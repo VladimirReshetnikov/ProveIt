@@ -1,3 +1,7 @@
+/- Modified for ProveIt: provide the factor, row-product, and full-product
+SigmaFinite instances, plus the proved covered-chart OpensMeasurableSpace
+instance, explicitly in coefficientCoveredDensity_global to avoid Lean 4.32
+instance-search timeouts. Theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.MixedCoveredChartCompact
 import OAI.Combinatorics.Progressions.Probability.AllocatedFrozenJetDensity
 
@@ -201,6 +205,12 @@ theorem coefficientCoveredDensity_global
   · exact fun x hx => coefficientCoveredDensity_pointwise U root A rows pivot hpivot c w p o b hb bW d ν
       Ω hΩo hΩ hw (fun j a ha t => hΨΩ j t (hs j a ha t)) μ hinput g hg hg0 hlaw x hx
   · let ξ := Measure.pi (fun j => Measure.pi (fun _ : O j => ν j))
+    let : ∀ j, SigmaFinite (ν j) := fun j => inferInstance
+    let : ∀ j, SigmaFinite (Measure.pi (fun _ : O j => ν j)) :=
+      fun j => Measure.pi.sigmaFinite _
+    let : SigmaFinite ξ := Measure.pi.sigmaFinite _
+    let : OpensMeasurableSpace (CoveredJetChartSource U O B n d) :=
+      @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
     let S := coveredJetSourceRegion (B := B) U b d Ψ
     let q := coveredJetChart (O := O) U b hb bW d
     let density := canonicalCoveredArrayDensity (B := B) U root A rows pivot hpivot c w p d

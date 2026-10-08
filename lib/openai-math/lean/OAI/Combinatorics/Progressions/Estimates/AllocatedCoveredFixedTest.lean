@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved covered-chart Borel instance
+explicitly as OpensMeasurableSpace in allocatedCoveredPullback_measurable,
+avoiding Lean 4.32 instance-search timeout. Theorem statements are unchanged. -/
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Probability.ProbabilityMassFunction.Integrals
 import OAI.Combinatorics.Progressions.Probability.AllocatedWholeDeckLaw
@@ -386,6 +389,8 @@ local notation "pullback" => (fun p : (AllocatedFrozenCoefficients B U b S ×
 
 omit [Fintype α] [DecidableEq α] [∀ j, DecidableEq (O j)] in
 theorem allocatedCoveredPullback_measurable (hF : Measurable F) : Measurable pullback := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O Q n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   have hchart := (coveredJetChart_continuous (O := O) U b hb bW d).measurable.comp
     (mixedCoveredJetCoordinates_measurable (O := O) (B := Q) (n := n) U o d)
   exact hF.comp ((measurable_fst.comp measurable_fst).prodMk

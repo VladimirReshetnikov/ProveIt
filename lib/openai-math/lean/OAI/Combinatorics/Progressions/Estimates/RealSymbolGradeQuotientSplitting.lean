@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial coefficient lemmas explicitly for the older coefficient API.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.HomogeneousQuotientSymbolLiftBounds
 import OAI.Combinatorics.Progressions.Nilpotent.RealFunctionalBCH
@@ -179,7 +180,7 @@ theorem scalarSymbolPolynomial_eq_zero_of_fast
     F.scalarSymbolPolynomial b ω hF w θ P = 0 := by
   have hle : W.toSubmodule ≤ LinearMap.ker θ := hθ
   ext α
-  rw [F.coeff_scalarSymbolPolynomial, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+  rw [F.coeff_scalarSymbolPolynomial, MvPolynomial.coeff_zero]
   apply (mem_realified_frequency_kernel_iff θ _).mp
   apply Submodule.baseChange_mono ℝ hle
   exact (F.mem_real_symbolPointwiseSubalgebra_iff_coefficients b ω hF w W P.coord).mp hP α
@@ -211,7 +212,7 @@ theorem scalarSymbolPolynomial_approximation_of_factorization [Fintype ι]
   have hz := congrArg (fun polynomial => polynomial.coeff α) hZ
   simp only [MvPolynomial.coeff_map, MvPolynomial.coeff_C_mul] at hz
   change ((Z.coeff α : ℤ) : ℝ) = (q : ℝ) * (F.scalarSymbolPolynomial b ω hF w θ Q).coeff α at hz
-  rw [hsplit, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hz,
+  rw [hsplit, MvPolynomial.coeff_add, hz,
     mul_div_cancel_left₀ _ (Nat.cast_ne_zero.mpr hq.ne'), add_sub_cancel_right]
   exact (F.scalarSymbolPolynomial_slow_coefficients_of_height b ω hF w θ T hT hM
     hθH E hE α).trans (div_le_div_of_nonneg_right hslow (monomialScale_pos T hT α).le)
@@ -567,7 +568,7 @@ theorem realSymbolGradeQuotientPolynomial_coordinate_normalized_splitting
         (F.realSymbolGradeQuotientPolynomial b ω hF w W.toSubmodule k (R * R₀⁻¹).coord) := by
   rw [F.realSymbolGradeQuotientPolynomial_normalized_splitting b ω hF w W k E P R E₀ R₀ hP hE hR]
   ext α
-  simp only [coeff_coordinate, map_add, Finsupp.add_apply, AddMonoidAlgebra.coeff_add]
+  simp only [coeff_coordinate, map_add, Finsupp.add_apply, MvPolynomial.coeff_add]
 
 theorem scalarSymbolPolynomial_weightedComponent_normalized_splitting
     (W : LieSubalgebra ℚ F.AssociatedGraded)
@@ -594,7 +595,7 @@ theorem scalarSymbolPolynomial_weightedComponent_normalized_splitting
         coordinate (realifyFunctional θ).toAddMonoidHom p +
         coordinate (realifyFunctional θ).toAddMonoidHom q := by
     ext α
-    simp only [coeff_coordinate, map_add, Finsupp.add_apply, AddMonoidAlgebra.coeff_add]
+    simp only [coeff_coordinate, map_add, Finsupp.add_apply, MvPolynomial.coeff_add]
   simp only [hcoord_add, coordinate_weightedHomogeneousPart] at hc
   change MvPolynomial.weightedHomogeneousComponent w k
       (F.scalarSymbolPolynomial b ω hF w θ (E₀⁻¹ * (E * P * R) * R₀⁻¹)) =

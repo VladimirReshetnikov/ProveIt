@@ -20779,7 +20779,12 @@
     "OAI.Combinatorics.Progressions.Probability.MixedCoveredDensityMass": "Derive OpensMeasurableSpace explicitly from the existing coveredJetChartSource_borel instance in mixedCoveredJet_normalized_lintegral to avoid Lean 4.32 typeclass-search exhaustion; statements and bounds unchanged.",
     "OAI.Combinatorics.Progressions.Sampling.CoveredSamplerHaarDensity": "Derive product IsProbabilityMeasure, IsFiniteMeasure, SigmaFinite, and SFinite instances explicitly in canonicalCoveredArrayDensity_law, and derive chart-source OpensMeasurableSpace from coveredJetChartSource_borel in canonicalCoefficientDeckSample_array_density, for Lean 4.32 instance resolution; statements and bounds unchanged.",
     "OAI.Combinatorics.Progressions.Estimates.AllocatedFrozenTupleGrouping": "Use a private pointwise principalTupleWeights_toPMF helper, following the existing toPMF_pi pointwise argument, in allocatedFrozenTuple_axis_marginal and allocatedFrozenTuple_full_blocks to avoid Lean 4.32 kernel memory exhaustion. All upstream theorem statements are unchanged.",
-    "OAI.Combinatorics.Progressions.Probability.AllocatedActiveAxisSourceLaw": "Derive allocatedFrozenTuple_single_block_marginal from allocatedFrozenTuple_block_marginal and dependentProductPMF_eval with an explicit product family, avoiding the expensive complete-weight conversion on Lean 4.32; all upstream statements and bounds unchanged."
+    "OAI.Combinatorics.Progressions.Probability.AllocatedActiveAxisSourceLaw": "Derive allocatedFrozenTuple_single_block_marginal from allocatedFrozenTuple_block_marginal and dependentProductPMF_eval with an explicit product family, avoiding the expensive complete-weight conversion on Lean 4.32; all upstream statements and bounds unchanged.",
+    "OAI.Combinatorics.Progressions.Estimates.RealSymbolGradeQuotientSplitting": "Use MvPolynomial.coeff_zero and coeff_add explicitly in scalar and quotient polynomial splitting proofs, omitting obsolete coefficient-function application rewrites. All 25 upstream theorem statements unchanged. Full module and 1,355-module closure compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Geometry.RestrictedChartPrefixControl": "Use weightedHomogeneousSubmodule.sub_mem instead of the unavailable IsWeightedHomogeneous.sub lemma in normalizedRealPolynomialChart_isWeightedHomogeneous. All 22 upstream theorem statements unchanged. Full module and 1,358-module closure compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Sampling.PrincipalGridMixture": "Supply the existing tuple y as a local Nonempty instance in principalResidueWeights_nonzero_source, avoiding the older typeclass search timeout. All four upstream theorem statements unchanged. Full module and 1,485-module closure compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Estimates.AllocatedCoveredFixedTest": "Supply OpensMeasurableSpace for CoveredJetChartSource explicitly from coveredJetChartSource_borel in allocatedCoveredPullback_measurable, avoiding Lean 4.32 instance-search timeout. All 17 upstream theorem statements unchanged. Full module and 1,545-module closure compiled.",
+    "OAI.Combinatorics.Progressions.Sampling.CoveredSamplerGlobalDensity": "In coefficientCoveredDensity_global, supply factor, row-product and full-product SigmaFinite instances and the covered-chart OpensMeasurableSpace instance from the proved Borel structure, avoiding older typeclass-search timeouts. All four theorem statements unchanged. Full module and 1,543-module closure compiled on Lean 4.32.0."
   },
   "additional_compat_imports": {
     "OAI.Combinatorics.Progressions.Nilpotent.BCHQuotientLocalIsometry": [
@@ -21051,11 +21056,11 @@
     "OAI.Combinatorics.Progressions.Polynomial.RealGradedSymbolPolynomial"
   ],
   "partial_verification": {
-    "manifest_prefix_length": 2300,
-    "last_upstream_module": "OAI.Combinatorics.Progressions.Lattices.PhysicalSpatialResidueSupport",
-    "build_closure_modules": 2316,
+    "manifest_prefix_length": 2400,
+    "last_upstream_module": "OAI.Combinatorics.Progressions.Dynamics.CanonicalDetectedScaleInputBudget",
+    "build_closure_modules": 2416,
     "audit_module": "OAI.QuantitativePortAudit",
-    "audited_public_OAI_theorems": 38026,
+    "audited_public_OAI_theorems": 39376,
     "allowed_axioms": [
       "propext",
       "Classical.choice",
@@ -21064,7 +21069,7 @@
     "toolchain": "leanprover/lean4:v4.32.0",
     "date": "2026-10-08",
     "scope": "Only this initial prefix and its dependencies; Results.Conclusions remains unverified.",
-    "audit_build_closure_modules": 2317,
+    "audit_build_closure_modules": 2417,
     "compatibility_axiom_check": "The audit rejects unapproved axioms in each explicitly listed compatibility declaration, in addition to public OAI theorems."
   },
   "mathlib_import_renames": {
