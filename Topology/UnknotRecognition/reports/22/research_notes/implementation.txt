@@ -1,0 +1,213 @@
+CHECKED MONTESINOS ARITHMETIC: IMPLEMENTATION AND DIAGNOSTIC NOTES
+8 October 2026
+
+Scope and source audit
+----------------------
+The baseline fast/ recognizer has checked source-braid provenance and exact
+at-most-three-strand braid recognition, signed-Seifert certificates, geometric
+reductions, invariant obstructions, visible factorization and exact Khovanov
+fallback. It has no rational-tangle/Montesinos input or decision backend.
+Report 11 lists rational tangles as future work. Reports 10 and 12 address
+algebraic contraction and succinct cancellation; this code does not duplicate
+them. No arbitrary planar diagram is identified as Montesinos by this module.
+
+Files changed by this implementation
+-----------------------------------
+fast/fastunknot/rational.py (new)
+fast/fastunknot/diagram.py
+fast/fastunknot/recognize.py
+fast/fastunknot/__init__.py
+fast/fastunknot/__main__.py
+fast/tests/test_rational.py (new)
+
+Public interface
+----------------
+  continued_fraction(coefficients, check=None)
+      Exact primitive projective pair (p,q), q nonnegative. Conventional
+      continued fractions a0+1/(a1+...) are used, not negative CF notation.
+      Intermediate zero denominators are projective; final infinity is
+      available here but rejected as a Montesinos summand.
+
+  montesinos_certificate(e, tangles, check=None)
+      Arithmetic-only complete recognition on the supplied class. The input
+      is the numerator closure of integer tangle e plus a horizontal sum of
+      individually supplied finite rational tangles. Each summand is a CF.
+      Literal booleans/floats, empty CFs, infinite final summands and even
+      determinant closures raise DiagramError. The last condition rejects
+      links rather than giving them a knot verdict. There is no expansion.
+
+  verify_montesinos_certificate(e, tangles, certificate)
+      Replays slopes using forward 2x2 products, versus the production
+      backwards CF recurrence. Independently forms the full denominator
+      product and its numerator sum. It does not re-use the production
+      common-denominator accumulator to verify the decision. The cost
+      statistic is replayed separately. Exact field types and complete key
+      equality reject booleans in integer fields and extra/misleading fields.
+      The mathematical topological theorems are imported, not formally proved
+      by this function. Its verification time can be cubic in total binary
+      input length under schoolbook arithmetic; a quadratic production bound
+      should not be attributed to this deliberately independent verifier.
+
+  Diagram.from_rational(e, tangles, max_crossings=100000)
+  Diagram.from_montesinos(e, tangles, max_crossings=100000)
+      Aliases that really construct planar tangles, their horizontal gluing,
+      and the numerator closure, then call ordinary Diagram.from_pd.
+      They store detached immutable rational_source=(e, tuple(tuple(CF),...)).
+      max_crossings=None explicitly requests uncapped expansion.
+
+  Diagram.from_json({"montesinos":{"e":0,"tangles":[[...],[...]]}})
+      e defaults to zero. tangles is required. Additional fields within the
+      Montesinos source and mixed top-level PD/braid/grid/Montesinos sources
+      are rejected. The default 100000 crossing cap is used.
+
+  recognize(diagram, use_rational=True)
+      Checked Montesinos source is examined before the existing pipeline.
+      use_rational=False gives a clean old-pipeline comparison on the exact
+      same generated PD. The CLI exposes --no-rational for this comparison.
+      A bare PD, even if equal to a generated PD, has no rational_source.
+
+  diagram.to_json(preserve_rational=True)
+      Explicitly retains its source. The ordinary no-argument to_json still
+      exports a bare PD and drops source provenance.
+
+  build_montesinos_tangle(e,tangles,max_crossings=100000)
+      Returns a dict containing actual crossing rows `pd`, four boundary
+      labels `boundary` in NW,NE,SE,SW cyclic order, and detached `source`.
+      Crossing rows use the baseline counterclockwise convention: slots
+      0,2 are under, slots 1,3 over. Every label occurs twice across rows
+      plus boundary occurrences. A crossing-free boundary arc repeats one
+      boundary label. This function allows even-determinant numerator closures
+      and can create sums with closed tangle components, so a consumer claiming
+      a two-string local tangle must separately rule out closed components.
+
+CLI versus compressed API
+-------------------------
+The ordinary CLI always reads a Diagram. Huge binary coefficients are therefore
+rejected by the expansion cap before crossing objects are allocated. It does
+not silently switch input/output semantics to a compressed arithmetic mode.
+The documented nonexpanding path is the Python API, for example:
+
+  from fastunknot import montesinos_certificate
+  witness = montesinos_certificate(0, [[0, (1 << 20000) + 1]])
+
+This exact input represents the numerator closure of slope 1/(2^20000+1).
+It is an unknot. The source has a 20001-bit coefficient and exponentially
+many expanded crossings; the direct API does not construct them. Witness
+integers of more than 1024 bits are encoded as {hex:...,bits:...} records
+so JSON serialization never hits Python's decimal digit conversion limit.
+
+Arithmetic semantics and principal safety distinction
+----------------------------------------------------
+Each primitive slope p_i/q_i has q_i>0. Divide p_i=a_i q_i+beta_i with
+0<=beta_i<q_i; add all a_i to e. Keep every nonzero beta_i/q_i as an
+exceptional pair beta_i/alpha_i, where alpha_i=q_i>=2. Zero beta_i implies
+q_i=1 because the original pair is primitive.
+
+The determinant is the absolute value of
+
+  e' product(alpha_i) + sum_i beta_i product_{j!=i}(alpha_j).
+
+The common-denominator pair is NEVER reduced across different summands.
+For example, 1/2+1/2 is the number 1 but the closure determinant is 4;
+collapsing the rational sum would be a false-positive unknot bug.
+
+The certificate returns UNKNOT exactly when r<=2 and determinant=1. It
+returns KNOTTED for r>=3 by the nontrivial base orbifold group quotient of
+the Seifert-fibred double cover, including determinant-one examples. For
+r<=2 and determinant>1 it returns KNOTTED by two-bridge classification.
+These are complete decisions only for checked supplied Montesinos sources.
+
+Planar construction
+-------------------
+A rational tangle starts as two horizontal arcs. A unit right twist adds one
+real crossing at the right two terminals. A clockwise quarter turn changes
+the fraction to -1/F; crossing mirror then negates the fraction, implementing
+the ordinary reciprocal 1/F. Building the CF backwards realizes the required
+positive-sign continued fraction convention. A lazy crossing-switch bit
+avoids rewriting all previous crossing rows at each mirror. Horizontal gluing
+uses union-find on boundary wire labels. After numerator caps are applied, a
+separate strand-component count includes crossing-free wires before producing
+the closed PD, so it cannot silently omit a detached crossing-free component.
+The observed determinant and component matches are validated against the
+existing, independently written Alexander and Khovanov implementations.
+
+Provenance safety
+-----------------
+The source is attached only after actual conversion and PD validation. Pickle
+loading reconstructs its PD and requires exact row equality up to choosing
+the other under-port of a crossing (a half-turn of that row). Serialized
+multiple source types are rejected. Mirrors retain the explicitly mirrored
+source. Reinvoking Diagram.__init__ is forbidden, just like __setstate__;
+otherwise it could replace a certified unknot PD with a trefoil while retaining
+the old source. Ordinary hostile in-process mutation via __dict__ or
+object.__setattr__ remains outside the immutable-record API's trust boundary.
+No claim to harden arbitrary malicious Python code is made.
+
+Executed validation before root integration
+------------------------------------------
+Command: python -m unittest discover -s tests -p test_rational.py -v
+All 12 test methods passed, approximately 0.7 seconds on this host.
+
+They include:
+* 76 small single-rational closures checked by an independent dense F2 cube;
+* 56 small two-rational closures checked by the same independent cube;
+* 160 seeded random Montesinos determinants versus exact Alexander(-1);
+* all 64 entries of the m=3 binary-word continuation matrix, with the
+  constructed 16-crossing PD determinants independently checked;
+* determinant-one knots M(-1;1/2,1/3,1/5) and M(-1;1/2,1/3,1/7), which
+  must not be confused with determinant-one unknots;
+* invalid sources, source detachment, mirror and pickle round trips,
+  attempted constructor reinitialization, and certificate tampering;
+* actual four-terminal label-incidence checks;
+* 20001-bit coefficient arithmetic and expansion-cap checks.
+
+Full baseline and combined-module suites are for the root integration run;
+these notes do not claim that they have already run.
+
+Useful cancellation-hard diagnostic corpus
+------------------------------------------
+Let A(p,q)=(p+2q,q), B(p,q)=(p,2p+q), and let G_w be the product of the
+matrices of the letters of w. Use v_w=G_w(1,1), x_w=G_w(3,2), convert
+each to positive Euclidean CF, negate all coefficients of the continuation,
+and construct e=0 with those TWO distinct rational summands.
+The diagonal closures are unknots, and cross-word closures are nontrivial.
+
+For the explicit word AB the source is
+
+  {"montesinos":{"e":0,"tangles":[[2,3],[-2,-2,-1,-2]]}}.
+
+It has 12 crossings. The current RI/RII simplifier leaves all 12, and the
+current default pipeline with use_rational=False reaches reduced Khovanov.
+The new source arithmetic returns UNKNOT before any reduction or scan.
+
+A short diagnostic over all words of length m=5 produced 32 diagonal
+24-crossing unknots: 26 reached the baseline Khovanov scanner, 15 retained
+all 24 crossings after RI/RII, and only six reduced directly to the unknot.
+This is a useful corpus selection observation, NOT a timed speedup study.
+Root-owned paired benchmark results should be the sole source for final
+wall-time claims.
+
+Complexity claims to keep separate
+---------------------------------
+For total binary coefficient length L, primitive CF evaluation and the
+unreduced determinant accumulator have O(L)-bit intermediates and polynomial
+bit time; a direct schoolbook accounting gives O(L^2) for production arithmetic.
+This assumes a supplied Montesinos decomposition. It does not include finding
+one in an arbitrary diagram. The PD constructor necessarily expands n real
+crossings and its validation/resource costs depend on n, not merely L.
+The independent verifier may be slower than production. The existing general
+pipeline remains worst-case exponential and its Result JSON still explicitly
+withholds a general quasi-polynomial guarantee.
+
+Final integration update
+------------------------
+The final combined suite, including the local obstruction module, passed all
+152 test methods in 30.415 unittest seconds (30.651362 measured process wall
+seconds), exit code zero. The full log is results/integrated_tests.txt.
+The integration patch changes/adds 13 paths under
+Topology/UnknotRecognition/fast. It was applied to a fresh exact baseline
+copy; all 81 resulting noncache files matched the delivered fast/ tree.
+Both new suites (12 arithmetic and 6 local methods) passed in that isolated
+copy, with PYTHONPATH removed and no dependency on experiments/.
+See integration/README.md, integration/patch_manifest.json and
+results/patch_verification.txt for commands, byte hashes and replay evidence.

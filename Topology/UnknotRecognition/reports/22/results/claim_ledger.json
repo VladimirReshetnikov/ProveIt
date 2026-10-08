@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-08",
+  "baseline_commit": "86f23490006c880cd01db9bec10761d39c6395c8",
+  "general_quasipolynomial_bound_established": false,
+  "formal_proof_assistant_verification": false,
+  "claims": [
+    {
+      "id": "boolean_connection_identity",
+      "status": "proved_in_article",
+      "formula": "H_m = I_(2^m)",
+      "scope": "Rational four-ended prefixes/continuations; all cross closures knots; O(m) displayed crossings",
+      "proof_label": "thm:rational-boolean-identity",
+      "diagnostic": "results/identity_verification.json",
+      "not_claimed": "General recognition running-time lower bound"
+    },
+    {
+      "id": "arithmetic_rank_two",
+      "status": "proved_in_article",
+      "formula": "D_m = p s^T - q r^T; rank_Q(D_m) <= 2",
+      "scope": "Exact rational slopes; nonlinear final absolute-value-one readout",
+      "proof_label": "thm:rational-arithmetic-representation",
+      "bit_time": "O(m^2) schoolbook"
+    },
+    {
+      "id": "full_checkpoint_growth",
+      "status": "proved_in_article",
+      "formula": "M(C_k) >= p_k+q_k in graded explicit basis; >= p_k/2 without quantum grading",
+      "scope": "Specified four-ended rational prefix of displayed unknot with 8k+4 crossings",
+      "proof_label": "cor:graded-checkpoint-size",
+      "diagnostic": "results/checkpoint_family_verification.json",
+      "not_claimed": "All scan orders, arbitrary succinct representations, or a benchmark materializing billions of objects"
+    },
+    {
+      "id": "montesinos_classifier",
+      "status": "implemented_and_proved",
+      "formula": "For one component: unknot iff r<=2 and abs(D)=1",
+      "scope": "Supplied finite continued fractions; primitive pairs; normalized integer term; component check",
+      "bit_time": "O(B^2) production; O(B^3) independent verifier on valid O(B)-size certificates",
+      "module": "fast/fastunknot/rational.py"
+    },
+    {
+      "id": "local_obstruction",
+      "status": "implemented_using_imported_theorem",
+      "source_theorem": "Nogueira-Salgueiro Theorem 4.9",
+      "scope": "Literal connected e0 patterns; every original rational summand nonintegral and finite; two open strands; four distinct external edges; verified common port face",
+      "module": "fast/fastunknot/tangle_obstruction.py",
+      "matching_word_time": "O(nm) after compilation; public validation adds O(n log(n+2)); source and compilation costs additional",
+      "default": "opt-in"
+    },
+    {
+      "id": "bounded_description_discovery",
+      "status": "algorithm_proved_not_implemented_as_exhaustive_enumerator",
+      "bit_time": "(n+2)^O(h), hence exp(O(log(n+2)^2)) for h=O(log(n+2))",
+      "scope": "One-sided search complete only for stated bounded literal template class; uncapped abstract construction",
+      "proof_label": "prop:mon:bounded-discovery"
+    }
+  ],
+  "validation": {
+    "baseline_test_methods": 134,
+    "integrated_test_methods": 152,
+    "new_test_methods": 18,
+    "patch_changed_paths": 13,
+    "identity_entries": 1398101,
+    "independent_montesinos_sources": 1200,
+    "checkpoint_instances": 21
+  },
+  "benchmark_scope": "Warm in-process A/B/A ablation; fresh diagram caches; recognition excludes construction; construction+recognition shown separately; UNKNOWN censored; local regressions retained"
+}

@@ -1,0 +1,211 @@
+\section{Implementation, certificates, and integration contracts}
+\label{sec:implementation}
+
+The package includes a runnable copy of the updated \code{fast} recognizer
+and a patch against the pinned baseline. The patch changes or adds thirteen
+paths, including two new mathematical modules, their tests, source-provenance
+handling, CLI integration, documentation, and local certificate fixtures.
+The existing license is preserved. This section describes the public
+behavior that a repository integration should retain.
+
+\subsection{Structured arithmetic and actual diagram construction}
+
+The arithmetic API accepts an integer and a sequence of finite continued
+fractions:
+\begin{lstlisting}[language=Python]
+from fastunknot.rational import (
+    montesinos_certificate, verify_montesinos_certificate,
+)
+
+source = [[0, -3], [0, 5], [0, 7]]
+certificate = montesinos_certificate(0, source)
+assert certificate["status"] == "KNOTTED"
+assert certificate["determinant"] == 1
+assert verify_montesinos_certificate(0, source, certificate)
+\end{lstlisting}
+This call performs no PD expansion. It is the compressed-input interface
+to Theorem~\ref{thm:mon:complete}. In particular, native Python integers
+with many thousands of binary digits are supported by the arithmetic path.
+The bit model in Proposition~\ref{prop:mon:complexity} describes those
+integers, rather than a unit-cost model for arbitrarily large numbers.
+
+For integration into the ordinary pipeline, the diagram constructor expands
+the same source into a real plane diagram:
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram, recognize
+
+d = Diagram.from_rational(0, [[0, -3], [0, 5], [0, 7]])
+assert d.crossings == 15
+answer = recognize(d)
+assert answer.status == "KNOTTED"
+assert answer.method == "montesinos-orbifold-quotient"
+
+# Alias with the mathematical family name:
+same = Diagram.from_montesinos(0, [[0, -3], [0, 5], [0, 7]])
+\end{lstlisting}
+The compiler implements horizontal twist composition, quarter rotation,
+crossing reversal, and numerator closure. Rotation changes a slope to
+\(-1/x\); reciprocal construction adds crossing reversal to obtain \(1/x\).
+A lazy crossing-switch flag prevents repeated physical mirroring of all
+already constructed rows at every reciprocal step. Its final output still
+undergoes the ordinary spherical-embedding and component checks.
+
+The corresponding JSON representation is:
+\begin{lstlisting}
+{
+  "montesinos": {
+    "e": 0,
+    "tangles": [[0, -3], [0, 5], [0, 7]]
+  }
+}
+\end{lstlisting}
+The CLI accepts this through the ordinary input loader. The switch
+\code{--no-rational} disables the new early decision, which is useful for
+paired experiments on the very same expanded diagram. This switch does not
+change what knot the supplied source represents.
+
+The arithmetic stage recognizes both signs of the determinant-one
+two-bridge condition. For instance,
+\code{montesinos_certificate(0, [[1], [-1, -2]])}
+describes \(N(T(1)-T(3/2))\) and returns \unk.
+For \(P(-3,5,7)\), in contrast, the three exceptional denominators establish
+nontriviality even though the determinant is one. The latter decision is
+not an inference from the Alexander polynomial.
+
+\subsection{Provenance is part of the correctness argument}
+
+An arbitrary PD accompanied by an unrelated list of fractions is not
+covered by the structured theorem. The implementation therefore attaches
+immutable, detached rational source data only when its own checked
+constructor creates the PD. The ordinary \code{Diagram.from_pd} constructor
+does not invent or infer this provenance. Mutating the caller's original
+list after construction does not mutate the stored source.
+
+Mirroring preserves the connection between data and topology by changing
+the source consistently. Pickle roundtrips replay construction and verify
+the resulting source/PD relation. A guard also prevents a second
+\code{Diagram.__init__} call from replacing the PD of an already initialized
+object while leaving old provenance attached. These are ordinary supported
+API invariants; the mathematics does not assume an attacker can rewrite
+arbitrary internal interpreter objects.
+
+This contract allows \code{recognize} to use a source without solving a
+second, potentially difficult tangle-recognition problem. When the source
+is absent, the existing PD pipeline is available. Automatic extraction of
+rational structure from general diagrams is an explicit next research task.
+
+\subsection{Input rejection and resource behavior}
+
+The following cases are handled before a topological verdict is returned.
+Every coefficient must be a literal integer; Python booleans are rejected
+despite their being integer subclasses. Continued-fraction blocks must be
+nonempty. Intermediate projective infinity is allowed, but a final
+denominator zero is outside the supported source grammar. A final
+multi-component numerator closure is outside the knot domain and is
+rejected as input, rather than labeled a nontrivial knot.
+
+The PD constructor defaults to a literal expansion ceiling of 100,000
+crossings, checked before allocating the diagram. This policy protects the
+expanded interface from exponentially large \(C\). It is separate from the
+compressed arithmetic API, which does not need to allocate \(C\) crossings.
+The current CLI uses the expanded constructor; the very large compressed
+benchmarks below use the direct arithmetic API.
+
+The existing recognition timeout and complex-object ceilings retain their
+original meaning. Exhausting those limits yields \unknown, never \unk.
+The separate expansion ceiling instead rejects construction with a
+\code{DiagramError}; the CLI reports invalid input. Construction precedes
+the recognition timer and is not covered by that timer. The exact arithmetic
+branch is still subject to ordinary input processing and the chosen
+pipeline budget; it does not create a universal real-time guarantee.
+
+\subsection{Local occurrence certificates in arbitrary PDs}
+
+The second new module is \code{fastunknot.tangle_obstruction}. Its direct
+verification interface accepts a host diagram and a source-plus-map
+certificate:
+\begin{lstlisting}[language=Python]
+from fastunknot.tangle_obstruction import (
+    find_subtangle_obstruction,
+    verify_subtangle_certificate,
+    recognize_with_subtangles,
+)
+
+certificate, evidence, stats = find_subtangle_obstruction(host)
+if certificate is not None:
+    checked = verify_subtangle_certificate(host, certificate)
+    assert checked["status"] == "KNOTTED"
+
+# Optional search, followed by the existing recognizer if no witness is found.
+answer = recognize_with_subtangles(host, seconds=3.0)
+\end{lstlisting}
+Here \code{host} is a normal validated \code{Diagram}; it need not carry
+rational provenance. The example fixture files in \code{fast/examples}
+are plain PDs, and their local certificates are separate files in
+\code{fast/certificates}.
+
+Each certificate contains exactly a version, a pattern source, a list of
+crossing images, and a list of cyclic offsets:
+\begin{lstlisting}
+{
+  "version": 1,
+  "pattern": {"e": 0, "tangles": [[0, 3], [0, 3]]},
+  "crossings": [...],
+  "rotations": [0, 2, ...]
+}
+\end{lstlisting}
+The ellipses above indicate the format; the delivered certificates contain
+complete integer lists. Verification compiles the source or retrieves a
+previously checked immutable template from the compilation cache. It then
+checks the host and occurrence afresh: the crossing map, the cyclic order,
+the overpassing pairs, every internal edge, the four distinct outgoing
+edges, the common port face, and the two open strands. The checked template supplies the exact fractions
+and obstruction. A stated knot verdict
+in a JSON object is never itself a certificate.
+
+The initial compiler accepts only \(e=0\), at least two finite nonintegral
+rational summands, a connected crossing shadow, two open strands with no
+closed component, and four distinct external cut edges at an occurrence.
+The full arithmetic classifier has a broader source grammar; these two
+interfaces should not be conflated.
+
+The default catalogue consists of six templates: the sums with slopes
+\((1/3,1/3)\), \((1/2,1/5)\), and \((1/3,1/4)\), and their mirrors.
+Their literal sizes are six or seven crossings. Their respective
+uncancelled congruence numerators are \(6,7,7\), with products \(9,10,12\).
+Each fails the \(\pm1\) congruence and has at most one even denominator.
+
+Connectedness makes matching unusually simple. Once a root crossing image
+and an allowed half-turn are selected, every internal edge forces its
+neighbor's image and rotation. The search does not enumerate all
+\(n^m\) crossing maps. For an already compiled \(m\)-crossing pattern it
+uses the \(O(nm)\) forced-propagation algorithm proved above.
+The public call also sorts labels during validation, adding
+\(O(n\log(n+2))\) word operations, plus source reading and compilation.
+These deterministic word bounds can be realized with indexed arrays.
+The Python implementation uses dictionaries and sets in some checks;
+its operation accounting uses the usual constant-time table model.
+No worst-case bit bound for adversarial interpreter hash-table behavior
+is being inferred from a wall-clock measurement.
+
+The wrapper is opt-in. An inconclusive search continues to the existing
+pipeline, and a failed time budget has the same \unknown\ interpretation.
+Successful local rejection is independent of the exterior's knot
+polynomial or homology. An unknottable local pattern, however, supplies
+no positive verdict about its actual exterior.
+
+\subsection{What the integration patch does and does not contain}
+
+The patch includes \code{rational.py}, \code{tangle_obstruction.py},
+the new tests and fixtures, modifications to the diagram class and
+recognition entry points, and updated documentation. It can be reviewed
+and applied from the ProveIt repository root; the exact commands and
+baseline checks are in \code{integration/README.md}.
+
+The archive also contains the entire runnable \code{fast} directory,
+the article sources and PDF, example-source generators, independent
+diagnostics, raw measurements, and manifests. The theoretical exhaustive
+enumerator of Proposition~\ref{prop:mon:bounded-discovery} is not silently
+presented as shipping software. The implementation supplies the required
+fixed-pattern search primitive; a practical enumerator should be a separate
+reviewed contribution with source deduplication and explicit budgets.

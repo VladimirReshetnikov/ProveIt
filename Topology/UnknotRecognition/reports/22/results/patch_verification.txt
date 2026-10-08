@@ -1,0 +1,48 @@
+Exact-baseline patch application and isolated targeted test replay
+Baseline: upstream/Topology/UnknotRecognition/fast
+Temporary checkout: /workspace/scratch/d4a797eef8dc/unknot_patchcheck_8swk41yf
+Patch SHA256: e9a714ff83fa68257df3f7b66da730dd3713e49ac71535bc9ea6e57a1b778eb1
+
+All 73 baseline files match recorded bytes.
+Command: git apply --check /workspace/scratch/d4a797eef8dc/unknot_arithmetic_continuations/integration/fast_arithmetic_continuations.patch
+Command: git apply /workspace/scratch/d4a797eef8dc/unknot_arithmetic_continuations/integration/fast_arithmetic_continuations.patch
+All 81 patched files match the delivered fast/ byte-for-byte.
+
+Working directory: temporary Topology/UnknotRecognition/fast
+Command: python -m unittest discover -s tests -p test_rational.py -v
+PYTHONPATH removed; no package/experiments dependency.
+test_binary_coefficient_arithmetic_does_not_expand (test_rational.RationalArithmeticTests.test_binary_coefficient_arithmetic_does_not_expand) ... ok
+test_certificate_replay_and_tampering (test_rational.RationalArithmeticTests.test_certificate_replay_and_tampering) ... ok
+test_integer_normalization_preserves_the_full_product (test_rational.RationalArithmeticTests.test_integer_normalization_preserves_the_full_product) ... ok
+test_invalid_source_inputs (test_rational.RationalArithmeticTests.test_invalid_source_inputs) ... ok
+test_projective_cf_zero_denominators_and_mirrors (test_rational.RationalArithmeticTests.test_projective_cf_zero_denominators_and_mirrors) ... ok
+test_three_exceptional_fibres_detect_determinant_one_knots (test_rational.RationalArithmeticTests.test_three_exceptional_fibres_detect_determinant_one_knots) ... ok
+test_checked_provenance_serialization_and_mirror (test_rational.RationalDiagramTests.test_checked_provenance_serialization_and_mirror) ... ok
+test_four_terminal_graph_contract (test_rational.RationalDiagramTests.test_four_terminal_graph_contract) ... ok
+test_identity_continuation_matrix_and_cancellation_hard_unknot (test_rational.RationalDiagramTests.test_identity_continuation_matrix_and_cancellation_hard_unknot) ... ok
+test_random_montesinos_determinants_against_exact_alexander (test_rational.RationalDiagramTests.test_random_montesinos_determinants_against_exact_alexander) ... ok
+test_small_cf_corpus_against_independent_khovanov_cube (test_rational.RationalDiagramTests.test_small_cf_corpus_against_independent_khovanov_cube) ... ok
+test_small_two_tangle_corpus_against_independent_cube (test_rational.RationalDiagramTests.test_small_two_tangle_corpus_against_independent_cube) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.583s
+
+OK
+
+Working directory: temporary Topology/UnknotRecognition/fast
+Command: python -m unittest discover -s tests -p test_tangle_obstruction.py -v
+PYTHONPATH removed; no package/experiments dependency.
+test_default_catalogue_and_fallback (test_tangle_obstruction.SubtangleTests.test_default_catalogue_and_fallback) ... ok
+test_local_certificate_and_automatic_discovery (test_tangle_obstruction.SubtangleTests.test_local_certificate_and_automatic_discovery) ... ok
+test_no_false_rejection_on_short_closed_braids (test_tangle_obstruction.SubtangleTests.test_no_false_rejection_on_short_closed_braids) ... ok
+test_ports_and_closed_strings (test_tangle_obstruction.SubtangleTests.test_ports_and_closed_strings) ... ok
+test_reordered_crossings_and_even_rotations (test_tangle_obstruction.SubtangleTests.test_reordered_crossings_and_even_rotations) ... ok
+test_tampering_rejected (test_tangle_obstruction.SubtangleTests.test_tampering_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.076s
+
+OK
+
+Result: PASS
+Measured wall seconds: 1.048206

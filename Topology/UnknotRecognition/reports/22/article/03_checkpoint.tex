@@ -1,0 +1,294 @@
+% Research fragment: independently audited 2026-10-08.
+% The parent supplies theorem environments, amsmath/amssymb, and sources.bib.
+
+\section{An exponential full-complex checkpoint inside explicit unknots}
+\label{sec:unknot-checkpoint-lower-bound}
+
+The Boolean connection-rank obstruction concerns a representation that
+answers every admitted continuation.  The next obstruction is different:
+it applies to the explicit size of a complex that retains the complete
+Bar--Natan homotopy type of one specified prefix.  It holds even when the
+input is promised to be an unknot.
+
+\subsection{A reduced closure functor needs no exactness hypothesis}
+
+Fix a field $\mathbb F$ and the ordinary Khovanov Frobenius algebra
+$A=\mathbb F[X]/(X^2)$.  Work in the additive Bar--Natan category with
+fixed boundary, using the standard specialization if a universal
+deformation is present.  We count actual summands, with multiplicity,
+of circle-free crossingless matchings in a bounded, explicitly delooped
+complex.  A quantum or homological shift does not change this count.
+
+\begin{lemma}[Closure lower bound]
+\label{lem:reduced-closure-size}
+Let $P$ be a tangle with $2r>0$ boundary points.  Fix a crossingless
+closure $\Gamma$ for which $\Gamma(P)$ is a knot.  Suppose that $C$ is
+homotopy equivalent to the full Bar--Natan complex of $P$ and that all
+objects appearing in $C$ are shifts of circle-free crossingless
+matchings.  If $M(C)$ is the total number of summands over all chain
+degrees, counted with multiplicity, then
+\[
+ M(C)\ \ge\ 2^{1-r}\,
+ \dim_{\mathbb F}\widetilde{Kh}(\Gamma(P);\mathbb F)
+ \ \ge\ 2^{1-r}\det(\Gamma(P)).
+\]
+In particular, for a four-ended tangle and numerator closure,
+$M(C)\ge \det(N(P))/2$.
+\end{lemma}
+
+\begin{proof}
+Choose a point $*$ in the interior of one of the external closure arcs.
+Closing a cobordism adds the fixed product $\Gamma\times[0,1]$.
+Consequently the track $*\times[0,1]$ lies on the resulting cobordism
+and joins its distinguished input and output circles.  There is no
+requirement that the original tangle category carry a basepoint.
+
+Let $F$ be the ordinary Khovanov TQFT.  Give $F(\Gamma(S))$ its
+$A$-module structure by multiplication on the circle containing $*$.
+Every map obtained by closing a tangle cobordism is $A$-linear: a
+multiplication by $X$ can be moved along the fixed marked track from the
+incoming end to the outgoing end.  Algebraically this follows from
+commutativity of multiplication and the Frobenius identity
+\[
+ \Delta(Xa)=(X\otimes1)\Delta(a)
+             =(1\otimes X)\Delta(a).
+\]
+Births and deaths away from the marked track commute with this action
+as well.  These identities apply to composite cobordisms and their
+linear combinations.  The usual sphere, torus, and neck-cutting
+relations are already respected by $F$.
+
+Thus the assignment
+\[
+ R_\Gamma(S)=F(\Gamma(S))\otimes_A A/(X)
+\]
+and the induced maps define an additive functor on the original,
+unpointed tangle category.  Equivalently, up to a grading shift, one
+can restrict to the image of multiplication by $X$ on the marked
+circle.  All modules before reduction are free as $A$-modules, so
+the quotient and image descriptions are naturally identified by
+\mbox{$[a]\mapsto Xa$}.
+
+An additive functor preserves the equations defining a chain homotopy.
+For example, $gf-1=dh+hd$ implies
+$R_\Gamma(g)R_\Gamma(f)-1
+=R_\Gamma(d)R_\Gamma(h)+R_\Gamma(h)R_\Gamma(d)$.
+It therefore preserves chain homotopy equivalences.  No exactness of
+$-\otimes_A A/(X)$ is asserted or needed.  Applied to the cube of
+resolutions of $P$, the functor gives the reduced Khovanov complex of
+$\Gamma(P)$, up to harmless grading shifts.  This is compatible with
+the planar-composition and TQFT constructions in
+\cite[Theorem~2 and Section~7]{BarNatanTangles} and with the reduced
+complex in \cite[Section~3]{KhovanovPatterns}.
+
+A circle-free matching on $2r$ points has $r$ arcs.  Gluing it to the
+$r$ closure arcs produces $c$ circles with $1\le c\le r$.
+Hence
+\[
+ \dim_{\mathbb F}R_\Gamma(S)=2^{c-1}\le2^{r-1}.
+\]
+It follows that the total vector-space dimension of
+$R_\Gamma(C)$ is at most $2^{r-1}M(C)$.  Total homology dimension is
+at most total chain dimension, and homotopy equivalence identifies
+its homology with $\widetilde{Kh}(\Gamma(P);\mathbb F)$.
+
+Finally, the graded Euler characteristic of reduced Khovanov homology
+is the normalized Jones polynomial.  Evaluating its grading variable
+at $i$ corresponds to evaluating the conventional Jones variable at
+$-1$; all grading monomials have absolute value one.  The triangle
+inequality gives
+\[
+ \dim_{\mathbb F}\widetilde{Kh}(L;\mathbb F)
+ \ge |V_L(-1)|=|\Delta_L(-1)|=\det(L).
+\]
+This is the elementary reduced-homology inequality recorded in
+\cite[Section~3]{KhovanovPatterns}.  The same Euler-characteristic
+argument works over every field, since the integer graded Euler
+characteristic of the finite complex is independent of the field.
+Combining the inequalities proves the result.
+\end{proof}
+
+\begin{remark}[An independent unreduced proof over $\mathbb F_2$]
+The four-ended bound also follows without constructing a reduced
+closure functor.  An ordinary numerator closure sends each
+circle-free matching to at most two circles and thus at most four
+scalar generators.  Over $\mathbb F_2$, the unreduced Khovanov
+homology is the direct sum of two grading shifts of the reduced
+homology \cite[Corollary~3.2.C]{ShumakovitchTorsion}.  Therefore
+\[
+ 4M(C)\ge\dim Kh(N(P);\mathbb F_2)
+ =2\dim\widetilde{Kh}(N(P);\mathbb F_2)
+ \ge2\det(N(P)).
+\]
+This supplies the same lower bound $M(C)\ge\det(N(P))/2$.
+\end{remark}
+
+\subsection{Pell growth at a four-ended unknot checkpoint}
+
+Use the matrices and tangle conventions of
+\eqref{eq:rational-two-twist-generators}.  For $k\ge0$, set
+\[
+ G_k=(AB)^k,
+ \qquad \binom{p_k}{q_k}=G_k\binom11,
+ \qquad \binom{r_k}{s_k}=G_k\binom32,
+\]
+and choose the standard rational tangle diagrams
+\[
+ P_k=T(p_k/q_k),\qquad Q_k=-T(r_k/s_k),
+ \qquad K_k=N(P_k+Q_k).
+\]
+
+\begin{theorem}[Explicit unknots with an exponential intrinsic checkpoint]
+\label{thm:unknot-exponential-checkpoint}
+There are diagrams $K_k$ of the unknot with $N_k=8k+4$ displayed
+crossings and a specified four-ended prefix $P_k$ such that every
+explicitly delooped complex $C_k$ retaining the complete Bar--Natan
+homotopy type of $P_k$ has
+\[
+ M(C_k)\ge\frac{p_k}{2}
+ \ge\frac12(3+2\sqrt2)^k
+ =\frac12(3+2\sqrt2)^{(N_k-4)/8}.
+\]
+Here
+\[
+ p_0=1,\quad p_1=7,\quad
+ p_{k+2}=6p_{k+1}-p_k,
+\]
+and, with $\lambda=3+2\sqrt2$,
+\[
+ p_k=\frac{1+\sqrt2}{2}\lambda^k
+       +\frac{1-\sqrt2}{2}\lambda^{-k}.
+\]
+In particular, the lower bound is exponential in the size of these
+displayed unknot diagrams, although the rational arithmetic summaries
+have $O(k)$ bits and decide their closure in $O(k^2)$ bit operations.
+\end{theorem}
+
+\begin{proof}
+Both columns are primitive and
+\[
+ p_ks_k-q_kr_k
+ =\det(G_k)\det\begin{pmatrix}1&3\\1&2\end{pmatrix}
+ =-1.
+\]
+The rational gluing criterion
+\eqref{eq:rational-unknot-gluing} therefore proves that $K_k$ is an
+unknot.  The relevant classical criterion is
+\cite[Theorem~5]{KauffmanLambropoulouHard}.
+
+The prescribed construction uses $4k+1$ crossings for $P_k$ and
+$4k+3$ for $Q_k$, and numerator caps introduce none.
+For an explicit continued-fraction realization, $P_0=[1]$ and, for
+$k\ge1$,
+\[
+ P_k=[\underbrace{2,\ldots,2}_{2k-1},3],
+ \qquad
+ -Q_k=[\underbrace{2,\ldots,2}_{2k},1,2].
+\]
+The sums of the absolute coefficients are exactly $4k+1$ and
+$4k+3$.  These are counts in the displayed input diagrams, not
+minimal crossing numbers of their knot type.
+
+The matrix
+\[
+ AB=\begin{pmatrix}5&2\\2&1\end{pmatrix}
+\]
+has trace six and determinant one.  Its characteristic equation
+gives the asserted recurrence.  Its eigenvalues are
+$\lambda$ and $\lambda^{-1}$, and the initial values give the stated
+closed formula.  Since
+\[
+ p_k-\lambda^k
+ =\frac{\sqrt2-1}{2}(\lambda^k-\lambda^{-k})\ge0,
+\]
+we have $p_k\ge\lambda^k$.
+
+Moreover, $G_k\equiv I\pmod2$, so $p_k$ and $q_k$ are odd.
+Thus $N(P_k)$ is a rational knot and its determinant is $p_k$.
+The determinant assertion is the usual primitive fraction formula
+for rational numerator closure; it can also be computed from its
+lens-space double branched cover, whose first homology has order
+$p_k$.  The tangle fraction and numerator/denominator determinant
+interpretation are reviewed in
+\cite[Section~4.1, Remark~2]{KauffmanLambropoulouFractions}.
+Apply Lemma~\ref{lem:reduced-closure-size} with $r=2$ to obtain
+$M(C_k)\ge p_k/2$.  Since $M(C_k)$ is integral and $p_k$ is odd, the
+rounded bound is $(p_k+1)/2$.
+
+Each matrix update uses additions and doubling of $O(k)$-bit
+integers.  The two slope columns and their determinant consequently
+require $O(k)$ storage bits and $O(k^2)$ schoolbook bit operations,
+as in Theorem~\ref{thm:rational-arithmetic-representation}.
+\end{proof}
+
+\begin{corollary}[Stronger bound when the quantum grading is retained]
+\label{cor:graded-checkpoint-size}
+For the ordinary graded Bar--Natan complex, the conclusion of
+Theorem~\ref{thm:unknot-exponential-checkpoint} strengthens to
+\[
+ M(C_k)\ge p_k+q_k,
+ \qquad q_k=\frac{\lambda^k+\lambda^{-k}}2.
+\]
+Indeed the two individual circle-free matching types must occur at
+least $p_k$ and $q_k$ times, respectively, counting all shifts and
+chain degrees.  More generally, for any number of ends a graded
+version of Lemma~\ref{lem:reduced-closure-size} gives
+$M(C)\ge\det(\Gamma(P))$.
+\end{corollary}
+
+\begin{proof}
+Use $z$ for the quantum grading variable to distinguish it from the
+fraction denominator $q_k$.  A matching whose closure has $c$
+circles contributes, up to a grading monomial,
+\[
+ (z+z^{-1})^{c-1}
+\]
+to the graded dimension of the reduced closure.  At $z=i$ this is
+zero if $c>1$ and has absolute value one if $c=1$.  The reduced
+graded Euler characteristic therefore yields
+\[
+ \det(\Gamma(P))\le
+ \#\{\hbox{summands whose $\Gamma$-closure is one circle}\}.
+\]
+This proves the general assertion.  It only uses graded homotopy
+equivalence and evaluation of the graded Euler characteristic; it
+does not assume thinness of Khovanov homology.
+
+For four ends there are exactly two circle-free matchings, the
+horizontal and vertical ones.  Numerator closure gives two circles
+on the horizontal matching and one on the vertical matching;
+denominator closure interchanges these roles.  Let $M_H$ and $M_V$
+be their total multiplicities.  The numerator estimate gives
+$M_V\ge p_k$.  The denominator closure of $P_k$ is also a rational
+knot because $q_k$ is odd, and has determinant $q_k$.  Applying the
+same estimate to denominator closure gives $M_H\ge q_k$.  Thus
+$M(C_k)=M_H+M_V\ge p_k+q_k$.
+
+The recurrence for $q_k$ is the same trace-six recurrence as for
+$p_k$, with initial values $q_0=1$ and $q_1=3$, giving the displayed
+formula.  One orientation of the prefix need not extend to both test closures.
+Use the orientation-free bracket complex first; changing strand orientations
+changes the normalized complex only by global homological and quantum shifts.
+Their evaluations have absolute value one. Thus both estimates apply to
+the same matching multiplicities, despite independent closure orientations.
+\end{proof}
+
+\paragraph{Scope of the obstruction.}
+This theorem applies at the specified prefix checkpoint and to
+representations preserving its full homotopy type in the stated
+explicit basis.  It is not a lower bound for every scan order or
+every unknot-recognition algorithm.  An algorithm can use information
+about the actual continuation, absorb parts of it earlier, or retain
+the rational slope in a compact arithmetic form.  The conclusion
+also does not charge an exponentially repeated object encoded by a
+binary multiplicity as exponentially many stored words: it rules
+out a small \emph{expanded} full complex, and any use of compressed
+multiplicities or other compressed objects must prove that all
+required operations on that representation remain efficient.
+
+The distinction from the Boolean identity-matrix theorem is precise.
+That theorem rules out a small exact linear representation of all
+Boolean continuation answers on its family.  The present theorem
+rules out a small expanded full homotopy representative for one
+sequence of prefixes inside unknots.  Both leave room for the
+rank-two signed arithmetic pairing followed by a nonlinear test.
