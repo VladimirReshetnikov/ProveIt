@@ -695,27 +695,29 @@ input for a formalization.
 - Theorem 16.2 in dimension three would then be conditional on a
   quasi-polynomial stackable structure, plus the readout (R) of J.2.
 
-**Plan for (D), quadratic case (from Maynard's outline, arXiv:2011.12275, §2).**
-Schmidt's c/K² already suffices: (D) needs only poly(1/K). His argument is an
-increment strategy, simpler than Maynard's geometry-of-numbers refinement.
+**Existing checked Schmidt input (2026-10-08).** The density port already
+contains `OAI.Erdos3.simultaneous_monomial_recurrence` in
+[`PolynomialCoordinatePartition.lean`](../../../../lib/openai-math/lean/OAI/Combinatorics/Progressions/Polynomial/PolynomialCoordinatePartition.lean).
+For each fixed degree `j+1` it supplies constants `K >= 1`, `p > 0`,
+independent of the number `d` of coefficients. If
+`N >= (K*(d+1)/R)^(p*(d+1)^2)`, with `0 < R <= 1`, there is an integer
+`1 <= q <= N` making all `q^(j+1)*alpha_i` within `R` of integers.
+Thus the required polynomial dependence on the number of simultaneous
+monomials is already formalized, including the quadratic case.
 
-1. **Equidistribution or relation.** Fourier analysis on 𝕋^K. Either
-   v(n) = (α_i n²)_i hits every box of side δ for some n < x, once
-   x > δ^(−K−o(1)), or there is a relation h·α ≈ a/q with
-   |h_i| ≤ δ^(−1−o(1)) and q ≤ δ^(−O(K)).
-2. **Reduction.** On multiples n = h₁q·n′, the first polynomial is
-   controlled by the others. That leaves K − 1 polynomials, at scale
-   x/(h₁q).
-3. **Iteration.** K steps, each costing δ^(O(1)) of the range. This gives
-   exponent c/K².
+The same module proves `exists_polynomial_coordinate_partition_bound`:
+for fixed degree `k`, constants `K,p` give an arithmetic-progression
+partition whenever `H >= K*(d+1)` and `N >= H^(p*(d+1)^(2*k))`.
+It bounds `card(labels)*H <= 2^k*N` and the coordinate error by `k/H`.
+This is an average-length bound, not a minimum length for every cell.
 
-Corpus inputs already proved: `lemma_5_3` (Weyl's inequality) and
-`lemma_5_4` (Dirichlet); `simultaneous_small_multiplier` is the degree-one
-case. Missing: a multidimensional Erdős–Turán–Koksma-type criterion,
-equidistribution in boxes of 𝕋^K controlled by exponential sums over
-frequencies h with |h| ≤ H. A smooth-bump or Fejér-kernel proof avoids the
-full Koksma inequality. Size estimate: several thousand lines over a few
-weeks.
+This is manifest entry 3295, included in the completed prefix-3400 build
+and axiom audit. No additional upstream port is needed to use these results.
+The remaining work is the bridge to a simultaneous multilinear **box**
+partition satisfying Lemma 16.1's minimum-width and uniform-smallness
+requirements, and adequate degree constants. The constants above are
+existential; neither the bridge nor the printed final threshold follows
+merely by importing the module.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
