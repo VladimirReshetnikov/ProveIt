@@ -26,13 +26,16 @@ Verification at this checkpoint
   Proofs05MinimumModularPartition also transfers the minimum-length result
   to the catalogue's PolynomialOn phases with centered diameter 2*k*N/H.
   The recurrence and partition modules have passed isolated Lean checks.
-  The real polynomial partition
-  guarantees every one-dimensional cell has length at least H while keeping
-  the family-size exponent p*(d+1)^(2*k); the multivariate box bridge remains
-  open. Proofs05SimultaneousMultiaffineStep also passes an isolated module
-  check: it reduces one common maximal monomial for an entire family on
-  proper boxes, given recurrence, scale, and simultaneous child-partition
-  premises. These additions close no numbered catalogue statement.
+  The one-dimensional result guarantees minimum cell length H. The new
+  Proofs05SimultaneousMultiaffinePartition additionally proves the proper
+  box bound by simultaneous monomial-height induction. Its Section 16
+  lift, Proofs16SimultaneousRecurrence, gives every cell width at least H
+  and common-difference error at most 2*N/H under
+    H >= K*(q+1), width(P) >= H^(p*(q+1)^(2^(k+2))).
+  The constants K >= 2 and p > 0 depend only on dimension. Both production
+  modules pass isolated Lean checks. Root-width parameterization, explicit
+  degree constants, and the remaining structure hypotheses are separate
+  obligations. These additions close no numbered catalogue statement.
   All 823 modules reachable from GowersSzemeredi.Audit compiled successfully.
   The axiom audit checked 5,365 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
