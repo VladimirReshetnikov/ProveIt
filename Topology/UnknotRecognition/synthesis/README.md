@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 245 tests. Local report 10–12 production
+The current full production suite passes 272 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -133,5 +133,29 @@ cancellation. `../fast/benchmark_windows.py --output FILE` reproduces the
 seven-round comparisons in `../fast/results/window_integration_20261008.json`.
 The table generator reads that file. `data/window-integrated-tests.txt` records
 245 passing tests; report 13's 64 scanner and 10 hierarchy tests and report
-14's 94 tests have separate logs in `data/`. Report 14's integration review is
-ongoing, including its scalar basis changes' compatibility with quantum grading.
+14's 94 tests have separate logs in `data/`. The subsequent interval and scalar
+splitting integration is documented in `continuations.tex`.
+
+`continuations.tex` integrates report 14's exact interval normalization,
+length-two decision quotient, and certified scalar splitting. The production
+splitter now restricts scalar changes to recovered quantum-shift blocks by
+default. The section derives a sharper homogeneous checkpoint bound and
+keeps its hypotheses explicit. `data/continuation-integrated-tests.txt` records
+267 passing tests; `data/continuation-algebra-validation.json` records the
+independent 861-complex, 10206-comparison finite algebra check. Reproduce paired
+measurements with `../fast/benchmark_continuations.py --output FILE`; retained
+results are `../fast/results/continuation_integration_20261008.json`. They
+include actual split witnesses and negative timings; the table generator reads
+them directly. The report's order optimizer is not integrated.
+
+`ranktwo.tex` reviews and integrates the incoming rank-two braid-kernel archive:
+exact local normal forms, optimal bounded-overlap interval search, independent
+linear replay, and the conditional small-core recognition theorem. It also
+proves why the supplied higher-rank barrier cannot be solved by repeated strict
+rank-two shortening. The optional production stage has a local budget and
+preserves evidence across a restart on the verified shorter source braid.
+`data/ranktwo-integrated-tests.txt` records 272 passing tests; archive tests
+and the formerly unrun real-upstream gateway check have separate logs.
+`../fast/benchmark_ranktwo.py --output FILE` measures complete recognition with
+all default filters and PD construction, retaining timings, transcripts, and
+separate allocation peaks in `../fast/results/ranktwo_integration_20261008.json`.

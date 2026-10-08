@@ -1,0 +1,217 @@
+\section{Verified rank-two braid preprocessing}
+\label{sec:ranktwo-integration}
+
+The incoming archive \path{unknot_rank_two_kernels_20261007.zip}
+contributes an exact braid-word compressor. It finds an optimal set of
+disjoint two-index subwords to replace by the empty word or a single
+Artin letter. We integrate the search and its independent replay verifier
+as an optional bounded preprocessing stage, after the inexpensive existing
+certificates and before the more expensive braid descent and diagram
+fallbacks. Unlike the closed-three-braid gateway, this procedure proves
+braid equality inside the surrounding word.
+
+\subsection{Faithful local states without copying prefixes}
+For adjacent indices write $a=\sigma_i$, $b=\sigma_{i+1}$.
+The local group is
+\[
+ B_3=\langle a,b\mid aba=bab\rangle
+     =\langle x,y\mid x^2=y^3\rangle,
+ \qquad x=aba,\quad y=ab.
+\]
+The common element $z=x^2=y^3$ is central and has Artin exponent sum six.
+The quotient by $z$ is $C_2*C_3$. Thus a local braid is uniquely determined
+by its reduced quotient word together with its exponent sum: equal
+quotients differ by $z^k$, and equal exponents force $6k=0$.
+
+The quotient normal form must not be cyclically reduced. The conjugate
+letters $a$ and $b$ are not equal inside an arbitrary context. Nor may the
+central exponent guard be omitted: $(aba)^2$ has empty quotient word but
+is nontrivial. For distant indices the local subgroup is $\mathbb Z^2$,
+so two exponent counts suffice. A single index uses one count.
+
+In the quotient, the four signed letters have images
+$y^2x,xy,xy^2,yx$. Each appends two tokens to an alternating normal-form
+stack. The search stores these stacks persistently in a trie with three
+child slots per node. Push creates or reuses a child, cancellation follows
+a parent pointer, and combination of order-three tokens uses a child of
+the parent. Node identity is an exact canonical word identity; no hash
+fingerprint substitutes for group equality. The prefix tables themselves
+use deterministic AVL trees in the integrated recognition stage.
+
+\subsection{An optimal pass over bounded-overlap intervals}
+Compress maximal runs of a common absolute generator index. Label each
+edge between consecutive runs by its unordered pair of indices. A maximal
+string of equal edge labels specifies a maximal two-index interval,
+called a corridor in the source. Consecutive corridors overlap in exactly
+one run; nonneighbors are disjoint. Every permitted subinterval lies in a
+corridor, each letter belongs to at most two, and the sum of their lengths
+is at most $2n$.
+
+Let $F[j]$ be the maximum number of letters removable from the first $j$
+letters by disjoint permitted replacements. Inside one active corridor,
+write $p_j$ for its local prefix product. Maintain an exact table
+\[
+ H(q)=\max_{i:p_i=q}(F[i]-i),
+\]
+with an attaining start position. For a target $v$ of length zero or one,
+\[
+ w[i:j]=v\quad\Longleftrightarrow\quad p_i=p_jv^{-1}.
+\]
+Therefore the next optimum is
+\[
+ F[j]=\max\left(F[j-1],\,
+       \max_{\text{active corridors},\,v}\{j-|v|+H(p_jv^{-1})\}\right).
+\]
+Queries precede insertion of the current endpoint. Backtracking the
+attaining starts recovers disjoint replacements. The last replacement of
+any optimal prefix plan is represented in this recurrence, proving
+optimality by induction. This is optimality for one pass and this explicit
+rule set, not global minimality among braid presentations or Markov moves.
+
+There are at most five targets per corridor and at most two active
+corridors. Each adjacent-group update takes two trie-token operations.
+There are $O(n)$ exact states, queries, and backpointers. AVL table access
+costs $O(\log(n+2))$ comparisons, giving
+\[
+ O(n\log(n+2))\ \text{word-RAM time},\qquad O(n)\ \text{words}.
+\]
+State identifiers, exponent counts, and indices have
+$O(\log(n+s+2))$ bits for $s$ strands, giving the conservative bit bound
+$O(n\log^2(n+s+2))$. The low-level package also retains an optional hash
+backend whose dictionary-time bound is expected rather than deterministic.
+Recognition uses one AVL pass. Repeated passes remain available through
+the low-level API, but their conservative total bound is quadratic up to
+logarithmic factors.
+
+\subsection{Independent replay and evidence association}
+The verifier does not import the optimizer or its quotient trie. It uses
+a central normal form $z^k f_1\cdots f_r$ with alternating $x,y,y^2$
+factors. Each signed Artin letter expands into $z^{-1}$ times the same two
+positive factors used above; reductions $xx=z$ and $y^3=z$ update the
+central integer explicitly. A replacement is accepted only if its source
+and target differ by the identity in this form, or by equal exponent
+counts in the commuting case.
+
+Stable linked-list node identifiers describe interval endpoints across
+passes. Inserted target letters get fresh identifiers. Replay checks that
+endpoints remain live and correctly ordered, that the interval uses at
+most two indices, that the target is permitted, that equality holds, and
+that the word strictly shortens. The final output is reconstructed and
+compared exactly with the certificate. Its input digest binds the
+transcript to the supplied word; it is not an authenticity signature.
+
+Braid equality preserves exponent parity, so each successful replacement
+saves at least two letters. Across all passes there are at most $n/2$
+insertions and $3n/2$ removed nodes. Thus valid-certificate replay takes
+linear word-RAM work and memory, even when search used multiple passes.
+The verifier establishes soundness of the replacements; it does not
+certify the optimizer's separate optimality or saturation claims.
+
+The pipeline requires checked source-braid provenance. It compresses that
+source, independently replays the transcript, and constructs a new validated
+PD only if the word is shorter than the current simplified diagram. An
+accepted replacement restarts recognition on the new source with compression
+disabled, preserving all other options and the remaining global time.
+Earlier PD reductions and later reductions lie on distinct branches of
+the evidence, named \code{before\_ranktwo} and \code{after\_ranktwo}; the
+source word and braid-equality certificate connect the original knot to
+the restarted input. They must not be concatenated as one PD move trace.
+The existing factor and twist provenance rules then apply to the restarted
+recognition without modification.
+
+The stage is enabled by \code{use\_ranktwo=True} or \code{--ranktwo}.
+It has one shared local allowance for search and replay, defaulting to
+$0.1$ seconds, configurable through \code{ranktwo\_seconds} or
+\code{--ranktwo-seconds}. Budgets are cooperative. Local time or allocation
+failure skips the probe and continues the existing complete route;
+global exhaustion returns \code{UNKNOWN}. A failed certificate is an error,
+never a knot verdict. Already decisive cheap certificates retain priority.
+Inputs without checked braid provenance bypass this stage.
+
+\subsection{A constructive quasi-polynomial input class and its barrier}
+Let $\kappa_1(w)$ be the smallest output length under the one-pass rules.
+The optimizer finds this number without receiving a decomposition. A
+\emph{flat rank-two inflation} of a $k$-letter core replaces disjoint
+letters by equal rank-two words and inserts disjoint rank-two identity
+blocks. Those blocks themselves define an admissible plan, so
+$\kappa_1(w)\le k$. Following the verified pass by an uncapped exact
+exponential homology computation takes
+\[
+ O(n\log^2(n+s+2))+
+ \operatorname{poly}(\kappa_1(w))2^{O(\kappa_1(w))}.
+\]
+For a knot closure the reduced strand count satisfies
+$s\le\kappa_1(w)+1$: a word on $s$ strands whose permutation is one cycle
+needs at least $s-1$ adjacent transpositions. This removes a hidden strand
+factor. Flat inflations of $O(\log^2 n)$-letter cores consequently admit
+quasi-polynomial recognition without a supplied inflation decomposition.
+The statement concerns the uncapped route, including
+\code{ranktwo\_seconds=None} in the integrated API. A local cutoff can
+miss the compression and invoke an exponential fallback on the larger
+input even when that fallback eventually completes; a finite global budget
+can return \code{UNKNOWN}. The integrated earlier simplifications have
+polynomial overhead and do not invalidate this conditional bound.
+
+No universal small-core theorem follows. An explicit obstruction is
+\[
+ U=abcaba,
+ \quad V=cbacbc,
+ \quad q_h=(UV^{-1})^h abc\quad\text{in }B_4.
+\]
+The positive words $U,V$ are equal half-twists, so $q_h$ closes to the
+unknot and has length $12h+3$. Within a uniform-sign block, exponent sum
+proves every subword geodesic. Any two-index subword crossing a sign
+boundary is contained in $ac^{-1}$ or $c^{-1}a$, flanked by index $b$;
+its commuting exponent vector has norm two, proving geodesicity there
+as well. Thus no strictly shortening rank-two substitution of any target
+length can begin on this family. Escaping it requires, for example,
+length-preserving relations, a larger support, or separately certified
+closed-knot operations. Increasing the number of identical shortening
+passes cannot solve that obstruction.
+
+\subsection{Production validation and end-to-end measurements}
+The archive's 33 tests pass locally. Its previously unrun real-upstream
+smoke test now passes all 16 sleeve cases against the current braid gateway:
+the gateway alone is inconclusive before compression and certifies the
+unknot after replay. This gateway result does not by itself establish an
+end-to-end speedup; the current diagram simplifier may already decide them.
+
+All 272 integrated tests pass. New tests compare 200 random words with an
+independent exhaustive interval oracle, both dictionaries, both target
+radii, and the Artin action on a free group. Sixty knot inputs compare full
+normalized homological profiles before and after shortening, checking
+$d^2=0$. Other regressions cover central and conjugacy guards, certificate
+corruption, the higher-rank barrier, original input counts, evidence scopes,
+local and global budgets, absent provenance, preservation of cheap verdicts,
+and restart into the standard, shared, twist, barcode, and Fitting backends.
+Logs and the actual gateway smoke-test output are retained in
+\path{synthesis/data/}.
+
+\input{tables/ranktwo-integration.tex}
+
+The benchmark uses seven shuffled paired rounds with an identical A/A
+control. It includes PD construction, all default certificates and
+simplifications, compression, replay, and the complete fallback; imports
+are excluded. It uses a five-second global budget and the default
+$0.1$-second compression budget. The source inputs, verdicts, methods,
+transcripts, and timings are recorded. Separate traced-allocation runs
+record both their peak and the path actually taken, since instrumentation
+can affect a time-limited branch. These are measurements of this machine,
+not asymptotic guarantees or a broadly sampled knot distribution.
+
+The sleeve cases with parameters $1,16,64$ improve by approximately
+$3.4$, $12.5$, and $33.8$ times respectively. Their baseline already
+certifies the unknot through diagram reduction; compression reaches the
+short source braid and its genus-zero certificate sooner. The stress
+five-braid instead runs about $1.8$ times slower: its probe cannot supply
+a shorter input than the current simplified diagram, and Alexander still
+provides the verdict. The barrier fixture is settled by the descending
+diagram certificate before compression, and the positive braid by
+Bennequin's obstruction; neither timing measures a compressor success.
+The two PD-only named knots bypass the stage. These contrasting outcomes
+support keeping the new stage optional.
+
+In the separate traced-allocation run, the largest sleeve baseline hit the
+five-second global deadline. Its recorded peak is censored and must not be
+compared as a peak of a completed recognition. All ordinary timed arms
+completed with agreeing verdicts.

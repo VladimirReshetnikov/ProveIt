@@ -228,3 +228,28 @@ if windows:
                'Ratios are median paired baseline/new times; values above one are faster.\n')
     with open('tables/window-integration.tex', 'w') as handle:
         handle.write(content)
+
+continuations = load('../fast/results/continuation_integration_20261008.json')
+if continuations:
+    rows = []
+    for r in continuations['cases']:
+        ratios = r['median_full_over']
+        cells = ' & '.join(f"{ratios[k]:.3f}" for k in
+                           ('barcode_exact', 'fitting_exact', 'fitting_decision', 'control'))
+        rows.append(f"{esc(r['name'])} & {cells}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+               table('Input & Interval exact & Fitting exact & Fitting decision & A/A',
+                     '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+               'Ratios are median paired full-scanner/new times; values below one are slower.\n')
+    with open('tables/continuation-integration.tex', 'w') as handle:
+        handle.write(content)
+
+ranktwo = load('../fast/results/ranktwo_integration_20261008.json')
+if ranktwo:
+    rows = [f"{esc(r['name'])} & {r['median_speedup']:.3f} & {r['median_aa']:.3f}" + r" \\"
+            for r in ranktwo['cases']]
+    with open('tables/ranktwo-integration.tex', 'w') as handle:
+        handle.write(r"\begin{center}" + '\n' +
+                     table('Input & Disabled/enabled & A/A', '@{}lrr@{}', rows) +
+                     r"\end{center}" + '\n' +
+                     'Ratios are median paired end-to-end times; values above one are faster.\n')

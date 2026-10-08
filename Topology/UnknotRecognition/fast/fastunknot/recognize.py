@@ -214,6 +214,15 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         else:
             return _decide_twist(twist_source, evidence, max_basis=scan_options["twist_max_basis"],
                                  deadline=deadline, check_d_squared=check_d_squared)
+    if backend in ("barcode", "fitting"):
+        if backend == "barcode":
+            from .barcode_scan import barcode_khovanov_decide as decide
+        else:
+            from .scalar_split import fitting_khovanov_decide as decide
+        kh = decide(diagram.pd, order=order, max_objects=max_objects,
+                    seconds=remaining, check_d_squared=check_d_squared)
+        evidence["khovanov"] = {"field": "F2", **kh}
+        return kh["status"], "khovanov-" + backend + "-saturated"
     if backend == "euler":
         from .euler_scan import euler_compressed_khovanov_decide
         kh = euler_compressed_khovanov_decide(
@@ -268,8 +277,16 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               factor_backend: str = "interlacement", composition: str = "standard",
               composition_max_variables: int = 18, twist_max_basis: int = 1_000_000,
               reduction: str = "standard", window_radius: int | None = None,
-              window_max_objects: int | None = 20000, window_seconds: float | None = 0.1) -> Result:
+              window_max_objects: int | None = 20000, window_seconds: float | None = 0.1,
+              use_ranktwo: bool = False, ranktwo_seconds: float | None = 0.1) -> Result:
+    restart_options = locals().copy() if use_ranktwo else None
     start = monotonic()
+    if type(use_ranktwo) is not bool:
+        raise ValueError("use_ranktwo must be boolean")
+    if ranktwo_seconds is not None:
+        from math import isfinite
+        if type(ranktwo_seconds) not in (int, float) or not isfinite(ranktwo_seconds) or ranktwo_seconds < 0:
+            raise ValueError("ranktwo_seconds must be finite and nonnegative, or None")
     if window_radius is not None and (type(window_radius) is not int or window_radius < 0):
         raise ValueError("window_radius must be a nonnegative integer or None")
     if window_max_objects is not None and (type(window_max_objects) is not int or window_max_objects < 0):
@@ -294,8 +311,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
         raise ValueError("factor_backend must be interlacement or legacy")
-    if backend not in ("standard", "shared", "saturated", "euler", "twist"):
-        raise ValueError("backend must be standard, shared, saturated, euler, or twist")
+    if backend not in ("standard", "shared", "saturated", "euler", "twist", "barcode", "fitting"):
+        raise ValueError("backend must be standard, shared, saturated, euler, twist, barcode, or fitting")
     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
         raise ValueError("euler_max_states must be a nonnegative integer or None")
     if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
@@ -348,6 +365,41 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                 evidence["descending_start_dart"] = dart
                 return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
                               monotonic() - start, evidence)
+        if use_ranktwo and original.braid_source is not None:
+            from .ranktwo import compress, verify
+            strands, word = original.braid_source
+            probe_start = monotonic()
+            local_deadline = None if ranktwo_seconds is None else probe_start + ranktwo_seconds
+            def ranktwo_check():
+                check()
+                if local_deadline is not None and monotonic() >= local_deadline:
+                    raise ScanLimit("rank-two local time allowance exhausted")
+            try:
+                ranktwo_check()
+                candidate = compress(strands, word, max_passes=1, dictionary="avl", check=ranktwo_check)
+                reduced_word, replay = verify(strands, word, candidate["certificate"], check=ranktwo_check)
+                ranktwo_check()
+            except (ScanLimit, MemoryError) as exc:
+                check()
+                evidence["ranktwo"] = dict(status="skipped", reason=str(exc) or "memory allocation failed",
+                                            seconds=monotonic()-probe_start)
+            else:
+                evidence["ranktwo"] = dict(status="verified", source_strands=strands,
+                    source_word=list(word), certificate=candidate["certificate"],
+                    statistics=candidate["stats"], replay=replay, seconds=monotonic()-probe_start,
+                    used=len(reduced_word) < diagram.crossings)
+                if len(reduced_word) < diagram.crossings:
+                    # This new PD follows the source braid equality. Earlier PD
+                    # simplification evidence describes a separate branch.
+                    reduced_input = Diagram.from_braid(strands, reduced_word)
+                    check()
+                    restart_options.update(diagram=reduced_input, use_ranktwo=False,
+                        seconds=None if deadline is None else max(0.0, deadline-monotonic()))
+                    after = recognize(**restart_options)
+                    check()
+                    return Result(after.status, "ranktwo-"+after.method, original.crossings,
+                                  after.reduced_crossings, monotonic()-start,
+                                  dict(before_ranktwo=evidence, after_ranktwo=after.evidence))
         # Endpoint descent may cost O(n*m), so the cheaper structural and
         # diagram certificates get priority. The retained original source has
         # the same closure as the diagram after its recorded reductions.
