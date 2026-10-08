@@ -837,6 +837,23 @@ expected bound is |V(ρ)| ≤ 4^O(|Γ|+|Ψ|+r)·|V′(ρ/2)| for a slightly
 enlarged variety V′, and the regular step is then taken over the enlarged
 family.
 
+**Correction (same day): naive variety doubling fails.**
+- The shift L(y) = L(w) + c sends the fibre over y to
+  B(Γ ∪ {L_k(w) + c_k}; ρ), a variety with *shifted* frequencies.
+- Nothing compares it with the unshifted fibre B(Γ ∪ {L_k(w)}; ρ/2). The
+  condition |(L(w) + c)·x| ≤ ρN neither implies nor is implied by
+  |L(w)·x| ≤ ρN/2.
+- So a single variety does not double with respect to itself. The natural
+  object is the family of shifted varieties {V_c}. Controlling their sizes
+  uniformly is the content of Milićević's §3 algebraic regularity method
+  ("efficient algebraic regularity lemma", his Theorem 3.5, generalized
+  from [49]).
+
+The packing step therefore needs that regularity input, beyond the
+Bohr-side lemmas proved here. It is a further hypothesis to state
+precisely, or a substantial formalization in its own right. It is not
+composition.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
