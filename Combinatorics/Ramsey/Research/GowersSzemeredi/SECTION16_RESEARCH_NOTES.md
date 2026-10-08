@@ -828,7 +828,7 @@ under the same bound with search limit `M`, it produces `1 <= q <= M`
 and `centeredAbs(q^(j+1)*a_i) < R*N` simultaneously. The modulus and the
 search limit are separate; a use requiring a nonzero modular multiplier
 can impose `M < N`. Its module passed an isolated Lean check, and the
-updated facade audit is queued.
+updated facade audit passes.
 The same module also proves `exists_mixed_modular_recurrence_bound`.
 For fixed maximum degree `k`, constants `K,p` give a common
 `1 <= q <= H^(p*(d+1)^(2*k))` making every monomial in `d` families and
@@ -848,7 +848,7 @@ Degree reduction at scale `2*T` and induction on each actual block length
 avoid truncating children and creating short tails. The extra factor of two
 only changes the degree-dependent constant `p`, not the exponent `2*k` in
 family size. The production module passed an isolated Lean check; the full
-facade audit is queued. Its adapted proof carries separate Apache-2.0
+facade audit passes. Its adapted proof carries separate Apache-2.0
 licensing and provenance in the adjacent `LICENSE.openai-math`.
 
 `Proofs05MinimumModularPartition.exists_minimum_polynomialOn_partition`
@@ -899,7 +899,7 @@ H >= K*(q+1),  width(P) >= H^(p*(q+1)^(2^(k+2)))
 give a common proper box partition with **every width at least `H`** and
 `centeredAbs(mu_i(x)*cell.commonDiff) <= 2*N/H` at every point of every
 cell. Rescaling by `2^k` and increasing `p` absorb the diameter coefficient.
-Both production modules passed Lean; the combined facade audit is queued.
+Both production modules and the combined facade axiom audit pass.
 
 This supplies polynomial dependence on `q` in the input-width exponent
 in the stated large-width regime. It does not give explicit dimension

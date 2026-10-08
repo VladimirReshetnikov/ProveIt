@@ -20,12 +20,12 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  The counts below describe the last completed facade audit. The next audit
-  is queued with the new simultaneous recurrence and minimum-length
-  partition modules, the Milicevic interface, and exponent comparisons.
+  The completed facade audit includes the simultaneous recurrence and
+  minimum-length partition modules, the root-width profile, the Milicevic
+  interfaces, exponent comparisons, and the incoming variety-box results.
   Proofs05MinimumModularPartition also transfers the minimum-length result
   to the catalogue's PolynomialOn phases with centered diameter 2*k*N/H.
-  The recurrence and partition modules have passed isolated Lean checks.
+  The recurrence and partition modules pass the full facade axiom audit.
   The one-dimensional result guarantees minimum cell length H. The new
   Proofs05SimultaneousMultiaffinePartition additionally proves the proper
   box bound by simultaneous monomial-height induction. Its Section 16
@@ -33,21 +33,21 @@ Verification at this checkpoint
   and common-difference error at most 2*N/H under
     H >= K*(q+1), width(P) >= H^(p*(q+1)^(2^(k+2))).
   The constants K >= 2 and p > 0 depend only on dimension. Both production
-  modules pass isolated Lean checks. Proofs16PolynomialRecurrenceProfile
+  modules pass the full audit. Proofs16PolynomialRecurrenceProfile
   now gives the root-width form with epsilon = 1/(2*p*(q+1)^(2^(k+2)))
   and integer threshold (K*(q+1))^(2*p*(q+1)^(2^(k+2))). It preserves minimum
   width m^epsilon and error 2*m^(-epsilon)*N, including ceiling rounding.
   Its production module and transitive axiom check pass. Explicit degree
   constants and the remaining structure hypotheses are separate obligations.
   These additions close no numbered catalogue statement.
-  All 823 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,365 public Gowers theorems and found only propext,
+  All 1,369 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,519 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
-  This full build includes all 137 vendored lib/openai-math modules and
+  This full build includes 667 OAI modules from the audited port subset and
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
@@ -63,11 +63,11 @@ Verification at this checkpoint
   dimension-two, and quartic inverse thresholds, the low-dimensional
   Corollary 16.11 companions, the stackable-slice reductions, and the
   conditional dimension-three results, the
-  823-module Gowers audit checks 5,365 theorems and the same 114/6
+  1,369-module Gowers audit checks 5,519 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,562-module closure and checks equality of the extracted propositions
+  2,605-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
@@ -356,17 +356,17 @@ Conditional quantitative density bridge and dependency port
   This implication is checked in the full audit, but its quantitative
   premise is not yet proved by the compiled vendored subset. No exact
   companion is added and the six open catalogue statements remain open.
-  Only the quantitative-density conclusion needed by Theorem 1.3 is being
-  backported. Density-only extracts omit the reciprocal-sum conclusion and
+  The port supplies the quantitative-density conclusion needed by Theorem
+  1.3 and the simultaneous recurrence input used by the new box bounds. Density-only extracts omit the reciprocal-sum conclusion and
   its dedicated Results.Reciprocal and Results.Statements modules. The
   remaining import closure has 4,134 upstream modules, including 128
   previously present, adding 4,006 files. This is not a claim of minimal
   theorem-level dependencies. check_gowers_port_scope.py verifies the
   manifest and can show a dependency path from the density target.
-  These new sources are outside the current Gowers import closure, and
-  the complete quantitative dependency build has not yet passed.
-  The first 3,400 pinned manifest entries compile as a 3,416-module closure.
-  OAI.QuantitativePortAudit checks 52,058 public OAI theorems in this prefix
+  The facade now imports the recurrence input and its needed dependencies;
+  the quantitative density conclusion remains outside it and unverified.
+  The first 3,500 pinned manifest entries compile as a 3,516-module closure.
+  OAI.QuantitativePortAudit checks 53,607 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.
