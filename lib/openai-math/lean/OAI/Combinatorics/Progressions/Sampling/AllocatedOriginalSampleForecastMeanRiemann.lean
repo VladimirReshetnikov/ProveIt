@@ -1,3 +1,6 @@
+/- Modified for ProveIt: prove the pushed-forward probability instance from
+the existing lift-map measurability lemma in allocatedOriginalSampleForecastSource_probability
+on Lean 4.32. All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Probability.GenericProbabilityProductMapIntegral
 import OAI.Combinatorics.Progressions.Probability.GenericSampleExpectation
 import OAI.Combinatorics.Progressions.Sampling.AllocatedOriginalSampleForecastAtom
@@ -211,7 +214,8 @@ theorem allocatedOriginalSampleForecastSource_probability (sample : Sample) :
   let :=  canonicalZeroSpatialLaw_probability (X := X) s root D hp hW hL
   let : IsProbabilityMeasure ((unitBoxMeasure Input).map
       (allocatedOriginalSampleLiftMap B U basis S lower width sample)) :=
-    inferInstance
+    Measure.isProbabilityMeasure_map
+      (allocatedOriginalSampleLiftMap_fixed_measurable B U basis S lower width sample).aemeasurable
   change IsProbabilityMeasure ((canonicalZeroSpatialLaw (X := X) s root D W L).prod _)
   infer_instance
 
