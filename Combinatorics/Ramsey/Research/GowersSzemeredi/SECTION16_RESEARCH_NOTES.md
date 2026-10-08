@@ -812,6 +812,31 @@ cells' per-point steps must tile, which is the peer's Lemma 16.1
 partition machinery. This is composition, not new mathematics, plus the
 pre-extension hypothesis.
 
+**Bohr-side size control, proved (same day).**
+- `bohr_card_le_four_pow` (`Proofs16BohrDoubling`):
+  |B(K;ρ)| ≤ 4^|K|·|B(K;ρ/2)|.
+- `bohr_exists_regular_step` (`Proofs16BohrRegularStep`): among the radii
+  ρ(1 − j/(2m)), some consecutive ratio is ≤ 4^(|K|/m), which is about
+  1 + θ for m ≈ |K|/θ.
+
+These work directly with the corpus's `bohr`, without OAI.
+
+**Next: variety doubling.** |V(ρ)| = Σ_{y ∈ B(Ψ;ρ)} |B(Γ ∪ {L_k(y)}; ρ)|.
+The fibres double by `bohr_card_le_four_pow`. The y-range needs a cell
+argument:
+- bucket y ∈ B(Ψ;ρ) into 4^|Ψ| cells with representatives y₀, so that
+  y − y₀ ∈ B(Ψ;ρ/2);
+- Freiman-linearity gives L(y) = L(y − y₀) + (L(y₀) − L(0));
+- so each fibre over y injects, by x ↦ x, into the fibre over y − y₀ of a
+  variety with r more frequencies, namely the constants L_k(y₀) − L_k(0)
+  on that cell.
+
+Bounding the fibre at radius ρ by one at radius ρ/2 needs the radii split
+between the two terms, which adds one more Bohr-doubling factor. So the
+expected bound is |V(ρ)| ≤ 4^O(|Γ|+|Ψ|+r)·|V′(ρ/2)| for a slightly
+enlarged variety V′, and the regular step is then taken over the enlarged
+family.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
