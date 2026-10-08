@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 774 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,970 public Gowers theorems and found only propext,
+  All 775 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,977 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -78,6 +78,19 @@ Parametric affine lift with an abstract slice provider
   slice provider to produce a proper-box partition and multilinear cover.
   The slice provider remains a premise; this does not establish Theorem
   16.2 or close any of the six open catalogue statements.
+
+Concrete Freiman-family slice provider in dimension two
+  Proofs16FreimanSliceProvider passes the full audit. If each final-coordinate
+  section is covered by q > 0 order-eight Freiman graphs, all r sampled
+  sections are covered simultaneously by at most 3*max(1,r)*q graphs,
+  with exponent polyBaseExponent(max(1,r)*q, sigma). The graph count is
+  independent of the requested loss sigma. The proof pads the sample to
+  max(1,r), flattens the sampled graph families, and uses the proved
+  one-dimensional simultaneous cover. The controls satisfy all range
+  hypotheses of Section16SliceProviderRanges. The derived two-dimensional
+  affine-cover theorem discharges the abstract slice-provider premise;
+  line covers and the individual Freiman-family covers remain assumptions.
+  This does not close Theorem 16.2 or a new catalogue entry.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
