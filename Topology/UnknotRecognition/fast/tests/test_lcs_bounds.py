@@ -60,8 +60,8 @@ class LCSBoundTests(unittest.TestCase):
         self.assertEqual(length, literal_lcs(x, y))
         self.assertEqual(x[i:i+length], y[j:j+length])
         self.assertGreater(arena.stats.get('lcs_pair_stops', 0), 0)
-        # Same alphabet must still use the exact fallback; an alphabet bound
-        # says nothing about ordering or about different generator signs.
+        # A shared alphabet alone says nothing about ordering or signs;
+        # stronger bounds must still return the exact substring answer.
         x, y = [1,2]*11+[-1], [2,1,1,2]*5+[-1]
         arena = WordArena()
         length, i, j = CommonSubstring(arena).longest(arena.from_word(x), arena.from_word(y))
