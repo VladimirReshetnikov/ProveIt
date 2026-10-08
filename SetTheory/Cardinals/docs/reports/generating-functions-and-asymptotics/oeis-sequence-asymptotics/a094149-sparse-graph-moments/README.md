@@ -157,6 +157,10 @@ terms and records "Asymptotically between A_k (the k-th Bell number, A000110)
 and choose(2k, k)*A_k." Remark 1.2: the 13 terms were recomputed; the formula
 line is a correct pair of bounds (`B_k ≤ M_{2k} ≤ Cat_k B_k`), neither of
 which is sharp, by Part II. The entry has no conjecture, so none is settled.
+The quoted sentence is the middle one of the formula line. The full line is
+"See [link:1] for a complex recurrence relationship. Asymptotically between
+A_k (the k-th Bell number, A000110) and choose(2k, k)*A_k. (see [ref:1])."
+Remark 1.2 carries a dated correction to that effect.
 
 ## The inverses and the transseries volume
 
@@ -180,7 +184,8 @@ use.
 names the relative asymptotics of `M_{2k}` as open (item `stc:q:moments`),
 listing these five archives as unchecked leads. Part II answers that item,
 and its conditional remark (`M_{2k}/a_k → 0` if `M_{2k} ~ 2B_{k+1}`) becomes
-unconditional; a reciprocal note there is a separate commit. Neighbours by
+unconditional; a reciprocal note there is a separate commit (`f8f9eb33b`,
+checked with this report, see below). Neighbours by
 method: `a277364-bell-asymptotics`, `a088714-bell-scale-growth`. No Lean or
 Rocq development treats these sequences.
 
@@ -239,7 +244,7 @@ else is delivered text.
 ```text
 README.md                                            this guide (replaces Report 214's delivered README.txt)
 article.tex                                          the merged report (delivered Report214.tex, merged with Reports 213, 212, 210, 209)
-article.pdf                                          compiled report, 86 pages
+article.pdf                                          compiled report, 87 pages
 209-shifted-SOURCES.txt                              Part V: source ledger (delivered SOURCES.txt)
 210-walks-SOURCES.txt                                Part IV: source ledger
 212-hubs-CODE_README.md                              Part III: computation guide (delivered CODE_README.md)
@@ -377,6 +382,52 @@ full one a C++17 compiler with GMP; they were not rerun by the write, which
 recomputed the rows independently for `k ≤ 128` instead (Part III's
 Section 34.1 note). The outer drivers and PDF/ZIP builders were not run.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`e4199e04f`) recomputed every
+number the write added, with its own code. It used a different method wherever
+one was available. The check is recorded in a dated note at the end of
+Section 56.
+
+- **Brute force for `k ≤ 9`** (467,963 walks at `k = 9`). It confirmed the rows
+  `F_{k,m}`, the coefficientwise Bauer–Golinelli comparison, `G_k` (by the
+  geometric predicate) and `J_k` (by the defining conditions on a centre)
+  against (197)–(198), including `J_8 = 360` and `J_9 = 9180`. It also
+  confirmed `U_{k,S}` against the two-hub formula (116) for every admissible
+  `S`.
+- **Own recurrence for `k ≤ 256`**, one step beyond the write's 128. The
+  maximum of `M_{2k}/(2B_{k+1})` is `4.7128100813441074388…` at `k = 19`, and
+  the decrease is strict through 256. Every entry of Tables 3–7 agrees,
+  including the `k = 256` rows of Tables 4–5, which nobody had recomputed
+  before. The equality set of (234) is `{1, 2, 3}`.
+- **`A_1`, `A_2` from the definitions (26)–(27).** Marked blocks were counted
+  directly, not through the EGF (35). All 28 entries of Table 2, `T_k`, `d_2`,
+  `d_3`, `P_2` and `P_3` agree.
+- **Remarks 1.2, 11.4 and 46.1.** The bounds of Remark 1.2 and the strict
+  increase of `a_k` hold for `k ≤ 256`. The classifications of Remark 11.4
+  were re-read against the volume: `p0:def:model`, `p0:def:three-inverses`,
+  `p0:thm:staircase` and `q2:rem:bell-scale`. Remark 46.1 was re-derived. As a
+  finite illustration only, `((M−G−J)/(2B_{k+1}))/(W³/k)` is 4.46, 0.89 and
+  0.23 at `k = 16`, 64 and 256.
+- **Provenance and numbering.** Archive sizes, file and line counts, and
+  delivered page counts are confirmed. The three manifests verify. All 80
+  staged files are byte-identical to the delivery. The 57 number mappings in
+  the notes under the omitted blocks name the right objects. The `.aux`
+  files of the five delivered builds give 300 printed labels, each with its
+  number unchanged up to the stated shifts; 324 labels in all. The named
+  differences between the repeated blocks were confirmed by word diff.
+- **Reciprocal note in `a064856-stirling-catalan-transforms` (`f8f9eb33b`).**
+  `M_{2k}/B_k ~ 2k/W(k) → ∞`, and `M_{2k}/a_k → 0` because
+  `log(a_k/B_k) ~ (log 4)k/log k` is superlogarithmic. On `k ≤ 32`,
+  `B_k ≤ M_{2k} ≤ a_k` holds, and `M_{2k}/a_k` is 1 for `k ≤ 3`, then
+  decreases strictly to `5.065e-5`. All confirmed.
+- **Corrected by a dated note.** Remark 1.2 quoted one sentence of the OEIS
+  formula line as the whole line. Its "no asymptotic formula" means no
+  asymptotic equivalent: the bounds sentence is the entry's only asymptotic
+  statement.
+
+Nothing else was found wrong. Rebuilt: 87 pages (86), label numbers unchanged.
+
 ## Build
 
 pdfLaTeX (amsmath, amssymb, amsthm, mathtools, booktabs, array, longtable,
@@ -388,8 +439,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
-86 pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026;
+rebuilt after the independent check, three passes): 87 pages (86 at the
+write); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered sources, built the same way, give 25, 20, 16,
 12 and 13 pages (Report 209's with one underfull box in its bibliography).

@@ -1013,6 +1013,9 @@ volume~\cite{TSvol}; its symbols are not used here.
 \item \emph{The palette threshold.} For fixed $N$, the real continuation $P_N(q)$ equals $p(N,q)$ at integers and is continuous and strictly increasing on $q\ge Q_0$, so it is an admissible interpolation of the sequence $q\mapsto p(N,q)$ there; the part of Corollary~\ref{mct:cor:globalpalette} above $Q_0$ is the exact rounding of \file{p0:thm:staircase}(1) in the index $q$, and Lemma~\ref{mct:lem:fixedq} supplies what the volume does not, the exclusion of the finitely many smaller palettes. The expansion~\eqref{mct:eq:paletteinverse} of the root is an elementary implicit-function expansion; as the source says, it may not be put inside the ceiling.
 \end{enumerate}
 \end{remark}
+\begin{writenote}[Qualification (independent check of the write), 7 October 2026]
+Item~(4) is not literally an instance of the volume's statement. \file{p0:def:three-inverses} assumes $A_n\to+\infty$, whereas here $p(N,q)\to1$ as $q\to\infty$. Item~(4) becomes an instance after an increasing change of target: put $\tilde A_q=-\log(1-p(N,q))$ and $\tilde{\mathcal A}(q)=-\log(1-P_N(q))$ for $q\ge Q_0$. Then $P_N<1$ there, since it increases to~$1$. The sequence $\tilde A_q$ is strictly increasing and tends to $+\infty$, and $\tilde{\mathcal A}$ is an admissible interpolation of it. At the target $-\log(1-p_0)$ its staircase and its interpolated inverse are the least palette $q\ge Q_0$ with $p(N,q)\ge p_0$ and the root $q_*(N)$. With this reading, item~(4) stands as stated.
+\end{writenote}
 
 \section{Palette sizing and global eventual thresholds}\label{mct:sec:palette}
 \subsection{The real continuation}
@@ -1186,6 +1189,23 @@ The common-domain proof opens several concrete directions without settling them.
 The probability convention, $N=n+1$ diagonal shift, integer-palette restriction, moving Poisson parameter, and rounding safeguards are part of the results, not optional implementation details. The numerical evidence supports checks and illustrations; the proofs are the analytic arguments above. Priority statements remain bounded by the source coverage described in Section~1.
 \begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
 Every open question of the source is in this list, with its sketch and what is missing; the write adds from the non-claims: a rate for the fixed-parameter Poisson limit (it needs a rate for $q/N$), an exact total-variation constant for the whole automorphism group (only the upper bound~\eqref{mct:eq:groupTV} is proved), and the unread full text of Labelle's 1992 article, which may bear on priority. Two conjectures posted in the OEIS are proved here and named in Remark~\ref{mct:rem:oeis}: Kot\v{e}\v{s}ovec's $d(k)\sim ke$ in A242249 (2014) and its identity-tree analogue in A255517 (2015). No claim of the source was found to be false; one printed decimal is a rounding, corrected in a note in Section~\ref{mct:sec:compute}.
+\end{writenote}
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check read A242249 (\#47), A255517 (\#40), A242375 (\#18) and A255523 (\#15) again. Every quotation of Remark~\ref{mct:rem:oeis} is verbatim.
+\begin{itemize}
+\item \emph{Kot\v{e}\v{s}ovec's conjectures.} The identification of his $d(k)$ with $D_+(k)=k/r_+(1/k)$, and of the A255517 limits with $D_-(k)$, was re-derived. The argument of Remark~\ref{mct:rem:oeis} was re-read against Section~\ref{mct:sec:domain} and Proposition~\ref{mct:prop:jets}, and it proves both posted statements. As an independent numerical route, the check solved the classical characteristic system $C(\rho)=1$, $k\rho\exp\bigl(1+\sum_{m\ge2}\eps_mC(\rho^m)/m\bigr)=1$ for $C=kT_\pm(\cdot,k)$, with its own coefficients and 60-digit arithmetic.
+\begin{itemize}
+\item It reproduces every value Kot\v{e}\v{s}ovec lists: $d(k)$ for $k=1,\ldots,10,100,101,200,201$ to all printed digits (25 to 28 significant), and the A255517 limits for $k=1,\ldots,10,100$ to all 50 printed digits.
+\item It gives $d(101)-d(100)=2.71827674495\ldots$ and $d(201)-d(200)=2.71828055137\ldots$.
+\item At $k=10^3$ and $10^4$, $k(D_\pm(k)-ek\mp\frac1{2e})$ equals $0.051335$ and $0.00153$--$0.00155$. These match Proposition~\ref{mct:prop:jets}'s next coefficients, $\frac1{3e^2}+\frac1{8e^3}=0.0513351\ldots$ and $\frac1{3e^2}-\frac7{8e^3}=0.0015481\ldots$.
+\item The residuals of the $S_\pm$ jets~\eqref{mct:eq:Splus}--\eqref{mct:eq:Sminus}, divided by $u^4$, stay bounded.
+\end{itemize}
+\item \emph{OEIS data and the table.} With its own recurrence code the check matched every b-file term of A242249 and A255517 (all 141 antidiagonals, $10{,}011$ terms each) and of A242375 ($n\le200$) and A255523 ($n\le300$). It generated canonical forms of colored rooted trees for $N\le6$, $q\le3$ and classified them directly (identity, $J=0$, class $\classB$). This gives all 36 table entries without the recurrence.
+\item \emph{Constants.} $\mathcal C(1)=0.13683983139099866117\ldots$ is confirmed, so the note of Section~\ref{mct:sec:compute} is right. Also confirmed: $a^3+a^4$, the four exact $N\Prob(\classB^c)$ entries, $\ell_{\pm,1}$, $\ell_{\pm,2}$ and their truncations, the approach at $n=50,\ldots,400$, and $K_+=1.160358615244339554387715748\ldots$.
+\item \emph{Remark~\ref{mct:rem:transseries}.} Items~(1)--(3) were re-derived, including the shape of the remaining equation in item~(2). Item~(4) needs the qualification given after the remark, because the volume assumes $A_n\to+\infty$.
+\end{itemize}
+Also confirmed: the provenance (630,103 bytes, 18 files, 1128 lines, 29 pages, 17 checksums), the byte identity of the 14 staged files, the README listing, and the numbering (92 labels unchanged, 4 added). One qualification was needed, made in a dated note after Remark~\ref{mct:rem:transseries}. No claim of the write was found wrong.
 \end{writenote}
 
 \appendix
