@@ -430,7 +430,7 @@ def main(argv: list[str] | None = None) -> int:
         statistics = {}
         try:
             test, _, extra = select_jones_filter(args.backend, args.potts_colors)
-            if args.backend in ("potts-faithful", "spin-faithful"):
+            if args.backend in ("potts-faithful", "spin-faithful", "faithful-adaptive"):
                 extra.update(statistics=statistics, include_polynomial=True)
             witness = test(diagram, max_states=args.max_states,
                            max_transitions=args.max_transitions, **extra)
@@ -439,7 +439,7 @@ def main(argv: list[str] | None = None) -> int:
                               "reason": str(exc) or "memory allocation failed"}))
             return 3
         result = {"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}
-        for field in ("polynomial_identity", "jones_polynomial"):
+        for field in ("polynomial_identity", "jones_polynomial", "backend_policy"):
             if field in statistics:
                 result[field] = statistics[field]
         print(json.dumps(result, indent=1))

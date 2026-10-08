@@ -1,0 +1,162 @@
+\section{Adaptive faithful Jones computation with a charged fallback}
+\label{sec:adaptive-jones}
+
+\subsection{A portfolio with an asymptotic guarantee}
+The earlier measurements favor faithful Potts on small diagrams and tree
+medials, and binary spin on larger grid diagrams. Neither implementation
+dominates. The user's introsort suggestion and the certified-primitives
+report's bounded-Potts-prelude proposal suggest a one-way adaptive policy:
+try the practically favorable method, but bound its work before invoking
+the method with the stronger general complexity guarantee.
+
+The optional \code{faithful-adaptive} backend implements this policy for
+full Jones computation and exact polynomial-identity queries. For an input
+with $n$ crossings, it gives faithful Potts a default trial of $128n$
+transitions. The constant is a scheduling choice, not a topological theorem.
+The trial includes any internal Potts ordering restart. If Potts completes,
+its faithful answer is final for this invariant query. If it hits its trial
+allowance or frontier cap, the wrapper abandons the table and starts spin.
+A zero trial selects spin directly. The crossing-free unknot is handled by
+the existing exact empty-diagram case even with zero local caps.
+
+This uses measured progress: the transition counter and actual state
+population determine whether the prelude completes. It does not choose a
+backend solely from the input crossing count or from a predicted width.
+Unlike introsort, the two representations do not currently share partially
+contracted coefficients. Switching restarts the invariant calculation, and
+all completed work in the discarded representation is explicitly charged.
+
+\subsection{One resource ledger across both implementations}
+Let $C$ be the caller's transition allowance, possibly infinite, and $T=128n$.
+The Potts attempt receives $\min(T,C)$. If it fails after $p$ transitions,
+spin receives exactly $C-p$. Its completed work $s$ produces total $p+s$;
+its local exhaustion reports that same cumulative count. No fresh full
+allowance is allocated to the replacement. If $C-p=0$, the wrapper returns
+an inconclusive limit before starting spin. An explicitly configured trial
+has its own cost and does not inherit the default linear-prelude guarantee.
+
+Both stages use the same state cap. The reported peak state count is the
+maximum across attempts, including a rejected insertion that first exceeds
+a state cap. It is not a byte-memory limit, nor the sum of simultaneous
+populations. The failed Potts exception handler is exited before allocating
+the spin table, releasing the abandoned traceback and its evaluator locals.
+Only progress counters and completed order information are retained.
+
+Potts may already have constructed a checked separator order while adapting
+its own scan. The wrapper passes that order to spin without reconstructing
+its certificate. Otherwise spin constructs its usual certified order.
+Thus a failed prelude does not require a second certificate construction.
+The retained certificate's order still has the square-root frontier bound.
+Caller cancellation exceptions propagate. A local limit can retain a completed
+order certificate and policy counters, but never an unfinished polynomial,
+identity assertion or scalar value.
+
+The public result preserves the winning backend's scalar format and names
+its selected backend. The obstruction wrapper chooses the corresponding
+hexadecimal serialization, including large quadratic coordinates and color
+counts for Potts or bracket scalars for spin. CLI output includes the policy
+record. Recognition preserves that record even when the Jones result is
+inconclusive and the independent Khovanov calculation continues.
+
+\subsection{Why the prelude preserves the stronger complexity bound}
+With external caps and deadlines disabled, the default Potts attempt still
+has only $128n$ transitions. Each transition changes the represented table
+by at most one key. Thus it retains polynomially many keys; keys have at most
+$O(n)$ entries, and faithful quadratic coefficients have $O(n^2)$ bits.
+Even pessimistic dictionary lookup costs remain polynomial in this bounded
+attempt. Input validation, ordering, at most one separator preparation,
+normalization and optional coefficient recovery likewise have polynomial
+bit cost. Internal reordering does not multiply the work allowance: both
+attempts contribute to the same Potts transition counter.
+
+If the prelude completes, the whole query has polynomial cost. Otherwise
+the remaining spin computation has the certified $2^{O(\sqrt n)}$ bound,
+including exact arithmetic and full coefficient recovery. Hence
+\[
+ \operatorname{poly}(n)+2^{O(\sqrt n)}=2^{O(\sqrt n)}.
+\]
+This guarantee is independent of whether the prelude proves useful on the
+input. It applies to the default bounded trial; an arbitrarily large
+user-supplied trial contributes its own additional work. Fixed local caps
+can make the query inconclusive and do not turn a partial result into a proof.
+
+Both backends compute the same faithful invariant. They cannot disagree
+about a completed polynomial-one result. However, that result still does not
+certify an unknot. The general subexponential bound established here is for
+Jones computation, not for complete unknot recognition. The policy offers
+no theorem that spin is within a constant factor of the faster backend on
+every input, and the chosen transition constant is not a runtime optimum.
+
+\subsection{Validation and measurements}
+The focused tests compare both winners and direct-spin mode against an
+independent whole-cube polynomial oracle on 36 diagram/mirror inputs, giving
+108 full-polynomial comparisons. They verify that easy Potts completions
+avoid spin and separator preparation; that a measured-work switch reuses its
+certificate; that a state-limited Potts query can finish in spin; and that
+exact shared-budget boundaries give completion or inconclusive exhaustion.
+A shuffled grid forces a Potts ordering restart before the cross-backend
+switch and verifies that both discarded stages are charged. Zero budgets,
+empty input, malformed options, cancellation during either decoder, large
+JSON evidence, CLI dispatch and Khovanov fallback after Jones identity are
+also covered.
+
+The integrated suite passed 725 tests in 165.183 seconds. A final refinement
+counts a switch only when spin actually starts, and extends the nested
+ordering-restart assertion. After that refinement, all seven focused test
+methods passed again in 1.637 seconds. The broad suite predates that small
+counter clarification; the final focused gate covers it explicitly.
+
+The maintained \path{benchmark_adaptive_jones.py} compares historical Potts
+at commit \code{153bc2362}, an identical A/A control, current valuation spin,
+and the new adaptive wrapper. Fourteen inputs use seed 26100867 to shuffle
+five measured rounds after one excluded warmup. Each query includes fresh
+PD validation, ordering, tensor preparation, contraction, normalization and
+full coefficient recovery. The common allowances are three cooperative
+seconds, 4096 states and 200000 transitions. Source hashes are frozen across
+the run. All 56 warmup attempts are excluded from timings. Of 280 measured
+attempts, 270 complete; the ten incomplete attempts are the two Potts arms
+on the 196-crossing grid. They are never treated as completed-query times.
+Small diagrams use an independent whole-cube oracle, grids have verified
+descending certificates, and the other cases compare completed polynomials
+across arms. These are full invariant queries, not full recognition timings.
+
+\input{tables/adaptive_jones.tex}
+
+On the 144-crossing grid, adaptive computation uses 18432 discarded Potts
+transitions and 32098 spin transitions, totaling 50530. It reuses the checked
+order. The adaptive median is 279.949 milliseconds, compared with 367.153
+for Potts and 176.774 for direct spin; the median paired Potts/adaptive ratio
+is 1.330. Thus the policy improves on Potts here, but the unsuccessful prelude
+still has a measurable cost relative to direct spin.
+
+On the 196-crossing grid, Potts exceeds its state cap after 6405 transitions.
+Adaptive computation then spends 89122 spin transitions and completes in
+507.184 milliseconds, compared with 480.226 for direct spin. The ten capped
+Potts attempts establish a completion difference under the same resource
+limits, not a finite completed-query speedup. On the 144-crossing case,
+the focused test confirms completion at the exact combined work allowance;
+one transition less gives an inconclusive result with the charged cumulative count.
+
+Most small cases retain Potts's timing advantage over spin, with some wrapper
+overhead. For example, the trefoil medians are 0.185 milliseconds for Potts,
+0.589 for spin and 0.193 for adaptive computation. The 126-crossing tree has
+medians 10.586, 43.437 and 10.660 respectively. The 254-crossing tree has
+substantial timing variation, including different medians for the identical
+Potts arms, so it does not support a precise small percentage comparison.
+The shuffled 64-crossing grid finishes within the Potts prelude after an
+internal ordering restart; adaptive takes 28.537 milliseconds versus 24.128
+for direct spin. These counterexamples rule out interpreting the policy as
+an oracle for the fastest representation. It remains optional, with the
+existing overall backend default unchanged.
+
+Raw measurements are in \path{results/adaptive_jones_20261008.json}; test
+logs and PDF validation are retained under \path{synthesis/data/}. The
+research refresh finds unchanged hashes for all 21 incoming archives and
+unchanged \code{openai/math} head \code{fd4aeeb2ee}. This checkpoint promotes
+the bounded-prelude proposal; the other component reviews in
+Section~\ref{sec:incoming-oct8} remain separate work.
+The subsequent intake commit \code{b71e64c3b} places those six deliveries in
+\path{reports/29/} through \path{reports/34/}. Comparison against the original
+archives finds only omitted checksum manifests and CRLF normalization in two
+CSV files; all other placed bytes match. This placement adds no new research
+claim to the current review queue.
