@@ -1,10 +1,11 @@
-import GowersSzemeredi.Proofs05ModularApproximation
+import GowersSzemeredi.Proofs05QuadraticPhaseError
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinatePartition
 
 /-! Transfer the already audited upstream Schmidt recurrence theorem to the
 centered modular norm used in Gowers's Section 16. For each fixed degree,
 the exponent is quadratic in the number of simultaneous coefficients.
-The degree constants are existential. This supplies a recurrence input;
+Combining degrees 1 through k gives exponent p*(d+1)^(2*k), with one
+common multiplier for all d coefficient families. The degree constants are existential. This supplies a recurrence input;
 the minimum-width multilinear-box partition still requires a bridge. -/
 set_option autoImplicit false
 noncomputable section
@@ -49,5 +50,114 @@ theorem simultaneous_modular_monomial_recurrence (j : Nat) :
   obtain ⟨q, hq, hqM, b, hb⟩ :=
     hrec ι (fun i => (a i).valMinAbs / (N : Real)) M R hR hR1 hM
   exact ⟨q, hq, hqM, fun i => centered_monomial_of_integer_approximation (a i) (b i) (hb i)⟩
+
+
+/-- A fixed number of degrees preserves polynomial dependence on family size. -/
+theorem schmidt_mixed_exponent_bound (p e d k : Nat) :
+    (2 + (k + 1) * (p * (d + 1) ^ (2 * k))) * (e * (d + 1) ^ 2) +
+        p * (d + 1) ^ (2 * k) ≤
+      (p + e * (2 + (k + 1) * p)) * (d + 1) ^ (2 * (k + 1)) := by
+  have h1 : 1 ≤ (d + 1) ^ (2 * k) := one_le_pow₀ (by omega)
+  have h2 : 1 ≤ (d + 1) ^ 2 := one_le_pow₀ (by omega)
+  have ha := Nat.mul_le_mul_left (2 * e * (d + 1) ^ 2) h1
+  have hb := Nat.mul_le_mul_left (p * (d + 1) ^ (2 * k)) h2
+  rw [show 2 * (k + 1) = 2 * k + 2 by omega, pow_add]
+  nlinarith only [ha, hb]
+
+/-- At resolution H, one multiplier makes every monomial in d families
+and degrees 1 through k smaller than N/H in centered modular norm. -/
+def MixedModularRecurrenceBound (k : Nat) (K : Real) (p : Nat) : Prop :=
+  ∀ (N : Nat) [NeZero N] (d H : Nat), 0 < H →
+    K * ((d : Real) + 1) ≤ H → ∀ a : Fin d → Fin k → ZMod N,
+      ∃ q : Nat, 0 < q ∧ q ≤ H ^ (p * (d + 1) ^ (2 * k)) ∧ ∀ i j,
+        (centeredAbs ((q : ZMod N) ^ (j.val + 1) * a i j) : Real) * H < N
+
+/-- Simultaneous recurrence for all degrees up to k. The fixed-degree
+constants do not depend on the modulus, family size, or resolution. -/
+theorem exists_mixed_modular_recurrence_bound (k : Nat) :
+    ∃ (K : Real) (p : Nat), 1 ≤ K ∧ 0 < p ∧ MixedModularRecurrenceBound k K p := by
+  induction k with
+  | zero =>
+      refine ⟨1, 1, le_rfl, by decide, ?_⟩
+      intro N _ d H hH _ a
+      refine ⟨1, by decide, ?_, fun _ j => Fin.elim0 j⟩
+      simpa using (show 1 ≤ H by omega)
+  | succ k ih =>
+      obtain ⟨K, p, hK, hp, hrec⟩ := ih
+      obtain ⟨L, e, hL, he, hmono⟩ := simultaneous_modular_monomial_recurrence k
+      refine ⟨max K L, p + e * (2 + (k + 1) * p), hK.trans (le_max_left _ _), by omega, ?_⟩
+      intro N _ d H hH hscale a
+      have hd : (0 : Real) ≤ (d : Real) + 1 := by positivity
+      have hKH : K * ((d : Real) + 1) ≤ H :=
+        (mul_le_mul_of_nonneg_right (le_max_left K L) hd).trans hscale
+      have hLH : L * ((d : Real) + 1) ≤ H :=
+        (mul_le_mul_of_nonneg_right (le_max_right K L) hd).trans hscale
+      let A := p * (d + 1) ^ (2 * k)
+      let Q := H ^ A
+      let B := (2 + (k + 1) * A) * (e * (d + 1) ^ 2)
+      let R : Real := ((H : Real) * (Q : Real) ^ (k + 1))⁻¹
+      have hHr : (0 : Real) < H := by exact_mod_cast hH
+      have hQ : 0 < Q := pow_pos hH _
+      have hQr : (0 : Real) < Q := by exact_mod_cast hQ
+      have hden : (0 : Real) < H * (Q : Real) ^ (k + 1) := mul_pos hHr (pow_pos hQr _)
+      have hden1 : (1 : Real) ≤ H * (Q : Real) ^ (k + 1) := by
+        exact_mod_cast (show 1 ≤ H * Q ^ (k + 1) by
+          have := Nat.mul_pos hH (pow_pos hQ (k + 1))
+          omega)
+      have hR : 0 < R := inv_pos.mpr hden
+      have hR1 : R ≤ 1 := by
+        simpa [R] using one_div_le_one_div_of_le (by norm_num : (0 : Real) < 1) hden1
+      have hbase : L * ((d : Real) + 1) / R ≤ (H : Real) ^ (2 + (k + 1) * A) := by
+        calc
+          _ = (L * ((d : Real) + 1)) * (H * (Q : Real) ^ (k + 1)) := by simp only [R, div_inv_eq_mul]
+          _ ≤ H * (H * (Q : Real) ^ (k + 1)) := mul_le_mul_of_nonneg_right hLH hden.le
+          _ = (H : Real) ^ (2 + (k + 1) * A) := by
+            simp only [Q, Nat.cast_pow, pow_add, pow_mul]
+            ring
+      have hsearch : (L * ((Fintype.card (Fin d) : Real) + 1) / R) ^
+          (e * (Fintype.card (Fin d) + 1) ^ 2) ≤ (H ^ B : Nat) := by
+        simp only [Fintype.card_fin, Nat.cast_pow]
+        exact (pow_le_pow_left₀ (by positivity) hbase _).trans_eq (by rw [← pow_mul])
+      obtain ⟨q1, hq1, hq1B, hq1small⟩ := hmono N (Fin d) (fun i => a i (Fin.last k))
+        (H ^ B) R hR hR1 hsearch
+      obtain ⟨q2, hq2, hq2Q, hq2small⟩ := hrec N d H hH hKH
+        (fun i j => (q1 : ZMod N) ^ (j.val + 1) * a i j.castSucc)
+      refine ⟨q1 * q2, Nat.mul_pos hq1 hq2, ?_, ?_⟩
+      · calc
+          q1 * q2 ≤ H ^ B * H ^ A := Nat.mul_le_mul hq1B hq2Q
+          _ = H ^ (B + A) := (pow_add _ _ _).symm
+          _ ≤ H ^ ((p + e * (2 + (k + 1) * p)) * (d + 1) ^ (2 * (k + 1))) :=
+            Nat.pow_le_pow_right hH (schmidt_mixed_exponent_bound p e d k)
+      · intro i j
+        refine Fin.lastCases ?_ (fun t => ?_) j
+        · have hid : ((q1 * q2 : Nat) : ZMod N) ^ (k + 1) * a i (Fin.last k) =
+              ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) * (q2 : ZMod N) ^ (k + 1) := by
+            push_cast
+            ring
+          have hsmall : (centeredAbs ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) : Real) *
+              (H * (Q : Real) ^ (k + 1)) < N := by
+            apply (lt_div_iff₀ hden).mp
+            simpa [R, div_eq_mul_inv, mul_comm] using hq1small i
+          have hmul : (centeredAbs (((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) *
+                (q2 : ZMod N) ^ (k + 1)) : Real) ≤
+              (centeredAbs ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) : Real) * (q2 : Real) ^ (k + 1) := by
+            exact_mod_cast centeredAbs_mul_natCast_pow_le ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) q2 (k + 1)
+          change (centeredAbs (((q1 * q2 : Nat) : ZMod N) ^ (k + 1) * a i (Fin.last k)) : Real) * H < N
+          rw [hid]
+          apply lt_of_le_of_lt _ hsmall
+          calc
+            _ ≤ ((centeredAbs ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) : Real) *
+                  (q2 : Real) ^ (k + 1)) * H := mul_le_mul_of_nonneg_right hmul hHr.le
+            _ ≤ ((centeredAbs ((q1 : ZMod N) ^ (k + 1) * a i (Fin.last k)) : Real) *
+                  (Q : Real) ^ (k + 1)) * H := by
+              gcongr
+            _ = _ := by ring
+        · have hid : ((q1 * q2 : Nat) : ZMod N) ^ (t.val + 1) * a i t.castSucc =
+              (q2 : ZMod N) ^ (t.val + 1) * ((q1 : ZMod N) ^ (t.val + 1) * a i t.castSucc) := by
+            push_cast
+            ring
+          change (centeredAbs (((q1 * q2 : Nat) : ZMod N) ^ (t.val + 1) * a i t.castSucc) : Real) * H < N
+          rw [hid]
+          exact hq2small i t
 
 end LeanProofs.GowersSzemeredi
