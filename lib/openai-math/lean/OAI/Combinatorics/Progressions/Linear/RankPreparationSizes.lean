@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: explicitly simplify the singleton coordinate sum in
+RankPreparationLayer.initial_value on Lean 4.32. Upstream statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.IntegralSlowSlice
 import OAI.Combinatorics.Progressions.Estimates.RelativePatchAmplification
 import OAI.Combinatorics.Progressions.Geometry.CoordinateCopySum
@@ -353,7 +357,8 @@ theorem initial_valid [Fintype J] [DecidableEq J]
     (p : VectorPolynomial I ℝ (J → ℝ)) (x : I → ℝ) : (initial p).value x = eval x p := by
   ext j
   change (coordinateCopySum (R := ℝ) (id : J → J) (eval x p)) j = _
-  simp [coordinateCopySum_apply]
+  simp only [coordinateCopySum_apply, id_eq]
+  exact Finset.sum_ite_eq_of_mem' Finset.univ j (eval x p) (Finset.mem_univ j)
 
 end RankPreparationLayer
 end Erdos3

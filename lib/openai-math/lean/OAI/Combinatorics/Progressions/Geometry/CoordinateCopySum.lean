@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: remove a redundant rfl after simplification closes the
+coordinate-copy sum identity on Lean 4.32. Upstream statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.CopiedLayerSpace
 
 namespace OAI
@@ -35,7 +39,6 @@ theorem coordinateCopySum_sum {C D J R : Type*} [Fintype C] [Fintype D]
   ext j
   simp only [coordinateCopySum_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr,
     Pi.add_apply]
-  rfl
 
 theorem coordinateCopySum_abs_le {C J : Type*} [Fintype C] [DecidableEq J]
     (label : C → J) {x : C → ℝ} {δ : ℝ} (hδ : 0 ≤ δ) (hx : ∀ c, |x c| ≤ δ) (j : J) :
