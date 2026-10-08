@@ -105,57 +105,66 @@ existential made explicit.** A Gowers-type terminal would not rescue it
 either. At density e^(−T), Gowers's bound gives log log N₀ = e^(T·M), and
 C₀ ≤ 2^M fails by the factor T in the exponent.
 
-## Finding 3: the terminal can probably be removed (proposal, interface-checked)
+## Finding 3: the dense case is intrinsic to the method (V; refutes the first proposal)
 
-The descent needs p ≥ T only to keep its subquadratic invariant (Finding 1);
-a density step itself works at any density.
+The first version of this survey proposed a "dense continuation": freeze the
+parameter at p = T and keep incrementing the density. Lemma interfaces
+seemed to allow it. Reading the proofs refutes it.
 
-- `scored_patch_density_step` (`Sampling/ScoredPatchDensityStep.lean:26`,
-  V) is parameter-free. From a patch correlation exp(−U) with target G·α, it
-  produces a subprogression with **new density > G·α**, at a loss of
-  log(4P) + 2s²R in log log N. R and V are any bounds on log(rank+1) and
-  log U. Its only density condition, 2 ≤ densityParameter α − δ, holds at
-  every density with δ = 0.
-- `positive_patch_score_target_lt_one` (V) shows that a positive correlation
-  forces G·α < 1.
-- The source step `APFreeInterval.patch_of_relative_absolute` (V) needs only
-  exp(−p) ≤ α/2, which is **monotone in p**, and N ≥ exp((p+2)^E).
+- **Lift step.** The lift from the n₀-dimensional absolute rule to a
+  one-dimensional patch is `RelativePatchPowerInductionRule.of_mean_increment`
+  (`Linear/RelativeRankZeroSource.lean:10`). It needs `2 * a ≤ mean` and
+  `Λ ≤ 1`, and its target is `(1 − τ)^(s+1) · Λ = κ·Λ`.
+- **Base rule.** The absolute rule at the base level
+  (`exists_initial_relative_absolute_rule`, from the CRT window patch) has
+  target Λ = (1 + xi)·a.
+- **Amplified levels** j ≥ 1 have target H_j·a under
+  `LowDensityThreshold H_j a`, i.e. H_j²·a ≤ 1
+  (`Probability/LowDensityAmplification.lean:12`;
+  `LowDensityRelativeAbsoluteRule`, `Estimates/RelativePatchAmplification.lean:549`).
+- **The step.** `scored_patch_density_step` then turns a positive
+  correlation with target G·α into new density > G·α, with G = κ·H/2
+  (because a ≤ α/2).
 
-**Dense continuation.**
-1. Freeze p = P* := T for every density α ≥ 2e^(−T).
-2. Each step multiplies the density by G(T) = (κH₀)^(2^⌊levelCoefficient·log T⌋)/2 > 1,
-   which `exists_selected_density_drop` bounds below.
-3. Each step loses at most L(T) = log(4P) + 2s²R(T) in log log N.
-4. Density cannot exceed 1, so there are at most about T/log G(T) steps.
-   A k-AP-free set cannot survive them.
+**Consequence.**
+- An increment needs G > 1, i.e. H > 2/κ.
+- At the base level that means 1 + xi > 2/κ ≥ 2. The CRT window gives no
+  such xi.
+- At an amplified level, H_j²·a ≤ 1 with a = α/2 forces α ≤ 2/H_j² < κ²/2 < 1/2.
+- So the method increments **only sets of density below about κ²/2 < 1/2**.
+  Above that it has no step at all. Freezing p changes the terminal density
+  from e^(−T) to a constant c₀ < 1/2; it cannot remove the terminal.
 
-This would replace `FixedDensity.szemeredi` by C₀ ≈ (T/log G(T))·L(T) plus
-cutoff terms, which is poly(T) (I). With E_s = 2^(poly s) and T
-quasi-polynomial in E, C₀ = 2^(poly k). That is vastly below 2^M = 2^2^2^2^(k+9).
-The same machinery would then cover the δ = 1/2 case, and with it 18.7.
+A proof of r_k(N) = o(N) by this method therefore needs, as a black box,
+Szemerédi's theorem at one fixed density c₀ < 1/2. The port uses the
+hypergraph-removal proof there. Corollary 18.7, at density exactly 1/2, is
+entirely that black box.
 
-**Caveat.** This is checked against lemma interfaces, not proved. The
-source family also needs p ≥ n₀, which P* = T satisfies. The step-to-step
-bookkeeping (cutoffs, the d₀ rank budget, the absolute rule at p = T) must
-be redone without the subquadratic invariant.
+## Bottom line for Theorems 18.2 and 18.7
 
-## What a proof of 18.2 and 18.7 through the port would take
+Even with every constant made explicit, the port reduces both to a
+**quantitative dense Szemerédi theorem**:
+- **18.7:** sets of density 1/2 in [N] contain k-APs once
+  N ≥ 2^2^2^2^2^(k+9).
+- **18.2:** the same at density c₀, with log log N₀ ≤ 2^(M−1), plus the
+  explicitized descent for smaller δ. This is the same tower scale as 18.7.
 
-1. **Port compiles.** `Results.Conclusions` is not yet verified
-   (manifest: "Backport in progress"). The peer owns this.
-2. **Dense continuation lemma** (Finding 3). It is a new module using
-   `scored_patch_density_step` and the source at frozen P*. Size: moderate.
-3. **Explicit constants with bounds.** Every spine existential must be
-   restated with an explicit witness or an explicit upper bound:
-   - about 340 spine theorems;
-   - the s-only `Classical.choose` chains (net exponent, observable,
-     primitive, early/input exponents);
-   - a sharp polynomial-budget helper that returns the degree, not the
-     coefficient sum.
-   This is the dominant cost: mechanical, but several hundred restatements
-   in a tree that is still being ported.
-4. **Size bookkeeping.** Bound C₀ by an explicit 2^(poly k), check
-   C₀ ≤ 2^(M−1), and feed 18.2 and then 18.7.
+That dense statement is the core of Gowers's theorem. No other published
+proof supplies explicit constants of this size:
+- the hypergraph-removal and regularity proofs are tower or Ackermann-type;
+- Shelah's van der Waerden bound is wowzer-type;
+- the modern analytic proofs, the port included, leave the dense case to
+  one of these.
 
-Unaffected: 16.2, 16.11 and 18.1 are Gowers's internal statements. No
-change of path reaches them (research notes, Parts D–J).
+So **the port cannot be the path to 18.2 or 18.7.** Their only available
+route is Gowers's own density iteration, i.e. this project's Sections 16–18
+lane. That lane is proved for k ≤ 5 (`corollary_18_7_le_five`) and blocked
+for k ≥ 6 (research notes, Parts B, I and J).
+
+Explicitizing the port is still worthwhile for its own sake. But it would
+improve none of the catalogue statements: 1.3 needs only `∃ N₀`.
+
+**The lesson** (recorded in project memory). An interface can look
+monotone in a parameter while the proof pins the parameter to the data,
+here through `exp(−p) = α/2` and the low-density threshold. Read the
+step's proof before proposing a route through it.

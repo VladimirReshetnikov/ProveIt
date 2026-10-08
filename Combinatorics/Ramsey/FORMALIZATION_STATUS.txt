@@ -3291,11 +3291,17 @@ Port constants survey: routes to Theorems 18.2 and 18.7 (2026-10-08)
   - The dense case, which is all of 18.7, ends in FixedDensity.szemeredi.
     That is a hypergraph-removal proof with tower- or Ackermann-type
     constants.
-  Proposed route. Replace that terminal by a dense continuation: the
-  parameter-free scored_patch_density_step, run at frozen parameter T, gives
-  multiplicative density increments. Then restate the roughly 340-theorem
-  constant spine with explicit bounds. The route is checked against lemma
-  interfaces only, and it depends on the port compiling first.
+  The terminal is intrinsic to the method. A first proposal to replace it
+  by a dense continuation at frozen parameter is refuted on proof
+  inspection. The relative lift needs 2a <= mean and target <= 1, and the
+  amplified levels need H^2 a <= 1. So increments exist only below density
+  about kappa^2/2 < 1/2, and some Szemeredi theorem at a fixed density
+  c0 < 1/2 must be supplied as a black box.
+  Hence 18.2 and 18.7 reduce to a quantitative dense Szemeredi theorem with
+  tower-scale explicit constants. That is the core of Gowers's theorem, and
+  no other published proof supplies it. Their only route is this project's
+  Sections 16-18 lane (k <= 5 proved, k >= 6 blocked). The port is not a
+  path to them.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
