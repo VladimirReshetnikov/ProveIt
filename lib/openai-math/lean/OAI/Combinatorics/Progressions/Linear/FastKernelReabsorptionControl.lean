@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: give realFast_kernel_reabsorption_controlled a local
+400000-heartbeat budget for dependent quotient elaboration on Lean 4.32.
+The upstream theorem statements and proof text are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.ExtractedInitialState
 
 namespace OAI
@@ -62,6 +67,7 @@ local notation "Y" => (fun (g : 𝓖) i => F.realFastCoefficientDirectionMap U (
 
 include e ω hF
 
+set_option maxHeartbeats 400000 in
 theorem realFast_kernel_reabsorption_controlled
     (a b c : 𝓖) (S R : K →ₗ[ℝ] 𝓔)
     (hSR : S = (ρ (a * b * c)).toLinearMap.comp R)
