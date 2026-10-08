@@ -60,6 +60,8 @@ class Diagram:
     """
 
     def __init__(self, pd: tuple[tuple[int, int, int, int], ...]):
+        if "pd" in self.__dict__:
+            raise AttributeError("cannot reinitialize an immutable Diagram")
         object.__setattr__(self, "pd", pd)
 
     def __setattr__(self, name, value):
@@ -90,6 +92,15 @@ class Diagram:
         unchecked second argument to the public Diagram constructor.
         """
         return self.__dict__.get("_braid_source")
+
+    @property
+    def rational_source(self):
+        """Checked ``(e, continued_fractions)`` Montesinos source, or None.
+
+        Attached only by actual tangle construction.  Equality and hashing
+        still depend solely on PD, and a bare PD never acquires this promise.
+        """
+        return self.__dict__.get("_rational_source")
 
     @classmethod
     def from_pd(cls, data: Iterable[Iterable[int]]) -> "Diagram":
@@ -228,14 +239,32 @@ class Diagram:
         return cls.from_pd(pd)
 
     @classmethod
+    def from_rational(cls, e: int, tangles, *, max_crossings=100_000) -> "Diagram":
+        """Numerator closure of integer e plus supplied rational tangles.
+
+        Every tangle is an ordinary continued fraction.  Actual planar
+        twists, reciprocals and horizontal gluing create the PD.  Its
+        immutable source authorizes the Montesinos recognition theorem.
+        The default crossing-expansion cap is independent of the arithmetic
+        certificate API, which supports arbitrarily large binary coefficients.
+        """
+        from .rational import montesinos_pd
+        pd, source = montesinos_pd(e, tangles, max_crossings=max_crossings)
+        result = cls.from_pd(pd)
+        object.__setattr__(result, "_rational_source", source)
+        return result
+
+    from_montesinos = from_rational
+
+    @classmethod
     def from_json(cls, value: Any) -> "Diagram":
         if isinstance(value, list):
             return cls.from_pd(value)
         if not isinstance(value, dict):
             raise DiagramError("input must be a JSON object or a PD array")
-        keys = [k for k in ("pd", "braid", "rows", "x") if k in value]
+        keys = [k for k in ("pd", "braid", "rows", "x", "montesinos") if k in value]
         if len(keys) != 1:
-            raise DiagramError("specify exactly one of pd, braid, rows, or x/o")
+            raise DiagramError("specify exactly one of pd, braid, rows, x/o, or montesinos")
         key = keys[0]
         if key == "pd":
             return cls.from_pd(value["pd"])
@@ -246,6 +275,12 @@ class Diagram:
             return cls.from_braid(braid["strands"], braid["word"])
         if key == "rows":
             return cls.from_grid(value["rows"])
+        if key == "montesinos":
+            source = value["montesinos"]
+            if (not isinstance(source, dict) or "tangles" not in source
+                    or set(source) - {"e", "tangles"}):
+                raise DiagramError("montesinos must have tangles and an optional integer e")
+            return cls.from_rational(source.get("e", 0), source["tangles"])
         x, o = value["x"], value.get("o")
         if not isinstance(x, list) or not isinstance(o, list) or len(x) != len(o):
             raise DiagramError("x and o must be equal-length arrays")
@@ -265,6 +300,8 @@ class Diagram:
         state = {"pd": self.pd}
         if self.braid_source is not None:
             state["braid_source"] = self.braid_source
+        if self.rational_source is not None:
+            state["rational_source"] = self.rational_source
         return state
 
     def __setstate__(self, state):
@@ -273,6 +310,8 @@ class Diagram:
         if "pd" in self.__dict__:
             raise AttributeError("cannot reinitialize an immutable Diagram")
         restored = Diagram.from_pd(state["pd"])
+        if "braid_source" in state and "rational_source" in state:
+            raise DiagramError("serialized diagram has multiple source presentations")
         source = state.get("braid_source")
         if source is not None:
             try:
@@ -288,6 +327,13 @@ class Diagram:
                 raise DiagramError("serialized braid provenance does not match PD")
             source = braid.braid_source
         object.__setattr__(self, "_braid_source", source)
+        rational_source = state.get("rational_source")
+        if rational_source is not None:
+            from .rational import source_matches_pd
+            rational_source = source_matches_pd(restored, rational_source)
+            if rational_source is None:
+                raise DiagramError("serialized Montesinos provenance does not match PD")
+            object.__setattr__(self, "_rational_source", rational_source)
         object.__setattr__(self, "pd", restored.pd)
 
     def alpha(self) -> list[int]:
@@ -359,10 +405,17 @@ class Diagram:
         if self.braid_source is not None:
             strands, word = self.braid_source
             object.__setattr__(result, "_braid_source", (strands, tuple(-g for g in word)))
+        if self.rational_source is not None:
+            e, tangles = self.rational_source
+            object.__setattr__(result, "_rational_source",
+                               (-e, tuple(tuple(-a for a in cf) for cf in tangles)))
         return result
 
-    def to_json(self, *, preserve_braid: bool = False) -> dict[str, Any]:
+    def to_json(self, *, preserve_braid: bool = False, preserve_rational: bool = False) -> dict[str, Any]:
         if preserve_braid and self.braid_source is not None:
             strands, word = self.braid_source
             return {"braid": {"strands": strands, "word": list(word)}}
+        if preserve_rational and self.rational_source is not None:
+            e, tangles = self.rational_source
+            return {"montesinos": {"e": e, "tangles": [list(cf) for cf in tangles]}}
         return {"pd": [list(row) for row in self.pd]}
