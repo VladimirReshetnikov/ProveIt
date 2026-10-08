@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 577 passing tests.
+diagram is not checked twice. The integrated suite now has 582 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -160,11 +160,22 @@ python -B benchmark_shadow.py --output results/shadow_local.json
 The Euler and determinant caches share `--euler-max-states`. The additional
 `--shadow-max-work` allowance counts geometry visits, matrix allocation and
 integer arithmetic updates (API: `shadow_max_work=None` removes this local
-cap). Local exhaustion disables inference and continues the same saturated
-scan; global exhaustion remains `UNKNOWN`. Completed determinant values alone
-are cached, so interruption cannot publish a partial result. Early evidence
+cap). Exhausting marked work switches to Euler-only observations using the
+same exact cache and remaining shared query allowance. These direct Euler
+walks are separately counted in `euler_fallback_traversed_darts`; they do not
+reset or consume the spent marked-work counter. Exhausting the query cap then
+continues the same saturated scan without observations. Global exhaustion
+remains `UNKNOWN`. Thus `--shadow-max-work 0` permits Euler fallback, while
+`--euler-max-states 0` disables all new completion queries.
+`shadow_stats.observer_mode` reports `shadow`, `euler`, or `scan`; the result
+also distinguishes `shadow_exhausted` and `euler_exhausted`. Completed
+determinant values alone are cached, so interruption cannot publish a partial result. Early evidence
 uses `reduced_rank_lower_bound_capped`, `stage`, and `shadow_stats`; the final
 rank still uses `rank_capped`. The existing backend restrictions apply.
+`python -B benchmark_shadow_fallback.py --output results/shadow_fallback_local.json`
+compares the schedulers on complete raw scans and recognition, including low
+budgets and supplied-order controls. See `../synthesis/shadow_fallback.tex`
+for the exact resource contract, transition proof, and measurements.
 
 Larger completed Tait graphs now factor at articulation vertices before dense
 matrix allocation. Parallel signed weights are combined first; cancelled edges

@@ -1,0 +1,157 @@
+\section{Preserving a cheap observer after marked-work exhaustion}
+\label{sec:shadow-fallback}
+
+Block products reduce the cost of many determinant queries, but a large
+irreducible cofactor can still exhaust its optional allowance.  The earlier
+scheduler then stopped \emph{all} observations, including cheap component-Euler
+checks.  We now distinguish those resource limits.  This is analogous to introsort
+at the scheduling level: an expensive optional method
+has a bounded attempt, then gives way to a cheaper exact method, then to the
+complete scanner when its own allowance is exhausted.
+
+The marked backend has the one-way progression
+\[
+ \text{marked residues and Euler}
+ \ \longrightarrow\ \text{Euler only}
+ \ \longrightarrow\ \text{unobserved capped scan}.
+\]
+The first transition occurs on marked-work exhaustion; shared query
+exhaustion can take either observer state directly to the unobserved scan.
+The crossing order, simplified relative complex, completed pivots, exact
+cached values, and global deadline survive every transition.  There is no
+restart and no new query allowance.
+
+\subsection{Two limits with separate meanings}
+
+Let $W$ be \code{shadow\_max\_work} and $K$ be
+\code{euler\_max\_states}.  While marked observations are active, $W$ pays
+for their geometry, matrix allocation, arithmetic updates, and accompanying
+Euler queries, as before.  The exception \code{ShadowWorkBudget}, a subtype
+of \code{EulerBudget}, identifies exhaustion of this particular allowance.
+The driver then stops requesting marked observations permanently.
+
+If query capacity remains, later Euler queries use the direct closure
+connectivity evaluator with the \emph{same} exact cache and state counter.
+Its new geometric work is separately measured by
+\code{euler\_fallback\_traversed\_darts}; it is not charged to, or hidden by
+resetting, the already spent marked-work allowance.  The corresponding
+\code{euler\_fallback\_evaluations} and \code{euler\_fallback\_states}
+fields distinguish all completed fallback requests from newly computed
+values.  Cached values do not consume another query, but still check the
+global deadline.  Result fields \code{shadow\_exhausted} and
+\code{euler\_exhausted}, together with \code{observer\_mode}, distinguish
+which methods remain available.
+
+This is an explicit resource-semantics change: setting $W=0$ disables marked
+work but permits the query-capped Euler reserve.  Setting $K=0$ disables all
+new completion queries.  Either limit may be explicitly unbounded through
+the existing API option \code{None}; an unbounded $K$ does not give a finite
+fallback-query guarantee.  No additional public switch is required.
+
+If $k$ distinct Euler values have already been computed, the fallback can
+compute at most $K-k$ more.  Each direct completion walk uses $O(n)$
+combinatorial work, so additional \emph{new closure geometry} is
+$O(n(K-k))$.  This bound does not include every observation cost: aggregating
+whole relative components still visits the current generators, and cache
+keys encode boundary matchings.  Integer bit costs also depend on the
+suffix size and coefficient growth.  In particular, this is not a
+polynomial bound on the complete Khovanov scan, whose number of live
+generators remains uncontrolled in general.
+
+\subsection{Why partially completed observations are safe to abandon}
+
+For a whole relative component, completion gives a genuine chain complex
+and its signed Euler characteristic $\chi$.  Therefore
+$|\chi|\le\dim H$.  Summing these inequalities with the already certified
+nonnegative component multiplicities gives the existing Euler rank lower
+bound.  Capping the final nonnegative bound preserves its decision meaning;
+the individual signed Euler values themselves remain exact integers.
+Thus an Euler certificate does not depend on finishing a marked determinant.
+
+The implementation first completes the component-Euler bound for a stage.
+If marked work fails afterward, the incomplete marked bound is discarded.
+That stage's already completed Euler bound remains valid; later stages may
+request further Euler values.  If the marked allowance instead runs out
+while preparing the Euler part, its adapter switches before completing the
+outstanding query.  Both paths use the same budget-checked evaluator and
+cache.  A generic query-cap exception stops all further observations.
+Global \code{ScanLimit} exceptions are never converted into local declines:
+they propagate to \code{UNKNOWN} at the recognition boundary.
+
+As before, an early lower bound can certify knottedness only.  An unknot
+verdict requires the completed rank calculation.  These invariants hold
+for every allowed transition regardless of how favorable the timing turns
+out to be.  The policy provides bounded optional work and exact continuation;
+it supplies no general quasi-polynomial recognition theorem.
+
+\subsection{Transition tests and benchmark design}
+
+Five new tests exercise zero marked allowance, exhaustion during a block
+determinant, one versus two available queries, preserved cached Euler
+values, and a global deadline expiring during the transition.  Two hundred
+budgeted scans of twenty small random diagrams and their mirrors agree with
+independent reduced homology.  Zero-cap and low-cap paths are checked for
+both knotted and unknotted outcomes, and no partial observation returns an
+unknot verdict.  Existing fallback expectations now reflect the retained
+Euler phase.  All 582 maintained tests pass; logs are
+\path{data/shadow-fallback-tests.txt} and
+\path{data/shadow-fallback-integrated-tests.txt}.
+
+\path{fast/benchmark_shadow_fallback.py} compares the earlier scheduler from
+revision \code{82fdfe15b} with the new one, sharing all other dependencies.
+It times seven shuffled paired rounds with an identical baseline control,
+fresh input and observer setup, and one excluded warmup.  Every successful
+arm must agree on the verdict.  Method and stage differences are retained
+as evidence, and any \code{UNKNOWN} suppresses all ratios for that case.
+The raw backend and full recognition are separate scopes.
+
+Alongside all sixteen existing examples under default limits, the benchmark
+uses reduced-work and single-query controls.  A larger default-limit example
+joins the Conway knot to $T(3,151)$, giving a validated 313-crossing PD code.
+It is tested with the ordinary heuristic order and with a supplied order
+that processes the Conway summand first.  The latter case is explicitly
+raw-only; its favorable ordering is not attributed to the default heuristic.
+Complete input codes, actual scan orders, budgets, source hashes, and raw
+samples are retained in
+\path{fast/results/shadow_fallback_20261008.json}.
+
+\input{tables/shadow_fallback_benchmark.tex}
+
+\paragraph{Retained query capacity produces the gain.}
+On the eightfold Conway sum, $W=0$ improves the raw scan by $5.53$ times,
+and $W=2800$ by $5.15$ times.  Both schedulers respect the same marked-work
+cap.  In the latter case each spends all 2,800 units and has computed one
+Euler value; the new scheduler uses one further query to obtain the
+component-Euler certificate at crossing 11.  The baseline completes all 88
+crossings.  With $K=1$, neither can compute that further value and both
+finish the full scan, with a timing ratio of $1.01$.  This negative control
+checks that the improvement does not come from silently resetting the query
+budget.  With default marked work, this example never switches and its ratio
+is $0.997$.
+
+The retained reserve can also cost time without strengthening a bound.
+With $W=0$, $T(3,5)$ uses three fallback values but still requires closed
+rank, with ratio $0.982$.  The hard eight-crossing unknot uses one value and
+still finishes the entire scan, with ratio $0.984$.  These small regressions
+are part of the comparison, not excluded as inconclusive examples.
+
+\paragraph{Ordering determines when the reserve can help.}
+For the 313-crossing connected sum, both policies stop marked work at 999,932
+units under the default million-unit allowance.  The heuristic order first
+processes the torus part.  Fallback gives a certificate at crossing 302
+rather than 313, but the measured speedup is only $1.016$, with an A/A ratio
+of $1.009$.  This does not demonstrate a substantial timing gain.
+With the supplied order, fallback needs only one new query and certifies
+knottedness at crossing 11.  Its measured raw-scan speedup is $4.79$ times,
+with an A/A ratio of $1.007$.  The respective median times are about
+170 and 821 milliseconds.  This is a scheduler gain for the supplied order,
+not evidence that the ordinary order selector discovers it.
+
+All 45 case/scope comparisons complete and agree on verdict.  None of the
+sixteen default-limit examples switches modes; their raw ratios range from
+$0.971$ to $1.031$.  Earlier recognition filters decide every full-recognition
+case before this observer runs, giving ratios from $0.982$ to $1.019$ and
+no demonstrated full-recognizer gain.  In particular, the larger connected
+sum is already detected by the Rasmussen interval filter.  The new policy
+therefore improves robustness of an optional backend under its resource
+limits while leaving the universal complexity question unresolved.

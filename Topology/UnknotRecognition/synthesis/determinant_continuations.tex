@@ -154,8 +154,10 @@ wall-clock guarantee.  The cooperative global deadline is polled during
 geometry and between determinant elimination rows, including on cache
 hits.  An incomplete determinant is never cached as a completed value.
 
-If either local inference allowance is exhausted, the driver disables
-further observations and continues the \emph{same} capped exact scan.
+At this integration checkpoint, exhaustion of either local allowance disabled
+further observations and continued the \emph{same} capped exact scan.
+Section~\ref{sec:shadow-fallback} subsequently refines this policy by retaining
+a separately query-capped Euler reserve after marked-work exhaustion.
 No restart, discarded completed pivot, or speculative verdict is needed.
 Global resource exhaustion still returns \code{UNKNOWN} through the
 recognition API.  An unknot verdict is available only when the complete

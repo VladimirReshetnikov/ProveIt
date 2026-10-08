@@ -448,3 +448,34 @@ if tait_blocks:
                      'Ratios are median paired direct/block times; values above one favor '
                      'block evaluation. A/A compares identical direct implementations. '
                      'Every scope includes fresh setup.\n')
+
+fallback = load('../fast/results/shadow_fallback_20261008.json')
+if fallback:
+    names = {
+        'conway_sum_8': 'Conway sum 8',
+        'conway_sum_8_w0_q4096': 'Conway sum 8',
+        'conway_sum_8_w2800_q4096': 'Conway sum 8',
+        'conway_sum_8_w2800_q1': 'Conway sum 8',
+        'torus_3_5_w0_q4096': '$T(3,5)$',
+        'hard_unknot_8_w0_q4096': 'Hard unknot 8',
+        'conway_torus151_heuristic': '313 crossings, heuristic',
+        'conway_torus151_supplied': '313 crossings, supplied',
+    }
+    rows = []
+    for row in fallback['rows']:
+        if row['scope'] != 'raw-shadow' or row['name'] not in names:
+            continue
+        ratios = row['median_speedups']
+        before, after = (row['evidence'][arm].get('stage', 'unknown')
+                         for arm in ('baseline', 'fallback'))
+        work = row['options']['shadow_max_work']
+        work = '$10^6$' if work == 1_000_000 else str(work)
+        cells = ['unknown', 'unknown'] if ratios is None else [f'{ratios[k]:.3f}' for k in ('fallback', 'control')]
+        rows.append(names[row['name']] + f" & {work} & {row['options']['euler_max_states']} & " +
+                    f'{before} & {after} & ' + ' & '.join(cells) + r' \\')
+    with open('tables/shadow_fallback_benchmark.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+                     table('Input/order & $W$ & $K$ & Old stop & New stop & Speedup & A/A',
+                           '@{}lrrrrrr@{}', rows) + r'\end{center}' + '\n' +
+                     'Ratios are median paired baseline/fallback times for complete raw scans. '
+                     'Stop columns give the processed crossing count. A/A compares identical baselines.\n')

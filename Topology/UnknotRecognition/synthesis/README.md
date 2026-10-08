@@ -2,6 +2,16 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`shadow_fallback.tex` extends the adaptive scheduler: exhausting marked work
+retains direct Euler observations within the original shared query cap; query
+exhaustion then continues the same exact scanner. It states the changed
+zero-work semantics, separate fallback counters, cache/deadline invariants,
+and the limited `O(nK)` bound on new closure geometry. All 582 tests pass
+(`data/shadow-fallback-integrated-tests.txt`), including 200 scans checked
+against independent homology across several budget combinations.
+`../fast/benchmark_shadow_fallback.py` separates raw scans from recognition
+and preserves both heuristic and explicitly supplied order results.
+
 `tait_blocks.tex` follows actual marked-observer traces to optimize single
 completion queries. The maintained shadow backend factors signed Tait graphs
 at articulation vertices before dense allocation, keeping direct cofactors

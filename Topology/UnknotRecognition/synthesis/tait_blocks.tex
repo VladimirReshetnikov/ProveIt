@@ -109,8 +109,10 @@ All graph traversal, edge aggregation, matrix allocation, and elimination
 paths charge the existing local work allowance and poll the global deadline.
 Only a complete four-residue result enters the closure cache.  A partially
 multiplied block product is local state and is discarded on interruption.
-Local exhaustion disables optional observations and continues the same
-exact capped scan; a global deadline still yields \code{UNKNOWN}.  The
+The implementation measured in this section disables observations on local
+exhaustion and continues the same exact capped scan.  The later scheduler in
+Section~\ref{sec:shadow-fallback} retains a query-capped Euler phase; a global
+deadline still yields \code{UNKNOWN}.  The
 bounded-work policy counts combinatorial and arithmetic updates, not integer
 bit operations.  The change remains inside the optional \code{shadow}
 backend; default recognition still uses \code{standard}.

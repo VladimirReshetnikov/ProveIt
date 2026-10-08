@@ -276,8 +276,10 @@ The maintained Euler backend now adaptively reuses boundary path summaries;
 all 572 integrated tests pass at that checkpoint. A subsequent implementation
 factors actual completed signed Tait graphs at articulation vertices before
 dense allocation (`../synthesis/tait_blocks.tex`), with 577 passing tests and
-separate initial-query, raw-scan, and full-recognition benchmarks. The standard
-backend remains the default.
+separate initial-query, raw-scan, and full-recognition benchmarks. The later
+scheduler retains query-capped Euler observations after marked-work exhaustion
+(`../synthesis/shadow_fallback.tex`); all 582 tests pass. The standard backend
+remains the default.
 
 Report `27/` is reviewed in `../synthesis/causal_r3.tex`. The maintained
 implementation adds opt-in support-aware/adaptive RIII search, fixes ambiguous
