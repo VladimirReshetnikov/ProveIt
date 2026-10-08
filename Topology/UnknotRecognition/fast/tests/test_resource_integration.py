@@ -22,7 +22,7 @@ class RecognitionResourceTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.diagram = Diagram.from_braid(3, [1, 1, 1, 2, 2, 2])
+        cls.diagram = Diagram.from_pd(Diagram.from_braid(3, [1, 1, 1, 2, 2, 2]).pd)
 
     def assert_unknown(self, result, message):
         self.assertEqual((result.status, result.method), ("UNKNOWN", "resource-limit"))

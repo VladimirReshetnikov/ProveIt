@@ -2,8 +2,7 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
-* `report.tex`, `acceleration.tex`, `round3.tex`, `bend.tex`, `report.pdf`: the report (27
-  pages). Sections: sources and outcome; the six archives; code review;
+* `report.tex`, `acceleration.tex`, `round3.tex`, `bend.tex`, `report.pdf`: the report (updated with the October continuations). Sections: sources and outcome; the six archives; code review;
   cross-validation; what is missing for `n^O(log n)`; the `fastunknot`
   recognizer; assessment; the nine acceleration proposals, 0.2 and the Rust
   port (`acceleration.tex`); the later constant-factor work on the Python
@@ -46,6 +45,16 @@ The next extension prepares suffix-Euler geometry lazily within the inference
 budget; the current suite has 73 passing tests. Setup-only measurements and
 separate allocation peaks are in `../fast/results/lazy_euler_setup_20261007.json`,
 reproduced by `../fast/benchmark_euler_setup.py`.
+
+`research_updates.tex` covers the later report 08–12 intake and reviewed
+integrations: complete short-strand braid recognition, interlacement factors,
+sparse Alexander elimination, and the corrected general-frontier matching bound.
+The current full production suite passes 116 tests. Local report 10–12 production
+cross-checks are retained in `data/`; those reports' broader adapters remain under
+review. The braid benchmark includes PD construction and keeps the current
+Seifert shortcut enabled in its baseline. Reproduce it with
+`../fast/benchmark_braid.py`; raw data are in
+`../fast/results/braid_integration_20261007.json`.
 
 ## Historical experiment status (18 September 2026)
 

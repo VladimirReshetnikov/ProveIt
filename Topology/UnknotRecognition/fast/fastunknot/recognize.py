@@ -3,7 +3,9 @@
 Input is a validated classical one-component Diagram. The command-line loader
 performs that validation; constructing Diagram(pd) directly is a validity promise.
 
-The default first attempts a linear signed Seifert-graph certificate. When
+Checked source braids first use exact at-most-three-strand recognition or a
+Bennequin obstruction. The default then attempts a linear signed Seifert-graph
+certificate. When
 inconclusive, it follows the established pipeline: Reidemeister I/II reduction,
 descending test, visible connected-sum factorization, modular Alexander/Jones
 obstructions, optional exact Alexander, late Reidemeister III, and F2 Khovanov.
@@ -26,6 +28,7 @@ if TYPE_CHECKING:
     from typing import Any
 
 from .alexander import alexander_polynomial, evaluate, format_polynomial
+from .braid import braid_certificate
 from .diagram import Diagram
 from .factor import convolve, visible_factors
 from .filters import FilterLimit, alexander_obstruction, jones_obstruction
@@ -200,6 +203,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
 
 def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
               use_seifert: bool = True, backend: str = "standard",
+              use_braid: bool = True, braid_backend: str = "free-product",
+              use_braid_reduction: bool = True,
               euler_max_states: int | None = 4096,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
@@ -210,6 +215,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               race: int = 1, race_after: float = 1.0,
               factor_backend: str = "interlacement") -> Result:
     start = monotonic()
+    if braid_backend not in ("free-product", "matrix"):
+        raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
         raise ValueError("factor_backend must be interlacement or legacy")
     if backend not in ("standard", "shared", "saturated", "euler"):
@@ -227,6 +234,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
 
     try:
         check()
+        if use_braid and original.braid_source is not None:
+            strands, word = original.braid_source
+            witness = braid_certificate(strands, word, backend=braid_backend,
+                                        use_braid_reduction=False, check=check)
+            check()
+            evidence["braid"] = witness
+            if witness["status"] != "INCONCLUSIVE":
+                return Result(witness["status"], witness["method"], original.crossings,
+                              diagram.crossings, monotonic() - start, evidence)
         if use_seifert:
             certificate = seifert_certificate(diagram)
             check()
@@ -257,6 +273,19 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                 evidence["descending_start_dart"] = dart
                 return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
                               monotonic() - start, evidence)
+        # Endpoint descent may cost O(n*m), so the cheaper structural and
+        # diagram certificates get priority. The retained original source has
+        # the same closure as the diagram after its recorded reductions.
+        if (use_braid and use_braid_reduction and original.braid_source is not None
+                and original.braid_source[0] > 3):
+            strands, word = original.braid_source
+            witness = braid_certificate(strands, word, backend=braid_backend,
+                                        use_braid_reduction=True, check=check)
+            check()
+            evidence["braid"] = witness
+            if witness["status"] != "INCONCLUSIVE":
+                return Result(witness["status"], witness["method"], original.crossings,
+                              diagram.crossings, monotonic() - start, evidence)
         factors = [diagram]
         if use_factorization:
             check()

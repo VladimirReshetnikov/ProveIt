@@ -33,6 +33,10 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--no-braid", None, False, None, "disable source-braid certificates"),
+        ("--braid-backend", str, "free-product", ("free-product", "matrix"),
+         "exact decision backend for a source braid on at most three strands"),
+        ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
         ("--backend", str, "standard", ("standard", "shared", "saturated", "euler"),
          "Khovanov backend: standard, component sharing, saturated decision, or Euler bounds"),
@@ -165,6 +169,8 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_seifert=not args.no_seifert, backend=args.backend,
+                           use_braid=not args.no_braid, braid_backend=args.braid_backend,
+                           use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,

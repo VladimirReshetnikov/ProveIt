@@ -1,4 +1,4 @@
-# fastunknot 0.3.0: structural certificates and optional shared backends
+# fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
 This research continuation adds a linear signed Seifert-graph certificate before
 the established recognition pipeline and three optional Khovanov backends.
@@ -11,7 +11,27 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 98 passing tests.
+diagram is not checked twice. The integrated suite now has 116 passing tests.
+
+Report 08 adds complete recognition for checked source braids on at most three
+strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the
+pipeline uses a linear symbolic decision before the Seifert stage. The raw-word
+API `braid_certificate(strands, word)` avoids PD construction. For more strands,
+the initial stage supplies a writhe obstruction; optional checked endpoint
+destabilization runs after the cheaper diagram and structural tests.
+Use `--no-braid`, `--braid-backend matrix`, or `--no-braid-reduction` to control
+these stages (API: `use_braid`, `braid_backend`, `use_braid_reduction`). A PD-only
+input never acquires an unchecked source word. `to_json(preserve_braid=True)`
+explicitly retains provenance; default JSON stays PD. The specialization does
+not give a general quasi-polynomial algorithm.
+
+`benchmark_braid.py` measures fresh diagram construction plus recognition
+against the current Seifert-enabled pipeline with braid dispatch disabled.
+The local nine-round data in `results/braid_integration_20261007.json` show
+3.30–4.89× gains on five scrambled three-braid unknots with default RIII enabled,
+1.23–1.35× on positive three-braids, and 6.14× on the hard eight-crossing fixture.
+A 256-strand stabilization control is about 2.8% slower. Import/startup and JSON
+parsing are excluded; the script also records separate raw-word scaling.
 
 Report 09 adds checked Gauss-interlacement factorization as the default visible
 sum decomposition, with `connected_sum_factorization` certificate evidence.
@@ -557,3 +577,11 @@ default scanner: list storage, interned matchings, bucket-queue min-fill),
 `planar.py` (its integer geometry and compiled plans), `scan_reference.py` (the
 0.1 scanner, unchanged), `recognize.py` (pipeline), `__main__.py` (CLI).
 MIT-0, see the repository root.
+
+The default planar algebra also short-circuits typed identities and scalar
+squares over its square-free F2 ring. These identities agree with the original
+cobordism evaluator; they do not apply to arbitrary morphisms or matrix blocks.
+`benchmark_planar_shortcuts.py` records raw scan and separate scalar-kernel
+timings. Ordinary scans showed negligible timing impact because most identities
+are already removed by the scanner. The dense report 12 adapter remains opt-in
+research code; no default dense-engine switch has been made.
