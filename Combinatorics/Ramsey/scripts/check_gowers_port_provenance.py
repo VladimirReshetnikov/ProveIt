@@ -19,6 +19,16 @@ def require(condition, message):
         raise SystemExit(message)
 
 
+def section_theorem_source(source, name, namespace):
+    """Read one of the extract's two single-theorem namespace sections."""
+    marker = f'theorem {name} '
+    require(source.count(marker) == 1, f'Expected exactly one extracted theorem: {name}')
+    start = source.index(marker)
+    end = source.find(f'\nend {namespace}\n', start)
+    require(end >= 0, f'Missing namespace boundary for extracted theorem: {name}')
+    return source[start:end]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('upstream', type=Path, help='local openai/math repository root')
@@ -50,6 +60,16 @@ def main():
             if b'copyright' in line.lower():
                 require(line.strip() in local,
                         f'Missing original copyright notice: {path}')
+    lattice_path = Path('OAI/Combinatorics/Progressions/Lattices')
+    original = (upstream / lattice_path / 'NativeProperAffineRecovery.lean').read_text()
+    extract = (PORT / 'lean' / lattice_path / 'FreimanAffineBox.lean').read_text()
+    require('Modified for ProveIt' in extract and manifest['revision'] in extract,
+            'Missing pinned provenance or modification notice in the Freiman extract')
+    for name in ('exists_dense_cyclic_model_of_integer_vectors',
+                 'exists_bounded_affine_box_of_cyclic_model'):
+        require(section_theorem_source(extract, name, 'Erdos3.FreimanModel.ProveItExtract') ==
+                section_theorem_source(original, name, 'Erdos3.FreimanModel'),
+                f'Freiman extract differs from its pinned statement or proof body: {name}')
     for entry in manifest.get('mathlib_backports', []):
         path = Path(*entry['module'].split('.')).with_suffix('.lean')
         require(entry['copyright'] in (PORT / 'lean' / path).read_text(),
@@ -58,6 +78,7 @@ def main():
                 f'Missing recorded Mathlib license: {entry["license_file"]}')
     print(f'{len(manifest["modules"])} pinned upstream hashes match; '
           f'{modified} adapted files have modification notices.')
+    print('Both Freiman extract statements and proof bodies match the pinned originals.')
     print('Upstream license unchanged; pinned provenance and recorded copyright notices retained.')
     print('Separate Mathlib source hashes are recorded in the manifest, not checked by this command.')
 
