@@ -1,0 +1,178 @@
+\section{Local occurrence tables for overlap windows}
+\label{sec:lcs-windows}
+
+\subsection{A short query inside a long compressed word}
+
+The equal-bigram control in Section~\ref{sec:lcs-transitions} exposes a
+different source of unnecessary work. For
+\[
+ T=\mathtt{aabbccacbabc},\qquad
+ X=(ab)^NcT,\quad Y=(ab)^NaT,
+\]
+the exact longest common substring has length $2N$, but shared alphabets
+and directed pairs do not prove optimality. The fallback must examine
+grammar cuts. Some of its overlap queries compare a very long child
+against a short tail. The previous implementation built an occurrence
+table over the entire long child even though the query used only a short
+suffix of it. A profile at $N=2^{500}$ places almost all charged work in
+these table constructions and their local occurrence queries. Profiling
+times are diagnostic only and are excluded from the timing comparison.
+
+The correction is to localize the table's text operand as well as the
+query interval. This retains the exact algorithm and its complete
+fallback; it changes the grammar presented to each occurrence table.
+
+\subsection{Two exact restrictions and one coordinate translation}
+
+Write $\operatorname{OL}(U,V)$ for the positive lengths $k$ for which
+the suffix of $U$ of length $k$ equals the prefix of $V$ of length $k$.
+Set $m=\min(|U|,|V|)$. Then
+\[
+ \operatorname{OL}(U,V)
+ =\operatorname{OL}(U[|U|-m:|U|],V[0:m]).
+\]
+Every feasible overlap is at most $m$, so its two compared substrings
+are unchanged by these restrictions. The implementation first replaces
+the operands by these equal-length words. Cache keys retain the original
+root identities, while cached values remain overlap lengths and require
+no translation. If the restricted words are uniform, the existing exact
+uniform-word shortcut now applies even when the original roots were mixed.
+
+For a dyadic band $\ell\le k\le h$ with
+$h=\min(2\ell-1,m)$, let $P=V[0:\ell]$ and $Z=U[m-h:m]$ in the
+restricted coordinates. A candidate overlap of length $k$ has its seed
+starting at $m-k$ in $U$, or at $h-k$ in $Z$. Its entire seed lies in $Z$:
+\[
+ 0\le h-k\le h-\ell,\qquad (h-k)+\ell\le h.
+\]
+Consequently the occurrences of $P$ in $Z$ are in bijection with precisely
+the seed occurrences needed for this band. No occurrence from outside
+the suffix window can contribute an overlap in the band.
+
+The matcher therefore builds its arithmetic-progression table for $(P,Z)$
+and queries the interval $[0,h]$. For every returned progression of starts
+$(p,d,t)$ it uses
+\[
+ (p+m-h,d,t)
+\]
+in the existing periodic-extension test. Only the first start changes;
+step and multiplicity do not. The extension test still operates on the
+equal-length restricted operands and returns lengths $m-p'$. Thus both
+singleton verification and periodic-run departure comparisons have exactly
+the same coordinate meaning as before. The dyadic bands partition positive
+overlap lengths, so the resulting progressions remain disjoint and complete.
+
+\subsection{Cost and limits of the improvement}
+
+Occurrence-table construction now depends on the reachable grammars of
+the prefix seed and suffix window, rather than on all rules reachable
+from the original text. Slices reuse complete interior subtrees and create
+only boundary nodes. With grammar height $H$, the two initial restrictions
+and $O(\log m)$ dyadic windows create at most $O(H\log m)$ such nodes
+before accounting for reuse. This remains a polynomial local operation
+on a binary straight-line program. The usual word-operation statement
+must still be supplemented by polynomial costs for encoded integers.
+
+There is no universal claim that the new reachable grammar is smaller:
+boundary nodes and repeated slices can add work, and the largest band
+can contain the whole text. The full-overlap control below measures that
+case. All slices, tables, extension checks and cached progressions retain
+the shared work and memory limits. A resource exception is still an
+inconclusive search, never a negative knot verdict.
+
+On the specified equal-bigram binary-power family, the difficult overlap
+queries concern only constant-length tails. The new tables therefore
+have constant size even as the long prefix grows. Root-bound preparation
+and grammar navigation still depend on $\log N$. This family-specific
+improvement does not prove a bound on the number of relator moves,
+intermediate grammar size, or completeness of the group search. In
+particular it supplies neither a general subexponential recognizer nor
+a quasi-polynomial recognition theorem.
+
+\subsection{Validation and controlled measurements}
+
+The existing literal oracles cover 3844 binary overlap pairs, random
+signed parses, exact substring witnesses, periodic critical alignments,
+and complete cyclic overlap searches. Three additional tests check
+asymmetric periodic operands and empty boundaries, caller-root cache
+reuse, uniform overlaps surrounded by exponentially long irrelevant
+context, and the exact equal-bigram answer at $N=2^{500}$ under a
+20000-work allowance with expansion forbidden. The complete suite passes
+690 tests with Regina 7.4.1 in 153.084 seconds.
+
+\input{tables/lcs_windows_queries.tex}
+\input{tables/lcs_windows_kernels.tex}
+\input{tables/lcs_windows_operations.tex}
+
+For the equal-pair family, medians at $h=8$ fall from 7.249 milliseconds
+(7.053 A/A) to 2.174; at $h=32$ they fall from 70.293 (70.937 A/A) to
+2.487. At $h=500$ both archived controls exhaust the work allowance,
+whereas localization finishes in 7.893 milliseconds with 1034 arena
+nodes and 12609 charged work units. All three localized sizes use eight
+window queries and 162 cumulative table cells. These are actual completed
+exact LCS queries, not merely longer partial searches.
+
+The full-overlap control compares $(ab)^N$ with itself and asks for all
+positive overlap lengths, represented by arithmetic progressions. At
+$h=8$, localization takes 29.741 milliseconds versus 33.549 before and
+33.367 A/A, with work falling from 42506 to 37641 and nodes rising from
+103 to 108. At $h=32$ and $h=500$, every arm still exhausts the allowance.
+The localized $h=500$ run spends 2.639 seconds before exhaustion versus
+1.177 before, and creates 2120 nodes versus 503. This is a material limit
+of localization: it reaches expensive equality/periodic-extension work
+that the archived table construction never reaches at the same charged
+budget. The changed mix of operations has a higher wall-clock cost per
+charged unit. Neither run completes, so their times do not measure a
+completed-query slowdown or speedup. Future work must address that
+remaining bottleneck rather than extrapolate from short-tail queries.
+
+All full knot queries complete with identical certificate digests and
+zero calls to the changed fallback. The small-fourteen sum of medians
+is 215.475 milliseconds before, 215.870 A/A and 215.012 after; Gordian
+medians are 1.906, 1.983 and 1.918 seconds. The full relator operations
+also have identical traces between arms. At $h=500$, the equal-pair
+cyclic medians are 6.664, 6.586 and 6.629 milliseconds; successful
+quotient-search medians are 13.486, 13.291 and 13.532. These controls
+show no corresponding knot-corpus or relator-pipeline speedup. Timing
+variation is visible in A/A and should not be promoted to an algorithmic
+effect.
+
+The comparison uses the LCS class archived at \code{34f2689e9} inside
+the common current word arena, donor helpers, recognizer and certificate
+replayer. A/A repeats that archived class. Seed 3012 shuffles arm order
+in each round; each case has one excluded warmup and five measured rounds.
+The audit includes 225 full knot queries, 180 string queries and 135
+local relator operations. Full query timings include fresh PD construction
+and independent replay; certificate digests are compared outside the
+timer. String and relator timings include grammar construction. Local
+queries allow two million work units and 100000 nodes/table cells.
+Whole recognition allows 18 seconds, with 15 seconds and twenty million
+work units in its group stage. Censored runs are never used as completed
+runtime denominators.
+
+The cyclic equal-bigram operation is deliberately a separate control.
+Its doubled words have a common substring $T(ab)^N$ of length $2N+12$,
+so the existing cyclic algorithm already finds a useful checked move
+quickly. Applying it reduces the target to $c^{-1}a$, with total relator
+length $2N+15$. Faster exact linear queries should not be reported as a
+speedup for this already fast cyclic operation. All completed relator
+traces are checked for agreement between arms; these supplied abstract
+presentations are not knot-recognition verdicts.
+
+Raw samples are in \path{results/lcs_windows_20261008.json}, with the
+profile, test and build logs under \path{synthesis/data/lcs-window-*}.
+The synchronization brought in fifteen research archives. Static relevance
+triage inspected their overview material and scanned textual members,
+with archive hashes, member names and matches retained in
+\path{data/lcs-window-incoming-scan.json}. The new material concerns
+recurrence avoidance, special functions, affine partitions and probabilistic
+asymptotics. The affine-partition article uses perfect hash families to
+coordinate rainbow zero sets, but its parameter regime is fixed field
+size and growing numbers of coordinate arms; its scope statement explicitly
+excludes a faster unknot recognizer. Sparse-graph moment and tree-broadcast
+results concern probabilistic limits rather than the deterministic planar
+diagrams or compressed group words in this implementation. No reduction
+connecting these results to a useful exact recognition step was identified,
+so none was incorporated as a complexity premise. This was a relevance
+review, not an independent validation of those manuscripts' theorems.
+The suggested \code{openai/math} head remained \code{fd4aeeb2ee}.
