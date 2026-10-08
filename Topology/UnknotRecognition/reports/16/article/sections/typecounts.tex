@@ -1,0 +1,107 @@
+\subsection{A sharper bound for component-sharing types}
+\label{sec:types}
+
+The recovered grading also improves the finite-type estimate used by the
+earlier structural-compression report. This is an improvement to a
+sufficient parameter regime, beyond the faster composition kernel.
+
+For integers $m\geq0$ and $b\geq1$, let
+\[
+ B_m=\binom{m}{\floor{m/2}},\qquad M(2m)=(2m-1)!!,
+\]
+with $M(0)=1$. A homogeneous element of a $k$-circle coefficient space
+belongs to one of its $k+1$ dot-degree layers. Each layer has dimension
+at most $B_m$ for $k\leq m$. Hence the number of possible coefficients,
+including zero, is at most $H_m=(m+1)2^{B_m}$. This union bound
+intentionally overcounts zero.
+
+\begin{theorem}[Homogeneous component-type bound]
+\label{thm:types}
+At a fixed frontier of $2m$ labeled points, the number of serialized
+connected differential components with at most $b$ objects, homogeneous
+entries, and homological degrees normalized by their minimum is at most
+\begin{equation}
+ K(m,b)=\sum_{s=1}^{b}s^s M(2m)^s H_m^{s^2}.
+ \label{eq:types}
+\end{equation}
+Consequently
+\begin{equation}
+ \log K(m,b)=O\bigl(b^2 B_m+b m\log(m+1)+b\log(b+1)\bigr)
+ =O(b^2 B_m).
+ \label{eq:typecost}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a connected component of $s$ objects, every nonzero differential
+changes homological degree by one. An undirected path of at most $s-1$
+edges joins a minimum-degree vertex to any other vertex. The normalized
+degrees therefore lie in $\{0,\ldots,s-1\}$, giving at most $s^s$
+assignments. There are at most $M(2m)^s$ choices of matching labels. For
+each ordered pair of vertices, the homogeneous coefficient belongs to a
+set of at most $H_m$ possibilities. This gives $H_m^{s^2}$ choices.
+We have ignored the required degree difference, connectedness, and
+$d^2=0$, so the count is an upper bound. It already counts ordered
+serializations; no graph-isomorphism algorithm is assumed.
+
+Take logarithms and bound the sum by $b$ times its largest crude term.
+The estimates $\log M(2m)=O(m\log(m+1))$ and the definition of $H_m$
+give the first expression. Finally, $m\log(m+1)=O(B_m)$,
+$\log(m+1)=O(B_m)$, and $\log(b+1)=O(b)$ uniformly over nonnegative
+integers, with the finitely many small values absorbed into constants.
+This gives the second expression.
+\end{proof}
+
+The keys in the earlier component-sharing code do not store quantum
+shifts. This does not invalidate the count: Proposition~\ref{prop:grading}
+ensures that each observed coefficient is homogeneous. Forgetting a
+hidden grading cannot increase the number of structures compared with
+the set of possible graded structures. There is also a potentially
+tighter count that assigns normalized quantum shifts to vertices.
+Across a nonzero edge their difference is
+$m-k+2d\in[0,2m]$. In a connected $s$-vertex component their range is
+therefore at most $2m(s-1)$. Once both matching and quantum shifts are
+fixed, every ordered pair has a uniquely determined dot-degree layer.
+This yields the alternative upper bound
+\[
+ \sum_{s=1}^{b}s^s[2m(s-1)+1]^s M(2m)^s 2^{s^2 B_m}.
+\]
+Its leading exponent has the same order as~\eqref{eq:typecost}.
+
+\begin{corollary}[Improved sufficient regime for exact sharing]
+\label{cor:sharing}
+Consider the exact component-sharing scanner from report 07, using the
+present coefficient kernel. Suppose every reduced connected component
+encountered in an execution has at most $b$ objects and the frontier has
+at most $2m$ points. Then a sufficient condition for
+$n^{O(\log n)}$ time is
+\begin{equation}
+ b^2\binom{m}{\floor{m/2}}=O((\log(n+2))^2).
+ \label{eq:sharingregime}
+\end{equation}
+\end{corollary}
+\begin{proof}
+There are at most $K(m,b)$ stored component representatives, each with
+at most $b$ objects. Tensoring a representative with one crossing creates
+only a constant factor more objects before cancellation. Distinct parent
+summands stay independent under this operation, so the representation
+has polynomial size in $bK(m,b)$. Its homological-shift weights have
+degree $O(n)$ and coefficients of $O(n)$ bits: the full cube has at most
+exponentially many generators in $n$. Saturated decision weights are
+smaller still. The resource envelope is therefore polynomial in
+$n,b,K(m,b)$ times $\poly(m)2^m$. Insert
+Theorem~\ref{thm:types} and~\eqref{eq:sharingregime}.
+\end{proof}
+
+Since $B_m=\Theta(2^m/\sqrt{m+1})$, the sufficient leading term improves
+from $b^2 2^m$ in the generic ungraded type count to
+$b^2 2^m/\sqrt{m+1}$. For bounded $b$, put
+$L=\log_2(n+2)$ and $\ell=\log_2 L$. The corresponding frontier scale
+is enlarged from $w\leq4\ell+O(1)$ to
+\[
+ w\leq4\ell+\log_2\ell+O(1).
+\]
+The additive constant can depend on the chosen bound for $b$.
+This is a modest asymptotic refinement of the earlier regime. The
+unresolved task is still to prove useful bounds on actual connected
+component sizes for broad knot families. The archive does not claim a
+new benchmark of the report-07 scanner with every recent branch merged.

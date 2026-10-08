@@ -1,0 +1,1321 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem,listings,fancyhdr}
+\usepackage{xcolor,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Sharp Radical Bounds and Survivor-First Compression in Exact Unknot Recognition},
+ pdfauthor={Research contribution prepared for the ProveIt project}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\parskip}{0.3em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small ProveIt / Unknot Recognition}
+\fancyhead[R]{\small Radical transfer and exact survivor profiles}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\A}{\mathcal A}
+\newcommand{\C}{\mathcal C}
+\newcommand{\B}{\mathcal B}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rKh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,
+ breaklines=true,frame=single,framerule=0.3pt,showstringspaces=false}
+\title{\textbf{Sharp Radical Bounds and Survivor-First\\Compression in Exact Unknot Recognition}\\[0.6em]
+\large Finite homological perturbation, certified minimal models,\\
+and a parameterized route to quasi-polynomial complexity}
+\author{Research contribution prepared for the ProveIt project}
+\date{7 October 2026}
+\input{results_macros.tex}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a chain-level complement to the earlier twist and component-compression
+work in ProveIt's unknot-recognition program. For the characteristic-two arc
+category on $2k$ boundary points, we give an explicit proof of the sharp radical
+bound $J^{2k}=0\ne J^{2k-1}$ for $k\geq1$. The proof uses a dot derivative and a
+nested-matching witness. A central marked-dot splitting further identifies the
+algebra as $B\otimes\F[z]/(z^2)$, with radical index $2k-1$ for $B$.
+
+For any bounded complex in this category, the scalar residue predicts the exact
+multiplicity of every matching in every degree of a minimal representative:
+$\mu_{a,h}=m_{a,h}-r_{a,h}-r_{a,h-1}$. This yields both a cheap survivor oracle and
+a proof that changing pivot order cannot improve these final multiplicities for
+a fixed processed tangle. A finite perturbation formula constructs the remaining
+differential directly on the predicted survivors. Its maximum necessary
+correction order is $2k-2$, and we exhibit complexes attaining that order.
+The expensive composition count is output-sensitive in the survivor count,
+subject to explicit input-validation and certificate-cost qualifications.
+
+The package contains exact standard-library Python implementations, full
+homotopy-identity checks, an independently checked braid-scanning harness, and
+paired benchmarks. It checks 306 braid closures against a crossing-cube oracle
+and verifies 1,365 intermediate-stage contractions. On one alternating
+three-braid benchmark, the local transfer scanner is about $\BraidGain$ times faster
+than the included scalar-pivot baseline; other cases are slower. These are not
+benchmarks against the optimized upstream recognizer. The resulting complexity
+theorem is unconditional in boundary width and minimal survivor count, but no
+uniform quasi-polynomial bound for arbitrary knot diagrams is established.
+\end{abstract}
+\noindent\textbf{Status.} Complete written proofs of the algebraic and parameterized
+statements; executable exact-arithmetic checks; no Lean formalization, no
+first-in-literature priority claim, and no claim to have run the full upstream
+repository test suite.
+\newpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\newpage
+
+\section{Research objective, existing work, and precise scope}
+\label{sec:scope}
+The objective is an exact, practically useful unknot recognizer with an eventual
+worst-case running time $n^{O(\log n)}$, where $n$ measures an explicit diagram.
+There are two distinct questions. One asks how to reduce the cost of the exact
+Khovanov pipeline that already exists. The other asks for a global structural
+argument forcing a quasi-polynomial bound. A faster numerical kernel, a smaller
+intermediate complex on examples, and a global complexity theorem are different
+achievements. This report treats them separately.
+
+The inspected ProveIt subtree documents an exact but worst-case exponential
+implementation. Its scanner already includes bit-packed dotted cobordisms,
+compiled gluing plans, isomorphism cancellation, fill-sensitive pivot selection,
+and alternative scan orders \cite{proveit}. The earlier project contribution on
+twist compression replaces long local crossing blocks by smaller complexes;
+the component-compression contribution accelerates individual cobordism
+compositions and studies hierarchy restart counts \cite{twist,component}.
+We do not reclassify those existing improvements as results of this report.
+
+The present work addresses a different bottleneck: repeatedly performing
+cobordism-valued Schur updates before knowing how many objects will survive.
+It separates a differential into a readily processed scalar part and a nilpotent
+remainder. The scalar part determines the final minimal object counts exactly.
+The remainder can then be transferred to those objects in a uniformly bounded
+number of algebraic correction stages.
+
+\subsection{Connection with the two referenced repositories}
+The methodological connection to \code{openai/math} is its finite Artin-model
+construction in the section entitled ``Finite cochain models'' of the binary
+algebra manuscript \cite{mathrepo}. There, residual cohomology is lifted to a
+finite model using a nilpotent perturbation. We use the same general strategy,
+but none of that manuscript's arithmetic conclusions is an input to our proofs.
+The homological perturbation lemma itself is classical; an appropriate primary
+reference is Crainic \cite{crainic}. Our category has several nonisomorphic
+matching objects, rather than a single local coefficient ring, and its exact
+characteristic-two radical index supplies a concrete transfer bound.
+
+The original arc algebra and tangle formalism are due to Khovanov and Bar-Natan
+\cite{khovanov,bn05,bn07}. Minimal complexes over a nilpotent radical and the
+perturbation lemma are established algebraic tools. Our contribution is an
+explicit, independently proved specialization, its sharpness witnesses, its
+output-sensitive implementation, and its integration with the particular
+recognition pipeline. We have not established bibliographical priority for the
+sharp nilpotence statement or the marked splitting.
+
+\subsection{The two obstructions that remain}
+Even when the boundary is small, the number of copies of its matching objects
+can be large. This distinction is essential. Kelom\"aki--Sch\"utz prove
+exponential behavior for basis-expanding scanning on certain positive and
+alternating three-braid families, while also giving a different polynomial-time
+algorithm for three-braid Khovanov homology \cite{ks26}. Thus bounded strand
+number alone cannot justify a polynomial bound on an explicitly expanded
+minimal complex. Our survivor theorem makes this multiplicity obstruction
+visible before the expensive elimination phase.
+
+The separate hierarchy route also remains relevant. Lackenby's 2026 preprint
+explains in Section~9 that its algorithmic steps have not been specified
+precisely enough to estimate their running times \cite{lackenby}. This report
+neither supplies those missing geometric routines nor derives their complexity
+bounds from Khovanov calculations. Its quasi-polynomial consequence instead
+has an explicit boundary-and-survivor hypothesis.
+
+\section{The characteristic-two arc category and its intrinsic weight}
+\label{sec:arc}
+Fix $2k$ labeled points in a prescribed cyclic order. Let $\B_k$ be their set of
+noncrossing perfect matchings. Labels carry incidence information; changing their
+names does not change the algebra. For $a,b\in\B_k$, let $c(a,b)$ be the number
+of circles obtained by overlaying $a$ with the reflected matching $b$.
+Each circle alternates between arcs of the two matchings, with a coincident pair
+counted as a two-edge circle. In particular,
+\[
+ 1\leq c(a,b)\leq k\quad(k>0),\qquad c(a,b)=k\Longleftrightarrow a=b.
+\]
+
+We work over $\F$. After delooping, the dotted-cobordism morphism space is
+\begin{equation}\label{eq:hom}
+ \Hom(a,b)=\F[x_1,\ldots,x_{c(a,b)}]/(x_1^2,\ldots,x_{c(a,b)}^2)
+\end{equation}
+as a vector space, with its indicated monomial basis. For unequal endpoints
+this notation specifies the basis, not a multiplication internal to that Hom
+space. Composition is the usual saddle-gluing operation. The Frobenius algebra
+on a circle is
+\begin{equation}\label{eq:frob}
+ A=\F[x]/(x^2),\qquad
+ \Delta(1)=1\otimes x+x\otimes1,\qquad \Delta(x)=x\otimes x.
+\end{equation}
+A sphere without a dot is zero, a sphere with one dot is one, and positive-genus
+connected components evaluate to zero in this characteristic. These are precisely
+the numerical conventions used by the inspected composition routines.
+
+The additive category of finite direct sums of these matchings is denoted
+$\C_k$. Equivalently, use the finite-dimensional algebra
+\[
+ H_k=\bigoplus_{a,b\in\B_k}\Hom(a,b),
+\]
+with products zero when endpoints do not match. Our convention for $gf$ is
+``$g$ after $f$.'' Quantum shifts are forgotten, while homological degrees are
+retained. This is enough to compute total Khovanov ranks. The intrinsic weight
+below is an algebra grading; it is not the homological degree and is not a
+claim that all entries of an unshifted differential have the same weight.
+
+\begin{definition}[Intrinsic weight]
+For a basis monomial $x_S:a\to b$, define
+\begin{equation}\label{eq:weight}
+ \wt(x_S)=k-c(a,b)+2|S|.
+\end{equation}
+Let $J$ be the span of all positive-weight basis monomials in $H_k$.
+\end{definition}
+
+\begin{lemma}[Additivity of weight]\label{lem:weight}
+Every nonzero monomial in the product of homogeneous morphisms of weights
+$u$ and $v$ has weight $u+v$. All weights lie between $0$ and $2k$.
+The weight-zero space consists exactly of the scalar identities of the
+individual matchings.
+\end{lemma}
+\begin{proof}
+Consider basis inputs in $\Hom(a,b)$ and $\Hom(b,c)$, and put
+$p=c(a,b)$, $q=c(b,c)$, and $r=c(a,c)$. Glue the $p+q$ input discs along the
+$k$ middle arcs. If a component has positive genus, its contribution is zero,
+so suppose all surviving components have genus zero. Let $t$ be their number.
+The Euler characteristic gives
+\[
+ p+q-k=2t-r.
+\]
+A genus-zero component with $s$ output boundaries contributes $s-1$ output
+dots when it has no input dot, and $s$ output dots when it has one input dot.
+Two or more dots on that component give zero. Consequently a surviving output
+has $r-t+d$ dots, where $d$ is the total input dot count. Its weight is
+\[
+ k-r+2(r-t+d)=2k-p-q+2d,
+\]
+which is the sum of the input weights. In these arc compositions every component
+has output boundary; the same Euler accounting also accommodates any scalar
+sphere evaluation in a larger dotted-cobordism presentation.
+
+Nonnegativity follows from $c(a,b)\leq k$. The largest possible weight in a Hom
+space is $k+c(a,b)\leq2k$. Weight zero forces $c(a,b)=k$ and no dots, hence
+$a=b$ and the identity basis element.
+\end{proof}
+
+\begin{corollary}[Residue algebra]\label{cor:residue}
+The space $J$ is a nilpotent two-sided ideal, initially with the bound
+$J^{2k+1}=0$, and
+\begin{equation}\label{eq:quotient}
+ H_k/J\cong\prod_{a\in\B_k}\F.
+\end{equation}
+It is the Jacobson radical of $H_k$.
+\end{corollary}
+\begin{proof}
+The ideal and nilpotence assertions follow from weight additivity. The quotient
+is the weight-zero algebra. A nilpotent ideal is contained in the Jacobson
+radical, since $1-u$ has a finite geometric inverse for every element of that
+ideal, even after multiplication by an arbitrary algebra element. Conversely,
+a semisimple quotient has zero radical. Applying these two observations proves
+the final assertion.
+\end{proof}
+
+The projection in \cref{eq:quotient} is especially inexpensive: discard every
+entry between distinct matchings, and retain only the constant coefficient of
+an entry between equal matchings. In the repository's packed encoding this
+coefficient is the low bit. The nontrivial fact is that discarding the other
+entries respects composition; \cref{lem:weight} proves exactly this fact.
+
+\section{Dot differentiation and the sharp radical index}
+\label{sec:sharp}
+\subsection{A derivation in characteristic two}
+For a Hom-space monomial, define
+\begin{equation}\label{eq:derivative}
+ \partial(x_S)=\sum_{i\in S}x_{S\setminus\{i\}}.
+\end{equation}
+This definition is independent of the numbering of the overlay circles.
+It lowers weight by two and satisfies $\partial^2=0$.
+
+\begin{lemma}[Leibniz rule for arc composition]\label{lem:derivation}
+For composable morphisms $f,g$,
+\begin{equation}\label{eq:leibniz}
+ \partial(gf)=(\partial g)f+g(\partial f).
+\end{equation}
+\end{lemma}
+\begin{proof}
+On $A$, write $D(1)=0$ and $D(x)=1$. Multiplication obeys
+$D\mu=\mu(D\otimes1+1\otimes D)$. The only possibly misleading case is
+$x\otimes x$: the right side is $x+x=0$, as required. Similarly,
+\[
+ (D\otimes1+1\otimes D)\Delta(1)=0=\Delta D(1),
+\]
+whereas its value on $\Delta(x)$ is $1\otimes x+x\otimes1=\Delta D(x)$.
+Thus both elementary saddles commute with the total dot derivative on all their
+circle factors. Arc composition is a succession of these saddles, so the
+identity persists under composition. Before the saddles, the total derivative
+on the tensor product of the two input spaces is precisely the right side of
+\cref{eq:leibniz}. No assertion of derivative naturality for arbitrary cups or
+caps is needed here.
+\end{proof}
+
+\begin{theorem}[Sharp characteristic-two radical bound]\label{thm:nilpotence}
+For every $k\geq1$,
+\begin{equation}\label{eq:sharpnil}
+ J^{2k}=0\qquad\text{and}\qquad J^{2k-1}\ne0.
+\end{equation}
+The nilpotence index is therefore exactly $2k$. For $k=0$, $H_0=\F$ and $J=0$.
+\end{theorem}
+\begin{proof}[Upper bound]
+It is enough to consider products of homogeneous radical basis elements.
+A product of $2k$ such factors can survive the weight bound only if every factor
+has weight one and the output has weight $2k$. A weight-one monomial is
+undotted, so its derivative is zero. By \cref{lem:derivation}, the product has
+zero derivative.
+
+Weight $2k$ occurs only in a diagonal Hom space, where it is spanned by the
+fully dotted monomial $x_1\cdots x_k$. Its derivative is
+\[
+ \sum_{i=1}^k\prod_{j\ne i}x_j\ne0.
+\]
+Distinct summands are distinct basis monomials, including the single constant
+summand when $k=1$. Thus a nonzero weight-$2k$ output cannot have zero
+derivative. The proposed product vanishes. Linearity proves $J^{2k}=0$.
+\end{proof}
+
+\begin{proof}[Explicit sharpness witness]
+Number the endpoints $0,1,\ldots,2k-1$. For $0\leq j\leq k-1$, set
+\begin{equation}\label{eq:nested}
+ a_j=\{(0,2j+1)\}\cup\{(2s-1,2s):1\leq s\leq j\}
+       \cup\{(2s,2s+1):j+1\leq s\leq k-1\}.
+\end{equation}
+These are noncrossing matchings. Consecutive matchings differ by one saddle,
+and the undotted morphism between them has weight one. Follow the path
+\[
+ a_0\longrightarrow a_1\longrightarrow\cdots\longrightarrow a_{k-1}
+ \longrightarrow a_{k-2}\longrightarrow\cdots\longrightarrow a_0
+\]
+using undotted morphisms throughout. There are $2k-2$ factors.
+
+To evaluate the round trip, first note that the forward path merges one further
+circle at each step in $\Hom(a_0,a_j)$. Its value is the undotted basis element,
+since $\mu(1\otimes1)=1$. Reflection gives the analogous value for the reverse
+path. In their composite on the active $2j+2$ endpoints, the two input discs
+are glued along $j+1$ arcs and have $j+1$ output circles. Its Euler
+characteristic is $1-j$, hence its genus is zero. The resulting value is
+$\Delta^{(j)}(1)$, namely the sum of products of all but one of the $j+1$
+output variables. At $j=k-1$, the complete round trip is therefore
+\begin{equation}\label{eq:roundtrip}
+ \sum_{i=1}^k\prod_{j\ne i}x_j=\partial(x_1\cdots x_k).
+\end{equation}
+Multiplication by the endomorphism $x_1$ kills all but one of these summands and
+produces $x_1\cdots x_k\ne0$. This is a product of $2k-1$ radical factors.
+For $k=1$, the round trip has no factors and the final dot itself is the witness.
+\end{proof}
+
+\begin{remark}[Why the field matters]
+The argument uses $x+x=0$ in the saddle identities. A proof over another field
+must not silently reuse it. The elementary weight bound $2k+1$ is more general,
+but the improvement by one here is a characteristic-two assertion.
+\end{remark}
+
+\subsection{A central marked-dot splitting}
+Choose a boundary point $p$. For each matching, dot its arc incident to $p$;
+the sum of these endomorphisms is denoted $z$. Sliding that dot across any
+morphism shows that $z$ is central. Also $z^2=0$ and $\partial z=1$.
+Set $B_k=\ker\partial\subset H_k$.
+
+\begin{proposition}[Splitting off one square-zero variable]\label{prop:split}
+For $k\geq1$, $B_k$ is a subalgebra and multiplication gives an algebra
+isomorphism
+\begin{equation}\label{eq:split}
+ B_k\otimes_{\F}\F[z]/(z^2)\;\cong\;H_k.
+\end{equation}
+For any morphism $f$, its unique decomposition is
+\begin{equation}\label{eq:decompose}
+ f=f_0+zf_1,\qquad f_1=\partial f,\qquad f_0=f+z\partial f,
+ \qquad f_0,f_1\in B_k.
+\end{equation}
+Moreover, if $J_B=\rad B_k$, then
+\begin{equation}\label{eq:radicalsplit}
+ J^r=J_B^r\oplus zJ_B^{r-1}\quad(r\geq1),\qquad
+ J_B^{2k-1}=0\ne J_B^{2k-2}.
+\end{equation}
+For $k=1$, the last inequality reads $B_1\ne0$ and $J_B=0$.
+\end{proposition}
+\begin{proof}
+The Leibniz rule makes $B_k$ a subalgebra. Since
+$\partial(zf)=f+z\partial f$, both terms in \cref{eq:decompose} belong to
+$B_k$. This identity proves existence of the splitting. If $b_0+zb_1=0$ with
+$b_i\in B_k$, applying $\partial$ gives $b_1=0$ and hence $b_0=0$.
+Centrality and $z^2=0$ now prove the algebra isomorphism.
+
+The subalgebra $B_k$ is graded. It has no nonzero elements of weight $2k$ by the
+fully dotted diagonal calculation. Weight $2k-1$ can only occur when
+$c(a,b)=k-1$ and every overlay circle is dotted; for $k\geq2$ its derivative
+is again nonzero. When $k=1$, no weight-one space exists. Thus $B_k$ has
+maximum weight $2k-2$. Its positive-weight ideal is its radical by the same
+argument as \cref{cor:residue}, so $J_B^{2k-1}=0$. The undotted round trip
+in \cref{eq:roundtrip} belongs to $J_B^{2k-2}$ and is nonzero, proving
+sharpness. Finally $J=J_B\oplus zB_k$, and an $r$-fold product contains
+at most one $z$. Expanding products as subspaces gives
+\cref{eq:radicalsplit}.
+\end{proof}
+
+In each individual Hom space, the splitting halves the coefficient dimension.
+If the marked overlay circle is numbered zero, one may use
+$y_i=x_i+x_0$ for the other circles as a basis of $\ker\partial$; these
+variables also square to zero. This is a useful representation option, not a
+claim that the current Python code has already realized a factor-two memory
+saving. Its marked variant deliberately retains the original full encoding
+for independent identity checking.
+
+\section{The scalar residue predicts every minimal multiplicity}
+\label{sec:survivors}
+Let $(C,d)$ be a bounded complex in $\C_k$. Write
+\[
+ C^h=\bigoplus_{a\in\B_k}a^{\oplus m_{a,h}}.
+\]
+The scalar residue $\bar d$ is obtained by applying \cref{eq:quotient}
+entrywise. It is a complex of finite-dimensional vector spaces, separately for
+each matching. Let $r_{a,h}$ be the binary rank of
+$\bar d^h_a:\F^{m_{a,h}}\to\F^{m_{a,h+1}}$.
+
+\begin{definition}[Minimal complex]
+A complex in $\C_k$ is minimal if every differential entry belongs to $J$.
+Equivalently, its scalar residue differential is zero. This is the same stopping
+condition as exhausting all invertible entries between equal matchings.
+\end{definition}
+The equivalence follows because
+$\End(a)=\F[x_1,\ldots,x_k]/(x_i^2)$ is local: an element is a unit exactly
+when its constant coefficient is one. Distinct matching objects cannot be
+isomorphic, since their residues occupy different simple factors.
+
+\begin{theorem}[Exact survivor profile]\label{thm:survivors}
+Every minimal complex homotopy equivalent to $(C,d)$ has exactly
+\begin{equation}\label{eq:survivors}
+ \boxed{\ \mu_{a,h}=m_{a,h}-r_{a,h}-r_{a,h-1}\ }
+\end{equation}
+copies of matching $a$ in degree $h$. Such a minimal complex exists.
+Any homotopy equivalence between two minimal complexes is a chain isomorphism.
+\end{theorem}
+\begin{proof}
+Because the scalar projection is an algebra map, $\bar d^2=0$. Therefore the
+right side of \cref{eq:survivors} is precisely the dimension of the residue
+homology in that matching and degree, and is nonnegative.
+
+Existence follows either by successively cancelling unit entries, each of which
+removes two objects, or by the finite construction in \cref{sec:transfer}.
+Cancellation is a chain-homotopy equivalence, and termination leaves a radical
+differential. Reduce any homotopy equivalence between the original complex and
+a minimal one modulo $J$. It remains a homotopy equivalence of vector-space
+complexes, while the minimal target has zero differential. Its term dimensions
+must equal the residue homology dimensions, proving the formula.
+
+Now suppose $f$ is a homotopy equivalence between two minimal complexes.
+Modulo $J$ all differentials vanish, so a homotopy inverse is an actual inverse
+to $\bar f$ in every degree. The scalar matrix $\bar f$ is invertible within
+each matching block. Lift its inverse and factor $f$ as its scalar invertible
+part times $1+N$, where $N$ is a matrix over $J$. The matrix ideal has the
+same nilpotence bound as $J$, since each entry of a long enough matrix product
+is a sum of vanishing products of radical elements. A finite geometric series
+inverts $1+N$. Thus $f$ is invertible in every degree; its inverse is a chain
+map because $f$ was one.
+\end{proof}
+
+\subsection{Consequences for the existing cancellation strategy}
+For a fixed processed tangle, exact minimal multiplicities do not depend on the
+order of scalar-unit cancellations. Min-fill, LIFO, or another complete pivot
+strategy can change intermediate fill, coefficient density, and runtime, but
+not the final counts in \cref{eq:survivors}. This is a stronger statement than
+agreement of final closed homology ranks: it applies before closure, matching
+by matching and degree by degree.
+
+The formula is also a resource oracle. A caller can compute
+$R=\sum_{a,h}\mu_{a,h}$ before cobordism-valued Schur updates and decline an
+explicit representation whose minimal survivor count already exceeds a budget.
+That refusal is \emph{not a knot verdict}. In particular, a large partial-tangle
+profile does not imply that its eventual closure is nontrivial.
+
+The lower bound is representation-specific. It applies to finite direct sums of
+these matching objects up to chain homotopy. It does not rule out circuits,
+recurrences, macro complexes, compressed multiplicities, derived descriptions
+using different generators, or a decision procedure that avoids computing all
+Khovanov homology. This qualification is precisely where future
+quasi-polynomial progress may enter.
+
+\section{Finite transfer directly to the survivors}
+\label{sec:transfer}
+\subsection{Constructing the scalar contraction}
+Let $d_0$ be the scalar lift of $\bar d$: equal-matching constant coefficients
+are multiplied by the corresponding identity cobordisms, and other entries
+are zero. These scalar blocks form a split subalgebra, so $d_0^2=0$. Put
+\[
+ \delta=d-d_0=d+d_0.
+\]
+Every entry of $\delta$ belongs to $J$.
+
+Binary linear algebra decomposes each matching block of $(C,d_0)$ as homology
+plus contractible two-term pairs. Let $V$ denote the homology objects with the
+multiplicities \cref{eq:survivors}. Choose maps
+\[
+ i:V\to C,\qquad p:C\to V,\qquad h:C^h\to C^{h-1}
+\]
+whose entries are scalar identities and which satisfy
+\begin{equation}\label{eq:scalarcontraction}
+ pi=1,\quad d_0i=0,\quad pd_0=0,\quad
+ 1+ip=d_0h+hd_0,\quad h^2=hi=ph=0.
+\end{equation}
+One explicit construction chooses, in every degree, a basis $B$ of boundaries,
+a complement $H$ to $B$ in the cycles, and lifts $L$ of the next boundaries.
+In the basis $(B,H,L)$, let $i$ include $H$, let $p$ project to it, and let $h$
+map a boundary to its selected lift in the preceding degree. The implementation
+builds these bases with tracked binary column elimination.
+
+\begin{theorem}[Sharp finite transfer]\label{thm:transfer}
+For $k\geq1$, set
+\begin{align}
+ I&=\sum_{r=0}^{2k-1}(h\delta)^r i,&
+ P&=p\sum_{r=0}^{2k-1}(\delta h)^r,\label{eq:IP}\\
+ H&=\sum_{r=0}^{2k-1}(h\delta)^r h,&
+ D&=\sum_{r=0}^{2k-2}p\delta(h\delta)^r i.\label{eq:HD}
+\end{align}
+Then $(V,D)$ is minimal and the following identities hold:
+\begin{gather}\label{eq:certificate}
+ D^2=0,\quad dI=ID,\quad Pd=DP,\quad PI=1,\quad
+ 1+IP=dH+Hd,\\
+ H^2=0,\qquad HI=0,\qquad PH=0.\nonumber
+\end{gather}
+Consequently it is homotopy equivalent to $(C,d)$. For $k=0$, simply take
+$D=0$ and the scalar contraction.
+\end{theorem}
+\begin{proof}
+Matrices with entries in $J$ form a nilpotent ideal of index at most $2k$,
+independently of matrix size. Since $h$ is scalar, $h\delta$ and $\delta h$
+are in this ideal. Their geometric series therefore terminate as displayed.
+Each summand of $D$ has at least one radical factor, proving minimality.
+The omitted possible last summand has $2k$ radical factors and vanishes.
+
+For completeness, the algebra behind the perturbation step can be recorded
+without an infinite-series argument. Define
+\[
+ Q=\delta(1+h\delta)^{-1}=(1+\delta h)^{-1}\delta.
+\]
+Finite multiplication gives
+\[
+ Q=\delta+\delta hQ=\delta+Qh\delta,
+ \qquad d_0Q+Qd_0+QipQ=0.
+\]
+The last identity follows by substituting $ip=1+d_0h+hd_0$ and
+$d_0\delta+\delta d_0+\delta^2=0$, then multiplying by the two finite
+inverses. In these terms,
+\[
+ D=pQi,\quad I=i+hQi,\quad P=p+pQh,\quad H=h+hQh.
+\]
+For example,
+$D^2=p(QipQ)i=p(d_0Q+Qd_0)i=0$.
+Expanding $dI+ID$ and using the same three identities cancels all terms;
+the dual calculation gives $Pd+DP=0$. Expansion of $dH+Hd$ gives
+$1+IP$. The side conditions $h^2=hi=ph=0$ immediately imply
+$PI=1$, $H^2=0$, $HI=0$, and $PH=0$ from the displayed formulas.
+These are the finite special-deformation-retract formulas of the classical
+perturbation lemma \cite{crainic}, here justified by the explicit radical bound.
+\end{proof}
+
+\subsection{Why the stated correction depth cannot be reduced}
+\begin{proposition}[Sharp transfer order]\label{prop:sharptransfer}
+For each $k\geq1$, there is a two-term complex with $4k-2$ objects and exactly
+two residue survivors for which the first nonzero transferred-differential
+summand is
+\[
+ p\delta(h\delta)^{2k-2}i.
+\]
+Thus $2k-2$ is the best possible universal correction-order bound for this
+category.
+\end{proposition}
+\begin{proof}
+Take the $q=2k-1$ radical factors $f_1,\ldots,f_q$ in the sharpness witness
+of \cref{thm:nilpotence}, on a path of matching objects
+$a^{(0)},\ldots,a^{(q)}$. Place a survivor $U=a^{(0)}$ in degree zero and a
+survivor $V=a^{(q)}$ in degree one. For each internal path vertex add a
+contractible pair $B_j\xrightarrow{1}C_j$, with $B_j$ in degree zero and
+$C_j$ in degree one, both of matching type $a^{(j)}$.
+
+Let $d_0$ consist of these identity arrows. Define $\delta$ by
+\[
+ U\xrightarrow{f_1}C_1,\quad
+ B_1\xrightarrow{f_2}C_2,\quad\ldots,\quad
+ B_{q-1}\xrightarrow{f_q}V.
+\]
+All maps go from degree zero to degree one, so $d^2=0$ automatically.
+The scalar contraction sends $C_j$ back to $B_j$. The only route from $U$
+to $V$ in the transfer series uses all $q$ radical factors and $q-1$ copies of
+$h$. Its value is the nonzero fully dotted endomorphism. Every shorter route
+ends in a contractible target and is killed by $p$. The object count is
+$2+2(q-1)=4k-2$.
+\end{proof}
+
+This witness is an algebraic complex in the tangle category. We do not assert
+that every such witness is the scanner complex of a knot diagram. The theorem
+establishes sharpness for the algebraic transfer routine, not a topological
+worst-case lower bound for all recognizers.
+
+\subsection{A block-matrix pitfall}
+A scalar unit of $\End(a)$ is an involution over $\F$, since every element
+with zero constant term squares to zero. This existing scalar shortcut must
+not be used for matrices. In $\F[x,y]/(x^2,y^2)$, let
+\[
+ N=\begin{pmatrix}0&x\\y&0\end{pmatrix}.
+\]
+Then $N^2=xyI\ne0$ and $N^3=0$, so
+\[
+ (I+N)^{-1}=I+N+N^2\ne I+N.
+\]
+This example is included in the executable tests. When a full block inverse is
+needed, geometric doubling is valid: powers of the \emph{same} matrix commute,
+and
+\[
+ \prod_{j=0}^{s-1}(I+N^{2^j})=\sum_{r=0}^{2^s-1}N^r.
+\]
+Choose $2^s$ at least the nilpotence bound. No entrywise Frobenius rule for
+noncommuting matrix terms is being assumed.
+
+\subsection{Two-pass transfer using the marked splitting}
+\begin{proposition}[One final square-zero correction]\label{prop:twopass}
+Write a differential uniquely as
+\[
+ d=d_B+ze,\qquad d_B=d+z\partial d,\qquad e=\partial d,
+\]
+with entries of $d_B,e$ in $B_k$. Then
+$d_B^2=0$ and $d_Be+ed_B=0$. Suppose
+$(I_B,P_B,H_B)$ contracts $(C,d_B)$ to its minimal complex $(V,D_B)$.
+A minimal differential for $d$ is
+\begin{equation}\label{eq:twopass}
+ D=D_B+zP_BeI_B.
+\end{equation}
+The corresponding contraction is
+\begin{align*}
+ I&=I_B+zH_BeI_B,& P&=P_B+zP_BeH_B,\\
+ H&=H_B+zH_BeH_B.
+\end{align*}
+\end{proposition}
+\begin{proof}
+The direct sum decomposition $H_k=B_k\oplus zB_k$ and $z^2=0$ separate the
+two coefficients of $d^2$: they are $d_B^2$ and $d_Be+ed_B$.
+Apply the perturbation lemma a second time, now with perturbation $ze$.
+Every product containing two such perturbations vanishes because $z$ is
+central and $z^2=0$. Thus only the displayed correction remains.
+The scalar residues of $d$ and $d_B$ coincide, so their survivor objects
+coincide as well. Finally, $D_B$ is radical and the extra term is divisible by
+$z$, hence the final differential is minimal.
+\end{proof}
+
+The first pass may use the smaller radical index $2k-1$ in $B_k$. A practical
+reduced-basis implementation would need only half the coefficients in each
+nonzero Hom space. Our supplied two-pass variant is instead a proof-oriented
+full-encoding implementation; its 308 complete contraction checks are reported
+below, but it is not included in the speedup claims.
+
+
+\section{Output-sensitive cost and the quasi-polynomial parameter regime}
+\label{sec:cost}
+\subsection{Computational model and input qualifications}
+Let $M$ be the number of objects in a supplied complex before reduction, and
+let $R=\sum_{a,h}\mu_{a,h}$ be the exact survivor count. A morphism in a
+$2k$-point category has at most $2^k$ coefficients. Let $\A(k)$ bound the
+bit cost of composing or adding two such morphisms, including the required
+topological-plan work. Standard finite basis arithmetic gives
+\[
+ \A(k)=\poly(k)2^{O(k)}.
+\]
+This loose bound is enough for the asymptotic result. A compatible faster
+component-compression kernel can improve the exponential constant, but is not
+required for the proofs or the experiments here.
+
+All complexity statements charge for packed bit strings, not merely for
+unit-cost arithmetic on arbitrarily large Python integers. Index and endpoint
+bookkeeping contributes logarithmic factors in the explicit input size and
+$M$; we suppress these by $\widetilde O$. A complex is assumed either to be
+known valid from its construction or to have been separately checked.
+Verifying $d^2=0$ by generic dense multiplication can itself cost
+$\widetilde O(M^3\A(k))$. That cost must be added when requested.
+
+\begin{theorem}[Survivor-first construction cost]\label{thm:cost}
+On a valid input differential, a minimal differential and its inclusion map
+can be constructed in
+\begin{equation}\label{eq:cost}
+ \widetilde O\!\left(M^3+M^2(1+kR)\A(k)\right)
+\end{equation}
+bit operations. The $M^3$ term is scalar binary linear algebra. The expensive
+cobordism-composition count in the transfer phase is $O((k+1)M^2R)$.
+A complete explicit contraction, including its $M\times M$ homotopy, can
+instead be produced and checked within
+\begin{equation}\label{eq:certificatecost}
+ \widetilde O\!\left(M^3+(k+1)M^3\A(k)\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Build the scalar residue, compute its ranks, and construct the $(B,H,L)$ bases
+from \cref{sec:transfer}. Dense binary elimination and basis inversion cost
+$O(M^3)$ bit operations conservatively, after summing over the matching-degree
+blocks. Reading and forming the radical coefficient arrays is covered by
+$\widetilde O(M^2\A(k))$.
+
+To construct $I$, start with the $M\times R$ scalar matrix $i$ and iterate
+\begin{equation}\label{eq:iteration}
+ T_0=i,\qquad T_{r+1}=h(\delta T_r),\qquad I=\sum_rT_r.
+\end{equation}
+Do not form the $M\times M$ matrix $h\delta$ first. Each application of
+$\delta$ to $T_r$ uses at most $M^2R$ morphism compositions. Applying the
+scalar matrix $h$ only sums coefficients, with no new surface composition.
+There are at most $2k-1$ noninitial stages. Finally compute $D=p\delta I$.
+This proves \cref{eq:cost}; its extra input term also covers the case $R=0$.
+When $k=0$, the radical remainder is zero, so the construction is purely scalar.
+
+For $P$, the analogous row iteration uses at most $O(kM^2R)$ compositions.
+Constructing $H$ explicitly involves $M$ columns rather than $R$, giving the
+$O(kM^3)$ bound. Each of the finitely many certificate identities can be
+checked by generic matrix multiplication in $O(M^3\A(k))$ time. This proves
+\cref{eq:certificatecost}.
+\end{proof}
+
+There are three distinct modes. The profile oracle performs only the binary
+rank calculation. The production transfer path can skip generic input-square
+verification when validity follows from the crossing construction. The
+proof-oriented path computes a full contraction and checks it. The code's
+\code{transfer(..., validate=False)} implements the second mode; its safer
+standalone default validates the input. The output-sensitive bound must not be
+advertised for that default without adding its validation cost.
+
+Working coefficient matrices require $O(M^2 2^k)$ bits for the input and
+$O(MR2^k+R^2 2^k)$ bits for transfer columns and output, in addition to scalar
+basis data and index storage. This is an accounting of matrix payloads, not a
+tight bound on the shipped Python process: its geometry caches and object
+headers are additional. Discarding or bounding caches preserves the time bound.
+A conservative overall space bound is the stated time bound. A production
+memory claim should separately account for cache policy and representation
+metadata.
+
+\subsection{A comparison with scalar-unit cancellation}
+Generic dense cancellation can require $O((M-R)M^2)$ cobordism-valued Schur
+updates. The transfer construction replaces this coarse count by
+$O(kM^2R)$ expensive compositions for $k>0$, plus binary work. The promising
+regime is therefore large cancellation, small $R$, and relatively expensive
+morphism arithmetic. There is no theorem saying it wins on every sparse
+instance: a good pivot sequence may make almost no fill, whereas scalar basis
+changes can be dense. An adaptive implementation should retain both paths.
+
+If the radical remainder has minimum positive intrinsic weight $s>1$, then a
+product of more than $\lfloor2k/s\rfloor$ such factors vanishes already by
+weight. This yields a further safe truncation of \cref{eq:iteration}; endpoint
+weights can refine it more. The supplied main implementation uses the uniform
+sharp bound and early termination on a zero iterate. Weight-aware truncation
+is an additional implementation opportunity, not part of the reported timings.
+
+\subsection{A complete parameterized recognition theorem}
+Let $N\geq2$ be the explicit input size, including strands when a braid is
+supplied. Consider a \emph{valid supplied arc-category scan}: every interface
+is modeled by some $\C_{k_t}$, and the crossing order and local attachments
+are specified, not found by an uncharged search. Braid scanning in
+\cref{sec:braid} is one concrete instance. Define
+\begin{equation}\label{eq:parameters}
+ k_* = \max_t k_t,\qquad
+ R_* = \max\bigl(1,\text{number of objects after minimal reduction at stage }t\bigr).
+\end{equation}
+
+\begin{lemma}[Constant local expansion]\label{lem:expansion}
+Attaching one crossing to a circle-free matching creates at most two new closed
+circles in either smoothing. Consequently the number of objects immediately
+before the next elimination is at most eight times the preceding survivor
+count. For the braid attachment used in the harness, the bound is three times.
+\end{lemma}
+\begin{proof}
+Every new closed circle must contain at least one of the two newly attached
+smoothing arcs, since the old object has no closed circles. There are at most
+two such circles. Delooping $c$ circles produces $2^c\leq4$ copies in each
+of the two smoothings, for a total of at most eight. In a braid attachment the
+identity smoothing creates no circle, and the turnback smoothing creates at
+most one, giving $1+2=3$.
+\end{proof}
+
+\begin{theorem}[Parameterized recognition bound]\label{thm:qp}
+For a one-component diagram with a valid supplied scan as above, crossing
+attachment, survivor-first reduction, and exact closure give an exact unknot
+recognition algorithm. There is a fixed polynomial $p$ for which its running
+time is bounded by
+\begin{equation}\label{eq:scanbound}
+ T\leq p(N,k_*)\,2^{O(k_*)}R_*^3.
+\end{equation}
+The constants do not depend on the input. In particular,
+\begin{align}
+ k_*+\log_2(R_*+1)&=O(\log N)
+       &&\Longrightarrow\quad T=N^{O(1)},\label{eq:polyregime}\\
+ k_*+\log_2(R_*+1)&=O((\log N)^2)
+       &&\Longrightarrow\quad T=N^{O(\log N)}.\label{eq:qpregime}
+\end{align}
+\end{theorem}
+\begin{proof}
+At each stage, \cref{lem:expansion} gives $M\leq8R_*$. Local crossing maps
+can be assembled with $\poly(N,k_*)2^{O(k_*)}R_*^2$ work by finite-basis
+arithmetic. Apply \cref{thm:cost}, or even its full-certificate bound, at each
+of at most polynomially many elementary stages. Starting with the identity or
+empty matching, the same expansion bound ensures $\log R_*=\poly(N)$,
+so suppressed index costs are absorbed in $p$. The resulting cost is bounded
+as in \cref{eq:scanbound}.
+
+A scan that ends with empty boundary already has a vector-space complex.
+For an open braid scan, closing a matching $a$ by the fixed crossingless
+closure $e$ yields $c(e,a)\leq k_*$ circles, so the explicit closed complex
+has at most $2^{k_*}R_*$ basis vectors. Binary Gaussian elimination costs at
+most the cube of this number, still within \cref{eq:scanbound}. Correctness
+follows from local chain-homotopy equivalence and the rank criterion proved
+in \cref{lem:detect} below. Taking logarithms of the bound gives both
+parameter-regime consequences.
+\end{proof}
+
+\paragraph{What this theorem does not charge for, and does not prove.}
+It does not search over all crossing orders or supply a topological proof that
+an arbitrary knot admits a scan satisfying \cref{eq:qpregime}. The profile is
+an exact diagnostic once a stage differential has been constructed; it is not
+an independently available succinct certificate for the entire input. Thus
+\cref{thm:qp} is an unconditional parameterized theorem and a conditional
+route to a \emph{uniform} quasi-polynomial algorithm. The latter structural
+step remains open in this work.
+
+\section{An exact braid-scanning validation harness}
+\label{sec:braid}
+The package includes a small complete algebraic harness to exercise the new
+reduction on genuine tangle complexes. It is deliberately separate from the
+optimized upstream \code{FastScan} representation.
+
+Start with the identity matching between the top and bottom endpoints of a
+$b$-strand braid. For each braid generator attach its two-resolution complex
+at the relevant bottom endpoints, deloop any new circle, and reduce using
+either the transfer routine or an independent scalar-pivot baseline.
+Positive and negative generators use opposite choices of the two smoothings;
+the final homological degrees are shifted by the negative-crossing count.
+The geometry of the crossing and delooping plans is adapted from the inspected
+repository \code{geometry.py} and \code{algebra.py}. Static composition uses
+a previously archived numerical excerpt of \code{planar.py}.
+
+For closure, use the representable functor
+\[
+ \Hom(e,-):\C_b\longrightarrow\text{finite-dimensional }\F\text{-vector spaces},
+\]
+where $e$ pairs each final bottom endpoint with its original top endpoint.
+A basis for $\Hom(e,a)$ consists of dot monomials on the closed smoothing
+circles, and a differential $f:a\to a'$ acts by $g\mapsto fg$.
+This is the ordinary Frobenius evaluation of that crossingless closure.
+As an additive functor it preserves every chain-homotopy identity, so reducing
+the open complex before closing does not change the resulting homology.
+
+\begin{lemma}[The rank criterion used for knots]\label{lem:detect}
+For a knot $K$,
+\[
+ K\text{ is the unknot}\quad\Longleftrightarrow\quad
+ \dim_{\F}\Kh(K;\F)=2
+ \quad\Longleftrightarrow\quad\dim_{\F}\rKh(K;\F)=1.
+\]
+\end{lemma}
+\begin{proof}
+Here is the characteristic-two relationship between the reduced and unreduced
+complexes. On each closed smoothing take the total dot derivative
+$\partial$; by the saddle calculation in \cref{lem:derivation} it commutes
+with the Khovanov differential. Let $X$ be multiplication by a dot on a chosen
+marked component. It is also a chain map, $X^2=0$, and
+$\partial X+X\partial=1$. Hence the unreduced complex splits into two
+isomorphic copies of $\ker\partial$, one multiplied by $X$, and the reduced
+complex can be identified with $\operatorname{im}X=X\ker\partial$.
+For homological-degree counts, the two copies therefore have equal homology.
+Quantum shifts, which differ between the copies, are irrelevant here.
+
+The unknot has reduced integral Khovanov homology $\mathbb Z$. Conversely,
+mod-two reduced rank one forces rational reduced rank at most one by the
+universal coefficient theorem. Rational reduced Khovanov homology of a knot
+has positive rank: its graded Euler characteristic is the normalized Jones
+polynomial, whose value at its normalization point is one. Its rational rank
+is therefore one. The unknot-detection theorem of Kronheimer--Mrowka then
+implies that $K$ is the unknot \cite{km}.
+\end{proof}
+
+For links, the harness still computes unreduced homology, but the lemma is not
+used to make a knot verdict. A recognition wrapper must first check that the
+input has one component. For a braid closure this is the cycle count of the
+braid permutation. No resource limit or partial profile is substituted for
+that topological check or for a completed homology computation.
+
+\section{Reproducible computations and performance measurements}
+\label{sec:experiments}
+All reported calculations use exact integers and binary arithmetic. The Python
+standard library is sufficient; no floating-point arithmetic enters a theorem
+check, a rank, or a differential. Floating-point values below are wall-clock
+measurements only. Timings were obtained in this container with CPython 3.13.5;
+the full version and platform string, individual repetitions, and operation
+counts are recorded in \code{results/benchmark.json}.
+
+\subsection{Algebra, minimality, and homotopy certificates}
+The following checks were completed in this session.
+\begin{center}\small
+\begin{tabular}{p{0.67\linewidth}r}
+\toprule
+Check & Count\\\midrule
+Exhaustive basis-monomial products for $1\leq k\leq3$ & 2,244\\
+Leibniz and homogeneous-weight checks on those products & 2,244 each\\
+Nonzero maximal radical words, $1\leq k\leq12$ & 12\\
+Sharp-depth full transfer certificates, $1\leq k\leq8$ & 8\\
+Random conjugated-complex full transfer certificates & 500\\
+Independent scalar-pivot minimal-profile comparisons & 500\\
+Marked two-pass full contraction certificates & 308\\
+Unit-test methods, including invalid input and matrix pitfall & 18\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 500 random complexes start with a sum of contractible pairs and a minimal
+residual block, then undergo degree-preserving invertible elementary basis
+changes. Thus validity is built into their construction, not guessed from a
+random matrix. The verifier nevertheless checks the square of the differential,
+the square of the transferred differential, both chain-map identities, $PI=1$,
+the homotopy identity, and all three side conditions. The last check confirms
+that the output differential has zero scalar residue.
+
+For additional finite evidence, the script computes the entire radical-power
+filtration for $k\leq4$ by linear spans of products. Here the first entry is
+$\dim H_k$, followed by $\dim J,\dim J^2,\ldots$:
+\begin{center}\small
+\begin{tabular}{cl}
+\toprule
+$k$ & Dimensions of successive radical powers, including $J^0=H_k$\\\midrule
+1 & $2,\ 1,\ 0$\\
+2 & $12,\ 10,\ 6,\ 2,\ 0$\\
+3 & $104,\ 99,\ 82,\ 52,\ 22,\ 5,\ 0$\\
+4 & $1092,\ 1078,\ 1008,\ 826,\ 546,\ 266,\ 84,\ 14,\ 0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These data agree with the sharp index, but the proof of
+\cref{thm:nilpotence} is independent of finite testing. Similarly, the tested
+sharp transfer depths $0,2,4,\ldots,14$ are not the basis of the general
+sharpness proof.
+
+\subsection{Independent closed-braid comparisons}
+The braid test set consists of six explicit examples and 100 seeded random
+words for each of two, three, and four strands. Random words have between
+zero and nine crossings; the fixed seed is \code{202610072}. The total is
+306 closures, including both knots and links. For each case, both the local
+pivot scanner and the transfer scanner are compared degree by degree against
+an independent reduced crossing-cube implementation from the prior twist
+package. The expected unreduced profile is twice the reduced profile, by the
+chain splitting used in \cref{lem:detect}.
+
+All comparisons passed. The transfer scanner also produced and verified a full
+contraction at every nonempty stage: 1,365 stage certificates in total. The two
+scanners agreed on every intermediate survivor count. Familiar calibration
+cases include the one-strand unknot with unreduced rank two, the closure of
+$\sigma_1^3$ with rank six, and the closure of
+$(\sigma_1\sigma_2^{-1})^2$ with rank ten.
+
+The independence is limited and explicitly documented. The crossing-cube
+oracle assembles smoothing graphs and differential matrices independently and
+does not use the arc-transfer formulas. However, the static arc-composition
+excerpt and the crossing-plan conventions originate in the same project as
+the target scanner. We have not run the full upstream scanner, Rust port, or
+their complete regression suites in this environment.
+
+\subsection{Paired timings with favorable and unfavorable cases}
+Each timing is the median of five repetitions. Method order alternates, and
+geometry caches are fresh for each timed run. For fixed-complex tests, input
+construction and validation are outside the measured reduction. For braid
+scans, the two methods share the same local geometry harness; generic
+input-square validation and full certificate construction are disabled during
+timing for both. Exact output checks are performed separately. A ratio above
+one means transfer is faster than the included pivot baseline.
+
+\input{benchmark_fixed.tex}
+On these five fixed complexes the profile oracle alone took approximately
+$\ProfileLow$--$\ProfileHigh$ milliseconds. This is a particularly safe
+integration target: it is inexpensive relative to either full reduction path
+and gives an exact answer about minimal multiplicities.
+
+\input{benchmark_braids.tex}
+For the braid table, $M$ and $R$ are maxima across the scan. The last word is
+\[
+ (\sigma_1\sigma_2\sigma_1\sigma_2^{-1}\sigma_1^{-1}\sigma_2^{-1})^4
+ \sigma_1\sigma_2.
+\]
+The bracketed word is trivial by the braid relation, and the final closure is
+an unknot. Its test result is rank two. It is a useful warning against selecting
+only nontrivial knots or only dense algebraic matrices as performance evidence.
+
+These measurements support an adaptive design, not unconditional replacement.
+The favorable alternating example has genuine tangle multiplicity growth; the
+sparse sharpness witness and several simple braids favor scalar cancellation.
+Moreover, an upstream recognition pipeline would reject many of the displayed
+nontrivial knots using cheaper filters, before reaching Khovanov homology.
+The measurements therefore do \emph{not} establish a full-recognizer speedup or
+a speedup over the optimized upstream \code{FastScan}. Millisecond timings also
+have ordinary platform noise; all individual repetitions are retained so these
+ratios can be re-evaluated rather than treated as asymptotic evidence.
+
+\section{Integration strategy and correctness boundaries}
+\label{sec:integration}
+The proposed destination is a new subtree such as
+\path{Topology/UnknotRecognition/research/radical_transfer/}.
+No current defaults should change solely on the basis of this report.
+
+The lowest-risk first step is the non-mutating survivor oracle. The included
+adapter accepts the audited bit-valued reference \code{ScanComplex} interface,
+not the distinct optimized \code{FastScan} layout. It reads matching types,
+homological degrees, and equal-matching low bits. It neither composes
+cobordisms nor rewrites the upstream object graph. A stage instrumented before
+and after existing elimination should have exactly the predicted number of
+survivors. The adapter has a mock-interface test but has not been run against
+a complete upstream checkout; that remains an integration check.
+
+The second step is an opt-in transfer backend with a tested conversion between
+matching IDs, circle-basis ordering, and sparse differential matrices. A full
+contraction verifier should be enabled on small development cases. The third
+step is paired profiling on inputs that actually reach the backend after the
+existing filters, including hard unknots and negative controls. Only those
+measurements can justify an adaptive production default.
+
+\paragraph{Preserve the differential, not merely the counts.}
+The profile formula does not say that the radical remainder can be discarded.
+An output with the correct objects and the zero differential will generally be
+wrong. The finite transfer terms are essential; \cref{prop:sharptransfer}
+exhibits a surviving map that appears only at the maximum allowed order.
+
+\paragraph{Preserve scope when interpreting a lower bound.}
+Pivot-order invariance concerns the same processed tangle and the same category.
+Different scan orders give different prefixes. Twist compression and more
+succinct objects change the representation. Neither is contradicted by the
+minimality theorem.
+
+\paragraph{Preserve budget and input semantics.}
+A negative predicted multiplicity signals an invalid residue complex or an
+implementation error, not a knot property. A survivor ceiling produces a
+resource outcome, never ``knotted.'' A rank criterion is applied only to a
+completed calculation and a verified one-component input. The simple Python
+harness has no certified production memory ceiling; its cache and allocation
+behavior must not be advertised as one.
+
+\paragraph{Keep the verification claims at their actual level.}
+Written proofs establish the stated algebraic theorems. Exact computations
+check finite instances and implementation identities. They are not a Lean
+formalization, an independent proof of every topological convention in a large
+codebase, or a certificate that the unrestricted asymptotic goal has been met.
+The archive includes seeds, raw timing repetitions, source identifiers, and a
+reproduction script to make further review concrete.
+
+\section{Further research questions and specific proof targets}
+\label{sec:questions}
+\begin{question}[A cheaply enumerable family of favorable unknot models]
+Can one construct, in quasi-polynomial time, a quasi-polynomial-sized family of
+verified diagram transformations and scan orders such that every unknot input
+has at least one member satisfying \cref{eq:qpregime}? The transformations
+must preserve the represented knot, and their encoding and execution costs
+must be included. Merely knowing that a favorable presentation exists is not
+enough.
+\end{question}
+This target can be weaker than controlling the profile of every knot and every
+scan. A precise sufficient condition is useful:
+\begin{proposition}[A one-sided model-cover criterion]\label{prop:cover}
+Suppose an algorithm constructs and verifies, in $N^{O(\log N)}$ time,
+at most $N^{O(\log N)}$ equivalent
+scan inputs, each of size at most $N^{O(\log N)}$. Suppose a fixed bound
+$T_0(N)=N^{O(\log N)}$ guarantees that, whenever the original input is the
+unknot, at least one of the resulting exact recognizer runs finishes within
+$T_0(N)$. Then bounded simulation of these runs decides unknot recognition in
+$N^{O(\log N)}$ time.
+\end{proposition}
+\begin{proof}
+Run each recognizer for $T_0(N)$ steps. Accept if any completed run identifies
+the unknot. Equivalent-input verification and exactness make acceptance sound.
+If none accepts, the stated covering guarantee rules out an unknot input.
+The product of the family-size bound and the per-run bound remains
+$N^{O(\log N)}$. Timed-out individual runs are not assigned verdicts; the
+negative conclusion uses the global covering theorem.
+\end{proof}
+The proposition does not provide the required cover. Its purpose is to specify
+an exact topological/combinatorial target without incorrectly demanding that
+all nontrivial knots have small Khovanov complexes.
+
+\begin{question}[Succinct minimal models beyond explicit multiplicities]
+Can the degree-indexed matching multiplicities and radical differentials be
+stored by circuits or recurrences whose size is quasi-polynomial even when
+$R_*$ is exponential? A useful representation must support crossing attachment,
+composition, finite transfer, closure, and exact rank-one testing within proved
+bit costs. Integer-encoding of a large multiplicity alone does not provide the
+corresponding differential or a fast rank algorithm.
+\end{question}
+The three-braid distinction between exponentially large Betti numbers and
+polynomial computation in a more structured description \cite{ks26} is a
+concrete reason to pursue this direction. The exact survivor theorem identifies
+what cannot be removed by ordinary pivoting, and therefore what must be
+represented more succinctly.
+
+\begin{question}[A practical reduced-basis marked backend]
+Implement the algebra $B_k$ in its $2^{c(a,b)-1}$-dimensional Hom bases and
+combine it with \cref{prop:twopass}. Can its compositions be evaluated directly
+through the earlier component kernel, without lifting to the full dot basis?
+Measure coefficient density and conversion costs, not just the nominal
+factor-two dimension reduction. Prove that the selected marked point is
+transported correctly through all local interfaces.
+\end{question}
+
+\begin{question}[A sharper support-dependent nilpotence bound]
+The universal correction order is sharp, but most measured complexes use only
+a small part of the arc algebra. Can one compute a smaller nilpotence bound for
+the ideal generated by the actual entries of $\delta$, or for the operator
+$h\delta$ on the survivor columns, without doing the transfer first? Intrinsic
+weights give one inexpensive bound; radical-layer coordinates and forbidden
+matching transitions may improve it.
+\end{question}
+
+\begin{question}[Transfer-compatible twist and separator macros]
+Combine twist-normal-form complexes from the earlier package with this
+survivor-first reduction. What contracts must a macro expose for its inclusion,
+projection, and homotopy to remain compatible with subsequent gluing?
+For separator-based recursion, bound both boundary width and minimal
+multiplicity. A small number of geometric matching types by itself does not
+control the number of copies of those types.
+\end{question}
+
+\begin{question}[Adaptive reduction with a provable safety envelope]
+Can cheap predictors based on $(M,R,k)$, scalar rank density, and observed
+composition cost select transfer or scalar cancellation reliably? A full-run
+interleaving of two exact backends gives the usual constant-factor simulation
+bound relative to the faster run when preemption overhead is bounded. Local
+stage-by-stage switching is subtler: different minimal bases can alter the
+cost of future stages even when their object profiles coincide. Establish the
+appropriate claim rather than assuming local optimality implies global
+optimality.
+\end{question}
+
+\begin{question}[Proof-carrying profile and contraction certificates]
+Design serialized binary-rank and transfer certificates whose verification
+avoids trusting the elimination implementation. The scalar contraction
+identities already certify the predicted object counts, and
+\cref{eq:certificate} certifies the transferred complex. Can certificates be
+shared across many stages, with explicit bit-size bounds and without expanding
+all homotopy matrices? A compressed certificate requires a correspondingly
+proved verifier, not just a smaller file.
+\end{question}
+
+\begin{question}[Formalization of the characteristic-two core]
+Formalize the finite matching category, the dot derivation, weight additivity,
+and the sharp radical bound in Lean. A reusable second layer should prove
+finite homological perturbation in an additive category with a nilpotent ideal.
+The repository-specific interface can then instantiate these abstractions.
+Checking $d^2=0$ is necessary but does not establish that a generated complex
+represents the intended knot; local tangle equivalences remain part of the
+formalization target.
+\end{question}
+
+\begin{question}[Which abstract sharpness witnesses occur topologically?]
+The zigzag witnesses attain correction order $2k-2$ in the algebraic category.
+Determine which can occur as subcomplexes or retracts of genuine knot-tangle
+complexes. A topological restriction excluding the worst algebraic witnesses
+could justify a better scanner-specific bound; a realizability construction
+would rule out that particular improvement. Neither conclusion follows from
+the finite algebra tests alone.
+\end{question}
+
+\begin{question}[A decision-specific interface invariant]
+Can a smaller invariant than the full minimal complex decide whether an
+arbitrary future closure has reduced Khovanov rank one, perhaps for a restricted
+family of closure contexts? Universal composition summaries already face
+strong dimensional constraints. A decision-only summary may be smaller, but
+its closure domain and exactness must be stated, and positive and negative
+answers must both be justified.
+\end{question}
+
+\begin{question}[Separating algebraic and hierarchy complexity]
+The hierarchy program needs compressed cutting, controlled encodings, and
+quantitative bounds on its geometric routines. Can the present exact rank and
+nilpotence diagnostics serve as auxiliary verifiers or local cost estimates
+without replacing those missing topological arguments? Any synthesis should
+state a complete dependency graph and charge for every conversion between a
+hierarchy description and an algebraic tangle description.
+\end{question}
+
+\section{Conclusion}
+The practical improvement is a change in the order of work: determine the exact
+minimal object profile with binary algebra first, then transfer the expensive
+radical differential directly to those survivors. The accompanying structural
+result is the sharp characteristic-two radical index $2k$, together with its
+marked splitting and the sharp transfer order $2k-2$. These bounds are
+independent of matrix multiplicity; that is precisely why they are useful for
+large blocks of repeated matching objects.
+
+The measurements support keeping both reduction strategies. They also support
+integrating the survivor oracle before making more invasive changes. The
+remaining global obstacle is no longer hidden inside an elimination heuristic:
+it is the need to control, avoid, or succinctly represent the exact minimal
+multiplicities and to find suitable presentations within a proved time bound.
+The report supplies a parameterized theorem and a concrete model-cover target,
+not an unrestricted quasi-polynomial recognizer.
+
+\appendix
+\section{A six-object example where the last correction is essential}
+For $k=2$, let $a=(01)(23)$ and $b=(03)(12)$. Let
+$f:a\to b$ and $g:b\to a$ be the undotted morphisms. Their composite is
+$gf=x_1+x_2$ in $\End(a)$. Take degree-zero objects $(U,B_1,B_2)$ of types
+$(a,b,a)$ and degree-one objects $(C_1,C_2,V)$ of types $(b,a,a)$, with
+\[
+ d=\begin{pmatrix}
+ f&1&0\\
+ 0&g&1\\
+ 0&0&x_1
+ \end{pmatrix}.
+\]
+The scalar residue consists only of the two identity pivots. Its survivors are
+$U$ and $V$. The degree-zero and degree-one labels are different copies even
+when they have the same matching type.
+
+The direct term $p\delta i$ vanishes. The one-homotopy term
+$p\delta h\delta i$ also vanishes because it ends at $C_2$. The last allowed
+term is
+\[
+ p\delta h\delta h\delta i=x_1gf=x_1(x_1+x_2)=x_1x_2\ne0.
+\]
+Thus replacing the original complex by two isolated objects would be wrong,
+even though it would have the correct minimal object profile. The exact
+transferred differential is the fully dotted map between them.
+
+\section{Source audit and reproducibility map}
+\label{app:audit}
+The following Git object identifiers specify the inspected upstream versions.
+A hash identifies content; it is not a correctness certificate or an assertion
+that an entire checkout was tested.
+\begin{center}\footnotesize
+\begin{tabular}{p{0.39\linewidth}p{0.55\linewidth}}
+\toprule
+Inspected source & Git object identifier\\\midrule
+ProveIt \code{fast/} subtree & \code{b99a666269f660d932fc82ac8d1f29d3ae42231f}\\
+\code{fastunknot/scan.py} & \code{4acff3cb5ffb4c4ad226a8bf6dcda3d8dc0bb561}\\
+\code{fastunknot/algebra.py} & \code{d6d28604ac39c29145aa52f91074539a5aeac949}\\
+\code{fastunknot/geometry.py} & \code{96acc160dbf2df7981b2db98b602311712a01531}\\
+\code{fastunknot/planar.py} excerpt provenance & \code{1078526e7e7dbaf0b7267728105d870d94136769}\\
+\code{openai/math} binary-algebra section & \code{29714bb7882fd989f987423540541957d8be6200}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The archive is organized as follows.
+\begin{center}\small
+\begin{tabular}{p{0.37\linewidth}p{0.57\linewidth}}
+\toprule
+Path & Role\\\midrule
+\code{article/article.tex}, \code{article.pdf} & Complete source and compiled report\\
+\code{code/radical.py} & Exact residue, contraction, transfer, marked variant, pivot baseline\\
+\code{code/braid_scan.py} & Crossing-attachment and closure validation harness\\
+\code{vendor/reference_planar.py} & Attributed static numerical composition excerpt\\
+\code{vendor/reference_cube.py} & Independent reduced crossing-cube oracle from prior package\\
+\code{tests/} & Unit tests and deterministic complex fixtures\\
+\code{experiments/} & Algebra, braid, marked-variant, and paired timing scripts\\
+\code{results/} & Completed-run data and logs\\
+\code{integration/} & Non-mutating reference-interface adapter and deployment notes\\
+\code{PROVENANCE.json}, \code{CLAIMS.md} & Source identity and exact claim boundaries\\
+\code{SHA256SUMS} & Hash manifest of delivered files\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The recommended reproduction commands are
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+python experiments/validate_algebra.py
+python experiments/validate_braids.py
+python experiments/validate_marked.py
+python experiments/benchmark.py
+python experiments/make_tables.py
+cd article
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{lstlisting}
+The benchmark script records fresh timings, which naturally need not reproduce
+identical milliseconds. The table generator keeps the numerical tables and
+summary macros consistent with the recorded benchmark file. The SHA-256
+manifest covers the delivered snapshot; a local rerun changes outputs and
+therefore requires a new manifest to describe that new snapshot.
+
+\begin{thebibliography}{99}
+\bibitem{khovanov}
+M. Khovanov, \emph{A functor-valued invariant of tangles}, Algebraic \& Geometric
+Topology \textbf{2} (2002), 665--741.
+\url{https://doi.org/10.2140/agt.2002.2.665}.
+\bibitem{bn05}
+D. Bar-Natan, \emph{Khovanov's homology for tangles and cobordisms}, Geometry \&
+Topology \textbf{9} (2005), 1443--1499.
+\url{https://doi.org/10.2140/gt.2005.9.1443}.
+\bibitem{bn07}
+D. Bar-Natan, \emph{Fast Khovanov homology computations}, Journal of Knot Theory
+and Its Ramifications \textbf{16} (2007), 243--255.
+\url{https://doi.org/10.1142/S0218216507005294}.
+\bibitem{crainic}
+M. Crainic, \emph{On the perturbation lemma, and deformations},
+arXiv:math/0403266v1 (2004), especially Sections~2.2--2.4 and 3.2.
+\url{https://arxiv.org/abs/math/0403266}.
+\bibitem{km}
+P. B. Kronheimer and T. S. Mrowka, \emph{Khovanov homology is an unknot-detector},
+Publications Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208.
+\url{https://doi.org/10.1007/s10240-010-0030-y}.
+\bibitem{ks26}
+T. Kelom\"aki and D. Sch\"utz, \emph{On computational complexity of Khovanov
+homology}, arXiv:2601.02119v1 (2026), especially Theorems~1.2 and 1.3.
+\url{https://arxiv.org/abs/2601.02119}.
+\bibitem{lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1 (2026), Section~9.
+\url{https://arxiv.org/abs/2607.23350}.
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository sources
+inspected 7 October 2026. Specific content identifiers appear in
+\cref{app:audit} and the artifact provenance file.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Topology/UnknotRecognition}.
+\bibitem{mathrepo}
+OpenAI, \emph{Mathematical manuscripts and supporting proof artifacts},
+\code{openai/math}. The inspected methodological source is
+\emph{Goldfeld's analytic density conjecture and the 2-converse for elliptic
+curves}, binary-algebra section, subsection ``Finite cochain models,''
+September 2026. No arithmetic theorem from that manuscript is used here.
+\url{https://github.com/openai/math}.
+\bibitem{twist}
+ProveIt research contribution, \emph{Twist-Compressed Khovanov Recognition: Explicit complexity bounds,
+exact cost certificates, and a tested route toward quasi-polynomial time}, 7 October 2026. Prior project artifact
+\code{unknot_twist_research_bundle.zip}; exact source artifact and hashes are
+recorded in \code{PROVENANCE.json}. Used for context and the independent
+crossing-cube validation oracle.
+\bibitem{component}
+ProveIt research contribution, \emph{Component Compression and Restart Entropy
+in Exact Unknot Recognition}, 7 October 2026. Prior project artifact
+\code{unknot_component_entropy_20261007.zip}; exact source artifact and hashes
+are recorded in \code{PROVENANCE.json}. Used for context and the attributed
+static composition excerpt.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,140 @@
+\section{Results, scope, and the verified starting point}
+\label{sec:scope}
+
+\subsection{The question this continuation answers}
+The ProveIt project asks for an exact recognizer whose running time approaches
+\begin{equation}\label{eq:target}
+ T(n)=n^{O(\log n)}=2^{O((\log n)^2)}
+\end{equation}
+on an explicitly given classical knot diagram with $n$ crossings. The existing
+implementation is complete without resource limits, but its worst-case bound
+is exponential. This article develops a specific way of discarding algebraic
+information that is irrelevant to the final decision, and a verified way of
+exposing direct summands that were hidden by the current choice of basis.
+
+The strongest new statement is an observation theorem. Suppose a genuine
+direct summand of the open complex has one crossingless matching $M$ in every
+degree and one fixed nonzero nilpotent coefficient $\theta$ in every nonzero
+differential entry. First put its scalar coefficient matrices into interval
+form. Then, \emph{for the unreduced rank-two unknot decision}, every interval
+of length at least two may be replaced by an interval of length two. This
+preserves the final total rank capped at three under every remaining crossing
+sequence and closure. The replacement is generally not a chain homotopy
+equivalence. Its safety follows from a proved property of every allowed
+continuation, rather than from agreement on a finite test collection.
+
+The same observation gives an explicit complexity theorem. At a stage whose
+residual components all have the stated form, the number of stored objects
+after decision compression is bounded solely in terms of the frontier size.
+If such stages occur frequently enough, the entire scanner has a
+quasi-polynomial bound. The missing universal assertion is now a concrete
+structural condition on the intervening residual complexes.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}Y>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\toprule
+Contribution & Guarantee & Status\\
+\midrule
+Interval normalization & Exact chain isomorphism for common-nilpotent direct
+summands, with interval counts computed by binary rank invariants & Proved and implemented\\
+Length-two decision model & Same completed rank capped at three for every
+ordinary Khovanov continuation & Proved and implemented; exact ranks excluded\\
+Scalar Fitting splitting & Every accepted split is an exact chain isomorphism,
+with complete transformed cross terms checked & Implemented with bounded search\\
+Checkpoint complexity & Explicit $2^{O((\log n)^2)}$ sufficient condition in
+frontier size and distance between suitable stages & Proved conditional bound\\
+Window order optimization & Exact optimum for a chosen window, with a
+nonincreasing global combinatorial objective & Proved and implemented\\
+General quasi-polynomial recognizer & Bound~\eqref{eq:target} on every input & Not established\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Repository and artifact provenance}
+The inspected ProveIt revision~\cite{proveit} is \pin. Its
+\code{Topology/UnknotRecognition/fast} tree has Git identifier
+\nolinkurl{b99a666269f660d932fc82ac8d1f29d3ae42231f}.
+All forty source, test, example, and configuration files in the preceding
+package's unchanged reference directory were independently hashed as Git
+blobs and matched to this current tree. Thus the starting implementation is
+grounded in repository bytes, rather than a reconstruction from a conversation
+summary. The package records both Git blob identifiers and SHA-256 hashes.
+
+The immediate development base is the separately delivered
+\emph{Unknot Recognition by Structural Certificates and Compressed Chain
+Complexes}, version 0.3.0~\cite{prior}. That package adds signed Seifert-graph
+certificates, literal component sharing, multiplicity saturation, and optional
+suffix-Euler lower bounds. Those additions are retained in the supplied
+version 0.4.0. They are not contributions of the present article.
+
+A concurrent continuation investigated faster factorization, sparse
+Alexander calculations, pointed homology, and a three-braid recognizer. The
+present package is based on the inspected repository plus the structural
+0.3.0 package; it does not claim that the independent branch has been merged
+or jointly tested. The two supplied patches distinguish an incremental update
+from 0.3.0 and a cumulative update from the pinned repository tree. This makes
+the integration boundary explicit.
+
+\subsection{Relation to the two linked research repositories}
+We also inspected the \code{openai/math} repository at
+\nolinkurl{adc7f1241b42e322a6451854ab7e4b4c146bf78a}. Its catalogue does not
+provide a ready-made replacement for the knot recognizer. One nearby theme is
+family 116, concerning finite matrix observations of bounded noncommutative
+formulas. Its formalization scope distinguishes a division-free hitting
+property from separately asserted construction and dimension bounds
+\cite{openaimath}. The useful methodological connection is to prove which
+finite observations suffice before compressing an algebraic object.
+
+No identity-testing theorem is imported as a Khovanov rank algorithm. A
+small formula, a small chain model, and a method for evaluating homology rank
+are different inputs. Our continuation theorem explicitly proves the needed
+observation property in the dual-number setting, where the relevant derived
+category can be classified. That is the substantive bridge to the broader
+compressed-algebra theme.
+
+\subsection{Current primary literature and the size of the target}
+Lackenby's 2021 lecture material announces
+$2^{O((\log n)^3)}=n^{O((\log n)^2)}$ time~\cite{lackenbytalk}. This is
+quasi-polynomial, but differs from the stronger target~\eqref{eq:target} used
+in this project. His July 2026 preprint gives a new hierarchy algorithm and
+efficient certification results. Section 9 expressly treats an iteration
+bound separately from an implementation time bound; Proposition 9.1 gives
+$L(g+1)^L$ iterations in its hierarchy parameters~\cite{lackenby2026}.
+The sources inspected do not supply an end-to-end quasi-polynomial
+implementation of the geometric route. This article advances the existing
+algebraic scanner.
+
+A particularly relevant obstruction is the 2026 work of Kelom\"aki and
+Sch\"utz. Their Theorem 1.2 proves exponential behavior of the explicit
+Bar-Natan scanning and divide-and-conquer algorithms even on positive or
+alternating three-braids. Their separate special-purpose result computes
+three-braid homology in polynomial time~\cite{kelomaki}. Thus a bound on
+boundary matching types alone cannot control the number of basis objects or
+the differential data between them. Both multiplicity compression and
+compression within a single connected component matter.
+
+The classical inputs here are the tangle construction and local cobordism
+relations~\cite{khovanov,barnatan}, type-$A$ interval decomposition
+\cite{carlsson}, and the derived classification over the dual numbers
+\cite{keller}. We give proofs of the algebraic statements actually used.
+We make no literature-wide priority claim for barcode decomposition, Fitting
+decomposition, or the classification itself. The contribution is their
+specific continuation quotient, verified implementation, and quantified
+application to this recognizer.
+
+\subsection{Encoding and validation conventions}
+The input is an explicitly listed planar-diagram code, or a braid/grid
+description converted to such a code. Public command-line input is validated
+as a one-component classical spherical diagram. The low-level scanner APIs
+retain the inherited validity promise. An empty diagram denotes one
+crossing-free circle, with unreduced rank two. Normalized edge labels require
+$O(n\log(n+2))$ input bits. Arbitrarily long supplied labels also incur their
+reading and normalization cost.
+
+All new algebra is over $\F$. The scanner forgets quantum degree and retains
+raw cube homological degree in exact-rank mode. In decision mode, uniform
+homological shifts and then interval lengths may be discarded only for the
+proved total-rank observation. The distinction is reflected in separate
+return schemas: \code{rank} and \code{by\_degree} are exact, whereas
+\code{rank\_capped} records only a threshold result. A resource limit produces
+\UNKNOWN, never a mathematical verdict inferred from an unfinished scan.
