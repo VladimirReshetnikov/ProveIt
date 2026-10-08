@@ -1,0 +1,255 @@
+\section{Exact Potts filters and independent component tensors}
+\label{sec:potts-integration}
+
+Report 17 contributes an optional scalar obstruction before the complete
+homology fallback. The integrated selectors are \code{potts5},
+\code{potts-exact}, and \code{potts-exact-factorized}; the existing
+\code{matching} Jones backend remains the default. These selectors are
+independent of the Khovanov backend and of adaptive cancellation.
+Potts representations of Jones evaluations and width-sensitive contraction
+are established techniques, including the tensor implementation of
+Meichanetzidis--Kourtis \cite{potts-tensor} and Maria's parameterized analysis
+of quantum invariants \cite{quantum-width}. The contribution here is the
+audited implementation, exact coefficient representation, component factoring,
+and explicit resource and fallback contracts.
+
+\subsection{Normalization without approximate algebraic numbers}
+Let $D$ be a nonempty validated plane knot diagram, $G$ either checkerboard
+Tait multigraph, $v$ its number of vertices, and $r$ the diagram writhe.
+Loops and parallel edges are retained. At crossing $e$, let
+$\epsilon_e\in\{1,-1\}$ be the bracket exponent of the smoothing that
+omits its Tait edge; put $s=\sum_e\epsilon_e$.
+A subset $S$ of included edges produces
+\[
+ c(S)=2k(S)-v+|S|
+\]
+smoothing circles. Indeed a regular neighborhood of the spanning plane
+subgraph has Euler characteristic $v-|S|=2k(S)-c(S)$, including its isolated
+vertices. With $\delta=-A^2-A^{-2}$ and the full bracket of one circle equal
+to $\delta$, expansion of the smoothing sum gives
+\[
+ B_D(A)=\delta^{-v}A^s
+ \sum_{S\subseteq E}(\delta^2)^{k(S)}
+       \prod_{e\in S}\delta A^{-2\epsilon_e}.
+\]
+At the integer specialization $q=\delta^2$, expanding a spin product shows
+that the sum is a partition function: each selected edge requires equal
+endpoint colors, so the assignments constant on $(V,S)$ number $q^{k(S)}$.
+Writing $x=A^4$ gives
+\[
+ q=x+2+x^{-1},\qquad
+ Z_G=\sum_{\sigma:V\to[q]}\prod_{e=uv}
+ \begin{cases}-x^{-\epsilon_e},&\sigma(u)=\sigma(v),\\
+               1,&\sigma(u)\ne\sigma(v).
+ \end{cases}
+\]
+
+The normalized Jones polynomial is $V_D(A^{-4})=B_D(A)/
+\bigl(\delta(-A^3)^r\bigr)$. Substitution of
+$\delta=-(x+1)A^{-2}$ yields
+\begin{equation}\label{eq:potts-normalization}
+ V_D(x^{-1})=(-1)^{r+v+1}x^h\frac{Z_G}{(x+1)^{v+1}},
+ \qquad h=\frac{s-3r+2(v+1)}4.
+\end{equation}
+For a knot, $h$ is an integer. The residue modulo four of
+$s_\sigma-3r+2(c_\sigma-1)$ is unchanged by a smoothing flip.
+In the Seifert state $s_\sigma=r$ and $c_\sigma-1\equiv r\pmod2$;
+in the all-omitted state $c_\sigma=v$, giving the assertion.
+Thus the exact obstruction compares $Z_G$ with
+\[
+ Z_U=(-1)^{r+v+1}x^{-h}(x+1)^{v+1}.
+\]
+No fourth root or division by $x+1$ is computed. The crossing-free knot
+is handled separately with $Z_G=Z_U=q$.
+
+For every integer $q\ge5$, work in
+$R_q=\mathbb Z[x]/(x^2-(q-2)x+1)$.
+The discriminant lies strictly between $(q-3)^2$ and $(q-2)^2$, so this
+polynomial is irreducible and each element has a unique integer pair
+$(a,b)$ representing $a+bx$. Here $x^{-1}=q-2-x$ and
+\[
+ (a,b)(c,d)=(ac-bd,\ ad+bc+(q-2)bd).
+\]
+Multiplication by an equal-spin edge uses just additions and multiplication
+by $q-2$:
+\[
+ -x^{-1}(a,b)=(-(q-2)a-b,a),\qquad
+ -x(a,b)=(b,-a-(q-2)b).
+\]
+Partition inequality therefore certifies a nontrivial Jones value exactly.
+Partition equality is inconclusive. The exact implementations default to
+$q=6$, whose roots are $2\pm\sqrt3$; no numerical embedding is chosen.
+Witness pairs are serialized as signed hexadecimal strings, avoiding
+Python's limit on conversion of very large integers to decimal strings.
+
+\subsection{A half-frontier bound for every supplied crossing order}
+At a cut in the crossing order, let $w_i$ count shadow edges joining a
+processed crossing to an unprocessed one. A Tait vertex is active when it
+is incident to both processed and unprocessed edges; write $f_i$ for their
+number. Traverse the cyclic boundary walk of an active selected-color face.
+The processed/unprocessed marks change at least twice. Each change traverses
+a cut shadow edge. A cut edge has just one side of the selected color and
+can be charged to just that face. Hence
+\begin{equation}\label{eq:potts-half-frontier}
+ 2f_i\le w_i.
+\end{equation}
+This argument allows repeated vertices and edges in face walks, and does
+not require a common-disk ordering or a Catalan matching hypothesis.
+
+The single-table algorithm introduces a spin at its first incident edge,
+applies the edge weight, and forgets spins at their last incident edge.
+Its key records the equality pattern of active colors, canonically naming
+classes in first-occurrence order. Coefficients aggregate \emph{all} labeled
+assignments in an orbit. An introduced spin can join any existing class
+with multiplicity one, or create a new class with multiplicity $q-k$ when
+$k$ classes already occur. Restriction and recanonicalization implement
+forgetting. There are at most $q^{f_i}$ keys; an edge introduces at most
+two extra vertices. At fixed $q$, the work is
+\[
+ \operatorname{poly}(n,w)\,q^{w/2},\qquad w=\max_i w_i,
+\]
+including polynomial bit arithmetic. To justify the latter, each coefficient
+after $i$ edges and $I$ introduced vertices is a sum of at most $q^I$
+assignments with pair norm bounded by $(q-1)^i$. Therefore its bit length
+is $O(n\log q)$, since $v\le n+1$. The normalization pair also has that
+bit bound. This is a scalar-query bound, not a bound on full homology.
+
+\subsection{Independent processed components and exact orbit division}
+The factored implementation keeps one tensor for each connected component
+of processed Tait edges. A vertex forgotten from the frontier does not
+erase interactions through it. Consequently this decomposition follows
+processed connectivity, not connectivity of just the active vertices.
+Relative color equalities between two components become relevant only when
+an edge joins them. A closed component contributes a scalar factor.
+
+For a pattern using $k$ colors, write $(q)_k=q(q-1)\cdots(q-k+1)$.
+Its aggregate coefficient $C$ is $(q)_k$ times its per-assignment value,
+because simultaneous color permutation preserves the partial partition sum.
+When joining patterns with $k$ and $\ell$ classes, enumerate partial
+bijections between their classes. An alignment with $K\le q$ total classes
+has pre-edge aggregate coefficient
+\begin{equation}\label{eq:potts-orbit-merge}
+ \frac{C_L}{(q)_k}\frac{C_R}{(q)_\ell}(q)_K.
+\end{equation}
+The integer coordinates of each division must have zero remainder; the code
+checks this before multiplying pairs. The operation is exact integer
+division, not division in a finite field or a numerical approximation.
+Each combined equality pattern determines its two restrictions and alignment
+uniquely, proving that the merge neither loses nor duplicates assignments.
+
+There are at most $q!$ relative alignments per pair of keys. Let $g$ be the
+largest number of active vertices in any one processed component after an
+edge. Only the current edge's endpoints can be forgotten at that step,
+so a merged component has at most $g+2$ vertices before forgetting. Thus
+the Cartesian product of its two input key sets is bounded by $q^{g+2}$,
+not merely by the weaker $q^{2g}$. The resulting bound is
+\[
+ \operatorname{poly}(n,g)\,q!\,q^{g+2}
+\]
+coefficient and key work, with $O(nq^g)$ logical keys and polynomial
+coefficient lengths. Here $g\le\max_i f_i\le w/2$.
+The extra alignment work can dominate when factoring saves few states.
+
+\subsection{A specialization collision that changing primes cannot repair}
+Report 17 analyzes $W_m=\widehat{(\sigma_1\sigma_2^{-1})^m}$.
+It is a knot exactly when $3\nmid m$. Its three-braid Jones trace identity
+gives, at $t+t^{-1}=q-2$,
+\[
+ V_{W_m}(t)=q-2+T_m,\quad
+ T_0=2,\quad T_1=3-q,\quad T_{m+1}=(3-q)T_m-T_{m-1}.
+\]
+At $q=5$ this is $3+2(-1)^m$, equal to one for every odd $m$.
+In particular the nontrivial members with odd $m\ge5$ are missed even in
+characteristic zero. Changing primes or using the conjugate root preserves
+this equality. For $q\ge6$, set $a=q-3\ge3$ and
+$U_m=(-1)^mT_m$. Then $U_0=2$, $U_1=a$,
+$U_2=a^2-2>a$, and the recurrence proves strict increase thereafter.
+Thus $a+1+(-1)^mU_m\ne1$ for every $m\ge2$.
+For example, $V_{W_5}=-119$ at $q=6$.
+This proves detection for this family only. The existing short-braid stage
+already decides these inputs when their source braid is available.
+
+\subsection{Integration, budgets, and validation}
+The optional filter runs in the same place as the existing matching Jones
+filter and reuses its crossing order. A mismatch returns \code{KNOTTED};
+equality or local state/transition exhaustion continues the existing
+Alexander, simplification, window, and complete homology stages.
+The global cooperative deadline still returns \code{UNKNOWN}.
+\code{--jones-backend} selects the filter in recognition, while
+\code{jones --backend} selects a standalone query.
+The standalone query now exits 3 with an inconclusive result when its
+resource limit is reached: a nonempty error dictionary is never interpreted
+as an obstruction. Invalid options exit 2.
+
+State limits count represented keys. Inputs and a replacement table can
+coexist during a merge, and normalized lists and alignment caches consume
+additional memory, so this is not a resident-memory limit. Transition
+limits count actual orbit updates, including relative alignments.
+At fixed $q\le6$ the alignment cache has finitely many bounded entries;
+larger color counts use lazy alignment generation.
+The factored wrapper additionally checks the global deadline after final
+normalization. The archived source remains unchanged.
+
+The archived suite passed 172 tests; the first integrated checkpoint passed
+315 tests. The retained independent full-smoothing oracle constructs Laurent
+Jones polynomials without Tait graphs or production ring multiplication.
+It checked 248 diagrams and 30,116 cube states, followed by 4,464 comparisons
+per exact backend over three color counts, two shadings, and three orders.
+Another 45 weaving checks reached 98 crossings. These are correctness
+observations, not complexity proofs. The report's certificate replayer,
+which recomputes the same backend, is not presented as an independent oracle.
+The ring-valued Fitting proposals in report 17 are not integrated by this change.
+
+\subsection{Measurements and the quasi-polynomial objective}
+\label{sec:potts-measurements}
+The reproducible driver \path{fast/benchmark_potts.py} measures seven
+shuffled paired rounds with an exact-$q=6$ A/A control. Kernel timings
+exclude construction of their common supplied order; the fragmented-order
+case is deliberately adverse. A separate normal-pipeline comparison includes
+diagram construction, ordering, cheap certificates, and fallbacks. Matching
+and modular $q=5$ arms evaluate different specializations, so their timing
+ratios alone do not establish equivalent detection power.
+Detailed measurements are recorded in
+\path{fast/results/potts_20261008.json}.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Input & Exact keys & Factored keys & Exact/factored & Pipeline gain\\
+\midrule
+Weaving, 10 crossings & 5 & 6 & 0.799 & bypassed\\
+Weaving, 98 crossings & 5 & 6 & 0.934 & bypassed\\
+Fragmented order, 16 crossings & 4111 & 205 & 23.612 & bypassed\\
+Conway & 5 & 6 & 0.803 & 1.143\\
+Kinoshita--Terasaka & 5 & 6 & 0.734 & 1.152\\
+Stress braid, 36 crossings & 15 & 16 & 0.787 & bypassed\\
+Hard unknot, 8 crossings & 2 & 3 & 0.749 & bypassed\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``Exact/factored'' is the median paired kernel-time ratio; a value
+above one favors factoring. ``Pipeline gain'' compares default matching
+recognition with the single-table exact-$q=6$ option, including construction
+and all earlier stages. On Conway and Kinoshita--Terasaka, every compared
+pipeline reached its Jones filter and returned \code{KNOTTED}. The factored
+option's corresponding pipeline ratios were only 1.069 and 1.053.
+The other five cases were decided earlier, so their pipeline timings measure
+noise and common stages rather than a benefit from Potts evaluation.
+
+Factoring reduced transitions from 30,197 to 1,558 on the fixed fragmented
+order but was slower in all six other kernel cases. The exact A/A ratios
+ranged from 0.973 to 1.159, making small timing changes unsuitable for a
+broad speedup claim. The robust large saving on the adverse order supports
+keeping the factored implementation available; these data do not support
+making it the default. Nor does the modest normal-pipeline improvement on
+two fixtures establish superiority of the six-color specialization on
+unseen diagrams.
+
+At fixed $q$, a supplied order with $w=O(\log^2 n)$ makes this filter
+quasi-polynomial. The stronger component parameter $g$ can make a poor
+global frontier affordable. Neither guarantees a suitable order for every
+diagram, nor that the scalar differs from the unknot value. The fallback
+therefore retains its exponential worst case. This integration adds options
+for a future adaptive scalar-query policy; it does not change the existing
+progress-based adaptive Khovanov cancellation policy or promote an unmeasured
+automatic Potts switch.

@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 277 passing tests.
+diagram is not checked twice. The integrated suite now has 315 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -867,3 +867,41 @@ All 277 tests pass. `benchmark_minimal_windows.py --output FILE` compares exact
 identical window queries on common supplied orders. Minimal mode is slower on
 all six measured cases; it remains optional despite its stronger conditional
 bound. These partial-query ratios are not end-to-end recognition speedups.
+
+## Optional exact Potts Jones filters
+
+`recognize --jones-backend potts-exact` uses integer pairs in
+`Z[x]/(x²−(q−2)x+1)`, with six colors by default. The
+`potts-exact-factorized` option keeps processed Tait components separate until
+an edge joins them. `potts5` supplies a modular five-color comparison; it
+misses a proved infinite weaving family even without modular collisions.
+The exact six-color filter detects that family. Equality at any chosen
+specialization remains inconclusive and continues the complete fallback.
+The existing `matching` filter remains the default.
+
+Use `--potts-colors 7` to choose another exact color count (integer ≥5), and
+`--jones-max-states` / `--jones-max-transitions` for local work limits.
+A state limit counts represented keys, not total memory. Local exhaustion
+falls through; the global recognition deadline returns UNKNOWN.
+Standalone examples:
+
+```sh
+python -m fastunknot jones examples/conway.json --backend potts-exact
+python -m fastunknot jones examples/conway.json --backend potts-exact-factorized
+python -m fastunknot recognize examples/conway.json --jones-backend potts-exact
+python -B check_potts_independent.py /tmp/potts-independent.json
+python -B benchmark_potts.py --output results/potts_local.json
+```
+
+The standalone Jones command returns an inconclusive result and exits 3 on
+resource exhaustion, 2 for invalid options, and 0 on a completed query.
+Exact witness pairs use signed hexadecimal strings for large-integer JSON
+safety. Raw evaluator APIs retain integer pairs.
+
+The same-color benchmark measured a 23.6× factoring gain on a fixed fragmented
+order (4,111→205 peak keys), but factoring slowed all six other kernel cases.
+Normal recognition with the single-table exact option was about 1.14–1.15×
+faster on Conway and Kinoshita–Terasaka in this small run; earlier certificates
+bypassed the new filter in the other five cases. These observations do not
+justify an automatic switch or a default change. See the complete theory,
+limitations and measurements in [`../synthesis/potts.tex`](../synthesis/potts.tex).

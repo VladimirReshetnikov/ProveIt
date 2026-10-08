@@ -1,0 +1,199 @@
+\section{Results, input models, and the remaining objective}
+\label{sec:scope}
+
+The most useful next step for this project is to change which intermediate
+objects are materialized. The existing recognizer already avoids much
+unnecessary work through local simplification, algebraic obstructions,
+connected-sum structure, and improved Khovanov computations. Those changes
+do not make an explicit complex small merely because its boundary is small.
+The present contribution supplies an exact arithmetic route around that
+problem on a well-defined family, and a local certificate route that applies
+to a larger family of diagrams.
+
+The central engineering recommendation is to retain certified rational
+pieces as primitive integer slopes and decide supported gluings arithmetically.
+When a general diagram contains a tangle that is incompatible with every
+unknotting complement, a checked local occurrence can end the decision
+without evaluating the exterior. Each recommendation has a precise input
+contract, a proof obligation, executable code, and a measured limitation.
+
+\subsection{What is established here}
+
+Table~\ref{tab:claims} distinguishes mathematical conclusions from
+implementation and discovery claims. This distinction is necessary because
+a fast algorithm on a supplied presentation is not automatically an algorithm
+that discovers that presentation in an arbitrary diagram.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{L{0.25\textwidth}X L{0.21\textwidth}}
+\toprule
+Contribution & Exact scope & Status\\
+\midrule
+Exponential continuation profiles &
+Four marked endpoints, \(O(m)\) crossings per prefix and continuation,
+all cross closures knots &
+Proved; arithmetic diagnostic through \(m=10\)\\
+\addlinespace
+Exponential explicit prefix complex &
+Any full delooped Bar--Natan complex for a specified rational prefix
+inside an unknot family &
+Proved; not a scan-order-independent decision lower bound\\
+\addlinespace
+Montesinos arithmetic classifier &
+Supplied finite-slope continued fractions and integer term; one-component
+input checked &
+Implemented, complete on this input class\\
+\addlinespace
+Forbidden subtangle search &
+Literal connected disk patterns in a validated plane knot diagram;
+four distinct cut edges &
+Implemented for supplied or fixed finite catalogue\\
+\addlinespace
+Quasi-polynomial discovery &
+Literal admissible patterns with at most \(O(\log n)\) continued-fraction
+coefficients &
+Enumeration algorithm proved; exhaustive enumerator not implemented\\
+\addlinespace
+General quasi-polynomial recognizer &
+Every valid \(n\)-crossing knot diagram &
+Not established by this contribution\\
+\bottomrule
+\end{tabularx}
+\caption{Claim ledger. \emph{Proved} refers to the mathematical arguments in
+this report, rather than formal verification in a proof assistant.}
+\label{tab:claims}
+\end{table}
+
+\subsection{Three input sizes that must be kept separate}
+\label{subsec:input-sizes}
+
+Let \(n\) be the number of crossings of a supplied planar diagram (PD).
+Its four-valent plane map, crossing information, and component structure
+are part of the input. With canonically bounded labels its encoding has
+\(O(n\log(n+2))\) bits. If users supply labels with arbitrarily many bits,
+their actual encoding length must also be charged to parsing. Word-operation
+bounds below assume \(O(\log(n+2))\)-bit indices after relabeling.
+
+Let \(B\) be the binary length of a structured tangle source. It includes
+the signed integer term, all signed continued-fraction coefficients,
+and list delimiters. Counting delimiters matters: a list containing many
+zeros can have almost no twists but still take time to read and evaluate.
+Let
+\[
+ C=|e|+\sum_{i,j}|a_{i,j}|
+\]
+be the number of crossings in the literal expansion of that source.
+The compiler in this contribution constructs precisely that literal diagram,
+before any optional Reidemeister simplification. In general \(C\) can be
+exponential in \(B\), so an \(O(B^2)\) arithmetic result does not justify
+expanding a PD in \(O(B^2)\) time.
+
+Finally, let \(h\) denote the \emph{number} of continued-fraction coefficients
+in a local template description. The discovery theorem in
+Section~\ref{sec:mon:montesinos} assumes both a bound on \(h\) and an explicit
+crossing budget. It never equates coefficient count with bit length.
+
+We use \emph{quasi-polynomial} for a bound
+\(\exp((\log n)^{O(1)})\). The more specific target
+\(n^{O(\log n)}=\exp(O((\log n)^2))\) is stronger than
+\(n^{O((\log n)^2)}=\exp(O((\log n)^3))\).
+Whenever an exponent matters we write it explicitly.
+
+\subsection{The audited repository baseline}
+
+The work starts from ProveIt commit
+\code{86f23490006c880cd01db9bec10761d39c6395c8}, retrieved on 8 October
+2026~\cite{proveit-baseline}. The audited executable path is the
+\code{fast} subdirectory under \code{Topology/UnknotRecognition}. Its exact source and relevant tests,
+examples, and recent research documents were retrieved through the GitHub
+interface. Git blob hashes were checked against the fetched bytes for
+82 files; the source manifest accompanies the integration package.
+The baseline test suite contains 134 tests, despite the older test count
+still present in an earlier README passage.
+
+The baseline already includes Reidemeister reduction, descending-diagram
+recognition, complete specialized three-braid decisions, signed Seifert
+and Rasmussen-style obstructions, modular and exact Alexander paths,
+a Jones filter, visible connected-sum and interlacement decomposition,
+and several exact Khovanov backends. Component sharing, saturated
+multiplicities, Euler bounds, sparse maps, and composition caching are
+existing work. The recent reports additionally discuss radical
+minimization, exact homological windows, continuation shortening, Fitting
+splits, terminal boundary tests, twist macros, and hierarchy restart counts.
+These are context for the present work and are not relabeled as new
+contributions.
+
+The new production stage is deliberately earlier than complex construction
+when a checked rational source exists. Its mathematical information is
+different from an approximate Jones or Alexander value: within the supported
+Montesinos class it is a complete decision. The general exact fallback
+continues to have an exponential worst-case upper bound and a finite-budget
+\unknown\ result. The JSON flag reporting the absence of a general
+quasi-polynomial guarantee is retained.
+
+\subsection{Relevant literature and the status of the broad target}
+\label{subsec:literature-status}
+
+The exact Khovanov decision criterion ultimately uses the theorem of
+Kronheimer and Mrowka that reduced Khovanov homology detects the
+unknot~\cite{kronheimer-mrowka}. Over \(\F_2\), a reduced rank of one also
+forces rational reduced rank one by the universal coefficient inequality.
+This supplies a sound decision criterion; it does not give a fast method
+for computing the required rank.
+
+Lackenby's March 2021 Oxford slides announce a general unknot algorithm
+with running time \(2^{O((\log n)^3)}\)~\cite{lackenby-2021}.
+The power three in the logarithm should not be silently replaced by two.
+The July 2026 manuscript \emph{Incompressible surfaces, hierarchies and
+unknot recognition} gives a new hierarchy algorithm and substantial
+topological structure~\cite{lackenby-2026}. Section 9 of that manuscript
+explicitly separates an iteration bound from a full running-time analysis
+because several operations have not been specified sufficiently for the
+latter. Its displayed iteration estimate is
+\[
+ L(g+1)^L,
+\]
+where \(L\) is the maximum hierarchy length and \(g\) bounds surface
+pattern-complexity. The refined construction in Section 10 controls
+hierarchy length in terms of the initial handle complexity.
+
+This report uses that distinction constructively. A project implementation
+needs explicit operation algorithms, encoding-size bounds, and the
+appropriate logarithmic hierarchy estimate before inheriting a
+quasi-polynomial bound. A 2021 announcement, a 2026 iteration estimate,
+and a proved executable bound for the present code are different kinds
+of evidence. We do not infer the last from either of the first two.
+This is a statement about the sources and implementation audited here,
+not a claim to have ruled out every other possible algorithm in the
+literature.
+
+The rational-tangle classification and gluing formulas used below are
+classical; we use the treatments of Kauffman and
+Lambropoulou~\cite{kauffman-lambropoulou-tangles,
+kauffman-lambropoulou-knots,KauffmanLambropoulouHard}.
+The local obstruction is the theorem of Nogueira and
+Salgueiro~\cite{nogueira-salgueiro}. The lower bounds in the next sections
+are project-specific deductions from these tools and the functorial
+Khovanov framework, with their own proofs.
+
+\subsection{Use of the suggested mathematics repository}
+
+The suggested \code{openai/math} repository was inspected at the following commit:
+\begin{center}
+\code{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\end{center}
+Its description distinguishes
+research manuscripts at different stages from formally verified results.
+The relevant inspiration was a standard context-separation proof pattern:
+equal summaries must give equal answers after every allowed continuation.
+The inspected section applies this idea to word relations and
+automata~\cite{OpenAIMathContextSeparation}.
+
+Our rational-tangle construction below is independent of that manuscript's
+headline automata claim. It specifies actual knot diagrams, proves the
+diagonal acceptance matrix using unimodular arithmetic and disjoint cones,
+and gives a separate arithmetic representation. No theorem from the
+suggested repository is used as a black box for topology or complexity.
+The exact source path, commit, and blob hash are recorded in the package's
+research provenance.

@@ -1,0 +1,668 @@
+% Standalone section fragment for the parent article.
+% Requires amsmath, amssymb, amsthm; theorem/lemma/proposition/corollary/remark.
+% Bibliography keys and complete entries are supplied at the end as comments.
+% All labels use the mon: prefix.
+
+\section{Exact arithmetic recognition and local obstructions from Montesinos tangles}
+\label{sec:mon:montesinos}
+
+This section provides a complete arithmetic decision procedure on an explicitly
+specified family, and a certificate that can reject an arbitrary diagram
+containing a suitable local tangle.  The topology underlying the complete
+Montesinos classification is classical.  The local unknottability criterion is
+due to Nogueira and Salgueiro \cite[Theorem~4.9]{nogueira-salgueiro}.
+Our purpose is to state the input model, prove the arithmetic and diagram
+verification obligations, and make these results available to the recognizer.
+No statement here asserts efficient discovery of a Montesinos presentation for
+an arbitrary knot.
+
+\subsection{Conventions and exact component counts}
+
+Write $R(p/q)$ for the rational tangle of fraction $p/q$, with boundary points
+$NW,NE,SE,SW$ in their cyclic order.  Horizontal addition joins the east pair
+of one tangle to the west pair of the next.  The numerator closure $N(T)$ joins
+$NW$ to $NE$ and $SW$ to $SE$ outside the tangle disk.  We use the standard
+fraction rules $R(x)+[a]=R(x+a)$ and $R(x)^{-1}=R(1/x)$; the latter operation
+is a quarter rotation followed by crossing reversal.  A rotation alone sends
+$x$ to $-1/x$.  These conventions, including the distinction between rotation
+and inversion, are those of \cite[Section~2]{kauffman-lambropoulou-tangles}.
+An implementation must calibrate its crossing convention against these rules.
+
+The structured input is
+\[
+ M(e;p_1/q_1,\ldots,p_s/q_s)
+ =N\bigl([e]+R(p_1/q_1)+\cdots+R(p_s/q_s)\bigr),
+\]
+where $e$ and the rational-tangle continued-fraction coefficients are signed
+binary integers.  Every final slope is finite.  Each pair is reduced, with
+$q_i>0$.  A denominator-one summand is absorbed into $e$.  We thereafter write
+the remaining slopes as $\beta_i/\alpha_i$, $1\le i\le r$, where
+$\alpha_i\ge2$ and $\gcd(\alpha_i,\beta_i)=1$.
+It is optional to impose $0<\beta_i<\alpha_i$: replacing
+$\beta_i$ by $\beta_i-a\alpha_i$ and replacing $e$ by $e+a$ preserves the
+Montesinos link.  This is the standard integer-transfer isotopy; it follows
+by moving integral twists through rational summands using the rational flip
+isotopies \cite[Section~2]{kauffman-lambropoulou-tangles}.
+The tests below do not require the optional remainder normalization. The delivered implementation always performs it.
+
+For a finite continued fraction $[a_1,\ldots,a_\ell]$, the product
+\[
+ \begin{pmatrix}a_1&1\\1&0\end{pmatrix}\cdots
+ \begin{pmatrix}a_\ell&1\\1&0\end{pmatrix}
+ \binom10=\binom pq
+\]
+computes its projective fraction without floating-point arithmetic.  Intermediate
+infinite values are harmless in this formulation.  A final $q=0$ is outside
+the stated input model and must produce an unsupported-input response, not a
+knot verdict.  In particular, one must not replace an infinite tangle by an
+integer summand or apply the formulas below to it.
+
+\begin{lemma}[Endpoint parity and component count]\label{lem:mon:parity}
+Let $k$ be the number of even denominators among the reduced finite slopes in
+a horizontal Montesinos sum.  The sum has $\max(k-1,0)$ closed strand
+components in its interior.  Consequently it is a genuine two-string tangle
+with no closed components if and only if $k\le1$.
+Its numerator closure has
+\[
+ c=\begin{cases}
+ k,&k>0,\\
+ 1,&k=0\text{ and }e+\sum_i\beta_i\text{ is odd},\\
+ 2,&k=0\text{ and }e+\sum_i\beta_i\text{ is even}.
+ \end{cases}
+\]
+The same formula includes $r=0$.
+\end{lemma}
+
+\begin{proof}
+The endpoint pairing of a rational tangle depends only on the coprime pair
+$(p,q)$ modulo two.  There are three possibilities:
+\[
+\begin{array}{c|c|c}
+(p\bmod2,q\bmod2)&\text{pairing}&\text{type}\\\hline
+(0,1)&NW\!\leftrightarrow\!NE,\ SW\!\leftrightarrow\!SE&H\\
+(1,0)&NW\!\leftrightarrow\!SW,\ NE\!\leftrightarrow\!SE&V\\
+(1,1)&NW\!\leftrightarrow\!SE,\ SW\!\leftrightarrow\!NE&X.
+\end{array}
+\]
+This can be verified inductively from $[0]$, since adding one integral twist
+and inverting the tangle act on the three pairings exactly as they act on
+$(p,q)$ modulo two.  Thus it holds for every continued-fraction construction,
+including constructions with negative and zero coefficients.
+
+An $H$ or $X$ piece carries the left endpoint pair to the right endpoint pair
+by the identity or the transposition.  If there is no $V$ piece, the total
+transposition parity is $e+\sum_i\beta_i$; numerator closure gives the cycles
+of this two-element permutation.  If there are $k>0$ pieces of type $V$,
+each interval between consecutive such pieces closes one component.  There
+are $k-1$ such intervals in the open sum.  The two remaining outer caps
+close one additional component under numerator closure, giving $k$ components.
+No crossings are removed or changed in this argument: it follows the strands
+through the actual tangle connectivity.
+\end{proof}
+
+The component check is mandatory.  A link with several components is outside
+the ordinary knot-recognition domain; its presence is not evidence for a
+nontrivial knot.  In a local witness the corresponding mandatory check is that
+the selected portion consists of two open strands and no internal closed
+strand.  Following opposite darts through the crossings verifies this directly,
+independently of the arithmetic parity computation.
+
+\subsection{A direct nontriviality certificate for the branched cover}
+
+The branched double cover of a Montesinos link is Seifert fibered, with a
+presentation, in the above sign convention,
+\begin{equation}\label{eq:mon:sfs-group}
+ \pi_1\Sigma_2(M)=
+ \left\langle h,x_1,\ldots,x_r\ \middle|\
+ [h,x_i]=1,\ x_i^{\alpha_i}h^{\beta_i}=1,
+ \ x_1\cdots x_r=h^e\right\rangle.
+\end{equation}
+This is the classical Montesinos construction; see the application and
+attribution in \cite[proof of Theorem~4.9]{nogueira-salgueiro}.
+Here a lift of each rational-tangle ball is a solid torus.  The central piece
+is the circle bundle over the punctured sphere, and the meridian of the
+$i$th attached solid torus is $\alpha_i x_i+\beta_i h$.  These gluing slopes
+give the displayed relations by van Kampen's theorem.
+
+We give an explicit elementary representation to avoid treating the
+nontriviality of a triangle group as a group-decision black box.
+
+\begin{lemma}[An explicit nontrivial triangle representation]
+\label{lem:mon:triangle}
+For all integers $a,b,c\ge2$, the group
+\[
+ \langle x,y,z\mid x^a=y^b=z^c=xyz=1\rangle
+\]
+has a nontrivial representation in $\operatorname{PSL}_2(\mathbb C)$.
+\end{lemma}
+
+\begin{proof}
+Set
+\[
+ \lambda=e^{\pi i/a},\qquad t=2\cos(\pi/b),\qquad
+ s=2\cos(\pi/c),\qquad d=\lambda-\lambda^{-1},
+\]
+and define
+\[
+ u=\frac{s-\lambda^{-1}t}{d},\qquad
+ v=\frac{\lambda t-s}{d},\qquad
+ X=\begin{pmatrix}\lambda&0\\0&\lambda^{-1}\end{pmatrix},\qquad
+ Y=\begin{pmatrix}u&1\\uv-1&v\end{pmatrix}.
+\]
+The denominator $d$ is nonzero because $a\ge2$.  Direct calculation gives
+$\det X=\det Y=1$, $\operatorname{tr}Y=t$, and
+$\operatorname{tr}(XY)=s$.  Thus the distinct eigenvalues of $Y$ are
+$e^{\pi i/b}$ and $e^{-\pi i/b}$, while those of $XY$ are
+$e^{\pi i/c}$ and $e^{-\pi i/c}$.  It follows that
+\[
+ X^a=Y^b=(XY)^c=-I.
+\]
+Sending $x,y,z$ to the projective classes of $X,Y,(XY)^{-1}$ therefore
+satisfies every relation.  The image of $x$ has order exactly $a$, so it is
+nontrivial.
+\end{proof}
+
+This is a uniform symbolic certificate formula, rather than a requirement to
+expand cyclotomic fields of possibly enormous degree.  Its instantiated
+parameters are just the three binary integers $a,b,c$.  The verifier checks
+that they are the selected denominators and that they are at least two; the
+lemma supplies the representation for every such triple.  No numerical cosine
+evaluation or unproved finite-group search is involved.
+
+\begin{proposition}[Three genuine exceptional fibers obstruct the unknot]
+\label{prop:mon:three}
+If $r\ge3$, a Montesinos link of the stated form cannot be the unknot.
+\end{proposition}
+
+\begin{proof}
+In \eqref{eq:mon:sfs-group}, quotient first by $h=1$, then by $x_i=1$ for
+all but any three selected indices, retaining their cyclic order.  The resulting
+quotient is the triangle group with orders equal to their denominators.
+It is nontrivial by Lemma~\ref{lem:mon:triangle}.  Hence the branched double
+cover is not simply connected.  The double cover branched over the unknot
+is $S^3$, whose fundamental group is trivial.
+\end{proof}
+
+\subsection{A complete decision procedure on the structured input}
+
+Put
+\begin{equation}\label{eq:mon:delta}
+ Q=\prod_{i=1}^r\alpha_i,\qquad
+ D=eQ+\sum_{i=1}^r\beta_i\frac{Q}{\alpha_i},
+\end{equation}
+with the empty-product convention $Q=1$.  Abelianizing
+\eqref{eq:mon:sfs-group} gives a square integer relation matrix whose
+determinant has absolute value $|D|$.  Indeed, eliminate the diagonal block
+$\operatorname{diag}(\alpha_1,\ldots,\alpha_r)$ over $\mathbb Q$; its Schur
+complement is $-e-\sum_i\beta_i/\alpha_i$.  When $D\ne0$, the order of first
+homology is $|D|$; when $D=0$, first homology is infinite.
+
+\begin{theorem}[Complete Montesinos recognition in compressed arithmetic]
+\label{thm:mon:complete}
+For a structured finite-slope Montesinos input, first compute the component
+count in Lemma~\ref{lem:mon:parity}.  If it is one, the represented knot is
+the unknot exactly when $r\le2$ and $|D|=1$.
+\end{theorem}
+
+\begin{proof}
+The case $r\ge3$ is Proposition~\ref{prop:mon:three}.
+For $r=0$ or $r=1$, the link is the numerator of a rational tangle.
+For $r=2$, absorb the integral summand into one rational tangle; the numerator
+closure of the sum of two rational tangles is a two-bridge link.  This last
+statement concerns the closure, and does not assert that the open sum is
+rational; see \cite[Section~2]{kauffman-lambropoulou-tangles}.
+The branched cover of a two-bridge link is a lens space, and its numerator
+parameter has absolute value $|D|$.  The rational-link classification says
+that a two-bridge knot is the unknot precisely when the absolute numerator
+is one \cite{kauffman-lambropoulou-knots}.  This proves the claimed equivalence.
+Equivalently, the $r=2$ assertion is the integral-closure calculation in
+\cite[Theorem~4.9]{nogueira-salgueiro}.
+\end{proof}
+
+\begin{proposition}[Bit complexity of the arithmetic implementation]
+\label{prop:mon:complexity}
+Let $B$ be the complete binary length of a structured description, including
+coefficients, signs, and list delimiters. The production arithmetic classifier
+uses $O(B^2)$ schoolbook bit operations and $O(B)$ bits of integer data.
+Its valid branch certificate has $O(B)$ bits. The independent verifier in the
+package has the conservative bound $O(B^3)$ on these certificates. Input
+parsing must additionally charge the actual size of a purported certificate.
+These are bounds in compressed source length; they do not include PD expansion.
+\end{proposition}
+
+\begin{proof}
+Give a coefficient $a$ the weight
+$b(a)=1+\lceil\log_2(1+|a|)\rceil$ and charge at least one bit per delimiter.
+The sum of all weights is $O(B)$. The column recurrence starts at $(p,q)=(1,0)$
+and, reading a continued fraction backwards, replaces it by
+$(ap+q,p)$. Every matrix has determinant $-1$, so the final pair is primitive
+without a gcd computation. The one-norm of a column is bounded by the
+product of $(1+|a|)$ over its coefficients; allowing a constant for the
+initial state gives $O(B)$ bits for every entry, even with zeros and signs.
+The total size of the final numerator--denominator pairs over all input
+summands is $O(B)$ as well.
+
+More precisely, a recurrence with current entry length $s$ and coefficient
+weight $b$ costs $O(sb+s)$ with schoolbook arithmetic. Summing these costs
+is $O(B^2)$, since all partial lengths are bounded by the corresponding
+partial sum of coefficient weights and there are $O(B)$ entries.
+Changing the sign to make $q>0$ is linear in its size. For each finite pair,
+Euclidean division $p=aq+\beta$ computes $0\le\beta<q$. The sum of the
+squares of the pair lengths is at most the square of their total length,
+so all these divisions together still cost $O(B^2)$. The implementation
+absorbs every integral part into $e$ and drops exactly the pairs with $q=1$.
+
+To evaluate \eqref{eq:mon:delta}, begin with $(d,Q)=(e,1)$ and, for each
+remaining $(\beta,\alpha)$, update
+\[
+ (d,Q)\longmapsto(d\alpha+\beta Q,Q\alpha).
+\]
+No rational cancellation is performed. The total bit lengths of the
+$(\beta,\alpha)$ pairs are $O(B)$, and every accumulated entry has
+$O(B)$ bits. Weighting each multiplication by both operand lengths shows
+that the sum of multiplication costs is $O(B^2)$; the at most $O(B)$
+additions and parity checks contribute the same bound. All stored slopes,
+accumulated integers, counts, and the certificate together use $O(B)$ bits
+of integer and encoded source data. This is an arithmetic-space statement,
+not a measurement of Python object overhead or process memory.
+
+The production code tracks the maximum bit length of its recorded
+continued-fraction and accumulator states with a constant number of integer
+operations per state, costing $O(B^2)$ bit operations in total.
+The independent verifier reconstructs each fraction by a matrix product and
+recomputes product--sum expressions for the certificate. Its current replay
+of the prefix statistics contains nested loops. Bounding their work by
+$O(B^3)$ is safe: final products have $O(B)$ bits and the sums of operand
+lengths are $O(B)$. It never needs to expand a cyclotomic field, factor an
+integer, or enumerate a finite quotient. For valid certificates all compared
+fields have total length $O(B)$.
+\end{proof}
+
+The statistic \code{max_entry_bits} means the maximum \emph{tracked}
+continued-fraction or accumulator entry length. It is not the maximum length
+of every multiplication temporary, and is not peak memory. Temporary
+products still have $O(B)$ bits by the same estimates.
+For instance, the calculation for $M(-2;7/9)$ can form the temporary $-18$
+while the tracked final numerator is $-11$; the former has one more binary
+digit. The theorem does not infer a space bound from this empirical statistic.
+
+The one-component check can be implemented especially simply as $D$ odd.
+If exactly one denominator is even, its term $\beta_i Q/\alpha_i$ is odd
+and every other term in \eqref{eq:mon:delta} is even. If at least two are
+even, every term is even. If none is even, the parity is
+$e+\sum\beta_i$. Lemma~\ref{lem:mon:parity} therefore shows that $D$ is odd
+if and only if the numerator closure has one component. This equivalence
+includes zero exceptional fibers, and justifies the code's exact component
+rejection without expanding a diagram.
+
+\subsection{An Alexander-trivial family of genus-one knots}
+
+For odd integers $p,q,r$, use the conventional pretzel diagram
+$P(p,q,r)=M(0;1/p,1/q,1/r)$, with signs of the twist boxes as displayed in
+\cite[Figure~1 and Theorem~1(3)]{belousov-pretzel}.  Its usual two-disk,
+three-band spanning surface is orientable: all three bands have odd twisting,
+so the disk orientations can be chosen compatibly.  It has Euler characteristic
+$2-3=-1$ and one boundary component, hence genus one.
+Take one oriented cycle through the first and second bands and another through
+the second and third bands, choosing their intersection to be $+1$.
+In this basis a Seifert matrix is
+\begin{equation}\label{eq:mon:pretzel-seifert}
+ V=\frac12\begin{pmatrix}p+q&q+1\\q-1&q+r\end{pmatrix}.
+\end{equation}
+For completeness, the self-pairings are half the signed twists in the two
+bands traversed by the corresponding cycle.  In the shared middle band the
+off-diagonal pairings are $(q+1)/2$ and $(q-1)/2$: the parallel push-off on
+the two sides of the single transverse disk intersection differs by one.
+Their difference is the chosen intersection number, as independently required
+by $V-V^{\mathsf T}=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$.
+Reversing the entire diagram convention replaces the corresponding form by
+its mirror form and does not change the conclusions below.  There is also
+an independent check from the skein-derived formula in
+\cite[Theorem~1(3)]{belousov-pretzel}.
+
+Writing
+\[
+ A=\det V=\frac{pq+pr+qr+1}{4},
+\]
+direct expansion gives
+\[
+ \det(V-tV^{\mathsf T})=A(t-1)^2+t,
+ \qquad
+ \Delta_{P(p,q,r)}(t)=1+A(t+t^{-1}-2).
+\]
+Thus $pq+pr+qr=-1$ gives Alexander polynomial one, determinant one, and
+signature zero: the determinant of $V+V^{\mathsf T}$ is $4A-1=-1$, so its
+two eigenvalues have opposite signs.  The characterization by this equation
+for three odd parameters is established mathematics
+\cite[Section~2.3]{belousov-pretzel}.
+
+In particular, for every odd $a\ge3$ let
+\begin{equation}\label{eq:mon:family}
+ p=-a,\qquad q=a+2,\qquad r=\frac{a^2+2a-1}{2}.
+\end{equation}
+All three parameters are odd and have absolute value at least three.  Also
+$p+q=2$ and $pq=-a(a+2)$, whence
+$pq+pr+qr=-a(a+2)+2r=-1$.  The input is a knot by
+Lemma~\ref{lem:mon:parity}; its three genuine denominators establish
+nontriviality by Proposition~\ref{prop:mon:three}.  Consequently its Seifert
+genus is exactly one, although both the Alexander polynomial and the
+signature give the same answers as for the unknot.  The first example is
+$P(-3,5,7)$, with
+$V=\left(\begin{smallmatrix}1&3\\2&6\end{smallmatrix}\right)$.
+This is a useful regression family for the arithmetic branch. With the
+implementation's positive-denominator normalization, its signed
+Montesinos integer $D$ is $+1$; the value $pq+pr+qr=-1$ uses signed
+pretzel parameters. Their absolute values agree, as required.  The classical
+alternative $(-a,2a-1,2a+1)$ has the same Alexander-triviality property;
+neither family is claimed here as a new class of knots.
+
+\subsection{Closure-independent forbidden tangles}
+
+An essential distinction is that a tangle may occur inside a much more general
+knot diagram.  The appropriate local property is whether the tangle can occur
+inside \emph{any} unknot, not whether one selected closure is knotted.
+
+\begin{theorem}[Nogueira--Salgueiro local obstruction, with input checks]
+\label{thm:mon:local}
+Let
+\[
+ T=[e]+R(\beta_1/\alpha_1)+\cdots+R(\beta_r/\alpha_r),
+ \qquad \alpha_i\ge2,\quad\gcd(\alpha_i,\beta_i)=1,
+\]
+be a genuine two-string tangle with no internal closed components and
+$r\ge2$.  Then $T$ embeds in some unknot if and only if $r=2$ and
+\begin{equation}\label{eq:mon:congruence}
+ F:=\beta_1\alpha_2+\beta_2\alpha_1
+ \equiv1\ \text{or}\ -1\pmod{\alpha_1\alpha_2}.
+\end{equation}
+Therefore $r\ge3$, or failure of \eqref{eq:mon:congruence} when $r=2$,
+is a nontriviality certificate for every knot containing $T$.
+\end{theorem}
+
+\begin{proof}
+For $e=0$ this is \cite[Theorem~4.9(a)]{nogueira-salgueiro}; integral twists
+can be absorbed into a rational summand, changing $F$ by a multiple of
+$Q=\alpha_1\alpha_2$ and leaving the criterion unchanged.
+Here is the cover argument identifying the exact obstruction.
+The cover of the tangle ball has base disk and exceptional orders
+$\alpha_1,\ldots,\alpha_r$.  Its boundary is incompressible for $r\ge2$.
+For example, its group has the relations $[h,x_i]=1$ and
+$x_i^{\alpha_i}h^{\beta_i}=1$, without the last relation of
+\eqref{eq:mon:sfs-group}.  In the quotient by $h$ it is the free product
+$C_{\alpha_1}*\cdots*C_{\alpha_r}$, and the boundary base loop maps to
+$(x_1\cdots x_r)^{-1}$, an element of infinite order by reduced normal form.
+The fiber $h$ itself has infinite order, since the homomorphism to
+$(\mathbb Q,+)$ given by $h\mapsto1$ and
+$x_i\mapsto-\beta_i/\alpha_i$ respects the relations.  Thus the two
+boundary generators are independent and the boundary torus group injects.
+In particular, the tangle is essential: a disk separating its two strings
+would lift to a compression disk of that boundary torus.
+
+If an essential two-string tangle occurs in an unknot, its complementary
+tangle is rational \cite[Proposition~4.4]{nogueira-salgueiro}.
+A finite complementary slope with denominator at least two would add another
+genuine exceptional fiber; Proposition~\ref{prop:mon:three} rules this out.
+The infinite complementary slope is ruled out separately: its closure is the
+denominator closure of the horizontal sum, whose determinant is
+$\prod_i\alpha_i>1$.  This product also follows by expressing the
+denominator closure as the connected sum of the denominator closures of the
+rational pieces.  Hence the only possible case is $r=2$ with an integral
+complement $[u]$.  Its signed homology determinant is
+\[
+ F+(e+u)Q.
+\]
+The resulting link is rational and is the unknot precisely when this integer
+is $\varepsilon\in\{1,-1\}$, giving exactly
+\eqref{eq:mon:congruence}.  Conversely a successful sign gives the explicit
+integral unknotting complement $u=(\varepsilon-F)/Q-e$.
+Since $Q\ge4$, at most one of the two signs works.
+\end{proof}
+
+The genuine-tangle hypothesis can either be checked by following strands or
+by verifying that at most one denominator is even.  It cannot be dropped
+merely because the syntax contains rational summands.  The arithmetic witness
+for the two-summand rejection branch is simply the recomputed residue
+$F\bmod Q$, which must be neither $1$ nor $Q-1$.  No factorization of $Q$ is
+needed.  Satisfying the congruence gives \emph{no positive verdict for an
+arbitrary surrounding knot}: it only says that some choice of complement
+could unknot this tangle.
+
+For example, the tangle $R(1/3)+R(1/4)$ has $F=7$, $Q=12$, so it is
+forbidden in every unknot.  Its numerator and denominator determinants are
+$7$ and $12$, with gcd one.  Thus the obstruction is stronger on this example
+than the gcd-of-two-closures determinant obstruction: neither local homology
+order alone supplies the universal obstruction.
+Likewise the first two boxes of the family \eqref{eq:mon:family} already give
+the forbidden tangle $R(-1/a)+R(1/(a+2))$: here $F=-2$ and
+$Q=a(a+2)\ge15$.  This local witness remains valid if the entire third-box
+region is replaced by any exterior tangle giving a one-component closure.
+
+\subsection{A rigorous planar certificate for occurrence in a PD diagram}
+
+We now specify the missing link between arithmetic data and a supplied knot
+diagram.  A list of fractions, or an abstract four-edge cut, is not by itself
+an occurrence certificate.
+
+Let $H$ be the expanded connected shadow of the tangle constructed by the
+declared rational-tangle operations.  It has four degree-one port vertices;
+its other vertices are crossings with a cyclic order and an overpassing
+opposite pair.  Let $G$ be the validated connected plane shadow of the input
+knot.  A certificate maps the crossing darts of $H$ injectively to the crossing
+darts of $G$.  It must satisfy all the following requirements:
+\begin{enumerate}
+\item Crossing images are distinct; each crossing map preserves its cyclic
+      order and the overpassing pair.  The same global orientation convention
+      is used throughout.
+\item Every internal edge pairing of $H$ equals the corresponding edge pairing
+      in $G$.  Every dart at an image crossing is accounted for, either by an
+      internal edge or by one of the four ports.  There are no unrecorded
+      attachments or ignored incident darts.
+\item Each of the four port darts belongs to a distinct edge of $G$ whose
+      other endpoint is outside the selected crossing set. None of these
+      edges is an internal edge of the pattern. This deliberately strict
+      condition is the initial implementation contract; allowing two cut
+      points on one exterior edge is a possible extension, not an accepted
+      certificate here.
+\item In the plane ribbon graph $H$, all four ports lie on one facial boundary,
+      in the declared boundary order.  This is checked by the face permutation
+      of the rotation system after adding the four degree-one vertices.
+\item Following opposite darts through all crossings of $H$ gives exactly two
+      open strands and no closed strand component.
+\end{enumerate}
+The builder's rational fractions are recomputed from its operations.  Matching
+only fractions, crossing counts, or abstract unembedded graphs does not check
+these requirements.
+
+\begin{lemma}[The common-face certificate yields a separating disk]
+\label{lem:mon:disk}
+Under the preceding conditions there is a disk in the projection sphere whose
+interior contains precisely the certified tangle diagram and whose boundary
+meets the knot in its four declared ports.  In particular, the input knot
+contains the declared tangle, up to the boundary-preserving diagram isotopy.
+\end{lemma}
+
+\begin{proof}
+Embed $H$ in the projection sphere using the certified dart map, placing a cut
+point in each of the four distinct outgoing edges. Take a small regular
+neighborhood of this connected
+embedded graph.  The boundary component corresponding to the declared face
+is incident to all four outgoing port segments.  Every component of the
+remaining diagram attaches to $H$ at a port: otherwise it would be a separate
+component of the connected shadow $G$.  Since no edge crosses $H$, all such
+components lie in that one face.  The other boundary components of the regular
+neighborhood therefore enclose no part of the remaining diagram.
+Fill those other boundary components with their complementary disks.  This
+produces a disk; adjust its remaining boundary near the four terminal port
+segments so that it meets each once and no other diagram edge.  Its port
+order is the certified one.  Thickening this planar disk slightly in the
+projection direction gives the required tangle ball in $S^3$.
+\end{proof}
+
+\begin{proposition}[Verification and deterministic pattern search]
+\label{prop:mon:matching}
+For a fixed connected tangle pattern with $m$ crossings and an input plane
+knot diagram with $n$ crossings, the occurrence certificate can be verified
+in $O(n+m)$ word operations after parsing.  All its orientation-preserving
+dart occurrences can be found in $O(nm)$ word operations, plus parsing and
+output costs.  A conservative bit bound adds a factor $O(\log(n+m))$.
+\end{proposition}
+
+\begin{proof}
+All edge, rotation, strand, injectivity and face checks are traversals of
+finite permutations and graphs.  For the search, choose one crossing of the
+connected pattern as root.  Its image and cyclic offset have exactly $2n$ potential
+choices: offsets zero and two preserve the overpassing opposite pair.  An internal edge then forces the image of the next crossing and
+the image of its incoming dart; preservation of cyclic order forces its
+remaining three darts.  Propagate this rule through the connected pattern,
+rejecting inconsistent revisits, collisions, and overpair violations.
+There are no further choices after the root choice.  Each candidate takes
+$O(m)$ work, including the common-face and port checks.  The global validation
+of $G$ is performed once. Direct indexed arrays give the stated word bound;
+indices have $O(\log(n+m))$ bits.
+\end{proof}
+
+For a supplied already compiled template, this is the matching cost.
+The public implementation additionally validates and relabels the target PD;
+its sorting step gives $O(n\log(n+2)+nm)$ word operations with bounded labels.
+Source reading, arithmetic, and template compilation have their own $B$- and
+$m$-dependent cost and must be added if a template was not already compiled.
+In particular, an arbitrarily long source with zero coefficients is not
+processed in time bounded by $m$ alone.
+
+The pattern expansion cost is explicit here.  If the chosen literal
+continued-fraction pattern has more than $n$ crossings, it cannot have such
+an injective occurrence in the supplied PD and may be discarded before
+expansion.  This does not affect the independent compressed-input theorem,
+which never expands twist exponents.  Searching a library of patterns with
+total expanded size $M$ costs $O(nM)$ by the same argument.  Efficient
+recognition of all Montesinos tangles hidden behind arbitrary diagram
+isotopies is a different, unsolved implementation obligation in this package.
+
+In particular, a seven-crossing template for $R(1/3)+R(1/4)$ gives an
+$O(n\log(n+2))$-time public rejection stage (with a linear matching core) on every diagram containing
+an admissible occurrence with four distinct outgoing cut edges.  This is an explicit family with unrestricted
+exterior diagram size and complexity.  It is not a statement that every
+nontrivial knot has such a tangle, or that finding it after arbitrary isotopies
+has linear complexity.
+
+The useful integration direction is one-sided: a verified occurrence plus
+Theorem~\ref{thm:mon:local} gives a rigorous \texttt{KNOTTED} verdict.
+Failure to find a pattern, failure of a resource budget, or arithmetic that
+allows an unknotting closure causes the normal pipeline to continue.
+
+\subsection{Bounded-description discovery without a supplied sidecar}
+
+The preceding matching procedure also gives an explicit discovery bound when
+the local tangle has a short literal description.  This removes the need for
+a user-supplied occurrence certificate on a precisely delimited class.  It
+does not require a conjecture about the descriptions of all nontrivial knots.
+
+For integers $n\ge1$ and $h\ge2$, let $\mathcal S(n,h)$ consist of all
+ordered lists of at least two nonempty continued-fraction blocks
+\[
+ s=\bigl([a_{1,1},\ldots,a_{1,\ell_1}],\ldots,
+          [a_{b,1},\ldots,a_{b,\ell_b}]\bigr),\qquad b\ge2,
+\]
+such that
+\[
+ \sum_j\ell_j\le h,\qquad -n\le a_{j,k}\le n,
+ \qquad \sum_{j,k}|a_{j,k}|\le n.
+\]
+Its specified diagram is obtained by the fixed rational-tangle compiler and
+horizontal composition, with initial integer term $e=0$.  No diagram
+isotopies are performed during matching.  The compiler expands an integer
+$a$ into $|a|$ crossings and implements tangle rotation and reflection
+without adding crossings.  Thus its literal pattern has at most $n$
+crossings.  Zero coefficients and repeated descriptions are allowed; they
+only make the following upper bound more generous.
+
+Call a source \emph{admissible and forbidden} when every original final
+fraction is finite and nonintegral with denominator greater than one, its
+compiled shadow is connected, all four ports pass the common-face test, its
+strand tracing gives exactly two open strands and no closed component, and
+Theorem~\ref{thm:mon:local} rules out every unknotting complement. Occurrences
+must have four distinct external cut edges, as above. This matches the strict
+source grammar of the delivered local compiler: initial $e=0$, at least two
+nonintegral rational summands, and no discarded integral summands. Integer
+parts within a nonintegral slope do not affect its congruence obstruction.
+The graph being matched is always the original literal compiled graph.
+
+\begin{proposition}[Deterministic discovery from bounded source length]
+\label{prop:mon:bounded-discovery}
+Given a validated $n$-crossing plane knot diagram $G$ and an integer $h\ge2$,
+there is a deterministic one-sided search with running time
+\[
+ (n+2)^{O(h)}
+\]
+in bit operations which returns \texttt{KNOTTED} if and only if $G$ contains
+an orientation-preserving dart occurrence, satisfying
+Lemma~\ref{lem:mon:disk}, of a pattern compiled from some admissible and
+forbidden source in $\mathcal S(n,h)$.  When it returns \texttt{KNOTTED},
+it also returns the source and the verified crossing-dart map.  Otherwise it
+returns \texttt{UNKNOWN}.  In particular, for
+$h\le C\log(n+2)$ with fixed $C$, this restricted witness-discovery problem
+has running time
+\[
+ \exp\bigl(O((\log(n+2))^2)\bigr)
+       =(n+2)^{O(\log(n+2))}.
+\]
+\end{proposition}
+
+\begin{proof}
+A source with total coefficient count $\ell$ is specified by a sequence of
+$\ell$ coefficients and by selecting separators among the $\ell-1$ gaps.
+There are $(2n+1)^\ell$ sequences and at most $2^{\ell-1}$ separator sets;
+requiring at least two blocks and imposing the expansion budget can only
+decrease their number.  Consequently
+\[
+ |\mathcal S(n,h)|
+ \le \sum_{\ell=1}^{h}(2n+1)^\ell 2^{\ell-1}
+ \le \bigl(2(2n+1)\bigr)^{h+1}.
+\]
+Enumerate these finite sequences and separators, and immediately discard any
+source exceeding the expansion budget.  Evaluate every fraction by its
+integer matrix product, reject integral final summands, and apply the exact
+component and local obstruction tests.  The source bit length is
+$B=O(h\log(n+2))$; all these arithmetic operations cost $B^{O(1)}$ by the
+previous estimates.  Unsupported final infinite fractions are discarded.
+
+Compile each remaining source, checking connectedness, its ports, and strand
+components.  Standard explicit tangle composition and index permutations
+are polynomial in the source and expanded lengths.  Even a compiler which
+revisits the current graph at every continued-fraction operation takes
+$O(hn)$ word operations, absorbed by
+$O(n^2+B^2)$ up to logarithmic index costs.  Discard any inadmissible result.
+For an admissible forbidden pattern with $m\le n$ crossings, run the
+root-dart propagation of Proposition~\ref{prop:mon:matching}, costing
+$O(nm)\le O(n^2)$ word operations.  Including integer arithmetic and bit
+indices, with no fixed implementation expansion cap, the work per enumerated source is bounded by
+\[
+ O\bigl(n^2\log(n+2)+B^{C_0}\bigr)
+\]
+for some fixed constant $C_0$.  Multiplication by the preceding source count
+is $(n+2)^{O(h)}$; polynomial factors in $h$ are absorbed since $h\ge2$.
+
+Any returned map passes the separating-disk verification and the exact local
+obstruction theorem, so its verdict is sound for the surrounding knot.
+Conversely, every source in the stated finite class is enumerated.  If its
+literal pattern has such an occurrence, the matching procedure tries the
+correct root image and cyclic offset and then reconstructs the entire map.
+It therefore finds that occurrence.  Substituting
+$h\le C\log(n+2)$ gives the displayed quasi-polynomial bound.
+\end{proof}
+
+This is a theorem about discovering local certificates of bounded literal
+description length in the supplied diagram.  Its completeness class is
+specified by the source grammar and the checked plane embedding, rather than
+by knot type alone.  A diagram requiring Reidemeister moves before such a
+pattern becomes visible need not be rejected by the search.  No bound on
+$h$ for arbitrary nontrivial knot diagrams is proved or assumed.  The
+seven-crossing fixed-pattern matcher is an immediately usable implementation
+of the underlying search primitive; the exhaustive source enumerator in
+Proposition~\ref{prop:mon:bounded-discovery} is a separate algorithmic
+construction, and should be distinguished from that implementation in
+benchmark claims. The code defaults to a 100,000-crossing expansion cap;
+that resource policy is not part of the abstract completeness theorem.
+A fixed finite pattern library and a bounded exhaustive
+enumerator may both precede the existing exact fallback recognizer.
+
