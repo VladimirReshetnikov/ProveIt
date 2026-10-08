@@ -1,0 +1,191 @@
+\section{Affine families: tractable global queries and a geometric extraction step}
+\label{sec:affine-families-review}
+
+Commit \texttt{58ee11a97d} supplies
+\path{docs/incoming/unknot_affine_families_20261008.zip}. All 466 manifest
+entries match the original archive. The delivery combines three separate
+interfaces: optimizing a supplied family of cyclic translations, extracting
+partial interval maps from actual normal coordinates, and inheriting scalar
+endomorphism algebras through a verified direct-sum decomposition. The first
+two are complementary but are not yet connected by a complete geometric
+adapter. The third overlaps our earlier scalar-locality and static-corner
+work, with additional transport and one-generator optimizations worth
+measuring separately. This review preserves these distinctions.
+
+\subsection{A factor-free optimum over an affine modular family}
+
+Let $R=\mathbb Z/m\mathbb Z$, and let feasible parameters satisfy $Az=b$.
+For a connected base whose monodromies are translations by the entries of
+$h(z)=c+Hz$, the number of covering components is
+\[
+ \kappa(z)=\gcd(m,h_1(z),\ldots,h_\beta(z)).
+\]
+Solving the seam congruences gives the full affine coset $z=z_0+Bt$.
+Its holonomy image is $v+Ut$, with $v=c+Hz_0$ and $U=HB$. The minimum
+component count is exactly the gcd of $m$ and all entries of $v$ and $U$.
+This is stronger than a lower bound: some assignment attains that gcd.
+
+The constructive step merges two vectors $a,b$. Divide them and $m$ by
+their common content $g$, and put $M=m/g$ and
+$d=\gcd(M,a_1/g,\ldots,a_\beta/g)$. If $d=1$, retain $a$. Otherwise
+iterate $D\leftarrow\gcd(M,D^2)$ from $D=d$ until stable, and use
+$a+(M/D)b$. At termination $D$ contains the full prime-power parts of
+$M$ supported on $d$. On those primes $a/g$ vanishes and $(M/D)b/g$
+has a nonzero coordinate; on the other primes the added term vanishes
+and $a/g$ has a nonzero coordinate. The new vector has content $g$.
+This proof uses prime valuations to justify the algorithm, while the
+algorithm itself only computes gcds. Saturation doubles positive
+valuations, giving $O(\log\log(M+2))$ iterations. For example $m=12$,
+$a=2$, $b=1$ needs the saturated coefficient three; the unsaturated
+coefficient six would give content four rather than one.
+
+A row-by-row modular solver maintains the complete affine coset using
+unimodular two-column gcd transformations and a single congruence restriction
+per row. All stored residues are reduced modulo $m$. The parameterization
+may be redundant, but uniform parameters have equal-size fibres, so dividing
+the assignment count by the size of each new scalar image counts distinct
+feasible assignments correctly. Explicit matrix dimensions and witness
+lengths are charged; a binary declaration of an enormous number of unused
+variables is not treated as a constant-size explicit-variable input.
+
+For a proposed minimum $\mu\mid m$, set $s=m/\mu$. A feasible witness
+$z_*$ with $\gcd(m,c+Hz_*)=\mu$, together with
+\[
+ YA=sH,\qquad Yb+sc=0\pmod m,
+\]
+proves optimality without a kernel solver: every feasible holonomy is
+annihilated by $s$ and hence divisible by $\mu$, while $z_*$ attains it.
+An infeasibility witness is a row $y$ with $yA=0$ and $yb\ne0$ modulo $m$.
+The finite-module annihilator identity guarantees existence also for
+composite moduli. The implemented verifier checks these elementary
+identities and does not invoke the optimizer. Its minimal certificate
+contract deliberately excludes the separately computed feasible-assignment
+count.
+
+\subsection{Where the family query stops}
+
+The surface-family compiler permits disconnected local cyclic covers,
+full-boundary seams, shared affine parameters and a connected patch graph.
+A spanning tree transports sheet labels; local generators and non-tree
+seam voltages generate the global translation action. Seam compatibility
+is the equality of peripheral translations with the specified base-circle
+sign. A negative base-circle degree is not a reflection of the cyclic
+fibre. The compiler recomputes the holonomy data from the original surface
+schema before checking an arithmetic certificate.
+
+The polynomial optimum does not enumerate every marked covering or preserve
+all information needed for future attachments. Even connected covers can
+have different genus: over a five-sheet pair of pants, peripheral
+translations $(1,1,-2)$ give three boundary components and genus two,
+whereas $(1,-1,0)$ give seven boundary components and genus zero. Both
+covers are connected and have Euler characteristic $-5$.
+
+The report gives a sharp warning about correlated peripheral queries.
+For a graph, assign one parameter $z_v$ modulo three to each vertex and
+one boundary translation $z_u-z_v$ to each edge, on a planar surface with
+one additional boundary. Requiring every designated edge-boundary preimage
+to be connected is exactly proper three-colouring. This proves NP-completeness
+for that unrestricted affine peripheral query, not for unknot recognition,
+and does not unconditionally exclude quasi-polynomial time. Similarly,
+counting connected assignments in the family $h(z)=z$ includes computing
+$\varphi(m)$; for a semiprime this recovers its factors. Neither issue
+contradicts the polynomial minimum-and-witness theorem.
+
+\subsection{From actual normal coordinates to local cut data}
+
+The normal extractor accepts reciprocal tetrahedral face pairings and an
+admissible seven-coordinate normal vector. It checks nonnegative coordinates,
+quadrilateral compatibility and matching equations. The ambient manifold
+condition remains a precondition; no PD-to-exterior conversion is supplied.
+Each tetrahedron has at most four triangle stacks and one quadrilateral
+stack. Face arcs are ordered from the cut-off vertex, with triangles before
+quadrilaterals. Quadrilateral order reverses on the opposite side of its
+chosen vertex partition. Equal face ranks therefore give affine maps
+$i\mapsto\varepsilon i+c$ between intervals of disc indices.
+
+There are at most five such surface bands per paired face: for $k\le3$
+nonempty arc types, either side has at most $k+1$ blocks, and overlaying
+the two partitions gives at most $2(k+1)-k=k+2\le5$ intersections.
+Consecutive-disc prism gaps require both endpoint discs to lie in the band.
+Their map is $i\mapsto i+c$ for a translation, but
+$i\mapsto-i+c-1$ for a reflection. The minus one is necessary because a
+gap is indexed by its smaller disc index.
+
+If a tetrahedron has $D$ normal discs and $k$ nonempty types, it has
+$D-k$ between-disc prisms and $k+1\le6$ remaining local cells. Across a
+paired face at most two exceptional prism sides meet residual cells: one
+in each direction where an arc block crosses a triangle--quadrilateral
+transition. These are singleton gap contacts. The output size and arithmetic
+work are linear in tetrahedra and polynomial in coordinate bit length,
+with no multiplicity expansion.
+
+Concatenating disc-stack intervals produces an input for interval-orbit
+counting. A signed orientation double cover similarly distinguishes
+orientable and nonorientable component counts once those orbits are known.
+The delivery prepares these inputs; it does not implement unrestricted
+Agol--Hass--Thurston reduction, all weighted component data, residual edge
+attachments, or a full cut-manifold handle structure. Its partial signed
+interval maps are not automatically total translations on one cyclic fibre.
+A sound extraction and coverage theorem is still needed to connect them
+to the affine-family optimizer.
+
+\subsection{Scalar inheritance relative to the maintained implementation}
+
+For a complete scalar commutant $A$ and an actual typed direct-sum child
+with coordinate selector $e$, restriction identifies its full algebra with
+$e(S^{-1}AS)e$: every child endomorphism extends by zero. The map from the
+whole algebra to the corner is only linear in general, not multiplicative.
+Canonical least-pivot reduction recovers the same ordered basis as a fresh
+commutator solve, preserving bounded candidate order. Our maintained
+\path{corner_split.py} already implements this exact static principle;
+its reuse option remains separate from runtime defaults.
+
+The delivery additionally selects direct transport or a precomputed packed
+linear map on matrix variables. When a generator $Q$ saturates the full
+commutant dimension, $A=\mathbb F_2[Q]$. A child of this commutative algebra
+is generated by the restricted $Q$, so its full algebra can be recovered
+from one transported generator. A primary minimal polynomial then proves
+scalar locality. Our earlier dimension-saturation stopping already checks
+the locality implication; the new contribution to evaluate is propagation
+through one generator and its transport cost.
+
+The delivery reports fewer equations and solves on attached-copy fixtures,
+and about twofold improvements on selected saturated two-field fixtures.
+Those are graded algebraic complexes without a claimed realization as
+knot-scan prefixes. Its six natural-knot timings range from 0.961 to 1.022
+in paired baseline/new ratios, providing no convincing recognition gain.
+These supplied timings are not measurements of our current implementation;
+its baseline predates several maintained changes. A blanket patch would
+also overwrite our independently integrated scalar options. We therefore
+retain the proof and reproduction evidence, and defer runtime promotion
+until a direct comparison with the maintained backend establishes a benefit.
+
+\subsection{Reproduction and integration status}
+
+We reran all 65 targeted methods in the distributed source tree: 13 arithmetic,
+19 family-compiler, eight normal-extractor, 13 scalar-inheritance and 12
+primary-split tests. All passed. The rational oracle reproduced 1,537
+geometric cases, 9,771 disc identifications and 4,850 prism identifications,
+including 591 reflected prism bands. The separate Regina audit reproduced
+807 inputs and 1,537 component records, including 92 nonorientable and 274
+closed components; it compared full coordinate multisets, Euler characteristic,
+orientability and boundary counts. Family example and peripheral-reduction
+checks also passed. Logs and JSON evidence are stored under
+\path{data/affine-families-*}.
+
+These are reproduced delivery tests, not a claim that the entire distributed
+source tree replaces our maintained implementation. We did not rerun its
+790-test historical suite or its comparative timing experiments. The current
+775-test maintained suite validates the separate braid change in
+Section~\ref{sec:linear-braid-descent}. The archive also repeats the earlier
+single-submission worker-communication repair; it is distinct from all three
+new mathematical interfaces and should be assessed as a focused resource
+handling change.
+
+The most consequential new geometric result is the actual normal-coordinate
+extractor. The next integration target is a checked native consumer of those
+intervals, with general weighted orbit reduction and full residual attachments.
+A polynomial family query can remove enumeration only when its invariant is
+all that the caller needs. Neither component minimization nor inherited
+scalar locality supplies the missing global state-count, reset or completeness
+bound for the unknot algorithm.

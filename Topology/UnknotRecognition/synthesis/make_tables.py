@@ -1092,3 +1092,16 @@ if endpoint_clipping:
                 '@{}lrrrr@{}' if scope=='rows' else '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
                 'Median milliseconds; ratios are medians of complete paired before/clipping times. '
                 'Censored runs are shown as limits and excluded from ratios.\n')
+
+braid_descent = load('../fast/results/braid_descent_20261008.json')
+if braid_descent:
+    rows=[]
+    for item in braid_descent['summary']:
+        cells=[esc(item['case'])]
+        cells.extend(f"{1000*item['median_seconds'][arm]:.3f}" for arm in ('baseline','control','adaptive'))
+        cells.append(f"{item['paired_ratios']['adaptive']:.2f}" if item['complete'] else '--')
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/braid_descent.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Case & Before & A/A & Adaptive & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds; ratios are medians of paired before/adaptive times.\n')

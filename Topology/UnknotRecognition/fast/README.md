@@ -1794,3 +1794,22 @@ This improves a restricted class of exact compressed-word queries. It does not
 bound the number of relator moves needed to recognize arbitrary knots. See
 [`endpoint_clipping.tex`](../synthesis/endpoint_clipping.tex) for the proof,
 validation and comparison against the previous maintained matcher.
+
+Endpoint Markov descent now uses the original-position linked-list kernel from
+report 34 for sufficiently large, connected-closure-sized inputs (at least 64
+strands and 128 letters). Small inputs retain the version-1 path. Both paths
+perform the same elementary moves; the new version-2 certificate records local
+inverse cancellations and singleton endpoint deletions using original letter
+indices. Its independent verifier replays those choices without endpoint search.
+Old version-1 certificates remain supported.
+
+On an explicit one-component braid with `n` letters and `m` strands, adaptive
+descent takes `O(n+m)` word operations, including generation and replay of new
+certificates. A deletion queues at most one newly exposed seam, every original
+letter is removed at most once, and left renumbering uses a single offset.
+Small-path work is also linear on this domain because its rank or length is
+bounded by fixed dispatch thresholds. Sparse standalone link inputs retain the
+legacy behavior and its `O(n*m)` upper bound. This changes neither the sufficient
+endpoint criterion nor the general unknot complexity bound. The separate matrix
+three-braid backend retains its quadratic bit-arithmetic term. See
+[`braid_descent.tex`](../synthesis/braid_descent.tex) for proof and measurements.
