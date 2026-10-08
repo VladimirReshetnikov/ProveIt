@@ -95,6 +95,54 @@ class CommonSubstring:
         a.stats['lcs_periodic_hits'] = a.stats.get('lcs_periodic_hits', 0)+1
         return result
 
+    def sparse_overlaps(self, x, y):
+        """Enumerate at most 64 endpoint-forced lengths, then check them exactly.
+
+        A suffix/prefix match must end at last(x) in y and start at first(y)
+        in x. Saturated signed-letter counts choose the rarer candidate set.
+        None leaves dense endpoints to the complete occurrence-table matcher.
+        """
+        a = self.arena
+        nx, ny = a.lengths[x], a.lengths[y]
+        if min(nx, ny) < 128:
+            return None
+        a.stats['lcs_sparse_trials'] = a.stats.get('lcs_sparse_trials', 0)+1
+        first, last, counts = a.first[y], a.last[x], {}
+        nodes = a._reachable([x, y])
+        for node in nodes:
+            a.tick()
+            rule = a.rules[node]
+            if rule[0] == 't':
+                counts[node] = int(rule[1] == first), int(rule[1] == last)
+            else:
+                left, right = counts[rule[1]], counts[rule[2]]
+                counts[node] = min(65, left[0]+right[0]), min(65, left[1]+right[1])
+        a.stats['lcs_sparse_rules'] = a.stats.get('lcs_sparse_rules', 0)+len(nodes)
+        from_x = counts[x][0] < counts[y][1]
+        root, column = (x, 0) if from_x else (y, 1)
+        if counts[root][column] > 64:
+            return None
+        result, pending = [], [(root, 0)]
+        while pending:
+            a.tick()
+            node, offset = pending.pop()
+            if not counts[node][column]:
+                continue
+            rule = a.rules[node]
+            if rule[0] == 't':
+                length = nx-offset if from_x else offset+1
+                if length > min(nx, ny):
+                    continue
+                a.stats['lcs_sparse_candidates'] = a.stats.get('lcs_sparse_candidates', 0)+1
+                if a.equal(a.slice(x, nx-length, nx), a.slice(y, 0, length)):
+                    result.append((length, 0, 1))
+            else:
+                left, right = rule[1:]
+                pending.append((right, offset+a.lengths[left]))
+                pending.append((left, offset))
+        a.stats['lcs_sparse_hits'] = a.stats.get('lcs_sparse_hits', 0)+1
+        return result
+
     def overlaps(self, x, y):
         """Disjoint APs of positive k with suffix_k(x) == prefix_k(y)."""
         a = self.arena
@@ -118,6 +166,8 @@ class CommonSubstring:
                 result = [(1, 1 if limit > 1 else 0, limit)]
         elif (periodic := self.periodic_overlaps(x, y)) is not None:
             result = periodic
+        elif (sparse := self.sparse_overlaps(x, y)) is not None:
+            result = sparse
         else:
             low = 1
             while low <= limit:
