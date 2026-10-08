@@ -1,0 +1,230 @@
+\section{Exact compressed-word replay without expanding relators}
+\label{sec:compressed-words}
+
+\subsection{Separating word representation from proof search}
+
+The group-search implementations above store their relators as explicit
+letter lists.  This makes free reduction straightforward, but ties their
+operation counts and storage ceilings to expanded length.  The new
+\code{compressed\_words.py} implements a deterministic compressed-word
+kernel, and \code{compressed\_group.py} uses it to replay the same group
+certificates.  The kernel represents finite words by binary straight-line
+programs (SLPs), retaining concatenation and repeated subwords as a DAG.
+It supports exact equality, substrings, inversion, free reduction, cyclic
+reduction, simultaneous letter substitution and occurrence queries.
+
+The equality and reduction algorithms follow the constructive account of
+Plandowski's and Lohrey's results in Schleimer
+\cite{schleimer-compressed}, especially Sections~3, 7 and~8.  These are
+existing polynomial algorithms; the contribution here is an exact,
+resource-bounded implementation and its integration into certificate replay.
+No probabilistic fingerprint or assumed hash-collision bound decides word
+equality.  Python dictionaries index exact rule tuples and assertions,
+with ordinary collision-resolving equality checks.
+
+This is a representation improvement for verification.  The recognition
+producer still uses explicit relators, and its Whitehead and overlap
+searches retain their previous bounds and limitations.  The compressed
+checker does not by itself construct a short proof, control all grammar
+growth over a long search, or prove general quasi-polynomial recognition.
+Its present practical cost is also higher on most measured knot queries,
+so it is separately opt-in.
+
+\subsection{The immutable word arena}
+
+Node zero represents the empty word.  Other nodes either contain one
+signed generator or concatenate two earlier nonempty nodes.  Identical
+rules share a node.  Each node caches its length and endpoint letters;
+lengths and substring coordinates use exact integers.  A binary program
+with $N$ nonempty nodes represents words of length at most $2^N$, so
+these coordinates have $O(N)$ bits, apart from the separate bit cost of
+generator names.  Repeated squaring constructs powers using logarithmically
+many concatenations.
+
+A substring operation descends only at the two interval boundaries,
+reusing complete covered subtrees.  It creates $O(h)$ nodes for input
+height $h$ without increasing that height.  Explicit stacks avoid Python
+recursion limits.  Inversion reverses concatenation order and negates
+terminal letters, sharing memoized inverse nodes.  Occurrence counting
+uses a topological pass: a generator count at a concatenation is the sum
+of its child counts.  Following the child with a positive count locates
+the first occurrence and its sign without reading preceding letters.
+
+The arena has separate limits on work and allocated nodes.  The node
+allowance also caps live equality assertions and the equality-result
+cache.  Exceeding any limit raises an inconclusive resource exception,
+never a guessed equality result.  Cached nodes are immutable; an equality
+result cannot become stale after a later operation.  Diagnostic expansion
+is explicitly bounded and is not called by compressed equality, reduction
+or certificate replay.
+
+\subsection{Equality by splitting and periodicity compaction}
+
+For clarity, treat the two compared programs as disjoint tagged copies,
+even when they share arena nodes.  An assertion $(U,V,i)$ aligns $V$ at
+offset $i$ in $U$ and requires equality on the intersecting interval.
+If $|U|\le i+|V|$, it compares a suffix of $U$ with a prefix of $V$;
+otherwise it asserts that $V$ occurs inside $U$.  A proper prefix inclusion
+at offset zero is written with the two symbols interchanged.  Root
+length and endpoint mismatches are immediate rejections.  Equal root
+identities are immediate exact acceptances.
+
+Start with $(A,B,0)$.  At each round choose a mentioned nonterminal of
+maximum expanded length, and replace its assertions by assertions involving
+its two children.  The new assertions are exactly the intersections of the
+old comparison interval with the child intervals.  Terminal comparisons
+are checked directly.  Every split preserves the conjunction of all
+assertions.  Each selected nonterminal disappears permanently, because
+nonempty children have strictly smaller length.
+
+Splitting alone can create too many overlapping comparisons.  For an
+ordered pair $(U,V)$, consider three suffix--prefix assertions at offsets
+$i<j<k$.  If
+\[
+ (j-i)+(k-i)\le |U|-i,
+\]
+replace those three assertions by the assertions at offsets
+\[
+ i,\qquad i+\gcd(j-i,k-i).
+\]
+Two overlapping copies imply a period of the relevant suffix.  The displayed
+inequality allows the periodicity lemma to replace the two periods by their
+greatest common divisor.  Thus this compaction is logically equivalent,
+including when the compared words are unequal.  It is not merely a way of
+sampling a few positions.
+
+The code groups assertions by ordered symbol pair and repeatedly checks
+consecutive triples of sorted offsets.  This suffices: if any triple
+starting at $i$ meets the inequality, the next two offsets after $i$ are
+no larger and also meet it.  When no triple can be compacted, every two
+successive gaps advance more than half the remaining suffix length.
+There are consequently $O(\log |U|)=O(N)$ overlap assertions per pair.
+Across $O(N^2)$ symbol pairs there are $O(N^3)$ overlap assertions; at most
+$O(N)$ split rounds accumulate $O(N^4)$ subword assertions.  Our elementary
+sorting-and-compaction implementation therefore has a polynomial bound in
+the grammar size and coordinate bit lengths.  Its high worst-case degree
+is not claimed to match the best compressed-string algorithms.
+
+Tests compare the implementation with literal strings on 400 random
+30-rule grammars.  They also force compaction on distinct parses of periodic
+words and on a same-length interior mutation with identical endpoints.
+The latter exercises rejection through the actual equality procedure,
+rather than through an endpoint or length shortcut.
+
+\subsection{Free reduction from exact longest-prefix queries}
+
+Binary search on the prefix length, using SLP substring construction and
+exact equality, computes the longest common prefix.  It uses
+$O(\log L)$ equality calls for expanded length $L$; since the SLP length is
+binary-encoded, this number is polynomial in the grammar size.
+
+If $u$ and $v$ are freely reduced, all cancellations in their product occur
+at their common boundary.  Let
+\[
+ c=\operatorname{lcp}(u^{-1},v).
+\]
+Then its freely reduced form is
+\[
+ u[0:|u|-c]\;v[c:|v|].
+\]
+A bottom-up traversal applies this formula at every concatenation node.
+When the boundary letters are not inverse, no prefix query is necessary.
+The reduced children and their slices remain compressed and shared.
+A second prefix comparison against the inverse word, capped at half its
+length, removes the conjugating prefix and suffix for cyclic reduction.
+
+For a single input SLP, reduction does not increase expanded length or
+parse height.  Boundary slicing and the logarithmic prefix search create
+only polynomially many additional rules over the original nodes.
+Inversion, occurrence counting and one simultaneous substitution followed
+by reduction are likewise polynomial operations in their encoded inputs.
+However, repeatedly applying polynomial transformations need not maintain
+polynomial-size intermediate grammars in the original knot size.  A bound
+on the total constructed grammar size over the search remains a separate
+obligation.
+
+One exact test compares the two differently parsed words
+\[
+ (ab)^{2^{100}}a=a(ba)^{2^{100}}
+\]
+and freely reduces their quotient to the empty word.  Neither word is
+expanded.  Another test uses a 1,500-level repeated-power grammar to check
+substring and inversion operations without recursive-stack overflow.
+
+\subsection{Replaying the existing knot certificates}
+
+The public checker accepts \code{compressed=True}; the optional pipeline
+flag is \code{--group-compressed}, and Python recognition uses
+\code{use\_group=True, group\_compressed=True}.  Existing certificate
+versions~1 and~2 are unchanged.  The independent PD reconstruction remains
+the same as in the explicit checker, and only its small initial relators
+are materialized.  The compressed engine then replays every move.
+
+For a generator elimination, an exact DAG occurrence count must equal one.
+Its position splits the defining relator into prefix, signed generator
+and suffix; the derived replacement and its inverse are substituted into
+all other relators with shared reduction.  For a Whitehead move, validated
+letter images are substituted simultaneously.  For a relator-overlap
+move, compressed rotations and inversions are formed, the stated prefix
+equality is checked exactly, and the target is replaced using the same
+normal-closure identity as before.  A distinct donor must remain present.
+Terminal acceptance still requires one generator and no nonempty relators.
+
+The original \code{max\_letters} bound applies to the reconstructed initial
+presentation in compressed mode.  Intermediate expanded lengths are not
+subject to that limit; \code{max\_nodes} and the work allowance instead
+bound compressed replay.  The default node/assertion allowance is 100,000.
+Local exhaustion propagates as \code{GroupLimit} and resumes recognition
+when called through the optional stage.  Global cancellation propagates
+unchanged.  Search and replay still share the same local wall allowance.
+Evidence records whether replay used explicit letters or compressed SLPs.
+
+The initial presentation construction and classical cyclic-knot-group
+criterion are shared by the two checkers.  The compressed and explicit
+word algorithms are distinct, but this is not two entirely unrelated
+proof systems.  The regression suite checks every maintained survivor,
+the two overlap-dependent mirrors and Gordian, along with forged moves,
+resource exhaustion and actual CLI dispatch.
+
+\subsection{Capacity gains, measured overhead, and their scope}
+
+\code{benchmark\_compressed\_words.py} records whole-query, replay-only,
+constructed-trace and word-kernel measurements separately.  Each query
+starts from fresh validated PD data.  The 15 knot cases comprise twelve
+original survivors, the two previously stalled mirrors and Gordian.
+There are five measured randomized A/A/B rounds after one excluded warmup,
+with explicit verification, a repeated explicit control, and compressed
+verification.  Search settings are identical: relator moves enabled,
+two local seconds, ten million work units and four global seconds.
+
+On the fourteen small cases, the sums of median whole-query costs are
+$51.02$ ms, $50.89$ ms and $137.53$ ms respectively.  On Gordian the medians
+are $1.236$, $1.235$ and $1.417$ seconds.  All queries complete, but the
+compressed verifier adds overhead on these inputs.  The default stays
+explicit.  We do not present compression as a current general speedup.
+
+To test representation capacity separately, construct valid but deliberately
+inflated proof traces for a three-crossing unknot.  Apply alternating
+Whitehead shears repeatedly, undo them, and append an ordinary certificate.
+These are artificial verification stresses, not hard unknot-recognition
+instances; a trace simplifier could cancel inverse moves.  At eight rounds,
+both checkers finish, at medians $8.84$ ms explicit and $2.12$ ms compressed.
+At sixteen, thirty-two and sixty-four rounds, the explicit verifier exhausts
+its 200,000-letter allowance.  The compressed verifier finishes all three;
+its medians are $5.69$, $18.28$ and $64.06$ ms.  The sixty-four-round trace
+uses 904 SLP nodes and represents an intermediate node length with 90 bits.
+The explicit limit observations are not completed verification times.
+
+Finally, the noncanonical equality-and-cancellation kernel above, with
+exponent $2^{100}$, completes in a median $0.676$ seconds using 10,614
+allocated nodes and 835,846 charged work units.  This includes grammar
+construction, equality and reduction.  Raw samples, actual synthetic
+certificates, environment metadata and separate timing scopes are in
+\path{fast/results/compressed_words_20261008.json}.
+
+The resulting advance is exact access to words far larger than available
+expanded storage.  The next unresolved steps are compressed search
+operations and a quantitative bound on the grammars and moves needed for
+arbitrary knot diagrams.  The complete recognition fallback remains
+exponential; this implementation does not establish general sub-exponential
+or quasi-polynomial unknot recognition.
