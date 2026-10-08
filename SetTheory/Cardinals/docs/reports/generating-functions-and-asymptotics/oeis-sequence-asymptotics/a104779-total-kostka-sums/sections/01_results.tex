@@ -199,3 +199,32 @@ $D$, $W$, $N$ & $D_k$ the sums~\eqref{tks:eq:Dk} and $D$ the limiting deficit; $
 \bottomrule
 \end{longtable}
 \endgroup
+\begin{writenote}[Independent check of the write, 7 October 2026]\raggedright
+An independent adversarial check of the batch-113 write (\file{c95388b8e}) and of its reciprocal notes
+(\file{0603ceb9c}) used its own code. It read A104779 (\#14), A178718 (\#60), A321652 (\#18) and A068313 (\#25)
+again. The quotations of Remark~\ref{tks:rem:oeis} are verbatim, the four b-files have the stated ranges and
+authors, and A178718 equals A104779 at every positive index.
+\begin{itemize}\raggedright
+\item \emph{From the OEIS definitions, without Kostka numbers or RSK.} The check counted symmetric matrices with
+partition margins for $n\le16$, and nonnegative and binary matrices with partition margins for $n\le11$. They equal
+the b-files of A104779, A321652 and A068313. It also confirmed the root formula~\eqref{tks:eq:rootcycles} by brute
+force for sizes up to~7, and Schwob's identity~\eqref{tks:eq:schwob} in its Young-subgroup form for $n\le10$.
+\item \emph{Constants.} $C$ was recomputed at 50 digits, and $H_3,\ldots,H_6$ by its own expansion of~\eqref{tks:eq:P}
+($H_3$ also as $\frac13\sum_{j\ge3}\fall j3/(j!-1)$). All five lie in the printed intervals, and the 42 printed
+decimals of the note in Section~\ref{tks:sec:constants} are truncations.
+\item \emph{Numbers.} The inverse formulas~\eqref{tks:eq:centeredinverse}, \eqref{tks:eq:centerednext} on the
+model~$F_4$, and the companion ratios for $n\le37$, agree with the write's values. So do the two-sector
+remainders for $15\le n\le39$. For these the check adds a precision, a third exponentially small effect: the
+bracketed note at the end of Appendix~\ref{tks:sec:sectors}.
+\item \emph{Reciprocal notes.} Brute force over $S_n$, $n\le6$, confirms the double-coset readings of A104779
+(self-inverse $S_\mu wS_\mu$) and A321652 (all $S_\mu wS_\nu$), as stated in \file{a260700-parabolic-double-cosets}.
+For \file{a138178-symmetric-packed-matrices}, the decreasing-margin matrices are among the packed ones,
+$a_n\le A_n$ for $n\le10$ with $A_n$ recounted, and $a_n/A_n\sim2Ce^{-L^2/4}L^{n+1}$ is the quotient of the two
+leading terms.
+\end{itemize}
+Also confirmed: Remark~\ref{tks:rem:transseries} against the volume's statements (both seeds are
+\file{p0:thm:lambert-core} with $w=\log x_0-1$); the provenance (33 files, 55 lines, 25 pages, 32 manifest
+entries); the byte identity of the staged files; the README listing; and the numbering, with 123 delivered labels
+and 0 differences against the \file{.aux} of a build of the placed text. No claim of the write was found wrong;
+one precision was added.
+\end{writenote}

@@ -96,7 +96,10 @@ importing the delivered programs, it
 \begin{itemize}\raggedright
 \item computed $A_n$, $B_n$ by~\eqref{sfh:eq:recurrence} for $n\le1200$, equal
 to all 201 terms of the b-files of A323297 and A323296, and the connected
-counts $c_m$, equal to all 1001 terms of A323294; $A_n$ again by the second
+counts $c_m$, equal to all 1001 terms of A323294 [independent check,
+7~October 2026: equal for $2\le m\le1000$. A323294 counts spanning
+hypergraphs, so its $a(0)=1$ and $a(1)=0$ are its own conventions, while here
+$c_1=1$ is the isolated vertex. Its e.g.f.\ is $1+C(x)-x$]; $A_n$ again by the second
 route of Section~\ref{sfh:sec:computation} for $n\le60$; the series
 identity~\eqref{sfh:eq:C}; and, by enumerating every admissible edge set for
 $n\le8$, $A_n$, $B_n$, the connected counts and the defect
@@ -176,3 +179,29 @@ $\kappa_j$, $k_j$, $\eps$ & $\kappa_j=\De^jC(r)$; $k_j=\De^jG(r)$ for $G=C$ or $
 \bottomrule
 \end{longtable}
 \endgroup
+\begin{writenote}[Independent check of the write, 7 October 2026]\raggedright
+An independent adversarial check of the batch-113 write (\file{8748cfc59}) used its own code. It read A323297
+(\#14), A323296 (\#15) and A323294 (\#34) again. The quotations of Remark~\ref{sfh:rem:oeis} are verbatim, and so
+is the write's observation that the component comment is in A323296 while A323297 carries the e.g.f.
+\begin{itemize}\raggedright
+\item \emph{Counts.} The check enumerated every admissible edge set for $n\le7$, a separate backtracking code. It
+reproduces $A_n$, $B_n$, $c_m$ and the defect identity~\eqref{sfh:eq:defect} on every object. Power-series
+exponentiation of~\eqref{sfh:eq:C} reproduces all 201 b-file terms of A323297 and of A323296. For A323294 see the
+bracketed precision above.
+\item \emph{Expansions.} At the exact saddle, with counts computed to 80 digits for $n=100,\ldots,1200$, the
+remainders of~\eqref{sfh:eq:coeff} for $J=0,1,2$, the deletion remainders of~\eqref{sfh:eq:BA}
+and~\eqref{sfh:eq:nonsunflower}, and $(\log A_n-n\,g(r))/r^5$ all equal the write's values.
+\item \emph{Inverse.} An own symbolic reversion of~\eqref{sfh:eq:logreversal} gives exactly the corrections
+of~\eqref{sfh:eq:rinverse} and~\eqref{sfh:eq:reverse}. Remark~\ref{sfh:rem:transseries}(2) was checked against
+\file{plt:def:lw-monomial-log-datum}: $\rho=1$, $\mu=4$, $\beta=-\log2$, and the perturbation
+$\log(1+2t)+\log(g/r)$ lies in $t\,\mathbb Q(\log2)[\log r][[t]]$.
+\item \emph{Table of Section~\ref{sfh:sec:computation}.} All sixteen entries were recomputed from the exact
+conditioning formula~\eqref{sfh:eq:exacth} and exact moments of~$K$, and agree with the write's values to
+eight digits. The five
+values named in the note are roundings and the other eleven are truncations. $\E|1-Z^2|=4\phi(1)$ was confirmed.
+\end{itemize}
+Also confirmed: the provenance (601,277 bytes, 30 files, 52 lines, 21 pages, 29 manifest entries); the byte
+identity of the staged files; the README listing; and the numbering, with 83 delivered labels and 0 differences
+against the \file{.aux} of a build of the placed text. One precision was added in bracketed notes, on the A323294
+comparison, in this section and in Remark~\ref{sfh:rem:oeis}. No claim of the write was found wrong.
+\end{writenote}

@@ -123,6 +123,54 @@ byte reproducibility only for the same toolchain.
   bracket of Section 4.3 are analogues of `p0:thm:staircase`(3) and (2), not
   instances.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-113 write (`43e0c9a22`) used
+its own code.
+
+- **Checked hardest: A132219 cannot count line graphs.** All labelled graphs
+  on n ≤ 7 vertices were enumerated from the networkx graph atlas (1,252
+  unlabelled graphs, weighted by n!/|Aut|, so all 2^C(n,2) are covered). Each
+  was tested by two independent line-graph recognitions (van Rooij–Wilf, and
+  networkx's inverse-line-graph algorithm), which agree everywhere. This route
+  uses neither root graphs nor the exception classification. It gives
+  1, 2, 8, 60, 729, 11600, 228443 for n = 1..7, equal to (4) and to the
+  write's root enumeration. So `a(4) = 66` is impossible and the true value is
+  60. Among n ≤ 12, `O_n > 2^C(n,2)` only at n = 4. The OEIS searches for the
+  corrected terms return nothing.
+- **OEIS and sources.** The four entries were read again live; the revisions,
+  authors, names and b-file ranges quoted in Remark 2 are verbatim. An own
+  exact `H_n` (Newton differences, no Bell numbers) reproduces every b-file
+  term: A094089 as `2^n H_n` (151 terms), A060053 and A014500 (101 each) and
+  A132219 (18). The shipped b-files equal the live ones. Both
+  Cameron–Prellberg–Stark PDFs, fetched again, have the ledger's SHA-256
+  values, and every cited locator was confirmed.
+- **Numbers.** Recomputed: the `n = 1000` table, its truncations and the
+  `n = 20` values; the Lambert remainders for H, V, U, L at n = 10⁴…10⁷ and
+  every ratio quoted in Section 1.5; the roots of the `v_3` numerator (exact
+  isolation) and the values of `v_3/(r¹²/663552)`; the first-order formula;
+  (C17); the exact form of Φ(x_0); the seed (C23) with next term `b²/(2w⁴)`.
+  All agree.
+- **Transseries.** Remark 1 was checked against the volume's statements. The
+  reading `(ρ, μ, β) = (1, 2, 0)` over ℚ(log 2) for `plt:def:lw-monomial-log-datum`,
+  `p0:thm:lambert-core` with slope 1 and coefficient 2, and the staircase
+  analogues are confirmed.
+- **Precisions added (bracketed dated notes).**
+  - Remark 1(3): the relative change is of order `e^{−r_0}`, not
+    `r_0 e^{−r_0}`, since `d_0 ~ r_0/8` and `x_0 = r_0 e^{r_0}/2`. The
+    conclusion is unchanged.
+  - The `v_3` note of Section 3.4: `v_3(W(2n)) < 0` also for n ≤ 3 and for
+    37 ≤ n ≤ 235. The printed interval is the last of three. The sign of the
+    numerical remainder at n = 10⁴…10⁷ agrees.
+- **Also confirmed.** The provenance figures (621,206 bytes, 27 files, 44 and
+  1,383 lines, 21 pages, 24 manifest entries); the byte identity of the staged
+  files; the README listing; and the numbering: 47 delivered labels, 0
+  differences against the `.aux` of a build of the placed text, 51 tags
+  unchanged.
+
+No claim of the write was found wrong. The check is recorded at the end of
+Section 1.5.
+
 ## Further questions, and the standing rule
 
 Section 6 (the source's six questions: effective enclosures, growing orders,
@@ -259,6 +307,10 @@ The committed PDF was built from these files with MiKTeX pdfLaTeX (three
 passes, 7 October 2026): 26 pages; no errors or warnings, no undefined
 references, no multiply defined labels, no duplicate destinations, no
 overfull or underfull boxes. The delivered text gives 21 pages, equally clean.
+(Under MiKTeX, the delivered `\pdfmapfile{+lm.map}` lines produce 684 pdfTeX
+notices of duplicate font-map entries, both in the delivered and in the written
+build. These are not LaTeX warnings.) The independent check rebuilt the PDF on
+7 October 2026, three passes: 26 pages, equally clean, label numbers unchanged.
 
 ## Provenance
 

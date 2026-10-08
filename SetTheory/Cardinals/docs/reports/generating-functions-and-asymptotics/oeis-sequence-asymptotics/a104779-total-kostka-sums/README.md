@@ -114,6 +114,57 @@ matrix conventions), with a dated note under Vladimir's standing rule of
 version and an independent proof of the imported identities. No claim of the
 source was found false; nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-113 write (`c95388b8e`) and of
+its reciprocal notes (`0603ceb9c`) used its own code. It read A104779 (#14),
+A178718 (#60), A321652 (#18) and A068313 (#25) again; the quotations of
+Remark 10.1 are verbatim.
+
+- **From the OEIS definitions, without Kostka numbers or RSK.** Matrix counts
+  with partition margins give the b-files of A104779 (n ≤ 16), A321652 and
+  A068313 (n ≤ 11). The root formula (2.4) and Schwob's identity (2.2), in its
+  Young-subgroup form, were checked by brute force for n ≤ 7 and n ≤ 10.
+- **Constants.** `C` at 50 digits, and `H_3, …, H_6` by an own expansion of
+  (2.6) (`H_3` also as `(1/3) Σ_{j≥3} (j)_3/(j!−1)`). All five lie in the
+  printed intervals, and the note's 42 decimals are truncations.
+- **Numbers.** The inverse formulas (7.8)–(7.9) on the model `F_4`, the
+  companion ratios for n ≤ 37, and the Appendix A remainders all equal the
+  write's values.
+- **Precision added (bracketed dated note, Appendix A).** With the recessive
+  sector added, the scaled remainder rises monotonically up to n = 34. For
+  34 ≤ n ≤ 39 a residual alternation of about ±0.1 remains, down from ±1.7.
+  - It comes from a third exponentially small effect, which both expansions
+    omit (it lies beyond all their orders). The support weight
+    `α_{1^n} = [x^n] Π_j (1 − x^j/j!)^{−1}` tends to `C` with error
+    `O(2^{−n/2})`, from the poles `x = ±√2` of the factor j = 2.
+  - The pole at `−√2` gives an alternating relative term of about
+    `0.0644 (−1)^n 2^{−n/2}`. Near n = 33 this is comparable with
+    `e^{−2√n}`, and below that it is larger.
+  - Subtracting the exact correction `(α_{1^n} − C) I_n` as well leaves a
+    remainder whose only parity wiggle, about 0.1, sits at the turning point
+    n = 28–30.
+- **Reciprocal notes (`0603ceb9c`), now applied in
+  `a138178-symmetric-packed-matrices` and `a260700-parabolic-double-cosets`.**
+  - Brute force over `S_n`, n ≤ 6, confirms that A104779 counts the
+    self-inverse double cosets `S_μ w S_μ` summed over μ ⊢ n, and A321652
+    all `S_μ w S_ν`.
+  - The decreasing-margin matrices are among the packed ones: `a_n ≤ A_n`
+    for n ≤ 10, with `A_n` recounted.
+  - `a_n/A_n ~ 2C e^{−L²/4} L^{n+1}` is the quotient of Theorem 1.1 and that
+    report's Corollary 2.2.
+  - Both reports rebuild as committed.
+- **Also confirmed.**
+  - Remark 7.3 against the volume.
+  - The provenance figures (33 files, 55 lines, 25 pages, 32 manifest
+    entries).
+  - The byte identity of the staged files and the README listing.
+  - The numbering: 123 delivered labels, 0 differences against the `.aux` of
+    a build of the placed text.
+
+No claim of the write was found wrong. The check is recorded at the end of
+Section 1.2.
+
 ## Relation to the repository
 
 Before batch 113 the repository named A321652 and A178718 only in
@@ -160,7 +211,7 @@ README.md                        this guide (replaces the delivered README.md)
 COMPUTATION.md                   the source's account of its finite computations and reproduction
 SOURCES.md                       the source's public sources and attribution boundary
 article.tex                      the report's main file (delivered, written)
-article.pdf                      compiled report, 29 pages
+article.pdf                      compiled report, 30 pages
 code/build.py                    delivered root builder: manifest, receipts, pdfLaTeX, deterministic ZIP
 code/certify_constants.py        rational interval certificates for C and H_3..H_6 (J = 70)
 code/common.py                   shared bounded helpers
@@ -247,7 +298,10 @@ The committed PDF was built from these files with MiKTeX pdfLaTeX (three
 passes, 7 October 2026): 29 pages; no errors or warnings, no undefined
 references, no multiply defined labels, no duplicate destinations, no
 overfull or underfull boxes. The delivered text gives 25 pages and one
-underfull line in the bibliography.
+underfull line in the bibliography. (MiKTeX prints 684 pdfTeX notices of
+duplicate font-map entries in both builds; these are not LaTeX warnings.) The
+independent check rebuilt the PDF on 7 October 2026, three passes: 30 pages
+(the check notes add one), equally clean, label numbers unchanged.
 
 ## Provenance
 

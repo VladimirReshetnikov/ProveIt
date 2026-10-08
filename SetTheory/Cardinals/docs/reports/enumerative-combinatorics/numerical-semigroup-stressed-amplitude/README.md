@@ -120,6 +120,57 @@ Theorem 1.1**, which the source requests, and a quantitative study of the
 boundary series at the critical point. No claim of the source was found
 false; nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`a08662116`) was asked to probe
+the main theorem as far as light computation allows.
+
+- **Proof re-read; no error found.** The check re-read the container lemma,
+  the independence of the standardized prefix one-set, the eligibility budget
+  and the criterion (Proposition 7.2), the certificates of Proposition 8.1,
+  the three cases of Theorem 9.1 (the translated relations, the bound `η`,
+  the block-disjoint selection, the parameter order) and the residue step. It
+  found no error. This is again a reading, not a verification: the theorem
+  stays marked as not independently verified. Its constants are existential
+  (`τ = 7.686·10⁻⁵`), so no finite computation can confirm or refute it.
+- **Confirmed with the check's own code:**
+  - every rational certificate and critical constant;
+  - `D_r(ξ)` for `r ≤ 33`, by a second code (enumeration of `J` in (1.6)),
+    equal to the write's values to `4·10⁻¹²` relative, with
+    `C_s^(33) = 2.41595…`;
+  - `D_r = A·S_r(𝔗)` at `ξ` for `r ≤ 27`;
+  - the length-refined renewal (3.1) at `ξ`, against an exact enumeration of
+    all stressed words of length `L ≤ 29`;
+  - Zhu's Table 2, parsed from the re-fetched arXiv v3: the filter, and every
+    ratio and local exponent quoted in Section 1.2;
+  - a brute force to `g = 26`;
+  - A007323 and the OEIS searches;
+  - the provenance, the staged bytes and the README listing;
+  - the numbering: 96 labels, 0 differences against the `.aux` of a build of
+    the placed text.
+- **New exact computations (bracketed dated notes in Sections 1.2 and 14):**
+  - *Zhu's counts split into the separated class `U` and the early-one class
+    `V`.* Here `s^U_g = [z^g] N/(1−P)` is exact for `g ≤ 107`. The early-one
+    share is 0.447 at `g = 20`, 0.623 at `g = 50` and 0.665 at `g = 90, 95`:
+    rising, but flattening. At `g = 95`, `s^U_g/ρ^g = 0.7305…` and
+    `s^V_g/ρ^g = 1.4555…`, both increasing.
+    - If the theorem holds, the second tends to zero and the first to
+      `C_s > 2.4159`. So `s_g/ρ^g` (2.186 at `g = 95`) must still pass 2.41,
+      while two thirds of today's count become negligible.
+  - *The critical length-weights* (exact, `L ≤ 29`). The early-one part `V_L`
+    is 1.119, 1.327, 1.499, 1.593 at `L = 23, 25, 27, 29`: increasing, and
+    about 60 % of the total.
+  - *Two more boundary terms*: `D_34(ξ) = 0.4109…` and `D_35(ξ) = 0.6243…`.
+    Both are still increasing, by a factor 1.057 over two steps in both
+    parities, and `C_s^(35) = 2.6667…`.
+- **Not reported in the article:** a forward sequential Monte Carlo. It
+  reproduces `D_r` for `r ≤ 33`, but it misses the separated class at larger
+  `L` (it gives `U_L ≈ 0` at `L = 81`, where the renewal gives 3.92). Its
+  apparent decay of `D_r` beyond `r ≈ 100` is therefore not evidence.
+
+No claim of the write was found wrong. The check is recorded at the end of
+Section 1.3.
+
 ## Relation to the repository
 
 No other report treats numerical-semigroup enumeration by genus.
@@ -160,7 +211,7 @@ delivered text.
 README.md                        this guide (replaces the delivered README.md)
 SOURCES.md                       the source's sources and proof scope
 article.tex                      the report (delivered article.tex, written)
-article.pdf                      compiled report, 25 pages (a build of this text)
+article.pdf                      compiled report, 26 pages (a build of this text)
 code/build.py                    delivered builder: allowlisted snapshot, tests, TeX, ZIP and pins (Linux only)
 code/companion-exact_checks.py   delivered companion: bounded exact checks (delivered companion/exact_checks.py)
 code/tests-test_build.py         33 builder regression tests (delivered tests/test_build.py; Linux only)
@@ -217,6 +268,10 @@ The committed PDF was built from this file with MiKTeX pdfLaTeX (three
 passes, 7 October 2026): 25 pages; no errors or warnings, no undefined
 references, no multiply defined labels, no duplicate destinations, no
 overfull or underfull boxes. The delivered text gives 21 pages, equally clean.
+(MiKTeX prints 724 pdfTeX notices of duplicate font-map entries in both
+builds; these are not LaTeX warnings.) The independent check rebuilt the PDF
+on 7 October 2026, three passes: 26 pages (the check notes add one), equally clean, label numbers
+unchanged.
 
 ## Provenance
 

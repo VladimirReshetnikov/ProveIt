@@ -251,3 +251,35 @@ $P$, $\mathbb P_k$, $K$, $K_P$ & $P$ the polynomial perturbation; $\mathbb P_k$ 
 \bottomrule
 \end{longtable}
 \endgroup
+\begin{writenote}[Independent check of the write, 7 October 2026]\raggedright
+An independent adversarial check of the batch-113 write (\file{43e0c9a22}) recomputed every [write] claim with
+its own code. Checked hardest was the claim that A132219 cannot
+count line graphs. All labelled graphs on $n\le7$ vertices were enumerated from the networkx graph atlas, up to
+isomorphism and weighted by $n!/|\mathrm{Aut}|$, so all $2^{\binom n2}$ are covered. Each was tested by two
+independent line-graph recognitions, the van Rooij--Wilf criterion and the inverse-line-graph algorithm of
+networkx, which agree on all 1252 graphs. This route uses neither root graphs nor the exception
+classification. It gives $1,2,8,60,729,11600,228443$ for $n=1,\ldots,7$, equal to
+\eqref{tcl:eq:linecorrect} and to the write's root enumeration. So $a(4)=66$ of A132219 exceeds the true $60$.
+Among $n\le12$, $O_n>2^{\binom n2}$ holds only at $n=4$.
+
+The four OEIS entries were read again live (revisions \#51, \#52, \#5, \#13, as quoted); the searches for
+$2,8,60,729,11600$ and $8,60,729,11600,228443$ return nothing. An own exact $H_n$ (Newton differences,
+no Bell numbers) reproduces all 151 b-file terms of A094089 as $2^nH_n$, all 101 of A060053 and A014500 and
+the 18 of A132219; the shipped b-files equal the live ones. Cameron--Prellberg--Stark's two PDFs, fetched
+again, have the ledger's SHA-256 values, and every cited locator was confirmed.
+
+Also recomputed: the $n=1000$ table and its truncations; the $n=20$ values; the Lambert remainders for
+$H,V,U,L$ at $n=10^4,\ldots,10^7$ and the ratios quoted in this section; the five roots of the $v_3$
+numerator, by exact isolation, and the values of $v_3/(r^{12}/663552)$; the first-order formula for
+$a_{H,1},a_{V,1},a_{U,1}$; (C17); the exact form of $\Phi(x_0)$; and the seed expansion with next term
+$b^2/(2w^4)$. All agree.
+
+The transseries classification of Remark~\ref{tcl:rem:transseries} was checked against the volume's
+statements: a $(\rho,\mu,\beta)=(1,2,0)$ datum over $\mathbb Q(\log2)$, \file{p0:thm:lambert-core} with slope~1
+and coefficient~2, and analogues of \file{p0:thm:staircase}(2),(3). The labels and tags were compared against the
+\file{.aux} of a build of the placed text: 47 delivered labels, 0 differences, 51 tags unchanged.
+
+Two precisions were added as bracketed notes, in Remark~\ref{tcl:rem:transseries}(3) (the relative order
+$e^{-r_0}$) and in the $v_3$ note of Section~3.4 (the other intervals where $v_3<0$). No claim of the write was
+found wrong.
+\end{writenote}

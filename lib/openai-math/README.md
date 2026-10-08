@@ -138,8 +138,9 @@ above intentionally omit unrelated declarations; their proof status remains pend
   source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
-  orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the currently audited prefix.
+  orthonormal-basis declarations pass the three-axiom check. Its direct
+  consumer `Geometry/CoordinateMinorCovolume.lean` is included in the
+  audited 1,800-entry prefix; the full quantitative conclusion is still pending.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.

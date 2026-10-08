@@ -170,6 +170,24 @@ $1.31$, $1.37$, $1.40$ at $g=40$, $60$, $80$, $95$. These data do not
 contradict the theorem, whose remainder carries no effective constant, but
 they show that its limit regime, if it is reached, lies beyond all available
 counts.
+[Independent check, 7~October 2026. The check split Zhu's counts exactly
+into the separated class~$U$ of Section~\ref{ska:sec:renewal} and the
+early-one class~$V$ of Section~\ref{ska:sec:early}. The $U$-counts
+$s^U_g=[z^g]N(z)/(1-P(z))$ are exact for $g\le107$ from $D_r$ with $r\le22$
+(the minimal degree of $D_r$ is $5r+5-\max|J|$, which is $108$ at $r=23$),
+and they agree with a brute-force
+enumeration of Kunz words for $g\le26$. The early-one share $s^V_g/s_g$ is
+$0.447$, $0.543$, $0.623$, $0.653$, $0.665$, $0.665$ at $g=20$, $30$, $50$,
+$70$, $90$, $95$: still rising, but flattening. At $g=95$ the two parts
+normalized by $\rho^g$ are $s^U_g\rho^{-g}=0.7305\ldots$ and
+$s^V_g\rho^{-g}=1.4555\ldots$, and both are still increasing.
+
+If Theorem~\ref{ska:thm:main} holds, the second tends to zero
+(Theorem~\ref{ska:thm:early}). The first tends to
+$C_s>C_s^{(33)}=2.4159\ldots$ (Section~\ref{ska:sec:questions}), since every
+omitted $D_r(\xi)$ is positive. So $s_g/\rho^g$, now $2.186$, must still pass
+$2.41$, while the early-one words, two thirds of the present count, become
+negligible. The data neither confirm nor contradict this.]
 \end{writenote}
 
 \subsection{Provenance, sources and reading conventions}\label{ska:sec:provenance}
@@ -306,6 +324,45 @@ $\delta$, $\lambda$, $\rho$ & $\delta=1/48$ in Section~\ref{ska:sec:early}, $\de
 \bottomrule
 \end{tabular}
 \endgroup
+\begin{writenote}[Independent check of the write, 7 October 2026]\raggedright
+An independent adversarial check of the write (\file{a08662116}) re-read the proof of
+Theorem~\ref{ska:thm:main}, attending to five places:
+\begin{itemize}\raggedright
+\item the fingerprint reconstruction and the incidence count of Lemma~\ref{ska:lem:containers};
+\item the independence of the standardized prefix one-set;
+\item the eligibility budget of Lemma~\ref{ska:lem:product} and the criterion
+(Proposition~\ref{ska:prop:criterion});
+\item in the three cases of Theorem~\ref{ska:thm:early}: the discarded sources, the bound $\eta$ for
+block-disjoint translated relations, and the order in which the parameters are fixed;
+\item the residue computations.
+\end{itemize}
+It found no error. Like the write's, this is a reading and not a verification, so the theorem stays marked as
+not independently verified.
+
+With its own code, the check confirmed:
+\begin{itemize}\raggedright
+\item every rational certificate of Sections~\ref{ska:sec:theorem}, \ref{ska:sec:numerator}
+and~\ref{ska:sec:early};
+\item $\xi$, $\rho$, $\xi P'(\xi)$, the critical factors, the three components of~$\tau$, and the transformed
+activities with their factors;
+\item $D_r(\xi)$ for $r\le33$ by a second code, which enumerates the sets $J$ of~\eqref{ska:eq:Dr}. It equals the
+write's values to $4\cdot10^{-12}$ relative and gives $C_s^{(33)}=2.41595\ldots$;
+\item the identity $D_r(\xi)=A(\xi)S_r(\mathfrak T(\xi,\xi^2,\xi^3))$ for $r\le27$, by enumerating transformed words;
+\item the length-refined renewal~\eqref{ska:eq:refinedrenewal} at~$\xi$, against an exact enumeration of all
+stressed words of length $L\le29$;
+\item Zhu's Table~2, parsed from his arXiv version~3 (fetched again, with the write's SHA-256 value): the filter
+for $3\le g\le95$, and the ratios and local exponents quoted in Section~\ref{ska:sec:theorem};
+\item a brute force of all Kunz words to $g=26$;
+\item A007323 (\#263) and the four OEIS searches;
+\item the provenance: $448{,}517$ bytes, 9 files, 824 lines, 21 pages and 8 manifest entries;
+\item the byte identity of the staged files and the README listing;
+\item the numbering: 96 delivered labels, 0 differences against the \file{.aux} of a build of the placed text.
+\end{itemize}
+
+Two exact computations are added in bracketed notes, in Section~\ref{ska:sec:theorem} and at the end of
+Section~\ref{ska:sec:questions}. They do not test the theorem, whose constants are existential. They show where
+the finite-genus weight lies. No claim of the write was found wrong.
+\end{writenote}
 
 \section{Kunz words and the exact Fibonacci filter}\label{ska:sec:kunz}
 For completeness, we connect the word count to numerical semigroups without importing an asymptotic theorem. A numerical semigroup is an additive submonoid $\Lambda\subseteq\N_0$ with finite complement. Its genus is $|\N_0\setminus\Lambda|$, its multiplicity is the least positive element $m$, and its conductor is the least $c$ such that $c+\N_0\subseteq\Lambda$. The depth is $\lceil c/m\rceil$; $\N_0$ has depth zero.
@@ -1045,6 +1102,22 @@ between $1.04$ and $1.10$ every two steps for $21\le r\le33$, slowly
 decreasing), and the lower approximants $C_s^{(R)}$ are $0.4490$, $1.0798$, $2.0415$, $2.4159$ for $R=10,20,30,33$ (the baseline term alone gives $0.1199$). The proof's polynomial factors allow such a transient; locating
 the turning point, or a certified tail bound, would test the theorem
 quantitatively. No claim of the source was found false.
+[Independent check, 7~October 2026. The write's $D_r(\xi)$ were recomputed
+for $r\le33$ by a second code, and two more terms were added:
+$D_{34}(\xi)=0.4109\ldots$ and $D_{35}(\xi)=0.6243\ldots$, still increasing,
+by factors $1.057$ over two steps in both parities, and $C_s^{(35)}=2.6667\ldots$.
+
+The early-one class of Theorem~\ref{ska:thm:early} was also measured at the
+critical activities. Let $V_L$ be the critical weight $\sum\xi^{g(w)}$ of the
+stressed words of length~$L$ with a one at or before $L/3$. Exactly,
+$V_L=1.119$, $1.327$, $1.499$, $1.593$ at $L=23$, $25$, $27$, $29$, increasing
+and about $60\%$ of the total. The separated part equals the length-refined
+renewal~\eqref{ska:eq:refinedrenewal} at every $L\le29$.
+
+Theorem~\ref{ska:thm:early} asserts $V_L\le K_V\theta_V^L$ with
+$\theta_V=e^{-\tau/2}\approx1-3.8\cdot10^{-5}$. Neither this nor the turning
+point of $D_r(\xi)$ can be tested at these sizes. So both remain the further
+questions stated above.]
 \end{writenote}
 
 \clearpage

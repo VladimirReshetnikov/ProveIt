@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: give exists_fastCoefficient_rational_removal_grid a
+local 400000-heartbeat budget for dependent quotient reduction on Lean 4.32.
+The upstream theorem statements and proof text are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Dynamics.FastRemovalBudget
 import OAI.Combinatorics.Progressions.Dynamics.InitialRemovalBudget
 import OAI.Combinatorics.Progressions.Estimates.FullFastHorizontalNormalization
@@ -13,6 +18,7 @@ namespace Erdos3.NilpotentLieFiltration
 
 open Module
 
+set_option maxHeartbeats 400000 in
 theorem exists_fastCoefficient_rational_removal_grid (s : ℕ) :
     ∃ C : ℕ, 2 ≤ C ∧
     ∀ {σ ι κ L : Type*} [Fintype σ] [Fintype ι] [Fintype κ] [LieRing L] [LieAlgebra ℚ L]
