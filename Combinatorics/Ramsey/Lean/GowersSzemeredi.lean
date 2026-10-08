@@ -296,6 +296,7 @@ import GowersSzemeredi.Proofs16PartJSlices
 import GowersSzemeredi.Proofs16PartJPiece
 import GowersSzemeredi.Proofs16PartJBudget
 import GowersSzemeredi.Proofs16PartJTheorem
+import GowersSzemeredi.Proofs16MilicevicStructure
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
