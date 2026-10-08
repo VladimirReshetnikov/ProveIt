@@ -206,8 +206,10 @@ $m$ factors and $O(s)$ projected rules per factor.
 The verifier recomputes occurrence counts, exact cut locations and projected
 grammars, then checks each leaf proof. Leaves with at most two strands use
 their complete exponent criterion; three-strand leaves use compressed quotient
-replay. Wider leaves may be rejected by $|e|>m-1$. An unresolved wider leaf
-stays explicitly \texttt{INCONCLUSIVE}. A replayed forest certificate can
+replay. Wider leaves may be rejected by $|e|>m-1$. In the initial integration an
+unresolved wider leaf stayed explicitly \texttt{INCONCLUSIVE};
+Section~\ref{sec:exceptional-cube} adds its complete bounded fallback.
+A replayed forest certificate can
 certify that residual description without certifying unknotness. For a forest
 of knots, all trivial factors imply an unknot, and a nontrivial factor implies
 a nontrivial connected sum.
@@ -233,10 +235,11 @@ factors would therefore yield
 The solved compressed three-braid factors are excluded from the sum even when
 their minority counts are exponentially large. With polynomially many factors
 and $\max_i\kappa_i=O((\log g)^2)$, this bound is quasi-polynomial in $g$.
-This is a conditional composition theorem: the delivered and maintained forest
-interfaces do not yet connect that complete fallback or its source-projection
-certificate contract. No theorem bounds the exceptional parameters for every
-knot diagram.
+This was a conditional composition theorem at the delivery's initial
+integration. Section~\ref{sec:exceptional-cube} connects the complete fallback
+and its source-projection certificate contract, making the bound an implemented
+restricted-input guarantee. No theorem bounds the exceptional parameters for
+every knot diagram.
 
 \subsection{Why matrix evaluation can destroy compression}
 
