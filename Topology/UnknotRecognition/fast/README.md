@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 595 passing tests.
+diagram is not checked twice. The integrated suite now has 602 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -990,6 +990,42 @@ all six measured cases; it remains optional despite its stronger conditional
 bound. These partial-query ratios are not end-to-end recognition speedups.
 
 ## Optional exact Potts Jones filters
+
+`potts-faithful` decides whether the **entire normalized Jones polynomial is
+one**, and can recover all its Laurent coefficients. It chooses
+`q = 2^(4*n+2) + 2` from the crossing count, making the exact quadratic
+specialization injective on the proved coefficient and degree bounds.
+Canonical equality partitions avoid enumerating this large number of colors.
+Combined with adaptive certified separator ordering, the uncapped query takes
+`poly(n) * 2^O(sqrt(n)*log(n+1))` bit operations on every classical knot diagram.
+This is a general subexponential **Jones computation**, not a general
+subexponential recognition algorithm. Polynomial identity still yields
+`INCONCLUSIVE` in the Jones filter and continues to independent recognition.
+
+```sh
+python -B -m fastunknot jones examples/conway.json --backend potts-faithful
+python -B -m fastunknot recognize examples/conway.json --jones-backend potts-faithful
+python -B benchmark_faithful_jones.py --output results/faithful_jones_local.json
+```
+
+The `jones` command also returns `jones_polynomial`, with variable `t=A^-4`
+and sorted `[exponent, signed_hex_coefficient]` pairs. The Python API
+`fastunknot.faithful_jones.faithful_potts_exact` returns `polynomial_identity`
+and optionally reconstructs coefficients with `include_polynomial=True`.
+Its default caps are 4096 states and 200000 transitions; pass `None` for both
+to request uncapped work. The standalone `jones` command has no local caps
+unless supplied. The color count is input-derived, so `--potts-colors`
+does not override it. Shared budgets and global cancellation remain active
+during ordering, evaluation and recovery. The shared policy's mode name
+`polynomial-tail` has a quasi-polynomial tail bound for this growing `q`;
+that still preserves the stated subexponential bound.
+
+Raw exact results contain Python integers. JSON-safe obstruction witnesses
+encode color counts above 256 bits in `q_hex`, use a symbolic ring description,
+and retain hexadecimal quadratic coordinates. Small color counts retain `q`.
+These conversions do not change Python's global decimal-conversion limit.
+Full theory, validation and measured costs are in
+[`../synthesis/faithful_jones.tex`](../synthesis/faithful_jones.tex).
 
 `potts-adaptive` defers separator preparation until actual scalar work reaches
 `64*n` transitions. If at most `2*ceil(log2(n+1))` crossings remain then, it

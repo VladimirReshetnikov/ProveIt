@@ -2,6 +2,20 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`faithful_jones.tex` proves that an input-sized exact quadratic evaluation
+decides Jones polynomial identity without specialization collisions, and
+recovers the full Laurent polynomial by balanced integer decoding. Counting
+canonical color partitions gives an uncapped general bound of
+`poly(n) * 2^O(sqrt(n)*log(n+1))` bit operations, even though the number of
+colors grows exponentially. The adaptive tail needs a separate
+quasi-polynomial estimate in this setting. Jones identity remains inconclusive
+for recognition. Seven new tests include 156 independent cube-polynomial
+comparisons, 187 bounded-polynomial recovery cases, real restarts and caps,
+and very large JSON-safe witnesses. The invariant benchmark records the
+cost of stronger guarantees without claiming a full recognition speedup.
+All 602 integrated tests pass in 111.769 seconds; the run is recorded in
+`data/faithful-jones-integrated-tests.txt`. The rebuilt article has 141 pages.
+
 `adaptive_potts.tex` defers separator construction according to actual query
 work, proves a polynomial bound for a logarithmic remaining tail, and retains
 the general subexponential fixed-color scalar bound. It explains why unchanged
