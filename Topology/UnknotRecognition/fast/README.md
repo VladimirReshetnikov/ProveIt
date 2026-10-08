@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 458 passing tests.
+diagram is not checked twice. The integrated suite now has 517 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -1054,3 +1054,24 @@ family or superiority to sparse cancellation. See
 [corridor_research/README.md](corridor_research/README.md) for measurements,
 commands and limitations, and [the article](../synthesis/corridor_transfer.tex)
 for proofs and complete setup accounting.
+
+
+## Certified cyclic Garside preprocessing
+
+Report 25's exact source-braid compressor is available with `--garside` or
+`recognize(diagram, use_garside=True)`. It shares exact Garside prefix states
+across cyclic cuts, independently replays the proposed equalities, and restarts
+recognition only when the candidate improves the current simplified diagram.
+Cheap modular Alexander and structural obstructions run first; Jones follows
+the probe. The optional probe has a local time/operation
+allowance; exhausting it resumes the established exact pipeline under the
+remaining global budget. Original source-branch evidence and PD reductions stay
+separate, and backend/reduction options survive the restart.
+
+The default radius is one; `--garside-radius 2` adds two-letter targets.
+The default caps are `--garside-seconds 0.1`, `--garside-max-ticks 100000`, and
+`--garside-max-targets 100000`. The probe is disabled by default. See
+[`garside_research/README.md`](garside_research/README.md) for reproduction,
+resource semantics and measurement scope. The theory article derives the
+polynomial fixed-radius compressor bound and a conditional small-core theorem;
+it does not claim a general sub-exponential unknot algorithm.

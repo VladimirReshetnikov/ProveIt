@@ -129,22 +129,15 @@ def _decide_twist(source: Diagram, evidence: dict, *, max_basis, deadline, check
     return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), "twist-khovanov-F2"
 
 
-def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
-                          use_exact_alexander, use_r3, use_descending,
-                          jones_backend, potts_colors, jones_max_states, jones_max_transitions,
-                          max_objects, deadline,
-                          check_d_squared, scan_options, window_options=None,
-                          twist_source=None, defer_twist=False) -> tuple[str, str]:
-    """Verdict and method for one summand (already simplified by the caller)."""
-    def check():
-        if deadline is not None and monotonic() > deadline:
-            raise ScanLimit("time budget exhausted")
-
+def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_alexander,
+                           use_exact_alexander, jones_backend, potts_colors,
+                           jones_max_states, jones_max_transitions, check):
+    """One-sided polynomial filters and the scan order reusable by exact work."""
     if use_modular:
         witness = alexander_obstruction(diagram, check=check)
         if witness is not None:
             evidence["alexander_modular"] = witness
-            return "KNOTTED", "alexander-modular"
+            return "alexander-modular", None
     order = None
     if use_jones:
         # the Jones scan and the Khovanov scan use the same greedy order: compute it once
@@ -158,7 +151,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         else:
             if witness is not None:
                 evidence["jones"] = witness
-                return "KNOTTED", method
+                return method, order
             evidence["jones"] = "inconclusive"
     # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
     # unit, which the modular test has just failed to see at t = -1 and at a generic point of
@@ -174,7 +167,29 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         evidence["alexander_polynomial"] = format_polynomial(poly)
         evidence["determinant"] = abs(evaluate(poly, -1))
         if poly != [1]:
-            return "KNOTTED", "alexander-polynomial"
+            return "alexander-polynomial", order
+    return None, order
+
+
+def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
+                          use_exact_alexander, use_r3, use_descending,
+                          jones_backend, potts_colors, jones_max_states, jones_max_transitions,
+                          max_objects, deadline,
+                          check_d_squared, scan_options, window_options=None,
+                          twist_source=None, defer_twist=False, checked_modular=False) -> tuple[str, str]:
+    """Verdict and method for one summand (already simplified by the caller)."""
+    def check():
+        if deadline is not None and monotonic() > deadline:
+            raise ScanLimit("time budget exhausted")
+
+    method, order = _invariant_obstruction(diagram, evidence,
+        use_modular=use_modular and not checked_modular, use_jones=use_jones,
+        use_alexander=use_alexander, use_exact_alexander=use_exact_alexander,
+        jones_backend=jones_backend, potts_colors=potts_colors,
+        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+        check=check)
+    if method is not None:
+        return "KNOTTED", method
     if use_r3:
         # Every filter has failed, so the exponential scan is next: now it pays to look for
         # Reidemeister III moves that unlock further I/II reductions.  (Done earlier, the search
@@ -285,8 +300,11 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               reduction: str = "standard", window_radius: int | None = None,
               window_max_objects: int | None = 20000, window_seconds: float | None = 0.1,
               use_ranktwo: bool = False, ranktwo_seconds: float | None = 0.1,
+              use_garside: bool = False, garside_radius: int = 1,
+              garside_seconds: float | None = 0.1, garside_max_ticks: int | None = 100000,
+              garside_max_targets: int | None = 100000,
               window_strategy: str = "support") -> Result:
-    restart_options = locals().copy() if use_ranktwo else None
+    restart_options = locals().copy() if use_ranktwo or use_garside else None
     start = monotonic()
     validate_jones_options(jones_backend, potts_colors, jones_max_states, jones_max_transitions)
     if window_strategy not in ("support", "minimal"):
@@ -297,6 +315,18 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_rational must be boolean")
     if type(use_ranktwo) is not bool:
         raise ValueError("use_ranktwo must be boolean")
+    if type(use_garside) is not bool:
+        raise ValueError("use_garside must be boolean")
+    if type(garside_radius) is not int or garside_radius < 1:
+        raise ValueError("garside_radius must be a positive integer")
+    for name, value, minimum in (("garside_max_ticks", garside_max_ticks, 0),
+                                 ("garside_max_targets", garside_max_targets, 1)):
+        if value is not None and (type(value) is not int or value < minimum):
+            raise ValueError(f"{name} must be an integer >= {minimum}, or None")
+    if garside_seconds is not None:
+        from math import isfinite
+        if type(garside_seconds) not in (int, float) or not isfinite(garside_seconds) or garside_seconds < 0:
+            raise ValueError("garside_seconds must be finite and nonnegative, or None")
     if ranktwo_seconds is not None:
         from math import isfinite
         if type(ranktwo_seconds) not in (int, float) or not isfinite(ranktwo_seconds) or ranktwo_seconds < 0:
@@ -446,6 +476,33 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
             if witness["status"] != "INCONCLUSIVE":
                 return Result(witness["status"], witness["method"], original.crossings,
                               diagram.crossings, monotonic() - start, evidence)
+        checked_modular = False
+        if use_garside and original.braid_source is not None:
+            # Keep the cheap modular obstruction first. Compression can avoid
+            # the larger Jones scan, so leave that stage after the probe.
+            # Reuse this check only on the unchanged whole diagram.
+            if use_modular and use_alexander:
+                witness = alexander_obstruction(diagram, check=check)
+                check()
+                if witness is not None:
+                    evidence["alexander_modular"] = witness
+                    return Result("KNOTTED", "alexander-modular", original.crossings,
+                                  diagram.crossings, monotonic()-start, evidence)
+                checked_modular = True
+            from .garside_probe import propose
+            proposal = propose(original, diagram.crossings, radius=garside_radius,
+                               seconds=garside_seconds, max_ticks=garside_max_ticks,
+                               max_targets=garside_max_targets, check=check)
+            check()
+            evidence["garside"] = proposal.evidence
+            if proposal.candidate is not None:
+                restart_options.update(diagram=proposal.candidate, use_garside=False,
+                    seconds=None if deadline is None else max(0.0, deadline-monotonic()))
+                after = recognize(**restart_options)
+                check()
+                return Result(after.status, "garside-"+after.method, original.crossings,
+                              after.reduced_crossings, monotonic()-start,
+                              dict(before_garside=evidence, after_garside=after.evidence))
         factors = [diagram]
         if use_factorization:
             check()
@@ -478,7 +535,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
             # A retained source represents this whole knot across recorded
             # reductions. Never pass it to the individual factors below.
             source = original if original.braid_source is not None else None
-            status, method = _decide_prime_looking(diagram, evidence, twist_source=source, **options)
+            status, method = _decide_prime_looking(diagram, evidence, twist_source=source,
+                                                   checked_modular=checked_modular, **options)
         else:
             status, reports = "UNKNOT", []
             deferred = False
