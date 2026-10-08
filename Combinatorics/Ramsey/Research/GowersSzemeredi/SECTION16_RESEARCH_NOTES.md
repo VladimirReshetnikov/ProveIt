@@ -781,15 +781,20 @@ supply the bridge; no prime-modulus assumption is used. The production
 module passed Lean. The partition is still of the integer index interval;
 proper modular progression transport is a further obligation.
 
-A second route to the box bridge is available in the current code:
-`multiaffine_box_height_step` already separates a maximal square-free
-monomial from a lower-height polynomial on every coarse box. Its coarse
-partition depends on the recurrence step and scale, not on the individual
-coefficient family. Generalizing the child hypothesis and diameter estimates
-to a simultaneous family would let the checked Schmidt recurrence replace
-the one-coefficient recurrence. The number of monomial-removal stages is
-bounded by `2^k`, independently of family size. This is a proposed extension,
-not yet a proof of the required box bound.
+**Simultaneous geometric height step proved.**
+`Proofs05SimultaneousMultiaffineStep.simultaneous_multiaffine_box_height_step`
+now generalizes the existing geometric step to a family of `q` phases.
+One common coarse partition separates the same maximal square-free monomial
+from all phases, and a simultaneous lower-height partition is transported
+and flattened. Properness, minimum widths, and each phase's diameter bound
+are preserved. The production module passed Lean. The recurrence estimate,
+scale budget, and simultaneous child theorem remain explicit premises.
+
+This allows the checked Schmidt recurrence to replace the one-coefficient
+recurrence in the height induction. The number of monomial-removal stages
+is bounded by `2^k`, independently of family size. A uniform recurrence over
+the finitely many degrees and a new scale/exponent induction are still
+needed before this yields the required quantitative box bound.
 
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
