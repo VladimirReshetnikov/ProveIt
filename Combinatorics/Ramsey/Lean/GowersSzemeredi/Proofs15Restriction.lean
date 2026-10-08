@@ -2080,6 +2080,96 @@ private lemma selection_exists_stage_margin (k : Nat) (alpha eta : Real)
   rw [hpower]
   exact sub_pos.mpr (htarget.trans_lt hstrict)
 
+/-- The stage margin is at least `(1 - eta) * target`. -/
+private lemma selection_exists_stage_margin_lower (k : Nat) (alpha eta : Real)
+    (halpha : 0 < alpha) (heta : 0 < eta)
+    (halpha_one : alpha ≤ 1) (heta_one : eta ≤ 1) :
+    ∃ m : Nat, (1 - eta) * selectionTarget k alpha eta ≤
+      (((2 : Real)⁻¹) ^ (2 ^ (k + 4))) ^
+          (2 ^ (2 ^ (k + 4) - 1) * m) *
+        (alpha * eta *
+            (1 + 2 * ((2 : Real)⁻¹) ^ (2 ^ (k + 4))) ^
+              (2 ^ (2 ^ (k + 4) - 1) * m) - 1) -
+        eta * selectionTarget k alpha eta := by
+  let a := alpha * eta
+  have ha : 0 < a := mul_pos halpha heta
+  have haone : a ≤ 1 := by
+    dsimp [a]
+    calc
+      alpha * eta ≤ 1 * eta :=
+        mul_le_mul_of_nonneg_right halpha_one heta.le
+      _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left heta_one (by norm_num)
+      _ = 1 := mul_one _
+  obtain ⟨n : Nat, hnupper, hnlower⟩ :=
+    exists_nat_pow_near_of_lt_one
+      (x := a / 2) (y := (2 : Real)⁻¹)
+      (by positivity) (by nlinarith) (by norm_num) (by norm_num)
+  let m := n + 1
+  let q : Real := ((2 : Real)⁻¹) ^ m
+  have hqpos : 0 < q := by positivity
+  have hqupper : q < a / 2 := hnupper
+  have hqlower : a / 4 ≤ q := by
+    dsimp [q, m]
+    rw [pow_succ]
+    norm_num
+    nlinarith
+  let M : Nat := 2 ^ (k + 4)
+  let K : Nat := 2 ^ (M - 1)
+  let E : Nat := arrangementSelectionExponent k
+  let amp : Real := 1 + 2 * ((2 : Real)⁻¹) ^ M
+  have hamp : (2 : Real) ≤ amp ^ K := by
+    exact selection_amplification_step k
+  have hamp_pow : (2 : Real) ^ m ≤ amp ^ (K * m) := by
+    calc
+      (2 : Real) ^ m ≤ (amp ^ K) ^ m :=
+        pow_le_pow_left₀ (by norm_num) hamp m
+      _ = amp ^ (K * m) := (pow_mul amp K m).symm
+  have hqmul : q * (2 : Real) ^ m = 1 := by
+    dsimp [q]
+    rw [← mul_pow]
+    norm_num
+  have htwo : 2 < a * (2 : Real) ^ m := by
+    have hmul := mul_lt_mul_of_pos_right hqupper
+      (pow_pos (by norm_num : (0 : Real) < 2) m)
+    rw [hqmul] at hmul
+    nlinarith
+  have hfactor : 1 < a * amp ^ (K * m) - 1 := by
+    have hamp_a : a * (2 : Real) ^ m ≤ a * amp ^ (K * m) :=
+      mul_le_mul_of_nonneg_left hamp_pow ha.le
+    nlinarith
+  have hME : M * K = E := by
+    exact selection_vertex_times_amplification k
+  have hpower :
+      (((2 : Real)⁻¹) ^ M) ^ (K * m) = q ^ E := by
+    calc
+      (((2 : Real)⁻¹) ^ M) ^ (K * m) =
+          ((2 : Real)⁻¹) ^ (M * (K * m)) :=
+        (pow_mul ((2 : Real)⁻¹) M (K * m)).symm
+      _ = ((2 : Real)⁻¹) ^ (E * m) := by
+        rw [← Nat.mul_assoc, hME]
+      _ = ((2 : Real)⁻¹) ^ (m * E) := by rw [Nat.mul_comm E m]
+      _ = q ^ E := by
+        dsimp [q]
+        rw [pow_mul]
+  have htarget : eta * (a / 4) ^ E ≤ q ^ E := by
+    calc
+      eta * (a / 4) ^ E ≤ 1 * (a / 4) ^ E :=
+        mul_le_mul_of_nonneg_right heta_one (pow_nonneg (by positivity) _)
+      _ = (a / 4) ^ E := one_mul _
+      _ ≤ q ^ E := pow_le_pow_left₀ (by positivity) hqlower E
+  have hstrict : q ^ E < q ^ E * (a * amp ^ (K * m) - 1) := by
+    have h := mul_lt_mul_of_pos_left hfactor (pow_pos hqpos E)
+    rw [mul_one] at h
+    exact h
+  refine ⟨m, ?_⟩
+  unfold selectionTarget
+  change (1 - eta) * (a / 4) ^ E ≤
+    (((2 : Real)⁻¹) ^ M) ^ (K * m) *
+        (a * amp ^ (K * m) - 1) - eta * (a / 4) ^ E
+  rw [hpower]
+  have hfloor : (a / 4) ^ E ≤ q ^ E := pow_le_pow_left₀ (by positivity) hqlower E
+  linarith only [hfloor, hstrict.le]
+
 /-! ## Absorbing the degenerate arrangements -/
 
 /-! The height-zero case used by Lemma 9.3 does not need a field.  After the
@@ -3016,6 +3106,379 @@ private theorem selection_scale_estimate_of_exceptional_bound
     have halpha_gt : 1 < alpha := lt_of_not_ge halpha_one
     nlinarith
 
+/-- The explicit modulus threshold of the selection estimate: at least three,
+and large enough that `Cdeg` exceptional arrangements per unit of `delta*scale`
+fit inside half the guaranteed stage margin `(1 - eta) * (alpha*eta/4)^E`. -/
+def selectionExplicitThreshold (k : Nat) (alpha eta scale Cdeg : Real) : Real :=
+  max 3 (Cdeg / (((1 - eta) * (alpha * eta / 4) ^ arrangementSelectionExponent k / 2) * scale))
+
+/-- `selectionDegenerate_real_small` with its threshold written out. -/
+private lemma selectionDegenerate_real_small_explicit (k : Nat) (scale delta : Real)
+    (hk : 1 ≤ k) (hscale : 0 < scale) (hdelta : 0 < delta) :
+    ∀ (N : Nat) [NeZero N],
+      (3 : Real) ^ (16 * 2 ^ k) * k / (delta * scale) ≤ (N : Real) → N.Prime → Odd N →
+      (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
+        delta * scale * (N : Real) ^ (17 * k + 15) := by
+  let C : Real := (3 : Real) ^ (16 * 2 ^ k) * k
+  let D : Real := delta * scale
+  have hD : 0 < D := mul_pos hdelta hscale
+  intro N _ hratio hprime hodd
+  have hC : C ≤ D * (N : Real) := by
+    rw [mul_comm]
+    exact (div_le_iff₀ hD).mp hratio
+  have hdeg := lemma_15_4_holds N k 8 hprime hodd hk (by norm_num)
+  have hdeg' :
+      (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
+        C * (N : Real) ^ (17 * k + 14) := by
+    simpa only [C, Nat.cast_ofNat, Nat.cast_mul, Nat.cast_pow,
+      show 2 * 8 = 16 by norm_num,
+      show (2 * 8 + 1) * k + 2 * 8 - 2 = 17 * k + 14 by omega]
+      using hdeg
+  calc
+    (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
+        C * (N : Real) ^ (17 * k + 14) := hdeg'
+    _ ≤ (D * (N : Real)) * (N : Real) ^ (17 * k + 14) := by
+      exact mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
+    _ = delta * scale * (N : Real) ^ (17 * k + 15) := by
+      dsimp only [D]
+      rw [show 17 * k + 15 = (17 * k + 14) + 1 by omega, pow_succ]
+      ring
+
+/-- `selectionDegenerate_real_small_zero` with its threshold written out. -/
+private lemma selectionDegenerate_real_small_zero_explicit (scale delta : Real)
+    (hscale : 0 < scale) (hdelta : 0 < delta) :
+    ∀ (N : Nat) [NeZero N], 3 ≤ N → 2 * 4 ^ 16 / (delta * scale) ≤ (N : Real) →
+      (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        delta * scale * (N : Real) ^ 15 := by
+  let C : Real := 2 * 4 ^ 16
+  let D : Real := delta * scale
+  have hD : 0 < D := mul_pos hdelta hscale
+  intro N _ hN3 hratio
+  have hC : C ≤ D * (N : Real) := by
+    rw [mul_comm]
+    exact (div_le_iff₀ hD).mp hratio
+  have hdegNat := selectionZeroDegenerateCount_le hN3
+  have hdeg :
+      (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        C * (N : Real) ^ 14 := by
+    simpa only [C, Nat.cast_mul, Nat.cast_ofNat, Nat.cast_pow] using
+      (show (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+          (((2 * 4 ^ 16) * N ^ 14 : Nat) : Real) by exact_mod_cast hdegNat)
+  calc
+    (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
+        C * (N : Real) ^ 14 := hdeg
+    _ ≤ (D * (N : Real)) * (N : Real) ^ 14 := by
+      exact mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
+    _ = delta * scale * (N : Real) ^ 15 := by
+      dsimp only [D]
+      rw [show 15 = 14 + 1 by omega, pow_succ]
+      ring
+
+set_option maxHeartbeats 3000000 in
+private theorem selection_scale_estimate_of_exceptional_bound_explicit
+    (valid : Nat → Prop) (k : Nat) (alpha scale eta : Real)
+    (halpha : 0 < alpha) (hscale : 0 < scale)
+    (heta : 0 < eta) (heta_lt : eta < 1) (Cdeg : Real) (hCdeg : 0 ≤ Cdeg)
+    (hdegenerateSmall : ∀ delta : Real, 0 < delta →
+      ∀ (N : Nat) [NeZero N], 3 ≤ N → Cdeg / (delta * scale) ≤ (N : Real) → valid N →
+        (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
+          delta * scale * (N : Real) ^ (17 * k + 15)) :
+    ∀ (N : Nat) [NeZero N], selectionExplicitThreshold k alpha eta scale Cdeg ≤ (N : Real) →
+      valid N →
+      ∀ (B : Finset (Point N (k + 1)))
+          (phi : Point N (k + 1) → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤
+            scale * (N : Real) ^ (17 * k + 15) →
+        alpha * scale * (N : Real) ^ (17 * k + 15) ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (alpha * eta / 4) ^ arrangementSelectionExponent k * scale *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  have heta_one : eta ≤ 1 := heta_lt.le
+  by_cases halpha_one : alpha ≤ 1
+  · obtain ⟨m : Nat, hlow₀⟩ :=
+      selection_exists_stage_margin_lower k alpha eta halpha heta halpha_one heta_one
+    let V : Nat := 2 ^ (k + 4)
+    let K : Nat := 2 ^ (V - 1)
+    let r : Nat := K * m
+    let qb : Real := ((2 : Real)⁻¹) ^ V
+    let amp : Real := 1 + 2 * ((2 : Real)⁻¹) ^ V
+    let qg : Real := qb * amp
+    let target : Real := selectionTarget k alpha eta
+    let margin : Real :=
+      qb ^ r * (alpha * eta * amp ^ r - 1) - eta * target
+    have hlow : (1 - eta) * target ≤ margin := hlow₀
+    have htargetPos : 0 < target := by
+      show 0 < selectionTarget k alpha eta
+      rw [selectionTarget_eq]
+      positivity
+    have hlowPos : 0 < (1 - eta) * target := mul_pos (by linarith) htargetPos
+    have hmargin : 0 < margin := hlowPos.trans_le hlow
+    intro N _ hN hvalid B phi harrangementUpper hrespected
+    have hNmax : max 3 (Cdeg / (((1 - eta) * (alpha * eta / 4) ^
+        arrangementSelectionExponent k / 2) * scale)) ≤ (N : Real) := hN
+    have hN3real : (3 : Real) ≤ N := (le_max_left _ _).trans hNmax
+    have hN3 : 3 ≤ N := by exact_mod_cast hN3real
+    have hratio : Cdeg / ((margin / 2) * scale) ≤ (N : Real) := by
+      refine le_trans ?_ ((le_max_right _ _).trans hNmax)
+      have hden : 0 < ((1 - eta) * target / 2) * scale := mul_pos (half_pos hlowPos) hscale
+      have hle : ((1 - eta) * target / 2) * scale ≤ (margin / 2) * scale := by
+        gcongr
+      have h := div_le_div_of_nonneg_left hCdeg hden hle
+      simpa only [target, selectionTarget_eq] using h
+    let M : Real := scale * (N : Real) ^ (17 * k + 15)
+    let exceptional : Real :=
+      degenerateGeneralArrangementCount (N := N) (k := k) 8
+    have hNpos : 0 < (N : Real) := by
+      exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+    have hMpos : 0 < M := by
+      dsimp [M]
+      positivity
+    have hexceptional0 : 0 ≤ exceptional := by positivity
+    have hexceptional : exceptional ≤ (margin / 2) * M := by
+      simpa only [exceptional, M, mul_assoc] using
+        hdegenerateSmall (margin / 2) (half_pos hmargin) N hN3 hratio hvalid
+    have hgoodCardNat := selectionGoodNondegenerate_card_lower B phi
+    have hgoodCard :
+        (respectedGeneralArrangementCount 8 B phi : Real) ≤
+          ((selectionGoodNondegenerate B phi).card : Real) + exceptional := by
+      rw [← selectionGoodArrangements_card]
+      dsimp [exceptional]
+      exact_mod_cast hgoodCardNat
+    have hgoodLower :
+        alpha * M - exceptional ≤
+          ((selectionGoodNondegenerate B phi).card : Real) := by
+      linarith only [hrespected, hgoodCard]
+    have hbadCardNat := selectionBadNondegenerate_card_upper B phi
+    have hbadCard :
+        ((selectionBadNondegenerate B phi).card : Real) ≤
+          (selectionArrangements B).card := by
+      exact_mod_cast hbadCardNat
+    have hbadUpper :
+        ((selectionBadNondegenerate B phi).card : Real) ≤ M := by
+      rw [selectionArrangements_card] at hbadCard
+      exact hbadCard.trans harrangementUpper
+    have hV : 1 ≤ V := by
+      dsimp only [V]
+      exact Nat.one_le_pow _ 2 (by norm_num)
+    have hqb0 : 0 ≤ qb := by
+      dsimp [qb]
+      positivity
+    have hqbHalf : qb ≤ (2 : Real)⁻¹ := by
+      dsimp only [qb]
+      calc
+        ((2 : Real)⁻¹) ^ V ≤ ((2 : Real)⁻¹) ^ 1 :=
+          pow_le_pow_of_le_one (by norm_num) (by norm_num) hV
+        _ = (2 : Real)⁻¹ := pow_one _
+    have hamp0 : 0 ≤ amp := by
+      dsimp [amp]
+      positivity
+    have hamp2 : amp ≤ 2 := by
+      dsimp only [amp, qb] at hqbHalf ⊢
+      linarith
+    have hqg0 : 0 ≤ qg := by
+      exact mul_nonneg hqb0 hamp0
+    have hqg1 : qg ≤ 1 := by
+      dsimp only [qg]
+      calc
+        qb * amp ≤ (2 : Real)⁻¹ * 2 :=
+          mul_le_mul hqbHalf hamp2 hamp0 (by norm_num)
+        _ = 1 := by norm_num
+    have hqgPow0 : 0 ≤ qg ^ r := pow_nonneg hqg0 r
+    have hqgPow1 : qg ^ r ≤ 1 := pow_le_one₀ hqg0 hqg1
+    have hqbPow0 : 0 ≤ qb ^ r := pow_nonneg hqb0 r
+    have hgoodScaled :
+        eta * qg ^ r * (alpha * M - exceptional) ≤
+          eta * qg ^ r * (selectionGoodNondegenerate B phi).card :=
+      mul_le_mul_of_nonneg_left hgoodLower
+        (mul_nonneg heta.le hqgPow0)
+    have hbadScaled :
+        qb ^ r * (selectionBadNondegenerate B phi).card ≤ qb ^ r * M :=
+      mul_le_mul_of_nonneg_left hbadUpper hqbPow0
+    have havgLower :
+        qb ^ r * (alpha * eta * amp ^ r - 1) * M -
+            eta * qg ^ r * exceptional ≤
+          eta * qg ^ r * (selectionGoodNondegenerate B phi).card -
+            qb ^ r * (selectionBadNondegenerate B phi).card := by
+      calc
+        qb ^ r * (alpha * eta * amp ^ r - 1) * M -
+              eta * qg ^ r * exceptional =
+            eta * qg ^ r * (alpha * M - exceptional) - qb ^ r * M := by
+          dsimp [qg]
+          rw [mul_pow]
+          ring
+        _ ≤ eta * qg ^ r * (selectionGoodNondegenerate B phi).card -
+              qb ^ r * (selectionBadNondegenerate B phi).card :=
+          sub_le_sub hgoodScaled hbadScaled
+    have hetaQ : eta * qg ^ r ≤ 1 := by
+      calc
+        eta * qg ^ r ≤ 1 * qg ^ r :=
+          mul_le_mul_of_nonneg_right heta_one hqgPow0
+        _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left hqgPow1 (by norm_num)
+        _ = 1 := mul_one _
+    have herror : (eta * qg ^ r + 1) * exceptional ≤ margin * M := by
+      have hfactor : eta * qg ^ r + 1 ≤ 2 := by linarith only [hetaQ]
+      have hfirst := mul_le_mul_of_nonneg_right hfactor hexceptional0
+      have hsecond : 2 * exceptional ≤ margin * M := by
+        calc
+          2 * exceptional ≤ 2 * ((margin / 2) * M) :=
+            mul_le_mul_of_nonneg_left hexceptional (by norm_num)
+          _ = margin * M := by ring
+      exact hfirst.trans hsecond
+    have htargetToAverage :
+        eta * target * M + exceptional ≤
+          eta * qg ^ r * (selectionGoodNondegenerate B phi).card -
+            qb ^ r * (selectionBadNondegenerate B phi).card := by
+      calc
+        eta * target * M + exceptional =
+            qb ^ r * (alpha * eta * amp ^ r - 1) * M -
+                eta * qg ^ r * exceptional -
+              (margin * M - (eta * qg ^ r + 1) * exceptional) := by
+          dsimp [margin]
+          ring
+        _ ≤ qb ^ r * (alpha * eta * amp ^ r - 1) * M -
+              eta * qg ^ r * exceptional :=
+          sub_le_self _ (sub_nonneg.mpr herror)
+        _ ≤ eta * qg ^ r * (selectionGoodNondegenerate B phi).card -
+              qb ^ r * (selectionBadNondegenerate B phi).card := havgLower
+    have hphaseExpected :
+        eta * target * M + exceptional ≤
+          𝔼 C : Fin r → SelectionPhase N k, (
+            eta * (∑ R ∈ selectionGoodNondegenerate B phi,
+              ∏ z : selectionIndex k,
+                multiStageSelectionWeight C phi (selectionVertex R z)) -
+            ∑ R ∈ selectionBadNondegenerate B phi,
+              ∏ z : selectionIndex k,
+                multiStageSelectionWeight C phi
+                  (selectionVertex R z)) := by
+      rw [selection_phase_score_average hN3]
+      exact htargetToAverage
+    obtain ⟨C, hCmem, hC⟩ := Finset.exists_le_of_le_expect
+      (Finset.univ_nonempty : (Finset.univ :
+        Finset (Fin r → SelectionPhase N k)).Nonempty) hphaseExpected
+    have hcarrierLower :=
+      selection_carrier_score_lower (by omega) eta heta.le B phi C
+    have hcarrierAverage :
+        eta * target * M ≤
+          eta * (∑ R ∈ selectionGoodArrangements B phi,
+            ∏ z ∈ selectionCarrier R,
+              multiStageSelectionWeight C phi z) -
+            ∑ R ∈ selectionBadArrangements B phi,
+              ∏ z ∈ selectionCarrier R,
+                multiStageSelectionWeight C phi z := by
+      linarith only [hC, hcarrierLower]
+    have hgoodCarrier : ∀ R ∈ selectionGoodArrangements B phi,
+        selectionCarrier R ⊆ B := by
+      intro R hR
+      have hdata : R ∈ selectionArrangements B ∧ R.IsRespected phi := by
+        simpa [selectionGoodArrangements] using hR
+      have hIsIn : R.IsIn B := by
+        simpa [selectionArrangements] using hdata.1
+      exact selectionCarrier_subset B R hIsIn
+    have hbadCarrier : ∀ R ∈ selectionBadArrangements B phi,
+        selectionCarrier R ⊆ B := by
+      intro R hR
+      have hmem := (Finset.mem_sdiff.mp hR).1
+      have hIsIn : R.IsIn B := by simpa [selectionArrangements] using hmem
+      exact selectionCarrier_subset B R hIsIn
+    obtain ⟨B', hB'B, hscore⟩ := exists_subset_count_score
+      B (multiStageSelectionWeight C phi)
+      (fun z hz ↦ multiStageSelectionWeight_nonneg C phi z)
+      (fun z hz ↦ multiStageSelectionWeight_le_one C phi z)
+      (selectionGoodArrangements B phi)
+      (selectionBadArrangements B phi) selectionCarrier
+      hgoodCarrier hbadCarrier eta (eta * target * M) hcarrierAverage
+    let goodCount :=
+      ((selectionGoodArrangements B phi).filter fun R ↦
+        selectionCarrier R ⊆ B').card
+    let badCount :=
+      ((selectionBadArrangements B phi).filter fun R ↦
+        selectionCarrier R ⊆ B').card
+    have hgoodCount :
+        goodCount = respectedGeneralArrangementCount 8 B' phi := by
+      exact selection_good_restrict_card B B' phi hB'B
+    have htotalCount :
+        goodCount + badCount = generalArrangementCount 8 B' := by
+      exact selection_good_bad_restrict_card B B' phi hB'B
+    have htotalCountReal :
+        (goodCount : Real) + badCount = generalArrangementCount 8 B' := by
+      exact_mod_cast htotalCount
+    have htargetPos : 0 < target := by
+      dsimp only [target]
+      rw [selectionTarget_eq]
+      exact pow_pos (div_pos (mul_pos halpha heta) (by norm_num)) _
+    have harrangementLower :
+        target * M ≤ (generalArrangementCount 8 B' : Real) := by
+      change eta * target * M ≤ eta * (goodCount : Real) - badCount at hscore
+      have hbad0 : 0 ≤ (badCount : Real) := Nat.cast_nonneg _
+      have hgoodLeTotal :
+          (goodCount : Real) ≤ generalArrangementCount 8 B' := by
+        calc
+          (goodCount : Real) ≤ (goodCount : Real) + badCount :=
+            le_add_of_nonneg_right hbad0
+          _ = generalArrangementCount 8 B' := htotalCountReal
+      have hscoreUpper :
+          eta * (goodCount : Real) - badCount ≤
+            eta * (generalArrangementCount 8 B' : Real) := by
+        calc
+          eta * (goodCount : Real) - badCount ≤ eta * goodCount :=
+            sub_le_self _ hbad0
+          _ ≤ eta * (generalArrangementCount 8 B' : Real) :=
+            mul_le_mul_of_nonneg_left hgoodLeTotal heta.le
+      have h := hscore.trans hscoreUpper
+      apply (mul_le_mul_iff_of_pos_left heta).mp
+      calc
+        eta * (target * M) = eta * target * M := by ring
+        _ ≤ eta * (generalArrangementCount 8 B' : Real) := h
+    have hdensity :
+        (1 - eta) * (generalArrangementCount 8 B' : Real) ≤
+          respectedGeneralArrangementCount 8 B' phi := by
+      change eta * target * M ≤ eta * (goodCount : Real) - badCount at hscore
+      have hpositive : 0 ≤ eta * target * M :=
+        (mul_pos (mul_pos heta htargetPos) hMpos).le
+      have hbad_le : (badCount : Real) ≤ eta * goodCount :=
+        sub_nonneg.mp (hpositive.trans hscore)
+      have hbad0 : 0 ≤ (badCount : Real) := Nat.cast_nonneg _
+      have honeeta0 : 0 ≤ 1 - eta := sub_nonneg.mpr heta_one
+      have honeeta1 : 1 - eta ≤ 1 := by linarith only [heta]
+      have hbadScaled : (1 - eta) * (badCount : Real) ≤ badCount := by
+        calc
+          (1 - eta) * (badCount : Real) ≤ 1 * badCount :=
+            mul_le_mul_of_nonneg_right honeeta1 hbad0
+          _ = badCount := one_mul _
+      rw [← hgoodCount]
+      calc
+        (1 - eta) * (generalArrangementCount 8 B' : Real) =
+            (1 - eta) * (goodCount + badCount) := by rw [htotalCountReal]
+        _ = (1 - eta) * goodCount + (1 - eta) * badCount := by ring
+        _ ≤ (1 - eta) * goodCount + eta * goodCount := by
+          simpa only [add_comm] using
+            add_le_add_left (hbadScaled.trans hbad_le)
+              ((1 - eta) * (goodCount : Real))
+        _ = goodCount := by ring
+    refine ⟨B', hB'B, ?_, hdensity⟩
+    rw [← selectionTarget_eq]
+    dsimp only [target, M] at harrangementLower
+    simpa only [mul_assoc] using harrangementLower
+  · intro N _ hN hvalid B phi harrangementUpper hrespected
+    exfalso
+    let M : Real := scale * (N : Real) ^ (17 * k + 15)
+    have hNpos : 0 < (N : Real) := by
+      exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
+    have hMpos : 0 < M := by
+      dsimp [M]
+      positivity
+    have hrespectedUpperNat := selection_respected_le_arrangement B phi
+    have hrespectedUpper :
+        (respectedGeneralArrangementCount 8 B phi : Real) ≤
+          generalArrangementCount 8 B := by
+      exact_mod_cast hrespectedUpperNat
+    have halpha_gt : 1 < alpha := lt_of_not_ge halpha_one
+    nlinarith
+
 /-- Random restriction with a prescribed upper scale for the arrangement
 count. Taking scale one makes the threshold independent of the exact density. -/
 theorem selection_scale_estimate
@@ -3071,6 +3534,58 @@ theorem selection_scale_estimate_zero
   refine ⟨N0, ?_⟩
   intro N _ hN B phi hu hl
   exact hN0 N hN trivial B phi hu hl
+
+/-- `selection_scale_estimate` with its modulus threshold written out. -/
+theorem selection_scale_estimate_explicit
+    (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
+    (halpha : 0 < alpha) (hscale : 0 < scale)
+    (heta : 0 < eta) (heta_lt : eta < 1) :
+    ∀ (N : Nat) [NeZero N],
+      selectionExplicitThreshold k alpha eta scale ((3 : Real) ^ (16 * 2 ^ k) * k) ≤ (N : Real) →
+      N.Prime → Odd N →
+      ∀ (B : Finset (Point N (k + 1)))
+          (phi : Point N (k + 1) → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤
+            scale * (N : Real) ^ (17 * k + 15) →
+        alpha * scale * (N : Real) ^ (17 * k + 15) ≤
+            respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧
+          (alpha * eta / 4) ^ arrangementSelectionExponent k * scale *
+              (N : Real) ^ (17 * k + 15) ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  intro N _ hN hprime hodd
+  exact selection_scale_estimate_of_exceptional_bound_explicit
+    (fun N ↦ N.Prime ∧ Odd N) k alpha scale eta halpha hscale heta heta_lt
+    ((3 : Real) ^ (16 * 2 ^ k) * k) (by positivity)
+    (fun delta hdelta N _ _ hratio hvalid ↦
+      selectionDegenerate_real_small_explicit k scale delta hk hscale hdelta N hratio
+        hvalid.1 hvalid.2)
+    N hN ⟨hprime, hodd⟩
+
+/-- `selection_scale_estimate_zero` with its modulus threshold written out. -/
+theorem selection_scale_estimate_zero_explicit
+    (alpha scale eta : Real) (halpha : 0 < alpha) (hscale : 0 < scale)
+    (heta : 0 < eta) (heta_lt : eta < 1) :
+    ∀ (N : Nat) [NeZero N], selectionExplicitThreshold 0 alpha eta scale (2 * 4 ^ 16) ≤ (N : Real) →
+      ∀ (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤ scale * (N : Real) ^ 15 →
+        alpha * scale * (N : Real) ^ 15 ≤ respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N 1), B' ⊆ B ∧
+          (alpha * eta / 4) ^ arrangementSelectionExponent 0 * scale * (N : Real) ^ 15 ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  intro N _ hN B phi hu hl
+  exact selection_scale_estimate_of_exceptional_bound_explicit
+    (fun _ => True) 0 alpha scale eta halpha hscale heta heta_lt
+    (2 * 4 ^ 16) (by positivity)
+    (fun delta hdelta N _ hN3 hratio _ => by
+      simpa only [Nat.mul_zero, zero_add] using
+        selectionDegenerate_real_small_zero_explicit scale delta hscale hdelta N hN3 hratio)
+    N hN trivial B phi hu hl
+
 
 set_option maxHeartbeats 1000000 in
 /-- The height-zero specialization of the random restriction.  Unlike the
