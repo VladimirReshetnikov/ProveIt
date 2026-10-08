@@ -1,3 +1,6 @@
+/- Modified for ProveIt: use a private pointwise proof of the principal tuple
+PMF conversion in the two allocated grouping proofs. This avoids excessive
+Lean 4.32 kernel memory use; all upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Sampling.JointFrozenSamplerLaw
 
 namespace OAI
@@ -7,6 +10,20 @@ section
 namespace Erdos3
 
 open scoped BigOperators
+
+/-- Check the conversion pointwise before instantiating the allocated sampler
+parameters, avoiding reduction of the entire probability-weight structure. -/
+private theorem principalTupleWeights_toPMF {D α : Type*} [Fintype D] [DecidableEq D]
+    [Fintype α] [DecidableEq α] (B : D → Type*) [∀ d, Fintype (B d)] [∀ d, DecidableEq (B d)]
+    (h : D → ℕ) (L : PrincipalTupleIndex B h → ℕ) (hL : ∀ j, 0 < L j) :
+    (principalTupleWeights (α := α) B h L hL).toPMF =
+      dependentProductPMF (fun j => (integerScalarCubeWeights α (L j) (hL j)).toPMF) := by
+  ext x
+  rw [FiniteProbabilityWeights.toPMF_apply, dependentProductPMF_apply]
+  simp only [FiniteProbabilityWeights.toPMF_apply]
+  change ENNReal.ofReal (∏ j, (integerScalarCubeWeights α (L j) (hL j)).weight (x j)) =
+    ∏ j, ENNReal.ofReal ((integerScalarCubeWeights α (L j) (hL j)).weight (x j))
+  exact ENNReal.ofReal_prod_of_nonneg (fun j _ => (integerScalarCubeWeights α (L j) (hL j)).nonneg (x j))
 
 theorem dependentProductPMF_sigma_curry
     {A : Type*} [Fintype A] {B C : A → Type*}
@@ -93,7 +110,9 @@ theorem allocatedFrozenTuple_axis_marginal :
         (allocatedPrincipalSides_pos B U basis S ⟨k.1.val, k.2⟩)
   have hp : (allocatedFrozenTupleWeights (α := α) B U basis S).toPMF =
       dependentProductPMF (fun k => (w k).toPMF) :=
-    FiniteProbabilityWeights.toPMF_pi w
+    principalTupleWeights_toPMF (fun d : {d // grid d} => B d.val)
+      (fun d => layerSamplerDegree I n d.val) (principalAxisLength grid sides)
+      (fun j => allocatedPrincipalSides_pos B U basis S ⟨j.1.val, j.2⟩)
   exact (congrArg (fun p : PMF (PrincipalAxisTuples (α := α) grid sides) =>
     p.map (fun u (q : B a.val × Fin (layerSamplerDegree I n a.val)) => u ⟨a, q⟩)) hp).trans
       (dependentProductPMF_marginal (fun k => (w k).toPMF) (fun q => ⟨a, q⟩)
@@ -152,7 +171,9 @@ theorem allocatedFrozenTuple_full_blocks :
         (allocatedPrincipalSides_pos B U basis S ⟨k.1.val, k.2⟩)
   have hp : (allocatedFrozenTupleWeights (α := α) B U basis S).toPMF =
       dependentProductPMF (fun k => (w k).toPMF) :=
-    FiniteProbabilityWeights.toPMF_pi w
+    principalTupleWeights_toPMF (fun d : {d // grid d} => B d.val)
+      (fun d => layerSamplerDegree I n d.val) (principalAxisLength grid sides)
+      (fun j => allocatedPrincipalSides_pos B U basis S ⟨j.1.val, j.2⟩)
   exact (congrArg (fun p : PMF (PrincipalAxisTuples (α := α) grid sides) =>
     p.map (fun u a b v => u ⟨a, b, v⟩)) hp).trans
       (dependentProductPMF_sigma_curry (fun a b v => (w ⟨a, b, v⟩).toPMF))
