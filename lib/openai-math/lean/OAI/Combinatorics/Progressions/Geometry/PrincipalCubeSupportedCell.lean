@@ -1,3 +1,8 @@
+/- Modified for ProveIt: use a private pointwise PMF conversion for principal
+coordinate weights to avoid Lean 4.32 kernel memory exhaustion; remove a
+redundant fiber-law conversion after simplification in the axis marginal;
+provide the existing tuple as Nonempty in principalResidueCell_pos_of_cube.
+All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.ContainedFullIntervalResidueIdentity
 import OAI.Combinatorics.Progressions.Linear.ContainedSupportedProgressionKernels
 
@@ -7,6 +12,18 @@ section
 
 namespace Erdos3
 open scoped Classical
+
+private theorem principalCoordinateWeights_toPMF_pointwise
+    {D α : Type*} [Fintype D] [DecidableEq D] [Fintype α] [DecidableEq α]
+    (B : D → Type*) [∀ d, Fintype (B d)] [∀ d, DecidableEq (B d)] (h : D → ℕ)
+    (L : PrincipalTupleIndex B h → ℕ)
+    (w : ∀ j, FiniteProbabilityWeights (IntegerScalarCubeBox α (L j))) :
+    (FiniteProbabilityWeights.pi w).toPMF = dependentProductPMF (fun j => (w j).toPMF) := by
+  ext x
+  rw [FiniteProbabilityWeights.toPMF_apply, dependentProductPMF_apply]
+  change ENNReal.ofReal (∏ j, (w j).weight (x j)) =
+    ∏ j, ENNReal.ofReal ((w j).weight (x j))
+  exact ENNReal.ofReal_prod_of_nonneg (fun j _ => (w j).nonneg (x j))
 
 variable {D α : Type*} [Fintype D] [DecidableEq D] [Fintype α] [DecidableEq α]
 variable (B : D → Type*) [∀ d, Fintype (B d)] [∀ d, DecidableEq (B d)] (h : D → ℕ)
@@ -46,7 +63,8 @@ theorem principalSupportedResidue_restrict
     (principalResidueCell_mass_pos BP hP (principalAxisLength P H) hHP q hq rP hsize)
   have hpmf := congrArg (fun p : FiniteProbabilityWeights
     (PrincipalIntegerTuples BP hP α (principalAxisLength P H)) => p.toPMF) (hres.trans hcond)
-  have hpi := FiniteProbabilityWeights.toPMF_pi (principalSupportedCoordinateWeights BP hP
+  have hpi := principalCoordinateWeights_toPMF_pointwise BP hP (principalAxisLength P H)
+    (principalSupportedCoordinateWeights BP hP
     (principalAxisLength P H) hHP q rP (principalResidueCell_mass_pos BP hP (principalAxisLength P H) hHP q hq rP hsize))
   exact hm.trans (hpmf.trans hpi).symm
 
@@ -191,20 +209,17 @@ theorem containedSupportedProgressionLaw_axis_marginal :
   have hraw := FiniteProbabilityWeights.pi_condition_positive_fiber_marginal
     (fun j => integerScalarCubeWeights α (H j) (hH j))
     (fun j (z : IntegerScalarCubeBox α (H j)) a => ((z a : ℤ) : ZMod q)) r hcell embed hinj
-  have hpi := FiniteProbabilityWeights.toPMF_pi (fun j : PrincipalTupleIndex BP hP => w (embed j))
+  have hpi := principalCoordinateWeights_toPMF_pointwise BP hP (principalAxisLength P H)
+    (fun j : PrincipalTupleIndex BP hP => w (embed j))
   have hraw' : (conditioned).toPMF.map (principalAxisRestrict P) =
       (FiniteProbabilityWeights.pi (fun j : PrincipalTupleIndex BP hP => w (embed j))).toPMF := hraw.trans hpi.symm
   have hm := congrArg (fun p => p.map (containedProgressionTupleMap BP hP
       (principalAxisLength P L) (principalAxisLength P H) (principalAxisLength P step)
       (fun j => c (embed j)) (fun j => hL (embed j)) (fun j => hsubset (embed j)))) hraw'
   rw [PMF.map_comp] at hm
-  have hout := FiniteProbabilityWeights.toPMF_fiberLaw
-    (FiniteProbabilityWeights.pi (fun j : PrincipalTupleIndex BP hP => w (embed j)))
-    (containedProgressionTupleMap BP hP (principalAxisLength P L) (principalAxisLength P H)
-      (principalAxisLength P step) (fun j => c (embed j)) (fun j => hL (embed j)) (fun j => hsubset (embed j)))
   simp only [containedSupportedProgressionLaw, containedSupportedProgressionAxisLaw,
     FiniteProbabilityWeights.toPMF_fiberLaw, PMF.map_comp]
-  refine Eq.trans ?_ (hm.trans hout.symm)
+  refine Eq.trans ?_ hm
   apply congrArg (fun f : PrincipalIntegerTuples B h α H → PrincipalAxisTuples (α := α) P L =>
     (conditioned).toPMF.map f)
   funext y j
@@ -284,6 +299,7 @@ theorem principalResidueCell_pos_of_cube (q : ℕ) (y : PrincipalIntegerTuples B
     (hy : ∀ j, IntegerScalarCube (L j) (fun a => (y j a : ℤ))) :
     0 < (principalTupleWeights B h L hL).mass
       (Finset.univ.filter (fun z => principalResidueLabel q z = principalResidueLabel q y)) := by
+  letI : Nonempty (PrincipalIntegerTuples B h α L) := ⟨y⟩
   apply lt_of_lt_of_le (principalTupleWeights_weight_pos_of_cube B h L hL y hy)
   exact Finset.single_le_sum (fun z _ => (principalTupleWeights B h L hL).nonneg z)
     (by simp : y ∈ Finset.univ.filter (fun z => principalResidueLabel q z = principalResidueLabel q y))
