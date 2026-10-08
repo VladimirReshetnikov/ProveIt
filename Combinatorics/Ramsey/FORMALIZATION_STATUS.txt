@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 775 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,977 public Gowers theorems and found only propext,
+  All 776 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,978 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -91,6 +91,16 @@ Concrete Freiman-family slice provider in dimension two
   affine-cover theorem discharges the abstract slice-provider premise;
   line covers and the individual Freiman-family covers remain assumptions.
   This does not close Theorem 16.2 or a new catalogue entry.
+
+Explicit cubic lower bound for the simultaneous width exponent
+  Proofs16PolynomialBaseExponent proves, for q > 0 and 0 < sigma <= 1,
+    2^(-27) * sigma^3 / q^4 <= polyBaseExponent(q, sigma).
+  It uses log(1024*pi*q/sigma) <= 4096*q/sigma and log(2) >= 1/2.
+  Thus the simultaneous Freiman-family width exponent has an explicit
+  polynomial lower bound, also after substituting max(1,r)*q in the slice
+  provider. This is a bound on the already proved local cover controls;
+  it does not establish the missing general Section 16 induction or improve
+  an all-length Szemeredi threshold. The theorem passes the full audit.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
