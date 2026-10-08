@@ -140,6 +140,11 @@ bound analogue, and no published erratum for §16 of Gowers (2001). As
 encoded, Theorem 16.2's quantitative content appears to be beyond current
 published methods, although the statement may well be true.
 
+This concerns polynomial bounds. H.5 records Milićević's 2026 quasipolynomial
+structure theorem for Freiman bihomomorphisms in general finite abelian
+groups. Through simultaneous Bohr unions, quasipolynomial bounds appear to
+fit the exact budget.
+
 ## E. A positive reduction (proved; formalized in `Proofs16RegimeSplitting`)
 
 The Lean version, `multiplyLinear_of_powerLossCover`, is kernel-checked. Its
@@ -286,7 +291,9 @@ These are the only places where the route uses `Point N 1`
 
 ### H.2 Sequential unions are exponential in the number of pieces
 
-*Proved (elementary; not formalized).* Suppose `Γ₁,…,Γ_m` each satisfy
+*Proved; formalized as `MultiplyLinearWith.fin_union` and
+`MultiplyLinearWith.finsetUnion` in `Proofs16WithUnion`, from the two-relation
+`MultiplyLinearWith.union`.* Suppose `Γ₁,…,Γ_m` each satisfy
 `MultiplyLinearWith Q E`. Then their union satisfies `MultiplyLinearWith`
 with count `m·Q(ρ/m)` and exponent `E(ρ/m)^m`.
 
@@ -332,6 +339,47 @@ Bohr radius `ζ = 2^(−s(θ,γ,1))`, and the Lemma 16.1 exponent
 what made it stackable. Neither computation is an impossibility proof. They
 show only that the dimension-two theorem, as stated and proved, does not
 supply the dimension-three slice provider.
+
+### H.3a Break B in dimension three is the same gap; truncation does not help
+
+Lemma 16.6 feeds the lower-dimensional graph count `q` of the spectrum
+relation into Lemma 16.1, whose exponent is `K^(−2^(k+1)·q)`. That exponent
+is `exp(−poly(1/θ))` only when q is polynomial in `1/θ` and `1/γ`. So break
+B and the stacking gap of H.3 come from one defect.
+
+- **Dimension two.** The spectrum count comes from dimension one:
+  `section16CubicSpectrumCount`, which the peer bounds by `s(θ,γ,1)` in
+  `Proofs16CubicSpectrumBudget`. It is polynomial.
+- **Dimension three.** The count would come from dimension two. Through
+  `section16CubicLiftGraphBound` it is exponential in a polynomial, so
+  Lemma 16.9's width exponent becomes doubly exponential again.
+
+Gowers's definition (`sz-thm-gowers-proof.tex`, line 3342) asks for every
+inner loss, exactly as the encoding does. But its only consumer outside
+Section 16, the proof of Corollary 16.11 (line 3534), uses one loss,
+θ′ = α/8. A version of Theorem 16.2 truncated at `θ′ ≥ ρ₀(θ,γ,k)` looks
+inductive, because the lift requests lower-dimensional losses proportional
+to its own. It would remove break A. It would not remove break B, and the
+catalogue's Corollary 16.11 exponent `(α/8)·c(r⁻¹α/8, α/2, k)^r` is
+`exp(−poly(1/α))`, so truncation alone does not reach the open catalogue
+items. Every route beyond dimension two needs lower-dimensional counts that
+are polynomial in all parameters.
+
+**Polynomial controls are necessary but not sufficient.** One could try to
+make dimension two polynomial in every parameter:
+
+- feed the cubic dimension-one controls into the cross-sections of
+  Lemma 16.4(i) and the line covers of Lemma 16.9, instead of the printed
+  `(γ,R)` controls behind `section16Lemma9QBound`;
+- replace Lemma 16.1 for linear forms (the case k = 1) by Dirichlet's
+  theorem, whose exponent is about `1/q` rather than `K^(−4q)`.
+
+Even then, stacking would fail. The proof of Theorem 16.2 ends with a
+greedy decomposition into about `γ⁻²/θ₂` pieces united by Lemma 16.8, which
+is a sequential union (H.2). Applied to a stack of r slices at `γ/√r`, the
+number of pieces is polynomial in r, so the exponent is exponential in it.
+A stackable invariant must therefore support **simultaneous** unions, not
+merely polynomial counts.
 
 ### H.4 A stackable invariant: Bohr-structured multilinearity (proposal)
 
@@ -381,6 +429,72 @@ inverse theorem for Freiman multi-homomorphisms in Bohr form.
   - I have not found a `Z_N` version with polynomial rank. It would be a
     bilinear (more generally multilinear) polynomial Bogolyubov theorem.
 
+### H.5 Literature for the open step, and the budget it allows
+
+**What is now available.** Milićević,
+[*A bilinear Bogolyubov argument in abelian groups*](https://arxiv.org/abs/2109.03093)
+(v3 December 2024), extends bilinear Bogolyubov from `F_p^n` to arbitrary
+finite abelian groups with codimension `log^O(1)(1/δ)`. His
+[*General inverse theory for the U⁴ norm*](https://arxiv.org/abs/2601.01682)
+(January 2026), Theorem 1.4, proves the structure theorem H.4 needs in
+dimension two. Let `φ: A → H` be a Freiman bihomomorphism on
+`A ⊆ G₁×G₂` with `|A| = c|G₁||G₂|`. Then there are:
+
+- Bohr sets `B₁, B₂` of codimension `(2 log c⁻¹)^O(1)` and radius
+  `exp(−(2 log c⁻¹)^O(1))`;
+- a set E of rank `(2 log c⁻¹)^O(1)`;
+- shifts s, t and an E-bihomomorphism Φ on `B₁×B₂` that agrees with
+  `φ(x+s, y+t)` on at least `exp(−(2 log c⁻¹)^O(1))·|G₁||G₂|` points.
+
+The groups are arbitrary, so `Z_N` is included. For the U⁴ application the
+paper assumes `(|G|, 6) = 1`, which holds for primes N > 3.
+
+**Why quasipolynomial bounds fit the exact budget.** Simultaneous unions
+(H.4 (i)) change what the budget constrains. Theorem 16.2's targets are
+`q(θ′/R)^R` and `c(θ′/R)^R` with `R = γ⁻²·s(θ,γ,k)`. For fixed θ′ these are
+`exp(poly(1/θγ))` and `exp(−poly(1/θγ))`. In the Bohr route:
+
+- the count is the number of maps;
+- the exponent is about `1/(k·rank)`;
+- the inner loss enters only through a threshold handled by regime
+  splitting (E).
+
+So the total rank and count may be as large as `exp(poly(1/θγ))`. Covering
+by `1/mass = exp(polylog)` pieces of polylog rank each gives total rank
+`exp(polylog)`, well inside that budget. By contrast, the sequential route
+H.2 needs piece masses polynomial in θγ, because R appears in the exponent.
+
+**What it would unlock, and what remains (heuristic assessment).**
+
+1. *Dimension three.* If the two-dimensional slices of a structured pair
+   in `Z_N³` are Freiman bihomomorphisms on dense sets, then Theorem 1.4
+   makes them Bohr-structured. The stacked-slice provider of H.1 would then
+   come from H.4 (i)–(ii), and the proved general-k lift would give
+   `Theorem162At 3`.
+   - Lemma 16.4 supplies arrangement-respecting restrictions. Whether they
+     are bihomomorphisms on dense sets, with density polynomial in θγ, has
+     to be checked.
+   - E-bihomomorphisms rather than bihomomorphisms also need care. On a
+     product of short progressions inside the Bohr sets, the rank-r error
+     set E should contribute only bracket terms that do not wrap. That would
+     make Φ bilinear in the progression coordinates, hence multilinear in
+     the `Z_N` coordinates, since N is prime.
+2. *Every dimension.* Each step from k to k+1 needs the same theorem for
+   Freiman (k+1)-homomorphisms over `Z_N`, with bounds at most
+   `exp(poly)`. Gowers–Milićević prove the multilinear version only over
+   `F_p^n`, with iterated-exponential bounds (D). Theorem 1.4 is the case
+   k+1 = 2. I know of no version for k+1 ≥ 3 over cyclic groups.
+   Formalizing Theorem 1.4 itself (a paper of about 100 pages) would be a
+   campaign of its own.
+
+**Decision (2026-10-07).** Keep the printed statements of 16.2, 16.11,
+18.1, 18.2 and 18.7 exact; do not restate them. The precedent for
+restating, Lemma 16.10, rested on a formal refutation of the printed
+encoding. Theorem 16.2 has no refutation, and the evidence above is that it
+holds but needs mathematics newer than Gowers (2001). Restating it would
+replace the source's quantitative theorems by weaker ones. Theorem 1.3 is
+being closed as stated by the openai-math port.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
@@ -416,3 +530,22 @@ inverse theorem for Freiman multi-homomorphisms in Bohr form.
    - With polynomial rank, it would give the exact Theorem 16.2 in every
      dimension.
    - The dimension-two route alone cannot reach dimension three (H.3).
+5. **Theorems 18.2 and 18.7 from openai-math with explicit constants.**
+   *Proved arithmetic; the port is infeasible for now.*
+   - Theorem 18.2 assumes δ ≤ 1/2 and
+     `N ≥ 2^(2^X)` with `X = δ^(−2^(2^(k+9)))`, so `log log N ≥ X·log 2 − 1`.
+     The openai-math bound
+     `r_k(N) ≤ C·N·exp(−c·(log log N)^(1+η))` falls below `δN` as soon as
+     `c·(X/2)^(1+η) > log C + log(1/δ)`. Since `log(1/δ) = (log X)/2^(2^(k+9))`
+     and `X ≥ 2^(2^(2^(k+9)))`, this needs only `log C / c` to be at most
+     about that size.
+   - Corollary 18.7 already follows from 18.2
+     (`corollary_18_7_holds_of_theorem_18_2`).
+   - Upstream, however, states and proves `QuantitativeDensityBound` with
+     `∃ C c η`. The headline's witness comes from an induction of
+     existential powers (`exists_manuscriptRelativePatchPower`).
+   - Scale of the Progressions tree: 4,774 Lean files, 128 of which use
+     filter asymptotics (412 occurrences), and 4,844 `exists_*` theorems.
+     Making the constants explicit would mean re-proving much of a
+     million-line development. Asking upstream for an explicit-constant
+     headline is the realistic form of this route.

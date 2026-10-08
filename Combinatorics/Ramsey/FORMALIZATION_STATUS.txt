@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 800 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,117 public Gowers theorems and found only propext,
+  All 807 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,170 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -56,7 +56,8 @@ One-dimensional cover with graph count independent of the loss
   It deletes the sparse graphs and applies Corollary 7.11 simultaneously
   to the remaining graphs; small boxes use the exact coarse cover.
   This supplies a stronger base case for the dimension-two approach.
-  The higher-dimensional lift and Theorem 16.2 remain unproved.
+  The exact dimension-two instance is now proved below; the general
+  higher-dimensional structural theorem remains unproved.
 
 Parametric spectrum controls for Lemmas 16.6 and 16.9
   The merged Proofs16WithLemma6 and Proofs16WithLemma9 pass the full audit.
@@ -234,7 +235,7 @@ Cubic source-scale numerical budgets
   Proofs16CubicPieceParameterBudget proves that the retained mass eta can
   pay for the concrete nonunit piece parameter s(theta,gamma,1)^8 within
   the total s(theta,gamma,2) budget. The cover comparison at this parameter
-  remains to be proved.
+  is now proved by Proofs16DimensionTwo, as recorded below.
   Proofs16CubicOuterScaleBudget rewrites log(32/zeta) exactly and bounds
   the width denominator by 10*s(theta,gamma,1), giving a positive algebraic
   width control for the already constructed pieces.
@@ -246,7 +247,38 @@ Cubic source-scale numerical budgets
   U^6, the spectrum count by U^2, and the slice family count by U, where
   U=s(theta,gamma,1). Proofs16CubicPowerAbsorption proves that the source
   power at U^8 pays for the scalar recurrence and polynomial losses.
-  These six modules pass the full audit and discharge numerical substeps; the general structural theorem and six catalogue gaps remain.
+  These six modules pass the full audit and discharge numerical substeps;
+  the general structural theorem and six catalogue gaps remain.
+
+Exact two-dimensional structural theorem
+  Proofs16DimensionTwo proves theorem_16_2_at_two : Theorem162At 2 for
+  arbitrary product relations over sufficiently large primes, with the
+  manuscript's parameter gamma^(-2)*s(theta,gamma,2).
+  Proofs16CubicScalarWidth and Proofs16CubicWidthLowerBound bound the actual
+  constructed width below by u^5*sigma^10*2^(-(84*U^2+75))/U^14, where
+  U=s(theta,gamma,1), R is the halved-density remainder count, and
+  u=multipleC(sigma/(2*R),gamma,2)^R. Proofs16CubicSourceWidth compares
+  this with the required width at the piece parameter U^8.
+  Proofs16CubicGraphWidthBudget proves that the graph count times the
+  algebraic width control is at most one, supplying the matching graph
+  budget. The retained mass pays for U^8; greedy extraction and the proved
+  finite-union theorem then give the exact structural conclusion.
+  This is an unconditional dimension-two result, not the general theorem.
+  The catalogue still has 114 companions and six open statements. The
+  higher-dimensional simultaneous slice-cover problem remains unresolved.
+
+Quartic inverse and six-term density iteration
+  Proofs18QuarticIteration applies theorem_16_2_at_two to the joint inverse
+  induction, proving quartic_function_discrepancy_bound unconditionally.
+  Its parameter and exponent are jointStructuralInverseParameter 2 alpha
+  and jointStructuralInverseExponent 2 alpha. The remaining threshold T
+  depends only on alpha and is existential.
+  natural_six_term_via_quartic_inverse feeds this bound into the closed
+  interval density iteration: sufficiently large dense subsets of [1,N]
+  contain a six-term arithmetic progression, with no structural premise.
+  This route does not yet give an explicit six-term numerical improvement.
+  The new consequences and the incoming Proofs16WithUnion pass the full
+  combined axiom audit; the catalogue remains 114/6.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
@@ -264,8 +296,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 1,400 pinned manifest entries compile as a 1,415-module closure.
-  OAI.QuantitativePortAudit checks 24,924 public OAI theorems in this prefix
+  The first 1,500 pinned manifest entries compile as a 1,515-module closure.
+  OAI.QuantitativePortAudit checks 26,262 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.
@@ -3070,6 +3102,22 @@ Higher-dimensional stackability gap (research notes, Part H)
   stackable invariant: ranks add under unions. They isolate its open step,
   preservation under the lift, which is a multilinear Bogolyubov-type
   inverse theorem over Z_N. Research only: the count stays 114/6.
+  Proofs16WithUnion formalizes the sequential-union bound (Part H.2) for
+  arbitrary controls: MultiplyLinearWith.union covers two relations at losses
+  lam*s and (1-lam)*s, with counts adding and width exponents multiplying.
+  MultiplyLinearWith.fin_union and .finsetUnion unite q relations with
+  common controls (Q,E) into count q*Q(s/q) and exponent E(s/q)^q. The module
+  also adds congr_controls and subset. It was compiled locally against its
+  115-module closure, and all six theorems use only propext,
+  Classical.choice and Quot.sound.
+  Part H.5 (literature): Milicevic, General inverse theory for the U4 norm
+  (arXiv:2601.01682, 2026), Theorem 1.4, is a quasipolynomial structure
+  theorem for Freiman bihomomorphisms in every finite abelian group. With
+  simultaneous Bohr unions, quasipolynomial ranks fit the exact budget,
+  which plausibly unlocks Theorem162At 3. Every dimension would need the
+  (k+1)-linear analogue over Z_N, which is not known. Decision recorded
+  there: the printed statements 16.2, 16.11, 18.1, 18.2 and 18.7 stay
+  exact and are not restated.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

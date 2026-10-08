@@ -409,6 +409,7 @@ import GowersSzemeredi.Proofs16PolyBaseCase
 import GowersSzemeredi.Proofs16WithLemma6
 import GowersSzemeredi.Proofs16WithLemma9
 import GowersSzemeredi.Proofs16WithLift
+import GowersSzemeredi.Proofs16WithUnion
 import GowersSzemeredi.Proofs16FreimanSliceProvider
 import GowersSzemeredi.Proofs16PolynomialBaseExponent
 import GowersSzemeredi.Proofs16CubicCoverControls
@@ -428,6 +429,8 @@ import GowersSzemeredi.Proofs16CubicSampleBudget
 import GowersSzemeredi.Proofs16CubicOuterScaleBudget
 import GowersSzemeredi.Proofs16CubicSpectrumBudget
 import GowersSzemeredi.Proofs16CubicPowerAbsorption
+import GowersSzemeredi.Proofs16DimensionTwo
+import GowersSzemeredi.Proofs18QuarticIteration
 import GowersSzemeredi.Proofs05DiameterReserve
 import GowersSzemeredi.Proofs05QuarterDiameterBudget
 import GowersSzemeredi.Proofs05QuarterDiameterPartition
