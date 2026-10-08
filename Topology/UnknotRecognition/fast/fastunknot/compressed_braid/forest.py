@@ -83,6 +83,11 @@ def summarize(data, *, check=lambda: None):
 
 def project(data, low, high, *, check=lambda: None):
     """Project to the consecutive strand interval [low, high], inclusively."""
+    check()
+    if low == high:
+        # Every generator is erased. This is exactly the old canonical output,
+        # including when unreachable rules are present in the validated input.
+        return dict(strands=1, rules=[['e']], root=0)
     out, intern, mapped = [['e']], {}, [0]
     def add(rule):
         key = tuple(rule)
@@ -103,8 +108,64 @@ def project(data, low, high, *, check=lambda: None):
     return dict(strands=high - low + 1, rules=out, root=mapped[data['root']])
 
 
+def _factor_plan(data, summary, intervals, check):
+    """Exact projected lengths/exponents and a cheap rule-count upper bound.
+
+    A node's nonempty factor projections lie within the hull of its terminal
+    factor indices. Range additions count all such hulls in linear space.
+    The bound need not be tight; it schedules work but proves no knot verdict.
+    Caller has validated the full grammar and established a knot closure.
+    """
+    rules, count = data['rules'], len(intervals)
+    labels = [-1] * data['strands']
+    lengths, exponents = [0] * count, [0] * count
+    for index, (lo, hi) in enumerate(intervals):
+        check()
+        for label in range(lo + 1, hi):
+            check()
+            labels[label] = index
+            lengths[index] += summary['counts'][label]
+    weights = [0] * len(rules)
+    weights[data['root']] = 1
+    for node in range(len(rules) - 1, 0, -1):
+        check()
+        rule, weight = rules[node], weights[node]
+        if not weight:
+            continue
+        if rule[0] == 'g':
+            index = labels[abs(rule[1])]
+            if index >= 0:
+                exponents[index] += weight if rule[1] > 0 else -weight
+        else:
+            weights[rule[1]] += weight
+            weights[rule[2]] += weight
+    spans, difference = [None], [0] * (count + 1)
+    for rule in rules[1:]:
+        check()
+        if rule[0] == 'g':
+            index = labels[abs(rule[1])]
+            span = (index, index) if index >= 0 else None
+        else:
+            a, b = spans[rule[1]], spans[rule[2]]
+            span = ((min(a[0], b[0]), max(a[1], b[1])) if a and b else a or b)
+        spans.append(span)
+        if span is not None:
+            difference[span[0]] += 1
+            difference[span[1] + 1] -= 1
+    plan, covered = [], 0
+    for index, (lo, hi) in enumerate(intervals):
+        check()
+        covered += difference[index]
+        m, exponent = hi - lo, exponents[index]
+        priority = 0 if m <= 2 or abs(exponent) > m - 1 else 1 if m == 3 else 2
+        plan.append((priority, covered + 1, index, lo, hi, lengths[index], exponent))
+    return sorted(plan)
+
+
 def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda size: None,
-                     use_fallback_reduction=True, **arena_options):
+                     use_fallback_reduction=True, use_lazy_factors=True, **arena_options):
+    if type(use_lazy_factors) is not bool:
+        raise ValueError('use_lazy_factors must be Boolean')
     check = arena_options.get('check', lambda: None)
     s = summarize(data, check=check)
     certificate = dict(version='compressed-singleton-forest-v1', input=deepcopy(data))
@@ -113,19 +174,37 @@ def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda 
         return dict(status='LINK', certificate=certificate)
     cuts = sorted(i for i, count in s['counts'].items() if count == 1)
     boundaries = [0] + cuts + [data['strands']]
-    prepared = []
-    for index, (lo, hi) in enumerate(zip(boundaries, boundaries[1:])):
+    intervals = list(zip(boundaries, boundaries[1:]))
+    def prepare():
+        if use_lazy_factors:
+            if len(intervals) == 1:
+                lo, hi = intervals[0]
+                plan = [(0, 0, 0, lo, hi, s['length'], s['exponent'])]
+            else:
+                plan = _factor_plan(data, s, intervals, check)
+            for _, _, index, lo, hi, length, exponent in plan:
+                check()
+                leaf = project(data, lo + 1, hi, check=check)
+                ls = summarize(leaf, check=check)
+                if (ls['length'], ls['exponent']) != (length, exponent):
+                    raise ArithmeticError('projected factor metadata differs from scheduling summary')
+                yield index, lo, hi, leaf, ls
+        else:
+            prepared = []
+            for index, (lo, hi) in enumerate(intervals):
+                check()
+                leaf = project(data, lo + 1, hi, check=check)
+                ls = summarize(leaf, check=check)
+                m = leaf['strands']
+                priority = 0 if m <= 2 or abs(ls['exponent']) > m-1 else 1 if m == 3 else 2
+                prepared.append((priority, len(leaf['rules']), index, lo, hi, leaf, ls))
+            for _, _, index, lo, hi, leaf, ls in sorted(prepared):
+                yield index, lo, hi, leaf, ls
+    leaves, order = [None] * len(intervals), []
+    for index, lo, hi, leaf, ls in prepare():
         check()
-        leaf = project(data, lo + 1, hi, check=check)
-        ls = summarize(leaf, check=check)
         if not ls['knot']:
             raise RuntimeError('singleton split of a knot produced a link')
-        m = leaf['strands']
-        priority = 0 if m <= 2 or abs(ls['exponent']) > m-1 else 1 if m == 3 else 2
-        prepared.append((priority, len(leaf['rules']), index, lo, hi, leaf, ls))
-    leaves, order = [None] * len(prepared), []
-    for _, _, index, lo, hi, leaf, ls in sorted(prepared):
-        check()
         order.append(index)
         m = leaf['strands']
         if m <= 2:
