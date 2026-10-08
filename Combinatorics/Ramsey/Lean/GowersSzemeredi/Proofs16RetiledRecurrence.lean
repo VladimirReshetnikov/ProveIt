@@ -38,18 +38,23 @@ theorem lastProductSet_partition {N k M : Nat} [NeZero N]
     exact Finset.disjoint_left.mp (hpart.2 i j hij)
       ((Finset.mem_filter.mp hi).2.1) ((Finset.mem_filter.mp hj).2.1)
 
-/-- The base recurrence and signed tiling combine into proper product cells
-with short final axes, retaining the frequency-times-step estimate. -/
-theorem proper_retiled_product_recurrence {N k q m v : Nat} [NeZero N]
+/-- Any common recurrence partition can be retiled along a compatible final
+axis. The width scale and error are independent of the recurrence theorem. -/
+theorem proper_retiled_product_of_recurrence {N k q v : Nat} [NeZero N]
     (P : Box N k) (B I : ModAP N) (i : Fin k) (u : (ZMod N)ˣ)
-    (hP : P.IsProper) (hI : I.IsProper)
+    (hI : I.IsProper)
     (hBstep : B.step = (↑u : ZMod N)) (hIstep : I.step = B.step)
     (hsub : (P.axis i).carrier ⊆ B.carrier) (hshort : 2 * B.length ≤ N)
     (hL : B.length ≤ I.length)
-    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ a, IsMultilinear (mu a))
-    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)
+    (mu : Fin q → Point N k → ZMod N)
+    (scale error : Real)
+    (hrec : ∃ M : Nat, ∃ R : Fin M → Box N k,
+      IsBoxPartition R P ∧ (∀ j, (R j).IsProper) ∧
+      (∀ j, scale ≤ (R j).width) ∧
+      ∀ a j x, x ∈ (R j).carrier →
+        (centeredAbs (mu a x * (R j).commonDiff) : Real) ≤ error * N)
     (hv : 2 ≤ v)
-    (hvscale : (v : Real) ^ 2 + 1 ≤ (m : Real) ^ section16RecurrenceExponent k q) :
+    (hvscale : (v : Real) ^ 2 + 1 ≤ scale) :
     ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
       ∃ J : Fin M → ModAP N,
       IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
@@ -59,10 +64,10 @@ theorem proper_retiled_product_recurrence {N k q m v : Nat} [NeZero N]
       (∀ j, 0 < (J j).length ∧ (J j).length ≤ v) ∧
       ∀ a j x, x ∈ (T j).carrier →
         (centeredAbs (mu a x * (J j).step) : Real) ≤
-          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by
+          error * N := by
   classical
   obtain ⟨M, R, hpart, hproper, hwidth, hsmall⟩ :=
-    proper_lemma_16_1 N k q m P hP mu hm hmP hmu
+    hrec
   have hfit (j : Fin M) : v ^ 2 ≤ (R j).width - 1 := by
     have h := hvscale.trans (hwidth j)
     have h' : v ^ 2 + 1 ≤ (R j).width := by exact_mod_cast h
@@ -101,6 +106,31 @@ theorem proper_retiled_product_recurrence {N k q m v : Nat} [NeZero N]
     have hp := hSproduct (e.symm j).1 (e.symm j).2
     rw [hp.2.2, hp.2.1]
     exact hsmall a _ x hx
+
+/-- The base recurrence and signed tiling combine into proper product cells
+with short final axes, retaining the frequency-times-step estimate. -/
+theorem proper_retiled_product_recurrence {N k q m v : Nat} [NeZero N]
+    (P : Box N k) (B I : ModAP N) (i : Fin k) (u : (ZMod N)ˣ)
+    (hP : P.IsProper) (hI : I.IsProper)
+    (hBstep : B.step = (↑u : ZMod N)) (hIstep : I.step = B.step)
+    (hsub : (P.axis i).carrier ⊆ B.carrier) (hshort : 2 * B.length ≤ N)
+    (hL : B.length ≤ I.length)
+    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ a, IsMultilinear (mu a))
+    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)
+    (hv : 2 ≤ v)
+    (hvscale : (v : Real) ^ 2 + 1 ≤ (m : Real) ^ section16RecurrenceExponent k q) :
+    ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
+      ∃ J : Fin M → ModAP N,
+      IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
+      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
+      (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
+      (∀ j, (T j).carrier ⊆ P.carrier) ∧
+      (∀ j, 0 < (J j).length ∧ (J j).length ≤ v) ∧
+      ∀ a j x, x ∈ (T j).carrier →
+        (centeredAbs (mu a x * (J j).step) : Real) ≤
+          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by
+  exact proper_retiled_product_of_recurrence P B I i u hI hBstep hIstep hsub hshort hL
+    mu _ _ (proper_lemma_16_1 N k q m P hP mu hm hmP hmu) hv hvscale
 
 /-- Frequency coverage converts the retiled base recurrence into linearity
 on every final-axis cell. This allows the base and final input steps to differ. -/

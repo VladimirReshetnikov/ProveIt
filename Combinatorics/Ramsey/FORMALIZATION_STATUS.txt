@@ -19,12 +19,20 @@ Scope
   Counts in the historical checkpoint sections below describe those earlier
   checkpoints; the current catalogue count is stated here and in the ledger.
 
+New work after the last full audit
+  Proofs16PolynomialRetiledLinearity passes a direct production-source Lean
+  check. A generic recurrence-to-tiling theorem now accepts any supplied
+  scale and error, preserving the existing retiled recurrence statement.
+  The new polynomial recurrence gives linear final-axis cells of width
+  at least (zeta/2)*sqrt(m^epsilon), including rounding and the required
+  length-minus-one margin. For sufficiently large phase families, the
+  larger exponent applies under the old input threshold. Frequency coverage
+  and local linearity remain explicit hypotheses; the structural theorem
+  is not supplied. The off-origin variety-box import and this new module
+  await the next combined facade audit; counts below are the last completed
+  audit, not a claim about these later changes.
+
 Verification at this checkpoint
-  The counts below describe the last completed audit. A follow-up audit
-  is checking the incoming variety-coordinate/readout modules and the new
-  Proofs16PolynomialRecurrenceComparison. The comparison module has passed
-  the normal repository checker: for sufficiently large families it gives
-  a strictly larger recurrence exponent under the old width threshold.
   The completed facade audit includes the simultaneous recurrence and
   minimum-length partition modules, the root-width profile, the Milicevic
   interfaces, exponent comparisons, and the incoming variety-box results.
@@ -44,9 +52,13 @@ Verification at this checkpoint
   width m^epsilon and error 2*m^(-epsilon)*N, including ceiling rounding.
   Its production module and transitive axiom check pass. Explicit degree
   constants and the remaining structure hypotheses are separate obligations.
+  Proofs16PolynomialRecurrenceComparison also passes the full audit. For
+  every fixed dimension, sufficiently large phase families have a strictly
+  larger recurrence exponent under the old rounding-safe width threshold.
+  The crossover and dimension constants remain existential.
   These additions close no numbered catalogue statement.
-  All 1,369 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,519 public Gowers theorems and found only propext,
+  All 1,373 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,548 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -68,11 +80,11 @@ Verification at this checkpoint
   dimension-two, and quartic inverse thresholds, the low-dimensional
   Corollary 16.11 companions, the stackable-slice reductions, and the
   conditional dimension-three results, the
-  1,369-module Gowers audit checks 5,519 theorems and the same 114/6
+  1,373-module Gowers audit checks 5,548 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,605-module closure and checks equality of the extracted propositions
+  2,609-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction

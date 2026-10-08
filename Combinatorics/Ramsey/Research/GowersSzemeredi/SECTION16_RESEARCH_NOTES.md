@@ -1004,9 +1004,21 @@ with the construction: for every dimension there are integer constants
 `K,p,q0` such that **under the old width threshold**, every family size
 `q >= q0` has a common proper partition satisfying the new, strictly larger
 width exponent and the corresponding smaller error exponent. The production
-module passed the normal repository checker; the follow-up full facade
-audit is running. The crossover `q0` and dimension constants remain
+module and the follow-up full facade axiom audit pass. The crossover `q0` and dimension constants remain
 existential, so this does not supply numerical improvements for small `q`.
+
+**The improved exponent now reaches retiled linearity.**
+`Proofs16PolynomialRetiledLinearity` passes a direct production-source Lean
+check. Its `Section16RetiledLinearityBound` keeps frequency coverage,
+local Bohr linearity, and the compatible-axis hypotheses explicit. The
+new recurrence yields proper product cells of minimum width
+`(zeta/2)*sqrt(m^epsilon(q))`, with a linear final-coordinate restriction
+on every good base point. The generic tiling theorem accepts a supplied
+recurrence partition, so the existing recurrence API is preserved.
+`exists_eventually_stronger_retiled_linearity` gives this conclusion under
+the old integer threshold for all sufficiently large `q`, with a strictly
+larger exponent. Integer rounding and the length-minus-one margin are
+included. The next full facade audit is pending.
 
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
