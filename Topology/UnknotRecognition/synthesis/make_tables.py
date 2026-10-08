@@ -1328,3 +1328,17 @@ if lf:
     open('tables/lazy_forest.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & old ms & lazy ms & eager ms & ratio & projections old/new',
         '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+# Compact live permutations: full recognition and independently measured memory.
+cp = load('../fast/results/compact_permutations_20261008.json')
+if cp:
+    rows = []
+    for r in cp['cases']:
+        m = r['medians']; memory = r['root_summary_peak_traced_bytes']
+        rows.append(esc(r['name'])+' & '+' & '.join(
+            f'{1000*m[a]:.3f}' for a in ('old','current','live_dense'))
+            +f" & {r['paired_ratios']['current']:.3f} & "
+            +f"{memory['old']/1024:.1f}/{memory['current']/1024:.1f}"+r' \\')
+    open('tables/compact_permutations.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & old ms & new ms & dense ms & ratio & peak KiB old/new',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')

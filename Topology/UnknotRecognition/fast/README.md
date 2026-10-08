@@ -2068,3 +2068,34 @@ flag to retain eager preparation and its former ordering. All work remains under
 the shared public allowances. See [`lazy_forest.tex`](../synthesis/lazy_forest.tex)
 for the scheduling proof, cost limits, compatibility audit and complete-call
 measurements, including positive controls that need every factor.
+
+### Compact component permutations
+
+Compressed forest validation now evaluates only root-reachable permutations.
+For more than eight strands, it stores moved points sparsely and switches to
+dense tuples when a product moves more than half the strands. Dense descendants
+remain dense. Every supplied rule is still validated, including dead rules;
+the missing-generator guard still runs before strand-sized allocations; the
+exact global component check still precedes factor recognition.
+
+This changes no public options or certificate fields. On 402 audited sources,
+all public result fields match the pinned prior implementation, and certificates
+replay in both versions. Complete recognition on the measured 64-factor forest
+with a finite obstruction improves from 188.472 to 89.181 ms; its separately
+measured root-summary peak traced allocation falls from 8,194,752 to 1,714,252
+bytes. Small controls have no consistent gain. These are supplied-grammar
+measurements, with no new general unknot complexity claim.
+
+See [`compact_permutations.tex`](../synthesis/compact_permutations.tex) for the
+composition proof, storage policy, dictionary-cost assumptions and limitations.
+From this directory, reproduce the native comparisons with:
+
+```sh
+python -B compressed_braid_research/permutations.py audit --output ../synthesis/data/compact-permutations-audit.json
+python -B compressed_braid_research/permutations.py benchmark --output results/compact_permutations_20261008.json
+```
+
+The benchmark pins the entire old compressed-braid package at `d0f0e37761b5`,
+measures complete public calls with mandatory replay, includes identical A/A
+controls and a dense-storage ablation, and records source hashes and raw inputs.
+Memory measurements run separately from elapsed-time samples.

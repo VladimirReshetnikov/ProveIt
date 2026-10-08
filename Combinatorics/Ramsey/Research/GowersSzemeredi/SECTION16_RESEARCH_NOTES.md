@@ -1521,3 +1521,36 @@ does not provide.**
      Making the constants explicit would mean re-proving much of a
      million-line development. Asking upstream for an explicit-constant
      headline is the realistic form of this route.
+
+### Polynomial width through multilinear extraction
+
+`Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
+composes the improved all-scale Lemma 16.9 with the rounded affine lift.
+For total loss `rho`, let `sigma=rho/4` and let `l` be the new polynomial
+linearity width evaluated at spectrum count `floor(Qb(rho/8))`. The final
+proper cells have width at least
+`sqrt((floor(l)/8)^(Es(samples,sigma)))/4`, where
+`samples=ceil(6*max(1,qGamma)/sigma)`. The good set has relative size at
+least `1-rho`, and the candidate count retains the existing slice-provider
+bound. The production source and combined facade axiom audit pass.
+Spectrum structure, induced selection, a remainder cover, and the slice
+provider are still hypotheses. No additional upstream module is imported.
+
+`Proofs16PolynomialCubicPowerCover.exists_polynomial_cubic_power_cover`
+now specializes the lift to cubic slice controls. With the new line
+prefactor `z`, line exponent `e`, uniform sample ceiling `R`, and cubic
+slice exponent `a`, every `b < e*a/2` gives cell width at least `m^b` once
+`section16RoundedExponentThreshold z e a b <= m`. Its candidate budget is
+at most `9*R^4*q^2`, independently of the graph count chosen in the line
+cover. The full production source and transitive axiom check pass. The
+combined facade audit passes. The same
+structural hypotheses remain; no catalogue statement closes.
+
+`Proofs16PolynomialLineExponentComparison` proves that, for fixed positive
+controls and dimension, the improved all-scale Lemma 16.9 exponent
+strictly exceeds `lemma9WidthWithExponent` for all sufficiently large
+spectrum counts. Apply the earlier geometric-versus-polynomial comparison
+with exponent constant `2*p` to absorb the additional factor-two loss.
+The production module and full facade axiom audit pass. This is a comparison
+of exponents; it does not assert superiority at every small box scale or
+improve the final all-length Szemeredi threshold.

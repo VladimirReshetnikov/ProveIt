@@ -11,6 +11,68 @@ from .engine import recognize
 from .verify import verify as verify_three, require, InvalidCertificate
 
 
+def _compose_permutations(p, q, m):
+    """Compose immutable sparse maps or dense tuples: result[i] = p[q[i]].
+
+    Sparse maps omit fixed points. Once more than half the strands move,
+    store a dense tuple; dense descendants stay dense. No operand is mutated,
+    so identity products can share an existing representation safely.
+    """
+    if not p:
+        return q
+    if not q:
+        return p
+    if isinstance(p, tuple):
+        if isinstance(q, tuple):
+            return tuple(p[j] for j in q)
+        result = list(p)
+        for i, j in q.items():
+            result[i] = p[j]
+        return tuple(result)
+    if isinstance(q, tuple):
+        return tuple(p.get(j, j) for j in q)
+    result = p.copy()
+    for i, j in q.items():
+        value = p.get(j, j)
+        if value == i:
+            result.pop(i, None)
+        else:
+            result[i] = value
+    if len(result) > m // 2:
+        return tuple(result.get(i, i) for i in range(m))
+    return result
+
+
+def _root_permutation(data, weights, check, *, compact=True):
+    """Evaluate live nodes after validation and the complete-support guard.
+
+    The internal dense mode is an ablation, not a certificate policy. Small
+    strand counts use tuples directly to avoid representation dispatch costs.
+    """
+    m, rules = data['strands'], data['rules']
+    compact = compact and m > 8
+    identity = {} if compact else tuple(range(m))
+    permutations = [identity]
+    for node, rule in enumerate(rules[1:], 1):
+        check()
+        if not weights[node]:
+            permutations.append(identity)
+        elif rule[0] == 'g':
+            i = abs(rule[1]) - 1
+            if compact:
+                permutations.append({i: i + 1, i + 1: i})
+            else:
+                p = list(range(m))
+                p[i], p[i + 1] = p[i + 1], p[i]
+                permutations.append(tuple(p))
+        else:
+            p, q = permutations[rule[1]], permutations[rule[2]]
+            permutations.append(_compose_permutations(p, q, m) if compact else
+                                tuple(p[j] for j in q))
+    p = permutations[data['root']]
+    return [p.get(i, i) for i in range(m)] if isinstance(p, dict) else list(p)
+
+
 def summarize(data, *, check=lambda: None):
     check()
     require(isinstance(data, dict) and set(data) == {'strands', 'rules', 'root'}, 'invalid grammar object')
@@ -60,25 +122,14 @@ def summarize(data, *, check=lambda: None):
         return dict(length=lengths[root], exponent=exponents[root], counts=counts,
                     gap=gap, knot=False, permutation=None)
     # Complete support entails m <= number of terminal rules + 1.
-    permutations = [tuple(range(m))]
-    for rule in rules[1:]:
-        check()
-        if rule[0] == 'g':
-            p = list(range(m))
-            i = abs(rule[1]) - 1
-            p[i], p[i + 1] = p[i + 1], p[i]
-            permutations.append(tuple(p))
-        else:
-            p, q = permutations[rule[1]], permutations[rule[2]]
-            permutations.append(tuple(p[q[i]] for i in range(m)))
-    p = permutations[root]
+    p = _root_permutation(data, weights, check)
     current, seen = 0, set()
     while current not in seen:
         check()
         seen.add(current)
         current = p[current]
     return dict(length=lengths[root], exponent=exponents[root], counts=counts,
-                gap=None, knot=len(seen) == m, permutation=list(p))
+                gap=None, knot=len(seen) == m, permutation=p)
 
 
 def project(data, low, high, *, check=lambda: None):
