@@ -176,8 +176,8 @@ def audit(functions):
                     assert verify_group_certificate(d,proof,compressed=compressed,max_work=20_000_000)
             proofs[arm]=proof;queries_seen[arm]=seen
         assert (proofs['old'] is None)==(proofs['current'] is None)
-        # The retained corpus enters either the exact old-order prelude or the
-        # fixed-slot base case; archive rather than assume trace equality.
+        # Longest-first donors and joint continuation can change tied moves;
+        # archive observed trace equality instead of assuming it.
         rows.append(dict(name=case['name'],pd=case['pd'],proofs=proofs,queries=queries_seen,
                          same_native_certificate=proofs['old']==proofs['current']))
     return dict(rows=rows,comparisons=len(rows),native_identical=sum(r['same_native_certificate'] for r in rows),

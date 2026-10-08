@@ -5,7 +5,7 @@ The maximum guaranteed gain is exact; tie choices may differ from the old SAM.
 Only independent replay of a complete presentation trace can certify a knot.
 
 Shared-index construction adapted from report 46 (MIT-0). The bounded
-prelude below retains the maintained donor cutoffs and original scan order.
+prelude below retains the maintained donor cutoffs with a longest-first order.
 """
 from bisect import bisect_right
 
@@ -222,17 +222,18 @@ class _PreludeBudget:
 
 
 def _pairwise_prelude(nonempty, budget, stats):
-    """The maintained donor/sign/target order, with every pair visit charged.
+    """Longest donors first, then the maintained sign and target scan order.
 
     Kept in its own frame so an exhausted prelude releases its automaton
     before constructing the shared index. Only strict gain improvements win.
     """
     from .relator_overlap import _automaton
     best_gain, best = 0, None
-    for donor, word in nonempty:
+    budget.tick(len(nonempty)*(len(nonempty).bit_length()+1))
+    for donor, word in sorted(nonempty, key=lambda item: (-len(item[1]), item[0])):
         budget.tick()
         if len(word) <= best_gain:
-            continue
+            break
         budget.tick(len(word))
         for inverse in (False, True):
             if len(word) <= best_gain:
@@ -278,8 +279,8 @@ def bounded_overlap_move(words, budget, *, stats=None, coefficient=2, small_slot
     """A bounded exact prelude, then a complete shared-index continuation.
 
     Fixed thresholds are independent of input size in the complexity claim.
-    Completed preludes keep the old witness exactly; continuation may choose
-    a different tied maximum. Global limits and cancellation never restart.
+    The fixed-slot case keeps the old witness exactly; longer queries may
+    choose a different tied maximum. Global limits and cancellation never restart.
     """
     from .relator_overlap import pairwise_overlap_move
     if type(coefficient) is not int or coefficient < 0:

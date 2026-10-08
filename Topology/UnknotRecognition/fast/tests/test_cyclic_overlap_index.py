@@ -121,7 +121,7 @@ class CyclicOverlapIndexTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 bounded_overlap_move(words, budget(), small_slots=value)
 
-    def test_completed_prelude_preserves_every_incumbent_witness(self):
+    def test_completed_prelude_preserves_maximum_gain_and_literal_validity(self):
         rng = random.Random(261008612)
         for _ in range(2000):
             words = [rng.choices((-3,-2,-1,1,2,3),k=rng.randrange(18))
@@ -129,7 +129,9 @@ class CyclicOverlapIndexTests(unittest.TestCase):
             stats = {}
             move = bounded_overlap_move(words,budget(),coefficient=100000,
                                         small_slots=0,stats=stats)
-            self.assertEqual(move,pairwise_overlap_move(words,budget()))
+            self.assertEqual(gain(words,move),gain(words,pairwise_overlap_move(words,budget())))
+            if move is not None:
+                apply_overlap(copy.deepcopy(words),move,budget(),_reduce)
             self.assertEqual(stats['backend'],'prelude')
 
     def test_full_donor_match_preserves_the_maintained_early_cutoffs(self):

@@ -116,7 +116,7 @@ def apply_overlap(words, move, budget, reduce):
 def overlap_move(words, budget, *, backend='adaptive', stats=None):
     """Exact maximum cyclic shortening under one shared resource budget.
 
-    Adaptive search preserves the maintained pairwise prelude and continues
+    Adaptive search retains donor pruning in a longest-first prelude and continues
     with the joint index after O(L log(L+1)) charged work. Fixed-size slot
     lists retain the original query. The joint index may choose different
     tied witnesses; neither discovery policy is trusted by certificate replay.
