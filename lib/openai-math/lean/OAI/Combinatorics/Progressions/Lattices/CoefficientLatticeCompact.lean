@@ -1,3 +1,6 @@
+/- Modified for ProveIt: explicitly provide the finite chosen-basis index
+instances for the lattice layers, avoiding a Lean 4.32 instance-search
+timeout. The upstream theorem statement is unchanged. -/
 import OAI.Combinatorics.Progressions.Fourier.EuclideanJetTorus
 
 namespace OAI
@@ -17,6 +20,7 @@ theorem coefficientTorus_compact_of_lattice {K : Type*} [Fintype K] {m : ℕ}
   classical
   let Λ := fun j => latticeSection (standardEuclideanLattice (J j)) (euclideanSubspace (U j))
   let : ∀ j, Module.Finite ℤ (Λ j) := fun j => ZLattice.module_finite ℝ (Λ j)
+  let : ∀ j, Fintype (Module.Free.ChooseBasisIndex ℤ (Λ j)) := fun j => inferInstance
   let b := fun j => Module.Free.chooseBasis ℤ (Λ j)
   let e := fun j => (euclideanSubspaceArrayEquiv (U j)).toLinearEquiv.trans
     (LinearEquiv.piUnique ℝ (fun _ : Unit => U j))
