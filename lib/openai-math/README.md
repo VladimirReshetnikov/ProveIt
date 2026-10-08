@@ -25,7 +25,8 @@ Mathlib `v4.32.0` workspace.
 With a local checkout of the pinned upstream revision, run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_provenance.py /path/to/math`
 from the workspace root to check original-source hashes, modification notices,
-the unchanged upstream license, and retained copyright notices. This command
+the unchanged upstream license, retained copyright notices, and the two
+Freiman extracts' statements and proof bodies against the pinned originals. This command
 does not verify Lean proofs or the separately recorded Mathlib source hashes.
 
 ## Verified subset and quantitative backport

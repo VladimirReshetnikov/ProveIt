@@ -139,10 +139,131 @@ Five new regression tests cover the explicit two-face example with all
 six dart orders, invalid certificates, every candidate RIII face in
 deterministically generated knot diagrams, legacy unambiguous replay, and
 JSON round trips after crossing deletions.  The full integrated suite passes
-539 tests in 109.018 seconds in this local run; the log is
-\path{data/reidemeister-trace-integrated-tests.txt}.  The clustered search itself
-is not yet enabled in production.  Its integration still needs complete
-support-aware enumeration, exception-safe rollback, cooperative resource
-checks and actual-diagram performance comparisons.  A local search budget
-may stop this preprocessing inconclusively; it cannot replace the exact
-fallback or establish a general sub-exponential bound.
+539 tests in 109.018 seconds at that checkpoint; the log is
+\path{data/reidemeister-trace-integrated-tests.txt}.
+
+\subsection{Integrated search and adaptive dispatch}
+The production module \path{fastunknot/causal_r3.py} now implements the
+support-aware normal-form search.  It uses an explicit depth-first stack
+with no global memo table.  Each frame owns a journal of at most 24 pairing
+entries.  Failure, local trial exhaustion and exceptions restore those
+entries and the path; successful first-unlocking traces remain applied.
+The retained footprint unions, per-frame candidate sets and pairing journals
+use polynomial workspace in $N,k$.  Candidate enumeration polls an optional
+resource callback, as do terminal tests and the main search loop.
+
+An additional pruning rule is justified under a narrower hypothesis than
+in the delivered adapter.  Suppose an action with footprint $F$ is applied
+when the earlier accumulated support is $S$.  Its immediate inverse can be
+skipped if $F\subseteq S$.  In that case deleting the pair preserves the
+physical state, accumulated support, birth count and last birth key.  It
+can only delay the start of the connected phase; all subsequent connected
+actions remain legal in the normal form.  The resulting trace is shorter.
+If $F\not\subseteq S$, the inverse is retained, including inverses of
+initial births.  This distinction preserves the preceding counterexample
+and the parameterized completeness argument.
+
+The \code{r3\_search} option accepts \code{last}, \code{clustered}, and
+\code{adaptive}; the last-move neighborhood implementation remains the
+default.  The clustered implementation searches with a caller-specified
+\code{r3\_births} bound.  Adaptive dispatch first gives the last-move search
+half the remaining trial allowance.  If it fails to make progress, the
+clustered search uses the remaining shared allowance.  When the total trial
+limit is disabled, the first phase is still limited to $5N$ trials before
+switching.  Each phase uses iterative deepening up to \code{r3\_depth}.
+At a depth of at least two, the first move is not filtered by the
+last-step face shortcut.  If a completed search at that depth tried zero
+nondegenerate moves, there is no legal first RIII move at all.  Both search
+implementations stop deepening in that case, and adaptive dispatch also
+skips its second phase.  This is a proved dead end for RIII-only search;
+it says nothing about crossing-increasing moves or knot type.  In particular,
+failure of the face-filtered depth-one search alone does not justify stopping.
+
+Successful reductions trigger another episode, with the same accumulated
+trial counter.  Only paths ending in a legal RI/RII reduction are committed.
+The independent starting moves and retained support are local to each search
+episode, not retained across changes of crossing count.
+
+The API and CLI expose the depth, births and trial allowance.  The existing
+\code{use\_r3=False} switch still disables the whole stage.  Global time
+exhaustion interrupts either implementation and yields \code{UNKNOWN}; local
+trial exhaustion is inconclusive and continues the exact recognition
+pipeline.  These options are preserved through certified source-reduction
+restarts and passed to each summand.  Recognition records per-implementation
+trial counts and switch counts for the new modes.
+
+Eleven new production tests compare bounded searches against unrestricted
+all-face enumeration on actual diagrams, verify disjoint births commute,
+check exact trace replay, retain inverse moves that add support, and exercise
+nested cancellation and injected mutation failures.  They also check the
+no-first-move shortcut and deeper recognition of a stored hard unknot.
+The full integrated suite passes 550 tests in 98.849 seconds.  Its log is
+\path{data/causal-r3-integrated-tests.txt}; the separate focused log is
+\path{data/causal-r3-production-tests.txt}.
+
+\subsection{Actual-diagram evidence and limits}
+The reproducible discovery run in \path{benchmark_causal_r3.py} uses seed
+2703 and tests 12,000 random braid words on four to six strands.  Of these,
+2,296 close to knots and 1,537 remain above six crossings after the historical
+search at depth four and ten trials per input crossing.  On those 1,537,
+each new mode ties the resulting crossing count in 1,529 cases and leaves
+more crossings in eight; neither improves it.  This is a negative practical
+result for the proposed dispatch at those settings, even though the
+unlimited clustered search has a stronger parameterized completeness claim.
+Finite budgets and the choice of committed reductions matter.
+
+Another 1,200 generated unknots use the existing conjugation-and-scrambling
+constructor with 800 rewriting steps.  All already reduce below seven
+crossings with the historical simplifier; none enters the stalled-diagram
+comparison.  These are easy examples for existing RIII preprocessing and
+supply no evidence of a gain from clustered search.  The data and exact
+source hashes are in \path{results/causal_r3_discovery_20261008.json}.
+For all 3,496 validated diagrams, the current default simplifier's complete
+trace and output PD code also agree exactly with pinned revision
+\code{28c974650}; the new no-first-move shortcut changes work, not choices.
+
+The stored hard unknot corpus gives a separate lead: two examples admit
+further reductions when the historical search depth is raised from four to
+six, using fewer than forty trials.  This benefit comes from greater depth,
+not from the new support representation.  Full-pipeline paired measurements
+are maintained separately from the discovery counts.  The final run covers
+21 inputs, seven shuffled paired rounds and three fresh constructions per
+arm, after one untimed warmup.  The baseline loads both the simplifier and
+recognizer from revision \code{28c974650}, sharing all other modules;
+an identical control arm measures variation.  All recognition results finish
+and agree, with every default invariant and structural filter enabled and
+a five-second global limit.
+
+At depth six, the historical search improves full recognition time by
+$1.71\times$ on stored survivor 0 (sixteen crossings reduced to twelve)
+and $3.61\times$ on survivor 1 (fifteen crossings reduced to zero).
+The adaptive depth-six arm gives $1.48\times$ and $3.65\times$ respectively;
+the second example finishes in its historical phase without switching.
+Across all inputs, the depth-six historical arm ranges from $0.907\times$
+to $3.605\times$, with median $0.957\times$.  Consequently the default
+depth remains four; selective examples do not justify a universal increase.
+
+The final default arm, including stricter option validation, cooperative
+deadline checks and the no-first-move shortcut, ranges from $0.945\times$
+to $1.061\times$ in full recognition, with median $0.989\times$.
+The recognition control ratios range from $0.983\times$ to $1.054\times$.
+For survivor 8 the no-first-move shortcut reduces isolated simplification
+from about $391$ to $325$ microseconds (paired ratio $1.20\times$), with
+little effect on full recognition.  On the empty diagram, validation adds
+about $1.34$ microseconds to isolated simplification and $0.56$ microseconds
+to recognition.  These costs are retained in the reported measurements.
+
+At depth four, the clustered and adaptive full-recognition median ratios
+are $0.942\times$ and $0.931\times$; neither supplies evidence for a default
+switch.  Raw simplifier ratios must not be confused with end-to-end speedups:
+for example, spending more on simplification can save a larger subsequent
+homology computation on the depth-six witnesses.  Inputs, individual samples,
+verdicts, methods, per-mode trial counts and exact source hashes are retained
+in \path{results/causal_r3_integration_20261008.json}.  These are finite
+measurements, not asymptotic evidence.
+
+A local search budget may stop preprocessing inconclusively; it cannot
+replace the exact fallback.  The conditional bound still requires bounded
+unlocking parameters at each episode selected by the actual reduction
+policy.  Neither this integration nor adaptive switching proves a general
+sub-exponential or quasi-polynomial recognition theorem.
