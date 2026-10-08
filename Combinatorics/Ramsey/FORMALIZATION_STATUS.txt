@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 820 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,322 public Gowers theorems and found only propext,
+  All 823 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,365 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -41,12 +41,13 @@ Verification at this checkpoint
   module. Their statements and proof bodies are unchanged. After this
   adjustment, the merged small-degree results, and the explicit selection,
   dimension-two, and quartic inverse thresholds, the low-dimensional
-  Corollary 16.11 companions, and the stackable-slice reductions, the
-  820-module Gowers audit checks 5,322 theorems and the same 114/6
+  Corollary 16.11 companions, the stackable-slice reductions, and the
+  conditional dimension-three results, the
+  823-module Gowers audit checks 5,365 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,559-module closure and checks equality of the extracted propositions
+  2,562-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
@@ -56,8 +57,11 @@ Conditional stackable structure and slice reduction
   extraction. Proofs16PartJSlices proves that such a cover restricts every
   final-coordinate slice with the stated density loss and provides the
   cubic slice input on a common-base good domain, with parameter Q*q.
-  These are checked conditional reductions. The required higher-dimensional
-  structure input is not proved, so no full catalogue entry is closed.
+  Proofs16PartJPiece, Proofs16PartJBudget, and Proofs16PartJTheorem now
+  derive Theorem162At 3 and Corollary1611At 3 from StackableStructureAt 2
+  with polynomial bounds on both cover controls. The graph and width
+  budgets pass the same axiom audit. The required structure input remains
+  unproved, so these conditional reductions close no full catalogue entry.
 
 Conditional Section 16 regime splitting
   The merged Proofs16RegimeSplitting gives exact coarse covers for relations
@@ -341,8 +345,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 3,200 pinned manifest entries compile as a 3,216-module closure.
-  OAI.QuantitativePortAudit checks 49,010 public OAI theorems in this prefix
+  The first 3,300 pinned manifest entries compile as a 3,316-module closure.
+  OAI.QuantitativePortAudit checks 50,373 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.
@@ -3235,6 +3239,46 @@ degree-four inverse theorem (2026-10-08)
   N^((1/2)^((1/alpha)^(2^70))). Research notes, Part I. The lane is closed
   until a structure theorem with graph counts polynomial in 1/theta and
   1/gamma is available.
+
+Part J: Theorem 16.2 and Corollary 16.11 in dimension three, conditionally
+(2026-10-08)
+  Research notes Part J name the input that every dimension >= 3 lacks: a
+  structure theorem whose covers stack, i.e. whose unions keep controls
+  polynomial in the number of pieces. That input is now a Lean Prop, and
+  dimension three is proved from it.
+  - Proofs16PartJInterface: CubicStackableClass d q S (any n members of S
+    have a union of graphs with MultiplyLinearWith count 3*n*q and exponent
+    cubicBaseExponent (n*q)) and StackableStructureAt d Q q (after removing
+    a theta fraction, every product relation in Z_N^d is covered by
+    Q gamma theta members of such a class with parameter q gamma theta).
+    stackableStructureAt_one: the dimension-one instance holds, with the
+    Freiman-one class, so the definition is not vacuous.
+  - Proofs16PartJSlices: Section16FinalStackable and the good-domain slice
+    provider of the general-k cubic lift, built from a stackable class.
+  - Proofs16PartJPiece: the dimension-three structured extraction, the
+    spectrum restriction, and partJ_relation_piece, a cover of mass
+    section16ThetaTwo (section16ThetaOne (theta/2) gamma 2) * N^3 with the
+    lift's MultiplyLinearWith controls.
+  - Proofs16PartJBudget / Proofs16PartJTheorem: the budget comparison at
+    piece parameter U^9, U = multipleS theta gamma 2. It covers the
+    capped-to-power and power-to-algebraic exponents, a width lower bound
+    via section16_cubic_scalar_width, power absorption, the source width,
+    the graph budget, and U^9 <= mass * multipleS theta gamma 3. Results:
+      section16_budgeted_piece_three_of_stackable,
+      theorem_16_2_at_three_of_stackable : Theorem162At 3,
+      corollary_16_11_at_three_of_stackable : Corollary1611At 3,
+    each under (hyp : StackableStructureAt 2 Q q) and PolyBoundedControl Q,
+    PolyBoundedControl q, where PolyBoundedControl f means
+    f gamma theta <= (2/(gamma*theta))^(2^64) on (0,1]^2.
+  Axioms: propext, Classical.choice, Quot.sound only.
+  What this does NOT give. The hypothesis is open. Milicevic's Theorem 1.4
+  (arXiv:2601.01682) gives a Bohr-structured description of Freiman
+  bihomomorphisms with QUASI-polynomial bounds; PolyBoundedControl needs
+  polynomial ones, because the width exponent contains 576^(-24n) with n of
+  the order Q*q, and a quasi-polynomial n overruns the multipleS budget.
+  The bridge from the dimension-three structured pair's slices to
+  bihomomorphisms on dense pieces is also unproved. Theorems 18.1 and 18.2
+  do not follow (Part I). The catalogue count stays 114/6.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

@@ -1,0 +1,313 @@
+\section{What a quasi-polynomial recognition proof still requires}
+\label{sec:qp}
+
+\subsection{The specific missing theorem}
+
+The progress established here consists of exact local representations and
+operations. A proof of the requested global bound would need a theorem with
+the following shape: given a validated $n$-crossing knot diagram, a complete
+algorithm constructs and processes at most $2^{C(\log(n+2))^2}$ encoded
+objects, each of at most that many bits, and supplies independently checkable
+evidence for its terminal answer. The constants and the algorithm must be
+uniform over all diagrams. A reduction to another unbounded search does not
+satisfy the theorem.
+
+For a hierarchy approach, the objects include the triangulations or handle
+structures, chosen normal surfaces, cut-open boundary patterns, gluing data,
+and any alternatives explored while finding or repairing a hierarchy.
+Controlling the number of successful cuts alone leaves the cost of each
+search and each representation conversion unresolved. For a compressed group
+approach, they include the presentation states, permitted relation moves,
+matching queries, and certificate transcripts. Polynomial exact word
+operations do not bound the length or breadth of that search.
+
+The appropriate proof strategy must connect four statements: a complete
+choice principle, a bound on the choices actually explored, preservation of
+small encodings, and a checked terminal decision. The present work improves
+parts of the encoding and checking statements and isolates a quantitative
+obstacle for a natural choice space.
+
+\subsection{A measurable geometric entropy budget}
+
+Suppose an algorithm explicitly enumerates every joint framed phase-class
+assignment for independent cyclic assemblies simultaneously represented at
+one frontier, indexed by $j$. The exact number of joint choices is
+\[
+ \prod_j m_j^{\beta_j}
+ =2^{\Psi},\qquad
+ \Psi=\sum_j\beta_j\log_2m_j.
+\]
+For that particular enumeration strategy to fit the target, one needs
+$\Psi=O((\log n)^2)$, before charging the cost of each class. Merely
+proving that $\beta_j=O(\log n)$ is insufficient if a relevant
+$\log m_j$ can be $\Theta(n)$. Conversely, a degree $m_j$ that is large
+as an integer is harmless for the number of phase classes on a tree, where
+$\beta_j=0$ and all phases are removable by vertex gauges. Its bit length
+still contributes to the cost of representing and processing that class.
+The product counts simultaneous joint choices; the costs of separate tasks
+or successive stages instead add and must be accounted for separately.
+
+This parameter makes an empirical investigation more discriminating than
+recording only genus, cover degree, or number of blocks. A hierarchy trace
+should record the actual frontier graph, the bits in its degrees, and its
+cycle rank after every simplification. It should also distinguish classes
+actually reached from all classes admitted by an unrestricted model. Our
+orbit formula does not establish that a knot hierarchy realizes the whole
+space.
+
+Possible ways around the obstruction include proving
+that reachable frontiers satisfy a small entropy budget, or learning to
+operate on many phase classes symbolically, proving that all later tests
+preserve that symbolic description. Simple equality of canonical keys
+accomplishes neither by itself. A third possibility is a justified weaker
+equivalence, addressed next.
+
+\subsection{Equivalence must be justified by future operations}
+
+The framed covering equivalence used in \cref{sec:gluings} deliberately
+preserves the base projection. Forgetting that projection can identify
+different framed states: the underlying oriented surfaces may all have the
+same genus and boundary count. A smaller quotient could therefore be
+possible, but the quotient must retain the information used by the remaining
+algorithm.
+
+A useful formulation is a continuation property. Two interface states may
+be merged when every allowed future attachment, surface test, and terminal
+recognition test has the same outcome after substituting either state.
+For an algorithm, one must give a finite computable sufficient criterion
+and prove that it is preserved by the permitted operations. Invoking
+homeomorphism of abstract surfaces without tracking the attaching curves,
+peripheral paths, and boundary pattern is not such a proof.
+
+The new congruence solver gives a controlled laboratory for this question.
+All its currently supported restrictions can be kept as compact arithmetic
+families. One can ask exactly which added geometric operations force unions,
+nonlinear relations, or explicit splitting. That is a sharper next problem
+than assuming that a polynomial canonicalizer automatically yields a small
+state space.
+
+\section{Proposed research questions and concrete next milestones}
+\label{sec:agenda}
+
+The questions below are proposals, not consequences already established by
+the code. They are ordered by how directly they connect the present results
+to a demonstrable improvement of the complete recognizer. Each asks for a
+specific proof or experiment that can succeed or fail.
+
+\subsection{Priority A: connect exact local work to actual recognition}
+
+\paragraph{1. Can a PD-to-exterior conversion be independently replayed?}
+Construct a finite compact triangulation from the validated diagram and
+export an elementary construction transcript. The checker should recover
+the meridian and longitude data and prove the correspondence with the knot
+exterior. Alternatively, verify a sequence from a simple diagram-derived
+cell decomposition to the supplied triangulation. A triangulation digest
+proves only identity of bytes; it cannot replace this geometric argument.
+The immediate milestone is a positive knot certificate that combines this
+replay with \cref{thm:disk} on a corpus of diagrams, including deliberately
+relabelled and corrupted transcripts. Size and running-time bounds must
+include the conversion transcript.
+
+\paragraph{2. Which surviving knot computations activate the endpoint theorem?}
+The present corpus does not establish a full recognition gain. Instrument
+compressed group search after every existing inexpensive filter, retaining
+the exact presentations that reach overlap matching. Record successful
+anchor size, progression step and count bits, comparison count, additional
+grammar nodes, and the reason the complete fallback was needed. The
+milestone is a paired recognition experiment on a predefined family with
+matching certificate hashes and nonzero shortcut activations. Constructed
+word examples remain useful tests, but should not be renamed as hard knots
+without a verified realization and an actual run through the recognizer.
+
+\paragraph{3. Can a topology engine produce the new certificate economically?}
+Given a disk found by the existing normal-surface backend, determine how
+often its standard vector satisfies the support-nullity condition. If it
+does not, investigate a checked reduction to a primitive extreme essential
+disk under precisely stated manifold assumptions. Record coordinate export,
+rank-prime discovery, conversion, and verification separately from surface
+search. Success would reduce reliance on a large producer for checking a
+positive result; it would not by itself accelerate discovery. A counterexample
+to an attempted extreme-disk reduction should become a permanent fixture.
+
+\paragraph{4. Can modular rank checking reuse structured elimination?}
+The current verifier is deliberately simple. A producer could furnish a
+sparse pivot transcript, a nonzero minor with elimination data, or a block
+decomposition derived from tetrahedron adjacency. The checker must verify
+the claimed rank, including all support columns, rather than merely replay
+unverified pivots. Compare time and certificate size against packed mod-$2$
+elimination on layered examples, irregular triangulations, and examples
+whose first useful prime is odd. The milestone is a meaningful reduction
+on an independently chosen nonlayered family, with the same soundness
+statement and bounded verification work.
+
+\subsection{Priority B: remove the remaining compressed-word bottleneck}
+
+\paragraph{5. Can exact equality be accelerated with a rigorous bit bound?}
+Rank galloping reduces the number of required equalities; the unresolved
+large phase-shifted operations still show that individual compressed
+comparisons matter. Evaluate recompression-based equality or pattern
+matching against the maintained implementation, using Je\.{z}'s algorithm
+as a primary starting point \cite{jez}. Its word-RAM hypotheses must be
+translated to arbitrary binary positions and signed generator labels.
+The milestone is a total bound in reachable grammar size, height, and
+coordinate bit length, together with an implementation that preserves
+certificate replay and cancellation. Replacing exact comparison by an
+unchecked hash is not an acceptable shortcut.
+
+\paragraph{6. Can occurrence progressions be generalized to a small union?}
+An endpoint word may occur in a union of $k$ arithmetic progressions even
+when no single progression suffices. Develop a grammar summary whose
+merges either produce a certified union of bounded size or report that
+the representation has grown beyond a checked budget. For each component,
+state a period condition that makes candidate validity monotone, and prove
+that duplicate or overlapping candidates are handled exactly. The decisive
+issue is a bound on $k$ along grammar construction and relation operations;
+allowing $k$ to grow linearly with expanded length would lose the point.
+Start with two interleaved marker types and report adversarial families
+where the union count must increase.
+
+\paragraph{7. Can anchor choice be adaptive without duplicating grammar work?}
+The current finite list $q=1,2,4,8$ controls overhead. A structural selector
+might examine endpoint repetition, local grammar boundaries, or existing
+$q$-gram summaries to choose a larger useful anchor. Prove a bound for
+all failed anchor attempts as well as for the successful attempt. Shared
+summaries and reusable occurrence gaps are natural candidates. The
+milestone is an amortized bound in the final reachable grammar size and
+the total anchor material inspected, with negative benchmarks on words
+whose every short anchor has irregular occurrences.
+
+\paragraph{8. Can galloping be extended across a sequence of relation moves?}
+Successive cyclic reductions and overlaps often revisit related slices.
+Investigate certificates that survive a localized edit of the represented
+word. A maintained period certificate or occurrence summary must be
+invalidated exactly when its proof ceases to apply. Bound both the update
+cost and the growth of persistent grammar nodes over a complete transcript.
+The milestone is an amortized analysis for a specified move system and a
+verified implementation on saved knot-derived traces. A bound for one query
+cannot simply be multiplied by an assumed short move sequence.
+
+\subsection{Priority C: make geometric compression stable under hierarchy work}
+
+\paragraph{9. Can regular-cover blocks be extracted with certificates?}
+The gluing kernel begins with connected regular blocks and explicit
+monodromy. Develop a recognizer for that structure inside the handle or
+boundary-pattern objects produced by the hierarchy. It must verify the
+local base, common fibre coordinates, surjectivity, based peripheral words,
+and every attachment phase. The milestone is an independently checked
+extraction from a real cut-open knot exterior. Failure to extract a block
+must preserve a complete fallback, not silently impose regularity.
+
+\paragraph{10. Which cuts preserve the coherent attachment model?}
+An entire boundary preimage glued by one right multiplication is much more
+structured than arbitrary independent permutations of its lifted circles.
+Classify the cuts, collapses, and hierarchy repairs that preserve this
+property. For operations that split a boundary preimage, ask whether the
+new pieces admit a small coset or interval description. Give either a
+closure theorem with an explicit size bound or a small obstruction showing
+why the current model is inadequate. Local regularity of the pieces must
+not be confused with global regularity of their assembly.
+
+\paragraph{11. Can general transitive actions be handled without enumerating sheets?}
+The regular model has a particularly simple centralizer: every equivariant
+map is a right multiplication. A transitive nonregular action has stabilizer
+data, and its equivariant automorphisms are controlled by a normalizer
+quotient. Seek a binary representation for those subgroups and attachment
+double-coset constraints in families actually arising from the hierarchy.
+The milestone is a proved polynomial algorithm for one strictly larger
+class, with a literal small-degree oracle. A formula for the group order
+alone does not supply an efficient algorithm for its action or transporter.
+
+\paragraph{12. Can families of holonomies be propagated symbolically?}
+For cyclic blocks, keep chord phases as affine subgroups or cosets in
+$(\Z/m)^\beta$ instead of listing $m^\beta$ representatives. Test whether
+the geometric constraints needed by the hierarchy remain linear after
+forest changes, port gluing, and component elimination. For dihedral blocks,
+study whether parity variables can be retained as a compact algebraic
+system rather than branched independently. The milestone is closure under
+a specified list of operations, with a bound on the number and size of
+symbolic pieces. Counting or comparing one family is easier than proving
+that an arbitrary long computation stays within that family class.
+
+\paragraph{13. Is there a useful weaker continuation equivalence?}
+Determine which parts of the framed projection and peripheral data are
+actually observed by later hierarchy steps. Propose a computable quotient
+and prove the continuation property stated above. Then count its classes
+on the exact examples used for \cref{thm:orbits}. A quotient that collapses
+all examples by forgetting information subsequently needed for a disk or
+annulus test does not qualify. Conversely, a sound quotient that removes
+the factor $m^\beta$ would change the global search prospects much more
+than another constant-factor optimization of CRT.
+
+\paragraph{14. Can the reachable entropy be bounded geometrically?}
+Search for a relation between the frontier quantity $\Psi$, the original
+crossing number, and a monotone hierarchy complexity. A promising statement
+would prevent large degree-bit contributions from coexisting with many
+independent cycles, or would charge their creation to progress that cannot
+repeat. The milestone is a theorem for a nontrivial complete subclass of
+knots, followed by an explicit test of which hypothesis fails outside it.
+Bounds on genus, boundary count, or separator width should be translated
+into $\Psi$ before claiming that they control phase enumeration.
+
+\subsection{Priority D: establish completeness and reproducible complexity evidence}
+
+\paragraph{15. How can essential surfaces be selected without exhaustive support search?}
+The normal-disk verifier exposes how little work is needed once a suitable
+ray is supplied. Investigate whether geometric constraints permit a
+deterministic selection process that avoids the full quadrilateral-type
+and support search. Candidate approaches include a proved low-width
+decomposition of the relevant constraint system, a complete family of
+separators, or a structural reduction specific to knot exteriors. Each must
+bound failed choices and intermediate arithmetic, not just the size of one
+successful witness. The milestone is a complete theorem on a clearly
+defined class with unbounded crossing number and a counterexample search
+for each proposed extension.
+
+\paragraph{16. Can compressed cutting be made representation-preserving end to end?}
+Lackenby's framework includes efficient compressed operations for supplied
+surfaces \cite{lackenby2026}. The integration question is whether the
+particular encoding used by a complete implementation remains small after
+all boundary-pattern updates, simplifications, and subsequent surface
+requests. Prove a recurrence for actual encoded sizes, including names,
+paths, phase families, and certificates. The milestone is a checked
+multi-step hierarchy transcript whose size accounting survives every
+operation, together with a theorem explaining that accounting beyond the
+measured examples.
+
+\paragraph{17. What is the right adversarial benchmark hierarchy?}
+Maintain three separate levels: local binary-encoded stress families,
+verified geometric inputs, and complete knot-diagram runs. For every
+benchmark, record what is supplied and what is discovered. Include examples
+that defeat each structural shortcut, report UNKNOWN or resource limits
+explicitly, and retain the artifacts that reproduce them. Paired runs,
+equivalence controls, and certificate hashes should be required before
+attributing a recognition gain to one kernel. The milestone is a benchmark
+release with a predefined scoring protocol and families that scale in
+crossing number, not just in an artificial repetition parameter.
+
+\paragraph{18. Can the mathematical interface be formalized in small steps?}
+The most suitable initial formalization targets are the endpoint clipping
+identity, monotone rank cutoff, forest gauge substitution, CRT family
+completeness, primitive-ray connectedness, and the boundary-parity lemma.
+Their statements have short, explicit premises and clear correspondences
+with certificate fields. A proof assistant development should distinguish
+the abstract theorem from the parser and integer implementation. The
+milestone is one end-to-end verified certificate checker, including input
+decoding and rejected malformed inputs, rather than only a formal version
+of an isolated algebraic identity.
+
+\subsection{Recommended order of work}
+
+The next implementation cycle should first finish PD-to-triangulation replay
+and identify actual knot traces that reach the improved overlap operation.
+Those tasks determine whether the new local capabilities improve the
+maintained recognizer on genuine inputs. In parallel, the highest-value
+theoretical work is the continuation quotient or symbolic propagation of
+holonomy families: the exact state-count result shows why comparison alone
+cannot settle that problem.
+
+Only after those interfaces are explicit should a global recurrence be
+proposed. It must include construction, all attempted choices, encoded
+state growth, and certificate replay. The present article therefore leaves
+the target bound open while supplying three concrete exact components,
+their proofs and failure boundaries, and experiments that another researcher
+can rerun or challenge.

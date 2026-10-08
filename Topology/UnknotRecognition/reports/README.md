@@ -40,6 +40,12 @@ modification times.
 | `32/` | `unknot_graded_torus_20261008.zip` | graded scanner (`32/src/`, `32/integration/`) | local cancellation bound by absolute homological-quantum bidegree occupancy, four-strand torus-block scanning | — | not run |
 | `33/` | `proveit_unknot_causal_kernels_2026-10-08.zip` | causal-kernel code (`33/src/`) | deterministic `poly(N,k)·2^O(k)` decision whether at most `k` RIII moves expose a crossing-decreasing RI or RII | — | not run |
 | `34/` | `ProveIt_Unknot_Braid_Kernel_2026-10-08.zip` | `braidkernel` package (`34/braidkernel/`, `34/integration/`) | certified braid kernels and linear Markov descent | — | not run |
+| `35/` | `unknot_projectors_and_seams_20261008.zip` | optional primary backend with integration material (`35/source/`, `35/integration/`) | polynomial-projector extension of scalar Fitting splitting via the Frobenius fixed algebra; exact full-boundary assembly of dihedral surface covers with binary sheet counts | — | not run |
+| `36/` | `unknot_research_20261008.zip` | `fastunknot` modules under `36/Topology/` and `integration.patch` | arithmetic-progression certificates for compressed overlaps, congruence families for regular-cover gluings, checked primitive extreme normal disks | — | not run |
+| `37/` | `unknot_separator_research_20261008.zip` | reference implementation (`37/code/`) | first-hit factorization through vertex cuts, greedy rank budget giving the cut homology lower bound | — | not run |
+| `38/` | `unknot_presentations_and_early_certificates.zip` | integration patch and project snapshot (`38/integration/`, `38/snapshot/`) | presentation-complexity bounds for knot groups, early first-jet certificates, streaming boundary responses | — | not run |
+| `39/` | `unknot_su2_degree_budget_20261008.zip` | `su2budget` package (`39/code/`) | degree-budgeted SU(2) feasibility reduction; polynomial two-meridian traceless test on compressed presentations | — | not run |
+| `40/` | `unknot_port_register_20261008.zip` | research backend (`40/src/`, `40/integration/`) | singular-safe port compression: exact F_2 homology of template-plus-low-rank differentials with finite-state multiplicity registers | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -66,6 +72,15 @@ ship a patch against `../fast/` and a pinned copy of the project under
 `reference/`; neither patch is applied. `18/` suggests
 `research/twist-continuation-20261008/` as its home; it is kept here as
 delivered.
+
+`35/`–`40/` were placed the same way on 8 October 2026, numbered by arrival
+commit (`36/` before `37/` within one commit, by member times). Their
+checksum files are dropped; the delivered self-check scripts that read them
+(`35/scripts/reproduce.py`, `36/verify_release.py`,
+`37/code/check_manifest.py`, `40/scripts/checksums.py`) therefore report the
+manifest absent.
+`37/results/benchmark_medians.csv` is stored with LF. Each delivery states
+that it does not prove general quasi-polynomial recognition.
 
 Separately from placement, the algorithm-improvement task reviewed `15/` and
 `16/` in isolated archive extractions. Their source files remain unchanged.

@@ -1,3 +1,6 @@
+/- Modified for ProveIt: unfold the newer IsLowerTriangular abbreviation
+to BlockTriangular OrderDual.toDual for Lean 4.32. Mathematical statements
+and proof bodies are otherwise unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.PreparedIntegerRemainder
 import OAI.Combinatorics.Progressions.Lattices.TriangularAffineReset
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinatePartition
@@ -16,7 +19,7 @@ namespace PolynomialPatch.LowestLayerModel
 variable {σ : Type*} {s D E h : ℕ} {A : PolynomialPatch σ s (D + E)}
     (L : A.LowestLayerModel h)
 
-theorem residualMatrix_lower : (1 - L.matrix).IsLowerTriangular := by
+theorem residualMatrix_lower : (1 - L.matrix).BlockTriangular OrderDual.toDual := by
   intro i j hij
   change i < j at hij
   simp [Matrix.sub_apply, Matrix.one_apply_ne hij.ne, L.strict i j hij.le]

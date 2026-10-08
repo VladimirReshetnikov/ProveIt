@@ -1,0 +1,121 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Compressed certificates for unknot recognition},
+ pdfauthor={Research continuation for the ProveIt project}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{193B4B}
+\definecolor{accent}{HTML}{187F86}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Compressed certificates for unknot recognition}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\lcp}{\operatorname{lcp}}
+\newcommand{\lcsuf}{\operatorname{lcsuf}}
+\newcommand{\pref}{\operatorname{pref}}
+\newcommand{\suff}{\operatorname{suff}}
+\newcommand{\Orb}{\operatorname{Orb}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\baseline}{\texttt{1be2abc8cc743c1a3b5cb7fdfeb650697f8e2d5b}}
+\newcommand{\subtreebaseline}{\texttt{38e65c9c2e2bfd42b9f71f1a1a7af15a3f8a3005}}
+\input{verification.tex}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{18mm}
+{\color{accent}\large PROVEIT / TOPOLOGY / RESEARCH CONTINUATION\par}
+\vspace{12mm}
+{\color{ink}\Huge\bfseries Compressed certificates\par
+ for unknot recognition\par}
+\vspace{9mm}
+{\Large Arithmetic overlap families, regular-cover gluings,\par
+ and normal disks\par}
+\vspace{14mm}
+{\large 8 October 2026\par}
+\vspace{13mm}
+\begin{abstract}
+We develop three exact computational improvements motivated by the remaining
+gap between the maintained \code{fastunknot} implementation and a general
+$n^{O(\log n)}$ recognition bound. First, a short endpoint word can identify
+an arithmetic progression containing every possible suffix--prefix overlap.
+An exact periodicity certificate makes candidate validity monotone in
+progression rank; galloping and bisection filter the entire progression.
+Its step and cardinality may both be
+exponentially large in their binary descriptions. This strictly extends the
+implementation's fixed short-period and bounded-marker shortcuts while
+preserving the complete fallback.
+
+Second, we give a polynomial algorithm, in the encoded input size, for
+equivalence of framed assemblies of connected regular cyclic or dihedral
+surface covers. A spanning forest reduces all local gluing phases to one
+group element per graph component. Cycle and boundary-mark constraints become
+at most two systems of congruences. We also count the remaining unmarked
+classes exactly: cyclic assemblies have $m^\beta$ classes, where $\beta$ is
+the cycle rank. Thus efficient equivalence testing alone does not control
+the number of distinct geometric states.
+
+Third, we implement an independent normal-disk verifier using a primitive
+extreme-ray certificate, modular rank, Euler characteristic, and boundary
+intersection parity. It validates the finite triangulation and never expands
+the normal surface. Fibonacci layered solid tori provide an explicit
+exponential-weight test family. These results include proofs, adversarial
+checks, measured positive and negative outcomes, and a repository patch.
+The general quasi-polynomial recognition bound remains unproved.
+\end{abstract}
+\vfill
+{\small Research prepared for integration into
+\url{https://github.com/VladimirReshetnikov/ProveIt}.\par
+All new numerical claims are tied to reproducible artifacts. Classical
+normal-surface and compressed-word results are credited separately from
+the implementation and refinements developed here.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\input{context.tex}
+\input{overlaps.tex}
+\input{gluings.tex}
+\input{normal_disks.tex}
+\input{experiments.tex}
+\input{research_agenda.tex}
+\input{references.tex}
+\end{document}

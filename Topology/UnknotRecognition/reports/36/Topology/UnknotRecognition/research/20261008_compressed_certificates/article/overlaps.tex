@@ -1,0 +1,338 @@
+\section{All overlaps from an arithmetic endpoint family}
+\label{sec:overlaps}
+
+\subsection{Candidate lengths forced by a short endpoint word}
+
+For finite words $X,Y$, define
+\[
+ \mathcal O(X,Y)=\{k:1\leq k\leq\min(|X|,|Y|),\;
+                    \suff_k(X)=\pref_k(Y)\}.
+\]
+These are literal signed-word equalities. Free reduction is not performed
+inside this definition. In the application, the surrounding group algorithm
+chooses the words whose overlaps are to be queried.
+
+Write $L=\min(|X|,|Y|)$. Replacing $X$ by its last $L$ letters and $Y$ by
+its first $L$ letters preserves $\mathcal O(X,Y)$. We therefore assume both
+operands have length $L$. Pick $1\leq q\leq L$ and let
+$P=\suff_q(X)$. Every overlap of length $k\geq q$ forces an occurrence of
+$P$ in $Y$ ending at position $k$, where positions are counted from one.
+Thus the set
+\[
+ K_P(Y)=\{i+q:Y[i:i+q]=P\}
+\]
+contains every possible overlap length at least $q$. This is only a necessary
+condition. The algorithm must verify all lengths that it accepts.
+
+An arithmetic progression is represented by $(a,d,c)$, denoting
+$\{a,a+d,\ldots,a+(c-1)d\}$. For $c>1$, require $d>0$;
+for a singleton, use $d=0$. Both $d$ and $c$ are exact binary integers.
+
+\begin{theorem}[Endpoint progression clipping]
+\label{thm:endpoint}
+Suppose $K_P(Y)$ is a nonempty arithmetic progression $K$ with largest
+member $M$, and put $U=\pref_M(Y)$. If $K$ has at least two members,
+let its step be $d$ and suppose that $U$ has period $d$. Then
+\begin{equation}
+ \mathcal O(X,Y)\cap[q,L]
+   =K\cap[q,\lcsuf(X,U)].
+ \label{eq:endpoint}
+\end{equation}
+The hypothesis about the period is decidable by the exact equality
+\begin{equation}
+ U[0:M-d]=U[d:M].\label{eq:period-check}
+\end{equation}
+No periodicity hypothesis on the other operand $X$ is required.
+\end{theorem}
+\begin{proof}
+If $K=\{M\}$, the only candidate is accepted exactly when
+$\suff_M(X)=U$, equivalently when $M\leq\lcsuf(X,U)$.
+Now suppose $K$ has at least two members.
+Each $k\in K$ has the form $M-jd$ for an integer $j\geq0$.
+The period condition implies $U[i]=U[i+jd]$ whenever both sides are within
+$U$, by repeatedly applying the period identity. Therefore
+\[
+ \pref_k(Y)=\pref_k(U)=\suff_k(U).
+\]
+The condition $\suff_k(X)=\pref_k(Y)$ is consequently equivalent to
+$\suff_k(X)=\suff_k(U)$, which holds precisely when
+$k\leq\lcsuf(X,U)$. Conversely, every overlap of length at least $q$
+belongs to $K$ by its final $q$ letters. These two implications prove \eqref{eq:endpoint}.
+Equation \eqref{eq:period-check} is the definition of period $d$ for a finite word, so it gives
+an exact certificate for the only periodicity used in the proof.
+\end{proof}
+
+\begin{corollary}[Symmetric endpoint direction]
+\label{cor:endpoint-symmetric}
+Let $Q=\pref_q(Y)$ and let
+$K=\{L-i:X[i:i+q]=Q\}$. Suppose $K$ is a nonsingleton arithmetic
+progression of step $d$ and maximum $M$, and $V=\suff_M(X)$ has period $d$.
+Then
+\[
+ \mathcal O(X,Y)\cap[q,L]=K\cap[q,\lcp(V,Y)].
+\]
+\end{corollary}
+\begin{proof}
+For $k=M-jd$, periodicity gives
+$\suff_k(X)=\suff_k(V)=\pref_k(V)$. Now use the definition of a longest
+common prefix. The occurrence of $Q$ at the beginning of any overlap proves
+necessity of membership in $K$.
+\end{proof}
+
+Empty and singleton candidate sets need separate, simpler treatment. If the
+set is empty, no overlap of length at least $q$ exists. For a singleton,
+one exact suffix--prefix comparison decides its membership. Every length
+below $q$ is checked directly in all three cases. Hence one successful
+anchor returns at most $q$ disjoint progression records: at most $q-1$
+short singletons and one progression for the longer overlaps.
+
+\subsection{Finding the cutoff by candidate rank}
+
+The common-suffix and common-prefix lengths in the preceding statements
+describe the answer, but need not be computed. A binary search for the
+complete common-prefix length can examine positions that are irrelevant
+to the progression. Once the progression and its period have been checked,
+we can search only its candidate ranks.
+
+\begin{corollary}[Galloping search for the last successful candidate]
+\label{cor:endpoint-rank}
+Under the hypotheses of \cref{thm:endpoint} or
+\cref{cor:endpoint-symmetric}, write
+$K=\{a+jd:0\leq j<c\}$ with $c\geq2$. Let $h$ be the number of its
+members that are actual overlaps and let $z=c-h$.
+All accepted members can be returned using
+\begin{equation}
+ O\bigl(1+\log(1+z)\bigr)
+ \quad\text{exact suffix--prefix equality comparisons}.
+ \label{eq:rank-comparisons}
+\end{equation}
+This is $O(\log(c+1))$ in the worst case. If every candidate succeeds,
+one comparison suffices; if every candidate fails, at most two suffice.
+These counts exclude the preceding period check and the fewer than $q$
+short-length checks.
+\end{corollary}
+\begin{proof}
+By the clipping theorem, the predicate
+\[
+ f(j)=\bigl[\suff_{a+jd}(X)=\pref_{a+jd}(Y)\bigr]
+\]
+is a true prefix: it holds precisely for $0\leq j<h$.
+Check $f(c-1)$ first. If it holds, return all of $K$.
+Otherwise check $f(0)$; if that fails, return the empty progression.
+The remaining case has $1\leq h<c$. Maintain a checked true index
+$\mathrm{lo}$ and a checked false index $\mathrm{hi}$, initially
+$0$ and $c-1$.
+
+Probe backward from the maximum at distances
+$\delta=1,2,4,\ldots$, using $j=\max(0,c-1-\delta)$.
+A false answer updates $\mathrm{hi}=j$; a true answer updates
+$\mathrm{lo}=j$ and ends this phase. If $j=0$, its previously checked
+true value supplies the endpoint without another comparison.
+For an unclamped probe,
+\[
+ f(c-1-\delta)\text{ holds}
+ \quad\Longleftrightarrow\quad \delta\geq z.
+\]
+Consequently the gallop uses $O(1+\log z)$ comparisons. Its final
+bracket has width $O(z)$, including the clamped case. Binary search within
+that bracket finds the last true index using $O(\log(1+z))$ additional
+comparisons. The answer is the first $h$ members of $K$, represented by
+one progression, or by a singleton when $h=1$.
+The invariant also covers $c=2$, when no interior search is needed.
+\end{proof}
+
+The monotonicity is a consequence of the certified period condition.
+Arbitrary overlap lengths need not have this property. The implementation
+therefore applies the rank search only after the exact structural check;
+it does not replace a failed period test by an assumed monotonicity.
+The proof uses ordinary exponential search followed by bisection, rather
+than a new general-purpose search method. Its useful feature here is the
+choice of the candidate rank and the direction of the gallop.
+
+\begin{example}[The opposite word may be nonperiodic]
+Let $B$ be a word whose final letter $c$ appears nowhere else in $B$.
+For integers $C\geq r\geq1$, let $Y=B^C$ and let $X=WB^r$, where
+$W$ is any word of length $(C-r)|B|$. The endpoint occurrences in
+$Y$ lie at $|B|,2|B|,\ldots,C|B|$. The theorem returns exactly those
+multiples no larger than the actual common-suffix length. It does not need
+to certify that $W$ repeats $B$, and it remains correct when $W$ contains
+arbitrary defects or a partially matching suffix.
+\end{example}
+
+\subsection{Recognizing a progression without listing its points}
+
+The missing operation is to summarize all occurrences of an explicit short
+pattern in an SLP word. It is insufficient to summarize distinct grammar
+nodes containing the pattern: a shared node can be used exponentially many
+times in the represented word.
+
+For an ordered finite set of occurrence starts $S$, retain
+\[
+ \Sigma(S)=(c,f,l,\delta_{\min},\delta_{\max}),
+\]
+where $c=|S|$, $f,l$ are its endpoints, and the last two entries are the
+minimum and maximum consecutive gaps. Empty and singleton sets have both
+gap entries zero. For $c\geq2$,
+\begin{equation}
+ S\text{ is an arithmetic progression}
+ \quad\Longleftrightarrow\quad
+ \delta_{\min}=\delta_{\max}.\label{eq:ap-test}
+\end{equation}
+
+\begin{lemma}[Exact ordered concatenation]
+\label{lem:summary}
+Suppose every point of $S$ precedes every point of $T$. The summary of
+$S\cup T$ is determined by their summaries: counts add, the first and last
+nonempty endpoints persist, and the new gap extrema are the extrema among
+the old gaps and $\min T-\max S$. Translating $T$ only changes its two
+endpoints. These formulas remain exact when the sets are exponentially large.
+\end{lemma}
+\begin{proof}
+All consecutive pairs in $S\cup T$ lie within $S$, within $T$, or are the
+single pair bridging their endpoints. This exhausts the gap list.
+\end{proof}
+
+For a rule $A\to BC$ and pattern length $q$, every occurrence is in exactly
+one of three disjoint sets: wholly inside $B$; crossing the concatenation
+cut; or wholly inside $C$. The last set is translated by $|B|$.
+This locality at a grammar concatenation is standard in compressed
+$q$-gram algorithms; see Goto, Bannai, Inenaga and Takeda
+\cite{goto-qgrams}. The five-entry summary used here is tailored to
+certifying one exact occurrence progression.
+There are at most $q-1$ crossing positions. Store the first and last
+$\min(q-1,|A|)$ letters of every reachable rule, and check those crossing
+positions explicitly. Processing them in increasing start order allows
+\cref{lem:summary} to merge all three sets without enumerating any child
+occurrence set. For $q=1$ there are no crossing occurrences.
+
+\begin{theorem}[SLP occurrence summaries]
+\label{thm:summary}
+For an explicit nonempty pattern of length $q$ and an SLP with $g$ reachable
+rules, the occurrence summary can be computed using
+$O(qg)$ stored letters and integers and
+$O(q^2g+g\log(g+1))$ elementary operations with the implementation's
+topological sorting. If $b$ bounds the bit length of positions, counts,
+rule identifiers and signed letters, a conservative corresponding bit bound
+is $O((q^2g+g\log(g+1))b)$, besides the input grammar's stored structure.
+\end{theorem}
+\begin{proof}
+Terminal rules are immediate. The three-way partition at a concatenation
+and \cref{lem:summary} establish correctness by induction on the grammar.
+The retained endpoints have length at most $q-1$. There are at most $q-1$
+crossing candidates, each checked against $q$ explicit letters, yielding
+$O(q^2)$ elementary work per rule. The count for a repeated child is
+included once on each side of the cut, correctly accounting for grammar
+sharing. All integer additions, subtractions, comparisons and translations
+involve $O(b)$ bits. Sorting the reachable rule identifiers adds the displayed
+term; node order already respects the grammar's acyclicity.
+\end{proof}
+
+The summary is useful even when \cref{eq:ap-test} fails: it certifies that this particular
+anchor does not give a single progression. It is not a complete compressed
+representation of a nonprogression set. The matcher therefore tries another
+anchor or falls back, rather than discarding unrepresented candidates.
+
+\subsection{Integration and local complexity}
+
+The implementation tries anchor sizes $1,2,4,8$, in both directions. Its
+public primitive accepts other finite lists of positive sizes. A proposed
+size is clipped to the available word length. The integrated hook is reached
+only for a query window of length at least 128, after the earlier uniform,
+short-period and sparse-endpoint shortcuts. Thus successful earlier paths
+retain their previous work. The new hook is deterministic and preserves
+the old complete dyadic occurrence-table fallback.
+
+For one nonsingleton successful anchor, the implementation performs one
+period equality and the candidate-rank comparisons in
+\cref{cor:endpoint-rank}. It does not compute the complete longest common
+prefix or suffix. Let $g$ count the rules reachable from the input operands,
+let $H$ bound their height, and let $b$ bound the bit lengths of all
+positions, counts, rule identifiers and signed letters involved in the
+query. Write $\mathsf E(G,b)$ for a bound on one exact equality call on
+an augmented grammar with at most $G$ rules, including its assertion and
+cache bookkeeping. To account also for persistent arena data, let $g_0$
+bound the total number of grammar rules and pre-existing equality-cache
+records at entry; in particular $g_0\geq g$. Define
+\[
+ J=1+\left\lceil\log_2(1+z)\right\rceil.
+\]
+Each candidate comparison slices the same original operands. A substring
+adds $O(H)$ rules and does not increase their height, so the initial
+cropping, endpoint extraction, period slices, candidate slices and short
+checks together create at most $O(H(q+J))$ additional rules. The equality
+implementation itself uses assertions on existing rules. We may therefore
+take
+\[
+ G=g_0+O\bigl(H(q+J)\bigr).
+\]
+This deliberately counts persistent data that a reachable-rule summary
+does not inspect but an equality-cache cleanup might visit.
+Charging $O(b^2)$ for elementary binary multiplication in the calculation
+$a+jd$, a conservative bound for the new promised-class route is
+\begin{equation}
+ O\!\left((q^2g+g\log(g+1))b
+ +(q+J)\bigl[\mathsf E(G,b)+Hb+b^2\bigr]\right).
+ \label{eq:overlap-cost}
+\end{equation}
+The $q$ term includes the fewer than $q$ directly checked short lengths.
+For the fixed list $1,2,4,8$, failed earlier anchors contribute only a
+constant number of summary passes, endpoint slices and period comparisons;
+the same bound applies with the largest tried $q$ and a changed absolute
+constant. All large numerical dependence is through encoded lengths and
+the exact comparison cost. In particular, \cref{eq:rank-comparisons}
+improves the \emph{number} of comparisons; it does not make each equality
+independent of the represented words. No asymptotic bound is transferred
+from a different compressed-string implementation.
+
+All calls use the same arena work allowance and cancellation callback.
+Successful complete answers are cached under the caller's original root
+pair, even when the actual comparison was cropped. Candidate-rank filtering
+uses direct suffix--prefix comparisons in both anchor directions.
+An interruption raises the existing resource exception, with no partial
+overlap set entered into the answer cache.
+
+An unsuccessful speculative certificate has a bounded number of summary
+passes for the fixed policy, but its exact equality query may still be
+expensive. This is why the experiments include failed period tests and
+phase-shifted long-period queries. We claim the promised-class improvement
+expressed in \cref{eq:overlap-cost}, not uniform dominance over every old query.
+
+\subsection{An explicit family beyond both old numerical caps}
+
+\begin{proposition}[Unbounded period and marker multiplicity]
+\label{prop:marker-family}
+For distinct signed letters $a,b,c$, positive integers $N,C$, and
+$W=((ab)^Nc)^C$, let $d=2N+1$. Then
+\[
+ \mathcal O(W,W)=\{d,2d,\ldots,Cd\}.
+\]
+The $q=1$ endpoint method returns this set as a single progression, using
+grammar operations polynomial in $\log(N+1)+\log(C+1)$ for its constructed
+SLP. Neither $d$ nor $C$ has a fixed numerical upper bound.
+\end{proposition}
+\begin{proof}
+The final letter is $c$, whose occurrences are exactly at multiples of $d$.
+Every overlap must end at such a position in the second copy. Conversely,
+each such length is a whole number of identical blocks and is an overlap.
+The longest candidate window is all of $W$ and has period $d$.
+Repeated squaring gives a grammar with
+$O(\log(N+1)+\log(C+1))$ rules, and the exact compressed comparisons are
+polynomial in that encoded grammar size.
+\end{proof}
+
+Two binary-alphabet variants demonstrate why short words are useful anchors:
+\[
+ W_2=((ba)^Na)^C,\qquad W_4=((ab)^Naa)^C.
+\]
+The terminal word $aa$ identifies exactly the block ends of $W_2$.
+The terminal word $abaa$ does so for $W_4$. For $N\geq2$ the resulting
+overlap sets are, respectively, the multiples of $2N+1$, and
+$\{1\}$ together with the multiples of $2N+2$. The latter isolated overlap
+is exactly why lengths shorter than the anchor must be retained.
+
+With $N=C=2^{500}$, a period itself needs about 502 bits and the number of
+overlaps needs 501 bits. Explicitly listing the overlaps is impossible within
+reasonable resources, but their three-integer progression representation is
+small. This family is a controlled compressed-string benchmark. No theorem
+here says that arbitrary hard unknot instances must generate this family,
+or that every important relator overlap satisfies its hypotheses.

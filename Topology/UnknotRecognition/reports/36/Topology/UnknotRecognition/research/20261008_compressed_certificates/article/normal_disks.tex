@@ -1,0 +1,373 @@
+\section{An independent compressed normal-disk certificate}
+\label{sec:normal}
+
+\subsection{The proposition certified by the interface}
+
+The input to this kernel is a finite face-paired tetrahedral triangulation
+$\mathcal T$ and a vector $x\in\N^{7t}$ of standard normal coordinates.
+The claimed conclusion is
+\begin{quote}
+$\mathcal T$ is a connected compact orientable $3$-manifold with one torus
+boundary, and $x$ represents a properly embedded disk whose boundary is
+essential in that torus.
+\end{quote}
+This is a relative topological certificate. The input does not contain a knot
+diagram or a verified conversion from such a diagram. Even a genuine
+compressing disk does not identify an arbitrary torus-boundary manifold as a
+solid torus: $(S^1\times D^2)\mathbin{\#}(S^1\times S^2)$ supplies a familiar
+counterexample. For an actual knot exterior in $S^3$, a compressible boundary
+does imply the unknot; establishing that this is the supplied exterior is an
+additional obligation. The successful evidence object states its relative
+scope explicitly.
+
+The producer accepts a \emph{supplied} coordinate vector and tries to attach
+a small rank prime. It does not enumerate surfaces. A rejected vector means
+that this particular certificate format did not verify. It does not certify
+incompressibility or a nontrivial knot.
+
+\subsection{Finite triangulations are checked, not assumed}
+
+Tetrahedra and vertices are numbered. A face record is either a boundary
+marker or a destination tetrahedron together with a permutation of its four
+vertices; the image of the source face is determined by that permutation.
+The verifier reconstructs the quotient and checks the following conditions.
+
+\begin{enumerate}
+\item Every face pairing is reciprocal. A face is not glued to itself.
+All indices and permutations have the exact declared types and ranges.
+\item The graph of tetrahedra joined through paired faces is connected.
+An orientation sign on every tetrahedron solves the face-orientation
+equations, whose multiplier is minus the sign of the gluing permutation.
+\item Edge identifications never identify an edge with its own reverse.
+Each edge link has zero or two unpaired endpoints. Since its constituent
+segments are joined at endpoints, and an edge equivalence class gives a
+connected link, these links are circles or intervals.
+\item Vertex links are reconstructed from their triangles, edges, and
+vertices. The preceding local checks make them connected surfaces; their
+Euler characteristics must be $2$ when closed and $1$ when they have
+boundary. They are consequently spheres or disks. Ideal vertices and
+nonmanifold vertices are rejected.
+\item The finite boundary is connected and has Euler characteristic zero.
+The checked ambient orientation induces a boundary orientation, so this
+boundary is a torus.
+\end{enumerate}
+
+The vertex-link conclusion uses the classification of compact surfaces.
+For a connected surface with nonempty boundary, Euler characteristic one
+forces a disk even without an orientability premise. The separate edge and
+link checks are essential: Euler characteristic alone does not certify that
+an arbitrary two-dimensional quotient is a surface.
+
+These checks involve $O(t)$ combinatorial cells, represented by union--find
+structures and finite graphs. They are included in the measured certificate
+time. No field supplied by a topology engine is trusted as a substitute.
+
+\subsection{Normal coordinates and the support-rank certificate}
+
+The seven coordinates in a tetrahedron are ordered
+\[
+ (T_0,T_1,T_2,T_3,Q_{01|23},Q_{02|13},Q_{03|12}).
+\]
+Triangles link vertices; the indicated quadrilateral avoids the two listed
+opposite edges. The verifier reconstructs the normal matching matrix $A$,
+checks $Ax=0$, and checks the quadrilateral condition: at most one of the
+three quadrilateral coordinates is nonzero in each tetrahedron. Together
+with $x\geq0$, these are the standard admissibility conditions for an
+embedded normal surface \cite{hlp,jaco-rubinstein}.
+
+Let $I=\supp x$, $s=|I|$, and let $A_I$ restrict the columns of $A$ to $I$.
+Each face-arc matching row has two positive and two negative contributions,
+before cancellations caused by identifications. Triangle and quadrilateral
+columns are distinct, so its Euclidean norm is at most $2$. This bound
+remains true after restricting columns.
+
+\begin{theorem}[Primitive support-nullity certificate]
+\label{thm:primitive}
+Suppose $x\ne0$ is admissible, $\gcd(x_1,\ldots,x_{7t})=1$, and
+$\rank_\Q A_I=s-1$. Then the represented normal surface is connected.
+\end{theorem}
+\begin{proof}
+Write the coordinate vectors of its nonempty connected components as
+$x^{(1)},\ldots,x^{(k)}$. Each is a nonnegative integer vector satisfying
+the matching equations, supported in $I$, and their sum is $x$.
+The one-dimensional kernel of $A_I$ therefore gives
+$x^{(j)}=\lambda_jx$, with $\lambda_j>0$.
+Primitivity supplies integers $b_i$ with $\sum_i b_i x_i=1$, whence
+$\lambda_j=\sum_i b_i x_i^{(j)}$ is an integer. Since
+$\sum_j\lambda_j=1$, there is exactly one component.
+\end{proof}
+
+This is the classical extreme-ray argument, not a new general connectivity
+theorem for normal surfaces. The support condition is equivalent to the
+vector lying on an extreme ray of the nonnegative matching cone. It is
+stronger than merely being a connected normal disk. A connected disk outside
+this class can be rejected by the present format.
+
+\begin{lemma}[One prime certifies rational rank]
+\label{lem:rank-prime}
+If a checked prime $p$ satisfies $\rank_{\F_p} A_I=s-1$, then
+$\rank_\Q A_I=s-1$. Conversely, if the rational rank is $s-1$, a suitable
+prime occurs among the first $s$ primes.
+\end{lemma}
+\begin{proof}
+A nonzero minor modulo $p$ is a nonzero integer minor. Thus the modular rank
+is a lower bound for rational rank. The exact nonzero vector $x$ is in the
+rational kernel, giving the opposite upper bound $s-1$.
+
+For the converse, choose a nonzero $(s-1)$-minor $D$. Hadamard's inequality
+and the row-norm bound give $1\leq|D|\leq2^{s-1}$. A nonzero integer in
+this range has at most $s-1$ distinct prime divisors: a product of $s$
+distinct primes is larger than $2^{s-1}$. At least one of the first $s$
+primes does not divide $D$, and the modular rank at that prime is $s-1$.
+When $s=1$, the empty minor is $1$ and rank zero is immediate.
+\end{proof}
+
+The certificate stores the prime, not a trusted assertion that it is prime.
+The verifier restricts it to
+\begin{equation}
+ 2\leq p\leq 32(s+1)^2
+ \label{eq:prime-bound}
+\end{equation}
+and proves primality by exact trial division. This deliberately generous
+bound keeps even that elementary test polynomial in the encoded input size.
+An adversary cannot turn verification into trial division of an arbitrary
+binary integer.
+
+Here is an elementary supply proof for \eqref{eq:prime-bound}. Put
+$N=32(s+1)^2$ and let $\pi(N)$ count primes at most $N$. The central
+binomial coefficient satisfies
+\[
+ \frac{2^N}{N+1}\leq \binom{N}{N/2}\leq N^{\pi(N)}.
+\]
+For the upper bound, Legendre's formula shows that each term in the
+$p$-adic valuation is zero or one. Hence the full contribution of a prime
+$p$ to the binomial coefficient is at most
+$p^{\lfloor\log_pN\rfloor}\leq N$. Consequently
+\[
+ \pi(N)\geq\frac{N-\log_2(N+1)}{\log_2N}>s.
+\]
+For completeness, $N-\log_2(N+1)\geq N/2$ here and
+$\log_2N=5+2\log_2(s+1)\leq5+2s$; therefore the last quotient is at
+least $16(s+1)^2/(5+2s)>s$.
+
+\begin{corollary}[Coordinate size on the certified ray]
+\label{cor:coordinate-size}
+For a primitive vector with this support-nullity property,
+every positive coordinate is at most $2^{s-1}$. The coordinates therefore
+have $O(t^2)$ total bits.
+\end{corollary}
+\begin{proof}
+Choose $s-1$ independent rows of $A_I$. Their signed maximal minors form
+a nonzero integer kernel vector. Dividing by their common divisor gives
+the primitive kernel generator, up to sign. Each minor has absolute value
+at most $2^{s-1}$ by the same row-norm estimate. There are at most $7t$
+coordinates, each with $O(t)$ bits.
+\end{proof}
+
+This is a certificate-size statement. It does not say that an algorithm can
+find the ray without examining exponentially many possible supports or
+quadrilateral choices.
+
+\subsection{Euler characteristic without expanding the surface}
+
+Let $w_e$ denote the intersection number with a global triangulation edge.
+In local edge $ab$ of tetrahedron $i$, it is
+\[
+ w_{ab}=T_a+T_b+Q_{01|23}+Q_{02|13}+Q_{03|12}-Q_{ab|cd},
+\]
+where $cd$ is the opposite edge. All local representatives of a global
+edge must give the same value; the verifier checks this directly.
+The normal arc count on face $f$ is
+\[
+ a_f=\sum_{v\ne f}T_v+\sum_Q Q.
+\]
+Counting each paired face once and each boundary face once gives
+\begin{align*}
+ V_S&=\sum_{e\text{ global}}w_e,\\
+ E_S&=\sum_{f\text{ paired once}}a_f+
+       \sum_{f\text{ boundary}}a_f,\\
+ F_S&=\sum_i x_i,\qquad \chi(S)=V_S-E_S+F_S.
+\end{align*}
+These are the cells of the normal surface induced by the triangulation,
+computed through their binary multiplicities. The checker requires
+$\chi(S)=1$ and a positive boundary-arc count. Combined with
+\cref{thm:primitive}, the classification of surfaces gives a disk. No
+independent orientability test on the normal surface is required for this
+particular conclusion.
+
+\subsection{Essential boundary from intersection parity}
+
+The remaining disk could be boundary-parallel. To exclude it, assign to
+each boundary edge the parity
+\[
+ c(e)=w_e\bmod2.
+\]
+For every boundary triangle, the sum on its three edges is zero: each
+normal arc contributes two endpoints. Thus $c$ is a cellular cocycle,
+the mod-$2$ Poincar\'e dual of the boundary multicurve. The implementation
+checks this identity as well as deriving the counts from the coordinates.
+
+A cocycle on this finite cell structure is a coboundary precisely when
+there is a vertex potential $\phi$ satisfying
+\[
+ c(uv)=\phi(u)+\phi(v)\pmod2
+ \label{eq:potential}
+\]
+on every boundary edge. A graph traversal assigns potentials and detects
+inconsistent equations. Loop edges are retained; on a one-vertex torus
+they can carry all the information.
+
+\begin{lemma}[Parity detects essential disk boundary on a torus]
+\label{lem:boundary-parity}
+Once the surface has been proved to be a disk, its boundary is essential
+in the checked torus if and only if $c$ is not a coboundary.
+\end{lemma}
+\begin{proof}
+The disk has exactly one simple boundary curve. A null-homotopic simple
+curve in a torus has zero integral homology class. An essential simple
+curve has a primitive nonzero class $(a,b)\in\Z^2$. A primitive pair
+cannot have both entries even, so its image in $H_1(T^2;\F_2)$ is nonzero.
+Poincar\'e duality identifies that class with $[c]$ in cohomology.
+\end{proof}
+
+The order of these conclusions matters. For an arbitrary disconnected
+normal surface, essential parallel boundary curves can cancel modulo two.
+Conversely, positive Euler characteristic alone can combine several
+components in misleading ways. Connectedness, disk type, and the single
+torus boundary are proved before parity is interpreted topologically.
+The code can calculate intermediate values in a different order, but it
+returns success only after every condition is satisfied.
+
+\begin{theorem}[Soundness and bit complexity of the disk verifier]
+\label{thm:disk}
+Acceptance of the face pairing, coordinate vector, and rank prime proves
+the relative proposition at the start of this section. With schoolbook
+integer arithmetic, a conservative bound for one verification is
+\[
+ O\bigl(tB_x^2+t^3\log^2(t+2)\bigr)
+\]
+bit operations and polynomial space. No term is proportional to
+$\sum_i x_i$.
+\end{theorem}
+\begin{proof}
+The finite combinatorial checks establish the ambient manifold and its
+boundary. Matching and quadrilateral admissibility establish the embedded
+normal surface. The modular rank and primitivity prove connectedness;
+Euler characteristic and boundary count prove disk type; the nonzero
+parity class proves essential boundary.
+
+There are $O(t)$ coordinate and matching operations on $B_x$-bit integers.
+The gcd computations can be bounded by $O(tB_x^2)$. Dense elimination on
+an $O(t)$ by $O(t)$ matrix uses $O(t^3)$ operations modulo a prime of
+$O(\log(t+2))$ bits, including the lower-order pivot inversions and prime
+validation. The finite topology and parity traversals are smaller terms.
+All surface multiplicities are stored and manipulated as binary integers.
+\end{proof}
+
+The implementation specializes $p=2$ to packed exact XOR elimination.
+The producer may try $s$ primes, so its rank work can be larger by that
+factor; the certificate verifier performs only one rank check. None of
+this replaces the more general orbit-counting algorithms of
+Agol--Hass--Thurston \cite{aht}. It is a compact certificate format for
+the primitive extreme case, with a small independent trusted computation.
+
+\subsection{An explicit exponential-weight fixture family}
+\label{sec:fibonacci}
+
+Let $F_0=0$, $F_1=1$, and $F_{r+2}=F_{r+1}+F_r$. Fibonacci growth in
+layered solid tori is classical \cite{jaco-rubinstein}. We record a fully
+specified family because it makes the difference between coordinate size
+and expanded surface size directly reproducible.
+
+For $t\geq1$, number tetrahedra $0,\ldots,t-1$ from the boundary inward.
+For $i<t-1$, face $0$ of tetrahedron $i$ is paired to tetrahedron $i+1$
+by the permutation $(2,1,3,0)$, and face $1$ is paired by
+$(0,3,1,2)$. A tuple here lists the images of vertices $0,1,2,3$; it is
+not cycle notation. At the core, face $0$ is glued to face $1$ of the same
+tetrahedron by $(1,2,3,0)$. Every inverse pairing is included. Faces $2$
+and $3$ of tetrahedron $0$ are the two boundary faces. These are the
+standard layered solid tori with meridian boundary intersection numbers
+$F_{t+1},F_{t+2},F_{t+3}$.
+
+In tetrahedron $i$, put $r=t-i$ and set
+\begin{equation}
+ x_i=(F_{r+1},F_{r+1},0,0,0,0,F_r).
+ \label{eq:fibonacci-vector}
+\end{equation}
+On this support, write the three nonzero variables as $a_i,b_i,c_i$.
+The core matching equations impose $a_{t-1}=b_{t-1}=c_{t-1}$.
+The interlayer equations impose
+\[
+ c_i=a_{i+1}=b_{i+1},\qquad
+ a_i=a_{i+1}+c_{i+1},\qquad
+ b_i=b_{i+1}+c_{i+1}.
+\]
+They have a one-dimensional solution space over every field; all remaining
+restricted matching equations are satisfied by this recurrence. Hence
+the support has rank $3t-1$ even modulo two. The core coordinate is one,
+so the vector is primitive. In particular the certificate prime can always
+be $2$ for this family.
+
+The exact number of elementary normal disks is
+\begin{equation}
+ D_t=\sum_{r=1}^{t}(2F_{r+1}+F_r)
+     =\sum_{r=1}^{t}F_{r+3}=F_{t+5}-5.
+ \label{eq:disk-count}
+\end{equation}
+The global triangulation edges have weights
+$F_2,F_3,\ldots,F_{t+3}$: the core gives $1,2,3$, and each new layer
+adds the next Fibonacci weight while retaining the previous global edge
+weights. Therefore
+\[
+ V_S=\sum_{k=2}^{t+3}F_k=F_{t+5}-2.
+\]
+The core paired face contributes $2$ surface edges, the two paired faces
+at level $r\geq2$ contribute $2F_{r+2}$, and the two outer boundary
+faces contribute $2F_{t+3}$. Hence
+\[
+ E_S=2+2\sum_{r=2}^{t}F_{r+2}+2F_{t+3}
+     =2F_{t+5}-8,
+\]
+including the empty sum for $t=1$. These formulas give $\chi(S)=1$.
+There are $2F_{t+3}>0$ boundary normal arcs. The boundary has one vertex
+and three edges. Its consecutive Fibonacci edge counts are not all even,
+so the parity cocycle cannot be a coboundary. This proves the certificate
+conditions for every $t$ without an expansion.
+
+Thus $D_t=\Theta(\varphi^t)$, where
+$\varphi=(1+\sqrt5)/2$, while the full coordinate vector has only $O(t^2)$
+bits. The fixture generator is independent of Regina. The benchmark also
+compares the generated face pairings and coordinates with Regina's native
+layered-solid-torus construction for twelve small values, and retains
+the supplied inputs for all measured sizes.
+
+At $t=128$, the exact value of $D_t$ is
+\[
+ 2\,791\,715\,456\,571\,051\,233\,611\,642\,548.
+\]
+The verifier manipulates the 896 coordinate positions, not that many
+individual disks. This is a test of certificate checking for a supplied
+triangulation, not a knot-diagram family with a demonstrated recognition
+speedup.
+
+\subsection{API and integration boundary}
+
+The module \code{fastunknot/normal\_disk\_certificate.py} exposes a
+producer, a Boolean verifier, and an evidence-producing audit function.
+A certificate contains exactly a version, the coordinate rows, and a rank
+prime. The audit reconstructs the matrix and every topological count; it
+does not accept a supplied rank, Euler characteristic, component count,
+or boundary-homology answer.
+
+Cooperative cancellation exceptions propagate to the caller. Strict schema
+validation rejects Boolean values in integer positions and malformed face
+maps. Unit tests include valid disks, boundary-parallel vertex-linking
+disks, nonprimitive multiples, annuli, mismatched coordinates, conflicting
+quadrilaterals, invalid moduli, disconnected input, and relabelled copies.
+
+The natural next integration is a transcript from a validated PD diagram
+to its finite compact exterior triangulation, together with a checker for
+that transcript. A producer may then be delegated to a fast topology
+engine while the positive answer is independently replayed. This work
+does not attach an unverified triangulation hash to a PD diagram and call
+that replay complete.

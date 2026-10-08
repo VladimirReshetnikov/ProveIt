@@ -1,0 +1,135 @@
+\section{How the results could form a quasi-polynomial portfolio}
+\label{sec:portfolio}
+
+\subsection{Three sufficient regimes}
+
+The previous sections give different, explicitly checkable sufficient
+conditions. They should be combined by a logical decision policy and a
+complete cost account, rather than by adding their most favorable
+exponents informally.
+
+\begin{corollary}[Explicit sufficient regimes]
+\label{cor:regimes}
+For diagrams with $n$ crossings, any one of the following conditions
+gives a deterministic $n^{O(\log n)}$ recognition method, including its
+stated construction cost:
+\begin{enumerate}[label=(\roman*)]
+\item A verified presentation can be constructed in polynomial time with
+      $r=O(\log n)$ and explicit relator length $N=n^{O(1)}$.
+\item A verified word circuit of polynomial description length and a cut
+      can be constructed in polynomial time with
+      $(r+t)\log(d+2)=O((\log n)^2)$.
+\item An order for the first-jet decision scan can be constructed in
+      polynomial time whose actual one-object gap and frontier obey
+      $g+w=O((\log n)^2)$, with all temporary allocation and the terminal
+      segment included.
+\end{enumerate}
+No condition is asserted to hold on arbitrary diagrams. In (i) and (ii),
+the decision method is the theoretical exact real procedure, not an
+asymptotic guarantee for the supplied practical solver.
+\end{corollary}
+
+\begin{proof}
+In (i), the logarithm of the nonpolynomial factor is
+$O(r\log(2+N/r))=O((\log n)^2)$. Condition (ii) is precisely the
+exponent of Theorem~\ref{thm:su2-hybrid}. Condition (iii) follows from
+the scan bound in Section~\ref{sec:first-jet-pre-schur}. In each case
+the additional polynomial factors are absorbed.
+\end{proof}
+
+The supplied-diagram condition $b(D)=O(\log n)$ is a concrete instance
+of (i) whose construction is already implemented. Fully retaining a
+word circuit with $r+s=O(\log^2 n)$ is a concrete instance of (ii).
+Conditions (i) and (iii) describe different geometric and algebraic
+phenomena: neither a small bridge invariant nor a small matrix response
+may be substituted for the measured parameters in their proofs.
+
+\subsection{Certified reductions and fair execution}
+
+\begin{proposition}[A portfolio sufficient condition]
+\label{prop:portfolio}
+Suppose a polynomial-time verified reduction converts an input diagram
+into polynomially many knot instances of total polynomial size, with the
+original knot trivial if and only if every resulting knot is trivial.
+For each instance suppose at least one member of a fixed finite collection
+of sound algorithms terminates within $n^{O(\log n)}$ steps, with uniform
+constants. Then a fair execution of that collection decides the original
+input in $n^{O(\log n)}$ time. Every proposed certificate must be checked
+within the corresponding cost, and the instance-size bound refers to the
+actual encoded inputs.
+\end{proposition}
+
+\begin{proof}
+Simulate the fixed number of algorithms on each instance in round-robin
+instruction blocks. Stop that instance when one supplies a checked
+verdict. If an algorithm takes $C$ steps, the simulation gives it those
+steps with only a fixed-factor scheduling overhead in a standard
+multi-workspace machine model; a conventional bit-machine simulation
+adds at most polynomial or logarithmic overhead, harmless here. Sum
+over polynomially many instances. Soundness and the verified reduction
+justify the conjunction of their unknot verdicts. A single checked
+knotted instance permits earlier rejection.
+\end{proof}
+
+This elementary proposition is not a new structural theorem. It locates
+the missing proof: every residual input must be covered by at least one
+bounded regime. Finite budgets, empirical dispatch thresholds, and a
+collection of examples do not establish that covering statement. A
+bounded practical solver that can return unknown is a sound portfolio
+member, but does not by itself supply the terminating algorithm required
+by the proposition.
+
+For a scan making $q$ boundary observations over $a$ primes, the new
+response contribution has the schematic arithmetic cost
+\[
+ O\bigl(a n(W+1)^2+a q(W+1)^3\bigr).
+\]
+Source geometry and index arithmetic have the separately stated costs
+in Section~\ref{sec:streaming-response}. If $a$ or $q$ is large, that
+must be paid. The number of relative objects and cobordism compositions
+remains in the rest of the scan's cost. This is why the response theorem
+is an ingredient within a recognition algorithm, not a complete
+recognizer to place by itself in the portfolio minimum.
+
+\subsection{Correct integration contracts}
+
+The delivered additions expose narrow interfaces with explicit verdict
+semantics. A generic group presentation produces a representation query;
+only a formula derived from a validated knot diagram is promoted to a
+knot verdict. Defining-generator elimination preserves the surviving
+positive meridians, which permits the shared scalar coordinate and the
+meridional inequality. Arbitrary future Whitehead transformations must
+use the general commutator test unless conjugacy provenance is retained.
+
+The first-jet observer accepts whole components of the actual differential
+graph. It does not treat a selected submatrix as a direct summand. Local
+exhaustion discards uninstalled proposals, disables observation, and resumes
+ordinary elimination; global exhaustion propagates. Replaced complexes
+support total-rank decisions only. A homology-reporting API must continue
+to compute the original graded complex.
+
+The response module returns a field-specific cofactor response. Its
+absorbing zero is proved for every admissible continuation, but only in
+that field. A zero residue is not an integer zero certificate, and
+compatibility with an unknot determinant is not a positive recognition
+certificate. Completion geometry, signs, loop phases, and the anchor
+remain part of the exact query.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}YY@{}}
+\toprule
+New interface & Definite output means & Inconclusive or excluded behavior\\
+\midrule
+\path{su2.solve_formula} & Exact nonabelian representation exists, or exact infeasibility for its input formula & Solver unknown, timeout, missing solver, or compilation allowance.\\
+\path{su2.su2_decide} & Knot verdict derived from validated diagram provenance & Practical solver trust is explicit; generic external presentations are not accepted as diagram provenance.\\
+\texttt{first\_jet\_profile} & Two exact ranks of a whole one-matching component & No inference from first-jet identities alone that an arbitrary polynomial matrix squares to zero.\\
+\path{first_jet_khovanov_decide} & Total-rank decision preserved through its replacements & Original bigraded homology is outside the API contract.\\
+\path{compile_suffix_responses} & Every prepared suffix has an immutable exact response modulo the supplied prime & No automatic driver dispatch or general recognition-time claim.\\
+\bottomrule
+\end{tabularx}\end{center}
+
+The default backend selection is unchanged. The new modules are optional
+research interfaces because the measurements do not yet justify a uniform
+production dispatch policy. One unrelated existing subprocess polling
+defect is corrected by integrating a previously developed fix; its
+provenance and regression test are documented in Appendix~\ref{sec:reproduce}.
