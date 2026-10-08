@@ -1,4 +1,4 @@
-/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup and explicit norm congruence on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.LowTaggedRationalLiftRewrite
 import OAI.Combinatorics.Progressions.Estimates.TranslationMajorCorrelationDecomposition
 import OAI.Combinatorics.Progressions.Fourier.MajorPhaseLowFourierExtraction
@@ -254,6 +254,7 @@ theorem exists_majorPhase_residue_detection (d : ℕ) (hd : 0 < d) :
     apply (Real.exp_le_exp.mpr (neg_le_neg hpp')).trans
     convert hcorr using 1
     congr 1
+    apply congrArg (fun z : ℂ => ‖z‖)
     apply Finset.expect_congr rfl
     intro v _
     have hcast : (fun j => ((Sum.elim v (β' v) j : ℤ) : ℝ)) =
