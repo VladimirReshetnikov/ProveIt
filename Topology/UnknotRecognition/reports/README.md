@@ -30,7 +30,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(267 current production tests pass). Local reruns of
+(272 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -48,7 +48,7 @@ Separately from placement, the algorithm-improvement task reviewed `15/` and
 The current implementation integrates the survivor/degree-gap shortcut from
 `15/`, with adaptive switching, and homogeneous coefficient multiplication
 from `16/`, with a further top-degree shortcut. The full transfer engine and
-finite-quotient filter are not integrated. Current validation passes 267 tests;
+finite-quotient filter are not integrated. Current validation passes 272 tests;
 local logs, proofs, applicability limits, and paired measurements are in
 `../synthesis/radical.tex` and `../synthesis/homogeneous.tex`. Report `13/` contributes the integrated exact window scanner and mirror bound;
 `../synthesis/windows.tex` describes the new bounded adaptive widening policy.
@@ -98,3 +98,15 @@ review of them is `../synthesis/report.pdf`.
 Cross-validation of the archives against each other (five Khovanov
 implementations, six pattern testers, the grid search of `01/` against the
 Khovanov homology of `04/`) is in `../synthesis/data/`.
+
+### Subsequent incoming rank-two review
+
+The algorithm-improvement task separately reviewed
+`docs/incoming/unknot_rank_two_kernels_20261007.zip` from commit `d569a29de`
+in a scratch extraction. All 33 archive tests and its formerly unrun 16-case
+real-upstream gateway smoke test pass. The production tree now includes its
+optimizer and independent verifier with an optional bounded recognition stage;
+272 integrated tests pass. The source archive is preserved unchanged. Proofs,
+conditional complexity, barriers, and end-to-end measurements are maintained in
+`../synthesis/ranktwo.tex`. The simultaneously received Potts-frontier and newer
+twist archives remain queued for mathematical and integration review.
