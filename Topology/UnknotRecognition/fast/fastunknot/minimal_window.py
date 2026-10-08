@@ -55,7 +55,7 @@ def khovanov_minimal_window_auto(diagram, lower, upper, *, order=None, max_objec
         raise ValueError('lower and upper must be integers with lower <= upper')
     if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
         raise ValueError('max_objects must be nonnegative or None')
-    if reduction not in ('standard','residue','adaptive'):
+    if reduction not in ('standard','residue','adaptive','disk-adaptive'):
         raise ValueError('invalid reduction')
     if composition not in ('standard','component','component-dense'):
         raise ValueError('invalid composition')
@@ -82,8 +82,8 @@ def khovanov_minimal_window_auto(diagram, lower, upper, *, order=None, max_objec
     order = list(cert.order)
     scan_type = FastScan
     if reduction != 'standard':
-        from .residue import AdaptiveScan, ResidueScan
-        scan_type = AdaptiveScan if reduction == 'adaptive' else ResidueScan
+        from .residue import reduction_scanner
+        scan_type = reduction_scanner(reduction)
     scan_type = type("MinimalWindowScan", (BoundedCompositionCache,scan_type), {})
     scan = scan_type(max_objects=max_objects,deadline=deadline,shape_cache=False)
     if composition != 'standard':
