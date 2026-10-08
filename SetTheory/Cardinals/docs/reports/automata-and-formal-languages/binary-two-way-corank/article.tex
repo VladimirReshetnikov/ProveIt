@@ -39,6 +39,13 @@
 \newcommand{\enc}{\operatorname{enc}}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+% Added by the ProveIt write (7 October 2026): dated notes marked [write] and a
+% macro for file, label and commit names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \setlength{\emergencystretch}{2em}
 \setlist{itemsep=3pt,topsep=5pt}
 \pagestyle{fancy}
@@ -107,6 +114,41 @@ agenda are included.
 \end{titlepage}
 \hypersetup{pageanchor=true}
 \pagenumbering{roman}
+\begin{writenote}[Status and trust boundary, added 7 October 2026]
+This research article was delivered to ProveIt's \file{docs/incoming}
+intake (non-Gowers intake NG3) and is filed as the single-source report
+\file{binary-two-way-corank} in the automata category of the research-report
+collection (provenance, the sources as the write read them, what was
+checked, relation to the repository, the collected non-claims and the
+reading conventions are in Section~\ref{btc:intro:provenance}). Its title
+page and PDF author field read ``Prepared with ChatGPT for Vladimir
+Reshetnikov'', and its review of its own proofs ``was an additional
+AI-assisted mathematical review, not independent human peer review''
+(Section~\ref{btc:verify:section}). It is unrefereed and not formalized.
+\emph{What is proved in the text}: Theorem~\ref{btc:intro:main} (the binary
+determinization bound), with Lemmas~\ref{btc:alg:components},
+\ref{btc:alg:corner}, \ref{btc:alg:unit-lifts},
+\ref{btc:alg:relation-corner}, Theorems~\ref{btc:alg:budget},
+\ref{btc:alg:support}, \ref{btc:alg:rank} and~\ref{btc:alg:divisor},
+Corollaries~\ref{btc:alg:relative-budget} and~\ref{btc:alg:support-count},
+Propositions~\ref{btc:alg:amplification}, \ref{btc:alg:optimal-parameters}
+and~\ref{btc:alg:finite-recurrence}, Theorems~\ref{btc:mach:representation}
+and~\ref{btc:mach:linear-optimality}, Theorem~\ref{btc:comp:register},
+Corollary~\ref{btc:comp:products}, Proposition~\ref{btc:comp:binary-count},
+Lemma~\ref{btc:comp:quotient}, and Propositions~\ref{btc:research:beta}
+and~\ref{btc:research:union-obstruction}. \emph{What is conditional}:
+Theorem~\ref{btc:complement:binary} (binary nondeterministic
+complementation) assumes Theorem~\ref{btc:complement:imported}, a theorem of
+a companion OpenAI manuscript that is stated here but not proved and was not
+checked by the write; it is \emph{not} a proved result of this report, and
+neither is anything that cites it. Lemma~\ref{btc:complement:representation}
+and Proposition~\ref{btc:complement:quotient} are proved here, the former
+as a normalization of the companion's construction. \emph{What is prior}:
+the cap-component classification (Dolinka et al.), the relation-corner and
+tree-contour architecture (the OpenAI liveness manuscript, adapted with
+attribution), and fixed-alphabet transfer (TheoremDB R816). No statement,
+proof or number of the source was changed.
+\end{writenote}
 \begingroup
 \small
 \tableofcontents

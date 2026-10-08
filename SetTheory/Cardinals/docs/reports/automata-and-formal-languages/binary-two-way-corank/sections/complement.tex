@@ -1,5 +1,5 @@
 \section{A separate consequence for binary complementation}
-\label{complement:section}
+\label{btc:complement:section}
 
 The binary compiler also transfers an exponential lower bound when
 the machine recognizing the complementary language may itself be
@@ -30,7 +30,7 @@ relations. Multiplication preserves $\sqsubseteq$ in both arguments.
 \begin{center}
 \fbox{\begin{minipage}{0.92\linewidth}
 \begin{theorem}[Imported order-reversing image bound]
-\label{complement:imported}
+\label{btc:complement:imported}
 Let $m\ge1$, let $H$ be a finite set with $h\ge2$ elements, and let
 $S_0$ be a submonoid of $\mathcal T_m$. Suppose a surjective
 multiplicative map $\phi_0:S_0\to\Rel{H}$ satisfies
@@ -40,7 +40,7 @@ multiplicative map $\phi_0:S_0\to\Rel{H}$ satisfies
  \qquad(z,w\in S_0).
 \]
 Then
-\begin{equation}\label{complement:external-bound}
+\begin{equation}\label{btc:complement:external-bound}
  2m\ge2^{\lfloor(h-2)/127\rfloor}.
 \end{equation}
 Identity preservation of $\phi_0$ is not required.
@@ -54,22 +54,22 @@ and nested corners is not reproduced in this article.
 \end{center}
 
 The parameter $m$ counts labels in each direction. Thus the quantity
-in \eqref{complement:external-bound} is the total number $2m$ of
+in \eqref{btc:complement:external-bound} is the total number $2m$ of
 directional labels; it is not the degree of the Brauer matching
 representation used in the determinization proof.
 
 \begin{lemma}[Finite acceptance and monotonicity]
-\label{complement:representation}
+\label{btc:complement:representation}
 For an $s$-state binary 2NFA $C$ in the endmarker model of this article,
 there are a homomorphism $\tau:\bits^*\to\mathcal T_{s+1}$,
 fixed endmarker diagrams $\lambda,\rho$, and positive labels $a,b$
 such that
-\begin{equation}\label{complement:acceptance}
+\begin{equation}\label{btc:complement:acceptance}
  u\in L(C)\quad\Longleftrightarrow\quad
  (a,b)\in F_{\lambda\tau(u)\rho}.
 \end{equation}
 Consequently $\tau(u)\sqsubseteq\tau(v)$ implies
-\begin{equation}\label{complement:monotonicity}
+\begin{equation}\label{btc:complement:monotonicity}
  xuy\in L(C)\quad\Longrightarrow\quad xvy\in L(C)
  \qquad(x,y\in\bits^*).
 \end{equation}
@@ -91,12 +91,12 @@ finite sequence of stay transitions followed by one exit move from
 the cell. The entry sign records the side of arrival. Finite
 computations split into such visits, and local edge witnesses
 concatenate back into finite computations. This gives
-\eqref{complement:acceptance} with the marker diagrams fixed and
+\eqref{btc:complement:acceptance} with the marker diagrams fixed and
 the ordinary-cell products defining $\tau$. Missing transitions and
 infinite nonaccepting computations create no finite successful path.
 Finally, inclusion of all four relations is preserved by adjoining
 the diagrams for $x,y$ and the markers. The designated accepting
-edge therefore persists, proving \eqref{complement:monotonicity}.
+edge therefore persists, proving \eqref{btc:complement:monotonicity}.
 \end{proof}
 
 \subsection{Encoded contexts give the required antitone quotient}
@@ -109,20 +109,20 @@ alphabet $\Rel{H}$, write
  \enc(w)=\enc(R_1)\cdots\enc(R_t),
 \]
 and use $r(\eps)=\Id_H$, $\enc(\eps)=\eps$. The compiler proves
-\begin{equation}\label{complement:compiler-property}
+\begin{equation}\label{btc:complement:compiler-property}
  \enc(w)\in B_h\quad\Longleftrightarrow\quad r(w)\ne\varnothing.
 \end{equation}
 The transition tables also define $B_h$ on every other binary word,
 so complementation below is taken in the full set $\bits^*$.
 
-\begin{proposition}[Direct antitone quotient]\label{complement:quotient}
+\begin{proposition}[Direct antitone quotient]\label{btc:complement:quotient}
 If an $s$-state 2NFA $C$ recognizes $\bits^*\setminus B_h$, a
 submonoid of $\mathcal T_{s+1}$ admits a surjective unital
 homomorphism onto $\Rel{H}$ that reverses inclusion.
 \end{proposition}
 
 \begin{proof}
-Use $\tau$ from Lemma~\ref{complement:representation} and let
+Use $\tau$ from Lemma~\ref{btc:complement:representation} and let
 \[
  S_0=\{\tau(\enc(w)):w\in\Rel{H}^{*}\}.
 \]
@@ -133,8 +133,8 @@ Fix $i,j\in H$ and use the binary contexts
 $x=\enc(\Id_{\{i\}})$ and $y=\enc(\Id_{\{j\}})$.
 For every relation $A$, the product $\Id_{\{i\}}A\Id_{\{j\}}$
 is empty exactly when $(i,j)\notin A$. Hence
-\eqref{complement:compiler-property}, followed by complement
-acceptance and \eqref{complement:monotonicity}, gives
+\eqref{btc:complement:compiler-property}, followed by complement
+acceptance and \eqref{btc:complement:monotonicity}, gives
 \[
  (i,j)\notin r(u)\quad\Longrightarrow\quad(i,j)\notin r(v).
 \]
@@ -150,37 +150,54 @@ order reversal.
 \end{proof}
 
 \begin{theorem}[Binary nondeterministic complementation]
-\label{complement:binary}
-Under the imported premise of Theorem~\ref{complement:imported},
+\label{btc:complement:binary}
+Under the imported premise of Theorem~\ref{btc:complement:imported},
 every $s$-state 2NFA recognizing $\bits^*\setminus B_h$ satisfies
-\begin{equation}\label{complement:state-bound}
+\begin{equation}\label{btc:complement:state-bound}
  2(s+1)\ge2^{\lfloor(h-2)/127\rfloor},\qquad
  s\ge\frac12\,2^{\lfloor(h-2)/127\rfloor}-1.
 \end{equation}
 Consequently, for each $n\ge14$, an $n$-state binary one-way NFA has
 a complementary language requiring at least
-\begin{equation}\label{complement:n-bound}
+\begin{equation}\label{btc:complement:n-bound}
  \frac12\,2^{\lfloor(n-14)/762\rfloor}-1
 \end{equation}
 states in every two-way nondeterministic recognizer.
 \end{theorem}
 
 \begin{proof}
-Apply Theorem~\ref{complement:imported} to
-Proposition~\ref{complement:quotient}, with $m=s+1$.
+Apply Theorem~\ref{btc:complement:imported} to
+Proposition~\ref{btc:complement:quotient}, with $m=s+1$.
 For the last assertion choose $h=\lfloor(n-2)/6\rfloor$ and add
 unreachable states to $B_h$ to obtain exactly $n$ states.
 The identity
 $\lfloor(h-2)/127\rfloor=\lfloor(n-14)/762\rfloor$
-gives \eqref{complement:n-bound}.
+gives \eqref{btc:complement:n-bound}.
 \end{proof}
 
 The same homomorphism $\tau$ and its $2(s+1)$ directional labels are
 used throughout this argument. In particular, encoded word length
 does not introduce a state factor. The external dependency is
-specifically Theorem~\ref{complement:imported}; the encoding and
+specifically Theorem~\ref{btc:complement:imported}; the encoding and
 the antitone-quotient argument have been given here. This article
 provides no new Lean formalization of that imported theorem or of
 this complementation transfer. The compiler's finite exact audits
 verify its stated encoding behavior and do not certify the external
 path-diagram bound.
+
+\begin{writenote}[Status of this section, 7 October 2026]
+Theorem~\ref{btc:complement:binary} is conditional: it holds if
+Theorem~\ref{btc:complement:imported} does. That premise is a theorem of the
+companion OpenAI manuscript, not proved here and not checked by the write,
+which compared only its statement with a copy of the companion's source at
+the pinned commit (Section~\ref{btc:intro:provenance}); it is listed nowhere
+in this report or its README among the proved results. What is proved here is
+the transfer: Lemma~\ref{btc:complement:representation} (read; a
+normalization of the companion's finite-computation construction, which the
+write did not read) and Proposition~\ref{btc:complement:quotient}, whose
+antitone step ($(i,j)\notin r(u)\Rightarrow(i,j)\notin r(v)$, hence
+$r(v)\subseteq r(u)$) the write rederived, as it did the deduction with $m=s+1$
+and the identity $\lfloor(h-2)/127\rfloor=\lfloor(n-14)/762\rfloor$ (by hand
+and, for $14\le n\le2\cdot10^5$, by its own code). The determinization
+theorem, Theorem~\ref{btc:intro:main}, does not use this section.
+\end{writenote}

@@ -1,5 +1,5 @@
 \section{A linear-degree local representation of deterministic machines}
-\label{mach:section}
+\label{btc:mach:section}
 
 The connection with automata requires more than a matching representation
 of a completed configuration graph. Each input symbol must determine its
@@ -30,19 +30,19 @@ infinite run without an accepting state rejects. Initial and accepting
 states are included in $s$. Stay moves, partial transition tables, and
 rejecting cycles are allowed throughout.
 
-\begin{theorem}[Sparse-slot local representation]\label{mach:representation}
+\begin{theorem}[Sparse-slot local representation]\label{btc:mach:representation}
 For every machine in this convention, there are an even integer $k$ and
 a map
 \[
  \eta:\Sigma\cup\{\Lmark,\Rmark\}\longrightarrow\Br{k}
 \]
 such that
-\begin{equation}\label{mach:degree-bound}
+\begin{equation}\label{btc:mach:degree-bound}
  2\le k\le 2(a+2)s+2.
 \end{equation}
 Designate ports $1,2$ on each side as test ports. For every
 $w=a_1\cdots a_\ell$, the machine accepts $w$ exactly when
-\begin{equation}\label{mach:whole-diagram}
+\begin{equation}\label{btc:mach:whole-diagram}
  \eta(\Lmark)\eta(a_1)\cdots\eta(a_\ell)\eta(\Rmark)
 \end{equation}
 pairs a left test port with a right test port. In that case both left
@@ -54,7 +54,7 @@ $\Sigma=\bits$ one has $k\le8s+2$.
 \subsection{Acceptance becomes reachability of one sink}
 
 Add a new state $f$ and define an auxiliary partial successor rule by
-\begin{equation}\label{mach:normalization}
+\begin{equation}\label{btc:mach:normalization}
  \widehat\delta(q,b)=
  \begin{cases}
  (f,0),&q\in A,\\
@@ -73,7 +73,7 @@ must come from an old accepting state. This includes acceptance initially
 and acceptance on either marker. There is no additional copy of the
 initial state.
 
-\begin{lemma}[The component of a functional sink]\label{mach:tree}
+\begin{lemma}[The component of a functional sink]\label{btc:mach:tree}
 Let $\sigma:V\rightharpoonup V$ be a partial function on a finite set,
 and suppose $\sigma(t)$ is undefined. Make an undirected multigraph with
 one edge for each defined successor, retaining loops and parallel edges.
@@ -97,7 +97,7 @@ It is connected and hence is a tree, with neither loops nor parallel
 edges.
 \end{proof}
 
-Apply the lemma to all configurations of \eqref{mach:normalization}.
+Apply the lemma to all configurations of \eqref{btc:mach:normalization}.
 Call the resulting undirected successor multigraph $G$. Its component
 containing $t$ is a tree, and contains $c_0$ precisely on accepted
 inputs. Other components may contain nonaccepting cycles. They need no
@@ -106,7 +106,7 @@ modification.
 \subsection{A sparse set of boundary slots}
 
 Put $Q'=Q\cup\{f\}$. The fixed set of crossing candidates is
-\begin{equation}\label{mach:slot-set}
+\begin{equation}\label{btc:mach:slot-set}
  C=\{(d,p,q):d\in\{-1,1\},\ p,q\in Q',\
        \widehat\delta(p,b)=(q,d)\text{ for some }b\},
  \qquad J=|C|.
@@ -114,7 +114,7 @@ Put $Q'=Q\cup\{f\}$. The fixed set of crossing candidates is
 Each old state supplies at most $a+2$ candidates, one per scanned symbol.
 The new state supplies just the single candidate $(1,f,f)$, since all
 its defined crossing rules are identical. Therefore
-\begin{equation}\label{mach:slot-count}
+\begin{equation}\label{btc:mach:slot-count}
  1\le J\le(a+2)s+1,\qquad k=2J\le2(a+2)s+2.
 \end{equation}
 In fact the first upper bound can be improved to
@@ -154,7 +154,7 @@ incidence is followed by departure along the next incidence in this
 order. A degree-one vertex consequently reflects the traversal back
 along its edge.
 
-\begin{lemma}[Contour of a tree]\label{mach:contour}
+\begin{lemma}[Contour of a tree]\label{btc:mach:contour}
 On a finite tree with at least one edge, these successor rules form one
 cycle on the directed edge traversals, for every choice of cyclic
 orders. Opening the reflection joins at two distinct leaves produces
@@ -233,7 +233,7 @@ first, last, and intermediate occurrences. Gluing equal-index ports of
 neighboring cell diagrams reconstructs the full two-lane wiring.
 Contracting paths before gluing or after gluing yields the same matching
 of outer ports, by the path definition of Brauer multiplication. Thus
-\eqref{mach:whole-diagram} represents the complete wiring with the two
+\eqref{btc:mach:whole-diagram} represents the complete wiring with the two
 test-leaf joins open.
 
 If a wire joins a left test port to a right test port, it stays inside
@@ -241,10 +241,10 @@ one component of the augmented graph. The separately paired outward
 ports cannot participate. Hence $z_L$ and $z_R$ are connected, and the
 machine accepts. Conversely, on an accepted input both test leaves lie
 in the tree component of $t$. Temporarily close their reflection joins.
-Lemma~\ref{mach:contour} gives one circular contour through both joins;
+Lemma~\ref{btc:mach:contour} gives one circular contour through both joins;
 opening them again gives two paths between the two test sides. Both
 left test ports therefore meet right test ports. This proves the
-acceptance criterion and completes Theorem~\ref{mach:representation}.
+acceptance criterion and completes Theorem~\ref{btc:mach:representation}.
 
 For $w$ empty, there are still two distinct adjacent marker cells. Their
 inward boundaries glue by precisely the same slot scheme, and both test
@@ -268,7 +268,7 @@ Fixed marker diagrams and a fixed port predicate can always be absorbed
 into an accepting subset of the monoid of body-word diagrams.
 
 \begin{theorem}[A linear degree is sometimes necessary]
-\label{mach:linear-optimality}
+\label{btc:mach:linear-optimality}
 For every $s\ge2$ there is a binary language recognized by an $s$-state
 one-way DFA under the usual end-of-input acceptance convention such that
 every monoid recognizer
@@ -302,7 +302,7 @@ context also has equal images and hence equal acceptance. Therefore the
 assignment from a word image to its syntactic class is a well-defined
 unital surjection $S\twoheadrightarrow\mathfrak S_s$.
 Choose an idempotent $e$ of minimum rank above the group identity and
-put $r=\rk(e)$. Lemmas~\ref{alg:corner} and~\ref{alg:unit-lifts}
+put $r=\rk(e)$. Lemmas~\ref{btc:alg:corner} and~\ref{btc:alg:unit-lifts}
 give a reduced corner
 \[
  R_e(eSe)\subseteq\Br{r}
@@ -324,3 +324,16 @@ states, including the new accepting state, and also handles the empty
 word. It proves the stated asymptotic necessity. The argument does not
 claim that the constant $8$ in the binary upper bound is optimal.
 \end{proof}
+
+\begin{writenote}[Checked, 7 October 2026]
+Read line by line, with no error found. Rederived by hand: the
+normalization~\eqref{btc:mach:normalization} and its acceptance equivalence;
+Lemma~\ref{btc:mach:tree} (a component with $v$ vertices and $v-1$ successor
+edges); the slot count $J\le(a+2)s+1$, at most one crossing candidate per
+state and scanned symbol plus the single candidate $(1,f,f)$; the induction
+of Lemma~\ref{btc:mach:contour}; the acceptance criterion; and
+Theorem~\ref{btc:mach:linear-optimality} ($s!\le|R_e(eSe)|\le r!\le m!$).
+The lane wiring and its locality were read, not rebuilt independently; the
+shipped \file{code/sparse\_slots\_audit.py} builds the local diagrams for 800
+machines and passed again at the write (Section~\ref{btc:verify:section}).
+\end{writenote}
