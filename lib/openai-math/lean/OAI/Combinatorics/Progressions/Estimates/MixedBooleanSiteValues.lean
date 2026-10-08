@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: supply quotient Borel and nested product finite/sigma-finite
+measure instances explicitly for the older Mathlib instance search. Derive
+finiteness on compacts directly from finite total measure. Statements unchanged.
+-/
 import Mathlib.MeasureTheory.Constructions.Pi
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import OAI.Combinatorics.Progressions.Fourier.EuclideanJetTorus
@@ -391,6 +396,13 @@ theorem euclideanCoefficientJetMap_measurePreserving {α K : Type*}
     [∀ j, (ν j).IsAddLeftInvariant] [∀ j, IsProbabilityMeasure (ν j)] :
     MeasurePreserving (euclideanCoefficientJetMap U root D rows) μ
       (Measure.pi (fun j => Measure.pi (fun _ : O j => ν j))) := by
+  letI : ∀ j, BorelSpace (euclideanSubspace (U j) ⧸
+      (latticeSection (standardEuclideanLattice (J j)) (euclideanSubspace (U j))).toAddSubgroup) :=
+    fun _ => QuotientAddGroup.borelSpace
+  letI : ∀ j, IsFiniteMeasure (Measure.pi (fun _ : O j => ν j)) :=
+    fun _ => Measure.pi.instIsFiniteMeasure _
+  letI : ∀ j, SigmaFinite (Measure.pi (fun _ : O j => ν j)) :=
+    fun _ => IsFiniteMeasure.toSigmaFinite _
   let ξ := Measure.pi (fun j => Measure.pi (fun _ : O j => ν j))
   have hc := euclideanCoefficientJetMap_continuous U root D rows
   have hs := euclideanCoefficientJetMap_surjective U root D a ha hperiod rows hinj hdegree
@@ -401,6 +413,7 @@ theorem euclideanCoefficientJetMap_measurePreserving {α K : Type*}
   let : ∀ j, IsProbabilityMeasure (Measure.pi (fun _ : O j => ν j)) :=
     fun _ => Measure.pi.instIsProbabilityMeasure _
   let : IsProbabilityMeasure ξ := Measure.pi.instIsProbabilityMeasure _
+  let : IsFiniteMeasure ξ := ⟨by simp [measure_univ]⟩
   let : ∀ j, (Measure.pi (fun _ : O j => ν j)).IsAddLeftInvariant :=
     fun _ => Measure.pi.isAddLeftInvariant _
   let : ξ.IsAddLeftInvariant := Measure.pi.isAddLeftInvariant _
@@ -410,7 +423,7 @@ theorem euclideanCoefficientJetMap_measurePreserving {α K : Type*}
       toIsOpenPosMeasure := isOpenPosMeasure_of_addLeftInvariant_of_compact
         (μ := μ) Set.univ isCompact_univ (by simp) }
   let : ξ.IsAddHaarMeasure :=
-    { toIsFiniteMeasureOnCompacts := inferInstance
+    { toIsFiniteMeasureOnCompacts := ⟨fun _ _ => measure_lt_top ξ _⟩
       toIsAddLeftInvariant := inferInstance
       toIsOpenPosMeasure := isOpenPosMeasure_of_addLeftInvariant_of_compact
         (μ := ξ) Set.univ isCompact_univ (by simp) }
