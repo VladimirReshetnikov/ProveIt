@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: use explicit reducible rewriting for translated niltest
+evaluation across equivalent quotient-dimension subtype descriptions on
+Lean 4.32. The theorem statements and quantitative bounds are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.CommonIntegralModelEquivalences
 import OAI.Combinatorics.Progressions.Estimates.ShiftedVerticalExpansion
 import OAI.Combinatorics.Progressions.Geometry.BoxOverlapSize
@@ -882,7 +887,7 @@ theorem exists_adapted_uniform_two_shift_square (s : ℕ) :
         (D.filtration.squareFiltration.realification.polynomialOrbitEval w x q) (hq x).1 (hq x).2)
     refine ⟨S.translate hw k, hSB, hS.mono (hbudget p hp), ?_⟩
     intro x
-    rw [RationalFilteredNilmanifold.Niltest.eval_translate, hval]
+    erw [RationalFilteredNilmanifold.Niltest.eval_translate, hval]
     congr 2
     abel
 
