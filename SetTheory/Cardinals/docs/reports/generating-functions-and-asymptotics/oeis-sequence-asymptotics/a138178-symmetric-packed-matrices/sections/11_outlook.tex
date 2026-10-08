@@ -22,6 +22,32 @@ The proof identifies suppressed opposite-saddle and nonreal-pole effects only th
 \paragraph{Other matrix conventions.}
 Unlabeled symmetric matrices, prescribed dimension, fixed trace, and decreasing-margin variants require their own exact transform and source comparison. Even when involution numbers reappear, the normalization and the collision rates can change. A systematic classification of which conventions preserve this coupled gamma/involution mechanism would be more informative than transferring formulas between superficially similar sequences.
 
+\begin{writenote}[Added 7 October 2026, batch~113 (reciprocal note): a decreasing-margin variant]
+One of the variants named in this paragraph is now treated in the
+collection's report \file{a104779-total-kostka-sums} (bundle Report~237,
+batch~113; its symbols carry the mark ``tks'' here). It counts the
+symmetric nonnegative integer matrices of total sum $n$ without zero rows
+whose row sums are weakly decreasing, with positions distinguished as here:
+OEIS A104779, the sum $a^{\rm tks}_n$ of all entries of the Kostka matrix of
+order~$n$. These matrices are among those counted by $A_n$. That report
+uses no geometric transform and no ordered Bell pole: it starts from
+Schwob's cycle-index identity, and a positive global support bound with
+analytic coefficient stabilization at every fixed support gives, for every
+fixed $S\ge0$ (its Theorem~1.1),
+\[
+ a^{\rm tks}_n=C_{\rm tks}\sum_{s=0}^{S}H^{\rm tks}_sI_{n-s}
+ +O_S\bigl(I_nn^{-(S+1)/2}\bigr),\qquad
+ C_{\rm tks}=\prod_{j\ge2}\Bigl(1-\frac1{j!}\Bigr)^{-1},
+\]
+with $I_n=I_n(1)$, $H^{\rm tks}_0=1$ and $H^{\rm tks}_1=H^{\rm tks}_2=0$.
+The involution numbers reappear and the normalization changes, as this
+paragraph anticipates: with Corollary~\ref{spm:cor:unmarked},
+$a^{\rm tks}_n/A_n\sim2C_{\rm tks}e^{-L^2/4}L^{n+1}$, so the matrices with
+decreasing margins are an exponentially small fraction of those counted
+here. No result of this report is used there, and that report treats one
+convention, not the classification asked for here, so the question stands.
+\end{writenote}
+
 The central analytic point is reusable: control the entire coefficient polynomial with a positive envelope, retain both local normalizers, and prove compact-marker estimates on the domain actually needed for the probabilistic conclusion. Here that combination yields a complete fixed-order theory for the count, two fluctuation scales, a summable collision law, and an inverse with its integer uncertainty kept explicit.
 
 \section{Further questions and research}\label{spm:sec:further}

@@ -133,6 +133,21 @@ Added by the write (6 October 2026), marked `[write]`:
   `k × k` matrices to packed ones, with a short proof), and in Sections 10.3
   and 10.4.
 
+**Reciprocal note (batch 113, 7 October 2026).** A dated `[write]` note in
+Section 11 (`spm:sec:outlook`), after the paragraph "Other matrix
+conventions", records that one of the variants named there, symmetric
+matrices with weakly decreasing row sums (OEIS A104779, the total Kostka
+sums), is now treated in `a104779-total-kostka-sums` by Schwob's cycle
+index instead of a geometric transform, with
+`a_n = C Σ_{s≤S} H_s I_{n−s} + O(I_n n^{−(S+1)/2})`,
+`C = Π_{j≥2}(1 − 1/j!)^{−1}` (its Theorem 1.1; marked "tks" in the note,
+since `C`, `H` and `a` have other meanings here). These matrices are among
+those counted by `A_n`, and with Corollary 2.2 the note derives
+`a_n/A_n ~ 2C e^{−L²/4} L^{n+1}`: the involution numbers reappear with a
+different normalization, as the paragraph anticipates. The question stands
+(one convention is treated, not the classification asked for); no label was
+added (still 117) and no statement of this report changed.
+
 ## The OEIS entries and the data
 
 The live entry A138178 (revision #39, 18 December 2022, read 6 October 2026;
@@ -316,7 +331,17 @@ Section 1.1). No novelty is claimed for the inversions.
   its README); this report's note in Section 1.1 is the reciprocal one. The
   "Report 169" named in `SOURCES.md` is that Part.
 - `a260700-parabolic-double-cosets`: the same ordered-Bell pole at `log 2`
-  for a different sequence (a reciprocal note there is proposed separately).
+  for a different sequence (a batch-108 reciprocal note there, added
+  7 October 2026, names this report).
+- `a104779-total-kostka-sums` (bundle Report 237, batch 113): the
+  decreasing-margin variant named in Section 11, symmetric matrices without
+  zero rows whose row sums are weakly decreasing (A104779; A178718 its OEIS
+  duplicate), a subset of the matrices counted here, on the scale
+  `C I_n`, `C = Π_{j≥2}(1 − 1/j!)^{−1}`, by Schwob's cycle index, a global
+  support bound and fixed-support stabilization (no geometric transform, no
+  ordered-Bell pole). No theorem is shared, and neither report uses the
+  other. That report names this one in its Section 1.2; the dated note in
+  Section 11 here (batch 113) is the reciprocal one.
 - `a262810-diagonal-alignments` (bundle Report 177, batch 109): the other
   bundle report `SOURCES.md` names; a different model.
 - `a007716-bipartite-multigraphs` (nonnegative matrices without zero lines up
@@ -350,7 +375,9 @@ them updated. The write added 7: `spm:rem:oeis`, `spm:sec:provenance`,
 delivered text and of this one give all 110 delivered labels the same numbers
 (aux files compared). The added remarks are the last statements of their
 sections, the added subsection and section follow the last delivered ones in
-their places, and the added displays are unnumbered.
+their places, and the added displays are unnumbered. The batch-113
+reciprocal note (7 October 2026) adds no label and no numbered display
+(still 117 labels).
 
 ## Files
 
@@ -367,7 +394,7 @@ sections/07_collisions.tex         Section 7, collision markers and the binary m
 sections/08_total_variation.tex    Section 8, joint limits and total variation
 sections/09_inverse.tex            Section 9, inversion (and Remark 9.3)
 sections/10_computation.tex        Section 10, exact reproduction (two notes)
-sections/11_outlook.tex            Section 11, further questions; Section 12 (the write's)
+sections/11_outlook.tex            Section 11, further questions (a batch-113 dated note); Section 12 (the write's)
 sections/12_references.tex         bibliography
 article.pdf                        compiled report, 30 pages
 COMPUTATION.md                     algorithms, bounds and limitations (delivered at the root)
@@ -485,7 +512,11 @@ overfull or underfull boxes. The delivered preamble's `\pdfmapfile` lines
 make pdfTeX print 684 "fontmap entry … already exists, duplicates ignored"
 notices, as many as in a build of the delivered text (22 pages, otherwise
 clean but for one underfull line in the bibliography entry of
-Cerbai–Claesson, which does not recur in this build). The delivered byte-identity claims apply to
+Cerbai–Claesson, which does not recur in this build). Rebuilt the same way
+on 7 October 2026 after the batch-113 reciprocal note: still 30 pages, the
+same clean log and the same 684 notices; all 117 labels and 5 citations keep
+their numbers and pages (aux files compared), and only the References entry
+of the contents moved from page 29 to 30. The delivered byte-identity claims apply to
 `Report238.pdf` under the delivering toolchain, not to this build.
 
 ## From the delivery README

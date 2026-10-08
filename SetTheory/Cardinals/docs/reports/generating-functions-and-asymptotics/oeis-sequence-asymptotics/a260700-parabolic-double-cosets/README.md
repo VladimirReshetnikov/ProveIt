@@ -160,6 +160,22 @@ two steps, as that report itself says (its Section 1.1, Section 10 item 5
 and Appendix B). No theorem is shared; a dated note in Section 9 here
 (added 7 October 2026) records the pointer.
 
+**A sixth neighbour (batch 113).** The collection report
+[`a104779-total-kostka-sums`](../a104779-total-kostka-sums/) (OEIS A104779,
+A321652, A068313; bundle Report 237) gives asymptotics at every fixed order
+for two of the aggregates that Section 9 attributes to Schwob's paper, both
+from Schwob's exact identities: A178718, an OEIS duplicate of A104779 (the
+total Kostka sums, equivalently self-inverse double cosets `S_μ w S_μ`
+summed over partitions μ ⊢ n), in shifted involution numbers with leading
+term `C I_n`, `C = Π_{j≥2}(1 − 1/j!)^{−1}` (its Theorem 1.1); and A321652
+(double cosets `S_μ w S_ν` summed over pairs of partitions), in shifted
+factorials with leading term `C² n!` (its Theorem 9.1). Like Schwob's
+paper, these sums count every presentation separately and do not identify
+equal double-coset subsets across presentations, so they do not bear on
+`p_n` or on the questions here. No theorem is shared; a second batch-113
+dated note in Section 9 here (added 7 October 2026, after the first)
+records the pointer, and that report names this one in its Section 1.2.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -191,7 +207,12 @@ pages with the same clean log. A batch-113 reciprocal note (7 October 2026)
 added a seventh dated `[write]` note after that one and a seventh
 bibliography entry (`pdc-otr`, printed as [16]); it adds no label (still
 64), no earlier label or citation number changed, and the rebuilt PDF has 20
-pages with the same clean log.
+pages with the same clean log. A second batch-113 reciprocal note (7 October
+2026, from `a104779-total-kostka-sums`) added an eighth dated `[write]` note
+after the seventh and an eighth bibliography entry (`pdc-tks`, printed as
+[17]); it adds no label (still 64), no earlier label or citation number
+changed (one page anchor moved: `pdc:app:coeff`, 17 → 18), and the rebuilt
+PDF stays at 20 pages with the same clean log.
 
 ## Files
 
@@ -289,7 +310,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built in a scratch directory with MiKTeX: 20 pages
-(19 before the batch-113 reciprocal note of 7 October 2026),
+(19 before the first batch-113 reciprocal note of 7 October 2026, and
+still 20 after the second),
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull
 boxes. (The delivered source built to 16 pages with the same clean log.)
