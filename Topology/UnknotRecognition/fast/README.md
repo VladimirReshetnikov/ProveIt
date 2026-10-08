@@ -1972,3 +1972,24 @@ This avoids cubes for reducible wider factors and avoids unfinished factors
 after a complete negative witness. It retains the same exceptional-factor
 asymptotic bound. See [`adaptive_forest.tex`](../synthesis/adaptive_forest.tex)
 for soundness, proof compatibility, resource accounting and paired measurements.
+
+
+### Sparse two-meridian seed discovery
+
+The optional two-meridian stage now reuses generation-stamped closure arrays.
+When the crossing rules have no productive unary implication, every generating
+pair must be a productive binary prerequisite pair. Only those `O(n)` pairs
+need examination. A proper failed closure also rules out every later candidate
+pair it contains. Productive-unary systems retain complete pair enumeration.
+Both paths preserve the first successful seeds and exact derivation trace;
+the arithmetic, certificate schema and search-independent verifier are unchanged.
+
+This improves seed discovery from cubic to quadratic word operations on the
+checked trivial-singleton class, with linear search storage. It does not reduce
+every term in the complete stage's conservative arithmetic bound. Exhaustive
+seed failure remains `INCONCLUSIVE`, and the ordinary pipeline remains opt-in
+through `use_two_meridian=True` or `--two-meridian`. New statistics describe the
+search mode, candidate count, excluded pairs and visited closure incidences.
+All preparation, attempts, arithmetic and replay share the original allowances.
+See [`sparse_seeds.tex`](../synthesis/sparse_seeds.tex) for the proofs and native
+measurements, and `two_meridian_research/README.md` for reproduction commands.
