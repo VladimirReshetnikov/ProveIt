@@ -11,7 +11,42 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 611 passing tests.
+diagram is not checked twice. The integrated suite now has 619 passing tests
+with the optional Regina dependency installed.
+
+`--regina` (Python: `use_regina=True`) adds an optional complete external
+normal-surface recognizer after cheap invariant filters, on undecided diagrams
+with at least 32 crossings. Install the extra in the interpreter running the
+recognizer:
+
+```sh
+python -m pip install '.[normal]'
+python -B -m fastunknot recognize normal_research/gordian.json --regina --seconds 4
+```
+
+Each attempt runs in a fresh subprocess, with a default two-second local
+allowance including native import and startup (`--regina-seconds`). Missing
+dependencies, native failures and local timeouts are inconclusive and continue
+the existing RIII/Khovanov pipeline. A global deadline yields `UNKNOWN`; every
+interrupted worker is killed and reaped. `max_objects` bounds Khovanov, not
+Regina's memory. Python's `regina_seconds=None` disables the local cap.
+`fastunknot.normal_surface.regina_decide` offers the standalone query without
+the pipeline's crossing threshold.
+
+This is explicitly an **external-engine verdict**, not an independently
+verified normal-surface certificate. Evidence records input digest, engine and
+distribution versions, simplification and triangulation sizes, and elapsed
+time. Serialized external verdicts do not inherit the built-in runtime bound.
+The default remains dependency-free and does not call Regina.
+
+In five paired runs, the portfolio decided Haken's 141-crossing Gordian unknot
+every time (median 1.788 seconds including validation and child startup); both
+default controls exhausted their four-second allowance every time. GST,
+Monster and Conway stayed on the existing fast paths. These are censored
+completion comparisons, not a general speedup or asymptotic theorem. See
+[`normal_research/README.md`](normal_research/README.md),
+[`normal_surface.tex`](../synthesis/normal_surface.tex), and
+[`results/normal_surface_20261008.json`](results/normal_surface_20261008.json).
 
 An optional complete test for **projection graphs of treewidth at most two**
 is enabled by `--treewidth-two` or `use_treewidth_two=True`. It first certifies
