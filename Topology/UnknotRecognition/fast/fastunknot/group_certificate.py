@@ -210,14 +210,26 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
 
 
 def verify_group_certificate(diagram, certificate, *, check=lambda: None,
-                             max_letters=200000, max_work=2000000):
+                             max_letters=200000, max_work=2000000,
+                             compressed=False, max_nodes=100000, stats=None):
     """Independently reconstruct and replay; no producer algebra/search helpers.
 
     The shared budget helper only controls resources. Exhaustion raises
     GroupLimit; invalid evidence returns False. Input validity is the usual
     Diagram contract. All relators are reconstructed, including the redundant
     Wirtinger relation, and terminal freeness is checked explicitly.
+
+    With compressed=True, reconstruct the same initial presentation but
+    replay it as exact straight-line-program words. max_letters then bounds
+    only the initial presentation; max_nodes bounds compressed storage and
+    equality assertions. Search remains explicit. No speedup is promised.
     """
+    if type(compressed) is not bool:
+        raise ValueError('compressed must be boolean')
+    if type(max_nodes) is not int or max_nodes < 0:
+        raise ValueError('max_nodes must be a nonnegative integer')
+    if stats is not None and type(stats) is not dict:
+        raise ValueError('stats must be a dictionary or None')
     budget = _Budget(check, max_letters, max_work)
     budget.tick()
     if (type(certificate) is not dict or set(certificate) != {
@@ -300,6 +312,13 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             left, right = right, left
         words.append(normalize([top, left, -top, -right]))
     alive = set(range(1, count+1)) if n else {1}
+    if compressed:
+        from .compressed_group import verify_moves, CompressedLimit
+        try:
+            return verify_moves(words, alive, certificate, budget, max_nodes, stats)
+        except CompressedLimit as exc:
+            check()
+            raise GroupLimit(str(exc)) from exc
     for move in certificate['moves']:
         budget.tick()
         if type(move) is not dict:
@@ -389,10 +408,15 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 
 
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
-                 relator_moves=False, check=lambda: None):
+                 relator_moves=False, compressed_verification=False,
+                 max_nodes=100000, check=lambda: None):
     """Bounded search AND independent verification sharing one wall allowance."""
     from math import isfinite
     start = monotonic()
+    if type(compressed_verification) is not bool:
+        raise ValueError('compressed_verification must be boolean')
+    if type(max_nodes) is not int or max_nodes < 0:
+        raise ValueError('max_nodes must be a nonnegative integer')
     if seconds is not None and (type(seconds) not in (int, float)
             or not isfinite(seconds) or seconds < 0):
         raise ValueError('group seconds must be finite and nonnegative, or None')
@@ -408,11 +432,14 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                                         relator_moves=relator_moves)
         if certificate is not None:
             valid = verify_group_certificate(diagram, certificate, check=tick,
-                                              max_letters=max_letters, max_work=max_work)
+                                              max_letters=max_letters, max_work=max_work,
+                                              compressed=compressed_verification, max_nodes=max_nodes)
             tick()
             if not valid:
                 raise ArithmeticError('produced group certificate failed independent replay')
-            return dict(status='UNKNOT', certificate=certificate, seconds=monotonic()-start)
+            return dict(status='UNKNOT', certificate=certificate,
+                        verification_backend='compressed-slp' if compressed_verification else 'explicit-letters',
+                        seconds=monotonic()-start)
         reason = 'group simplification stalled'
     except GroupLimit as exc:
         check()  # A simultaneous global cancellation must still propagate.
