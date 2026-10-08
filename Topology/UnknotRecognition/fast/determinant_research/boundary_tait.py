@@ -1,7 +1,7 @@
 """Checked boundary-sized Tait quotient queries for a fixed classical suffix.
 
-Research interface: report 26's exact rational terminal kernel supplies the
-linear algebra. Cut-face fragments, rather than whole original regions, are
+Research interface: fraction-free terminal kernels supply the linear algebra,
+with report 26's rational kernel retained as a reference option. Cut-face fragments, rather than whole original regions, are
 the common graph vertices. Query checks use only boundary identifications.
 Production does not dispatch to this kernel until its setup cost is justified.
 """
@@ -40,7 +40,7 @@ def coloring(pd):
 
 
 class BoundaryTait:
-    def __init__(self, pd, order, stage, palette=None, *, arithmetic='rational'):
+    def __init__(self, pd, order, stage, palette=None, *, arithmetic='integer'):
         if arithmetic not in ('rational', 'integer'):
             raise ValueError('terminal arithmetic must be rational or integer')
         self.arithmetic = arithmetic

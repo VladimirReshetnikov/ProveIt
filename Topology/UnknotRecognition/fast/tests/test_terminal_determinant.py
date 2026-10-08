@@ -81,8 +81,8 @@ class IntegerTerminalTests(unittest.TestCase):
             scan = FastScan(shape_cache=False)
             order = list(range(d.crossings))
             for stage,index in enumerate(order):
-                rational = BoundaryTait(d.pd,order,stage)
-                integer = BoundaryTait(d.pd,order,stage,arithmetic='integer')
+                rational = BoundaryTait(d.pd,order,stage,arithmetic='rational')
+                integer = BoundaryTait(d.pd,order,stage)
                 integer.prepare_kernel(verify=True)
                 for m in set(scan.mid)-{None}:
                     pairs = scan.algebra.pairs[m]
