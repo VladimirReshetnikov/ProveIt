@@ -1039,6 +1039,15 @@ the supplied spectrum controls and can be shared across further partition
 refinements. The production source and all three transitive axiom checks
 pass. Its facade import awaits completion of the running audit.
 
+`Proofs16PolynomialLemma6.exists_polynomial_lemma_16_6` specializes the
+uniform assembly to the exact induced-function inputs used by Lemma 16.6.
+For `m >= 4` and a positive localized scale `n` below `(m/8)^(Eb sigma)`
+and above the recurrence threshold, it gives proper product cells with
+the uniform polynomial width bound and linear induced restrictions on
+the good base set. Spectrum coverage and the induced selection are still
+premises. Its production source and transitive axiom check pass; the
+facade import awaits the current audit's completion.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold
