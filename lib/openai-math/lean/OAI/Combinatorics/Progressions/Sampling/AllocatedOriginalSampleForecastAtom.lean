@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
+Use prod_le_prod' for generic product comparisons, and split axis products
+into selected and remaining factors instead of the unavailable injection
+comparison lemma. All upstream theorem statements are unchanged. -/
 import OAI.Compat.FinsetInj
 import OAI.Combinatorics.Progressions.Estimates.AllocatedOriginalSampleQuadratureUniformBounds
 import OAI.Combinatorics.Progressions.Geometry.CanonicalSpatialSupportTwo
@@ -355,12 +357,12 @@ theorem allocatedFixedPathLiftRowCap_eq_allAxis (a : {a // ¬P a}) :
 theorem allocatedFixedPathLift_prod_add_one_le_allAxis :
     (∏ a, (allocatedFixedPathLiftRowCap P (unitProfilePrincipalLowerBound_pos B) hδ a + 1)) ≤
       allocatedForecastAllAxisLiftCap B hδ := by
-  apply Finset.prod_le_prod_of_injOn Subtype.val
-      (fun _ _ _ _ h => Subtype.val_injective h) (Finset.subset_univ _)
-  · intro a _
-    exact le_rfl
-  · intro a _ _
-    exact le_add_of_nonneg_left zero_le
+  change (∏ a : {a // ¬P a}, (allocatedForecastAllAxisRowCap B hδ a.val + 1)) ≤
+    ∏ a, (allocatedForecastAllAxisRowCap B hδ a + 1)
+  rw [← Fintype.prod_subtype_mul_prod_subtype (fun a => ¬P a)
+    (fun a => allocatedForecastAllAxisRowCap B hδ a + 1)]
+  exact le_mul_of_one_le_right zero_le
+    (Finset.one_le_prod' (fun _ _ => le_add_of_nonneg_left zero_le))
 
 theorem allocatedFixedPathLift_prod_le_allAxis :
     (∏ a, allocatedFixedPathLiftRowCap P (unitProfilePrincipalLowerBound_pos B) hδ a) ≤
