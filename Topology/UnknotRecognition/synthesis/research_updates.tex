@@ -10,7 +10,7 @@ report 11. These are separate suites and their counts must not be added
 as though they were independent mathematical cases. Logs and local
 cross-checks are retained under \code{synthesis/data/}. The current
 production suite, after the selected report 08 and 09 integrations below,
-passes 113 tests. Report 12's 29 test methods also pass locally. Reports
+passes 116 tests. Report 12's 29 test methods also pass locally. Reports
 10--12 and report 09's pointed backend remain under integration review
 at this checkpoint.
 
@@ -294,3 +294,44 @@ remain unresolved. In particular, a scalar unit in a square-free
 characteristic-two algebra is its own inverse, but a matrix unit need
 not be: radical corrections require a finite matrix geometric series.
 That distinction must survive any future block integration.
+
+
+\subsection{Typed scalar shortcuts in the default planar algebra}
+The report 12 adapter drew attention to a small mismatch between the two
+production algebra engines: the older bit engine shortcuts identities
+and scalar squares, whereas the default integer-matching engine compiled
+them as general cobordisms. The default \code{Planar.compose} now returns
+zero immediately for a zero factor, and recognizes the identity only
+when its source and target matching agree. A polynomial encoded by the
+integer one in a different morphism space is not an identity.
+
+For an endomorphism of one matching, the coefficient ring is
+$R_b=\mathbb F_2[x_1,\ldots,x_b]/(x_i^2)$. If
+$F=c+\sum_{S\ne\varnothing}f_Sx_S$, then
+\[
+ F^2=c^2+\sum_{S\ne\varnothing}f_S^2x_S^2=c,
+\]
+because cross terms cancel in characteristic two and every nonconstant
+square-free monomial has square zero. Thus equal scalar endomorphisms
+compose to their constant coefficient. This avoids the old Cartesian
+loop over $|\operatorname{supp}F|^2$ monomial pairs. Comparing packed
+integers may still read the coefficient vector; it is not constant bit
+time for arbitrary dense inputs. Equal coefficients in differently
+typed morphism spaces do not satisfy this identity, and matrix-valued
+endomorphisms are explicitly outside its scope.
+
+The new tests compare every three-arc scalar and typed identity against
+the original compiled evaluator, enumerate equal coefficients across
+all small matching triples to catch a missing type guard, and check
+1,000 random four-arc products. The full suite passes 116 tests.
+Nine paired raw-scan runs are recorded in
+\code{fast/results/planar\_shortcuts\_20261007.json}, with a pinned
+pre-change implementation, fresh algebra objects, and separate untimed
+call profiling. Ordinary scans support no general timing gain: the
+scanner already shortcuts most identities before calling this layer.
+For example, Conway calls the general algebra only 32 times, three of
+which are scalar squares; its exact square-zero debug checks call the
+algebra much more frequently. The separate dense scalar microcases
+measure the algebra operation alone and must not be advertised as full
+recognition speedups. The reproduction command is
+\code{python benchmark\_planar\_shortcuts.py --output RESULTS.json}.

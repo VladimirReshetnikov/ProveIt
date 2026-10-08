@@ -296,6 +296,17 @@ class Planar:
         return result
 
     def compose(self, a: int, b: int, c: int, f: int, g: int) -> int:
+        # Typed identities preserve the engine's canonical circle numbering.
+        # The square shortcut applies only in End(a), not to arbitrary Hom
+        # spaces or matrix blocks over the coefficient ring.
+        if not f or not g:
+            return 0
+        if f == 1 and a == b:
+            return g
+        if g == 1 and b == c:
+            return f
+        if a == b == c and f == g:
+            return f & 1  # In F2[x_1,...,x_b]/(x_i^2), f^2 = f(0).
         plan = self.compose_plan(a, b, c)
         if plan is None:
             return 0

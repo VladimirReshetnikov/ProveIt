@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 113 passing tests.
+diagram is not checked twice. The integrated suite now has 116 passing tests.
 
 Report 08 adds complete recognition for checked source braids on at most three
 strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the
@@ -577,3 +577,11 @@ default scanner: list storage, interned matchings, bucket-queue min-fill),
 `planar.py` (its integer geometry and compiled plans), `scan_reference.py` (the
 0.1 scanner, unchanged), `recognize.py` (pipeline), `__main__.py` (CLI).
 MIT-0, see the repository root.
+
+The default planar algebra also short-circuits typed identities and scalar
+squares over its square-free F2 ring. These identities agree with the original
+cobordism evaluator; they do not apply to arbitrary morphisms or matrix blocks.
+`benchmark_planar_shortcuts.py` records raw scan and separate scalar-kernel
+timings. Ordinary scans showed negligible timing impact because most identities
+are already removed by the scanner. The dense report 12 adapter remains opt-in
+research code; no default dense-engine switch has been made.

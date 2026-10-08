@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 113 tests. Local report 10–12 production
+The current full production suite passes 116 tests. Local report 10–12 production
 cross-checks are retained in `data/`; those reports' broader adapters remain under
 review. The braid benchmark includes PD construction and keeps the current
 Seifert shortcut enabled in its baseline. Reproduce it with

@@ -25,7 +25,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `07/`–`12/` were placed on 7 October 2026. Each is a research continuation of
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/`, are integrated
-(113 current production tests pass). Local reruns of
+(116 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
