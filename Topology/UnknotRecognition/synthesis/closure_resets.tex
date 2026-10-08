@@ -1,0 +1,258 @@
+\section{Classical closures, first jets, and bounded diagram resets}
+\label{sec:closure-resets}
+
+Report 28 studies a different way to avoid carrying a large complex through
+the entire crossing order.  When a whole relative summand has one matching,
+its \emph{actual classical completion} imposes restrictions absent from an
+arbitrary algebraic continuation.  In certain cases the entire current
+scan has the same total homology rank as that completed matching alone.
+We can then splice the matching into the remaining diagram and start a
+fresh scan with fewer crossings.  The maintained decision-only backend
+\code{closure}, implemented in \code{fastunknot/closure\_scan.py}, combines
+these resets with closure-rank obstructions and bounded optional work.
+The standard backend remains the default.
+
+\subsection{Source audit and the exact scope of the rerun}
+
+The delivered package distinguishes its shortened reference fixture from
+the production checkout.  We ran its AST checker against the current
+checkout.  The scanner agrees after docstrings are removed, but the
+geometry fixture's \code{compose} omits four maintained fast paths:
+zero factors, the two identity cases, and equal endomorphism factors.
+The latter uses the square-zero radical identity.  Moreover, the geometry
+blob listed in the provenance file is not the blob at the stated inspected
+revision \code{13f6dbfdd}: the actual blob there starts \code{92135876},
+whereas the supplied pin starts \code{1078526e}.  The other three pins
+match that revision.  The earlier intake ledger already flagged this
+mismatch, but its summary and catalog wording overstated the verification.
+Those summaries are now corrected.  The detailed follow-up is retained in
+\code{data/closure-reset-source-audit.json}.
+
+The 29 delivered tests pass with imports redirected to the actual
+production package.  We also reran the independent cube audit through
+\path{fast/closure_research/audit_upstream.py}.  This adapter changes only
+the import paths, output destinations, and scope description; the delivered
+files remain unchanged.  All 480 driver comparisons on 160 diagrams,
+480 interval-rank checks, and 130 quiver-rank checks pass.  Eighty diagrams
+reset and two have early nontriviality certificates.  No nonsingleton
+eligible block occurs in this corpus.  The independent cube does not
+import scanner code.
+
+\subsection{Why a first jet controls a knot completion}
+
+Let $m$ be a nonempty geometric matching with $p$ arcs, and let a whole
+differential component supported on $m$ have coefficient matrix
+\[
+ Q(\boldsymbol{x})=A+\sum_{i=1}^p x_iB_i+\text{higher dot terms},
+ \quad Q^2=0,\qquad B=\sum_iB_i,
+\]
+over $\F[x_1,\ldots,x_p]/(x_i^2)$.  The matrix raises homological degree
+by one.  Gluing the actual suffix gives a link $L_m$, whose Khovanov
+complex $C$ carries commuting square-zero dot operators $X_i$.  The
+completed block has differential $D=d_C+Q(X)$ on $C\otimes V$.
+The component must have no incoming or outgoing attachments; a selected
+submatrix does not meet this premise.
+
+\paragraph{The chain-level calculation.}
+Moving a marked point across a crossing has reverse-saddle homotopy $H$
+with $d_CH+Hd_C=X_a+X_b=\delta$, $H^2=0$, and commutation with all
+fixed dot operators.  It also satisfies $H\delta=0$.  These are strict
+chain identities, recorded in Nahm's Lemma 2.4 and its cited predecessors
+\cite{nahm-basepoints}; equality of induced dot maps on homology would
+not suffice here.  For $P=\partial Q/\partial x_i$, differentiation of
+$Q^2=0$ gives $PQ+QP=0$.  Thus $G=1+HP(X)$ is self-inverse and
+\[
+ GDG=D+\delta P(X).
+\]
+Indeed the linear error is $\delta P$, while the quadratic error is
+$Hd_CHP^2=H\delta P^2=0$.  There is no requirement that $P^2=0$.
+This conjugation moves one variable's dot action to the new marked edge.
+
+If $L_m$ is a knot, all marks can consequently be moved to one edge.
+All higher monomials vanish under $x_i\mapsto X$, leaving $A+XB$.
+The characteristic-two vertical operator $\nu$, which changes one circle
+label $x$ to $1$ and sums over circles, satisfies
+\[
+ \nu^2=0,\qquad \nu d_C=d_C\nu,\qquad \nu X+X\nu=1.
+\]
+Hence $C=E\oplus XE\cong\F[x]/(x^2)\otimes E$, where
+$E=\operatorname{im}\nu$ is a subcomplex.  Contracting $(V,A)$ onto
+its homology transfers $A+xB$ to $xB_*$: two perturbation factors vanish
+because $x^2=0$.  If $t=\dim H(V,A)$ and $b=\operatorname{rank} B_*$,
+the transferred complex has dimension $2t$, differential rank $b$,
+and homology dimension $2(t-b)$.  Therefore
+\[
+ \dim H(\operatorname{cl}(Q))
+   =\kappa(Q)\,r(L_m),\qquad
+ \kappa(Q)=\dim H(V,A)-\operatorname{rank} B_*,
+\]
+where $r$ denotes total unreduced characteristic-two Khovanov rank.
+The formula preserves total rank; it does not assert equality of the
+original open complexes or their bigraded profiles.
+
+After exact scalar-unit cancellation, $A=0$, so
+\[
+ \kappa=N-\sum_h\operatorname{rank} B_h\geq1.
+\]
+The implementation reads only the parity of singleton-monomial
+coefficients in each entry, then computes adjacent binary ranks.  Counting
+all monomials modulo two would give the wrong matrix.  Neither barcode
+reconstruction nor ranks of products of adjacent matrices are needed.
+The maintained reader declines blocks containing scalar units; the general
+formula above explains the theory but is not an additional production
+scalar eliminator.
+
+\subsection{Pure blocks and the indispensable link distinction}
+
+For a pure block $Q=\theta T$ with one nonzero radical coefficient, put
+$\beta=N-\sum_h\operatorname{rank}T_h$ and let
+$\sigma=\sum_i[x_i]\theta$ be its total-linear parity.  The scalar
+quiver has $\beta$ intervals, although $T^2$ need not be zero.
+When $\sigma=1$, the derivation identity
+$\nu\theta+\theta\nu=U$ has $U^2=1$ and $\nu U=U\nu$.
+Then $U\nu$ splits the suffix complex into a free dual-number factor
+for the action of $\theta$.  This proves completed rank $\beta r(L_m)$
+for \emph{every} classical link completion.
+
+If $\sigma=0$ and the completion is a knot, the first-jet matrix vanishes,
+giving completed rank $Nr(L_m)\geq2N$.  If the completion has at least
+two components, each quiver interval contributes at least $r(L_m)\geq4$.
+The first inequality follows from the monotone interval profile already
+proved in the continuation analysis; the second follows from the link's
+Euler specialization.  Consequently a pure block has lower bound
+\[
+ \begin{cases}
+ 2\beta,&\sigma=1,\\
+ 2\min(N,2\beta),&\sigma=0.
+ \end{cases}
+\]
+Any even pure block with an edge therefore certifies rank at least four.
+The implementation uses this threshold directly instead of computing
+unnecessary exact interval data.
+
+A nonpure block requires the knot-completion premise.  For example, on
+the two-component unlink, $x_1+x_2$ acts nontrivially, and a three-term
+interval joined by this coefficient has rank four.  Applying the knot
+formula would incorrectly give twelve.  The maintained tests include
+this counterexample; no completion with several components is silently
+treated as a knot.
+
+\subsection{Recognition control, splicing, and fallback}
+
+The backend scans with exact component sharing and multiplicities capped
+at three.  At each proper prefix it inspects whole differential components.
+Pure components give the closure-uniform lower bounds above.  Otherwise
+the driver constructs the actual completion for each eligible matching,
+checks its spherical rotation system, and counts link components.
+A knot completion supplies $2\kappa$ as a lower bound.  Contributions
+are multiplied by their nonnegative integer multiplicities and added;
+rank at least four rejects the original knot.
+
+When the entire scan has one component copy, one matching, and
+$\kappa=1$ with a knot completion, that residual knot has the same total
+rank as the current computation.  Each matching arc joins two boundary
+labels of the unprocessed suffix.  The splice merges these labels,
+canonicalizes the remaining PD code, and retains the selected crossing
+order.  Removed smoothing circles have already been handled by delooping;
+they are not reintroduced.  A fresh scanner starts from empty boundary on
+the strictly shorter residual diagram.  No claim of a knot isotopy between
+the original and residual diagrams is needed or made.
+
+The local \code{closure\_max\_work} allowance, default one million,
+charges observer traversal, polynomial extraction, binary elimination,
+and completion geometry.  It is an operation allowance, not a bit-cost
+or strict wall-clock bound.  The global cooperative deadline has priority.
+Local exhaustion disables observation and continues the current exact
+scan, preserving all completed algebraic work.  A partially computed
+bound or residual is never committed as a reset.  Global exhaustion
+returns \code{UNKNOWN} through recognition.  Only final closed rank two
+certifies the unknot; a proper-prefix failure to reject is inconclusive.
+
+The decision interface exposes capped ranks and reset events.  It is not
+connected to the exact homology or window APIs, because resets discard
+grading information.  The optional backend retains the same alternate
+backend restrictions as the existing shared scanners.
+
+\subsection{Actual reset gaps and what they do not prove}
+
+Let $g$ be the maximum number of crossings processed between resets or
+the final decision, including the initial and terminal segments.  After
+$j$ crossings in one segment, there are at most $4j$ frontier labels and,
+using a deliberately loose delooping bound, at most $8^j$ physical objects.
+The coefficient basis has size $2^{O(j)}$.  Exact arithmetic, elimination,
+first-jet inspection, and geometry checks cost
+$\operatorname{poly}(n)2^{O(j)}$ in bit operations.  Saturated sharing
+does not increase the literal object bound.  The maintained ordering
+heuristic has polynomial overhead, and preserving the suffix order means
+each original crossing is processed only once across all segments.
+Thus this implementation satisfies the parameterized bound
+\[
+ T(n,g),\ S(n,g)\ \leq\operatorname{poly}(n)2^{O(g)}.
+\]
+The recorded \code{max\_gap} is this execution parameter, including
+scanning after observation has been disabled.  A polylogarithmic bound
+on \emph{actual} gaps would give quasi-polynomial recognition.  We do
+not know such a bound for arbitrary knots or unknots, or an efficiently
+constructible ordering that guarantees it.  Adaptive fallback does not
+supply that missing theorem.
+
+\subsection{Expanded discovery, validation, and paired measurements}
+
+The maintained discovery program
+\path{fast/closure_research/audit_blocks.py} samples 1200 braid attempts
+with seed 2801, accepting 312 knots.  Each is scanned in a random order
+and the width heuristic's order, with a quarter-second and 3000-object
+allowance per scan.  All 624 scans complete: 4972 crossing stages produce
+785 singleton observations and no nonsingleton pure or first-jet block.
+This larger negative result supports no claim of actual-diagram gains
+from the mixed-coefficient rule.  It does not prove that such blocks
+cannot occur.  Inputs, orders, limits and source hashes are retained in
+\code{data/closure-reset-block-discovery.json}.
+
+The maintained unit checks directly complete forty mixed polynomial
+matrices against the independent trefoil cube, verify $d^2=0$, and compare
+their ranks with $\kappa r(L_m)$.  They also compare sixty random knots
+against the independent cube under resets, no resets, and zero observation
+budget; compare actual splices with the independent implementation;
+check malformed blocks and external attachments; and test global deadlines,
+CLI dispatch, and local exhaustion after successful resets.  A seven-crossing
+Coxeter unknot has six resets and maximum gap one.  This is an illustrative
+family already easy for earlier structural recognizers.
+The complete maintained suite passes all 567 tests.  Shape caching is tested
+both enabled and disabled; automatic mode applies the established repeated-stage
+heuristic to each residual diagram, so the raw comparison uses the same cache
+policy as the existing saturated scanner.
+
+\input{tables/closure_benchmark.tex}
+
+The full-recognition ratios lie between 0.978 and 1.028, with median
+1.001, while the identical full-control ratios span 0.976--1.081.
+All twenty inputs are decided by earlier enabled filters, so this corpus
+shows no complete-recognition gain from closure dispatch.  The unchanged
+default path has median old/new ratio 1.008, with variation consistent
+with the controls.  One raw trefoil control reaches 1.180; its small
+scanner differences should not be interpreted as reliable gains.
+
+The raw observer improves the Conway sums by about $1.42$ and $5.28$
+times, and the trefoil-with-curls examples by $1.63$, $2.03$, and $2.40$
+times.  These are early obstructions with \emph{zero resets}; the existing
+Euler backend already provides comparable gains.  The actual reset cases
+are slower: saturated/reset ratios are 0.889 for the hard unknot, 0.646
+for the scrambled grid unknot, 0.465 for cancellation pairs, and 0.297
+for the Coxeter example.  Their reset counts are 1, 4, 13, and 23.
+The no-reset control is faster on each of these four inputs, showing
+that splicing and scanner reinitialization add overhead here.  There is
+no observed nonsingleton first-jet compression in this benchmark either.
+These measurements justify retaining the optional backend for further
+research and leaving automatic recognition dispatch unchanged.
+
+\code{fast/benchmark\_closure.py} measures full recognition separately
+from raw saturated, Euler, reset, and no-reset scanners.  It includes the
+eight delivered examples and twelve maintained examples, uses seven
+shuffled paired rounds, includes validated diagram construction, and
+retains an identical control arm in each scope.  Imports and one warmup
+are excluded.  Calls have five-second and 50000-object limits; any timed
+repetition returning \code{UNKNOWN} suppresses that case's timing ratios.
+The old recognition arm loads only \code{recognize.py} from
+\code{e6f975521}, sharing unchanged dependencies.  All raw samples and
+source hashes are retained in \code{fast/results/closure\_reset\_20261008.json}.

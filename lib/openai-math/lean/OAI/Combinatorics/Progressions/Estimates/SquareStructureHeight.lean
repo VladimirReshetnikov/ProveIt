@@ -1,3 +1,6 @@
+/- Modified for ProveIt: rewrite supported-basis coordinates with
+semireducible transparency to align rational scalar instances on Lean 4.32.
+The theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Linear.SquareBasisGeometry
 
 namespace OAI
@@ -22,7 +25,8 @@ theorem adaptedSquareBasis_bracket_repr_inr (x y : F.squareLieSubalgebra) (k : {
     (F.adaptedSquareBasis e ω hF).repr ⁅x, y⁆ (Sum.inr k) =
       e.repr (⁅x.val.1, y.val.1⁆ - ⁅x.val.2, y.val.2⁆) k.val := by
   change (F.squareBasis e _).repr ⁅x, y⁆ (Sum.inr k) = _
-  rw [F.squareBasis_repr_inr, supportedSubmoduleBasis_repr]
+  rw [F.squareBasis_repr_inr]
+  erw [supportedSubmoduleBasis_repr]
   rfl
 
 theorem adaptedSquareBasis_structure_height {H : ℕ} (hH : 1 ≤ H)

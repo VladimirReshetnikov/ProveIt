@@ -18,7 +18,16 @@ Mathlib `v4.32.0` workspace.
 - Lake library: `OAI` in the root `lakefile.toml`, with source root
   `lib/openai-math/lean` and module names unchanged from upstream
   (`OAI.Combinatorics.Progressions.*`). The declarations keep their upstream
-  namespaces (`OAI.Erdos3.*`).
+  namespaces (`OAI.Erdos3.*`), except the two extracted Freiman lemmas,
+  which use `OAI.Erdos3.FreimanModel.ProveItExtract` to coexist with their
+  originals when the complete density proof is imported.
+
+With a local checkout of the pinned upstream revision, run
+`python3 Combinatorics/Ramsey/scripts/check_gowers_port_provenance.py /path/to/math`
+from the workspace root to check original-source hashes, modification notices,
+the unchanged upstream license, retained copyright notices, and the two
+Freiman extracts' statements and proof bodies against the pinned originals. This command
+does not verify Lean proofs or the separately recorded Mathlib source hashes.
 
 ## Verified subset and quantitative backport
 
@@ -70,10 +79,10 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 1,400 manifest entries have compiled (1,415 modules including their
+The first 2,000 manifest entries have compiled (2,016 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 24,924 public OAI theorems and reports only `propext`,
+checks 33,429 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
@@ -132,8 +141,9 @@ above intentionally omit unrelated declarations; their proof status remains pend
   source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
-  orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the currently audited prefix.
+  orthonormal-basis declarations pass the three-axiom check. Its direct
+  consumer `Geometry/CoordinateMinorCovolume.lean` is included in the
+  audited 1,800-entry prefix; the full quantitative conclusion is still pending.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.
@@ -146,6 +156,12 @@ above intentionally omit unrelated declarations; their proof status remains pend
   `import OAI.Compat.<Topic>` line, and nothing else, unless a further change
   is listed in their header comment.
 - `Lattices/FreimanAffineBox.lean` is an extract, as described above.
+  Its two lemmas use the `FreimanModel.ProveItExtract` namespace so they
+  coexist with the originals in `NativeProperAffineRecovery.lean`.
+  `GowersSzemeredi.PortImportAudit` imports the Gowers audit alongside that
+  full upstream module and checks that the extracted propositions match
+  their originals. The combined 2,548-module build passes; this is not an
+  audit of the still-pending full quantitative-density conclusion.
 
 ## Trust
 
@@ -164,3 +180,6 @@ Lake can build any module of `OAI` (`lake build +OAI.<Module>`), but
 their `OAI` imports one `lean` process at a time without Lake's trace pass;
 both use the root workspace's Mathlib. 64 vendored modules import all of
 Mathlib.
+
+Run `python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PortImportAudit`
+to repeat the combined-import and extracted-statement checks.

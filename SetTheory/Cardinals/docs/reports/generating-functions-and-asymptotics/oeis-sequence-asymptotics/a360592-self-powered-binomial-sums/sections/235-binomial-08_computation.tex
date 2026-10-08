@@ -67,3 +67,58 @@ delivered layout; the report README gives commands that rerun the checks in a
 scratch copy.
 \end{writenote}
 
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the write read the three OEIS entries
+again (A360592 \#28, A360479 \#40, A360747 \#22, unchanged since February 2023)
+and recomputed every number the write added, with its own code and, where one
+exists, by a different method.
+\begin{itemize}
+\item \emph{The refutation of the OEIS first corrections} (Remark~\ref{spb:ep:rem:oeis}).
+The check typed the three formula lines afresh from the live entries and used
+them directly, not the source's transcription; SymPy confirms that their
+leading factors are $M_1(n)$, $M_2(n)$, $M_3(n)$ and that their multipliers
+are those displayed in Section~\ref{spb:ep:sec:sources}. It evaluated
+$a_p(n)/M_p(n)$ at $n$ up to $10^{24}$ by a route the write did not use: one
+central summand by log-gamma, all others by the exact adjacent ratio of
+consecutive summands (agreeing with the exact integers at $n=10^4$ to
+$10^{-56}$). Then $(\text{entry}-a_p(n))/(M_p(n)t)$ is $0.109664$,
+$0.107465$, $0.107244$, $0.1072229$, $0.10722073$ at
+$n=10^6,10^8,\ldots,10^{14}$ ($p=1$), $0.046842$, $0.047452$, $0.0475147$,
+$0.04752092$ at $n=10^9,\ldots,10^{18}$ ($p=2$), and $0.018632110$,
+$0.018632475$, $0.018632164$, $0.01863213$ at $n=10^{12},\ldots,10^{24}$
+($p=3$), converging to $1/(8c_p)=0.10722048562\ldots$, $0.04752160739\ldots$,
+$0.01863212660\ldots$. The leading equivalents are right and the first
+corrections are wrong, as stated.
+\item \emph{Coefficients.} An own generator, which expands the exact
+defect~\eqref{spb:ep:eq:Delta} by SymPy series (not through
+\eqref{spb:ep:eq:Dgeneral}) and averages by Touchard polynomials, gives every
+printed $C_{2,1..4}$ and $C_{3,1..6}$, $U_1=-A\lambda^2-b\lambda$ for
+$p=2,\ldots,5$, $C_{p,1}=\cdots=C_{p,p-2}=0$ for $p=4,5$ with first nonzero
+coefficients $-81c^2/10$ and $-151c^2/12$, and from its own $C_{p,k}$ and
+$U_j$ ($k,j\le12$) Table~\ref{spb:ep:tab:counts} and its truncations. Against
+the evaluations above, the residual after the printed coefficients, divided by
+the next power of $t$, is stable ($24.192$ for $p=1$ after $C_{1,4}$, the
+value of the write's $C_{1,5}$; $12876.7$ for $p=2$ after $C_{2,4}$), and with
+the write's $C_{1,5},C_{1,6}$ the order-$t^7$ ratio is $-5.50$, $-10.74$,
+$-11.30$, $-11.35$, $-11.36$ at $n=10^4,\ldots,10^{12}$.
+\item \emph{Decimals.} The critical values at $n=10^4$ and $10^4+1$, the four
+marked ratios at $n=10^9$ (exact law by the adjacent ratio, conditioning by
+the root-of-unity filter), the twelve ratios of the table of this section
+(exact law by~\eqref{spb:ml:eq:weightrecurrence} from a log-gamma anchor) and
+the constants $0.3456571460\ldots$, $0.4718790625\ldots$,
+$0.7325121488\ldots$ agree with the write's notes in every digit, and every
+truncation stated in those notes is correct.
+\end{itemize}
+It also confirmed the provenance figures (archive sizes, file and line counts,
+30 and 23 delivered pages, the two manifests), the byte identity of all 23
+staged code, data and guide files, the word counts of the three passages
+printed once, the label numbering (229 delivered labels unchanged up to the
+shift of eight, 234 in all), Remark~\ref{spb:ep:rem:transseries} against the
+volume's statements, and the README listing. No mathematical claim of the
+write was found wrong. One build defect was: the Guide's reading-conventions
+table and Table~\ref{spb:ep:tab:counts} both received the PDF destination
+\file{table.1}, so links to Table~\ref{spb:ep:tab:counts} led to the Guide
+(the write's log had two ``duplicate ignored'' warnings that its README
+reported as absent). The check gave the Guide's table its own anchor name;
+no number changed.
+\end{writenote}

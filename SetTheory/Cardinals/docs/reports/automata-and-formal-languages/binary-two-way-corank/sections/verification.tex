@@ -1,5 +1,5 @@
 \section{Exact finite audits and reproducibility}
-\label{verify:section}
+\label{btc:verify:section}
 
 The universal claims in this article are proved mathematically.
 The accompanying programs test independent representations of the
@@ -117,14 +117,14 @@ The direct executions include 24,066 initial acceptances, 4,367
 later acceptances, 12,637 rejecting infinite runs, and 9,330
 undefined rejecting halts. Every local matching is checked to
 be perfect and to satisfy $k\le8s+2$. This explicitly exercises
-the corner cases in Section~\ref{mach:section}.
+the corner cases in Section~\ref{btc:mach:section}.
 
 \subsection{Exact recurrence and finite consequences}
 
 The script \texttt{code/finite\_bounds.py} evaluates
-\eqref{alg:D} through $h=256$, using only integer ceilings.
+\eqref{btc:alg:D} through $h=256$, using only integer ceilings.
 It also verifies the explicit union-graph obstruction in
-Section~\ref{research:union}. Selected values are:
+Section~\ref{btc:research:union}. Selected values are:
 \begin{center}
 \small
 \begin{tabular}{rrrrr}
@@ -140,7 +140,7 @@ $h$ & Source states $6h+2$ & $\lceil F(h)\rceil$
 \bottomrule
 \end{tabular}
 \end{center}
-The last column applies \eqref{comp:integer-bound} to the exact
+The last column applies \eqref{btc:comp:integer-bound} to the exact
 recurrence. The closed form remains useful because it gives a
 simple exponential statement for all parameters; the recurrence
 preserves the improvements from parity and the best arm sizes
@@ -176,3 +176,27 @@ It was an additional AI-assisted mathematical review, not
 independent human peer review. The source snapshots and precise
 theorem dependencies make subsequent human or formal review
 possible without reconstructing the research session.
+
+\begin{writenote}[The shipped layout and the reruns, 7 October 2026]
+In ProveIt the package's files are shipped in their delivered layout (the
+report README lists them); \file{article.pdf} is the write's build of this
+text, and the delivered PDF, \file{article.bbl} and \file{SHA256SUMS} are not
+shipped. The command above writes \file{reproduced/} inside the directory it
+is run from, as does \texttt{make audit}: in the repository, run it on a copy
+or with an output directory outside the report. On Windows use \texttt{py}
+for \texttt{python3}. The shipped \file{certificates/relation\_compiler\_audit.json}
+records the producer's scratch output path
+(\file{/workspace/scratch/3b2ceb1576c8/...}), a sandbox path with no
+personal data. At the write, on a copy with Python 3.14.4, the suite passed
+in 97~s; every certificate equals the shipped one as data except the timing
+fields, the Python version and that output path, and
+\file{finite\_bounds.csv} is byte-identical. The counts quoted in this
+section were also recomputed from their definitions: the $146{,}600$
+matchings and both columns of the first table by the write's own code (for
+$m\le7$), $66{,}066=\sum_{h\le4}2^{h^2}$, $262{,}404=\sum_{h\le3}4^{h^2}$,
+$4{,}674=\sum_{h\le3}h^22^{h^2}$, $32{,}764=4(2^{13}-1)$ and their total
+$365{,}908$; $288=2\cdot3\cdot3\cdot4\cdot4$ one-state machines, $63$ words,
+$800\cdot63=50{,}400$ comparisons, $800\cdot4=3{,}200$ diagrams and the four
+outcome counts summing to $50{,}400$; the table of finite bounds (all five
+rows).
+\end{writenote}

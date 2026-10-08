@@ -1,3 +1,5 @@
+/- Modified for ProveIt: close the residual definitional equality after
+rewriting quotient-basis coordinates on Lean 4.32. Statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.RealFirstCoefficientHorizontal
 import OAI.Combinatorics.Progressions.Geometry.SupportedSubquotient
 
@@ -79,6 +81,7 @@ theorem realFirstCoefficientBasis_repr_map (w : σ → ℕ)
   change (supportedQuotientBasis _ _ _ _).repr
     (((F.realShiftedCoefficientSubmodule w 2).comap (F.realShiftedCoefficientSubmodule w 1).subtype).mkQ x) _ = _
   rw [supportedQuotientBasis_repr_mk, F.realShiftedMonomialBasis_repr]
+  rfl
 
 theorem realFirstCoefficientBasis_polynomial_coordinate (w : σ → ℕ)
     (x : F.realShiftedCoefficientSubmodule w 1) (z : FirstCoefficientIndex w ω) :

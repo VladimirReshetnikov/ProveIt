@@ -1,0 +1,133 @@
+\section{Parameterized enumeration and asymptotic regimes}
+\label{sec:enumeration}
+
+\subsection{The birth-front search}
+
+The normal form leads to a direct iterative-deepening algorithm.
+
+\begin{algorithmic}[Birth-front unlocking search]
+\label{alg:birth-front}
+Given a state $x$, a depth bound $k$, and a birth bound $b$:
+\begin{enumerate}
+\item For $\ell=1,\ldots,k$, search traces of length at most $\ell$.
+\item Enumerate a canonical list of at most $b$ pairwise footprint-disjoint
+      births.  Each birth is chosen among all currently legal neutral actions.
+\item After the birth block, permit only a legal action whose footprint meets
+      the union of all previously chosen footprints.
+\item After every neutral action, test for a terminal reduction.  Return the
+      shortest successful trace.
+\item Undo failed branches exactly.  Exhaustion returns \emph{unknown}, never a
+      negative verdict.
+\end{enumerate}
+\end{algorithmic}
+
+A canonical order on births removes permutations of pairwise commuting actions.
+The complexity theorem below does not need that saving, so its bound is robust
+to a simpler implementation.
+
+\subsection{Counting search nodes}
+
+\begin{theorem}[Parameterized enumeration]
+\label{thm:enumeration}
+Assume footprint size at most $f$, global incidence at most $AN$, local
+incidence at most $B|S|$, and polynomial-time state operations.  The birth-front
+algorithm finds a first-unlocking trace whenever one of length at most $k$ and
+birth number at most $b$ exists, and exhausts all birth-front normal-form
+candidates in time
+\[
+   N^{b+O(1)}(Ck)^k,
+   \qquad C=Bf\max(1,A),
+\]
+and polynomial working memory.  The constant implicit in $O(1)$ is independent
+of $b$ and $k$.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:birth-front}, it is enough to enumerate traces with all
+births first.  Suppose a normal-form trace has $r\leq b$ births and total length
+$\ell\leq k$.
+
+At each birth position there are at most $AN$ legal neutral actions, so the birth
+block has at most $(AN)^r$ possibilities.  After $j$ actions have been chosen,
+the accumulated footprint contains at most $fj$ sites.  Bounded local incidence
+therefore gives at most $Bfj$ possible connected extensions.  Consequently,
+the number of length-$\ell$ search words with $r$ births is at most
+\[
+  (AN)^r\prod_{j=r}^{\ell-1} Bfj
+  \leq (AN)^b(Bfk)^k.
+\]
+Summing over $r\leq b$ and $\ell\leq k$ contributes at most a polynomial or
+$2^{O(k)}$ factor, which is absorbed by replacing $C$ with a larger absolute
+rule-set constant.
+
+Each node performs polynomial-time legality, application, terminal, and undo
+operations.  A depth-first traversal stores one state representation, at most
+$k$ undo records, the accumulated footprint of size at most $fk$, and polynomial
+bookkeeping.  Hence the working memory is polynomial in $N$ and $k$.
+\end{proof}
+
+\begin{remark}[Why the exponent $b$ appears]
+Every birth can be located anywhere in the diagram, so a direct deterministic
+search pays one factor of $N$ per independent branch.  Removing this exponent
+would require extra structure, such as color-coding, representative families,
+a reverse terminal-rooted search, or a geometric theorem constraining where
+births can occur.
+\end{remark}
+
+\subsection{Quasi-polynomial and polynomial corollaries}
+
+Write
+\[
+ T(N;b,k)=N^{b+O(1)}(Ck)^k.
+\]
+Taking logarithms gives
+\[
+ \log T=(b+O(1))\log N + k\log(Ck).
+\]
+
+\begin{corollary}[Logarithmic parameters]
+\label{cor:log-parameters}
+If $b=O(\log N)$ and $k=O(\log N)$, then
+\[
+ T(N;b,k)=\exp(O((\log N)^2))=N^{O(\log N)}.
+\]
+Thus the search is quasi-polynomial.
+\end{corollary}
+
+\begin{corollary}[Constant branching]
+\label{cor:constant-branching}
+If $b=O(1)$ and $k=O(\log N)$, then
+\[
+ T(N;b,k)=\exp(O(\log N\log\log N))
+          =N^{O(\log\log N)}.
+\]
+\end{corollary}
+
+\begin{corollary}[Sublogarithmic depth]
+\label{cor:polynomial-island}
+If $b=O(1)$ and
+$k=O(\log N/\log\log N)$, then $T(N;b,k)=N^{O(1)}$.
+\end{corollary}
+
+\begin{proof}
+For the last statement,
+$k\log(Ck)=O(\log N)$, while the birth factor is polynomial because $b$ is
+constant.
+\end{proof}
+
+\subsection{Search budgets}
+
+A practical implementation will cap the number of trial moves rather than run
+the worst-case tree.  The theorem and the budget serve different purposes.
+
+\begin{itemize}
+\item The theorem says what is complete when the specified $(b,k)$ tree is
+      exhausted.
+\item A trial budget may stop earlier to protect the exact fallback.
+\item Budget exhaustion has no mathematical meaning about knottedness or about
+      the nonexistence of a trace.
+\item Successful traces remain exact because they are independently replayed.
+\end{itemize}
+
+This is compatible with the current ProveIt design, which already treats RIII
+search as an optional pre-scan accelerator.

@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 800 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,117 public Gowers theorems and found only propext,
+  All 809 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,190 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -36,6 +36,14 @@ Verification at this checkpoint
   proof now reduces the local let definitions before introducing the two
   cover hypotheses. The repaired statement and all quantitative bounds
   are unchanged. The full combined build and axiom scan now pass.
+  The two vendored Freiman extracts now use the ProveItExtract namespace,
+  preventing declaration collisions with the full upstream affine-recovery
+  module. Their statements and proof bodies are unchanged. After this
+  adjustment the 809-module Gowers audit still checks 5,190 theorems and
+  the same 114/6 catalogue split. GowersSzemeredi.PortImportAudit additionally
+  compiles the facade and full affine-recovery module together as a
+  2,548-module closure and checks equality of the extracted propositions
+  with their originals. This does not certify the remaining density port.
 
 Conditional Section 16 regime splitting
   The merged Proofs16RegimeSplitting gives exact coarse covers for relations
@@ -56,7 +64,8 @@ One-dimensional cover with graph count independent of the loss
   It deletes the sparse graphs and applies Corollary 7.11 simultaneously
   to the remaining graphs; small boxes use the exact coarse cover.
   This supplies a stronger base case for the dimension-two approach.
-  The higher-dimensional lift and Theorem 16.2 remain unproved.
+  The exact dimension-two instance is now proved below; the general
+  higher-dimensional structural theorem remains unproved.
 
 Parametric spectrum controls for Lemmas 16.6 and 16.9
   The merged Proofs16WithLemma6 and Proofs16WithLemma9 pass the full audit.
@@ -234,7 +243,7 @@ Cubic source-scale numerical budgets
   Proofs16CubicPieceParameterBudget proves that the retained mass eta can
   pay for the concrete nonunit piece parameter s(theta,gamma,1)^8 within
   the total s(theta,gamma,2) budget. The cover comparison at this parameter
-  remains to be proved.
+  is now proved by Proofs16DimensionTwo, as recorded below.
   Proofs16CubicOuterScaleBudget rewrites log(32/zeta) exactly and bounds
   the width denominator by 10*s(theta,gamma,1), giving a positive algebraic
   width control for the already constructed pieces.
@@ -246,7 +255,61 @@ Cubic source-scale numerical budgets
   U^6, the spectrum count by U^2, and the slice family count by U, where
   U=s(theta,gamma,1). Proofs16CubicPowerAbsorption proves that the source
   power at U^8 pays for the scalar recurrence and polynomial losses.
-  These six modules pass the full audit and discharge numerical substeps; the general structural theorem and six catalogue gaps remain.
+  These six modules pass the full audit and discharge numerical substeps;
+  the general structural theorem and six catalogue gaps remain.
+
+Exact two-dimensional structural theorem
+  Proofs16DimensionTwo proves theorem_16_2_at_two : Theorem162At 2 for
+  arbitrary product relations over sufficiently large primes, with the
+  manuscript's parameter gamma^(-2)*s(theta,gamma,2).
+  Proofs16CubicScalarWidth and Proofs16CubicWidthLowerBound bound the actual
+  constructed width below by u^5*sigma^10*2^(-(84*U^2+75))/U^14, where
+  U=s(theta,gamma,1), R is the halved-density remainder count, and
+  u=multipleC(sigma/(2*R),gamma,2)^R. Proofs16CubicSourceWidth compares
+  this with the required width at the piece parameter U^8.
+  Proofs16CubicGraphWidthBudget proves that the graph count times the
+  algebraic width control is at most one, supplying the matching graph
+  budget. The retained mass pays for U^8; greedy extraction and the proved
+  finite-union theorem then give the exact structural conclusion.
+  This is an unconditional dimension-two result, not the general theorem.
+  The catalogue still has 114 companions and six open statements. The
+  higher-dimensional simultaneous slice-cover problem remains unresolved.
+
+Strictly smaller dimension-two structural parameter
+  Proofs16DimensionTwoSharper proves theorem_16_2_at_two_sharper with
+  parameter gamma^(-2)*s(theta,gamma,1)^10. The retained piece mass pays
+  for the union within this smaller budget. On the full admissible density
+  range, section16DimensionTwoParameter_lt_source proves that this is
+  strictly less than the printed gamma^(-2)*s(theta,gamma,2).
+  Writing b=2/(theta*gamma), the old iteration factor is b^(2^256),
+  whereas the new one is b^(10*2^128). This improves the dimension-two
+  structural conclusion; it is not a new all-length Szemeredi threshold.
+
+Sharper dimension-two Fourier-frequency box
+  Proofs16DimensionTwoFrequencyBox carries the improved structural
+  parameter into corollary_16_11_at_two_sharper, constructing a proper
+  two-dimensional box and a multilinear frequency map directly from
+  degree-three nonuniformity. Its width exponent uses
+  r=section16DimensionTwoParameter(alpha/4,alpha/2), and its relative
+  frequency density is alpha/8 times that exponent.
+  section16_corollary_two_width_lt_sharper proves that the new width
+  exponent is strictly larger than section16CorollaryWidthExponent alpha 2
+  for 0<alpha<=1/2. Thus this propagates the structural improvement into
+  an actual stronger frequency-box conclusion. The general Corollary
+  16.11 remains open and the catalogue count is unchanged.
+
+Quartic inverse and six-term density iteration
+  Proofs18QuarticIteration applies theorem_16_2_at_two to the joint inverse
+  induction, proving quartic_function_discrepancy_bound unconditionally.
+  Its parameter and exponent are jointStructuralInverseParameter 2 alpha
+  and jointStructuralInverseExponent 2 alpha. The remaining threshold T
+  depends only on alpha and is existential.
+  natural_six_term_via_quartic_inverse feeds this bound into the closed
+  interval density iteration: sufficiently large dense subsets of [1,N]
+  contain a six-term arithmetic progression, with no structural premise.
+  This route does not yet give an explicit six-term numerical improvement.
+  The new consequences and the incoming Proofs16WithUnion pass the full
+  combined axiom audit; the catalogue remains 114/6.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
@@ -264,8 +327,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 1,400 pinned manifest entries compile as a 1,415-module closure.
-  OAI.QuantitativePortAudit checks 24,924 public OAI theorems in this prefix
+  The first 2,000 pinned manifest entries compile as a 2,016-module closure.
+  OAI.QuantitativePortAudit checks 33,429 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.

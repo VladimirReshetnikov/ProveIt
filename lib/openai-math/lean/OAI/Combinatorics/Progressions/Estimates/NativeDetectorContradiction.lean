@@ -1,6 +1,8 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Mathematical statements are unchanged from the pinned upstream source.
-Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged.
+Normalize universe levels in the first proof before ordinary kernel checking to
+avoid excessive kernel memory use; the original proof steps are retained. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.FactoredPositiveShiftContradiction
 import OAI.Combinatorics.Progressions.Nilpotent.SimultaneousNiltestFactorization
@@ -13,6 +15,23 @@ namespace Erdos3.RationalFilteredNilmanifold
 
 open Module VectorPolynomial
 open scoped TensorProduct BigOperators
+
+/-- Normalize equivalent universe expressions before ordinary kernel checking.
+Lean 4.32 otherwise uses excessive memory checking the product factorization;
+this transforms only universe levels and retains the original proof and statement. -/
+elab "normalize_ported_proof_universes" body:tacticSeq : tactic => do
+  Lean.Elab.Tactic.withMainContext do
+    let goal ← Lean.Elab.Tactic.getMainGoal
+    let inner ← Lean.Meta.mkFreshExprMVar (← goal.getType)
+    Lean.Elab.Tactic.replaceMainGoal [inner.mvarId!]
+    Lean.Elab.Tactic.evalTactic body
+    let proof ← Lean.instantiateMVars inner
+    let proof ← Lean.Core.transform proof (pre := fun e => do
+      match e with
+      | .const n us => return .done (.const n (us.map Lean.Level.normalize))
+      | .sort u => return .done (.sort u.normalize)
+      | _ => return .continue)
+    goal.assign proof
 
 theorem exists_selected_product_factorization (s : ℕ) (hs : 1 ≤ s) :
     ∃ C : ℕ, 2 ≤ C ∧
@@ -73,57 +92,58 @@ theorem exists_selected_product_factorization (s : ℕ) (hs : 1 ≤ s) :
         (pi D).filtration.realGradedRefiltrationLayer W (Finsupp.weight (fun _ => 1) α)) ∧
       (∀ t : σ → ℝ, eval₂ t (b.coord : VectorPolynomial σ ℚ (ℝ ⊗[ℚ] (∀ i, L i))) ∈
         realificationLieSubalgebra ((pi D).filtration.gradedRefiltrationSubalgebra W)) := by
-  obtain ⟨c, _, hfactor⟩ := exists_lattice_normalized_niltest_factorization s hs
-  let X : Polynomial ℕ := Polynomial.X
-  let Q := (X + 2) ^ 2 + X + (X + (X ^ 2 + X + 3) ^ 2) + X ^ 2 + 4
-  let F := Q + (Q + Polynomial.C c) ^ c
-  obtain ⟨C, hC, hbudget⟩ := exists_natPolynomial_eval_budget F
-  refine ⟨C, hC, ?_⟩
-  intro ι J σ _ _ _ _ L _ _ d _ _ _ _ _ _ _ _ D base rows active eta p
-    hp hι hJ hσ hD horbit hcomp hcap hheight hvert weight hFlayers
-    origin lengths hlengths hbias side hside hrelative
-  have hp0 : 0 ≤ p := by linarith
-  let q := productNiltestBudget p
-  have hpq : p ≤ q := by
-    exact (by nlinarith [sq_nonneg p] : p ≤ (p + 2) ^ 2).trans (productNiltestBudget_geometry hp0)
-  have hq : 0 ≤ q := hp0.trans hpq
-  have hbudget' : q + (q + c) ^ c ≤ (p + C) ^ C := by
-    simpa [F, Q, X, q, productNiltestBudget, productObservableLipBudget, Polynomial.eval₂_pow] using hbudget p hp0
-  have hcC : (q + c) ^ c ≤ (p + C) ^ C := by linarith
-  have hsidepos : ∀ i, 0 < side i := fun i => (Real.exp_pos _).trans_le (hside i)
-  obtain ⟨S0, S, hS0, hS0c, hS⟩ := exists_common_product_niltest_family D base rows active eta
-    hp hι hD horbit hcomp hcap hheight hvert
-  let omega := productBasisWeight weight
-  let hTotal := pi_layer_span D weight hFlayers
-  let freq := fun j => piFrequency
-    (selectedOrbitFrequencies (eta j) (active j))
-  have hcorr : ∀ j, Real.exp (-q) ≤ ‖𝔼 x ∈ translatedIntegerBox (origin j) (lengths j), (S j).eval x‖ := by
-    intro j
-    apply (Real.exp_le_exp.mpr (neg_le_neg hpq)).trans
-    simpa only [(hS j).2.2.2.1] using hbias j
-  have hrel : ∀ j i, Real.exp (-q) * side i ≤ lengths j i := fun j i =>
-    (mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (neg_le_neg hpq)) (hsidepos i).le).trans (hrelative j i)
-  obtain ⟨W, v, m, κ, E, b, R, hv, hW, hheight, hfreq, hm, hmp, hκ, hebr,
-      hE, hR, hb0, hR0, hcoeff, hvalues⟩ :=
-    hfactor (pi D) omega hTotal S0 S (fun j => (hS j).1) freq q hq hS0c.1
-      (by exact (show (Fintype.card σ : ℝ) ≤ p from hσ).trans hpq)
-      (hJ.trans hpq) (fun j => (hS j).2.2.1)
-      (fun j k => ((hS j).2.2.2.2.1 k).trans hpq) (fun j => (hS j).2.2.2.2.2)
-      origin lengths hlengths hcorr side (fun i => (Real.exp_le_exp.mpr hcC).trans (hside i)) hrel
-  let orbit := NilpotentLieFiltration.piRealOrbit (fun i => (D i).filtration)
-    (fun i => (base i).orbit)
-  let g : ((pi D).filtration.realification.adaptedPolynomialFiltration (fun _ : σ => 1)).Group :=
-    ⟨⟨orbit.log, orbit.property⟩⟩
-  have hg : (⟨⟨S0.orbit.log, S0.orbit.property⟩⟩ :
-      ((pi D).filtration.realification.adaptedPolynomialFiltration (fun _ : σ => 1)).Group) = g := by
-    apply NilpotentLieBCHGroup.ext
-    apply Subtype.ext
-    exact congrArg (fun o : (pi D).filtration.realification.PolynomialOrbit (fun _ : σ => 1) => o.log) hS0
-  refine ⟨W, v, m, κ, E, b, R, hv, hW, (fun i k => (hheight i k).trans hcC), hfreq, hm,
-    hmp.trans (Real.exp_le_exp.mpr hcC), hκ, hebr.trans hg, ?_, hR, hb0, hR0, hcoeff, hvalues⟩
-  intro α i
-  exact (hE α i).trans (div_le_div_of_nonneg_right (Real.exp_le_exp.mpr hcC)
-    (monomialScale_pos side hsidepos α).le)
+  normalize_ported_proof_universes
+    obtain ⟨c, _, hfactor⟩ := exists_lattice_normalized_niltest_factorization s hs
+    let X : Polynomial ℕ := Polynomial.X
+    let Q := (X + 2) ^ 2 + X + (X + (X ^ 2 + X + 3) ^ 2) + X ^ 2 + 4
+    let F := Q + (Q + Polynomial.C c) ^ c
+    obtain ⟨C, hC, hbudget⟩ := exists_natPolynomial_eval_budget F
+    refine ⟨C, hC, ?_⟩
+    intro ι J σ _ _ _ _ L _ _ d _ _ _ _ _ _ _ _ D base rows active eta p
+      hp hι hJ hσ hD horbit hcomp hcap hheight hvert weight hFlayers
+      origin lengths hlengths hbias side hside hrelative
+    have hp0 : 0 ≤ p := by linarith
+    let q := productNiltestBudget p
+    have hpq : p ≤ q := by
+      exact (by nlinarith [sq_nonneg p] : p ≤ (p + 2) ^ 2).trans (productNiltestBudget_geometry hp0)
+    have hq : 0 ≤ q := hp0.trans hpq
+    have hbudget' : q + (q + c) ^ c ≤ (p + C) ^ C := by
+      simpa [F, Q, X, q, productNiltestBudget, productObservableLipBudget, Polynomial.eval₂_pow] using hbudget p hp0
+    have hcC : (q + c) ^ c ≤ (p + C) ^ C := by linarith
+    have hsidepos : ∀ i, 0 < side i := fun i => (Real.exp_pos _).trans_le (hside i)
+    obtain ⟨S0, S, hS0, hS0c, hS⟩ := exists_common_product_niltest_family D base rows active eta
+      hp hι hD horbit hcomp hcap hheight hvert
+    let omega := productBasisWeight weight
+    let hTotal := pi_layer_span D weight hFlayers
+    let freq := fun j => piFrequency
+      (selectedOrbitFrequencies (eta j) (active j))
+    have hcorr : ∀ j, Real.exp (-q) ≤ ‖𝔼 x ∈ translatedIntegerBox (origin j) (lengths j), (S j).eval x‖ := by
+      intro j
+      apply (Real.exp_le_exp.mpr (neg_le_neg hpq)).trans
+      simpa only [(hS j).2.2.2.1] using hbias j
+    have hrel : ∀ j i, Real.exp (-q) * side i ≤ lengths j i := fun j i =>
+      (mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (neg_le_neg hpq)) (hsidepos i).le).trans (hrelative j i)
+    obtain ⟨W, v, m, κ, E, b, R, hv, hW, hheight, hfreq, hm, hmp, hκ, hebr,
+        hE, hR, hb0, hR0, hcoeff, hvalues⟩ :=
+      hfactor (pi D) omega hTotal S0 S (fun j => (hS j).1) freq q hq hS0c.1
+        (by exact (show (Fintype.card σ : ℝ) ≤ p from hσ).trans hpq)
+        (hJ.trans hpq) (fun j => (hS j).2.2.1)
+        (fun j k => ((hS j).2.2.2.2.1 k).trans hpq) (fun j => (hS j).2.2.2.2.2)
+        origin lengths hlengths hcorr side (fun i => (Real.exp_le_exp.mpr hcC).trans (hside i)) hrel
+    let orbit := NilpotentLieFiltration.piRealOrbit (fun i => (D i).filtration)
+      (fun i => (base i).orbit)
+    let g : ((pi D).filtration.realification.adaptedPolynomialFiltration (fun _ : σ => 1)).Group :=
+      ⟨⟨orbit.log, orbit.property⟩⟩
+    have hg : (⟨⟨S0.orbit.log, S0.orbit.property⟩⟩ :
+        ((pi D).filtration.realification.adaptedPolynomialFiltration (fun _ : σ => 1)).Group) = g := by
+      apply NilpotentLieBCHGroup.ext
+      apply Subtype.ext
+      exact congrArg (fun o : (pi D).filtration.realification.PolynomialOrbit (fun _ : σ => 1) => o.log) hS0
+    refine ⟨W, v, m, κ, E, b, R, hv, hW, (fun i k => (hheight i k).trans hcC), hfreq, hm,
+      hmp.trans (Real.exp_le_exp.mpr hcC), hκ, hebr.trans hg, ?_, hR, hb0, hR0, hcoeff, hvalues⟩
+    intro α i
+    exact (hE α i).trans (div_le_div_of_nonneg_right (Real.exp_le_exp.mpr hcC)
+      (monomialScale_pos side hsidepos α).le)
 
 end Erdos3.RationalFilteredNilmanifold
 

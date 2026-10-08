@@ -212,6 +212,64 @@ class ClosureEuler(SuffixEuler):
         return value
 
 
+class AdaptiveClosureEuler(ClosureEuler):
+    """Use boundary-only queries after repeated completions of one suffix.
+
+    The initial queries use the direct orientation traversal. Only a later
+    uncached query pays for two path summaries. Cached values, the query cap,
+    signed integer arithmetic, and the cooperative global deadline are shared.
+    The direct ClosureEuler remains an independent reference implementation.
+    """
+
+    def __init__(self, *args, compression_after=4, **kwargs):
+        if type(compression_after) is not int or compression_after < 0:
+            raise ValueError("compression_after must be a nonnegative integer")
+        super().__init__(*args, **kwargs)
+        self.compression_after = compression_after
+        self.query_stage = None
+        self.stage_queries = 0
+        self.summary = None
+        self.stats.update(engine="adaptive-boundary-connectivity", boundary_preparations=0,
+                          boundary_evaluations=0, boundary_setup_darts=0, boundary_query_darts=0)
+
+    def evaluate(self, stage, pairs):
+        self._check()
+        if not 0 <= stage <= len(self.crossings):
+            raise ValueError("invalid suffix stage")
+        key = (stage, tuple(pairs))
+        if key in self.cache:
+            return super().evaluate(stage, key[1])
+        if self.max_states is not None and self.stats["states"] >= self.max_states:
+            raise EulerBudget("closure Euler state budget exhausted")
+        if self.query_stage != stage:
+            self.query_stage, self.stage_queries, self.summary = stage, 0, None
+        self.stage_queries += 1
+        if self.stage_queries <= self.compression_after:
+            return super().evaluate(stage, key[1])
+        self._prepare(stage)
+        # Two boundary overlays are unattractive when the cut contains more
+        # labels than the remaining diagram has crossings. Threshold zero is
+        # an explicit eager mode for independent comparisons.
+        if self.compression_after and len(self.boundary) > len(self.crossings)-stage:
+            return super().evaluate(stage, key[1])
+        self.stats["evaluations"] += 1
+        self.stats["states"] += 1
+        if self.summary is None:
+            from .boundary_connectivity import BoundaryConnectivity
+            # Publish only after complete preparation. A deadline interruption
+            # leaves neither an incomplete summary nor a cached Euler value.
+            summary = BoundaryConnectivity(self.base_alpha, self.boundary, self._check)
+            self.summary = summary
+            self.stats["boundary_preparations"] += 1
+            self.stats["boundary_setup_darts"] += 2 * len(self.base_alpha)
+        value = self.summary.euler(key[1], self._check)
+        self.cache[key] = value
+        self.stats["boundary_evaluations"] += 1
+        self.stats["boundary_query_darts"] += 2 * len(self.boundary)
+        self.stats["max_coefficient_bits"] = max(self.stats["max_coefficient_bits"], abs(value).bit_length())
+        return value
+
+
 def component_euler_bound(scan, engine, stage, *, cap=None):
     """Return the sum of absolute Euler characteristics of completed summands.
 
@@ -256,7 +314,7 @@ def euler_compressed_khovanov_decide(pd, *, order=None, max_objects=None, second
         order = best_scan_order(pd, tries=min(len(pd), 12))
     if shape_cache is None:
         shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
-    engine = ClosureEuler(pd, order, max_states=euler_max_states, deadline=deadline)
+    engine = AdaptiveClosureEuler(pd, order, max_states=euler_max_states, deadline=deadline)
     scan = ComponentScan(max_objects=max_objects, deadline=deadline,
                          shape_cache=shape_cache, rank_cap=3)
     exhausted = False

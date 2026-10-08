@@ -6,6 +6,7 @@
 \usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
 \usepackage[margin=1in]{geometry}
 \usepackage{xcolor}
+\usepackage{xurl}% added for Part II (7 October 2026)
 \usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
 \usepackage{enumitem,fancyhdr}
 \makeatletter
@@ -20,7 +21,7 @@
     \endgroup
   \fi}
 \makeatother
-\hypersetup{pdftitle={Lazy Closed Walks in Growing Dimension},pdfauthor={Research report 179},pdfsubject={OEIS A328716, parity sensitive asymptotics and probability laws}}
+\hypersetup{pdftitle={Lazy Closed Walks in Growing Dimension},pdfauthor={Part I: Research report 179; Part II: research manuscript prepared for Vladimir Reshetnikov},pdfsubject={OEIS A328716, parity sensitive asymptotics and probability laws; Part II (added 7 October 2026): uniform lattice-bridge asymptotics, a Gaussian return bound disproved}}
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Lazy closed walks in growing dimension}\fancyhead[R]{\small Report 179}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}\setlength{\emergencystretch}{2em}
 \setlist{itemsep=3pt,topsep=5pt}
@@ -42,9 +43,35 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
-\title{\textbf{Lazy Closed Walks\\in Growing Dimension}\\[7pt]\large All fixed orders, parity conditioned Poisson laws,\\and occupied coordinate fluctuations for OEIS A328716}
-\author{Research report 179}
-\date{3 October 2026}
+% Added by the ProveIt write of Part II (7 October 2026): packages and macros of
+% Part II (uniform lattice-bridge asymptotics), and the Part II source blocks.
+\usepackage{graphicx,longtable}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\TV}{TV}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Dop}{\mathcal D}
+\newcommand{\ep}{\epsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\sourcepin}{\texttt{136e707021c9}}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+% Part II's shipped table file carries unprefixed labels; this wrapper gives
+% them the prefix lcw:ulb: at input, leaving the shipped file unchanged
+% (amsmath restores \label from \ltx@label inside floats, so both are set).
+\makeatletter
+\newcommand{\inputprefixed}[1]{\begingroup\let\lcwlabel\label
+ \renewcommand{\label}[1]{\lcwlabel{lcw:ulb:##1}}\let\ltx@label\label
+ \input{#1}\endgroup}
+\makeatother
+\title{\textbf{Lazy Closed Walks\\in Growing Dimension}\\[7pt]\large All fixed orders, parity conditioned Poisson laws,\\and occupied coordinate fluctuations for OEIS A328716\\[6pt]\normalsize Part II: uniform lattice-bridge asymptotics, a Gaussian bound disproved,\\a sharp dimension threshold, and sparse Poisson laws}
+\author{Part I: Research report 179\\[2pt]Part II: research manuscript prepared for Vladimir Reshetnikov}
+\date{Part I: 3 October 2026\quad Part II: 7 October 2026\quad merged: 7 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -80,8 +107,38 @@ transseries volume; a proof of the row conjecture of A328718, a
 fixed-dimension statement outside the source's regime) and dated notes. No
 statement, proof or number of the source was changed.
 \end{writenote}
+\begin{writenote}[Part~II, added 7 October 2026 (second write)]
+Since its second write the report has two Parts. Part~I
+(Sections~\ref{lcw:sec:scope}--\ref{lcw:sec:further}) is Report~179 as
+written and independently checked; the abstract and the status note above
+describe it alone, and nothing of it changed except the \verb|\part| line,
+this note and dated notes at the ends of Sections~\ref{lcw:sec:ratio}
+and~\ref{lcw:sec:further}. Part~II
+(Sections~\ref{lcw:ulb:sec:front}--\ref{lcw:ulb:sec:outlook}, labels
+\file{lcw:ulb:}) is the manuscript \emph{Uniform Lattice-Bridge
+Asymptotics} (7~October 2026, ``Prepared for Vladimir Reshetnikov''), which
+names Part~I as its immediate predecessor and answers its
+Question~2 for the counts at both ends of the ratio $N/D$: a
+scalar saddle expansion uniform in the dimension and in all nonnegative
+activities, to every fixed order, with leading relative error at most
+$24/m$ (Theorem~\ref{lcw:ulb:thm:global},
+Corollary~\ref{lcw:ulb:cor:explicit}); the dense Gaussian threshold
+$D^3/N^2\to0$ with critical factor $\exp(1/(48s^2))$
+(Theorem~\ref{lcw:ulb:thm:dense-gaussian}); and, for $m^2/D=O(1)$, a joint
+Poisson law of repeated axes and parity-conditioned idle steps
+(Theorems~\ref{lcw:ulb:sp:thm:count} and~\ref{lcw:ulb:sp:thm:law}). It also
+gives an exact counterexample, at $D=16$ and $N=26$, to the universal
+Gaussian return bound stated by Ball and Sterbenz as a conjecture of Lyons
+(Theorem~\ref{lcw:ulb:thm:lyons-counterexample}), which the write confirmed
+by its own exact count. Section~\ref{lcw:ulb:sec:front} records its
+provenance, what it answers here, the checks, its non-claims and its
+letters: they are not Part~I's (in Part~II $\epsilon\in\{0,1\}$ is the
+parity remainder of $N=2m+\epsilon$; in Part~I $\epsilon=(-1)^n$ is a sign).
+\end{writenote}
 \setcounter{tocdepth}{1}{\small\tableofcontents}
 \newpage
+
+\part{Lazy closed walks in growing dimension: all fixed orders, parity conditioned Poisson laws, and occupied coordinate fluctuations for OEIS A328716}\label{lcw:part:one}
 
 \section{The model and the scope of the results}\label{lcw:sec:scope}
 A walk is an ordered sequence of steps from
@@ -914,6 +971,40 @@ $-0.562508$. This is the standard
 Edgeworth computation, recorded here as a numerical corroboration, not as a
 proved second-order theorem.)}
 \end{remark}
+\begin{writenote}[Part~II and this section, 7 October 2026]
+The sentence ``Nothing here treats $\rho\downarrow0$, $\rho\to\infty$, or fixed
+$D$'' describes Part~I. Part~II treats all three for the counts.
+Its Theorem~\ref{lcw:ulb:thm:global} holds for every $D$, every $N$ and every
+nonnegative idle and axis activity, with relative error $O_K(m^{-K-1})$,
+$m=\lfloor N/2\rfloor$; Theorem~\ref{lcw:ulb:thm:dense-gaussian} makes the
+leading term explicit for $N/D\to\infty$, and
+Theorem~\ref{lcw:ulb:sp:thm:count} for $m^2/D=O(1)$. \emph{On a compact
+$\rho$-interval} (a consequence drawn by the write, not stated in Part~II),
+for a real marker $u=\lambda$ in a compact subset of $[0,\infty)$, of
+$(0,\infty)$ when $N$ is odd,
+Theorem~\ref{lcw:ulb:thm:global} and Theorem~\ref{lcw:thm:ratio} are two
+expansions of the same counts with the same relative precision but different
+leading terms: Part~II's saddle is that of the whole generator
+$H_\epsilon(\lambda^2t)F(t)^D$, Part~I's that of $F^D$, with the idle factor
+as amplitude. Each leading term is therefore the count times
+$1+O_K(1/D)$, so the two agree to relative $O(1/D)$; at $N=D=40,41,100,101$
+and $u=1$ the write's evaluation gives Part~II's over Part~I's minus one
+$=-1.86\cdot10^{-3}$, $-3.65\cdot10^{-4}$, $-7.57\cdot10^{-4}$,
+$-1.86\cdot10^{-4}$. Neither theorem contains the other: Part~II has no
+complex marker, no absolute remainder at the zeros of $E_\epsilon(ru)$
+(Remark~\ref{lcw:rem:zeros}) and no zero-step law in this range; Part~I has
+no uniformity in $\rho$ or in anisotropic activities. \emph{At fixed $D\ge1$},
+Theorem~\ref{lcw:ulb:thm:dense-gaussian}(i) gives the leading statement of
+Remark~\ref{lcw:rem:rows} by a second route (the parity-resolved saddle and
+the large-argument Bessel expansion, not Fourier inversion); its error
+contains $O(1/N)$, so it does not give the $1/N$ term.
+Subsection~\ref{lcw:ulb:subsec:dense-cumulant-check} obtains that term,
+$-3D/(16N)$, by the same Edgeworth computation as the dated note in
+Remark~\ref{lcw:rem:rows} (not an independent route), with its remainder in
+outline, and the next coefficient $D(32D^2-21D-8)/1536$, which the write
+corroborated from exact counts (note at the end of
+Section~\ref{lcw:ulb:sec:dense-gaussian}).
+\end{writenote}
 
 \section{Exact checks and reproducibility}\label{lcw:sec:verification}
 The proofs above establish the asymptotic results. Computation checks finite enumeration and coefficient algebra; numerical agreement does not establish a uniform remainder, an effective onset, or priority over prior literature.
@@ -1086,8 +1177,2447 @@ core-reversion form with $\Lambda_{\mathrm{vol}}=1+1/L$).
 numbers and 65 references (aux of a build of the delivered text) confirmed.
 Apart from the scope of one sentence, no defect was found in the write.
 \end{writenote}
+\begin{writenote}[Part~II and these questions, 7 October 2026]
+Part~II (Section~\ref{lcw:ulb:sec:front}) answers part of these questions; the
+table of Section~\ref{lcw:ulb:sec:answers} gives the details, and the notes
+above, which call the two ends of question~2 open, were written before
+Part~II arrived and are kept. \emph{Question~2}: answered for the counts at
+both ends (Theorem~\ref{lcw:ulb:thm:global} for every ratio,
+Theorem~\ref{lcw:ulb:thm:dense-gaussian} and
+Corollary~\ref{lcw:ulb:cor:nonlazy-dense} for $N/D\to\infty$,
+Theorem~\ref{lcw:ulb:sp:thm:count} for $m^2/D=O(1)$), and for the laws of
+the zero steps and of the repeated and occupied axes in the sparse critical
+range $m^2/D=O(1)$ (Theorem~\ref{lcw:ulb:sp:thm:law}). Open: those laws when
+$N/D\to\infty$ with $D\to\infty$, and when $N/D\to0$ with $N^2/D\to\infty$
+(Part~II's own questions in
+Sections~\ref{lcw:ulb:sec:outlook}.4 and~\ref{lcw:ulb:sec:outlook}.6 are
+related). \emph{Question~3}: advanced only in that sparse range, where the
+occupied axes are not Gaussian: a joint discrete law of zero steps and
+repeated axes with error $O(1/m)$ in exponentially weighted $\ell^1$, and the
+occupied-axis deficit $m-K_{\rm occ}$ in total variation; the local theorem
+and the joint Edgeworth expansion in the compact range stay open.
+\emph{Question~1}: advanced in part. Corollary~\ref{lcw:ulb:cor:explicit}
+gives the explicit two-sided bound $|a_n/L_n-1|\le24/\lfloor n/2\rfloor$ for
+every $n\ge2$, with Part~II's leading term $L_n$; effective constants for
+the expansion of Theorem~\ref{lcw:thm:absolute}, interval evaluations and a
+certified inverse stay open (Part~II asks the same for its own expansion in
+Section~\ref{lcw:ulb:sec:outlook}.3). \emph{Question~4}: untouched.
+\end{writenote}
 
-\begin{thebibliography}{9}
+\clearpage
+\part{Uniform lattice-bridge asymptotics: a Gaussian bound disproved, a sharp dimension threshold, and sparse Poisson laws}\label{lcw:ulb:part}
+\fancyhead[R]{\small Part II: uniform lattice bridges}
+% Part II numbers equations within sections, as delivered; Part I's equations
+% keep their consecutive numbers.
+\counterwithin{equation}{section}
+\partsource{A research manuscript of 7~October 2026, archive
+\file{uniform-lattice-bridges-research.zip}, delivered as
+\file{uniform-lattice-bridges/article.tex} with nine section files
+(31~pages). Delivered title block ``RESEARCH ARTICLE / Uniform Lattice-Bridge
+Asymptotics / A Gaussian bound disproved, a sharp dimension threshold, and
+sparse Poisson laws / Prepared for Vladimir Reshetnikov / 7 October 2026''.
+Printed as delivered after Section~\ref{lcw:ulb:sec:front}, which the write
+added, with \textbf{[write]} notes; the manuscript's Section~$k$ is
+Section~$k+13$ here, its statements move with their sections, its equation
+($k.m$) is equation ($k{+}13.m$), and its Tables~2--4 and Figures~1 and~2
+keep their numbers. Its labels carry the prefix \file{lcw:ulb:}. It uses
+Part~I only as the source of the questions it answers, not as a premise of
+any proof.}
+\begin{partabstract}
+We give an exact counterexample to the universal Gaussian return bound
+conjectured in Felker--Lyons (2003) and stated by Ball--Sterbenz (2005):
+in dimension $16$, the nonlazy return probability after $26$ steps is
+strictly greater than $2(4/(13\pi))^8$. The certificate uses only integer
+arithmetic and an elementary rational bound for $\pi$.
+A uniform asymptotic theorem explains the failure and proves more:
+no finite constant can multiply the Gaussian expression into an upper
+bound valid for every dimension and time.
+
+The main tool is a single expansion for weighted closed walks with steps
+$0,\pm e_1,\ldots,\pm e_D$, uniform in dimension and all nonnegative
+activities. For length $N=2m+\epsilon$, exact parity reduction expresses
+the count through Bessel and hyperbolic functions with negative real
+zeros. Their tilted coefficients are Poisson--binomial probabilities,
+with the decisive variance bound $m/2\le B\le m$. We prove expansions
+to every fixed order, with relative remainder $O_K(m^{-K-1})$, and a
+leading relative error at most $24/m$.
+
+For isotropic nonlazy and unit-idle walks in the dense range
+$N/D\to\infty$, the Gaussian estimate, including the period correction
+when appropriate, is relatively valid exactly when
+$D^3/N^2\to0$. At $N/D^{3/2}\to s>0$, the missing factor tends to
+$\exp(1/(48s^2))$. The eventual Gaussian upper-bound thresholds
+are asymptotic to $D^2/12$ and $D^2/9$, respectively. In the sparse range $m^2/D=O(1)$ with bounded
+$\lambda\sqrt{m/D}$, repeated axes
+follow a Poisson law of mean $m^2/(4D)$, asymptotically independent of
+a parity-conditioned Poisson idle count. We prove error $O(m^{-1})$
+in exponentially weighted $\ell^1$, give the first counting correction,
+and quantify triple occupancy.
+
+The results answer endpoint questions in the repository's lazy-walk
+report. Proofs, source comparisons, reproducible checks, and further questions
+are included. The classical
+real-zero and Edgeworth methods are credited explicitly; historical
+priority of the combined conclusions is not asserted.
+
+\smallskip\noindent
+Mathematical status: proved in the text, with separate computational checks.
+No Lean formalization or external peer review is claimed.
+\end{partabstract}
+
+\section{Provenance, scope and notation of Part~II}\label{lcw:ulb:sec:front}
+
+[Added 7~October 2026.] Part~II was added in a second write of this report,
+after Part~I had been written (\file{f3fb85cb6}) and independently checked
+(\file{1ba9be08f}). It is the manuscript \emph{Uniform Lattice-Bridge
+Asymptotics}, which starts from Part~I's Question~2
+(Section~\ref{lcw:sec:further}) and answers it for the counts. Everything of
+the manuscript is printed in this Part except its title page (recorded in
+the source block above and below), its table of contents and its reference
+list (merged into this report's bibliography): its abstract and status line
+above, and its eight sections as
+Sections~\ref{lcw:ulb:sec:context}--\ref{lcw:ulb:sec:outlook}, in the
+manuscript's order. Its letters are kept
+(Section~\ref{lcw:ulb:sec:notation}). This section and the notes marked
+[write] are the write's; all other text of
+Sections~\ref{lcw:ulb:sec:context}--\ref{lcw:ulb:sec:outlook} is the
+manuscript's.
+
+\subsection{The manuscript}\label{lcw:ulb:sec:provenance}
+
+The archive \file{uniform-lattice-bridges-research.zip} ($838{,}687$ bytes,
+SHA-256 \file{f736b7f99454...3eaff7bb6}; 24 files in one wrapper directory
+\file{uniform-lattice-bridges/}, $1{,}057{,}955$ bytes unpacked; no checksum
+manifest) arrived in commit \file{fe7165a3c} (7~October 2026, 10:58). Its 12
+supporting files were placed in this directory by commit \file{3cf0a2758}
+(7~October 2026, 13:16), which also retired the archive, with the prefix
+\file{02-bridges-}, the Part number; all 12 are byte-identical to the
+delivery (confirmed at the write). The programs are \file{code/02-bridges-*.py};
+the verification record, the generated table, \file{requirements.txt} and
+\file{source\_provenance.json} are under \file{data/}; the two figures (PDF,
+included here, and PNG previews) under \file{figures/}. Not shipped, and
+retrievable from the arrival commit: the manuscript sources and its PDF, and
+the delivery \file{README.txt}.
+
+The manuscript is \file{article.tex} with \file{sections/01\_context.tex} to
+\file{sections/08\_outlook.tex} and \file{sections/references.tex} (2{,}139
+lines, 88{,}397 bytes; a 31-page PDF, which a build of the delivered text
+reproduces), dated 7~October 2026. Its driver inputs the section files in the
+order 01, 06, 02, 03, 04, 05, 07, 08, so the counterexample file is its
+Section~2. Its title page reads ``Prepared for Vladimir Reshetnikov'', its PDF
+author field and its README ``Research manuscript prepared for Vladimir
+Reshetnikov''; it names no person or tool as author and carries no
+AI-assistance line (none is supplied here). Its pins
+(Section~\ref{lcw:ulb:sec:context}, \file{data/02-bridges-source\_provenance.json}
+and the bibliography entries \cite{proveit,mathrepo}) are ProveIt commit
+\file{136e707021c9df3a1b6af904ddad045ae38b7c23} (7~October 2026, 17:07:16
+UTC), which is later than Part~I's write and its independent check, so the
+manuscript read Part~I as written, and commit \file{adc7f1241b42} of
+Vladimir's \texttt{math} repository, which is outside this repository and was
+not checked. Part~I's \file{article.tex} is the same at the pin as before
+this write.
+
+\emph{How the manuscript was merged.} Its 76 labels carry the prefix
+\file{lcw:ulb:}: \file{ulb:}$X$ and unprefixed $X$ became
+\file{lcw:ulb:}$X$, and the sparse section's \file{newsp:}$X$ became
+\file{lcw:ulb:sp:}$X$ (the two sections both use \file{eq:exact}); its 75
+references to them (41 \verb|\eqref|, 34 \verb|\ref|) were updated. The
+three table labels live in the shipped file
+\file{data/02-bridges-numerical\_tables.tex}, which is input unchanged
+through a local wrapper that adds the prefix. The table file and the two
+figures are input under their prefixed names. Its citation keys are new
+entries of the merged bibliography, marked [Part~II], except \file{gww},
+which Part~I cites too and which is printed once with Part~II's link and note
+added; its key \file{lcw} is this report at the pin, that is, Part~I. Its
+macros (\verb|\Prob|, \verb|\Dop|, \verb|\ep|, \verb|\R|, \verb|\Z|,
+\verb|\sech|, \verb|\csch|, \verb|\repo|, \verb|\sourcepin|, and the unused
+\verb|\N|, \verb|\Pois|, \verb|\TV|, \verb|\abs|) and the
+packages \texttt{graphicx} and \texttt{longtable} were added to the preamble;
+its \verb|\E| and \verb|\Var| are Part~I's. The title page and table of
+contents are not printed. No other text was changed; the survey table of
+Section~\ref{lcw:ulb:sec:context} is set ragged right (layout only), and the
+unlabelled sparse section received the label \file{lcw:ulb:sp:sec:sparse}.
+The numbering, against
+a build of the delivered text: its Sections~1--8 are
+Sections~\ref{lcw:ulb:sec:context}--\ref{lcw:ulb:sec:outlook} here, its
+Theorem~2.1 is Theorem~\ref{lcw:ulb:thm:lyons-counterexample}, Theorem~3.2
+is Theorem~\ref{lcw:ulb:thm:global}, Corollary~3.3 is
+Corollary~\ref{lcw:ulb:cor:explicit}, Theorems~5.1 and~5.2 are
+Theorems~\ref{lcw:ulb:sp:thm:count} and~\ref{lcw:ulb:sp:thm:law},
+Theorem~6.1 is Theorem~\ref{lcw:ulb:thm:dense-gaussian}, every statement,
+subsection and equation $k.m$ is $(k{+}13).m$, and Tables~2--4 (the
+uncaptioned table of Section~\ref{lcw:ulb:sec:context} takes number~1, as
+delivered) and Figures~1 and~2 are unchanged (all 76 labels compared). The
+manuscript cites by number only Part~I's Sections~9 and~12, which keep their
+numbers, and outside sources.
+
+\emph{What the manuscript says about the repository.} Its account of
+Part~I (the compact-ratio Theorem~\ref{lcw:thm:ratio}, Question~2 of
+Section~\ref{lcw:sec:further}, and the fixed-$D$ Remark~\ref{lcw:rem:rows}
+with the note that the dense case with growing dimension stays open) is
+correct. Its table of the other threads it surveyed is context, not a premise
+of any proof; one entry was true at its pin and is stale now (dated note at
+the end of Section~\ref{lcw:ulb:sec:context}).
+
+\subsection{What Part II answers in Part I}\label{lcw:ulb:sec:answers}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\theHtable}{lcwulb.answers}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.69\textwidth}@{}}
+\toprule
+Part~I & After Part~II\\
+\midrule
+\endhead
+Question~2 (the ratios $N/D\to0$ and $N/D\to\infty$) & \textbf{Answered for the counts at both ends}: Theorem~\ref{lcw:ulb:thm:global} for every $D$, $N$ and nonnegative activity; Theorem~\ref{lcw:ulb:thm:dense-gaussian} and Corollaries~\ref{lcw:ulb:cor:nonlazy-dense}--\ref{lcw:ulb:cor:eventual-threshold} for $N/D\to\infty$, with the explicit $-3D/(16N)+D^3/(48N^2)$; Theorem~\ref{lcw:ulb:sp:thm:count} for $m^2/D=O(1)$, with the first correction. \textbf{Answered for the laws in the sparse critical range} $m^2/D=O(1)$: zero steps, repeated axes and the occupied-axis deficit (Theorem~\ref{lcw:ulb:sp:thm:law}). \textbf{Open}: the laws for $N/D\to\infty$ with $D\to\infty$, and for $N/D\to0$ with $N^2/D\to\infty$.\\
+Question~3 (local theorem or joint Edgeworth expansion for the occupied axes) & \textbf{Advanced only in the sparse critical range}, where the occupied axes are not Gaussian: the joint law of zero steps and repeated axes with error $O(1/m)$ in exponentially weighted $\ell^1$, and the deficit $m-K_{\rm occ}$ in total variation. The compact-range question stays open.\\
+Question~1 (effective constants, certified inverse) & \textbf{Advanced in part}: the explicit bound $|W_N/L_N-1|\le24/m$ (Corollary~\ref{lcw:ulb:cor:explicit}), hence $|a_n/L_n-1|\le24/\lfloor n/2\rfloor$ for every $n\ge2$. Effective constants for Theorem~\ref{lcw:thm:absolute}, interval evaluations and a certified inverse stay open.\\
+Question~4 (comparison with the literature) & Untouched.\\
+Remark~\ref{lcw:rem:rows} (rows of A328718) & Its leading statement follows from Theorem~\ref{lcw:ulb:thm:dense-gaussian}(i) at fixed $D\ge1$ by a second route; Subsection~\ref{lcw:ulb:subsec:dense-cumulant-check} computes its $1/N$ term by the same Edgeworth computation as its dated note, and the next term.\\
+Theorem~\ref{lcw:thm:ratio} & Not contained in Theorem~\ref{lcw:ulb:thm:global}: on its common range (real marker, compact ratio) the two give expansions of the same counts with leading terms that agree to relative $O(1/D)$ (note at the end of Section~\ref{lcw:sec:ratio}).\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+Dated notes at the ends of Sections~\ref{lcw:sec:ratio}
+and~\ref{lcw:sec:further} say the same; the earlier notes there, which call
+the two ends of Question~2 open, are kept as written.
+
+\emph{What Part~II proves again.} Its exact identity
+(Proposition~\ref{lcw:ulb:prop:exact}) contains Part~I's count
+\eqref{lcw:eq:exact} (at $u=\lambda$, after splitting the parity of the idle
+steps), and its fixed-$D$ subsection repeats Part~I's Edgeworth $1/N$ term.
+\emph{What is new to the report}: everything else, in particular the
+counterexample, which is new to the repository (before the placement no
+file of the repository mentioned Felker or Sterbenz).
+
+\subsection{What the write read and checked}\label{lcw:ulb:sec:checks}
+
+\emph{At placement} (the intake dossier, 7~October 2026): the three shipped
+programs rerun on a copy (\file{verify\_lyons.py} and
+\file{verify\_endpoints.py}, standard library; \file{reproduce.py} with
+mpmath~1.3.0); the record equal except for the Python version, the table
+file equal apart from line ends; the counterexample confirmed exactly by an
+earlier batch's own count; no claim found wrong.
+
+\emph{At the write} (7~October 2026; Python 3.14.4, mpmath 1.3.0, SymPy 1.14.0;
+own code, kept with the intake records and not shipped). Every proof of
+Sections~\ref{lcw:ulb:sec:lyons-counterexample}--\ref{lcw:ulb:sec:dense-gaussian}
+was read line by line, with no error found; rechecked by hand in particular:
+the three formulas of Lemma~\ref{lcw:ulb:lem:half} and the Bernoulli bound
+$B\le m$; the integral representation of $F_\nu$; every constant of
+Proposition~\ref{lcw:ulb:prop:PBexplicit}; the transfer
+inequalities and the expansion \eqref{lcw:ulb:sp:eq:log}, its triple-use
+coefficient and the corrections $C_\epsilon$ and their unweighted forms;
+the conversion of the parity saddle in the proof of
+Theorem~\ref{lcw:ulb:thm:dense-gaussian} and its two corollaries on signs
+and thresholds. With SymPy it rederived
+\eqref{lcw:ulb:eq:dense-v-expansion}, \eqref{lcw:ulb:eq:dense-rate-series}, the
+prefactor expansion, the totals $-3/(16\rho)$ and $D/(48\rho^2)$ and the
+logarithm of the fixed-$D$ expansion. Exactly, it recounted the
+counterexample by a third route and decided it in interval arithmetic, and
+scanned the conjecture for $d\le40$ (note at the end of
+Section~\ref{lcw:ulb:sec:lyons-counterexample}); it reproduced every entry
+of Table~\ref{lcw:ulb:tab:verification-sparse} and checked further sparse
+cases and $\E U$ (Section~\ref{lcw:ulb:sp:sec:sparse}); it computed $R/G$ at
+$D=100$ from exact counts and recomputed all of
+Table~\ref{lcw:ulb:tab:verification-dense} by its own saddle code, and the
+fixed-$D$ second coefficient from exact counts
+(Section~\ref{lcw:ulb:sec:dense-gaussian}); it checked the envelope
+\eqref{lcw:ulb:eq:explicit} on an anisotropic example
+(Section~\ref{lcw:ulb:sec:global}). It reran the three shipped programs on a
+copy (Section~\ref{lcw:ulb:sec:computation}). It read the author-hosted
+Ball--Sterbenz preprint and the Felker--Lyons version of 6~November 2003 at
+the cited places (note at the end of
+Section~\ref{lcw:ulb:sec:lyons-counterexample}). \emph{Not read by the
+write}: the journal versions of both papers, the Felker--Lyons erratum,
+Bender, Pitman, Dolgopyat--Hafouta, the DLMF sections and the \texttt{math}
+repository; the manuscript's accounts of them are reported, not confirmed.
+
+\subsection{What is not claimed}\label{lcw:ulb:sec:nonclaims}
+
+From the manuscript: no historical priority for the counterexample or the
+combined conclusions, and no minimum dimension or length (``No claim that
+this is the smallest possible dimension or the shortest possible
+counterexample is needed''; its README: the literature audit ``does not
+establish historical priority or a minimum dimension''); the final
+Ball--Sterbenz journal PDF not inspected; the real-zero, Bernoulli and
+Edgeworth methods classical; Poincar\'e expansions at fixed order, with
+existential constants $C_K$; the dense large-dimension table entries are
+saddle evaluations, not enumerations; no interval arithmetic (the $24/m$
+envelope becomes a numerical interval only with outward-rounded evaluation
+of the saddle); the sign corollary asserts no uniqueness of crossings; the
+effective dimension of Section~\ref{lcw:ulb:sec:outlook}.5 is ``a proposed
+organizing parameter''; the review of the two repositories was bounded and
+infers no formal scope; nothing formalized, no external review. The write
+adds: its checks are exact finite computations, floating evaluations or hand
+computations; its scan of the conjecture is finite and settles no minimum;
+nothing was submitted anywhere.
+
+\subsection{Reading conventions}\label{lcw:ulb:sec:notation}
+
+Part~II keeps its letters. Where they clash with Part~I, read them as follows
+(the write's own text in Part~II uses Part~II's letters).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{lcwulb.notation}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.15in}>{\raggedright\arraybackslash}p{2.05in}@{}}
+\toprule
+Symbol & Part II & Part I\\
+\midrule
+\endhead
+$\epsilon$ & the parity remainder in $N=2m+\epsilon$, $\epsilon\in\{0,1\}$ & the sign $(-1)^n$; Part~I's $+1$ is Part~II's $0$\\
+$m$, $N$ & $N=2m+\epsilon$ the length, $m$ the number of pairs & $N$ the length, $n=N=D$ on the diagonal\\
+$F$ & $F(t)=\sum t^k/(k!)^2=I_0(2\sqrt t)$ & $F(z)=I_0(2z)$, Part~II's $F$ at $t=z^2$\\
+$\Dop$ & $t\,d/dt$ & $\DD=z\,d/dz$; under $t=z^2$, $t\,d/dt=\tfrac12z\,d/dz$\\
+$r$, $\kappa_j$, $B$ & the saddle of $G_\epsilon$ in $t$ (mean $m$) and its cumulants and variance; $B$ also a bound for $\beta$ (Theorem~\ref{lcw:ulb:sp:thm:count}) and $B(z)=z\,d/dz\log I_0(2z)$ (Section~\ref{lcw:ulb:sec:dense-gaussian}) & $r$ the saddle of $F$ in $z$ (mean $1$), $\kappa_h$, $b=4r^2-1$; $B_w(z)$\\
+$E_s$ & the saddle corrections~\eqref{lcw:ulb:eq:Es}, Part~I's $\TT_s$ of~\eqref{lcw:eq:operator} applied to the constant~$1$ with $(B,\kappa_j)$ for $(b,\kappa_h)$ & $E_\epsilon(t)=e^t+\epsilon e^{-t}$, $E_{\epsilon,u}$\\
+$H_0$, $H_1$, $h$ & $\cosh\sqrt t$, $\sinh\sqrt t/\sqrt t$; $h=|x|_1$, $h=B^{-1/2}$ (Section~\ref{lcw:ulb:sec:PB}) & $H(v,t)$, $H(s)$, $H_\ell(j)$; $h$ a cumulant order, $h(w)$\\
+$\lambda$, $J$ & the idle activity (Part~I's marker $u$); the number of idle steps (Part~I's $J_n$); $J=\sum_jj\nu_j$ in~\eqref{lcw:ulb:eq:Es} & $u$; $J_n$, $J_\epsilon$\\
+$K_{\rm occ}$, $R$, $U$, $K$ & occupied (Part~I's $K_n$), repeated and triple-use axes; $K$ a fixed order, a bound for $\theta$, $K_i$ axis counts & $K_n$; $R_2(n)$, $R_{k,m}$; $U_M$; $K$ a compact interval\\
+$\theta$, $\beta$ & $\theta=m^2/D$, $\beta=\lambda\sqrt{m/D}$; $\theta$ also an angle & $\theta$ an angle\\
+$C$, $c$ & $C_K$; $C_\epsilon(\theta,\beta)$ the sparse correction~\eqref{lcw:ulb:sp:eq:C}; $C_{m,d}$ multinomial sums; $c_i=a_ib_i$; $c=\beta^2$; $c=1+1/(2D)$ & $C_\epsilon=E_\epsilon(r)/\sqrt b$; $c_{\epsilon,\ell}$\\
+$\rho$, $q$ & $\rho=N/D$ (as in Part~I), $q=D/N$ & $\rho=N/D$; $q=1/F(r)$\\
+$R_{N,D}$, $G_{N,D}$ & the lazy return probability and its Gaussian prediction; $R^0$, $G^0$ nonlazy & $R_2(n)$, $R_{k,m}$\\
+$Q$ & $Q_{n,D}=(n!)^2[t^n]F(t)^D$, Part~I's $Q_{D,n}$ (indices swapped); $Q_\epsilon(z)=1+(-1)^\epsilon e^{-2z}$; $Q\sim\mathcal P_{\epsilon,\beta}$; $Q(t,x)$ & $Q_{D,k}$, $Q_{\epsilon,\ell}$\\
+$T$, $L$ & $T_m$ the transfer; $T_0(D)$, $T_1(D)$ thresholds; $L_N$, $L_{N,x}$ leading terms; $L$ an order & $\TT_\ell$, $T(n,k)$; $L_M$ a lower bracket\\
+$\mathcal P_{\epsilon,\beta}$ & Poisson$(\beta)$ conditioned on parity $\epsilon$ & $\pi_\epsilon$, Poisson$(r)$ conditioned on the sign $\epsilon$\\
+$a$, $b$, $d$, $s$, $p$ & activities $a_i,b_i$; $a=2D+1$, $a=15/32$, $a\in\{1/4,3/16\}$; $d$ the dimension (Section~\ref{lcw:ulb:sec:lyons-counterexample}); $s$ a limit of $N/D^{3/2}$ or $N/D^2$, an index; $p_j$ Bernoulli parameters & $a_n$; $b$; $d=F(r)/(er)$; $s_j$ Stirling coefficients; $p=1-q$\\
+$X$, $x$, $\nu$ & $X_j$ Bernoulli variables; $x$ an endpoint or a scaled angle; $\nu_i=|x_i|$, $\nu_j$ multiplicities & $X_r$, $X$; $x=z^2$; $\nu(X)$\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+% ---- delivered sections/01_context.tex ----
+\section{Repository review and the research question}
+\label{lcw:ulb:sec:context}
+
+The starting request was to review recent results in
+\texttt{VladimirReshetnikov/ProveIt} and
+\texttt{VladimirReshetnikov/math}, select a promising direction, and develop
+substantial new mathematics. The review was pinned to the \repo\ commit
+\sourcepin\ and the \texttt{math} import
+\texttt{adc7f1241b42} \cite{proveit,mathrepo}. Pinning matters: the Ramsey
+corpus had already absorbed several rounds of improvements on the day of
+inspection. A question in an earlier report may have been answered in a
+later report without the older question being deleted.
+
+\subsection{Results reviewed and their precise scope}
+
+The following table records the mathematical reasons for the selection.
+Statements about formalization are reports of the inspected repository
+records; no repository-wide Lean rebuild was performed for this article.
+In particular, a manuscript, its formalization scope document, and a
+quantitative consequence are treated as separate objects.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}>{\raggedright\arraybackslash}p{.27\textwidth}@{}}% ragged right added by the write (layout only)
+\toprule
+Direction & Inspected progress & Consequence for selection\\
+\midrule
+\endhead
+Gowers--Szemer\'edi formalization in \repo
+& Recent commits record weighted slab product estimates, compressed
+interpolation, and improved explicit four- and five-term bounds relative
+to the source parameters. The ledger distinguishes 113 exact companions
+from seven unresolved catalogue entries. One packaged Lemma 16.10
+interface has a counterexample, so an interface repair and a proof are
+different tasks.
+& A further global bound would require resolving substantial structural
+obligations, not merely replacing a local constant.\\[4pt]
+Boolean phase integration, sources 65 and 69
+& The two reports obtain the all-degree nonintegrable energy extremum
+$1-(d+1)/2^d$, with a tensor equality classification. Their explicit
+remaining questions include odd characteristic and maximizing phases.
+& Reproving the all-degree value would duplicate the newest intake.
+The remaining analytic questions are serious but were not resolved in
+this investigation.\\[4pt]
+\texttt{math}, family 159
+& The catalogue describes quasipolynomial arithmetic-progression bounds.
+The scope document identifies the formalized comparator as the
+reciprocal-sum consequence, and explicitly separates the quantitative
+extremal estimate \cite{math159}.
+& Formal scope cannot be inferred from the family title. This result is
+not an input to the present proof.\\[4pt]
+\texttt{math}, families 241 and 242
+& The scope files describe full Turing-degree rigidity and single-fold
+Diophantine representation statements, while excluding specified
+representation or undecidability corollaries \cite{math241,math242}.
+Selected manuscript arguments and the catalogue were inspected.
+& These suggest substantial future work, but a sequel would require
+specialized foundations. The present article does not certify or assume
+these claims.\\[4pt]
+Lazy closed walks, A328716/A328718 report
+& The report proves fixed-order expansions in a compact positive ratio
+range. A later note supplies the classical fixed-dimension leading term.
+The sparse limit and the dense limit with growing dimension remain
+explicit questions \cite{lcw}.
+& There is a precise, self-contained gap with a promising structural
+solution: remove the period-two obstruction before applying a uniform
+coefficient theorem.\\
+\bottomrule
+\end{longtable}
+
+The \texttt{math} README describes 722 manuscripts in 372 families at
+different verification stages \cite{mathrepo}. The catalogue review
+found no indicated Bessel/Poisson--binomial lattice-return treatment
+overlapping the theorem below. This is a bounded comparison with the
+material inspected, not a certificate of absence from every manuscript
+or from the literature.
+
+\subsection{The exact gap in the predecessor}
+
+The immediate predecessor is \emph{Lazy Closed Walks in Growing Dimension: All fixed orders,
+parity conditioned Poisson laws, and occupied coordinate fluctuations
+for OEIS A328716}, archived
+under \texttt{a328716-lazy-closed-walks} \cite{lcw}. Its proportional
+dimension theorem uses the parameter $\rho=N/D$ in compact subsets of
+$(0,\infty)$. Section 12 asks for both $\rho\to0$ and $\rho\to\infty$.
+The integrated edition clarifies that the growing-dimensional dense
+case remains open after its fixed-$D$ remark. These are questions
+internal to that report; they are not presented here as long-standing
+named conjectures in the published literature. The dense analysis
+also led to the separate refutation in Section~\ref{lcw:ulb:sec:lyons-counterexample}
+of a universal bound appearing in \cite{felkerlyons,ballsterbenz}.
+
+The new results settle the counting part of both endpoint questions and
+also give a sharp criterion for the Gaussian simplification in the dense
+case. They settle the sparse joint lattice-law question in the critical
+collision range. They give an explicit effective leading error, while a
+complete high-order interval-arithmetic evaluator remains a further task.
+
+\begin{center}
+\begin{tabular}{@{}p{.34\textwidth}p{.58\textwidth}@{}}
+\toprule
+New result & Main conclusion\\
+\midrule
+Theorem~\ref{lcw:ulb:thm:lyons-counterexample} and
+Corollary~\ref{lcw:ulb:cor:nonlazy-dense}
+& An exact counterexample to the published universal Gaussian
+conjecture, and failure of every dimension-independent constant
+replacement.\\[3pt]
+Theorem~\ref{lcw:ulb:thm:global}
+& Relative expansions of every fixed order for all dimensions and
+nonnegative activities; no ratio restriction.\\[3pt]
+Corollary~\ref{lcw:ulb:cor:explicit}
+& A leading saddle approximation with relative error at most $24/m$.\\[3pt]
+Theorems~\ref{lcw:ulb:sp:thm:count} and \ref{lcw:ulb:sp:thm:law}
+& A uniform sparse correction and a joint Poisson law in a strong
+discrete norm.\\[3pt]
+Theorem~\ref{lcw:ulb:thm:dense-gaussian}
+& The Gaussian estimate is relatively correct precisely for
+$D^3/N^2\to0$ in the dense range; its critical missing factor and quadratic eventual-bound thresholds are explicit.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Established methods and the novelty boundary}
+
+The Bessel generating function belongs to classical lattice-walk
+enumeration; Gessel, Weinstein, and Wilf provide relevant background
+\cite{gww}. Negative real zeros and independent Bernoulli representations
+have a long history in asymptotic enumeration, including Bender and
+Pitman \cite{bender,pitman}. General local Edgeworth theory is considerably
+broader than the special lemma proved here; see Dolgopyat and Hafouta
+\cite{dh}. We give the short complete proof needed for the present
+uniformity rather than claiming these tools as new.
+
+The new work is the combination of an exact parity reduction, a uniform
+variance lower bound, and the resulting endpoint analysis. The dense
+threshold needs a uniform remainder: a fixed-dimension Edgeworth
+coefficient alone does not prove it. The sparse statement gives a joint
+law with a quantitative error, not just a pointwise generating-function
+limit. Historical priority for the full collection of conclusions is
+not established by this targeted review. Each comparison with the
+predecessor is stated at the level actually proved.
+
+\begin{writenote}[The review at the pin, 7 October 2026]
+The rows of the table above were checked against the repository at the pin
+\file{136e70702} only as far as this repository goes. The lattice-walk row
+and the next subsection describe Part~I correctly (its Section~9 is
+Section~\ref{lcw:sec:ratio}, its Section~12 is Section~\ref{lcw:sec:further},
+and the ``integrated edition'' is Part~I's write with its dated notes). The
+Gowers--Szemer\'edi ledger
+(\file{Combinatorics/Ramsey/gowers-proof-status.json}) records 113 exact
+companions and 7 open statements at the pin, as stated; it records 114 and 6
+at this write, since the repair of the Lemma~16.10 interface the row
+mentions (commit \file{456b6e3ad}, after the pin). The Boolean row refers to the reports numbered 65 and 69 in
+\file{Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/},
+which state the value $1-(d+1)/2^d$; they were not checked further. The
+\texttt{math} rows were not checked. None of these rows is a premise of any
+proof in Part~II.
+\end{writenote}
+
+% ---- delivered sections/06_counterexample.tex ----
+% Independently verified finite counterexample. Do not claim priority without
+% checking later literature. Source statement: Ball--Sterbenz, eq. (1.3).
+
+\section{A finite counterexample to the Gaussian return bound}
+\label{lcw:ulb:sec:lyons-counterexample}
+
+Ball and Sterbenz, in \emph{Explicit Bounds for the Return Probability
+of Simple Random Walks}, Journal of Theoretical Probability 18 (2005),
+317--326, state the following conjecture of Russ Lyons in equation (1.3)
+of the available preprint dated 19 January 2004 \cite{ballsterbenz}: for the nonlazy simple random walk on $\mathbb Z^d$,
+\begin{equation}\label{lcw:ulb:eq:lyons-bound}
+ p_{2n}^{(d)}(0,0)\le 2\left(\frac{d}{4\pi n}\right)^{d/2}
+ \qquad(d\ge1,\ n\ge1).
+\end{equation}
+The same universal inequality is conjectured in Felker and Lyons
+\cite{felkerlyons}, equation (2.3). The leading factor $2$ is the
+lattice-period correction. Ball and Sterbenz's
+Proposition 1 and Remark 1 establish a sufficient large-time range
+of order $d^3$, and they report checks through dimension six.
+The universal inequality as stated is false.
+
+\begin{theorem}[An exact finite counterexample]
+\label{lcw:ulb:thm:lyons-counterexample}
+For the nonlazy simple random walk in dimension $d=16$, after $26$
+steps,
+\[
+ p_{26}^{(16)}(0,0)
+ =\frac{5630493790109507827003978475}{2^{118}}
+ >2\left(\frac4{13\pi}\right)^8.
+\]
+Indeed, the ratio of the left-hand side to the right-hand side is
+strictly greater than $4001/4000$.
+\end{theorem}
+
+\begin{proof}
+Define the integers
+\[
+ C_{m,d}=\sum_{k_1+\cdots+k_d=m}
+            \binom{m}{k_1,\ldots,k_d}^{\!2}.
+\]
+Splitting off the last coordinate gives the finite exact recurrence
+\[
+ C_{m,1}=1,\qquad
+ C_{m,d+1}=\sum_{k=0}^m\binom{m}{k}^2 C_{m-k,d}.
+\]
+A closed walk uses the positive and negative direction of each
+axis equally often. Its count is therefore
+$\binom{2m}{m}C_{m,d}$, and hence
+\[
+ p_{2m}^{(d)}(0,0)
+ =\frac{\binom{2m}{m}C_{m,d}}{(2d)^{2m}}.
+\]
+At $(m,d)=(13,16)$ the recurrence gives
+\[
+ C_{13,16}=2217420395389549070189056,
+\]
+and thus exactly
+\[
+ \binom{26}{13}C_{13,16}
+   =23062502564288544059408295833600
+\]
+closed walks. Division by $32^{26}$ gives the displayed probability.
+The accompanying verification script performs this recurrence and
+independently obtains the same count by repeated squaring of the
+degree-13 truncation of $\sum_{k\ge0}t^k/(k!)^2$.
+
+No floating-point comparison with $\pi$ is required. The classical
+rational lower bound $\pi>333/106$ implies
+\[
+ 2\left(\frac4{13\pi}\right)^8
+   <2\left(\frac{424}{4329}\right)^8.
+\]
+For a self-contained certificate of this lower bound, Machin's identity
+$\pi=16\arctan(1/5)-4\arctan(1/239)$ and the alternating-series
+bounds give
+\[
+ \pi>
+ 16\left(\frac15-\frac1{3\cdot5^3}
+                 +\frac1{5\cdot5^5}-\frac1{7\cdot5^7}\right)
+       -\frac4{239}
+ >\frac{333}{106};
+\]
+the final comparison is rational arithmetic. Machin's identity itself
+follows from the tangent addition formula and the fact that the
+relevant angle lies in $(0,\pi/2)$.
+
+Writing $A=5630493790109507827003978475$, the needed comparison reduces
+to the positive integer
+\begin{align*}
+ A\,4329^8-2^{143}53^8
+ &=241148999863792122048803143474490963808862899634921387\\
+ &>0.
+\end{align*}
+The stronger ratio bound follows from the exact comparison
+\[
+ 4000 A\,4329^8>4001\cdot2^{143}53^8.
+\]
+Every displayed integer and rational comparison is checked by the
+standard-library-only script \texttt{verify\_lyons.py}.
+\end{proof}
+
+The numerical values, included only to show the size of the effect, are
+\[
+ p_{26}^{(16)}(0,0)\simeq1.6943650925091064\times10^{-8},\qquad
+ 2\left(\frac4{13\pi}\right)^8
+     \simeq1.6934178227188187\times10^{-8}.
+\]
+Their ratio is approximately $1.0005593833828717$. The exact
+certificate, rather than these decimal approximations, proves the
+counterexample. No claim that this is the smallest possible dimension
+or the shortest possible counterexample is needed.
+
+\paragraph{Source locator.}
+Primary paper: \url{https://doi.org/10.1007/s10959-003-2606-7}.
+The author-hosted full text is
+\url{https://mathweb.ucsd.edu/~bdriver/DRIVER/Miscellaneous_Files/sterbenz6.pdf};
+see equation (1.3) on page 2, Proposition 1 and Remark 1 on pages 3--4.
+
+\subsection{What this finite calculation settles}
+
+This disproves the universal inequality \eqref{lcw:ulb:eq:lyons-bound}.
+It is consistent with the eventual fixed-dimension upper bound
+proved in \cite{ballsterbenz}. More substantially,
+Corollary~\ref{lcw:ulb:cor:nonlazy-dense} below proves that the ratio to the
+period-corrected Gaussian expression is unbounded along even lengths
+$N\sim D^{4/3}$. Thus replacing the factor $2$ by any other fixed
+finite constant cannot repair the universal statement.
+
+For the historical comparison, the author-hosted Felker--Lyons version
+of 6 November 2003, the Ball--Sterbenz paper, and the linked
+Felker--Lyons erratum of 7 August 2012 were inspected. That erratum
+concerns body-centered lattice formulas and numerical bounds
+\cite{felkererratum}. A targeted search of later references located
+no prior refutation of \eqref{lcw:ulb:eq:lyons-bound}; this search is not an
+exhaustive priority determination. The mathematical claim here is the
+explicit counterexample and the proved asymptotic failure of every
+constant bound.
+
+\begin{writenote}[Checked, 7 October 2026]
+\emph{The certificate.} With its own code the write counted the closed walks
+of length~26 in $\Z^{16}$ by a third route, with no power series and no
+recurrence over the dimension: for each of the $101$ partitions of~$13$ it
+counted the assignments of the parts to axes and summed the multinomial
+numbers $26!/\prod_ik_i!^2$. It obtained
+$23{,}062{,}502{,}564{,}288{,}544{,}059{,}408{,}295{,}833{,}600
+=\binom{26}{13}C_{13,16}$ with $C_{13,16}$ as printed, $A$ as printed
+(the count divided by $2^{12}$, an odd integer), the printed positive
+integer, and $4000A\cdot4329^8>4001\cdot2^{143}53^8$. The four Machin terms
+give $\pi>3.1415916745>333/106$; independently, the partial sums of the
+positive series $\pi=6\arcsin\frac12$ give $\pi>3.1415926521$. In mpmath
+interval arithmetic (160 bits) the lower end of the ratio's interval is
+$1.000559383382871717665\ldots$; with
+$\pi$ replaced by $333/106$ the certificate keeps the margin $1.000347\ldots$,
+so its bound $4001/4000$ holds. The three displayed decimals agree with
+$1.694365092509106442\ldots\times10^{-8}$,
+$1.6934178227188187305\ldots\times10^{-8}$ and
+$1.0005593833828717176\ldots$. The shipped
+\file{code/02-bridges-verify\_lyons.py}, rerun on a copy, prints the same
+count and difference.
+
+\emph{The sources.} The write read the author-hosted Ball--Sterbenz preprint
+cited above (its date line is 19~January 2004; the PDF was produced in 2005
+from \file{walk\_bound\_jtp.dvi}). Its display~(1.3), on page~2, is
+\eqref{lcw:ulb:eq:lyons-bound}, stated for $d\ge1$, $n\ge0$ (above:
+$n\ge1$; at $n=0$ the right side is undefined, so nothing changes), as a
+conjecture of Russ Lyons. Proposition~1 (page~3, for $2\le n$ and $d\le n$)
+and Remark~1 (pages~3--4: $n\ge\frac74d^2(d+2)+1$ suffices, so the range is
+of order $d^3$) and the computer checks for $d=3,4,5,6$ (page~4; $d=1,2$
+being easy, page~2) are as described. In the Felker--Lyons version of
+6~November 2003, page~4, the authors say that the inequality appears to be
+true for all $d$ and $k$, and then display~(2.3) only as known to hold for
+all $k$ when $1\le d\le6$ and for all large $k$ (``if not all $k$'') when
+$d\ge7$. So the
+universal inequality is their stated belief; the display, as qualified, is
+not contradicted. Their rigorous bounds for $h_3,\dots,h_6$ use~(2.3) only for
+$3\le d\le6$, which the counterexample does not touch (compare
+Section~\ref{lcw:ulb:sec:outlook}.9). The journal versions and the erratum
+were not read.
+
+\emph{A finite scan} (computed by the write). Exact counts for $1\le d\le40$
+and $1\le n\le200$ (walks of length at most $400$), and for $d\le16$ up to
+$n=500$, each comparison with \eqref{lcw:ulb:eq:lyons-bound} decided in
+interval arithmetic: for $d=16$ the only violation is $n=13$, the
+counterexample above; for each $17\le d\le40$ the violations form one run of
+consecutive $n$ ($n=12,\dots,16$ for $d=17$; $n=19,\dots,86$ for $d=40$, with
+largest ratio $1.3225\ldots$ at $n=28$); for $d\le15$ there is none, and the
+largest ratio there, below one, is at the end of the range, $n=500$. This is an observation in a finite
+range: for $d\le15$ it stops far below Ball--Sterbenz's guaranteed range
+(from $n=6695$ at $d=15$), so it does not show that $16$ is the least
+dimension, which the manuscript does not claim either.
+\end{writenote}
+
+% ---- delivered sections/02_global.tex ----
+\section{An expansion uniform in dimension and all activities}
+\label{lcw:ulb:sec:global}
+
+\subsection{Weighted bridges and exact parity reduction}
+
+Fix a nonnegative integer $D$. Give the step $+e_i$ activity $a_i\ge0$,
+the step $-e_i$ activity $b_i\ge0$, and the step $0$ activity
+$\lambda\ge0$. The weight of a walk is the product of its step
+activities. Let $W_N(\boldsymbol a,\boldsymbol b,\lambda)$ be the
+total weight of length-$N$ walks starting and ending at the origin.
+Only $c_i=a_i b_i$ matters for a closed walk, so we also write
+$W_N(\boldsymbol c,\lambda)$. The isotropic notation is
+$A_{N,D}(\lambda)=W_N((1,\ldots,1),\lambda)$.
+
+These weights include ordinary counts, colored idle steps when $\lambda$
+is an integer, and transition probabilities. If
+$\lambda+\sum_i(a_i+b_i)=1$, then $W_N$ is already the return
+probability. For any positive total activity, division by that sum to the power $N$ normalizes
+the step activities. No symmetry assumption $a_i=b_i$ is required.
+
+Define the entire functions, by their power series,
+\begin{equation}\label{lcw:ulb:eq:entire}
+ F(t)=\sum_{k\ge0}\frac{t^k}{(k!)^2},\qquad
+ H_0(t)=\sum_{h\ge0}\frac{t^h}{(2h)!},\qquad
+ H_1(t)=\sum_{h\ge0}\frac{t^h}{(2h+1)!}.
+\end{equation}
+For positive arguments these are
+$I_0(2\sqrt t)$, $\cosh\sqrt t$, and $\sinh\sqrt t/\sqrt t$.
+Writing them by series avoids any square-root branch convention.
+For $N=2m+\ep$, $\ep\in\{0,1\}$, put
+\begin{equation}\label{lcw:ulb:eq:Ge}
+ G_\ep(t)=H_\ep(\lambda^2t)\prod_{i=1}^D F(c_i t).
+\end{equation}
+
+\begin{proposition}[Exact coefficient identity]\label{lcw:ulb:prop:exact}
+For every nonnegative choice of activities,
+\begin{equation}\label{lcw:ulb:eq:exact}
+ W_N(\boldsymbol c,\lambda)
+ =N!\lambda^\ep[t^m]G_\ep(t).
+\end{equation}
+\end{proposition}
+\begin{proof}
+If axis $i$ is used $k_i$ times in each direction and there are $j$
+idle steps, then $j+2\sum_i k_i=N$. The number of orders of these
+steps is $N!/(j!\prod_i(k_i!)^2)$ and their common weight is
+$\lambda^j\prod_i c_i^{k_i}$. Set $j=2h+\ep$ and sum. Equivalently,
+the exponential generating function before splitting parity is
+$e^{\lambda z}\prod_i I_0(2\sqrt{c_i}\,z)$.
+\end{proof}
+
+If $\ep=1$ and $\lambda=0$, the original count is exactly zero.
+For all other cases with at least one nonconstant factor in $G_\ep$,
+the following gives a relative asymptotic. The normalized coefficient
+$[t^m]G_1(t)$ itself continues smoothly to $\lambda=0$ and also has
+the stated expansion. If all $c_i$ and $\lambda$ vanish, then
+$G_\ep\equiv1$ and its positive-degree coefficients vanish; no
+positive saddle exists in this degenerate case.
+
+\subsection{The saddle and the main theorem}
+
+Write $\Dop=t\,d/dt$. For a nonconstant generator $G_\ep$, let $r>0$
+be the unique solution of
+\begin{equation}\label{lcw:ulb:eq:saddle}
+ (\Dop\log G_\ep)(r)=m.
+\end{equation}
+Existence and uniqueness, for $m>0$, follow in the proof below. Define
+the cumulants and leading approximation by
+\begin{equation}\label{lcw:ulb:eq:cumulants}
+ \kappa_j=(\Dop^j\log G_\ep)(r),\qquad B=\kappa_2,
+ \qquad L_N=\frac{N!\lambda^\ep G_\ep(r)}{r^m\sqrt{2\pi B}}.
+\end{equation}
+When discussing the normalized odd coefficient at zero, omit the
+factor $\lambda^\ep$ in both the exact count and $L_N$.
+
+\begin{theorem}[Uniform expansion in all parameters]\label{lcw:ulb:thm:global}
+For every fixed integer $K\ge0$ there are constants $C_K,m_K$, depending
+only on $K$, such that for every $m\ge m_K$, every dimension $D$, every
+parity, and every allowed nonnegative choice of activities with nonzero
+count,
+\begin{equation}\label{lcw:ulb:eq:global}
+ \frac{W_N(\boldsymbol c,\lambda)}{L_N}
+ =\sum_{s=0}^{K} E_s+\mathcal R_K,
+ \qquad |\mathcal R_K|\le C_K m^{-K-1}.
+\end{equation}
+Here $E_0=1$. For $s\ge1$, sum over nonnegative integers
+$\nu_3,\ldots,\nu_{2s+2}$ satisfying
+$\sum_{j=3}^{2s+2}(j-2)\nu_j=2s$, and set
+$J=\sum_j j\nu_j$. Then
+\begin{equation}\label{lcw:ulb:eq:Es}
+ E_s=\sum_{\sum(j-2)\nu_j=2s}
+ \frac{(-1)^{J/2}(J-1)!!}{B^{J/2}}
+ \prod_{j=3}^{2s+2}\frac{\kappa_j^{\nu_j}}{\nu_j!(j!)^{\nu_j}}.
+\end{equation}
+The integer $J$ is even. Each $E_s=O_s(m^{-s})$ uniformly in all
+the same parameters, and
+\begin{equation}\label{lcw:ulb:eq:variance}
+ \frac m2\le B\le m.
+\end{equation}
+The dimension and the activities may depend arbitrarily on $m$.
+\end{theorem}
+
+In particular, the first two corrections are
+\begin{align}
+ E_1&=\frac{\kappa_4}{8B^2}-\frac{5\kappa_3^2}{24B^3},
+ \label{lcw:ulb:eq:E1}\\
+ E_2&=-\frac{\kappa_6}{48B^3}
+ +\frac{7\kappa_3\kappa_5}{48B^4}
+ +\frac{35\kappa_4^2}{384B^4}
+ -\frac{35\kappa_3^2\kappa_4}{64B^5}
+ +\frac{385\kappa_3^4}{1152B^6}.
+ \label{lcw:ulb:eq:E2}
+\end{align}
+The expression is a fixed-order Poincar\'e expansion. There is no
+assertion that the infinite sum of its corrections converges, or that
+one may let $K$ grow without additional estimates.
+
+\begin{corollary}[Explicit leading envelope]\label{lcw:ulb:cor:explicit}
+For every $m>0$ in the nonzero cases,
+\begin{equation}\label{lcw:ulb:eq:explicit}
+ \left|\frac{W_N}{L_N}-1\right|\le\frac{12}{B}\le\frac{24}{m}.
+\end{equation}
+Consequently, for $m>24$,
+\[
+ L_N(1-24/m)\le W_N\le L_N(1+24/m).
+\]
+The same inequalities apply to the normalized odd coefficient at
+$\lambda=0$.
+\end{corollary}
+
+The envelope is deliberately conservative. Its value is that its
+constant and its parameter range are explicit, with no hidden
+dependence on dimension or anisotropy. Evaluating $r,G_\ep(r),B$ by
+outward-rounded arithmetic would turn it into a numerical interval.
+The supplied floating-point examples illustrate the formula; they do
+not by themselves implement outward rounding.
+
+\subsection{Negative zeros and the variance sandwich}
+
+Let $j_{0,k}$ denote the positive zeros of the ordinary Bessel function
+$J_0$. The classical product identities \cite{dlmfzeros,dlmftrig} give
+\begin{align}
+ F(t)&=\prod_{k\ge1}\left(1+\frac{4t}{j_{0,k}^2}\right),
+ \label{lcw:ulb:eq:Fproduct}\\
+ H_0(t)&=\prod_{k\ge0}\left(1+
+          \frac{t}{\pi^2(k+\tfrac12)^2}\right),
+ &H_1(t)&=\prod_{k\ge1}\left(1+\frac{t}{\pi^2k^2}\right).
+ \label{lcw:ulb:eq:Hproduct}
+\end{align}
+Their reciprocal zero moduli are summable, so the products and their
+logarithmic derivatives converge locally away from the zeros. Scaling
+the argument by any positive activity preserves this property; a zero
+activity contributes the constant factor one.
+
+For a factor $1+t/a$, its tilt at $r$ is the generating function
+of a Bernoulli variable of parameter $r/(a+r)$. Thus the normalized
+coefficient distribution of $G_\ep$ is a countable sum of independent
+Bernoulli variables. More explicitly, with independent parameters
+$p_j=r/(a_j+r)$ over all reciprocal-zero factors, put $S=\sum_jX_j$.
+Then $\sum_jp_j<\infty$, $S$ is finite almost surely, and
+\begin{equation}\label{lcw:ulb:eq:tiltedidentity}
+ \E z^S=\frac{G_\ep(rz)}{G_\ep(r)},\qquad
+ [t^m]G_\ep(t)=G_\ep(r)r^{-m}\Prob(S=m).
+\end{equation}
+At the saddle, $\E S=m$. In particular, its variance does not exceed its
+mean. The lower bound follows factor by factor from a further special
+property of the Bessel and parity factors.
+
+\begin{lemma}[Variance at least half the mean]\label{lcw:ulb:lem:half}
+For $Q=F,H_0,H_1$ and $t>0$, put
+$\mu_Q(t)=\Dop\log Q(t)$ and $b_Q(t)=\Dop\mu_Q(t)$.
+Then $b_Q(t)\ge\mu_Q(t)/2$.
+\end{lemma}
+\begin{proof}
+For $F$, set $z=2\sqrt t$ and $R(z)=I_1(z)/I_0(z)$. Then
+\[
+ \mu_F(t)=\frac z2R(z),\qquad
+ b_F(t)=\frac{\mu_F(t)}2+\frac{z^2}{4}R'(z).
+\]
+The integral representation
+$I_0(z)=\pi^{-1}\int_0^\pi e^{z\cos\theta}\,d\theta$
+\cite{dlmfintegral} identifies $R(z)$ with the expectation of
+$\cos\theta$ under the density proportional to $e^{z\cos\theta}$.
+Differentiating that expectation shows
+$R'(z)=\Var_z(\cos\theta)\ge0$.
+
+For the parity factors, let $x=\sqrt t$. Direct differentiation gives
+\begin{align*}
+ \mu_{H_0}&=\frac{x\tanh x}{2},
+ &b_{H_0}-\frac{\mu_{H_0}}2&=\frac{x^2\sech^2x}{4},\\
+ \mu_{H_1}&=\frac{x\coth x-1}{2},
+ &b_{H_1}-\frac{\mu_{H_1}}2&=
+       \frac{1-x^2\csch^2x}{4}.
+\end{align*}
+The last numerator is nonnegative because $\sinh x\ge x$.
+All formulas extend by continuity at zero.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{lcw:ulb:thm:global} and
+Corollary~\ref{lcw:ulb:cor:explicit}]
+The mean of each nonconstant factor increases continuously from zero
+to infinity: this follows from the displayed formulas, or from its
+Bernoulli product and the presence of infinitely many positive
+Bernoulli parameters approaching one as $r\to\infty$. The total mean
+is strictly increasing, so \eqref{lcw:ulb:eq:saddle} has exactly one
+positive solution for every $m>0$. Variances and means add under the
+product. Lemma~\ref{lcw:ulb:lem:half} and the Bernoulli upper bound give
+\eqref{lcw:ulb:eq:variance}.
+
+Theorem~\ref{lcw:ulb:thm:PB} below gives the coefficient expansion with
+error $O_K(B^{-K-1})$ and corrections \eqref{lcw:ulb:eq:Es}. Since
+$B\ge m/2$, all its constants are independent of the walk parameters.
+Multiplication by the exact factor $N!\lambda^\ep$ proves the theorem.
+The explicit estimate in Proposition~\ref{lcw:ulb:prop:PBexplicit} gives
+the corollary.
+\end{proof}
+
+\subsection{Why resolving parity changes the uniformity problem}
+
+In the original variable $z$, the factor $I_0(2z)^D$ is even. In
+sparse regimes the two arcs near positive and negative real $z$ can
+have comparable size, and the odd answer is a small difference of
+large contributions. An error controlled relative to either arc is
+then insufficient for an odd relative asymptotic. In
+\eqref{lcw:ulb:eq:exact}, both parity factors have positive coefficients
+and the tilted lattice has span one. The global characteristic-function
+bound in the next section gives one uniform estimate for both cases.
+
+For example, with $\lambda=1$ and $D\gg m^2$, the first equivalents are
+\[
+ A_{2m,D}(1)\sim\frac{(2m)!D^m}{m!},\qquad
+ A_{2m+1,D}(1)\sim\frac{(2m+1)!D^m}{m!}.
+\]
+The typical odd bridge has one idle step. This leading behavior is
+automatically retained by the factorization, including when the odd
+idle activity becomes arbitrarily small.
+
+% Direct corollary of the global method; for insertion in the global section.
+% Uses existing labels ulb:thm:global, ulb:cor:explicit, ulb:thm:PB,
+% ulb:prop:PBexplicit, and bibliography keys dlmfzeros, dlmfintegral.
+
+\subsection{A direct extension to prescribed endpoints}
+\label{lcw:ulb:subsec:endpoints}
+
+The same argument already covers arbitrary endpoints, including endpoints
+whose coordinates grow with the length. The parameter controlling the
+relative error is the number of available pairs after the mandatory
+displacement has been removed.
+
+Let $W_{N,x}$ be the total activity of length-$N$ walks from $0$ to
+$x\in\Z^D$, with the directional and idle activities used above. Put
+\[
+ x_i^+=\max(x_i,0),\qquad x_i^-=\max(-x_i,0),\qquad
+ \nu_i=|x_i|,\qquad h=|x|_1=\sum_i\nu_i,\qquad c_i=a_ib_i.
+\]
+If $N<h$, then $W_{N,x}=0$. Otherwise write
+$N-h=2m+\epsilon$, where $m\ge0$ and $\epsilon\in\{0,1\}$, and define
+\[
+ F_\nu(t)=\nu!\sum_{k\ge0}\frac{t^k}{k!(k+\nu)!},
+ \qquad
+ G_{\epsilon,x}(t)=H_\epsilon(\lambda^2t)
+                    \prod_{i=1}^D F_{\nu_i}(c_it).
+\]
+In particular $F_0=F$ and $F_\nu(0)=1$. For $t>0$,
+$F_\nu(t)=\nu!t^{-\nu/2}I_\nu(2\sqrt t)$, but the entire series is
+the definition at zero.
+
+\begin{corollary}[Uniform prescribed-endpoint expansion]
+\label{lcw:ulb:cor:endpoint}
+For all nonnegative activities,
+\begin{equation}\label{lcw:ulb:eq:endpoint-exact}
+ W_{N,x}=P_{N,x}[t^m]G_{\epsilon,x}(t),\qquad
+ P_{N,x}=N!\lambda^\epsilon
+          \prod_{i=1}^D\frac{a_i^{x_i^+}b_i^{x_i^-}}{\nu_i!}.
+\end{equation}
+Powers of exponent zero in the prefactor equal one, also when the
+activity is zero.
+
+Suppose $m>0$, $P_{N,x}>0$, and $G_{\epsilon,x}$ is nonconstant.
+Let $r>0$ satisfy $\mathcal D\log G_{\epsilon,x}(r)=m$, and set
+\[
+ \kappa_j=\mathcal D^j\log G_{\epsilon,x}(r),\qquad B=\kappa_2,
+ \qquad
+ L_{N,x}=\frac{P_{N,x}G_{\epsilon,x}(r)}
+               {r^m\sqrt{2\pi B}}.
+\]
+Then $m/2\le B\le m$, and the expansion in
+Theorem~\ref{lcw:ulb:thm:global}, with the same corrections $E_s$ and
+constants depending only on its fixed order, holds for $W_{N,x}/L_{N,x}$.
+Moreover, for every such $m>0$,
+\[
+ \left|\frac{W_{N,x}}{L_{N,x}}-1\right|
+       \le\frac{12}{B}\le\frac{24}{m}.
+\]
+Uniformity includes arbitrary variation of $x,D$ and all activities;
+there is no upper restriction on any endpoint order $\nu_i$.
+\end{corollary}
+
+\begin{proof}
+For axis $i$, the two directional counts are
+$k_i+x_i^+$ and $k_i+x_i^-$ for some $k_i\ge0$. If there are
+$j=2\ell+\epsilon$ idle steps, the length constraint is
+$\ell+\sum_i k_i=m$. The weight of all orders of these steps is
+\[
+ \frac{N!\lambda^{2\ell+\epsilon}
+           \prod_i a_i^{k_i+x_i^+}b_i^{k_i+x_i^-}}
+      {(2\ell+\epsilon)!\prod_i k_i!(k_i+\nu_i)!}.
+\]
+Summing proves \eqref{lcw:ulb:eq:endpoint-exact}.
+
+For each nonnegative integer $\nu$, the Bessel product
+\cite{dlmfzeros} gives
+\[
+ F_\nu(t)=\prod_{k\ge1}
+           \left(1+\frac{4t}{j_{\nu,k}^2}\right),
+\]
+where $j_{\nu,k}$ are the positive zeros of $J_\nu$ and
+$\sum_k j_{\nu,k}^{-2}<\infty$. Consequently every tilted factor is
+again a countable Bernoulli sum. It remains only to verify the
+variance lower bound uniformly in $\nu$.
+
+Let $z=2\sqrt t$ and $M_\nu(z)=F_\nu(z^2/4)$.
+The positive integral representation
+\cite[Eq.~10.32.2]{dlmfintegral} reads
+\[
+ M_\nu(z)=
+ \frac{\Gamma(\nu+1)}{\sqrt\pi\,\Gamma(\nu+\tfrac12)}
+ \int_{-1}^1 e^{zu}(1-u^2)^{\nu-1/2}\,du.
+\]
+At $z=0$ this normalizes a probability density. Under its exponential
+tilt at $z>0$, put $R_\nu(z)=(\log M_\nu)'(z)$.
+Differentiating the integral gives
+\[
+ R_\nu(z)=\mathbb E_{\nu,z}u,\qquad
+ R_\nu'(z)=\operatorname{Var}_{\nu,z}(u)\ge0.
+\]
+Therefore the mean and variance of the coefficient tilt of $F_\nu$
+satisfy
+\[
+ \mu_\nu(t)=\frac z2R_\nu(z),\qquad
+ b_\nu(t)=\frac{\mu_\nu(t)}2+\frac{z^2}{4}R_\nu'(z)
+             \ge\frac{\mu_\nu(t)}2.
+\]
+This is the same bound as for $F_0$, with no constant depending on
+$\nu$. Zero activities contribute constant factors and zero mean and
+variance. The means and variances add, and the parity factor has
+already been treated. Each nonconstant factor has infinitely many
+Bernoulli factors, so its mean increases strictly from zero to
+infinity. This proves existence and uniqueness of the saddle and the
+variance sandwich. Theorem~\ref{lcw:ulb:thm:PB} and
+Proposition~\ref{lcw:ulb:prop:PBexplicit}, followed by multiplication by
+the exact prefactor, prove the asserted expansion and envelope.
+\end{proof}
+
+The excluded boundaries are exact, not asymptotic exceptions.
+If $P_{N,x}=0$, a required directional or idle step has zero
+activity and $W_{N,x}=0$. If $G_{\epsilon,x}\equiv1$, its coefficient
+is zero for $m>0$. For $m=0$, its constant coefficient is one and
+$W_{N,x}=P_{N,x}$, whether or not the generator is constant.
+When a prefactor vanishes but the generator is nonconstant, the
+normalized coefficient $[t^m]G_{\epsilon,x}$ still has the same
+uniform expansion; no ratio to a zero walk weight is asserted.
+
+\begin{writenote}[Checked, 7 October 2026]
+Read line by line, with no error found. Rederived by hand: the exact
+identity \eqref{lcw:ulb:eq:exact} and its endpoint form
+\eqref{lcw:ulb:eq:endpoint-exact}; the three formulas of
+Lemma~\ref{lcw:ulb:lem:half} (with $\Dop=\frac z2\frac d{dz}$ for $F$ and
+$\Dop=\frac x2\frac d{dx}$ for $H_0,H_1$); $B\le m$ from the Bernoulli
+representation; and the normalization of the integral representation of
+$F_\nu$ (at $z=0$ it is $F_\nu(0)=1$). The DLMF product formulas were not
+read; the products are classical. The corrections \eqref{lcw:ulb:eq:Es} are
+Part~I's saddle functionals: $E_s$ is $\TT_s1$ of~\eqref{lcw:eq:operator}
+(only $j=0$ survives for a constant amplitude) with $(B,\kappa_j)$ in place of
+$(b,\kappa_h)$; in particular \eqref{lcw:ulb:eq:E1} is the last term
+of~\eqref{lcw:eq:T1}. On an anisotropic example computed exactly by the write
+($D=3$, $c=(1,\tfrac17,5)$, $\lambda=\tfrac13$, $N=10,11,30,31,60,61$), $B/m$
+lies between $0.51$ and $0.60$, $|W_N/L_N-1|$ between $1.2\cdot10^{-3}$ and
+$8.1\cdot10^{-3}$, far inside $12/B$ (from $4.1$ down to $0.76$), and, after
+$E_1$ and after $E_1+E_2$, at most $2.0\cdot10^{-4}$ and $2.3\cdot10^{-5}$.
+How Theorem~\ref{lcw:ulb:thm:global} relates to Part~I's
+Theorem~\ref{lcw:thm:ratio} is in the note at the end of
+Section~\ref{lcw:sec:ratio}.
+\end{writenote}
+
+% ---- delivered sections/03_bernoulli.tex ----
+\section{A uniform local expansion for Bernoulli sums}
+\label{lcw:ulb:sec:PB}
+
+This section proves the probabilistic estimate used in
+Theorem~\ref{lcw:ulb:thm:global}. Its hypotheses allow arbitrarily unequal
+Bernoulli parameters and countably many summands. The method is classical;
+the proof records the uniform constants and the cancellation needed for
+an integer-power remainder at every order.
+
+\begin{theorem}[Uniform Poisson--binomial local expansion]
+\label{lcw:ulb:thm:PB}
+Let $X_j$ be a finite or countable family of independent Bernoulli random
+variables with parameters $p_j\in[0,1]$ and $\sum_jp_j<\infty$.
+Suppose $S=\sum_jX_j$ has integer mean $m$ and variance $B>0$.
+Write $\kappa_j$ for its cumulants. For every fixed $K\ge0$, as
+$B\to\infty$,
+\begin{equation}\label{lcw:ulb:eq:PB}
+ \sqrt{2\pi B}\,\Prob(S=m)
+ =\sum_{s=0}^K E_s+O_K(B^{-K-1}),
+\end{equation}
+where $E_s$ is given by \eqref{lcw:ulb:eq:Es}, with these cumulants and
+variance. The error constant depends only on $K$. In particular,
+$E_s=O_s(B^{-s})$ uniformly over all such families.
+\end{theorem}
+
+\subsection{Analytic bounds and localization}
+
+For one Bernoulli parameter define the centered logarithm
+\[
+ \ell_p(z)=\log(1-p+pe^{iz})-ipz.
+\]
+On $|z|\le1/4$, the logarithm is the analytic branch at zero:
+\[
+ |1-p+pe^{iz}|\ge 1-|e^{iz}-1|\ge2-e^{1/4}>0.
+\]
+Direct differentiation gives
+\[
+ \ell_p''(z)=-\frac{p(1-p)e^{iz}}{(1-p+pe^{iz})^2}.
+\]
+It is bounded there by an absolute constant times $p(1-p)$.
+Cauchy's estimates on a smaller fixed disk give, for each fixed $j\ge2$,
+\begin{equation}\label{lcw:ulb:eq:cumulantbound}
+ |\kappa_j|\le C_jB.
+\end{equation}
+They also give, for each fixed $L\ge2$ and real $|\theta|\le\delta$,
+\begin{equation}\label{lcw:ulb:eq:logphi}
+ \log\phi(\theta)
+ =-\frac{B\theta^2}{2}
+  +\sum_{j=3}^{L}\frac{\kappa_j(i\theta)^j}{j!}
+  +O_L(B|\theta|^{L+1}),
+ \qquad \phi(\theta)=\E e^{i\theta(S-m)}.
+\end{equation}
+Here $\delta>0$ is a fixed sufficiently small number. These statements
+follow by summing the individual estimates; the summability of the
+variances justifies this also for countably many factors.
+
+For the whole Fourier interval, the elementary identity
+\[
+ |1-p+pe^{i\theta}|^2=1-4p(1-p)\sin^2(\theta/2)
+\]
+and $1-u\le e^{-u}$ imply
+\begin{equation}\label{lcw:ulb:eq:localization}
+ |\phi(\theta)|\le e^{-2B\sin^2(\theta/2)}
+ \le e^{-2B\theta^2/\pi^2},\qquad |\theta|\le\pi.
+\end{equation}
+Thus the characteristic function has no competing lattice peak when
+$B$ grows, regardless of how close individual parameters are to zero
+or one. Fourier inversion at the integer mean reads
+\begin{equation}\label{lcw:ulb:eq:inversion}
+ \Prob(S=m)=\frac1{2\pi}\int_{-\pi}^{\pi}\phi(\theta)\,d\theta.
+\end{equation}
+
+\subsection{Proof to every fixed order}
+
+\begin{proof}[Proof of Theorem~\ref{lcw:ulb:thm:PB}]
+Fix $K$ and take $L=2K+3$ in \eqref{lcw:ulb:eq:logphi}. Put
+$h=B^{-1/2}$, $x=\theta/h$, and $b_j=\kappa_j/B$. Then
+\[
+ \log\phi(hx)=-x^2/2+Q(h,x)
+      +O_K(h^{2K+2}|x|^{2K+4}),
+ \qquad
+ Q(t,x)=\sum_{j=3}^{2K+3}\frac{b_j(ix)^j}{j!}t^{j-2}.
+\]
+The $b_j$ are bounded solely in terms of $j$. Choose $\delta>0$
+sufficiently small in terms of $K$. On $|hx|\le\delta$, for
+$0\le t\le h\le1$, each term in $Q$ is bounded by a constant
+times $x^2(t|x|)^{j-2}$. Consequently
+\[
+ |Q(t,x)|\le x^2/8,
+ \qquad
+ |\log\phi(hx)+x^2/2-Q(h,x)|\le x^2/8.
+\]
+Replacing $\phi(hx)$ by $e^{-x^2/2}e^{Q(h,x)}$ therefore has
+integrated error $O_K(h^{2K+2})$: the pointwise error is bounded by
+\[
+ C_K h^{2K+2}|x|^{2K+4}e^{-x^2/4}.
+\]
+
+Expand $e^{Q(t,x)}$ in $t$ at zero through degree $2K+1$.
+The integral form of Taylor's remainder, together with the preceding
+bound on $Q$, shows that its remainder after multiplication by
+$e^{-x^2/2}$ is at most
+\[
+ C_Kh^{2K+2}(1+|x|^{M_K})e^{-3x^2/8}.
+\]
+Indeed, a fixed number of derivatives of $e^Q$ is $e^Q$ times
+a polynomial in the derivatives of $Q$, whose coefficients are
+uniformly bounded for $0\le t\le h\le1$. The displayed bound
+is integrable with a constant depending only on $K$.
+
+The coefficient of $t^w$ is
+\[
+ A_w(x)=\sum_{\sum(j-2)\nu_j=w}
+       \prod_j\frac{\{b_j(ix)^j/j!\}^{\nu_j}}{\nu_j!}.
+\]
+If $J=\sum j\nu_j$, then $J\equiv w\pmod2$. Hence $A_w(x)$
+is odd and purely imaginary when $w$ is odd. Its integral against
+the even Gaussian over the symmetric local interval is exactly zero.
+For even $w=2s$, extend the polynomial Gaussian integral to the
+whole real line, with exponentially small error. Equation
+\eqref{lcw:ulb:eq:localization} bounds the remaining original integral
+by an exponentially small quantity as well.
+
+Finally,
+\[
+ \frac1{\sqrt{2\pi}}\int_{\R}x^{2j}e^{-x^2/2}\,dx=(2j-1)!!.
+\]
+Multiplying by $h^{2s}$ and replacing $b_j$ by $\kappa_j/B$
+gives exactly \eqref{lcw:ulb:eq:Es}. For any summand in that formula,
+\[
+ J/2-\sum_j\nu_j=\tfrac12\sum_j(j-2)\nu_j=s,
+\]
+so \eqref{lcw:ulb:eq:cumulantbound} gives $E_s=O_s(B^{-s})$.
+All discarded terms have integrated size $O_K(B^{-K-1})$ in the
+normalization of \eqref{lcw:ulb:eq:PB}, completing the proof.
+\end{proof}
+
+\begin{remark}[Why the odd term must be retained]
+After the first correction, an absolute bound on an omitted fifth
+cumulant would yield only $O(B^{-3/2})$. The proof keeps that term
+until its odd integral cancels. At order $K$ it keeps the corresponding
+odd degree $2K+1$ in $h$. This supplies the claimed $O(B^{-K-1})$
+remainder without an unproved parity improvement.
+\end{remark}
+
+\subsection{A fully explicit leading bound}
+
+\begin{proposition}\label{lcw:ulb:prop:PBexplicit}
+Under the hypotheses of Theorem~\ref{lcw:ulb:thm:PB}, for every $B>0$,
+\begin{equation}\label{lcw:ulb:eq:PBexplicit}
+ \left|\sqrt{2\pi B}\,\Prob(S=m)-1\right|\le\frac{12}{B}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $|\theta|\le1/2$, write
+$\log\phi(\theta)=-B\theta^2/2+R(\theta)+iI(\theta)$.
+We first prove
+\begin{equation}\label{lcw:ulb:eq:RI}
+ |R(\theta)|\le B\theta^4/8,
+ \qquad |I(\theta)|\le B|\theta|^3/3.
+\end{equation}
+For one parameter put $q=p(1-p)$ and $u=4q\sin^2(\theta/2)$.
+Then $u\le1/16$, and the real remainder is
+\[
+ q\{\theta^2/2-2\sin^2(\theta/2)\}
+       +\tfrac12\{\log(1-u)+u\}.
+\]
+The first term has absolute value at most $q\theta^4/24$.
+For the second,
+\[
+ \tfrac12|\log(1-u)+u|
+ \le\frac{u^2}{4(1-u)}
+ \le\frac4{15}q^2\theta^4\le\frac1{15}q\theta^4.
+\]
+Their sum is less than $q\theta^4/8$. For the imaginary part,
+\[
+ \frac{d^3}{d\theta^3}\log(1-p+pe^{i\theta})
+ =-\frac{iqe^{i\theta}(1-p-pe^{i\theta})}
+          {(1-p+pe^{i\theta})^3}.
+\]
+On this real interval its modulus is at most $2q$, since the
+numerator apart from $q$ has modulus at most one and the denominator
+has modulus at least $\cos^3(1/4)>1/2$. The centered first derivative
+vanishes and the second derivative at zero is real. Taylor's theorem
+gives the imaginary bound $q|\theta|^3/3$. Summing proves
+\eqref{lcw:ulb:eq:RI}.
+
+Put $a=15/32$. The real exponent is at most $-aB\theta^2$.
+Using the real mean-value inequality for exponentials and
+$1-\cos I\le I^2/2$, obtain
+\[
+ |\Re\phi(\theta)-e^{-B\theta^2/2}|
+ \le e^{-aB\theta^2}
+       \left(\frac{B\theta^4}{8}+\frac{B^2\theta^6}{18}\right).
+\]
+Integrating over the entire real line and multiplying by
+$\sqrt{B/(2\pi)}$ bounds the local normalized error by
+\[
+ \frac1B\left\{
+ \frac{3}{32\sqrt2\,a^{5/2}}
+ +\frac{5}{48\sqrt2\,a^{7/2}}\right\}<\frac2B.
+\]
+For example, $a>4/9$ and $1/\sqrt2<3/4$ bound the braces by
+$45927/24576<2$.
+
+On $1/2\le|\theta|\le\pi$, use \eqref{lcw:ulb:eq:localization}
+and enlarge to two infinite Gaussian tails. The elementary inequality
+\[
+ \int_h^\infty e^{-cB\theta^2}\,d\theta
+       \le\frac{e^{-cBh^2}}{2cBh}
+\]
+shows that the normalized characteristic-function tail is at most
+$\pi^2e^{-B/(2\pi^2)}/\sqrt{2\pi B}$. The omitted Gaussian
+tail is at most $4e^{-B/8}/\sqrt{2\pi B}$.
+After multiplication by $B$, the suprema of these bounds over $B>0$
+are, respectively,
+\[
+ \frac{\pi^3}{\sqrt{2\pi e}}<8,
+ \qquad \frac8{\sqrt{2\pi e}}<2.
+\]
+The first inequality follows from $\pi<22/7$ and $e>8/3$;
+the second from $\pi>3$ and $e>8/3$. Combining the local and tail
+estimates proves \eqref{lcw:ulb:eq:PBexplicit}. The argument imposed
+no lower restriction on $B$.
+\end{proof}
+
+For the lattice-bridge product, $B\ge m/2$, so this proposition gives
+Corollary~\ref{lcw:ulb:cor:explicit}. The numerical constant $24$ is an
+effective certificate; its optimal value is an open quantitative
+question discussed in Section~\ref{lcw:ulb:sec:outlook}.
+
+\begin{writenote}[Checked, 7 October 2026]
+Read line by line, with no error found. The constants of
+Proposition~\ref{lcw:ulb:prop:PBexplicit} were recomputed by hand:
+$|1-p+pe^{i\theta}|^2=1-4p(1-p)\sin^2(\theta/2)$; $u\le q\theta^2\le1/16$;
+$\frac1{24}+\frac1{15}=\frac{13}{120}<\frac18$; the third derivative
+displayed, with $|1-p+pe^{i\theta}|\ge\cos(1/4)$ and
+$\cos^3(1/4)=0.909\ldots>\frac12$; $a=\frac12-\frac1{32}=\frac{15}{32}$; the
+Gaussian moments $\frac34\sqrt\pi(aB)^{-5/2}$ and $\frac{15}8\sqrt\pi(aB)^{-7/2}$,
+which give the displayed braces, $1.485\ldots$ at $a=15/32$ and at most
+$45927/24576=1.868\ldots$ with $a>4/9$; the two tails, whose suprema over
+$B$ are attained at $B=\pi^2$ and $B=4$ and equal $\pi^{5/2}/\sqrt{2e}=7.502\ldots$
+and $8/\sqrt{2\pi e}=1.935\ldots$; and $2+8+2=12$.
+\end{writenote}
+
+% ---- delivered sections/04_sparse.tex ----
+% Research notes for the parent article; not a standalone preamble.
+% Derived independently on 2026-10-07. All constants below are uniform.
+% Source boundary: lcw:sec:ratio and lcw:sec:further in the existing report.
+
+\section{The sparse collision and idle-step transition}\label{lcw:ulb:sp:sec:sparse}% label added by the write
+
+Let $N=2m+\epsilon$, where $\epsilon\in\{0,1\}$, and let $D\geq1$.
+A bridge is an $N$-step closed walk in $\mathbb Z^D$ with steps
+$0,\pm e_1,\ldots,\pm e_D$. Write $J$ for its number of idle steps.
+For each axis $i$, closure forces the positive and negative step counts
+to agree; call their common value $K_i$. Thus
+\[
+ J\equiv\epsilon\pmod2,\qquad
+ \frac{J-\epsilon}{2}+\sum_{i=1}^D K_i=m.
+\]
+Let
+\[
+ R=\#\{i:K_i\geq2\},\quad U=\#\{i:K_i\geq3\},\quad
+ K_{\rm occ}=\#\{i:K_i\geq1\}.
+\]
+Here a repeated axis means an axis used at least twice in each direction.
+This is a count of axes, not a count of individual step coincidences.
+
+Give a bridge weight $\lambda^J$, where $\lambda\geq0$, and denote the
+total weight by $A_{N,D}(\lambda)$. Define the entire functions
+\[
+ F(t)=\sum_{k\geq0}\frac{t^k}{(k!)^2}=I_0(2\sqrt t),\qquad
+ H_0(t)=\sum_{h\geq0}\frac{t^h}{(2h)!},\qquad
+ H_1(t)=\sum_{h\geq0}\frac{t^h}{(2h+1)!}.
+\]
+The square-root notation is only shorthand for these entire series.
+The exact parity-reduced enumeration is
+\begin{equation}\label{lcw:ulb:sp:eq:exact}
+ A_{N,D}(\lambda)
+ =N!\lambda^\epsilon[t^m]F(t)^D H_\epsilon(\lambda^2t).
+\end{equation}
+Indeed, a fixed vector of axis counts and idle count contributes the
+multinomial number $N!/(J!\prod_i(K_i!)^2)$.
+
+When $\epsilon=1$ and $\lambda=0$, the total weight in
+\eqref{lcw:ulb:sp:eq:exact} is zero, so it cannot normalize a probability law.
+We therefore define the normalized partition function by the entire
+extension
+\[
+ \widetilde A_{N,D}(\lambda)
+ :=N![t^m]F(t)^D H_\epsilon(\lambda^2t).
+\]
+For $\lambda>0$ this equals $A_{N,D}(\lambda)/\lambda^\epsilon$.
+At $\lambda=0$, its associated limiting probability law is the uniform
+law on bridges with exactly $\epsilon$ idle steps. In particular it is
+the usual nonlazy bridge law for $\epsilon=0$, and the exactly-one-idle
+bridge law for $\epsilon=1$. Assertions about the odd law at zero below
+refer to this extension, not to normalization of zero total weight.
+
+The two transition parameters are
+\[
+ \theta=\frac{m^2}{D},\qquad
+ \beta=\lambda\sqrt{\frac mD}.
+\]
+The first controls repeated axes; the second controls the idle count.
+The original unweighted bridge measure $\lambda=1$ has $\beta\to0$
+throughout the regime of bounded $\theta$ considered here. A nonzero
+idle transition is observed by allowing the idle weight to grow.
+
+\begin{theorem}[Uniform sparse partition function]\label{lcw:ulb:sp:thm:count}
+Fix $K,B<\infty$. Uniformly over integers $D\geq1$, parities
+$\epsilon\in\{0,1\}$, and $\lambda\geq0$ such that
+$0<\theta\leq K$ and $0\leq\beta\leq B$, as $m\to\infty$,
+\begin{equation}\label{lcw:ulb:sp:eq:count}
+ \widetilde A_{N,D}(\lambda)
+ =\frac{N!D^m}{m!}e^{-\theta/4}H_\epsilon(\beta^2)
+ \left(1+\frac{C_\epsilon(\theta,\beta)}m+O_{K,B}(m^{-2})\right),
+\end{equation}
+where, with $c=\beta^2$,
+\begin{equation}\label{lcw:ulb:sp:eq:C}
+ C_\epsilon(\theta,\beta)
+ =\frac\theta4-\frac{\theta^2}{72}
+ +\frac\theta2\frac{cH_\epsilon'(c)}{H_\epsilon(c)}
+ -\frac12\frac{c^2H_\epsilon''(c)}{H_\epsilon(c)}.
+\end{equation}
+Multiplication by $\lambda^\epsilon$ gives the weighted count, with
+the zero odd count correctly retained when $\lambda=0$.
+\end{theorem}
+
+Define a probability law $\mathcal P_{\epsilon,\beta}$ on the
+nonnegative integers by its probability generating function
+\begin{equation}\label{lcw:ulb:sp:eq:paritylaw}
+ P_{\epsilon,\beta}(u)
+ =\frac{u^\epsilon H_\epsilon(\beta^2u^2)}{H_\epsilon(\beta^2)}.
+\end{equation}
+For $\beta>0$ this is Poisson($\beta$) conditioned to have parity
+$\epsilon$: it is $\cosh(\beta u)/\cosh\beta$ in the even case,
+and $\sinh(\beta u)/\sinh\beta$ in the odd case.
+At $\beta=0$ it is respectively the point mass at $0$ or at $1$.
+This definition avoids conditioning a zero-parameter Poisson variable
+on an event of probability zero.
+
+\begin{theorem}[Joint sparse probability law]\label{lcw:ulb:sp:thm:law}
+Under the same parameter restrictions, let $p_{m,D,\lambda}(j,r)$
+be the joint law of $(J,R)$ under the weighted bridge measure, including
+the minimal-idle extension at zero. For every fixed $a,b\geq1$,
+\begin{equation}\label{lcw:ulb:sp:eq:l1}
+ \sum_{j,r\geq0}a^j b^r
+ \left|p_{m,D,\lambda}(j,r)
+   -\mathcal P_{\epsilon,\beta}\{j\}
+      e^{-\theta/4}\frac{(\theta/4)^r}{r!}\right|
+ =O_{K,B,a,b}(m^{-1}).
+\end{equation}
+Consequently the idle count and the repeated-axis count are
+asymptotically independent, uniformly in these moving parameters.
+If $\theta\to\theta_*$ and $\beta\to\beta_*$ along a fixed parity,
+their joint limit is
+$\mathcal P_{\epsilon,\beta_*}\otimes\operatorname{Pois}(\theta_*/4)$.
+Moreover
+\begin{equation}\label{lcw:ulb:sp:eq:triple}
+ \mathbb E U=\frac{\theta^2}{36m}+O_{K,B}(m^{-2}),\qquad
+ \mathbb P(U\geq1)=O_{K,B}(m^{-1}).
+\end{equation}
+If $Q\sim\mathcal P_{\epsilon,\beta}$ and
+$Z\sim\operatorname{Pois}(\theta/4)$ are independent, then
+\begin{equation}\label{lcw:ulb:sp:eq:deficit}
+ d_{\rm TV}\left(\mathcal L(m-K_{\rm occ}),
+                 \mathcal L((Q-\epsilon)/2+Z)\right)
+ =O_{K,B}(m^{-1}).
+\end{equation}
+Thus sparse occupied-axis fluctuations are described by an explicit
+discrete law, on the natural scale of one axis.
+\end{theorem}
+
+\subsection{A uniform coefficient-extraction lemma}
+
+For a function $f$ analytic on a neighborhood of the closed disk
+$|z|\leq R$, with fixed $R>1$, define
+\[
+ T_m f:=\frac{m!}{m^m}[z^m]e^{mz}f(z).
+\]
+Writing $f(z)=\sum_{j\geq0}f_jz^j$ gives the finite exact identity
+\begin{equation}\label{lcw:ulb:sp:eq:transfer}
+ T_m f=\sum_{j=0}^m f_j\frac{(m)_j}{m^j}.
+\end{equation}
+Here $(m)_j=m(m-1)\cdots(m-j+1)$ is the falling factorial.
+For $0\leq j\leq m$, the elementary product inequalities give
+\[
+ 0\leq1-\frac{(m)_j}{m^j}
+ \leq\frac{j(j-1)}{2m}.
+\]
+Cauchy's estimate $|f_j|\leq\|f\|_R R^{-j}$ and the exponentially
+small tail $j>m$ show
+\begin{equation}\label{lcw:ulb:sp:eq:transfer1}
+ T_m f=f(1)+O_R(m^{-1}\|f\|_R).
+\end{equation}
+For a second order bound, apply the first two Bonferroni inequalities
+to the product $\prod_{k=0}^{j-1}(1-k/m)$:
+\[
+ 0\leq\frac{(m)_j}{m^j}-1+\frac{j(j-1)}{2m}
+ \leq\frac12\left(\frac{j(j-1)}{2m}\right)^2.
+\]
+Summing again yields the uniform identity
+\begin{equation}\label{lcw:ulb:sp:eq:transfer2}
+ T_m f=f(1)-\frac{f''(1)}{2m}
+        +O_R(m^{-2}\|f\|_R).
+\end{equation}
+The missing tails of both $f(1)$ and $f''(1)$ are exponentially small.
+These estimates also apply to analytic families with a common sup norm
+bound. This elementary lemma is what supplies uniformity for the
+changing dimension; no uncontrolled saddle substitution is used.
+
+\subsection{Proof of the count and joint law}
+
+To mark repeated axes, put
+\[
+ F_w(t)=1+t+w(F(t)-1-t).
+\]
+The exact joint generating polynomial, after removal of the common
+$\lambda^\epsilon$ factor, is
+\begin{equation}\label{lcw:ulb:sp:eq:marked}
+ N!u^\epsilon[t^m]F_w(t)^D
+ H_\epsilon(\lambda^2u^2t).
+\end{equation}
+This formula is polynomial in $u,w,\lambda$, and remains meaningful
+at $\lambda=0$ with the interpretation specified above.
+
+Fix any complex disks $|u|\leq R_u$ and $|w|\leq R_w$, and a disk
+$|z|\leq R$ with $R>1$. Put
+$t_0=m/D=\theta/m$ and substitute $t=t_0z$.
+The function $F_w(t_0z)$ is uniformly close to $1$ for large $m$;
+its logarithm is the branch obtained by Taylor expansion at $0$.
+Uniformly on these three fixed disks,
+\[
+ \log F_w(s)
+ =s+\frac{w-2}{4}s^2+\frac{3-2w}{9}s^3+O_{R_w}(s^4).
+\]
+Hence
+\begin{equation}\label{lcw:ulb:sp:eq:log}
+ D\log F_w(t_0z)
+ =mz+\frac{w-2}{4}\theta z^2
+    +\frac{3-2w}{9m}\theta^2z^3+O_{K,R,R_w}(m^{-2}).
+\end{equation}
+The last estimate follows from
+$Dt_0^4=m^4/D^3=\theta^3/m^2$.
+Similarly $\lambda^2t_0=\beta^2$ exactly, so the idle factor is
+$H_\epsilon(\beta^2u^2z)$, which is uniformly bounded on the
+fixed disks because $\beta\leq B$.
+
+Set
+\[
+ \alpha=\frac{w-2}{4}\theta,\quad
+ b_0=\frac{3-2w}{9}\theta^2,\quad c=\beta^2u^2,\quad
+ f(z)=e^{\alpha z^2}H_\epsilon(cz).
+\]
+Equations \eqref{lcw:ulb:sp:eq:log} and \eqref{lcw:ulb:sp:eq:transfer2} give
+\begin{equation}\label{lcw:ulb:sp:eq:markedexp}
+ \frac{m!}{D^m}[t^m]F_w(t)^D H_\epsilon(\lambda^2u^2t)
+ =f(1)+\frac{b_0f(1)-f''(1)/2}{m}+O(m^{-2}).
+\end{equation}
+Expanding the derivative, the right-hand side is
+\begin{multline*}
+ e^\alpha\biggl[H_\epsilon(c)+\frac1m\bigl\{
+ (b_0-\alpha-2\alpha^2)H_\epsilon(c)\\
+ -2\alpha cH_\epsilon'(c)-\tfrac12c^2H_\epsilon''(c)
+ \bigr\}\biggr]+O(m^{-2}).
+\end{multline*}
+All error constants here are uniform for the stipulated real parameters
+and fixed complex marker disks. To justify applying the transfer to the
+analytic remainder, observe from \eqref{lcw:ulb:sp:eq:transfer} and Cauchy's
+bound that $|T_mg|\leq (1-1/R)^{-1}\|g\|_R$. Thus a remainder
+$O(m^{-2})$ in sup norm remains $O(m^{-2})$ after transfer.
+
+At $u=w=1$ one has $\alpha=-\theta/4$ and $b_0=\theta^2/9$.
+The expression $b_0-\alpha-2\alpha^2$ then reduces to
+$\theta/4-\theta^2/72$, and \eqref{lcw:ulb:sp:eq:markedexp} proves
+Theorem~\ref{lcw:ulb:sp:thm:count}. The leading factor cannot approach zero:
+$e^{-\theta/4}\geq e^{-K/4}$ and $H_\epsilon(\beta^2)\geq1$.
+Division by the unmarked count is therefore uniform.
+
+Let $G_{m,D,\lambda}(u,w)$ be the joint probability generating
+function of $(J,R)$. Taking the ratio of the marked and unmarked
+formulas, and restoring $u^\epsilon$, proves
+\begin{equation}\label{lcw:ulb:sp:eq:pgf}
+ G_{m,D,\lambda}(u,w)
+ =\frac{u^\epsilon H_\epsilon(\beta^2u^2)}{H_\epsilon(\beta^2)}
+     \exp\left(\frac\theta4(w-1)\right)+O(m^{-1})
+\end{equation}
+uniformly on every fixed complex polydisk in $u,w$.
+Given $a,b\geq1$, choose $R_u>a$ and $R_w>b$. Cauchy's estimates
+on the larger disks give a bound
+$Cm^{-1}R_u^{-j}R_w^{-r}$ for each coefficient of the error.
+Summing $a^jb^r$ times this bound yields
+\eqref{lcw:ulb:sp:eq:l1}. This also shows why convergence of the generating
+functions merely on a neighborhood of $1$ would be insufficient for
+the asserted weighted norm: the present proof supplies every fixed
+complex disk directly.
+
+For the assertion about triple-use axes, introduce an extra marker
+$v$ and set
+\[
+ F_{w,v}(t)=1+t+\frac{w t^2}{4}
+          +wv\left(F(t)-1-t-\frac{t^2}{4}\right).
+\]
+Its logarithmic coefficient of $t^3$ is
+$wv/36-w/4+1/3$. Therefore the argument above, uniformly also
+on a fixed disk about $v=1$, gives a $v$ derivative at $w=v=1$
+equal to
+\[
+ \frac{\theta^2}{36m}e^{-\theta/4}H_\epsilon(\beta^2)
+ +O_{K,B}(m^{-2})
+\]
+for the normalized numerator. Division by the unmarked expression
+proves the expectation in \eqref{lcw:ulb:sp:eq:triple}; Markov's inequality
+proves its probability bound. Differentiation of the error is valid
+by Cauchy's estimate on a slightly larger fixed $v$ disk.
+
+On the event $U=0$, every occupied axis has one or two pairs, so
+\[
+ m-K_{\rm occ}=(J-\epsilon)/2+R.
+\]
+The failure probability is $O(m^{-1})$. Apply the data-processing
+inequality for total variation to \eqref{lcw:ulb:sp:eq:l1} at $a=b=1$
+and add this failure probability. This proves
+\eqref{lcw:ulb:sp:eq:deficit} and completes the theorem.
+
+\subsection{Consequences and scope}
+
+For unweighted bridges $\lambda=1$, $\beta^2=m/D=\theta/m$.
+Thus $J=\epsilon$ with probability $1-O_K(m^{-1})$, and the
+occupied-axis deficit has the Poisson($\theta/4$) approximation
+in total variation with error $O_K(m^{-1})$.
+For example, the even count is
+\[
+ A_{2m,D}(1)=\frac{(2m)!D^m}{m!}e^{-\theta/4}
+ \left(1+\frac{3\theta/4-\theta^2/72}{m}
+ +O_K(m^{-2})\right),
+\]
+because $H_0(\theta/m)=1+\theta/(2m)+O(m^{-2})$.
+For odd lengths,
+\[
+ A_{2m+1,D}(1)=\frac{(2m+1)!D^m}{m!}e^{-\theta/4}
+ \left(1+\frac{5\theta/12-\theta^2/72}{m}
+ +O_K(m^{-2})\right),
+\]
+using $H_1(\theta/m)=1+\theta/(6m)+O(m^{-2})$.
+These statements remain uniform as $\theta\downarrow0$.
+
+The theorem addresses the critical sparse range $m^2/D=O(1)$.
+It does not itself describe a diverging repeated-axis mean
+$m^2/D\to\infty$. The global Bernoulli-product saddle theorem
+can cover counts in that wider range, but a Gaussian or
+mod-Poisson description of the repeated-axis law would require
+additional uniform marked estimates.
+
+\begin{writenote}[Checked, 7 October 2026]
+Read line by line, with no error found. Rederived by hand: the transfer
+inequalities; the coefficients $(w-2)/4$ and $(3-2w)/9$ of $\log F_w$ and
+$Dt_0^k=m,\theta,\theta^2/m,\theta^3/m^2$ for $k=1,\dots,4$; the second
+derivative of $f$ at $1$ and $b_0-\alpha-2\alpha^2=\theta/4-\theta^2/72$ at
+$u=w=1$, hence \eqref{lcw:ulb:sp:eq:C}; the triple-use coefficient
+$wv/36-w/4+1/3$; the identity $m-K_{\rm occ}=(J-\epsilon)/2+R$ on $\{U=0\}$;
+and the unweighted corrections $3\theta/4-\theta^2/72$ and
+$5\theta/12-\theta^2/72$. From exact rational counts of its own (a binary
+power of the truncated series of $F$), the write reproduced all sixteen
+entries of Table~\ref{lcw:ulb:tab:verification-sparse} to their printed
+digits. Further cases: at $\theta=4$, $\beta=2$ ($D=m^2/4$) and
+$m=20,40,80$ the corrected relative errors are $-2.9\cdot10^{-3}$,
+$-8.6\cdot10^{-4}$, $-2.3\cdot10^{-4}$ for even $N$ and $-2.4\cdot10^{-3}$,
+$-6.7\cdot10^{-4}$, $-1.8\cdot10^{-4}$ for odd $N$, of order $m^{-2}$; at
+$\theta=\tfrac14$, $\beta=0$ ($D=4m^2$) they are $-1.9\cdot10^{-6}$,
+$-4.5\cdot10^{-7}$, $-1.1\cdot10^{-7}$ for both parities. For the unweighted
+measure, $m\,\E U$ is $0.0243$ (even $N$) and $0.0244$ (odd) at $\theta=1$,
+$m=20$, $0.0261$ for both at $m=40$, and $0.433$, $0.434$ at $\theta=4$,
+$m=40$, against
+$\theta^2/36=0.0277\ldots$ and $0.444\ldots$, with the gap shrinking like $1/m$.
+\end{writenote}
+
+% ---- delivered sections/05_dense.tex ----
+% Research note for integration. Depends only on the uniform coefficient
+% saddle theorem for F(t)^D H_epsilon(t), with relative error O(1/m).
+% All constants in the dense estimates below are absolute.
+
+\section{The Gaussian transition and its dimension thresholds}
+\label{lcw:ulb:sec:dense-gaussian}
+
+For integers $N,D\ge1$, let
+\[
+ R_{N,D}=\frac{N!}{(2D+1)^N}[z^N]e^z I_0(2z)^D,
+ \qquad
+ G_{N,D}=\left(\frac{2D+1}{4\pi N}\right)^{D/2}.
+\]
+Thus $R_{N,D}$ is the return probability of the walk whose $2D+1$
+equiprobable increments are $0,\pm e_1,\ldots,\pm e_D$.
+The covariance matrix of one increment is $2(2D+1)^{-1}I_D$, so
+$G_{N,D}$ is its Gaussian local-limit prediction. Put
+\[
+ \rho=\frac ND,\qquad q=\rho^{-1}=\frac DN.
+\]
+The result is uniform in the two integer parameters; in particular,
+it does not first fix the dimension.
+
+\begin{theorem}[Dense expansion and Gaussian threshold]
+\label{lcw:ulb:thm:dense-gaussian}
+There are absolute constants $C$ and $\rho_0$ such that, for
+$D\ge1$ and $N/D\ge\rho_0$,
+\begin{equation}\label{lcw:ulb:eq:dense-uniform}
+ \log\frac{R_{N,D}}{G_{N,D}}
+ =-\frac{3D}{16N}+\frac{D^3}{48N^2}
+ +O\left(\frac{D^2}{N^2}+\frac{D^4}{N^3}
+               +\frac1N+e^{-N/(4D)}\right).
+\end{equation}
+The implied constant is absolute. Consequently, along every sequence
+with $N/D\to\infty$:
+\begin{enumerate}
+\item $R_{N,D}/G_{N,D}\to1$ if and only if $D^3/N^2\to0$;
+\item if $D^3/N^2\to\xi\in(0,\infty)$, then
+      $R_{N,D}/G_{N,D}\to e^{\xi/48}$;
+\item if $D^3/N^2\to\infty$, then
+      $\log(R_{N,D}/G_{N,D})\sim D^3/(48N^2)$.
+\end{enumerate}
+In particular, the critical scale is $N\asymp D^{3/2}$.
+If $N/D^{3/2}\to s\in(0,\infty)$, the critical ratio is
+$\exp(1/(48s^2))$. The same conclusions hold for even and odd $N$.
+\end{theorem}
+
+\begin{proof}
+We first convert the parity-resolved saddle into a saddle involving
+$e^z I_0(2z)^D$. This conversion is justified below; it is not an
+assumption that a second saddle can be discarded uniformly.
+
+Write $N=2m+\epsilon$, with $\epsilon\in\{0,1\}$, and set
+\[
+ F(t)=I_0(2\sqrt t),\qquad
+ H_0(t)=\cosh\sqrt t,\qquad
+ H_1(t)=\frac{\sinh\sqrt t}{\sqrt t}.
+\]
+The exact parity identity is
+\[
+ [z^N]e^zI_0(2z)^D=[t^m]F(t)^DH_\epsilon(t).
+\]
+Theorem~\ref{lcw:ulb:thm:global} for this coefficient has relative
+error $O(1/m)=O(1/N)$, with an absolute constant.
+
+Define
+\[
+ B(z)=z\frac{d}{dz}\log I_0(2z),\quad
+ A_+(z)=DB(z)+z,
+\]
+and let $\zeta>0$ solve $A_+(\zeta)=N$. Existence and uniqueness
+follow from positivity of the tilted variance: $A_+'(z)>0$;
+also $A_+(0)=0$ and $A_+(z)\to\infty$. Set
+\[
+ V_+=\zeta A_+'(\zeta).
+\]
+We claim the following uniformly valid positive-saddle formula:
+\begin{equation}\label{lcw:ulb:eq:dense-positive-saddle}
+ R_{N,D}=
+ \frac{N!e^{\zeta}I_0(2\zeta)^D}
+ {(2D+1)^N\zeta^N\sqrt{2\pi V_+}}
+ \left(1+O\left(N^{-1}+e^{-N/(4D)}\right)\right).
+\end{equation}
+
+For completeness, put
+\[
+ Q_\epsilon(z)=1+(-1)^\epsilon e^{-2z}.
+\]
+Then $H_\epsilon(z^2)=e^zQ_\epsilon(z)/(2z^\epsilon)$.
+If $\eta^2$ is the exact parity saddle, its equation is
+\begin{equation}\label{lcw:ulb:eq:dense-exact-saddle}
+ A_+(\eta)+\eta\frac{Q_\epsilon'(\eta)}{Q_\epsilon(\eta)}=N.
+\end{equation}
+The standard large-positive-argument expansion of $I_0$ and its
+derivatives implies
+\[
+ B(z)=2z-\tfrac12+O(z^{-1}),\quad
+ B'(z)=2+O(z^{-2}),\quad B''(z)=O(z^{-3}).
+\]
+Hence $\zeta\asymp\rho$, $A_+'(z)\asymp D$ near $\zeta$,
+and, in fact, $\zeta\ge N/(2D+1)\ge\rho/3$ exactly, since
+$I_1(2\zeta)/I_0(2\zeta)<1$ by the positive integral representation.
+For $z\ge1$ the perturbing term in
+\eqref{lcw:ulb:eq:dense-exact-saddle} is $O(ze^{-2z})$, and its derivative
+is $O(ze^{-2z})$. The mean-value theorem, first on
+$[\zeta-1,\zeta+1]$ and then between the two roots, gives
+\[
+ |\eta-\zeta|\le C\frac{\zeta e^{-2\zeta}}D.
+\]
+The positive exponent
+$E(z)=D\log I_0(2z)+z-N\log z$ has $E'(\zeta)=0$ and
+$E''(z)=O(D/\zeta)$ on this short interval. Its change is therefore
+$O(\zeta e^{-4\zeta}/D)$, and $\log Q_\epsilon(\eta)=O(e^{-2\zeta})$.
+If $V_t$ denotes the variance at the exact parity saddle, direct
+differentiation gives
+\[
+ 4V_t=\eta A_+'(\eta)+
+ \eta\frac{d}{d\eta}\left(
+       \eta\frac{Q_\epsilon'(\eta)}{Q_\epsilon(\eta)}\right).
+\]
+It follows that $4V_t/V_+=1+O(\zeta e^{-2\zeta})$.
+The factor $1/2$ in $H_\epsilon$ consequently cancels the factor
+$2$ from replacing $\sqrt{V_t}$ by $\sqrt{V_+}/2$.
+Since $\zeta e^{-2\zeta}=O(e^{-\rho/4})$, the exact parity
+saddle theorem proves \eqref{lcw:ulb:eq:dense-positive-saddle}.
+This also explains the uniform treatment of the two parities.
+
+It remains to expand this real saddle. Let
+\[
+ c=1+\frac1{2D}\in[1,3/2],\qquad
+ w=2\zeta,\qquad v=cw,
+\]
+and define
+\[
+ \ell(w)=\log I_0(w)-w+\tfrac12\log(2\pi w),\qquad
+ \ell_c(v)=\ell(v/c).
+\]
+The classical expansion \cite{dlmf1040}, for positive $w\to\infty$, is
+\begin{equation}\label{lcw:ulb:eq:dense-bessel-log}
+ \ell(w)=\frac1{8w}+\frac1{16w^2}+O(w^{-3}).
+\end{equation}
+The expansion may be differentiated to the fixed orders used here;
+this follows either from the differentiated Bessel expansions or
+from Laplace's method applied to
+$I_0(w)=\pi^{-1}\int_0^\pi e^{w\cos\theta}\,d\theta$.
+All resulting bounds for $\ell_c$ are uniform for $1\le c\le3/2$.
+The saddle equation becomes
+\begin{equation}\label{lcw:ulb:eq:dense-v-equation}
+ \rho=v-\tfrac12+v\ell_c'(v)
+      =v-\tfrac12-\frac{c}{8v}-\frac{c^2}{8v^2}+O(v^{-3}).
+\end{equation}
+Its derivative with respect to $v$ is $1+O(v^{-2})$, uniformly
+in $c$. Substitution followed by the mean-value theorem therefore
+gives the uniform inverse expansion
+\begin{equation}\label{lcw:ulb:eq:dense-v-expansion}
+ v=\rho+\tfrac12+\frac{c}{8\rho}
+       +\frac{2c^2-c}{16\rho^2}+O(\rho^{-3}).
+\end{equation}
+
+Applying Stirling's formula with remainder $O(1/N)$ to
+\eqref{lcw:ulb:eq:dense-positive-saddle}, and subtracting $\log G_{N,D}$,
+yields
+\begin{equation}\label{lcw:ulb:eq:dense-rate-representation}
+ \log\frac{R_{N,D}}{G_{N,D}}
+   =D\mathcal A(\rho,c)+\frac12\log\frac{N}{V_+}
+       +O\left(N^{-1}+e^{-\rho/4}\right),
+\end{equation}
+where
+\[
+ \mathcal A(\rho,c)
+   =(\rho+\tfrac12)\log\frac\rho v-\rho+v+\ell_c(v).
+\]
+There is no untracked $D$-dependent constant here: the factors
+$(2D+1)^N$, the Gaussian normalization, and the Bessel prefactor
+have all been retained exactly.
+
+Using \eqref{lcw:ulb:eq:dense-v-expansion} in this last display gives
+\begin{equation}\label{lcw:ulb:eq:dense-rate-series}
+ \mathcal A(\rho,c)
+ =\frac{c-1}{8\rho}
+   +\frac{1}{\rho^2}\left(\frac1{48}+\frac{c^2-c}{16}\right)
+   +O(\rho^{-3}).
+\end{equation}
+Furthermore, since $V_+=D v\,d\rho/dv$,
+\[
+ \frac12\log\frac{N}{V_+}
+ =-\frac1{4\rho}
+   +\frac1{\rho^2}\left(\frac1{16}-\frac c8\right)
+   +O(\rho^{-3}).
+\]
+Because $D(c-1)=1/2$, the terms of order $\rho^{-1}$ combine
+to $-3/(16\rho)$. The leading term of order $D\rho^{-2}$
+is $D/(48\rho^2)$, and all other second-order terms are
+$O(\rho^{-2})$. Multiplying the uniform remainder in
+\eqref{lcw:ulb:eq:dense-rate-series} by $D$ proves
+\eqref{lcw:ulb:eq:dense-uniform}.
+
+Finally put $\chi=D/\rho^2=D^3/N^2$. Formula
+\eqref{lcw:ulb:eq:dense-uniform} reads
+\[
+ \log(R_{N,D}/G_{N,D})
+ =\frac\chi{48}-\frac3{16\rho}
+    +O\left(\frac\chi\rho+\rho^{-2}+N^{-1}+e^{-\rho/4}\right).
+\]
+This gives the three asserted limits. For the ``only if'' direction
+in the first assertion, any failure of $\chi\to0$ has a subsequence
+on which $\chi$ converges to a positive finite value or tends to
+infinity, or a further subsequence of one of these two forms.
+The other two assertions then preclude a ratio tending to one.
+\end{proof}
+
+\begin{corollary}[Nonlazy walks and failure of every constant Gaussian bound]
+\label{lcw:ulb:cor:nonlazy-dense}
+For positive even $N$, let
+\[
+ R^0_{N,D}=\frac{N!}{(2D)^N}[z^N]I_0(2z)^D,\qquad
+ G^0_{N,D}=\left(\frac{D}{2\pi N}\right)^{D/2}.
+\]
+Uniformly as $N/D\to\infty$,
+\begin{equation}\label{lcw:ulb:eq:nonlazy-dense}
+ \log\frac{R^0_{N,D}}{2G^0_{N,D}}
+ =-\frac{D}{4N}+\frac{D^3}{48N^2}
+  +O\left(\frac{D^2}{N^2}+\frac{D^4}{N^3}+\frac1N\right).
+\end{equation}
+The three conclusions of Theorem~\ref{lcw:ulb:thm:dense-gaussian} hold with
+$R/G$ replaced by $R^0/(2G^0)$. In particular, there is no universal
+finite constant $K$ for which
+\[
+ R^0_{N,D}\le K\left(\frac{D}{2\pi N}\right)^{D/2}
+ \qquad\hbox{for every positive even $N$ and every $D$}.
+\]
+\end{corollary}
+\begin{proof}
+The exact parity identity now has no idle factor:
+$[z^{2m}]I_0(2z)^D=[t^m]F(t)^D$. Its variance in the $t$ variable
+is exactly one fourth of the variance in $z$, yielding the lattice
+factor $2$ in the denominator of \eqref{lcw:ulb:eq:nonlazy-dense}.
+The saddle computation is otherwise exactly the preceding proof
+with $c=1$. Thus the $\rho^{-1}$ term in $D\mathcal A$ vanishes,
+while the prefactor contributes $-1/(4\rho)$ and
+$D\mathcal A$ contributes $D/(48\rho^2)$. There is no parity
+approximation and hence no exponentially small error to retain.
+Choosing any even $N$ with $N\sim D^{4/3}$ gives
+\[
+ \log\frac{R^0_{N,D}}{2G^0_{N,D}}
+       \sim\frac{D^{1/3}}{48}\longrightarrow\infty,
+\]
+which excludes every finite $K$.
+\end{proof}
+
+\begin{corollary}[The side of approach to the Gaussian value]
+\label{lcw:ulb:cor:gaussian-sign}
+If $D\to\infty$ and $N/D^2\to s\in(0,\infty)$, then
+\[
+ D\log\frac{R_{N,D}}{G_{N,D}}
+     \longrightarrow\frac{1-9s}{48s^2}.
+\]
+For even $N$ in the same regime,
+\[
+ D\log\frac{R^0_{N,D}}{2G^0_{N,D}}
+     \longrightarrow\frac{1-12s}{48s^2}.
+\]
+Thus the eventual signs switch at $s=1/9$ in the lazy model and
+$s=1/12$ in the nonlazy model, away from the critical equality cases.
+\end{corollary}
+\begin{proof}
+Multiply \eqref{lcw:ulb:eq:dense-uniform} or \eqref{lcw:ulb:eq:nonlazy-dense} by $D$.
+Every remainder is $O(D^{-1})$ or exponentially smaller in this regime.
+\end{proof}
+
+\begin{corollary}[The eventual Gaussian upper-bound thresholds]
+\label{lcw:ulb:cor:eventual-threshold}
+Let $T_0(D)$ be the least positive even integer $M$ such that
+$R^0_{N,D}\le2G^0_{N,D}$ for every positive even $N\ge M$.
+Let $T_1(D)$ be the least positive integer $M$ such that
+$R_{N,D}\le G_{N,D}$ for every integer $N\ge M$.
+These thresholds are finite, and
+\[
+ \frac{T_0(D)}{D^2}\longrightarrow\frac1{12},\qquad
+ \frac{T_1(D)}{D^2}\longrightarrow\frac1{9}
+ \qquad(D\to\infty).
+\]
+More precisely, for each $\delta>0$ and all sufficiently large $D$,
+the nonlazy upper bound holds simultaneously at every even
+$N\ge(1/12+\delta)D^2$, and the lazy upper bound holds at every
+$N\ge(1/9+\delta)D^2$. Each model has a failing time arbitrarily
+close to its corresponding lower scale $(1/12-\delta)D^2$ or
+$(1/9-\delta)D^2$ when that scale is positive.
+\end{corollary}
+\begin{proof}
+For the nonlazy model multiply \eqref{lcw:ulb:eq:nonlazy-dense} by $\rho$.
+For the lazy model do the same in \eqref{lcw:ulb:eq:dense-uniform}.
+Writing $a=1/4$ or $a=3/16$, respectively, gives
+\[
+ \rho\log(\text{return}/\text{Gaussian})
+ =-a+\frac{D}{48\rho}
+  +O\left(\rho^{-1}+D\rho^{-2}+D^{-1}
+              +\rho e^{-\rho/4}\right),
+\]
+where the last term is omitted in the nonlazy case and its Gaussian
+includes the period factor. For every fixed $c>0$, the error is
+$O_c(D^{-1})$ uniformly on the entire half-line $\rho\ge cD$.
+Thus if $c>1/(48a)$, the expression is at most
+$-a+1/(48c)+O_c(D^{-1})<0$ for all sufficiently large $D$,
+simultaneously for every allowed time on that half-line.
+
+If $0<c<1/(48a)$, choose an allowed integer $N_D$ nearest to $cD^2$.
+Corollary~\ref{lcw:ulb:cor:gaussian-sign} makes its ratio strictly greater
+than one for large $D$, so the eventual threshold exceeds $N_D$.
+Together these statements squeeze the thresholds to the asserted
+limits; parity rounding changes times by only $O(1)$.
+For each fixed dimension, finiteness in the nonlazy case follows from
+the eventual bound in \cite{ballsterbenz}; in the lazy case it follows
+from the negative first fixed-dimension correction established below.
+\end{proof}
+
+\subsection{The first two fixed-dimension coefficients}
+\label{lcw:ulb:subsec:dense-cumulant-check}
+
+The coefficient of $D^3/N^2$ has an independent check that also
+explains the cancellation of a prospective $D^2/N$ obstruction.
+For fixed $D$, Fourier inversion gives
+\[
+ R_{N,D}=(2\pi)^{-D}\int_{[-\pi,\pi]^D}
+ \left(\frac{1+2\sum_{j=1}^D\cos\theta_j}{2D+1}\right)^N
+ \,d\theta.
+\]
+With $a=2D+1$ and $\theta_j=\sqrt{a/(2N)}\,x_j$, write
+$S_r=\sum_{j=1}^D x_j^r$. Locally near $\theta=0$, the exponent through order $N^{-2}$ is
+\[
+ -\frac{S_2}{2}+\frac{A(x)}N+\frac{B(x)}{N^2}+O_D(N^{-3}
+ (1+\|x\|^8)),
+\]
+where
+\[
+ A(x)=\frac{aS_4}{48}-\frac{S_2^2}{8},\qquad
+ B(x)=-\frac{a^2S_6}{2880}+
+       \frac{aS_2S_4}{96}-\frac{S_2^3}{24}.
+\]
+For fixed $D$, the absolute characteristic function is bounded by
+some $q_D<1$ outside any sufficiently small fixed neighborhood of
+zero: the idle step makes this walk aperiodic. On the local part,
+a rescaled cutoff $\|x\|\le N^\delta$, with fixed sufficiently small
+$\delta>0$, gives an integrable Gaussian Taylor remainder; the
+remaining local tail is exponentially small in $N^{2\delta}$.
+Thus integration against $D$ independent standard Gaussian variables
+gives
+\[
+ \mathbb E A=-\frac{3D}{16},
+ \qquad
+ \mathbb E B+\frac12\mathbb E A^2
+   =\frac{D(32D^2-21D-8)}{1536}.
+\]
+Thus, for fixed $D$,
+\begin{align*}
+ \frac{R_{N,D}}{G_{N,D}}
+ &=1-\frac{3D}{16N}
+   +\frac{D(32D^2-21D-8)}{1536N^2}+O_D(N^{-3}),\\
+ \log\frac{R_{N,D}}{G_{N,D}}
+ &=-\frac{3D}{16N}
+   +\frac{D(4D^2-6D-1)}{192N^2}+O_D(N^{-3}).
+\end{align*}
+This calculation is a check of the coefficients, not the source of
+the uniform growing-dimension error bound. The latter was proved
+by the scalar parity saddle above. In particular, directly promoting
+the fixed-$D$ error term $O_D(N^{-3})$ to a uniform statement would
+not establish the dimension threshold.
+
+\paragraph{Reference for the Bessel expansion.}
+The only classical analytic input beyond the uniform coefficient
+saddle theorem is the fixed-order large-positive-argument expansion
+of $I_0$ and its derivatives, as in NIST DLMF, Section 10.40,
+especially equations 10.40.1 and 10.40.3, together with the integral
+representation in Section 10.32. Source URLs:
+\url{https://dlmf.nist.gov/10.40},
+\url{https://dlmf.nist.gov/10.32}.
+
+\begin{writenote}[Checked, 7 October 2026]
+Read line by line, with no error found. By hand: the parity identity and
+$H_\epsilon(z^2)=e^zQ_\epsilon(z)/(2z^\epsilon)$; $\zeta\ge N/(2D+1)$; the
+cancellation of the factor $\frac12$ of $H_\epsilon$ against
+$\sqrt{V_t}\approx\sqrt{V_+}/2$; the two corollaries on signs and thresholds
+($(1-9s)/(48s^2)$, $(1-12s)/(48s^2)$; $1/(48a)=1/9$ and $1/12$). With SymPy,
+keeping an unknown $w^{-3}$ coefficient in $\ell$: the inverse
+expansion~\eqref{lcw:ulb:eq:dense-v-expansion}; the coefficients
+$(c-1)/8$ and $\frac1{48}+\frac{c^2-c}{16}$ of~\eqref{lcw:ulb:eq:dense-rate-series};
+$\frac12\log(N/V_+)=-\frac1{4\rho}+(\frac1{16}-\frac c8)\rho^{-2}+O(\rho^{-3})$;
+the totals $-3/(16\rho)$ and $\bigl(\frac D{48}-\frac1{32}-\frac3{64D}\bigr)\rho^{-2}$
+for $c=1+\frac1{2D}$, and $-1/(4\rho)$, $(\frac D{48}-\frac1{16})\rho^{-2}$ for
+$c=1$; the coefficients $\frac18$, $\frac1{16}$ of $\ell$ from the
+large-argument series $1+\frac1{8w}+\frac9{128w^2}+\cdots$; and the logarithm
+$D(4D^2-6D-1)/192$ of the fixed-$D$ expansion. From exact counts at $D=100$
+the write obtained $R_{N,D}/G_{N,D}=1.077912419$, $1.068950263$,
+$1.004262565$, $1.004177988$, $0.9960407379$, $0.9960398689$ at
+$N=500,501,1000,1001,2000,2001$ (each rounded in its last digit): the
+$D=100$ rows of Table~\ref{lcw:ulb:tab:verification-dense}, saddle values
+through $E_2$, agree with these exact ratios to every printed digit. Its own
+saddle code reproduces all 24 entries of that table and the limits
+$e^{1/(48s^2)}$. For fixed $D$, Richardson extrapolation of
+$N^2\bigl(R_{N,D}/G_{N,D}-1+3D/(16N)\bigr)$ from exact counts at $N=400$ and
+$800$ gives $0.0019530\ldots$, $0.1015622\ldots$, $0.4238214\ldots$ for
+$D=1,2,3$, against $D(32D^2-21D-8)/1536=0.0019531\ldots$, $0.1015625$,
+$0.4238281\ldots$: numerical corroboration of the second coefficient. The
+first, $-3D/16$, is the term of Part~I's dated note in
+Remark~\ref{lcw:rem:rows}, obtained here by the same Edgeworth computation;
+the lazy half of Corollary~\ref{lcw:ulb:cor:eventual-threshold} rests on it
+for the finiteness of $T_1(D)$ at fixed $D$, with the remainder of this
+subsection given in outline.
+\end{writenote}
+
+% ---- delivered sections/07_computation.tex ----
+\section{Exact computation and reproducible checks}
+\label{lcw:ulb:sec:computation}
+
+The proofs above establish the infinite-parameter assertions. The
+accompanying programs provide independent finite checks, an exact
+counterexample certificate, and numerical illustrations. Every large
+dimension entry below is identified by its evaluation method.
+
+\subsection{An integer coefficient recurrence}
+
+For isotropic walks define
+\[
+ Q_{n,D}=(n!)^2[t^n]F(t)^D.
+\]
+These numbers are integers, with $Q_{0,D}=1$. The following recurrence
+computes all coefficients through degree $m$ using $O(m^2)$ integer
+arithmetic operations, without a loop over the dimension:
+\begin{equation}\label{lcw:ulb:eq:miller}
+ nQ_{n,D}=\sum_{k=1}^n\bigl((D+1)k-n\bigr)
+                \binom nk^2 Q_{n-k,D}.
+\end{equation}
+To verify it, write $F(t)=\sum f_kt^k$, $F(t)^D=\sum g_nt^n$,
+and compare coefficients in $F(F^D)'=DF'F^D$. This gives
+$ng_n=\sum_{k=1}^n((D+1)k-n)f_kg_{n-k}$; multiplication by
+$(n!)^2$ proves \eqref{lcw:ulb:eq:miller}. The closed-walk count is
+then the positive finite sum
+\begin{equation}\label{lcw:ulb:eq:exactsum}
+ A_{N,D}(\lambda)=\sum_{k=0}^{\lfloor N/2\rfloor}
+    \binom N{2k}\binom{2k}{k}Q_{k,D}\lambda^{N-2k}.
+\end{equation}
+For rational $\lambda$, this is an exact rational computation.
+The arithmetic-operation count does not bound bit complexity: the
+integers can be large, and the recurrence itself includes signed terms.
+
+The independent implementation multiplies truncated rational power
+series directly. A third implementation enumerates endpoints of short
+walks by dynamic programming, retaining separate positive and negative
+directional weights. These methods check different parts of the
+combinatorial identity. The finite counterexample also has its own
+standard-library-only verifier, including the Machin lower bound for
+$\pi$ and the exact positive integer comparison.
+
+\noindent\begin{minipage}{\linewidth}
+\subsection{Verification coverage}
+
+The saved run used Python 3.12.14 and \texttt{mpmath} 1.3.0 at 60 decimal
+digits for numerical work. It passed the following 444 exact comparisons:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Comparison & Cases\\
+\midrule
+Integer recurrence versus independent rational coefficients & 91\\
+Isotropic count versus direct endpoint enumeration & 108\\
+Isotropic count versus parity-reduced convolution & 198\\
+Asymmetric rational activities versus direct enumeration & 36\\
+Insertion or removal of inactive axes & 11\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{minipage}
+\par\medskip
+The direct enumerations have dimension at most three and length at
+most eight. The coefficient comparisons extend through order twelve.
+These bounds describe the scope of the checks, not restrictions on
+the theorems. The dimension-16 counterexample is checked separately
+by two exact coefficient methods.
+The prescribed-endpoint corollary has an additional 1,303 exact
+comparisons in \texttt{code/verify\_endpoints.py}: eight activity models
+in dimensions zero through two, lengths zero through six, rational
+asymmetric and one-sided axes, and all stated boundary types. This
+separate grid compares the coefficient formula with direct step
+enumeration for every reached endpoint and the box $\{-3,\ldots,3\}^D$.
+
+There are 84 finite saddle cases at $m=20,40,80$, covering both
+parities, sparse, balanced and dense parameters, zero and positive
+idle activities, idle-only walks, and rational anisotropy. Of these,
+66 have nonzero counts and 18 are exact-zero boundaries. The program
+checks the saddle mean, $m/2\le B\le m$, agreement of the universal
+coefficient generator with the displayed first two corrections, and
+the explicit $12/B$ envelope. The observed range of $B/m$ is
+$[0.5,0.993776729)$.
+
+Table~\ref{lcw:ulb:tab:verification-errors} uses the conventional error
+``approximation divided by exact count, minus one.'' The rigorous
+envelope \eqref{lcw:ulb:eq:explicit} uses the reverse normalization,
+``exact count divided by leading approximation, minus one.'' Both
+values are stored in the data, and Figure~\ref{lcw:ulb:fig:uniform-errors}
+uses the latter normalization when comparing to $24/m$.
+
+\inputprefixed{data/02-bridges-numerical_tables}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/02-bridges-uniform_errors.pdf}
+\caption{Finite exact-count comparisons for the uniform saddle
+expansion. The explicit $24/m$ leading envelope is conservative.
+The improved residuals after successive corrections are numerical
+observations; the all-orders theorem supplies their asymptotic orders.}
+\label{lcw:ulb:fig:uniform-errors}
+\end{figure}
+
+\subsection{The dense and sparse transitions}
+
+For the dense illustration, $D$ ranges through $100,1600,25600,409600$,
+and $N$ is the even integer $sD^{3/2}$ or its odd successor, with
+$s=1/2,1,2$. The 24 entries in
+Table~\ref{lcw:ulb:tab:verification-dense} evaluate the parity saddle through
+the second correction. They are not exact enumerations at those large
+lengths. Their convergence to $\exp(1/(48s^2))$ illustrates
+Theorem~\ref{lcw:ulb:thm:dense-gaussian}; the theorem's proof supplies the
+uniform justification. At moderate dimension, the negative
+$-3D/(16N)$ term and parity effects remain visible.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/02-bridges-dense_transition.pdf}
+\caption{The dense Gaussian crossover. Saddle evaluations approach
+the limiting factor $\exp(1/(48s^2))$ as the dimension grows at fixed
+$s=N/D^{3/2}$. Finite values can approach the limit slowly because
+the first correction has order $D^{-1/2}$ on this scale.}
+\label{lcw:ulb:fig:dense-transition}
+\end{figure}
+
+For the sparse illustration, $D=m^2$ and $\lambda^2=m$, so
+$\theta=\beta=1$. Removing the common factor $\lambda^\epsilon$
+makes the count an exact integer, even when $\lambda$ is irrational.
+Eight comparisons, for both parities and $m=20,40,80,160$, show the
+improvement from the correction in Theorem~\ref{lcw:ulb:sp:thm:count};
+see Table~\ref{lcw:ulb:tab:verification-sparse}. This tests the counting
+correction independently of the global saddle expansion.
+
+\subsection{How to reproduce and extend the calculations}
+
+The archive contains the following entry points:
+\begin{description}[style=nextline]
+\item[\texttt{code/verify\_lyons.py}]
+Verifies the exact finite counterexample with rational arithmetic.
+It needs only the Python standard library and runs independently of
+the numerical package.
+\item[\texttt{code/verify\_endpoints.py}]
+Checks the general endpoint coefficient identity against an independent
+step-by-step dynamic program. It uses only exact rational arithmetic
+and the Python standard library.
+\item[\texttt{code/walks.py}]
+Implements exact isotropic counts, rational anisotropic convolution,
+the scalar parity saddle, cumulants, and arbitrary fixed-order
+Edgeworth corrections. Numerical evaluations use logarithms to avoid
+overflow; rational activities passed to the numerical routines should
+first be converted to \texttt{mpmath} values at the chosen precision.
+\item[\texttt{code/reproduce.py}]
+Runs the complete saved verification grid and regenerates
+\texttt{data/verification.json}, the three tables, and both figures.
+\end{description}
+From the archive root, the commands are
+\begin{verbatim}
+python code/verify_lyons.py
+python code/verify_endpoints.py
+python code/reproduce.py
+latexmk -pdf article.tex
+\end{verbatim}
+Package dependencies are recorded
+in \texttt{requirements.txt}; the PDF can be built directly from the
+included tables and figures without rerunning the numerical work.
+
+The finite exact certificates and the analytic inequalities have
+different roles from floating-point diagnostics. The latter do not
+perform outward rounding. A certified numerical interval for a large
+count requires enclosing the saddle, its generator value, and its
+variance, then applying \eqref{lcw:ulb:eq:explicit}.
+
+\begin{writenote}[The shipped layout and the reruns, 7 October 2026]
+This section describes the delivered package, which is not shipped as such.
+In this directory \file{code/verify\_lyons.py}, \file{code/verify\_endpoints.py},
+\file{code/walks.py} and \file{code/reproduce.py} are
+\file{code/02-bridges-*.py}; \file{data/verification.json} and
+\file{data/numerical\_tables.tex} are \file{data/02-bridges-*};
+\file{requirements.txt} is \file{data/02-bridges-requirements.txt}; the
+figures are \file{figures/02-bridges-*}. \file{reproduce.py} imports
+\file{walks} by its delivered name and writes \file{data/} and
+\file{figures/} under the package root by the delivered names, overwriting
+the records there,
+and \texttt{latexmk -pdf article.tex} builds the manuscript, not this report;
+the report README gives a route that restores the delivered layout on a copy.
+Tables~\ref{lcw:ulb:tab:verification-errors}--\ref{lcw:ulb:tab:verification-sparse}
+are input from the shipped table file, unchanged. At the write, on a copy in
+the delivered layout: \file{verify\_lyons.py} and \file{verify\_endpoints.py}
+(standard library) passed, the latter with its 1{,}303 comparisons;
+\file{reproduce.py} (Python 3.13.5 under \texttt{uv}, mpmath~1.3.0, 85~s)
+passed its 444 exact checks, 84 saddle cases, 24 dense and 8 sparse cases,
+and wrote a \file{verification.json} equal to the shipped one except the
+recorded Python version (the shipped run used 3.12.14) and a table file
+equal to the shipped one apart from line ends.
+\end{writenote}
+
+% ---- delivered sections/08_outlook.tex ----
+\section{Further research questions and a development programme}
+\label{lcw:ulb:sec:outlook}
+
+The results leave several concrete problems. The first three are the
+most direct continuations: they seek usable replacements for the
+disproved Gaussian bound, a precise transition window, and effective
+certification. Later items extend the probability laws or the class of
+walks. Each question is proposed as a task still open within this
+investigation; an exhaustive literature search remains necessary
+before assigning historical novelty.
+
+\subsection{A corrected universal Gaussian upper bound}
+
+The original conjecture cannot be repaired by changing its constant.
+The dense theorem suggests an exponential correction depending on
+$D^3/N^2$. Determine the smallest explicit functions $U(D,N)$ for which
+\[
+ R^0_{N,D}\le 2G^0_{N,D}\,e^{U(D,N)}
+\]
+holds for every positive even $N$ and $D\ge1$, and for which
+$U(D,N)\sim D^3/(48N^2)$ whenever that term dominates in the dense
+range. A result restricted to $N\ge cD$ with an explicit $c$ would
+already be useful. The positive scalar saddle and the $12/B$ local
+bound provide a rigorous starting inequality. The remaining task is
+to replace the implicitly defined saddle by an explicit expression
+while retaining the sharp exponential scale.
+
+Corollary~\ref{lcw:ulb:cor:eventual-threshold} already determines the leading
+last-failure thresholds: $T_0(D)\sim D^2/12$ and $T_1(D)\sim D^2/9$.
+What remains is an explicit dimension onset for the uniform
+upper-bound region, lower-order terms in these thresholds, and a
+classification of finite-dimension exceptions. Those questions demand
+more information than the leading quadratic scale.
+
+\subsection{The narrow window near the quadratic crossing}
+
+For nonlazy walks the leading sign changes at $N/D^2=1/12$;
+for the particular lazy walk it changes at $1/9$. Determine the next
+terms in the crossing locations and the profile in windows such as
+\[
+ N=\frac{D^2}{12}+\alpha D+O(1)
+\]
+for even nonlazy lengths. On this scale the leading terms already
+proved cancel, so a new term in the uniform scalar expansion and
+an explicit first saddle correction are required. It would also be
+valuable to prove uniqueness, or a controlled number, of crossings
+of the ratio through one at each sufficiently large dimension.
+The present sign corollary does not assert such uniqueness.
+
+\subsection{Effective high-order bounds and a verified evaluator}
+
+The $24/m$ envelope is explicit, whereas the constants $C_K$ in the
+all-orders theorem are existential. Produce a recurrence for usable
+constants and an onset for each $K$. A practical implementation should
+enclose Bessel values and derivatives, locate the monotone saddle by
+interval arithmetic, and bound the local integral together with its
+tails. One can then compare the cost of using more terms with that of
+evaluating an exact finite coefficient.
+
+A related sharp problem is to determine
+\[
+ \sup B\left|\sqrt{2\pi B}\,\Prob(S=\E S)-1\right|
+\]
+over Bernoulli sums with integer mean, and the corresponding supremum
+over the narrower Bessel--hyperbolic family. The proof gives the upper
+bound $12$ in the first class. Numerical improvement alone would not
+identify the extremal distributions or exclude singular parameter
+limits.
+
+\subsection{From rare collisions to Gaussian occupation fluctuations}
+
+The sparse joint theorem assumes $m^2/D=O(1)$. Investigate the
+intermediate sparse region
+\[
+ m/D\to0,\qquad m^2/D\to\infty.
+\]
+Repeated axes now have a diverging mean. Determine the range in which
+a Poisson approximation remains accurate in total variation, and
+the range in which centering and scaling yields a normal law. The
+next structural scale is the appearance of a nonnegligible number
+of triple-use axes, measured at first order by $m^3/D^2$.
+The marked logarithm in \eqref{lcw:ulb:sp:eq:log} identifies the terms
+that must be retained.
+
+A successful theorem should control the joint law of $J$, the number
+of double-use axes, and the number of triple-use axes, and should
+match the proportional-dimension Gaussian occupation law in the
+predecessor \cite{lcw}. This is a probability-law problem beyond the
+already uniform counting formula.
+
+\subsection{Anisotropic collision laws and effective dimension}
+
+The counting theorem permits arbitrary $c_i$, but the sparse law was
+proved only for $c_i=1$. For a sparse anisotropic tilt, the quantities
+$\sum_i c_i$, $\sum_i c_i^2$, and $\sum_i c_i^3$ suggest the relevant
+pair- and triple-collision scales. Formulate a condition excluding
+domination by a single coordinate, then prove an anisotropic joint
+Poisson law with explicit error. The natural candidate effective
+dimension is
+\[
+ D_{\rm eff}=\frac{(\sum_i c_i)^2}{\sum_i c_i^2},
+\]
+when the denominator is nonzero. Determine how this parameter and
+higher normalized power sums enter the first correction. The formula
+is a proposed organizing parameter, not a theorem that one may
+substitute it for $D$ everywhere.
+
+\subsection{A moving idle activity in the dense regime}
+
+The global theorem is uniform in $\lambda$, while the dense crossover
+was calculated for $\lambda=1$ and $\lambda=0$. Classify the dense
+asymptotics when the idle activity moves between these regimes or
+grows with $D$. The parity suppression is controlled by the size of
+$\lambda$ times the positive saddle, so its transition can occur
+on a different scale from the Gaussian correction. A full theorem
+should identify when both lattice arcs matter, when one is negligible,
+and how the covariance normalization changes the first two uniform
+coefficients. The exact $H_\epsilon$ representation remains available
+throughout.
+
+\subsection{Nonzero endpoints and other step sets}
+
+Corollary~\ref{lcw:ulb:cor:endpoint} already gives the uniform coefficient
+expansion for arbitrary prescribed endpoints, using Bessel factors of
+orders $|x_i|$. Determine explicit Gaussian and large-deviation
+simplifications of that saddle when the coordinate profile of the
+endpoint moves with the dimension. In particular, characterize which
+power sums or maximal-coordinate conditions determine the transition
+between central and displaced regimes. Near ballistic endpoints the
+residual budget $\lfloor(N-|x|_1)/2\rfloor$ may be small, and a
+separate exact or rare-event approximation may be preferable. The
+variance lower bound and the negative-zero representation themselves
+are already proved for these endpoints.
+
+More generally, characterize finite symmetric step sets whose
+parity- or residue-reduced return generator has only negative real
+zeros, or factors into functions with an equally useful local
+probability representation. For a general graph or a step set with
+diagonal moves, coordinate independence can disappear; the present
+product argument does not automatically survive.
+
+\subsection{A staged formalization in \repo}
+
+The exact finite counterexample is the most accessible first target.
+Formalize the multinomial recurrence, compute $C_{13,16}$ by a
+verified evaluator, prove the rational Machin lower bound, and close
+the strict integer inequality. This yields an independently checkable
+formal theorem without first developing asymptotic analysis.
+
+The analytic programme can then be separated into reusable results:
+countable Bernoulli products and coefficient tilting; the uniform
+characteristic-function bound; the explicit local inequality;
+the Bessel product and variance estimate; and the finite-order
+integrated expansion. The sparse coefficient-transfer lemma is another
+short independent target. The dense crossing theorem would follow
+only after a formal uniform remainder for the differentiated Bessel
+expansion. This order gives useful intermediate theorems at each stage.
+
+\subsection{Implications for spanning-tree entropy estimates}
+
+The return-probability conjecture arose in the study of spanning-tree
+entropy, where Felker and Lyons express the entropy through a series
+of return probabilities \cite{felkerlyons}. Investigate tail bounds
+that combine exact initial coefficients with the corrected dense
+estimate. The finite counterexample by itself does not invalidate
+results whose tails use a separately established large-time bound;
+the threshold and the assumptions of each application must be checked.
+A useful outcome would be dimension-uniform certified truncation
+rules for this series.
+
+\paragraph{Recommended order of work.}
+First formalize the exact counterexample and build an interval evaluator
+for the already proved saddle bound. Then derive a corrected explicit
+Gaussian upper inequality and resolve the quadratic crossing window.
+The marked sparse transition and anisotropic probability laws provide
+the next coherent research programme beyond counting.
+
+\begin{writenote}[Under Vladimir's standing rule of 4 October 2026, 7 October 2026]
+The nine subsections above are questions, and they stay open; the leading
+thresholds of Section~\ref{lcw:ulb:sec:outlook}.1 are proved
+(Corollary~\ref{lcw:ulb:cor:eventual-threshold}) and only their onsets and
+lower-order terms are asked. The write found no claim of Part~II that is
+unproved as stated outside these questions and none that is wrong, so nothing
+was moved here or refuted. Recorded by dated notes: Ball--Sterbenz state
+their display for $n\ge0$ and Felker--Lyons display their (2.3) with a
+qualification (end of Section~\ref{lcw:ulb:sec:lyons-counterexample}); the
+Gowers--Szemer\'edi ledger count is stale since the pin (end of
+Section~\ref{lcw:ulb:sec:context}); the delivered layout
+(Section~\ref{lcw:ulb:sec:computation}). Two of these questions meet Part~I's:
+Section~\ref{lcw:ulb:sec:outlook}.3 is Part~I's Question~1 for Part~II's
+expansion, and Section~\ref{lcw:ulb:sec:outlook}.4 asks for the laws between
+Part~II's sparse range and Part~I's compact range, the part of Part~I's
+Questions~2 and~3 left open on the sparse side (note at the end of
+Section~\ref{lcw:sec:further}). On Section~\ref{lcw:ulb:sec:outlook}.8: no
+Lean or Rocq declaration exists for any statement of this report. On
+Section~\ref{lcw:ulb:sec:outlook}.9: Felker and Lyons's rigorous bounds use
+the inequality only in dimensions $3$ to $6$ (note at the end of
+Section~\ref{lcw:ulb:sec:lyons-counterexample}).
+\end{writenote}
+
+\begin{thebibliography}{99}
 \bibitem{oeis}
 OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A328716.
 Exact formula attributed to Ilya Gutkovskiy (26 October 2019); leading equivalent and numerical constants attributed to V\'aclav Kot\v e\v sovec (27 October 2019).
@@ -1103,9 +3633,134 @@ I. Gessel, J. Weinstein, and H. S. Wilf,
 \emph{Lattice walks in $\mathbb Z^d$ and permutations with no long ascending subsequences},
 Electronic Journal of Combinatorics \textbf{5} (1998), Research Paper 2, 11 pp.
 \href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v5i1r2/pdf}{Primary journal PDF}, especially equation (2), pp. 2--3.
+[Part~II cites it for background, with the article page \url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v5i1r2}: ``See especially the Bessel generating function in equation (2).'']
 \bibitem{fs}
 P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009.
 Theorem VIII.8 and proof, pp. 587--588; remarks and Note VIII.37, p. 589.
 \href{https://algo.inria.fr/flajolet/Publications/book.pdf}{Author-hosted book PDF}.
+% Part II entries (added by the write of 7 October 2026), in the order of
+% the delivered reference list; gww is shared with Part I (above).
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, GitHub repository, inspected at commit
+\texttt{136e707021c9}, 7 October 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/136e707021c9df3a1b6af904ddad045ae38b7c23}{Pinned repository snapshot}.
+[Part~II.]
+
+\bibitem{mathrepo}
+V. Reshetnikov, \emph{math}, GitHub repository, inspected at commit
+\texttt{adc7f1241b42}, 7 October 2026.
+\href{https://github.com/VladimirReshetnikov/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a}{Pinned repository snapshot}.
+Catalogue and README counts refer to this snapshot.
+[Part~II.]
+
+\bibitem{math159}
+\emph{math}, formalization scope for family 159,
+\texttt{lean/docs/159.md}, at the snapshot in \cite{mathrepo}.
+\href{https://github.com/VladimirReshetnikov/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/docs/159.md}{Pinned scope document}.
+[Part~II.]
+
+\bibitem{math241}
+\emph{math}, formalization scope for family 241,
+\texttt{lean/docs/241.md}, at the snapshot in \cite{mathrepo}.
+\href{https://github.com/VladimirReshetnikov/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/docs/241.md}{Pinned scope document}.
+[Part~II.]
+
+\bibitem{math242}
+\emph{math}, formalization scope for family 242,
+\texttt{lean/docs/242.md}, at the snapshot in \cite{mathrepo}.
+\href{https://github.com/VladimirReshetnikov/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/docs/242.md}{Pinned scope document}.
+[Part~II.]
+
+\bibitem{lcw}
+Research report 179, \emph{Lazy Closed Walks in Growing Dimension:
+All fixed orders, parity conditioned Poisson laws, and occupied coordinate
+fluctuations for OEIS A328716}, dated 3 October 2026, integrated notes
+dated 7 October 2026. In \repo, snapshot \cite{proveit}, directory
+\nolinkurl{a328716-lazy-closed-walks/}.
+The compact-ratio theorem and endpoint questions are in Sections 9 and 12
+of the inspected source. Direct source:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/136e707021c9df3a1b6af904ddad045ae38b7c23/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks/article.tex}{Pinned article source}.
+[Part~II.]
+
+\bibitem{felkerlyons}
+J. L. Felker and R. Lyons,
+\emph{High-precision entropy values for spanning trees in lattices},
+Journal of Physics A: Mathematical and General \textbf{36} (2003),
+8361--8365. \url{https://doi.org/10.1088/0305-4470/36/31/301}.
+Inspected author version of 6 November 2003:
+\url{https://rdlyons.pages.iu.edu/pdf/entnum.pdf}.
+The universal return inequality is proposed around equation (2.3),
+on the fourth page of that PDF.
+[Part~II.]
+
+\bibitem{ballsterbenz}
+K. Ball and J. Sterbenz,
+\emph{Explicit Bounds for the Return Probability of Simple Random Walks},
+Journal of Theoretical Probability \textbf{18} (2005), 317--326.
+\url{https://doi.org/10.1007/s10959-003-2606-7}.
+The full text inspected was the author-hosted preprint dated
+19 January 2004:
+\url{https://mathweb.ucsd.edu/~bdriver/DRIVER/Miscellaneous_Files/sterbenz6.pdf}.
+Equation (1.3), Proposition 1, and Remark 1 are locators in that version;
+the final journal PDF was not independently inspected.
+[Part~II.]
+
+\bibitem{felkererratum}
+J. L. Felker and R. Lyons,
+\emph{Errata to High-Precision Entropy Values for Spanning Trees in Lattices},
+7 August 2012.
+\url{https://rdlyons.pages.iu.edu/errata/entnum.pdf}.
+[Part~II.]
+
+\bibitem{bender}
+E. A. Bender,
+\emph{Central and local limit theorems applied to asymptotic enumeration},
+Journal of Combinatorial Theory, Series A \textbf{15} (1973), 91--111.
+\url{https://doi.org/10.1016/0097-3165(73)90038-1}.
+[Part~II.]
+
+\bibitem{pitman}
+J. Pitman,
+\emph{Probabilistic bounds on the coefficients of polynomials with only
+real zeros}, Journal of Combinatorial Theory, Series A \textbf{77}
+(1997), 279--303.
+\url{https://doi.org/10.1006/jcta.1997.2747}.
+Author's institutional record and abstract:
+\url{https://statistics.berkeley.edu/tech-reports/453}.
+[Part~II.]
+
+\bibitem{dh}
+D. Dolgopyat and Y. Hafouta,
+\emph{Edgeworth expansions for independent bounded integer valued random
+variables}, Stochastic Processes and their Applications \textbf{152}
+(2022), 486--532.
+\url{https://doi.org/10.1016/j.spa.2022.07.001}.
+\url{https://arxiv.org/abs/2011.14852}.
+[Part~II.]
+
+\bibitem{dlmfzeros}
+NIST Digital Library of Mathematical Functions, Section 10.21,
+\emph{Zeros}, especially the Bessel infinite product in equation 10.21.15.
+\url{https://dlmf.nist.gov/10.21}.
+[Part~II.]
+
+\bibitem{dlmftrig}
+NIST Digital Library of Mathematical Functions, Section 4.22,
+\emph{Infinite Products and Partial Fractions}, sine and cosine products.
+\url{https://dlmf.nist.gov/4.22}.
+[Part~II.]
+
+\bibitem{dlmfintegral}
+NIST Digital Library of Mathematical Functions, Section 10.32,
+\emph{Integral Representations}, modified Bessel functions.
+\url{https://dlmf.nist.gov/10.32}.
+[Part~II.]
+
+\bibitem{dlmf1040}
+NIST Digital Library of Mathematical Functions, Section 10.40,
+\emph{Asymptotic Expansions for Large Argument}, especially equations
+10.40.1 and 10.40.3 and their error discussion.
+\url{https://dlmf.nist.gov/10.40}.
+[Part~II.]
 \end{thebibliography}
 \end{document}

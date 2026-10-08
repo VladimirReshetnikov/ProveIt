@@ -14,6 +14,7 @@
 \setlist{nosep,leftmargin=*}
 \newtheorem{proposition}{Proposition}[section]
 \newtheorem{lemma}[proposition]{Lemma}
+\newtheorem{corollary}[proposition]{Corollary}
 \theoremstyle{remark}
 \newtheorem{remark}[proposition]{Remark}
 \newcommand{\F}{\mathbb{F}_2}
@@ -30,7 +31,7 @@ synthesis, cross-validation, and a faster exact recognizer}
 \maketitle
 
 \begin{abstract}
-Six independently produced archives each tried to implement the $\qp$ unknot
+Six independently produced archives each tried to implement the quasi-polynomial unknot
 recognition algorithm announced in Marc Lackenby's February 2021 talk. This
 report extracts them into numbered directories, reads their reports, reviews
 their code, re-runs their test suites, and cross-validates them against each
@@ -126,10 +127,31 @@ also supplies two facts the archives use: Proposition 2.6 (a pattern on a
 planar dual is simple and 4-connected or $K_3$ or $K_4$) and Definition 3.4
 (pattern-complexity $\chi_P(S)=-4\chi(S)+|S\cap P|$).
 
-So the accelerated, logarithmic-depth algorithm of the talk is, as of
-September 2026, announced but not specified in any source available to us.
+So the accelerated, logarithmic-depth algorithm of the talk remains
+announced but not specified in any source available to us on rechecking
+the author's page and the preprint on 7 October 2026.
 This is the single obstacle behind every ``partial'' verdict below, and it is
 mathematical, not an engineering shortfall.
+
+\paragraph{Plausibility and the precise target.}
+The announced bound is $2^{O((\log n)^3)}=n^{O((\log n)^2)}$;
+the stronger $\qp$ target used elsewhere in this report must not be
+attributed to that announcement.  Both are quasi-polynomial and hence
+$2^{o(n)}$.  The hierarchy strategy is a credible route to such a bound:
+it replaces exhaustive global witness search with decomposition,
+compression and controlled corrections.  The preprint supplies substantial
+topological machinery for that route.  This is our assessment of plausibility,
+not a verification of its announced asymptotics.
+Even given the iteration estimate $L(g+1)^L$, an implementation must bound
+the bit cost $C(n)$ of each operation on its largest intermediate encoding.
+A sufficient accounting condition is
+\[
+ \log C(n)+\log(L+1)+L\log(g+1)=O((\log n)^3).
+\]
+Efficiently handling one compressed surface, or proving termination,
+does not establish this condition.  No general sub-exponential bound for
+our recognizer follows from the current report or from adaptive switching
+among its present backends.
 
 \subsection{Outcome in one paragraph}
 None of the six archives, and not the new package either, implements a
@@ -589,6 +611,17 @@ to repeat, it is not quasi-polynomial.
 \input{extremal.tex}
 \input{potts.tex}
 \input{disk_transfer.tex}
+\input{twist_continuation.tex}
+\input{rational.tex}
+\input{graded_transfer.tex}
+\input{symbolic_runs.tex}
+\input{corridor_transfer.tex}
+\input{cyclic_garside.tex}
+\input{surface_covers.tex}
+\input{causal_r3.tex}
+\input{determinant_continuations.tex}
+\input{closure_resets.tex}
+\input{boundary_reuse.tex}
 
 \section{Assessment and recommendations}
 
@@ -625,6 +658,9 @@ which would make the empirical behaviour subexponential even if unproved.
 implementation, as several of their reports suggest.
 
 \begin{thebibliography}{99}
+\bibitem{nahm-basepoints} Gheehyun Nahm, \emph{Basepoints in Khovanov homology and nonorientable surfaces}, arXiv:2605.08457v1, 8 May 2026, Lemma 2.4. \url{https://arxiv.org/abs/2605.08457}.
+\bibitem{hatcher-covering} Allen Hatcher, \emph{Algebraic Topology}, Cambridge University Press, 2002, Section 1.3. \url{https://pi.math.cornell.edu/~hatcher/AT/ATpage.html}.
+\bibitem{aht-orbits} Ian Agol, Joel Hass and William P. Thurston, \emph{The computational complexity of knot genus and spanning area}, Trans. Amer. Math. Soc. 358 (2006), 3821--3850. \url{https://arxiv.org/abs/math/0205057}.
 \bibitem{abe} Tetsuya Abe, \emph{The Rasmussen invariant of a homogeneous knot}, Proc. Amer. Math. Soc. 139 (2011), 2647--2656. \url{https://arxiv.org/abs/1003.5392}.
 \bibitem{lobb} Andrew Lobb, \emph{Computable bounds for Rasmussen's concordance invariant}, Compositio Math. 147 (2011), 661--668. \url{https://arxiv.org/abs/0908.2745}.
 \bibitem{structural07} Report 07, \emph{Unknot recognition: structural certificates and compressed complexes}, delivered 7 October 2026; \code{reports/07/paper/unknot\_structural\_compression.tex}.\small
@@ -641,9 +677,22 @@ Phys. Rev. E 100 (2019), 033303. \url{https://arxiv.org/abs/1807.02119}.
 \bibitem{quantum-width} Cl\'ement Maria,
 \emph{Parameterized Complexity of Quantum Knot Invariants}, SoCG 2021,
 LIPIcs 189, 53:1--53:17. \url{https://doi.org/10.4230/LIPIcs.SoCG.2021.53}.
+\bibitem{dehornoy-garside} Patrick Dehornoy, \emph{Efficient solutions to the braid isotopy problem}, arXiv:math/0703666, 2007. \url{https://arxiv.org/abs/math/0703666}.
 \bibitem{crainic-perturbation} Marius Crainic,
 \emph{On the perturbation lemma, and deformations}, arXiv:math/0403266.
 \url{https://arxiv.org/abs/math/0403266}.
+\bibitem{jaeger-twisted} Thomas C. Jaeger,
+\emph{A Remark on Roberts' Totally Twisted Khovanov Homology},
+arXiv:1109.1805, Theorem 3.1. \url{https://arxiv.org/abs/1109.1805}.
+\bibitem{rational-tangles} Louis H. Kauffman and Sofia Lambropoulou,
+\emph{On the classification of rational tangles}, arXiv:math/0311499.
+\url{https://arxiv.org/abs/math/0311499}.
+\bibitem{rational-hard} Louis H. Kauffman and Sofia Lambropoulou,
+\emph{Hard Unknots and Collapsing Tangles}, arXiv:math/0601525, Theorem 5.
+\url{https://arxiv.org/abs/math/0601525}.
+\bibitem{rational-local} Jo\~ao M. Nogueira and Ant\'onio Salgueiro,
+\emph{On embeddings of 2-string tangles into the unknot, the unlink and split links},
+arXiv:2110.15645, Theorem 4.9. \url{https://arxiv.org/abs/2110.15645}.
 \end{thebibliography}
 
 \appendix

@@ -1,5 +1,5 @@
 \section{Problem, source review, and contribution}
-\label{intro:section}
+\label{btc:intro:section}
 
 The state cost of replacing nondeterminism by deterministic two-way
 head motion is a central succinctness problem for finite automata.
@@ -73,7 +73,7 @@ carefully scoped automata report, but no theorem from those three
 series is used as a premise below.
 
 \subsection{The machine convention}
-\label{intro:model}
+\label{btc:intro:model}
 
 An input is $\Lmark w\Rmark$, where $w\in\Sigma^*$ and the two
 endmarkers are distinct and lie outside $\Sigma$. The head starts
@@ -96,16 +96,16 @@ handled with one extra initial copy in the target normalization;
 the resulting binary port bound is $8s+10$. We state the sharper
 constant under the convention just fixed.
 
-\begin{theorem}[Binary determinization]\label{intro:main}
+\begin{theorem}[Binary determinization]\label{btc:intro:main}
 For every integer $h\ge2$, there is an explicitly defined language
 $B_h\subseteq\bits^*$ recognized by a $6h+2$-state 1NFA such that
 every $s$-state 2DFA recognizing $B_h$ satisfies
-\begin{equation}\label{intro:h-bound}
+\begin{equation}\label{btc:intro:h-bound}
  8s+2\ \ge\ 2\left(\frac52\right)^{\lfloor(h-2)/9\rfloor}.
 \end{equation}
 Consequently, for every $n\ge14$ there is a language recognized by
 an $n$-state binary 1NFA for which every equivalent 2DFA satisfies
-\begin{equation}\label{intro:n-bound}
+\begin{equation}\label{btc:intro:n-bound}
  s\ \ge\ \frac14\left(\frac52\right)^{\lfloor(n-14)/54\rfloor}
              -\frac14
    \ =\ 2^{(\log_2(5/2)/54)n-O(1)}.
@@ -114,15 +114,15 @@ The exponent coefficient is
 $\log_2(5/2)/54=0.0244801499\ldots$.
 \end{theorem}
 
-The proof is assembled in Section~\ref{comp:main-proof}.
+The proof is assembled in Section~\ref{btc:comp:main-proof}.
 The familiar subset construction gives an exponential one-way
 deterministic upper bound and hence a two-way upper bound; with
 the present endmarker convention the harmless normalization costs
 only a constant number of states. Accordingly the worst-case
 binary 1NFA-to-2DFA state growth is $2^{\Theta(n)}$ under this model.
 The precise coefficient in the exponent is not claimed optimal.
-For small $n$, \eqref{intro:n-bound} may give only a weak numerical
-bound; the parity-aware recurrence in Section~\ref{alg:optimization-section}
+For small $n$, \eqref{btc:intro:n-bound} may give only a weak numerical
+bound; the parity-aware recurrence in Section~\ref{btc:alg:optimization-section}
 is appreciably stronger for finite parameters.
 
 \subsection{Three ingredients}
@@ -203,3 +203,167 @@ Finally, the state lower bounds do not establish $\mathsf{L}\ne
 \mathsf{NL}$ or any other uniform space separation. Uniform
 simulation, constructibility, and bounds tied to input length
 are separate issues. No such conclusion is used or asserted.
+
+\subsection{Provenance, sources and reading conventions}\label{btc:intro:provenance}
+\begin{writenote}[Added 7 October 2026]
+\emph{Provenance.} The archive \file{ProveIt_Binary_Two_Way_Corank.zip}
+($581{,}213$ bytes, SHA-256 \file{e1817c4d2f42...65b36439c}; $32$ files in
+one wrapper directory \file{Binary_Automata_Corank/}, $794{,}441$ bytes
+unpacked) arrived
+in commit \file{964621dd2} (7~October 2026, 14:02) and was placed by commit
+\file{bdcae034b} as this new report, unprefixed, in its delivered layout: the
+main file \file{article.tex} with its seven section files ($2{,}214$ lines,
+$96{,}365$ bytes),
+\file{references.bib}, \file{Makefile}, the programs under \file{code/}, the
+reference outputs under \file{certificates/}, \file{SOURCE\_AUDIT.txt},
+\file{source\_manifest.json}, \file{THEOREM\_LEDGER.csv},
+\file{THIRD\_PARTY\_NOTICES.txt}, \file{LICENSE-APACHE-2.0.txt} and the
+delivery \file{README.txt} as \file{README.md} (29 files, byte-identical to
+the delivery). Not shipped, and retrievable from the arrival commit: the
+delivered 31-page \file{article.pdf}, the prebuilt \file{article.bbl} and the
+checksum manifest \file{SHA256SUMS} (31 entries, verified at placement). The
+delivery README was replaced by the report README. The text is dated
+7~October 2026. Its author lines are recorded in the status note above; it
+names no human author. It pins ProveIt commit
+\file{670a67d35eda2fc92f2483b1b3d643bad9173113} (7~October 2026, 13:09
+Pacific time), which exists, and commit
+\file{adc7f1241b42e322a6451854ab7e4b4c146bf78a} of the external repository
+\file{openai/math} (\file{SOURCE\_AUDIT.txt}). It is a single-source report,
+so no merge choice was made. The write prefixed the 91 delivered labels with
+\file{btc:} (so \file{alg:budget} is \file{btc:alg:budget}) and updated the
+85 references to them (53 \verb|\ref|, 32 \verb|\eqref|; \verb|\cref| is
+loaded but unused); \file{THEOREM\_LEDGER.csv} keeps the delivered names. It
+added this subsection, the status note and the notes marked [write], each
+after the last delivered text of its section or after the title page, and
+no numbered statement, display or table, so every section, statement,
+equation, table and figure keeps its delivered number (aux files of builds
+of the delivered and the written text compared). The 20 numbers that the
+ledger quotes are the delivered numbers. No other text was changed.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item The repository at the pin: the three automata README blobs that the
+ introduction and \file{SOURCE\_AUDIT.txt} cite
+ (\file{shuffle-six-state-bound} \file{077d0777},
+ \file{dfao-reversal-coloring-obstruction} \file{92fa1fc9},
+ \file{constrained-crossover-closure} \file{e8ff27d7}) are unchanged at this
+ write, and the descriptions of them agree with them (checked at
+ placement).
+\item The companion OpenAI manuscript, through a copy of
+ \file{sections/diagrams.tex} at commit \file{adc7f1241} fetched at the write
+ (not a local checkout): its theorem ``Order-reversing image bound'',
+ labelled \file{amp:image} (and \file{amp:relation-bound}), has the
+ hypotheses and the bound $2m\ge2^{\lfloor(h-2)/127\rfloor}$ printed in
+ Theorem~\ref{btc:complement:imported}, including that the map need not
+ preserve identities. Its proof, in \file{sections/amplification.tex}, was
+ not read.
+\item Not read by the write: the OpenAI liveness manuscript, its Lean summary
+ \file{lean/docs/129.md}, TheoremDB R816, and the classical and recent
+ literature (Dolinka et al., East--Gray, Kapoutsis, Yan, Adeogun--Kapoutsis,
+ Pighizzini and the rest); the manuscript's account of them is reported,
+ not confirmed. \file{source\_manifest.json} hashes the producer's local
+ snapshots, none of which is shipped, so its hashes cannot be checked here.
+\item The bibliography file has 27 entries, of which 19 are cited and
+ printed; the eight others (\file{CompanionComplementation2026},
+ \file{RabinScott1959}, \file{Shepherdson1959}, \file{Sipser1980},
+ \file{AdeogunKapoutsisLimitation2026}, \file{Chrobak1986Unary},
+ \file{Chrobak2003Errata}, \file{Kapoutsis2018ShortLiveness}) are never
+ cited and so not printed. \file{CompanionComplementation2026} duplicates the
+ cited \file{OpenAIComplement2026} with an unpinned \file{blob/main} link;
+ the printed entry is the pinned one.
+\end{itemize}
+
+\emph{What was checked at intake.} The placement dossier read the
+manuscript and found no error; it re-derived by hand the main arithmetic, the
+corank budget, the amplifier, the optimization, the compiler path analysis,
+the singleton-context quotients, Theorem~\ref{btc:mach:linear-optimality} and
+the bounds of Proposition~\ref{btc:research:beta}; with its own code it
+recomputed the idempotent counts for $m\le6$, the support equality counts,
+the budget on 30{,}756 random word prefixes, the union obstruction, $D(h)$
+for $h\le256$, the optimal $p=q=5$, the floor identities and the compiler's
+exact path counts; and it reran the shipped suite on a copy (pass; every
+certificate equal as data except timings, the Python version and one output
+path). The sparse-slot construction and the imported premise were read, not
+re-derived.
+\emph{What the write checked.} Every proof of
+Sections~\ref{btc:alg:section}--\ref{btc:comp:section} and of
+Lemma~\ref{btc:complement:representation}, Proposition~\ref{btc:complement:quotient}
+and Theorem~\ref{btc:complement:binary} (as a deduction from its premise) was
+read line by line, with no error found; the steps rechecked by hand are listed
+in the notes at the ends of Sections~\ref{btc:alg:section}--\ref{btc:complement:section}.
+With its own code (Python 3.14.4, mpmath~1.3.0), independent of the shipped
+programs: all perfect matchings for $m\le7$ ($146{,}600$), with idempotent
+counts $1,1,2,10,40,296,1936,17872$ and support equality counts
+$1,1,1,7,25,61,481,2731$ (equal to $\sum_q m!/(q!(m-3q)!)$), as tabulated in
+Section~\ref{btc:verify:section}; the budget on every ordered idempotent
+pair and every two-generator monoid for $m\le4$ (the shipped counts
+$1{,}706$, $1{,}898$, $826$ and $4{,}280$ reproduced) and on $42{,}000$
+random word prefixes for $4\le m\le10$, with no violation; the union
+obstruction of Proposition~\ref{btc:research:union-obstruction}; $D(h)$ for
+$h\le256$ against all 255 rows of \file{certificates/finite\_bounds.csv} and
+the table of Section~\ref{btc:verify:section}; the rates, the optimal $(5,5)$
+over $p,q\le300$ and the floor identities; and the case counts quoted in
+Section~\ref{btc:verify:section}. It reran the shipped suite on a copy (note
+at the end of Section~\ref{btc:verify:section}). Finite computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before this report no file of the
+repository treated two-way automata, Brauer monoids or relation-monoid
+divisors, and no Lean or Rocq declaration concerns them; no statement of this
+report is formalized, and its place in the collection confers no formal
+status. The three neighbouring automata reports it cites are context only: no
+theorem of theirs is a premise, and none shares a result with this report, so
+no reciprocal note is proposed. The word ``liveness'' here names the one-way
+liveness languages of two-way automata theory; the ``liveness beyond halting''
+of the Hilbert-tenth-problem reports is temporal liveness of computations, a
+different notion. The repository's \file{lib/openai-math} holds an unrelated
+family of the external release; the manuscripts this report adapts are not
+vendored, and only the complementation section depends on one of them.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No priority certification: the targeted literature and repository review
+``cannot certify priority against all existing work'', the results are
+``offered as a research manuscript for independent review'', the corank
+budget's priority is ``unconfirmed'' (ledger), and the negative search in
+East--Gray ``is not a proof of novelty'' (\file{SOURCE\_AUDIT.txt}); the
+possibility of a binary transfer is not claimed to originate here (TheoremDB
+R816), and the exponential order of $\beta(h)$ already follows from the
+source. The coefficient $\log_2(5/2)/54$ is not claimed optimal, the choice
+$p=q=5$ is optimal only within the rectangular amplifier, the constant $8$ in
+$8s+2$ is not claimed optimal, and the counting argument for block length
+does not bound compiler states. The machine model is fixed (two endmarkers,
+partial rules, acceptance at any time, all states counted); under a
+convention requiring a move before initial acceptance the port bound is
+$8s+10$. No $\mathsf L\ne\mathsf{NL}$ or other uniform space separation, and
+nothing about running time, reversals or witness length. The finite audits
+are diagnostics, not proofs; nothing is formalized, the upstream Lean
+development was neither extended nor rerun, and no human peer review took
+place. Theorem~\ref{btc:complement:binary} rests on an external premise that
+is not reproved. The write adds: its checks are exact finite computations or
+hand computations; it read the imported premise's statement only.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the source reuses, with the tempting
+false readings; no symbol of the source was renamed).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{3.55in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$s$ & the number of states of a 2DFA or 2NFA; in Proposition~\ref{btc:alg:finite-recurrence} and~\eqref{btc:alg:D} the arm sum $p+q$ & each other\\
+$k$ & the Brauer degree $\Br{k}$; in Proposition~\ref{btc:alg:amplification} the size $h-p-q+1$ & each other\\
+$m$ & the degree of $\Br{m}$; in Section~\ref{btc:complement:section} the number of labels per direction of $\mathcal T_m$ & each other\\
+$a$, $b$, $t$, $r$ & the alphabet size $a$; the four relation letters (Section~\ref{btc:comp:section}); an idempotent $a$ (Definition~\ref{btc:alg:admissible-bound}) and the idempotents $a,b$ of Proposition~\ref{btc:research:union-obstruction}; positive labels $a,b$ (Lemma~\ref{btc:complement:representation}); $t$ also the sink configuration (Section~\ref{btc:mach:section}) and a word length; $r$ also a rank, and $r(w)$ a relation product (Section~\ref{btc:complement:section}) & each other\\
+$U$, $V$ & arm point sets (Proposition~\ref{btc:alg:amplification}); register state sets (Section~\ref{btc:comp:section}) & each other\\
+$F$, $E$, $P$, $Q$ & $F(h)$ the degree bound~\eqref{btc:alg:F}; $F\subseteq H$ a retained set; $F,B,L,R$ the four relations of a path diagram; $E=\Id_F$; $P$, $P_\ell$ relations; $P\subseteq\Br{m}$ an accepting set; $Q=PEP$; $Q$ a state set & each other; $E_C$ an edge count\\
+$\beta$, $\rho$, $\delta$ & $\beta(h)$ the least divisor degree (Section~\ref{btc:research:section}); $\beta=R_b(b_\ell)$ in the proof of Proposition~\ref{btc:alg:amplification}; $\rho$ a recognizer (Theorem~\ref{btc:mach:linear-optimality}) and a marker diagram (Lemma~\ref{btc:complement:representation}); $\delta$ the transition function and the deficit $\delta(e)$ & each other\\
+$R$, $R_e$ & a relation; the corner map $R_e$ (Lemma~\ref{btc:alg:corner}); TheoremDB record R816 & each other\\
+$D(h)$, $D^\pm$ & the recurrence~\eqref{btc:alg:D}; the label sets of $\mathcal T_m$ & each other\\
+$L$, $J$, $C$ & an addition bound $L$, the language $L(C)$, a path relation $L$; $J$ the number of crossing candidates; $C$ the candidate set, a union component, a 2NFA & each other\\
+liveness & one-way liveness languages (two-way automata) & the ``liveness beyond halting'' of the Hilbert-tenth-problem reports\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}%
+\par

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Construct the probability instance for the mapped mixed scalar law
+explicitly from measurability on Lean 4.32. Statements are unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.JointMixedCoefficientComparison
 import OAI.Combinatorics.Progressions.Geometry.JetAxisCoordinates
@@ -114,7 +115,7 @@ theorem mixedArrayImageDensity_probability (c w : I → J → ℝ) (hw : ∀ i j
       (mixedArrayImageDensity A s hA c w p)) := by
   let := mixedScalarArrayLaw_probability c w hw p
   rw [← mixedArrayImageDensity_law A s hA c w hw p]
-  infer_instance
+  exact Measure.isProbabilityMeasure_map (mixedArrayIntegerImage_measurable A).aemeasurable
 
 theorem mixedArrayImageDensity_mass (c w : I → J → ℝ) (hw : ∀ i j, 0 < w i j)
     (p : Z → J → PMF ℤ) :

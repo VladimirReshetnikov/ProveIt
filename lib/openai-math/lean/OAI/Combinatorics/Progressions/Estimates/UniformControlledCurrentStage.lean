@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: give exists_uniform_controlled_current_stage a local
+400000-heartbeat budget for dependent polynomial reduction on Lean 4.32.
+The upstream theorem statements and proof text are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.UniformFormalCurrentLayerStep
 import OAI.Combinatorics.Progressions.Polynomial.FormalPolynomialOperationBounds
 
@@ -148,6 +153,7 @@ namespace Erdos3.NilpotentLieFiltration
 open Module VectorPolynomial NilpotentLieBCHGroup
 open scoped TensorProduct
 
+set_option maxHeartbeats 400000 in
 theorem exists_uniform_controlled_current_stage (s : ℕ) :
     ∃ C : ℕ, 2 ≤ C ∧
     ∀ {L μ ι ν σ : Type*} [LieRing L] [LieAlgebra ℚ L]

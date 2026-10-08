@@ -41,29 +41,42 @@ OPTIONS = {
         ("--window-strategy", str, "support", ("support", "minimal"), "allocation-pruned or cancel-before-truncate window strategy"),
         ("--ranktwo", None, False, None, "try one verified rank-two shortening pass on a retained source braid"),
         ("--ranktwo-seconds", float, 0.1, None, "local allowance for optional braid compression and replay"),
+        ("--garside", None, False, None, "try verified cyclic Garside source-braid compression"),
+        ("--garside-radius", int, 1, None, "maximum target word length in the optional cyclic kernel"),
+        ("--garside-seconds", float, 0.1, None, "shared local allowance for Garside search and replay"),
+        ("--garside-max-ticks", int, 100000, None, "cooperative operation allowance for the Garside probe"),
+        ("--garside-max-targets", int, 100000, None, "target dictionary ceiling for the Garside probe"),
         ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
         ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
         ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
-        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive"),
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive", "corridor", "corridor-adaptive"),
          "chain cancellation strategy (distinct from Reidemeister --no-reduction)"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
          "opt-in component contraction for the standard scanner"),
         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
+        ("--braid-profile", None, False, None, "evaluate the Seifert structural certificate directly on a checked source braid"),
         ("--no-braid", None, False, None, "disable source-braid certificates"),
+        ("--no-rational", None, False, None, "disable checked Montesinos source certificates"),
         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
          "exact decision backend for a source braid on at most three strands"),
         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "twist", "barcode", "fitting"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"),
          "Khovanov backend, including optional sharing, twists, intervals, or scalar splitting"),
         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
+        ("--shadow-max-work", int, 1_000_000, None, "work allowance for optional marked determinant continuations"),
+        ("--closure-max-work", int, 1_000_000, None, "work allowance for optional classical closure bounds and resets"),
         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
         ("--seconds", float, None, None, "cooperative time budget"),
         ("--no-reduction", None, False, None, None),
         ("--no-descending", None, False, None, None),
         ("--no-alexander", None, False, None, "disable both Alexander stages"),
         ("--no-r3", None, False, None, "no Reidemeister III search before the Khovanov scan"),
+        ("--r3-search", str, "last", ("last", "clustered", "adaptive"), "bounded RIII search implementation"),
+        ("--r3-depth", int, 4, None, "maximum RIII moves per unlocking sequence"),
+        ("--r3-budget", int, 10, None, "RIII trial allowance per input crossing"),
+        ("--r3-births", int, 1, None, "maximum independent starting moves in clustered RIII search"),
         ("--exact-alexander", None, False, None,
          "also compute the exact Alexander polynomial after the modular test passed"),
         ("--no-modular", None, False, None, "disable only the modular Alexander stage"),
@@ -84,8 +97,8 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
-        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive"),
-         "opt-in binary survivor prediction and degree-gap cancellation shortcut"),
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive", "corridor", "corridor-adaptive"),
+         "chain cancellation strategy, including optional survivor and full-transfer policies"),
         ("--twist", None, False, None, "compute a checked source braid through twist blocks"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
@@ -218,6 +231,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"invalid Jones options: {exc}", file=sys.stderr)
             return 2
     if args.command in ("recognize", "khovanov"):
+        if args.reduction in ("graded", "graded-adaptive", "corridor", "corridor-adaptive") and getattr(args, "window_radius", None) is not None:
+            print("graded/corridor reduction cannot be combined with --window-radius", file=sys.stderr)
+            return 2
         if args.reduction != "standard" and (
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"
@@ -243,6 +259,10 @@ def main(argv: list[str] | None = None) -> int:
         try:
             if args.ranktwo_seconds < 0 or not args.ranktwo_seconds < float("inf"):
                 raise ValueError("--ranktwo-seconds must be finite and nonnegative")
+            if args.garside_seconds < 0 or not args.garside_seconds < float("inf"):
+                raise ValueError("--garside-seconds must be finite and nonnegative")
+            if args.garside_radius < 1 or args.garside_max_targets < 1 or args.garside_max_ticks < 0:
+                raise ValueError("Garside radius/target ceiling must be positive and ticks nonnegative")
             if args.window_seconds < 0 or not args.window_seconds < float("inf"):
                 raise ValueError("--window-seconds must be finite and nonnegative")
             if args.window_radius is not None and args.window_radius < 0:
@@ -250,10 +270,16 @@ def main(argv: list[str] | None = None) -> int:
             if args.window_max_objects < 0:
                 raise ValueError("--window-max-objects must be nonnegative")
         except ValueError as exc:
-            print(f"invalid window options: {exc}", file=sys.stderr)
+            print(f"invalid probe/window options: {exc}", file=sys.stderr)
             return 2
         if args.euler_max_states < 0:
             print("--euler-max-states must be nonnegative", file=sys.stderr)
+            return 2
+        if args.shadow_max_work < 0:
+            print("--shadow-max-work must be nonnegative", file=sys.stderr)
+            return 2
+        if args.closure_max_work < 0:
+            print("--closure-max-work must be nonnegative", file=sys.stderr)
             return 2
         if args.backend != "standard" and (args.pivot != "minfill" or args.algebra != "bits"
                                             or args.tail != 0 or args.race != 1):
@@ -261,6 +287,9 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_ranktwo=args.ranktwo, ranktwo_seconds=args.ranktwo_seconds,
+                           use_garside=args.garside, garside_radius=args.garside_radius,
+                           garside_seconds=args.garside_seconds, garside_max_ticks=args.garside_max_ticks,
+                           garside_max_targets=args.garside_max_targets,
                            window_radius=args.window_radius, window_strategy=args.window_strategy, window_max_objects=args.window_max_objects,
                            window_seconds=args.window_seconds,
                            use_seifert=not args.no_seifert, backend=args.backend,
@@ -268,11 +297,17 @@ def main(argv: list[str] | None = None) -> int:
                            composition=args.composition, composition_max_variables=args.composition_max_variables,
                            reduction=args.reduction,
                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
+                           use_rational=not args.no_rational,
+                           use_braid_profile=args.braid_profile,
                            use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
+                           shadow_max_work=args.shadow_max_work,
+                           closure_max_work=args.closure_max_work,
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
+                           r3_search=args.r3_search, r3_depth=args.r3_depth,
+                           r3_budget=args.r3_budget, r3_births=args.r3_births,
                            race=args.race, race_after=args.race_after,
                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
                            factor_backend="legacy" if args.legacy_factor else "interlacement",

@@ -11,7 +11,35 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 344 passing tests.
+diagram is not checked twice. The integrated suite now has 572 passing tests.
+
+New RIII trace entries include `triangle`, the three dart indices of the
+chosen face in the original input diagram. Crossing indices alone can name
+two different legal faces. Replay validates the specified face and accepts
+older crossing-only RIII records only when the face is unambiguous. R1/R2
+records retain their existing format.
+
+The report 27 causal RIII search is available with `r3_search="clustered"`
+or `--r3-search clustered`. It tracks the union of all touched darts and admits
+up to `r3_births` independent starting moves (default 1). `r3_search="adaptive"`
+first gives the historical search half the remaining trial allowance, then
+switches to clustered search if stalled. Both share `r3_budget` trials per
+input crossing (default 10); `None` disables the total cap in Python. The
+maximum sequence length is `r3_depth` (default 4). For example:
+
+```sh
+python -m fastunknot recognize examples/hard_unknot_8.json --r3-search adaptive --r3-depth 6
+```
+
+Speculative branches roll back on interruption. Local trial exhaustion falls
+back to exact recognition; a global deadline yields `UNKNOWN`. If an unfiltered
+root search finds no legal RIII move, the simplifier skips further deepening
+and switching because no RIII sequence can start. The default remains `last`:
+the new modes did not improve crossing counts in the recorded random-diagram
+audit and sometimes left more crossings under the same trial cap. Greater
+depth helps two stored hard unknots independently of the clustered algorithm.
+See `benchmark_causal_r3.py` for paired recognition/simplifier measurements
+and its `--discovery` mode for reproducible search and exact legacy-trace checks.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -87,7 +115,8 @@ python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
 python3 -m unittest discover -s tests -v
 ```
 
-Recognition accepts `--backend standard|shared|saturated|euler|twist`. The default is
+Recognition accepts `--backend standard|shared|saturated|euler|shadow|closure|twist`
+(with the barcode and fitting options described below). The default is
 `standard`: sharing incurs overhead on prime examples that stay connected.
 `shared` retains exact ranks and raw homological-degree counts. `saturated`
 retains the final unreduced rank capped at three. `euler` adds an optional exact
@@ -96,17 +125,84 @@ A capped count of three means “at least three”; it is never an exact rank.
 An early Euler result uses `rank_lower_bound_capped`, distinct from final
 `rank_capped`. Exhausting the optional inference budget continues complete
 saturated scanning; object/time exhaustion returns `UNKNOWN`.
-The Euler backend now computes each completed matching's exact Euler value
-from the classical closure's component count and crossing-sign parity in
-linear time, avoiding suffix smoothing enumeration. The query budget counts
-completed matchings. The original `SuffixEuler` recurrence remains available
-as an independent reference; both prepare geometry lazily within the budget.
+The Euler backend begins with direct linear-time closure walks. After four
+distinct queries at a stage, it prepares strand and zero-smoothing boundary
+path summaries when the boundary has no more darts than the suffix has
+crossings. Subsequent queries walk only these boundary summaries, computing
+the exact raw Euler value as `(-1)**(n+c+c0) * 2**c`. Preparation remains
+within the existing deadline and query budget; interrupted summaries are not
+published. The query budget counts completed matchings. `ClosureEuler` and
+the original `SuffixEuler` recurrence remain independent references.
+The low-level `AdaptiveClosureEuler(compression_after=0)` forces eager setup
+for diagnostics; public recognition uses the adaptive policy.
+`python -B benchmark_boundary.py --output results/boundary_local.json`
+separates repeated-query timings from complete scans and recognition.
+See `../synthesis/boundary_reuse.tex` for the proof and measured limitations.
 `euler_stats.prepared_stages` records the number of prepared stages.
 `python benchmark_euler_setup.py --output results/euler_setup_local.json`
 measures this setup separately from full recognition, with allocation peaks
 measured outside the timing samples.
 `python benchmark_euler_connectivity.py --output results/euler_local.json`
 compares the raw Euler-assisted scans with the earlier recurrence implementation.
+
+`--backend shadow` adds report 26's marked residue-four continuation bound.
+It completes whole relative components with the actual suffix, recovers their
+relative quantum shifts, and uses signed Tait determinants to evaluate four
+Euler residues. A reduced rank lower bound above one certifies knottedness;
+an inconclusive bound continues the exact scan. Only proper prefixes are
+observed. A partial observation never certifies the unknot.
+
+```bash
+python -B -m fastunknot recognize examples/conway.json --backend shadow --shadow-max-work 1000000
+python -B benchmark_shadow.py --output results/shadow_local.json
+```
+
+The Euler and determinant caches share `--euler-max-states`. The additional
+`--shadow-max-work` allowance counts geometry visits, matrix allocation and
+integer arithmetic updates (API: `shadow_max_work=None` removes this local
+cap). Local exhaustion disables inference and continues the same saturated
+scan; global exhaustion remains `UNKNOWN`. Completed determinant values alone
+are cached, so interruption cannot publish a partial result. Early evidence
+uses `reduced_rank_lower_bound_capped`, `stage`, and `shadow_stats`; the final
+rank still uses `rank_capped`. The existing backend restrictions apply.
+
+The default stays `standard`: earlier filters already decide many examples
+where the raw marked scanner improves substantially. The paired benchmark
+separates complete recognition from raw scanner timings. The theory and
+validation are in `../synthesis/determinant_continuations.tex`. The common
+terminal graph producer in `determinant_research/terminal_geometry_audit.py`
+is a checked research prototype; production computes each completion directly.
+The newer `determinant_research/boundary_tait.py` uses cut-face fragments and
+boundary-only gluing checks, reusing a signed terminal kernel and partition
+cache. Its audit agrees on 4,503 actual completions and checks another 3,468
+arbitrary pairings. It remains research code: it imports the delivered kernel
+and lacks production deadline/work accounting. Isolated repeated-query gains
+do not establish a complete-recognizer speedup.
+
+`--backend closure` adds report 28's classical closure bounds and
+single-survivor resets. For a whole radical component with one matching, it
+reads the scalar first-jet matrices and checks the actual remaining closure.
+Pure coefficients also support bounds valid for all classical link closures.
+A certified rank above two rejects the knot. When the entire scan has one
+component copy and first-jet multiplier one with a knot completion, it splices
+that matching into the remaining PD and restarts with fewer crossings. This
+preserves total rank; it is not an isotopy certificate or a graded-homology API.
+
+```bash
+python -B -m fastunknot recognize examples/conway.json --backend closure --closure-max-work 1000000
+python -B benchmark_closure.py --output results/closure_local.json
+```
+
+The local work allowance counts optional observer traversal, polynomial
+extraction, binary rank operations and completion geometry. Exhaustion disables
+observations and continues the current exact capped scan; global exhaustion
+still returns `UNKNOWN`. API `closure_max_work=None` removes this local cap.
+Evidence records reset events, `segment_stats`, and `closure_stats`, including
+the actual maximum segment length `max_gap`. A general polylogarithmic bound
+on this gap is unproved. An expanded 624-scan search found singleton resets
+but no nonsingleton eligible blocks; algebraic tests cover the broader formula.
+See `../synthesis/closure_resets.tex` for proofs, source-audit qualifications,
+and separate full-recognition and raw-backend measurements.
 
 Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
 and no racing. Incompatible options are rejected. `khovanov --shared` cannot
@@ -937,3 +1033,160 @@ The [theory section](../synthesis/disk_transfer.tex) covers certificates, finite
 perturbation, rollback, cost accounting, and explicit unknot diagrams whose raw
 frontier is Ω(√n) in every order. The latter limit an order-only approach, not
 recognition with simplification and structural certificates.
+
+## Exact long-twist profiles and streamed homology
+
+The additive RLE frontend `python -m fastunknot.twist.continuation input.json`
+accepts `{"strands": 3, "runs": [[1, 1001], [2, -1], [1, 1], [2, -1]]}`.
+It checks the original knot component count and evaluates structural
+certificates directly on run counts. `--mode homology --method tail` computes
+an exact reduced homological profile using a finite reference at run length
+`W+2`, where `W` counts the fixed context crossings. Longer exponents produce
+a constant interval plus finite exceptional degrees, without expansion.
+The returned degrees are macro degrees; quantum grading is forgotten.
+
+`--method streaming` instead retains two adjacent state layers and feeds
+columns directly into elimination. It reduces storage but was slower in all
+eight measured full-homology cases. In recognition it may stop when finalized
+reduced homology already exceeds one, explicitly reporting an incomplete
+homology and a rank lower bound. A partial rank-one result never proves UNKNOT.
+`--method macro` retains full assembly. The existing main CLI and production
+`backend="twist"` defaults are unchanged.
+
+The ordinary recognizer has a separate opt-in `--braid-profile` flag
+(`use_braid_profile=True`) for a checked source word. It specializes the
+existing Seifert graph criteria, with the established PD/Artin sign conversion.
+The original source remains distinct from any connected-sum factors.
+
+The largest measured tail gain was 58.6× for exact homology; dominant-run knots
+were already structurally decidable, so this is not a new recognition family.
+The profile option gained 2.30–3.33× on selected fresh prebuilt homogeneous braid
+diagrams. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md) for schemas,
+budgets and examples, and [the theory section](../synthesis/twist_continuation.tex)
+for proofs, output-size limits, independent audits and timing scope.
+
+
+## Checked rational and Montesinos presentations
+
+`Diagram.from_rational(e, tangles)` now builds and validates a Montesinos
+numerator closure, retaining checked source provenance. The recognizer uses
+an exact arithmetic decision before the general diagram pipeline; disable it
+with `use_rational=False` or `--no-rational`. JSON uses
+`{"montesinos":{"e":0,"tangles":[[2,3],[-2,-2,-1,-2]]}}`.
+The decision preserves each rational summand's denominator and handles
+nontrivial determinant-one knots. Arbitrary PDs have no inferred source.
+
+For binary coefficients too large to expand, `montesinos_certificate(e,tangles)`
+provides a separate arithmetic-only API. The ordinary constructor and CLI
+still build the actual PD, with a default 100,000-crossing expansion ceiling.
+
+`recognize_with_subtangles` in `fastunknot.tangle_obstruction` optionally
+searches a small literal-pattern catalogue in an arbitrary validated PD.
+Each rejection verifies a four-port disk occurrence and its non-embeddability
+in an unknot. No match falls back to the ordinary recognizer. This wrapper
+was slower in all five measured cases and remains explicit.
+
+See [RATIONAL.md](RATIONAL.md) for APIs, provenance and certificates,
+[rational_research/README.md](rational_research/README.md) for reproducible
+checks, and [the theory](../synthesis/rational.tex) for arithmetic bounds,
+full-complex barriers and performance scope. These are polynomial procedures
+on supplied presentations or fixed local patterns; general quasi-polynomial
+recognition remains unproved.
+
+
+## Quantum-ordered full transfer
+
+`--reduction graded` and `--reduction graded-adaptive` are optional exact
+policies for the standard scanner. The first computes the full differential
+between scalar survivors using quantum-ordered transfer. The second retains
+completed sparse pivots and switches only when the per-stage Schur-update
+allowance is exhausted. Unlike a survivor-count shortcut, both retain nonzero
+maps between adjacent surviving degrees. They do not require a common-disk
+certificate. The standard policy remains the default.
+
+The Python `khovanov_rank` and `recognize` APIs accept the same reduction names.
+Bit coefficients, minimum-fill pivots, self-inverse cancellation and one scan
+order are required. Component coefficient composition and tail finishing are
+supported; homological windows and alternative scanners are rejected before
+early recognition certificates. Global resource failure remains `UNKNOWN`
+in recognition. The replacement graph is fully prepared before installation,
+so transfer failure preserves the current differential.
+
+See [graded_research/README.md](graded_research/README.md) for reproducible
+checks and measurements and [the theory](../synthesis/graded_transfer.tex)
+for the finite-transfer proof, cost accounting and unresolved multiplicity
+bounds. The new full suite has 426 passing tests. The report's remaining proposals are reviewed in
+[the symbolic continuation section](../synthesis/symbolic_runs.tex).
+
+
+The run frontend now transports huge integer values and degree keys using exact
+hexadecimal strings, accepts either signed runs or an explicit word, and
+supports independent replay of serialized structural certificates. Use
+`fastunknot.integer_codec.decode_degree_profile` after a JSON round trip.
+The earlier total-rank law at context length plus one is documented and audited;
+the full-profile computation keeps its context-length-plus-two reference.
+All 431 maintained tests pass. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md)
+for the extended schema and [the theory](../synthesis/symbolic_runs.tex) for
+succinct complexity and the conditional repair-DAG research target.
+
+
+### Survivor corridors and bidirectional adaptive transfer
+
+`--reduction corridor` preserves full graded transfer while pruning paths
+that cannot reach an output survivor and choosing propagation direction per
+component. `--reduction corridor-adaptive` first spends the existing sparse
+Schur-update allowance and retains completed pivots before switching.
+Both are optional; `standard` remains the default. The supported backend,
+coefficient, tail and resource contracts match the graded full-transfer modes;
+window combinations are rejected. Direct controls also expose sparse scalar
+components and Boolean endpoint selection.
+
+The 458-test maintained suite passes. Independent audits check 3,885 transfer
+comparisons on 555 prefixes, all eight contraction identities at each prefix,
+and entrywise equality of sparse versus packed scalar maps. The constructed
+shared-suffix family proves a near-linear complete stage versus quadratic
+forward propagation at fixed algebra size; it does not prove a knot-prefix
+family or superiority to sparse cancellation. See
+[corridor_research/README.md](corridor_research/README.md) for measurements,
+commands and limitations, and [the article](../synthesis/corridor_transfer.tex)
+for proofs and complete setup accounting.
+
+
+## Certified cyclic Garside preprocessing
+
+Report 25's exact source-braid compressor is available with `--garside` or
+`recognize(diagram, use_garside=True)`. It shares exact Garside prefix states
+across cyclic cuts, independently replays the proposed equalities, and restarts
+recognition only when the candidate improves the current simplified diagram.
+Cheap modular Alexander and structural obstructions run first; Jones follows
+the probe. The optional probe has a local time/operation
+allowance; exhausting it resumes the established exact pipeline under the
+remaining global budget. Original source-branch evidence and PD reductions stay
+separate, and backend/reduction options survive the restart.
+
+The default radius is one; `--garside-radius 2` adds two-letter targets.
+The default caps are `--garside-seconds 0.1`, `--garside-max-ticks 100000`, and
+`--garside-max-targets 100000`. The probe is disabled by default. See
+[`garside_research/README.md`](garside_research/README.md) for reproduction,
+resource semantics and measurement scope. The theory article derives the
+polynomial fixed-radius compressor bound and a conditional small-core theorem;
+it does not claim a general sub-exponential unknot algorithm.
+
+
+## Compressed surface-cover geometry
+
+`fastunknot.surface_cover` maintains report 24's classifier for supplied
+binary-encoded dihedral covers of bordered surfaces. `CoverIndex` provides
+component and boundary-lift queries, exact signatures for ordered marked fibre
+points, and evaluation of rooted equivariant maps. Classification uses at most
+three unmarked family records; all arithmetic is polynomial in the input bit
+length without expanding sheets. Hexadecimal JSON and cooperative cancellation
+are supported. See [`cover_research/README.md`](cover_research/README.md) for
+input examples, proofs, audits and separate geometric benchmarks.
+
+This module is not called by knot recognition. Presentation extraction, full
+external attachments and hierarchy search bounds remain unproved integration
+steps. Even a one-type cyclic annulus cover has `W` inequivalent ordered pairs
+of marked points, so efficient marked comparison alone does not bound the
+number of possible hierarchy states. The theory is maintained in
+[`../synthesis/surface_covers.tex`](../synthesis/surface_covers.tex).

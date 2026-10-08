@@ -2,6 +2,72 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`boundary_reuse.tex` proves the new adaptive Euler path summaries and the
+research cut-face Tait quotient construction. The maintained Euler evaluator
+switches after four distinct same-stage queries when the suffix is sufficiently
+long. All 572 tests pass (`data/boundary-connectivity-integrated-tests.txt`).
+`../fast/determinant_research/audit_boundary_tait.py` verifies 4,503 actual
+completions and 3,468 arbitrary boundary pairings, including classical pairings
+that must decline this inherited-color representation.
+`../fast/benchmark_boundary.py` records seven paired rounds with fresh setup:
+adaptive Euler queries improve up to 15.8x on isolated long-suffix streams;
+the research determinant path reaches 53.9x. The latter benchmark has no
+interior elimination, and complete recognition shows no overall improvement.
+Inputs, source hashes, timings, and audit counts are retained in
+`../fast/results/boundary_reuse_20261008.json` and
+`data/boundary-tait-audit.json`. Terminal kernels remain outside production.
+
+`closure_resets.tex` reviews report 28's first-jet formula and pure-block
+classical closure bounds, with the maintained optional `closure` backend.
+It explains the total-rank invariant of a geometric reset, whole-summand and
+knot-completion premises, bounded observation with exact fallback, and the
+conditional complexity bound in the actual maximum reset gap. All 567 tests
+pass (`data/closure-reset-integrated-tests.txt`).
+The 29 delivered tests and the 160-diagram independent audit also pass against
+current production. `../fast/closure_research/audit_upstream.py` reproduces
+the latter without modifying delivered files. The source audit corrects one
+geometry pin's association with the stated inspected revision and identifies
+the retained fixture's omitted composition fast paths.
+`../fast/closure_research/audit_blocks.py` records 624 completed scans of 312
+knots, with no nonsingleton first-jet block found.
+`../fast/benchmark_closure.py` measures full recognition and raw scans separately;
+its samples are in `../fast/results/closure_reset_20261008.json`.
+
+`determinant_continuations.tex` reviews report 26 and the optional maintained
+`shadow` backend. It proves the marked-completion lower bound, derives the
+signed Tait phase and residue reconstruction, and explains budget exhaustion
+with exact continuation of the same scan. It also reviews the singular-safe
+terminal kernel and the new checked common-graph producer. The latter accepts
+3,186 connected queries; another 1,317 have disconnected projections and zero
+determinant specialization. This finite audit is not a universal complexity
+bound, and terminal reuse is not enabled in the recognizer.
+`data/determinant-integrated-tests.txt` records all 560 passing tests.
+The archive validation and actual-upstream reruns are retained in
+`data/determinant-archive-validation.txt` and
+`data/determinant-upstream-probe.json`; the geometric audit has inputs and
+source hashes in `data/determinant-terminal-geometry-audit.json`.
+`../fast/benchmark_shadow.py` reproduces separate paired recognition and raw
+scan timings in `../fast/results/marked_shadow_20261008.json`.
+
+`causal_r3.tex` reviews report 27's parameterized search, reproduces its
+5,000-system and 608,400-instance abstract audits, and gives a four-site
+counterexample to immediate-inverse pruning when accumulated support controls
+the birth budget. The production changes fix RIII trace ambiguity by recording
+input face darts and add opt-in clustered/adaptive search with guarded inverse
+pruning, exception-safe rollback and global deadline checks. The default
+search also stops deepening when no legal first RIII move exists.
+`data/causal_inverse_audit.py` reproduces the counterexample.
+`data/reidemeister-trace-integrated-tests.txt` records 539 passing integrated tests.
+The later search integration passes 550 tests, recorded in
+`data/causal-r3-integrated-tests.txt`.
+`../fast/benchmark_causal_r3.py` reproduces the paired end-to-end and isolated
+timings; `--discovery` reproduces the random search, the negative findings,
+and exact trace comparisons against the pinned default implementation.
+The opening source review also distinguishes Lackenby's announced
+`2^O((log n)^3)` bound from this project's stronger `n^O(log n)` target and
+explains why the hierarchy strategy is plausible without claiming a verified
+general runtime bound.
+
 * `report.tex`, `acceleration.tex`, `round3.tex`, `bend.tex`, `report.pdf`: the report (updated with the October continuations). Sections: sources and outcome; the six archives; code review;
   cross-validation; what is missing for `n^O(log n)`; the `fastunknot`
   recognizer; assessment; the nine acceleration proposals, 0.2 and the Rust
@@ -49,7 +115,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 344 tests. Local report 10–12 production
+That production checkpoint passed 431 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -166,7 +232,7 @@ Its nice-order certificate and minimal-truncation domination proof transfer the
 primary paper's binomial object bounds to arbitrary exhaustive pivots. The
 section distinguishes this from the faster allocation-pruned strategy, includes
 the raw-depth padding obstruction, and accounts for bounded composition caches.
-`data/minimal-window-integrated-tests.txt` records 344 passing tests; independent
+`data/minimal-window-integrated-tests.txt` records 277 passing tests at that checkpoint; independent
 archive tests and the 393-window audit have separate logs. Reproduce paired
 query measurements using `../fast/benchmark_minimal_windows.py --output FILE`;
 raw results are `../fast/results/minimal_windows_20261008.json`.
@@ -189,3 +255,99 @@ certificates are retained in `data/disk-*`. The section includes the descending
 grid raw-width obstruction and the current scheduler's resource/fallback scope.
 Paired data in `../fast/results/disk_transfer_20261008.json` distinguish
 synthetic gains from four ordinary scans with zero full-transfer calls.
+
+`twist_continuation.tex` reviews report 18 and documents the exact one-run
+recurrence, positive turnback slope, compact output, streamed storage and
+source-braid structural specialization. It distinguishes exact homology gains
+from the already-decidable dominant-run recognition family. At that integration checkpoint, all 254 archive
+and 391 production tests passed; separate audits checked 832 recurrence
+comparisons, 220 independent cubes and 500 slope identities. Data are in
+`data/twist-*-audit.json`; paired measurements are in
+`../fast/results/twist_tail_20261008.json`, `twist_streaming_20261008.json`,
+and `braid_profile_20261008.json`. The streaming regressions and differing
+input/output contracts are stated explicitly; defaults remain unchanged.
+
+
+`rational.tex` reviews report 22 and documents the complete arithmetic
+Montesinos classifier, checked-source integration and optional literal local
+obstructions. It proves the bit bounds and separates the four-ended Boolean
+continuation-rank and explicit-full-complex barriers from general running-time
+claims. At this checkpoint the production suite had 411 passing tests; the unchanged archive
+has 152. Independent results in `data/rational-*` cover 1,200 sources,
+1,398,101 identity entries, 21 checkpoint diagrams and adversarial local maps.
+Raw paired measurements are in `../fast/results/rational_20261008.json`.
+Object-capped baselines are censored; local regressions and construction versus
+recognition scope are retained explicitly. Reproduction commands are in
+`../fast/rational_research/README.md`.
+
+
+`graded_transfer.tex` integrates the quantum-ordered full transfer from report
+23, with eager and adaptive policies. It proves termination and source-band
+pruning without the disk-transfer geometry precondition, retains nonzero maps
+between scalar survivors, and charges allocated slots left by sparse pivots.
+The 426-test maintained suite and 281-test delivered snapshot pass; the latter
+also contains additions not yet integrated. The production transfer audit
+checks 1,812 stage contractions across 86 diagrams and 258 order presentations.
+All 114 pinned source blobs match. Evidence is in `data/graded-*`; paired raw
+scanner/kernel measurements are in `../fast/results/graded_transfer_20261008.json`.
+The remaining report 23 proposals are reviewed below; report 24 scanner integration is described below; its surface-cover kernel remains under review.
+
+
+`symbolic_runs.tex` completes the report 23 review: the existing run frontend
+now supports exact hexadecimal integers and independent serialized-certificate
+replay. It documents the earlier total-rank law without claiming a smaller
+reference calculation, sharpens the succinct context bound, and states the
+repair-DAG theorem with its unresolved geometric hypotheses. Evidence includes
+392 explicit tail complexes, 380 weighted-path fixtures, and 431 maintained
+tests in `data/tail-earlier-threshold-audit.json`, `repair-dag-audit.json`, and
+`symbolic-integrated-tests.txt`. The production backend keeps one canonical
+tail implementation; the DAG calculation remains a research diagnostic.
+
+
+`corridor_transfer.tex` integrates report 24's exact survivor pruning and
+bidirectional full transfer, including the sparse scalar and Boolean-port
+variants. The article proves the propagation bounds and complete fixed-algebra
+stage separation, charging scalar setup, graph construction, endpoint masks,
+and vertex visits explicitly. It distinguishes the constructed complex from an
+unproved knot-prefix family. The default reducer remains sparse cancellation.
+All 458 maintained tests pass; production repeats 3,885 transfer comparisons
+on 555 prefixes with full contraction certificates, 639 support comparisons,
+and the sparse/packed scalar-map representation audit. Evidence is in
+`data/corridor-*`; the 11-arm paired measurements are in
+`../fast/results/corridor_integrated_20261008.json`. The delivered archive's
+268 scanner tests and separate cover suite pass in a temporary copy. Its 20
+integration hashes match; its advertised package-wide hash manifest is missing.
+The separate cover-kernel follow-up is now maintained in `surface_covers.tex`,
+with its supplied-presentation contract kept distinct from recognition.
+
+
+`cyclic_garside.tex` reviews and integrates report 25's exact classical Garside
+normal forms, shared cyclic interval optimizer, independent local replay and
+bounded source-braid portfolio. It gives explicit word-operation and storage
+bounds, a restricted inflated-core quasi-polynomial theorem, and two limitations
+of equality-based shortening. Production puts modular Alexander
+first, reuses that inconclusive check if the probe declines, and runs Jones after
+the probe so that compression can avoid work on the larger diagram. That checkpoint
+passes 517 tests, including 60 small-closure homology comparisons and resource,
+restart and certificate regressions. Logs and the 45-hash/six-blob source audit
+are in `data/cyclic-garside-*`. Reproduce the separate mechanism and complete
+recognition experiments with `../fast/garside_research/benchmark_kernel.py` and
+`benchmark_pipeline.py`, each with `--output FILE`. Their paired raw results in
+`../fast/results/cyclic_garside_*_20261008.json` generate the article tables.
+The `before_filter_order` and `after_all_filters` files retain the diagnostic
+regressions that motivated placing the probe between modular Alexander and Jones.
+They are explicitly not measurements of the final implementation.
+
+
+`surface_covers.tex` completes the report 24 cover-kernel review and proves the
+new ordered-point signature and rooted transport interface. It also shows why
+two marks already allow `W` inequivalent types on a single cyclic annulus cover.
+The geometry module remains separate from recognition: a checked extraction
+from a knot exterior, full attachments and a search-state bound are still needed.
+The 534-test checkpoint, 13,846 expanded-topology comparisons and independent
+196,712 marked-equivalence comparisons are retained in `data/surface-cover-*`.
+Use `../fast/cover_research/audit_markings.py --output FILE` and
+`../fast/cover_research/benchmark.py --output FILE` to reproduce the new audit
+and geometric measurements. The tables read `../fast/results/surface_cover_20261008.json`;
+its 12 complete-topology cases and nine prepared-query cases have raw paired
+samples, A/A controls and source hashes. They are not knot-recognition timings.

@@ -1,3 +1,6 @@
+/- Modified for ProveIt: define sum-indexed Lie instances by direct
+constructor cases so their realifications reduce definitionally on Lean 4.32.
+The public types and mathematical constructions are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.ProductOrbitCongruence
 
 namespace OAI
@@ -15,14 +18,18 @@ def sumLieSpace {ι κ : Type*} (L : ι → Type u) (M : κ → Type u) : ι ⊕
   | .inr j => M j
 
 instance sumLieRing {ι κ : Type*} {L : ι → Type u} {M : κ → Type u}
-    [∀ i, LieRing (L i)] [∀ j, LieRing (M j)] (k : ι ⊕ κ) : LieRing (sumLieSpace L M k) := by
-  cases k <;> dsimp [sumLieSpace] <;> infer_instance
+    [∀ i, LieRing (L i)] [∀ j, LieRing (M j)] (k : ι ⊕ κ) : LieRing (sumLieSpace L M k) :=
+  match k with
+  | .inl i => inferInstanceAs (LieRing (L i))
+  | .inr j => inferInstanceAs (LieRing (M j))
 
 instance sumLieAlgebra {ι κ : Type*} {L : ι → Type u} {M : κ → Type u}
     [∀ i, LieRing (L i)] [∀ j, LieRing (M j)]
     [∀ i, LieAlgebra ℚ (L i)] [∀ j, LieAlgebra ℚ (M j)] (k : ι ⊕ κ) :
-    LieAlgebra ℚ (sumLieSpace L M k) := by
-  cases k <;> dsimp [sumLieSpace] <;> infer_instance
+    LieAlgebra ℚ (sumLieSpace L M k) :=
+  match k with
+  | .inl i => inferInstanceAs (LieAlgebra ℚ (L i))
+  | .inr j => inferInstanceAs (LieAlgebra ℚ (M j))
 
 instance sumRealificationTopology {ι κ : Type*} {L : ι → Type u} {M : κ → Type u}
     [∀ i, LieRing (L i)] [∀ j, LieRing (M j)]

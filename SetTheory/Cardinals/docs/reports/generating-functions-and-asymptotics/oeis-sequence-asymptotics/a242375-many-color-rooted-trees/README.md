@@ -81,7 +81,9 @@ expansion inside a ceiling; numerical brackets are diagnostics.
   corrections in (72) are, formally, an instance of `p0:thm:core-reversion`
   (`Λ = h`); nearest-integer recovery at range points is an instance of
   `p0:thm:staircase`(3); Corollary 12.3 above `Q_0` is `p0:thm:staircase`(1)
-  in the index `q`, with Lemma 12.2 excluding small palettes.
+  in the index `q`, with Lemma 12.2 excluding small palettes (an instance
+  after the increasing change of target `y ↦ −log(1 − y)`, since the volume
+  assumes `A_n → +∞`; dated qualification after Remark 11.3).
 - **Recomputed:** all b-file terms of A242249 and A255517 with `n ≤ 60`,
   `k ≤ 40` (2460 each), both diagonals for `n ≤ 60`, all 36 entries of the
   table in Section 13, the class-`ℬ` defect row at `N = 80, …, 640`,
@@ -141,7 +143,7 @@ delivered text.
 ```text
 README.md                          this guide (replaces the delivered README.md)
 article.tex                        the report (delivered article.tex, written)
-article.pdf                        compiled report, 33 pages
+article.pdf                        compiled report, 34 pages
 code/build.py                      PDF and deterministic ZIP builder (delivered root build.py)
 code/certify_bounds.py             rational certificate of the domain inequalities (Appendix A)
 code/colored_trees.py              exact counts, marked polynomials, diagonals, inverses, palette search
@@ -196,6 +198,40 @@ equalled the recorded results after removing carriage returns
 (`test_exact.py` also under `-O`; `diagnostics.py --tv` took 66 s). The
 builder was not run.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`d53b7fbd4`) read the four
+OEIS entries again; every quotation is verbatim. The check is recorded in a
+dated note at the end of Section 14.
+
+- **Kotěšovec's conjectures.** The proof in Remark 5.2 was re-read against
+  Section 3 and Proposition 5.1 and is confirmed. An independent numerical
+  route, the classical characteristic system `C(ρ) = 1`,
+  `kρ exp(1 + Σ_{m≥2} ε_m C(ρ^m)/m) = 1` with the check's own coefficients
+  at 60 digits, reproduces:
+  - every `d(k)` Kotěšovec lists (`k = 1…10, 100, 101, 200, 201`) to all
+    printed digits;
+  - every A255517 limit (`k = 1…10, 100`) to all 50 printed digits;
+  - his two differences.
+  At `k = 10³, 10⁴`, `k(D_± − ek ∓ 1/(2e))` matches Proposition 5.1's next
+  coefficients, `1/(3e²) + 1/(8e³)` and `1/(3e²) − 7/(8e³)`.
+- **Data.** Every b-file term of A242249 and A255517 (all 141
+  antidiagonals) and of the two diagonals (`n ≤ 200`, `n ≤ 300`) agrees.
+  All 36 table entries were also obtained by direct classification of
+  canonical colored trees (`N ≤ 6`, `q ≤ 3`), without the recurrence.
+- **Constants.** `𝒞(1)`, `a³ + a⁴`, the class-`ℬ` row, `ℓ_{±,1}`,
+  `ℓ_{±,2}` (and the approach to them through `n = 400`) and `K_+` are
+  confirmed.
+- **Qualified by a dated note after Remark 11.3.** Item (4) calls Corollary
+  12.3 an instance of `p0:thm:staircase`(1). The volume's definition assumes
+  `A_n → +∞`, whereas `p(N, q) → 1`. The statement is an instance after the
+  increasing change of target `y ↦ −log(1 − y)`. Items (1)–(3) are confirmed.
+- **Provenance, checksums, byte identity and numbering.** All confirmed:
+  630,103 bytes, 18 files, 1128 lines, 29 pp.; 17 checksums; 14 staged files
+  byte-identical; README listing; 92 labels unchanged, 4 added.
+
+Rebuilt: 34 pages (33), label numbers unchanged.
+
 ## Build
 
 pdfLaTeX (lmodern, amsmath, amssymb, amsthm, mathtools, microtype, booktabs,
@@ -206,8 +242,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
-33 pages; no errors or warnings, no undefined references, no multiply defined
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026;
+rebuilt after the independent check, three passes): 34 pages (33 at the
+write); no errors or warnings, no undefined references, no multiply defined
 labels, no duplicate destinations, no overfull or underfull boxes. The
 delivered text (with its `tables.tex`) gives 29 pages with no warnings.
 

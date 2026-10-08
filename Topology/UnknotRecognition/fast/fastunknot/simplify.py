@@ -11,11 +11,13 @@ from .diagram import Diagram, DisjointSet
 
 
 class Move:
-    """An immutable record (kind, crossings) with value equality and hashing."""
+    """Immutable move record; R3 can name its face by fixed input dart indices."""
 
-    def __init__(self, kind: str, crossings: tuple[int, ...]):
+    def __init__(self, kind: str, crossings: tuple[int, ...],
+                 triangle: tuple[int, ...] | None = None):
         object.__setattr__(self, "kind", kind)
-        object.__setattr__(self, "crossings", crossings)
+        object.__setattr__(self, "crossings", tuple(crossings))
+        object.__setattr__(self, "triangle", None if triangle is None else tuple(triangle))
 
     def __setattr__(self, name, value):
         raise AttributeError(f"cannot assign to field {name!r}: Move is immutable")
@@ -26,16 +28,20 @@ class Move:
     def __eq__(self, other):
         if other.__class__ is not self.__class__:
             return NotImplemented
-        return (self.kind, self.crossings) == (other.kind, other.crossings)
+        return (self.kind, self.crossings, self.triangle) == (other.kind, other.crossings, other.triangle)
 
     def __hash__(self):
-        return hash((self.kind, self.crossings))
+        return hash((self.kind, self.crossings, self.triangle))
 
     def __repr__(self):
-        return f"Move(kind={self.kind!r}, crossings={self.crossings!r})"
+        face = "" if self.triangle is None else f", triangle={self.triangle!r}"
+        return f"Move(kind={self.kind!r}, crossings={self.crossings!r}{face})"
 
     def to_json(self) -> dict:
-        return {"kind": self.kind, "crossings": list(self.crossings)}
+        result = {"kind": self.kind, "crossings": list(self.crossings)}
+        if self.triangle is not None:
+            result["triangle"] = list(self.triangle)
+        return result
 
 
 def legal_moves(diagram: Diagram) -> list[Move]:
@@ -277,13 +283,15 @@ class _Darts:
         return Diagram(tuple(rows))
 
 
-def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool):
+def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool, check=None):
     """Depth-first search for at most ``depth`` Reidemeister III moves after which a I/II move
     exists.  The moves are left applied and listed in ``path``; returns the darts to look at,
     or None with the structure restored.  After the first move only triangles next to it are
     tried, and never the inverse of the move just made."""
     seen = set()
     for d in darts:
+        if check is not None:
+            check()
         if state.trials >= state.budget:
             return None
         triangle = state.triangle_at(d)
@@ -299,26 +307,49 @@ def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: 
         state.trials += 1
         around = [4 * (x // 4) + j for x in triangle for j in range(4)]
         path.append(triangle)
-        if any(state.move_at(x) is not None for x in around):
-            return around
-        if depth > 1:
-            crossings = {x // 4 for x in around} | {state.alpha[x] // 4 for x in around}
-            near = [4 * c + j for c in sorted(crossings) for j in range(4)]
-            found = _unlock(state, depth - 1, near, {x ^ 2 for x in triangle}, path, check_faces)
-            if found is not None:
-                return found + around
-        path.pop()
-        state.apply_r3(state.triangle_at(triangle[0] ^ 2))               # undo: the move is an involution
+        keep = False
+        try:
+            if check is not None:
+                check()
+            if any(state.move_at(x) is not None for x in around):
+                keep = True
+                return around
+            if depth > 1:
+                crossings = {x // 4 for x in around} | {state.alpha[x] // 4 for x in around}
+                near = [4 * c + j for c in sorted(crossings) for j in range(4)]
+                found = _unlock(state, depth - 1, near, {x ^ 2 for x in triangle}, path, check_faces, check)
+                if found is not None:
+                    keep = True
+                    return found + around
+        finally:
+            if not keep:
+                path.pop()
+                state.apply_r3(state.triangle_at(triangle[0] ^ 2))
     return None
 
 
+def validate_r3_options(search, depth, budget, births):
+    if search not in ("last", "clustered", "adaptive"):
+        raise ValueError("r3_search must be last, clustered, or adaptive")
+    if type(depth) is not int or depth < 1:
+        raise ValueError("r3_depth must be a positive integer")
+    if type(births) is not int or births < 1:
+        raise ValueError("r3_births must be a positive integer")
+    if budget is not None and (type(budget) is not int or budget < 0):
+        raise ValueError("r3_budget must be a nonnegative integer or None")
+
+
 def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
-             r3_depth: int = 4, r3_budget: int | None = 10) -> tuple[Diagram, list[Move]]:
+             r3_depth: int = 4, r3_budget: int | None = 10, *,
+             r3_search: str = "last", r3_births: int = 1,
+             check=None, stats: dict | None = None) -> tuple[Diagram, list[Move]]:
     """Crossing-decreasing Reidemeister I/II moves until none applies, helped by Reidemeister III.
 
     Incremental version (idea from acceleration proposal 02).  Moves in the
-    trace name crossings by their index in the *input* diagram; ``replay``
-    checks a trace.  The result is revalidated once at the end.
+    trace name crossings by their index in the *input* diagram; R3 records
+    also name the triangular face by input darts, since a crossing triple
+    need not identify a unique face.  ``replay`` checks a trace.  The result
+    is revalidated once at the end.
 
     With ``r3``, when no I/II move is left, sequences of at most ``r3_depth``
     Reidemeister III moves (inversions of a triangular face) are tried, shortest
@@ -334,21 +365,71 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
     useful sequences are found early: on 117 unknot diagrams that depth 1 cannot
     touch, budgets of 5, 15, 40 and none all reduce 97, 109 and 110 of them to
     nothing at depths 2, 3 and 4.
+    ``r3_search="clustered"`` searches accumulated support with at most
+    ``r3_births`` independent starting moves, retaining immediate inverses
+    whenever the preceding move enlarged the accumulated support.
+    ``r3_search="adaptive"`` first runs the historical last-move neighborhood
+    search with half the remaining allowance (5n trials if uncapped), then
+    switches to clustered search if stalled. Both share the total trial cap.
+    An optional ``check`` callback can interrupt all searches cooperatively;
+    speculative RIII branches roll back on exceptions. Optional ``stats``
+    records trial counts by search implementation and adaptive switches.
     ``check_faces=False`` tries every triangle as the
     last move of a sequence instead of only those next to a small face (slower,
     same result; kept for the test of that shortcut).
     """
+    validate_r3_options(r3_search, r3_depth, r3_budget, r3_births)
+    if stats is not None:
+        stats.update(last_trials=0, clustered_trials=0, switches=0)
+    if check is not None:
+        check()
     if not diagram.crossings:
         return diagram, []
-    if type(r3_depth) is not int or r3_depth < 1:
-        raise ValueError("r3_depth must be a positive integer")
     state = _Darts(diagram)
     state.trials = 0
     state.budget = float("inf") if r3_budget is None else r3_budget * diagram.crossings
+    no_moves = False
+    def search(mode, ceiling):
+        nonlocal no_moves
+        original_budget, before = state.budget, state.trials
+        state.budget = ceiling
+        try:
+            if mode == "clustered":
+                from .causal_r3 import search_clustered_unlock
+            for depth in range(1, r3_depth + 1):
+                if check is not None:
+                    check()
+                if state.trials >= state.budget:
+                    break
+                path = []
+                before_depth = state.trials
+                if mode == "last":
+                    found = _unlock(state, depth, range(4 * len(state.alive)),
+                                    None, path, check_faces, check)
+                else:
+                    found = search_clustered_unlock(state, depth, max_births=r3_births,
+                                                    check_faces=check_faces, path=path, check=check)
+                if found is not None:
+                    return found, path
+                if depth > 1 and state.trials == before_depth:
+                    # The root was not face-filtered at depth >= 2, so every
+                    # nondegenerate legal first move would have been tried.
+                    # No RIII sequence can start; neither deeper search nor
+                    # switching neighborhoods can help this diagram.
+                    no_moves = True
+                    break
+            return None, []
+        finally:
+            state.budget = original_budget
+            if stats is not None:
+                stats[mode + "_trials"] += state.trials - before
+
     trace: list[Move] = []
     stack = list(range(4 * diagram.crossings - 1, -1, -1))
     while True:
         while stack and state.remaining:
+            if check is not None:
+                check()
             move = state.move_at(stack.pop())
             if move is None:
                 continue
@@ -357,15 +438,24 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
                 stack.append(d)
         if not r3 or state.remaining < 3:
             break
-        for depth in range(1, r3_depth + 1):
-            path: list = []
-            found = _unlock(state, depth, range(4 * len(state.alive)), None, path, check_faces)
-            if found is not None:
-                trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle))) for triangle in path)
-                stack = found
-                break
+        no_moves = False
+        if r3_search == "adaptive":
+            # Reserve half the remaining finite allowance for support search.
+            # With no total cap, bound the heuristic phase by 5n trials.
+            allowance = (5 * diagram.crossings if r3_budget is None
+                         else (state.budget - state.trials) // 2)
+            found, path = search("last", state.trials + allowance)
+            if found is None and not no_moves and state.trials < state.budget:
+                if stats is not None:
+                    stats["switches"] += 1
+                found, path = search("clustered", state.budget)
         else:
+            found, path = search(r3_search, state.budget)
+        if found is None:
             break
+        trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle)), triangle)
+                     for triangle in path)
+        stack = found
     if not trace:
         # nothing applied: no need to rebuild and revalidate (the rebuild would also rename the edges
         # in order of first appearance; an unreduced diagram now keeps its own labels)
@@ -374,25 +464,60 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
 
 
 def replay(diagram: Diagram, trace) -> Diagram:
-    """Re-apply a trace produced by ``simplify``, checking that every move is legal."""
+    """Check and re-apply a trace. Legacy R3 records require a unique legal face.
+
+    Face darts are fixed slots in the input diagram, even after deletions.
+    Their supplied order is irrelevant: recover the oriented face walk from
+    the current state rather than trusting an arbitrary order in a record.
+    """
     if not trace:
         return diagram                        # as ``simplify``: an unreduced diagram keeps its labels
     state = _Darts(diagram)
     for item in trace:
-        kind, crossings = (item.kind, tuple(item.crossings)) if isinstance(item, Move) else             (item["kind"], tuple(item["crossings"]))
+        try:
+            if isinstance(item, Move):
+                kind, crossings, face = item.kind, tuple(item.crossings), item.triangle
+            else:
+                kind, crossings = item["kind"], tuple(item["crossings"])
+                face = item.get("triangle")
+            face = None if face is None else tuple(face)
+        except (KeyError, TypeError, AttributeError) as error:
+            raise ValueError("malformed move record") from error
+        if (kind not in ("R1", "R2", "R3")
+                or len(crossings) != int(kind[1])
+                or any(type(c) is not int for c in crossings)
+                or len(set(crossings)) != len(crossings)):
+            raise ValueError("invalid move kind or crossing indices")
+        if any(not 0 <= c < len(state.alive) or not state.alive[c] for c in crossings):
+            raise ValueError("the trace names a crossing that is not present")
+        crossings = tuple(sorted(crossings))
+        if face is not None:
+            if (kind != "R3" or len(face) != 3
+                    or any(type(d) is not int or not 0 <= d < len(state.alpha) for d in face)
+                    or tuple(sorted(d // 4 for d in face)) != crossings):
+                raise ValueError("invalid Reidemeister III face indices")
+            triangle = state.triangle_at(face[0])
+            if triangle is None or set(triangle) != set(face):
+                raise ValueError("the trace names an illegal Reidemeister III face")
+            if state.apply_r3(triangle) is None:
+                raise ValueError("the trace contains a degenerate Reidemeister III move")
+            continue
         found = None
+        faces = {}
         for c in crossings:
-            if not 0 <= c < len(state.alive) or not state.alive[c]:
-                raise ValueError("the trace removes a crossing that is not present")
             for j in range(4):
                 if kind == "R3":
                     triangle = state.triangle_at(4 * c + j)
-                    if triangle is not None and tuple(sorted(x // 4 for x in triangle)) == tuple(sorted(crossings)):
-                        found = triangle
+                    if triangle is not None and tuple(sorted(x // 4 for x in triangle)) == crossings:
+                        faces[frozenset(triangle)] = triangle
                     continue
                 move = state.move_at(4 * c + j)
-                if move is not None and move[0] == kind and move[1] == tuple(sorted(crossings)):
+                if move is not None and move[0] == kind and move[1] == crossings:
                     found = move
+        if kind == "R3":
+            if len(faces) > 1:
+                raise ValueError("ambiguous Reidemeister III record: triangle darts are required")
+            found = next(iter(faces.values()), None)
         if found is None:
             raise ValueError("the trace contains an illegal move")
         if kind == "R3":

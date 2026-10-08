@@ -1,5 +1,5 @@
 \section{Further research: precise questions and useful obstructions}
-\label{research:section}
+\label{btc:research:section}
 
 The results settle several quantitative issues within the
 matching-monoid approach, but leave substantial structural problems.
@@ -18,9 +18,9 @@ bound and its general machine representation
 \cite{OpenAILiveness2026}; the following consequence records
 explicit bounds from the constructions given here.
 
-\begin{proposition}\label{research:beta}
+\begin{proposition}\label{btc:research:beta}
 For $h\ge2$,
-\begin{equation}\label{research:beta-bounds}
+\begin{equation}\label{btc:research:beta-bounds}
  2(5/2)^{\lfloor(h-2)/9\rfloor}
  \ \le\ \beta(h)\ \le\ 12\cdot4^h+26.
 \end{equation}
@@ -28,22 +28,22 @@ In particular $\beta(h)=2^{\Theta(h)}$.
 \end{proposition}
 
 \begin{proof}
-The lower bound is Theorem~\ref{alg:divisor}.
+The lower bound is Theorem~\ref{btc:alg:divisor}.
 Consider the four-letter language defined by starting with any
 state in $U$ and accepting at the end exactly in $U$, using
-\eqref{comp:a}--\eqref{comp:r}. A deterministic subset machine
+\eqref{btc:comp:a}--\eqref{btc:comp:r}. A deterministic subset machine
 has at most $2^{2h}$ subset states, one separate initial state,
 and one separate accepting state. On the left marker it enters
 the subset $U$; on each ordinary symbol it takes the relational
 image of its current subset; on the right marker it enters the
 accepting state exactly when its subset meets $U$. All subset
 states are nonaccepting, so this respects the convention of
-Section~\ref{intro:model}.
+Section~\ref{btc:intro:model}.
 
-For $a=4$, Theorem~\ref{mach:representation} gives degree at most
+For $a=4$, Theorem~\ref{btc:mach:representation} gives degree at most
 $12(2^{2h}+2)+2$. Canonical four-letter words and their singleton
 contexts give the surjection by the same proof as
-Lemma~\ref{comp:quotient}, before binary decoding.
+Lemma~\ref{btc:comp:quotient}, before binary decoding.
 This is the claimed upper bound.
 \end{proof}
 
@@ -64,7 +64,7 @@ upper bound more effectively than determinizing the compiler.
 
 \begin{question}
 Can a nonrectangular family of relation additions improve the
-gain-to-deletion ratio of Proposition~\ref{alg:amplification}?
+gain-to-deletion ratio of Proposition~\ref{btc:alg:amplification}?
 \end{question}
 
 The $p\times q$ grid adds $pq$ independent edges at a cost of
@@ -84,14 +84,14 @@ An optimization problem based only on edge counts would miss
 this obstruction.
 
 \subsection{Minimum generated rank needs more than union connectivity}
-\label{research:union}
+\label{btc:research:union}
 
 The budget theorem uses a union graph and parity. Those data
 need not determine the actual minimum rank in the generated
 monoid.
 
 \begin{proposition}[A connected union need not attain its parity floor]
-\label{research:union-obstruction}
+\label{btc:research:union-obstruction}
 There are two rank-two idempotents in $\Br{4}$ whose union cap
 graph is connected, although every nonempty word in them has
 rank two.
@@ -144,7 +144,7 @@ binary decoder with $6h+2$ total states in the stated model.
 The block length is optimal in order by counting, but that
 argument does not bound compiler states beyond the designated
 boundary requirement. A smaller binary construction would
-improve the coefficient in \eqref{intro:n-bound} without
+improve the coefficient in \eqref{btc:intro:n-bound} without
 changing the algebra.
 
 The strong single-block path-count property suggests a
@@ -163,7 +163,7 @@ degree $cs+O(1)$ for a constant $c<8$, and what is the best
 universal constant?
 \end{question}
 
-Theorem~\ref{mach:linear-optimality} rules out sublinear
+Theorem~\ref{btc:mach:linear-optimality} rules out sublinear
 degree, but leaves a gap in the coefficient. The present
 construction uses two lanes for every distinct crossing triple.
 Several transitions may share a port scheme if they cannot
@@ -183,7 +183,7 @@ that combinatorial optimum with the number of states.
 \begin{question}
 Is there a repetition-independent structural budget for
 idempotents in the ordered path-diagram monoid used in
-Section~\ref{complement:section}?
+Section~\ref{btc:complement:section}?
 \end{question}
 
 The Brauer proof relies on degree-two colored components
@@ -253,3 +253,17 @@ Each has a compact mathematical specification and a clear
 effect on the present results. The longer-term target is
 the exact exponential behavior of $\beta(h)$, together
 with a stronger ordered-path invariant for complementation.
+
+\begin{writenote}[Under Vladimir's standing rule of 4 October 2026, 7 October 2026]
+The eight research questions stand as the source states them, and none is
+answered elsewhere in the repository. The write found no claim of the source
+that is unproved as stated outside them, and none that is wrong; nothing was
+moved here or refuted. Theorem~\ref{btc:complement:binary} is not an
+unproved claim in this sense, because the source states it as conditional on
+a named external premise; it stays where it is, marked conditional
+(Section~\ref{btc:complement:section}). Proposition~\ref{btc:research:beta}
+was rederived ($12(2^{2h}+2)+2=12\cdot4^h+26$; the subset machine accepts
+only through its separate accepting state), and
+Proposition~\ref{btc:research:union-obstruction} was confirmed by the write's
+own diagram multiplication ($a,b$ idempotent of rank two, $ab=b$, $ba=a$).
+\end{writenote}

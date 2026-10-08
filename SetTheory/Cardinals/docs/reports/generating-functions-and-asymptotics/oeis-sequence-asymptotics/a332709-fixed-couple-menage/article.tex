@@ -178,6 +178,15 @@ formalized (the Lean file above is external and concerns the leading
 equivalent of A258667 only), and its place in the collection confers no formal
 status.
 \end{writenote}
+\begin{writenote}[Independent check, 7 October 2026]
+``Whose current Git blobs are the ones the source pins'' was true at the write
+(\file{b353bba89}). Later the same day \file{d92db8d06} added two dated repairs
+to Appendix~V (the Fubini pole lattice) of the first volume, whose blob is now
+\file{f6f91ca842881a9d63a518120f01e36aa91a1fff}. No labelled statement was
+added or changed, and the statements compared in
+Remark~\ref{fcm:rem:transseries} are unchanged. The second volume's blob is
+still the pinned one.
+\end{writenote}
 \begin{writenote}[What is not claimed, collected from the source]
 The rook inclusion--exclusion, the Shevelev--Moses fixed-couple factorization
 and their observation of row unimodality, Kagey's prefix framework, the
@@ -799,6 +808,28 @@ formula. A127548 (\#38, 20 September 2024) and A000179 are as the source
 describes them. \emph{Checks.} The write's counts equal the b-files named in
 Section~\ref{fcm:sec:provenance}. No OEIS edit is part of this work.
 \end{remark}
+\begin{writenote}[Correction at the independent check, 7 October 2026]
+The sentence ``The other column entries (A258664--A258666, A258673) post no
+asymptotic formula'' is wrong. A258664 (\#85), A258665 (\#75), A258666 (\#74)
+and A258673 (\#71), all of 5 November 2025 and by Shevelev and Moses (7 June
+2015), each carry the same two comments as A258667 (A258664 has no space after
+the sum's subscript): Riordan's expansion of $U_n$ and ``Therefore, it is natural to conjecture that a(n) $\sim$
+e\^{}(-2)*n!/(n-2)*(1 + Sum\_\{k>=1\} (-1)\^{}k/(k!(n-1)\_k)).'' None of them
+records a proof. Their data are the columns $s=1,2,3,5$ (checked against
+$T(n,s+2)$ for all 24 posted terms of each). \emph{The check adds:} each
+conjecture holds as a leading equivalence and fails as an asymptotic
+expansion. By~\eqref{fcm:eq:round}, $a(n)$ divided by the displayed expression
+with the finite sum is $\RR(n,s)\,U_n/(U_n+\vartheta_n)$ with
+$|\vartheta_n|\le\frac12$. By Theorem~\ref{fcm:thm:allorders} with $q=s$
+eventually and Table~\ref{fcm:tab:coeffs}, this is
+$1-n^{-3}-4n^{-4}+O(n^{-5})$ for A258664, $1+2n^{-4}+15n^{-5}+O(n^{-6})$ for
+A258665, and $1+2n^{-4}+16n^{-5}+O(n^{-6})$ for A258666 and A258673. It tends
+to one, but it is not $1+O(n^{-K})$ for every $K$; the same holds with the
+sum truncated at any fixed order. At $n=40,80,160,320$, $n^3$ times the ratio
+minus one is $-1.108$, $-1.052$, $-1.025$, $-1.013$ for A258664, and $n^4$
+times it is $2.427$, $2.200$, $2.097$, $2.048$ for A258665 and $2.464$,
+$2.215$, $2.104$, $2.051$ for A258666 and A258673.
+\end{writenote}
 
 \section{Further questions}
 Several natural next steps remain separate from the results proved above.
@@ -815,6 +846,41 @@ non-claims a rerun of the Lean proof of the A258667 leading equivalent (read
 here, not compiled). The two A332709 conjectures are proved; the stronger,
 expansion reading of the A258667 conjecture is refuted at relative order
 $n^{-4}$ (Remark~\ref{fcm:rem:oeis}); no claim of the source was found false.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the write read the OEIS entries and the
+Lean file again and recomputed every number the write added, with its own
+code. It took $T(n,k)$ from the entry's double-sum formula, not from the
+cofactor formula~\eqref{fcm:eq:cofactor}, and $U_n$ from Touchard's formula.
+\begin{itemize}
+\item The counts equal all 1275 terms of the A332709 b-file, the A000179 and
+A127548 b-files, and the posted terms of A258664--A258667 and A258673.
+Theorem~\ref{fcm:thm:difference}, the complete classification of
+Theorem~\ref{fcm:thm:shape}, and the identity and sign pattern of
+Theorem~\ref{fcm:thm:TV} hold for every $n\le120$.
+\item Table~\ref{fcm:tab:coeffs} and the coefficients of~\eqref{fcm:eq:TV}
+were tested against exact counts at $n=100,200,300$, at the columns $q=1,\ldots,5$
+and the central column. Every residual $n^{11}(\RR(n,s)-\sum_{r\le10}c_r(q)n^{-r})$
+is bounded and settling ($2239$, $2055$, $1996$ for $q=1$; $4.27\cdot10^5$,
+$4.13\cdot10^5$, $4.08\cdot10^5$ in the interior), and so is the
+total-variation residual ($10793$, $10709$, $10680$).
+\item The Wyman--Moser rounding~\eqref{fcm:eq:round} holds for
+$2\le m\le300$. The ratio of $a(n)$ to the A258667 expression gives $n^4$
+times ratio minus one equal to $3.1016$, $2.4644$, $2.2150$, $2.1036$, $2.0509$
+at $n=20,40,80,160,320$, and $n(n^4(\text{ratio}-1)-2)$ tends to $16$, as
+Remark~\ref{fcm:rem:oeis} says. The Lean file at the current main branch has
+28,220 bytes, and with one newline appended it has the SHA-256 the source pins.
+Its \texttt{target\_theorem\_0} is an \texttt{IsEquivalent} statement.
+\end{itemize}
+It also confirmed the provenance figures (475,232 bytes, 16 files, 591 lines,
+16 pages, the 15-entry manifest), the byte identity of the 12 staged files,
+Remark~\ref{fcm:rem:transseries} against the volumes' statements, the label
+numbering (60 delivered labels unchanged, 63 in all) and the README listing.
+It found one error and one stale statement, both corrected by notes. Remark~\ref{fcm:rem:oeis}
+said that A258664--A258666 and A258673 post no asymptotic formula. In fact
+each posts the A258667 conjecture, and the report settles all four in the same
+way (note after the remark). The provenance note's statement on the pinned
+volume blob has gone stale (note after it).
 \end{writenote}
 
 \begin{thebibliography}{99}

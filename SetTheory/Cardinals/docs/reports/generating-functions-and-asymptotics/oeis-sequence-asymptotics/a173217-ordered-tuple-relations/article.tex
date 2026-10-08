@@ -213,6 +213,13 @@ these sequences; no statement of this report is formalized, and its place in
 the collection confers no formal status. The inverse and the pole theorems are
 compared with the transseries volume in Remark~\ref{otr:rem:transseries}.
 \end{writenote}
+\begin{writenote}[Correction at the independent check, 7 October 2026]
+The delivered \file{Report220.tex} has 757 lines, not 758. ``The transseries
+volume is unchanged at the write'' was true at the write (\file{7ad0ec8ab}).
+Later the same day \file{d92db8d06} added two dated repair boxes to the volume
+that record the source's corrections; see the note after the pin check in
+Appendix~\ref{otr:app:corrections}.
+\end{writenote}
 \begin{writenote}[What is not claimed, collected from the source]
 The geometric-binomial enumeration, the signed-Stirling transform, the Fubini
 pole identity (Hickerson, in A000670) and the leading equivalents (OEIS) are
@@ -934,6 +941,28 @@ that blob. The volume at the current commit has the same blob: none of the
 three passages has been changed yet. The correction of the volume itself is a
 separate commit of the owner's; this report does not edit the volume.
 \end{writenote}
+\begin{writenote}[Independent check, 7 October 2026: the volume since the write]
+That separate commit is \file{d92db8d06} (7 October 2026, after the write).
+It adds two dated repair boxes, one after the proof of \file{q2:thm:fubini}
+(the constant $\frac14$) and one after \file{q2:rem:weighted} (the maximum of
+$\rho_x$, the large-weight direction, and the observation that the volume's
+proof of the uniform bound needs $\rho_x\le2\pi$). The quoted passages are not
+edited. The volume's blob is now
+\file{f6f91ca842881a9d63a518120f01e36aa91a1fff}, so the bibliography's
+\cite{TSvol} is no longer the pinned blob of \cite{transseries}. The links
+above point to the pinned commit and remain valid. The check confirmed both
+boxes. With $u_k(x)=\rho_x/(\rho_x+2\pi\ii k)$, $|u_k|<1$ for $k\ne0$ gives
+$\sum_{k\ne0}|u_k|^{n+1}\le\rho_x^2/12$ for every $x>0$. The monotonicity of
+$2r^{n+1}\zeta(n+1)$ fails for $r=\rho/2\pi>1$, for example at
+$\rho=7$ from $n=2$ on. At $x=0.001$, where $\rho_x>2\pi$, one has
+$|T_3-1|=0.6176\ldots\le3.978\ldots$. One further point appears in neither the
+boxes nor this report. The proof of \file{q2:thm:weighted} applies the
+Mittag--Leffler argument ``verbatim''. The symmetric expansion of
+$(1-x(\e^z-1))^{-1}$ has the entire part $1/(2(1+x))$, not $0$: the identity
+$(1-x(\e^z-1))^{-1}=\bigl(1-\coth((z-\rho_x)/2)\bigr)/(2(1+x))$ holds
+exactly (residual $10^{-41}$ at $x=3$, $z=0.3+0.7\ii$). That theorem, too,
+stands for $n\ge1$ as stated.
+\end{writenote}
 
 \subsection{The symmetric Mittag--Leffler constant}
 The proof labeled \texttt{q2:thm:fubini}, at
@@ -1037,6 +1066,52 @@ $\binom m2$, and directed multigraphs. None of the entries has a conjecture.
 \emph{Checks.} The write's counts equal the three b-files in the ranges
 stated in Section~\ref{otr:sec:provenance}. No OEIS edit is part of this work.
 \end{remark}
+\begin{writenote}[Correction at the independent check, 7 October 2026]
+``None of the entries has a conjecture'' is wrong for A000670, which displays
+two: Peter Bala's conjecture (8 July 2022) that A000670 modulo every $k$ is
+eventually periodic with period dividing $\varphi(k)$, with its
+generalization to e.g.f.s $G(\e^x-1)$, and Mikhail Kurkov's formula (2018),
+marked proved by John Erlbacher (8 July 2026). Neither concerns this report.
+The other six entries display no conjecture.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the write read the seven OEIS entries
+again (A173217 \#30, A301466 \#10, A301468 \#4, A000670 \#913, A173219 \#9,
+A121251 \#21, A104209 \#25). It recomputed every number the write added, with
+its own code.
+\begin{itemize}
+\item $H_d(n)$ by inclusion--exclusion~\eqref{otr:eq:enum} equals the b-files
+of A173217 ($n\le100$), A301466 ($n\le60$, and $n\le175$ by the
+Stirling--Fubini formula) and A301468 ($n\le10$). Brute force gives
+$1,3,36,744$ and $1,13,2335$. The table of Section~\ref{otr:sec:model} and
+the monotonicity for $d\le5$, $n<60$ also hold.
+\item The cutoff table of Section~\ref{otr:sec:recovery} holds (least $M$ by
+exact integers). For the nine inputs $(d,n)=(2,2)$, $(2,25)$, $(2,100)$, $(3,3)$, $(3,50)$, $(4,5)$, $(4,25)$, $(5,10)$ and $(12,10)$,
+$|H_d(n)-T_{d,n,M}|$ is below $13/(18n^{d-1})$ at both cutoffs, and below
+the harmonic bound at $M_h$; at $(2,100)$ the two errors are
+$1.03\cdot10^{-7}$ and $7.76\cdot10^{-9}$. The maximum of $K_{d,M}/R_M$ is
+$0.3183157$, the log-2 bounds hold for $N\le11$, and $\kappa(d,a_*)+\beta_d=2-\log2$.
+\item The amplitudes, from the definition~\eqref{otr:eq:amplitude}: the
+residuals of~\eqref{otr:eq:A2} times $n^3$ (three $z$, one nonreal) and
+of~\eqref{otr:eq:A3}, \eqref{otr:eq:A4} times $n^4$ are stable for
+$n=250,\ldots,2000$, and $n(\e^{-w/2}G_{d,n}(w)-1)$ tends to $C_{d,1}(w)$
+of~\eqref{otr:eq:C1} for $d=2,\ldots,5$. The checks of $b_{d,1}$ hold
+($d=2,3,4$, $n=50,100,200$), and so does the first pair~\eqref{otr:eq:firstpair}
+(ratio $1.0173$ at $n=20$, $1+6\cdot10^{-14}$ at $n=40$).
+\item Appendix~\ref{otr:app:corrections}: the identity~\eqref{otr:eq:ML}
+holds exactly. The symmetric partial sums up to $|k|=20000$ leave the
+constant $0.2500005$, and the pole part at $z=0$ is $0.75$. The values
+$T_1(1)$, $|T_3(x)-1|$, the modulus ratios and the value $74$ all agree.
+\end{itemize}
+It also confirmed the pin (the commit, three blobs, the SHA-256 and the quoted
+lines), the provenance figures apart from the line count, both manifests (25
+and 17), the byte identity of the 20 staged files and of the omitted byte copy,
+Remark~\ref{otr:rem:transseries}, the label numbering (74 delivered labels
+unchanged, 78 in all) and the README listing. Corrections and updates are in
+dated notes: the line count and the volume's later repairs (after the
+provenance note and after the pin check), and the conjectures of A000670
+(after Remark~\ref{otr:rem:oeis}).
+\end{writenote}
 
 \begin{thebibliography}{99}
 \bibitem{oeis2} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A173217, directed graphs with $n$ edges and no isolated vertices, allowing loops. Formula and leading-asymptotic entries, including the 2018 contribution of V. Kot\v e\v sovec. \url{https://oeis.org/A173217}.

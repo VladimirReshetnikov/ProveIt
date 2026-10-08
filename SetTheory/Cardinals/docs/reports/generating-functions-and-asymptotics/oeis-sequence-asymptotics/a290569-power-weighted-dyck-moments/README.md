@@ -137,8 +137,9 @@ Read on 7 October 2026 in the internal format.
 - **A218221** (#23, 16 March 2024; Hanna), weights `C(h+2,3)`: Kotěšovec's
   `d = 0.241821816937867322064…`, `c = 0.60382458700655692263…`; Theorem 1.6
   with `Q(x) = x(x+1)(x+2)/6` gives both to twenty digits.
-- **A338634** (#9, 12 November 2020; Hanna): the unattributed
-  formula line **"For n > 0, a(n) is odd iff n is a power of 2 (conjecture)."
+- **A338634** (#9, 12 November 2020; Hanna): the unsigned (by OEIS
+  convention Hanna's; "unattributed" in the write, corrected by the
+  independent check) formula line **"For n > 0, a(n) is odd iff n is a power of 2 (conjecture)."
   is proved** by Theorem 28.1 (mod 2 the S-fraction is `1/(1 − z)`, and
   `A² + A = x` over `F_2`); Kotěšovec's leading formula is Theorem 19.1's leading
   term. The b-file (`0 ≤ n ≤ 130`), not retrieved by Report 199, agrees in all
@@ -148,7 +149,10 @@ Read on 7 October 2026 in the internal format.
   1/QPochhammer(exp(−1)) = 1.98244090741287370368…`; b-file (`n ≤ 30`, Israel)
   agrees with the write's computation.
 - All b-file terms of A216966, A218221, A227887 agree with the write's own
-  moment computations. Nothing was submitted to the OEIS.
+  moment computations. (Independent check: A216966 and A227887 have no
+  b-file; the OEIS synthesizes one from their 15 and 14 displayed terms, so
+  the agreement covers those terms only. A218221's b-file, `0 ≤ n ≤ 198`, is
+  real.) Nothing was submitted to the OEIS.
 
 ## What is not claimed
 
@@ -210,6 +214,56 @@ source was found wrong.
   volume. Not read: the cited literature (in particular KM, CKM, Berg–Valent,
   Mastroianni–Milovanović).
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`fb9602e55`), with
+its own code, after fetching again A290569 (#31), A216966 (#29), A227887
+(#28), A218221 (#23), A338634 (#9), A291333 (#12) and their b-files.
+
+- **A338634's parity conjecture (Remark 19.3, Theorem 28.1).** The proof's
+  reduction modulo 2 re-derived (`1 = A − x/A`, so `A² + A = x`,
+  `A = 1 + Σ x^{2^j}`). A338634 recomputed for `n ≤ 130` by Lagrange
+  inversion of `x = u M(u)²` (from `A = M(x/A²)`, derived from the defining
+  relation) with the check's own `m_n`: all 131 b-file terms agree, odd terms
+  exactly at the powers of two; the truncated continued fraction returns 1
+  through `x⁴⁰`. Confirmed. **Precision:** the parity line is unsigned, so by
+  OEIS convention Hanna's, not "unattributed" (dated note after Remark 19.3;
+  the bullet above).
+- **Correction:** A216966 and A227887 have no b-file of their own; the
+  agreement claimed for their "b-files" covers their 15 and 14 displayed terms
+  (dated note after Remark 1.7; the bullet above). The check's own height-state
+  walk reproduces the write's moments to `n = 400` and `500`.
+- **Constants.** `d_p`, `𝒞_p` equal Kotěšovec's `d(s)`, `c(s)` at `p = 3, 4`;
+  (1.14) gives A218221's closed forms to 50 digits (with `I_3` by the beta
+  function; quadrature alone loses digits near 27); A218221 (`n ≤ 198`) and
+  A291333 (`n ≤ 30`) agree with their b-files; ratios to the asymptotic
+  1.0293, 1.0147 at `n = 100, 198`.
+- **Part II.** `r = 8√π/Γ(1/4)² = r_4`; every entry of the diagnostic table
+  (`n = 20, 80, 160, 500`) reproduced from the check's own `m_n`, `b_n`.
+- **Part III.** `J_2 = 0`, `J_4 = −π/4`, `J_3 = −0.6045997880…`,
+  `C_3 = −0.1979888535…`; `e(n)` at 100, 200, 400 and both Richardson values
+  reproduced; a three-point extrapolation gives `−0.19798885…`, about nine
+  digits of agreement: still evidence for the conditional formula, not a
+  proof of its premise, which stays open.
+- **Part IV.** `Q(1)`, `E_0(10)`, `E_0(20)`, `E_0(40)`, the total-variation
+  constant; `c_1` to about five digits by extrapolating exact `E_0(n)`,
+  `n ≤ 160`.
+- **Numbering and merge.** Shifts 0, 18, 33, 43 with appendix letters kept:
+  all 431 delivered labels keep their numbers; 14 added, 445 in all; 126,
+  65, 92, 66 references. The duplication notes (the constant 15552, the class
+  `¾h⁴ ≤ w_h ≤ h⁴`, the log-convexity, the free energy `log d_p − p`) and the
+  merged bibliography confirmed.
+- **Transseries remarks (15.3, 29.2, 41.2, 51.4).** Factorial cores with
+  `κ = p`, `4`, `½` (after `X = t²`), the core-reversion forms and first
+  coefficients, the analogues: re-derived.
+- **Provenance.** Archive bytes, SHA-256, file counts, lines, delivered
+  pages, author lines and PDF author fields, the two regenerable data-file
+  sizes, the file list. The delivered suites were not rerun (by the write
+  either; the intake reran them).
+- The check read the four Parts' proofs as well and found no error.
+
+The check is recorded in the Guide, after the collected non-claims.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -253,7 +307,7 @@ label keeps its number up to the section shift.
 ```text
 README.md                                              this guide (replaces Report 201's delivery README)
 article.tex                                            the merged report (Report201/199/202/204.tex; labels prefixed, [write] additions)
-article.pdf                                            compiled report, 106 pages
+article.pdf                                            compiled report, 107 pages
 201-harmonic-repro-README.md                           Report 201's reproduction guide (delivered repro/README.md)
 202-relcorr-repro-README.md                            Report 202's reproduction guide (delivered repro/README.md)
 code/201-harmonic-build.py                             Report 201's builder (delivered build.py)
@@ -354,8 +408,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026 (106
-pages): no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 7 October 2026 (107
+pages after the independent check's notes; 106 at the write): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered texts build with 35, 22, 27 and 16 pages;
 Reports 199 and 202 each have two underfull boxes in their bibliographies,

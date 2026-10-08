@@ -1,0 +1,585 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Classical-closure compression}\fancyhead[R]{\small ProveIt research contribution}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{{\mathbb{F}_2}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\CKh}{\operatorname{CKh}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\rad}{\mathfrak m}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{\textbf{Classical-Closure Rigidity and Single-Survivor Resets}\\[5pt]
+\large First-jet rank formulas, parity obstructions, and a sharper\newline parameterized bound for exact unknot recognition}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt project\\[3pt]
+\small Mathematical development, proofs, and executable validation: ChatGPT}
+\date{7 October 2026, Pacific time\quad Version 1.0}
+\newcommand{\AuditQuivers}{130}
+\newcommand{\AuditResets}{80}
+\newcommand{\AuditEarly}{2}
+\newcommand{\TailRatio}{2.24}
+\newcommand{\TailPeakFull}{18}
+\newcommand{\TailPeakReset}{9}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We strengthen the continuation-compression program in ProveIt's exact Khovanov-based unknot recognizer. The central distinction is between arbitrary algebraic continuations and actual classical link closures. For a bounded complex supported on one nonempty matching, we prove that, when the actual matching completion is a knot, its completed total homology rank depends only on the scalar and total-linear parts of its dot-polynomial differential. If these first-jet matrices are $A$ and $B$, the rank is
+\[
+ \bigl(\dim H(V,A)-\rk(B_*:H(V,A)\to H(V,A))\bigr)\dim\Kh(K;\F).
+\]
+An explicit matrix-valued dot-sliding conjugation proves the required specialization; mere equality of dot actions on homology would not suffice. For radical blocks the multiplier is computable using only adjacent binary ranks, without a full interval decomposition.
+
+For pure blocks we also obtain a closure-uniform dichotomy. Odd total-linear parity gives exact rank compression to matching copies. Any nonzero even-parity pure differential forces rank at least four under every classical closure. Thus an inconclusive all-pure checkpoint has only one surviving matching, not a large alphabet of coefficient-labelled intervals. Splicing this matching into the unprocessed diagram permits a genuine restart from empty boundary. With a specified order policy and maximum restart gap $g$, the resulting bit complexity is $n^{O(1)}2^{O(g)}$. In particular, $g=O(\log^2 n)$ is sufficient for quasi-polynomial recognition; no uniform small-gap theorem for arbitrary diagrams is asserted.
+
+The accompanying implementation passes 29 unit tests and a separate 160-diagram independent-cube audit. Paired raw-backend timings include both gains and regressions. No nonsingleton eligible block occurred in that diagram corpus, so the new higher-coefficient compression is supported by algebraic tests and proofs, not by a claimed production speedup on such blocks.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\bigskip
+\noindent\textbf{Result map.} The distinctions below are part of the hypotheses, not interchangeable versions of one claim.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.20\textwidth}p{0.32\textwidth}X@{}}
+\toprule
+Result & Closure premise & Observation \\
+\midrule
+Theorem~\ref{thm:jet} & Single matching; actual completion a knot & Exact total rank from the first jet. \\
+Proposition~\ref{prop:odd} & Pure odd block; any classical link completion & Exact rank compression to matching copies. \\
+Theorem~\ref{thm:parity} & Pure even block with a nonzero differential & Rank at least four under every classical closure. \\
+Theorem~\ref{thm:correct} & Whole-block checks and exact scan & Correct completed unknot decision after resets. \\
+Theorem~\ref{thm:complexity} & Specified order policy; actual reset gap $g$ & Bit complexity $n^{O(1)}2^{O(g)}$. \\
+\bottomrule
+\end{tabularx}\end{center}
+\noindent The first-jet kernel is broader than the pure-block kernel but has a stricter closure premise. The complexity theorem includes that premise's construction and verification cost. The missing uniform small-gap theorem is discussed in Section~7.3; measured gains and negative results appear in Section~9.
+\newpage
+
+\section{Research position and contribution}
+\subsection{What is being improved}
+The maintained project uses exact Bar--Natan-style scanning, delooping, and cancellation, alongside independent structural certificates and other acceleration mechanisms. Its interval backend recognizes differential components supported on one matching with a common radical coefficient, decomposes their scalar quivers into intervals, and shortens those intervals in a decision-only interface. The maintained continuation analysis gives a sufficient bound involving the number of possible coefficients and matchings at a pure checkpoint \cite{ProveIt}. This article replaces that counting argument with restrictions imposed by actual classical closures.
+
+The resulting advance is a sharper, explicitly proved local reduction and a stronger parameterized complexity theorem. It is not an implementation of a general $n^{O(\log n)}$ algorithm. The quantitative obstruction is now expressed by the number of crossings between usable restarts, rather than by an enormous coefficient alphabet. Showing that arbitrary inputs admit efficiently constructible polylogarithmic restart gaps remains a substantive mathematical question.
+
+The alternative hierarchy route should not be conflated with this argument. Lackenby's July 2026 preprint describes hierarchy algorithms, but Section 9 explicitly distinguishes counting iterations from bounding the costs of all primitives \cite{Lackenby}. None of the lemmas below supplies those missing geometric primitive bounds.
+
+\subsection{What is new here, and what is background}
+The standard ingredients are Khovanov's Frobenius algebra, Bar--Natan's tangle formalism, the characteristic-two vertical differential, and coherent basepoint-sliding identities \cite{Khovanov,BarNatan,Shumakovitch,Nahm}. Pointed and derived Khovanov theories already establish substantial invariance under moving basepoints; we do not claim to discover that invariance \cite{BLS,Nahm}.
+
+The contributions developed here are their explicit computational specialization to arbitrary single-matching polynomial matrices, the closed-rank first-jet formula, the parity-based permanent obstruction for pure blocks, the single-survivor checkpoint consequence, and the diagram-reset complexity analysis. These strengthen the inspected ProveIt continuation argument. Global priority for every algebraic corollary has not been established by an exhaustive literature review. The manuscript supplies complete proofs rather than treating a novelty label as evidence.
+
+The \code{openai/math} collection was inspected as a possible source of ideas. No theorem from that collection is used as a mathematical premise. Its relevance here is methodological: distinguish formal identities, finite validation, performance measurements, and unsupported structural hypotheses.
+
+\subsection{Main result in implementation form}
+Suppose an exact scan contains an isolated differential block with one matching $m$. Write its matrix differential as
+\begin{equation}\label{eq:firstjet}
+ Q(\boldsymbol x)=A+\sum_{i=1}^p x_i B_i+	ext{terms of dot degree at least two},
+ \qquad B=\sum_iB_i.
+\end{equation}
+Both $A$ and $B$ raise homological degree by one; $A^2=0$ and $AB+BA=0$. Let $L_m$ be the diagram obtained by gluing $m$ to the actual remaining crossings. If $L_m$ is a knot, the completed total rank of the block is
+\begin{equation}\label{eq:introjet}
+ \kappa(Q)\,\dim\Kh(L_m;\F),\qquad
+ \kappa(Q)=\dim H(V,A)-\rk B_*.
+\end{equation}
+Here $\rk B_*$ is the sum of its ranks between all adjacent homological degrees; $B_*$ need not square to zero. After scalar-unit elimination, $A=0$, and
+\begin{equation}\label{eq:kappa}
+ \kappa(Q)=\sum_h\dim V_h-\sum_h\rk B_h.
+\end{equation}
+Thus reading one parity bit from each polynomial entry, followed by binary elimination, computes the multiplier. It is unnecessary to preserve higher dot terms for this observation, or to compute products $B_b\cdots B_a$.
+
+A multiplier at least two gives a knottedness obstruction for the original knot. A multiplier one permits replacement of the entire block by $m$ for the fixed actual suffix. A multiplier zero is possible before scalar-unit elimination, in which case the completed block is acyclic. The prototype accepts radical blocks after the existing exact eliminator; the general scalar formula is provided as a separately tested kernel.
+
+\section{Conventions, admissible blocks, and classical closures}
+\subsection{The dot algebra and completed complex}
+All coefficients are in $\F$. Gradings are cohomological, so differentials have degree $+1$. We retain that grading to define bounded complexes but observe only total homology dimension; quantum grading is not part of the claimed output. The ordinary Frobenius algebra is
+\[
+ A_0=\F[x]/x^2,
+ \quad m(1\otimes1)=1,\quad m(1\otimes x)=m(x\otimes1)=x,
+ \quad m(x\otimes x)=0,
+\]
+with coproduct $\Delta(1)=1\otimes x+x\otimes1$ and $\Delta(x)=x\otimes x$.
+
+For a circle-free geometric matching $m$ consisting of $p$ arcs, the dot-polynomial endomorphism algebra used by the scanner is
+\[
+ R_m=\F[x_1,\ldots,x_p]/(x_1^2,\ldots,x_p^2),\qquad
+ \rad=(x_1,\ldots,x_p).
+\]
+A matching must retain its geometric realization as a smoothing of the processed region. An arbitrary abstract pairing is not silently interpreted as a classical planar tangle. No common boundary disk is required for the estimates here.
+
+Every $f\in\rad$ satisfies $f^2=0$, because squares of nonconstant monomials vanish and cross terms cancel. An element of constant term one is a unit and is its own inverse. This statement concerns individual algebra elements, not arbitrary matrices with radical entries: a radical matrix need not square to zero. We always require a legitimate differential $Q^2=0$.
+
+A single-matching block has terms $m\otimes V_h$ and differential matrix $Q_h\in\operatorname{Mat}(R_m)$. If $F$ is the actual additive continuation and ordinary closure, let
+\[
+ C=\CKh(L_m;\F)=F(m).
+\]
+Choosing a marked point on each arc defines commuting square-zero chain maps $X_i$ on $C$. Strict gluing identifies the completed block with
+\begin{equation}\label{eq:completed}
+ \mathcal C(Q,C)=\bigl(C\otimes_\F V,\ d_C\otimes1+Q(X_1,\ldots,X_p)\bigr).
+\end{equation}
+The two summands of its differential commute, and their cross terms cancel over $\F$. A formal replacement is justified using this identification, not merely by invoking additivity.
+
+\subsection{Whole direct summands, not selected submatrices}
+A block is admissible only when it is an entire direct summand. In the stored differential graph, every incoming and outgoing edge of its vertices must remain inside the block. An exact scalar change of basis may expose such a summand, but the change of basis and the vanishing of all cross-block entries must be verified first.
+
+This restriction is essential. A visually recognizable interval inside a larger connected complex may be cancelled or otherwise altered through its attachments. Removing it without transferring those attachments is not an application of any theorem in this article. The executable certificate readers explicitly reject a proposed group with external differential edges.
+
+\subsection{Rank lower bounds and the detection threshold}
+\begin{lemma}[Classical nonvanishing]\label{lem:nonvanishing}
+If $L$ is a nonempty classical link with $c$ components, then
+\[
+ r(L):=\dim_\F\Kh(L;\F)\ge 2^c.
+\]
+\end{lemma}
+\begin{proof}
+The graded Euler characteristic of unreduced Khovanov homology is the corresponding unnormalized Jones polynomial. On setting the grading variable to one, its absolute value is $2^c$: crossing changes reduce to a $c$-component unlink and preserve this absolute value, and an unlink contributes one factor of two per circle. Raw homological normalization may change an overall sign, which does not affect the absolute value. The total dimension of a finite complex's homology is at least the absolute value of its Euler characteristic, over any field. This proves the claim. The Frobenius state sum gives the same argument directly \cite{Khovanov}.
+\end{proof}
+
+For a classical knot, unreduced characteristic-two homology has twice the reduced dimension; Section~\ref{sec:vertical} recalls an explicit splitting. Together with the universal coefficient theorem and the Kronheimer--Mrowka unknot detector, this gives
+\begin{equation}\label{eq:detector}
+ r(K)=2\quad\Longleftrightarrow\quad K\text{ is the unknot}.
+\end{equation}
+Indeed reduced $\F$-rank one forces reduced rational rank one, hence the unknot; the converse is the direct computation. Thus total rank at least four is a sound obstruction, and the decision interface may store $\min(3,r(K))$ \cite{KM,Shumakovitch}.
+
+Even when the input is a knot, $L_m$ need not be a knot. Smoothing processed crossings can create several link components. The prototype reconstructs the completed matching diagram and counts its components before applying the knot-context formula. This is a mathematical premise, not a dispensable optimization.
+
+\section{Coherent dot sliding for polynomial matrices}
+\subsection{Local identities}
+Let $a,b$ lie on the same strand on opposite sides of a crossing $c$, and let $H_c$ be the reverse-saddle map in the cube of resolutions, supported on transitions with the $c$-coordinate $1\to0$. It has homological degree $-1$. The standard chain-level identities are
+\begin{equation}\label{eq:slide}
+ d_CH_c+H_cd_C=X_a+X_b=:\delta_c,
+ \quad H_c^2=0,
+ \quad H_cX_z=X_zH_c
+\end{equation}
+for every fixed marked edge $z$, together with
+\begin{equation}\label{eq:annihilation}
+ H_c\delta_c=\delta_cH_c=0.
+\end{equation}
+These follow from neck cutting and dot sliding on the connected saddle. The square is zero because the reverse map cannot be applied twice at the same cube coordinate. Maps at other crossings commute and cancel in the anticommutator. A dot placed at either of the two relevant ends lies on the same connected saddle, giving~\eqref{eq:annihilation}. These identities are established in the basepoint literature; see, for example, Nahm's Lemma 2.4 and its cited predecessors \cite{Nahm,BLS}.
+
+The last identity is stronger than saying that $X_a$ and $X_b$ induce the same map on homology. It will eliminate the quadratic error in a conjugation. Omitting it would leave a genuine gap.
+
+\subsection{An explicit matrix-valued change of variables}
+\begin{lemma}[Matrix dot-slide conjugation]\label{lem:gauge}
+Let $Q(\boldsymbol x)$ be a bounded degree-one matrix over $R_m$ with $Q^2=0$. Suppose the marked point assigned to $x_i$ is moved across a crossing from $a$ to $b$, leaving all other assignments unchanged. The two completed complexes~\eqref{eq:completed} are chain isomorphic after forgetting quantum grading.
+\end{lemma}
+\begin{proof}
+The formal derivative $P=\partial Q/\partial x_i$ is well-defined over $R_m$, since in characteristic two $\partial(x_i^2)/\partial x_i=0$. It is independent of $x_i$. Differentiating the matrix identity $Q^2=0$ gives
+\begin{equation}\label{eq:derivmatrix}
+ PQ+QP=0.
+\end{equation}
+Evaluate all variables at their current marked-edge operators. Write $D=d_C+Q(X)$, suppressing tensor identities. With $H=H_c$, put $K=HP(X)$. The matrix $P$ raises the $V$-degree by one, so $K$ has total degree zero. It commutes with dot operators, and $K^2=H^2P^2=0$.
+
+The relation~\eqref{eq:derivmatrix} implies
+\[
+ KD+DK=(Hd_C+d_CH)P+H(PQ+QP)=\delta_cP.
+\]
+Moreover,
+\[
+ KDK=Hd_CHP^2+H^2PQP=H\delta_cP^2=0.
+\]
+Consequently the self-inverse map $G=1+K$ satisfies
+\begin{equation}\label{eq:gauge}
+ GDG=D+\delta_cP.
+\end{equation}
+Since $Q=Q_0+x_iP$ with $Q_0$ independent of $x_i$, replacing $X_a$ by $X_b$ changes $Q(X)$ by precisely $(X_a+X_b)P$. Equation~\eqref{eq:gauge} is the claimed isomorphism. The proof never assumes $P^2=0$, never assumes a common coefficient for the matrix entries, and never assumes that a scalar first-jet matrix squares to zero.
+\end{proof}
+
+\begin{corollary}[Componentwise specialization]\label{cor:componentcollapse}
+For a classical matching completion $L_m$, choose one marked edge on each link component. Up to chain isomorphism of the completed total complex, all variables $x_i$ belonging to the same link component may be evaluated at that component's chosen dot operator.
+\end{corollary}
+\begin{proof}
+Move each point along its link component to a small crossing-free neighborhood of the chosen edge, applying Lemma~\ref{lem:gauge} at each crossed crossing. Moving inside an edge changes no operator. Points can be kept distinct while inducing the same operator. The finite product of the displayed self-inverse conjugations is an isomorphism. Subsequent steps use the substituted polynomial matrix, whose square remains zero.
+\end{proof}
+
+\begin{remark}[What this does not identify]
+The completed complex is being compared after a fixed actual suffix is supplied. We do not assert that the original open blocks are chain homotopy equivalent, or that their pointed cobordism maps are equal. The distinction between chain homotopy, derived equivalence, and forgetting module data is important in pointed Khovanov theory \cite{Nahm}. The explicit conjugation here proves exactly the rank observation needed by the recognizer.
+\end{remark}
+
+\section{The first-jet rank theorem}
+\subsection{The characteristic-two vertical splitting}\label{sec:vertical}
+On a smoothing with algebra $A_0^{\otimes c}$, let $\nu$ be the sum of the operators which replace one $x$ by $1$ and send $1$ to zero. Then
+\begin{equation}\label{eq:nu}
+ \nu^2=0,\qquad \nu d_C=d_C\nu,\qquad \nu X+X\nu=1
+\end{equation}
+for a dot $X$ at any fixed marked point. The commutation with the differential is verified on $m$ and $\Delta$; for example the two derivatives of $\Delta(1)=1\otimes x+x\otimes1$ cancel. This is the characteristic-two vertical differential studied by Shumakovitch \cite{Shumakovitch}.
+
+Let $E=\im\nu$. Since $\nu$ commutes with $d_C$, it is a subcomplex. The identities give an isomorphism of complexes with marked-dot action
+\begin{equation}\label{eq:Asplit}
+ C\cong A_0\otimes_\F E,
+\end{equation}
+where $X$ acts by multiplication by $x$ and the differential is $1\otimes d_E$. Explicitly, $C=E\oplus XE$; $X:E\to XE$ is an isomorphism with inverse $\nu$. In particular $r(L)=2\dim H(E)$ for any nonempty marked link. This is also the familiar reduced/unreduced rank relation over $\F$.
+
+\subsection{General scalar and linear parts}
+\begin{theorem}[Knot-context first-jet formula]\label{thm:jet}
+Let $Q$ be a bounded differential matrix over $R_m$, where $m$ is nonempty. Define $A$ and $B$ by~\eqref{eq:firstjet}. If the actual matching completion $L_m$ is a knot, then
+\begin{equation}\label{eq:jettheorem}
+ \dim H(\mathcal C(Q,\CKh(L_m)))=
+ \left(\dim H(V,A)-\rk B_*\right)r(L_m).
+\end{equation}
+Here $B_*$ is the degree-one map induced by $B$ on $H(V,A)$. The formula holds for mixed polynomial coefficients, including nonhomogeneous dot polynomials. It computes total rank, not a bigraded invariant.
+\end{theorem}
+\begin{proof}
+The constant and linear terms of $Q^2=0$ imply $A^2=0$ and $AB+BA=0$. Thus $B_*$ is defined. By Corollary~\ref{cor:componentcollapse}, all dot variables may be placed at one edge of the knot. Every monomial of degree at least two then vanishes, and the matrix becomes $A+XB$.
+
+Use~\eqref{eq:Asplit}. The completed complex is the tensor product over $\F$ of $E$ and
+\[
+ W=(A_0\otimes_\F V,\ A+xB).
+\]
+Choose a contraction of the finite scalar complex $(V,A)$ onto $H(V,A)$: maps $i,p,h$ with $pi=1$, $ip=1+Ah+hA$, and the usual side conditions, obtained by choosing bases of boundaries, homology representatives, and their preimages. Extend it over $A_0$. The perturbation is $xB$; every product with two perturbation factors is zero because $x^2=0$. Therefore exact cancellation transfers the differential to
+\[
+ x\,pBi=xB_*
+\]
+on $A_0\otimes H(V,A)$. This can also be checked by substituting the finite correction maps $i+xhBi$, $p+xpBh$, and $h+xhBh$ into the contraction identities. There is no infinite series or convergence premise.
+
+Writing $t=\dim H(V,A)$ and $b=\rk B_*$, the transferred chain space has dimension $2t$ and its differential has rank $b$. Its total homology dimension is $2(t-b)$. The K\"unneth formula over the field then gives
+\[
+ \dim H(W\otimes E)=2(t-b)\dim H(E)=(t-b)r(L_m),
+\]
+as required.
+\end{proof}
+
+\begin{corollary}[Radical matrix certificate]\label{cor:radjet}
+If $A=0$ and the block is nonempty, put $N=\sum_h\dim V_h$ and let $B_h$ have entries equal to the total-linear parity of the corresponding polynomial entries of $Q_h$. Then
+\[
+ \kappa=N-\sum_h\rk B_h\ge1,
+ \qquad \dim H(F(Q))=\kappa r(L_m)
+\]
+whenever $L_m$ is a knot.
+\end{corollary}
+\begin{proof}
+Only positivity needs comment. For the last nonzero layer $V_b$, the sum of the arrow ranks is at most the sum of all source-layer dimensions, which is $N-\dim V_b$. Hence $\kappa\ge\dim V_b\ge1$. The formula is Theorem~\ref{thm:jet} with $A=0$.
+\end{proof}
+
+\subsection{Computing the multiplier without a change of basis}
+Even before scalar cancellation one need not build explicit homology bases. With matrices viewed on the total graded vector space, let $Z=\ker A$ and $U=\im A$. Because $B$ preserves both,
+\begin{equation}\label{eq:inducedrank}
+ \rk B_* = \dim\bigl(BZ+U\bigr)-\dim U.
+\end{equation}
+Binary elimination produces a kernel basis and the two ranks in this expression. The supplied \code{first_jet_survivors} function implements it, checking $A^2=0$ and $AB+BA=0$. Its matrix-only API cannot certify a homological grading omitted by its caller, or the topology of a supplied suffix.
+
+For radical blocks, only adjacent arrow ranks are required. A full barcode instead asks for ranks of products over all subintervals. Those products remain useful for exact graded reconstruction, but are unnecessary for the observation in~\eqref{eq:jettheorem}.
+
+\begin{example}[Beyond a common coefficient]
+Take three consecutive rank-one terms with arrows $x_1$ and $x_1+x_1x_2$. Their product is zero, so this is a legitimate complex. It is not pure in the maintained common-coefficient sense. Both arrows have total-linear parity one, giving $\kappa=3-1-1=1$. For every knot completion, its total completed rank equals the rank of one copy of the matching. The synthetic mixed-matrix tests exercise this distinction.
+\end{example}
+
+\section{Pure blocks and closure-uniform obstructions}
+\subsection{The scalar quiver and its interval count}
+A pure block has $Q_h=\theta B_h$, with one fixed nonzero $\theta\in\rad$ and binary matrices $B_h$. The relation $\theta^2=0$ makes it a complex without requiring $B_{h+1}B_h=0$. Standard elimination along a linearly oriented finite quiver decomposes it into intervals. The number of intervals is
+\begin{equation}\label{eq:beta}
+ \beta=N-\sum_h\rk B_h.
+\end{equation}
+Indeed an interval of length $l$ contributes $l$ to $N$ and $l-1$ to the sum of arrow ranks. This interval decomposition and its use in the scanner are credited to the maintained ProveIt continuation development \cite{ProveIt}.
+
+\subsection{A self-contained monotonicity argument}
+We record a short proof of the generic continuation profile, because it clarifies exactly which step uses classical topology.
+\begin{lemma}[Truncated-polynomial rank profile]\label{lem:profile}
+Let $(D,d)$ be a bounded finite-dimensional complex and let $T$ be a commuting degree-zero operator with $T^2=0$. Let $r_l$ be the total homology dimension of $l$ consecutive copies of $D$ joined by $T$. Then there are nonnegative integers $a,b_j$, finitely supported in $j$, such that
+\begin{equation}\label{eq:profile}
+ r_l=al+2\sum_{j\ge1}b_j\min(l,j).
+\end{equation}
+In particular $r_l$ is nondecreasing and discretely concave, and $r_l\ge r_1$.
+\end{lemma}
+\begin{proof}
+Form the finite-rank free graded module $D\otimes\F[u]$, with $|u|=1$ and differential $d+uT$ of degree one. Its homology is a finitely generated graded module over the principal ideal domain $\F[u]$. The graded structure theorem decomposes it into shifted free modules and shifted torsion modules $\F[u]/u^j$. Torsion is $u$-primary because its invariant factors can be chosen homogeneous. Let their multiplicities be $a,b_j$.
+
+Multiplication by $u^l$, with the appropriate grading shift, gives a short exact sequence of differential modules. The associated homology sequence identifies the homology of the quotient with an extension of the cokernel and kernel of multiplication by $u^l$ on the original homology. A free summand contributes $l$ to the cokernel and zero to the kernel. A torsion summand of length $j$ contributes $\min(l,j)$ to each. The quotient is exactly the $l$-term continuation complex, proving~\eqref{eq:profile}. The monotonicity and concavity follow term by term.
+\end{proof}
+
+The profile itself is already used by the repository. The proof above is an alternative elementary justification, not a claim that the formula is newly discovered.
+
+\subsection{Odd parity under every classical closure}
+Define
+\[
+ \sigma(\theta)=\sum_{i=1}^p[x_i]\theta\in\F,
+\]
+where $[x_i]\theta$ extracts the coefficient of the singleton monomial $x_i$. This is neither the parity of the number of all monomials nor the parity of their total dot degree.
+
+\begin{proposition}[Odd coefficient splitting]\label{prop:odd}
+If $\sigma(\theta)=1$, then for every classical link completion of the nonempty matching,
+\begin{equation}\label{eq:odd}
+ \dim H(F(Q))=\beta r(L_m).
+\end{equation}
+Thus a pure interval of any positive length has the same completed total rank as one matching.
+\end{proposition}
+\begin{proof}
+Let $\partial=\sum_i\partial/\partial x_i$. The operator $\nu$ of~\eqref{eq:nu} satisfies $\nu\theta+\theta\nu=U$, where $U$ is the evaluated polynomial $\partial\theta$. It has constant term one, so $U^2=1$. Also $\partial^2=0$, hence $\nu U=U\nu$. Set $h=U\nu$. Then
+\[
+ h^2=0,\quad hd_C=d_Ch,\quad h\theta+\theta h=1.
+\]
+Exactly as in~\eqref{eq:Asplit}, the suffix complex splits as a free rank-two module complex for multiplication by $\theta$. For the pure block this leaves a scalar tensor factor with differential $\epsilon B_h$ over $\F[\epsilon]/\epsilon^2$. Its chain dimension is $2N$ and differential rank is $\sum_h\rk B_h$, so its homology dimension is $2\beta$. Multiplying by the complementary suffix factor gives~\eqref{eq:odd}.
+\end{proof}
+
+\subsection{Even parity forces a permanent obstruction}
+\begin{theorem}[Classical-closure pure-block dichotomy]\label{thm:parity}
+Let $Q=\theta B$ be a nonempty pure block on a nonempty geometric matching, with $N,\beta$ as above. For every actual classical closure,
+\begin{equation}\label{eq:purelower}
+ \dim H(F(Q))\ \ge\
+ \begin{cases}
+ 2\beta,&\sigma(\theta)=1,\\
+ 2\min(N,2\beta),&\sigma(\theta)=0.
+ \end{cases}
+\end{equation}
+If the even-parity differential has any nonzero entry, then its completed rank is at least four. This obstruction holds independently of the unresolved crossings.
+\end{theorem}
+\begin{proof}
+The odd case follows from Proposition~\ref{prop:odd} and Lemma~\ref{lem:nonvanishing}. Suppose parity is even. If $L_m$ is a knot, its first-jet matrix is zero, so Theorem~\ref{thm:jet} gives completed rank $N r(L_m)\ge2N$. If $L_m$ has at least two components, each scalar-quiver interval contributes at least $r(L_m)$ by Lemma~\ref{lem:profile}. Their $\beta$ contributions total at least $4\beta$. The smaller of the two bounds gives~\eqref{eq:purelower}. A nonzero differential forces $N\ge2$ and $\beta\ge1$, hence $\min(N,2\beta)\ge2$.
+\end{proof}
+
+\begin{corollary}[No coefficient-labelled survivors at an inconclusive pure checkpoint]\label{cor:purecheckpoint}
+Suppose a scan of a classical knot has nonempty frontier and every remaining differential component is pure or a singleton. Either a completed-rank-at-least-four obstruction is already certified, or the entire scan is total-rank equivalent under every actual continuation to one undotted matching.
+\end{corollary}
+\begin{proof}
+Every nonempty pure component contributes at least two. Two components therefore force rank at least four. An even component with a nonzero arrow forces the same conclusion. The only remaining possibilities are a singleton or one odd component with $\beta=1$. Proposition~\ref{prop:odd} replaces the latter by one matching. If that matching's actual completion is a multicomponent link, Lemma~\ref{lem:nonvanishing} supplies the obstruction as well.
+\end{proof}
+
+\subsection{Necessary counterexamples and qualifications}
+For the two-component unlink, put marks on different components and take $\theta=x_1+x_2$. Its parity is even, yet multiplication by $\theta$ on $A_0\otimes A_0$ is free as a dual-number action. Every interval has completed rank four, not $4l$. Thus the even formula $l r(L_m)$ is a \emph{knot-completion} formula, not an all-link formula. The unit suite includes this counterexample.
+
+For a one-component crossing-free closure, the same coefficient becomes $X+X=0$, so a length-$l$ interval has rank $2l$. Thus replacing every even interval by one matching is false. Our replacement is instead an absorbing knottedness certificate when such an interval is an isolated summand of the original knot computation.
+
+Finally, arbitrary algebraic suffixes may be acyclic or have odd-dimensional chain groups. Classical nonvanishing cannot be transferred to them. The generic formula~\eqref{eq:profile} remains valid, but the permanent knottedness interpretation does not.
+
+\section{Single-survivor resets and sound decision control}
+\subsection{The broader usable checkpoint}
+The first-jet theorem extends the pure-checkpoint conclusion. After exact scalar-unit cancellation, inspect each whole differential component. For every single-matching component, reconstruct its actual matching completion. If that completion is a knot, the component contributes exactly $\kappa r(L_m)$ and at least $2\kappa$. For pure components whose completion is not a knot, Theorem~\ref{thm:parity} and the component count still provide lower bounds. Mixed-matching components and nonpure multicomponent completions are left unchanged.
+
+Since direct-sum homology dimensions add, two certified positive contributions suffice for rejection. If the entire scan consists of one radical single-matching component with knot completion and $\kappa=1$, the whole current knot has exactly the same total rank as that matching completion. This is a usable reset. Purity is sufficient but not necessary.
+
+\begin{proposition}[One first-jet survivor]\label{prop:onejet}
+For a bounded radical single-matching component, $\kappa=1$ implies that the scalar quiver formed by its total-linear entries has one-dimensional nonzero layers and nonzero arrows between consecutive layers. In particular it has just one interval in its scalar-quiver decomposition.
+\end{proposition}
+\begin{proof}
+For any layer $V_k$, bound the ranks of arrows below $k$ by their source dimensions and those at or above $k$ by their target dimensions. Their sum is at most $N-\dim V_k$. Thus $\kappa\ge\dim V_k$ for every $k$. If $\kappa=1$, all nonzero layers are one-dimensional. A missing arrow or an empty intervening layer would separate the quiver into at least two intervals and make $N-\sum\rk B_h\ge2$. Therefore exactly one interval remains.
+\end{proof}
+
+This statement concerns the linear parts. The actual consecutive polynomial coefficients may differ. The prototype reads their parities and never assumes common coefficients in its first-jet path.
+
+\subsection{Splicing the retained matching}
+At a proper intermediate stage of a connected knot diagram, frontier labels are the edge labels appearing exactly once in the unprocessed suffix. The matching pairs these labels. Join each pair, merge the corresponding edge labels, and canonicalize the remaining PD code. The retained crossings, their cyclic orders, and their over/under choices are unchanged.
+
+Geometrically this is the diagram obtained by inserting the particular smoothing matching in the processed region. It is classical because that matching is geometric; the implementation additionally verifies the genus-zero rotation system of the resulting PD code. Any removed closed smoothing circles were already handled by delooping and cancellation. They must not be reinserted as unrecorded scalar factors.
+
+The component count of this residual diagram is computed from opposite half-edges at each crossing. A residual link with at least two components gives rank at least four and hence a negative verdict for the original knot. A residual knot has fewer crossings and becomes the next input to an empty-boundary scanner.
+
+\subsection{Invariant and termination}
+\begin{theorem}[Reset recognizer correctness]\label{thm:correct}
+Start with a validated classical knot diagram. Alternate exact scanning and cancellation with the following operations: reject using a proved whole-summand rank lower bound of at least four; or, when the entire current scan has a single-matching knot completion with $\kappa=1$, replace the current diagram by that completion and restart. If no earlier operation applies, finish the exact scalar closure. The resulting completed verdict is correct, and the uncapped procedure terminates.
+\end{theorem}
+\begin{proof}
+Maintain equality between the original knot's total unreduced rank and the completed total rank of the current diagram/scan. Exact scanning and cancellation preserve it. A reset preserves it by Theorem~\ref{thm:jet}. The whole-summand conditions make all lower-bound contributions additive and nonnegative, so an obstruction proves that the original rank is at least four. Equation~\eqref{eq:detector} then certifies knottedness.
+
+Every reset removes at least one processed crossing; the residual is again a validated knot. There are at most $n$ resets. Between resets, each scan processes a finite remaining crossing list. If it reaches empty frontier at final closure, exact elimination leaves the full scalar homology, and rank two is equivalent to the unknot. Thus the procedure terminates and its positive verdict is also justified.
+\end{proof}
+
+A rank-two observation on a proper window, or failure to find an obstruction, is never an unknot certificate. A resource limit returns \code{UNKNOWN}. The reset is a homological recognition reduction: this article does not produce a Reidemeister isotopy between the original and residual diagrams, and does not infer that two nontrivial knots with equal ranks are the same knot.
+
+\section{Bit complexity and the remaining structural problem}
+\subsection{The actual gap parameter}
+Fix a crossing-order policy whose total overhead is polynomial in the current diagram size, or supply a polynomial-size sequence of orders. The prototype uses the current PD input order. A segment begins with an empty-boundary scanner and ends at a reset or a final decision. Let
+\[
+ g=\max\{\text{number of crossings processed in one segment}\}.
+\]
+This is an execution parameter, not the claimed existence of a good ordering. Initial and terminal segments are included. A premature obstruction may shorten the final segment. A failed local normalization does not count as a reset.
+
+\begin{theorem}[Reset-gap complexity]\label{thm:complexity}
+For the explicit exact scanner representation and the reset procedure above, under a polynomial-overhead order policy,
+\begin{equation}\label{eq:complexity}
+ T(n,g)\le n^{O(1)}2^{O(g)},\qquad
+ S(n,g)\le n^{O(1)}2^{O(g)}
+\end{equation}
+in bit complexity. In particular a constructible family with $g=O(\log^2(n+2))$ has a complete quasi-polynomial recognizer, and one with $g=O(\log(n+2))$ has a polynomial-time recognizer.
+\end{theorem}
+\begin{proof}
+After $j$ crossings in one segment, at most $4j$ half-edge frontier labels are present. Delooping one smoothing of one crossing creates at most two new circles, hence at most four children; the two smoothings together create at most eight children per existing object. Starting from one object, the number of physical objects before cancellation is therefore at most $8^j$. Cancellation does not increase that count. The reset discards the entire previous frontier instead of carrying a large collection of templates into the next segment.
+
+An overlay between two frontier matchings has $O(j)$ components, so its coefficient algebra has a basis of size $2^{O(j)}$. Binary polynomial arithmetic, geometric matching construction, and a deliberately conservative Gaussian elimination cost are polynomial in the physical object count, the coefficient-basis size, and label bit lengths. All are therefore $2^{O(j)}\poly(n)$ in bit operations. The implicit constants do not depend on the knot.
+
+First-jet extraction and rank computation are polynomial in these same quantities. Computing a pure-block bound requires only adjacent scalar ranks. Reconstructing and validating a matching completion costs polynomial time in $n$; even performing this separately for every considered matching is bounded by $8^{O(j)}\poly(n)$. The implementation avoids claiming that connectivity queries are free.
+
+No multiplicity of exponential bit size is hidden here: the literal segment contains at most $8^j$ objects, and all derived counts are bounded by that number. General exact integer statistics and the input labels have polynomial bit cost. Storing a replay trace for all stages multiplies the bound by at most a polynomial in $n$.
+
+Every crossing is processed at most once across the sequence of resets, since a reset removes its processed prefix. Thus there are at most $n$ processing stages and at most $n$ polynomial-size residual diagrams. Summing the per-stage bounds proves~\eqref{eq:complexity}. Substitution of the stated logarithmic gap bounds gives the consequences.
+\end{proof}
+
+\subsection{Comparison with the previous checkpoint bound}
+The inspected maintained continuation analysis bounds all shortened pure templates by their matching and coefficient alphabet, producing
+\begin{equation}\label{eq:oldbound}
+ n^{O(1)}\exp O\left(g+w\log(w+1)+\binom{w/2}{\lfloor w/4\rfloor}\right)
+\end{equation}
+for frontier bound $w$ and pure-checkpoint gap $g$ \cite{ProveIt}. Corollary~\ref{cor:purecheckpoint} shows that an inconclusive classical-knot checkpoint cannot retain that whole alphabet: it has one matching.
+
+Even without splicing, normalizing an all-pure checkpoint to one matching yields the sufficient bound $n^{O(1)}2^{O(w+g)}$ along the chosen scan, with the coefficient-algebra cost charged explicitly. Splicing and restarting then bounds the new frontier by $4g$, removing the need for a separate global-width hypothesis. The first-jet criterion can enlarge the set of usable checkpoints further. These comparisons concern the respective correctly normalized algorithms; they do not retroactively change the complexity of an implementation that still stores the old template alphabet.
+
+\subsection{What would prove an unrestricted quasi-polynomial result}
+A sufficient next theorem would supply, for every knot diagram, a polynomial-time constructible sequence of exact reductions and orders for which the reset gap is $O(\log^2 n)$, with all preprocessing and certificate costs included. The present work neither assumes such a theorem implicitly nor proves it from low frontier width. At present $g$ may equal $n$, and~\eqref{eq:complexity} is then exponential.
+
+An exhaustive search for an optimal short segment is not a free substitute. Searching $n^g$ candidate prefixes adds $\exp(O(g\log n))$ cost, which changes the sufficient parameter regime. Likewise, a scalar Fitting search must be charged at its actual cost and may fail to expose a useful block. The tested prototype performs neither an unbounded Fitting search nor an uncharged optimal-order oracle.
+
+\section{Implementation, certificates, and reproducibility}
+\subsection{Delivered modules}
+The archive includes a standard-library Python package \code{closure_reset}. The \code{dots} module implements the square-zero algebra, its formal derivative, total-linear parity, and componentwise substitution. The \code{jet} module reads whole radical single-matching blocks and includes the scalar-homology kernel~\eqref{eq:inducedrank}. The \code{pure} module supplies the independent closure-uniform bounds. The \code{diagram} module validates planar rotation systems, counts link components, converts supported braid words, and performs matching splices.
+
+The \code{driver} module is an additive research interface over \code{fastunknot.scan_fast.FastScan}; it does not modify the production CLI or its defaults. It processes crossings in input order, uses existing exact cancellation, records decisions and resets, and supports object and time ceilings. It returns a capped-rank observation, not exact homology degrees after a reset. The \code{cube} module is a separately written unreduced crossing-cube oracle and imports no scanner code.
+
+The prototype uses the radical form of the first-jet theorem after unit elimination. The general scalar formula is implemented and tested separately. It does not implement a new scalar Fitting splitter, a reduced-Khovanov scanner, quantum grading recovery after resets, Rust integration, or the hierarchy algorithm.
+
+\subsection{Input and failure contracts}
+A PD input is a list of cyclic crossing quadruples with nonnegative integer edge labels. Each edge must occur twice. The ribbon rotation system must have genus zero, and the original input must have exactly one link component. Empty input denotes the crossing-free unknot. The braid converter rejects untouched strands which would otherwise represent implicit circles missing from its PD representation; it is not a general link-file parser.
+
+A public low-level first-jet block reader inherits the precondition $Q^2=0$ from a valid exact scan. Shape checks alone cannot prove that a malformed externally supplied polynomial matrix is a chain complex. The optional full differential-square check and the independently validated examples help enforce that distinction. Resource exhaustion yields \code{UNKNOWN} and is never converted to either mathematical verdict.
+
+\subsection{Replay evidence and its trust boundary}
+Each reset records its stage, matching pairs, first-jet matrices and multiplier, and the reconstructed residual PD diagram. An obstruction records the contributing whole-block summaries and lower bounds. The replay routine recomputes the deterministic exact scan and compares the canonical JSON event trace, with differential-square checks enabled. It rejects corrupted event data and incomplete \code{UNKNOWN} outputs.
+
+This is an executable replay certificate, not a Lean proof object or an independently implemented verifier for every Bar--Natan elimination. It depends on the same scanner kernel for the replayed scan. Independence is supplied separately by the small crossing-cube oracle; it does not replace the general mathematical proof or a future formalization. The source bundle makes this trusted-computing boundary explicit.
+
+\subsection{Source provenance}
+The inspected repository reference is commit
+\begin{center}\small\ttfamily 13f6dbfdd32c152bec2d01af23b9eea2a12191ae.\end{center}
+The runtime comparison uses the retained source-derived \code{FastScan}/\code{Planar} fixture from the earlier disk-frontier package. Its core algorithms were transcribed from the pinned Git blobs, with comments/docstrings shortened; its geometry module contains only the imports required by those modules. It is not a complete checkout, and a byte-for-byte or normalized-AST comparison was not executed here. The fixture's original provenance is included unchanged, and the integration directory provides a local-checkout AST audit script.
+
+Consequently, none of the results below is described as a run of the maintained production test suite. Current upstream production counts, default front-end filters, component sharing, adaptive cancellation, and Rust performance are outside these experiments. Integration into the actual repository remains a separate release action; no remote files were changed.
+
+\section{Validation and measured performance}
+\subsection{Algebraic and diagram checks}
+The completed unit run contains 29 passing tests. Its parameterized checks include all 128 three-variable radical polynomials, 600 four-variable derivative-product checks, 1,536 exact knot interval-rank comparisons, 640 link interval checks, 90 random pure quivers, 150 mixed radical polynomial matrices, and 90 blocks with scalar units. The suite checks local reverse-saddle identities, an explicit matrix-valued gauge transformation, a non-square-zero scalar quiver, whole-block attachment rejection, invalid inputs, resource limits, reset replay, and certificate corruption. It also compares two scanner arms on 100 seeded knot braids against the independent cube.
+
+A separate deterministic audit uses seed 20261007 and 160 one-component braid closures with at most seven crossings, including shuffled PD orders. It performs 480 driver comparisons, 480 additional interval comparisons, and \AuditQuivers{} additional scalar-quiver comparisons. All pass. Its reset arm performs at least one reset in \AuditResets{} cases and returns an early nontrivial verdict in \AuditEarly{} cases. Both the pure and first-jet nonsingleton observation counts are zero. The complete inputs, outputs, and audit summary are stored in JSON.
+
+These checks provide finite evidence about the implementation and exercise algebraic hypotheses directly. They are not a proof of the all-input theorem, not a claim of uniform small restart gaps, and not evidence that the mixed-coefficient compression frequently occurs in practical diagrams.
+
+\subsection{Paired raw-backend experiment}
+Three arms are measured: the retained full exact scan; that scan with whole-summand closure tests but no reset; and the reset driver. Inputs are preconstructed. Nine rounds per case randomize arm order. Timed work includes input validation, scan work, closure checks, and evidence construction; imports and initial warm-up runs are excluded. All arms are checked for agreeing verdicts. These are small local measurements on the recorded Python/runtime, not a production benchmark. Several timings are submillisecond and particularly sensitive to noise; the ratios are descriptive rather than robust statistical estimates.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Input & Full (ms) & Test (ms) & Reset (ms) & Full/reset & Gap $g$\\
+\midrule
+Trefoil & 0.291 & 0.333 & 0.304 & 0.96 & 3\\
+Figure-eight & 0.485 & 0.671 & 0.539 & 0.90 & 4\\
+Positive two-braid, 11 & 1.249 & 1.467 & 1.515 & 0.83 & 11\\
+Coxeter braid, 24 & 0.973 & 3.280 & 4.509 & 0.22 & 1\\
+Cancelling pairs, 26 & 1.710 & 3.471 & 3.444 & 0.50 & 2\\
+Trefoil + 6 curls & 0.497 & 0.444 & 0.407 & 1.22 & 3\\
+Trefoil + 12 curls & 0.828 & 0.462 & 0.518 & 1.60 & 3\\
+Trefoil + 24 curls & 1.285 & 0.607 & 0.574 & 2.24 & 3\\
+\bottomrule
+\end{tabular}
+\caption{Median paired raw-backend times, nine rounds. Test enables closure-summand bounds without resetting. Ratios below one mean the reset arm is slower. The full arm is the retained source-derived fixture, not the complete production recognizer.}
+\label{tab:benchmark}
+\end{table}
+
+
+The selected connected-sum examples place a trefoil before a tail of curls. The obstruction can be recognized before scanning the tail, so they demonstrate early stopping on a decomposable input, not a newly recognized family. On the 27-crossing example the measured full/reset ratio is about \TailRatio{}, while the three-crossing trefoil and figure-eight show overhead. The reset gap is one on the 24-crossing Coxeter braid, with 23 resets, but repeatedly validating and rebuilding a trivial residual diagram costs more than simply retaining the already-small scanner state. This is a useful negative result for policy design.
+
+On the trefoil-plus-tail examples, early rejection reduces the recorded peak physical-object count from \TailPeakFull{} to \TailPeakReset{}. The positive 11-crossing two-braid, by contrast, is scanned to completion and shows no peak-object reduction. These observations do not demonstrate a nontrivial polynomial-matrix collapse. None of the eight cases contains an observed nonsingleton eligible block. The exact first-jet compression is tested on synthetic valid chain complexes; it must not be credited with these diagram speedups.
+
+\subsection{Performance implications for integration}
+The mathematical bound motivates the new representation, but it does not recommend unconditional resetting at every singleton in production. A practical policy can retain a small exact state until a reset has a concrete expected benefit, or apply inexpensive established certificates first. Such a policy changes the measured gap and must be included in any complexity statement. The supplied driver deliberately uses a simple deterministic policy so that its proofs, replay, and parameter are transparent.
+
+A proper upstream evaluation should compare against the already integrated Euler-assisted sharing and structural pipeline. Several observed early obstructions are likely to overlap with existing methods. The current raw-fixture comparison does not determine their incremental benefit over that pipeline.
+
+\section{Failure modes excluded by the proofs}
+\paragraph{Discarding nonlinear terms without a closure premise.}
+The first-jet formula is not an identity of open complexes over $R_m$. Higher terms can matter under other continuations. The matrix conjugation uses actual paths between marks in the completed classical knot.
+
+\paragraph{Using only a homology-level dot relation.}
+Knowing $X_a$ and $X_b$ are homotopic does not by itself remove all higher perturbation terms. Equations~\eqref{eq:slide}--\eqref{eq:annihilation} and the identity obtained by differentiating $Q^2=0$ are needed for the exact matrix change of variables.
+
+\paragraph{Treating the linear part as a differential.}
+Although $AB+BA=0$, the map $B_*$ need not square to zero. The multiplier subtracts its ordinary rank, not twice its rank and not the dimension of its homology. A three-vertex pure interval with both binary arrows equal to one is an explicit regression.
+
+\paragraph{Confusing multiplicity and characteristic-two coefficients.}
+The counts $N,\beta,\kappa$ are nonnegative integers. Two independent matching copies contribute twice the completed rank; they do not disappear modulo two. Only coefficients of differential maps are in $\F$.
+
+\paragraph{Forgetting the empty-frontier case.}
+A nonempty matching has a nonempty classical closure and supports the rank-two floor. The empty matching has coefficient ring $\F$ and no such local floor. The prototype handles final empty-boundary scalar homology separately. A proper prefix of a connected knot projection cannot close its frontier completely while crossings remain.
+
+\paragraph{Using shortened degrees as exact homology.}
+The replacement can move surviving classes into different homological positions and erases quantum information. Only total rank and the knot verdict are promised after resets. Exact graded homology should continue to use the full backend.
+
+\paragraph{Hiding construction or verification costs.}
+Building residual diagrams, identifying components, verifying eligibility, searching for scalar splittings, finding an order, and storing evidence are not free operations. The bound charges the implemented ones; stronger search procedures require additional accounting.
+
+\section{Further research questions}
+\subsection{Structural restart theorems}
+The most consequential question is whether a useful topological class admits a polynomial-time construction of reset gaps $O(\log^2 n)$ after certified simplification. One should first target families where local algebraic decompositions can be related to explicit tangle decompositions, rather than assume that low graph width forces a first-jet checkpoint. A proof should control the total encoded size after every reduction.
+
+A related question is whether every unknot admits a short-gap sequence after a bounded enlargement of the move set. This concerns the difficult positive branch; an early knottedness lower bound does not resolve it. Any proposed enlargement must come with exact recognition preservation and bit-cost bounds.
+
+\subsection{Finding nontrivial first-jet events}
+Search for actual knot diagrams whose exact scans expose mixed-coefficient single-matching blocks, with and without verified scalar Fitting changes of basis. Record failures as well as successes. The immediate empirical target is a genuine nonsingleton first-jet event in a classical diagram, not an artificially embedded matrix without geometric provenance. A paired comparison should isolate the new kernel from the existing Euler and component-sharing methods.
+
+\subsection{Several link components}
+For multicomponent $L_m$, componentwise dot collapse leaves one variable per link component, not one variable altogether. What finite collection of low-degree data determines or bounds the completed rank in special link classes? The two-component unlink counterexample shows that global parity alone cannot give the knot formula. A useful extension must account for the module structure of link homology and may need more than its rank.
+
+\subsection{Mixed matchings and survivor-first transfer}
+Can a small collection of different matchings be reduced to a finite closure-observation algebra with similarly small first-jet data? Existing radical-transfer and disk-frontier methods suggest first cancelling scalar maps and then transferring only the surviving inter-matching structure. The challenge is to prove that the surviving geometric operators admit a controlled closure quotient, not merely a small list in selected experiments.
+
+\subsection{Certified policy and ordering}
+Design reset policies that preserve provable gap bounds while avoiding the measured overhead of repeatedly rebuilding already-trivial states. An implementation should distinguish a theorem about all segments from a heuristic score for choosing the next crossing. Local order search, cached completion connectivity, and incremental PD splicing are natural engineering targets, provided their worst-case costs remain visible.
+
+\subsection{Formalization and independent verification}
+A manageable formalization sequence is: the square-zero polynomial derivative; the matrix conjugation identity; the scalar first-jet multiplier; the interval monotonicity lemma; whole-summand additive lower bounds; and finally the topological local-saddle identities and geometric splice invariant. The current replay depends on the scanner. A smaller independently implemented verifier for elimination witnesses would materially reduce its trusted base.
+
+\subsection{Other coefficients and other observations}
+The proof uses characteristic two in several indispensable places, including square-zero radical elements, the vertical splitting, and self-inverse conjugations. Determine precisely which fragments survive over odd characteristic or integrally. Separately, ask how much graded information can be retained while using a closure quotient. A total-rank reduction should not be advertised as a bigraded Khovanov algorithm without additional data and proofs.
+
+\section{Conclusion}
+Classical topology imposes stronger constraints on continuation blocks than a generic square-zero module calculation reveals. Coherent dot sliding reduces a knot-completed single-matching polynomial matrix to its first jet, and the vertical characteristic-two splitting turns that jet into an exact rank multiplier. For pure blocks, parity and classical nonvanishing further provide closure-uniform obstructions.
+
+The algorithmic consequence is that an inconclusive usable checkpoint has one survivor. Replacing it by its actual matching completion and restarting removes the accumulated frontier, yielding $n^{O(1)}2^{O(g)}$ bit complexity in the measured reset-gap parameter. This is a substantial sharpening of the inspected coefficient-alphabet bound, but not a universal small-gap theorem.
+
+The delivered software establishes a reproducible starting point: exact arithmetic, explicit premises, an independent finite oracle, replayable events, and timings that include regressions. The next decisive step is structural or geometric: force useful checkpoints often enough, and find them without spending the quasi-polynomial budget elsewhere.
+
+\appendix
+\section{A compact proof-audit checklist}
+For Theorem~\ref{thm:jet}, a reader can check the proof in the following order. Verify that $\partial_i$ descends through $x_i^2=0$; differentiate $Q^2=0$; check $H$ commutes with every evaluated polynomial entry; use $H\delta=0$ to remove $KDK$; iterate actual point slides; specialize all variables to one $X$ only when the completion is a knot; split $C$ using $\nu$; and transfer $xB$ across a scalar contraction. Each step is finite. The only general topological inputs are the local saddle identities, ordinary Khovanov invariance, and unknot detection.
+
+For Theorem~\ref{thm:complexity}, check that every counted segment begins with one empty-boundary object, that one crossing contributes at most eight children, and that all coefficient spaces have $2^{O(g)}$ basis size. Then charge the number of block/closure queries, the label bit lengths, and the order policy. Finally verify that a reset removes its processed prefix; otherwise the bound on the total number of stages would require revision.
+
+\section{Reproduction commands}
+From the unpacked archive root, the self-contained fixture mode is
+\begin{verbatim}
+export PYTHONPATH="$PWD/src:$PWD/reference_upstream"
+python -m unittest discover -s tests -v
+python experiments/audit.py
+python experiments/benchmark.py
+python -m closure_reset examples/figure_eight.json --check-d2
+sh article/build.sh
+\end{verbatim}
+To use an actual ProveIt checkout instead, replace the fixture directory in \code{PYTHONPATH} by \code{Topology/UnknotRecognition/fast} from that checkout. Read \code{integration/INTEGRATION.md} first: the full production suite and compatibility checks must then be run separately. Benchmark JSON includes the actual interpreter and platform strings. The archive also provides SHA-256 hashes for its delivered files.
+
+\begin{thebibliography}{99}
+\bibitem{Khovanov} M. Khovanov, \emph{A categorification of the Jones polynomial}, Duke Math. J. \textbf{101} (2000), 359--426. doi:10.1215/S0012-7094-00-10131-7.
+\bibitem{BarNatan} D. Bar--Natan, \emph{Khovanov's homology for tangles and cobordisms}, Geom. Topol. \textbf{9} (2005), 1443--1499. doi:10.2140/gt.2005.9.1443; arXiv:math/0410495.
+\bibitem{Shumakovitch} A. Shumakovitch, \emph{Torsion of the Khovanov homology}, Fund. Math. \textbf{225} (2014), 343--364. doi:10.4064/fm225-1-16; arXiv:math/0405474, version 2 (2018), Section 3.
+\bibitem{KM} P. B. Kronheimer and T. S. Mrowka, \emph{Khovanov homology is an unknot-detector}, Publ. Math. Inst. Hautes \'Etudes Sci. \textbf{113} (2011), 97--208. doi:10.1007/s10240-010-0030-y; arXiv:1005.4346.
+\bibitem{BLS} J. A. Baldwin, A. S. Levine, and S. Sarkar, \emph{Khovanov homology and knot Floer homology for pointed links}, J. Knot Theory Ramifications \textbf{26} (2017), no. 2, 1740004.
+\bibitem{Nahm} G. Nahm, \emph{Basepoints in Khovanov homology and nonorientable surfaces}, arXiv:2605.08457v1 (8 May 2026), especially Section 2.2 and Appendix B.
+\bibitem{Lackenby} M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1 (25 July 2026), especially Section 9.
+\bibitem{ProveIt} V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, inspected at commit \code{13f6dbfdd32c152bec2d01af23b9eea2a12191ae}. Maintained continuation section: \code{synthesis/continuations.tex}, blob \code{23f718e6171f81249d435859b6e23bd27e2ccc2a}. Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{OpenAIMath} OpenAI, \emph{Mathematical manuscripts and supporting proof artifacts}, \url{https://github.com/openai/math}. Inspected as an exploratory catalogue; no result from the catalogue is assumed in this article.
+\end{thebibliography}
+\end{document}

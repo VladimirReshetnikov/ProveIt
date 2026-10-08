@@ -137,7 +137,7 @@ prefixes, the bibliography entry `TSvol`, and the `\file` macro and
 ```text
 README.md                                  this guide (replaces the delivered README.txt)
 article.tex                                the report (delivered Report215.tex, written)
-article.pdf                                compiled report, 25 pages
+article.pdf                                compiled report, 26 pages
 SOURCES.txt                                source ledger and bounded comparison (delivered)
 SOURCE_FILES.txt                           delivered input inventory
 code-README.txt                            the delivered code/README.txt
@@ -220,6 +220,46 @@ receipt differed only in the SHA-256 hashes of its inputs (line ends). The
 radial step was not run (the intake confirmed its regression values with an
 own sieve to `10^6`).
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`37b523e32`) read the four
+OEIS entries again, together with Section 3 of Erdős–Loxton in the published
+scan. Every quotation and citation is as reported. The paper says only that
+its methods "could be used to give bounds for the oscillation"; calling these
+upper bounds is an inference, since a positive lower bound would have
+decided the question. The check is recorded in a dated note at the end of
+Section 14.
+
+- **Cloitre's conjecture.** The refutation is confirmed and holds in every
+  logarithm base: the constant is `log b/(2 log 2)`, which is `1/2` in base
+  2, still outside the open interval. A floating divisor sieve to `2^25`
+  continues the write's data: `log a_n/log² n` is 0.503, 0.518, 0.531 and
+  0.537 at `n = 10⁵, 10⁶, 10⁷, 2^25`.
+- **The radial sieve, which the write did not rerun, done independently.**
+  `a_{2^24}` was computed exactly by the sieve in eight word-size prime
+  moduli plus CRT. It equals the receipt's 65-digit endpoint. A floating sum
+  over `n ≤ 2^24` reproduces the finite radial values `H(t_1)`, `H(t_2)` to
+  `2·10⁻¹³`. The true tail between `2^24` and `2^25` is `2.2·10⁻¹³`, well
+  under the bound (36), `1.51·10⁻⁹`.
+- **The operator.** A direct floating evaluation of `T1(t_i)` from (21),
+  using no package code, gives values inside the certified enclosures.
+- **Exact reconstruction of the receipts.** The check rebuilt `S_3`, `I_1`,
+  `I_2`, the gap (37), `R_1`, `R_2` and `2g/(R_1+R_2)` from the stored
+  endpoints, in exact rationals and with its own code. All agree with the
+  receipts and the printed decimals.
+- **Reruns.** The delivered chain (all steps except the radial sieve) was
+  rerun on a copy. Every receipt equals its delivered version; the combined
+  receipt differs only in its recorded input hashes.
+- **Also confirmed:**
+  - the OEIS data and both fixtures;
+  - the inverse constants of (73);
+  - the provenance figures, the manifest (36 entries) and the byte identity
+    of the 33 staged files;
+  - the README listing;
+  - the numbering (95 labels unchanged, 3 added).
+
+Nothing needed correcting. Rebuilt: 26 pages (25), label numbers unchanged.
+
 ## Build
 
 pdfLaTeX (lmodern, microtype, amsmath, amssymb, amsthm, mathtools, booktabs,
@@ -230,8 +270,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
-25 pages; no errors or warnings, no undefined references, no multiply defined
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026;
+rebuilt after the independent check, three passes): 26 pages (25 at the
+write); no errors or warnings, no undefined references, no multiply defined
 labels, no duplicate destinations, no overfull or underfull boxes. The
 delivered text gives 21 pages with no warnings.
 

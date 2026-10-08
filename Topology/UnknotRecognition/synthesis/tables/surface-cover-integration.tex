@@ -1,0 +1,39 @@
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Supplied cover & Sheets & Records & Expanded/compressed & A/A \\
+\midrule
+annulus & 16 & 1 & 4.06 & 1.034 \\
+mobius\_reflection & 16 & 3 & 4.15 & 0.991 \\
+three\_types & 16 & 3 & 3.52 & 0.990 \\
+annulus & 256 & 1 & 15.65 & 1.016 \\
+mobius\_reflection & 256 & 3 & 25.41 & 1.156 \\
+three\_types & 256 & 3 & 17.58 & 0.988 \\
+annulus & 4096 & 1 & 244.61 & 1.072 \\
+mobius\_reflection & 4096 & 3 & 396.16 & 0.956 \\
+three\_types & 4096 & 3 & 318.54 & 1.046 \\
+annulus & 65536 & 1 & 4621.74 & 1.045 \\
+mobius\_reflection & 65536 & 3 & 8290.72 & 0.989 \\
+three\_types & 65536 & 3 & 7002.16 & 0.970 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Ratios are median paired times for complete cover topology; sheet expansion is an independent oracle, not a competing compressed algorithm.
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Sheet exponent & Marks & Query (ms) & JSON bytes & A/A \\
+\midrule
+32 & 2 & 0.010 & 100 & 1.001 \\
+32 & 32 & 0.077 & 456 & 0.999 \\
+32 & 512 & 1.187 & 6135 & 1.008 \\
+1024 & 2 & 0.014 & 698 & 1.013 \\
+1024 & 32 & 0.192 & 5534 & 1.009 \\
+1024 & 512 & 3.059 & 82897 & 1.001 \\
+16384 & 2 & 0.412 & 8286 & 0.998 \\
+16384 & 32 & 12.330 & 70055 & 1.000 \\
+16384 & 512 & 148.544 & 1058344 & 1.004 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Marked queries reuse a prepared index, with sheet count $W=2^{\mathrm{exponent}}$. Preparation and serialization are outside query timing.

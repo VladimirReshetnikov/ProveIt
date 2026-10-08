@@ -2,14 +2,14 @@
 
 # Research reports
 
-Two hundred and forty-seven independent mathematical research packages, unpacked
+Two hundred and seventy-seven independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all two hundred and forty-seven reports, names the problem each one attacks
+numbers all two hundred and seventy-seven reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -18,19 +18,19 @@ records what each report claims rather than verifying it.
 | Category | Reports |
 |---|---:|
 | [`ordinals-and-order-types/`](ordinals-and-order-types) — friendly order types, wqo powersets and statures, transfinite words, ordinal arithmetic, games, graph minors, filter sites and their Booleanizations, ideals, lattice congruences, lexicographic orders of the well-orderings of the reals, measurable box games and hat guessing, named elementary embeddings in urelement set theory, random bits and cuts of models of arithmetic, noisy parity on cubes, robust neutral choice, Freiling symmetry from finite blacklists, bounded-width power-set compression | 27 |
-| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures, pyramidal Frobenius numbers, valley-monotone bargraphs, bridgeless toroidal maps | 26 |
+| [`enumerative-combinatorics/`](enumerative-combinatorics) — parking functions, pattern avoidance, preorder and order polytopes, numerical semigroups, lattice arrays, tropical degree, mesh patterns, skew partitions, polyomino growth, first pattern failures, pyramidal Frobenius numbers, valley-monotone bargraphs, bridgeless toroidal maps, stressed Kunz words | 27 |
 | [`hankel-determinants/`](hankel-determinants) — Somos and elliptic, Catalan and ballot, Cigler's conjectures, growth and runs, arithmetic numerators | 10 |
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, integrality of asymptotic coefficients, valuations and periodicity | 11 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles, clipping tables, stable Hilbert series, bipartite and leafless multigraphs, strict twice partitions, column-convex permutominoes, self-modified and weak ascent sequences, one-sided rectangulations, Tesler matrices, closed lambda terms, self-complementary tournament scores, inversion-sequence classes, diagonally symmetric alternating sign matrices, unique pattern occurrences, a weighted Dyck Newton diagonal, a proportional placement game, alternating Baxter involutions, circle, permutation and interval graphs, diagonal and iterated Euler transforms, strict partition chains, sub- and superdiagonal partitions, Stirling products and transforms, disjoint partition families, odious and evil partitions, pop-stacked permutations, bounded-indegree DAGs, nested cycle assemblies, constrained 0-1 and integer matrices, maximum-density kings, nonattacking bishops, maximal matchings of tripartite graphs, outerplanar graphs, planar Eulerian orientations, sums of square roots, diagonal alignments, lazy closed walks), Apéry arrays | 123 |
-| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity, counting accessible and strongly connected automata | 8 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles, clipping tables, stable Hilbert series, bipartite and leafless multigraphs, strict twice partitions, column-convex permutominoes, self-modified and weak ascent sequences, one-sided rectangulations, Tesler matrices, closed lambda terms, self-complementary tournament scores, inversion-sequence classes, diagonally symmetric alternating sign matrices, unique pattern occurrences, a weighted Dyck Newton diagonal, a proportional placement game, alternating Baxter involutions, circle, permutation and interval graphs, diagonal and iterated Euler transforms, strict partition chains, sub- and superdiagonal partitions, Stirling products and transforms, disjoint partition families, odious and evil partitions, pop-stacked permutations, bounded-indegree DAGs, nested cycle assemblies, constrained 0-1 and integer matrices, maximum-density kings, nonattacking bishops, maximal matchings of tripartite graphs, outerplanar graphs, planar Eulerian orientations, sums of square roots, diagonal alignments, lazy closed walks, the modified Entringer diagonal, tableau defect clusters, rounded running means, square-root factorial sampling, minimum-length compositions, decorated eta products, spiral Fibonacci sequences, exponential towers, maximal Schreier supports, distinct sizes and multiplicities of partitions, extreme-part conditions, power-weighted Dyck moments, sparse graph moments, labeled fat trees, uniform trees and binary partitions, many-color and high-outdegree rooted trees, commutative magmas, distinguished maximal independent sets, self-powered binomial sums, first-block maxima, ordered tuple relations, fixed-couple ménage rows, restricted two-covers and line graphs, cycle-minima sums, total Kostka sums, singleton-free hypergraphs), Apéry arrays | 151 |
+| [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity, counting accessible and strongly connected automata, binary two-way automata and corank budgets in Brauer monoids | 9 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
-| **Total** | **247** |
+| **Total** | **277** |
 
 ## Later deliveries
 
@@ -694,7 +694,8 @@ clusters and opened five reports in
 [`oeis-sequence-asymptotics`](generating-functions-and-asymptotics/oeis-sequence-asymptotics):
 [`a082528-rounding-extinction`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a082528-rounding-extinction)
 (Cloitre's conjecture: repeated rounding down to multiples of `k^m` dies at
-`(m Γ(m/(m+1))^(m+1) n)^(1/(m+1))`, every real `m > 0`),
+`(m Γ(m/(m+1))^(m+1) n)^(1/(m+1))`, every real `m > 0`; batch 110 added
+Parts II and III, on rates and on schedules),
 [`a261781-matrix-compositions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a261781-matrix-compositions)
 (exact minimal recurrences, Hankel products and uniform asymptotics for
 A261781 and A261784, from two manuscripts),
@@ -1092,8 +1093,12 @@ two values of a numerical note in `a182220`, where the check also derived
 when the radial ratio of an arithmetic section has a limit (Corollary 21.7,
 `978b52fb5`), and two wordings in `a357825` (`2ff7e46eb`); the checks of
 `a033552` (`f00cfc175`) and `a181199` (`ed8e73df9`) needed no correction.
-The new Parts of `a000571`, `a273821` and `a261781` have not been
-independently checked. Staged files are byte-identical to the deliveries
+The new Parts of `a000571`, `a273821` and `a261781`, missed by the
+intake's checks, were checked on 7 October and found no mathematical error:
+`9650268bb` qualified Part III's "the rest is new" in a000571 and read
+Flajolet–Sedgewick IX.11, `eb01b6670` traced a273821's growth constant to
+Chow–West's Corollary 4.1, and `04690b89f` confirmed a261781's Part III and
+corrected the wording of its reciprocal note on a122399. Staged files are byte-identical to the deliveries
 (fifty-three CRLF files kept by `-text` lines); the articles, PDFs, delivery
 READMEs, checksum manifests and a few byte copies survive in the arrival
 commits. Nothing was superseded, and no manuscript refutes a repository
@@ -1102,11 +1107,12 @@ claim.
 Batches 99 to 113 are the clusters of one delivery: the session bundle of
 numbered Research Reports 1–243, 177 archives in one arrival commit
 (`60f54ea06`), triaged into fifteen batches (99 to 113). Batch 99 went to
-the Fabius drafts tree; batches 100 to 109 are placed, written and
-catalogued below; batches 110 to 113 are not yet placed. Batch 114 is the
-other arrivals of the same day. Batches 115 to 125, the Gowers–Szemerédi
-manuscripts of 6 October, went to a research report beside the Lean
-development of Gowers's proof, not to this collection (see below).
+the Fabius drafts tree; batches 100 to 113 are placed, written and
+catalogued below. Batch 114 is the other arrivals of the same day; Report
+274 and three manuscripts of 7 October that arrived outside the bundle are
+described after it. Batches 115 to 137, the Gowers–Szemerédi manuscripts
+of 6 and 7 October, went to a research report beside the Lean development
+of Gowers's proof, not to this collection (see below).
 
 Batch 99 brought nothing here: its thirteen archives, taken from the
 session bundle `60f54ea06` (Thue–Morse trace and interval parts, a checker
@@ -1173,8 +1179,10 @@ corrected three statements: a truncation error quoted in `a126348`
 outlook of Part IV of `power-tower-exponent-supports`, now restricted to
 `1/2 ≤ a < 1` (`0c81c51e2`), and the order of the theta shift of the
 threshold in `a022629` (`91ef1ef6f`); the check of `a271619` (`342a4583e`)
-found both of the write's proofs valid. Nothing was superseded, and no
-manuscript refutes a repository claim.
+found both of the write's proofs valid. The check of `a007716`, missed at
+the intake, was made on 7 October (`693f03a7d`) and needed no correction;
+`f81b762d5` gave that report pointers back to the six later reports that name
+it. Nothing was superseded, and no manuscript refutes a repository claim.
 
 Batch 101, thirteen archives of the 177-archive session bundle that arrived
 in `60f54ea06`, all OEIS-asymptotics manuscripts, was placed in one commit
@@ -1221,8 +1229,9 @@ second routes or tabulated, and unproved claims went to each Part's
 further questions. The a189281 write also applied the reciprocal notes that
 correct its two stale sentences about a330266's tail step; the notes into
 `a181280-binary-matrix-formula` (the Section 6.4 recurrences now proved) and
-`a357825-theta-ballot-power-sums` (Report 86 examined, not an instance) are
-not yet applied. The intake checked every write independently: `39b1110a6`
+`a357825-theta-ballot-power-sums` (Report 86 examined, not an instance) were
+applied, README only, in the cleanup pass of 7 October (`9a2c24746`,
+`66cd3899a`). The intake checked every write independently: `39b1110a6`
 sharpened the a196275 profile bound to an exact distance, `07068a4b9`
 tightened one proposition on unequal ranks in a330266, `af05d23ba` sharpened
 an edge constant of a126764's Lemma 28.1 by the factor `1/π` its proof
@@ -1286,8 +1295,8 @@ at `d = 3`, and the fifth and sixth binary coefficients; `7e85b5a0c`). The
 cross-references among the seven reports were written into the writes
 themselves; no separate reciprocal-notes commit was made, and the drafted
 one-line pointers from `a202061-ascent-120-deficit` and
-`a202062-ascent-201-enumeration` to the new 100/110 report are not
-applied. Independent checks after the writes found no counterexample and
+`a202062-ascent-201-enumeration` to the new 100/110 report were applied,
+README only, in the cleanup pass of 7 October (`d758fe26b`, `ff1c728fa`). Independent checks after the writes found no counterexample and
 no gap in any proof chain, and corrected wording only: `811ad87f0` located
 the sign change of the first saddle correction in the A098569 report
 (`N = 15,865`, not "between 10⁴ and 10⁶") and, with `5ada42e2f`, withdrew
@@ -1371,7 +1380,9 @@ a348351's into a377922 were applied in the a377922 write (`9b4001d29`) and
 updated by the a348351 check; the drafted pointer from
 `a000571-tournament-score-sequences` to the self-complementary report, whose
 "no other report treats tournament score sequences" sentences are now
-incomplete, is not yet applied. The intake's independent checks found every
+incomplete, was applied in the cleanup pass of 7 October (`c1f29c091`),
+which also gave `a348351-one-sided-rectangulations` a pointer to the
+historic-tree non-D-finiteness theorem (`8f067c239`). The intake's independent checks found every
 result the writes added valid and corrected supporting text: a range and the
 algebraicity step in a348351 (`019cf8e50`); O'Neill's journal and arXiv
 numbering, Pantone's credit and the completion of the margin-sharpness proof
@@ -1623,8 +1634,10 @@ computation of `log Q` (given `d = −log Q`). No reciprocal notes were committe
 write-time drafts find none required, and two optional pointers (into
 `a082161-airy-amplitudes` and into the atlas, under its own procedure) were
 not applied. Nothing was superseded; the bundle's Reports 209, 210 and
-212–214 on the spectral moments `M_{2k}` remain archives in `docs/incoming`,
-named as leads in the a064856 report. No manuscript refutes a repository
+212–214 on the spectral moments `M_{2k}` were then archives in
+`docs/incoming`, named as leads in the a064856 report; batch 112 placed and
+wrote them as `a094149-sparse-graph-moments`, with a reciprocal note in
+a064856 (`f8f9eb33b`). No manuscript refutes a repository
 claim, and nothing was submitted to the OEIS.
 
 Batch 108, thirteen archives of the bundle arrival `60f54ea06` (bundle
@@ -1746,7 +1759,8 @@ squarefree radicands are equivalent (at `n = 2`: 8 values, not 7);
 order; and
 [`a328716-lazy-closed-walks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks)
 (179, `f3fb85cb6`), whose write also proves Kotěšovec's 2019 row conjecture
-in A328718. The independent checks corrected wording, rounded digits and
+in A328718 (a Part II from a later non-bundle arrival is placed; see below).
+The independent checks corrected wording, rounded digits and
 quotation sources, not theorems: `80177120d` (a137432: the fixture's SHA-256
 is that of Matsuo's table; three rounded digits, one range), `ae0721fd9`
 (a002465: Santos's Theorem 6 described correctly), `60d3c10df` (a297487:
@@ -1766,6 +1780,204 @@ READMEs and checksum manifests, and Report 171's `exact.json`. Nothing was
 superseded, no manuscript refutes a repository claim, and nothing was
 submitted to the OEIS.
 
+Batch 110, twelve archives of the bundle arrival `60f54ea06` (bundle
+Reports 180, 183 and 185–193, and 211) and `Periodic_Rounding_Extinction`
+(`e4d5dcf9e`), held from batch 114 so that its host gets one write, was
+placed in one commit (`8622ca7e5`; `f6b774865` retired the last archive,
+which git's rename detection had left out of it) as two Parts of an existing
+report and eight new reports, all under
+`generating-functions-and-asymptotics/oeis-sequence-asymptotics/`, and
+written report by report. Report 188 and `Periodic_Rounding_Extinction`
+became Parts II and III of
+[`a082528-rounding-extinction`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a082528-rounding-extinction)
+(`7fe078b25`): `B_p(k) = K_p k^(p+1) + O(k^((p+1)²/(p+2)))` uniformly on
+compact `p`-sets, which answers the host's question on rates (its leading
+law a second route to Part I's Theorem 1.1, the last digits of its decimals
+`c₂`, `c₃` corrected), and the averaged ceiling law for bounded convergent
+schedules, with the `1/(2π) → π/8` activation jump and the exact spectrum
+`(0, 1/(m+1))`, which answers the host's question on schedules and the
+bounded form of its sparse-exception question. Reports 185 (base) and 211
+became
+[`a330499-decorated-eta-products`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a330499-decorated-eta-products)
+(`bb51b57e3`), which identifies A330499's decimal as `π²/(12(e−1))` and
+proves Kotěšovec's conjectural `log 2` in A330498. Reports 190 (base) and
+191 became
+[`a094925-spiral-fibonacci`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a094925-spiral-fibonacci)
+(`d30bfb2a3`), two Parts that share a construction and a method but no
+theorem: Part I proves Scheucher's 2015 equivalents in A094926 and A094925,
+and the write proves that his heuristic form in A094926 cannot hold.
+Reports 192 (base) and 193, its sequel, became
+[`a096537-exponential-towers`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a096537-exponential-towers)
+(`cff2b48aa`), which refutes with proof Kotěšovec's A096537 conjecture (the
+amplitude is `2√(2π/ρ)`, not `2π`; ratio `1.0035525…`) and A096542's
+`T(n,1) = n·A096537(n)` (it is `n·A096537(n−1)`). Five single reports
+complete the batch:
+[`a386381-modified-entringer`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a386381-modified-entringer)
+(Report 180, `e378a2d67`; Kotěšovec's OEIS amplitude identified as
+`π A(π/2)` with a certified enclosure, and a marked Fredholm limit),
+[`a394326-tableau-defect-clusters`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a394326-tableau-defect-clusters)
+(183, `5d3107954`; a computer-certified simple pole, `1/ρ < 1.6180189139`,
+below the golden ratio, which refutes both asymptotic formula lines of
+A394326),
+[`a065094-rounded-running-means`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a065094-rounded-running-means)
+(186, `1ebd8c33c`; the Bessel growth conjectures of A065094 and A065095
+proved),
+[`a326805-square-root-factorial-sampling`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a326805-square-root-factorial-sampling)
+(187, `6ec1f3f92`; Kotěšovec's `a(n) ~ 2n eⁿ` proved as stated) and
+[`a098131-minimum-length-compositions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a098131-minimum-length-compositions)
+(189, `89b899bf3`). Every write was independently checked, and no check
+found a mathematical error in a source theorem: `f0ae397ee` (a082528:
+archive sizes, an intake remainder band and one perturbation sentence
+corrected), `60860dd40` (a330499: one notation attribution), `ef1d91e4f`
+(a094925: one provenance date), `7781110bc` (a096537: both refutations
+confirmed by an independent recurrence, one explanatory sentence
+qualified), `3d6e73ab1` (a386381: one provenance sentence), `e98226347`
+(a394326: the entry's residual comment proved for every `n ≥ 30`, and
+`aₙ/φⁿ` strictly decreasing from there, which settles the write's two
+questions), `fc8a50c68` (a065094) and `fe3862203` (a326805: Lean
+declaration names corrected), and `d980a69f2` (a098131: one transseries
+statement). No neighbour needed a reciprocal note. Not staged and
+retrievable from `60f54ea06` and `e4d5dcf9e`: PDFs, member and addition
+manuscripts, delivered READMEs, checksum manifests and byte copies. Nothing
+was superseded, and nothing was submitted to the OEIS.
+
+Batch 111, eleven archives of the bundle arrival `60f54ea06` (bundle
+Reports 195–199, 201, 202, 204 and 216–218), was placed in one commit
+(`d451ef3d8`) as five new reports under `oeis-sequence-asymptotics/`.
+Report 195 became
+[`a239950-maximal-schreier-supports`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a239950-maximal-schreier-supports)
+(`a0d4f816a`; every fixed half-power order on the scale `e^(2√(Sn))`, and a
+rational certificate that the generating function is no finite eta
+quotient) and Report 196
+[`a239964-sizes-equal-max-multiplicity`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a239964-sizes-equal-max-multiplicity)
+(`4b5cfc9b1`; an exact inclusion–exclusion diagonal transform, Manyama's
+OEIS product formula credited, and `P(D = M) ~ π H′(1)/√(6n)`). Reports
+197 (base) and 198 became
+[`a373271-distinct-multiplicity-values`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a373271-distinct-multiplicity-values)
+(`0064d11e6`), bound by one exact identity with the weights `w = 1`
+(A373271, mean `(6n)^(1/4) − 23/16 + K n^(−1/4)`) and `w(m) = m` (A373273, a
+five-scale mean); a non-bundle manuscript of 7 October became its Part III
+(see below). Reports 216 (base), 217 and 218 became
+[`a350879-extreme-part-conditions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a350879-extreme-part-conditions)
+(`27ecec221`), which refutes with proof Kotěšovec's first form in A350879
+(a factor `π` is missing under the root; the rate is `exp(π√(2n/3))`) and
+proves that A117086 increases strictly. Reports 201 (base), 199, 202 and
+204 became
+[`a290569-power-weighted-dyck-moments`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290569-power-weighted-dyck-moments)
+(`fb9602e55`), four Parts on one object, which proves A338634's conjecture
+that `a(n)` is odd exactly when `n` is a power of 2; its absolute
+amplitudes rest on Kriecherbauer–McLaughlin's Theorem 1.5, read only as
+restated by Claeys–Krasovsky–Minakov (a disclosed trust boundary), and
+Report 202's general first-correction coefficient, conditional on an
+unverified Freud envelope, is an open question, as is Report 217's
+comparison with Pittel (2007). Every write was independently checked, and
+no check found a wrong or unproved claim in a source: `57a8055a0`
+(a239950: one OEIS attribution, two precisions), `54212e64a` (a239964: two
+precisions), `a03243ec3` (a373271, Parts I–II: one precision), `afddc5983`
+(a350879: one provenance statement) and `45a31a828` (a290569: neither
+A216966 nor A227887 has a b-file, so the write's b-file claim was
+corrected; one attribution made precise). The writes found no reciprocal
+note required. Not staged and retrievable from `60f54ea06`: PDFs, member
+manuscripts, delivered READMEs, pure checksum manifests and two
+regenerable data files over 2 MB. Nothing was superseded, and nothing was
+submitted to the OEIS.
+
+Batch 112, twelve archives of the bundle arrival `60f54ea06` (bundle
+Reports 200, 203, 206, 209, 210, 212–215, 222, 227 and 229), was placed in
+one commit (`f79c9bef1`) as seven new reports under
+`oeis-sequence-asymptotics/`. Reports 214 (base), 213, 212, 210 and 209, one
+chain on OEIS A094149, became
+[`a094149-sparse-graph-moments`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a094149-sparse-graph-moments)
+(`e4199e04f`), five Parts printed newest first, each repeated proof block
+printed once: `M_2k ~ 2B_{k+1}` and every fixed collision order of
+`a_k/(2B_{k+1})`; Report 212's unproved reduction is completed by Report
+213, and its spectral-transfer heuristic is an open question. Reports 227
+(base) and 229 became
+[`a244407-high-outdegree-rooted-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a244407-high-outdegree-rooted-trees)
+(`155fb997d`), the exact plateau, two-hub and third sectors of rooted
+unlabeled trees of maximum outdegree `k`. Five single reports complete the
+batch:
+[`a055779-labeled-fat-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a055779-labeled-fat-trees)
+(Report 203, `b76f517a4`; every fixed order uniformly in `M ≥ 1`),
+[`a003238-uniform-trees-binary-partitions`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003238-uniform-trees-binary-partitions)
+(215, `37b523e32`; a computer-assisted proof that neither
+`A003238(n+1)/A018819(n)` nor `A003318(n+1)/A000123(n)` converges, the
+negative answer to Erdős and Loxton's 1979 question, and Cloitre's A003238
+conjecture `0.4 < c < 0.5` refuted with proof: `c = 1/(2 log 2)`),
+[`a242375-many-color-rooted-trees`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a242375-many-color-rooted-trees)
+(222, `d53b7fbd4`; Kotěšovec's A242249 and A255517 conjectures
+`d(k) ~ ek` proved),
+[`a001425-commutative-magmas`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a001425-commutative-magmas)
+(200, `7f470df1e`) and
+[`a340021-distinguished-maximal-independent-sets`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a340021-distinguished-maximal-independent-sets)
+(206, `0c4f9054d`). Every write was independently checked, and no check
+found a mathematical error: `5f0331dc8` (a094149: every number recomputed
+through `k = 256`, one OEIS quotation completed), `0f10e9822` (a055779: the
+write's own value of Kotěšovec's `p` corrected to a truncation),
+`b978b0cd8` (a003238: the radial sieve that neither the intake nor the
+write had rerun, checked by other means), `879bb7ef3` (a242375: one
+transseries instance claim qualified), `31111c548` (a244407: nothing to
+correct), `f68e935fe` (a001425: one OEIS citation made precise) and
+`a2fe3ed38` (a340021: a second preamble package recorded). A reciprocal
+note went to `a064856-stirling-catalan-transforms` (`f8f9eb33b`): its open
+question on the relative asymptotics of `M_2k` is answered, and its
+conditional remark `M_2k/a_k → 0` is now unconditional. Not staged and
+retrievable from `60f54ea06`: PDFs, member manuscripts and delivered
+READMEs, Report 229's embedded copy of Report 227, pure checksum manifests
+and Report 200's regenerable 4.2 MB `fixed_counts.json`. Nothing was
+superseded, and nothing was submitted to the OEIS.
+
+Batch 113, nine archives of the bundle arrival `60f54ea06` (bundle Reports
+208, 220, 221, 224, 230, 234, 235, 237 and 240), was placed in one commit
+(`a4186a946`) as eight new reports under `oeis-sequence-asymptotics/`.
+Reports 230 (base) and 235 became
+[`a360592-self-powered-binomial-sums`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a360592-self-powered-binomial-sums)
+(`a0bec1539`): every fixed order for every `p`, and, answering Part I's
+question, the globally optimal parity-conditioned binomial law of the
+critical inactive count; the write refutes with proof the first
+corrections of the OEIS refinements in A360592, A360479 and A360747, whose
+leading equivalents are right. Seven single reports complete the batch:
+[`a386374-first-block-maximum`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a386374-first-block-maximum)
+(Report 208, `20f872d12`; Gourdon's 1996 thesis is the credited prior),
+[`a173217-ordered-tuple-relations`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a173217-ordered-tuple-relations)
+(220, `7ad0ec8ab`), whose Appendix A found two errors in the transseries
+volume's Fubini chapter, repaired there by `d92db8d06` (the proof of
+`q2:thm:fubini` drops the constant 1/4; `q2:rem:weighted` needs the max, not
+the min, of `ρ_x` and reverses the large-weight direction), its check
+finding the same missing constant in `q2:thm:weighted` (repaired by
+`08bc7a5c8`),
+[`a332709-fixed-couple-menage`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a332709-fixed-couple-menage)
+(221, `b353bba89`; both conjectures displayed in A332709 proved, and the
+expansion reading of the A258667 conjecture refuted at order `n⁻⁴`),
+[`a060053-two-covers-line-graphs`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a060053-two-covers-line-graphs)
+(224, `43e0c9a22`; A132219, "Number of line graphs on n labeled nodes",
+cannot count them: its `a(4) = 66 > 2⁶`, and the true value is 60),
+[`a368246-cycle-minima-sums`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a368246-cycle-minima-sums)
+(234, `f24d4b02b`; Kotěšovec's A368246 conjecture `c = e^(−γ)` proved as
+posted, as Giuliano–Szewczak–Weber's Theorem 2.1 already gives),
+[`a104779-total-kostka-sums`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a104779-total-kostka-sums)
+(237, `c95388b8e`; not a Part of `a138178-symmetric-packed-matrices`, whose
+transform and scale differ) and
+[`a323297-singleton-free-hypergraphs`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a323297-singleton-free-hypergraphs)
+(240, `8748cfc59`). Every write was independently checked, and no check
+found a mathematical error in a source: `2a7fce071` (a360592: the
+refutation confirmed to `n = 10²⁴` from the live formulas, one duplicate
+PDF destination fixed), `21e010ada` (a386374: two finite ranges made
+precise), `d42f42690` (a173217: A000670's conjectures and a line count
+corrected), `492aa527e` (a332709: the same conjecture in A258664–A258666
+and A258673, which the write said post no formula, settled the same way),
+`7a1ff0c36` (a060053: the corrected line-graph counts confirmed without the
+exception classification, two precisions), `ff6f743ac` (a368246: a file
+count corrected, one "proved" qualified), `de043efe1` (a104779: the
+residual alternation in its sector note traced to a third exponentially
+small effect) and `ea5241c74` (a323297: one OEIS comparison made precise).
+Reciprocal notes went to `a260700-parabolic-double-cosets` for a173217
+(`f8f9eb33b`) and, for a104779, to `a138178-symmetric-packed-matrices` and
+again to a260700 (`0603ceb9c`). Not staged and retrievable from
+`60f54ea06`: PDFs, Report 235's manuscript, sections and README, pure
+checksum manifests and one byte copy. Nothing was superseded, and nothing
+was submitted to the OEIS.
+
 Batch 114, seven of the eight archives of two "New research reports"
 arrival commits of 5 October 2026 that are not part of the session bundle,
 was placed in one commit (`99053b5d1`) as two additions and five new
@@ -1776,8 +1988,8 @@ other five in `2399df2bd`. The batch's intake record gave
 `git show --stat e4d5dcf9e 2399df2bd` shows it in `e4d5dcf9e`, which the
 report's README and article cite. The eighth archive, `Periodic_Rounding_Extinction`
 (`e4d5dcf9e`), continues `a082528-rounding-extinction`, the host of bundle
-cluster 110-A082528, and is held for batch 110 so that the host gets one
-write; it was not placed. `binary_morphic_fluctuations` became Part III of
+cluster 110-A082528, and was held for batch 110 so that the host got one
+write: batch 110 placed it as that report's Part III (above). `binary_morphic_fluctuations` became Part III of
 [`binary-substitution-discrepancy`](generating-functions-and-asymptotics/binary-substitution-discrepancy)
 (`788a7bd5a`), which answers Part II's research question 7 on the unbounded
 regimes of `0 → 1, 1 → 1 0^a 1^b`: the cluster set `±(a−1)/(2 log a)` of
@@ -1832,12 +2044,67 @@ pointers in this catalogue, and none of the batch's theorems is
 formalized. Nothing was superseded, no manuscript refutes a repository
 claim, and nothing was submitted to the OEIS.
 
-Batches 115 to 125 brought nothing here. Their fifty-nine manuscripts of
-6 October 2026 all sharpen local estimates of Gowers's proof of Szemerédi's
-theorem, and by Vladimir's direction they form one report beside the Lean
-development of that proof, outside this collection:
+Report 274, `Report274_Stressed_Kunz_Finite_Amplitude.zip`, arrived alone
+in `764740f07` (6 October 2026), outside the session bundle, and was placed
+(`2680aae95`) as the new report
+[`numerical-semigroup-stressed-amplitude`](enumerative-combinatorics/numerical-semigroup-stressed-amplitude),
+beside `numerical-semigroup-leaf-types` (the same objects, no shared
+theorem), not among the OEIS studies: no OEIS sequence is its object. It
+claims that the stressed Kunz words on `{1,2,3}` satisfy
+`s_g = C_s ρ^g + O(ρ₂^g)` with `0 < C_s < ∞`, so that Zhu's
+polynomial-prefactor formulation holds for `s_g` with exponent 0, against
+Zhu's numerical expectation of 1.6–1.7. The write (`a08662116`) read every
+proof and found no error, but the theorem is not independently verified:
+its constants are existential and give no onset, the counts and the
+boundary series are still pre-asymptotic, and the source itself asks for an
+independent check, recorded as a further question. The independent check
+(`444e6d6b6`) re-read the proof, found no error either, and split Zhu's
+counts exactly into the separated and the early-one classes; the theorem
+stays marked unverified. Reports 270 and 271, which it names as earlier
+reports on the same sequence, were not delivered. Nothing was submitted to
+the OEIS.
+
+Three manuscripts of 7 October 2026 from outside the session bundle came
+here through that day's non-Gowers queue; the others of that queue went to
+new topic directories outside this collection, which
+[`docs/incoming`](../../../../docs/incoming/README.md) lists. All three are
+placed, and their writes are pending.
+`ProveIt_Binary_Two_Way_Corank.zip` (`964621dd2`) was placed (`bdcae034b`)
+as the new report
+[`binary-two-way-corank`](automata-and-formal-languages/binary-two-way-corank),
+delivered layout kept and no article or README write yet: for every `h ≥ 2`
+an explicit binary language recognized by a `(6h+2)`-state 1NFA whose every
+`s`-state 2DFA satisfies `8s + 2 ≥ 2(5/2)^⌊(h−2)/9⌋`, by repetition-independent
+corank budgets in Brauer monoids. Its binary complementation bound is
+conditional on an unreproved premise of an external OpenAI manuscript; its
+architecture is adapted, with attribution, from an external openai/math
+release, whose Apache-2.0 licence and third-party notices are staged with
+the report as its nested licence. The partitions manuscript of
+`ProveIt_Research_2026-10-07.zip` (`7b8ed30e7`) was placed (`9a10a617f`) as
+Part III of
+[`a373271-distinct-multiplicity-values`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a373271-distinct-multiplicity-values):
+it answers Part I's question on variance and fluctuations
+(`Var D₀ ~ v₀ n^(1/4)` and a central limit theorem), Part II's question on
+weighted fluctuations (a Gumbel law for `D₁`) and, for the fluctuation laws,
+the question on the weights `m^α`. It was written as Sections 25–34
+(`b0ad11d15`); its independent check is pending. `uniform-lattice-bridges-research.zip`
+(`fe7165a3c`) was placed (`3cf0a2758`) as Part II of
+[`a328716-lazy-closed-walks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks):
+an expansion uniform in the dimension and in all nonnegative activities,
+which answers the host's question on sparse and dense ratios, and an exact
+counterexample at `D = 16`, `N = 26` to the universal Gaussian return bound
+of Felker–Lyons and Ball–Sterbenz. No statement of the three is
+formalized, and nothing was submitted to the OEIS.
+
+Batches 115 to 137 brought nothing here. Their one hundred and six
+manuscripts of 6 and 7 October 2026 all sharpen local estimates of
+Gowers's proof of Szemerédi's theorem, and by Vladimir's direction they
+form one report beside the Lean development of that proof, outside this
+collection:
 [`Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements`](../../../../Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md),
-whose README is its own index.
+whose README is its own index. Manuscripts that arrived with them but do
+not concern Gowers's argument were placed separately, three of them here
+(above).
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its

@@ -1,0 +1,89 @@
+\section{Reviewed baseline, motivation, and scope}
+\label{sec:baseline}
+
+\subsection{The maintained ProveIt pipeline}
+
+The reviewed source is the public ProveIt repository at commit
+\hashcode{23893144e3aafd074a23cfb633222ab7e03e6d2e}.  At that commit, the project
+combines cheap diagram reductions and obstructions with exact Khovanov/Bar--Natan
+computation.  The commit message records 431 maintained tests and states
+explicitly that general quasi-polynomial recognition remains unproved.  This
+report accepts that boundary \cite{ProveIt2026}.
+
+The relevant preprocessor is in
+\code{Topology/UnknotRecognition/fast/fastunknot/simplify.py}, reviewed blob
+\hashcode{2fcaabb51eaa45cf84bdee32cd1b4e18acf2c478}.  The file represents a diagram
+by a fixed list of crossing darts and a mutable edge involution.  It performs
+crossing-decreasing RI/RII moves incrementally.  When no such move remains, it
+can trial an RIII inversion of a triangular face, keep a short sequence if the
+sequence exposes RI/RII, and otherwise undo it exactly.
+
+The existing recursive helper has three important properties.
+\begin{enumerate}
+\item It is \emph{sound}: successful RIII trials are retained only when a legal
+      RI/RII move appears, and the resulting trace is independently replayable.
+\item It is \emph{budgeted}: the total number of trial moves is capped per input
+      crossing, because failed deep searches can dominate runtime.
+\item It is \emph{path-local}: after the first RIII move, later candidates are
+      drawn from a neighborhood of the immediately preceding move, rather than
+      from the accumulated support of the entire trace.
+\end{enumerate}
+
+The synthesis reports document why this matters.  On a corpus of difficult
+unknot survivors, depth two, three, and four searches simplified many more
+instances than one-step lookahead, but a failed depth-four search on a
+triangle-rich braid was much more expensive.  The current default therefore
+uses shallow depth and a strict budget.  These data motivate a theorem that
+separates global branching from genuinely local continuation.
+
+\subsection{Relation to known Reidemeister bounds}
+
+Hass and Lagarias proved an exponential upper bound on the number of
+Reidemeister moves needed to trivialize an $n$-crossing unknot diagram
+\cite{HassLagarias2001}.  Dynnikov proved monotonic simplification for
+arc-presentations of the unknot \cite{Dynnikov2006}; Henrich and Kauffman used
+that framework to bound diagram complexity and move counts
+\cite{HenrichKauffman2011}.  Lackenby later proved that an $n$-crossing unknot
+diagram can be reduced using at most $(236n)^{11}$ Reidemeister moves while the
+crossing number remains at most $(7n)^2$ along the sequence
+\cite{Lackenby2015}.
+
+Those theorems establish polynomial-size certificates and powerful global
+control.  They do not assert that a sequence can be partitioned into bounded
+runs of RIII moves separated only by crossing-\emph{decreasing} RI/RII moves.
+The present search deliberately forbids crossing increase.  Consequently, the
+new parameterized theorem is neither a replacement for Lackenby's theorem nor a
+consequence of it.
+
+Lackenby's 2026 hierarchy algorithm gives a different route to unknot detection,
+through incompressibility and essential hierarchies \cite{Lackenby2026}.  Its
+abstract emphasizes avoidance of certain large searches, but the preprint does
+not claim the quasi-polynomial running-time theorem sought by this project.  The
+local RIII analysis here is orthogonal and can coexist with hierarchy-based
+certificates.
+
+\subsection{Relation to the exact fallback}
+
+Khovanov homology detects the unknot \cite{KronheimerMrowka2011}, and Bar--Natan's
+tangle/cobordism formalism supports local scanning computations
+\cite{BarNatan2005}.  ProveIt exploits this exact route after cheaper stages
+fail.  Report 25 changes none of that algebra.  Its role is to make one
+preprocessing search asymptotically accountable and more complete under explicit
+parameters.
+
+\subsection{Methodological scope}
+
+The OpenAI mathematics repository contains manuscripts and proof artifacts at
+multiple verification levels, explicitly warning that unformalized outputs may
+contain errors \cite{OpenAIMath2026}.  This report follows the useful part of
+that model: theorem statements are separated from experiments, failed proof
+ideas are recorded, and the integration patch remains opt-in.  It does not rely
+on repository size or model provenance as mathematical evidence.
+
+\begin{warning}[Novelty and verification]
+The theorems below are new relative to the reviewed ProveIt source and its
+synthesis, but no claim of priority in the wider mathematical literature is made
+without expert review.  The proofs are human-readable and computationally
+stress-tested, not formally verified.  The ProveIt adapter was not executed
+inside a full checkout in this environment.
+\end{warning}

@@ -1,0 +1,206 @@
+\section{Full transfer ordered by quantum grading}
+\label{sec:graded-transfer}
+
+The graded kernel from report 23 supplies another exact response to slow
+sparse cancellation.  It computes all maps between scalar survivors,
+including adjacent-degree maps, without the common-disk certificate required
+by Section~\ref{sec:disk-transfer-integration}.  Production exposes \code{graded} and
+\code{graded-adaptive} as optional reduction policies.  This integration
+covers the graded kernel; Section~\ref{sec:symbolic-runs} reviews the report's
+twist-threshold, succinct interface and geometric-dependency proposals.
+
+\subsection{Retaining the grading rather than reconstructing it afterwards}
+At a frontier of $2k$ points let $c(a,b)$ be the number of circles in the
+overlay of matchings $a,b$.  A basis morphism dotted on a set $S$ of those
+circles has intrinsic weight
+\[
+ \omega(a,b,S)=k-c(a,b)+2|S|.
+\]
+The existing coefficient engine and grading audit use the convention
+$q_b-q_a=\omega$ for every nonzero monomial in a homogeneous differential
+entry.  The new scanner keeps these object shifts during allocation:
+\[
+ q'=q+i+c-2\operatorname{popcount}(\ell),
+\]
+where $i\in\{0,1\}$ is the smoothing, $c$ is the number of delooped circles,
+and $\ell$ is their binary label.  The array follows the exact object order
+used by \code{FastScan.add\_crossing}.  Scalar cancellation preserves the
+shifts of all remaining objects.  This is the ordinary dotted grading and
+cancellation calculus of \cite{barnatan}, used here as an algorithmic order.
+
+Weights are nonnegative because $c(a,b)\le k$.  Equality requires equal
+matchings and no dots: a circle in the overlay then consists of the two
+copies of the same arc.  Composition adds weights on every nonzero term.
+In the engine's dot-count convention, for a composition through $b$ with
+input dot counts $u,v$ and output count $r$,
+\[
+ 2r=2u+2v+k-c(a,b)-c(b,c)+c(a,c),
+\]
+which proves additivity by substitution.  Thus writing $d=d_0+\delta$,
+the zero-weight part $d_0$ is a direct sum of binary complexes at fixed
+matching and $q$, and $\delta$ strictly raises $q$.  An undotted morphism
+between distinct matchings is not a scalar identity.  Taking weight zero
+in $d^2=0$ proves $d_0^2=0$.
+
+\subsection{A contraction with representatives and homotopies}
+For each fixed matching and quantum shift, binary elimination splits each
+chain group as
+\[
+ C^h=B^h\oplus R^h\oplus L^h,
+\]
+where $B^h=\operatorname{im}d_0^{h-1}$, $R^h$ represents its quotient
+in $\ker d_0^h$, and $d_0:L^h\to B^{h+1}$ is an isomorphism.
+Let $I,P$ include/project $R$ and let $H$ invert the last isomorphism,
+vanishing on the other summands.  Then
+\[
+ PI=1,\quad d_0I=Pd_0=0,\quad d_0H+Hd_0=1+IP,
+ \quad H^2=HI=PH=0.
+\]
+The implementation constructs bases, lifts, and inverse coordinates; a
+list of ranks would not supply the maps needed for this step.  Each scalar
+map preserves matching and $q$, and $H$ lowers homological degree by one.
+
+There are finitely many object shifts, so $H\delta$ and $\delta H$ are
+nilpotent.  In characteristic two form the finite inverses
+\[
+ U=(1+H\delta)^{-1},\qquad V=(1+\delta H)^{-1}.
+\]
+The finite perturbation identity \cite{crainic-perturbation} gives
+\begin{equation}
+ D=P\delta UI,\quad I'=UI,\quad P'=PV,\quad H'=UH=HV.
+ \label{eq:graded-full-transfer}
+\end{equation}
+These are a special chain contraction from $(C,d)$ to $(R,D)$:
+\[
+ dI'=I'D,\quad P'd=DP',\quad P'I'=1,\quad
+ dH'+H'd=1+I'P',\quad H'^2=H'I'=P'H'=0,\quad D^2=0.
+\]
+For an explicit algebraic check, $Z=UI$ solves $Z=I+H\delta Z$.
+Using $d_0\delta+\delta d_0+\delta^2=0$ and the scalar contraction gives
+$dZ=ID+H\delta dZ$, hence $dZ=ZD$.  The right-hand calculation gives
+the projection identity.  Expanding the finite inverses with $H^2=HI=PH=0$
+proves the side identities.  Multiplying
+$dH'+H'd+1+I'P'$ on the left by $1+H\delta$ and on the right by
+$1+\delta H$ reduces it to zero using $d^2=0$ and the scalar homotopy
+equation.  The multipliers are invertible.  Finally
+$D^2=P'd^2I'=0$.  Every term of $D$ contains $\delta$ and has positive
+weight, so the returned complex has no scalar unit left to cancel.
+
+This termination argument uses the actual finite grading and typed
+composition law.  It does not invoke a uniform nilpotence claim for
+arbitrary ungraded formal matching tables.  Both the disk-certified and
+graded algorithms remain applicable only to valid complexes in their
+respective contracts.
+
+\subsection{Computing a path sum without enumerating its paths}
+For each scalar survivor column $e$, evaluate
+\[
+ Z=Ie+HW,\qquad W=\delta Z,\qquad De=PW
+\]
+one quantum block at a time in increasing order.  All contributions to a
+block arrive from lower blocks before it is processed; binary $P,H$ then
+mix within that block.  Each radical edge is propagated at most once for
+this source, combining equal destinations by XOR.  This computes the
+finite sum in \eqref{eq:graded-full-transfer} without constructing matrix
+powers or enumerating exponentially many individual paths.
+
+There is also a source-dependent band:
+\[
+ 0\le\omega=k-c(a,b)+2|S|\le k+c(a,b)\le2k.
+\]
+A source of shift $q_0$ cannot reach a nonzero coefficient beyond $q_0+2k$.
+The kernel drops such destinations before composition.  It still retains
+higher-order corrections within the band.  For example, two radical steps
+with a scalar contracting arrow between them can yield $x_1x_2$ even when
+$P\delta I=0$.  On a single arc the analogous $x^2$ term is zero.  Both
+cases are explicit regression tests, as is the nonzero minimal map
+$a\xrightarrow{x}a$.  Replacing the latter by two isolated survivors would
+change later gluing.
+
+Let $N$ count allocated object slots including holes left by completed
+sparse pivots, $S$ count scalar survivors, and $E_\delta$ count positive-weight
+entries.  There are at most $S E_\delta$ coefficient-composition attempts.
+If $A_H,A_P$ count nonzero scalar incidences, the remaining transfer work is
+bounded by $O(S(N+E_\delta+A_H+A_P))$ coefficient additions and control
+operations, after polynomial binary preprocessing.  Packed indices and
+integer costs must also be charged.  The implementation's global bit columns
+and arrays can depend on $N$, even if few slots remain live.  Thus a live-only
+bound must first account for compaction or the size of the allocated arrays.
+The component coefficient engine costs $2^{O(k)}\operatorname{poly}(k)$ per
+operation, giving an explicit bound polynomial in $N,S$ and exponential in
+$k$.  None of these statements bounds necessary object multiplicity.
+
+Optional diagnostic mode additionally computes all of $I',P',H'$ and checks
+the eight displayed identities in the full cobordism algebra.  It is excluded
+from timed production reductions.  If the whole differential is scalar and
+diagnostics are disabled, the kernel obtains quantum-resolved homology
+multiplicities directly and avoids constructing unused contraction maps.
+
+\subsection{Adaptive scheduling and installation}
+The eager policy transfers each stage.  The adaptive policy first allows
+$\max(256,4M)$ candidate Schur update pairs, where $M$ is the live count at
+stage entry.  The existing sparse eliminator pauses only between complete
+pivots and clears its candidate queues.  Full transfer then consumes that
+partially reduced complex, retaining completed cancellations.  Counters
+distinguish stages, actual switches, coefficient attempts, identity shortcuts,
+and scalar-only reductions.
+
+The maintained adapter prepares the new incoming-edge index before replacing
+any differential arrays, checks the shared deadline again, and installs the
+matching, degree, quantum, outgoing and incoming arrays together.  A failure
+while preparing the replacement preserves the current differential; composition
+caches may have acquired reusable entries.  Tests force both a final-boundary
+deadline expiration and an incoming-index allocation failure, then resume the
+same object successfully.  The kernel also polls during long composition
+sequences.  A global resource failure propagates from the raw API and becomes
+UNKNOWN in recognition; no rate of progress is a topological verdict.
+
+Direct constructors have an optional transfer-object ceiling; exceeding it
+resumes ordinary cancellation.  The public reduction modes retain the existing
+object and time ceilings.  Their policy is a heuristic, not a competitive
+running-time guarantee or a byte-memory budget.  In particular, a dense binary
+basis change can be more expensive than the sparse pivots it replaces and can
+change future fill.  The default remains \code{standard}.
+
+Both modes require minimum-fill pivots, bit coefficients, self-inverse
+cancellation, and one scan order.  Standard and component coefficient
+composition and tail finishing are supported.  Homological windows are
+rejected before early recognition certificates: their pruned allocation needs
+a separate quantum-label adapter.  Shared, saturated, twist and other
+alternative scanners are also rejected.  Existing disk-adaptive window modes
+remain available.
+
+\subsection{Validation and measurement scope}
+The delivered report 23 snapshot passes all 281 tests unchanged and its
+114 source Git blobs match the declared baseline.  Those full archive tests
+also cover additions outside this integration; passing them does not constitute
+integration of those additions.  Production adds 13 graded integration tests
+and two transactional-resource tests to the previous 411-test suite.
+The transfer audit uses 86 diagrams in 258 order presentations and checks
+1812 full stage contractions, with eight identities each.  Four scanner
+variants agree on raw ranks and three quantum-tracking variants agree on
+quantum-resolved ranks.  Synthetic controls retain nonzero minimal maps,
+test higher corrections, exercise capacity fallback and resume after sparse
+progress.  Independent set-coefficient scans provide an additional oracle
+on 18 small random diagrams.
+
+The maintained drivers are in \code{fast/graded\_research}; raw audit and
+source-provenance evidence is in \code{synthesis/data/graded-*}.
+Measurements use seven shuffled paired rounds, an identical standard A/A arm,
+fresh states and batched calls.  Whole-diagram timings cover complete raw scans
+including reduction setup, but exclude construction and order selection;
+they bypass recognition filters.  Synthetic timings cover the entire reduction
+stage and exclude cloning.  Synthetic controls are valid graded algebraic
+complexes, not proved realizations of classical knot prefixes.
+
+\input{tables/graded-transfer-integration.tex}
+
+The conditional complexity target remains explicit.  If all allocated
+intermediate state counts satisfy $N=n^{O(\log n)}$, all frontiers have
+$k=O(\log^2n)$, and there are polynomially many stages, these explicit
+operations fit a quasi-polynomial bound.  The integration proves neither
+universal hypothesis.  Section~\ref{sec:rational-arithmetic} shows why even a
+four-ended frontier can have large necessary expanded multiplicity.  The next
+algebraic refinement in report 24 prunes paths irrelevant to survivors and
+chooses propagation direction; its performance and topology obligations
+remain separate from this kernel's correctness.

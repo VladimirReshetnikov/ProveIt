@@ -265,3 +265,156 @@ if minimal:
         handle.write(r"\begin{center}"+'\n'+
             table('Input & Full/support & Full/minimal & Support/minimal & A/A','@{}lrrrr@{}',rows)+
             r"\end{center}"+'\n'+'Ratios are medians of paired times; larger than one favors the denominator.\n')
+
+corridor = load('../fast/results/corridor_integrated_20261008.json')
+if corridor:
+    rows = []
+    for row in corridor['actual']:
+        v = row['paired_ratios']
+        cells = ' & '.join(f"{v[k]:.3f}" for k in (
+            'standard_over_auto', 'standard_over_adaptive',
+            'standard_over_compressed', 'standard_over_control'))
+        switches = row['metrics']['adaptive']['stats'].get('corridor_switches', 0)
+        rows.append(f"{esc(row['name'])} & {cells} & {switches}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+        table('Raw scan & Std/corridor & Std/adapt. & Std/sparse & A/A & Switches',
+              '@{}lrrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Sparse denotes the component-scalar/Boolean-port configuration. '
+        'Ratios above one favor the denominator.\n')
+    rows = []
+    for row in corridor['kernels']:
+        v = row['paired_ratios']
+        cells = ' & '.join(f"{v[k]:.3f}" for k in (
+            'prior_over_auto', 'prior_over_compressed',
+            'standard_over_compressed', 'standard_over_control'))
+        rows.append(f"{esc(row['name'])} & {cells}" + r" \\")
+    content += (r"\begin{center}" + '\n' +
+        table('Constructed stage & Fwd/corridor & Fwd/sparse & Std/sparse & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Fwd denotes the maintained quantum-ordered forward transfer. '
+        'These timings include scalar and graph setup.\n')
+    with open('tables/corridor-transfer-integration.tex', 'w') as handle:
+        handle.write(content)
+
+garside = load('../fast/results/cyclic_garside_pipeline_20261008.json')
+garside_kernel = load('../fast/results/cyclic_garside_kernel_20261008.json')
+if garside and garside_kernel:
+    rows = []
+    for row in garside['cases']:
+        ratios = row['paired_ratios']
+        cells = ' & '.join('unknown' if ratios[k] is None else f'{ratios[k]:.3f}'
+                           for k in ('off_over_radius1', 'off_over_radius2', 'off_over_control'))
+        rows.append(f"{esc(row['name'])} & {row['crossings']} & {cells}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+        table('Recognition input & $n$ & Off/radius 1 & Off/radius 2 & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Ratios are medians of paired complete-recognition times; '
+        'values above one favor the enabled policy.\n')
+    rows = [f"{esc(row['case'])} & {row['n']} & {row['paired_speedup']:.3f} & "
+            f"{row['aa_ratio']:.3f}" + r" \\" for row in garside_kernel['summary']]
+    content += (r"\begin{center}" + '\n' +
+        table('Isolated compressor & $n$ & Repeated/shared & A/A', '@{}lrrr@{}', rows) +
+        r"\end{center}" + '\n' +
+        'Both compressor arms search all cuts without lower-bound pruning and '
+        'generate and replay only the winning certificate.\n')
+    with open('tables/cyclic-garside-integration.tex', 'w') as handle:
+        handle.write(content)
+
+surface_cover = load('../fast/results/surface_cover_20261008.json')
+if surface_cover:
+    rows = [f"{esc(row['name'])} & {row['sheets']} & {row['families']} & "
+            f"{row['expanded_over_compressed']:.2f} & {row['control_over_compressed']:.3f}" + r" \\"
+            for row in surface_cover['topology']]
+    content = (r"\begin{center}" + '\n' +
+        table('Supplied cover & Sheets & Records & Expanded/compressed & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Ratios are median paired times for complete cover topology; '
+        'sheet expansion is an independent oracle, not a competing compressed algorithm.\n')
+    rows = [f"{row['sheet_exponent']} & {row['marks']} & {1e3*row['query_seconds']:.3f} & "
+            f"{row['signature_json_bytes']} & {row['control_over_query']:.3f}" + r" \\"
+            for row in surface_cover['marked_queries']]
+    content += (r"\begin{center}" + '\n' +
+        table('Sheet exponent & Marks & Query (ms) & JSON bytes & A/A',
+              '@{}rrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Marked queries reuse a prepared index, with sheet count $W=2^{\\mathrm{exponent}}$. '
+        'Preparation and serialization are outside query timing.\n')
+    with open('tables/surface-cover-integration.tex', 'w') as handle:
+        handle.write(content)
+
+shadow = load('../fast/results/marked_shadow_20261008.json')
+if shadow:
+    by_case = {}
+    for row in shadow['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    rows = []
+    for name, scopes in by_case.items():
+        cells = []
+        for scope, arm in [('recognition', 'shadow'), ('recognition', 'control'),
+                           ('raw-decision', 'shadow'), ('raw-decision', 'euler'),
+                           ('raw-decision', 'control')]:
+            ratios = scopes[scope]['median_speedups']
+            cells.append('unknown' if ratios is None else f'{ratios[arm]:.3f}')
+        rows.append(esc(name) + ' & ' + ' & '.join(cells) + r' \\')
+    content = (r'\begin{center}\small' + '\n' +
+        table('Input & Full/shadow & A/A & Raw/shadow & Raw/Euler & A/A',
+              '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+        'Ratios are median paired times; values above one favor the denominator. '
+        'Full uses the previous default recognizer; raw uses the saturated scanner. '
+        'A/A compares identical implementations in each scope.\n')
+    with open('tables/determinant_benchmark.tex', 'w') as handle:
+        handle.write(content)
+
+closure = load('../fast/results/closure_reset_20261008.json')
+if closure:
+    by_case = {}
+    for row in closure['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    rows = []
+    for name, scopes in by_case.items():
+        cells = []
+        for scope, arm in [('recognition', 'closure'), ('raw-decision', 'closure'),
+                           ('raw-decision', 'no-reset'), ('raw-decision', 'euler'),
+                           ('raw-decision', 'control')]:
+            ratios = scopes[scope]['median_speedups']
+            cells.append('unknown' if ratios is None else f'{ratios[arm]:.3f}')
+        display = name.replace('report28_', 'R28 ')
+        rows.append(esc(display) + ' & ' + ' & '.join(cells) + r' \\')
+    content = (r'\begin{center}\small' + '\n' +
+        table('Input & Full/reset & Raw/reset & Raw/no reset & Raw/Euler & Raw A/A',
+              '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+        'Ratios are median paired times; values above one favor the denominator. '
+        'Full uses the previous default recognizer; raw uses the saturated scanner. '
+        'The no-reset arm retains closure observations but does not restart.\n')
+    with open('tables/closure_benchmark.tex', 'w') as handle:
+        handle.write(content)
+
+boundary = load('../fast/results/boundary_reuse_20261008.json')
+if boundary:
+    by_case = {}
+    for row in boundary['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    streams, pipelines = [], []
+    for name, scopes in by_case.items():
+        if 'euler-stream' in scopes:
+            euler = scopes['euler-stream']
+            e, s = euler['median_speedups'], scopes['shadow-stream']['median_speedups']
+            cells = [e['adaptive'], e['eager'], e['control'], s['boundary'], s['control']]
+            streams.append(str(euler['input']['suffix_crossings']) + ' & ' +
+                           ' & '.join(f'{v:.3f}' for v in cells) + r' \\')
+        else:
+            r = scopes['raw-euler']['median_speedups']
+            f = scopes['recognition-euler']['median_speedups']
+            cells = [r['adaptive'], r['control'], f['adaptive'], f['control']]
+            pipelines.append(esc(name) + ' & ' +
+                             ' & '.join(f'{v:.3f}' for v in cells) + r' \\')
+    for filename, heading, columns, rows in [
+        ('boundary_streams', '$n$ & Euler adaptive & Euler eager & A/A & Tait boundary & A/A',
+         '@{}rrrrrr@{}', streams),
+        ('boundary_pipeline', 'Input & Raw adaptive & A/A & Full adaptive & A/A',
+         '@{}lrrrr@{}', pipelines),
+    ]:
+        with open(f'tables/{filename}.tex', 'w') as handle:
+            handle.write(r'\begin{center}\small' + '\n' + table(heading, columns, rows) +
+                         r'\end{center}' + '\n' +
+                         'Ratios are median paired direct/alternative times; values above one '
+                         'favor the alternative. A/A compares identical direct implementations.\n')

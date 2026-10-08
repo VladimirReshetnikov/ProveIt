@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: give nativeFast_derivativeSystem_to_formal a local
+400000-heartbeat budget for Lean 4.32 reduction of dependent quotient types.
+The upstream theorem statements and proof text are otherwise unchanged.
+-/
 import OAI.Combinatorics.Progressions.Linear.FastCoefficientRelativeKernel
 import OAI.Combinatorics.Progressions.Linear.RealGradedFastCoefficientKernel
 
@@ -62,6 +67,7 @@ theorem realFirstCoefficientGradedPolynomial_basisLift {K : Type*}
 
 variable [Fintype σ] [DecidableEq σ]
 
+set_option maxHeartbeats 400000 in
 theorem nativeFast_derivativeSystem_to_formal
     (hW : BasisGradedSubmodule bW ωW W.toSubmodule)
     (g : F.realFastDiagonalSubgroup (fun _ : σ => 1) Wf)

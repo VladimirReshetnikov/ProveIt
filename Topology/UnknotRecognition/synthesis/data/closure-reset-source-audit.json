@@ -1,0 +1,44 @@
+{
+  "scope": "Source audit of delivered report 28 against its stated revision and current production",
+  "revision": "13f6dbfdd32c152bec2d01af23b9eea2a12191ae",
+  "current": "e6f9755213cd9f710eff2767d8328085bcc5e7c4",
+  "rows": [
+    {
+      "file": "Topology/UnknotRecognition/synthesis/continuations.tex",
+      "expected_blob": "23f718e6171f81249d435859b6e23bd27e2ccc2a",
+      "blob_at_stated_revision": "23f718e6171f81249d435859b6e23bd27e2ccc2a",
+      "pin_matches_revision": true
+    },
+    {
+      "file": "Topology/UnknotRecognition/fast/fastunknot/scan_fast.py",
+      "expected_blob": "6c731d0f4d2c2c8bbe513e6b7495cf5dbdc8dc88",
+      "blob_at_stated_revision": "6c731d0f4d2c2c8bbe513e6b7495cf5dbdc8dc88",
+      "pin_matches_revision": true,
+      "fixture_ast_matches_current": true,
+      "differing_methods": []
+    },
+    {
+      "file": "Topology/UnknotRecognition/fast/fastunknot/planar.py",
+      "expected_blob": "1078526e7e7dbaf0b7267728105d870d94136769",
+      "blob_at_stated_revision": "92135876d8e91ae297ea00f786295aae536ec6ad",
+      "pin_matches_revision": false,
+      "fixture_ast_matches_current": false,
+      "differing_methods": [
+        "compose"
+      ]
+    },
+    {
+      "file": "Topology/UnknotRecognition/fast/fastunknot/barcode_scan.py",
+      "expected_blob": "5733b0c66b935cd427ad7578a11461f54aab20af",
+      "blob_at_stated_revision": "5733b0c66b935cd427ad7578a11461f54aab20af",
+      "pin_matches_revision": true
+    }
+  ],
+  "upstream_audit_adaptation": "Original experiments/audit.py with src plus current fast imports, output paths redirected, scope corrected; original delivered files unchanged",
+  "geometry_fixture_difference": "compose omits zero-factor, identity-factor, and equal-endomorphism-factor fast paths; all other normalized function ASTs match",
+  "sources": {
+    "reports/28/experiments/audit.py": "d059a58db069a66a90de31651d5ec6bcf9ee36cec2af87c7b6cce654ca538aff",
+    "fast/closure_research/audit_upstream.py": "7ecbca6934d8f8b97005ae6705788585189a9787e5d3ab5b030205ec409d10c4",
+    "reports/28/provenance/sources.json": "3bcf0ecd95442643d78309567f25ebd859cd79faa044c0806bc5e309339de7ba"
+  }
+}
