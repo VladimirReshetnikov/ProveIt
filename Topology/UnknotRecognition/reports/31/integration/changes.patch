@@ -1,0 +1,2704 @@
+diff --git a/Topology/UnknotRecognition/fast/audit_tensor_jones.py b/Topology/UnknotRecognition/fast/audit_tensor_jones.py
+new file mode 100644
+index 0000000..51fc0ff
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/audit_tensor_jones.py
+@@ -0,0 +1,91 @@
++"""Independent cube and discrete-turning audit for the full tensor polynomial."""
++import argparse
++from hashlib import sha256
++import json
++from pathlib import Path
++import platform
++import random
++import sys
++
++from fastunknot import Diagram
++from fastunknot.tensor_jones import rotation_cochain, tensor_jones
++from fastunknot.separator_order import verify_width_bounded_order
++from check_potts_independent import laurent_jones
++
++ROOT = Path(__file__).resolve().parent
++sys.path.insert(0, str(ROOT/"tests"))
++from test_tensor_jones import diagrams, independent_turning_numbers, coefficients
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", type=Path, required=True)
++    args = parser.parse_args()
++    rng = random.Random(2643)
++    cases = [(f"random-{i}", d.pd) for i, (d, _) in enumerate(diagrams(100, 2644))]
++    for name in ("trefoil", "conway", "kinoshita_terasaka", "hard_unknot_8"):
++        d = Diagram.from_json(json.loads((ROOT/"examples"/(name+".json")).read_text()))
++        cases.append((name, d.pd))
++    cases.append(("empty", []))
++    rows, comparisons, circles, smoothings = [], 0, 0, 0
++    for name, pd in cases:
++        cube = {-e: c for e, c in laurent_jones(Diagram.from_pd(pd)).items()}
++        variants = []
++        for mirrored in (False, True):
++            d = Diagram.from_pd(pd)
++            if mirrored:
++                d = d.mirror()
++            labels = sorted({x for row in d.pd for x in row})
++            renamed = dict(zip(labels, rng.sample(range(-1_000_000, 1_000_000), len(labels))))
++            shuffled = [tuple(renamed[x] for x in row) for row in d.pd]
++            rng.shuffle(shuffled)
++            d = Diagram.from_pd(shuffled)
++            expected = {-e if mirrored else e: c for e, c in cube.items()}
++            order = list(range(d.crossings))
++            rng.shuffle(order)
++            for outer in (0, len(d.faces())-1 if d.crossings else 0):
++                result = tensor_jones(d, order=order, outer_face=outer)
++                assert coefficients(result) == expected
++                integer_result = tensor_jones(d, order=order, outer_face=outer,
++                                               arithmetic="integer")
++                assert coefficients(integer_result) == expected
++                global_result = tensor_jones(d, order=order, outer_face=outer,
++                                             arithmetic="integer-global")
++                assert coefficients(global_result) == expected
++                if d.crossings:
++                    assert verify_width_bounded_order(d.pd, result["order_certificate"])
++                comparisons += 3
++                turn_count = smoothing_count = 0
++                if d.crossings <= 10:
++                    beta = rotation_cochain(d, outer_face=outer)
++                    for state in range(1 << d.crossings):
++                        turns = independent_turning_numbers(d, state, beta)
++                        assert all(abs(turn) == 4 for turn in turns)
++                        smoothing_count += 1
++                        turn_count += len(turns)
++                    circles += turn_count
++                    smoothings += smoothing_count
++                variants.append(dict(mirrored=mirrored, pd=d.pd, supplied_order=order,
++                                     outer_face=outer, result=result,
++                                     integer_result=integer_result,
++                                     global_integer_result=global_result,
++                                     circle_rotations_checked=turn_count,
++                                     smoothing_states_checked=smoothing_count))
++        rows.append(dict(name=name, crossings=len(pd), variants=variants))
++    paths = ["audit_tensor_jones.py", "fastunknot/tensor_jones.py",
++             "fastunknot/separator_order.py", "tests/test_tensor_jones.py",
++             "check_potts_independent.py"]
++    result = dict(algorithm="binary-rotation-tensor-v1", seed=2643, input_seed=2644,
++                  python=sys.version, platform=platform.platform(),
++                  source_sha256={p: sha256((ROOT/p).read_bytes()).hexdigest() for p in paths},
++                  independent_polynomial_comparisons=comparisons,
++                  independent_smoothing_states=smoothings,
++                  independent_circle_rotations=circles, rows=rows)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2)+"\n")
++    print(json.dumps({k: result[k] for k in ("independent_polynomial_comparisons",
++                     "independent_smoothing_states", "independent_circle_rotations")}))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/benchmark_cocycle_seed.py b/Topology/UnknotRecognition/fast/benchmark_cocycle_seed.py
+new file mode 100644
+index 0000000..e8d3af1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_cocycle_seed.py
+@@ -0,0 +1,215 @@
++"""Reproduce certified cocycle-seed measurements, including genuine manifolds.
++
++Run from fast/: python benchmark_cocycle_seed.py --output results/cocycle_seed.json
++Add --regina to audit finite trefoil/figure-eight exteriors if Regina is installed.
++The archive02 adapter audit is used when that report is present in the repository.
++The product solid-torus family isolates binary-height scaling; it is deliberately
++constructed by gauge perturbation and is not a random-knot performance corpus.
++"""
++
++from __future__ import annotations
++
++import argparse
++import importlib
++import json
++from math import gcd
++from pathlib import Path
++import platform
++import random
++import sys
++import time
++
++from fastunknot.cocycle_seed import (
++    face_pairing_data, minimize_disc_seed, optimize_triangulated_cocycle,
++    check_seed_certificate, check_glued_normal_coordinates,
++)
++
++
++def product_solid_torus(steps=3, amplitude=0, seed=2718):
++    """Explicit staircase triangulation of triangle x a steps-edge circle.
++
++    Its 3*steps tetrahedra triangulate D^2 x S^1. Local heights are the pullback
++    of a primitive cocycle on the circle, plus an integral GLOBAL vertex
++    potential. Therefore every amplitude gives the same primitive class.
++    """
++    if type(steps) is not int or steps < 3 or type(amplitude) is not int:
++        raise ValueError('steps must be >=3 and amplitude integral')
++    tetrahedra, heights = [], []
++    rng = random.Random(seed)
++    perturbation = [rng.randrange(-11, 12) * amplitude for _ in range(3 * steps)]
++    for k in range(steps):
++        bottom, top = [3 * k + i for i in range(3)], [3 * ((k + 1) % steps) + i
++                                                       for i in range(3)]
++        weight = 1 if k == steps - 1 else 0
++        prism = ((bottom[0], bottom[1], bottom[2], top[2]),
++                 (bottom[0], bottom[1], top[1], top[2]),
++                 (bottom[0], top[0], top[1], top[2]))
++        top_set = set(top)
++        for tet in prism:
++            tetrahedra.append(tet)
++            heights.append(tuple((weight if v in top_set else 0) + perturbation[v]
++                                 for v in tet))
++    gluings = [[None] * 4 for _ in tetrahedra]
++    seen = {}
++    for t, tet in enumerate(tetrahedra):
++        for face in range(4):
++            key = tuple(sorted(tet[i] for i in range(4) if i != face))
++            if key not in seen:
++                seen[key] = (t, face)
++                continue
++            s, other_face = seen.pop(key)
++            p = tuple(other_face if i == face else tetrahedra[s].index(tet[i])
++                      for i in range(4))
++            inverse = tuple(p.index(i) for i in range(4))
++            gluings[t][face], gluings[s][other_face] = (s, p), (t, inverse)
++    return tuple(tuple(row) for row in gluings), tuple(heights)
++
++
++def load_archive_triangulation():
++    archive = Path(__file__).resolve().parent.parent / 'reports' / '02'
++    if not (archive / 'unknotlab' / 'normal.py').exists():
++        return None
++    if str(archive) not in sys.path:
++        sys.path.insert(0, str(archive))
++    return importlib.import_module('unknotlab.normal').Triangulation
++
++
++def regina_triangulation(regina, gluings):
++    pairs = []
++    for t, row in enumerate(gluings):
++        for f, pairing in enumerate(row):
++            if pairing is not None:
++                s, p = pairing
++                if (t, f) < (s, p[f]):
++                    pairs.append((t, f, s, regina.Perm4(*p)))
++    return regina.Triangulation3.fromGluings(len(gluings), pairs)
++
++
++def regina_gluings(tri):
++    rows = []
++    for t in range(tri.size()):
++        tet = tri.tetrahedron(t)
++        row = []
++        for face in range(4):
++            adjacent = tet.adjacentTetrahedron(face)
++            if adjacent is None:
++                row.append(None)
++            else:
++                p = tet.adjacentGluing(face)
++                row.append((adjacent.index(), tuple(p[i] for i in range(4))))
++        rows.append(tuple(row))
++    return tuple(rows)
++
++
++def regina_surface_summary(regina, triangulation, coordinates):
++    surface = regina.NormalSurface(triangulation, regina.NormalCoords.Standard,
++                                   [value for row in coordinates for value in row])
++    return {'manifold_valid': triangulation.isValid(),
++            'manifold_orientable': triangulation.isOrientable(),
++            'manifold_ideal': triangulation.isIdeal(),
++            'homology': str(triangulation.homology()),
++            'surface_connected': surface.isConnected(),
++            'surface_orientable': surface.isOrientable(),
++            'surface_euler_characteristic': str(surface.eulerChar()),
++            'surface_has_real_boundary': surface.hasRealBoundary(),
++            'surface_boundary_components': surface.countBoundaries()}
++
++
++def run(include_regina=False):
++    result = {'schema': 'fastunknot.cocycle-seed-benchmark.v1',
++              'python': platform.python_version(), 'cases': [],
++              'scope': 'restricted normal-seed optimization, not unknot recognition timing'}
++    regina = importlib.import_module('regina') if include_regina else None
++    if regina is not None:
++        regina.RandomEngine.reseedWithDefault()
++        result['regina_version'] = regina.versionString()
++    for steps, bits in ((3, 0), (3, 16), (3, 256), (3, 4096),
++                        (8, 16), (16, 16), (32, 16)):
++        amplitude = 0 if bits == 0 else (1 << bits) + 17
++        gluings, heights = product_solid_torus(steps, amplitude)
++        gluings, vertices, heights = face_pairing_data(gluings, heights)
++        started = time.perf_counter()
++        certificate = minimize_disc_seed(vertices, heights)
++        elapsed = time.perf_counter() - started
++        verify_start = time.perf_counter()
++        check_seed_certificate(vertices, heights, certificate)
++        check_glued_normal_coordinates(gluings, certificate.normal_coordinates)
++        verify_elapsed = time.perf_counter() - verify_start
++        record = {'name': f'product_torus_{steps}_heightbits_{bits}',
++                  'manifold': 'D^2 x S^1 by explicit product construction',
++                  'class': 'primitive circle generator plus exact vertex coboundary',
++                  'seconds': elapsed, 'verification_seconds': verify_elapsed,
++                  'initial_disc_count': certificate.initial_disc_count,
++                  'optimal_disc_count': certificate.disc_count,
++                  'statistics': certificate.statistics,
++                  'certificate': certificate.as_dict()}
++        if regina is not None:
++            tri = regina_triangulation(regina, gluings)
++            record['regina'] = regina_surface_summary(regina, tri,
++                                                     certificate.normal_coordinates)
++        result['cases'].append(record)
++    # This also demonstrates an input where binary coordinate growth is
++    # unavoidable and the vertex gauge has no freedom: all corners share v.
++    huge = 1 << 4096
++    vertices, heights = ((0, 0, 0, 0),), ((0, huge, 3 * huge, 2 * huge),)
++    started = time.perf_counter()
++    certificate = minimize_disc_seed(vertices, heights)
++    result['one_vertex_binary_case'] = {
++        'seconds': time.perf_counter() - started,
++        'initial_disc_bits': certificate.initial_disc_count.bit_length(),
++        'optimal_disc_bits': certificate.disc_count.bit_length(),
++        'statistics': certificate.statistics,
++        'scope': 'local optimizer input; no manifold is asserted for this one row'}
++    if regina is not None:
++        Triangulation = load_archive_triangulation()
++        if Triangulation is None:
++            result['finite_exterior_audit'] = 'archive02 triangulation validator unavailable'
++        else:
++            exterior_records = []
++            for name, tri in (('trefoil', regina.ExampleLink.trefoil().complement()),
++                              ('figure_eight', regina.Example3.figureEight())):
++                tri.idealToFinite()
++                gluings = regina_gluings(tri)
++                validated = Triangulation(gluings)
++                basis = validated.rational_cohomology_basis()
++                if len(basis) != 1:
++                    raise ArithmeticError('named knot exterior does not have rank-one H^1')
++                started = time.perf_counter()
++                certificate, surface = optimize_triangulated_cocycle(validated, basis[0])
++                elapsed = time.perf_counter() - started
++                record = {'name': name, 'tetrahedra': tri.size(),
++                          'vertices': tri.countVertices(),
++                          'finite_triangulation_isosig': tri.isoSig(),
++                          'gluings': gluings,
++                          'initial_tree_gauge_cocycle': basis[0],
++                          'tree_gauge_coordinate_gcd': gcd(*basis[0]),
++                          'certificate': certificate.as_dict(),
++                          'provenance': 'Regina named example, idealToFinite, '
++                                        'archive02 exact tree-gauge rational cohomology basis',
++                          'seconds': elapsed,
++                          'initial_disc_count': certificate.initial_disc_count,
++                          'optimal_disc_count': certificate.disc_count,
++                          'statistics': certificate.statistics,
++                          'regina': regina_surface_summary(regina, tri, surface.coordinates)}
++                exterior_records.append(record)
++            result['finite_exterior_audit'] = exterior_records
++    return result
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--regina', action='store_true')
++    parser.add_argument('--output', type=Path)
++    args = parser.parse_args()
++    result = run(args.regina)
++    text = json.dumps(result, indent=2)
++    if args.output:
++        args.output.parent.mkdir(parents=True, exist_ok=True)
++        args.output.write_text(text + '\n')
++        print(json.dumps({'output': str(args.output), 'cases': len(result['cases'])}))
++    else:
++        print(text)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/benchmark_overlap_witness.py b/Topology/UnknotRecognition/fast/benchmark_overlap_witness.py
+new file mode 100644
+index 0000000..e5bb901
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_overlap_witness.py
+@@ -0,0 +1,211 @@
++"""Paired audit of optional strict-majority witnesses and cyclic extension.
++
++The default recognizer is unchanged. The full-query arm installs the optional
++helper in the existing compressed-overlap dispatch; local and residual probes
++report their narrower scopes separately. Limits remain censored observations.
++"""
++import argparse
++from contextlib import contextmanager
++from copy import deepcopy
++import hashlib
++import json
++from pathlib import Path
++import platform
++import random
++from statistics import median
++import sys
++from time import perf_counter
++from unittest.mock import patch
++
++from benchmark_compressed_words import cases
++from benchmark_whitehead_power import historical
++from fastunknot import Diagram, recognize, compressed_overlap, compressed_search
++from fastunknot.compressed_words import WordArena, CompressedLimit
++from fastunknot.group_certificate import (
++    _Budget, _certificate_version, _presentation, _reduce, verify_group_certificate,
++)
++from fastunknot.relator_overlap import apply_overlap
++
++
++BASELINE = '8a95834940cf77cdab1b39571ffc102ca8b6bede'
++ROOT = Path(__file__).resolve().parent
++TAIL = [1, 1, 2, 2, 3, 3, 1, 3, 2, 1, 2, 3]
++
++
++def residual():
++    """A real Gordian residual reached by a saved independently replayable prefix."""
++    record = json.loads((ROOT/'tests/fixtures/gordian_relator_power.json').read_text())
++    diagram, original = Diagram.from_pd(record['pd']), record['certificate']
++    index = next(i for i, move in enumerate(original['moves']) if move['kind'] == 'relator_power')
++    prefix = deepcopy(original['moves'][:index])
++    budget = _Budget(lambda: None, 200000, 20000000)
++    alive, words = _presentation(diagram, budget)
++    for move in prefix:
++        if move['kind'] == 'relator':
++            apply_overlap(words, move, budget, _reduce)
++            continue
++        assert move['kind'] == 'eliminate'
++        relation, g = move['relation'], move['generator']
++        word = words[relation]
++        pos = next(i for i, x in enumerate(word) if abs(x) == g)
++        rest = word[pos+1:]+word[:pos]
++        value = [-x for x in rest[::-1]] if word[pos] > 0 else rest
++        inverse = [-x for x in value[::-1]]
++        words[relation] = []
++        alive.remove(g)
++        words = [_reduce([y for x in w for y in
++                 (value if x == g else inverse if x == -g else [x])], budget) for w in words]
++    return diagram, original, prefix, alive, words
++
++
++def build_family(arena, family, bits):
++    n = 2**bits
++    if family == 'gain-tradeoff':
++        words = [list(range(1, 9)),
++                 list(range(1, 6))+[9, 10, 11]+list(range(1, 8))+[12]]
++        return [arena.from_word(word) for word in words]
++    run = arena.power(arena.from_word([1, 2]), n)
++    tail = arena.from_word(TAIL)
++    if family == 'prefix':
++        return [arena.concat(run, arena.from_word([x]+TAIL+[y])) for x, y in ((3, 1), (1, 2))]
++    if family == 'suffix':
++        return [arena.concat(arena.from_word([x]+TAIL+[y]), run) for x, y in ((3, 1), (1, 2))]
++    if family == 'shared-tail-control':
++        return [arena.concat(run, arena.concat(arena.letter(x), tail)) for x in (3, 1)]
++    assert family == 'no-majority'
++    return [run, arena.power(arena.from_word([1, 1, 2, 2]), n)]
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--rounds', type=int, default=5)
++    parser.add_argument('--queries-only', action='store_true')
++    parser.add_argument('--kernels-only', action='store_true')
++    args = parser.parse_args()
++    if args.rounds < 1 or args.queries_only and args.kernels_only:
++        parser.error('positive rounds and at most one scope restriction are required')
++    old = historical('compressed_overlap', BASELINE).cyclic_overlap_move
++    current = compressed_overlap.cyclic_overlap_move
++
++    def witness(arena, roots):
++        return current(arena, roots, witness_first=True)
++
++    @contextmanager
++    def environment(arm):
++        helper = witness if arm == 'witness' else old
++        with patch.object(compressed_overlap, 'cyclic_overlap_move', helper):
++            yield helper
++
++    rng, rows, operations, residuals = random.Random(3110), [], [], []
++    arms = ['baseline', 'control', 'witness']
++    if not args.kernels_only:
++        for name, diagram in cases():
++            samples = []
++            for repetition in range(args.rounds+1):
++                order, measurements = arms[:], {}
++                rng.shuffle(order)
++                for arm in order:
++                    with environment(arm):
++                        start = perf_counter()
++                        result = recognize(Diagram.from_pd(diagram.pd), use_group=True,
++                            group_compressed_search=True, group_relators=True,
++                            group_seconds=15, group_max_work=20000000, seconds=18, max_objects=50000)
++                        elapsed = perf_counter()-start
++                    group = result.evidence.get('group', {})
++                    measurements[arm] = dict(seconds=elapsed, status=result.status, method=result.method,
++                        search_stats=group.get('search_stats'), certificate_sha256=hashlib.sha256(
++                            json.dumps(group.get('certificate'), sort_keys=True).encode()).hexdigest())
++                    assert result.status == 'UNKNOT'
++                assert len({v['certificate_sha256'] for v in measurements.values()}) == 1
++                if repetition:
++                    samples.append(dict(order=order, measurements=measurements))
++            rows.append(dict(name=name, pd=diagram.pd, samples=samples,
++                median_seconds={a: median(s['measurements'][a]['seconds'] for s in samples) for a in arms}))
++            print(name, rows[-1]['median_seconds'], flush=True)
++    if not args.queries_only:
++        for family in ('prefix', 'suffix', 'shared-tail-control', 'no-majority', 'gain-tradeoff'):
++            for bits in ((0,) if family == 'gain-tradeoff' else (8, 32, 500)):
++                samples = []
++                for repetition in range(args.rounds+1):
++                    order, measurements = arms[:], {}
++                    rng.shuffle(order)
++                    for arm in order:
++                        with environment(arm) as helper:
++                            start = perf_counter()
++                            arena = WordArena(max_work=2000000)
++                            roots = build_family(arena, family, bits)
++                            before = sum(arena.lengths[r] for r in roots)
++                            move = None
++                            try:
++                                assert compressed_overlap.whole_donor_move(arena, roots) is None
++                                move = helper(arena, roots)
++                                if family == 'no-majority':
++                                    assert move is None
++                                else:
++                                    assert move is not None
++                                    if family in ('prefix', 'suffix'):
++                                        assert move['overlap'] == 2*(2**bits)
++                                    if family == 'shared-tail-control':
++                                        assert move['overlap'] == 2*(2**bits)+len(TAIL)
++                                    compressed_overlap.apply_cyclic_overlap(arena, roots, move)
++                                status, reason = 'COMPLETE', None
++                            except CompressedLimit as exc:
++                                status, reason = 'LIMIT', str(exc)
++                            measurements[arm] = dict(seconds=perf_counter()-start, status=status,
++                                reason=reason, move=move, nodes=len(arena.rules)-1,
++                                gain=before-sum(arena.lengths[r] for r in roots) if status == 'COMPLETE' else None,
++                                stats=arena.stats.copy())
++                    if repetition:
++                        samples.append(dict(order=order, measurements=measurements))
++                operations.append(dict(family=family, bits=bits, samples=samples))
++                print(family, bits, {a:(measurements[a]['status'],
++                    median(s['measurements'][a]['seconds'] for s in samples)) for a in arms}, flush=True)
++        diagram, original, prefix, initial_alive, words = residual()
++        for repetition in range(args.rounds+1):
++            order, measurements = arms[:], {}
++            rng.shuffle(order)
++            for arm in order:
++                with environment(arm) as helper:
++                    start = perf_counter()
++                    arena = WordArena(max_work=20000000)
++                    roots = [arena.reduce(arena.from_word(word)) for word in words]
++                    alive, moves = set(initial_alive), deepcopy(prefix)
++                    move = helper(arena, roots)
++                    assert move is not None
++                    compressed_overlap.apply_cyclic_overlap(arena, roots, move)
++                    moves.append(move)
++                    assert compressed_search._search(arena, roots, alive, moves, relator_moves=True)
++                    elapsed = perf_counter()-start
++                certificate = dict(original, moves=moves, version=_certificate_version(moves),
++                                   remaining_generator=next(iter(alive)))
++                replays = {}
++                for compressed in (False, True):
++                    replay_start = perf_counter()
++                    assert verify_group_certificate(diagram, certificate,
++                        compressed=compressed, max_work=20000000)
++                    replays['compressed' if compressed else 'literal'] = perf_counter()-replay_start
++                measurements[arm] = dict(seconds=elapsed, status='COMPLETE', first_move=move,
++                    moves=len(moves), nodes=len(arena.rules)-1, stats=arena.stats.copy(),
++                    replay_seconds=replays, certificate=certificate)
++            if repetition:
++                residuals.append(dict(order=order, measurements=measurements))
++        print('gordian-residual', {a:median(s['measurements'][a]['seconds'] for s in residuals)
++              for a in arms}, flush=True)
++    result = dict(python=sys.version, platform=platform.platform(), baseline_commit=BASELINE,
++        seed=3110, measured_rounds=args.rounds, excluded_warmups=1,
++        kernel_max_work=2000000, query_max_work=20000000, max_nodes=100000,
++        policy='Historical global-LCS default retained; witness_first is an explicit optional helper',
++        query_scope='Fresh PD, full recognition and independent replay; digests checked outside timing',
++        operation_scope='Grammar construction, unsuccessful whole-donor check, cyclic partial query and checked application',
++        residual_scope='Fresh compression of real reachable Gordian residual, witness move and search continuation; existing prefix recovery excluded',
++        replay_scope='Complete reconstructed original-PD certificate; each backend measured independently outside residual timer',
++        gain_warning='Threshold-plus-maximal-extension can select smaller gain at a different alignment; gain-tradeoff records an explicit instance',
++        censoring='LIMIT is incomplete search, not a negative result or completed-time denominator',
++        rows=rows, operations=operations, residual_samples=residuals)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2)+'\n')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/benchmark_tensor_jones.py b/Topology/UnknotRecognition/fast/benchmark_tensor_jones.py
+new file mode 100644
+index 0000000..f518cb5
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_tensor_jones.py
+@@ -0,0 +1,120 @@
++"""Paired complete full-Jones queries: faithful Potts, A/A, and binary tensors.
++
++All arms return the same full polynomial and construct a fresh Diagram. Timing
++includes every order-preparation step. The integer-ordinary arm is a deliberate
++ordering ablation without a universal width promise. Capped measurements are
++retained and excluded from completed-query speedup ratios. These are invariant
++queries; no claim is made about complete unknot-recognition speed.
++"""
++import argparse
++from hashlib import sha256
++import json
++from pathlib import Path
++import platform
++import random
++from statistics import median
++import sys
++from time import perf_counter
++
++from fastunknot import Diagram
++from fastunknot.faithful_jones import faithful_potts_exact
++from fastunknot.filters import FilterLimit
++from fastunknot.geometry import ScanLimit
++from fastunknot.integer_codec import json_safe
++from fastunknot.tensor_jones import tensor_jones
++from check_potts_independent import laurent_jones
++from separator_research.graphs import tree_medial
++
++ROOT = Path(__file__).resolve().parent
++sys.path.insert(0, str(ROOT/"tests"))
++from disk_grid import descending_grid
++
++
++def coefficients(result):
++    return {e: int(c, 16) for e, c in result["jones_polynomial"]["coefficients_hex"]}
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", type=Path, required=True)
++    parser.add_argument("--rounds", type=int, default=7)
++    parser.add_argument("--seconds", type=float, default=2)
++    args = parser.parse_args()
++    if args.rounds < 1 or args.seconds <= 0:
++        parser.error("rounds and seconds must be positive")
++    rng = random.Random(2645)
++    cases = []
++    for name in ("trefoil", "conway", "kinoshita_terasaka", "hard_unknot_8",
++                 "stress_braid5_36"):
++        pd = Diagram.from_json(json.loads((ROOT/"examples"/(name+".json")).read_text())).pd
++        cases.append((name, pd, None))
++    cases += [(f"weaving-{m}", Diagram.from_braid(3, [1, -2]*m).pd, None)
++              for m in (5, 13, 17)]
++    cases += [(f"tree-{h}", tree_medial(h).pd, None) for h in (6, 7)]
++    for m in (4, 6, 8, 10):
++        cases.append((f"grid-{m}", descending_grid(m), None))
++    pd = descending_grid(8)
++    supplied = list(range(len(pd)))
++    rng.shuffle(supplied)
++    cases.append(("grid-8-shuffled", pd, supplied))
++    rows = []
++    for name, pd, order in cases:
++        oracle = ({-e: c for e, c in laurent_jones(Diagram.from_pd(pd)).items()}
++                  if len(pd) <= 12 else None)
++        samples = []
++        for repetition in range(args.rounds+1):
++            arms = ["faithful", "control", "laurent", "integer-global", "integer", "integer-ordinary"]
++            rng.shuffle(arms)
++            elapsed, results, polynomials = {}, {}, []
++            for arm in arms:
++                start = perf_counter()
++                def check():
++                    if perf_counter()-start > args.seconds:
++                        raise ScanLimit("complete polynomial query time allowance")
++                try:
++                    options = dict(order=order, max_states=4096, max_transitions=200000,
++                                   check=check)
++                    if arm in ("faithful", "control"):
++                        result = faithful_potts_exact(Diagram.from_pd(pd),
++                                                      include_polynomial=True, **options)
++                    else:
++                        result = tensor_jones(Diagram.from_pd(pd),
++                                              arithmetic=arm if arm in ("laurent", "integer-global") else "integer",
++                                              certified=arm != "integer-ordinary", **options)
++                    polynomial = coefficients(result)
++                    if oracle is not None:
++                        assert polynomial == oracle
++                    polynomials.append(polynomial)
++                    results[arm] = dict(status="COMPLETE", result=result)
++                except (FilterLimit, ScanLimit) as error:
++                    results[arm] = dict(status="CAPPED", reason=str(error),
++                                        transitions=getattr(error, "transitions", None),
++                                        peak_states=getattr(error, "peak_states", None))
++                elapsed[arm] = perf_counter()-start
++            assert all(p == polynomials[0] for p in polynomials)
++            if repetition:
++                samples.append(dict(arm_order=arms, seconds=elapsed, results=results))
++        complete = [arm for arm in arms if all(s["results"][arm]["status"] == "COMPLETE"
++                                               for s in samples)]
++        ratios = ({arm: median(s["seconds"]["faithful"]/s["seconds"][arm] for s in samples)
++                   for arm in complete if arm != "faithful"} if "faithful" in complete else {})
++        row = dict(name=name, crossings=len(pd), pd=pd, supplied_order=order,
++                   independent_cube_checked=oracle is not None, samples=samples,
++                   complete_arms=complete, median_faithful_over=ratios,
++                   median_seconds={arm: median(s["seconds"][arm] for s in samples) for arm in arms})
++        rows.append(row)
++        print(name, {a: round(1000*t, 3) for a, t in row["median_seconds"].items()},
++              complete, flush=True)
++    paths = ["benchmark_tensor_jones.py", "fastunknot/tensor_jones.py",
++             "fastunknot/faithful_jones.py", "fastunknot/potts_exact.py",
++             "fastunknot/adaptive_potts.py", "fastunknot/separator_order.py"]
++    result = dict(seed=2645, rounds=args.rounds, warmups=1,
++                  seconds_per_query=args.seconds, max_states=4096, max_transitions=200000,
++                  python=sys.version, platform=platform.platform(), scope=__doc__,
++                  source_sha256={p: sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}, rows=rows)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(json_safe(result), indent=2)+"\n")
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+index ca54a7b..783de94 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -68,6 +68,7 @@ OPTIONS = {
+         ("--group-max-work", int, 2000000, None, "work allowance for each group search and independent replay"),
+         ("--group-compressed", None, False, None, "enable group certificates with exact compressed-word replay"),
+         ("--group-compressed-search", None, False, None, "enable compressed group search and replay; overlaps expand within a fixed cap"),
++        ("--group-overlap-witness", None, False, None, "enable compressed relator search with threshold-first cyclic overlap witnesses"),
+         ("--group-adaptive", None, False, None, "start group search explicitly and switch to compressed words before exceeding the letter allowance"),
+         ("--group-switch-letters", int, None, None, "enable adaptive group search with this earlier substitution-size threshold"),
+         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
+@@ -312,12 +313,14 @@ def main(argv: list[str] | None = None) -> int:
+                            use_rational=not args.no_rational,
+                            use_treewidth_two=args.treewidth_two, treewidth_two_seconds=args.treewidth_two_seconds,
+                            use_regina=args.regina, regina_seconds=args.regina_seconds,
+-                           use_group=args.group or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_adaptive or args.group_switch_letters is not None,
++                           use_group=args.group or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_overlap_witness or args.group_adaptive or args.group_switch_letters is not None,
+                            group_seconds=args.group_seconds, group_compressed=args.group_compressed,
+-                           group_compressed_search=args.group_compressed_search,
++                           group_compressed_search=args.group_compressed_search or args.group_overlap_witness,
++                           group_overlap_witness=args.group_overlap_witness,
+                            group_adaptive=args.group_adaptive or args.group_switch_letters is not None,
+                            group_switch_letters=args.group_switch_letters,
+-                           group_relators=args.group_relators, group_max_work=args.group_max_work,
++                           group_relators=args.group_relators or args.group_overlap_witness,
++                           group_max_work=args.group_max_work,
+                            use_braid_profile=args.braid_profile,
+                            use_braid_reduction=not args.no_braid_reduction,
+                            euler_max_states=args.euler_max_states,
+@@ -432,6 +435,8 @@ def main(argv: list[str] | None = None) -> int:
+             test, _, extra = select_jones_filter(args.backend, args.potts_colors)
+             if args.backend == "potts-faithful":
+                 extra.update(statistics=statistics, include_polynomial=True)
++            elif args.backend == "tensor":
++                extra.update(statistics=statistics)
+             witness = test(diagram, max_states=args.max_states,
+                            max_transitions=args.max_transitions, **extra)
+         except (FilterLimit, MemoryError) as exc:
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/cocycle_seed.py b/Topology/UnknotRecognition/fast/fastunknot/cocycle_seed.py
+new file mode 100644
+index 0000000..39cae11
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/cocycle_seed.py
+@@ -0,0 +1,424 @@
++"""Certified minimum-disc normal seeds within one integral cocycle class.
++
++For tetrahedron t, the four local integer heights are h[t][i]. A potential f
++on GLOBAL vertices changes them to h[t][i] + f[v[t][i]]. The number of normal
++discs is the sum of the four-height spans. This module minimizes that sum by
++exact min-cost flow. There are exactly as many unit augmentations as tetrahedra;
++neither the network nor any loop expands a height or a normal coordinate.
++
++An independent verifier checks a potential and a dual matching of tetrahedra
++through shared vertices. Equality of their integer objectives proves optimality.
++This is a restricted seed optimization, not a normal-surface enumeration or an
++unknot recognizer. A one-vertex triangulation has no vertex-potential freedom.
++
++Local normal-coordinate conventions agree with reports/02/unknotlab/normal.py:
++tri0, tri1, tri2, tri3, quad01|23, quad02|13, quad03|12. The height-to-coordinate
++construction is classical; the span optimization and its certificate are the
++new research primitive here. The finite-triangulation adapter uses a protocol
++and does not import any archived report or optional package.
++"""
++
++from __future__ import annotations
++
++from collections import defaultdict
++from dataclasses import dataclass
++from typing import Callable
++
++
++QUAD_SIDES = (frozenset((0, 1)), frozenset((0, 2)), frozenset((0, 3)))
++
++
++def _rows(rows, label):
++    if not isinstance(rows, (tuple, list)) or not rows:
++        raise ValueError(f'{label} must be a nonempty sequence of four-tuples')
++    answer = []
++    for row in rows:
++        if (not isinstance(row, (tuple, list)) or len(row) != 4
++                or any(type(value) is not int for value in row)):
++            raise ValueError(f'{label} must contain four integers per tetrahedron')
++        answer.append(tuple(row))
++    return tuple(answer)
++
++
++def _input(vertices, heights):
++    vertices, heights = _rows(vertices, 'vertices'), _rows(heights, 'heights')
++    if len(vertices) != len(heights):
++        raise ValueError('vertices and heights must have the same number of rows')
++    if any(v < 0 for row in vertices for v in row):
++        raise ValueError('global vertex labels must be nonnegative integers')
++    labels = tuple(sorted({v for row in vertices for v in row}))
++    return vertices, heights, labels
++
++
++def local_normal_coordinates(heights):
++    """Seven binary coordinates from four local heights, using three gaps."""
++    if (not isinstance(heights, (tuple, list)) or len(heights) != 4
++            or any(type(h) is not int for h in heights)):
++        raise ValueError('four integer local heights are required')
++    order = sorted(range(4), key=lambda i: (heights[i], i))
++    row = [0] * 7
++    row[order[0]] = heights[order[1]] - heights[order[0]]
++    row[order[3]] = heights[order[3]] - heights[order[2]]
++    lower = frozenset(order[:2])
++    side = lower if 0 in lower else frozenset(range(4)) - lower
++    row[4 + QUAD_SIDES.index(side)] = heights[order[2]] - heights[order[1]]
++    return tuple(row)
++
++
++def _face_arcs(row, face):
++    vertices = set(range(4)) - {face}
++    arcs = {v: row[v] for v in vertices}
++    for q, side in enumerate(QUAD_SIDES):
++        cut = vertices & side
++        singleton = cut if len(cut) == 1 else vertices - cut
++        arcs[next(iter(singleton))] += row[4 + q]
++    return arcs
++
++
++@dataclass(frozen=True)
++class SeedCertificate:
++    """Primal potential and dual unit transshipment, with normal coordinates.
++
++    Matching row (t, i, s, j) sends the unit from lower node t through the
++    common global vertex vertices[t][i] == vertices[s][j] to upper node s.
++    Sources and targets each occur once; its objective is h[s][j]-h[t][i].
++    Statistics are measurements, not part of the mathematical certificate.
++    """
++
++    vertex_ids: tuple[int, ...]
++    potential: tuple[int, ...]
++    matching: tuple[tuple[int, int, int, int], ...]
++    normal_coordinates: tuple[tuple[int, ...], ...]
++    initial_disc_count: int
++    disc_count: int
++    statistics: dict
++
++    def as_dict(self):
++        return {
++            'schema': 'fastunknot.cocycle-disc-seed.v1',
++            'vertex_ids': list(self.vertex_ids),
++            'potential': list(self.potential),
++            'matching': [list(row) for row in self.matching],
++            'normal_coordinates': [list(row) for row in self.normal_coordinates],
++            'initial_disc_count': self.initial_disc_count,
++            'disc_count': self.disc_count,
++            'statistics': dict(self.statistics),
++            'scope': 'minimum disc count among vertex-potential changes of input cocycle',
++        }
++
++
++def check_seed_certificate(vertices, heights, certificate):
++    """Check a certificate without running the optimizer; raise on any defect.
++
++    The proof checked is weak duality: for every matched pair through v,
++    max(h_s+f)-min(h_t+f) >= h_sj-h_ti. Summing a permutation of sources and
++    targets gives D(f) >= dual. Equality certifies global integer AND real
++    optimality, independently of the network implementation.
++    """
++    vertices, heights, labels = _input(vertices, heights)
++    if isinstance(certificate, SeedCertificate):
++        data = certificate.as_dict()
++    elif isinstance(certificate, dict):
++        data = certificate
++    else:
++        raise ValueError('certificate must be a SeedCertificate or JSON object')
++    if data.get('schema') != 'fastunknot.cocycle-disc-seed.v1':
++        raise ValueError('unsupported certificate schema')
++    if data.get('vertex_ids') != list(labels):
++        raise ValueError('certificate vertex labels do not match the input')
++    potential = data.get('potential')
++    if (not isinstance(potential, (tuple, list)) or len(potential) != len(labels)
++            or any(type(value) is not int for value in potential)):
++        raise ValueError('one integral potential per global vertex is required')
++    f = dict(zip(labels, potential))
++    adjusted = tuple(tuple(h + f[v] for v, h in zip(vs, hs))
++                     for vs, hs in zip(vertices, heights))
++    coordinates = tuple(local_normal_coordinates(row) for row in adjusted)
++    supplied = data.get('normal_coordinates')
++    if (not isinstance(supplied, (list, tuple)) or len(supplied) != len(heights)
++            or any(not isinstance(row, (list, tuple)) or len(row) != 7
++                   or any(type(value) is not int or value < 0 for value in row)
++                   for row in supplied)
++            or tuple(tuple(row) for row in supplied) != coordinates):
++        raise ValueError('normal coordinates do not equal the three local gaps')
++    initial = sum(max(row) - min(row) for row in heights)
++    primal = sum(sum(row) for row in coordinates)
++    if type(data.get('initial_disc_count')) is not int or data['initial_disc_count'] != initial:
++        raise ValueError('incorrect initial disc count')
++    if type(data.get('disc_count')) is not int or data['disc_count'] != primal:
++        raise ValueError('incorrect optimized disc count')
++    matching = data.get('matching')
++    if not isinstance(matching, (list, tuple)) or len(matching) != len(heights):
++        raise ValueError('the dual matching needs one row per tetrahedron')
++    sources, targets, dual = set(), set(), 0
++    for row in matching:
++        if (not isinstance(row, (list, tuple)) or len(row) != 4
++                or any(type(value) is not int for value in row)):
++            raise ValueError('a dual row must be four integers')
++        t, i, s, j = row
++        if not (0 <= t < len(heights) and 0 <= s < len(heights)
++                and 0 <= i < 4 and 0 <= j < 4):
++            raise ValueError('dual row index is out of range')
++        if t in sources or s in targets:
++            raise ValueError('dual matching repeats a source or target')
++        if vertices[t][i] != vertices[s][j]:
++            raise ValueError('dual row does not use a shared global vertex')
++        sources.add(t)
++        targets.add(s)
++        dual += heights[s][j] - heights[t][i]
++    if primal != dual:
++        raise ValueError('primal and dual objectives differ')
++    return {'primal': primal, 'dual': dual, 'verified': True}
++
++
++def verify_seed_certificate(vertices, heights, certificate):
++    """Boolean wrapper for use at an untrusted certificate boundary."""
++    try:
++        check_seed_certificate(vertices, heights, certificate)
++    except (ValueError, TypeError, KeyError, IndexError):
++        return False
++    return True
++
++
++@dataclass
++class _Arc:
++    to: int
++    reverse: int
++    capacity: int
++    cost: int
++
++
++def minimize_disc_seed(vertices, heights, check: Callable[[], None] | None = None):
++    """Exact minimum of sum_t span(h[t] + f[vertices[t]]) with a certificate.
++
++    Complexity is O(t*N*E) integer relaxations for t augmentations in this
++    deliberately simple Bellman-Ford implementation. Since N,E=O(t), this is
++    O(t^3), plus O(N*E) for potential extraction. Integer bit lengths are
++    O(B + log(t)), where B bounds input height bit lengths. No numeric height
++    is used as a capacity or as a loop bound. `check` may raise to cancel.
++    """
++    vertices, heights, labels = _input(vertices, heights)
++    n, label_index = len(heights), {v: i for i, v in enumerate(labels)}
++    original_nodes = 2 * n + len(labels)
++    source, sink = original_nodes, original_nodes + 1
++    graph = [[] for _ in range(original_nodes + 2)]
++    references = []
++    statistics = {'tetrahedra': n, 'vertices': len(labels), 'augmentations': 0,
++                  'relaxations': 0, 'height_bits': max(abs(h).bit_length()
++                                                     for row in heights for h in row)}
++
++    def add(a, b, capacity, cost):
++        index = len(graph[a])
++        graph[a].append(_Arc(b, len(graph[b]), capacity, cost))
++        graph[b].append(_Arc(a, index, 0, -cost))
++        return a, index
++
++    for t in range(n):
++        add(source, t, 1, 0)
++        add(n + t, sink, 1, 0)
++        for i in range(4):
++            v = 2 * n + label_index[vertices[t][i]]
++            h = heights[t][i]
++            # n+1 is strictly greater than the entire flow. These original
++            # arcs remain residual-forward even after the last augmentation.
++            references.append(('lower', t, i, add(t, v, n + 1, h)))
++            references.append(('upper', t, i, add(v, n + t, n + 1, -h)))
++    statistics['network_nodes'] = len(graph)
++    statistics['network_arcs'] = sum(len(row) for row in graph) // 2
++
++    for _ in range(n):
++        if check:
++            check()
++        distances, previous = [None] * len(graph), [None] * len(graph)
++        distances[source] = 0
++        for _pass in range(len(graph) - 1):
++            if check:
++                check()
++            changed = False
++            for u, row in enumerate(graph):
++                if distances[u] is None:
++                    continue
++                for i, arc in enumerate(row):
++                    if not arc.capacity:
++                        continue
++                    candidate = distances[u] + arc.cost
++                    statistics['relaxations'] += 1
++                    if distances[arc.to] is None or candidate < distances[arc.to]:
++                        distances[arc.to], previous[arc.to] = candidate, (u, i)
++                        changed = True
++            if not changed:
++                break
++        if distances[sink] is None:
++            raise ArithmeticError('unit transshipment unexpectedly became infeasible')
++        current, path = sink, []
++        while current != source:
++            if previous[current] is None or len(path) >= len(graph):
++                raise ArithmeticError('invalid shortest augmenting path')
++            u, i = previous[current]
++            path.append((u, i))
++            current = u
++        for u, i in path:
++            arc = graph[u][i]
++            arc.capacity -= 1
++            graph[arc.to][arc.reverse].capacity += 1
++        statistics['augmentations'] += 1
++
++    # The original transshipment's residual graph has no negative-cost cycle.
++    # For each residual u->v with cost a, require x_v-x_u >= -a. Longest
++    # distances from a zero-cost universal source give integral feasible x.
++    constraints = []
++    incoming, outgoing = defaultdict(list), defaultdict(list)
++    for kind, t, i, (u, edge_index) in references:
++        arc = graph[u][edge_index]
++        flow = graph[arc.to][arc.reverse].capacity
++        if flow not in (0, 1):
++            raise ArithmeticError('a layered unit-flow arc is not integral and binary')
++        constraints.append((u, arc.to, -arc.cost))
++        if flow:
++            constraints.append((arc.to, u, arc.cost))
++            vertex = vertices[t][i]
++            (incoming if kind == 'lower' else outgoing)[vertex].append((t, i))
++    x = [0] * original_nodes
++    for iteration in range(original_nodes):
++        if check:
++            check()
++        changed = False
++        for u, v, length in constraints:
++            if x[v] < x[u] + length:
++                x[v] = x[u] + length
++                changed = True
++        if not changed:
++            break
++        if iteration == original_nodes - 1:
++            raise ArithmeticError('optimal flow has a positive residual cycle')
++    f = [x[2 * n + i] for i in range(len(labels))]
++    shift = min(f)
++    f = tuple(value - shift for value in f)
++    lookup = dict(zip(labels, f))
++    coordinates = tuple(local_normal_coordinates(tuple(h + lookup[v]
++                                                     for v, h in zip(vs, hs)))
++                        for vs, hs in zip(vertices, heights))
++    matching = []
++    for vertex in labels:
++        left, right = sorted(incoming[vertex]), sorted(outgoing[vertex])
++        if len(left) != len(right):
++            raise ArithmeticError('transshipment is not balanced at a global vertex')
++        matching.extend((t, i, s, j) for (t, i), (s, j) in zip(left, right))
++    certificate = SeedCertificate(
++        labels, f, tuple(sorted(matching)), coordinates,
++        sum(max(row) - min(row) for row in heights),
++        sum(sum(row) for row in coordinates), statistics)
++    check_seed_certificate(vertices, heights, certificate)
++    return certificate
++
++
++def face_pairing_data(gluings, local_heights):
++    """Check reciprocal face pairings/cocycle compatibility and label vertices.
++
++    `gluings[t][f]` is None, or (s,p), with p a permutation of 0..3. This
++    adapter checks the gluing data and the additive local-height transitions;
++    it does NOT establish that a supplied quotient is a compact 3-manifold.
++    A validated finite triangulation is required for the geometric theorems.
++    Ideal vertices must be truncated before applying those theorems.
++    """
++    heights = _rows(local_heights, 'heights')
++    if not isinstance(gluings, (list, tuple)) or len(gluings) != len(heights):
++        raise ValueError('one four-face gluing row per tetrahedron is required')
++    n = len(heights)
++    normalized = []
++    for row in gluings:
++        if not isinstance(row, (tuple, list)) or len(row) != 4:
++            raise ValueError('each tetrahedron must specify four face gluings')
++        converted = []
++        for pairing in row:
++            if pairing is None:
++                converted.append(None)
++                continue
++            if not isinstance(pairing, (list, tuple)) or len(pairing) != 2:
++                raise ValueError('a face pairing must be (tetrahedron, permutation)')
++            s, p = pairing
++            if (type(s) is not int or not 0 <= s < n
++                    or not isinstance(p, (tuple, list)) or len(p) != 4
++                    or any(type(i) is not int for i in p) or sorted(p) != list(range(4))):
++                raise ValueError('invalid face pairing')
++            converted.append((s, tuple(p)))
++        normalized.append(tuple(converted))
++    parents = list(range(4 * n))
++
++    def root(a):
++        while parents[a] != a:
++            parents[a] = parents[parents[a]]
++            a = parents[a]
++        return a
++
++    for t, row in enumerate(normalized):
++        for face, pairing in enumerate(row):
++            if pairing is None:
++                continue
++            s, p = pairing
++            if (s, p[face]) == (t, face):
++                raise ValueError('a face cannot be paired to itself')
++            inverse = tuple(p.index(i) for i in range(4))
++            if normalized[s][p[face]] != (t, inverse):
++                raise ValueError('face pairings must be reciprocal')
++            differences = {heights[s][p[i]] - heights[t][i]
++                           for i in range(4) if i != face}
++            if len(differences) != 1:
++                raise ValueError('local heights do not define a compatible integral cocycle')
++            for i in range(4):
++                if i != face:
++                    a, b = root(4 * t + i), root(4 * s + p[i])
++                    parents[max(a, b)] = min(a, b)
++    vertices = tuple(tuple(root(4 * t + i) for i in range(4)) for t in range(n))
++    return tuple(normalized), vertices, heights
++
++
++def check_glued_normal_coordinates(gluings, coordinates):
++    """Check nonnegative admissibility and every paired-face matching equation."""
++    if len(gluings) != len(coordinates):
++        raise ValueError('normal-coordinate row count differs from tetrahedron count')
++    for row in coordinates:
++        if (len(row) != 7 or any(type(value) is not int or value < 0 for value in row)
++                or sum(value != 0 for value in row[4:]) > 1):
++            raise ValueError('invalid normal-coordinate row')
++    for t, row in enumerate(gluings):
++        for face, pairing in enumerate(row):
++            if pairing is not None:
++                s, p = pairing
++                a, b = _face_arcs(coordinates[t], face), _face_arcs(coordinates[s], p[face])
++                if any(a[i] != b[p[i]] for i in a):
++                    raise ValueError('normal matching equation fails')
++    return True
++
++
++def optimize_face_pairing_cocycle(gluings, local_heights, check=None):
++    """Optimize a glued cocycle after combinatorial compatibility checks."""
++    gluings, vertices, heights = face_pairing_data(gluings, local_heights)
++    result = minimize_disc_seed(vertices, heights, check)
++    check_glued_normal_coordinates(gluings, result.normal_coordinates)
++    return result
++
++
++def optimize_triangulated_cocycle(triangulation, cocycle, check=None):
++    """Adapter for a validated finite-triangulation object, including archive02.
++
++    Required protocol: tetrahedra, vertex_classes, edge_endpoints, edge_value,
++    and dual_surface. The object's dual_surface validates the cocycle and
++    returns an object with .coordinates and .disc_count. This routine returns
++    (certificate, optimized_surface). It does not import the object's module.
++    """
++    initial = triangulation.dual_surface(cocycle)
++    n = triangulation.tetrahedra
++    vertices = tuple(tuple(triangulation.vertex_classes[4 * t + i] for i in range(4))
++                     for t in range(n))
++    heights = tuple(tuple(triangulation.edge_value(cocycle, t, 0, i) for i in range(4))
++                    for t in range(n))
++    result = minimize_disc_seed(vertices, heights, check)
++    potential = dict(zip(result.vertex_ids, result.potential))
++    optimized = tuple(c + potential[b] - potential[a]
++                      for c, (a, b) in zip(cocycle, triangulation.edge_endpoints))
++    surface = triangulation.dual_surface(optimized)
++    if (surface.coordinates != result.normal_coordinates
++            or initial.disc_count != result.initial_disc_count):
++        raise ArithmeticError('triangulation adapter disagrees with local normal coordinates')
++    return result, surface
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_overlap.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_overlap.py
+index 46e890a..92fa84d 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_overlap.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_overlap.py
+@@ -98,12 +98,41 @@ def apply_whole_donor(arena, roots, move):
+         arena.stats['max_relator_power_bits'] = max(arena.stats.get('max_relator_power_bits', 0), copies.bit_length())
+ 
+ 
+-def cyclic_overlap_move(arena, roots):
++def _extend_cyclic_witness(arena, target, donor, target_size, donor_size,
++                          target_start, donor_start, overlap):
++    """Maximize the cyclic interval containing a checked common substring.
++
++    ``target`` and ``donor`` are doubled roots. At most two exact prefix
++    queries extend the witness, and total length never exceeds donor_size.
++    This maximizes its alignment; it does not compare other alignments.
++    """
++    i, j = target_start % target_size, donor_start % donor_size
++    arena.tick()
++    if overlap < donor_size:
++        overlap += arena.lcp(arena.slice(target, i+overlap, i+donor_size),
++                             arena.slice(donor, j+overlap, j+donor_size))
++    remaining = donor_size-overlap
++    before = 0
++    if remaining:
++        before = arena.lcp(
++            arena.inverse(arena.slice(target, i+target_size-remaining, i+target_size)),
++            arena.inverse(arena.slice(donor, j+donor_size-remaining, j+donor_size)))
++    arena.stats['overlap_witness_extensions'] = arena.stats.get('overlap_witness_extensions', 0)+1
++    return overlap+before, (i-before) % target_size, (j-before) % donor_size
++
++
++def cyclic_overlap_move(arena, roots, *, witness_first=False):
+     """Find a strictly shortening overlap over all rotations and both signs.
+ 
+     Searching the shorter donor of each unordered pair suffices for existence:
+     it offers at least the gain of using the longer relation as donor.
++    ``witness_first`` stops at the strict-majority threshold, then maximizes
++    that alignment by exact cyclic extension. It preserves existence
++    completeness, but can select a smaller gain than global LCS optimization.
++    The historical longest-match policy remains the default.
+     """
++    if type(witness_first) is not bool:
++        raise ValueError('witness_first must be boolean')
+     from .compressed_lcs import CommonSubstring
+     nonempty = sorted(((i, root) for i, root in enumerate(roots) if root),
+                       key=lambda item: (arena.lengths[item[1]], item[0]))
+@@ -122,8 +151,15 @@ def cyclic_overlap_move(arena, roots):
+                 pattern = arena.inverse(source) if inverse else source
+                 if pattern not in doubled:
+                     doubled[pattern] = arena.concat(pattern, pattern)
+-                overlap, target_start, donor_start = matcher.longest(doubled[other], doubled[pattern], shared)
++                cap = size//2+1 if witness_first else shared
++                if witness_first:
++                    arena.stats['overlap_witness_queries'] = arena.stats.get('overlap_witness_queries', 0)+1
++                overlap, target_start, donor_start = matcher.longest(doubled[other], doubled[pattern], cap)
+                 if 2*overlap > size:
++                    if witness_first:
++                        overlap, target_start, donor_start = _extend_cyclic_witness(
++                            arena, doubled[other], doubled[pattern], arena.lengths[other],
++                            size, target_start, donor_start, overlap)
+                     return dict(kind='relator', target=target, donor=donor,
+                         target_rotation=target_start % arena.lengths[other],
+                         donor_rotation=donor_start % size, inverse=inverse, overlap=overlap)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+index ff33437..dbc06a8 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+@@ -9,7 +9,8 @@ from .group_certificate import _Budget, _presentation, _whitehead_cut, _image, _
+ from .whitehead_power import power_profile, powered_images
+ 
+ 
+-def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000):
++def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
++            overlap_witness=False):
+     while len(alive) > 1:
+         counts, _ = arena.summarize(roots)
+         candidates = []
+@@ -74,7 +75,8 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
+                         continue
+                     from .compressed_overlap import cyclic_overlap_move, apply_cyclic_overlap
+                     arena.stats['compressed_lcs_attempts'] = arena.stats.get('compressed_lcs_attempts', 0)+1
+-                    move = cyclic_overlap_move(arena, roots)
++                    move = (cyclic_overlap_move(arena, roots, witness_first=True)
++                            if overlap_witness else cyclic_overlap_move(arena, roots))
+                     if move is not None:
+                         apply_cyclic_overlap(arena, roots, move)
+                         moves.append(move)
+@@ -116,7 +118,8 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
+ 
+ 
+ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
+-                           max_work=2000000, max_nodes=100000, relator_moves=False, stats=None):
++                           max_work=2000000, max_nodes=100000, relator_moves=False,
++                           overlap_witness=False, stats=None):
+     """Find a trace or None; resource exhaustion raises GroupLimit.
+ 
+     max_letters caps the initial presentation and optional overlap expansion.
+@@ -125,6 +128,10 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
+     """
+     if type(relator_moves) is not bool:
+         raise ValueError('relator_moves must be boolean')
++    if type(overlap_witness) is not bool:
++        raise ValueError('overlap_witness must be boolean')
++    if overlap_witness and not relator_moves:
++        raise ValueError('overlap_witness requires relator_moves')
+     if stats is not None and type(stats) is not dict:
+         raise ValueError('stats must be a dictionary or None')
+     budget = _Budget(check, max_letters, max_work)
+@@ -134,7 +141,8 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
+         arena.tick(max_work-budget.left)
+         roots = [arena.reduce(arena.from_word(word)) for word in words]
+         moves = []
+-        if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters):
++        if not _search(arena, roots, alive, moves, relator_moves=relator_moves,
++                       max_letters=max_letters, overlap_witness=overlap_witness):
+             return None
+         return dict(version=_certificate_version(moves),
+                     method='wirtinger-cyclic-group', status='UNKNOT',
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+index 922510e..71d016a 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+@@ -489,7 +489,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
+ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
+                  relator_moves=False, compressed_verification=False,
+                  compressed_search=False, adaptive_search=False, switch_letters=None,
+-                 max_nodes=100000, check=lambda: None):
++                 overlap_witness=False, max_nodes=100000, check=lambda: None):
+     """Bounded search AND independent verification sharing one wall allowance."""
+     from math import isfinite
+     start = monotonic()
+@@ -497,6 +497,10 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
+         raise ValueError('compressed_verification must be boolean')
+     if type(compressed_search) is not bool:
+         raise ValueError('compressed_search must be boolean')
++    if type(overlap_witness) is not bool:
++        raise ValueError('overlap_witness must be boolean')
++    if overlap_witness and not (compressed_search and relator_moves):
++        raise ValueError('overlap_witness requires compressed search and relator moves')
+     if type(adaptive_search) is not bool:
+         raise ValueError('adaptive_search must be boolean')
+     if compressed_search and adaptive_search:
+@@ -525,7 +529,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
+         if compressed_search:
+             from .compressed_search import compressed_certificate
+             certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+-                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats)
++                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves,
++                overlap_witness=overlap_witness, stats=search_stats)
+         else:
+             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/jones_filter.py b/Topology/UnknotRecognition/fast/fastunknot/jones_filter.py
+index e869926..d3108a8 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/jones_filter.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/jones_filter.py
+@@ -1,7 +1,7 @@
+ """Validated lazy selection of optional one-sided Jones filters."""
+ from .filters import jones_obstruction
+ 
+-JONES_BACKENDS = ("matching", "potts5", "potts-exact", "potts-exact-factorized", "potts-separator", "potts-adaptive", "potts-faithful")
++JONES_BACKENDS = ("matching", "potts5", "potts-exact", "potts-exact-factorized", "potts-separator", "potts-adaptive", "potts-faithful", "tensor")
+ 
+ 
+ def validate_jones_options(backend, colors, max_states, max_transitions):
+@@ -34,5 +34,8 @@ def select_jones_filter(backend, colors=6):
+     if backend == "potts-faithful":
+         from .faithful_jones import faithful_potts_obstruction
+         return faithful_potts_obstruction, "jones-potts-faithful", {}
++    if backend == "tensor":
++        from .tensor_jones import tensor_jones_obstruction
++        return tensor_jones_obstruction, "jones-tensor-exact", {"arithmetic": "integer"}
+     from .potts_factorized_exact import factorized_potts_exact_obstruction
+     return factorized_potts_exact_obstruction, "jones-potts-exact-factorized", {"colors": colors}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py b/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py
+index 5f4de5c..7035c4d 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py
+@@ -36,6 +36,7 @@ class NormalWorkerError(RuntimeError):
+ def _invoke(command, payload, expires, check):
+     """Communicate cooperatively and always reap a failed/interrupted child."""
+     import subprocess
++    from threading import Event, Thread
+ 
+     check()
+     if expires is not None and monotonic() >= expires:
+@@ -45,29 +46,50 @@ def _invoke(command, payload, expires, check):
+                                  stderr=subprocess.PIPE, text=True)
+     except OSError as exc:
+         raise NormalWorkerError(str(exc)) from exc
++    communicator = None
++    started = False
+     try:
+-        pending = payload
++        try:
++            completed, result, failures = Event(), [], []
++
++            def communicate():
++                # Submit input once. Retrying communicate(None) after a partial
++                # write can stop sending retained input on supported Python.
++                try:
++                    result.append(child.communicate(payload))
++                except BaseException as exc:
++                    failures.append(exc)
++                finally:
++                    completed.set()
++
++            communicator = Thread(target=communicate, daemon=True)
++            communicator.start()
++            started = True
++        except (RuntimeError, OSError) as exc:
++            raise NormalWorkerError(str(exc)) from exc
+         while True:
+             check()
+             left = None if expires is None else expires-monotonic()
+             if left is not None and left <= 0:
+                 raise NormalTimeout('normal-surface local time allowance exhausted')
+-            try:
+-                output, errors = child.communicate(pending, timeout=0.05 if left is None else min(0.05, left))
+-            except subprocess.TimeoutExpired:
+-                # communicate() retains partially sent input and received output.
+-                pending = None
++            if not completed.wait(0.05 if left is None else min(0.05, left)):
+                 continue
+-            except OSError as exc:
+-                raise NormalWorkerError(str(exc)) from exc
+             check()
+             if expires is not None and monotonic() >= expires:
+                 raise NormalTimeout('normal-surface local time allowance exhausted')
++            if failures:
++                error = failures[0]
++                if isinstance(error, OSError):
++                    raise NormalWorkerError(str(error)) from error
++                raise error
++            output, errors = result[0]
+             return child.returncode, output, errors
+     finally:
+         if child.poll() is None:
+             child.kill()
+         child.wait()
++        if started:
++            communicator.join()
+         for stream in (child.stdin, child.stdout, child.stderr):
+             stream.close()
+ 
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+index 6a2db8e..6d05cb8 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -162,7 +162,7 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
+         order_stats, witness = {}, None
+         try:
+             test, method, extra = select_jones_filter(jones_backend, potts_colors)
+-            if jones_backend in ("potts-separator", "potts-adaptive", "potts-faithful"):
++            if jones_backend in ("potts-separator", "potts-adaptive", "potts-faithful", "tensor"):
+                 extra["statistics"] = order_stats
+             witness = test(diagram, max_states=jones_max_states,
+                            max_transitions=jones_max_transitions, order=order, check=check, **extra)
+@@ -178,6 +178,8 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
+             evidence["jones_ordering_policy"] = order_stats["ordering_policy"]
+         if "polynomial_identity" in order_stats:
+             evidence["jones_polynomial_identity"] = order_stats["polynomial_identity"]
++        if "jones_polynomial" in order_stats:
++            evidence["jones_polynomial"] = order_stats["jones_polynomial"]
+         if witness is not None:
+             return method, order
+     # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
+@@ -364,6 +366,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+               use_group: bool = False, group_seconds: float | None = 0.05,
+               group_relators: bool = False, group_max_work: int = 2000000,
+               group_compressed: bool = False, group_compressed_search: bool = False,
++              group_overlap_witness: bool = False,
+               group_adaptive: bool = False, group_switch_letters: int | None = None,
+               use_braid_reduction: bool = True, use_braid_profile: bool = False,
+               euler_max_states: int | None = 4096,
+@@ -410,6 +413,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+         raise ValueError("group_compressed must be boolean")
+     if type(group_compressed_search) is not bool:
+         raise ValueError("group_compressed_search must be boolean")
++    if type(group_overlap_witness) is not bool:
++        raise ValueError("group_overlap_witness must be boolean")
++    if group_overlap_witness and not (group_compressed_search and group_relators):
++        raise ValueError("group_overlap_witness requires compressed search and relator moves")
+     if type(group_adaptive) is not bool:
+         raise ValueError("group_adaptive must be boolean")
+     if group_adaptive and group_compressed_search:
+@@ -677,6 +684,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+                        group_options=dict(seconds=group_seconds, relator_moves=group_relators,
+                                           compressed_verification=group_compressed,
+                                           compressed_search=group_compressed_search,
++                                          overlap_witness=group_overlap_witness,
+                                           adaptive_search=group_adaptive, switch_letters=group_switch_letters,
+                                           max_work=group_max_work) if use_group else None,
+                        window_options=None if window_radius is None else dict(
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/tensor_jones.py b/Topology/UnknotRecognition/fast/fastunknot/tensor_jones.py
+new file mode 100644
+index 0000000..5b967f2
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/tensor_jones.py
+@@ -0,0 +1,467 @@
++"""Exact full Jones polynomial from a two-state planar tensor network.
++
++The combinatorial rotation cochain is part of the calculation, not optional
++framing data.  Each bounded face has four quarter turns and the distinguished
++outer face has minus four.  This forces every smoothed circle to have turning
++number +1 or -1, so its two orientations contribute z**4 + z**-4.
++
++Substitute A=i*z**2 and factor i once per crossing.  The two smoothing
++weights then become z**2 and -z**-2; all arithmetic stays in Z[z,z**-1].
++For writhe w and n crossings, V(z**-8) is
++(-1)**((n-w)//2) * z**(-6*w) * F(z)/(z**4+z**-4).
++
++At crossing frontier w there are at most 2**w binary spin keys.  Laurent
++degrees and coefficient bit lengths are polynomial in the input.  Together
++with the maintained certified separator order this gives exact full Jones
++computation in poly(n)*2**O(sqrt(n)).  Polynomial identity is still not an
++unknot certificate.  Resource failures never publish a partial polynomial.
++"""
++from __future__ import annotations
++
++from .filters import FilterLimit
++from .ordering import best_scan_order, validate_order
++
++
++class TensorLimit(FilterLimit):
++    """Local exhaustion with counters, never a partially computed invariant."""
++
++    def __init__(self, message, *, transitions=0, peak_states=0,
++                 completed_crossings=0):
++        super().__init__(message)
++        self.transitions = transitions
++        self.peak_states = peak_states
++        self.completed_crossings = completed_crossings
++
++
++def _budget(value, name):
++    if value is not None and (type(value) is not int or value < 0):
++        raise ValueError(name + " must be a nonnegative integer or None")
++
++
++def rotation_cochain(diagram, *, outer_face=0, check=lambda: None):
++    """Return checked integer dart bends from a dual spanning tree.
++
++    Face walks use rho(alpha(d)).  Their local corner contribution is +1.
++    Therefore sum(beta[d] for d in face) must be 4-len(face), except for
++    -4-len(face) at the chosen outer face.  All other dual edges receive zero.
++    Antisymmetry and every face equation are checked independently afterwards.
++    The contract is a validated classical one-component Diagram.
++    """
++    check()
++    n = diagram.crossings
++    if type(outer_face) is not int or outer_face < 0:
++        raise ValueError("outer_face must be a nonnegative integer")
++    if not n:
++        if outer_face:
++            raise ValueError("the crossing-free case has only outer face zero")
++        return ()
++    alpha, faces = diagram.alpha(), diagram.faces()
++    if outer_face >= len(faces):
++        raise ValueError("outer_face is outside the face list")
++    if len(faces) != n + 2:
++        raise ValueError("the rotation cochain requires a connected spherical projection")
++    dart_face = [-1] * (4*n)
++    for f, face in enumerate(faces):
++        check()
++        for dart in face:
++            dart_face[dart] = f
++    dual = [[] for _ in faces]
++    for dart, other in enumerate(alpha):
++        if dart < other:
++            check()
++            f, g = dart_face[dart], dart_face[other]
++            if f != g:
++                dual[f].append((g, dart))
++                dual[g].append((f, other))
++    parent = {outer_face: None}
++    parent_dart, queue = {}, [outer_face]
++    for f in queue:
++        check()
++        for g, dart in dual[f]:
++            if g not in parent:
++                parent[g] = f
++                parent_dart[g] = alpha[dart]  # dart on the child's face
++                queue.append(g)
++    if len(queue) != len(faces):
++        raise ValueError("the face dual is disconnected")
++    demand = [4-len(face) for face in faces]
++    demand[outer_face] -= 8
++    if sum(demand):
++        raise ArithmeticError("the planar face rotation demands do not balance")
++    beta = [0] * (4*n)
++    for f in reversed(queue[1:]):
++        check()
++        dart = parent_dart[f]
++        beta[dart], beta[alpha[dart]] = demand[f], -demand[f]
++        demand[parent[f]] += demand[f]
++    if demand[outer_face]:
++        raise ArithmeticError("dual-tree rotation routing did not close")
++    for dart, other in enumerate(alpha):
++        if beta[dart] != -beta[other]:
++            raise ArithmeticError("dart rotation antisymmetry failed")
++    for f, face in enumerate(faces):
++        check()
++        expected = -4 if f == outer_face else 4
++        if len(face) + sum(beta[d] for d in face) != expected:
++            raise ArithmeticError("a routed face rotation equation failed")
++    return tuple(beta)
++
++
++def _local_tensor(vertex, alpha, beta):
++    """At most six binary dart patterns, with one or two Laurent monomials."""
++    base, entries = 4*vertex, []
++    for mask in range(16):
++        if mask.bit_count() != 2:
++            continue
++        spin = tuple(1 if mask & (1 << j) else -1 for j in range(4))
++        if any(alpha[base+j]//4 == vertex
++               and spin[j] != -spin[alpha[base+j] % 4] for j in range(4)):
++            continue
++        edge_turn = sum(spin[j]*beta[base+j] for j in range(4)
++                        if base+j < alpha[base+j])
++        polynomial = {}
++        for smoothing, pairs in enumerate((((0, 1), (2, 3)),
++                                            ((0, 3), (1, 2)))):
++            if any(spin[a] != -spin[b] for a, b in pairs):
++                continue
++            corner_turn = sum(-spin[a] * (1 if (b-a) % 4 == 1 else -1)
++                              for a, b in pairs)
++            exponent = 2-4*smoothing + edge_turn + corner_turn
++            polynomial[exponent] = polynomial.get(exponent, 0) + (1-2*smoothing)
++        polynomial = tuple((e, c) for e, c in polynomial.items() if c)
++        if polynomial:
++            entries.append((mask, polynomial))
++    return tuple(entries)
++
++
++def _divide_loop(polynomial, check):
++    """Exact Laurent division by z**4+z**-4 with a checked zero remainder."""
++    if not polynomial:
++        return {}
++    # Multiply numerator and denominator by z**4, then shift only the
++    # numerator by its least exponent to use ordinary monic long division.
++    least = min(polynomial) + 4
++    remainder = {e+4-least: c for e, c in polynomial.items()}
++    quotient = {}
++    while remainder:
++        check()
++        degree = max(remainder)
++        if degree < 8:
++            raise ArithmeticError("tensor bracket is not divisible by the loop polynomial")
++        coefficient = remainder.pop(degree)
++        qdegree = degree-8
++        quotient[qdegree+least] = coefficient
++        value = remainder.get(qdegree, 0)-coefficient
++        if value:
++            remainder[qdegree] = value
++        else:
++            remainder.pop(qdegree, None)
++    return quotient
++
++
++def _decode_integer(value, *, crossings, writhe, laurent_shift, encoding_bits, check):
++    """Recover Jones coefficients from one exact integer tensor contraction.
++
++    z=2**encoding_bits, x=z**8 >= 4*4**n.  ``value`` equals z**(-g)*F(z),
++    where g=laurent_shift is the sum of the per-vertex least exponents.
++    Consequently x**(2*n)*V(x**-1) is
++       sign*z**(16*n+4-6*w+g)*value/(z**8+1).
++    Negative powers are moved into the denominator before exact division.
++    Only the final normalized polynomial needs faithful base-x encoding;
++    intermediate table values may coincide or vanish at this specialization.
++    """
++    n, w, k = crossings, writhe, encoding_bits
++    check()
++    if k < 1 or 8*k < 2*n+2:
++        raise ValueError("the tensor integer encoding base is too small")
++    if (n-w) % 2:
++        raise ArithmeticError("crossing count and writhe have incompatible parity")
++    sign = -1 if ((n-w)//2) % 2 else 1
++    base = 1 << (8*k)
++    # This comparison is a whole-polynomial identity test by the coefficient
++    # bound.  It avoids normalization division and decoding for the identity.
++    identity_exponent = 6*w-4-laurent_shift
++    if identity_exponent >= 0 and value == sign*((base+1) << (k*identity_exponent)):
++        check()
++        return {0: 1}, True
++    exponent = 16*n+4-6*w+laurent_shift
++    numerator, denominator = sign*value, base+1
++    if exponent >= 0:
++        numerator <<= k*exponent
++    else:
++        denominator <<= -k*exponent
++    check()
++    encoded, remainder = divmod(numerator, denominator)
++    if remainder:
++        raise ArithmeticError("tensor integer Jones normalization is not exact")
++    answer, degree = {}, 0
++    half, mask = base >> 1, base-1
++    while encoded:
++        check()
++        if degree > 4*n:
++            raise ArithmeticError("decoded Jones polynomial exceeds its degree bound")
++        digit = encoded & mask
++        if digit >= half:
++            digit -= base
++        if digit:
++            answer[2*n-degree] = digit
++        encoded = (encoded-digit) >> (8*k)
++        degree += 1
++    return answer, False
++
++
++def _add_valuations(left, right, encoding_bits):
++    """Add normalized exact pairs z**v*m, where z=2**encoding_bits.
++
++    A nonzero mantissa is not divisible by z.  Zero is represented by None.
++    Normalizing after every addition removes monomial padding exactly, even
++    when specialized coefficients acquire additional factors of z by carries.
++    The representation is of the evaluated rational number, not its formal
++    Laurent polynomial; intermediate faithfulness is unnecessary.
++    """
++    if left is None:
++        return right
++    if right is None:
++        return left
++    lv, lm = left
++    rv, rm = right
++    if lv < rv:
++        exponent, mantissa = lv, lm+(rm << (encoding_bits*(rv-lv)))
++    else:
++        exponent, mantissa = rv, rm+(lm << (encoding_bits*(lv-rv)))
++    if not mantissa:
++        return None
++    magnitude = abs(mantissa)
++    zero_bits = (magnitude & -magnitude).bit_length()-1
++    shift = zero_bits//encoding_bits
++    return exponent+shift, mantissa >> (encoding_bits*shift)
++
++
++def tensor_jones(diagram, *, order=None, certified=True, outer_face=0,
++                 arithmetic="laurent",
++                 max_states=None, max_transitions=None, check=lambda: None,
++                 statistics=None):
++    """Compute the full normalized Jones polynomial of a validated knot.
++
++    ``certified=True`` constructs and verifies the existing separator witness
++    and compares it with a supplied/greedy order; this is the default and the
++    scope of the universal sqrt(n) bound.  With ``certified=False``, the exact
++    supplied/greedy order is used without a universal width promise.
++
++    ``arithmetic="laurent"`` keeps exact sparse Laurent coefficient tables.
++    ``arithmetic="integer"`` evaluates at a coefficient-bounded power of two,
++    uses valuation-normalized signed integer shifts, then recovers all Jones
++    coefficients exactly. ``arithmetic="integer-global"`` retains a simpler
++    global shift as an arithmetic ablation; it can retain large monomial pads.
++    All modes have the same output contract and frontier bound.
++
++    Limits count represented nonzero spin keys and completed compatible local
++    tensor transitions.  Deadline checks additionally occur in coefficient
++    loops.  Neither limit is a byte-memory budget.  ``statistics`` is updated
++    only after the full polynomial and its normalization checks are complete.
++    """
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if type(certified) is not bool:
++        raise ValueError("certified must be Boolean")
++    if arithmetic not in ("laurent", "integer", "integer-global"):
++        raise ValueError("arithmetic must be laurent, integer or integer-global")
++    check()
++    n = diagram.crossings
++    if order is not None:
++        order = validate_order(n, order)
++    if n and (max_states == 0 or max_transitions == 0):
++        raise TensorLimit("tensor Jones budget is zero")
++    beta = rotation_cochain(diagram, outer_face=outer_face, check=check)
++    certificate = None
++    if n and certified:
++        from .separator_order import width_bounded_scan_order, verify_width_bounded_order
++        prepared = width_bounded_scan_order(diagram.pd, order=order, check=check)
++        if not verify_width_bounded_order(diagram.pd, prepared, check=check):
++            raise ArithmeticError("tensor Jones separator certificate failed verification")
++        order, certificate = prepared["order"], prepared
++    elif order is None:
++        order = (best_scan_order(diagram.pd, tries=min(n, 12), check=check)
++                 if n else [])
++    alpha = diagram.alpha() if n else ()
++    integer_mode = arithmetic != "laurent"
++    valuation_mode = arithmetic == "integer"
++    encoding_bits = max(1, (2*n+9)//8)
++    laurent_shift = 0
++    states = {0: (0, 1)} if valuation_mode else ({0: 1} if integer_mode else {0: {0: 1}})
++    active = []
++    peak, transitions, max_boundary = 1, 0, 0
++    peak_terms, max_terms, coefficient_bits, exponent_abs = 1, 1, 1, 0
++    valuation_abs = 0
++    for position, vertex in enumerate(order):
++        check()
++        base = 4*vertex
++        incident = {min(base+j, alpha[base+j]) for j in range(4)}
++        loops = {edge for edge in incident if edge//4 == alpha[edge]//4}
++        active_positions = {edge: j for j, edge in enumerate(active)}
++        touched = incident & active_positions.keys()
++        surviving = tuple(j for j, edge in enumerate(active) if edge not in touched)
++        new_edges = sorted(incident-touched-loops)
++        new_positions = {edge: j for j, edge in enumerate(new_edges)}
++        after = [active[j] for j in surviving] + new_edges
++        options = []
++        local = _local_tensor(vertex, alpha, beta)
++        least = min((e for _, polynomial in local for e, _ in polynomial), default=0)
++        if integer_mode and not valuation_mode:
++            laurent_shift += least
++        for mask, polynomial in local:
++            required_mask = required_value = born = 0
++            for j in range(4):
++                dart, bit = base+j, (mask >> j) & 1
++                edge = min(dart, alpha[dart])
++                if edge in loops:
++                    continue
++                canonical_bit = bit if dart == edge else 1-bit
++                if edge in active_positions:
++                    k = active_positions[edge]
++                    required_mask |= 1 << k
++                    required_value |= canonical_bit << k
++                else:
++                    born |= canonical_bit << new_positions[edge]
++            encoded_polynomial = (tuple(((e-least)*encoding_bits, c) for e, c in polynomial)
++                                  if integer_mode and not valuation_mode else polynomial)
++            options.append((required_mask, required_value, born, encoded_polynomial))
++        following = {}
++        for state, coefficient in states.items():
++            check()
++            retained = sum(((state >> old) & 1) << new
++                           for new, old in enumerate(surviving))
++            for required_mask, required_value, born, polynomial in options:
++                if state & required_mask != required_value:
++                    continue
++                if max_transitions is not None and transitions >= max_transitions:
++                    raise TensorLimit("tensor Jones transition budget exhausted",
++                                      transitions=transitions, peak_states=peak,
++                                      completed_crossings=position)
++                transitions += 1
++                target = retained | (born << len(surviving))
++                if valuation_mode:
++                    check()
++                    output = following.get(target)
++                    for shift, scalar in polynomial:
++                        term = (coefficient[0]+shift, scalar*coefficient[1])
++                        output = _add_valuations(output, term, encoding_bits)
++                    if output is not None:
++                        following[target] = output
++                        coefficient_bits = max(coefficient_bits, abs(output[1]).bit_length())
++                        valuation_abs = max(valuation_abs, abs(output[0]))
++                    else:
++                        following.pop(target, None)
++                elif integer_mode:
++                    check()
++                    output = following.get(target, 0)
++                    for shift, scalar in polynomial:
++                        output += scalar*(coefficient << shift)
++                    if output:
++                        following[target] = output
++                        coefficient_bits = max(coefficient_bits, abs(output).bit_length())
++                    else:
++                        following.pop(target, None)
++                else:
++                    output = following.setdefault(target, {})
++                    for shift, scalar in polynomial:
++                        for k, (exponent, value) in enumerate(coefficient.items()):
++                            if not k & 255:
++                                check()
++                            destination = exponent+shift
++                            result = output.get(destination, 0)+scalar*value
++                            if result:
++                                output[destination] = result
++                            else:
++                                output.pop(destination, None)
++                    if not output:
++                        following.pop(target, None)
++                peak = max(peak, len(following))
++                if max_states is not None and len(following) > max_states:
++                    raise TensorLimit("tensor Jones frontier budget exhausted",
++                                      transitions=transitions, peak_states=peak,
++                                      completed_crossings=position)
++        states, active = following, after
++        max_boundary = max(max_boundary, len(active))
++        if not integer_mode:
++            term_count = 0
++            for polynomial in states.values():
++                check()
++                term_count += len(polynomial)
++                max_terms = max(max_terms, len(polynomial))
++                for exponent, coefficient in polynomial.items():
++                    exponent_abs = max(exponent_abs, abs(exponent))
++                    coefficient_bits = max(coefficient_bits, abs(coefficient).bit_length())
++            peak_terms = max(peak_terms, term_count)
++    if active or any(states):
++        raise ArithmeticError("tensor Jones contraction ended with an open frontier")
++    writhe = diagram.writhe() if n else 0
++    if (n-writhe) % 2:
++        raise ArithmeticError("crossing count and writhe have incompatible parity")
++    identity_shortcut = False
++    if n and integer_mode:
++        if valuation_mode:
++            laurent_shift, scalar_value = states.get(0, (0, 0))
++        else:
++            scalar_value = states.get(0, 0)
++        answer, identity_shortcut = _decode_integer(scalar_value, crossings=n,
++                 writhe=writhe, laurent_shift=laurent_shift,
++                 encoding_bits=encoding_bits, check=check)
++    elif n:
++        normalized = _divide_loop(states.get(0, {}), check)
++        sign = -1 if ((n-writhe)//2) % 2 else 1
++        answer = {}
++        for exponent, coefficient in normalized.items():
++            check()
++            exponent -= 6*writhe
++            if exponent % 8:
++                raise ArithmeticError("a normalized knot Jones exponent is not integral")
++            answer[-exponent//8] = sign*coefficient
++    else:
++        answer = {0: 1}
++    if not answer or sum(answer.values()) != 1:
++        raise ArithmeticError("normalized knot Jones evaluation at one is not one")
++    if any(abs(e) > 2*n for e in answer) or sum(map(abs, answer.values())) > 4**n:
++        raise ArithmeticError("normalized Jones degree or coefficient bound failed")
++    check()
++    result = dict(algorithm="binary-rotation-tensor-v1", crossing_count=n,
++                  arithmetic=arithmetic,
++                  writhe=writhe, outer_face=outer_face, certified=certified,
++                  order=list(order), max_boundary=max_boundary,
++                  peak_states=peak, transitions=transitions,
++                  max_polynomial_terms=None if integer_mode else max_terms,
++                  peak_polynomial_terms=None if integer_mode else peak_terms,
++                  max_coefficient_bits=coefficient_bits,
++                  max_abs_intermediate_exponent=None if integer_mode else exponent_abs,
++                  rotation_l1=sum(abs(beta[d]) for d in range(len(beta))
++                                  if d < alpha[d]),
++                  differs=answer != {0: 1},
++                  polynomial_identity=dict(algorithm="binary-rotation-tensor-v1",
++                                           crossing_count=n, is_one=answer == {0: 1}),
++                  jones_polynomial=dict(variable="t", coefficients_hex=[
++                      [e, hex(c)] for e, c in sorted(answer.items())]))
++    if integer_mode:
++        result["integer_encoding"] = dict(z_bits=encoding_bits, x_bits=8*encoding_bits,
++                                           laurent_shift=laurent_shift,
++                                           identity_shortcut=identity_shortcut,
++                                           mode="valuation" if valuation_mode else "global-shift")
++        if valuation_mode:
++            result["integer_encoding"]["max_abs_valuation"] = valuation_abs
++    if certificate is not None:
++        result["order_certificate"] = certificate
++    if statistics is not None:
++        statistics.update(result)
++    return result
++
++
++def tensor_jones_obstruction(diagram, **options):
++    """A full-polynomial nontriviality witness, or inconclusive on identity.
++
++    A completed identity result remains available through ``statistics`` for
++    the recognizer's independent fallback.  Jones identity is never promoted
++    to an unknot verdict.
++    """
++    result = tensor_jones(diagram, **options)
++    if not result["differs"]:
++        return None
++    return dict(kind="tensor-jones-polynomial-nontrivial", **result)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_certified_primitives_integration.py b/Topology/UnknotRecognition/fast/tests/test_certified_primitives_integration.py
+new file mode 100644
+index 0000000..33647bf
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_certified_primitives_integration.py
+@@ -0,0 +1,109 @@
++"""End-to-end semantics of the optional tensor and overlap policies."""
++import contextlib
++import io
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram
++from fastunknot.__main__ import main
++from fastunknot.compressed_search import compressed_certificate
++from fastunknot.group_certificate import group_decide, verify_group_certificate
++from fastunknot.recognize import recognize
++from fastunknot.separator_order import verify_width_bounded_order
++
++
++ROOT = Path(__file__).resolve().parents[1]
++FILTER_OPTIONS = dict(use_braid=False, use_rational=False, use_seifert=False,
++                      use_reduction=False, use_descending=False,
++                      use_factorization=False, use_modular=False,
++                      use_alexander=False, use_r3=False)
++
++
++class CertifiedPrimitivesIntegrationTests(unittest.TestCase):
++    def test_tensor_obstruction_and_identity_fallback(self):
++        weaving = Diagram.from_pd(Diagram.from_braid(3, [1, -2]*5).pd)
++        result = recognize(weaving, jones_backend='tensor', **FILTER_OPTIONS)
++        self.assertEqual((result.status, result.method),
++                         ('KNOTTED', 'jones-tensor-exact'))
++        self.assertIn('jones_polynomial', result.evidence)
++        self.assertTrue(verify_width_bounded_order(
++            weaving.pd, result.evidence['separator_order']))
++        kink = Diagram.from_pd(Diagram.from_braid(2, [1]).pd)
++        result = recognize(kink, jones_backend='tensor', **FILTER_OPTIONS)
++        self.assertEqual(result.status, 'UNKNOT')
++        self.assertEqual(result.evidence['jones'], 'inconclusive')
++        self.assertTrue(result.evidence['jones_polynomial_identity']['is_one'])
++        self.assertIn('khovanov', result.evidence)
++        capped = recognize(kink, jones_backend='tensor', max_objects=0,
++                           **FILTER_OPTIONS)
++        self.assertEqual(capped.status, 'UNKNOWN')
++        self.assertTrue(capped.evidence['jones_polynomial_identity']['is_one'])
++
++    def test_tensor_resource_decline_does_not_publish_a_polynomial(self):
++        d = Diagram.from_pd(Diagram.from_braid(2, [1, 1, 1]).pd)
++        result = recognize(d, jones_backend='tensor', jones_max_transitions=0,
++                           max_objects=0, **FILTER_OPTIONS)
++        self.assertEqual(result.status, 'UNKNOWN')
++        self.assertNotIn('jones_polynomial_identity', result.evidence)
++        self.assertNotIn('jones_polynomial', result.evidence)
++
++    def test_cli_tensor_full_polynomial_and_resource_decline(self):
++        for name, verdict in [('trefoil', 'KNOTTED'),
++                              ('hard_unknot_8', 'INCONCLUSIVE')]:
++            output = io.StringIO()
++            with contextlib.redirect_stdout(output):
++                code = main(['jones', str(ROOT/'examples'/(name+'.json')),
++                             '--backend', 'tensor'])
++            self.assertEqual(code, 0)
++            result = json.loads(output.getvalue())
++            self.assertEqual(result['verdict'], verdict)
++            self.assertIn('jones_polynomial', result)
++        output = io.StringIO()
++        with contextlib.redirect_stdout(output):
++            code = main(['jones', str(ROOT/'examples/trefoil.json'),
++                         '--backend', 'tensor', '--max-transitions', '0'])
++        self.assertEqual(code, 3)
++        self.assertNotIn('jones_polynomial', json.loads(output.getvalue()))
++
++    def test_public_group_policy_produces_independently_replayed_certificate(self):
++        d = Diagram.from_json(json.loads((ROOT/'examples/hard_unknot_8.json').read_text()))
++        result = group_decide(d, seconds=None, compressed_search=True,
++                              relator_moves=True, overlap_witness=True)
++        self.assertEqual(result['status'], 'UNKNOT')
++        self.assertTrue(verify_group_certificate(d, result['certificate']))
++        with patch('fastunknot.compressed_search._search', return_value=False) as search:
++            self.assertIsNone(compressed_certificate(d, relator_moves=True,
++                                                     overlap_witness=True))
++        self.assertIs(search.call_args.kwargs['overlap_witness'], True)
++
++    def test_cli_group_flag_enables_its_required_search_options(self):
++        output = io.StringIO()
++        with contextlib.redirect_stdout(output):
++            code = main(['recognize', str(ROOT/'examples/hard_unknot_8.json'),
++                         '--group-overlap-witness', '--group-seconds', '2',
++                         '--no-braid', '--no-seifert', '--no-reduction',
++                         '--no-descending', '--no-factor', '--no-alexander',
++                         '--no-jones', '--no-r3'])
++        self.assertEqual(code, 0)
++        result = json.loads(output.getvalue())
++        self.assertEqual(result['status'], 'UNKNOT')
++        self.assertEqual(result['method'], 'wirtinger-cyclic-group')
++        self.assertEqual(result['evidence']['group']['search_backend'], 'compressed-slp')
++
++    def test_policy_validation(self):
++        d = Diagram.from_pd([])
++        for options in ({'overlap_witness': 1}, {'overlap_witness': True}):
++            with self.assertRaises(ValueError):
++                compressed_certificate(d, **options)
++            with self.assertRaises(ValueError):
++                group_decide(d, **options)
++        for options in ({'group_overlap_witness': 1},
++                        {'group_overlap_witness': True}):
++            with self.assertRaises(ValueError):
++                recognize(d, **options)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_cocycle_seed.py b/Topology/UnknotRecognition/fast/tests/test_cocycle_seed.py
+new file mode 100644
+index 0000000..3b66b6c
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_cocycle_seed.py
+@@ -0,0 +1,213 @@
++"""Independent finite optimization oracles and geometric seed audits."""
++
++from copy import deepcopy
++from dataclasses import replace
++import importlib.util
++from itertools import product, permutations
++import random
++import unittest
++
++from fastunknot.cocycle_seed import (
++    check_glued_normal_coordinates, check_seed_certificate, face_pairing_data,
++    local_normal_coordinates, minimize_disc_seed, optimize_face_pairing_cocycle,
++    optimize_triangulated_cocycle, verify_seed_certificate,
++)
++from benchmark_cocycle_seed import (
++    load_archive_triangulation, product_solid_torus, regina_surface_summary,
++    regina_triangulation, regina_gluings,
++)
++
++
++class CocycleSeedTests(unittest.TestCase):
++    def test_local_coordinates_all_orders_ties_and_large_gaps(self):
++        for heights in permutations((0, 1, 4, 11)):
++            row = local_normal_coordinates(heights)
++            self.assertEqual(sum(row), 11)
++            self.assertEqual(sum(bool(value) for value in row[4:]), 1)
++        self.assertEqual(local_normal_coordinates((3, 3, 3, 3)), (0,) * 7)
++        large = 1 << 4096
++        self.assertEqual(sum(local_normal_coordinates((0, large, large, 2 * large))),
++                         2 * large)
++
++    def test_exhaustive_potential_oracle(self):
++        # Optimization is valid even for this abstract local incidence input;
++        # no assertion that these random rows form a manifold is made.
++        rng = random.Random(123456)
++        for _ in range(120):
++            count = rng.randrange(1, 6)
++            vertices = tuple(tuple(rng.randrange(3) for _ in range(4))
++                             for _ in range(count))
++            heights = tuple(tuple(rng.randrange(-3, 4) for _ in range(4))
++                            for _ in range(count))
++            result = minimize_disc_seed(vertices, heights)
++            labels = sorted({v for row in vertices for v in row})
++            # For these three-vertex inputs a fixed zero potential and range
++            # [-12,12] includes an optimal difference-constraint vertex.
++            best = min(sum(max(h + f[v] for v, h in zip(vs, hs))
++                           - min(h + f[v] for v, h in zip(vs, hs))
++                           for vs, hs in zip(vertices, heights))
++                       for tail in product(range(-12, 13), repeat=len(labels) - 1)
++                       for f in [dict(zip(labels, (0,) + tail))])
++            self.assertEqual(result.disc_count, best)
++            self.assertTrue(verify_seed_certificate(vertices, heights, result))
++
++    def test_exhaustive_dual_permutation_oracle(self):
++        rng = random.Random(161803)
++        for _ in range(25):
++            n = 5
++            vertices = tuple(tuple(rng.randrange(4) for _ in range(4)) for _ in range(n))
++            heights = tuple(tuple(rng.randrange(-50, 51) for _ in range(4)) for _ in range(n))
++            costs = {}
++            for t in range(n):
++                for s in range(n):
++                    allowed = [heights[s][j] - heights[t][i]
++                               for i in range(4) for j in range(4)
++                               if vertices[t][i] == vertices[s][j]]
++                    if allowed:
++                        costs[t, s] = max(allowed)
++            best = max(sum(costs[t, s] for t, s in enumerate(p))
++                       for p in permutations(range(n))
++                       if all((t, s) in costs for t, s in enumerate(p)))
++            self.assertEqual(minimize_disc_seed(vertices, heights).disc_count, best)
++
++    def test_binary_height_scaling_does_not_expand_network(self):
++        gluings, h = product_solid_torus(3, 1 << 16)
++        _, vertices, h = face_pairing_data(gluings, h)
++        small = minimize_disc_seed(vertices, h)
++        gluings, h = product_solid_torus(3, 1 << 4096)
++        _, vertices, h = face_pairing_data(gluings, h)
++        large = minimize_disc_seed(vertices, h)
++        self.assertEqual(large.disc_count, 3)
++        self.assertEqual(large.statistics['augmentations'], 9)
++        self.assertEqual(large.statistics['network_arcs'], small.statistics['network_arcs'])
++        self.assertEqual(large.statistics['network_nodes'], small.statistics['network_nodes'])
++        self.assertGreater(large.initial_disc_count.bit_length(), 4096)
++
++    def test_one_vertex_gauge_is_vacuous(self):
++        vertices = ((4, 4, 4, 4), (4, 4, 4, 4))
++        heights = ((-7, 1, 2, 9), (0, 2, 1, 1 << 4096))
++        result = minimize_disc_seed(vertices, heights)
++        self.assertEqual(result.disc_count, result.initial_disc_count)
++        self.assertEqual(result.potential, (0,))
++
++    def test_exact_class_can_disappear(self):
++        result = minimize_disc_seed(((0, 1, 2, 3),), ((3, -11, 9, 42),))
++        self.assertEqual(result.disc_count, 0)
++        self.assertEqual(result.normal_coordinates, ((0,) * 7,))
++
++    def test_disconnected_incidence_system(self):
++        result = minimize_disc_seed(((0, 1, 1, 0), (5, 6, 6, 5)),
++                                    ((0, 3, 4, 2), (-2, 8, 5, 7)))
++        self.assertTrue(verify_seed_certificate(((0, 1, 1, 0), (5, 6, 6, 5)),
++                                               ((0, 3, 4, 2), (-2, 8, 5, 7)), result))
++
++    def test_independent_certificate_rejects_corruption(self):
++        gluings, heights = product_solid_torus(3, 123)
++        _, vertices, heights = face_pairing_data(gluings, heights)
++        result = minimize_disc_seed(vertices, heights)
++        data = result.as_dict()
++        for key in ('initial_disc_count', 'disc_count'):
++            bad = deepcopy(data)
++            bad[key] += 1
++            self.assertFalse(verify_seed_certificate(vertices, heights, bad))
++        bad = deepcopy(data)
++        bad['normal_coordinates'][0][0] += 1
++        self.assertFalse(verify_seed_certificate(vertices, heights, bad))
++        bad = deepcopy(data)
++        bad['matching'][0] = bad['matching'][1]
++        self.assertFalse(verify_seed_certificate(vertices, heights, bad))
++        bad = deepcopy(data)
++        bad['potential'][0] = float(bad['potential'][0])
++        self.assertFalse(verify_seed_certificate(vertices, heights, bad))
++        bad = deepcopy(data)
++        bad['vertex_ids'].reverse()
++        self.assertFalse(verify_seed_certificate(vertices, heights, bad))
++
++    def test_potential_global_shift_preserves_certificate(self):
++        vertices, heights = ((0, 1, 2, 0),), ((0, -1, 2, 3),)
++        result = minimize_disc_seed(vertices, heights)
++        shifted = replace(result, potential=tuple(v + 10**80 for v in result.potential))
++        self.assertTrue(verify_seed_certificate(vertices, heights, shifted))
++
++    def test_cancel_callback(self):
++        class Cancelled(Exception):
++            pass
++        def cancel():
++            raise Cancelled
++        with self.assertRaises(Cancelled):
++            minimize_disc_seed(((0, 1, 2, 3),), ((0, 1, 2, 3),), cancel)
++
++    def test_product_torus_normal_matching_and_primitive_disk(self):
++        for steps in (3, 4, 7):
++            gluings, heights = product_solid_torus(steps, 13579)
++            result = optimize_face_pairing_cocycle(gluings, heights)
++            self.assertEqual(result.disc_count, 3)
++            self.assertTrue(check_glued_normal_coordinates(gluings, result.normal_coordinates))
++            self.assertGreater(result.initial_disc_count, result.disc_count)
++
++    def test_gluing_adapter_rejects_bad_input(self):
++        gluings, heights = product_solid_torus()
++        changed = [list(row) for row in heights]
++        changed[0][0] += 1
++        with self.assertRaises(ValueError):
++            face_pairing_data(gluings, changed)
++        with self.assertRaises(ValueError):
++            face_pairing_data([[(0, (0, 1, 2, 3)), None, None, None]], [(0, 0, 0, 0)])
++        for vertices, local in (([], []), (((0, 1, 2, True),), ((0, 1, 2, 3),)),
++                                 (((0, 1, 2, 3),), ((0, 1, 2, 3.0),))):
++            with self.assertRaises(ValueError):
++                minimize_disc_seed(vertices, local)
++
++    def test_archive02_finite_manifold_and_adapter(self):
++        Triangulation = load_archive_triangulation()
++        if Triangulation is None:
++            self.skipTest('archive02 finite triangulation validator not present')
++        gluings, heights = product_solid_torus(4, 0)
++        tri = Triangulation(gluings)
++        self.assertTrue(all(link['chi'] == 1 for link in tri.vertex_links.values()))
++        basis = tri.rational_cohomology_basis()
++        self.assertEqual(len(basis), 1)
++        result, surface = optimize_triangulated_cocycle(tri, basis[0])
++        self.assertEqual(result.disc_count, 3)
++        self.assertEqual(surface.euler_characteristic, 1)
++
++    @unittest.skipUnless(importlib.util.find_spec('regina'), 'optional Regina unavailable')
++    def test_regina_independent_manifold_and_connectedness(self):
++        import regina
++        gluings, heights = product_solid_torus(5, 1 << 80)
++        result = optimize_face_pairing_cocycle(gluings, heights)
++        tri = regina_triangulation(regina, gluings)
++        info = regina_surface_summary(regina, tri, result.normal_coordinates)
++        self.assertTrue(info['manifold_valid'])
++        self.assertTrue(info['manifold_orientable'])
++        self.assertFalse(info['manifold_ideal'])
++        self.assertEqual(info['homology'], 'Z')
++        self.assertTrue(info['surface_connected'])
++        self.assertTrue(info['surface_orientable'])
++        self.assertEqual(info['surface_euler_characteristic'], '1')
++        self.assertTrue(info['surface_has_real_boundary'])
++        self.assertEqual(info['surface_boundary_components'], 1)
++
++    @unittest.skipUnless(importlib.util.find_spec('regina'), 'optional Regina unavailable')
++    def test_regina_finite_knot_exterior_seeds(self):
++        import regina
++        Triangulation = load_archive_triangulation()
++        if Triangulation is None:
++            self.skipTest('archive02 finite triangulation validator not present')
++        regina.RandomEngine.reseedWithDefault()
++        for tri in (regina.ExampleLink.trefoil().complement(), regina.Example3.figureEight()):
++            tri.idealToFinite()
++            validated = Triangulation(regina_gluings(tri))
++            basis = validated.rational_cohomology_basis()
++            self.assertEqual(len(basis), 1)
++            result, surface = optimize_triangulated_cocycle(validated, basis[0])
++            self.assertLess(result.disc_count, result.initial_disc_count)
++            info = regina_surface_summary(regina, tri, surface.coordinates)
++            self.assertTrue(info['surface_connected'])
++            self.assertTrue(info['surface_orientable'])
++            self.assertEqual(info['surface_euler_characteristic'], '-1')
++            self.assertEqual(info['surface_boundary_components'], 1)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_surface.py b/Topology/UnknotRecognition/fast/tests/test_normal_surface.py
+index 227d7f2..bb2474f 100644
+--- a/Topology/UnknotRecognition/fast/tests/test_normal_surface.py
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_surface.py
+@@ -7,10 +7,10 @@ import subprocess
+ import sys
+ from time import monotonic
+ import unittest
+-from unittest.mock import patch
++from unittest.mock import Mock, patch
+ 
+ from fastunknot import Diagram, recognize, Result
+-from fastunknot.normal_surface import (_invoke, NormalTimeout, input_digest,
++from fastunknot.normal_surface import (_invoke, NormalTimeout, NormalWorkerError, input_digest,
+                                       regina_decide, regina_pd)
+ from fastunknot.scan import ScanLimit
+ 
+@@ -69,6 +69,39 @@ class NormalSurfaceTests(unittest.TestCase):
+         code, out, err = _invoke(command, payload, monotonic()+3, lambda: None)
+         self.assertEqual((code, out, err), (0, payload, 'note'))
+ 
++    def test_communicator_thread_errors_and_setup_failures_are_cleaned_up(self):
++        from threading import get_ident
++        command = [sys.executable, '-B', '-c', 'import sys,time;sys.stdin.read();time.sleep(10)']
++        original, created, checks = subprocess.Popen, [], []
++        caller = get_ident()
++
++        def spawn(*args, **kwargs):
++            child = original(*args, **kwargs)
++            created.append(child)
++            child.communicate = Mock(side_effect=OSError('communicator pipe failed'))
++            return child
++
++        with patch('subprocess.Popen', side_effect=spawn):
++            with self.assertRaisesRegex(NormalWorkerError, 'communicator pipe failed'):
++                _invoke(command, '{}', monotonic()+3, lambda: checks.append(get_ident()))
++        created[0].communicate.assert_called_once_with('{}')
++        self.assertTrue(checks and all(thread == caller for thread in checks))
++
++        def normal_spawn(*args, **kwargs):
++            child = original(*args, **kwargs)
++            created.append(child)
++            return child
++
++        for api in ('threading.Event', 'threading.Thread', 'threading.Thread.start'):
++            with self.subTest(api=api), patch('subprocess.Popen', side_effect=normal_spawn), \
++                 patch(api, side_effect=RuntimeError('cannot set up thread')):
++                with self.assertRaisesRegex(NormalWorkerError, 'cannot set up thread'):
++                    _invoke(command, '{}', monotonic()+3, lambda: None)
++        self.assertEqual(len(created), 4)
++        for child in created:
++            self.assertIsNotNone(child.poll())
++            self.assertTrue(child.stdin.closed and child.stdout.closed and child.stderr.closed)
++
+     def test_missing_dependency_and_invalid_worker_cannot_decide(self):
+         d = load('monster')
+         with patch('importlib.util.find_spec', return_value=None), patch(
+diff --git a/Topology/UnknotRecognition/fast/tests/test_overlap_witness.py b/Topology/UnknotRecognition/fast/tests/test_overlap_witness.py
+new file mode 100644
+index 0000000..4cf5487
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_overlap_witness.py
+@@ -0,0 +1,168 @@
++"""Independent literal audits of thresholded cyclic-overlap witnesses."""
++from copy import deepcopy
++import itertools
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram, compressed_overlap, compressed_search
++from fastunknot.compressed_words import WordArena, CompressedLimit
++from fastunknot.compressed_overlap import cyclic_overlap_move, apply_cyclic_overlap
++from fastunknot.group_certificate import (
++    _Budget, _certificate_version, _presentation, _reduce, verify_group_certificate,
++)
++from fastunknot.relator_overlap import apply_overlap
++from test_compressed_lcs import parsed
++
++
++def literal_cyclic_matches(left, right):
++    """Enumerate signed cyclic factors directly, without grammar operations."""
++    matches = []
++    for inverse in (False, True):
++        source = [-x for x in right[::-1]] if inverse else right
++        for i in range(len(left)):
++            for j in range(len(right)):
++                length = 0
++                while (length < min(len(left), len(right))
++                       and left[(i+length) % len(left)] == source[(j+length) % len(source)]):
++                    length += 1
++                matches.append((length, i, j, inverse))
++    return matches
++
++
++def literal_reduce(word):
++    stack = []
++    for value in word:
++        if stack and stack[-1] == -value:
++            stack.pop()
++        else:
++            stack.append(value)
++    while len(stack) > 1 and stack[0] == -stack[-1]:
++        stack = stack[1:-1]
++    return stack
++
++
++class OverlapWitnessTests(unittest.TestCase):
++    def test_existence_soundness_and_local_maximality_against_literal_oracle(self):
++        rng = random.Random(3111)
++        binary = [list(w) for n in range(1, 5) for w in itertools.product((1, 2), repeat=n)]
++        pairs = list(itertools.product(binary, binary))
++        pairs += [tuple(literal_reduce([rng.choice((-3, -2, -1, 1, 2, 3))
++                                       for _ in range(rng.randrange(1, 21))])
++                        for _ in range(2)) for _ in range(400)]
++        for words in pairs:
++            if not all(words):
++                continue
++            expected = max(x[0] for x in literal_cyclic_matches(*words))
++            arena = WordArena(max_work=20000000)
++            roots = [parsed(arena, word, rng) for word in words]
++            move = cyclic_overlap_move(arena, roots, witness_first=True)
++            self.assertEqual(move is not None, 2*expected > min(map(len, words)), words)
++            if move is None:
++                continue
++            left, right = words[move['target']], words[move['donor']]
++            if move['inverse']:
++                right = [-x for x in right[::-1]]
++            i, j, k = move['target_rotation'], move['donor_rotation'], move['overlap']
++            lrot, rrot = left[i:]+left[:i], right[j:]+right[:j]
++            self.assertEqual(lrot[:k], rrot[:k])
++            self.assertGreater(2*k, len(right))
++            if k < len(right):
++                self.assertNotEqual(left[(i+k) % len(left)], right[(j+k) % len(right)])
++                self.assertNotEqual(left[(i-1) % len(left)], right[(j-1) % len(right)])
++            want = literal_reduce([-x for x in rrot[k:][::-1]]+lrot[k:])
++            apply_cyclic_overlap(arena, roots, move)
++            self.assertEqual(arena.expand(roots[move['target']]), want)
++            self.assertLess(sum(arena.lengths[x] for x in roots), sum(map(len, words)))
++
++    def test_equal_bigram_exponential_family_avoids_optimality_tables(self):
++        tail = [1, 1, 2, 2, 3, 3, 1, 3, 2, 1, 2, 3]
++        for bits, interior in itertools.product((8, 32, 100, 500), (False, True)):
++            arena, n = WordArena(max_work=100000), 2**bits
++            run = arena.power(arena.from_word([1, 2]), n)
++            tails = [arena.from_word([x]+tail+[y]) for x, y in ((3, 1), (1, 2))]
++            roots = [arena.concat(t, run) if interior else arena.concat(run, t) for t in tails]
++            before = sum(arena.lengths[x] for x in roots)
++            with patch.object(arena, 'expand', side_effect=AssertionError('must not expand')), \
++                 patch('fastunknot.compressed_lcs.MatchTable', side_effect=AssertionError('witness suffices')):
++                self.assertIsNone(compressed_overlap.whole_donor_move(arena, roots))
++                move = cyclic_overlap_move(arena, roots, witness_first=True)
++                self.assertEqual(move['overlap'], 2*n)
++                apply_cyclic_overlap(arena, roots, move)
++            self.assertEqual(before-sum(arena.lengths[x] for x in roots), 2*n-14)
++            self.assertEqual(arena.stats.get('lcs_cut_pairs', 0), int(interior))
++            self.assertEqual(arena.stats['overlap_witness_extensions'], 1)
++
++    def test_greedy_gain_can_change_and_historical_default_is_retained(self):
++        # Both alignments shorten. The first maximal one has length five;
++        # another has length seven. There is no full donor spelling in target.
++        donor = list(range(1, 9))
++        target = list(range(1, 6))+[9, 10, 11]+list(range(1, 8))+[12]
++        arena = WordArena()
++        roots = [arena.from_word(donor), arena.from_word(target)]
++        self.assertIsNone(compressed_overlap.whole_donor_move(arena, roots))
++        old = cyclic_overlap_move(arena, roots)
++        new = cyclic_overlap_move(arena, roots, witness_first=True)
++        self.assertEqual(old['overlap'], 7)
++        self.assertEqual(new['overlap'], 5)
++        for bad in (0, 1, None, 'yes'):
++            with self.assertRaises(ValueError):
++                cyclic_overlap_move(arena, roots, witness_first=bad)
++        arena.left = 0
++        with self.assertRaises(CompressedLimit):
++            cyclic_overlap_move(arena, roots, witness_first=True)
++        arena = WordArena()
++        roots = [arena.from_word(donor), arena.from_word(target)]
++        arena.max_nodes = len(arena.rules)-1
++        with self.assertRaises(CompressedLimit):
++            cyclic_overlap_move(arena, roots, witness_first=True)
++
++    def test_actual_gordian_trace_independent_replay_and_forgery_rejection(self):
++        path = Path(__file__).parent/'fixtures/gordian_relator_power.json'
++        record = json.loads(path.read_text())
++        diagram, original = Diagram.from_pd(record['pd']), record['certificate']
++        index = next(i for i, move in enumerate(original['moves']) if move['kind'] == 'relator_power')
++        moves = deepcopy(original['moves'][:index])
++        budget = _Budget(lambda: None, 200000, 20000000)
++        alive, words = _presentation(diagram, budget)
++        # Replay the existing prefix to a real reachable ten-generator state.
++        for move in moves:
++            if move['kind'] == 'relator':
++                apply_overlap(words, move, budget, _reduce)
++                continue
++            self.assertEqual(move['kind'], 'eliminate')
++            relation, g = move['relation'], move['generator']
++            word = words[relation]
++            pos = next(i for i, x in enumerate(word) if abs(x) == g)
++            rest = word[pos+1:]+word[:pos]
++            value = [-x for x in rest[::-1]] if word[pos] > 0 else rest
++            inverse = [-x for x in value[::-1]]
++            words[relation] = []
++            alive.remove(g)
++            words = [literal_reduce([y for x in w for y in
++                     (value if x == g else inverse if x == -g else [x])]) for w in words]
++        arena = WordArena(max_work=20000000)
++        roots = [arena.reduce(arena.from_word(word)) for word in words]
++        move = cyclic_overlap_move(arena, roots, witness_first=True)
++        self.assertIsNotNone(move)
++        self.assertGreater(arena.stats.get('overlap_witness_queries', 0), 0)
++        apply_cyclic_overlap(arena, roots, move)
++        moves.append(move)
++        self.assertTrue(compressed_search._search(arena, roots, alive, moves, relator_moves=True))
++        certificate = dict(original, moves=moves, version=_certificate_version(moves),
++                           remaining_generator=next(iter(alive)))
++        for compressed in (False, True):
++            with patch.object(compressed_overlap, 'cyclic_overlap_move', side_effect=AssertionError), \
++                 patch.object(compressed_overlap, '_extend_cyclic_witness', side_effect=AssertionError):
++                self.assertTrue(verify_group_certificate(diagram, certificate,
++                    compressed=compressed, max_work=20000000))
++            bad = deepcopy(certificate)
++            bad['moves'][index]['overlap'] += 1
++            self.assertFalse(verify_group_certificate(diagram, bad,
++                compressed=compressed, max_work=20000000))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_tensor_jones.py b/Topology/UnknotRecognition/fast/tests/test_tensor_jones.py
+new file mode 100644
+index 0000000..734c8c1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_tensor_jones.py
+@@ -0,0 +1,235 @@
++"""Independent full-cube, turning-number, and resource checks for tensors."""
++import json
++from fractions import Fraction
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram
++from fastunknot.geometry import ScanLimit
++from fastunknot.separator_order import verify_width_bounded_order
++from fastunknot.tensor_jones import (TensorLimit, _divide_loop, _local_tensor, _decode_integer,
++                                    _add_valuations,
++                                    rotation_cochain, tensor_jones)
++from check_potts_independent import laurent_jones
++
++
++def diagrams(count, seed):
++    """Seeded small knot closures without optional report-package imports."""
++    rng = random.Random(seed)
++    accepted = 0
++    while accepted < count:
++        strands = rng.randrange(2, 5)
++        word = [rng.choice((-1, 1))*rng.randrange(1, strands)
++                for _ in range(rng.randrange(1, 9))]
++        try:
++            diagram = Diagram.from_braid(strands, word)
++        except ValueError:
++            continue
++        order = list(range(diagram.crossings))
++        rng.shuffle(order)
++        accepted += 1
++        yield diagram, order
++
++
++def coefficients(result):
++    return {e: int(c, 16) for e, c in result["jones_polynomial"]["coefficients_hex"]}
++
++
++def independent_turning_numbers(diagram, smoothing, bends):
++    """Follow literal oriented smoothing circles using independently made edges."""
++    occurrences = {}
++    for v, row in enumerate(diagram.pd):
++        for j, label in enumerate(row):
++            occurrences.setdefault(label, []).append(4*v+j)
++    reverse = {}
++    for endpoints in occurrences.values():
++        a, b = endpoints
++        reverse[a], reverse[b] = b, a
++    smoothing_partner = {}
++    for v in range(diagram.crossings):
++        pairs = ((0, 3), (1, 2)) if smoothing >> v & 1 else ((0, 1), (2, 3))
++        for a, b in pairs:
++            smoothing_partner[4*v+a] = 4*v+b
++            smoothing_partner[4*v+b] = 4*v+a
++    unseen = set(reverse)
++    rotations = []
++    while unseen:
++        start = current = min(unseen)
++        turn = 0
++        while True:
++            opposite = reverse[current]
++            outgoing = smoothing_partner[opposite]
++            turn += bends[current] + (1 if (outgoing-opposite) % 4 == 1 else -1)
++            unseen.discard(current)
++            unseen.discard(opposite)
++            current = outgoing
++            if current == start:
++                break
++        rotations.append(turn)
++    return rotations
++
++
++class TensorJonesTests(unittest.TestCase):
++    def test_valuation_addition_against_exact_rationals(self):
++        rng = random.Random(2648)
++        for _ in range(300):
++            k = rng.randrange(1, 8)
++            z = 1 << k
++            pairs = []
++            for _ in range(2):
++                mantissa = rng.choice((-1, 1))*rng.randrange(1, 10000)
++                exponent = rng.randrange(-20, 21)
++                while mantissa % z == 0:
++                    exponent += 1
++                    mantissa //= z
++                pairs.append((exponent, mantissa))
++            value = _add_valuations(pairs[0], pairs[1], k)
++            expected = sum(Fraction(z)**e*m for e, m in pairs)
++            if value is None:
++                self.assertEqual(expected, 0)
++            else:
++                self.assertNotEqual(value[1] % z, 0)
++                self.assertEqual(Fraction(z)**value[0]*value[1], expected)
++            self.assertIsNone(_add_valuations(pairs[0], (pairs[0][0], -pairs[0][1]), k))
++
++    def test_integral_vertex_gauge_covariance_and_closed_invariance(self):
++        rng = random.Random(2646)
++        for diagram, order in diagrams(15, 2647):
++            alpha = diagram.alpha()
++            beta = rotation_cochain(diagram)
++            height = [rng.randrange(-1000, 1001) for _ in range(diagram.crossings)]
++            changed = tuple(beta[d] + height[alpha[d]//4]-height[d//4]
++                            for d in range(len(beta)))
++            for v in range(diagram.crossings):
++                first = dict(_local_tensor(v, alpha, beta))
++                second = dict(_local_tensor(v, alpha, changed))
++                self.assertEqual(set(first), set(second))
++                for mask, polynomial in first.items():
++                    shift = sum((1 if mask >> j & 1 else -1)
++                                * height[max(4*v+j, alpha[4*v+j])//4] for j in range(4))
++                    self.assertEqual(dict(second[mask]), {e+shift: c for e, c in polynomial})
++            expected = coefficients(tensor_jones(diagram, order=order, certified=False))
++            with patch("fastunknot.tensor_jones.rotation_cochain", return_value=changed):
++                actual = coefficients(tensor_jones(diagram, order=order, certified=False))
++            self.assertEqual(actual, expected)
++            integer = tensor_jones(diagram, order=order, certified=False, arithmetic="integer")
++            with patch("fastunknot.tensor_jones.rotation_cochain", return_value=changed):
++                transformed = tensor_jones(diagram, order=order, certified=False, arithmetic="integer")
++            self.assertEqual(coefficients(transformed), expected)
++            self.assertEqual(transformed["max_coefficient_bits"], integer["max_coefficient_bits"])
++            self.assertEqual(transformed["peak_states"], integer["peak_states"])
++
++    def test_every_smoothed_circle_has_rotation_plus_or_minus_four(self):
++        cases = list(diagrams(20, 2640))
++        checked = 0
++        for diagram, _ in cases:
++            if diagram.crossings > 10:
++                continue
++            for outer in (0, len(diagram.faces())-1):
++                bends = rotation_cochain(diagram, outer_face=outer)
++                for smoothing in range(1 << diagram.crossings):
++                    turns = independent_turning_numbers(diagram, smoothing, bends)
++                    self.assertTrue(all(abs(turn) == 4 for turn in turns))
++                    checked += len(turns)
++        self.assertGreater(checked, 1000)
++
++    def test_independent_full_polynomials_mirrors_orders_and_outer_faces(self):
++        rng = random.Random(2641)
++        cases = list(diagrams(40, 2642))
++        root = Path(__file__).resolve().parents[1] / "examples"
++        for name in ("conway", "kinoshita_terasaka", "hard_unknot_8"):
++            d = Diagram.from_json(json.loads((root / (name+".json")).read_text()))
++            cases.append((d, list(range(d.crossings))))
++        cases.append((Diagram.from_pd([]), []))
++        for diagram, order in cases:
++            for d in (diagram, diagram.mirror()):
++                expected = {-e: c for e, c in laurent_jones(d).items()}
++                variants = [order, list(reversed(order))]
++                shuffled = list(order)
++                rng.shuffle(shuffled)
++                variants.append(shuffled)
++                for i, supplied in enumerate(variants):
++                    for arithmetic in ("laurent", "integer", "integer-global"):
++                        result = tensor_jones(d, order=supplied, certified=False,
++                                              arithmetic=arithmetic,
++                                              outer_face=0 if i < 2 or not d.crossings
++                                              else len(d.faces())-1)
++                        self.assertEqual(coefficients(result), expected)
++                        self.assertEqual(result["polynomial_identity"]["is_one"], expected == {0: 1})
++                        self.assertLessEqual(result["peak_states"], 1 << result["max_boundary"])
++
++    def test_integer_decoder_extreme_signed_coefficients_and_both_shift_directions(self):
++        for n in range(1, 13):
++            k = max(1, (2*n+9)//8)
++            cases = [{0: 1}, {-2*n: 4**n}, {2*n: -4**n},
++                     {-2*n: -(4**n)//2, 2*n: (4**n)//2}, {0: 4**n}]
++            for polynomial in cases:
++                w = n
++                for extra in (0, 40*n+10):
++                    g = 6*w-4-8*max(polynomial)-extra
++                    value = sum(c << (k*(6*w-8*e+delta-g))
++                                for e, c in polynomial.items() for delta in (-4, 4))
++                    decoded, shortcut = _decode_integer(value, crossings=n, writhe=w,
++                        laurent_shift=g, encoding_bits=k, check=lambda: None)
++                    self.assertEqual(decoded, polynomial)
++                    self.assertEqual(shortcut, polynomial == {0: 1})
++        with self.assertRaises(ValueError):
++            _decode_integer(1, crossings=10, writhe=0, laurent_shift=0,
++                            encoding_bits=1, check=lambda: None)
++        with self.assertRaises(ArithmeticError):
++            _decode_integer(1, crossings=3, writhe=3, laurent_shift=0,
++                            encoding_bits=1, check=lambda: None)
++
++    def test_certified_order_and_source_free_pd(self):
++        source = Diagram.from_braid(4, [1, -2, 3, -1, 2, -3, 1, 2, 3])
++        d = Diagram.from_pd(source.pd)
++        result = tensor_jones(d, order=list(reversed(range(d.crossings))))
++        self.assertTrue(verify_width_bounded_order(d.pd, result["order_certificate"]))
++        self.assertEqual(coefficients(result), {-e: c for e, c in laurent_jones(d).items()})
++        self.assertEqual(result["max_boundary"], result["order_certificate"]["profile"][0])
++
++    def test_local_caps_and_global_interruptions_publish_no_partial_polynomial(self):
++        d = Diagram.from_braid(3, [1, -2]*5)
++        exact = tensor_jones(d)
++        self.assertEqual(tensor_jones(d, max_transitions=exact["transitions"]), exact)
++        statistics = {"sentinel": 1}
++        with self.assertRaises(TensorLimit) as caught:
++            tensor_jones(d, max_transitions=exact["transitions"]-1, statistics=statistics)
++        self.assertEqual(caught.exception.transitions, exact["transitions"]-1)
++        self.assertEqual(statistics, {"sentinel": 1})
++        for options in ({"max_states": 0}, {"max_transitions": 0}, {"max_states": 1}):
++            with self.assertRaises(TensorLimit):
++                tensor_jones(d, **options)
++        calls = 0
++        def interrupt():
++            nonlocal calls
++            calls += 1
++            if calls == 200:
++                raise ScanLimit("injected tensor deadline")
++        with self.assertRaises(ScanLimit):
++            tensor_jones(d, check=interrupt, statistics=statistics)
++        self.assertEqual(statistics, {"sentinel": 1})
++
++    def test_input_validation_and_corrupted_normalization(self):
++        d = Diagram.from_braid(2, [1, 1, 1])
++        for options in ({"max_states": -1}, {"max_states": True},
++                        {"max_transitions": -1}, {"certified": 1},
++                        {"arithmetic": "floating"},
++                        {"outer_face": True}, {"outer_face": -1},
++                        {"outer_face": len(d.faces())}, {"order": [0]}):
++            with self.assertRaises(ValueError):
++                tensor_jones(d, **options)
++        with self.assertRaises(ArithmeticError):
++            _divide_loop({0: 1}, lambda: None)
++        with patch("fastunknot.tensor_jones.rotation_cochain", return_value=(0,)*12):
++            with self.assertRaises(ArithmeticError):
++                tensor_jones(d, certified=False)
++        with patch("fastunknot.separator_order.verify_width_bounded_order", return_value=False):
++            with self.assertRaises(ArithmeticError):
++                tensor_jones(d)
++
++
++if __name__ == "__main__":
++    unittest.main()

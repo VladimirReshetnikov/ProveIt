@@ -1,0 +1,120 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem,xcolor,graphicx,float}
+\usepackage{fancyhdr,listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{153E63}
+\definecolor{pale}{HTML}{F1F5F8}
+\definecolor{muted}{HTML}{425466}
+\hypersetup{pdftitle={Certified primitives for faster unknot recognition},
+ pdfauthor={ProveIt research continuation},pdfsubject={Exact algorithms, normal surfaces, tensor networks, compressed words}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt: unknot recognition}
+\fancyhead[R]{\small\color{muted}8 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\lone}[1]{\left\lVert #1\right\rVert_1}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\status}[1]{\textsf{#1}}
+\newcommand{\baseline}{\texttt{8a95834940cf77cdab1b39571ffc102ca8b6bede}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{pale},
+ backgroundcolor=\color{pale},xleftmargin=5pt,xrightmargin=5pt,
+ aboveskip=8pt,belowskip=8pt}
+\title{\color{ink}\bfseries Certified primitives for faster\\unknot recognition\\[7pt]
+ \large Binary planar tensors, optimal cocycle seeds, and compressed overlap witnesses\\[5pt]
+ \normalsize A research continuation toward quasi-polynomial complexity}
+\author{ProveIt research continuation\\\small Prepared for Vladimir Reshetnikov with ChatGPT Pro}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the performance program in \emph{ProveIt/Topology/UnknotRecognition}
+from an explicitly pinned repository revision. Three exact improvements are
+developed, implemented, and tested. First, a two-state planar tensor model
+computes the full Jones polynomial with at most $2^w$ frontier states, where
+$w$ is the crossing-edge cut width of a certified scan order. A combinatorial
+rotation cochain supplies the correct contribution of every smoothed circle,
+including diagrams with repeated face walks, loops, and nested circles.
+The existing planar separator certificate then gives bit time and space
+$\poly(n)2^{O(\sqrt n)}$, removing the logarithmic factor in the exponent
+of the repository's faithful equality-partition backend. Exact integer
+specialization with balanced-digit recovery and valuation normalization is
+also provided. This realizes a known square-root-exponential principle in
+the present implementation; it is not a claim of the first such theorem.
+
+Second, for an integral cocycle in a finite triangulation, we minimize the
+number of normal discs over all global vertex-potential changes. A sparse
+integral min-cost flow gives an optimal potential and a matching certificate
+whose equality with the primal objective proves optimality over both real
+and integral potentials. The conservative bit bound is
+$O(T^3(B+\log(T+1)))$ for $T$ tetrahedra and $B$-bit local heights. Under the
+stated geometric hypotheses, an optimum has no nonempty relatively
+null-homologous component union; a primitive rank-one class therefore gives
+a connected nonseparating seed. This preserves a property already enjoyed by
+the initial spanning-tree gauge while reducing its disc count.
+
+Third, an optional compressed cyclic-overlap policy asks for a strict-majority
+witness before extending its alignment with at most two exact longest common
+prefix queries. It is complete for the existence of a local shortening move
+when uncapped, and is much faster on a rigorously specified exponential-word
+family. It need not find the best greedy move, and the supplied knot corpus
+shows no demonstrated recognition speedup from this policy.
+
+Proofs, independent checks, controlled measurements, negative results,
+integration patches, and reproduction scripts accompany the article. None of
+these improvements establishes a quasi-polynomial worst-case bound for the
+complete maintained recognizer. We formulate the remaining requirements in
+terms of compressed geometry, hierarchy resets, state growth, and search
+completeness, and give a prioritized research agenda with falsifiable targets.
+\end{abstract}
+\vspace{5pt}
+\noindent\fcolorbox{ink}{pale}{\parbox{0.94\linewidth}{\small
+\textbf{Scope of the result.} Theorems in this article certify the stated
+primitives. Experimental timings measure the supplied instances on one
+environment. A Jones polynomial equal to one remains an inconclusive result
+in this implementation. A general quasi-polynomial recognition theorem is
+\emph{not} claimed.}}
+\clearpage
+\tableofcontents
+\clearpage
+\input{01_scope}
+\input{02_tensor}
+\input{03_cocycle}
+\input{04_overlap}
+\input{05_experiments}
+\addtocontents{toc}{\protect\newpage}
+\input{06_integration}
+\input{07_research}
+\appendix
+\input{08_reproducibility}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,198 @@
+\section{Faithful integer evaluation and bit complexity}
+\label{sec:encoding}
+
+\subsection{Uniform polynomial bounds}
+
+Write $V_D(t)=\sum_j c_jt^j$ for the Jones polynomial of the input knot.
+The following deliberately loose bounds suffice:
+\begin{equation}\label{eq:coefficient-bounds}
+ \sum_j|c_j|\le4^n,
+ \qquad c_j=0\quad\text{if }|j|>2n.
+\end{equation}
+For completeness, the normalized state sum has $2^n$ terms. Splitting each
+of the $n$ crossings increases the number of connected components by at
+most one, so $c(s)\le n+1$. The coefficient norm of
+$\delta^{c(s)-1}$ is $2^{c(s)-1}\le2^n$. The triangle inequality gives
+the first bound. Before collecting terms, the smoothing monomial,
+circle powers, and writhe correction have total absolute $A$-degree at
+most $n+2n+3n=6n$. The normalized exponents are divisible by four for a
+knot, giving the sharper $3n/2$ bound and hence the stated $2n$ bound.
+
+Choose
+\begin{equation}\label{eq:integer-base}
+ \beta=\left\lceil\frac{2n+2}{8}\right\rceil,
+ \qquad B=2^\beta,
+ \qquad A=B^2,
+ \qquad X=B^8.
+\end{equation}
+Then $X\ge4\cdot4^n$. These choices depend only on the crossing count.
+The backend performs no probabilistic polynomial identity test.
+
+\begin{lemma}[Injectivity of bounded integer evaluation]
+\label{lem:balanced-injective}
+An integer polynomial whose coefficients have absolute value strictly
+less than $X/2$ is uniquely determined by its value at $X$, among
+polynomials with coefficients in the balanced digit interval
+$[-X/2,X/2)$. The same is true for a Laurent polynomial with a known
+finite degree range, after multiplication by a fixed monomial.
+\end{lemma}
+
+\begin{proof}
+The constant coefficient is the unique representative of the residue
+modulo $X$ in the balanced interval. Subtract that coefficient and divide
+by $X$, then repeat. The resulting digits determine all coefficients.
+The procedure works for negative integers as well. Multiplication by a
+known monomial reduces the Laurent case to the ordinary polynomial case.
+\end{proof}
+
+The coefficient bounds \eqref{eq:coefficient-bounds} lie strictly inside
+the balanced interval. In particular, equality with the integer evaluation
+of the polynomial one proves \emph{polynomial} identity, not merely
+agreement at an arbitrary evaluation point.
+
+\subsection{Clearing negative powers before contraction}
+
+Set $t=\zeta B$ with $\zeta^4=-1$. A local contribution has exponent
+$2(1-2s)+r_v$ in $B$, between $-4$ and $4$. Multiply every crossing
+tensor by $B^4$. For each edge $e$, multiply its factor by
+$B^{|b_e|}$. The two choices of arrow then have nonnegative $B$-exponents
+$|b_e|\pm b_e$. Consequently the complete contraction is
+\begin{equation}\label{eq:scaled-bracket}
+ S_0=B^{K_0}\mathcal B_D(B^2),
+ \qquad K_0=4n+L_b.
+\end{equation}
+Every local coefficient is a bounded sum of signed monomials
+$\zeta^r B^e$ with $e\ge0$. Multiplication by such a monomial is a binary
+shift of an integer and a phase/sign update. General multiplication of
+two large integer coefficients is unnecessary in the sequential scan.
+
+For normalization the implementation sets
+\begin{equation}\label{eq:normalization-shift}
+ K=\max(K_0,6n+4),\qquad S=B^{K-K_0}S_0.
+\end{equation}
+The expected scaled bracket of an unknot of the input writhe $a$ is the
+integer
+\begin{equation}\label{eq:unknot-scalar}
+ U=(-1)^{a+1}(B^8+1)B^{K+6a-4}.
+\end{equation}
+Its exponent is nonnegative because $a\ge-n$ and $K\ge6n+4$.
+It is nonzero. Thus $S=U$ can be tested without division and is equivalent
+to $V_D=1$, using the faithful evaluation above.
+
+The empty PD is treated separately. In this project it represents one
+crossing-free unknot, whose bracket is $\delta$, rather than an empty
+link with bracket one. The implementation returns its full polynomial
+one even when the local state and transition caps are zero.
+
+\subsection{Recovering every coefficient}
+
+Let $a=\operatorname{wr}(D)$. By the normalization in
+\eqref{eq:bracket-state-sum},
+\begin{equation}\label{eq:integer-recovery}
+ P:=X^{2n}V_D(X^{-1})
+   =\frac{(-1)^{a+1}S\,B^{16n+4-K-6a}}{X+1}.
+\end{equation}
+If the exponent of $B$ in the numerator is negative, move that power to
+the denominator. The quotient is an integer: the left side is an
+ordinary integer polynomial evaluated at the integer $X$.
+The implementation uses exact division and checks its remainder.
+
+Write $P=\sum_{i=0}^{4n}d_iX^i$ in balanced digits. Equation
+\eqref{eq:integer-recovery} and Lemma~\ref{lem:balanced-injective} give
+\[
+ c_j=d_{2n-j}.
+\]
+The decoder checks the degree and coefficient bounds, and agreement
+between the decoded identity and the direct comparison $S=U$. An identity
+query does not run the decoder. A full-polynomial query with $S=U$ returns
+$\{0\mapsto1\}$ immediately after validating its normalization.
+These checks protect the interface against inconsistent data; the tensor
+identity is what establishes the mathematical value of $S$.
+
+\subsection{All intermediate integers have polynomially many bits}
+
+The largest possible total $B$-exponent in an expanded shifted tensor
+monomial is at most
+\[
+ E=8n+2L_b.
+\]
+There are at most $2^n$ smoothing choices and $2^{2n}$ arrow assignments.
+Using the triangle inequality, every intermediate integer coordinate
+has at most
+\begin{equation}\label{eq:bit-bound}
+ \beta(8n+2L_b)+3n+O(1)=O(n^3)
+\end{equation}
+bits, by Theorem~\ref{thm:turn-construction}. Partial contractions obey
+the same bound because all shifted exponents are nonnegative. Final
+scaling, the normalization integer, and the division in
+\eqref{eq:integer-recovery} also use $O(n^3)$-bit integers.
+There are only $O(n)$ output coefficients, each of $O(n)$ bits.
+
+The loose cubic bound is intentional. The observed $L_b$ can be much
+smaller than its worst-case quadratic bound, and the implementation
+reports it. Improving the cochain's $\ell^1$ norm can reduce large-integer
+work without changing any topological argument.
+
+\begin{theorem}[Uncapped full Jones complexity]
+\label{thm:full-jones}
+For any fixed crossing order of width $w$, the new backend computes the
+complete Jones polynomial using at most $2^w$ frontier keys and
+$\poly(n)2^{O(w)}$ deterministic bit time. Using the existing certified
+separator ordering by default gives
+\[
+ \poly(n)2^{O(\sqrt n)}
+\]
+bit time for every classical knot diagram. If a supplied family of
+orders satisfies $w=O(\log^2(n+2))$, its full Jones queries run in
+$n^{O(\log n)}$ bit time.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:binary-tensor} bounds the number of keys. Each crossing
+has bounded arity, hence a bounded number of local transitions per
+incoming key. Key extraction and all integer operations cost a polynomial
+in $n$, using \eqref{eq:bit-bound}. The integer reconstruction also has
+polynomial bit cost, even with schoolbook division.
+
+A collision-free table or a balanced search tree gives
+$\poly(n)2^w$ operation accounting. The actual Python implementation uses
+a sparse integer-key dictionary. Even the conservative worst case in
+which a lookup compares every represented key squares the state factor,
+which remains $2^{O(w)}$. Thus the displayed deterministic bound does
+not rely on an unproved constant-time hash-table assumption. Input edge
+labels are normalized; the cost of reading arbitrary integer labels is
+polynomial in their supplied bit length.
+
+The baseline separator constructor and verifier have polynomial cost and
+produce an order with $w=O(\sqrt n)$. The wrapper may keep a supplied or
+greedy order only after comparing its actual frontier profile with the
+certified one. It therefore has the same width guarantee. Substitution
+gives the first general bound and the stated polylogarithmic-width case.
+\end{proof}
+
+\subsection{Integration and exact resource semantics}
+
+The new module is \code{fast/fastunknot/spin_jones.py}. Its public exact
+query returns the identity result, optional full Laurent coefficients,
+turning certificate, selected order certificate, and work counters.
+The optional \code{spin-faithful} choice exposes it through the existing
+Jones command and recognition filter selector. The production default
+Jones backend remains unchanged because a stronger asymptotic bound
+does not imply better timings on small diagrams.
+
+State and transition caps are validated before expensive preparation.
+Crossing preparation, contraction, normalization, and decoding observe
+the caller's cancellation checks. If a local cap is exhausted, the
+exception records charged transitions and completed crossings but no
+unfinished scalar or polynomial result. A completed order certificate
+may still be retained for the exact fallback. If $V_D\ne1$, the evaluator
+returns a knottedness obstruction. If $V_D=1$, recognition stores that
+fact and continues to an independent recognizer.
+
+Two large signed integers can be returned by the Python query. Serialized
+obstruction evidence uses hexadecimal strings for those integers and for
+polynomial coefficients, avoiding process-wide changes to decimal
+conversion limits. A turning certificate alone proves the validity of
+the geometric weights, not the correctness of a claimed contraction
+output; the latter is checked by replay or by the independent oracles
+used in the accompanying audits.

@@ -1,0 +1,146 @@
+\section{Research objective and evidence boundary}
+\label{sec:scope}
+
+The objective is to make exact unknot recognition faster while moving toward
+a defensible quasi-polynomial worst-case analysis. That requires a joint
+argument about topology, representation size, primitive bit costs, and the
+number of primitive calls. Speeding up one operation does not supply the
+missing bounds on the other three. The work below therefore treats an
+implemented theorem, an observed acceleration, and a proposed global route
+as different kinds of evidence.
+
+The baseline is the public ProveIt revision
+\begin{center}\small\baseline\end{center}
+dated 8 October 2026, 15:40:39 UTC. All code changes in the accompanying patch
+are relative to that revision. The target is
+\code{Topology/UnknotRecognition/fast}; the older reports and synthesis
+documents provide mathematical context and selected independent reference
+implementations. No remote repository changes are required to inspect or
+reproduce this package.
+
+\subsection{Input size and the asymptotic target}
+
+An input knot diagram has $n$ crossings and a validated planar-diagram
+encoding. Arc labels are normalized during validation; their accidental
+decimal spelling is not a topological size parameter. We use bit complexity
+throughout. Writing a bound as polynomial in $n$ permits the usual
+$O(n\log(n+2))$ encoding overhead. For a triangulation, $T$ denotes the number
+of tetrahedra and $B$ the bit length of supplied integral cocycle heights.
+For a compressed word, the grammar size and the bit length of its represented
+length are input parameters; the expanded length can be exponential in them.
+
+For an input encoding of length $N$, quasi-polynomial time means
+\[
+ \exp\!\left((\log(N+2))^{O(1)}\right).
+\]
+In particular $N^{C\log N}$ is quasi-polynomial, whereas
+$2^{C\sqrt N}$ is a larger asymptotic class. Removing a factor $\log n$ from
+an exponent $O(\sqrt n\log n)$ is a real improvement, but it does not reach
+the requested target. Conversely, a polynomial operation on a $2^N$-letter
+word is efficient only if the polynomial is in the compressed encoding,
+not in $2^N$.
+
+Three separate resource notions recur:
+\begin{enumerate}
+\item \emph{Mathematical input size}: the diagram, triangulation, grammar,
+and binary integers specified by the theorem.
+\item \emph{Represented intermediate size}: frontier keys, coefficient
+bits, grammar nodes, attaching maps, or normal coordinates actually stored.
+\item \emph{Charged implementation work}: a documented counter or elapsed
+time allowance. A cap on state count is not a byte-memory cap, and a cap on
+work does not turn an unfinished search into a negative mathematical answer.
+\end{enumerate}
+
+\subsection{What the existing implementation already supplies}
+
+The maintained recognizer is a portfolio. It validates the input, applies
+structural and simplification certificates, uses one-sided invariant tests,
+and can attempt independently replayed group certificates. Complete exact
+fallbacks include the built-in Khovanov calculation and an optional external
+normal-surface engine. The previous work already includes separator
+certificates, exact faithful Potts evaluation, transfer methods for special
+diagram families, compressed group words, accelerated repeated automorphisms,
+whole-donor macros, and a complete local compressed substring primitive.
+
+The relevant baseline guarantees are narrower than a complete recognition
+bound. A crossing scan with certified edge frontier $O(\sqrt n)$ is already
+available. The faithful Potts calculation uses equality partitions, whose
+Bell-number state count gives $2^{O(w\log(w+2))}$ for $w$ active boundary
+objects. Its universal full-polynomial bound is thus
+$\poly(n)2^{O(\sqrt n\log n)}$. The compressed word kernel has polynomial
+local bit bounds, but no general bound on discovery steps or accumulated
+grammar size follows. The normal-surface adapter can return an exact decision
+from its external engine, but it does not yet export an independently replayed
+compressed hierarchy with a quasi-polynomial running-time theorem.
+
+This continuation reuses those working parts. It changes the state space of
+the full-Jones calculation, optimizes a concrete geometric primitive, and
+reduces work spent finding a sufficient compressed overlap. The three routes
+share a principle: a compact representation must preserve the information
+needed by the next exact operation, and its certificate must describe that
+operation's actual conclusion.
+
+\subsection{Relationship to the literature}
+
+The Kauffman state model and its normalization are classical
+\cite{kauffman1987}. Ellenberg, Newman, Sawin, and Shi already proved a
+polynomial-times-$2^{C\sqrt n}$ time and memory bound for the Kauffman bracket
+using controlled tangle boundaries \cite{ellenberg2013}. General planar
+Boolean tensor contraction and Jones tensor implementations provide further
+context \cite{liuying2023,meichanetzidis2019,laakkonen2026}. Our contribution
+here is a self-contained binary model that works with the repository's
+existing arbitrary crossing cut order, its exact arithmetic, its input
+validation, and its resource semantics. The square-root-exponential exponent
+itself is established prior work.
+
+The geometry route is motivated by Lackenby's hierarchy construction
+\cite{lackenby2026}. It is necessary to distinguish the 2021 announcement of
+a quasi-polynomial unknot-recognition algorithm \cite{oxford2021} from the
+particular written argument audited here. Section 9 of the July 2026 preprint
+does not specify all primitive running times; its iteration estimate depends
+on maximal hierarchy length and maximal pattern-complexity. Section 10
+improves the depth control, but the code in this package does not implement
+all of that geometric machinery. Thus neither the announcement nor the
+preprint is used as a black-box complexity proof for ProveIt's recognizer.
+
+Integral optimization through network matrices is also classical. The
+topological use of total unimodularity has substantial precedent, including
+optimal homologous cycle algorithms \cite{dey2011}. We claim a precise
+local-span optimization, certificate, and geometric preservation argument
+for the implemented cocycle-seed family, without asserting literature-wide
+priority for network integrality or for connected nonseparating surfaces.
+
+\input{literature_status}
+
+\subsection{The principal results and their scope}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}P{0.20\linewidth}YY@{}}
+\toprule
+Primitive & Proved improvement & Remaining limitation\\
+\midrule
+Full Jones polynomial & Binary frontier states; exact
+$\poly(n)2^{O(\sqrt n)}$ bit bound with a certified separator order &
+Subexponential rather than quasi-polynomial; identity is not accepted as an
+unknot certificate by this implementation.\\[4pt]
+Cocycle normal seed & Exact minimum disc count within a fixed
+vertex-potential family; polynomial binary cost and a short dual certificate &
+Restricted family; no incompressibility, genus-minimality, or hierarchy-reset
+bound.\\[4pt]
+Compressed overlap & A sufficient strict-majority witness followed by at most
+two LCP extensions; exact local-existence completeness when uncapped &
+May choose a worse greedy move; preceding stages and total search remain
+possible bottlenecks.\\
+\bottomrule
+\end{tabularx}
+\caption{Theorem scope. Each result is used only for the conclusion it proves.}
+\label{tab:scope}
+\end{table}
+
+The paper's algorithmic claims are proved below and checked against independent
+oracles where feasible. Those checks increase confidence in the implementation;
+finite tests do not establish the asymptotic theorems. Conversely, a correct
+proof of an algorithm does not excuse a mismatch between the mathematical
+algorithm and the code. The package therefore retains full inputs, exact
+outputs, proof traces where available, source hashes, and censored observations.

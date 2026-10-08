@@ -1,0 +1,137 @@
+{
+  "schema": "proveit-modular-boundary-package-v1",
+  "prepared_date": "2026-10-08",
+  "upstream_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "upstream_commit": "8a95834940cf77cdab1b39571ffc102ca8b6bede",
+  "upstream_subtree": "Topology/UnknotRecognition",
+  "local_snapshot_commit": "3179d245a6752749c09d4fe79c018c79d2209c2d",
+  "local_snapshot_relation": "Text/code snapshot extracted from the pinned upstream tree, committed locally for a reproducible baseline. Its commit hash is not the upstream revision. Archived reference files were supplied separately from the same upstream tree.",
+  "baseline_modified_files": {
+    "Topology/UnknotRecognition/fast/fastunknot/recognize.py": {
+      "sha256": "47d27d53103d67f0768a62d9ab8d388ba2cdf8b7c43a0ef6a8f02a4ec9867a5e",
+      "git_blob": "6a2db8e7c7a667a4d830ff0527992fcf4c231962"
+    },
+    "Topology/UnknotRecognition/fast/fastunknot/__main__.py": {
+      "sha256": "5c2e99ddc00409760d4c49de584c3b16bf0a0bfae8db68591b379dbe40f43c7a",
+      "git_blob": "ca54a7b3111413faced202d60cab14e8e11ebb44"
+    }
+  },
+  "patch": {
+    "path": "patches/modular_boundary.patch",
+    "sha256": "c34605790b8552a66a1803df6095dbcbcfc6e6d0b45d49bf4ddb15a790552f93",
+    "files": [
+      "Topology/UnknotRecognition/fast/fastunknot/recognize.py",
+      "Topology/UnknotRecognition/fast/fastunknot/__main__.py",
+      "Topology/UnknotRecognition/fast/MODULAR_BOUNDARY.md",
+      "Topology/UnknotRecognition/fast/fastunknot/boundary_tait.py",
+      "Topology/UnknotRecognition/fast/fastunknot/modular_response.py",
+      "Topology/UnknotRecognition/fast/fastunknot/modular_lattice.py",
+      "Topology/UnknotRecognition/fast/fastunknot/modular_shadow.py",
+      "Topology/UnknotRecognition/fast/fastunknot/modular_verify.py",
+      "Topology/UnknotRecognition/fast/tests/test_modular_response.py",
+      "Topology/UnknotRecognition/fast/tests/test_modular_shadow.py",
+      "Topology/UnknotRecognition/fast/tests/test_modular_verify.py",
+      "Topology/UnknotRecognition/fast/modular_research/audit.py",
+      "Topology/UnknotRecognition/fast/modular_research/benchmark.py",
+      "Topology/UnknotRecognition/fast/modular_research/demo.py"
+    ],
+    "apply_check": "passed against unchanged baseline files",
+    "applied_content_comparison": "all 14 patched files byte-identical to delivered source",
+    "pinned_upstream_modified_file_checks": [
+      {
+        "path": "Topology/UnknotRecognition/fast/fastunknot/recognize.py",
+        "sha256": "47d27d53103d67f0768a62d9ab8d388ba2cdf8b7c43a0ef6a8f02a4ec9867a5e",
+        "matches_pinned_upstream": true
+      },
+      {
+        "path": "Topology/UnknotRecognition/fast/fastunknot/__main__.py",
+        "sha256": "5c2e99ddc00409760d4c49de584c3b16bf0a0bfae8db68591b379dbe40f43c7a",
+        "matches_pinned_upstream": true
+      }
+    ]
+  },
+  "benchmark": {
+    "path": "reproducibility/ProveIt/Topology/UnknotRecognition/fast/results/modular_benchmarks.json",
+    "recorded_local_revision": "3179d245a6752749c09d4fe79c018c79d2209c2d",
+    "source_hash_count": 110,
+    "changed_during_run": [],
+    "current_recorded_source_mismatches": [],
+    "post_benchmark_additions": [
+      "fastunknot/modular_verify.py",
+      "tests/test_modular_verify.py",
+      "modular_research/audit.py",
+      "modular_research/demo.py",
+      "MODULAR_BOUNDARY.md"
+    ],
+    "scope": "No recorded observer source changed. Independent replay and documentation were added after timing.",
+    "python": "3.12.14",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "rounds": 5,
+    "time_cap": "Cooperative 3.0 s plus POSIX SIGALRM/setitimer wall-clock cap of 3.15 s",
+    "rerun_requirement": "benchmark.py records git rev-parse HEAD and should be run in the patched Git checkout"
+  },
+  "correctness_audit": {
+    "path": "reproducibility/ProveIt/Topology/UnknotRecognition/fast/results/modular_audit.json",
+    "totals": {
+      "base_inputs": 69,
+      "prime_count": 6,
+      "diagrams": 138,
+      "full_reduced_cubes": 138,
+      "cube_generators": 209658,
+      "cube_d2_columns": 209658,
+      "proper_prefixes": 868,
+      "modular_vector_comparisons": 15096,
+      "actual_matching_completions": 2516,
+      "empty_frontier_grounding_checks": 138,
+      "maximum_frontier_darts": 14,
+      "maximum_terminals": 7,
+      "maximum_residual_nullity": 2,
+      "radical_dimension_zero_cases": 198,
+      "frontier_minus_two_dimension_checks": 14898,
+      "maximum_query_matrix_dimension": 5,
+      "component_bound_comparisons": 868,
+      "bounds_checked_against_full_homology": 868,
+      "whole_component_record_checks": 868,
+      "certified_threshold_agreements": 868,
+      "small_prime_bound_comparisons": 868,
+      "small_prime_certified_threshold_agreements": 392,
+      "terminal_half_frontier_checks": 730,
+      "final_capped_rank_comparisons": 138,
+      "recognition_status_comparisons": 138,
+      "positive_modular_replays": 50,
+      "replayed_components": 50,
+      "small_prime_missed_obstructions": 70,
+      "disconnected_completions": 362
+    }
+  },
+  "verification": {
+    "modular_tests": {
+      "tests": 31,
+      "passed": 31,
+      "seconds": 0.649
+    },
+    "initial_full_suite": {
+      "tests": 708,
+      "passed": 704,
+      "errors": 1,
+      "skipped": 3,
+      "seconds": 113.653
+    },
+    "inherited_failure": "test_normal_surface.NormalSurfaceTests.test_communication_retains_input_across_polls",
+    "inherited_failure_status": "Reproduces in isolation and with byte-identical baseline source; no production fix applied.",
+    "arithmetic_audit": {
+      "lift_formula_cases": 33300,
+      "threshold_cases": 1496340,
+      "status": "passed",
+      "oracle": "Independent dynamic programming on explicitly bounded integer lifts; independent exhaustive integer-vector threshold checks.",
+      "scope": "Finite implementation/proof audit, not a substitute for the general proofs."
+    }
+  },
+  "article": {
+    "path": "article/unknot_modular_boundary.pdf",
+    "pages": 26,
+    "format": "LaTeX source with local section inputs, generated tables and vector figure; compiled PDF",
+    "status": "AI-assisted research working paper; not independently refereed or formally verified"
+  },
+  "remote_mutation": "No upstream commit, push, pull request, or repository publication was performed."
+}

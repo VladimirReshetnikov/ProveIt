@@ -1,0 +1,73 @@
+[
+  {
+    "id": "genus-kernel",
+    "article": "Theorem 3.5",
+    "status": "proved in article; classical singleton ingredient credited",
+    "domain": "explicit Artin word, one-component closure",
+    "conclusion": "closure-preserving <=4g_B letters and <=2g_B+1 strands",
+    "implementation": "braidkernel/core.py",
+    "limit": "canonical genus of supplied braid surface, not minimal knot genus"
+  },
+  {
+    "id": "minority-kernel",
+    "article": "Theorem 4.1",
+    "status": "proved in article",
+    "domain": "same input; locally failing Bennequin factor rejects",
+    "conclusion": "surviving closure-preserving <=4*kappa<=4*k letters; compact encoding O((k+1)log(k+2)) bits",
+    "limit": "full audit certificate remains input-sized; no priority claim for isolated corollary"
+  },
+  {
+    "id": "local-dominance",
+    "article": "Proposition 4.2",
+    "status": "proved in article",
+    "conclusion": "all local Bennequin passes imply global pass; exact minority accounting"
+  },
+  {
+    "id": "fixed-parameter-recognition",
+    "article": "Theorem 5.3 and Corollary 5.4",
+    "status": "proved, using imported Khovanov and unknot-detection theorems",
+    "conclusion": "poly(n)*2^O(k); stronger residual max-factor bound; n^O(log n) for k_star=O(log^2 n)",
+    "limit": "resource caps disabled for completeness; arbitrary diagrams require a paid input conversion"
+  },
+  {
+    "id": "additive-input-parameter-cost",
+    "article": "Corollary 5.5",
+    "status": "proved in article",
+    "conclusion": "O((n+1)log^2(n+2)) + 2^O(k) bit complexity; near-linear input dependence for fixed minority or fixed residual maximum factor parameter",
+    "limit": "complete uncapped algorithm; no uniform small-parameter theorem for arbitrary inputs"
+  },
+  {
+    "id": "linear-endpoint-descent",
+    "article": "Theorem 6.1",
+    "status": "proved and implemented",
+    "conclusion": "O(n+b) word operations including independent replay; O(n log n) certificate bits",
+    "implementation": "braidkernel/descent.py",
+    "limit": "sufficient-condition endpoint descent, not complete Markov search"
+  },
+  {
+    "id": "sharpness",
+    "article": "Proposition 7.1",
+    "status": "proved",
+    "conclusion": "4k crossing and 2k+1 strand inequalities are attained by singleton-only output on an infinite unknot family",
+    "limit": "not a complexity lower bound; elementary rank-two moves shorten the family"
+  },
+  {
+    "id": "finite-validation",
+    "status": "executed",
+    "data": "data/validation_summary.json",
+    "conclusion": "2856 short knot braids +32 planted internal cuts +1000 endpoint comparisons; zero mismatches",
+    "limit": "not formal verification or full upstream regression"
+  },
+  {
+    "id": "endpoint-performance",
+    "status": "measured",
+    "data": "data/benchmark.json",
+    "conclusion": "paired stage speedups on stabilization chains and overhead on tiny no-progress controls",
+    "limit": "host-dependent; source-derived baseline, not full production pipeline"
+  },
+  {
+    "id": "general-quasipolynomial-recognition",
+    "status": "not established by this work",
+    "missing": "uniform efficiently constructible small-parameter reduction or stronger general exact backend"
+  }
+]

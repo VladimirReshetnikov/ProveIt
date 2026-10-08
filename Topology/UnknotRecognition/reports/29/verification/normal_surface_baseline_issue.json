@@ -1,0 +1,95 @@
+{
+  "schema": "normal-surface-baseline-issue-v1",
+  "classification": "Reproducible inherited optional-worker pipe-progress defect; unrelated to modular changes; not classified as flaky or benchmark contention.",
+  "production_fix_applied": false,
+  "module": "Topology/UnknotRecognition/fast/fastunknot/normal_surface.py",
+  "baseline_local_git_commit": "3179d245a6752749c09d4fe79c018c79d2209c2d",
+  "baseline_git_blob": "5f4de5cdf153a3ca3fd575aff9989a653d013c07",
+  "working_git_blob": "5f4de5cdf153a3ca3fd575aff9989a653d013c07",
+  "baseline_and_working_bytes_equal": true,
+  "unchanged_sha256": "18deb3f935fc860e5c4f618e494b9cedaa49699ae3183ff68606e623a7979239",
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "subprocess_implementation": "POSIX Popen._communicate"
+  },
+  "test": {
+    "working_directory": "Topology/UnknotRecognition/fast",
+    "command": "python -B -m unittest discover -s tests -p test_normal_surface.py -v",
+    "failing_test": "test_normal_surface.NormalSurfaceTests.test_communication_retains_input_across_polls",
+    "exception": "fastunknot.normal_surface.NormalTimeout",
+    "prior_isolated_module_result": {
+      "tests": 8,
+      "errors": 1,
+      "skips": 3,
+      "seconds": 3.176
+    },
+    "payload_bytes": 500000,
+    "child_initial_sleep_seconds": 0.12,
+    "poll_timeout_seconds": 0.05,
+    "local_allowance_seconds": 3
+  },
+  "blocking_cause": {
+    "first_call": "child.communicate(payload, timeout=0.05)",
+    "retry": "child.communicate(None, timeout=0.05)",
+    "observed_stdlib_guard": "if self.stdin and input: selector.register(self.stdin, selectors.EVENT_WRITE)",
+    "effect": "Retries keep the internal input buffer but no longer register stdin for writing. The sent offset remains fixed, stdin stays open, and the child waits for remaining input and EOF.",
+    "longer_deadline_is_not_a_repair": true,
+    "resending_nonempty_payload_is_rejected_by_communicate": true
+  },
+  "plain_subprocess_poll_trace": [
+    {
+      "poll": 0,
+      "sent_bytes": 65536,
+      "buffer_bytes": 500000,
+      "stdin_closed": false,
+      "child_returncode": null
+    },
+    {
+      "poll": 1,
+      "sent_bytes": 65536,
+      "buffer_bytes": 500000,
+      "stdin_closed": false,
+      "child_returncode": null
+    },
+    {
+      "poll": 2,
+      "sent_bytes": 65536,
+      "buffer_bytes": 500000,
+      "stdin_closed": false,
+      "child_returncode": null
+    },
+    {
+      "poll": 3,
+      "sent_bytes": 65536,
+      "buffer_bytes": 500000,
+      "stdin_closed": false,
+      "child_returncode": null
+    },
+    {
+      "poll": 4,
+      "sent_bytes": 65536,
+      "buffer_bytes": 500000,
+      "stdin_closed": false,
+      "child_returncode": null
+    }
+  ],
+  "successful_single_call_comparison": {
+    "same_child_command_and_payload": true,
+    "method": "subprocess.run with one communication operation",
+    "timeout_seconds": 3,
+    "elapsed_seconds": 0.1367267030000221,
+    "returncode": 0,
+    "stdout_bytes": 500000,
+    "payload_matches": true,
+    "stderr": "note"
+  },
+  "baseline_reproduction": {
+    "source": "git show HEAD:Topology/UnknotRecognition/fast/fastunknot/normal_surface.py",
+    "execution": "Compile the unchanged baseline into a separate namespace and invoke its _invoke with the same command, payload and three-second allowance.",
+    "exception": "NormalTimeout",
+    "elapsed_seconds": 3.001340564000202
+  },
+  "impact": "The optional Regina worker path can time out and return INCONCLUSIVE when input remains after the first poll. This observation does not establish a false topological verdict or a defect in the new modular observer.",
+  "scope": "Separate inherited limitation. No production or test-source fix was made during this investigation."
+}

@@ -1,0 +1,25 @@
+The repair gives one communication thread sole ownership of
+\code{communicate(payload)}. The caller waits on a completion event in
+bounded intervals, checking the existing local deadline and global
+cancellation callback on the calling thread. Completion publishes either
+the returned streams or the communication error. A worker pipe failure
+remains inconclusive, while a caller's cancellation exception propagates.
+
+Cleanup covers every operation after successful child creation, including
+event construction, thread construction and startup. It kills a live
+child, reaps it, joins a successfully started communicator, and then closes
+the pipes. Independent review identified and closed a constructor-scope
+gap before the final tests. The scope is the controlled direct-child
+Regina worker; it is not a general supervisor for arbitrary grandchildren
+retaining inherited pipes.
+
+The existing delayed-reader regression now transmits and recovers all
+500,000 input characters within its unchanged three-second allowance.
+Existing cancellation and real-engine checks also pass. One additional
+test injects communication and thread-setup failures, verifies child
+reaping and closed pipes, checks that the payload is submitted once, and
+confirms caller-thread polling. The final nine-test worker module passes
+in 2.732 seconds, followed by six public-integration tests in 0.010 seconds.
+The preserved diagnosis and logs are separate from the performance
+benchmarks; this transport repair contributes no claimed mathematical
+speedup.

@@ -1,0 +1,280 @@
+\section{Implementation, independent checks, and measurements}
+\label{sec:experiments}
+
+\subsection{Experimental questions and scopes}
+
+The experiments address three separate questions. Does each implementation
+agree with an independently organized exact oracle? Does compression remove
+the intended local bottleneck on an explicit family? Does a completed query
+in the maintained application become faster? A positive answer to one does
+not supply a positive answer to the others.
+
+All recorded timings use Python 3.12.14 on x86-64 Linux with glibc 2.39.
+The complete integration environment also has Regina 7.4.1. Wall times use
+\code{perf_counter}; the compressed-word audit additionally records process
+CPU time. These are measurements from a shared execution environment, not
+hardware-independent performance guarantees. Raw samples, arm orders,
+resource counters, source hashes, inputs, and status values accompany the
+article. The independently counted states and completed results are often
+more informative than a submillisecond timing difference.
+
+The source baseline is the commit in Section~\ref{sec:overview}. The Jones
+comparison uses its maintained faithful full-polynomial Potts backend.
+The word audit loads the frozen baseline matching module and patches only
+that module for the treatment. An A/A arm invokes the same baseline
+operation again. It measures timing variability; it does not represent
+an additional algorithm. All warmups are excluded from the reported samples.
+
+\subsection{The Jones correctness checks}
+
+The focused tensor suite contains 140 comparisons with the independent
+whole-smoothing-cube Laurent-polynomial calculation. Inputs include actual
+knots, mirrors, alternate crossing orders, and alternate outer faces.
+The oracle expands complete smoothing states and explicitly counts circles;
+it does not use the turning cochain or binary tensor recurrence.
+Further checks directly enumerate every oriented smoothing circle on small
+examples and verify its total turn. Twenty randomly selected exact vertex
+gauges test the independence in Corollary~\ref{cor:gauge}.
+
+The reconstruction tests contain 180 bounded signed Laurent polynomials,
+including coefficients and degrees at their permitted extremes. They check
+the balanced integer decoder independently of diagram contraction. Forged
+turning certificates are rejected. The final interface also checks the
+normalizing scalar before taking its identity shortcut. Local transition
+and state limits, cooperative cancellation, the crossing-free knot,
+and exact scalars exceeding 14,000 bits are covered. Large JSON witnesses
+use hexadecimal integers; they do not require altering a process-global
+decimal conversion setting.
+
+Four additional integration tests exercise the selector, recognizer, and
+command line. They verify that a nonidentity polynomial supplies an exact
+obstruction, an identity continues the independent recognition fallback,
+and a locally exhausted query does not publish an identity. A completed
+order certificate may be reused after such exhaustion. A separate ordering
+regression test exercises the shuffled grid discussed below. The full-suite
+outcome and any baseline/environment qualification are recorded in the
+delivered validation report.
+
+\subsection{Full Jones queries: the initial paired audit}
+
+The initial audit has fourteen inputs, five arms, and seven shuffled
+measured rounds after one excluded warmup round: 490 measured queries and
+70 warmups. Its fixed seed is 26100860. Every arm requests the \emph{full}
+polynomial, with 4,096 allowed states, 200,000 allowed transitions, and a
+three-second local allowance. The arms are ordinary Potts, its A/A control,
+ordinary spin, and Potts and spin on a common separately prepared certified
+crossing order. Thus the matched-order scope isolates contraction from
+differences in order selection; its preparation is outside both matched
+timings. The ordinary scope includes each backend's normal preparation.
+
+Small inputs use the independent cube oracle. The large grid examples
+are independently checked descending diagrams. For other large inputs,
+including the tree medials, the driver checks agreement among completed
+arms and does not label that agreement an independent cube oracle.
+The grids are useful controlled contraction workloads with known polynomial,
+but are not a corpus of hard unknown knots. An ordinary recognition front
+end can settle such an unknot without computing its full polynomial. The following table
+therefore reports full-polynomial queries, not faster complete recognition
+of those examples.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{YrrY}
+\toprule
+Input and timing scope & Potts (ms) & Spin (ms) & Interpretation\\
+\midrule
+144-crossing grid, ordinary & 313.118 & 186.080 & Paired median ratio 1.719\\
+144-crossing grid, common order & 274.913 & 145.532 & Paired median ratio 1.814\\
+196-crossing grid, ordinary & Limit & 633.059 & Potts 0/7; spin 7/7 complete\\
+254-crossing tree medial, ordinary & 66.662 & 305.133 & Substantial regression\\
+\bottomrule
+\end{tabularx}
+\caption{Selected initial full-polynomial measurements. Times are arm
+medians. A paired median ratio is the median of within-round ratios, so it
+need not equal the ratio of the two displayed medians.}
+\label{tab:spin-timings}
+\end{table}
+
+On the 144-crossing grid, the peak number of states drops from 877 to 240
+and the transition count from 48,386 to 32,098. On the 196-crossing grid,
+spin uses 480 peak states and 89,122 transitions. Both Potts arms reach the
+4,096-state allowance in every measured round. An incomplete Potts run has
+no completion time, so there is no completed-query speedup ratio for this
+case. Several small knots and both tree medials favor Potts. In particular,
+the stronger asymptotic state bound does not imply uniform practical
+dominance: local table size, sparsity, coefficient lengths, and order
+preparation all matter.
+
+\subsection{An ordering defect exposed by the audit}
+
+An explicitly supplied order in the initial spin wrapper was compared
+with the separator order without also comparing the ordinary greedy
+candidate. On a shuffled 64-crossing grid, this led to seven state-limit
+failures. The final wrapper first compares supplied and greedy profiles,
+then applies the existing separator certification. This does not change
+the mathematical guarantee, but avoids discarding an inexpensive better
+candidate. The initial source and driver are preserved under
+\path{fast/spin_jones_research/initial/}; their raw results remain labeled
+as the initial audit.
+
+A separate follow-up repeats just this affected case with seven measured
+rounds and five arms: 35 measured queries and five excluded warmups. Every
+arm now completes. The ordinary medians are 19.293 ms for Potts and
+14.625 ms for spin, with paired ratio 1.331. On the common certified order,
+the medians are 3.963 ms and 10.790 ms, with paired ratio 0.3666.
+For this input the ordinary-query gain is attributable to ordering policy;
+the matched-order binary contraction remains slower. The follow-up is not
+silently pooled with the initial implementation's results.
+
+The final reconstruction validation added during review changes only
+the checking of result metadata before coefficient decoding. The recorded
+timings predate that defensive check. They are retained as measurements of
+the identified source hashes, not relabeled as fresh final-source timings.
+The final source is subject to the final correctness gate.
+
+\subsection{Compressed matching: kernel and application evidence}
+
+The word-kernel audit uses five measured randomized rounds after one excluded
+warmup, seed 3103, a two-million-work allowance, and a 100,000-node allowance.
+Every kernel timing includes complete construction of its input grammar.
+The whole-knot group queries instead use a twenty-million-work allowance,
+15 seconds for the local group stage, and 18 seconds globally.
+The audit contains 225 measured whole-knot queries over fifteen inputs and
+280 kernel measurements. Four new unit tests include 500 periodic-prefix
+oracle comparisons and 450 near-prefix longest-common-substring
+comparisons, as well as the $2^{500}$ compressed input, cap accounting,
+and cancellation. The existing directed-pair negative control now uses
+the longer tail $T^3$, preserving coverage of the complete fallback.
+
+For the equal-bigram family from Section~\ref{sec:matching}, and for a
+positive-shift family in which the best match actually improves the prefix,
+the new branch removes a measured local obstruction. A fourth arm on these
+families performs the same diagonal reduction but uses generic compressed
+prefix and suffix primitives. It distinguishes the diagonal alignment
+reduction from the finite-cycle method used to evaluate each shift.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{Yrrrr}
+\toprule
+Family, $N=2^h$ & Baseline & A/A & Generic LCE & Cycle method\\
+\midrule
+Equal bigrams, $h=8$ & 4.586 & 4.593 & 12.073 & 1.204\\
+Equal bigrams, $h=32$ & 51.954 & 75.993 & 219.083 & 3.965\\
+Equal bigrams, $h=100$ & 466.427 & 447.129 & Limit & 12.948\\
+Equal bigrams, $h=500$ & Limit & Limit & Limit & 92.580\\
+Positive shift, $h=8$ & 1.970 & 1.830 & 1.132 & 0.118\\
+Positive shift, $h=32$ & 37.794 & 46.241 & 27.401 & 0.450\\
+Positive shift, $h=100$ & 338.582 & 321.581 & 266.394 & 0.819\\
+Positive shift, $h=500$ & Limit & Limit & Limit & 3.515\\
+\bottomrule
+\end{tabularx}
+\caption{Median complete kernel times in milliseconds. ``Limit'' means
+the specified work allowance was exhausted; it is not a time measurement.}
+\label{tab:lcs-timings}
+\end{table}
+
+At $h=500$, the equal-bigram branch uses 116,299 work units and 6,494
+nonempty grammar nodes. Its 25,691 periodic states are the total over
+successive tables, not simultaneous live storage. The positive-shift branch
+uses 9,104 work units, 507 nodes, and 1,006 periodic states. The generic-LCE
+ablation also reaches the work limit in these cases, showing that merely
+listing fewer alignments does not remove the original comparison cost.
+
+The large-deficit control has $S=73$ and fails the fixed gate $S\le32$.
+All three relevant arms have identical work counts: 43,100 at $h=8$,
+514,652 at $h=32$, and a limit at $h=100$ and $h=500$. An interior control
+is already resolved by the earlier directed-pair bound, with identical
+work in all arms. These controls demonstrate that the new branch is
+specialized, and that its improvement is not an artifact of weakening
+the old fallback or its correctness requirement.
+
+Every whole-knot query returns \code{UNKNOT}; for each case all arms have
+identical certificate digests. However, none invokes the new branch.
+The sums of the fourteen small-case median times are 139.524 ms baseline,
+136.484 ms A/A, and 139.042 ms treatment. Gordian medians are 1.719, 1.678,
+and 1.618 seconds. These timings do not establish faster completed knot
+recognition from the new branch. Their useful evidence is preservation of
+existing successful traces and absence of a large unrelated regression.
+
+\subsection{Boundary transport: literal permutation oracles}
+
+The boundary solver has nine focused tests, including very large binary
+weights, mixed point and boundary constraints, infeasibility, reflection
+branches, canonical keys, and JSON output with integers exceeding
+24,000 bits. A separate
+finite oracle constructs literal permutations and discovers equivariant
+maps by breadth-first propagation on the permutation graph. It does not
+use the gcd, root-progression, or CRT formulas of
+Section~\ref{sec:transport}.
+
+The transport audit checks 817 presentations, 650,992 constraint queries,
+and 12,496 individual transported values in 6.715 seconds. An additional
+canonical-signature audit checks 285 pure-translation presentations,
+6,356 signature queries, 1,034 literal marking classes, and 44,790
+witness-map evaluations in 0.123 seconds. The expected classes are obtained
+by enumerating literal equivariant maps; comparing two implementations of
+the same normalization formula would have been weaker evidence.
+
+The timing comparison with explicit sheet enumeration is deliberately a
+kernel comparison. With $1,048,576$ sheets and two boundary constraints,
+literal enumeration takes 0.762 seconds, including peripheral-orbit
+labeling and scanning possible root images. A \emph{prepared} compressed
+query has median 5.929 microseconds over eleven calls. The latter excludes
+parsing and cover classification. These scopes must not be confused with construction of a
+3-manifold decomposition or full recognition.
+
+For a binary input with 58,883-bit sheet count, preparation takes 4.245 ms
+and the two-constraint prepared query has median 15.027 ms. The answer is
+one progression; its exact map count has 27,864 bits. A reflection-paired
+48,001-bit input returns two progressions with query median 4.891 ms.
+Those cases demonstrate operation on the encoded integers without sheet
+expansion. They do not establish a polynomial bound on how many different
+cover presentations a hierarchy algorithm might generate.
+
+\subsection{The final integration gate and a baseline pipe defect}
+
+The final maintained suite runs 714 tests in 105.729 seconds, with no
+failures, errors, or skips, on Python 3.12.14 with Regina 7.4.1. The
+integration patch also passes a clean application check against a fresh
+extraction of the pinned baseline. Every tracked and newly added file in
+the patched maintained subtree agrees byte-for-byte with the delivered
+source. These checks concern the actual final code, including the
+normalization validation and the corrected supplied-order policy.
+
+An earlier 712-test run had one error in an unchanged subprocess test.
+That error reproduces in the pinned baseline: after a short timeout, this
+runtime's repeated \code{communicate(None)} calls leave part of a
+500,000-byte request unsent. The child waits for more input or EOF, and
+the local allowance expires. A single uninterrupted communication sends
+the complete payload correctly. This is a separately diagnosed transport
+defect, not evidence against a tensor or topological identity.
+
+The delivered correction performs one communication in an owned thread
+while the main thread polls completion for deadlines and cancellation.
+Cleanup reaps the child, joins the communication thread, and closes the
+streams. Thread-start failures remain inconclusive worker failures;
+caller cancellation exceptions propagate. The unchanged large-payload
+test and a new cancellation test pass. The controlled worker must not
+leave descendants inheriting its pipes; this is not a general process-tree
+supervisor. Its external-engine verdict retains the original trust label.
+The diagnosis, before-source, and final test logs are preserved separately
+from the mathematical performance experiments.
+
+\subsection{Reproduction and evidence preservation}
+
+The archive contains a complete runnable source subtree, an integration
+patch against the pinned commit, TeX sources, the PDF, and a validation
+report. The README supplies commands for the complete unit suite, focused
+tests, literal audits, timing drivers, and document compilation. A hash
+manifest identifies the delivered bytes. The preserved initial Jones
+implementation explains the first audit; the corrected-order follow-up
+has its own result file. The matching audit retains the exact baseline
+module and the generic-LCE ablation.
+
+Reproduction should check exact statuses, polynomials, certificates, work
+counts, and source identities before interpreting timing differences.
+Machine and load differences can change medians and timeout behavior.
+An absent optional dependency or an environmental subprocess restriction
+must be reported explicitly, rather than counted as a mathematical or
+algorithmic success.

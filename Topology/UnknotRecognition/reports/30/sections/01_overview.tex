@@ -1,0 +1,125 @@
+\section{Scope, baseline, and mathematical status}
+\label{sec:overview}
+
+\subsection{The snapshot being extended}
+
+The source baseline is the public ProveIt repository~\cite{proveit-baseline} at commit
+\begin{center}\small
+\code{8a95834940cf77cdab1b39571ffc102ca8b6bede}.
+\end{center}
+All paths below are relative to \code{Topology/UnknotRecognition}, unless a
+different root is specified. The most recent baseline commit affecting this
+subdirectory is
+\begin{center}\small
+\code{30d58bd311d96af1e49b6c98584b8da526b7adcc}.
+\end{center}
+The audit included the maintained implementation in \code{fast/}, the
+199-page synthesis and its source sections, and the relevant literature.
+The delivered patch is against this fixed snapshot; it does not assume that
+the moving \code{main} branch remains unchanged.
+
+This distinction matters because the baseline already incorporates many
+earlier improvements. These include structural Seifert and braid
+certificates, rational-tangle methods, component and homological compression,
+exact Potts evaluations, certified separator orders, full Jones recovery,
+and compressed group-presentation search. In particular, alphabet and
+directed-pair bounds for compressed substrings are already present.
+Reimplementing one of those results would not constitute a continuation.
+
+The present work concentrates on three remaining representation costs:
+
+\begin{enumerate}
+\item Full Jones evaluation uses equality partitions of frontier colors.
+When the number of colors grows with the input, the available bound is a
+Bell number. A fixed two-state model removes this source of the logarithmic
+factor in the exponent.
+\item Two very long compressed words can share both their alphabet and
+their directed pairs. If they already agree almost to their ends, the
+remaining search can instead be bounded by their short unmatched tails.
+\item A compressed surface cover must preserve the identities of boundary
+components used in subsequent gluings. Pointed-cover classification alone
+does not solve simultaneous constraints on whole boundary lifts.
+\end{enumerate}
+
+The first two kernels are connected to callable recognizer paths in the
+patch. The boundary kernel extends a geometric data operation; a complete
+Lackenby hierarchy implementation does not yet exist in this codebase.
+
+\subsection{What the main theorem says}
+
+Let $n$ be the number of crossings of a validated classical knot diagram.
+For an order of its crossings, let $w$ be the largest number of diagram
+edges incident to both processed and unprocessed crossings. Then the new
+backend computes the full Jones polynomial with at most $2^w$ frontier keys
+and in
+\begin{equation}\label{eq:main-width}
+ \poly(n)2^{O(w)}
+\end{equation}
+deterministic bit time. The polynomial factor includes exact arithmetic,
+normalization, and coefficient recovery. The default ordering wrapper has
+$w=O(\sqrt n)$ and polynomial preparation cost, so
+\begin{equation}\label{eq:main-sqrt}
+ T_{\mathrm{Jones}}(n)=\poly(n)2^{O(\sqrt n)}.
+\end{equation}
+The unrestricted statement requires disabled local caps and no external
+deadline. With limits enabled, an exhausted query yields no polynomial
+identity assertion.
+
+The key point is the absence of a common-disk hypothesis. The baseline
+correctly rejects the inference that an arbitrary planar scan has
+Catalan-many matchings. We do not reintroduce that inference. The new state
+space records two orientations per cut edge and uses a linear evaluation
+of the bracket. It never claims to preserve every boundary matching as a
+distinct object. Section~\ref{sec:tensors} proves the relevant evaluation
+identity directly.
+
+\subsection{Attribution and novelty}
+
+The Kauffman bracket and its relation to the Jones polynomial are classical
+\cite{kauffman1987}. Singly exponential dependence on diagram width, and
+consequent $2^{O(\sqrt n)}$ algorithms for fixed quantum invariants, are
+established in work including Maria's theorem \cite{maria2021}. That paper
+also addresses the arithmetic cost. Equation~\eqref{eq:main-sqrt} is
+therefore an improvement to the maintained implementation and its proved
+bound, not a new general complexity theorem for the Jones polynomial.
+
+The development here supplies a small, direct construction from PD data:
+an independently checkable integral turning cochain, a binary frontier
+contraction, a proof that one cyclotomic phase suffices for each key, and
+exact coefficient recovery from integer arithmetic. The word and covering
+results are likewise stated as specific kernels and proved in the
+generality actually implemented. No claim of historical priority for every
+elementary lemma is needed to assess their correctness or usefulness.
+
+\subsection{The quasi-polynomial target remains distinct}
+
+We use \emph{quasi-polynomial} for bounds of the form
+$\exp((\log(n+2))^{O(1)})$. The stronger target repeatedly used in this
+project is $n^{O(\log n)}=\exp(O(\log^2 n))$.
+The new general Jones bound in \eqref{eq:main-sqrt} is subexponential but is
+larger than every bound with a fixed power of $\log n$ in the exponent.
+
+Moreover, a full Jones polynomial equal to one is not a recognized unknot
+certificate. The baseline explicitly preserves an independent exact
+fallback. The patch preserves that behavior. Khovanov homology supplies a
+complete detection theorem \cite{kronheimer-mrowka}; this does not bound the
+size of the intermediate chain complexes used to compute it.
+
+Lackenby's July 2026 preprint gives a new hierarchy algorithm and
+polynomially encoded certification machinery \cite{lackenby2026}. Its
+Section~9 separates iteration counts from running time and gives an
+iteration bound $L(g+1)^L$ in terms of maximum hierarchy length and pattern
+complexity. The refined length control in Section~10 is linear in initial
+handle complexity. These results do not provide the complete accelerated
+quasi-polynomial implementation sought here. In particular, compressing one
+local operation does not bound the number or sizes of future operations.
+
+\subsection{Reading the evidence}
+
+Proofs establish correctness and asymptotic claims. Exhaustive finite
+checks test conventions and implementation against independently organized
+oracles. Timings measure completed executions on the stated machine; a
+resource limit is reported as a limit rather than as a completion time.
+Section~\ref{sec:experiments} reports both favorable cases and regressions.
+The package contains the patch, complete runnable source, test and audit
+drivers, raw measurements, and build instructions.

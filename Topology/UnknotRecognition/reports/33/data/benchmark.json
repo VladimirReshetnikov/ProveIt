@@ -1,0 +1,737 @@
+{
+  "python": "3.13.5",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "seed": 8102602,
+  "rounds": 5,
+  "scope": "Paired kernel timings, not full fastunknot recognition benchmarks.\n\nCompares the old birth-front normal form (without optional inverse pruning)\nwith commuting layers. Both use the same immutable transition kernel. All\ntraces through the depth bound are exhausted; goal tests do not stop the run.\nThus this measures duplicate-interleaving work, not an end-to-end speedup.\n",
+  "rows": [
+    {
+      "name": "independent_bits_6_k1",
+      "scope": "abstract",
+      "depth": 1,
+      "max_roots": 1,
+      "trace_counts": {
+        "birth_front": 6,
+        "layered": 6
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 4.1482000028736365e-05,
+            "birth_front": 1.2318000017330633e-05,
+            "layered": 2.386599999226746e-05
+          },
+          "counts": {
+            "control": 6,
+            "birth_front": 6,
+            "layered": 6
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 3.6524000051940675e-05,
+            "layered": 1.8256999965160503e-05,
+            "birth_front": 1.0025000051427924e-05
+          },
+          "counts": {
+            "control": 6,
+            "layered": 6,
+            "birth_front": 6
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 1.0034000069936155e-05,
+            "layered": 4.4004999949720514e-05,
+            "control": 1.0003999932450824e-05
+          },
+          "counts": {
+            "birth_front": 6,
+            "layered": 6,
+            "control": 6
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 9.144000046035217e-06,
+            "layered": 1.651499997024075e-05,
+            "birth_front": 3.419100005430664e-05
+          },
+          "counts": {
+            "control": 6,
+            "layered": 6,
+            "birth_front": 6
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 9.31399995351967e-06,
+            "birth_front": 8.98299992968532e-06,
+            "layered": 1.5303000054700533e-05
+          },
+          "counts": {
+            "control": 6,
+            "birth_front": 6,
+            "layered": 6
+          }
+        }
+      ],
+      "median_seconds": {
+        "control": 1.0003999932450824e-05,
+        "birth_front": 1.0034000069936155e-05,
+        "layered": 1.8256999965160503e-05
+      },
+      "paired_speedup": 0.5491044569512212,
+      "control_ratio": 0.9644620973280907
+    },
+    {
+      "name": "independent_bits_6_k6",
+      "scope": "abstract",
+      "depth": 6,
+      "max_roots": 6,
+      "trace_counts": {
+        "birth_front": 1653,
+        "layered": 923
+      },
+      "samples": [
+        {
+          "order": [
+            "layered",
+            "control",
+            "birth_front"
+          ],
+          "seconds": {
+            "layered": 0.004614100000026156,
+            "control": 0.00424330100008774,
+            "birth_front": 0.004175610999936907
+          },
+          "counts": {
+            "layered": 923,
+            "control": 1653,
+            "birth_front": 1653
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.004364960999964751,
+            "birth_front": 0.004550346000087302,
+            "layered": 0.004779634999977134
+          },
+          "counts": {
+            "control": 1653,
+            "birth_front": 1653,
+            "layered": 923
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.004526469999973415,
+            "control": 0.0046520959999725164,
+            "layered": 0.004244663000008586
+          },
+          "counts": {
+            "birth_front": 1653,
+            "control": 1653,
+            "layered": 923
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.004219175000002906,
+            "control": 0.004350840000029166,
+            "layered": 0.0047119739999743615
+          },
+          "counts": {
+            "birth_front": 1653,
+            "control": 1653,
+            "layered": 923
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.004545157999928051,
+            "birth_front": 0.004585548000022754,
+            "layered": 0.00433149200000571
+          },
+          "counts": {
+            "control": 1653,
+            "birth_front": 1653,
+            "layered": 923
+          }
+        }
+      ],
+      "median_seconds": {
+        "control": 0.004364960999964751,
+        "birth_front": 0.004526469999973415,
+        "layered": 0.004614100000026156
+      },
+      "paired_speedup": 0.9520279268414997,
+      "control_ratio": 0.9840477967154738
+    },
+    {
+      "name": "independent_bits_6_k8",
+      "scope": "abstract",
+      "depth": 8,
+      "max_roots": 8,
+      "trace_counts": {
+        "birth_front": 15327,
+        "layered": 3002
+      },
+      "samples": [
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.03492963500002588,
+            "control": 0.03459490900002038,
+            "layered": 0.015631579000000784
+          },
+          "counts": {
+            "birth_front": 15327,
+            "control": 15327,
+            "layered": 3002
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 0.03602953199992953,
+            "layered": 0.015308791000052224,
+            "control": 0.0358673020000424
+          },
+          "counts": {
+            "birth_front": 15327,
+            "layered": 3002,
+            "control": 15327
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 0.0359111570001005,
+            "layered": 0.016302783000014642,
+            "control": 0.035189268999943124
+          },
+          "counts": {
+            "birth_front": 15327,
+            "layered": 3002,
+            "control": 15327
+          }
+        },
+        {
+          "order": [
+            "layered",
+            "control",
+            "birth_front"
+          ],
+          "seconds": {
+            "layered": 0.015747440000041024,
+            "control": 0.035837058000083744,
+            "birth_front": 0.035611423999966973
+          },
+          "counts": {
+            "layered": 3002,
+            "control": 15327,
+            "birth_front": 15327
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.03502461499999754,
+            "layered": 0.015936358999965705,
+            "birth_front": 0.03949502199998278
+          },
+          "counts": {
+            "control": 15327,
+            "layered": 3002,
+            "birth_front": 15327
+          }
+        }
+      ],
+      "median_seconds": {
+        "control": 0.035189268999943124,
+        "layered": 0.015747440000041024,
+        "birth_front": 0.0359111570001005
+      },
+      "paired_speedup": 2.2614103625652295,
+      "control_ratio": 1.0096755855032111
+    },
+    {
+      "name": "torus_3_4_k1",
+      "scope": "knot RIII",
+      "depth": 1,
+      "max_roots": 1,
+      "trace_counts": {
+        "birth_front": 8,
+        "layered": 8
+      },
+      "samples": [
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.0001022709999460858,
+            "control": 9.491999992405908e-05,
+            "layered": 0.00011058400002639246
+          },
+          "counts": {
+            "birth_front": 8,
+            "control": 8,
+            "layered": 8
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.00010900200004471117,
+            "layered": 0.00010760900011064223,
+            "birth_front": 0.00010393399998065433
+          },
+          "counts": {
+            "control": 8,
+            "layered": 8,
+            "birth_front": 8
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 0.00011066400008985511,
+            "layered": 0.00010967200000777666,
+            "control": 9.575199999289907e-05
+          },
+          "counts": {
+            "birth_front": 8,
+            "layered": 8,
+            "control": 8
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 9.469999997691048e-05,
+            "layered": 0.0001091319999204643,
+            "birth_front": 9.162599997125653e-05
+          },
+          "counts": {
+            "control": 8,
+            "layered": 8,
+            "birth_front": 8
+          }
+        },
+        {
+          "order": [
+            "layered",
+            "control",
+            "birth_front"
+          ],
+          "seconds": {
+            "layered": 0.00010296300001755299,
+            "control": 9.144600005583925e-05,
+            "birth_front": 9.362900004816765e-05
+          },
+          "counts": {
+            "layered": 8,
+            "control": 8,
+            "birth_front": 8
+          }
+        }
+      ],
+      "median_seconds": {
+        "layered": 0.0001091319999204643,
+        "control": 9.491999992405908e-05,
+        "birth_front": 0.0001022709999460858
+      },
+      "paired_speedup": 0.9248263756210424,
+      "control_ratio": 1.023872011799263
+    },
+    {
+      "name": "torus_3_4_k4",
+      "scope": "knot RIII",
+      "depth": 4,
+      "max_roots": 4,
+      "trace_counts": {
+        "birth_front": 664,
+        "layered": 664
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.009142964000034226,
+            "layered": 0.00974161900001036,
+            "birth_front": 0.008686036999961289
+          },
+          "counts": {
+            "control": 664,
+            "layered": 664,
+            "birth_front": 664
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.009529025000006186,
+            "birth_front": 0.009235901000010927,
+            "layered": 0.010303973000077349
+          },
+          "counts": {
+            "control": 664,
+            "birth_front": 664,
+            "layered": 664
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.00959441199995581,
+            "layered": 0.009962597000026108,
+            "birth_front": 0.009238043999971524
+          },
+          "counts": {
+            "control": 664,
+            "layered": 664,
+            "birth_front": 664
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 0.008918130999973073,
+            "layered": 0.009832783999968342,
+            "control": 0.008471009000004415
+          },
+          "counts": {
+            "birth_front": 664,
+            "layered": 664,
+            "control": 664
+          }
+        },
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.008656243000018549,
+            "control": 0.009217414000090685,
+            "layered": 0.012604387999999744
+          },
+          "counts": {
+            "birth_front": 664,
+            "control": 664,
+            "layered": 664
+          }
+        }
+      ],
+      "median_seconds": {
+        "birth_front": 0.008918130999973073,
+        "control": 0.009217414000090685,
+        "layered": 0.009962597000026108
+      },
+      "paired_speedup": 0.896343672478722,
+      "control_ratio": 0.9628567128464018
+    },
+    {
+      "name": "torus_3_7_k4",
+      "scope": "knot RIII",
+      "depth": 4,
+      "max_roots": 4,
+      "trace_counts": {
+        "birth_front": 6069,
+        "layered": 4928
+      },
+      "samples": [
+        {
+          "order": [
+            "birth_front",
+            "control",
+            "layered"
+          ],
+          "seconds": {
+            "birth_front": 0.08549747699998989,
+            "control": 0.08924906000004285,
+            "layered": 0.08658315399998173
+          },
+          "counts": {
+            "birth_front": 6069,
+            "control": 6069,
+            "layered": 4928
+          }
+        },
+        {
+          "order": [
+            "layered",
+            "birth_front",
+            "control"
+          ],
+          "seconds": {
+            "layered": 0.09231777299999067,
+            "birth_front": 0.08851323099997899,
+            "control": 0.08481155099991611
+          },
+          "counts": {
+            "layered": 4928,
+            "birth_front": 6069,
+            "control": 6069
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.08700806199999533,
+            "layered": 0.08737060900000415,
+            "birth_front": 0.08602036100000987
+          },
+          "counts": {
+            "control": 6069,
+            "layered": 4928,
+            "birth_front": 6069
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.08605095600000823,
+            "birth_front": 0.08353653400001804,
+            "layered": 0.08522655500007659
+          },
+          "counts": {
+            "control": 6069,
+            "birth_front": 6069,
+            "layered": 4928
+          }
+        },
+        {
+          "order": [
+            "layered",
+            "birth_front",
+            "control"
+          ],
+          "seconds": {
+            "layered": 0.08452833199999077,
+            "birth_front": 0.08231715900001291,
+            "control": 0.08485228200004258
+          },
+          "counts": {
+            "layered": 4928,
+            "birth_front": 6069,
+            "control": 6069
+          }
+        }
+      ],
+      "median_seconds": {
+        "layered": 0.08658315399998173,
+        "birth_front": 0.08549747699998989,
+        "control": 0.08605095600000823
+      },
+      "paired_speedup": 0.9801702532730904,
+      "control_ratio": 0.9707798481635701
+    },
+    {
+      "name": "torus_3_10_k4",
+      "scope": "knot RIII",
+      "depth": 4,
+      "max_roots": 4,
+      "trace_counts": {
+        "birth_front": 18095,
+        "layered": 14305
+      },
+      "samples": [
+        {
+          "order": [
+            "birth_front",
+            "layered",
+            "control"
+          ],
+          "seconds": {
+            "birth_front": 0.29473144200005663,
+            "layered": 0.3052275610000379,
+            "control": 0.2964778560000241
+          },
+          "counts": {
+            "birth_front": 18095,
+            "layered": 14305,
+            "control": 18095
+          }
+        },
+        {
+          "order": [
+            "control",
+            "layered",
+            "birth_front"
+          ],
+          "seconds": {
+            "control": 0.29998729900000853,
+            "layered": 0.307004415999927,
+            "birth_front": 0.2923338520000698
+          },
+          "counts": {
+            "control": 18095,
+            "layered": 14305,
+            "birth_front": 18095
+          }
+        },
+        {
+          "order": [
+            "layered",
+            "control",
+            "birth_front"
+          ],
+          "seconds": {
+            "layered": 0.308985999000015,
+            "control": 0.29721534200007227,
+            "birth_front": 0.2896573509999598
+          },
+          "counts": {
+            "layered": 14305,
+            "control": 18095,
+            "birth_front": 18095
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.2917954939999845,
+            "birth_front": 0.2887070030000132,
+            "layered": 0.29832282600000326
+          },
+          "counts": {
+            "control": 18095,
+            "birth_front": 18095,
+            "layered": 14305
+          }
+        },
+        {
+          "order": [
+            "control",
+            "birth_front",
+            "layered"
+          ],
+          "seconds": {
+            "control": 0.29410039599997617,
+            "birth_front": 0.2914919549999695,
+            "layered": 0.31040676199995687
+          },
+          "counts": {
+            "control": 18095,
+            "birth_front": 18095,
+            "layered": 14305
+          }
+        }
+      ],
+      "median_seconds": {
+        "control": 0.2964778560000241,
+        "birth_front": 0.2914919549999695,
+        "layered": 0.307004415999927
+      },
+      "paired_speedup": 0.952213833953904,
+      "control_ratio": 0.9894155630793549
+    }
+  ]
+}

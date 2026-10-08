@@ -1,0 +1,312 @@
+\section{Marked determinant continuations and an adaptive exact fallback}
+\label{sec:determinant-continuations}
+
+Report 26 supplies a stronger observation of a partially scanned complex:
+complete each genuine relative direct summand with the actual remaining
+diagram, reduce at a marked point, and retain its Euler characteristic in
+each quantum degree modulo four.  Its norm can detect knottedness before
+the whole scan closes.  The maintained implementation is
+\code{fastunknot/shadow\_scan.py}, selected by \code{backend="shadow"}.
+It evaluates actual completed diagrams by exact integer determinants.
+The report's reusable terminal kernel is verified separately; a new
+geometric producer for that kernel is still a research prototype.
+Neither observation gives a general bound on when a useful summand appears.
+
+\subsection{Why the marked completion is necessary}
+
+At a proper prefix of a crossing order, choose a point on an edge incident
+to the last unprocessed crossing.  The remaining tangle retains this point
+through every prefix observation.  The marked circle carries the action
+of $A=\F[x]/(x^2)$.  The relative cobordism maps, cancellations, and their
+explicit chain homotopies commute with this action.  Completing the relative
+complex and applying the marked quotient therefore preserves these chain
+homotopies: apply the quotient to each identity $fg-1=dh+hd$.
+No assertion that the quotient functor is exact or flat is needed.
+
+Suppose the maintained relative complex splits as whole differential
+components $C_a$, with multiplicities $m_a$.  After the actual suffix is
+attached and the marked quotient is applied, it follows that
+\[
+ \Kh(K;\F)\cong\bigoplus_a
+ H\bigl(\widetilde{\operatorname{cl}}(C_a)\bigr)^{\oplus m_a},
+\]
+up to the recorded grading shifts.  This is a statement about components
+of a genuine relative knot complex.  An arbitrary graded matrix satisfying
+$d^2=0$ is insufficient evidence of this provenance.
+
+There is also a crucial endpoint restriction.  After the final crossing
+is processed, individual unmarked scalar generators need not be free
+marked $A$-summands.  Dividing the Euler value of each such generator by
+$q+q^{-1}$ would be invalid.  The observer rejects the final stage, and
+the complete fallback instead uses the established unreduced rank test.
+
+\subsection{A four-coordinate lower bound}
+
+For a finite bigraded completed complex $X$, write
+\[
+ \sigma_r(X)=\sum_{h,\;j\equiv r\ (4)}(-1)^h\dim_{\F} X^{h,j},
+ \qquad r=0,1,2,3.
+\]
+This vector is unchanged by a graded chain homotopy equivalence.  A uniform
+homological shift changes its overall sign and a uniform quantum shift
+cyclically permutes its coordinates.  Thus neither changes its $\ell^1$
+norm.  Taking Euler characteristics after passing to homology proves
+\[
+ \|\sigma(X)\|_1\leq\dim_{\F} H(X),\qquad
+ B_4=\sum_a m_a\,
+ \|\sigma(\widetilde{\operatorname{cl}}(C_a))\|_1
+ \leq\dim_{\F}\Kh(K;\F).
+\]
+More precisely, if $E_r,O_r$ are the even and odd homological dimensions
+in residue $r$, the deficit is $2\sum_r\min(E_r,O_r)$.
+Since reduced Khovanov homology detects the unknot, $B_4>1$ certifies
+knottedness.  A value of zero or one is inconclusive.
+
+\paragraph{Aggregation order matters.}
+For each whole differential component the implementation recovers relative
+quantum shifts using \code{recover\_shifts}.  A nonzero coefficient of dot
+degree $d$ between matchings with $m$ arcs and $c$ glued circles requires
+$q_{\rm target}-q_{\rm source}=m-c+2d$.  Consistency is checked on all
+edges and cycles.  The completed object vectors are shifted, multiplied
+by the object's homological sign, and \emph{added before taking a norm}.
+Taking separate object norms would discard legitimate differential
+cancellations and could produce an unsound rejection.
+
+Exact refinement of a direct-sum decomposition cannot decrease $B_4$:
+this is the triangle inequality, together with additivity of the Euler
+vector.  Shared isomorphic components add their multiplicities.  The
+production scanner caps those multiplicities at three; it preserves
+the threshold $\min(2,B_4)$, rather than the full uncapped bound.
+Tests compare both exact multiplicities and this saturated threshold.
+
+\subsection{Computing the vector without enumerating the cube}
+
+For a nonempty closed diagram use the raw reduced convention
+\[
+ J(q)=\sum_{s\in\{0,1\}^n}(-q)^{|s|}
+             (q+q^{-1})^{c(s)-1}.
+\]
+Its quantum degrees have one parity
+$\epsilon=(c(0)-1)\bmod2$.  Put $a=J(1)$ and
+$d=i^{-\epsilon}J(i)$, which is an integer.  Only residues $\epsilon$
+and $\epsilon+2$ can occur, and
+\[
+ \sigma_\epsilon=(a+d)/2,\qquad
+ \sigma_{\epsilon+2}=(a-d)/2.
+\]
+The engine verifies the parity and the exact divisions.  The existing
+orientation-based closure calculation supplies the unreduced value
+$2a$ at $q=1$; no exponential state sum is involved.
+
+For the other specialization, construct the actual completed dart
+involution and follow the face permutation
+$d\mapsto\operatorname{rot}(\alpha(d))$.  Check that its Euler
+characteristic is that of a disjoint union of spheres, then checkerboard
+color its faces.  A disconnected projection has $J(i)=0$.
+For a connected projection choose either color as black, with $v$ black
+regions.  At crossing $e$, let $b_e$ be the smoothing bit which does
+\emph{not} join its black sectors, put $w_e=(-1)^{b_e}$, and set
+$B=\sum_e b_e$.  With $L_G^{(0)}$ a grounded cofactor of the signed
+Tait Laplacian,
+\[
+                  J(i)=(-i)^{B+v-1}\det L_G^{(0)}.
+\]
+One-circle smoothings correspond to spanning trees of the Tait graph;
+expanding their signed weights gives this formula by the matrix-tree
+identity.  The identity is polynomial in the edge weights, so negative
+weights do not require a positivity assumption.  Tait loops contribute
+to $B$ even though they make no Laplacian contribution.  Dropping this
+phase, or replacing the determinant by its absolute value, would corrupt
+cancellation within a component.
+
+Either checkerboard color is valid if its phase is computed consistently.
+The maintained engine chooses the smaller color class to reduce the
+dense cofactor dimension.  Fraction-free Bareiss elimination, with row
+pivoting and exact integer division, computes the determinant.  Its
+integer intermediate sizes are polynomially bounded for these
+integer Laplacians; the determinant calculation for one completion has
+polynomial bit complexity in its crossing count.
+
+For a single parity vector the norm is
+$\max(|a|,|d|)$, using
+$|a+d|+|a-d|=2\max(|a|,|d|)$.  Thus the observation retains both Euler
+and determinant information.  The significant new possibility is their
+application to separate genuine completed components, whose contributions
+may cancel in the global polynomial.  Abstract examples of stronger
+component bounds do not by themselves establish that a knot scan realizes
+those examples.
+
+\subsection{A budgeted observer on the same exact scan}
+
+The driver first tries the existing component Euler obstruction, then
+the four-coordinate bound.  Stage zero is always eligible.  Later
+observations are skipped while there is just one component copy, since
+its completed Euler vector is the unchanged global vector up to shifts.
+Observation resumes when a nontrivial direct-sum decomposition appears.
+The suffix preparation and completed values are cached by stage and
+boundary matching.  Euler and determinant observations share the
+\code{euler\_max\_states} allowance, default 4096 distinct queries.
+
+An additional \code{shadow\_max\_work} allowance, default one million,
+charges geometry visits, dense matrix allocation and arithmetic updates.
+It is an operation allowance, not a count of bit operations or a hard
+wall-clock guarantee.  The cooperative global deadline is polled during
+geometry and between determinant elimination rows, including on cache
+hits.  An incomplete determinant is never cached as a completed value.
+
+At this integration checkpoint, exhaustion of either local allowance disabled
+further observations and continued the \emph{same} capped exact scan.
+Section~\ref{sec:shadow-fallback} subsequently refines this policy by retaining
+a separately query-capped Euler reserve after marked-work exhaustion.
+No restart, discarded completed pivot, or speculative verdict is needed.
+Global resource exhaustion still returns \code{UNKNOWN} through the
+recognition API.  An unknot verdict is available only when the complete
+rank computation has closed.  The empty diagram is handled by its known
+unreduced rank two.
+
+This is an adaptive policy in the sense suggested by introsort: expensive
+optional work has a budget and a complete fallback.  Its guarantee is
+that inference cannot continue consuming unbounded local work after
+that allowance.  Unlike introsort's worst-case sorting theorem, it does
+not improve the fallback's asymptotic bound.  The default recognition
+backend remains unchanged because the measurements below do not show
+a broad end-to-end benefit.
+
+\subsection{A reusable terminal kernel, including singular interiors}
+
+Report 26 also proposes factoring a common signed Laplacian into interior
+vertices $I$ and boundary terminals.  A completion identifies terminals;
+it must leave interior vertices distinct.  A nonsingular interior block
+could be eliminated by an ordinary Schur complement, but signed weights
+allow a singular interior even when some completed cofactor is nonzero.
+The archive uses symmetric one- or two-coordinate pivots to extract a
+nonsingular principal block $P$.  The remaining interior block is zero,
+of dimension $r$.  With residual coupling $R$, terminal matrix $S$, and
+grounded partition matrix $Q$ for a query with $p$ terminal blocks, its
+cofactor is
+\[
+ \det P\;\det
+ \begin{pmatrix}
+  0&RQ\\ Q^{\mathsf T}R^{\mathsf T}&Q^{\mathsf T}SQ
+ \end{pmatrix},\qquad Q\text{ has }q=p-1\text{ columns}.
+\]
+If $r>q$, or $RQ$ lacks row rank $r$, the answer vanishes.  In
+particular, $r>b-1$ makes every query vanish when there are $b$ terminals.
+At the critical size $q=r$ the answer becomes
+\[
+                 (-1)^r\det P\,\det(RQ)^2,
+\]
+independent of $S$.  Consequently two nonzero critical answers have the
+same sign and rational square class; their product is a positive integer
+square.  These are identities for a verified common graph and partition,
+not a license to identify arbitrary regions of unrelated completions.
+
+\paragraph{An explicit geometric producer.}
+The new research program
+\path{fast/determinant_research/terminal_geometry_audit.py}
+retains the original black regions incident to the suffix crossings,
+and retains exactly those crossings as signed edges.  Original black
+regions touching a frontier edge become terminals.  For each completed
+matching it verifies that completed faces retain the original colors,
+that each retained original black region maps to one completed face,
+and that every fiber containing more than one old region consists only
+of terminals.  These conditions establish the graph quotient by checking
+each retained edge's endpoints; no dense matrix comparison is required.
+The phase uses the \emph{completed} black vertex count.
+
+The program constructs one archive terminal kernel per suffix and verifies
+its algebraic certificate.  Disconnected completed projections have zero
+determinant specialization and are handled separately.  Any other failed
+geometry check declines the query; it cannot certify a knot.
+Across 300 random braid attempts, 78 validated knots and all encountered
+prefix matchings, 3186 connected queries passed the checks and agreed
+with direct completed determinants.  A further 1317 queries had
+disconnected projections.  There were no color, region-splitting, or
+interior-identification failures; the largest terminal set had size ten.
+The input words, crossing orders, and source hashes accompany these
+4503 queries in \code{data/determinant-terminal-geometry-audit.json}.
+This is finite evidence for a useful construction, not a proof that every
+realizable matching passes its checks.  The recognizer currently uses
+direct completed determinants; kernel reuse needs a maintained
+implementation, interruptible exact arithmetic, and measurements of
+setup amortization before production dispatch is justified.
+
+\subsection{Independent checks and actual performance}
+
+The unchanged delivered package passes its 35 tests.  Its full validation
+rerun covers 701 diagrams, 133923 direct cube states, 83 homology
+calculations, 62904 columns checked for $d^2=0$, and 4000 quotient queries
+on 160 signed graphs, including 57 singular interiors.  The upstream
+probe performs 176 scans of 44 diagrams, using two crossing orders and
+both physical and shared components.  All 820 proper-prefix observations
+obey the exact-rank bound and the appropriate monotonicity condition.
+
+Ten maintained tests independently compare Bareiss elimination with
+permutation expansion, completed vectors with direct cube polynomials,
+and component bounds with reduced homology.  They check ordinary and
+capped multiplicities, mirror diagrams, global deadlines, partial
+determinant interruption, shared cache limits, exact fallback with zero
+inference budget, invalid inputs, and actual CLI dispatch.  They also
+verify that observing a component does not mutate its differential.
+The full integrated suite passes all 560 tests.
+
+One concrete strict improvement is the natural crossing order of $T(3,5)$.
+Its initial four-coordinate norm is one.  After nine of ten crossings,
+the completed components have total norm seven, while their reduced
+Euler bound is only one.  The marked backend therefore rejects at stage
+nine; the Euler backend reaches the final stage ten.  Similar one-stage
+improvements occur on the measured $T(3,7)$ and $T(3,11)$ inputs.
+An earlier certified stage does not automatically imply a faster runtime.
+
+\input{tables/determinant_benchmark.tex}
+
+The complete recognizer shows no material benefit from the new backend
+on these inputs: old-default/marked ratios range from 0.979 to 1.014,
+while the identical-control range is 0.969--1.028.  The changed default
+entry point has old/new ratios 0.962--1.019, with median 0.998.
+In contrast, the raw marked scanner is about $3.02$ times faster on the
+trefoil and $360$ times faster on the 36-crossing stress braid, rejecting
+both at stage zero.  Existing recognition filters already decide those
+inputs.  The Conway sums gain from component Euler information available
+to the old Euler backend too; that backend is faster than the marked
+observer on both measured sums.  The raw marked scanner is slower on
+Conway, Kinoshita--Terasaka, both nonempty unknot fixtures, and the empty
+diagram.  The one-stage torus improvements give ratios of 1.023, 1.000,
+and 0.972, respectively, against saturated scanning.  These results
+support optional use and further work on selective observation, rather
+than enabling the backend by default.
+For scale, the empty raw scan rises from about $2.56$ to $34.90$
+microseconds, while the stress braid falls from about $635$ to $1.72$
+milliseconds; these are medians of the individual arm times.
+
+The reproducer is \code{fast/benchmark\_shadow.py}.  It compares twelve
+inputs over seven shuffled paired rounds, with a duplicate control arm.
+Recognition measurements keep every default filter enabled and include
+fresh validated diagram construction.  A separate raw-decision scope
+bypasses those filters and compares the saturated, Euler and marked
+scanners.  Each call has a five-second and 50000-object allowance;
+any timed repetition returning \code{UNKNOWN} suppresses ratios for
+that case.  The historical recognition control loads only
+\code{recognize.py} from commit \code{3a6d80ed6}, sharing its unchanged
+dependencies.  Imports and one warmup are excluded.  Complete samples
+and source hashes are retained in
+\code{fast/results/marked\_shadow\_20261008.json}.
+
+\subsection{What is still missing for a general complexity theorem}
+
+Each determinant query is polynomial, but the number and size of physical
+relative components need not be small.  The report's stopping-prefix
+bound has the conditional form $\operatorname{poly}(n,R)2^{O(W)}$,
+where $R$ bounds the actual maintained physical data and $W$ bounds the
+frontier through the first decisive observation.  Neither parameter
+has a universal bound sufficient for quasi-polynomial recognition.
+A planar separator bound on a diagram alone does not bound the surviving
+algebraic multiplicities or ensure an early decisive decomposition.
+
+The new observer is useful precisely because it may stop before computing
+all homology.  That possibility does not establish that it stops early
+on every nontrivial knot, nor that the complete fallback is subexponential
+on all unknots.  The earlier assessment of Lackenby's hierarchy claim
+remains unchanged: it is a plausible geometric route, while this
+implementation still lacks a general quasi-polynomial or subexponential
+running-time proof.

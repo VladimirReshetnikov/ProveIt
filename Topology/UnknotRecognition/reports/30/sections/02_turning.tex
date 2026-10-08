@@ -1,0 +1,211 @@
+\section{Integral turning data from a rotation system}
+\label{sec:turning}
+
+\subsection{Darts, faces, and smoothing conventions}
+
+Suppose first that $n>0$. A validated PD diagram is a connected four-valent
+plane multigraph with $n$ vertices and $2n$ edges. Loops and repeated edges
+are allowed. At crossing $v$, its four darts are numbered $(v,0)$ through
+$(v,3)$ in counterclockwise order. Write $\sigma(v,j)=(v,j+1\bmod4)$ and
+let $\alpha$ exchange the two darts of each edge. The cycles of
+\begin{equation}\label{eq:face-permutation}
+ \phi=\sigma\alpha
+\end{equation}
+are the oriented face walks. There are $n+2$ of them, and their total length
+is $4n$. A face walk may repeat vertices and edges.
+
+The two smoothings pair slots as follows:
+\[
+ S_0=\{\{0,1\},\{2,3\}\},\qquad
+ S_1=\{\{0,3\},\{1,2\}\}.
+\]
+Their bracket weights are $A$ and $A^{-1}$, respectively. We use the
+unnormalized bracket $\mathcal B_D(A)$, in which every closed circle has
+weight $\delta=-A^2-A^{-2}$. Thus
+\begin{equation}\label{eq:bracket-state-sum}
+ \mathcal B_D(A)=\sum_{s\in\{0,1\}^n}
+      A^{n-2|s|}\delta^{c(s)},
+ \qquad
+ V_D(A^{-4})=(-A^3)^{-\operatorname{wr}(D)}
+                   \frac{\mathcal B_D(A)}{\delta}.
+\end{equation}
+Here $c(s)$ counts the smoothing circles. These conventions agree with the
+independent Laurent-polynomial oracle supplied by the baseline.
+
+At a smoothing arc traversed from incoming slot $j$ to outgoing slot $k$,
+define its quarter-turn by
+\begin{equation}\label{eq:corner-turn}
+ \tau(j,k)=
+ \begin{cases}
+ -1,&k=j+1\pmod4,\\
+ +1,&k=j-1\pmod4.
+ \end{cases}
+\end{equation}
+The incoming tangent points into the crossing, which explains the minus
+sign in the first case. In particular, each corner of a face walk in
+\eqref{eq:face-permutation} has quarter-turn $-1$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.85,>=Latex]
+ \draw[fill=pale,draw=navy] (0,0) circle (1.0);
+ \foreach \a/\s in {0/0,90/1,180/2,270/3}{
+  \draw[navy] (\a:0.98)--(\a:1.65);
+  \node at (\a:1.92) {$\s$};
+ }
+ \draw[very thick,teal,->] (0,1.4)--(0,0.72)
+  .. controls (0,0.3) and (0.3,0) .. (0.72,0)--(1.4,0);
+ \node[align=center] at (0,-2.65) {incoming $1$ to outgoing $0$\\$\tau(1,0)=+1$};
+ \begin{scope}[xshift=6.0cm]
+ \draw[fill=pale,draw=navy] (0,0) circle (1.0);
+ \foreach \a/\s in {0/0,90/1,180/2,270/3}{
+  \draw[navy] (\a:0.98)--(\a:1.65);
+  \node at (\a:1.92) {$\s$};
+ }
+ \draw[very thick,teal,->] (1.4,0)--(0.72,0)
+  .. controls (0.3,0) and (0,0.3) .. (0,0.72)--(0,1.4);
+ \node[align=center] at (0,-2.65) {incoming $0$ to outgoing $1$\\$\tau(0,1)=-1$};
+ \end{scope}
+\end{tikzpicture}
+\caption{The local convention. Slot numbers increase counterclockwise,
+but the entering tangent reverses the slot's outward direction.}
+\label{fig:turn-convention}
+\end{figure}
+
+\subsection{A small system of face equations}
+
+Choose one face $f_\infty$ as the outer face. A directed edge-turn cochain
+is a family of integers $b_d$, one for every dart, satisfying
+$b_{\alpha(d)}=-b_d$. We require
+\begin{equation}\label{eq:turn-equations}
+ \sum_{d\in f} b_d=
+ \begin{cases}
+ |f|-4,&f\ne f_\infty,\\
+ |f|+4,&f=f_\infty.
+ \end{cases}
+\end{equation}
+These equations contain the total edge turning along each face; the
+$|f|$ local corners contribute $-|f|$ separately.
+
+\begin{theorem}[Constructive integral turning cochain]
+\label{thm:turn-construction}
+For every connected spherical four-valent rotation system with $n>0$, the
+equations \eqref{eq:turn-equations} have an integer solution supported on
+the edges dual to a dual spanning tree. Such a solution can be constructed
+and verified in polynomial bit time and encoded in $O(n\log(n+2))$ bits.
+For the construction used here,
+\begin{equation}\label{eq:cochain-bounds}
+ \max_d |b_d|\le4n+4,
+ \qquad
+ L_b:=\sum_{e}|b_e|\le4(n+1)^2.
+\end{equation}
+The sum over edges chooses either orientation once.
+\end{theorem}
+
+\begin{proof}
+Put $h_f=|f|-4+8\mathbf1_{f=f_\infty}$. Euler's formula gives
+\[
+ \sum_f h_f=4n-4(n+2)+8=0.
+\]
+Choose a spanning tree of the connected dual graph, rooted at $f_\infty$.
+For a nonroot face $f$, let $d_f$ be the dart on its parent edge belonging
+to $f$. Assign $b_{d_f}$ the total demand of the subtree rooted at $f$ and
+assign its negative to the other dart. Assign zero on all remaining edges.
+At $f$, its parent-edge contribution is its subtree demand; the
+child-edge contributions subtract the children's subtree demands.
+Their sum is $h_f$. The root equation follows from total demand zero.
+This also handles a primal bridge: its dual loop belongs to no spanning
+tree and contributes zero twice with opposite signs.
+
+The total positive demand equals half the absolute demand sum, and
+\[
+ \sum_f |h_f|\le\sum_f(|f|+4)=8n+8.
+\]
+Every subtree sum therefore has absolute value at most $4n+4$.
+There are $n+1$ dual-tree edges, proving \eqref{eq:cochain-bounds}.
+The construction uses face walks, a tree traversal, and integer subtree
+sums. Its verifier reconstructs the face walks, checks antisymmetry, and
+checks every equation in \eqref{eq:turn-equations}; it does not repeat the
+tree construction. All numbers used by the constructed certificate have
+$O(\log(n+2))$ bits.
+\end{proof}
+
+\subsection{Why every smoothing circle has the right turning}
+
+\begin{lemma}[Zero face integrals determine all closed integrals]
+\label{lem:closed-cochain}
+Let $c$ be an antisymmetric edge cochain on a connected graph cellularly
+embedded in the sphere. If its integral around every face walk is zero,
+then its integral around every closed graph walk is zero. The statement
+holds over $\Z$ and over $\Z/4\Z$.
+\end{lemma}
+
+\begin{proof}
+Choose a primal spanning tree. For each nontree edge, its fundamental
+cycle bounds a union of faces, with signs determined by orientation.
+The integral around that cycle is consequently zero. Define a vertex
+potential by integrating $c$ along the tree from a root. The vanishing
+fundamental-cycle integrals show that the difference of potentials across
+every edge is $c$ on that edge. Potential differences telescope on every
+closed walk. This argument uses no division and works over either ring.
+Repeated edges on a face boundary cancel with their orientations.
+\end{proof}
+
+\begin{theorem}[Turning of all smoothing circles]
+\label{thm:turning}
+Let $b$ satisfy \eqref{eq:turn-equations}. For any smoothing state, orient
+one of its circles $C$ arbitrarily. Sum $b_d$ along its directed traversals
+of diagram edges and sum \eqref{eq:corner-turn} along its smoothing arcs.
+The resulting integer is $+4$ or $-4$. Reversing $C$ negates the integer.
+\end{theorem}
+
+\begin{proof}
+Take any smooth planar realization of the rotation system with the chosen
+outer face. In small disjoint neighborhoods of its crossings, arrange
+the four outward tangents in the cardinal directions indexed by the
+slots. This is possible because their cyclic orders agree. Smooth the
+remaining edges while keeping those endpoint tangents fixed.
+Let $b^{\mathrm{geom}}_d$ be the total tangent turning along such an edge,
+measured in quarter-turns. Endpoint tangent directions make this an integer.
+It is antisymmetric under reversal.
+
+A slightly regularized face boundary turns once clockwise for an inner
+face and once counterclockwise for the outer face. Its local crossing
+corners each contribute $-1$. Hence $b^{\mathrm{geom}}$ satisfies exactly
+\eqref{eq:turn-equations}, including faces whose combinatorial walks
+repeat vertices. By Lemma~\ref{lem:closed-cochain}, the difference
+$b-b^{\mathrm{geom}}$ has zero integral on every closed graph walk.
+
+The oriented smoothing circle is a simple smooth plane curve. Its total
+tangent turning is $+4$ or $-4$ quarter-turns. Replacing the edge part of
+that sum by $b$ leaves the total unchanged: after collapsing the small
+crossing neighborhoods, the circle determines a closed graph walk.
+It may visit one crossing twice, but the lemma explicitly permits this.
+The local smoothing turns are precisely \eqref{eq:corner-turn}.
+Reversal negates both the edge and corner contributions.
+\end{proof}
+
+This proof uses a geometric drawing only as an existence argument. The
+algorithm constructs and verifies integers from the rotation system.
+No coordinate drawing, floating-point angle, or numerical winding test
+appears in the computation.
+
+\begin{corollary}[Gauge independence]
+\label{cor:gauge}
+For a fixed outer face, any two solutions of the face equations give the
+same total turn on every smoothing circle. Different outer-face choices
+also yield the same unoriented loop evaluation $\rho^4+\rho^{-4}$.
+\end{corollary}
+
+\begin{proof}
+The first assertion is Lemma~\ref{lem:closed-cochain}. For the second,
+Theorem~\ref{thm:turning} still gives the two opposite values $\pm4$;
+summing over both orientations removes their order.
+\end{proof}
+
+\begin{remark}[The sphere hypothesis]
+On a higher-genus surface, vanishing face integrals need not imply
+vanishing integrals on essential cycles. The construction here therefore
+requires validated classical diagrams. It is not a Jones algorithm for
+arbitrary virtual diagrams with no additional homological data.
+\end{remark}

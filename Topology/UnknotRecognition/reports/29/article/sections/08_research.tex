@@ -1,0 +1,177 @@
+\section{Further research questions and proposed priorities}
+\label{sec:research}
+
+The arithmetic improvement is useful enough to integrate as an optional
+capability. The evidence suggests a different order of priorities for obtaining
+practical speed-ups and for proving a quasi-polynomial theorem. The former
+needs better scheduling and reuse; the latter needs a representation theorem
+and a bound on decisive work. The following questions state both the proposed
+work and the evidence that would count as progress.
+
+\subsection{Near-term implementation and experimental questions}
+
+\paragraph{Q1. When should a suffix pay for a response?}
+Can a scheduler predict the number of distinct useful matching and partition
+queries before the suffix changes? A candidate decision rule should compare
+measured direct-query cost with preparation cost plus expected boundary-query
+cost, using $v-t$, $t$, projected query count, and the number of likely prime
+passes. It should also account for the chance that the exact Euler prefilter
+or first few direct queries stop the scan. A concrete milestone is an opt-in
+hybrid that selects direct integer, rational response, or modular response
+on a held-out corpus and improves total recognition time with every failed
+probe charged. The current seven raw regressions make this the first
+performance priority. A model fitted only to the favorable pure-tail stream
+would not be adequate evidence.
+
+\paragraph{Q2. Can a response survive a change of suffix?}
+Removing one crossing changes both edges and the cut-face fragmentation. It can
+split a region, create new terminals, and change the radical dimension. A
+correct incremental update therefore needs a precise map between successive
+vertex spaces, not just a rank-one edge update to a fixed Laplacian. Develop
+an update calculus for fragment splits, terminal promotions, and edge deletion,
+with a rebuild path when the pivot profile changes. The useful theorem would
+bound amortized update work in terms of the changed frontier neighborhood.
+The useful experiment would include many consecutive observed stages with
+few queries per stage, where full rebuilding currently loses.
+
+\paragraph{Q3. How should articulation blocks and sparse elimination combine?}
+The maintained direct observer already factors at articulation points. A
+boundary response could eliminate terminal-free blocks separately and retain
+small interfaces at blocks that contain frontier terminals. The challenge is
+to prove the gluing formula with signed weights, zero tree factors, and singular
+interiors; a division by an apparently harmless block determinant can fail
+modulo a prime. Establish a singular-safe block response and compare it with
+both existing articulation factoring and dense modular preparation. Measure
+fill-in, temporary memory, and cost at exceptional primes, as well as elapsed
+time on nonsingular examples.
+
+\paragraph{Q4. Which certified coefficient bounds repay their cost?}
+The bound $C_a\le s_a2^{n-1}$ is universal but can be loose. Candidate refinements
+include the unsigned spanning-tree count of the actual graph, products of
+blockwise bounds, bridge reductions, and degree-based determinant bounds. A
+bound should be computed once and reused across completions when possible;
+otherwise its cost can exceed the modular observation it was meant to save.
+The target is a proved $C_a'$ together with a measured reduction in prime passes
+or exact-threshold completion time. Signed cancellation may improve the actual
+coefficient, but cannot justify shrinking a certified bound without evidence.
+
+\paragraph{Q5. Can prime scheduling exploit the exposure theorem?}
+\Cref{prop:prime-exposure} bounds how many primes can hide an existing
+obstruction. Use it to design a policy choosing between one more independent
+prime, another CRT pass, and continuing the scan. An asymptotic version should
+supply enough primes automatically and charge their generation and validation.
+A practical version should distinguish a large default prime from a random
+prime-pool experiment, retain monotone CRT information, and report the cost
+of inconclusive passes. Prime choice must never change the meaning of a
+positive result. The 70 misses at prime three are a useful adversarial check,
+not a reason to label the method probabilistic or unsound.
+
+\paragraph{Q6. What is the true memory cost of continuation reuse?}
+Only the active residual matrices are boundary-sized. Completed-value keys and
+records can accumulate across stages, and algebraic generator storage may
+dominate everything. Introduce a memory ledger for geometry, prime responses,
+partition caches, matching keys, exact Euler integers, and scanner objects.
+Study bounded caches or stage-local eviction with reconstruction charged.
+A credible performance report should include peak memory and the number of
+retained objects, not only the largest query matrix. This may reveal a regime
+where recomputation is preferable to retaining all exact completion values.
+
+\subsection{Questions that address the quasi-polynomial barrier}
+
+\paragraph{Q7. Which continuation behaviors admit a succinct quotient?}
+Equality of boundary matchings is too coarse to identify chain complexes with
+different differentials. Seek an equivalence relation on relative complexes
+that preserves the needed threshold decision under all admissible future
+crossings or actual suffixes, and that is stable under tensoring, delooping,
+and cancellation. The essential result would bound the number and bit size of
+its states by $2^{(\log N)^{O(1)}}$ and give constructive transition rules.
+A finite table of scalar Euler observations alone is unlikely to determine
+all future homological behavior; this should be tested with counterexamples
+before adopting it as a state representation. Any successful quotient must
+retain enough information to justify the marked homotopies, not merely $d^2=0$.
+
+\paragraph{Q8. Is there a family theorem for the first decisive observation?}
+For a specified diagram family and order policy, can one bound the number of
+represented objects and stages before $B_4>1$, or before a rank-two contraction
+is exhibited? The arithmetic completion theorem starts only after an exact
+obstruction is present. It says nothing about when that happens. A useful
+intermediate target is an explicit family beyond the already solved structural
+cases, with a proved stopping-stage bound and a certified complexity expression
+in its parameters. Failed examples should retain the exact sequence of prefix
+bounds, so a proposed detection lemma can be falsified by genuine complexes.
+
+\paragraph{Q9. Can larger residue systems remain efficiently observable?}
+Residues modulo eight or higher powers of two refine quantum grading and can
+retain cancellations lost modulo four. Investigate whether their evaluations
+admit a manageable transfer representation on bounded interfaces. The special
+value at $i$ has a spanning-tree determinant formula; higher roots do not
+inherit that formula automatically. A successful extension needs three proofs:
+that the residue norm still bounds completed homology, that the relevant
+integer or cyclotomic data are computed exactly, and that their observation
+cost has the claimed dependence on boundary width. A larger invariant that
+requires exponential work in the suffix would not resolve the present barrier.
+
+\paragraph{Q10. Can homological information be compressed without changing fields?}
+The auxiliary primes in this paper reduce integer Euler data. They cannot be
+used to compute a generic odd-characteristic Khovanov rank and silently treat
+it as the rank over $\F_2$. Investigate compact descriptions of persistent
+cancellations, module decompositions, or continuation-compatible rank defects
+\emph{over the actual coefficient field}. The maintained interval and scalar-
+splitting backends provide concrete comparison points. A new theorem should
+state exactly which operations preserve the compressed description and what
+happens when that description must expand. The three-braid structural formulas
+suggest that family-specific symbolic answers can be much smaller than
+explicit bases \cite{kelomaki}.
+
+\paragraph{Q11. What geometric decomposition gives the right width measure?}
+A polylogarithmic number of frontier darts would bound the oracle table, but
+it is not guaranteed by the current crossing-order search. Investigate
+hierarchical decompositions whose interfaces carry both the tangle data and
+sufficient algebraic summaries. A useful theorem must control interface size,
+number of pieces, transition cost, and the growth of multiplicities and
+coefficient descriptions simultaneously. If only a planar separator estimate
+with a much larger boundary is available, state the resulting subexponential
+bound honestly; it does not become quasi-polynomial through terminology.
+Connections to hierarchy-based topological methods are promising only after
+the translation cost is made explicit.
+
+\paragraph{Q12. Can independently verified compressed contractions replace replay?}
+The current verifier reconstructs the entire prefix. A more useful certificate
+would encode contractions and direct-sum decompositions in a form whose local
+identities can be checked without expanding every intermediate complex. Study
+straight-line descriptions of maps and homotopies, canonical sharing, and
+certified transfer across a decomposition tree. The certificate must include
+its own size bound and account for zero tests and equality of compressed maps.
+A short list of moves is insufficient if one move refers to an exponentially
+large object. A constructive bound here would address both practical replay
+cost and a major part of \cref{prop:conditional}.
+
+\subsection{External algorithm audits and integration milestones}
+
+Two literature tracks deserve separate, explicit audits. Lackenby's hierarchy
+program supplies a geometric framework and efficiently checkable objects;
+an implementation study should identify which construction and encoding bounds
+are already proved and which speed-up lemmas remain proposed
+\cite{lackenby2026,lackenbytalk}. Musick's September 2026 polynomial-time claim
+should be assessed independently: formalize its state representation, verify
+that every claimed local move is discoverable within the compressed encoding,
+and prove a bound on the total descriptions created, including overwritten
+or retained grammar versions \cite{musick}. This article neither adopts that
+claim nor supplies a counterexample. Its relevance is that a serious current
+research program should investigate a directly competing claimed algorithm
+instead of declaring it absent.
+
+For ProveIt, the immediate integration sequence is concrete. Add the optional
+backend and its replay tests against the pinned source. Preserve the recorded
+arithmetic and actual-diagram audits. Keep the raw timing samples and the
+negative complete-scan results next to the favorable response experiment.
+Then evaluate a scheduling change as a separate patch with a new held-out
+corpus. The inherited normal-surface I/O defect should also receive a separate
+focused repair rather than an unexplained test exclusion.
+
+The next mathematical milestone should be a family theorem controlling the
+size of a continuation-compatible representation through a decisive event.
+The modular response provides a proved inexpensive observation interface to
+attach to that theorem. Establishing the representation and stopping bounds
+is the work that would turn the present performance improvement into progress
+on a general quasi-polynomial recognition guarantee.

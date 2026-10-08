@@ -1,0 +1,246 @@
+\section{Strict-majority witnesses in compressed relator search}
+\label{sec:overlap}
+
+The group route represents relators by shared straight-line grammars. Their
+expanded lengths can be enormous even when a certificate and each local word
+operation remain small. The baseline already has exact compressed equality,
+slicing, inverse, longest-common-prefix (LCP), and longest-common-substring
+(LCS) operations. The present improvement changes what the search asks the
+LCS primitive to prove. It leaves certificate replay unchanged.
+
+\subsection{The amount of overlap needed for shortening}
+
+After choosing cyclic rotations and possibly inverting the donor, write
+\[
+ D=UA,\qquad R=UB,
+\]
+where $D$ is a donor relator, $R$ is a target relator, and $U$ is the common
+prefix. Replacing $R$ by $A^{-1}B$ is an elementary relator operation:
+$D^{-1}R=A^{-1}B$ before free reduction. Let $m=|D|$, $r=|R|$, and
+$\ell=|U|$. Before any extra cancellation, the replacement has length
+$m+r-2\ell$, so the raw reduction in total relator length is
+\begin{equation}
+ \operatorname{gain}=2\ell-m.
+ \label{eq:overlap-gain}
+\end{equation}
+Strict raw shortening therefore requires only
+\[
+ \ell\geq\tau(m):=\lfloor m/2\rfloor+1.
+\]
+Finding the globally longest common cyclic factor is stronger than necessary
+to find one valid shortening move. The optional policy asks first for a
+witness of length $\tau(m)$, then improves that witness's selected alignment.
+
+The word ``shortening'' in the next theorem refers to this strict raw
+overlap criterion. Additional cancellation can help a particular relator
+move, but the theorem does not assert completeness for every possible
+group-theoretic reduction involving such cancellation or other operations.
+
+\begin{theorem}[Local existence is preserved]
+Replace the exact cyclic LCS query's old shared-count cap by
+$\tau(m)=\lfloor m/2\rfloor+1$. Search both signs of the donor, and use the
+shorter member of each unordered relator pair as donor. With unlimited
+resources, the modified query finds a strict raw-shortening overlap if and
+only if one exists among the examined relators and their cyclic rotations.
+\label{thm:witness-existence}
+\end{theorem}
+\begin{proof}
+The exact capped LCS primitive returns the smaller of the true optimum and
+its supplied cap, together with checked matching positions. Thus returning
+the threshold is equivalent to existence of an overlap above half the donor
+length. Doubling each cyclic spelling contains every one-turn cyclic factor;
+starts are reduced modulo the original lengths. Restricting overlaps to at
+most $m$ ensures that the resulting witness is a genuine one-turn factor.
+
+Both donor signs cover relative orientation. If an overlap of length $\ell$
+shortens with the longer member as donor, then
+$2\ell-|D_{\rm short}|\geq2\ell-|D_{\rm long}|>0$; the shorter-donor
+choice therefore preserves existence. The existing absolute letter-count
+bound is an upper bound on any one-turn overlap, so its rejection cannot
+discard a strict-majority witness. These facts cover every permitted pair,
+rotation, and relative sign. Conversely, every returned witness is checked
+and satisfies \eqref{eq:overlap-gain} with positive gain.
+\end{proof}
+
+This is a local existence theorem. It does not say that a greedy sequence
+of these moves decides every unknot presentation, nor that it preserves the
+later trajectory chosen by the previous longest-overlap policy.
+
+\subsection{Two exact extensions make the selected alignment maximal}
+
+Suppose a length-$\ell$ witness starts at $i$ in the target and $j$ in the
+donor, with $m\leq r$. Normalize both offsets to one turn. In doubled roots,
+compare the unmatched intervals beginning at $i+\ell$ and $j+\ell$, each
+truncated to at most the remaining $m-\ell$ letters. One LCP query extends
+to the right by $a$ letters. Let $q=\ell+a$.
+
+If $q=m$, the donor-length cap is reached. Otherwise compare the preceding
+$m-q$ letters backwards by taking the LCP of their inverses. If this adds
+$b$ letters, return the factor of length $q+b$ at starts
+\[
+ i-b\pmod r,\qquad j-b\pmod m.
+\]
+Taking inverses reverses order and reverses signs in both words, preserving
+equality of the compared preceding factors.
+
+\begin{lemma}[Exact alignment extension]
+The procedure contains the original witness, uses at most two exact LCP
+queries, and returns a common cyclic factor maximal at its selected relative
+alignment subject to the one-donor-length cap. If its length is less than
+$m$, the two boundary letters disagree on each side.
+\label{lem:extend}
+\end{lemma}
+\begin{proof}
+The forward LCP stops at its first disagreement or its length cap. If it
+stops at a disagreement, extending backwards does not change that right
+boundary. The backward LCP stops at the first left disagreement or at the
+remaining donor-length allowance. Hence an uncapped side cannot be extended
+further. The original matched interval is retained throughout and every
+new letter is certified by an exact LCP equality. The total length never
+exceeds $m$, so cyclic starts remain valid.
+\end{proof}
+
+The implementation uses a constant number of slices and inversions, and all
+operations share the same arena work allowance and cancellation callback.
+Slices add only a number of grammar rules controlled by grammar height;
+inversion traverses a DAG. Since the existing exact LCS and LCP primitives
+have polynomial bit bounds in grammar size and length bit size, the new
+procedure retains that local bound. No expansion of an exponentially long
+word or list of all its positions is introduced.
+
+\subsection{A family with a proved exact optimum}
+
+Let
+\[
+ P=(ab)^N,\qquad T=\mathtt{aabbccacbabc},\qquad N\geq16,
+\]
+and consider the positive cyclic relators
+\begin{equation}
+ D=P\,cTa,\qquad R=P\,aTb.
+ \label{eq:hard-overlap}
+\end{equation}
+Each has length $2N+14$. The fixed word $T$ contains all nine directed
+bigrams on $\{a,b,c\}$, so the previously added alphabet and transition
+filters do not distinguish the two words. Their letter-count vectors differ
+by one $c$ versus one $b$. Since they have equal length, neither whole donor
+can occur in a rotation of the other. The inexpensive whole-donor count
+rejection therefore bounds the work of the stage that precedes partial
+overlap search.
+
+\begin{proposition}[Exact cyclic LCS for the stress family]
+The maximum one-turn cyclic overlap of the two words in
+\eqref{eq:hard-overlap}, allowing both relative signs, has length $2N$.
+Both the historical and the optional policy can attain this overlap. The
+resulting replacement has length $28$, with gain $2N-14$.
+\label{prop:stress-overlap}
+\end{proposition}
+\begin{proof}
+The common prefix $P$ proves a lower bound $2N$. An inverse of a positive
+word has only negative letters, so the opposite-sign case has no nonempty
+overlap here.
+
+In $D$, the unique alternating $a,b$ run of length at least four is $P$.
+It is preceded by $a$, giving $aa$ at the left boundary, and followed by
+$c$. In $R$, the unique long alternating run is $bPa$, of length $2N+2$;
+it is preceded by $c$ and followed by $a$, giving $aa$ at its right boundary.
+All other alternating runs have length at most three.
+
+If a common cyclic factor had length at least $2N+1$, it would contain at
+least $2N-13$ letters of $D$'s principal run, split into at most two intervals.
+For $N\geq16$, one interval has length at least ten. It must align with the
+principal alternating run of $R$. Such a common factor cannot cross the
+left end of $P$ in $D$: either it first encounters $R$'s preceding $c$ while
+$D$ is still alternating, or $D$'s preceding $a$ disagrees with the $b$
+forced by $R$'s alternation. It cannot cross the right end either: $D$'s
+next $c$ disagrees with the continuing alternating run of $R$, or the $aa$
+departure from $R$'s run first disagrees with $D$. The factor is therefore
+contained in $D$'s $P$ and has length at most $2N$, a contradiction.
+
+At that optimum the replacement is $(cTa)^{-1}(aTb)$. Its two parts each
+have length $14$ and their boundary letters cause no free or cyclic
+cancellation. Its length is $28$, giving the stated gain.
+\end{proof}
+
+The threshold is only $N+8$. On the prefix presentation, the threshold
+witness is obtained immediately and the forward extension recovers all of
+$P$; the opposite cyclic boundary disagrees. To avoid relying only on a
+common-prefix fast path, the tests also rotate the spellings to $cTaP$ and
+$aTbP$. The shared run is then an interior/suffix witness found through the
+compressed aligned-cut route.
+
+For $N=2^h$, the constructed grammars have $O(h)$ rules. The supplied
+positive instances exercise no full occurrence table: the prefix case
+requires no cut-pair visit, and the rotated case uses one aligned-cut
+extension. The needed counts, shared subgrammar comparisons, slices, and
+inverses have polynomial cost in $h$. Tests prohibit both word expansion
+and occurrence-table construction on these inputs through $h=500$. This
+establishes a meaningful compressed-family improvement; it is still a
+statement about the specified local search and application operation.
+
+\paragraph{A negative control that matters.}
+The tempting family $PcT,PaT$ is not a corresponding hard cyclic example.
+The common tail $T$ wraps before $P$, creating an overlap of length
+$2N+12$ that the older method already finds cheaply. The benchmark retains
+this family as an overhead control. Treating it as a hard linear-string
+instance after cyclic doubling would have overstated the improvement.
+
+\subsection{The policy has no uniform greedy-gain guarantee}
+
+Exact extension does not make an arbitrary threshold witness globally best.
+Let the donor consist of $2m$ distinct letters. Put its first $m+1$ letters
+at the start of a target, followed by fresh separator letters, then its
+first $2m-1$ letters, then another fresh separator. The first witness is
+locally maximal with overlap $m+1$ and gain $2$. A different alignment has
+overlap $2m-1$ and gain $2m-2$.
+
+\begin{proposition}[Unbounded loss of greedy gain]
+The ratio of the first maximal threshold witness's gain to the best gain
+can be $1/(m-1)$, tending to zero. There is no positive universal gain
+approximation factor for the present first-witness policy.
+\end{proposition}
+\begin{proof}
+The fresh separators prevent either displayed interval from extending.
+Every donor letter is distinct, so a common cyclic interval cannot pass a
+separator or combine the two copies. The longer displayed copy realizes
+the optimum, and \eqref{eq:overlap-gain} gives the two gains and their ratio.
+\end{proof}
+
+The concrete test uses donor \code{abcdefgh} and target
+\code{abcdeXYZabcdefgW}: the old overlap is seven, while the optional overlap
+is five. Duplicating every letter removes singleton occurrences without
+removing the discrepancy; the independently computed weighted Whitehead
+cut on that doubled example has value zero. The concern therefore is not
+confined to presentations immediately eliminated by a singleton rule.
+
+The historical policy remains the default. A future scheduler could keep
+cheap witnesses while spending a bounded additional budget on improving
+their gain, but any approximation or amortized descent theorem would require
+an argument beyond the local existence theorem above.
+
+\subsection{Certificates, real residuals, and scope}
+
+The helper emits the existing relator-move format. Literal and compressed
+certificate verifiers independently check the cyclic positions, orientation,
+overlap, and replacement. They do not invoke the producer to justify its
+own move. The new search policy does not alter the trust boundary.
+
+To test a genuine knot-derived state, the audit replays the first 132 moves
+of the archived Gordian certificate. Its ten remaining nonempty relators
+have lengths
+\[
+ 378,\ 8140,\ 4,\ 370,\ 1704,\ 370,\ 2026,\ 128,\ 888,\ 1022.
+\]
+The optional query selects target slot $124$ and donor slot $73$, rotations
+$81$ and $3$, positive donor sign, and overlap four. The continuation gives
+the same 142-move original-diagram certificate as the previous policy. Both
+independent replayers accept when producer/helper calls are disabled, and
+both reject a forged overlap. This tests a reachable certificate path; it
+does not demonstrate a speedup of the whole recognition query.
+
+A separate attempt to force the compressed-overlap route from the start of
+Gordian exhausted twenty million work units. The ordinary corpus routes
+through the existing explicit bridge at these sizes. Moreover, the
+no-majority pair $(ab)^N,(aabb)^N$ can exhaust its allowance in the preceding
+whole-donor probe before the new helper is called. These observations
+identify next bottlenecks and prevent an isolated successful kernel from
+being mistaken for an improved complete search algorithm.
