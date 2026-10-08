@@ -2,8 +2,8 @@
 
 **Density transfer and phase-flat partitions; energies, restriction and dependent random choice; cube and progression counts; floor patterns and the Proposition 17.7 phase extraction**
 
-This is a research report built on 6–7 October 2026 from eighty-one research
-manuscripts, dated 6 October 2026 (sources 42, 45, 51–53, 57–60, 63, 67, 68 and 70–81: 7
+This is a research report built on 6–7 October 2026 from ninety-four research
+manuscripts, dated 6 October 2026 (sources 42, 45, 51–53, 57–60, 63, 67, 68 and 70–94: 7
 October 2026 on their title pages; 55's says October 2026). Sources 01–05 were merged in the first write
 (batch 115, `18507e2b2`); sources 06–10 were added in a second write the same day
 (`9f83dbe0f`), sources 11–14 (batch 116) in a third (`b16ce380d`), sources 15–20
@@ -12,7 +12,8 @@ fifth (`4b7266a65`), sources 28–33 (batch 121) in a sixth (`bec460a33`), and s
 34–39 (batch 122) in a seventh (`0f0a7cb2b`), sources 40–46 (batch 123) in an
 eighth (`b51c063c2`), sources 47–53 (batch 124) in a ninth (`52faf9fcd`), sources
 54–59 (batch 125) in a tenth (`dfc1a5a68`), sources 60–69 (batches 126–127) in an
-eleventh (`32057611f`), and sources 70–81 (batches 128–129) in a twelfth, each time as dated
+eleventh (`32057611f`), sources 70–81 (batches 128–129) in a twelfth (`ddafb95a8`), and
+sources 82–94 (batches 130–131) in a thirteenth, each time as dated
 additions that renumber and relabel nothing printed before. Each source
 sharpens local estimates of W. T. Gowers, *A new proof of Szemerédi's theorem*,
 GAFA 11 (2001), 465–588, and compares its statements with the *corrected*
@@ -27,7 +28,7 @@ The report is filed under `Combinatorics/Ramsey/Research/` by Vladimir's directi
 Every manuscript spans several themes, so the article is arranged in five
 **thematic Parts**, with each source's sections printed whole inside them:
 
-- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19; 23, 26; 32; 35, 37; 41, 42; 67).
+- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19; 23, 26; 32; 35, 37; 41, 42; 67; 90, 93).
   - A sharp one-sided density–mass bound `P(X > t) ≥ ((a+t)T − at)/(a(b−t))`,
     proved independently in six sources (01, 02, 03, 05, 06, 10).
   - A sharp one-cell phase envelope `C² ≤ (1−ρ²)F² + ρ²L²`.
@@ -104,7 +105,14 @@ Every manuscript spans several themes, so the article is arranged in five
     equal-budget branch the missing-arc mass is exactly
     `−1/((1 − cos a) eᵀL(ε)⁻¹e)` under unequal budgets, with the old certificate's
     optimality polytope, Hessian rank `⌊(R−1)/2⌋` and aligned grids to order `N⁻²`.
-- **Part II — the inverse step** (02, 03, 04; 07, 10; 11, 12, 14; 15, 17, 18, 19; 22–25, 27; 28–31, 33; 34, 35, 38, 39; 40, 44, 45; 48–53; 54–59; 60–62, 66–68; 70–81).
+  - **Sources 93 and 90 on Lemma 5.2 (guide I.77):** the **complete four-frequency
+    missing-arc profile `Φ₄`**, seven branches with unique extremizers, an algebraic branch
+    on `[a*, 3π/5]` (junction `12c⁴ + 6c³ − 11c² − 5c + 1`, `a*/π` irrational),
+    `Φ₄(π/2) = (√3 − 1)/2` — **proved twice independently** (neither cites the other); the
+    maximal first continuation past 37's first window and a final band at every cutoff;
+    exact grid corrections and the aligned semicircle; Wasserstein stability. 37's
+    question beyond the first window is answered for `R = 4`.
+- **Part II — the inverse step** (02, 03, 04; 07, 10; 11, 12, 14; 15, 17, 18, 19; 22–25, 27; 28–31, 33; 34, 35, 38, 39; 40, 44, 45; 48–53; 54–59; 60–62, 66–68; 70–81; 82, 83, 85, 87, 88, 90, 93).
   - A mixed, weighted extension of Proposition 6.1 on every finite abelian
     group, with coefficient one.
   - Lemma 7.4 with `7δ³n/(3√6)`, and two elementary Propositions 7.3,
@@ -300,7 +308,25 @@ Every manuscript spans several themes, so the article is arranged in five
   - **Source 67 at Lemma 16.10 (guide II.338):** `E_t(L₁, …, L_r)` candidates cover the
     certified points (no separate direct-anchor term), exactly in the interface; the
     repository has since formalized the affine case in its own form.
-- **Part III — cube and progression counts** (03, 04; 06, 08, 09, 10; 13, 14; 16, 18, 20; 21, 22, 23; 28, 29; 34, 35, 38; 45; 49; 60, 63, 64, 67).
+  - **Sources 82, 83 and 85 on target torsion and spikes (guide II.454):** on `𝔽₃`-spaces
+    of dimension ≥ 2 the largest hereditary infimum outside affine maps and cuts is
+    **`5/9` when the target has no element of order two** and 81's `λ` otherwise, both
+    attained in every rank (82); real `ℓ⁴`-maximizers of `I − γJ/n` are two-valued and
+    `‖I − 2J/n‖₄ → √(1 + √2)` (83; 82's nine-point reflection is `n = 9`); the optimal
+    multiplicity is unique and **exactly 77 orders saturate**, the largest 583 (85,
+    answering 83's tie question). 85's `η₄ = 5/8` is 76's conditional `5/8`.
+  - **Sources 93 and 90 on graph energy (guide II.484):** unique affine recovery below
+    defect `1/4` and the non-affine maximum from **`N ≥ 13` for every abelian target,
+    optimal** — settling the cutoff 11, 59 and 67 left open (93); `D(f) ≤ (N+1)d₁(f)/6`
+    for maps `C_N → W`, `N ≥ 12` (90).
+  - **Source 88 on the product property (guide II.487):** exponents `8(4^k − 3^k)` and
+    `4(4^k − 2^k)` in place of `2k4^k`, and `a₈ ≥ β^{22·4^k} γ^{88·4^k − 32·2^k}` against
+    15's `γ^{44k4^k + 56·2^k}`; these imply the formal `lemma_14_4`, `corollary_14_5`,
+    `lemma_14_8` (already exact).
+  - **Source 87 on Lemma 16.10 (guide II.496):** the universal contextual lift fails at
+    **`γ = 1`** in every dimension, with a good witness for the same input; the repository
+    has since refuted the contract formally along it. Its "earlier unnumbered note" is 74.
+- **Part III — cube and progression counts** (03, 04; 06, 08, 09, 10; 13, 14; 16, 18, 20; 21, 22, 23; 28, 29; 34, 35, 38; 45; 49; 60, 63, 64, 67; 93, 94).
   - The exact fourth-order term of the centered cube count on every finite
     abelian group (03, 08, 09), and the exact fifth-order term with Stirling
     multiplicities and order-two and order-three torsion statistics (09).
@@ -377,7 +403,14 @@ Every manuscript spans several themes, so the article is arranged in five
     dimension barrier is 10's exact threshold (14 reproves it).
   - **Source 67 on norm layers (guide III.108):** independent norm layers classified with no
     degree cap for `2m = 4, 6, 8` and `q ≥ (2m−1)²`.
-- **Part IV — floor patterns** (01, 04; 06; 16; 36; 43, 46; 47; 63, 65, 69).
+  - **Source 94 at Lemma 2.2 (guide III.110):** sharp three-term constants for arbitrary
+    increment maps, `U²` constant `([G:A(D)][G:B(D)][G:A(D)+B(D)])^{1/4}`, with the singular
+    spectrum, extremizers and optimal stability (10's endpoint factor generalized; 20's
+    operator-norm question answered for three-term systems).
+  - **Source 93 on the odd constants (guide III.117):** `c_d(F) − D(F) = O(d 2^{−d/2})`
+    uniformly over odd-order families (constant not explicit; 63's rate superseded in
+    order), the exact first-order term on `ℤ/p`.
+- **Part IV — floor patterns** (01, 04; 06; 16; 36; 43, 46; 47; 63, 65, 69; 89, 91, 92).
   - `|F(r)| = (∏ 2rᵢ) C_k`, with `2^{k(k−1)/2} ≤ C_k ≤ R(H_k, k)`; general
     coefficient families and modular counts (06).
   - `log₂ C_k ~ k²`, using the classical threshold-function count (01, 06; 06
@@ -406,7 +439,10 @@ Every manuscript spans several themes, so the article is arranged in five
     sharp Boolean certification threshold `1 − 2^{1−d}`, division-free orthogonality on
     every finite abelian group, the fourth-power triangle bound and the quartic value
     `11/16` on `𝔽₂²` (all four checked at the write). Source 36's characteristic-two
-    question is answered for symmetric trilinear forms.
+    question is answered for symmetric trilinear forms. Not only characteristic two
+    (corrected at the thirteenth write): 46 also gives, for every prime `p`, the
+    first-obstruction test at degree `p + 1` (Proposition IV.26.3), the alternating defect
+    (Lemma IV.26.4) and the repair number (Theorem IV.32.3), which 89 and 92 re-derive.
   - **Source 47 (guide IV.42): exact Boolean obstruction energies.** For the canonical
     tensor `C_d` over `𝔽₂^n` the maximum selected energy is exactly `1 − (d+1)/2^d` in
     every degree `d ≥ 3` and dimension `n ≥ 2` — **answering 43's quartic question**
@@ -449,9 +485,16 @@ Every manuscript spans several themes, so the article is arranged in five
     `5/16` of the box; 74), and positive-density slabs force a positive deletion fraction
     (75). The same witnesses refute the repository's universal contextual-lift contract at
     `γ < 1` in writing (formally refuted at `γ = 1`).
+  - **Sources 92, 89 and 91 at degree `p + 1` (guide IV.69):** for a nonintegrable
+    symmetric `(p+1)`-linear form of defect rank `2r`: optimal restriction codimension `r`
+    (46's repair number, re-derived independently by 89 and 92), minimum covers of kernel
+    `p^r`, lossless sharp quotient moments, extremal energy depending only on `r`,
+    `11/27 ≤ m_{3,1} ≤ 1099/2187` (92); the optimal depth-reduction factor
+    `sin(π/p^a)/(p sin(π/p^{a+1}))` through exactly `p` phases (91).
 - **Part V — formal interface, ledger crosswalk, research questions.** The
   writes' crosswalk to the ledger, the deduplicated list of the sources'
-  775 questions, iteration bookkeeping (03, 06, 10), and each source's
+  882 questions, iteration bookkeeping, a chapter on the repository's explicit five-term
+  thresholds (V.302; 84, 86), (03, 06, 10), and each source's
   formalization plan, questions, conclusions and appendices.
 
 | No. | Delivered title | Archive (bytes, files) | Manuscript | Pin | Placed | Printed in |
@@ -537,6 +580,19 @@ Every manuscript spans several themes, so the article is arranged in five
 | 79 | *The Sharp Weighted Energy Gap and Three-Coset Extremizers: full-domain maps between arbitrary abelian groups* (Report291) | `Report291_Sharp_Weighted_Energy_Gap_and_Three_Coset_Extremizers.zip` (535,978 B, 12) | `Report291.tex`, 977 lines, 25 pp. | none (SHA-256 chain) | `487859db5` | F.84; II.392–400 (in II.358's chapter); V.291–V.293 |
 | 80 | *Nine-Point Rigidity on Elementary Abelian Three-Groups: arbitrary rank and arbitrary abelian targets* (Report292) | `Report292_Nine_Point_Rigidity_on_Elementary_Abelian_Three_Groups.zip` (493,289 B, 12) | `Report292.tex`, 831 lines, 23 pp. | none (SHA-256 chain) | `487859db5` | F.85; II.401–407 (in II.358's chapter; §§5–7 printed as 81's); V.294–V.297 |
 | 81 | *The Sharp Weighted Energy Gap on Elementary Abelian Three-Groups: arbitrary targets and exact plane extremizers* (Report293) | `report293_sharp_weighted_three_gap.zip` (512,640 B, 13) | `Report293.tex`, 1,069 lines, 27 pp. | none (SHA-256 chain) | `487859db5` | F.86; II.408–416 (in II.358's chapter); V.298–V.301 |
+| 82 | *Sharp Weighted Energy Gaps and the Target Torsion Dichotomy: exact constants for each fixed source and target* (Report294) | `report294_target_torsion_dichotomy.zip` (525,011 B, 13) | `Report294.tex`, 812 lines, 22 pp. | none (81 by SHA-256) | `bbde2b873` | F.87; II.455–462 (in II.454's chapter); V.317–319 |
+| 83 | *Exact Fourth Norms and Two-Valued Extremizers: mean perturbations and parity energy on finite abelian groups* (Report295) | `report295_fourth_norm_extremizers.zip` (509,638 B, 13) | `Report295.tex`, 833 lines, 23 pp. | none | `bbde2b873` | F.88; II.463–474 (in II.454's chapter); V.320–322 |
+| 84 | *A Strict Comparison of Explicit Five Term Thresholds: the old and Fejér constructions at a pinned revision* (Report296) | `report296_five_term_threshold_comparison.zip` (440,835 B, 15) | `Report296.tex`, 565 lines, 13 pp. | `af74fb522` | `bbde2b873` | F.89; V.303–308 (in V.302's chapter); V.323–325 |
+| 85 | *Unique Optimal Splits and Spectral Saturation: the seventy-seven finite orders* (Report297) | `report297_finite_saturation.zip` (462,451 B, 14) | `Report297.tex`, 500 lines, 15 pp. | none (83 by SHA-256) | `bbde2b873` | F.90; II.475–483 (in II.454's chapter); V.326–327 |
+| 86 | *An Explicit Five-Term Envelope Below Gowers' Numerical Threshold: full numerical dependencies and density iteration* (Report298) | `report298_five_term_envelope.zip` (537,198 B, 17) | `Report298.tex`, 1,042 lines, 22 pp. | `af74fb522` | `bbde2b873` | F.91; V.309–316 (in V.302's chapter); V.328–331 |
+| 87 | *Endpoint Obstructions to Universal Common Base Lifting: positive-density slabs in every positive induction dimension* (Report299) | `report299_endpoint_lifting.zip` (561,794 B, 17) | `Report299.tex`, 666 lines, 19 pp. | `130fca9b1` | `bbde2b873` | F.92; II.497–506 (in II.496's chapter); V.332–336 |
+| 88 | *Smaller Constraint Families in Gowers' Product Property: weighted cube counts, optimal local tests, and an explicit stronger extraction theorem* | `Gowers_Product_Property_Refinements.zip` (573,384 B, 12) | `gowers_product_property_refinements.tex`, 2,647 lines, 33 pp. | `6d4942222` | `bbde2b873` | F.93; II.488–495 (in II.487's chapter); V.337–338 |
+| 89 | *Lossless Local Phase Removal in Small Characteristic* | `Gowers_Critical_Phase_Localization_2026-10-07.zip` (476,771 B, 12) | `critical_phase_removal.tex`, 1,135 lines, 17 pp. | `8622ca7e5` | `39beb65f2` | F.94; IV.83–89 (in IV.69's chapter); V.339–342 |
+| 90 | *Sharp Fourier Detection and Directional Rigidity in Gowers' Szemerédi Framework* | `Gowers_Sharp_Fourier_Directional_TeX_and_PDF.zip` (864,336 B, 21) | `gowers_fourier_directional.tex`, 2,485 lines, 36 pp. | `6d4942222` | `39beb65f2` | F.95; I.82–85 (in I.77's chapter); I.86 (in I.77's chapter); II.486 (in II.484's chapter); V.343–344 |
+| 91 | *Sharp Depth Reduction at the Critical Degree* | `ProveIt_Sharp_Depth_Reduction.zip` (507,197 B, 13) | `article.tex`, 958 lines, 20 pp. | `b9760ed93` | `39beb65f2` | F.96; IV.90–99 (in IV.69's chapter); V.345–349 |
+| 92 | *Finite-cover polarization and optimal repair of multilinear phase obstructions* | `finite_cover_phase_repair.zip` (522,000 B, 11) | `article.tex`, 1,940 lines, 28 pp. | none (Research tree `36d278747`) | `39beb65f2` | F.97; IV.70–82 (in IV.69's chapter); V.350–352 |
+| 93 | *Exact spectral detection, faster uniformity limits, and sharp affine recovery* | `Gowers_Exact_Spectral_Uniformity_Affine_Research.zip` (911,471 B, 23) | `gowers_spectral_uniformity_affine.tex`, 3,412 lines, 46 pp. | `6d4942222` | `39beb65f2` | F.98; I.78–81 (in I.77's chapter); II.485 (in II.484's chapter); III.118–119 (in III.117's chapter); V.353–355 |
+| 94 | *Sharp Three-Term Progression Bounds with Torsion* | `proveit_sharp_three_term_torsion.zip` (481,211 B, 12) | `article.tex`, 1,405 lines, 20 pp. | `0ef37201d` | `39beb65f2` | F.99; III.111–116 (in III.110's chapter); V.356–359 |
 
 The first five archives arrived in `66f24b0d0` ("New research reports", 6 October
 2026) and survive there (`git show 66f24b0d0:docs/incoming/<archive> > <archive>`);
@@ -666,6 +722,24 @@ Section 5 (57 arrived after 72's overlap check); 70's prime-field near-maximal b
 READMEs, the provenance snapshots of 70–74 (copies of repository files, verified against
 their manifests), eight `companion/__init__.py` stubs and twelve checksum manifests.
 
+Sources 82–94 arrived on 7 October 2026: Reports 294–299 in `579f95dfe` (08:54), 88 in
+`006cd822e` (09:05), 89–91 in `fe6aa5608` (09:25), 92 in `fab704838` (09:29), 93 in
+`785382058` (09:35) and 94 in `0049d075d` (10:10); `bbde2b873` ("Place batch 130", 82–88)
+and `39beb65f2` ("Place batch 131", 89–94) staged them and retired their archives; intake
+records `dossier130_GOWERS` and `dossier131_GOWERS`. 84 and 86 pin `af74fb522`, 87
+`130fca9b1`, 88, 90 and 93 `6d4942222`, 89 `8622ca7e5`, 91 `b9760ed93`, 94 `0ef37201d` (the
+ledger stood at 113/7 at all of them); 92 records the Research tree `36d278747`; 82, 83 and
+85 record no pin and identify their predecessors (81, 82, 83) by SHA-256 (all verified at
+the thirteenth write). **No section of 82–94 repeats another**: the largest per-section
+text overlap is 35 % (85's Section 5 against 83). Results proved twice independently,
+both printed: `Φ₄` (90 and 93, the same morning), the critical-degree core (89 and 92,
+the same morning, both re-deriving 46's test and repair number without citing it). 93
+omits 63, whose rate it supersedes in order; 87 calls 74 "an earlier unnumbered note";
+90 and 93 credit an undelivered manuscript (`gowers_extremal_limits.tex`; 93 reproves
+what they use). Not staged: the thirteen PDFs, manuscripts and delivery READMEs, five
+`companion/__init__.py` stubs, and the checksum manifests of 82–87 and 90, 91, 93, 94.
+93's two CSV files keep their CRLF line ends (two `.gitattributes` lines).
+
 **Status.** Unrefereed; nothing proved here has been checked by a proof
 assistant. The one exception, a lifting lemma, was formalized before the sources
 arrived (below). **Authorship disclosures:**
@@ -776,39 +850,39 @@ arrived (below). **Authorship disclosures:**
   give "AI-assisted research manuscript prepared for Vladimir Reshetnikov" as PDF author
   (76–79 also in their scope statements). 70 and 71 ("Research report prepared for
   Vladimir") make no statement on AI assistance, and none is invented here.
+- **Sources 82–94**: 82–87 give "AI-assisted research manuscript prepared for Vladimir
+  Reshetnikov" as PDF author; 88, 90 and 93 are "prepared with ChatGPT"; 89 gives
+  "ChatGPT; research manuscript prepared for Vladimir Reshetnikov" as PDF author and names
+  ChatGPT on its title page; 91, 92 and 94 ("prepared for the ProveIt project", "Research
+  contribution for the ProveIt project") make no statement on AI assistance (91's README:
+  "The author field deliberately does not assign this draft to the user"), and none is
+  invented here.
 
-Every result, proof, example, remark, question and limitation of the eighty-one
+Every result, proof, example, remark, question and limitation of the ninety-four
 manuscripts is printed. No proof was replaced by a pointer. Eight delivered sections of
 73, 76 and 80 repeat 55, 78 and 81 word for word and are printed once; their places keep
-the heading, every sentence that differs and a note naming the counterpart.
+the heading, every sentence that differs and a note naming the counterpart. Every
+delivered section of 82–94 is printed whole.
 
-**Further sources, not yet written in.** Sources 82–88, 89–94, 95–96, 97–98, 99–100 and
-101 were placed in this directory by `bbde2b873`, `39beb65f2`, `09f5b745a`, `9599d8566`,
-`53eedc74c` and `3a5a735dc` ("Place batch 130" to "Place batch 135") before the twelfth
-write began, and sources 102–103 by `e38d7731f` ("Place batch 136") while it was in
-progress, as prefixed files (listed under Files). The article does not use them yet; a
-later write will add them as dated additions without renumbering anything here. Their
-placements record, among other findings: 82 the per-target hereditary constant on
-`𝔽₃`-spaces (`5/9` without elements of order two, 81's `λ` otherwise), 83 and 85 the
-spectral energy of order-two spikes (85: exactly 77 orders saturate); 84 and 86 the
-explicit five-term thresholds; 87 that the contextual lift contract fails for every
-`k ≥ 1` even at `γ = 1` (now formalized), beside 74's `γ < 1`; 88 product-property
-refinements in 15's chapter; 89, 91 and 92 the first nonclassical obstruction in odd
-characteristic; 90 and 93 the complete four-frequency missing-arc profile; 93 affine
-recovery below graph defect `1/4` and the non-affine maximum from `N ≥ 13` for every
-abelian target, and a rate `c_d − D = O(d2^{−d/2})` that would supersede 63's; 94 sharp
-three-term counting with arbitrary homomorphisms; 95 simultaneous integration of two
-Boolean cubics; 96 60's arrangement repair and bracket independently, the affine cubic on
-the whole range for every odd-order target, and `c₄^odd ≤ 0.5868716`; 97 the maximizing
-functions of the canonical Boolean tensor (the function questions of 65 and 69); 98 that
-`a` is affine iff `r₃(a) > 5/8` (a third-order ratio, not the `r` of 76–81); 99
-fixed-radius Bohr sets with `2^r − 1` runs (30's prime-order question); 100 that no
-`o(u²)` counting error is possible on prime cyclic groups (20's Questions 1 and 3); 101
-the sharp coset stability of cube counts in every order (14's, 45's and 68's envelope
-for `k = 2`, independently); 102 exact affine localization of quadratic phases at the
-Lemma 13.5 interface; 103 101's odd-order conjecture, `ε₃ ≥ 4δ − 10δ² + 8δ³`, sharp.
-These findings were not checked by the twelfth write. V.2 states those questions as they
-stand after it.
+**Further sources, not yet written in.** Sources 95–96, 97–98, 99–100, 101 and 102–103
+were placed in this directory by `09f5b745a`, `9599d8566`, `53eedc74c`, `3a5a735dc` and
+`e38d7731f` ("Place batch 132" to "Place batch 136") before the thirteenth write began, and
+sources 104–106 by `bb6ecb32b` ("Place batch 137") while it was in progress, as prefixed
+files (listed under Files). The article does not use them yet; a later write will add them
+as dated additions without renumbering anything here. Their placements record, among other
+findings: 95 simultaneous integration of two Boolean cubics; 96 60's arrangement repair and
+bracket independently, the affine cubic on the whole range for every odd-order target, and
+`c₄^odd ≤ 0.5868716`; 97 the maximizing functions of the canonical Boolean tensor (the
+function questions of 65 and 69); 98 that `a` is affine iff `r₃(a) > 5/8` (a third-order
+ratio, not the `r` of 76–85); 99 fixed-radius Bohr sets with `2^r − 1` runs (30's
+prime-order question); 100 that no `o(u²)` counting error is possible on prime cyclic groups
+(20's Questions 1 and 3); 101 the sharp coset stability of cube counts in every order and an
+odd-order conjecture (its Conjecture 12.1), proved by 103 and again by 104; 102 exact
+affine localization of quadratic phases at the Lemma 13.5 interface; 104 also the optimal
+comparison `ε₂ ≤ ε_k ≤ (2^k − k − 1)ε₂`; **105 a proof of 92's conjecture `m_{3,1} = 11/27`**
+(the case `p = 3`, `r = 1` of 89's); 106 products of coordinate crosses, `ρ(q) ~ 2√q`, on
+102's questions. These findings were not checked by the thirteenth write. V.2 states those
+questions as they stand after it.
 
 ## Why thematic Parts, and how they are filled
 
@@ -911,6 +985,18 @@ II.293; Section 13 on fixed prime support and the printed Theorem 13.12 (II.417;
 16.10 (II.439; 74, then 75's Sections 2–8), which continues 50's II.226 and II.338. Source
 75 is split by subject. All stand at the end of Part II because nothing printed earlier may
 move.
+The thirteenth write adds nine guides, in every Part, in the order of Gowers's sections
+within each: the four-frequency missing-arc profile (I.77; 93, then 90), continuing 37's
+I.40; target torsion, fourth norms and saturation (II.454; 82, 83, 85), continuing the
+hereditary chain II.358; affine recovery and the cutoff 13 (II.484; 93's Section 8, 90's
+Section 6), continuing 11's II.22; the product property (II.487; 88), continuing 15's
+II.75 and 35's II.180; the contextual lift at `γ = 1` (II.496; 87), continuing II.439;
+three-term constants with torsion (III.110; 94), continuing 20's III.31; the faster passage
+to the bounded endpoint (III.117; 93's Sections 6–7), continuing III.100; the first
+nonclassical obstruction (IV.69; 92, 89, 91), continuing 46's IV.42; and the explicit
+five-term threshold (V.302; 84, 86), the first Part V chapter on Section 18. Sources 90
+and 93 are split by subject. All stand at the end of their Parts because nothing printed
+earlier may move.
 
 **Results proved by several sources** are printed in each source's own form,
 because the forms and hypotheses differ and the proofs are independent. Examples:
@@ -995,17 +1081,21 @@ route:
   every `k`, `γ < 1`); the hereditary chain's re-proofs (75's arbitrary-target `3/4`
   theorem and 76's cyclic lemma as second routes, 78's Section 2 and 81's Sections 8–10
   printed once).
+- added in the thirteenth write: the four-frequency profile `Φ₄` (90 and 93, independently,
+  the same morning); the critical-degree test and repair number (46 first; 89 and 92
+  independently, neither citing 46); the nine-point reflection (82; 83 for every `n`);
+  the cutoff 13 (67 for elementary abelian `3`-targets; 93 for every target).
 
 ## Files
 
-The directory holds 957 files: 173 at the root, 367 in `code/`, 363 in `data/`, 54 in
+The directory holds 985 files: 181 at the root, 375 in `code/`, 375 in `data/`, 54 in
 `figures/`. Of these, 38 were placed with sources 01–05 (besides the base's
 `article.tex` and `README.md`, which the first write replaced), 46 with sources
 06–10, 39 with sources 11–14, 42 with sources 15–20, 60 with sources 21–27, 61 with
 sources 28–33, 77 with sources 34–39, 52 with sources 40–46, 58 with sources 47–53,
-55 with sources 54–59, 123 with sources 60–69, 81 with sources 70–81, and 222 with later
-sources not yet written in (below); `article.pdf` was added by the first write and rebuilt
-by the second to twelfth.
+55 with sources 54–59, 123 with sources 60–69, 81 with sources 70–81, 139 with sources
+82–94, and 111 with later sources not yet written in (below); `article.pdf` was added by the
+first write and rebuilt by the second to thirteenth.
 
 **Report files**, written in the writes:
 
@@ -2460,9 +2550,260 @@ code/81-ternary-weighted-gap-test_companion.py
 data/81-ternary-weighted-gap-lattice_certificate.json
 ```
 
-**Sources 82–103, placed by `bbde2b873`, `39beb65f2`, `09f5b745a`, `9599d8566`,
-`53eedc74c`, `3a5a735dc` and `e38d7731f`, write pending** (222 files; not used in the
-article):
+**Source 82, prefix `82-target-torsion-`** (8 files). At the root, its reproduction
+notes, source record and companion README. `code/`: the delivered builder (`build.py`,
+Linux), the exact companion (`companion/exact_checks.py`, standard library, JSON on
+stdout) and its two test files (`tests/test_build.py`, `tests/test_companion.py`).
+`data/`: the 729-midpoint relation certificate.
+
+```
+82-target-torsion-REPRODUCING.md
+82-target-torsion-SOURCES.md
+82-target-torsion-companion-README.md
+code/82-target-torsion-build.py
+code/82-target-torsion-exact_checks.py
+code/82-target-torsion-test_build.py
+code/82-target-torsion-test_companion.py
+data/82-target-torsion-midpoint_certificate.json
+```
+
+**Source 83, prefix `83-fourth-norm-`** (8 files). At the root, its reproduction notes,
+source record and companion README. `code/`: the delivered builder (`build.py`, Linux),
+the exact companion (`companion/exact_checks.py`, standard library, JSON on stdout) and
+its two test files (`tests/test_build.py`, `tests/test_companion.py`). `data/`: its
+interval certificate.
+
+```
+83-fourth-norm-REPRODUCING.md
+83-fourth-norm-SOURCES.md
+83-fourth-norm-companion-README.md
+code/83-fourth-norm-build.py
+code/83-fourth-norm-exact_checks.py
+code/83-fourth-norm-test_build.py
+code/83-fourth-norm-test_companion.py
+data/83-fourth-norm-interval_certificate.json
+```
+
+**Source 84, prefix `84-threshold-comparison-`** (10 files). At the root, its
+reproduction notes, source record and companion README. `code/`: the delivered builder
+(`build.py`, Linux), the exact companion (`companion/exact_checks.py`, standard library,
+JSON on stdout) and its two test files (`tests/test_build.py`,
+`tests/test_companion.py`). `data/`: its source manifest (34 files at `af74fb522`),
+source excerpts (48) and certificate; its companion needs Linux.
+
+```
+84-threshold-comparison-REPRODUCING.md
+84-threshold-comparison-SOURCES.md
+84-threshold-comparison-companion-README.md
+code/84-threshold-comparison-build.py
+code/84-threshold-comparison-exact_checks.py
+code/84-threshold-comparison-test_build.py
+code/84-threshold-comparison-test_companion.py
+data/84-threshold-comparison-SOURCE_MANIFEST.json
+data/84-threshold-comparison-certificate.json
+data/84-threshold-comparison-source_excerpts.json
+```
+
+**Source 85, prefix `85-finite-saturation-`** (10 files). At the root, its reproduction
+notes, source record and companion README. `code/`: the delivered builder (`build.py`,
+Linux), the exact companion (`companion/exact_checks.py`, standard library, JSON on
+stdout) and its two test files (`tests/test_build.py`, `tests/test_companion.py`). Also
+its classifier (`companion/classify.py`). `data/`: the compact and finite certificates.
+
+```
+85-finite-saturation-REPRODUCING.md
+85-finite-saturation-SOURCES.md
+85-finite-saturation-companion-README.md
+code/85-finite-saturation-build.py
+code/85-finite-saturation-classify.py
+code/85-finite-saturation-exact_checks.py
+code/85-finite-saturation-test_build.py
+code/85-finite-saturation-test_companion.py
+data/85-finite-saturation-compact_certificate.json
+data/85-finite-saturation-finite_certificate.json
+```
+
+**Source 86, prefix `86-five-term-envelope-`** (12 files). At the root, its reproduction
+notes, source record, companion README and frozen proof (`provenance/PROOF.md`).
+`code/`: the delivered builder (`build.py`, Linux), the exact companion
+(`companion/exact_checks.py`, standard library, JSON on stdout) and its two test files
+(`tests/test_build.py`, `tests/test_companion.py`). `data/`: its source manifest (50
+files), source excerpts (56 and two paper spans), current-status record and certificate;
+its companion needs Linux.
+
+```
+86-five-term-envelope-PROOF.md
+86-five-term-envelope-REPRODUCING.md
+86-five-term-envelope-SOURCES.md
+86-five-term-envelope-companion-README.md
+code/86-five-term-envelope-build.py
+code/86-five-term-envelope-exact_checks.py
+code/86-five-term-envelope-test_build.py
+code/86-five-term-envelope-test_companion.py
+data/86-five-term-envelope-CURRENT_SOURCE_STATUS.json
+data/86-five-term-envelope-SOURCE_MANIFEST.json
+data/86-five-term-envelope-certificate.json
+data/86-five-term-envelope-source_excerpts.json
+```
+
+**Source 87, prefix `87-endpoint-lifting-`** (12 files). At the root, its reproduction
+notes, source record, companion README and frozen proof (`provenance/PROOF.md`).
+`code/`: the delivered builder (`build.py`, Linux), the exact companion
+(`companion/exact_checks.py`, standard library, JSON on stdout) and its two test files
+(`tests/test_build.py`, `tests/test_companion.py`). `data/`: its source manifest (40
+files at `130fca9b1`), source excerpts (28), current-status record and certificate; its
+companion needs Linux.
+
+```
+87-endpoint-lifting-PROOF.md
+87-endpoint-lifting-REPRODUCING.md
+87-endpoint-lifting-SOURCES.md
+87-endpoint-lifting-companion-README.md
+code/87-endpoint-lifting-build.py
+code/87-endpoint-lifting-exact_checks.py
+code/87-endpoint-lifting-test_build.py
+code/87-endpoint-lifting-test_companion.py
+data/87-endpoint-lifting-CURRENT_SOURCE_STATUS.json
+data/87-endpoint-lifting-SOURCE_MANIFEST.json
+data/87-endpoint-lifting-certificate.json
+data/87-endpoint-lifting-source_excerpts.json
+```
+
+**Source 88, prefix `88-product-property-`** (9 files). At the root, its source audit
+and integration notes. `code/`: three verifiers (rank, counting, parameters; standard
+library) and its `Makefile`. `data/`: their outputs.
+
+```
+88-product-property-INTEGRATION.txt
+88-product-property-SOURCE_AUDIT.txt
+code/88-product-property-Makefile
+code/88-product-property-verify_counting.py
+code/88-product-property-verify_parameters.py
+code/88-product-property-verify_rank.py
+data/88-product-property-counting_checks.json
+data/88-product-property-parameter_checks.json
+data/88-product-property-rank_checks.json
+```
+
+**Source 89, prefix `89-critical-localization-`** (9 files). At the root, its build
+notes, formalization plan, proof audit and source audit. `code/`: its verifier (NumPy)
+and `Makefile`. `data/`: its dependency record, requirements and verification output.
+
+```
+89-critical-localization-BUILD.md
+89-critical-localization-FORMALIZATION.md
+89-critical-localization-PROOF_AUDIT.md
+89-critical-localization-SOURCE_AUDIT.md
+code/89-critical-localization-Makefile
+code/89-critical-localization-verify.py
+data/89-critical-localization-dependencies.json
+data/89-critical-localization-requirements.txt
+data/89-critical-localization-verification.json
+```
+
+**Source 90, prefix `90-fourier-directional-`** (17 files). At the root, its independent
+review note. `code/`: three verifiers (frontiers, Fourier LP, directional; NumPy,
+SciPy), its figure script and `Makefile`. `data/`: build validation, requirements,
+runtime versions, source ledger and the three verification outputs. `figures/`: two
+figures (PDF and PNG).
+
+```
+90-fourier-directional-independent_review.md
+code/90-fourier-directional-Makefile
+code/90-fourier-directional-make_figures.py
+code/90-fourier-directional-verify_directional.py
+code/90-fourier-directional-verify_fourier_lp.py
+code/90-fourier-directional-verify_frontiers.py
+data/90-fourier-directional-build_validation.json
+data/90-fourier-directional-requirements.txt
+data/90-fourier-directional-runtime_versions.json
+data/90-fourier-directional-source_ledger.json
+data/90-fourier-directional-verification_directional.json
+data/90-fourier-directional-verification_fourier_lp.json
+data/90-fourier-directional-verification_frontiers.json
+figures/90-fourier-directional-fourier_frontier.pdf
+figures/90-fourier-directional-fourier_frontier.png
+figures/90-fourier-directional-semicircle_grid.pdf
+figures/90-fourier-directional-semicircle_grid.png
+```
+
+**Source 91, prefix `91-depth-reduction-`** (9 files). At the root, its formalization
+plan, review notes and source audit. `code/`: its verifier, demonstration script and
+`Makefile`. `data/`: build validation, requirements and verification output.
+
+```
+91-depth-reduction-FORMALIZATION.md
+91-depth-reduction-REVIEW_NOTES.md
+91-depth-reduction-SOURCE_AUDIT.md
+code/91-depth-reduction-Makefile
+code/91-depth-reduction-depth_reduction.py
+code/91-depth-reduction-verify.py
+data/91-depth-reduction-build_validation.json
+data/91-depth-reduction-requirements-checks.txt
+data/91-depth-reduction-verification.json
+```
+
+**Source 92, prefix `92-finite-cover-repair-`** (8 files). At the root, its
+formalization plan and source audit. `code/`: its exact verifier (standard library; the
+59049-cube census), a numerical exploration script and `Makefile`. `data/`: the ternary
+certificate, the numerical experiment and the verification report.
+
+```
+92-finite-cover-repair-FORMALIZATION_PLAN.md
+92-finite-cover-repair-SOURCE_AUDIT.md
+code/92-finite-cover-repair-Makefile
+code/92-finite-cover-repair-explore_ternary.py
+code/92-finite-cover-repair-verify_exact.py
+data/92-finite-cover-repair-ternary_numerical_experiment.json
+data/92-finite-cover-repair-ternary_quartic_certificate.json
+data/92-finite-cover-repair-verification_report.json
+```
+
+**Source 93, prefix `93-spectral-uniformity-`** (19 files). `code/`: four verifiers
+(Fourier, rate and prime norm certificates, rigidity checks), its figure script and
+`Makefile`. `data/`: build validation, two CSV tables (CRLF, kept by `.gitattributes`),
+the verification outputs and certificates, provenance and requirements. `figures/`: two
+figures (PDF and PNG).
+
+```
+code/93-spectral-uniformity-Makefile
+code/93-spectral-uniformity-fourier_verify.py
+code/93-spectral-uniformity-make_figures.py
+code/93-spectral-uniformity-norm_verify_prime.py
+code/93-spectral-uniformity-norm_verify_rate.py
+code/93-spectral-uniformity-rigidity_checks.py
+data/93-spectral-uniformity-build_validation.json
+data/93-spectral-uniformity-fourier_profile_values.csv
+data/93-spectral-uniformity-fourier_verification_results.json
+data/93-spectral-uniformity-half_circle_grid_values.csv
+data/93-spectral-uniformity-norm_prime_certificates.json
+data/93-spectral-uniformity-norm_rate_certificates.json
+data/93-spectral-uniformity-provenance.json
+data/93-spectral-uniformity-requirements.txt
+data/93-spectral-uniformity-rigidity_checks.json
+figures/93-spectral-uniformity-fourier_profiles.pdf
+figures/93-spectral-uniformity-fourier_profiles.png
+figures/93-spectral-uniformity-grid_correction.pdf
+figures/93-spectral-uniformity-grid_correction.png
+```
+
+**Source 94, prefix `94-three-term-torsion-`** (8 files). At the root, its integration
+notes and source audit. `code/`: its verifier (NumPy) and `Makefile`. `data/`:
+requirements, source audit record, validation and verification outputs.
+
+```
+94-three-term-torsion-INTEGRATION.md
+94-three-term-torsion-SOURCE_AUDIT.md
+code/94-three-term-torsion-Makefile
+code/94-three-term-torsion-verify.py
+data/94-three-term-torsion-requirements.txt
+data/94-three-term-torsion-source_audit.json
+data/94-three-term-torsion-validation.json
+data/94-three-term-torsion-verification.json
+```
+
+**Sources 95–106, placed by `09f5b745a`, `9599d8566`, `53eedc74c`, `3a5a735dc`,
+`e38d7731f` and `bb6ecb32b`, write pending** (111 files; not used in the article):
 
 ```
 100-quadratic-barrier-INTEGRATION.md
@@ -2473,40 +2814,14 @@ article):
 103-odd-cube-stability-CLAIMS.md
 103-odd-cube-stability-INTEGRATION.md
 103-odd-cube-stability-SOURCE_AUDIT.md
-82-target-torsion-REPRODUCING.md
-82-target-torsion-SOURCES.md
-82-target-torsion-companion-README.md
-83-fourth-norm-REPRODUCING.md
-83-fourth-norm-SOURCES.md
-83-fourth-norm-companion-README.md
-84-threshold-comparison-REPRODUCING.md
-84-threshold-comparison-SOURCES.md
-84-threshold-comparison-companion-README.md
-85-finite-saturation-REPRODUCING.md
-85-finite-saturation-SOURCES.md
-85-finite-saturation-companion-README.md
-86-five-term-envelope-PROOF.md
-86-five-term-envelope-REPRODUCING.md
-86-five-term-envelope-SOURCES.md
-86-five-term-envelope-companion-README.md
-87-endpoint-lifting-PROOF.md
-87-endpoint-lifting-REPRODUCING.md
-87-endpoint-lifting-SOURCES.md
-87-endpoint-lifting-companion-README.md
-88-product-property-INTEGRATION.txt
-88-product-property-SOURCE_AUDIT.txt
-89-critical-localization-BUILD.md
-89-critical-localization-FORMALIZATION.md
-89-critical-localization-PROOF_AUDIT.md
-89-critical-localization-SOURCE_AUDIT.md
-90-fourier-directional-independent_review.md
-91-depth-reduction-FORMALIZATION.md
-91-depth-reduction-REVIEW_NOTES.md
-91-depth-reduction-SOURCE_AUDIT.md
-92-finite-cover-repair-FORMALIZATION_PLAN.md
-92-finite-cover-repair-SOURCE_AUDIT.md
-94-three-term-torsion-INTEGRATION.md
-94-three-term-torsion-SOURCE_AUDIT.md
+104-odd-cube-boundary-FORMALIZATION_PLAN.md
+104-odd-cube-boundary-INTEGRATION.md
+104-odd-cube-boundary-PROOF_REVIEW.md
+104-odd-cube-boundary-SOURCE_AUDIT.md
+105-ternary-quartic-CERTIFICATE.md
+105-ternary-quartic-FORMALIZATION_PLAN.md
+105-ternary-quartic-PROVENANCE.md
+106-torus-defect-INTEGRATION.md
 95-simultaneous-integration-FORMALIZATION.md
 95-simultaneous-integration-SOURCE_AUDIT.md
 96-odd-order-refinements-INTEGRATION.txt
@@ -2529,56 +2844,14 @@ code/102-affine-localization-verify.py
 code/103-odd-cube-stability-build.sh
 code/103-odd-cube-stability-local_checks.py
 code/103-odd-cube-stability-verify.py
-code/82-target-torsion-build.py
-code/82-target-torsion-exact_checks.py
-code/82-target-torsion-test_build.py
-code/82-target-torsion-test_companion.py
-code/83-fourth-norm-build.py
-code/83-fourth-norm-exact_checks.py
-code/83-fourth-norm-test_build.py
-code/83-fourth-norm-test_companion.py
-code/84-threshold-comparison-build.py
-code/84-threshold-comparison-exact_checks.py
-code/84-threshold-comparison-test_build.py
-code/84-threshold-comparison-test_companion.py
-code/85-finite-saturation-build.py
-code/85-finite-saturation-classify.py
-code/85-finite-saturation-exact_checks.py
-code/85-finite-saturation-test_build.py
-code/85-finite-saturation-test_companion.py
-code/86-five-term-envelope-build.py
-code/86-five-term-envelope-exact_checks.py
-code/86-five-term-envelope-test_build.py
-code/86-five-term-envelope-test_companion.py
-code/87-endpoint-lifting-build.py
-code/87-endpoint-lifting-exact_checks.py
-code/87-endpoint-lifting-test_build.py
-code/87-endpoint-lifting-test_companion.py
-code/88-product-property-Makefile
-code/88-product-property-verify_counting.py
-code/88-product-property-verify_parameters.py
-code/88-product-property-verify_rank.py
-code/89-critical-localization-Makefile
-code/89-critical-localization-verify.py
-code/90-fourier-directional-Makefile
-code/90-fourier-directional-make_figures.py
-code/90-fourier-directional-verify_directional.py
-code/90-fourier-directional-verify_fourier_lp.py
-code/90-fourier-directional-verify_frontiers.py
-code/91-depth-reduction-Makefile
-code/91-depth-reduction-depth_reduction.py
-code/91-depth-reduction-verify.py
-code/92-finite-cover-repair-Makefile
-code/92-finite-cover-repair-explore_ternary.py
-code/92-finite-cover-repair-verify_exact.py
-code/93-spectral-uniformity-Makefile
-code/93-spectral-uniformity-fourier_verify.py
-code/93-spectral-uniformity-make_figures.py
-code/93-spectral-uniformity-norm_verify_prime.py
-code/93-spectral-uniformity-norm_verify_rate.py
-code/93-spectral-uniformity-rigidity_checks.py
-code/94-three-term-torsion-Makefile
-code/94-three-term-torsion-verify.py
+code/104-odd-cube-boundary-build.sh
+code/104-odd-cube-boundary-verify.py
+code/104-odd-cube-boundary-verify_local.py
+code/105-ternary-quartic-Makefile
+code/105-ternary-quartic-test_corruption.py
+code/105-ternary-quartic-verify_exact.py
+code/106-torus-defect-Makefile
+code/106-torus-defect-verify.py
 code/95-simultaneous-integration-Makefile
 code/95-simultaneous-integration-verify.py
 code/96-odd-order-refinements-Makefile
@@ -2612,53 +2885,18 @@ data/102-affine-localization-theorem_status.json
 data/103-odd-cube-stability-boolean_patterns.json
 data/103-odd-cube-stability-local_results.json
 data/103-odd-cube-stability-results.json
-data/82-target-torsion-midpoint_certificate.json
-data/83-fourth-norm-interval_certificate.json
-data/84-threshold-comparison-SOURCE_MANIFEST.json
-data/84-threshold-comparison-certificate.json
-data/84-threshold-comparison-source_excerpts.json
-data/85-finite-saturation-compact_certificate.json
-data/85-finite-saturation-finite_certificate.json
-data/86-five-term-envelope-CURRENT_SOURCE_STATUS.json
-data/86-five-term-envelope-SOURCE_MANIFEST.json
-data/86-five-term-envelope-certificate.json
-data/86-five-term-envelope-source_excerpts.json
-data/87-endpoint-lifting-CURRENT_SOURCE_STATUS.json
-data/87-endpoint-lifting-SOURCE_MANIFEST.json
-data/87-endpoint-lifting-certificate.json
-data/87-endpoint-lifting-source_excerpts.json
-data/88-product-property-counting_checks.json
-data/88-product-property-parameter_checks.json
-data/88-product-property-rank_checks.json
-data/89-critical-localization-dependencies.json
-data/89-critical-localization-requirements.txt
-data/89-critical-localization-verification.json
-data/90-fourier-directional-build_validation.json
-data/90-fourier-directional-requirements.txt
-data/90-fourier-directional-runtime_versions.json
-data/90-fourier-directional-source_ledger.json
-data/90-fourier-directional-verification_directional.json
-data/90-fourier-directional-verification_fourier_lp.json
-data/90-fourier-directional-verification_frontiers.json
-data/91-depth-reduction-build_validation.json
-data/91-depth-reduction-requirements-checks.txt
-data/91-depth-reduction-verification.json
-data/92-finite-cover-repair-ternary_numerical_experiment.json
-data/92-finite-cover-repair-ternary_quartic_certificate.json
-data/92-finite-cover-repair-verification_report.json
-data/93-spectral-uniformity-build_validation.json
-data/93-spectral-uniformity-fourier_profile_values.csv
-data/93-spectral-uniformity-fourier_verification_results.json
-data/93-spectral-uniformity-half_circle_grid_values.csv
-data/93-spectral-uniformity-norm_prime_certificates.json
-data/93-spectral-uniformity-norm_rate_certificates.json
-data/93-spectral-uniformity-provenance.json
-data/93-spectral-uniformity-requirements.txt
-data/93-spectral-uniformity-rigidity_checks.json
-data/94-three-term-torsion-requirements.txt
-data/94-three-term-torsion-source_audit.json
-data/94-three-term-torsion-validation.json
-data/94-three-term-torsion-verification.json
+data/104-odd-cube-boundary-PDF_QA.json
+data/104-odd-cube-boundary-local_verification_results.json
+data/104-odd-cube-boundary-requirements.txt
+data/104-odd-cube-boundary-verification_results.json
+data/105-ternary-quartic-checks.json
+data/105-ternary-quartic-corruption_tests.log
+data/105-ternary-quartic-ternary_quartic_gram.json
+data/105-ternary-quartic-verification.log
+data/106-torus-defect-build_report.json
+data/106-torus-defect-source_manifest.json
+data/106-torus-defect-theorem_status.json
+data/106-torus-defect-verification_results.json
 data/95-simultaneous-integration-results.json
 data/96-odd-order-refinements-affine_completion_checks.json
 data/96-odd-order-refinements-affine_completion_verify_run.txt
@@ -2679,26 +2917,18 @@ data/98-third-energy-small_cyclic_m3.json
 data/99-prime-bohr-arc_certificates.json
 data/99-prime-bohr-verification-run.txt
 data/99-prime-bohr-verification.json
-figures/90-fourier-directional-fourier_frontier.pdf
-figures/90-fourier-directional-fourier_frontier.png
-figures/90-fourier-directional-semicircle_grid.pdf
-figures/90-fourier-directional-semicircle_grid.png
-figures/93-spectral-uniformity-fourier_profiles.pdf
-figures/93-spectral-uniformity-fourier_profiles.png
-figures/93-spectral-uniformity-grid_correction.pdf
-figures/93-spectral-uniformity-grid_correction.png
 ```
 
 **Not shipped**, all retrievable from the arrival commits (`66f24b0d0` for 01–05,
 `62e21161f` for 06–10, `08ab4187e` for 11–13, `d179062cc` for 14, and those named
-above for 15–81):
-- the eighty-one PDFs;
-- the manuscripts of sources 01, 02, 03, 05 and 06–81 (45's main file with its nine
+above for 15–94):
+- the ninety-four PDFs;
+- the manuscripts of sources 01, 02, 03, 05 and 06–94 (45's main file with its nine
   section files and `references.bib`, 56's main file with its thirteen section files,
   67's front and end matter and four section files besides its assembly, 68's
   `main.tex` and eleven section files besides its expansion), which are printed in the
   article;
-- the delivery READMEs of 01, 02, 03, 05 and 06–81 (their limitations are carried
+- the delivery READMEs of 01, 02, 03, 05 and 06–94 (their limitations are carried
   below);
 - the run logs of 61 (`checks/run.log`, a byte copy of its results), 64
   (`verification.log`, with a sandbox path) and 66 (`data/verification.log`);
@@ -2706,7 +2936,7 @@ above for 15–81):
 - the provenance snapshots shipped by 70–74 under `provenance/sources/` (copies of
   repository files, mathlib's `ZMod.lean` and archive members, verified against their
   staged manifests; the route below restores them from git), and the eight empty
-  `companion/__init__.py` of 74–81;
+  `companion/__init__.py` of 74–81 and the five of 82–84, 86 and 87;
 - the 46 Lean source snapshots shipped by 51–53 under `provenance/sources/` (copies of
   repository files at their recorded commits, verified byte for byte; retrievable from
   git history);
@@ -2726,8 +2956,11 @@ above for 15–81):
   again at the tenth write, and 60 (`MANIFEST.sha256`, 18/18), 61 (`manifest.json`,
   13/13), 63 (`MANIFEST.sha256`, 29/29), 64 (`SHA256SUMS`, 12/12), 66 (`MANIFEST.sha256`,
   12/12), 67 (`SHA256SUMS.txt`, 31/31) and 68 (`MANIFEST.sha256`, 30/30), verified at
-  intake and again at the eleventh write, and the `MANIFEST.sha256` of 70–81, verified at
-  intake and again at the twelfth write (repository policy drops checksum manifests).
+  intake and again at the eleventh write, the `MANIFEST.sha256` of 70–81, verified at
+  intake and again at the twelfth write, and the `MANIFEST.sha256` of 82–87 (12/12, 12/12,
+  14/14, 13/13, 16/16, 16/16) and the `SHA256SUMS` of 90 (20/20), 91 (12/12), 93 (22/22)
+  and 94 (11/11), verified at intake and again at the thirteenth write (88, 89 and 92 ship
+  none; repository policy drops checksum manifests).
 
 **Delivery names.** A shipped file is its delivered path, flattened, behind its
 prefix:
@@ -2879,8 +3112,22 @@ and a comparison with separate builds of the twelve delivered manuscripts found 
 statement and equation index of 70–81 unchanged (80's `eq:separation` keeps its index 9 by
 an explicit counter setting). 70–81 deliver plain stems (`thm:main`, `sec:questions`)
 under `gsr:<part>:70:` to `gsr:<part>:81:`.
+The thirteenth write added the 1,130 delivered labels of 82–94 (82: 75, 83: 114, 84: 56, 85:
+58, 86: 130, 87: 77, 88: 130, 89: 67, 90: 70, 91: 71, 92: 115, 93: 85, 94: 82), a label on
+each of their 166 delivered sections, the nine chapter guides (`gsr:dt:sec:phifour`,
+`gsr:en:sec:spikes`, `gsr:en:sec:quarter`, `gsr:en:sec:productproperty`,
+`gsr:en:sec:endpointlift`, `gsr:cc:sec:threeterm`, `gsr:cc:sec:fasterlimit`,
+`gsr:fp:sec:critical`, `gsr:fz:sec:fiveterm`) and four item labels in Part V
+(`gsr:fz:q:II:spikes`, `gsr:fz:q:II:directional`, `gsr:fz:q:IV:depth`,
+`gsr:fz:q:V:fiveterm`): **9,713 labels**, all distinct. A comparison of the `.aux` with a
+build of `ddafb95a8` found every one of its 8,404 labels with the same printed number, and
+a comparison with separate builds of the thirteen delivered manuscripts found all 854
+statement and equation indices of 82–94 unchanged (91 and 94 number their equations
+consecutively; here they are numbered within sections, as for 02, 03 and others). 82–94
+deliver plain stems (`thm:main`, `sec:questions`) and 94 `st3:` stems, under
+`gsr:<part>:82:` to `gsr:<part>:94:`.
 
-**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.86
+**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.99
 in the front matter). Statements and equations are numbered within sections. A
 delivered statement or equation `k.j` keeps its index `j`; the exceptions are the
 equations of sources 02, 03, 06, 11, 12, 13, 26 (omitted from this list at the fifth
@@ -2888,9 +3135,9 @@ write), 30, 32 and 51–53, which numbered them through the whole manuscript, an
 of sources 06–10 are numbered within their sections (Figure IV.9.1), so that the
 global table and figure numbers of 01–05 do not move; the write's remark on the
 false quartic bound is Remark W1; the third write's remarks have their own counter and
-are W2–W4 (the fourth to twelfth writes needed none). Source 16 numbers its equations by
+are W2–W4 (the fourth to thirteenth writes needed none). Source 16 numbers its equations by
 explicit tags `(k.j)`, kept as delivered; source 20's Questions, numbered on their
-own counter there, are numbered within their section here and keep their indices. So are 25's Questions 1–8; 22's and 23's explicit equation tags ((D1.1)–(D1.7), (F1)–(F13)) are kept. So are 28's Research questions 1–15, 30's Questions 1–12 and 33's Research questions 1–12, and 36's Research questions 13.1–13.12 and 37's Questions 11.1–11.10, and 45's Questions 6.1–6.16. 43's Research questions, numbered 1–10 on their own counter, are numbered within their section here, and so are 47's and 50's (1–9, 1–10); 49's Questions 10.1–10.16 keep their indices. 57's Research questions 1–12, on their own counter, are numbered within their section here and keep their indices, and so do 58's and 59's Questions 13.1–13.10 and 12.1–12.10. 60's, 65's and 69's Research questions (1–14, 1–9, 1–10), on their own counters, are numbered within their sections here and keep their indices; the questions of 61–64 and 66–68 keep theirs (68's begin at 8.2). 73–75's Questions keep their numbers on the shared counters; the questions of 70 and 76–81 are enumerated lists and those of 71 and 72 paragraphs, as delivered (V.2 calls them "70 Q1" and so on). Source 04's tags (M1)–(M7), (R1)–(R32),
+own counter there, are numbered within their section here and keep their indices. So are 25's Questions 1–8; 22's and 23's explicit equation tags ((D1.1)–(D1.7), (F1)–(F13)) are kept. So are 28's Research questions 1–15, 30's Questions 1–12 and 33's Research questions 1–12, and 36's Research questions 13.1–13.12 and 37's Questions 11.1–11.10, and 45's Questions 6.1–6.16. 43's Research questions, numbered 1–10 on their own counter, are numbered within their section here, and so are 47's and 50's (1–9, 1–10); 49's Questions 10.1–10.16 keep their indices. 57's Research questions 1–12, on their own counter, are numbered within their section here and keep their indices, and so do 58's and 59's Questions 13.1–13.10 and 12.1–12.10. 60's, 65's and 69's Research questions (1–14, 1–9, 1–10), on their own counters, are numbered within their sections here and keep their indices; the questions of 61–64 and 66–68 keep theirs (68's begin at 8.2). 73–75's Questions keep their numbers on the shared counters; the questions of 70 and 76–81 are enumerated lists and those of 71 and 72 paragraphs, as delivered (V.2 calls them "70 Q1" and so on). 88's, 89's and 91's questions keep their numbers on the shared counters; 90's and 93's Research questions, numbered 1–13 and 1–16 on their own counters, are numbered within their sections here and keep their indices; 82–86 enumerate their questions, 87 writes paragraphs and 94 subsections (V.2: "82 Q1" and so on). Source 04's tags (M1)–(M7), (R1)–(R32),
 (A1)–(A14), (Q1), (Q2) and (∗) are kept. **Bare numbers such as "Lemma 5.15"
 refer to Gowers's paper**, as in the sources; this report's own numbers always
 carry a Part numeral or an F. Section F.1 holds the full concordance of delivered
@@ -3034,6 +3281,19 @@ reading-conventions tables (one for 01–05, one for 06–10). The main collisio
   `\ee` as `\e`; the `\code` of 74–81 as `\filename`; 79's `\Eadd` as `\EaddG`, 80's and
   81's as `\EaddV`), printing as delivered. **73 and 74 use `cleveref`**; their references
   are written out with the names cleveref prints.
+- **Sources 82–94**: 82's `λ` is 81's constant, `μ = 2λ − 1` a fourth-power ratio, `H` the
+  target; 83's and 85's `k_n` are reflection radicals (**not dimensions**), `η_n = 1/(1 + k_n)`
+  the spectral energy bound, `H_n = I − 2J/n` (**not 82's target `H`**); 84's and 86's `H_o`,
+  `H_f` are the repository's five-term thresholds; 87's `K`, `R = 4K`, `θ = 1/(32K)` (**84's
+  `R` is a gain**); 92's `B_T`, 89's `𝔇_T` and 46's `C_T` are **the same alternating
+  defect**; 89's `c_p` is 92's `b_p`, 91's `c_{p,a}` the depth factor, 93's `c_d(F)`, `D(F)`
+  the odd constants (**90's `D(f)` is a collision rate**); 90's and 93's `Φ_R` is the
+  missing-arc minimax (**not 72's frequency map `Φ`**); 94's `u, v, ℓ` are indices. Macros
+  renamed or reassigned (the `\Eadd` of 82, 83, 85; the `\EE` of 82, 83, 85; the `\code` of
+  82–87 as `\filename`; the `\PP` of 84, 86, 87 as `\PPop`; 84's `\source`, 86's and 87's
+  `\src`, 87's `\srcline`; the `\ee` of 89 and 91; 89's `\defect`, `\cube`; 91's `\ip`,
+  `\repo`), printing as delivered; 94's `st`-prefixed macros and environments kept or
+  mapped to the report's. **89, 91 and 92 use `cleveref`**; their references are written out.
 
 ## What the report claims
 
@@ -3354,6 +3614,29 @@ length propagation.
   indicator exceeds `53/81` (sharp); the optimal weighted bound `λ`, one order-two spike,
   nine points necessary at `λ`.
 
+**Sources 82–94 (thirteenth write).**
+- 82: per target on `𝔽₃`-spaces, the largest `r(a)` outside affine maps and cuts is `5/9`
+  without two-torsion, `λ` with it (upper bound imported from 81), both attained in every
+  rank; the sharp nine-point reflection `‖R₉z‖₄⁴ ≥ (2λ − 1)‖z‖₄⁴`.
+- 83: two-valued real `ℓ⁴`-maximizers of `I − γJ/n`; the threshold `γ_n ↑ γ_∞`; the
+  reflection norm in radicals, `< 3 + 2√2`; the point-spike saturation criterion.
+- 84: `H_f < H_o^{1/4} < H_o` for the repository's two five-term thresholds.
+- 85: the optimal multiplicity is unique; exactly 77 saturating orders, the largest 583.
+- 86: `H_f < 2^{2^{δ^{−2^76}}}` below Gowers's `2^{2^{δ^{−2^16384}}}` (**superseded by the
+  repository's formal `2^73`**).
+- 87: `Section16ContextualLiftAt` false for every `k` at `γ = 1` (formally refuted since).
+- 88: configuration and cube-pair exponents `8(4^k − 3^k)`, `4(4^k − 2^k)`; integral bases;
+  `a₈ ≥ β^{22·4^k} γ^{88·4^k − 32·2^k}`; a stronger extraction through 35's selector.
+- 89, 92: at degree `p + 1`, optimal repairs (codimension `r`, covers of kernel `p^r`, all
+  classified), lossless sharp quotient moments, rank-only extremal energy, the ternary
+  interval `11/27 ≤ m_{3,1} ≤ 1099/2187`.
+- 90, 93: the complete profile `Φ₄`; continuations and a final band at every cutoff; grid
+  corrections; recovery below defect `1/4` and the cutoff 13 for every target (93);
+  `D(f) ≤ (N+1)d₁(f)/6` (90); `c_d(F) − D(F) = O(d2^{−d/2})` (93).
+- 91: the optimal depth-reduction factor through exactly `p` phases.
+- 94: sharp three-term constants, spectrum, extremizers and stability for arbitrary
+  increment maps.
+
 **Proved in the first write** (dated notes, each with its proof; listed in F.1):
 1. **01's increment is at least 3/2 times 05's** (and 03's at `λ = 1/2`) at the
    stated parameters. With `κ = η/(2δb)`, the ratio is
@@ -3612,6 +3895,29 @@ length propagation.
     unimodular identities, 8 basis reconstructions). Script and output: not shipped (the
     write's scratch record, 67 exact checks).
 
+**Proved or checked in the thirteenth write** (dated notes, each with its argument):
+73. **The constants of 82, 83 and 85**: `λ`, `μ`, `‖R₉‖₄ = μ^{−1/4}`, `k₉ = k*` (so 82's
+    reflection is 83 at `n = 9`), `η₄ = 5/8`, the uniqueness of `m_n` (all multiplicities
+    to `n = 700`) and **the 77 saturating orders** (to `n = 200000`); the spike on `𝔽₃²`
+    and product weights on `𝔽₃³` at `λ`; **82's `5/9` at source dimension one** for maps
+    into `ℤ/3` and `ℤ/7`, which is the fixed-target value of the twelfth write for
+    `ℤ/3 → ℤ/3`; **85's `η₄ = 5/8` and 76's conditional `5/8` are the same object** (the
+    order-four spike, `40/64`).
+74. **Graph energy** (90, 93): the cutoff 13 exhaustively on `ℤ/13 → ℤ/2` (maximum 1669)
+    and its failure at `N = 12` for both target kinds (1296); 90's directional bound
+    exhaustively on `C₁₂, C₁₃, C₁₄ → C₂`.
+75. **The four-frequency profile**: the junction's minimal polynomial, `Φ₄(a*)`, an LP for
+    `Φ₄(π/2) = (√3 − 1)/2` and two branches; `κ_R = 1/(R − 1 + ξ_R)`; `a₃ = 3π/5`.
+76. **The odd constants**: 93's `D_p` is 63's `b(ℤ/p)`, and 63's fixed-group bound is sharp
+    to first order on `ℤ/p` (93's first-order term); the `ℤ/3` obstruction.
+77. **The five-term threshold**: 84's identities and `R ≥ 4`, 86's conversion; **86's
+    headline superseded by the formal `2^73`** (`3f61aea0a`).
+78. **The critical degree**: Lagrangian counts, the test law, the block energy; 91's phase
+    maximum with `pm` maximizers, `c_{p,1} > p^{−1/2}`.
+79. **Source 88**: its sums, exponents, gain and table; its bounds imply the formal
+    `lemma_14_4`, `corollary_14_5`, `lemma_14_8`.
+Script and output: not shipped (the write's scratch record, 55 checks).
+
 Recomputed independently at the second write: the `ℤ/11` counterexample (exact
 enumeration of all `11⁴` frequency choices, and direct summation over all cubes);
 09's determinant-5 configuration (`det B = −5`, `M_S r = (10,5,5,5,5,5)`, Smith form
@@ -3635,7 +3941,8 @@ local; 54, 57, 58 and 59 cite Leng–Sah–Sawhney, and 55 and 56 state that the
 are local; 60, 64, 67 and 69 cite Leng–Sah–Sawhney, 60, 63, 64 and 66–69 state that no new
 global bound is claimed, and 61, 62 and 65 make no global claim; 70 and 72–81 state that no
 global bound is claimed or that their results are local, and 71 that nothing beyond its
-moduli is settled. No source claims literature
+moduli is settled; 82–94 state that their results are local or comparative (90, 92 and 93
+cite Leng–Sah–Sawhney for context). No source claims literature
 priority or an exhaustive priority search, Lean compilation, or kernel
 verification. Further limitations, kept in place and collected in Section V.2:
 - sharpness in the weighted model, not for arithmetic characters (01);
@@ -3806,6 +4113,19 @@ verification. Further limitations, kept in place and collected in Section V.2:
   optimality of `19/27` not asserted (78); no classification of all maps at `ρ` (79);
 - 80, 81: `𝔽₃`-space domains only; 80's `γ` not optimal (superseded); `677/1161` not optimal;
   no explicit testing rate;
+- 82: fixed `(V, H)`; no higher-rank equality classification; no indicator dichotomy with
+  two-torsion; `λ` imported;
+- 83, 85: `p = 4` only; the order-81 minimum and indicator minima not computed;
+- 84, 86: repository expressions only; 86's exponent not optimal (superseded formally);
+- 87: refutes only the universal witness quantifier; existential selection open;
+- 88: local; optimality of the final exponents and the cube-pair density frontier open;
+- 89, 92: homogeneous all-slot symmetric tensors over `𝔽_p^n`; no rank-from-energy bound
+  for odd `p`; the ternary value `11/27` conjectured (105, placed during the write, records
+  a proof);
+- 90, 93: measures, not indicators; 93's rate constant not explicit; 90's directional
+  theorem for `N ≥ 12`;
+- 91: a conversion only, not iterable;
+- 94: three-term only; equality for `2 < p < ∞`; stability at `p = 4`;
 - finite and numerical checks prove nothing general (all).
 
 From the delivery READMEs:
@@ -3843,16 +4163,34 @@ sentences — 613 questions. The eleventh write adds the 104 questions of 60–6
 as one new item (III.binomial) or dated sentences — 717 questions. The twelfth write adds
 the 58 questions of 70–81 (70: 6, 71: 4, 72: 6, 73: 4, 74: 3, 75: 5, 76: 4, 77: 4, 78: 4, 79: 5,
 80: 6, 81: 7) as one new item (II.hereditary, the 32 questions of 75–81 on hereditary
-energy) or dated sentences — **775 questions in all**:
-- **I**, density transfer: 21 items, 74 questions;
-- **II**, the inverse step: 61 items, 387 questions and two paragraphs, plus five
+energy) or dated sentences — 775 questions. The thirteenth write adds the 107 questions of
+82–94 (82: 5, 83: 6, 84: 5, 85: 6, 86: 5, 87: 5 paragraphs, 88: 9, 89: 7 and a conjecture,
+90: 13, 91: 12, 92: 10, 93: 16, 94: 8) as four new items (II.spikes, II.directional,
+IV.depth, V.fiveterm) or dated sentences — **882 questions in all**:
+- **I**, density transfer: 21 items, 86 questions;
+- **II**, the inverse step: 63 items, 423 questions and two paragraphs, plus five
   marked questions of the intakes (below; 40's joins 35's; 11's marked cutoff `30` is
   superseded by 59's `16`, and 60 proves the marked threshold composition with one power
   of `L` less);
-- **III**, cubes and progressions: 31 items, 141 questions and one paragraph;
-- **IV**, floor patterns: 11 items, 76 questions;
-- **V**, integration and formalization: 3 items, 97 questions.
+- **III**, cubes and progressions: 31 items, 152 questions and one paragraph;
+- **IV**, floor patterns: 12 items, 102 questions;
+- **V**, integration and formalization: 4 items, 119 questions.
 
+- **Answered or advanced in the thirteenth write** (dated notes at the questions):
+  - **37's question beyond the first window is answered for `R = 4`** by 90 and 93, and
+    advanced for every `R`; its grid question advanced.
+  - **The non-affine cutoff is 13 for every target** (93): 11's cutoff question and 59's
+    Question 12.9 at 13–15 answered.
+  - 83's tie question by 85; 82's `ℓ_p` question at `p = 4` by 83; 89's dimension question
+    by 92; 20's operator-norm and quotient-baseline questions for three-term systems by
+    94; 15's Question 5 advanced by 88; 63's rate by 93; the ledger item by 84, 86 and the
+    formal five-term instance; 87's fifth paragraph and 86's second question met by the
+    repository.
+- **Thirteenth write:** no claim of 82–94 was found wrong or unproved. Recorded in dated
+  notes: 86's headline superseded by a formal theorem; credits corrected (87's earlier note
+  is 74; 89 and 92 re-derive 46; 93 omits 63; 91 omits 46's scalar order); the undelivered
+  manuscript of 90 and 93 (nothing taken from it beyond 93's re-proofs); conjectures kept
+  as Further questions (89, 92; 105, placed during the write, records a proof of 92's).
 - **Answered or advanced in the twelfth write** (dated notes at the questions):
   - **55's entry question is answered** by 73 (singly exponential threshold, radius and
     cubic coefficient).
@@ -4218,6 +4556,26 @@ Python version, and 45's stdout record in the sandbox path and one path separato
 and 42's companions run, and their 51 and 35 companion tests pass, normally and with
 `-O` (their builders and `test_build.py` need Linux and were not run).
 
+**At the thirteenth write:** every comparison of 82–94 with the formal project was checked
+at HEAD `bf285410b` (Section V.1, thirteenth table; every cited file and line read there: 46
+pairs and 53 sentence forms of the new text, and the earlier tables' 187 citations, none
+changed since `0c4f9054d`; since then the Lean development has only gained four Section 16
+files). The provenance records were re-verified in 76 checks (every pin an ancestor, the
+source manifests of 84, 86, 87 entry by entry, their 132 excerpts at the pins and at HEAD,
+86's paper spans and both status records, the ten checksum manifests, the SHA-256
+identifications of 81, 82, 83 and of 59's, 67's and 68's manuscripts, and the 139 staged
+files byte-identical to a fresh extraction). The constants above were recomputed by the
+write's scripts (55 checks; exact arithmetic wherever the statement is exact, LPs and
+optimizations as corroboration); merge fidelity was checked word by word against the
+delivered sections (the only differences are the written-out `cleveref` references of 89,
+91 and 92, `\appendix` and `\clearpage` lines, four figure paths, 90's `[H]`, 86's two table
+widths and 91's Section 6 heading), and statement and equation indices against separate
+builds of the thirteen manuscripts. The thirteen companions were rerun on copies of a fresh
+extraction, normally and with `-O` where allowed (identical to the intake's runs and to the
+delivered data, 30 comparisons; 84's, 86's and 87's with only their Linux-only read
+primitive replaced); 82's companion tests fail only on Windows line ends, 83's and 85's pass;
+and the route below, run from the shipped files, gives the same outputs.
+
 **At the twelfth write:** every comparison of 70–81 with the formal project was checked
 at HEAD `0c4f9054d` (Section V.1, twelfth table; every cited file and line read there; the
 provenance records were re-verified in 318 checks: every pin an ancestor, every manifest
@@ -4375,7 +4733,9 @@ and 105/15 for 55–59); at the eleventh write (HEAD `fb9602e55`) 114 and 6, wit
 and 4,877 theorems in the last complete audit, which predates the change (sources 60–69
 quote no counts; at their pins 107/13); at the twelfth write (HEAD `0c4f9054d`) still 114 and 6,
 all kernel-checked, with 770 modules and 4,912 theorems in the last complete audit (sources
-70–81 quote no counts; at the pins of 70–72 101/19, of 74 and 75 108/12). Since
+70–81 quote no counts; at the pins of 70–72 101/19, of 74 and 75 108/12); at the
+thirteenth write (HEAD `bf285410b`) still 114 and 6, with 771 modules and 4,931 theorems in the
+last complete audit (sources 82–94 quote no counts; at all their pins 113/7). Since
 `128f514af` the first obligation of `FORMALIZATION_STATUS.txt` (Corollary 5.8) names
 source 41 as a written proof and 26 and 32 as its precursors. Each source's comparison
 with a corrected statement is accurate at HEAD except stale claims, which the
@@ -4607,6 +4967,25 @@ from power-loss covers), neither closing an open statement. Related exact statem
 `lemma_6_2_holds` (75–81), `lemma_16_10_holds` (74, 75). Formalization candidates, not
 claimed: 74's every-`k` family; 71's negation; 76's dichotomy and 78's trichotomy on finite
 groups; 81's lattice certificate.
+
+**Sources 82–94.** No statement of theirs is formalized as stated. **The universal
+contract `Section16ContextualLiftAt` is formally refuted for every `k ≥ 1` at `γ = 1`**
+(`section16_contextual_lift_counterexample`, `Proofs16ContextualLiftCounterexample.lean`,
+line 80; `48efbb992`), along 87's construction, which the status record names as Report 299;
+the existential `Section16SelectedLiftAt` predates it. **86's headline is superseded by a
+formal theorem**: `fejerFiveTermThreshold_le_explicit_tower`
+(`Proofs18FiveTermSourceThreshold.lean`, line 12) bounds the five-term threshold by
+`2^{2^{δ^{−2^73}}}` on `0 < δ ≤ 1/2` (`0d0033b0f` with `2^76`, `3f61aea0a` with `2^73`, both
+after 86's arrival), with `theorem_18_2_five_holds` the exact five-term instance; 84's
+comparison of the two thresholds has no formal counterpart. 88's bounds imply the formal
+`lemma_14_4`, `corollary_14_5` and `lemma_14_8` (already exact). The formal Section 17
+(`lemma_17_1`, `proposition_17_2`) assumes `(k+1)!` invertible in a prime field, where the
+obstruction of 89, 91 and 92 cannot occur. No declaration concerns `Φ_R`, the odd constants,
+spikes, the hereditary infimum or three-term constants. Related exact statements:
+`lemma_5_2_holds` (90, 93), `proposition_6_1_holds` and `lemma_6_2_holds` (82, 83, 85, 90,
+93), `lemma_2_2_holds` and `theorem_2_6_holds` (94), `lemma_14_4_holds` and the others (88).
+Formalization candidates, not claimed: 88's cube-pair bound; 84's comparison; 92's census;
+the defect algebra of 89 and 92; 93's quarter recovery; 94's cyclic constants.
 
 **Nothing else here is formalized, and the report gains no formal status.**
 Pointers for `FORMALIZATION_STATUS.txt` are left to the session that maintains
@@ -4858,6 +5237,14 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     package through its builder; the builders and `test_build.py` need Linux. 72 overlaps 57 uncited and 73 prints 55's text (both
     explained above). 74's companion README and the `REPRODUCING.md` of 76–81 describe the
     delivered layout.
+  - 82, 83 and 85 identify their predecessors by SHA-256 (verified), 84, 86 and 87 record
+    manifests, excerpts and status records (verified; one excerpt of 87 now differs at HEAD
+    only in a doc comment), 88, 89, 91 and 94 blob pins (verified; 94's transcription has
+    changed since in one Section 16 passage), 92 a Research tree; 90 and 93 identify 59's,
+    67's and 68's manuscripts and an undelivered one by SHA-256. 87 quotes the contract at
+    its pin's line 17 (line 20 at HEAD). The companions of 84, 86 and 87 and every
+    `build.py`/`test_build.py` need Linux; 90's and 93's verifiers and 91's `verify.py` use
+    bare `assert` (do not run them with `-O`).
 - **Delivery names inside shipped text.**
   - 04's and 07's and 10's `source_manifest.json`, 03's `SOURCE_NOTES.txt`, 06's
     `provenance.json` and `README_VERIFICATION.txt`, 08's `source_provenance.json`,
@@ -4903,6 +5290,9 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     delivered files.
   - the source records, manifests, companion READMEs and `REPRODUCING.md` of 70–81 name
     delivered files (`companion/exact_checks.py`, `provenance/sources/…`).
+  - the source records, manifests, companion READMEs, `REPRODUCING.md`, audits and
+    Makefiles of 82–94 name delivered files (`companion/exact_checks.py`,
+    `code/verify.py`, `data/…`).
 - **Edits of delivered text in the article**, listed in F.1:
   - prefixed labels and unified citation keys;
   - source tags on headings;
@@ -4986,6 +5376,14 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     keeping its heading, the sentences that differ and a note, with 80's `eq:separation`
     renumbered to its delivered index; the post-abstract statements of all twelve printed in
     their front-matter sections.
+  - thirteenth write: macros renamed or reassigned (the `\Eadd` and `\EE` of 82, 83, 85;
+    the `\code` of 82–87; the `\PP` of 84, 86, 87; 84's `\source`, 86's and 87's `\src`
+    and 87's `\srcline`; the `\ee` of 89 and 91; 89's `\defect` and `\cube`; 91's `\ip` and
+    `\repo`); 94's `st`-prefixed environments mapped; the `cleveref` references of 89, 91 and
+    92 written out (89's with the statements' names, where its PDF prints "theorem"); 91's
+    Section 6 bookmark argument replaced; 90's `[H]` figure set `[!htbp]`; the reference
+    column of 86's two ledger tables widened; the post-abstract statements of all thirteen
+    printed in their front-matter sections.
 
 ## Rerunning the checks
 
@@ -5340,6 +5738,96 @@ print(json.dumps(e.diagnostics(), indent=2, sort_keys=True))
 EOF
 ```
 
+Sources 82–94 (added in the thirteenth write; same variables; from the repository root; `unpack` rebuilds each
+delivered layout from the shipped files):
+
+```sh
+unpack() {   # unpack NN-slug- delivered/path ... : rebuild a delivered layout under $T/rNN from the shipped files
+  local p=$1; shift; local n=${p%%-*}; local d="$T/r$n"
+  for q in "$@"; do
+    local b=${q##*/} s
+    case $q in
+      companion/README.md) s="$p"companion-README.md ;;
+      *.py|*/Makefile|Makefile) s=code/"$p$b" ;;
+      *.json|*.csv|requirements*|*/requirements*) s=data/"$p$b" ;;
+      figures/*) s=figures/"$p$b" ;;
+      *) s="$p$b" ;;
+    esac
+    mkdir -p "$d/$(dirname "$q")" && cp "$R/$s" "$d/$q"
+  done
+}
+unpack 82-target-torsion- \
+  REPRODUCING.md SOURCES.md build.py companion/README.md companion/exact_checks.py \
+  companion/midpoint_certificate.json tests/test_build.py tests/test_companion.py
+unpack 83-fourth-norm- \
+  REPRODUCING.md SOURCES.md build.py companion/README.md companion/exact_checks.py \
+  companion/interval_certificate.json tests/test_build.py tests/test_companion.py
+unpack 84-threshold-comparison- \
+  REPRODUCING.md SOURCES.md SOURCE_MANIFEST.json build.py companion/README.md \
+  companion/certificate.json companion/exact_checks.py source_excerpts.json \
+  tests/test_build.py tests/test_companion.py
+unpack 85-finite-saturation- \
+  REPRODUCING.md SOURCES.md build.py companion/README.md companion/classify.py \
+  companion/compact_certificate.json companion/exact_checks.py \
+  companion/finite_certificate.json tests/test_build.py tests/test_companion.py
+unpack 86-five-term-envelope- \
+  CURRENT_SOURCE_STATUS.json REPRODUCING.md SOURCES.md SOURCE_MANIFEST.json build.py \
+  companion/README.md companion/certificate.json companion/exact_checks.py \
+  provenance/PROOF.md source_excerpts.json tests/test_build.py tests/test_companion.py
+unpack 87-endpoint-lifting- \
+  CURRENT_SOURCE_STATUS.json REPRODUCING.md SOURCES.md SOURCE_MANIFEST.json build.py \
+  companion/README.md companion/certificate.json companion/exact_checks.py \
+  provenance/PROOF.md source_excerpts.json tests/test_build.py tests/test_companion.py
+unpack 88-product-property- \
+  INTEGRATION.txt Makefile SOURCE_AUDIT.txt code/verify_counting.py \
+  code/verify_parameters.py code/verify_rank.py data/counting_checks.json \
+  data/parameter_checks.json data/rank_checks.json
+unpack 89-critical-localization- \
+  BUILD.md FORMALIZATION.md Makefile PROOF_AUDIT.md SOURCE_AUDIT.md code/verify.py \
+  data/dependencies.json data/verification.json requirements.txt
+unpack 90-fourier-directional- \
+  Makefile code/make_figures.py code/verify_directional.py code/verify_fourier_lp.py \
+  code/verify_frontiers.py data/build_validation.json data/independent_review.md \
+  data/runtime_versions.json data/source_ledger.json \
+  data/verification_directional.json data/verification_fourier_lp.json \
+  data/verification_frontiers.json figures/fourier_frontier.pdf \
+  figures/fourier_frontier.png figures/semicircle_grid.pdf figures/semicircle_grid.png \
+  requirements.txt
+unpack 91-depth-reduction- \
+  FORMALIZATION.md Makefile REVIEW_NOTES.md SOURCE_AUDIT.md code/depth_reduction.py \
+  code/verify.py data/build_validation.json data/verification.json \
+  requirements-checks.txt
+unpack 92-finite-cover-repair- \
+  FORMALIZATION_PLAN.md Makefile SOURCE_AUDIT.md \
+  data/ternary_numerical_experiment.json data/ternary_quartic_certificate.json \
+  data/verification_report.json explore_ternary.py verify_exact.py
+unpack 93-spectral-uniformity- \
+  Makefile data/build_validation.json data/fourier_profile_values.csv \
+  data/half_circle_grid_values.csv data/provenance.json figures/fourier_profiles.pdf \
+  figures/fourier_profiles.png figures/grid_correction.pdf figures/grid_correction.png \
+  make_figures.py requirements.txt verification/fourier_verification_results.json \
+  verification/fourier_verify.py verification/norm_prime_certificates.json \
+  verification/norm_rate_certificates.json verification/norm_verify_prime.py \
+  verification/norm_verify_rate.py verification/rigidity_checks.json \
+  verification/rigidity_checks.py
+unpack 94-three-term-torsion- \
+  INTEGRATION.md Makefile SOURCE_AUDIT.md code/verify.py data/source_audit.json \
+  data/validation.json data/verification.json requirements.txt
+# 82, 83, 85: standard library; 84, 86, 87 use Linux no-follow descriptors (run them on Linux)
+for n in 82 83 85; do (cd "$T/r$n" && $PY -X int_max_str_digits=640 -B companion/exact_checks.py > checks.json); done
+for n in 84 86 87; do (cd "$T/r$n" && $PY -X int_max_str_digits=640 -B -I companion/exact_checks.py > checks.json); done   # Linux
+(cd "$T/r88" && $PY -B code/verify_rank.py > rank.json && $PY -B code/verify_counting.py --output counting.json \
+   && $PY -B code/verify_parameters.py --output parameter.json)
+(cd "$T/r89" && $PY -B code/verify.py --output out.json)            # NumPy
+(cd "$T/r90" && $PY -B code/verify_frontiers.py --output frontiers.json && $PY -B code/verify_fourier_lp.py --output fourier_lp.json \
+   && $PY -B code/verify_directional.py > directional.json)          # NumPy, SciPy
+(cd "$T/r91" && $PY -B code/verify.py --output out.json)            # NumPy; about two minutes
+(cd "$T/r92" && $PY -B verify_exact.py)                             # standard library
+(cd "$T/r93" && $PY -B verification/fourier_verify.py --output fourier.json && $PY -B verification/norm_verify_rate.py --output rate.json \
+   && $PY -B verification/norm_verify_prime.py --output prime.json && $PY -B verification/rigidity_checks.py)   # rewrites verification/rigidity_checks.json
+(cd "$T/r94" && $PY -B code/verify.py --output out.json)            # NumPy; refuses under -O
+```
+
 Requirements and run times:
 - 02 and 10 need NumPy; 05's `verify.py` needs mpmath (even for `--part exact`);
   09's `verify_lattices.py` needs SymPy (1.14.0 was used); 12's
@@ -5385,6 +5873,12 @@ Requirements and run times:
   step re-checks its complete delivered package through its builder (manuscript and README
   not shipped), so the route replaces that one step. The builders and `test_build.py`
   need Linux.
+- 82–88 and 92 use the standard library, 89–91, 93 and 94 NumPy (90 also SciPy); each
+  run takes under a minute except 91's `verify.py` (about two minutes) and 90's
+  `verify_frontiers.py` (about 45 s). The companions of 84, 86 and 87 read through Linux
+  no-follow descriptors (on Windows the write replaced only that read primitive); 89's and
+  91's outputs record timings and versions, 94's diagnostics differ in their digits across
+  NumPy versions (its counts are fixed); compare parsed values.
 - 13's cube and Fourier summaries record floating-point error magnitudes and the
   NumPy version; compare them field by field, not byte by byte.
 - Do not run Python with `-O`: the 02, 05 and 06 checkers rely on assertions (06's
@@ -5407,8 +5901,10 @@ above, see "At the eighth write"), and at the ninth write the 47–53 checks (in
 delivered layout, and the block above, see "At the ninth write"), and at the tenth
 write the 54–59 checks (in their delivered layout, and the block above, see "At the tenth
 write"), at the eleventh write the 60–69 checks (in their delivered layout, and the
-block above, see "At the eleventh write"), and at the twelfth write the 70–81 checks (in their
-delivered layout, and the block above, see "At the twelfth write") run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
+block above, see "At the eleventh write"), at the twelfth write the 70–81 checks (in their
+delivered layout, and the block above, see "At the twelfth write"), and at the thirteenth
+write the 82–94 checks (in their delivered layout, and the block above, see "At the
+thirteenth write") run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
 `uv run --no-project --with sympy==1.14.0` and `--with numpy`), completed all
 comparisons. The longer checks also run on these copies:
 - 01: `check_refinements.py` (NumPy, SymPy);
@@ -5427,7 +5923,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Use pdfLaTeX (MiKTeX or TeX Live), in a scratch copy that contains `figures/`.
-The build gives 2399 pages, with no LaTeX warnings, no undefined references, no
+The build gives 2736 pages, with no LaTeX warnings, no undefined references, no
 duplicate destinations and no overfull boxes. Packages: amsmath, amssymb, amsthm,
 mathtools, lmodern, geometry, microtype, graphicx, booktabs, longtable, tabularx,
 array, enumitem, needspace, placeins, xcolor, hyperref, xurl, bookmark, mathrsfs
