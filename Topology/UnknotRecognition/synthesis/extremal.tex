@@ -1,0 +1,216 @@
+\section{Minimal extremal windows with certified binomial bounds}
+\label{sec:minimal-window-integration}
+
+The incoming archive \path{ProveIt_Unknot_Extremal_Windows_2026-10-07.zip}
+adds a stronger size analysis for an alternative window schedule. The
+schedule is now available in recognition through the
+\code{--window-strategy} option with value \code{minimal}, and through
+\code{window --minimal} for exact partial homology.
+The existing allocation-pruned strategy remains the default. Both compute
+exact requested ranks, but they construct different guard complexes and
+have different size guarantees.
+
+\subsection{Cancellation and truncation do not commute}
+Let $K=k+1$ when the desired raw degrees are $0,\ldots,k$.
+The new strategy extends the whole retained complex by one crossing,
+deloops, exhaustively cancels units, and only then discards degrees above
+$K$. In particular it constructs temporary degree $K+1=k+2$.
+The contractible complex $X\xrightarrow{1}X$ in degrees $K,K+1$
+explains the order: cancellation removes it, while early truncation leaves
+a nonzero stalk in degree $K$. The latter is artificial guard homology.
+
+This does not contradict the exactness of the earlier support-window
+algorithm. That algorithm returns degrees below the guard and has a
+separate bounded-suffix support proof. But that proof does not establish
+the binomial size bound derived here. The two implementations are kept
+explicitly separate; the new strategy never suppresses temporary objects
+before cancellation. Its object ceiling therefore includes their allocation.
+
+\subsection{Minimality controls all exhaustive pivot choices}
+In the finite dotted matching category over $\F$, let $J$ consist of
+all morphisms between distinct matchings and all equal-matching morphisms
+with zero constant coefficient. This is the nilpotent radical; the
+semisimple quotient has one scalar factor per matching. The positive
+weight $m-c(a,b)+2|S|$ from the radical analysis gives a finite nilpotence
+bound. An entry outside $J$ is precisely a unit between equal matchings.
+Exhaustive scalar-unit cancellation therefore leaves a minimal complex,
+meaning one whose differential lies in $J$.
+
+Every bounded finite complex splits, by the invertible changes of basis
+from Gaussian cancellation, into a minimal complex and contractible disks.
+If minimal complexes $M,N$ are homotopy equivalent, their homotopy inverse
+equations reduce modulo $J$ to degreewise inverse maps. Lift these inverses
+using the finite geometric series in the nilpotent matrix ideal. The
+chain maps are thus degreewise invertible and give a chain isomorphism.
+Consequently the minimal matching multiplicity in every homological degree
+is unique, although matrix entries and computation times can depend on
+the chosen pivots.
+
+Write $\tau_K$ for brutal upper truncation. Consider additive extension
+functors $F_t$ that preserve chain homotopies and have degree amplitude
+$[0,1]$. Starting from a common initial complex, compare
+\[
+ A_t=\tau_K\operatorname{Min}(F_t A_{t-1}),\qquad
+ B_t=\tau_K R_t(F_t B_{t-1}),
+\]
+where $R_t$ performs any collection of valid unit cancellations. Then
+\begin{equation}\label{eq:minimal-window-domination}
+ B_t\simeq A_t\oplus E_t[K]
+\end{equation}
+for a stalk object $E_t$ in degree $K$. In particular $A_t$ has no larger
+matching multiplicities than $B_t$ in any degree.
+
+To prove this, extend the inductive decomposition. Its extra stalk extends
+only into degrees $K,K+1$. Uniqueness of minimal complexes identifies the
+minimal part of the extension with the sum of the desired minimal extension
+and a minimal complex supported in those two degrees. The partially reduced
+comparison complex is \emph{chain-isomorphic} to that sum plus contractible
+disks. Truncate this chain isomorphism: disks below $K$ stay contractible,
+disks above $K$ disappear, and disks crossing the cutoff become stalks in
+$K$. The extra minimal two-degree piece also becomes a stalk. This proves
+\eqref{eq:minimal-window-domination}. It never assumes that brutal
+truncation preserves an arbitrary homotopy equivalence.
+
+\subsection{The geometric certificate and inherited object count}
+The external ingredient is
+\href{https://arxiv.org/html/2601.02119v1}{Kelom\"aki--Sch\"utz,
+Lemma 5.5}, checked directly against the primary paper during this review.
+For their comparison scan on a nice disc order, its degree-$j$ object
+count after $t$ crossings is bounded by $\binom tj$ before final closure
+and by $2\binom nj$ at closure. Reducing its coefficients modulo two
+preserves the allowed cancellations. Applying
+\eqref{eq:minimal-window-domination} transfers these object bounds to our
+exhaustive cancellation policy.
+
+The production certificate verifies an actual crossing permutation,
+absence of projection loop edges, connected processed and remaining
+vertex sets, consecutive attaching slots at every intermediate crossing,
+and the unique final four-slot closure. For a validated plane projection,
+a cut with connected sides is a bond; its dual cycle supplies a separating
+curve and a disc presentation. Consecutive attachments are checked
+explicitly. The certificate records the measured maximum boundary size
+$W$, not an estimate of the best possible girth.
+
+When no order is supplied, the implementation first tries the ordinary
+fast greedy order. If its certificate fails, a polynomial search attempts
+a connected-prefix, connected-suffix order on the loopless two-connected
+projection. It repeatedly chooses a vertex attached to the prefix whose
+removal leaves the suffix connected, breaking ties by the next cut size.
+The block decomposition of the connected suffix guarantees a permissible
+extension under the stated two-connectedness hypothesis. Direct candidate
+connectivity checks give a conservative $O(n^3)$ construction cost.
+The resulting order is reverified. If construction fails, the original
+order remains valid for exact computation and only the stronger complexity
+certificate is withheld. Supplied orders are verified without replacement.
+All planning and verification is charged to the query deadline.
+
+At each certified stage the implementation checks the actual retained
+degree counts against the binomial bound. This is a diagnostic consequence
+of the proof, not a substitute for the geometric hypothesis. Tests also
+compare matching-by-degree profiles across standard, residue, and adaptive
+exhaustive cancellation. Optional dense coefficient operations preserve
+the same exact category and can be used as well.
+
+\subsection{A uniform bound without the all-state-circle factor}
+Put
+\[
+ B(n,K)=\sum_{j=0}^{\min(n,K)}\binom nj.
+\]
+Retained population is at most $2B(n,K)$. One crossing creates at most
+eight delooped children per object, so even the fully allocated temporary
+extension has population $O(B(n,K))$. There are quadratically many
+possible entries and linearly many pivots; a pivot changes quadratically
+many entries. Each coefficient computation costs
+$\operatorname{poly}(n,W)2^{O(W)}$ bit operations. Thus the new strategy
+has the bounds
+\[
+ T\le\operatorname{poly}(n,W)2^{O(W)}B(n,k+1)^3,
+ \qquad
+ S\le\operatorname{poly}(n,W)2^{O(W)}B(n,k+1)^2.
+\]
+The implementation disables the cross-stage shape cache for this strategy
+and caps its per-stage coefficient-composition memo at 4096 entries.
+This avoids silently charging cubic memo storage as quadratic matrix
+storage. Disc matching and plan metadata has $2^{O(W)}$ possible types
+per stage; accumulated stage labels add polynomial factors.
+
+For $k=O(\log(n+2))$ and $W=O(\log^2(n+2))$, these bounds are
+quasi-polynomial. Unlike the previous elementary support-window estimate,
+this bound has no all-zero smoothing circle factor. It requires a
+certified nice order and this particular cancellation schedule. It is
+not asserted for early-allocation pruning or arbitrary uncertified
+frontiers.
+
+The API \code{khovanov\_minimal\_window\_auto} accepts an arbitrary raw
+interval $[a,b]$. On one side it computes through upper degree $b$ and
+returns only the requested interval. Mirroring instead computes through
+$n-a$ and maps degrees back by $h\mapsto n-h$. The default mirror choice
+minimizes this raw upper depth; it does not estimate wall time.
+The complexity parameter is the selected upper depth, not the width
+$b-a$. The \code{binomial\_bound\_certified} field records whether the
+nice-order premise was established. A failed certificate does not weaken
+the exactness of the returned queried ranks.
+
+Recognition can use this strategy inside the existing bounded widening
+portfolio. Its same normalized-band comparison, local allowance, global
+limits, restart rule, and complete fallback remain in force. Agreement
+with the unknot on a partial band is still inconclusive. Widening restarts;
+it does not attempt to reconstruct discarded chain groups. No new default
+policy or general quasi-polynomial verdict guarantee is introduced.
+
+\subsection{Raw endpoint depth has an exact padding obstruction}
+Insert $s$ cancelling positive-negative crossing pairs into a diagram.
+Its knot type and normalized Khovanov homology do not change, while its
+crossing count rises by $2s$ and its negative PD crossing count by $s$.
+Therefore the raw profile obeys
+\[
+ \beta_{D_s}(r)=\beta_D(r-s).
+\]
+Every discrepant degree relative to the unknot profile shifts by $s$,
+and its distance from either raw endpoint increases by $s$. Such padding
+can be inserted with constant additional frontier width. Consequently
+bounded width alone does not force a logarithmic detecting endpoint depth.
+Ordinary diagram simplification removes this particular padding, so this
+is an obstruction to an unqualified raw-window theorem, not a lower bound
+for the whole preprocessing pipeline. A theorem covering all reduced
+inputs would need additional information. Even shallow agreement on an
+unknot needs a positive certificate or eventual full coverage.
+
+\subsection{Validation and comparison with the current window engine}
+The integrated suite passes 277 tests. New checks compare 100 random knot
+braids and arbitrary intervals with complete production homology, using
+three exhaustive reducers and forced dense composition on the first 15
+inputs. They check intermediate $d^2=0$, certified binomial inequalities,
+mirror labels, invalid orders, padding shifts, time and allocation limits,
+and the guard-disk counterexample. The CLI and recognition portfolio are
+tested separately, including an agreeing partial query followed by exact
+fallback. The actual stage profiles are also compared across reducers.
+
+The archive's 14 tests pass locally. Its separately rerun independent
+cube audit compares 393 windows on 100 diagrams, checks 1772 certified
+stages and 15 padding cases, and reports no failures. Its archived adapter
+is not applied: the production implementation here targets the current
+array-based \code{FastScan}, with its existing coefficient engines and
+adaptive cancellation. Source archive files remain unchanged; review
+runs use a scratch extraction. Local logs are retained under
+\path{synthesis/data/}.
+
+\input{tables/minimal-window-integration.tex}
+
+These seven-round paired measurements use common supplied crossing orders
+and depth-two raw queries. Full homology and a window have different
+output contracts; both window strategies answer exactly the same interval.
+A/A compares identical full-homology calls. Order construction and imports
+are excluded, while the minimal strategy's certificate verification is
+included. These are backend query measurements, not default recognition
+speedups. In particular, a supplied nice order can differ from the ordinary
+recognizer's preferred order.
+
+The new strategy is slower than allocation pruning on all six cases.
+It sometimes saves retained guard objects nevertheless: on the 14-crossing
+weaving case, peak pre-cancellation allocation is 492 rather than 516,
+versus 5046 for full homology in that order. On Conway it instead allocates
+84 objects versus 42 for the support strategy, because it constructs the
+temporary degree needed for cancellation. Its practical tradeoff is an
+additional proved size guarantee under explicit hypotheses, not a measured
+replacement for the faster default on this corpus.

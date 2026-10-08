@@ -86,7 +86,7 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
-The maintained Python suite now passes 272 tests. The latest work adds
+The maintained Python suite now passes 277 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations
 having logarithmically many signed runs, plus optional adaptive cancellation
 (`--reduction adaptive`). The latter preserves sparse cancellation progress,
@@ -192,3 +192,12 @@ recognition benchmarks show 3.4–33.8x sleeve-family gains and a slowdown on th
 stress five-braid, so the stage remains optional. See the maintained
 [theory and measurements](synthesis/ranktwo.tex), including the small-core
 quasi-polynomial class and an infinite strict-shortening barrier.
+
+The new extremal-window report contributes optional cancellation before
+truncation (`window --minimal`, or `recognize --window-strategy minimal` with a
+window radius). Certified nice orders give a stronger binomial size bound,
+without the earlier all-state-circle factor. The current support strategy is
+faster on the measured corpus and remains default. All 277 tests pass; the
+[updated theory](synthesis/extremal.tex) explains the geometric conditions,
+minimal-complex proof, and why the result is still not general quasi-polynomial
+unknot recognition.

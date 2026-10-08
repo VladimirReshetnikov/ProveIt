@@ -253,3 +253,15 @@ if ranktwo:
                      table('Input & Disabled/enabled & A/A', '@{}lrr@{}', rows) +
                      r"\end{center}" + '\n' +
                      'Ratios are median paired end-to-end times; values above one are faster.\n')
+
+minimal = load('../fast/results/minimal_windows_20261008.json')
+if minimal:
+    rows=[]
+    for r in minimal['cases']:
+        v=r['median_full_over']
+        rows.append(f"{esc(r['name'])} & {v['support']:.2f} & {v['minimal']:.2f} & "
+                    f"{r['median_support_over_minimal']:.3f} & {v['control']:.3f}" + r" \\")
+    with open('tables/minimal-window-integration.tex','w') as handle:
+        handle.write(r"\begin{center}"+'\n'+
+            table('Input & Full/support & Full/minimal & Support/minimal & A/A','@{}lrrrr@{}',rows)+
+            r"\end{center}"+'\n'+'Ratios are medians of paired times; larger than one favors the denominator.\n')

@@ -24,12 +24,18 @@ def window_radii(maximum):
 
 def probe_windows(diagram, *, maximum_radius, max_objects=20000, seconds=0.1,
                   deadline=None, order=None, check_d_squared=False,
-                  reduction="standard", composition="standard", composition_max_variables=18):
+                  reduction="standard", composition="standard", composition_max_variables=18, strategy="support"):
     if type(maximum_radius) is not int or maximum_radius < 0:
         raise ValueError("maximum_radius must be a nonnegative integer")
     if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
         raise ValueError("max_objects must be a nonnegative integer or None")
     validate_seconds(seconds)
+    if strategy not in ("support", "minimal"):
+        raise ValueError("window strategy must be support or minimal")
+    query = khovanov_window_auto
+    if strategy == "minimal":
+        from .minimal_window import khovanov_minimal_window_auto
+        query = khovanov_minimal_window_auto
     started = monotonic()
     stop = None if seconds is None else started + seconds
     if deadline is not None:
@@ -38,7 +44,7 @@ def probe_windows(diagram, *, maximum_radius, max_objects=20000, seconds=0.1,
     maximum = min(maximum_radius, max(negative, diagram.crossings - negative))
     evidence = dict(status="INCONCLUSIVE", field="F2", diagram_pd=[list(row) for row in diagram.pd],
                     negative_crossings=negative, maximum_radius=maximum, attempts=[],
-                    policy="geometric radii, shared budget, restart when widening")
+                    policy="geometric radii, shared budget, restart when widening", strategy=strategy)
     result = dict(status="INCONCLUSIVE", evidence=evidence, order=order)
     for radius in window_radii(maximum):
         before = monotonic()
@@ -49,7 +55,7 @@ def probe_windows(diagram, *, maximum_radius, max_objects=20000, seconds=0.1,
             break
         remaining = None if stop is None else max(0.0, stop - before)
         try:
-            window = khovanov_window_auto(diagram, negative - radius, negative + radius,
+            window = query(diagram, negative - radius, negative + radius,
                 order=result["order"], max_objects=max_objects, seconds=remaining,
                 check_d_squared=check_d_squared, reduction=reduction,
                 composition=composition, composition_max_variables=composition_max_variables)
@@ -71,6 +77,9 @@ def probe_windows(diagram, *, maximum_radius, max_objects=20000, seconds=0.1,
                        orientation=window["orientation"],
                        profile_degree_convention=window["profile_degree_convention"],
                        scan_order=window["order"], scan_stats=window["stats"])
+        if "nice_order" in window:
+            attempt["nice_order"] = window["nice_order"]
+            attempt["binomial_bound_certified"] = window["binomial_bound_certified"]
         evidence["attempts"].append(attempt)
         if ranks != {0: 2}:
             result["status"] = evidence["status"] = attempt["status"] = "KNOTTED"

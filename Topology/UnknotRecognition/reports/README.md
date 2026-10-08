@@ -30,7 +30,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(272 current production tests pass). Local reruns of
+(277 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -48,7 +48,7 @@ Separately from placement, the algorithm-improvement task reviewed `15/` and
 The current implementation integrates the survivor/degree-gap shortcut from
 `15/`, with adaptive switching, and homogeneous coefficient multiplication
 from `16/`, with a further top-degree shortcut. The full transfer engine and
-finite-quotient filter are not integrated. Current validation passes 272 tests;
+finite-quotient filter are not integrated. Current validation passes 277 tests;
 local logs, proofs, applicability limits, and paired measurements are in
 `../synthesis/radical.tex` and `../synthesis/homogeneous.tex`. Report `13/` contributes the integrated exact window scanner and mirror bound;
 `../synthesis/windows.tex` describes the new bounded adaptive widening policy.
@@ -110,3 +110,12 @@ optimizer and independent verifier with an optional bounded recognition stage;
 conditional complexity, barriers, and end-to-end measurements are maintained in
 `../synthesis/ranktwo.tex`. The simultaneously received Potts-frontier and newer
 twist archives remain queued for mathematical and integration review.
+
+The later `docs/incoming/ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` was
+reviewed in a scratch extraction, preserving the delivered archive. Its 14 tests
+and independent audit (393 windows, 1772 certified stages, 15 padding cases)
+pass. The production integration targets current `FastScan`, rather than the
+archive's untested older adapter. The new optional minimal-window strategy,
+geometric certificate, stronger conditional bounds, and negative timings are
+in `../synthesis/extremal.tex`; all 277 production tests pass. The recently
+arrived disk-frontier report remains unreviewed.
