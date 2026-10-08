@@ -1,0 +1,224 @@
+\section{Endpoint patterns and certified overlap cutoffs}
+\label{sec:endpoint-clipping}
+
+\subsection{Extending the existing compressed-word path}
+The compressed-certificates delivery adds a useful continuation of
+Section~\ref{sec:lcs-endpoint}: short endpoint patterns can have regularly
+spaced occurrences even when neither endpoint letter does, and a progression
+of candidate overlap lengths can have a proper initial segment of successes.
+The maintained implementation keeps the earlier uniform, short-period,
+sparse-letter and two-largest-overlap shortcuts first. Only their unresolved
+queries of length at least 128 reach the new continuation in
+\path{fastunknot/compressed_endpoint.py}. A failed structural certificate
+still invokes the complete occurrence-table matcher.
+
+For words $x,y$ represented by binary straight-line programs, put
+\[
+ \mathcal O(x,y)=\{k:1\le k\le\min(|x|,|y|),\quad
+     x[|x|-k:|x|]=y[0:k]\}.
+\]
+The output must describe \emph{all} these lengths by disjoint arithmetic
+progressions, not merely certify one good overlap. Both operands may first
+be cropped to length $L=\min(|x|,|y|)$, retaining the suffix of $x$ and
+prefix of $y$. This does not change $\mathcal O$.
+
+\subsection{Summarizing every occurrence of a short pattern}
+Fix an explicit pattern $a$ of length $q$. For all its occurrence starts in
+a grammar word, retain the count, first and last start, and minimum and
+maximum successive gap. Empty and singleton sets have separate exact
+conventions. At a concatenation $uv$, occurrences fall into three disjoint,
+ordered groups: wholly in $u$, crossing the cut, and wholly in $v$.
+The middle group uses at most $q-1$ possible shares from the suffix of $u$;
+retaining only the first and last $q-1$ letters of each grammar word suffices
+to check every such occurrence. The last group is translated by $|u|$.
+
+Concatenating two nonempty occurrence lists adds their counts and introduces
+exactly one new gap between the first list's last start and the second list's
+first start. Updating both gap extrema therefore gives an exact summary by
+induction. A set with at least two positions is an arithmetic progression
+precisely when its two gap extrema agree. Counts and gaps are arbitrary-size
+integers, not saturated counters or numerical iteration bounds.
+
+For $g$ reachable rules, one pattern costs $O(q^2g+g\log g)$ elementary
+operations and $O(qg)$ stored symbols and integer fields. The sorting term
+comes from the existing reachable-rule ordering. Coordinate and label bit
+lengths must still be charged in a bit model. The production trial lengths
+are $q\in\{1,2,4,8\}$, in both endpoint directions; a bounded pattern prefix
+is a proposal, never evidence that the rest of a word is periodic.
+
+\subsection{The period makes candidate rank monotone}
+Let $a$ be the length-$q$ suffix of $x$. Every overlap of length at least
+$q$ ends at an occurrence of $a$ in $y$. Suppose these necessary candidate
+lengths form
+\[
+ K=\{b,b+d,\ldots,b+(r-1)d\},\qquad M=\max K,
+\]
+with $r>1$. Check by exact compressed equality that $P=y[0:M]$ has period
+$d$, meaning $P[0:M-d]=P[d:M]$. For every $k\in K$, the difference
+$M-k$ is a multiple of $d$, so
+\[
+ y[0:k]=P[0:k]=P[M-k:M].
+\]
+Thus the candidate is a true overlap exactly when the length-$k$ suffixes
+of $x$ and $P$ agree. Equivalently,
+\[
+ \mathcal O(x,y)\cap[q,\infty)
+     =K\cap[\,q,\operatorname{lcsuffix}(x,P)\,].
+\]
+The dual argument starts with the length-$q$ prefix of $y$, takes candidate
+lengths $|x|-s$ from its starts $s$ in $x$, and checks period $d$ on
+$P=x[|x|-M:|x|]$. The cutoff is then $\operatorname{lcp}(P,y)$.
+The first candidate need not equal the period. Material outside the maximum
+candidate window is irrelevant to the period certificate.
+
+Consequently exact overlap equality is true on an initial segment of the
+candidate ranks. The implementation first tests the largest rank. If it
+passes, every candidate passes. Otherwise it tests the smallest rank; failure
+there rules out all candidates. In the remaining case, probe backwards from
+the maximum at distances $1,2,4,\ldots$, stopping at a success or the known
+minimum, then bisect the bracket. With $b_{\rm bad}$ rejected top candidates,
+this takes
+\[
+ O(1+\log(1+b_{\rm bad}))\le O(\log(r+1))
+\]
+exact candidate comparisons. All-pass and all-fail cases use one and at most
+two comparisons, respectively. Exactly one rejected top candidate needs three
+comparisons, even when both the period and the candidate count have hundreds
+of bits. Computing a full LCP on a much larger numerical range is unnecessary.
+
+An empty occurrence set excludes all lengths at least $q$. A singleton
+candidate is checked directly, without a period assumption. Every shorter
+length $1,\ldots,q-1$ is checked separately. A successful trial therefore
+returns the complete overlap set: at most one progression of long overlaps
+and at most $q-1$ short singletons. A nonprogression or failed exact period
+check gives no conclusion and tries another bounded anchor, then falls back.
+
+\subsection{Costs, integration and examples}
+If $H$ bounds the input grammar height, $c$ is the rank-comparison count and
+$E(G)$ bounds exact equality at the actual intermediate grammar size, a
+conservative successful-trial cost is
+\[
+ O(q^2g+g\log g+H(q+c))+O(q+c+1)E(G),
+ \qquad G=O(g+H(q+c))
+\]
+for a fresh arena containing the input and query artifacts. Earlier failed
+trials have their own bounded preparation and equality costs. This is an
+operation bound, not a unit-cost assumption for binary positions or letter
+labels. In particular, a middle cutoff can still require many slices and
+exhaust the node allowance. No general linear-time claim is made.
+
+All preparation and exact checks use the caller's existing word-arena budget.
+Local resource exceptions and global cancellation propagate. Neither becomes
+an empty overlap answer; incomplete queries are not inserted in the overlap
+cache. The old endpoint counters are preserved, while new preparation,
+period, cutoff and allocation counters have the \path{lcs_anchor_} prefix.
+The existing longest-common-substring critical-extension calculation receives
+the same complete progression interface. Forty separately checked clipped
+families verify that its finite critical candidates still attain the maximum
+over every explicit overlap.
+
+For $n,m\ge2$, the words
+\[
+ ((21)^n1)^m,\qquad ((12)^n11)^m
+\]
+have dense single-letter endpoints. A suffix bigram in the first case gives
+all positive multiples of $2n+1$ through $m(2n+1)$. A four-letter anchor in
+the second gives all positive multiples of $2n+2$ through $m(2n+2)$, together
+with the short overlap one. Their grammars have $O(\log n+\log m)$ rules.
+For $P_n=(12)^n3$, the pair
+\[
+ x=4^{2n+1}P_n^{m-1},\qquad y=P_n^m
+\]
+has exactly one rejected top candidate, so the three-comparison cutoff applies.
+The older all-success marker family remains on the original two-largest path.
+A damaged word whose relevant windows have no certified period still needs
+the general matcher; the extension is not a universal pattern shortcut.
+
+\subsection{Validation and comparison with the current baseline}
+The 12 new test methods cover exact signed occurrence summaries, exhaustive
+short-word overlaps, 360 random parse pairs, eight-letter anchors, a depth-4000
+grammar, 500-bit periods and counts, interior and near-end cutoffs, allocation
+and work limits, and cancellation without partial cache entries. The four
+previous endpoint-progression tests still pass, including a trap proving that
+their successful old shortcut never invokes the new module. Existing general
+fallback tests explicitly disable the additional optional shortcut so that
+they continue exercising the table path. All 768 maintained tests pass in
+167.676 seconds with Regina installed.
+
+The benchmark fixes the old matcher at \code{8a9c08bcf} inside otherwise
+common current word, relator and recognition code. It runs old, identical
+A/A control and maintained clipping arms, with one excluded warmup followed
+by five measured rounds in shuffled order. Source hashes are frozen before
+measurement and checked afterward. Each compressed operation uses fresh
+state, two million shared work units and at most 100,000 grammar nodes.
+Grammar construction is included in timings; output containment and
+cardinality checks are outside the overlap-query clock. Numerical word
+lengths are never used to enumerate the large expected answers.
+
+Eight overlap families use parameters $n=2^b$ at $b=8,64,500$, covering
+new dense endpoints and cutoff classes, successful old shortcuts, and
+uncertifiable periods. Whole phased LCS and cyclic relator searches use the
+dense bigram family at $b=8,32$; the relator scope includes failed whole-donor
+search, the complete cyclic overlap query and checked application. A pure-power
+quotient control retains the established path. These are compressed algebraic
+inputs, not diagrams with $2^b$ crossings.
+
+\input{tables/endpoint_clipping_kernels.tex}
+\input{tables/endpoint_clipping_operations.tex}
+
+The complete-query comparison retains all 15 established hard-unknot inputs,
+all existing filters, compressed group search and certificate replay. The
+new two-meridian stage is disabled so that it does not bypass the matcher
+being tested. Every query starts from a freshly validated PD. Group work is
+capped at 20 million units and 15 seconds, with an 18-second global allowance
+and 50,000 Khovanov objects. Certificate digests and complete search counters
+are retained outside the timed region. Timeout records never enter
+completed-time medians or paired speedup denominators.
+
+\input{tables/endpoint_clipping_rows.tex}
+
+All raw samples and source hashes are retained in:
+\begin{center}\small
+\path{fast/results/endpoint_clipping_20261008.json}
+\end{center}
+The record contains 675 measured calls: 360 complete-overlap attempts, 90
+whole algebraic operations and 225 whole-knot queries, plus 135 excluded
+warmups. Of the measured calls, 525 complete and 150 exhaust an allowance.
+All completed answers agree with their structural oracle or prior knot
+label; every completed knot arm produces the same certificate digest as its
+paired competitors.
+
+At the eight-bit parameter, dense bigram and fourgram overlap queries improve
+by paired factors $244.48$ and $201.36$, respectively. The one-rejected family
+improves by $279.34$ and the half-rejected family by $150.16$. At 500 bits,
+dense bigram, dense fourgram and one-rejected queries complete in median
+65.94, 85.07 and 62.96 milliseconds; both old arms exhaust the work cap.
+Those capped comparisons demonstrate increased capacity, not numerical
+speedup ratios. The one-rejected query uses exactly three rank comparisons
+at all three parameter sizes. The established all-success marker, short-period
+and sparse controls never invoke the new continuation.
+
+The finite comparison also exhibits its limits. At 64 bits the half-rejected
+family completes with 128 rank comparisons; at 500 bits it exhausts the
+100,000-node allowance after 72 comparisons, before finding its cutoff.
+The failed-period family remains on the complete fallback and still exhausts
+the work cap at 64 and 500 bits. These are unresolved matching computations,
+not certificates that the overlap set is empty.
+
+The whole phased LCS improves from 940.26 to 59.31 milliseconds at eight bits,
+a paired factor $15.88$, and completes at 32 bits where the old arms exhaust
+the cap. The full phased cyclic-relator query and checked application complete
+in 155.73 milliseconds at eight bits where both old arms are capped. At 32
+bits that operation remains capped even with eight successful anchor hits:
+other matching and extension work still dominates the shared allowance.
+The quotient control remains on its old path.
+
+All 225 measured whole-knot queries complete, but their new anchor activation
+counts are zero. Their before/clipping ratios range from $0.967$ to $1.018$,
+while their A/A ratios range from $0.993$ to $1.025$. There is consequently no
+measured recognition speedup on this corpus. For completed primitive pairs,
+A/A ratios range from $0.961$ to $1.067$; small changes on unaffected controls
+are retained as timing variation. The supported conclusion is broader exact
+compressed-word capacity and faster selected complete algebraic queries.
+Neither a general relator-search move bound nor a quasi-polynomial knot
+recognizer follows from these results.
