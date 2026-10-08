@@ -133,7 +133,10 @@ class WhiteheadPowerTests(unittest.TestCase):
             bad = deepcopy(cert)
             bad['remaining_generator'] = 999
             self.assertFalse(verify_group_certificate(d, bad, compressed=compressed))
-            for version in (1, 2, 4):
+            upgraded = deepcopy(cert)
+            upgraded['version'] = 4
+            self.assertTrue(verify_group_certificate(d, upgraded, compressed=compressed))
+            for version in (1, 2, 5):
                 bad = deepcopy(cert)
                 bad['version'] = version
                 self.assertFalse(verify_group_certificate(d, bad, compressed=compressed))

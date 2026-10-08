@@ -38,6 +38,7 @@ class WordArena:
         self.equality_probe_steps = equality_probe_steps
         self.prefix_probe_steps = prefix_probe_steps
         self.rules, self.lengths, self.first, self.last = [None], [0], [0], [0]
+        self.uniform = [0]  # exact signed letter for a constant word; zero otherwise
         self._interned, self._inverse, self._reduced, self._equal_cache = {}, {0: 0}, {0: 0}, {}
         self.stats = dict(work=0, equality_calls=0, splits=0, compact_triples=0, peak_assertions=0,
                           probe_steps=0, probe_resolved=0, probe_fallbacks=0,
@@ -62,6 +63,8 @@ class WordArena:
         self.lengths.append(length)
         self.first.append(first)
         self.last.append(last)
+        self.uniform.append(first if rule[0] == 't' else
+                            self.uniform[rule[1]] if self.uniform[rule[1]] == self.uniform[rule[2]] else 0)
         self._interned[rule] = result
         return result
 
@@ -219,6 +222,9 @@ class WordArena:
         if (self.lengths[a] != self.lengths[b] or self.first[a] != self.first[b]
                 or self.last[a] != self.last[b]):
             return False
+        if self.uniform[a] and self.uniform[a] == self.uniform[b]:
+            self.stats['uniform_equal_hits'] = self.stats.get('uniform_equal_hits', 0)+1
+            return True
         key = min(a, b), max(a, b)
         if key in self._equal_cache:
             return self._equal_cache[key]
@@ -344,6 +350,10 @@ class WordArena:
         if not hi or self.first[a] != self.first[b]:
             self.tick()
             return 0
+        if self.uniform[a] and self.uniform[a] == self.uniform[b]:
+            self.tick()
+            self.stats['uniform_lcp_hits'] = self.stats.get('uniform_lcp_hits', 0)+1
+            return hi
         lo = 0
         if self.prefix_probe_steps:
             lo, resolved = self._prefix_probe(a, b, hi, self.prefix_probe_steps, 'lcp_probe_steps')

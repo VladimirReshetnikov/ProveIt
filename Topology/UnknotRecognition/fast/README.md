@@ -1,5 +1,15 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Compressed whole-donor search now batches consecutive copies in a version-4
+`relator_power` certificate. Both literal and compressed verifiers independently
+check the entire removed prefix. Exact uniform-letter summaries make equality
+and prefix queries on pure powers constant work, and ineligible donor pairs are
+pruned before allocating inverses. On supplied pure-power presentations this
+turns repeated subtraction into Euclidean division; the general recognition
+bound remains unproved. The integrated suite has 672 passing tests with Regina,
+including a genuine Gordian trace accepted by both verifiers, forged macro
+rejection, and a compressed `2^500` replay without expansion.
+
 When compressed group search would stall above the explicit-letter cap,
 `--group-relators` now enables exact whole-donor deletion without expansion.
 A fully compressed substring matcher uses arithmetic-progression occurrence
@@ -40,7 +50,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 666 passing tests
+diagram is not checked twice. The integrated suite now has 672 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then
