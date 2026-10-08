@@ -88,7 +88,6 @@ def _rules(n, crossings, budget):
 
 
 def _propagate(n, rules, incident, seeds, budget):
-    """Original dense closure, retained as a small independent search oracle."""
     budget.tick(n+len(rules))
     remaining = [1 if over == source else 2 for over, source, *_ in rules]
     reached = set(seeds)
@@ -107,98 +106,6 @@ def _propagate(n, rules, incident, seeds, budget):
                 trace.append([target, crossing, direction])
                 queue.append(target)
     return trace, len(reached)
-
-
-class _SeedClosures:
-    """Reuse generations; charge only visited vertices and rule incidences.
-
-    ``known`` records enqueueing and ``processed`` records dequeueing. Using
-    processed dependencies preserves the original counter algorithm's exact
-    queue order and derivation trace, including equal-dependency rules.
-    """
-
-    def __init__(self, n, rules, incident, budget):
-        budget.tick(2*n+1)
-        self.n, self.rules, self.incident, self.budget = n, rules, incident, budget
-        self.known, self.processed = [0]*n, [0]*n
-        self.generation = 0
-        self.reached = []
-        self.vertex_pops = self.rule_visits = 0
-
-    def propagate(self, seeds):
-        self.budget.tick(len(seeds)+1)
-        self.generation += 1
-        generation = self.generation
-        self.reached = list(seeds)
-        for v in seeds:
-            self.known[v] = generation
-        queue, trace = deque(seeds), []
-        while queue and len(self.reached) < self.n:
-            v = queue.popleft()
-            self.budget.tick()
-            self.vertex_pops += 1
-            self.processed[v] = generation
-            for index in self.incident[v]:
-                self.budget.tick()
-                self.rule_visits += 1
-                over, source, target, crossing, direction = self.rules[index]
-                if (self.processed[over] == generation
-                        and self.processed[source] == generation
-                        and self.known[target] != generation):
-                    self.known[target] = generation
-                    self.reached.append(target)
-                    trace.append([target, crossing, direction])
-                    queue.append(target)
-        return trace, len(self.reached)
-
-
-class _ProductivePairs:
-    """Sparse candidate graph when every singleton closure is trivial.
-
-    With more than two arcs a useful seed pair must enable a first rule with
-    two distinct dependencies and a new target. There are at most as many
-    such pairs as rules. Productive unary rules invalidate this shortcut;
-    their presence selects the complete all-pairs fallback.
-    """
-
-    @classmethod
-    def build(cls, n, rules, budget):
-        for over, source, target, *_ in rules:
-            budget.tick()
-            if over == source and target != over:
-                return None
-        pairs = set()
-        for over, source, target, *_ in rules:
-            budget.tick()
-            if over != source and target not in (over, source):
-                pairs.add((min(over, source), max(over, source)))
-        # A two-element seed set can already be the whole universe.
-        if n == 2:
-            pairs.add((0, 1))
-        budget.tick(n+len(pairs)*(1+len(pairs).bit_length())+1)
-        result = cls()
-        result.pairs = sorted(pairs)
-        result.adjacent, result.excluded = [[] for _ in range(n)], [False]*len(pairs)
-        result.pruning_visits = result.excluded_count = 0
-        for index, (u, v) in enumerate(result.pairs):
-            budget.tick()
-            result.adjacent[u].append((v, index))
-            result.adjacent[v].append((u, index))
-        return result
-
-    def exclude_closed(self, closure, current_index, budget):
-        """Every later candidate inside a proper closed set must also fail."""
-        if len(closure.reached) <= 2:
-            return
-        for u in closure.reached:
-            budget.tick()
-            for v, index in self.adjacent[u]:
-                budget.tick()
-                self.pruning_visits += 1
-                if (index > current_index and not self.excluded[index]
-                        and closure.known[v] == closure.generation):
-                    self.excluded[index] = True
-                    self.excluded_count += 1
 
 
 def _multiply(x, y, budget):
@@ -325,16 +232,12 @@ def two_meridian_decide(diagram, *, seconds=0.05, max_work=2_000_000,
     All preparation, every attempted seed set, arithmetic and replay share one
     work/time allowance. Set all three local caps to None for exhaustive search.
     The integer ledger is a cooperative work measure, not a hard bit-time bound.
-    Stamped closures reuse preparation. When singleton closures are trivial,
-    only productive prerequisite pairs can grow; proper failed closures prune
-    further pairs in this sparse graph. Otherwise all pairs are still tried.
     """
     validate_limits(seconds, max_work, max_attempts)
     start = monotonic()
     budget = _Budget(check, seconds, max_work)
     stats = dict(attempts=0, work=0, replay_work=0, max_reached=0)
     replay_start = None
-    closures = candidates = None
     try:
         checked, digest, n, crossings = _model(diagram, budget)
         stats['arc_count'] = n
@@ -343,30 +246,17 @@ def two_meridian_decide(diagram, *, seconds=0.05, max_work=2_000_000,
             found = [], []
         else:
             rules, incident = _rules(n, crossings, budget)
-            closures = _SeedClosures(n, rules, incident, budget)
-            candidates = _ProductivePairs.build(n, rules, budget)
-            stats.update(search_mode='all-pairs' if candidates is None else 'productive-prerequisites',
-                         candidate_pairs=n*(n-1)//2 if candidates is None else len(candidates.pairs),
-                         nonproductive_pairs=0 if candidates is None else n*(n-1)//2-len(candidates.pairs),
-                         closed_pairs_skipped=0)
             for rank in (1, 2):
-                seed_sets = (enumerate(candidates.pairs) if rank == 2 and candidates is not None
-                             else enumerate(combinations(range(n), rank)))
-                for index, seeds in seed_sets:
+                for seeds in combinations(range(n), rank):
                     budget.tick()
-                    if rank == 2 and candidates is not None and candidates.excluded[index]:
-                        stats['closed_pairs_skipped'] += 1
-                        continue
                     if max_attempts is not None and stats['attempts'] >= max_attempts:
                         raise TwoMeridianLimit('two-meridian seed-attempt allowance exhausted')
                     stats['attempts'] += 1
-                    trace, reached = closures.propagate(seeds)
+                    trace, reached = _propagate(n, rules, incident, seeds, budget)
                     stats['max_reached'] = max(stats['max_reached'], reached)
                     if reached == n:
                         found = list(seeds), trace
                         break
-                    if rank == 2 and candidates is not None:
-                        candidates.exclude_closed(closures, index, budget)
                 if found is not None:
                     break
         if found is None:
@@ -381,10 +271,6 @@ def two_meridian_decide(diagram, *, seconds=0.05, max_work=2_000_000,
                 raise ArithmeticError('produced two-meridian certificate failed verification')
             stats['replay_work'] = budget.work-replay_start
             budget.tick()
-            if closures is not None:
-                stats.update(closure_vertex_pops=closures.vertex_pops,
-                             closure_rule_visits=closures.rule_visits,
-                             pruning_visits=0 if candidates is None else candidates.pruning_visits)
             stats['work'] = budget.work
             return dict(status=certificate['status'], method='wirtinger-two-seed',
                         certificate=json_safe(certificate), statistics=stats, seconds=monotonic()-start)
@@ -392,10 +278,6 @@ def two_meridian_decide(diagram, *, seconds=0.05, max_work=2_000_000,
         check()
         reason = str(exc)
     check()
-    if closures is not None:
-        stats.update(closure_vertex_pops=closures.vertex_pops,
-                     closure_rule_visits=closures.rule_visits,
-                     pruning_visits=0 if candidates is None else candidates.pruning_visits)
     stats['work'] = budget.work
     if replay_start is not None:
         stats['replay_work'] = budget.work-replay_start
