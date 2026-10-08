@@ -15,6 +15,15 @@ from .potts import (_budget, _canonical, _checkerboard, _extensions,
                     _schedule, _tait_from_faces)
 
 
+class PottsLimit(FilterLimit):
+    """Local exhaustion with work counters, never a partially computed value."""
+    def __init__(self, message, *, transitions=0, peak_states=0, completed_crossings=0):
+        super().__init__(message)
+        self.transitions = transitions
+        self.peak_states = peak_states
+        self.completed_crossings = completed_crossings
+
+
 def multiply(left, right, colors=6):
     """Exact quadratic-ring multiplication; x^2=(colors-2)*x-1."""
     a, b = left
@@ -54,7 +63,8 @@ def equal_spin(value, omitted_exponent, colors=6):
 
 
 def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
-                order=None, check=lambda: None, statistics=None, shade=None):
+                order=None, check=lambda: None, statistics=None, shade=None,
+                _stage_check=None):
     """Return the exact partition function and its unknot comparison.
 
     For a nonempty classical knot diagram let v be the Tait vertex count,
@@ -79,7 +89,7 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
     if order is not None:
         order = validate_order(n, order)
     if n and (max_states == 0 or max_transitions == 0):
-        raise FilterLimit("exact Potts filter budget is zero")
+        raise PottsLimit("exact Potts filter budget is zero")
     if n == 0:
         result = dict(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=0,
                       partition_function=[colors, 0], unknot_partition=[colors, 0],
@@ -117,7 +127,8 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
         for state, coefficient in states.items():
             for values, multiplicity, _ in _extensions(state, len(new_vertices), colors):
                 if max_transitions is not None and transitions >= max_transitions:
-                    raise FilterLimit("exact Potts transition budget exhausted")
+                    raise PottsLimit("exact Potts transition budget exhausted", transitions=transitions,
+                                     peak_states=peak, completed_crossings=position)
                 transitions += 1
                 if not transitions & 1023:
                     check()
@@ -134,7 +145,8 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
                 else:
                     following.pop(target, None)
                 if max_states is not None and len(following) > max_states:
-                    raise FilterLimit("exact Potts frontier budget exhausted")
+                    raise PottsLimit("exact Potts frontier budget exhausted", transitions=transitions,
+                                     peak_states=peak, completed_crossings=position)
         active = [extended[i] for i in keep]
         states = following
         peak = max(peak, len(states))
@@ -146,6 +158,8 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
         max_boundary = max(max_boundary, len(boundary))
         if 2 * len(active) > len(boundary):
             raise ArithmeticError("checkerboard frontier violates the cut-edge bound")
+        if _stage_check is not None and position+1 < n:
+            _stage_check(position+1, transitions, peak)
     if active or boundary or any(states):
         raise ArithmeticError("exact Potts scan ended with an open frontier")
     check()
