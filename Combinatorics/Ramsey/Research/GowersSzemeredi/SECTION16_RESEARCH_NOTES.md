@@ -1490,3 +1490,13 @@ least `1-rho`, and the candidate count retains the existing slice-provider
 bound. The production source and combined facade axiom audit pass.
 Spectrum structure, induced selection, a remainder cover, and the slice
 provider are still hypotheses. No additional upstream module is imported.
+
+`Proofs16PolynomialCubicPowerCover.exists_polynomial_cubic_power_cover`
+now specializes the lift to cubic slice controls. With the new line
+prefactor `z`, line exponent `e`, uniform sample ceiling `R`, and cubic
+slice exponent `a`, every `b < e*a/2` gives cell width at least `m^b` once
+`section16RoundedExponentThreshold z e a b <= m`. Its candidate budget is
+at most `9*R^4*q^2`, independently of the graph count chosen in the line
+cover. The full production source and transitive axiom check pass. The
+combined facade audit is queued behind the density-port build. The same
+structural hypotheses remain; no catalogue statement closes.
