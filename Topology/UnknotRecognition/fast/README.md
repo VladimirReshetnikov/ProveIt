@@ -8,6 +8,11 @@ for the donor's recorded spelling or inverse; arbitrary donor rotations and
 partial overlaps remain outside this fallback. Accepted moves use the existing
 independent relator certificate replay. Work and storage limits remain
 inconclusive, and no general subexponential bound is claimed.
+See [`compressed_matching.tex`](../synthesis/compressed_matching.tex) for the
+proof and boundaries. Reproduce the matched measurements with
+`python -B benchmark_compressed_match.py --output results/compressed_match_local.json`.
+The supplied exponential presentation family now completes in two moves;
+existing knot-corpus paths and timings remain essentially unchanged.
 
 Compressed group search now batches powers of a selected Whitehead automorphism
 when the move repeats or expanded length exceeds four times allocated grammar

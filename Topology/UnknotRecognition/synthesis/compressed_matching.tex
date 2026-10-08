@@ -1,0 +1,309 @@
+\section{Exact substring matching without expanding relators}
+\label{sec:compressed-matching}
+
+\subsection{What the new stage needs to decide}
+
+Whitehead powers address repeated elementary descent, but not the earlier
+backend's inability to compare overlaps once the explicit-letter allowance
+is exceeded. The new fallback first handles a precise subproblem: find a
+complete occurrence of a donor's recorded spelling, or its inverse, inside
+a cyclic target. The substring primitive is complete for its specified
+pattern and text. The resulting relator search is restricted: it does not
+try every cyclic conjugate of the donor or find the longest partial overlap.
+
+The implemented occurrence table follows the fully compressed pattern-matching
+framework of Lifshits~\cite{lifshits-fcpm}. It represents occurrences touching
+a grammar cut by a single arithmetic progression, using dynamic programming
+on pattern and text rules. The paper's analysis counts operations on string
+positions; bit costs require a further factor depending on their binary
+length. Independently, Matsubara et al.~\cite{matsubara-compressed-lcs} give a
+polynomial algorithm for longest common substrings of two SLP strings.
+That stronger primitive would support a complete cyclic-overlap search on
+doubled relators, but it is not implemented here. Thus arbitrary compressed
+overlap is an available algorithmic direction, not an established exponential
+barrier.
+
+\subsection{The implemented occurrence-table invariant}
+
+For a nonempty pattern node $P$ and text node $T=UV$, define
+\[
+ \mathcal A(P,T)=\{i:0\le i\le |T|-|P|,\quad
+                  T[i:i+|P|]=P,\quad i\le |U|\le i+|P|\}.
+\]
+Positions are zero based, substrings are half open, and touching either
+endpoint of the cut is allowed. For a terminal text the cut is zero.
+The cut-occurrence lemma states that this set is an arithmetic progression,
+including the empty and singleton cases. We store a progression as
+$(s,d,c)$: first position, step and cardinality. A singleton has $d=0$.
+The table includes empty entries for sufficiently long text nodes; shorter
+text nodes are omitted because they cannot contain the pattern.
+
+For a one-letter pattern, a concatenation's only possible occurrences
+at its cut are the last letter of its left child and the first letter of
+its right child. Both are available from the word arena. A terminal text
+requires only one exact letter comparison. The remaining cells are computed
+in ascending pattern-node order, so both children of the pattern have
+complete rows available. No occurrence list is expanded.
+
+\subsection{An iterative local-window query}
+
+The internal query $\operatorname{Local}(P,T,[\alpha,\beta))$ returns all
+occurrences lying entirely within the specified interval, provided that
+its width is at most $3|P|$. Bounds are first clipped to the text. The
+implementation visits the parse of $T$ using an explicit stack. It obtains
+central occurrences from the stored cell and descends into a child only
+when the child's intersection with the interval has length at least $|P|$.
+Left-child, central and right-child results are emitted in that order.
+Occurrences shared between adjacent pieces can only coincide at an endpoint.
+The stack avoids dependence on Python's recursion depth.
+
+Write $q=|P|$. Partition occurrence starts into
+\[
+ i\le\alpha+q\qquad\hbox{and}\qquad i>\alpha+q.
+\]
+Every occurrence in the first part touches $\alpha+q$, and every occurrence
+in the second touches $\alpha+2q$. Indeed, starts lie between $\alpha$ and
+$\beta-q\le\alpha+2q$. Each part is therefore one cut-occurrence progression
+restricted to an interval of starts. This gives at most two output
+progressions without a greedy merge heuristic.
+
+To combine the ordered pieces of one part, the code computes their first
+and last positions, the greatest common divisor of their nonzero steps and
+offsets from the first position, and their total cardinality after removing
+duplicate endpoints. It then checks that this cardinality equals the number
+of points in the proposed progression. All supplied points have the same
+residue modulo the resulting step. Consequently equality of the cardinalities
+certifies that no hole was filled accidentally. A violated invariant raises
+an arithmetic error instead of manufacturing a match.
+
+The local traversal has at most a constant number of branches at any level:
+its live intervals have disjoint interiors, each has length at least $q$,
+and together they fit in an interval of width at most $3q$. Its depth is at
+most the number of text rules. Repeated grammar occurrences therefore do
+not cause an exponential traversal.
+
+\subsection{Extending a larger pattern child}
+
+Suppose $P=AB$ and $|A|\ge |B|$. If a full occurrence touches text cut $c$,
+its $A$ part is contained in
+\[
+ [c-|P|,\ c+|A|),
+\]
+a window of width at most $3|A|$. Query that row locally, then restrict
+candidate starts so the full occurrence fits in the text and touches $c$.
+Each resulting progression describes overlapping copies of the same word
+$A$ that share a position. Their union is periodic with the progression's
+step, unless it is a singleton.
+
+Let $e$ be the last ending position of those $A$ occurrences. Candidate
+endings at most $e-|B|$ leave their entire prospective $B$ block inside
+that periodic union. These blocks begin at congruent positions and are
+identical. One exact local query therefore either accepts or rejects this
+entire first range of candidates. The remaining endings are within $|B|$
+of $e$. A local $B$ query on $[e-|B|,e+|B|)$ gives at most two progressions;
+intersect them with the candidate endings and shift back by $|A|$.
+
+When the right child is larger, the implementation uses the symmetric
+construction on starting positions: prospective left blocks inside the
+periodic union are checked together, and the first $|A|$-wide region is
+checked locally. Both orientations are exercised by randomized unbalanced
+parses. Candidate progression intersections use exact congruences and the
+extended-Euclidean modular inverse. Inconsistent residues yield the empty
+set. The final pieces describe exactly the full-pattern occurrences that
+touch the text cut and are merged with the checked progression operation.
+
+This establishes the cell invariant inductively. To recover the globally
+first occurrence, propagate the earliest position of every text node down
+the DAG, in reverse topological order. Every nonempty occurrence touches
+a cut of some containing parse node (or belongs to a terminal). Taking
+the minimum of a node's earliest position plus its first cut-occurrence
+position therefore finds the first occurrence in the entire text. Failure
+to find any such cell is an exact negative substring answer.
+
+\subsection{Complexity, fast positive queries, and resource semantics}
+
+Let $m,n$ be the numbers of pattern and text rules. There are at most $mn$
+cells. Each nontrivial cell uses a constant number of local traversals,
+each visiting $O(n)$ parse pieces and performing exact progression arithmetic.
+Thus there are $O(mn^2)$ such visits and integer operations, including gcd
+and modular-inverse calls. This is a polynomial bit-time algorithm:
+positions and counts have $O(n)$ bits when the text has $n$ binary rules,
+and gcd and modular inverse are polynomial in that bit length. We do not
+identify the Python implementation's charged work counter with a unit-cost
+machine model for these big-integer operations. Space is $O(mn+n)$ integer
+records, in addition to the input arena. The arena's node allowance also
+independently caps the number of live table cells.
+
+Before constructing a full table, the public primitive checks whether the
+pattern is a prefix using exact compressed LCP. If not, a bottom-up DAG
+pass finds the earliest occurrence of its first signed letter. If there
+is no such letter, or insufficient remaining text even at that first
+position, absence is proved. Otherwise one exact substring LCP tests that
+candidate. Success is necessarily the first match; failure invokes the
+complete table. This is an exact fast path with a complete fallback, not
+a sample of possible occurrences. Its positive benefit can be large when
+the first candidate begins after an exponentially long block.
+
+Table construction, local traversal, grammar operations and the fast path
+all share the caller's remaining work and cancellation allowance. Resource
+exhaustion raises \code{CompressedLimit}; the group wrapper translates this
+to an inconclusive group probe. Partial tables never escape as a negative
+substring result. Global cancellation propagates unchanged. The matcher
+uses signed letters and exact integer arithmetic, without hashes deciding
+word equality or substring occurrence.
+
+\subsection{Integrating whole-donor deletion}
+
+The fallback runs only with relator moves enabled, when current total
+expanded length exceeds \code{max\_letters} and the Whitehead test offers
+no shortening. This preserves the ordinary compressed descent paths.
+Nonempty donors are visited in descending length, with stable slot order
+for ties. For each donor, the search tries its spelling and inverse against
+distinct target slots at least as long. Per-relator absolute-generator counts
+supply a necessary-condition filter: a donor cannot fit in one cyclic turn
+of a target with fewer occurrences of any generator.
+
+For donor $D$ and target $R$, searching $D$ in $RR$ finds every complete
+occurrence of this particular spelling across a cyclic seam. Since
+$|D|\le|R|$, an occurrence found in the second copy has an equivalent start
+in the first; reducing its position modulo $|R|$ is valid. The search does
+not turn a multiple-wrap match into a legal overlap. If the resulting cyclic
+target is $DW$, keeping $D$ and replacing $DW$ by $W$ preserves normal closure:
+\[
+ \langle\!\langle D,DW\rangle\!\rangle
+   =\langle\!\langle D,W\rangle\!\rangle.
+\]
+Inversion and cyclic conjugation of a relator also preserve normal closure.
+The producer checks the entire proposed prefix by an exact LCP before
+slicing it away and cyclically reducing the remainder. It records the
+existing \code{relator} move, with donor rotation zero and overlap $|D|$.
+The independent literal and compressed verifiers already support these
+moves and never call the matcher or donor-search helper. A standalone
+presentation simplification result is not a knot verdict; production still
+reconstructs the full Wirtinger presentation from the original valid PD.
+
+A useful stalled example is
+\[
+ \langle a,b\mid a^N,\ ba^Nb^{-1}a\rangle,\qquad N=2^h.
+\]
+For the tested $h=10,100,500$, the previous capped producer cannot proceed.
+The new producer finds the donor beginning at target position one. Deletion
+leaves a cyclic conjugate of $a$, which eliminates $a$ and empties both
+relations. The two-move trace leaves the free generator $b$, as expected
+from the presentation itself. No expanded relator is allocated, including
+for $N=2^{500}$. This is again an abstract supplied presentation family;
+it is not asserted to be a hard knot-diagram family.
+
+
+\begin{proposition}[A uniform stalled family resolved without expansion]
+For every $N\ge2$, the presentation above has no eligible generator
+elimination and no shortening Whitehead cut in its initial state. With relator moves enabled and an
+explicit overlap allowance below $2N+3$, the preceding internal producer stalls.
+Given sufficient compressed work and storage allowances, the new fallback
+completes in two moves. For the binary-power grammar at
+$N=2^h$, both moves and their discovery use polynomial bit complexity in $h$.
+\end{proposition}
+\begin{proof}
+Neither generator occurs once in either relator. The weighted Whitehead
+graph has an edge between $a$ and $a^{-1}$ of weight $2N-1$, and four
+weight-one edges joining each of $b,b^{-1}$ to each of $a,a^{-1}$.
+An $a$--$a^{-1}$ cut has minimum weight $2N+1$, equal to the degree
+of either endpoint: the large edge is mandatory and each of $b,b^{-1}$
+contributes at least one more edge. A $b$--$b^{-1}$ cut has minimum weight
+two, also equal to the endpoint degree, because the two length-two paths
+through $a$ and $a^{-1}$ are edge-disjoint. Thus every optimal Whitehead
+change is zero. The old overlap bridge is unavailable above its cap.
+The new donor search finds $a^N$ at target position one and leaves the
+cyclic word $b^{-1}ab$, which reduces to $a$. One generator elimination
+then removes both relators. The initial grammar has $O(h)$ rules. The
+first-letter probe finds the exact donor node, and the fixed-rank graph,
+compressed slices, cyclic reduction and substitution all operate on a
+polynomial-size grammar. No loop iterates over the $N$ letters.
+\end{proof}
+
+\subsection{Validation and remaining work}
+
+The maintained tests compare 7340 exhaustive binary pattern/text pairs,
+including all text lengths through seven and pattern lengths through four.
+Three hundred random signed-letter instances check every stored table cell
+against literal cut occurrences and also check local-window results. A
+separate 3000-case progression audit checks intersections, including negative
+starts and singleton cases. Large tests represent an occurrence progression
+with $2^{60}+1$ elements, force a failed first candidate before an exponential
+later match, and use an unbalanced 1500-rule grammar. Table, work and global
+cancellation limits are exercised. Three hundred fifty random relator tuples
+compare the complete recorded-donor search against literal cyclic scans.
+Finally, genuine small-unknot traces inflated by a Whitehead power through
+$2^{100}$ receive a new donor-deletion move and pass independent compressed
+replay; a smaller exponent also passes literal replay.
+
+The implementation removes an expansion barrier for exact substring queries
+and enables additional certified search paths. Completing arbitrary cyclic
+partial overlaps, reusing occurrence tables across changing presentations,
+and bounding the total number of presentation moves remain separate tasks.
+In particular, polynomial cost for an occurrence query does not give a
+polynomial, quasi-polynomial or general subexponential bound for recognition.
+
+\subsection{Controlled measurements}
+
+The driver is \path{benchmark_compressed_match.py}.
+Its historical baseline is commit \code{59054ec761d1};
+the full revision is retained in the raw artifact. It measures the
+historical search, an identical A/A control and the new search in shuffled
+order, with five measured rounds after one excluded warmup. Full queries
+include fresh PD validation, recognition and independently reconstructed
+certificate replay. There are 225 measured queries on the fifteen-case knot
+corpus and thirty additional adaptive group probes on Gordian at letter
+caps 4096 and 8192. Every query and probe completes. Full-query certificate
+digests agree across the three arms. None of these runs reaches the new
+stalled-state fallback, so the following data check preservation of existing
+paths and do not demonstrate a knot-corpus speedup.
+
+\input{tables/compressed_match_queries.tex}
+
+Sixty additional measurements construct and simplify the abstract presentation
+family above. The old search and its control stall for every tested exponent;
+the new search completes in two moves in every run. At $h=500$, median
+construction plus search time is 7.712 milliseconds, with 1014 allocated
+nonempty grammar nodes and 17325 charged work units. The earliest-letter
+probe finds the useful occurrence, so this family does not require the
+full occurrence table. These are capacity results on supplied presentations,
+not ratios against completed knot recognition.
+
+\input{tables/compressed_match_presentations.tex}
+
+A separate 135-query audit tests the complete matcher. For $N=2^h$ let
+$P=(ab)^N$. The first-hit text is $cPc$; the later-hit text is
+$ac\,c^N P$, so its first $a$ is a false candidate; the absent text is
+$ac(ab)^{N-1}ac$. The expected first positions are respectively $1$, $N+2$
+and absent. Each timing includes grammar construction. The full-table arm
+bypasses the fast path; the adaptive and A/A arms both use the first-letter
+probe with table fallback. All 135 results complete and agree with the
+constructed expected answers.
+
+\input{tables/compressed_match_primitive.tex}
+
+At $h=64$, the first-hit probe takes about 0.216 milliseconds and avoids
+all table cells; direct table construction takes about 946 milliseconds
+and stores 2415 cells. The later-hit and absent cases still require full
+tables: 4626 and 4556 cells respectively. Their adaptive medians are about
+1.194 and 3.301 seconds. Thus the implementation supports exact queries on
+exponential strings, but the polynomial fallback has significant constants.
+These measurements motivate future table reuse and better string indexes;
+they do not justify moving this fallback onto already successful small-word
+search paths.
+
+All runs use twenty million charged work units and 100000 arena nodes/table
+cells; whole recognition allows 18 seconds, and its group stage 15 seconds.
+The explicit overlap allowance for the abstract presentations is four
+letters. The raw artifact \code{results/compressed\_match\_20261008.json}
+retains the inputs or exact construction, execution order, statuses, timings
+and per-query counters. The integrated suite passes 666 tests with Regina
+7.4.1 in 140.313 seconds; its log is
+\code{synthesis/data/compressed-match-integrated-tests.txt}.
+
+No new delivery was present in \code{docs/incoming} during this iteration.
+The suggested \code{openai/math} repository remained at
+\code{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}. The newly integrated research
+is the exact compressed-pattern-matching method cited above; the fuller
+longest-common-substring algorithm remains a documented next step.

@@ -2,6 +2,24 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`compressed_matching.tex` documents the exact arithmetic-progression occurrence
+table, iterative local-window query, checked progression unions and polynomial
+bit-complexity argument. The new whole-donor fallback preserves normal closure
+without expanding oversized relators, and existing independent verifiers check
+its moves. It is complete for occurrences of a specified pattern; searching
+all partial cyclic overlaps remains separate work.
+
+All 666 tests pass with optional Regina in 140.313 seconds. The controlled audit
+retains 225 full knot queries, 30 capped Gordian group probes, 60 abstract
+presentation runs and 135 exact substring queries. Existing knot paths are
+unchanged. A supplied `a^N, b a^N b^-1 a` presentation that previously stalled
+now finishes in two moves through `N=2^500`, about 7.7 ms including construction.
+The exact table fallback can still take seconds on exponential negative queries;
+no general subexponential recognition bound is claimed. Raw results are in
+`../fast/results/compressed_match_20261008.json`, with test/build/benchmark logs
+in `data/compressed-match-*`. The rebuilt article has 181 pages with no new
+layout warnings or unresolved references.
+
 `whitehead_powers.tex` proves an exact weighted-median formula for cyclic length
 along powers of a selected Whitehead automorphism. The compressed producer
 uses it on repeated directions or strongly compressed states. Version-3
