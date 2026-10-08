@@ -774,6 +774,25 @@ where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
   (`OAI/.../Fourier/BohrTorusApproximation.lean`). Its `CyclicBohr.Set`
   must be matched to the corpus's `bohr K ρ`.
 
+**A subtlety at base points away from the origin (2026-10-08).**
+- At (x₀, y₀), the cross term j·(L_k(e) − L_k(0))·x₀ must be small. The
+  step e must therefore make a *Freiman-linear* function of e small, not a
+  linear one.
+- At the origin this term is absent (x₀ = 0). That is why
+  `bilinearBohrVariety_contains_product` works with Dirichlet alone.
+- Off the origin, Dirichlet handles it only if L_k is affine
+  (y ↦ λy + c) on the Bohr set. In Z_N a Bohr set is essentially a proper
+  generalized arithmetic progression, and a Freiman-linear map on it is
+  affine in the progression's *coordinates*: L(a + Σ n_i g_i) = c + Σ n_i λ_i.
+  It is not affine in y.
+- So off-origin cells need Bohr sets presented as generalized progressions
+  (Milićević Prop. 2.13 / Thm. 2.26, Gowers §7), with Dirichlet applied per
+  coordinate.
+- The coordinate statement itself, that Freiman-linear maps on a proper
+  GAP are coordinate-affine, is elementary: the second-difference argument
+  in each coordinate, as in `affine_of_second_difference`. It is the next
+  formalizable piece.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
