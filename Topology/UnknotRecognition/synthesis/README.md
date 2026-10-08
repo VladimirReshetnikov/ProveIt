@@ -815,3 +815,14 @@ python -B normal_orbit_research/multiplicity.py benchmark --output results/norma
 The prior `normal_certificates.py` experiment explicitly disables this later
 optimization to retain its version-one comparison. Historical raw measurements
 retain their original source hashes and are not relabelled as new timings.
+
+`lazy_forest.tex` replaces eager compressed-factor preparation with a schedule
+computed directly on the source DAG. It retains global knot validation and all
+existing certificate formats, and distinguishes preparation savings from the
+unchanged dense root-permutation cost. Reproduce the cross-version audit and
+whole-call benchmark from `fast/`:
+
+```sh
+python -B compressed_braid_research/lazy_forest.py audit --output ../synthesis/data/lazy-forest-audit.json
+python -B compressed_braid_research/lazy_forest.py benchmark --output results/lazy_forest_20261008.json
+```
