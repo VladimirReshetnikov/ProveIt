@@ -14,6 +14,9 @@ The standard Khovanov scanner remains the default. Optional shared, saturated,
 and euler backends compress literal direct summands; saturated modes preserve
 only a capped rank or a certified lower bound, as named in their evidence.
 Filters never interpret agreement with the unknot invariant as triviality.
+An optional twist backend uses checked source-braid runs after the filters.
+If visible factors remain undecided it computes the entire original source,
+never treating that braid as a presentation of one factor.
 Object/time exhaustion in the backend yields UNKNOWN. An exhausted optional
 Euler inference budget falls back to complete saturated scanning.
 
@@ -107,10 +110,28 @@ def factored_khovanov_rank(diagram: Diagram, **options) -> dict[str, Any]:
             "stats": stats, "factors": summaries, "cuts": cuts, "distinct_factors": len(memo)}
 
 
+def _decide_twist(source: Diagram, evidence: dict, *, max_basis, deadline, check_d_squared):
+    """Decide the entire checked source knot, never an unmatched PD factor."""
+    from .twist.core import Budget
+    from .twist_adapter import twist_khovanov_rank
+    remaining = None if deadline is None else max(0.0, deadline - monotonic())
+    kh = twist_khovanov_rank(source, check_d_squared=check_d_squared,
+                            budget=Budget(max_basis=max_basis, seconds=remaining))
+    evidence["khovanov"] = {
+        "field": "F2", "backend": "twist", "unreduced_rank": kh["rank"],
+        "reduced_rank": kh["reduced_rank"],
+        "unreduced_rank_by_cube_degree": kh["by_degree"],
+        "grading_diagram": kh["grading_diagram"], "source_crossings": kh["source_crossings"],
+        "source_strands": kh["source_strands"], "macro_reduced_by_degree": kh["macro_reduced_by_degree"],
+        "preflight": kh["preflight"], "scan_stats": kh["stats"],
+    }
+    return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), "twist-khovanov-F2"
+
+
 def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
                           use_exact_alexander, use_r3, use_descending,
                           jones_max_states, jones_max_transitions, max_objects, deadline,
-                          check_d_squared, scan_options) -> tuple[str, str]:
+                          check_d_squared, scan_options, twist_source=None, defer_twist=False) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -167,6 +188,16 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             diagram, order = reduced, None
     remaining = None if deadline is None else max(0.0, deadline - monotonic())
     backend = scan_options["backend"]
+    if backend == "twist":
+        if twist_source is None:
+            if defer_twist:
+                evidence["twist_deferred"] = "source braid represents the whole connected sum"
+                return "INCONCLUSIVE", "twist-deferred"
+            evidence["twist_skipped"] = "no checked source braid for this diagram or factor"
+            backend = "standard"
+        else:
+            return _decide_twist(twist_source, evidence, max_basis=scan_options["twist_max_basis"],
+                                 deadline=deadline, check_d_squared=check_d_squared)
     if backend == "euler":
         from .euler_scan import euler_compressed_khovanov_decide
         kh = euler_compressed_khovanov_decide(
@@ -189,7 +220,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                                      seconds=remaining, check_d_squared=check_d_squared)
     else:
         standard_options = {key: value for key, value in scan_options.items()
-                            if key not in ("backend", "euler_max_states")}
+                            if key not in ("backend", "euler_max_states", "twist_max_basis")}
         kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
                            check_d_squared=check_d_squared, **standard_options)
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
@@ -217,8 +248,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
               race: int = 1, race_after: float = 1.0,
               factor_backend: str = "interlacement", composition: str = "standard",
-              composition_max_variables: int = 18) -> Result:
+              composition_max_variables: int = 18, twist_max_basis: int = 1_000_000) -> Result:
     start = monotonic()
+    if type(twist_max_basis) is not int or twist_max_basis < 0:
+        raise ValueError("twist_max_basis must be nonnegative")
     if composition not in ("standard", "component", "component-dense"):
         raise ValueError("composition must be standard, component, or component-dense")
     if type(composition_max_variables) is not int or composition_max_variables < 0:
@@ -229,12 +262,12 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
         raise ValueError("factor_backend must be interlacement or legacy")
-    if backend not in ("standard", "shared", "saturated", "euler"):
-        raise ValueError("backend must be standard, shared, saturated, or euler")
+    if backend not in ("standard", "shared", "saturated", "euler", "twist"):
+        raise ValueError("backend must be standard, shared, saturated, euler, or twist")
     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
         raise ValueError("euler_max_states must be a nonnegative integer or None")
     if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
-        raise ValueError("shared backends require minfill pivots, bits algebra, tail=0, and race=1")
+        raise ValueError("alternate backends require minfill pivots, bits algebra, tail=0, and race=1")
     deadline = None if seconds is None else start + seconds
     original = diagram
     evidence: dict[str, Any] = {}
@@ -316,13 +349,18 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
                                          race_after=race_after, backend=backend,
                                          euler_max_states=euler_max_states, composition=composition,
-                                         composition_max_variables=composition_max_variables))
+                                         composition_max_variables=composition_max_variables,
+                                         twist_max_basis=twist_max_basis))
         method = "reduced-khovanov-F2-scan"
         check()
         if len(factors) == 1:
-            status, method = _decide_prime_looking(diagram, evidence, **options)
+            # A retained source represents this whole knot across recorded
+            # reductions. Never pass it to the individual factors below.
+            source = original if original.braid_source is not None else None
+            status, method = _decide_prime_looking(diagram, evidence, twist_source=source, **options)
         else:
             status, reports = "UNKNOT", []
+            deferred = False
             evidence["factors"] = reports
             for factor in sorted(factors, key=lambda d: d.crossings):
                 check()
@@ -332,13 +370,19 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                 if reduced.crossings == 0 or (use_descending and descending_start(reduced) is not None):
                     sub["status"], sub["method"] = "UNKNOT", "reduction-or-descending"
                     continue
-                sub["status"], sub["method"] = _decide_prime_looking(reduced, sub, **options)
+                sub["status"], sub["method"] = _decide_prime_looking(
+                    reduced, sub, defer_twist=backend == "twist" and original.braid_source is not None, **options)
+                deferred |= sub["status"] == "INCONCLUSIVE"
                 check()
                 if sub["status"] == "KNOTTED":
                     status, method = "KNOTTED", "connected-sum-factor:" + sub["method"]
                     break
             else:
-                method = "connected-sum-all-factors-trivial"
+                if deferred:
+                    status, method = _decide_twist(original, evidence, max_basis=twist_max_basis,
+                                                  deadline=deadline, check_d_squared=check_d_squared)
+                else:
+                    method = "connected-sum-all-factors-trivial"
         check()
     except (ScanLimit, MemoryError) as exc:
         evidence["reason"] = str(exc) or "memory allocation failed"

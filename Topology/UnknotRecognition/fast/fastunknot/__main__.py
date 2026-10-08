@@ -37,6 +37,7 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
          "opt-in component contraction for the standard scanner"),
         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
@@ -45,8 +46,8 @@ OPTIONS = {
          "exact decision backend for a source braid on at most three strands"),
         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler"),
-         "Khovanov backend: standard, component sharing, saturated decision, or Euler bounds"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "twist"),
+         "Khovanov backend: standard, sharing, saturated, Euler bounds, or checked source twists"),
         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
         ("--seconds", float, None, None, "cooperative time budget"),
@@ -71,6 +72,8 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
+        ("--twist", None, False, None, "compute a checked source braid through twist blocks"),
+        ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
          "opt-in component contraction for the standard scanner"),
         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
@@ -170,6 +173,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"invalid input: {exc}", file=sys.stderr)
         return 2
     if args.command in ("recognize", "khovanov"):
+        if args.twist_max_basis < 0:
+            print("--twist-max-basis must be nonnegative", file=sys.stderr)
+            return 2
         if args.composition_max_variables < 0:
             print("--composition-max-variables must be nonnegative", file=sys.stderr)
             return 2
@@ -184,10 +190,11 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         if args.backend != "standard" and (args.pivot != "minfill" or args.algebra != "bits"
                                             or args.tail != 0 or args.race != 1):
-            print("shared backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
+            print("alternate backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_seifert=not args.no_seifert, backend=args.backend,
+                           twist_max_basis=args.twist_max_basis,
                            composition=args.composition, composition_max_variables=args.composition_max_variables,
                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
                            use_braid_reduction=not args.no_braid_reduction,
@@ -208,6 +215,25 @@ def main(argv: list[str] | None = None) -> int:
         print(text)
         return EXIT[result["status"]]
     if args.command == "khovanov":
+        if args.twist:
+            if (args.shared or args.factor or args.pivot != "minfill" or args.algebra != "bits"
+                    or args.tail or args.race != 1 or args.composition != "standard"):
+                print("--twist requires no --shared/--factor, minfill, bits, tail=0, race=1, and standard composition",
+                      file=sys.stderr)
+                return 2
+            from .twist.core import Budget
+            from .twist_adapter import twist_khovanov_rank
+            try:
+                result = twist_khovanov_rank(diagram, budget=Budget(max_basis=args.twist_max_basis),
+                                             check_d_squared=args.check_d2)
+            except ValueError as exc:
+                print(f"invalid twist input: {exc}", file=sys.stderr)
+                return 2
+            except (ScanLimit, MemoryError) as exc:
+                print(json.dumps({"status": "UNKNOWN", "method": "resource-limit", "reason": str(exc)}))
+                return 3
+            print(json.dumps(result, indent=1))
+            return 0
         if args.shared:
             if args.factor or args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1:
                 print("--shared requires no --factor, minfill, bits, tail=0, and race=1", file=sys.stderr)

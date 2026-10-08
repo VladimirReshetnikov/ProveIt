@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 134 passing tests.
+diagram is not checked twice. The integrated suite now has 209 passing tests.
 
 Report 08 adds complete recognition for checked source braids on at most three
 strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the
@@ -48,7 +48,7 @@ python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
 python3 -m unittest discover -s tests -v
 ```
 
-Recognition accepts `--backend standard|shared|saturated|euler`. The default is
+Recognition accepts `--backend standard|shared|saturated|euler|twist`. The default is
 `standard`: sharing incurs overhead on prime examples that stay connected.
 `shared` retains exact ranks and raw homological-degree counts. `saturated`
 retains the final unreduced rank capped at three. `euler` adds an optional exact
@@ -616,3 +616,62 @@ and about 44× slowdown when a sparse ten-variable product is forced through the
 dense method. None of the six ordinary scan cases selected an adaptive factored
 call. Those results justify the explicit option, not a default switch. The raw
 samples and A/A controls are in `results/component_algebra_20261007.json`.
+
+
+### Optional twist compression
+
+Report 11 is integrated through `--backend twist` or `backend="twist"`.
+Existing cheap certificates and filters retain priority. After they fail, a
+checked source braid is grouped into maximal equal signed runs and evaluated
+using the exact reduced twist macro complex. Its complete uncapped bound is
+`poly(n) * 2^O(t log(2+n/t))`, where `n` is the expanded crossing count and `t`
+is the number of runs in the supplied word. This is quasi-polynomial for
+`t = O(log n)`; there is no general conversion to such a presentation.
+
+```bash
+python -m fastunknot recognize examples/hard_unknot_8.json --backend twist
+python -m fastunknot khovanov examples/trefoil.json --twist --check-d2
+python -m fastunknot.twist examples/trefoil.json --mode estimate --profile
+```
+
+The direct Python rank entry point is
+`fastunknot.twist_adapter.twist_khovanov_rank(diagram, budget=Budget(...))`,
+with `Budget` from `fastunknot.twist`. Advanced signed-run homology and estimates
+are available there too. Binary run exponents do not change the expanded-size
+complexity convention. The main Diagram input still expects an explicit word.
+
+PD and grid recognition fall back to the standard scanner when no checked
+source braid exists. Proper connected-sum factors never inherit the original
+source word: cheap factor tests run first, then unresolved factors defer to
+one computation on the whole original braid. Such factors carry
+`twist_deferred` evidence. The whole-knot rank is recorded only at the top level.
+This preserves the restricted run-count bound for source-braid inputs.
+The raw twist-rank API rejects missing provenance instead of falling back.
+
+An exact Temperley–Lieb basis count precedes assembly. Recognition exposes
+`twist_max_basis` (CLI `--twist-max-basis`, default one million); the raw `Budget`
+also controls macro states, matrix bits, XORs, and time. Preflight and assembly
+share a deadline. Exhaustion returns `UNKNOWN` in recognition and the CLI;
+the production Python adapter raises `ScanLimit` or `MemoryError`. These
+limits are separate from the ordinary scanner's object ceiling.
+
+Raw degree output is converted to the original source braid's cube grading,
+with `grading_diagram` and `source_crossings` identifying it explicitly. This
+remains the original grading after whole-diagram simplification. Macro reduced
+degrees are also retained. Assembly and degree-profile estimates report the
+peak degree dimension, matrix-bit bound, and a degree-sensitive XOR-bit bound.
+
+`benchmark_twist.py` compares raw homology against the production scanner,
+including exact degree equality and A/A controls. The default recognition
+pipeline often decides these inputs earlier; raw homology speedups are not
+recognition speedups. The theory, restricted-family proof, integration details,
+and benchmark limitations are maintained in `../synthesis/twist.tex`.
+
+Local seven-round raw homology gains on two-strand twists are 31.6×, 134.7×,
+and 574.4× at 51, 201, and 801 crossings. In a fixed four-strand context, a
+single 801-letter block gives a 4.29× gain with peak degree dimension 177.
+The alternating no-compression control is about 4.5× slower, and the Morton
+four-strand unknot about 15.8× slower. Default recognition already decides the
+long examples by the braid obstruction. Full inputs, degree counts, timing
+boundaries, and A/A controls are recorded in `results/twist_integration_20261007.json`
+and `results/twist_context_scaling_20261007.json`.

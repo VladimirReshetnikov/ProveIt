@@ -49,10 +49,10 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 134 tests. Local report 10–12 production
+The current full production suite passes 209 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
-is integrated as an opt-in API/CLI option; its structured block cancellation and
-report 11's twist backend remain under review. The braid benchmark includes PD construction and keeps the current
+is integrated as an opt-in API/CLI option. Report 11's twist backend is now
+integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
 Seifert shortcut enabled in its baseline. Reproduce it with
 `../fast/benchmark_braid.py`; raw data are in
 `../fast/results/braid_integration_20261007.json`.
@@ -90,3 +90,13 @@ are in `data/component-algebra-tests.txt`; separate dense/sparse kernel and raw
 scanner timings are in `../fast/results/component_algebra_20261007.json`.
 The ordinary scanner cases did not select adaptive dense calls, so these
 measurements do not support a default-engine switch.
+
+
+`twist.tex` explains the checked twist backend, its exact basis and degree
+profiles, its quasi-polynomial bound for logarithmically many supplied braid
+runs, and the sharper linear scaling when one block grows in a fixed context.
+The backend remains optional and does not supply short-run presentations for
+arbitrary PD input. `data/twist-integrated-tests.txt` records the 209-test suite.
+Raw homology measurements and controls are in
+`../fast/results/twist_integration_20261007.json`; the extended four-strand
+context experiment is in `../fast/results/twist_context_scaling_20261007.json`.
