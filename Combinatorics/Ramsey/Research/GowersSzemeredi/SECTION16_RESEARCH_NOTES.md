@@ -772,6 +772,25 @@ family size. The production module passed an isolated Lean check; the full
 facade audit is queued. Its adapted proof carries separate Apache-2.0
 licensing and provenance in the adjacent `LICENSE.openai-math`.
 
+`Proofs05MinimumModularPartition.exists_minimum_polynomialOn_partition`
+now transfers this to the catalogue's modular polynomial encoding. It gives
+the same minimum index-cell length and bounds the centered distance between
+any two values in a cell by `(2*k/H)*N`, simultaneously for the whole family.
+An integer lift of `PolynomialOn` and cancellation of the cell constant
+supply the bridge; no prime-modulus assumption is used. The production
+module passed Lean. The partition is still of the integer index interval;
+proper modular progression transport is a further obligation.
+
+A second route to the box bridge is available in the current code:
+`multiaffine_box_height_step` already separates a maximal square-free
+monomial from a lower-height polynomial on every coarse box. Its coarse
+partition depends on the recurrence step and scale, not on the individual
+coefficient family. Generalizing the child hypothesis and diameter estimates
+to a simultaneous family would let the checked Schmidt recurrence replace
+the one-coefficient recurrence. The number of monomial-removal stages is
+bounded by `2^k`, independently of family size. This is a proposed extension,
+not yet a proof of the required box bound.
+
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
 requirements, and adequate degree constants. The constants above are
