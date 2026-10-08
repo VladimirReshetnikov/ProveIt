@@ -1,3 +1,7 @@
+/- Modified for ProveIt: provide the dependent finite-type instances and
+rewrite the outer sigma sums explicitly in allocated_genuine_cube_expansion;
+supply its spatial parameter explicitly on Lean 4.32. All upstream theorem
+statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.AllocatedGenuineSpatialReindex
 import OAI.Combinatorics.Progressions.Polynomial.CubeMixtureAllDegrees
 
@@ -271,16 +275,24 @@ theorem allocated_genuine_cube_expansion [DecidableEq X]
           ∏ s, test s (fun z => (physicalCubeVertexValue u s z : ℝ)) *
             Ψ i s (physicalCubeVertexValue u s)) := by
   intro Index raw c Ψ
+  letI : Fintype (terms × (∀ i, ((coverWitness r).expansion i).Term)) := inferInstance
+  letI : ∀ t : terms × (∀ i, ((coverWitness r).expansion i).Term),
+      Fintype ((Finset (Fin dim) →
+        ((∀ j, Fin (n j) → ZMod period) × (∀ j, Kcov j → ZMod period))) ×
+        K × (Finset (Fin dim) → ∀ i,
+          ZMod (((coverWitness r).expansion i).period (t.2 i)))) := fun t => inferInstance
   refine ⟨?_, ?_, ?_⟩
   · intro i s u
     exact allocatedRecenteredNormalizedSiteFactor_norm_le B U b S X modulus q wholeReference
       coverWitness x N mesh base r a.val i.1.1 i.1.2 (fI i.2.2.1 s) s (i.2.2.2 s)
       hb o bW d p hm period (i.2.1 s) (hunit _ _ _ _ _) u
-  · simp only [Index, c, Fintype.sum_sigma, Fintype.sum_prod_type, norm_mul,
+  · erw [Fintype.sum_sigma]
+    simp only [Index, c, Fintype.sum_sigma, Fintype.sum_prod_type, norm_mul,
       Complex.norm_natCast, Finset.mul_sum]
   · intro test
+    erw [Fintype.sum_sigma]
     simpa only [Index, c, Ψ, raw, Fintype.sum_sigma, Fintype.sum_prod_type] using
-      allocatedAmbientNormalizedSpatialApproximation_mixture B U b S X modulus q wholeReference
+      allocatedAmbientNormalizedSpatialApproximation_mixture (τ := τ) B U b S X modulus q wholeReference
         coverWitness hb o bW d x hM selection hx N hW mesh base cells p hm r a period cI fI test
 
 end Erdos3.VectorPolynomial
