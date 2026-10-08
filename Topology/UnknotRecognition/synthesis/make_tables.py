@@ -1300,3 +1300,17 @@ if nc:
     open('tables/normal_certificates.tex', 'w').write('\\begin{center}\n' + table(
         'Input & count ms & record ms & both ms & replay ms & ratio',
         '@{}lrrrrr@{}', rows) + '\\end{center}\n')
+
+# Common coordinate multiplicity: complete topology calls and complete proof arms.
+nm = load('../fast/results/normal_multiplicity_20261008.json')
+if nm:
+    rows = []
+    for r in nm['cases']:
+        m = r['medians']; q = r['paired_ratios']
+        rows.append(esc(r['name']) + ' & ' + ' & '.join(
+            f'{1000*m[arm]:.3f}' for arm in ('old', 'current'))
+            + f" & {q['count']:.3f} & {q['certified']:.3f} & "
+            + f"{r['old_proof_bytes']}/{r['new_proof_bytes']}" + r' \\')
+    open('tables/normal_multiplicity.tex', 'w').write('\\begin{center}\\small\n' + table(
+        'Input & old ms & new ms & count ratio & proof ratio & proof bytes old/new',
+        '@{}lrrrrr@{}', rows) + '\\end{center}\n')

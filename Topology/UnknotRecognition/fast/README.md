@@ -2026,3 +2026,27 @@ Malformed evidence returns `False`, malformed source geometry raises
 `fastunknot.integer_codec.json_safe` before JSON serialization of huge integers.
 See [`normal_certificates.tex`](../synthesis/normal_certificates.tex) for the
 proof, scope, independent comparisons and performance measurements.
+
+### Common normal-coordinate multiplicity
+
+`normal_surface_topology` now defaults to `reduce_multiplicity=True`. After
+validating the full source, it divides out the coordinate gcd and runs the
+three orbit queries on that quotient. If its component counts are `O`
+orientable and `N` nonorientable, scaling by `k` gives
+`k*O + (k//2)*N` orientable components and `(k%2)*N` nonorientable components.
+Boundary circles and Euler characteristic scale by `k`. This handles one-sided
+components: doubling a Möbius band produces one annulus.
+
+Every topology field still describes the original input. When reduction
+occurs, `coordinate_divisor` identifies the scale and `queries` contains the
+actual quotient-search statistics. The proof then uses
+`normal-surface-topology-v2`; replay checks exact divisibility and reconstructs
+the quotient queries without searching for a gcd. The boundary witness and
+source digest remain tied to the full input. Version-one proofs remain valid.
+Use `reduce_multiplicity=False` for the former direct queries and proof format;
+empty and primitive inputs retain their prior output structure.
+
+See [`normal_multiplicity.tex`](../synthesis/normal_multiplicity.tex) for the
+sheet-cover argument, bit complexity, old/new proof compatibility and paired
+measurements. The optimization reduces work on repeated surfaces; normal
+vector discovery and knot-exterior provenance remain separate obligations.
