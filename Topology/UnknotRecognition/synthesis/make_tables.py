@@ -1018,3 +1018,26 @@ if adaptive_jones:
             table('Input & Potts & A/A & Spin & Adaptive', '@{}lrrrr@{}', rows) +
             r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
             'Limits are censored, not completed-query times.\n')
+
+primary_continuation = load('../fast/results/primary_continuation_20261008.json')
+if primary_continuation:
+    arms = ('fitting', 'control', 'delivered', 'primary', 'corner')
+    for scope in ('knots', 'compression'):
+        rows = []
+        items = primary_continuation['knots' if scope == 'knots' else 'fields']
+        for row in items:
+            if scope == 'knots':
+                name = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+                        'stress_braid5_36': 'Braid5 36', 'torus_3_5': 'Torus (3,5)'}.get(row['name'],row['name'].capitalize())
+                timing = row['timing']
+            else:
+                name = str(row['degree'])+' '+row['mixing']
+                timing = row['compression']['timing']
+            rows.append(' & '.join([esc(name)] +
+                [f"{1000*timing['median_seconds'][arm]:.3f}" for arm in arms]) + r' \\')
+        with open(f'tables/primary_{scope}.tex', 'w') as handle:
+            handle.write(r'\begin{center}\small'+'\n'+
+                table('Input & Fitting & A/A & Delivered & Local stop & Corner', '@{}lrrrrr@{}', rows)+
+                r'\end{center}'+'\nMedian milliseconds; all calls complete. '+
+                ('Full raw knot scans at a common prepared order.\n' if scope=='knots' else
+                 'Complete recursive compression of graded algebraic fixtures; construction excluded.\n'))
