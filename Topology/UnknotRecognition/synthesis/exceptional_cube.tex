@@ -1,0 +1,248 @@
+\section{A complete fallback for exceptional compressed-braid factors}
+\label{sec:exceptional-cube}
+
+The preceding section left a precise missing implementation step: completing
+wider factors after singleton cuts without expanding the already solved
+three-braid factors. We now connect a bounded reduced Khovanov cube, with
+source-bound linear-algebra proofs, to the native grammar interface. Given
+sufficient allowances this makes recognition complete for every supplied braid
+grammar. Its running time is polynomial in grammar size plus an exponential
+term for each exceptional factor's minority-sign count. The latter parameters
+remain uncontrolled for general knots.
+
+\subsection{Dispatch and the source contract}
+
+The existing component check and exact singleton cuts run first. One- and
+two-strand factors use exponent sums; three-strand factors use compressed
+free-product normal forms. A wider factor with $|e|>m-1$ is already nontrivial.
+For every remaining wider factor the host compares its exact binary expanded
+length with \texttt{fallback\_max\_crossings}, default 12. Only a factor that
+passes this comparison is expanded. All larger residuals remain explicitly
+inconclusive; no iteration up to their represented lengths occurs.
+
+Expansion walks the projected grammar and skips zero-length children. This
+last detail is necessary: a depth-$s$ grammar of concatenated empty strings
+can have $2^s$ occurrences but length zero. With zero children skipped, every
+visited node lies on a path to one of the $n$ actual letters, giving an
+$O(s(n+1))$ traversal bound. The expansion is checked against its previously
+computed length. Three-braid factors never enter this routine, including
+factors with exponentially large minority-sign counts.
+
+A forest proof containing an exceptional cube uses version two. Its original
+input, singleton cuts, strand intervals and projected grammars are checked
+exactly as before. The child proof additionally records the expanded signed
+word and strand count, which replay recomputes from that projected grammar.
+Thus neither an independently chosen small braid nor a convenient PD diagram
+can substitute for the actual factor. The cube operates directly on the braid;
+a separate diagram-to-braid conversion is not part of its trusted input.
+Version-one proofs remain replayable with their original unsupported-factor
+semantics. Changing a version-two cube proof to version one is rejected.
+
+\subsection{The exact reduced cube}
+
+We adapt the explicit braid-resolution construction from report 34's MIT-0
+oracle, retaining it as a separately loaded comparison implementation.
+For an $m$-strand word of length $n$, vertices comprise the $m$ top endpoints
+and two new bottom endpoints per crossing. In each state
+$\epsilon\in\{0,1\}^n$, smoothing joins either the two horizontal pairs or
+the two vertical pairs. The choice of state bit is reversed for a negative
+Artin generator. Joining final endpoints to their initial strand positions
+closes the resolution. A disjoint-set computation returns its circles.
+The circle containing vertex zero is the marked circle in every state.
+
+Assign each circle a label in $\{1,x\}$ with $x^2=0$, and require the marked
+circle's label to be $x$. A state with $c$ circles therefore contributes
+$2^{c-1}$ basis elements to cube degree $|\epsilon|$. A cube edge changes
+one zero state bit to one and applies the ordinary Frobenius maps
+\[
+ \begin{array}{ll}
+ \mu(1,1)=1,&\mu(1,x)=\mu(x,1)=x,\quad\mu(x,x)=0,\\
+ \Delta(1)=1\otimes x+x\otimes1,&\Delta(x)=x\otimes x.
+ \end{array}
+\]
+Unchanged circles keep their labels. The marked-$x$ subcomplex is preserved.
+Over $\mathbb F_2$ the cube signs disappear. Homological normalization shifts
+and quantum gradings are unnecessary for the total rank used here.
+
+Let $D_h$ be the dimension in raw cube degree $h$, and $r_h$ the rank of its
+differential to degree $h+1$. The implementation constructs each differential
+as integer bit-vector columns and checks $d^2=0$ before using
+\[
+ b_h=D_h-r_h-r_{h-1},\qquad
+ \dim\widetilde{Kh}(K;\mathbb F_2)=\sum_h b_h.
+\]
+The same chain check runs during replay. Negative dimensions or zero total
+rank on a knot are implementation errors, not verdicts. The unknot test is
+total reduced rank one. Kronheimer--Mrowka gives the rational rank-one
+criterion~\cite{km}; the universal coefficient theorem bounds rational rank
+by mod-two dimension, while the unknot has a single torsion-free reduced
+generator. These facts give the same detection criterion over $\mathbb F_2$.
+They do not identify the Jones polynomial with a complete decision procedure.
+
+\subsection{A rank proof with no pivot search in replay}
+
+For each matrix column, discovery records a list of earlier basis-column
+indices whose XORs eliminate its leading bits, followed by the leading row
+of the residual, or $-1$ for zero. The proof stores indices, not copies of all
+intermediate bit vectors. Discovery uses a map from leading row to its basis
+column to select eliminations.
+
+Replay reconstructs the differential from the source word and reads the
+proposed XOR list. Each reference must name a distinct preceding basis
+column. A zero residual must have pivot $-1$. A nonzero residual must have
+exactly the stated highest set bit, and that row must differ from all earlier
+basis pivots. Replay stores this residual as the new basis column. It does
+not call the rank producer or select a pivot to eliminate.
+
+The rank assertion follows by two inductions. First, distinct highest set
+bits make the retained residual vectors linearly independent: among vectors
+in a putative dependence, the largest leading row cannot cancel. Second,
+each original column is the XOR of its residual and earlier basis vectors,
+while each new residual is in the span of original columns already processed.
+The two spans are consequently equal after every column. The number of
+retained residuals is the exact rank, including for zero and rectangular
+matrices. Both lower and upper rank bounds are proved; a list of independent
+columns alone would prove only the lower bound and would be insufficient for
+an unknot verdict.
+
+The rank verifier is structurally independent of elimination discovery.
+It shares the explicit Frobenius complex construction, expansion helper,
+integer arithmetic and $d^2$ check with the producer. This trusted boundary is
+intentional and visible. Comparisons with the maintained planar-diagram
+scanner test a different geometric construction and reduction algorithm;
+comparisons with report 34 additionally check that the adaptation preserves
+its original ranks.
+
+\subsection{Budgets across discovery and replay}
+
+The public API adds \texttt{fallback\_max\_crossings=12} and
+\texttt{fallback\_max\_generators=200000}, also available as hyphenated CLI
+options. The latter is a cumulative allowance across \emph{all} cube
+constructions, including reconstruction during replay. A resolution reserves
+its $2^{c-1}$ generators before allocating the differential matrices.
+The ordinary work callback is polled during expansion, resolution building,
+Frobenius edge assembly, the chain check, elimination and rank replay.
+String arenas, metadata, JSON transport and these cube operations retain the
+same shared work and time budgets.
+
+A factor above the crossing threshold has not started a cube and may remain
+as a verified inconclusive residual in a forest proof. Exhaustion of shared
+work, generator, node, time or proof-size allowances returns inconclusive
+without a partial proof. External cancellation propagates. Setting the
+crossing threshold to zero restores the earlier unsupported-factor behavior;
+raising it permits a larger exponential computation. Proof byte limits are
+checked after construction, so they are not hard peak-memory guarantees.
+Neither a generator count nor a work counter claims to count individual
+machine instructions or bits allocated by Python.
+
+\subsection{The exceptional-factor theorem is now implemented}
+
+Let $g$ be the original grammar bit size and let $I$ index only wider factors
+not decided by the finite checks. For factor $i$, write $n_i,m_i,\kappa_i$ for
+its expanded length, strand count and minority-sign count. The previous
+singleton and Bennequin arguments give
+\[
+ n_i\le4\kappa_i,\qquad m_i\le2\kappa_i+1.
+\]
+The cube has $2^{n_i}$ states. Each resolution has at most $m_i+2n_i$ circles,
+since that is its number of vertices, so a deliberately coarse bound for its
+total reduced basis size is
+\[
+ D_i\le 2^{m_i+3n_i-1}=2^{O(\kappa_i)}.
+\]
+Building all columns and checking $d^2$ use polynomially many bit operations
+in $D_i+n_i+m_i$. Elimination performs at most $D_i$ XORs per column on at
+most $D_i$ bits. A trace has at most $O(D_i^2)$ indices of $O(\log(D_i+2))$
+bits, and replay has the same exponential upper bound. The polynomial costs
+of source validation, projections and solved compressed factors are paid
+separately. Products of a source-polynomial term and an exponential factor
+can be absorbed into an additive bound using $ab\le a^2+b^2$, with only a
+constant change in the exponential coefficient. With sufficiently large
+allowances, implemented discovery,
+certificate production and replay therefore satisfy
+\[
+ \operatorname{poly}(g)+\sum_{i\in I}2^{O(\kappa_i)}.
+\]
+All factors eventually decide as the finite allowances increase. The number
+of factors is polynomial in $g$. Thus the implementation has a restricted
+quasi-polynomial guarantee when
+$\max_{i\in I}\kappa_i=O((\log g)^2)$, and a polynomial guarantee when those
+counts are $O(\log g)$. There is no restriction on the expanded minority
+counts of the solved three-braid factors. This is a complete algorithm for
+supplied braid grammars, but an exponential worst case remains. We have not
+proved the exceptional-parameter condition or a favorable grammar-construction
+bound for arbitrary knot diagrams.
+
+\subsection{Validation and measured scope}
+
+Twelve new tests exercise both knot verdicts, exact source binding, Boolean
+field substitutions, altered dimensions and ranks, invalid column spans,
+replay without the rank producer, and shared budgets through multiple factors
+and replay. All 512 binary $3\times3$ matrices are checked against their
+explicitly enumerated column spans. Random braid cubes are compared with the
+maintained planar-diagram scanner. A mixed seven-strand forest contains a
+$2^{256}$ conjugation sleeve and a nine-crossing exceptional factor; only the
+latter is expanded. A separate binary-sized wider factor is declined before
+expansion. The empty-subgrammar test ensures that represented emptiness does
+not cause exponential traversal.
+
+The complete maintained suite passes 897 tests with Regina in 226.425 seconds.
+A separate seeded audit constructs 160 knot closures on three through six
+strands with at most ten crossings. All reduced ranks agree with both the
+unchanged report-34 oracle and the maintained planar-diagram scanner, with
+$d^2$ checked in all three computations. Every public result also replays.
+There are 108 unknots and 52 nontrivial knots; 17 public calls require the new
+cube fallback, while the other cases are decided by the earlier exact stages.
+The audit takes 44.679 seconds and retains every signed input word, rank,
+verdict and source hash in \path{data/exceptional-cube-audit.json}.
+
+\input{tables/exceptional_cube.tex}
+
+The benchmark uses seed 261008493, one shuffled warmup and five measured
+rounds with identical controls. Its whole-cube ablation expands the entire
+supplied braid, builds a reduced complex, produces a rank trace and replays
+it. The hybrid uses the public source-bound forest interface, including its
+transport checks, decomposition, factor proofs and replay. The ablation also
+uses the host's transport and work-accounting conventions, with larger finite
+allowances for its larger complex. Neither timed arm exhausts its allowances
+on the compared cases. The explicit comparison is admitted only for inputs
+with at most 12 crossings; larger inputs are omitted by preflight.
+
+The two four-strand controls separately time the maintained scanner on an
+already constructed PD diagram. That timing has no rank certificate, source
+conversion or independent replay. It measures the practical cost of choosing
+a straightforward proof-producing cube instead of the faster ordinary
+recognizer; it is not a comparison between equivalent proof interfaces.
+The mixed cases adjoin the trivial three-braid $ab$ through a singleton seam
+to either a nine-crossing trivial or nontrivial four-braid. Larger mixed cases
+replace $ab$ with its $u^{2^k}$ conjugate for $k=8,64,512$; the exceptional
+factor remains nine crossings. No whole-input speedup ratio is inferred for
+these enormous represented words. Raw samples and source hashes are in
+\path{../fast/results/exceptional_cube_20261008.json}.
+
+For the small trivial connected sum, whole-cube production and replay take
+7.702 seconds at the median, versus 169.427 ms for the hybrid; the median
+paired ratio is 44.278. For the nontrivial connected sum, the corresponding
+values are 5.558 seconds, 139.172 ms and ratio 40.209. Both comparisons
+include proof replay. The trivial-sum hybrid samples vary from 159 to 331 ms,
+and its identical control has a different median despite a paired A/A ratio
+near one. We therefore interpret these as roughly fortyfold family-specific
+gains, not precise crossover thresholds. All variation is retained.
+
+The large mixed examples require exactly 4,638 cumulative cube generators
+for production and replay, independent of the compressed sleeve exponent.
+At $k=512$ the complete hybrid median is 249.543 ms and its proof has
+137,317 canonical bytes. The measured time grows with the compressed
+source and proof, not its expanded conjugating length.
+
+On the standalone nine-crossing four-braids, the hybrid cube path takes
+161.835 ms for the unknot and 137.068 ms for the nontrivial knot. The ordinary
+scanner takes 1.673 and 4.559 ms respectively, without independent proof
+output. The cube is consequently a conservative complete fallback, not a
+replacement for the faster scanner in ordinary diagram recognition.
+A useful next optimization is to apply already verified explicit reductions
+inside a small projected factor before constructing its cube, preserving a
+source-bound reduction trace. Another is to stop the forest as soon as a
+nontrivial factor has a complete proof; the current implementation still
+processes every leaf. Neither optimization is assumed in the bounds or
+measurements above.

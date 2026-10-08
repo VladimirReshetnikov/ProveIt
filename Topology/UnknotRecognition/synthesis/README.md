@@ -748,10 +748,20 @@ samples, A/A controls and source hashes. They are not knot-recognition timings.
 `compressed_braid.tex` integrates the 2026-10-08 compressed-braid delivery with
 the maintained exact string arena. It proves the polynomial input-bit bound
 for native three-braid grammars, explains independent reduction replay and
-singleton connected-sum forests, and distinguishes the implemented restricted
-recognizer from the unwired exceptional-minority fallback theorem. The 885-test
+singleton connected-sum forests, and records the initial boundary between the compressed recognizer and its
+exceptional-minority fallback theorem. `exceptional_cube.tex` now implements
+that fallback with exact source projections and checked rank transcripts. The 885-test
 checkpoint and 87,381-word exhaustive audit are in `data/compressed-braid-*`.
 `../fast/benchmark_compressed_braid.py` reproduces the paired explicit/native
 measurements, including identical controls and complete native replay. Raw
 results are in `../fast/results/compressed_braid_20261008.json`. This is a
 supplied-braid grammar API, with no general PD-to-grammar complexity claim.
+
+
+`exceptional_cube.tex` makes the supplied-grammar exceptional-factor bound
+an implemented guarantee, while retaining its restricted-input condition.
+The public interface defaults to a 12-crossing fallback preflight and a shared
+200,000-generator allowance across all factors and replay. Version-one proofs
+remain supported. The 897-test checkpoint and cross-oracle evidence are in
+`data/exceptional-cube-*`; the paired splitting ablation is reproduced by
+`../fast/compressed_braid_research/exceptional.py benchmark --output FILE`.

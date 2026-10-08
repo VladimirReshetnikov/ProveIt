@@ -1228,3 +1228,17 @@ if cb:
     open('tables/compressed_braid.tex', 'w').write(
         '\\begin{center}\n' + table('Input & rules & explicit ms & native ms & paired ratio',
                                     '@{}lrrrr@{}', rows) + '\\end{center}\n')
+
+# Complete exceptional-factor fallback: same proof-producing cube with/without cuts.
+ec = load('../fast/results/exceptional_cube_20261008.json')
+if ec:
+    rows = []
+    for r in ec['cases']:
+        old = r['medians'].get('whole')
+        old_cell = '--' if old is None else f'{1000*old:.2f}'
+        ratio = '--' if old is None else f"{r['paired_ratios']['hybrid']:.3f}"
+        rows.append(f"{esc(r['name'])} & {old_cell} & {1000*r['medians']['hybrid']:.2f} & "
+                    f"{ratio} & {r['resources']['cube_generators']} \\\\")
+    open('tables/exceptional_cube.tex', 'w').write(
+        '\\begin{center}\n' + table('Input & whole ms & hybrid ms & paired ratio & generators',
+                                    '@{}lrrrr@{}', rows) + '\\end{center}\n')

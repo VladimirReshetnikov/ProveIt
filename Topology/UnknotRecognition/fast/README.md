@@ -1896,13 +1896,22 @@ checks closure components and exponent sum, then reduces the quotient
 `C2 * C3` without expansion. Independent replay checks source binding and
 local reduction equalities without repeating prefix searches. General
 strand counts first detect missing generators, then split singleton-generator
-connected sums. Factors with at most three strands are completely decided;
-unresolved wider factors remain `INCONCLUSIVE`. The minority-sign exponential
-fallback theorem in the article is not yet connected to this interface.
+connected sums. Factors with at most three strands are completely decided without expansion.
+Wider factors that pass the Bennequin bound now use a complete reduced F2
+Khovanov cube when their binary expanded length is within
+`fallback_max_crossings=12`. Larger residuals remain `INCONCLUSIVE`.
+Version-two forest certificates bind the expanded word to the exact source
+projection and replay checked XOR elimination traces without pivot discovery.
+The Frobenius complex builder is shared by discovery and replay. Legacy
+version-one proofs retain their original residual semantics.
 
 Public `recognize` includes replay. `verify` independently returns the certified
 status or raises. Defaults share 10,000,000 abstract work units and 100,000
-cumulative string nodes across all factors and replay. Additional controls are
+cumulative string nodes across all factors and replay.
+`fallback_max_generators=200_000` similarly counts all reduced cube generators
+cumulatively, including replay; `resources["cube_generators"]` reports usage.
+Set `fallback_max_crossings=0` to disable this fallback. Both fallback controls
+have hyphenated CLI flags. Additional controls are
 `max_input_rules=100_000`, `max_input_bytes=16_000_000`,
 `max_certificate_bytes=64_000_000`, `seconds=None`, and a `check` callback.
 Limits are cooperative, not hard process-memory or CPU limits. Exhaustion
@@ -1925,3 +1934,17 @@ including replay is about 118 times faster for the unknot and 14 times faster
 for the nontrivial knot. Small explicit controls remain substantially faster
 with the explicit API. The source-bound theorem, proofs, measurements and
 limitations are in [`compressed_braid.tex`](../synthesis/compressed_braid.tex).
+
+
+With sufficiently large allowances, the complete grammar algorithm takes
+`poly(g) + sum_i 2**O(kappa_i)`, where `g` is grammar bit size and `kappa_i`
+is the minority-sign count only of unresolved wider singleton factors.
+It therefore has a restricted quasi-polynomial guarantee when those counts are
+`O(log(g)**2)`. This does not bound them on arbitrary diagrams. The proof,
+certificate trust boundary and validation are in
+[`exceptional_cube.tex`](../synthesis/exceptional_cube.tex). Reproduce the
+cross-oracle audit and the splitting ablation with
+`python -B compressed_braid_research/exceptional.py audit --output FILE` or
+`benchmark --output FILE`. Whole-cube comparisons include proof construction
+and replay; planar-scanner timings have no such certificate and are labeled
+separately.

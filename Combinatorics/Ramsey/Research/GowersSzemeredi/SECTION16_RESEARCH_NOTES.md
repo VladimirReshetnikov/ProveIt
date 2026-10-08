@@ -772,6 +772,30 @@ family size. The production module passed an isolated Lean check; the full
 facade audit is queued. Its adapted proof carries separate Apache-2.0
 licensing and provenance in the adjacent `LICENSE.openai-math`.
 
+`Proofs05MinimumModularPartition.exists_minimum_polynomialOn_partition`
+now transfers this to the catalogue's modular polynomial encoding. It gives
+the same minimum index-cell length and bounds the centered distance between
+any two values in a cell by `(2*k/H)*N`, simultaneously for the whole family.
+An integer lift of `PolynomialOn` and cancellation of the cell constant
+supply the bridge; no prime-modulus assumption is used. The production
+module passed Lean. The partition is still of the integer index interval;
+proper modular progression transport is a further obligation.
+
+**Simultaneous geometric height step proved.**
+`Proofs05SimultaneousMultiaffineStep.simultaneous_multiaffine_box_height_step`
+now generalizes the existing geometric step to a family of `q` phases.
+One common coarse partition separates the same maximal square-free monomial
+from all phases, and a simultaneous lower-height partition is transported
+and flattened. Properness, minimum widths, and each phase's diameter bound
+are preserved. The production module passed Lean. The recurrence estimate,
+scale budget, and simultaneous child theorem remain explicit premises.
+
+This allows the checked Schmidt recurrence to replace the one-coefficient
+recurrence in the height induction. The number of monomial-removal stages
+is bounded by `2^k`, independently of family size. A uniform recurrence over
+the finitely many degrees and a new scale/exponent induction are still
+needed before this yields the required quantitative box bound.
+
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
 requirements, and adequate degree constants. The constants above are
