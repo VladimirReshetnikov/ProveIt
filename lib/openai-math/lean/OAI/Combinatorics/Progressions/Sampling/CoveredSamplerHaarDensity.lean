@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply explicit product-measure finiteness and
+chart-source open-set measurability instances on Lean 4.32;
+theorem statements and bounds are unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.MixedArrayImageSupport
 import OAI.Combinatorics.Progressions.Probability.CoefficientJetDensityFactors
 import OAI.Combinatorics.Progressions.Probability.MixedCoveredDensityMass
@@ -41,6 +44,15 @@ theorem canonicalCoveredArrayDensity_law (hw : ∀ j i e, 0 < w j i e) (d : ℕ)
       (canonicalCoveredArrayDensity U root A rows pivot hpivot c w p d) := by
   let : ∀ j, IsProbabilityMeasure (mixedScalarArrayLaw (c j) (w j) (p j)) :=
     fun j => mixedScalarArrayLaw_probability _ _ (hw j) _
+  let : IsProbabilityMeasure (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) :=
+    Measure.pi.instIsProbabilityMeasure _
+  let : IsFiniteMeasure (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) := by
+    constructor
+    rw [measure_univ]
+    exact ENNReal.one_lt_top
+  let : SigmaFinite (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) :=
+    IsFiniteMeasure.toSigmaFinite _
+  let : SFinite (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) := inferInstance
   have hF := canonicalCoefficientJetArrays_measurable (I := I) (n := n) root A rows
   have hR : Measurable (coefficientDeckJetMap (B := B) root A rows d) := measurable_of_finite _
   change Measure.map (Prod.map (canonicalCoefficientJetArrays root A rows)
@@ -68,6 +80,8 @@ theorem canonicalCoefficientDeckSample_array_density [Fintype α]
     (realDensityMeasure (coveredJetArrayReference U d)
       (canonicalCoveredArrayDensity U root A rows pivot hpivot c w p d)).map
         (fun x => coveredJetChart U b hb bW d (mixedCoveredJetCoordinates U o d x)) := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O B n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   have hF := canonicalCoefficientJetArrays_measurable (I := I) (n := n) root A rows
   have hR : Measurable (coefficientDeckJetMap (B := B) root A rows d) := measurable_of_finite _
   have hq : Measurable (fun x => coveredJetChart U b hb bW d (mixedCoveredJetCoordinates U o d x)) :=
