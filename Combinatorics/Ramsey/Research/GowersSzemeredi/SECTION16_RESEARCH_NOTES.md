@@ -495,6 +495,37 @@ holds but needs mathematics newer than Gowers (2001). Restating it would
 replace the source's quantitative theorems by weaker ones. Theorem 1.3 is
 being closed as stated by the openai-math port.
 
+## I. Why the proved structure cannot give Theorem 18.2 at length six (proved)
+
+Written 2026-10-08, after `theorem_16_2_at_two` (`27d8419b8`). Its modulus
+threshold has been made explicit (`theorem_16_2_at_two_bounded`), and so has
+that of the degree-four inverse theorem (`quartic_function_inverse_explicit`).
+The remaining step would compare the resulting six-term threshold with
+`szemerediThreshold delta 6`. That comparison fails, for a reason that has
+nothing to do with constants.
+
+- The density iteration's threshold is
+  `densityIterationClosedThreshold T c rho n = exp((1 + log T + |log c|) * (2/rho)^n)`,
+  with `n = ⌈8/beta⌉` steps (`intervalDiscrepancyClosedThreshold`), where
+  `beta` is the discrepancy parameter.
+- At degree four, `beta = jointStructuralInverseParameter 2 alpha` contains
+  `section16JointFrequencyDensity alpha 2 = (alpha/8) / section16JointPowerGraphBudget …`.
+  The graph budget is `section16UniformLiftGraphBudget`, about
+  `multipleQ(…)^(r*s)`. This is the number of multilinear graphs in the
+  dimension-two structure, and it is `exp(poly(1/alpha))`.
+- So `n = exp(poly(1/delta))`, `(2/rho)^n` is doubly exponential, and the
+  threshold is `exp(exp(exp(poly(1/delta))))`.
+- Theorem 18.2 allows `2^(2^(delta^(-M)))` with `M = 2^(2^15)`. Since
+  `exp(poly(1/delta))` eventually exceeds `M * log(1/delta)`, no choice of
+  constants rescues the comparison for small `delta`.
+
+The five-term case succeeded only because the cubic discrepancy parameter
+is polynomial in `alpha` (`fejerCubicDiscrepancyParameter_inv_le_power`).
+Length six fails for the same reason as Theorem 18.1 at degree three (status
+file, "degree by degree"). The source's polynomial discrepancy rests on the
+unsupported estimate of Corollary 16.11. A structure theorem whose graph
+count is polynomial in `1/theta` and `1/gamma` (H.3, H.5) would repair both.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
