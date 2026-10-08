@@ -1,0 +1,1465 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem,xurl,hyperref,fancyhdr}
+\hypersetup{hidelinks,pdftitle={Singular-Safe Port Compression and Finite-State Multiplicity Registers},pdfauthor={Research draft prepared with OpenAI ChatGPT for ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small ProveIt / Unknot recognition}
+\fancyhead[R]{\small Port-register compression}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\allowdisplaybreaks[2]
+\newcommand{\F}{{\mathbb F_2}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\title{\LARGE Singular-Safe Port Compression\\ and Finite-State Multiplicity Registers\\[0.5em]
+\large Exact homology beyond direct-sum sharing, with a conditional\\ route to quasi-polynomial unknot recognition}
+\author{Research continuation for the ProveIt project}
+\date{8 October 2026\quad /\quad Reproducible research draft}
+\begin{document}
+\maketitle
+\begin{abstract}
+Explicit chain-object multiplicity remains an asymptotic obstruction in the
+ProveIt Khovanov scanner. Literal direct-sum sharing does not describe coupling
+between copies. We develop an exact scalar-complex backend for a different
+representation: small template differentials repeated over exponentially many
+Boolean words, connected by a bounded number of rank-one channels, called
+ports. The port coordinates are given by layered weighted automata over
+$\F$, optionally restricted to an explicitly supplied deterministic language.
+
+A singular-safe bordered-rank formula reduces the calculation to a matrix
+with at most $2r$ rows and columns, where $r$ is the port count. Its use does
+not require an inverse of the port interaction matrix. Finite-state row
+spaces and parity pairings construct this matrix without enumerating the
+multiplicity domain. The same primitives check the full square-zero identity
+and minimize the port count exactly for the chosen base differential,
+without increasing register width. We prove a sharp rank-budget threshold
+for decision saturation and a tensor-amplification obstruction to automatic
+closure of the representation.
+
+The resulting algorithm is polynomial in the explicit register presentation,
+not in the virtual chain dimension. A certified quasi-polynomial-time
+presentation producer would therefore yield a quasi-polynomial recognizer;
+no such producer for arbitrary diagrams is established here. The package
+contains proofs, standard-library Python, 48 unit tests, 4,352 exhaustive
+rank-update comparisons, 404 braid-closure cube audits, and both favorable
+and unfavorable paired measurements. Exponentially large abstract examples
+are not presented as knot benchmarks or as evidence of an unrestricted
+recognition bound.
+\end{abstract}
+\clearpage
+\tableofcontents
+\bigskip
+\noindent\textbf{Reading guide.}
+Sections~\ref{sec:border}--\ref{sec:complexity} give the exact algebra,
+finite-state construction, validity test, and presentation-size bound.
+Sections~\ref{sec:budget} and~\ref{sec:amplification} establish the sharp
+cancellation budget and a limitation on propagating scalar ports.
+For implementation and evidence, read Sections~\ref{sec:integration}
+and~\ref{sec:experiments}, then Appendix~\ref{app:files}.
+The constructive diagram-to-presentation question is isolated in
+Theorem~\ref{thm:conditional} and the research agenda.
+\newpage
+
+\section{The bottleneck and the precise advance}
+\label{sec:advance}
+
+\subsection{What was inspected}
+The inspected ProveIt implementation stores the objects of each scanning
+stage in explicit lists, interns matching types, and uses sparse, prioritized
+unit cancellation. The complete default method still has an exponential
+general guarantee. Our source audit covers the project README, the beginning
+of \code{scan_fast.py}, and the maintained structural and radical-transfer
+sections; it is not a full checkout audit \cite{repo-readme,repo-scan,
+repo-structural,repo-radical}. The observed branch commit was
+\code{81a387aada56bb180649a98c21c078cb89efcfde}. The scanner blob was checked at
+that commit. Other inspected blobs and the exact scope of their retrieval
+are recorded separately in \code{provenance.json}.
+
+Two existing ideas are particularly relevant. Component sharing compresses
+\emph{literal direct sums}: equal differential components may be represented
+once with a multiplicity. Residue prediction determines how many matching
+copies survive scalar-unit cancellation, but not all surviving maps. The
+present work changes the multiplicity representation rather than merely
+accelerating another coefficient operation. It permits nonzero maps between
+copies, including examples whose entire differential support graph is
+connected.
+
+This is a different contribution from the earlier twist, rank-two braid,
+extremal-window, graded-occupancy, and common-disk radical-transfer routes.
+It also has a different limitation: our verified algorithm operates on
+closed, scalar chain complexes. A closed homology rank is not a replacement
+for the relative chain-homotopy data of an open tangle.
+
+\subsection{Relation to the literature}
+Bar--Natan's local simplification method provides the computational setting
+\cite{barnatan}. Kelom\"aki and Sch\"utz show that the usual scanning and
+explicit-basis divide-and-conquer algorithms can require exponential time
+even on certain positive or alternating three-braids, while a different
+algorithm computes three-braid homology in polynomial time \cite{kelomaki}.
+The distinction between an explicit basis and a succinct description is
+therefore substantive, not merely a programming preference.
+
+The linear algebra below uses classical rank-factorization and bordered
+matrix operations. The register representation is a layered version of a
+weighted automaton; forward-space methods have established polynomial
+algorithms \cite{kiefer}, and matrix-product representations also fit the
+tensor-train viewpoint \cite{oseledets}. We do not claim these ingredients,
+Lucas parity, or the elementary rank inequality as new discoveries. The
+contribution is their precise synthesis into a singular-safe, exact,
+proof-audited interface for coupled multiplicities, including optimal
+fixed-base port reduction, domain restriction, and explicit failure modes.
+Literature priority for this combined formulation has not been established.
+
+Lackenby's July 2026 hierarchy paper is a separate route. Section 9 explicitly
+leaves several operation costs and controlling parameters outside a complete
+running-time estimate \cite{lackenby}. The scalar-complex results here neither
+supply those missing geometric operations nor contradict the announced
+quasi-polynomial program motivating the repository.
+
+\subsection{Status of the claims}
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}Xp{0.19\linewidth}@{}}
+\toprule
+Claim & Scope & Status\\
+\midrule
+Small bordered core & Arbitrary binary low-rank matrix updates, including singular interaction & Proved and tested\\
+Succinct homology & Valid port-register complexes with explicit finite-state descriptions & Proved and implemented\\
+Minimum port count & Fixed base differential and homogeneous scalar ports & Proved and implemented\\
+Knot interpretation & A separate certified association with closed Khovanov homology & Conditional on provenance\\
+General quasi-polynomial recognition & Arbitrary ordinary knot diagrams & Not established by this work\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The measurements support a potential kernel improvement, not a default-backend
+change. A producer that first expands a small cube and then applies our
+interface is much slower than direct rank computation on that cube. The
+useful regime is one in which the producer avoids expansion in the first
+place.
+
+\section{Scalar complexes, templates, and ports}
+\label{sec:model}
+
+All coefficient arithmetic is over $\F$. We use cochain conventions:
+a differential raises homological degree by one. Quantum grading is not
+needed for the total-rank decision studied here and is not computed by the
+prototype.
+
+\begin{definition}[Port-register presentation]
+For each block $\nu$, choose a finite graded space $T_\nu$ of dimension
+$d_\nu$, a degree-one matrix $A_\nu$ satisfying $A_\nu^2=0$, and a domain
+$\Omega_\nu\subseteq\{0,1\}^{m_\nu}$. In the basic model the domain is all
+words. The language-restricted model supplies an explicit layered
+deterministic automaton accepting exactly $\Omega_\nu$.
+
+Set
+\begin{equation}
+ C=\bigoplus_\nu T_\nu\otimes\F^{\Omega_\nu},\qquad
+ A=\bigoplus_\nu A_\nu\otimes I_{|\Omega_\nu|},\qquad D=A+UV,
+ \label{eq:model}
+\end{equation}
+where $U$ has $r$ columns and $V$ has $r$ rows. Port $j$ has a prescribed
+integer $\ell_j$: its row in $V$ is supported in degree $\ell_j$, and its
+column in $U$ is supported in degree $\ell_j+1$. At each block and word,
+a weighted register simultaneously specifies the $d_\nu r$ coordinates
+of $U$ and the $d_\nu r$ coordinates of $V$. Validity requires $D^2=0$.
+\end{definition}
+
+Thus a port is a homogeneous rank-one channel, not a topological boundary
+circle or a cobordism generator. Several ports can be linearly dependent,
+and cancellation can make $UV=0$ even when neither factor is zero.
+No positivity is assumed for differential entries. Multiplicity counts,
+by contrast, are ordinary nonnegative integers and are never reduced
+modulo two.
+
+Write
+\begin{equation}
+ N=\sum_\nu d_\nu|\Omega_\nu|,\quad
+ q_\nu=\rk A_\nu,\quad
+ q=\sum_\nu q_\nu|\Omega_\nu|,\quad
+ \beta_0=\sum_\nu(d_\nu-2q_\nu)|\Omega_\nu|.
+ \label{eq:basecounts}
+\end{equation}
+The potentially enormous integers $N,q,\beta_0$ have small binary
+representations relative to the explicitly listed register lengths.
+The main target is
+\begin{equation}
+ \beta(D)=\dim_\F H(C,D)=N-2\rk D.
+ \label{eq:beta}
+\end{equation}
+The last equality uses $D^2=0$, hence $\im D\subseteq\ker D$.
+Applying it to an arbitrary matrix without the square-zero hypothesis
+would not compute homology.
+
+\subsection{The knot criterion and its provenance requirement}
+For a validated one-component classical knot diagram, total unreduced
+Khovanov rank two over $\F$ detects the unknot. Here is the precise chain
+of implications used by the project. Shumakovitch's splitting over
+characteristic two gives twice the reduced total rank
+\cite[Corollary 3.2.C]{shumakovitch}. If the reduced rank over $\F$ is one,
+the universal coefficient theorem bounds its rational rank by one.
+That rational rank is nonzero: the reduced Jones Euler characteristic
+has value one at its standard identity specialization for a knot.
+Kronheimer--Mrowka's detection theorem then implies that the knot is
+trivial \cite{kronheimer}. The unknot itself has unreduced rank two.
+
+For completeness, the characteristic-two splitting comes from the marked
+point map $X$ and the dot-derivative map $\nu$, which commute with the chain
+differential and satisfy
+\[
+ X^2=\nu^2=0,\qquad X\nu+\nu X=I.
+\]
+These identities split the complex into two isomorphic copies of the
+reduced complex, with quantum shifts ignored. They explain why the factor
+two is a mathematical feature, not a numerical convention.
+
+\begin{remark}[An abstract rank-two complex is not a knot certificate]
+The presentation \eqref{eq:model} alone says nothing about which diagram,
+if any, it describes. The implementation deliberately emits
+\code{topological_verdict: null}. A trusted diagram-to-complex constructor,
+or a separately verified equivalence certificate, is needed before the
+rank criterion can be used as a topological verdict. Link inputs also
+require their own interpretation; the one-component promise is not dropped.
+\end{remark}
+
+\section{A bordered-rank formula without an inverse assumption}
+\label{sec:border}
+
+\begin{lemma}[Reflexive inverse from a rank minor]
+\label{lem:inverse}
+Let $A\in\F^{a\times b}$ have rank $q$. There is a matrix
+$h\in\F^{b\times a}$ satisfying
+\begin{equation}
+ AhA=A,\qquad hAh=h.
+ \label{eq:reflexive}
+\end{equation}
+It is constructible by elementary elimination. If $I,J$ select an
+invertible $q\times q$ rank minor $M=A[I,J]$, then
+$h=E_JM^{-1}E_I^T$ is such a matrix.
+\end{lemma}
+\begin{proof}
+The selected columns span the column space of $A$, and the selected rows
+of those columns are independent. Consequently
+$A=A[:,J]M^{-1}A[I,:]$. Substitution gives $AhA=A$. The second identity
+follows by replacing the middle $E_I^TAE_J$ with $M$. The empty rank-zero
+minor gives $h=0$, including zero-dimensional cases. This is a reflexive
+generalized inverse, not a positive-definite or Moore--Penrose construction.
+\end{proof}
+
+\begin{theorem}[Singular-safe port core]
+\label{thm:border}
+Let $A\in\F^{a\times b}$, $U\in\F^{a\times r}$, and
+$V\in\F^{r\times b}$. Choose $h$ as in Lemma~\ref{lem:inverse}, and define
+\begin{equation}
+ U_0=(I-Ah)U,\qquad V_0=V(I-hA),\qquad E=I_r+VhU.
+ \label{eq:residuals}
+\end{equation}
+Let $\overline U$ consist of independent actual rows spanning the row
+space of $U_0$, and let $\overline V$ consist of independent actual
+columns spanning the column space of $V_0$. If these ranks are $s,t$, put
+\begin{equation}
+ K=\begin{pmatrix}0_{s\times t}&\overline U\\
+                   \overline V&E\end{pmatrix}.
+ \label{eq:core}
+\end{equation}
+Then
+\begin{equation}
+ \boxed{\rk(A+UV)=\rk A+\rk K-r.}
+ \label{eq:rankformula}
+\end{equation}
+The core has $(s+r)\times(t+r)$ entries, with $s,t\le r$. The matrix $E$
+may be singular or zero. No inverse of $E$ is used.
+\end{theorem}
+\begin{proof}
+Consider the bordered matrix
+\[
+ B=\begin{pmatrix}A&U\\V&I_r\end{pmatrix}.
+\]
+Subtracting $U$ times the bottom block row from the top block row shows
+that $\rk B=r+\rk(A+UV)$; subtraction equals addition in $\F$.
+
+The reflexive identities decompose the domain of $A$ as
+$\im h\oplus\ker A$ and its codomain as $\im A\oplus\ker h$. On the
+first summands $A$ and $h$ are inverse isomorphisms. Choose compatible
+bases so that both are the appropriate rectangular versions of
+$\operatorname{diag}(I_q,0)$. In these bases write
+$U=(U_1,U_2)^T$ and $V=(V_1,V_2)$. Eliminating the $I_q$ block from $B$
+leaves
+\[
+ \begin{pmatrix}0&U_2\\V_2&I_r+V_1U_1\end{pmatrix},
+\]
+and therefore adds exactly $q$ to the rank. In the same bases $U_0$ has
+rows $(0,U_2)^T$, $V_0$ has columns $(0,V_2)$, and $VhU=V_1U_1$.
+
+It remains to compress the two zero-corner directions. An invertible row
+operation on the top row block puts any chosen row basis of $U_0$ first
+and makes all its other rows zero. Because the upper-left block is zero,
+this does not change $E$ or $V_0$. The analogous column operation on the
+left column block keeps a column basis of $V_0$ and zeroes the others,
+without changing $E$ or the retained rows of $U_0$. Deleting the resulting
+zero rows and columns leaves precisely \eqref{eq:core}, up to independent
+basis changes in its top and left blocks. Thus $\rk B=q+\rk K$.
+Equating the two expressions for $\rk B$ proves the result.
+\end{proof}
+
+\begin{example}[The smallest resonance]
+For $A=U=V=(1)$ one has $A+UV=0$ and $E=0$. An inverse-based update is
+undefined. Theorem~\ref{thm:border} instead has $s=t=0$, $K=(0)$, and
+$1+0-1=0$ as required. This is the essential singular case, not an
+exception to be handled by returning an inconclusive result.
+\end{example}
+
+\begin{corollary}[Exact homology from the core]
+\label{cor:homology}
+For a valid presentation \eqref{eq:model}, take
+$h=\bigoplus_\nu h_\nu\otimes I$, using a reflexive inverse of every
+template. Then
+\begin{equation}
+ \boxed{\beta(D)=\beta_0+2r-2\rk K.}
+ \label{eq:homologycore}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Substitute \eqref{eq:rankformula} into \eqref{eq:beta} and use
+$\beta_0=N-2q$.
+\end{proof}
+
+The formula is independent of which rank minor produces $h$, although the
+core matrix itself need not be canonical. It is also valid with redundant
+ports and with zero-dimensional blocks. These edge cases are included in
+the tests, rather than being excluded by an informal genericity assumption.
+
+\subsection{Homological degrees can be retained}
+The implementation reports total rank. The same theorem computes a graded
+profile by applying it separately to each rectangular differential
+$D_i:C^i\to C^{i+1}$, with the ports of degree $i$. If $R_i=\rk D_i$ and
+$N_i=\dim C^i$, then
+\[
+ \dim H^i(C,D)=N_i-R_{i-1}-R_i.
+\]
+The total port count is the sum of these degree-group counts, so summing
+the corresponding cubic bounds remains polynomial. This is an extension
+of the proof, not a claim that the shipped command-line interface already
+outputs quantum grading, integral torsion, representatives, or relative
+chain maps.
+
+\section{Finite-state multiplicity registers}
+\label{sec:register}
+
+\begin{definition}[Layered weighted register]
+A length-$m$ register with $Q$ outputs consists of positive integers
+$b_0,\ldots,b_m$, an initial row $\alpha\in\F^{b_0}$, two matrices
+$T_j^0,T_j^1\in\F^{b_{j-1}\times b_j}$ for every layer, and a terminal
+matrix $O\in\F^{b_m\times Q}$. It evaluates to
+\begin{equation}
+ F(x_1,\ldots,x_m)=\alpha T_1^{x_1}\cdots T_m^{x_m}O.
+ \label{eq:register}
+\end{equation}
+Its width is $B=\max_j b_j$. All layers are explicitly listed; $m$ is not
+an exponentially large repetition count encoded in binary.
+\end{definition}
+
+For block $\nu$ the output count is $Q=2d_\nu r$. The first $d_\nu r$
+bits encode the rows of $U$ at one word, and the next $d_\nu r$ bits
+encode the columns of $V$ at that word. This simultaneous encoding permits
+shared finite-state structure among different port coordinates. It is not
+a requirement to build $Q$ separate automata.
+
+A product of literals is represented by a diagonal register: one state
+per product term, each transition retaining or deleting that state according
+to the selected literal value. In particular, a point indicator needs one
+term, not the exponentially long expansion that an unfortunate polynomial
+basis might produce. General dense transition matrices are also allowed.
+
+\begin{theorem}[Reachable rows with actual witnesses]
+\label{thm:reach}
+The span of the $2^m$ evaluation rows $F(x)$ has a basis consisting of at
+most $B$ actual evaluations. Such a basis and its witnessing words can be
+computed using $O(mB^3+B^2Q)$ binary field operations. The witness
+bookkeeping requires only $O(mB)$ predecessor records.
+\end{theorem}
+\begin{proof}
+At layer zero retain $\alpha$ if it is nonzero. Suppose rows
+$w_1,\ldots,w_s$, each realized by a prefix, span all reachable rows at
+layer $j-1$. Every reachable row at layer $j$ lies in the span of
+\[
+ w_iT_j^0,\quad w_iT_j^1\qquad(1\le i\le s).
+\]
+Conversely these candidates are themselves realized by prefixes. Choose
+an independent subset of the actual candidates, not merely arbitrary
+row-reduced substitutes. There are at most $b_j\le B$ selected rows.
+Induction proves both the spanning property and the existence of actual
+prefix witnesses. At the terminal layer multiply by $O$ and select an
+independent subset again.
+
+There are at most $2B$ candidates per layer; multiplication and elementary
+elimination cost $O(B^3)$ field operations. Terminal multiplication and
+selection cost $O(B^2Q)$. Store each new witness as a predecessor pointer
+and one appended bit. At most $B$ records are retained per layer. Recovering
+the at most $B$ final words then costs $O(mB)$ steps. Copying whole prefixes
+at every layer would instead introduce an avoidable quadratic factor in $m$.
+\end{proof}
+
+This is a specialization of the established forward-space idea for weighted
+automata \cite{kiefer}. Keeping actual witnesses makes the implementation
+and its audit particularly transparent: each claimed basis row is checked
+by replaying an ordinary binary word.
+
+\begin{theorem}[Exact parity pairings]
+\label{thm:pair}
+Let $w(x)=\alpha T_1^{x_1}\cdots T_m^{x_m}$ be the terminal state row,
+and define
+\begin{equation}
+ W_0=\alpha^T\alpha,\qquad
+ W_j=(T_j^0)^TW_{j-1}T_j^0+(T_j^1)^TW_{j-1}T_j^1.
+ \label{eq:gram}
+\end{equation}
+Then $W_m=\sum_x w(x)^Tw(x)$. For terminal coefficient columns $a,b$,
+\begin{equation}
+ \sum_x (w(x)a)(w(x)b)=a^TW_mb.
+ \label{eq:pair}
+\end{equation}
+All sums here are in $\F$.
+\end{theorem}
+\begin{proof}
+Partition the length-$j$ words by their last symbol and apply induction
+to the outer product of their state rows. The scalar formula follows by
+multiplying by $a^T$ and $b$. Dense evaluation of the recurrence costs
+$O(mB^3)$ field operations.
+\end{proof}
+
+\begin{remark}[A Gram matrix is not a rank test in characteristic two]
+\label{rem:gram}
+For the nonzero constant function on $\{0,1\}^m$, $m\ge1$, the evaluation
+matrix has rank one while its self-pairing is $2^m=0$ in $\F$. Thus a Gram
+matrix can vanish on a nonzero row space. The implementation uses reachable
+spaces for ranks and the recurrence \eqref{eq:gram} only for contractions.
+It never substitutes one task for the other.
+\end{remark}
+
+\subsection{How the core is computed without expansion}
+Apply Theorem~\ref{thm:reach} to the simultaneous output register. For each
+retained evaluation and each template coordinate, compute the corresponding
+row of $(I-A_\nu h_\nu)U$ and column of $V(I-h_\nu A_\nu)$. The union of
+these finite lists spans all rows and columns needed for
+$\overline U,\overline V$. Indeed, each coordinate extraction and template
+matrix action is linear in the simultaneous evaluation row.
+
+The entries of $VhU$ are sums, over templates and words, of products of a
+$V$ coordinate and an $hU$ coordinate. Theorem~\ref{thm:pair} computes these
+sums by small terminal coefficient matrices and $W_m$. The implementation
+does \emph{not} build a full $Q\times Q$ output Gram matrix. It contracts
+the $B\times B$ state matrix directly against $B\times r$ port
+coefficient arrays, one template coordinate at a time.
+
+\subsection{Elementary closure properties and their cost}
+A fixed linear transformation of the output functions changes $O$ only;
+it leaves every transition matrix and the width unchanged. A sum of two
+register functions has a direct-sum representation of width at most
+$B_1+B_2$. Their pointwise product has a tensor-product representation of
+width at most $B_1B_2$. These identities follow by distributing matrix
+products or by the elementary identity
+$(aA\otimes bB)=(a\otimes b)(A\otimes B)$.
+
+These are exact operations over $\F$, with no numerical tolerance or
+singular-value truncation. They also expose a danger: repeated pointwise
+products can multiply widths. Closure under an operation is not a
+polynomial bound on the size after a long sequence of such operations.
+
+\section{Regular-language multiplicities and exact cardinalities}
+\label{sec:language}
+
+Boolean multiplicity domains are useful but need not include all words.
+For example, a fixed homological layer may correspond to words of a fixed
+Hamming weight. We allow an explicitly supplied \emph{deterministic} layered
+language automaton, with at most $L$ states per layer, a single initial
+state, and designated accepting terminal states.
+
+The number $a=|\Omega|$ is obtained by dynamic programming with integer
+counts: initialize the initial-state count to one, and for each symbol
+add each state's count to the count of its specified successor. There
+are $O(mL)$ additions of integers with at most $m+1$ bits. Determinism
+matters: counting accepting paths of an arbitrary nondeterministic
+presentation would not in general count accepted words.
+
+\begin{proposition}[Language restriction without coordinate enumeration]
+\label{prop:language}
+A width-$B$ output register can be masked by the indicator of a supplied
+width-$L$ deterministic language using a width-at-most-$BL$ register.
+The core in Theorem~\ref{thm:border}, its validity checks, and the port
+ranks can then be computed over the accepted domain without enumerating
+accepted or rejected words. Exact dimension bookkeeping uses $|\Omega|$,
+not its parity.
+\end{proposition}
+\begin{proof}
+Take the tensor product of the weighted register with the deterministic
+state-transition representation of the language. At the terminal layer
+set an output row to zero unless the language state accepts. The value
+on a word is precisely $\mathbf 1_\Omega(x)F(x)$. Hence the evaluation
+row spaces are those from accepted words, together with extra zero rows.
+The parity pairings are also correct because
+$\mathbf 1_\Omega(x)^2=\mathbf 1_\Omega(x)$ in $\F$.
+
+To see the dimension statement transparently, extend the masked model to
+all Boolean words. Its differential is a direct sum of the desired
+accepted-domain complex and
+\[
+ (T,A_T)^{\oplus(2^m-|\Omega|)}
+\]
+on the rejected domain. No port enters or leaves the latter summand.
+Consequently its dimension, differential rank, and homology dimension
+are respectively
+\[
+ d(2^m-|\Omega|),\qquad q_T(2^m-|\Omega|),\qquad
+ (d-2q_T)(2^m-|\Omega|).
+\]
+Subtract these \emph{known exact integers} from the full-word calculation.
+The small core is unchanged, since all rejected-domain port coordinates
+are zero. This is also the implementation used by the optional language
+wrapper. The argument applies blockwise even when the accepted blocks
+are coupled to each other.
+\end{proof}
+
+\begin{remark}[Do not saturate before removing the known complement]
+The full-word padded model can have enormous homology entirely supported
+on rejected words. A capped value cannot be used for the exact subtraction
+in Proposition~\ref{prop:language}. The implementation first removes the
+known uncoupled complement using arbitrary-precision integers, and only
+then forms decision caps for the actual domain. A test with a zero base,
+$2^{40}$ padded copies, and only one accepted word has actual homology
+zero despite the enormous padded complementary homology.
+\end{remark}
+
+The fixed-weight language $|x|=k$ has a deterministic counter with
+$k+2$ states: counts $0,\ldots,k$ and a dead overflow state. Its accepted
+cardinality is $\binom mk$. Thus the representation supports binomial,
+not just power-of-two, multiplicities at polynomial descriptor cost.
+No unproved statement about Khovanov diagrams having such a representation
+is implicit in this observation.
+
+\section{Checking the full differential and minimizing ports}
+\label{sec:validity}
+
+\subsection{A symbolic square-zero check}
+It is insufficient to check the template differentials and assume their
+coupling remains a complex. The following test evaluates all of $D^2$,
+not a sample of its entries.
+
+\begin{theorem}[Finite-state validity certificate]
+\label{thm:square}
+Assume $A^2=0$, and compute $M=VU$. Then
+\begin{equation}
+ D^2=\bigl[\,AU+UM\ \ U\,\bigr]
+       \begin{bmatrix}V\\VA\end{bmatrix}.
+ \label{eq:square}
+\end{equation}
+The condition $D^2=0$ is equivalent to every pairing between a basis of
+the row space of the first factor and a basis of the column space of the
+second factor being zero. Both bases have size at most $2r$ and are
+constructible from the register evaluations without expanding $C$.
+Homogeneity of all ports is checkable by the same evaluations.
+\end{theorem}
+\begin{proof}
+Expanding $(A+UV)^2$ and using $A^2=0$ gives
+$AUV+UVA+U(VU)V$, which is \eqref{eq:square}. Each entry of a product
+matrix is a pairing of a row of the first factor with a column of the
+second. Bilinearity makes vanishing on spanning bases equivalent to
+vanishing on every such pair.
+
+The parity-pairing algorithm computes $M$ exactly. At each template and
+word, $AU+UM$ and $VA$ are linear expressions in the simultaneous
+register output after $M$ is known. The reachable-row theorem therefore
+provides spanning lists for all required rows and columns. Ordinary
+elimination reduces them to at most $2r$ each.
+
+A forbidden degree coordinate is likewise a fixed linear functional of
+the simultaneous output. It vanishes on every word exactly when it
+vanishes on a spanning set of evaluations. Checking these coordinates
+therefore certifies port homogeneity, including functions that vanish
+only after cancellation in the register. With language restrictions,
+use the masked evaluations and the actual accepted domain.
+\end{proof}
+
+This check establishes an algebraic chain complex. It does not establish
+that the complex comes from a planar diagram, nor that its coefficients
+encode valid cobordisms before closure. Such geometry remains the
+responsibility of the producer.
+
+\subsection{The minimum number of ports for a fixed base}
+Redundant ports waste cubic core work and weaken rank-budget obstructions.
+Their redundancy can be removed exactly, without modifying register widths.
+
+\begin{theorem}[Exact port minimization]
+\label{thm:minimize}
+For a fixed base differential $A$, the smallest number of homogeneous
+scalar ports in a factorization of $D-A$ equals
+\begin{equation}
+ r_{\min}=\rk(D-A).
+ \label{eq:rmin}
+\end{equation}
+For a port-register presentation this number and a factorization attaining
+it are constructible in polynomial time in the presentation. Every
+register retains its length, transition matrices, and widths; only its
+terminal output coefficients change. This does not optimize the base $A$.
+\end{theorem}
+\begin{proof}
+First work within one port-degree group and write the update as $UV$ with
+$k$ ports. Choose an actual row basis $P\in\F^{a\times k}$ of $U$ and
+an actual column basis $Q\in\F^{k\times b}$ of $V$. These are computed
+using reachable register evaluations. Choose a right inverse $P^+$ and
+a left inverse $Q^+$ using rank minors. Define
+\[
+ L=UP^+,\qquad R=Q^+V.
+\]
+Because every row of $U$ is in the row space of $P$, and every column of
+$V$ is in the column space of $Q$, one has $U=LP$ and $V=QR$.
+Furthermore, the actual rows of $U$ selected for $P$ give an identity
+submatrix in $L$; the actual columns selected for $Q$ give one in $R$.
+Hence $L$ has full column rank and $R$ has full row rank.
+
+It follows that
+\[
+ \rk(UV)=\rk\bigl(L(PQ)R\bigr)=\rk(PQ).
+\]
+Factor the small matrix $PQ=ST$ using exactly $r'=\rk(PQ)$ columns in
+$S$. Then
+\begin{equation}
+ U'=UP^+S,\qquad V'=TQ^+V
+ \label{eq:portmin}
+\end{equation}
+satisfy $U'V'=UV$ and use $r'$ ports. Every entry of $U'$ and $V'$ is a
+fixed linear combination of original port-coordinate functions. Thus
+\eqref{eq:portmin} changes only terminal outputs of their registers.
+
+Repeat separately for each degree. Distinct groups map distinct source
+degrees to distinct target degrees, so the ranks of these blocks add.
+The result has $\rk(D-A)$ homogeneous ports. Conversely any sum of $s$
+rank-one channels has rank at most $s$, proving minimality. All matrices
+used to form the port transformations have dimensions bounded by the
+original port count. No basis vector of the virtual space is enumerated.
+\end{proof}
+
+\begin{example}[Duplicate channels can disappear completely]
+Two identical columns of $U$ paired with two identical rows of $V$
+contribute twice the same rank-one matrix and cancel over $\F$.
+Both factors may be nonzero, but the optimal port count is zero. The
+prototype checks this on a length-40 register. Minimizing $\rk U$ and
+$\rk V$ separately would not detect every such cancellation: the small
+interaction $PQ$ is essential. Nor can one substitute $\rk(VU)$ for
+$\rk(UV)$: with an even number $M$ of coordinates, $U=\one$ and
+$V=\one^T$ give $VU=0$ but $UV=J_M$ has rank one.
+\end{example}
+
+The theorem is a useful preprocessing operation because it improves both
+the core dimension and the sharp rank budget. It is not an algorithm for
+finding a low-rank perturbation of an arbitrary differential: the quality
+of the \emph{chosen base} is a distinct and harder issue.
+
+\section{The main presentation-size complexity theorem}
+\label{sec:complexity}
+
+Let the number of template blocks be $b$. For block $\nu$, let $d_\nu$ be
+the template dimension, $m_\nu$ the explicitly listed register length, and
+$B_\nu$ the maximum \emph{effective} width after any language mask. The
+unmasked register width times the deterministic language width bounds
+$B_\nu$. Define
+\begin{equation}
+ \begin{split}
+ \Psi_\nu={}&d_\nu^3+(m_\nu+1)B_\nu^3+d_\nu^2B_\nu r\\
+             &+d_\nu B_\nu^2r+d_\nu B_\nu r^2.
+ \end{split}
+ \label{eq:Psi}
+\end{equation}
+
+\begin{theorem}[Polynomial-time homology of supplied presentations]
+\label{thm:main}
+From an explicit port-register presentation one can deterministically
+check the template and port degree conditions, check $D^2=0$, and, when
+valid, compute $\beta(D)$ exactly without enumerating any $\Omega_\nu$.
+The binary field-operation cost is
+\begin{equation}
+ O\!\left(\sum_{\nu=1}^{b}\Psi_\nu+r^3\right).
+ \label{eq:maincost}
+\end{equation}
+The algorithm uses polynomial space in the descriptor. Integer
+cardinality, index, and dimension arithmetic has polynomial bit cost in
+the explicit input length. For supplied width-$L_\nu$ language automata,
+a conservative bound for the cardinality additions is
+$O(\sum_\nu(m_\nu+1)^2L_\nu)$ bit operations.
+The optional exact minimization of Theorem~\ref{thm:minimize} preserves
+this polynomial bound. No factor $2^{m_\nu}$ occurs in the field-operation
+bound.
+\end{theorem}
+\begin{proof}
+For each template, check $A_\nu^2=0$ and compute a reflexive inverse in
+$O(d_\nu^3)$ field operations. Run the reachable-space and parity-pairing
+algorithms. Their per-block work is bounded by
+$O((m_\nu+1)B_\nu^3+d_\nu B_\nu^2r)$, since the simultaneous output
+count is $2d_\nu r$.
+
+Multiplying template matrices into the port coefficient arrays costs
+$O(d_\nu^2B_\nu r)$. The contractions producing $VU$ and $VhU$ cost
+$O(d_\nu B_\nu^2r+d_\nu B_\nu r^2)$. Acting on the at most $B_\nu$
+retained evaluations to form quotient and validity rows has the same
+bounds. Their total number is $O(\sum_\nu d_\nu B_\nu)$; each row has
+at most $2r$ bits, so eliminating those lists costs
+$O(\sum_\nu d_\nu B_\nu r^2)$. Checking all pairings of the two small
+validity bases and reducing the core costs $O(r^3)$.
+
+Equations \eqref{eq:basecounts} and \eqref{eq:homologycore} finish the
+calculation. Full-word dimensions require only binary shifts. A language
+count uses $O(m_\nu L_\nu)$ additions with $O(m_\nu)$-bit operands,
+which gives the stated conservative cardinality cost. Dimensions and
+ranks have at most
+\[
+ O\!\left(\max_\nu m_\nu+\log\bigl(1+\sum_\nu d_\nu\bigr)\right)
+\]
+bits. All explicitly supplied degree labels and matrix indices are also
+accounted for by the input bit length.
+
+The stored transition matrices, template matrices, terminal coefficient
+arrays, small cores, and reachable witnesses occupy polynomial space.
+In particular, witness construction uses shared predecessor records,
+not arrays indexed by all words. Port minimization adds row-space
+extraction and matrices of size at most $r$, together with fixed linear
+output transformations; its cost fits the same polynomial estimate.
+\end{proof}
+
+The estimate is conservative elementary linear algebra, not an assertion
+that Python takes one machine instruction per field operation. Arbitrary-
+precision bit rows often make the implementation substantially faster
+than that elementary estimate. Conversely the measured timings cannot
+be used to replace the proof with a fitted exponent.
+
+\subsection{A concrete algorithm contract}
+A producer may provide a compressed presentation, but the consumer does
+not trust cached ranks or an asserted square-zero identity. It performs
+these steps:
+\begin{enumerate}[label=\arabic*.,leftmargin=*,itemsep=2pt]
+\item Validate template shapes and degrees, build any deterministic language
+mask, and compute the accepted multiplicities as integers.
+\item Compute template inverses, finite-state evaluation bases, parity
+pairings, and the complete small square-zero check.
+\item Optionally minimize the homogeneous ports while preserving the base.
+\item Construct $\overline U,\overline V,E,K$, compute $\rk K$, and evaluate
+\eqref{eq:homologycore}; remove any known padded complementary summands
+before applying a decision cap.
+\item Return the algebraic result and its replay data. Apply a topological
+verdict only in a caller with independent diagram-to-complex provenance.
+\end{enumerate}
+The shipped \code{verify} command recomputes this contract and compares
+its canonical output with the recorded certificate. It shares the solver
+implementation and is therefore a \emph{replay checker}, not a separately
+implemented proof checker. The independent small-matrix and crossing-cube
+audits provide different checks, but are finite tests rather than formal
+verification.
+
+\subsection{What yields a quasi-polynomial recognition bound}
+\begin{theorem}[Constructive, conditional recognition theorem]
+\label{thm:conditional}
+Let $n\ge2$ be the encoded input length of a validated knot diagram.
+Suppose a proved, constructive procedure produces and certifies a
+presentation whose homology is that of its closed unreduced Khovanov
+complex over $\F$. Suppose its construction and provenance-verification
+cost is $n^{O(1)}2^{O(\sigma(n))}$, the number of blocks and all register
+lengths are polynomial in $n$, and
+\[
+ d_\nu,\ B_\nu,\ r\ \le n^{O(1)}2^{O(\sigma(n))}
+\]
+with the integer label lengths polynomially bounded as well. Then the
+combined recognition procedure has bit complexity
+\begin{equation}
+ n^{O(1)}2^{O(\sigma(n))}.
+ \label{eq:conditional}
+\end{equation}
+In particular $\sigma(n)=O(\log^2 n)$ gives $n^{O(\log n)}$ time.
+\end{theorem}
+\begin{proof}
+Every term of \eqref{eq:maincost}, and the additional integer bookkeeping,
+has the stated bound after substitution. Add the assumed production and
+verification cost. The rank-two criterion from Section~\ref{sec:model}
+then decides the input knot.
+\end{proof}
+
+This theorem is useful as an implementation target because the consumer
+and all of its costs are now explicit. It is not a substitute for the
+producer hypothesis. Merely postulating a small presentation, finding one
+by exponential search, constructing one after an exponential scan, or
+assuming a short certificate without an efficient verifier does not meet
+the theorem. The largest unresolved task is controlling the construction
+and maintenance of this representation on ordinary diagrams.
+
+\section{Sharp rank budgets and safe decision saturation}
+\label{sec:budget}
+
+\begin{theorem}[Sharp perturbation bound]
+\label{thm:budget}
+For valid square-zero matrices $A,D$ on the same finite graded space,
+with $D-A=UV$ and $r$ ports,
+\begin{equation}
+ |\beta(D)-\beta(A)|\le2\rk(UV)\le2r.
+ \label{eq:budget}
+\end{equation}
+Consequently $\beta_0>2r+2$ is a rank-two obstruction. For the rank-two
+query it is sufficient to retain the base count as
+\begin{equation}
+ \min(\beta_0,2r+3)
+ \label{eq:cap}
+\end{equation}
+along with the core data. After port minimization the optimal fixed-base
+budget is obtained by replacing $r$ with $r_{\min}$.
+\end{theorem}
+\begin{proof}
+The inequalities
+$\rk D\le\rk A+\rk(UV)$ and
+$\rk A\le\rk D+\rk(UV)$ give the rank bound. Equation~\eqref{eq:beta}
+turns it into \eqref{eq:budget}. If $\beta_0>2r+2$, the final homology
+dimension exceeds two. Otherwise the capped value \eqref{eq:cap} retains
+$\beta_0$ exactly, so \eqref{eq:homologycore} is still an exact test for
+equality to two.
+\end{proof}
+
+\begin{proposition}[Sharpness and the failure of a fixed cap of three]
+\label{prop:capsharp}
+The obstruction threshold $2r+2$ cannot be lowered using the rank budget
+alone. The direct-sum cap $\min(3,\beta_0)$ is insufficient for arbitrary
+coupled presentations, even with one port.
+\end{proposition}
+\begin{proof}
+Take $A=0$ on a two-term space of total dimension $2r+2$, with $r+1$
+generators in each degree. Let $D$ contain $r$ disjoint identity arrows.
+Then $D^2=0$, $\rk D=r$, and $\beta(D)=2$. Thus a base dimension of
+$2r+2$ can still lead to rank two. Removing the two isolated generators
+shows the full downward change $2r$ is attained. Conversely, starting
+with $r$ contractible pairs and cancelling all their arrows by an equal
+perturbation attains the upward change $2r$.
+
+For the fixed-cap failure, take $r=1$. A zero base of dimension four
+with a rank-one two-term differential has final homology dimension two.
+Adding two isolated generators gives base dimension six and final
+homology dimension four. In both examples the nontrivial core is the
+same $2\times2$ matrix
+\[
+ \begin{pmatrix}0&1\\1&1\end{pmatrix}
+\]
+of rank two, and both base dimensions would be capped to three. The
+capped base and unchanged core would no longer distinguish the cases.
+\end{proof}
+
+This is an extension-specific warning, not a defect in the maintained
+literal-direct-sum sharing method. Nonnegative multiplicity saturation
+is sound when no differential connects the summands. Coupling introduces
+new cancellations, so the available cancellation rank must enter the
+threshold.
+
+\begin{corollary}[Necessary near-contractibility of a useful unknot base]
+\label{cor:necessary}
+If a fixed-base presentation represents a knot of total rank two, then
+\[
+ r_{\min}\ge \frac{\beta_0-2}{2}.
+\]
+In particular, a huge zero-differential base cannot be repaired into an
+unknot complex using only a small number of scalar ports.
+\end{corollary}
+
+This gives a practical design constraint: a promising producer must
+identify most contractible structure \emph{before} encoding the remaining
+couplings. Assigning every expanded generator to a zero template and
+hoping that a few global channels will reconstruct the differential is
+not a viable general strategy.
+
+\subsection{Future updates need a future budget}
+Suppose, on a fixed ambient space, a current valid differential may later
+receive updates whose ranks sum to at most $R$, and the final differential
+is again valid. The same proof gives a possible homology change of at most
+$2R$. A rank-two obstruction must therefore reserve that whole remaining
+budget. A bound using only channels already processed would be unsound.
+This observation does not automatically apply to future crossing additions,
+which usually change the ambient complex and require relative gluing data.
+
+\section{An obstruction to automatic scalar-port closure}
+\label{sec:amplification}
+
+Finite-state compression solves evaluation and rank extraction for the
+specified model. It cannot by itself make the model closed under every
+operation that occurs in a topological scanner.
+
+\begin{theorem}[Tensor amplification of the minimum port count]
+\label{thm:tensor}
+Fix a base $A$ and an update $\Delta=D-A$ of rank $s>0$. If both the base
+and differential are tensored with an identity on a $q$-dimensional
+multiplicity space, then the minimum scalar-port count for that fixed
+new base is exactly
+\begin{equation}
+ \rk\bigl(\Delta\otimes I_q\bigr)=sq.
+ \label{eq:amplification}
+\end{equation}
+No choice of scalar register-coordinate functions can represent this
+same fixed-base update with fewer than $sq$ ports.
+\end{theorem}
+\begin{proof}
+Choose bases reducing $\Delta$ to an identity block of size $s$ and a
+zero block. Tensoring these invertible basis changes with $I_q$ reduces
+$\Delta\otimes I_q$ to an identity block of size $sq$ and a zero block.
+The lower bound on any port factorization follows from rank. A rank
+factorization realizes equality, so the bound is exact.
+\end{proof}
+
+Even appending $t$ completely passive binary multiplicity factors can
+therefore change a nonzero fixed-base port requirement from $s$ to
+$s2^t$. This is a genuine algebraic obstruction, not a poor choice of
+weighted-automaton basis. It rules out the argument that a compact
+register description alone guarantees small port count under arbitrary
+tensor extension.
+
+There are possible responses, but none is free: absorb the replicated
+update into a newly chosen template; allow structured matrix-valued ports;
+use a recursively factored coupling description; or prove that the
+particular geometric operation has smaller effective rank after additional
+certified cancellations. Each option changes the construction problem and
+needs its own size theorem. The existing structured-tensor and radical
+methods may help with such absorption, but their compatibility with this
+closed scalar interface is not asserted without proof.
+
+\section{Explicit families and what they demonstrate}
+\label{sec:examples}
+
+\subsection{Connected support with one port and rank-two homology}
+Let $M=2^m$, $m\ge2$, and consider the two-term complex
+\begin{equation}
+ \F^M\xrightarrow{\ I_M+\one(e_0+e_1+e_2)^T\ }\F^M.
+ \label{eq:connected}
+\end{equation}
+Use the two-dimensional template with one identity arrow, so the base
+is contractible. The column $U$ is the constant function and the row $V$
+is the sum of three point indicators. A diagonal register of width four
+encodes them for every $m$.
+
+\begin{proposition}[An exponentially large connected example]
+\label{prop:connected}
+The differential in \eqref{eq:connected} has rank $M-1$, and its total
+homology dimension is two. Its undirected differential support graph is
+connected. It has a one-port presentation with a $1\times1$ zero core,
+independent of $m$.
+\end{proposition}
+\begin{proof}
+Put $v=e_0+e_1+e_2$. Then $v^T\one=3=1$ in $\F$.
+If $(I+\one v^T)z=0$, then $z=\one(v^Tz)$, so the kernel is contained
+in the span of $\one$. That vector is in the kernel, giving nullity one
+and rank $M-1$. The two-term cokernel has the same dimension.
+
+For connectedness, the source vertices $0,1,2$ are each adjacent to all
+targets except the corresponding target of the same index. The subgraph
+on these six vertices is a six-cycle. Every target with index at least
+three is adjacent to all three of these source vertices. Every remaining
+source has its identity edge to its own target. Thus all vertices lie
+in one component.
+
+The template inverse gives $U_0=V_0=0$ and
+$E=1+v^T\one=0$. The core consists of this scalar, so
+\eqref{eq:homologycore} gives $0+2-0=2$.
+\end{proof}
+
+This is a strict representation distinction from sharing literal
+connected components \emph{of the supplied matrix}: the input has no
+nontrivial differential-component decomposition to share. It is not a
+lower bound against every algorithm that may first change basis or
+perform cancellation. In particular, explicit scalar elimination will
+reduce this example once it has allocated or otherwise accessed the
+relevant matrix entries. The advantage demonstrated here is that the
+register algorithm need not allocate its virtual generators at all.
+
+For $m=40$, the represented chain space has
+$2^{41}=2,199,023,255,552$ generators. The program also checks $m=200$ and
+$m=1000$ using the same one-port construction. These are \emph{abstract}
+chain complexes. No knot diagrams with these prescribed presentations
+were constructed in this work.
+
+\subsection{Dense parity-sensitive coupling}
+Replace $v$ by $\one$ and restrict the multiplicity domain to words of
+Hamming weight $k$. Write $a=\binom mk$. The resulting nonzero block is
+\begin{equation}
+ I_a+J_a,\qquad J_a=\one\one^T.
+ \label{eq:binomial}
+\end{equation}
+Only one rank-one channel is needed. The unmasked output register has
+width one; the deterministic counter mask has width $k+2$.
+
+\begin{proposition}[Binomial resonance]
+\label{prop:binomial}
+The two-term complex with differential \eqref{eq:binomial} has total
+homology dimension
+\begin{equation}
+ \beta=\begin{cases}2,&\binom mk\text{ is odd},\\0,&\binom mk\text{ is even}.
+ \end{cases}
+ \label{eq:binomialbeta}
+\end{equation}
+The odd case occurs exactly when every nonzero binary digit of $k$ is
+also a nonzero binary digit of $m$.
+\end{proposition}
+\begin{proof}
+Here $E=1+a$ in $\F$. If $a$ is even, then $J_a^2=aJ_a=0$, so
+$(I_a+J_a)^2=I_a$ and the differential is an isomorphism. If $a$ is odd,
+the same kernel argument as above gives nullity one. The case $a=0$
+has zero-dimensional chain groups and belongs to the even case.
+
+For the parity criterion, write $m=\sum_jm_j2^j$. In $\F[t]$,
+\[
+ (1+t)^m=\prod_{j:m_j=1}(1+t^{2^j}).
+\]
+Each exponent in the product is the sum of a unique subset of the
+indicated powers of two. The coefficient of $t^k$ is therefore one
+exactly under the stated binary condition. This is the familiar binary
+Lucas criterion; it is used here as an independent closed-form check,
+not claimed as a new combinatorial theorem.
+\end{proof}
+
+The packaged language examples have the following exact values:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$(m,k)$ & Multiplicity $a$ & Total dimension $2a$ & $\beta$\\
+\midrule
+$(63,31)$ & 916312070471295267 & 1832624140942590534 & 2\\
+$(64,32)$ & 1832624140942590534 & 3665248281885181068 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first case has singular interaction and the second has invertible
+interaction. Both are processed by the same formula. Integer cardinality
+is essential for the virtual dimension, while parity is the correct
+arithmetic for $VhU$; conflating these two roles would destroy the result.
+
+\subsection{Large surviving homology is also represented exactly}
+Take a zero base and the rank-one two-term differential $\one\one^T$ on
+$M$ generators in each degree. Its homology dimension is $2M-2$ for
+$M\ge1$. The register algorithm outputs this integer without a basis of
+that size. This example tests the opposite regime from the contractible
+base: a small number of ports cannot remove the large base homology,
+exactly as Theorem~\ref{thm:budget} predicts.
+
+\section{Integration with the maintained recognizer}
+\label{sec:integration}
+
+\subsection{A deliberately narrow adapter}
+The module \code{portkh.explicit} contains an explicit audit bridge. It
+accepts a scalar, graded, square-zero matrix; chooses vertex-disjoint
+arrows as a square-zero base; factors the residual separately in every
+degree; and constructs a zero-length register. Equality of the resulting
+matrix with the input is checkable by expansion on small cases.
+This is a correctness bridge, not an asymptotic compression algorithm:
+the entire explicit matrix is already present and the template can be
+as large as that matrix.
+
+The companion \code{from_closed_fastscan} adapter targets the inspected
+interned-list API. It refuses a nonempty frontier, non-scalar coefficients,
+inconsistent live counts, mixed closed matching identifiers, and edges
+targeting deleted objects. It was exercised with API-shaped fixtures and
+independent small cubes. It was \emph{not} exercised against a complete
+upstream checkout, the maintained 277-test suite, or the production PD
+corpus. These distinctions are also recorded in the integration notes.
+
+Running this adapter after full scalar elimination is generally redundant:
+the surviving closed complex already has zero differential. Running it
+before that elimination still cannot recover the cost of a prefix scan
+that has already expanded exponentially. A genuine improvement needs a
+producer that emits shared templates and coordinate registers earlier,
+with the required relative information preserved until closure.
+
+\subsection{Data that must not be discarded at an open frontier}
+Before closure, differential coefficients are typed cobordisms rather than
+ordinary scalars. Surviving matching multiplicities do not determine all
+maps; the maintained radical discussion already gives examples of this
+issue \cite{repo-radical}. The present use of a generalized inverse over
+$\F$ does not bypass that category structure. In particular, it does not
+license scalar mixing of inequivalent boundary objects, nor transfer of
+a common-disk radical exponent to an uncertified arbitrary PD frontier.
+
+A future relative adapter must state the object types of its ports,
+the coefficient algebra of its maps, and the continuation information
+carried by the compressed basis. A theorem about the rank of one closed
+complex does not imply equivalence under every future gluing operation.
+
+\subsection{An adoption gate based on structural cost, not optimism}
+The natural first integration is an opt-in diagnostic, not replacement of
+\code{scan_fast.py}. A producer should report template dimensions, raw
+and minimized port counts, effective register widths, accepted-word
+counts, estimated descriptor storage, and the cost of obtaining all of
+those data. It should preserve the current fallback state until the new
+operation has passed its checks.
+
+For ordinary already-expanded matrices, the bridge should remain disabled
+by default: the measured controls below show pronounced overhead. For a
+native compressed producer, an admission test can compare a bound such
+as \eqref{eq:maincost} with an explicit-allocation estimate. Such a test
+is a resource policy, not a knot invariant. A declined conversion or
+exhausted budget must fall back or report unknown, never be interpreted
+as proof of nontriviality.
+
+The supplied package does not modify the repository, enable a new default,
+or assert production compatibility beyond the inspected interface. The
+recommended integration directory is a new named research subdirectory,
+not an assumed unused numeric report identifier.
+
+\section{Validation and measured performance}
+\label{sec:experiments}
+
+\subsection{What was actually run}
+The standard-library test suite passes 48 tests. Several tests include
+seeded loops: 1,000 random rectangular rank updates, 300 reflexive-inverse
+checks, 200 rank factorizations, 300 random finite-state reachability and
+pairing comparisons, 250 coupled two-term examples, 160 three-term
+validity trials, 100 exact port-minimization comparisons, and 70
+language-restricted dense comparisons. Additional tests cover literal
+truth tables, long shared witnesses, malformed input, degree failures,
+empty dimensions, duplicate ports, unsafe saturation, large dimensions,
+CLI replay, and certificate tampering. These are not all independent
+mathematical tests of the same strength; the raw test log identifies
+exactly what each method checks.
+
+The separate validation script exhausts all binary $2\times2$ bases with
+one or two ports. This gives 4,352 update cases, including 1,728 with a
+singular middle matrix. Every result agrees with a distinct low-pivot
+rank implementation. The unit suite additionally compares against a
+dense list-of-bits elimination routine, rather than relying exclusively
+on the production bit-row elimination.
+
+An independent braid-closure cube constructor audits every signed
+2-strand word of length at most five and every signed 3-strand word of
+length at most four: 404 distinct presentations, of which 210 have one
+component and 194 have more than one. Many presentations represent the
+same knot or link. The largest cube dimension is 246. Every cube is
+checked for $d^2=0$, converted through the explicit bridge, re-expanded
+for equality, and compared in total homology. Each also has a mirror
+homological-profile check. The mirror set overlaps the original set;
+it is not another 404 distinct knot types.
+
+Known small examples and tests of braid relations, cancellation, and
+positive and negative stabilization supplement this enumeration. The
+cube oracle is independent of the register and port construction, but
+is itself a new small implementation rather than an external production
+knot package. These finite checks support the code; they do not replace
+the proofs or constitute formal verification.
+
+The files \code{data/validation.json}, \code{data/unit-tests.txt},
+\code{data/benchmarks.json}, and the example certificates preserve the
+actual results. The scripts contain fixed random seeds. No full upstream
+checkout validation or end-to-end production recognition benchmark was
+run in this session.
+
+\subsection{Paired timings and their interpretation}
+All reported timings use seven rounds with randomized order among a
+baseline, the port implementation, and a second identical baseline.
+The A/A ratio measures local timing variability. Small cases use batches
+of five calls. Imports, parsing, and disk I/O are excluded. Host and
+Python metadata, every order, and every raw duration are stored in the
+JSON, so the displayed ratios can be reconstructed. A paired ratio is the
+median of within-round baseline/treatment ratios, not necessarily the
+quotient of the two marginal median times.
+
+For the connected abstract family, the baseline is intentionally favorable:
+it constructs only the nonzero $M\times M$ block from its closed formula,
+then performs bit-packed elimination. It does not allocate a
+$2M\times2M$ total differential. The treatment analyzes an already
+prepared compact register, including degree and square-zero validation.
+Both therefore start from compact descriptions, but their construction
+and checking work is not identical; the exact timed tasks are recorded.
+The family also has a closed-form answer: this benchmark compares two
+representation paths, not the best possible specialized algorithm for
+this family.
+
+\input{measurements.tex}
+
+The crossover is visible rather than hidden. At $m=4$ the register method
+is approximately $\SlowFour$ times slower. At $m=10$ the median paired
+ratio is $\GainTen$, close to the observed crossover. At $m=12$ and
+$m=14$ the paired ratios are $\GainTwelve$ and $\GainFourteen$. These
+are abstract-kernel observations on this host, not a fitted asymptotic
+law and not knot-recognition speedups. The largest A/A variation in
+these tiny measurements also argues against excessive precision in
+performance claims.
+
+The compressed-only cases demonstrate that the implementation follows its
+representation-size theorem: length 40, 200, and 1000 examples return the
+proved rank-two homology while the virtual dimensions are $2^{41}$,
+$2^{201}$, and $2^{1001}$. No explicit run was attempted at those sizes,
+and no hypothetical elapsed time or speedup is attributed to one.
+
+The four small knot-cube controls make the limitation concrete. Their
+prepared-cube direct baseline is much faster than the combination of the
+explicit-to-port producer and the symbolic solver. Ratios around
+$0.010$ correspond to roughly two orders of magnitude of overhead.
+This is not a reason to discard the representation theorem, but it is a
+reason not to install the audit bridge as a default optimization.
+
+\section{Further research questions and prioritized tasks}
+\label{sec:research}
+
+\subsection{Native producers before expansion}
+The first empirical task is to instrument actual scan stages and record
+candidate template decompositions before object allocation. Can a stage
+emit registers directly, rather than discover repeated rows after
+expansion? A useful experiment must include production cost, certificate
+cost, failed attempts, and peak storage. A small port count measured only
+after exponential preprocessing is not progress toward the target bound.
+
+\subsection{Choosing the base, not just minimizing its ports}
+Theorem~\ref{thm:minimize} solves the optimal port count for a fixed $A$.
+The next mathematical problem is to choose a compact template base that
+simultaneously has small homology, small update rank, and a short
+coordinate description. Corollary~\ref{cor:necessary} supplies a necessary
+condition for unknot presentations. Can suitable bases be obtained from
+certified local cancellation families rather than from general matrix
+optimization?
+
+\subsection{Relative, typed ports at tangle frontiers}
+Can ports be defined in the relevant additive cobordism category so that
+continuation preserves a compressed representation? The required theorem
+must identify which basis changes respect object types, which contractions
+remain valid after gluing, and how coefficient size enters the cost.
+Merely applying the scalar formula to a residue complex loses information.
+
+\subsection{Absorbing tensor amplification}
+Theorem~\ref{thm:tensor} proves that naive scalar-port propagation fails
+under passive multiplicity amplification. Investigate structured
+matrix-valued channels or recursive factorizations that can absorb
+$\Delta\otimes I$ without $q$ separate scalar ports. The central question
+is whether their singular interactions still admit exact small-core
+elimination with a proved size bound.
+
+\subsection{Graded domains and simultaneous coordinate minimization}
+The deterministic-language extension represents exact Hamming-weight
+slices, but a practical constructor may create more complicated degree
+conditions. Determine which conditions admit small deterministic
+presentations and whether output registers can be minimized jointly with
+those conditions. Avoid implicitly replacing a small nondeterministic
+object by an exponentially large deterministic one.
+
+\subsection{A diagram-level constructive parameter theorem}
+Find a geometric or combinatorial parameter whose bounded value guarantees
+an efficiently obtainable template-and-port presentation, with explicit
+bounds for $d_\nu,B_\nu,r$, and the number of stages. Theorem~\ref{thm:conditional}
+then turns that theorem into a runtime result. The parameter must be
+computable, certified, or supplied with the input; existentially optimal
+scan orders alone do not satisfy the contract.
+
+\subsection{Adversarial lower bounds for register width}
+Port rank and automaton width are independent sources of cost. Construct
+families whose updates have small rank but whose coordinate functions
+require large widths for natural variable orders. Conversely, identify
+geometric transformations that change the variable order without
+expanding the complex. Such lower bounds would clarify which representation
+failures are intrinsic and which are artifacts of a poor layout.
+
+\subsection{Composing with the existing restricted algorithms}
+The twist, graded-occupancy, extremal-window, and radical-transfer methods
+can produce manageable local complexes in regimes where generic scanning
+is expensive. Study whether their interfaces give structured low-rank
+couplings between blocks, rather than multiplying object counts. Every
+composition theorem must count producer cost and preserve the exact
+hypotheses of each local result, especially common-disk assumptions and
+window guard degrees.
+
+\subsection{Independent verification and formalization}
+The replay checker currently shares its arithmetic implementation with
+the solver. A smaller independent checker could verify rank factorizations,
+reachability closure, witness evaluations, small pairings, and the rank
+minor identities. Formalization should begin with Theorem~\ref{thm:border}
+and the rank-minimization theorem, then establish the automaton and
+language semantics. Topological provenance is a separate formalization
+layer, not an automatic consequence of binary matrix verification.
+
+\subsection{Production acceptance criteria}
+Before a default change, run the full maintained suite, production
+PD examples, several scan orders, and realistic hard-knot families.
+Measure failed conversion overhead and capped fallback behavior. Only
+then investigate a Rust port or more elaborate dense kernels. The present
+positive abstract cases and negative knot controls define an honest
+starting point for that work rather than a substitute for it.
+
+\section{Conclusion}
+The main completed advance is an exact polynomial-in-description algorithm
+for homology of finite-state, port-coupled repeated templates. It remains
+valid at singular interactions, checks the whole differential, supports
+regular-language multiplicities, and removes every redundant scalar port
+for a fixed base without increasing register width. These are executable
+and mathematically specified operations, not an appeal to an unspecified
+compression oracle.
+
+The limits are equally concrete. A useful unknot base must already be
+nearly contractible relative to its port budget; tensoring can force
+exponential port amplification; open-frontier continuation needs typed
+relative data; and the available explicit bridge is slower on the measured
+small knot cubes. The next breakthrough needed for this route is therefore
+a constructive theorem about \emph{producing and maintaining} suitable
+representations. The consumer-side algebra and its exact cost accounting
+are provided here as a platform for proving such a theorem.
+
+\appendix
+\section{Independent small-cube construction}
+\label{app:cube}
+The audit cube represents a braid with $s$ strands and $n$ crossings by
+$s(n+1)$ level vertices. Unaffected strands are joined vertically. At an
+active crossing, a smoothing either joins the two strands vertically or
+joins the two upper endpoints and the two lower endpoints. For positive
+crossings the two choices are assigned cube coordinates zero and one in
+that order; for negative crossings the order is reversed. Closure joins
+the first and last level at each strand. A union--find computation produces
+the smoothing circles.
+
+Each circle is labeled by $1$ or $x$ in $\F[x]/(x^2)$. The cube differential
+uses the standard Frobenius maps
+\[
+ m(1,1)=1,\quad m(1,x)=m(x,1)=x,\quad m(x,x)=0,
+\]
+\[
+ \Delta(1)=1\otimes x+x\otimes1,\qquad \Delta(x)=x\otimes x.
+\]
+An edge of the cube changes the number of circles by one. Comparing the
+circle partitions identifies whether it is a merge or a split and which
+labels are unaffected. The homological degree is the number of one
+resolutions minus the number of negative crossings. Sign assignments are
+unnecessary over $\F$. The standard Frobenius identities make square faces
+commute; their two paths cancel in characteristic two, giving $d^2=0$.
+The script additionally computes and checks that square directly.
+
+The oracle has strict crossing and dimension caps. It is deliberately
+exponential and independent of the register representation. Its purpose is
+to validate small closed complexes and the explicit bridge, not to provide
+an alternative scalable recognizer. The supplied figure-eight example
+records the exact braid word, coefficient field, grading convention,
+constructor, and resulting total rank ten.
+
+\section{File formats, replay, and reproducibility}
+\label{app:files}
+The matrix convention is fixed throughout: an integer row has its column
+zero coefficient in the least significant bit. The JSON format
+\code{portkh-1} stores template differential rows, template degrees, port
+degrees, and the complete register matrices. At one template word, output
+bits are grouped by template coordinate: first $d r$ bits for the rows of
+$U$, followed by $d r$ bits for the columns of $V$. Thus a $V$ column is
+stored as an $r$-bit word, avoiding ambiguity about matrix orientation.
+
+A language descriptor supplies its layer widths, deterministic successor
+arrays for both symbols, initial state, and accepting states. Language
+files are arrays aligned with the template blocks; a null entry means
+all words. The optional language wrapper masks ports and removes the
+known uncoupled complement exactly, as proved in
+Proposition~\ref{prop:language}.
+
+From the package root, no dependency installation is required:
+\begin{verbatim}
+export PYTHONPATH="$PWD/src"
+python -m unittest discover -s tests -v
+python scripts/validate.py
+python scripts/benchmark.py
+python scripts/make_tables.py
+sh build.sh
+\end{verbatim}
+The basic large certificate can be replayed by
+\begin{verbatim}
+python -m portkh verify \
+  examples/connected_singular_40.json \
+  examples/connected_singular_40.certificate.json
+\end{verbatim}
+For the language-restricted singular example:
+\begin{verbatim}
+python -m portkh verify \
+  examples/binomial_63_31.json \
+  examples/binomial_63_31.certificate.json \
+  --languages examples/binomial_63_31.languages.json
+\end{verbatim}
+The \code{minimize} command writes a new basic presentation with the
+minimum homogeneous port count for its fixed base. It does not accept
+language files directly; a program using language restrictions should
+apply the proven mask first and keep the accepted-domain bookkeeping.
+No numerical randomization occurs in the solver. Randomness is used only
+for reproducible tests and randomized benchmark order.
+
+The archive includes the full source, example inputs and certificates,
+raw validation and timing records, integration notes, an MIT-0 license,
+a source-provenance manifest, and file checksums. The PDF and its TeX are
+both included. Compiling the article uses the adjacent generated
+\code{measurements.tex}. Re-running benchmarks changes timing-dependent
+files; the reproduction script regenerates tables and checksums afterward.
+The measured numbers in the text describe the packaged run, not a promise
+that another host will reproduce identical timings.
+
+\begin{thebibliography}{99}
+\small\setlength{\itemsep}{2pt}\setlength{\parskip}{0pt}
+\bibitem{barnatan}
+D.~Bar--Natan, \emph{Fast Khovanov homology computations},
+Journal of Knot Theory and Its Ramifications 16 (2007), 243--255.
+\href{https://arxiv.org/abs/math/0606318}{arXiv:math/0606318}.
+
+\bibitem{kelomaki}
+T.~Kelom\"aki and D.~Sch\"utz, \emph{On computational complexity of Khovanov
+homology}, 2026 preprint, version 1.
+\href{https://arxiv.org/abs/2601.02119}{arXiv:2601.02119}.
+
+\bibitem{kronheimer}
+P.~B.~Kronheimer and T.~S.~Mrowka, \emph{Khovanov homology is an
+unknot-detector}, Publications Math\'ematiques de l'IH\'ES 113 (2011).
+\href{https://arxiv.org/abs/1005.4346}{arXiv:1005.4346}.
+
+\bibitem{shumakovitch}
+A.~Shumakovitch, \emph{Torsion of the Khovanov homology},
+Fundamenta Mathematicae 225 (2014), 343--364.
+\href{https://arxiv.org/abs/math/0405474}{arXiv:math/0405474v2}.
+In particular, Lemma 3.1.C and Corollary 3.2.C.
+
+\bibitem{kiefer}
+S.~Kiefer, \emph{Notes on Equivalence and Minimization of Weighted Automata},
+2020. \href{https://arxiv.org/abs/2009.01217}{arXiv:2009.01217}.
+
+\bibitem{oseledets}
+I.~V.~Oseledets, \emph{Tensor-Train Decomposition},
+SIAM Journal on Scientific Computing 33 (2011), 2295--2317.
+\href{https://doi.org/10.1137/090752286}{doi:10.1137/090752286}.
+
+\bibitem{lackenby}
+M.~Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+25 July 2026, version 1, especially Section 9.
+\href{https://arxiv.org/abs/2607.23350}{arXiv:2607.23350}.
+
+\bibitem{repo-readme}
+V.~Reshetnikov, ProveIt repository, UnknotRecognition README.
+Inspected 8 October 2026; blob prefix \code{7d80dc0740b2}.
+Full identifiers and inspection scope are in \code{provenance.json}.
+
+\bibitem{repo-scan}
+ProveIt, \path{Topology/UnknotRecognition/fast/fastunknot/scan_fast.py}.
+Inspected blob prefix \code{6c731d0f4d2c}; verified at commit
+\code{81a387aada56}.
+
+\bibitem{repo-structural}
+ProveIt, \path{Topology/UnknotRecognition/synthesis/structural.tex}.
+Inspected blob prefix \code{26b056b9a6f8}.
+
+\bibitem{repo-radical}
+ProveIt, \path{Topology/UnknotRecognition/synthesis/radical.tex}.
+Inspected blob prefix \code{a163430fd6cb}.
+\end{thebibliography}
+\end{document}
