@@ -7,8 +7,11 @@ Milićević (arXiv:2601.01682), Proposition 2.37: for a Freiman-linear
 Bohr set of codimension at most `d + (2r log(σ⁻¹ρ⁻¹))^{O(1)}` and radius at
 least `σ (2r log(σ⁻¹ρ⁻¹))^{−O(1)}`.
 
-`BohrBohrIsBohr D` states the `d = 1`, `G = ZMod N` case with one exponent
-`D` for the `O(1)`. It is a hypothesis (not asserted). Consequence: for
+`BohrBohrIsBohr D` states a normalized `d = 1`, `G = ZMod N` interface with one exponent
+`D` for the `O(1)`. It requires `φ 0 = 0`: the four-point Freiman
+identity alone also permits nonzero constant maps, for which a centered
+Bohr subset of every sublevel set is impossible. This is a conditional
+interface, not an asserted existence theorem. Consequence: for
 fixed `x`, the y-section of a bilinear Bohr variety,
 `{y ∈ B(Ψ;ρ) : |L(y)·x| ≤ ρN}`, contains a genuine Bohr set. This is the
 section-by-section packing route of research notes J.2. -/
@@ -23,10 +26,33 @@ at least `2` so its powers are monotone. -/
 def bohrBohrLoss (r : Nat) (σ ρ : Real) : Real :=
   max 2 (2 * r * Real.log ((σ * ρ)⁻¹))
 
-/-- **Proposition 2.37 (d = 1) as a hypothesis.** -/
+/-- A centered Bohr subset of every positive sublevel forces normalization
+at zero. This explains why the four-point Freiman identity alone is not
+sufficient for the following interface. -/
+theorem bohr_sublevels_require_zero {N : Nat} [NeZero N] (phi : ZMod N → ZMod N)
+    (h : ∀ sigma : Real, 0 < sigma →
+      ∃ (K : Finset (ZMod N)) (rho : Real), 0 ≤ rho ∧
+        bohr K rho ⊆ Finset.univ.filter (fun x => (centeredAbs (phi x) : Real) ≤ sigma * N)) :
+    phi 0 = 0 := by
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  obtain ⟨K, rho, hrho, hsub⟩ := h (1 / (2 * (N : Real))) (by positivity)
+  have hzero : (0 : ZMod N) ∈ bohr K rho := by
+    unfold bohr
+    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun r _ => ?_⟩
+    simpa [centeredAbs] using mul_nonneg hrho (Nat.cast_nonneg N)
+  have hsmall := (Finset.mem_filter.mp (hsub hzero)).2
+  have heps : (1 / (2 * (N : Real))) * N = 1 / 2 := by field_simp
+  rw [heps] at hsmall
+  have hlt : centeredAbs (phi 0) < 1 := by
+    exact_mod_cast hsmall.trans_lt (by norm_num : (1 / 2 : Real) < 1)
+  have hz : centeredAbs (phi 0) = 0 := by omega
+  simpa only [centeredAbs, Int.natAbs_eq_zero, ZMod.valMinAbs_eq_zero] using hz
+
+/-- A normalized one-coordinate Bohr-sublevel hypothesis, motivated by
+Proposition 2.37. Existence of such an exponent is not asserted. -/
 def BohrBohrIsBohr (D : Nat) : Prop :=
   ∀ (N : Nat) [NeZero N] (Γ : Finset (ZMod N)) (ρ σ : Real) (φ : ZMod N → ZMod N),
-    0 < ρ → 0 < σ → IsFreimanLinearOn (bohr Γ ρ) φ →
+    0 < ρ → 0 < σ → IsFreimanLinearOn (bohr Γ ρ) φ → φ 0 = 0 →
     ∃ (Γ' : Finset (ZMod N)) (ρ' : Real),
       (Γ'.card : Real) ≤ 1 + bohrBohrLoss Γ.card σ ρ ^ D ∧
       σ * (bohrBohrLoss Γ.card σ ρ ^ D)⁻¹ ≤ ρ' ∧
@@ -40,18 +66,20 @@ theorem IsFreimanLinearOn.mul_right {N : Nat} {B : Finset (ZMod N)} {L : ZMod N 
   show L y₁ * x + L y₂ * x = L y₃ * x + L y₄ * x
   rw [← add_mul, ← add_mul, this]
 
-/-- **Variety sections contain Bohr sets.** Under `BohrBohrIsBohr D`, for
+/-- **Normalized variety sections contain Bohr sets.** Under `BohrBohrIsBohr D`, for
 each fixed `x` and each `k`, the `y`-section `{y ∈ B(Ψ;ρ) : |L_k(y)·x| ≤ ρN}`
 contains a Bohr set of codimension `≤ 1 + loss^D` and radius `≥ ρ/loss^D`. -/
 theorem variety_section_contains_bohr {D : Nat} (hBB : BohrBohrIsBohr D)
     {N : Nat} [NeZero N] {Ψ : Finset (ZMod N)} {r : Nat} {L : Fin r → ZMod N → ZMod N}
-    {ρ : Real} (hρ : 0 < ρ) (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k)) (x : ZMod N) (k : Fin r) :
+    {ρ : Real} (hρ : 0 < ρ) (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k))
+    (hLzero : ∀ k, L k 0 = 0) (x : ZMod N) (k : Fin r) :
     ∃ (Ψ' : Finset (ZMod N)) (ρ' : Real),
       (Ψ'.card : Real) ≤ 1 + bohrBohrLoss Ψ.card ρ ρ ^ D ∧
       ρ * (bohrBohrLoss Ψ.card ρ ρ ^ D)⁻¹ ≤ ρ' ∧
       ∀ y ∈ bohr Ψ' ρ', y ∈ bohr Ψ ρ ∧ (centeredAbs (L k y * x) : Real) ≤ ρ * N := by
   obtain ⟨Ψ', ρ', hcard, hrad, hsub⟩ :=
     hBB N Ψ ρ ρ (fun y => L k y * x) hρ hρ ((hL k).mul_right x)
+      (by rw [hLzero k, zero_mul])
   refine ⟨Ψ', ρ', hcard, hrad, fun y hy => ?_⟩
   obtain ⟨hyB, hsmall⟩ := Finset.mem_filter.mp (hsub hy)
   exact ⟨hyB, hsmall⟩
@@ -66,20 +94,20 @@ theorem bohr_mono_radius {N : Nat} [NeZero N] (K : Finset (ZMod N)) {ρ ρ' : Re
   exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun r hr =>
     (hx r hr).trans (mul_le_mul_of_nonneg_right h hN)⟩
 
-/-- **Whole variety sections contain Bohr sets.** Under `BohrBohrIsBohr D`,
+/-- **Whole normalized variety sections contain Bohr sets.** Under `BohrBohrIsBohr D`,
 for each `x ∈ B(Γ;ρ)` there is a Bohr set `B(Ψ'';ρ'')` with
 `|Ψ''| ≤ r (1 + loss^D)` (plus `|Ψ|` if `r = 0`) and `ρ'' ≥ ρ / loss^D`
 such that `{x} × B(Ψ'';ρ'') ⊆ V`. -/
 theorem variety_full_section_contains_bohr {D : Nat} (hBB : BohrBohrIsBohr D)
     {N : Nat} [NeZero N] {Γ Ψ : Finset (ZMod N)} {r : Nat} {L : Fin r → ZMod N → ZMod N}
     {ρ : Real} (hρ : 0 < ρ) (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k))
-    (x : ZMod N) (hx : x ∈ bohr Γ ρ) :
+    (hLzero : ∀ k, L k 0 = 0) (x : ZMod N) (hx : x ∈ bohr Γ ρ) :
     ∃ (Ψ'' : Finset (ZMod N)) (ρ'' : Real),
       (Ψ''.card : Real) ≤ Ψ.card + r * (1 + bohrBohrLoss Ψ.card ρ ρ ^ D) ∧
       ρ * (bohrBohrLoss Ψ.card ρ ρ ^ D)⁻¹ ≤ ρ'' ∧ ρ'' ≤ ρ ∧
       ∀ y ∈ bohr Ψ'' ρ'', (x, y) ∈ bilinearBohrVariety Γ Ψ L ρ := by
   classical
-  have hsec := fun k => variety_section_contains_bohr hBB hρ hL x k
+  have hsec := fun k => variety_section_contains_bohr hBB hρ hL hLzero x k
   choose Ψk ρk hcard hrad hsub using hsec
   set rad₀ := ρ * (bohrBohrLoss Ψ.card ρ ρ ^ D)⁻¹ with hrad₀def
   have hloss : (1 : Real) ≤ bohrBohrLoss Ψ.card ρ ρ ^ D :=

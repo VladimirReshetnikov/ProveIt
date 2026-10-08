@@ -20,20 +20,16 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 New work after the last full audit
-  Proofs16PolynomialRetiledLinearity passes a direct production-source Lean
-  check. A generic recurrence-to-tiling theorem now accepts any supplied
-  scale and error, preserving the existing retiled recurrence statement.
-  The new polynomial recurrence gives linear final-axis cells of width
-  at least (zeta/2)*sqrt(m^epsilon), including rounding and the required
-  length-minus-one margin. For sufficiently large phase families, the
-  larger exponent applies under the old input threshold. Frequency coverage
-  and local linearity remain explicit hypotheses; the structural theorem
-  is not supplied. Proofs16PolynomialProductAssembly also passes Lean and
-  propagates the new exponent through MultiplyLinearWith short-parent
-  spectrum covers. It keeps the good-set mass and graph-count bounds, with
-  an explicit localized input-scale threshold. These additions, together
-  with the incoming variety-box and Bohr-doubling modules, await the next
-  combined facade audit; counts below are the last completed audit.
+  Proofs16PolynomialUniformWidth and Proofs16PolynomialLemma6 separately
+  pass production-source checks and transitive axiom checks. They make
+  the spectrum width uniform in floor(Qb sigma) and specialize it to the
+  induced-function setting of Lemma 16.6 above the localized input threshold.
+  Their facade imports are included in the next combined audit, alongside
+  the incoming regular-step, Bohr-section, and biaffine-gluing results.
+  The Bohr-section interface now requires zero normalization: a proved
+  necessity lemma shows that centered Bohr subsets of all positive sublevels
+  force phi(0)=0. Its section consequences require L_k(0)=0 explicitly.
+  Existence of the normalized Bohr-sublevel hypothesis remains unproved.
 
 Verification at this checkpoint
   The completed facade audit includes the simultaneous recurrence and
@@ -59,9 +55,15 @@ Verification at this checkpoint
   every fixed dimension, sufficiently large phase families have a strictly
   larger recurrence exponent under the old rounding-safe width threshold.
   The crossover and dimension constants remain existential.
+  Proofs16PolynomialRetiledLinearity and Proofs16PolynomialProductAssembly
+  also pass the completed full audit. The polynomial recurrence gives
+  retiled linearity cells and propagates through MultiplyLinearWith spectrum
+  covers, keeping the good-set mass and graph-count bounds. The localized
+  input threshold, frequency coverage, and local linearity remain explicit.
+  Incoming off-origin variety-box and Bohr-doubling results are included.
   These additions close no numbered catalogue statement.
-  All 1,373 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,548 public Gowers theorems and found only propext,
+  All 1,377 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,589 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -83,11 +85,11 @@ Verification at this checkpoint
   dimension-two, and quartic inverse thresholds, the low-dimensional
   Corollary 16.11 companions, the stackable-slice reductions, and the
   conditional dimension-three results, the
-  1,373-module Gowers audit checks 5,548 theorems and the same 114/6
+  1,377-module Gowers audit checks 5,589 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,609-module closure and checks equality of the extracted propositions
+  2,613-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
