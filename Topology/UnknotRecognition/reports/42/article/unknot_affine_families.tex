@@ -1,0 +1,91 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage{booktabs,longtable,array,graphicx,xcolor,enumitem,fancyhdr,listings}
+\usepackage{xurl}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{14334A}
+\definecolor{accent}{HTML}{137B80}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+  pdftitle={Affine families and inherited structure in unknot recognition},
+  pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT}}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Affine families and inherited structure}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\sourcepin}{\texttt{ea9cf443c8ce}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!15},showstringspaces=false}
+\title{\color{ink}\textbf{Affine Families and Inherited Structure\\in Unknot Recognition}\\[6pt]
+  \large Certified component optimization, normal-coordinate extraction,\\
+  and reuse of scalar endomorphism spaces}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+  \small ProveIt / Topology / UnknotRecognition\\
+  \small Mathematical development, implementation, and independent model-assisted review}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the ProveIt unknot-recognition program at a pinned repository
+revision. The main arithmetic result replaces enumeration by an exact
+optimization over an entire affine family. For a binary modulus $m$, a
+nonempty solution set $Az=b\pmod m$, and cyclic monodromies
+$h(z)=c+Hz$, we determine
+$\min_z\gcd(m,h_1(z),\ldots,h_r(z))$ in deterministic polynomial bit time.
+The minimum is attained by a constructively produced assignment, without
+integer factorization. Compact dual modular identities certify both
+optimality and infeasibility independently of the optimizer. We connect
+this result to full-boundary assemblies of cyclic surface covers, allowing
+disconnected local covers and correlated seam parameters.
+
+A second contribution extracts signed interval pairings and prism-gap
+contacts directly from admissible binary normal coordinates in tetrahedra,
+with a number of records linear in the triangulation size and independent
+of the number of normal discs. A third implements inheritance of scalar
+endomorphism spaces after verified chain-complex splitting, replacing
+descendant commutator solves by restriction of a transported parent basis.
+A dimension-saturated generator can additionally certify scalar locality
+and permit inheritance through one generator. The article gives proofs, exact-input contracts, independent finite
+checks, paired benchmarks, negative results, and a research agenda.
+These results improve specific represented operations. They do not prove
+a general quasi-polynomial unknot-recognition bound; global state growth,
+geometric admissibility, and hierarchy restart costs remain explicit.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_affine_arithmetic}
+\input{sections/03_certificates}
+\input{sections/04_surface_families}
+\input{sections/05_boundaries}
+\input{sections/06_normal_extraction}
+\input{sections/07_inheritance}
+\input{sections/08_global_complexity}
+\input{sections/09_experiments}
+\input{sections/10_research}
+\input{sections/11_reproducibility}
+\input{sections/bibliography}
+\end{document}

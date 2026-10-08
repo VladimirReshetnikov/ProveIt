@@ -1,0 +1,220 @@
+\subsection{Protocol and independent controls}
+
+All reported timings are completed local runs on the environment recorded
+in the raw JSON, using Python 3.12.14. Measurements are not extrapolated
+from operation counts. Mechanism-level counters are reported separately
+from elapsed time. Historical source is frozen and hashed, and the
+benchmark drivers verify that the relevant dependencies do not change
+during a timing batch.
+
+The two-meridian experiment uses twenty previously published diagrams,
+with their original PDs and labels retained in a separate corpus file.
+It performs nine shuffled measured rounds of five standalone variants:
+baseline, a same-code baseline control, generation stamps alone, stamps
+with candidate restriction, and the complete optimization. One warm-up
+round is excluded. Whole-pipeline experiments use five rounds per diagram
+in each of two option sets, comparing baseline, same-code control,
+optimized stage, and the stage disabled. All existing filters, fallback
+methods and time limits are retained. Reported paired speedups are
+\emph{medians of within-round ratios}; they need not equal the ratio of
+the two separately reported medians.
+
+The incidence experiment uses twenty exact supplied interval systems:
+five modulus bit lengths and four port counts, with three shuffled rounds.
+An independent residue-endpoint formula checks every answer; literal
+union--find also checks the eight small cases. The special formula is
+cheaper on this intentionally structured family and is not presented as
+an algorithm being beaten by the generic engine.
+
+The normal-surface experiment measures full aggregate topology, proof
+production and independent replay separately. Small explicit polygon
+and Regina component controls check overlapping topology outputs; they
+also return individual coordinate records and do not implement the same
+proof protocol. They are appropriate independent controls, not identical
+whole-workflow baselines. The complete raw normal benchmark includes
+the input vector for every measured row.
+
+\subsection{Correctness evidence}
+
+The interval producer and independent verifier passed 26 focused test
+methods. The producer tests include exhaustive pairs of isometries on
+universes of size at most four, 4,000 seeded arbitrary systems, inverses
+and reflected-coordinate invariance, support-hull and adjacent-period
+regressions, and 12,001-bit widths. A separate development audit compared
+40,000 arbitrary systems with a finite disjoint-set oracle and replayed
+10,000 generated certificates. The reproducible focused suite is retained;
+those larger development totals are not added to the count of test methods.
+
+Ten incidence test methods include 180 randomized literal histograms,
+every marked-subset identity on those cases, duplicate and empty ports,
+huge integers, forged proofs, and the guarantee that replay does not
+invoke the producer. Eight tests cover the imported normal extractor and
+eight new tests cover native topology, disc essentiality, coning,
+hexadecimal proof transport, malformed inputs and cancellation.
+
+The strengthened normal geometry audit has the following completed scope:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule Check & Count\\\midrule
+Geometric input vectors & 1,561\\
+Native Regina input vectors & 799\\
+Component records compared & 15,978\\
+Closed component records & 290\\
+Nonorientable component records & 108\\
+Inputs mixing closed and boundary-bearing components & 8\\
+Independently replayed topology certificates & 2,360\\
+Malformed-input, altered-proof and interruption checks & 17\\\bottomrule
+\end{tabular}
+\end{center}
+The native audit includes vertex normal surfaces and compatible sums in
+balls, spheres, lens spaces, products, a solid Klein bottle, the three-torus,
+and layered solid tori. It compares against native component vectors,
+Euler characteristic, orientation and boundary counts. An additional
+independent check uses Regina's ambient edge classes for $V$, derives $E$
+from native Euler characteristic, checks boundary arc counts, and tests
+the boundary parity class using Gaussian elimination over $\F$ rather
+than our signed disjoint-set structure and graph traversal.
+
+The two-meridian changes pass fourteen targeted methods, including the
+eight previous methods unchanged. New exhaustive checks cover all 4,096
+four-arc systems built from distinct-arc crossing types, all 512 three-arc
+systems including productive unary rules, and 400 random degenerate
+systems. Repeated fixed-point closure and the frozen old queue routine
+serve as separate oracles. Candidate completeness, proper-closed-set
+pruning, first successful pair, exact derivation order, resource behavior,
+and replay without search are checked. All twenty natural fixtures have
+the same exhaustive outcomes and byte-identical positive certificates.
+
+\input{suite_status.tex}
+
+\subsection{Seed-search results on natural diagrams}
+
+\input{seed_table.tex}
+
+The largest difference is on Gordian's 141-crossing diagram. The baseline
+examines 10,011 seed sets, uses 4,347,002 work units, and takes a median
+297.346 milliseconds. The optimized query examines 274 seed sets, uses
+12,251 work units, and takes 3.460 milliseconds. The median matched ratio
+is 85.861, while the baseline-versus-identical-control ratio is 0.991.
+There are 274 candidate edges before closed-set pruning. The latter
+excludes 141 later edges, so the executed trials comprise 141 singletons
+and 133 pairs. The largest proper closure has five arcs.
+
+Every one of the 900 measured standalone calls completes its exhaustive
+class query. Sixteen fixtures receive a conclusive knot verdict with
+the exact frozen positive certificate. Gordian, survivor-01, Conway and
+Kinoshita--Terasaka instead exhaust the two-seed derivation class and
+return \code{INCONCLUSIVE} for knot type. The previously capped Gordian
+query failed to exhaust its candidate list; the new query completes far
+below the same two-million-unit allowance. This is a capacity improvement
+for the class test, not an independent Gordian unknot certificate.
+
+The mechanism ablation on Gordian separates the gains:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule Standalone variant & Median milliseconds\\\midrule
+Original dense preparation & 297.346\\
+Generation arrays only & 27.577\\
+Generation arrays and first-firing candidates & 3.587\\
+Complete change, including proper-closure pruning & 3.460\\\bottomrule
+\end{tabular}
+\end{center}
+\begin{figure}[ht]
+\centering\includegraphics[width=.94\textwidth]{figures/seed_ablation.pdf}
+\caption{Measured Gordian two-seed class query. The logarithmic horizontal
+scale separates the reusable-state gain from the candidate-set theorem.
+This figure does not report whole-knot recognition time.}
+\end{figure}
+
+\subsection{Whole-pipeline results and negative cases}
+
+The 800 measured whole-pipeline calls contain 780 completed verdicts,
+all equal to the established corpus label, and twenty censored ordinary
+Gordian calls that return \code{UNKNOWN}. A timeout is not assigned an
+artificial finite speedup.
+
+For survivor-00, the ordinary option set has baseline and new medians
+1.950 and 1.690 milliseconds and a median matched speedup of 1.221.
+With compressed group search enabled, the corresponding medians are
+1.968 and 1.580 milliseconds and the matched speedup is 1.245.
+
+For Gordian with compressed group search, the matched ratio is only
+1.034; the separately measured medians are 1.338 seconds for the baseline
+and 1.375 seconds for the changed version. Their different ordering is
+possible because the median of ratios and the ratio of medians are
+different statistics. It illustrates why this small whole-query change
+must not be described as a robust universal speedup. The subsequent
+roughly 1.3-second recognizer dominates the saved seed work. The ordinary
+Gordian configuration never finishes within its cap in either version.
+
+Several small standalone cases regress, including trefoil, figure-eight
+and survivor-11; the complete table and A/A controls retain those results.
+The stage remains opt-in. The measurements support an exact search
+improvement with a large local gain on sparse failures, not a blanket
+improvement on every recognized knot.
+
+\subsection{Native compressed surface scaling}
+\input{normal_results.tex}
+
+\subsection{Port-incidence costs and the output contract}
+
+For the family $N=7\cdot2^{4096}$, the primary pairings identify residues
+modulo $2^{4096}$ and the selected ports are supplied unions of intervals.
+The measured medians are:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule Ports & Histogram slots & Count (ms) & Proof (ms) & Replay (ms)\\\midrule
+2 & 4 & 0.232 & 0.253 & 0.214\\
+4 & 16 & 1.761 & 1.625 & 1.313\\
+6 & 64 & 8.867 & 9.911 & 7.780\\
+8 & 256 & 48.168 & 54.247 & 40.698\\\bottomrule
+\end{tabular}
+\end{center}
+The eight-port proof serializes to 13,866,578 bytes in compact JSON.
+This cost is recorded and charged even though the mathematical output
+has only 256 integer slots. Only the selected 1,024-bit four-port proof
+is retained as a separate replay fixture; the larger proof's size and
+digest are in the data. Count-only mode does not retain those traces.
+
+The small-universe comparison supplies an important counterweight. For
+$N=7\cdot2^{12}$ and eight ports, the new method takes 25.059 milliseconds
+versus 10.355 milliseconds for literal enumeration. With two ports at the
+same size, it takes 0.151 milliseconds versus 8.517 milliseconds. Avoiding
+sheet expansion does not automatically win when the expanded instance
+is small and the number of coned queries is large.
+
+These are generic queries on supplied interval systems. They are not
+whole-recognizer timings, not a benchmark against the weighted AHT
+algorithm, and not evidence that all geometric attachment information
+has been recovered.
+
+\subsection{An inherited worker failure repaired separately}
+
+The first full regression run executed 833 tests and reproduced one
+existing failure in the optional normal-surface subprocess wrapper. A
+500,000-character request was not completely transmitted when a timed
+\code{communicate} call was retried with no input on this Python version.
+This defect predates the interval and seed changes and had already been
+identified in incoming reports; the maintained baseline still contained
+the failing path.
+
+The focused repair gives one worker thread ownership of a single
+\code{communicate(payload)} call while the main thread polls its future
+for cancellation and deadline handling. On exit the child is killed
+when necessary, reaped, the communication owner is joined, and the pipes
+are closed. The existing eight worker tests pass, including delayed
+large-input transmission, local timeout, global cancellation, and
+actual Regina verdicts. This is an engineering repair, not one of the
+mathematical advances. The seed benchmark does not import this worker
+path, so its measured dependency hashes remain unchanged.
+
+\subsection{Interpretation of the evidence}
+
+The strongest experimental conclusion is agreement across independent
+representations, coupled with successful processing of genuine normal
+vectors whose disc multiplicity is far beyond enumeration. The strongest
+search improvement is the reduction from a quadratic candidate set to
+a linear one under a checked hypothesis, combined with output-sensitive
+closure work. The data show where each matters and where it does not.
+None of the experiments estimates a universal hierarchy depth or proves
+the missing complete recognition bound.

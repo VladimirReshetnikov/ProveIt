@@ -1,0 +1,292 @@
+\section{A shared index for maximum cyclic relator shortening}
+\label{sec:joint-cyclic-overlap}
+
+\subsection{The bottleneck and the exact query}
+
+The existing native positive-certificate path reconstructs the complete
+Wirtinger presentation, performs generator eliminations and Whitehead moves,
+and searches for a length-reducing relator substitution when these moves
+stall.  The relevant local query takes an indexed list
+$(R_1,\ldots,R_s)$ of explicit cyclic words.  Let $m$ be the number of
+nonempty slots and $L=\sum_i |R_i|$.  For distinct slots $i\ne j$, rotate
+$R_i$ and either $R_j$ or $R_j^{-1}$ to write
+\[
+ R_i\sim UW,\qquad R_j^{\varepsilon}\sim UV,
+ \qquad \varepsilon\in\{1,-1\}.
+\]
+Replacing the target by $V^{-1}W$ while retaining the donor preserves the
+normal closure.  Indeed, $(UV)^{-1}(UW)=V^{-1}W$ and
+$(UV)(V^{-1}W)=UW$.  The guaranteed decrease before incidental free
+cancellation is
+\[
+ g=2|U|-|R_j|.
+\]
+The search must find the maximum positive $g$ over all target rotations,
+all donor rotations and both donor signs, or prove that none exists.
+No small-cancellation hypothesis is needed for the soundness of a move.
+Stalling is inconclusive for unknot recognition.
+
+The maintained pairwise implementation builds a suffix automaton for each
+oriented doubled donor and scans every eligible doubled target.  Its bound
+is $O(s+mL)$ dictionary operations and $O(L)$ auxiliary space.  Profiling
+the actual 141-crossing Gordian input found one such query after 129 generator
+eliminations.  Twelve nonempty relators then have total length $17\,504$.
+This query, rather than the elimination loop, was the dominant producer
+cost.  The new query removes the factor $m$ from its asymptotic operation
+bound; it does not bound the number of subsequent presentation moves.
+
+\subsection{Cyclic windows as capped points on a suffix-link tree}
+
+A nonempty word $w$ of length $d$ has all its cyclic rotations among the
+length-$d$ windows ending at positions
+\[
+ d-1,d,\ldots,2d-2
+\]
+of $ww[0:d-1]$, using zero-based positions.  There are exactly $d$ such
+windows, even when several spell the same word.  Each shorter cyclic
+segment is a suffix of one of them.  A capacity $d$ prevents any accepted
+match from wrapping around the donor or target twice.
+
+Build one suffix automaton for the concatenation of the positive doubled
+relators, with a separator after each block.  In the implementation the
+separator is a fresh object outside the signed-generator alphabet.  The
+indexed string has length exactly $2L$.  Standard suffix-automaton theory
+provides $O(L)$ states and transitions; the classical linear-size subword
+index is due to Blumer and coauthors~\cite{blumer}.  A state has a maximum represented
+substring length $\lambda(v)$ and a suffix link $p(v)$ satisfying
+$\lambda(p(v))<\lambda(v)$.  The represented lengths on its suffix-link
+edge are the integers
+\[
+ \lambda(p(v))+1,\ldots,\lambda(v).
+\]
+All strings represented by one state are suffixes of its unique longest
+string.  Consequently a virtual point at an intermediate edge depth has
+a well-defined word, not merely a numerical length.  Thus an occurrence
+of a word of length $d$ can be represented by a point
+at depth $d$ on the suffix-link path of its ending state.  Insert that
+point as a terminal cap if it is not already a state vertex.
+
+For every positive rotation, mark its capped point with two roles: it is
+a possible target and a possible positive donor.  The mark retains its
+original relator slot, its word length, its sign, and the ending position
+inside the doubled source.  Equal words in distinct slots retain distinct
+identities.  Losing this information would permit an invalid self-donor
+substitution.
+
+The inverse donors need not enlarge the index.  Scan each inverse doubled
+relator through the already completed automaton, maintaining the longest
+matched suffix.  At each of its $d$ cyclic-window endpoints, let $h$ be
+the length of that matched suffix.  If $h>0$, attach an inverse-donor mark
+at depth $\min(d,h)$, but retain the original donor length $d$ for the gain
+calculation.  This is a partially represented inverse window, not a claim
+that its full length-$d$ rotation occurs in the indexed text.
+
+\begin{lemma}[Completeness of the inverse-window marks]
+Every common cyclic segment of an inverse donor and a positive target is
+represented by the common ancestral path of one inverse-donor mark and one
+positive-target mark.  Conversely, every such common path denotes a literal
+common segment of those oriented relators.
+\end{lemma}
+\begin{proof}
+Let the segment have length $u$.  Choose the donor's length-$d$ cyclic
+window ending with this segment; its endpoint is one of the $d$ recorded
+endpoints.  Since the segment occurs in a positive target, it occurs in
+the indexed text.  The longest suffix match at that donor endpoint has
+length at least $u$, and $u\le d$, so the inverse mark has depth at least
+$u$.  Its suffix-link path therefore represents the required segment.
+The positive target has an analogous complete cyclic-window mark.
+Conversely, an ancestor of a mark represents a suffix of the actual marked
+window.  The depth caps ensure that this suffix has length at most the
+corresponding original relator length.  A common ancestor represents the
+same substring in both windows.
+\end{proof}
+
+The capped tree contains at most $2L$ marked windows and at most $2L$ new
+cap vertices.  Together with the automaton states it has $O(L)$ vertices.
+Marks can coincide, in which case their original slots remain separate
+records.  No quadratic list of explicit rotations is constructed.
+
+\subsection{Two representatives suffice for the distinct-slot constraint}
+
+At a capped-tree vertex of depth $h$, all descendant marks contain the same
+length-$h$ suffix.  A donor of length $d$ and any distinct-slot target
+therefore supply gain $2h-d$.  At this fixed depth, maximizing gain means
+minimizing donor length among eligible donor slots.
+
+\begin{lemma}[Two-slot summary]
+At each tree vertex, retain the two least donor records of distinct
+original slots, ordered first by donor length, and any two target records
+of distinct slots.  These summaries suffice to recover the largest
+guaranteed gain of a distinct-slot donor--target pair available at that
+vertex.
+\end{lemma}
+\begin{proof}
+Consider the shortest retained donor slot $j$.  If there is a target of a
+different slot, one of two distinct target representatives supplies it:
+at most one can have slot $j$.  This donor is optimal.  If no such target
+exists, every target has slot $j$.  The shortest donor with a different
+slot is then the second retained donor; if it does not exist, no eligible
+pair exists.  The same argument covers vertices with only one target or
+one donor slot.  Donor orientation and occurrence location do not affect
+the gain at this fixed depth, so a single representative per donor slot
+is sufficient.
+\end{proof}
+
+These constant-size summaries merge bottom-up.  The implementation keeps
+deterministic tuple orders for witnesses, but does not promise the
+historical suffix automaton's tie choice.  Maximum gain, distinct slots,
+valid offsets and literal equality are the required invariant properties.
+
+\begin{theorem}[Exact shared-index query]
+The shared capped suffix-link index returns a maximum positive guaranteed
+decrease over all distinct relator slots, cyclic rotations and donor
+signs.  It uses $O(s+L\log(L+1))$ integer and dictionary operations and
+$O(L)$ auxiliary storage.  Under the usual expected constant-time
+hash-dictionary assumption this is the corresponding expected word-time
+bound.
+\end{theorem}
+\begin{proof}
+Every candidate common cyclic segment is represented by two marked points,
+by construction and the inverse-window lemma.  Their longest common suffix
+ends at their lowest common ancestor in the tree after cap insertion.
+The gain is increasing in the common depth when the donor is fixed, so
+an optimum is attained at a tree or cap vertex.  The two-slot lemma
+recovers an optimal pair at every such vertex.  Taking the largest of
+these values therefore gives the global optimum, and each recovered
+pair is a literal valid match.
+
+The indexed text has length $2L$.  Building its suffix automaton and
+scanning all inverse blocks uses $O(L)$ dictionary operations.  A depth-first
+traversal maintains the increasing depths on its current suffix-link path;
+binary search locates each of at most $2L$ terminal caps in $O(\log(L+1))$
+operations.  Caps on each original edge are sorted.  Their total sorting
+cost is $O(L\log(L+1))$, since the sum of their counts is $O(L)$.  Constant-size
+summary propagation and candidate evaluation are linear in the capped
+tree size.  The original list of $s$ slots is traversed once.  All stored
+arrays, transitions, window marks and cap records have linear total size.
+\end{proof}
+
+For a node of depth $h$, with donor endpoint $e_d$ and target endpoint
+$e_t$, the certificate offsets are
+\[
+ a_d=(e_d-h+1)\bmod d,\qquad
+ a_t=(e_t-h+1)\bmod t.
+\]
+The resulting record uses the existing version-two relator fields.  No
+change to the certificate format or the independent checker is needed.
+
+\subsection{A bounded prelude that improves the actual knot query}
+
+The shared index alone is slower on Gordian than the small set of useful
+pairwise scans.  This measured regression motivates the implemented
+adaptive query.  As a fixed-size base case, lists with at most four
+nonempty relators use the existing pairwise query.  Its cost is $O(s+L)$
+in that case, and its historical tie choices are preserved.  The threshold
+four is fixed independently of the input; allowing it to grow with the
+input would require including it as a parameter in the complexity bound.
+This base case avoids paying for both a failed prelude and a shared index
+on the two small mirror examples.  For larger lists, every donor of
+length $d$ satisfies
+\[
+ 2\min(d,t)-d\le d.
+\]
+Consequently a donor with $d\le G$, where $G$ is the largest gain already
+found, cannot improve the incumbent.  Process donors in decreasing length,
+retain the existing target upper bound, and stop once all remaining donor
+lengths are at most $G$.
+
+This is a sound search order and pruning rule, but on its own retains the
+old worst-case $mL$ scan cost.  The implementation therefore limits the
+prelude to
+\[
+ Q=2\max(1,L)\,\operatorname{bitlength}(L+1)
+\]
+charged work units.  Sorting, donor construction, suffix-link traversal,
+transition creation, clone copying, target-pair consideration and target
+scanning consume this allowance.  When the local allowance is exhausted,
+the complete shared index is built under the same enclosing resource
+budget.  Genuine global cancellation or resource exhaustion propagates;
+it is not converted into an invitation to reset the budget.
+
+\begin{corollary}[Adaptive exact query]
+The adaptive query has the same maximum-gain guarantee and
+$O(s+L\log(L+1))$ dictionary/word-operation bound as the shared query.
+It retains $O(L)$ auxiliary storage, including failed prelude construction.
+\end{corollary}
+\begin{proof}
+The fixed-slot base case has linear cost and is exact.  Otherwise, if
+the prelude completes, all unvisited donors and targets have valid upper
+bounds no larger than the incumbent.  It is exact.  Otherwise the complete
+shared query is exact independently of the partial prelude.  Prelude work
+is bounded by $Q$ plus one already charged operation batch of $O(L)$; the
+shared query then has the preceding theorem's bound.  The one-donor
+index is no longer needed when the continuation begins.  No list of
+all donor automata or pairwise matches is retained.
+\end{proof}
+
+Dictionary-operation bounds should not be confused with unconditional
+bounds for CPython's deterministic integer hashing.  A deterministic
+balanced-map implementation gives $O(s+L\log(L+1))$ comparison operations
+for the shared index alone and a conservative
+$O(s+L\log^2(L+1))$ comparison bound for this adaptive scheduling policy.
+Comparisons and stored lengths have their ordinary bit costs.  The
+presented Python code uses its existing dictionary conventions; it does
+not implement a new balanced-map data structure.
+
+For an explicit bit bound on that deterministic variant, let
+$\beta=\lceil\log_2(L+2)\rceil$ and let $b_{\rm id}\ge1$ bound the bit
+length of signed-generator identifiers and slot indices. Elementary
+comparison and arithmetic give the conservative adaptive bound
+\[
+       O\!\left((s+1+L\beta^2)(b_{\rm id}+\beta)\right).
+\]
+The shared index alone has one power of $\beta$ in place of $\beta^2$.
+Copied automaton transitions are charged individually, so clone creation
+introduces no further logarithmic factor. Offset normalization acts on a
+value in $[0,2d)$ and needs at most one subtraction. These bounds exclude
+arbitrary caller-supplied callback work and assume resource counters have
+comparable bit lengths. They are bounds for the stated balanced-map
+variant, not a claim that CPython hashing has deterministic constant cost.
+
+On Gordian the maximum guaranteed decrease is $2\cdot3362-3726=2998$.
+Only the length-$4260$ and length-$3726$ donors survive the decreasing-length
+prelude's final bound.  Four oriented donor automata suffice, versus 24
+in the recorded incumbent query.  The selected move and the entire
+141-move certificate remain identical on this input.  The timing table
+and raw data report both the resulting full-query speedup and the
+shared-index-only regression.
+
+\subsection{Scope and remaining research obligations}
+
+This result accelerates an exact query on an explicit presentation.  It
+does not establish a small explicit presentation for every input knot,
+a bound on grammar growth, a bound on the number of changing relator
+moves, or completeness of greedy presentation simplification.  If $L$
+becomes exponential in the original crossing number, even the new local
+query may take exponential time.  The existing compressed-word pipeline
+continues to handle inputs beyond its explicit expansion cap; this
+shared explicit index is used only when an explicit query is actually
+made.  No false negative is inferred from an absent shortening move.
+
+For a more explicit conditional accounting, suppose the ordinary explicit
+producer starts with $r$ generators and its total reduced relator length
+never exceeds $B$.  There are at most $r-1$ generator eliminations.  Between
+two successive eliminations, every accepted Whitehead or overlap move
+strictly decreases an integer length in $[0,B]$, so there are at most $B$
+such moves.  Including an unsuccessful final query, the number of overlap
+queries is at most $r(B+1)$.  Their total new cost is therefore
+\[
+ O\!\left(r(B+1)\bigl(s+B\log(B+1)\bigr)\right)
+\]
+dictionary/word operations.  This charges only the overlap searches, not
+Whitehead cuts, generator substitution, replay or diagram preparation.
+If $B$ were universally quasi-polynomially bounded, this contribution
+would be quasi-polynomial as well.  Establishing such a bound and ensuring
+successful recognition remain separate obligations.
+
+A useful next problem is a similarly shared fully compressed cyclic index:
+can one remove the factor equal to the number of relators while charging
+only grammar size and logarithmic represented lengths?  Another is an
+incremental index under a certified relator replacement, with deleted
+occurrences handled exactly.  Both require new representation bounds;
+copying this explicit tree into a compressed arena would not supply them.

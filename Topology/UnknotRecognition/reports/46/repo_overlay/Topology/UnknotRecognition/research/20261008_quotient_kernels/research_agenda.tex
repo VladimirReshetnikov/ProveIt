@@ -1,0 +1,331 @@
+\section{Sufficient global bounds and a concrete research agenda}
+\label{sec:global-agenda}
+
+The local theorems expose several quantities that could support a global
+bound. At present these quantities describe an execution; they are not
+proved restrictions on every diagram. The next task is to convert selected
+observations into uniform bounds, while retaining an algorithm that always
+finishes with a correct decision.
+
+\subsection{A sufficient accounting principle}
+
+Let $S_*(n)$ bound the complete bit length of every state, query input,
+output, and retained certificate record in an execution. Let $Q_*(n)$ bound
+the number of charged operations, including failed branches, hierarchy
+repairs, canonicalization, certificate verification and changes of
+representation. Fixed constants in local polynomial algorithms must be
+uniform over the allowed input family. In particular, a handle-type catalog
+or a frontier alphabet whose size grows with $n$ cannot be hidden inside
+such a constant.
+
+\begin{proposition}[Conditional composition bound]
+\label{prop:global-accounting}
+Suppose a sound and complete recognition algorithm has preprocessing time
+$P(n)$, makes at most $Q_*(n)$ calls, and each call costs at most
+$C(1+S_*(n))^a$ bit operations for fixed $C,a$. If, for fixed
+$\alpha,\beta,\gamma\ge1$,
+\[
+\begin{split}
+ Q_*(n)&\le\exp(O(\log^{\alpha}(n+2))),\\
+ S_*(n)&\le\exp(O(\log^{\beta}(n+2))),\\
+ P(n)&\le\exp(O(\log^{\gamma}(n+2))),
+\end{split}
+\]
+then its total time is
+$\exp(O(\log^{\max(\alpha,\beta,\gamma)}(n+2)))$.
+In particular, exponents at most two suffice for $n^{O(\log n)}$.
+\end{proposition}
+
+\begin{proof}
+The total time is at most $P(n)+C Q_*(n)(1+S_*(n))^a$.
+Taking logarithms of the second term adds the bounds for $\log Q_*$
+and $a\log(1+S_*)$. A fixed finite sum of these logarithmic powers is
+bounded by a constant times the largest one. Adding preprocessing does
+not change that largest exponent.
+\end{proof}
+
+The proposition is an accounting criterion, not a theorem that its
+hypotheses hold for the present recognizer. Polynomial time for a local
+query does not bound $Q_*$ or $S_*$. An inconclusive budget exit does not
+supply completeness. Nor does a short successful certificate show that a
+deterministic search finds it within the same bound. All expanded data
+that must actually be written count towards the relevant size and time.
+
+\subsection{Hierarchy depth, restarts and branching are separate parameters}
+
+Write $H$ for maximum hierarchy length and $G$ for maximum pattern
+complexity. In this notation Lackenby's Proposition~9.1 gives the iteration
+bound $H(G+1)^H$ \cite{lackenby2026}. Hence a sufficient restriction for
+this part of the calculation is
+\[
+                 H\log(G+1)+\log(H+1)=O(\log^2 n).
+\]
+For example, $H=O(\log n)$ and $G=n^{O(1)}$ suffice. If instead
+$H=O(\log^2 n)$ and $G=n^{O(1)}$, this particular bound gives
+$\exp(O(\log^3 n))$: quasi-polynomial in the broader sense, but not the
+specific $n^{O(\log n)}$ target. A polynomial bound on the bit length of
+$G$ alone does not imply $G=n^{O(1)}$.
+
+The refined construction in Section~10 controls hierarchy length linearly
+in the initial $q$-complexity. It does not by itself give logarithmic
+depth or a quasi-polynomial bound on the restart expression. Conversely,
+replacing a costly surface-topology query by AHT lowers the cost of one
+step without lowering the number of lexicographic repairs. These are
+different improvements and require different proofs.
+
+If a proposed construction has at most $B(n)$ possible children at depth
+at most $H(n)$, its search tree can contain as many as
+$\sum_{j=0}^{H(n)}B(n)^j$ nodes. Polynomial branching and logarithmic
+depth are sufficient for a quasi-polynomial tree-size bound. Polynomial
+depth is not. Revisiting or modifying a node requires an additional
+amortized bound, even if the number of distinct nodes is controlled.
+Memoization helps only after proving that the canonical state retains
+every relevant boundary marking and that the number of such states is
+small. A state with polynomially many bits can still have exponentially
+many possible values.
+
+\paragraph{Falsifiable hierarchy question.}
+For the multisurface and generalized-Heegaard construction, identify a
+potential that pays both for ordinary progress and for discarding later
+surfaces after a repair. Can every long execution produce a certified
+Cheeger-region simplification before the restart cost exceeds a
+polylogarithmic exponent? Useful negative instances would keep the
+recorded local complexities small while forcing many successive repairs.
+Such examples would refute a proposed potential, even if all topology
+queries themselves were fast. The announced acceleration framework
+\cite{lackenbytalk} motivates this question; the present kernels do not
+implement its global argument.
+
+\subsection{From normal-coordinate topology to certified cutting}
+
+The current normal adapter supplies connectivity and total topological
+statistics for a supplied surface. A compressed cutting primitive has a
+larger contract. It must return the complementary handle structure,
+the parallelity components, the topology and twisting of their base
+surfaces, and the attachment of their vertical boundaries. These are the
+kinds of output required by Lackenby's Theorem~14.4
+\cite{lackenby2026}. Matching component counts do not determine these
+attachments. Even matching unmarked surface types does not determine a
+map relative to a marked boundary.
+
+The first implementation target is weighted AHT with grouped multiplicity
+records, followed by a compiler from those records to the required cut
+incidence data. The weighted orbit theorem is classical \cite{aht}; its
+implementation would extend the current module rather than establish a
+new existence theorem. Its output must remain grouped when a binary vector
+describes exponentially many equal components. Explicitly listing one
+record per component defeats the compression.
+
+A useful contract for testing is a commuting reconstruction diagram:
+on small inputs, expand the original surface and perform an independent
+ordinary cut; expand the compressed output; compare the resulting marked
+cell structures. Include twisted bundles, annular interfaces,
+self-identifications, boundary-parallel discs and disconnected surfaces.
+For large inputs, retain locally checkable construction records instead
+of treating a numerical topology summary as a reconstruction proof.
+
+An equally important target is a verified diagram-to-exterior adapter.
+It must specify how the peripheral torus corresponds to the knot and how
+that correspondence changes during simplification. A normal disc whose
+boundary is essential in a supplied torus certifies compression of that
+torus. Turning it into a certificate about the input PD diagram requires
+the exterior correspondence. A complete global theorem also needs a
+method of finding suitable surfaces within its work budget.
+
+\subsection{Frontier and representation bounds}
+
+Let $w$ be the number of interface positions in a scanner state, $\tau$
+the number of retained scalar types, $\mu=\max_v s_v$, $E$ the number of
+nonzero typed blocks, $\rho=\max_{u,v}\rho_{uv}$, and $B$ the largest
+packed morphism bit length. The elementary inequalities
+\[
+              V\le\tau\mu^2,\qquad
+              P_{\mathrm{span}}\le E\rho\mu^2
+\]
+describe how these parameters enter the solver. They do not bound the
+parameters in terms of $n$. A small coefficient span does not bound
+multiplicity, and small frontier width does not by itself bound the
+size of all coefficients or the number of repeated states.
+
+One sufficient approach is to prove a uniform encoding bound of the form
+$S_*\le\exp(O(w\log(w+2)))\poly(n)$ and a suitable bound on all visits,
+then establish $w\log(w+2)=O(\log^2 n)$ for the chosen decomposition or
+for an exact quotient of its states. This is a proposed route, not a
+property established for the present scanner. A square-root-width
+separator bound, even if available for a particular diagram graph, would
+give a much larger exponent in this model and would not meet the target.
+
+The experiment should record $w,\tau,\mu,E,\rho,B,V,V_F$, reconstruction
+cost, and the number of repeated states together. Search for families in
+which one proposed controlling parameter stays fixed while another grows.
+In particular, a useful challenge to the forest proposal is a family with
+small $V_F$ but costly dense reconstruction in the original $V$ variables.
+The current bounded-candidate policy requires that reconstruction, so it
+cannot be excluded from the accounting.
+
+\subsection{A tractable commutant family and its limitations}
+
+There is a clean special case in which the forest construction supplies
+explicit projections, rather than merely a smaller linear system.
+
+\begin{proposition}[Scalar transports give explicit repeated summands]
+\label{prop:scalar-transport-splitting}
+Consider an entire finite differential component with no incident
+differential blocks omitted. Suppose every scalar type has multiplicity
+$s$ and the selected invertible forest connects all its types. Use the
+transport matrices $P_v$ from Theorem~\ref{thm:forest}. The complete
+commutant is the common centralizer in $M_s(\F)$ of every transported
+coefficient matrix $P_v^{-1}A_iP_u$.
+
+If every such matrix is a scalar multiple of $I_s$, the component is
+isomorphic to a direct sum of $s$ identical multiplicity-one typed
+complexes. Explicit compatible matrix units in the original coordinates
+are
+\[
+                   E^{(v)}_{ij}=P_v E_{ij}P_v^{-1}.
+\]
+In particular, the $s$ diagonal units are orthogonal rank-one projectors
+whose sum is the identity. If additional attachment maps are required in
+the splitting contract, the assertion applies when they also respect
+these summands; this must be verified, not inferred from the differential.
+\end{proposition}
+
+\begin{proof}
+There is one root matrix $X$ because the forest is connected. Theorem
+\ref{thm:forest} changes every original equation into $X\widetilde A_i
+=\widetilde A_iX$, proving the centralizer statement. Under the scalar
+hypothesis every $X\in M_s(\F)$ satisfies these equations. After changing
+the basis at type $v$ by $P_v$, each differential block is a morphism
+coefficient times $I_s$, since all of its scalar coefficient matrices
+are scalar. The $s$ coordinate lines are therefore invariant and carry
+identical typed differentials. Conjugating the usual matrix units back
+gives the displayed formula, their multiplication identities, and the
+rank-one projections. Their images supply the claimed direct sum. The
+same conclusion for extra attachments follows only if the required
+invariance or transported block form is checked for those maps as well.
+\end{proof}
+
+A sufficient case is that the graph of all nonzero typed blocks is a
+tree and each block has a one-dimensional coefficient span whose nonzero
+coefficient matrix is invertible. Choosing those matrices as the forest
+transports turns every block coefficient matrix into $I_s$. This is an
+algebraic family; its prevalence among actual knot-scan components remains
+an empirical and structural question. The current implementation computes
+and canonically reconstructs the full commutant. It does not yet bypass
+the bounded candidate policy with these direct projectors.
+
+Cycles explain a limitation. A non-tree invertible block becomes a
+holonomy constraint on $X$, and all noninvertible coefficients impose
+their own centralizer conditions. If these matrices have only the scalar
+common centralizer, there are no nontrivial projections in that algebra.
+Thus a connected invertible forest does not guarantee a useful split.
+At the other extreme, low-rank coefficient spans need not display an
+invertible basis element: the two singular matrices
+$\operatorname{diag}(1,0)$ and $\operatorname{diag}(0,1)$ span $I_2$.
+The current forest search can therefore miss an invertible linear
+combination. Exhausting the span costs $2^\rho$ candidates, so any wider
+search needs a stated rank restriction or its own complexity argument.
+
+\subsection{Explicit and compressed relator growth}
+
+The new shared query costs nearly linearly in the total explicit relator
+length $\ell$, with the stated logarithmic and dictionary-model factors.
+Its speed does not make $\ell$ small. Generator substitution can duplicate
+long words across many relators; a sequence of individually valid moves
+can therefore create an expensive explicit presentation before the next
+shortening query is reached.
+
+There is a modest unconditional observation for a restricted phase: if
+every accepted relator replacement strictly decreases total explicit
+length, and no intervening operation increases it, the number of such
+replacements is at most the starting length. This says nothing about
+whether that phase recognizes every unknot, and it does not bound the
+length at entry to later phases. A useful next theorem would control
+both presentation growth and the number of verified moves across the
+whole producer, including generator eliminations and Whitehead steps.
+
+For straight-line representations, track grammar size, logarithmic
+represented length, the number of rewritten nonterminals, and the cost
+of checking each move. A shared fully compressed cyclic index would
+need to handle donor exclusion and occurrence deletion without expanding
+the rotations. An incremental explicit index is another concrete target,
+but reusing an index after mutation requires exact removal of obsolete
+occurrences. Each proposal should be challenged by presentations where
+short descriptions expand rapidly or where most indexed occurrences are
+invalidated by a single certified move.
+
+\subsection{Proposed research questions}
+
+The following questions are prioritized by how directly they remove a
+known implementation or proof obstruction. They can be pursued separately,
+but every claimed global application must satisfy the complete accounting
+contract above.
+
+\begin{enumerate}[label=Q\arabic*.,leftmargin=12mm]
+\item \textbf{Weighted component extraction.} Can the native interval
+kernel return selected component coordinates and grouped topological
+weights in polynomial encoded time, including one-sided components and
+exponentially large multiplicities?
+\item \textbf{Marked cutting.} What is the smallest attachment record that
+determines the cut complement and its parallelity bundles relative to all
+peripheral markings? Can its expansion be independently compared with
+ordinary cutting on every small test input?
+\item \textbf{Exterior correspondence.} Can each diagram simplification and
+exterior construction emit a short composable certificate preserving the
+peripheral identification needed by the final compressing-disc argument?
+\item \textbf{Hierarchy repairs.} Is there an amortized potential that bounds
+the cumulative cost of discarded and rebuilt hierarchy suffixes by
+$\exp(O(\log^2 n))$, or an explicit family refuting a proposed potential?
+\item \textbf{Interface compression.} Which exact state equivalence can
+reduce the effective interface description below the width of the raw
+diagram decomposition while preserving every future attachment operation?
+\item \textbf{Natural coefficient ranks.} Are there topologically defined
+knot families with uniformly small $\rho_{uv}$ but growing ambient
+coefficient support, and can the rank advantage persist after including
+all scan and reconstruction costs?
+\item \textbf{Constructive scalar summands.} Can the transported-projector
+family of Proposition~\ref{prop:scalar-transport-splitting} be recognized
+and split directly under the scanner's full attachment contract, avoiding
+construction of its entire commutant basis?
+\item \textbf{Invertible combinations.} For the coefficient spaces actually
+arising in the scanner, can an invertible linear combination be found with
+a proved cost smaller than enumerating all $2^\rho$ combinations?
+\item \textbf{Canonical output cost.} Can candidate selection be reformulated
+in reduced root coordinates with an independently verified equivalence to
+the existing policy, so that a large full-basis reconstruction is avoided?
+\item \textbf{Shared compressed word search.} Can capped cyclic windows and
+distinct-slot donor constraints be indexed in time polynomial in grammar
+size and logarithmic represented length, without expanding the rotations?
+\item \textbf{Presentation growth.} For which nontrivial diagram families
+are both intermediate presentation size and the full verified move count
+quasi-polynomially bounded, including the substitutions that increase
+length between shortening phases?
+\item \textbf{Incremental exact indices.} Can relator replacement and deletion
+update the shared index faster than rebuilding it while deleting every
+obsolete occurrence and retaining a compact independently checkable match?
+\end{enumerate}
+
+\subsection{Milestones that would justify stronger conclusions}
+
+The next report should distinguish the following outcomes.
+\begin{enumerate}
+\item A completed weighted-orbit and marked-cutting implementation, with
+independent reconstruction tests and a proved bound on its encoded output.
+\item A verified connection from the ordinary knot diagram to the
+triangulation and peripheral data consumed by the geometric kernels.
+\item A structural theorem for a nontrivial diagram family controlling
+every parameter in Proposition~\ref{prop:global-accounting}, rather than
+only the frontier width or a successful witness size.
+\item A constructive implementation of Proposition
+\ref{prop:scalar-transport-splitting}, checked against the maintained
+attachment contract and measured on actual differential components.
+\item A complete presentation-growth and move-count bound for a specified
+group-simplification family, or an exact compressed replacement for the
+steps that defeat such a bound.
+\item A hierarchy theorem paying simultaneously for depth, branching,
+repairs and representation changes, with every local oracle instantiated.
+\end{enumerate}
+
+Any one of these would close a clearly identified gap. A general
+$n^{O(\log n)}$ conclusion requires enough of them, or an alternative
+complete route, to meet a uniform total-work bound on every input.

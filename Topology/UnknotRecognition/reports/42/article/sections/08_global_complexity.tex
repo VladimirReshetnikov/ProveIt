@@ -1,0 +1,115 @@
+\section{Global complexity: a precise remaining target}
+\label{sec:global}
+
+\subsection{The family-query bound removes one parameter explosion}
+
+Suppose a represented stage previously tried up to $m^k$ phase vectors,
+and the only information requested from that family is feasibility and
+the minimum number of cyclic covering components. For the affine model
+of this article, compilation and optimization have polynomial bit cost
+in the listed matrix dimensions and input integer lengths. Thus the
+$m^k$ term can genuinely be removed from that stage. The emitted witness
+and its independent verification are polynomial as well. This conclusion
+does not require $k=O(\log n)$ or $m$ to be a small integer.
+
+There is no corresponding conclusion for a stage which must distinguish
+all seam assignments under future attachments, require many selected
+boundary preimages to be connected, or test unknown normal-surface
+embeddings. Sections~\ref{sec:surface-families} and \ref{sec:boundaries}
+give examples and formal barriers to those extensions.
+
+\subsection{A composition theorem with every hypothesis exposed}
+
+\begin{theorem}[Conditional represented-algorithm bound]
+\label{thm:conditional-global}
+Consider a complete unknot-recognition algorithm on $n$-crossing diagrams.
+Suppose that, on every execution:
+\begin{enumerate}
+\item the number of represented states and transitions, including all
+failed branches and resets, is at most $\exp(C\log^2(n+2))$;
+\item every listed state and certificate has bit size at most
+$\exp(C\log^2(n+2))$;
+\item every transition is either a verified operation proved polynomial
+in that bit size, or another routine whose total cost has the same
+quasi-polynomial bound;
+\item the representation and transition relation are sound and complete
+for the required topological decision.
+\end{enumerate}
+Then the total bit time, including certificate checks and output, is
+$\exp(O(\log^2(n+2)))$.
+\end{theorem}
+\begin{proof}
+A fixed polynomial in $\exp(C\log^2(n+2))$ is
+$\exp(O(\log^2(n+2)))$. Multiplying this by the assumed bound on the
+number of transitions preserves the form. Reading and emitting every
+state is included in the same product. The soundness and completeness
+hypothesis is needed to identify the resulting algorithm as a complete
+recognizer rather than an exact subroutine or a partial search.
+\end{proof}
+
+This bookkeeping theorem is elementary. Its usefulness is diagnostic:
+the arithmetic optimizer and normal-coordinate extractor establish
+particular transition-cost statements in item (3), under their explicit
+input contracts. Scalar-space inheritance avoids repeated work on an
+already represented complex. None establishes items (1), (2), or (4) for
+unrestricted knots. In particular, the theorem is not presented as a
+new solution to the central complexity problem.
+
+\subsection{Why a termination potential is insufficient}
+
+A lexicographically decreasing list with $L$ entries each in
+$\{0,\ldots,g\}$ can visit $(g+1)^L$ values. The corresponding integer
+potential is
+\[
+ P(a_1,\ldots,a_L)=\sum_{i=1}^L a_i(g+1)^{L-i}.
+\]
+Decreasing an earlier coordinate and resetting all later coordinates to
+$g$ decreases $P$, but can make progress of only one unit. This is exactly
+the type of accounting behind the hierarchy iteration bound
+$L(g+1)^L$ in Lackenby's Proposition 9.1~\cite{lackenby2026}.
+
+A sufficient numerical regime for this particular bound is
+\[
+ \log(L+1)+L\log(g+1)=O(\log^2(n+2)),
+\]
+together with control of the per-step bit cost. The first term also
+covers $g=0$, when the bound reduces to $L$. A merely linear estimate
+for $L$ does not supply it. Faster gcds, shorter certificates, or reduced
+commutant solves do not change the number of possible resets. A new
+global argument would need, for example, a stronger amortized progress
+measure, a decomposition theorem limiting genuinely new states, or
+an operation that processes a whole relevant reset family symbolically.
+
+\subsection{The two geometric interfaces must not be conflated}
+
+The normal extractor produces partial signed interval maps, with source
+and target stacks and explicit endpoint data. The family optimizer
+receives total translations of a common cyclic fibre and affine
+parameter constraints. These are different mathematical objects. A
+sound bridge could identify a cyclic block inside the interval data,
+certify that all its possible completions are represented, and pass the
+induced congruences to the optimizer. No such general bridge is included.
+
+Likewise, computing the local complement cells is less than constructing
+their full residual handle structure, including every attachment and
+boundary pattern. General orbit counting can determine connected pieces,
+but subsequent genus, orientation, and vertical-annulus data must retain
+the appropriate provenance. Theorem 14.4 of the geometric literature
+identifies the desired full uniform-type handle-structure interface~\cite{lackenby2026}; the present
+implementation supplies a concrete first portion of it.
+
+\subsection{The algebraic route retains its intrinsic size barrier}
+
+Transporting an endomorphism space can avoid repeatedly solving for the
+same information. A certified local scalar endomorphism algebra can stop
+a futile search for scalar direct summands. Neither fact bounds the
+number of surviving homological generators or the size of the parent
+commutant. A complex with a local endomorphism algebra can still be large.
+The first computation of that algebra may dominate, and a bounded search
+can remain inconclusive when no dimension-saturated generator is found.
+
+The measured implementation therefore retains caps, transactional failure
+behavior, and separate optional controls. A local algebra certificate
+means ``no nontrivial splitting by the admitted scalar maps.'' It does
+not mean ``unknot,'' ``small homology,'' or ``no more general
+continuation-compatible compression.''
