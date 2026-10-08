@@ -21,7 +21,10 @@ The input is a JSON object with integer strand count and signed run pairs:
 Generator indices are unsigned, one-based, and less than the strand count.
 Exponents are nonzero signed integers. An optional outer `braid` object is
 accepted. `-` as the input filename reads standard input. This command accepts
-run-encoded braids; it does not convert PD codes, grids, or words.
+run-encoded braids or an explicit `word` array instead of `runs`; it does not
+convert PD codes or grids. Supply exactly one of `runs` and `word`.
+Integer fields accept signed hexadecimal strings such as `"-0x10001"` as well
+as JSON integers. Runs are never expanded into individual crossings.
 
 ## Modes and defaults
 
@@ -75,10 +78,11 @@ certificates may settle recognition without allocating a macro complex, even
 when the algebraic state or basis ceiling is zero.
 
 Exit status is 0 for a completed calculation or profile, 2 for invalid input or
-configuration, and 3 for `UNKNOWN`. JSON input and output obey Python's decimal
-integer digit limit. The direct Python APIs can accept much larger integers;
-their optional output-expansion cap prevents accidental enumeration of a long
-homology interval.
+configuration, and 3 for `UNKNOWN`. Output integers larger than 4096 bits use
+exact hexadecimal strings, including large degree dictionary keys. This permits
+huge binary inputs and outputs without relaxing Python's decimal conversion
+limit. Direct Python APIs continue returning integers. The optional
+output-expansion cap prevents accidental enumeration of a long homology interval.
 
 ## Python API
 
@@ -99,12 +103,22 @@ streamed = compute(2, [Run(1, 3)], mode="homology", method="streaming",
 ```
 
 Use the in-memory Python profile for `profile_dimension` and `expand_profile`.
-As with ordinary degree dictionaries, JSON serialization converts integer
-dictionary keys to strings; convert `points` keys back to integers after a JSON
-round trip before using those Python helpers.
+JSON converts degree dictionary keys to strings. After serialization, use
+`fastunknot.integer_codec.decode_degree_profile(profile)` before calling those
+helpers; it decodes both ordinary keys and large hexadecimal fields without
+expanding the interval. This is transport validation, not a homology proof.
+`verify_structural_runs_certificate` independently replays source counts and
+permutation data and accepts the CLI's exact hexadecimal certificate fields.
+
+For compressed results the tail certificate also reports
+`one_full_slice_magnitude = L+1` and its total reduced rank. The affine rank
+law already holds there; full profiles and slope calibration still use the
+`L+2` reference. This does not lower the computational cap or identify a
+shortened braid with the original knot.
 
 Run `python -m unittest discover -s tests -p 'test_twist_tail.py' -v` and
 `python -m unittest discover -s tests -p 'test_twist_continuation.py' -v` from
 `fast` for the recurrence and frontend suites. The portable audit and benchmark
-scripts are `tools/audit_slope.py` and `tools/benchmark_tail.py` at package root.
-They write their raw results under `results/`, replacing the corresponding files.
+scripts are `audit_slope.py OUTPUT` and `benchmark_tail.py OUTPUT` in `fast/`.
+The additional threshold check is `graded_research/referee_tail.py OUTPUT`.
+Each writes to the explicit output path; use a new path to preserve saved data.

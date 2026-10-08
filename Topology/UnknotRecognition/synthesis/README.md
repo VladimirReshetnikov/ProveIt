@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 426 tests. Local report 10–12 production
+The current full production suite passes 431 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -224,4 +224,15 @@ also contains additions not yet integrated. The production transfer audit
 checks 1,812 stage contractions across 86 diagrams and 258 order presentations.
 All 114 pinned source blobs match. Evidence is in `data/graded-*`; paired raw
 scanner/kernel measurements are in `../fast/results/graded_transfer_20261008.json`.
-The report's other proposals and report 24 remain under review.
+The remaining report 23 proposals are reviewed below; report 24 remains under review.
+
+
+`symbolic_runs.tex` completes the report 23 review: the existing run frontend
+now supports exact hexadecimal integers and independent serialized-certificate
+replay. It documents the earlier total-rank law without claiming a smaller
+reference calculation, sharpens the succinct context bound, and states the
+repair-DAG theorem with its unresolved geometric hypotheses. Evidence includes
+392 explicit tail complexes, 380 weighted-path fixtures, and 431 maintained
+tests in `data/tail-earlier-threshold-audit.json`, `repair-dag-audit.json`, and
+`symbolic-integrated-tests.txt`. The production backend keeps one canonical
+tail implementation; the DAG calculation remains a research diagnostic.

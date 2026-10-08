@@ -1,0 +1,137 @@
+\section{Succinct transport, the earlier rank law, and repair dependencies}
+\label{sec:symbolic-runs}
+
+The remaining parts of report 23 overlap substantially with the integrated
+one-run recurrence of Section~\ref{sec:twist-continuation}.  We retain that
+backend and its established profile schema.  The useful additions are exact
+transport for enormous integers, an independent structural replay, a sharper
+statement of the total-rank threshold, and a precisely conditional repair
+bound.  None requires a second competing implementation of the same tail.
+
+\subsection{An earlier total-rank threshold does not give a smaller cap for free}
+Fix a selected signed run of magnitude $m$, and let the remaining expanded
+context have degree range $[a,b]$ and length $L=b-a$.
+For a positive run, the interior starts at degree $b+1$.  At $m=L+1$
+there is exactly one full chain slice $V$.  At $m=L+2$ there are two,
+with the canonically identified square-zero matrix $A:V\to V$ between them.
+Write $v=\dim V$, $\rho=\operatorname{rank}A$, and $\nu=v-2\rho$.
+
+All lower boundary matrices are fixed; all upper boundary matrices agree
+after translating degrees.  Increasing $m$ from $L+1$ inserts one more
+full slice and one matrix $A$, without changing any other matrix rank.
+The field identity
+\[
+ \dim H(C)=\sum_h\dim C^h-2\sum_h\operatorname{rank}d^h
+\]
+therefore proves
+\[
+ R(m)=R(L+1)+(m-L-1)\nu\qquad(m\ge L+1).
+\]
+For a negative run use the reversed coordinate $q=-h$; the original
+cochain matrix still goes from $h$ to $h+1$, so its central source is
+$a-2$, as in the existing implementation.  The formula is about total
+rank, not a decomposition of the single full slice's two boundary
+contributions.  Exact degree profiles still use the $L+2$ cap.
+
+The integrated recurrence now reports $L+1$ and
+$R(L+1)=R(L+2)-\nu$ in its compressed-result certificate.  It still builds
+the $L+2$ reference: the earlier equality by itself does not construct the
+missing square matrix or compute its rank from a single slice.  No reference
+cost reduction is claimed.  An independent referee run checked 392 explicit
+complexes: 96 signed contexts at four magnitudes plus eight sharp boundary
+examples.  It checks canonical interior matrix equality, $d^2=0$, Euler
+characteristics, the rank law and full profiles against the ordinary macro
+builder.  The boundary examples $\sigma_1^{L+1}\sigma_1^{-L}$ are unknots,
+so a dominance rejection threshold cannot simply be lowered to $L+1$.
+
+The cap also has a sharper elementary size estimate.  A support with $r$
+active turnbacks has at most $s+r$ closure circles on $s$ strands, since
+adding one turnback changes the count by at most one.  Summing reduced
+dimensions over active-run choices gives, at selected magnitude $L+2$,
+\[
+ K\le2^{s-1}(2L+5)\prod_{i\ne j}(1+2|e_i|)
+   \le2^{s-1}(2L+5)3^L.
+\]
+For an original knot, every strand separator occurs.  Apart from the
+selected generator at least $s-2$ distinct generators occur in the context,
+so $s\le L+2$.  Finite-reference geometry, rank computations and compressed
+output consequently cost $2^{O(L)}\operatorname{poly}(N)$ for succinct
+input bit length $N$.  This becomes quasi-polynomial when
+$L=O(\log^2(N+2))$.  Reading an explicit word has its additional linear
+input cost.  Discovering a small context for arbitrary diagrams is still
+unproved, and dominant-run knot decisions were already covered by the
+existing structural criteria.
+
+\subsection{JSON is part of the succinct representation contract}
+The previous Python API could compute exponents with tens of thousands of
+bits, but ordinary JSON decimal conversion could reject their input or
+output.  This included degree \emph{keys} of the finite exceptional profile,
+not just rank values.  The maintained run frontend now accepts literal
+integers or explicitly signed hexadecimal strings.  Above 4096 bits it emits
+hexadecimal strings for both integer values and integer dictionary keys;
+smaller values retain the ordinary JSON representation.  No global decimal
+conversion limit is relaxed.  Booleans, floats and ambiguous numeric strings
+are rejected.  Distinct dictionary keys must retain distinct encodings.
+
+The frontend accepts exactly one of \code{runs} and \code{word}; the latter
+is already an explicit list of signed generators.  Neither path constructs
+a PD, and run input is never expanded.  Recognition, homology and structural
+profile modes retain their existing meanings and resource outcomes.
+A final deadline check now covers the arithmetic after source counting,
+including successful structural answers.
+
+\code{decode\_degree\_profile} reconstructs integer points and interval
+fields without enumerating the plateau.  It rejects duplicate degrees after
+decoding.  This function validates a transport schema, not a homology proof;
+the normal profile-query functions operate on its decoded Python result.
+The structural certificate verifier decodes only numeric fields prescribed
+by its exact schema, rejecting additional fields and boolean/float impostors.
+Its replay uses a separately written dense permutation and generator-support
+calculation, independent of the sparse producer.  Before allocating the
+permutation it checks $s\le\#\text{runs}+1$, which every knot source must
+satisfy.  It recomputes the PD/Artin sign conversion and both Rasmussen
+intervals.  This checks arithmetic premises, not the imported topology.
+
+New regressions send $2^{20000}+1$ through the actual CLI with both signs,
+reconstruct the degree profile, and verify the exact rank while constructing
+only four reference basis vectors.  A five-strand example with four balanced
+huge signed runs has no dominant exponent; its homogeneous source certificate
+round-trips and verifies while the producer is disabled by the test.
+Tampered fields, duplicate degree encodings, original component parity,
+and unchanged global decimal limits are checked.  These changes enable an
+already-proved succinct computation to cross the public interface; they
+do not provide a new homology runtime improvement.
+
+\subsection{What an acyclic repair certificate would need to establish}
+The report's geometric proposal is an accounting theorem for a supplied
+fixed DAG, not a constructed hierarchy of a knot exterior.  Suppose module
+$i$ has an integer counter $0\le x_i\le g_i$.  Every charged event strictly
+decreases its distinguished counter and can increase only counters at its
+out-neighbors. Only these charged events may increase counters.
+Partition time at events of predecessors of $i$; within
+each interval $i$ has at most $g_i$ events.  Thus the event counts obey
+\[
+ r_i\le g_i\left(1+\sum_{j\to i}r_j\right).
+\]
+Induction in topological order gives the weighted-path bound
+\[
+ \sum_i r_i\le\sum_{\pi\ne\varnothing}\prod_{v\in\pi}g_v
+ \le \ell g\sum_{j=0}^{B}(dg)^j,
+\]
+where $\ell$ is the number of vertices, $d$ bounds outdegree, $g$ bounds
+the numerical counter values, and $B$ bounds path length in edges.
+The exact path sum is computable by dynamic programming without enumerating
+paths.  Polynomial $\ell,d,g$ and logarithmic $B$ give a quasi-polynomial
+number of charged events.  A short binary encoding of an enormous $g$ is
+insufficient; the event count depends on $g$, not merely its bit length.
+
+The maintained research diagnostic agrees with independent path enumeration
+on 380 fixtures and rejects cycles and invalid bounds.  A complete DAG has
+bound $(g+1)^\ell-1$, while a chain has
+$\sum_{j=1}^{\ell}(\ell-j+1)g^j$; sparse edges alone do not control depth.
+For a knot algorithm one must still construct and validate the modules,
+fixed dependencies, counter bounds, and legal update rules.  Disjoint local
+supports do not by themselves imply independence of global nonseparatingness,
+homology predicates or attachment certificates.  Total work must also charge
+uncharged steps, event cost, and representation size.  We retain this as a
+research target rather than installing an unsupported geometric scheduler.
