@@ -340,3 +340,26 @@ if surface_cover:
         'Preparation and serialization are outside query timing.\n')
     with open('tables/surface-cover-integration.tex', 'w') as handle:
         handle.write(content)
+
+shadow = load('../fast/results/marked_shadow_20261008.json')
+if shadow:
+    by_case = {}
+    for row in shadow['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    rows = []
+    for name, scopes in by_case.items():
+        cells = []
+        for scope, arm in [('recognition', 'shadow'), ('recognition', 'control'),
+                           ('raw-decision', 'shadow'), ('raw-decision', 'euler'),
+                           ('raw-decision', 'control')]:
+            ratios = scopes[scope]['median_speedups']
+            cells.append('unknown' if ratios is None else f'{ratios[arm]:.3f}')
+        rows.append(esc(name) + ' & ' + ' & '.join(cells) + r' \\')
+    content = (r'\begin{center}\small' + '\n' +
+        table('Input & Full/shadow & A/A & Raw/shadow & Raw/Euler & A/A',
+              '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+        'Ratios are median paired times; values above one favor the denominator. '
+        'Full uses the previous default recognizer; raw uses the saturated scanner. '
+        'A/A compares identical implementations in each scope.\n')
+    with open('tables/determinant_benchmark.tex', 'w') as handle:
+        handle.write(content)

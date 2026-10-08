@@ -2,6 +2,22 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`determinant_continuations.tex` reviews report 26 and the optional maintained
+`shadow` backend. It proves the marked-completion lower bound, derives the
+signed Tait phase and residue reconstruction, and explains budget exhaustion
+with exact continuation of the same scan. It also reviews the singular-safe
+terminal kernel and the new checked common-graph producer. The latter accepts
+3,186 connected queries; another 1,317 have disconnected projections and zero
+determinant specialization. This finite audit is not a universal complexity
+bound, and terminal reuse is not enabled in the recognizer.
+`data/determinant-integrated-tests.txt` records all 560 passing tests.
+The archive validation and actual-upstream reruns are retained in
+`data/determinant-archive-validation.txt` and
+`data/determinant-upstream-probe.json`; the geometric audit has inputs and
+source hashes in `data/determinant-terminal-geometry-audit.json`.
+`../fast/benchmark_shadow.py` reproduces separate paired recognition and raw
+scan timings in `../fast/results/marked_shadow_20261008.json`.
+
 `causal_r3.tex` reviews report 27's parameterized search, reproduces its
 5,000-system and 608,400-instance abstract audits, and gives a four-site
 counterexample to immediate-inverse pruning when accumulated support controls

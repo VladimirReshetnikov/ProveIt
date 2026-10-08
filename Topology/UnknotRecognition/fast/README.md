@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 550 passing tests.
+diagram is not checked twice. The integrated suite now has 560 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -115,7 +115,8 @@ python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
 python3 -m unittest discover -s tests -v
 ```
 
-Recognition accepts `--backend standard|shared|saturated|euler|twist`. The default is
+Recognition accepts `--backend standard|shared|saturated|euler|shadow|twist`
+(with the barcode and fitting options described below). The default is
 `standard`: sharing incurs overhead on prime examples that stay connected.
 `shared` retains exact ranks and raw homological-degree counts. `saturated`
 retains the final unreduced rank capped at three. `euler` adds an optional exact
@@ -135,6 +136,34 @@ measures this setup separately from full recognition, with allocation peaks
 measured outside the timing samples.
 `python benchmark_euler_connectivity.py --output results/euler_local.json`
 compares the raw Euler-assisted scans with the earlier recurrence implementation.
+
+`--backend shadow` adds report 26's marked residue-four continuation bound.
+It completes whole relative components with the actual suffix, recovers their
+relative quantum shifts, and uses signed Tait determinants to evaluate four
+Euler residues. A reduced rank lower bound above one certifies knottedness;
+an inconclusive bound continues the exact scan. Only proper prefixes are
+observed. A partial observation never certifies the unknot.
+
+```bash
+python -B -m fastunknot recognize examples/conway.json --backend shadow --shadow-max-work 1000000
+python -B benchmark_shadow.py --output results/shadow_local.json
+```
+
+The Euler and determinant caches share `--euler-max-states`. The additional
+`--shadow-max-work` allowance counts geometry visits, matrix allocation and
+integer arithmetic updates (API: `shadow_max_work=None` removes this local
+cap). Local exhaustion disables inference and continues the same saturated
+scan; global exhaustion remains `UNKNOWN`. Completed determinant values alone
+are cached, so interruption cannot publish a partial result. Early evidence
+uses `reduced_rank_lower_bound_capped`, `stage`, and `shadow_stats`; the final
+rank still uses `rank_capped`. The existing backend restrictions apply.
+
+The default stays `standard`: earlier filters already decide many examples
+where the raw marked scanner improves substantially. The paired benchmark
+separates complete recognition from raw scanner timings. The theory and
+validation are in `../synthesis/determinant_continuations.tex`. The common
+terminal graph producer in `determinant_research/terminal_geometry_audit.py`
+is a checked research prototype; production computes each completion directly.
 
 Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
 and no racing. Incompatible options are rejected. `khovanov --shared` cannot
