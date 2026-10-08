@@ -1,3 +1,6 @@
+/- Modified for ProveIt: use direct product monotonicity for the dimension
+bound in exists_allocated_accuracy_reference_mass_bound, avoiding a Lean 4.32
+nlinarith timeout. All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedReferenceErrorWindowBound
 import OAI.Combinatorics.Progressions.Fourier.AllocatedProjectedFourierData
 import OAI.Combinatorics.Progressions.Sampling.AllocatedUnifiedSamplingBudget
@@ -799,7 +802,7 @@ theorem exists_allocated_accuracy_reference_mass_bound :
     simp only [Fintype.card_prod, Fintype.card_option, Fintype.card_fin, Nat.cast_mul,
       Nat.cast_add, Nat.cast_one]
     have hh := mul_le_mul hd hXB (Nat.cast_nonneg (Fintype.card X)) hpB
-    nlinarith
+    exact hh.trans (mul_le_mul_of_nonneg_left (le_add_of_nonneg_right zero_le_one) hpB)
   let η : ℝ≥0 := ⟨a, ha.1.le⟩
   have hresult := hcertified B U b hR hσ S x hb o bW d C V hC hV ν modulus hperiod q hq reference
     N hN hW hτ hξ hξ1 hρ hsizeSp hρ8 hρshift base cells hmass poly hpoly hm
