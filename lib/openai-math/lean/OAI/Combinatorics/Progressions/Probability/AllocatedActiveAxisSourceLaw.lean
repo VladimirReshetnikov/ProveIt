@@ -1,3 +1,7 @@
+/- Modified for ProveIt: derive allocatedFrozenTuple_single_block_marginal
+from the checked block marginal and coordinate evaluation, with an explicit
+product family. This avoids Lean 4.32 kernel memory exhaustion while
+preserving all upstream theorem statements. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedFrozenTupleGrouping
 
 namespace OAI
@@ -319,17 +323,14 @@ theorem allocatedFrozenTuple_single_block_marginal
       dependentProductPMF (fun v : Fin (layerSamplerDegree I n a.val) =>
         (integerScalarCubeWeights α (sides ⟨a.val, b, v⟩)
           (allocatedPrincipalSides_pos B U basis S ⟨a.val, b, v⟩)).toPMF) := by
-  let w := fun k : PrincipalTupleIndex
-    (fun d : {d // grid d} => B d.val) (fun d => layerSamplerDegree I n d.val) =>
-      integerScalarCubeWeights α (sides ⟨k.1.val, k.2⟩)
-        (allocatedPrincipalSides_pos B U basis S ⟨k.1.val, k.2⟩)
-  have hp : (allocatedFrozenTupleWeights (α := α) B U basis S).toPMF =
-      dependentProductPMF (fun k => (w k).toPMF) :=
-    FiniteProbabilityWeights.toPMF_pi w
-  exact (congrArg (fun p : PMF (PrincipalAxisTuples (α := α) grid sides) =>
-    p.map (fun u (v : Fin (layerSamplerDegree I n a.val)) => u ⟨a, b, v⟩)) hp).trans
-      (dependentProductPMF_marginal (fun k => (w k).toPMF) (fun v => ⟨a, b, v⟩)
-        (by intro v z h; simpa using h))
+  have h := congrArg (fun p => p.map (fun z => z b))
+    (allocatedFrozenTuple_block_marginal (α := α) B U basis S a)
+  rw [PMF.map_comp] at h
+  exact h.trans (dependentProductPMF_eval
+    (fun b : B a.val => dependentProductPMF
+      (fun v : Fin (layerSamplerDegree I n a.val) =>
+        (integerScalarCubeWeights α (sides ⟨a.val, b, v⟩)
+          (allocatedPrincipalSides_pos B U basis S ⟨a.val, b, v⟩)).toPMF)) b)
 
 theorem allocatedFrozenTuple_single_block_integer_law
     (a : {a : LayerSamplerAxis I n // grid a}) (b : B a.val) :
