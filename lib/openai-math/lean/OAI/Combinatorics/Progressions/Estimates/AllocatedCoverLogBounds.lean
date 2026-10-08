@@ -1,3 +1,6 @@
+/- Modified for ProveIt: allow 400,000 elaboration heartbeats locally for
+exists_allocatedActualProfileFourier_bound on Lean 4.32. All upstream theorem
+statements and proof steps are unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AllocatedIdealCoverRadiusBudget
 import OAI.Combinatorics.Progressions.Dynamics.AllocatedNormalizedScaleBudget
 import OAI.Combinatorics.Progressions.Estimates.AllocatedSeparatedGeometry
@@ -331,6 +334,7 @@ theorem allocatedActualProfileFourier_nonneg (m : ℕ) {D p e g s : ℝ}
   unfold allocatedProfileFourierOutput allocatedProfileFourierInput
   positivity
 
+set_option maxHeartbeats 400000 in
 theorem exists_allocatedActualProfileFourier_bound (m : ℕ) :
     ∃ a : ℕ, 2 ≤ a ∧ ∀ {D p e g s : ℝ},
       0 ≤ D → 0 ≤ p → 0 ≤ e → 0 ≤ g → 0 ≤ s →
