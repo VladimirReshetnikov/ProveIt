@@ -1,0 +1,131 @@
+\section{Auditing a claimed route from Jones identity to recognition}
+\label{sec:jones-detection-audit}
+
+A June 2026 preprint by Carmi and Cohen claims that the Jones polynomial
+detects the unknot \cite{carmi-cohen2026}.  We checked a specific prerequisite:
+Lemma~5.8 bounds residual Jones--Vassiliev degree by
+$\widehat B+2$, under its machine hypotheses.  Section~5.1.1 sets
+$\widehat B=3n+\ell-1+11$ from the pre-planting host, and
+Proposition~5.12 claims the required local construction at a seed crossing,
+recovering an ordinary odd anti-parallel twist.  Together these statements
+would bound every such residual twist on a three-crossing knot host by
+$3\cdot3+1-1+11+2=22$, independently of its length.
+
+The explicit computation below contradicts this combined consequence.
+It does not distinguish an error in the conditional algebraic lemma from
+an error in the claimed geometric realization, and it does not provide
+a counterexample to Jones unknot detection itself.  It is sufficient to
+reject this proof as a dependency of the maintained recognition algorithm.
+The stronger Jones identity backend therefore continues to require an
+independent unknot certificate.
+
+\subsection{An explicit host and a twist with fixed exterior}
+
+Use the oriented trefoil with PD rows
+\[
+ H=((5,1,2,0),(1,4,3,2),(0,3,4,5)).
+\]
+Keep its first two rows fixed.  Replace the last row by a linear twist
+of odd length $L$, preserving its four exterior labels $0,3,4,5$.
+Start with $(a,b)=(0,3)$.  For $i=0,\ldots,L-2$, insert
+$(a,b,6+2i,7+2i)$ and replace $(a,b)$ by $(7+2i,6+2i)$.
+Finish with $(a,b,4,5)$.  Call the resulting knot diagram $D_L$.
+For $L=1$ this is precisely $H$, and $D_L$ has $L+2$ crossings.
+All of its crossings are positive in the orientation given by traversing
+opposite ports and equal-label arc endpoints.
+
+The two strands in the inserted band are anti-parallel: at every inserted
+row, exactly one of ports $0,1$ is incoming and exactly one of ports $2,3$
+is incoming.  The oriented smoothing pairs ports $(0,1)$ and $(2,3)$.
+After smoothing any one band crossing, the others successively become
+adjacent-port monogons.  Deleting these by Reidemeister~I moves gives
+exactly the two exterior rows obtained by smoothing the seed of $H$.
+All moves take place in the inserted band.  This shadow calculation is
+independent of the signs assigned to the remaining crossings.
+
+There is also an explicit host anchor in every odd sign cube: assign the
+first $L-1$ crossings alternating signs $+,-$, and the last sign $+$.
+Cancel each consecutive opposite-sign pair by Reidemeister~II.  The
+surviving row and its exterior are exactly $H$, up to arc relabeling.
+Thus the audit does not infer applicability merely from a knot-family
+name or from a numerical resemblance of polynomials; it checks the
+specified local anti-parallel and anchor behavior.
+
+\subsection{An independent polynomial calculation}
+
+Use $t$ for the standard Jones variable and $z=t^{1/2}$ for the variable
+called $x$ in the audited preprint.  This $z$ is different from the
+$x=A^4=t^{-1}$ used in our numerical Potts ring.
+The seed polynomial is
+\[
+ V_1(t)=t+t^3-t^4.
+\]
+Oriented smoothing of a band crossing gives the positive Hopf link,
+with $V_0(z)=-z-z^5$.  The four bracket states of the two-crossing
+smoothed host independently check this value.  Switching one band
+crossing allows a Reidemeister~II cancellation and produces $D_{L-2}$.
+The usual oriented Jones skein relation consequently gives
+\[
+ t^{-1}V_L(t)-t V_{L-2}(t)
+ =(t^{1/2}-t^{-1/2})(-t^{1/2}-t^{5/2}),
+\]
+or
+\[
+ V_L(t)=t^2V_{L-2}(t)+t-t^2+t^3-t^4\qquad(L\ge3\text{ odd}).
+\]
+In particular, the leading term is $-t^{L+3}$.  For the smallest positive
+example exceeding the claimed cap, $L=9$,
+\[
+ V_9(t)=t-t^2+2\sum_{j=3}^{9}(-1)^{j+1}t^j-t^{10}+t^{11}-t^{12}.
+\]
+An independent whole-cube bracket computation checks this eleven-crossing
+diagram using only $2^{11}$ states.  It uses neither a Tait graph nor the
+production quadratic evaluator.  The exact faithful backend independently
+recovers the same complete polynomial.
+
+Now write $p=z-z^{-1}$, so $z^2=pz+1$.  Reducing $V_L(z^2)$ into
+$a(p)+b(p)z$ is a formal operation in a free rank-two
+$\mathbb Z[p]$-module.  Multiplication by $z$ sends the pair $(a,b)$
+to $(b,a+pb)$.  Thus for positive exponent $k$, the coefficient of $z$
+in $z^k$ has degree $k-1$ and leading coefficient one.  The term
+$-z^{2L+6}$ therefore contributes a unique leading term
+$-p^{2L+5}$ to $b(p)$; every other Jones monomial has exponent at most
+$2L+4$ and cannot cancel it.  Consequently
+\[
+ \deg_p V_L=2L+5,\qquad
+ f_{23}(D_9)=(a_{23},b_{23})=(0,-1)\ne(0,0).
+\]
+This contradicts the degree-22 consequence above.  There is no numerical
+approximation or degree estimation involved.  Reflection provides another
+check: the mirrored family has degree $2L+6$, so the mirror of $D_9$ has
+degree 24.  For any fixed proposed cap, the same recurrence supplies
+larger counterexamples to a uniform residual-twist bound.
+
+\subsection{Reproducibility and the scope of the finding}
+
+The maintained research audit is
+\path{fast/jones_research/audit_residual_twists.py}, with results in
+\path{fast/results/residual_twist_audit_20261008.json}.
+
+It checks lengths $1,3,5,7,9,23,31$, both mirrors, and stores each PD,
+full Jones polynomial, both formal JVP coordinates and their actual degrees.
+Ten small cases have whole-cube comparisons; all fourteen have faithful
+recovery and skein-recurrence comparisons.  Formal substitution
+$p=z-z^{-1}$ reconstructs every original Laurent polynomial, checking the
+coordinate conversion independently of the numerical quadratic ring.
+The longer cases include lengths beyond 22, so the discrepancy is not
+resolved by requiring a twist longer than that threshold.
+
+The geometry record contains 79 individual smoothings and 1576 explicit
+Reidemeister~I deletions with the fixed exterior retained, together with
+the alternating-sign Reidemeister~II anchor traces.  Another 42 crossing-sign
+assignments, exhausting sign cubes of lengths one, three and five, compare
+whole-cube polynomials with their signed-sum twist reductions.  For each
+assignment, the independent bracket computation sums all smoothing states.
+
+The audit does not construct the four-clasp machine or identify the precise
+step of its claimed collapse that fails.  Its conclusion is the narrower,
+fully reproducible one: the uniform residual cap and universal geometric
+realization asserted by the audited statements cannot both be correct.
+In particular, the preprint does not close our gap between fast Jones
+computation and fast complete recognition.
