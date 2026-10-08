@@ -498,3 +498,25 @@ if separator_orders:
     with open('tables/separator_orders.tex', 'w') as handle:
         handle.write(table('Family & $n$ & Greedy & Separator & Selected & Greedy ms & Bounded ms',
                            '@{}lrrrrrr@{}', rows))
+
+adaptive_potts = load('../fast/results/adaptive_potts_20261008.json')
+if adaptive_potts:
+    names = {'conway': 'Conway', 'tree-7': 'Tree medial 254',
+             'grid-4-random-order': 'Grid 16, shuffled',
+             'grid-8-random-order': 'Grid 64, shuffled',
+             'grid-10': 'Grid 100', 'grid-12': 'Grid 144'}
+    rows = []
+    for row in adaptive_potts['rows']:
+        if row['scope'] != 'scalar' or row['name'] not in names:
+            continue
+        cells = [names[row['name']]]
+        for arm in ('ordinary', 'control', 'eager', 'initial', 'adaptive'):
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                         if arm in row['completed_arms'] else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/adaptive_potts.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+                     table('Scalar input & Ordinary & A/A & Eager & Initial & Adaptive',
+                           '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+                     'Median milliseconds including all setup. A/A repeats ordinary exact Potts. '
+                     'A limit is a censored query, not a completed scalar value.\n')
