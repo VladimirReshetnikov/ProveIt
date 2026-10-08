@@ -430,7 +430,7 @@ def main(argv: list[str] | None = None) -> int:
         statistics = {}
         try:
             test, _, extra = select_jones_filter(args.backend, args.potts_colors)
-            if args.backend == "potts-faithful":
+            if args.backend in ("potts-faithful", "spin-faithful"):
                 extra.update(statistics=statistics, include_polynomial=True)
             witness = test(diagram, max_states=args.max_states,
                            max_transitions=args.max_transitions, **extra)

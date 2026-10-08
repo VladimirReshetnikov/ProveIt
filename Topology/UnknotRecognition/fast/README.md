@@ -1630,3 +1630,33 @@ steps. Even a one-type cyclic annulus cover has `W` inequivalent ordered pairs
 of marked points, so efficient marked comparison alone does not bound the
 number of possible hierarchy states. The theory is maintained in
 [`../synthesis/surface_covers.tex`](../synthesis/surface_covers.tex).
+
+
+### Binary-state faithful Jones backend (8 October 2026)
+
+The optional `spin-faithful` backend uses one orientation bit per cut edge,
+a checked integral turning cochain, and an injective integer encoding of the
+full Jones polynomial. With its certified separator order and caps/deadlines
+disabled, it computes the full polynomial in `poly(n) 2^O(sqrt(n))` deterministic
+bit time. A polynomial different from one certifies knottedness; polynomial
+one continues to the independent recognizer.
+
+```sh
+python -B -m fastunknot jones examples/trefoil.json --backend spin-faithful
+python -B -m fastunknot recognize examples/conway.json --jones-backend spin-faithful
+```
+
+Python callers can use `spin_jones_exact(diagram, include_polynomial=True,
+max_states=None, max_transitions=None)` from `fastunknot.spin_jones` for an
+uncapped query. Default local caps are 4096 states and 200000 transitions;
+cancellation callbacks remain available. The turning certificate validates
+local geometric weights, not a claimed completed contraction. Serialized
+large scalars and coefficients use hexadecimal strings.
+
+This integrates the Jones component of `unknot_recognition_research_20261008.zip`
+from commit `1be2abc8c`. Its historical benchmark data and ordering-policy
+correction remain distinct from the maintained integration measurements.
+See `spin_jones_research/README.md` for provenance and the synthesis article's
+binary-tensor chapter for the proof. Measured regressions justify retaining
+the existing default. The other newly delivered research components remain
+under component-level review; the synthesis records their current status.

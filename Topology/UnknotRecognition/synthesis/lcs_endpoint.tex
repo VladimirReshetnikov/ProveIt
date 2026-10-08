@@ -1,0 +1,126 @@
+\section{Dense endpoint progressions certified by two overlaps}
+\label{sec:lcs-endpoint}
+
+The 65-marker limitation of Section~\ref{sec:lcs-sparse} suggests retaining
+an entire arithmetic progression of candidate lengths. This removes both
+the fixed marker-count limit and the short-period limit for a useful family,
+while preserving the general exact occurrence matcher as fallback.
+
+\subsection{Certifying an occurrence grid without enumeration}
+For a signed letter $a$, summarize its positions in a grammar word by
+$(f,l,d,c)$: first position, last position, gcd of successive gaps, and exact
+cardinality. Empty sets have $c=0$; singletons have $d=0$. At a concatenation
+$UV$, shift the right positions by $|U|$. If both sets are nonempty, the new
+gap gcd is
+\[
+ \gcd(d_U,d_V,|U|+f_V-l_U).
+\]
+The first and last positions and count combine directly. Every position is
+congruent to $f$ modulo $d$. Since positions are distinct, the set fills its
+entire grid if and only if
+\[
+ l-f=d(c-1).
+\]
+This criterion also covers a singleton. Absence, a certified progression,
+and a nonprogression are distinct outcomes. The traversal uses the reachable
+grammar, including binary arithmetic on exponentially large counts and gaps;
+it never expands those counts into lists.
+
+Every suffix/prefix overlap of $X,Y$ has a length in both necessary sets
+\[
+ \{|X|-i:X_i=\operatorname{first}(Y)\},\qquad
+ \{j+1:Y_j=\operatorname{last}(X)\}.
+\]
+If both sets are progressions, intersect them using exact CRT arithmetic.
+If only one is a progression, it still supplies a necessary candidate set.
+Clip to $1\le k\le\min(|X|,|Y|)$. An absent endpoint or empty intersection
+proves that there are no overlaps. If neither set is a progression, decline
+this stage. No conclusion is drawn from failure to find a grid.
+
+\subsection{The two-largest-overlaps certificate}
+Suppose the resulting candidate progression contains at least two lengths,
+with maximum $L$ and step $d>0$. Check exactly, using compressed equality,
+that both $L$ and $L-d$ are overlaps. If so, the common word
+\[
+ W=\operatorname{suffix}_L(X)=\operatorname{prefix}_L(Y)
+\]
+has a border of length $L-d$, hence period $d$. Repeated application of
+that period implies that every positive $L-jd$ is also a border of $W$.
+It follows that every member of the candidate progression is an overlap.
+Conversely, endpoint necessity already ensures that every overlap belongs
+to that progression. Thus two exact equalities certify the entire answer.
+The progression need not begin at $d$, and its cardinality need not fit a
+machine integer or any fixed enumeration allowance.
+
+For a singleton, one equality decides it. If either of the two checks for
+a nonsingleton fails, the stage declines: smaller candidates may still be
+valid. The complete matcher then runs. This distinction is essential;
+a failed largest overlap is not a certificate of an empty overlap set.
+
+For $s$ reachable rules, grammar height $H$, and maximum integer bit length
+$b$, the two grid passes cost $O(s\log s)$ word operations for reachability
+and a polynomial amount of $b$-bit arithmetic per rule. The CRT intersection
+has polynomial bit cost. At most four slices and two equality queries remain,
+adding $O(H)$ grammar nodes. If $E(t,b)$ bounds the deterministic equality
+primitive, the equality term is at most $2E(s+O(H),b)$. These costs remain
+charged to the common work and node allowances; a limit is inconclusive.
+The implementation tries this route after the cheaper uniform, short-period,
+and sparse-endpoint routes, for operands of length at least 128.
+
+Set $B=(ab)^Nc$ and $X=Y=B^q$. The occurrences of $c$ give precisely the
+length progression $(|B|,|B|,q)$. For $q\ge2$, the two largest candidates
+are true overlaps, so the complete answer is certified without enumerating
+$q$. In particular both $N$ and $q$ may equal $2^{500}$. This is a local
+compressed-string theorem. It does not bound the number of relator moves,
+intermediate grammar growth, or total unknot-recognition time.
+
+\subsection{Validation and measurements}
+The four new tests compare occurrence grids with literal sets on all binary
+words of length at most seven and 300 random signed words; compare complete
+overlap sets and critical-extension maxima on 40 randomized repeated blocks;
+exercise disjoint grids and both failed-check fallbacks; and certify the
+$N=q=2^{500}$ family under a 100000-work allowance with expansion and generic
+occurrence tables forbidden. Existing generic-matcher coverage explicitly
+bypasses the independent fast stages. The full suite passes all 701 tests
+with Regina 7.4.1 in 166.342 seconds.
+
+\input{tables/lcs_endpoint_queries.tex}
+\input{tables/lcs_endpoint_kernels.tex}
+\input{tables/lcs_endpoint_operations.tex}
+
+For $q=65$ and $N=2^8$, median time falls from 213.510 milliseconds
+(209.198 A/A) to 0.675; charged work falls from 259320 to 860 and arena
+nodes from 425 to 26. At $N=2^{500}$ both old arms exhaust two million
+work units; the new query completes in 4.810 milliseconds, with 518 nodes,
+9224 work units, two exact equalities and no occurrence table.
+For $q=N=2^{500}$ the complete answer is one progression containing
+$2^{500}$ lengths. Its median is 52.894 milliseconds, using 2003 nodes,
+48292 work units and two equalities. Both controls are limited.
+For $q=N=2^8$, completed medians are 314.478, 321.601 and 0.917 milliseconds.
+
+The negative control changes the first block to $(ba)^Nc$ while retaining
+64 ordinary blocks, and compares that word with itself. Its endpoint grid
+is regular, but the second-largest proposed overlap fails. Only the full
+word is an overlap. At $N=2^8$, the fallback completes in 255.670 milliseconds
+before, 271.733 A/A and 259.146 after. The unsuccessful certificate adds
+210 work units and six nodes. At $N=2^{32}$ and $N=2^{500}$ every arm is
+still limited. A regular endpoint grid alone is therefore insufficient.
+
+All 225 whole-knot queries preserve their certificate digests and none
+activates this stage. Small-fourteen sums of medians are 197.850, 198.286
+and 198.954 milliseconds. Gordian medians are 2.279, 1.997 and 3.209 seconds;
+this batch is noisy and does not demonstrate a recognition speedup.
+The 135 local relator operations retain identical traces; the $N=2^{500}$
+quotient medians are 13.937, 13.636 and 13.726 milliseconds. Earlier phase
+and sparse routes likewise retain their counters on the corresponding controls.
+
+The archived baseline is \code{8170a64c7}. A/A repeats its matcher inside
+the common current arena and recognition/replay pipeline. Seed 3015 shuffles
+three arms in each of five measured rounds, after one excluded warmup.
+The 495 string queries include construction and local answer validation;
+no progression with exponentially many entries is enumerated for validation.
+Local allowances are two million work units and 100000 arena/table cells.
+Whole recognition allows 18 seconds, with a 15-second, twenty-million-work
+group stage. Limited samples remain censored, with no completed-time ratio.
+Raw measurements are in \path{results/lcs_endpoint_progressions_20261008.json};
+the test and benchmark logs are under \path{synthesis/data/lcs-endpoint-*}.

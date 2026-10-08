@@ -5,7 +5,8 @@ Our overlap construction uses dyadic prefix seeds and the existing AP matcher;
 our equality backend has different costs from the paper's FM data structure.
 All loops depend on grammar size or binary lengths, never expanded word length.
 """
-from .compressed_match import MatchTable, _clip, _last, _shift
+from math import gcd
+from .compressed_match import MatchTable, _clip, _intersect, _last, _shift
 from .compressed_words import CompressedLimit
 
 
@@ -19,6 +20,37 @@ def adjacent_pairs(arena, nodes):
             pairs.add((arena.last[rule[1]], arena.first[rule[2]]))
     arena.stats['adjacency_rules'] = arena.stats.get('adjacency_rules', 0)+len(nodes)
     return pairs
+
+
+def letter_progression(arena, root, letter):
+    """Exact occurrence AP, () for absence, or None for a non-AP position set.
+
+    Track the first/last positions, gcd of successive gaps, and cardinality.
+    The set fills its congruence grid iff span == gcd * (cardinality - 1).
+    """
+    summaries = {}
+    nodes = arena._reachable([root])
+    for node in nodes:
+        arena.tick()
+        rule = arena.rules[node]
+        if rule[0] == 't':
+            summaries[node] = 0, 0, 0, int(rule[1] == letter)
+            continue
+        left, right = rule[1:]
+        lo, hi, step, count = summaries[left]
+        rlo, rhi, rstep, rcount = summaries[right]
+        offset = arena.lengths[left]
+        if not rcount:
+            summaries[node] = lo, hi, step, count
+        elif not count:
+            summaries[node] = offset+rlo, offset+rhi, rstep, rcount
+        else:
+            summaries[node] = lo, offset+rhi, gcd(step, rstep, offset+rlo-hi), count+rcount
+    arena.stats['lcs_endpoint_rules'] = arena.stats.get('lcs_endpoint_rules', 0)+len(nodes)
+    lo, hi, step, count = summaries.get(root, (0, 0, 0, 0))
+    if not count:
+        return ()
+    return (lo, step, count) if hi-lo == step*(count-1) else None
 
 
 class CommonSubstring:
@@ -143,6 +175,52 @@ class CommonSubstring:
         a.stats['lcs_sparse_hits'] = a.stats.get('lcs_sparse_hits', 0)+1
         return result
 
+    def progression_overlaps(self, x, y):
+        """Certify a whole endpoint progression using its two largest lengths.
+
+        Two successive true overlaps force their common word to have the
+        progression's period. Unresolved endpoint geometry or failed checks
+        leave the complete general matcher available.
+        """
+        a = self.arena
+        nx, ny = a.lengths[x], a.lengths[y]
+        limit = min(nx, ny)
+        if limit < 128:
+            return None
+        a.stats['lcs_endpoint_trials'] = a.stats.get('lcs_endpoint_trials', 0)+1
+        left = letter_progression(a, x, a.first[y])
+        right = letter_progression(a, y, a.last[x])
+        if left == () or right == ():
+            candidates = None
+        else:
+            known = []
+            if left is not None:
+                known.append(_clip((nx-_last(left), left[1], left[2]), 1, limit))
+            if right is not None:
+                known.append(_clip(_shift(right, 1), 1, limit))
+            if not known:
+                return None
+            candidates = known[0] if len(known) == 1 else _intersect(*known)
+        if candidates is None:
+            result = []
+        else:
+            maximum = _last(candidates)
+            a.stats['lcs_endpoint_checks'] = a.stats.get('lcs_endpoint_checks', 0)+1
+            if not a.equal(a.slice(x, nx-maximum, nx), a.slice(y, 0, maximum)):
+                if candidates[2] > 1:
+                    return None
+                result = []
+            elif candidates[2] == 1:
+                result = [candidates]
+            else:
+                second = maximum-candidates[1]
+                a.stats['lcs_endpoint_checks'] += 1
+                if not a.equal(a.slice(x, nx-second, nx), a.slice(y, 0, second)):
+                    return None
+                result = [candidates]
+        a.stats['lcs_endpoint_hits'] = a.stats.get('lcs_endpoint_hits', 0)+1
+        return result
+
     def overlaps(self, x, y):
         """Disjoint APs of positive k with suffix_k(x) == prefix_k(y)."""
         a = self.arena
@@ -168,6 +246,8 @@ class CommonSubstring:
             result = periodic
         elif (sparse := self.sparse_overlaps(x, y)) is not None:
             result = sparse
+        elif (progression := self.progression_overlaps(x, y)) is not None:
+            result = progression
         else:
             low = 1
             while low <= limit:
