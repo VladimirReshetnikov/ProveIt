@@ -444,9 +444,14 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     ``reduction="adaptive"`` starts ordinary cancellation and switches to
     the residue shortcut only after its per-stage Schur update allowance is
     exceeded. A declined shortcut resumes the partially reduced complex.
+
+    ``reduction="disk-adaptive"`` additionally attempts bounded full radical
+    transfer when adjacent degrees defeat that shortcut. Its rotation-system
+    certificate and local work gate must both succeed before installation;
+    otherwise sparse cancellation resumes on the saved partial complex.
     """
-    if reduction not in ("standard", "residue", "adaptive"):
-        raise ValueError("reduction must be standard, residue, or adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, or disk-adaptive")
     if reduction != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
         raise ValueError("residue reduction requires minfill, bits, self_inverse=True, and race=1")
     if composition not in ("standard", "component", "component-dense"):
@@ -471,8 +476,8 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
             shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
         scan_type = FastScan
         if reduction != "standard":
-            from .residue import AdaptiveScan, ResidueScan
-            scan_type = AdaptiveScan if reduction == "adaptive" else ResidueScan
+            from .residue import reduction_scanner
+            scan_type = reduction_scanner(reduction)
         complex_ = scan_type(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
     else:                         # ablation configurations
         complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,

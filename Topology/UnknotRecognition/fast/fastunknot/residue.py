@@ -126,3 +126,15 @@ class AdaptiveScan(ResidueScan):
         else:
             stats["adaptive_fallbacks"] += 1
             FastScan.eliminate(self)
+
+
+def reduction_scanner(reduction):
+    """Select an explicit cancellation policy; full disk transfer stays lazy."""
+    if reduction == "disk-adaptive":
+        from .disk_scan import DiskAdaptiveScan
+        return DiskAdaptiveScan
+    if reduction == "adaptive":
+        return AdaptiveScan
+    if reduction == "residue":
+        return ResidueScan
+    raise ValueError("unknown residue reduction policy")

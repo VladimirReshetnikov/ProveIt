@@ -3089,6 +3089,14 @@ Higher-dimensional stackability gap (research notes, Part H)
   stackable invariant: ranks add under unions. They isolate its open step,
   preservation under the lift, which is a multilinear Bogolyubov-type
   inverse theorem over Z_N. Research only: the count stays 114/6.
+  Proofs16WithUnion formalizes the sequential-union bound (Part H.2) for
+  arbitrary controls: MultiplyLinearWith.union covers two relations at losses
+  lam*s and (1-lam)*s, with counts adding and width exponents multiplying.
+  MultiplyLinearWith.fin_union and .finsetUnion unite q relations with
+  common controls (Q,E) into count q*Q(s/q) and exponent E(s/q)^q. The module
+  also adds congr_controls and subset. It was compiled locally against its
+  115-module closure, and all six theorems use only propext,
+  Classical.choice and Quot.sound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
