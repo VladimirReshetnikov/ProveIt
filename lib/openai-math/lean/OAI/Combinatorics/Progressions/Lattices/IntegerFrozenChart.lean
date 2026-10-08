@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial.coeff_sub for the frozen top-component coefficient proof.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Polynomial.BufferedSampledCurrentGradePhase
 
@@ -84,7 +85,7 @@ theorem freezePolynomial_top_independent (keep : I → Prop)
       by_contra hn
       have hlt := hlower (mem_support_iff.mpr hn)
       exact (Nat.lt_irrefl d) (hα ▸ hlt)
-    exact sub_eq_zero.mp (by simpa only [AddMonoidAlgebra.coeff_sub, Finsupp.sub_apply] using hz)
+    exact sub_eq_zero.mp (by simpa only [MvPolynomial.coeff_sub] using hz)
   · rfl
 
 theorem freezePolynomial_map {S : Type*} [CommRing S] (φ : R →+* S)
