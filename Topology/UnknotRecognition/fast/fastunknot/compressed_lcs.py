@@ -5,7 +5,7 @@ Our overlap construction uses dyadic prefix seeds and the existing AP matcher;
 our equality backend has different costs from the paper's FM data structure.
 All loops depend on grammar size or binary lengths, never expanded word length.
 """
-from .compressed_match import MatchTable, _clip, _last
+from .compressed_match import MatchTable, _clip, _last, _shift
 from .compressed_words import CompressedLimit
 
 
@@ -32,10 +32,20 @@ class CommonSubstring:
         """Disjoint APs of positive k with suffix_k(x) == prefix_k(y)."""
         a = self.arena
         a.tick()
-        if (x, y) in self.cache:
-            return self.cache[x, y]
+        key = x, y
+        if key in self.cache:
+            return self.cache[key]
         nx, ny = a.lengths[x], a.lengths[y]
         limit, result = min(nx, ny), []
+        # No overlap can extend outside this suffix and prefix. Keep cache
+        # identity in the caller's roots while matching only the local words.
+        if nx > limit:
+            x = a.slice(x, nx-limit, nx)
+            a.stats['lcs_trimmed_operands'] = a.stats.get('lcs_trimmed_operands', 0)+1
+        if ny > limit:
+            y = a.slice(y, 0, limit)
+            a.stats['lcs_trimmed_operands'] = a.stats.get('lcs_trimmed_operands', 0)+1
+        nx = ny = limit
         if limit and a.uniform[x] and a.uniform[y]:
             if a.uniform[x] == a.uniform[y]:
                 result = [(1, 1 if limit > 1 else 0, limit)]
@@ -45,8 +55,15 @@ class CommonSubstring:
                 a.tick()
                 high = min(2*low-1, limit)
                 seed = a.slice(y, 0, low)
-                table = MatchTable(a, seed, x)
-                for ap in table.local(seed, x, nx-high, nx):
+                # Every candidate seed lies wholly in this suffix. Translate
+                # its local start before applying the periodic extension test.
+                window = a.slice(x, nx-high, nx)
+                table = MatchTable(a, seed, window)
+                a.stats['lcs_window_queries'] = a.stats.get('lcs_window_queries', 0)+1
+                a.stats['lcs_window_bits'] = max(
+                    a.stats.get('lcs_window_bits', 0), high.bit_length())
+                for local in table.local(seed, window, 0, high):
+                    ap = _shift(local, nx-high)
                     a.tick()
                     start, step, count = ap
                     if count == 1:
@@ -71,7 +88,7 @@ class CommonSubstring:
                 low *= 2
         if self.cache_cells+len(result)+1 > a.max_nodes:
             raise CompressedLimit('compressed-LCS overlap cache allowance exhausted')
-        self.cache[x, y] = result
+        self.cache[key] = result
         self.cache_cells += len(result)+1
         a.stats['lcs_overlap_aps'] = a.stats.get('lcs_overlap_aps', 0)+len(result)
         return result
