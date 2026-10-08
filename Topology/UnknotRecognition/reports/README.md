@@ -29,8 +29,8 @@ modification times.
 | `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | 52 archive tests, pinned-source audit and 14,658-state geometry audit pass; optional adaptive full transfer integrated |
 | `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | 152 archive tests and independent arithmetic/local audits pass; checked-source classifier and opt-in local wrapper integrated |
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded transfer and exact symbolic transport integrated; earlier rank law and conditional repair bound reviewed |
-| `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover integration remains under review |
-| `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517 production tests pass |
+| `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover kernel and ordered-point queries maintained separately, 534-test checkpoint |
+| `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517-test integration checkpoint |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -202,8 +202,14 @@ The advertised full `SHA256_MANIFEST.json` is absent; no broader hash claim is
 made. Production repeats 3,885 entrywise comparisons over 555 prefixes, all
 555 full contraction certificates, and support and representation audits.
 Proofs, measurements, and resource semantics are in
-`../synthesis/corridor_transfer.tex`. The separate dihedral-cover kernel still
-needs theory and implementation integration review; it is not a knot certificate.
+`../synthesis/corridor_transfer.tex`. The separate dihedral-cover kernel review
+is now complete and its maintained derivative adds binary JSON, cooperative
+checks and exact ordered-point component comparison. The full checkpoint passes
+534 tests; 196,712 marked comparisons against literal equivariant bijections
+supplement the 13,846 expanded-topology checks. `../synthesis/surface_covers.tex`
+gives the proofs and the two-mark obstruction to a constant state-type bound.
+The geometry module requires a supplied presentation and is not a knot certificate;
+extracting it from an exterior and representing full attaching maps remain open.
 
 
 Report `25/` was extracted from `docs/incoming/unknot_cyclic_garside_20261007.zip`
@@ -214,8 +220,8 @@ smoke pass against this checkout. Its maintained derivative now supplies an
 optional independently replayed source-braid probe with shared local/global
 checks and complete fallback. The modular Alexander obstruction precedes the probe, and an inconclusive result
 is reused on an unchanged diagram. Jones follows the probe so that compression
-can avoid its cost on a larger diagram. All 517
-production tests pass; isolated-compressor and complete-recognition measurements
+can avoid its cost on a larger diagram. The integration checkpoint passed all 517
+production tests; isolated-compressor and complete-recognition measurements
 are retained separately. The theory, fixed-radius complexity bound, restricted
 small-core theorem and limitations are in `../synthesis/cyclic_garside.tex`.
 The delivered `SHA256SUMS.txt` is explicitly tracked despite the repository's

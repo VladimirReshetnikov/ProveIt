@@ -251,7 +251,8 @@ and the sparse/packed scalar-map representation audit. Evidence is in
 `../fast/results/corridor_integrated_20261008.json`. The delivered archive's
 268 scanner tests and separate cover suite pass in a temporary copy. Its 20
 integration hashes match; its advertised package-wide hash manifest is missing.
-The separate cover kernel is not yet integrated into the maintained theory.
+The separate cover-kernel follow-up is now maintained in `surface_covers.tex`,
+with its supplied-presentation contract kept distinct from recognition.
 
 
 `cyclic_garside.tex` reviews and integrates report 25's exact classical Garside
@@ -260,7 +261,7 @@ bounded source-braid portfolio. It gives explicit word-operation and storage
 bounds, a restricted inflated-core quasi-polynomial theorem, and two limitations
 of equality-based shortening. Production puts modular Alexander
 first, reuses that inconclusive check if the probe declines, and runs Jones after
-the probe so that compression can avoid work on the larger diagram. The maintained suite
+the probe so that compression can avoid work on the larger diagram. That checkpoint
 passes 517 tests, including 60 small-closure homology comparisons and resource,
 restart and certificate regressions. Logs and the 45-hash/six-blob source audit
 are in `data/cyclic-garside-*`. Reproduce the separate mechanism and complete
@@ -270,3 +271,17 @@ recognition experiments with `../fast/garside_research/benchmark_kernel.py` and
 The `before_filter_order` and `after_all_filters` files retain the diagnostic
 regressions that motivated placing the probe between modular Alexander and Jones.
 They are explicitly not measurements of the final implementation.
+
+
+`surface_covers.tex` completes the report 24 cover-kernel review and proves the
+new ordered-point signature and rooted transport interface. It also shows why
+two marks already allow `W` inequivalent types on a single cyclic annulus cover.
+The geometry module remains separate from recognition: a checked extraction
+from a knot exterior, full attachments and a search-state bound are still needed.
+The 534-test checkpoint, 13,846 expanded-topology comparisons and independent
+196,712 marked-equivalence comparisons are retained in `data/surface-cover-*`.
+Use `../fast/cover_research/audit_markings.py --output FILE` and
+`../fast/cover_research/benchmark.py --output FILE` to reproduce the new audit
+and geometric measurements. The tables read `../fast/results/surface_cover_20261008.json`;
+its 12 complete-topology cases and nine prepared-query cases have raw paired
+samples, A/A controls and source hashes. They are not knot-recognition timings.

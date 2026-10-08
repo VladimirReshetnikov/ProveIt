@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 517 passing tests.
+diagram is not checked twice. The integrated suite now has 534 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -1075,3 +1075,22 @@ The default caps are `--garside-seconds 0.1`, `--garside-max-ticks 100000`, and
 resource semantics and measurement scope. The theory article derives the
 polynomial fixed-radius compressor bound and a conditional small-core theorem;
 it does not claim a general sub-exponential unknot algorithm.
+
+
+## Compressed surface-cover geometry
+
+`fastunknot.surface_cover` maintains report 24's classifier for supplied
+binary-encoded dihedral covers of bordered surfaces. `CoverIndex` provides
+component and boundary-lift queries, exact signatures for ordered marked fibre
+points, and evaluation of rooted equivariant maps. Classification uses at most
+three unmarked family records; all arithmetic is polynomial in the input bit
+length without expanding sheets. Hexadecimal JSON and cooperative cancellation
+are supported. See [`cover_research/README.md`](cover_research/README.md) for
+input examples, proofs, audits and separate geometric benchmarks.
+
+This module is not called by knot recognition. Presentation extraction, full
+external attachments and hierarchy search bounds remain unproved integration
+steps. Even a one-type cyclic annulus cover has `W` inequivalent ordered pairs
+of marked points, so efficient marked comparison alone does not bound the
+number of possible hierarchy states. The theory is maintained in
+[`../synthesis/surface_covers.tex`](../synthesis/surface_covers.tex).
