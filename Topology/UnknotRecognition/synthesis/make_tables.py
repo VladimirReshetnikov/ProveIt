@@ -1255,3 +1255,35 @@ if af:
     open('tables/adaptive_forest.tex','w').write(
         '\\begin{center}\n' + table('Input & old ms & current ms & no reduction ms & paired ratio',
                                     '@{}lrrrr@{}', rows) + '\\end{center}\n')
+
+# Report-47 seed search rerun on the maintained pipeline.
+ss = load('../fast/results/two_meridian_search_native_20261008.json')
+if ss:
+    selected = {'survivor-00','survivor-01','survivor-04','survivor-09',
+                'gordian','conway','kinoshita_terasaka','trefoil'}
+    rows = []
+    def seed_ms(value):
+        return '--' if value is None else f'{1000*value:.3f}'
+    def seed_ratio(value):
+        return '--' if value is None else f'{value:.3f}'
+    for r in ss['rows']:
+        if r['name'] not in selected:
+            continue
+        s = r['standalone']; m = s['completed_median_seconds']
+        rows.append(f"{esc(r['name'])} & {seed_ms(m['baseline'])} & {seed_ms(m['stamped'])} & "
+                    f"{seed_ms(m['candidate_only'])} & {seed_ms(m['optimized'])} & "
+                    + seed_ratio(s['paired_ratios']['baseline/optimized']['median']) + r' \\')
+    open('tables/sparse_seeds.tex','w').write('\\begin{center}\n'+
+        table('Input & old ms & stamped ms & pairs ms & full ms & ratio','@{}lrrrrr@{}',rows)+'\\end{center}\n')
+    rows = []
+    for r in ss['rows']:
+        if r['name'] not in selected:
+            continue
+        cells = [esc(r['name'])]
+        for mode in ('ordinary','compressed_group'):
+            s = r['pipeline'][mode]; m = s['completed_median_seconds']
+            cells += [seed_ms(m['baseline'])+'/'+seed_ms(m['optimized']),
+                      seed_ratio(s['paired_ratios']['baseline/optimized']['median'])]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/sparse_seeds_pipeline.tex','w').write('\\begin{center}\n'+
+        table('Input & ordinary old/new ms & ratio & group old/new ms & ratio','@{}lrrrr@{}',rows)+'\\end{center}\n')

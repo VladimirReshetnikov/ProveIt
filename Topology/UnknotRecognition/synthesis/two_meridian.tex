@@ -44,8 +44,10 @@ For a fixed seed set this computes the least closed set of known arcs.
 Induction shows that every queued step belongs to every rule-closed superset
 of the seeds. Conversely, when the queue is empty, every rule with known
 dependencies has already fired. Therefore queue failure cannot be repaired
-by choosing a different order of rules with those same seeds. The search
-tries all single seeds and then all unordered pairs, subject to its caps.
+by choosing a different order of rules with those same seeds. The initial search
+tried all single seeds and then all unordered pairs, subject to its caps.
+Section~\ref{sec:sparse-seeds} now removes proved unsuccessful pairs under
+a checked structural condition while preserving the first successful trace.
 This recognizes the diagram-specific two-seed class exactly when uncapped.
 It does not search all diagrams of the same knot.
 
