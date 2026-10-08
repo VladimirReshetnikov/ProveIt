@@ -4,8 +4,10 @@ Modified for ProveIt: this file is an extract of upstream
 (openai/math commit adc7f1241b42e322a6451854ab7e4b4c146bf78a, Apache-2.0).
 It keeps only `exists_dense_cyclic_model_of_integer_vectors` (upstream lines
 190-261) and `exists_bounded_affine_box_of_cyclic_model` (upstream lines
-452-512), verbatim, with the imports they need; the rest of the upstream
-file and its large import closure are omitted.
+452-512), with verbatim statements and proof bodies, in the distinct
+`OAI.Erdos3.FreimanModel.ProveItExtract` namespace so the extract can coexist
+with the full upstream module. Only the needed imports are retained; the
+rest of the upstream file and its large import closure are omitted.
 -/
 import OAI.Combinatorics.Progressions.Estimates.CyclicProgressionHom
 import OAI.Combinatorics.Progressions.Estimates.DenseCyclicFreimanModel
@@ -18,7 +20,7 @@ namespace OAI
 
 section
 
-namespace Erdos3.FreimanModel
+namespace Erdos3.FreimanModel.ProveItExtract
 
 open scoped Pointwise
 
@@ -85,13 +87,13 @@ theorem exists_dense_cyclic_model_of_integer_vectors {I : Type*} [Fintype I]
   exact ⟨N, J, B, g ∘ e, hN, hJne, hJA, hJsize, hBne, hBimage,
     hBcard.trans hJcard, hg.comp heJ, hNsize', hdensity⟩
 
-end Erdos3.FreimanModel
+end Erdos3.FreimanModel.ProveItExtract
 
 end
 
 section
 
-namespace Erdos3.FreimanModel
+namespace Erdos3.FreimanModel.ProveItExtract
 
 open scoped Pointwise BigOperators
 open CyclicCrootSisask
@@ -147,7 +149,7 @@ theorem exists_bounded_affine_box_of_cyclic_model {G : Type*} [AddCommGroup G] [
     rw [heq]
     abel
 
-end Erdos3.FreimanModel
+end Erdos3.FreimanModel.ProveItExtract
 
 end
 

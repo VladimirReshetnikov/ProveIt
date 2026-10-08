@@ -2086,7 +2086,8 @@ Part III of
 it answers Part I's question on variance and fluctuations
 (`Var D₀ ~ v₀ n^(1/4)` and a central limit theorem), Part II's question on
 weighted fluctuations (a Gumbel law for `D₁`) and, for the fluctuation laws,
-the question on the weights `m^α`. `uniform-lattice-bridges-research.zip`
+the question on the weights `m^α`. It was written as Sections 25–34
+(`b0ad11d15`); its independent check is pending. `uniform-lattice-bridges-research.zip`
 (`fe7165a3c`) was placed (`3cf0a2758`) as Part II of
 [`a328716-lazy-closed-walks`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a328716-lazy-closed-walks):
 an expansion uniform in the dimension and in all nonnegative activities,

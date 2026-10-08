@@ -7,13 +7,13 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
-\hypersetup{pdftitle={Distinct multiplicity values in integer partitions (OEIS A373271 and A373273)},pdfauthor={Research report},pdfsubject={Merged report a373271-distinct-multiplicity-values (batch 111): the number of distinct multiplicity values (Report 197) and their sum (Report 198)}}
+\hypersetup{pdftitle={Distinct multiplicity values in integer partitions (OEIS A373271 and A373273)},pdfauthor={Research report},pdfsubject={Merged report a373271-distinct-multiplicity-values (batch 111): the number of distinct multiplicity values (Report 197), their sum (Report 198), and their fluctuations (Part III, added 7 October 2026)}}
 \pdfinfoomitdate=1
 \pdftrailerid{}
 \pdfsuppressptexinfo=15
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Distinct multiplicity values}
-\fancyhead[R]{\small Reports 197 and 198}\fancyfoot[C]{\thepage}
+\fancyhead[R]{\small Parts I--III}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
@@ -46,16 +46,29 @@
  {\par\endgroup\smallskip}
 \newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
 \newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+% Part III (added 7 October 2026): graphicx for its two figures, and the
+% manuscript's macros not defined above (its \TV, \pinprove and \pinmath are unused).
+\usepackage{graphicx}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\dto}{\xrightarrow{\ d\ }}
+\newcommand{\Ltwo}{\xrightarrow{\ L^2\ }}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
 \title{\LARGE\bfseries Distinct multiplicity values in integer partitions\\[4pt]\large (OEIS A373271 and A373273)\\[8pt]
 \normalsize Part I: the number of distinct multiplicity values, matched asymptotics and a shrinking inverse\\[2pt]
-Part II: the sum of distinct multiplicity values, five asymptotic scales and a shrinking inverse}
-\author{Two research reports of one external research session\\(bundle Reports 197 and 198), bound into one ProveIt report}
-\date{Both Parts: 4 October 2026\quad merged: 7 October 2026}
+Part II: the sum of distinct multiplicity values, five asymptotic scales and a shrinking inverse\\[2pt]
+Part III: fluctuations, Gaussian and non-Gaussian limits and a logarithmic window}
+\author{Two research reports of one external research session\\(bundle Reports 197 and 198) and a continuation manuscript,\\bound into one ProveIt report}
+\date{Parts I and II: 4 October 2026\quad Part III: 7 October 2026\quad merged: 7 October 2026}
 \begin{document}
 \hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
-For a partition $\lambda=(1^{M_1}2^{M_2}\cdots)$ of $n$, consider the set of positive values taken by the multiplicities $M_j$. Part~I counts this set: $a(n)=\sum_{\lambda\vdash n}D(\lambda)$ is OEIS A373271, and it proves $a(n)/p(n)=(6n)^{1/4}-\tfrac{23}{16}+Kn^{-1/4}+O(n^{-1/2})$ with an explicit $K$, the constant $-\tfrac{23}{16}$ needing an exact telescoping tail $-\tfrac12$ that a local expansion misses; it derives two relative corrections for $a(n)$, eventual strict increase and a two-ceiling inverse whose width before rounding tends to zero. Part~II sums the set: $a_n=\sum_{\lambda\vdash n}W(\lambda)$ is OEIS A373273, and it proves an expansion of $a_n/p(n)$ through the five scales $\sqrt n\log n$, $\sqrt n$, $n^{1/4}$, $\log n$, $1$ with error $O(n^{-1/4})$, the leading term being $\sqrt{6n}\log n/(4\pi)$; there the square of a nonlocal correction and a finite-difference tail enter the constant, and zeta derivatives cancel. Both Parts rest on one exact identity, $\sum_na_nq^n=P(q)\sum_{m\ge1}w(m)(1-Q_m(q))$ with $w=1$ and $w(m)=m$, on a whole-circle bound for positive products that forbid one multiplicity, and on local saddle transfer. Part~II answers the case $w(m)=m$ of Part~I's question on weighted occupied values; other weights remain open. The write adds the OEIS entries, the b-file of A373271 that Part~I could not open (all 200 terms agree), and a comparison of the inverses with the repository's transseries volume. The report is unrefereed, and nothing in it is formalized.
+For a partition $\lambda=(1^{M_1}2^{M_2}\cdots)$ of $n$, consider the set of positive values taken by the multiplicities $M_j$. Part~I counts this set: $a(n)=\sum_{\lambda\vdash n}D(\lambda)$ is OEIS A373271, and it proves $a(n)/p(n)=(6n)^{1/4}-\tfrac{23}{16}+Kn^{-1/4}+O(n^{-1/2})$ with an explicit $K$, the constant $-\tfrac{23}{16}$ needing an exact telescoping tail $-\tfrac12$ that a local expansion misses; it derives two relative corrections for $a(n)$, eventual strict increase and a two-ceiling inverse whose width before rounding tends to zero. Part~II sums the set: $a_n=\sum_{\lambda\vdash n}W(\lambda)$ is OEIS A373273, and it proves an expansion of $a_n/p(n)$ through the five scales $\sqrt n\log n$, $\sqrt n$, $n^{1/4}$, $\log n$, $1$ with error $O(n^{-1/4})$, the leading term being $\sqrt{6n}\log n/(4\pi)$; there the square of a nonlocal correction and a finite-difference tail enter the constant, and zeta derivatives cancel. Both Parts rest on one exact identity, $\sum_na_nq^n=P(q)\sum_{m\ge1}w(m)(1-Q_m(q))$ with $w=1$ and $w(m)=m$, on a whole-circle bound for positive products that forbid one multiplicity, and on local saddle transfer. Part~II answers the case $w(m)=m$ of Part~I's question on weighted occupied values. Part~III, a continuation manuscript added on 7~October 2026, studies $D_\alpha=\sum_mm^\alpha\mathbf 1_{\{N_m>0\}}$ for every $\alpha\ge0$, so that $D_0=D$ and $D_1=W$: Gaussian fluctuations with an explicit covariance kernel for $\alpha<\tfrac12$, in particular $\Var_nD\sim v_0n^{1/4}$ with $v_0=6^{1/4}(\sqrt2-\tfrac34-\tfrac{3\sqrt2}8\log(1+\sqrt2))=0.3080002444\ldots$ and a central limit theorem, which answers Part~I's variance question; a factor $\log n$ in the variance at $\alpha=\tfrac12$, with a Gaussian field in a logarithmic window of exponents; non-Gaussian series of exponentials above $\tfrac12$, among them a Gumbel law for $W$ with $\Var_nW\sim n$; mutual independence of the three regimes; and the leading means of every $D_\alpha$. Mean expansions of the precision of Parts~I and~II remain open for other weights. The write adds the OEIS entries, the b-file of A373271 that Part~I could not open (all 200 terms agree), a comparison of the inverses with the repository's transseries volume, and, for Part~III, recomputations of its constants and tables and of the geometric-law means against Parts~I and~II. The report is unrefereed, and nothing in it is formalized.
 \end{abstract}
 \hypersetup{pageanchor=true}
 {\small\setcounter{tocdepth}{1}\setlength{\parskip}{0pt}\tableofcontents}
@@ -63,9 +76,10 @@ For a partition $\lambda=(1^{M_1}2^{M_2}\cdots)$ of $n$, consider the set of pos
 
 \section*{Guide to this report}\phantomsection\label{dmv:sec:guide}
 \addcontentsline{toc}{section}{Guide to this report}
-The two Parts are two manuscripts of the session bundle of Reports 1--243
+Parts~I and~II are two manuscripts of the session bundle of Reports 1--243
 (arrival commit \file{60f54ea06}), placed in this directory by commit
-\file{d451ef3d8} (batch~111).
+\file{d451ef3d8} (batch~111); Part~III, a later continuation manuscript, was
+placed by commit \file{9a10a617f} (below).
 \begin{center}
 \small
 \begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.5\textwidth} l@{}}
@@ -74,6 +88,7 @@ Part & Bundle report & Delivered title & Labels\\
 \midrule
 I & 197 (base) & Distinct positive multiplicity values in integer partitions: Matched asymptotics and a shrinking inverse for OEIS A373271 (4~October 2026) & \file{dmv:cnt:}\\
 II & 198 & The sum of distinct multiplicity values in integer partitions: Five asymptotic scales and a shrinking inverse for OEIS A373273 (4~October 2026) & \file{dmv:sum:}\\
+III & none & Fluctuations of Distinct Multiplicities in Random Integer Partitions: Exact variance, Gaussian and non-Gaussian limits, and a logarithmic transition window (7~October 2026) & \file{dmv:fl:}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -122,6 +137,29 @@ Report~198's README states that ``No A373271 theorem or coefficient is used
 as a mathematical premise'', and the write confirmed that Part~II cites
 nothing of Part~I. The constants differ, so neither result is a special
 case of the other.
+
+\emph{Part~III, added 7~October 2026.} A third manuscript, \emph{Fluctuations
+of Distinct Multiplicities in Random Integer Partitions} (7~October 2026,
+archive \file{ProveIt_Research_2026-10-07.zip}), is printed as Part~III
+(Sections~\ref{dmv:fl:sec:front}--\ref{dmv:fl:sec:verification}, labels
+\file{dmv:fl:}). It was written from Part~I alone, as the continuation of
+Part~I's Questions~2 and~4, and studies
+$D_\alpha=\sum_{m\ge1}m^\alpha\mathbf 1_{\{N_m>0\}}$ for every $\alpha\ge0$,
+so that $D_0=D$ of Part~I and $D_1=W$ of Part~II. It proves their
+fluctuation laws (Gaussian below $\alpha=\tfrac12$, a logarithmic variance
+factor at $\tfrac12$ with a Gaussian window field, non-Gaussian series of
+exponentials above, mutually independent), the variance and central limit
+theorem for $D$, the Gumbel law of $W$, and the leading means of every
+$D_\alpha$. It thereby answers Part~I's Question~2 and Part~II's
+Question~4, and, for the weights $m^\alpha$ as to fluctuations and leading
+means, Part~I's Question~4 and part of Part~II's Question~2; the sentence
+above saying that
+$m^\alpha$ stays open, and the earlier notes in both question lists, were
+written before Part~III arrived and are kept, with dated notes after them.
+Its means at $\alpha=0,1$ re-derive, more weakly, terms of Parts~I and~II
+(Section~\ref{dmv:fl:sec:answers}). Its provenance, checks, non-claims and
+reading conventions are in its Section~\ref{dmv:fl:sec:front}; it is
+numbered with the shift $k\mapsto k+25$ (Section~\ref{dmv:fl:sec:provenance}).
 
 \emph{Arrangement and duplication.} The base of the merge is Report~197:
 its \file{Report197.tex} was staged as this \file{article.tex}, it arrived
@@ -306,6 +344,13 @@ the shipped files (byte-identical, \texttt{PASS}; Part~II's diagnostics
 differ only in the 15 sector residuals, at about the tenth significant
 digit). One precision is recorded after Remark~\ref{dmv:cnt:rem:transseries}.
 No claim of either source was found wrong or unproved.
+\end{writenote}
+\begin{writenote}[Part~III, 7 October 2026]
+The checks above and the collected non-claims concern Parts~I and~II.
+Part~III's provenance, its non-claims and what the write checked in it are
+in Sections~\ref{dmv:fl:sec:provenance}, \ref{dmv:fl:sec:nonclaims}
+and~\ref{dmv:fl:sec:checks}, and its reading conventions, against
+Parts~I and~II, in Section~\ref{dmv:fl:sec:notation}.
 \end{writenote}
 \medskip
 \begingroup\small
@@ -1114,6 +1159,31 @@ claim of this Part that is unproved as stated and none that is wrong, so
 nothing was moved here or refuted. For Question~3 note only that the shipped
 table increases strictly for $1\le n<2000$, which proves no onset.
 \end{writenote}
+\begin{writenote}[Part~III, 7 October 2026]
+Part~III answers Question~2 and, for the weights $w(m)=m^\alpha$, Question~4;
+the note above, which calls those weights open, was written before
+Part~III arrived and is kept. \emph{Question~2}: Part~III's
+Corollary~\ref{dmv:fl:cor:unweighted} gives $\Var_nD\sim v_0n^{1/4}$,
+$v_0=6^{1/4}(\sqrt2-\tfrac34-\tfrac{3\sqrt2}8\log(1+\sqrt2))=0.3080002444\ldots$,
+and a central limit theorem for $(D-(6n)^{1/4})/(\sqrt{v_0}\,n^{1/8})$,
+through the cumulant analysis of its Section~\ref{dmv:fl:sec:gaussian}
+that this question asks for; the conditioning on total size is its
+Lemmas~\ref{dmv:fl:lem:localization} and~\ref{dmv:fl:lem:llt} with
+Proposition~\ref{dmv:fl:prop:transfer}. \emph{Question~4}: for every fixed
+$\alpha\ge0$ it determines the fluctuations of
+$\sum_mm^\alpha\mathbf 1_{\{N_m>0\}}$ (Theorem~\ref{dmv:fl:thm:phase}:
+Gaussian below $\tfrac12$, a factor $\log n$ at $\tfrac12$, non-Gaussian
+series above; Theorem~\ref{dmv:fl:thm:window}, the window
+$\tfrac12+\theta/\log(1/\tau_n)$; Theorem~\ref{dmv:fl:thm:independence},
+independence of the three families) and the leading mean
+(Proposition~\ref{dmv:fl:prop:weightedmeans} and~\eqref{dmv:fl:eq:highmean});
+as this question warns, the weight changes the tail scale. Open: other
+weights (Part~III's Question~4), and means of this Part's precision for
+$\alpha\ne0$ (Part~II gives $\alpha=1$). The sentence ``Not established
+are \dots\ a variance theorem, a central limit theorem'' of
+Section~\ref{dmv:cnt:sec:sources} describes this Part alone. Questions~1,
+3 and~5 are untouched; Question~5 is also Part~III's Question~8.
+\end{writenote}
 
 \subsection{Summary of established and unestablished claims}
 Established here are the exact occupancy generating function, its uniform three-term radial expansion with $O(|t|)$ error, the full-torus localization, the three-term mean, two relative corrections for the total sequence, eventual strict increase, and the shrinking two-ceiling inverse. Finite exact checks support the implementation and the identification of the sequence. Not established are all fixed asymptotic orders, a variance theorem, a central limit theorem, explicit error constants or onset, an exact single-ceiling inverse, or absolute novelty.
@@ -1815,6 +1885,2613 @@ stated and none that is wrong, so nothing was moved here or refuted. For
 Question~3 note only that the shipped table increases strictly for
 $1\le n<2500$, which proves no onset.
 \end{writenote}
+\begin{writenote}[Part~III, 7 October 2026]
+Part~III answers Question~4 and part of Question~2; the note above, which
+calls the family $m^\alpha$ open, was written before Part~III arrived and
+is kept. \emph{Question~4}: Part~III's Corollary~\ref{dmv:fl:cor:gumbel}
+gives, for $W=D_1$,
+$\tau_nW-\tfrac12\log\tfrac1{\tau_n}-\tfrac{3-3\gamma}2\to G$ in law, $G$
+standard Gumbel ($\tau_n=\pi/\sqrt{6n}$), and $\Var_nW\sim n$; the
+dependence that this question names is handled by its collision estimate
+(Lemma~\ref{dmv:fl:lem:collisions}). \emph{Question~2}: for
+$\sum_mm^\alpha\mathbf 1_{\{N_m>0\}}$ the leading scale is
+$M_\alpha\tau_n^{-(\alpha+1)/2}$ with next term
+$\Gamma(\alpha+1)\zeta(\alpha)\tau_n^{-\alpha}$ for $0<\alpha<1$
+(Proposition~\ref{dmv:fl:prop:weightedmeans}), $\frac1{2\tau_n}\log\frac1{\tau_n}$
+at $\alpha=1$ (this Part's leading term), and
+$\Gamma(\alpha+1)\zeta(\alpha)\tau_n^{-\alpha}$ for $\alpha>1$
+(\eqref{dmv:fl:eq:highmean}): the occupancy scale $\tau^{-(\alpha+1)/2}$
+and the small-part scale $\tau^{-\alpha}$ cross at $\alpha=1$, where the
+logarithm appears. The matching constants beyond these two terms, an
+expansion of this Part's precision for $\alpha\ne1$, remain open.
+Questions~1, 3 and~5 are untouched.
+\end{writenote}
+
+\part{Fluctuations of distinct multiplicities in random integer partitions: exact variance, Gaussian and non-Gaussian limits, and a logarithmic transition window}\label{dmv:fl:part}
+\partsource{A continuation manuscript of 7~October 2026, archive \file{ProveIt_Research_2026-10-07.zip}, delivered as \file{partitions/article.tex} with ten section files (35 pages). Delivered title block ``PROVEIT RESEARCH CONTINUATION / Fluctuations of Distinct Multiplicities in Random Integer Partitions / Exact variance, Gaussian and non-Gaussian limits, and a logarithmic transition window / 7 October 2026 / Research draft prepared with ChatGPT''. Printed as delivered after Section~\ref{dmv:fl:sec:front}, which the write added, with \textbf{[write]} notes; the manuscript's Section~$k$ is Section~$k+25$ here, its statements move with their sections, its equation~($k.m$) is equation~($k{+}25.m$), and its Figures~1 and~2 keep their numbers. Its labels carry the prefix \file{dmv:fl:}, and its citation key \file{oeis} is \file{oeisA373271} and \file{oeisA373273} here. This Part is self-contained: it uses no theorem of Parts~I and~II as a premise.}
+\begin{partabstract}
+Let $M_j$ be the multiplicity of the part size $j$ in a uniform partition
+of $n$, and let $D_\alpha=\sum_{m\ge1}m^\alpha
+\ind_{\{M_j=m\text{ for some }j\}}$. We determine the fluctuation law
+for every fixed $\alpha\ge0$. For $0\le\alpha<1/2$ the limit is Gaussian,
+with an explicit positive covariance kernel and variance of order
+$n^{\alpha/2+1/4}$. At $\alpha=1/2$ the variance acquires a factor
+$\log n$. For $\alpha>1/2$ the centered limit is an explicit convergent
+series of powers of independent exponential random variables and is
+non-Gaussian. In particular, the number $D_0$ of distinct multiplicities
+has variance $0.3080002444\ldots\,n^{1/4}$ and a central limit theorem,
+whereas the sum $D_1$ of distinct multiplicities has a Gumbel limit and
+variance asymptotic to $n$. We also determine a Gaussian covariance field
+in the moving window $\alpha=1/2+\theta/\log(1/t)$,
+$t\sim\pi/\sqrt{6n}$. The three limiting families are mutually independent.
+
+The proof treats the negative dependence between occupied multiplicity
+values explicitly. A localization theorem shows that the entire occupied
+set is determined, with arbitrarily small polynomial failure probability,
+by part sizes at most $O(t^{-1/2}\log^{3/2}(1/t))$. A separately proved
+local limit theorem then transfers both laws and second moments from the
+independent geometric model to uniform partitions. This answers the
+variance and fluctuation question in the inspected ProveIt report on
+OEIS A373271 and develops its proposed weighted extension. The present
+proofs are written mathematical proofs, accompanied by exact finite
+checks; they have not been formalized in a proof assistant.
+\end{partabstract}
+
+\section{Provenance, scope and notation of Part~III}\label{dmv:fl:sec:front}
+
+[Added 7~October 2026.] Part~III was added in a second write of this
+report, after Parts~I and~II had been written (\file{0064d11e6}) and
+independently checked (\file{a03243ec3}). It is the manuscript
+\emph{Fluctuations of Distinct Multiplicities in Random Integer
+Partitions}, which starts from Part~I's Questions~2 and~4
+(Section~\ref{dmv:cnt:sec:sources}) and answers them for the weights
+$m^\alpha$. Everything of the manuscript is printed in this Part except
+its title page (recorded below), its table of contents and its reference
+list (merged into this report's bibliography): its abstract above, and
+its Sections~1--9 as Sections~\ref{dmv:fl:sec:results}--\ref{dmv:fl:sec:verification}.
+Its symbols are kept (Section~\ref{dmv:fl:sec:notation}). This section
+and the notes marked [write] are the write's; all other text of
+Sections~\ref{dmv:fl:sec:results}--\ref{dmv:fl:sec:verification} is the
+manuscript's.
+
+\subsection{The manuscript}\label{dmv:fl:sec:provenance}
+
+The archive \file{ProveIt_Research_2026-10-07.zip} ($1{,}527{,}416$
+bytes, SHA-256 \file{49c8000eea95...07b2b5b4c07}; 32 files in one wrapper
+directory, $2{,}225{,}214$ bytes unpacked) arrived in commit
+\file{7b8ed30e7} (7~October 2026, 10:50). It holds two independent
+manuscripts: \file{partitions/}, this Part, and \file{sensitivity/}, placed
+as the separate report
+\path{Combinatorics/BooleanFunctions/Research/sensitivity-block-sensitivity}
+by commit \file{5476940ed}, which also retired the archive. This Part's
+files were placed in this directory by commit \file{9a10a617f}
+(7~October 2026, 13:16; the placement records of the batch name it by its
+side-branch copy \file{119d8d35d}, whose tree for this directory is the
+same): 12 files, all byte-identical to the delivery (confirmed at the
+write), with the prefix \file{03-fluct-}, the Part number (the prefixes
+\file{197-count-} and \file{198-sum-} are bundle report numbers, and
+\file{199-} is bundle Report~199's prefix in another report). The
+package's \file{SHA256SUMS} (31 entries) verified at the write.
+
+The manuscript is \file{partitions/article.tex} with
+\file{sections/01-results.tex} to \file{sections/10-references.tex}
+(2{,}346 lines, 99{,}736 bytes; a 35-page PDF, which a build of the
+delivered text reproduces), dated 7~October 2026. Its title page reads
+``PROVEIT RESEARCH CONTINUATION'', ``Research draft prepared with
+ChatGPT'' and ``Prepared for Vladimir Reshetnikov's research programme.
+Source snapshots and attribution are recorded in
+Section~\ref{dmv:fl:sec:review}''; its PDF author field reads
+``ChatGPT'', and the package README says it was ``Prepared with ChatGPT
+for the requested continuation of research in VladimirReshetnikov/ProveIt
+and VladimirReshetnikov/math''. It names ChatGPT as the tool and no human
+author. Its pins (Section~\ref{dmv:fl:sec:review} and the bibliography
+entries \cite{proveit,prior197,mathrepo}) are ProveIt commit
+\file{1210e9d3ac88a573f98d7ef8626ba3d2c30e9749} (7~October 2026,
+16:29:40~UTC, as quoted) and commit \file{adc7f1241b42} of Vladimir's
+\code{math} repository, which is outside this repository and was not
+checked. At the ProveIt pin this \file{article.tex} was Report~197 alone,
+Git blob \file{77a379cfb}, as the manuscript's bibliography records;
+Part~II was written into it three hours later. The manuscript therefore
+knows Part~I as Report~197 and does not know Part~II
+(Section~\ref{dmv:fl:sec:review}, dated note).
+
+\emph{How the manuscript was merged.} Its 118 labels carry the prefix
+\file{dmv:fl:}, and its 127 references to them (83
+\verb|\eqref|, 44 \verb|\ref|) were updated. Its citation keys
+\file{proveit}, \file{prior197}, \file{mathrepo}, \file{math132},
+\file{fristedt} and \file{erdoslehner} are new entries of the merged
+bibliography, marked [Part~III]; its entries for Ralaivaosaona and for
+Corteel, Pittel, Savage and Wilf are printed once with Parts~I and~II,
+with its own note added; its single entry \file{oeis} for A373271 and
+A373273 is cited as the two OEIS entries of this report, its note added
+to both. The two figure files are included under their prefixed names.
+The title page and table of contents are not printed. No other text was
+changed. The numbering, against a build of the delivered text: the
+manuscript's Sections~1--9 are Sections~26--34 here, its Theorem~1.1 is
+Theorem~\ref{dmv:fl:thm:phase}, its Corollaries~1.2--1.4 are
+Corollaries~\ref{dmv:fl:cor:unweighted}--\ref{dmv:fl:cor:quadratic}, its
+Theorem~1.5 is Theorem~\ref{dmv:fl:thm:window}, its Proposition~3.4 is
+Proposition~\ref{dmv:fl:prop:transfer}, its Theorem~8.1 is
+Theorem~\ref{dmv:fl:thm:independence}, every statement and equation
+$k.m$ is $(k{+}25).m$, and Figures~1 and~2 are unchanged (all 118 labels
+compared). The manuscript cites no number literally; its package README
+(not shipped) names Theorem~1.1, Corollaries~1.2--1.4, Theorem~1.5,
+Theorem~8.1 and Proposition~3.4 in the delivered numbering.
+
+\emph{What the manuscript says about the repository.} Its account of
+Part~I (the three-term mean, with the constant $K$ of
+Theorem~\ref{dmv:cnt:thm:mean}, and the variance, conditioning and
+weighted questions of its final section) is correct. Two of its
+statements were true at its pin and are stale now; dated notes in
+Section~\ref{dmv:fl:sec:review} record them: that this file ``contains the
+unweighted report'' (it now contains Part~II as well), and that the
+Gowers--Szemer\'edi source ledger records 113 exact companions and seven
+open statements (now 114 and six). Its account of the other threads it
+surveyed is context, not a premise of any proof.
+
+\subsection{What Part III answers in Parts I and II}\label{dmv:fl:sec:answers}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\theHtable}{dmvfl.answers}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.66\textwidth}@{}}
+\toprule
+Question & After Part~III\\
+\midrule
+\endhead
+Part~I, Question~2 (variance and fluctuations; conditioning on the total size) & \textbf{Answered}: Corollary~\ref{dmv:fl:cor:unweighted}, $\Var_nD\sim v_0n^{1/4}$ with $v_0=0.3080002444\ldots$, and a central limit theorem, from Theorem~\ref{dmv:fl:thm:phase}(i) at $\alpha=0$ with the covariance kernel of Section~\ref{dmv:fl:sec:gaussian}; the conditioning is Lemmas~\ref{dmv:fl:lem:localization}--\ref{dmv:fl:lem:llt} and Proposition~\ref{dmv:fl:prop:transfer}.\\
+Part~I, Question~4 (weighted occupied values) & \textbf{Answered for the weights $m^\alpha$, $\alpha\ge0$}: the fluctuation laws (Theorems~\ref{dmv:fl:thm:phase}, \ref{dmv:fl:thm:window} and~\ref{dmv:fl:thm:independence}) and the leading means (Proposition~\ref{dmv:fl:prop:weightedmeans}, \eqref{dmv:fl:eq:highmean}). Not answered for other weights (Part~III's Question~4 proposes regularly varying ones), nor with the precision of Parts~I and~II for $\alpha\ne0,1$.\\
+Part~II, Question~2 (other weights $m^\alpha$; leading scale and matching constants) & \textbf{Partly answered}: the leading scale and the next term for every $\alpha$ (Proposition~\ref{dmv:fl:prop:weightedmeans}, \eqref{dmv:fl:eq:highmean}); the matched expansion to Part~II's precision is not extended to $\alpha\ne1$.\\
+Part~II, Question~4 (variance and law of $W$) & \textbf{Answered}: Corollary~\ref{dmv:fl:cor:gumbel}, a Gumbel law with explicit centering and $\Var_nW\sim n$ ($W=D_1$).\\
+Part~I, Questions~1, 3, 5; Part~II, Questions~1, 3, 5 & Untouched. Part~III's Question~8 (the historical comparison) is the same task as Questions~5 of both Parts.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+Dated notes after the two question lists (Sections~\ref{dmv:cnt:sec:sources}
+and~\ref{dmv:sum:sec:further}) say the same; the earlier notes there,
+which call the weights $m^\alpha$ open, are kept as written.
+
+\emph{What Part~III proves again.} Its means at $\alpha=0$ and $\alpha=1$
+re-derive, by a different route and with weaker remainders, the leading
+term of Part~I's mean (Theorem~\ref{dmv:cnt:thm:mean}) and the first two
+terms of Part~II's (Theorem~\ref{dmv:sum:thm:mean}, with the same constant
+$c=\tfrac32-\tfrac\gamma2=\tfrac{3-\gamma}2$); its identity
+\eqref{dmv:fl:eq:forbiddenGF}--\eqref{dmv:fl:eq:exactmoments} extends
+Part~I's forbidden-value products (Proposition~\ref{dmv:cnt:prop:gf}) to
+pairs of values. These are kept, with a dated note at the end of
+Section~\ref{dmv:fl:sec:means}, because Part~III's later statements cite
+them and its proofs are not Parts~I and~II's. \emph{What is new to the
+report}: every distributional statement; the localization of the whole
+occupied set to part sizes $O(t^{-1/2}\log^{3/2}(1/t))$; the reservoir
+local limit theorem with second-moment transfer; the covariance kernel and
+its strict positivity; the collision estimates; the critical window and
+its kernel $K_{\rm crit}$; the mutual independence of the three regimes;
+the quadratic weight; the sequence-level variances
+$p(n)B_\alpha(n)-A_\alpha(n)^2$; and the second moments of A373271 and
+A373273 in the exact tables.
+
+\subsection{What the write read and checked}\label{dmv:fl:sec:checks}
+
+\emph{At placement} (the intake dossier, 7~October 2026): the exact part
+of the delivered suite rerun on a copy without simulations (moments CSV
+byte-identical); fixed-$n$ moments to $n=300$ by the intake's own code;
+$v_0$, $V_0$, the Gumbel centering and the constants of
+Corollary~\ref{dmv:fl:cor:quadratic} re-derived; no claim found wrong.
+
+\emph{At the write} (7~October 2026; Python 3.14.4, mpmath 1.3.0,
+NumPy 2.4.4; own code, kept with the intake records and not shipped). Every
+proof of Sections~\ref{dmv:fl:sec:conditioning}--\ref{dmv:fl:sec:consequences}
+was read line by line, with no error found; rechecked by hand in
+particular: the localization bounds \eqref{dmv:fl:eq:lowmiss}--\eqref{dmv:fl:eq:highlate};
+the moments \eqref{dmv:fl:eq:sizemoments} ($\Var_tN\sim2\zeta(2)t^{-3}$)
+and the likelihood ratio and its $L^2$ rate; the pair intensity
+\eqref{dmv:fl:eq:pairintensity} and the kernel \eqref{dmv:fl:eq:kernel};
+the Cauchy--Schwarz positivity \eqref{dmv:fl:eq:strictpositive}; the
+diagonal integral of \eqref{dmv:fl:eq:Vaoned} (by
+$\ee^{-s^2}-\ee^{-2s^2}=\int_1^2s^2\ee^{-cs^2}\,dc$); the leading constant
+$M_\alpha$ (one integration by parts); the identity
+$H(u)-2H(2u)=1/(\ee^u+1)$; the singular part and $C_{\rm reg}=1$ at
+$\alpha=1$; the Gumbel identification and its centering
+$\tfrac{3-\gamma}2-\gamma=\tfrac{3-3\gamma}2$; the critical row covariance
+$c_{1/2,1/2}=1-\tfrac\pi4$ and the window integral \eqref{dmv:fl:eq:harmonicwindow}
+giving \eqref{dmv:fl:eq:windowkernel}; and every mean-shift order in
+Section~\ref{dmv:fl:sec:means}. With 40-digit mpmath it confirmed: $V_0$
+and $v_0$ by the closed form, by the one-dimensional
+formula~\eqref{dmv:fl:eq:Vaoned} (to all 40 digits) and by a
+two-dimensional quadrature of \eqref{dmv:fl:eq:Va} in the variables
+$1/y,1/z$ (to $10^{-14}$); $V_{1/4}=0.600519279618463641\ldots$
+(one-dimensional; to $4\cdot10^{-7}$, relatively, by the two-dimensional
+quadrature);
+$(1-2\alpha)V_\alpha\to c_*$; $M_\alpha$ and $\Gamma(\alpha+1)\zeta(\alpha)$
+as integrals at $\alpha=\tfrac14,\tfrac12,\tfrac34$; $C_{\rm reg}=1$;
+the Gumbel characteristic function (the finite products at $k=2000$ and
+$10^6$ approach $\ee^{-\ii\gamma u}\Gamma(1-\ii u)$, which equals the
+Gumbel Fourier integral times $\ee^{-\ii\gamma u}$); the constants $2$, $8$,
+$\tfrac{2\pi^4}9$ and~$1$ of Corollaries~\ref{dmv:fl:cor:gumbel}
+and~\ref{dmv:fl:cor:quadratic}; $K_{\rm crit}$ against its integral; and
+Part~I's $K$ in the form quoted in Section~\ref{dmv:fl:sec:review}. It
+enumerated all $215{,}308$ partitions of $n\le40$ by multiplicity vectors
+(all 41 rows and nine columns of the shipped moments table agree), extended
+the exact moments to $n=300$ by forbidden-value products (the same identity
+as \eqref{dmv:fl:eq:exactmoments}, so a range extension, not a second
+route), recomputed the covariance and sample tables of
+Section~\ref{dmv:fl:sec:verification}, evaluated the geometric-law means
+against Parts~I--III, and reran the delivered \file{verify.py} without
+simulations on a copy (notes in Sections~\ref{dmv:fl:sec:results},
+\ref{dmv:fl:sec:review}, \ref{dmv:fl:sec:means} and
+\ref{dmv:fl:sec:verification}; the README has the details). It read the
+live OEIS entries A373271 and A373273 again, and the repository at the
+manuscript's pin. \emph{Not read by the write}: Fristedt, Erd\H{o}s and
+Lehner, the \code{math} repository and its family-132 manuscript; for
+Ralaivaosaona and Corteel, Pittel, Savage and Wilf see Parts~I and~II. The
+manuscript's accounts of them are reported, not confirmed.
+
+\subsection{What is not claimed}\label{dmv:fl:sec:nonclaims}
+
+From the manuscript: the finite checks and the high-precision constants
+are evidence for the implementation, not proofs, and are not
+interval-certified; the samples are unconditioned finite-row Boltzmann
+samples, not uniform partitions of a fixed integer; the critical
+finite-size discrepancy of the samples is ``deliberately retained'' and no
+onset or finite-$t$ error is claimed; only finite-dimensional convergence
+is asserted in the window, ``No tightness statement in a space of
+functions of $\theta$ is used or claimed''; no effective (Kolmogorov or
+Wasserstein) bound; the variance formula for regularly varying weights in
+its Question~4 ``is a proposed extension, not a theorem''; nothing is
+formalized; and, since the full text of Corteel, Pittel, Savage and Wilf
+was not obtained, no global priority (``No assertion that every
+potentially overlapping paper has been excluded is needed''). The review
+was ``not an audit of every repository theorem or every manuscript''. The
+write adds: its checks are floating, finite or hand computations; the
+fixed-$n$ variances to $n=300$ are consistent with $v_0$ but do not decide
+it; nothing was submitted to the OEIS.
+
+\subsection{Reading conventions}\label{dmv:fl:sec:notation}
+
+Part~III keeps its letters. Where they clash with Parts~I and~II, read
+them as follows (the write's own text in this Part uses Part~III's
+letters).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{dmvfl.notation}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{2.75in}>{\raggedright\arraybackslash}p{2.35in}@{}}
+\toprule
+Symbol & Part III & Parts I and II\\
+\midrule
+\endhead
+$D_\alpha$ & $\sum_{m\in\mathcal M}m^\alpha$; $D_0$ is Part~I's $D$, $D_1$ is Part~II's $W$ & $D(\lambda)$ (Part~I); $D(t)$ a delta correction (Part~II)\\
+$\tau_n$, $t$ & $\tau_n=\pi/\sqrt{6n}$; $t=t_n$ the exact saddle~\eqref{dmv:fl:eq:saddle}, also the free parameter of the law $\Q_t$ & $\tau=\sqrt{A/(n-1/24)}$; $t$ a complex sector variable\\
+$g$ & $g(u)=\ee^u/(\ee^u-1)^2$ & Part~I: $g(t)=\E_tD$; Part~II writes $F(y)$ for this function\\
+$M_\alpha$, $M_j$, $M$ & $M_\alpha=\Gamma(\frac{1-\alpha}2)/(1+\alpha)$; $M_j$ multiplicities; $M_s$ a geometric variable and $M=t^{-1/2}$ in Section~\ref{dmv:fl:sec:critical}; $M$ a constant in~\eqref{dmv:fl:eq:nonGaussiantail} & $M_j$; $M$ a cutoff or envelope constant\\
+$W(\theta)$ & the window variance~\eqref{dmv:fl:eq:Wtheta} & Part~II's statistic $W$; Lambert's $W_{-1}$ (Part~I)\\
+$c_*$, $c$ & $c_*=1-\pi/4$; $c,C$ generic constants & Part~II: $c=\frac32-\frac\gamma2$\\
+$H$ & $H_n=\log(1/\tau_n)$, $H=\log(1/t)$; $H(u)$ in Section~\ref{dmv:fl:sec:means}; $H_k$ harmonic numbers in Section~\ref{dmv:fl:sec:consequences} & $H_\pm$ envelopes; $H_2,H_3,H_{22}$ matched sums\\
+$K$, $\mathcal K$ & $K_{\rm crit}$ the window kernel; $\mathcal K$ the occupancy kernel~\eqref{dmv:fl:eq:kernel}; $K$ an integer cutoff in Section~\ref{dmv:fl:sec:consequences} & the constants $K$ of the two mean expansions\\
+$A$, $B$ & $A$ the error exponent of Lemma~\ref{dmv:fl:lem:localization}; $A_J,B_J$ row sums; $A_\alpha(n),B_\alpha(n)$ total sequences, $A_0=a(n)$ of Part~I, $A_1=a_n$ of Part~II; $B$ a constant in that lemma & $A=\pi^2/6$; $B=2\sqrt A$ or $B(z)$\\
+$G$, $\mathcal G$ & $G$ a standard Gumbel variable; $\mathcal G(\theta)$ the window field & $G(t)$ (Part~I); $G=F^2-2F/y^2$ (Part~II)\\
+$E$, $\mathcal E$ & $E_j$ independent exponentials; $\mathcal E$ an edge set & $E_{2,m}$, $E(t)$, $E_1$\\
+$N$ & $N=\sum_jjM_j$ the total size; $N_m$, $N_{m,J}$ counts of part sizes with multiplicity~$m$ & $N_m$ the same; $N$ a cutoff (Part~I), $N=n-\frac1{24}$ (Part~II); $N(Y)$\\
+$Q$, $\Q_t$ & $Q_m$, $Q_S$ absence probabilities, $Q_m=Q_m(\ee^{-t})$ of Parts~I--II; $\Q_t$ the geometric law & $Q_m(q)$ the product\\
+$\lambda$ & $\lambda_m$ the expected number of part sizes with multiplicity $m$; $\lambda(y)=y^{-2}$ in Section~\ref{dmv:fl:sec:gaussian}; $\lambda$ also a partition & $\lambda$ a partition\\
+$Z$, $Y$ & $Z_\alpha$ the series~\eqref{dmv:fl:eq:Zalpha}, $Y_\alpha$ its uncentered form; $Z_m$ absence indicators & $Z(Y)$, $Z(u)$, $Z_m$; $Y$ a threshold\\
+$\eps$, $J$, $L$, $R$ & $\eps=\sqrt t$ (Parts~I--II: $h$); $J$ the row cutoff~\eqref{dmv:fl:eq:J}; $L=C_AH^{3/2}$; $R$ a block size; $R_t$ the likelihood ratio & $J_s$; $L$, $L_m$; $R(q)$; $R_D$\\
+$T$, $C$, $S$ & $T_f$ occupancy tests; $T$ a parameter bound; $S_{\alpha,J}$, $C_{\alpha,J}$ additive sums and collisions & $T(n)$, $T_n$; $C$, $C_N$\\
+$P_S$, $p$ & $P_S(q)$ forbids every value in $S$, $P_{\{m\}}=P_m$; $p_{jm}=\Q_t(M_j=m)$ & $P_m=PQ_m$; $p(n)$\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+\section{The statistic and the main results}\label{dmv:fl:sec:results}
+
+Write a partition as $\lambda=(1^{M_1}2^{M_2}\cdots)$, with
+$\sum_{j\ge1}jM_j=n$. Its set of positive multiplicity values is
+\[
+ \mathcal M(\lambda)=\{m\ge1:M_j=m\text{ for at least one }j\ge1\}.
+\]
+For a real parameter $\alpha\ge0$, define
+\begin{equation}\label{dmv:fl:eq:statistic}
+ D_\alpha(\lambda)=\sum_{m\in\mathcal M(\lambda)}m^\alpha.
+\end{equation}
+The value $0$ is excluded, and a multiplicity appearing at several part
+sizes is counted only once. For example,
+$\lambda=(5,5,3,3,1)$ has $\mathcal M=\{1,2\}$, and hence
+$D_0=2$, $D_1=3$, and $D_2=5$.
+
+Let $\Pp_n$ denote the uniform law on the $p(n)$ ordinary partitions of
+$n$; expectations under this law carry subscript $n$. Put
+\begin{equation}\label{dmv:fl:eq:tau}
+ \tau_n=\frac{\pi}{\sqrt{6n}},\qquad
+ c_* =1-\frac\pi4,\qquad
+ M_\alpha=\frac{\Gamma((1-\alpha)/2)}{1+\alpha}
+ \quad(0\le\alpha<1).
+\end{equation}
+All limits below are as $n\to\infty$. In the proofs, $t=t_n$ is the exact
+positive solution of
+\begin{equation}\label{dmv:fl:eq:saddle}
+ \sum_{j\ge1}\frac{j}{\ee^{tj}-1}=n.
+\end{equation}
+We prove $t_n=\tau_n+O(\tau_n^2)$, so either parameter can be used in
+the fluctuation statements.
+
+For $0\le\alpha<1/2$ define
+\begin{align}\label{dmv:fl:eq:Va}
+ V_\alpha={}&\int_0^\infty y^{2\alpha}
+       (\ee^{-1/y^2}-\ee^{-2/y^2})\,dy\\
+ &\quad-2\int_0^\infty\int_0^\infty
+       \frac{y^\alpha z^\alpha\ee^{-1/y^2-1/z^2}}{(y+z)^3}\,dy\,dz.
+ \nonumber
+\end{align}
+These integrals are finite and $V_\alpha>0$. A one-dimensional formula is
+\begin{equation}\label{dmv:fl:eq:Vaoned}
+ V_\alpha=\Gamma(\tfrac12-\alpha)
+ \left\{\frac{2^{\alpha+1/2}-1}{2\alpha+1}
+ -\int_0^1[r(1-r)]^{1-\alpha}
+       [r^2+(1-r)^2]^{\alpha-1/2}\,dr\right\}.
+\end{equation}
+
+\begin{theorem}[The three fluctuation regimes]\label{dmv:fl:thm:phase}
+For every fixed $\alpha\ge0$ the following statements hold.
+\begin{enumerate}[label=\textnormal{(\roman*)},leftmargin=*]
+\item If $0\le\alpha<1/2$, then
+\begin{align}\label{dmv:fl:eq:lowphase}
+ \Var_n D_\alpha&\sim V_\alpha\tau_n^{-\alpha-1/2},\\
+ \tau_n^{\alpha/2+1/4}(D_\alpha-\E_nD_\alpha)
+       &\dto N(0,V_\alpha).
+ \nonumber
+\end{align}
+The same normal limit holds when $\E_nD_\alpha$ is replaced by
+$M_\alpha\tau_n^{-(\alpha+1)/2}$.
+\item At $\alpha=1/2$,
+\begin{align}\label{dmv:fl:eq:criticalphase}
+ \Var_nD_{1/2}&\sim\frac{c_*}{2\tau_n}\log\frac1{\tau_n},\\
+ \sqrt{\frac{\tau_n}{\log(1/\tau_n)}}
+       (D_{1/2}-\E_nD_{1/2})&\dto N(0,c_*/2).
+ \nonumber
+\end{align}
+Again the mean may be replaced by $M_{1/2}\tau_n^{-3/4}$.
+\item If $\alpha>1/2$, let $E_1,E_2,\ldots$ be independent exponential
+variables of mean $1$, and set
+\begin{equation}\label{dmv:fl:eq:Zalpha}
+ Z_\alpha=\sum_{j\ge1}\frac{E_j^\alpha-\Gamma(\alpha+1)}{j^\alpha}.
+\end{equation}
+The series converges in $L^2$, and
+\begin{align}\label{dmv:fl:eq:highphase}
+ \tau_n^\alpha(D_\alpha-\E_nD_\alpha)&\dto Z_\alpha,\\
+ \tau_n^{2\alpha}\Var_nD_\alpha&\longrightarrow
+ [\Gamma(2\alpha+1)-\Gamma(\alpha+1)^2]\zeta(2\alpha).
+ \nonumber
+\end{align}
+The limit $Z_\alpha$ is non-Gaussian. For $\alpha>1$ there is also the
+uncentered limit, with convergence of the first two moments,
+\begin{equation}\label{dmv:fl:eq:uncentered}
+ \tau_n^\alpha D_\alpha\dto
+ Y_\alpha:=\sum_{j\ge1}\frac{E_j^\alpha}{j^\alpha}.
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+In particular, the order of the standard deviation changes from
+$n^{\alpha/4+1/8}$ below $1/2$, to $n^{1/4}\sqrt{\log n}$ at $1/2$,
+to $n^{\alpha/2}$ above $1/2$. The change comes from two different
+portions of the partition. The subcritical statistic aggregates occupied
+values $m\asymp n^{1/4}$ across many part sizes. Above the threshold,
+the few smallest part sizes, whose multiplicities are of order $\sqrt n$,
+control the fluctuation. The critical case accumulates a comparable
+contribution over logarithmically many intermediate scales.
+
+\begin{corollary}[The unweighted open question]\label{dmv:fl:cor:unweighted}
+Put
+\begin{equation}\label{dmv:fl:eq:vzero}
+ v_0=6^{1/4}\left(\sqrt2-\frac34
+       -\frac{3\sqrt2}{8}\log(1+\sqrt2)\right)
+       =0.308000244403717958\ldots.
+\end{equation}
+Then
+\[
+ \Var_nD_0\sim v_0 n^{1/4},\qquad
+ \frac{D_0-(6n)^{1/4}}{\sqrt{v_0}\,n^{1/8}}\dto N(0,1).
+\]
+Thus the variance and central limit questions stated in the inspected
+ProveIt report on A373271 are answered.
+\end{corollary}
+\begin{writenote}[7 October 2026]
+The digits of $v_0$ in \eqref{dmv:fl:eq:vzero} are rounded in the last
+place: the truncation is $v_0=0.308000244403717957\ldots$ (next digits
+$652\ldots$; recomputed by the write from the closed form, which the
+package's \file{data/03-fluct-checks.json} also records to 48 digits). The
+abstract's $0.3080002444\ldots$ and $V_0=0.348809403800813564\ldots$ in
+\eqref{dmv:fl:eq:Vzero} are truncations. ``The inspected ProveIt report on
+A373271'' is Part~I, and the questions are its Question~2
+(Section~\ref{dmv:cnt:sec:sources}); a dated note there records the
+answer. The centering $(6n)^{1/4}$ is the leading term of Part~I's
+Theorem~\ref{dmv:cnt:thm:mean}, whose next term $-\tfrac{23}{16}$ is
+$o(n^{1/8})$. The write's exact fixed-$n$ variances, from forbidden-value
+products, give $\Var_nD_0/n^{1/4}=0.2119$, $0.2343$, $0.2458$, $0.2516$ at
+$n=40$, $100$, $200$, $300$, increasing towards $v_0$ without deciding it;
+the corresponding $\Var_nD_1/n$ are $0.751$, $0.828$, $0.872$, $0.894$
+(Corollary~\ref{dmv:fl:cor:gumbel}: limit~$1$).
+\end{writenote}
+
+\begin{corollary}[An explicit Gumbel law]\label{dmv:fl:cor:gumbel}
+Let $G$ have the standard Gumbel distribution
+$\Pp(G\le x)=\exp(-\ee^{-x})$, and let $\gamma$ denote Euler's constant.
+For the sum $D_1$ of distinct positive multiplicities,
+\begin{equation}\label{dmv:fl:eq:gumbel}
+ \tau_nD_1-\frac12\log\frac1{\tau_n}
+       -\frac{3-3\gamma}{2}\dto G.
+\end{equation}
+Furthermore,
+\begin{equation}\label{dmv:fl:eq:gumbelmean}
+ \E_nD_1=\frac1{2\tau_n}\log\frac1{\tau_n}
+       +\frac{3-\gamma}{2\tau_n}+o(\tau_n^{-1}),
+ \qquad \Var_nD_1\sim n.
+\end{equation}
+\end{corollary}
+\begin{writenote}[7 October 2026]
+$D_1$ is Part~II's statistic $W$, and \eqref{dmv:fl:eq:gumbel} answers
+Part~II's Question~4 (Section~\ref{dmv:sum:sec:further}). The mean
+in \eqref{dmv:fl:eq:gumbelmean} is the first two terms of Part~II's
+Theorem~\ref{dmv:sum:thm:mean}: with $c=\tfrac32-\tfrac\gamma2=\tfrac{3-\gamma}2$
+there, Part~II's $(\ell/2+c)/\tau$ is $\frac1{2\tau}\log\frac1\tau+\frac{3-\gamma}{2\tau}$,
+and its $\tau=\sqrt{A/(n-1/24)}$ differs from $\tau_n$ by
+$O(\tau_n^3)$; Part~II's remainder $O(\tau^{-1/2})$ is sharper than
+$o(\tau_n^{-1})$. Part~III proves the mean without Part~II
+(Section~\ref{dmv:fl:sec:means}, dated note at its end).
+\end{writenote}
+
+\begin{corollary}[A quadratic-weight example]\label{dmv:fl:cor:quadratic}
+One has
+\[
+ \frac{D_2}{n}\dto\frac6{\pi^2}\sum_{j\ge1}\frac{E_j^2}{j^2},
+ \qquad\frac{\E_nD_2}{n}\longrightarrow2,
+ \qquad\frac{\Var_nD_2}{n^2}\longrightarrow8.
+\]
+In particular, the quadratic-weight statistic does not concentrate about
+its mean at its natural scale.
+\end{corollary}
+
+\subsection{The moving transition window}
+The abrupt distinction between fixed exponents has a precise window.
+For $\theta\in\R$ put
+\[
+ H_n=\log(1/\tau_n),\qquad
+ \alpha_n(\theta)=\frac12+\frac\theta{H_n}.
+\]
+These exponents are positive for all sufficiently large $n$.
+
+\begin{theorem}[The logarithmic window]\label{dmv:fl:thm:window}
+For any fixed finite collection of real parameters $\theta$, the variables
+\begin{equation}\label{dmv:fl:eq:windowvars}
+ X_n(\theta)=\sqrt{\frac{\tau_n}{H_n}}
+       \left(D_{\alpha_n(\theta)}-\E_nD_{\alpha_n(\theta)}\right)
+\end{equation}
+converge jointly to centered Gaussian variables $\mathcal G(\theta)$ with
+covariance
+\begin{equation}\label{dmv:fl:eq:windowkernel}
+ K_{\rm crit}(\theta,\phi)=
+ c_*\frac{\ee^{\theta+\phi}-\ee^{(\theta+\phi)/2}}{\theta+\phi},
+\end{equation}
+interpreted as $c_*/2$ when $\theta+\phi=0$. Their second moments converge.
+An equivalent realization of this covariance is
+\begin{equation}\label{dmv:fl:eq:brownian}
+ \mathcal G(\theta)=\sqrt{c_*}
+       \int_0^{1/2}\ee^{\theta(1-u)}\,dB(u),
+\end{equation}
+where $B$ is standard Brownian motion. In particular,
+\begin{equation}\label{dmv:fl:eq:Wtheta}
+ \Var_nD_{\alpha_n(\theta)}\sim
+ \frac{H_n}{\tau_n}W(\theta),\qquad
+ W(\theta)=c_*\frac{\ee^{2\theta}-\ee^\theta}{2\theta},
+ \quad W(0)=c_*/2.
+\end{equation}
+The centering in \eqref{dmv:fl:eq:windowvars} may be replaced by
+$M_{\alpha_n(\theta)}\tau_n^{-(\alpha_n(\theta)+1)/2}$.
+\end{theorem}
+
+Only finite-dimensional convergence is asserted in this theorem. No
+tightness statement in a space of functions of $\theta$ is used or
+claimed. The proof is uniform when the finitely many parameters range
+over a fixed compact interval. Theorem~\ref{dmv:fl:thm:independence} further
+proves that the subcritical Gaussian vector, critical-window Gaussian
+vector, and fixed-supercritical series vector are mutually independent
+in their joint limit. In particular the limits for $D_0$, $D_{1/2}$,
+and $D_1$ are mutually independent.
+
+\subsection{Proof structure}
+The main proof has four logically separate tasks. We first localize the
+occupied multiplicity set and justify conditioning on total size. We
+then establish a Gaussian covariance field on the scale $m\sqrt t$ by
+finite-order cumulants. A collision estimate compares weighted occupied
+values with additive powers of geometric variables. That comparison
+gives the critical and supercritical laws. Finally, matched integral
+estimates supply the explicit centerings. Every limiting claim used in
+this chain is proved below; the earlier report's refined mean expansion
+is contextual information rather than a required premise.
+\section{Repository review, source boundary, and selection}\label{dmv:fl:sec:review}
+
+\subsection{What was inspected}
+This work began with a targeted review of the two repositories requested
+by the user. The pinned snapshots were:
+\begin{quote}\small\raggedright
+ProveIt: \code{1210e9d3ac88a573f98d7ef8626ba3d2c30e9749}\\
+7 October 2026, 16:29:40 UTC.\\[3pt]
+\code{math}: \code{adc7f1241b42e322a6451854ab7e4b4c146bf78a}\\
+6 October 2026, 21:58:50 UTC.
+\end{quote}
+The latter snapshot has one initial commit;
+its dates in manuscript directory names do not constitute a longer
+repository commit history. Its README describes 722 manuscripts in
+372 families and explicitly distinguishes levels of verification
+\cite{mathrepo}.
+
+The review used recent commit descriptions to identify candidates, then
+read mathematical source for the selected candidates. It was not an
+audit of every repository theorem or every manuscript. The most useful
+comparisons were the following.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+Thread & Inspected result or claim & Research decision\\
+\midrule
+ProveIt: Gowers/Szemer\'edi & Recent structural-cover and inverse-induction
+work retains explicit conditional dimensions; the source ledger reports
+113 exact companions and seven open statements. & Promising, but the
+remaining structural boundary requires a separate substantial project.\\[5pt]
+ProveIt: Keller maps & The displayed three-variable map has constant
+Jacobian $-2$ and explicit integral collisions; the determinant and one
+collision were checked independently. Written follow-ups treat weighted
+rigidity and degree growth. & Interesting geometry; an exact second
+dynamical-degree theorem was not established in this investigation.\\[5pt]
+ProveIt: partition multiplicities & The A373271 manuscript proves a
+refined mean and explicitly asks for variance, a central limit theorem,
+and weighted occupied-value statistics. & Selected: a definite unanswered
+question and a nontrivial dependence mechanism amenable to a complete
+proof.\\[5pt]
+\code{math}, family 159 & The source states quasipolynomial bounds for
+fixed-length arithmetic progressions and the reciprocal-sum consequence. &
+Its weighted harmonic-tail consequences already appear in the manuscript;
+they should not be presented as new deductions here.\\[5pt]
+\code{math}, family 132 & A total-Boolean-function construction gives
+a superquadratic sensitivity separation, with associated formalization
+material. & A separate companion note sharpens a certified exponent to
+$65/32$, by retaining more of the construction's quantitative information.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository statements in the table are drawn from the pinned
+sources \cite{proveit,mathrepo,math132}; the conclusions proved in this
+article are distinguished from them. No proof in the following sections assumes
+the large Ramsey or Keller-map claims. The companion sensitivity note is
+mathematically independent of the partition argument.
+\begin{writenote}[7 October 2026]
+Checked against the repository at the pin \file{1210e9d3a}. \emph{The
+Gowers--Szemer\'edi row:} the source ledger
+\path{Combinatorics/Ramsey/gowers-proof-status.json} then counted 113
+exact companions and 7 open statements, as stated; this is stale: since
+the repair of Lemma~16.10 (commit \file{456b6e3ad}, merged into the main
+line by \file{c05c2f73e}, 7~October 2026) it counts 114 and 6, and so it
+does at the parent \file{76eca179c} of this write. \emph{The Keller row}
+agrees with \path{Algebra/JacobianConjecture/README.md} at the pin
+(constant Jacobian determinant $-2$; the integral collision
+$F(-1,1,5)=F(0,-2,-16)$). \emph{The partition row} is Part~I, as
+Section~\ref{dmv:fl:sec:review} quotes it. The two \code{math} rows and the
+snapshot facts of the \code{math} repository were not checked: that
+repository is outside this one. The sensitivity companion named above is
+the report
+\path{Combinatorics/BooleanFunctions/Research/sensitivity-block-sensitivity}.
+None of these threads is a premise of Part~III.
+\end{writenote}
+
+\subsection{The exact ProveIt question answered}
+The inspected file is
+\begin{quote}\small\raggedright
+\code{SetTheory/Cardinals/docs/reports/}\\
+\code{generating-functions-and-asymptotics/oeis-sequence-asymptotics/}\\
+\code{a373271-distinct-multiplicity-values/article.tex}.
+\end{quote}
+It identifies $\sum_{\lambda\vdash n}D_0(\lambda)$ with OEIS A373271
+and proves the three-term mean
+\[
+ \E_nD_0=(6n)^{1/4}-\frac{23}{16}
+ +\frac{\pi}{6^{1/4}}
+   \left(\frac{12365}{82944}+\frac{15}{8\pi^2}\right)n^{-1/4}
+ +O(n^{-1/2}).
+\]
+Its section on further questions asks for a covariance or cumulant
+analysis and a separate justification of conditioning before stating
+a variance or central limit theorem. It also proposes replacing the
+unit weight by general weights \cite{prior197}. These are precisely
+the two gaps addressed here.
+
+There is a source-packaging nuance. A placement commit discusses both
+Reports 197 and 198, and auxiliary files for the latter are present, but
+the inspected main manuscript contains the unweighted report. We therefore
+use the actual text of Report 197 for the open-question attribution.
+The weighted mean formulas needed here are proved afresh, rather than
+inferred from a placement description. All statements in this article
+remain valid independently of that packaging issue.
+\begin{writenote}[7 October 2026]
+True at the pin and stale now. At \file{1210e9d3a} this
+\file{article.tex} was Report~197 alone (blob \file{77a379cfb}), and
+Report~198 was present only as programs and data with the prefix
+\file{198-sum-}; the write \file{0064d11e6} (7~October 2026, 12:43) made
+Report~198 Part~II of this file. The quoted three-term mean is Part~I's
+Theorem~\ref{dmv:cnt:thm:mean} with $K$ of \eqref{dmv:cnt:eq:meann}
+($K=0.680582149566835918851\ldots$; the write recomputed it from the form
+quoted here), and the questions are Part~I's Questions~2 and~4. Part~II
+proves the five-scale mean of $D_1$; Part~III's weight-one mean
+\eqref{dmv:fl:eq:onemean} is therefore a second route to its first two
+terms (dated notes after Corollary~\ref{dmv:fl:cor:gumbel} and at the end
+of Section~\ref{dmv:fl:sec:means}). Part~III does not use Part~II, so its
+statements stand as written.
+\end{writenote}
+
+\subsection{Relation to earlier partition literature}
+Ralaivaosaona's theorem concerns
+$N_m=\#\{j:M_j=m\}$ for one prescribed multiplicity $m$. It gives a
+Gaussian--Poisson--degenerate transition as $m$ crosses the scale
+$n^{1/4}$ \cite{ralaivaosaona}. Our statistic sums the indicators
+$\ind_{\{N_m>0\}}$ over all $m$, so a one-bin limit theorem does not
+determine its variance: weak pairwise correlations accumulate over
+quadratically many pairs. The explicit covariance term in
+\eqref{dmv:fl:eq:Va} is a quantitative expression of that obstruction.
+
+The independent geometric model and conditioning strategy belong to the
+classical probabilistic theory of partitions, notably Fristedt's work
+\cite{fristedt}. We prove the particular localization and local limit
+estimates needed here, including the moment-transfer statement; we do not
+assume that convergence of unconditioned characteristic functions alone
+justifies conditioning on an event of probability tending to zero.
+
+The Gumbel law for the number of summands is classical
+\cite{erdoslehner}. The new point here is that deleting repeated
+\emph{multiplicity values} changes the expectation of $D_1$ at leading
+order but changes its centered fluctuation by $o(\sqrt n)$.
+The resulting centering in \eqref{dmv:fl:eq:gumbel} therefore differs from the
+classical number-of-summands centering.
+
+Earlier work of Corteel, Pittel, Savage, and Wilf concerns prescribed
+multiplicities and sampling a part size \cite{cpsw}. Its bibliographic
+record and abstract were located, but the attempted author PDF returned
+an access error. This limitation is recorded because a finite source
+search cannot establish global historical priority. The precise claims
+made here are complete proofs of the displayed results and progress
+beyond the inspected repository statements. No assertion that every
+potentially overlapping paper has been excluded is needed.
+
+\subsection{Verification status}
+The infinite limit theorems below are proved in ordinary mathematics.
+The accompanying program checks exact finite generating functions against
+independent partition enumeration and evaluates the stated constants.
+These checks can detect normalization and implementation errors; they
+are not substitutes for the proofs and are not proof-assistant
+certificates. No Lean or Rocq formalization of the new partition results
+is supplied in this package.
+\section{The geometric model and conditioning on total size}\label{dmv:fl:sec:conditioning}
+
+\subsection{Independent geometric coordinates}
+For $t>0$ let $\Q_t$ be the law of independent random variables $M_j$ with
+\begin{equation}\label{dmv:fl:eq:geometric}
+ \Q_t(M_j=m)=(1-\ee^{-tj})\ee^{-tjm},\qquad m=0,1,2,\ldots.
+\end{equation}
+Write
+\[
+ N=\sum_{j\ge1}jM_j,\quad
+ p_{jm}=(1-\ee^{-tj})\ee^{-tjm},\quad
+ N_m=\sum_{j\ge1}\ind_{\{M_j=m\}},\quad I_m=\ind_{\{N_m>0\}}.
+\]
+Since $\sum_j\Q_t(M_j>0)<\infty$, only finitely many $M_j$ are positive
+almost surely. For a partition $\lambda$ of size $n$,
+\[
+ \Q_t(\lambda)=\ee^{-tn}\prod_{j\ge1}(1-\ee^{-tj}).
+\]
+Consequently the conditional law given $N=n$ is exactly $\Pp_n$.
+
+We use $\eps=\sqrt t$ throughout. The expected number of occurrences
+of a multiplicity value has the exact telescoping form
+\begin{equation}\label{dmv:fl:eq:lambda}
+ \lambda_m=\sum_jp_{jm}
+ =\frac1{\ee^{tm}-1}-\frac1{\ee^{t(m+1)}-1}
+ =\int_{tm}^{t(m+1)}g(u)\,du,
+ \quad g(u)=\frac{\ee^u}{(\ee^u-1)^2}.
+\end{equation}
+For a finite set $S$ of positive multiplicities, the absence probability is
+\begin{equation}\label{dmv:fl:eq:absence}
+ Q_S=\Q_t(N_m=0\text{ for every }m\in S)
+ =\prod_{j\ge1}\left(1-\sum_{m\in S}p_{jm}\right).
+\end{equation}
+In particular $Q_m:=Q_{\{m\}}\le\ee^{-\lambda_m}$. For $m\ne\ell$,
+each factor satisfies
+$1-p_{jm}-p_{j\ell}\le(1-p_{jm})(1-p_{j\ell})$, whence
+\begin{equation}\label{dmv:fl:eq:negativecov}
+ \Cov_t(I_m,I_\ell)=Q_{m,\ell}-Q_mQ_\ell\le0.
+\end{equation}
+Only this explicitly proved pairwise fact is needed for the weighted
+tail variances below.
+
+\begin{lemma}[Elementary uniform bounds]\label{dmv:fl:lem:basicbounds}
+For all $m\ge1$ and $0<t\le1$,
+\begin{equation}\label{dmv:fl:eq:lambdabounds}
+ \lambda_m\le\frac1{tm(m+1)}\le\frac1{tm^2},\qquad
+ \lambda_m\le C t\ee^{-tm}\quad(tm\ge1).
+\end{equation}
+If $tm\le1$, then
+$\lambda_m\ge c/(tm(m+1))$. For any finite $J$,
+\begin{equation}\label{dmv:fl:eq:truncatedlambda}
+ \lambda_m^{(J)}:=\sum_{j\le J}p_{jm}
+ \le\min\left\{\frac{tJ(J+1)}2,\frac1{tm^2}\right\}.
+\end{equation}
+For each fixed $r>0$,
+\begin{equation}\label{dmv:fl:eq:momentbound}
+ \E_t M_j^r\le C_r(tj)^{-r}.
+\end{equation}
+The constants in the last bound may be chosen uniformly for $r$ in a
+fixed compact subinterval of $(0,\infty)$.
+\end{lemma}
+\begin{proof}
+The identity $g(u)=[2\sinh(u/2)]^{-2}$ gives $g(u)\le u^{-2}$;
+on $(0,2]$ it also gives a positive constant times $u^{-2}$ as a lower
+bound. If $tm\le1$ and $t\le1$, the integration interval lies in
+$(0,2]$. On $[1,\infty)$, $g(u)\le C\ee^{-u}$. Integrating proves
+\eqref{dmv:fl:eq:lambdabounds}. The estimate $p_{jm}\le tj$ proves the first
+part of \eqref{dmv:fl:eq:truncatedlambda}. Finally, on a common probability
+space we may set
+\begin{equation}\label{dmv:fl:eq:expcoupling}
+ M_j=\left\lfloor\frac{E_j}{tj}\right\rfloor,
+ \qquad E_j\text{ independent }\operatorname{Exp}(1).
+\end{equation}
+This has exactly the tail probabilities in \eqref{dmv:fl:eq:geometric}, and
+$M_j^r\le E_j^r/(tj)^r$ proves the moment bound.
+\end{proof}
+
+\subsection{The entire occupied set is determined by small part sizes}
+Let $\mathcal M_J=\{M_j:j\le J,\ M_j>0\}$ and
+$D_\alpha^{(J)}=\sum_{m\in\mathcal M_J}m^\alpha$.
+
+\begin{lemma}[Localization of the occupied set]\label{dmv:fl:lem:localization}
+For every fixed $A>0$ there is a constant $C_A$ such that, with
+\begin{equation}\label{dmv:fl:eq:J}
+ J=\left\lceil C_A t^{-1/2}\log^{3/2}(1/t)\right\rceil,
+\end{equation}
+one has
+\begin{equation}\label{dmv:fl:eq:setlocalization}
+ \Q_t(\mathcal M\ne\mathcal M_J)=O_A(t^A).
+\end{equation}
+On the complementary event, $D_\alpha=D_\alpha^{(J)}$ simultaneously for all
+$\alpha\ge0$. The constant $C_A$ is allowed to depend on $A$.
+\end{lemma}
+\begin{proof}
+Write $H=\log(1/t)$ and choose constants $B,C>0$ below. Put
+$m_0=\lfloor t^{-1/2}/\sqrt{BH}\rfloor$ and
+$J=\lceil Ct^{-1/2}H^{3/2}\rceil$.
+For all sufficiently small $t$, the indices
+\[
+ \frac1{2tm_0}\le j\le\frac1{tm_0}
+\]
+lie below $J$. On this interval,
+$(1-\ee^{-tj})\ee^{-tjm_0}\ge c tj$, with an absolute $c>0$.
+Summing gives $\lambda_{m_0}^{(J)}\ge c'/(tm_0^2)\ge c'BH$.
+Since $p_{jm}$ decreases in $m$, this lower bound holds for every
+$1\le m\le m_0$. A union bound therefore gives
+\begin{equation}\label{dmv:fl:eq:lowmiss}
+ \Q_t(\text{some }m\le m_0\text{ is absent from }\mathcal M_J)
+ \le m_0\ee^{-c'BH}.
+\end{equation}
+For the large values, sum the geometric tail exactly:
+\begin{align}\label{dmv:fl:eq:highlate}
+ \Q_t(\exists j>J:M_j>m_0)
+ &\le\sum_{j>J}\ee^{-tj(m_0+1)}\\
+ &=\frac{\ee^{-t(J+1)(m_0+1)}}{1-\ee^{-t(m_0+1)}}
+ \le C' t^{-1/2}\sqrt{BH}\,\ee^{-CH/\sqrt B}.
+ \nonumber
+\end{align}
+First choose $B$ so $c'B>A+2$, and then choose $C$ so
+$C/\sqrt B>A+2$. Both displayed bounds are $O(t^A)$.
+Outside these two events, every value supplied by a row $j>J$ already
+appears in a row $j\le J$. This proves equality of the occupied sets.
+\end{proof}
+
+This localization concerns the set of multiplicities, not the size of
+the partition. The rows $j>J$ carry most of the variance of $N$ and
+provide the reservoir that makes conditioning asymptotically harmless.
+
+\subsection{A uniform local limit estimate}
+Put
+\[
+ A_J=\sum_{j\le J}jM_j,\qquad B_J=\sum_{j>J}jM_j,
+ \qquad N=A_J+B_J.
+\]
+For the next lemma it suffices that $J\ge1$ and $Jt\to0$.
+
+\begin{lemma}[Reservoir local limit theorem]\label{dmv:fl:lem:llt}
+Let $\mu=\E_tN$, $\sigma^2=\Var_tN$, and let $\mu_B,\sigma_B^2$
+be the corresponding parameters of $B_J$. Then
+\begin{align}\label{dmv:fl:eq:sizemoments}
+ \mu&=\frac{\pi^2}{6t^2}+O(t^{-1}),&
+ \sigma^2&\sim\frac{\pi^2}{3t^3},&
+ \sigma_B^2&\sim\sigma^2,\\
+ \Var_t A_J&=O(Jt^{-2}),&
+ \E_t(A_J-\E_tA_J)^4&=O((J^2+J)t^{-4}).
+ \nonumber
+\end{align}
+Writing $\varphi(x)=(2\pi)^{-1/2}\ee^{-x^2/2}$, uniformly in integer $k$,
+\begin{equation}\label{dmv:fl:eq:LLT}
+ \sigma_B\Q_t(B_J=k)
+ =\varphi\!\left(\frac{k-\mu_B}{\sigma_B}\right)+O(\sqrt t).
+\end{equation}
+The identical estimate holds for $N$ with its own mean and variance.
+\end{lemma}
+\begin{proof}
+The mean estimate follows by a Riemann sum for $u/(\ee^u-1)$.
+For the variance, use the integrable function
+$u^2\ee^{-u}/(1-\ee^{-u})^2$ and
+\[
+ \int_0^\infty\frac{u^2\ee^{-u}}{(1-\ee^{-u})^2}\,du
+ =\sum_{k\ge1}k\int_0^\infty u^2\ee^{-ku}\,du
+ =2\zeta(2)=\frac{\pi^2}3.
+\]
+Each summand $jM_j$ has variance $O(t^{-2})$ and centered fourth
+moment $O(t^{-4})$, by \eqref{dmv:fl:eq:momentbound}. Independence gives the
+two bounds for $A_J$ and hence $\sigma^2-\sigma_B^2=O(Jt^{-2})$.
+The summed absolute third centered moments of all $jM_j$ are
+$O(t^{-4})$: for $tj\le1$ use $O(t^{-3})$ per row, and for $tj>1$
+use $O(j^3\ee^{-tj})$ and a Riemann sum.
+
+Here are the Fourier estimates needed for a local, rather than merely
+distributional, limit. For $q_j=\ee^{-tj}$,
+\[
+ \left|\E_t\ee^{\ii\theta jM_j}\right|^2
+ =\frac{(1-q_j)^2}{(1-q_j)^2+4q_j\sin^2(j\theta/2)}.
+\]
+For $j\in[1/t,2/t]\cap\N$ the parameter $q_j$ stays in a compact
+subinterval of $(0,1)$. All these rows belong to $B_J$ eventually. Thus
+\begin{equation}\label{dmv:fl:eq:fourierbound}
+ |\E_t\ee^{\ii\theta B_J}|
+ \le\exp\left[-c\min\{\theta^2/t^3,1/t\}\right],
+ \qquad -\pi\le\theta\le\pi.
+\end{equation}
+For completeness, the needed trigonometric bound is
+\[
+ \sum_{1/t\le j\le2/t}\sin^2(j\theta/2)
+ \ge c\min\{\theta^2/t^3,1/t\}.
+\]
+When $|\theta|\le c_0t$, apply the elementary lower bound for sine
+near zero. When $|\theta|\ge C_0t$, use
+$|\sum_{a\le j\le b}\ee^{\ii j\theta}|\le1/|\sin(\theta/2)|$
+and $\sin^2(u/2)=(1-\cos u)/2$. On the remaining compact range
+$c_0\le|\theta|/t\le C_0$, a Riemann sum for
+$\int_1^2\sin^2(s\theta/(2t))\,ds$ is bounded below by a positive
+constant. This proves \eqref{dmv:fl:eq:fourierbound} on the entire circle.
+
+For the centered characteristic function at
+$\theta=u/\sigma_B$, Taylor expansion of its logarithm gives
+\[
+ \log\E_t\ee^{\ii u(B_J-\mu_B)/\sigma_B}
+ =-u^2/2+O(\sqrt t\,|u|^3).
+\]
+For an explicit uniform derivative bound, the geometric logarithm series is
+\[
+ \log\E_t\ee^{\ii\theta B_J}
+ =\sum_{j>J}\sum_{k\ge1}\frac{\ee^{-tjk}}{k}
+       (\ee^{\ii jk\theta}-1).
+\]
+Its third derivative in absolute value is at most
+$\sum_{j>J}j^3q_j(1+q_j)/(1-q_j)^3=O(t^{-4})$, uniformly in real
+$\theta$. On $|u|\le c_1t^{-1/2}$ choose $c_1$ small
+enough that the remainder is at most a fixed small multiple of $u^2$.
+The difference from $\ee^{-u^2/2}$ is bounded there by
+$C\sqrt t\,|u|^3\ee^{-c_2u^2}$.
+On the rest of the Fourier interval, \eqref{dmv:fl:eq:fourierbound} gives an
+exponentially small integral, including the range $|\theta|\ge t$.
+Consequently the $L^1$ distance of the rescaled characteristic function
+from $\ee^{-u^2/2}$ is $O(\sqrt t)$. Fourier inversion proves
+\eqref{dmv:fl:eq:LLT}, uniformly in $k$. The proof for $N$ is the same.
+\end{proof}
+
+The saddle equation \eqref{dmv:fl:eq:saddle} has a unique positive solution:
+its left side is continuous and strictly decreasing from infinity to
+zero. The mean estimate in \eqref{dmv:fl:eq:sizemoments} gives
+$t_n=\tau_n+O(\tau_n^2)$ as promised.
+
+\begin{proposition}[Likelihood ratio and moment transfer]\label{dmv:fl:prop:transfer}
+Take $t=t_n$, and let $J$ satisfy \eqref{dmv:fl:eq:J}. The conditional law of
+$(M_j)_{j\le J}$ given $N=n$ has likelihood ratio, relative to its
+unconditional law,
+\begin{equation}\label{dmv:fl:eq:likelihood}
+ R_t=\frac{\Q_t(B_J=n-A_J)}{\Q_t(N=n)}.
+\end{equation}
+Uniformly over all low-row configurations, $0\le R_t\le C$, and
+\begin{equation}\label{dmv:fl:eq:Rrate}
+ \|R_t-1\|_{L^2(\Q_t)}=O(Jt+\sqrt t)=o(1).
+\end{equation}
+Thus the total variation distance of the two low-row laws tends to zero.
+If a sequence of low-row random variables $Y_t$ has a limiting law and
+uniformly integrable squares under $\Q_t$, its first and second moments
+and its law have the same limits after conditioning. For any square
+integrable low-row statistic $T$,
+\begin{equation}\label{dmv:fl:eq:meanshift}
+ |\E_nT-\E_tT|
+ \le C(Jt+\sqrt t)\sqrt{\Var_tT}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Independence proves \eqref{dmv:fl:eq:likelihood}. Apply Lemma~\ref{dmv:fl:lem:llt}
+at the saddle $\mu=n$. With
+$z=(A_J-\E_tA_J)/\sigma_B$, it gives
+\[
+ R_t=\frac{\sigma}{\sigma_B}
+       \frac{\ee^{-z^2/2}+O(\sqrt t)}{1+O(\sqrt t)}.
+\]
+The uniform upper bound follows. Moreover
+$\sigma/\sigma_B=1+O(Jt)$, and
+\[
+ \E_tz^4=O((J^2+J)t^2),\qquad
+ |1-\ee^{-z^2/2}|\le\min\{z^2/2,1\}.
+\]
+These prove \eqref{dmv:fl:eq:Rrate}. Since $\E_tR_t=1$, the mean difference
+equals $\E_t[(T-\E_tT)(R_t-1)]$, and Cauchy--Schwarz proves
+\eqref{dmv:fl:eq:meanshift}. Finally, boundedness of $R_t$ and convergence to
+$1$ in probability allow truncation of any uniformly integrable family
+$Y_t^2$, which proves the moment-transfer assertion. Total variation
+and the same truncation prove the law and first-moment assertions.
+\end{proof}
+
+\subsection{Removing the row cutoff after conditioning}
+The support-localization event involves both low and high rows, so it
+must not be transferred using a likelihood ratio for low rows alone.
+Instead, at $t=t_n$, Lemma~\ref{dmv:fl:lem:llt} gives
+\begin{equation}\label{dmv:fl:eq:eventtransfer}
+ \Pp_n(\mathcal M\ne\mathcal M_J)
+ \le\frac{\Q_t(\mathcal M\ne\mathcal M_J)}{\Q_t(N=n)}
+ =O_A(t^{A-3/2}).
+\end{equation}
+For each fixed $\alpha\ge0$,
+\begin{equation}\label{dmv:fl:eq:polynomialgrowth}
+ 0\le D_\alpha\le N^{\max(1,\alpha)}.
+\end{equation}
+Indeed $m^\alpha\le m$ for $0\le\alpha\le1$, whereas for
+$\alpha\ge1$ the sum of the $\alpha$th powers is at most the $\alpha$th
+power of the sum. Also $\E_tN^r=O_r(t^{-2r})$ for every fixed positive
+$r$, by the geometric moment or cumulant bounds (integer moments
+suffice, followed by H\"older).
+
+Choosing $A$ sufficiently large for the finitely many exponents and
+moments under consideration, \eqref{dmv:fl:eq:eventtransfer},
+\eqref{dmv:fl:eq:polynomialgrowth}, and Cauchy--Schwarz show that
+$D_\alpha-D_\alpha^{(J)}$ is negligible in $L^2$ at every scale used in
+this article, under both $\Q_t$ and $\Pp_n$. The same holds for any
+specified finite moment. This explains why the quantifier ``for every
+$A$'' in Lemma~\ref{dmv:fl:lem:localization} matters.
+\section{A Gaussian field of occupied multiplicities}\label{dmv:fl:sec:gaussian}
+
+\subsection{The covariance on the occupancy scale}
+On the scale $y=\eps m$, a bin has expected occupancy of order one.
+Uniformly for $a\le\eps m\le b$, where $0<a<b<\infty$ are fixed,
+\begin{equation}\label{dmv:fl:eq:localones}
+ \lambda_m=y^{-2}+O(\eps),\qquad
+ Q_m=\ee^{-y^{-2}}(1+O(\eps)).
+\end{equation}
+Indeed, \eqref{dmv:fl:eq:lambda} and $g(u)=u^{-2}+O(1)$ prove the first
+estimate. For the second, use $\max_jp_{jm}=O_a(\eps)$ and
+$\sum_jp_{jm}^2=O_a(\eps)$ in the logarithm of \eqref{dmv:fl:eq:absence}.
+
+For distinct $m,\ell$ in this range, put $z=\eps\ell$. The Riemann sum
+with $x=\eps j$ gives
+\begin{equation}\label{dmv:fl:eq:pairintensity}
+ \sum_jp_{jm}p_{j\ell}
+ =\eps\int_0^\infty x^2\ee^{-(y+z)x}\,dx+O(\eps^2)
+ =\frac{2\eps}{(y+z)^3}+O(\eps^2).
+\end{equation}
+Here all derivatives of the exponentially decaying integrands are
+uniformly integrable when $y,z$ stay in the compact interval. Expanding
+the logarithm of the pair absence probability yields
+\[
+ \log\frac{Q_{m,\ell}}{Q_mQ_\ell}
+ =-\sum_jp_{jm}p_{j\ell}+O(\eps^2),
+\]
+because the cubic error is at most a constant times
+$\sum_jp_{jm}p_{j\ell}(p_{jm}+p_{j\ell})=O(\eps^2)$. Consequently
+\begin{equation}\label{dmv:fl:eq:covlocal}
+ \Cov_t(I_m,I_\ell)
+ =-\frac{2\eps\ee^{-1/y^2-1/z^2}}{(y+z)^3}+O(\eps^2).
+\end{equation}
+Each correlation is small, but there are order $\eps^{-2}$ pairs.
+Their total is of the same order as the sum of the diagonal variances.
+
+For compactly supported, continuous real functions $f,g$ on
+$(0,\infty)$ define
+\begin{align}\label{dmv:fl:eq:kernel}
+ \mathcal K(f,g)={}&\int_0^\infty f(y)g(y)
+       (\ee^{-1/y^2}-\ee^{-2/y^2})\,dy\\
+ &-2\int_0^\infty\int_0^\infty
+       \frac{f(y)g(z)\ee^{-1/y^2-1/z^2}}{(y+z)^3}\,dy\,dz.
+ \nonumber
+\end{align}
+The same formula applies to bounded piecewise continuous functions
+supported inside a compact subinterval. With
+$T_f=\sum_m f(\eps m)I_m$, the diagonal formula and
+\eqref{dmv:fl:eq:covlocal} prove
+\begin{equation}\label{dmv:fl:eq:compactcov}
+ \eps\Cov_t(T_f,T_g)\longrightarrow\mathcal K(f,g).
+\end{equation}
+The error $O(\eps^2)$ per off-diagonal pair contributes only $O(\eps)$
+after this normalization.
+
+\subsection{A finite-order cumulant lemma}
+The following argument treats repeated indices as well as distinct
+ones. This distinction is necessary when summing ordinary cumulants.
+Let $Z_m=1-I_m$ be the absence indicator.
+
+\begin{lemma}[Connected cumulant bound]\label{dmv:fl:lem:cumulants}
+Fix $r\ge1$ and $0<a<b<\infty$. If an ordered $r$-tuple of indices
+in $[a/\eps,b/\eps]$ contains $d$ distinct indices, its joint cumulant
+of absence indicators, and hence of presence indicators for $r\ge2$,
+is $O_{a,b,r}(\eps^{d-1})$. Consequently, for uniformly bounded weights
+$f_m$ supported in this interval,
+\begin{equation}\label{dmv:fl:eq:sumcumulants}
+ \kappa_r\left(\sum_m f_m I_m\right)=O_{a,b,r,\sup|f_m|}(\eps^{-1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Label the $d$ distinct bins by $[d]$. In the compact range, for every
+nonempty subset $B\subseteq[d]$ of size at most $r$,
+\begin{equation}\label{dmv:fl:eq:rowproducts}
+ \sum_j\prod_{i\in B}p_{ji}=O_{a,r}(\eps^{|B|-1}).
+\end{equation}
+To prove this, set $x=\eps j$ and use
+$p_{ji}\le\eps x\ee^{-ax}$, followed by an exponentially convergent
+Riemann sum. In particular $\sum_{i=1}^dp_{ji}\le1/2$ for sufficiently
+small $\eps$.
+
+For nonempty $B\subseteq[d]$ take the Boolean differences
+\[
+ c_B=\sum_{S\subseteq B}(-1)^{|B|-|S|}\log Q_S,
+ \qquad Q_\varnothing=1.
+\]
+In the absolutely convergent expansion of
+$\log(1-\sum_{i\in S}p_{ji})$, this difference kills every monomial
+that omits an index of $B$. The sum of the remaining monomials is
+bounded by $C_d\prod_{i\in B}p_{ji}$: after removing one occurrence of
+each index, the remaining series is dominated by a geometric series
+with argument at most $1/2$. Thus
+\begin{equation}\label{dmv:fl:eq:hyperweights}
+ c_B=O(\eps^{|B|-1}).
+\end{equation}
+Put $a_i=Q_{\{i\}}$ and $w_B=\ee^{c_B}-1$ for $|B|\ge2$.
+Boolean inversion gives
+\[
+ Q_S=\prod_{i\in S}a_i
+     \prod_{\substack{B\subseteq S\\|B|\ge2}}(1+w_B).
+\]
+For complex $s_i$ near zero, set
+$z_i=\ee^{s_i}-1$, $h_i=1+a_iz_i$, and $b_i=a_iz_i/h_i$.
+Expanding the moment generating function exactly, with
+$\mathcal E=\{B\subseteq[d]:|B|\ge2\}$, gives
+\begin{equation}\label{dmv:fl:eq:finitecluster}
+ \E_t\ee^{\sum_i s_iZ_i}
+ =\prod_i h_i\;R(w,b),\qquad
+ R(w,b)=\sum_{F\subseteq\mathcal E}
+       \left(\prod_{B\in F}w_B\right)
+       \left(\prod_{i\in\bigcup F}b_i\right).
+\end{equation}
+This is a finite polynomial identity before taking the logarithm.
+The function $\log R$ is analytic in common small polydisks in $w,s$,
+uniformly for $0\le a_i\le1$, because $R=1$ at $w=0$.
+
+Consider a Taylor monomial of $\log R$ in the edge variables $w_B$.
+If its edge multiset splits into vertex-disjoint components, its
+coefficient is zero unless there is only one component: setting all
+other edge variables to zero factorizes $R$ across those components,
+and its logarithm becomes a sum. A derivative with positive order in
+every $s_i$ also vanishes unless the union of the edges covers $[d]$.
+Every surviving term therefore has a connected spanning hypergraph.
+If edge $B$ occurs $k_B$ times, connectivity implies
+\[
+ \sum_B k_B(|B|-1)\ge d-1.
+\]
+By \eqref{dmv:fl:eq:hyperweights}, such a term is $O(\eps^{d-1})$.
+To justify the bound for the entire analytic series, separate it at
+total $w$-degree $d-1$. The tail and each fixed $s$ derivative of the
+tail are $O(\eps^{d-1})$, since every $w_B=O(\eps)$. Below that degree
+there are finitely many terms, to which the connected-spanning argument
+applies individually. When $d=1$, every fixed cumulant of a Bernoulli
+variable is bounded.
+
+Differentiating with possibly repeated $s_i$ now proves the claimed
+ordinary joint cumulant bound. There are $O_r(\eps^{-d})$ ordered
+$r$-tuples with $d$ distinct indices. Summing over $d=1,\ldots,r$
+proves \eqref{dmv:fl:eq:sumcumulants}; bounded weights do not affect its order.
+\end{proof}
+
+\begin{theorem}[Compact occupancy Gaussian field]\label{dmv:fl:thm:field}
+For any fixed finite family of bounded piecewise continuous test
+functions supported inside compact subintervals of $(0,\infty)$,
+\[
+ \sqrt\eps\left(\sum_mf(\eps m)I_m-
+                     \E_t\sum_mf(\eps m)I_m\right)
+\]
+converges jointly under $\Q_t$ to a centered Gaussian vector with
+covariance $\mathcal K$. Every fixed moment of each compact test
+statistic converges. Under $\Pp_n$ the same finite-dimensional law and
+second-moment conclusion hold, with $t=t_n$.
+\end{theorem}
+\begin{proof}
+After centering, the first cumulant vanishes, the second converges by
+\eqref{dmv:fl:eq:compactcov}, and for $r\ge3$ Lemma~\ref{dmv:fl:lem:cumulants} gives
+$O(\eps^{r/2-1})\to0$. The finite moment--cumulant formulas yield
+convergence of every fixed moment to the Gaussian moment. Bounded
+second moments give tightness, and the Gaussian distribution is
+determined by its moments. Apply this scalar argument to every linear
+combination to obtain the joint assertion. The fourth-moment bound
+gives uniform integrability of squares. Localization and
+Proposition~\ref{dmv:fl:prop:transfer} give the conditioned assertion.
+\end{proof}
+
+\subsection{Strict positivity of the covariance}
+The negative double integral in \eqref{dmv:fl:eq:kernel} cannot cancel the
+whole diagonal. This can be seen without numerical computation.
+Write $\lambda(y)=y^{-2}$ and $h(x,y)=x\ee^{-xy}$ for $x,y>0$.
+Then
+\[
+ \int_0^\infty h(x,y)\,dy=1,\quad
+ \int_0^\infty h(x,y)\,dx=\lambda(y),\quad
+ \int_0^\infty h(x,y)h(x,z)\,dx=\frac2{(y+z)^3}.
+\]
+For each fixed $x$, apply Cauchy--Schwarz with probability density
+$h(x,y)\,dy$. Integrating in $x$ gives
+\[
+ 2\iint\frac{f(y)f(z)\ee^{-\lambda(y)-\lambda(z)}}{(y+z)^3}\,dy\,dz
+ \le\int f(y)^2\lambda(y)\ee^{-2\lambda(y)}\,dy.
+\]
+Therefore
+\begin{equation}\label{dmv:fl:eq:strictpositive}
+ \mathcal K(f,f)\ge
+ \int_0^\infty f(y)^2\ee^{-2\lambda(y)}
+       [\ee^{\lambda(y)}-1-\lambda(y)]\,dy>0
+\end{equation}
+for every nonzero real test function modulo equality almost everywhere.
+The same proof applies whenever the integrals converge, including
+$f(y)=y^\alpha$, $0\le\alpha<1/2$.
+
+\subsection{Removing the multiplicity cutoff}
+For nonnegative weights $w_m$ and a set of bins $S$, the exact sign
+\eqref{dmv:fl:eq:negativecov} implies
+\begin{equation}\label{dmv:fl:eq:tailvariance}
+ \Var_t\left(\sum_{m\in S}w_mI_m\right)
+ \le\sum_{m\in S}w_m^2\min\{Q_m,1-Q_m\}.
+\end{equation}
+Fix $0\le\alpha<1/2$. On $m<a/\eps$, the lower bound for $\lambda_m$
+in Lemma~\ref{dmv:fl:lem:basicbounds} gives
+\begin{equation}\label{dmv:fl:eq:lowweightedtail}
+ \eps^{2\alpha+1}\Var_t\sum_{m<a/\eps}m^\alpha I_m
+ \le C_\alpha\int_0^{2a}y^{2\alpha}\ee^{-c/y^2}\,dy+o(1).
+\end{equation}
+A direct maximum bound also proves this for sufficiently small $a$;
+the displayed Riemann-integral version makes its limit zero explicit.
+For $m>b/\eps$, \eqref{dmv:fl:eq:lambdabounds} gives
+\begin{equation}\label{dmv:fl:eq:highweightedtail}
+ \eps^{2\alpha+1}\Var_t\sum_{m>b/\eps}m^\alpha I_m
+ \le\eps^{2\alpha-1}\sum_{m>b/\eps}m^{2\alpha-2}
+ \le C_\alpha b^{2\alpha-1}.
+\end{equation}
+The low and high tails have nonpositive covariance. Their centered sum
+is consequently small in $L^2$, after multiplication by
+$\eps^{\alpha+1/2}$, as first $t\to0$ and then $a\downarrow0$,
+$b\uparrow\infty$.
+
+Apply Theorem~\ref{dmv:fl:thm:field} to
+$f(y)=y^\alpha\ind_{[a,b]}(y)$. The two tail bounds extend the Gaussian
+law to all bins and extend the limiting variance by Cauchy--Schwarz.
+The resulting constant is $\mathcal K(y^\alpha,y^\alpha)=V_\alpha$.
+They also prove uniform integrability of the normalized squares:
+the compact statistic has bounded fourth moments and the tails are
+arbitrarily small in $L^2$. Proposition~\ref{dmv:fl:prop:transfer} and the
+support-localization lemma therefore transfer the full Gaussian and
+variance statements to uniform partitions.
+
+This proves the centered subcritical assertion of
+Theorem~\ref{dmv:fl:thm:phase}. It also proves joint Gaussian limits for any
+finite list $0\le\alpha_i<1/2$, with covariance
+$\mathcal K(y^{\alpha_i},y^{\alpha_j})$ under their respective
+normalizations. Linear combinations are treated using the individual
+$L^2$ tail bounds, so no sign assumption on those combinations is needed.
+
+\subsection{Evaluation and the critical pole}
+For $0\le\alpha<1/2$, integration by parts gives
+\[
+ \int_0^\infty y^{2\alpha}
+    (\ee^{-1/y^2}-\ee^{-2/y^2})\,dy
+ =\Gamma(\tfrac12-\alpha)
+       \frac{2^{\alpha+1/2}-1}{2\alpha+1}.
+\]
+In the double integral of \eqref{dmv:fl:eq:Va}, substitute $y=sr$,
+$z=s(1-r)$. The Jacobian is $s$, and integration in $s$ gives the
+integral subtracted in \eqref{dmv:fl:eq:Vaoned}. This proves that formula.
+At $\alpha=0$,
+\[
+ \int_0^1\frac{r(1-r)}{\sqrt{r^2+(1-r)^2}}\,dr
+ =\frac{3\sqrt2}{8}\log(1+\sqrt2)-\frac14,
+\]
+by $u=2r-1$ and elementary antiderivatives. Hence
+\begin{equation}\label{dmv:fl:eq:Vzero}
+ V_0=\sqrt\pi\left(\sqrt2-\frac34
+ -\frac{3\sqrt2}{8}\log(1+\sqrt2)\right)
+ =0.348809403800813564\ldots.
+\end{equation}
+Using $\tau_n^{-1/2}=6^{1/4}n^{1/4}/\sqrt\pi$ gives
+\eqref{dmv:fl:eq:vzero}.
+
+As $\alpha\uparrow1/2$, the bracket in \eqref{dmv:fl:eq:Vaoned} tends to
+\[
+ \frac12-\int_0^1\sqrt{r(1-r)}\,dr
+ =\frac12-\frac\pi8=\frac{c_*}{2}.
+\]
+Since $\Gamma(1/2-\alpha)\sim(1/2-\alpha)^{-1}$,
+\begin{equation}\label{dmv:fl:eq:variancepole}
+ V_\alpha\sim\frac{c_*}{1-2\alpha}.
+\end{equation}
+The pole indicates the failure of a uniformly integrable high-bin
+variance tail at the endpoint. Section~\ref{dmv:fl:sec:critical} resolves that
+failure directly and yields the logarithmic coefficient $c_*/2$.
+\section{Explicit centerings and the logarithmic mean}\label{dmv:fl:sec:means}
+
+The centered limit theorems do not require a high-order expansion of
+the mean. Nevertheless, obtaining a genuinely explicit limit law
+requires controlling the mean to better than the fluctuation scale.
+This section does so without importing the earlier report's refined
+unweighted expansion.
+
+\begin{proposition}[Weighted means]\label{dmv:fl:prop:weightedmeans}
+For every fixed $0<\alpha<1$, under both the geometric law and the
+uniform partition law at the exact saddle,
+\begin{equation}\label{dmv:fl:eq:twotermmean}
+ \E D_\alpha=M_\alpha t^{-(\alpha+1)/2}
+       +\Gamma(\alpha+1)\zeta(\alpha)t^{-\alpha}
+       +o(t^{-\alpha}).
+\end{equation}
+At $\alpha=1$,
+\begin{equation}\label{dmv:fl:eq:onemean}
+ \E D_1=\frac1{2t}\log\frac1t+\frac{3-\gamma}{2t}+o(t^{-1}).
+\end{equation}
+For $\alpha=0$ the geometric mean is
+\begin{equation}\label{dmv:fl:eq:zeromean}
+ \E_tD_0=\sqrt\pi\,t^{-1/2}+O(1),
+\end{equation}
+and the same bounded-error formula holds under $\Pp_n$ at $t=t_n$.
+All these statements remain valid with $t_n$ replaced by $\tau_n$.
+The estimates used for \eqref{dmv:fl:eq:twotermmean} are uniform for $\alpha$
+in a compact subinterval of $(0,1)$.
+\end{proposition}
+
+\subsection{Reduction to one integral}
+For $0<\alpha<2$, define
+\[
+ F_t(u)=u^\alpha(1-\ee^{-tg(u)}),\qquad
+ J_\alpha(t)=\int_0^\infty F_t(u)\,du.
+\]
+We first prove the geometric estimate
+\begin{equation}\label{dmv:fl:eq:meanintegral}
+ \E_tD_\alpha=t^{-\alpha-1}J_\alpha(t)+O_\alpha(t^{-\alpha/2}).
+\end{equation}
+There are three approximations, and their errors must all be summed
+over the full range of multiplicities.
+
+First, the maximum of $(1-q)q^m$ on $0\le q\le1$ is at most
+$1/(m+1)\le1/2$. Expanding $-\log(1-p)$ gives
+\begin{equation}\label{dmv:fl:eq:poissonerror}
+ 0\le\ee^{-\lambda_m}-Q_m
+ \le\ee^{-\lambda_m}\sum_jp_{jm}^2
+ \le\ee^{-\lambda_m}\lambda_m/m.
+\end{equation}
+For $tm\le1$, Lemma~\ref{dmv:fl:lem:basicbounds} bounds the weighted sum by
+\[
+ Ct^{-1}\sum_m m^{\alpha-3}\ee^{-c/(tm^2)}=O(t^{-\alpha/2}).
+\]
+For $tm>1$, use $\lambda_m\le Ct\ee^{-tm}$ to obtain
+$O(t^{1-\alpha})$, which is no larger when $\alpha<2$.
+
+Second, $\lambda_m\le tg(tm)$, and
+\[
+ 0\le tg(tm)-\lambda_m\le
+ \begin{cases}
+ C/(tm^3),&tm\le1,\\
+ Ct^2\ee^{-tm},&tm>1.
+ \end{cases}
+\]
+The mean value theorem for the exponential, with the lower bound for
+$\lambda_m$, yields the same weighted error $O(t^{-\alpha/2})$.
+
+Third, the elementary estimates for $g,g'$ imply
+\begin{equation}\label{dmv:fl:eq:variation}
+ \int_0^\infty|F_t'(u)|\,du=O_\alpha(t^{\alpha/2}).
+\end{equation}
+For the derivative of $u^\alpha$, split at $u=\sqrt t$ and use
+$1-\ee^{-tg(u)}\le\min(1,Ct/u^2)$ on $(0,1]$. For the other term
+use $Ct u^{\alpha-3}\ee^{-ct/u^2}$. Beyond $1$, exponential decay
+gives $O(t)$. These estimates prove \eqref{dmv:fl:eq:variation} for
+$0<\alpha<2$. The bounded-variation Riemann-sum inequality is
+\[
+ \left|t\sum_{m\ge1}F_t(tm)-\int_0^\infty F_t(u)\,du\right|
+ \le t\int_0^\infty|F_t'(u)|\,du.
+\]
+Multiplication by $t^{-\alpha-1}$ gives the third error in
+\eqref{dmv:fl:eq:meanintegral}. Each argument is uniform on compact exponent
+intervals inside $(0,2)$.
+
+\subsection{Two terms below the mean threshold}
+For $0<\alpha<1$, integration by parts gives
+\[
+ \int_0^\infty u^\alpha(1-\ee^{-t/u^2})\,du
+ =M_\alpha t^{(\alpha+1)/2}.
+\]
+Moreover, $0<g(u)<u^{-2}$ and
+$u^\alpha(u^{-2}-g(u))$ is integrable at both endpoints.
+Dominated convergence therefore gives
+\begin{equation}\label{dmv:fl:eq:regularmean}
+ J_\alpha(t)=M_\alpha t^{(\alpha+1)/2}
+ +t\int_0^\infty u^\alpha(g(u)-u^{-2})\,du+o(t).
+\end{equation}
+The regularized Mellin integral equals
+\begin{equation}\label{dmv:fl:eq:mellinconstant}
+ \int_0^\infty u^\alpha(g(u)-u^{-2})\,du
+ =\Gamma(\alpha+1)\zeta(\alpha).
+\end{equation}
+Here is a direct convergent-integral justification. Let
+$H(u)=(\ee^u-1)^{-1}-u^{-1}$. Boundary terms vanish in integration
+by parts, so the left side is
+$\alpha\int_0^\infty u^{\alpha-1}H(u)\,du$.
+The identity
+\[
+ H(u)-2H(2u)=\frac1{\ee^u+1}
+\]
+implies that this last Mellin integral, multiplied by
+$1-2^{1-\alpha}$, is $\Gamma(\alpha)\eta(\alpha)$.
+This follows by integrating the alternating geometric expansion of the
+right side; the integrated remainder tends to zero for $\alpha>0$.
+Using $\eta(\alpha)=(1-2^{1-\alpha})\zeta(\alpha)$ proves
+\eqref{dmv:fl:eq:mellinconstant}. Substitution in \eqref{dmv:fl:eq:meanintegral}
+proves \eqref{dmv:fl:eq:twotermmean} under $\Q_t$.
+
+For $\alpha<1/2$, the second term in \eqref{dmv:fl:eq:twotermmean} is smaller
+than the standard deviation because
+$\alpha<\alpha/2+1/4$. At $\alpha=1/2$ it is smaller by a factor
+$\sqrt{\log(1/t)}$. At $1/2<\alpha<1$ it is exactly on the limiting
+fluctuation scale and must be retained when an explicit centering is
+wanted.
+
+\subsection{The mean at weight one}
+At $\alpha=1$ the integral in \eqref{dmv:fl:eq:mellinconstant} is no longer
+convergent at infinity. Split at $u=1$ instead. Dominated convergence
+gives
+\begin{equation}\label{dmv:fl:eq:Jone}
+ J_1(t)=\int_0^1u(1-\ee^{-t/u^2})\,du+tC_{\rm reg}+o(t),
+\end{equation}
+where
+\begin{align*}
+ C_{\rm reg}
+ &=\int_0^1u(g(u)-u^{-2})\,du+\int_1^\infty ug(u)\,du\\
+ &=\lim_{\delta\downarrow0}
+ \left\{\frac{\delta}{\ee^\delta-1}
+       -\log(1-\ee^{-\delta})+\log\delta\right\}=1.
+\end{align*}
+The singular part can be evaluated exactly:
+\begin{align*}
+ \int_0^1u(1-\ee^{-t/u^2})\,du
+ &=\frac{1-\ee^{-t}}2+\frac t2\int_t^\infty\frac{\ee^{-v}}v\,dv\\
+ &=\frac t2\left(\log\frac1t+1-\gamma\right)+O(t^2).
+\end{align*}
+Equations \eqref{dmv:fl:eq:meanintegral} and \eqref{dmv:fl:eq:Jone} prove
+\eqref{dmv:fl:eq:onemean} under the geometric law. The mean constant
+$(3-\gamma)/2$ and the standard-Gumbel shift $(3-3\gamma)/2$ in
+Corollary~\ref{dmv:fl:cor:gumbel} have different roles; confusing them would
+shift the limiting distribution by $\gamma$.
+
+\subsection{A bounded error for the unweighted mean}
+Set $a_m=[tm(m+1)]^{-1}$. Then $\lambda_m\le a_m$, and the exact
+telescoping identity gives
+\[
+ \sum_{m\ge1}(a_m-\lambda_m)
+ =\frac1t-\frac1{\ee^t-1}=O(1).
+\]
+The exponential function is Lipschitz on the nonnegative half-line.
+Equation~\eqref{dmv:fl:eq:poissonerror}, summed with $\alpha=0$, contributes
+only $O(1)$ by the same small- and large-$tm$ split. Thus
+\[
+ \E_tD_0=\sum_{m\ge1}(1-\ee^{-a_m})+O(1).
+\]
+The inequalities $(m+1)^{-2}\le[m(m+1)]^{-1}\le m^{-2}$ sandwich this
+sum between two shifted Riemann sums. Monotonicity gives
+\[
+ \sum_{m\ge1}(1-\ee^{-1/(tm^2)})
+ =t^{-1/2}\int_0^\infty(1-\ee^{-1/y^2})\,dy+O(1)
+ =\sqrt\pi\,t^{-1/2}+O(1),
+\]
+proving \eqref{dmv:fl:eq:zeromean}.
+
+\subsection{Transfer of these centerings to fixed size}
+The centered variance estimates proved in Sections~\ref{dmv:fl:sec:gaussian},
+\ref{dmv:fl:sec:large}, and \ref{dmv:fl:sec:critical} do not use the mean asymptotics.
+Apply \eqref{dmv:fl:eq:meanshift} to $D_\alpha^{(J)}$, and use localization
+to replace it by $D_\alpha$. Since $Jt=O(\sqrt t\,H^{3/2})$,
+the mean shift for fixed $0\le\alpha<1/2$ is
+\[
+ O(t^{1/4-\alpha/2}H^{3/2})=o(1).
+\]
+At $\alpha=1/2$, and uniformly in the moving window, it is $O(H^2)$.
+For fixed $\alpha>1/2$ it is $O(t^{1/2-\alpha}H^{3/2})$.
+Each error is $o(t^{-\alpha})$ for $0<\alpha\le1$, and is
+$o(1)$ for $\alpha=0$. This proves all conditioned mean statements.
+The same bounds and the compact-uniform integral estimates prove the
+explicit centering claim in Theorem~\ref{dmv:fl:thm:window}.
+
+Finally, replacing $t_n$ by $\tau_n$ changes the leading mean for
+$\alpha<1$ by $O(t_n^{(1-\alpha)/2})$, and changes the weight-one mean
+by $O(\log(1/t_n))$. These are smaller than the stated mean remainders
+and every relevant fluctuation scale. This completes the proof of
+Proposition~\ref{dmv:fl:prop:weightedmeans} and the centering assertions in
+Theorem~\ref{dmv:fl:thm:phase}.
+\begin{writenote}[Parts~I and~II's counterparts, 7 October 2026]
+At $\alpha=0$ and $\alpha=1$ this section proves weaker forms of results
+of Parts~I and~II, by another route (Riemann sums for the geometric law
+and dominated convergence, against matched sector expansions and saddle
+transfer there): \eqref{dmv:fl:eq:zeromean} is the leading term of
+Part~I's radial expansion, Theorem~\ref{dmv:cnt:thm:radial}
+($\E_tD=\sqrt\pi\,t^{-1/2}-\tfrac{23}{16}+\sqrt\pi\,d\,t^{1/2}+O(|t|)$),
+and \eqref{dmv:fl:eq:onemean} is the first two terms of Part~II's,
+Proposition~\ref{dmv:sum:prop:radial}, whose constant
+$c=\tfrac32-\tfrac\gamma2$ equals $\tfrac{3-\gamma}2$. Both are kept:
+Part~III's later statements cite them, and Part~III proves them without
+Parts~I and~II. For $0<\alpha<1$ and $\alpha>1$ the means are new to this
+report. As $\alpha\downarrow0$ the second coefficient of
+\eqref{dmv:fl:eq:twotermmean} tends to $\zeta(0)=-\tfrac12$, not to
+Part~I's $-\tfrac{23}{16}$; there is no conflict, since
+\eqref{dmv:fl:eq:twotermmean} is stated for fixed $\alpha>0$ and the
+remainder $O(t^{-\alpha/2})$ of \eqref{dmv:fl:eq:meanintegral} is of the
+order of that constant at $\alpha=0$. The write evaluated
+$\E_tD_\alpha=\sum_mm^\alpha(1-Q_m)$ under $\Q_t$ in binary64 (every row
+and multiplicity with $tjm<60$) at $t=10^{-2},10^{-3},10^{-4},10^{-5}$:
+$(\E_tD_0-\text{Part~I's three terms})/t=-0.0709$, $-0.0718$, $-0.0720$,
+$-0.0721$; $t^{1/2}(\E_tD_{1/2}-\text{the two terms of
+\eqref{dmv:fl:eq:twotermmean}})=-0.180$, $-0.100$, $-0.055$, $-0.031$;
+$t\,(\E_tD_1-\text{the two terms of \eqref{dmv:fl:eq:onemean}})=-0.0714$,
+$-0.0238$, $-0.0077$, $-0.0024$; and
+$t^{-1/2}(\E_tD_1-\text{Part~II's five terms})=-0.122$, $-0.126$,
+$-0.128$, $-0.128$. All four are as the three Parts require; they are
+observations, not proofs.
+\end{writenote}
+\section{Collision removal and non-Gaussian limits}\label{dmv:fl:sec:large}
+
+\subsection{An Efron--Stein estimate for repeated values}
+For $\alpha>0$ and a finite row set $j\le J$, write
+\[
+ S_{\alpha,J}=\sum_{j\le J}M_j^\alpha,\qquad
+ C_{\alpha,J}=S_{\alpha,J}-D_\alpha^{(J)}
+             =\sum_{m\ge1}m^\alpha(N_{m,J}-1)_+,
+\]
+where $N_{m,J}=\sum_{j\le J}\ind_{\{M_j=m\}}$.
+Thus $C$ is the contribution discarded when repeated multiplicity
+values are counted only once.
+
+\begin{lemma}[Collision variance]\label{dmv:fl:lem:collisions}
+For every $\alpha>0$ and finite $J$,
+\begin{equation}\label{dmv:fl:eq:collisionbound}
+ \Var_t C_{\alpha,J}
+ \le 2\sum_{m\ge1}m^{2\alpha}\lambda_m^{(J)}
+                                  \min\{1,\lambda_m^{(J)}\}.
+\end{equation}
+For every fixed $\alpha>1/2$, uniformly in $J$,
+\begin{equation}\label{dmv:fl:eq:collisionrates}
+ \Var_t C_{\alpha,J}\le
+ \begin{cases}
+ O_\alpha(t^{-\alpha-1/2}),&1/2<\alpha<3/2,\\
+ O(t^{-2}\log(1/t)),&\alpha=3/2,\\
+ O_\alpha(t^{1-2\alpha}),&\alpha>3/2.
+ \end{cases}
+\end{equation}
+In every case this is $o(t^{-2\alpha})$.
+\end{lemma}
+\begin{proof}
+Replace row $M_j$ by an independent copy $M'_j$. Removing its old
+positive value $m$ changes $C$ only if another row has value $m$;
+in that case the change has magnitude $m^\alpha$. The corresponding
+statement holds for insertion of the new value. The square of the
+net change is bounded by twice the sum of the squared removal and
+insertion changes. Efron--Stein, with its factor $1/2$, therefore gives
+\[
+ \Var_tC_{\alpha,J}
+ \le2\sum_{j\le J}\sum_{m\ge1}m^{2\alpha}p_{jm}
+       \Q_t(\text{another row has value }m).
+\]
+The last probability is at most $\min(1,\lambda_m^{(J)})$, proving
+\eqref{dmv:fl:eq:collisionbound}. All variables have finite moments, so the
+variance inequality applies directly; infinite $J$ may also be
+obtained by $L^2$ approximation when needed.
+
+To prove \eqref{dmv:fl:eq:collisionrates}, split at
+$m=t^{-1/2}$ and $m=t^{-1}$. On the first range the sum is bounded by
+\[
+ Ct^{-1}\sum_{m\le t^{-1/2}}m^{2\alpha-2}
+ =O_\alpha(t^{-\alpha-1/2}),
+\]
+since $2\alpha-2>-1$. On the middle range it is at most
+$Ct^{-2}\sum m^{2\alpha-4}$. This gives the three cases in
+\eqref{dmv:fl:eq:collisionrates}, with a logarithm when $2\alpha-4=-1$.
+Beyond $t^{-1}$ use the sharper exponential bound in
+\eqref{dmv:fl:eq:lambdabounds}; the contribution is
+\[
+ Ct^2\sum_{m>t^{-1}}m^{2\alpha}\ee^{-2tm}
+ =O_\alpha(t^{1-2\alpha}).
+\]
+Comparison with $t^{-2\alpha}$ proves the final assertion.
+\end{proof}
+
+The estimate concerns a centered error. Its expectation need not be
+small at the fluctuation scale. The explicit means in the preceding
+section are what allow that distinction to be handled correctly.
+
+\subsection{The limiting series}
+For fixed $\alpha>1/2$, the exponential coupling
+\eqref{dmv:fl:eq:expcoupling} implies, for every fixed $j$,
+\[
+ t^\alpha(M_j^\alpha-\E_tM_j^\alpha)
+ \Ltwo j^{-\alpha}(E_j^\alpha-\Gamma(\alpha+1)).
+\]
+Moreover, independence and \eqref{dmv:fl:eq:momentbound} give
+\begin{equation}\label{dmv:fl:eq:seriestail}
+ \Var_t\left[t^\alpha\sum_{K<j\le J}
+                         (M_j^\alpha-\E_tM_j^\alpha)\right]
+ \le C_\alpha\sum_{j>K}j^{-2\alpha}\longrightarrow0
+ \quad(K\to\infty).
+\end{equation}
+The same bound holds for the tail of \eqref{dmv:fl:eq:Zalpha}.
+Taking first $t\to0$ and then $K\to\infty$ proves
+\begin{equation}\label{dmv:fl:eq:additiveLtwo}
+ t^\alpha(S_{\alpha,J}-\E_tS_{\alpha,J})\Ltwo Z_\alpha
+\end{equation}
+on the common coupling, for $J$ in \eqref{dmv:fl:eq:J}.
+
+By Lemma~\ref{dmv:fl:lem:collisions},
+\[
+ t^\alpha(C_{\alpha,J}-\E_tC_{\alpha,J})\Ltwo0.
+\]
+Subtracting proves the law and variance limit for $D_\alpha^{(J)}$
+under $\Q_t$. It also proves uniform integrability of the normalized
+squares. Alternatively, the additive sums have uniformly bounded
+fourth centered moments, by independence and
+$\sum_jj^{-2\alpha}<\infty$, and the collision error tends to zero
+in $L^2$. Proposition~\ref{dmv:fl:prop:transfer} transfers these statements
+to the conditioned low-row law, including the small difference between
+its own mean and the geometric mean. Section~\ref{dmv:fl:sec:conditioning}
+removes the cutoff. This proves \eqref{dmv:fl:eq:highphase}.
+
+For a finite list $\alpha_1,\ldots,\alpha_r>1/2$ the same coupling
+gives joint convergence to the series built from the \emph{same}
+exponentials $E_j$. Their limiting covariance is
+\begin{equation}\label{dmv:fl:eq:highcov}
+ \Cov(Z_\alpha,Z_\beta)=
+ [\Gamma(\alpha+\beta+1)-\Gamma(\alpha+1)\Gamma(\beta+1)]
+       \zeta(\alpha+\beta).
+\end{equation}
+This is generally nonzero; the supercritical limits are not independent
+of one another.
+
+\subsection{Why these limits are not Gaussian}
+Write
+$Z_\alpha=E_1^\alpha-\Gamma(\alpha+1)+R_\alpha$, with an independent
+almost surely finite remainder $R_\alpha$. Choose $M$ so that
+$p:=\Pp(R_\alpha\ge-M)>0$. For all sufficiently large $x$,
+\begin{equation}\label{dmv:fl:eq:nonGaussiantail}
+ \Pp(Z_\alpha>x)
+ \ge p\exp\left[-(x+M+\Gamma(\alpha+1))^{1/\alpha}\right].
+\end{equation}
+Since $1/\alpha<2$, this lower bound decays more slowly than the
+right tail of every nondegenerate Gaussian distribution. The variance
+in \eqref{dmv:fl:eq:highphase} is positive, so a degenerate Gaussian is also
+excluded. This proves the non-Gaussian assertion without a uniqueness
+theorem for independent decompositions.
+
+\subsection{Uncentered limits for \texorpdfstring{$\alpha>1$}{alpha greater than one}}
+For $\alpha>1$, the additive sums converge uncentered in $L^2$:
+the centered tails satisfy \eqref{dmv:fl:eq:seriestail} and their means are
+bounded by $C_\alpha\sum_{j>K}j^{-\alpha}\to0$.
+To show that collisions have negligible \emph{mean} in this range,
+use
+\[
+ \E_t(N_{m,J}-1)_+
+ \le\min\{\lambda_m^{(J)},(\lambda_m^{(J)})^2/2\}.
+\]
+The first bound is immediate; the second follows from
+$(k-1)_+\le k(k-1)/2$ and independence of rows. Splitting as in
+Lemma~\ref{dmv:fl:lem:collisions}, now with exponent $\alpha$ rather than
+$2\alpha$, gives
+\begin{equation}\label{dmv:fl:eq:collisionmean}
+ \E_tC_{\alpha,J}\le
+ \begin{cases}
+ O_\alpha(t^{-(\alpha+1)/2}),&1<\alpha<3,\\
+ O(t^{-2}\log(1/t)),&\alpha=3,\\
+ O_\alpha(t^{1-\alpha}),&\alpha>3.
+ \end{cases}
+\end{equation}
+Each is $o(t^{-\alpha})$. Along with the variance estimate, this
+shows $t^\alpha C_{\alpha,J}\to0$ in $L^2$.
+The conditioned likelihood is bounded, so the same negligible
+uncentered collision error transfers. The additive normalized squares
+are uniformly integrable, and the cutoff is harmless. Thus
+\eqref{dmv:fl:eq:uncentered} holds with convergence of its first two moments.
+In particular,
+\begin{equation}\label{dmv:fl:eq:highmean}
+ \E_nD_\alpha\sim\Gamma(\alpha+1)\zeta(\alpha)\tau_n^{-\alpha}
+ \qquad(\alpha>1).
+\end{equation}
+\section{The critical exponent and its logarithmic window}\label{dmv:fl:sec:critical}
+
+The fixed-exponent arguments on either side of $1/2$ cease to be uniform
+at the boundary. The Gaussian variance integral develops a pole, whereas
+the variance of the exponential series diverges. A moving exponent
+resolves the transition directly.
+
+In this section set
+\[
+ H=\log(1/t),\qquad \alpha_t(\theta)=\frac12+\frac\theta H,
+ \qquad L=C_AH^{3/2},\qquad J=\lceil t^{-1/2}L\rceil.
+\]
+For a fixed finite bound $T$, all exponents with $|\theta|\le T$ lie in
+$[2/5,3/5]$ once $t$ is sufficiently small. The constant $C_A$ is chosen
+as in Lemma~\ref{dmv:fl:lem:localization}, with $A$ large enough for all the
+moment errors used below. No assertion is made that one fixed $C_A$
+works for every error power $A$.
+
+\subsection{A uniform bound for the collision fluctuation}
+The global estimate in Lemma~\ref{dmv:fl:lem:collisions} is insufficient at
+$\alpha=1/2$: it would retain the full logarithmic variance. The
+additional cutoff bound in \eqref{dmv:fl:eq:truncatedlambda} is decisive.
+
+\begin{lemma}[Critical collision error]\label{dmv:fl:lem:criticalcollision}
+Uniformly for $|\theta|\le T$,
+\begin{equation}\label{dmv:fl:eq:criticalcollision}
+ \Var_t C_{\alpha_t(\theta),J}
+ =O_T\!\left(t^{-1}(1+\log L)\right)=o(H/t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First take $\alpha=1/2$ and put $M=t^{-1/2}$. In
+\eqref{dmv:fl:eq:collisionbound}, split the sum at $M/L$, $M$, and $1/t$.
+On the first range, $\lambda_m^{(J)}\le CL^2$, so its contribution is
+\[
+ O\!\left(L^2\sum_{m\le M/L}m\right)=O(t^{-1}).
+\]
+On the second range, use $\lambda_m^{(J)}\le1/(tm^2)$ and
+$\min(1,\lambda_m^{(J)})\le1$ to obtain $O(t^{-1}\log L)$.
+On the third range, use the squared intensity bound to obtain
+\[
+ O\!\left(t^{-2}\sum_{m>M}m^{-3}\right)=O(t^{-1}).
+\]
+Finally, the exponential range $m>1/t$ contributes
+$O(t^2\sum m\ee^{-2tm})=O(1)$.
+
+For $|\theta|\le T$ and $m\le1/t$, the moving weight satisfies
+\[
+ m^{2\alpha_t(\theta)}
+ =m\exp\left(\frac{2\theta\log m}{H}\right)\le\ee^{2T}m.
+\]
+Thus all preceding bounds remain uniform. Beyond $1/t$, the bound is
+\[
+ C_Tt^2\sum_{m>1/t}m^{2\alpha_t(\theta)}\ee^{-2tm}
+ =O_T(t^{1-2\alpha_t(\theta)})=O_T(1).
+\]
+Since $\log L=O(\log H)=o(H)$, the result follows.
+\end{proof}
+
+The expectation of $C_{\alpha,J}$ has not been discarded. Only its
+centered contribution is negligible; this is why the limit theorem
+first uses the exact expectation before applying the mean expansion.
+
+\subsection{A triangular array of independent row contributions}
+For a geometric variable $M_s=\lfloor E/s\rfloor$, with
+$E\sim\operatorname{Exp}(1)$, concavity of $x^\alpha$ gives, for
+$0<a\le\alpha\le b<1$ and $s\le1$,
+\begin{equation}\label{dmv:fl:eq:floorwindow}
+ \left|(sM_s)^\alpha-E^\alpha\right|\le s^\alpha\le s^a.
+\end{equation}
+Exponential moments of fixed polynomial orders are uniformly bounded
+on compact exponent intervals. Consequently, uniformly for
+$\alpha,\beta\in[a,b]$,
+\begin{align}\label{dmv:fl:eq:covwindowrow}
+ \Cov(M_s^\alpha,M_s^\beta)
+ &=s^{-\alpha-\beta}
+       \left(c_{\alpha,\beta}+O(s^a)\right),\\
+ c_{\alpha,\beta}
+ &=\Gamma(\alpha+\beta+1)-\Gamma(\alpha+1)\Gamma(\beta+1),
+ \nonumber
+\end{align}
+and
+\begin{equation}\label{dmv:fl:eq:fourthrowwindow}
+ \E|M_s^\alpha-\E M_s^\alpha|^4\le C_{a,b}s^{-4\alpha}.
+\end{equation}
+In particular $c_{1/2,1/2}=1-\pi/4=c_*$.
+
+\begin{lemma}[Additive critical-window limit]\label{dmv:fl:lem:additivewindow}
+For each fixed finite list of parameters, the centered variables
+\[
+ \sqrt{t/H}\,
+ (S_{\alpha_t(\theta),J}-\E_tS_{\alpha_t(\theta),J})
+\]
+converge jointly to a centered Gaussian vector with covariance
+$K_{\rm crit}$ in \eqref{dmv:fl:eq:windowkernel}. Their covariances converge,
+and their fourth moments are uniformly bounded. The covariance estimates
+are uniform on compact parameter sets and the conclusions remain valid
+for parameter sequences tending to fixed values.
+\end{lemma}
+\begin{proof}
+Put $s_0=\theta+\phi$ and $\delta=s_0/H$. Since $tJ\to0$,
+independence and \eqref{dmv:fl:eq:covwindowrow} give
+\begin{equation}\label{dmv:fl:eq:windowsum}
+ \Cov_t(S_{\alpha_t(\theta),J},S_{\alpha_t(\phi),J})
+ =(c_*+o(1))t^{-1-\delta}\sum_{j\le J}j^{-1-\delta}.
+\end{equation}
+The row-approximation error relative to the sum is
+$O((tJ)^{2/5})=o(1)$, uniformly for bounded parameters. Integral
+comparison, together with $\log J=H/2+\log L+o(1)$, gives
+\begin{equation}\label{dmv:fl:eq:harmonicwindow}
+ \frac1H\sum_{j\le J}j^{-1-s_0/H}
+ \longrightarrow\int_0^{1/2}\ee^{-s_0u}\,du.
+\end{equation}
+For bounded $s_0$, the sum--integral error is $O(1/H)$ and the
+endpoint error is $O_T(\log L/H)$. Since $t^{-\delta}=\ee^{s_0}$,
+equations \eqref{dmv:fl:eq:windowsum}--\eqref{dmv:fl:eq:harmonicwindow} yield
+\[
+ \frac tH\Cov_t(S_{\alpha_t(\theta),J},S_{\alpha_t(\phi),J})
+ \longrightarrow c_*\int_0^{1/2}\ee^{(\theta+\phi)(1-u)}\,du.
+\]
+This is exactly \eqref{dmv:fl:eq:windowkernel}.
+
+For the central limit theorem, \eqref{dmv:fl:eq:fourthrowwindow} implies
+\[
+ \sum_{j\le J}
+ \E_t|M_j^{\alpha_t(\theta)}-\E_tM_j^{\alpha_t(\theta)}|^4
+ \le C_Tt^{-4\alpha_t(\theta)}
+       \sum_{j\ge1}j^{-4\alpha_t(\theta)}=O_T(t^{-2}).
+\]
+Here $4\alpha_t(\theta)\ge8/5>1$, uniformly for small $t$, and
+$t^{-4\alpha_t(\theta)}=t^{-2}\ee^{4\theta}$.
+After division by $(H/t)^2$, the fourth-moment sum is $O_T(H^{-2})$.
+The same estimate holds for every fixed linear combination, using
+$|\sum_{i=1}^r z_i|^4\le r^3\sum_{i=1}^r|z_i|^4$.
+If its limiting variance is positive, Lyapunov's theorem applies;
+if it is zero, convergence to zero holds in $L^2$. The Cram\'er--Wold
+criterion gives the joint Gaussian limit.
+
+For independent centered row contributions $U_j$, the fourth-moment
+identity
+\[
+ \E\left(\sum_j U_j\right)^4
+ =\sum_j\E U_j^4+6\sum_{i<j}\E U_i^2\E U_j^2
+\]
+and the covariance bound show that every normalized fourth moment is
+bounded. All estimates were compact-uniform, which also proves the
+claim for converging parameter sequences.
+\end{proof}
+
+\subsection{Returning to occupied values and uniform partitions}
+\begin{proof}[Proof of Theorem~\ref{dmv:fl:thm:window} and the critical case]
+Under $\Q_t$ the identity
+\[
+ D_{\alpha,J}-\E_tD_{\alpha,J}
+ =S_{\alpha,J}-\E_tS_{\alpha,J}
+       -(C_{\alpha,J}-\E_tC_{\alpha,J})
+\]
+holds, where $D_{\alpha,J}$ here denotes $D_\alpha^{(J)}$.
+Lemma~\ref{dmv:fl:lem:criticalcollision} makes the last term negligible in
+$L^2$ after multiplication by $\sqrt{t/H}$. The additive lemma therefore
+proves the joint geometric limits and the convergence of covariances.
+Localization removes the row cutoff with negligible first and second
+moment errors, as established in Section~\ref{dmv:fl:sec:conditioning}.
+
+For the uniform law, first retain the cutoff. The normalized additive
+terms have bounded fourth moments, so Proposition~\ref{dmv:fl:prop:transfer}
+transfers their laws and first two moments. Its bounded-likelihood
+consequence also transfers the centered collision errors, whose $L^2$
+norms tend to zero. In particular the normalized conditional mean
+differs from the normalized geometric mean by $o(1)$, so the centering
+can be changed to the conditional expectation. The rare-event bound
+\eqref{dmv:fl:eq:eventtransfer} then removes the cutoff under
+conditioning as well. It is applied separately because the support
+mismatch event depends on both the initial block and the reservoir.
+
+These arguments use the exact saddle $t=t_n$. To recover the statement
+with $\tau_n$, observe the exact identity
+\[
+ \frac12+\frac\theta{\log(1/\tau_n)}
+ =\frac12+\frac{\theta_t}{\log(1/t_n)},\qquad
+ \theta_t=\theta\frac{\log(1/t_n)}{\log(1/\tau_n)}\longrightarrow\theta.
+\]
+The compact-uniform estimates just proved apply to $\theta_t$, while
+$t_n/\tau_n\to1$. Continuity of the covariance kernel gives the stated
+normalization and exponent without requiring a derivative estimate for
+$D_\alpha$. Proposition~\ref{dmv:fl:prop:weightedmeans} supplies the explicit
+leading-mean centering, uniformly in this window.
+
+Finally, the deterministic Brownian integrands in \eqref{dmv:fl:eq:brownian}
+have covariance
+$c_*\int_0^{1/2}\ee^{(\theta+\phi)(1-u)}\,du$ by the It\^o isometry.
+This proves that representation for the finite-dimensional limits.
+Taking $\theta=0$ gives \eqref{dmv:fl:eq:criticalphase}. No tightness result
+for the prelimit processes is invoked.
+\end{proof}
+
+The variable $u=\log j/H$ in \eqref{dmv:fl:eq:harmonicwindow} identifies the
+scales responsible for the critical fluctuation. Part sizes from order
+one up to order $t^{-1/2}$ occupy an interval of length $1/2$ in this
+logarithmic coordinate. Their independent contributions accumulate to
+the Brownian integral. The additional factor $L$ needed to localize
+the entire occupied set changes that interval only by $o(1)$.
+\section{Explicit consequences and separation of fluctuation sources}\label{dmv:fl:sec:consequences}
+
+\subsection{The Gumbel distribution at weight one}
+The series $Z_1$ has a classical closed distribution. For real $u$,
+independence and $L^2$ convergence give
+\begin{align}\label{dmv:fl:eq:gumbelproduct}
+ \E\ee^{\ii uZ_1}
+ &=\prod_{j\ge1}\frac{\ee^{-\ii u/j}}{1-\ii u/j}
+ =\ee^{-\ii\gamma u}\Gamma(1-\ii u).
+\end{align}
+The last equality is Euler's convergent product for the gamma function;
+it follows as well by taking the limit in
+\[
+ \prod_{j=1}^k\frac{\ee^{-\ii u/j}}{1-\ii u/j}
+ =\ee^{-\ii uH_k}
+   \frac{\Gamma(k+1)\Gamma(1-\ii u)}{\Gamma(k+1-\ii u)},
+ \qquad H_k-\log k\longrightarrow\gamma.
+\]
+The standard Gumbel density is
+$\ee^{-x}\exp(-\ee^{-x})$. Substituting $v=\ee^{-x}$ in its Fourier
+integral yields the characteristic function $\Gamma(1-\ii u)$.
+Thus $Z_1$ has the law $G-\gamma$. Proposition~\ref{dmv:fl:prop:weightedmeans}
+then gives the location in \eqref{dmv:fl:eq:gumbel} exactly.
+
+Also, $\Var Z_1=\zeta(2)=\pi^2/6$, so
+\[
+ \Var_nD_1\sim\frac{\pi^2}{6}\tau_n^{-2}=n.
+\]
+This proves every assertion of Corollary~\ref{dmv:fl:cor:gumbel}, including
+the variance, which does not follow merely from weak convergence.
+The statistic $\sum_jM_j$, counting all parts, is much larger in mean
+than $D_1$. The collision argument explains why removing repeated
+multiplicity values nonetheless leaves the same centered limiting
+random series.
+
+\subsection{Explicit centerings above the Gaussian range}
+For $1/2<\alpha<1$, the two-term mean formula gives the useful form
+\begin{equation}\label{dmv:fl:eq:explicitintermediate}
+ \tau_n^\alpha
+ \left(D_\alpha-M_\alpha\tau_n^{-(\alpha+1)/2}\right)
+ \dto Z_\alpha+\Gamma(\alpha+1)\zeta(\alpha).
+\end{equation}
+Thus no unknown expectation is needed to state a limiting distribution
+in any regime: use the leading mean below and at $1/2$, the displayed
+deterministic shift for $1/2<\alpha<1$, the Gumbel centering for
+$\alpha=1$, and the uncentered limit for $\alpha>1$.
+
+At $\alpha=2$, $\E E_j^2=2$ and
+$\Var(E_j^2)=24-4=20$. Therefore
+\[
+ \E Y_2=2\zeta(2)=\frac{\pi^2}{3},\qquad
+ \Var Y_2=20\zeta(4)=\frac{2\pi^4}{9}.
+\]
+Multiplying by $\tau_n^{-2}/n=6/\pi^2$ proves
+Corollary~\ref{dmv:fl:cor:quadratic}. More generally, for $\alpha>1$,
+\begin{equation}\label{dmv:fl:eq:relativevariance}
+ \frac{\Var_nD_\alpha}{(\E_nD_\alpha)^2}
+ \longrightarrow
+ \frac{[\Gamma(2\alpha+1)-\Gamma(\alpha+1)^2]\zeta(2\alpha)}
+      {\Gamma(\alpha+1)^2\zeta(\alpha)^2}>0.
+\end{equation}
+For every fixed $0\le\alpha\le1$, in contrast, the same ratio tends
+to zero by the mean and variance formulas already proved. The
+fluctuation transition at $1/2$ and the loss of relative concentration
+above $1$ are therefore distinct thresholds.
+
+\subsection{Mutual independence of the three fluctuation regimes}
+\label{dmv:fl:subsec:mutual-independence}
+
+The separation between the three regimes is stronger than a comparison
+of variances. Their limiting vectors are mutually independent, although
+the coordinates within each vector generally remain dependent.
+
+\begin{theorem}[Mutual independence across row scales]
+\label{dmv:fl:thm:independence}
+Fix any finite lists of exponents and parameters
+\[
+ 0\le\alpha_1,\ldots,\alpha_r<\tfrac12,\qquad
+ \theta_1,\ldots,\theta_s\in\mathbb R,\qquad
+ \beta_1,\ldots,\beta_v>\tfrac12.
+\]
+Take the normalized centered subcritical variables from
+Theorem~\ref{dmv:fl:thm:phase}, the moving-window variables from
+Theorem~\ref{dmv:fl:thm:window}, and the normalized centered fixed
+supercritical variables from Theorem~\ref{dmv:fl:thm:phase}.
+They converge jointly. Their three limiting vectors are mutually
+independent:
+\begin{enumerate}
+\item the subcritical Gaussian vector with covariance
+      $\mathcal K(y^{\alpha_i},y^{\alpha_j})$;
+\item the critical-window Gaussian vector with covariance
+      $K_{\rm crit}(\theta_i,\theta_j)$;
+\item the vector $(Z_{\beta_1},\ldots,Z_{\beta_v})$ built from the same
+      exponential sequence within that vector.
+\end{enumerate}
+The assertions hold under both $\Q_t$ and $\Pp_n$, with their respective
+expectations and the normalizations already specified.
+All cross-covariances between the three normalized vectors converge
+to zero.
+
+The same conclusion holds if the first vector consists instead of a
+finite family of normalized bounded piecewise continuous compactly
+supported occupancy tests on $(0,\infty)$. These are
+finite-dimensional assertions; no convergence or tightness in a
+function space is claimed.
+\end{theorem}
+
+We first prove a row-deletion estimate for bounded signed weights.
+It is essential to center the deletion error: its expectation need
+not be small.
+
+For a finite row set $A\subseteq[J]$, write
+\[
+ I_m^A=\ind_{\{\exists j\in A:M_j=m\}},\qquad
+ T_f^A=\sum_{m\ge1}f(\eps m)I_m^A.
+\]
+Here $\eps=\sqrt t$. For the next lemma, $f$ is any bounded real
+function supported in a fixed compact interval $[a,b]\subset(0,\infty)$;
+no continuity or sign assumption is required.
+
+\begin{lemma}[Deleting the smallest growing block of rows]
+\label{dmv:fl:lem:small-row-deletion}
+Let $0<\eta\le1$, put $R=\lfloor\eta/\eps\rfloor$, and assume
+$1\le R<J$. Set $A=[R]$ and $B=\{R+1,\ldots,J\}$.
+There is a constant $C_f$, depending only on $a,b$ and $\sup|f|$,
+such that
+\begin{equation}
+ \Var_t\!\left(T_f^{[J]}-T_f^B\right)
+ \le C_f\eta^2\eps^{-1}.
+ \label{dmv:fl:eq:small-row-deletion-variance}
+\end{equation}
+In particular, the centered normalized statistics satisfy
+\begin{equation}
+ \left\|
+ \sqrt\eps\left[
+ T_f^{[J]}-\E_tT_f^{[J]}
+ -(T_f^B-\E_tT_f^B)
+ \right]\right\|_2
+ \le C_f^{1/2}\eta.
+ \label{dmv:fl:eq:small-row-deletion-Ltwo}
+\end{equation}
+The constants are uniform in $J$.
+\end{lemma}
+
+\begin{proof}
+Put $f_m=f(\eps m)$ and
+$\mathcal B_f=\{m\ge1:a\le\eps m\le b\}$.
+The exact difference is
+\[
+ \Delta_f:=T_f^{[J]}-T_f^B
+ =\sum_{m\in\mathcal B_f}f_m I_m^A(1-I_m^B).
+\]
+This identity remains valid for signed $f$.
+There are $O_{a,b}(\eps^{-1})$ relevant bins, and
+\begin{align}
+ \lambda_m^A:=\sum_{j\le R}p_{jm}
+ &\le \frac{tR(R+1)}2\le\eta^2,
+ \label{dmv:fl:eq:deleted-intensity}\\
+ \lambda_m^B:=\sum_{R<j\le J}p_{jm}
+ &\le\lambda_m\le\frac1{tm^2}\le a^{-2}
+       \qquad(m\in\mathcal B_f).
+ \label{dmv:fl:eq:retained-intensity}
+\end{align}
+The bound in \eqref{dmv:fl:eq:deleted-intensity} uses $R\ge1$, so
+$R+1\le2R$, and $\eps R\le\eta$.
+
+Apply Efron--Stein to $\Delta_f$, resampling one independent row at
+a time. Suppose first that $j\in A$. Resampling $M_j$ can change
+$I_m^A$ only at its old and new values. The factor $1-I_m^B$ is
+unchanged and is at most one. Thus the squared change is bounded
+by twice $\sup|f|^2$ times the sum of the indicators that the old
+and new values belong to $\mathcal B_f$. Summing the resulting
+Efron--Stein contributions over $j\in A$ gives at most
+\[
+ C\sup|f|^2
+   \sum_{j\le R}\sum_{m\in\mathcal B_f}p_{jm}
+ =
+ C\sup|f|^2\sum_{m\in\mathcal B_f}\lambda_m^A
+ \le C_f\eta^2\eps^{-1}.
+\]
+
+Now suppose that $j\in B$. A changed factor $1-I_m^B$ matters only
+if $I_m^A=1$. The old and new values of row $j$ are independent
+of all rows in $A$. The analogous squared-change estimate
+therefore gives a total contribution at most
+\[
+ C\sup|f|^2
+ \sum_{j\in B}\sum_{m\in\mathcal B_f}
+     p_{jm}\Q_t(I_m^A=1)
+ \le
+ C\sup|f|^2
+ \sum_{m\in\mathcal B_f}\lambda_m^B\lambda_m^A
+ \le C_f\eta^2\eps^{-1},
+\]
+by \eqref{dmv:fl:eq:deleted-intensity}--\eqref{dmv:fl:eq:retained-intensity}.
+We have only enlarged the estimate by dropping any condition on
+the other retained rows. Hence it is valid regardless of repeated
+values among those rows.
+Adding the two row-block contributions proves
+\eqref{dmv:fl:eq:small-row-deletion-variance}. Centering and multiplying
+by $\sqrt\eps$ proves \eqref{dmv:fl:eq:small-row-deletion-Ltwo}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{dmv:fl:thm:independence}]
+We first work under $\Q_t$ with bounded piecewise continuous
+compactly supported tests $f_1,\ldots,f_r$ in the first vector.
+Use the same row cutoff
+\[
+ J=\lceil t^{-1/2}L\rceil,\qquad
+ L=C_AH^{3/2},\qquad H=\log(1/t),
+\]
+in every occupied statistic. Choose $A$ large enough for the
+localization errors in all the finitely many moments and exponents
+under consideration. Fix an integer $K\ge1$ and a number
+$0<\eta\le1$. Put $R=\lfloor\eta/\eps\rfloor$.
+For all sufficiently small $t$,
+\[
+             K<R<J.
+\]
+Partition the retained rows into the three disjoint sets
+\begin{equation}
+ [K],\qquad \{K+1,\ldots,R\},\qquad\{R+1,\ldots,J\}.
+ \label{dmv:fl:eq:three-row-blocks}
+\end{equation}
+The next approximations use these three sets, respectively, for
+the supercritical, critical-window, and compact occupancy vectors.
+
+\paragraph{The compact occupancy vector.}
+Replace its coordinate
+$\sqrt\eps(T_{f_i}^{[J]}-\E_tT_{f_i}^{[J]})$ by
+\[
+ \sqrt\eps\left(T_{f_i}^{\{R+1,\ldots,J\}}
+                    -\E_tT_{f_i}^{\{R+1,\ldots,J\}}\right).
+\]
+Lemma~\ref{dmv:fl:lem:small-row-deletion} bounds each error in $L^2$ by
+$C_{f_i}^{1/2}\eta$. This estimate does not require the deleted
+statistic itself to have a limit for a fixed $\eta$.
+
+\paragraph{The critical-window vector.}
+For $\alpha_t(\theta)=1/2+\theta/H$, first replace the occupied
+statistic by its centered additive approximation, as proved in
+Section~\ref{dmv:fl:sec:critical}. Next retain only the middle rows:
+\[
+ \sqrt{\frac tH}
+ \sum_{K<j\le R}
+       \left(M_j^{\alpha_t(\theta)}
+                        -\E_tM_j^{\alpha_t(\theta)}\right).
+\]
+For parameters in a fixed compact interval, the variance of the
+discarded first $K$ centered rows is, after normalization,
+\begin{equation}
+ \frac tH
+ \Var_t\sum_{j\le K}M_j^{\alpha_t(\theta)}
+ \le
+ \frac{C_T}{H}\sum_{j\le K}j^{-1-2\theta/H}
+ =O_T((1+\log K)/H).
+ \label{dmv:fl:eq:window-small-block}
+\end{equation}
+For the discarded rows above $R$, use
+$j^{-2\theta/H}\le C_T$ for $j\le J$ and small $t$ to obtain
+\begin{align}
+ \frac tH
+ \Var_t\sum_{R<j\le J}M_j^{\alpha_t(\theta)}
+ &\le\frac{C_T}{H}\sum_{R<j\le J}j^{-1-2\theta/H}
+ \nonumber\\
+ &\le\frac{C_T}{H}\bigl(1+\log(J/R)\bigr)
+ =O_T\!\left(\frac{1+\log(L/\eta)}H\right).
+ \label{dmv:fl:eq:window-large-block}
+\end{align}
+Both quantities tend to zero for fixed $K,\eta$, since
+$\log L=O(\log H)$. Together with the centered collision bound,
+these estimates make the middle-row approximation asymptotically
+exact in $L^2$.
+
+\paragraph{The fixed supercritical vector.}
+For each fixed $\beta>1/2$, retain the first $K$ centered
+additive rows:
+\[
+       t^\beta\sum_{j\le K}
+                 (M_j^\beta-\E_tM_j^\beta).
+\]
+The centered collision estimate and \eqref{dmv:fl:eq:seriestail} imply
+\begin{equation}
+ \limsup_{t\downarrow0}
+ \left\|
+ t^\beta(D_\beta^{(J)}-\E_tD_\beta^{(J)})
+ -
+ t^\beta\sum_{j\le K}(M_j^\beta-\E_tM_j^\beta)
+ \right\|_2
+ \le
+ C_\beta\left(\sum_{j>K}j^{-2\beta}\right)^{1/2}.
+ \label{dmv:fl:eq:high-first-block}
+\end{equation}
+This bound tends to zero as $K\to\infty$. The retained finite
+sums converge jointly to the first $K$ terms of the corresponding
+exponential series.
+
+\paragraph{Independence and the order of limits.}
+For every $t$ with $K<R<J$, the three approximating vectors just
+defined are independent under $\Q_t$: they depend on the three
+disjoint row sets in \eqref{dmv:fl:eq:three-row-blocks}.
+The marginal limits of the original vectors are already known.
+To identify their joint limit without assuming any additional
+limit for the deleted compact statistic, compare characteristic
+functions directly. For any fixed frequency vectors, the inequality
+$|\ee^{\ii x}-\ee^{\ii y}|\le|x-y|$ and the preceding $L^2$ bounds
+show that the difference between the original joint characteristic
+function and the product of its original marginal characteristic
+functions has limiting upper bound
+\[
+ C\eta+
+ C\sum_{\ell=1}^v
+      \left(\sum_{j>K}j^{-2\beta_\ell}\right)^{1/2}.
+\]
+One obtains this bound by replacing all three vectors by their
+independent approximations, then replacing the marginal
+characteristic functions back; each replacement has the same
+type of bound.
+
+First let $t\downarrow0$ with $K,\eta$ fixed. Then let
+$\eta\downarrow0$ and $K\to\infty$. The displayed error vanishes.
+The known marginal characteristic functions therefore multiply
+in the joint limit. This proves mutual independence for compact
+occupancy tests.
+
+\paragraph{Removing the multiplicity cutoffs.}
+For a subcritical exponent $0\le\alpha<1/2$, use the compact
+test
+\[
+           f_{\alpha,a,b}(y)=y^\alpha\ind_{[a,b]}(y).
+\]
+The normalized power statistic has the exact form
+\[
+ \eps^{\alpha+1/2}(D_\alpha^{(J)}-\E_tD_\alpha^{(J)})
+ =
+ \sqrt\eps\sum_{m\ge1}
+        (\eps m)^\alpha(I_m^{[J]}-\E_tI_m^{[J]}).
+\]
+The centered low- and high-multiplicity bounds in
+Section~\ref{dmv:fl:sec:gaussian} show that replacing this by the compact
+test statistic has arbitrarily small limiting $L^2$ error as
+$a\downarrow0$ and $b\uparrow\infty$. The same statement with
+row cutoff $J$ follows by support localization and its moment
+bounds; no localization assertion after deleting rows is needed.
+For a finite list of exponents, apply the individual bounds and
+the triangle inequality to every linear combination.
+
+More explicitly, fix the compact bin cutoffs first, carry out the
+limit $t\downarrow0$, then $\eta\downarrow0$ and $K\to\infty$,
+and finally remove the compact bin cutoffs. A second characteristic
+function approximation gives the claimed product limit for the
+subcritical power statistics.
+
+\paragraph{Conditioning and centerings.}
+All original truncated statistics in this proof are measurable
+with respect to $(M_j)_{j\le J}$. Proposition~\ref{dmv:fl:prop:transfer}
+therefore transfers their entire joint law by total variation.
+The marginal normalized squares are uniformly integrable by the
+already proved fluctuation theorems and their moment estimates.
+Thus changing each geometric centering to its own conditional
+centering changes the normalized variable by $o(1)$.
+The support-localization event and its separately proved
+conditional moment bounds then replace the original statistics
+with cutoff $J$ by the full statistics.
+
+In particular, the argument never assumes that
+$\mathcal M=\mathcal M_J$ remains true after deleting rows.
+Deletion is performed inside the common finite block $[J]$;
+localization is used only for the original, undeleted statistics.
+The exact-saddle to $\tau_n$ replacement, including the window
+reparameterization, is the one already proved in
+Section~\ref{dmv:fl:sec:critical}.
+
+Finally, uniform integrability of the individual normalized
+squares implies uniform integrability of every pairwise product.
+For example, split the event $|XY|>M$ into $|X|>\sqrt M$ or
+$|Y|>\sqrt M$ and apply Cauchy--Schwarz.
+Joint convergence therefore transfers all pairwise moments.
+The limiting cross-covariances between the independent centered
+vectors are zero, as asserted.
+\end{proof}
+
+For example, the Gaussian limit for $D_0$, the critical Gaussian
+limit for $D_{1/2}$, and the standard Gumbel limit for $D_1$ are
+mutually independent after the stated deterministic centerings.
+Within the supercritical vector, the covariance
+\eqref{dmv:fl:eq:highcov} remains strictly positive. Within the two
+Gaussian vectors, the covariance kernels $\mathcal K$ and
+$K_{\rm crit}$ describe their dependence. The independence theorem
+concerns the separation between these three families.
+
+\subsection{Consequences for total sequences}
+Let $A_\alpha(n)=\sum_{\lambda\vdash n}D_\alpha(\lambda)$, and let
+$B_\alpha(n)=\sum_{\lambda\vdash n}D_\alpha(\lambda)^2$.
+The exact relation to the uniform law is
+\begin{equation}\label{dmv:fl:eq:totals}
+ \frac{A_\alpha(n)}{p(n)}=\E_nD_\alpha,\qquad
+ \frac{B_\alpha(n)}{p(n)}
+       -\left(\frac{A_\alpha(n)}{p(n)}\right)^2
+ =\Var_nD_\alpha.
+\end{equation}
+The unweighted total $A_0$ is OEIS A373271; $A_1$ is its linked
+weight-one counterpart A373273 \cite{oeisA373271,oeisA373273}. Thus, for example,
+\[
+ p(n)B_0(n)-A_0(n)^2\sim v_0p(n)^2n^{1/4},\qquad
+ p(n)B_1(n)-A_1(n)^2\sim p(n)^2n.
+\]
+These are sequence-level forms of the variance theorems, with the
+centering cancellation kept explicit. The first equality in
+\eqref{dmv:fl:eq:totals} also converts every weighted mean formula into a
+total-sequence asymptotic without another analytic transfer theorem.
+\begin{writenote}[7 October 2026]
+$A_0(n)$ is Part~I's $a(n)$ and $A_1(n)$ is Part~II's $a_n$. The cited
+OEIS entries are A373271 and A373273 (Remarks~\ref{dmv:cnt:rem:oeis}
+and~\ref{dmv:sum:rem:oeis}); their names, read again by the write on
+7~October 2026 at revisions \#15 and \#14, are ``a(n) = sum for all
+integer partitions of n of the number of distinct multiplicities in each
+partition.'' and ``a(n) = sum of all distinct multiplicities in every
+integer partition of n.''; the name quoted in the bibliography for
+A373271 is the paraphrase that Part~I also uses. A373273, which the
+manuscript could not retrieve, was read directly at the write. Nothing was
+submitted to the OEIS.
+\end{writenote}
+\section{Exact checks, numerical illustrations, and further research}\label{dmv:fl:sec:verification}
+
+\subsection{Independent exact finite calculations}
+The finite check uses two different descriptions of a partition.
+The first directly enumerates every partition through $n=40$, computes
+its multiplicity set, and accumulates the first and second raw moments
+of $D_0,D_1,D_2$ and the mixed moment $D_0D_1$. The second computes
+the same totals by generating functions that forbid one or two
+multiplicity values. Its state and recurrence do not enumerate
+partitions or reuse their occupied sets.
+
+Let $P(q)=\prod_{j\ge1}(1-q^j)^{-1}$ and, for a finite set $S$ of
+positive integers, define
+\begin{equation}\label{dmv:fl:eq:forbiddenGF}
+ P_S(q)=\prod_{j\ge1}
+ \left(\frac1{1-q^j}-\sum_{m\in S}q^{jm}\right).
+\end{equation}
+Each factor has coefficients $0$ or $1$ and permits precisely the
+multiplicities outside $S$. Therefore $[q^n]P_S(q)$ counts the
+partitions of $n$ in which every value in $S$ is absent.
+Inclusion--exclusion gives
+\begin{align}\label{dmv:fl:eq:exactmoments}
+ \sum_{n\ge0}A_\alpha(n)q^n
+ &=\sum_{m\ge1}m^\alpha(P-P_{\{m\}}),\\
+ \sum_{n\ge0}B_\alpha(n)q^n
+ &=\sum_{m\ge1}m^{2\alpha}(P-P_{\{m\}})\nonumber\\
+ &\quad+2\sum_{m<\ell}m^\alpha\ell^\alpha
+ (P-P_{\{m\}}-P_{\{\ell\}}+P_{\{m,\ell\}}).
+ \nonumber
+\end{align}
+These are formal power-series identities: to compute through degree
+$n$, only $j,m,\ell\le n$ can contribute. The analogous mixed-moment
+identity has off-diagonal coefficient
+$m^\alpha\ell^\beta+m^\beta\ell^\alpha$ and diagonal coefficient
+$m^{\alpha+\beta}$. Euler's pentagonal recurrence independently
+recomputes $p(n)$.
+
+The two methods agree exactly for every $0\le n\le40$, encompassing
+215,308 directly enumerated partitions. The first ten listed values
+of A373271 and its linked A373273 counterpart also agree with the
+recorded source prefixes \cite{oeisA373271,oeisA373273}. A few exact totals are:
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$n$ & $p(n)$ & $A_0(n)$ & $B_0(n)$ & $A_1(n)$ & $B_1(n)$\\
+\midrule
+10 & 42 & 70 & 128 & 161 & 861\\
+20 & 627 & 1,358 & 3,192 & 3,754 & 30,928\\
+30 & 5,604 & 13,998 & 37,660 & 43,416 & 457,512\\
+40 & 37,338 & 103,077 & 304,455 & 347,571 & 4,357,827\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complete exact CSV includes the quadratic-weight totals and cross
+moments as well. All comparisons use arbitrary-precision integers;
+rational means and variances are derived only after the integer
+identities have been checked.
+\begin{writenote}[7 October 2026]
+The write enumerated all $215{,}308$ partitions of $n\le40$ with its own
+code (multiplicity vectors, not the manuscript's descending parts): all 41
+rows of \file{data/03-fluct-exact_partition_moments.csv}, in all nine
+columns, agree, and so do the four rows above. The first ten values agree
+with the live entries A373271 (revision \#15) and A373273 (\#14), read on
+7~October 2026. The identity \eqref{dmv:fl:eq:forbiddenGF} is Part~I's
+$P_m=PQ_m$ (Proposition~\ref{dmv:cnt:prop:gf}) for $S=\{m\}$, and
+$P_S=P\prod_j(1-(1-q^j)\sum_{m\in S}q^{jm})$ in general; with it the write
+extended the exact moments to $n=300$ (note after
+Corollary~\ref{dmv:fl:cor:unweighted}). A rerun of the delivered
+\file{verify.py} without simulations, on a copy, reproduced the moments
+CSV byte for byte; its \file{checks.json} differs from the shipped one
+only in the skipped simulation block, the software versions and seven
+floating values in the last digit.
+\end{writenote}
+
+\subsection{Constants and the covariance kernel}
+The program separately evaluates the one-dimensional covariance
+integral, its unweighted closed form, the regularized Mellin constants,
+and the Gumbel moments with 55 working decimal digits. In particular,
+the integral and closed formula for $V_0$ agree to more than 45 digits.
+This is high-precision numerical evidence for implementation
+consistency; the exact equality was proved in
+Section~\ref{dmv:fl:sec:gaussian}. The computation uses no interval arithmetic
+and is not described as a directed-rounding certificate.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/03-fluct-variance_transition.pdf}
+\caption{Variance constants across the transition. Left:
+$(1-2\alpha)V_\alpha$ extends continuously to $c_*=1-\pi/4$ at
+$\alpha=1/2$. Right: the logarithmic-window variance $W(\theta)$ on
+a logarithmic vertical scale, with $W(0)=c_*/2$ marked. The curves
+evaluate proved formulas and contain no fitted parameters.}
+\label{dmv:fl:fig:variance}
+\end{figure}
+
+A separate covariance check uses the compact multiplicity interval
+$0.75\le\eps m\le2.5$. Finite products for one-bin and two-bin
+absence probabilities give the following comparison:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$\eps$ & $\eps\Var_t\sum_{0.75\le\eps m\le2.5}I_m$
+ & limiting $\mathcal K(\ind_{[0.75,2.5]},\ind_{[0.75,2.5]})$\\
+\midrule
+0.0500 & 0.2805135573 & 0.2755896124\\
+0.0250 & 0.2780882612 & 0.2755896124\\
+0.0125 & 0.2768478709 & 0.2755896124\\
+\bottomrule
+\end{tabular}
+\end{center}
+These finite products use a documented part-size cutoff; the omitted
+one-bin intensity sums have analytically derived floating-point bounds
+below $6.4\cdot10^{-14}$ in these three runs. The computations are
+binary64 diagnostics, not exact evaluations of the infinite products.
+In particular this check is of a moving \emph{multiplicity interval};
+it should not be confused with the moving \emph{exponent} window of
+Theorem~\ref{dmv:fl:thm:window}.
+
+\subsection{Seeded experiments and slow critical convergence}
+The package includes 2,000 independent samples at each of
+$t=10^{-4},10^{-5},10^{-6}$, using all rows
+$j\le\lceil40/\sqrt t\rceil$. They are finite-row, unconditioned
+Boltzmann experiments. They are not uniform partitions of a fixed
+integer, and omitted rows have not been silently sampled or corrected.
+The generator is NumPy PCG64 with the three seeds
+2026100701, 2026100702, and 2026100703. All 6,000 records, including
+their normalized statistics, are supplied in the CSV.
+
+For comparison with the limiting laws, the unweighted normalization is
+$t^{1/4}(D_0-\sqrt\pi\,t^{-1/2})$. For the critical diagnostic the
+two-term mean in \eqref{dmv:fl:eq:twotermmean} is subtracted before multiplying
+by $\sqrt{t/H}$. A deterministic centering does not affect the sample
+variance. The resulting unbiased sample variances are:
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$t$ & normalized $D_0$ & critical $D_{1/2}$ & Gumbel $D_1$
+ & $D_2/(\pi^2/(6t^2))$\\
+\midrule
+$10^{-4}$ & 0.347428 & 0.188401 & 1.637908 & 7.915215\\
+$10^{-5}$ & 0.340051 & 0.172240 & 1.662296 & 6.838436\\
+$10^{-6}$ & 0.352854 & 0.168793 & 1.830369 & 9.404014\\
+Limit & 0.348809 & 0.107301 & 1.644934 & 8\\
+\bottomrule
+\end{tabular}
+\end{center}
+The critical discrepancy is substantial at these values of $t$ and
+has been retained. The proof provides only a leading logarithmic
+asymptotic; the collision bound loses an $O(\log H/H)$ fraction on
+that scale, and no explicit onset or finite-$t$ error is claimed.
+The quadratic statistic has a broad limiting law, so 2,000 samples
+also leave visible variability in its sample variance. These features
+are reasons to develop effective estimates, not grounds to alter or
+select the sample data.
+\begin{writenote}[7 October 2026]
+Recomputed by the write with its own code: the three rows of the
+covariance table, by the one-bin and two-bin products over all rows with
+$tjm<80$ (all ten printed digits agree, as rounded values); the limit
+$\mathcal K(\ind_{[0.75,2.5]},\ind_{[0.75,2.5]})=0.2755896124337\ldots$ by
+quadrature of \eqref{dmv:fl:eq:kernel}; and the twelve sample variances
+from the raw columns $D_0$, $D_{1/2}$, $D_1$, $D_2$ of
+\file{data/03-fluct-boltzmann_samples.csv} with the stated normalizations
+(all printed digits agree). The ``Limit'' row is rounded:
+$V_0=0.3488094\ldots$, $c_*/2=0.10730091\ldots$, $\pi^2/6=1.6449340\ldots$
+and~$8$.
+\end{writenote}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/03-fluct-boltzmann_ecdfs.pdf}
+\caption{Empirical CDFs for the normalized unweighted and weight-one
+statistics. Each colored curve uses all 2,000 samples at the indicated
+$t$; dashed curves are the limiting $N(0,V_0)$ and standard Gumbel
+CDFs. The finite-row geometric samples are unconditioned, with
+$J=\lceil40/\sqrt t\rceil$, and no samples were selected for agreement.
+The unweighted statistic retains its theoretical leading centering
+rather than an empirical recentering.}
+\label{dmv:fl:fig:ecdf}
+\end{figure}
+
+\subsection{Reproduction and the boundary of verification}
+From the article directory, run
+\begin{quote}\small\ttfamily
+python3 code/verify.py\\
+python3 code/make\_figures.py\\
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{quote}
+The first command regenerates the exact checks, constants, finite-window
+diagnostics, and sample records. The second creates the vector figure
+components from those records and the proved formulas. Dependencies and
+versions are listed in \code{code/requirements.txt}; the included PDFs
+can be rebuilt from the TeX and existing figure components without
+running the simulations. A quicker check that skips the simulations is
+documented in \code{code/README.txt}.
+\begin{writenote}[7 October 2026]
+The paths in these commands are the delivery's. Here the programs are
+\file{code/03-fluct-verify.py} and \file{code/03-fluct-make_figures.py},
+their data and requirements are under \file{data/} with the prefix
+\file{03-fluct-}, and the figures under \file{figures/}; the programs
+resolve \file{../data} and \file{../figures} from their own location, so
+run them on a copy with the delivered names (the README has a recipe).
+The manuscript's TeX is Part~III of this file. The package builder
+\file{code/03-fluct-build.py} builds the delivered directories
+\file{partitions/} and \file{sensitivity/} and does not run here.
+\end{writenote}
+
+Every verification condition uses an explicit exception and remains
+active under optimized Python. An independent optimized replay gave
+the same exact and analytic records and a byte-identical exact CSV.
+Numerical byte reproduction otherwise requires compatible versions and
+floating-point behavior. File hashes in the package manifest establish
+which files were delivered; they do not establish mathematical truth.
+
+The difficult proof steps were separately reviewed: the connected
+cumulant bound including repeated indices; whole-circle Fourier decay
+for the growing reservoir; quantitative likelihood and second-moment
+transfer; weighted mean constants; collision estimates; and the
+critical-window triangular array. This was an independent derivation
+and internal review exercise, not external peer review or a formal
+proof-assistant run. A later formalization should preserve that
+distinction in its theorem and artifact metadata.
+
+\subsection{A proposed research programme}
+The following questions are ordered by their connection to the
+results proved here. They are open within this article; a literature
+claim of longstanding global openness is not implied.
+
+\begin{enumerate}[leftmargin=*,itemsep=8pt]
+\item \textbf{Effective Gaussian approximation.}
+Obtain a quantitative bound in Kolmogorov or Wasserstein distance for
+the normalized $D_0$, with computable constants and an explicit onset.
+The compact cumulant calculation suggests the natural small parameter
+$\sqrt\eps=n^{-1/8}$ up to constants, but it does not by itself prove
+a bound of that order. A successful argument must make the cumulant
+order dependence explicit, control both multiplicity tails, and retain
+the conditioning error. Quantitative normal approximation for the
+negatively dependent occupation indicators may be more efficient than
+an all-order expansion.
+
+\item \textbf{The next variance term and critical finite-size correction.}
+Determine whether
+$\Var_nD_0-v_0n^{1/4}$ has a finite limit, or whether a logarithmic or
+other intermediate correction occurs. Independently, determine the
+coefficient after $c_*H/(2t)$ in $\Var D_{1/2}$. The present
+$O(t^{-1}\log H)$ collision bound may be nonsharp and does not
+identify such a coefficient. This problem has immediate numerical
+value because the critical approximation is visibly slow. It requires
+matching pair occupancies and collision covariances, not only improving
+the first-moment expansion.
+
+\item \textbf{Functional convergence of the critical window.}
+Strengthen finite-dimensional convergence of $X_n(\theta)$ to weak
+convergence in $C([-T,T])$, or in a topology that also controls
+derivatives in $\theta$. The proposed limit is the smooth Gaussian
+field in \eqref{dmv:fl:eq:brownian}. A route is to estimate increments and
+derivatives, whose weights introduce factors $\log m/H$, and obtain
+uniform control of the collision process. Pointwise collision variance
+alone is insufficient to claim process tightness. This would permit
+simultaneous confidence bands over a range of exponents.
+
+\item \textbf{Regularly varying weights.}
+Replace $m^\alpha$ by $m^\alpha L(m)$ for a specified slowly varying
+function $L$. Below the threshold the relevant argument of $L$ should
+be $t^{-1/2}$, whereas above it the smallest rows sample $t^{-1}$.
+At the boundary, a test case is
+$w(m)=\sqrt m\,(\log(m+1))^\beta$. The row calculation suggests a
+variance scale $t^{-1}H^{2\beta+1}$ and coefficient
+\[
+ c_*\int_0^{1/2}(1-u)^{2\beta}\,du.
+\]
+This formula is a proposed extension, not a theorem of this paper.
+The task is to specify regularity conditions that justify the
+collision estimate, whole-range mean approximation, and conditioning
+uniformly for these weights.
+
+\item \textbf{Largest occupied values and a joint point-process theorem.}
+Study the random point measure formed by $tM_j$ for positive
+multiplicities, with repeated values removed. Fixed rows converge to
+$E_j/j$, and the high-weight moment series suggests a common limiting
+point measure away from zero. Prove a topology and tightness statement
+that makes this precise, identify the largest occupied values, and
+couple this limit with the Gaussian occupancy field. A moment theorem
+for a few power weights does not automatically imply a point-process
+theorem near its accumulation point at zero.
+
+\item \textbf{Conditioning corrections and universality.}
+The likelihood estimate proves that total-size conditioning does not
+change the leading laws. Determine the first correction it contributes
+to covariance and moderate deviations. Then treat specified restricted
+partition models, such as colored partitions or a prescribed allowed
+set of part sizes. The occupancy intensity and reservoir may change;
+the threshold $1/2$ should be derived from their scaling instead of
+assumed universal. Partitions into distinct parts require a different
+observable because their positive multiplicity set is essentially
+trivial.
+
+\item \textbf{Formalization and exact second-moment computation.}
+Formalize first the exact finite identities
+\eqref{dmv:fl:eq:forbiddenGF}--\eqref{dmv:fl:eq:exactmoments}, the pairwise covariance
+sign, and the finite-row resampling inequalities. These supply
+independently reusable lemmas before the analytic limit theory is
+formalized. On the computational side, develop a faster exact
+algorithm for $B_0(n)$ and $B_1(n)$ so that variance asymptotics can be
+tested well beyond the enumeration range. The quadratic family of
+forbidden pairs is a concrete algorithmic obstruction.
+
+\item \textbf{Complete the historical comparison.}
+Inspect the full 1999 multiplicity paper and follow its citations,
+including statistics of distinct gaps in conjugate Ferrers diagrams.
+The conjugate partition has successive positive gaps equal to the
+original multiplicities, so the present observable may appear under
+that terminology. This bibliographic task changes the appropriate
+novelty claim and attribution, even though it does not change the
+proofs. A priority statement should be strengthened only after that
+comparison has actually been completed.
+\end{enumerate}
+
+For immediate continuation, the strongest mathematical targets are an
+effective error bound for $D_0$ and the critical variance correction.
+They address a limitation exposed by the present proof and the retained
+data. Functional and point-process results would then organize the
+individual limit laws into a fuller description of the random
+multiplicity set. The independent sensitivity companion supplies a
+different research track: optimize the certified exponent, improve the
+local recurrences, or replace the probabilistic label construction.
+\begin{writenote}[7 October 2026]
+Under Vladimir's standing rule of 4~October 2026 (unproved claims are moved
+to questions, wrong ones are refuted on the record), the write found no
+claim of this Part that is wrong, and none that is unproved as stated: the
+proposed variance formula of Question~4 and the suggested small parameter
+of Question~1 are already marked as unproved here. The eight questions stay
+open. Question~8 is the same task as Questions~5 of Parts~I and~II.
+Question~7's faster exact algorithm for $B_0(n)$ and $B_1(n)$ is a
+separate matter from the write's range extension to $n=300$, which used the
+quadratic family of pairs as stated.
+\end{writenote}
+
+\clearpage
 
 
 \begin{writenote}[The merged bibliography, 7 October 2026]
@@ -1824,14 +4501,22 @@ each Part's own note on what it inspected is kept, marked ``Part~I'' or
 \file{oeis}, are \file{oeisA373271} (Part~I) and \file{oeisA373273}
 (Part~II).
 \end{writenote}
+\begin{writenote}[Part~III, 7 October 2026]
+Part~III's reference list is merged the same way, every detail kept. Its
+entries for Ralaivaosaona and for Corteel, Pittel, Savage and Wilf are
+the entries above, with Part~III's own note added; its single entry for
+A373271 and A373273 (key \file{oeis}) is cited as the two OEIS entries,
+its note added to both; its other six entries are new and marked
+[Part~III].
+\end{writenote}
 \begin{thebibliography}{99}
 \bibitem{oeisA373271}
 OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, entry A373271, ``Sum of number of distinct multiplicities over all partitions of $n$.''
-\url{https://oeis.org/A373271}. Entry inspected 4 October 2026. Related partition-level array: \url{https://oeis.org/A373269}. [Part~I]
+\url{https://oeis.org/A373271}. Entry inspected 4 October 2026. Related partition-level array: \url{https://oeis.org/A373269}. [Part~I] Part~III (one entry, key \file{oeis}, for A373271 and A373273): ``A373271, `Sum of number of distinct multiplicities over all partitions of $n$,' and the linked counterpart A373273, summing those values. \url{https://oeis.org/A373271}; \url{https://oeis.org/A373273}. The A373271 entry and its cross-reference data were inspected 7 October 2026; direct retrieval of A373273 was unavailable in this source screen.''
 
 \bibitem{oeisA373273}
 O. G\'erard, OEIS A373273, \emph{Sum of all distinct multiplicities in every integer partition of $n$}, OEIS Foundation, 2024. Official maintained record, inspected 4 October 2026:\\
-\url{https://github.com/oeis/oeisdata/blob/main/seq/A373/A373273.seq}. [Part~II]
+\url{https://github.com/oeis/oeisdata/blob/main/seq/A373/A373273.seq}. [Part~II] Part~III: see the previous entry (``direct retrieval of A373273 was unavailable in this source screen'').
 
 \bibitem{triangle}
 O. G\'erard, OEIS A373272, weighted distinct multiplicity sums by number of parts, OEIS Foundation. \url{https://oeis.org/A373272}. [Part~II]
@@ -1839,7 +4524,7 @@ O. G\'erard, OEIS A373272, weighted distinct multiplicity sums by number of part
 \bibitem{ralaivaosaona}
 D.~Ralaivaosaona, \emph{On the distribution of multiplicities in integer partitions}, Annals of Combinatorics \textbf{16} (2012), 871--889.
 \href{https://doi.org/10.1007/s00026-012-0165-2}{doi:10.1007/s00026-012-0165-2}.
-Part~I: full author text: \url{https://su-plus.strathmore.edu/bitstreams/fd5051ed-a369-4cdd-ba34-91599a8ec9b5/download}.
+Part~I: full author text: \url{https://su-plus.strathmore.edu/bitstreams/fd5051ed-a369-4cdd-ba34-91599a8ec9b5/download}.\newline Part~III prints the author as ``Dimbinaina Ralaivaosaona'': \href{https://su-plus.strathmore.edu/server/api/core/bitstreams/fd5051ed-a369-4cdd-ba34-91599a8ec9b5/content}{Full author text inspected}.
 
 \bibitem{gkw}
 P.~J.~Grabner, A.~Knopfmacher and S.~Wagner,
@@ -1851,7 +4536,7 @@ Author version: \url{https://math.sun.ac.za/swagner/PartitionStatistics.pdf}. (P
 S.~Corteel, B.~Pittel, C.~D.~Savage and H.~S.~Wilf,
 \emph{On the multiplicity of parts in a random partition}, Random Structures \& Algorithms \textbf{14}(2) (1999), 185--197.
 \href{https://doi.org/10.1002/(SICI)1098-2418(199903)14:2<185::AID-RSA4>3.0.CO;2-F}{Publisher DOI link}.
-Part~I: ``Publisher abstract inspected; full text unavailable during this source screen.'' Part~II: ``Publisher abstract inspected; full-text overlap check incomplete.''
+Part~I: ``Publisher abstract inspected; full text unavailable during this source screen.'' Part~II: ``Publisher abstract inspected; full-text overlap check incomplete.'' Part~III: ``Publisher abstract and bibliographic data located; the attempted author PDF was inaccessible. No full-text exclusion of overlap is claimed.''
 
 \bibitem{lugo}
 M.~T.~Lugo, \emph{Profiles of Large Combinatorial Structures}, Ph.D. thesis, University of Pennsylvania, 2010, Section~6.1.
@@ -1865,5 +4550,64 @@ M. Archibald, A. Blecher, C. Brennan, A. Knopfmacher, and T. Mansour, \emph{Part
 \bibitem{fill}
 J. A. Fill, S. Janson, and M. D. Ward, \emph{Partitions with Distinct Multiplicities of Parts: On An Unsolved Problem Posed By Herbert Wilf}, Electronic Journal of Combinatorics \textbf{19}(2) (2012), P18.
 \url{https://doi.org/10.37236/2128}; \url{https://arxiv.org/abs/1203.2670}. [Part~II]
+
+\raggedright% Part III's entries, set ragged right as delivered
+\bibitem{proveit}
+Vladimir Reshetnikov, repository maintainer.
+\emph{ProveIt}. Snapshot
+\code{1210e9d3ac88a573f98d7ef8626ba3d2c30e9749},
+7 October 2026, 16:29:40 UTC.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1210e9d3ac88a573f98d7ef8626ba3d2c30e9749}{Pinned repository}.
+Recent commit records, relevant README files, source ledgers, and
+selected manuscript sources inspected for the research screen. [Part~III]
+
+\bibitem{prior197}
+\emph{Distinct positive multiplicity values in integer partitions:
+matched asymptotics and a shrinking inverse for OEIS A373271}.
+ProveIt repository manuscript, Report 197, 4 October 2026, at the snapshot in
+\cite{proveit}. Source path:
+\code{SetTheory/Cardinals/docs/reports/}\allowbreak
+\code{generating-functions-and-asymptotics/}\allowbreak
+\code{oeis-sequence-asymptotics/}\allowbreak
+\code{a373271-distinct-multiplicity-values/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1210e9d3ac88a573f98d7ef8626ba3d2c30e9749/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a373271-distinct-multiplicity-values/article.tex}{Pinned full mathematical source}.
+The variance, conditioning, and weighted-extension questions are in
+its final section. File object
+\code{77a379cfb3eebad70c14123c049d1be1d64ef998}. [Part~III; this is Part~I of the present report as it stood at the pin.]
+
+\bibitem{mathrepo}
+Vladimir Reshetnikov, repository maintainer.
+\emph{math}. Snapshot
+\code{adc7f1241b42e322a6451854ab7e4b4c146bf78a},
+6 October 2026, 21:58:50 UTC.
+\href{https://github.com/VladimirReshetnikov/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a}{Pinned repository}.
+README, mathematical overview, and selected preprints inspected. [Part~III]
+
+\bibitem{math132}
+OpenAI.
+\emph{A superquadratic separation between sensitivity and block
+sensitivity}. Repository manuscript, 25 September 2026, family 132
+in \cite{mathrepo}.
+\href{https://github.com/VladimirReshetnikov/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-superquadratic-separation-between-sensitivity-and-block-sensitivity-September-25-2026/build}{Pinned source directory}.
+The companion article included with this package proves an explicit
+quantitative refinement and records its own references and certificate. [Part~III]
+
+\bibitem{fristedt}
+Bert Fristedt.
+\emph{The structure of random partitions of large integers}.
+Transactions of the American Mathematical Society \textbf{337} (1993),
+703--735.
+\href{https://doi.org/10.1090/S0002-9947-1993-1094553-1}{doi:10.1090/S0002-9947-1993-1094553-1}.
+\href{https://experts.umn.edu/en/publications/the-structure-of-random-partitions-of-large-integers/}{Author-institution bibliographic record and abstract inspected}. [Part~III]
+
+\bibitem{erdoslehner}
+Paul Erd\H{o}s and Joseph Lehner.
+\emph{The distribution of the number of summands in the partitions
+of a positive integer}. Duke Mathematical Journal \textbf{8} (1941),
+335--345.
+\href{https://renyi.hu/en/node/4094}{R\'enyi Institute bibliography}.
+The bibliographic record was checked; the attempted original scan
+could not be retrieved. The Gumbel identification needed here is
+proved directly in \eqref{dmv:fl:eq:gumbelproduct}. [Part~III]
 \end{thebibliography}
 \end{document}

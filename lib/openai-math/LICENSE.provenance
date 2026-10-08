@@ -43,7 +43,10 @@ The ProveIt port adapts Lean 4.34.1 / Mathlib d13f23b7 source to this
 workspace's Lean 4.32.0 / Mathlib v4.32.0. Modified upstream files carry
 "Modified for ProveIt" notices describing their changes. Local compatibility
 declarations are in lean/OAI/Compat/. FreimanAffineBox.lean is an explicitly
-marked extract of upstream NativeProperAffineRecovery.lean. Local additions
+marked extract of upstream NativeProperAffineRecovery.lean. Its two theorem
+statements and proof bodies are retained in the distinct
+OAI.Erdos3.FreimanModel.ProveItExtract namespace to avoid collisions with
+the originals when both import paths meet. Local additions
 and modifications in this directory are also distributed under Apache-2.0.
 Results/Conclusions.lean and Estimates/UniformRelativePatchSource.lean are
 density-only extracts of the corresponding files at the same pinned revision.
