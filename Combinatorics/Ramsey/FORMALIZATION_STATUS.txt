@@ -20,27 +20,11 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 New work after the last full audit
-  Proofs16PolynomialUniformWidth and Proofs16PolynomialLemma6 separately
-  pass production-source checks and transitive axiom checks. They make
-  the spectrum width uniform in floor(Qb sigma) and specialize it to the
-  induced-function setting of Lemma 16.6 above the localized input threshold.
-  Their facade imports are included in the next combined audit, alongside
-  the incoming regular-step, Bohr-section, and biaffine-gluing results.
-  The Bohr-section interface now requires zero normalization: a proved
-  necessity lemma shows that centered Bohr subsets of all positive sublevels
-  force phi(0)=0. Its section consequences require L_k(0)=0 explicitly.
-  Existence of the normalized Bohr-sublevel hypothesis remains unproved.
-  Proofs16PolynomialLemma9 passes its production-source check and carries
-  the common polynomial width through the line-cover assembly, preserving
-  the remainder graph-count and good-mass bounds. The localized input
-  threshold, spectrum structure, selection, and remainder cover remain
-  hypotheses. It is included in the queued follow-up facade audit.
-  Proofs16PolynomialAllScaleParameters and Proofs16PolynomialAllScaleLemma6
-  pass their production-source checks. With b=C*(q+1) and
-  E=2*p*(q+1)^(2^(k+2)), the width (zeta/(4*b))*m^(a/(4*E)) is available
-  at every input scale: a target above one supplies the recurrence threshold,
-  and singleton cells handle smaller targets. Here a=Eb(sigma) is in (0,1].
-  These modules are also included in the queued audit.
+  Proofs16PolynomialAllScaleLemma9 passes its production-source check and
+  transfers the uniform polynomial width through the remainder cover at
+  every input scale, without a localized threshold premise. It will enter
+  the next combined facade audit; the counts below are the last completed
+  audit and do not include this later module.
 
 Verification at this checkpoint
   The completed facade audit includes the simultaneous recurrence and
@@ -72,9 +56,19 @@ Verification at this checkpoint
   covers, keeping the good-set mass and graph-count bounds. The localized
   input threshold, frequency coverage, and local linearity remain explicit.
   Incoming off-origin variety-box and Bohr-doubling results are included.
+  The completed audit also includes the uniform spectrum width, the
+  improved Lemmas 16.6 and 16.9 with localized thresholds, and the all-scale
+  Lemma 16.6 bound. For b=C*(q+1), E=2*p*(q+1)^(2^(k+2)), and 0<a<=1,
+  the latter gives width (zeta/(4*b))*m^(a/(4*E)) at every input scale.
+  The recurrence threshold is absorbed by the prefactor and rounding;
+  singleton cells handle targets at most one. Spectrum structure and
+  selection remain explicit premises. The normalized Bohr-section interface
+  and incoming Bohr-row, lower-bound, regular-step, and gluing results also
+  pass the audit. Its necessity lemma proves why phi(0)=0 is required;
+  existence of the normalized Bohr-sublevel hypothesis remains unproved.
   These additions close no numbered catalogue statement.
-  All 1,377 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,589 public Gowers theorems and found only propext,
+  All 1,388 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,708 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -96,11 +90,11 @@ Verification at this checkpoint
   dimension-two, and quartic inverse thresholds, the low-dimensional
   Corollary 16.11 companions, the stackable-slice reductions, and the
   conditional dimension-three results, the
-  1,377-module Gowers audit checks 5,589 theorems and the same 114/6
+  1,388-module Gowers audit checks 5,708 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,613-module closure and checks equality of the extracted propositions
+  2,624-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
