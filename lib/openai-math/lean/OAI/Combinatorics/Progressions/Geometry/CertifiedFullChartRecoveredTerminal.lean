@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: use MvPolynomial.coeff_add in the recovered
+coefficient sum, matching the Mathlib 4.32 polynomial coefficient API.
+All theorem statements are unchanged from the pinned upstream source.
+-/
 import OAI.Combinatorics.Progressions.Estimates.Separation
 import OAI.Combinatorics.Progressions.Geometry.CertifiedFullChartFrozenTerminal
 import OAI.Combinatorics.Progressions.Polynomial.FrozenPolynomialAffineRange
@@ -28,7 +33,7 @@ theorem canonicalCoefficientSample_floor_coeff_sum
   have h := congrArg (fun polynomial : MvPolynomial K ℝ => polynomial.coeff d.val)
     (canonicalCoefficientSample_floor_polynomial_remainder U b hb o sample c hc j i).1
   simp only [coefficientRowPolynomial, monomialArrayPolynomial_coeff _ Subtype.val_injective,
-    AddMonoidAlgebra.coeff_add, Finsupp.add_apply,
+    MvPolynomial.coeff_add,
     mixedLiftPolynomial_coeff _ _ _ _ Subtype.val_injective, coeff_map,
     Int.coe_castRingHom] at h
   exact h.symm
