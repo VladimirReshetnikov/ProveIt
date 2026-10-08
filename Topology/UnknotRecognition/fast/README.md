@@ -1948,3 +1948,27 @@ cross-oracle audit and the splitting ablation with
 `benchmark --output FILE`. Whole-cube comparisons include proof construction
 and replay; planar-scanner timings have no such certificate and are labeled
 separately.
+
+
+The forest now prepares finite leaf summaries and tries finite exponent tests
+first, compressed three-braid decisions second, and wider fallbacks last.
+It stops on the first proved nontrivial factor. A version-three
+`knotted-factor` certificate binds that single witness to its exact source
+interval and proves the whole connected sum nontrivial. An unknot still needs
+all factor proofs in their original order. `factor_order` reports discovery
+order; it is diagnostic metadata, not part of the mathematical proof.
+
+For a small wider factor, the fallback first performs the existing verified
+free/cyclic cancellation and endpoint Markov descent. A resulting three-braid
+uses the compressed exact terminal; a still-wider residual uses its complete
+cube. Progress is recorded in a source-bound `exceptional-reduction-v1` child.
+No progress retains the direct cube. The explicit crossing preflight still
+happens before expansion. Set `use_fallback_reduction=False` (CLI
+`--no-fallback-reduction`) to disable only this pre-cube step; priority and
+selective negative proofs remain enabled. Verification supports old and new
+proofs irrespective of how the producer was configured.
+
+This avoids cubes for reducible wider factors and avoids unfinished factors
+after a complete negative witness. It retains the same exceptional-factor
+asymptotic bound. See [`adaptive_forest.tex`](../synthesis/adaptive_forest.tex)
+for soundness, proof compatibility, resource accounting and paired measurements.

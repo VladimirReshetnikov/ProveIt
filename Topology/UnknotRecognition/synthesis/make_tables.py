@@ -1242,3 +1242,16 @@ if ec:
     open('tables/exceptional_cube.tex', 'w').write(
         '\\begin{center}\n' + table('Input & whole ms & hybrid ms & paired ratio & generators',
                                     '@{}lrrrr@{}', rows) + '\\end{center}\n')
+
+# Adaptive forest scheduling and checked pre-cube reduction, actual pinned host.
+af = load('../fast/results/adaptive_forest_20261008.json')
+if af:
+    rows = []
+    for r in af['cases']:
+        rows.append(f"{esc(r['name'])} & {1000*r['medians']['old']:.2f} & "
+                    f"{1000*r['medians']['current']:.2f} & "
+                    f"{1000*r['medians']['no_reduction']:.2f} & "
+                    f"{r['paired_ratios']['current']:.3f} \\\\")
+    open('tables/adaptive_forest.tex','w').write(
+        '\\begin{center}\n' + table('Input & old ms & current ms & no reduction ms & paired ratio',
+                                    '@{}lrrrr@{}', rows) + '\\end{center}\n')

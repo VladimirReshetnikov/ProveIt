@@ -240,9 +240,8 @@ On the standalone nine-crossing four-braids, the hybrid cube path takes
 scanner takes 1.673 and 4.559 ms respectively, without independent proof
 output. The cube is consequently a conservative complete fallback, not a
 replacement for the faster scanner in ordinary diagram recognition.
-A useful next optimization is to apply already verified explicit reductions
-inside a small projected factor before constructing its cube, preserving a
-source-bound reduction trace. Another is to stop the forest as soon as a
-nontrivial factor has a complete proof; the current implementation still
-processes every leaf. Neither optimization is assumed in the bounds or
+These measurements motivated two further optimizations: verified explicit
+reductions before a small factor's cube, and immediate termination on a proved
+nontrivial factor. Section~\ref{sec:adaptive-forest} implements both with
+source-bound proofs. Neither optimization is assumed in the checkpoint
 measurements above.

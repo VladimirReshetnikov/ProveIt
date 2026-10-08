@@ -1,0 +1,221 @@
+\section{Adaptive factor scheduling and checked pre-cube reduction}
+\label{sec:adaptive-forest}
+
+The complete exceptional-factor fallback exposes two avoidable costs.
+A small wider braid may simplify to three strands, yet a direct cube pays
+exponential cost before using that structure. A nontrivial connected-sum
+factor may already have an inexpensive proof, yet an earlier expensive factor
+can consume the shared allowance first. We address both costs while retaining
+the same complete fallback and exceptional-parameter bound.
+
+\subsection{Prioritize decisions before exponential work}
+
+The producer validates the original grammar, computes exact singleton cuts,
+and prepares each projected leaf and its finite summaries. It then assigns
+three priority classes. The first contains factors with at most two strands
+and factors already excluded by the exponent obstruction $|e|>m-1$.
+The second contains the remaining three-braid factors, which have a complete
+compressed polynomial algorithm. The third contains wider residual factors.
+Within a class, shorter projected grammars precede longer ones; original
+factor index breaks ties. Preparing these projections remains polynomial in
+the input size and does not expand any word.
+
+This is a deterministic structural policy, not a timing threshold fitted to
+the benchmark. It promotes cases whose available decision method is cheap
+and complete. It does not promise to minimize running time on every input:
+a particularly simple wider factor might finish before an awkward compressed
+three-braid. All attempted operations still share the host's resource budget.
+The returned \texttt{factor\_order} is execution metadata, not an extra
+mathematical assertion accepted by the verifier.
+
+As soon as a factor is proved nontrivial, the producer stops. It need not
+finish unvisited factors or retain proofs for earlier trivial factors.
+This changes bounded behavior as well as runtime: an exact negative result
+can now survive a zero cube-generator allowance when a finite obstruction
+appears later in strand order. Without priority, the first wider factor
+could exhaust that allowance and leave the whole input inconclusive.
+
+An unknot verdict still requires every factor to be proved trivial. Complete
+split proofs retain all factor records in their original strand order, even
+when discovery visits them in a different order. An unsupported factor may
+remain inconclusive while later factors are examined; any subsequent exact
+negative result is sufficient to decide the whole sum.
+
+\subsection{A proof for one nontrivial summand}
+
+The new forest format is version three. Its \texttt{knotted-factor} phase
+contains the original input, the exact complete singleton-cut list, a factor
+index and precisely one leaf record. The verifier recomputes the source
+summaries and cut list, verifies that the original closure is a knot, and
+checks that the index names one of the resulting consecutive strand intervals.
+It reconstructs that interval's projected grammar and checks its metadata and
+child proof. It accepts this phase only when the child proves
+\texttt{KNOTTED} and the parent asserts \texttt{KNOTTED}.
+
+Soundness uses the connected-sum decomposition from
+Section~\ref{sec:compressed-braid}: an unknot has only trivial knot summands.
+Thus one nontrivial summand disproves unknotness of the original source.
+The unvisited factors require no certificate. The original one-component
+check matters, since the connected-sum-of-knots argument is not a statement
+about arbitrary links. A single positive factor cannot prove the whole input
+trivial; the verifier explicitly rejects that substitution. It also rejects
+an index rebound to a different interval, Boolean index aliases, an omitted
+leaf in a complete split proof, and downgrades of the selected-factor phase
+to an older version.
+
+This selective proof can be much smaller than the former complete forest
+proof. It still includes the whole source and exact cut data, plus the
+selected factor's projection and certificate. Preparation currently constructs
+all projections before scheduling, so early termination saves decision and
+replay work, not that polynomial preparation cost. Versions one and two remain
+accepted with their original complete-list semantics.
+
+\subsection{A checked reduction before building a cube}
+
+A wider factor that passes its expanded-length preflight is converted to an
+explicit word under the existing cap. Before building its reduced Khovanov
+cube, the producer invokes the maintained singleton endpoint Markov descent
+from Section~\ref{sec:linear-braid-descent}. This routine freely and cyclically
+cancels adjacent inverse letters, then deletes singleton endpoint generators
+by a cyclic rotation and destabilization, stopping on reaching three strands
+or when no endpoint move applies. Every operation preserves the isotopy type
+of the closure and never increases word length or strand count.
+
+If both the final word and strand count are unchanged, the original direct
+cube certificate is used. No witness of an unsuccessful simplification search
+is required. If there is progress, an \texttt{exceptional-reduction-v1} child
+contains the checked Markov trace followed by a terminal proof. Three-strand
+residuals use the compressed quotient recognizer on a deterministically built
+balanced grammar for the explicit residual word. Wider residuals still use
+the complete cube, now on the shorter word. Reaching three strands, rather
+than guessing minimal braid index, is sufficient for the complete terminal
+criterion. Failure to reach three strands remains eligible for homology.
+
+Replay starts from the original factor's projected grammar, expands it under
+the same cap, and invokes the independent maintained endpoint verifier on the
+supplied trace. It reconstructs the actual resulting strand count and word.
+The terminal grammar is rebuilt from that word, then the corresponding
+three-braid or cube proof is checked against it. The declared final word is
+never used as a substitute for replay. Version three is required for this
+nested reduction proof; an older forest cannot silently acquire new terminal
+semantics.
+
+The endpoint verifier checks recorded choices without searching for an
+endpoint. Its legacy version-one path shares deterministic free/cyclic
+cancellation with discovery, while its version-two path replays local moves
+on original positions. That existing trusted boundary is retained; we do not
+claim two independent implementations of every simplification primitive.
+Both maintained Markov schemas contain no Boolean fields, so the adapter
+rejects Boolean values throughout the nested witness before legacy replay.
+This prevents Python integer equality from accepting an aliased signed
+generator or metadata field. External exceptions, including a user callback's
+\texttt{ValueError} subtype, propagate without reclassification as a knot
+verdict.
+
+\subsection{Resources and asymptotic accounting}
+
+The public producer enables this reduction by default. The control
+\path{use_fallback_reduction=False}, or CLI flag
+\texttt{--no-fallback-reduction}, provides an ablation of only the new
+pre-cube stage. It retains factor priority and selective negative proofs.
+Verification accepts every supported proof independently of the producer's
+choice of this control. Existing crossing preflight, input and proof bytes,
+shared work, time, string nodes and cumulative cube-generator allowances
+remain in force. A solved reduced three-braid consumes no cube generators,
+but its string production and replay still consume the shared string budget.
+
+Let $f$ be the number of factors and $g$ the input bit size. The new ordering
+adds $O(f\log(f+1))$ comparisons after the existing polynomial projections.
+For an admitted wider factor, explicit endpoint descent costs $O(n+m)$ word
+operations on this one-component domain. The residual has no more letters or
+strands than its source. Constructing a balanced residual grammar and applying
+the complete three-braid procedure therefore adds polynomial work in that
+explicit factor size; a remaining cube retains the previous exponential upper
+bound. Consequently the implemented uncapped bound remains
+\[
+ \operatorname{poly}(g)+\sum_{i\in I}2^{O(\kappa_i)},
+\]
+where $I$ and $\kappa_i$ refer to the exceptional factors \emph{before} this
+new elementary reduction. We do not replace them by residual minority counts
+without proving a new singleton bound for those residuals. Early negative
+termination can remove summands from the actual work, but a worst-case unknot
+still requires all factors. No new general quasi-polynomial claim follows.
+
+\subsection{Validation and measurements}
+
+Twelve new tests exercise a reducible wider unknot with zero cube allowance,
+a stalled nontrivial four-braid, and a shorter residual that still needs the
+cube. They verify that later finite and compressed negative factors run before
+an earlier wider factor; that selective proofs cannot prove unknotness or be
+rebound to another interval; and that all positive factors remain necessary.
+They mutate reduction output, terminal source grammars and versions, replay
+with reduction/rank discovery disabled, and exercise exact shared-work
+boundaries and external cancellation. The earlier direct-cube tests explicitly
+disable the new reduction, preserving coverage of the fallback rather than
+accidentally testing only a simplification shortcut.
+
+All 78 focused tests pass, followed by all 909 maintained tests with Regina in
+212.426 seconds. The paired experiments load the previous maintained package
+from commit \texttt{666a62f6a} under a separate package name, sharing the
+unchanged native string kernel. Baseline module hashes are retained, rather
+than approximating the old behavior by disabling one new option.
+
+A 160-case cross-version audit reuses the preceding section's independently
+checked signed braid inputs. Old and new public verdicts agree in all cases:
+108 unknots and 52 nontrivial knots. The new verifier accepts every old proof
+and every newly produced proof. Public cube use falls from 17 to 12 cases.
+The audit also fixes the operational difference at a zero generator allowance:
+a wider trivial factor followed by a two-strand trefoil was previously
+inconclusive and now has a checked nontriviality proof for the later factor.
+The 5.581-second audit records source hashes and the prior input audit's hash
+in \path{data/adaptive-forest-audit.json}. An initial baseline-loader path
+failure is retained separately; it occurred before any algorithm comparison.
+
+\input{tables/adaptive_forest.tex}
+
+The performance experiment uses seed 261008494, one shuffled warmup and five
+measured rounds on nine inputs. It compares the actual previous maintained
+host, an identical old control, the current host, an identical current control,
+and the current host with only elementary fallback reduction disabled.
+Every arm includes its normal proof production and independent replay.
+The last arm retains priority and selective negative proofs, separating their
+benefit from pre-cube simplification. All signed inputs come from the checked
+fixture constructors, and all arms must agree on the verdict. Source hashes,
+raw samples, execution orders, proof sizes and resource counts are retained in
+\path{../fast/results/adaptive_forest_20261008.json}.
+
+The reducible nine-crossing four-braid improves from a 265.060 ms median to
+2.039 ms, with median paired ratio 128.769. Its cumulative cube-generator
+count falls from 4,638 to zero, and its proof shrinks from 68,785 to 1,395
+canonical bytes. Disabling reduction restores the expensive cube. For the
+11-crossing word whose shorter residual remains four-stranded, the median
+improves from 1,203.179 to 138.640 ms, with paired ratio 8.889; generator
+reservations fall from 28,470 to 3,774. This case checks that useful progress
+need not reach a polynomial terminal to reduce complete-fallback cost.
+
+When the nine-crossing wider unknot precedes a two-strand trefoil, priority
+and the selected-factor proof reduce 163.016 ms to 0.696 ms, with paired ratio
+234.638. The proof shrinks from 69,095 to 656 bytes. The no-reduction arm is
+similarly fast, isolating scheduling and selective replay as the mechanism.
+A later compressed nontrivial three-braid gives a paired ratio of 9.539 by
+the same mechanism. The original shared budget would have spent work on the
+irrelevant earlier cube in both cases.
+
+For a positive mixed forest containing a $2^{512}$ conjugation sleeve, all
+factors remain necessary, but the wider factor no longer needs a cube.
+The median falls from 238.687 to 79.079 ms, with paired ratio 2.980.
+A smaller positive sum improves by paired ratio 35.050. On the stalled
+four-braid, the current 135.774 ms median is close to the old 134.800 ms;
+its complete cube remains necessary. The positive all-three-braid forest
+and direct three-braid control likewise show no meaningful gain. Their
+small differences are retained, not used to claim an improvement.
+
+Identical-arm paired ratios range from 0.961 to 1.077. The short reducible
+case has the widest control variation, so the large ratios should be read
+as approximate family-specific improvements, not exact machine-independent
+constants. The experiment has 225 measured calls and 45 warmup calls.
+It does not measure arbitrary-diagram recognition or bound the general
+exceptional minority parameter. The next opportunities include avoiding
+unneeded projection preparation on negative forests and integrating the
+pending sparse two-meridian seed search from report 47; neither is included
+in these timings.
