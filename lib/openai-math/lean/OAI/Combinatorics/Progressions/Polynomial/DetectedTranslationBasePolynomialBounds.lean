@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: use MvPolynomial.coeff_add for the translated base
+polynomial multiplication identity on Lean 4.32. All upstream statements
+and quantitative bounds are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.ControlledDetectedTranslationBaseBounds
 
 namespace OAI
@@ -61,7 +66,7 @@ noncomputable def detectedTranslationBasePolynomial
   rw [(pi (pairModels (weightedTranslationResidueNilmanifold w d hw hwd M hM) D)).filtration.scalarSymbolPolynomial_mul b ω hN (fun _ : σ => 1)
     (detectedTranslationBaseFunctional w d hw hwd M hM D i)
     (detectedTranslationBaseFunctional_lie w d hw hwd M hM D i) hd,
-    AddMonoidAlgebra.coeff_add, Finsupp.add_apply]
+    MvPolynomial.coeff_add]
 
  theorem detectedTranslationBasePolynomial_factorization (hd : 1 ≤ d)
     (E P Q X : (pi (pairModels (weightedTranslationResidueNilmanifold w d hw hwd M hM) D)).filtration.RealPolynomialSymbolGroup (fun _ : σ => 1))
