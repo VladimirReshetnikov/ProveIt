@@ -1,0 +1,33 @@
+\begin{center}\small
+\begin{tabular}{@{}llrrr@{}}
+\toprule
+LCS family & $h$ & Before & A/A & Transitions \\
+\midrule
+Prefix & 8 & 1.089 & 1.099 & 0.122 \\
+Prefix & 32 & 8.395 & 8.376 & 0.283 \\
+Prefix & 500 & limit & limit & 3.612 \\
+Interior & 8 & 85.855 & 87.077 & 0.197 \\
+Interior & 32 & limit & limit & 0.463 \\
+Interior & 500 & limit & limit & 5.120 \\
+Equal bigrams & 8 & 7.066 & 7.085 & 7.235 \\
+Equal bigrams & 32 & 71.284 & 71.929 & 71.226 \\
+Equal bigrams & 500 & limit & limit & limit \\
+\bottomrule
+\end{tabular}
+\end{center}
+Median milliseconds including construction; limits are censored.
+\begin{center}\footnotesize
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+Operation & $h$ & Before & A/A & Matcher & Pruning & Both \\
+\midrule
+Partial & 8 & 176.782 & 174.430 & 12.035 & 165.455 & 0.356 \\
+Partial & 32 & limit & limit & 285.692 & limit & 0.762 \\
+Partial & 500 & limit & limit & limit & limit & 7.078 \\
+Quotient & 8 & 0.330 & 0.325 & --- & --- & 0.363 \\
+Quotient & 32 & 0.909 & 0.930 & --- & --- & 1.025 \\
+Quotient & 500 & 14.130 & 14.105 & --- & --- & 15.340 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Median milliseconds including construction. Both denotes the initial filter before the uniform-word shortcut. Partial operations do not produce knot verdicts.

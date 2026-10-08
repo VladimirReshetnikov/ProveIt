@@ -2,6 +2,21 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`lcs_transitions.tex` strengthens the compressed substring bound with shared
+directed signed-letter pairs. It proves exact pair extraction and constrained
+run summaries, and adds a necessary pair filter before whole-donor matching.
+Cyclic seams and inverse orientation are handled explicitly. The primary audit
+includes 225 whole-knot queries, 135 LCS queries, 75 partial operations and 45
+quotient searches. A measured quotient overhead prompted an exact uniform-word
+shortcut and a separate 315-operation follow-up. An equal-bigram control still
+hits the work limit; the general recognition bound remains unproved. Raw data
+are in `../fast/results/lcs_transitions_20261008.json` and
+`../fast/results/donor_pair_shortcut_20261008.json`; logs are in
+`data/lcs-transitions-*` and `data/donor-pair-shortcut-*`. All 687 tests pass
+with Regina in 162.201 seconds. The focused audit brings the quotient case
+back to the historical controls while preserving the new partial-move gain.
+The article has 199 pages with no new layout warnings or unresolved references.
+
 `lcs_bounds.tex` adds exact signed-alphabet run bounds and incremental
 optimality checks to the complete compressed substring primitive. It proves
 the grammar summary, distinguishes local-pair from global stopping, and gives

@@ -4,14 +4,18 @@ Compressed substring queries also bound matches by the directed signed-letter
 pairs shared by both words. This handles some expensive cases with identical
 alphabets. Whole-donor search rejects impossible pair sets, including the
 cyclic seam and inverse orientation, before allocating inverses or matching.
-All 686 tests pass. The complete exact fallback and independent relator replay
-remain in place; a general subexponential bound is still unproved.
+Uniform words reuse their exact metadata to avoid redundant pair extraction.
+All 687 tests pass. The complete exact fallback and independent relator replay
+remain in place; a general subexponential bound is still unproved. See
+[`lcs_transitions.tex`](../synthesis/lcs_transitions.tex) for the proofs and
+controlled results. Reproduce them with `benchmark_lcs_transitions.py` and
+`benchmark_donor_pair_shortcut.py`, each taking `--output PATH`.
 
 Compressed substring queries now use exact shared-alphabet run bounds and
 process extension witnesses as soon as they are checked. Letters absent from
 the other word act as barriers; once a witness reaches a proved global or local
 bound, the remaining candidates are skipped. Same-alphabet queries retain the
-complete fallback. All 686 tests pass, including exponentially long inputs
+complete fallback. All 687 tests pass, including exponentially long inputs
 where tables are forbidden once optimality is already proved. See
 [`lcs_bounds.tex`](../synthesis/lcs_bounds.tex) for the proof and scope.
 Reproduce the isolated component audit with
@@ -22,7 +26,7 @@ cyclic overlaps over all donor rotations and both signs. The exact compressed
 longest-common-substring primitive uses dyadic overlap progressions and at most
 six periodic extension candidates per progression. Shared-letter counts give
 safe pruning and early completion bounds. Existing independent relator replay
-checks every emitted move. The integrated suite has 686 passing tests; the
+checks every emitted move. The integrated suite has 687 passing tests; the
 local query has a polynomial bound, while general recognition remains unproved.
 See [`compressed_lcs.tex`](../synthesis/compressed_lcs.tex) for proofs and limits.
 
@@ -32,7 +36,7 @@ check the entire removed prefix. Exact uniform-letter summaries make equality
 and prefix queries on pure powers constant work, and ineligible donor pairs are
 pruned before allocating inverses. On supplied pure-power presentations this
 turns repeated subtraction into Euclidean division; the general recognition
-bound remains unproved. The integrated suite has 686 passing tests with Regina,
+bound remains unproved. The integrated suite has 687 passing tests with Regina,
 including a genuine Gordian trace accepted by both verifiers, forged macro
 rejection, and a compressed `2^500` replay without expansion.
 The proof and limits are in [`relator_powers.tex`](../synthesis/relator_powers.tex).
@@ -79,7 +83,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 686 passing tests
+diagram is not checked twice. The integrated suite now has 687 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then
