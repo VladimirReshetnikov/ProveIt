@@ -43,7 +43,7 @@ def _automaton(word, budget):
     return lengths, links, edges, ends
 
 
-def overlap_move(words, budget):
+def pairwise_overlap_move(words, budget):
     """Return a largest guaranteed shortening, or None; no substring expansion.
 
     O(n + m L) dictionary operations for n slots, m nonempty relators and total length L,
@@ -111,3 +111,28 @@ def apply_overlap(words, move, budget, reduce):
         raise ArithmeticError('suffix-automaton overlap failed literal comparison')
     replacement = [-x for x in reversed(donor[overlap:])] + target[overlap:]
     words[move['target']] = reduce(replacement, budget)
+
+
+def overlap_move(words, budget, *, backend='adaptive', stats=None):
+    """Exact maximum cyclic shortening under one shared resource budget.
+
+    Adaptive search retains donor pruning in a longest-first prelude and continues
+    with the joint index after O(L log(L+1)) charged work. Fixed-size slot
+    lists retain the original query. The joint index may choose different
+    tied witnesses; neither discovery policy is trusted by certificate replay.
+    """
+    if backend not in ('adaptive', 'joint', 'pairwise'):
+        raise ValueError('overlap backend must be adaptive, joint, or pairwise')
+    if stats is not None and not isinstance(stats, dict):
+        raise ValueError('stats must be a dictionary or None')
+    if stats is not None:
+        stats.clear()
+    if backend == 'pairwise':
+        result = pairwise_overlap_move(words, budget)
+        if stats is not None:
+            stats.update(backend='pairwise', best_gain=0 if result is None else
+                         2*result['overlap']-len(words[result['donor']]))
+        return result
+    from .cyclic_overlap_index import bounded_overlap_move, joint_overlap_move
+    query = bounded_overlap_move if backend == 'adaptive' else joint_overlap_move
+    return query(words, budget, stats=stats)
