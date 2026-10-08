@@ -364,6 +364,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
+              group_adaptive: bool = False, group_switch_letters: int | None = None,
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
@@ -409,6 +410,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("group_compressed must be boolean")
     if type(group_compressed_search) is not bool:
         raise ValueError("group_compressed_search must be boolean")
+    if type(group_adaptive) is not bool:
+        raise ValueError("group_adaptive must be boolean")
+    if group_adaptive and group_compressed_search:
+        raise ValueError("group_adaptive and group_compressed_search are mutually exclusive")
+    if group_switch_letters is not None:
+        if type(group_switch_letters) is not int or group_switch_letters < 0:
+            raise ValueError("group_switch_letters must be a nonnegative integer or None")
+        if not group_adaptive:
+            raise ValueError("group_switch_letters requires group_adaptive")
     if type(group_max_work) is not int or group_max_work < 0:
         raise ValueError("group_max_work must be a nonnegative integer")
     if group_seconds is not None:
@@ -667,6 +677,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        group_options=dict(seconds=group_seconds, relator_moves=group_relators,
                                           compressed_verification=group_compressed,
                                           compressed_search=group_compressed_search,
+                                          adaptive_search=group_adaptive, switch_letters=group_switch_letters,
                                           max_work=group_max_work) if use_group else None,
                        window_options=None if window_radius is None else dict(
                            radius=window_radius, max_objects=window_max_objects, seconds=window_seconds,

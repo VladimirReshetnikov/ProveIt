@@ -106,3 +106,24 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         if stats is not None:
             stats.update(arena.stats, nodes=len(arena.rules)-1,
                          largest_word_bits=max(arena.lengths).bit_length())
+
+
+def _continue_compressed(words, alive, moves, budget, max_nodes, relator_moves, stats):
+    """Internal handoff from an intact explicit state; never a verdict API.
+
+    Preserve relator slots, generator names and the existing trace. Conversion
+    and continuation consume the remainder of the original search allowance.
+    """
+    arena = WordArena(max_nodes=max_nodes, max_work=budget.left, check=budget.check)
+    try:
+        roots = [arena.reduce(arena.from_word(word)) for word in words]
+        return _search(arena, roots, alive, moves, relator_moves=relator_moves,
+                       max_letters=budget.max_letters)
+    except CompressedLimit as exc:
+        budget.check()
+        raise GroupLimit(str(exc)) from exc
+    finally:
+        budget.left = arena.left
+        if stats is not None:
+            stats['compressed'] = dict(arena.stats, nodes=len(arena.rules)-1,
+                                       largest_word_bits=max(arena.lengths).bit_length())
