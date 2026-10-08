@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved covered-chart Borel structure as
+OpensMeasurableSpace in the normalized and weighted complex-integral proofs,
+avoiding Lean 4.32 instance-search timeouts. Theorem statements are unchanged. -/
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import OAI.Combinatorics.Progressions.Geometry.RestrictedComplexChartSupport
 import OAI.Combinatorics.Progressions.Probability.AllocatedLongIntegralMass
@@ -148,6 +151,8 @@ theorem mixedCoveredJet_normalized_complex_integral
     (∫ z, (f z : ℂ) * φ (chart z) ∂raw) =
       ∫ y, (restrictedChartDensity chart region 1
         (fun z => f z / coveredJetArrayScale (O := O) U) y : ℂ) * φ y ∂haar := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O E n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   let ρ := restrictedChartDensity chart region 1
     (fun z => f z / coveredJetArrayScale (O := O) U)
   have hρm : Measurable ρ :=
@@ -260,6 +265,8 @@ theorem mixedCoveredJet_weighted_complex_integral
     (∫ y, restrictedComplexChartDensity chart region 1 f y * test y ∂haar) =
       (coveredJetArrayScale (O := O) U : ℂ) *
         ∫ z in region, f z * test (chart z) ∂raw := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O E n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   have hq : Measurable chart :=
     (coveredJetChart_continuous (O := O) U b hb bW d).measurable.comp
       (mixedCoveredJetCoordinates_measurable (O := O) (B := E) (n := n) U o d)
