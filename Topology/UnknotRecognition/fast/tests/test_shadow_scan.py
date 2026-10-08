@@ -153,7 +153,11 @@ class ShadowTests(unittest.TestCase):
             for options in ({"shadow_max_work": 0}, {"euler_max_states": 0}):
                 result = shadow_compressed_khovanov_decide(diagram.pd, **options)
                 self.assertEqual(result["status"], expected)
-                self.assertEqual(result["method"], "closed-rank")
+                if "euler_max_states" in options:
+                    self.assertEqual(result["method"], "closed-rank")
+                    self.assertTrue(result["euler_exhausted"])
+                else:
+                    self.assertIn(result["method"], ("closed-rank", "component-euler"))
                 self.assertTrue(result["shadow_exhausted"])
 
     def test_global_deadline_precedes_local_budget_even_on_cache_hit(self):

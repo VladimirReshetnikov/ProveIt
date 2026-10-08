@@ -116,7 +116,8 @@ class TaitBlockTests(unittest.TestCase):
         out = shadow_compressed_khovanov_decide(d.pd, shadow_max_work=2000)
         self.assertEqual(out['status'], 'KNOTTED')
         self.assertTrue(out['shadow_exhausted'])
-        self.assertEqual(out['method'], 'closed-rank')
+        self.assertEqual((out['method'], out['stage']), ('component-euler', 11))
+        self.assertFalse(out['euler_exhausted'])
 
 
 if __name__ == '__main__':
