@@ -11,7 +11,38 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 603 passing tests.
+diagram is not checked twice. The integrated suite now has 611 passing tests.
+
+An optional complete test for **projection graphs of treewidth at most two**
+is enabled by `--treewidth-two` or `use_treewidth_two=True`. It first certifies
+that the crossing graph excludes a K4 minor, then computes the exact integer
+determinant. On this class, the structural classification as connected sums
+of two-strand torus knots makes determinant one sufficient for `UNKNOT`.
+Arbitrary determinant-one knots do not pass this rule. No supplied braid or
+rational-tangle presentation is required.
+
+```sh
+python -B -m fastunknot recognize examples/trefoil.json --treewidth-two --no-braid
+```
+
+The local allowance defaults to 0.1 seconds (`--treewidth-two-seconds`);
+exhaustion continues the existing recognizer, while a global deadline yields
+`UNKNOWN`. Python's `treewidth_two_seconds=None` removes the local cap.
+`fastunknot.treewidth_two.treewidth_two_certificate` provides the uncapped
+standalone producer, returning `None` outside the class.
+`verify_treewidth_two_certificate` independently replays the graph order and
+recomputes the determinant with Fox matrices and rational elimination.
+The producer has polynomial bit cost on this class; it does not implement
+the published linear-time generalized-diagram algorithm. A capped probe
+followed by Khovanov fallback does not inherit the polynomial bound.
+
+`benchmark_treewidth_two.py --output FILE` measures validation plus complete
+recognition on fresh PD inputs with paired controls. The recorded run improves
+three mixed-sign two-strand unknot cases by 1.085–1.142x, but slows several
+cases already handled cheaply by Seifert certificates. It remains optional.
+See [`treewidth_two.tex`](../synthesis/treewidth_two.tex) for the theory and
+[`treewidth_two_20261008.json`](results/treewidth_two_20261008.json) for raw
+measurements. The general subexponential recognition goal remains open.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name

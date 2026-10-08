@@ -1,0 +1,185 @@
+\section{A complete polynomial test on certified treewidth-two projections}
+\label{sec:treewidth-two}
+
+\subsection{The structural restriction that makes determinant one sufficient}
+
+The general determinant-one implication is false: the Conway and
+Kinoshita--Terasaka knots both survive that scalar test.  Here we add an
+explicit graph hypothesis to make it a complete decision rule.  Let $G_D$
+be the projection graph of a validated classical one-component diagram $D$:
+vertices are crossings and edges are the arcs between crossings.  This is
+\emph{not} a Tait graph or a knot-complement triangulation graph.
+Loops and multiple edges do not affect the presence of a $K_4$ minor.
+
+The structural theorem of Ru\'e, Thilikos and Velona
+\cite{rue-thilikos-velona} classifies links admitting a $K_4$-minor-free
+projection as disjoint and connected sums of two-strand torus links.
+For a knot, this reduces to connected sums of $T(2,q_i)$ with odd $q_i$,
+with trivial factors allowed.  Indeed a connected sum of links with
+$c_1,c_2$ components has $c_1+c_2-1$ components, so a two-component torus
+link cannot occur in a decomposition resulting in one component.
+
+\begin{proposition}
+For a classical knot diagram $D$ with $\operatorname{tw}(G_D)\le2$,
+\[
+ D\text{ represents the unknot}\quad\Longleftrightarrow\quad
+ \det(D)=1.
+\]
+\end{proposition}
+\begin{proof}
+Treewidth at most two is equivalent to excluding a $K_4$ minor.  Apply the
+classification above.  For odd $q$, the Alexander polynomial of $T(2,q)$,
+up to a Laurent unit and mirroring, is
+$(t^{|q|}+1)/(t+1)$, whose value at $t=-1$ has absolute value $|q|$.
+The Alexander polynomial multiplies under connected sum, hence
+$\det(D)=\prod_i |q_i|$.  This product is one exactly when all factors
+are trivial.  Conversely every unknot has determinant one.
+\end{proof}
+
+This uses the given projection, with no supplied braid or Montesinos
+presentation.  A rejected projection does not imply that its knot type
+has no other diagram in the class.  In particular, it is not a
+knottedness certificate.
+
+Bodlaender, Burton, Fomin and Grigoriev \cite{bodlaender-treewidth-two}
+give a stronger, linear-time recognition algorithm on the same class,
+using generalized diagrams with twist-labelled double edges.  Our
+implementation uses the classification and an exact determinant instead;
+it does not implement their linear-time algorithm or inherit its time
+bound.  This separates a directly checkable implementation from a future
+optimization of its arithmetic.
+
+\subsection{A graph certificate before any positive invariant verdict}
+
+The producer in \code{fastunknot/treewidth\_two.py} builds the simple
+projection adjacency sets.  It queues vertices of degree at most two.
+Deleting a degree-two vertex joins its two remaining neighbours; existing
+parallel edges coalesce.  It records the deletion order.  Every operation
+preserves the property of having treewidth at most two in both directions.
+For degree two, suppression is an edge contraction followed by removal of
+redundant parallel edges, so it cannot increase treewidth.  Conversely, a
+width-two decomposition of the remaining graph has a bag containing the
+new neighbour edge; attach the deleted vertex in a new bag of size three.
+The cases of degree zero or one are immediate.
+
+Every nonempty graph of treewidth at most two has a vertex of degree at
+most two.  Consequently elimination either deletes everything and supplies
+a certificate, or stops at a graph of minimum degree at least three and
+rejects the input projection.  Deletion never increases a remaining
+vertex's degree: a possible fill edge replaces the incident edge just
+removed.  This justifies the queue implementation.  Each deletion examines
+at most two neighbours and creates at most one fill edge.  The graph phase
+uses $O(n)$ adjacency operations and $O(n)$ words; the recorded order uses
+$O(n\log(n+1))$ bits.
+
+A verifier does not trust the producer's queue or adjacency state.  It
+reconstructs projection edges from PD labels, checks that the order is a
+permutation of all crossings, and replays deletion and fill on an edge set.
+It rejects any step with more than two remaining neighbours.  The simple
+independent replay is polynomial rather than linear.  Crucially, it must
+succeed \emph{before} an exact determinant of one is allowed to certify an
+unknot.  Certificates also bind the crossing count, schema version, method
+and exact verdict.  The width witness is a sufficient structural certificate,
+not an implementation of a formal proof of the imported classification.
+
+\subsection{Exact integer arithmetic and independent verification}
+
+The producer builds the signed checkerboard graph using the existing
+PD corner convention.  For either shading, the absolute signed
+spanning-tree sum is the knot determinant.  We choose the shading with
+fewer vertices, discard loops, sum parallel signed weights and use the
+articulation-block product from Section~\ref{sec:tait-blocks}.
+The reduced signed Laplacian of every nontrivial block is evaluated by
+fraction-free Bareiss elimination with exact division and row exchanges
+when a leading pivot is zero.  Bridge blocks contribute just their integer
+weight.  The shared determinant routine was moved to
+\code{integer\_determinant.py}; the marked-continuation backend retains its
+existing interface and algorithm.
+
+No modular residue is promoted to an exact determinant.  A cancelled
+parallel sum and a zero leading pivot require exact handling even though a
+validated classical knot ultimately has an odd, nonzero determinant.
+The stored determinant is hexadecimal, so large composite knots do not
+hit Python's decimal-conversion ceiling when their certificates are
+serialized as JSON.
+
+The independent certificate verifier avoids the checkerboard construction
+and Bareiss entirely.  It constructs Wirtinger arcs by joining only the
+overpassing arc labels at each crossing.  At $t=-1$, every Fox row is
+\[
+ 2x_{\rm over}-x_{\rm under,1}-x_{\rm under,2},
+\]
+independently of crossing sign and orientation.  It removes one row and
+one column and evaluates the resulting cofactor using exact rational
+Gaussian elimination.  Its absolute value must equal the reported
+integer, and the verdict must be precisely the determinant-one decision.
+This provides a separate graph representation, knot-matrix construction
+and elimination algorithm for replay.
+
+With $n$ crossings, checkerboard matrices have $O(n)$ rows and integer
+entries of size $O(n)$.  Hadamard bounds give $O(n\log(n+1))$ bits for
+all relevant minors, hence for Bareiss entries; numerator products and
+exact divisors remain polynomial in bit length.  Summing cubic arithmetic
+cost over blocks gives at most $O(n^3)$ integer arithmetic operations.
+Thus the uncapped certificate producer has a polynomial bit bound on this
+class, with a conservative dense memory bound also polynomial.  This is
+weaker than the cited linear algorithm, but independent of the size of any
+Khovanov complex.
+
+\subsection{Adaptive integration and the exact scope of the guarantee}
+
+The CLI option \code{--treewidth-two}, or Python option
+\code{use\_treewidth\_two=True}, enables this stage after checked source
+certificates and before the usual Seifert and simplification stages.
+The local allowance defaults to $0.1$ seconds and includes lazy module
+loading, graph certification and determinant work.  Its callback first
+checks the global deadline, then the local one; graph loops and determinant
+rows poll cooperatively.  A local timeout or allocation failure records a
+skipped probe and continues the existing recognizer.  A projection outside
+the class also continues.  A global timeout retains \code{UNKNOWN}.
+No interrupted order or partially multiplied determinant is published as
+a verdict.  The local interval and discarded work remain part of the
+complete query's global elapsed time.
+
+The standalone producer has no local cap.  An uncapped local query in the
+Python recognizer sets \code{treewidth\_\allowbreak two\_\allowbreak seconds}
+to \code{None}.
+The polynomial claim belongs to the uncapped
+restricted-class procedure.  A capped probe that falls back to Khovanov
+does not give the whole pipeline a polynomial guarantee, even on inputs
+whose projection lies in the class.  The optional stage also does not
+change the general exponential upper bound or establish a general
+subexponential recognizer.
+
+\subsection{Validation and whole-query measurements}
+
+Eight added tests cover: an independent branch-set search for $K_4$ minors
+on all 64 four-vertex graphs and 25 larger graphs; all 170 signed
+one-component two-strand braids through seven crossings against full
+cube-of-resolutions recognition; random braid and named-diagram determinants
+against exact Alexander polynomials; mirrored and relabelled diagrams;
+forged certificates; CLI dispatch; early and late cancellation; and local
+fallback versus global exhaustion.  The Conway, Kinoshita--Terasaka and
+stored determinant-one grid knots explicitly test that the graph restriction
+cannot be omitted.  A connected sum of 10,000 trefoils produces determinant
+$3^{10000}$ and a JSON-safe certificate on 30,000 crossings.  The full suite
+result is recorded in \code{data/treewidth-two-integrated-tests.txt}.
+
+\code{benchmark\_treewidth\_two.py} measures validation plus full recognition
+on fresh, source-free PD inputs.  Fourteen inputs each receive one excluded
+warm-up and seven shuffled paired rounds: default, an identical default
+control, and the optional stage.  The interpreter is warm; imports are not
+part of the measured rounds.  All 294 measured queries finish with matching
+verdicts.  Median paired speedups on mixed-sign two-strand unknot diagrams
+of 101, 501 and 2001 crossings are respectively $1.085$, $1.142$ and $1.126$.
+The default/control ratios range from $0.954$ to $1.038$.
+
+Other inputs show why the stage remains optional.  The trefoil has a
+$0.606$ speedup ratio, tree medials range from $0.756$ to $0.838$, and the
+two 120-crossing trefoil sums have ratios near $0.67$: existing Seifert
+certificates already decide these cheaply.  Outside-class inputs range
+from $0.862$ to $1.018$.  These measurements support a modest improvement
+on a specific family and a new independently certified input-class bound,
+not a default-wide performance improvement.  Exact inputs, execution order,
+individual timings, methods and certificates are retained in
+\code{results/treewidth\_two\_20261008.json}.
