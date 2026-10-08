@@ -19,10 +19,10 @@ on pattern and text rules. The paper's analysis counts operations on string
 positions; bit costs require a further factor depending on their binary
 length. Independently, Matsubara et al.~\cite{matsubara-compressed-lcs} give a
 polynomial algorithm for longest common substrings of two SLP strings.
-That stronger primitive would support a complete cyclic-overlap search on
-doubled relators, but it is not implemented here. Thus arbitrary compressed
-overlap is an available algorithmic direction, not an established exponential
-barrier.
+That stronger primitive supports complete cyclic-overlap search on doubled
+relators. It was not implemented at this checkpoint; the subsequent
+implementation and local completeness proof appear in
+Section~\ref{sec:compressed-lcs}.
 
 \subsection{The implemented occurrence-table invariant}
 
@@ -307,4 +307,5 @@ No new delivery was present in \code{docs/incoming} during this iteration.
 The suggested \code{openai/math} repository remained at
 \code{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}. The newly integrated research
 is the exact compressed-pattern-matching method cited above; the fuller
-longest-common-substring algorithm remains a documented next step.
+longest-common-substring algorithm was the next step at this checkpoint and
+is implemented in Section~\ref{sec:compressed-lcs}.

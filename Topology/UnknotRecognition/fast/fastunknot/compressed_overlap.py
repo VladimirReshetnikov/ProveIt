@@ -1,7 +1,6 @@
-"""Whole-donor deletion using fully compressed exact substring matching.
+"""Exact compressed relator overlaps with a cheap whole-donor first stage.
 
-This searches the recorded donor spelling and its inverse in a doubled target.
-It covers every target rotation, but not all donor rotations or partial overlaps.
+The complete fallback searches all cyclic rotations and partial overlaps.
 Failure is a search stall, never a conclusion about the presented group.
 """
 from .compressed_match import first_occurrence
@@ -65,3 +64,52 @@ def apply_whole_donor(arena, roots, move):
     if copies > 1:
         arena.stats['relator_power_moves'] = arena.stats.get('relator_power_moves', 0)+1
         arena.stats['max_relator_power_bits'] = max(arena.stats.get('max_relator_power_bits', 0), copies.bit_length())
+
+
+def cyclic_overlap_move(arena, roots):
+    """Find a strictly shortening overlap over all rotations and both signs.
+
+    Searching the shorter donor of each unordered pair suffices for existence:
+    it offers at least the gain of using the longer relation as donor.
+    """
+    from .compressed_lcs import CommonSubstring
+    nonempty = sorted(((i, root) for i, root in enumerate(roots) if root),
+                      key=lambda item: (arena.lengths[item[1]], item[0]))
+    counts = {i: arena.summarize([root])[0] for i, root in nonempty}
+    matcher, doubled = CommonSubstring(arena), {}
+    for index, (donor, source) in enumerate(nonempty):
+        size = arena.lengths[source]
+        for target, other in nonempty[index+1:]:
+            arena.tick(len(counts[donor])+1)
+            shared = sum(min(n, counts[target].get(g, 0)) for g, n in counts[donor].items())
+            if 2*shared <= size:
+                continue
+            if other not in doubled:
+                doubled[other] = arena.concat(other, other)
+            for inverse in (False, True):
+                pattern = arena.inverse(source) if inverse else source
+                if pattern not in doubled:
+                    doubled[pattern] = arena.concat(pattern, pattern)
+                overlap, target_start, donor_start = matcher.longest(doubled[other], doubled[pattern], shared)
+                if 2*overlap > size:
+                    return dict(kind='relator', target=target, donor=donor,
+                        target_rotation=target_start % arena.lengths[other],
+                        donor_rotation=donor_start % size, inverse=inverse, overlap=overlap)
+    return None
+
+
+def apply_cyclic_overlap(arena, roots, move):
+    """Apply a producer overlap after exact prefix validation; no expansion."""
+    target, donor = move['target'], move['donor']
+    left, right = roots[target], roots[donor]
+    ll, rr = arena.lengths[left], arena.lengths[right]
+    i, j, overlap = move['target_rotation'], move['donor_rotation'], move['overlap']
+    left = arena.concat(arena.slice(left, i, ll), arena.slice(left, 0, i))
+    if move['inverse']:
+        right = arena.inverse(right)
+    right = arena.concat(arena.slice(right, j, rr), arena.slice(right, 0, j))
+    if (not rr//2 < overlap <= min(ll, rr)
+            or not arena.equal(arena.slice(left, 0, overlap), arena.slice(right, 0, overlap))):
+        raise ArithmeticError('compressed cyclic overlap failed exact prefix replay')
+    roots[target] = arena.cyclic_reduce(arena.concat(
+        arena.inverse(arena.slice(right, overlap, rr)), arena.slice(left, overlap, ll)))

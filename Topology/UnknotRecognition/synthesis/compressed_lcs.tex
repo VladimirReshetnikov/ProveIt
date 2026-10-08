@@ -1,0 +1,292 @@
+\section{Complete cyclic overlap queries on compressed relators}
+\label{sec:compressed-lcs}
+
+\subsection{The local completeness gap being removed}
+
+The preceding whole-donor fallback leaves a concrete gap: it can miss an
+overlap longer than half the donor if that overlap uses only part of the
+donor or starts at another cyclic position. The new fallback computes a
+longest common substring of doubled relators, capped at one donor turn.
+It therefore searches all cyclic rotations and both donor signs, without
+expanding either word. It uses the existing ordinary relator certificate;
+no new certificate format or trusted verifier operation is introduced.
+
+The cut-pair and periodic-extension strategy follows Matsubara et
+al.~\cite{matsubara-compressed-lcs}. Their implementation uses a particular
+overlap/FM data structure and proves an $O(s^4\log s)$ arithmetic-operation
+bound. Our implementation combines the existing deterministic SLP equality
+engine with a dyadic construction of overlap progressions using the
+Lifshits occurrence table. These substituted primitives have different
+costs. We prove a polynomial local bound below; we do not assign the
+published degree to this implementation. The later refinement in
+Section~\ref{sec:lcs-bounds} adds stronger inexpensive bounds and
+incremental witness processing; the measurements below describe the
+initial complete-query checkpoint.
+
+\subsection{Dyadic construction of suffix-prefix overlaps}
+
+Write $X[i:j]$ for a zero-based half-open substring and define
+\[
+ \operatorname{OL}(X,Y)=
+ \{k:1\le k\le\min(|X|,|Y|),\quad X[|X|-k:|X|]=Y[0:k]\}.
+\]
+We represent this set as disjoint arithmetic progressions of lengths.
+For each power of two $l$, consider the band
+$[l,h]$, where $h=\min(2l-1,|X|,|Y|)$. An overlap of length in this band
+must begin with the seed $P=Y[0:l]$, occurring in
+$X[|X|-h:|X|]$. The window has length less than $2l$; all seed occurrences
+share a cut and are represented by an arithmetic progression. Their starts
+$p$ correspond to candidate overlap lengths $|X|-p$.
+
+A singleton candidate is checked by exact LCP. For a progression
+$p_i=p_0+id$ with at least two members, $0<d<l$. Adjacent overlapping
+occurrences imply that the seed has period $d$, and their union is one
+$d$-periodic run. Compute its maximal right endpoint in $X$ and the maximal
+$d$-periodic prefix length of $Y$:
+\[
+ E_X=p_0+d+\operatorname{LCP}(X[p_0:|X|],X[p_0+d:|X|]),
+ \qquad
+ E_Y=d+\operatorname{LCP}(Y,Y[d:|Y|]).
+\]
+Every candidate starts in the same periodic phase as $Y$.
+
+\begin{lemma}[Filtering a seed progression]
+If $E_X=|X|$, exactly the candidates with $p_i\ge |X|-E_Y$ are
+suffix-prefix overlaps. If $E_X<|X|$, the only possible overlap candidate
+is $p_i=E_X-E_Y$; when this value belongs to the progression, an exact
+LCP query determines whether its entire suffix matches.
+\end{lemma}
+\begin{proof}
+Compare the periodic run beginning at $p_i$ with the prefix of $Y$.
+They agree until the smaller of the two periodic extents
+$E_X-p_i$ and $E_Y$. If these extents differ and the shorter string has
+not ended, the first departure from the periodic word causes a mismatch:
+the longer side still has the periodic letter. Thus a match extending
+through a nonperiodic tail of $X$ requires equal departure positions.
+That equality determines at most one progression member. If $X$ ends
+while still periodic, the whole suffix matches precisely when its length
+is no greater than the periodic extent of $Y$. A possible end of $Y$
+causes no exception, since every candidate length in the band is at most
+$|Y|$.
+\end{proof}
+
+Clipping and reversing the surviving progression of starts gives a
+progression of overlap lengths. Distinct bands are disjoint and cover
+all positive lengths, so the resulting list is exact and has
+$O(\log\min(|X|,|Y|))$ progressions. Uniform equal-letter words have the
+direct answer: every positive length up to the shorter word length.
+Different uniform letters have no overlaps. Neither case enumerates that set.
+
+\subsection{From overlaps to longest common substrings}
+
+Consider grammar rules $U=AB$ and $V=CD$. For each
+$k\in\operatorname{OL}(A,D)$, let
+\[
+ L(k)=\operatorname{LCSuf}(A[0:|A|-k],C),\qquad
+ R(k)=\operatorname{LCP}(B,D[k:|D|]).
+\]
+Then $k+L(k)+R(k)$ is a common substring length, with start positions
+$|A|-k-L(k)$ in $U$ and $|C|-L(k)$ in $V$. Inversion reverses and
+negates both words, so the existing LCP primitive on their inverses
+computes LCSuf exactly. The alignment $k=0$ is also valid and uses
+$\operatorname{LCSuf}(A,C)+\operatorname{LCP}(B,D)$.
+
+\begin{lemma}[Coverage by pairs of grammar cuts]
+Every common substring of length at least two is covered by one of these
+alignments for some pair of binary rules, allowing $U$ and $V$ to be
+interchanged. Single-letter matches can be handled separately.
+\end{lemma}
+\begin{proof}
+In each occurrence's derivation tree, choose the lowest node containing
+the whole occurrence. Since the occurrence has length at least two, it
+crosses that node's binary cut. Place the two equal substrings on the same
+coordinate line. If the first cut is to the right of the second by $k>0$,
+the intervening word is both a suffix of $A$ and a prefix of $D$, and is
+therefore in $\operatorname{OL}(A,D)$. Extending in both directions covers
+the original common substring. Reverse the roles if the cuts are ordered
+the other way; coincident cuts give $k=0$.
+\end{proof}
+
+Although the derivation trees may be exponential, each rule has a fixed
+spelling. We examine rule pairs, not tree-node occurrences. A top-down
+pass on the grammar DAG records the earliest position of each rule in
+the root word. Adding that offset to a local witness gives a valid root
+witness. We examine longer rules first and stop examining rules whose
+length cannot improve the current best result.
+
+\subsection{Only six members of a progression need extension}
+
+Let $k=a+id$, $0\le i<t$, be an overlap progression with $t\ge2$.
+The two largest overlaps imply that the common suffix of $A$ and prefix
+of $D$ of length $a+(t-1)d$ have period $d$. Let $e_2$ be the maximal
+$d$-periodic suffix length of $A$ and $e_3$ the maximal $d$-periodic
+prefix length of $D$. Let $e_1$ be the extent to which $B$ continues the
+periodic suffix of $A$, and $e_4$ the extent to which $C$ continues the
+periodic prefix of $D$ backwards. All four values are obtained with
+compressed suffix/prefix queries. For example,
+\[
+ e_2=d+\operatorname{LCSuf}(A[0:|A|-d],A[d:|A|]),
+ \qquad e_3=d+\operatorname{LCP}(D,D[d:|D|]).
+\]
+For $e_1$, compare $B$ with enough binary-powered copies of the last
+$d$ letters of $A$. For $e_4$, compare $C$ backwards with enough copies
+of the first $d$ letters of $D$. Only a logarithmic number of new power
+rules is required.
+
+Except when periodic departure positions coincide, the extension length is
+\[
+ F(k)=k+\min(e_2-k,e_4)+\min(e_1,e_3-k).
+\]
+Its two breakpoints are $e_2-e_4$ and $e_3-e_1$. Between breakpoints it
+is affine: first nondecreasing, then constant, then nonincreasing. At a
+breakpoint, equal departures may match for longer; the true extension
+must therefore be checked there. It follows that the maximum over the
+progression is attained among its endpoints and the progression members
+immediately below and above the two breakpoints, at most six values.
+We evaluate those candidates by the exact extension formula, not by
+assuming that the periodic approximation remains valid at a breakpoint.
+Singleton progressions require one exact extension. This argument permits
+arbitrary starting residues and does not require the first overlap to
+be less than the step.
+
+\subsection{Cyclic search, early bounds and certificate replay}
+
+For relators $R,D$, every cyclic substring of length at most
+$\min(|R|,|D|)$ appears in $RR$ and $DD$. Conversely, any such common
+substring of the doubled words determines valid cyclic starting positions
+by reducing its offsets modulo the original lengths. Thus the longest
+cyclic overlap is the longest linear common substring of the doubled
+words, capped at one shorter relator turn. Repeat with $D^{-1}$ to cover
+the inverse sign.
+
+For each unordered pair, it suffices to choose the shorter relation as
+donor. If an overlap of length $k$ gives gain $2k-|D|$ with the longer
+donor, it gives at least that gain with the shorter one. Hence this policy
+is complete for the existence of an overlap satisfying $2k>|D|$ across
+all distinct pairs and rotations. It returns the first pair and sign
+with such an overlap, not the globally largest gain.
+
+Absolute-generator counts give the additional bound
+\[
+ k\le M(R,D)=\sum_g\min(\#_gR,\#_gD).
+\]
+If $2M\le |D|$, the pair cannot help. Otherwise the LCS query may stop
+at $M$: no one-turn cyclic overlap can exceed that value. This is a proved
+upper bound, not a timeout heuristic. A direct prefix LCP sometimes
+attains it before any overlap table is built. The generic LCS API likewise
+accepts an explicit cap and returns the smaller of that cap and the exact
+longest common substring length, together with a witness.
+
+After rotating the relators to $R=PS$ and $D=PQ$, the producer checks the
+prefix equality and replaces the target by the cyclic reduction of
+$Q^{-1}S$. The donor is retained. This preserves normal closure, and
+before further cancellation the target loses $2|P|-|D|>0$ letters.
+Existing literal and compressed verifiers independently check the ordinary
+\code{relator} move from the original knot presentation. The new matcher
+is only a search mechanism, never a trusted shortcut in recognition.
+
+The integration retains the fast paths: singleton elimination and
+Whitehead shortening, the bounded explicit overlap bridge, then whole-donor
+matching and quotient deletion. Only an oversized state that would otherwise
+stall reaches the complete cyclic fallback. Every primitive shares the
+arena's work allowance and cancellation callback. Node allocation, occurrence
+table cells and cached overlap entries are bounded; resource exhaustion is
+inconclusive and must not be mistaken for proof that no overlap exists.
+
+\subsection{What complexity has actually been established}
+
+Let $s$ be the input grammar size and $b$ the largest binary length of a
+represented word length. There are $O(s^2)$ rule pairs and $O(b)$ dyadic
+bands per required overlap set. Each band builds one polynomial-sized
+occurrence table and makes a bounded number of exact compressed queries.
+Each overlap progression needs at most six extensions. Every substring
+used here is a slice of an input rule, its inverse, or a bounded binary
+power of a slice. Slice height does not increase; powering adds $O(b)$
+height and rules. The number and size of all intermediate grammars are
+therefore polynomial in $s$ and $b$. Applying the established polynomial
+bounds of the occurrence and equality primitives gives polynomial bit
+complexity for one uncapped-resource LCS or cyclic-overlap query.
+
+This is deliberately a local statement. It does not bound the number of
+relator moves, the size of intermediate grammars across the entire search,
+or whether a trivial knot group can always be simplified using strictly
+shortening moves. The general subexponential and quasi-polynomial recognition
+targets remain unproved. What has changed is that partial cyclic overlap
+search is now implemented, rather than merely cited as a possible future
+primitive.
+
+\subsection{Validation and measurements}
+
+The tests compare overlap sets for all 3844 ordered pairs of nonempty binary
+words of length at most five, plus 300 signed random pairs with independently
+randomized parses. Longest-common-substring tests cover 961 ordered binary
+pairs including the empty word, 300 further signed random pairs and five
+cap choices per pair, checking both lengths and witness positions. A
+separate periodic test compares the critical-candidate maximum against every
+member of the small progression, using independent noise on all four sides.
+There are 350 randomized cyclic-pair trials checked against all literal
+rotations and signs, including exact application and strict length decrease.
+
+An exponential test represents $2^{500}$ overlap lengths by one progression
+and finds a witness in $a^N b$ and $c a^N$ without expansion. Another test
+starts with $a^N b^2,a^N c^2$: neither a Whitehead shortening nor a whole
+donor deletion exists, but the new stage replaces the second word by
+$b^{-2}c^2$. Total expanded relator length drops from $2N+4$ to $N+6$.
+The supplied group remains inconclusive afterward; no knot verdict or
+recognition-time speedup is inferred from this example. Invalid caps and
+exhausted work and cache allowances are also checked.
+
+The integrated suite passes 678 tests with Regina 7.4.1 in 163.634 seconds;
+the targeted six-test run passes in 28.136 seconds.
+
+\input{tables/compressed_lcs_queries.tex}
+
+All 225 full knot queries complete with identical certificate digests; none
+reaches the new fallback. The small-fourteen sum of medians is 277.600,
+278.931 and 280.322 milliseconds for archived, A/A and new search.
+Gordian takes 3.425, 3.218 and 3.265 seconds respectively. The variation
+between the historical controls prevents interpreting the lower Gordian
+median as a demonstrated speedup. The audit supports preservation of the
+existing successful paths.
+
+\input{tables/compressed_lcs_kernels.tex}
+
+There are 125 measured LCS queries and twenty separate partial-move runs.
+At $h=16$, the full cyclic-family query takes about 1.970 seconds and
+1421272 work units; the count-bound query takes 0.164 milliseconds and
+75 work units. At $h=32,100,500$, the full query exhausts its two-million-work
+allowance. The bounded query still completes at $h=500$ in 0.802 milliseconds,
+with 509 nonempty grammar nodes and 1527 work units. Submillisecond A/A
+measurements are visibly noisy, so the stable work counts matter more than
+precise ratios. Exhausted full queries are not completed-time denominators.
+
+The shifted family tests a successful uncapped query that actually uses
+periodic extension. At $h=500$, it takes 37.239 milliseconds versus
+36.928 for A/A, with 3003 nodes and 27039 work units. The complete partial
+move at the same exponent takes 6.301 milliseconds, 512 nodes and 7626
+work units, including construction and checked application. These local
+results do not demonstrate completion of the supplied group search or a
+speedup on genuine knot recognition.
+
+
+The audit uses archived search-loop code from \code{032ca00758} in the
+common current recognition and replay harness, with an identical A/A arm.
+There is one excluded warmup and five measured rounds per case, with
+randomized arm order using seed 2810. Full queries include fresh planar-diagram
+construction and independent replay. Their certificate digests are checked
+outside the timer. All kernel timings include grammar construction; exhausted
+queries remain censored. The cyclic query family compares a full LCS query
+with the proved shared-count cap on $(a^N b^2)^2,(a^N c^2)^2$, whose exact
+LCS is $N$. A second family uses $a^N b,c a^N$ and compares two identical
+uncapped queries. A separate move audit includes failed whole-donor search,
+complete cyclic search and checked application.
+
+Whole recognition allows 18 seconds, with 15 seconds and twenty million
+work units for its group stage. Kernels allow two million work units and
+100000 nodes/table cells. Raw results are in
+\path{results/compressed_lcs_20261008.json}.
+Test and build logs are in \path{synthesis/data/compressed-lcs-*}.
+
+No new incoming report was present; the suggested \code{openai/math}
+head remained at the previously recorded \code{fd4aeeb2ee}. This iteration implements
+and checks the previously identified compressed-LCS research direction.

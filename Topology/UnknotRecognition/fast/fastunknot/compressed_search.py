@@ -1,4 +1,4 @@
-"""Optional SLP search with explicit overlaps and compressed donor deletion.
+"""Optional SLP search with complete strictly shortening cyclic overlap queries.
 
 Only the wrapper reconstructs a knot presentation. Internal search success is
 not a knot verdict: group_decide independently rebuilds and checks the trace.
@@ -71,6 +71,14 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                         apply_whole_donor(arena, roots, move)
                         arena.stats['compressed_overlap_moves'] = arena.stats.get('compressed_overlap_moves', 0)+1
                         moves.append(move)
+                        continue
+                    from .compressed_overlap import cyclic_overlap_move, apply_cyclic_overlap
+                    arena.stats['compressed_lcs_attempts'] = arena.stats.get('compressed_lcs_attempts', 0)+1
+                    move = cyclic_overlap_move(arena, roots)
+                    if move is not None:
+                        apply_cyclic_overlap(arena, roots, move)
+                        moves.append(move)
+                        arena.stats['compressed_lcs_moves'] = arena.stats.get('compressed_lcs_moves', 0)+1
                         continue
         if cut is None:
             cut = whitehead()

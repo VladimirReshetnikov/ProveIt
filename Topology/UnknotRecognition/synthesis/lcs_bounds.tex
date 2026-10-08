@@ -1,0 +1,226 @@
+\section{Alphabet barriers and incremental optimality checks}
+\label{sec:lcs-bounds}
+
+\subsection{The next bottleneck is unnecessary exact work}
+
+The complete overlap implementation has a polynomial local bound, but some
+compressed substring queries still exhaust millions of work units on simple
+repeated words. For example, the longest common substring of
+$(a^N b^2)^2$ and $(a^N c^2)^2$ has length $N$. A total multiplicity bound
+on these doubled strings permits $2N$, so it does not prove that the first
+match of length $N$ is optimal. Continuing with exact occurrence tables
+can be much more expensive than discovering the match itself.
+
+There is a stronger inexpensive obstruction: a common substring cannot
+cross a signed letter that is absent from the other word. Here $b$ and $c$
+are separators, and the longest possible common-alphabet run has length
+$N$. The new implementation computes this bound on the grammar DAG and
+uses it at both the root and individual grammar-rule pairs. It also
+processes witnesses incrementally. Once a verified witness attains the
+relevant upper bound, all remaining candidates for that scope are unnecessary.
+This is exact optimality detection, not speculative termination.
+
+\subsection{An exact summary of allowed-letter runs}
+
+Let $C$ be the intersection of the two words' signed alphabets. For a
+nonempty grammar word $W$, store three lengths: $p(W)$, its longest
+prefix over $C$; $q(W)$, its longest suffix over $C$; and $r(W)$, its
+longest contiguous substring over $C$. A terminal in $C$ has summary
+$(1,1,1)$, and any other terminal has $(0,0,0)$. For a binary rule $W=UV$,
+\[
+\begin{aligned}
+ p(W)&=p(U)+\mathbf 1_{p(U)=|U|}\,p(V),\\
+ q(W)&=q(V)+\mathbf 1_{q(V)=|V|}\,q(U),\\
+ r(W)&=\max\{r(U),r(V),q(U)+p(V)\}.
+\end{aligned}
+\]
+The third formula includes the only possible run crossing the rule's cut.
+All quantities are computed bottom up without expanding any word.
+
+\begin{proposition}[Shared-alphabet upper bound]
+For any two reachable grammar words $U,V$ in the query,
+\[
+ \operatorname{LCS}(U,V)\le\min(r(U),r(V)),
+\]
+where the summaries use the intersection $C$ of the original root alphabets.
+The summaries take linear arithmetic work and storage in the reachable
+grammar size, with the bit cost of stored lengths.
+\end{proposition}
+\begin{proof}
+Induction on the grammar gives the stated prefix, suffix and maximum-run
+meanings: a run either lies in one child or crosses the cut as a suffix
+followed by a prefix. Every letter in a common substring of $U,V$ occurs
+in both root words, so it lies in $C$. The substring is therefore contained
+in an allowed-letter run on each side. The recurrence uses a constant
+number of arithmetic operations per rule.
+\end{proof}
+
+The intersection is signed: a letter and its inverse are different string
+symbols. Terminal node identifiers are unique for each signed letter in
+one arena, so intersecting the reachable terminal sets computes $C$
+exactly. If one root's entire alphabet is shared, every substring of that
+root is over $C$; the implementation uses ordinary node lengths on that
+side and skips its summary pass. Disjoint alphabets give an immediate
+zero answer. Bounds are local to the query, since changing the other
+word can change $C$; they are not permanent word-arena metadata.
+
+This bound can be stronger than shared total counts. Counts constrain how
+many matching letters exist, while the run bound also constrains their
+contiguity. Neither changes the equality test or accepts a witness that
+has not been checked.
+
+\subsection{Using progress as soon as it is proved}
+
+The complete search initially tries the existing exact prefix query. If
+that does not finish the query, it builds root offsets and alphabet sets,
+computes any needed run summaries, and reduces its global upper bound to
+\[
+ U=\min(\text{requested cap},r(X),r(Y)),
+\]
+with the requested cap omitted when absent. An already found prefix or
+single-letter witness of length $U$ settles the query immediately.
+
+Binary rules are examined in descending run-bound order. A rule with
+bound no greater than the best known common substring length cannot
+improve the answer, nor can any subsequent rule with a smaller bound.
+For a selected pair $A,B$, its local upper bound is
+$U_{A,B}=\min(r(A),r(B),U)$. The matcher now yields the zero-offset
+extension immediately, followed by the critical progression extensions
+as they are computed. After every witness it updates the best answer.
+Reaching $U$ finishes the whole query; reaching $U_{A,B}$ stops that pair
+and continues only where a larger answer is still possible.
+
+Previously the matcher collected all extension witnesses for a pair
+before considering any of them. Even a first witness attaining a known
+upper bound could be followed by expensive occurrence tables and further
+extensions. The new loop does not request those computations. A local
+stop is never treated as global completion unless the global bound is
+also attained. The original exact fallback remains available whenever
+the inexpensive bounds are loose, including queries with identical signed
+alphabets but different letter order.
+
+\subsection{Restricted families with inexpensive exact completion}
+
+The first family is $(a^N b^2)^2,(a^N c^2)^2$, with $N=2^h$. The common
+alphabet is $\{a\}$, the maximum allowed run is $N$ on both sides, and
+the initial prefix witness has length $N$. No cut-pair search is needed.
+
+A second family separates discovery from stopping. Represent
+$b a^N b$ and $c a^N c$ with root cuts in the middle of the long run:
+\[
+ (b a^{N/2})(a^{N/2}b),\qquad
+ (c a^{N/2})(a^{N/2}c).
+\]
+There is no common prefix. The first aligned-cut extension matches
+$N/2$ letters backwards and $N/2$ forwards, reaching the run bound $N$.
+Thus the new loop finishes after one extension, without requesting the
+suffix-prefix overlap sets. Computing bounds while retaining eager
+witness collection does not obtain this same early stop.
+
+On these particular binary-power parses, construction, offsets, summaries
+and the required prefix/suffix comparisons use $O(h\log h)$ traversal
+and arithmetic operations in the constant-time-dictionary model, on
+$O(h)$-bit lengths. This includes grammar traversal and sorting. Allowing
+also a conservative linear worst-case dictionary lookup overhead gives
+a polynomial bit bound of $O(h^3\log(h+1))$. This statement concerns
+these explicit families and parse shapes; the general LCS primitive
+retains its polynomial fallback with larger costs.
+
+There is also a direct relator-search example with a loose total-count
+bound. Let $M=N/4$ and use
+\[
+ D=a^N b^2 a^M b^2,\qquad R=a^N c^2 a^M c^2.
+\]
+The shared count is $N+M$, but the maximum shared-alphabet run, including
+cyclic seams, is $N$. The checked prefix attains it. For $N>M+4$, the
+overlap gives positive raw gain $N-M-4$ and replaces the target by
+\[
+ b^{-2}a^{-M}b^{-2}c^2a^Mc^2.
+\]
+The total relator length drops from $2N+2M+8$ to $N+3M+12$.
+The earlier whole-donor stage cannot match either relation because each
+has a generator absent from the other. The new bound therefore accelerates
+an actual partial-move query whose count cap alone is insufficient.
+This is a supplied-presentation operation, not a completed knot verdict.
+
+\subsection{Validation and controlled ablation}
+
+Four new tests check run bounds against literal expansion at every reachable
+node of 400 randomly parsed signed words; exponential uncapped queries
+through $N=2^{500}$ with occurrence tables forbidden; an interior witness
+with further overlaps forbidden; local-pair stopping against a literal
+LCS oracle; a same-alphabet negative control; exhausted work; and the
+large partial-move family above without expansion. The existing exhaustive
+and randomized LCS, cyclic-overlap and witness tests are retained.
+
+All 682 tests pass with Regina 7.4.1 in 182.222 seconds. The preceding
+ten-test targeted run passed in 27.990 seconds; the integrated run also
+checks the interior example with both root cuts inside the long run.
+
+\input{tables/lcs_bounds_queries.tex}
+
+All 225 whole-knot queries retain identical certificate digests, and none
+reaches the changed matcher. The small-fourteen sum of medians is 280.857,
+280.086 and 282.904 milliseconds for baseline, A/A and both changes.
+Gordian takes 1.952, 1.940 and 1.940 seconds respectively. These data check
+preservation of existing paths; they do not demonstrate a knot-corpus speedup.
+
+\input{tables/lcs_bounds_kernels.tex}
+
+The kernel audit contains 225 uncapped LCS measurements. At $h=8$, the
+repeated family falls from 109.458 milliseconds to 0.142 milliseconds.
+Bounds alone obtain this improvement; incremental witnesses alone do not.
+At $h=500$, both changes complete in 3.028 milliseconds, with 509 nonempty
+nodes and 5562 work units, while the original query exhausts its two-million-
+work allowance.
+
+The interior family separates the two effects. At $h=8$, archived search
+takes 60.409 milliseconds, bounds alone 58.950, incremental witnesses alone
+59.761, and both changes 0.177. At $h=500$, both changes finish in 4.912
+milliseconds with 1012 nodes and 8562 work units; every isolated or archived
+arm exhausts the cap. A bound does not save the later exact work unless
+the checked witness is considered before that work is requested.
+
+The same-alphabet control completes with identical work counts through
+$h=32$: 16187 units and approximately 8.6 milliseconds in each arm.
+At $h=500$, every arm still exhausts two million work units. Thus the new
+bound leaves a measurable class of expensive queries unresolved.
+
+Forty-five further measurements include the complete partial-move operation.
+At $h=8$, construction plus search and application falls from 287.444 to
+0.409 milliseconds. At $h=500$, the combined path completes in 8.418
+milliseconds with 1019 nodes and 19223 work units; both archived arms hit
+the cap. These are exact local operations on supplied relators, not
+completed recognition of those groups. No speedup ratio is assigned to
+an exhausted baseline.
+
+
+The audit compares the archived matcher from \code{e678ef097} against
+two isolated components and their combination. The bounds-only arm uses
+run summaries and bound-based ordering but eagerly collects pair witnesses.
+The incremental-only arm uses the new witness loop with the previous
+ordinary-length bounds. An A/A arm repeats the archived class. These
+classes run in the common current word arena, recognition and replay
+harness, so this is a controlled component comparison.
+
+One warmup is excluded before five measured rounds per case; arm order
+is shuffled with seed 2910. Full knot timings include fresh planar-diagram
+construction, recognition and independent replay; certificate digests are
+checked outside the timer. Kernel timings include grammar construction
+and uncapped exact LCS. A same-alphabet family,
+$(ab)^Nac,(ab)^Nca$, has exact LCS length $2N$ and provides a control
+where run summaries are skipped. The partial-move timings additionally
+include the unsuccessful whole-donor query, cyclic search and checked
+application. Resource exhaustion is censored, never a negative substring
+answer or a completed-time denominator.
+
+Whole recognition allows 18 seconds, with 15 seconds and twenty million
+work units for the group stage. Kernels allow two million work units and
+100000 nodes/table cells. Raw results are in
+\path{results/lcs_bounds_20261008.json}; logs are in
+\path{synthesis/data/lcs-bounds-*}. No new incoming report was present,
+and the suggested \code{openai/math} head was unchanged at the previously
+recorded \code{fd4aeeb2ee}. These are local refinements of the complete
+compressed-overlap implementation. They do not settle global move count,
+grammar growth or completeness, so the general subexponential recognition
+bound remains unproved.

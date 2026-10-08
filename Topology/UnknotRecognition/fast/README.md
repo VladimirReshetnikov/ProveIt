@@ -1,12 +1,31 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Compressed substring queries now use exact shared-alphabet run bounds and
+process extension witnesses as soon as they are checked. Letters absent from
+the other word act as barriers; once a witness reaches a proved global or local
+bound, the remaining candidates are skipped. Same-alphabet queries retain the
+complete fallback. All 682 tests pass, including exponentially long inputs
+where tables are forbidden once optimality is already proved. See
+[`lcs_bounds.tex`](../synthesis/lcs_bounds.tex) for the proof and scope.
+Reproduce the isolated component audit with
+`python -B benchmark_lcs_bounds.py --output results/lcs_bounds_local.json`.
+
+When whole-donor search would stall, compressed group search now finds partial
+cyclic overlaps over all donor rotations and both signs. The exact compressed
+longest-common-substring primitive uses dyadic overlap progressions and at most
+six periodic extension candidates per progression. Shared-letter counts give
+safe pruning and early completion bounds. Existing independent relator replay
+checks every emitted move. The integrated suite has 682 passing tests; the
+local query has a polynomial bound, while general recognition remains unproved.
+See [`compressed_lcs.tex`](../synthesis/compressed_lcs.tex) for proofs and limits.
+
 Compressed whole-donor search now batches consecutive copies in a version-4
 `relator_power` certificate. Both literal and compressed verifiers independently
 check the entire removed prefix. Exact uniform-letter summaries make equality
 and prefix queries on pure powers constant work, and ineligible donor pairs are
 pruned before allocating inverses. On supplied pure-power presentations this
 turns repeated subtraction into Euclidean division; the general recognition
-bound remains unproved. The integrated suite has 672 passing tests with Regina,
+bound remains unproved. The integrated suite has 682 passing tests with Regina,
 including a genuine Gordian trace accepted by both verifiers, forged macro
 rejection, and a compressed `2^500` replay without expansion.
 The proof and limits are in [`relator_powers.tex`](../synthesis/relator_powers.tex).
@@ -18,7 +37,7 @@ When compressed group search would stall above the explicit-letter cap,
 A fully compressed substring matcher uses arithmetic-progression occurrence
 tables and a safe first-letter probe. It searches every cyclic target position
 for the donor's recorded spelling or inverse; arbitrary donor rotations and
-partial overlaps remain outside this fallback. Accepted moves use the existing
+partial overlaps are handled by the later complete cyclic fallback. Accepted moves use the existing
 independent relator certificate replay. Work and storage limits remain
 inconclusive, and no general subexponential bound is claimed.
 See [`compressed_matching.tex`](../synthesis/compressed_matching.tex) for the
@@ -53,7 +72,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 672 passing tests
+diagram is not checked twice. The integrated suite now has 682 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then
