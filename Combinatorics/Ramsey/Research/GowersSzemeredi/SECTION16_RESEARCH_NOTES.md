@@ -909,6 +909,32 @@ interface is asserted.
 
    Either is a genuine lemma, not bookkeeping.
 
+**Linking option formalized (same day).**
+- `biaffine_coeffs_eq_of_square`, `biaffine_glue`,
+  `freiman_bihom_biaffine_on_chain` (`Proofs16BiaffineGluing`): one
+  bi-affine function on any chain of boxes whose consecutive members share
+  a 2 × 2 square.
+- `bohr_row_convex` (`Proofs16BohrRowIntervals`): in a slow cell each
+  row's Bohr section is an interval. It uses the no-wrap lemma
+  `valMinAbs_add_of_small`.
+- `freiman_bihom_biaffine_on_staircase`: height-3 boxes chained along row
+  intervals whose consecutive triples and quadruples overlap in at least
+  two columns. Height-2 boxes provably cannot be glued, since they share
+  one row.
+
+**Where it bottoms out.** With cell steps making every variation term
+≤ εN (the peer's polynomial Lemma 16.1 supplies this):
+- cells with all variety conditions ≤ (ρ − 3ε)N lie inside V;
+- cells with some condition > (ρ + 3ε)N miss V;
+- only boundary cells are partial. The staircase lemma covers their
+  interiors.
+
+The θ-loss budget still needs **the total mass of boundary cells** to be
+small. That is a regularity statement for V: the mass of V(ρ + 3ε) ∖ V(ρ − 3ε)
+relative to V(ρ), with the shifted-family issue above. So the packing
+reduces exactly to variety regularity (Milićević §3), and every other
+ingredient is now proved here or in the peer's lane.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
