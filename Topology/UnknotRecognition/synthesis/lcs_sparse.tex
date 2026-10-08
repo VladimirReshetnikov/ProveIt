@@ -1,0 +1,182 @@
+\section{Sparse endpoint certificates for overlap lengths}
+\label{sec:lcs-sparse}
+
+\subsection{A defective periodic word can still have few candidates}
+
+The late-defect control of Section~\ref{sec:lcs-periodic},
+$X=Y=(ab)^Nc$, is not periodic with a short block. Nevertheless its
+overlap set is immediate from the final letter: every matching prefix of
+$Y$ must end in $c$, and $Y$ contains that letter only at its end. Hence
+the only candidate is the full length, whose equality is easy to check.
+
+This suggests a general exact filter that does not assume periodicity.
+For any nonempty words $X,Y$, a positive suffix/prefix overlap of length
+$k$ necessarily satisfies both
+\[
+ Y_{k-1}=\operatorname{last}(X),\qquad
+ X_{|X|-k}=\operatorname{first}(Y).
+\]
+If either required letter is rare in the corresponding word, these
+conditions give a small complete list of candidate lengths. The letters
+are signed free-group letters; $a$ and $a^{-1}$ are distinct here.
+
+\subsection{Saturated counts preserve precisely the needed information}
+
+After the existing feasible suffix/prefix restriction, the implementation
+tries this stage on operands of length at least 128, following the uniform
+and certified short-period cases. It uses a fixed candidate allowance
+$K=64$. Over the union of the two reachable grammars it computes counts
+of $\operatorname{first}(Y)$ and $\operatorname{last}(X)$, each saturated
+at $K+1=65$. A terminal contributes zero or one; concatenation contributes
+\[
+ \widehat c(UV)=\min(K+1,\widehat c(U)+\widehat c(V)).
+\]
+Induction gives $\widehat c(W)=\min(K+1,c(W))$ for the true signed-letter
+count $c(W)$. Thus a value at most $K$ is exact, zero proves absence,
+and $K+1$ means only that enumeration would exceed the policy allowance.
+No exponentially large frequency integer is needed.
+
+Compare the count of $\operatorname{first}(Y)$ in $X$ with the count of
+$\operatorname{last}(X)$ in $Y$. Choose the smaller; ties use $Y$.
+If both counts exceed $K$, the stage declines and the complete occurrence
+matcher runs. Otherwise a grammar traversal enumerates the chosen letter's
+positions, pruning every subtree whose count is zero. Shared grammar nodes
+may have several distinct occurrence offsets; these are intentionally kept
+distinct. There are at most $K$ retained terminal occurrences, even if the
+other letters occupy exponentially many positions.
+
+An occurrence at offset $i$ in $X$ proposes $k=|X|-i$; one at offset $j$
+in $Y$ proposes $k=j+1$. Candidates outside the feasible length bound
+are discarded. Each remaining candidate is checked by deterministic
+compressed equality of
+\[
+ X[|X|-k:|X|]\quad\text{and}\quad Y[0:k].
+\]
+A successful check contributes the singleton progression $(k,0,1)$.
+The stage uses an equality query because only this fixed-length predicate
+is needed; it does not compute a longest prefix by bisection.
+
+\subsection{Soundness, completeness and cost}
+
+Every returned length is supported by exact equality. Conversely, every
+actual overlap satisfies the chosen endpoint condition, hence occurs in
+the enumerated candidate list and passes its equality check. The conversion
+from a terminal offset to a length is injective, so the output progressions
+are disjoint. If a required endpoint letter is absent, the complete overlap
+set is empty and no equality query is necessary. Counts above the threshold
+produce no negative conclusion; they simply select the fallback.
+
+For $s$ reachable grammar rules, the two count summaries use $O(s)$
+bounded-size storage and transitions. The current reachability helper's
+sorting gives $O(s\log s)$ word operations overall for that pass.
+If grammar height is $H$, traversal of at most $K$ retained terminal paths
+uses $O(KH+1)$ work, including discarded siblings. Candidate slicing adds
+at most $O(KH)$ grammar nodes. If $E(t)$ bounds an exact compressed equality
+query on a grammar of size $t$, a conservative local bound is
+\[
+ O\bigl(s\log s+KH+K E(s+KH)\bigr),
+\]
+with the binary-length arithmetic costs included in the underlying
+primitive's bit-complexity accounting. The candidate limit is a fixed
+implementation parameter. The potentially expensive equality term must not
+be omitted merely because candidate enumeration is cheap.
+
+All traversals and checks consume the existing shared allowance. Node
+allocation, equality assertions and overlap-cache storage retain their
+existing limits. A candidate check that exhausts its resources remains
+inconclusive. The result is cached under the original caller roots, as for
+the other exact overlap implementations.
+
+This route also handles arbitrarily long repeating blocks when their
+marker count is small. Set
+\[
+ B=(ab)^Nc,\qquad X=Y=B^q.
+\]
+The endpoint $c$ occurs exactly $q$ times, so for $q\le64$ the candidate
+lengths are precisely $|B|,2|B|,\ldots,q|B|$. All pass equality. The block
+length can be exponential in its grammar size and need not fit the earlier
+32-letter phase model. For $q=65$, the sparse stage declines. This is a
+policy boundary, not a mathematical hardness transition; the benchmark
+retains it to expose the limitation directly.
+
+No bound has been proved here for the number of recognition moves or the
+sizes and marker distributions of all intermediate relators. These exact
+local improvements therefore do not establish general subexponential or
+quasi-polynomial unknot recognition.
+
+\subsection{Validation and controlled comparison}
+
+New literal-oracle tests use 160 random signed parses with both endpoint
+directions, deliberately invalid candidates, and at least one genuine
+overlap. They distinguish opposite signs, count multiple occurrences of
+shared grammar nodes, check absent endpoints without equality calls, retain
+the dense complete fallback, and exercise the work limit. Compressed
+regressions use $N=2^{500}$ with $q=1,17,64$, under 30000 work units and
+with whole-word expansion and occurrence tables forbidden. The $q=65$
+case checks the saturated-count refusal.
+The periodic-rejection oracle explicitly bypasses the independent sparse
+stage so that it continues to exercise the general occurrence table.
+All 697 tests pass with Regina 7.4.1 in 155.753 seconds.
+The benchmark writes $N=2^h$.
+
+\input{tables/lcs_sparse_queries.tex}
+\input{tables/lcs_sparse_kernels.tex}
+\input{tables/lcs_sparse_operations.tex}
+
+For the late-defect family at $h=8$, median time falls from 32.704
+milliseconds (33.066 A/A) to 0.142; charged work falls from 40414 to
+377. At $h=500$, both archived controls exhaust two million work units,
+whereas the endpoint route completes in 2.909 milliseconds with 505 nodes,
+5789 work units and one checked candidate. No occurrence table is built.
+
+At $h=500$, the 17-marker and 64-marker queries complete in 3.682 and
+13.985 milliseconds, with 6621 and 15658 work units respectively. Both
+archived controls are limited on each family. The 64-marker run stores
+625 arena nodes and checks exactly 64 candidates; equality work is visible
+in its larger runtime. At $h=8$, the 17-marker median falls from 121.041
+milliseconds (121.152 A/A) to 0.834, and the 64-marker median falls from
+202.026 (201.761 A/A) to 11.055.
+
+The 65-marker control shows the cost of declining this route. At $h=8$,
+all arms complete, with medians 204.693 milliseconds before, 202.723 A/A
+and 202.383 after. The new stage adds exactly 56 work units, from 259264
+to 259320, while nodes and cumulative table cells remain 425 and 2673.
+At $h=32$ and $h=500$, all arms still exhaust the allowance. At $h=500$,
+times to exhaustion are 2.627, 2.591 and 2.602 seconds. These are censored
+searches, not completed runtime comparisons. The unresolved dense case
+is recorded explicitly rather than hidden by the enumeration threshold.
+
+The short-period families retain identical charged statistics across arms,
+because their earlier phase certificate still answers before the new stage.
+Every full knot query has the same certificate digest in all arms, and
+none invokes the sparse stage. The small-fourteen sums of medians are
+187.459 milliseconds before, 188.118 A/A and 188.697 after; Gordian medians
+are 1.901, 1.896 and 1.893 seconds. All local relator operations also retain
+identical traces. At $h=500$, successful quotient-search medians are
+13.067, 13.081 and 13.144 milliseconds. These controls support preservation
+of existing paths, not a demonstrated knot-corpus speedup.
+
+The archived baseline is the phase-certified matcher at \code{0c9ac4f1b};
+A/A repeats that class inside the common current arena, donor helpers,
+recognizer and independent certificate replayer. Each case has one excluded
+warmup and five measured rounds, with shuffled arm order and seed 3014.
+The audit contains 225 full knot queries, 405 string queries and 135 local
+relator operations. Grammar construction and local answer checks are inside
+the string and relator timers. Full query timings include fresh PD creation
+and replay, with certificate digest comparison outside the timer.
+Local queries retain the two-million-work and 100000-node/table-cell
+allowances. Whole recognition allows 18 seconds, including a 15-second,
+twenty-million-work group stage. Resource-limited runs remain censored.
+
+The dense 65-marker control is included alongside the successful sparse
+families and the previously optimized short-period families. Full knot
+queries and abstract relator operations are reported separately from the
+string primitives; a faster overlap query alone is not a faster knot verdict.
+
+Raw measurements are in \path{results/lcs_sparse_20261008.json}, with
+test and build logs under \path{synthesis/data/lcs-sparse-*}.
+The incoming-archive review remains the one in
+Section~\ref{sec:lcs-windows}, and the suggested \code{openai/math} head
+is unchanged at \code{fd4aeeb2ee}. The endpoint condition is elementary;
+its role here is to select a bounded exact verification path inside the
+compressed implementation.
