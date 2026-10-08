@@ -97,6 +97,16 @@ Caveats:
   hypothesis to polynomial graph counts, or prove a simultaneous multilinear
   recurrence whose exponent is polynomial in q, as Dirichlet's theorem gives
   for linear forms. Either is a research problem.
+- **Update (2026-10-08, J.3).** The second repair is supported by the
+  literature on simultaneous small fractional parts:
+  - for K polynomials of fixed degree, exponent c/K² (Schmidt) and c/K
+    (Maynard), and explicitly 1/(10.5·K·d(d−1)) (Lau);
+  - with K = O(2^k·q), the width exponent becomes 1/poly(q). With
+    q = exp(poly(1/θ)) that is exp(−poly(1/θ)), the same order as
+    Theorem 16.2's own c(θ'/r, γ, k)^r.
+  So Break B would be removed by a multilinear Lemma 16.1 built on those
+  bounds. Break A (Lemma 16.10's inner-loss uniformity) is independent and
+  unaffected. The bounds have not been formalized.
 
 ## C. The unit-parameter selected lift is θ-dependent (heuristic)
 
@@ -636,6 +646,78 @@ formalization step.
 **Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
+
+### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
+
+Part J's `PolyBoundedControl` hypotheses exist only because of the factor
+576^(−24n) (`partJ_recurrence_lower`). It is the dimension-two instance of
+Lemma 16.1's width exponent m^(K^(−2^(k+1)·q)).
+
+**Origin.** Lemma 16.1 applies Corollary 5.11, which makes the q
+(k+1)-linear forms ν_i(x, y) = μ_i(x)·y simultaneously small on subboxes.
+It does so by refining one form at a time. Each refinement multiplies the
+width exponent by K^(−2^(k+1)), so q forms cost K^(−2^(k+1)·q).
+
+**Corollary 7.11 is not a substitute.** Its exponent is 2^(−14)·α²/q,
+polynomial in q. But it is a one-dimensional statement about order-8
+homomorphisms on a progression; it does not make multilinear forms small on
+boxes.
+
+**The lead (checked 2026-10-08).** Along a progression x₀ + t·d,
+smallness of μ_i(x)·d is a question of simultaneous small fractional parts
+of polynomials in d of degree k+1. That problem has exponents polynomial in
+the number of polynomials:
+- Schmidt (*Small fractional parts of polynomials*, CBMS 32, 1977):
+  exponent c_d/K² for K polynomials of degree d.
+- Maynard (arXiv:2011.12275): c_d/K, essentially optimal in K.
+- Lau (arXiv:2407.01611): fully explicit. Some n < x has
+  ‖f_i(n)‖ ≪ x^(−1/(10.5·K·d(d−1)) + o(1)) for all i.
+
+Gowers's per-form iteration (K^(−2^(k+1)·q)) is therefore not forced. A
+multilinear-forms version of Lemma 16.1 with width exponent poly(1/q)
+should follow from these bounds. Lau's explicit exponent is the natural
+input for a formalization.
+
+**Two caveats.**
+1. Lemma 16.1 needs a *partition* of a box into cells. Each cell needs
+   smallness uniformly over its points. The reduction to one-variable
+   polynomials in the common difference must keep the number of polynomials
+   polynomial in q. Expanding a k-linear μ_i on a k-dimensional cell gives
+   O(2^k) coefficient polynomials per form, so K = O(2^k·q). That is still
+   polynomial in q.
+2. The o(1) in Lau's bound, and the size of x relative to the cell width,
+   must be made explicit.
+
+**Consequences if (D) holds.**
+- The lift's recurrence factor would become poly(1/n) instead of 576^(−24n).
+- Part J's hypotheses would weaken from polynomial to quasi-polynomial
+  counts (J.1).
+- Theorem 16.2 in dimension three would then be conditional on a
+  quasi-polynomial stackable structure, plus the readout (R) of J.2.
+
+**Existing checked Schmidt input (2026-10-08).** The density port already
+contains `OAI.Erdos3.simultaneous_monomial_recurrence` in
+[`PolynomialCoordinatePartition.lean`](../../../../lib/openai-math/lean/OAI/Combinatorics/Progressions/Polynomial/PolynomialCoordinatePartition.lean).
+For each fixed degree `j+1` it supplies constants `K >= 1`, `p > 0`,
+independent of the number `d` of coefficients. If
+`N >= (K*(d+1)/R)^(p*(d+1)^2)`, with `0 < R <= 1`, there is an integer
+`1 <= q <= N` making all `q^(j+1)*alpha_i` within `R` of integers.
+Thus the required polynomial dependence on the number of simultaneous
+monomials is already formalized, including the quadratic case.
+
+The same module proves `exists_polynomial_coordinate_partition_bound`:
+for fixed degree `k`, constants `K,p` give an arithmetic-progression
+partition whenever `H >= K*(d+1)` and `N >= H^(p*(d+1)^(2*k))`.
+It bounds `card(labels)*H <= 2^k*N` and the coordinate error by `k/H`.
+This is an average-length bound, not a minimum length for every cell.
+
+This is manifest entry 3295, included in the completed prefix-3400 build
+and axiom audit. No additional upstream port is needed to use these results.
+The remaining work is the bridge to a simultaneous multilinear **box**
+partition satisfying Lemma 16.1's minimum-width and uniform-smallness
+requirements, and adequate degree constants. The constants above are
+existential; neither the bridge nor the printed final threshold follows
+merely by importing the module.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
