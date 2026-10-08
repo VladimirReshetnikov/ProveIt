@@ -1,5 +1,6 @@
-/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
-Mathematical statements and proofs unchanged. -/
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0 and provide
+a finite local heartbeat budget for kernel checking the restricted-symbol
+grade step. Mathematical statements and proof steps are unchanged. -/
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.StdBasis
 import OAI.Combinatorics.Progressions.Estimates.RealSymbolGradeQuotientSplitting
@@ -73,6 +74,7 @@ variable {X B J ι L : Type*} [Fintype B] [Fintype J]
   (F : NilpotentLieFiltration L s) (b : Basis ι ℚ L) (ω : ι → ℕ)
   (hF : ∀ j, F.layer j = Submodule.span ℚ (b '' {i | j ≤ ω i})) (w : B → ℕ)
 
+set_option maxHeartbeats 400000 in
 theorem exists_restricted_symbol_algebraic_major_grade_step
     (U : Submodule ℚ F.AssociatedGraded)
     (hU : BasisGradedSubmodule (F.associatedGradedBasis b ω hF) ω U)
