@@ -99,7 +99,11 @@ proof using the existing comparable residue partition to ensure every cell
 has length at least `H`, with the same family-size exponent form. This
 one-dimensional strengthening has a separate Apache-2.0 license and source
 attribution in `Combinatorics/Ramsey/Lean/GowersSzemeredi/LICENSE.openai-math`.
-The minimum-width multivariate box-partition bridge for Section 16 remains open.
+`Proofs05MinimumModularPartition` transfers this to the catalogue's modular
+polynomial phases, giving centered distance at most `2*k*N/H` within each
+index cell, for every nonzero modulus. Both modules passed isolated Lean
+checks; their full facade audit is queued. The minimum-width multivariate
+box-partition bridge for Section 16 remains open.
 
 The quantitative statement has existential positive constants `C`, `c`, and
 `eta` for each progression length, and bounds the extremal cardinality by
