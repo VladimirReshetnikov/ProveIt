@@ -1,0 +1,205 @@
+\section{Further research questions and a prioritized program}
+\label{sec:agenda}
+
+The most useful next step is not simply a larger benchmark. It is to
+separate structural hypotheses that might yield a quasi-polynomial theorem
+from engineering changes whose value must be established by controlled
+whole-query experiments. The questions below specify the desired object,
+the proof obligation, and a useful first deliverable.
+
+\subsection{Structural questions bearing directly on the target}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em]
+\item \textbf{Which precisely defined residual class admits small
+presentation parameters?}
+After certified prime decomposition and the maintained structural,
+determinant, coloring, and Alexander tests, can the surviving class be
+shown to have a constructible circuit cut satisfying
+$(r+t)\log(d+2)=O(\log^2 n)$? The filters must be fixed mathematically,
+not described as ``all easy cases.'' Begin with prime determinant-one or
+Alexander-trivial diagrams and identify whether large ordinary group
+rank persists. The displayed dihedral obstructions are removed by cheap
+coloring and therefore do not settle this residual question. A counterfamily
+would be as useful as a positive theorem, provided it survives the stated
+filters and includes a rank or cut lower bound.
+
+\item \textbf{Can one construct small presentations of unknots efficiently?}
+Every unknot group has a one-generator presentation, but that existence
+does not bound the cost of finding it from a difficult diagram. Seek a
+family of verified Tietze or geometric transformations with bounded move
+count, grammar growth, and compressed verification cost on unknots.
+Separate unknotted-input guarantees from the separate task of rejecting
+knotted inputs. A proof that a local search never stalls requires a
+global completeness argument, and any temporary word expansion must be
+charged in its actual representation.
+
+\item \textbf{Can the decision problem use smaller data than the whole group?}
+The rank obstructions rule out a universal small presentation of the
+entire group, not a small certificate tailored to triviality. One could
+seek verified decompositions, representation-preserving quotients, or
+local extension problems whose conjunction detects the unknot. A proposed
+quotient must preserve the direction needed: a nonabelian image of a
+quotient certifies knottedness, whereas failure to find one generally
+does not certify the unknot. A complete reduction needs both directions
+and a bound on the size and number of subproblems.
+
+\item \textbf{Can checkpoint gaps and frontier widths be controlled together?}
+Construct crossing orders or certified splicing moves with
+$g+w=O(\log^2 n)$ on a meaningful class of hard residual diagrams.
+The gap must include the crossing that triggers a replacement and the
+last segment; the width must be the actual temporary frontier. Study
+whether alternating reductions, arborescent decompositions, or controlled
+tangle sums give such orders after the already easy cases are removed.
+A bound only on final survivor count leaves the intermediate cost unresolved.
+
+\item \textbf{Can geometric hierarchy certificates supply the missing size theorem?}
+Translate the hierarchy parameters in \cite{Lackenby2026Hierarchies} into
+explicit data structures and verified transitions. Bound hierarchy length,
+surface and pattern complexity, compressed cutting cost, and the bit
+length of every update. The displayed iteration bound $L(g+1)^L$ is
+only one term in that analysis. A practical starting point is a small
+certificate checker for one cutting or simplification step, with
+independent topology reconstruction and a precise input-size theorem.
+
+\item \textbf{What exactly is established by the recent bridge-minimization claim?}
+Independently audit \cite{Musick2026}, including conversion from arbitrary
+input diagrams, completeness of the allowed moves, the application of
+Otal's theorem to the unknot case, and polynomial
+bounds for their actual encoded
+execution. Record any lemma that requires an additional hypothesis and
+distinguish implementation tests from proof of that lemma. The present
+report's results do not assume the claim; resolving its status would
+materially change the broader research landscape.
+\end{enumerate}
+
+\subsection{Algebraic compilation and exact certificates}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em,start=7]
+\item \textbf{How hard is the best word-circuit cut?}
+Study the optimization problem
+$\min_C(r+|C|)\log(d_C+2)$ on a word DAG. A first target is an exact
+dynamic program for trees, followed by a proved approximation or a
+parameterized algorithm for shared DAGs. Repeated subwords make local
+greedy cuts potentially suboptimal. Formal degree, actual monomial
+support, coefficient height, and compiler work can be tracked separately;
+an empirical support heuristic should not be substituted into the
+worst-case theorem without a bound.
+
+\item \textbf{Can quaternion-specific identities improve the degree bound?}
+Repeated powers of a unit quaternion satisfy a quadratic recurrence, so
+Chebyshev-type representations may compress certain relators further.
+Any use of these identities must preserve all unit-quaternion solutions,
+including central generators, and count newly introduced scalar or
+quaternion variables. Determine whether power-heavy knot presentations
+admit smaller cuts than generic straight-line words. Avoid confusing a
+short recurrence with a constant-cost real formula.
+
+\item \textbf{Can exact representation witnesses be checked independently?}
+The current optional solver records algebraic models and checks its
+assertions through the same exact engine. A stronger SAT artifact would
+give isolating intervals, defining polynomials, and independently verified
+sign tests for every equation and the noncommutativity inequality. For
+UNSAT, specify a checkable real-algebraic proof format or a verified
+decision backend. Establish verifier complexity in the certificate's
+actual bit size; a compact approximate numerical model alone is insufficient.
+
+\item \textbf{How should the known traceless-meridian theorem be used?}
+Kronheimer--Mrowka already prove complete detection with a meridian
+sent to $i$ \cite[Corollary~7.17]{KM2010Excision}; this is not an open
+trace-existence question. Implement and independently validate
+Corollary~\ref{cor:su2-fixed-meridian}, carrying explicit meridional
+provenance through generator changes. Compare its smaller complete formula
+with the current one-sided witness probe on the same residual corpus.
+A separate mathematical question concerns other prescribed trace values
+or trace schedules that improve real-algebraic decomposition. Such a
+restriction requires its own theorem, and generic nonmeridional
+generators must retain the unrestricted query.
+
+\item \textbf{Can presentation provenance remain compressed across every move?}
+The repository already independently replays several compressed group
+certificates. Connect that verifier to the new circuit compiler so arbitrary
+generator changes switch correctly from the meridional inequality to the
+general commutator condition. Bound grammar size and assertion growth
+through long traces, not just individual word operations. The first
+deliverable should be a shared, versioned presentation object carrying
+origin, generator meanings, and exactly the current relators.
+\end{enumerate}
+
+\subsection{Earlier homological decisions and reusable geometry}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em,start=12]
+\item \textbf{Can the flat-origin constraint remove the second rank safely?}
+For genuine minimal same-matching components, $\kappa=t$. Determine how
+to maintain a cheap connection or provenance certificate across scalar
+cancellation, direct-summand extraction, and total-rank replacements.
+The last operation need not preserve genuine cube origin. A theorem
+covering exactly the executed scanner would permit using one rank where
+two are currently computed. Merely observing $t=\kappa$ in a corpus is
+not sufficient to install that shortcut.
+
+\item \textbf{What constraints survive in higher jets or mixed matchings?}
+Lift the identity $\partial Q=\Gamma Q+Q\Gamma$ beyond scalar residue.
+Can it restrict higher-dot coefficients, transferred operations, or the
+shape of mixed-matching minimal blocks enough to bound multiplicities?
+The objective is a genuine realizability constraint on tangle-derived
+complexes. Arbitrary polynomial complexes over the dot algebra may be
+too broad to support the desired theorem, as the synthetic odd intervals
+already demonstrate.
+
+\item \textbf{Can eligible components be maintained incrementally?}
+Current graph traversal and binary ranks can cost more than the scalar
+cancellations they avoid. Develop a dynamic index that certifies a
+whole one-matching direct summand and updates its scalar matrix after one
+crossing. It must detect all external attachments and survive transactional
+interruption. Evaluate saved cobordism compositions against the cost of
+component maintenance; the present easy replacement families regress.
+
+\item \textbf{When should a scan precompute suffix responses?}
+Develop an adaptive policy that chooses independent setup, checkpoint
+responses, or full reverse compilation based on a proved cost estimate
+and observed demand. Aim for a competitive bound relative to the better
+strategy, including source geometry and abandoned work. A forward scanner
+may terminate before most precomputed suffixes are queried. The large
+all-stage timing ratios therefore cannot directly choose a default policy.
+
+\item \textbf{Can a separator tree support local response updates?}
+Replace the linear order by a decomposition tree while retaining radical
+couplings and exact grounding. Prove a boundary contract that permits
+subtree changes without identifying eliminated interior vertices. Determine
+which snapshots and Euler summaries can be shared across primes or nearby
+orders despite exceptional pivot profiles. The established low-treewidth
+linear-algebra literature provides a starting point, not a substitute for
+the topology-specific gluing proof \cite{furer-hoppen-trevisan}.
+\end{enumerate}
+
+\subsection{Evidence, dispatch, and a concrete sequence of deliverables}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=3em,start=17]
+\item \textbf{Which residual corpus measures the intended improvement?}
+Assemble difficult unknots and knots that survive the exact existing
+front ends, with full PD provenance, mirrors, several orders, and
+duplicate detection. Include determinant-one and Alexander-trivial knots,
+inflated unknots, and examples with substantial repeated suffix interior
+work. A test label should come from an independent certificate or complete
+oracle. Synthetic word circuits remain useful for capacity tests but
+must be reported separately from knot-recognition instances.
+
+\item \textbf{Which optional method improves complete queries reliably?}
+Run paired, shuffled whole-recognizer experiments with identical controls,
+fixed source hashes, explicit warmup rules, and all outcomes retained.
+Report CPU and wall time scopes, object and coefficient peaks, solver
+startup, model validation, and censored runs. Promotion to a default
+should require a reproducible benefit on the target residual corpus
+without a correctness or deadline regression. A small local improvement
+does not justify hiding a larger all-stage setup cost.
+\end{enumerate}
+
+The proposed order is concrete. First, finish the residual corpus and
+attach independently checked presentation provenance to the representation
+compiler. Next, reduce first-jet traversal overhead and prototype an
+adaptive response consumer, retaining the present backends as controls.
+In parallel, pursue either a circuit-cut theorem for a precisely filtered
+class or a geometric bound on checkpoint gaps and frontier width. A
+successful structural theorem would immediately plug into
+Corollary~\ref{cor:regimes}; until then, the optional implementations and
+recorded negative results provide a disciplined experimental platform.

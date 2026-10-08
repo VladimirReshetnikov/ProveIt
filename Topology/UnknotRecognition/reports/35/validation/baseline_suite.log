@@ -1,0 +1,17 @@
+======================================================================
+ERROR: test_communication_retains_input_across_polls (test_normal_surface.NormalSurfaceTests.test_communication_retains_input_across_polls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/427e45204d63/baseline/Topology/UnknotRecognition/fast/tests/test_normal_surface.py", line 69, in test_communication_retains_input_across_polls
+    code, out, err = _invoke(command, payload, monotonic()+3, lambda: None)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/427e45204d63/baseline/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py", line 54, in _invoke
+    raise NormalTimeout('normal-surface local time allowance exhausted')
+fastunknot.normal_surface.NormalTimeout: normal-surface local time allowance exhausted
+
+----------------------------------------------------------------------
+Ran 697 tests in 108.821s
+
+FAILED (errors=1, skipped=3)
+Expanded-sheet topology comparisons: 13846
+Independent marked-cover audit: {"marked_comparisons": 196712, "max_sheets": 6, "presentations": 364, "rooted_comparisons": 9100, "transported_sheets": 38746, "unmarked_comparisons": 1061}

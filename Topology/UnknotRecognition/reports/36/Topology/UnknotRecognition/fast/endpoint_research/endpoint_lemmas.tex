@@ -1,0 +1,244 @@
+% Standalone mathematical fragment for integration into the main article.
+% Requires amsmath, amssymb, and amsthm, with lemma/theorem/corollary environments.
+
+\section{Arithmetic endpoint certificates with binary-sized periods}
+
+Let $x,y$ be finite words over an alphabet of signed nonzero integers.  Write
+$x[i:j]$ for the half-open subword and define
+\[
+ \mathcal O(x,y)=\{k:1\leq k\leq\min(|x|,|y|),\quad
+ x[|x|-k:|x|]=y[0:k]\}.
+\]
+All lengths, positions, occurrence counts, and periods are binary integers.
+The words themselves are given by binary straight-line programs (SLPs).
+The new construction accelerates a structural class of queries already
+covered by the complete polynomial compressed matcher.  It is not a new
+general complexity bound for compressed matching or for unknot recognition.
+
+\subsection{Exact occurrence summaries}
+
+For an explicitly represented nonempty word $a$ of length $q$, let
+$S_a(w)$ be the increasing sequence of all starting positions of $a$ in $w$.
+For a nonempty sequence $S=(s_1,\ldots,s_t)$ retain
+\[
+ \Sigma(S)=(t,s_1,s_t,\delta_{\min},\delta_{\max}),\qquad
+ \delta_{\min}=\min_{i<t}(s_{i+1}-s_i),\quad
+ \delta_{\max}=\max_{i<t}(s_{i+1}-s_i).
+\]
+Both gap entries are zero when $t=1$; the empty sequence has a separate
+zero-count summary.  In particular, counts are not saturated at any fixed
+threshold.
+
+\begin{lemma}[Exact SLP occurrence summary]
+Given an SLP with $g$ reachable rules and an explicit $q$-letter pattern,
+the summary of every occurrence set $S_a(w)$ is computable with
+$O(q^2g+g\log g)$ elementary operations and $O(qg)$ stored symbols and
+integer fields.  The numerical value of the occurrence count is not a loop
+bound.  The nonempty occurrence set is an arithmetic progression if and only
+if its count is one or its two gap entries agree.
+\end{lemma}
+
+\begin{proof}
+At a concatenation $w=uv$, the occurrences fall into three disjoint ordered
+parts: those wholly in $u$, those crossing its cut, and those wholly in $v$.
+The last part is shifted by $|u|$.  A crossing occurrence uses $j$ letters
+of the suffix of $u$ and $q-j$ letters of the prefix of $v$, for
+$1\leq j\leq q-1$.  The prefixes and suffixes of length at most $q-1$ of
+each grammar word suffice to check all these candidates.  Checking at most
+$q-1$ explicit words of length $q$ costs $O(q^2)$ operations per rule.
+
+To concatenate two nonempty ordered occurrence sequences, add their counts,
+keep the first position of the first and the last position of the second,
+and include exactly one additional gap: the first position of the second
+minus the last position of the first.  The new least and greatest gaps are
+the minima and maxima of the old nonempty gap collections and this new gap.
+Empty inputs and singleton gap collections require no special approximation.
+This recurrence computes exact summaries by induction on the grammar.
+Topological sorting contributes $O(g\log g)$ operations.  Finally all
+consecutive gaps are equal exactly when their least and greatest values
+agree, which is the arithmetic-progression condition.
+\end{proof}
+
+\subsection{Period-certified clipping}
+
+An integer $d$ with $1\leq d<|P|$ is a period of $P$ if
+$P[0:|P|-d]=P[d:|P|]$.  This condition can be checked by one deterministic
+compressed equality call.  Neither $d$ nor the number of repetitions is
+expanded, and no claim that $d$ is the least period is needed.
+
+\begin{theorem}[Suffix-anchor clipping]
+Fix $1\leq q\leq\min(|x|,|y|)$ and let $a$ be the suffix of $x$ of length
+$q$.  Suppose that the complete candidate set
+\[
+ K=\{s+q:s\in S_a(y),\ s+q\leq |x|\}
+   =\{b,b+d,\ldots,b+(r-1)d\}
+\]
+is a nonempty arithmetic progression with $r>1$.
+Set $M=\max K$ and $P=y[0:M]$.  If $P$ has period $d$, then
+\[
+ \mathcal O(x,y)\cap[q,\infty)
+  =K\cap\bigl[q,\operatorname{lcsuffix}(x,P)\bigr].
+\]
+Thus all long overlaps are obtained by one compressed longest-common-suffix
+query and arithmetic clipping of a single progression.
+\end{theorem}
+
+\begin{proof}
+Every overlap of length at least $q$ must align the suffix anchor of $x$
+with an occurrence ending at the overlap endpoint in $y$.  It therefore
+belongs to $K$.  For any $k\in K$, write $M-k=jd$ with $j\geq0$.
+Repeated application of the certified period gives
+$P[i]=P[i+jd]$ for $0\leq i<k$, since all intermediate indices lie in $P$.
+Consequently
+\[
+ y[0:k]=P[0:k]=P[M-k:M].
+\]
+The overlap equality for this candidate is therefore exactly equality of
+the length-$k$ suffixes of $x$ and $P$.  These suffixes agree if and only if
+$k\leq\operatorname{lcsuffix}(x,P)$.
+\end{proof}
+
+\begin{theorem}[Prefix-anchor clipping]
+Let $a=y[0:q]$ and suppose that
+\[
+ K=\{|x|-s:s\in S_a(x),\ |x|-s\leq |y|\}
+\]
+is a nonempty arithmetic progression of step $d$ and count greater than
+one.  Set $M=\max K$ and $P=x[|x|-M:|x|]$.  If $P$ has period $d$, then
+\[
+ \mathcal O(x,y)\cap[q,\infty)
+   =K\cap\bigl[q,\operatorname{lcp}(P,y)\bigr].
+\]
+\end{theorem}
+
+\begin{proof}
+Every sufficiently long overlap starts at an occurrence of the prefix
+anchor in $x$, so it lies in $K$.  As before, $M-k$ is a nonnegative
+multiple of $d$ for each candidate, and periodicity yields
+$x[|x|-k:|x|]=P[M-k:M]=P[0:k]$.  Equality with $y[0:k]$ is therefore
+equivalent to $k\leq\operatorname{lcp}(P,y)$.
+\end{proof}
+
+\begin{corollary}[Search by candidate rank]
+Under either theorem's hypotheses, the exact predicate
+\[
+ f(j)=[\,x[|x|-(b+jd):|x|]=y[0:b+jd]\,],\qquad 0\leq j<r,
+\]
+is true on an initial segment of the candidate ranks.  Its cutoff can be
+found without computing the full longest-common-prefix or suffix length.
+If $T$ candidates pass and $b_{\rm bad}=r-T$, maximum/minimum tests followed
+by backward doubling and bisection use
+\[
+ O\bigl(1+\log(1+b_{\rm bad})\bigr)
+ \quad\hbox{exact substring equality calls},
+\]
+and hence $O(\log(r+1))$ in the worst case.  The all-true case uses one
+call and the all-false case at most two.
+\end{corollary}
+
+\begin{proof}
+The clipping theorems make $f$ a monotone true-prefix predicate.
+First test rank $r-1$; if it passes, every rank passes.  Otherwise test rank
+zero; if it fails, every rank fails.  The remaining case has known bounds
+$f(0)=\mathrm{true}$ and $f(r-1)=\mathrm{false}$.
+Probe backwards from $r-1$ at distances $1,2,4,\ldots$, stopping on a true
+rank or on the previously checked rank zero.  A probe at distance $\delta$
+passes exactly when $\delta\geq b_{\rm bad}$.  The first passing power of
+two is less than $2b_{\rm bad}$, unless the search was clamped to the known
+minimum.  The resulting bracket has width $O(b_{\rm bad})$.  Ordinary exact
+bisection finds the last passing rank in another $O(\log(1+b_{\rm bad}))$
+calls.  The case $r=2$ has no interior ranks to inspect.
+\end{proof}
+
+The final implementation uses this rank search.  The earlier full-LCP
+implementation and its raw measurements are preserved as a separate ablation.
+The refined comparison count is independent of the numerical period, but
+each comparison and each coordinate arithmetic operation still incurs its
+ordinary grammar and bit costs.
+
+\paragraph{Empty sets, singletons, and short overlaps.}
+An empty candidate set excludes every overlap of length at least $q$.
+A singleton is checked by one exact substring equality, without a period
+test.  The lengths $1,\ldots,q-1$ are checked separately.  Thus a successful
+anchor gives a complete answer, not merely some verified witnesses.
+The first candidate $b$ need not equal $d$, and the period is required only
+on the longest candidate window; material outside that window is irrelevant.
+
+\paragraph{Cropping and signs.}
+Putting $L=\min(|x|,|y|)$ and replacing $x$ by its suffix of length $L$ and
+$y$ by its prefix of length $L$ leaves $\mathcal O$ unchanged.  This removes
+irrelevant candidates before the summaries are computed.  Reversal combined
+with letterwise sign inversion is a bijection preserving equality, so the
+existing free-group inverse operation turns a longest-common-suffix query
+into an exact longest-common-prefix query without changing its length.
+This was used by the LCP ablation; the final rank implementation directly
+checks the two candidate substrings.
+
+\paragraph{Fallback and resource bounds.}
+The implementation tries $q=1,2,4,8$ in both directions, after the earlier
+uniform, short-period, and sparse-endpoint cases.  A non-AP occurrence set
+or a failed period certificate returns no conclusion and leaves the complete
+matcher available.  A resource exception propagates; it is never interpreted
+as an empty overlap set.  All query caches receive only completed results.
+
+Let $Q$ be the largest explicit anchor length, $B$ the bit length of the
+largest source-word length, and $A$ the maximum letter-label bit length.
+The elementary-operation summary bound must not be interpreted as a bit-time
+bound: coordinate arithmetic uses up to $B$ bits, label comparisons use up
+to $A$ bits, and identifiers use $O(\log g)$ bits.  For fixed $Q=8$, the
+preprocessing contributes a linear number of grammar-summary operations
+apart from topological sorting, with $O(g)$ stored bounded-length buffers
+and binary fields.  Exact period certification, slicing, and candidate
+equalities retain their own polynomial SLP costs.  If $H$ bounds the two
+input grammar heights and $c=O(1+\log(1+b_{\rm bad}))$ is the rank comparison
+count, the rank search adds at most $O(Hc)$ slice rules; including short
+overlaps and the bounded endpoint/period cuts gives $O(H(q+c))$ new rules.
+A useful black-box bound for one successful anchor is
+\[
+ O\bigl(q^2g+g\log g+H(q+c)\bigr)+O(q+c+1)E(G),
+\]
+in elementary-operation notation, where $G$ bounds the actual intermediate
+grammar size and $E$ is the selected exact-equality cost.  Thus one may use
+$G=O(g+H(q+c))$ for a fresh arena containing only these inputs and the query
+artifacts.  Failed earlier anchors add their explicitly bounded summary and
+equality costs.  No overall linear-time claim follows from the linear summary
+recurrence, and $O(\log r)$ equality calls is not itself a bit-time bound.
+
+\subsection{A family beyond both previous thresholds}
+
+Let $n,m$ be positive integers and
+\[
+ P_n=(12)^n3,\qquad W_{n,m}=P_n^m.
+\]
+The occurrences of the endpoint letter $3$ end at precisely
+$|P_n|,2|P_n|,\ldots,m|P_n|$.  The period certificate succeeds and
+$\mathcal O(W_{n,m},W_{n,m})$ is exactly this progression.  The grammar
+has $O(\log n+\log m)$ rules under binary powering, while the period is
+$2n+1$ and the candidate count is $m$.  Both can exceed every fixed
+implementation threshold simultaneously.
+
+The binary-alphabet variant $((21)^n1)^m$ has dense endpoint-letter
+occurrences but one cyclic occurrence per block of the suffix bigram $11$;
+the $q=2$ certificate yields the same progression of multiples of $2n+1$.
+For $((12)^n11)^m$ with $n\geq2$, $q=4$ uses the suffix pattern $1211$;
+the complete answer consists of the singleton overlap $1$ and the positive
+multiples of $2n+2$ through $m(2n+2)$.
+
+The rank refinement also handles the nonperiodic target
+\[
+ x=4^{2n+1}P_n^{m-1},\qquad y=P_n^m.
+\]
+For $m\geq3$ the exact candidate ranks have one rejected largest member.
+Maximum, minimum, and immediate-predecessor tests therefore settle the whole
+query in three rank predicates, regardless of the binary sizes of $n$ and
+$m$.  The original full-LCP clipping may still bisect a word-length range
+whose binary size includes both $\log n$ and $\log m$.
+
+\paragraph{Scope of the improvement.}
+This is a polynomial promise-case accelerator and an exact compressed
+output representation inside the relator engine.  It supplies neither a
+bound on the number of relator moves needed for arbitrary unknot diagrams,
+nor a completeness theorem for the geometric hierarchy search, nor a
+quasipolynomial bound for the complete recognition pipeline.  In particular,
+the existing equality/LCP backend can still dominate phased long-period
+queries even after an endpoint period certificate has succeeded.

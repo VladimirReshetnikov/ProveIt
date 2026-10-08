@@ -1,0 +1,164 @@
+\section{Reproduction and integration notes}
+\label{sec:reproduce}
+
+\subsection{Pinned source and package contents}
+
+The baseline is the public repository commit \basecommit. The companion
+archive includes this article's complete \LaTeX{} source and bibliography,
+the compiled PDF, an integration patch, a reviewable tree of changed and
+new repository files, and a runnable source snapshot with the independent
+test-oracle files needed by the existing suite. Machine-readable manifests
+record source provenance and SHA-256 digests. Temporary bytecode caches,
+compiler intermediates, and failed retrieval artifacts are excluded.
+
+The new implementation files are
+\path{fastunknot/su2.py}, \path{fastunknot/first_jet.py},
+\path{fastunknot/first_jet_scan.py}, and
+\path{fastunknot/streaming_response.py}. Each has focused tests.
+Raw measurements and inputs live in \path{fast/results/}; replay
+scripts are grouped by experiment. The default recognizer does not
+automatically select these new research backends.
+
+One existing file, \path{fastunknot/normal_surface.py}, receives an
+inherited correction from the preceding research continuation. Repeated
+\texttt{communicate(None)} calls after a timeout can lose an incompletely
+sent input payload on the supported Python subprocess path. The corrected
+worker performs exactly one \texttt{communicate(payload)} in a thread,
+polls its completion under the cooperative deadline, and kills, reaps,
+and joins on interruption. This resolves the existing
+\texttt{test\_communication\_retains\_input\_across\_polls} regression.
+It is an integration fix with prior provenance, not a new mathematical
+or recognition-performance result of this article.
+
+\subsection{Build and test commands}
+
+The article uses standard \LaTeX{} packages; no external network source
+is needed to compile it. From the article directory:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  unknot_presentations_and_early_certificates.tex
+\end{lstlisting}
+\end{minipage}\par
+An already generated bibliography is included for installations that
+prefer a plain \texttt{pdflatex} build; a complete refresh uses BibTeX
+through \texttt{latexmk}. The archived PDF is rendered and visually
+checked after compilation.
+
+From the bundled or patched \path{Topology/UnknotRecognition/fast}
+directory:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}
+python3 -m unittest discover -s tests -q
+python3 first_jet_research/audit.py --fast-root . \
+  --output results/first_jet_discovery_local.json
+python3 benchmark_first_jet.py \
+  --output results/first_jet_benchmark_local.json
+python3 response_research/audit_streaming_response.py \
+  --output results/streaming_response_audit_local.json
+python3 response_research/benchmark_streaming_response.py \
+  --output results/streaming_response_local.json \
+  --sizes 16 32 64 128 --rounds 7 --large-stream 2048
+python3 response_research/benchmark_streaming_response.py \
+  --output results/streaming_response_large_local.json \
+  --sizes 256 --rounds 3 --large-stream 8192
+python3 su2_research/audit_su2.py \
+  --output results/su2_audit_local.json
+python3 su2_research/benchmark_su2.py \
+  --output results/su2_benchmark_local.json
+\end{lstlisting}
+\end{minipage}\par
+The detailed README gives the accepted output-path and size flags of
+each script. The recorded optional real solver is
+\path{z3-solver==5.1.0.0}, reporting core version 5.1.0. The symbolic
+compiler, exact rational-witness tests, finite-group checks, first-jet
+code, and response code do not need that dependency. Solver-dependent
+tests skip when it is absent.
+
+The complete integrated suite depends on the bundled independent
+reference modules from reports 24, 26, and 28. They are unchanged copies
+of pinned repository files, not a second implementation of the new
+incremental state inside its oracle. Existing optional Regina tests
+remain conditional on that external dependency.
+
+\subsection{Example interfaces}
+
+The following generic query has no knot verdict attached:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.su2 import compile_presentation, solve_formula
+
+# The trefoil presentation aba = bab, supplied here only as a group.
+formula = compile_presentation(
+    [1, 2], [(1, 2, 1, -2, -1, -2)], chunk_size=3
+)
+print(formula.summary())
+print(solve_formula(formula, seconds=1.0))
+\end{lstlisting}
+\end{minipage}\par
+Use the validated diagram constructor to obtain a knot decision:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.diagram import Diagram
+from fastunknot.su2 import su2_decide
+
+d = Diagram.from_braid(3, [1, -2, 1, -2])
+answer = su2_decide(d, presentation="tietze", seconds=1.0,
+                    trace_zero_probe=True)
+print(answer["status"])
+\end{lstlisting}
+\end{minipage}\par
+The trace-zero flag enables a one-sided witness probe only. This interface
+still queries the full formula after a failed restricted probe; it does
+not exploit the stronger complete specialization in
+Corollary~\ref{cor:su2-fixed-meridian}. Export an
+exact SMT-LIB input with the standalone CLI's \texttt{--smt2} option.
+
+The rank-only scanner accepts validated PD data and an optional supplied
+order:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.first_jet_scan import first_jet_khovanov_decide
+
+answer = first_jet_khovanov_decide(
+    d.pd, seconds=2.0, max_objects=50000,
+    first_jet_max_work=1000000
+)
+print(answer["status"], answer["first_jet_stats"])
+\end{lstlisting}
+\end{minipage}\par
+Its global scan limit is an exception in this raw API, consistent with
+the maintained raw scanner contract. A caller must handle that as
+unresolved. It must not expose replacement degree counts as the original
+graded homology.
+
+Finally, the response compiler takes a crossing order and a prime:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.streaming_response import compile_suffix_responses
+
+responses = compile_suffix_responses(
+    d.pd, order=list(range(d.crossings)), prime=101,
+    max_boundary=100, max_stored_elements=1000000
+)
+# Query a stage only with a checked matching on that stage's boundary.
+\end{lstlisting}
+\end{minipage}\par
+The storage allowance counts retained matrix entries; it is not a hard
+process-memory cap. Source data and a current temporary matrix have the
+additional costs proved in the response theorem.
+
+\subsection{Reproducibility and trust limitations}
+
+All mathematical proofs are presented for review rather than described
+as formally verified. Independent implementations and cross-checks reduce
+implementation risk, but finite tests do not replace those proofs. The
+optional real solver is an explicit trusted backend. SAT models are
+retained as exact algebraic expressions and evaluated by that same
+backend, while UNSAT is its exact decision result; no independent
+UNSAT proof checker is bundled.
+
+The source snapshot is a convenience for reproduction, not a substitute
+for reviewing the small integration patch against the pinned repository.
+The archive is prepared for later repository integration. It does not
+represent a pushed commit or a published change to ProveIt.

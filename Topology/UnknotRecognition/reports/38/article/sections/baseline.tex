@@ -1,0 +1,98 @@
+\section{The maintained algorithm and its unresolved size parameters}
+\label{sec:baseline}
+
+\subsection{The exact foundation}
+
+The maintained program validates diagrams before applying inexpensive
+structural tests, diagram simplification, invariant obstructions, and
+optional certificate searches. It has specialized recognition routines for
+several structured inputs and an exact Khovanov fallback. The group stage
+supports explicit and straight-line words, with independent replay of
+its existing certificate formats. Optional normal-surface calls have a
+separate external-engine trust boundary. These are important existing
+capabilities; this report does not reintroduce them as new results
+\cite{ProveItBaseline}.
+
+The homological fallback uses Bar-Natan's local tangle formalism and
+cancellation \cite{BarNatan2005,BarNatan2007}. A crossing extends a relative
+complex. Closed circles are delooped, scalar isomorphisms are cancelled,
+and dot polynomials encode the remaining cobordisms. At final closure the
+total characteristic-two Khovanov rank decides the unknot, using
+Kronheimer--Mrowka's detection theorem and the characteristic-two reduced
+splitting \cite{KM2011Kh,Shumakovitch2014}. Section~\ref{sec:first-jet-pre-schur}
+states the exact rank convention used by the new decision scanner.
+
+An invariant obstruction is logically asymmetric. A determinant or Jones
+value incompatible with the unknot proves knottedness, but a compatible
+value does not generally prove triviality. A verified reduction to the
+empty diagram, a replayed group certificate, or a completed detecting
+homology computation can certify the unknot. Resource exhaustion produces
+an unresolved status. This asymmetry remains part of every new interface.
+
+\subsection{Why width alone does not bound the scanner}
+
+Let $w_s$ be the actual frontier at stage $s$, let $M_s$ be its number of
+live objects, and let $L_s$ be the explicit length of its coefficient data.
+A width bound controls the kinds of boundary matchings and the available
+dot coordinates. It does not bound the multiplicity of each matching or
+the number of homological copies. Even one fixed matching supports free
+complexes with arbitrarily many objects. A bounded algebra dimension
+therefore does not imply a bounded differential matrix.
+
+Moreover, Gaussian elimination can temporarily construct large coefficient
+compositions even when its final scalar survivor count is small. A correct
+cost model must include each crossing's complete allocation, the input
+coefficient bit lengths, intermediate compositions, geometry certification,
+and the work spent on attempts that eventually return inconclusive. The
+pre-elimination first jet addresses one of these costs directly: it can
+certify the relevant rank before some cobordism compositions are formed.
+
+The existing first-jet observer already has a knot-completion multiplier.
+It reads a radical one-matching block \emph{after} scalar elimination.
+Moving the query earlier is a genuine implementation change, but merely
+renaming the old multiplier would not be one. The new doubled binary matrix
+works when scalar coefficients are still present; its invariance under
+their elimination is proved below. A separate rigidity theorem licenses
+repeated total-rank substitutions under link completions.
+
+\subsection{Why repeated graph setup is a separate cost}
+
+At a fixed suffix, signed Tait-graph elimination gives a small terminal
+response. A singular interior must be represented by both its radical
+coordinates and their coupling to the boundary. Earlier fixed-stage
+responses already use this principle. Rebuilding the next suffix and
+eliminating its interior independently can nevertheless repeat most of
+the work. The reverse-suffix construction retains the elimination while
+the black cut-face fragments merge. Its admissibility invariant is that
+an eliminated closed fragment can never be identified again.
+
+This improvement is orthogonal to the relative-complex state count. A
+response of bounded dimension can be queried exponentially many times.
+Conversely, many early-exit inputs do not justify precomputing all suffixes.
+The theorem in Section~\ref{sec:streaming-response} states setup and query
+costs separately, and the experiments time only the scope they actually
+exercise.
+
+\subsection{Parameters and representations}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+Parameter & Meaning and necessary accounting\\
+\midrule
+$n$ & Crossings of the supplied validated diagram.\\
+$b(D)$ & Maximal over-runs of its cyclic over/under traversal; not the knot's minimum bridge number.\\
+$r,N$ & Generator count and total explicit relator letters of a verified presentation.\\
+$S,s,t,d$ & Literal word-circuit input size, reachable gates, retained cut gates, and post-cut formal degree.\\
+$w,W$ & Actual scan frontier and actual suffix dart frontier in their respective constructions.\\
+$g$ & Inclusive largest crossing gap between one-object checkpoints, including initial and terminal segments.\\
+$M_s,L_s$ & Relative-complex object count and explicit coefficient length before or after the stated operation.\\
+$p$ & Field characteristic for modular determinant responses; bit cost is separate when $p$ varies.\\
+\bottomrule
+\end{tabularx}\end{center}
+
+Several quantities can be measured inexpensively, but an observed small
+value is not a universal bound. The experiments store actual diagrams and
+orders so these distinctions can be checked on the same input. Theoretical
+claims always specify the representation; a binary exponent is not charged
+as one explicitly expanded relator letter.

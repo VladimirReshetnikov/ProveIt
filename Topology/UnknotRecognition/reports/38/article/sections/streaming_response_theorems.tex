@@ -1,0 +1,384 @@
+% Standalone section source: no preamble or external macros are required.
+\section{Reverse-suffix response compilation with singular interiors}
+\label{sec:streaming-response}
+
+The preceding fixed-suffix response construction leaves an avoidable source
+of repeated work: after the scan advances, the next suffix is usually rebuilt
+and its entire interior is eliminated again.  We give a different construction
+which prepares \emph{all} suffix responses in reverse order.  Its quantitative
+gain is a theorem about response compilation on diagrams of bounded frontier.
+It supplies neither a universal frontier bound nor a bound on the number of
+Khovanov components.  The new implementation is an experimental module; no
+recognizer driver dispatches to it automatically.
+
+This construction belongs to the established study of elimination on
+graphs of small width.  In particular, F\"urer, Hoppen and Trevisan
+give an $O(k^2(m+n))$ rank and determinant algorithm over arbitrary
+fields when a suitable width-$k$ decomposition is supplied
+\cite{furer-hoppen-trevisan}.  We do not claim a new general
+small-width Gaussian-elimination bound.  The contribution here is the
+all-suffix determinant response interface, its exact compatibility with
+cut-face identifications, and a singular-safe implementation whose
+updates can be reused across actual stages of the unknot scanner.
+
+\subsection{The admissible graph filtration}
+
+Fix a checkerboard coloring of the source diagram once for the entire
+filtration. In this section, $\alpha$ pairs the two darts of each diagram
+edge, and $\rho$ rotates the four darts of each crossing counterclockwise.
+For a suffix, its common Tait vertices are black cut-face
+fragments, and its edges are the signed crossing edges.  Build suffixes in
+reverse: start with the last crossing, then insert the preceding crossing,
+and continue.  A crossing initially contributes four new face fragments,
+of which exactly two are black.  Whenever a new edge joins an already
+present dart, the face permutation adds the two connections
+\[
+ d\longleftrightarrow\rho(\alpha(d)),\qquad
+ \alpha(d)\longleftrightarrow\rho(d).
+\]
+These connections merge fragments.  They never split a fragment.
+
+A closed fragment is already a complete cycle of the partial face
+permutation.  All of its incoming and outgoing permutation arrows are
+present; no subsequent insertion can touch it.  Consequently every later
+identification occurs among open fragments or fragments just introduced.
+Every later signed edge has endpoints among those same fragments.  This
+is the essential admissibility condition for retaining an eliminated
+interior.  It would be false for arbitrary changes of a diagram or for
+forward deletion of an already eliminated crossing.
+
+Keep one distinguished black fragment as a grounding anchor, even if it
+closes.  When it merges with another open fragment, follow the merged
+fragment.  This leaves at least one retained coordinate at every stage.
+If the suffix has $w$ boundary darts, at most $w$ black fragments are open,
+so the number $b$ of retained black coordinates obeys
+\[
+                         1\le b\le w+1.
+\]
+The extra coordinate is unnecessary when the anchor is already open.
+The anchor represents an actual graph vertex; it is not an isolated
+vertex added to the graph.
+
+\subsection{A response preserved under arbitrary later attachments}
+
+Work over a field $\mathbb F$.  Starting from a symmetric signed
+Laplacian, eliminate only interior coordinates by nonsingular symmetric
+principal pivots.  A nonzero diagonal gives a one-coordinate pivot.
+If all remaining interior diagonals are zero but an off-diagonal entry
+$c$ is nonzero, the principal block
+\[
+             \begin{pmatrix}0&c\\c&0\end{pmatrix}
+\]
+is invertible and gives a two-coordinate pivot.  If neither kind exists,
+the residual interior block is identically zero.  These alternatives
+hold in characteristic two as well as in odd characteristic.
+
+The resulting response consists of a nonzero scalar $\delta$ and
+\[
+ M=\begin{pmatrix}0_r&R\\R^{\mathsf T}&S\end{pmatrix},
+ \qquad R\in\mathbb F^{r\times b},
+ \quad S=S^{\mathsf T}\in\mathbb F^{b\times b}.
+\]
+Here $\delta$ is the product of all eliminated principal determinants.
+For any additional graph attached only at the retained coordinates,
+and for any identifications among those coordinates, a grounded cofactor
+of the augmented original graph equals $\delta$ times the corresponding
+grounded determinant obtained from $M$.  To see this, add the exterior
+matrix in its own coordinates before eliminating.  Every eliminated
+principal block is unchanged, its coupling to new exterior coordinates
+is zero, and block Gaussian elimination therefore gives the same Schur
+complement and determinant factor.  Terminal identification is the
+congruence $M\mapsto T^{\mathsf T}MT$ with $T$ equal to the identity on
+interior coordinates.  This congruence commutes with the same interior
+elimination.  Grounding a retained terminal also commutes with it.
+
+No invertibility assumption is imposed on the full interior block.
+Discarding $0_r$ and $R$ would be unsound.  For example, over
+$\mathbb F_2$ the path $0$--$1$--$2$, with terminal endpoints, has the
+single interior diagonal $2=0$, but its tree cofactor is one.  Retaining
+its one-dimensional radical permits a later two-coordinate pivot when
+the path is extended; treating the zero interior pivot as a zero answer
+would lose a valid response.
+
+\subsection{The absorbing-zero lemma}
+
+\begin{lemma}[Absorbing zero]
+\label{lem:response-zero}
+Suppose a residual response has $r\ge b$.  Every grounded cofactor
+obtained by any future admissible graph attachments and terminal
+identifications is zero over $\mathbb F$.
+\end{lemma}
+
+\begin{proof}
+Schur complementation of a zero-row-sum matrix still has zero row sums.
+Indeed, if
+$L=\left(\begin{smallmatrix}P&B\\B^{\mathsf T}&C\end{smallmatrix}\right)$
+annihilates the all-ones vector, then
+$P\mathbf1+B\mathbf1=0$ and
+$B^{\mathsf T}\mathbf1+C\mathbf1=0$, whence
+$(C-B^{\mathsf T}P^{-1}B)\mathbf1=0$.
+The same is true after terminal congruences and addition of signed
+Laplacian edges.  Since the first $r$ rows of $M$ have zero interior
+block, $R\mathbf1_b=0$.  Thus
+$\operatorname{rank}R\le b-1<r$, and there is a nonzero
+$u\in\ker R^{\mathsf T}$.  The vector $(u,0_b)$ is in the kernel of
+$M$.  Its support lies wholly in permanent interior coordinates, which
+future attachments and identifications never touch.  Extending this
+vector by zeros gives a nonzero nullvector of every future grounded
+matrix, since the grounded coordinate is retained rather than interior.
+The determinant is therefore zero.
+\end{proof}
+
+The lemma permits an \emph{absorbing} zero response: all numerical
+matrix entries may be discarded, although boundary geometry must still
+be maintained.  The module records this zero separately from a missing
+or interrupted computation.  This is a field-specific zero.  A zero
+modulo one prime never proves that an integer determinant is zero.
+
+The sufficient test $r\ge b$ is intentionally cheap.  A rank-deficient
+$R$ can yield a permanent nullvector even when $r<b$; recognizing all
+such cases would require another rank calculation.  The additional test
+is unnecessary for the claimed size bound.  Every carried nonzero
+response has
+\[
+                      r\le b-1,\qquad \dim M\le 2b-1.
+\]
+
+\subsection{Why every crossing needs only constantly many pivots}
+
+Consider one admissible update.  Aggregate the old terminal rows and
+columns under all identifications, insert the new crossing edge, and
+move the newly closed black fragments into the interior.  Let their
+number be $u$.  The old radical block remains zero, so the interior
+matrix now has the form
+\[
+ A=\begin{pmatrix}0_r&C\\C^{\mathsf T}&D\end{pmatrix},
+                     \qquad D\in\mathbb F^{u\times u}.
+\]
+The first $r$ rows are supported on $u$ columns; the final $u$ rows
+contribute rank at most $u$.  Hence
+\[
+                         \operatorname{rank}A\le 2u.
+\]
+Symmetric nonsingular principal elimination removes exactly its pivot
+rank and leaves an identically zero interior block.  It therefore
+eliminates at most $2u$ coordinates, using at most $2u$ pivots.
+
+Inserting one crossing creates at most four physical internal edges,
+each supplying one black face connection.  Each newly closed black
+fragment must contain a newly supplied connection, so $u\le4$.
+Retaining the anchor can only reduce $u$.  Thus there are at most eight
+one- or two-coordinate pivots per crossing, including exceptional
+characteristics in which pivot profiles change.  No probabilistic
+genericity or numerical stability assumption is used.
+
+\subsection{All-stage complexity theorem}
+
+\begin{theorem}[All-stage response compilation]
+\label{thm:response-all-stage}
+Let a spherical $n$-crossing source diagram have a prescribed crossing
+order whose largest dart frontier is $W$.  Over any fixed field, all
+nonempty suffix determinant responses can be compiled with
+$O(n(W+1)^2)$ field operations.  Keeping all snapshots stores
+$O(n(W+1)^2)$ field elements; streaming the snapshots uses
+$O((W+1)^2)$ field elements in addition to $O(n)$ geometric storage.
+An arbitrary checked boundary-matching query costs
+$O((W+1)^3)$ field operations and $O(W\alpha(W)+W)$ combinatorial
+operations.  These bounds include singular interiors.
+\end{theorem}
+
+\begin{proof}
+For a nonzero response, $b\le W+1$ and $r\le b-1$.
+At most two black vertices are introduced in the next update.
+Identifications do not increase matrix dimension.  Matrix construction,
+terminal aggregation, and each symmetric pivot therefore cost
+$O((W+1)^2)$ field operations.  The preceding rank argument bounds
+the number of pivots per crossing by an absolute constant.  A scan for
+an available diagonal or off-diagonal pivot also examines at most
+$O((W+1)^2)$ entries and is repeated only constantly often.  If the
+absorbing-zero condition occurs, subsequent arithmetic is cheaper.
+Summing over $n$ crossings proves the arithmetic claim.  Copying a
+finished immutable response has the same quadratic bound.
+
+Original edge pairing, source faces, checkerboard coloring, and the
+insertion sequence are prepared in $O(n)$ graph work apart from
+disjoint-set costs.  Union by size with path compression handles
+$O(n)$ unions and $O(n+\sum_s w_s)$ finds.  Snapshot construction
+visits only the current boundary, sorting its labels and roots once.
+Its total combinatorial work is
+\[
+ O\!\left((n+\sum_s w_s)\alpha(n)
+              +\sum_s w_s\log(w_s+2)\right).
+\]
+It never retraverses the whole suffix.  This separate statement avoids
+silently treating union-find costs or index bit lengths as field
+operations.  The geometric storage consists of the source darts,
+two union-find structures, the active-crossing flags and the boundary
+dictionary, all of size $O(n)$; a snapshot retains $O(W)$ labels.
+
+For a query, boundary unions reconstruct exactly the completed open
+faces and projection components.  The inherited coloring is checked,
+and the sphere equation $F=n_s+2k$ is verified.  Closed fragments and
+closed projection components contribute their stored counts.  There
+are at most $W$ open black fragments.  Their quotient partition,
+together with the fixed anchor when closed, grounds a matrix of
+dimension at most $2b-2=O(W+1)$.  Dense field elimination costs the
+stated cubic amount.
+\end{proof}
+
+Since $W\le 4n$, the construction also gives an unconditional
+$O(n^3)$ field-operation bound for \emph{all-stage response compilation},
+where independent dense cubic setup at every stage gives the coarser
+$O(n^4)$ bound.  For $W=O(1)$ the new arithmetic bound is linear; for
+$W=O(\log^c n)$ it is $O(n\log^{2c}n)$.  None of these statements
+bounds the number of observations or the work of the relative-complex
+scanner that requests them.
+
+For a variable prime $p$, multiplication costs and inversions must be
+restored to the field-operation bound.  With $\ell=\lceil\log_2p\rceil$,
+the construction uses $O(n(W+1)^2)$ operations on $O(\ell)$-bit field
+elements and only $O(n)$ inversions.  The implementation validates
+primes below $2^{31}$, including two, so its individual field elements
+have a fixed machine-word bound.  More primes multiply the compilation
+cost; the theorem does not claim constant-cost reconstruction of an
+arbitrarily large integer cofactor.
+
+\subsection{Implementation and integration boundary}
+
+The new file \path{fastunknot/streaming_response.py} supplies immutable
+\texttt{StreamingResponse} and \texttt{SuffixResponse} objects, an
+iterator over suffixes in reverse stage order, and a convenience
+function returning every snapshot indexed by forward prefix stage.
+The generic arithmetic API rejects new edges whose endpoints are no
+longer retained terminals.  The geometric compiler additionally checks
+every black-fragment merge against its live terminal set, so an
+accidental identification of an eliminated face is an explicit error.
+
+Snapshot completion queries check exact boundary coverage, inherited
+color compatibility, and spherical genus.  A disconnected projection
+has raw reduced Jones value zero at $i$.  A connected query uses the
+phase $(-i)^{B+v-1}$, where $B=\sum_e b_e$: the crossing bit is
+$b_e=1$ for black sectors $[0,2]$ and $b_e=0$ for black sectors $[1,3]$,
+and the edge weight is $(-1)^{b_e}$. This sum retains contributions of
+Laplacian loops. The number $v$ is the actual completed black-face count.
+The anchor is included in this count exactly once.  Modulo a prime the
+result is stored as a formal Gaussian pair; it does not require
+choosing a square root of $-1$ in the field.
+
+All response updates and queries poll an optional cancellation/work
+callback.  An exception propagates before a partially completed
+snapshot is published.  Existing snapshots cannot be modified by an
+update.  The constructor's source validation is also interruptible.
+There is no new default setting, fallback-policy change or positive
+unknot claim.
+
+The iterator accepts an optional frontier allowance and stops before a
+response at an over-wide stage is built.  The all-snapshot convenience
+function also accepts a retained-field-element allowance, charging the
+sum of squared stored response dimensions before retaining each completed
+snapshot.  Exhaustion raises a distinct \texttt{ResponseBudget} exception;
+the convenience function returns no partial compiled tuple.  The storage
+allowance covers retained field entries, not source metadata or a current
+update's temporary matrix.  It is not a hard process-memory limit.
+
+The primary integration opportunity is an observer that expects to
+query many stages of a fixed order.  It can prepare responses once
+and query the corresponding stage without repeating interior
+elimination.  Conversely, a scan that is likely to terminate after
+one inexpensive early observation should not automatically prepare
+every suffix.  An adaptive dispatcher must account for the all-stage
+setup cost.  No such dispatcher or end-to-end speedup is claimed here.
+
+\subsection{Independent checks and measurements}
+
+The reproducible integer-cofactor audit accepts 53 knot braid diagrams
+from 240 seeded attempts.  It considers every one of their 610 suffixes
+under a recorded shuffled order, over the primes $2,3,5,101$.
+There are 2440 field responses and 19520 independent quotient-cofactor
+comparisons, all agreeing.  The sample includes 493 singular responses,
+19 absorbing-zero responses, and 72 streams that perform a
+two-coordinate pivot.  The largest retained radical has dimension four.
+The reference reconstructs complete cut-face graphs by graph components
+and computes integer Bareiss cofactors; it does not reuse the incremental
+fragment union-find or the field-response matrices.
+
+Eight focused tests additionally exercise actual scanner matchings and
+their raw Gaussian phases, mirrors, randomly generated graph insertion
+streams with identifications and forgetting, the characteristic-two
+singular path example, protected zero responses, immutable updates,
+source and mid-update cancellation, and the explicit frontier/storage
+allowances.  No first-jet or recognition driver is imported by the new
+response compiler.
+
+The timing family is the natural crossing order of the positive
+three-strand braid $(\sigma_1\sigma_2)^{n/2}$ for the listed $n$.
+The closures are knots since $n/2$ is coprime to three.  Both arms
+prepare every suffix of the same diagram.  The dense control independently
+rebuilds each cut-face graph and uses the same symmetric pivot arithmetic;
+the streaming arm retains elimination between suffixes.  Original
+coloring is computed once per arm.  Source preparation, geometry and
+all response setups are included.  One excluded warmup checks five
+arbitrary quotient queries per suffix.  Shuffled A/A/B rounds include
+two identical dense controls.  The first four rows use seven rounds;
+the last uses three.
+
+\begin{center}
+\begin{tabular}{r|r|r|r|r}
+$n$ & Dense setup (ms) & Streaming (ms) & Ratio & Dense A/A\\\hline
+16 & 1.308 & 0.522 & 2.51 & 1.076\\
+32 & 5.584 & 1.123 & 4.97 & 1.155\\
+64 & 27.180 & 2.193 & 12.39 & 0.993\\
+128 & 267.265 & 5.241 & 50.99 & 0.992\\
+256 & 3615.101 & 14.061 & 257.10 & 0.906
+\end{tabular}
+\end{center}
+
+The large ratios reflect substantial interior reuse.  At $n=256$,
+253 of 256 stages have a nontrivial interior and 84 have a nonzero
+retained radical.  The dense common graph reaches 129 black vertices;
+the largest matrix constructed by streaming has dimension five.
+Each dense arm performs 23789518 symmetric elimination updates across
+all suffixes, compared with 928 for streaming. At all natural-order sizes
+the largest dart frontier is six.  Compiling all 8192 suffixes of the
+corresponding larger braid takes 0.4155 seconds in one additional
+streaming-only run, performs 30024 elimination updates, and stores
+92825 field elements.  That run has no dense timed comparator.
+
+Recorded shuffled orders at 16, 32 and 64 crossings give smaller ratios
+of 1.69, 2.50 and 3.73.  This sensitivity is expected: a poor order
+increases the actual retained boundary.  Small-instance timings and
+the 256-crossing dense controls exhibit visible noise; the table
+reports their controls rather than treating milliseconds as exact.
+The operation-count theorem is independent of these wall-clock ratios.
+
+These knots are readily decided by existing recognizer filters.
+The measurements establish a response-compilation improvement, not a
+whole-recognizer speedup or a difficult family for unknot recognition.
+Their significance relative to earlier boundary benchmarks is that
+substantial, sometimes singular interiors are eliminated once across
+genuinely changing suffixes.  All raw input words, orders, timings,
+counts and source hashes are retained in
+\path{fast/results/streaming_response*.json}; the source hashes in
+all three final JSON files match the delivered response module.
+
+\subsection{Further questions specific to this construction}
+
+\begin{enumerate}
+\item Can a cost-based observer choose a prefix of the reverse compilation
+      or a collection of checkpoints that gives a competitive bound relative
+      to the better of independent setup and full precompilation?
+\item Can the same face filtration compile the two Euler boundary path
+      summaries and determinant response in one pass, so stage geometry and
+      cancellation checks are shared?
+\item Can a separator tree replace a linear crossing order while preserving
+      singular residual information, giving local updates after a small
+      diagram change?  The present no-future-interior-identification contract
+      must be replaced by a proved tree-boundary contract.
+\item Which real observer traces contain enough nontrivial interior work
+      at enough stages for this compilation theorem to improve complete
+      recognition?  Easy torus-braid families isolate the arithmetic gain
+      but cannot answer this question.
+\item Can boundary response snapshots be shared across several primes or
+      several crossing orders without assuming a common pivot profile?
+      Exceptional primes require exact handling of changing radicals.
+\end{enumerate}

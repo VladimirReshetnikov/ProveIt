@@ -1,0 +1,111 @@
+\section{Scope, status, and the three costs being reduced}
+\label{sec:overview}
+
+The objective is a mathematically justified acceleration of the ProveIt
+unknot-recognition algorithm, with quasi-polynomial asymptotic
+complexity as the research target. The repository already contains a
+substantial collection of exact structural certificates, compressed group
+operations, and relative Khovanov scanners. A useful continuation must
+identify which expensive operations it actually avoids and which input-size
+parameters remain uncontrolled. This report develops three such improvements,
+and includes the code and negative experimental results needed to evaluate
+them independently.
+
+\begin{definition}[Input and target]
+The primary input is a validated spherical planar diagram of a tame knot
+with $n$ crossings and one component. Crossing and edge labels have
+polynomially bounded encoding length after normalization. General
+quasi-polynomial time means $\exp((\log(n+2))^{O(1)})$; several sufficient
+conditions in this report yield the more specific bound
+$\exp(O((\log(n+2))^2))=n^{O(\log n)}$. Bounds for a supplied compressed
+presentation explicitly include its description length and provenance.
+\end{definition}
+
+Three different costs occur. The first is the number of real variables and
+the polynomial degree in an exact representation query. The second is
+cobordism-valued elimination performed before a decision certificate becomes
+visible. The third is repeatedly eliminating the same graph interior while
+preparing boundary observations at successive stages. Reducing any one of
+these can be useful. None alone bounds the total number of intermediate
+relative-complex objects or guarantees a short geometric decomposition.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}YY@{}}
+\toprule
+Result & Proved guarantee & Remaining condition or limitation\\
+\midrule
+Explicit knot-group presentation &
+$\poly(N+r)(2+N/r)^{O(r)}$ bit operations &
+Construct and verify the presentation; $N$ counts explicitly written letters.\\
+Word-circuit cut &
+$\poly(S+r+s)(d+2)^{O(r+t)}$ bit operations &
+Pay for retained gates, formal degree, dense compilation, and provenance.\\
+Pre-elimination first jet &
+$t=N-2\rank A$ and $\kappa=N-\rank\bigl(\begin{smallmatrix}A&0\\B&A\end{smallmatrix}\bigr)$ &
+Whole one-matching summand; general multiplier needs a knot completion.\\
+Multiplier-one rigidity &
+One matching preserves total rank under every classical link continuation &
+Preserves a decision quantity; original quantum grading is not retained.\\
+All-suffix responses &
+$O(n(W+1)^2)$ field operations for every suffix &
+Prescribed order; query count and relative-complex growth are separate.\\
+Checkpoint scan &
+$\poly(n)2^{O(g+w)}$ for its actual maximum gap and frontier &
+No universal polylogarithmic bound on $g+w$ is proved.\\
+\bottomrule
+\end{tabularx}
+\caption{The theorem boundaries. Letters reused inside individual sections
+are defined locally; in the presentation rows $r$ counts generators and $N$
+counts relator letters, while in the first-jet row $N$ counts complex objects.}
+\label{tab:results}
+\end{table}
+
+\subsection{What is established and what is still research}
+
+The presentation theorems are exact decision theorems using established
+existential real algorithms. The delivered compiler emits exact integer
+polynomials, but its optional practical solver is NLSAT through Z3; the
+theoretical running-time bound is not attributed to that solver. The
+first-jet scanner is a complete rank-decision method when its underlying
+exact computation is allowed to finish, with a bounded optional observer
+and an unchanged mathematical fallback. The streaming-response module is
+a subroutine with a proved arithmetic bound, and is not installed in the
+default recognition pipeline.
+
+The development is based on the pinned revision \basecommit\ of the
+ProveIt repository \cite{ProveItBaseline}. Prior reports establish the
+binary Jones contraction, scalar residue and radical analysis, first-jet
+knot-completion multiplier, and fixed-stage boundary responses. The new
+work is the quantitative presentation compilation, the placement of the
+first-jet test before elimination together with its multiplier-one link
+extension and flat-origin constraint, and reuse of boundary elimination
+across all changing suffixes. Established ingredients receive attribution;
+the fact that a combination is proved here does not establish historical
+priority for every ingredient or parameterized consequence.
+
+\input{sections/current_status}
+
+\subsection{A stronger sufficient condition is useful even with obstructions}
+
+For a word circuit, let $r$ count original generators, let $t$ count
+retained gates, and let $d$ bound the formal degrees after cutting. The
+explicit target
+\[
+             (r+t)\log(d+2)=O((\log n)^2)
+\]
+turns an informal request to ``compress the group'' into a testable theorem
+statement. It must be accompanied by polynomial construction and verification
+costs. Connected sums of trefoils, and a prime pretzel family, have group
+rank growing linearly with crossing count. Thus this condition cannot hold
+universally for presentations of the entire knot group. The same knots
+have inexpensive coloring obstructions, so they do not refute a portfolio
+that first removes such cases. A meaningful residual-class theorem must
+state those filters and decompositions exactly.
+
+Likewise, the first-jet scan supplies an explicit target $g+w=O(\log^2 n)$
+on the executed order, including temporary crossing allocation and the
+last segment. The streaming response theorem reduces the cost of observing
+such an order without proving that the order exists. These formulations
+make a future quasi-polynomial claim susceptible to proof checking rather
+than extrapolation from favorable timings.

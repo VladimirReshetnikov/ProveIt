@@ -1,0 +1,155 @@
+\section{Implementation evidence and controlled comparisons}
+\label{sec:experiments}
+
+\subsection{Verification scope}
+
+The integrated implementation passes 728 unit tests, with three skips for
+unavailable optional dependencies, in the recorded Python 3.12.14
+environment. The run includes all 31 newly added tests: ten for exact
+quaternion and presentation compilation, thirteen for first jets and
+continued rank-decision scans, and eight for streaming responses.
+After the full run, an additional general-presentation API boundary was
+tightened so callers cannot request the meridional shortcut without
+validated diagram construction; the ten SU(2) tests were rerun and passed,
+including a same-trace cyclic counterexample. The final archive retains
+the logs and source manifest rather than relying on a test count in a
+historical README.
+
+The test oracles are intentionally different computations. Streaming
+responses are compared with integer Bareiss cofactors from independently
+reconstructed complete graphs. First-jet decisions are compared with
+an independent full crossing cube, as well as the maintained exact scanner.
+Representation queries are compared with a separate reduced Khovanov cube
+and finite-group homomorphism counts. These checks test implementation
+behavior on finite inputs; the theorems establish the universal statements.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.25\textwidth}YY@{}}
+\toprule
+Recorded check & Coverage & Result and qualification\\
+\midrule
+Integrated test suite & 728 tests, including 31 new tests & Passed; three optional-dependency skips.\\
+First-jet discovery & 360 scans, 2898 stages; 117 eligible components & All pre/post-elimination profiles agree; all observed $t=\kappa$.\\
+First-jet independent cube & 96 comparisons on 32 sampled knots & No decision disagreement; continued replacements and budget fallback included.\\
+Streaming integer oracle & 53 diagrams, 610 suffixes, 19520 comparisons & No mismatch; singular and characteristic-two cases included.\\
+SU(2) short-budget audit & 96 queries on 48 sampled entries, 38 distinct PD arrays & 90 complete and correct, six inconclusive.\\
+Finite-group presentation audit & 36 sampled entries, 26 distinct PD arrays & Equal $S_3$ homomorphism counts for all three presentations.\\
+\bottomrule
+\end{tabularx}\end{center}
+
+\subsection{First-jet observer: eligibility and timing are different results}
+
+The discovery experiment in Section~\ref{sec:first-jet-pre-schur} establishes
+that the pre-elimination test encounters eligible components in actual
+diagrams. Its 117 components contain 633 objects and 237 scalar pairs.
+All contain scalar units, so they lie outside the old radical-only
+observer's precondition at that moment. This does not by itself imply a
+speedup: traversing the whole graph and computing ranks also costs work.
+
+The paired benchmark therefore compares six raw-scanner arms on twelve
+actual diagrams: the ordinary scanner, an identical control, the full
+first-jet scanner, an observe-only variant, a variant without completion
+geometry, and a zero-observation-budget fallback. Every arm validates the
+same supplied PD and uses the same crossing order, no shape cache, a
+three-second deadline and a 50,000-object ceiling. Timings include validation,
+scanner construction, observation, and elimination. They exclude imports,
+input construction, order selection, and one warmup. Front-end recognizer
+filters are bypassed. Seven shuffled rounds are recorded; small cases
+batch repeated calls as specified by the script. All arms finish in every
+recorded case.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Input & $n$ & Standard ms & Jet ms & Paired ratio & A/A & Repl.\\
+\midrule
+Trefoil & 3 & 0.336 & 0.364 & 0.922 & 0.954 & 0\\
+Conway & 11 & 3.362 & 4.605 & 0.795 & 1.009 & 0\\
+Kinoshita--Terasaka & 11 & 4.625 & 6.410 & 0.761 & 1.018 & 0\\
+Hard unknot fixture & 8 & 0.780 & 0.840 & 0.893 & 1.065 & 0\\
+Scrambled grid unknot & 6 & 0.363 & 0.682 & 0.525 & 1.033 & 3\\
+Five-strand stress braid & 36 & 301.156 & 483.852 & 0.663 & 0.964 & 0\\
+Conway connected sum & 22 & 52.323 & 15.007 & 3.367 & 1.009 & 0\\
+Coxeter unknot & 11 & 0.334 & 1.077 & 0.310 & 0.989 & 10\\
+Coxeter unknot & 35 & 1.147 & 5.864 & 0.192 & 0.895 & 34\\
+Trefoil with 8 cancelling pairs & 19 & 1.795 & 2.110 & 0.848 & 1.015 & 0\\
+Trefoil with 24 cancelling pairs & 51 & 4.569 & 5.651 & 0.750 & 1.008 & 0\\
+$T(3,5)$ & 10 & 2.440 & 2.702 & 0.895 & 0.988 & 0\\
+\bottomrule
+\end{tabular}
+\caption{All twelve first-jet benchmark cases. Times are medians;
+``paired ratio'' is the median of the seven within-round
+standard/jet ratios and therefore need not equal the ratio of the two
+displayed medians. A/A is the corresponding standard/control statistic.
+Repl. counts installed multiplier-one replacements. Ratios below one
+mean the first-jet arm is slower.}
+\label{tab:jet-timings}
+\end{table}
+
+The clear gain is the connected sum of two Conway diagrams. At crossing
+11 of 22 it has a 975-object whole one-matching block with scalar rank
+471 and $t=\kappa=33$. The actual matching completion is a knot, so the
+rank lower bound is 66 and the scan rejects immediately. Counted
+cobordism compositions fall from 3324 to 39. No replacement occurs.
+The observe-only arm has paired ratio 3.473, confirming that the gain is
+early rejection. Disabling completion geometry removes this certificate
+and has ratio 0.569.
+
+The three cases that actually install replacements are slower, with
+ratios 0.525, 0.310, and 0.192. Their ordinary scans already perform
+zero counted cobordism compositions, so there is little expensive work
+for the first-jet query to avoid. The remaining full-jet ratios range
+from about 0.663 to 0.922. These unfavorable results are consequential:
+the implementation is useful as an exact experimental interface, but
+the data do not justify a default global replacement policy. The
+Conway-sum case is also decomposable and does not establish a whole-pipeline
+improvement over the repository's existing structural reductions.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/first_jet_ratios.png}
+\caption{All first-jet paired ratios from Table~\ref{tab:jet-timings}.
+The dashed line is equal runtime. The early Conway-sum obstruction is
+the only improvement in this raw-scanner corpus; replacement cases regress.}
+\label{fig:jet-ratios}
+\end{figure}
+
+\input{sections/su2_experiments}
+
+\subsection{Interpreting the response measurements}
+
+Section~\ref{sec:streaming-response} reports the complete all-suffix setup
+experiment because its arithmetic and geometry scopes belong together.
+At 256 crossings, dense rebuilding takes 3615.101 ms and streaming takes
+14.061 ms, a recorded ratio of 257.10; the identical dense control ratio
+is 0.906. The new arithmetic theorem, the reduction from 23,789,518 to
+928 elimination updates, and the small carried matrices explain the
+direction of the gain without depending on an exact wall-clock ratio.
+
+The input family is easy for the recognition front end. The streaming-only
+8192-crossing run demonstrates capacity for many evolving suffixes,
+not difficulty of those knot types. A future integration experiment
+must retain inputs on which the recognizer actually demands many such
+responses, and include the setup cost even if an early certificate
+ends the scan. The present release therefore makes no default-recognizer
+speedup claim from this experiment.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/response_setup.png}
+\caption{Recorded all-suffix setup medians at frontier six, with logarithmic
+axes. These are easy torus-braid inputs and subroutine timings. The plot
+shows the recorded points only; it does not fit an asymptotic exponent.}
+\label{fig:response-setup}
+\end{figure}
+
+\subsection{What these experiments do not establish}
+
+No finite corpus establishes universal checkpoint bounds, small
+presentations, or a success probability on arbitrary knots. No timeout is
+counted as an exact answer or as a completed baseline runtime. No
+exponent is estimated from the timing table. No synthetic word circuit
+is promoted to a knot input without group provenance. The tests and
+measurements support implementation claims and identify costs worth
+reducing; the asymptotic claims come from the explicit proofs.
