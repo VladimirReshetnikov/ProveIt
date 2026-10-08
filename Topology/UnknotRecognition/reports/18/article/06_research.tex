@@ -1,0 +1,350 @@
+\section{What still obstructs a general quasi-polynomial bound}\label{sec:barriers}
+
+\subsection{Finite matching types do not bound multiplicity}
+
+The macro state space separates geometry from algebraic copies.
+Even a very small collection of boundary matchings can occur with
+exponentially large multiplicities. Streaming changes how those copies
+are visited; it does not eliminate the copies. The one-run recurrence
+does eliminate a repeated algebraic region, but only after a fixed
+finite context has been solved.
+
+The three-strand obstruction in Kelom\"aki--Sch\"utz~\cite{ks26}
+is particularly decisive against a universal width-only argument.
+Some constant-strand families have exponentially growing total Betti
+number, so any algorithm explicitly retaining a basis must expand
+exponentially. Their specialized polynomial computation shows why this
+is a representation obstruction rather than an impossibility theorem
+for compact output.
+The same lesson applies to scalar transfer matrices: their coefficients
+can encode very large counts, but a transfer formula for the Euler
+characteristic does not automatically determine homology ranks.
+
+Likewise, the restriction \(t=O(\log n)\) in
+\eqref{eq:prior-bound} is substantive. It cannot be removed by calling
+the supplied run count a width parameter. A general diagram may have
+\(t=\Theta(n)\), and the existence of some small topological
+decomposition does not imply a polynomial procedure to find it with
+short, verifiable moves.
+
+\subsection{Why several long variables need more than interpolation}
+
+A plausible next direction is to allow several large exponents at
+once. Even the simplest example rules out one overly strong formulation.
+
+\begin{proposition}[No single eventual polynomial in all twist lengths]
+\label{prop:chambers}
+There is no polynomial \(p(m,\ell)\) agreeing, for all sufficiently
+large \(m,\ell\) with \(m-\ell\) odd, with the total reduced
+characteristic-two Khovanov rank of the closed braid
+\(\sigma_1^m\sigma_1^{-\ell}\).
+\end{proposition}
+
+\begin{proof}
+The braid cancels to \(\sigma_1^{m-\ell}\), a two-strand torus knot
+when \(m-\ell\) is odd. Its reduced rank is \(|m-\ell|\).
+This last fact also follows directly from the one-run normal form:
+there is one class in degree zero, none in degree of magnitude one,
+and one in each subsequent degree through magnitude \(|m-\ell|\).
+
+If \(p\) existed, fix any sufficiently large integer \(\ell\).
+For infinitely many admissible \(m>\ell\),
+\(p(m,\ell)=m-\ell\). A one-variable polynomial with infinitely many
+zeros is zero, so \(p(x,\ell)=x-\ell\) identically in \(x\).
+This holds for infinitely many \(\ell\), hence
+\(p(x,y)=x-y\) as a two-variable polynomial.
+It contradicts the required value \(\ell-m\) for admissible
+\(\ell>m\).
+\end{proof}
+
+The cancellation in this example is cheap and should be performed first
+in a practical recognizer. Its role is conceptual: comparable exponents
+can produce different asymptotic chambers separated by equalities of
+lengths. A multivariable theorem might use piecewise polynomial,
+quasi-polynomial, or rational generating descriptions with explicit
+chamber conditions. A few numerical values cannot select the correct
+description or prove its validity throughout a large orthant.
+
+\subsection{A sufficient representation target}
+
+The useful target is a compact algebraic model closed under the operations
+the algorithm actually performs. For a tangle fragment it must include
+boundary data, grading shifts, multiplicities, differentials, and the
+maps used in subsequent gluing. A list of dimensions is insufficient.
+
+\Needspace{14\baselineskip}
+\begin{proposition}[Conditional complexity contract]\label{prop:contract}
+Suppose every \(n\)-crossing input admits a constructible decomposition
+with \(\poly(n)\) composition steps. Assume:
+\begin{enumerate}
+\item each intermediate fragment has a faithful algebraic description
+of at most \(S(n)\) bits, including all multiplicities and map data;
+\item each composition, reduction, and final rank-one decision can be
+performed in \(\poly(n,S(n))\) bit operations while preserving a
+description of that size;
+\item the construction and the correctness of every representation
+change have the same total complexity bound.
+\end{enumerate}
+If \(S(n)=2^{O((\log n)^2)}\), this gives a complete
+\(n^{O(\log n)}\)-time recognition algorithm.
+\end{proposition}
+
+\begin{proof}
+There are polynomially many steps, each of polynomial degree independent
+of \(n\) in \(n\) and \(S(n)\). Their sum, including the construction and
+final decision, remains \(2^{O((\log n)^2)}\).
+Faithfulness makes the final rank-one decision equivalent to
+\eqref{eq:detector}.
+\end{proof}
+
+This proposition is a contract for future theorems, not a proof that such
+descriptions exist. In particular the first assumption forbids hiding
+large basis multiplicity inside a supposedly small number of geometric
+types, and the second forbids an implicit exponential expansion during
+composition. The third distinguishes finding a useful decomposition
+from merely asserting its existence.
+
+The present recurrence satisfies this kind of contract for one finite
+context followed by a homogeneous repeated chain region. It gives a
+concrete example of how much information can be compressed while still
+recovering exact ranks. Extending that closure property to interacting
+regions is the central algebraic problem.
+
+\section{Further research questions and proposed work programme}
+\label{sec:research}
+
+The following topics are ordered by their connection to the actual
+remaining bottlenecks. Each has a concrete mathematical or experimental
+completion criterion. They are proposals, not claimed consequences of
+the current implementation.
+
+\subsection{Reduce the effective context amplitude}
+
+\begin{question}\label{q:amplitude}
+Can the raw crossing span \(W\) be replaced by the degree span of a
+smaller context model that retains both dot actions and the distinguished
+saddle?
+\end{question}
+
+The proof of \cref{thm:recurrence} uses a common support interval for the
+\(I\) and \(E\) context sectors and compatibility with their maps.
+Suppose an explicitly constructed equivalence of this two-sector
+context has degree-preserving forward and backward maps, with contracting
+homotopies, all compatible with both exterior dot actions and the
+distinguished saddle. If both resulting sector complexes are supported
+in \([a',c']\), the same proof gives threshold \(c'-a'+2\).
+Compatibility is required at the level of maps and homotopies.
+An ordinary homotopy equivalence of the underlying complexes alone
+does not suffice; transporting operators through an arbitrary
+contraction can introduce additional terms.
+
+A first implementation should perform local contractions in the open
+tangle category and transport the saddle, dot actions, and contracting
+homotopies. It should output an equivalence witness and measure both
+the reduced amplitude and the resulting matrix size.
+A useful negative outcome would be a family where amplitude is small
+but the equivariant context dimension still grows exponentially.
+That would isolate the next barrier more accurately than crossing
+count alone.
+
+\subsection{Two interacting variable regions before arbitrary many}
+
+\begin{question}\label{q:two}
+For two distinguished runs, can their simultaneous long region be
+described by finitely many exact face and chamber models whose evaluation
+is polynomial in the two exponent bit lengths?
+\end{question}
+
+The one-run interior is controlled by \(D_E+L\). With two selected
+turnbacks, there are two commuting local dot sums and several
+\(I/E\) sectors. The total homological degree combines both local
+coordinates, so the number of copies along a diagonal changes near
+the boundary of the exponent rectangle. A faithful model must retain
+those incidences, not simply add two independently computed slopes.
+
+Begin with adjacent and nonadjacent generators, both relative signs,
+all original component parities, and the cancellation family in
+\cref{prop:chambers}. Require an exact symbolic formula whose chamber
+conditions are proved, then compare complete small profiles with the
+crossing cube. Only after the two-variable case is understood should
+one study an \(s\)-variable face system with up to \(2^s\) sectors.
+Even that sector count would not bound internal module complexity.
+
+\subsection{Restore quantum information}
+
+\begin{question}\label{q:quantum}
+What is the exact bigraded refinement of the one-reference recurrence,
+including the shifts of both boundary regions and the repeated interval?
+\end{question}
+
+The ungraded deformation \(D_E+L\) combines maps with different original
+bidegrees. The slope identity gives total dimension and does not place
+the smoothing's original bigraded groups in the long complex.
+A correct refinement must carry the quantum shifts in the integer-twist
+normal form before flattening the central groups.
+One possible output is a rational generating expression in homological
+and quantum variables, with finite boundary corrections. Its validity
+and output size have to be proved.
+The completion criterion is agreement with an independently bigraded
+cube on both signs and mixed contexts, not just recovery of the Jones
+Euler polynomial.
+
+\subsection{Odd characteristics and integral torsion}
+
+\begin{question}\label{q:integral}
+Can a signed periodic central model replace \(F\) over fields of odd
+characteristic and over the integers?
+\end{question}
+
+The current square-zero calculation and weight cancellation use
+characteristic two. Over the integers, twist differentials alternate
+dot sums and differences; signs also interact with tensor degrees.
+A period-two central model is a natural object to examine, but using
+the present \(D_E+L\) unchanged is invalid.
+An integral algorithm additionally needs Smith-form or module data,
+with the bit lengths of torsion invariants included in its complexity.
+The first result should be a fully signed local and contextual theorem,
+followed by a recurrence for isomorphism types or a precisely weaker
+rank statement.
+
+\subsection{Decision certificates smaller than full homology}
+
+\begin{question}\label{q:certificate}
+Can a rank-greater-than-one witness be represented and verified compactly
+on inputs that evade the structural and modular filters?
+\end{question}
+
+There is a concrete algebraic witness to seek. In a chain complex with
+total differential \(d\), find two cycles \(z_1,z_2\) and two linear
+functionals \(\ell_1,\ell_2\) satisfying
+\[
+dz_j=0,\qquad \ell_i d=0,\qquad \ell_i(z_j)=\delta_{ij}.
+\]
+Then the two homology classes are independent: any boundary relation
+between them is annihilated by both functionals. This elementary
+criterion gives a verifiable target.
+An explicit witness can be exponentially long, so the research problem
+is a representation that supports these products without expansion.
+The streamed lower bound already proves a decision but does not yet
+produce such a portable compressed cycle--cocycle witness.
+
+Unknot certificates need a different positive mechanism, such as a
+small contraction to the one-generator reduced complex or a
+topological simplification certificate. A method that quickly produces
+two surviving classes on many knots still needs a complete, costed
+endpoint on hard unknots.
+
+\subsection{Use tangle invariants with explicit algebraic size accounting}
+
+\begin{question}\label{q:curves}
+Can immersed-curve or related four-ended tangle descriptions support
+exact repeated gluing with compact multiplicities and controlled local
+systems?
+\end{question}
+
+The framework of Kotelskiy--Watson--Zibrowius is a serious source of
+structure~\cite{kwz}. The relevant complexity parameters would include
+curve segments, intersections under twisting, local-system ranks and
+entries, and the cost of cancelling the resulting Floer-type complex.
+A picture with few curves may still encode many intersections or a
+large local system. The first milestone should translate one delivered
+long-run example into that representation and recover its threshold,
+slope, and boundary corrections with explicit cost accounting.
+
+\subsection{Recover speed while preserving the streamed memory bound}
+
+\begin{question}\label{q:streamspeed}
+Which bounded low-level changes recover the streamed backend's observed
+time loss without restoring unbounded tables?
+\end{question}
+
+Candidates include a compiled exact bitset kernel, small-label tables
+admitted only under an explicit slot cap, reused neighboring state keys,
+and a more efficient geometry construction.
+The benchmark currently shows a real time cost, so a default switch
+would be premature.
+Any follow-up should report complete output equality, paired A/B and
+A/A timings, total versus live state counts, map-compilation counts,
+and separate traced-allocation measurements on the same inputs.
+
+A related question is whether the sweep should start at the other
+homological end. Reversing the sweep requires the correct transposed
+local maps and grading conversion. A preflight estimate may choose an
+end, but an estimate of where homology is likely cannot substitute
+for the exact incident ranks required by an early decision.
+
+\subsection{Benchmark the unresolved part of the pipeline}
+
+\begin{question}\label{q:corpus}
+Which checked inputs actually reach the expensive endpoint after all
+current inexpensive certificates, and what algebraic feature predicts
+their cost?
+\end{question}
+
+Record the exit stage of every case, rather than timing all backends
+on examples already decided at the front. Include actual hard unknot
+fixtures, determinant-one nontrivial knots, mixed-sign braids of at
+least four strands, and examples with large intermediate but small
+final homology. Retain source provenance and the distinction between
+PD-only and braid-source inputs.
+The correct metrics include crossings, runs, degree span, maximum
+layer dimension, cancellation fill, map recompilation, and the
+compressed context size from \cref{q:amplitude}.
+Artificially labeling an easy torus or three-strand example as hard
+would make this research programme less informative.
+
+\subsection{Cost the hierarchy route operation by operation}
+
+\begin{question}\label{q:hierarchy}
+Can the remaining hierarchy steps be given explicit input/output bit
+contracts and composed into a complete quasi-polynomial runtime proof?
+\end{question}
+
+The required ledger includes hierarchy length, boundary-pattern size,
+surface-coordinate bit length, component tracking after cutting,
+product-region recognition, and the search cost of each next surface.
+Polynomial certificate verification must be kept separate from finding
+the certificate. Compact normal coordinates must remain compact through
+every update.
+Lackenby's current results provide substantial ingredients
+\cite{lackenby26}; completing this ledger would be an independent route,
+not a corollary of the present Khovanov recurrence.
+
+\subsection{Formalize the finite algebraic core first}
+
+\begin{question}\label{q:formal}
+Which parts admit a small proof-assistant development with a stable
+boundary to the topological literature?
+\end{question}
+
+The square-zero calculation, signed interval bookkeeping, rank identity,
+positive and negative profile formulas, and cycle--cocycle witness
+criterion are finite algebra and arithmetic. They are natural first
+targets. A formalization should expose the local tangle-normal-form
+assumption and then separately formalize or import its topological
+proof. A machine-checked recurrence conditional on that assumption is
+valuable, but is not a formalization of the complete unknot detector.
+The current package contains conventional proofs and executable
+cross-checks, not a Lean proof.
+
+\subsection{A proposed sequence of research milestones}
+
+\begin{enumerate}
+\item Integrate the additive code and preserve the default dispatcher.
+Reproduce the 254-method suite and the independent cube checks.
+\item Build dot- and saddle-compatible context contractions and measure
+effective amplitude on filter-undecided examples.
+\item Prove a complete two-variable theorem, including its chambers,
+component parities, and compact output.
+\item Construct and independently verify compact nontriviality witnesses,
+with an explicit positive endpoint for unknot cases.
+\item Test a representation closed under repeated tangle gluing against
+the size and operation contract in \cref{prop:contract}.
+\item Pursue the hierarchy cost ledger in parallel, so the programme
+does not depend on one algebraic representation succeeding universally.
+\end{enumerate}
+
+The immediate work is concrete and testable. A general quasi-polynomial
+claim should be made only when both a compact representation and the
+cost of every operation on it have been proved, including construction
+and the final decision.

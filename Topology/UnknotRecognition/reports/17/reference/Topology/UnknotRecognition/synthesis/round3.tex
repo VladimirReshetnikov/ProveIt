@@ -1,0 +1,380 @@
+% Third round: CPython-level work on fastunknot after 0.2, and how it was measured.
+\section{A third round: constant factors in Python, and how to measure them}
+\label{sec:round3}
+
+After version 0.2 the Rust work was paused and the Python package was
+optimized further, with no change to the mathematics, the verdicts or the
+asymptotic behaviour. This section records what was gained, what was tried and
+rejected, and an episode about measurement that changed how every number below
+was obtained. All verdicts and ranks are exact and identical to those of 0.2
+(the deciding step can differ: the Reidemeister III help below settles some
+unknots before the scan): 41 unit tests pass, and \texttt{crosscheck.py} compares the ranks by homological degree
+of the new default scanner with the generic 0.2 scanner and the 0.1 set algebra
+on random braid closures (400 closures with 2 to 5 strands, no mismatch).
+
+\subsection{What changed}
+A profile of 0.2 on the stress closure showed that the cobordism algebra was no
+longer the bottleneck: of 1.6 s under the profiler, the scanner's own
+bookkeeping (method calls per differential entry, tuple-keyed dictionaries,
+hashing of nested frozensets, a heap of pivot candidates) took most of it.
+\begin{itemize}
+\item \textbf{A scanner written for CPython} (\texttt{scan\_fast.py}). Objects
+  of a stage are numbered $0,\dots,N-1$ and live in lists; the objects created
+  from one old object form a contiguous block, so a delooping label is an
+  offset; matchings are interned as integers, so every cache key is a tuple of
+  small integers; transfers of an edge are cached per (source matching, target
+  matching, value) for both smoothings at once; cancellation is one inlined
+  loop. The generic scanner of 0.2 is kept for the ablation configurations.
+\item \textbf{A bucket queue for pivots.} On the stress closure 114\,197 unit
+  entries are candidates but only 16\,884 are used; the rest die when a
+  neighbour is cancelled. Markowitz costs are tiny, so one list per small cost
+  plus a heap for the rare large ones replaces the heap.
+\item \textbf{Integer planar geometry} (\texttt{planar.py}). Circles of
+  $a\cup\bar b$ are found by walking partners alternately; a crossing is glued
+  by following the at most four strands through it; a transfer plan is compiled
+  only over the crossing and the circles it touches, the other circles being
+  renumbered; and since monomials of different components live on disjoint
+  circles, multiplying a bit-packed sum by a monomial $c$ is the shift
+  \texttt{<{}< c}.
+\item \textbf{Outside the scanner.} The modular Alexander filter builds the
+  matrix by sparse rows (at most three nonzero entries per row) and evaluates
+  each distinct entry once; the boundary profile of a greedy scan order is
+  tracked inside the greedy in $O(1)$ per step and a losing start is abandoned
+  early; the Jones frontier scan uses the interned matchings and the
+  strand-following gluing. Each was checked to be output-preserving against the
+  previous implementation on 500 to 600 random diagrams, including diagrams
+  with kinks.
+\end{itemize}
+
+\subsection{Results}
+Same harness on both sides (\texttt{perf.py}: in one process, best of $N$,
+timers around the call only), so the columns are comparable with each other
+but \emph{not} with the fresh-process medians of the previous section.
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Task (milliseconds) & 0.2 & after the scanner work & ratio \\
+\midrule
+Scan, stress closure (36 crossings, rank 2949) & 575.4 & 216.8 & 2.65 \\
+Scan, 41-crossing 4-strand closure & 135.3 & 51.1 & 2.65 \\
+Scan, 40-crossing 3-strand closure & 71.0 & 26.2 & 2.71 \\
+Scan, 31-crossing 6-strand closure & 59.3 & 21.4 & 2.77 \\
+Scan, Conway\#Conway (unfactored) & 114.9 & 41.7 & 2.75 \\
+Scan, $T(3,11)$ & 22.8 & 8.7 & 2.61 \\
+Scan, Conway knot & 7.7 & 3.0 & 2.54 \\
+Scan, chain of 256 kinks & 15.9 & 10.9 & 1.47 \\
+Recognize the 8-crossing hard unknot & 1.26 & 0.90 & 1.41 \\
+Recognize Conway knot, exact steps only & 7.8 & 3.2 & 2.43 \\
+\midrule
+Total of the 14 cases of \texttt{perf.py} & 1022.2 & 394.6 & 2.59 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The right-hand column is a run whose control loop (see below) spread by 4.8\%.
+The changes outside the scanner came later and were measured as paired ratios
+new/old with 95\% confidence intervals, which do not need a quiet machine:
+recognition of $T(3,61)$ $0.60$ $[0.53, 0.67]$ and then $0.69$ $[0.62, 0.72]$,
+together about $0.41$; the chain of 256 kinks $0.78$ $[0.73, 0.82]$; the Jones
+scan of the stress closure $0.67$ $[0.46, 0.72]$; recognition of the Conway
+knot $0.92$ $[0.89, 0.93]$. Four later sequential runs were all rejected by the
+control rule and are not used; they are flagged in \texttt{perf\_log.json}.
+
+\paragraph{A cache that began as a trade-off.} The last change was at first not
+a free win; how it became nearly one is told in order. Every crossing brings new edge labels, so plans cached per
+stage are never reused across stages, although a long braid compiles the same
+few pictures at every crossing: at boundary size 6 there are five matchings,
+and about 35 transfer plans were compiled per crossing of $T(3,n)$. Transfer
+plans are now also cached under a label-independent key, the matchings and the
+crossing relabelled by rank. This is sound because the relabelling is monotone
+and circles are numbered by their minimal label whichever matching is walked
+first (tested on random matchings). The reuse is 80\% of the plans for
+$T(3,11)$, 94\% for $T(3,31)$, 99\% for the chain of kinks, 38\% and 19\% for
+the random 3- and 4-strand closures, but 1\% for the stress closure and none
+for the Conway knot. With the cache always on, three agreeing A/B runs: scan of $T(3,11)$ $0.61$
+$[0.59, 0.66]$, chain of kinks $0.78$, 40-crossing 3-strand closure $0.97$;
+\emph{scan of the Conway knot $1.06$ $[1.04, 1.07]$ and recognition of the hard
+unknot $1.07$, slower}; no claim on the large scans. Timing partial variants
+against the old code (A/A ratio $0.999$) splits the cost into ranking the
+boundary at each stage ($+1.5\%$), building and looking up the key ($+3.0\%$)
+and storing ($+1.3\%$). Two explanations offered first were wrong: interning
+the shapes as integers, against the hashing of nested tuples, changed nothing,
+and the ratio was the same with the cyclic garbage collector disabled;
+\texttt{shape\_cache=False} restores the previous speed exactly ($1.003$
+$[0.999, 1.007]$).
+
+A first attempt at an automatic switch failed, and I concluded too early that
+none was possible: an early hit count predicts the wrong way, since the inputs
+that profit get their first hit only after 35 to 150 lookups, while the stress
+closure gets 12 hits in its first 64 lookups and then none. A different
+predictor works. A plan can be reused only in a stage whose picture, the
+position of the four crossing slots among the boundary points up to monotone
+relabelling, has occurred before, and that is known from the scan order alone,
+before the scan. The number of such stages is 0 for the Conway knot, the
+Kinoshita--Terasaka knot and Conway\#Conway, 1 of 36 for the stress closure,
+4 of 31 and 11 of 41 for the 6- and 4-strand closures, 16 of 40 for the
+3-strand closure and 16 of 22 for $T(3,11)$. The default now turns the cache on
+when the diagram has at least 16 crossings and an eighth of its stages repeat.
+Transfer and composition \emph{results} are shared across stages too, but only
+after the first reused plan of a scan, because before that no shared result can
+exist; without that gate they cost a further $2.6\%$ on the small irregular
+scans. Against the code before any of this, with 301 interleaved pairs: scan of
+$T(3,11)$ $0.505$ $[0.486, 0.508]$, Conway knot $1.008$ $[1.005, 1.010]$, hard
+unknot $1.007$; on the corpus, $T(3,11)$ $0.51$, chain of kinks $0.81$, and
+nothing slower.
+
+\paragraph{A stage that was not needed.} The benchmark corpus contained one
+input that no filter decides, the hard unknot with 8 crossings, and that hid
+the cost of a whole stage. A generator of scrambled unknot braids
+(\texttt{hard\_unknots.py}: the closure of $v\,\sigma_1\cdots\sigma_{n-1}v^{-1}$
+rewritten by random braid relations) gives diagrams of which about half survive
+the Reidemeister I/II reduction with 15 to 27 crossings and pass every filter.
+On 26 of them the exact Alexander polynomial over $\mathbb Z[t]$ took a median
+24\%, and up to 63\%, of the recognition. That stage can only answer
+\textsc{knotted}, and only for a polynomial that is not a unit, which the
+modular test has just failed to see at $t=-1$ and at a generic point of
+$\mathbb F_p$; and whatever it might still catch, the exact scan decides anyway,
+so verdicts cannot change. It now runs only when the modular test did not. Over
+720 diagrams the two modes never disagree, and the exact stage decided nothing
+once the modular test had passed. Recognition of the 55 scan-decided scrambled
+unknots is faster on all 55: median ratio $0.81$, range $0.53$ to $0.93$.
+
+\paragraph{Reidemeister III, the one algorithmic gain of this round.} The scan
+is exponential in what the reduction leaves, and the reduction used to stop
+wherever a Reidemeister III move was needed. On the dart structure of the
+reduction a triangular face is a 3-cycle of the face walk through three
+distinct crossings; it can be inverted if and only if some side passes over at
+both ends; and inverting it only reverses the order in which each of the three
+strands meets the other two, a relinking of at most twelve darts that keeps
+every crossing's slots and the direction of both strands through it, hence its
+sign. When no I/II move is left, each such triangle is inverted on trial, kept
+if that creates a I/II move and undone otherwise (the move is an involution).
+The move was tested on its own before it was used: 150 random moves give valid
+spherical diagrams with the same Alexander polynomial, writhe and Khovanov ranks
+by degree, and a second move restores the structure exactly (300 of 300). On
+1500 random closures the helped reduction never leaves more crossings than I/II
+alone, leaves no I/II move, replays from its trace, and preserves the Alexander
+polynomial and the Khovanov rank; 26\% of the diagrams shrink further and
+$0.80$ of the crossings remain. The 8-crossing ``hard unknot'' used throughout
+this report goes from 6 crossings to none, and so do all 120 scrambled unknots
+above, which is no surprise, their scrambling being made of such moves. Honest
+hard inputs had to be found by search: 117 closures among 40\,000 random words
+that survive I, II, the III search and the Alexander filter, and are unknots by
+reduced Khovanov rank 1, with up to 21 crossings. Verdicts with and without the
+search agree on 900 diagrams.
+
+Two lessons came with it. \emph{Placement:} run together with the first
+reduction, the search cost 58\% on $T(3,61)$, 20\% on a random 5-strand closure
+and 4 to 6\% on the Conway knot, inputs that a filter decides a moment later.
+It now runs only after every filter has failed, immediately before the scan;
+then no slowdown can be claimed on those inputs, while recognition of the hard
+unknot takes $0.48$ and of a scrambled unknot of 27 crossings $0.18$ of the
+time. \emph{Fewer crossings is not always less work:} one survivor was flagged
+$1.43$ times slower, correctly, since the help takes it from 22 to 20 crossings
+and its scan work from 2081 to 3277. Over the 54 survivors where crossings are
+removed (3.4 on average) the scan work is $0.43$ of what it was, cheaper on 44
+and dearer on 10, with per-diagram ratios from $0.03$ to $7.3$; over all 117 it
+is $0.69$.
+
+\emph{Depth, and a budget.} One move of lookahead left those 117 unknots
+untouched. Sequences of two moves, the second next to the first, reduce 97 of
+them to nothing, three moves 109 and four moves 110, without a violation at any
+depth. What costs is a search that fails: on $T(3,61)$, full of triangles that
+lead nowhere, depths 1 to 4 take 2, 10, 44 and 189 ms. Useful sequences are
+found early, so the search watches its own cost and deepens only while fewer
+than a fixed number of trial moves per crossing have been made; budgets of 5,
+15, 40 and none give the same 97, 109 and 110, and a budget of 5 caps the
+$T(3,61)$ case at 10 ms. With the defaults (depth 4, budget 10) only 15 of
+60\,000 random closures are unknots that survive the reduction, the largest
+with 16 crossings.
+
+\paragraph{Introspective selection and racing (two suggestions of the user).}
+The first suggestion was to choose algorithms from a runtime profile, as
+introsort does. It works where a cheap signal separates the populations and
+switching is free, and three parts of the package are now of that kind: the
+shape cache chosen from the scan order, result sharing enabled by the first
+reused plan, and the budgeted deepening just described. For scan \emph{orders}
+it fails with the rules at hand, in both forms tried. Restarting with another
+tie-break rule when a growing work budget is overrun was simulated exactly on
+the saved work of three rules on 81 diagrams: all 27 policies cost $1.4$ to
+$4.8$ times the default. Introsort can switch because heapsort carries a
+guarantee and recursion depth signals degeneracy; here no rule has a
+guarantee, expensive is not degenerate, and an abandoned scan is lost. Without
+restarts (the previous stage is never mutated, so tied candidates can each be
+tried from the same state and the smallest real complex kept) the cost with all
+trial work counted is $0.41$ on the scrambled unknots but $1.44$ to $1.52$ on
+random closures and about $1.4$ overall: the size of the complex now does not
+predict the cost of the choice later.
+
+The second suggestion, racing two algorithms on separate cores, is where the
+same data does promise something, because by wall clock a race costs only the
+winner's time: the better of two rules needs $0.75$ of the default on the
+expensive inputs, and $0.07$, $0.24$ and $0.30$ on single ones. In Python a
+competitor has to be a process, and starting one costs 30 ms bare, 76 ms with
+the package imported and 111 ms for a complete scan of the trefoil from the
+command line, against scans that mostly finish within 300 ms. Following the
+user's instruction for that case, the race was built in the Rust version, where
+a thread costs microseconds, together with a port of the Reidemeister III
+search: up to three greedy orders (ties by crossing index, by longest wait, by
+most recent touch) are scanned on separate threads and the first to finish
+stops the others through a flag; the rank does not depend on the order, so the
+result is the same whoever wins. On 40 random closures of 34 to 55 crossings
+whose single scan takes 30 ms to 8 s, with the settings interleaved over five
+rounds, racing two orders needs $0.650$ of the total time and racing three
+$0.689$. The gain is insurance against the heavy tail and not uniform: per
+input the ratio runs from $0.05$ to $1.68$; 6.8 s become 0.34 s and 890 ms
+become 140 ms, but on the half of the inputs where the default order was the
+best anyway the race costs 10 to 60\%. I first blamed the shared heap for that
+premium and was wrong: two or three separate processes running the same single
+scan at once slow each other down exactly as much as the racing threads
+($1.15$ against $1.18$, $2.11$ against $2.06$), so it is contention in the
+hardware of this machine and will differ elsewhere. The race is therefore an
+option (\texttt{--race 2}), not the default.
+
+Dismissing a race in Python was, on reflection, a wrong comparison: the cost of
+starting a process was set against the typical scan, while a race only matters
+on the heavy tail, where Python scans take seconds to minutes. The Python
+package therefore has it too, in the form the two suggestions combine to: the
+default order runs alone for a head start of one second, and only then are
+other greedy orders started as separate processes, which the scanner polls
+where it looks at the clock; the first to finish wins. On 26 random closures
+with single scans of 0.15 to 3.6 s the total is $0.910$ of single with two
+orders and $0.925$ with three. That total consists of two inputs on which a
+competitor wins in every round (3.22 s to 1.74 s, 3.55 s to 1.56 s) and of a
+cost of 10 to 20\% on scans of 1 to 3 s that the default order wins. The other
+per-input ratios of that experiment are noise, and the data says so itself: 18
+inputs finish inside the head start, where nothing is started and the ratio
+must be 1, yet they read $0.80$ to $1.43$ with three rounds each. Measured with
+61 interleaved pairs, an armed race that starts nothing costs $1.010$
+$[0.984, 1.041]$ against an A/A control of $1.042$, that is, nothing.
+
+\paragraph{Start-up, the largest gain for a command-line user.} Everything above
+saves well under a millisecond on a small diagram, while a whole
+\texttt{python -m fastunknot recognize} process took 115 ms, 29.5 of them for
+the bare interpreter. Importing the package cost 56 ms: 25 for
+\texttt{dataclasses}, which loads \texttt{inspect}, \texttt{re}, \texttt{dis},
+\texttt{ast} and \texttt{tokenize}, used for five simple records (now written
+out by hand with the same constructors, equality, hashing, immutability and
+\texttt{repr}); 9 for \texttt{subprocess} and \texttt{json}, needed only when a
+race starts; 5 for \texttt{typing}, used only in annotations that are never
+evaluated. Then \texttt{argparse}: 55 to 59 ms in Python 3.14, where it loads
+\texttt{\_colorize}, \texttt{dataclasses} again and \texttt{shutil}. The
+options are now one table feeding a small direct parser for the well-formed
+common case and, on demand, the real \texttt{argparse} parser for everything
+else, so help and error messages are unchanged; tests check that the two agree
+wherever the fast one accepts. With 41 interleaved pairs of whole processes a
+run takes $0.52$ of the time ($0.510$ to $0.541$; 115.5 to 60.9 ms for the
+Conway knot) on every short invocation and $0.86$ on the half-second stress
+scan. My first two such comparisons showed no difference and were invalid:
+\texttt{python -m} puts the current directory first on the module path and both
+arms ran from the working tree, which was thus compared with itself.
+
+Profiling \texttt{recognize} by cumulative time, rather than the scanner by own
+time, then found four more things of the same unglamorous kind. The Jones
+filter paid for the bookkeeping of a shape cache it never uses (9\% of a
+recognition of the Conway knot); the reduction rebuilt and revalidated the
+diagram even when no move applied (12\%); the dart involution of an immutable
+diagram was recomputed seven times per recognition; and on the commonest input
+of all, a reducible closure that the Alexander filter decides, a quarter of the
+time went into validating the reduced diagram from scratch, although the moves
+can only break its topology, which is now checked directly on the darts (one
+traversal through every crossing twice, $n+2$ faces; of 282 deliberately
+corrupted structures 273 are rejected and the other 9 also pass the full
+validation). Against the code before: recognition of the Conway knot $0.765$
+$[0.733, 0.794]$, of $T(3,61)$ $0.759$, of Conway\#Conway\#Conway $0.731$, and
+of the random 5-strand closure $0.865$ and then $0.796$ $[0.772, 0.831]$, with
+status, deciding step, reduced size and rank identical on 700 diagrams and
+reduced diagrams and traces identical on 1500. The \texttt{tail} option was
+re-tested on the present scanner and stays at 0: one crossing of tail is a wash
+($0.94$ to $1.01$), two or three are worse, up to three times.
+
+Two remarks. First, the closing sentence of the previous section, that on an
+unknot diagram no filter can decide the Python accelerations change nothing,
+was true of 0.1 against 0.2 and is no longer true: that case is now 1.4 times
+faster, because the scan itself is. Second, the gain is a constant factor:
+between 2.5 and 2.8 on every scan in the table except the chain of kinks (1.5),
+where fixed work per crossing dominates. Nothing here touches the exponential
+growth, and the Rust port remains several times faster still.
+
+\subsection{Measured and not adopted}
+All of these were decided with deterministic counters (compositions performed
+during cancellation, differential entries written while adding crossings), and
+the ranks were identical in every variant.
+\begin{itemize}
+\item \emph{One queued pivot candidate per source object.} Fewer queue
+  operations, but 42\,197 instead of 29\,347 compositions on the stress closure:
+  the queued candidate goes stale. Rejected.
+\item \emph{Other pivot rules.} First-in-first-out inside a cost bucket needs
+  64\% more compositions on the stress closure; the cost
+  $(\mathrm{out}-1)+(\mathrm{in}-1)$ is worse on all four inputs tried. The
+  product cost with last-in-first-out stays.
+\item \emph{Another score for scan orders.} Scoring greedy orders by
+  $\sum 2^{|\partial|/2}$ selects the same start as the current rule (maximal,
+  then total boundary size) on all four inputs.
+\item \emph{Scoring all greedy starts instead of twelve.} On 40 random closures
+  the order changed in 18: equal work in 8, less in 6, more in 4, with ratios
+  from $0.29$ to $6.69$. The total, $0.952$, is carried by three inputs and
+  changes sign without one of them. Not adopted.
+\item \emph{Cancelling saddle isomorphisms before writing their entries.}
+  Between 74 and 83\% of the entries written are incident to a cancelled pair
+  when it is cancelled, but only 30 to 53\% of the cancellations are between
+  the two smoothings of one old object, the predictable kind, and they account
+  for 24 to 36\% of the entries. That bounds the gain near 15\% on the stress
+  closure before the cost of the extra code. Not pursued.
+\item \emph{A fast path for single-entry transfers.} It would apply to 13\% of
+  the edges of the stress closure: too little to measure. Not written.
+\end{itemize}
+The experiments on scan orders have a positive content. The score is the weak
+point, not the number of candidates: on the stress closure the greedy starts
+14 to 16 need 23\,710 compositions and have boundary profile $(8, 226)$, while
+start 0, with profile $(8, 230)$, needs 895\,182, that is 38 times more, with
+2.6 times the peak size; 20 of the 36 starts do not finish in 4 s. A
+matchings-only simulation cannot replace the score, because the gap occurs at
+equal boundary size, where there are at most 14 matchings: it is all
+multiplicity, i.e.\ homology of the partial tangle, which is what the
+computation computes. A cheap predictor of that multiplicity would be worth
+more than everything in this section.
+
+A larger experiment, on 81 diagrams (36 scrambled unknots of the kind described
+above and 45 random closures with 20 to 35 crossings), confirms this and closes
+one more door. The greedy rule breaks ties by crossing index, which is
+arbitrary. Breaking them towards the most recently touched crossing costs
+$1.09$ and $1.05$ of the present total work on the two families, and towards
+the longest-waiting crossing $1.52$ and $1.57$; per diagram the ratios run from
+$0.01$ to $28$, better on about as many inputs as worse, so the rules are
+incomparable rather than ranked. A portfolio does not rescue this. The best of
+the three rules on each diagram would need $0.31$ of the work on the unknots
+and $0.74$ overall, but running them interleaved until the first one finishes
+costs three times the winner: $0.94$ on the unknots and $2.2$ overall, because
+8 of the 81 inputs carry 86\% of the work and there the rules lie within a
+factor two of each other.
+
+\subsection{An episode about measurement}
+Midway, a benchmark run showed everything 40\% slower, including code that had
+not been touched. No process of ours was running; the desktop's own load had
+changed. A fixed pure-Python control loop, added to the harness, went from
+5.3 ms to 12 ms \emph{inside one run}. Sequential before/after timing was
+therefore abandoned for decisions: \texttt{perf.py} now times the control next
+to every case and rejects a run whose control spreads by more than 10\% (eight
+of the fifteen logged runs are rejected), and \texttt{ab.py} times the old and
+the new code alternately in one process.
+
+The first criterion of \texttt{ab.py}, ``the interquartile range of the paired
+ratios lies below 1'', was then caught making false claims in both directions.
+A change confined to order selection, which is 0.2 to 1.8\% of the scans
+concerned and was measured on its own as 32 to 58\% faster with identical
+output, was reported as 14\% slower on one input and 4\% faster on another.
+The bound came from asking what share of the run time the change could touch
+at all. The tool now times the old code twice per round; on mid-sized scans
+this A/A control shows identical code differing by 20 to 30\% between adjacent
+runs. A difference is claimed only if the order-statistic 95\% confidence
+interval of the median ratio excludes 1 \emph{and} the median lies outside the
+interquartile range of the A/A ratios. The one claim that had been published
+under the lenient criterion (7 to 13\% from the refinements of the geometry on
+small scans, no claim on large ones) was re-tested between the two revisions
+under the strict criterion and holds: $0.87$ to $0.92$ with intervals inside
+$[0.87, 0.95]$, no claim on the large scans.
+
+A smaller finding of the same kind: the new scanner at first overshot a time
+budget of 1 s by up to 0.24 s (the generic scanner: 0.01 s), because a single
+crossing was added without looking at the clock. With a check every 512
+objects the overshoot is at most 0.03 s on the same runs.

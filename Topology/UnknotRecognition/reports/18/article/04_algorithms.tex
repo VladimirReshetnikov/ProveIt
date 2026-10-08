@@ -1,0 +1,498 @@
+\section{The compressed algorithm and its bit complexity}\label{sec:algorithm}
+
+\subsection{One finite solve and a compact exact answer}
+
+The implementation in \code{fastunknot.twist.tail} has a deliberately small
+mathematical interface. It validates the run list, selects a specified run
+or the largest run, and computes \([a,c]\) and \(m_0\). At or below the threshold
+it uses the ordinary macro backend. Above the threshold it changes
+only the selected absolute exponent to \(m_0\), computes the full reference
+homology and boundary ranks, and applies \cref{thm:recurrence}.
+
+The returned degree profile consists of a dictionary of exceptional
+degree--dimension pairs and at most one interval
+\[
+(\ell,u,\eta),\qquad
+\text{meaning }\beta_h=\eta\text{ for every integer }\ell\le h\le u.
+\]
+The exceptional degrees are disjoint from that interval. Endpoints are
+inclusive. A single-degree query uses these two components directly.
+The total rank is the sum of the point coefficients plus
+\((u-\ell+1)\eta\) for each interval. An explicit expansion routine is
+available, but has a caller-visible limit on the number of emitted terms.
+
+\begin{center}
+\begin{minipage}{0.94\linewidth}
+\begin{lstlisting}
+validate the original braid and retain its component count
+choose the distinguished run, with sign epsilon and length m
+compute context endpoints a, c and threshold m0 = c - a + 2
+if m <= m0:
+    return complete ordinary macro homology as a point profile
+reference = the same signed runs with selected length m0
+solve the complete reference complex
+hc = c + 1 if epsilon > 0 else a - 2
+M = reference.chain_dimensions[hc]
+r = reference.boundary_ranks[hc]
+eta = M - 2*r
+shift the appropriate reference boundary region by m - m0
+insert the proved constant interval, if it is nonempty
+return exact rank, compact profile, original components,
+       reference output and recurrence certificate
+\end{lstlisting}
+\end{minipage}
+\end{center}
+
+The certificate records the threshold, degree endpoints, selected position,
+sign, reference dimensions, central boundary rank, slope, and finite solve.
+It is a transparent computational witness. The implementation does not
+claim that arbitrary certificate JSON is a formal proof of the topological
+normal-form theorem. The independent audit reconstructs the recurrence
+without calling the production recurrence routine.
+
+\subsection{A precise parameterized guarantee}
+
+\begin{theorem}[Cost in the context and exponent]\label{thm:bit-cost}
+Let a fixed-context family be as in \cref{thm:recurrence}. Let \(\N_0\)
+be its reference chain dimension. Its exact compact reduced homological
+profile can be computed using one ordinary reference solve, with safe
+time bound
+\begin{equation}\label{eq:reference-time}
+\poly(b,W)\,\N_0^3+\poly\bigl(W,\log(m+1),\log(\N_0+1)\bigr).
+\end{equation}
+The exponent-dependent part of the output has polynomial bit size in
+\(W+\log(m+1)+\log(\N_0+1)\).
+For original one-component closures with at least one run, this gives the
+coarser uniform bound
+\begin{equation}\label{eq:context-exp}
+2^{O(W+1)}\,\poly(\log(m+1)).
+\end{equation}
+Fixed resource caps can interrupt the reference solve; in that event the
+bounded implementation makes no exact-rank claim.
+\end{theorem}
+
+\begin{proof}
+The reference has \(2W+2\) expanded crossings. There are at most \(W\)
+other nonempty runs, so \(t\le W+1\).
+Each reference state can be constructed and its local Frobenius maps
+evaluated in a polynomial in \(b,W\), times the number of labels processed.
+Assembling the reference differential and applying ordinary elimination
+is therefore bounded by the first term of \eqref{eq:reference-time}.
+This intentionally loose cubic bound suffices regardless of the practical
+bitset improvements.
+
+The reference homological support has at most \(2W+3\) possible degrees.
+Splitting, shifting, and summing these entries takes polynomially many
+integer operations. All reference coefficients and boundary ranks are at
+most \(\N_0\), and the final rank is at most
+\(\N_0+m\N_0\). Degree shifts use integers of \(O(\log(m+W+2))\)
+bits. Standard integer arithmetic proves the second term and the output
+claim.
+
+For the uniform knot bound, every generator occurs in the original braid.
+At most one generator index is supplied only by the selected run, so
+\(b-2\le W\). A support of size \(s\) has at most \(b+s\) resolution
+circles: changing one \(I\) into \(E\) changes component count by at most
+one. Hence, even without the sharper first-use bound from report 11,
+\[
+\N_0\le 2^{b-1}\prod_j(1+2m_j^{(0)})
+\le 2^{b-1}3^{\,2W+2}=2^{O(W)}.
+\]
+Here \(1+2u\le3^u\) for integers \(u\ge1\), and \(m_j^{(0)}\)
+are the reference lengths. Substituting this into
+\eqref{eq:reference-time} proves \eqref{eq:context-exp}.
+The reference may be a link; the argument only uses occurrence of the
+original generator indices, which shortening preserves.
+\end{proof}
+
+For fixed context the finite solve is a constant with respect to \(m\),
+and the remaining bit complexity is polynomial in \(\log m\). This is
+the encoding improvement over expanding all \(m+1\) local terms.
+In particular \(W=O((\log n)^2)\) gives \(n^{O(\log n)}\), and
+\(W=O((\log\lambda)^2)\) gives \(\lambda^{O(\log\lambda)}\).
+More generally, if \(W=O((\log n)^k)\) for a fixed \(k\), then
+\eqref{eq:context-exp} is a quasi-polynomial homology bound in the
+expanded size \(n\). If the same relation is imposed with the encoded
+size \(\lambda\), it is a quasi-polynomial bound in \(\lambda\).
+These are promises on the supplied context, not theorems that arbitrary
+diagrams admit such a representation.
+
+Several comparable huge runs do not satisfy the fixed-small-context
+condition. For example, if two lengths are both of order \(m\), choosing
+one leaves \(W\) of order \(m\). Applying the theorem once does not remove
+that dependence. Any run satisfying \(m\ge W+2\) has more than half the
+total crossings, so there can be at most one. Choosing the largest run
+therefore finds this regime whenever it is present. This fact is not a
+multivariable compression theorem.
+
+\subsection{What can and cannot be inferred from a shortened reference}
+
+The original strand permutation is indispensable. A two-strand run of
+length \(101\) is a knot, while its reference length \(m_0=2\) is a
+two-component link. Nevertheless the marked reference homology is the
+correct algebraic input to the recurrence. Using the reference component
+count in a recognition wrapper would be a bug.
+
+The original crossing counts are also indispensable for a grading adapter.
+The existing macro-to-scanner conversion uses
+\[
+h_{\rm cube}=n_+^{\rm original}-h_{\rm macro}.
+\]
+Substituting the shortened positive crossing count would shift the reported
+homology incorrectly. The delivered raw interface retains the macro
+grading explicitly. The existing one-component characteristic-two adapter
+can double reduced dimensions to obtain its unreduced output, but this
+knot-specific convention should not be silently transferred to general
+marked links.
+
+The flag \code{check_d2=True} checks the actual finite reference
+differential. It does not construct and multiply an enormous original
+matrix. The output says which finite complex was checked. General
+correctness for all larger exponents rests on the proof of the recurrence.
+
+\section{Structural certificates directly from braid runs}\label{sec:structural}
+
+An exact algebraic improvement is valuable even when recognition can be
+settled more cheaply. The audit makes this separation particularly sharp
+for the dominant-run family. We first specialize the existing structural
+bounds to braid counts, then prove why a proposed signature shortcut
+would add no cases.
+
+\subsection{The signed path multigraph}
+
+Assume the original closure is one component. Let \(p_i,n_i\) be the numbers
+of positive and negative occurrences of generator \(i\). Define
+\[
+P=\sum_i p_i,\quad N_-=\sum_i n_i,\quad n=P+N_-,\quad e=P-N_-,
+\]
+\[
+u_+=|\{i:p_i>0\}|,\qquad u_-=|\{i:n_i>0\}|,\qquad d=n-b+1.
+\]
+The \(b\) oriented Seifert disks of a braid form a path multigraph, with
+all crossings of \(\sigma_i\) joining vertices \(i,i+1\). The positive
+and negative subgraphs have \(b-u_+\) and \(b-u_-\) connected components,
+respectively, including isolated vertices.
+Specializing the Kawamura--Lobb bound and the homogeneous-diagram
+criterion~\cite{lobb,abe,cromwell} gives
+\begin{equation}\label{eq:braid-rasmussen}
+e+b-2u_+-1\ \le s(K)\le\ e-b+2u_-+1,
+\end{equation}
+in the usual Artin crossing-sign convention.
+The canonical surface has genus \(d/2\), and the homogeneity defect is
+\begin{equation}\label{eq:mixed}
+u_++u_--b+1
+=|\{i:p_i>0\text{ and }n_i>0\}|.
+\end{equation}
+The equality follows because every generator index occurs in at least
+one sign.
+
+Thus \(d=0\) certifies the unknot. If the defect is zero, the homogeneous
+diagram realizes the knot genus; positive \(d\) certifies knottedness.
+An interval in \eqref{eq:braid-rasmussen} excluding zero also certifies
+knottedness. An interval containing zero alone does not certify triviality,
+even if it consists of the single value zero.
+
+\begin{proposition}[Encoded structural evaluation]\label{prop:rle}
+All these quantities and the original one-component condition can be
+computed in polynomial time in the run-encoded input size \(\lambda\),
+without expanding exponents.
+\end{proposition}
+
+\begin{proof}
+Accumulate signed occurrence counts and exponent sums using integer
+arithmetic. Apply the adjacent transposition for each odd exponent, keeping
+only touched positions in a sparse permutation. A position not touched is
+fixed; add those fixed cycles to the cycles in the sparse permutation.
+If some generator index is absent, reject the knot-only interface without
+allocating an array of length \(b\).
+Otherwise, for a knot candidate \(b-1\le t\), so all count and cycle
+structures have polynomial size in \(\lambda\).
+The displayed formulas then require only additions, comparisons, and
+small-integer multiplications on numbers of \(O(\lambda)\) bits.
+\end{proof}
+
+The module \code{braid_profile.py} implements this specialization.
+One repository sign convention needs explicit documentation.
+For inputs built by \code{Diagram.from_braid}, the production Seifert
+evaluator assigns the opposite sign to the usual positive Artin letter.
+Consequently the public fields matching existing Seifert output use writhe
+\(-e\) and interval \([-U,-L]\), where \([L,U]\) is
+\eqref{eq:braid-rasmussen}. The module also returns
+\code{artin_exponent_sum} and \code{artin_rasmussen_interval}.
+This sign conversion leaves every recognition conclusion unchanged.
+Exhaustive comparisons check the complete existing field dictionary,
+not just the final verdict.
+
+\subsection{A sound signature idea that is dominated}
+
+The proposed shortcut was to retain many same-sign bands in the canonical
+Seifert surface and use a large definite subspace of its symmetrized form.
+The mathematical argument is valid, including when selected occurrences
+are nonconsecutive in the original word.
+
+\begin{lemma}[Retained bands]\label{lem:bands}
+Retain all \(b\) Seifert disks and \(p\ge1\) same-sign occurrences of one
+generator. The retained surface contributes a definite subspace of
+dimension \(p-1\) to the symmetrized Seifert form of the full surface.
+For a fixed sign, nonadjacent generator indices contribute a direct sum
+of such subspaces.
+\end{lemma}
+
+\begin{proof}
+The retained surface is the standard \(T(2,p)\) band surface, together
+with unused disks. Its symmetrized form is definite of rank \(p-1\),
+with sign determined by the crossing convention~\cite{feller}.
+Deleting other bands does not alter the relative order of the retained
+same-generator bands.
+The full surface is obtained by attaching only one-handles to this
+retained surface \(F_0\). Hence \(H_2(F,F_0)=0\), and the relative
+homology sequence gives an injection \(H_1(F_0)\to H_1(F)\).
+The Seifert pairing restricts to the pairing of \(F_0\).
+For nonadjacent indices the retained bands use disjoint strand pairs and
+form a split union after deleting all other bands; their forms sum
+directly. Retaining all disks is relevant to the injection argument:
+arbitrary subsurfaces need not have injective first homology.
+\end{proof}
+
+For one sign let \(w_i=\max(p_i-1,0)\), using \(n_i\) for the other
+sign. A maximum-weight independent set of the index path chooses
+nonadjacent generators with total weight \(R\). It is computed by
+\[
+B_j=\max(B_{j-1},B_{j-2}+w_j).
+\]
+A definite \(R\)-dimensional subspace in a symmetric form of dimension
+\(d\) gives the sufficient signature inequality
+\begin{equation}\label{eq:inertia}
+|\sigma(K)|\ge 2R-d
+\quad\text{when the right side is positive}.
+\end{equation}
+Indeed, at least \(R\) eigenvalues have the selected sign and at most
+\(d-R\) can have the opposite sign.
+
+\begin{proposition}[Domination]\label{prop:domination}
+Every braid knot certified nontrivial by \eqref{eq:inertia} is already
+certified by \eqref{eq:braid-rasmussen}. Signature packing adds no
+instances to the existing structural stage.
+\end{proposition}
+
+\begin{proof}
+For positive bands,
+\[
+R\le\sum_i\max(p_i-1,0)=P-u_+.
+\]
+The lower endpoint of \eqref{eq:braid-rasmussen} equals
+\[
+2(P-u_+)-d.
+\]
+It is at least \(2R-d\). Therefore a positive signature packing bound
+forces a positive Rasmussen lower bound. The negative version gives an
+upper bound at most \(-[2(N_--u_-)-d]\), and the same conclusion follows
+when negative packing succeeds.
+\end{proof}
+
+The diagnostic signature routine and witness checker are retained for
+reproducibility, but the recognition path uses the cheaper dominating
+counts directly. This rejected optimization is a useful result of the
+audit: a correct new certificate is not automatically a stronger one.
+
+\begin{corollary}[Every dominant-run knot is already decided]\label{cor:dominant}
+If a one-component \(b\)-braid has a selected run of magnitude
+\(m\ge W+2\), then its existing structural Rasmussen interval excludes
+zero. In particular it is knotted.
+\end{corollary}
+
+\begin{proof}
+For a positive selected run,
+\[
+P-u_+\ge m-1,\qquad
+2(P-u_+)-d\ge m-W+b-3\ge b-1>0.
+\]
+Here \(d=m+W-b+1\), and the presence of a run implies \(b\ge2\).
+For a negative selected run the upper endpoint is at most the negative
+of the same positive quantity.
+\end{proof}
+
+This corollary fixes the interpretation of the performance results.
+The recurrence computes much more homological information at much lower
+cost on its long-run families, but it does not create a new class of
+previously undecided knots in that range. The direct run-based structural
+interface, on the other hand, makes the already known decision available
+without first paying the expanded-input cost.
+
+\section{Degree-streamed exact homology}\label{sec:streaming}
+
+\subsection{Enumeration in the correct signed degree}
+
+The streamed backend evaluates exactly the same macro complex as
+\code{twist.core}. It changes storage and evaluation order.
+Set \(\nu=\sum_{e_j<0}m_j\) and replace each local coordinate by
+\[
+\alpha_j=\begin{cases}
+k_j,&e_j>0,\\
+m_j-k_j,&e_j<0.
+\end{cases}
+\]
+Then every differential increments one \(\alpha_j\), and the total degree
+is \(h=\sum_j\alpha_j-\nu\).
+For negative runs the support condition is \(\alpha_j\ne m_j\), not
+\(\alpha_j\ne0\). This is a necessary detail for mixed-sign inputs.
+
+To enumerate degree \(h\), solve the bounded composition
+\(\sum_j\alpha_j=h+\nu\), with \(0\le\alpha_j\le m_j\).
+If the remaining sum at position \(j\) is \(R\), and
+\(M_{j+1}=\sum_{i>j}m_i\), visit only
+\begin{equation}\label{eq:composition}
+\max(0,R-M_{j+1})\le\alpha_j\le\min(m_j,R).
+\end{equation}
+Every visited prefix extends to a solution, since the remaining interval
+coordinates realize every integer from zero through their total
+capacity. Conversely every valid state obeys these bounds.
+The iterative depth-first implementation therefore emits each state
+once, uses \(O(t)\) generator memory, and avoids rescanning the entire
+Cartesian product in each degree.
+
+If \(s_h\) is the number of states in degree \(h\), there are at most
+\(s_h\) feasible prefixes at each depth. The total enumeration cost is
+\(O(tS)\), because
+\(\sum_hs_h=S\) and \(n+1\le S=\prod_j(m_j+1)\) for nonempty run lists.
+The empty list is handled separately.
+
+\subsection{Two adjacent indexes and generated columns}
+
+At degree \(h\), keep the source state index and construct the target
+index for degree \(h+1\). An index entry contains the coordinate tuple,
+support mask, basis offset, and basis dimension. These two indexes
+determine every local edge and its destination offset.
+Generate a differential column, immediately reduce it against a
+dictionary of pivot columns, and discard it if dependent.
+Only pivots are retained for rank computation.
+
+When \(r_h\) is complete, \eqref{eq:betti} finalizes degree \(h\).
+Release its source index and pivot dictionary, retain \(r_h\) as a
+scalar, and advance. By induction each local map occurs exactly once
+in the correct matrix. The degree-wise basis order may differ from the
+ordinary backend for negative runs, but this only permutes matrix bases.
+Exact elimination therefore gives identical chain dimensions, boundary
+ranks, and homology.
+
+Geometry is obtained from the pinned union-find construction.
+The geometry cache has an entry cap and a cap on total cached vertex
+occurrences. The map cache has an entry cap and a cap on descriptor
+integer slots. Both are least-recently-used caches; an evicted support
+is not retained in an unbounded history set.
+
+Local maps use compact circle-index descriptors. A merge relabels circles
+and sends two \(X\)'s on the same output circle to zero. A split evaluates
+\(\Delta(1)\) or \(\Delta(X)\). A dot map stores two circle indices,
+cancelling coincident dots and killing multiplication on the marked
+\(X\)-circle. This avoids a cached table with one entry for each of
+\(2^{c-1}\) labelings. The current source state's outgoing descriptors
+also have an explicit active-slot cap.
+
+\subsection{A storage bound that includes auxiliary data}
+
+Let \(V_g=b(t+1)\) be the geometry grid size, let
+\(L_s=\max_h(s_h+s_{h+1})\), and let \(C_g,C_m,A_m\) be the actual
+peak cached geometry vertex occurrences, cached map slots, and active
+map slots. On a word model large enough for coordinates and offsets,
+the ordinary streamed computation uses
+\begin{equation}\label{eq:stream-space}
+\begin{split}
+O\biggl(& (t+1)L_s+(n+1)+C_g+C_m+A_m+V_g+t\\
+&+\max_h(r_h+4)
+\left(1+\left\lceil d_{h+1}/w_{\rm bit}\right\rceil\right)\biggr)
+\end{split}
+\end{equation}
+words, where \(w_{\rm bit}\) is the bitset limb size.
+The four-vector allowance covers a yielded column, its evolving reduced
+value, a shifted unit bit, and an allocated XOR result.
+The \(O(n+1)\) term is the retained full output and scalar degree
+statistics. Omitting it would wrongly suggest constant total memory for
+a long two-strand explicit-profile computation.
+
+For binary coordinates, replace scalar word counts by their bit lengths.
+For example the two indexes have the safe bound
+\[
+O\!\left(L_s[t\log(n+2)+t+\log(\N+1)]\right)
+\]
+bits, apart from container overhead. Geometry and descriptor indices use
+\(O(\log(V_g+1))\) bits, and support keys use \(O(t)\) bits.
+Finite transient geometries and descriptors are included as well as
+cached entries.
+
+Without checking mode, the conservative algebraic bit envelope is
+\[
+\max_h(r_h+4)d_{h+1}.
+\]
+With \code{check_d2=True}, retain two adjacent matrices and compose them
+column by column; the old source state index is unnecessary.
+Thus there are still only two state indexes. A safe algebraic envelope
+in checking mode is
+\begin{equation}\label{eq:d2space}
+\max_h\left\{
+d_{h-1}d_h+d_hd_{h+1}
++\max\bigl((r_h+4)d_{h+1},\,4d_h+3d_{h+1}\bigr)
+\right\}.
+\end{equation}
+Pivots are released before the composition phase. Matrix and pivot
+reference counts are capped separately, so a large list of zero columns
+does not evade accounting through its zero bit payload.
+
+The ordinary backend retains all state indexes and all matrices, with
+bit envelope \(Q=\sum_hd_hd_{h+1}\). Replacing that sum by adjacent
+degree costs can save substantial storage, but the bounds are
+mathematical payload bounds, not measured Python heap or process-RSS
+ratios. The experiments measure newly traced Python allocations
+separately.
+
+\subsection{Time, budgets, and exact early decisions}
+
+Let \(G\) count actual geometry constructions, \(M_{\rm map}\) map
+compilations, and \(E_h\) emitted local differential terms in degree
+\(h\). Safe bounds are
+\[
+G\le(t+2)S,\quad M_{\rm map}\le tS,\quad E_h\le2td_h.
+\]
+Neighbor-tuple construction can cost \(O(t^2S)\). The particular
+union-find implementation has a safe elementary \(O(V_g^2)\) construction
+bound; the analysis does not assume a stronger bound its code has not
+established. In addition to topology and label evaluation, column
+assembly and elimination cost at most
+\[
+O\!\left(\sum_h[E_h+d_h(r_h+1)]
+\left(1+\left\lceil d_{h+1}/w_{\rm bit}\right\rceil\right)\right)
+\]
+word operations. Each pivot XOR lowers the leading set bit, so a column
+uses at most \(r_h\) pivot XORs. Optional differential-square checking
+adds its actual column-composition work.
+Bounded caches can repeat geometry and map work. These facts explain
+why a memory improvement need not be a time improvement.
+
+The budget distinguishes total macro states from live states, total
+enumerated basis from one layer's basis, and live algebraic payload from
+cache storage. Product bounds are checked before expanding states.
+Huge exponents and huge strand counts are rejected by arithmetic
+guards before large allocations or decimal diagnostic formatting.
+The deadlines are cooperative, and the units are structural counts,
+not hard process-memory reservations.
+
+After degree \(h\) is finalized, define
+\[
+R_{\le h}=\sum_{i\le h}(d_i-r_{i-1}-r_i).
+\]
+Every summand is an actual nonnegative homology dimension. For an
+original one-component closure, \(R_{\le h}>1\) therefore proves
+\code{KNOTTED}. Later degrees cannot cancel homology already computed.
+An early result leaves \code{reduced_rank} unset and reports
+\code{reduced_rank_lower_bound=R}.
+Its completeness field is \code{homology_complete=False}.
+If checking mode is enabled, the checked
+prefix is reported and the full-complex check flag remains false.
+\code{UNKNOT} requires a complete rank-one calculation.
+
+For a positive two-strand run of odd magnitude at least three, four
+states suffice for an early
+nontriviality result; three suffice for the negative run. These are
+transparent raw-backend demonstrations. Such examples are already
+easy for the structural front end and do not demonstrate acceleration
+of a filter-resistant recognition workload.

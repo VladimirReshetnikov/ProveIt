@@ -1,0 +1,176 @@
+\section{The remaining distance to quasi-polynomial recognition}
+\label{sec:complexity}
+
+\subsection{Three separate obstacles}
+
+A faster exact scalar filter addresses only one part of the recognition
+problem. Three distinct missing implications must not be conflated.
+
+First, equality of a selected Jones value to $1$ need not decide the knot.
+At $q=5$ this is disproved by Theorem~\ref{thm:blind}; at $q=6$ we assume
+no global detection statement. The completeness of the enclosing recognizer
+comes from its retained exact fallback, not from these evaluations.
+
+Second, the input diagram does not come with a promise of logarithmic or
+polylogarithmic width. Theorems~\ref{thm:transfer} and
+\ref{thm:componentwidth} are bounds in a supplied order's measured
+parameters. A polynomial heuristic finds useful orders but has no universal
+$O((\log n)^2)$ guarantee. Planar separator methods and tensor contraction
+are relevant, established tools \cite{maria2021,seymour1994}; using them does
+not imply a polylogarithmic bound for arbitrary diagrams.
+
+Third, the full categorical complex contains more information than the
+scalar partition function. Boundary size does not alone control object
+multiplicities, ranks, differential supports or the size of an explicit
+homology basis. Kelomäki and Schütz prove exponential behavior for explicit
+scanning or divide-and-conquer constructions even on certain positive and
+alternating three-braid families, while giving polynomial algorithms for
+compressed three-braid homology and fixed homological windows at fixed strand
+count \cite{kelomaki2026}. This is a representation obstruction, not a reason
+to abandon compression.
+
+\subsection{A finite exact menu decides Jones-polynomial triviality}
+
+The fixed-color obstruction can be extended to an unconditional decision
+about the entire Jones polynomial, although this still does not settle
+unknot recognition.
+
+\begin{proposition}[A growing exact specialization menu]\label{prop:menu}
+For a knot diagram with $n>0$ crossings, suppose the exact quadratic
+evaluations equal $1$ for every integer
+$q\in\{5,6,\ldots,2n+5\}$. Then $V_D(t)$ is identically $1$.
+Conversely, the constant polynomial $1$ passes every evaluation.
+On a supplied order of width $w$, this decision can be carried out using
+the one-tensor algorithm in
+\[
+ n^{\lfloor w/2\rfloor+O(1)}
+\]
+bit operations. In particular it is quasi-polynomial when
+$w=O(\log n)$.
+\end{proposition}
+\begin{proof}
+In a normalized smoothing summand, the $A$ exponents come from a smoothing
+weight in $[-n,n]$, the writhe correction in $[-3n,3n]$, and
+$\delta^{c-1}$ with $c-1\le n$. Hence all $A$ exponents lie in $[-6n,6n]$.
+For a knot they are multiples of four, so all Jones $t$ exponents lie in
+the conservative interval $[-2n,2n]$.
+Thus $P(t)=t^{2n}(V_D(t)-1)$ is a polynomial of degree at most $4n$.
+
+Equality at a root of $t^2-(q-2)t+1$ makes this irreducible quadratic divide
+$P$ over $\Q$. The $2n+1$ quadratics for the specified distinct values of
+$q$ are pairwise coprime. If $P\ne0$, their product of degree $4n+2$
+cannot divide it. Thus $P=0$.
+
+There are $O(n)$ evaluations with $q=O(n)$. For $f\le w/2\le n$,
+the number of equality patterns is at most the Bell number
+$B(f)\le f^f\le n^f$, with the empty pattern treated separately.
+Introducing two vertices has only $O((f+2)^2)$ canonical branches,
+independent of the multiplicities attached to those branches.
+The coordinate lengths are $O(n\log n)$ by Theorem~\ref{thm:bits}.
+All remaining factors, including exact arithmetic and normalization, are
+polynomial in $n$ and $w$.
+\end{proof}
+
+A smaller menu follows from the same proof without new topology.
+For writhe $r$, the actual conservative exponent interval is
+$[\lceil3(r-n)/4\rceil,\lfloor3(r+n)/4\rfloor]$.
+It contains zero and has width $D\le\lfloor3n/2\rfloor$.
+Thus $\lfloor D/2\rfloor+1$ distinct quadratic evaluations suffice.
+The larger $2n+1$ menu keeps the statement independent of this refinement.
+
+This is elementary degree counting, not a new claim about the difficulty of
+the Jones polynomial. It shows exactly what a sufficiently large menu can
+certify. The menu is a mathematical extension; the default recognizer does
+not automatically run $O(n)$ different color counts. The complete
+unknot-detection question for $V_D(t)\equiv1$ remains outside its conclusion.
+It also shows why a growing number of colors cannot be hidden in a
+fixed-$q$ complexity statement.
+
+\subsection{A precise conditional algebraic route}
+
+Reduced Khovanov rank one characterizes the unknot
+\cite{kronheimer2011}. The same rank-one decision is sound over $\F_2$:
+rank one over $\F_2$ forces rational rank at most one by universal
+coefficients, while reduced knot homology is nonzero; the rational
+rank-one theorem then applies. Conversely the unknot has reduced rank one
+over $\F_2$.
+The baseline's local-complex and cancellation approach follows the practical
+framework of Bar-Natan~\cite{barnatan2007}; a general small-complex bound
+is a separate requirement.
+
+To turn that endpoint into a quasi-polynomial algorithm, a compression
+scheme needs a closed set of operations and a size theorem, not merely
+small examples or an existence statement.
+
+\begin{theorem}[Conditional summary criterion]\label{thm:conditional}
+Let $Q(n)=\exp((\log(n+2))^c)$ for a fixed constant $c$.
+Suppose a proposed exact recognition method has, on every $n$-crossing
+input, the following proved properties:
+\begin{enumerate}
+\item it constructs at most $Q(n)$ summaries or intermediate states;
+\item each summary has at most $Q(n)$ bits;
+\item constructing, composing, restricting, simplifying, comparing, and
+checking a summary uses at most $Q(n)^{O(1)}$ bit operations;
+\item a final predicate, evaluable within the same bound, is equivalent to
+reduced Khovanov rank one or to another complete unknot criterion.
+\end{enumerate}
+Then the resulting exact recognizer is quasi-polynomial time.
+\end{theorem}
+\begin{proof}
+Multiply the number of operations by their cost. A fixed power of
+$\exp((\log(n+2))^c)$ is still quasi-polynomial. Exact invariants and the
+terminal equivalence imply correctness.
+\end{proof}
+
+The theorem is intentionally a contract rather than a breakthrough: its
+hypotheses identify the work still missing. The Potts representations satisfy
+analogous storage and operation bounds at bounded width, but their terminal
+predicate is incomplete. The residue-polynomial theorem shortens a local
+certificate, but does not prove the global summary count or size. The earlier
+scalar splitter finds some endomorphisms but does not guarantee a useful
+decomposition on every input.
+
+For an explicit ring-valued implementation, the coefficient space alone has
+$p^b$ basis monomials. A block with multiplicity $r$ can have $r^2$
+entries. Bounding an inverse polynomial's degree by $pr$ leaves both
+$p^b$ and the total number of blocks to be controlled.
+Using a circuit or shared DAG can reduce their representation, but then
+composition, equality and zero detection for that representation also require
+proved bounds. Constant-size formulas whose expansion is exponential do not
+by themselves satisfy the criterion.
+
+\subsection{The geometric route and the current literature}
+
+Lackenby's 2021 slides announce a deterministic recognition algorithm with
+bound $2^{O((\log n)^3)}=n^{O((\log n)^2)}$ \cite{lackenby2021}.
+That is quasi-polynomial, but it is not the stronger
+$n^{O(\log n)}$ target sometimes used in project notes.
+The July 2026 hierarchy preprint supplies a new recognition algorithm and
+certification framework; its Section 9 separates iteration counting from
+the cost of operations and bounds iterations by $L(G+1)^L$,
+where $L$ is maximum hierarchy length and $G$ maximum surface
+pattern-complexity \cite{lackenby2026}. We use $G$ here to distinguish it
+from the component frontier $g$.
+
+Published compressed-curve algorithms compute intersection numbers with
+cost polynomial in triangulation size and logarithmic normal weights;
+the isotopy result additionally assumes essential normal one-manifolds
+\cite{lackenbycurves2026}. These provide concrete components for a geometric
+implementation. Neither a fast terminal-pattern check nor an iteration
+count by itself supplies a complete bound on construction, cutting,
+simplification, representation growth and restarts.
+
+For example, an independently proved bound $L=O(\log n)$ and
+$G=n^{O(1)}$ would make $L(G+1)^L=n^{O(\log n)}$; with
+$L=O((\log n)^2)$ it would give $n^{O((\log n)^2)}$.
+These are conditional substitutions, not bounds established for the
+hierarchy inputs generated by this package. Likewise, a bit cost polynomial
+in an expanded normal weight is inadequate when that weight is exponential
+in its encoded length.
+
+The strongest credible program therefore has two interacting branches:
+exact algebraic obstructions and compressed homological decisions for
+efficient practical rejection, and fully costed compressed geometric
+operations for a possible general recognition guarantee. They should share
+validated inputs, deterministic evidence records and resource-safe
+orchestration, while retaining separate mathematical obligations.

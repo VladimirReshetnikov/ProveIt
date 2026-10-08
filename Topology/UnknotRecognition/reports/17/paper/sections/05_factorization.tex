@@ -1,0 +1,150 @@
+\section{Factoring intermediate components instead of correlating all spins}
+\label{sec:factorization}
+
+\subsection{Why the global orbit table can still be wasteful}
+
+A poor crossing order can create several disjoint components of processed
+Tait edges. Before any processed edge joins them, their partial weights
+factor. A global $S_q$ orbit table nevertheless records whether an active
+spin in one component happens to have the same color as a spin in another.
+Those relative color identities matter only when a future edge first
+connects the two components. Recording them earlier can create many keys
+with an exactly factorizable coefficient.
+
+This is an exact independence statement about the processed interaction
+graph. It does not follow merely because two groups of vertices appear far
+apart in a drawing, nor does it assume a graph separator whose crossing
+interactions have been discarded. We keep one tensor for each connected
+component of the graph formed by introduced vertices and processed edges.
+Connectivity through a forgotten vertex remains connectivity: forgetting
+does not undo an interaction already summed into the tensor.
+
+An isolated newly introduced vertex has the one-key table
+$\{(0)\mapsto q\}$. An edge internal to a component uses the usual equality
+weight and forgetting operation. When no active vertices remain in a
+component, its scalar partition factor is multiplied into the accumulated
+scalar and its tensor is released. Only an edge joining two distinct
+processed components requires a new operation.
+
+\subsection{The relative-color merge}
+
+Let a left pattern have $k$ classes and a right pattern have $\ell$ classes.
+Within each pattern, distinct classes must receive distinct colors.
+Across the two patterns, an arbitrary partial bijection may identify
+some left and right classes. If $j$ pairs are identified, the merged pattern
+has $K=k+\ell-j$ classes, and it is possible exactly when $K\le q$.
+The number of such alignments is
+\begin{equation}
+ A_q(k,\ell)=
+ \sum_{\substack{0\le j\le\min(k,\ell)\\k+\ell-j\le q}}
+ \binom{k}{j}\binom{\ell}{j}j!.
+ \label{eq:alignments}
+\end{equation}
+It is at most $q!$ when $k,\ell\le q$. One way to see this bound is to fix
+distinct actual colors on all left classes and inject the alignment choices
+into the injective assignments of colors to the $\ell$ right classes by
+assigning fresh colors in a prescribed order. There are
+$\fall{q}{\ell}\le q!$ such assignments. The implementation enumerates
+alignments directly, giving fresh classes their next canonical label.
+
+\begin{theorem}[Aggregate component merge]\label{thm:merge}
+Work over $R_q$, or over a field of characteristic zero or greater than $q$.
+Suppose the left and right orbit coefficients are $C_L$ and $C_R$.
+For one relative alignment with $K$ total classes, its aggregate coefficient
+before the joining edge is applied is
+\begin{equation}
+ \frac{C_L}{\fall{q}{k}}\,
+ \frac{C_R}{\fall{q}{\ell}}\,
+ \fall{q}{K}.
+ \label{eq:merge}
+\end{equation}
+After multiplication by the joining-edge weight, ordinary forgetting
+and canonical aggregation produce the correct merged tensor.
+\end{theorem}
+\begin{proof}
+The orbit of a pattern with $k$ nonempty classes has
+$\fall{q}{k}$ labeled active assignments. Color relabeling preserves the
+sum over forgotten spins, so all those active assignments have the same
+partial value. That value is $C_L/\fall{q}{k}$. The same statement holds
+on the right.
+
+Before the joining edge, the two processed components share no vertex or
+processed interaction, so their per-assignment partial values multiply.
+The aligned combined pattern has $\fall{q}{K}$ labeled assignments.
+Multiplying by this orbit size gives \eqref{eq:merge}.
+Every combined pattern determines exactly its restrictions and its
+partial-bijection alignment, so no term is omitted or counted twice.
+The joining edge and restriction to surviving vertices then obey
+Proposition~\ref{prop:orbit}.
+\end{proof}
+
+In the modular backend, $q<p$ makes every falling factorial a unit in
+$\F_p$, and inverses can be precomputed. In the exact backend, each
+coefficient is an integral multiple of its orbit size in $R_q$.
+Both integer coordinates are therefore divisible by that positive integer.
+The implementation checks the remainders and performs exact integer
+division. It then multiplies the resulting pairs.
+This operation uses no fraction field and no approximate division.
+Unlike the one-tensor transfer, it is not literally division-free; the
+divisions are certified divisions by known small integers at fixed $q$.
+
+\subsection{A stronger parameter: the largest processed component}
+
+For each step, consider each still-active processed component and count its
+active vertices. Define $g$ to be the largest such count over all components
+and all \emph{post-edge} steps. Thus $g\le\max_i f_i\le w/2$.
+
+\begin{theorem}[Component-frontier complexity]\label{thm:componentwidth}
+At fixed $q$, the factored transfer uses
+\[
+ n\,\poly(g,\log n)\,q!\,q^{g+2}
+\]
+coefficient operations and key-management work, with
+$O(nq^g)$ logical table keys. Over $R_q$, coefficient bit lengths remain
+$O(n\log q)$; the bit-operation bound is obtained by multiplying the
+displayed work by a polynomial in $n\log q$.
+\end{theorem}
+\begin{proof}
+An edge can cause only its two incident vertices to be forgotten: any
+vertex whose last incident edge is the current edge must be an endpoint.
+Therefore a component's pre-forget active set at this step has at most
+$g+2$ vertices. For a merge, this set is the union of the two input active
+sets, including newly introduced endpoints. If their sizes are $a,b$, then
+$a+b\le g+2$. The number of pairs of input keys is at most
+$q^a q^b\le q^{g+2}$; each pair has at most $q!$ alignments.
+An internal edge has the same bound without the alignment factor.
+There are $n$ edges and at most $O(n)$ active components.
+
+For the exact coefficient bound, each component coefficient is a sum over
+assignments on a subset of vertices and a product over its processed edges.
+The argument of Theorem~\ref{thm:bits} applies componentwise. During a merge,
+the division removes an orbit multiplicity, and the final insertion is a
+sum over a subset of assignments on the union. Its length is again bounded
+by the same global $q^v(q-1)^n$ envelope.
+\end{proof}
+
+Bounding each input component separately by $g$ and then multiplying two
+$q^g$ tables would give the weaker exponent $2g$.
+The fact that only the current edge's endpoints can be forgotten is what
+gives the stronger $g+2$ bound. A measurement of the largest table size alone
+would not prove either complexity result: merge Cartesian products and
+alignment work must be counted.
+
+\subsection{Implementation and remaining limitations}
+
+The package supplies modular and exact factored kernels. Their state budget
+bounds the sum of represented keys over current component tables. During an
+update, the old input tables and their replacement may coexist; normalized
+merge lists and cached alignment patterns also occupy memory.
+Consequently that counter is a logical state budget, not an allocation or
+resident-memory ceiling. Transition counts include each relative alignment
+that is actually processed.
+
+At $q=5$ there are at most $120$ alignments per input-key pair; at $q=6$
+there are at most $720$. These constants can make factorization slower when
+components repeatedly merge without having saved many keys. The measured
+negative controls in Section~\ref{sec:experiments} are therefore essential.
+The implementation does not factor a connected tensor merely because its
+coefficient array happens to have low rank, and it does not split components
+again when active graph connectivity changes. Such extensions require
+additional algebra and are research topics rather than current guarantees.

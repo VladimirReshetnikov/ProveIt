@@ -1,0 +1,164 @@
+\section{Integration, reproducibility, and provenance}\label{sec:integration}
+
+\subsection{Package layout and proposed repository placement}
+
+The archive contains the complete modified \code{fast/} tree and an
+untouched \code{reference/fast/} snapshot from the pinned revision.
+The integration patch is relative to
+\code{Topology/UnknotRecognition/fast}. It adds the modules and tests
+described below and the optional source-profile argument; it does not
+alter the default recognition dispatch.
+The article and research artifacts can be placed in a new report
+directory under \code{Topology/UnknotRecognition/reports/}, using the
+next free report number at integration time.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.43\linewidth}p{0.48\linewidth}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\code{article/main.tex} and section files &
+Complete article source, with an ordinary LaTeX bibliography.\\
+\code{article/main.pdf} & Compiled and visually checked article.\\
+\code{article/figures/} & Vector figures and PNG previews, generated
+from exact output or retained measurements.\\
+\code{fast/fastunknot/twist/tail.py} &
+Exact one-reference homological recurrence and compact-profile API.\\
+\code{fast/fastunknot/twist/streaming.py} &
+Bounded-cache, degree-streamed full homology and early recognition.\\
+\code{fast/fastunknot/braid_profile.py} &
+Run-encoded structural certificates and the dominated signature
+experiment.\\
+\code{fast/fastunknot/twist/continuation.py} &
+Raw RLE command-line and Python frontend.\\
+\code{fast/tests/} & All inherited and new regression tests.\\
+\code{tools/} & Portable audits, benchmarks, figure regeneration,
+validation, and article build scripts.\\
+\code{results/} & Raw measurements, pilot runs, exact comparison
+records, and the complete test log.\\
+\code{reference/} & Pinned baseline and detailed proof/accounting
+audit notes.\\
+\code{integration.patch} & Additive patch for review against the
+pinned baseline.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The baseline MIT No Attribution (MIT-0) license is retained.
+No remote repository write or
+default-backend replacement is part of this deliverable.
+The accompanying integration guide gives the exact paths and patch
+check command.
+
+\subsection{Interfaces and examples}
+
+From the package's \code{fast/} directory, the new frontend accepts
+run-encoded JSON:
+\begin{lstlisting}
+{"strands": 3, "runs": [[1, 1001], [2, -1], [1, 1], [2, -1]]}
+\end{lstlisting}
+The corresponding commands are:
+\begin{lstlisting}
+python -m fastunknot.twist.continuation input.json
+python -m fastunknot.twist.continuation input.json \
+  --mode homology --method tail --check-d2
+python -m fastunknot.twist.continuation input.json \
+  --mode homology --method streaming
+python -m fastunknot.twist.continuation input.json --mode profile
+\end{lstlisting}
+
+The default is recognition with the tail method selected for any
+necessary exact endpoint. Recognition first checks the original
+one-component closure and tries the direct structural certificate.
+Only an inconclusive certificate reaches the selected backend.
+Full homology mode always computes the selected full exact homology,
+including for links; it does not stop after a cheap knot verdict.
+Profile mode returns only the structural certificate.
+The methods \code{tail}, \code{streaming}, and \code{macro} are explicit
+choices.
+
+A Python call avoids JSON serialization limits for extremely large
+integers:
+\begin{lstlisting}
+from fastunknot.twist.core import Run
+from fastunknot.twist.tail import tail_homology, profile_dimension
+
+m = (1 << 100000) + 1
+answer = tail_homology(2, [Run(1, m)], check_d2=True)
+assert answer["reduced_rank"] == m
+assert answer["reference"]["stats"]["basis"] == 4
+assert profile_dimension(answer["degree_profile"], m) == 1
+\end{lstlisting}
+
+The standard Python JSON integer conversion has a decimal-digit
+limit in this runtime. The API supports the tested 100,001-bit
+integers directly; the CLI does not disable that general runtime
+limit. JSON also converts dictionary degree keys to strings.
+The documentation identifies the schema and inclusive interval
+semantics so downstream consumers do not confuse a large encoded
+endpoint with an explicit array index range.
+
+Existing checked diagrams can opt into the source specialization via
+\code{recognize(diagram, use_braid_profile=True)} or the production
+\code{--braid-profile} option. It is used only with retained checked
+braid source. A PD-only diagram does not acquire invented braid
+provenance, and a later diagram factor is not assumed to share the
+original source braid.
+
+\Needspace{15\baselineskip}
+\subsection{Reproduction commands}
+
+From the archive root:
+\begin{lstlisting}
+PYTHONPATH=fast python -m unittest discover -s fast/tests -v
+python tools/audit_long_twist.py
+python tools/audit_slope.py
+python tools/benchmark_tail.py
+python tools/benchmark_streaming.py --rounds 7 --batch 5
+python tools/benchmark_braid_profile.py --rounds 7
+python tools/make_figures.py
+bash tools/build_article.sh
+\end{lstlisting}
+
+The exact outputs originally used in the article are retained.
+Rerunning measurements overwrites their default target files; retain a
+copy or specify a separate output path for comparison.
+Wall-clock measurements on another machine are expected to differ.
+The scripts use package-relative imports, fixed stated random seeds,
+and standard-library exact arithmetic for the core algorithms.
+Matplotlib is used only to regenerate plots.
+Building the article requires a conventional LaTeX installation with
+the packages named in the preamble and \code{latexmk}.
+
+The independent recurrence audit was executed successfully before
+being relocated into the final package. The relocated script changes
+paths and explanatory text, not the tested algebra, and its raw result
+file is retained unchanged. Its provenance note states this explicitly.
+The final integrated 254-method suite was run on the delivered combined
+implementation.
+
+\subsection{Evidence boundaries and integration decisions}
+
+The proofs establish a theorem for finite complexes obtained from the
+stated local normal form. The implementation comparisons check that
+the delivered code computes that model on the tested inputs.
+Neither is a proof-assistant formalization of the entire topology
+dependency chain.
+Benchmarks establish observations on specified input families and
+execution conditions; they do not establish a distribution-free
+performance claim.
+
+For integration, the evidence supports adding the tested APIs, research
+documentation, and opt-in source-profile stage. The streamed backend
+should remain selectable on memory grounds while its measured time
+loss is addressed. A future automatic dispatcher should be justified
+on the subset of inputs reaching the expensive endpoint, with both
+time and memory objectives stated.
+
+The main unresolved theorem is universal closure of a compact
+representation under construction, gluing, reduction, and exact
+decision. The finite-threshold result supplies one such closure
+mechanism in a controlled setting, together with enough source,
+proof, and experimental detail to make the next stage of research
+reviewable and reproducible.

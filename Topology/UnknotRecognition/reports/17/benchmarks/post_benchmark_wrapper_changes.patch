@@ -1,0 +1,39 @@
+--- measured/potts_exact.py
++++ current/potts_exact.py
+@@ -173,7 +173,24 @@
+     return result
+ 
+ 
++def witness_from_exact(result, *, kind="potts-jones-exact-differs-from-unknot"):
++    """JSON-safe exact witness, or None; raw evaluators retain integer pairs.
++
++    Signed hexadecimal strings avoid Python's decimal integer digit limit
++    for long bounded-width inputs without altering a process-global setting.
++    The equality test uses the actual pairs, not a supplied truthy flag.
++    """
++    partition = result["partition_function"]
++    expected = result["unknot_partition"]
++    if partition == expected:
++        return None
++    witness = dict(kind=kind, **result)
++    witness["differs"] = True
++    for name in ("partition_function", "unknot_partition"):
++        witness[name + "_hex"] = [hex(value) for value in witness.pop(name)]
++    return witness
++
++
+ def potts_exact_obstruction(diagram, **options):
+     """An exact nontrivial-Jones-value witness, or None (inconclusive)."""
+-    result = potts_exact(diagram, **options)
+-    return dict(kind="potts-jones-exact-differs-from-unknot", **result) if result["differs"] else None
++    return witness_from_exact(potts_exact(diagram, **options))
+--- measured/potts_factorized_exact.py
++++ current/potts_factorized_exact.py
+@@ -231,5 +231,6 @@
+ 
+ def factorized_potts_exact_obstruction(diagram, **options):
+     """A one-sided witness, with no finite-field collisions or unknot assertion."""
++    from .potts_exact import witness_from_exact
+     result = factorized_potts_exact(diagram, **options)
+-    return dict(kind="factorized-potts-jones-exact-differs-from-unknot", **result) if result["differs"] else None
++    return witness_from_exact(result, kind="factorized-potts-jones-exact-differs-from-unknot")

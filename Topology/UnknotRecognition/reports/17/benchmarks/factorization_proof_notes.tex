@@ -1,0 +1,138 @@
+% Proof notes for the main article; notation can be adapted by the integrator.
+\section{Processed-component Potts tensors}
+
+Fix a plane knot projection, one of its checkerboard graphs, an order of
+its $n$ edges (the crossings), and a fixed integer $q\ge5$.  An active
+vertex is incident with both a processed and an unprocessed edge.  A
+processed component is a connected component of the spanning subgraph
+formed by the processed edges after vertices of degree zero in that
+subgraph have been discarded.  Its active vertices need not be consecutive
+in any cyclic order.  Let $f_i$ be the number of active vertices after
+edge $i$ and let $g$ be the maximum number of active vertices in one
+processed component at any completed stage.
+
+For a component $H$ with active set $B$, retain the function
+\[
+ F_H(\sigma_B)=\sum_{\sigma_{V(H)\setminus B}}
+       \prod_{e=uv\in E(H)}W_e(\sigma_u,\sigma_v),
+ \qquad W_e(a,b)=\begin{cases}-x^{-\epsilon_e},&a=b,\\1,&a\ne b.\end{cases}
+\]
+Here $x^2-(q-2)x+1=0$ and $\epsilon_e\in\{1,-1\}$ is the exponent of
+the omitted-edge smoothing.  A completely closed component contributes
+its scalar partition function.  The function of the entire processed
+graph is exactly the product of these component functions.  This remains
+true although unprocessed edges may later join those components: their
+active spins are retained, and no interaction from an unprocessed edge
+has yet been included.
+
+Every $F_H$ is invariant under simultaneous permutation of the $q$ spin
+names.  Represent an orbit by the restricted-growth word $P$ of its
+active-spin equality pattern, with $k\le q$ blocks.  The stored value is
+the aggregate
+\[
+ A_H(P)=(q)_k F_H(\sigma_P),\qquad
+ (q)_k=q(q-1)\cdots(q-k+1).
+\]
+In particular, the coefficients of both integer coordinates of $A_H(P)$
+are divisible by $(q)_k$.  The exact implementation checks the remainder
+before every such division.  In the modular $q=5$ implementation these
+orbit sizes are units modulo $2^{61}-1$.
+
+\subsection{The merging identity}
+Suppose an edge joins different processed components with equality
+patterns $P,Q$, having $k,l$ blocks.  Their relative color data are a
+partial bijection identifying $s$ blocks on one side with $s$ on the other.
+The number of resulting colors is $m=k+l-s\le q$.  Nonidentified right
+blocks receive successive fresh labels, so every joint equality orbit is
+represented exactly once.  For each such relative alignment the aggregate
+before its joining-edge weight is
+\[
+ \frac{A_H(P)}{(q)_k}\frac{A_J(Q)}{(q)_l}(q)_m.
+\]
+This follows by evaluating the two invariant functions at one labeled
+representative and then multiplying by the size of its joint orbit.
+Multiplication by the joining-edge weight and forgetting inactive endpoint
+vertices complete the update.  Forgetting means restricting the equality
+word, canonically renaming surviving blocks, and adding aggregates with
+equal resulting words.  It does not involve division or a further factor.
+
+The number of relative alignments of patterns with $k,l$ blocks is exactly
+\[
+ L_q(k,l)=\sum_{s=\max(0,k+l-q)}^{\min(k,l)}
+           \binom{k}{s}\binom{l}{s}s!.
+\]
+It is at most $q!$: fix the left labels, and embed the right labels in
+the $q$ names.  Canonical relative alignments are distinct representatives
+among at most $(q)_l\le q!$ injections.  The bound is attained for
+$k=l=q$.  Thus the $q=5$ merge has at most $120$ alignments per pair of
+table entries, and the $q=6$ merge has at most $720$.
+The orbit-cardinality identity
+\[
+ \sum_{\text{relative alignments}}(q)_m=(q)_k(q)_l
+\]
+is an independent counting check of the normalization.  The tests verify
+it for every $k,l\le q\le6$, as well as the number of assignments in which
+one prescribed left and one prescribed right block receive the same color.
+
+\subsection{The component-width bound}
+Put $S_q(t)=\sum_{k=0}^{\min(q,t)}\left\{{t\atop k}\right\}$.
+A component with $t$ active vertices has at most $S_q(t)\le q^t$ table keys.
+At a completed stage every component has at most $g$ active vertices, so
+the sum of all represented keys is $O(nq^g)$.  Immediately before an edge
+is processed, new endpoint vertices are introduced as singleton tensors.
+The merged pre-forget bag of that edge has at most $g+2$ vertices: after
+the edge it is one processed component with at most $g$ active vertices,
+and only the at most two endpoint vertices can disappear at this step.
+This argument also covers a loop and the closing of a whole component.
+
+There are at most $q^{g+2}$ pairs of input entries at a merge, at most
+$q!$ relative alignments per pair, and polynomial work in $g$ to form and
+canonicalize a key.  Hence the transfer uses
+\[
+ n\,\operatorname{poly}(g+1)\,q!\,q^{g+2}
+\]
+coefficient-ring operations, in addition to polynomial preprocessing.
+Logical key storage is $O(nq^g)$ at completed stages, or
+$O(nq^{g+2})$ during a fused merge.  Two input tables and their replacement
+may be simultaneously allocated.  The implementation's key budget counts
+the sum of the represented replacement and unaffected tables, not Python
+allocator overhead or a hard process-memory ceiling.
+
+All exact coordinates have $O(n\log q)$ bits.  Indeed multiplication by
+either $-x$ or $-x^{-1}$ increases the coefficient $\ell^1$ norm by at most
+$q-1$, and summing at most $q^{|V|}$ spin assignments bounds that norm by
+$q^{|V|}(q-1)^n$.  Orbit normalization only divides exact aggregates.
+Products formed in a merge concern disjoint processed edge sets and have
+the same global bound.  The normalization expression for the unknot also
+has $O(n\log q)$ bits.  For fixed $q$ the bit bound is therefore
+\[
+ n^{O(1)}\operatorname{poly}(g+1)\,q^{g+2}.
+\]
+The same proof gives the weaker global-frontier bound with $g$ replaced
+by $\max_i f_i$.  If $w_i$ is the number of projection edges cut by the
+processed crossing set, every mixed black face has at least two cut-edge
+incidences, and each cut projection edge has exactly one black side.
+Consequently $2f_i\le w_i$, without any disk-boundary assumption.
+
+The result is a quasi-polynomial bound for this exact Jones specialization
+whenever $g=O(\log^2 n)$.  It remains a one-sided knot filter.  A value
+equal to the unknot value is inconclusive, and no universal bound on $g$
+for the implemented scan orders is asserted.
+
+\subsection{Practical qualification}
+The original greedy crossing order keeps its processed projection
+connected.  Adjacent projection crossings share a black face, so its
+processed Tait edges are also connected.  Consequently factorization has
+little to separate on those orders and can add overhead.  It is most
+useful when a supplied order creates independent processed components.
+The benchmark intentionally includes every one of the first twelve
+accepted diagrams and shuffled orders from one fixed seed.  Several
+remain slower than the matching scan even after factorization; the
+prototype is optional, not an unconditional replacement.
+
+The $q=5$ specialization also has an infinite blind family among weaving
+knots.  The reported $m=5,7,11$ cases of the closure of
+$(\sigma_1\sigma_2^{-1})^m$ are inconclusive in both modular and exact
+$q=5$ arithmetic.  Exact $q=6$ detects these cases.  Neither arithmetic
+exactness nor processed-component factorization implies that a fixed
+Jones specialization detects all nontrivial knots.

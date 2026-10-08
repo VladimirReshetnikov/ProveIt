@@ -22,6 +22,11 @@ modification times.
 | `14/` | `unknot_continuation_quotients.zip` | `fastunknot` 0.4.0 | interval normalization, length-two continuation quotients, certified scalar Fitting splitting | exact window ordering | 94 archive tests pass; intervals and graded scalar splitting integrated |
 | `15/` | `unknot_radical_transfer_20261007.zip` | survivor-first compression code | sharp radical nilpotence index 2k of the characteristic-two arc category, two-pass transfer | — | 18 archive tests and independent certificates pass; survivor prediction and adaptive shortcut integrated |
 | `16/` | `unknot_recognition_dense_algebra_20261008.zip` | dense cobordism-algebra code | `poly(m)·2^m` dense coefficient algorithm by ranked subset convolution, certified finite-quotient filters | — | 74 archive tests and independent algebra checks pass; homogeneous coefficient path integrated |
+| `17/` | `unknot_potts_frontiers.zip` | `fastunknot` with opt-in Potts backends (`17/fast/`, `integration/changes.patch`) | fixed-color Potts transfer for an exact Jones specialization, single-exponential in a Tait-graph frontier at most half the cut-edge frontier; component-factored transfer | — | not run |
+| `18/` | `unknot_twist_research_2026-10-08.zip` | additive continuation of `fastunknot` (`18/fast/`, `integration.patch`) | exact long-twist recurrence for reduced F2 Khovanov homology, streamed homology backend, direct braid-profile structural evaluation | — | not run |
+| `19/` | `unknot_rank_two_kernels_20261007.zip` | standard-library rank-two braid kernel (`19/src/`) | optimal one-pass disjoint rank-two substitutions in `O(n log n)`, linear replay verifier | quasi-polynomial bound for flat rank-two inflations of `O(log² n)`-crossing cores only | not run |
+| `20/` | `ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` | standard-library `unknot_windows` with an upstream adapter (`20/integration/`) | exact low-degree and mirror Khovanov windows with a one-degree halo, three-outcome probes, nice-order certificates | `n^O(log n)` for windows of depth `O(log n)` at girth `O(log² n)` | not run |
+| `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -42,6 +47,12 @@ directories as delivered.
 `13/`–`16/` were placed as delivered on 7 October 2026 under the intake rule:
 no test runs, no patch application, no review. Text files are stored with LF,
 and checksum files are dropped. Their recorded results are the authors' own.
+
+`17/`–`21/` were placed the same way on 7 October 2026. `17/` and `18/` each
+ship a patch against `../fast/` and a pinned copy of the project under
+`reference/`; neither patch is applied. `18/` suggests
+`research/twist-continuation-20261008/` as its home; it is kept here as
+delivered.
 
 Separately from placement, the algorithm-improvement task reviewed `15/` and
 `16/` in isolated archive extractions. Their source files remain unchanged.

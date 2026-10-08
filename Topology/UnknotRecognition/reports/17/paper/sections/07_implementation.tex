@@ -1,0 +1,146 @@
+\section{Implementation, integration, and certificate semantics}
+\label{sec:implementation}
+
+\subsection{The implemented backends}
+
+The Python package adds four core modules: a modular one-tensor transfer,
+an exact one-tensor transfer, a modular component transfer, and an exact
+component transfer. The first two provide independent execution paths for
+the same $q=5$ specialization when the exact evaluator is configured with
+$q=5$. The exact implementations support every
+integer $q\ge5$ and default to $q=6$.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.31\textwidth}p{0.20\textwidth}X@{}}
+\toprule
+Backend/API & Arithmetic & Role\\
+\midrule
+\code{matching} & Existing finite field &
+Unchanged default Jones filter and same-point comparison reference.\\
+\code{potts5} & $\F_{2^{61}-1}$ &
+Opt-in five-color equality-pattern filter.\\
+\code{potts-exact} & $R_q$, default $q=6$ &
+Opt-in exact one-tensor filter; simplest exact replay path.\\
+\code{potts-exact-factorized} & $R_q$, default $q=6$ &
+Opt-in exact component filter, using integral orbit-size division.\\
+\code{factorized\_potts\_bracket} & $\F_{2^{61}-1}$ &
+Modular factored API, included as an experimental comparison kernel.\\
+\bottomrule
+\end{tabularx}
+\caption{Interfaces available in the delivered source tree. The backend
+selector here controls only the Jones stage; the Khovanov backend is a
+separate option.}
+\label{tab:backends}
+\end{table}
+
+The default remains the existing matching filter. This is a deliberate
+consequence of the evidence: the Potts encodings improve some inputs, but
+can regress on others, and $q=5$ changes the invariant point in a way that
+misses a known family. An automatic policy should be supported by a broader
+cost model before changing existing behavior.
+
+\subsection{One-tensor pseudocode}
+
+\begin{lstlisting}[caption={Exact equality-pattern transfer at a fixed color count, for $n>0$.}]
+validate the knot diagram and supplied crossing permutation
+choose one checkerboard color from the two complete profiles
+compute first and last incident-edge positions for each Tait vertex
+table = { empty_pattern: (1, 0) }
+for edge in crossing_order:
+    introduce its previously unseen endpoints
+    following = {}
+    for pattern, coefficient in table:
+        for extension, multiplicity in color_orbit_extensions(pattern):
+            value = coefficient * multiplicity
+            if the endpoint classes agree:
+                value *= -x^(-edge.omitted_exponent)
+            target = restrict_and_canonicalize(extension, surviving_vertices)
+            following[target] += value
+            remove target immediately if its coefficient is exactly zero
+            enforce state and transition budgets
+    table = following
+    forget vertices whose last edge has just been processed
+Z, ZU = final partition pair, exact unknot normalization pair
+return inequality as a KNOTTED obstruction; equality is inconclusive
+\end{lstlisting}
+
+The factored variant replaces the single table by a map from union-find
+component representatives to active lists and tables. It applies
+Theorem~\ref{thm:merge} when the current edge joins two representatives.
+The algebraic scalar associated with already closed components is retained.
+
+\subsection{Budget behavior and sound control flow}
+
+Both new exact backends accept a state budget, a transition budget, a
+cooperative deadline callback, an explicit crossing order, and an optional
+fixed shading. The enclosing recognizer computes an order once and reuses
+it for the Jones and possible Khovanov stages.
+Order construction itself checks the deadline.
+Local budget exceptions are caught as a skipped filter. A global time
+exception propagates to the existing resource-limit outcome.
+
+The standalone \code{jones} command now handles resource exhaustion
+explicitly. Its JSON output is inconclusive and its exit code is $3$.
+A completed equality is also inconclusive, but is a successful computation
+and exits $0$. An invalid option or input exits $2$.
+In particular, a truthy dictionary describing a skipped computation must
+never be interpreted as a knottedness witness. Focused tests exercise this
+boundary, including zero budgets on actual unknots and exact $q=5$ equality
+on a nontrivial knot.
+
+All verdicts concern validated classical knot input. The low-level
+\code{Diagram(pd)} constructor is used internally for already validated
+data, including benchmark repetitions. Public file reading and certificate
+replay use the validating constructors. Neither a genus error in a rotation
+system nor a multiple-component input is silently treated as an ordinary
+knot.
+
+\subsection{Exact values, serialization, and replay}
+
+The raw exact evaluators return integer coordinate pairs, along with the
+chosen shading, normalization exponent, writhe, frontier counts and work
+counters. Obstruction wrappers encode the two large coordinate pairs as
+canonical signed hexadecimal strings:
+\code{partition\_function\_hex} and \code{unknot\_partition\_hex}.
+This permits arbitrarily long bounded-width examples to be serialized
+without hitting Python's limit on decimal conversion of huge integers.
+It does not change a process-global interpreter setting or truncate values.
+
+The current replay schema is restricted to $q=6$, for either exact backend;
+the raw evaluation APIs support all $q\ge5$.
+The certificate format binds a complete PD, an explicit crossing permutation,
+the chosen shading, and the full exact evidence record. Its SHA-256 input
+digest detects accidental edits; it is not a digital signature.
+The replay tool validates the diagram, recomputes the chosen exact transfer,
+compares all evidence fields, and independently checks that the two
+coordinate pairs differ. It does not trust a stored Boolean flag.
+Tampering with the order, normalization, values, flags or counters is
+rejected.
+
+This is \emph{recomputation-based replay}, not a separate polynomial-size
+proof checker whose complexity is independent of the original transfer.
+Its runtime has the same width dependence. The independent smoothing-cube
+oracle is a different algorithm and supplies cross-validation on smaller
+inputs; it is not the large-instance replay implementation.
+If a verifier's resource budget is exhausted, its result is
+\code{UNVERIFIED}, not a positive or negative topological conclusion.
+
+\Needspace{11\baselineskip}
+\subsection{Command examples}
+
+Run these commands from the included \code{fast} directory:
+\begin{lstlisting}
+python -m fastunknot jones examples/conway.json \
+    --backend potts-exact --potts-colors 6
+
+python -m fastunknot recognize examples/conway.json \
+    --jones-backend potts-exact-factorized --potts-colors 6
+
+python -m fastunknot jones examples/hard_unknot_8.json \
+    --backend potts-exact --max-transitions 0
+\end{lstlisting}
+The second command retains all earlier recognition stages, so its winning
+method may precede the Jones stage. To study the scalar algorithm in
+isolation, use the benchmark scripts or the low-level APIs with an explicitly
+recorded crossing order.
