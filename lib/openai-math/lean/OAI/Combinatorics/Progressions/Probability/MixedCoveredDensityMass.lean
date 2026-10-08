@@ -1,3 +1,6 @@
+/- Modified for ProveIt: derive the chart-source OpensMeasurableSpace instance
+explicitly from coveredJetChartSource_borel in mixedCoveredJet_normalized_lintegral to avoid Lean 4.32
+instance-search exhaustion; theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.MixedCoveredRowReindex
 import OAI.Combinatorics.Progressions.Geometry.FiniteGoodSupport
 
@@ -127,6 +130,8 @@ theorem mixedCoveredJet_normalized_lintegral (f : MixedCoveredJetSource I O E n 
     (∫⁻ y, ENNReal.ofReal (restrictedChartDensity chart region 1
       (fun z => f z / coveredJetArrayScale (O := O) U) y) ∂haar) =
       ∫⁻ z in region, ENNReal.ofReal (f z) ∂raw := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O E n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   have h := realDensityMeasure_lintegral_of_map raw haar chart
     ((coveredJetChart_continuous (O := O) U b hb bW d).measurable.comp
       (mixedCoveredJetCoordinates_measurable (O := O) (B := E) (n := n) U o d))

@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use the older Finset.single_le_prod' name in the
+modulus-to-product bound on Lean 4.32; theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AbsoluteIncrementBudgets
 import OAI.Combinatorics.Progressions.Dynamics.RepresentativeWindowBudget
 import OAI.Combinatorics.Progressions.Estimates.PositiveWeightContradiction
@@ -29,7 +31,7 @@ theorem prime_product_unit_of_lt {J : Type*} [Fintype J] (N : J → ℕ)
 
 theorem modulus_le_product {J : Type*} [Fintype J] (N : J → ℕ)
     (hpos : ∀ j, 0 < N j) (j : J) : N j ≤ ∏ i, N i :=
-  Finset.single_le_prod (fun i _ => hpos i) (Finset.mem_univ j)
+  Finset.single_le_prod' (fun i _ => hpos i) (Finset.mem_univ j)
 
 end Erdos3
 
