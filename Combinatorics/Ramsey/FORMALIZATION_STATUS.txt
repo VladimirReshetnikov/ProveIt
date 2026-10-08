@@ -3280,6 +3280,23 @@ Part J: Theorem 16.2 and Corollary 16.11 in dimension three, conditionally
   bihomomorphisms on dense pieces is also unproved. Theorems 18.1 and 18.2
   do not follow (Part I). The catalogue count stays 114/6.
 
+Port constants survey: routes to Theorems 18.2 and 18.7 (2026-10-08)
+  Research/GowersSzemeredi/PORT_CONSTANTS_SURVEY.md (read-only survey of
+  lib/openai-math). The port's QuantitativeDensityTheorem gives Theorem 1.3
+  as stated. It cannot give 18.2 or 18.7 as written, for two reasons:
+  - Its constants are existential, and the witnesses the code actually
+    produces are towers of height about 2s to 4s (s = k-2). This comes from
+    the polynomial-budget helper, which uses the coefficient sum, not its
+    logarithm. With a sharp helper they would be 2^(poly k).
+  - The dense case, which is all of 18.7, ends in FixedDensity.szemeredi.
+    That is a hypergraph-removal proof with tower- or Ackermann-type
+    constants.
+  Proposed route. Replace that terminal by a dense continuation: the
+  parameter-free scored_patch_density_step, run at frozen parameter T, gives
+  multiplicative density increments. Then restate the roughly 340-theorem
+  constant spine with explicit bounds. The route is checked against lemma
+  interfaces only, and it depends on the port compiling first.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
