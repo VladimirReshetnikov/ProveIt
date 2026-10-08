@@ -11,11 +11,13 @@ from .diagram import Diagram, DisjointSet
 
 
 class Move:
-    """An immutable record (kind, crossings) with value equality and hashing."""
+    """Immutable move record; R3 can name its face by fixed input dart indices."""
 
-    def __init__(self, kind: str, crossings: tuple[int, ...]):
+    def __init__(self, kind: str, crossings: tuple[int, ...],
+                 triangle: tuple[int, ...] | None = None):
         object.__setattr__(self, "kind", kind)
-        object.__setattr__(self, "crossings", crossings)
+        object.__setattr__(self, "crossings", tuple(crossings))
+        object.__setattr__(self, "triangle", None if triangle is None else tuple(triangle))
 
     def __setattr__(self, name, value):
         raise AttributeError(f"cannot assign to field {name!r}: Move is immutable")
@@ -26,16 +28,20 @@ class Move:
     def __eq__(self, other):
         if other.__class__ is not self.__class__:
             return NotImplemented
-        return (self.kind, self.crossings) == (other.kind, other.crossings)
+        return (self.kind, self.crossings, self.triangle) == (other.kind, other.crossings, other.triangle)
 
     def __hash__(self):
-        return hash((self.kind, self.crossings))
+        return hash((self.kind, self.crossings, self.triangle))
 
     def __repr__(self):
-        return f"Move(kind={self.kind!r}, crossings={self.crossings!r})"
+        face = "" if self.triangle is None else f", triangle={self.triangle!r}"
+        return f"Move(kind={self.kind!r}, crossings={self.crossings!r}{face})"
 
     def to_json(self) -> dict:
-        return {"kind": self.kind, "crossings": list(self.crossings)}
+        result = {"kind": self.kind, "crossings": list(self.crossings)}
+        if self.triangle is not None:
+            result["triangle"] = list(self.triangle)
+        return result
 
 
 def legal_moves(diagram: Diagram) -> list[Move]:
@@ -317,8 +323,10 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
     """Crossing-decreasing Reidemeister I/II moves until none applies, helped by Reidemeister III.
 
     Incremental version (idea from acceleration proposal 02).  Moves in the
-    trace name crossings by their index in the *input* diagram; ``replay``
-    checks a trace.  The result is revalidated once at the end.
+    trace name crossings by their index in the *input* diagram; R3 records
+    also name the triangular face by input darts, since a crossing triple
+    need not identify a unique face.  ``replay`` checks a trace.  The result
+    is revalidated once at the end.
 
     With ``r3``, when no I/II move is left, sequences of at most ``r3_depth``
     Reidemeister III moves (inversions of a triangular face) are tried, shortest
@@ -361,7 +369,8 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
             path: list = []
             found = _unlock(state, depth, range(4 * len(state.alive)), None, path, check_faces)
             if found is not None:
-                trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle))) for triangle in path)
+                trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle)), triangle)
+                             for triangle in path)
                 stack = found
                 break
         else:
@@ -374,25 +383,60 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
 
 
 def replay(diagram: Diagram, trace) -> Diagram:
-    """Re-apply a trace produced by ``simplify``, checking that every move is legal."""
+    """Check and re-apply a trace. Legacy R3 records require a unique legal face.
+
+    Face darts are fixed slots in the input diagram, even after deletions.
+    Their supplied order is irrelevant: recover the oriented face walk from
+    the current state rather than trusting an arbitrary order in a record.
+    """
     if not trace:
         return diagram                        # as ``simplify``: an unreduced diagram keeps its labels
     state = _Darts(diagram)
     for item in trace:
-        kind, crossings = (item.kind, tuple(item.crossings)) if isinstance(item, Move) else             (item["kind"], tuple(item["crossings"]))
+        try:
+            if isinstance(item, Move):
+                kind, crossings, face = item.kind, tuple(item.crossings), item.triangle
+            else:
+                kind, crossings = item["kind"], tuple(item["crossings"])
+                face = item.get("triangle")
+            face = None if face is None else tuple(face)
+        except (KeyError, TypeError, AttributeError) as error:
+            raise ValueError("malformed move record") from error
+        if (kind not in ("R1", "R2", "R3")
+                or len(crossings) != int(kind[1])
+                or any(type(c) is not int for c in crossings)
+                or len(set(crossings)) != len(crossings)):
+            raise ValueError("invalid move kind or crossing indices")
+        if any(not 0 <= c < len(state.alive) or not state.alive[c] for c in crossings):
+            raise ValueError("the trace names a crossing that is not present")
+        crossings = tuple(sorted(crossings))
+        if face is not None:
+            if (kind != "R3" or len(face) != 3
+                    or any(type(d) is not int or not 0 <= d < len(state.alpha) for d in face)
+                    or tuple(sorted(d // 4 for d in face)) != crossings):
+                raise ValueError("invalid Reidemeister III face indices")
+            triangle = state.triangle_at(face[0])
+            if triangle is None or set(triangle) != set(face):
+                raise ValueError("the trace names an illegal Reidemeister III face")
+            if state.apply_r3(triangle) is None:
+                raise ValueError("the trace contains a degenerate Reidemeister III move")
+            continue
         found = None
+        faces = {}
         for c in crossings:
-            if not 0 <= c < len(state.alive) or not state.alive[c]:
-                raise ValueError("the trace removes a crossing that is not present")
             for j in range(4):
                 if kind == "R3":
                     triangle = state.triangle_at(4 * c + j)
-                    if triangle is not None and tuple(sorted(x // 4 for x in triangle)) == tuple(sorted(crossings)):
-                        found = triangle
+                    if triangle is not None and tuple(sorted(x // 4 for x in triangle)) == crossings:
+                        faces[frozenset(triangle)] = triangle
                     continue
                 move = state.move_at(4 * c + j)
-                if move is not None and move[0] == kind and move[1] == tuple(sorted(crossings)):
+                if move is not None and move[0] == kind and move[1] == crossings:
                     found = move
+        if kind == "R3":
+            if len(faces) > 1:
+                raise ValueError("ambiguous Reidemeister III record: triangle darts are required")
+            found = next(iter(faces.values()), None)
         if found is None:
             raise ValueError("the trace contains an illegal move")
         if kind == "R3":

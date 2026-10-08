@@ -1,0 +1,148 @@
+\section{Causal RIII search: review and unambiguous certificates}
+\label{sec:causal-r3}
+
+The next intake placed three archives in arrival order as reports 26--28:
+determinant continuations, causal RIII search, and classical closure resets.
+The second archive calls itself ``Report 25'' internally; our collection
+number is 27 to avoid colliding with the earlier Garside archive.
+Original checksum manifests were verified in scratch before placement,
+then omitted under the repository intake rules.  Delivered source and
+results remain unchanged apart from the mandated line-ending normalization
+of report 28's benchmark CSV.  The retained intake audit records all
+original hashes, normalized hashes and source pins.  Local unit reruns pass
+35, 7 and 29 tests respectively; these counts do not establish mathematical
+soundness or integration with the current recognizer.
+
+\subsection{What the causal argument can give}
+Report 27 considers bounded-local reversible moves on a fixed set of sites.
+Each move has a footprint containing everything it reads and changes.
+Actions on disjoint footprints commute in both directions and preserve
+each other's legality.  Terminal reductions also have local footprints.
+A move is a \emph{birth} when its footprint is disjoint from the union of
+all preceding footprints.  That union is accumulated support, not merely
+the footprint of the last move.
+
+Every birth can commute to the front of the trace: it is disjoint from
+every earlier action.  The births are pairwise disjoint and can be ordered
+canonically.  Remaining actions retain an intersection with the preceding
+support.  A reduction may become available sooner after this rearrangement,
+in which case the trace is truncated.  Thus one can search a normal form
+with a canonical sequence of births followed by connected extensions.
+Connectedness of the full dependency graph does not imply that every
+chronological prefix was connected.
+
+For RIII on a fixed input diagram, let $D(T)$ be the twelve darts at the
+three crossings of a triangular face $T$, and let $\alpha$ be the edge
+pairing.  The conservative footprint
+\[
+ F(T)=D(T)\cup\alpha(D(T)),\qquad |F(T)|\le24
+\]
+contains every modified pairing.  Inverting the face leaves this footprint
+unchanged.  Globally there are $O(N)$ triangular faces in a connected
+$N$-crossing spherical diagram.  The number whose footprint meets a set
+of $O(k)$ darts is $O(k)$, since only incident crossings and their partners
+need inspection.  The report consequently obtains a conditional search
+bound
+\[
+ N^{b+O(1)}(Ck)^k
+\]
+for traces of length at most $k$ and birth number at most $b$, with an
+absolute constant $C$.  A depth-first implementation without a global
+memo table uses polynomial workspace in $N,k$.  The delivered abstract
+prototype does retain a memo table, so its memory usage should not be
+identified with the latter claim.
+
+For example, fixed $b$ and $k=O(\log N/\log\log N)$ give polynomial time;
+$b,k=O(\log N)$ give quasi-polynomial time.  These are parameterized
+statements.  No argument bounds the parameters uniformly for arbitrary
+unknots.  Repeated preprocessing also requires the bound at each episode
+selected by the actual deterministic reduction policy; existence of a
+different successful sequence of choices is insufficient.
+
+We reran the report's independent breadth-first comparisons in scratch.
+The generated audit covers 5,000 six-site systems, with 1,660 witnessed
+instances, 3,209 already reducible and 131 without a depth-six witness.
+The exhaustive three-site catalog covers 608,400 instances through depth
+four, with 171,968 witnessed, 163,800 already reducible and 272,632 without
+a witness.  Both reproduce zero discrepancies in the recorded normal-form
+checks.  These are abstract Boolean systems, not knot-diagram benchmarks;
+they exercise the prototype, not the proposed production adapter.
+
+\subsection{Why immediate inverse pruning needs care}
+The proposed RIII adapter suppresses the inverse of the preceding move.
+The abstract prototype deliberately does not.  For unrestricted shortest
+paths an adjacent inverse pair is removable, but this need not preserve
+the birth bound.  Here is an explicit four-site example under precisely
+the abstract locality assumptions.  Start with all bits zero:
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Move & Footprint & Toggled bits & Guard\\
+\midrule
+$A$ & $\{0,1,2,3\}$ & $\{0,1\}$ & $x_2=x_3=0$\\
+$B$ & $\{0,2\}$ & $\{2\}$ & $x_0=0$\\
+$C$ & $\{1,3\}$ & $\{3\}$ & $x_1=0$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each guard avoids the toggled bits, so every legal move is an involution.
+The terminal predicate is $x_2=x_3=1$.  The trace $BC$ succeeds but has
+two births.  The trace $AABC$ succeeds with one birth: after $AA$ the
+physical state is again zero, while accumulated support contains all four
+sites.  After the first $A$, both $B$ and $C$ are disabled, so the inverse
+$A$ is essential for this one-birth trace.
+
+Exhaustion of all words through length four gives exactly $AABC$ and
+$AACB$ as first-unlocking traces with at most one birth.  Suppressing
+adjacent inverses loses both.  The script
+\path{data/causal_inverse_audit.py} compares this independent enumeration
+with the delivered prototype and retains the source hashes and results.
+This is an abstract counterexample to the pruning justification; it is
+not an actual RIII counterexample.  It shows that locality alone cannot
+justify transplanting that extra pruning rule into the claimed complete
+parameterized search.  Physical-state memoization likewise cannot ignore
+support and search phase.  The existing bounded local simplifier remains
+a heuristic; its failure is not a knottedness certificate.
+
+\subsection{Integrated prerequisite: identify the actual triangular face}
+Review also exposed a separate defect in the existing production trace
+format.  Recording only the three crossing indices does not uniquely
+identify an RIII move.  The two-strand braid $(1,1,-1)$ has the PD code
+\[
+ ((5,4,0,1),(1,0,2,3),(2,4,5,3)).
+\]
+Both $(11,4,0)$ and $(9,2,6)$ are legal triangular faces on crossings
+$\{0,1,2\}$.  Their inversions give distinct labeled PD codes:
+\[
+\begin{split}
+ ((0,1,2,0),(3,4,1,3),(2,4,5,5)),\\
+ ((0,1,1,2),(3,4,4,0),(5,5,3,2)).
+\end{split}
+\]
+The old replay routine selected a face according to traversal order and
+therefore could reconstruct the wrong intermediate diagram.  Both moves
+preserve knot type; the defect concerns reproducibility of the recorded
+sequence, including the legality of its subsequent moves.
+
+New RIII records include a \code{triangle} field containing the face's
+three input dart indices.  These indices remain fixed after earlier
+crossing deletions.  Replay checks distinct, present crossing indices,
+literal integer types, range, face membership and RIII legality.  It
+recovers cyclic order from the current pairing, so reordering the three
+supplied dart indices cannot accidentally request a different reconnection.
+Legacy crossing-only RIII records are accepted when they identify a unique
+face, and rejected with an ambiguity error otherwise.  R1/R2 serialization
+is unchanged.  This is a certificate correctness fix, not a new recognition
+criterion or an asymptotic improvement.
+
+Five new regression tests cover the explicit two-face example with all
+six dart orders, invalid certificates, every candidate RIII face in
+deterministically generated knot diagrams, legacy unambiguous replay, and
+JSON round trips after crossing deletions.  The full integrated suite passes
+539 tests in 109.018 seconds in this local run; the log is
+\path{data/reidemeister-trace-integrated-tests.txt}.  The clustered search itself
+is not yet enabled in production.  Its integration still needs complete
+support-aware enumeration, exception-safe rollback, cooperative resource
+checks and actual-diagram performance comparisons.  A local search budget
+may stop this preprocessing inconclusively; it cannot replace the exact
+fallback or establish a general sub-exponential bound.
