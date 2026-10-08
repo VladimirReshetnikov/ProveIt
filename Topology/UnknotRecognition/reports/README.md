@@ -291,3 +291,14 @@ The delivered report and adapter remain unchanged.
 Report `27/` retains three delivered trailing spaces in its recorded LaTeX/PDF
 inspection logs. They are part of the archived evidence, not new formatting in
 the maintained implementation. Executable script modes are preserved from ZIP.
+
+The maintained continuation of report `17/` now includes certified separator
+orders (`../synthesis/separator_orders.tex`) and an optional measured-work
+Potts policy (`../synthesis/adaptive_potts.tex`). The former supplies a general
+square-root crossing-frontier order; the latter defers its preparation, keeps
+unchanged tables, and charges any restart to the original transition budget.
+A logarithmic remaining tail has a polynomial work bound. These yield a
+general subexponential fixed-color scalar query, not a general subexponential
+recognizer. The 595-test checkpoint includes independent scalar comparisons,
+while the benchmark retains initial-policy source, gains, regressions and
+censored queries. The delivered report is unchanged.

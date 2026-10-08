@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 589 passing tests.
+diagram is not checked twice. The integrated suite now has 595 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -990,6 +990,38 @@ all six measured cases; it remains optional despite its stronger conditional
 bound. These partial-query ratios are not end-to-end recognition speedups.
 
 ## Optional exact Potts Jones filters
+
+`potts-adaptive` defers separator preparation until actual scalar work reaches
+`64*n` transitions. If at most `2*ceil(log2(n+1))` crossings remain then, it
+finishes the current table under a proved polynomial tail bound. Otherwise it
+builds a certified order: an unchanged order continues without repeating work;
+an improved order restarts once with the **remaining original transition
+allowance**. State-cap failure can also request the one preparation. Completed
+order certificates survive later scalar exhaustion; global interruption never
+publishes an unfinished scalar or partial certificate.
+
+```sh
+python -B -m fastunknot recognize examples/conway.json --jones-backend potts-adaptive
+python -B -m fastunknot jones examples/conway.json --backend potts-adaptive
+python -B benchmark_adaptive_potts.py --output results/adaptive_potts_local.json
+```
+
+The Python API is `fastunknot.adaptive_potts.adaptive_potts_exact`. Its uncapped,
+fixed-color query retains `poly(n) 2^O(sqrt(n))` bit complexity, while easy
+queries avoid separator construction entirely. Result `ordering_policy` records
+the actual path, discarded work and total transitions. In ordinary or
+polynomial-tail mode, the later homology fallback receives no separator-width
+promise. This remains a one-sided scalar filter, not a complete subexponential
+recognizer.
+
+Measurements include all preparation and retain both the initial policy and
+its source. The short-tail rule improves the initial policy 1.415x on the
+100-crossing grid but regresses on a shuffled 16-crossing grid. Other supplied
+orders finish after adaptation where ordinary/eager queries hit state caps;
+those are censored comparisons, not timing speedups. Ordinary exact Potts
+remains faster on some inputs, and no consistent full-recognition advantage
+over it is established. See
+[`../synthesis/adaptive_potts.tex`](../synthesis/adaptive_potts.tex).
 
 `potts-separator` first constructs and verifies a balanced separator hierarchy,
 then chooses the smaller frontier of its order and the existing greedy order.

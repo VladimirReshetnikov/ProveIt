@@ -1,0 +1,184 @@
+\section{Deferring separator work until the scalar query needs it}
+\label{sec:adaptive-potts}
+
+The separator backend supplies a useful universal bound, but eagerly building
+its certificate slows many easy scalar queries.  The new optional
+\code{potts-adaptive} backend starts with the ordinary order and watches
+\emph{actual completed transitions}.  It postpones separator construction
+until that work becomes large, while retaining the preceding section's
+subexponential fixed-color scalar bound.  This is the introsort principle
+applied to one exact invariant query: limit speculative work, then use a
+method with a proved bound.  It is not yet an analogous worst-case bound
+for the complete unknot recognizer.
+
+\subsection{The policy and its persistent state}
+
+For an $n$-crossing input, let the initial work threshold be $B=64n$ and the
+short-tail allowance be $r_0=2\lceil\log_2(n+1)\rceil$.  The evaluator begins
+on a supplied order, or the existing greedy order when none is supplied.
+At each completed crossing before the last, it observes the cumulative
+transition count.  The actions are as follows.
+\begin{enumerate}
+\item Below $B$, continue normally.  A completed scalar answer needs no
+separator certificate.
+\item On first reaching $B$, if at most $r_0$ crossings remain, finish the
+current table.  This enters \code{polynomial-tail} mode; the argument below
+supplies a bound without requiring a width certificate.
+\item Otherwise construct and independently verify a separator hierarchy.
+Compare its order with the better of the current order and a freshly
+computed greedy order, using (maximum frontier, total frontier).
+\item If the selected order is unchanged, retain the \emph{same} Potts table
+and continue.  No processed crossing or transition is repeated.  This is
+\code{certified-continue} mode.
+\item A changed order enters \code{certified-restart} mode.
+Discard the unfinished scalar table and restart once.  The old exception handler
+is exited before allocating the replacement table, releasing the abandoned
+evaluator's traceback and local references.
+\end{enumerate}
+
+A local state-cap failure can also trigger the preparation when it has not
+already happened and transition allowance remains.  If the selected order
+is unchanged, repeating the query cannot repair that failure: publish the
+completed order certificate and decline immediately.  A spent transition
+allowance never triggers preparation.  There is at most one separator
+preparation and at most one restart.  A fixed state cap may still interrupt
+the polynomial tail, in which case the same rules apply.
+
+The \code{ordering\_policy} evidence records the mode, threshold, short-tail
+allowance, preparation/restart counts, abandoned crossings and transitions,
+and total spent transitions.  \code{PottsLimit} carries work counters only;
+it never exposes a partial partition function as a completed value.  The
+public exact evaluator's existing complete-result behavior is unchanged.
+
+\subsection{A single transition budget, including discarded work}
+
+Suppose the user supplies transition allowance $T$, and the first attempt
+spends $a$ transitions.  A restarted evaluator receives exactly $T-a$.
+If it spends another $b$, the returned count and any exhaustion exception
+report $a+b\le T$.  There is no fresh allowance for the second implementation.
+State caps keep their existing meaning as limits on represented table keys;
+the reported peak is the larger attempt peak, not a byte-memory estimate.
+Other scalar geometry and coefficient statistics describe the final attempt.
+
+Order preparation is charged to the shared global deadline, not to the
+scalar-transition counter.  The deadline callback propagates through the
+policy and verifier.  A preparation interrupted globally publishes no partial
+certificate.  After a complete witness is available, a later local scalar
+failure retains it for the recognition fallback.  Subsequent crossing-changing
+Reidemeister simplification rebuilds it on the reduced diagram, as in the
+preceding section.  When the scalar query finishes in ordinary or
+polynomial-tail mode, no separator witness has been computed; those modes
+make no width promise for the later homology scan.
+
+\subsection{Why the deferral preserves the asymptotic scalar bound}
+
+Fix the number of colors $q\ge5$.  One crossing introduces at most two Tait
+vertices.  From one stored spin-equality state there are at most $q^2$
+extensions, because every canonical extension represents at least one
+labeled choice for those two vertices.  Aggregation and cancellation only
+decrease the number of states.  Moreover, after at least one crossing the
+number of stored states is at most the number of transitions spent so far.
+
+Immediately before the first completed stage reaching $B$, at most
+$B+1$ states are available.  The crossing that first passes the threshold
+therefore takes at most $(B+1)q^2$ further transitions.  Stopping only at a
+crossing boundary causes polynomial, rather than unbounded, overshoot.
+The same observation bounds a final crossing that completes the entire query
+before the policy is invoked.  Canonical-key work and exact coefficient
+arithmetic have polynomial bit cost at fixed $q$.
+
+If the policy enters a short tail of $r\le r_0$ crossings, the number of
+additional transitions is bounded by
+\[
+ O\!\left((B+1)q^2\sum_{j=1}^{r}q^{2j}\right)
+ =O\!\left(nq^{2r+O(1)}\right)
+ =n^{O(1)}\quad\text{for fixed }q.
+\]
+The degree of this polynomial can be large.  This is an asymptotic safeguard,
+not a promise that every permitted tail is practically cheap.  Existing
+state, transition and deadline limits remain active.  If a state-cap failure
+interrupts the tail and requests a new order, the abandoned tail work is
+still bounded by this polynomial.
+
+In every other uncapped case the policy eventually obtains a certified
+$O(\sqrt n)$-frontier order.  Continuing an unchanged order or restarting
+on the selected order costs $\operatorname{poly}(n)2^{O(\sqrt n)}$ bit
+operations.  A continuing run does not repeat its earlier work; a restarted
+run adds only the polynomially bounded first attempt.  Construction of the
+hierarchy is polynomial.  Hence the complete adaptive \emph{scalar} query
+has the same general subexponential upper bound as eager separator evaluation.
+
+This theorem does not assert competitiveness with the fastest order on each
+input.  Under a finite allowance, discarded transitions may prevent completion
+where some single-order query would have completed.  Frontier improvement also
+does not force fewer spin states after exact cancellations.  These are reasons
+to expose the option and its policy evidence while retaining the existing
+default, not reasons to reset the budget silently.
+
+\subsection{Independent checks and measured scope}
+
+The six new test cases cover actual measured-work restarts, state-cap
+restarts, unchanged-order continuation, a completed short tail, exact shared
+budget boundaries, globally interrupted preparation, zero budgets, invalid
+options, CLI routing and the complete recognition fallback.  Twenty small
+diagrams, three color counts and both shadings give 120 comparisons with an
+independent whole-cube Laurent-Jones oracle.  That oracle uses neither Tait
+graphs nor production ring arithmetic.  Its cases exercise policy switches
+as well as ordinary completion.  The five-color blind weaving example still
+falls through to Khovanov recognition rather than receiving an unknot verdict.
+
+The benchmark uses seven shuffled rounds after an excluded warm-up, fresh
+diagram construction and all order preparation inside every timer.  It
+separates 15 scalar scopes from 11 full-recognition scopes.  Ordinary exact
+Potts has an identical A/A control; eager separator, final adaptive and the
+initial adaptive policy are compared on the same scalar queries.  Every
+completed scalar comparison checks cross-multiplied normalized values,
+because changing shading changes both the partition function and its
+normalizing factor.  Limits remain censored outcomes.
+
+The initial policy lacked the short-tail rule.  Its source snapshot matches
+the hash in the retained initial measurements, and the final driver also
+reruns it as a paired control.  On the $10\times10$ descending grid, the
+threshold is crossed after crossing 90, at 6555 transitions; the whole query
+requires 7109.  With ten crossings left and $r_0=14$, the final policy avoids
+the otherwise unnecessary certificate.  Its median time is 21.457\,ms versus
+30.556\,ms for the initial policy, a median paired improvement of 1.415 times.
+On a shuffled 16-crossing grid, however, the tail rule forgoes a useful restart
+and is slower than the initial policy (paired ratio 0.913).  Both results are
+retained; the rule is not claimed to optimize every instance.
+
+\input{tables/adaptive_potts.tex}
+
+On the 254-crossing tree-medial diagram, ordinary and adaptive scalar times
+are 9.617 and 9.703\,ms, versus 34.412\,ms for eager separator preparation.
+On the shuffled 36-, 64- and 100-crossing grids, both adaptive policies finish
+within the default budgets while ordinary and eager supplied-order queries
+hit their state caps.  The adaptive fallback's fresh greedy comparison is
+part of this benefit; the eager backend compares only the supplied order
+with its separator order.  These capped runs have no completion-time speedup
+ratio.  On the ordinary 144-crossing grid, the final policy continues the
+same table after certification and takes 153.190\,ms versus 135.286\,ms for
+ordinary exact Potts: the guarantee still has a preparation cost.
+
+Full recognition on the measured inputs gains no consistent advantage over
+ordinary exact Potts.  Earlier certificates bypass the scalar query on many
+cases.  Avoiding eager preparation helps where it would have been used, but
+this is not a general improvement over the historical matching default.
+The new backend remains optional.
+
+\subsection{A relevant geometric result, with a different scope}
+
+The research refresh found no new delivered unknot report in the drop zone.
+Lackenby's revised \emph{Some fast algorithms for curves in surfaces}
+\cite{lackenby-curves2026} supplies a useful related primitive: Theorem 1.1
+computes geometric intersection numbers of normal 1-manifolds in time
+polynomial in triangulation size and the logarithms of their weights.
+Theorem 1.2 gives a corresponding isotopy test.  The normalization theorem
+also depends on the input's simplification number; that extra parameter
+must not be dropped from a complexity claim.
+These results strengthen the case that very large geometric objects can
+admit efficient compressed operations.  They neither bound the depth of an
+accelerated 3-manifold hierarchy nor the number of surviving chain objects
+in our implementation.  We therefore record them as candidate geometric
+primitives, without treating them as a missing recognition theorem or adding
+an unused surface API to the scalar scanner.

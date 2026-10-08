@@ -2,6 +2,18 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`adaptive_potts.tex` defers separator construction according to actual query
+work, proves a polynomial bound for a logarithmic remaining tail, and retains
+the general subexponential fixed-color scalar bound. It explains why unchanged
+orders continue the same table and why a restart spends only the original
+remaining budget. The 595-test suite includes 120 independent cube-Jones
+comparisons and actual policy/resource transitions. Seven-round measurements
+separate 15 scalar scopes from 11 complete-recognition scopes, retain the
+initial policy's regression and frozen source, and report remaining overhead.
+The backend remains optional; the full recognition bound remains unresolved.
+The literature note reviews Lackenby's compressed curve-operation theorems
+without inferring an accelerated hierarchy bound from them.
+
 `separator_orders.tex` proves the maintained optional separator order has
 `O(sqrt(n))` crossing frontier for every closed classical projection. It explains
 the BFS layers, contracted middle band, three paths at a dual-tree centroid,
