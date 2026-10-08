@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: provide quotient Borel instances and finiteness of the
+nested product measures explicitly on Lean 4.32. Mathematical statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.CoefficientProductHaar
 import OAI.Combinatorics.Progressions.Geometry.CoefficientCoordinateEquiv
 
@@ -82,6 +86,15 @@ theorem euclideanCoefficient_measurePreserving [Fintype K]
     [∀ j, (ν j).IsAddLeftInvariant] [∀ j, IsProbabilityMeasure (ν j)] :
     MeasurePreserving (euclideanCoefficientEquiv U) μ
       (Measure.pi (fun j => Measure.pi (fun _ : BoundedCoefficientExponent K (j.val + 1) => ν j))) := by
+  letI : ∀ j, BorelSpace (euclideanSubspace (U j) ⧸
+      (latticeSection (standardEuclideanLattice (J j)) (euclideanSubspace (U j))).toAddSubgroup) :=
+    fun _ => QuotientAddGroup.borelSpace
+  letI : ∀ j, IsFiniteMeasure
+      (Measure.pi (fun _ : BoundedCoefficientExponent K (j.val + 1) => ν j)) :=
+    fun _ => Measure.pi.instIsFiniteMeasure _
+  letI : ∀ j, SigmaFinite
+      (Measure.pi (fun _ : BoundedCoefficientExponent K (j.val + 1) => ν j)) :=
+    fun _ => IsFiniteMeasure.toSigmaFinite _
   let ξ := Measure.pi (fun j => Measure.pi (fun _ : BoundedCoefficientExponent K (j.val + 1) => ν j))
   let : CompactSpace (EuclideanCoefficientLayers (K := K) U) := by
     have hc := isCompact_univ.image (euclideanCoefficientEquiv_continuous (K := K) U)

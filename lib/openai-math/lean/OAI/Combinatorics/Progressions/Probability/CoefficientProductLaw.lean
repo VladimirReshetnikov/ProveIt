@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Pass sigma-finiteness explicitly to the product-integral theorem on Lean 4.32.
+Mathematical statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.CoefficientProductHaar
 
@@ -62,7 +63,9 @@ theorem coefficientProductDensity_probability {K : Type*} [Fintype K] {m : ℕ}
     (∫ x, coefficientProductDensity U f x ∂μ) = ∫ y, g y ∂Measure.pi ν := by
       simpa only [hp.map_eq, g, coefficientProductDensity] using
         (integral_map hp.measurable.aemeasurable hg').symm
-    _ = ∏ s, ∫ x, f s x ∂ν s := integral_fintype_prod_eq_prod f
+    _ = ∏ s, ∫ x, f s x ∂ν s :=
+      @integral_fintype_prod_eq_prod ℝ (CoefficientSlot K m) _ _ _ f _ ν
+        (fun s => IsFiniteMeasure.toSigmaFinite (ν s))
     _ = 1 := by simp only [hmass, Finset.prod_const_one]
 
 end Erdos3.VectorPolynomial
