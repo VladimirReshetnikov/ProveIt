@@ -1,0 +1,220 @@
+\section{A collision-free Jones query and full polynomial recovery}
+\label{sec:faithful-jones}
+
+The fixed-color queries above can certify a nontrivial Jones value, but equality
+can hide a nonconstant polynomial.  The optional \code{potts-faithful} backend
+removes this specialization ambiguity.  It chooses an input-dependent quadratic
+integer and either decides whether the \emph{whole} normalized Jones polynomial
+is one, or recovers that polynomial.  With resource caps disabled, both queries
+have the general bit bound
+\[
+ \operatorname{poly}(n)\,2^{O(\sqrt n\log(n+1))}.
+\]
+This is subexponential in the crossing count.  It is a bound for Jones
+computation, not for complete unknot recognition.  The implementation does not
+assume that the Jones polynomial detects the unknot: a completed identity
+result still proceeds to an independent recognition certificate.
+
+This section combines elementary coefficient bounds and integer encoding with
+the preceding maintained separator and Potts algorithms.  It makes no priority
+claim for subexponential Jones computation.  In particular, efficient Jones
+computation under graph-width restrictions predates this implementation; see
+the literature review in \code{reports/17/research/literature\_landscape.md}.
+
+\subsection{Uniform coefficient and degree bounds}
+
+Write $V_D(t)$ for the normalized Jones polynomial of an $n$-crossing knot,
+with $V_{\bigcirc}=1$, and put $W(x)=V_D(x^{-1})$ for $x=A^4$.
+The bracket state sum has $2^n$ states.  Each state has at most $n+1$ circles:
+changing one smoothing changes the circle count by one, and smoothing a
+connected $n$-crossing projection cannot produce more than $n+1$ components.
+The normalized circle factor is $(-A^2-A^{-2})^{c-1}$, whose coefficient
+$\ell^1$ norm is $2^{c-1}$.  Writhe normalization only changes signs and
+shifts degrees.  Thus
+\[
+ \|W\|_1=\|V_D\|_1\le 2^n 2^n=4^n=:C.
+\]
+The smoothing monomial has $A$-exponent of absolute value at most $n$;
+circle factors contribute at most $2n$; writhe contributes at most $3n$.
+Every resulting exponent is divisible by four for a knot, giving
+$|\deg_x|\le 3n/2$.  We use the simpler integral bound $D=2n$.
+The crossing-free knot is handled separately with polynomial one.
+
+\subsection{Choosing a specialization that cannot hide nontriviality}
+
+Choose
+\[
+ M=2^{4n+2}=4\cdot16^n,\qquad q=M+2,\qquad x^2-Mx+1=0,
+\]
+and consider the larger real root $x$.  Since $M\ge4$, this root satisfies
+$x>M-1>C$.  Suppose that $W-1$ is a nonzero Laurent polynomial.  Multiplying
+by a monomial produces an ordinary integer polynomial $P$ with nonzero
+leading coefficient of absolute value at least one.  Its norm is at most
+$C+1$, so the sum of absolute values of all its other coefficients is at most
+$C$.  At a real argument $x>C$, the leading term has absolute value greater
+than the sum of the lower terms.  Thus $P(x)\ne0$, and hence $W(x)\ne1$.
+
+Consequently equality of the exact quadratic-ring pairs for the partition
+function $Z$ and the unknot normalization $U$ is equivalent to
+$V_D(t)=1$ as a polynomial.  The normalization is nonzero: its formula is a
+signed monomial times a power of $x+1$.  No floating-point approximation or
+probabilistic identity test is used.  The same leading-term argument applied
+to a difference of two bounded polynomials proves injectivity, because
+$M-1>2C$.
+
+The root argument alone would permit a smaller base for identity testing.
+We deliberately use a single larger base for both identity testing and the
+coefficient recovery below, keeping their result semantics consistent.
+
+\subsection{Recovering all coefficients from two integers}
+
+The existing evaluator supplies $Z$ and $U$ as pairs representing elements
+of $\mathbb{Z}[x]/(x^2-Mx+1)$.  First recover the normalized pair exactly.
+If $U=c+dx$, its conjugate is $(c+Md)-dx$ and its norm is
+\[
+ N(U)=c^2+Mcd+d^2.
+\]
+Multiply $Z$ by this conjugate and divide both coordinates by $N(U)$.
+The divisions have zero remainder because $Z/U=W(x)$ is a Laurent
+polynomial with integer coefficients and $x^{-1}=M-x$ is integral.
+The code checks the remainders, rather than rounding them.
+
+To understand the coordinate encoding, introduce formal polynomials
+$U_{-1}(M)=0$, $U_0(M)=1$, $U_1(M)=M$, and
+$U_j(M)=M U_{j-1}(M)-U_{j-2}(M)$.  For $k\ge1$,
+\[
+ x^k=-U_{k-2}(M)+U_{k-1}(M)x,\qquad
+ x^{-k}=U_k(M)-U_{k-1}(M)x.
+\]
+The first formula for $k=1$ uses $U_{-1}=0$.
+Each $U_j$ has coefficient norm at most $2^j$, by induction on the
+recurrence.  Therefore reduction of $W$ yields coordinate polynomials
+$a(M),b(M)$ of degree at most $D$, each with every coefficient bounded by
+\[
+ C 2^D\le 4^n 2^{2n}=16^n=M/4.
+\]
+The computed integers $a(M),b(M)$ consequently determine these coordinate
+polynomials uniquely by balanced base-$M$ expansion.  Repeatedly take the
+residue modulo $M$, subtract $M$ when it is at least $M/2$, and divide the
+remaining difference by $M$.  This handles negative coordinates as well as
+positive ones.  Actual coefficients lie strictly inside the balanced digit
+interval; there is no carry ambiguity.
+
+Finally substitute the formal identity $M=x+x^{-1}$.  A decoded term
+$cM^j x^e$, where $e\in\{0,1\}$, contributes
+\[
+ c\sum_{k=0}^j\binom jk x^{j-2k+e}.
+\]
+Aggregate equal exponents, remove zero coefficients, and negate the exponents
+to return the standard variable $t=A^{-4}$.  The implementation independently
+checks the final degree and coefficient bounds, and consistency with the
+pair-equality identity result.  These checks detect inconsistent input to the
+decoder; they do not replace the state-sum correctness argument.
+There are $O(n)$ output coefficients of $O(n)$ bits each.  Balanced decoding,
+exact normalization division and binomial expansion take polynomial bit time.
+
+\subsection{Why exponentially many colors do not cause exponential work}
+
+Applying the fixed-$q$ bound $q^f$ directly would lose the desired result.
+The implementation instead stores \emph{canonical equality partitions} of
+the $f$ active Tait vertices.  There are at most the Bell number $B_f$ such
+partitions, independent of $q$.  Its extension loop considers each existing
+color class and at most one new class, weighted by the number of unused
+colors $q-k$.  It never enumerates $q$ colors.
+
+The certified crossing order has frontier $w=O(\sqrt n)$, hence at most
+$f\le w/2$ active faces of either chosen checkerboard shade.  As
+$B_f\le\max(1,f^f)$, the number of represented states is
+$2^{O(\sqrt n\log(n+1))}$.  Each crossing introduces at most two vertices;
+the number of extensions from one state is at most $(n+3)^2$.
+The original scalar coefficient bound is $O(n\log q)$ bits, now $O(n^2)$.
+Key manipulation, multiplicities, arithmetic and the number of stages
+therefore contribute only polynomial factors.
+
+The adaptive preliminary scan needs separate accounting because $q$ is no
+longer fixed.  Before its first threshold crossing it has at most $64n+1$
+states.  One completed-stage overshoot costs at most
+$(64n+1)(n+3)^2$ transitions.  If it takes the short-tail option with at most
+$2\lceil\log_2(n+1)\rceil$ crossings remaining, a conservative work bound is
+\[
+ \operatorname{poly}(n)(n+3)^{O(\log(n+1))}
+ =2^{O(\log^2(n+1))}.
+\]
+Thus the mode called \code{polynomial-tail} in the shared fixed-color policy
+has only a \emph{quasi-polynomial} bound here.  That cost is still dominated
+by $2^{O(\sqrt n\log(n+1))}$.  All other uncapped runs obtain the separator
+certificate and continue or restart once.  Discarded work and a possible
+state-cap interruption obey the same bounds.  The polynomial construction
+and verification costs do not change the final bound.
+
+\subsection{Interface, evidence and resource semantics}
+
+\code{faithful\_potts\_exact} in \code{fastunknot/faithful\_jones.py}
+returns the existing exact query fields together with
+\code{polynomial\_identity}: the algorithm version, crossing count, whether
+the polynomial is one, and the exponents defining the coefficient and
+encoding bounds.  Its optional \code{include\_polynomial=True} returns
+sorted Laurent coefficients in \code{jones\_polynomial}, with variable
+\code{t} and signed hexadecimal coefficient strings.  Raw quadratic pairs
+and the raw color count remain Python integers.
+
+The command \code{python -B -m fastunknot jones FILE --backend potts-faithful}
+requests full recovery.  Recognition through
+\code{--jones-backend potts-faithful} requests identity testing only.
+The color count is derived from the input; \code{--potts-colors} does not
+override it.  The Python API and recognition defaults remain 4096 states and
+200000 transitions; the standalone \code{jones} command has no local caps
+unless supplied.  An exhausted allowance remains inconclusive.
+The uncapped complexity statement
+requires \code{max\_states=None} and \code{max\_transitions=None} and no
+external deadline.  A restarted evaluation shares the original transition
+allowance.  Global checks run during decoding too.  No incomplete identity
+or polynomial is published if the query fails before completion.
+
+Exact witnesses encode $q$ in \code{q\_hex} above 256 bits and retain the
+existing integer \code{q} field for smaller values.  Large ring descriptions
+refer symbolically to $q$.  This avoids Python's decimal-conversion limit
+without changing process-global settings.  The factorized exact backend
+uses the same ring description and witness conversion.
+
+Identity equality has two deliberately separate consequences: it settles
+the algebraic question $V_D=1$, but yields \code{INCONCLUSIVE} for the Jones
+recognition filter.  The complete recognizer retains this stronger evidence
+and continues to its existing exact fallback.  Neither this backend nor the
+adaptive scheduler establishes a general subexponential recognition bound.
+
+\subsection{Validation and measurement}
+
+The complete maintained suite passes all 602 tests in 111.769 seconds.
+The run is preserved in \path{data/faithful-jones-integrated-tests.txt}.
+
+Seven new maintained tests compare 156 full polynomials against the independent
+whole-cube Laurent oracle: both checkerboard shades and both mirrors of 35
+random diagrams, three named fixtures, and the crossing-free knot.  Another
+187 synthetic bounded Laurent polynomials check recovery at extreme signed
+degrees and coefficient sizes, including arbitrary exact normalization.
+Tests exercise a real certified restart, the precise shared transition limit,
+the known $q=5$ weaving collision, recognition fallback after polynomial
+identity, cancellation during decoding, zero budgets, CLI output, and
+20001-bit color counts through both exact witness backends.
+
+\code{benchmark\_faithful\_jones.py} measures fixed $q=6$ twice as an A/A
+control, faithful identity, and full recovery in seven shuffled rounds after
+an excluded warmup.  Every timing includes construction of a fresh diagram
+and all order preparation.  Small inputs have independent cube checks;
+completed larger recovered polynomials are checked by specialization back
+to the fixed-$q$ result.  These arms deliver different guarantees, so their
+timings describe the price of stronger information rather than speedups for
+an identical task.  Capped results are retained as such.  The backend remains
+optional, and these invariant timings do not claim faster full recognition.
+
+\input{tables/faithful_jones.tex}
+
+All 13 measured inputs completed in every arm and round.  The Conway knot
+costs 0.563\,ms at fixed $q=6$, 0.608\,ms for collision-free identity, and
+0.718\,ms for full recovery.  The larger integer arithmetic is more costly
+on the 254-crossing tree medial: 17.981\,ms, 125.268\,ms, and 239.190\,ms,
+respectively.  Grid 100 rises from 21.873\,ms to 38.744\,ms for identity
+and 38.943\,ms for recovery.  This cost is a reason to retain the inexpensive
+fixed specializations and the current default filter; stronger asymptotic
+information is not a measured per-input runtime improvement.

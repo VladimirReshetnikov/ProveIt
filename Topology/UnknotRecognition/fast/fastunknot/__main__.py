@@ -84,7 +84,7 @@ OPTIONS = {
         ("--no-factor", None, False, None, "do not split visible connected sums"),
         ("--legacy-factor", None, False, None, "use the historical recursive two-edge-cut factorizer"),
         ("--jones-backend", str, "matching", JONES_BACKENDS, "one-sided Jones obstruction implementation"),
-        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5)"),
+        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5; faithful derives its own)"),
         ("--jones-max-transitions", int, 200000, None, "local Jones transition budget"),
         ("--jones-max-states", int, 4096, None, None),
         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
@@ -130,7 +130,7 @@ OPTIONS = {
     ],
     "jones": [
         ("--backend", str, "matching", JONES_BACKENDS, "Jones obstruction implementation"),
-        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5)"),
+        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5; faithful derives its own)"),
         ("--max-states", int, None, None, "represented-state budget"),
         ("--max-transitions", int, None, None, "transition budget"),
     ],
@@ -407,15 +407,22 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=1))
         return 0
     if args.command == "jones":
+        statistics = {}
         try:
             test, _, extra = select_jones_filter(args.backend, args.potts_colors)
+            if args.backend == "potts-faithful":
+                extra.update(statistics=statistics, include_polynomial=True)
             witness = test(diagram, max_states=args.max_states,
                            max_transitions=args.max_transitions, **extra)
         except (FilterLimit, MemoryError) as exc:
             print(json.dumps({"verdict": "INCONCLUSIVE", "witness": None,
                               "reason": str(exc) or "memory allocation failed"}))
             return 3
-        print(json.dumps({"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}, indent=1))
+        result = {"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}
+        for field in ("polynomial_identity", "jones_polynomial"):
+            if field in statistics:
+                result[field] = statistics[field]
+        print(json.dumps(result, indent=1))
         return 0
     poly = alexander_polynomial(diagram)
     print(json.dumps({"alexander_polynomial": format_polynomial(poly), "coefficients": poly}))

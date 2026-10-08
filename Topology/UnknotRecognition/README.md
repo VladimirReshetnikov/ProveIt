@@ -152,10 +152,21 @@ long-running because old configurations run into their time caps on purpose.
   compare against them, not against memory.
 - Speed claims need paired measurements: see the timing caveats in
   `fast/README.md`.
-- Never claim a quasi-polynomial bound: every implementation here is
-  exponential in the worst case (`synthesis/report.pdf`).
+- Do not claim a general quasi-polynomial recognition bound: the complete
+  recognizers still have only exponential general guarantees. State any
+  stronger invariant-query or restricted-input bound with its exact scope
+  (`synthesis/report.pdf`).
 
 ## Status of the quasi-polynomial target
+
+The optional `potts-faithful` backend now computes the full Jones polynomial,
+or decides whether it is one, in general
+`poly(n) * 2^O(sqrt(n)*log(n+1))` bit time with query caps disabled.
+It combines a collision-free exact specialization, canonical color
+partitions, certified separator ordering, and optional coefficient decoding.
+**This does not establish a general subexponential unknot recognizer:** Jones
+identity still requires an independent recognition certificate. See
+[`synthesis/faithful_jones.tex`](synthesis/faithful_jones.tex).
 
 Open. Section 5 of the synthesized report lists what a proof-carrying
 implementation would still need: an encoded layered handle structure with

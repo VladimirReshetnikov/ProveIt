@@ -24,6 +24,12 @@ class PottsLimit(FilterLimit):
         self.completed_crossings = completed_crossings
 
 
+def ring_label(colors):
+    """Keep huge color counts out of decimal formatting and its global limit."""
+    return (f"Z[x]/(x^2-{colors - 2}*x+1)" if colors.bit_length() <= 256
+            else "Z[x]/(x^2-(q-2)*x+1)")
+
+
 def multiply(left, right, colors=6):
     """Exact quadratic-ring multiplication; x^2=(colors-2)*x-1."""
     a, b = left
@@ -91,7 +97,7 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
     if n and (max_states == 0 or max_transitions == 0):
         raise PottsLimit("exact Potts filter budget is zero")
     if n == 0:
-        result = dict(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=0,
+        result = dict(q=colors, ring=ring_label(colors), writhe=0,
                       partition_function=[colors, 0], unknot_partition=[colors, 0],
                       differs=False, tait_vertices=1, shade=0 if shade is None else shade,
                       peak_states=1, transitions=0, max_spin_frontier=0,
@@ -175,7 +181,7 @@ def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
     if (writhe + vertices + 1) % 2:
         expected = -expected[0], -expected[1]
     check()
-    result = dict(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=writhe,
+    result = dict(q=colors, ring=ring_label(colors), writhe=writhe,
                   partition_function=list(partition), unknot_partition=list(expected),
                   differs=partition != expected, tait_vertices=vertices, shade=shade,
                   peak_states=peak, transitions=transitions,
@@ -200,6 +206,8 @@ def witness_from_exact(result, *, kind="potts-jones-exact-differs-from-unknot"):
         return None
     witness = dict(kind=kind, **result)
     witness["differs"] = True
+    if 'q' in witness and witness['q'].bit_length() > 256:
+        witness['q_hex'] = hex(witness.pop('q'))
     for name in ("partition_function", "unknot_partition"):
         witness[name + "_hex"] = [hex(value) for value in witness.pop(name)]
     return witness

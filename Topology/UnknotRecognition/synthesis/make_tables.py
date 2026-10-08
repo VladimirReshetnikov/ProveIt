@@ -520,3 +520,24 @@ if adaptive_potts:
                            '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
                      'Median milliseconds including all setup. A/A repeats ordinary exact Potts. '
                      'A limit is a censored query, not a completed scalar value.\n')
+
+faithful_jones = load('../fast/results/faithful_jones_20261008.json')
+if faithful_jones:
+    names = {'conway': 'Conway', 'hard_unknot_8': 'Hard unknot 8',
+             'weaving-10': 'Weaving 10', 'tree-7': 'Tree medial 254',
+             'grid-8-random': 'Grid 64, shuffled', 'grid-10': 'Grid 100'}
+    rows = []
+    for row in faithful_jones['rows']:
+        if row['name'] not in names:
+            continue
+        cells = [names[row['name']]]
+        for arm in ('fixed6', 'control6', 'identity', 'polynomial'):
+            complete = all(s['result'][arm]['status'] == 'COMPLETE' for s in row['samples'])
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}" if complete else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/faithful_jones.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+                     table('Input & Fixed $q=6$ & A/A & Identity & Full polynomial',
+                           '@{}lrrrr@{}', rows) + r'\end{center}' + '\n' +
+                     'Median milliseconds including setup; distinct output guarantees. '
+                     'A limit is a censored query.\n')
