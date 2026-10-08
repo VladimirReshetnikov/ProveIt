@@ -2,8 +2,8 @@
 
 The topological connected-sum split is established prior work in ProveIt.
 This module performs the whole analysis and all projections on the input DAG.
-No compressed leaf is expanded. More-than-three-strand unresolved leaves are
-returned INCONCLUSIVE, never asserted unknotted.
+Three-strand leaves are never expanded. An optional bounded exact cube handles
+wider exceptional leaves; legacy proofs retain their inconclusive semantics.
 """
 from copy import deepcopy
 import json
@@ -103,7 +103,8 @@ def project(data, low, high, *, check=lambda: None):
     return dict(strands=high - low + 1, rules=out, root=mapped[data['root']])
 
 
-def recognize_forest(data, **arena_options):
+def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda size: None,
+                     **arena_options):
     check = arena_options.get('check', lambda: None)
     s = summarize(data, check=check)
     certificate = dict(version='compressed-singleton-forest-v1', input=deepcopy(data))
@@ -129,6 +130,12 @@ def recognize_forest(data, **arena_options):
         elif abs(ls['exponent']) > m - 1:
             status = 'KNOTTED'
             child = dict(version='bennequin-v1', exponent_hex=hex(ls['exponent']), status=status)
+        elif ls['length'] <= fallback_max_crossings:
+            from .cube import produce
+            child = produce(leaf, ls, max_crossings=fallback_max_crossings,
+                            check=check, reserve=fallback_reserve)
+            status = child['status']
+            certificate['version'] = 'compressed-singleton-forest-v2'
         else:
             status, child = 'INCONCLUSIVE', None
         leaves.append(dict(low=lo + 1, high=hi, grammar=leaf, status=status,
@@ -140,10 +147,12 @@ def recognize_forest(data, **arena_options):
     return dict(status=status, certificate=certificate)
 
 
-def verify_forest(data, certificate, **arena_options):
+def verify_forest(data, certificate, *, fallback_max_crossings=0,
+                  fallback_reserve=lambda size: None, **arena_options):
     check = arena_options.get('check', lambda: None)
     c, s = certificate, summarize(data, check=check)
-    require(isinstance(c, dict) and c.get('version') == 'compressed-singleton-forest-v1', 'wrong version')
+    require(isinstance(c, dict) and c.get('version') in
+            ('compressed-singleton-forest-v1', 'compressed-singleton-forest-v2'), 'wrong version')
     require(json.dumps(c.get('input'), sort_keys=True, separators=(',', ':')) ==
             json.dumps(data, sort_keys=True, separators=(',', ':')), 'wrong source grammar')
     if c.get('phase') == 'components':
@@ -181,6 +190,10 @@ def verify_forest(data, certificate, **arena_options):
             status = 'KNOTTED'
             require(child == dict(version='bennequin-v1', exponent_hex=hex(ls['exponent']), status=status),
                     'invalid Bennequin certificate')
+        elif child is not None and c['version'] == 'compressed-singleton-forest-v2':
+            from .cube_verify import verify
+            status = verify(leaf, ls, child, max_crossings=fallback_max_crossings,
+                            check=check, reserve=fallback_reserve)
         else:
             status = 'INCONCLUSIVE'
             require(child is None, 'unsupported leaf assertion')

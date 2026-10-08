@@ -17,6 +17,8 @@ def main():
     parser.add_argument('--max-input-bytes', type=int, default=16000000)
     parser.add_argument('--max-certificate-bytes', type=int, default=64000000)
     parser.add_argument('--seconds', type=float)
+    parser.add_argument('--fallback-max-crossings', type=int, default=12)
+    parser.add_argument('--fallback-max-generators', type=int, default=200000)
     args = parser.parse_args()
     if args.action == 'verify' and args.certificate is None:
         parser.error('verify requires --certificate')
@@ -31,7 +33,8 @@ def main():
         return json.loads(raw)
 
     options = {key: getattr(args, key) for key in ('max_nodes', 'max_work', 'max_input_rules',
-               'max_input_bytes', 'max_certificate_bytes', 'seconds')}
+               'max_input_bytes', 'max_certificate_bytes', 'seconds',
+               'fallback_max_crossings', 'fallback_max_generators')}
     try:
         data = load(args.input, args.max_input_bytes)
         if args.action == 'recognize':

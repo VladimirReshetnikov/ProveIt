@@ -728,6 +728,20 @@ The induction first makes the highest degree sufficiently small to survive
 a bounded multiplier chosen for all lower degrees. Its exponent estimate
 is checked in `schmidt_mixed_exponent_bound`. This strengthens the available
 recurrence input, while leaving the box-partition obligation below open.
+**Minimum cell length now proved in one dimension.**
+`Proofs05MinimumPolynomialPartition.exists_minimum_polynomial_partition_bound`
+strengthens the polynomial partition: for constants `K >= 2`, `p > 0`,
+the same form of size condition `N >= H^(p*(d+1)^(2*k))` yields a partition
+with **every** cell length at least `H`, and error at most `k/H` modulo
+integers on each cell. The induction uses the already ported
+`comparableResidueProgressions`: its outer blocks have lengths in `[T,2*T)`.
+Degree reduction at scale `2*T` and induction on each actual block length
+avoid truncating children and creating short tails. The extra factor of two
+only changes the degree-dependent constant `p`, not the exponent `2*k` in
+family size. The production module passed an isolated Lean check; the full
+facade audit is queued. Its adapted proof carries separate Apache-2.0
+licensing and provenance in the adjacent `LICENSE.openai-math`.
+
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
 requirements, and adequate degree constants. The constants above are

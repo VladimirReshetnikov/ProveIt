@@ -77,7 +77,7 @@ class CompressedBraidHostTests(unittest.TestCase):
             index = len(data['rules'])
             data['rules'].extend([['g', g], ['c', data['root'], index]])
             data['root'] = index+1
-        result = recognize(data)
+        result = recognize(data, fallback_max_crossings=0)
         self.assertEqual(result['status'], 'INCONCLUSIVE')
         self.assertTrue(result['verified'])
         self.assertEqual(verify(data, result['certificate']), 'INCONCLUSIVE')

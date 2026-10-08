@@ -94,7 +94,12 @@ transfers it to centered norms in `ZMod N`, with a fixed-degree exponent
 quadratic in the number of coefficients. Its mixed-degree extension uses
 one multiplier for all degrees through `k`, with search exponent
 `p*(d+1)^(2*k)` for `d` coefficient families. These reuse the existing port;
-the minimum-width box-partition bridge for Section 16 remains open.
+`Proofs05MinimumPolynomialPartition` adapts the upstream polynomial partition
+proof using the existing comparable residue partition to ensure every cell
+has length at least `H`, with the same family-size exponent form. This
+one-dimensional strengthening has a separate Apache-2.0 license and source
+attribution in `Combinatorics/Ramsey/Lean/GowersSzemeredi/LICENSE.openai-math`.
+The minimum-width multivariate box-partition bridge for Section 16 remains open.
 
 The quantitative statement has existential positive constants `C`, `c`, and
 `eta` for each progression length, and bounds the extremal cardinality by
