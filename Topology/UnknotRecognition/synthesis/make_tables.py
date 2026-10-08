@@ -1342,3 +1342,37 @@ if cp:
     open('tables/compact_permutations.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & old ms & new ms & dense ms & ratio & peak KiB old/new',
         '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+# Report-46 shared overlap rebased onto maintained donor pruning.
+jo = load('../fast/results/joint_overlap_kernels_20261008.json')
+if jo:
+    rows = []
+    names = {'gordian-derived':'Gordian residual','random-8x64':r'random $8\times64$',
+             'random-32x64':r'random $32\times64$','random-128x64':r'random $128\times64$',
+             'duplicate-periodic':'periodic duplicates','duplicate-native-cutoff':'full-donor duplicates',
+             'many-empty-slots':'many empty slots'}
+    for r in jo['rows']:
+        rows.append(names[r['name']]+' & '+' & '.join(f"{1000*r['medians'][a]:.3f}"
+            for a in ('old','current','report','joint'))
+            +f" & {r['paired_ratios']['current']['median']:.3f}"+r' \\')
+    open('tables/joint_overlap_kernels.tex','w').write('\\begin{center}\\small\n'+table(
+        'Query & old ms & native ms & report ms & joint ms & ratio',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+jp = load('../fast/results/joint_overlap_pipeline_20261008.json')
+if jp:
+    rows = []
+    selected = {'survivor-00','mirror-03','mirror-08','gordian','trefoil','conway','kinoshita_terasaka'}
+    for r in jp['rows']:
+        if r['name'] not in selected:
+            continue
+        cells = [esc(r['name'])]
+        for mode in ('explicit','compressed'):
+            v = r['modes'][mode]; m = v['medians']
+            times = '/'.join('--' if m[a] is None else f'{1000*m[a]:.3f}'
+                             for a in ('old','current'))
+            ratio = v['paired_ratios']['current']['median']
+            cells += [times, '--' if ratio is None else f'{ratio:.3f}']
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/joint_overlap_pipeline.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & explicit old/new ms & ratio & compressed old/new ms & ratio',
+        '@{}lrrrr@{}',rows)+'\\end{center}\n')

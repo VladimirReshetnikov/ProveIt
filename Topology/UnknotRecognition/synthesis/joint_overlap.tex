@@ -1,0 +1,298 @@
+\section{Shared overlap indexing with bounded adaptive search}
+\label{sec:joint-overlap-native}
+
+Report 46 supplies an exact shared index for cyclic relator overlap. Its
+operation bound removes the number of nonempty relators from the leading
+pairwise scan cost. The report was based on commit \texttt{58ee11a97d5f},
+before the maintained donor-pruning improvement. The native integration
+therefore preserves those later cutoffs and compares against the actual
+maintained implementation at \texttt{bec1afd07cd2}. It also retains the
+as-delivered report as a separate measured arm. No group-theoretic
+certificate rule changes.
+
+\subsection{The exact local query and its topological scope}
+
+Let $s$ be the number of supplied relator slots, $m$ the number of nonempty
+slots, and $L$ their total explicit length. Empty slots are retained because
+certificate moves refer to original slot indices. For a target and a
+distinct donor, choose cyclic rotations and donor sign so that
+\[
+ R_i\sim UW,\qquad R_j^{\varepsilon}\sim UV,
+ \qquad i\ne j,\quad \varepsilon\in\{1,-1\}.
+\]
+Keep the donor and replace the target by $V^{-1}W$. The normal closure
+is preserved, since
+\[
+ (UV)^{-1}(UW)=V^{-1}W,\qquad (UV)(V^{-1}W)=UW.
+\]
+The guaranteed length decrease before free cancellation is $g=2|U|-|R_j|$. The query finds a maximum positive $g$ over
+all rotations, signs and distinct slots, or returns no shortening.
+It is an exact optimization query; failure to find a move is not a knot
+verdict or a completeness theorem for presentation simplification.
+
+The old query builds a suffix automaton for each oriented doubled donor,
+then scans eligible doubled targets. The native donor bound
+$g\le |R_j|$ already avoids donors that cannot improve an incumbent gain.
+This is effective on repeated relators and on the measured Gordian
+presentation, but its worst-case operation bound remains $O(s+mL)$.
+
+\subsection{Capped cyclic windows on a shared suffix-link tree}
+
+For a nonempty word of length $d$, the $d$ endpoints from $d-1$ through
+$2d-2$ in its doubled text represent all length-$d$ cyclic windows. Build
+one suffix automaton over the positive doubled blocks, separated by a
+symbol distinct from every signed generator. The indexed text has length
+$2L$. Attach each window to its endpoint state, with a depth cap $d$ and
+its original slot and endpoint. A cap at a depth inside a suffix-link edge
+creates an implicit vertex. Thus no marked substring crosses a block
+separator or wraps around a relator more than once.
+
+Inverse donors are scanned through this completed positive index. At each
+inverse cyclic-window endpoint, let $h$ be the longest matched suffix.
+If $h>0$, attach a donor mark at depth $\min(h,d)$, retaining the original
+length $d$ for its gain. Every common inverse-donor/positive-target segment
+of length $u$ is a suffix of a recorded inverse window. The longest match
+has length at least $u$, so the mark's ancestral suffix path contains it.
+Conversely, each ancestor denotes a literal suffix of that window. Positive
+target marks have the same property. This proves both completeness and
+soundness of the inverse-window representation without inserting inverse
+blocks into the shared index.
+
+At a capped-tree vertex of depth $h$, any descendant donor and target marks
+of different original slots give gain $2h-d$, where $d$ is the donor length.
+Only two donor representatives of distinct slots are needed, ordered first
+by donor length; retain at most two target representatives of distinct slots
+as well. If the shortest donor has any eligible target, one of the two target
+slots differs from it. Otherwise all available targets have that donor's
+slot, so the second donor is the shortest eligible alternative. If it does
+not exist, there is no eligible pair. This proves that constant-size summaries
+recover the maximum gain at each vertex. Duplicate words in different slots
+remain distinct donors and targets.
+
+Propagate these summaries upward. An optimum common suffix ends at a tree
+vertex or a cap vertex: between adjacent such vertices there are no new
+available marks, and increasing the common depth increases gain. Evaluating
+all these vertices therefore finds a global maximum. Endpoint $e$, depth
+$h$ and original word length $d$ recover the cyclic start as
+$(e-h+1)\bmod d$. The resulting move has exactly the existing version-two
+relator fields. Deterministic representative ordering need not choose the
+historical pairwise witness among tied maxima.
+
+There are $O(L)$ automaton states, transitions and window marks, and at most
+$O(L)$ cap vertices. A depth-first traversal maintains the increasing depths
+on its suffix-link path. Binary search places each cap; sorting caps along
+each edge costs $O(L\log(L+1))$ in total. Constant-size summary propagation
+is linear. Including the input slots, the shared query takes
+$O(s+L\log(L+1))$ integer and dictionary operations and $O(L)$ auxiliary
+entries. With expected constant-time dictionary operations this is the
+expected word-time bound. It is not a deterministic constant-time hashing
+claim for arbitrary Python integers.
+
+\subsection{A bounded prelude that retains native donor pruning}
+
+Building the shared index can cost more than a few successful pairwise
+scans. Lists with at most four nonempty relators therefore use the unchanged
+native pairwise query, retaining its exact witness. Since this threshold is
+fixed, that base case costs $O(s+L)$.
+
+For larger lists, sort donors by decreasing length, breaking equal-length
+ties by original slot. Targets retain their original order, and donor signs
+retain the old order. Once the next donor length is at most the best known
+gain $G$, no remaining donor can improve it. The native target-length bound
+also remains in force. After a full-donor match, stop the target scan and
+skip the other sign: no larger gain from that donor is possible. These
+cutoffs preserve maximum gain, although changing the donor order can change
+a tied witness.
+
+Charge sorting, donor construction, suffix-link traversal, transition work,
+clone copying, every target-pair visit, and target scanning to a local
+allowance
+\[
+ Q=2\max(1,L)\operatorname{bitlength}(L+1).
+\]
+Each local charge first charges the original enclosing group budget. Only
+exhaustion of the private prelude allowance triggers the complete shared
+index. A global work limit or external cancellation propagates immediately;
+it cannot reset the budget or publish the partial incumbent as a completed
+query. The prelude runs in its own frame, and continuation starts after the
+exception handler, releasing its traceback and abandoned automaton first.
+Both phases together retain $O(L)$ auxiliary storage.
+
+If the prelude completes, all omitted candidates have upper bounds at most
+$G$, so its answer is exact. Otherwise the shared index computes an exact
+answer independently of the unfinished prelude. Prelude work, including
+any last charged batch, is $O(L\log(L+1))$. Thus the adaptive query has
+$O(s+L\log(L+1))$ dictionary/word operations and $O(L)$ auxiliary storage.
+The fixed four-slot and coefficient-two thresholds are part of this bound;
+allowing a caller to scale them with the input would require charging those
+parameters explicitly.
+
+The low-level \texttt{overlap\_move} defaults to \texttt{backend='adaptive'};
+\texttt{'pairwise'} retains the maintained former query, and \texttt{'joint'}
+selects the shared index directly. Optional statistics distinguish fixed-slot
+queries, completed preludes and shared-index continuations. The native group
+producer still invokes this search only where relator moves are enabled and
+its existing control flow calls for an explicit overlap query. Compressed
+word queries keep their separate representation and search bounds.
+
+\subsection{Independent replay and the general complexity gap}
+
+Every proposed move is checked literally before producer application. The
+established explicit and compressed certificate replayers independently
+reconstruct and check the full presentation trace; neither calls the overlap
+search or its application helper. A valid completed trace still reduces the
+full source-bound knot-group presentation to one generator and no relators.
+The new index is a search accelerator, not an additional trusted certificate
+field. Different valid tied moves may cause later search trajectories to
+differ, so maximum-gain agreement alone is not a whole-recognition timing
+or completeness result.
+
+A deterministic balanced-map version would give
+$O(s+L\log(L+1))$ comparison operations for the shared index and a conservative
+$O(s+L\log^2(L+1))$ bound for this adaptive scheduling policy: the bounded
+prelude counts dictionary operations, each requiring logarithmically many
+comparisons in that variant. With $\beta=\lceil\log_2(L+2)\rceil$ and
+$b$ bounding generator and slot identifier bit lengths, a conservative
+adaptive bit bound is $O((s+1+L\beta^2)(b+\beta))$. This describes the
+balanced-map variant, not the implemented Python dictionary as an
+unconditional deterministic bit-cost theorem.
+
+If a producer begins with $r$ generators and explicit relator length never
+exceeds $B$, at most $r-1$ eliminations occur. Between eliminations each
+accepted Whitehead or overlap move strictly decreases integer length, so
+there are at most $B$ such moves. Including failed final queries, overlap
+searches contribute at most
+\[
+ O\!\left(r(B+1)\bigl(s+B\log(B+1)\bigr)\right)
+\]
+dictionary operations. This charges only those searches. Neither the
+explicit-length bound $B$ nor successful simplification is established
+uniformly for all knot diagrams. The new local bound therefore improves
+one contribution without proving general quasi-polynomial recognition.
+A shared index whose size is controlled by a compressed grammar, and a
+complete source-bound search with controlled representation growth, remain
+separate research problems.
+
+\subsection{Native reconciliation and measured evidence}
+
+The incoming index and overlap module were checked against their hashes in
+the delivered benchmark record. The native query retains the shared capped
+index, but its prelude incorporates the maintained full-donor and sign
+cutoffs. The pinned previous overlap module is executed directly; the group
+producer, explicit and compressed checker hosts, recognizer and diagram
+modules are byte-identical to that baseline. The delivered report modules
+are loaded in their own package for comparison, rather than being treated
+as the maintained baseline.
+
+Ten focused tests pass in 10.340 seconds. They include all 7,056 ordered pairs
+of rank-two words of lengths one through three, including unreduced words,
+against independent enumeration of every rotation and donor sign. Another
+350 random multislot cases use that oracle; 600 larger random cases include
+large integer identifiers and compare maximum gain with the old query.
+Two thousand additional cases check completed longest-first preludes against
+historical maximum gain and literal application. Periodic clipping, inverse
+windows, duplicate slots, empty slots, global cancellation and exact shared
+work ceilings are covered. A repeated full-donor regression requires exactly
+one automaton and one target scan, preventing loss of the native early cutoffs.
+The complete Gordian proof and mutations of its move fields exercise both
+independent replay backends.
+
+The first full-suite run exposed a historical polling assumption: its
+pairwise regression requested cancellation on the hundredth skipped-donor
+callback, but the new sorted prelude had already completed. The original
+assertions are retained and now explicitly select the unchanged pairwise
+backend. Adaptive global cancellation and exact resource ceilings remain
+covered separately. The initial full-suite log is archived; no production
+algorithm was changed to satisfy that callback-count assumption.
+
+
+The final full maintained suite passes 958 tests with Regina in 217.815 seconds.
+
+A native nineteen-diagram audit takes 2.754 seconds. The corpus contains
+fifteen unknot examples and four known nontrivial examples. For each diagram,
+old, native, report and joint-only group production are followed by both
+explicit and compressed replay whenever a proof is produced. There are
+fifteen successful certificates per arm; the other four group searches
+remain inconclusive. All nineteen native outputs, including absent proofs,
+match the maintained previous implementation exactly on this corpus. This
+is an observed compatibility result, not a promise that all tied witnesses
+are unchanged. Source diagrams, complete proofs, residual queries and policy
+statistics are in \path{data/joint-overlap-audit.json}.
+
+The first native experiment retained original donor order inside the bounded
+prelude. It passed the exact-query checks but regressed on the Gordian
+residual: old/current median times were 144.083/189.582 ms, with paired ratio
+0.765. The delivered longest-first prelude was faster. The final policy
+(\texttt{bbfc40517}) adopts that order and keeps the current early cutoffs.
+Commit \texttt{a2af739a3} records the initial policy; its measurements are in
+\path{../fast/results/joint_overlap_initial_20261008.json}.
+
+\input{tables/joint_overlap_kernels.tex}
+
+The final isolated-query run has seven inputs, six arms, one excluded warmup
+and five measured rounds: 210 measured queries and 42 warmups. The arms are
+the actual maintained baseline, an identical baseline control, native
+adaptive search, an identical native control, the delivered report's adaptive
+query, and the shared index alone. Input generation is outside the timer;
+all preparation, failed prelude work, index construction and exact search are
+inside. Optional query statistics are collected inside these calls. The
+81.899-second run retains raw words, moves, work counts, orders, times and
+source hashes in \path{../fast/results/joint_overlap_kernels_20261008.json}.
+
+On the Gordian residual, native charged work is 146,504 instead of 304,005;
+the prelude completes after four oriented automata and four target scans,
+with exact maximum gain 2,998. The isolated paired time ratio is 1.838.
+These isolated elapsed measurements are noisy: identical-old ratios across
+the seven inputs range from 0.880 to 1.262, and identical-native ratios from
+0.961 to 1.049. In particular, separate arm medians need not give the median
+paired ratio. The exact reduction in charged work and the following
+whole-recognition study provide distinct evidence.
+
+For random presentations with 32 and 128 relators of length 64, the native
+query enters shared-index continuation. Charged work changes from
+514,282 to 122,316 and from 8,076,415 to 524,622, respectively. Their paired
+elapsed ratios are 2.701 and 8.978. These are synthetic query-capacity
+examples, not hard knots or evidence of a complete unknot search bound.
+The eight-relator random case is slower, with paired ratio 0.757; its failed
+prelude costs more time than the eventual saved pairwise scans.
+
+Repeated-word cases also retain regressions. Periodic duplicates have paired
+old/native ratio 0.776, and full-donor duplicates have ratio 0.687. Sorting
+and allowance accounting add work when the old query already stops almost
+immediately. The native cutoffs nevertheless halve the report's work on the
+periodic case, from 12,612 to 6,408, and reduce its full-donor work from 3,324
+to 2,180. The many-empty-slot case has ratio 0.520; both algorithms scan the
+original slots, and the wrapper adds another pass and charges those slots
+explicitly. These cases rule out any universal speedup claim.
+
+\input{tables/joint_overlap_pipeline.tex}
+
+The whole-recognition run uses all nineteen actual diagrams in explicit and
+compressed search modes, with the same six arms and five measured rounds:
+1,140 measured calls and 228 excluded warmups. All 1,140 calls complete with
+the expected knot verdict. Every timed call starts from fresh PD validation
+and includes all recognition stages and mandatory certificate replay.
+The query wrappers collect policy statistics inside the timer; corpus
+loading, policy binding and result serialization are outside. The 117.363-second
+run retains every diagram, certificate, stage record and sample in
+\path{../fast/results/joint_overlap_pipeline_20261008.json}. Timeouts would
+be retained and excluded from completed medians and paired comparisons;
+none occurred in this run.
+
+For Gordian with explicit search, the old/native medians are
+1,041.096/911.653 ms and the median paired ratio is 1.238. Its identical-old
+and identical-native controls give ratios 1.003 and 1.038. Shared-index-only
+recognition takes 1,441.976 ms, so the index alone is a whole-call regression
+on this example. The adaptive prelude is essential to its practical result.
+With compressed search enabled, Gordian's old/native medians are
+1,762.236/1,694.382 ms and its paired ratio is 1.120; the corresponding
+control ratios are 1.015 and 1.030. This is a measured effect of the explicit
+query reached by that mode, not a shared fully compressed overlap theorem.
+
+Across the complete corpus, identical-old ratios range from 0.969 to 1.044,
+and identical-native ratios from 0.965 to 1.076. The small mirror examples
+and sources which do not reach overlap search supply controls rather than
+large gains. Mirror 03 with explicit search has paired ratio 0.923, while its
+identical-native ratio is 1.076; this run does not isolate a small algorithmic
+regression from timing variation. Mirror 08 is close to unchanged. All raw
+results, including those unfavorable to the new policy, remain in the archive.
