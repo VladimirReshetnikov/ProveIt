@@ -904,9 +904,26 @@ Both production modules passed Lean; the combined facade audit is queued.
 This supplies polynomial dependence on `q` in the input-width exponent
 in the stated large-width regime. It does not give explicit dimension
 constants or a pointwise improvement of every previous threshold. The
-remaining work is root-width parameterization and integration into the
-higher-dimensional lift and its structure hypotheses. The printed final
-all-length threshold does not follow from this recurrence theorem alone.
+root-width form is now proved in
+`Proofs16PolynomialRecurrenceProfile.exists_polynomial_section16_recurrence_profile`.
+For integer constants `K >= 2`, `p > 0`, set
+
+```
+epsilon(q) = 1 / (2*p*(q+1)^(2^(k+2)))
+threshold(q) = (K*(q+1))^(2*p*(q+1)^(2^(k+2))).
+```
+
+For `threshold(q) <= m <= width(P)`, the partition has every width at least
+`m^epsilon(q)` and common-difference error at most `2*m^(-epsilon(q))*N`.
+The proof takes the ceiling of the real root; doubling the exponent
+denominator covers its cost without losing the target width. The production
+module and its transitive axiom check pass, with only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+The remaining work is integration into the higher-dimensional lift and
+its structure hypotheses, together with explicit dimension constants where
+the printed thresholds require them. The printed final all-length threshold
+does not follow from this recurrence theorem alone.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
