@@ -86,7 +86,7 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
-The maintained Python suite now passes 222 tests. The latest work adds
+The maintained Python suite now passes 229 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations
 having logarithmically many signed runs, plus optional adaptive cancellation
 (`--reduction adaptive`). The latter preserves sparse cancellation progress,
@@ -95,6 +95,13 @@ the same complex if the shortcut cannot finish. Neither improvement gives a
 general quasi-polynomial algorithm. Theory and measurements are in
 [`synthesis/twist.tex`](synthesis/twist.tex) and
 [`synthesis/radical.tex`](synthesis/radical.tex), included in the maintained PDF.
+
+The incoming dense-algebra report contributes a verified homogeneous coefficient
+path and a complementary-subset shortcut inside the opt-in component engine.
+The recovered grading sharpens the sufficient sharing bound; its audit and
+graded adaptive controls are described in
+[`synthesis/homogeneous.tex`](synthesis/homogeneous.tex). Ordinary scan timings
+remain mixed, and the general complexity target remains open.
 
 Earlier integration checkpoints follow.
 

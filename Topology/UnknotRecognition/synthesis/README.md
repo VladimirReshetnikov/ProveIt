@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 222 tests. Local report 10–12 production
+The current full production suite passes 229 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -67,6 +67,19 @@ two-term complexes improve substantially. The full 222-test log is
 are the other `data/radical-*` files. Reproduce paired standard/eager/adaptive
 timings with `../fast/benchmark_residue.py`. The table generator reads its
 recorded `../fast/results/residue_integration_20261007.json`.
+
+`homogeneous.tex` reviews the next dense-algebra report, derives the recovered
+quantum grading and improved component-type bound, and explains the integrated
+homogeneous and top-degree coefficient shortcuts. The 229-test checkpoint is
+`data/homogeneous-integrated-tests.txt`. `../fast/audit_grading.py` audits the
+current scanner with ordinary and forced component algebra (520 scans).
+`../fast/benchmark_homogeneous.py` compares the previous ranked and new dispatch,
+and `../fast/benchmark_adaptive_graded.py` supplies graded synthetic controls for
+the adaptive policy. Their results are retained in `../fast/results/`; the
+table generator reads them directly. Mixed-degree adaptive controls remain
+historical measurements of valid ungraded complexes and cannot be interpreted
+as genuine graded scan differentials. The report's finite-quotient search has
+been tested in isolation but is not integrated into the current recognizer.
 
 ## Historical experiment status (18 September 2026)
 

@@ -17,10 +17,12 @@ from fastunknot.residue import AdaptiveScan, ResidueScan
 from fastunknot.scan_fast import FastScan
 
 
-def dense_two_term(scan_type, size):
+def dense_two_term(scan_type, size, *, graded=False):
     """Synthetic valid complex with a full-rank residue and one survivor.
 
-    No claim is made that this density occurs in a supplied knot scan.
+    With graded=True all entries are scalars and all quantum shifts can be
+    zero. The default mixed-degree dot coefficients cannot be genuine scan
+    entries. No claim is made that either density occurs in a supplied scan.
     Preparation is deterministic and excluded from the kernel timings.
     """
     rng = random.Random(2026100723 + size)
@@ -35,9 +37,16 @@ def dense_two_term(scan_type, size):
     scan.points = frozenset(range(6))
     scan.mid = [matching] * total
     scan.deg = [0] * (size + 1) + [1] * size
-    scan.out = [({size + 1 + j: 2 * rng.randrange(1, 128) + ((binary[i] >> j) & 1)
-                  for j in range(size)} if i <= size else {}) for i in range(total)]
-    scan.inc = [set() if i <= size else set(range(size + 1)) for i in range(total)]
+    if graded:
+        scan.out = [({size + 1 + j: 1 for j in range(size) if (binary[i] >> j) & 1}
+                     if i <= size else {}) for i in range(total)]
+    else:
+        scan.out = [({size + 1 + j: 2 * rng.randrange(1, 128) + ((binary[i] >> j) & 1)
+                      for j in range(size)} if i <= size else {}) for i in range(total)]
+    scan.inc = [set() for _ in range(total)]
+    for a, row in enumerate(scan.out):
+        for b in row:
+            scan.inc[b].add(a)
     scan.live = total
     return scan
 

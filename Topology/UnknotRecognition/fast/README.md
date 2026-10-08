@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 222 passing tests.
+diagram is not checked twice. The integrated suite now has 229 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -32,6 +32,25 @@ general recognition or complexity improvement is claimed. See
 the adaptive policy, and the incoming report's stronger hypotheses.
 Run `python benchmark_residue.py --output results/residue_local.json` to
 compare standard, eager, and adaptive modes with paired controls.
+
+The later dense-algebra report adds a verified homogeneous multiplication path
+inside component contraction. Inputs of a single dot degree use a binary subset
+transform with a cardinality filter; products in the top degree use a packed
+complementary-subset inner product. Mixed inputs retain the ranked transform.
+The current scanner's erased quantum shifts were recovered and checked on 520
+scans (196,928 entries). This also sharpens the article's sufficient sharing bound.
+Use `benchmark_homogeneous.py` and `audit_grading.py`, each with `--output FILE`,
+to reproduce the local measurements and checks. The same contraction options
+apply; the default sparse engine is unchanged.
+
+The mixed-degree synthetic matrices in the original adaptive benchmark cannot
+be genuine scan differentials. `benchmark_adaptive_graded.py --output FILE`
+adds dense scalar matrices satisfying the recovered grading constraint, with
+local adaptive gains of 2.7–58.5×. These are still synthetic complexes, not a
+claim that the current crossing order produces that density. Ordinary forced
+component scans show mixed timing results, so these measurements do not justify
+changing the default engine. Full proofs and results are in
+[`../synthesis/homogeneous.tex`](../synthesis/homogeneous.tex).
 
 Report 08 adds complete recognition for checked source braids on at most three
 strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the

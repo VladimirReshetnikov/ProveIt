@@ -1,0 +1,253 @@
+\section{Recovered grading, homogeneous algebra, and sharper type bounds}
+\label{sec:homogeneous-integration}
+
+The incoming package \path{unknot_recognition_dense_algebra_20261008.zip}
+contains another dense coefficient engine, a recovered-grading argument,
+and a bounded finite-quotient certificate search. It is now preserved as
+report 16. Its component contraction
+overlaps the implementation already integrated from reports 10 and 12.
+We therefore retain the current adapter and incorporate the additional
+homogeneous multiplication case, rather than replacing the production
+tree with the archive's older baseline. We also derive a packed shortcut
+for products in the top degree and audit the recovered grading against
+the current scanner.
+
+\subsection{The grading that survives after its labels are erased}
+Start the empty object with an auxiliary quantum shift $q=0$.
+When smoothing $i\in\{0,1\}$ of one crossing creates $c$ closed
+circles, its delooping label $\ell$ gives the child shift
+\[
+ q'=q+i+c-2\operatorname{popcount}(\ell).
+\]
+For matching objects $a_u,a_v$ at a frontier of $2m$ endpoints, every
+monomial with $d$ dots in a nonzero differential entry $u\to v$ obeys
+\begin{equation}\label{eq:recovered-grading}
+ c(a_u,a_v)-m-2d+q_v-q_u=0.
+\end{equation}
+Here $c(a_u,a_v)$ counts the circles of their overlay, and the
+normalization is that of the raw scanner, before oriented link shifts.
+This is the dotted grading of
+\href{https://arxiv.org/abs/math/0410495v2}{Bar--Natan's tangle formalism},
+specialized to the implementation's smoothing and delooping order.
+
+\begin{proposition}
+Every actual differential entry in the ordinary scanner is homogeneous
+in dot degree. Every cancellable entry between equal matchings is the
+scalar identity $1$.
+\end{proposition}
+\begin{proof}
+A $k$-disc cobordism carrying $d$ dots has normalized degree $k-m-2d$.
+A crossing saddle contributes $-1$, compensated by the smoothing
+shift. Delooping a circle contributes shifts $+1$ and $-1$, giving
+the displayed recurrence and establishing~\eqref{eq:recovered-grading}
+after crossing extension.
+
+The intrinsic weights from Section~\ref{sec:radical-adaptive} add under
+nonzero composition; their negatives are these normalized degrees.
+If a map between equal matchings has scalar coefficient one,
+homogeneity forces its dot degree to be zero. There is only one
+zero-dot monomial, so the map is exactly $1$ and the two shifts agree.
+The source and target shifts telescope in a Schur correction through
+this identity. That correction has the same degree as the existing
+entry, and their sum remains homogeneous. Induction over the
+cancellation sequence proves the claim.
+\end{proof}
+
+The auxiliary labels are a proof and diagnostic device; the normal
+scanner still does not store quantum grading. Component sharing
+preserves the conclusion: identical connected keys have identical
+relative shift differences along their nonzero entries, and an
+overall shift of a disconnected summand is irrelevant to homogeneity.
+The adaptive degree-gap shortcut produces a zero differential, which
+also admits such a grading before subsequent crossing extension.
+This does not turn its output into a computation of quantum-graded
+homology; those discarded absolute labels are not reconstructed.
+
+The production audit explicitly propagates $q$ and checks every term
+before and after elimination, for ordinary and forced component
+composition. It completed 520 scans of 87 diagrams, using input,
+greedy, and seeded shuffled orders where specified: 196,928 entries
+and 220,736 supported terms satisfy the equation. The largest dot
+degree observed was two. This finite observation is not a universal
+bound on dot degree. Inputs, orders, exact ranks, and counts are in
+\path{fast/results/grading_audit_20261008.json}; reproduce with
+\path{fast/audit_grading.py}.
+
+\subsection{Cheaper multiplication with an explicit applicability check}
+In the component ring
+$R_r=\F[x_1,\ldots,x_r]/(x_1^2,\ldots,x_r^2)$, suppose $F,G$ have
+homogeneous dot degrees $a,b$. Apply the ordinary subset zeta
+transform to their binary coefficient arrays, multiply pointwise,
+and apply the inverse transform, also XOR over $\F$. The resulting
+coefficient at $S$ is
+\[
+ U_S=\sum_{A\cup B=S}F_A G_B.
+\]
+Retain only subsets of size $a+b$. Each supported pair has
+$|A|+|B|=a+b$, so this restriction is equivalent to $A\cap B=\varnothing$.
+The surviving array is exactly the square-free product $FG$.
+If $a+b>r$, the product is zero.
+
+This branch uses $O((r+1)2^r)$ binary field operations. The generic
+ranked transform, retained for mixed-degree inputs, has the usual
+$O((r+1)^2 2^r)$ ring-operation bound of
+\href{https://arxiv.org/abs/cs/0611101v1}{Bjoerklund--Husfeldt--Kaski--Koivisto}.
+These are arithmetic bounds; array indices, monomial masks, and
+coefficient conversions still carry their bit costs. Both remain
+within the earlier $\operatorname{poly}(r)2^r$ coefficient envelope.
+The ranked implementation itself is cheaper on many special inputs,
+so the two displayed bounds are not a prediction of a factor-$r$
+measured speedup on every homogeneous product.
+
+The final size restriction is essential. For example,
+$x_1(x_1+x_2)=x_1x_2$, whereas unfiltered union convolution would
+incorrectly keep $x_1$. The software verifies the dot degree of each
+actual operand and falls back to ranked convolution for mixed degrees.
+It never infers this property merely from a caller selecting the
+scanner API. Projection to component variables preserves degree for
+every surviving monomial; a repeated component annihilates a term
+and collisions may cancel terms, but cannot create another degree.
+Thus the optimization applies after the existing component projection.
+
+\paragraph{Complementary subsets in the top degree.}
+We add a further specialization when $a+b=r$. Only the full monomial
+$x_{[r]}$ can survive, and its coefficient is
+\[
+ [x_{[r]}]FG=\sum_{A\subseteq[r]}F_A G_{[r]\setminus A}.
+\]
+In the packed coefficient convention, complementing the subset index
+is exactly reversing its $2^r$ coefficient bits. Reverse the bytes
+and the bits within each byte, remove padding when $2^r<8$, intersect
+with the other polynomial, and take the parity of the population
+count. This computes the coefficient using linear work in the packed
+bit length after the degrees have been checked, with no zeta
+transform. The homogeneity check still incurs its own support and
+index-processing cost. Generic mixed-degree inputs cannot use this
+shortcut to compute their other output degrees.
+
+The new cases are inside the existing opt-in component-contraction
+backend. No additional recognition flag is required; the ordinary
+sparse engine remains the default. The old ranked function remains
+available for independent comparisons. Existing allocation limits,
+deadline callbacks, scalar identities, and polarization are retained.
+
+\subsection{A sharper sufficient regime for component sharing}
+Let $B_m=\binom{m}{\lfloor m/2\rfloor}$ and let
+$M(2m)=(2m-1)!!$, with $M(0)=1$. The latter is the safe unrestricted
+pairing count; this argument does not restore a Catalan bound without
+a common-disk certificate.
+
+A homogeneous coefficient with at most $m$ circle variables lies
+in one of at most $m+1$ degree layers, each of dimension at most
+$B_m$. There are therefore at most
+\[
+ H_m=(m+1)2^{B_m}
+\]
+possibilities, intentionally counting zero more than once. A connected
+component on $s$ objects has normalized homological degrees between
+zero and $s-1$: each edge changes degree by one, and a simple path
+from a minimum-degree object has at most $s-1$ edges. Consequently
+the number of ordered serialized keys with at most $b$ objects is
+bounded by
+\[
+ K(m,b)=\sum_{s=1}^b s^s M(2m)^s H_m^{s^2}.
+\]
+We have overcounted zero entries, invalid degree differences,
+disconnected graphs, and failures of $d^2=0$, so no unproved
+realizability assertion enters this upper bound. Taking logarithms,
+\[
+ \log K=O\bigl(b^2B_m+bm\log(m+1)+b\log(b+1)\bigr)
+       =O(b^2B_m).
+\]
+
+The existing exact-sharing argument now gives the stronger sufficient
+condition
+\[
+ b^2\binom{m}{\lfloor m/2\rfloor}=O(\log^2(n+2))
+\]
+for quasi-polynomial cost, provided it bounds every reduced component
+and frontier actually encountered. Extending a representative through
+one crossing only multiplies its object count by a constant; different
+parent components stay independent. Shift weights have polynomial
+degree and polynomial bit length, as in Section~\ref{sec:structural}.
+For bounded $b$, writing $L=\log_2(n+2)$ and $\ell=\log_2 L$, the
+sufficient frontier scale improves from $2m\le4\ell+O(1)$ to
+\[
+ 2m\le4\ell+\log_2\ell+O(1).
+\]
+This is a refinement of a conditional parameter regime, not a proof
+that arbitrary diagrams admit such scans. Actual component size is
+still uncontrolled, and large multiplicities still defeat an
+explicit-object implementation.
+
+\subsection{Adaptive controls that satisfy the grading constraint}
+The mixed-dot two-term matrices used in the previous adaptive
+benchmark are valid ungraded complexes, but generally cannot be
+genuine scan differentials: their entries mix dot degrees. Their
+large speedups therefore do not establish the behavior of a graded
+scan. We retain those samples and add a separate graded family.
+
+For size $s$, begin with an invertible binary $s$-by-$s$ matrix,
+constructed by reversible row additions, and add one source column.
+Interpret each nonzero entry as the identity of a fixed matching.
+The resulting two-term complex has $s+1$ sources, $s$ targets,
+quantum shifts all zero, and exactly one surviving source object.
+It satisfies both $d^2=0$ and the recovered grading equation.
+Dense scalar Schur updates can still be expensive even though they
+require no cobordism products. The existing adaptive allowance detects
+that update work and switches to binary residue homology.
+
+The new graded controls are still synthetic: we do not claim that
+our crossing order naturally generates their density. This makes
+them a stronger applicability check for the switch, not evidence of
+a broad recognition improvement.
+
+\input{tables/homogeneous-integration.tex}
+
+All measurements use seven shuffled paired trials and an identical
+old/old control. Product timings compare the prior ranked transform
+to the checked dispatch; full-component timings include projection
+and output expansion. Ordinary scan measurements force component
+contraction to exercise the changed path and include order selection.
+The small trefoil scan regressed in this sample; other scan differences
+are modest and include control variation. The default sparse engine
+does not use this new dispatch, and no general recognition speedup is
+claimed. Reproduction scripts are \path{fast/benchmark_homogeneous.py}
+and \path{fast/benchmark_adaptive_graded.py}; their complete samples
+are in \path{fast/results/homogeneous_integration_20261008.json} and
+\path{fast/results/adaptive_graded_20261008.json}.
+
+The full suite passes 229 tests. New tests exhaust every pair of
+four-variable homogeneous polynomials, test overlap rejection and
+byte padding, compare mixed inputs with the ranked fallback, verify
+projection behavior, and combine forced component algebra with adaptive
+cancellation. The isolated incoming archive passed its 74 tests,
+the independent eleven-test algebra suite, 2,100 associativity
+checks, 8,768 transfer comparisons, and replay of ten finite-quotient
+certificates. Local logs are retained under \path{synthesis/data/}.
+
+\subsection{A limit of fixed finite-quotient portfolios}
+The archive's optional $A_5$ search has not been merged into the
+current pipeline. Its witnesses are useful nontriviality certificates;
+exhaustion must remain inconclusive. The report also supplies a
+structural limitation worth retaining in the research plan.
+
+For prime $p>3$, the torus-knot group of $T(3,p)$ has presentation
+$\langle x,y\mid x^3=y^p\rangle$, with $x^3=y^p$ central.
+In any finite image in which the order of the image of $y$ is
+coprime to $p$, that image is a power of its central $p$th power.
+It is therefore central, so the image generated by $x,y$ is abelian.
+In particular this holds for $A_5$ when $p\ge7$.
+
+For a coloring by a finite quandle $Q$ with $|Q|<p$, its inner action
+lies in the symmetric group on fewer than $p$ points, so the same
+argument makes the induced group image abelian. All meridian images
+then agree. The common right translation fixes each color by
+idempotence, making every crossing preserve its under-arc color;
+following the one-component knot forces the coloring to be constant.
+Thus this family needs palettes of at least $p$ for nonconstant
+colorings, although its usual braid diagram has only $2p$ crossings.
+These knots are already decided by our three-braid or homogeneous
+diagram stages. The obstruction rules out a universal fixed-palette
+strategy; it does not rule out larger adaptive targets, bounded-seed
+searches, or a quasi-polynomial algorithm by another method.
