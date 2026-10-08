@@ -1,0 +1,145 @@
+\section{Linear endpoint descent with original-position certificates}
+\label{sec:linear-braid-descent}
+
+The endpoint kernel of report 34 removes a repeated whole-word scan from the
+maintained braid recognizer. Previously, every elementary destabilization
+ran cyclic free reduction, counted both endpoint generators, copied a cyclic
+rotation, and potentially renumbered every surviving letter. A chain on
+$m$ strands and $n$ letters could therefore use $O(nm)$ word operations.
+The replacement retains the same sufficient endpoint criterion and the
+same right-before-left preference. It does not find general Markov moves,
+internal connected-sum cuts, or a minimum braid index.
+
+\subsection{Representation and local updates}
+
+Keep the original signed generators $w_i$, with predecessor and successor
+arrays forming a cyclic list of live positions. For each original generator
+index, maintain its live multiplicity and the xor of its live positions.
+The xor is used only when the multiplicity is one, when it identifies that
+unique position exactly. A live interval of strand labels is represented by
+$\ell<h$: the current strand count is $h-\ell$, and an original signed
+letter becomes
+\[
+ \operatorname{sgn}(w_i)(|w_i|-\ell).
+\]
+A left destabilization increments $\ell$; a right destabilization decrements
+$h$. No surviving word is renumbered until output.
+
+Initially queue every original position as a possible left endpoint of an
+inverse seam. Remove a live adjacent inverse pair when found, then enqueue
+only the predecessor of the newly exposed seam. After the queue drains,
+the cyclic word has no inverse adjacency. If the current right endpoint
+$h-1$ occurs once, remove it; otherwise test the left endpoint $\ell+1$.
+Set the head to the successor of the removed letter, implementing precisely
+the cyclic conjugation required to put that crossing last before Markov
+destabilization. Enqueue the newly exposed seam and repeat. Stop at three
+strands or when neither endpoint is a singleton.
+
+Every inverse cancellation is a braid-group equality, including a conjugation
+for a wrapped cyclic cancellation. An endpoint generator occurring exactly
+once can be moved to the last position by conjugation and destabilized;
+left renumbering merely identifies the surviving consecutive strand labels.
+Thus every recorded move preserves closure isotopy. Reduction order can
+change the chosen cyclic representative; comparison with the earlier
+algorithm is therefore up to cyclic rotation.
+
+\begin{proposition}[Amortized endpoint cost]
+On an explicit braid with $n$ letters and $m$ strands, the linked kernel and
+its original-position replay use $O(n+m)$ word operations and space. Their
+conservative bit cost, including the certificate, is
+$O((n+m)\log(n+m+2))$.
+\end{proposition}
+\begin{proof}
+Each position is deleted at most once. A cancellation deletes two positions
+and a destabilization deletes one; each deletion event adds at most one queue
+entry. Including the initial $n$ entries gives at most $2n$ queue pops and
+at most $n$ trace records. Each pop and deletion performs a bounded number
+of array, counter and link operations. Every successful strand iteration
+removes a letter, and there is at most one final unsuccessful iteration.
+Initialization costs $O(n+m)$ and final output costs $O(n)$. Replay checks
+only the supplied local adjacencies and singleton counts, with the same
+initialization and deletion bounds. Indices and signed generator labels
+have $O(\log(n+m+2))$ bits, giving the conservative bit bound.
+\end{proof}
+
+The maintained dispatcher selects the linked path for at least 64 strands
+and 128 letters, provided $m\le n+1$. Otherwise it retains the simpler
+version-1 implementation. A one-component closure necessarily satisfies
+$m\le n+1$, since each adjacent transposition can reduce the number of
+permutation cycles by at most one. On this domain the remaining branch has
+bounded rank or bounded word length, so its whole-word passes also have a
+linear bound with fixed constants. Sparse standalone link inputs retain
+the earlier $O(nm)$ upper bound and avoid an allocation indexed by an
+arbitrarily large strand count. These statements concern explicit input;
+they are not complexity claims for a binary-compressed braid word.
+
+\subsection{Replay and resource boundaries}
+
+The new \texttt{singleton-markov-descent-v2} certificate records original
+positions for every cancellation and destabilization, plus the final live
+order and signed word. The verifier constructs its own lists and multiplicities;
+it checks live distinct positions, directed adjacency, inverse generators,
+endpoint identity and singleton count. It does not use the producer's xor
+lookup or queue, and it does not search for a reducible endpoint. Exact
+field, integer and trace-length checks reject malformed records. The queue
+counter is a diagnostic, never a mathematical witness for an isotopy.
+A valid prematurely stopped trace proves only its recorded equivalence.
+
+Version-1 evidence remains replayable by the old verifier. Its historical
+replay complexity is unchanged; the new linear replay bound applies to the
+new certificates. Both new production and replay paths call the cooperative
+cancellation callback during their traversals. Resource interruption raises
+without returning a partial recognition result.
+
+The complete free-product decision for the resulting at-most-three-strand
+braid remains linear on explicit input, so this endpoint-recognized class
+now has a linear symbolic path. The independent matrix backend retains its
+quadratic bit-arithmetic term. A supplied PD still needs checked braid
+provenance; neither this improvement nor a stalled endpoint search makes a
+new general unknot decision.
+
+\subsection{Validation and measurement contract}
+
+Seven added test methods compare exhaustive signed words through three
+strands, additional four-strand cases, and 120
+seeded conjugated mixed stabilization chains with a separate explicit
+whole-word algorithm. A deliberately slow list-based original-position
+oracle checks the local trace independently of both linked implementations.
+Additional tests cover both signs, both recognition backends, chains through
+2048 strands, malformed and reused positions, false inverse cancellations,
+input binding, small-path dispatch and resource interruption. Small
+stabilizations agree with independently computed reduced Khovanov rank.
+The complete maintained suite passes all 775 tests in 181.567 seconds with
+Regina installed.
+
+\path{fast/benchmark_braid_descent.py} pins the previous reducer and verifier
+to commit \texttt{c4c23b61d}. It compares baseline, identical A/A control,
+and the adaptive implementation in shuffled order, using one excluded
+warmup and five measured rounds. Kernel measurements include certificate
+generation and independent replay. Raw braid measurements also include
+closure validation and symbolic recognition; fresh-PD measurements include
+diagram construction and the ordinary recognition pipeline. Input construction
+for the kernel is excluded; imports and JSON serialization are excluded in
+all arms. Source hashes are checked before and after the experiment. Any
+unknown result suppresses a timing ratio for that case.
+
+The experiment contains 300 completed measured calls and 60 excluded warmups.
+At 4096 strands, right-chain generation plus replay falls from 4300.024 ms
+to 14.142 ms, with median paired ratio 305.29; the left chain falls from
+5953.078 ms to 14.304 ms, with paired ratio 380.36. At 256 strands the
+corresponding ratios are 19.10 and 24.27. Complete raw-braid recognition
+plus replay at 2048 strands falls from 1042.500 ms to 7.582 ms, with paired
+ratio 138.34. These are large separated effects, supported independently
+by the deletion and queue bounds rather than extrapolated from timings.
+
+\input{tables/braid_descent.tex}
+
+The ordinary PD examples invoke the linked kernel zero times: earlier
+simplification already settles those stabilized unknots. Their paired ratios
+are 1.005--1.021 and give no meaningful complete-pipeline improvement.
+A/A ratios range from 0.940 to 1.194 across this short experiment; small
+apparent gains in unchanged paths fall within that variability. In particular,
+the 128-strand right chain has only 127 letters and deliberately stays on the
+old branch, while the slightly longer left chain crosses the threshold.
+These results support a practical large-chain optimization, not a universal
+recognition speedup or a quasi-polynomial general algorithm.

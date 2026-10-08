@@ -1,0 +1,149 @@
+\section{Whitehead exposure: rank drops beyond strict length descent}
+\label{sec:whitehead-exposure-review}
+
+Commit \texttt{613bec60c3} supplies
+\path{docs/incoming/unknot_whitehead_exposure_20261008.zip}; all 44 manifest
+entries verify. Its main idea addresses a different objective from integral
+shear length minimization: deliberately expose a defining occurrence, then
+eliminate that generator, even if the intervening automorphism increases
+length. The delivered adapter now runs against our maintained code in an
+offline audit. No runtime policy is changed by this review.
+
+\subsection{An exact one-step exposure oracle}
+
+For a cyclically reduced relator $w$, put one unit on the undirected edge
+$\{x,-y\}$ for every cyclic adjacent pair $xy$. Parallel edges aggregate
+as positive capacities. For an admissible Whitehead pair $(a,S)$ with
+$a\in S$ and $-a\notin S$, the transformed cyclic word has exactly
+$c_w(S)$ occurrences of $a^{\pm1}$, where $c_w$ is the graph cut capacity.
+Every other unsigned generator count is unchanged. The same noncancelling
+skeleton argument used for integral shears proves this stronger occurrence
+identity, and subtracting the original multiplier count gives the classical
+length-change formula.
+
+Consequently a one-step multiplier singleton exists exactly when the graph
+has a capacity-one support bridge. A unit cut clearly isolates such a bridge.
+Conversely, one component after deleting the bridge has odd weighted degree
+sum. Signed degrees occur in equal inverse pairs, so that shore cannot be
+closed under inversion: it separates some $a,-a$ and defines an admissible
+Whitehead move. A bridge of capacity greater than one does not suffice.
+
+To optimize a target relation's exposure, choose its unit bridge and contract
+all its other support edges. A cut with that bridge as its only target edge
+is constant on every contracted component. Pin the two bridge sides and the
+multiplier pair in opposite shores, then solve a minimum cut in the quotient
+of the \emph{total} presentation graph. Enumerating target bridges and signed
+multipliers covers all one-step exposures. Absent signed letters must remain
+as isolated vertices: assigning them can change the costs of other relators.
+Equal pin patterns can share a flow computation. A feasible flow whose value
+equals the cut certifies the selected pinned optimum; the checker does not
+certify that every other bridge was searched. Topological validity only
+requires replaying the chosen automorphism and elimination.
+
+There is also an exact allocation objective. Let $L$ be total initial length,
+$d(a)$ the total multiplier count, $c$ the total selected cut capacity, and
+$t=|w_j|-d_j(a)$ for the target. Its transformed length is $t+1$ and its
+solved replacement has length $t$. Removing it and substituting into the
+other $c-1$ multiplier occurrences allocates exactly
+\[
+ U=L-d(a)+t(c-2)
+\]
+letters before the final reductions. Since $t\ge0$, the same minimum-cut
+query optimizes $U$ for fixed target and multiplier. This is a bound on raw
+substitution, not an estimate of final reduced length or future difficulty.
+
+\subsection{A separation from strict automorphism descent}
+
+Let $u=a^2bab$, $t=(ab^{-1})^3$, and let $v$ be the cyclically reduced
+commutator $[u,t]$, of length 20. The presentation
+\[
+ P_m=\langle a,b\mid u,v^m\rangle
+\]
+presents $\mathbb Z$: the Whitehead map fixing $a$ and sending
+$b\mapsto a^{-1}b$ takes $u$ to $ab^2$, so $u$ is primitive, and the
+commutator relator already lies in its normal closure. After this exposure,
+substituting $a=b^{-2}$ kills every relation.
+
+The complete rank-two cut table gives the non-inner elementary length
+changes on $(u,v^m)$ as $2m-2$, $2m-1$, $2$, and $3$, with complement
+symmetries. Thus for $m\ge2$ every non-inner elementary Whitehead move
+increases length. Signed permutations and inner moves preserve this
+obstruction and the absence of a singleton. The least one-step exposing
+increase is $2m-2$, yet the following elimination leaves length zero.
+For the selected exposure, $L=20m+5$, the intermediate length is $22m+3$,
+and the raw bound is $U=34m$. This explains why optimizing only immediate
+length can miss an affordable algebraic simplification.
+
+It is a separation for the restricted automorphism policy. It does not
+establish failure of our overlap-enabled group search, and these abstract
+presentations are not a family of difficult knot diagrams. Nor is the
+one-step increase a lower bound on every longer increasing path.
+
+The fused verifier composes the automorphism with its solved quotient map
+and evaluates that map directly on all original grammar roots. On
+$P_{2^k}$, the base commutator maps to the empty word before repeated copies
+are evaluated. A grammar with $k+51$ nodes therefore supports exact replay
+with a literal image cap of 100. The cap is enforced at every needed grammar
+node; this is a bounded small-image evaluator, not a general compressed
+free-reduction algorithm. The supplied $k=1000$ certificate was successfully
+replayed without expanding its enormous relator.
+
+\subsection{Rank bounds do not establish completeness}
+
+The explicit rank-first stage performs at most $r-1$ rank drops and
+$2(r-1)$ elementary moves. With stored-letter cap $M$, Whitehead workspace
+is at most $3M$. Choosing a quasi-polynomial cap bounds this particular
+possibly inconclusive positive search, including replay, by a quasi-polynomial
+function on native Wirtinger inputs. It does not prove that every unknot
+passes the stage, that the greedy choice finds every affordable path, or
+that an exponential complete fallback inherits this bound.
+
+The report gives two distinct obstructions. A primitive word can have no
+unit bridge until a preparatory move is made, so absence of a bridge is only
+a negative answer to the depth-one query. More permanently,
+$\langle a,b\mid a^2,a^3\rangle$ is infinite cyclic, while an automorphism
+keeps both relators proper powers; neither can acquire a singleton.
+Relator interaction is indispensable. Exposure should therefore cooperate
+with certified relator replacement rather than replace it.
+
+\subsection{Reproduction and actual maintained inputs}
+
+All 49 delivered unit tests passed. The deterministic audit reproduced
+17,664 occurrence and length checks on 1,104 cyclic words, 1,104 bridge
+existence comparisons, 640 selector comparisons against literal enumeration,
+468 checked witnesses, 500 independent flow comparisons, 500 rejected
+capacity mutations, and 32 barrier presentations. All three supplied
+positive certificates passed their respective replay checks. The five-case
+maintained adapter smoke test also passed; this closes the delivery's
+previously unexecuted compatibility check, without implying a new production
+integration.
+
+Our reproducible \path{data/audit_whitehead_exposure.py} recovers the original
+archive from its arrival commit and reconstructs actual maintained PD
+presentations. On the 30 small diagrams from the independent port-register
+Khovanov corpus, it returns 23 positives and seven inconclusive results.
+Every positive has independent explicit and compressed full-source replay
+and agrees with the stored Khovanov oracle. None uses an exposure: existing
+singletons suffice. External cancellation propagates and a zero time budget
+returns inconclusive.
+
+We additionally ran the native adapter on the maintained 141-crossing
+Gordian fixture. It uses one exposure, then stops at rank 11 with 97,684
+letters. Reconstructing every recorded move from the native full presentation
+and scanning the resulting relator graphs finds zero unit bridges. Thus the
+final failure is not just an allocation cap. This reproduces the delivery's
+negative residual through the actual maintained input boundary. Across all
+31 diagrams there are 23 positives and eight inconclusive results, with one
+exposure and no demonstrated new recognition coverage.
+
+The delivery's reported selector speedups compare against exhaustive shore
+enumeration, not our existing minimum-cut producer. We did not rerun those
+timings or treat them as pipeline gains. The next useful experiment is a
+bounded handoff from an intact maintained residual after ordinary group
+search stalls, preserving relation slots, names, prior moves and input
+binding. The supplied adapter restarts from the original PD and does not
+implement that handoff. Its search and verification have separate work
+allowances but a shared wall-clock callback; a production integration must
+account for both. In particular, any overlap that creates a unit bridge in
+the verified Gordian residual would be a concrete next algebraic target,
+with affordable rank decrease as the criterion.
