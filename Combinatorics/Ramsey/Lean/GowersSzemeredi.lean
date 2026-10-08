@@ -46,6 +46,7 @@ import GowersSzemeredi.Proofs05Multiaffine
 import GowersSzemeredi.Proofs05BoxTransport
 import GowersSzemeredi.Proofs05MultilinearIteration
 import GowersSzemeredi.Proofs16Lemma1
+import GowersSzemeredi.Proofs16SimultaneousRecurrence
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
@@ -325,6 +326,7 @@ import GowersSzemeredi.Proofs05SchmidtRecurrence
 import GowersSzemeredi.Proofs05MinimumPolynomialPartition
 import GowersSzemeredi.Proofs05MinimumModularPartition
 import GowersSzemeredi.Proofs05SimultaneousMultiaffineStep
+import GowersSzemeredi.Proofs05SimultaneousMultiaffinePartition
 import GowersSzemeredi.Proofs05QuadraticRecurrenceTransfer
 import GowersSzemeredi.Proofs05QuadraticWeyl
 import GowersSzemeredi.Proofs05RecurrenceFourierScale
