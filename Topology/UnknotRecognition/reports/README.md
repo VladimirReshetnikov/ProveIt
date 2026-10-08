@@ -31,7 +31,7 @@ modification times.
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded transfer and exact symbolic transport integrated; earlier rank law and conditional repair bound reviewed |
 | `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover kernel and ordered-point queries maintained separately, 534-test checkpoint |
 | `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517-test integration checkpoint |
-| `26/` | `ProveIt_Unknot_Determinant_Continuations_2026-10-07.zip` | marked residue-four observer and singular-safe terminal kernel (`26/detshadow/`) | quantum recovery, exact marked continuation norm, bordered determinant queries, critical square law | conditional `poly(n,R) 2^O(W)` stopping-prefix bound | 27 delivered hashes and four pinned paths verified; 35 delivered tests pass; geometry and production integration under review |
+| `26/` | `ProveIt_Unknot_Determinant_Continuations_2026-10-07.zip` | marked residue-four observer and singular-safe terminal kernel (`26/detshadow/`) | quantum recovery, exact marked continuation norm, bordered determinant queries, critical square law | conditional `poly(n,R) 2^O(W)` stopping-prefix bound | 35 delivered and 560 maintained tests pass; optional marked observer integrated; 4,503 geometric completion queries audited; terminal reuse remains a research prototype |
 | `27/` | `ProveIt_Report25_Causal_R3_2026-10-07.zip` | local rewrite prototype and RIII adapter (`27/prototype/`, `27/integration/`) | canonical initial births followed by accumulated-support search | conditional `N^(b+O(1)) (Ck)^k` unlocking bound | 42 delivered hashes and pinned simplifier verified; corrected replay and guarded inverse pruning integrated with optional clustered/adaptive search; 550 production tests pass; actual-diagram audit does not support changing the default |
 | `28/` | `unknot_classical_closure_research_20261007.zip` | closure-rank compression and reset driver (`28/src/closure_reset/`) | scalar/total-linear first jet, pure block bounds, geometric single-survivor resets | conditional `poly(n) 2^O(g)` bound in actual reset gap | 62 delivered hashes and four exact source blobs verified; 29 delivered tests pass; source fixture and production integration under review |
 
@@ -246,7 +246,18 @@ The intake and source-pin audit is retained in
 The archives have been retired from the drop zone under its documented policy,
 including the previously placed Garside archive after verification against its
 placement commit. No delivered code, article or data is replaced by maintained
-integration work. Reviews of `26/` and `28/` remain open.
+integration work. Review of `28/` remains open.
+
+Report `26/` is reviewed in `../synthesis/determinant_continuations.tex`.
+The maintained `shadow` backend evaluates actual marked completions with
+interruptible integer determinants, retaining exact capped scanning when its
+local budget expires. The original 701-diagram validation and a 176-scan
+upstream probe pass. A separate checked common-Tait-graph producer agrees with
+direct determinants on all 3,186 connected queries tested; 1,317 disconnected
+queries have determinant specialization zero. Common-kernel reuse remains
+outside production pending a maintained implementation and amortization
+measurements. Full recognition and raw scanner benchmarks are reported
+separately; the standard backend remains the default.
 
 Report `27/` is reviewed in `../synthesis/causal_r3.tex`. The maintained
 implementation adds opt-in support-aware/adaptive RIII search, fixes ambiguous
