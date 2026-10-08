@@ -2,6 +2,23 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`group_certificates.tex` adds a bounded, independently replayed positive
+recognizer based on reducing the complete Wirtinger presentation to one free
+generator. It derives the Whitehead minimum-cut search and its conditional
+expanded-word bound, and records a concrete convention mismatch in equations
+(10)--(12) of Kapovich's arXiv:2607.21499v1 without treating that mismatch as a
+refutation of the main results. The implementation retains the complete
+fallback when group search stalls or exhausts its local allowance.
+
+The 21-input A/A/B audit contains 441 timed queries. Group certificates decide
+all twelve Khovanov-only survivors and improve ten of their median query
+costs; the sum of medians drops from 60.8 to 39.2 ms including independent
+verification. Regressions on some survivors and cheap RIII examples keep this
+stage opt-in. All 626 tests pass with Regina installed in 126.707 seconds
+(`data/group-integrated-tests.txt`). The rebuilt article has 154 pages;
+`data/group-article-build.txt` records its build. These results do not provide
+a general sub-exponential recognition bound.
+
 `normal_surface.tex` explains an optional isolated Regina solid-torus
 recognition stage after the cheap filters on undecided diagrams of at least
 32 crossings. Local exhaustion falls back and global exhaustion propagates;

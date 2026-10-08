@@ -11,8 +11,40 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 619 passing tests
+diagram is not checked twice. The integrated suite now has 626 passing tests
 with the optional Regina dependency installed.
+
+`--group` (Python: `use_group=True`) tries a bounded knot-group certificate
+search after invariant filters. Exact generator eliminations and Whitehead
+changes of basis reduce a full Wirtinger presentation; an independent checker
+reconstructs and replays the trace before accepting a one-generator,
+relation-free presentation. For a validated classical knot this proves
+unknottedness. Stalling or local exhaustion falls back to the remaining
+recognizers, and a global deadline still yields `UNKNOWN`.
+
+```sh
+python -B -m fastunknot recognize examples/hard_unknot_8.json --group
+python -B benchmark_group.py --output results/group_local.json
+```
+
+Search and replay share `--group-seconds 0.05` per attempt. The standalone
+`fastunknot.group_certificate.group_decide` also accepts `max_letters` (default
+200,000) and `max_work` (default 2,000,000 per search/replay); `seconds=None`
+removes only the wall cap. `group_certificate` produces a trace, and
+`verify_group_certificate(diagram, certificate)` independently checks it.
+Certificates contain the actual normalized PD used by that stage; when the
+pipeline has reduced or factored the input, its earlier evidence supplies
+the connection to the original diagram.
+
+In seven paired whole-query rounds this stage certified all twelve maintained
+Khovanov-only survivors. Ten improved, with the largest gains about 2.3x and
+3.3x. The sum of their median costs fell from 60.8 to 39.2 ms, including replay.
+Two survivors and the already cheap RIII examples regressed, so the stage is
+**disabled by default**. No general sub-exponential bound is established:
+word expansion and stalled searches remain obstacles. See
+[`group_certificates.tex`](../synthesis/group_certificates.tex) for the theory,
+new-preprint convention audit, benchmarks and limitations, and
+[`results/group_20261008.json`](results/group_20261008.json) for raw measurements.
 
 `--regina` (Python: `use_regina=True`) adds an optional complete external
 normal-surface recognizer after cheap invariant filters, on undecided diagrams

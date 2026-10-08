@@ -1,0 +1,245 @@
+\section{Cyclic knot-group certificates and adaptive Whitehead descent}
+\label{sec:group-certificates}
+
+\subsection{A positive certificate from the full fundamental group}
+
+The optional \code{--group} stage provides a new sufficient test for
+unknottedness.  It simplifies a Wirtinger presentation by exact changes of
+presentation, records every nontrivial step, and independently replays that
+record.  A successful trace ends with precisely one generator and no
+nonempty relators.  It therefore proves that the knot group is isomorphic
+to $\mathbb Z$.  For classical knots in $S^3$, this implies that the knot is
+the unknot, by the classical consequence of the Loop Theorem
+\cite{papakyriakopoulos}.  This criterion concerns the whole fundamental
+group: its abelianization alone is $\mathbb Z$ for every knot and cannot
+supply this conclusion.
+
+Here is the topological implication explicitly.  Write $X$ for the compact
+knot exterior.  If $\pi_1(X)=\mathbb Z$, the map from the boundary torus
+group $\mathbb Z^2$ cannot be injective.  The Loop Theorem supplies an
+embedded compressing disc.  The exterior is irreducible: an embedded
+sphere bounds two balls in $S^3$, and the ball on the side away from the
+connected knot lies in the exterior.  Compressing its torus boundary along
+the disc gives a sphere; irreducibility then identifies the exterior with
+a solid torus.  Equivalently, the compression slope is the longitude,
+which bounds a disc and gives a spanning disc for the knot after adjoining
+the collar annulus.  The input contract is essential: our PD loader
+validates a classical, single-component knot diagram.  No conclusion for
+virtual diagrams or arbitrary finitely presented groups is asserted.
+
+\subsection{A deterministic presentation and reversible eliminations}
+
+For each PD row $(a,b,c,d)$, join the labels $b,d$ along the overpass.
+The connected classes of arc labels are the Wirtinger generators.  Name
+these classes by increasing minimum arc label; this makes certificate
+indices independent of the producer's union--find root choices.  Orient
+the knot by following its component from dart zero.  At a crossing let
+$u,v$ denote the incoming and outgoing underpass generators and let $o$
+be its overpass generator.  Our relator is
+\[
+ o u o^{-1}v^{-1}\quad\hbox{at a positive crossing},\qquad
+ o v o^{-1}u^{-1}\quad\hbox{at a negative crossing}.
+\]
+These choices give the same signed Fox rows as the established Alexander
+convention.  We retain all crossing relators, including the redundant
+Wirtinger relator, and freely and cyclically reduce each one.  Free
+reduction changes no word in the free group; cyclic reduction conjugates
+the relator and hence preserves its normal closure.
+
+Suppose a relator contains a generator $g$ exactly once, with sign
+$\epsilon\in\{1,-1\}$.  Write it as $P g^{\epsilon} S$ where neither
+$P$ nor $S$ contains $g^{\pm1}$.  Solve the defining relation:
+\[
+ g=P^{-1}S^{-1}\quad(\epsilon=1),\qquad
+ g=SP\quad(\epsilon=-1).
+\]
+Substitute this word, and its inverse for $g^{-1}$, into every other
+relator.  Delete this one defining relation and the generator.  This is a
+Tietze elimination, giving an isomorphic presented group.  In particular,
+it is not the operation of imposing an extra relation.  The trace records
+only the original relation index and generator; replay derives the
+replacement itself.  Empty slots retain their original indices.
+
+The producer prefers an eligible pair minimizing
+$(|R|-2)\operatorname{occ}(g)$, followed by relator length, index and generator.
+This is a deterministic estimate of expansion cost, not a completeness
+argument.  Renumbering or mirroring a diagram can change the greedy path.
+Indeed, two of the twelve tested mirror diagrams stall even though every
+original succeeds.  This is a concrete reason to retain other decision
+procedures in the portfolio.
+
+\subsection{Cut-based changes of free basis}
+
+When no generator can be eliminated, try to shorten the whole relator
+list by a Whitehead automorphism.  Fix a signed letter $a$ and a subset
+$A$ of the signed alphabet with $a\in A$ and $a^{-1}\notin A$.  Fix
+$a^{\pm1}$, and for every other letter $x$ put
+\[
+ \tau_{A,a}(x)=
+ \bigl(a^{-1}\text{ if }x^{-1}\in A\bigr)\;x\;
+ \bigl(a\text{ if }x\in A\bigr),
+\]
+where an absent factor means the empty word.  This preserves inversion and
+defines a free-group automorphism.  Its inverse uses multiplier $a^{-1}$
+and subset $(A\setminus\{a\})\cup\{a^{-1}\}$.  Applying it to every
+relator therefore preserves the isomorphism type of the quotient group.
+
+For a cyclically reduced list of words, add a weighted undirected edge
+$\{x,y^{-1}\}$ for each cyclic adjacent pair $xy$, including the last--first
+pair of each word.  Add weights across all relators.  For this convention,
+the exact change in total cyclic length is
+\[
+ |\tau_{A,a}(R)|_{\rm cyc}-|R|_{\rm cyc}
+   =\operatorname{cut}(A,A^c)-\deg(a).
+\]
+The cut-capacity approach to Whitehead minimization is developed by
+Roig--Ventura--Weil \cite{roig-ventura-weil}; their polynomial algorithm
+handles varying free rank, rather than enumerating exponentially many
+subsets.  We implement the relevant minimization directly on the sum of
+the relators' weighted graphs.  For each signed multiplier, an exact
+integer-capacity Edmonds--Karp flow finds a minimum cut separating $a$
+from $a^{-1}$.  The best strictly negative length change selects the next
+move.  A nonnegative minimum ends this search attempt.
+
+The producer explicitly substitutes the chosen automorphism and checks
+that the observed length change equals the cut prediction.  The verifier
+needs neither this formula nor the minimum-cut computation: it checks that
+the supplied pair is a valid Whitehead automorphism and directly applies
+it.  Soundness does not require the proposed move to shorten the words.
+Thus an error in search strategy cannot by itself create a false positive
+through the certificate interface.
+
+\subsection{A reproducible convention audit of a new preprint}
+
+Kapovich's July 2026 preprint on compressed primitivity
+\cite{kapovich-compressed} motivates keeping group words compressed.  It
+states polynomial compressed Whitehead-minimality tests at fixed rank,
+with further results for compressed primitivity.  It also cautions that
+fast compressed operations alone do not bound the number of descent
+steps: elementary descent on $a b^{2^m}$ can require exponentially many
+steps in the compressed input length.  Fixed-rank hypotheses also need
+attention when the rank grows with a knot diagram.
+
+Our audit found a convention mismatch in version~1's equations
+(10)--(12), as printed together.  Its automorphism (10) is the one above,
+but its graph (11) uses edges $\{x^{-1},y\}$.  Take
+\[
+ w=abc,\qquad A=\{a,b^{-1}\},\qquad\hbox{multiplier }a.
+\]
+Literal substitution gives $a a^{-1}bc$, hence cyclic length change $-1$.
+The printed graph has edges $\{a^{-1},b\}$, $\{b^{-1},c\}$,
+$\{c^{-1},a\}$; the stated cut has weight two and $\deg(a)=1$, predicting
+$+1$ via (12).  With our edges $\{x,y^{-1}\}$ the cut has weight zero,
+so the predicted change is correctly $-1$.
+
+This local inconsistency is repaired by inverting the graph's vertex
+labels, or by transforming the associated characteristic pair
+consistently.  It is not a disproof of the paper's compressed-primitivity
+claims: minimization over all pairs can survive such a relabelling.  Our
+regression test records the three-letter example and checks 15,552
+short-word/characteristic-pair combinations against an independent
+four-case substitution implementation.  The production code currently
+uses explicit word lists.  It does not implement compressed free-group
+operations or inherit a compressed-input complexity guarantee.
+
+\subsection{Independent replay and local resource accounting}
+
+The certificate contains its version, method, positive verdict, exact
+normalized input PD, move list, and surviving generator.  The checker
+reconstructs the presentation by graph traversal rather than union--find,
+reconstructs orientation from paired darts rather than cached Diagram
+orientation, and performs word cancellation with a separate deque-based
+implementation.  It checks unique occurrence before an elimination and
+valid alphabet membership and multiplier conditions before a Whitehead
+move.  After every substitution it reduces every remaining relator.
+Acceptance requires exactly the declared surviving generator and an
+entirely empty relator list.  All relators are accounted for; neither the
+stored verdict nor a claim of rank one is accepted on its own.
+
+The search and checker share a default wall allowance of 0.05 seconds per
+attempt.  Each separately has a two-million-unit cooperative work budget
+and a 200,000-letter expansion ceiling.  Work units conservatively charge
+letter processing in blocks, graph scans and flow exploration; they are
+not a hardware-independent instruction count.  Substitution sizes are
+checked before allocating expanded words.  The Whitehead producer uses a
+conservative bound of three times the current length.  A trace that is
+mathematically valid can therefore be rejected by a resource ceiling.
+Only a fully completed and checked trace supplies a verdict.
+
+Local exhaustion or stalled search returns \code{INCONCLUSIVE}; global
+cancellation propagates and the surrounding recognizer returns
+\code{UNKNOWN}.  The optional stage runs after cheap invariant
+obstructions and before the optional normal-surface worker and late
+Reidemeister III/Khovanov stages.  A local failure consumes only its
+allowance and resumes the portfolio.  Verification is inside the local
+allowance, including the check immediately before acceptance.
+
+\subsection{What can and cannot be bounded}
+
+Let $n$ be the crossing number, and suppose every expanded relator list in
+one completed search has total length at most $B$.  There are at most
+$n-1$ generator eliminations.  Between eliminations each chosen Whitehead
+step decreases a nonnegative integer length, so there are at most $B$
+such steps in each of at most $n$ phases.  The graph has $O(n)$ vertices
+and $O(n^2)$ edges.  Edmonds--Karp takes $O(n^5)$ graph operations per
+multiplier and we try $O(n)$ multipliers.  Thus, conservatively, the search
+cost is polynomial in $n$ and $B$, bounded by
+\[
+ O\bigl(n(B+1)(B+n^6)\operatorname{polylog}(nB+2)\bigr)
+\]
+with straightforward bit accounting for integer capacities.  Replay is
+polynomial in explicit trace size and expanded word volume.  This is our
+implementation-level conditional bound, not a compressed-word theorem.
+
+Two essential gaps prevent a general fast recognition theorem.  First,
+eliminating a generator can substantially expand the other relators; no
+polynomial or quasi-polynomial bound on $B$ in terms of $n$ is established.
+Second, even unlimited length-decreasing Whitehead search followed by this
+greedy elimination rule can stall on an unknot.  A larger Tietze search
+would require its own completeness and quantitative bounds.  Compressed
+words could address representation growth, but would not alone supply
+those missing search bounds.  The bounded optional stage preserves the
+existing complete fallback and does not improve the general exponential
+upper bound proved for our built-in decision pipeline.
+
+\subsection{Whole-query measurements and regression tests}
+
+\code{fast/benchmark\_group.py} measures 21 inputs in seven randomized
+A/A/B rounds after one excluded warmup: 441 timed whole queries.
+Every query starts with fresh validated PD data and carries no source-braid
+provenance.  The two control arms use the default pipeline.  The third
+enables the group stage, including independent replay.  Every arm has a
+0.25-second global allowance and a 50,000-object Khovanov ceiling.  Raw
+samples, resulting certificates and environment metadata are recorded in
+\code{fast/results/group\_20261008.json}.
+
+The group stage certifies all twelve maintained Khovanov-only survivor
+inputs in every measured round.  Ten show lower median query costs.  The
+two largest gains are $10.90$ to $4.66$ ms and $12.86$ to $3.86$ ms.
+Two regress, from $4.62$ to $4.89$ ms and from $3.67$ to $4.69$ ms.
+The sum of the twelve median costs is $60.85$ ms for the default control,
+$60.56$ ms for the repeated control, and $39.19$ ms with group certificates.
+This aggregate describes these twelve selected inputs, not a distribution
+of arbitrary knots or an asymptotic law.
+
+An eight-crossing hard unknot and Monster already have cheap default
+Reidemeister paths; inserting group search increases their median costs
+from $0.66$ to $1.01$ ms and $0.95$ to $1.82$ ms respectively.  Easy
+structural and invariant obstructions generally bypass the new stage.
+All arms time out on Gordian under this benchmark's short global cap;
+these censored observations are not completion times or speedups.
+The standalone group attempt also exhausts its local work allowance on
+Gordian.  These results support retaining \code{--group} as opt-in.
+
+Tests cover exhaustive short-word cut identities, minimum-cut versus
+exhaustive characteristic-pair optimization, the printed-convention
+counterexample, all twelve survivor certificates, mirror behaviour,
+70 random small knots against an independent full Khovanov cube, known
+nontrivial determinant-one knots, malformed and input-mismatched traces,
+independent replay with producer helpers disabled, local exhaustion,
+global and verification-stage cancellation, and actual CLI routing.
+
+The integrated suite passes all 626 tests with the optional Regina backend
+installed (126.707 seconds); see
+\code{synthesis/data/group-integrated-tests.txt}.  The rebuilt article
+contains 154 pages.
