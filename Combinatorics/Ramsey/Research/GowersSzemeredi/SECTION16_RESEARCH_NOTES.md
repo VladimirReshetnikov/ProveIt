@@ -720,6 +720,33 @@ on any product of progressions satisfying the variety's conditions, the map
 is bi-affine. Those conditions are Bohr membership in each coordinate and
 every L_i(y)·x small, i.e. simultaneously small bilinear-type quantities,
 item (D).
+
+**Progress (2026-10-08, kernel-checked).**
+- `bilinearBohrVariety_contains_product` (`Proofs16VarietyBoxes`): if the
+  L_k are Freiman-linear, the variety contains
+  {i·u : i < L₁} × {j·v : j < L₂} with u ≤ M₁^(|Γ|+2r) and v ≤ M₂^|Ψ|,
+  whenever L₂ ≤ ρM₂ and L₁(1 + L₂) ≤ ρM₁. Simultaneous Dirichlet is used
+  twice; the L_k are affine along the column. Exponents are linear in
+  codimension and rank.
+- `freiman_on_variety_biaffine_at_origin`: any Freiman bihomomorphism on
+  the variety is bi-affine on that box. This is the readout at the origin.
+
+**Remaining gap for (R) → Part J.**
+1. **Off-origin cells.** `MultiplyLinear` asks for partitions of
+   *arbitrary* boxes. The variety is not translation-invariant: x ranges
+   over B({L_k(y)}; ρ), which moves with y. Covering a box far from the
+   origin needs the variety conditions relative to a base point. The
+   L_k(y₀ + j·e)·(x₀ + i·d) expansion adds the constant terms
+   L_k(y₀)·x₀, which are not small in general. So cells exist only near
+   points of V, and covers must be built from V's own geometry. Gowers's
+   multiply-linear framework does not ask for covers off the domain, so
+   the restriction to V may suffice. The bookkeeping of
+   `CubicStackableClass` against V's geometry has not been worked out.
+2. **Unions (stackability).** n pieces give n varieties. Common boxes need
+   the union of all their Γ, Ψ and L-families, which is still linear in
+   the total rank by the exponents above. That is the (D)-type win.
+3. **The pre-extension hypothesis** `MilicevicVarietyStructure D`, from
+   the paper, not proved here.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
