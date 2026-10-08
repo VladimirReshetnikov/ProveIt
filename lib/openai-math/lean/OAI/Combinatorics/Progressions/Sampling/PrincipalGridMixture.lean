@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the existing tuple as an explicit Nonempty
+instance in principalResidueWeights_nonzero_source to avoid Lean 4.32
+instance-search timeout. All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Probability.PrincipalTestMixture
 
 namespace OAI
@@ -36,6 +39,7 @@ theorem principalResidueWeights_nonzero_source {D α : Type*}
     (y : PrincipalIntegerTuples B h α L) (hy : (principalResidueWeights B h L hL m hm r hsize).weight y ≠ 0) :
     (principalTupleWeights (α := α) B h L hL).weight y ≠ 0 := by
   classical
+  letI : Nonempty (PrincipalIntegerTuples B h α L) := ⟨y⟩
   intro hz
   apply hy
   rw [principalResidueWeights_eq_condition]
