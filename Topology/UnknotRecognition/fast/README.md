@@ -11,14 +11,35 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 539 passing tests.
+diagram is not checked twice. The integrated suite now has 550 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
 two different legal faces. Replay validates the specified face and accepts
 older crossing-only RIII records only when the face is unambiguous. R1/R2
-records retain their existing format. The causal RIII search proposed in
-report 27 is still under review; this change fixes certificate replay.
+records retain their existing format.
+
+The report 27 causal RIII search is available with `r3_search="clustered"`
+or `--r3-search clustered`. It tracks the union of all touched darts and admits
+up to `r3_births` independent starting moves (default 1). `r3_search="adaptive"`
+first gives the historical search half the remaining trial allowance, then
+switches to clustered search if stalled. Both share `r3_budget` trials per
+input crossing (default 10); `None` disables the total cap in Python. The
+maximum sequence length is `r3_depth` (default 4). For example:
+
+```sh
+python -m fastunknot recognize examples/hard_unknot_8.json --r3-search adaptive --r3-depth 6
+```
+
+Speculative branches roll back on interruption. Local trial exhaustion falls
+back to exact recognition; a global deadline yields `UNKNOWN`. If an unfiltered
+root search finds no legal RIII move, the simplifier skips further deepening
+and switching because no RIII sequence can start. The default remains `last`:
+the new modes did not improve crossing counts in the recorded random-diagram
+audit and sometimes left more crossings under the same trial cap. Greater
+depth helps two stored hard unknots independently of the clustered algorithm.
+See `benchmark_causal_r3.py` for paired recognition/simplifier measurements
+and its `--discovery` mode for reproducible search and exact legacy-trace checks.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:

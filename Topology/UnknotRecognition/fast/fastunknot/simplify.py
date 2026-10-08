@@ -283,13 +283,15 @@ class _Darts:
         return Diagram(tuple(rows))
 
 
-def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool):
+def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: bool, check=None):
     """Depth-first search for at most ``depth`` Reidemeister III moves after which a I/II move
     exists.  The moves are left applied and listed in ``path``; returns the darts to look at,
     or None with the structure restored.  After the first move only triangles next to it are
     tried, and never the inverse of the move just made."""
     seen = set()
     for d in darts:
+        if check is not None:
+            check()
         if state.trials >= state.budget:
             return None
         triangle = state.triangle_at(d)
@@ -305,21 +307,42 @@ def _unlock(state: _Darts, depth: int, darts, undo_of, path: list, check_faces: 
         state.trials += 1
         around = [4 * (x // 4) + j for x in triangle for j in range(4)]
         path.append(triangle)
-        if any(state.move_at(x) is not None for x in around):
-            return around
-        if depth > 1:
-            crossings = {x // 4 for x in around} | {state.alpha[x] // 4 for x in around}
-            near = [4 * c + j for c in sorted(crossings) for j in range(4)]
-            found = _unlock(state, depth - 1, near, {x ^ 2 for x in triangle}, path, check_faces)
-            if found is not None:
-                return found + around
-        path.pop()
-        state.apply_r3(state.triangle_at(triangle[0] ^ 2))               # undo: the move is an involution
+        keep = False
+        try:
+            if check is not None:
+                check()
+            if any(state.move_at(x) is not None for x in around):
+                keep = True
+                return around
+            if depth > 1:
+                crossings = {x // 4 for x in around} | {state.alpha[x] // 4 for x in around}
+                near = [4 * c + j for c in sorted(crossings) for j in range(4)]
+                found = _unlock(state, depth - 1, near, {x ^ 2 for x in triangle}, path, check_faces, check)
+                if found is not None:
+                    keep = True
+                    return found + around
+        finally:
+            if not keep:
+                path.pop()
+                state.apply_r3(state.triangle_at(triangle[0] ^ 2))
     return None
 
 
+def validate_r3_options(search, depth, budget, births):
+    if search not in ("last", "clustered", "adaptive"):
+        raise ValueError("r3_search must be last, clustered, or adaptive")
+    if type(depth) is not int or depth < 1:
+        raise ValueError("r3_depth must be a positive integer")
+    if type(births) is not int or births < 1:
+        raise ValueError("r3_births must be a positive integer")
+    if budget is not None and (type(budget) is not int or budget < 0):
+        raise ValueError("r3_budget must be a nonnegative integer or None")
+
+
 def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
-             r3_depth: int = 4, r3_budget: int | None = 10) -> tuple[Diagram, list[Move]]:
+             r3_depth: int = 4, r3_budget: int | None = 10, *,
+             r3_search: str = "last", r3_births: int = 1,
+             check=None, stats: dict | None = None) -> tuple[Diagram, list[Move]]:
     """Crossing-decreasing Reidemeister I/II moves until none applies, helped by Reidemeister III.
 
     Incremental version (idea from acceleration proposal 02).  Moves in the
@@ -342,21 +365,71 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
     useful sequences are found early: on 117 unknot diagrams that depth 1 cannot
     touch, budgets of 5, 15, 40 and none all reduce 97, 109 and 110 of them to
     nothing at depths 2, 3 and 4.
+    ``r3_search="clustered"`` searches accumulated support with at most
+    ``r3_births`` independent starting moves, retaining immediate inverses
+    whenever the preceding move enlarged the accumulated support.
+    ``r3_search="adaptive"`` first runs the historical last-move neighborhood
+    search with half the remaining allowance (5n trials if uncapped), then
+    switches to clustered search if stalled. Both share the total trial cap.
+    An optional ``check`` callback can interrupt all searches cooperatively;
+    speculative RIII branches roll back on exceptions. Optional ``stats``
+    records trial counts by search implementation and adaptive switches.
     ``check_faces=False`` tries every triangle as the
     last move of a sequence instead of only those next to a small face (slower,
     same result; kept for the test of that shortcut).
     """
+    validate_r3_options(r3_search, r3_depth, r3_budget, r3_births)
+    if stats is not None:
+        stats.update(last_trials=0, clustered_trials=0, switches=0)
+    if check is not None:
+        check()
     if not diagram.crossings:
         return diagram, []
-    if type(r3_depth) is not int or r3_depth < 1:
-        raise ValueError("r3_depth must be a positive integer")
     state = _Darts(diagram)
     state.trials = 0
     state.budget = float("inf") if r3_budget is None else r3_budget * diagram.crossings
+    no_moves = False
+    def search(mode, ceiling):
+        nonlocal no_moves
+        original_budget, before = state.budget, state.trials
+        state.budget = ceiling
+        try:
+            if mode == "clustered":
+                from .causal_r3 import search_clustered_unlock
+            for depth in range(1, r3_depth + 1):
+                if check is not None:
+                    check()
+                if state.trials >= state.budget:
+                    break
+                path = []
+                before_depth = state.trials
+                if mode == "last":
+                    found = _unlock(state, depth, range(4 * len(state.alive)),
+                                    None, path, check_faces, check)
+                else:
+                    found = search_clustered_unlock(state, depth, max_births=r3_births,
+                                                    check_faces=check_faces, path=path, check=check)
+                if found is not None:
+                    return found, path
+                if depth > 1 and state.trials == before_depth:
+                    # The root was not face-filtered at depth >= 2, so every
+                    # nondegenerate legal first move would have been tried.
+                    # No RIII sequence can start; neither deeper search nor
+                    # switching neighborhoods can help this diagram.
+                    no_moves = True
+                    break
+            return None, []
+        finally:
+            state.budget = original_budget
+            if stats is not None:
+                stats[mode + "_trials"] += state.trials - before
+
     trace: list[Move] = []
     stack = list(range(4 * diagram.crossings - 1, -1, -1))
     while True:
         while stack and state.remaining:
+            if check is not None:
+                check()
             move = state.move_at(stack.pop())
             if move is None:
                 continue
@@ -365,16 +438,24 @@ def simplify(diagram: Diagram, r3: bool = True, check_faces: bool = True,
                 stack.append(d)
         if not r3 or state.remaining < 3:
             break
-        for depth in range(1, r3_depth + 1):
-            path: list = []
-            found = _unlock(state, depth, range(4 * len(state.alive)), None, path, check_faces)
-            if found is not None:
-                trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle)), triangle)
-                             for triangle in path)
-                stack = found
-                break
+        no_moves = False
+        if r3_search == "adaptive":
+            # Reserve half the remaining finite allowance for support search.
+            # With no total cap, bound the heuristic phase by 5n trials.
+            allowance = (5 * diagram.crossings if r3_budget is None
+                         else (state.budget - state.trials) // 2)
+            found, path = search("last", state.trials + allowance)
+            if found is None and not no_moves and state.trials < state.budget:
+                if stats is not None:
+                    stats["switches"] += 1
+                found, path = search("clustered", state.budget)
         else:
+            found, path = search(r3_search, state.budget)
+        if found is None:
             break
+        trace.extend(Move("R3", tuple(sorted(x // 4 for x in triangle)), triangle)
+                     for triangle in path)
+        stack = found
     if not trace:
         # nothing applied: no need to rebuild and revalidate (the rebuild would also rename the edges
         # in order of first appearance; an unreduced diagram now keeps its own labels)

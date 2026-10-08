@@ -40,7 +40,7 @@ from .interlace import visible_factors_interlacement
 from .ordering import best_scan_order
 from .scan import ScanLimit, khovanov_rank
 from .seifert import seifert_certificate
-from .simplify import descending_start, simplify
+from .simplify import descending_start, simplify, validate_r3_options
 
 
 class Result:
@@ -176,7 +176,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                           jones_backend, potts_colors, jones_max_states, jones_max_transitions,
                           max_objects, deadline,
                           check_d_squared, scan_options, window_options=None,
-                          twist_source=None, defer_twist=False, checked_modular=False) -> tuple[str, str]:
+                          twist_source=None, defer_twist=False, checked_modular=False,
+                          r3_options=None) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -195,7 +196,11 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         # Reidemeister III moves that unlock further I/II reductions.  (Done earlier, the search
         # cost up to 58% on diagrams that the Alexander test decides a moment later.)
         check()
-        reduced, trace = simplify(diagram, r3=True)
+        search_stats = {} if r3_options and r3_options["r3_search"] != "last" else None
+        reduced, trace = simplify(diagram, r3=True, check=check if deadline is not None else None,
+                                  stats=search_stats, **(r3_options or {}))
+        if search_stats is not None:
+            evidence["r3_search"] = dict(r3_options, **search_stats)
         if reduced.crossings < diagram.crossings:
             evidence["reidemeister_three"] = {"crossings_before": diagram.crossings,
                                               "crossings_after": reduced.crossings,
@@ -289,6 +294,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               euler_max_states: int | None = 4096,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
+              r3_search: str = "last", r3_depth: int = 4,
+              r3_budget: int | None = 10, r3_births: int = 1,
               jones_backend: str = "matching", potts_colors: int = 6,
               jones_max_states: int | None = 4096,
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
@@ -306,6 +313,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               window_strategy: str = "support") -> Result:
     restart_options = locals().copy() if use_ranktwo or use_garside else None
     start = monotonic()
+    validate_r3_options(r3_search, r3_depth, r3_budget, r3_births)
     validate_jones_options(jones_backend, potts_colors, jones_max_states, jones_max_transitions)
     if window_strategy not in ("support", "minimal"):
         raise ValueError("window_strategy must be support or minimal")
@@ -517,6 +525,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
             check()
         options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
                        use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
+                       r3_options=dict(r3_search=r3_search, r3_depth=r3_depth,
+                                       r3_budget=r3_budget, r3_births=r3_births),
                        use_descending=use_descending,
                        jones_backend=jones_backend, potts_colors=potts_colors,
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
