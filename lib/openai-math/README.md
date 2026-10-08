@@ -46,13 +46,29 @@ The second closure (38 upstream modules, `FixedDensity/`) supplies
 Theorem 1.2 of the catalogue is derived in
 `GowersSzemeredi/Proofs01SzemerediFixedDensity.lean`.
 
-The pinned quantitative closure rooted at
-`OAI.Combinatorics.Progressions.Results.Conclusions` is now also vendored:
-4,136 upstream modules, including the 128 already present, so this adds
-4,008 modules. **This quantitative backport is in progress and is not yet
-verified.** The Gowers facade does not import the quantitative conclusion.
+The only additional upstream target being ported is
+`OAI.Erdos3.manuscriptQuantitativeDensityTheorem`, to discharge the checked
+conditional bridge for Gowers Theorem 1.3. `Results/Conclusions.lean` now
+extracts this density conclusion directly; it omits the combined manuscript
+and reciprocal-sum conclusions. `Estimates/UniformRelativePatchSource.lean`
+retains the density-source construction and omits the separate logarithmic
+and reciprocal corollaries. `DensityBoundFromInvariant` imports `Results.Basic`
+directly, allowing `Results.Reciprocal` and the empty `Results.Statements`
+wrapper to be removed entirely.
+
+The remaining module import closure contains 4,134 upstream modules,
+including 128 previously present (4,006 additional modules). **This density
+backport is in progress and is not yet verified.** Every staged upstream
+module is reachable from the density-only conclusion. This is an import-level
+check, not a claim that every declaration bundled in a shared module is
+needed. Further extracts should remove avoidable unrelated branches as they
+are identified; standalone upstream results without a Gowers consumer are
+outside the port's scope. The Gowers facade does not import this conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
-the upstream source hashes, import closure, and initial compatibility imports.
+the selected theorem, Gowers consumer, excluded modules, original source
+hashes and compatibility adaptations. Run
+`python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
+closure; pass a module name to show an import path explaining its inclusion.
 
 The first 1,000 manifest entries have compiled (1,014 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
@@ -79,8 +95,8 @@ in their file headers.
 
 Upstream files are kept with their upstream paths. Every file changed by the
 port carries a header comment, `Modified for ProveIt: …`, stating what was
-changed, as Apache-2.0 §4(b) requires. Mathematical content and statements are
-unchanged.
+changed, as Apache-2.0 §4(b) requires. Retained theorem statements are unchanged. The density-only extracts described
+above intentionally omit unrelated declarations; their proof status remains pending.
 
 - `OAI/Compat/*.lean` (not upstream) backport the declarations that upstream
   uses from its newer toolchain but that are absent from Lean 4.32.0 /

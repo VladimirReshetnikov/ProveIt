@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: extract the quantitative-density conclusion used by the
+Gowers Theorem 1.3 bridge. Prove it directly from uniform relative lifting,
+without the combined manuscript theorem or reciprocal-sum conclusion.
+-/
 import OAI.Combinatorics.Progressions.Estimates.PreparedRelativePositivePassage
 import OAI.Combinatorics.Progressions.Estimates.RelativePatchScalarBaseFin
 import OAI.Combinatorics.Progressions.Estimates.UniformRelativePatchSource
@@ -23,20 +28,13 @@ theorem exists_manuscriptRelativePatchPower (s : ℕ) (hs : 1 ≤ s)
       (VectorPolynomial.scalarNativeDimension s) stage power discount
       hs hpower hdiscount hone ih
 
-theorem manuscript_main_theorems :
-    QuantitativeDensityTheorem ∧ ReciprocalProgressionTheorem := by
-  apply manuscript_targets_of_uniform_relative_lifting
+theorem manuscriptQuantitativeDensityTheorem : QuantitativeDensityTheorem := by
   intro k hk
-  refine ⟨VectorPolynomial.scalarNativeDimension (k - 2),
-    VectorPolynomial.scalarNativeDimension_pos (k - 2), ?_⟩
+  let n₀ := VectorPolynomial.scalarNativeDimension (k - 2)
+  letI : NeZero n₀ := ⟨Nat.ne_of_gt (VectorPolynomial.scalarNativeDimension_pos (k - 2))⟩
+  apply quantitative_density_bound_of_uniform_relative_lifting k n₀ hk
   intro discount hdiscount hhalf
   exact exists_manuscriptRelativePatchPower (k - 2) (by omega) discount hdiscount hhalf
-
-theorem manuscriptQuantitativeDensityTheorem : QuantitativeDensityTheorem :=
-  manuscript_main_theorems.1
-
-theorem manuscriptReciprocalProgressionTheorem : ReciprocalProgressionTheorem :=
-  manuscript_main_theorems.2
 
 end Erdos3
 

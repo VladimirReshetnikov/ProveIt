@@ -1,3 +1,9 @@
+/-
+Modified for ProveIt: retain only the quantitative-density source construction.
+Omit the logarithmic/reciprocal-sum corollaries and the combined manuscript
+conclusion; the Gowers Theorem 1.3 bridge needs QuantitativeDensityTheorem only.
+Pinned source and copyright status: ../../../../../LICENSE.provenance.
+-/
 import OAI.Combinatorics.Progressions.Dynamics.AmplificationSourceResourceBudget
 import OAI.Combinatorics.Progressions.Dynamics.RelativePatchAmplificationIteration
 import OAI.Combinatorics.Progressions.Lattices.IntervalIntegerVectorAPFree
@@ -7,127 +13,6 @@ import OAI.Combinatorics.Progressions.Probability.DensityBoundFromInvariant
 import OAI.Combinatorics.Progressions.Sampling.ScoredPatchDensityStep
 
 namespace OAI
-
-section
-
-open Filter
-open scoped Topology
-
-namespace Erdos3
-
-theorem eventually_exp_loglog_rpow_le {c η : ℝ} (hc : 0 < c) (hη : 0 < η)
-    (B : ℝ) :
-    ∀ᶠ x : ℝ in atTop,
-      Real.exp (-c * (Real.log (Real.log x)) ^ (1 + η)) ≤
-        ((Real.log x) ^ B)⁻¹ := by
-  have hloglog : Tendsto (fun x : ℝ ↦ Real.log (Real.log x)) atTop atTop :=
-    Real.tendsto_log_atTop.comp Real.tendsto_log_atTop
-  have hpow := (tendsto_rpow_atTop hη).comp hloglog
-  filter_upwards [hpow.eventually (eventually_ge_atTop (B / c)),
-    hloglog.eventually (eventually_gt_atTop 0), eventually_gt_atTop (1 : ℝ)] with
-    x hlarge hz hx
-  have hBc : B ≤ c * (Real.log (Real.log x)) ^ η := by
-    exact (div_le_iff₀ hc).mp hlarge |>.trans_eq (mul_comm _ _)
-  have hmul := mul_le_mul_of_nonneg_left hBc hz.le
-  have hpower : (Real.log (Real.log x)) ^ (1 + η) =
-      Real.log (Real.log x) * (Real.log (Real.log x)) ^ η := by
-    rw [Real.rpow_add hz, Real.rpow_one]
-  rw [Real.rpow_def_of_pos (Real.log_pos hx), ← Real.exp_neg]
-  apply Real.exp_le_exp.mpr
-  rw [hpower]
-  nlinarith
-
-theorem QuantitativeDensityBound.eventually_logarithmic {k : ℕ}
-    (h : QuantitativeDensityBound k) (B : ℝ) :
-    ∃ C : ℝ, 0 < C ∧ ∀ᶠ N : ℕ in atTop,
-      (extremalNumber k N : ℝ) ≤ C * N / (Real.log N) ^ B := by
-  obtain ⟨C, c, η, hC, hc, hη, hbound⟩ := h
-  refine ⟨C, hC, ?_⟩
-  have htail := tendsto_natCast_atTop_atTop.eventually
-    (eventually_exp_loglog_rpow_le hc hη B)
-  filter_upwards [htail, eventually_ge_atTop 3] with N hN hN3
-  apply (hbound N hN3).trans
-  simpa only [div_eq_mul_inv] using
-    mul_le_mul_of_nonneg_left hN (show 0 ≤ C * (N : ℝ) by positivity)
-
-theorem QuantitativeDensityBound.logarithmic {k : ℕ}
-    (h : QuantitativeDensityBound k) {B : ℝ} (hB : 0 < B) :
-    ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, 3 ≤ N →
-      (extremalNumber k N : ℝ) ≤ C * N / (Real.log N) ^ B := by
-  obtain ⟨C, hC, htail⟩ := h.eventually_logarithmic B
-  obtain ⟨N₀, htail⟩ := eventually_atTop.mp htail
-  let M := max 3 N₀
-  let C' := max C ((Real.log M) ^ B)
-  have hCC' : C ≤ C' := le_max_left _ _
-  refine ⟨C', hC.trans_le hCC', fun N hN ↦ ?_⟩
-  have hNreal : (1 : ℝ) < N := by exact_mod_cast (show 1 < N by omega)
-  have hlogN : 0 < Real.log N := Real.log_pos hNreal
-  have hden : 0 < (Real.log N) ^ B := Real.rpow_pos_of_pos hlogN B
-  by_cases hlarge : N₀ ≤ N
-  · apply (htail N hlarge).trans
-    apply div_le_div_of_nonneg_right _ hden.le
-    exact mul_le_mul_of_nonneg_right hCC' (by positivity)
-  · have hNM : N ≤ M := by dsimp [M]; omega
-    have hlogNM : Real.log N ≤ Real.log M :=
-      Real.log_le_log (by positivity) (by exact_mod_cast hNM)
-    have hpNM := Real.rpow_le_rpow hlogN.le hlogNM hB.le
-    have hpow : (Real.log N) ^ B ≤ C' := hpNM.trans (le_max_right _ _)
-    have hcard : (extremalNumber k N : ℝ) ≤ N :=
-      by exact_mod_cast extremalNumber_le k N
-    apply hcard.trans
-    apply (le_div_iff₀ hden).mpr
-    nlinarith [mul_le_mul_of_nonneg_left hpow (show (0 : ℝ) ≤ N by positivity)]
-
-theorem summable_dyadic_of_eventually_logarithmic {k : ℕ} {C B : ℝ}
-    (hB : 1 < B)
-    (hbound : ∀ᶠ N : ℕ in atTop,
-      (extremalNumber k N : ℝ) ≤ C * N / (Real.log N) ^ B) :
-    Summable (fun m : ℕ ↦ (extremalNumber k (2 ^ m) : ℝ) / 2 ^ m) := by
-  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hsum : Summable (fun m : ℕ ↦ (C / (Real.log 2) ^ B) * ((m : ℝ) ^ B)⁻¹) :=
-    (Real.summable_nat_rpow_inv.mpr hB).mul_left _
-  apply hsum.of_norm_bounded_eventually_nat
-  have hpow : Tendsto (fun m : ℕ ↦ (2 : ℕ) ^ m) atTop atTop :=
-    tendsto_pow_atTop_atTop_of_one_lt (by norm_num)
-  filter_upwards [hpow.eventually hbound] with m hm
-  rw [Real.norm_eq_abs, abs_of_nonneg (by positivity)]
-  have hden : (0 : ℝ) < 2 ^ m := by positivity
-  have hcast : ((2 ^ m : ℕ) : ℝ) = (2 : ℝ) ^ m := by norm_cast
-  rw [hcast, Real.log_pow, Real.mul_rpow (by positivity) hlog2.le] at hm
-  calc
-    (extremalNumber k (2 ^ m) : ℝ) / 2 ^ m
-        ≤ (C * 2 ^ m / ((m : ℝ) ^ B * (Real.log 2) ^ B)) / 2 ^ m :=
-      div_le_div_of_nonneg_right hm hden.le
-    _ = (C / (Real.log 2) ^ B) * ((m : ℝ) ^ B)⁻¹ := by
-      field_simp
-
-theorem QuantitativeDensityBound.summable_dyadic {k : ℕ}
-    (h : QuantitativeDensityBound k) :
-    Summable (fun m : ℕ ↦ (extremalNumber k (2 ^ m) : ℝ) / 2 ^ m) := by
-  obtain ⟨C, _hC, htail⟩ := h.eventually_logarithmic 2
-  exact summable_dyadic_of_eventually_logarithmic (by norm_num) htail
-
-theorem hasAP_of_eventually_logarithmic_bound {k : ℕ} {C δ : ℝ} (hδ : 0 < δ)
-    (hbound : ∀ᶠ N : ℕ in atTop,
-      (extremalNumber k N : ℝ) ≤ C * N / (Real.log N) ^ (1 + δ))
-    {A : Set ℕ} (hA : ¬ Summable (reciprocalTerm A)) : HasAP A k :=
-  hasAP_of_not_summable_reciprocal
-    (summable_dyadic_of_eventually_logarithmic (by linarith) hbound) hA
-
-theorem QuantitativeDensityBound.hasAP {k : ℕ} (h : QuantitativeDensityBound k)
-    {A : Set ℕ} (hA : ¬ Summable (reciprocalTerm A)) : HasAP A k :=
-  hasAP_of_not_summable_reciprocal h.summable_dyadic hA
-
-theorem reciprocalProgressionTheorem_of_quantitativeDensityTheorem
-    (h : QuantitativeDensityTheorem) : ReciprocalProgressionTheorem := by
-  intro A hA k
-  by_cases hk : 3 ≤ k
-  · exact (h k hk).hasAP hA
-  · exact ((h 3 le_rfl).hasAP hA).of_le (by omega)
-
-end Erdos3
-
-end
 
 section
 
@@ -541,18 +426,6 @@ theorem quantitative_density_bound_of_uniform_relative_lifting
     hκ hgain hK (by norm_num : (1 : ℝ) ≤ 1) (by norm_num : (1 : ℝ) < 2)
     (by norm_num : (0 : ℝ) < 1) hB hD hsource
   simpa only [Nat.sub_add_cancel (by omega : 2 ≤ k)] using hresult
-
-theorem manuscript_targets_of_uniform_relative_lifting
-    (hlifting : ∀ k : ℕ, 3 ≤ k → ∃ n₀ : ℕ, 0 < n₀ ∧
-      ∀ τ : ℝ, 0 < τ → τ ≤ 1 / 2 →
-        ∃ E : ℕ, 2 ≤ E ∧ RelativePatchPowerInductionRule (k - 2) n₀ (k - 2) τ E) :
-    QuantitativeDensityTheorem ∧ ReciprocalProgressionTheorem := by
-  have hquant : QuantitativeDensityTheorem := by
-    intro k hk
-    obtain ⟨n₀, hn₀, hrelative⟩ := hlifting k hk
-    let : NeZero n₀ := ⟨Nat.ne_of_gt hn₀⟩
-    exact quantitative_density_bound_of_uniform_relative_lifting k n₀ hk hrelative
-  exact ⟨hquant, reciprocalProgressionTheorem_of_quantitativeDensityTheorem hquant⟩
 
 end Erdos3
 
