@@ -1,0 +1,114 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem,graphicx,xcolor,fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{19354A}
+\definecolor{pale}{HTML}{F3F6F8}
+\hypersetup{pdftitle={Toward Quasi-Polynomial Unknot Recognition: Presentation Complexity, Early Certificates, and Streaming Responses},pdfauthor={Research continuation for the ProveIt project},pdfsubject={Exact parameterized algorithms, audited implementation, and research agenda}}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.2em}
+\setlength{\emergencystretch}{1.8em}
+\setcounter{tocdepth}{2}
+\setlist{itemsep=0.3em,topsep=0.45em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\basecommit}{\texttt{1be2abc8cc743c1a3b5cb7fdfeb650697f8e2d5b}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{pale},frame=single,rulecolor=\color{black!15},breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,xleftmargin=0.4em,xrightmargin=0.4em,aboveskip=0.7em,belowskip=0.7em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}ProveIt: unknot recognition}
+\fancyhead[R]{\small Research continuation, October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.25in}
+{\Large\sffamily\color{ink}PROVEIT\quad /\quad TOPOLOGY\par}
+\vspace{0.35in}
+{\LARGE\bfseries Toward Quasi-Polynomial\\[0.12em] Unknot Recognition\par}
+\vspace{0.22in}
+{\Large Presentation complexity, early first-jet certificates,\\[0.12em]
+and streaming boundary responses\par}
+\vspace{0.45in}
+{\large Research continuation prepared for Vladimir Reshetnikov\par}
+\vspace{0.08in}
+{8 October 2026\par}
+\vspace{0.45in}
+\begin{abstract}
+We develop three exact improvements to the ProveIt unknot-recognition
+program, separating complete parameterized decision theorems from optional
+implementation experiments. First, a presentation with $r$ generators and
+total explicit relator length $N$ yields deterministic recognition in
+$\poly(N+r)(2+N/r)^{O(r)}$ bit operations, after verified provenance is
+included. A straight-line word presentation gives a constant-degree
+formulation with cost $\poly(S+r+s)2^{O(r+s)}$; a cut through its word
+circuit gives $\poly(S+r+s)(d+2)^{O(r+t)}$. The proofs account for dense
+polynomial construction, coefficient height, inverse letters, conjugate
+meridians, and degenerate gauge choices.
+
+Second, two binary matrix ranks compute a one-matching complex's scalar
+survivors and first-jet closure multiplier before cobordism elimination.
+A rigidity theorem at multiplier one proves equality of total Khovanov
+rank under every classical link continuation. A separate flat-origin
+constraint explains why the stronger algebraic interval compression is
+absent from genuine minimal complexes in the tested corpus.
+
+Third, a reverse filtration of cut faces compiles all suffix determinant
+responses in $O(n(W+1)^2)$ field operations, retaining singular interior
+directions and handling characteristic two. Controlled experiments show
+substantial response-setup improvements, mixed early-observer performance,
+and useful small-instance exact algebraic decisions. All inconclusive
+solver outcomes and unfavorable timings are retained.
+
+The work supplies proved sufficient quasi-polynomial regimes and explicit
+obstructions to universal whole-group compression. It does not establish
+a quasi-polynomial bound for the full maintained recognizer. We conclude
+with a prioritized research program, concrete proof obligations, a patch
+against a pinned repository revision, and reproducibility artifacts.
+\end{abstract}
+\vfill
+{\small Source baseline: \basecommit.\\
+Repository: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Topology/UnknotRecognition}{ProveIt / Topology / UnknotRecognition}.\\
+Companion archive contains source, exact inputs, raw measurements, tests,
+integration patch, and build instructions.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/overview}
+\input{sections/baseline}
+\input{sections/su2_theorems}
+\input{sections/first_jet_theorems}
+\input{sections/streaming_response_theorems}
+\input{sections/portfolio}
+\input{sections/experiments}
+\input{sections/research_agenda}
+\appendix
+\input{sections/reproducibility}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

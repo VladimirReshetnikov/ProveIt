@@ -1,0 +1,495 @@
+% Standalone section material; the parent article supplies theorem environments.
+\section{First-jet decisions before cobordism elimination}
+\label{sec:first-jet-pre-schur}
+
+The maintained closure observer reads a radical complex after all scalar
+units have been cancelled. It deliberately declines a block containing a
+scalar coefficient. This section moves the observation before that operation
+and proves a rigidity statement that removes the knot-completion hypothesis
+when the multiplier is one. The result is an optional decision scanner;
+no original graded homology is claimed after a replacement.
+
+Fix a nonempty matching $m$ with $p$ arcs and put
+\[
+ R=\mathbb F_2[x_1,\ldots,x_p]/(x_1^2,\ldots,x_p^2),\qquad
+ A_\epsilon=\mathbb F_2[\epsilon]/(\epsilon^2).
+\]
+Let $C=(R\otimes V,Q)$ be a bounded finite free complex supported entirely
+on $m$. It must be a whole relative direct summand: no omitted differential
+entry may attach it to another object. Write
+\[
+ Q=A+\sum_{i=1}^p x_i B_i+\text{terms of dot degree at least two},
+ \qquad B=\sum_i B_i,\qquad N=\dim V .
+\]
+All matrices raise homological degree by one. The identities $A^2=0$ and
+$AB+BA=0$ follow from $Q^2=0$. They are necessary first-jet tests, not
+sufficient tests of the whole polynomial identity $Q^2=0$.
+
+\subsection{Two ordinary binary ranks}
+
+Let $r(M)$ denote the total rank of a matrix on the direct sum of all
+homological degrees, equivalently the sum of its adjacent-degree ranks.
+Define
+\begin{equation}
+ t=N-2r(A),\qquad
+ \kappa=N-r\begin{pmatrix}A&0\\ B&A\end{pmatrix}.
+ \label{eq:first-jet-two-ranks}
+\end{equation}
+
+\begin{proposition}[Pre-elimination first-jet invariants]
+\label{prop:first-jet-invariants}
+The number $t$ is the number of objects in a completely scalar-reduced
+one-matching complex. If $B_*$ is induced by $B$ on $H(V,A)$, then
+\[
+ \kappa=t-r(B_*).
+\]
+Both $t$ and $\kappa$ are unchanged by scalar-unit cancellation. Moreover
+$\kappa=0$ if and only if $t=0$. If $t>0$, then $1\le\kappa\le t$.
+\end{proposition}
+
+\begin{proof}
+The homomorphism $R\to\mathbb F_2$ setting every $x_i$ to zero sends
+every scalar-unit cancellation to a binary cancellation. At termination
+its differential is zero, so its object count is $\dim H(V,A)=t$.
+This is the existing residue-survivor invariant specialized to one matching.
+
+The homomorphism $R\to A_\epsilon$ sending every $x_i$ to $\epsilon$
+sends $Q$ to $A+\epsilon B$. In the basis $1,\epsilon$ its underlying
+binary differential is the doubled matrix in
+\eqref{eq:first-jet-two-ranks}; its homology dimension is $2\kappa$.
+Scalar-unit cancellation remains a homotopy equivalence after substitution,
+so $\kappa$ is invariant without any cobordism-valued Schur update.
+
+Choose a binary special contraction of $(V,A)$ onto $H(V,A)$. Transferring
+$\epsilon B$ retains only its first perturbation term because
+$\epsilon^2=0$. The transferred differential is $\epsilon B_*$ and its
+binary rank is $r(B_*)$. Its homology dimension is $2t-2r(B_*)$, giving
+the asserted formula.
+
+Regard $B_*$ as a representation of a finite linearly oriented quiver;
+it need not square to zero. The number of intervals in its decomposition
+is $t-\sum_h r(B_{*,h})=\kappa$. A nonzero bounded quiver has at least
+one interval. If $t=0$, scalar-unit cancellation removes the whole
+relative complex, so it is contractible.
+\end{proof}
+
+\begin{lemma}[Established knot-completion multiplier]
+\label{lem:first-jet-knot-multiplier}
+If the actual classical completion $L_m$ is a knot, then
+\begin{equation}
+ \dim H(\operatorname{cl}(C))
+ =\kappa\,\dim\operatorname{Kh}(L_m;\mathbb F_2).
+ \label{eq:first-jet-knot-multiplier}
+\end{equation}
+\end{lemma}
+
+This is the closure formula already established in the repository's
+report~28 and \path{synthesis/closure_resets.tex}. We reproduce its
+chain-level justification to make the pre-elimination query self-contained~\cite{ClosurePrior}.
+The new all-link extension at $\kappa=1$ is proved separately below.
+
+\begin{proof}
+Let $(D,d_D)$ be the ordinary Khovanov complex of $L_m$. Its marked-arc
+dot maps $X_i$ commute with each other and with $d_D$, and satisfy
+$X_i^2=0$. On $D^a\otimes V^b$ use total cohomological degree $a+b$.
+The completed differential is
+$\mathcal D=d_D\otimes1+Q(X_1,\ldots,X_p)$; both summands have total
+degree one. All tensor signs disappear over $\mathbb F_2$.
+
+Consider moving the mark for variable $x_i$ across one crossing, from
+edge $u$ to the continuation edge $v$ of the same link strand.
+The local reverse-saddle map $H$ has cohomological degree $-1$,
+satisfies $H^2=0$, commutes with every fixed dot map, and obeys
+\[
+ d_DH+Hd_D=X_u+X_v=\delta,\qquad H\delta=\delta H=0.
+\]
+These are strict chain identities, not merely identities on homology:
+Nahm records them in Lemma~2.4, with attribution to
+Hedden--Ni, Baldwin--Levine--Sarkar, and Lipshitz--Sarkar
+\cite{Nahm2026Basepoints}. The last identity also follows there by combining
+$HX_u=X_vH$ with commutation of $H$ with $X_u$.
+
+Put $P=\partial Q/\partial x_i$ and evaluate its other variables at the
+current marked edges. It has degree one on $V$ and is independent of
+$x_i$. Differentiating $Q^2=0$ gives $PQ+QP=0$. The map $HP$ on
+$D\otimes V$ has total degree zero, and
+$G=1+HP$ is self-inverse since $H^2=0$.
+Expansion, with compositions acting right to left, gives
+\[
+ G\mathcal D G
+ =\mathcal D+\delta P+Hd_DH\,P^2
+ =\mathcal D+\delta P .
+\]
+Here the linear $Q$-terms cancel by $PQ+QP=0$, the quadratic
+$Q$-terms contain $H^2$, and
+$Hd_DH=H\delta=0$ kills the remaining quadratic term.
+In particular no assumption $P^2=0$ is being made.
+Since each coefficient is square-free in $x_i$, adding $\delta P$
+replaces exactly the action $X_u$ by $X_v$ in that variable.
+If quantum gradings are retained, $H$ has quantum degree $-2$ and
+differentiation with respect to $x_i$ raises quantum degree by two,
+so the same $G$ has quantum degree zero for homogeneous $Q$.
+
+Because $L_m$ is a knot, every mark can be moved along its strand to
+one chosen edge by finitely many such conjugations. Their composition
+is a chain isomorphism, providing coherent transport of the entire
+polynomial matrix. Once all actions equal $X$, every monomial of
+degree at least two vanishes and the differential is $d_D+A+XB$.
+An equality of dot maps on homology alone would not justify this step.
+
+For completeness, let $\nu$ be the operator changing one circle label
+$x$ to $1$ and summing over circles. Over $\mathbb F_2$,
+\[
+ \nu^2=0,\qquad \nu d_D=d_D\nu,\qquad \nu X+X\nu=1;
+\]
+see Shumakovitch, Lemma~3.1.C and the proof of Theorem~3.2.A
+\cite{Shumakovitch2014}. Thus $E=\operatorname{im}\nu=\ker\nu$
+is a subcomplex and $D=E\oplus XE\cong A_\epsilon\otimes E$,
+with $X$ acting as multiplication by $\epsilon$.
+The transported completed complex is therefore the tensor product
+over $\mathbb F_2$ of $E$ and $(A_\epsilon\otimes V,A+\epsilon B)$.
+The latter has homology dimension $2\kappa$ by
+Proposition~\ref{prop:first-jet-invariants}; the former has homology
+dimension $\frac12\dim H(D)$.
+The field K\"unneth formula gives \eqref{eq:first-jet-knot-multiplier}.
+\end{proof}
+
+\subsection{Primitive-interval rigidity}
+
+\begin{lemma}[A primitive radical element is a coordinate]
+\label{lem:first-jet-coordinate}
+If $\theta\in R$ has zero constant term and nonzero linear part, an
+automorphism of $R$ carries $x_1$ to $\theta$. Consequently
+\[
+ \operatorname{ann}_R(\theta)=\theta R.
+\]
+If $\eta$ also has nonzero linear part and $\theta\eta=0$, then
+$\eta=\theta u$ for some unit $u\in R$.
+\end{lemma}
+
+\begin{proof}
+Every element of $\mathfrak m=(x_1,\ldots,x_p)$ squares to zero: cross
+terms cancel in characteristic two and squares of nonconstant monomials
+vanish. Complete the linear part of $\theta$ to a basis of
+$\mathfrak m/\mathfrak m^2$, lift the other basis vectors, and send the
+generators to these $p$ elements. Their squares vanish, so this defines
+an endomorphism of $R$. The induced map on the associated graded ring
+of the finite $\mathfrak m$-adic filtration is an invertible linear
+change of generators. The endomorphism is therefore an automorphism.
+
+Write $R=R'\oplus x_1R'$ for
+$R'=\mathbb F_2[x_2,\ldots,x_p]/(x_i^2)$. Multiplication by $x_1$
+kills exactly $x_1R'$, so $\operatorname{ann}(x_1)=x_1R$.
+Transport this identity by the automorphism. Thus
+$\theta\eta=0$ gives $\eta=\theta u$. If $u$ had zero constant term,
+the product would have zero linear part. Its constant term must
+therefore be one, so $u$ is a unit.
+\end{proof}
+
+\begin{theorem}[Rigidity at multiplier one]
+\label{thm:first-jet-rigidity}
+If $\kappa=1$, then after scalar-unit cancellation $C$ is isomorphic
+over $R$ to one finite interval
+\[
+ R\xrightarrow{\theta}R\xrightarrow{\theta}\cdots
+ \xrightarrow{\theta}R
+\]
+on $m$, with $\theta$ of odd total-linear parity. A one-term interval
+is allowed and needs no coefficient. For every nonempty classical link
+completion of $m$,
+\begin{equation}
+ \dim H(\operatorname{cl}(C))
+ =\dim\operatorname{Kh}(L_m;\mathbb F_2).
+ \label{eq:first-jet-all-link-equality}
+\end{equation}
+In particular no knot-completion premise is needed here. Quantum
+homogeneity and genuine cube origin are not assumptions of this theorem.
+\end{theorem}
+
+\begin{proof}
+After cancelling scalar units, the quiver of total-linear matrices has
+exactly one interval by Proposition~\ref{prop:first-jet-invariants}.
+Hence its spaces are one-dimensional in consecutive degrees and zero
+elsewhere, and its intervening binary arrows are one.
+The full differential has one coefficient $\theta_h$ between consecutive
+objects, and each $\theta_h$ has odd total-linear parity.
+
+The chain condition gives $\theta_h\theta_{h+1}=0$.
+Lemma~\ref{lem:first-jet-coordinate} gives
+$\theta_{h+1}=\theta_hu_h$ with $u_h$ a unit. Inductively each coefficient
+is a unit multiple of the first one. Successive rescalings of the
+rank-one free modules make every arrow equal to the same $\theta$.
+This is a chain isomorphism over the full ring, not just its first jet.
+
+Let $D$ be the unreduced characteristic-two Khovanov complex of the
+classical link $L_m$, with commuting square-zero dot operators $X_i$.
+The vertical operator $\nu$, which changes one circle label $x$ to $1$
+and sums over circles, satisfies
+\[
+ \nu^2=0,\qquad \nu d_D=d_D\nu,\qquad \nu X_i+X_i\nu=1.
+\]
+These identities follow directly from multiplication and comultiplication
+in $\mathbb F_2[x]/(x^2)$ and hold for links as well as knots. Put
+$\Theta=\theta(X_1,\ldots,X_p)$ and
+\[
+ U=\nu\Theta+\Theta\nu
+ =\left(\sum_i\frac{\partial\theta}{\partial x_i}\right)(X_1,\ldots,X_p).
+\]
+The polynomial defining $U$ has constant term one. Every zero-constant
+polynomial in commuting square-zero operators squares to zero, so $U^2=1$.
+The derivation $\partial=\sum_i\partial/\partial x_i$ satisfies
+$\partial^2=0$, giving $\nu U=U\nu$.
+All these operators commute with $d_D$. Thus $K=U\nu$ satisfies
+\[
+ K^2=0,\qquad K\Theta+\Theta K=1,\qquad Kd_D=d_DK.
+\]
+For $E=\operatorname{im}K=\ker K$, these relations give a direct sum
+of subcomplexes
+$D=E\oplus\Theta E\cong A_\epsilon\otimes E$, with $\Theta$ acting
+as multiplication by $\epsilon$.
+The completed $\ell$-term interval is the tensor product of $E$ with
+the free dual-number interval $J_\ell$. As a binary complex $J_\ell$
+has dimension $2\ell$, differential rank $\ell-1$, and homology
+dimension two. The field K\"unneth formula gives
+$\dim H(J_\ell\otimes E)=2\dim H(E)=\dim H(D)$.
+\end{proof}
+
+The two ranks certify existence of the interval decomposition and
+rescaling; no such basis needs to be constructed by the decision query.
+The replacement asserts neither an isotopy of knots nor equality of
+open complexes or of original bigraded homology.
+
+\subsection{The boundary of the link extension}
+
+For $p=2$, the two-term complex $R^2\to R$ with row $(x_1,x_2)$ has
+$t=3$ and $\kappa=2$. Completing to one circle identifies the variables
+and gives homology dimension four, as the knot formula predicts.
+For the two-component unlink the module is $R$ itself. The image is
+$(x_1,x_2)$, which has dimension three. The total homology dimension is
+$12-2\cdot3=6$, whereas
+$\kappa\,\dim\operatorname{Kh}(U_2)=2\cdot4=8$.
+Thus the all-link equality cannot be extended to arbitrary $\kappa$.
+A three-term interval with coefficient $x_1+x_2$ similarly has
+$\kappa=3$ but completed rank four on the two-component unlink.
+
+Raw survivor count alone is not a general algebraic decision rule:
+an interval with coefficient $x_1$ can have arbitrarily many objects
+and still have $\kappa=1$. Such algebraic fixtures must not be
+presented as realized knot prefixes.
+
+\subsection{A flat-origin constraint on genuine minimal complexes}
+
+\begin{proposition}[Vanishing of the minimal diagonal first jet]
+\label{prop:first-jet-flat-origin}
+Start from an ordinary undotted tangle cube over $\mathbb F_2$, apply
+delooping and scalar-unit cancellation, and retain any whole relative
+direct summand of the resulting minimal complex $M$. Every same-matching
+entry of its differential has total-linear dot parity zero.
+In particular a one-matching summand has $\kappa=t$.
+\end{proposition}
+
+\begin{proof}
+In the dotted cobordism category, let $\partial$ remove one dot and sum
+over all choices. It is a derivation for composition and respects the
+relations in characteristic two. A one-dotted sphere differentiates
+to an undotted sphere, hence to zero. The derivative of the two-dot
+relation consists of two equal terms. The two dotted terms in
+neck-cutting also differentiate to two equal undotted surfaces.
+Their derivatives vanish. The undotted cube differential $d$ therefore
+satisfies $\partial d=0$.
+
+For a chain isomorphism changing $d$ to $D=FdF^{-1}$, differentiation
+of the inverse identity gives
+\[
+ \partial D=\Gamma D+D\Gamma,\qquad \Gamma=(\partial F)F^{-1}.
+\]
+Delooping is such an isomorphism. Gaussian cancellation is a chain
+isomorphism displaying a contractible disk as a direct summand;
+retain these disks formally until the end. The block of this equation
+on the remaining minimal summand still has the form
+$\partial D_M=\Gamma_M D_M+D_M\Gamma_M$, because the displayed
+differential has no off-block entries.
+
+Recall the scalar-residue map $\rho$ from the maintained radical analysis
+\cite{RadicalPrior}. At a frontier of $2k$ endpoints, a dotted basis
+morphism $x_S:a\to b$ has nonnegative weight
+$k-c(a,b)+2|S|$, where $c(a,b)$ counts the circles in the glued pair
+of matchings. Weight zero consists precisely of scalar identities.
+The Euler-characteristic composition rule makes weights additive in
+every nonzero valid composition. Projection to weight zero is therefore
+multiplicative; this is the map $\rho$.
+Minimality gives $\rho(D_M)=0$, hence
+$\rho(\partial D_M)=0$. On a same-matching entry this is exactly
+the sum of its singleton-dot coefficients. The residue on a
+different-matching entry is automatically zero. Restriction to a further
+whole summand preserves the same block argument.
+\end{proof}
+
+This proposition needs genuine cube origin or a suitable connection
+identity. The generic query does not infer it from $Q^2=0$ or from a
+nonnegative survivor profile. It computes both ranks and remains valid
+on the broader algebraic class in Theorem~\ref{thm:first-jet-rigidity}.
+A future provenance-dependent optimization could omit the second rank;
+this release does not install that shortcut.
+
+\subsection{Decision control, costs, and the remaining structural question}
+
+\begin{proposition}[Established rank-two unknot test over $\mathbb F_2$]
+\label{prop:first-jet-rank-two}
+For a classical knot $K$,
+\[
+ \dim_{\mathbb F_2}\operatorname{Kh}(K;\mathbb F_2)=2
+ \quad\Longleftrightarrow\quad K\text{ is the unknot}.
+\]
+Every larger total unreduced rank is at least four.
+\end{proposition}
+
+\begin{proof}
+Choose a basepoint and its dot map $X$ on the ordinary complex $D$.
+The reduced complex can be taken as $\widetilde D=\operatorname{im}X$,
+up to its conventional quantum shift. The identities for $\nu$ above give
+$D=E\oplus XE$ for $E=\operatorname{im}\nu$, and
+$X:E\to XE=\widetilde D$ is an isomorphism with inverse $\nu$.
+Both maps commute with the homological differential. Consequently
+\[
+ \dim_{\mathbb F_2}\operatorname{Kh}(K;\mathbb F_2)
+ =2\dim_{\mathbb F_2}\widetilde{\operatorname{Kh}}(K;\mathbb F_2).
+\]
+This is the characteristic-two reduced/unreduced splitting of
+Shumakovitch, Corollary~3.2.C \cite{Shumakovitch2014}.
+
+The integral reduced cube is a bounded complex of finite free abelian
+groups. The universal coefficient theorem therefore gives
+\[
+ \dim_{\mathbb Q}\widetilde{\operatorname{Kh}}(K;\mathbb Q)
+ \le
+ \dim_{\mathbb F_2}\widetilde{\operatorname{Kh}}(K;\mathbb F_2).
+\]
+Kronheimer--Mrowka prove that the rational reduced rank is greater
+than one for every nontrivial knot: this is the rank consequence of
+their instanton spectral sequence and unknot-detection argument,
+specifically Corollary~1.3 and Proposition~1.4 with the accompanying
+discussion \cite{KM2011Kh}. Hence a nontrivial knot has unreduced
+$\mathbb F_2$ rank at least four. Conversely the crossing-free unknot
+has complex $\mathbb F_2[x]/(x^2)$ with zero differential and rank two.
+All normalization shifts leave these total dimensions unchanged.
+\end{proof}
+
+This detection theorem is an established topological input.
+Our contribution is the preservation of its total-rank observation
+under the new queries and replacements, not a new proof of Khovanov
+unknot detection.
+
+
+For a classical link $L$ with $c\ge1$ components,
+$\dim_{\mathbb F_2}\operatorname{Kh}(L;\mathbb F_2)\ge2^c$.
+Indeed, write $J_L(q)$ for its graded Euler characteristic, normalized
+by $J_U(q)=q+q^{-1}$. The integral cube is free, so this Euler
+characteristic is unchanged by passage to $\mathbb F_2$.
+The skein relation
+$q^{-2}J_{L_+}-q^2J_{L_-}=(q^{-1}-q)J_{L_0}$
+shows that crossing changes preserve $J_L(1)$.
+Changing crossings to obtain the $c$-component unlink gives
+$J_L(1)=2^c$, and total homology dimension bounds the absolute
+Euler characteristic \cite{Khovanov2000}.
+Homological or quantum normalization shifts do not alter this
+absolute bound. This argument is applied to the ordinary classical
+completion, whose total rank the replacement theorem preserves.
+
+At each proper prefix the new driver fully allocates one crossing with
+cancellation disabled and finds whole differential components.
+A component with $\kappa=0$ is discarded; one with $\kappa=1$ can be
+replaced by one copy of its matching, with an arbitrary homological shift
+because only total rank is observed. Every nonempty classical completion
+of the latter contributes at least two to rank, and a completion with
+at least two link components contributes at least four.
+For $\kappa\ge2$ the multiplier is used only after verifying that the
+actual completion is a classical knot.
+Contributions of independent components are added; a lower bound of
+four rejects the original knot.
+
+Every replacement preserves total rank for every later classical
+completion. This statement is preserved by finite sequences of
+replacements; the theorem does not require quantum homogeneity of the
+intermediate rank-only model. The driver then uses ordinary scalar
+cancellation and continues its crossing order. At final closure it
+reports rank two as unknotted and larger rank as knotted, using
+Khovanov unknot detection.
+
+The local optional allowance covers component traversal, polynomial
+extraction, binary work, completion geometry, and construction of
+replacement arrays. Arrays and reverse indices are prepared before a
+final check and one installation. Exhausting this allowance discards
+all uninstalled proposals from that stage, disables further observation,
+and resumes ordinary cancellation on the intact state. Global
+resource exhaustion propagates the ordinary scan limit and never
+becomes a knot verdict. The object ceiling includes temporary crossing
+allocation before observation.
+
+For a queried block with $N=\sum_h n_h$ objects and total packed
+coefficient input length $L$, the query stores binary matrices using
+$O(N^2)$ bits up to index overhead and performs no cobordism composition.
+A conservative bit-complexity envelope is
+\[
+ \widetilde O(L+N^3).
+\]
+The tilde absorbs logarithmic factors and polynomial-size index
+arithmetic. Singleton monomials occupy packed bit positions
+$1,2,4,\ldots$; reading only these avoids enumeration of dense
+irrelevant higher terms. The cost includes the given coefficient
+representation and does not assume it has polynomial size in $p$.
+
+Let $w$ be the maximum actual frontier size and $g$ the largest number
+of crossings between successive one-object checkpoints of the executed
+scan, including its initial and terminal segments. The crossing ending
+a segment counts before observation or cancellation. A crossing creates
+at most eight delooped children, so each segment has at most $8^g$
+temporary objects. Coefficient spaces at width $w$ have size $2^{O(w)}$.
+The explicit elimination, query, and geometry operations therefore give
+\[
+ T(n;g,w),\ S(n;g,w)\le\operatorname{poly}(n)2^{O(g+w)}
+\]
+with the maintained polynomial ordering overhead. A one-object
+checkpoint can retain a large frontier, so $w$ cannot be dropped as
+it can after a suitable diagram-splicing reset.
+Quasi-polynomial time follows if constructible orders guarantee
+$g+w=O(\log^2(n+2))$. No such guarantee for arbitrary knots or unknots
+is established. Stages after observer exhaustion remain included in
+the actual recorded gap.
+
+\subsection{Finite evidence and interpretation}
+
+The discovery run uses seed $29002$, accepting $180$ knot braid diagrams
+from $591$ attempts. Greedy and shuffled orders give $360$ complete scans
+and $2898$ stages. There are $117$ eligible pre-Schur one-matching
+components, containing $633$ objects and $237$ scalar pairs.
+All are nonsingleton and contain scalar units. There are $96$ cases
+with $t=\kappa=1$ and $21$ with $t=\kappa\ge2$.
+All $117$ pre/post-cancellation comparisons agree.
+None of $8183$ inspected minimal same-matching entries has odd
+total-linear parity, consistently with the flat-origin proposition.
+
+These counts establish real eligibility before Schur updates, rather
+than only synthetic interval fixtures. They do not establish a timing
+gain; queries and traversal incur overhead. Paired timing data must be
+read separately. In particular no $t>\kappa$ primitive-interval
+compression occurs in this actual-diagram corpus.
+
+The tests compare decisions with an independent complete crossing cube,
+test continued scans after replacement and exhausted local budgets,
+and evaluate polynomial complexes with scalar units and nonlinear terms
+under random invertible changes of basis. They retain explicit
+link-completion counterexamples and an invalid polynomial complex whose
+first-jet identities still hold, documenting the precise audit scope.
+
+\paragraph{Further research questions.}
+Can a cheaply maintained cube-origin connection certificate eliminate
+the second rank throughout the decision scanner? Can small scalar
+components be queried without traversing the whole differential graph
+while still certifying absence of external attachments?
+Which geometric classes admit polylogarithmic one-object checkpoint
+gaps and frontier widths? Can the flat-origin constraint be lifted beyond
+scalar residue to restrict higher jets of mixed-matching minimal
+complexes? Can hard reduced knot families be found where avoided
+cobordism work outweighs observer overhead?
+

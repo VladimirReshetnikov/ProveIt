@@ -1,0 +1,44 @@
+% Optional introduction/footnote material, status checked 8 October 2026.
+% Bibliography keys are supplied in su2_sources.bib.
+
+\paragraph{Current literature and the meaning of the target.}
+The present work does not claim a new general quasipolynomial algorithm.
+Lackenby's March 2021 author slides announce a running time
+$2^{O((\log n)^3)}=n^{O((\log n)^2)}$ and outline a hierarchy approach
+\cite{Lackenby2021Slides}. We use that source's displayed bound.
+His July 2026 preprint proves a new hierarchy
+algorithm for incompressibility, with unknot recognition as a consequence,
+and explicitly leaves possible speed-ups to future work
+\cite{Lackenby2026Hierarchies}.  It should therefore not be cited as a
+completed proof of the announced quasipolynomial bound.  The present
+algebraic sufficient condition targets $n^{O(\log n)}$ on a specified
+residual class, under explicitly stated and verified compression hypotheses.
+These are different statements.
+
+A September 2026 preprint by Musick claims a polynomial-time procedure
+for producing locally minimal bridge presentations and, consequently,
+unknot recognition in $P$ \cite{Musick2026}.  Version 2 is dated
+20 September 2026.  That claim has not been independently established by
+this study and none of the results or code here depends on it.  Recording
+its existence avoids the inaccurate claim that no polynomial-time preprint
+has appeared; treating it as an unverified recent claim avoids replacing
+proof checking with an abstract-level assertion.  An independent audit
+would have to establish the completeness of the permitted presentation
+moves and the polynomial bounds on their compressed execution, as well as
+the correctness of the initial diagram conversion.
+
+\paragraph{What the hierarchy bounds suggest.}
+Lackenby's 2026 Proposition 9.1 bounds the number of main iterations by
+$L(g+1)^L$, where $L$ controls hierarchy length and $g$ controls the
+relevant pattern complexity.  The later sections develop efficient
+hierarchy certificates and compressed cutting operations
+\cite{Lackenby2026Hierarchies}.  Purely as an implication of that bound,
+polynomial $g$ and $L=O(\log n)$ would yield $n^{O(\log n)}$
+iterations, while $L=O((\log n)^2)$ yields
+$n^{O((\log n)^2)}$.  Counting iterations alone still requires a bound
+on the bit cost of each iteration and on the construction of the
+surfaces used.  The 2021 slides describe polynomial genus, compressed
+hierarchies, multisurfaces, and Heegaard/Cheeger-region arguments as the
+components of that route \cite{Lackenby2021Slides}.  A rigorous
+implementation project would need exact data formats, verified transition
+rules, and complete size and bit-complexity bounds for those components.

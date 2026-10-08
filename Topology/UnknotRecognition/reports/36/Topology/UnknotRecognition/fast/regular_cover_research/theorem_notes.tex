@@ -1,0 +1,408 @@
+% Standalone article fragment; parent article supplies theorem environments.
+% Suggested references: hatcher-covering, aht-orbits, lackenby2026.
+\section{Symbolic gluing of regular covering blocks}
+\label{sec:regular-cover-gluing}
+
+\subsection{The new interface and its exact scope}
+
+The existing surface-cover kernel records component types and transports
+ordered fibre points within one supplied cover.  We now give an exact
+assembly interface: it compares multiple covering blocks after their
+boundary preimages have been glued, preserves named boundary lifts, and
+returns a complete family of compatible transports.  In the unmarked case
+it also constructs a canonical cache key.  The computational parameter is
+the binary length of the covering degree; no sheet or boundary-lift list
+is expanded.
+
+The ingredients from covering-space theory are classical
+\cite[Section 1.3]{hatcher-covering}.  Spanning-tree elimination,
+simultaneous conjugacy, generalized Chinese remaindering, and Burnside
+counting are also standard algebraic tools.  Our contribution is their
+precise combination into a checked geometric representation and a
+proof-carrying implementation for this repository.  We make no claim of
+worldwide novelty for the underlying classification of covering spaces.
+
+Fix one of the groups
+\[
+ C_m=\mathbb Z/m\mathbb Z,\qquad
+ D_m=\langle T,R\mid T^m=R^2=1,\ RTR=T^{-1}\rangle.
+\]
+Throughout, $D_m$ has \emph{order $2m$}.  Its elements are represented by
+$(s,t)=T^tR^s$, where $s\in\{0,1\}$ and $t\in\mathbb Z/m\mathbb Z$, with
+\[
+ (s,t)(u,v)=(s+u,\ t+(-1)^s v),\qquad
+ (s,t)^{-1}=(s,-(-1)^s t).
+\]
+For $C_m$ the parity is always zero.  The cases $m=1,2$ are included:
+$D_1\cong C_2$ and $D_2\cong C_2\times C_2$.
+
+Let $\Gamma$ be a finite labelled multigraph; loops and parallel edges are
+allowed.  At vertex $v$, take a compact connected orientable bordered
+surface $F_v$ and a surjective homomorphism
+\[
+ \rho_v:\pi_1(F_v)\longrightarrow G,\qquad G=C_m\text{ or }D_m.
+\]
+The corresponding block cover $\widetilde F_v\to F_v$ has fibre $G$ and
+monodromy acting on the \emph{left}.  Surjectivity makes the block cover
+connected and regular.  Each boundary circle has a based peripheral word,
+including a chosen path from the block basepoint, hence a specified
+monodromy element $p_{v,j}\in G$.  These paths are part of the framing.
+
+An oriented edge $e:u\to v$ uses one distinct boundary port at each end,
+with
+\[
+ p_{v,j}=p_{u,i}^{-1}.
+\]
+Over the fixed orientation-reversing base boundary gluing, it glues the
+\emph{entire preimages} of these two circles by the fibre map
+\[
+ x\longmapsto x a_e,\qquad a_e\in G.
+\]
+This map is compatible with the two peripheral actions because
+$p_{v,j}^{-1}(xa_e)=(p_{u,i}x)a_e$.
+It therefore extends uniquely to the required map of boundary covering
+spaces.  Every port is used at most once.  All vertex and port labels,
+the local monodromy representations, and the underlying base gluing are
+fixed when comparing two phase assignments $a=(a_e)$ and $a'=(a'_e)$.
+
+This promise is substantial.  A general permutation of the boundary
+lifts, with independent rotations on them, need not be right
+multiplication by one group element.  Also, a natural action of a
+dihedral group on $m$ points is usually not the regular $2m$-point action
+used here.  The existing affine surface-cover classifier contains regular
+paired components that can motivate this interface, but no automatic
+extraction or conversion is asserted by the new module.
+
+\subsection{From gluing maps to a single root variable}
+
+\begin{lemma}[Local transports]
+Every isomorphism of a block cover over the identity of $F_v$ is uniquely
+of the form $x\mapsto xh_v$, with $h_v\in G$.
+\end{lemma}
+\begin{proof}
+An equivariant map is determined by $h_v=f(1)$, since
+$f(g)=gf(1)=gh_v$.  Conversely, right multiplication commutes with every
+left monodromy action and is bijective.  The associated covering-space
+isomorphism is unique by path lifting.
+\end{proof}
+
+\begin{theorem}[Exact assembly transport equations]
+Two phase assignments are isomorphic over the fixed labelled base if and
+only if there are $h_v\in G$ satisfying
+\begin{equation}\label{eq:regular-glue}
+ a_eh_v=h_ua'_e\qquad(e:u\to v).
+\end{equation}
+For a spanning forest with roots $r$, let $A_v$ and $A'_v$ be the ordered
+products of the source and target edge phases along the forest path from
+$r$ to $v$, using inverses when an edge is traversed backwards.  Then
+every solution is uniquely specified by its root elements $h_r$, with
+\begin{equation}\label{eq:regular-root}
+ h_v=A_v^{-1}h_rA'_v.
+\end{equation}
+For each nonforest edge, the remaining condition is
+\begin{equation}\label{eq:regular-cycle}
+ c_eh_r=h_rc'_e,\qquad
+ c_e=A_ua_eA_v^{-1},\quad
+ c'_e=A'_ua'_e(A'_v)^{-1}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Starting with $x$ on the source side of an edge, gluing and then applying
+the target-block transport gives $xa_eh_v$.  Transporting first and then
+using the target gluing gives $xh_ua'_e$.  Equality for all $x$ is exactly
+\eqref{eq:regular-glue}.  It is necessary and sufficient for the local
+cover isomorphisms to descend to an isomorphism of the glued covers.
+The equations on a tree uniquely propagate a chosen root element and
+give \eqref{eq:regular-root} by induction.  Substituting that expression
+into the equation on a chord and multiplying on the two sides yields
+\eqref{eq:regular-cycle}.  The calculation includes loops and reverse
+tree traversals.
+\end{proof}
+
+For cyclic groups, \eqref{eq:regular-cycle} simply says $c_e=c'_e$:
+the root variable disappears.  For $D_m$, write
+$h_r=(s,t)$, $c_e=(p,a)$, and $c'_e=(p',a')$.  The exact conditions are
+\[
+ p=p',\qquad
+ \begin{cases}
+ a=(-1)^sa'\pmod m,&p=0,\\
+ 2t=a-(-1)^sa'\pmod m,&p=1.
+ \end{cases}
+\]
+There are only two \emph{global} parity choices per connected graph
+component, regardless of the number of blocks.  The second congruence
+is impossible when $\gcd(2,m)$ does not divide its right side; otherwise
+it is one residue class modulo $m/\gcd(2,m)$.
+
+\subsection{Ordered points and unparameterized boundary lifts}
+
+A boundary lift of a port with peripheral monodromy $p$ is represented
+by a sheet $x$.  Its fibre over the boundary basepoint is the left coset
+$\langle p\rangle x$.  Different sheets in that coset describe the same
+unparameterized boundary circle.  A named-boundary comparison therefore
+must preserve a coset, rather than an arbitrarily selected point on it.
+
+\begin{lemma}[Mark reduction]
+Suppose that at vertex $v$ a source sheet $x$ is to map to a target sheet
+$y$.  In the forest coordinates this is the exact root condition
+\[
+ h_r=A_vx^{-1}y(A'_v)^{-1}.
+\]
+If the mark specifies only the boundary lift containing $x$ and the one
+containing $y$, then the condition is
+\begin{equation}\label{eq:root-coset}
+ h_r\in L\langle p\rangle Q,\qquad
+ L=A_vx^{-1},\quad Q=y(A'_v)^{-1}.
+\end{equation}
+For each fixed root parity, this is either impossible or one congruence
+$t=b\pmod q$ with $q\mid m$.
+\end{lemma}
+\begin{proof}
+The point statement follows directly from $xh_v=y$.  For boundary lifts,
+the required equality is
+$\langle p\rangle xh_v=\langle p\rangle y$, which is equivalent to
+\eqref{eq:root-coset}.
+If $p=T^a$, put $q=\gcd(m,a)$.  The elements of
+$L\langle p\rangle Q$ have the parity of $LQ$, and their shifts form the
+single residue class of the shift of $LQ$ modulo $q$.  This follows by
+multiplying $L(T^{ka})Q$; the possible sign on $ka$ does not change its
+generated cyclic subgroup.
+If $p=T^aR$, the subgroup has exactly two elements.  The two elements
+$LQ$ and $LpQ$ have opposite parities, so each parity permits exactly
+one shift modulo $m$.  This also proves the degenerate cases $m=1,2$.
+\end{proof}
+
+Repeated marks and an ordered list of boundary names are permitted.
+The constraint for each named lift is independent of the representative
+sheet used to encode it.  Individual attaching-circle rotations are
+not silently forgotten: edge phases remain part of the input, and
+parameterized point marks can fix phases that an unparameterized
+boundary mark leaves free.
+
+\subsection{The complete binary algorithm and its certificates}
+
+\begin{theorem}[Compressed marked assembly comparison]
+For the promised cyclic or dihedral assembly model, with ordered sheet
+marks and ordered unparameterized boundary-lift marks, there is a
+deterministic algorithm that computes \emph{all} isomorphisms over the
+fixed base in polynomial binary time.
+For each graph component, its answer is the union of at most two
+families
+\[
+ h_r=T^{b+kq}R^s,\qquad
+ 0\le k<m/q,\quad q\mid m.
+\]
+These families, together with \eqref{eq:regular-root}, represent every
+compatible map uniquely.  The cyclic case has at most one family.
+\end{theorem}
+\begin{proof}
+Validate the canonical bordered-surface schema, the surjectivity of the
+local group representations, distinct use of ports, and inverse peripheral
+monodromies.  Construct the spanning forest and the path products.
+For each root parity, reduce the cycle and mark conditions as above.
+Every nontrivial surviving condition is a single modular congruence
+$t=b_i\pmod{q_i}$ with $q_i\mid m$.
+
+Intersect them by generalized Chinese remaindering.  If the current class
+is $t=b\pmod q$ and the next is $t=b'\pmod{q'}$, their intersection exists
+if and only if
+\[
+ b=b'\pmod{\gcd(q,q')}.
+\]
+When it exists, extended Euclid produces the one resulting residue
+class modulo $\operatorname{lcm}(q,q')$, still a divisor of $m$.
+When it does not, there are two incompatible original congruences:
+pairwise consistency of such congruences is equivalent to simultaneous
+consistency.  A scan of the already processed constraints locates that
+pair; it occurs at most once per parity branch.
+
+The result for a surviving branch is exactly the stated arithmetic
+progression.  Root propagation is unique, so no maps are missing or
+counted twice.  Different parities are different elements of the regular
+dihedral group, including when $m=1,2$.  Different graph components have
+independent choices.
+\end{proof}
+
+Here is a useful precise complexity accounting.  Let $N$ be the total
+number of vertices, edges, free generators in all local schemas, and marks,
+and let $B$ include the maximum input-integer bit length and $\log(N+2)$.
+For a connected graph, validation, comparison, canonicalization, and
+certificate verification have a conservative $O(NB^3)$ elementary
+bit-operation bound.  There are $O(N)$ arithmetic operations, with
+extended Euclid and modular inversion charged conservatively.  All
+residue moduli divide $m$.  The representation contains $O(NB)$ bits.
+For a disconnected graph the residue-family computation remains
+$O(NB^3)$; explicitly multiplying all component isomorphism counts adds
+at most $O(N^2B^2)$ work with schoolbook multiplication.  One may retain
+the factored count if that product is unnecessary.
+
+The implementation emits arithmetic certificates.  A positive parity
+branch gives a residue satisfying every reduced congruence and the least
+common multiple of their moduli.  A negative branch identifies either
+one impossible equation or two incompatible congruences.  The verifier
+reconstructs the forest and reduced conditions, but does \emph{not} run
+CRT.  A second verifier checks an explicit set of block gauges directly
+against \eqref{eq:regular-glue} and the original point/coset marks, without
+using a forest or a congruence solver.  Thus a successful transport is
+checked against its actual gluing semantics.
+
+\subsection{Canonical keys for unmarked assemblies}
+
+\begin{theorem}[Canonical unmarked representative]
+For a fixed labelled cyclic or dihedral assembly model, a complete
+unmarked isomorphism key can be computed in polynomial binary time.
+In the dihedral case at most two candidate root conjugations per graph
+component suffice.  The algorithm also produces block gauges to the
+canonical edge-phase assignment.
+\end{theorem}
+\begin{proof}
+First gauge the forest phases to the identity.  The remaining phases are
+the ordered tuple $(c_e)$ of chord holonomies.  Residual changes are
+simultaneous conjugation by one root element.
+For a cyclic group there is nothing further to do.
+
+In $D_m$, conjugation by $h=(s,t)$ sends a rotation shift $a$ to
+$(-1)^sa$ and a reflection shift $a$ to $(-1)^s(a-2t)$.
+If every chord is a rotation, take the lexicographically smaller of
+the tuple of shifts and its negation.
+Otherwise let $a$ be the shift of the first reflection chord in the fixed
+edge order, set $d=\gcd(2,m)$ and $\delta=a\bmod d$, and require that this
+reflection have the smallest attainable shift $\delta$.  For each parity
+$s$, solve
+\[
+ 2t=a-(-1)^s\delta\pmod m.
+\]
+The equation always has solutions.  For even $m$ its two solutions differ
+by $m/2$, and $T^{m/2}$ is central, so they act identically by conjugation
+on every chord.  There is therefore only one relevant tuple per parity.
+Choose the lexicographically smaller of these at most two tuples.
+The normalized forest and chord phases give a complete canonical phase
+assignment.  Include the local schemas, monodromies, and labelled port
+graph in the key so it cannot identify different framed input models.
+\end{proof}
+
+The cache key is intentionally \emph{unmarked}.  It must not be used to
+erase external named lifts, points, base vertex identities, or arbitrary
+attachment maps.  The marked comparison algorithm handles named points
+and lifts exactly, but a canonical marked-state representation beyond
+this scope is a separate task.
+
+\subsection{Exact residual state counts}
+
+\begin{theorem}[Phase orbits and their exact counts]
+Let the fixed labelled graph be connected with cycle rank
+$\beta=|E|-|V|+1$.  The set of unmarked phase assignments modulo all block
+deck gauges is naturally identified with $G^\beta$ modulo simultaneous
+conjugacy.  Consequently, for $C_m$ it has exactly $m^\beta$ elements.
+For $D_m$ its cardinality is
+\[
+ \begin{cases}
+ \displaystyle
+ \frac{(2m)^\beta+(m-1)m^\beta+m\,2^\beta}{2m},
+ &m\text{ odd},\\[2ex]
+ \displaystyle
+ \frac{2(2m)^\beta+(m-2)m^\beta+m\,4^\beta}{2m},
+ &m\text{ even}.
+ \end{cases}
+\]
+\end{theorem}
+\begin{proof}
+Gauge each forest edge to the identity.  Any choice of phases on the
+$\beta$ remaining edges is possible, and the only remaining freedom is
+the common root gauge acting by simultaneous conjugacy.  This proves the
+first statement and the cyclic count.
+Burnside's lemma gives the dihedral count in the form
+\[
+ \frac1{|D_m|}\sum_{g\in D_m}|C_{D_m}(g)|^\beta.
+\]
+For odd $m$, the identity has centralizer size $2m$, the $m-1$ other
+rotations have centralizer size $m$, and each of the $m$ reflections has
+centralizer size $2$.  For even $m$, the two central rotations have
+centralizer size $2m$, the $m-2$ other rotations have centralizer size $m$,
+and the $m$ reflections have centralizer size $4$.  Substitution proves
+the displayed formulas.  The same expressions include $m=1,2$ and
+$\beta=0$.
+\end{proof}
+
+These formulas distinguish cheap equivalence from a small search space.
+Even with $\beta=1$, a cyclic modulus $m=2^b$ gives $2^b$ inequivalent
+phase assignments encoded with $O(b)$ bits each.  The new algorithm
+removes enumeration of the vertex gauges for a \emph{given comparison};
+it does not reduce all possible holonomy choices to polynomially many
+states.  Equally, this count does not prove that an unknot hierarchy
+must encounter all these states.  A quasipolynomial recognizer needs a
+bound on the states reachable by its geometric construction, or a
+further proved quotient appropriate to the information the construction
+needs to retain.
+
+Although every block is regular, a glued cover need not be regular.
+Its deck group is the simultaneous centralizer of its chord holonomies
+inside $G$ (up to the chosen right-action convention).  In particular,
+noncentral dihedral holonomy can reduce the global deck group.  The
+algorithm classifies these assemblies without assuming global regularity.
+
+\subsection{Topology and a concrete large example}
+
+Each connected graph component produces a connected assembled covering
+surface.  Boundary-circle gluings do not change Euler characteristic.
+Thus, writing $d=|G|$,
+\[
+ \chi(\widetilde F)=d\sum_{v}\chi(F_v),\qquad
+ b(\widetilde F)
+ =\sum_{\text{unglued ports }(v,j)}
+        \frac{d}{\operatorname{ord}(p_{v,j})},
+\]
+and $g(\widetilde F)=(2-b(\widetilde F)-\chi(\widetilde F))/2$.
+For a rotation $T^a$ the order is $m/\gcd(m,a)$; a dihedral reflection
+has order two.  These formulas use binary arithmetic and no expanded
+boundary-cycle enumeration.
+
+For example, take two pair-of-pants bases with local monodromies $T,R$
+in $D_m$.  Their connected regular covers have genus zero and $2m+2$
+boundary circles.  Glue the entire preimages of their reflection ports.
+There are $m$ glued circle pairs, giving a connected surface of genus
+$m-1$ and $2m+4$ remaining boundary circles.  The graph has one edge, so
+all gluing phases are equivalent and exactly $2m$ isomorphisms relate
+any two assignments.  The construction and comparison still use
+polynomial time in $\log m$.  This example shows that exponential
+expanded genus is compatible with a small, exact assembly representation.
+
+\subsection{Relevance to an unknot hierarchy and the remaining obligations}
+
+Lackenby's July 2026 hierarchy algorithm explicitly retains boundary
+patterns and parallelity information \cite{lackenby2026}.  Its
+Section~9 iteration estimate does not by itself give a quasipolynomial
+implementation; the treatment of supplied compressed surfaces is a
+different issue from controlling which states are generated.
+General orbit algorithms for compressed normal surfaces are already
+available \cite{aht-orbits}.  The present kernel should be evaluated as
+an additional exact attachment-comparison tool, not as a replacement
+for those algorithms.
+
+The next geometric work is concrete:
+\begin{enumerate}
+\item Extract regular cyclic or dihedral block actions from a supplied
+compressed surface or parallelity description, with certificates for
+the common fibre coordinates and the based peripheral system.
+\item Certify that each proposed full-boundary-preimage attachment is
+one coherent right-group phase.  If the actual map is an arbitrary
+permutation of lifts with independent rotations, this module does not
+apply.
+\item Determine whether the coherent-phase promise is preserved by the
+specific cutting, compression, and hierarchy-repair operations used in
+the recognizer.
+\item Extend the interface to controlled exceptions, such as a bounded
+number of independently attached lifts or nonregular blocks, while
+retaining exact external marking semantics.
+\item Bound the cycle rank and the reachable holonomy tuples created
+by the hierarchy, rather than only the time needed to compare two
+tuples.
+\item Investigate whether a weaker equivalence than cover isomorphism
+preserves all later pattern-compression decisions and permits additional
+state merging; prove the preservation theorem before using that quotient.
+\end{enumerate}
+
+Until those obligations are met, the module returns no knot verdict and
+is not dispatched by the main recognition pipeline.  Its proved
+performance improvement is the removal of sheet and local-gauge
+enumeration from this explicit geometric assembly problem.

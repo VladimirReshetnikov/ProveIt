@@ -1,0 +1,153 @@
+% Derived only from the existing su2_audit.json and su2_benchmark.json.
+% No experiments were rerun for this subsection.
+
+\subsection{SU(2) compilation and decision experiments}
+\label{subsec:su2-experiments}
+
+The recorded experiments test the exact formula construction and illustrate
+the practical degree--variable tradeoff with the exact NLSAT method\cite{JovanovicDeMoura2012,ProgrammingZ3}.  They do not measure the running
+time of the theoretical real-decision algorithm.  The complete records are
+\path{results/su2_audit.json} and
+\path{results/su2_benchmark.json}; the corresponding scripts are
+\path{su2_research/audit_su2.py} and
+\path{su2_research/benchmark_su2.py}.
+
+\paragraph{Finite correctness audit.}
+With seed $20261008$, the audit sampled 48 accepted one-component braid
+closures on two to four strands, using words of one to seven letters.
+Every third accepted diagram was mirrored.  An independently implemented
+reduced $\mathbb F_2$ Khovanov cube classified 39 samples as unknots
+and nine as knotted.  Bridge compilation completed 42 of 48 queries:
+36 unknot decisions and six knottedness decisions.  Its six timeouts
+comprised three samples of each oracle class.  Defining-generator Tietze
+elimination followed by compilation completed all 48 queries.  Thus 90 of
+96 queries were definitive, with no disagreement among those 90.
+The audit identifies its exact backend as Z3 5.1.0.
+
+These are 48 sampled entries, containing 38 distinct stored PD arrays,
+and do not constitute 48 distinct knot types or an independent test-set
+estimate of general success probability.  The saved PD arrays specify
+the actual inputs: the stored source braid words precede the optional
+mirroring step.  The seed and script reproduce that step.
+For the 36 sampled entries with at most five crossings, comprising 26
+distinct PD arrays, exhaustive counts of homomorphisms to $S_3$ agreed
+for the Wirtinger, bridge, and simplified presentations.  This checks
+concrete relation-order and substitution behavior; agreement for one
+finite target group does not establish presentation equivalence in
+general.  The Tietze and bridge proofs supply that justification.
+
+The same audit checked the prime-pretzel family at
+$m=3,5,7,11,21,51$, hence at $9,15,21,33,63,153$ crossings.
+The computed Fox $3$-coloring dimensions were respectively
+$3,5,7,11,21,51$, as predicted by
+Proposition~\ref{prop:su2-prime-rank-obstruction}.  These finite checks
+support the construction and indexing; the proposition's proof supplies
+the statement for all odd $m$.
+
+\paragraph{Presentation choice and peak degree.}
+The benchmark makes three repetitions per presentation on seven fixed
+examples, with a requested solver allowance of $250$ milliseconds.
+Table~\ref{tab:su2-recorded-bench} reports representative cases.
+Here $k$ is the actual number of real variables after the safe gauge and
+meridional trace sharing, and $d_{\rm eq}$ is the maximum degree of an
+individual compiled equality before squaring.  The implementation sends
+the separate equations to NLSAT in these measurements.  Its sum-of-squares
+aggregate is available separately for the constant-atom theoretical bound.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{llrrrrl}
+\hline
+Input & Presentation & $k$ & $d_{\rm eq}$ & Compile ms & Query ms & Result\\
+\hline
+Figure-eight & Wirtinger & 10 & 4 & 0.702 & 273.510 & I\\
+ & Bridge & 10 & 2 & 0.416 & 270.820 & I\\
+ & Tietze & 4 & 10 & 1.716 & 26.103 & K\\
+$T(2,9)$ & Wirtinger & 25 & 4 & 1.866 & 283.346 & I\\
+ & Bridge & 25 & 2 & 0.972 & 285.034 & I\\
+ & Tietze & 4 & 18 & 11.411 & 72.254 & K\\
+Coxeter unknot, $n=9$ & Wirtinger & 25 & 4 & 1.519 & 280.035 & I\\
+ & Bridge & 2 & 2 & 0.323 & 0.983 & U\\
+ & Tietze & 2 & 2 & 0.319 & 1.232 & U\\
+\hline
+\end{tabular}
+\caption{Recorded medians of three repetitions, in milliseconds.  K:
+nonabelian representation; U: no nonabelian representation; I:
+inconclusive timeout.  All three repetitions in each row had the displayed
+status.  The Coxeter example is the closure of
+$\sigma_1\cdots\sigma_9\in B_{10}$.  Timeout durations are reported
+as censored runs and are not completion times.}
+\label{tab:su2-recorded-bench}
+\end{table}
+
+On $T(2,9)$, Tietze elimination reduced $k$ from 25 to four while
+raising $d_{\rm eq}$ to 18, with aggregate degree bound 36.
+Its compilation took longer, but its query completed within the requested
+allowance while the other two formulations did not.  This demonstrates
+why generator elimination must be assessed together with degree and
+support growth.  It gives no finite speedup ratio against a censored run.
+Across all 63 benchmark queries, 39 were definitive and 24 inconclusive.
+
+\paragraph{Compressed powers.}
+A separate construction-only experiment uses the general presentation
+$\langle x_1,x_2\mid x_1^{2^b}\rangle$, represented by $b$ squaring
+gates.  It has no knot-group provenance and was not assigned a knot
+verdict.  Table~\ref{tab:su2-recorded-powers} shows that the compiler
+retained the circuit, producing constant-degree equations without
+expanding $2^b$ letters.  The number of stored terms sums the supports
+of the individual equations and the nonabelian polynomial; it is not the
+support of a fully collected sum-of-squares aggregate.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\hline
+$b$ & Real variables & Stored terms & $d_{\rm eq}$ & Compile ms\\
+\hline
+8 & 37 & 97 & 2 & 0.260\\
+32 & 133 & 361 & 2 & 0.815\\
+128 & 517 & 1417 & 2 & 3.160\\
+512 & 2053 & 5641 & 2 & 13.622\\
+2048 & 8197 & 22537 & 2 & 54.236\\
+\hline
+\end{tabular}
+\caption{Three-run compiler medians for an already constructed word
+circuit.  Expanded word length is $2^b$; aggregate degree bound is four
+throughout.  These measurements exclude WordArena construction and make
+no claim about solver performance on the resulting formulas.}
+\label{tab:su2-recorded-powers}
+\end{table}
+
+\paragraph{Interpretation and trust boundary.}
+Both scripts enable a trace-zero witness probe before the unrestricted
+query. A satisfying assignment to this restricted query is valid for
+the original formula; an unsatisfiable or unknown probe is discarded by
+this implementation. The known completeness theorem for verified knot
+meridians, Theorem~\ref{thm:su2-traceless}, would permit a stronger
+knot-specific policy, but these recorded runs do not implement it.
+All 15 successful knottedness queries in the audit used this probe.
+Their exact algebraic model expressions were retained and checked against
+the assertions by Z3 itself.  This remains a trusted-solver computation,
+not an independently checked proof certificate.  Neither a trace-zero
+failure nor any timeout is accepted as an unknot decision.
+
+The timing allowances are soft: the largest recorded audit call took
+$375.926$ milliseconds with a requested $300$-millisecond allowance,
+and the largest benchmark query took $288.326$ milliseconds with a
+requested $250$-millisecond allowance.  The benchmark's reported query
+time includes formula parsing and solver checks, but excludes the Z3
+import and subsequent model extraction and validation.  Its compiler
+times exclude construction of the input diagram.  The audit's per-call
+times cover compilation and the solver wrapper.
+
+The identical repeated compiler controls also show appreciable timing
+variation: across 63 pairs, the median first-run/control ratio was 1.234,
+with range 0.609--5.565.  Since the control always runs second, this
+includes order and warm-up effects.  With three repetitions, fixed case
+order, and a small convenience sample, the data justify neither a
+statistical speedup claim nor an extrapolated asymptotic exponent.
+They document correct completed queries and concrete representation
+tradeoffs.  Renegar's theoretical complexity and this optional NLSAT
+implementation remain separate statements.

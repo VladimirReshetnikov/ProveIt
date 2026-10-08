@@ -1,0 +1,163 @@
+\section{Research status and the concrete advance}
+\label{sec:status}
+
+\subsection{What is being continued}
+
+The maintained repository already contains a substantial exact recognizer:
+structural and braid certificates, polynomial one-sided obstructions,
+width-sensitive Jones and Khovanov computations, compressed group operations,
+and an optional complete normal-surface backend. Its synthesis article had
+reached 210 pages before this work. Repeating the existing width-conditional
+recurrences, or adding another invariant with no effect on the surviving
+search space, would not close its main theoretical gap.
+
+The public checkout and preceding relevant revision are pinned as follows
+\cite{proveit}:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+Checkout & \baseline\\
+Subtree revision & \subtreebaseline\\
+Shared \code{fast/} tree & \texttt{e7222244bb0d7f35cf7f34f83228b350240e4d13}
+\end{tabular}
+\end{center}
+The preceding subtree revision is entitled ``Document sparse endpoint proofs
+and controlled overlap measurements.'' Both references have the same
+maintained \code{fast/} tree. The patch is prepared against the full checkout
+reference. It does not depend on remembering an earlier conversational archive.
+
+The latest compressed-overlap implementation already had two certified
+shortcuts. One recognized a common cyclic pattern with period at most 32.
+The other counted occurrences of an endpoint letter, saturating at 65, and
+individually verified at most 64 forced candidates. Their exact fallbacks were
+complete, but long-period blocks with many repeated markers could still
+exhaust the allotted work. We remove those two numerical restrictions on a
+structurally certified class. The important change is from enumerating a
+bounded number of candidate lengths to proving a formula for all of them.
+
+Two geometric interfaces are developed alongside that change. The existing
+surface-cover kernel describes a particular affine action on a cyclic sheet
+set. It does not solve gluing equivalence for an assembly of regular covers.
+The new assembly kernel has a deliberately different, checked input model.
+The existing Regina wrapper exports an external-engine verdict and metadata;
+it does not independently certify a supplied normal disk. The new verifier
+checks such a disk in a supplied finite triangulation. These are exact
+additional capabilities, with their premises visible at the interface.
+
+\subsection{What the current literature actually supplies}
+
+Lackenby's July 2026 preprint gives a new algorithm based on essential
+hierarchies and boundary patterns \cite{lackenby2026}. Section 9 explicitly
+distinguishes a bound on the number of steps from a running-time estimate for
+all steps. Its later sections develop polynomial verification and compressed
+decomposition when suitable surfaces are supplied. In particular, supplying
+a normal surface in binary coordinates and cutting efficiently along it are
+not equivalent to finding the required surfaces or bounding the complete
+recognition computation. The repository correctly preserves this distinction.
+
+Compressed-word equality and several fully compressed matching operations
+already have polynomial algorithms in grammar size
+\cite{schleimer,lifshits,matsubara}. The present endpoint construction is a
+more economical exact route for a broad promised class of overlap queries.
+We do not claim that it changes a previously exponential general compressed
+matching problem into a polynomial one.
+
+Likewise, polynomial normal-surface verification is classical. The
+extreme-ray approach is part of the Hass--Lagarias--Pippenger framework
+\cite{hlp}; the more general orbit-counting machinery of
+Agol--Hass--Thurston handles surfaces beyond this restricted certificate
+class \cite{aht}. Our contribution is a small independently inspectable
+implementation, an explicit modular rank certificate, a parity test for the
+boundary, and a reproducible comparison that does not require expanding a
+normal disk. General normal-surface discovery remains a separate problem.
+
+\subsection{Results and their precise scope}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}>{\raggedright\arraybackslash}p{.30\textwidth}@{}}
+\toprule
+Result & Exact guarantee & Remaining premise or limitation\\
+\midrule
+Endpoint progressions & All suffix--prefix overlaps are returned from a
+certified short-anchor occurrence progression; both its step and count are
+binary integers with no fixed cap. & Failure of the structural certificate
+uses the complete matcher; the inherited extension queries can still be
+expensive.\\
+Regular-cover gluing & All framed isomorphisms are encoded by at most two
+root congruence classes per connected assembly graph. & Each block is a
+connected regular cover with checked compatible whole-boundary attachments;
+the blocks are already supplied.\\
+Gluing state count & Exact orbit counts, including $m^\beta$ for cyclic
+covers, quantify states left after relabelling. & This is a lower bound for
+enumerating these framed classes, not for arbitrary unknot algorithms.\\
+Normal disk certificate & A supplied finite triangulation and binary normal
+vector are checked to contain an essential compressing disk. & The vector
+must satisfy the extreme-ray condition; correspondence with a given PD
+diagram is not asserted.\\
+\bottomrule
+\end{longtable}
+
+The distinction between a complete recognizer and a complete local operation
+is central. The word shortcut participates in an already existing optional
+compressed group search. The gluing and normal-disk kernels are new explicit
+APIs. They do not silently introduce new positive or negative knot verdicts
+into the pipeline.
+
+\section{Encodings, cost measures, and proof obligations}
+\label{sec:models}
+
+The number $n$ denotes crossings in a validated classical knot diagram,
+not expanded word length or the size of an unencoded geometric construction.
+We use the specific target $n^{O(\log n)}=2^{O((\log n)^2)}$. Some authors use
+``quasi-polynomial'' for the larger union of bounds
+$2^{(\log n)^{O(1)}}$; any use of that broader convention must be stated.
+
+An SLP is an acyclic binary grammar whose rules are terminals or
+concatenations of earlier rules. Let $g$ be the number of reachable rules,
+$H$ its height, $L$ the maximum represented length, and
+$B=\lceil\log_2(L+1)\rceil$. Lengths, positions, and counts are binary
+integers. Signed generator names have their own bit lengths and are compared
+exactly. A grammar may contain two copies of the same child in one rule;
+its represented occurrence count must therefore respect multiplicity even
+when the grammar nodes themselves are shared.
+
+For surface assemblies, $m$ is the cyclic parameter, and
+$\ell=\lceil\log_2(m+1)\rceil$. The regular dihedral group has order $2m$;
+it is not the generally nonregular action of a dihedral subgroup on $m$
+residues. Let $v,e,r$ denote the numbers of blocks, attachments, and
+explicit markings, with the total listed local monodromy data included in
+the input size. For a connected assembly graph, $\beta=e-v+1$.
+
+For the normal-disk verifier, $t$ is the number of tetrahedra, $x$ the
+normal coordinate vector, $s=|\supp x|\leq7t$, and $B_x$ the largest
+coordinate bit length. A tetrahedron has four triangle and three
+quadrilateral types. Face maps are explicit vertex permutations, not an
+unverified topology label or a hash of one.
+
+We distinguish three measurements throughout. A mathematical bit bound counts
+integer operations according to operand length. The implementation's work
+counter charges selected operations cooperatively; it is a resource policy,
+not an exact instruction count. Wall-clock measurements are empirical and
+include the scope specified by each benchmark. A resource-limited computation
+has no recorded completion time. It cannot serve as the denominator of a
+completion-speedup claim.
+
+\begin{proposition}[Local bounds do not compose without state bounds]
+Suppose each operation on an encoded state of size $S$ costs $S^c$ for a
+fixed $c$. If a computation performs $R(n)$ charged state-processing
+operations, including repeated visits, and every participating state has
+size at most $S(n)$, its operation cost is bounded by
+$R(n)S(n)^c$, before adding input conversion and output verification.
+To obtain the target $n^{O(\log n)}$ from this estimate, it suffices to prove both
+$\log R(n)=O((\log n)^2)$ and
+$\log S(n)=O((\log n)^2)$, with the other work similarly controlled.
+\end{proposition}
+\begin{proof}
+Sum the local cost over the actual operations. Taking logarithms yields
+$\log R+c\log S$. The statement requires bounds for the states actually
+processed and the number of processing operations; the existence of a
+smaller representation, or a bound only on distinct states, is insufficient.
+\end{proof}
+
+This elementary accounting is included to locate the obligation, not as a
+new recognition theorem. The gluing orbit count below gives a concrete
+reason that an efficient quotient computation can leave too many distinct
+states for this argument to meet the target.

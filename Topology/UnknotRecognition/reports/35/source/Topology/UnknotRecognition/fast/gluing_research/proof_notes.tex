@@ -1,0 +1,387 @@
+\section{Full-boundary assembly of compressed surface covers}
+\label{sec:full-boundary-assembly}
+
+The maintained \texttt{surface\_cover.py} classifies a supplied dihedral
+cover of one canonical bordered surface.  Its component and marking formulas
+do not themselves specify what happens when entire collections of boundary
+circles are attached.  The new \texttt{surface\_gluing.py} implements that
+operation under an explicit promise: every connected collection of patches
+has one common sheet coordinate, every monodromy and seam transport is
+dihedral in that coordinate, and each seam glues a complete base boundary
+together with its full inverse image.  The assembled base may be closed.
+
+The mathematical ingredients are classical covering-space classification,
+van Kampen's theorem, and the dihedral arithmetic already used by the
+repository.  The contribution is a precise closure theorem for this checked
+input model, a provenance-preserving implementation, and independent tests of
+its topology and marked transport.  It is not a new general orbit-counting
+theorem: Agol--Hass--Thurston's more general compressed normal-surface orbit
+algorithms already have polynomial bit complexity.  Nor does this kernel
+produce an unknot verdict or assert that an assembled surface is embedded in
+a specified three-manifold.
+
+\subsection{Input, boundary directions, and the seam equation}
+
+Let $X=\mathbb Z/W\mathbb Z$, where $W\ge1$ is given in binary.  For every
+vertex $v$ of a finite graph, let $F_v$ be a connected compact surface with
+at least one boundary circle.  Its orientability, genus or crosscap number,
+and number of boundaries specify the same canonical free generators and
+peripheral words as the existing cover interface.  Assign to every generator
+an affine permutation
+\[
+ g_{v,i}(x)=\sigma_{v,i}x+a_{v,i},\qquad \sigma_{v,i}\in\{1,-1\},
+\]
+and let $w_{v,i}\in\mathbb Z/2$ be the actual orientation character of that
+generator.  The bit $w_{v,i}$ is determined by the surface schema; it is
+not inferred from $\sigma_{v,i}$.  Write $B_{v,j}$ for the evaluated
+monodromy of its $j$th canonical peripheral word.
+
+Each patch fixes a local orientation at its basepoint, a marked reference
+point on each boundary, and a whisker from the basepoint to that point.
+The boundary direction is induced by the collar orientation transported
+along this whisker.  The usual polygon models with handle commutators or
+crosscap squares realize these conventions.  Written words are traversed
+in their written order; affine expressions below use functional composition.
+
+A seam $e$ specifies two distinct unused boundary ports $(u,a)$ and $(v,b)$,
+a boundary degree $\epsilon_e\in\{1,-1\}$, and a bijection of reference
+fibres
+\[
+ A_e(x)=s_ex+c_e,\qquad s_e\in\{1,-1\}.
+\]
+It is admitted precisely when
+\begin{equation}
+ A_e\circ B_{u,a}= B_{v,b}^{\epsilon_e}\circ A_e.
+ \tag{S}\label{eq:seam-intertwining}
+\end{equation}
+Every boundary port occurs in at most one seam.  A self-seam is allowed
+only between two different boundaries of the same patch.  No selected lift
+circle or proper interval of a boundary is silently substituted for a full
+inverse image.
+
+Equation~\eqref{eq:seam-intertwining} is equality of permutations of $X$,
+not equality of formal sign--shift pairs.  Two affine expressions agree
+exactly when both their coefficient difference and their constant difference
+vanish modulo $W$.  This distinction is essential for $W=1,2$, where formal
+signs $+1$ and $-1$ can describe the same permutation.
+
+\paragraph{Realization of one seam.}
+A covering of a circle is the mapping torus of its monodromy permutation.
+A fibre bijection $A$ extends across a degree-$\epsilon$ map of the base
+circle if and only if it intertwines the monodromy as in (S).  For example,
+in a parameter interval one lifts the prescribed base homeomorphism from
+the image of every reference-fibre point; (S) is exactly the condition that
+the endpoints match on identifying the ends of the interval.  This produces
+a homeomorphism between the full boundary covers.  Its inverse is obtained
+from $A^{-1}$ and the inverse base map.  Thus every accepted seam is an
+actual surface attachment, including when its lift circles have large
+covering degree.  After gluing all disjoint boundary pairs, collars give a
+compact surface and the local covering charts join to a $W$-sheeted cover
+of the sewn base.
+
+\subsection{A spanning-tree gauge and the exact assembled monodromy}
+
+Split the patch adjacency graph into connected components.  The following
+construction is performed on each component separately, with root $o$ and
+spanning tree $T$.  Let $P_v:X_o\to X_v$ be the affine transport along
+the tree from $o$ to $v$, using $A_e^{-1}$ when traversing a seam backwards.
+Let
+\[
+ \delta_e=\begin{cases}0,&\epsilon_e=-1,\\1,&\epsilon_e=+1,\end{cases}
+ \qquad
+ t_v=\sum_{e\in[o,v]_T}\delta_e\pmod2.
+\]
+The bit $\delta_e$ follows directly from the boundary-orientation convention:
+orientation frames extend consistently across a seam that reverses the
+induced boundary directions.  The fibre sign $s_e$ has no role in this test.
+
+Use the following based permutations at the root:
+\begin{align*}
+ \widehat g_{v,i}&=P_v^{-1}\circ g_{v,i}\circ P_v,
+       &\widehat w_{v,i}&=w_{v,i},\\
+ H_e&=P_v^{-1}\circ A_e\circ P_u\quad(e\notin T),
+       &\eta_e&=t_u+\delta_e+t_v\pmod2.
+\end{align*}
+For every unglued boundary $(v,b)$ retain
+\[
+ \widehat B_{v,b}=P_v^{-1}\circ B_{v,b}\circ P_v.
+\]
+Conjugation and multiplication preserve the dihedral affine form.  The
+number of root generators is the sum of the local free ranks plus the
+cycle rank of the patch graph.  They can be redundant; no freeness assertion
+is made for a closed assembled base.
+
+\begin{proposition}[Root action of a sewn cover]
+The connected components of the assembled cover are exactly the orbits
+of the group generated by the $\widehat g_{v,i}$ and $H_e$.  Its orientation
+character on these loop generators is respectively $w_{v,i}$ and $\eta_e$.
+The permutations $\widehat B_{v,b}$ are the peripheral monodromies of its
+remaining boundaries.
+\end{proposition}
+\begin{proof}
+The local spines, their boundary whiskers, and the seam-crossing paths
+generate the fundamental group of the sewn surface by van Kampen.  Tree
+paths change the basepoint and yield the displayed conjugations; non-tree
+edges supply the remaining graph loops.  The relations coming from a glued
+circle hold because (S) was checked before assembly.  The induced covering
+therefore has precisely the displayed monodromy action.  Standard path
+lifting identifies connected covering components with its orbits.
+
+Alternatively, form the explicit graph with vertices $(v,x)$, local
+generator edges, and seam edges $(u,x)\leftrightarrow(v,A_ex)$.  Transport
+along a tree identifies every vertex with a root sheet, and leaves exactly
+the displayed local and non-tree root actions.  This proves the orbit claim
+without constructing a presentation for the closed surface.  Tracking a
+local orientation frame along the same paths gives the character formulas;
+the two copies of the tree path cancel around a local generator.  The
+peripheral formula is the same change-of-basepoint calculation.
+\end{proof}
+
+The code stores the original patch and seam data together with the gauge
+forest.  A separate verifier checks parent incidence, acyclicity, root
+coverage, the affine transport equations, and the orientation parity of
+each tree edge.  It checks every parent chain once.  The verifier permits
+another valid tree and another root; it never calls the producer's forest
+builder or the dihedral classifier.  This is a certificate of tree
+transport, not an independent certificate of arbitrary serialized genus
+and component claims.  Those claims are recomputed from the input.
+
+\subsection{Component topology, including closed output}
+
+Let $G$ be the resulting affine group at one root.  If $G$ has no supplied
+reflection, put $d=\gcd(W,a_1,\ldots,a_r)$.  Otherwise choose one reflection
+$R(x)=-x+a_0$ and take the gcd of $W$, all translation shifts, and all
+differences of reflection shifts from $a_0$.  Put $m=W/d$.  Products of
+two reflections and Bezout's identity give
+\[
+ G=\langle x\mapsto x+d\rangle
+ \quad\hbox{or}\quad
+ G=\langle x\mapsto x+d,\ x\mapsto-x+a_0\rangle.
+\]
+The translation orbits are residues modulo $d$.  Without reflections they
+give one family of $d$ components, each of covering degree $m$.  With a
+reflection, residues are paired by $r\mapsto a_0-r$.  If $f$ is the number
+of solutions of $2r=a_0\pmod d$, there are $(d-f)/2$ paired components
+of degree $2m$ and $f\le2$ exceptional fixed-residue components of degree
+$m$.  This gives at most three family records per connected sewn base,
+irrespective of $W$.  The same equivariant translations as in the earlier
+cover module classify unmarked cover types; the two exceptional types
+coincide exactly when $m$ is odd.
+
+Orientation uses the augmented action in the affine group times
+$\mathbb Z/2$.  To translation generators attach their actual character
+bits; to a difference of two reflections attach the sum of their bits.
+An extended-gcd calculation obtains a pair $(d,\tau)$ from these generators
+and $(W,0)$.  The translation character is well defined exactly when
+\[
+ m\tau=0\pmod2,
+ \qquad v_j=(u_j/d)\tau\pmod2
+ \quad\hbox{for every translation increment }(u_j,v_j).
+\]
+Failure produces an orientation-reversing identity translation, so every
+component is nonorientable.  Otherwise the paired components have no
+reflection stabilizer and are orientable.  A fixed-residue component at
+$r$ is orientable exactly when
+\[
+ w(R)+\frac{2r-a_0}{d}\tau=0\pmod2.
+\]
+These statements remain valid for the nonfaithful formal descriptions at
+$W=1,2$: translation relations and actual fixed-reflection stabilizers are
+both checked.
+
+For each remaining boundary, the existing exact cycle formulas apply to
+its root permutation.  A translation $x+c$ has
+$q=\gcd(m,c/d)$ cycles of degree $m/q$ on a single-residue component and
+$2q$ such cycles on a paired component.  A boundary reflection has $m$
+two-cycles on a paired component.  On a fixed-residue component, its fixed
+points solve $2y=(c-2r)/d\pmod m$; the remaining points are paired.
+All multiplicities are binary integers, never allocated as individual circles.
+
+Gluing circles does not change Euler characteristic, so
+\[
+ \chi(F)=\sum_{v\text{ at this root}}\chi(F_v),\qquad
+ \chi(C)=\deg(C)\chi(F).
+\]
+If $b(C)$ is the sum of the remaining boundary-lift multiplicities, then
+$2-b(C)-\chi(C)$ equals $2g(C)$ in the orientable case and the crosscap
+number in the nonorientable case.  Closed output simply has $b(C)=0$.
+No unverified closed-surface relator is introduced: the surface already
+exists by the checked boundary-gluing construction.  The implementation
+checks all resulting integrality, nonnegativity, and total-degree identities.
+
+\begin{theorem}[Closure under full-boundary affine assembly]
+Given the checked input above, every connected sewn base has at most three
+binary component-family records.  The algorithm computes the degree,
+orientation, genus, Euler characteristic, every remaining peripheral
+degree profile, and exact component labels without expanding a sheet,
+lifted boundary circle, or covering component.  It permits closed output
+and preserves the original ports, seam identifications, and ordered fibre
+point coordinates.
+\end{theorem}
+\begin{proof}
+The seam-realization argument gives an actual covering of an actual
+surface.  The root-action proposition computes its monodromy and orientation
+character.  Dihedral orbit arithmetic gives the complete component list;
+the peripheral cycles and covering Euler characteristic give its topology.
+All formulas use only binary arithmetic and finitely many input records.
+Provenance and point preservation are established by the explicit root and
+seam transports described next.
+\end{proof}
+
+\subsection{Ports, marked points, and repeated attachment}
+
+For a local point $(v,x)$, its root fibre coordinate is $P_v^{-1}(x)$.
+The component label is its root identifier together with the canonical
+dihedral orbit key.  This avoids merging components just because their
+genera or unmarked types happen to agree.
+
+For a boundary translation $x+c$, a literal lifted circle is labeled by
+$x\bmod\gcd(W,c)$; for a reflection it is labeled by its one- or two-point
+orbit.  Remaining-boundary keys retain the original port.  For an internal
+seam, the implementation transports a point on the right side back by
+$A_e^{-1}$ and uses the left boundary-cycle key together with the seam
+identifier.  Thus queries on the two sides agree exactly after the
+prescribed transport.  The API distinguishes an unglued boundary from an
+internal seam circle: consumed boundaries cannot be queried as if they
+remained on the boundary of the assembled surface.
+
+An ordered marking consists of points $(v_i,x_i)$ in one covering component.
+Transform each to the root fibre and use the complete rooted dihedral
+signature from the previous cover work.  Also retain the ordered list of
+piece labels $v_i$.  This additional data is necessary because a covering
+isomorphism over the identity of the base cannot send a point over one
+patch basepoint to a different basepoint.  The signature includes the
+normalized full input model and root, so comparisons across different
+assembled presentations make no implicit change-of-base claim.
+
+A map between transitive root orbits is determined by the image of one
+root point.  The existing translation/fixed/paired-orbit formulas decide
+whether that image is possible.  Conjugating the resulting map by $P_v$
+evaluates it at any requested point over piece $v$.  The public rooted
+transport API requires its two anchors to lie over the same basepoint;
+it can then transport a query point over any patch of the source component.
+
+\texttt{with\_seams} returns a new checked assembly while retaining all
+piece indices, original boundaries, and sheet coordinates.  The earlier
+index remains usable.  This method recomputes the complete assembly and
+does not claim incremental or amortized optimality.  In particular, marked
+points survive literally as $(v,x)$ even if a new seam merges their formerly
+distinct components; newly requested signatures are computed in the new
+base presentation.  No unmarked type quotient is substituted for the
+attaching data.
+
+\subsection{A family showing why the seam shift must be retained}
+
+\begin{proposition}[Identical patch topology, different closed assemblies]
+Let $W=2m$ with $m\ge1$.  Take the annulus cover with core monodromy
+$g(x)=x+2$ and glue its two base boundaries with $\epsilon=+1$ and
+$A_b(x)=-x+b$.  For even $b$ the resulting cover consists of two Klein
+bottles of degree $m$.  For odd $b$ it is one torus of degree $2m$.
+\end{proposition}
+\begin{proof}
+The two annulus boundary monodromies are $g$ and $g^{-1}$, and
+$A_b g=g^{-1}A_b$, so the seam is valid for every $b$.  The local cover
+is always the same pair of annuli, each of degree $m$.  In the sewn base
+the core loop has orientation bit zero and the seam loop has bit one.
+If $b$ is even, reflection preserves each parity class; each is a connected
+degree-$m$ cover containing an orientation-reversing stabilizer, hence is
+a closed nonorientable surface with Euler characteristic zero, a Klein
+bottle.  If $b$ is odd, reflection exchanges the parity classes and the
+cover is connected.  An orientation-reversing group word contains an odd
+number of reflections and exchanges parity, so it fixes no sheet.  The
+cover is therefore orientable, closed, and has Euler characteristic zero,
+hence is a torus.
+\end{proof}
+
+The proposition includes $W=2$, where the core translation is the identity
+and the formal reflection may itself be the identity permutation.  These
+examples are abstract surface-cover assemblies used to test topology and
+attachment bookkeeping.  No embedding of the closed Klein-bottle outputs
+in a knot exterior is asserted.  Their role is to prove that identical
+local component topology and identical local boundary-lift profiles cannot
+replace the seam transport data.  A second closed family caps a reflected
+M\"obius-band cover with disk covers, giving real-projective-plane components
+at fixed sheets and sphere components on paired sheets.  Two trivially
+covered pairs of pants glued along all three boundaries give an orientable
+genus-two base; a degree-$d$ component then has genus $d+1$.
+
+\subsection{Bit complexity and the unresolved search problem}
+
+Let $s$ be the number of patches, seams, generator records, and boundary
+records together, and let $B$ bound the binary lengths of all input integers
+and $\log(s+2)$.  Canonical peripheral words have total length $O(s)$.
+Normalization, seam checks, gauge construction, and all affine changes of
+base use $O(s)$ arithmetic operations on $O(B)$-bit integers, apart from
+sorting piece labels, which is absorbed in the following bound.  Gcd and
+extended-gcd computations give the conservative elementary bit bound
+\[
+ O(sB^3)
+\]
+for full assembly and classification.  Component degrees are at most $W$;
+Euler data and genus have $O(B)$ bits because their extra factor is at most
+linear in $s$.  The full binary output, including the normalized input and
+gauge provenance, has $O(sB)$ bits.  There is no loop whose bound is $W$,
+the number of covering components, or a boundary-lift multiplicity.
+
+After preparation, a point's component, a seam transport, or a rooted
+isomorphism evaluation uses $O(B^2)$ conservative bit work.  A port-cycle
+query additionally computes a gcd and uses $O(B^3)$.  A $q$-point marked
+signature uses $O(qB^2)$ work and $O(qB)$ additional output; copying,
+serializing, or comparing the full model header must also account for its
+$O(sB)$ size.  Independent gauge replay revalidates the patch/seam input
+and tree transport equations in $O(sB^2)$ bit work.  Repeated assembly
+states cost the sum of their individual bounds, not the bound of their
+largest state alone.
+
+The ordinary recognizer does not call this kernel.  Integration with a
+normal-surface hierarchy still requires checked extraction of the patch
+model and common fibre coordinate, representation of all relevant partial
+attachments or proof that full-boundary attachments suffice, and control
+of the number and size of successive repair states.  General normal-surface
+pairings can be piecewise affine and need not share this global dihedral
+promise.  Even one annulus cover has $W$ inequivalent ordered two-point
+markings, so a constant unmarked family count does not bound marked search
+states by a polynomial in $\log W$.  Polynomial bit complexity of this
+assembly operation supplies one compositional primitive; it does not
+establish general quasi-polynomial unknot recognition.
+
+\subsection{Independent verification and measured scope}
+
+The expanded oracle imports neither the gauge construction nor the gcd
+classifier, peripheral-word evaluator, or marking formulas.  It constructs
+literal local permutation arrays, evaluates peripherals point by point,
+and forms the graph on all $(v,x)$.  Graph search gives its components,
+parity propagation gives orientability, direct permutation cycles give
+boundary profiles, and addition of patch Euler characteristics gives genus.
+A separate labelled-edge propagation algorithm checks rooted covering
+isomorphisms on that graph, preserving every local-generator and seam label.
+
+The focused suite checks all valid self-sewn annulus actions through six
+sheets, all constructed sewn-pants actions through five sheets, disk and
+M\"obius cap families, random mixed orientable and nonorientable patch
+assemblies, all requested port and component keys, rooted transport,
+ordered repeated marks, gauge relabelings, and reversed seam descriptions.
+The 14 focused tests pass.  Their recorded totals are 1547 independent expanded topology comparisons and
+6216 ordered marking comparisons.  Additional tests use $W=2^{24000}$,
+64-patch gauges, huge closed genus, alternative verified tree roots,
+corrupt certificates, immutable seam continuation, exact hexadecimal JSON,
+invalid seams, and cooperative cancellation.
+
+The benchmark driver keeps input validation, all assembly arithmetic,
+classification, and defensive summary creation in the compressed timer.
+Its expanded arm includes literal graph construction and full topology.
+Input generation, equality checks, destruction of returned records, and
+JSON serialization are outside the timers; serialized sizes are recorded
+separately.  It uses one excluded warmup, five shuffled paired measured
+rounds, and an identical compressed A/A control.  The compressed topology
+arm batches 100 queries per sample; the reported statistic is the median
+per-query time across batches.  The expanded arm uses one complete expanded
+query per sample.  The A/A topology ratios range from 0.916 to 1.016.
+A second experiment
+varies $W=2^{64},2^{1024},2^{4096},2^{16384}$ and uses one, eight, or 64
+patches; it reports full preparation, separate gauge replay, and prepared
+32-point marking queries.  Timing artifacts retain all samples, orders,
+inputs or exact construction, Python/platform metadata, and source hashes.
+The measured comparison is with explicit sheet expansion, not a competing
+compressed orbit algorithm, and no timing in this experiment is a knot
+recognition measurement.
