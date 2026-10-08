@@ -387,3 +387,34 @@ if closure:
         'The no-reset arm retains closure observations but does not restart.\n')
     with open('tables/closure_benchmark.tex', 'w') as handle:
         handle.write(content)
+
+boundary = load('../fast/results/boundary_reuse_20261008.json')
+if boundary:
+    by_case = {}
+    for row in boundary['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    streams, pipelines = [], []
+    for name, scopes in by_case.items():
+        if 'euler-stream' in scopes:
+            euler = scopes['euler-stream']
+            e, s = euler['median_speedups'], scopes['shadow-stream']['median_speedups']
+            cells = [e['adaptive'], e['eager'], e['control'], s['boundary'], s['control']]
+            streams.append(str(euler['input']['suffix_crossings']) + ' & ' +
+                           ' & '.join(f'{v:.3f}' for v in cells) + r' \\')
+        else:
+            r = scopes['raw-euler']['median_speedups']
+            f = scopes['recognition-euler']['median_speedups']
+            cells = [r['adaptive'], r['control'], f['adaptive'], f['control']]
+            pipelines.append(esc(name) + ' & ' +
+                             ' & '.join(f'{v:.3f}' for v in cells) + r' \\')
+    for filename, heading, columns, rows in [
+        ('boundary_streams', '$n$ & Euler adaptive & Euler eager & A/A & Tait boundary & A/A',
+         '@{}rrrrrr@{}', streams),
+        ('boundary_pipeline', 'Input & Raw adaptive & A/A & Full adaptive & A/A',
+         '@{}lrrrr@{}', pipelines),
+    ]:
+        with open(f'tables/{filename}.tex', 'w') as handle:
+            handle.write(r'\begin{center}\small' + '\n' + table(heading, columns, rows) +
+                         r'\end{center}' + '\n' +
+                         'Ratios are median paired direct/alternative times; values above one '
+                         'favor the alternative. A/A compares identical direct implementations.\n')
