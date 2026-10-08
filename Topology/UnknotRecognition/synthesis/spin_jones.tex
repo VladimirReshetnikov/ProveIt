@@ -24,8 +24,7 @@ component is attributed to the maintained recognizer here.
 
 The new optional \code{spin-faithful} backend improves the maintained full
 Jones bound from the faithful Potts implementation's
-$\operatorname{poly}(n)2^{O(\sqrt n\log n)}$ to
-$\operatorname{poly}(n)2^{O(\sqrt n)}$. Comparable general bounds are known
+$2^{O(\sqrt n\log n)}$ to $2^{O(\sqrt n)}$. Comparable general bounds are known
 in the literature, including Maria~\cite{quantum-width}; this is an
 implementation improvement, not a claim of a new complexity class result.
 Jones polynomial one remains inconclusive for unknot recognition.
@@ -161,6 +160,12 @@ $w=O(\sqrt n)$. The default spin query considers a greedy candidate even
 when the caller supplies an order, and retains an order within the
 separator certificate's bound. With local caps and deadlines disabled,
 full Jones computation thus has the stated square-root exponential bound.
+The polynomial prefactor is absorbed here: for every fixed $c$,
+\[
+ n^c 2^{C\sqrt n}=2^{C\sqrt n+c\log_2n}=2^{O(\sqrt n)}.
+\]
+The factor $\operatorname{poly}(n)$ remains explicit in the width-parameterized
+bound because $w$ may be constant even when the diagram is large.
 For supplied orders of width $O(\log^2 n)$ the corresponding fixed-order
 query is quasi-polynomial.
 

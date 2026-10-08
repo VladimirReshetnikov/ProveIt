@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: provide the covered chart measurable-open-set instance
+explicitly in the bounded-test integrability proof on Lean 4.32. All upstream
+statements and bounds are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Sampling.AllocatedOriginalForecastSpatialIntegral
 import OAI.Combinatorics.Progressions.Sampling.ForecastActualPhysicalSourceContinuous
 import OAI.Combinatorics.Progressions.Sampling.ForecastOriginalDensityRegularity
@@ -237,6 +242,8 @@ theorem forecastDensityPhysicalChartSource_mul_test_integrable
     {testCap : ℝ} (hbound : ∀ y, ‖test y‖ ≤ testCap) :
     Integrable (fun z => chartSource u z * test (mixedCoveredJetChart U o basis hb bW N z))
       (mixedCoveredJetRawReference (I := I) (O := single) (E := Eout) (n := n) N) := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U single Eout n N) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U N)
   have hsource := forecastDensityPhysicalChartSource_integrable B U basis S density selected sample x
     active Y N volume base physicalN τ o hR hσ hs hσ1 hexhaustive hactive r hr hr3 hradius
     C hC hchart hbudget hdensity u

@@ -29,7 +29,7 @@ Review the initial connected-core and full-footprint arguments and adapt
 transactional replay. Its own genuine-diagram timings show no speedup.\\
 Certified primitives & Supplies a second binary Jones implementation,
 valuation arithmetic, minimum-disc cocycle seeds and an optional majority
-word-overlap policy. Compare both tensor implementations, and audit each
+word-overlap policy. Valuation arithmetic is transferred in Section~\ref{sec:spin-valuation}; audit each
 geometric or group primitive independently.\\
 Graded torus & Claims graded occupancy bounds and a polynomial four-strand
 torus scanner using an external Morse-model theorem. Review that dependency
@@ -96,8 +96,8 @@ local tensor aggregation and turn/sign conventions: for example the tree
 has 12589 spin transitions versus 15931 in either report mode. Their timing
 ratio must not be attributed solely to valuation normalization.
 
-These results justify reviewing and transferring valuation arithmetic next.
-They do not yet change the maintained spin implementation. The exact
+These results motivated the arithmetic transfer in Section~\ref{sec:spin-valuation}.
+The measurements in this subsection precede that transfer. The exact
 representation is $z^v m$, with nonzero $m$ not divisible by the power-of-two
 base $z$. Addition aligns the smaller valuation, adds signed mantissas, and
 removes all common factors of $z$; exact cancellation has its own zero
