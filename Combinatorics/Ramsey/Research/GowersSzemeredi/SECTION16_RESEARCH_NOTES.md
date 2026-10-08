@@ -854,6 +854,25 @@ Bohr-side lemmas proved here. It is a further hypothesis to state
 precisely, or a substantial formalization in its own right. It is not
 composition.
 
+**From Milićević §2 (read 2026-10-08, pp. 30–39).**
+- His equation (9) is Freiman-linearity on a coset progression in
+  coordinates, φ(Σ λ_i e_i + h) = Σ λ_i φ(e_i) + φ(h). That is
+  `freiman_linear_gap_affine` (`Proofs16GapCoordinates`), so the formal
+  lemma matches his usage.
+- **Proposition 2.37 ("Bohr–Bohr sets are Bohr")** may replace variety
+  doubling. For a Freiman-linear φ : B(Γ;ρ) → 𝕋^d, with r = |Γ|, the set
+  {x ∈ B : ‖φ(x)‖ ≤ σ} contains a Bohr set of codimension at most
+  d + (2r log(σ⁻¹ρ⁻¹))^O(1) and radius at least σ(2r log(σ⁻¹ρ⁻¹))^(−O(1)).
+- For fixed x, the variety's y-section {y ∈ B(Ψ;ρ) : ‖L(y)·x/N‖ ≤ ρ} is
+  such a set, since y ↦ L(y)·x is Freiman-linear.
+- So every y-section contains a genuine Bohr set, of quasi-polynomial
+  codimension, where `bohr_card_le_four_pow` and `bohr_exists_regular_step`
+  apply section by section.
+- Packing could then proceed section by section in y, with boxes in x
+  supplied by the x-direction Dirichlet argument of
+  `bilinearBohrVariety_contains_box_at`. That would avoid shifted-family
+  regularity. Not yet checked in detail.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
