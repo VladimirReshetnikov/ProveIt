@@ -3179,26 +3179,41 @@ Theorems 18.1, 18.2 and Corollary 18.7 degree by degree (2026-10-07)
   provides only an existential N0. The three entries stay open; the count
   stays 114/6.
 
-Explicit modulus thresholds toward Theorem 18.2 at length six (in progress;
-Claude session lane, 2026-10-08)
-  Theorem162At states its modulus threshold existentially, so the length-six
-  Szemeredi theorem obtained from theorem_16_2_at_two cannot yet be compared
-  with the explicit Theorem 18.2 threshold. An inventory of both chains
-  found no non-constructive leaf. Every threshold is a pass-through, a
-  maximum, or a rounded explicit expression. The two leaves sit in
-  Proofs15Restriction, and about 28 theorems need explicit-threshold
-  siblings. Done so far:
-  - Proofs15Restriction gains selection_exists_stage_margin_lower (stage
-    margin at least (1-eta)*target), explicit degenerate bounds, the
-    explicit exceptional-bound estimate, selectionExplicitThreshold, and
-    the public selection_scale_estimate_explicit / _zero_explicit. The
-    original statements are untouched.
-  - Proofs15ExplicitThresholds proves lemma_15_6_of_density_lower_all_explicit
-    with threshold lemma156ExplicitThreshold k beta gamma.
-  Next: an explicit-threshold form of Theorem162At (Theorem162AtBounded),
-  the face and extraction lemmas, theorem_16_2_at_two with an explicit
-  threshold, the degree-four inverse chain, and the numerical comparison
-  with szemerediThreshold delta 6.
+Explicit modulus thresholds for the dimension-two structure and the
+degree-four inverse theorem (2026-10-08)
+  Theorem162At states its modulus threshold existentially. The following
+  now carry explicit, closed thresholds (each an additive sibling; existing
+  statements unchanged):
+  - Proofs15Restriction / Proofs15ExplicitThresholds: the selection estimate
+    and Lemma 15.6 (lemma156ExplicitThreshold), as recorded earlier.
+  - Proofs16ExplicitFaces: Theorem162AtBounded k T (Theorem 16.2 for every
+    prime N >= T gamma theta; implies Theorem162At via the ceiling), and the
+    face restrictions of Lemma 16.4 with threshold section16FaceThreshold, a
+    finite sum over proper coordinate directions.
+  - Proofs16ExplicitBaseCase: lemma_16_3_bounded, i.e.
+    Theorem162AtBounded 1 (fun _ _ => 0). The base-case proof already used
+    threshold 0.
+  - Proofs16ExplicitDimensionTwo: theorem_16_2_at_two_bounded, i.e.
+    Theorem162AtBounded 2 section16DimTwoThreshold, with
+    section16DimTwoThreshold gamma theta
+      = max 3 (lemma156ExplicitThreshold 1 (theta/4) gamma).
+  - Proofs18ExplicitQuarticInverse: the spectrum, common-base, Lemma 16.4,
+    sharp-piece, joint-power, frequency-box and localization steps with
+    explicit thresholds, ending in quartic_function_inverse_explicit. That is
+    the degree-four FunctionDiscrepancyBound with threshold
+    quarticInverseThreshold alpha.
+  These do NOT give Theorem 18.2 at length six. The density iteration's
+  threshold is exp((1 + log T + |log c|) * (2/rho)^n), with n = ceil(8/beta)
+  steps. At degree four beta contains the frequency density
+  (alpha/8)/section16JointPowerGraphBudget, and that budget, the number of
+  multilinear graphs in the dimension-two structure, is exp(poly(1/alpha)).
+  The six-term threshold is therefore triple exponential in poly(1/delta),
+  while Theorem 18.2 allows only 2^(2^(delta^-M)). The same root cause
+  blocks Theorem 18.1 at degree three: its certified width exponent comes
+  from Theorem 13.12, whose own printed exponent is the three-level
+  N^((1/2)^((1/alpha)^(2^70))). Research notes, Part I. The lane is closed
+  until a structure theorem with graph counts polynomial in 1/theta and
+  1/gamma is available.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
