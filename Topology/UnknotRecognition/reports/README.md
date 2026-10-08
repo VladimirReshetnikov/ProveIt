@@ -33,7 +33,7 @@ modification times.
 | `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517-test integration checkpoint |
 | `26/` | `ProveIt_Unknot_Determinant_Continuations_2026-10-07.zip` | marked residue-four observer and singular-safe terminal kernel (`26/detshadow/`) | quantum recovery, exact marked continuation norm, bordered determinant queries, critical square law | conditional `poly(n,R) 2^O(W)` stopping-prefix bound | 35 delivered and 560 maintained tests pass; optional marked observer integrated; 4,503 geometric completion queries audited; terminal reuse remains a research prototype |
 | `27/` | `ProveIt_Report25_Causal_R3_2026-10-07.zip` | local rewrite prototype and RIII adapter (`27/prototype/`, `27/integration/`) | canonical initial births followed by accumulated-support search | conditional `N^(b+O(1)) (Ck)^k` unlocking bound | 42 delivered hashes and pinned simplifier verified; corrected replay and guarded inverse pruning integrated with optional clustered/adaptive search; 550 production tests pass; actual-diagram audit does not support changing the default |
-| `28/` | `unknot_classical_closure_research_20261007.zip` | closure-rank compression and reset driver (`28/src/closure_reset/`) | scalar/total-linear first jet, pure block bounds, geometric single-survivor resets | conditional `poly(n) 2^O(g)` bound in actual reset gap | 62 delivered hashes and four exact source blobs verified; 29 delivered tests pass; source fixture and production integration under review |
+| `28/` | `unknot_classical_closure_research_20261007.zip` | closure-rank compression and reset driver (`28/src/closure_reset/`) | scalar/total-linear first jet, pure block bounds, geometric single-survivor resets | conditional `poly(n) 2^O(g)` bound in actual reset gap | 29 delivered tests and 160-diagram audit pass against current production; optional closure backend integrated, 567 tests pass; one source pin mismatches its stated revision; expanded 624-scan discovery finds no nonsingleton block |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -246,7 +246,19 @@ The intake and source-pin audit is retained in
 The archives have been retired from the drop zone under its documented policy,
 including the previously placed Garside archive after verification against its
 placement commit. No delivered code, article or data is replaced by maintained
-integration work. Review of `28/` remains open.
+integration work.
+
+Report `28/` is reviewed in `../synthesis/closure_resets.tex`. Its optional
+maintained backend checks whole single-matching components and the actual
+classical suffix closure before rank-preserving resets. A local work limit
+falls back to the same saturated scan. The stated geometry pin does not match
+that path at the named inspected revision (the other three do); its retained
+geometry fixture omits four composition fast paths. The corrected audit is
+`../synthesis/data/closure-reset-source-audit.json`. The earlier intake ledger
+already marked this path mismatch; its summary and catalog wording overstated
+the verification and are now corrected. No delivered
+source, article or provenance record has been rewritten. The maintained
+tests and source-pinned discovery results are separate evidence.
 
 Report `26/` is reviewed in `../synthesis/determinant_continuations.tex`.
 The maintained `shadow` backend evaluates actual marked completions with

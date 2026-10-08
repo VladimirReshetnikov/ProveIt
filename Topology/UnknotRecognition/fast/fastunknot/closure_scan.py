@@ -11,7 +11,7 @@ from time import monotonic
 from .component_scan import ComponentScan, components
 from .diagram import DisjointSet
 from .geometry import ScanLimit
-from .ordering import best_scan_order, validate_order
+from .ordering import best_scan_order, repeated_stages, validate_order
 
 
 class ClosureBudget(Exception):
@@ -187,7 +187,7 @@ def complete_matching(suffix, pairs, check=lambda: None):
 
 def closure_khovanov_decide(pd, *, order=None, max_objects=None, seconds=None,
                             check_d_squared=False, closure_max_work=1_000_000,
-                            reset=True):
+                            reset=True, shape_cache=None):
     """Capped exact recognition with optional rank-preserving diagram resets.
 
     The input must be a validated classical knot. The selected crossing order
@@ -201,7 +201,11 @@ def closure_khovanov_decide(pd, *, order=None, max_objects=None, seconds=None,
     exhausted, events, scans = False, [], []
     scanned = max_gap = nonsingleton = 0
     while True:
-        scan = ComponentScan(max_objects=max_objects, deadline=deadline, rank_cap=3)
+        cache = shape_cache
+        if cache is None:
+            cache = len(current) >= 16 and 8 * repeated_stages(current, range(len(current))) >= len(current)
+        scan = ComponentScan(max_objects=max_objects, deadline=deadline, rank_cap=3,
+                             shape_cache=cache)
         scan._check()
         restarted = False
         for stage, crossing in enumerate(current, 1):

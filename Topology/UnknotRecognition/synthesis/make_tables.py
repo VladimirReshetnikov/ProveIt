@@ -363,3 +363,27 @@ if shadow:
         'A/A compares identical implementations in each scope.\n')
     with open('tables/determinant_benchmark.tex', 'w') as handle:
         handle.write(content)
+
+closure = load('../fast/results/closure_reset_20261008.json')
+if closure:
+    by_case = {}
+    for row in closure['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    rows = []
+    for name, scopes in by_case.items():
+        cells = []
+        for scope, arm in [('recognition', 'closure'), ('raw-decision', 'closure'),
+                           ('raw-decision', 'no-reset'), ('raw-decision', 'euler'),
+                           ('raw-decision', 'control')]:
+            ratios = scopes[scope]['median_speedups']
+            cells.append('unknown' if ratios is None else f'{ratios[arm]:.3f}')
+        display = name.replace('report28_', 'R28 ')
+        rows.append(esc(display) + ' & ' + ' & '.join(cells) + r' \\')
+    content = (r'\begin{center}\small' + '\n' +
+        table('Input & Full/reset & Raw/reset & Raw/no reset & Raw/Euler & Raw A/A',
+              '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+        'Ratios are median paired times; values above one favor the denominator. '
+        'Full uses the previous default recognizer; raw uses the saturated scanner. '
+        'The no-reset arm retains closure observations but does not restart.\n')
+    with open('tables/closure_benchmark.tex', 'w') as handle:
+        handle.write(content)

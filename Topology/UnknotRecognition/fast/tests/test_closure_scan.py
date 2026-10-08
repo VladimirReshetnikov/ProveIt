@@ -97,9 +97,11 @@ class ClosureTests(unittest.TestCase):
             order = list(range(diagram.crossings))
             rng.shuffle(order)
             expected = 'UNKNOT' if Cube(diagram.pd).homology_rank() == 2 else 'KNOTTED'
-            for limit, reset in [(None, True), (None, False), (0, True)]:
+            for limit, reset, cache in [(None, True, None), (None, False, False),
+                                         (0, True, None), (None, True, True)]:
                 out = closure_khovanov_decide(diagram.pd, order=order, reset=reset,
-                                              closure_max_work=limit, check_d_squared=True)
+                                              closure_max_work=limit, check_d_squared=True,
+                                              shape_cache=cache)
                 self.assertEqual(out['status'], expected)
                 self.assertLessEqual(out['closure_stats']['scanned'], diagram.crossings)
                 resets += out['closure_stats']['resets']

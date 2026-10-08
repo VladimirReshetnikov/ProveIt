@@ -2,6 +2,22 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`closure_resets.tex` reviews report 28's first-jet formula and pure-block
+classical closure bounds, with the maintained optional `closure` backend.
+It explains the total-rank invariant of a geometric reset, whole-summand and
+knot-completion premises, bounded observation with exact fallback, and the
+conditional complexity bound in the actual maximum reset gap. All 567 tests
+pass (`data/closure-reset-integrated-tests.txt`).
+The 29 delivered tests and the 160-diagram independent audit also pass against
+current production. `../fast/closure_research/audit_upstream.py` reproduces
+the latter without modifying delivered files. The source audit corrects one
+geometry pin's association with the stated inspected revision and identifies
+the retained fixture's omitted composition fast paths.
+`../fast/closure_research/audit_blocks.py` records 624 completed scans of 312
+knots, with no nonsingleton first-jet block found.
+`../fast/benchmark_closure.py` measures full recognition and raw scans separately;
+its samples are in `../fast/results/closure_reset_20261008.json`.
+
 `determinant_continuations.tex` reviews report 26 and the optional maintained
 `shadow` backend. It proves the marked-completion lower bound, derives the
 signed Tait phase and residue reconstruction, and explains budget exhaustion

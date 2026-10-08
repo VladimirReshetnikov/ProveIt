@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 560 passing tests.
+diagram is not checked twice. The integrated suite now has 567 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -115,7 +115,7 @@ python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
 python3 -m unittest discover -s tests -v
 ```
 
-Recognition accepts `--backend standard|shared|saturated|euler|shadow|twist`
+Recognition accepts `--backend standard|shared|saturated|euler|shadow|closure|twist`
 (with the barcode and fitting options described below). The default is
 `standard`: sharing incurs overhead on prime examples that stay connected.
 `shared` retains exact ranks and raw homological-degree counts. `saturated`
@@ -164,6 +164,31 @@ separates complete recognition from raw scanner timings. The theory and
 validation are in `../synthesis/determinant_continuations.tex`. The common
 terminal graph producer in `determinant_research/terminal_geometry_audit.py`
 is a checked research prototype; production computes each completion directly.
+
+`--backend closure` adds report 28's classical closure bounds and
+single-survivor resets. For a whole radical component with one matching, it
+reads the scalar first-jet matrices and checks the actual remaining closure.
+Pure coefficients also support bounds valid for all classical link closures.
+A certified rank above two rejects the knot. When the entire scan has one
+component copy and first-jet multiplier one with a knot completion, it splices
+that matching into the remaining PD and restarts with fewer crossings. This
+preserves total rank; it is not an isotopy certificate or a graded-homology API.
+
+```bash
+python -B -m fastunknot recognize examples/conway.json --backend closure --closure-max-work 1000000
+python -B benchmark_closure.py --output results/closure_local.json
+```
+
+The local work allowance counts optional observer traversal, polynomial
+extraction, binary rank operations and completion geometry. Exhaustion disables
+observations and continues the current exact capped scan; global exhaustion
+still returns `UNKNOWN`. API `closure_max_work=None` removes this local cap.
+Evidence records reset events, `segment_stats`, and `closure_stats`, including
+the actual maximum segment length `max_gap`. A general polylogarithmic bound
+on this gap is unproved. An expanded 624-scan search found singleton resets
+but no nonsingleton eligible blocks; algebraic tests cover the broader formula.
+See `../synthesis/closure_resets.tex` for proofs, source-audit qualifications,
+and separate full-recognition and raw-backend measurements.
 
 Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
 and no racing. Incompatible options are rejected. `khovanov --shared` cannot
