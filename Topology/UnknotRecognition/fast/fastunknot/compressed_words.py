@@ -7,6 +7,7 @@ compressed free-group reduction of the same paper. Resource caps interrupt;
 they never substitute a probabilistic or incomplete equality answer.
 """
 from collections import defaultdict
+from heapq import heappop, heappush
 from math import gcd
 
 
@@ -19,16 +20,22 @@ class WordArena:
 
     ``max_nodes`` also bounds live equality assertions and the equality cache.
     ``max_work`` charges cooperative abstract operations, not CPU instructions.
+    ``equality_probe_steps`` caps a direct DAG walk before polynomial fallback;
+    zero bypasses the probe. The default cap is independent of expanded length.
     All public word arguments are node ids obtained from this arena.
     """
-    def __init__(self, *, max_nodes=100000, max_work=10000000, check=lambda: None):
-        for name, value in (('max_nodes', max_nodes), ('max_work', max_work)):
+    def __init__(self, *, max_nodes=100000, max_work=10000000, equality_probe_steps=64,
+                 check=lambda: None):
+        for name, value in (('max_nodes', max_nodes), ('max_work', max_work),
+                            ('equality_probe_steps', equality_probe_steps)):
             if type(value) is not int or value < 0:
                 raise ValueError(f'{name} must be a nonnegative integer')
         self.max_nodes, self.left, self.check = max_nodes, max_work, check
+        self.equality_probe_steps = equality_probe_steps
         self.rules, self.lengths, self.first, self.last = [None], [0], [0], [0]
         self._interned, self._inverse, self._reduced, self._equal_cache = {}, {0: 0}, {0: 0}, {}
-        self.stats = dict(work=0, equality_calls=0, splits=0, compact_triples=0, peak_assertions=0)
+        self.stats = dict(work=0, equality_calls=0, splits=0, compact_triples=0, peak_assertions=0,
+                          probe_steps=0, probe_resolved=0, probe_fallbacks=0)
 
     def tick(self, amount=1):
         self.check()
@@ -157,6 +164,41 @@ class WordArena:
             self._reduced[result] = result
         return result
 
+    def _equality_probe(self, a, b):
+        """Bounded synchronized DAG walk: bool if resolved, None on fallback.
+
+        Skip identical subtrees; otherwise split the longer leading chunk.
+        No expanded word is allocated. A fixed work cap prevents an unfolded
+        traversal from inheriting the possibly exponential represented length.
+        """
+        left, right = [a], [b]
+        for _ in range(self.equality_probe_steps):
+            self.tick()
+            self.stats['probe_steps'] += 1
+            u, v = left[-1], right[-1]
+            if u == v:
+                left.pop()
+                right.pop()
+                if not left:
+                    # Root lengths agree and each skipped chunk has equal length.
+                    return True
+            elif self.first[u] != self.first[v]:
+                return False
+            elif self.lengths[u] >= self.lengths[v]:
+                _, x, y = self.rules[left.pop()]
+                left.extend((y, x))
+            else:
+                _, x, y = self.rules[right.pop()]
+                right.extend((y, x))
+        return None
+
+    def _remember_equal(self, key, result):
+        if len(self._equal_cache) >= self.max_nodes:
+            self._equal_cache.clear()
+        self._equal_cache[key] = result
+        self.tick()
+        return result
+
     def equal(self, a, b):
         """Deterministic polynomial SLP equality; exhaustion raises, never guesses."""
         self.tick()
@@ -169,12 +211,19 @@ class WordArena:
         key = min(a, b), max(a, b)
         if key in self._equal_cache:
             return self._equal_cache[key]
-        gamma = {((0, a), (1, b), 0)}
+        if self.equality_probe_steps:
+            result = self._equality_probe(a, b)
+            if result is not None:
+                self.stats['probe_resolved'] += 1
+                return self._remember_equal(key, result)
+            self.stats['probe_fallbacks'] += 1
+        gamma, mentioned, overlaps = set(), defaultdict(set), defaultdict(set)
+        pending, queued, dirty = [], set(), set()
 
         class Mismatch(Exception):
             pass
 
-        def add(out, u, v, offset):
+        def add(u, v, offset):
             self.tick()
             if offset == 0 and u[1] == v[1]:
                 return
@@ -185,68 +234,90 @@ class WordArena:
                 if self.first[u[1]] != self.first[v[1]]:
                     raise Mismatch
                 return
-            out.add((u, v, offset))
-            if len(out) > self.max_nodes:
+            assertion = u, v, offset
+            if assertion in gamma:
+                return
+            gamma.add(assertion)
+            if len(gamma) > self.max_nodes:
                 raise CompressedLimit('compressed equality assertion allowance exhausted')
+            self.stats['peak_assertions'] = max(self.stats['peak_assertions'], len(gamma))
+            for node in (u, v):
+                mentioned[node].add(assertion)
+                if self.rules[node[1]][0] == 'c' and node not in queued:
+                    heappush(pending, (-self.lengths[node[1]], -node[0], -node[1]))
+                    queued.add(node)
+            if self.lengths[u[1]] <= offset+self.lengths[v[1]]:
+                overlaps[u, v].add(offset)
+                dirty.add((u, v))
+
+        def remove(assertion):
+            self.tick()
+            u, v, offset = assertion
+            gamma.remove(assertion)
+            for node in (u, v):
+                mentioned[node].remove(assertion)
+                if not mentioned[node]:
+                    del mentioned[node]
+            if self.lengths[u[1]] <= offset+self.lengths[v[1]]:
+                overlaps[u, v].remove(offset)
+                if not overlaps[u, v]:
+                    del overlaps[u, v]
 
         try:
+            add((0, a), (1, b), 0)
             while gamma:
-                self.tick(len(gamma))
-                self.stats['peak_assertions'] = max(self.stats['peak_assertions'], len(gamma))
-                nodes = {x for u, v, _ in gamma for x in (u, v) if self.rules[x[1]][0] == 'c'}
-                selected = max(nodes, key=lambda x: (self.lengths[x[1]], x))
+                self.tick()
+                _, neg_side, neg_index = heappop(pending)
+                selected = -neg_side, -neg_index
+                if selected not in mentioned:
+                    continue  # An earlier exact shortcut discharged its assertions.
                 side, index = selected
                 _, aa, bb = self.rules[index]
                 left, right, middle = (side, aa), (side, bb), self.lengths[aa]
-                out = set()
-                for u, v, offset in gamma:
+                affected = list(mentioned[selected])
+                # Remove the old conjunction first, so the allocation ceiling
+                # applies to live assertions, not old and new copies together.
+                for assertion in affected:
+                    remove(assertion)
+                for u, v, offset in affected:
                     if u == selected:
                         end = min(self.lengths[u[1]], offset+self.lengths[v[1]])
                         if offset < middle:
-                            add(out, left, v, offset)
+                            add(left, v, offset)
                         if end > middle:
                             if offset >= middle:
-                                add(out, right, v, offset-middle)
+                                add(right, v, offset-middle)
                             else:
-                                add(out, v, right, middle-offset)
+                                add(v, right, middle-offset)
                     elif v == selected:
-                        add(out, u, left, offset)
+                        add(u, left, offset)
                         if self.lengths[u[1]] > offset+middle:
-                            add(out, u, right, offset+middle)
-                    else:
-                        add(out, u, v, offset)
-                groups, gamma = defaultdict(set), set()
-                for u, v, offset in out:
-                    self.tick()
-                    if self.lengths[u[1]] <= offset+self.lengths[v[1]]:
-                        groups[u, v].add(offset)
-                    else:
-                        gamma.add((u, v, offset))
-                for (u, v), offsets in groups.items():
+                            add(u, right, offset+middle)
+                # Unchanged pairs are already compact. Only additions can
+                # introduce a new compactable triple; removals cannot do so.
+                while dirty:
+                    u, v = dirty.pop()
                     while True:
+                        offsets = overlaps.get((u, v), ())
                         self.tick(len(offsets)+1)
                         values = sorted(offsets)
                         for k in range(len(values)-2):
                             self.tick()
                             i, j, last = values[k:k+3]
                             if j+last-i <= self.lengths[u[1]]:
-                                offsets.remove(j)
-                                offsets.remove(last)
-                                offsets.add(i+gcd(j-i, last-i))
+                                remove((u, v, j))
+                                remove((u, v, last))
+                                add(u, v, i+gcd(j-i, last-i))
                                 self.stats['compact_triples'] += 1
                                 break
                         else:
                             break
-                    gamma.update((u, v, i) for i in offsets)
+                    dirty.discard((u, v))
                 self.stats['splits'] += 1
             result = True
         except Mismatch:
             result = False
-        if len(self._equal_cache) >= self.max_nodes:
-            self._equal_cache.clear()
-        self._equal_cache[key] = result
-        self.tick()
-        return result
+        return self._remember_equal(key, result)
 
     def lcp(self, a, b, cap=None):
         """Exact longest common prefix; logarithmically many equality queries."""
