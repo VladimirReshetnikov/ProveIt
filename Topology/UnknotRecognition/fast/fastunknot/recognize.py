@@ -142,17 +142,23 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
     if use_jones:
         # the Jones scan and the Khovanov scan use the same greedy order: compute it once
         order = best_scan_order(diagram.pd, tries=min(diagram.crossings, 12), check=check)
+        order_stats, witness = {}, None
         try:
             test, method, extra = select_jones_filter(jones_backend, potts_colors)
+            if jones_backend == "potts-separator":
+                extra["statistics"] = order_stats
             witness = test(diagram, max_states=jones_max_states,
                            max_transitions=jones_max_transitions, order=order, check=check, **extra)
         except FilterLimit as exc:
             evidence["jones"] = f"skipped: {exc}"
         else:
-            if witness is not None:
-                evidence["jones"] = witness
-                return method, order
-            evidence["jones"] = "inconclusive"
+            evidence["jones"] = witness if witness is not None else "inconclusive"
+        if "order_certificate" in order_stats:
+            certificate = order_stats["order_certificate"]
+            order = certificate["order"]
+            evidence["separator_order"] = certificate
+        if witness is not None:
+            return method, order
     # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
     # unit, which the modular test has just failed to see at t = -1 and at a generic point of
     # F_p.  On filter-undecided unknot diagrams of 15 to 27 crossings it took a median 24% (up
