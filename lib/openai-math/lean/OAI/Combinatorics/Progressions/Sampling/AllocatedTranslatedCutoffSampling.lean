@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved Euclidean-layer measurable-open
+instance explicitly in physicalAmbientRowsKernelSampling_difference, avoiding
+Lean 4.32 instance-search timeout. All theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.PhysicalRowCoverCancellation
 import OAI.Combinatorics.Progressions.Probability.AllocatedNormalizedCutoffMass
 
@@ -214,6 +217,8 @@ theorem physicalAmbientRowsKernelSampling_difference.{uX, uJ}
   let _ := inst
   have hi : Integrable (fun y => error (coveredJetAmbientTorus U 1 y))
       (Measure.pi (fun j => Measure.pi (fun _ : O j => ν j))) := by
+    let : OpensMeasurableSpace (EuclideanJetLayers U O) :=
+      @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
     apply Integrable.of_bound (C := (Cf + Cg : ℝ≥0))
     · exact (hl.continuous.comp (coveredJetAmbientTorus_continuous U 1)).measurable.aestronglyMeasurable
     · exact Filter.Eventually.of_forall (fun y => by
