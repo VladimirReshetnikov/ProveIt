@@ -76,7 +76,9 @@ Section~\ref{cms:sec:counting} fixes the combinatorial normalization and index s
 \begin{writenote}[Added 7 October 2026, batch~113]\raggedright
 \emph{Provenance.} This report is Report~234 of the session bundle that
 ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
-\file{Report234.zip} ($648{,}517$ bytes, 25 files, wrapper directory
+\file{Report234.zip} ($648{,}517$ bytes, 25 files [independent check,
+7~October 2026: 24 files; the archive listing has 24 entries, all under the
+wrapper], wrapper directory
 \file{Report234/}), arrival commit \file{60f54ea06}, placed in
 \file{a4186a946}. The text is the delivered \file{article.tex} (67 lines) with
 its eleven \verb|\input| files \file{sections/01_results.tex}, \ldots,
@@ -217,3 +219,37 @@ $\lambda_j$, $\om$, $\varepsilon_\zeta$ & $\lambda_j=\lcm(2,\ldots,j)$; $\om=\ee
 \bottomrule
 \end{longtable}
 \endgroup
+\begin{writenote}[Independent check of the write, 7 October 2026]\raggedright
+An independent adversarial check of the batch-113 write (\file{f24d4b02b}) used its own code. It read
+A368246 (\#22), A143946 (\#38) and A080130 again. The quotations of Remark~\ref{cms:rem:oeis} are verbatim,
+including Kot\v{e}\v{s}ovec's formula line.
+
+Checked hardest, and confirmed: Kot\v{e}\v{s}ovec's conjecture, as posted, is proved.
+\begin{itemize}\raggedright
+\item Theorem~2.1 of Giuliano--Szewczak--Weber was read in arXiv:1309.1578v1, which was fetched again and has
+the write's SHA-256 value. It is stated on p.~2 for every integer sequence $\kappa_n$ with $\kappa_n/n\to x>0$,
+with the model of Section~\ref{cms:sec:counting}. The check verified exactly, for $n\le30$, that
+$n\Pr(T_n=n)=b_n$ from the product of the Bernoulli generating functions. With $\kappa_n=n$ and $\rho(1)=1$
+this gives $a_n\sim\ee^{-\gamma}(n-1)!$. Theorem~\ref{cms:thm:main} gives it as well.
+\item One exact integer evaluation of~\eqref{cms:eq:finite} to $N=2000$ reproduces all 452 b-file terms.
+A brute force over all permutations with $n\le8$ confirms both statistics and the equality of their
+distributions.
+\item With exact $b_n$, the remainder of~\eqref{cms:eq:explicit} times $n^4/(1+\log n)^2$ is $0.650$,
+$-5.517$, $-3.998$, $0.295$, $-2.616$ at $n=100$, $200$, $500$, $1000$, $2000$, and at most $5.5171$ in
+absolute value for $200\le n\le2000$, as the write found.
+\end{itemize}
+Also confirmed: $C_\om$ from the Gamma product at 50 digits, with the note after
+Theorem~\ref{cms:thm:explicit} (real part a truncation, imaginary part a rounding); $Q_{\ii}$ against
+extrapolated partial products; $S=2\log2+1-\zeta(2)$; and the constant-shift numbers. The transseries
+classification of Remark~\ref{cms:rem:transseries} was checked against the volume's statements:
+$X(\log X-1)=\mathcal L$ is \file{p0:thm:lambert-core} with $w=\log X-1$, slope~1, coefficient~1. Also
+confirmed: the four \file{SOURCES.md} blobs (two current; the other two in \file{3412ae074} and
+\file{a4198a037}); the byte identity of the staged files; the README listing; and the numbering, with 104
+delivered labels and 0 differences against the \file{.aux} of a build of the placed text.
+
+Corrected or qualified by bracketed dated notes:
+\begin{itemize}\raggedright
+\item the archive's file count in the provenance paragraph above (24 files, not 25);
+\item the word ``proved'' for the constant-shift observation, in the note to Section~\ref{cms:sec:questions}.
+\end{itemize}
+\end{writenote}
