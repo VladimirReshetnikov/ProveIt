@@ -2,6 +2,9 @@ import OAI.Combinatorics.Progressions.Estimates.AllocatedFrozenPrefixStageData
 import OAI.Combinatorics.Progressions.Geometry.CertifiedFullChartForwardEarlyTree
 import OAI.Combinatorics.Progressions.Polynomial.PreparedFiniteForwardPolynomialCap
 
+/- Modified for ProveIt: raise the local elaboration heartbeat limit for Lean 4.32.
+   The upstream theorem statement and proof are unchanged. -/
+
 namespace OAI
 
 section
@@ -82,6 +85,7 @@ local notation "fast" => W.map (D.filtration.associatedGradedMap Fmark φ hφ)
 local notation "gmark" => Fmark.realification.polynomialOrbitCoordinates (fullTaggedVariableWeight J) marked
 local notation "Z" => Fmark.realPolynomialSymbolHom bF ν hF (fullTaggedVariableWeight J) gmark
 
+set_option maxHeartbeats 400000 in
 theorem exists_budgeted_tree_terminal_of_stage_refinements
     [∀ r, Fintype (SymbolBasisIndex (fun _ : {i : LayerSamplerVariables G I n B // keep r i} => 1) ω)]
     [∀ r, Fintype (SymbolBasisIndex (fun _ : {i : LayerSamplerVariables G I n B // keep r i} => 1) ν)]

@@ -1476,3 +1476,17 @@ does not provide.**
      Making the constants explicit would mean re-proving much of a
      million-line development. Asking upstream for an explicit-constant
      headline is the realistic form of this route.
+
+### Polynomial width through multilinear extraction
+
+`Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
+composes the improved all-scale Lemma 16.9 with the rounded affine lift.
+For total loss `rho`, let `sigma=rho/4` and let `l` be the new polynomial
+linearity width evaluated at spectrum count `floor(Qb(rho/8))`. The final
+proper cells have width at least
+`sqrt((floor(l)/8)^(Es(samples,sigma)))/4`, where
+`samples=ceil(6*max(1,qGamma)/sigma)`. The good set has relative size at
+least `1-rho`, and the candidate count retains the existing slice-provider
+bound. The production source and combined facade axiom audit pass.
+Spectrum structure, induced selection, a remainder cover, and the slice
+provider are still hypotheses. No additional upstream module is imported.
