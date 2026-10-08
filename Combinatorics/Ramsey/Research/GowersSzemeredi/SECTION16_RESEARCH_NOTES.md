@@ -1053,6 +1053,47 @@ So what remains on the variety route is exactly two things:
 So, conditionally on `MilicevicDeepVarietyStructure`, the variety route's
 only open input is item 1. That is `OscillationPartitionsExist`: Lemma 16.1
 for Freiman-bilinear forms on a Bohr set.
+
+**Item 1 at explicit scales, proved (2026-10-08).** The Freiman-bilinear
+obstruction disappears after one preliminary partition
+(`Proofs16OscillationPartition`):
+1. **Linear stage.** Partition P by the |Γ| + |Ψ| linear maps x ↦ γx₀ and
+   x ↦ ψx₁, to image diameter 4N/H₁ ≤ ρN/4.
+2. **Bilinear stage.** A stage-1 cell that meets V(ρ/2) has its whole
+   y-range in B(Ψ;ρ). There each L_k is affine along the cell's y-axis,
+   since second differences vanish by Freiman-linearity. So
+   x ↦ L_k(x₁)·x₀ agrees on the cell with a genuinely multilinear map
+   (`freiman_column_multilinearOn`). Partition the cell again by these r
+   maps, to diameter 4N/H₂ ≤ ρN/2. Cells that miss V(ρ/2) stay whole.
+
+`oscillation_partition_of_scales` combines the two stages. Given
+8 ≤ ρH₂, 16 ≤ ρH₁, K(r+1) ≤ H₂, K(|Γ|+|Ψ|+1) ≤ H₁, H₂^(p(r+1)^8) ≤ H₁ and
+H₁^(p(|Γ|+|Ψ|+1)^8) ≤ P.width, it yields a partition into cells of width
+≥ H₂. Each cell misses V(ρ/2) or oscillates by at most ρN/2. The width
+exponent is 1/(p²(r+1)^8(|Γ|+|Ψ|+1)^8), **polynomial in the rank**, which
+is the point of the peer's Schmidt-based Lemma 16.1.
+
+The multilinear partition theorem enters as the hypothesis
+`MultilinearDiameterPartition K p`, the verbatim k = 2 body of the peer's
+`exists_simultaneous_multilinear_partition_bound`.
+`Proofs16OscillationPartitionInst` discharges it in two lines. That module
+imports the OAI port, so it is **not built on this machine** and is checked
+only by the full-verification host. Everything else here is kernel-checked
+locally, with axioms propext, Classical.choice, Quot.sound.
+
+**Left for item 1: all-scale bookkeeping.** `OscillationPartitionsExist`
+quantifies over every proper box, but the explicit scales need
+P.width ≥ T, with T = H₀^(e₁e₂) and H₀ = ⌈max(K(r+1), K(|Γ|+|Ψ|+1), 16/ρ)⌉.
+Boxes of smaller width cannot in general be cut into good cells of width
+≥ P.width^E > 1. So the final `MultiplyLinearWith` should handle them
+differently:
+- chop the long axis into blocks of length in [w, 2w), where w = P.width;
+- cover each block (fewer than 4T² points) by constant maps, using
+  q ≤ 4T² maps per cell.
+
+So Qb(θ) ≥ 4T², which is quasi-polynomial in 1/ρ and polynomial-exponent
+in the rank. On wide boxes, choose H₂ as the largest h with
+h^(e₁e₂) ≤ P.width, and take Eb = 1/(2e₁e₂).
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
@@ -1585,3 +1626,35 @@ independent of the density parameters, modulus, and relation, but remain
 existential. All three production modules and their transitive axiom checks
 pass; the full facade audit is queued. No new upstream module is imported,
 and no remaining all-dimension structure statement is claimed.
+
+### Simultaneous oscillation of multilinear variety phases
+
+`Proofs16PolynomialVarietyOscillation` applies the same recurrence to all
+`|Gamma|+|Psi|+r` defining conditions of a bilinear Bohr variety. If each
+mixed phase `L_i(x_1)*x_0` is multilinear on a proper parent box, constants
+`K>=2,p>0` independent of the phase count give a common proper partition
+with every cell width at least `H` and oscillation at most `4*N/H`, provided
+`H>=K*(|Gamma|+|Psi|+r+1)` and
+`H^(p*(|Gamma|+|Psi|+r+1)^8)<=parent.width`. The global affine case
+`L_i(y)=a_i*y+b_i` satisfies the phase premise. For `8<=rho*H`, every such
+cell is good for the half-radius and full-radius varieties.
+
+The complete production source and its three transitive axiom checks pass;
+the combined facade audit is queued. This proves an oscillation partition
+in a concrete case. Freiman linearity only on a Bohr set does not yet supply
+the parent-box multilinearity premise, and an all-box positive-power
+oscillation partition is not asserted. The result reuses the already
+scoped Schmidt recurrence input and adds no upstream module.
+
+`Proofs16PolynomialVarietyProfile` now chooses a rounded integer scale to
+obtain good cells of width at least `W^(1/(2*p*(q+1)^8))`, where `W` is the
+parent width and `q=|Gamma|+|Psi|+r`. Its integer threshold is
+`max(C*(q+1),ceil(8/rho))^(2*p*(q+1)^8)`, with fixed existential `C>=2,p>0`.
+`Proofs16PolynomialVarietyCover` uses one multilinear map on the good cells
+and the existing nine-map coarse cover below that threshold. Capping the
+positive exponent gives `MultiplyLinearWith` on every proper box, with
+controls independent of the requested loss. This discharges the partition
+input for globally multilinear mixed phases, including globally affine
+coordinate functions. It makes no such claim for general Freiman maps
+on Bohr sets. Both production modules and their five transitive axiom checks
+pass; the combined facade audit remains queued behind the port build.
