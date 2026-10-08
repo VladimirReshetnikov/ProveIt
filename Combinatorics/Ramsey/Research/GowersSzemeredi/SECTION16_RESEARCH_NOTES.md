@@ -695,10 +695,27 @@ input for a formalization.
 - Theorem 16.2 in dimension three would then be conditional on a
   quasi-polynomial stackable structure, plus the readout (R) of J.2.
 
-**Effort.** Formalizing a Schmidt/Maynard/Lau-type bound is a major
-project: Weyl differencing, van der Corput and geometry of numbers. Its
-quadratic case (d = 2), the one dimension three needs, is the place to
-start.
+**Plan for (D), quadratic case (from Maynard's outline, arXiv:2011.12275, §2).**
+Schmidt's c/K² already suffices: (D) needs only poly(1/K). His argument is an
+increment strategy, simpler than Maynard's geometry-of-numbers refinement.
+
+1. **Equidistribution or relation.** Fourier analysis on 𝕋^K. Either
+   v(n) = (α_i n²)_i hits every box of side δ for some n < x, once
+   x > δ^(−K−o(1)), or there is a relation h·α ≈ a/q with
+   |h_i| ≤ δ^(−1−o(1)) and q ≤ δ^(−O(K)).
+2. **Reduction.** On multiples n = h₁q·n′, the first polynomial is
+   controlled by the others. That leaves K − 1 polynomials, at scale
+   x/(h₁q).
+3. **Iteration.** K steps, each costing δ^(O(1)) of the range. This gives
+   exponent c/K².
+
+Corpus inputs already proved: `lemma_5_3` (Weyl's inequality) and
+`lemma_5_4` (Dirichlet); `simultaneous_small_multiplier` is the degree-one
+case. Missing: a multidimensional Erdős–Turán–Koksma-type criterion,
+equidistribution in boxes of 𝕋^K controlled by exponential sums over
+frequencies h with |h| ≤ H. A smooth-bump or Fejér-kernel proof avoids the
+full Koksma inequality. Size estimate: several thousand lines over a few
+weeks.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
