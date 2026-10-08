@@ -245,10 +245,16 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
         stats.update(work=max_work-budget.left, moves=len(moves))
     if any(words):
         return None
-    return dict(version=2 if any(m['kind'] == 'relator' for m in moves) else 1,
+    return dict(version=_certificate_version(moves),
                 method='wirtinger-cyclic-group', status='UNKNOT',
                 input_pd=[list(row) for row in diagram.pd], moves=moves,
                 remaining_generator=next(iter(alive)))
+
+
+def _certificate_version(moves):
+    if any(m['kind'] == 'whitehead_power' for m in moves):
+        return 3
+    return 2 if any(m['kind'] == 'relator' for m in moves) else 1
 
 
 def verify_group_certificate(diagram, certificate, *, check=lambda: None,
@@ -276,7 +282,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     budget.tick()
     if (type(certificate) is not dict or set(certificate) != {
             'version', 'method', 'status', 'input_pd', 'moves', 'remaining_generator'}
-            or type(certificate['version']) is not int or certificate['version'] not in (1, 2)
+            or type(certificate['version']) is not int or certificate['version'] not in (1, 2, 3)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -363,6 +369,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             raise GroupLimit(str(exc)) from exc
     for move in certificate['moves']:
         budget.tick()
+        repetitions = 1
         if type(move) is not dict:
             return False
         kind = move.get('kind')
@@ -385,7 +392,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             words[index] = []
             alive.remove(g)
         elif kind == 'relator':
-            if certificate['version'] != 2:
+            if certificate['version'] < 2:
                 return False
             if set(move) != {'kind', 'target', 'donor', 'target_rotation',
                              'donor_rotation', 'inverse', 'overlap'}:
@@ -416,8 +423,15 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             words[target] = normalize([-right[k] for k in range(len(right)-1, overlap-1, -1)]
                                       + left[overlap:])
             continue
-        elif kind == 'whitehead':
-            if set(move) != {'kind', 'multiplier', 'subset'}:
+        elif kind in ('whitehead', 'whitehead_power'):
+            fields = {'kind', 'multiplier', 'subset'}
+            if kind == 'whitehead_power':
+                fields.add('exponent')
+                if (certificate['version'] != 3 or type(move.get('exponent')) is not int
+                        or move['exponent'] < 2):
+                    return False
+                repetitions = move['exponent']
+            if set(move) != fields:
                 return False
             a, subset = move['multiplier'], move['subset']
             if type(subset) is list:
@@ -439,12 +453,18 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
                 images[-g] = [-x for x in reversed(image)]
         else:
             return False
-        expanded = 0
-        for word in words:
-            budget.tick(len(word)+1)
-            expanded += sum(len(images.get(x, (x,))) for x in word)
-        budget.size(expanded)
-        words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
+        # Independent literal replay of elementary moves, never the producer's
+        # run profile or powered images. Reject unaffordable exponents early.
+        if repetitions > budget.left:
+            budget.tick(repetitions)
+        for _ in range(repetitions):
+            budget.tick()
+            expanded = 0
+            for word in words:
+                budget.tick(len(word)+1)
+                expanded += sum(len(images.get(x, (x,))) for x in word)
+            budget.size(expanded)
+            words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
     return alive == {certificate['remaining_generator']} and not any(words)
 

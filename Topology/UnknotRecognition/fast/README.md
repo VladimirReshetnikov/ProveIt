@@ -1,5 +1,15 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Compressed group search now batches powers of a selected Whitehead automorphism
+when the move repeats or expanded length exceeds four times allocated grammar
+size. An exact weighted-median gap profile chooses the first minimizing power
+without expanding the words. Version-3 certificates are checked independently
+by compressed substitution or literal elementary replay. The explicit search
+policy is unchanged. This removes exponential unit descent on a supplied
+compact presentation family; a general subexponential recognition bound remains
+unproved. See [`whitehead_powers.tex`](../synthesis/whitehead_powers.tex).
+
+
 This research continuation adds a linear signed Seifert-graph certificate before
 the established recognition pipeline and three optional Khovanov backends.
 The new front end completely decides homogeneous input diagrams after validation.
@@ -11,7 +21,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 653 passing tests
+diagram is not checked twice. The integrated suite now has 658 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then

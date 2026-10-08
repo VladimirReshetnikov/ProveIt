@@ -37,8 +37,15 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                 roots[index] = 0
                 alive.remove(g)
                 roots = [arena.cyclic_reduce(x) for x in arena.substitute(roots, images)]
-            elif kind == 'whitehead':
-                if set(move) != {'kind', 'multiplier', 'subset'}:
+            elif kind in ('whitehead', 'whitehead_power'):
+                fields, exponent = {'kind', 'multiplier', 'subset'}, 1
+                if kind == 'whitehead_power':
+                    fields.add('exponent')
+                    if (certificate['version'] != 3 or type(move.get('exponent')) is not int
+                            or move['exponent'] < 2):
+                        return False
+                    exponent = move['exponent']
+                if set(move) != fields:
                     return False
                 a, subset = move['multiplier'], move['subset']
                 if type(subset) is list:
@@ -48,18 +55,19 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                         or len(set(subset)) != len(subset) or a not in subset or -a in subset):
                     return False
                 subset, images = set(subset), {}
+                power = arena.power(arena.letter(a), exponent)
                 for g in alive:
-                    letters = [g]
+                    value = arena.letter(g)
                     if g != abs(a):
                         if -g in subset:
-                            letters = [-a]+letters
+                            value = arena.concat(arena.inverse(power), value)
                         if g in subset:
-                            letters += [a]
-                    images[g] = arena.from_word(letters)
+                            value = arena.concat(value, power)
+                    images[g] = value
                     images[-g] = arena.inverse(images[g])
                 roots = [arena.cyclic_reduce(x) for x in arena.substitute(roots, images)]
             elif kind == 'relator':
-                if certificate['version'] != 2 or set(move) != {
+                if certificate['version'] < 2 or set(move) != {
                         'kind', 'target', 'donor', 'target_rotation', 'donor_rotation', 'inverse', 'overlap'}:
                     return False
                 target, donor = move['target'], move['donor']
