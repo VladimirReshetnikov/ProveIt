@@ -1222,8 +1222,8 @@ remainder cover for every input scale. With
 width is `(zeta/(4*b))*m^(c*a/(4*E))`, where `q=floor(Qb(sigma/2))`.
 The original remainder graph-count and good-mass conclusions are retained.
 A separate monotonicity lemma transfers the power lower bound on remainder
-cell widths. The complete production source passes Lean; its facade import
-awaits completion of the running audit. No localized threshold remains in
+cell widths. The complete production source and the follow-up combined
+facade audit pass. No localized threshold remains in
 this result's hypotheses, but spectrum structure, induced selection, and
 the remainder cover remain premises.
 

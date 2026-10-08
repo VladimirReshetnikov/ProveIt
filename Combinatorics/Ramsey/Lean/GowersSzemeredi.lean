@@ -56,6 +56,7 @@ import GowersSzemeredi.Proofs16PolynomialLemma6
 import GowersSzemeredi.Proofs16PolynomialLemma9
 import GowersSzemeredi.Proofs16PolynomialAllScaleParameters
 import GowersSzemeredi.Proofs16PolynomialAllScaleLemma6
+import GowersSzemeredi.Proofs16PolynomialAllScaleLemma9
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
