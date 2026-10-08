@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: express the final norm comparison by direct transitivity
+to avoid repeated elaboration of dependent coordinate expressions on Lean 4.32.
+The theorem statement, bounds, and default heartbeat limit are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.FastHorizontalFactorization
 import OAI.Combinatorics.Progressions.Linear.LayerOneProjectionMatrixBounds
 
@@ -133,10 +138,8 @@ theorem exists_native_coordinate_derivative_system :
     have hx := F.realFastCoefficientHorizontal_section_norm_bound e ω hF (fun _ => 1)
       (fun _ => Nat.zero_lt_one) Uf b sectionMap hsection rows T hT Cscale hC
       (fun M hM => (hweighted T hT M hM).2) (small i)
-    calc
-      _ ≤ Cscale * ‖basisWeightedCoordinates b (fun j => monomialScale T (rows j).val.1) (small i)‖ := hx
-      _ ≤ Cscale * (bound / T i) := mul_le_mul_of_nonneg_left (hsmall i) hC
-      _ = (Cscale * bound) / T i := (mul_div_assoc _ _ _).symm
+    exact (hx.trans (mul_le_mul_of_nonneg_left (hsmall i) hC)).trans_eq
+      (mul_div_assoc _ _ _).symm
 
 end Erdos3.NilpotentLieFiltration
 
