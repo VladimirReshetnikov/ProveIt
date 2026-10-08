@@ -2,6 +2,19 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`treewidth_two.tex` adds a complete polynomial recognition procedure on
+certified K4-minor-free projections. The structural classification reduces
+this input class to connected sums of two-strand torus knots, so exact
+determinant one is sufficient after the graph certificate passes. The
+independent verifier uses a separate graph replay and Fox-matrix arithmetic.
+The optional pipeline stage has a local deadline and safe fallback; its
+capped form does not confer the standalone polynomial bound on Khovanov.
+Fourteen paired whole-query benchmarks show 1.085–1.142x gains on three
+mixed-sign two-strand unknot cases and regressions on several already cheap
+Seifert cases. The stage remains optional. All 611 integrated tests pass in
+126.455 seconds (`data/treewidth-two-integrated-tests.txt`). The rebuilt
+article has 147 pages.
+
 `jones_detection_audit.tex` checks the combined residual-degree and geometric
 realization claims in Carmi–Cohen arXiv:2606.22410v1. An explicit nine-crossing
 anti-parallel replacement in a trefoil has Jones–Vassiliev degree 23, exceeding
@@ -18,7 +31,7 @@ with little change on other inputs. Full results agree in all arms, and all
 603 integrated tests pass in 110.500 seconds; see
 `data/jones-identity-shortcut-integrated-tests.txt`. Recognition does not request
 full coefficient recovery, so these gains apply to full-Jones queries.
-The rebuilt article has 144 pages.
+That checkpoint's article had 144 pages.
 
 `faithful_jones.tex` proves that an input-sized exact quadratic evaluation
 decides Jones polynomial identity without specialization collisions, and
