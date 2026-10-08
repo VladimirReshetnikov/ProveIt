@@ -185,8 +185,8 @@ adaptive scheduler establishes a general subexponential recognition bound.
 
 \subsection{Validation and measurement}
 
-The complete maintained suite passes all 602 tests in 111.769 seconds.
-The run is preserved in \path{data/faithful-jones-integrated-tests.txt}.
+The initial integration passed all 602 tests in 111.769 seconds.
+That run is preserved in \path{data/faithful-jones-integrated-tests.txt}.
 
 Seven new maintained tests compare 156 full polynomials against the independent
 whole-cube Laurent oracle: both checkerboard shades and both mirrors of 35
@@ -210,7 +210,8 @@ optional, and these invariant timings do not claim faster full recognition.
 
 \input{tables/faithful_jones.tex}
 
-All 13 measured inputs completed in every arm and round.  The Conway knot
+In the initial implementation, all 13 measured inputs completed in every
+arm and round.  The Conway knot
 costs 0.563\,ms at fixed $q=6$, 0.608\,ms for collision-free identity, and
 0.718\,ms for full recovery.  The larger integer arithmetic is more costly
 on the 254-crossing tree medial: 17.981\,ms, 125.268\,ms, and 239.190\,ms,
@@ -218,3 +219,43 @@ respectively.  Grid 100 rises from 21.873\,ms to 38.744\,ms for identity
 and 38.943\,ms for recovery.  This cost is a reason to retain the inexpensive
 fixed specializations and the current default filter; stronger asymptotic
 information is not a measured per-input runtime improvement.
+
+\subsection{Using proved identity to avoid redundant reconstruction}
+
+The first decoder always formed the norm of the unknot normalization, divided
+both coordinates and performed balanced decoding, even when $Z=U$ had already
+proved $V_D=1$.  These potentially large integer operations are unnecessary
+in that case.  The revised decoder validates the input-sized color count and
+nonzero normalization, checks the two exact pairs for equality, and returns
+the complete polynomial $\{0\mapsto1\}$ immediately when they agree.
+For every other input it follows the original recovery path.
+
+This shortcut uses the collision-free theorem above; applying it to an
+arbitrary fixed specialization would be incorrect.  The regression check
+therefore rejects a fixed-$q$ result, rejects zero normalization even when
+both pairs are zero, and exercises cancellation immediately before returning
+the identity.  Global checks still run before validation and before this
+early publication.  The complete maintained suite now passes 603 tests in
+110.500 seconds, recorded in
+\path{data/jones-identity-shortcut-integrated-tests.txt}.
+
+The added benchmark preserves the exact earlier decoder from commit
+\code{58006240a}, records its source hash, and compares complete polynomial
+queries in seven shuffled paired rounds after an excluded warmup.  Every arm
+constructs a fresh diagram and includes all ordering and scalar work.  A
+repeated old-decoder arm supplies an A/A control.  The full returned results,
+including all exact pairs, coefficients and work counters, agree in every
+arm.  The retained initial benchmark above and this new paired measurement
+are separate runs; their absolute times should not be compared across runs.
+
+\input{tables/jones_identity_shortcut.tex}
+
+On the 126-crossing tree medial, the median paired speedup is $1.742$;
+on the 254-crossing example it is $1.959$, with median times falling from
+142.257\,ms to 71.874\,ms.  Grid and small-knot timings show little change;
+the trefoil's paired ratio is $0.966$, so no broad improvement is claimed.
+The large tree inputs benefit because redundant normalization arithmetic is
+a substantial part of full recovery.  The scalar evaluation is still required,
+and the general asymptotic bound is unchanged.  Recognition already requests
+identity without coefficient recovery, so these are full-Jones-query gains,
+not gains in the complete recognition pipeline.

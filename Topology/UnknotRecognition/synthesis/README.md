@@ -2,6 +2,24 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`jones_detection_audit.tex` checks the combined residual-degree and geometric
+realization claims in Carmi–Cohen arXiv:2606.22410v1. An explicit nine-crossing
+anti-parallel replacement in a trefoil has Jones–Vassiliev degree 23, exceeding
+the implied cap 22. Independent cube polynomials, formal coordinate conversion,
+the twist skein recurrence, 79 smoothing traces and 1576 local RI deletions
+support the finding. The audit does not disprove Jones unknot detection or
+locate the faulty clasp-machine step; the proposed detection proof is not
+adopted by the implementation.
+
+The faithful decoder now skips normalization and coefficient decoding when
+exact identity already proves the full polynomial is one. A preserved-source
+paired benchmark reports 1.74x and 1.96x improvements on two tree medials,
+with little change on other inputs. Full results agree in all arms, and all
+603 integrated tests pass in 110.500 seconds; see
+`data/jones-identity-shortcut-integrated-tests.txt`. Recognition does not request
+full coefficient recovery, so these gains apply to full-Jones queries.
+The rebuilt article has 144 pages.
+
 `faithful_jones.tex` proves that an input-sized exact quadratic evaluation
 decides Jones polynomial identity without specialization collisions, and
 recovers the full Laurent polynomial by balanced integer decoding. Counting
@@ -13,8 +31,8 @@ for recognition. Seven new tests include 156 independent cube-polynomial
 comparisons, 187 bounded-polynomial recovery cases, real restarts and caps,
 and very large JSON-safe witnesses. The invariant benchmark records the
 cost of stronger guarantees without claiming a full recognition speedup.
-All 602 integrated tests pass in 111.769 seconds; the run is recorded in
-`data/faithful-jones-integrated-tests.txt`. The rebuilt article has 141 pages.
+The initial integration passed 602 tests in 111.769 seconds; that run is
+recorded in `data/faithful-jones-integrated-tests.txt`.
 
 `adaptive_potts.tex` defers separator construction according to actual query
 work, proves a polynomial bound for a logarithmic remaining tail, and retains

@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 602 passing tests.
+diagram is not checked twice. The integrated suite now has 603 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -1026,6 +1026,19 @@ and retain hexadecimal quadratic coordinates. Small color counts retain `q`.
 These conversions do not change Python's global decimal-conversion limit.
 Full theory, validation and measured costs are in
 [`../synthesis/faithful_jones.tex`](../synthesis/faithful_jones.tex).
+
+Full recovery now returns polynomial one immediately after the faithful pair
+comparison proves identity, avoiding redundant normalization and decoding.
+Paired full-query measurements show a 1.96x improvement on the 254-crossing tree
+medial, with little change on most other inputs. Recognition already requests
+identity alone, so this does not imply a recognition speedup. Run
+`benchmark_jones_identity_shortcut.py --output FILE` to reproduce the comparison
+against the preserved earlier decoder.
+
+The independent [residual-twist audit](jones_research/README.md) finds a concrete
+contradiction to the combined uniform-degree and geometric-realization claims
+used in arXiv:2606.22410v1. It does not disprove Jones unknot detection. That
+preprint is not used to promote polynomial identity to an unknot certificate.
 
 `potts-adaptive` defers separator preparation until actual scalar work reaches
 `64*n` transitions. If at most `2*ceil(log2(n+1))` crossings remain then, it
