@@ -139,6 +139,26 @@ class SeparatorOrderTests(unittest.TestCase):
         trefoil = Diagram.from_json(json.loads((root/'trefoil.json').read_text()))
         self.assertTrue(verify_width_bounded_order(trefoil.pd, result['witness']['order_certificate']))
 
+    def test_pipeline_rebuilds_certificate_when_reduction_changes_crossings(self):
+        from fastunknot.simplify import simplify
+        root = Path(__file__).resolve().parents[1] / 'examples'
+        d = Diagram.from_json(json.loads((root/'hard_unknot_8.json').read_text()))
+        reduced, trace = simplify(d, r3=False)
+        self.assertTrue(0 < reduced.crossings < d.crossings)
+        # Supply a valid partial simplification, leaving work for the scanner.
+        def partial(diagram, *, r3=False, **options):
+            return (reduced, trace) if r3 else (diagram, [])
+        with patch('fastunknot.recognize.simplify', side_effect=partial):
+            out = recognize(d, jones_backend='potts-separator', jones_max_transitions=1,
+                            use_braid=False, use_seifert=False, use_reduction=True,
+                            use_descending=False, use_factorization=False, use_modular=False,
+                            use_alexander=False, use_r3=True)
+        self.assertEqual(out.status, 'UNKNOT')
+        cert = out.evidence['separator_order']
+        self.assertTrue(verify_width_bounded_order(reduced.pd, cert))
+        self.assertFalse(verify_width_bounded_order(d.pd, cert))
+        self.assertEqual(out.evidence['khovanov']['scan_order'], cert['order'])
+
 
 if __name__ == '__main__':
     unittest.main()

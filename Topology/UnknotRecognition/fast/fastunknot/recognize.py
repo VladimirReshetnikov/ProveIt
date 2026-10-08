@@ -216,6 +216,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             if use_descending and descending_start(reduced) is not None:
                 return "UNKNOT", "descending-diagram"
             diagram, order = reduced, None
+            if 'separator_order' in evidence:
+                # Crossing indices changed. Rebuild the witness on this diagram
+                # before supplying an order to a window or the complete scan.
+                from .separator_order import width_bounded_scan_order
+                certificate = width_bounded_scan_order(diagram.pd, check=check)
+                evidence['separator_order'] = certificate
+                order = certificate['order']
     if window_options is not None:
         from .window_filter import probe_windows
         ceiling = window_options["max_objects"]
