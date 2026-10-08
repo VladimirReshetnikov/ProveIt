@@ -34,42 +34,63 @@ class NormalWorkerError(RuntimeError):
 
 
 def _invoke(command, payload, expires, check):
-    """Communicate cooperatively and always reap a failed/interrupted child."""
-    import subprocess
+    """Stage UTF-8 streams, wait cooperatively, and always reap the child.
 
-    check()
-    if expires is not None and monotonic() >= expires:
-        raise NormalTimeout('normal-surface local time allowance exhausted')
-    try:
-        child = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE, text=True)
-    except OSError as exc:
-        raise NormalWorkerError(str(exc)) from exc
-    try:
-        pending = payload
-        while True:
-            check()
-            left = None if expires is None else expires-monotonic()
-            if left is not None and left <= 0:
-                raise NormalTimeout('normal-surface local time allowance exhausted')
-            try:
-                output, errors = child.communicate(pending, timeout=0.05 if left is None else min(0.05, left))
-            except subprocess.TimeoutExpired:
-                # communicate() retains partially sent input and received output.
-                pending = None
-                continue
-            except OSError as exc:
-                raise NormalWorkerError(str(exc)) from exc
-            check()
-            if expires is not None and monotonic() >= expires:
-                raise NormalTimeout('normal-surface local time allowance exhausted')
-            return child.returncode, output, errors
-    finally:
-        if child.poll() is None:
-            child.kill()
-        child.wait()
-        for stream in (child.stdin, child.stdout, child.stderr):
-            stream.close()
+    One-shot file-backed standard streams avoid partially sent pipe input:
+    retrying communicate(None) after a timeout does not resume that input on
+    all supported Python implementations. Staging and reading share the same
+    allowance as process startup and execution. No background I/O thread or
+    private Popen state is needed, and every temporary stream is closed.
+    """
+    from contextlib import ExitStack
+    import subprocess
+    import tempfile
+
+    def guard():
+        check()
+        if expires is not None and monotonic() >= expires:
+            raise NormalTimeout('normal-surface local time allowance exhausted')
+
+    guard()
+    with ExitStack() as streams:
+        try:
+            request, output, errors = [streams.enter_context(tempfile.TemporaryFile(
+                mode='w+t', encoding='utf-8')) for _ in range(3)]
+            request.write(payload)
+            request.seek(0)
+        except OSError as exc:
+            raise NormalWorkerError(str(exc)) from exc
+        guard()
+        try:
+            child = subprocess.Popen(command, stdin=request, stdout=output, stderr=errors)
+        except OSError as exc:
+            raise NormalWorkerError(str(exc)) from exc
+        try:
+            while True:
+                guard()
+                left = None if expires is None else expires-monotonic()
+                try:
+                    child.wait(timeout=0.05 if left is None else max(0, min(0.05, left)))
+                except subprocess.TimeoutExpired:
+                    continue
+                except OSError as exc:
+                    raise NormalWorkerError(str(exc)) from exc
+                guard()
+                try:
+                    output.seek(0)
+                    errors.seek(0)
+                    result = output.read(), errors.read()
+                except OSError as exc:
+                    raise NormalWorkerError(str(exc)) from exc
+                guard()
+                return child.returncode, *result
+        finally:
+            if child.poll() is None:
+                try:
+                    child.kill()
+                except ProcessLookupError:
+                    pass
+            child.wait()
 
 
 def regina_decide(diagram, *, seconds=2.0, check=lambda: None):
