@@ -1020,6 +1020,17 @@ the old integer threshold for all sufficiently large `q`, with a strictly
 larger exponent. Integer rounding and the length-minus-one margin are
 included. The next full facade audit is pending.
 
+`Proofs16PolynomialProductAssembly` also passes Lean. It applies this
+profile to a `MultiplyLinearWith Qb Eb` spectrum cover on short parent
+boxes. For positive integer `n <= (m/8)^(Eb sigma)` above the new threshold
+at `floor(Qb sigma)`, it obtains one proper product partition of minimum
+width `(zeta/2)*sqrt(n^epsilon(q))`, where the actual cover count satisfies
+`q <= Qb sigma`. The good base set retains at least `1-sigma` of the mass.
+Monotonicity in the family size justifies testing the threshold at the
+known count bound. This makes the recurrence usable in the localized
+spectrum assembly; the threshold, spectrum structure, and local Bohr
+linearity remain explicit. The next combined audit is pending.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold
