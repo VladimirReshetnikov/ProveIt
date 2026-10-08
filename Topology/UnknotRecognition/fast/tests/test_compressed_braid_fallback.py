@@ -4,7 +4,7 @@ import random
 import unittest
 from unittest.mock import patch
 
-from fastunknot.compressed_braid import recognize, verify, InvalidCertificate, CompressedLimit
+from fastunknot.compressed_braid import recognize as native_recognize, verify, InvalidCertificate, CompressedLimit
 from fastunknot.compressed_braid import cube
 from fastunknot.compressed_braid.cube_verify import replay_rank
 from fastunknot.compressed_braid.forest import summarize
@@ -12,6 +12,11 @@ from fastunknot.compressed_words import WordArena
 from fastunknot.diagram import Diagram, DiagramError
 from fastunknot.scan import khovanov_rank
 from compressed_braid_research.families import sleeve
+
+
+def recognize_cube(data, **options):
+    """Keep the direct cube contract covered independently of adaptive reduction."""
+    return native_recognize(data, use_fallback_reduction=False, **options)
 
 
 def grammar(strands, word):
@@ -51,10 +56,11 @@ class ExceptionalCubeTests(unittest.TestCase):
     def test_both_verdicts_agree_with_independent_scanner(self):
         for word, status in ((UNKNOT, 'UNKNOT'), (KNOT, 'KNOTTED')):
             data = grammar(4, word)
-            result = recognize(data)
+            result = recognize_cube(data)
             self.assertEqual(result['status'], status)
             cert = result['certificate']
-            self.assertEqual(cert['version'], 'compressed-singleton-forest-v2')
+            self.assertEqual(cert['version'], 'compressed-singleton-forest-v2'
+                             if status == 'UNKNOT' else 'compressed-singleton-forest-v3')
             child = cert['leaves'][0]['certificate']
             rank = khovanov_rank(Diagram.from_braid(4, word).pd)['reduced_rank']
             self.assertEqual(sum(child['homology']), rank)
@@ -102,7 +108,7 @@ class ExceptionalCubeTests(unittest.TestCase):
 
     def test_source_and_rank_mutations_rejected(self):
         data = grammar(4, KNOT)
-        cert = recognize(data)['certificate']
+        cert = recognize_cube(data)['certificate']
         for field, edit in (
                 ('word', lambda x: [True] + x[1:]),
                 ('word', lambda x: [-x[0]] + x[1:]),
@@ -123,7 +129,7 @@ class ExceptionalCubeTests(unittest.TestCase):
 
     def test_replay_does_not_discover_rank_or_reduce_braids(self):
         data = grammar(4, UNKNOT)
-        cert = recognize(data)['certificate']
+        cert = recognize_cube(data)['certificate']
         with patch.object(cube, 'rank_trace', side_effect=AssertionError), \
              patch.object(cube, 'produce', side_effect=AssertionError), \
              patch.object(WordArena, 'lcp', side_effect=AssertionError):
@@ -138,7 +144,7 @@ class ExceptionalCubeTests(unittest.TestCase):
             return original(data, *args)
         with patch.object(cube, 'expand_leaf', side_effect=track), \
              patch.object(WordArena, 'expand', side_effect=AssertionError):
-            result = recognize(data)
+            result = recognize_cube(data)
         self.assertEqual(result['status'], 'UNKNOT')
         self.assertEqual(expanded, [4])
         self.assertEqual(verify(data, result['certificate']), 'UNKNOT')
@@ -147,13 +153,13 @@ class ExceptionalCubeTests(unittest.TestCase):
 
     def test_shared_generator_and_work_limits_cover_replay(self):
         data = join(grammar(4, UNKNOT), grammar(4, UNKNOT))
-        full = recognize(data)
+        full = recognize_cube(data)
         self.assertEqual(full['status'], 'UNKNOT')
         generators = full['resources']['cube_generators']
         work = full['resources']['work']
-        self.assertEqual(recognize(data, fallback_max_generators=generators, max_work=work)['status'], 'UNKNOT')
+        self.assertEqual(recognize_cube(data, fallback_max_generators=generators, max_work=work)['status'], 'UNKNOT')
         for opts in (dict(fallback_max_generators=generators-1), dict(max_work=work-1)):
-            limited = recognize(data, **opts)
+            limited = recognize_cube(data, **opts)
             self.assertEqual(limited['status'], 'INCONCLUSIVE')
             self.assertNotIn('certificate', limited)
         with self.assertRaises(CompressedLimit):
@@ -162,15 +168,15 @@ class ExceptionalCubeTests(unittest.TestCase):
     def test_crossing_preflight_and_legacy_residual_proofs(self):
         data = grammar(4, KNOT)
         with patch.object(cube, 'produce', side_effect=AssertionError):
-            result = recognize(data, fallback_max_crossings=8)
+            result = recognize_cube(data, fallback_max_crossings=8)
         self.assertEqual(result['status'], 'INCONCLUSIVE')
         self.assertEqual(result['resources']['cube_generators'], 0)
         self.assertEqual(verify(data, result['certificate']), 'INCONCLUSIVE')
         self.assertEqual(result['certificate']['version'], 'compressed-singleton-forest-v1')
         for options in (dict(fallback_max_crossings=True), dict(fallback_max_generators=-1)):
             with self.assertRaises(ValueError):
-                recognize(data, **options)
-        proof = recognize(data)['certificate']
+                recognize_cube(data, **options)
+        proof = recognize_cube(data)['certificate']
         with self.assertRaises(CompressedLimit):
             verify(data, proof, fallback_max_crossings=8)
 
@@ -183,7 +189,7 @@ class ExceptionalCubeTests(unittest.TestCase):
         data['rules'].append(['c', data['root'], empty])
         data['root'] = len(data['rules'])-1
         self.assertEqual(cube.expand_leaf(data, len(UNKNOT), 12, lambda: None), UNKNOT)
-        self.assertEqual(recognize(data)['status'], 'UNKNOT')
+        self.assertEqual(recognize_cube(data)['status'], 'UNKNOT')
 
     def test_huge_exceptional_factor_declines_before_expansion(self):
         data = grammar(4, UNKNOT)
@@ -196,7 +202,7 @@ class ExceptionalCubeTests(unittest.TestCase):
         data['rules'].append(['c', data['root'], root])
         data['root'] = len(data['rules'])-1
         with patch.object(cube, 'expand_leaf', side_effect=AssertionError):
-            result = recognize(data)
+            result = recognize_cube(data)
         self.assertEqual(result['status'], 'INCONCLUSIVE')
         self.assertEqual(result['resources']['cube_generators'], 0)
         self.assertTrue(result['verified'])
@@ -223,7 +229,7 @@ class ExceptionalCubeTests(unittest.TestCase):
                 inside = False
         with patch.object(cube, 'resolution', side_effect=cancelled):
             with self.assertRaises(Cancelled):
-                recognize(data, check=check)
+                recognize_cube(data, check=check)
         self.assertEqual(calls, 7)
 
 
