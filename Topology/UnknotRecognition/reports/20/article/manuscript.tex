@@ -1,0 +1,592 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{enumitem,listings,xcolor,fancyhdr,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Minimal Truncation and Certified Extremal Windows for Unknot Recognition},
+ pdfauthor={Research contribution prepared with ChatGPT for ProveIt}}
+\pagestyle{fancy}\fancyhf{}\lhead{Certified extremal windows}\rhead{ProveIt research contribution}\cfoot{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\Min}{\operatorname{min}}
+\newcommand{\rk}{\operatorname{rk}}
+\newcommand{\tr}{\tau_{\leq K}}
+\newcommand{\stalk}[2]{\mathsf S_{#1}(#2)}
+\newcommand{\B}{\mathcal B}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,
+ frame=single,rulecolor=black!25,showstringspaces=false}
+\title{\textbf{Minimal Truncation and Certified Extremal Windows\\for Unknot Recognition}\\[5pt]
+\large Pivot-independent binomial bounds, uniform bit complexity,\\and a precise quasi-polynomial regime}
+\author{Research contribution prepared with ChatGPT for the ProveIt project}
+\date{October 7, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt unknot recognizer contains an exact, worst-case exponential Khovanov scanning backend. This article develops a decision-oriented extension: compute certified homological windows before committing to the full complex. The main algebraic result is a minimal-truncation domination theorem. In a finite additive category with a nilpotent radical, exhaustive unit cancellation followed by upper truncation is degreewise no larger than any cancellation-based comparison algorithm with the same cutoff and nonnegative, two-term extension steps. A positive weight on dotted planar cobordisms proves that the scanner's existing same-matching unit test really detects all nonminimal differential entries. Consequently, the binomial intermediate-size bounds of Kelom\"aki--Sch\"utz transfer to arbitrary exhaustive pivot policies, not only their prescribed block reductions.
+
+For a certified nice crossing order of girth $W$, a low window through unshifted degree $k$ has bit complexity
+\[
+ \operatorname{poly}(n,W)\,2^{O(W)}
+ \left(\sum_{j=0}^{\min(n,k+1)}\binom nj\right)^3.
+\]
+This is $n^{O(\log n)}$ when $k=O(\log n)$ and $W=O(\log^2 n)$. A mirrored, adaptive decision procedure exploits shallow discrepancies from the unknot profile and never treats missing information as an unknot certificate. An exact Reidemeister-II padding identity proves that even constant-girth diagrams need not have logarithmic discrepancy depth. Thus the parameterized result is not an unrestricted quasi-polynomial recognizer.
+
+The accompanying standard-library Python package includes a source-derived scanner, an independent cube oracle, an optional upstream adapter, regression tests, and paired measurements. A separately counted audit checks 393 windows on 100 diagrams, 1,772 nice-order stages, and 15 padding cases without a discrepancy. The proofs and implementation have not been independently peer reviewed or formally verified.
+\end{abstract}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{Research objective, baseline, and contribution boundary}
+\label{sec:scope}
+The objective is not merely a faster implementation of an exponential state space. It is to identify a mathematically controlled quantity that the recognizer can avoid computing. Full Khovanov homology contains much more information than the answer to an unknot query. Nevertheless, omitting part of a complex is dangerous: it may manufacture cycles by deleting their outgoing differentials. A valid optimization needs both a homology-correctness argument and a size bound for the actual cancellation policy being implemented.
+
+The inspected ProveIt directory describes an exact exponential recognizer, not a completed implementation of the announced quasi-polynomial hierarchy algorithm. Its Python backend already uses bit-packed dotted cobordisms, local gluing plans, cancellation of units, min-fill pivot selection, and crossing-order heuristics \cite{ProveIt}. These are the baseline, not new contributions of this article. We do not replace the current filters, connected-sum factorization, or simplification rules. We propose an additional, budgeted stage before the full homology fallback.
+
+The closest direct mathematical input is Kelom\"aki--Sch\"utz's extremal scanning algorithm and its intermediate binomial bounds \cite[Lemma 5.5]{KS}. Their construction uses specified block cancellations. The practical question addressed here is whether an implementation can keep its exhaustive unit-cancellation engine, with its own pivot policy, and still inherit those bounds after repeated truncation. Ordinary uniqueness of minimal complexes alone does not answer this question: brutal truncation does not preserve arbitrary homotopy equivalences. Section~\ref{sec:domination} isolates and resolves that obstruction.
+
+The supplied \texttt{openai/math} repository was also inspected. The finite-algebra/radical viewpoint in its Artin-group categorical manuscript is a useful structural analogy \cite{OpenAICategory}. No Artin-group theorem from that manuscript is used as a premise here. The actual dotted category needed by the recognizer is treated directly, including its nilpotence bound. This avoids importing an unverified result from an adjacent research program merely because its language is similar.
+
+\subsection{What is proved here}
+The main results are the positive-weight radical description (Theorem~\ref{thm:radical}), minimal-truncation domination (Theorem~\ref{thm:domination}), its application to arbitrary exhaustive scanner pivots (Theorem~\ref{thm:binomial}), an explicit uniform bit-complexity estimate (Theorem~\ref{thm:runtime}), and an exact padding obstruction for endpoint discrepancy depth (Theorem~\ref{thm:padding}). The radical/minimal-complex arguments are adaptations of standard finite-dimensional algebra; no priority claim is made for those ingredients. The contribution is their precise combination with repeated truncation, the existing scanner interface, and recognition semantics.
+
+\subsection{What is not claimed}
+There is no proof that every residual input has a logarithmic-depth homological discrepancy, no proof that every input admits a polylogarithmic-girth order after efficient certified simplification, and no uniformly cheap positive certificate for every unknot. Full polynomial-time Khovanov computation is not claimed. Nor are the measured speed ratios a benchmark of the production Python or Rust pipeline: they compare two modes of the supplied readable reference backend on identical inputs and orders.
+
+The hierarchy approach remains a separate route. Lackenby's July 2026 preprint explicitly leaves the cost of its specified high-level operations unbounded at the needed implementation level \cite[Section 9]{Lackenby}. Nothing in the present algebraic optimization fills those topological and encoding gaps.
+
+\section{Conventions and the exact recognition interface}
+\label{sec:conventions}
+Let $D$ be a validated, classical, one-component planar diagram with $n$ crossings. The input is a planar-diagram code: each row consists of four counterclockwise edge labels, the understrand joins slots $0,2$, and the overstrand joins slots $1,3$. Each edge label occurs twice. Sphericity of the rotation system and one-componentness are checked before any verdict is issued. The crossing-free input denotes a single circle. All complexity statements use a normalized PD encoding with labels $0,\ldots,2n-1$, of size $O(n\log n)$ bits. For unusually long raw input labels, add the cost of reading and normalizing their encodings.
+
+We use the unshifted cube convention of the inspected scanner. Its $0$-smoothing joins slots $(0,1),(2,3)$ and its $1$-smoothing joins $(0,3),(1,2)$. A resolution with $r$ one-smoothings has unshifted homological degree $r$. With crossing signs obtained from an oriented traversal of the \emph{PD code}, normalized homological degree is
+\begin{equation}
+ h=r-n_-(D),\qquad 0\leq r\leq n.\label{eq:shift}
+\end{equation}
+Quantum degrees are forgotten throughout this article. This is legitimate for computing the sum of quantum-graded ranks in each homological degree; it is not an algorithm for recovering the quantum grading afterward.
+
+Write
+\[
+ \beta_D(r)=\dim_{\F}\Kh^{r-n_-(D),*}(D;\F).
+\]
+The expected unknot profile is
+\begin{equation}
+ u_D(r)=2\,\mathbf 1_{\{r=n_-(D)\}}.\label{eq:unknotprofile}
+\end{equation}
+For the mirrored PD code $\overline D$, cube duality exchanges the two smoothing choices and gives
+\begin{equation}
+ \beta_{\overline D}(j)=\beta_D(n-j).\label{eq:mirror}
+\end{equation}
+This identity is also checked against the independent cube implementation in the regression suite.
+
+\subsection{Why total rank two is a valid positive criterion}
+We record the reduction to the classical unknot-detection theorem rather than silently changing coefficient fields.
+
+\begin{lemma}[Splitting over $\F$]\label{lem:splitting}
+For a nonempty based link diagram, the unreduced Khovanov complex over $\F$, after forgetting quantum degrees, is a direct sum of two isomorphic copies of its reduced complex. In particular its total homology dimension is twice the reduced dimension.
+\end{lemma}
+\begin{proof}
+Use the Frobenius algebra $A=\F[x]/(x^2)$ with basis $1,x$. On each resolved tensor product, let $X$ multiply the marked-circle factor by $x$. Define $\nu$ as the sum of operations replacing $x$ by $1$ in exactly one tensor factor, and sending $1$ to zero in that factor. Direct inspection of multiplication $m$ and comultiplication $\Delta$ shows that both $X$ and $\nu$ commute with the cube differential. In characteristic two, $\nu^2=0$, $X^2=0$, and
+\[
+ X\nu+\nu X=1.
+\]
+The degree-zero idempotents $X\nu$ and $\nu X$ are complementary chain projections. Their images are $\operatorname{im}X$ and $\nu(\operatorname{im}X)$; $X$ and $\nu$ restrict to inverse chain isomorphisms between these two subcomplexes. The first is the usual based reduced complex, up to its irrelevant quantum shift. This proves the splitting.
+\end{proof}
+
+\begin{proposition}[Exact rank criterion]\label{prop:detection}
+A classical knot is the unknot if and only if its unreduced Khovanov homology over $\F$ has total dimension two.
+\end{proposition}
+\begin{proof}
+The forward implication is the direct computation for a circle. For the reverse implication, Lemma~\ref{lem:splitting} gives reduced dimension one over $\F$. Universal coefficients imply that the rank of reduced integral homology, equivalently its dimension over $\mathbb Q$, is at most one. Its Euler characteristic is the normalized Jones polynomial evaluated at $1$, namely one, so that rank is exactly one. Kronheimer--Mrowka's unknot-detection theorem applies \cite{KM}.
+\end{proof}
+
+For rejection, considerably less is needed. Any correctly computed value $\beta_D(r)\ne u_D(r)$ rules out an unknot merely by invariance. For acceptance, agreement on a proper window does not suffice. The return type therefore has three outcomes: \texttt{NONTRIVIAL}, \texttt{UNKNOT}, and \texttt{UNKNOWN}. A timeout, an object ceiling, and an unexamined degree are not positive certificates.
+
+\subsection{A convention regression worth preserving}
+The inspected braid converter and its PD-derived sign routine should not be interchanged with a remembered braid-sign convention. For example, the converter sends the one-generator input \texttt{[1]} to a one-crossing PD code whose derived sign is negative and whose unshifted rank is two in degree one. The input \texttt{[-1]} gives rank two in degree zero. Both normalize to the unknot using \eqref{eq:shift}. The package reproduces these conventions and tests them explicitly. It does not infer $n_-$ by counting negative entries of a braid word. This is an interface compatibility warning, not a change to the topology of either one-crossing diagram.
+
+\section{The finite dotted category and a positive radical weight}
+\label{sec:radical}
+Fix $2m$ boundary points in cyclic order. Let $\mathcal C_m$ be the additive $\F$-linear category generated by the loopless crossingless matchings on those points, with dotted Bar-Natan cobordisms modulo the usual sphere, dot, and neck-cutting relations. Closed circles have already been removed by delooping. We use the standard local category and cancellation framework \cite{BN}. All quantum shifts are identified in this ungraded additive category.
+
+For matchings $a,b$, let $c(a,b)$ be the number of circles obtained by gluing $a$ to the reflected matching $b$. The canonical basis of $\Hom(a,b)$ has one genus-zero disc for each such circle, with either zero or one dot on each disc. We identify a basis element with its dot subset $S\subseteq\{1,\ldots,c(a,b)\}$. Thus
+\begin{equation}
+ \dim_{\F}\Hom(a,b)=2^{c(a,b)}\leq 2^m.\label{eq:homdimension}
+\end{equation}
+These are exactly the bases encoded by the scanner's bit-packed morphisms. In particular a morphism is a bit vector of length at most $2^m$, not an integer of unit computational cost.
+
+\begin{definition}[Weight]
+The weight of the basis element $(a,b,S)$ is
+\begin{equation}
+ \omega(a,b,S)=m-c(a,b)+2|S|.\label{eq:weight}
+\end{equation}
+Extend this to a grading by assigning the indicated weight to every basis vector.
+\end{definition}
+
+\begin{lemma}[Homogeneity of composition]\label{lem:weight}
+Every nonzero basis term occurring in a product of two basis morphisms has weight equal to the sum of their weights. Every basis weight lies between $0$ and $2m$. Weight zero occurs precisely for the undotted identity of a matching.
+\end{lemma}
+\begin{proof}
+Consider basis morphisms $a\to b$ and $b\to d$. Put
+\[
+ p=c(a,b),\quad q=c(b,d),\quad r=c(a,d),
+\]
+and let the total number of input dots be $s$. Their composition initially glues $p+q$ discs along $m$ intervals. If a component acquires positive genus, its evaluation over $\F$ is zero: a handle contributes twice a dot. We may therefore restrict to genus-zero contributions.
+
+Let $C$ be the number of connected components of the glued surface, including closed components. Its Euler characteristic is both $p+q-m$ and $2C-r$, hence
+\begin{equation}
+ 2C=p+q-m+r.\label{eq:euler}
+\end{equation}
+On a genus-zero component with $b>0$ output boundary circles, neck cutting turns zero input dots into a sum of terms with $b-1$ output dots and one input dot into the term with $b$ output dots. Two input dots give zero. A closed component survives only with one dot. In all surviving cases the componentwise formula is
+\[
+ \text{output dots}=b-1+\text{input dots}.
+\]
+Summing over components, every surviving output term has $r-C+s$ dots. Its weight is therefore
+\[
+ m-r+2(r-C+s)=2m-p-q+2s,
+\]
+which is the sum of the two input weights.
+
+Since $0\leq |S|\leq c(a,b)\leq m$, the weight lies in $[0,2m]$. Vanishing weight requires $c(a,b)=m$ and no dots. The overlay then consists entirely of doubled arcs, so $a=b$, and the corresponding undotted cobordism is the identity. Conversely each such identity has weight zero.
+\end{proof}
+
+\begin{theorem}[Explicit radical and unit test]\label{thm:radical}
+Let $J$ be the ideal spanned by all positive-weight basis morphisms of $\mathcal C_m$. Then
+\[
+ J^{2m+1}=0,\qquad
+ \mathcal C_m/J\text{ has only scalar diagonal morphisms},
+ \qquad J=\rad(\mathcal C_m).
+\]
+Distinct generating matchings are nonisomorphic indecomposables. Moreover
+\begin{equation}
+ \End(a)\cong\F[x_1,\ldots,x_m]/(x_1^2,\ldots,x_m^2),\label{eq:endring}
+\end{equation}
+and an endomorphism is a unit exactly when its constant term is one. Every such unit is its own inverse.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:weight} makes $J$ an ideal and shows that a product of $2m+1$ of its elements vanishes. The quotient has one copy of $\F$ on each matching and no off-diagonal morphisms. Equivalently, for the finite direct sum $G$ of all generating matchings, the ideal $J(G,G)$ in the finite-dimensional algebra $\End(G)$ is nilpotent and its quotient is a product of fields. A nilpotent ideal lies in the Jacobson radical, while a semisimple quotient forces the radical into that ideal. Equality follows. The same description applies to matrices of morphisms between finite direct sums.
+
+For $a=b$, the canonical discs are the individual arcs of $a$. Composition puts dots on those arcs, with a second dot killing the term, which gives \eqref{eq:endring}. This is a local ring with residue field $\F$, so $a$ is indecomposable. An isomorphism between distinct matchings would reduce to an isomorphism between two distinct diagonal objects in the quotient, which is impossible.
+
+Finally write a unit as $1+\eta$, with zero constant term in $\eta$. Every nonconstant monomial has square zero and cross terms cancel in characteristic two. Hence $\eta^2=0$ and $(1+\eta)^2=1$.
+\end{proof}
+
+\begin{remark}
+The exponent $2m+1$ is a convenient uniform nilpotence bound, not an assertion of its optimality. The self-inverse unit identity is already exploited by ProveIt. Its role here is to certify that the implementation's unit predicate is complete, not to advertise that identity as a new optimization.
+\end{remark}
+
+\section{Minimal complexes and pivot-policy independence}
+\label{sec:minimal}
+A bounded cochain complex over $\mathcal C_m$ is \emph{minimal} if every differential entry lies in $J$. A unit entry between copies of the same matching can be cancelled using the usual Gaussian-elimination lemma. In characteristic two, cancelling $b\xrightarrow{\phi}c$ replaces another relevant entry by
+\begin{equation}
+ d'_{af}=d_{af}+d_{bf}\phi^{-1}d_{ac}.\label{eq:schur}
+\end{equation}
+The removed pair forms an elementary contractible complex after an invertible triangular change of basis. The formula is categorical: it is not scalar Gaussian elimination performed prematurely on an open tangle.
+
+\begin{lemma}[Complete cancellation]\label{lem:complete}
+Exhaustive cancellation of units between equal generating matchings terminates at a minimal complex. Conversely, any nonminimal differential matrix contains such a cancellable entry.
+\end{lemma}
+\begin{proof}
+Each cancellation removes two summands, so termination is finite. By Theorem~\ref{thm:radical}, every entry between distinct matchings is radical, and an entry between equal matchings is nonradical precisely when its constant coefficient is one. Such an entry is a unit. Thus absence of the scanner's unit pivots is exactly minimality.
+\end{proof}
+
+\begin{lemma}[Uniqueness and splitting]\label{lem:minimalunique}
+Homotopy-equivalent bounded minimal complexes over $\mathcal C_m$ are chain-isomorphic. Every bounded finite complex is chain-isomorphic to a direct sum of a minimal complex and finitely many elementary contractible complexes. In particular, its minimal part has uniquely determined matching multiplicities in each homological degree.
+\end{lemma}
+\begin{proof}
+The splitting assertion follows by retaining the invertible changes of basis associated with each cancellation in \eqref{eq:schur}. For uniqueness, suppose $f:M\to N$ and $g:N\to M$ are homotopy inverses between minimal complexes. Reducing $gf-1=dH+Hd$ and $fg-1=dH'+H'd$ modulo $J$ makes the right-hand sides zero. Hence, in each degree, the reductions of $f$ and $g$ are inverse maps between semisimple objects. Their diagonal multiplicities agree.
+
+Choose identifications of the corresponding sums of matchings. Each degreewise map is now a square matrix invertible modulo a nilpotent ideal. Such a matrix is invertible: lift an inverse modulo $J$ and invert the residual matrix $1-z$ by the finite sum $1+z+\cdots+z^{2m}$. Thus every $f^i$ is invertible. Since $f$ is a chain map, its degreewise inverse is a chain map too. This proves chain-isomorphism and the multiplicity assertion.
+\end{proof}
+
+\begin{corollary}[What pivot choice can and cannot change]\label{cor:pivots}
+For a fixed input complex, exhaustive LIFO, min-fill, or any other complete unit-pivot policy has the same final number of copies of each matching in each homological degree. The policies may have different intermediate sparsity, morphism density, composition counts, and running times.
+\end{corollary}
+
+This is stronger than equality of closed homology ranks, but weaker than equality of the stored matrices. It gives a useful stage-level regression oracle: compare matching-multiplicity profiles, not object identifiers or differential dictionaries.
+
+\section{The minimal-truncation domination theorem}
+\label{sec:domination}
+This section is independent of knot theory. It explains why the minimality results above remain useful after a truncation at every crossing.
+
+Let $\mathcal A_t$ be finite additive categories with the decomposition and minimality properties of Lemma~\ref{lem:minimalunique}. Let $F_t$ be extension operations on bounded complexes from $\mathcal A_{t-1}$ to $\mathcal A_t$. We assume that they are additive, preserve chain homotopy equivalences, and have nonnegative amplitude $[0,1]$: the image of an object concentrated in degree $i$ is supported in degrees $i,i+1$. Tensoring with a crossing followed by delooping is such an operation.
+
+Fix a cutoff $K$. Write $\tr C$ for brutal upper truncation: retain $C^i$ for $i\leq K$, retain $d^i$ for $i<K$, and replace everything above by zero. Let $\stalk K E$ mean the stalk complex with $E$ in degree $K$. This notation avoids ambiguities about cohomological shift conventions.
+
+\begin{theorem}[Minimal-truncation domination]\label{thm:domination}
+Start with the same finite complex in both constructions, supported in degrees at most $K$. At each step set
+\begin{align}
+ A_t&=\tr\Min(F_t A_{t-1}),\label{eq:minstep}\\
+ B_t&=\tr R_t(F_t B_{t-1}),\label{eq:compstep}
+\end{align}
+where $R_t$ is any sequence of valid unit cancellations, possibly empty. The minimal construction may also minimize the common initial complex. Then, for each $t$, there exists an object $E_t$ such that
+\begin{equation}
+ B_t\simeq A_t\oplus\stalk K{E_t}.\label{eq:dominates}
+\end{equation}
+Here $\simeq$ is ordinary chain homotopy equivalence, not just equivalence below the cutoff. The complex $A_t$ is minimal. For every degree and every indecomposable type, its multiplicity in $A_t$ is at most its multiplicity in $B_t$.
+\end{theorem}
+\begin{proof}
+Truncation of a minimal complex remains minimal, since all retained differential entries remain radical. The initial assertion holds because initial minimization only splits off contractible disks lying within the common support.
+
+Assume \eqref{eq:dominates} at step $t-1$. Additivity and homotopy preservation give
+\[
+ F_t B_{t-1}\simeq F_t A_{t-1}\oplus F_t(\stalk K{E_{t-1}}).
+\]
+By uniqueness of minimal complexes, the minimal part of the left side is chain-isomorphic to
+\begin{equation}
+ M\oplus H,\qquad
+ M=\Min(F_t A_{t-1}),\quad
+ H=\Min(F_t(\stalk K{E_{t-1}})).\label{eq:MH}
+\end{equation}
+Nonnegative amplitude implies that $H$ is supported in degrees $K,K+1$. Consequently $\tr H$ is a stalk in degree $K$.
+
+The partially reduced complex $R_t(F_t B_{t-1})$ is homotopy-equivalent to $F_t B_{t-1}$. By the splitting lemma it is \emph{chain-isomorphic}, not merely homotopy-equivalent, to $M\oplus H\oplus D$, where $D$ is a direct sum of elementary contractible disks. This distinction is essential: brutal truncation preserves a chain isomorphism.
+
+Truncate that decomposition. A disk supported in degrees $i,i+1$ remains contractible when $i+1\leq K$, vanishes when $i>K$, and becomes a stalk in degree $K$ when $i=K$. Therefore
+\[
+ B_t\simeq\tr M\oplus\stalk K{E_t}
+       =A_t\oplus\stalk K{E_t}
+\]
+for an object $E_t$ collecting the truncated halo contributions. This establishes the induction.
+
+The right side is minimal, being a direct sum of a minimal complex and a stalk. The splitting lemma therefore identifies it with the minimal part of $B_t$. Since a minimal part is a degreewise direct summand of the original chain objects, all asserted multiplicity inequalities follow.
+\end{proof}
+
+\subsection{Why the halo cannot simply be discarded earlier}
+Take a two-term complex $X\xrightarrow{1}X$ in degrees $K,K+1$. It is contractible, but its brutal truncation at $K$ is a nonzero stalk. This is a counterexample to the frequently tempting statement that truncation preserves homotopy equivalence.
+
+Theorem~\ref{thm:domination} does not use that false statement. It controls exactly the discrepancy that truncation creates: an additional object in the halo degree. The next extension cannot transport that object downward. The proof first obtains an honest chain-isomorphic split form and only then truncates it.
+
+For the window of true degrees $0,\ldots,k$, set $K=k+1$. The implementation must temporarily allow degree $K+1=k+2$ when adding a crossing, finish all unit cancellations, and only then remove degrees above $K$. Those temporary terms can cancel artificial halo classes. Preventing their construction changes the algorithm and invalidates the stated domination proof. The returned ranks must exclude degree $K$ unless that degree is separately known to be genuine.
+
+\subsection{Variable cutoffs}
+The theorem is stated for a fixed cutoff. This is the reason the supplied adaptive recognizer restarts its computation when it increases the window depth. It does not attempt to reconstruct degrees that an earlier run already discarded. A widening, reusable state representation would need additional retained extension data and a separate correctness proof.
+
+\section{Nice orders and inherited binomial bounds}
+\label{sec:binomial}
+A \emph{nice} scanning sequence builds the diagram from a single crossing, attaches every subsequent nonfinal crossing along one, two, or three consecutive boundary slots, and closes along all four slots only at the last crossing. Each partial tangle is presented in a disc. Its girth $W$ is the maximum number of boundary edge endpoints at any stage. The number is even; write $W_t=2m_t\leq W$.
+
+The relevant external size theorem is the following. For the Kelom\"aki--Sch\"utz comparison algorithm on a nice sequence, if $C_{[t]}^i$ denotes its retained chain object in unshifted degree $i$, then
+\begin{equation}
+ \rk_{\rm objects} C_{[t]}^i\leq\binom ti\quad(t<n),
+ \qquad
+ \rk_{\rm objects} C_{[n]}^i\leq2\binom ni.
+ \label{eq:KS}
+\end{equation}
+The cutoff is $k+1$ for output through $k$ \cite[Lemma 5.5]{KS}. We use the object-count portion of that theorem. Integer coefficient-growth estimates are not needed over $\F$.
+
+\begin{theorem}[Binomial bound for the exhaustive scanner]\label{thm:binomial}
+For a nice scanning sequence, tensor with each crossing, deloop all newly closed circles, exhaustively cancel all same-matching unit entries, and then truncate above $K=k+1$. Let $A_t^i$ be the retained object in degree $i$ after $t$ crossings. Regardless of the exhaustive pivot policy,
+\begin{equation}
+ \rk_{\rm objects} A_t^i\leq\binom ti\quad(t<n),
+ \qquad
+ \rk_{\rm objects} A_n^i\leq2\binom ni.
+ \label{eq:newbinomial}
+\end{equation}
+The closed output agrees with the full unreduced Khovanov homology in every unshifted degree $i\leq k$.
+\end{theorem}
+\begin{proof}
+Reduce the comparison complexes in \eqref{eq:KS} modulo two and forget their quantum gradings. Their prescribed cancellations remain legitimate isomorphism cancellations, and the number of summands does not increase. The categories at successive boundaries are precisely of the type treated in Theorem~\ref{thm:radical}. Crossing extension has amplitude $[0,1]$ and preserves homotopies. Lemma~\ref{lem:complete} identifies the implementation's exhaustive policy with minimization. Theorem~\ref{thm:domination} now bounds its matching multiplicities, hence its total object counts, by the comparison construction.
+
+For correctness below the halo, one may use the comparison algorithm's correctness together with \eqref{eq:dominates}: its extra stalk is in degree $K=k+1$ and does not affect lower homology. Equivalently, the usual local homotopy argument shows inductively that a discarded upper tail cannot affect degrees below $K$ under a nonnegative crossing extension. At closure the boundary category is $\mathcal C_0$, whose radical is zero; the minimal closed differential is therefore zero. Its retained object counts in degrees at most $k$ are the requested homology dimensions.
+\end{proof}
+
+\subsection{Certifying rather than assuming the geometric hypothesis}
+The package supplies a crossing-order certificate, not an unsupported estimate of an optimal order. It checks the permutation of crossings, absence of projection loop edges, connected processed and unprocessed vertex sets, consecutive attaching slots, the unique final four-slot closure, and the measured boundary sizes.
+
+For a loopless two-connected plane projection, one can construct an order by maintaining connected prefix and suffix sets. At each step choose a vertex adjacent to the prefix whose removal leaves the suffix connected; among those choices, the code minimizes the next cut size as a heuristic. The extension principle follows from two-connectedness: if the connected suffix has multiple blocks, any leaf block must attach to the prefix away from its separating vertex, or that separating vertex would disconnect the original graph. An attaching vertex in the leaf block away from the separator is not a suffix cut vertex. The one-block case is immediate.
+
+For each proper stage, a cut with connected sides is a bond in the plane graph. Its dual is a simple cycle, providing a separating curve and a disc presentation. The connectedness condition after the next addition excludes alternating old/new sectors at that crossing: otherwise disjoint connected paths on the two sides would have to cross in the sphere. Thus the attachments are consecutive. All these local conditions are rechecked by the implementation; the argument is not used to skip validation.
+
+Testing connectivity directly for all candidate vertices at each stage costs $O(n^3)$ on the four-valent projection, with straightforward data structures. No claim is made that the resulting girth is minimal. When the certificate fails, exact window computation remains available, but \eqref{eq:newbinomial} and its resulting complexity promise are not asserted.
+
+\subsection{Braid width versus the actual window parameter}
+A fixed-strand braid is an attractive source of bounded-girth orders, but closing strands can complicate a naive scan. The braid-to-nice-order construction in \cite[Section 5.1]{KS} adds a conjugating word and its inverse. It also changes the unshifted degree offset. In a uniform analysis where the strand count varies, these added crossings and the added negative crossings must be counted. They cannot be hidden in a constant merely because a fixed-strand theorem permits it. Our runtime theorem is formulated using the \emph{actual} certified PD order, its crossing count, and its requested unshifted window depth.
+
+\section{Uniform bit complexity}
+\label{sec:complexity}
+Define the cumulative binomial count
+\begin{equation}
+ \B(n,K)=\sum_{j=0}^{\min(n,K)}\binom nj.
+ \label{eq:B}
+\end{equation}
+The distinction between object counts, field operations, and bit operations is important here. A bit-packed cobordism with $m$ boundary arcs can occupy $2^m$ bits. Calling it one Python integer does not make its arithmetic constant-time.
+
+\begin{lemma}[Cost of the existing local representation]\label{lem:localcost}
+For boundary size at most $W$, the supplied pairwise-monomial dotted algebra performs a composition or a crossing-transfer computation in $\operatorname{poly}(n,W)2^{O(W)}$ bit operations. Its morphism representations have at most $2^{W/2}$ coefficient bits, apart from polynomial-size combinatorial metadata.
+\end{lemma}
+\begin{proof}
+By \eqref{eq:homdimension}, each Hom basis has at most $2^m$ elements for $2m\leq W$. A naive composition enumerates at most $2^{2m}$ pairs of nonzero monomials. Evaluating one pair by the neck-cutting formula generates at most $2^m$ output terms and manipulates bit vectors of length at most $2^m$. Charging even full-length bit-vector operations for each generated term gives the conservative bound $\operatorname{poly}(n,W)2^{4m}$. Topological plans can be computed by disjoint-set or graph operations on $O(W)$ discs and intervals. Crossing transfers have the same exponential-in-$W$ form; they create at most two new closed circles per smoothing.
+
+Boundary labels use $O(\log n)$ bits. Object identifiers and iteration counters use polynomially many bits in $n$ even in the exponential regime. Absorb those costs into the polynomial factor. No arithmetic on an exponentially long integer is charged as one bit operation.
+\end{proof}
+
+\begin{theorem}[Uniform window complexity]\label{thm:runtime}
+On a diagram with $n\geq1$ crossings and a certified nice order of girth $W$, the exhaustive low-window algorithm through degree $k$ can be implemented with
+\begin{align}
+ T(n,k,W)&\leq\operatorname{poly}(n,W)2^{O(W)}\B(n,k+1)^3,
+ \label{eq:runtime}\\
+ S(n,k,W)&\leq\operatorname{poly}(n,W)2^{O(W)}\B(n,k+1)^2
+ \label{eq:space}
+\end{align}
+bit time and space, respectively. Construction and verification of the order can be included in the polynomial factor. The hidden constants do not depend on $k$ or $W$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:binomial} bounds the retained population at every stage by $2\B(n,k+1)$. At one crossing, each old object contributes two smoothings, and each smoothing produces at most four delooped objects. Thus the raw population before cancellation is at most eight times the preceding retained population. Keeping the temporary degree $k+2$ does not change this constant-factor estimate.
+
+Let that raw population be $M$. There are at most $M^2$ differential entries and at most $M/2$ cancellation steps. A transparent exhaustive pivot search costs at most $O(M^2)$ entry inspections per cancellation. A cancellation changes at most $O(M^2)$ entries by \eqref{eq:schur}. Hence $O(M^3)$ local compositions, inspections, and updates suffice for the whole stage. The production lazy-heap policy is not necessary for this upper bound. Gluing and delooping cost at most $O(M^2)$ local operations. Lemma~\ref{lem:localcost} supplies their bit cost; multiplying by $n$ stages proves \eqref{eq:runtime}.
+
+Storing the objects and differentials costs $O(M^2)$ morphism slots. Local caches may be omitted or capped. The set of possible boundary matchings and topological plans also has size $2^{O(W)}$ for a disc boundary, so such metadata can be charged to that factor. This gives \eqref{eq:space}. No unlimited history of earlier-stage cache entries is required.
+\end{proof}
+
+For $1\leq K\leq n/2$, the standard binomial-tail estimate gives
+\begin{equation}
+ \B(n,K)\leq (en/K)^K.
+ \label{eq:entropy}
+\end{equation}
+For completeness, put $x=K/(n-K)\leq1$ and use
+$x^K\B(n,K)\leq(1+x)^n$, then bound the resulting binary entropy expression by $(en/K)^K$. For $K>n/2$, the safe bound is $2^n$.
+
+\begin{corollary}[A precise quasi-polynomial regime]\label{cor:qp}
+If $k=O(\log n)$ and $W=O(\log^2 n)$, the window algorithm has bit running time $\exp(O(\log^2 n))=n^{O(\log n)}$. More generally, in the range $k+1\leq n/2$,
+\[
+ \log T=O\!\left(\log n+W+(k+1)\log\frac{en}{k+1}\right).
+\]
+For fixed $k,W$ it is polynomial-time.
+\end{corollary}
+
+This is a uniform consequence, not a rebranding of a fixed-parameter polynomial with an unspecified dependence on the parameters. In particular, an estimate of the form $f(W)p_k(n)$ alone would not justify substituting $W=\log^2 n$ until the growth of $f$ had been bounded.
+
+\section{Decision-oriented windows and their limits}
+\label{sec:decision}
+\subsection{A sound two-sided probe}
+For depth $k$, compute a low window for $D$ and another for $\overline D$. Translate the latter with \eqref{eq:mirror}. An overlap is checked for equality; disagreement is an internal arithmetic error, never a knot verdict. Compare every known degree with \eqref{eq:unknotprofile}.
+
+If any degree differs, return \texttt{NONTRIVIAL}. If all degrees are known and agree, return \texttt{UNKNOT} using Proposition~\ref{prop:detection}. There is one safe shortcut: if every unexamined degree is absent except possibly $n_-(D)$, all off-zero normalized homology is zero. Since the normalized Euler characteristic at quantum value one is two, the missing degree has dimension two and acceptance is valid. Otherwise return \texttt{UNKNOWN}.
+
+\begin{proposition}[Soundness and completion]\label{prop:adaptive}
+The two-sided probe is sound. Repeating it from scratch at depths $0,1,2,4,\ldots$, with a final depth at least $\lceil n/2\rceil$, is a complete exact recognizer when no user resource limit stops it. With limits, the only additional outcome is \texttt{UNKNOWN}.
+\end{proposition}
+\begin{proof}
+Each reported degree is true homology by Theorem~\ref{thm:binomial}, or by the same halo-correctness argument without its size hypothesis. Rejection follows from invariance, and the two acceptance rules were justified above. At depth $\lceil n/2\rceil$, the low and high windows cover every degree from zero to $n$. Proposition~\ref{prop:detection} then determines the knot verdict. Restarts prevent lost tail data from being mistaken for a larger window.
+\end{proof}
+
+\begin{definition}[Endpoint discrepancy depth]
+For a nontrivial input diagram define
+\begin{equation}
+ \delta(D)=\min_{\beta_D(r)\ne u_D(r)}\min(r,n-r).
+ \label{eq:delta}
+\end{equation}
+For an unknot set $\delta(D)=\infty$.
+\end{definition}
+The minimum is finite for a nontrivial knot by Proposition~\ref{prop:detection}. It is a parameter of a \emph{diagram}, not a knot invariant.
+
+\begin{corollary}[Quasi-polynomial rejection on a joint parameter regime]\label{cor:reject}
+On certified nice inputs with $W=O(\log^2 n)$ and finite $\delta(D)=O(\log n)$, geometric-depth probing rejects nontrivial knots in $n^{O(\log n)}$ bit time. This includes finding the witness depth; it is not necessary to know $\delta(D)$ in advance.
+\end{corollary}
+\begin{proof}
+Some probed depth is at least $\delta(D)$ and at most $\max(1,2\delta(D))$. At that depth a mismatch is computed. There are $O(\log n)$ restarts, each no more expensive than the largest window up to polynomial factors. Mirror rotation preserves the cut sizes and niceness of the same crossing permutation. Apply Corollary~\ref{cor:qp}.
+\end{proof}
+
+\subsection{An exact obstruction to a universal shallow-witness conjecture}
+\begin{theorem}[Reidemeister-II padding identity]\label{thm:padding}
+Let $D$ be a nontrivial diagram and obtain $D_s$ by inserting $s$ cancellable Reidemeister-II pairs. Each pair has one positive and one negative crossing. Then
+\[
+ n(D_s)=n(D)+2s,\quad n_-(D_s)=n_-(D)+s,\quad
+ \beta_{D_s}(r+s)=\beta_D(r),
+\]
+with zero homology outside the shifted original support. Consequently
+\begin{equation}
+ \delta(D_s)=\delta(D)+s.\label{eq:paddingdelta}
+\end{equation}
+There are loopless, two-connected, nice diagrams of a fixed trefoil, all with girth four, for which $\delta(D_s)=(n(D_s)-3)/2$.
+\end{theorem}
+\begin{proof}
+The crossing-count statements are local. Normalized homology is invariant under the Reidemeister moves, and its relation to the unshifted degree is \eqref{eq:shift}. This proves the homology shift. The unknot comparison profile shifts by the same amount, so the set of discrepant degrees is exactly the old set translated by $s$. For each such degree,
+\[
+ \min(r+s,n+2s-r-s)=s+\min(r,n-r),
+\]
+which proves \eqref{eq:paddingdelta}.
+
+For the final assertion, take the closure of the two-strand braid word
+$1^3(1,-1)^s$ in the audited converter convention. Its projection is a cycle of $3+2s$ vertices with two parallel edges between consecutive vertices. Reading along that cycle is a nice order with boundary size four at each proper nonempty stage. The unpadded trefoil has unshifted ranks two in degrees $0,1,3$, with $n_-=3$, so its discrepancy depth is zero. The identity already proved gives $\delta(D_s)=s$.
+\end{proof}
+
+\begin{remark}[Depth obstruction, not a runtime lower bound]
+The padding theorem rules out a universal logarithmic bound on \emph{raw endpoint discrepancy depth}, even at constant girth. It does not prove that the algorithm runs exponentially on these padded inputs. The inserted pairs are easy to remove, and even a full scanner may cancel them efficiently. The correct lesson is that a shallow-witness theorem must explicitly quantify the preprocessing or diagram optimization allowed before measuring $\delta$.
+\end{remark}
+
+The positive side is at least as important. An unknot has no discrepant degree at all. Its windows may continue to agree while leaving the central range unknown. Therefore a fast rejection theorem does not establish a fast decision theorem. Efficient certified simplification, a separate disk certificate, or an alternative positive test must cover this case.
+
+\section{Implementation and integration contract}
+\label{sec:implementation}
+The supplied package is intentionally small enough to audit. It uses only the Python standard library. The primary modules are \texttt{windows.py} (retained degree and verdict policy), \texttt{orders.py} (nice-order certificates), \texttt{scanner.py} and \texttt{algebra.py} (readable source-derived scanning backend), and \texttt{cube.py} (independent scalar cube oracle).
+
+\subsection{The core modification}
+The essential loop is the following; its ordering is part of the theorem.
+\begin{lstlisting}[language=Python]
+cutoff = min(n, depth + 1)
+for crossing in certified_order:
+    scan.add_crossing(pd[crossing], reduce_now=True)
+    # add_crossing constructs the temporary next degree and
+    # exhausts unit cancellation before this deletion.
+    erase_above(scan, cutoff)
+return {h: rank for h, rank in scan.linear_ranks().items()
+        if h <= depth}
+\end{lstlisting}
+The deletion routine removes the object's incoming and outgoing differential entries, not merely its entry in the object dictionary. The halo degree is excluded from the returned ranks. A runtime assertion checks \eqref{eq:newbinomial} at every retained degree of every certified nice stage. These assertions are diagnostics; they are not substitutes for the proof.
+
+\subsection{Reference backend versus upstream adapter}
+The readable scanner reproduces the inspected geometric and algebraic conventions but uses a transparent exhaustive pivot search rather than the production lazy heap. Its performance should not be presented as the speed of \texttt{fastunknot 0.2}. The independent cube oracle does not call the scanner or its cobordism composition routine: it builds every resolution, labels the circles by $1,x$, assembles multiplication/comultiplication maps, checks $d^2=0$, and computes ranks over $\F$.
+
+The optional \texttt{integration/upstream\_adapter.py} constructs the upstream dictionary-based \texttt{fastunknot.scan.ScanComplex} and passes it to the same window controller. It catches the upstream \texttt{ScanLimit} class rather than assuming that the reference exception class is identical. This adapter was prepared from the inspected API but was \emph{not executed against a complete upstream checkout} in this run. No production regression suite or Rust cross-check is claimed. The proposed integration target is an opt-in experimental stage until those checks pass.
+
+\subsection{Recommended pipeline placement}
+Retain the existing validation, sound polynomial filters, certified simplification, and factorization stages. Then run a small, budgeted two-sided window probe. A certified mismatch returns a nontrivial verdict; a complete positive criterion returns an unknot verdict; all other outcomes fall through to the existing exact backend. On resource exhaustion, the controller does not retain a partly computed rank as a certificate.
+
+For an uncapped, standalone exact mode, geometric restarts are complete by Proposition~\ref{prop:adaptive}. For a production accelerator, restarting to central depth is usually the wrong default: a small budget and an explicit fallback preserve the current behavior on cases where windows are unhelpful.
+
+\subsection{Upstream integration tests still required}
+Before enabling the adapter by default, run the entire current Python suite with the feature disabled and enabled, cross-check the upstream scanner against the independent cube oracle, verify that actual input simplifications preserve the PD sign normalization used here, and test factorized inputs and mirrored scan orders. The optimized \texttt{FastScan} and Rust representations require their own deletion and cutoff implementations. The present adapter is for \texttt{ScanComplex}, not a claim that those other representations expose identical mutable state.
+
+\section{Reproducible validation and measurements}
+\label{sec:experiments}
+\subsection{Validation performed}
+The unit suite contains 14 test methods with multiple parameterized subcases. It checks all canonical monomial composition weights for all noncrossing matchings with $m\leq3$, the local endomorphism unit identity, off-diagonal backtracks, known knot profiles, mirror reversal, the halo failure mode, pivot-independent stage multiplicities, nice-order bounds, invalid inputs, and conservative resource-limit behavior. The recorded run completed successfully in 8.800 seconds on the supplied environment.
+
+A separately counted audit, generated by \texttt{experiments/validation.py}, uses seed 1701. It selects 100 valid one-component braid closures on two to four strands with at most nine crossings. It compares 393 low-window outputs with an independently computed full cube, checks 1,772 certified nice-order stages, verifies adaptive verdicts against the full rank criterion, and checks 15 instances of the exact padding formula. It recorded zero failures in about 6.49 seconds. The JSON includes the input words and full expected ranks, not only a pass/fail total.
+
+These are finite implementation tests, not a computer-assisted proof for arbitrary knots. In particular, the radical and domination theorems are established by the written arguments, not extrapolated from matching profiles up to nine crossings.
+
+\subsection{Paired reference-backend benchmark}
+Every row of Table~\ref{tab:benchmark} uses the same diagram, crossing permutation, algebra, and min-fill policy in both modes. The modes differ only in whether they retain the entire complex or the low window through degree two, with halo degree three. Three sequential repetitions alternate the order of full, window, and two-sided-probe runs. Imports and the once-per-input order construction are outside the timer; each timed run still validates the supplied order. No warmup measurement is silently discarded.
+
+\begin{table}[htbp]
+\centering\small
+\input{../results/benchmark_table.tex}
+\caption{Reference backend only. Times are medians in seconds. ``Ratio'' is the median of the three paired full/window ratios, not necessarily the ratio of medians. ``Peak ratio'' compares maximum pre-cancellation object counts, not measured resident memory. All displayed runs completed under the selected caps.}
+\label{tab:benchmark}
+\end{table}
+
+The weaving inputs are closures of $(-1,2)^s$ on three strands; the torus input is the closure of $(1,2)^7$. The positive-word control is $(1,2,1,1,2,2)^2$. The padded unknot is the closure of $(1,2)(1,-1)^5$. These words, their converted PD codes, and the actual crossing orders are included in \texttt{results/benchmark.json}.
+
+On the 14-crossing weaving input, full computation retained a peak of 5,046 objects before cancellation, versus 462 for the window. Composition calls fell from 7,152 to 696. The paired median speed ratio was about 96.1. The total full rank was 1,682, whereas the requested window had rank sum 58. These unequal rank sums reflect the deliberately different outputs, not a discrepancy between algorithms.
+
+\subsection{Decision timings and adverse controls}
+The two-sided depth-two probe rejected each of the five nontrivial benchmark inputs. On the torus control it took about 0.01693 seconds, slightly \emph{longer} than the 0.01426-second full computation, because its first window did not decide and the mirror computation added overhead. On the padded unknot, the probe took about 0.00286 seconds and correctly returned \texttt{UNKNOWN}, while full homology took about 0.00248 seconds and recognized the unknot. These are important negative controls: a faster window is not automatically a faster recognizer.
+
+The padded unknot did not receive a nice-order certificate. Its exact output remains valid, but it is not evidence for the binomial complexity theorem. The other five displayed inputs were certified nice, with girth six.
+
+Finally, these examples are not a sample of inputs that survive the existing polynomial filters. Many would be decided before reaching Khovanov homology in production. The measurements isolate a backend optimization. A claim about end-to-end throughput requires a separate benchmark restricted to realistic fallback survivors, with the full pipeline and all current heuristics enabled.
+
+\section{Relationship to the unrestricted quasi-polynomial target}
+\label{sec:global}
+The current result removes one specific obstacle: the choice of exhaustive pivot strategy is not a barrier to importing the extremal object bound. It also replaces an unspecified width dependence with an explicit single-exponential bit-cost factor. Those changes are enough for the precise joint regime in Corollary~\ref{cor:reject}.
+
+They do not overcome the explicit-output obstruction for full homology. Kelom\"aki--Sch\"utz show exponential behavior for explicit-basis scanning even on special three-strand families, while also obtaining polynomial algorithms in a compressed output model \cite{KS}. This is a reminder that the representation of the answer matters. A large Betti number can have a short binary representation even when listing a basis is prohibitive. The endpoint algorithm avoids producing much of that basis, but in central windows its cumulative binomial count can again be exponential.
+
+There are three logically different routes forward. One is to prove a joint bound on girth and discrepancy after a specified certified preprocessing algorithm, together with a cheap positive branch for unknots. A second is to add structured, compressed homology backends on special families and detect those families effectively. A third is to implement the topological hierarchy strategy with explicit encoded operations and bit bounds. The first two may coexist with the third, but success on one branch cannot be used as a missing theorem on another.
+
+For hierarchy accounting, suppose an abstract search has at most $L(g+1)^L$ steps. Its logarithmic cost is controlled by $\log L+L\log(g+1)$ only after a step's bit cost and state sizes are bounded. Even at the counting level, $L=O(\log^2 n)$ and $g=n^{O(1)}$ yield $\exp(O(\log^3 n))$, not the more specific $n^{O(\log n)}$ target. A claim of the latter would require a sharper depth, branching, or cumulative-entropy estimate. The present paper deliberately makes the analogous parameter substitution explicit in \eqref{eq:runtime}--\eqref{eq:entropy}.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+\paragraph{1. A preprocessing-sensitive discrepancy parameter.}
+Define $\delta_{\mathcal R}(D)$ as the least discrepancy depth achieved by a specified polynomially bounded, certificate-producing rewrite system $\mathcal R$. Theorem~\ref{thm:padding} says why the rewrite system must be part of the statement. Which extensions beyond free braid cancellation and local Reidemeister-I/II reduction make a logarithmic bound plausible on useful residual classes? Counterexamples should be sought among diagrams that remain irreducible under the exact chosen rules, not among easily padded words.
+
+\paragraph{2. Joint optimization of width and depth.}
+Minimizing crossing count, scan girth, and discrepancy depth are different objectives. Study the certificate cost
+\[
+ W+(k+1)\log\frac{en}{k+1}
+\]
+under diagram changes and order selection. A rewrite that slightly increases crossings may still be valuable if it sharply decreases the required window or the frontier. The appropriate target is a provable joint estimate, rather than three independently optimistic heuristics.
+
+\paragraph{3. The positive branch.}
+Develop a cheap certificate for unknots left undecided by shallow windows. Possible interfaces include a certified simplification trace, a compressed spanning disk, or a rigorously bounded normal-surface subroutine. The needed theorem must bound construction time as well as verification time. Polynomial-size certificates by themselves do not provide a polynomial-time search procedure.
+
+\paragraph{4. Stronger local composition and pivot cost bounds.}
+The $2^{O(W)}$ factor was deliberately derived from the existing monomial representation. Substitute factored connected-component composition or other structured multiplication routines and account for their bit costs. The domination theorem survives any exact local multiplication backend. Improve the cubic population exponent using sparse elimination bounds that remain valid under fill-in, rather than assuming sparsity persists.
+
+\paragraph{5. Direct transfer into a reduced window.}
+The current implementation constructs the temporary next degree, cancels, then truncates. Can the needed cancellation effects on the halo be computed through a Schur-complement interface without constructing all temporary objects? Such an optimization needs an exact boundary transfer invariant. The contractible-disk example in Section~\ref{sec:domination} is a mandatory regression test for proposed shortcuts.
+
+\paragraph{6. Formalization of the algebraic kernel.}
+A tractable formalization target is the finite algebra with a positive grading, the radical unit criterion, minimal-complex uniqueness, and Theorem~\ref{thm:domination}. This would isolate the logically delicate truncation argument from the much larger task of formalizing all of Khovanov theory. The present archive contains no claimed Lean proof; an implementation of this target remains future work.
+
+\paragraph{7. Quantum grading and selective rectangles.}
+A homological window forgets potentially useful quantum information. Determine conditions under which a two-dimensional retained region is closed under the relevant maps and admits a controlled halo. A rectangular cutoff is not automatically safe merely because a one-dimensional upper cutoff is safe. The differential degrees, grading shifts introduced by delooping, and allowed cancellation maps must be specified.
+
+\paragraph{8. Compressed special-family backends.}
+The polynomial three-braid results in \cite{KS} suggest an alternative to explicit complex construction on that class. Implement and independently verify the exact normal-form and coefficient conventions, including mirrors and torsion effects when translating to $\F$. A binary multiplicity backend could bypass the explicit-basis growth that windowing only partially avoids.
+
+\paragraph{9. Production and adversarial benchmarking.}
+Create a persistent corpus of diagrams that actually reach the existing exact fallback, including determinant-one knots, hard unknots, connected sums before and after factorization, randomized conjugates, and certified padded controls. Report paired distributions, completion rates, and resource-censored cases separately. A smaller peak object count should not be reported as a measured memory reduction without memory instrumentation.
+
+\paragraph{10. Hierarchy representations with explicit bit bounds.}
+For the topological route, prioritize a concrete encoding of layered handle structures and compressed cuts with provenance. Then give constructive bounds for region selection, weak reduction, and hierarchy depth. The target is an executable transition system whose state count and transition cost are both controlled; an abstract logarithmic-depth recursion without representation bounds is insufficient.
+
+\section{Conclusion}
+The main methodological gain is that a practical exhaustive cancellation engine need not reproduce a particular theoretical block-pivot schedule to benefit from extremal binomial bounds. The radical weight proves completeness of its local unit test, and minimal-truncation domination controls the only new homotopy defect introduced by repeatedly deleting upper tails. This yields a concrete, uniform $n^{O(\log n)}$ regime for exact extremal windows and for nontrivial diagrams with shallow endpoint discrepancies and controlled girth.
+
+The accompanying implementation makes the distinction between a partial observation and a knot verdict explicit, and its tests independently check the most fragile conventions. The padding identity identifies a genuine limit of the approach: even at constant girth, raw discrepancy depth is not uniformly logarithmic. Future progress toward a general quasi-polynomial recognizer must therefore be representation- and preprocessing-sensitive, and must solve the positive branch as well as early rejection.
+
+\appendix
+\section{Reproducing the archive}
+Run the following from the archive root with Python 3.10 or newer:
+\begin{lstlisting}[language=bash]
+python -m unittest discover -s tests -v
+python -m experiments.validation
+python -m experiments.benchmark --repeats 3
+python -m unknot_windows examples/torus_3_4.json --depth 0
+python -m unknot_windows examples/torus_3_4.json --adaptive
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error manuscript.tex
+pdflatex -interaction=nonstopmode -halt-on-error manuscript.tex
+\end{lstlisting}
+The first example command intentionally returns \texttt{UNKNOWN}; the adaptive command finds a nontrivial verdict. CLI defaults impose a time and object ceiling. Use the Python API with both ceilings omitted for the uncapped mathematical algorithm. Benchmark timings vary by machine and are not unit-test expectations.
+
+\section{Audit identifiers and dependency boundary}
+The following blob identifiers pin the inspected ProveIt sources. They identify files, not a claim that the entire repository was checked out or tested at a single commit.
+\begin{center}\small
+\begin{tabular}{lp{99mm}}\toprule
+File under \texttt{fast/fastunknot/} & Inspected Git blob\\\midrule
+\texttt{algebra.py} & \texttt{d6d28604ac39c29145aa52f91074539a5aeac949}\\
+\texttt{scan.py} & \texttt{4acff3cb5ffb4c4ad226a8bf6dcda3d8dc0bb561}\\
+\texttt{geometry.py} & \texttt{96acc160dbf2df7981b2db98b602311712a01531}\\
+\texttt{diagram.py} & \texttt{cfb1fd8a04165ff0eacef7f4533fe253f2de5099}\\
+\bottomrule\end{tabular}
+\end{center}
+The package's code is source-derived and separately versioned. It does not bundle the full upstream project or third-party paper PDFs. The accompanying manifest and source record identify the exact delivered files and the external mathematical inputs.
+
+\begin{thebibliography}{9}
+\bibitem{BN}
+D. Bar-Natan, \emph{Fast Khovanov homology computations}, Journal of Knot Theory and Its Ramifications \textbf{16} (2007), 243--255. Preprint: \url{https://arxiv.org/abs/math/0606318}.
+
+\bibitem{KM}
+P. B. Kronheimer and T. S. Mrowka, \emph{Khovanov homology is an unknot-detector}, Publications Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208. Preprint: \url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{KS}
+T. Kelom\"aki and D. Sch\"utz, \emph{On computational complexity of Khovanov homology}, arXiv:2601.02119v1, January 5, 2026. In particular Sections 5--6 and Lemma 5.5. \url{https://arxiv.org/abs/2601.02119}.
+
+\bibitem{Lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, July 2026. In particular Section 9. \url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository and source files inspected October 7, 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Topology/UnknotRecognition}. File-specific audit identifiers are recorded in Appendix B and \texttt{SOURCES.json}.
+
+\bibitem{OpenAICategory}
+\texttt{openai/math}, \emph{Parabolic intersections in Artin groups}, repository manuscript dated September 23, 2026, section ``The relative categorical family,'' especially the finite algebra and radical construction. Inspected file \texttt{build/sections/02\_category.tex}, blob \texttt{bc6b4d5f0f0f1b5712c2a974df1406f6d5fbd0fe}. \url{https://github.com/openai/math}. Used for comparison only, not as a theorem dependency.
+\end{thebibliography}
+\end{document}

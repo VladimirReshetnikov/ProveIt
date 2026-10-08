@@ -1,0 +1,1194 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,tabularx,longtable,array}
+\usepackage{enumitem,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Certified disk-frontier reduction}\fancyhead[R]{\small ProveIt research}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=1.6em}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{{\mathbb F_2}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\input{measurements.tex}
+\title{Certified Disk-Frontier Reduction\ for Exact Unknot Recognition\\[5pt]
+\large Common-boundary certificates, finite block cancellation,\ and two independent complexity obstructions}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt project}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt recognizer already has scalar-survivor prediction and
+interruptible cancellation, but its maintained report identifies a missing
+hypothesis for stronger radical transfer: partial-diagram matchings need not
+share a disk boundary. We supply a constructive geometric bridge. A
+rotation-system certificate recognizes processed regions whose frontier lies on
+one boundary component and certifies a common cyclic order for every smoothing,
+without enumerating those smoothings. Connected and co-connected prefixes pass;
+a polynomial ear-insertion construction supplies such orders for every
+biconnected plane crossing graph.
+
+On certified stages we implement exact finite homological perturbation,
+retaining nonzero maps between adjacent surviving degrees. The article proves
+the geometric claims, justifies the required algebra with its provenance, and
+provides typed chain-homotopy certificates, guarded adapters, an independent
+crossing-cube oracle, and reproducible measurements. Dense synthetic blocks
+improve by up to \DenseSpeedup{} times in the final paired run. Sparse examples
+regress, and the diagram timings do not establish a recognition speedup.
+
+Two explicit families separate the outstanding difficulties. Long-trefoil
+products have constant frontier width but exponentially many explicit minimal
+summands. Descending unknot diagrams with $n=m^2$ crossings force frontier width
+at least $m/3$ in every crossing order, despite admitting disk-certified orders.
+The resulting certified-scan bound is $\operatorname{poly}(n,1+R)2^{O(B)}$,
+where $B$ is maximum boundary half-width and $R$ maximum minimal multiplicity.
+No universal bound placing these parameters in the quasi-polynomial regime is
+claimed. The continuation addresses a concrete applicability gap, not a general
+solution of the asymptotic recognition problem.
+\end{abstract}
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{Scope, contribution, and relationship to the repository}
+\label{sec:scope}
+The objective remains an exact recognizer with a proved $n^{O(\log n)}$ bound.
+The present contribution addresses a specific implementation and proof gap on the
+Khovanov-scanning route. It is not a replacement for the separate hierarchy-based
+program. Lackenby's July 2026 preprint analyzes a hierarchy process but explicitly
+separates its step count from an adequately specified running-time analysis;
+Section~9 also leaves its hierarchy parameters unbounded in that discussion
+\cite{Lackenby2026}. Our argument does not fill those topological algorithmic gaps.
+
+The live repository changed during this investigation. The audited version of
+\path{synthesis/radical.tex} already contains survivor prediction, a degree-gap
+shortcut, adaptive pausing, and a discussion of sharp radical nilpotence and
+finite transfer \cite{RepoRadical}. Those algebraic results are \emph{background
+for this continuation}, not discoveries claimed anew here. In particular,
+canonical survivor counts and the sharp exponent below should not be counted as
+additional independent breakthroughs when this package is integrated.
+
+The contribution is the following bridge: derive a common-disk certificate from
+the actual processed diagram, construct eligible orders for biconnected crossing
+graphs, and use the certificate to justify full transfer on the current
+interned-list scanner. We also construct a descending-grid unknot family that
+rules out a universal polylogarithmic-width argument on raw diagrams. The
+underlying graph and homological tools are classical; no claim of literature
+priority is made for their ingredients or for the abstract perturbation lemma.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{.30\textwidth}X@{}}
+\toprule
+Item & Status in this article\\\midrule
+Common-disk compiler & Proved, implemented, and checked against all smoothings of
+small certified prefixes.\\
+Connected-cut order construction & Proved for biconnected plane crossing graphs;
+polynomial construction, not an optimal-width algorithm.\\
+Full finite transfer & Exact on a supplied, checked disk category; geometry-bound
+scanner implementation with safe decline and scalar fallback.\\
+Canonical profiles and sharp radical exponent & Existing project theory and
+standard algebraic foundations, rederived to make the assumptions explicit.\\
+Performance & Paired synthetic improvements and sparse regressions;
+no demonstrated full-pipeline improvement.\\
+General quasi-polynomial recognition & Still requires additional structural and
+representation bounds.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The optional \code{openai/math} catalogue was consulted. No result advertised
+there is used as an axiom or as an unverified shortcut in the proofs. The actual
+foundations used here are the tangle-category formulation, local cancellation,
+and homological perturbation \cite{Khovanov2002,BarNatan2007,Crainic2004}.
+
+\section{Input, geometry, and coefficient conventions}
+\label{sec:model}
+A nonempty planar-diagram input is a list of four-tuples of edge labels, one tuple
+per crossing, in a consistent cyclic order. Every edge label occurs exactly
+twice. Opposite slots are the two strands. The rotation system must describe a
+connected genus-zero diagram. The final recognition wrapper additionally checks
+that the straight-through strand system has one component. Empty diagrams require
+an explicit convention for isolated circles and are deliberately rejected by that
+wrapper rather than guessed to mean an unknot.
+
+Write $G$ for the plane multigraph of crossings and edges. Loops and parallel
+edges are allowed. Let $P$ be a set of already processed crossings. A frontier
+edge has exactly one endpoint in $P$. Its label appears once in the processed
+list. If there are $2b$ such labels, $b$ is the \emph{boundary half-width}.
+This is the complete frontier, not merely the four slots touched by the latest
+crossing.
+
+The scanner uses the Frobenius algebra
+\[
+ A=\F[x]/(x^2),\qquad
+ \Delta(1)=1\otimes x+x\otimes1,\quad
+ \Delta(x)=x\otimes x,\quad \epsilon(1)=0,\quad\epsilon(x)=1.
+\]
+After delooping, an object is a perfect matching of the frontier, with an integer
+homological degree and a multiplicity. Quantum shifts are forgotten throughout
+this article, as in the rank-only backend under study. Raw homological degrees
+are not normalized by the negative-crossing shift; total rank is unaffected.
+
+For two matchings $a,c$ on a common disk boundary, let $k(a,c)$ be the number of
+circles in their overlay. A basis of $\Hom(a,c)$ is indexed by subsets of those
+circles, specifying dots. The Python encoding places the coefficient of the
+monomial with mask $S$ at integer bit position $S$. Thus a coefficient requires
+up to $2^{k(a,c)}$ bits; it is not a machine-word scalar when $b$ grows. The
+current \code{Planar} circle ordering is part of the interface. No coefficient
+is transferred into a different circle-numbering convention.
+
+A critical typing rule is that bit zero is a scalar identity coefficient only
+when source and target matchings are equal. For different matchings the undotted
+basis cobordism is generally a saddle-type map, not an identity. Every binary
+projection and every identity shortcut in the implementation checks the matching
+types as well as the coefficient bits.
+
+\section{A common-disk certificate from boundary walks}
+\label{sec:disk}
+\subsection{The permutation certificate}
+Replace each processed crossing by a small oriented disk and each processed
+internal edge by an untwisted band. Keep a marked stub for each frontier edge.
+This is a ribbon neighborhood $N(P)$. It retracts to the processed crossing graph;
+frontier stubs do not change its Euler characteristic.
+
+Number the darts at crossing $v$ by $4v,4v+1,4v+2,4v+3$. Let $\sigma$ rotate
+the darts at each crossing by one slot. Let $\alpha_P$ exchange the two darts of
+an internal edge and fix a frontier dart. The cycles of
+\begin{equation}\label{eq:boundary-permutation}
+ \phi_P=\sigma\alpha_P
+\end{equation}
+are the boundary walks of $N(P)$. Fixing a frontier dart models the turn around
+the end of its stub. Let $v_P,e_P,f_P$ be the number of crossing disks, internal
+bands, and boundary walks. For a connected prefix,
+\begin{equation}\label{eq:ribbon-euler}
+ 2-2g=v_P-e_P+f_P.
+\end{equation}
+A boundary walk is \emph{marked} if it contains a frontier dart.
+
+\begin{definition}[Disk certificate]
+A disk certificate consists of the processed tuples, or a cryptographic digest
+binding them to the certificate, the boundary-walk cycles, and their extracted
+frontier labels. The checker requires that the processed graph be connected,
+that \eqref{eq:ribbon-euler} give $g=0$, and that at most one boundary walk be
+marked. At a nonempty frontier exactly one is marked. Its labels, in cyclic
+order, give $\theta_P$. Rotation and reversal of that order are immaterial.
+\end{definition}
+
+\begin{theorem}[Geometric certification]\label{thm:disk}
+Let the full input be a connected plane crossing diagram. A processed prefix
+with a disk certificate is contained in a disk $D_P$ whose boundary meets the
+remaining diagram exactly at the frontier labels in order $\theta_P$.
+Every smoothing of the processed crossings induces a noncrossing matching in
+that same order after closed circles are delooped. Consequently the entire
+formal prefix complex, and not just its currently stored matching types, is
+an object of the corresponding disk tangle category.
+\end{theorem}
+\begin{proof}
+The connected genus-zero ribbon surface $N(P)$ has one complementary disk in
+the sphere for each of its boundary components. Retain the complementary disk
+adjacent to the marked boundary as the outside region, and fill all its other
+boundary components. The resulting surface is a disk with the asserted boundary.
+
+There are no unprocessed crossings hidden in one of the filled, unmarked
+complementary disks. Otherwise, the component of the unprocessed crossing graph
+there would have to connect to the rest of the full connected graph. It cannot
+leave that complementary disk without meeting $N(P)$, and any edge meeting
+$N(P)$ would be a frontier edge on its boundary, contradicting that it is
+unmarked. This is where the connected full-diagram hypothesis is used.
+
+Smoothing replaces the local crossing by disjoint arcs in its crossing disk.
+Together with the internal bands these are embedded arcs and circles in $D_P$.
+Disjoint arcs in a disk have a noncrossing endpoint matching. Removing closed
+circles by the Frobenius delooping isomorphism does not alter those endpoint
+pairings. Saddles, linear combinations, and local cancellation are relative to
+the same boundary. Hence the formal complex and its homotopy manipulations
+belong to the certified disk category.
+\end{proof}
+
+At a closed frontier, one may choose any complementary boundary as the outside;
+there are no labels to order. Its coefficient category is simply $\F$.
+
+\begin{proposition}[Certificate cost]\label{prop:certcost}
+After indexing the edge labels, one prefix certificate can be built and checked
+in linear time in its number of darts. Certifying all prefixes independently
+costs $O(n^2)$ indexed graph operations and polynomial bit complexity.
+The certificate is independent of the number of smoothing states and matching
+multiplicities.
+\end{proposition}
+\begin{proof}
+Build edge occurrences, the internal-edge involution, and adjacency in a scan
+through the darts. Connectivity, permutation cycles, and extraction of marked
+labels each require one further linear traversal. Summing prefix lengths proves
+the second assertion. Arbitrarily long integer labels can first be relabelled;
+their input bit length is included in that preprocessing cost.
+\end{proof}
+
+\subsection{A second, algebraic check}
+The adapter also checks every \emph{distinct live matching} against $\theta_P$.
+Use the positions of its endpoints in the order. Scanning from left to right,
+push the far endpoint when opening an arc and require a matching stack pop when
+closing it. This is a linear noncrossing test. It is a useful consistency check
+between the geometric prefix and the scanner arrays. Theorem~\ref{thm:disk},
+not this finite test alone, supplies provenance for all possible smoothing states.
+
+\subsection{Why the certificate cannot be omitted}
+The three pairings
+\[
+ (01)(23),\qquad(02)(13),\qquad(03)(12)
+\]
+are not simultaneously noncrossing in any cyclic order of four points. In every
+such order one of the three is the crossing pairing. A putative gluing of the
+three abstract types can give an odd value for twice the genus in the planar
+composition engine. Pairing data by themselves therefore do not define a common
+arc algebra. The implementation declines this situation \emph{before} applying
+nilpotence or transfer. A failed certificate is not a knot verdict and is not
+silently treated as an empty or acyclic complex.
+
+\section{Constructing certified crossing orders}
+\label{sec:orders}
+\begin{lemma}[Connected cuts give one marked boundary]\label{lem:bond}
+If both $G[P]$ and $G[V(G)\setminus P]$ are connected, then $P$ passes the disk
+certificate.
+\end{lemma}
+\begin{proof}
+The ribbon neighborhood of the connected prefix is a connected genus-zero
+surface. Every vertex of the connected complement lies in one component of its
+complement in the sphere. Every frontier edge approaches the boundary of that
+same component. The complementary components of a connected planar ribbon
+surface are disks with distinct boundary components. Therefore every frontier
+stub lies on a single boundary component.
+\end{proof}
+
+An $st$-order is an ordering beginning at $s$ and ending at $t$ in which every
+other vertex has both an earlier and a later neighbor. Such an order has connected
+prefixes and suffixes: repeatedly follow an earlier neighbor to $s$, or a later
+neighbor to $t$. We give an elementary construction to make its algorithmic
+obligations explicit rather than relying on a black-box ordering theorem.
+
+\begin{theorem}[Polynomial certified orders]\label{thm:ear}
+Every biconnected plane crossing graph with at least two vertices has an order
+all of whose proper prefixes pass Theorem~\ref{thm:disk}. An explicit ear-insertion
+algorithm constructs and verifies such an order in polynomial time, with an
+$O(n^3)$ bound in the indexed graph model used here. The one-crossing case is
+handled directly.
+\end{theorem}
+\begin{proof}
+Choose adjacent distinct vertices $s,t$ and initialize the ordered set to
+$[s,t]$. Suppose the current ordered set is $S$ and is not all of $V(G)$.
+Take any connected component $K$ of $G-S$. It has at least two distinct neighbors
+in $S$: a unique neighbor would be an articulation separating $K$ from the
+nonempty remainder of $S$.
+
+Choose attachments $a,z$ with $a$ earlier than $z$. Within $K$, find a simple
+path connecting a neighbor of $a$ to a neighbor of $z$. It may be a single
+vertex. Insert this path immediately after $a$, oriented from $a$ toward $z$.
+Every inserted vertex has an earlier and a later neighbor along the path.
+Existing vertices retain their earlier and later neighbors, since their
+relative order has not changed. The endpoints remain $s$ and $t$.
+
+At least one vertex is inserted each time. Connectivity searches, path searches,
+order updates, and a direct articulation check are polynomial; the simple
+implementation is bounded by $O(n^3)$ graph operations. At completion the order
+is an $st$-order. The preceding observation and Lemma~\ref{lem:bond} certify
+every proper prefix. The implementation independently recomputes the boundary
+walk certificates instead of trusting only the construction invariant.
+\end{proof}
+
+This construction does \emph{not} minimize frontier width. Prefer a good supplied
+order when it is certified, or certify stages of the existing order only when a
+block operation is contemplated. Converting to an arbitrary ear order can make
+width worse. Articulated crossing graphs are declined by this constructor;
+ordinary scanning and the repository's established decomposition methods remain
+available. No unsupported articulation-to-connected-sum equivalence is assumed.
+
+\section{Descending-grid unknots: a width obstruction on actual unknots}
+\label{sec:grid}
+The preceding theorem supplies admissible geometry, not polylogarithmic geometry.
+The following explicit family prevents conflating those conclusions.
+
+\begin{theorem}[Unknots with unavoidable wide raw frontiers]\label{thm:grid}
+For each integer $m\ge2$ there is an explicitly constructible classical unknot
+diagram $D_m$ with $n=m^2$ crossings whose crossing graph is biconnected and contains
+the $m\times m$ grid as a spanning subgraph. In every crossing order, some prefix
+has at least $m/3$ frontier edges. Thus its maximum boundary half-width is at
+least $m/6=\Omega(\sqrt n)$.
+\end{theorem}
+\begin{proof}
+Draw $m$ horizontal and $m$ vertical strands crossing in a square array. There
+are $m^2$ crossings and $4m$ endpoints on the boundary of the square. Initially
+these strands are $2m$ open paths. In the exterior disk on the sphere, join two
+adjacent remaining endpoints belonging to different open paths. This merges
+those paths and removes the two joined endpoints. Until only one path remains,
+such an adjacent pair exists: each open path has exactly two remaining endpoints,
+so if all cyclically adjacent endpoints belonged to the same path there could
+be only one path. Join the final two endpoints to close it.
+
+Joining endpoints adjacent in the remaining cyclic order gives a noncrossing
+exterior matching. No additional crossings or vertices were added. The shadow
+has one straight-through component, is planar and four-valent, and still contains
+every internal grid edge. The grid is biconnected: it is the union of unit square
+cycles joined along edges, and the union of two biconnected graphs sharing two
+vertices is biconnected. Adding the exterior edges preserves this property.
+
+Traverse the shadow from a marked point and make the first visit to every
+crossing the overpass. This is a descending diagram. Cutting at the marked point,
+lift the traversed arc with strictly decreasing height. Each first visit is then
+above the second visit at its double point. A height-monotone arc can be straightened
+by level-preserving translations, with its closing arc kept outside. Closing
+therefore gives an unknot. This argument also explains the finite descending
+certificate supplied by the generator.
+
+It remains to prove the width claim, which is independent of the overpasses.
+Let $S$ contain between $m^2/3$ and $2m^2/3$ vertices of the grid. If at least
+$m/3$ rows contain vertices of both $S$ and its complement, those rows contribute
+at least $m/3$ distinct horizontal cut edges. Otherwise there is a completely
+occupied row and a completely unoccupied row: mixed rows alone cannot account
+for either of the two sets' required sizes. In each column, the vertical path
+between those two rows crosses the cut. This gives at least $m$ cut edges.
+In either case $|\partial S|\ge m/3$. Every ordering has a prefix of size
+$\lfloor m^2/2\rfloor$, within the stated range. Its grid cut edges are also
+frontier edges of the crossing graph. Dividing their number by two proves the
+half-width bound.
+\end{proof}
+
+This is a limitation of an \emph{order-only proof strategy on the unsimplified
+input}, not a lower bound for unknot recognition and not an assertion that our
+scanner takes exponential time on this family. Descending structure itself is
+a certificate of triviality. Reidemeister simplification, semantic recognition,
+or a succinct coefficient representation may bypass the wide raw cut entirely.
+In particular, the theorem must not be used to exclude a quasi-polynomial
+recognizer with such mechanisms.
+
+The bundle generates $D_m$ for $1\le m\le8$, supplies their descending traversals,
+and validates plane geometry and certified orders. Independent crossing-cube
+homology was computed only for $m\le3$; its total rank is two. Larger ranks are
+not reported as computed. The proof above supplies their unknot status.
+
+\input{grid_table.tex}
+
+\section{The certified arc algebra and its finite radical}
+\label{sec:radical}
+The results in this section are algebraic infrastructure already discussed in the
+maintained project report \cite{RepoRadical}. We include their proofs to state
+precisely where the common-disk hypothesis enters. Khovanov's arc-algebra
+construction supplies the categorical setting \cite{Khovanov2002}.
+
+Fix $2b$ points in a prescribed common cyclic order. For a dotted basis morphism
+$x_S:a\to c$ define its intrinsic weight by
+\begin{equation}\label{eq:weight}
+ w(x_S)=b-k(a,c)+2|S|.
+\end{equation}
+Every weight lies between zero and $2b$. Weight zero occurs only for the undotted
+identity of a matching: $k(a,c)=b$ implies $a=c$. A matching has at most $b$ overlay
+circles, so $\dim_\F\Hom(a,c)\le2^b$.
+
+\begin{lemma}[Additivity of intrinsic weight]\label{lem:weight}
+Composition is homogeneous for \eqref{eq:weight}. The positive-weight subspaces
+form a two-sided ideal $J$, and the quotient category has only scalar identities
+of the matching objects.
+\end{lemma}
+\begin{proof}
+Consider basis inputs with $u,v$ dots. If a composite component has positive
+genus, its Frobenius evaluation over $\F$ vanishes. Otherwise let $r$ be the number
+of genus-zero components of the glued surface. The input disks and the $b$ gluing
+bands give
+\[
+ k(a,b')+k(b',c)-b=2r-k(a,c),
+\]
+where $b'$ denotes the intermediate matching, not the half-width. On a surviving
+component with $q$ output circles, no input dot gives $q-1$ output dots and one
+input dot gives $q$; two dots give zero. Thus each nonzero output has
+$k(a,c)-r+u+v$ dots. Substitution gives additivity of \eqref{eq:weight}.
+The weight-zero characterization then proves the ideal and quotient assertions.
+\end{proof}
+
+\begin{theorem}[Sharp characteristic-two nilpotence]\label{thm:nilpotence}
+For $b\ge1$, in the full disk matching category,
+\[
+ J^{2b}=0,\qquad J^{2b-1}\ne0.
+\]
+For any subcategory of its matching objects the same upper bound holds. On
+endomorphisms of one matching, the positive ideal has exponent $b+1$ instead.
+\end{theorem}
+\begin{proof}
+The weight bound immediately gives $J^{2b+1}=0$. Suppose a product of $2b$
+positive homogeneous factors is nonzero. All factors must have weight one, and
+the output must have weight $2b$. Each weight-one factor is undotted. The output
+must be the fully dotted basis element of an endomorphism space, since weight
+$2b$ forces $k(a,c)=b$ and $a=c$.
+
+But a composite of undotted surfaces cannot have that term over $\F$. Positive
+genus evaluates to zero; an undotted closed sphere evaluates to zero; and each
+surviving genus-zero component with boundary leaves one of its output circles
+undotted in each term. Hence the fully dotted output is impossible.
+
+For sharpness, label the boundary $0,\ldots,2b-1$ and, for $0\le r\le b-1$, let
+$a_r$ have pairs
+\[
+ (0,2r+1),\ (1,2),\ (3,4),\ldots,(2r-1,2r),
+\]
+followed by adjacent pairs on the remaining labels. These are noncrossing.
+Compose the $b-1$ undotted weight-one morphisms from $a_0$ through $a_{b-1}$,
+a dot on the first arc of $a_{b-1}$, and the reverse sequence of $b-1$ undotted
+morphisms. The surface is connected: the successive elementary saddles join
+all the initial arc components. Counting its disks and gluing bands gives Euler
+characteristic $2-b$ and it has $b$ output boundary circles, so its genus is zero.
+It carries exactly one dot and therefore evaluates to $x_1\cdots x_b\ne0$ in
+$\End(a_0)$. There are $2b-1$ positive factors.
+
+Finally $\End(a)=\F[x_1,\ldots,x_b]/(x_i^2)$. A product of $b+1$ positive
+monomials vanishes, whereas $x_1\cdots x_b$ survives.
+\end{proof}
+
+The sharpness witness is algebraic. It does not assert that a scanned knot
+prefix forces the maximum transfer depth. The program verifies these witnesses
+through $b=8$. Neither the category nor its exponent is assigned to an arbitrary
+uncertified family of abstract pairings.
+
+\section{Scalar residues, minimal multiplicity, and what they do not retain}
+\label{sec:residue}
+For a bounded cochain complex $C$, retain the constant identity coefficient only
+between equal matchings:
+\[
+ (d_0)_{vu}=\begin{cases}
+ [1]d_{vu}\,\id_a,&\text{if both objects have matching }a,\\
+ 0,&\text{otherwise.}
+ \end{cases}
+ \qquad \delta=d-d_0.
+\]
+Here $[1]$ means coefficient of the undotted basis vector. By
+Lemma~\ref{lem:weight}, $d_0^2=0$ and $\delta$ is $J$-valued. Write
+\begin{equation}\label{eq:beta}
+ \beta^h_a(C)=\dim_\F H^h(C_a,d_0),\qquad
+ r(C)=\sum_{a,h}\beta^h_a(C).
+\end{equation}
+The summands $C_a$ contain the copies of matching $a$ only.
+
+\begin{theorem}[Canonical minimal multiplicities]\label{thm:minimal}
+Every bounded matching-valued complex that is homotopy equivalent to $C$ and
+has differential in $J$ contains exactly $\beta^h_a(C)$ copies of $a$ in degree
+$h$. In particular, every complete scalar-unit cancellation of $C$ leaves these
+counts, independently of pivot order.
+\end{theorem}
+\begin{proof}
+Reduction modulo $J$ preserves sums, composition, and chain-homotopy identities.
+It therefore carries a homotopy equivalence to a homotopy equivalence of binary
+complexes for each matching. A complex with differential in $J$ becomes a complex
+with zero differential, whose homology dimensions are its object counts.
+These dimensions must equal \eqref{eq:beta}.
+
+For the last assertion, a coefficient $1+u$ in an endomorphism ring is a unit.
+Indeed, in the square-free algebra over $\F$, $u^2=0$ for every positive sum
+$u$, so $(1+u)^{-1}=1+u$. Complete unit cancellation terminates after removing
+pairs of objects. If the final differential had a nonzero scalar residue, there
+would still be a unit pivot. Its differential therefore lies in $J$.
+\end{proof}
+
+This is a uniqueness statement for \emph{multiplicities}, not for the surviving
+basis or differential. It explains why pivot optimization changes fill and
+composition work but cannot lower the final number of explicit generators for
+a fixed processed tangle. Changing the processed prefix by changing the scan
+order is a different operation.
+
+\begin{proposition}[Profiles are not sufficient continuation states]\label{prop:notstate}
+Scalar-residue homology alone does not determine the surviving differential or
+its behavior under subsequent gluing.
+\end{proposition}
+\begin{proof}
+Over $R=\F[x]/(x^2)$, the two complexes
+\[
+ R\xrightarrow{x}R,\qquad R\xrightarrow{0}R
+\]
+have the same residue profile, one object in each of two consecutive degrees.
+They are not homotopy equivalent. Closing the arc turns multiplication by $x$
+into a binary map of rank one on $A$, giving total homology dimension two;
+the zero map gives total dimension four.
+
+In particular a positive-weight map can produce a scalar matrix entry after a
+frontier changes and a circle is delooped. The operation of taking scalar
+residues is not a replacement for the gluing functor.
+\end{proof}
+
+If occupied residue degrees are nonconsecutive, the differential in a minimal
+model must vanish. At a closed frontier it also vanishes, since $J=0$. These
+are precisely the kinds of shortcuts already integrated in the repository
+\cite{RepoRadical}. Full transfer is needed when those shortcuts do not apply.
+
+\section{Constructive finite transfer with nonzero survivors}
+\label{sec:transfer}
+\subsection{Extracting a scalar contraction}
+For each matching and degree split the binary complex as
+\[
+ C^h_a=B^h_a\oplus H^h_a\oplus L^h_a,
+ \qquad d_0:L^h_a\overset{\sim}{\longrightarrow}B^{h+1}_a.
+\]
+Column elimination selects independent image vectors and their lifts. Kernel
+vectors obtained from dependent columns are used to complement boundaries.
+This constructs inclusion $i$, projection $p$, and homotopy $h$, with
+\begin{equation}\label{eq:sdr0}
+ pi=1,\quad d_0h+hd_0=1+ip,\quad hi=ph=h^2=0,\quad d_0i=pd_0=0.
+\end{equation}
+All their coefficients are binary multiples of identities of equal matchings.
+The implementation uses bit-packed binary vectors and can verify all these
+identities independently. No structured low-rank block has to be supplied by
+the caller: the contraction is extracted from the actual scalar residue.
+
+\begin{theorem}[Disk-certified finite transfer]\label{thm:transfer}
+Let $C$ be a valid bounded complex on a certified disk frontier and let
+\eqref{eq:sdr0} be a scalar contraction. Then
+\begin{align}
+ I&=(1+h\delta)^{-1}i,&
+ D&=p\delta(1+h\delta)^{-1}i,\label{eq:transfer}\\
+ H'&=(1+h\delta)^{-1}h,&
+ P&=p(1+\delta h)^{-1}\label{eq:transfermaps}
+\end{align}
+are finite expressions and give a strong deformation retract of $(C,d)$ onto
+$(H,D)$. The differential $D$ lies in $J$, so this is a minimal complex with the
+multiplicities \eqref{eq:beta}. For $b\ge1$,
+\begin{equation}\label{eq:finiteD}
+ D=\sum_{j=0}^{2b-2}p\delta(h\delta)^ji.
+\end{equation}
+When all positive entries preserve their matching, at most $b$ positive factors
+are needed instead. For $b=0$, $D=0$.
+\end{theorem}
+\begin{proof}
+The operators $h,i,p$ have intrinsic weight zero. Each factor of $\delta$ is in
+$J$, so Theorem~\ref{thm:nilpotence} makes the inverse series finite. Thus the
+small-perturbation hypothesis of the homological perturbation lemma holds, and
+\eqref{eq:sdr0} is its special deformation-retract hypothesis
+\cite{Crainic2004}. Its formulas give \eqref{eq:transfer}--\eqref{eq:transfermaps}.
+Every term of $D$ contains a positive factor, hence $D\in J$. Theorem~\ref{thm:minimal}
+then identifies its multiplicities. A term in \eqref{eq:finiteD} contains $j+1$
+positive factors; $2b$ such factors vanish. The one-matching bound follows in
+the same way from the last assertion of Theorem~\ref{thm:nilpotence}.
+\end{proof}
+
+For clarity, the certificate checker verifies the full identities
+\begin{gather}\label{eq:allchecks}
+ d^2=D^2=0,\qquad dI=ID,\qquad Pd=DP,\qquad PI=1,\\
+ dH'+H'd=1+IP,\qquad H'I=PH'=(H')^2=0.\notag
+\end{gather}
+One can also see the special side conditions directly. Put
+$A=\delta(1+h\delta)^{-1}$. Then
+$I=i+hAi$, $P=p+pAh$, and $H'=h+hAh$. Substituting these expressions makes
+$PI=1$, $H'I=PH'=(H')^2=0$ immediate from \eqref{eq:sdr0}. The standard identity
+$d_0A+Ad_0+AipA=0$ gives $D^2=0$ after multiplication by $p$ and $i$.
+The other two chain-map identities and the homotopy identity are the remaining
+perturbation identities. The implementation checks them using full categorical
+matrix composition, separately from its column-wise transfer loop.
+
+\subsection{The streaming algorithm}
+For each residual basis column $i_j$, compute:
+\begin{lstlisting}
+t = i_j
+D_j = 0
+while t is nonzero:
+    y = delta * t
+    D_j = D_j + p * y
+    t = h * y
+\end{lstlisting}
+Addition is XOR. Multiplication by $p$ and $h$ uses only binary incidence data;
+expensive composition occurs in the multiplication by $\delta$. The old radical
+matrix is never overwritten with a full ring-valued Schur complement. Its original
+sparse edges are reused at every iteration.
+
+The implementation enforces the finite factor bound and checks that the next
+term vanishes. A term beyond the proved bound raises an arithmetic error;
+it is never silently truncated. It also checks the common cyclic order and
+coefficient-basis bounds. The default return value does not retain all lifted
+columns of $I$. Full $I,P,H'$ are computed only for an explicit certificate
+request, at higher memory and checking cost.
+
+\subsection{A concrete two-term interpretation}
+Suppose the source and target bases split into a cancellable block and surviving
+objects and the differential is
+\[
+ d=\begin{pmatrix}A&B\\ C&E\end{pmatrix},\qquad
+ A=A_0+U,
+\]
+where $A_0$ is invertible over $\F$ and $U,B,C,E$ have the appropriate positive
+parts after scalar splitting. The surviving map is the usual typed Schur
+complement $E+CA^{-1}B$. The finite transfer evaluates it without updating every
+entry of the eliminated block. Crucially, the surviving map need not vanish.
+The dense benchmark family below has adjacent survivor degrees and nonzero
+surviving maps, so its successful reduction is not explained by the earlier
+degree-gap or zero-survivor shortcut.
+
+\section{Cost, memory, and the quasi-polynomial target}
+\label{sec:cost}
+Let $N$ be the number of explicit objects before a block reduction, $r$ the
+number of survivors, and $E_\delta$ the number of nonzero entries in the original
+radical differential. Let $S_h,S_p$ be the numbers of nonzero scalar entries in
+the extracted homotopy and projection. Write $A_b$ for one coefficient addition
+cost and $M_b$ for one correctly typed cobordism composition cost, including
+its bit arithmetic. Let $G(N)$ bound binary contraction construction and checking.
+Dense Gaussian elimination gives a conservative $G(N)=O(N^3)$ scalar-field
+operation bound; bit packing improves implementation constants and word counts.
+
+\begin{proposition}[Column-transfer cost]\label{prop:cost}
+Ignoring optional full-certificate output and charging geometry compilation
+separately, finite transfer can be implemented in
+\begin{equation}\label{eq:kernelcost}
+ G(N)+O\!\left(N+E_\delta+
+ \ell r\bigl(E_\delta M_b+(S_h+S_p)A_b\bigr)\right)
+\end{equation}
+operations in the stated mixed cost model, where $\ell\le2b$ includes a final
+zero check, or $\ell\le b+1$ when all positive entries preserve matching.
+For $b=0$ only binary reduction is needed.
+\end{proposition}
+\begin{proof}
+Each residual column requires at most $\ell$ products by the original radical
+matrix. A product scans at most $E_\delta$ edges. Applying the scalar maps scans
+at most $S_h+S_p$ incidences and adds their coefficient values. Sum over the $r$
+columns and include extraction and input traversal.
+\end{proof}
+
+For dense matrices $E_\delta,S_h,S_p=O(N^2)$, expensive composition work is
+$O(brN^2M_b)$ instead of a generic $O(N^3M_b)$ ring-valued elimination bound.
+This separates binary work from expensive coefficient work; it does not magically
+remove the $G(N)$ term. It is useful when $r\ll N$ and the scalar cancellations
+would otherwise produce substantial fill. On a sparse diagonal matrix, ordinary
+cancellation is cheaper.
+
+A coefficient occupies at most $2^b$ bits. Even a naive implementation gives
+$M_b=\operatorname{poly}(b)2^{O(b)}$: there are at most $4^b$ monomial pairs,
+and a conservative bound for evaluating each output as a bit vector is
+$\operatorname{poly}(b)2^b$ bit operations. The resulting loose bound
+$\operatorname{poly}(b)8^b$ is sufficient here. Faster Frobenius/subset-convolution
+kernels from the previous project work can improve $M_b$ independently of this
+transfer algorithm. No fixed-word assumption is being used.
+
+With a bounded product cache of $K$ entries, the streaming implementation needs,
+beyond its input and the geometry engine's own caches, a conservative auxiliary
+bound
+\[
+ O\!\left(N^2+(N+r^2+K)2^b\right)
+\]
+bits, up to index and object overhead. The default local product cache is capped
+at 4096 entries and may be disabled. This bound does not pretend that the upstream
+geometry and monomial caches are free. Full certificate output can require
+$O(N^2 2^b)$ coefficient storage and substantially more checking time.
+
+\begin{theorem}[Parameterized certified-scan bound]\label{thm:qp}
+Consider a fixed disk-certified crossing order for a diagram with $n$ crossings.
+Let $B$ be its maximum boundary half-width and let $R$ be the largest explicit
+minimal survivor count after any stage, including the initial object. With exact
+coefficient arithmetic, an explicit scanner using the reductions above has a
+bound of the form
+\begin{equation}\label{eq:globalcost}
+ \operatorname{poly}(n,1+R)\,2^{O(B)}.
+\end{equation}
+Equivalently, for $\Theta=B+\log_2(1+R)$ the bound is
+$\operatorname{poly}(n)2^{O(\Theta)}$. In particular
+$\Theta=O((\log n)^2)$ implies $n^{O(\log n)}$ time.
+\end{theorem}
+\begin{proof}
+Attaching one crossing gives two smoothings, each creating at most two new closed
+circles. After delooping, each old object produces at most eight new objects.
+Thus the pre-reduction object count is at most $8R$. The number of differential
+entries is at most quadratic in that count. Crossing transfers have bounded
+local topology and $2^{O(B)}$ coefficient cost.
+
+At a disk frontier the number of matching types is at most $4^B$, by encoding a
+noncrossing matching as balanced parentheses. Pairing, composition-plan, and
+monomial caches can therefore be charged by $2^{O(B)}$ factors as well, rather
+than assumed absent. Apply Proposition~\ref{prop:cost} at each stage, include
+polynomial preprocessing and the certificate costs of Proposition~\ref{prop:certcost},
+and sum over $n$ stages. Taking logarithms of the parameter factors proves the
+last formulation.
+\end{proof}
+
+The theorem applies to full explicit multiplicities, not to an unspecified
+compressed substitute for $R$. The existence theorem for certified orders does
+not bound $R$ or force $B$ into the stated regime. Theorem~\ref{thm:grid} already
+precludes a universal polylogarithmic raw width bound, even on unknots. The next
+section shows why a small width alone is insufficient in the other direction.
+
+\section{Constant-width exponential multiplicity, with an explicit local model}
+\label{sec:trefoil}
+The following example supports the already identified multiplicity obstruction
+in the project report \cite{RepoRadical}. Its detailed local matrices make clear
+which representation is obstructed.
+
+Cut an edge of the positive three-crossing two-strand trefoil closure to obtain
+a long trefoil. After the first two crossing reductions, the last crossing gives
+a nine-object complex over $R=\F[x]/(x^2)$. In degrees zero through three its
+ranks are $2,2,3,2$, and its matrices, with columns as sources, are
+\begin{equation}\label{eq:trefoilmatrices}
+ d^0=\begin{pmatrix}1&x\\1&x\end{pmatrix},\qquad
+ d^1=\begin{pmatrix}x&x\\1&1\\0&0\end{pmatrix},\qquad
+ d^2=\begin{pmatrix}x&0&x\\1&x&1\end{pmatrix}.
+\end{equation}
+The input PD, all earlier prefix data, and strong deformation-retract certificates
+are supplied in \code{results/chain_certificates.json}; its verifier replays the
+crossing transfers and separately checks the matrix identities.
+
+Here is an explicit reduction of \eqref{eq:trefoilmatrices}. Name the bases
+$(a,b)$, $(c,d)$, $(e,f,g)$, and $(h,i)$ respectively. Use new bases
+\[
+ (b+xa,a),\quad (c+d,c),\quad (xe+f,e+g,e),\quad (xh+i,h).
+\]
+They are invertible basis changes. The differential becomes the three identity
+pairs
+\[
+ a\longmapsto c+d,\qquad c\longmapsto xe+f,\qquad e\longmapsto xh+i,
+\]
+with the other three generators $b+xa$, $e+g$, and $h$ closed. The surviving complex
+is therefore three copies of one arc, in degrees $0,2,3$, with zero differential.
+
+\begin{proposition}[Explicit fixed-width obstruction]\label{prop:trefoil}
+Concatenating $k$ copies of this long trefoil gives a tangle with a zero-differential
+minimal model containing $3^k$ copies of one arc. Its degree-count polynomial is
+$(1+t^2+t^3)^k$. A sequential presentation uses at most six frontier points.
+No fully explicit matching-valued homotopy-minimal representation can have fewer
+than $3^k$ objects.
+\end{proposition}
+\begin{proof}
+Concatenation is a planar composition functor and preserves each of the displayed
+homotopy equivalences. Composing $k$ direct sums of three identity arcs multiplies
+their multiplicities and their degree polynomials. The differential is zero.
+The six-point bound follows by scanning one three-crossing long factor at a time,
+retaining the outer endpoint while traversing the next factor; it is also checked
+on the supplied diagrams. The final statement follows from
+Theorem~\ref{thm:minimal}.
+\end{proof}
+
+This is not a lower bound for decision-only recognition. Closing the arc gives
+rank $2\cdot3^k$, and structural recognition, component sharing, degree-polynomial
+weights, or rank saturation can reject such inputs without materializing all
+copies. Indeed, these are exactly the kinds of mechanisms already available in
+the repository. The lesson is that matching type counts, coefficient dimensions,
+and explicit multiplicities must be controlled separately.
+
+\section{A guarded bridge to the current adaptive scanner}
+\label{sec:integration}
+The inspected \code{FastScan.eliminate} API accepts an optional
+\code{update_budget} and returns whether cancellation completed
+\cite{RepoScanner}. Its allowance counts candidate Schur update pairs, not
+elapsed time and not necessarily expensive compositions. Before a pivot it
+knows the Markowitz quantity
+\[
+ (|\operatorname{out}(u)|-1)(|\operatorname{in}(v)|-1).
+\]
+When a pivot would exceed the allowance, it pauses before that pivot, retains
+all previously completed cancellations and valid maps, and clears its candidate
+queues. This is the appropriate seam for the present work; restarting from the
+original unreduced stage would throw away useful progress.
+
+A conservative integration sequence is: preserve ordinary sparse cancellation;
+use the existing residue and degree-gap shortcut when applicable; otherwise
+attempt a common-disk certificate for the actual processed prefix; and only
+then consider full finite transfer. If the certificate fails or a transfer
+policy declines the block, resume the same partially reduced complex. The
+mathematical validity of a pivot does not depend on which implementation performed
+the preceding pivots.
+
+The supplied \code{RadicalScan} demonstrates four research controls and the
+new adaptive seam. Its \code{adaptive} mode starts with allowance
+$\max(256,4N)$, preserves completed sparse progress, and attempts a geometry-checked
+full reduction only after that allowance is exceeded. This fixture-level
+adapter is not the repository's production adaptive mode and should not be
+presented as such. Production already has additional profile shortcuts and
+integration constraints \cite{RepoRadical}.
+
+The controls are deliberately retained in the raw data. \code{always} tries
+full transfer at every eligible stage; \code{auto} uses an exploratory survivor
+fraction threshold; \code{terminal} uses binary completion only at closure.
+They are ablations, not recommended defaults. Every open-boundary full transfer
+requires the prefix certificate. Closed binary completion is an existing
+principle, not a novel algorithm attributed to this package.
+
+\paragraph{Atomicity and resource semantics.}
+The block routine operates on a compact snapshot and installs its output only
+after the computation succeeds. During an adaptive attempt, the authoritative
+state is the already partially cancelled complex. Geometry decline preserves
+it. Deadline or object-limit exceptions remain resource exceptions. A violated
+algebraic identity raises an error rather than silently producing a verdict.
+An externally supplied \code{update_budget} is delegated to the upstream
+pair-budget operation and is never reinterpreted as a perturbation-depth budget.
+
+The current wrapper supports the standard interned-list scanner. It does not
+update component-owner arrays or saturated weight structures, install a Rust
+implementation, modify race semantics, or alter the public CLI. Those integrations
+need their own invariants and regression tests. The source-derived fixture is
+kept under \code{reference_upstream}, separate from the original modules and from
+production code.
+
+\section{Correctness evidence and reproducibility}
+\label{sec:validation}
+The final bundle contains \UnitTests{} passing standard-library unit tests. The
+test count is a count of test methods, many of which run families of cases; it is
+not a count of formally verified theorems. Important checks include full scalar
+contraction identities, typed coefficient bounds, invalid disk orders, explicit
+radical witnesses, nontrivial three-term complexes, and failure semantics.
+
+The unit suite compares 100 seeded small braid closures against an independent
+crossing-cube implementation. That oracle directly forms smoothing circles and
+uses $m$ and $\Delta$ over $\F$; it does not call \code{Planar}, its composition
+plans, or its transfer routines. Both ordinary scanning and the guarded block
+scanner are compared to its homological ranks. An additional 40 braid cases
+compare every one of eight intermediate survivor profiles, giving 320 prefix
+comparisons. Arbitrary shuffled orders are allowed in those tests precisely
+because uncertified block stages fall back to the ordinary scanner.
+
+A separate geometry experiment uses 80 seeded two-, three-, or four-strand braid
+presentations with at most eight crossings. The ear-order constructor accepts
+\GeometryAccepted{} biconnected cases and declines \GeometryDeclined{} others.
+For every accepted prefix, \emph{all} smoothing states are formed independently
+and their matchings are checked against the one computed cyclic order. This
+produces \SmoothingChecks{} smoothing/order checks. The same
+\GeometryAccepted{} closed diagrams are compared against the independent cube.
+The log records cases, words, orders, widths, and full boundary certificates;
+it does not claim that repeated presentations represent distinct knots.
+
+Seven complete strong deformation-retract certificates are exported for the
+four prefixes of a figure-eight presentation and the three prefixes of the long
+trefoil. The checker verifies the coefficient and homological types, the disk
+certificate, and all of \eqref{eq:allchecks}. It also replays the source-derived
+crossing transfers to bind the certified input matrices to their listed PD
+prefixes. This is executable exact algebra, not a Lean-checked development or
+an independently verified implementation of every topological primitive.
+
+The descending-grid generator checks its planar rotation systems and its complete
+descending traversals through $m=8$. Independent cube ranks are additionally
+computed through $m=3$. None of these finite experiments replaces the general
+proof of Theorem~\ref{thm:disk}, \ref{thm:ear}, or \ref{thm:grid}.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{.40\textwidth}X@{}}
+\toprule
+Artifact & Reproduction command from bundle root\\\midrule
+Unit suite & \code{python -m unittest discover -s tests -v}\\
+Geometric exhaustive checks & \code{python experiments/geometry_validation.py}\\
+Exported chain certificates & \code{python experiments/verify_certificates.py}\\
+Descending-grid family & \code{python experiments/grid_family.py}\\
+Paired timings & \code{python experiments/benchmark.py --repeats 7}\\
+Article & \code{cd article; sh build.sh}\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The original full repository was not cloned or tested in this runtime. The fixture
+was transcribed from inspected upstream sources, retaining the executable algorithms
+and shortening commentary. It is not byte-identical to those files. Pinned blob
+identifiers, attribution, and a script for a subsequent normalized-AST comparison
+are included. The production suite, production recognition pipeline, Rust code,
+and races were not run. Their independently reported test counts must not be
+added to this bundle's results.
+
+\section{Paired performance results, including regressions}
+\label{sec:benchmarks}
+The final measurement run uses \BenchmarkRepeats{} trials per case on
+CPython \PythonVersion{}, Linux x86-64. Each trial starts with fresh geometry and
+composition caches. Method order is alternated or rotated between trials.
+Medians below are elapsed milliseconds from \code{perf_counter_ns}; all individual
+nanosecond observations are retained in JSON, with a CSV summary.
+
+\subsection{Dense two-term blocks with nonzero surviving differentials}
+The source and target each have $m+q$ objects of one matching with $b$ arcs.
+The scalar top-left $m\times m$ block is invertible and all other scalar entries
+vanish. The remaining coefficients are seeded radical elements. Thus exactly
+$2q$ objects survive in two adjacent degrees. The resulting differential is
+nonzero in every listed case, including the sparse control. These are valid
+algebraic complexes because there are only two degrees; they are not asserted
+to be realized by the measured knot prefixes.
+
+Every block is additionally checked outside the timed region by expanding the
+complex over the regular binary representation of its square-free ring. The
+original matrix, ordinary cancellation output, and transfer output have identical
+homology dimensions in that independent expansion.
+
+Timing starts after construction of the input coefficient matrix, matching
+geometry, and ordinary scanner adjacency lists. It includes the full scalar
+contraction and transfer in the new method, and the full cancellation loop in
+the baseline. This models a ready-to-reduce stage, not diagram parsing.
+
+\input{matrix_table.tex}
+
+The largest observed median ratio is \DenseSpeedup{} on a dense block. On that
+case the baseline requests \DenseBaseCompositions{} cobordism compositions,
+whereas transfer requests \DenseNewCompositions{}. These counters count algorithm
+requests under their documented identity/cache shortcuts; they are not wall-time
+units. The survivor map remains nonzero. Thus the improvement extends beyond
+an acyclic-block or degree-gap special case.
+
+The sparse diagonal control goes the other way: the new method is
+\SparseSlowdown{} times slower. Ordinary cancellation has no Schur fill there,
+whereas binary basis extraction still costs work. The smaller speedup when $q$
+is larger is consistent with the $r$ dependence in \eqref{eq:kernelcost}.
+These observations favor a guarded dense-block path, not unconditional replacement.
+
+\subsection{Complete fixed-order diagram scanners}
+These measurements include every crossing transfer, elimination stage, and final
+rank extraction, but exclude PD construction, input validation, order selection,
+structural/polynomial prefilters, and whole-process startup. They are
+\emph{complete fixed-order scanner timings}, not full production recognition
+timings. The diagrams are braid closures and may be links; the comparison is of
+homological ranks, not unsupported knot verdicts.
+
+\input{diagram_table.tex}
+
+For all seven diagram cases, the progress-preserving adaptive control completes
+ordinary cancellation before its allowance is exhausted. It therefore invokes
+\emph{zero full block transfers}. Its small timing differences from the baseline
+cannot be attributed to the new algebra. The eager block control is slower on
+every case. The exploratory survivor-fraction and terminal-only controls are
+also retained in the raw data, without selecting their most favorable trial.
+
+Accordingly, this run establishes a synthetic dense-kernel improvement and a
+working, guarded diagram implementation. It does not establish that dense
+cancellable blocks of the favorable kind arise often enough on difficult knots
+to improve overall recognition. The absence of a measured diagram-level block
+gain is an explicit result of the experiment, not omitted evidence.
+
+\section{Why the final rank test is sound}
+\label{sec:detector}
+For a validated one-component classical diagram, the wrapper declares the unknot
+exactly when unreduced Khovanov homology over $\F$ has total rank two. We recall
+the characteristic-two reduction to the usual unknot-detection theorem rather
+than assuming that every link of rank two has been validated as a knot.
+
+Let $X$ multiply by $x$ on the circle containing a marked point. Let $\partial$
+be the sum, over all circle factors, of the operation that replaces $x$ by $1$
+and sends $1$ to zero. Direct checking on the four multiplication basis tensors
+and two comultiplication basis vectors shows that $\partial$ commutes with the
+crossing-cube differential over $\F$. Also
+\[
+ X^2=\partial^2=0,\qquad \partial X+X\partial=1.
+\]
+Hence the chain complex splits as the images of the complementary idempotents
+$X\partial$ and $\partial X$. Those images are $\im X$ and $\im\partial$,
+which are isomorphic as complexes via $X$ and $\partial$. The first is a reduced
+complex, up to grading shifts. Consequently unreduced total rank over $\F$ is
+twice reduced total rank.
+
+If the unreduced rank is two, reduced rank over $\F$ is one. Universal coefficients
+bound reduced rational rank above by that rank, while the reduced Euler
+characteristic at $q=1$ has magnitude one for a knot. Reduced rational rank is
+therefore one, and the unknot-detection theorem of Kronheimer and Mrowka applies
+\cite{KM2011}. Conversely the unknot has one reduced and two unreduced generators.
+This argument does not make the compressed coefficient representation itself a
+new knot invariant. Its purpose is to preserve the existing invariant exactly.
+
+\section{Further research questions and concrete next steps}
+\label{sec:future}
+The following are research directions and implementation obligations, not claims
+that every item is an unsolved problem in the wider literature. Each mathematical
+question deserves an independent literature audit before a novelty claim.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.8em,itemsep=7pt]
+\item \textbf{Output-sensitive dynamic disk certificates.}
+Can the boundary permutation be maintained by local split/join operations as
+crossings are added, using $O(n\log n)$ maintenance work plus the time needed to
+emit requested cyclic orders? An explicit list of every frontier can itself
+have quadratic total size, so an unconditional linear-size certificate is the
+wrong target. The checker should replay local operations rather than trust a
+mutable topology cache.
+
+\item \textbf{Width-controlled certified ordering.}
+Given a good existing order, characterize when it can be converted to a
+connected-cut order without a large width increase. Measure this on real PDs
+before using ear insertion as a performance heuristic. The descending-grid
+family rules out a universal polylogarithmic raw-width conclusion; a useful
+result must be relative to an instance parameter or include diagram simplification.
+
+\item \textbf{Several marked boundary components.}
+Develop a faithful, explicitly encoded category for prefixes whose frontier
+occupies several boundary components. Which additional embedding or winding
+information is needed? Treating all endpoint pairings as if they lay on one
+disk is already falsified by the four-point example. A multisurface extension
+must prove its composition and nilpotence claims in its actual category.
+
+\item \textbf{Finding favorable adjacent-survivor blocks in practice.}
+The new kernel is useful on dense complexes whose residual differential is
+nonzero. Instrument difficult knot scans to determine whether such blocks arise,
+how large $r/N$ is, and what fraction of wall time their reduction consumes.
+Conway, Kinoshita--Terasaka, determinant-one examples, and scrambled certified
+unknots are more informative than another isolated dense random matrix.
+
+\item \textbf{A genuinely competitive adaptive policy.}
+The current Schur-pair allowance is a transparent heuristic. Binary prediction
+and full transfer can cost much more than the work completed before a pause.
+A constant-factor portfolio theorem would need cooperative time slicing with
+all primitive costs charged, or another proved domination argument. It does
+not follow from the current switching rule.
+
+\item \textbf{Geometry-aware scalar preflight.}
+Can the constant part of a crossing transfer be compiled as a linear functional
+on the incoming coefficient encoding, without expanding all outgoing coefficients?
+Proposition~\ref{prop:notstate} shows that simply forgetting positive terms is
+wrong. An exact preflight must account for the dots consumed by caps and cups
+and preserve the source and target matching types.
+
+\item \textbf{Combining two different forms of compression.}
+Couple the component/Frobenius composition kernels and prior twist-block models
+to the certified transfer engine. Kernel complexity $M_b$, explicit survivor
+multiplicity $R$, and presentation length are separate parameters. A combined
+bound must charge the extraction and maintenance of every compressed structure,
+not only its multiplication after it has been supplied.
+
+\item \textbf{Compression of nonzero minimal complexes.}
+The long-trefoil obstruction can be handled with repeated zero-differential
+summands, but generic minimal complexes have positive maps. Identify classes
+closed under gluing and transfer that admit short descriptions of both their
+multiplicities and those maps. Bounded-rank matrices, tensor descriptions, and
+repeated components are candidates only when their maintained-size bounds can
+be proved.
+
+\item \textbf{Certificates with lower checking overhead.}
+Full matrices $I,P,H'$ are easy to audit but can erase the memory advantage of
+streaming. Can one verify block contraction from a succinct elimination or
+factorization trace whose size is close to the work actually performed? Bind
+that trace to the prefix rotation system and coefficient convention, not just
+to an unlabelled binary matrix.
+
+\item \textbf{Formalizing the trusted boundary.}
+A useful formal target is the rotation-system disk theorem, the typed weight
+calculation, and the finite perturbation identities over a certified finite
+category. The present executable checks are not such a formalization. Negative
+cases, especially incompatible cyclic orders and post-gluing scalar creation,
+should be included in the specification rather than left as prose warnings.
+
+\item \textbf{The hierarchy route remains separate.}
+For the original quasi-polynomial objective, continue work on encoded layered
+structures, compressed cutting with provenance, and constructive bounds for the
+hierarchy operations. A polynomial disk-certificate compiler for a Khovanov
+scanner is not a substitute for those algorithms or for their bit-cost analysis.
+
+\item \textbf{A representation-sensitive end-to-end theorem.}
+The decisive target is a constructive statement that every relevant input can
+be simplified or decomposed into pieces whose \emph{maintained} description
+entropy is $O((\log n)^2)$, with polynomially or quasi-polynomially many charged
+operations. Theorem~\ref{thm:qp} describes the explicit-state version of that
+obligation. The two obstruction families explain why a proof based solely on
+pivot choice or solely on raw frontier order cannot supply it.
+\end{enumerate}
+
+\section{Conclusion and integration decision}
+A common-disk hypothesis is now a checkable property of the processed diagram,
+not an assumption inferred from the number of frontier labels. For biconnected
+crossing graphs, a polynomial construction supplies orders with that property
+at every prefix. This makes full finite transfer available on a rigorously
+identified class of stages, including stages with nonzero maps between adjacent
+survivor degrees.
+
+The measured benefit is narrower than the mathematical applicability: favorable
+dense algebraic blocks improve, sparse blocks regress, and the measured ordinary
+diagrams do not exercise the profitable adaptive branch. Integration should
+therefore preserve the current default, put the geometry check at the existing
+pause boundary, and keep the new path opt-in until a complete-checkout regression
+and representative workload study have been performed.
+
+The asymptotic target remains substantive. Certified disk geometry, bounded
+coefficient cost, and bounded explicit multiplicity are different requirements.
+The descending grids and long-trefoil products separate them on concrete inputs.
+Progress toward a general quasi-polynomial recognizer must address maintained
+representation size or topological simplification, not merely choose a different
+order of elementary cancellations.
+
+\appendix
+\section{Package map and source provenance}
+The package contains the article source and compiled PDF, standard-library
+implementations under \code{src}, independent and adversarial tests under
+\code{tests}, experiment drivers, JSON certificates, raw paired measurements,
+and integration notes. The principal entry points are:
+\begin{lstlisting}
+src/disk_frontier.py     # rotation-system certificates and ear orders
+src/radical.py           # binary contraction and finite typed transfer
+src/radical_scan.py      # guarded current-API scanner adapter
+src/certified_driver.py  # validated homology / knot wrapper
+src/descending_grid.py   # explicit certified unknot family
+\end{lstlisting}
+
+The audited source-derived fixture is based on these Git blob identifiers:
+\begin{center}
+\begin{tabular}{@{}ll@{}}\toprule
+Module & Blob identifier prefix\\\midrule
+\code{scan_fast.py} & \code{6c731d0f4d2c2c8bbe51}\\
+\code{planar.py} & \code{1078526e7e7dbaf0b726}\\
+\code{geometry.py} import surface & \code{96acc160dbf2df7981b2}\\
+Maintained \code{synthesis/radical.tex} & \code{53da077349498476001f}\\\bottomrule
+\end{tabular}
+\end{center}
+Full identifiers and the scope of transcription are in \code{PROVENANCE.md}.
+The fixture's geometry module intentionally contains only the constants and
+exception imported by the two scanner modules; it is not the upstream geometry
+module in full. No claim of a complete checkout or automatic source-equivalence
+verification is made. The supplied fetch-and-AST audit script is an additional
+integration check to run in an environment with repository network access.
+
+\section{Proof and evidence ledger}
+\begin{longtable}{@{}p{.29\textwidth}p{.65\textwidth}@{}}
+\toprule
+Claim & Justification and boundary\\\midrule\endhead
+Disk-frontier applicability & Theorem~\ref{thm:disk}; connected full plane input,
+connected genus-zero prefix, one marked boundary.\\
+Certified orders & Theorem~\ref{thm:ear}; biconnected crossing graph;
+no low-width guarantee.\\
+Grid width lower bound & Theorem~\ref{thm:grid}; raw diagrams; does not constrain
+simplification or decision certificates.\\
+Minimal counts & Theorem~\ref{thm:minimal}; fixed certified category; basis and
+differential are not claimed canonical.\\
+Block equivalence & Theorem~\ref{thm:transfer}; valid $d^2=0$, typed geometry,
+verified scalar contraction, no silent truncation.\\
+Quasi-polynomial specialization & Theorem~\ref{thm:qp}; conditional on
+$B+\log(1+R)=O((\log n)^2)$; no universal extraction theorem.\\
+Dense speedup & Final seven-trial fixture benchmark; synthetic complexes,
+nonzero surviving maps; not a production pipeline comparison.\\
+Full scanner correctness evidence & Independent cube comparisons and exported
+chain certificates; finite software validation, not formal verification.\\
+General recognition speedup & Not established by the measurements.\\
+Production, Rust, race integration & Not performed.\\\bottomrule
+\end{longtable}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{Khovanov2002}
+M. Khovanov, \emph{A functor-valued invariant of tangles}, Algebraic \& Geometric
+Topology \textbf{2} (2002), 665--741.
+\url{https://arxiv.org/abs/math/0103190}.
+\bibitem{BarNatan2007}
+D. Bar-Natan, \emph{Fast Khovanov homology computations}, Journal of Knot Theory
+and Its Ramifications \textbf{16} (2007), 243--255.
+\url{https://arxiv.org/abs/math/0606318}.
+\bibitem{Crainic2004}
+M. Crainic, \emph{On the perturbation lemma, and deformations}, 2004,
+especially Section~2.
+\url{https://arxiv.org/abs/math/0403266}.
+\bibitem{KM2011}
+P. B. Kronheimer and T. S. Mrowka, \emph{Khovanov homology is an unknot-detector},
+Publications Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208.
+\url{https://arxiv.org/abs/1005.4346}.
+\bibitem{Lackenby2026}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026, especially Section~9.
+\url{https://arxiv.org/abs/2607.23350}.
+\bibitem{RepoRadical}
+V. Reshetnikov's ProveIt repository, maintained synthesis,
+\emph{Survivor prediction and adaptive cancellation},
+\code{Topology/UnknotRecognition/synthesis/radical.tex}, inspected 7 October 2026;
+Git blob \code{53da077349498476001f6b45065b34f0e029daa6}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Topology/UnknotRecognition/synthesis/radical.tex}.
+\bibitem{RepoScanner}
+V. Reshetnikov's ProveIt repository,
+\path{Topology/UnknotRecognition/fast/fastunknot/scan_fast.py}, inspected source
+with interruptible cancellation; Git blob
+\code{6c731d0f4d2c2c8bbe513e6b7495cf5dbdc8dc88}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Topology/UnknotRecognition/fast/fastunknot/scan_fast.py}.
+\end{thebibliography}
+\end{document}

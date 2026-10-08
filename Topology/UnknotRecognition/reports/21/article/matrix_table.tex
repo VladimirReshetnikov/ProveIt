@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrlrrr@{}}\toprule
+$b$ & $m$ & $q$ & Pattern & Scalar (ms) & Transfer (ms) & Ratio\\\midrule
+3 & 12 & 1 & dense & 1.371 & 0.839 & 1.63\\
+3 & 24 & 1 & dense & 8.453 & 2.456 & 3.44\\
+3 & 40 & 1 & dense & 26.532 & 5.735 & 4.63\\
+4 & 24 & 1 & dense & 33.318 & 9.551 & 3.49\\
+4 & 40 & 1 & dense & 151.327 & 25.780 & 5.87\\
+4 & 24 & 4 & dense & 57.036 & 48.987 & 1.16\\
+3 & 24 & 1 & mixed scalar & 11.800 & 2.912 & 4.05\\
+4 & 40 & 1 & sparse & 0.043 & 0.374 & 0.11\\
+\bottomrule\end{tabular}
+\caption{Final paired stage-kernel timings. Ratio is scalar time divided by transfer time; below one is a regression. Source and target each have $m+q$ objects, with $2q$ survivors.}
+\label{tab:matrix}
+\end{table}
