@@ -1031,6 +1031,14 @@ known count bound. This makes the recurrence usable in the localized
 spectrum assembly; the threshold, spectrum structure, and local Bohr
 linearity remain explicit. The next combined audit is pending.
 
+`Proofs16PolynomialUniformWidth` proves antitonicity of the recurrence
+exponent and resulting product width in the phase-family size, including
+the zero-width case. Its uniform spectrum assembly has minimum width
+`(zeta/2)*sqrt(n^epsilon(floor(Qb sigma)))`, so the bound depends only on
+the supplied spectrum controls and can be shared across further partition
+refinements. The production source and all three transitive axiom checks
+pass. Its facade import awaits completion of the running audit.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold
