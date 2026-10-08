@@ -37,6 +37,9 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
+        ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
+        ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
         ("--reduction", str, "standard", ("standard", "residue", "adaptive"),
          "chain cancellation strategy (distinct from Reidemeister --no-reduction)"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
@@ -90,11 +93,24 @@ OPTIONS = {
         ("--race", int, 1, None, "scan N greedy orders in separate processes"),
         ("--race-after", float, 1.0, None, "head start of the default order in seconds"),
     ],
+    "window": [
+        ("--lower", int, 0, None, "first queried homological degree"),
+        ("--upper", int, 0, None, "last queried homological degree"),
+        ("--normalized", None, False, None, "interpret endpoints after subtracting the PD negative-crossing count"),
+        ("--auto-mirror", None, False, None, "select the mirror with the smaller proved object bound"),
+        ("--max-objects", int, None, None, "ceiling on retained objects before allocation"),
+        ("--seconds", float, None, None, "cooperative time budget including order and mirror selection"),
+        ("--check-d2", None, False, None, "verify d^2=0 after each crossing"),
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive"), "cancellation strategy"),
+        ("--composition", str, "standard", ("standard", "component", "component-dense"), "coefficient engine"),
+        ("--composition-max-variables", int, 18, None, "component allocation limit"),
+    ],
     "jones": [],
     "alexander": [],
 }
 COMMAND_HELP = {"recognize": "decide whether a knot diagram is the unknot",
                 "khovanov": "total F2 Khovanov rank by scanning",
+                "window": "exact partial F2 homology; raw degrees unless --normalized",
                 "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial"}
 
 
@@ -196,6 +212,16 @@ def main(argv: list[str] | None = None) -> int:
             print("component composition requires standard backend, minfill, bits, and race=1", file=sys.stderr)
             return 2
     if args.command == "recognize":
+        try:
+            if args.window_seconds < 0 or not args.window_seconds < float("inf"):
+                raise ValueError("--window-seconds must be finite and nonnegative")
+            if args.window_radius is not None and args.window_radius < 0:
+                raise ValueError("--window-radius must be nonnegative")
+            if args.window_max_objects < 0:
+                raise ValueError("--window-max-objects must be nonnegative")
+        except ValueError as exc:
+            print(f"invalid window options: {exc}", file=sys.stderr)
+            return 2
         if args.euler_max_states < 0:
             print("--euler-max-states must be nonnegative", file=sys.stderr)
             return 2
@@ -204,6 +230,8 @@ def main(argv: list[str] | None = None) -> int:
             print("alternate backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
+                           window_radius=args.window_radius, window_max_objects=args.window_max_objects,
+                           window_seconds=args.window_seconds,
                            use_seifert=not args.no_seifert, backend=args.backend,
                            twist_max_basis=args.twist_max_basis,
                            composition=args.composition, composition_max_variables=args.composition_max_variables,
@@ -226,6 +254,30 @@ def main(argv: list[str] | None = None) -> int:
                 handle.write(text + "\n")
         print(text)
         return EXIT[result["status"]]
+    if args.command == "window":
+        from .window_scan import khovanov_window
+        from .window_bounds import khovanov_window_auto
+        shift = diagram.signs().count(-1) if args.normalized else 0
+        options = dict(max_objects=args.max_objects, seconds=args.seconds,
+                       check_d_squared=args.check_d2, reduction=args.reduction,
+                       composition=args.composition, composition_max_variables=args.composition_max_variables)
+        try:
+            if args.auto_mirror:
+                result = khovanov_window_auto(diagram, args.lower + shift, args.upper + shift, **options)
+            else:
+                result = khovanov_window(diagram.pd, args.lower + shift, args.upper + shift, **options)
+        except ValueError as exc:
+            print(f"invalid window input: {exc}", file=sys.stderr)
+            return 2
+        except (ScanLimit, MemoryError) as exc:
+            print(json.dumps(dict(status="UNKNOWN", method="resource-limit", reason=str(exc))))
+            return 3
+        result["degree_convention"] = "raw cube degrees"
+        if args.normalized:
+            result["normalized_by_degree"] = {h - shift: rank for h, rank in result["by_degree"].items()}
+            result["normalized_lower"], result["normalized_upper"] = args.lower, args.upper
+        print(json.dumps(result, indent=1))
+        return 0
     if args.command == "khovanov":
         if args.twist:
             if (args.shared or args.factor or args.pivot != "minfill" or args.algebra != "bits"

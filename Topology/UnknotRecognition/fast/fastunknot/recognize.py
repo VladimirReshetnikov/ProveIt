@@ -131,7 +131,8 @@ def _decide_twist(source: Diagram, evidence: dict, *, max_basis, deadline, check
 def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
                           use_exact_alexander, use_r3, use_descending,
                           jones_max_states, jones_max_transitions, max_objects, deadline,
-                          check_d_squared, scan_options, twist_source=None, defer_twist=False) -> tuple[str, str]:
+                          check_d_squared, scan_options, window_options=None,
+                          twist_source=None, defer_twist=False) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -186,6 +187,21 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             if use_descending and descending_start(reduced) is not None:
                 return "UNKNOT", "descending-diagram"
             diagram, order = reduced, None
+    if window_options is not None:
+        from .window_filter import probe_windows
+        ceiling = window_options["max_objects"]
+        if max_objects is not None:
+            ceiling = max_objects if ceiling is None else min(ceiling, max_objects)
+        probe = probe_windows(diagram, maximum_radius=window_options["radius"],
+                              max_objects=ceiling, seconds=window_options["seconds"],
+                              deadline=deadline, order=order, check_d_squared=check_d_squared,
+                              reduction=scan_options["reduction"], composition=scan_options["composition"],
+                              composition_max_variables=scan_options["composition_max_variables"])
+        evidence["khovanov_windows"] = probe["evidence"]
+        if probe["status"] != "INCONCLUSIVE":
+            method = "khovanov-window-obstruction" if probe["status"] == "KNOTTED" else "khovanov-window-complete"
+            return probe["status"], method
+        order = probe["order"]
     remaining = None if deadline is None else max(0.0, deadline - monotonic())
     backend = scan_options["backend"]
     if backend == "twist":
@@ -251,8 +267,17 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               race: int = 1, race_after: float = 1.0,
               factor_backend: str = "interlacement", composition: str = "standard",
               composition_max_variables: int = 18, twist_max_basis: int = 1_000_000,
-              reduction: str = "standard") -> Result:
+              reduction: str = "standard", window_radius: int | None = None,
+              window_max_objects: int | None = 20000, window_seconds: float | None = 0.1) -> Result:
     start = monotonic()
+    if window_radius is not None and (type(window_radius) is not int or window_radius < 0):
+        raise ValueError("window_radius must be a nonnegative integer or None")
+    if window_max_objects is not None and (type(window_max_objects) is not int or window_max_objects < 0):
+        raise ValueError("window_max_objects must be a nonnegative integer or None")
+    if window_seconds is not None:
+        from math import isfinite
+        if type(window_seconds) not in (int, float) or not isfinite(window_seconds) or window_seconds < 0:
+            raise ValueError("window_seconds must be finite and nonnegative, or None")
     if reduction not in ("standard", "residue", "adaptive"):
         raise ValueError("reduction must be standard, residue, or adaptive")
     if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
@@ -353,6 +378,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        use_descending=use_descending,
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+                       window_options=None if window_radius is None else dict(
+                           radius=window_radius, max_objects=window_max_objects, seconds=window_seconds),
                        scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
                                          race_after=race_after, backend=backend,
                                          euler_max_states=euler_max_states, composition=composition,

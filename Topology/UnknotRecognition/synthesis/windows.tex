@@ -1,0 +1,214 @@
+\section{Exact homological windows and adaptive widening}
+\label{sec:window-integration}
+
+Report 13 supplies an exact way to compute a prescribed interval of
+unreduced Khovanov homology over $\F$ without constructing every chain
+group. We integrate its window scanner and explicit mirror bound into the
+current implementation, then add a bounded adaptive recognition stage.
+This stage first queries degree zero, widens only while its budget permits,
+and falls back to the complete selected backend if the answer is
+inconclusive. The earlier adaptive cancellation strategy can also run
+inside each window. Both mechanisms are optional.
+
+\subsection{Why deleting chain groups can be exact}
+Raw cube degree counts $1$-resolutions. Each remaining crossing contributes
+homological support $\{0,1\}$, and delooping preserves homological degree.
+Suppose the requested final raw interval is $[a,b]$ and $r$ crossings
+remain. Retain the current complex only in
+\begin{equation}\label{eq:integrated-window}
+ [a-r-1,b+1].
+\end{equation}
+This is brutal truncation: groups outside the interval and maps incident
+to them are deleted. The two extra degrees are guards.
+
+\begin{lemma}
+Truncation to \eqref{eq:integrated-window} preserves the final homology
+in $[a,b]$ after the actual remaining crossing extensions and closure.
+\end{lemma}
+\begin{proof}
+A current object of degree $p$ can contribute only to final degrees
+$p+q$ with $0\leq q\leq r$. For a final degree
+$j\in[a-1,b+1]$, every contributing $p=j-q$ belongs to
+$[a-r-1,b+1]$. Thus all chain groups and maps between them in this
+three-degree neighborhood survive unchanged. Homology in degree $j$
+uses precisely its group and the incoming and outgoing differential.
+Additive planar extension, closure, and the Khovanov functor preserve
+these equalities.
+\end{proof}
+
+Neither guard can be dropped in general. The complex
+$\F\xrightarrow{1}\F$ in degrees $a-1,a$ has zero $H^a$;
+deleting the first group invents a class. The same example in degrees
+$b,b+1$ proves the need for the other guard. Homology in a guard degree
+can itself be artificial and is never returned as part of the answer.
+
+After processing $i$ of $n$ crossings, the lower bound is
+$a-(n-i)-1$ and the upper bound remains $b+1$.
+At each step the code allocates only the delooped children in that band,
+then constructs crossing saddles and transferred old maps only when both
+endpoints survive. This is exactly the truncated extension, so the lemma
+applies before allocation as well as after it. An object ceiling therefore
+limits retained allocation, rather than an unnecessarily constructed full
+extension. The frontier still advances when the retained complex is empty.
+
+Unit cancellations may be interleaved arbitrarily: they are chain homotopy
+equivalences, and the remaining additive extension and closure operations
+preserve their homotopy equations. Applying the lemma after each extension
+and this invariance after each cancellation proves correctness inductively.
+The proof compares each intermediate state after its own actual suffix;
+it does not require the truncated and full scanners to choose the same
+pivots. An isolated object in degree $h$ may additionally be removed when
+$[h,h+r]\cap[a,b]=\varnothing$, since its independent continued summand
+has no homology in the target. Incident nonzero maps forbid this shortcut.
+
+\subsection{Mirror choice and a parameterized complexity bound}
+Let $s_0,s_1$ count circles in the all-zero and all-one complete smoothings.
+Intersect the target with $[0,n]$ first; an empty intersection has zero
+homology. Define
+\[
+ Q(n,k)=\sum_{j=0}^k2^j\binom nj,\qquad
+ B_0=2^{s_0}Q(n,\min(n,b+1)).
+\]
+A prefix state with $j$ one-resolutions has at most $s_0+j$ closed circles:
+complete it with zero-resolutions, then compare the resulting state with
+the all-zero smoothing using $j$ surgeries, each changing the circle count
+by at most one. Thus its delooping gives at most $2^{s_0+j}$ objects.
+Summing over at most $\binom nj$ states bounds every retained allocation
+by $B_0$. Cancellation and truncation remove physical objects and cannot
+increase this bound; surviving labels extend injectively to cube labels.
+
+If $w$ is the largest frontier size in the selected order, the ordinary
+explicit coefficient representation has cost
+\[
+ 2^{O(w+1)}(n+1)^{O(1)}(B_0+1)^{O(1)}.
+\]
+There are polynomially many object pairs and pivot updates per stage, and
+at most $2^{w/2}$ dotted basis elements in a morphism space. This argument
+counts objects actually present, so it requires no common boundary disk
+or Catalan matching bound.
+
+Mirroring reverses raw degree: the rank in original degree $h$ equals the
+mirror rank in degree $n-h$. It preserves the crossing graph and the width
+of the same crossing order, while interchanging $s_0$ and $s_1$.
+The corresponding bound is
+\[
+ B_1=2^{s_1}Q(n,\min(n,n-a+1)).
+\]
+The implementation compares these exact integers and selects the smaller
+bound, mapping returned degrees back to the original diagram. This is a
+proved size-bound selection, not a prediction of observed running time.
+The integers have $O(n)$ bits since $Q(n,k)\leq3^n$.
+The recorded per-stage profile explicitly states whether its internal
+degrees belong to the original or mirrored diagram.
+
+For normalization let $\nu$ be the number of negative crossings returned
+by \code{Diagram.signs()}; normalized degree is raw degree minus $\nu$.
+The source braid word uses a different sign convention: the closure of
+\code{[1]} on two strands has $\nu=1$ and raw homology in degree one.
+Counting negative braid letters would select the wrong window.
+If $s$ is the Seifert-circle count and $\mu=\min(\nu,n-\nu)$, surgery
+comparison with the oriented smoothing gives
+$s_0\leq s+\nu$ and $s_1\leq s+n-\nu$.
+For the normalized band $[-d,d]$, the resulting bound is
+\begin{equation}\label{eq:integrated-window-complexity}
+ 2^{O(w+s+\mu+d)}(n+1)^{O(\mu+d+1)}.
+\end{equation}
+It is quasi-polynomial when $w+s=O(\log^2(n+2))$ and
+$\mu+d=O(\log(n+2))$. For a $t$-strand braid scanned in braid order,
+$s=t$ and $w\leq2t$. These are bounds for the prescribed query.
+No theorem here bounds a detecting radius for every nontrivial knot,
+finds such a low-width presentation for every input, or turns an agreeing
+partial query into a complete unknot recognizer.
+
+\subsection{An introspective recognition policy}
+The new recognition options are \code{window\_radius},
+\code{window\_max\_objects}, and \code{window\_seconds}; the corresponding
+CLI flags use hyphens. A missing radius disables the stage. An enabled
+stage runs after the existing inexpensive certificates and simplification,
+before the selected complete backend. Each actual factor is queried
+independently and its PD is included in the evidence.
+
+The requested radius is a maximum. The stage tries normalized bands
+$[-d,d]$ at radii $0,1,2,4,\ldots$, including the requested endpoint
+once and stopping when every raw degree is covered. Each wider query
+restarts: discarded chain groups cannot be recovered from a narrow scan.
+The last successful crossing order is reused, including when the selected
+mirror changes. All queries for one factor share the same time allowance
+(default $0.1$ seconds) and retained-object ceiling (default $20\,000$),
+both bounded by the enclosing recognition limits. Before another query,
+the policy stops if the remaining local time is less than twice the last
+query's time. This is an empirical progress rule, not a competitive bound.
+
+An exact queried profile differing from $\{0:2\}$ proves knottedness,
+since every queried band includes normalized degree zero. Agreement is
+inconclusive unless the query covers all raw degrees $0,\ldots,n$.
+Only in that complete case does rank two certify the unknot using the
+existing Khovanov detection theorem. For example, a trefoil agrees in
+normalized degree zero and is detected after widening. A local time,
+object, or memory limit abandons the probe and continues the full backend;
+exhausting the enclosing deadline returns \code{UNKNOWN}.
+
+This differs operationally from adaptive cancellation: that method pauses
+between complete pivots and resumes the same complex when its residue
+shortcut fails. Window widening must restart. Both fit the same design
+principle of measuring progress, switching only at mathematically valid
+boundaries, and retaining an exact fallback. Their combination does not
+improve the general exponential worst-case guarantee.
+
+The standalone \code{window} CLI and the Python functions in
+\path{fastunknot/window_scan.py} and \path{fastunknot/window_bounds.py}
+expose exact partial ranks independently of recognition. CLI
+\code{--normalized} interprets input endpoints as normalized degrees and
+adds a separate normalized profile; \code{by\_degree} always uses original
+raw degrees. The API result distinguishes \code{window\_rank} from
+\code{complete\_rank}. A partial rank of two alone is never a verdict.
+
+\subsection{Validation and measured tradeoffs}
+The integrated suite passes 245 tests. New checks compare 100 deterministic
+random knot braids on two through five strands with full homology, using
+shuffled crossing orders and arbitrary intervals. Every interval is checked
+with ordinary, residue, and adaptive cancellation; the first 20 also force
+the dense component kernel. Intermediate differentials are checked to
+square to zero. Other regressions cover both guards, mirror degree mapping,
+wrong-sign hazards, factor evidence, partial agreement, complete coverage,
+local versus global limits, and budget-sensitive widening.
+Separately, report 13 passes its 64 scanner tests and 10 hierarchy tests;
+report 14 passes 94 tests. These later review runs do not alter the
+as-delivered archive trees. Logs are retained under \path{synthesis/data/}.
+
+\input{tables/window-integration.tex}
+
+The table uses seven shuffled paired rounds on CPython 3.13.14. A/A compares
+identical full-decision arms. Preparation and imports are excluded; order
+selection and mirror selection are included. The raw-window ratio compares
+\emph{different output contracts}: degree zero versus all homology. The two
+probe columns compare complete decision procedures with fallback, using a
+two-second shared local window budget and maximum radii zero and four.
+Earlier certificates are disabled in those timed arms to isolate this stage.
+With default certificates enabled, Jones decides Conway and Kinoshita--Terasaka,
+the short-braid engine decides the hard unknot, Alexander decides the stress
+braid, and Bennequin decides both torus examples. Thus these are fallback
+measurements, not claimed default-pipeline speedups.
+
+The stress input reduces peak retained allocation from $17\,694$ to
+$7\,692$ objects and its degree-zero rank is $698$, already an obstruction.
+At a $10\,000$-object cap, the full baseline returns \code{UNKNOWN}; the
+window stage returns \code{KNOTTED}. Conversely, the hard unknot gains no
+allocation reduction and maximum-radius-four probing is about $4.8$ times
+slower than the complete baseline. The large raw-window gain on the
+four-strand torus example does not directly translate to a decision gain:
+degree zero agrees with the unknot and requires widening or fallback.
+These negative results justify keeping the policy optional.
+
+\subsection{Review boundaries for the adjacent reports}
+Report 13's finite nilpotent transfer and terminal patterned-ball routine
+are separate proposals; their passing tests do not supply the missing
+complete hierarchy construction. They are not substituted for a knot
+recognition backend here. Report 14's interval normalization, decision
+quotients, and scalar Fitting split remain under review despite its passing
+suite. Its scalar basis changes are formulated without quantum grading.
+An eventual integration must preserve the recovered grading or explicitly
+fall back to the less sharp ungraded component-type bound; passing ungraded
+chain-equivalence tests alone cannot justify the homogeneous counting bound
+of Section~\ref{sec:homogeneous-integration}. No interval quotient or Fitting
+split from that report is enabled by this window change.

@@ -214,3 +214,17 @@ if homogeneous and graded:
         handle.write(content)
 
 print('tables written:', sorted(os.listdir('tables')))
+
+windows = load('../fast/results/window_integration_20261008.json')
+if windows:
+    rows = []
+    for r in windows['cases']:
+        ratios = ' & '.join(f"{r[k]:.3f}" for k in (
+            'median_full_over_window', 'median_zero_speedup', 'median_widen_speedup', 'median_aa'))
+        rows.append(f"{esc(r['name'])} & {ratios}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+               table('Input & Full/window & Probe 0 & Probe 4 & A/A', '@{}lrrrr@{}', rows) +
+               r"\end{center}" + '\n' +
+               'Ratios are median paired baseline/new times; values above one are faster.\n')
+    with open('tables/window-integration.tex', 'w') as handle:
+        handle.write(content)

@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 229 passing tests.
+diagram is not checked twice. The integrated suite now has 245 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -714,3 +714,41 @@ four-strand unknot about 15.8× slower. Default recognition already decides the
 long examples by the braid obstruction. Full inputs, degree counts, timing
 boundaries, and A/A controls are recorded in `results/twist_integration_20261007.json`
 and `results/twist_context_scaling_20261007.json`.
+
+### Exact windows and bounded adaptive widening
+
+Report 13's exact moving-window scanner is integrated. A window retains both
+adjacent differential degrees and prunes irrelevant objects before allocation.
+It can choose the mirror with the smaller proved object bound. The dedicated
+command returns partial ranks, never an unknot verdict from a partial rank:
+
+```sh
+python -m fastunknot window examples/conway.json --lower 0 --upper 0 --normalized --auto-mirror
+python -m fastunknot recognize examples/conway.json --window-radius 4 --window-seconds 0.1
+```
+
+Recognition's `--window-radius N` enables radii 0, 1, 2, 4, …, N before the
+complete backend. Attempts share a per-factor time budget (default 0.1 seconds)
+and object ceiling (`--window-max-objects`, default 20000), bounded by the
+outer recognition limits. Widening restarts and reuses the last crossing order.
+If less than twice the previous attempt's time remains, it proceeds to the
+complete backend. Local resource limits also fall back; global exhaustion is
+`UNKNOWN`. Any computed profile differing from the unknot proves knottedness.
+Agreement remains inconclusive unless the window covers all raw degrees.
+
+The Python API is `fastunknot.window_scan.khovanov_window(pd, lower, upper)`
+or `fastunknot.window_bounds.khovanov_window_auto(diagram, lower, upper)`.
+Endpoints and `by_degree` use raw cube degree. Normalized degree subtracts the
+number of negative crossings in `Diagram.signs()`, not negative braid letters.
+Both functions support `reduction='adaptive'` and the component algebra modes.
+`recognize(..., window_radius=4, window_seconds=0.1)` enables the bounded probe.
+The API's default `window_radius=None` leaves it disabled.
+
+`benchmark_windows.py --output FILE` reproduces seven paired rounds with A/A
+controls. The 36-crossing stress input drops from 17694 to 7692 peak objects;
+a 10000-object limit changes `UNKNOWN` to certified `KNOTTED`. Widening on the
+hard unknot is slower, so this policy remains optional. Earlier default
+certificates already decide all six benchmark fixtures. Measurements are
+fallback comparisons; the raw-window arm computes less than full homology.
+The integrated suite passes 245 tests. Proofs, conditional query bounds, and
+negative results are in [`../synthesis/windows.tex`](../synthesis/windows.tex).
