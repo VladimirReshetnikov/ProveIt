@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use BlockTriangular OrderDual.toDual and det_of_lowerTriangular from
+the older matrix API. Mathematical statements and bounds are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.SeparatedPositiveSum
 import OAI.Combinatorics.Progressions.Fourier.AffineTorusDensityIncrement
@@ -30,7 +31,7 @@ theorem earlierSlotMatrix_apply_lt {R : Type*} [CommRing R]
   · simp
 
 theorem unitLower_mulVec {R : Type*} [CommRing R]
-    (T : Matrix (Fin d) (Fin d) R) (htri : T.IsLowerTriangular)
+    (T : Matrix (Fin d) (Fin d) R) (htri : T.BlockTriangular OrderDual.toDual)
     (hdiag : ∀ i, T i i = 1) (v : Fin d → R) (i : Fin d) :
     T.mulVec v i = v i + ∑ k : Fin i.val, T i (earlierSlot i k) * v (earlierSlot i k) := by
   classical
@@ -74,7 +75,7 @@ theorem triangularReductionMatrix_diag (T : Matrix (Fin d) (Fin d) ℝ)
 
 theorem triangularReductionMatrix_det (T : Matrix (Fin d) (Fin d) ℝ) :
     (triangularReductionMatrix T).det = 1 := by
-  rw [Matrix.det_of_isLowerTriangular _ (triangularReductionMatrix_above T)]
+  rw [Matrix.det_of_lowerTriangular _ (triangularReductionMatrix_above T)]
   exact Finset.prod_eq_one (fun i _ => triangularReductionMatrix_diag T i)
 
 noncomputable def reducedTriangularMatrix (T : Matrix (Fin d) (Fin d) ℝ) :
@@ -82,14 +83,14 @@ noncomputable def reducedTriangularMatrix (T : Matrix (Fin d) (Fin d) ℝ) :
   T * (triangularReductionMatrix T).map (Int.castRingHom ℝ)
 
 theorem reducedTriangularMatrix_entry (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (i j : Fin d) :
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (i j : Fin d) :
     reducedTriangularMatrix T i j = (triangularReductionMatrix T i j : ℝ) +
       ∑ k : Fin i.val, T i (earlierSlot i k) *
         (triangularReductionMatrix T (earlierSlot i k) j : ℝ) := by
   exact unitLower_mulVec T htri hdiag (fun k => (triangularReductionMatrix T k j : ℝ)) i
 
 theorem reducedTriangularMatrix_above (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (i j : Fin d)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (i j : Fin d)
     (hij : i < j) : reducedTriangularMatrix T i j = 0 := by
   rw [reducedTriangularMatrix_entry T htri hdiag,
     triangularReductionMatrix_above T i j hij, Int.cast_zero, zero_add]
@@ -99,7 +100,7 @@ theorem reducedTriangularMatrix_above (T : Matrix (Fin d) (Fin d) ℝ)
     (lt_trans (show earlierSlot i k < i from k.isLt) hij), Int.cast_zero, mul_zero]
 
 theorem reducedTriangularMatrix_diag (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (i : Fin d) :
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (i : Fin d) :
     reducedTriangularMatrix T i i = 1 := by
   rw [reducedTriangularMatrix_entry T htri hdiag, triangularReductionMatrix_diag,
     Int.cast_one]
@@ -112,7 +113,7 @@ theorem reducedTriangularMatrix_diag (T : Matrix (Fin d) (Fin d) ℝ)
   rw [hz, add_zero]
 
 theorem reducedTriangularMatrix_lower_bound (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (i j : Fin d)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (i j : Fin d)
     (hji : j < i) : |reducedTriangularMatrix T i j| ≤ 1 / 2 := by
   rw [reducedTriangularMatrix_entry T htri hdiag]
   have hu : triangularReductionMatrix T i j =
@@ -125,7 +126,7 @@ theorem reducedTriangularMatrix_lower_bound (T : Matrix (Fin d) (Fin d) ℝ)
   exact abs_sub_round _
 
 theorem reducedTriangularMatrix_bound (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (i j : Fin d) :
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (i j : Fin d) :
     |reducedTriangularMatrix T i j| ≤ 1 := by
   rcases lt_trichotomy i j with h | h | h
   · simp [reducedTriangularMatrix_above T htri hdiag i j h]
@@ -153,7 +154,7 @@ open scoped NNReal BigOperators
 variable {d : ℕ}
 
 theorem one_sub_unitLower_strict (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1)
     (i j : Fin d) (hij : i ≤ j) : (1 - T) i j = 0 := by
   rcases eq_or_lt_of_le hij with h | h
   · subst j
@@ -161,12 +162,12 @@ theorem one_sub_unitLower_strict (T : Matrix (Fin d) (Fin d) ℝ)
   · simp [Matrix.sub_apply, htri h, Matrix.one_apply_ne h.ne]
 
 noncomputable def TriangularSlots.unitLowerBlock (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1) (x : Fin d → ℝ) :
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1) (x : Fin d → ℝ) :
     TriangularSlots d :=
   TriangularSlots.affineBlock (1 - T) (one_sub_unitLower_strict T htri hdiag) x
 
 theorem TriangularSlots.unitLowerBlock_residual (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1)
     (x : Fin d → ℝ) (b : Fin d → ℤ) :
     (unitLowerBlock T htri hdiag x).residual b = T.mulVec ((fun i => (b i : ℝ)) - x) := by
   rw [unitLowerBlock, affineBlock_residual]
@@ -178,14 +179,14 @@ noncomputable def triangularLatticeValue (T : Matrix (Fin d) (Fin d) ℝ)
   ∑' b : Fin d → ℤ, Φ.value (T.mulVec ((fun i => (b i : ℝ)) - x))
 
 theorem triangularLatticeValue_eq_patchValue (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1)
     (Φ : PatchKernel d) (x : Fin d → ℝ) :
     triangularLatticeValue T Φ x = (TriangularSlots.unitLowerBlock T htri hdiag x).patchValue Φ := by
   simp only [triangularLatticeValue, TriangularSlots.patchValue,
     TriangularSlots.unitLowerBlock_residual]
 
 theorem triangularLatticeValue_mem_Icc (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1)
     (Φ : PatchKernel d) (x : Fin d → ℝ) :
     triangularLatticeValue T Φ x ∈ Set.Icc (0 : ℝ) 1 := by
   rw [triangularLatticeValue_eq_patchValue T htri hdiag]
@@ -212,7 +213,7 @@ theorem bounded_matrix_mulVec_lipschitz (T : Matrix (Fin d) (Fin d) ℝ)
     _ = (d : ℝ) * dist x y := by simp
 
 theorem triangularLatticeValue_lipschitz (T : Matrix (Fin d) (Fin d) ℝ)
-    (htri : T.IsLowerTriangular) (hdiag : ∀ i, T i i = 1)
+    (htri : T.BlockTriangular OrderDual.toDual) (hdiag : ∀ i, T i i = 1)
     (hT : ∀ i j, |T i j| ≤ 1) (Φ : PatchKernel d) :
     LipschitzWith (Φ.lip * d) (triangularLatticeValue T Φ) := by
   apply separated_tsum_lipschitz
@@ -310,7 +311,7 @@ theorem matrix_mulVec_affine (V : Matrix (Fin d) (Fin d) ℝ)
   rw [Matrix.mulVec_add, Matrix.mulVec_smul]
 
 theorem triangular_affine_density_increment
-    (T : Matrix (Fin d) (Fin d) ℝ) (htri : T.IsLowerTriangular)
+    (T : Matrix (Fin d) (Fin d) ℝ) (htri : T.BlockTriangular OrderDual.toDual)
     (hdiag : ∀ i, T i i = 1) (Φ : PatchKernel d)
     {N H : ℕ} (hH : 0 < H) (hsize : H ^ (2 * d + 1) ≤ N)
     (alpha beta : Fin d → ℝ) (f : ℕ → ℝ)
@@ -327,7 +328,7 @@ theorem triangular_affine_density_increment
   let V := U⁻¹.map (Int.castRingHom ℝ)
   let B := reducedTriangularMatrix T
   have hU : IsUnit U.det := by rw [triangularReductionMatrix_det]; exact isUnit_one
-  have hBtri : B.IsLowerTriangular := reducedTriangularMatrix_above T htri hdiag
+  have hBtri : B.BlockTriangular OrderDual.toDual := reducedTriangularMatrix_above T htri hdiag
   have hBdiag : ∀ i, B i i = 1 := reducedTriangularMatrix_diag T htri hdiag
   have hBbound : ∀ i j, |B i j| ≤ 1 := reducedTriangularMatrix_bound T htri hdiag
   have hvalue (t : ℝ) : triangularLatticeValue T Φ (fun i => t * alpha i + beta i) =
