@@ -21,6 +21,11 @@
 \newcommand{\E}{\mathbb E}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
+% Added in the write (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \setlength{\emergencystretch}{2em}
 \allowdisplaybreaks[2]
 \title{All fixed order asymptotics for restricted two covers and line graphs}
@@ -33,12 +38,35 @@
 \begin{abstract}
 Restricted two-covers admit a positive Poisson sum whose unique real saddle gives an expansion to every fixed order. We prove a relative $O_K(n^{-K-1})$ remainder at the exact saddle, then transfer the result through arbitrary fixed polynomial exponential multipliers, including the signed correction for labelled line graphs. A separate finite rational construction gives explicit Lambert-$W$ coefficients with the logarithmic remainder that their growth requires. We compute the first corrections, explain the distinction between the corrected line-graph sequence and the legacy formula recorded as A132219, and derive inverse expansions with a precise separation between model roots and certified integer thresholds. Exact arithmetic, independent endpoint enumeration, and reproducible TeX and code accompany the report. The previously known leading equivalents and exact identities are credited to Cameron, Prellberg and Stark; no claim of worldwide priority is made for the higher-order refinements.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~224 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a060053-two-covers-line-graphs} (provenance, the sources as the write
+read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{tcl:sec:provenance}). It is unrefereed and not formalized. The
+delivered text calls itself ``Reconstructed edition~2'' (5~October 2026); no
+earlier edition was delivered. Its author line reads ``Research report 224''
+and its PDF author field ``Research report'': it names no person or tool.
+\emph{What rests on what.} The Poisson sum~\eqref{tcl:eq:poisson} and the
+identities~\eqref{tcl:eq:VU} are proved in the text (and are Cameron, Prellberg
+and Stark's); the corrected line-graph multiplier~\eqref{tcl:eq:linecorrect}
+rests on their classification of the exceptional roots (Whitney, Sabidussi),
+which the source imports and does not reprove. The asymptotic Theorems S1, S3
+and C1 and the inverse statements of Section~\ref{tcl:inversion-and-threshold-certification}
+have conventional proofs (strict concavity, Euler--Maclaurin and Poisson
+summation, Taylor and Cauchy estimates, the mean value theorem); no proof uses
+a computation, and the software and the floating diagnostics corroborate. The
+write adds Remarks~\ref{tcl:rem:transseries} and~\ref{tcl:rem:oeis} and dated
+notes; no statement, proof or number of the source was changed.
+\end{writenote}
 \tableofcontents
 \newpage
-\input{models.tex}
-\input{saddle.tex}
-\input{coefficients.tex}
-\input{inverses.tex}
-\input{computation.tex}
-\input{references.tex}
+% [write] the delivered \input{<name>.tex} lines read the files now shipped under sections/
+\input{sections/models.tex}
+\input{sections/saddle.tex}
+\input{sections/coefficients.tex}
+\input{sections/inverses.tex}
+\input{sections/computation.tex}
+\input{sections/references.tex}
 \end{document}

@@ -10,7 +10,7 @@ All capital-letter generating series in this report are formal exponential gener
 
 \subsection{The positive Poisson sum}
 Put $M(t)=t(t-1)/2$ and use $(z)_n=z(z-1)\cdots(z-n+1)$ for a falling factorial, with $(z)_0=1$. Define
-\begin{equation}\label{eq:poisson}
+\begin{equation}\label{tcl:eq:poisson}
 H_n=e^{-1}\sum_{m\ge0}\frac{(M(m))_n}{m!}.
 \end{equation}
 At integer $m$, any term with $M(m)<n$ is zero. There is no sign cancellation in this sum. Its convergence follows from the factorial denominator and the polynomial numerator. For $n=0$ it equals one.
@@ -20,7 +20,7 @@ If a root graph $G$ has $v$ vertices and $k$ isolated-edge components, its edge-
 e^{-1}\sum_{m\ge v}\frac{(m)_v}{2^k m!}=2^{-k}.
 \]
 Consequently $H_n$ is the sum of the weights $2^{-k}$ over all the $U_n$ roots. Decomposing into isolated edges and the remaining proper cover proves
-\begin{equation}\label{eq:VU}
+\begin{equation}\label{tcl:eq:VU}
 H(x)=e^{x/2}V(x),\qquad U(x)=e^xV(x)=e^{x/2}H(x).
 \end{equation}
 These are also the exact identities in \cite[Proposition 3 and equation (18)]{cps}. This argument explains why $H_n$ is generally rational, whereas $U_n$ and $V_n$ are integers.
@@ -30,18 +30,18 @@ There is a useful exact finite alternative to the infinite sum. If
 \prod_{j=0}^{n-1}(t^2-t-2j)=\sum_{k=0}^{2n}c_{n,k}t^k,
 \]
 then the Poisson moment identity for the Bell numbers $B_k$ gives
-\begin{equation}\label{eq:bell_exact}
+\begin{equation}\label{tcl:eq:bell_exact}
 H_n=2^{-n}\sum_{k=0}^{2n}c_{n,k}B_k.
 \end{equation}
-Both the polynomial multiplication and Bell numbers can be evaluated using integers. Equation \eqref{eq:bell_exact} is an exact algorithm, not an asymptotic replacement.
+Both the polynomial multiplication and Bell numbers can be evaluated using integers. Equation \eqref{tcl:eq:bell_exact} is an exact algorithm, not an asymptotic replacement.
 
 \subsection{The corrected line graph multiplier}
 The corrected Proposition 5 of Cameron, Prellberg and Stark \cite[p.~6]{cps}, using the Whitney--Sabidussi line-graph results, gives
 \begin{align}
-L(x)&=\exp\left(-\frac{x^3}{6}-\frac{x^4}{4}-\frac{x^5}{8}-\frac{x^6}{48}\right)U(x)\label{eq:linecorrect}\\
+L(x)&=\exp\left(-\frac{x^3}{6}-\frac{x^4}{4}-\frac{x^5}{8}-\frac{x^6}{48}\right)U(x)\label{tcl:eq:linecorrect}\\
 &=\exp\left(\frac{x}{2}-\frac{x^3}{6}-\frac{x^4}{4}-\frac{x^5}{8}-\frac{x^6}{48}\right)H(x).\nonumber
 \end{align}
-We use their classification of the exceptions as a known theorem. Here is the labelled-count calculation that explains the four coefficients. At three edges the triangle and the three-edge star give two roots with one common labelled line image, a difference of one. The remaining exceptional connected roots are the paw ($K_4$ minus two adjacent edges), $K_4$ minus one edge, and $K_4$. Their root and line-image counts are respectively $12$ and $6$, $30$ and $15$, and $30$ and $15$. The differences $1,6,15,15$, divided by $3!,4!,5!,6!$, are the four exponents in \eqref{eq:linecorrect}. The exponential formula passes from the connected differences to all graphs. Completeness of this list is the cited structural theorem, not an inference from small computations.
+We use their classification of the exceptions as a known theorem. Here is the labelled-count calculation that explains the four coefficients. At three edges the triangle and the three-edge star give two roots with one common labelled line image, a difference of one. The remaining exceptional connected roots are the paw ($K_4$ minus two adjacent edges), $K_4$ minus one edge, and $K_4$. Their root and line-image counts are respectively $12$ and $6$, $30$ and $15$, and $30$ and $15$. The differences $1,6,15,15$, divided by $3!,4!,5!,6!$, are the four exponents in \eqref{tcl:eq:linecorrect}. The exponential formula passes from the connected differences to all graphs. Completeness of this list is the cited structural theorem, not an inference from small computations.
 
 The original arXiv version \cite[p.~6]{cpsv1} omitted the last three terms. Its formula
 \[
@@ -65,12 +65,189 @@ $n$ & $2^nH_n$ & $V_n$ & $U_n$ & $L_n$ & $O_n$\\
 \end{tabular}
 \end{center}
 Already $O_4=66$ exceeds the $2^{\binom42}=64$ labelled simple graphs on four vertices. Thus it cannot count line graphs as defined here. Independent enumeration of partitions of the $2n$ labelled edge endpoints verifies the weighted endpoint count $2^nH_n$ and the counts $U_n,V_n,L_n$ through $n=6$.
+\begin{writenote}[Seven edges, 7 October 2026]
+The write's enumeration of restricted two-covers from the definition gives the
+table's $U_n$, $V_n$ and $L_n$ again and extends it by $U_7=233{,}238$,
+$V_7=163{,}356$ and $L_7=228{,}443$ (the last as the number of distinct
+labelled line images, without the exception classification), all equal
+to~\eqref{tcl:eq:linecorrect} and the identities~\eqref{tcl:eq:VU}. The
+column $2^nH_n$ is OEIS A094089 (Remark~\ref{tcl:rem:oeis}), whose e.g.f.\
+$e^{-1}\sum_m(1+2x)^{\binom m2}/m!$ is $H(2x)$. On four vertices the only
+labelled graphs that are not line graphs are the four claws, so
+$L_4=64-4=60$.
+\end{writenote}
 
 \subsection{Prior results and the scope of the refinement}
 Write $r=W(2n)$ for the positive Lambert function, so $re^r=2n$. The leading equivalent
-\begin{equation}\label{eq:known}
+\begin{equation}\label{tcl:eq:known}
 V_n\sim U_n\sim L_n\sim H_n\sim 2^{-n}B_{2n}\exp(-r^2/4-r/2)
 \end{equation}
 is already contained in the analysis of \cite[pp.~17--19, equations (21)--(27)]{cps}. Their Theorem 1 states an equivalent logarithmic form. The leading equivalent, Poisson identity and exact graph multipliers are prior results. Our purpose is to give a self-contained fixed-order saddle analysis, computable explicit refinements and inverse error control. Historical coverage is not exhaustive enough to support a worldwide novelty claim.
 
 The main distinctions are substantive. An exact-saddle remainder can be $O(n^{-K-1})$ because the local derivatives already incorporate the logarithmic scale. An explicit Lambert expansion instead has coefficients growing in $r$, and its displayed remainder retains that growth. A signed polynomial convolution has a third error scale. We prove each estimate in its own normalization rather than transfer a remainder by notation alone.
+
+\subsection{Provenance, sources and reading conventions}\label{tcl:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~224 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report224.zip} ($621{,}206$ bytes, 27 files, wrapper directory
+\file{Report224/}), arrival commit \file{60f54ea06}, placed in
+\file{a4186a946}. The text is the delivered \file{src/report224.tex} (44
+lines) with its six \verb|\input| files \file{models.tex},
+\file{saddle.tex}, \file{coefficients.tex}, \file{inverses.tex},
+\file{computation.tex} and \file{references.tex} ($1{,}383$ lines in all, 21
+pages, dated 5~October 2026), shipped as \file{article.tex} and
+\file{sections/*.tex}; the write changed the six \verb|\input| paths
+accordingly. The programs are shipped under \file{code/} (the delivered root
+\file{build.py} as \file{code/build.py}); the data, the build receipt
+\file{build_checks.json} and the three retrieved b-files (as
+\file{data/sources-A*_bfile.txt}) under \file{data/}; the delivered
+\file{sources/SOURCE_LEDGER.md} as \file{SOURCE_LEDGER.md}. Not shipped, and
+retrievable from the arrival commit: the delivered \file{Report224.pdf}, the
+checksum manifest \file{MANIFEST.sha256} (24 entries, all verified at the
+write) and the delivered \file{README.md}, which the report README replaces.
+The package records no ProveIt commit; it carries no ``prepared for private
+review'' line and no personal data. It is a single-source report, so no merge
+choice was made. The write prefixed the 47 delivered labels with
+\file{tcl:} and updated the references to them (3 \verb|\eqref|); it added this
+subsection, the notes marked [write] and Remarks~\ref{tcl:rem:transseries}
+and~\ref{tcl:rem:oeis}, each the last statement of its section, and inserted
+no numbered display, so every section, equation and tag of the source
+(\eqref{tcl:eq:poisson}--\eqref{tcl:eq:known}, (S1)--(S27) with (S21a), (C1)--(C23)) keeps
+its delivered number. The delivered text uses no theorem environment: its
+Theorems S1, S3, C1 and Proposition~S2 are named in bold type, so the write's
+remarks are numbered 1 and~2.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A060053,
+A014500, A132219 and A094089 in the internal format, with their b-files
+(Remark~\ref{tcl:rem:oeis}); Cameron, Prellberg and Stark's corrected author
+manuscript \file{cover.pdf} and their arXiv version~1, retrieved from the
+ledger's URLs (196{,}940 and 175{,}905 bytes; both SHA-256 values equal those
+in \file{SOURCE_LEDGER.md}): Proposition~3 (p.~5), the corrected
+Proposition~5 (p.~6, the multiplier
+$\exp(-x^3/3!-6x^4/4!-15x^5/5!-15x^6/6!)$, which is~\eqref{tcl:eq:linecorrect},
+with its proof from Whitney's theorem and Sabidussi's result), equation~(18)
+(p.~16), equations (21)--(27) (pp.~17--18), the formula for $L(x)$ and the
+acknowledgement of the referee's correction (p.~19), and Proposition~5 of
+version~1 (p.~6, $L(x)=e^{-x^3/3!}U(x)$): every locator of the source and of
+its ledger is as stated. Also the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}, \file{plt:def:lw-monomial-log-datum},
+\file{plt:thm:lw-template}). Not read by the write: the typeset journal
+version (the source did not obtain it either), the DLMF sections (standard
+conventions), and the OEIS revision histories that the ledger reports having
+inspected.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim, recorded that A132219 cannot count line
+graphs ($a(4)=66>2^6$), and reran the delivered suite on a copy (it
+reproduces). \emph{What the write checked.} It read every proof and found no
+error. With its own code (Python 3.14.4, exact integers and fractions; SymPy
+1.14.0; mpmath 1.3.0 at 50--60 digits), not importing the delivered programs,
+it
+\begin{itemize}\raggedright
+\item computed $H_n$ by two exact routes, the Newton forward differences of
+$(M(m))_n$ (no Bell numbers; $n\le120$) and the Bell-moment
+formula~\eqref{tcl:eq:bell_exact} ($n\le300$), which agree; $2^nH_n$ is an
+integer for $n\le300$; $V_n$, $U_n$, $L_n$, $O_n$ from the multipliers are
+integers for $n\le300$, equal to the table of Section~1.3, to all 101 terms of
+the b-files of A060053 and A014500, to the 18 terms of A132219 (legacy) and,
+for $2^nH_n$, to all 151 terms of the b-file of A094089; $U$ is the binomial
+transform of~$V$ for $n\le300$;
+\item enumerated, directly from the definition, all restricted two-covers of
+$[n]$ for $n\le7$ (multisets of blocks, each label in two occurrences,
+occurrences meeting in at most one label) and their distinct labelled line
+images: $U_n$, $V_n$ and $L_n$ equal the formulas through $n=7$, in
+particular $L_7=228{,}443$ (one edge beyond the source's endpoint check, and
+without the exception classification); the root and line-image counts
+$1,1$; $12,6$; $30,15$; $30,15$ of the triangle and star, paw, $K_4$ minus an
+edge and $K_4$ by automorphism counts;
+\item rederived the Lambert coefficients $a_{P,j}$, $j\le3$, for $H,V,U,L$ and
+the Bell normalization with its own SymPy expansion of the saddle sum ($m=s+\sqrt s\,y$,
+$n=r/(2h^2)$, finite Faulhaber, Stirling and collision truncations): equal to
+every coefficient printed in Section~\ref{tcl:explicit-coefficients-and-the-nonconstant-remainder-issue}
+and to all of \file{data/coefficients_order3.json}; $E_1$, $E_2$ and the
+first-order formula of Section~5.2; $v_1$, $v_2$, $v_3$ and $v_3\sim r^{12}/663552$;
+\eqref{tcl:eq:C16} ($a_{L,3}-a_{U,3}=-r^6/48$); the contraction
+coefficients~(S3) and the vanishing of the odd orders; (C17); the
+cancellation defining $d_1$ in~\eqref{tcl:eq:C20}; the exact form
+$e^{r_0}(r_0^2-ar_0+1)$ of $\Phi(x_0)$ and the expansion~\eqref{tcl:eq:C23}
+(through $w^{-6}$; the next term is $b^2/(2w^4)$, so its $O(w^{-4})$ is sharp);
+\item evaluated $H_m$ for $n-8\le m\le n$, $n=10^4,\ldots,10^7$, from the
+positive sum~\eqref{tcl:eq:poisson} and $B_{2n}$ from Dobinski's sum: for each
+of $H,V,U,L$ and each $j\le3$, $n^{j+1}$ times the remainder after the
+$j$-th Lambert term approaches $a_{P,j+1}(r)$ (e.g.\ for $H$ at $n=10^7$:
+$634.597$, $174718.3$, $2.72990\times10^7$ against $634.579$, $174715.6$,
+$2.72987\times10^7$), and the remainder after $j=3$ is at most
+$2\times10^{-9}\,r^{16}/n^4$ in absolute value; $V_n/T_n$ against
+$v_1,v_2,v_3$ (ratios $1.0000246$, $1.0000132$, $1.0000074$ at $n=10^7$);
+$48n^3(1-L_n/U_n)/r^6=1.0063$, $1.00093$, $1.00013$, $1.000017$; and
+$(H_{n-1}/H_n)/(r^2/(2n^2))\to1$ (S21);
+\item recomputed the exact-saddle table of Section~5.2 at $n=1000$ ($\tau$,
+$\sigma$, $\lambda_3,\ldots,\lambda_8$ from (S7), $C_0,\ldots,C_3$): every
+printed value (note in Section~5.2).
+\end{itemize}
+It reran, on a fresh copy of the delivered layout, \file{test_exact.py}
+with \texttt{-{}-cap 640} (normal and \texttt{-O}), \file{endpoint_check.py}
+with \texttt{-{}-max-index 6},
+\file{verify_coefficients.py}, \file{generate_coefficients.py} at orders 2
+and~3 and \file{check_saddle.py} with the frozen parameters:
+both test runs pass and print exactly the \file{exact} block of \file{data/build_checks.json} (cap 640, the 101, 101 and 18 retrieved terms, the count-data hash); the endpoint run equals \file{data/endpoints6.json}; the verifier passes its 28 identity checks; the generated coefficient files equal \file{data/coefficients_order2.json} and \file{data/coefficients_order3.json}; and \file{check_saddle.py} reproduces \file{data/saddle_diagnostics.json} exactly. The PDF and ZIP builder was not run. Floating computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A060053, A014500, A132219 or A094089. The report
+\file{a307316-leafless-multigraphs} cites Cameron--Prellberg--Stark for the
+labelled-edge multigraph reading of two-covers, for different objects
+(unlabelled leafless loopless multigraphs); no result is shared and no
+reciprocal note is proposed. No Lean or Rocq file treats these sequences; no
+statement of this report is formalized, and its place in the collection
+confers no formal status. The inverse is compared with the transseries volume
+in Remark~\ref{tcl:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The exact identities, the Poisson sum, the exception classification for line
+graphs and the leading equivalent~\eqref{tcl:eq:known} are prior
+(Cameron--Prellberg--Stark); the classification is used as a known theorem,
+and the small enumerations validate its consequences, not its completeness.
+No worldwide novelty or priority claim for the higher-order refinements;
+source coverage is not an exhaustive historical search; no conjecture or
+remainder is attributed to OEIS. The software caps (exact $n\le640$, symbolic
+order $\le3$, numerics $n\le10^4$) are implementation limits, not limits of
+the theorems; the floating diagnostics are not interval certificates and give
+no effective constant or starting index; the $O$-constants are not effective;
+a model root does not certify an arbitrary integer threshold without a
+true-sequence enclosure; the exact threshold scan is not an unbounded inverse
+oracle; the Lambert remainder carries powers of~$r$ and is not $O(n^{-3})$
+with a constant independent of~$n$; byte reproducibility is claimed only for
+the same toolchain. \emph{The write adds:} its checks are exact or floating
+computations; its transseries remark claims no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{5.3in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$a$, $a_j$, $a_{P,j}$ & $a_j=(1+\sqrt{1+8j})/2$ the roots in Section~\ref{tcl:strict-concavity-localization-and-derivative-scale}; $a_j=\lambda_j/\eta^{j-2}$ in Section~\ref{tcl:integrated-taylor-expansion-to-every-fixed-order}; $a_{P,j}(r)$ the Lambert coefficients~\eqref{tcl:eq:C2}; $a=1+\frac12\log2$ in Section~\ref{tcl:lambert-seed-and-its-limitation}. \emph{False reading:} $a_{P,j}$ is not a root $a_j$.\\
+$b$, $b_j$ & $b_j=1-a_j$; $b_j(r)$ the Bell corrections and the recurrence coefficients of $\exp(E)$ in Section~\ref{tcl:exact-finite-order-coefficient-generator}; $b=1-a^2/4$ in~\eqref{tcl:eq:C23}.\\
+$B_k$, $\mathsf B_k$ & Bell numbers; sans-serif: Bernoulli numbers and polynomials (the source flags this).\\
+$c_k$, $p_j$, $c_{n,k}$ & $p_j=[x^j]e^{P(x)}$ (Section~\ref{tcl:arbitrary-fixed-real-polynomial-perturbations}) and $c_k=[z^k]e^{P(z)}$ (Section~\ref{tcl:definitions-and-main-theorem}) are the same numbers; $c_{n,k}$ the coefficients in~\eqref{tcl:eq:bell_exact}; $c$, $C$, $C_q$ constants. \emph{False reading:} $C_\ell$ in (S1) are the contraction coefficients, not constants.\\
+$E$, $\E$ & $\E$ expectation; $E$ the formal exponent~\eqref{tcl:eq:C4}, $E_J$ its finite analytic version (Section~\ref{tcl:a-finite-analytic-exponent}) and, in Section~\ref{tcl:arbitrary-thresholds-require-a-true-sequence-enclosure}, an error bound $E_J(k)$; $E_k$ the coefficients of~$E$. \emph{False reading:} the bound $E_J(k)$ is not the exponent $E_J$.\\
+$F_p$, $F_J$, $f_n$ & $F_p(n)$ Faulhaber sums in~\eqref{tcl:eq:C3}; $F_J$ the inverse model~\eqref{tcl:eq:C21}; $f_n$ the saddle exponent.\\
+$H$, $h$, $h_0$ & $H_n$, $H(x)$ the weighted Poisson sum; $h=s^{-1/2}$ (Section~\ref{tcl:exact-finite-order-coefficient-generator}); $h(u,x)$ the cubic-and-higher part in (S16); $h_0(r)$ in Section~\ref{tcl:inversion-on-the-sequence-range}.\\
+$L$, $\mathcal H$ & $L_n$, $L(x)$ labelled line graphs; $L=2K+4$ the Euler--Maclaurin order in (S14)--(S15); $\mathcal H_{m,K}$ the truncated exact-saddle expression.\\
+$M$, $m$ & $M(t)=t(t-1)/2$; $M$ also the formal quantity of Section~\ref{tcl:exact-finite-order-coefficient-generator}; $m$ the summation index and $m=x/h^2$.\\
+$O$, $O_n$ & Landau symbol; $O(x)$, $O_n$ the legacy series of Section~1.3 (A132219). \emph{False reading:} $O_4=66$ is a count, not an error term.\\
+$Q$, $q$ & $Q=2K+1$ in Section~\ref{tcl:integrated-taylor-expansion-to-every-fixed-order}; $Q$, $Q_J$ the multiplier~\eqref{tcl:eq:C5}; $q$ a derivative order, the Stirling index in~\eqref{tcl:eq:C4}, and $q(r)=2r-\log2$ in~\eqref{tcl:eq:C17}.\\
+$r$, $s$, $S_n$ & $r=W(2n)$, $s=e^r=2n/r$ (also $r=W(2x)$ in Section~\ref{tcl:inversion-and-threshold-certification}); $S_n$ is defined twice, after (S21) and in~\eqref{tcl:eq:C1}, with equal values. \emph{False reading:} $r_0=W(2x_0)$, not $W(2N)$.\\
+$T_n$, $x$ & $T_n$ the exact Bell normalization; $x$ the e.g.f.\ variable, $x=(t-\tau)/\sigma$ in Section~2, $x=1+hy$ in Section~3 and the continuous index in Section~4.\\
+$Y$, $y$, $w$, $\delta$ & $Y$ the centred Gaussian in~\eqref{tcl:eq:C6} and the target value in Section~4; $y$ the scaled saddle coordinate; $w$, $\delta$ the Lambert seed of~\eqref{tcl:eq:C23}.\\
+$P$, $\mathbb P_k$, $K$, $K_P$ & $P$ the polynomial perturbation; $\mathbb P_k$ the law in (S20); $K$ an order; $K_P$ the coefficient field of~$P$.\\
+\bottomrule
+\end{longtable}
+\endgroup

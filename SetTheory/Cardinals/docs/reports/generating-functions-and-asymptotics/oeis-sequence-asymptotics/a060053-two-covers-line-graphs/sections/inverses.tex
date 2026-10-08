@@ -1,8 +1,8 @@
 \section{Inversion and threshold
-certification}\label{inversion-and-threshold-certification}
+certification}\label{tcl:inversion-and-threshold-certification}
 
 \subsection{Inversion on the sequence
-range}\label{inversion-on-the-sequence-range}
+range}\label{tcl:inversion-on-the-sequence-range}
 
 Let \(Y\) denote the target value. Define
 
@@ -20,14 +20,14 @@ Direct differentiation using \(r'=r/[x(1+r)]\) gives
 \[
  \Phi'(x)=2r-\log2=:q(r),\qquad
  \Phi''(x)=\frac{2r}{x(1+r)}.
- \tag{C17}\label{eq:C17}
+ \tag{C17}\label{tcl:eq:C17}
 \]
 
 From (C2),
 
 \[
  \log A_P(n)=\Phi(n)-h_0(r)+a_{P,1}(r)/n+O_{P}(r^8/n^2).
- \tag{C18}\label{eq:C18}
+ \tag{C18}\label{tcl:eq:C18}
 \]
 
 For large \(Y\), let \(x_0\) be the unique large real solution of
@@ -37,7 +37,7 @@ integer \(N\) tending to infinity, then
 \[
  N=x_0+\frac{h_0(r_0)}{2r_0-\log2}
  +O_P(r_0^3/x_0).
- \tag{C19}\label{eq:C19}
+ \tag{C19}\label{tcl:eq:C19}
 \]
 
 This is an absolute index error, not a relative one. To see the scale,
@@ -58,7 +58,7 @@ gives
 
 \[
  N=x_0+d_0(r_0)+d_1(r_0)/x_0+O_P(r_0^7/x_0^2).
- \tag{C20}\label{eq:C20}
+ \tag{C20}\label{tcl:eq:C20}
 \]
 
 For details of the second correction, let $x=x_0$, $r=W(2x)$ and
@@ -83,7 +83,7 @@ For arbitrary fixed \(J\), set
 \[
  F_J(x)=\Phi(x)-h_0(W(2x))
  +\log\left(\sum_{j=0}^J a_{P,j}(W(2x))/x^j\right).
- \tag{C21}\label{eq:C21}
+ \tag{C21}\label{tcl:eq:C21}
 \]
 
 The logarithm has positive argument eventually, and direct
@@ -93,7 +93,7 @@ differentiation of the finite rational formula shows
 
 \[
  |x_J-N|=O_{P,J}\!\left((1+r_N)^{4J+3}/N^{J+1}\right).
- \tag{C22}\label{eq:C22}
+ \tag{C22}\label{tcl:eq:C22}
 \]
 
 No differentiation of the unknown asymptotic remainder is used: apply
@@ -101,7 +101,7 @@ No differentiation of the unknown asymptotic remainder is used: apply
 explicit smooth \(F_J\).
 
 \subsection{Lambert seed and its
-limitation}\label{lambert-seed-and-its-limitation}
+limitation}\label{tcl:lambert-seed-and-its-limitation}
 
 Set
 
@@ -129,7 +129,7 @@ so
 
 \[
  \delta=-\frac{b}{w(w+2)}+O(w^{-4}).
- \tag{C23}\label{eq:C23}
+ \tag{C23}\label{tcl:eq:C23}
 \]
 
 This provides a useful initial seed for solving the exact scalar
@@ -145,7 +145,7 @@ equation numerically to the needed precision, or keep the seed error
 explicitly in the final error bound.
 
 \subsection{Arbitrary thresholds require a true-sequence
-enclosure}\label{arbitrary-thresholds-require-a-true-sequence-enclosure}
+enclosure}\label{tcl:arbitrary-thresholds-require-a-true-sequence-enclosure}
 
 The asymptotic \(A_P(n)/H_n\to1\) and \(H_{n+1}/H_n\to\infty\) imply
 \(A_P(n)\) is positive and strictly increasing eventually. For large
@@ -183,3 +183,45 @@ For $V,U,L$ within the public exact range, a finite scan checks all earlier
 indices instead of relying on an unimplemented monotonicity onset. Outside
 that range, the present asymptotic theorem alone supplies no effective
 certificate for a particular arbitrary threshold.
+
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{tcl:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} $\log A_P(n)=2n\log n-2n\log\log n+O(n)$ (S18),
+with a term $n\log n$, so the sequences are not of the exponential--power form
+of \file{p0:def:model}; no instance of the volume's model is claimed.
+\item \emph{The model root and the Lambert seed.} In the variable
+$r_0=W(2x_0)$ the model equation $\Phi(x_0)=\log Y$ is exactly
+$e^{r_0}(r_0^2-ar_0+1)=\log Y$ (checked symbolically), that is
+$r_0+2\log r_0+\log(1-a/r_0+1/r_0^2)=\log\log Y$. This is literally the
+volume's monomial--logarithmic equation
+(\file{plt:def:lw-monomial-log-datum}) in the unknown $r_0$, with unit slope,
+logarithmic coefficient~$2$, zero constant and a perturbation
+$\log(1-at+t^2)$, $t=1/r_0$, of positive order with constant coefficients;
+the three hypotheses of \file{plt:thm:lw-template} hold, so the formal
+expansion of $r_0$ in the reciprocal of $\log\log Y$ is an exact instance of
+the template. Its dominant block is solved exactly by the seed:
+$w=2W(\frac12\sqrt{\log Y}\,e^{-a/4})$ is the solution of
+$w+2\log w=\log\log Y-a/2$, an exact instance of \file{p0:thm:lambert-core}
+(unit slope, positive logarithmic coefficient~$2$, principal branch), and
+with $r_0=w+a/2+\delta$ the expansion~\eqref{tcl:eq:C23} is the first term of
+the remaining correction, a series in~$1/w$ with constant coefficients.
+\item \emph{The index.} The refinements~\eqref{tcl:eq:C19}, \eqref{tcl:eq:C20}
+and~\eqref{tcl:eq:C22} move $x_0$ by $O(r_0)$, a relative change of order
+$r_0e^{-r_0}$: below every order of the template's chart. So they are not
+instances of \file{plt:thm:lw-template}; they are proved directly, at the
+integer~$N$, by the mean value theorem for the explicit models.
+\item \emph{The thresholds.} $N_Y$ is the volume's staircase
+(\file{p0:def:three-inverses}(1)) of $A_P$ on its increasing tail. The models
+$\Phi-h_0$ and $F_J$ are smooth and increasing but do not take the values
+$\log A_P(k)$ at the integers, so they are not admissible interpolations:
+reading~\eqref{tcl:eq:C22} as $N=\lfloor x_J+\frac12\rfloor$ for large~$N$ is an
+analogue of \file{p0:thm:staircase}(3), and the bracket $k_-<N_Y\le k_+$ of
+Section~\ref{tcl:arbitrary-thresholds-require-a-true-sequence-enclosure},
+proved directly at the integers from a true-sequence enclosure, is an
+analogue of \file{p0:thm:staircase}(2), not an instance; the source's
+caution that rounding a model root certifies nothing is the volume's
+separation caveat.
+\end{enumerate}
+\end{remark}
