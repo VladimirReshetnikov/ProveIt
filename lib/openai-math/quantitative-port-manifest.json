@@ -21479,6 +21479,15 @@
       "OAI.Combinatorics.Progressions.Results.Conclusions",
       "OAI.Combinatorics.Progressions.Estimates.UniformRelativePatchSource"
     ],
-    "policy": "Port only results used by Gowers and their dependencies. Do not add standalone upstream results without identifying a Gowers consumer. Extract required results where a shared module pulls in an avoidable unrelated proof branch."
+    "policy": "Port only results used by Gowers and their dependencies. Do not add standalone upstream results without identifying a Gowers consumer. Extract required results where a shared module pulls in an avoidable unrelated proof branch.",
+    "additional_gowers_consumers": [
+      {
+        "upstream_module": "OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinatePartition",
+        "upstream_theorem": "OAI.Erdos3.simultaneous_monomial_recurrence",
+        "gowers_module": "GowersSzemeredi.Proofs05SchmidtRecurrence",
+        "gowers_theorem": "LeanProofs.GowersSzemeredi.simultaneous_modular_monomial_recurrence",
+        "purpose": "Transfer the fixed-degree simultaneous recurrence bound to centered modular norms for the Section 16 bounds work. Reuses manifest entry 3295 from the existing density closure; adds no upstream module."
+      }
+    ]
   }
 }
