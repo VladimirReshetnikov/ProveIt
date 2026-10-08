@@ -130,6 +130,9 @@ class AdaptiveScan(ResidueScan):
 
 def reduction_scanner(reduction):
     """Select an explicit cancellation policy with lazy full-transfer imports."""
+    if reduction in ("corridor", "corridor-adaptive"):
+        from .corridor import AdaptiveCorridorScan, CorridorScan
+        return AdaptiveCorridorScan if reduction == "corridor-adaptive" else CorridorScan
     if reduction in ("graded", "graded-adaptive"):
         from .graded_transfer import GradedAdaptiveScan, GradedTransferScan
         return GradedAdaptiveScan if reduction == "graded-adaptive" else GradedTransferScan

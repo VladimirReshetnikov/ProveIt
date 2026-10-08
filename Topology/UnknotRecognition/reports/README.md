@@ -29,7 +29,7 @@ modification times.
 | `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | 52 archive tests, pinned-source audit and 14,658-state geometry audit pass; optional adaptive full transfer integrated |
 | `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | 152 archive tests and independent arithmetic/local audits pass; checked-source classifier and opt-in local wrapper integrated |
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded transfer and exact symbolic transport integrated; earlier rank law and conditional repair bound reviewed |
-| `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | not run |
+| `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover integration remains under review |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -190,3 +190,16 @@ The earlier total-rank law was checked on 392 explicit complexes and is recorded
 without reducing the full-profile cap. The 380-fixture repair-DAG check supports
 a conditional accounting theorem, not an implemented knot-exterior hierarchy.
 All 431 maintained tests pass; `../synthesis/symbolic_runs.tex` states the scope.
+
+
+Report `24/` has its scanner contribution integrated: full survivor-corridor
+transfer, per-component direction choice, an adaptive sparse-work allowance,
+and direct sparse-scalar/Boolean-port controls. All 458 maintained tests pass.
+The archive wrapper verifies 20 integration-manifest hashes and passes its 268
+scanner tests, surface-cover suite and deterministic audits in a temporary copy.
+The advertised full `SHA256_MANIFEST.json` is absent; no broader hash claim is
+made. Production repeats 3,885 entrywise comparisons over 555 prefixes, all
+555 full contraction certificates, and support and representation audits.
+Proofs, measurements, and resource semantics are in
+`../synthesis/corridor_transfer.tex`. The separate dihedral-cover kernel still
+needs theory and implementation integration review; it is not a knot certificate.
