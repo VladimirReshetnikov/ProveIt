@@ -430,6 +430,7 @@ import GowersSzemeredi.Proofs16CubicOuterScaleBudget
 import GowersSzemeredi.Proofs16CubicSpectrumBudget
 import GowersSzemeredi.Proofs16CubicPowerAbsorption
 import GowersSzemeredi.Proofs16DimensionTwo
+import GowersSzemeredi.Proofs16DimensionTwoSharper
 import GowersSzemeredi.Proofs18QuarticIteration
 import GowersSzemeredi.Proofs05DiameterReserve
 import GowersSzemeredi.Proofs05QuarterDiameterBudget
