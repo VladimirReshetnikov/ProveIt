@@ -2,8 +2,8 @@
   "upstream": "https://github.com/openai/math",
   "revision": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
   "target": "OAI.Combinatorics.Progressions.Results.Conclusions",
-  "upstream_closure_modules": 4136,
-  "new_modules": 4008,
+  "upstream_closure_modules": 4134,
+  "new_modules": 4006,
   "initial_compat_imports": {
     "Core": 316,
     "BigOperators": 218,
@@ -20610,16 +20610,6 @@
       "previously_vendored": false
     },
     {
-      "module": "OAI.Combinatorics.Progressions.Results.Reciprocal",
-      "upstream_sha256": "c96f909b4e6a41466ef6e758b28848841453923bfdfc38c349a2e1f835ec5341",
-      "previously_vendored": false
-    },
-    {
-      "module": "OAI.Combinatorics.Progressions.Results.Statements",
-      "upstream_sha256": "e79488f75ac48f748635bd5f812ac03e11b80e629e70abc2955f0d252bd2caf8",
-      "previously_vendored": false
-    },
-    {
       "module": "OAI.Combinatorics.Progressions.Probability.DensityBoundFromInvariant",
       "upstream_sha256": "60af7f97aa4f6dd3b07fad6832f0039313f1a8ff9b20b69f3fd23b37c5ec3451",
       "previously_vendored": false
@@ -20750,7 +20740,13 @@
     "OAI.Combinatorics.Progressions.Estimates.CoefficientModeLowerTerms": "Use MvPolynomial.coeff_add and coeff_zero explicitly for top-symbol addition and lower-degree vanishing. Statements unchanged. Module compiled on Lean 4.32.0.",
     "OAI.Combinatorics.Progressions.Estimates.LowerTriangularMinor": "Use Matrix.BlockTriangular OrderDual.toDual and Matrix.det_of_lowerTriangular in the labelled determinant proof. Statements unchanged. Module compiled on Lean 4.32.0.",
     "OAI.Combinatorics.Progressions.Geometry.CoordinateConstantDecomposition": "Remove redundant reflexivity after simplification closes the constant-coordinate case. Statements unchanged. Module compiled on Lean 4.32.0.",
-    "OAI.Combinatorics.Progressions.Estimates.CoefficientProductHaar": "Supply product probability, finiteness, and additive translation-invariance instances explicitly, and derive finiteness on compacts directly from finite total measure. Statements unchanged. Module compiled on Lean 4.32.0."
+    "OAI.Combinatorics.Progressions.Estimates.CoefficientProductHaar": "Supply product probability, finiteness, and additive translation-invariance instances explicitly, and derive finiteness on compacts directly from finite total measure. Statements unchanged. Module compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Fourier.EuclideanCoefficientTorus": "Supply quotient Borel instances and explicit finite/sigma-finite instances for the nested product measures. Statements unchanged. Module compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Probability.EmptyCoefficientDensity": "Pass the constant measure family and its sigma-finiteness proof explicitly to integral_fintype_prod_eq_prod. Statements unchanged. Module compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Probability.CoefficientProductLaw": "Pass the sigma-finiteness proof explicitly to integral_fintype_prod_eq_prod in coefficientProductDensity_probability. Statements unchanged. Module compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Results.Conclusions": "Density-only extract: omit combined and reciprocal conclusions; derive manuscriptQuantitativeDensityTheorem directly from quantitative_density_bound_of_uniform_relative_lifting. Pending compilation.",
+    "OAI.Combinatorics.Progressions.Estimates.UniformRelativePatchSource": "Density-only extract: retain density-source construction; omit separate logarithmic and reciprocal corollaries and combined manuscript target. Pending compilation.",
+    "OAI.Combinatorics.Progressions.Probability.DensityBoundFromInvariant": "Import Results.Basic directly instead of the reciprocal-sum Statements wrapper. Statements and proofs unchanged; pending compilation."
   },
   "additional_compat_imports": {
     "OAI.Combinatorics.Progressions.Nilpotent.BCHQuotientLocalIsometry": [
@@ -21022,11 +21018,11 @@
     "OAI.Combinatorics.Progressions.Polynomial.RealGradedSymbolPolynomial"
   ],
   "partial_verification": {
-    "manifest_prefix_length": 900,
-    "last_upstream_module": "OAI.Combinatorics.Progressions.Linear.BasisAxisNormalization",
-    "build_closure_modules": 913,
+    "manifest_prefix_length": 1100,
+    "last_upstream_module": "OAI.Combinatorics.Progressions.Polynomial.CommonPolynomialScale",
+    "build_closure_modules": 1115,
     "audit_module": "OAI.QuantitativePortAudit",
-    "audited_public_OAI_theorems": 17747,
+    "audited_public_OAI_theorems": 20812,
     "allowed_axioms": [
       "propext",
       "Classical.choice",
@@ -21035,7 +21031,7 @@
     "toolchain": "leanprover/lean4:v4.32.0",
     "date": "2026-10-07",
     "scope": "Only this initial prefix and its dependencies; Results.Conclusions remains unverified.",
-    "audit_build_closure_modules": 917,
+    "audit_build_closure_modules": 1117,
     "compatibility_axiom_check": "The audit rejects unapproved axioms in each explicitly listed compatibility declaration, in addition to public OAI theorems."
   },
   "mathlib_import_renames": {
@@ -21366,5 +21362,30 @@
       "OAI.Combinatorics.Progressions.Estimates.ModularMultilinearAmbientSublevel"
     ],
     "verification": "Later callers remain pending outside the compiled prefix."
+  },
+  "scope": {
+    "gowers_target": "LeanProofs.GowersSzemeredi.theorem_1_3",
+    "required_upstream_theorem": "OAI.Erdos3.manuscriptQuantitativeDensityTheorem",
+    "bridge": "LeanProofs.GowersSzemeredi.theorem_1_3_of_quantitative_density",
+    "selection": "Module import closure of the density-only conclusion; not a claim of minimal theorem-level dependencies.",
+    "excluded": [
+      {
+        "module": "OAI.Combinatorics.Progressions.Results.Reciprocal",
+        "upstream_sha256": "c96f909b4e6a41466ef6e758b28848841453923bfdfc38c349a2e1f835ec5341",
+        "previously_vendored": false,
+        "reason": "Reciprocal-sum conclusion is not needed by the Gowers density bridge."
+      },
+      {
+        "module": "OAI.Combinatorics.Progressions.Results.Statements",
+        "upstream_sha256": "e79488f75ac48f748635bd5f812ac03e11b80e629e70abc2955f0d252bd2caf8",
+        "previously_vendored": false,
+        "reason": "Reciprocal-sum conclusion is not needed by the Gowers density bridge."
+      }
+    ],
+    "density_only_extracts": [
+      "OAI.Combinatorics.Progressions.Results.Conclusions",
+      "OAI.Combinatorics.Progressions.Estimates.UniformRelativePatchSource"
+    ],
+    "policy": "Port only results used by Gowers and their dependencies. Do not add standalone upstream results without identifying a Gowers consumer. Extract required results where a shared module pulls in an avoidable unrelated proof branch."
   }
 }

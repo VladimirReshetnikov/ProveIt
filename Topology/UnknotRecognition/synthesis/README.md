@@ -42,16 +42,17 @@ The post-reduction certificate extension is also described there; all 71 tests
 pass. Its isolated comparison is `../fast/benchmark_reduction.py`, with paired
 samples in `../fast/results/reduction_structural_20261007.json`.
 The next extension prepares suffix-Euler geometry lazily within the inference
-budget; the current suite has 73 passing tests. Setup-only measurements and
+budget; that checkpoint had 73 passing tests. Setup-only measurements and
 separate allocation peaks are in `../fast/results/lazy_euler_setup_20261007.json`,
 reproduced by `../fast/benchmark_euler_setup.py`.
 
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 116 tests. Local report 10–12 production
-cross-checks are retained in `data/`; those reports' broader adapters remain under
-review. The braid benchmark includes PD construction and keeps the current
+The current full production suite passes 134 tests. Local report 10–12 production
+cross-checks are retained in `data/`. Report 12's exact component contraction
+is integrated as an opt-in API/CLI option; its structured block cancellation and
+report 11's twist backend remain under review. The braid benchmark includes PD construction and keeps the current
 Seifert shortcut enabled in its baseline. Reproduce it with
 `../fast/benchmark_braid.py`; raw data are in
 `../fast/results/braid_integration_20261007.json`.
@@ -82,3 +83,10 @@ were run from a scratch directory containing copies of `reports/0k/<package>`
 renamed to `kh02`, `kh03`, `kh04`, `kh05`, `kh06` and `grid01`. To rerun
 them, recreate those copies (the packages use only relative imports) and
 adjust the `sys.path` lines at the top of each script.
+
+The component-contraction theory and production integration are maintained in
+`research_updates.tex`. Local exact algebra, degree, and CLI resource regressions
+are in `data/component-algebra-tests.txt`; separate dense/sparse kernel and raw
+scanner timings are in `../fast/results/component_algebra_20261007.json`.
+The ordinary scanner cases did not select adaptive dense calls, so these
+measurements do not support a default-engine switch.

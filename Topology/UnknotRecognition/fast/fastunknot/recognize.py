@@ -195,6 +195,9 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],
                             "scan_order": kh["order"]}
+    if "composition" in kh:
+        evidence["khovanov"]["composition"] = kh["composition"]
+        evidence["khovanov"]["composition_stats"] = kh["composition_stats"]
     if "race_winner" in kh:
         evidence["khovanov"]["race_winner"] = kh["race_winner"]
     method = "reduced-khovanov-F2-shared" if backend == "shared" else "reduced-khovanov-F2-scan"
@@ -213,8 +216,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               seconds: float | None = None, check_d_squared: bool = False,
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
               race: int = 1, race_after: float = 1.0,
-              factor_backend: str = "interlacement") -> Result:
+              factor_backend: str = "interlacement", composition: str = "standard",
+              composition_max_variables: int = 18) -> Result:
     start = monotonic()
+    if composition not in ("standard", "component", "component-dense"):
+        raise ValueError("composition must be standard, component, or component-dense")
+    if type(composition_max_variables) is not int or composition_max_variables < 0:
+        raise ValueError("composition_max_variables must be nonnegative")
+    if composition != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
+        raise ValueError("component composition requires standard backend, minfill, bits, and race=1")
     if braid_backend not in ("free-product", "matrix"):
         raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
@@ -305,7 +315,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
                                          race_after=race_after, backend=backend,
-                                         euler_max_states=euler_max_states))
+                                         euler_max_states=euler_max_states, composition=composition,
+                                         composition_max_variables=composition_max_variables))
         method = "reduced-khovanov-F2-scan"
         check()
         if len(factors) == 1:
