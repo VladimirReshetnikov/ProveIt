@@ -40,6 +40,11 @@
 \newcommand{\om}{\omega}
 \newcommand{\bigO}{\mathcal O}
 \newcommand{\dd}{\,\mathrm d}
+% Added in the write (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Record Sum Diagonal Expansions and Integer Inverses},pdfauthor={Report 234},pdfsubject={OEIS A368246 and root of unity asymptotics}}
 \pdftrailerid{<5265706F72743233344133363832343600><5265706F72743233344133363832343600>}
 \begin{document}
@@ -52,6 +57,25 @@
 \begin{abstract}
 Let $a_n$ count permutations of $\{1,\ldots,n\}$ whose cycle minima sum to $n$. The same numbers count permutations whose record positions sum to $n$ and form OEIS A368246. For $b_n=a_n/(n-1)!$, we prove a finite expansion to every fixed inverse-power order. The constant is $\ee^{-\gamma}$, the term of order $n^{-1}$ is absent, and every subsequent coefficient is a polynomial in $\log n$ with periodic coefficients of mean zero. The reason is the exact rooted-tree identity $T(s\ee^{-s})=s$, which cancels all higher logarithms at the positive singularity of a shifted infinite product. We give the second- and third-order terms, Gamma-product root amplitudes, the exceptional delay caused by zeros at $\pm\ii$, a direct global boundary remainder, and a real finite Newton construction with a rigorous two-ceiling inverse envelope. The method and the leading constant are classical; the focus is the sequence-specific cancellation and its refinements. Numerical checks are separated from the analytic proof, and no effective remainder constant, convergence of an infinite transseries, or publication-priority claim is made.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~234 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a368246-cycle-minima-sums} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{cms:sec:provenance}). It is
+unrefereed and not formalized. Its title page and PDF author field read
+``Report 234'': it names no person or tool. \emph{What rests on what.} Every
+theorem has a conventional proof in the text: an exact counting identity, the
+rooted-tree identity $T(s\ee^{-s})=s$, integer-polylogarithm and Gamma-product
+expansions at the roots of unity, a differentiated boundary remainder with
+Fourier integration by parts, exact coefficient transfer, Stirling's formula
+and Newton's method. The leading constant is also a consequence of the local
+limit theorem of Giuliano, Szewczak and Weber, which the write read
+(Remark~\ref{cms:rem:oeis}). No proof uses a computation; the exact checks
+corroborate finite identities and the floating evaluations are illustrations.
+The write adds Remarks~\ref{cms:rem:transseries} and~\ref{cms:rem:oeis} and
+dated notes; no statement, proof or number of the source was changed.
+\end{writenote}
 \tableofcontents
 \input{sections/01_results.tex}
 \input{sections/02_counting.tex}

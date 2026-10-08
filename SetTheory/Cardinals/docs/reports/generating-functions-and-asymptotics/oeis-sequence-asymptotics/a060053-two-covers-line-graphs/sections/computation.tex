@@ -2,7 +2,7 @@
 \subsection{Three distinct levels of evidence}
 The analytic theorems establish the fixed-order limits. Exact algebra verifies the displayed coefficient identities, while finite enumeration checks the models and indexing. High-precision floating-point residuals illustrate convergence but are not interval certificates. In particular, none of the decimal diagnostics supplies an effective constant or starting index for the asymptotic error bounds.
 
-The standard-library program \texttt{code/exact\_counts.py} implements equation \eqref{eq:bell_exact}. It builds Bell numbers with the Bell triangle, multiplies the integer polynomials recursively, and applies each exponential multiplier with exact rational arithmetic. For $p_j=[x^j]e^{P(x)}$, it uses
+The standard-library program \texttt{code/exact\_counts.py} implements equation \eqref{tcl:eq:bell_exact}. It builds Bell numbers with the Bell triangle, multiplies the integer polynomials recursively, and applies each exponential multiplier with exact rational arithmetic. For $p_j=[x^j]e^{P(x)}$, it uses
 \[
 p_0=1,\qquad p_j=\frac1j\sum_{k=1}^j k[x^k]P(x)\,p_{j-k}.
 \]
@@ -45,6 +45,18 @@ $K$ & relative error & $n^{K+1}$ times error\\
 \end{tabular}
 \end{center}
 The normalized ratio $(H_{n-1}/H_n)/(r^2/n^2)$ is about $0.501922$, consistent with the proved limiting value $1/2$. These observations do not replace the uniform derivative, lattice or tail estimates.
+\begin{writenote}[The table recomputed, 7 October 2026]
+The write recomputed the table at $n=1000$ with its own code ($\tau=345.4941688051\ldots$,
+$\sigma=7.0490293656\ldots$, $C_1=1.4690496\times10^{-5}$,
+$C_2=1.1794892\times10^{-9}$, $C_3=-6.2895152\times10^{-13}$): every printed
+value is the correct rounding of the recomputed one and of
+\file{data/saddle_diagnostics.json}. The printed values that are not
+truncations are $-1.46915\cdot10^{-5}$ and $-0.0146915$ ($K=0$; truncations
+$-1.46914\cdot10^{-5}$ and $-0.0146914$, from $-1.4691459\ldots\cdot10^{-5}$)
+and the ratio $0.501922$ (truncation $0.501921$, from $0.5019216358\ldots$).
+At $n=20$ the same normalized errors are $0.0154$, $0.0051$, $0.0026$,
+$0.0035$: the fixed-order behaviour is visible only for larger~$n$.
+\end{writenote}
 
 \subsection{Rebuilding and integer inverse queries}
 The accompanying README gives complete commands. The exact tests need Python 3.11 or later and no third-party library. Building the PDF additionally needs a TeX Live installation with the packages loaded in \texttt{src/report224.tex}. SymPy and mpmath are optional. The build uses a private TeX format, fixed PDF metadata, a sorted uncompressed ZIP with fixed timestamps, and an output directory outside the source tree. It verifies a source manifest before running and checks that no source bytes changed. Byte reproducibility is claimed for the same toolchain, not across arbitrary TeX or library versions.
@@ -52,6 +64,46 @@ The accompanying README gives complete commands. The exact tests need Python 3.1
 The exact threshold command scans a finite computed sequence in order and returns its first value at least the specified positive integer threshold. It does not assume monotonicity at small indices. If no crossing occurs, it says only that no crossing was found in the checked range. Threshold input and output use bounded chunked decimal conversion. It must not be described as an unbounded exact inverse oracle.
 
 A full package reproduction consists of ordinary and optimized cap-$640$ builds, comparison of the actual member names and bytes and the entire ZIP, plus visual inspection of every PDF page. A matching ZIP certifies reproducible bytes, not mathematical truth; the proof review and visual checks remain separate.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF and the manifest are not shipped; the text is
+\file{article.tex} with \file{sections/*.tex}, the programs are
+\file{code/*.py} (the builder as \file{code/build.py}), the data, the build
+receipt and the retrieved b-files are under \file{data/}. The tests read the
+b-files from \file{sources/} and the builder verifies the delivered manifest,
+so they run only in a re-extracted archive; the report README gives commands
+for that. The ``packages loaded in \file{src/report224.tex}'' are those of
+\file{article.tex}; the write added none.
+\end{writenote}
+
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{tcl:rem:oeis}
+The write read the entries in the internal format on 7~October 2026.
+\emph{A060053}, revision \#51 (30 May 2026), by Vladeta Jovovic (15 February
+2001): ``Number of r-bicoverings (or restricted proper 2-covers) of an
+n-set.'', with links to the arXiv preprint and the journal article of Cameron,
+Prellberg and Stark (``See v\_n''), the relation $U(x)=e^xV(x)$, an e.g.f.\ by Andrew Howroyd (2020) and a
+b-file by Robert Gerbicz for $n=0,\ldots,100$. \emph{A014500}, revision \#52
+(30 May 2026), by Simon Plouffe and Gilbert Labelle: ``Number of graphs with
+unlabeled (non-isolated) nodes and n labeled edges.'', with the journal link
+(``see u\_n'') and a b-file by Alois P.\ Heinz for $n=0,\ldots,100$. Neither
+entry has an asymptotic formula or a conjecture, as the source states.
+\emph{A132219}, revision \#5 (7 July 2015), by Vladeta Jovovic (14 August
+2007): ``Number of line graphs on n labeled nodes.'', with the e.g.f.\
+\verb|exp(x/2-x^3/6)*Sum(A020556(n)*(log(1+x)/2)^n/n!, n=0..infinity)|, that
+is $e^{-x^3/6}U(x)$, the legacy series~$O$, and 18 displayed terms (offset~1;
+the served b-file lists these terms). Its terms do not match its name: $a(4)=66$ exceeds
+the $2^6=64$ labelled graphs on four vertices, and the true count is
+$L_4=60$; its formula is Proposition~5 of the arXiv version~1, which the
+corrected manuscript supersedes. The corrected sequence
+$1,1,2,8,60,729,11600,228443,\ldots$ is not in the OEIS (search of
+7~October 2026). \emph{A094089}, revision \#13 (18 November 2020), by Vladeta
+Jovovic (1 May 2004), ``E.g.f.: exp(-1)*Sum((1+2*x)\^{}binomial(n,2)/n!,
+n=0..infinity).'', b-file by Heinz for $n=0,\ldots,150$: it is $2^nH_n$, a
+sequence the source tabulates without naming. \emph{Checks.} All 101 b-file
+terms of A060053 and A014500, the 18 terms of A132219 and all 151 terms of
+A094089 equal the write's computation; the retrieved b-files shipped in
+\file{data/} equal the live ones byte for byte. No OEIS edit is part of this
+work.
+\end{remark}
 
 \section{Further research questions}
 \begin{enumerate}
@@ -62,3 +114,11 @@ A full package reproduction consists of ordinary and optimized cap-$640$ builds,
 \item \textbf{Uniform inverse computation.} Can an interval implementation of the positive sum, exact-saddle derivatives and inverse correction bridge small exact counts to asymptotic enclosures with an explicit guarantee? Floating-point residuals alone do not settle this.
 \item \textbf{Source history and coverage.} The obsolete line-graph multiplier remains in the retrieved A132219 data, while the corrected author manuscript is clear. A comprehensive bibliographic study could determine which higher-order formulas or inverse techniques have appeared elsewhere. This report makes no inference of novelty from the absence of such formulas in the checked sources.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+These six questions are the source's own and stay open. The write adds from
+the non-claims: an independent check of the completeness of the exception
+classification (the write's enumeration reaches seven edges), interval
+certificates for the diagnostics, and the correction of the OEIS
+entry~A132219, which is not part of this work. No claim of the source was
+found false.
+\end{writenote}

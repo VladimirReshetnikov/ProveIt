@@ -1,4 +1,4 @@
-\section{Source and duplicate search boundaries}\label{sec:sources}
+\section{Source and duplicate search boundaries}\label{cms:sec:sources}
 \subsection{Sequence identification and freshness}
 The source reconnaissance dated 5 October 2026 obtained the complete indexed OEIS record for A368246, including its definition, offset, data, formula, examples, program, and cross-reference to A143946. It identifies the cycle-minimum diagonal, $a_0=1$, and the initial values used here. Direct fresh requests for A368246 and its internal entry were unsuccessful, including an HTTP 403 response. A newly verified live revision timestamp was therefore not obtained.
 
@@ -6,9 +6,9 @@ The related primary entry A143946 was retrieved and gives the record-position tr
 \[
 z(z^2+1)(z^3+2)\cdots(z^n+n-1).
 \]
-The primary papers also ground the statistic independently of the indexed entry. The exact counting proof in Section~\ref{sec:counting} provides a further check that the normalization and index agree with this definition.
+The primary papers also ground the statistic independently of the indexed entry. The exact counting proof in Section~\ref{cms:sec:counting} provides a further check that the normalization and index agree with this definition.
 
-The indexed record includes a historical conjecture attributing the constant $\ee^{-\gamma}$ to V\'aclav Kot\v e\v sovec on 29 December 2023. That is a statement about the inspected record, not evidence that the leading asymptotic remains open. As explained in Section~\ref{sec:counting}, the 2013 local limit theorem already implies it. No current OEIS claim of an unresolved leading constant is made here.
+The indexed record includes a historical conjecture attributing the constant $\ee^{-\gamma}$ to V\'aclav Kot\v e\v sovec on 29 December 2023. That is a statement about the inspected record, not evidence that the leading asymptotic remains open. As explained in Section~\ref{cms:sec:counting}, the 2013 local limit theorem already implies it. No current OEIS claim of an unresolved leading constant is made here.
 
 \subsection{The inspected mathematical literature}
 Louchard \cite[Eq.~(1)]{Louchard} explicitly supplies the finite polynomial, and Eq.~(2) gives its probability normalization. His introductory local-limit discussion and Eq.~(4) connect the statistic to the Dickman distribution and credit earlier work. Kortchemski \cite{Kortchemski} treats permutation records and a different large-deviation regime. Neither the known finite polynomial nor the elementary infinite-product reduction is presented here as a novelty.
@@ -19,7 +19,7 @@ Flajolet, Fusy, Gourdon, Panario and Pouyanne \cite[Theorems~1--2, Section~3]{FF
 \[
 \prod_{j\geq1}\left(1+\frac{z^j}{j}\right),
 \]
-whereas ours has exponent $j+1$. The unshifted example has a nonzero smooth correction sector; copying those coefficients would give the wrong answer for A368246. The use of Gamma products, local root expansions, and a natural boundary is part of that established method. The calculation specific to the shifted product is the identity \eqref{eq:exactcancel} and its consequences.
+whereas ours has exponent $j+1$. The unshifted example has a nonzero smooth correction sector; copying those coefficients would give the wrong answer for A368246. The use of Gamma products, local root expansions, and a natural boundary is part of that established method. The calculation specific to the shifted product is the identity \eqref{cms:eq:exactcancel} and its consequences.
 
 \subsection{Bounded duplicate checking}
 Current repository catalogues and exact-number searches were checked during reconnaissance. Actual near-match article sources on two Fourier peaks, path-forest expansions, partition orientation sums, a level-seven Gamma constant, and a cubic restricted-partition boundary were inspected rather than relying only on titles. Their models differ from the shifted record product. Exact-number searches for A368246 returned no matching article in the searched repository.
@@ -28,14 +28,36 @@ Searches in the available document collection also used the sequence number and 
 
 The editable \texttt{SOURCES.md} records source URLs and the scope of these checks. It deliberately omits private document identifiers and working-audit files. The result is a self-contained mathematical report with a bounded source ledger, not a certificate of priority.
 
-\section{Further research questions}\label{sec:questions}
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{cms:rem:oeis}
+The write read the entries in the internal format on 7~October 2026; the
+source could not (Section~\ref{cms:sec:sources}). \emph{A368246}, revision
+\#22 (4 January 2024), by Alois P.\ Heinz (18 December 2023): ``Number of
+permutations of [n] whose cycle minima sum to n.'', with the
+record-position comment, $a(n)=\mathrm{A143946}(n,n)$, a Maple program, a
+b-file by Heinz for $n=0,\ldots,451$, and the formula ``a(n) \textasciitilde{} c * (n-1)!,
+where c = 0.561459..., conjecture: c = exp(-gamma) = A080130, where gamma is
+the Euler-Mascheroni constant A001620.'', signed by V\'aclav Kot\v{e}\v{s}ovec,
+29 December 2023. \emph{The conjecture, as posted, is proved:}
+Theorem~\ref{cms:thm:main} gives $b_n=A+O(n^{-2})$, hence
+$a_n\sim\ee^{-\gamma}(n-1)!$, and it already followed from Theorem~2.1 of
+Giuliano--Szewczak--Weber (2013), whose model ($Z_k$ independent, equal to $1$
+with probability $1/k$, $T_n=\sum_{k\le n}kZ_k$) is that of
+Section~\ref{cms:sec:counting}, as the source says; the printed $0.561459$ is a
+correct truncation of $\ee^{-\gamma}=0.5614594835\ldots$. \emph{A143946},
+revision \#38 (13 March 2026), by Emeric Deutsch (21 September 2008), with the
+row polynomial $t(t^2+1)(t^3+2)\cdots(t^n+n-1)$, as the source states.
+\emph{Checks.} All 452 b-file terms of A368246 equal the write's evaluation
+of~\eqref{cms:eq:finite}. No OEIS edit is part of this work.
+\end{remark}
+
+\section{Further research questions}\label{cms:sec:questions}
 The fixed-order theorem leaves several concrete questions. They are proposed directions rather than results proved by this report.
 
 \paragraph{Effective constants and onset.}
-The tail majorants in Section~\ref{sec:tail} are explicit, but the proof does not assemble numerical bounds for all local jets, their complementary arcs, and the final Fourier norm. Carrying out that assembly could produce certified constants and onsets in \eqref{eq:main}. Combined with interval evaluation of the finite real model, it could turn the asymptotic envelope into a practical finite threshold certificate. At present, the exact count comparison remains necessary whenever a numerical inverse is used without such bounds.
+The tail majorants in Section~\ref{cms:sec:tail} are explicit, but the proof does not assemble numerical bounds for all local jets, their complementary arcs, and the final Fourier norm. Carrying out that assembly could produce certified constants and onsets in \eqref{cms:eq:main}. Combined with interval evaluation of the finite real model, it could turn the asymptotic envelope into a practical finite threshold certificate. At present, the exact count comparison remains necessary whenever a numerical inverse is used without such bounds.
 
 \paragraph{Certified higher amplitudes.}
-The finite prescription in Section~\ref{sec:transfer} determines every fixed coefficient. A reusable implementation could construct the actual higher $P_j$, rigorously bound derivatives of the smooth tail, collect the minimal periods, and expose cancellations among root amplitudes. It would be useful to determine which constants admit Gamma or other standard special-function expressions and which are most naturally represented by convergent series. The public code here implements exact tree jets and transfer checks, with the full sequence model displayed only through order three.
+The finite prescription in Section~\ref{cms:sec:transfer} determines every fixed coefficient. A reusable implementation could construct the actual higher $P_j$, rigorously bound derivatives of the smooth tail, collect the minimal periods, and expose cancellations among root amplitudes. It would be useful to determine which constants admit Gamma or other standard special-function expressions and which are most naturally represented by convergent series. The public code here implements exact tree jets and transfer checks, with the full sequence model displayed only through order three.
 
 \paragraph{More general exponent patterns and weights.}
 A natural extension is to products with periodic, nonconstant perturbations of the exponent $j+1$, or with controlled periodic weights. The question is which patterns cause complete or partial cancellation of the positive-root logarithmic sector, and how they alter the root frequencies. The constant-shift case alone is not an unresolved characterization: for
@@ -46,6 +68,15 @@ the positive logarithmic coefficient is $-T(s\ee^{-ds})/s=-1-(1-d)s+O(s^2)$. Its
 
 \paragraph{Large order and optimal truncation.}
 Nothing in the fixed-$K$ proof controls the growth of $P_j$ or of its remainder constants as $j\to\infty$. Establishing that growth could address optimal truncation, interactions among increasing root orders, and the scale of the error beyond all retained algebraic terms. The natural boundary makes these questions especially sensitive to uniformity. No convergent infinite transseries, optimal truncation rule, or exponentially small remainder is asserted in this report.
+
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+These four questions are the source's own and stay open; the constant-shift
+observation in the third is proved in the text (and agrees numerically). The
+write adds from the non-claims interval enclosures of the Gamma amplitudes
+and an implementation of the higher $P_j$. No claim of the source was found
+false; Kot\v{e}\v{s}ovec's conjecture in A368246 is proved
+(Remark~\ref{cms:rem:oeis}).
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{OEIS368246}
@@ -78,4 +109,6 @@ P. Flajolet, \'E. Fusy, X. Gourdon, D. Panario, and N. Pouyanne,
 \emph{A hybrid of Darboux's method and singularity analysis in combinatorial asymptotics}, Electronic Journal of Combinatorics \textbf{13} (2006), R103, 35 pp.\newline
 \url{https://doi.org/10.37236/1129}\newline
 \url{https://monge.univ-eiffel.fr/~fusy/Articles/FlFuGoPaPo06.pdf}
+\bibitem{TSvol}
+ProveIt, \emph{Transseries and inversion}, \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}) and the chapter on the Lambert template (\file{plt:thm:lw-template}). [Added in the write.]
 \end{thebibliography}

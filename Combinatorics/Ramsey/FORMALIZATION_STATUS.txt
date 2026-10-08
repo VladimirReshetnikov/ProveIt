@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 777 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,990 public Gowers theorems and found only propext,
+  All 780 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,004 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -114,6 +114,31 @@ Cubic controls for the actual Freiman-family covers
   The individual section-cover inputs remain hypotheses, so the six open
   catalogue statements remain open. The full audit includes these results.
 
+Uniform sample controls and a quartic candidate bound
+  Proofs16CubicUniformControls proves that increasing the positive graph
+  count decreases cubicBaseExponent. The sampled count chosen by the line
+  cover can be replaced by section16UniformSampleCount in both the cubic
+  exponent and the compressed interpolation budget, in the directions
+  required by the affine lift. The concrete candidate count also satisfies
+    section16CompressedCandidateCount(r, 3*max(1,r)*q)
+      <= 9*max(1,r)^4*q^2
+  for q > 0, including the empty-sample fallback. These are uniform local
+  controls; the full audit passes and no catalogue statement is closed.
+
+Uniform pure-power affine cover with cubic slice controls
+  Proofs16ParametricLineExponent rewrites lemma9WidthWith as z*m^e,
+  proves e positive, and controls it uniformly by increasing the spectrum
+  graph count to its explicit ceiling. Proofs16CubicUniformPowerCover
+  combines this estimate with the cubic slice provider and the proved
+  rounding threshold. For R=section16UniformSampleCount(sigma,theta,gamma,k),
+  a=cubicBaseExponent(R*q,sigma), and the uniform line exponent e, every
+  b<e*a/2 gives cell width at least m^b above the explicit
+  section16RoundedExponentThreshold(z,e,a,b). The candidate count is at
+  most 9*R^4*q^2. The bounds are independent of locally selected graph
+  counts, the parent box, and its modulus. The line-cover and cubic-provider
+  hypotheses remain explicit; this is a large-box result, not Theorem 16.2.
+  Both modules pass the full merged audit.
+
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
   OAI.Erdos3.QuantitativeDensityTheorem. An elementary exponential estimate
@@ -130,8 +155,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 1,100 pinned manifest entries compile as a 1,115-module closure.
-  OAI.QuantitativePortAudit checks 20,812 public OAI theorems in this prefix
+  The first 1,200 pinned manifest entries compile as a 1,215-module closure.
+  OAI.QuantitativePortAudit checks 21,940 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.

@@ -1,14 +1,14 @@
-\section{Projected Gaussian laws on two different scales}\label{sec:gaussian}
-The raw edge/component pair is asymptotically singular. The defect \eqref{eq:defect} identifies the residual direction and makes a nonsingular limit available before taking any Gaussian approximation.
+\section{Projected Gaussian laws on two different scales}\label{sfh:sec:gaussian}
+The raw edge/component pair is asymptotically singular. The defect \eqref{sfh:eq:defect} identifies the residual direction and makes a nonsingular limit available before taking any Gaussian approximation.
 
 Set
 \begin{align}
- d&=r+\frac{r^4}{4},& \tau^2&=r+\frac{r^4}{3},& \eta&=r+r^4,\label{eq:dmeans}\\
+ d&=r+\frac{r^4}{4},& \tau^2&=r+\frac{r^4}{3},& \eta&=r+r^4,\label{sfh:eq:dmeans}\\
  V&=C(r)-\frac{n^2}{b},& T&=\tau^2-\frac{\eta^2}{b},&
- G_*&=d-\frac{n\eta}{b},\qquad \rho=\frac{G_*}{\sqrt{VT}}.\label{eq:schur}
+ G_*&=d-\frac{n\eta}{b},\qquad \rho=\frac{G_*}{\sqrt{VT}}.\label{sfh:eq:schur}
 \end{align}
 These are Boltzmann means and covariance Schur complements for conditioning on total vertex count. Their scales are
-\begin{equation}\label{eq:schurscales}
+\begin{equation}\label{sfh:eq:schurscales}
  V\sim\frac n{r^2},\qquad T\sim\frac{r^4}{3},\qquad
  \rho\sim\frac{\sqrt3}{4}\frac{r^3}{\sqrt n}\longrightarrow0.
 \end{equation}
@@ -17,18 +17,18 @@ For the cancellation in $V$, the $H$-only expression is exactly
  H-\frac{(\De H)^2}{\De^2H}
  =\frac{Hr}{r^2+5r+4},
 \]
-and the polynomial changes contribute $O(r^4)$. The other equivalents follow directly from \eqref{eq:scales}.
+and the polynomial changes contribute $O(r^4)$. The other equivalents follow directly from \eqref{sfh:eq:scales}.
 
-\begin{theorem}[Quantitative projected characteristic law]\label{thm:gauss}
+\begin{theorem}[Quantitative projected characteristic law]\label{sfh:thm:gauss}
 For every fixed $T_0<\infty$, uniformly over $|t|,|s|\le T_0$,
-\begin{align}\label{eq:gauss}
+\begin{align}\label{sfh:eq:gauss}
  &\E_n\exp\left\{\ii t\frac{K-C(r)}{\sqrt V}
                      +\ii s\frac{\defect-d}{\sqrt T}\right\}\nonumber\\
  &\hspace{15mm}=\exp\{-\tfrac12(t^2+s^2+2\rho ts)\}
        +O_{T_0}(r^{-2}+\sqrt{r/n}).
 \end{align}
 Thus the two standardized variables converge jointly to independent standard normals. In particular,
-\begin{equation}\label{eq:degenerate}
+\begin{equation}\label{sfh:eq:degenerate}
  \left(\frac{K-C(r)}{\sqrt V},
        \frac{E-[n-2C(r)+d]}{2\sqrt V}\right)
  \ \Longrightarrow\ (Z,-Z),
@@ -58,7 +58,7 @@ Both have zero covariance with $N$, and
  \Var Y=V,\quad \Var Q_*=T,\quad \Cov(Y,Q_*)=G_*.
 \]
 On $N=n$, they equal $K-C(r)$ and $\defect-d$. The conditional characteristic numerator is therefore the Fourier integral of
-\begin{equation}\label{eq:markedphase}
+\begin{equation}\label{sfh:eq:markedphase}
  \exp\sum_\alpha\lambda_\alpha
        \{e^{\ii u_\alpha}-1-\ii u_\alpha\},\qquad
  u_\alpha=\frac{x m_\alpha}{\sqrt b}
@@ -66,7 +66,7 @@ On $N=n$, they equal $K-C(r)$ and $\defect-d$. The conditional characteristic nu
       +\frac{s q_\alpha}{\sqrt T},
 \end{equation}
 where $x=\theta\sqrt b$. Its quadratic exponent is exactly
-\begin{equation}\label{eq:markedquadratic}
+\begin{equation}\label{sfh:eq:markedquadratic}
  -\tfrac12(x^2+t^2+s^2+2\rho ts).
 \end{equation}
 The absence of $xt$ and $xs$ terms is the reason for projecting first.
@@ -77,7 +77,7 @@ The absolute third-moment sums satisfy
  \sum_\alpha\lambda_\alpha(m_\alpha/\sqrt b)^3
     &=O(\sqrt{r/n}),\nonumber\\
  \sum_\alpha\lambda_\alpha|a_\alpha/\sqrt V|^3
-    &=O(\sqrt{r/n}),\label{eq:thirdmoments}\\
+    &=O(\sqrt{r/n}),\label{sfh:eq:thirdmoments}\\
  \sum_\alpha\lambda_\alpha|q_\alpha/\sqrt T|^3
     &=O(r^{-2}).\nonumber
 \end{align}
@@ -94,28 +94,28 @@ $\E|\Pois(r)-r|^3\le(3r^2+r)^{3/4}$, from the fourth moment. Multiply by $H\asym
 
 The all-real Taylor inequality
 $|e^{\ii u}-1-\ii u+u^2/2|\le|u|^3/6$, together with
-$(|u|+|v|+|w|)^3\le9(|u|^3+|v|^3+|w|^3)$, bounds the phase difference between \eqref{eq:markedphase} and \eqref{eq:markedquadratic} by
-\begin{equation}\label{eq:markederror}
+$(|u|+|v|+|w|)^3\le9(|u|^3+|v|^3+|w|^3)$, bounds the phase difference between \eqref{sfh:eq:markedphase} and \eqref{sfh:eq:markedquadratic} by
+\begin{equation}\label{sfh:eq:markederror}
  C(|x|+|t|+|s|)^3\{r^{-2}+\sqrt{r/n}\}.
 \end{equation}
 
 \subsection{Domination on the full marked contour}
-The estimates must remain uniform for bounded $t,s$ outside a tiny Gaussian window. On $|\theta|\le c_0/r$, retain ordinary sizes $m\in[r/2,2r]$ and all exceptional types. Their phases in \eqref{eq:markedphase} are at most one in absolute value for sufficiently small $c_0$ and large $n$. The normalized covariance matrix of these retained types differs from the full matrix by $o(1)$ in operator norm. Indeed the omitted Poisson size tails are exponentially small in $r$, even after the polynomial factors from normalizing the small variance $V$; and essentially all defect variance is retained. Since $\rho\to0$, its quadratic form is bounded below by a positive constant times $x^2+t^2+s^2$. Using $1-\cos u\ge cu^2$ yields domination by $e^{-cx^2}$.
+The estimates must remain uniform for bounded $t,s$ outside a tiny Gaussian window. On $|\theta|\le c_0/r$, retain ordinary sizes $m\in[r/2,2r]$ and all exceptional types. Their phases in \eqref{sfh:eq:markedphase} are at most one in absolute value for sufficiently small $c_0$ and large $n$. The normalized covariance matrix of these retained types differs from the full matrix by $o(1)$ in operator norm. Indeed the omitted Poisson size tails are exponentially small in $r$, even after the polynomial factors from normalizing the small variance $V$; and essentially all defect variance is retained. Since $\rho\to0$, its quadratic form is bounded below by a positive constant times $x^2+t^2+s^2$. Using $1-\cos u\ge cu^2$ yields domination by $e^{-cx^2}$.
 
 For the outer arc, ordinary component phases take the form $m\theta'+u$, where
 \[
  \theta'=\theta-\frac{tn}{b\sqrt V}-\frac{s\eta}{b\sqrt T},
  \qquad u=\frac t{\sqrt V}.
 \]
-The shift is $O(n^{-1/2}+r/n)=o(1/r)$. For $c_0/r\le|\theta|\le\pi$, the distance of $\theta'$ from zero modulo $2\pi$ remains at least a constant times $1/r$. The radial estimate \eqref{eq:radial} applies unchanged to $e^{\ii u}H(re^{\ii\theta'})$, since its modulus is unchanged. The exceptional and other polynomial terms add only $O(r^4)$. Thus this entire outer arc is $O(e^{-cn/r^2})$ uniformly for bounded $t,s$.
+The shift is $O(n^{-1/2}+r/n)=o(1/r)$. For $c_0/r\le|\theta|\le\pi$, the distance of $\theta'$ from zero modulo $2\pi$ remains at least a constant times $1/r$. The radial estimate \eqref{sfh:eq:radial} applies unchanged to $e^{\ii u}H(re^{\ii\theta'})$, since its modulus is unchanged. The exceptional and other polynomial terms add only $O(r^4)$. Thus this entire outer arc is $O(e^{-cn/r^2})$ uniformly for bounded $t,s$.
 
 \subsection{Completion of the Gaussian proof}
 For complex $z,w$,
 \[
  |e^z-e^w|\le|z-w|e^{\max(\Re z,\Re w)}
 \]
-by integrating along the line segment. Apply this inequality to the two exponents, use \eqref{eq:markederror} and the preceding domination, and integrate against $e^{-cx^2}$. The numerator error is the normalized integral error $O_{T_0}(r^{-2}+\sqrt{r/n})$ times $(2\pi b)^{-1/2}$. The denominator is
+by integrating along the line segment. Apply this inequality to the two exponents, use \eqref{sfh:eq:markederror} and the preceding domination, and integrate against $e^{-cx^2}$. The numerator error is the normalized integral error $O_{T_0}(r^{-2}+\sqrt{r/n})$ times $(2\pi b)^{-1/2}$. The denominator is
 \[
  \PP(N=n)=(2\pi b)^{-1/2}(1+O(r/n)).
 \]
-The Gaussian integral of \eqref{eq:markedquadratic} therefore gives \eqref{eq:gauss}. Finally $\sqrt T/\sqrt V=O(r^3/\sqrt n)\to0$, so \eqref{eq:defect} yields \eqref{eq:degenerate} and completes the proof of Theorem~\ref{thm:gauss}.
+The Gaussian integral of \eqref{sfh:eq:markedquadratic} therefore gives \eqref{sfh:eq:gauss}. Finally $\sqrt T/\sqrt V=O(r^3/\sqrt n)\to0$, so \eqref{sfh:eq:defect} yields \eqref{sfh:eq:degenerate} and completes the proof of Theorem~\ref{sfh:thm:gauss}.

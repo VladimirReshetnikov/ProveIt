@@ -100,7 +100,8 @@ noncomputable def euclideanSubspaceTorusMeasure : Measure (SubspaceArrayTorus Un
 theorem euclideanSubspaceTorusMeasure_probability [IsProbabilityMeasure ν] :
     IsProbabilityMeasure (euclideanSubspaceTorusMeasure U ν) := by
   unfold euclideanSubspaceTorusMeasure
-  infer_instance
+  exact Measure.isProbabilityMeasure_map
+    (euclideanSubspaceTorusMeasurableEquiv U).measurable.aemeasurable
 
 theorem euclideanSubspaceTorusMeasure_invariant [ν.IsAddLeftInvariant] :
     (euclideanSubspaceTorusMeasure U ν).IsAddLeftInvariant :=

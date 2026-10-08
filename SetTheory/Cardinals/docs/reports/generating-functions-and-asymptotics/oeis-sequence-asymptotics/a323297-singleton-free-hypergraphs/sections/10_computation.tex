@@ -1,9 +1,9 @@
-\section{Exact checks and reproducible computation}\label{sec:computation}
+\section{Exact checks and reproducible computation}\label{sfh:sec:computation}
 The archive separates finite exact statements from noncertified numerical observations. Neither kind of finite check establishes an asymptotic remainder or replaces the proofs above. The accompanying \texttt{COMPUTATION.md} records bounds, algorithms, and environment requirements in detail.
 
 \subsection{Exact coefficient and component checks}
 The labelled assembly recurrence is
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{sfh:eq:recurrence}
  A_0=1,\qquad
  A_n=\sum_{m=1}^n\binom{n-1}{m-1}c_mA_{n-m}.
 \end{equation}
@@ -11,7 +11,7 @@ It follows by choosing the component containing vertex one. Setting $c_1=0$ give
 \[
  e^{C(z)}=e^{U(z)}\sum_{k\ge0}\frac{z^{2k}e^{kz}}{2^kk!},
 \]
-where only $k\le n/2$ contributes to $[z^n]$. A short polynomial-exponential recurrence computes $e^U$, and exact rational or integer convolutions recover the labelled coefficients. Agreement of these two routes is stronger than checking two rearrangements of \eqref{eq:recurrence}.
+where only $k\le n/2$ contributes to $[z^n]$. A short polynomial-exponential recurrence computes $e^U$, and exact rational or integer convolutions recover the labelled coefficients. Agreement of these two routes is stronger than checking two rearrangements of \eqref{sfh:eq:recurrence}.
 
 \begin{samepage}
 The initial terms are
@@ -26,15 +26,15 @@ $B_n$&1&0&0&1&11&10&25&406&4823\\
 \end{tabular}
 \end{center}
 \end{samepage}
-Direct enumeration of admissible edge sets through $n=8$ independently checks these terms, the connected multiplicities, and \eqref{eq:defect} on every object. Exact marked first and second moment identities are checked by two coefficient routes. The released bound for the recurrence-based count and moment checks is $n=640$; this is a deliberate resource bound, not a limitation of the mathematical formulas.
+Direct enumeration of admissible edge sets through $n=8$ independently checks these terms, the connected multiplicities, and \eqref{sfh:eq:defect} on every object. Exact marked first and second moment identities are checked by two coefficient routes. The released bound for the recurrence-based count and moment checks is $n=640$; this is a deliberate resource bound, not a limitation of the mathematical formulas.
 
 \subsection{Symbolic and numerical checks}
-Exact rational Gaussian contractions in \eqref{eq:Eell} reproduce \eqref{eq:E1}--\eqref{eq:E2}. Independent formal series reversal reproduces all coefficients in \eqref{eq:rinverse} and \eqref{eq:reverse}. The public symbolic program reports zero differences, with bounded expansion orders and explicit validation.
+Exact rational Gaussian contractions in \eqref{sfh:eq:Eell} reproduce \eqref{sfh:eq:E1}--\eqref{sfh:eq:E2}. Independent formal series reversal reproduces all coefficients in \eqref{sfh:eq:rinverse} and \eqref{sfh:eq:reverse}. The public symbolic program reports zero differences, with bounded expansion orders and explicit validation.
 
 The separately labelled \texttt{diagnostics.py} evaluates exact-count ratios and saddle approximations at finite sizes. Its tables include the scaled total-variation ratio, the $L^1$ likelihood residual, deletion corrections, coefficient residuals, and marked covariance scales. These are floating-point calculations, explicitly \emph{noncertified}: no interval enclosure, rigorous numerical error bar, or finite onset of the asymptotic estimates is claimed. Exact large integers are not converted to unbounded decimal strings merely to make these diagnostics.
 
 
-For a compact numerical illustration, let $c_*=(10/3)\phi(1)$ and let $R$ be the likelihood remainder in \eqref{eq:likelihood}. The following rounded values are taken from the \emph{noncertified} diagnostic receipt; Poisson sums are truncated as described in the supplement.
+For a compact numerical illustration, let $c_*=(10/3)\phi(1)$ and let $R$ be the likelihood remainder in \eqref{sfh:eq:likelihood}. The following rounded values are taken from the \emph{noncertified} diagnostic receipt; Poisson sums are truncated as described in the supplement.
 \begin{center}
 \small
 \begin{tabular}{rcccc}
@@ -49,8 +49,47 @@ $n$ & $\TV/(\phi(1)v/b)$ & $\TV/(c_*r^3/n)$ & $n^2\E_Q|R|/r^6$ & $\Var_n(K)/V$\\
 \end{tabular}
 \end{center}
 The two TV normalizations are asymptotically equivalent but differ substantially at these sizes. The table illustrates why exact-saddle quantities can be useful well before their leading logarithmic simplifications are accurate; it certifies neither a convergence rate nor an asymptotic onset.
+\begin{writenote}[The table recomputed, 7 October 2026]
+The write recomputed all sixteen entries with its own code: the law of $X$
+from the exact formula~\eqref{sfh:eq:exacth} with exact coefficients of
+$e^{C_0}$ and $e^C$, summed over the Poisson product (terms of $Q$-mass below
+$10^{-35}$ dropped), and $\Var_n(K)$ from exact first and second factorial
+moments.
+Every printed value is the correct rounding of the recomputed one, which also
+equals \file{data/diagnostic_receipt.json} to the printed digits. The
+printed values that are not truncations are $1.08081$ and $0.99947$
+($n=160$; truncations $1.08080$, $0.99946$), $0.57171$ ($n=320$; $0.57170$),
+$1.30935$ and $0.99984$ ($n=640$; $1.30934$, $0.99983$).
+\end{writenote}
 
 \subsection{Reproduction boundaries}
 The build verifies the complete source inventory before running checks, compiles a disposable source copy with a private TeX format and shell escape disabled, and requires byte-for-byte agreement with the frozen PDF and receipts. Python child processes disable bytecode output and enforce a decimal conversion cap independently of the inherited environment. Public input bounds use explicit exceptions, so optimization mode does not remove validation.
 
 The ZIP replay extracts the actual archive, verifies its contents and metadata, rebuilds it in normal and optimized Python modes, and compares the PDF, receipts, and all regenerated archive members. Source hashes are checked before and after builds. Reproducibility is relative to the recorded Python, symbolic-library, and TeX toolchain; a different engine or font installation may legitimately produce different PDF bytes and will be reported as a mismatch. The package includes no third-party paper PDFs and no private working or review notes.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF, the manifest and the delivered README are not shipped; the
+programs are \file{code/*.py} (the builder as \file{code/build.py}), and the
+four receipts and the requirements are shipped under \file{data/}. The
+checkers write to standard output and run from the shipped files; the builder
+and the archive replay expect the delivered layout and the manifest, so they
+run only in a re-extracted archive. The report README gives commands.
+\end{writenote}
+
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{sfh:rem:oeis}
+The write read the entries in the internal format on 7~October 2026.
+\emph{A323297}, revision \#14 (18 August 2019), by Gus Wiseman (11 January
+2019): ``Number of 3-uniform hypergraphs on n labeled vertices where no two
+edges have exactly one vertex in common.'', with the e.g.f.\ by Andrew
+Howroyd (18 August 2019), ``Binomial transform of A323296.'', and a b-file by
+Howroyd for $n=0,\ldots,200$. \emph{A323296}, revision \#15 (18 August 2019),
+by Wiseman (11 January 2019), the spanning version, with Howroyd's comment of
+18 August 2019 that such a hypergraph is a disjoint union of components in
+which any two edges share two vertices (A323294), his e.g.f.\ and a b-file
+for $n=0,\ldots,200$. The component decomposition is thus stated in A323296;
+A323297 carries the e.g.f. \emph{A323294}, revision \#34 (14 November 2025),
+by Wiseman (10 January 2019), with $a(n)=\binom n2$ for $n\ge5$ by Wiseman (16
+January 2019), the e.g.f.\ by Howroyd (2019) and a b-file for
+$n=0,\ldots,1000$. None of the three entries has an asymptotic formula or a
+conjecture. \emph{Checks.} All b-file terms equal the write's computation. No
+OEIS edit is part of this work.
+\end{remark}

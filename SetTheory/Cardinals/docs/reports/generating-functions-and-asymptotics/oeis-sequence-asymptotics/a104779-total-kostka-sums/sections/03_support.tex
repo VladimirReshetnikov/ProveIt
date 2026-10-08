@@ -1,9 +1,9 @@
-\section{Global support control and stabilization}\label{sec:support}
+\section{Global support control and stabilization}\label{tks:sec:support}
 The main difficulty is that the nonfixed support $s$ is not bounded as $n$ grows. Fixed-support calculations alone do not justify summing the asymptotic expansion. We first obtain a uniform positive majorant for every support, then prove sharper behavior at each fixed support.
 
 \subsection{A uniform cycle index majorant}
 Substitute $p_1=x$ and $p_\ell=x^\ell t^\ell$ for $\ell\geq2$. The homogeneous cycle-index polynomial becomes
-\begin{equation}\label{eq:Hjt}
+\begin{equation}\label{tks:eq:Hjt}
 \mathcal H_j(x,t)=h_j(x,x^2t^2,x^3t^3,\ldots)
  =x^j[z^j]\frac{\exp((1-t)z)}{1-tz}.
 \end{equation}
@@ -15,7 +15,7 @@ G(x,t)=\prod_{j\geq2}(1-\mathcal H_j(x,t))^{-1},
 \]
 Thus $B_{n,s}=\sum_{\rho\vdash s,\,\min\rho\geq2}\alpha_{1^{n-s}\rho}$.
 At $t_0=1/4$,
-\begin{equation}\label{eq:C0}
+\begin{equation}\label{tks:eq:C0}
 \sum_{j\geq2}\mathcal H_j(1,t_0)=\frac43e^{3/4}-2<1,
 \qquad
 C_0=\frac1{3-\frac43e^{3/4}}<6.
@@ -23,21 +23,21 @@ C_0=\frac1{3-\frac43e^{3/4}}<6.
 For nonnegative $v_j$ with sum less than $1$, the finite-product inequality
 $\prod_j(1-v_j)\geq1-\sum_jv_j$ and monotone convergence imply
 $G(1,t_0)\leq C_0$. Multiplication by $(1-x)^{-1}$ takes partial sums of the nonnegative $x$ coefficients of $G$, so
-\begin{equation}\label{eq:Bns}
+\begin{equation}\label{tks:eq:Bns}
 B_{n,s}\leq C_0\,4^s\qquad(n,s\geq0).
 \end{equation}
 This estimate is uniform even when $s$ is comparable with $n$.
 
 \subsection{Root and involution bounds}
-\begin{lemma}\label{lem:bounds}
+\begin{lemma}\label{tks:lem:bounds}
 For $k\geq1$, $n\geq1$, and $0\leq s\leq n$,
-\begin{equation}\label{eq:ratbound}
+\begin{equation}\label{tks:eq:ratbound}
 \sqrt k\leq\frac{I_k}{I_{k-1}}\leq1+\sqrt k,
 \qquad
 \frac{I_{n-s}}{I_n}\leq\fall ns^{-1/2}\leq(e/n)^{s/2}.
 \end{equation}
 If $\rho$ has no $1$-parts and $|\rho|=s\geq1$, then
-\begin{equation}\label{eq:rootbound}
+\begin{equation}\label{tks:eq:rootbound}
 r(\rho)\leq2^{s/2}s^{s/4}.
 \end{equation}
 \end{lemma}
@@ -51,7 +51,7 @@ squaring leaves the nonnegative difference $u^2/(1+u)^2$. The upper one follows 
 Multiplying the lower ratio bounds proves the first bound on $I_{n-s}/I_n$. The mean of the largest $s$ values of $\log k$, $1\leq k\leq n$, is at least the mean of all $n$ values. Consequently
 $\fall ns\geq(n!)^{s/n}\geq(n/e)^s$, proving the second bound.
 
-The ratio upper bound also gives $I_m\leq2^m m^{m/2}$ for $m\geq1$. The factor in \eqref{eq:rootcycles} at cycle length $\ell\geq2$ is at most $\ell^{m_\ell/2}I_{m_\ell}$. Hence
+The ratio upper bound also gives $I_m\leq2^m m^{m/2}$ for $m\geq1$. The factor in \eqref{tks:eq:rootcycles} at cycle length $\ell\geq2$ is at most $\ell^{m_\ell/2}I_{m_\ell}$. Hence
 \[
 r(\rho)\leq2^{\sum m_\ell}\prod_{\ell\geq2}(\ell m_\ell)^{m_\ell/2}
 \leq2^{s/2}s^{s/4},
@@ -59,16 +59,16 @@ r(\rho)\leq2^{\sum m_\ell}\prod_{\ell\geq2}(\ell m_\ell)^{m_\ell/2}
 because $\sum m_\ell\leq s/2$ and $\ell m_\ell\leq s$.
 \end{proof}
 
-Combining \eqref{eq:Bns}, \eqref{eq:rootfactor}, and Lemma~\ref{lem:bounds}, the normalized contribution at support $s\geq1$ is at most
+Combining \eqref{tks:eq:Bns}, \eqref{tks:eq:rootfactor}, and Lemma~\ref{tks:lem:bounds}, the normalized contribution at support $s\geq1$ is at most
 \begin{align}
 \frac{I_{n-s}}{I_n}
  \sum_{\substack{\rho\vdash s\\\min\rho\geq2}}
        \alpha_{1^{n-s}\rho}r(\rho)
 &\leq C_0 4^s 2^{s/2}s^{s/4}(e/n)^{s/2}\notag\\
-&\leq C_0\bigl(4\sqrt{2e}\,n^{-1/4}\bigr)^s.\label{eq:globaltail}
+&\leq C_0\bigl(4\sqrt{2e}\,n^{-1/4}\bigr)^s.\label{tks:eq:globaltail}
 \end{align}
 For all sufficiently large $n$ the base of this geometric bound is less than $1$. Thus for every fixed $T$ the total contribution from $s\geq T$ is
-\begin{equation}\label{eq:tailT}
+\begin{equation}\label{tks:eq:tailT}
 O_T(I_n n^{-T/4}).
 \end{equation}
 The estimate is deliberately rough. Its role is uniform control of all large supports, not an attractive numerical onset.
@@ -82,34 +82,34 @@ Q_s(x)=\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}
                 r(\rho)[u_\rho]G(x,u).
 \]
 The root-weighted cycle-index coefficient at support $s$, \emph{before} multiplication by $I_{n-s}$, is
-\begin{equation}\label{eq:Qcoefficient}
+\begin{equation}\label{tks:eq:Qcoefficient}
 [x^n]\frac{Q_s(x)}{1-x}.
 \end{equation}
 
-\begin{lemma}\label{lem:stabilization}
+\begin{lemma}\label{tks:lem:stabilization}
 For each fixed $s$ and each $1<R<\sqrt2$, the function $Q_s$ is analytic in a neighborhood of $|x|\leq R$, and
-\begin{equation}\label{eq:stabilize}
+\begin{equation}\label{tks:eq:stabilize}
 [x^n]\frac{Q_s(x)}{1-x}=CH_s+O_{s,R}(R^{-n}).
 \end{equation}
 Individually, for every fixed type $\rho$ with no $1$-parts,
-\begin{equation}\label{eq:alphastabilize}
+\begin{equation}\label{tks:eq:alphastabilize}
 \alpha_{1^{n-|\rho|}\rho}=Cq_\rho+O_{\rho,R}(R^{-n}).
 \end{equation}
 \end{lemma}
 \begin{proof}
-At $u=0$ the denominators are $1-x^j/j!$. For $|x|\leq R<\sqrt2$, one has $R^j/j!<1$ for every $j\geq2$, with supremum strictly less than $1$. Mark all $u_\ell$ by $t^\ell$. For sufficiently small positive $t$, the positive majorants $\mathcal H_j(R,t)$ stay uniformly below $1$ and have summable total. To see this, \eqref{eq:Hjt} gives a finite summed series whenever $Rt<1$; continuity controls a finite initial set of factors as $t\downarrow0$, and its summable tail is uniformly small. Only finitely many marked variables can enter a fixed weight. The infinite product is therefore locally uniformly convergent and analytic on a slightly larger $x$ disk and a small polydisc in those variables. Cauchy coefficient extraction proves analyticity of $Q_s$ and of each individual marked coefficient.
+At $u=0$ the denominators are $1-x^j/j!$. For $|x|\leq R<\sqrt2$, one has $R^j/j!<1$ for every $j\geq2$, with supremum strictly less than $1$. Mark all $u_\ell$ by $t^\ell$. For sufficiently small positive $t$, the positive majorants $\mathcal H_j(R,t)$ stay uniformly below $1$ and have summable total. To see this, \eqref{tks:eq:Hjt} gives a finite summed series whenever $Rt<1$; continuity controls a finite initial set of factors as $t\downarrow0$, and its summable tail is uniformly small. Only finitely many marked variables can enter a fixed weight. The infinite product is therefore locally uniformly convergent and analytic on a slightly larger $x$ disk and a small polydisc in those variables. Cauchy coefficient extraction proves analyticity of $Q_s$ and of each individual marked coefficient.
 
-The coefficient in \eqref{eq:Qcoefficient} is the partial sum of the Taylor coefficients of $Q_s$. The omitted tail is $O_{s,R}(R^{-n})$, so that partial sum tends to $Q_s(1)$. At $x=1$,
+The coefficient in \eqref{tks:eq:Qcoefficient} is the partial sum of the Taylor coefficients of $Q_s$. The omitted tail is $O_{s,R}(R^{-n})$, so that partial sum tends to $Q_s(1)$. At $x=1$,
 \[
 h_j(1,u_2,u_3,\ldots)=\frac1{j!}
  +\sum_{\substack{\rho\text{ has parts }\geq2\\0<|\rho|\leq j}}
                   \frac{u_\rho}{(j-|\rho|)!z_\rho}.
 \]
-Factoring $1-1/j!$ from the denominator gives $G(1,u)=CP(u)$, and hence $Q_s(1)=CH_s$. The same argument without the root-weighted sum proves \eqref{eq:alphastabilize}.
+Factoring $1-1/j!$ from the denominator gives $G(1,u)=CP(u)$, and hence $Q_s(1)=CH_s$. The same argument without the root-weighted sum proves \eqref{tks:eq:alphastabilize}.
 \end{proof}
 
 \subsection{Proof of the main theorem}
-Fix $S\geq0$ and choose $T=2S+2$. At each retained support $s\leq S$, Lemma~\ref{lem:stabilization} gives
-$I_{n-s}(CH_s+O(R^{-n}))$. The omitted but bounded supports $S<s<T$ contribute $O_S(I_n n^{-(S+1)/2})$, by the same lemma and \eqref{eq:ratbound}. The entire remaining range $s\geq T$ is bounded by \eqref{eq:tailT}, with precisely the same order. Exponentially small retained errors can be absorbed. This proves Theorem~\ref{thm:main}.
+Fix $S\geq0$ and choose $T=2S+2$. At each retained support $s\leq S$, Lemma~\ref{tks:lem:stabilization} gives
+$I_{n-s}(CH_s+O(R^{-n}))$. The omitted but bounded supports $S<s<T$ contribute $O_S(I_n n^{-(S+1)/2})$, by the same lemma and \eqref{tks:eq:ratbound}. The entire remaining range $s\geq T$ is bounded by \eqref{tks:eq:tailT}, with precisely the same order. Exponentially small retained errors can be absorbed. This proves Theorem~\ref{tks:thm:main}.
 
 The second cutoff $T$ is important. Applying the crude global bound directly at $S+1$ would yield only $n^{-(S+1)/4}$, which is weaker than the natural fixed-support remainder.

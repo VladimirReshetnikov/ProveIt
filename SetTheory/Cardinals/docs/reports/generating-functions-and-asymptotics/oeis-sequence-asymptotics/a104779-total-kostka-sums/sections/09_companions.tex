@@ -1,46 +1,46 @@
-\section{Factorial scale companions and binary probability}\label{sec:companions}
+\section{Factorial scale companions and binary probability}\label{tks:sec:companions}
 Let $b_n$ count all rectangular nonnegative integer matrices of total entry sum $n$, with no zero rows or columns and with weakly decreasing row and column sums. Let $c_n$ count the same objects with entries restricted to $0$ or $1$. These are A321652 and A068313, with official offsets $0$ and $1$, respectively \cite{A321652,A068313}. We use $b_0=1$ and set $c_0=1$ as the natural empty-object extension, not as a claim about the official offset of A068313. Dimensions vary, and equal-margin positions remain distinct.
 
-With $\alpha_\nu$ as in \eqref{eq:F}, Schwob gives the exact identities
-\begin{equation}\label{eq:companionexact}
+With $\alpha_\nu$ as in \eqref{tks:eq:F}, Schwob gives the exact identities
+\begin{equation}\label{tks:eq:companionexact}
 b_n=\sum_{\nu\vdash n}\alpha_\nu^2z_\nu,\qquad
 c_n=\sum_{\nu\vdash n}\alpha_\nu^2(-1)^{n-\ell(\nu)}z_\nu,
 \end{equation}
 where $\ell(\nu)$ is the number of parts \cite[\S4.3, (4.9), (4.11)]{Schwob}. These identities are prior work. They use the same cycle-index coefficients as the Kostka total, with different weights.
 
 For $s\geq0$, define
-\begin{equation}\label{eq:Js}
+\begin{equation}\label{tks:eq:Js}
 J_s^+=\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}z_\rho q_\rho^2,
 \qquad
 J_s^-=\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}
                 (-1)^{s-\ell(\rho)}z_\rho q_\rho^2,
 \qquad J_0^\pm=1.
 \end{equation}
-\begin{theorem}\label{thm:companions}
+\begin{theorem}\label{tks:thm:companions}
 For every fixed integer $S\geq0$,
 \begin{align}
 b_n&=C^2\sum_{s=0}^{S}J_s^+(n-s)!
-                        +O_S(n!n^{-S-1}),\label{eq:bexpansion}\\
+                        +O_S(n!n^{-S-1}),\label{tks:eq:bexpansion}\\
 c_n&=C^2\sum_{s=0}^{S}J_s^-(n-s)!
-                        +O_S(n!n^{-S-1}).\label{eq:cexpansion}
+                        +O_S(n!n^{-S-1}).\label{tks:eq:cexpansion}
 \end{align}
-All coefficients are effectively computable from the same finite product as in Proposition~\ref{prop:tails}.
+All coefficients are effectively computable from the same finite product as in Proposition~\ref{tks:prop:tails}.
 \end{theorem}
 \begin{proof}
-For $\nu=1^{n-s}\rho$, one has $z_\nu=(n-s)!z_\rho$ and $(-1)^{n-\ell(\nu)}=(-1)^{s-\ell(\rho)}$. Each fixed-support term therefore has the asserted limit by \eqref{eq:alphastabilize}. For the growing-support tail, write $\alpha_{n,\rho}=\alpha_{1^{n-s}\rho}$. Then
+For $\nu=1^{n-s}\rho$, one has $z_\nu=(n-s)!z_\rho$ and $(-1)^{n-\ell(\nu)}=(-1)^{s-\ell(\rho)}$. Each fixed-support term therefore has the asserted limit by \eqref{tks:eq:alphastabilize}. For the growing-support tail, write $\alpha_{n,\rho}=\alpha_{1^{n-s}\rho}$. Then
 \[
 z_\rho=\prod_{\ell\geq2}\ell^{m_\ell}m_\ell!
  \leq\prod_{\ell\geq2}(\ell m_\ell)^{m_\ell}
  \leq s^{s/2},
 \]
-and positivity with \eqref{eq:Bns} gives
+and positivity with \eqref{tks:eq:Bns} gives
 \[
 \sum_{\rho\vdash s,\,\min\rho\geq2}\alpha_{n,\rho}^2
  \leq\left(\sum_\rho\alpha_{n,\rho}\right)^2
  \leq C_0^2 16^s.
 \]
 Also $(n-s)!/n!\leq(e/n)^s$. Thus the absolute contribution of support $s$, normalized by $n!$, is at most
-\begin{equation}\label{eq:companiontail}
+\begin{equation}\label{tks:eq:companiontail}
 C_0^2(16e\,n^{-1/2})^s.
 \end{equation}
 The tail starting at $T$ is $O_T(n^{-T/2})$. Splitting omitted supports at $T=2S+2$, as in the main proof, gives $O_S(n^{-S-1})$. The signed $c_n$ tail is bounded in absolute value by the positive $b_n$ tail.
@@ -48,7 +48,7 @@ The tail starting at $T$ is $O_T(n^{-T/2})$. Splitting omitted supports at $T=2S
 
 \subsection{Initial coefficients and their interpretation}
 Set
-\begin{equation}\label{eq:eta}
+\begin{equation}\label{tks:eq:eta}
 \eta_2=q_{(2)}=D_2/2
  =\sum_{j\geq2}\frac{\binom j2}{j!-1}>0.
 \end{equation}
@@ -58,7 +58,7 @@ J_1^+&=J_1^-=0,\notag\\
 J_2^+&=2\eta_2^2,&J_2^-&=-2\eta_2^2,\notag\\
 J_3^+&=3H_3^2,&J_3^-&=3H_3^2,\notag\\
 J_4^+&=D_4^2/4+2H_4^2,&J_4^-&=-D_4^2/4+2H_4^2.
-\label{eq:lowJs}
+\label{tks:eq:lowJs}
 \end{align}
 Indeed, $q_{(3)}=H_3$, $q_{(4)}=D_4/4$, and $q_{(2,2)}=H_4/2$; the centralizer factors at the last two types are $4$ and $8$, with signs minus and plus.
 
@@ -67,29 +67,29 @@ Writing $u_n^+=b_n$ and $u_n^-=c_n$, conversion of factorial shifts gives
 \frac{u_n^\pm}{C^2n!}=1
  &+J_2^\pm n^{-2}+(J_2^\pm+J_3^\pm)n^{-3}\notag\\
  &+(J_2^\pm+3J_3^\pm+J_4^\pm)n^{-4}+O(n^{-5}).
- \label{eq:companionordinary}
+ \label{tks:eq:companionordinary}
 \end{align}
 There is no relative $n^{-1}$ correction. The first deviations from $C^2n!$ have opposite signs. In particular,
 \begin{align}
-\frac{b_n}{c_n}&=1+4\eta_2^2n^{-2}+O(n^{-3}),\label{eq:bratio}\\
-b_n-c_n&=4C^2\eta_2^2(n-2)!+O(n!n^{-4}).\label{eq:bdifference}
+\frac{b_n}{c_n}&=1+4\eta_2^2n^{-2}+O(n^{-3}),\label{tks:eq:bratio}\\
+b_n-c_n&=4C^2\eta_2^2(n-2)!+O(n!n^{-4}).\label{tks:eq:bdifference}
 \end{align}
 The stronger remainder in the difference uses cancellation at support $3$.
 Binary matrices are literally a subset of the same variable-dimension, sorted-margin matrix universe. Therefore a uniformly chosen matrix counted by $b_n$ is binary with probability
-\begin{equation}\label{eq:binaryprob}
+\begin{equation}\label{tks:eq:binaryprob}
 \frac{c_n}{b_n}=1-4\eta_2^2n^{-2}+O(n^{-3}).
 \end{equation}
 The agreement of the row and column conventions is necessary for this probability interpretation.
 
 \subsection{Effective companion constants}
-The coefficient version of \eqref{eq:factorialconstanttail} gives, for $s\geq2$ and $J\geq\max(s,4)$,
-\begin{equation}\label{eq:qtail}
+The coefficient version of \eqref{tks:eq:factorialconstanttail} gives, for $s\geq2$ and $J\geq\max(s,4)$,
+\begin{equation}\label{tks:eq:qtail}
 0\leq q_\rho-q_{\rho,J}\leq E_{s,J},\qquad
 E_{s,J}=24s4^s\frac{(J+1)^s}{(J+1)!},\qquad
 q_\rho\leq6\cdot4^s.
 \end{equation}
 Since $q_\rho^2-q_{\rho,J}^2\leq12\cdot4^sE_{s,J}$, either sign satisfies
-\begin{equation}\label{eq:Jtail}
+\begin{equation}\label{tks:eq:Jtail}
 \left|J_s^\pm-\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}
                  \eps_\rho^\pm z_\rho q_{\rho,J}^2\right|
  \leq12\cdot4^sE_{s,J}\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}z_\rho,
@@ -97,8 +97,8 @@ Since $q_\rho^2-q_{\rho,J}^2\leq12\cdot4^sE_{s,J}$, either sign satisfies
 where $\eps_\rho^+=1$ and $\eps_\rho^-=(-1)^{s-\ell(\rho)}$. The plus approximation is one-sided; the signed one need not be. This is a finite stopping rule, though not an optimized bound.
 
 \subsection{Companion inverses}
-Stirling's expansion and Theorem~\ref{thm:companions} imply, for every fixed $K$,
-\begin{equation}\label{eq:companionlog}
+Stirling's expansion and Theorem~\ref{tks:thm:companions} imply, for every fixed $K$,
+\begin{equation}\label{tks:eq:companionlog}
 \log u_n^\pm=n(\log n-1)+\tfrac12\log n+\delta_0
  +\sum_{j=1}^{K}\delta_j^\pm n^{-j}+O_K(n^{-K-1}),
 \end{equation}
@@ -110,14 +110,14 @@ with
 \delta_3^\pm=J_2^\pm+J_3^\pm-\tfrac1{360}.
 \]
 For $L=\log A$, the Lambert-$W$ seed is now
-\begin{equation}\label{eq:companionseed}
+\begin{equation}\label{tks:eq:companionseed}
 x_0=\frac{L}{W_0(L/e)},\qquad x_0(\log x_0-1)=L.
 \end{equation}
 The smooth truncated logarithm has derivative $\log x+O(1/x)$, so its root has index error $O(x^{-K-1}/\log x)$ for an exact-term input. Its seed error is $O(1)$, and Newton iteration has local error recurrence $e_{q+1}=O(e_q^2/(x_0\log x_0))$. In particular,
-\begin{equation}\label{eq:companioninverse}
+\begin{equation}\label{tks:eq:companioninverse}
 n=x_0-\frac12-\frac{\delta_0}{\log x_0}
                +O\left(\frac1{x_0\log x_0}\right).
 \end{equation}
 Every fixed precision is obtained by finitely many terms and steps.
 
-Both sequences are eventually strictly increasing because their adjacent ratios are asymptotic to $n$. For threshold indices, use the upper and lower envelopes obtained by adding and subtracting $Bx^{-K-1}$ from the smooth logarithm, invert them, and take their two ceilings. The resulting root width is $O(x^{-K-1}/\log x)$, so at most two consecutive candidates remain eventually. The same finite-input caveat as in Theorem~\ref{thm:ceilings} applies: the existence of asymptotic constants does not certify a numerical rounding decision.
+Both sequences are eventually strictly increasing because their adjacent ratios are asymptotic to $n$. For threshold indices, use the upper and lower envelopes obtained by adding and subtracting $Bx^{-K-1}$ from the smooth logarithm, invert them, and take their two ceilings. The resulting root width is $O(x^{-K-1}/\log x)$, so at most two consecutive candidates remain eventually. The same finite-input caveat as in Theorem~\ref{tks:thm:ceilings} applies: the existence of asymptotic constants does not certify a numerical rounding decision.

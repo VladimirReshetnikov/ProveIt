@@ -1,17 +1,17 @@
-\section{The expansion and its scope}\label{sec:results}
+\section{The expansion and its scope}\label{cms:sec:results}
 For $n\geq1$, let $a_n$ be the number of permutations of $[n]=\{1,\ldots,n\}$ for which the sum of the least elements of all cycles is $n$. The empty permutation is counted separately by $a_0=1$. The initial values are
 \[
 1,1,0,2,3,8,90,384,2940,18864,232848,1919520,\ldots,
 \]
 starting at $n=0$. Put
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{cms:eq:normalization}
 b_n=\frac{a_n}{(n-1)!}\qquad(n\geq1),\qquad A=\ee^{-\gamma},
 \end{equation}
 where $\gamma$ is Euler's constant. The normalization is never applied at $n=0$.
 
-\begin{theorem}[Fixed order expansion]\label{thm:main}
+\begin{theorem}[Fixed order expansion]\label{cms:thm:main}
 For every fixed integer $K\geq2$ there are real functions $P_j(n,u)$, $2\leq j\leq K$, such that
-\begin{equation}\label{eq:main}
+\begin{equation}\label{cms:eq:main}
 b_n=A+\sum_{j=2}^{K}\frac{P_j(n,\log n)}{n^j}
  +\bigO_K\!\left(\frac{(1+\log n)^{K-1}}{n^{K+1}}\right)
  \qquad(n\longrightarrow\infty).
@@ -26,13 +26,13 @@ and each coefficient has mean zero over that period. In particular, no nonoscill
 The quantifier ``fixed'' matters. The implied constants and the sufficiently large starting index may depend on $K$. The theorem does not assert convergence when $K\to\infty$, a uniform estimate in $K$, or a summation of an infinite transseries. It describes a compatible hierarchy of finite asymptotic expansions. Polynomial growth in $\log n$ is included explicitly in the error.
 
 Let $\om=\exp(2\pi\ii/3)$ and define
-\begin{equation}\label{eq:Comega}
+\begin{equation}\label{cms:eq:Comega}
 C_\om=\prod_{r=1}^{3}
 \frac{\Gamma(r/3)}{\Gamma\bigl((r+\om^{r+1})/3\bigr)}.
 \end{equation}
-\begin{theorem}[The first two corrections]\label{thm:explicit}
+\begin{theorem}[The first two corrections]\label{cms:thm:explicit}
 The expansion through order three is
-\begin{align}\label{eq:explicit}
+\begin{align}\label{cms:eq:explicit}
 b_n={}&A+\frac{(-1)^n}{n^2}\\
 &+\frac{(-1)^n(8-2\gamma-2\log n)
  +6\Rea(C_\om\om^{1-n})}{n^3}
@@ -43,23 +43,177 @@ For orientation only, a high precision evaluation gives
 C_\om\approx0.83150170079289916148
       -1.03642907874318733151\,\ii.
 \]
-The displayed decimal is an arithmetic approximation, not an interval certificate. The exact definition is \eqref{eq:Comega}.
+The displayed decimal is an arithmetic approximation, not an interval certificate. The exact definition is \eqref{cms:eq:Comega}.
 \end{theorem}
+\begin{writenote}[The printed decimal, 7 October 2026]
+The write evaluated~\eqref{cms:eq:Comega} at 50 digits:
+$C_\om=0.8315017007928991614835830\ldots-1.0364290787431873315053703\ldots\,\ii$,
+equal to an independent evaluation of the partial products to twelve digits.
+The printed real part is a truncation; the printed imaginary part is the
+rounding of $-1.03642907874318733150\ldots$, whose truncation at the printed
+length ends in $\ldots33150$.
+\end{writenote}
 
 \subsection{Why the positive singularity is not enough}
 The exact generating function is
-\begin{equation}\label{eq:Fintro}
+\begin{equation}\label{cms:eq:Fintro}
 F(z)=\prod_{j\geq1}\left(1+\frac{z^{j+1}}j\right),\qquad
 b_n=[z^{n-1}]F(z),\qquad |z|<1.
 \end{equation}
-Its unit circle is a natural boundary. The pole at $1$ supplies the constant $A$, but the nontrivial roots of unity supply every algebraic correction. A radial estimate as $z\uparrow1$ cannot, by itself, prove \eqref{eq:main}. In particular, subtracting the positive pole does not produce analytic continuation across a whole arc around $1$.
+Its unit circle is a natural boundary. The pole at $1$ supplies the constant $A$, but the nontrivial roots of unity supply every algebraic correction. A radial estimate as $z\uparrow1$ cannot, by itself, prove \eqref{cms:eq:main}. In particular, subtracting the positive pole does not produce analytic continuation across a whole arc around $1$.
 
 We instead split $F$ into a finite polylogarithmic factor and a tail with as many bounded boundary derivatives as the chosen order requires. Only finitely many roots then need explicit local subtraction. A global absolutely continuous boundary trace justifies repeated Fourier integration by parts. This establishes an actual coefficient estimate, including the contribution of all the unselected high-order roots.
 
 \subsection{Attribution and the bounded novelty claim}
-The finite record polynomial is classical and appears explicitly in Louchard \cite[Eq.~(1)]{Louchard}; its conversion to \eqref{eq:Fintro} is elementary. The leading constant $A$ follows immediately from the Dickman local limit theorem of Giuliano, Szewczak and Weber \cite[Theorem~2.1]{GSW}. The general hybrid method, including expansions at roots of unity despite a natural boundary, belongs to Flajolet, Fusy, Gourdon, Panario and Pouyanne \cite{FFGPP}. Their Section~3 analyzes the related product $\prod_{j\geq1}(1+z^j/j)$, whose correction sector is different from that of \eqref{eq:Fintro}.
+The finite record polynomial is classical and appears explicitly in Louchard \cite[Eq.~(1)]{Louchard}; its conversion to \eqref{cms:eq:Fintro} is elementary. The leading constant $A$ follows immediately from the Dickman local limit theorem of Giuliano, Szewczak and Weber \cite[Theorem~2.1]{GSW}. The general hybrid method, including expansions at roots of unity despite a natural boundary, belongs to Flajolet, Fusy, Gourdon, Panario and Pouyanne \cite{FFGPP}. Their Section~3 analyzes the related product $\prod_{j\geq1}(1+z^j/j)$, whose correction sector is different from that of \eqref{cms:eq:Fintro}.
 
-The specific calculation developed here is the cancellation of the entire nonoscillatory algebraic sector for the shifted exponent $j+1$, together with explicit oscillatory coefficients and a justified integer inverse. These particular refinements were not found in the sources inspected for this report. That statement is a bounded literature observation, not a claim of worldwide priority. Section~\ref{sec:sources} describes the source and duplicate-search limits, including the lack of a freshly retrieved OEIS revision for A368246.
+The specific calculation developed here is the cancellation of the entire nonoscillatory algebraic sector for the shifted exponent $j+1$, together with explicit oscillatory coefficients and a justified integer inverse. These particular refinements were not found in the sources inspected for this report. That statement is a bounded literature observation, not a claim of worldwide priority. Section~\ref{cms:sec:sources} describes the source and duplicate-search limits, including the lack of a freshly retrieved OEIS revision for A368246.
 
 \subsection{Guide to the proof}
-Section~\ref{sec:counting} fixes the combinatorial normalization and index shift. Sections~\ref{sec:tail}--\ref{sec:roots} construct the local expansions with differentiated remainders. Section~\ref{sec:global} supplies the global boundary argument, and Section~\ref{sec:transfer} converts it into Theorem~\ref{thm:main}. Section~\ref{sec:explicit} proves Theorem~\ref{thm:explicit} without fitting coefficients. Section~\ref{sec:inverse} gives the threshold envelope and a finite Newton approximation to its explicit model root. The final sections document the reproducible arithmetic, known limitations, and sources, then propose further research questions.
+Section~\ref{cms:sec:counting} fixes the combinatorial normalization and index shift. Sections~\ref{cms:sec:tail}--\ref{cms:sec:roots} construct the local expansions with differentiated remainders. Section~\ref{cms:sec:global} supplies the global boundary argument, and Section~\ref{cms:sec:transfer} converts it into Theorem~\ref{cms:thm:main}. Section~\ref{cms:sec:explicit} proves Theorem~\ref{cms:thm:explicit} without fitting coefficients. Section~\ref{cms:sec:inverse} gives the threshold envelope and a finite Newton approximation to its explicit model root. The final sections document the reproducible arithmetic, known limitations, and sources, then propose further research questions.
+
+\subsection{Provenance, sources and reading conventions}\label{cms:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~234 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report234.zip} ($648{,}517$ bytes, 25 files, wrapper directory
+\file{Report234/}), arrival commit \file{60f54ea06}, placed in
+\file{a4186a946}. The text is the delivered \file{article.tex} (67 lines) with
+its eleven \verb|\input| files \file{sections/01_results.tex}, \ldots,
+\file{sections/11_sources.tex} (29 pages, dated 5~October 2026), shipped
+under the same names. The programs are shipped under \file{code/} (the
+delivered root \file{build.py} as \file{code/build.py}); the receipts
+\file{code/receipt.json} and \file{code/guard_receipt.json} and the
+requirements under \file{data/}; \file{SOURCES.md} as delivered. Not shipped,
+and retrievable from the arrival commit: the delivered \file{Report234.pdf},
+the checksum manifest \file{MANIFEST.sha256} (23 entries, all verified at the write) and the delivered
+\file{README.md}, which the report README replaces. The package records no
+ProveIt commit, although \file{SOURCES.md} names five reports of this
+collection and the blob hashes of four of them (all four blobs are in the
+repository's history: two are the current versions, two are earlier versions
+since revised). It carries no ``prepared for private review'' line and no
+personal data. It is a single-source report, so no merge choice was made. The
+write prefixed the 104 delivered labels with \file{cms:} and updated the
+references to them (75 \verb|\eqref|, 27 \verb|\ref|); it added this subsection, the notes marked
+[write] and Remarks~\ref{cms:rem:transseries} and~\ref{cms:rem:oeis}, each the
+last statement of its section, and inserted no numbered display, so every
+section, theorem and equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A368246 and
+A143946 in the internal format, with the b-file of A368246
+(Remark~\ref{cms:rem:oeis}); Giuliano--Szewczak--Weber, arXiv:1309.1578v1 (37
+pages), Theorem~2.1 and its model on p.~2, which is the model of
+Section~\ref{cms:sec:counting}; the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}, \file{plt:thm:lw-template}). Not read by the write:
+Louchard, Kortchemski, de la Bret\`eche--Tenenbaum and
+Flajolet--Fusy--Gourdon--Panario--Pouyanne; the source's account of them
+(Section~\ref{cms:sec:sources} and \file{SOURCES.md}) is reported, not
+confirmed, in particular the literal invocation of the hybrid theorem in
+Section~6.5.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim, recorded the local limit theorem as
+imported, and reran the delivered suite on a copy (it reproduces apart from a
+recorded Python version string). \emph{What the write checked.} It read every
+proof and found no error. With its own code (Python 3.14.4, exact integers and
+fractions, 80-digit fixed point; SymPy 1.14.0; mpmath 1.3.0 at 30--60 digits),
+not importing the delivered programs, it
+\begin{itemize}\raggedright
+\item computed $a_n$ from~\eqref{cms:eq:finite} for $n\le451$, equal to all
+452 terms of the OEIS b-file and to the displayed values; the shifted
+product~\eqref{cms:eq:shift} exactly for $n\le61$; and, for $n\le8$, both
+statistics on every permutation: the counts are $a_n$ and the two
+distributions coincide;
+\item computed $b_n$ for $n\le4001$ from~\eqref{cms:eq:Fintro} in 80-digit
+fixed point (agreeing with the exact values for $n\le451$ to $10^{-61}$): the
+remainder of~\eqref{cms:eq:explicit}, times $n^4/(1+\log n)^2$, has absolute
+value at most $5.52$ for $200\le n\le4001$; $n^2(b_n-A)=\pm1$ up to
+$O(\log n/n)$, and its means over six consecutive $n$ are of size $10^{-6}$
+to $10^{-8}$, as the absence of an $n^{-1}$ term requires;
+\item evaluated $C_\om$ and $Q_{\ii}$ by the Gamma
+products~\eqref{cms:eq:gamma}, \eqref{cms:eq:Qi} and independently by
+extrapolated partial products (twelve and ten digits agree), $F(-1)=1$, the
+slope~\eqref{cms:eq:slopeS} ($S=0.7413602942\ldots=2\log2+1-\zeta(2)$), the
+$r=1$ slope $\frac32-\log2$ symbolically, and the sum $\frac12$ of the four
+contributions;
+\item verified the tree cancellation~\eqref{cms:eq:exactcancel} through degree
+40 and the leading terms~\eqref{cms:eq:Bqfirst} for $2\le q\le14$ with its own
+exact coefficients (with $B_2=s-2s^2+\cdots$, $B_4=\frac83s^3+\cdots$);
+\item derived the jet~\eqref{cms:eq:tminus} from~\eqref{cms:eq:logminus}
+symbolically; verified~\eqref{cms:eq:exactlogidentities} exactly for $3\le
+m\le30$, \eqref{cms:eq:minusm} against the exact coefficients at $m=1000$ and
+$4000$, the shift to~\eqref{cms:eq:minusn}, the generic
+coefficient~\eqref{cms:eq:genericcoefficient} at $q=3$ and the constant
+$256$ of~\eqref{cms:eq:ipair};
+\item checked~\eqref{cms:eq:X}, \eqref{cms:eq:halfresidual} ($24X$ times the
+residual tends to $-1$) and~\eqref{cms:eq:displacement} for the model $B_3$
+($(r_3-X-\frac12)X\log X\to\frac1{24}$), and the monotone quadratic convergence
+of~\eqref{cms:eq:Newton}, at $\log y=10^3,10^5,10^8$;
+\item checked the claim on constant shifts in Section~\ref{cms:sec:questions}
+numerically: $m(b^{(d)}_m-A)/(A(1-d))$ is $0.9970$ ($d=0$) and $1.0017$
+($d=2$) at $m=3000$.
+\end{itemize}
+It reran, on a fresh copy of the delivered layout, \file{checks.py} (normal
+and \texttt{-O}): both receipts equal \file{data/receipt.json} apart from the
+recorded Python version (3.14.4 against 3.12.14); \file{record_sum.py} with
+\texttt{exact} and \texttt{inverse} runs. The guard suite \file{guard_tests.py} stops on Windows
+at ``file path guard 5'', a path written with forward slashes and a
+\file{..} component, which is not a mathematical failure. The PDF and ZIP
+builder and \file{reproduce_zip.py} were not run. Floating computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A368246 or A143946. The five reports that \file{SOURCES.md} inspected as
+possible duplicates (\file{a039831-two-fourier-peaks},
+\file{a372395-acyclic-orientation-partitions},
+\file{a279619-level-seven-gamma-constant},
+\file{a238016-restricted-partitions-cubic-boundary},
+\file{a189281-path-forest-expansions}) treat other models; no result is
+shared and no reciprocal note is proposed. No Lean or Rocq file treats these
+sequences; no statement of this report is formalized, and its place in the
+collection confers no formal status. The inverse is compared with the
+transseries volume in Remark~\ref{cms:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The finite counting polynomial (Louchard, Eq.~(1)), its reduction to the
+shifted product, the leading constant $\ee^{-\gamma}$ (Giuliano--Szewczak--Weber,
+Theorem~2.1), Gamma grouping at roots of unity and the hybrid method
+(Flajolet--Fusy--Gourdon--Panario--Pouyanne) are prior; the refinements were
+not found in the inspected sources, a bounded observation and no priority
+claim. Not claimed: convergence of an infinite root-of-unity transseries or
+uniformity in~$K$; effective constants or onsets; a finite threshold
+certificate from rounding a model root; interval certification of the printed
+Gamma amplitudes; a complete implementation of every higher $P_j$; formal
+verification, peer review or a worldwide priority search; that the
+interpolation of Section~\ref{cms:sec:inverse} interpolates the sequence; that
+the guard tests prove security. \emph{The write adds:} its checks are exact or
+floating computations; its transseries remark claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{5.3in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$A$, $A_K$ & $A=\ee^{-\gamma}$; $A_K(x)=\Gamma(x)B_K(x)$ the real model~\eqref{cms:eq:AK}.\\
+$B$ & $B_{1,L}$, $B_{q,L}$, $B_q(s)$ the (filtered) tree series of Sections~\ref{cms:sec:positive}--\ref{cms:sec:roots}; $B_K(x)$ the real interpolation of Section~\ref{cms:sec:inverse}. \emph{False reading:} $B_2(s)=s-2s^2+\cdots$ in~\eqref{cms:eq:B2} and $B_2(x)=A+\cos(\pi x)/x^2$ in~\eqref{cms:eq:Bmodels} are unrelated.\\
+$C$, $D$ & $C_\om$ the Gamma amplitude; $C_K$, $\widetilde C_K$, $D_K$ constants; $D_L(s)=1-B_{1,L}(s)$.\\
+$d$, $s$ & $d=L-1$ the boundary regularity; $d$ the constant shift in Section~\ref{cms:sec:questions}; $s$ the exponential coordinate $z=\zeta\ee^{-s}$, and in Section~6.5 the regularity parameter of the hybrid theorem.\\
+$F$, $\widehat F$, $f_{K,y}$ & $F$ the shifted product~\eqref{cms:eq:Fintro}; $\widehat F$ without its first factor; $f_{K,y}$ the Newton function~\eqref{cms:eq:fNewton}.\\
+$G$, $G_n$ & $G_n(z)$ the counting polynomial~\eqref{cms:eq:finite}; $G(z)$ the subtracted function~\eqref{cms:eq:G}.\\
+$H$ & $H_L$ the finite polylogarithmic exponent~\eqref{cms:eq:HL}; $H_m$ harmonic numbers ($H_0=0$).\\
+$L$, $\mathcal L$, $M$, $m$ & $L$ the cutoff; $\mathcal L$ the Lambert target~\eqref{cms:eq:Lambert}; $M=K+2$ the number of derivatives; $m=n-1$ the coefficient index.\\
+$P$, $Q$ & $P_L$, $Q_L$ the factors of~\eqref{cms:eq:factorization}; $P_j(n,u)$, $\widetilde P_j$ the periodic polynomials; $Q_{\ii}=\widehat F(\ii)$; $Q_{p,h,j}$ the transfer polynomials. \emph{False reading:} $P_j$ is not $P_L$.\\
+$r$, $q$, $h$ & $r$ the polylogarithm index, the residue class in Proposition~\ref{cms:prop:gamma}, and $r=r_K(y)$ the model root~\eqref{cms:eq:r}; $q$ the order of a root; $h$ a derivative order and a logarithm power.\\
+$T$ & $T(w)$ the tree function~\eqref{cms:eq:tree}; $T_n=\sum kI_k$ in Section~2.3; $T(s)$, $T_{d-1}$ Taylor polynomials in~\eqref{cms:eq:taylor} and~\eqref{cms:eq:Qremainder}. \emph{False reading:} $T_n$ is a random variable.\\
+$t$, $\nu$, $X$ & $t=1-z/\zeta$ the local variable, and $t$ the Newton step count in Theorem~\ref{cms:thm:Newton}; $\nu(y)$ the integer threshold; $X$ the Lambert coordinate.\\
+$\lambda_j$, $\om$, $\varepsilon_\zeta$ & $\lambda_j=\lcm(2,\ldots,j)$; $\om=\ee^{2\pi\ii/3}$; $\varepsilon_\zeta=1$ at $\pm\ii$.\\
+\bottomrule
+\end{longtable}
+\endgroup
