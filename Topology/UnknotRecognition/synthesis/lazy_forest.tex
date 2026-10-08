@@ -1,0 +1,235 @@
+\section{Prepare compressed braid factors only when they are visited}
+\label{sec:lazy-forest}
+
+Section~\ref{sec:adaptive-forest} stops recognition after a complete
+nontrivial-factor proof, but still constructs and summarizes every projected
+factor before choosing the first one. Thus the earlier scheduler saves
+leaf recognition work while paying all factor-preparation costs. The
+maintained recognizer now constructs a cheaper schedule directly from the
+input grammar, and prepares factors on demand. The topology theorem and
+certificate formats are unchanged.
+
+\subsection{Keep global component validation before scheduling}
+
+The input grammar is validated in full, including unreachable rules. Its
+root occurrence counts determine every singleton-generator cut. Its exact
+root permutation must describe a knot before any factor can prove a
+nontrivial-knot verdict. A link containing a nontrivial component remains a
+link; one obstructing factor does not replace this global check.
+
+As before, deleting singleton generators partitions consecutive strand
+intervals and expresses the knot as a connected sum of their projected
+closures. One nontrivial summand proves the whole knot nontrivial, whereas
+an unknot verdict requires every summand to be an unknot. A selected-factor
+proof therefore remains the existing version-three certificate with one
+source-bound projected grammar. Positive certificates retain every factor
+in original strand order, regardless of discovery order. The checker still
+reconstructs the selected projection, or all projections for a complete
+positive proof, without consulting the producer's schedule.
+
+\subsection{A schedule without constructing the projected grammars}
+
+Let $s$ be the number of supplied grammar rules, $m$ the number of strands,
+and $f$ the number of factor intervals. Complete root support implies
+$m\le s+1$, so a strand-label-to-factor array is safe after global knot
+validation. Cut labels map to no factor. Summing root occurrence counts
+inside each interval gives its exact projected word length.
+
+A reverse DAG pass propagates root weights to children, adding both
+contributions when a concatenation repeats the same child. Each terminal
+contributes its weight with its sign to the exponent of its factor.
+Unreachable terminals have weight zero. Consequently these projected
+lengths and exponents are exact without expanding any word or building
+any factor grammar.
+
+To estimate construction cost, a forward pass assigns each node either
+an empty span or the hull of the factor indices touched by its terminal
+descendants. A terminal at a cut has empty span. A concatenation takes the
+hull of its nonempty child spans. The hull may contain factors that the
+node does not actually touch; this only makes the estimate larger.
+
+A terminal contributes a possible new rule to its single factor. A
+concatenation contributes only where both children can survive: the
+intersection of the two child hulls. If one child is empty in a factor,
+projection aliases the surviving child and creates no rule. An empty child
+span or a disjoint pair of child spans therefore contributes nothing.
+
+For each nonempty contribution interval $[a,b]$, add one to a difference
+array at $a$ and subtract one at $b+1$. Prefix summation gives the possible
+rule creations per factor. Its value plus one bounds the number of rules
+in the canonical projection. Every created terminal has the corresponding
+factor label; every created concatenation has two nonempty projected
+children, so that factor belongs to both child hulls. The extra rule is
+the empty node. Interning and false-positive hull intersections can only
+make the estimate larger than the actual count. All supplied nodes are
+considered, including unreachable ones, because the established canonical
+projection includes their surviving rules. This differs deliberately from
+root-weighted length and exponent.
+
+The schedule keeps the previous three priority classes: at-most-two-strand
+or exponent-obstructed factors first, other three-strand factors next, and
+wider residual factors last. Within a class it sorts by this rule-count
+upper bound, then original index. The old tie-breaker was the actual
+projected rule count, which required eager construction. The new estimate
+is a scheduling heuristic, not a topological certificate or a guarantee of
+optimal discovery order.
+
+\subsection{Lazy preparation and unchanged replay}
+
+Only when a factor is visited does the producer construct its canonical
+projection and run the full leaf summary. It checks the resulting length
+and exponent against the schedule and checks that the leaf is a knot.
+The existing finite, compressed three-braid, elementary-reduction and
+exceptional-cube backends then produce the same kinds of leaf proofs.
+A negative verdict immediately discards the remaining schedule; unvisited
+factor grammars are never constructed. An inconclusive wider factor does
+not justify a negative verdict, and a positive result still requires all
+factors.
+
+A one-strand projection has a further exact shortcut: every generator is
+erased, so its canonical grammar is just the empty rule with root zero.
+This agrees byte-for-byte with the old projection, including in the
+presence of unreachable source rules. Producer and verifier can construct
+it directly after global source validation. Invalid unreachable rules
+still fail the earlier validation.
+
+The public option \texttt{use\_lazy\_factors=False}, or CLI flag
+\texttt{--eager-factors}, retains eager preparation and its former exact
+rule-count ordering. The one-strand shortcut applies to both policies.
+No certificate version change is necessary: scheduling choices are not
+trusted proof fields, and every published verdict still undergoes fresh
+independent replay. Old proofs replay with the current checker and new
+proofs replay with the pinned previous checker.
+
+\subsection{Preparation bound and its limits}
+
+Let $q$ be the number of factors visited before completion, and let $s_i,m_i$
+be the rule and strand counts of a visited projection. The plan uses
+$O(s+m+f\log f)$ structural operations and $O(s+m+f)$ working entries, with
+binary root weights charged according to their bit lengths. A single-factor
+input bypasses the scheduling pass entirely. Ordinary projection scans the
+$s$ supplied rules; a one-strand projection is constant size. Apart from
+leaf recognition and binary arithmetic on lengths and weights, preparation now costs
+\[
+ O\!\left(s+m+f\log f+\sum_{i\text{ visited}}(s+s_i m_i)\right),
+\]
+where the second term inside the sum bounds the unchanged full leaf
+permutation summary. Previously every factor paid its projection and
+summary cost before recognition could stop. The new producer retains only
+visited projections and their required evidence, rather than materializing
+all factors first.
+
+The global root's dense-permutation pass still costs $O(sm)$ word operations and may dominate a large forest. That work is intentionally
+included in every complete-call measurement. This optimization therefore
+does not claim to remove the root permutation cost or improve the overall
+worst-case asymptotic bound merely by reducing factor preparation. If all
+factors are needed, $q=f$, and planning adds work. The exceptional-factor
+exponential bound and the restricted quasi-polynomial regimes of the prior
+sections remain unchanged.
+
+All planning, preparation, leaf solving, proof transport accounting and
+replay share the existing public work/time allowances. The estimate affects
+only which work is tried first. A limit still returns inconclusive with no
+partial certificate; external cancellation, including \texttt{ValueError},
+is not converted to an ordinary resource result.
+
+\subsection{Native validation}
+
+Seventy-eight existing compressed-braid tests pass in 20.043 seconds, and
+eight final focused tests pass in 0.244 seconds. The new tests compare exact
+projected metadata and structural bounds on 107 grammars, including nonconvex support spans, dead
+rules and repeated child references. They check that a thirteen-factor
+finite-obstruction example makes exactly two projection calls: one in
+production and one in mandatory replay, both for the selected factor.
+Positive forests retain identical complete certificates and include every
+factor. Link inputs are rejected before planning; one-strand shortcuts
+preserve exact canonical output; replay works with the planner disabled;
+and exact work limits and cancellation retain their prior semantics.
+
+A further native audit compares 160 prior explicit braid cases and 80
+seeded forests against the actual maintained implementation at commit
+\texttt{586bfc8d0ffc}. There are 110 unknot and 130 nontrivial-knot cases.
+Every old and new certificate replays in both implementations; every
+positive certificate is identical. Scheduling metadata and rule bounds
+are also checked against actual projections. The 4.424-second final audit keeps
+all source grammars, work counts and factor orders in
+\path{data/lazy-forest-audit.json}. Its bounded-work example completes a
+finite negative proof within an allowance at which the old implementation
+is inconclusive, with both string-node and cube-generator allowances zero.
+
+The final full maintained suite passes 940 tests with Regina in 208.823 seconds.
+The benchmark compares the pinned old implementation, an identical old
+control, current defaults, an identical current control and current eager
+preparation. Each of ten fixtures has one shuffled warmup and five measured
+rounds. Every timed call is the complete public recognizer: source checks,
+root summaries, factor discovery, proof construction, transport allowance
+accounting and mandatory independent replay. Projection-call counts come
+from separate untimed instrumented calls. No precomputed projections are
+supplied to a timed arm.
+
+\input{tables/lazy_forest.tex}
+
+The ratio is the median paired old/current elapsed time. All source
+grammars, samples, factor orders, proof sizes, projection calls and shared
+resource counts are in \path{../fast/results/lazy_forest_20261008.json}.
+The experiment includes positive forests, a negative factor early in
+strand order, a single wider factor and a direct three-braid control;
+the selected examples are not restricted to favorable early exits.
+
+
+The first tested estimate counted every nonempty node hull. A complete-call
+benchmark exposed a scheduling defect: concatenations between disjoint
+factors inflated the estimate for early factors, even though they alias
+away under projection. On the early-compressed negative fixture, the
+producer visited 22 factors instead of the old policy's one, with paired
+old/new ratio 0.849. The first measurements are preserved in
+\path{../fast/results/lazy_forest_initial_20261008.json}.
+
+The final bound counts possible rule creations, using child-hull
+intersections as proved above. It is exact on the tested block-separated
+forest grammars, regardless of negative-factor placement. A dedicated
+regression checks that both early and late compressed negative factors are
+visited first. Nonconvex supports still give a conservative bound, so no
+claim of optimal scheduling is made for arbitrary input DAGs.
+
+The final run has 250 measured calls and 50 excluded warmups, taking
+24.451 seconds. For 64 positive three-braid factors followed by a finite
+negative factor, complete recognition falls from 328.629 to 184.098 ms,
+with median paired ratio 1.785. Production plus replay makes two projection
+calls instead of 66, and charged work falls from 414,154 to 98,011.
+The eight- and 24-positive-factor versions have paired ratios 1.255 and
+1.465. The current eager arm remains close to the old implementation on
+these cases, isolating preparation as the mechanism.
+
+For the 24-factor compressed-negative fixtures, both early and late
+placements now visit exactly one factor and make two projection calls
+instead of 25. Charged work is 81,033 instead of 124,353 in both placements.
+The paired time ratios are 1.071 for early placement and 1.161 for late
+placement. These smaller elapsed-time differences should be read with the
+controls: identical-old ratios across the run range from 0.935 to 1.031,
+and identical-current ratios from 0.966 to 1.060. The structural correction
+is exact even where timing evidence for a small gain is noisy.
+
+The 128-strand chain consisting entirely of singleton generators improves
+from 36.872 to 12.712 ms (paired ratio 2.902). It still needs all 128 factors
+and 256 producer/replay projection calls. Here the improvement comes from
+the canonical one-strand shortcut, not early stopping; current eager
+preparation also benefits, with median 12.484 ms. Its charged work falls
+from 77,209 to 13,205.
+
+The sixteen-factor positive compressed forest needs every projection.
+Its old/new medians are 115.400/115.676 ms, with no systematic gain asserted.
+The smaller mixed positive case has paired ratio 0.976; planning costs can
+outweigh savings when all factors are needed. Single wider-factor and direct
+three-braid controls remain close to unchanged. The implementation therefore
+retains an eager policy for comparison and makes no universal claim about
+the best discovery order.
+
+\paragraph{Remaining complexity work.}
+The complete recognizer now avoids unused factor projections. Its input is
+still a supplied grammar. It neither constructs such a
+grammar of controlled size from every knot diagram nor bounds the exceptional
+parameter for every input. The dense root permutation pass is an explicit
+remaining cost even on favorable negative forests. Improving that pass and
+reconciling incoming overlap-search ideas with the maintained group backend
+are separate next steps toward the general recognition objective.

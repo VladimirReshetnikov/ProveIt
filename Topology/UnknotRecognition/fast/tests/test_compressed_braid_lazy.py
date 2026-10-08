@@ -38,6 +38,19 @@ class LazyForestTests(unittest.TestCase):
     def test_plan_metadata_and_rule_bound_against_every_actual_projection(self):
         rng = random.Random(261008500)
         cases = [singleton_forest(n, 5, negative_index=n-1) for n in range(2, 8)]
+        # Nonconvex child support: {factor 0, factor 2} has a hull covering
+        # factor 1, so intersecting hulls is a bound rather than an exact count.
+        mixed = dict(strands=6, rules=[['e'], ['g',1], ['g',5], ['c',1,2],
+                                      ['g',3], ['c',3,4]], root=5)
+        root = 5
+        for _ in range(32):
+            mixed['rules'].append(['c', root, root]); root=len(mixed['rules'])-1
+        mixed['rules'].append(['c',root,5]); root=len(mixed['rules'])-1
+        for letter in (2,4):
+            mixed['rules'].append(['g',letter]); node=len(mixed['rules'])-1
+            mixed['rules'].append(['c',root,node]); root=len(mixed['rules'])-1
+        mixed['root']=root
+        cases.append(mixed)
         for _ in range(100):
             data = grammar(2, [1, -1, 1])
             for _ in range(rng.randrange(1, 6)):
@@ -76,6 +89,18 @@ class LazyForestTests(unittest.TestCase):
         for _,_,_,lo,hi,length,exponent in plan:
             actual=forest.summarize(forest.project(data,lo+1,hi))
             self.assertEqual((length,exponent),(actual['length'],actual['exponent']))
+
+    def test_disjoint_concatenations_do_not_distort_factor_cost(self):
+        for negative in (0, 11):
+            data = singleton_forest(12, 8, negative_index=negative)
+            s = forest.summarize(data)
+            ends = [0] + sorted(g for g,n in s['counts'].items() if n==1) + [data['strands']]
+            plan = forest._factor_plan(data,s,list(zip(ends,ends[1:])),lambda:None)
+            for _,bound,_,lo,hi,_,_ in plan:
+                self.assertEqual(bound,len(forest.project(data,lo+1,hi)['rules']))
+            result = recognize(data)
+            self.assertEqual(result['factor_order'],[negative])
+            self.assertEqual(result['status'],'KNOTTED')
 
     def test_links_are_checked_before_any_selected_negative_factor(self):
         data = join(grammar(2, [1, 1]), grammar(2, [1, 1, 1]))
