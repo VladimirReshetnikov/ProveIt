@@ -663,13 +663,10 @@ on its forced role in Lemma 16.8. No published erratum was found
 - **Quasi-polynomial is not enough for 18.2.** It gives n = exp(polylog(1/δ))
   iterations. The threshold exp exp exp(polylog(1/δ)) exceeds 2^2^(δ^(−M))
   as δ → 0 whenever the polylog exponent exceeds 1.
-- **Corollary 18.7 is different:** it is the single density 1/2. For each
+- **Corollary 18.7 is different:** it is the single density 1/2, so for each
   fixed k it is a numerical comparison of constants with no asymptotics in
-  δ. In particular, k = 6 uses only dimension-two structure, which is
-  proved (`theorem_16_2_at_two_bounded`, `quartic_function_inverse_explicit`).
-  Whether the resulting six-term threshold at density 1/2 fits under
-  `twoColorThreshold 6 = 2^2^2^2^2^15` is an open numerical question. It is
-  the next concrete step: K.4.
+  δ. K.4 settles k = 6: the proved structure does not fit, and the input
+  that would fit is a trilinear inverse theorem that is not available.
 
 ### K.4 Corollary 18.7 at k = 6 from the proved dimension-two structure: no (proved by definitions)
 
@@ -697,26 +694,36 @@ Route: `quartic_function_inverse_explicit`, then
 - The shortfall is at the third exponential level. No adjustment of
   constants closes it.
 
-**What would close it.** Replace G = exp(poly(1/α)) by a count from a
-dimension-two inverse theorem:
-- **Polynomial** count G = α^(−D): log₂(1/β) ≈ 728·D, which fits whenever
-  D ≲ 2^32768 / 728. Gowers's intended D = 2^(2^10)-scale fits easily.
-- **Quasi-polynomial** count G = exp(C·log^A(1/α)): log₂(1/β) ≈ C·728^A,
-  which fits whenever A ≲ 3400 (for moderate C). Milićević's 2026
-  structure theorem for Freiman bihomomorphisms (arXiv:2601.01682,
-  Theorem 1.4) is quasi-polynomial and is in exactly the dimension-two
-  setting.
+**What would close it.** G is the budget of the *joint* frequency box.
 
-So **18.7 at k = 6 is plausibly within reach of Milićević's theorem**, at
-this single density. Two inputs are still unchecked:
-- its quasi-polynomial exponent, which must be explicit;
-- the bridge from bihomomorphisms on dense pieces to the frequency function
-  of §16 (Part J, (S)).
+- `section16_joint_frequency_box` at k = 2 takes degree-4 non-uniformity
+  to a box in Z_N^3. The frequency function there has **three** variables.
+  It is built from dimension-≤ 2 structure (Theorem 16.2 at dimensions 1
+  and 2) by the lift, which is where exp(poly) enters (Parts B and H).
+- The needed input is therefore a structure theorem for three-variable
+  (Freiman trihomomorphism-type) frequency functions. A single dense
+  multilinear piece of density c(α) is enough; it does not have to be lifted
+  from dimension two.
+- **Polynomial** c(α) = α^D fits whenever D ≲ 2^32768/728.
+- **Quasi-polynomial** c(α) = exp(−C·log^A(1/α)) fits whenever A ≲ 3400,
+  with moderate C.
 
-This would extend `corollary_18_7_le_five` to k ≤ 6. It would not close
-Corollary 18.7, which quantifies over all k. Length seven needs the
-three-dimensional (trilinear) analogue, which has no known quasi-polynomial
-bound.
+**Correction (same day).** An earlier version of this paragraph proposed
+Milićević's 2026 theorem as that input. It is not. That theorem
+(arXiv:2601.01682) is a quasi-polynomial **U⁴** inverse theorem, built on a
+structure result for two-variable Freiman **bi**homomorphisms. Two
+variables correspond to degree 3, i.e. five-term progressions, which are
+already proved here (`theorem_18_2_le_five`). Six-term progressions need
+the trilinear case, and no quasi-polynomial bound is known for it
+(Gowers–Milićević 2020: iterated exponential).
+
+Feeding a quasi-polynomial two-variable count into the lift does not
+help either. Lemma 16.1's width exponent is exponential in the graph count
+(Part B). Then log₂(1/β) ≈ exp(728^A) ≫ 2^32768 for every A ≥ 2.
+
+So **Corollary 18.7 at k = 6, like the all-k statements, needs a
+quasi-polynomial (or better) trilinear inverse input that the literature
+does not provide.**
 
 ## F. Routes
 
