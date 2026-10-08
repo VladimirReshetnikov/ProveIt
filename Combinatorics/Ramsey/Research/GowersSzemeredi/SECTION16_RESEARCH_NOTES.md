@@ -792,9 +792,13 @@ scale budget, and simultaneous child theorem remain explicit premises.
 
 This allows the checked Schmidt recurrence to replace the one-coefficient
 recurrence in the height induction. The number of monomial-removal stages
-is bounded by `2^k`, independently of family size. A uniform recurrence over
-the finitely many degrees and a new scale/exponent induction are still
-needed before this yields the required quantitative box bound.
+is bounded by `2^k`, independently of family size.
+`exists_uniform_modular_monomial_recurrence` now supplies one pair of Schmidt
+constants for all degrees from 1 through `k`, retaining the quadratic
+family-size exponent. The multiplier may depend on the selected degree;
+this is sufficient when removing one common maximal monomial. The production
+module passed Lean. A new scale/exponent induction is still needed before
+these ingredients yield the required quantitative box bound.
 
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness

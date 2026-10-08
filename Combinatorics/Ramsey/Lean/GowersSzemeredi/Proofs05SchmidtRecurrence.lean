@@ -160,4 +160,48 @@ theorem exists_mixed_modular_recurrence_bound (k : Nat) :
           rw [hid]
           exact hq2small i t
 
+/-- One pair of constants works for every degree from 1 through k.
+The recurrence step may depend on the chosen degree. -/
+def UniformModularMonomialRecurrence (k : Nat) (K : Real) (p : Nat) : Prop :=
+  ∀ (N : Nat) [NeZero N] (ι : Type) [Fintype ι]
+    (a : ι → ZMod N) (M : Nat) (R : Real), 0 < R → R ≤ 1 →
+    (K * ((Fintype.card ι : Real) + 1) / R) ^
+      (p * (Fintype.card ι + 1) ^ 2) ≤ M →
+    ∀ j : Fin k, ∃ q : Nat, 0 < q ∧ q ≤ M ∧ ∀ i,
+      (centeredAbs ((q : ZMod N) ^ (j.val + 1) * a i) : Real) < R * N
+
+/-- Uniformize the degree-dependent Schmidt constants over a finite range. -/
+theorem exists_uniform_modular_monomial_recurrence (k : Nat) :
+    ∃ (K : Real) (p : Nat), 1 ≤ K ∧ 0 < p ∧ UniformModularMonomialRecurrence k K p := by
+  classical
+  choose K p hK hp hrec using (fun j : Fin k => simultaneous_modular_monomial_recurrence j.val)
+  let C : Real := 1 + ∑ j : Fin k, K j
+  let e : Nat := 1 + ∑ j : Fin k, p j
+  have hK0 (j : Fin k) : 0 ≤ K j := (by norm_num : (0 : Real) ≤ 1).trans (hK j)
+  have hC : 1 ≤ C := by dsimp [C]; exact le_add_of_nonneg_right (Finset.sum_nonneg (fun j _ => hK0 j))
+  have he : 0 < e := by dsimp [e]; omega
+  have hKC (j : Fin k) : K j ≤ C := by
+    have h := Finset.single_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin k))) => hK0 i) (Finset.mem_univ j)
+    dsimp [C]
+    linarith
+  have hpe (j : Fin k) : p j ≤ e := by
+    have h := Finset.single_le_sum (fun i (_ : i ∈ (Finset.univ : Finset (Fin k))) => Nat.zero_le (p i)) (Finset.mem_univ j)
+    dsimp [e]
+    omega
+  refine ⟨C, e, hC, he, ?_⟩
+  intro N _ ι _ a M R hR hR1 hM j
+  apply hrec j N ι a M R hR hR1
+  have hc : (1 : Real) ≤ (Fintype.card ι : Real) + 1 := by norm_num
+  have hbase : 1 ≤ C * ((Fintype.card ι : Real) + 1) / R := by
+    rw [le_div_iff₀ hR, one_mul]
+    exact hR1.trans ((by simpa using mul_le_mul hC hc (by norm_num : (0 : Real) ≤ 1) (by linarith : 0 ≤ C)))
+  have hKj : 0 ≤ K j := hK0 j
+  calc
+    _ ≤ (C * ((Fintype.card ι : Real) + 1) / R) ^ (p j * (Fintype.card ι + 1) ^ 2) :=
+      pow_le_pow_left₀ (by positivity)
+        (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (hKC j) (by positivity)) hR.le) _
+    _ ≤ (C * ((Fintype.card ι : Real) + 1) / R) ^ (e * (Fintype.card ι + 1) ^ 2) :=
+      pow_le_pow_right₀ hbase (Nat.mul_le_mul_right _ (hpe j))
+    _ ≤ M := hM
+
 end LeanProofs.GowersSzemeredi
