@@ -793,6 +793,25 @@ where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
   in each coordinate, as in `affine_of_second_difference`. It is the next
   formalizable piece.
 
+**Update (same day): single off-origin boxes need no GAP coordinates.**
+`bilinearBohrVariety_contains_box_at` (`Proofs16VarietyBoxAt`) builds a
+box around any deep point (x₀, y₀) of V with three nested
+simultaneous-Dirichlet choices.
+1. e₁ over Ψ, so that L is affine along a long run of multiples of e₁.
+2. t over {δ_k·x₀}, with e = t·e₁. The quadruple (y₀ + e) + 0 = y₀ + e
+   makes L(y₀ + e) − L(y₀) = L(e) − L(0) = t·δ_k.
+3. d over Γ ∪ {L_k(y₀)} ∪ {t·δ_k}.
+
+The coordinate lemma (`freiman_linear_gap_affine`, `Proofs16GapCoordinates`)
+is proved too, but not needed for single boxes.
+
+**What remains for (R)'s covers.** A packing/partition: cover all but θ of
+V's points inside an arbitrary box P by disjoint such boxes. The deep
+points are the bulk of V for a regular radius (port Bohr regularity). The
+cells' per-point steps must tile, which is the peer's Lemma 16.1
+partition machinery. This is composition, not new mathematics, plus the
+pre-extension hypothesis.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
