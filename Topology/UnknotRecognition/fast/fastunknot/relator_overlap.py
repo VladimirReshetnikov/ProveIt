@@ -54,11 +54,21 @@ def overlap_move(words, budget):
     best_gain, best = 0, None
     nonempty = [(i, w) for i, w in enumerate(words) if w]
     for donor, word in nonempty:
-        budget.tick(len(word)+1)
+        budget.tick()
+        # overlap <= donor length, hence 2*overlap-len(donor) <= len(donor).
+        # Ties never replace the current witness, so this skips only queries
+        # which cannot improve it and preserves the original deterministic trace.
+        if len(word) <= best_gain:
+            continue
+        budget.tick(len(word))
         for inverse in (False, True):
+            if len(word) <= best_gain:
+                break
             source = [-x for x in reversed(word)] if inverse else word
             lengths, links, edges, ends = _automaton(source, budget)
             for target, other in nonempty:
+                if len(word) <= best_gain:
+                    break
                 if target == donor or 2*len(other)-len(word) <= best_gain:
                     continue
                 state = matched = 0
@@ -82,6 +92,8 @@ def overlap_move(words, budget):
                             target_rotation=(position-overlap+1) % len(other),
                             donor_rotation=(ends[state]-overlap+1) % len(word),
                             inverse=inverse, overlap=overlap)
+                        if best_gain == len(word):
+                            break
     budget.tick()
     return best
 
