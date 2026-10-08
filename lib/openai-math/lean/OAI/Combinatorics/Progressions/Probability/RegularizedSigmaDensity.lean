@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: construct the mapped joint probability instance from
+its existing measurability proof for older Mathlib. Statements unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.UnitCoefficientSourceMarginal
 import OAI.Combinatorics.Progressions.Sampling.MixedOutputGrid
 
@@ -49,7 +53,7 @@ theorem retainedDensity_image_law {T Ω X : Type*}
   have hnonneg : ∀ p, 0 ≤ Function.uncurry D p := fun p => (hprob p.1).1 p.2
   have hmap := measurable_fst.prodMk hU
   let : IsProbabilityMeasure ((μ.prod ν).map (fun p => (p.1, U p))) :=
-    inferInstance
+    Measure.isProbabilityMeasure_map hmap.aemeasurable
   let : IsFiniteMeasure (realDensityMeasure (μ.prod ξ) (Function.uncurry D)) :=
     realDensityMeasure_finite _ _ hi hnonneg
   ext s hs
