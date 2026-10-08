@@ -19,7 +19,8 @@ class ContinuationInterface(unittest.TestCase):
         expected = (3, (Run(1, 3), Run(2, -1)))
         self.assertEqual(load_runs(value), expected)
         self.assertEqual(load_runs({'braid': value}), expected)
-        for bad in ([], {}, {'strands': 2, 'word': [1]},
+        self.assertEqual(load_runs({'strands': 2, 'word': [1, 1, 1]}), (2, (Run(1, 3),)))
+        for bad in ([], {}, {'strands': 2, 'word': '1'},
                     {'strands': 2, 'runs': [[1, 0]]},
                     {'strands': 2, 'runs': [[1, True]]},
                     {'strands': 2, 'runs': [[2, 1]]},

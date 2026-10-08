@@ -126,9 +126,62 @@ def structural_word_certificate(strands, word, *, check=None):
 
 
 def verify_structural_runs_certificate(strands, runs, certificate):
-    """Replay the exact source calculation; this is not a theorem prover."""
+    """Replay counts and a dense permutation independently of the producer.
+
+    Accept exact hexadecimal numeric fields emitted by the symbolic CLI.
+    Check the run-count bound before allocating the strand permutation.
+    This verifies arithmetic premises, not the imported topological theorems.
+    """
+    from .integer_codec import certificate_equal
     try:
-        return certificate == structural_runs_certificate(strands, runs)
+        if type(strands) is not int or strands < 1:
+            return False
+        runs = tuple(runs)
+        if strands > len(runs) + 1:
+            return False
+        permutation = list(range(strands))
+        positive, negative = set(), set()
+        n = exponent = 0
+        for generator, power in runs:
+            if (type(generator) is not int or type(power) is not int or power == 0
+                    or not 1 <= generator < strands):
+                return False
+            n += abs(power)
+            exponent += power
+            (positive if power < 0 else negative).add(generator)
+            if power & 1:
+                i = generator - 1
+                permutation[i], permutation[i + 1] = permutation[i + 1], permutation[i]
+        visited, current = set(), 0
+        while current not in visited:
+            visited.add(current)
+            current = permutation[current]
+        if len(visited) != strands:
+            return False
+        pc, nc = strands - len(positive), strands - len(negative)
+        genus2, defect = n - strands + 1, strands + 1 - pc - nc
+        lower, upper = -exponent - strands + 2 * pc - 1, -exponent + strands - 2 * nc + 1
+        if genus2 < 0 or genus2 % 2 or defect < 0:
+            return False
+        if genus2 == 0:
+            status, criterion = 'UNKNOT', 'seifert-genus-zero'
+        elif defect == 0:
+            status, criterion = 'KNOTTED', 'homogeneous-seifert-genus'
+        elif lower > 0 or upper < 0:
+            status, criterion = 'KNOTTED', 'rasmussen-interval'
+        else:
+            status, criterion = 'INCONCLUSIVE', 'structural-braid-inconclusive'
+        expected = {
+            'schema': 'source-braid-structural-v1', 'status': status,
+            'criterion': criterion, 'strands': strands, 'crossings': n,
+            'writhe': -exponent, 'seifert_circles': strands,
+            'positive_components': pc, 'negative_components': nc,
+            'homogeneity_defect': defect, 'canonical_genus': genus2 // 2,
+            'rasmussen_interval': [lower, upper], 'artin_exponent_sum': exponent,
+            'artin_rasmussen_interval': [-upper, -lower],
+            'source': 'original checked braid',
+        }
+        return certificate_equal(certificate, expected)
     except (TypeError, ValueError, ArithmeticError):
         return False
 

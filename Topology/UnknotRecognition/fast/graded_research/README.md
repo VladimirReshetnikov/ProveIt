@@ -41,3 +41,17 @@ Current evidence is in `../../synthesis/data/graded-*` and
 `../results/graded_transfer_20261008.json`. The
 [maintained theory](../../synthesis/graded_transfer.tex) records all hypotheses,
 operation bounds, measured regressions and the remaining asymptotic problem.
+
+
+The remaining report 23 checks can be rerun without modifying the archive:
+
+```bash
+python -B graded_research/referee_tail.py /tmp/tail-threshold.json
+python -B graded_research/repair_dag_bound.py /tmp/repair-bound.json
+```
+
+The first builds 392 finite macro complexes and checks the earlier total-rank
+threshold, full-profile law, Euler/parity and sharpness examples. The second
+compares the weighted-path recurrence with enumeration on 380 fixtures. Its
+input is an already supplied acyclic dependency graph; constructing such a
+graph for knot-exterior repairs is not implemented or inferred by this tool.
