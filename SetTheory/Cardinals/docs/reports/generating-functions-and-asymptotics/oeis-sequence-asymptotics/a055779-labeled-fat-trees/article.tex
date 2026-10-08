@@ -637,6 +637,9 @@ has a two-ceiling horizontal error $O(t^{-2}/L)$; adding $p_2/t^2$ improves that
 \begin{writenote}[Two decimals, 7 October 2026]
 The write recomputed the five constants above to 50 digits. $r_1$, $C(1)$ and $c_2(r_1)$ are correct truncations. Two are roundings at the last printed digit, although ``$\ldots$'' marks a truncation: the correct truncations are $q(1)=1.65548791299153430662521161862\ldots$ (the next digits are $5179\ldots$) and $c_1(r_1)=-0.07357275810351076496294030050\ldots$ (next digits $6972\ldots$). Both printed values are within one unit of their last digit, so nothing else is affected. Kot\v{e}\v{s}ovec's parameter is $p=0.6924583254616546081\ldots$, his OEIS ``r'' (Remark~\ref{fat:rem:oeis}); the identities displayed above hold to 60 digits.
 \end{writenote}
+\begin{writenote}[Correction (independent check of the write), 7 October 2026]
+The note above makes the same slip it corrects. Its value of $p$ is rounded at the last printed digit. To 30 digits $p=0.692458325461654608095939144538\ldots$, so the truncation at the printed length is $p=0.6924583254616546080\ldots$, not the printed $0.6924583254616546081\ldots$. The reading-conventions table of Section~\ref{fat:sec:provenance} has the same slip in short form: its $p=0.6925\ldots$ should read $p=0.6924\ldots$. The check confirmed everything else in the note: the five constants to 40 digits, the two truncations and their next digits, and the identities.
+\end{writenote}
 
 \subsection{A295623 and A162695}
 For A295623, the exact relation \eqref{fat:eq:oeisrelation} immediately gives, for every fixed $J$,
@@ -841,6 +844,19 @@ The inverse is proved only for fixed $M$. The uniform direct expansion and bound
 
 \begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
 Every open question and unproved claim of the source is in this section, with its sketch and what is missing: effective constants (item~1), late terms and exponentially small corrections (item~2), the block-count crossover (item~3, a formal differentiation of the leading saddle with respect to a marking parameter, offered as motivation; missing an analytic-marking proof or an independent distributional argument), and sharper Poisson and component results (item~4). Also open, from the source's non-claims: an inverse uniform in $M$ or for moving $M=M_n$, a computable $K_{J,M}$, and a rate to $\Pois(1/\tau)$. Not resolved by the write: the source's comparison with Kot\v{e}\v{s}ovec's 2012 note and with Arratia--DeSalvo, which the write did not read. No claim of the source was found to be false, so nothing is refuted; the two rounded decimals of Section~\ref{fat:sec:applications} are corrected in a note there.
+\end{writenote}
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check read A055779 (\#42), A295623 (\#15) and A162695 (\#19) again; every quotation and attribution of Remark~\ref{fat:rem:oeis} is verbatim. It recomputed the write's numbers with its own code and, where possible, by other methods.
+\begin{itemize}
+\item \emph{OEIS data.} The 100 b-file terms of A055779 agree. A295623 equals $n^2A_n(1)$ for all 360 terms with $n\ge1$. The logarithm relation of A162695 holds for $n\le120$, by an exact power-series logarithm.
+\item \emph{Enumeration.} An enumeration of set partitions and cross-block edge sets for $n\le6$ gives the polynomials $A_n(M)$, which equal the OEIS comment's. The coefficientwise inequality~\eqref{fat:eq:monotone} holds for $n<60$.
+\item \emph{Symbolic.} $\kappa_0,\ldots,\kappa_4$ follow by direct differentiation of $Mz\ee^z$, not by the recursion~\eqref{fat:eq:P}. From them $s_1$, $s_2$, \eqref{fat:eq:c1}, \eqref{fat:eq:c2expanded}, $d_2$ and $c_1(0)=c_2(0)=0$ follow.
+\item \emph{Numerical, independent of the coefficient formulas.} Richardson extrapolation of the exact values $A_n(1)$ for $300\le n\le1800$ gives $c_1(r_1)$ and $c_2(r_1)$ to $45$ digits. At $M=4$ it gives $c_1$ to $37$ digits.
+\item \emph{The inverse.} A numerical solution of $F_2(x)=Y$ for $Y=10^4,\ldots,10^{10}$ leaves $(x-X_2)t^3L$ bounded (between $2.1$ and $3.3$). This is consistent with~\eqref{fat:eq:p0}--\eqref{fat:eq:p2}, and~\eqref{fat:eq:p0bounded} holds identically. The derivation of~\eqref{fat:eq:inverse-engine} was redone by hand.
+\item \emph{Diagnostics and appendix.} All eight diagnostic entries and the two predicted limits are correct roundings. In the appendix, $\E A(Z)$, $\E A(Z)^2$, $e_2(d)$ (from the integer lists) and the second coefficient of~\eqref{fat:eq:P6} are confirmed, and the remainder of~\eqref{fat:eq:P6} times $n^3$ is stable in~$n$.
+\end{itemize}
+Remark~\ref{fat:rem:transseries} was re-read against \file{p0:prop:factorial-core} and \file{p0:thm:core-reversion}: the instance claims hold as stated. The check also confirmed the provenance figures (archive size, 20 files, 688 lines, 19 pages), the two manifests (19 and 17 entries), the byte identity of the 16 staged files, and the numbering (70 delivered labels unchanged, 3 added). One correction was needed. The write printed Kot\v{e}\v{s}ovec's $p$ rounded, with ``$\ldots$'', in the note of Section~\ref{fat:sec:applications}.1 and in the reading-conventions table. Both are corrected by a dated note in Section~\ref{fat:sec:applications}.1. No other claim of the write was found wrong.
 \end{writenote}
 
 \begin{thebibliography}{9}
