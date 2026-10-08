@@ -935,6 +935,24 @@ relative to V(ρ), with the shifted-family issue above. So the packing
 reduces exactly to variety regularity (Milićević §3), and every other
 ingredient is now proved here or in the peer's lane.
 
+**Update and audit (same day): variety regularity is proved, with a caveat
+on the input.**
+- `variety_exists_regular_step` (`Proofs16VarietyRegularStep`) needs no
+  algebraic regularity. The telescoping argument only uses a global ratio
+  bound, |V(ρ)| ≤ N² ≤ M^dim·|V(ρ/2)|, from `variety_card_lower` (Bohr lower
+  bounds summed over fibres: `bohr_card_lower`, `variety_card_eq_sum`).
+  The boundary-cell mass is thereby controlled: restrict to V(ρ_j) and
+  take 3ε ≤ ρ/(2m). The domain points in boundary cells then lie in
+  V(ρ_j) ∖ V(ρ_{j+1}), a θ-fraction of V(ρ_j).
+- **Audit caveat.** `MilicevicVarietyStructure` guarantees agreement
+  Φ = φ (after shifts) on many points of V(ρ), not of V(ρ_j). Those
+  points could all lie in V(ρ) ∖ V(ρ_j). The packing therefore needs the
+  input with agreement inside a regular sub-radius. Milićević's own proofs
+  plausibly supply this, since they pick regular radii throughout, but the
+  Prop as stated does not. Strengthening the hypothesis accordingly, or
+  showing that agreement transfers to V(ρ_j) by averaging, is the
+  remaining check on this route.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
