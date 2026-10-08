@@ -675,3 +675,45 @@ if relator_power:
                   '@{}lrrrrrrr@{}', rows) + r'\end{center}' + '\n' +
             'Median milliseconds including grammar construction; Quotient also includes pair pruning. '
             'Moves and nodes describe both changes. Limits/stalls are incomplete searches.\n')
+
+compressed_lcs = load('../fast/results/compressed_lcs_20261008.json')
+if compressed_lcs:
+    from statistics import median
+    arms = ('baseline', 'control', 'complete-overlap')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in compressed_lcs['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in compressed_lcs['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    with open('tables/compressed_lcs_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Complete overlap', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all full knot queries complete.\n')
+    rows = []
+    for row in compressed_lcs['kernels']:
+        cells = [row['family'].capitalize(), str(row['bits'])]
+        for arm in ('full', 'bound', 'control'):
+            samples = [s['measurements'].get(arm) for s in row['samples']]
+            if samples[0] is None:
+                cells.append('---')
+            elif all(s['status'] == 'COMPLETE' for s in samples):
+                cells.append(f"{1000*median(s['seconds'] for s in samples):.3f}")
+            else:
+                cells.append('limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/compressed_lcs_kernels.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('LCS family & $h$ & Full query & Count bound & A/A', '@{}lrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including grammar construction. '
+            'A/A repeats the bounded query for Cyclic and the full query for Shifted. '
+            'Limits are censored queries.\n')
+        rows = []
+        for row in compressed_lcs['moves']:
+            first = row['samples'][0]
+            rows.append(f"{row['bits']} & {1000*median(s['seconds'] for s in row['samples']):.3f} & " +
+                        f"{first['nodes']} & {first['stats']['work']}" + r' \\')
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Partial move, $h$ & Milliseconds & Nodes & Charged work', '@{}rrrr@{}', rows) +
+            r'\end{center}' + '\nIncludes grammar construction, failed whole-donor search, '
+            'complete cyclic search and checked application. This is not a knot verdict.\n')

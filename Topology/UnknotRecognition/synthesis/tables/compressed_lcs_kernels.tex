@@ -1,0 +1,32 @@
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+LCS family & $h$ & Full query & Count bound & A/A \\
+\midrule
+Cyclic & 8 & 201.535 & 0.108 & 0.072 \\
+Cyclic & 16 & 1969.533 & 0.164 & 0.105 \\
+Cyclic & 32 & limit & 0.126 & 0.143 \\
+Cyclic & 100 & limit & 0.462 & 0.320 \\
+Cyclic & 500 & limit & 0.802 & 0.865 \\
+Shifted & 8 & 0.671 & --- & 0.675 \\
+Shifted & 16 & 1.252 & --- & 1.247 \\
+Shifted & 32 & 2.359 & --- & 2.371 \\
+Shifted & 100 & 7.285 & --- & 7.241 \\
+Shifted & 500 & 37.239 & --- & 36.928 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Median milliseconds including grammar construction. A/A repeats the bounded query for Cyclic and the full query for Shifted. Limits are censored queries.
+\begin{center}\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Partial move, $h$ & Milliseconds & Nodes & Charged work \\
+\midrule
+8 & 0.302 & 20 & 246 \\
+32 & 0.615 & 44 & 606 \\
+100 & 1.438 & 112 & 1626 \\
+500 & 6.301 & 512 & 7626 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Includes grammar construction, failed whole-donor search, complete cyclic search and checked application. This is not a knot verdict.

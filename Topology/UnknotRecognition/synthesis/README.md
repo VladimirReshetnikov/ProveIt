@@ -2,6 +2,23 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`compressed_lcs.tex` closes the local cyclic-overlap coverage gap. It proves
+exact dyadic suffix-prefix progressions, cut-pair coverage, the six-critical-
+alignment reduction, and a polynomial bound for the implemented primitive.
+The group fallback now covers every donor rotation, both signs and partial
+overlaps longer than half a donor, using existing independent relator replay.
+Shared-letter counts provide safe pruning and early completion bounds.
+The global move-count, grammar-growth and recognition-completeness questions
+remain unresolved. All 678 tests pass with Regina in 163.634 seconds.
+Raw component-controlled measurements are in
+`../fast/results/compressed_lcs_20261008.json`, with logs in
+`data/compressed-lcs-*`. The 225 full knot queries retain identical traces;
+125 LCS queries expose both inexpensive count-bound completion and costly
+full-query limits. The partial-move audit reaches `N=2^500` in 6.3 ms,
+including construction and checked application, while leaving that supplied
+group inconclusive. The article now has 190 pages with no new layout warnings
+or unresolved references. Earlier checkpoint measurements follow below.
+
 `relator_powers.tex` documents quotient deletion, version-4 certificate replay,
 exact uniform signed-letter summaries and pruning before inverse allocation.
 It proves polynomial bit complexity for the supplied pure-power Euclidean
