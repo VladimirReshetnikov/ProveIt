@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 344 tests. Local report 10–12 production
+The current full production suite passes 391 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -166,7 +166,7 @@ Its nice-order certificate and minimal-truncation domination proof transfer the
 primary paper's binomial object bounds to arbitrary exhaustive pivots. The
 section distinguishes this from the faster allocation-pruned strategy, includes
 the raw-depth padding obstruction, and accounts for bounded composition caches.
-`data/minimal-window-integrated-tests.txt` records 344 passing tests; independent
+`data/minimal-window-integrated-tests.txt` records 277 passing tests at that checkpoint; independent
 archive tests and the 393-window audit have separate logs. Reproduce paired
 query measurements using `../fast/benchmark_minimal_windows.py --output FILE`;
 raw results are `../fast/results/minimal_windows_20261008.json`.
@@ -189,3 +189,14 @@ certificates are retained in `data/disk-*`. The section includes the descending
 grid raw-width obstruction and the current scheduler's resource/fallback scope.
 Paired data in `../fast/results/disk_transfer_20261008.json` distinguish
 synthetic gains from four ordinary scans with zero full-transfer calls.
+
+`twist_continuation.tex` reviews report 18 and documents the exact one-run
+recurrence, positive turnback slope, compact output, streamed storage and
+source-braid structural specialization. It distinguishes exact homology gains
+from the already-decidable dominant-run recognition family. All 254 archive
+and 391 current production tests pass; separate audits checked 832 recurrence
+comparisons, 220 independent cubes and 500 slope identities. Data are in
+`data/twist-*-audit.json`; paired measurements are in
+`../fast/results/twist_tail_20261008.json`, `twist_streaming_20261008.json`,
+and `braid_profile_20261008.json`. The streaming regressions and differing
+input/output contracts are stated explicitly; defaults remain unchanged.

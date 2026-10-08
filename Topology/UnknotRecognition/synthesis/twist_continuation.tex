@@ -1,0 +1,244 @@
+\section{Exact long-run recurrences and streamed macro homology}
+\label{sec:twist-continuation}
+
+Report 18 extends the existing twist macro complex in two directions:
+an exact compressed homological profile for one sufficiently long run, and
+a separate backend that streams degree layers to reduce retained storage.
+The module \path{fastunknot.twist.continuation} exposes both on signed
+run-encoded braid input, with structural recognition before homology in its
+recognition mode. Its homology mode always computes the requested invariant.
+The existing production defaults and \code{backend="twist"} adapter retain
+their original macro implementation. Ordinary recognition additionally offers
+the opt-in \code{--braid-profile} structural evaluation on checked source words.
+
+\subsection{The repeated differential, not just repeated dimensions}
+Select a run $\sigma_i^{\epsilon m}$ and freeze the remaining context.
+Let its macro homological support be $[a,b]$, where
+$a$ is the sum of negative context exponents and $b$ the sum of positive
+ones. Write $W=b-a$ and $m_0=W+2$.
+When the selected run is in its turnback sector $E$, the direct sum of all
+context groups is a fixed vector space $C$ of dimension $M$. Let $D$ be
+the context differential and $L$ the sum of the dots on the cap and cup.
+The repeated interior differential is the \emph{same} square-zero operator
+\[
+ F=D+L,\qquad \eta=M-2\operatorname{rank}F.
+\]
+Indeed $D^2=0$, each dot squares to zero, and distinct dot actions commute.
+The Frobenius identities make exterior dots commute with every context
+saddle, giving $DL=LD$ and $F^2=0$ over $\F$. The argument restricts to
+the reduced marked-circle subcomplex. This is an ungraded endomorphism
+statement about $C$; $D$ and $L$ need not have the same original bidegree.
+
+For a positive run, complete copies of $C$ occur in total macro degrees
+$b+1\le h\le a+m$. At $m=m_0$ there are exactly two adjacent complete
+copies, in degrees $b+1,b+2$, with boundary map $F$ between them.
+For a negative run the complete copies lie in $b-m\le h\le a-1$,
+and the reference map is the boundary in degree $a-2$.
+Geometry depends on whether the selected sector is $I$ or $E$, not on its
+positive internal index, which identifies these interior maps exactly.
+
+Let $P_{m_0}(z)$ be the reference reduced homological polynomial and
+$\Delta=m-m_0\ge0$. Split its positive-run profile into
+$A_+$ in degrees at most $b+1$ and $B_+$ in degrees at least $b+2$.
+For the negative run split into $A_-$ at most $a-2$ and $B_-$ at least
+$a-1$. Then
+\begin{align*}
+ P_m(z)&=A_+(z)+z^\Delta B_+(z)
+             +\eta\sum_{h=b+2}^{a+m-1}z^h,\\
+ P_{-m}(z)&=z^{-\Delta}A_-(z)+B_-(z)
+             +\eta\sum_{h=b-m+1}^{a-2}z^h.
+\end{align*}
+The lower and upper end pieces retain both incident boundary maps, with
+the displayed shift where needed. Every inserted degree has $F$ as both
+incoming and outgoing differential and therefore has dimension $\eta$.
+There are exactly $\Delta$ inserted degrees, so
+\[
+ R(m)=R(m_0)+\Delta\eta.
+\]
+The implementation extracts $\eta$ from the reference \emph{boundary rank},
+not from either end-piece Betti number. Those Betti numbers need not equal
+the interior dimension. These formulas are proved identities of the macro
+complex; they are not extrapolations fitted to sampled ranks.
+
+\subsection{Why the slope is positive}
+Let $J_E$ be the link obtained by replacing the selected run with its cap
+and cup. Coherent braid orientation forces the two outside paths at that
+box to join top ends to bottom ends. Adding the cap and cup therefore puts
+both marked arcs on the same actual component, regardless of the other
+components of the closure.
+
+Jaeger's weighted-dot sliding theorem states that the characteristic-two
+twisted complex depends on the sum of weights on each actual component
+\cite{jaeger-twisted}. Two unit weights on that component cancel. In the
+report's explicit specialization, sliding across one crossing uses a reverse
+saddle $H$ with $H^2=0$ and $DH+HD=X_p+X_{p'}$; the change of basis
+$1+H$ conjugates the corresponding dot-deformed differentials. Thus the
+ordinary reduced cube with the two-dot deformation has the homology of
+$J_E$. Relative local reductions in the other run boxes commute with the
+exterior dots, so this identification passes to the macro context as well.
+Consequently
+\[
+ \eta=\dim_{\F}\widetilde{Kh}(J_E;\F)>0.
+\]
+Positivity follows from the nonzero reduced Jones Euler polynomial of a
+nonempty link: its value at one has absolute value $2^{\ell-1}$.
+A free integral homology summand therefore survives over $\F$.
+This argument does not use the generally false assertion that adding an
+arbitrary null-homotopic operator preserves homology.
+
+The dot argument identifies a total dimension after collapsing grading.
+The original run's homological profile follows instead from the separate
+identification of the complete groups and both incident maps above.
+Quantum grading is not returned. The raw continuation API retains macro
+degrees. Converting to the original production cube convention requires
+$h_{\rm cube}=n_+^{\rm original}-h_{\rm macro}$ and, for a knot, doubling
+reduced dimensions. The shortened reference's positive crossing count is
+not the original shift. Also, shortening can change component parity:
+recognition checks the original run list, and the reference may be a link.
+
+\subsection{Compressed output and a fixed-context bound}
+The tail algorithm keeps two finite sets of exceptional degree--dimension
+pairs and one constant interval, with inclusive endpoints. Exceptions and
+the interval are disjoint. Queries and total rank use integer arithmetic;
+explicit expansion is optional and capped. The tests include exponents with
+100,001 bits while the two-strand reference still has three macro states
+and four reduced basis elements. This is an in-memory API test; the JSON
+frontend retains Python's decimal-integer conversion limit.
+
+The reference has $2W+2$ expanded crossings. At $s$ strands a conservative
+basis bound is $2^{s-1}3^{2W+2}$, so even elementary assembly and elimination
+give $2^{O(s+W)}$ reference work, with polynomial dependence on the binary
+length of $m$ for reconstruction. For fixed context and strand count this
+removes enumeration of the long exponent. For growing context the reference
+can still be exponential. On a knot closure the context must touch all
+other strand separators, so $s\le W+2$; a context of
+$W=O(\log^2 n)$ yields a quasi-polynomial bound in the expanded crossing
+count $n$. This remains a restricted homology statement.
+
+Since $\eta>0$, an explicit list of the inserted nonzero degrees has at
+least $\Delta$ entries. No algorithm returning that expanded list can be
+polynomial in $\log m$ for fixed context. The compact output contract is
+essential, rather than an optional presentation improvement. The largest
+run is the default candidate. Two runs cannot both strictly dominate their
+complement, so this one-run recurrence cannot simply be iterated to compress
+every large exponent independently.
+
+\subsection{Direct structural evaluation on run-encoded braids}
+For each generator index let $p_i,n_i$ count its positive and negative
+occurrences, and set $P=\sum p_i$, $N=\sum n_i$, $e=P-N$,
+$u_+=|\{i:p_i>0\}|$, $u_-=|\{i:n_i>0\}|$. The braid's signed Seifert
+graph is a path multigraph on $s$ vertices. On a one-component closure,
+the existing structural formulas become
+\[
+ e+s-2u_+-1\le s(K)\le e-s+2u_-+1,
+ \qquad 2g=P+N-s+1.
+\]
+Its homogeneity defect is the number of indices occurring in both signs.
+Genus zero certifies the unknot; positive homogeneous genus or an interval
+excluding zero certifies knottedness. A zero-containing interval alone is
+inconclusive. Sparse permutation tracking uses each exponent's parity to
+check the original component count without expanding the word or allocating
+an array for untouched strands. Missing a strand separator rejects a knot
+candidate immediately; otherwise $s-1$ is bounded by the number of runs.
+These checks are polynomial in the encoded input length.
+
+The production PD convention reverses the Artin crossing sign. Public
+Seifert fields therefore use writhe $-e$ and interval $[-U,-L]$ when the
+Artin interval is $[L,U]$. Separate Artin fields make that conversion
+explicit. Tests compare the entire dictionary with the independent PD
+Seifert graph, rather than comparing only verdicts.
+
+Every one-component dominant-run input is already structurally knotted.
+For a positive run of magnitude $m\ge W+2$, the lower bound equals
+$2(P-u_+)-d$, with $d=m+W-s+1$, and
+\[
+ 2(P-u_+)-d\ge 2(m-1)-(m+W-s+1)
+             =m-W+s-3\ge s-1>0.
+\]
+The negative case is symmetric. Thus tail timings do not represent a newly
+solved recognition family. The report's signature-packing diagnostic also
+adds no cases: its selected definite rank is at most $P-u_+$ or $N-u_-$,
+so its successful inertia bound is dominated by the same interval. Its
+diagnostic and verifier are retained for reproducibility, but recognition
+uses the cheaper dominating calculation.
+
+\subsection{Streaming changes storage, with an explicit time tradeoff}
+The separate streamed backend enumerates bounded compositions of degree
+totals. Each macro state is visited once, without repeatedly scanning the
+whole Cartesian product for each degree. A depth-first enumerator prunes
+prefixes using suffix capacities and avoids recursion limits. Its total
+enumeration work is $O(t\prod_j(|e_j|+1))$ for $t$ runs.
+
+Only two adjacent state indexes are live. Local Frobenius maps retain circle
+indexes instead of exponentially large label tables; generated columns feed
+directly into binary elimination. Geometry and map caches have bounded entry
+and weighted-slot capacities. If square-zero checking is requested, two
+adjacent matrices are additionally retained. The limits distinguish total
+enumerated states and basis from live states, layer basis, matrix bit payload,
+column references, geometry vertices, and map slots. They are mathematical
+storage envelopes, not allocator or RSS reservations. The returned degree,
+chain-dimension, and boundary-rank dictionaries still grow with the number
+of degrees; two live state layers do not imply constant total memory.
+
+After computing ranks of $d_{h-1}$ and $d_h$, the value
+$\beta_h=\dim C^h-\operatorname{rank}d_{h-1}-\operatorname{rank}d_h$
+is final. On a knot, a cumulative finalized reduced rank greater than one
+certifies \code{KNOTTED} and permits early exit. Such a result explicitly
+has \code{reduced\_rank=null}, a lower bound, and
+\code{homology\_complete=false}. Agreement with rank one before completion
+cannot certify the unknot. Full homology mode never uses this early exit.
+
+The combined RLE frontend checks structural certificates first, then uses
+the selected \code{tail}, \code{streaming}, or \code{macro} backend. It is
+an explicit interface, not an unmeasured automatic storage switch. Resource
+exhaustion returns \code{UNKNOWN}; CLI exit codes are 0 for completion, 2
+for invalid input or configuration, and 3 for exhaustion. Tail's finite
+reference and reconstruction share one cooperative deadline in the production
+integration, and mutable streaming budgets are copied and revalidated.
+Tail's square-zero flag refers to the finite reference, not to an unbuilt
+enormous matrix. The ordinary source-word profile stage is opt-in and never
+assigns the whole source braid to an individual connected-sum factor.
+
+\subsection{Validation and measurements}
+The archive passed 254 tests unchanged. The production suite now passes 391,
+including 400 tail/macro profile comparisons, 80 independent cube comparisons,
+both signs and boundary thresholds, original component parity, huge binary
+exponents, streamed enumeration/maps/storage limits, partial-rank semantics,
+and deadline/budget regressions. Separate reruns produced 832 independently
+formulated recurrence comparisons, 220 cube comparisons, and 500 checks
+identifying the slope with a separately extracted ordinary turnback
+subcomplex. Their records are in \path{synthesis/data/twist-*-audit.json}.
+
+Seven paired A/B/A rounds compare complete homology contracts, with tail's
+compact profile expanded only for validation outside timing. At exponent
+1025, the two-strand, figure-eight-context, and four-strand-context cases
+gained 38.70, 58.59, and 46.84 times respectively. Their reduced reference
+bases were 4, 93, and 126, versus 1027, 15393, and 18486 for full macro
+assembly. The no-compression control ratio was 0.974. Raw samples and the
+separate A/A control are retained in
+\path{fast/results/twist_tail_20261008.json}.
+
+The separate eight-case streaming benchmark includes fresh A/A controls,
+seven shuffled rounds, and independent traced-allocation runs. Streaming
+was slower in every full-homology case: macro/stream ratios ranged from
+0.229 to 0.694. Peak traced allocation ratios ranged from 1.020 to 3.064
+in streaming's favor. These are Python allocation peaks, not process RSS;
+early-decision arms have a different output contract and are recorded
+separately. Data are in
+\path{fast/results/twist_streaming_20261008.json}.
+This supports streaming as a storage option, with no default change.
+The structural benchmark separately measures encoded input versus expansion
+and recognition on fresh prebuilt diagrams; these scopes must not be
+combined into a general recognition-speedup claim.
+For the four-strand family with runs $(1,m),(2,-(2m-1)),(3,m)$ and odd
+$m=17,129,1025,4097$, the source-profile option gained 2.296, 2.824,
+2.905, and 3.334 times on fresh prebuilt diagrams. Its A/A ratios ranged
+from 0.997 to 1.022. These inputs have homogeneous positive genus despite
+an Artin Rasmussen interval $[0,0]$, so the homogeneous criterion, not
+interval equality, supplies the verdict. The separate encoded-input
+comparison includes expansion, PD construction, and Seifert evaluation
+in its baseline; its ratios range from 94.4 to 29687.0. These large numbers
+primarily measure the benefit of preserving compressed input. Morton's
+11-crossing case remains a structural-only inconclusive control, with no
+full-pipeline timing in this experiment. All raw data are in
+\path{fast/results/braid_profile_20261008.json}.
