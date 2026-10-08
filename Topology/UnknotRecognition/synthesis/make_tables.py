@@ -817,3 +817,35 @@ if pair_shortcut:
             table('Operation & $h$ & Before & A/A & Filter & Shortcut', '@{}llrrrr@{}', rows) +
             r'\end{center}' + '\nMedian milliseconds over 21 measured rounds. '
             'A/A repeats Before for Quotient and Filter for Partial. All operations complete with identical traces.\n')
+
+lcs_windows = load('../fast/results/lcs_windows_20261008.json')
+if lcs_windows:
+    from statistics import median
+    arms = ('baseline', 'control', 'full')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in lcs_windows['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in lcs_windows['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    with open('tables/lcs_windows_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Windows', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all full knot queries complete.\n')
+    for key in ('kernels', 'operations'):
+        rows = []
+        for row in lcs_windows[key]:
+            name = {'equal-bigrams-cyclic': 'Equal-pair cyclic',
+                    'equal-bigrams': 'Equal pairs'}.get(row['family'], row['family'].replace('-', ' ').capitalize())
+            cells = [name, str(row['bits'])]
+            for arm in arms:
+                samples = [s['measurements'][arm] for s in row['samples']]
+                cells.append(f"{1000*median(s['seconds'] for s in samples):.3f}"
+                             if all(s['status'] == 'COMPLETE' for s in samples) else 'limit')
+            rows.append(' & '.join(cells) + r' \\')
+        with open(f'tables/lcs_windows_{key}.tex', 'w') as handle:
+            handle.write(r'\begin{center}\small' + '\n' +
+                table('Family & $h$ & Before & A/A & Windows', '@{}llrrr@{}', rows) +
+                r'\end{center}' + '\nMedian milliseconds including construction; limits are censored. '
+                + ('Full overlap enumerates all lengths in compressed progressions, not all occurrences.\n'
+                   if key == 'kernels' else 'Local operations do not produce knot verdicts.\n'))
