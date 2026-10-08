@@ -224,3 +224,12 @@ Mathlib.
 
 Run `python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PortImportAudit`
 to repeat the combined-import and extracted-statement checks.
+
+`AllocatedCandidateGeneratedFastTerminal` now also compiles on Lean 4.32
+with a finite local 400,000-heartbeat limit for
+`exists_budgeted_tree_terminal_of_stage_refinements`. Its complete upstream
+statement and proof body are unchanged. The isolated production check uses
+3,549 current local dependency modules. The resumed prefix build is pending;
+this does not advance the audited 3,500-entry checkpoint. Provenance checks
+verify all 4,134 upstream hashes and modification notices for 974 adapted
+files, with the Apache license and recorded copyright notices preserved.
