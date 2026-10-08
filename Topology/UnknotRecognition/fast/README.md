@@ -1761,9 +1761,11 @@ propagates. Weighted work is a cooperative metric, not a hard bit-time or
 memory limit. Python callers can set all three caps to `None` for exhaustive
 search over the at-most-two-seed class.
 
-Uncapped, this is a complete polynomial algorithm for **diagrams admitting
+Uncapped, the standalone stage is a complete polynomial algorithm for **diagrams admitting
 such a seed derivation**; the conservative bound is `O(n^4 log(n+2))`. It gives
-no general quasi-polynomial recognition guarantee. The report's multi-seed
+no general quasi-polynomial recognition guarantee. The full pipeline must
+also pay for its earlier invariant filters, including Jones; those costs are
+outside this standalone bound. The report's multi-seed
 formula compiler and minimum-degree propagation are not part of this stage.
 The theory, proof obligations, validation and full-pipeline comparison with
 the existing compressed-group incumbent are in

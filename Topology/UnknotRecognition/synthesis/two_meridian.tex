@@ -1,0 +1,270 @@
+\section{Complete recognition from a checked two-meridian derivation}
+\label{sec:two-meridian}
+
+\subsection{The delivered idea and the maintained topology adapter}
+Commit \code{ea9cf443c} supplied a particularly useful consequence of the
+traceless-representation theorem: recognition is polynomial when every
+Wirtinger generator can be derived from two original meridians by crossing
+conjugations. The maintained implementation now checks this condition directly
+on a validated planar diagram. This produces actual two-sided knot verdicts
+on a restricted class. Exhaustion of the search says nothing about knot type.
+
+The new module is \code{fastunknot.two\_meridian}.
+
+Enable the stage with \path{--two-meridian} or Python's
+\path{use_two_meridian=True}. It runs after the existing invariant filters and
+before optional group simplification or the remaining exact fallback. The
+ordinary defaults are unchanged. A successful negative test of representation
+existence returns \code{UNKNOT}; a successful existence test returns
+\code{KNOTTED}. Failure to obtain the required derivation, a local timeout or
+local work exhaustion returns \code{INCONCLUSIVE} and resumes the pipeline.
+
+The adapter revalidates the spherical, one-component PD instead of trusting a
+presentation-level declaration of meridian provenance. At each crossing,
+union the two overpassing edge ports. The resulting classes are the actual
+Wirtinger arcs. The oriented underpassing ports and crossing sign give
+\[
+ x_v=x_o^{\epsilon}x_u x_o^{-\epsilon},\qquad\epsilon\in\{1,-1\}.
+\]
+Both directions are retained: knowing $x_o,x_u$ derives $x_v$, and knowing
+$x_o,x_v$ derives $x_u$. The adapter hashes the canonical validated PD and
+binds every certificate to that input. A connected-sum factor uses its own
+PD and its own meridians; the original source braid is not substituted for a
+factor presentation.
+
+\subsection{A seed derivation is an elimination certificate}
+A seed set consists of one or two \emph{original} Wirtinger arcs. A queue
+propagates the crossing rules whose dependencies have become known. A rule
+with identical over and source arcs has one distinct dependency, not two.
+Every accepted step records a previously unknown target, the original
+crossing index and the direction. Its two dependencies have already been
+derived, so the trace is acyclic and has one step per nonseed arc.
+
+For a fixed seed set this computes the least closed set of known arcs.
+Induction shows that every queued step belongs to every rule-closed superset
+of the seeds. Conversely, when the queue is empty, every rule with known
+dependencies has already fired. Therefore queue failure cannot be repaired
+by choosing a different order of rules with those same seeds. The search
+tries all single seeds and then all unordered pairs, subject to its caps.
+This recognizes the diagram-specific two-seed class exactly when uncapped.
+It does not search all diagrams of the same knot.
+
+Replay uses the recorded rules to define a word $w_a$ in the seed meridians
+for every arc $a$. The chosen crossing relation is a valid Tietze elimination
+of its new target. Substituting the definitions into \emph{every original
+crossing relation}, including unused ones, preserves the original group
+presentation. Equivalently, assigning values to the seeds extends uniquely
+along the trace, and is a representation of the knot group exactly when all
+substituted original relations hold. No omitted residual relation can create
+a spurious representation. An arbitrary two-generator presentation obtained
+by a separate group search does not suffice: its generators need not be
+meridians, even if their abelianized exponents are $\pm1$.
+
+The delivered prototype also minimizes formal degrees for fixed seeds.
+The maintained two-seed path needs only a valid derivation and uses ordinary
+queue closure. It does not implement that degree optimization or the report's
+general multivariate real-feasibility compiler.
+
+\subsection{Why two traceless meridians reduce to integer arithmetic}
+Kronheimer--Mrowka's Corollary 7.17 states that every nontrivial knot admits an
+irreducible $\mathrm{SU}(2)$ representation sending a chosen meridian to $i$
+\cite{km-traceless-primary}. All positively oriented Wirtinger meridians are
+conjugate; their images therefore have trace zero. Conversely, the infinite
+cyclic group of the unknot has only abelian images. For a checked two-seed
+presentation, nontriviality is thus equivalent to existence of noncommuting
+unit pure imaginary quaternion values $A,B$ satisfying the substituted
+relations. If the seeds commute, every derived value commutes, so such a
+representation is not irreducible.
+
+Set $T=AB$. Since $A^2=B^2=-1$ and $ATA^{-1}=T^{-1}$, all word values have
+normal form
+\[
+ (-1)^eT^kA^s,\qquad e,s\in\{0,1\},\quad k\in\mathbb Z.
+\]
+The seed triples are $A=(0,0,1)$ and $B=(1,-1,1)$. Direct multiplication gives
+\begin{align*}
+ (e,k,s)(f,\ell,t)&=(e+f+st\bmod2,\ k+(-1)^s\ell,\ s+t\bmod2),\\
+ (e,k,s)^{-1}&=(e+s\bmod2,\ (-1)^{s+1}k,\ s).
+\end{align*}
+These operations evaluate all derivation words without expanding them.
+The checker forms each original relation as the predicted outgoing meridian
+times the inverse of the actual outgoing value.
+
+For noncommuting $A,B$, write $T=\cos\phi+J\sin\phi$ with
+$0<\phi<\pi$. Every such phase occurs, for example with
+$A=i$ and $B=-\cos\phi\,i+\sin\phi\,j$. Terms with $s=1$ lie in the
+orthogonal quaternion plane and cannot equal the identity. For a relation
+with $s=0$, the remaining condition is
+\[
+ k_j\phi\equiv e_j\pi\pmod{2\pi}.
+\]
+A relation with $k_j=0,e_j=1$ is immediately inconsistent. Otherwise put
+$d=\gcd_j|k_j|$. If $d=0$, all relations are identities and any interior
+phase, such as $\pi/2$, supplies a noncommuting representation.
+
+If $d>0$, at least one $k_j/d$ is odd. Its central bit fixes a parity $e$.
+The equations are compatible exactly when
+\[
+ e_j\equiv(k_j/d)e\pmod2\quad\hbox{for every }j.
+\]
+To see necessity, a B\'ezout combination of the integers $k_j/d$ shows that
+$d\phi/\pi$ is an integer $q$, and each equation fixes
+$(k_j/d)q\equiv e_j\pmod2$. An odd quotient determines $q\bmod2$.
+Conversely, the displayed compatibility makes every integer $q\equiv e\pmod2$
+a simultaneous solution with $\phi=q\pi/d$.
+The strict interior condition requires $1\le q\le d-1$, so there are
+\[
+ \left\lfloor\frac{d-1+e}{2}\right\rfloor
+\]
+allowed phases. A positive count supplies the compact witness $q=1$ for odd
+parity or $q=2$ for even parity. A zero count leaves only commuting endpoint
+phases and certifies the unknot. Floating-point trigonometry and a general
+real-algebraic solver are unnecessary.
+
+For one seed, every crossing derivation is formally the same meridian: a
+conjugate of $A$ by $A^{\pm1}$ is $A$. All original relations become identities,
+the group is cyclic, and the diagram is an unknot. The zero-crossing diagram
+is handled directly.
+
+\subsection{Completeness, complexity and certificate scope}
+The uncapped standalone algorithm is complete on diagrams admitting a derivation from
+at most two seeds. There are $O(n^2)$ seed sets; each closure uses $O(n)$
+incidence and queue operations. Indices have $O(\log(n+2))$ bits. Hence seed
+search costs $O(n^3\log(n+2))$ bit operations with an elementary model.
+
+For a successful derivation, the maximum absolute exponent grows by at most
+a fixed factor plus a constant at each step, so it is at most $3^{O(n)}$.
+Every stored integer consequently has $O(n)$ bits. There are $O(n)$ word
+operations and relations. Even allowing $O(n)$ long-division steps at
+$O(n^2)$ cost for each of the $O(n)$ gcd computations gives the conservative
+complete bound
+\[
+ O(n^4\log(n+2))
+\]
+on this class, including PD preparation, substitution, arithmetic and replay.
+This deliberately loose bound does not depend on expanding a word of length
+$3^{O(n)}$. The trace and relation triples occupy $O(n^2)$ bits. More efficient
+integer arithmetic can improve this accounting but is not needed for
+polynomiality. This bound is for the standalone stage. The optional pipeline
+placement retains earlier invariant filters, whose costs must be added;
+an expensive Jones computation before this stage is not covered by this
+restricted-class polynomial bound.
+
+This theorem does not cover arbitrary input knots, nor prove a cheap
+conversion of every diagram into the two-seed class. In particular, seed
+failure is not evidence of nontriviality. The general recognition fallback
+still has an exponential worst-case bound. The maintained faithful Jones
+query has a general $2^{O(\sqrt n)}$ bound, with fixed polynomial factors
+absorbed, but equality of Jones polynomials does not finish recognition.
+The new two-seed theorem supplies another complete restricted class, not the
+missing general quasi-polynomial theorem.
+
+A certificate records the version, input hash, arc count, seed indices,
+derivation trace, every relation triple, the gcd/parity calculation and the
+verdict. The public verifier reconstructs the signed presentation from the
+PD and replays the trace without rerunning seed search. It recomputes all
+relation triples and the final answer and compares the complete strict
+schema, including integer types. Producer and verifier share the PD parser
+and integer arithmetic; this is search-independent replay, not an independent
+implementation of topology or quaternion multiplication. Independent exact
+quaternion and whole-cube comparisons test that shared arithmetic separately.
+
+The local defaults are 50 milliseconds, two million weighted work units and
+10,000 attempted seed sets. Preparation, failed attempts, successful
+arithmetic and the mandatory replay share the same allowance; replay does
+not receive a fresh budget. The counter charges integer bit lengths but is a
+cooperative work metric, not an exact bit-operation count or a hard memory
+bound. Deadline and caller cancellation checks occur throughout the search
+and replay. Exhaustion before verified publication emits no certificate.
+A global pipeline limit retains the existing \code{UNKNOWN} semantics.
+Python callers can set all three local caps to \code{None} for exhaustive
+restricted-class recognition; the default finite caps are a practical probe.
+
+\subsection{Validation and full-pipeline measurements}
+Eight focused tests cover 300 rational-quaternion product/inverse comparisons,
+120 small phase systems compared with explicit rational phases, signed PD
+relations compared with the existing full Wirtinger builder, and 80 seeded
+small classical diagrams compared with an independent expanded Khovanov cube.
+For every seed set of those small inputs, a separate fixed-point closure
+agrees with the queue algorithm. Mirrors, rotated underpassing ports and
+permuted crossing rows exercise orientation handling. Replay is tested with
+seed search disabled, forged schema fields and derivations, a mismatched PD,
+large integer JSON encoding, exact work boundaries, caller cancellation,
+local fallback and CLI dispatch. The connected-sum test checks the actual
+interlacement factor and rejects replay against the whole input. All 756
+integrated tests pass with Regina installed in 174.738 seconds; the eight
+focused methods pass in 1.131 seconds.
+
+The benchmark fixes the previous recognizer at \code{7c45c41bc}, loads it
+under the unchanged package dependencies, and runs it twice as an A/A control.
+The other arms use the maintained recognizer with the new stage disabled or
+enabled. Source hashes are frozen before timing and verified afterward.
+All four arms revalidate a fresh PD and run the whole pipeline, including
+filters, certificate verification and fallback. Import time and construction
+of the previously reduced hard-input corpus are excluded. The corpus consists
+of the 15 existing compressed-group hard-unknot cases and five named controls:
+trefoil, figure-eight, Hard 8, Conway and Kinoshita--Terasaka.
+
+Each input is tested under the ordinary pipeline, with a three-second global
+allowance, and the stronger compressed-group configuration, with 15 seconds
+for group search, 20 million group work units and an 18-second global
+allowance. Both configurations retain all existing filters and allow 50,000
+Khovanov objects. There is one excluded warmup per input, configuration and
+arm, then five measured rounds with shuffled arm order. The optional stage
+uses its ordinary 50-millisecond local allowance. This gives 800 measured
+whole-recognition calls and 160 excluded warmup attempts. A separate one-shot
+standalone probe on each input omits the local time cap while retaining the
+work and attempt caps; those are discovery observations, not repeated timing
+comparisons. All known labels predate this recognizer.
+
+Raw samples, completion status, local work counts and deduplicated certificate
+contents are retained in:
+\begin{center}\small
+\path{fast/results/two_meridian_20261008.json}
+\end{center}
+Completed-time medians exclude censored runs. A paired ratio is formed only
+when both queries complete; it is the median of per-round ratios, not a ratio
+of medians. The following table displays timings only for arms completing
+all five measured queries and ratios only for five complete pairs.
+
+\input{tables/two_meridian.tex}
+The standalone stage resolves 13 of the 15 established hard-unknot inputs.
+It exhausts all 120 seed sets on survivor 01, reaching at most seven of its
+15 arcs. Gordian reaches the two-million-unit work cap after 4,609 attempts;
+that capped failure does not determine whether its diagram belongs to the
+class. Trefoil, figure-eight and Hard 8 are also conclusive; Conway and
+Kinoshita--Terasaka exhaust their 66 seed sets and remain inconclusive.
+Their ordinary pipeline verdicts come from earlier Jones obstructions.
+
+For the 13 successful hard-corpus cases, ordinary full-recognition paired
+speedups range from $1.85$ to $3.84$, with a median of the 13 per-case ratios
+of $2.07$. Against the compressed-group configuration, the corresponding
+range is $4.27$--$14.15$ and median $5.85$. For example, mirror 03 changes
+from 25.49 to 1.80 milliseconds in the group configuration; the ordinary
+configuration changes from 4.05 to 1.83 milliseconds. These are measured
+whole-query improvements with replay included, on an existing finite corpus,
+not an asymptotic claim or an independent random-knot sample.
+
+There are material counterexamples to unconditional dispatch. Hard 8 changes
+from 0.68 to 1.02 milliseconds in the ordinary pipeline: the original late
+path is cheaper than constructing this certificate. Its paired off/on ratio
+is $0.666$, about a 50\% slowdown, although the same probe improves the
+optional group configuration by a factor of $2.41$. The unsuccessful search
+on survivor 01 gives ordinary/group ratios $0.903$ and $0.914$. Gordian's
+50-millisecond probe times out in both configurations. All 20 measured
+ordinary Gordian queries exhaust the global allowance and remain censored;
+all group-configured Gordian queries complete using the original group
+certificate, with disabled/enabled medians 2.092/2.113 seconds and paired
+ratio $0.987$. No timeout is reported as a successful three-second decision.
+
+Overall, 780 of the 800 measured queries complete, every completed verdict
+agrees with the prior label, and 20 are censored. Ordinary A/A ratios range
+from $0.965$ to $1.027$ on completed pairs; group A/A ratios range from
+$0.946$ to $1.052$. Comparing the old recognizer to the current disabled arm
+also retains an ordinary survivor-00 outlier of $0.882$, so small timing
+changes are not interpreted as improvements from argument validation or
+other incidental work. The large successful-stage improvements coexist
+with the retained regressions and limited corpus size. The implementation
+therefore remains opt-in. Choosing when to attempt it earlier, or when to
+skip it in favor of an already cheap path, requires a separately measured
+adaptive policy.

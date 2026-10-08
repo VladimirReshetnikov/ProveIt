@@ -1041,3 +1041,27 @@ if primary_continuation:
                 r'\end{center}'+'\nMedian milliseconds; all calls complete. '+
                 ('Full raw knot scans at a common prepared order.\n' if scope=='knots' else
                  'Complete recursive compression of graded algebraic fixtures; construction excluded.\n'))
+
+two_meridian = load('../fast/results/two_meridian_20261008.json')
+if two_meridian:
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'figure_eight': 'Figure eight'}
+    for row in two_meridian['rows']:
+        cells = [esc(names.get(row['name'], row['name'].replace('-', ' ').capitalize())),
+                 str(row['crossings'])]
+        for mode in ('ordinary', 'compressed_group'):
+            result = row['modes'][mode]
+            for arm in ('disabled', 'enabled'):
+                times = result['completed_median_seconds'][arm]
+                count = sum(s['measurements'][arm]['completed'] for s in result['samples'])
+                cells.append(f'{1000*times:.2f}' if count == two_meridian['measured_rounds'] else 'limit')
+            pair = result['paired_ratios']['disabled/enabled']
+            cells.append(f"{pair['median']:.2f}" if pair['count'] == two_meridian['measured_rounds'] else '--')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/two_meridian.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+
+            table('Input & $n$ & Ord. off & Ord. on & Ratio & Group off & Group on & Ratio',
+                  '@{}lrrrrrrr@{}', rows)+r'\end{center}'+'\n'+
+            'Median milliseconds for whole recognition, including PD validation and replay. '
+            'Ratios are medians of paired off/on times; limits are censored.\n')
