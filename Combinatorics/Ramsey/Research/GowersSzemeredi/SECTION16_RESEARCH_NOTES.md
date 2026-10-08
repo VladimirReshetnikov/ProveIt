@@ -644,10 +644,25 @@ Consequences:
   Lengths up to 5 avoid §16 in higher dimensions and are proved
   (`theorem_18_2_le_five`).
 
-**Caveat.** The original was not consulted. Gowers's page offers only
-`sz898.dvi` and `gafasz.ps`. The ^r reading rests on the transcription and
-on its forced role in Lemma 16.8. No published erratum was found
-(web search, 2026-10-08).
+**Published-source check (2026-10-08).** The
+[published article PDF](https://www.cs.umd.edu/~gasarch/TOPICS/vdw/sz-thm-gowers-proof.pdf)
+was inspected as rendered pages, not just extracted text. Printed page 567
+(PDF page 103) confirms the nested `r` exponent in the width and the `r`
+power in the graph count. Printed page 576 (PDF page 112) confirms those
+powers in the proof of Corollary 16.11 and its stated polynomial exponent.
+These locations agree with the transcription; this check does not repair
+the quantitative comparison.
+
+The Lean counterexample refutes `lemma_16_10_printed_unit_encoding`, whose
+premises are the two packaged cover conditions. It does not by itself
+refute every formulation retaining the full preceding construction of
+`phi1`, or rule out another proof of the published theorem. The present
+obstruction concerns the implemented route and its stated interfaces.
+
+Downloaded PDF SHA-256:
+`6ab8e20052bd59f80f1b74d9564179da43954646f0b2cc6aa5b63d6004758866`.
+Reproduce the visual check with `pdftoppm -f 103 -singlefile` and
+`pdftoppm -f 112 -singlefile` on the linked PDF.
 
 ### K.3 What would close 18.2 and 18.7 for every k
 
