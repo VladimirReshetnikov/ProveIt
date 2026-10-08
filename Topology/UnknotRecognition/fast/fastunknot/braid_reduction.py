@@ -55,11 +55,18 @@ def singleton_reduce(strands, word, check=lambda: None):
     """Return (strands, word, certificate), stopping once strands <= 3.
 
     At most max(original_strands-3, 0) endpoint steps are made.  With L input letters
-    the straightforward algorithm uses O(L*strands) word operations.  It
+    the small/sparse path uses O(L*strands) word operations. Connected-closure
+    inputs use O(L+strands) word operations overall: large ranks dispatch to
+    linked descent, while the other branch has bounded rank or length. It
     neither increases the word length nor changes the isotopy class of its
     closure.  A failed search makes no claim about minimal braid index.
     """
     word = _validate(strands, word)
+    # Small ranks bound the number of whole-word passes. A connected closure
+    # requires strands <= len(word)+1; preserve sparse link-input behavior.
+    if 64 <= strands <= len(word)+1 and len(word) >= 128:
+        from .braid_descent import linear_descent
+        return linear_descent(strands, word, check)
     original_strands, original_length = strands, len(word)
     steps = []
     while True:
@@ -95,6 +102,9 @@ def verify_singleton_reduction(strands, word, certificate, check=lambda: None):
     word = _validate(strands, word)
     if not isinstance(certificate, dict):
         raise ValueError("certificate must be a dictionary")
+    if certificate.get("kind") == "singleton-markov-descent-v2":
+        from .braid_descent import verify_descent
+        return verify_descent(strands, word, certificate, check)
     if certificate.get("kind") != "singleton-markov-descent-v1":
         raise ValueError("unknown reduction certificate")
     if (certificate.get("input_strands") != strands or
