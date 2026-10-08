@@ -861,6 +861,13 @@ Route: `quartic_function_inverse_explicit`, then
   log₂ log₂ is 2^M = 2^(2^32768).
 - The shortfall is at the third exponential level. No adjustment of
   constants closes it.
+- **Kernel-checked:** `lengthSix_half_density_route_exceeds`
+  (`Proofs18LengthSixRouteGap`). For every σ and T,
+  `szemerediThreshold (1/2) 6` is strictly below
+  `intervalDiscrepancyClosedThreshold 6 (1/2) β σ T`, where
+  β = `jointStructuralInverseParameter 2 (intervalUniformityParameter (1/2) 6)`.
+  The proof uses only β ≤ 1/G, G ≥ 2^(2^(2^256)) (`section16JointPowerGraphBudget_ge`)
+  and the threshold ≥ exp(2^⌈8/β⌉). All towers stay symbolic.
 
 **What would close it.** G is the budget of the *joint* frequency box.
 
