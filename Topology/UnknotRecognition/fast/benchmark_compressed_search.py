@@ -60,6 +60,7 @@ def main():
         json.dump(dict(python=sys.version, platform=platform.platform(), seed=2688,
             measured_rounds=5, excluded_warmups=1, group_seconds=10, global_seconds=12,
             max_work=10000000, max_letters=200000, max_nodes=100000,
+            max_objects=50000,
             scope='Fresh PD validation and whole recognition, including independent certificate replay',
             censoring='Any INCONCLUSIVE record is a censored query, not a completed recognition time',
             kernel_scope='Synthetic compressed group presentations and summaries, not hard knot inputs',

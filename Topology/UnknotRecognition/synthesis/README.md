@@ -2,6 +2,26 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+The latest extension in `compressed_words.tex` adds optional compressed group
+discovery. A shared DAG pass computes exact generator counts and weighted
+Whitehead edges; presence/repetition masks identify unique generators.
+Elimination and Whitehead transformations stay compressed, while relator
+overlap discovery uses a bounded explicit bridge. All fifteen real knot
+certificates pass both replayers, and random grammar tests check the summaries
+against literal calculations.
+
+The 225-query A/A/B audit records a regression: Gordian takes 7.076 seconds
+with compressed search versus 1.247 seconds explicit, while fourteen small
+cases total 391.33 versus 73.52 ms in summed medians. Defaults remain explicit.
+Synthetic summaries and elimination handle lengths above 2^1024 with 3,077
+nodes; that is a capacity result on supplied presentations, not a hard-knot
+recognition bound. See `data/compressed-search-benchmark.txt` and
+`../fast/results/compressed_search_20261008.json`. The detailed article states
+the remaining search-length and grammar-growth obligations explicitly.
+All 642 tests pass with optional Regina installed in 166.446 seconds
+(`data/compressed-search-integrated-tests.txt`). The rebuilt article has 163
+pages; its build log is `data/compressed-search-article-build.txt`.
+
 `compressed_words.tex` describes the deterministic SLP word kernel and its
 optional integration into independent group-certificate replay. Equality uses
 split assertions and periodicity compaction; longest-prefix queries provide
@@ -13,7 +33,7 @@ intermediate word length, beyond the explicit checker's letter allowance.
 Whole-query measurements show overhead on the current knot corpus: fourteen
 small cases total 137.53 ms in summed medians versus 51.02 ms explicit, and
 Gordian costs 1.417 versus 1.236 seconds. The extension remains opt-in; search
-is still explicit and no general sub-exponential recognition theorem follows.
+defaults to explicit and no general sub-exponential recognition theorem follows.
 All 637 tests pass with Regina installed in 121.284 seconds
 (`data/compressed-words-integrated-tests.txt`). Timing scopes, synthetic traces
 and kernel counts are preserved in the raw benchmark artifact. The rebuilt

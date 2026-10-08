@@ -11,10 +11,37 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 637 passing tests
+diagram is not checked twice. The integrated suite now has 642 passing tests
 with the optional Regina dependency installed.
 
-`--group-compressed` enables exact SLP-based replay of group certificates.
+`--group-compressed-search` enables optional compressed group discovery and
+replay. Exact generator counts, unique-occurrence masks and weighted Whitehead
+graphs are computed from shared word grammars. Elimination and Whitehead moves
+stay compressed; optional relator-overlap matching expands only when the total
+length fits its 200,000-letter cap. Above that cap the overlap probe is skipped,
+and failure to finish remains inconclusive. Python callers use
+`use_group=True, group_compressed_search=True`; the standalone producer is
+`fastunknot.compressed_search.compressed_certificate`.
+
+This is a capacity extension, currently slower on the knot corpus. In 225
+whole-query measurements, Gordian's compressed-search median is 7.076 seconds
+versus 1.247 seconds explicit; fourteen smaller cases total 391.33 versus
+73.52 ms in summed medians. All complete with independent replay. Synthetic
+summary and elimination operations handle lengths above 2^1024 with 3,077
+allocated nodes, but this is not a hard-knot benchmark or a search-step bound.
+Explicit search remains the default. To reproduce the optional experiment:
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-relators --group-compressed-search --group-seconds 10 \
+  --group-max-work 10000000 --seconds 12
+python -B benchmark_compressed_search.py --output results/compressed_search_local.json
+```
+
+See [`results/compressed_search_20261008.json`](results/compressed_search_20261008.json)
+for raw A/A/B samples and the article for the DAG multiplicity proof and limits.
+
+`--group-compressed` enables only exact SLP-based replay of group certificates.
 Its deterministic word kernel supports equality, slicing, inversion and free
 reduction without expanding the represented strings. Recognition still searches
 with explicit relators. The existing certificate formats remain unchanged;

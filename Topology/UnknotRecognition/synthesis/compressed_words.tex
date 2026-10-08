@@ -22,9 +22,9 @@ No probabilistic fingerprint or assumed hash-collision bound decides word
 equality.  Python dictionaries index exact rule tuples and assertions,
 with ordinary collision-resolving equality checks.
 
-This is a representation improvement for verification.  The recognition
-producer still uses explicit relators, and its Whitehead and overlap
-searches retain their previous bounds and limitations.  The compressed
+The initial integration was a representation improvement for verification.
+The default producer still uses explicit relators.  The optional compressed
+search developed below extends the representation to discovery.  The compressed
 checker does not by itself construct a short proof, control all grammar
 growth over a long search, or prove general quasi-polynomial recognition.
 Its present practical cost is also higher on most measured knot queries,
@@ -223,8 +223,199 @@ certificates, environment metadata and separate timing scopes are in
 \path{fast/results/compressed_words_20261008.json}.
 
 The resulting advance is exact access to words far larger than available
-expanded storage.  The next unresolved steps are compressed search
-operations and a quantitative bound on the grammars and moves needed for
-arbitrary knot diagrams.  The complete recognition fallback remains
+expanded storage.  The following extension adds compressed search
+operations; a quantitative bound on the grammars and moves needed for
+arbitrary knot diagrams remains open.  The complete recognition fallback remains
 exponential; this implementation does not establish general sub-exponential
 or quasi-polynomial unknot recognition.
+
+\subsection{Compressed discovery: multiplicities and cyclic adjacency}
+\label{sec:compressed-search}
+
+The separately selectable \code{compressed\_search.py} now keeps relators
+as SLP roots throughout elimination and Whitehead search.  The key
+additional operation extracts the weighted Whitehead graph without
+examining expanded letters.  Let $N$ be the number of reachable grammar
+rules, $m$ the number of relator slots and $r$ the surviving generator
+rank.  Seed each nonempty root with multiplicity one, adding multiplicities
+when several relator slots share that root.  Visit rules in reverse
+topological order.  At $X=UV$, add the multiplicity of $X$ to both children,
+even when $U=V$.  At a terminal, add its multiplicity to the absolute
+generator's total occurrence count.
+
+This computes exact counts: the coefficient of a node is the number of its
+occurrences in the fully unfolded derivation forest.  Distributing a
+coefficient through a concatenation partitions these occurrences into its
+two child occurrences.  Induction down the DAG proves the terminal counts.
+It also proves the following adjacency construction.  At each $X=UV$ with
+multiplicity $c_X$, insert weight $c_X$ on the undirected edge
+\[
+ \{\operatorname{last}(U),-\operatorname{first}(V)\}.
+\]
+For each nonempty relator root, insert its closing edge with weight one.
+Every internal adjacent pair in an unfolded word has exactly one lowest
+concatenation separating its letters, so this counts each pair exactly once.
+Singleton relators receive just their closing edge. Empty relators contribute
+nothing. As with the explicit implementation, both signed vertices are
+retained, and the edge convention is $\{x,-y\}$.
+
+The traversal takes $O(N\log N+m)$ abstract operations, including the sort
+used to obtain a topological order, with $O(N+m+r^2)$ storage as a loose
+bound. These are integer-operation counts, not constant-time claims for
+unbounded integers: multiplicities have $O(N+\log(m+1))$ bits. In
+particular, a power containing $2^{100}$ copies of a subword contributes
+a 101-bit weight, not $2^{100}$ edge visits. The existing exact integer
+minimum-cut routine can therefore operate on the compressed graph. Its
+Edmonds--Karp augmentation bound is independent of the numeric capacity
+values; arithmetic still pays their bit cost.
+
+\subsection{Unique occurrences and elimination without expansion}
+
+Elimination needs to know which generators occur exactly once in each
+individual relator. Repeating full occurrence counting independently for
+every generator and every relator wastes sharing. Instead store two masks
+for every reachable node: $P_X$ records presence and $R_X$ records at least
+two occurrences. For a terminal $g$, set $P_X=\{ |g| \}$ and $R_X=\varnothing$.
+For a concatenation,
+\[
+ P_{UV}=P_U\cup P_V,\qquad
+ R_{UV}=R_U\cup R_V\cup(P_U\cap P_V).
+\]
+Thus the unique generators at a root are precisely $P_X\setminus R_X$.
+The implementation uses dense generator indices and integer bit masks;
+the cost of a mask operation grows with its $r$ bits. The transient mask
+storage is $O(Nr)$ bits. This is polynomial in grammar size and rank, with
+no dependence on expanded word length except its encoded bit length.
+
+Combine these unique-generator sets with aggregate counts to retain the
+explicit producer's elimination priority
+\[
+ ((|w|-2)\,\operatorname{count}(g),\ |w|,\ \text{relation index},\ g).
+\]
+For the chosen occurrence $w=u g^{\epsilon}v$, obtain its position using
+the existing compressed occurrence query. Form $vu$ by two slices and a
+concatenation. Substitute $(vu)^{-1}$ when $\epsilon=1$, or $vu$ when
+$\epsilon=-1$, into all other relators; retain the eliminated relator's
+empty slot. Exact compressed free and cyclic reduction finishes the move.
+The usual Tietze transformation proves preservation of the group.
+
+When no generator can be eliminated, a negative Whitehead cut supplies
+the same length-reducing automorphism used by the explicit producer.
+Its generator images are short words, but substitution and cancellation
+remain compressed. The implementation checks that the resulting total
+length change equals the cut prediction. All lengths and heuristic scores
+use exact integers. A zero or positive best cut is only a stalled search,
+not a nontrivial-knot certificate.
+
+\subsection{The bounded overlap bridge and verification boundary}
+
+The cyclic overlap matcher is still a suffix automaton on explicit letters.
+The new producer retains the rank-adaptive policy from the previous section,
+but enters this matcher only when the total current expanded length is at
+most \code{max\_letters}. It charges expansion and matching to the same
+search work allowance. If the length exceeds the cap, it skips overlap
+matching and continues to the compressed Whitehead test. It does not
+report that no overlap exists. Consequently the new backend is a hybrid,
+and its search paths need not cover all paths available with a larger
+explicit overlap allowance.
+
+The CLI flag \code{--group-compressed-search} enables compressed discovery
+and compressed replay; Python callers combine
+\code{group\_compressed\_search=True} with \code{use\_group=True}.
+The earlier \code{--group-compressed} flag continues to select replay only.
+Standalone \code{compressed\_certificate} returns an untrusted candidate
+trace. Before a recognition verdict, the checker reconstructs the full
+Wirtinger presentation independently from the input PD and replays the
+trace. It shares the deterministic word kernel, but does not call the new
+summary, eligibility, cut-selection or producer move routines. On the
+finite knot corpus, the independently implemented literal checker also
+accepts all the produced traces. This corroborates these examples; it is
+not a proof that two implementations sharing a kernel cannot share a bug.
+
+\code{max\_nodes} bounds allocated grammar nodes and equality assertions;
+\code{max\_work} bounds cooperative search operations. The independent
+replay has its own work allowance, and both share the local wall deadline.
+The explicit-letter cap bounds initial PD reconstruction and optional
+overlap expansion, rather than all intermediate represented lengths.
+Exhaustion remains inconclusive and caller cancellation propagates.
+
+\subsection{What the extension does and does not bound}
+
+For a supplied grammar, counts, unique-occurrence masks and Whitehead
+graphs are polynomial-time constructions. So are the individual compressed
+word operations established above. These statements do not bound the
+number of Whitehead moves in terms of the original crossing count, or
+the accumulated grammar size after repeated substitutions. Even a
+strictly length-decreasing search may have exponentially many steps when
+its initial length is exponentially compressed. Generator elimination can
+also increase subsequent relator lengths. A proof of a general
+quasi-polynomial recognizer must address these global quantities.
+
+The practical policy therefore keeps explicit search as the default.
+Representation adaptivity should be justified by measured progress and
+resource use, with independent verification retained after any transition.
+Switching implementations alone supplies no improved worst-case exponent.
+
+\subsection{Discovery audit and measured limitations}
+
+The 8 October 2026 discovery audit repeats the same fifteen input diagrams:
+twelve original Khovanov survivors, their two previously stalled mirrors,
+and Gordian. For each input it executes a randomized A/A/B ordering of
+explicit search, an identical explicit control, and compressed search.
+Every arm includes fresh PD validation, the complete recognition query
+and independent certificate replay. One warm-up round is excluded and
+five rounds are measured, giving 225 measured queries. The local group
+allowance is ten seconds, the global allowance twelve seconds, and each
+search/replay receives ten million abstract work units. The larger time
+allowance deliberately permits comparison of completed compressed searches;
+it differs from the earlier two-second replay-only experiment.
+
+All 225 queries return UNKNOT with group evidence. The sum of median
+times over the fourteen small cases is $73.52$ ms for explicit search,
+$74.00$ ms for its control and $391.33$ ms for compressed search. Gordian's
+respective medians are $1.247$, $1.252$ and $7.076$ seconds. Thus this
+implementation increases representation capacity but substantially slows
+the present corpus. A profile of Gordian identifies exact compressed
+equality inside cancellation as the main cost; the shared eligibility
+masks do not remove that bottleneck. Its producer allocates 11,529 grammar
+nodes and uses one bounded overlap expansion. These are observed values,
+not worst-case complexity bounds.
+
+A separate synthetic audit builds $(ab)^{2^k}$, computes counts and the
+cyclic graph for two copies, checks its unique-occurrence masks, then
+constructs the abstract presentation $\langle a,b\mid ab^{2^k}\rangle$
+and eliminates $a$ without expanding. This presentation is explicitly
+known to be infinite cyclic; it is not a new family of hard knot diagrams.
+The table includes grammar construction and all these operations, with
+five measured repetitions after a warm-up:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$k$ & allocated nodes & charged work & median seconds\\
+\midrule
+16 & 53 & 511 & 0.000267\\
+64 & 197 & 1855 & 0.000836\\
+256 & 773 & 7231 & 0.003128\\
+1024 & 3077 & 28735 & 0.015473\\
+\bottomrule
+\end{tabular}
+\end{center}
+The represented lengths exceed $2^{1024}$ in the last row, while no
+expanded-word scan occurs. Unit tests additionally compare 250 random
+grammars' counts, singleton sets, weighted graphs and cut predictions with
+literal computations, check oversized-overlap skipping, and replay all
+fifteen real certificates through both implementations. Resource limits,
+global cancellation, nontrivial knots and CLI routing are checked too.
+The full integrated suite passes all 642 tests with the optional Regina
+dependency installed in 166.446 seconds; its log is
+\path{data/compressed-search-integrated-tests.txt}.
+The raw experiment is
+\path{fast/results/compressed_search_20261008.json}; its script is
+\path{fast/benchmark_compressed_search.py}.
+
+The incoming-report directory still contains only its README at this
+checkpoint. The upstream \code{openai/math} head remains
+\code{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}; its latest listed changes
+update manuscripts and Lean formalizations and provide no new
+unknot-specific bound for this integration. No general sub-exponential or
+quasi-polynomial recognition theorem is claimed.
