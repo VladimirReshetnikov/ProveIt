@@ -720,6 +720,14 @@ and `centeredAbs(q^(j+1)*a_i) < R*N` simultaneously. The modulus and the
 search limit are separate; a use requiring a nonzero modular multiplier
 can impose `M < N`. Its module passed an isolated Lean check, and the
 updated facade audit is queued.
+The same module also proves `exists_mixed_modular_recurrence_bound`.
+For fixed maximum degree `k`, constants `K,p` give a common
+`1 <= q <= H^(p*(d+1)^(2*k))` making every monomial in `d` families and
+degrees `1,...,k` smaller than `N/H`, provided `H >= K*(d+1)`.
+The induction first makes the highest degree sufficiently small to survive
+a bounded multiplier chosen for all lower degrees. Its exponent estimate
+is checked in `schmidt_mixed_exponent_bound`. This strengthens the available
+recurrence input, while leaving the box-partition obligation below open.
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
 requirements, and adequate degree constants. The constants above are
@@ -777,6 +785,12 @@ power in the graph count. Printed page 576 (PDF page 112) confirms those
 powers in the proof of Corollary 16.11 and its stated polynomial exponent.
 These locations agree with the transcription; this check does not repair
 the quantitative comparison.
+
+**Kernel-checked comparison.** `section16CorollaryExponent_lt_printed`
+(`Proofs16CorollaryExponentGap`) proves the supplied exponent strictly
+below the printed (α/2)^(2^(2^(k+9))), for every 0 < α ≤ 1/2 and every k.
+The iteration parameter r is at least the degree A = 2^(2^(k+8)), so
+c^r ≤ (α/2)^(A²).
 
 The Lean counterexample refutes `lemma_16_10_printed_unit_encoding`, whose
 premises are the two packaged cover conditions. It does not by itself

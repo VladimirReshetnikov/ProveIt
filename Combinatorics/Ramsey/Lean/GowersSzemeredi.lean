@@ -298,6 +298,7 @@ import GowersSzemeredi.Proofs16PartJBudget
 import GowersSzemeredi.Proofs16PartJTheorem
 import GowersSzemeredi.Proofs16MilicevicStructure
 import GowersSzemeredi.Proofs05SimultaneousDirichlet
+import GowersSzemeredi.Proofs16CorollaryExponentGap
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
