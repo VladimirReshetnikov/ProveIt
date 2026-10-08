@@ -1,0 +1,344 @@
+\section{Certified cyclic Garside preprocessing}
+\label{sec:cyclic-garside}
+
+Report 25 extends the earlier rank-two interval optimizer to arbitrary
+supports in an Artin braid group.  The maintained implementation shares
+exact prefix arithmetic across cyclic cuts and target words.  It supplies
+an optional source-braid probe, not a new knot invariant.  A successful
+proposal must shorten the current simplified diagram, must pass independent
+replay, and restarts recognition under the remaining global budget.
+The probe follows the existing braid, Seifert, descending, and modular
+Alexander obstructions; its default setting is disabled.
+
+\subsection{Exact states and a separately checked equality witness}
+
+Let $b$ be the strand count and $\Delta$ the positive half-twist of length
+$B=\binom b2$.  Classical Garside theory gives a unique left-greedy form
+\[
+ g=\Delta^z s_1\cdots s_r,
+\]
+where $z\in\mathbb Z$ and the $s_i$ are proper nonidentity simple braids.
+A simple braid crosses each pair at most once and is determined by its
+permutation.  These are classical facts, not new compression theorems;
+see Dehornoy~\cite{dehornoy-garside}.  The implementation stores complete
+permutation arrays and the integer power.  Sorting and binary search
+compare these exact states; neither a permutation quotient nor a hash
+fingerprint is used to decide braid equality.
+
+Our convention is $p[i]=$ bottom position of top strand $i$.  For two
+adjacent simple factors $A,C$, a positive atom $\sigma_{i+1}$ can move
+from the start of $C$ to the end of $A$ exactly when
+\[
+ C[i]>C[i+1],\qquad A^{-1}[i]<A^{-1}[i+1].
+\]
+The move swaps values $i,i+1$ in $A$ and positions $i,i+1$ in $C$.
+The first condition factors $C=\sigma_{i+1}C'$ and reduces simple length
+by one; the second makes $A\sigma_{i+1}$ simple and increases its length
+by one.  Thus the local product is unchanged.  An identity right factor
+is deleted.  Positive input letters append an atom; negative letters use
+\[
+ \sigma_i^{-1}=\Delta^{-1}(\Delta\sigma_i^{-1}),\qquad
+ S\Delta^{-1}=\Delta^{-1}\tau(S),\qquad
+ \tau(p)[i]=b-1-p[b-1-i].
+\]
+After transfers make all pairs left weighted, leading half-twists are
+extracted into $z$.  Any half-twist factor must then be initial, since a
+left-weighted factor immediately before $\Delta$ must itself be $\Delta$.
+
+\begin{proposition}[Elementary normalization bound]
+Normalizing an $m$-letter signed word uses at most $Bm(m-1)/2$ atom
+transfers, at most $m$ simultaneous simple factors, and
+$O(m^2b^3)$ index-word operations.  Appending one atom to a normal state
+with $r$ factors costs $O((r+1)^2b^3)$ conservatively.
+\end{proposition}
+\begin{proof}
+For a temporary factor list indexed from zero, use
+$\Phi=\sum_j j\,\ell(s_j)$.  Each transfer decreases it by one before
+any deletion.  Deletion and leading half-twist extraction cannot increase
+it, and $\tau$ preserves simple length.  The $k$th append raises it by at
+most $B(k-1)$ and creates at most one factor.  Summing proves the transfer
+bound.  Each pair test or transfer scans $O(b)$ permutation positions;
+failed tests advance the scan index, and a successful transfer backs it
+up by at most one.  List copying, twisting and deletion fit the stated
+quadratic bound.  Starting with $r$ factors instead gives initial
+potential $O(B(r+1)^2)$ and the single-append bound.
+\end{proof}
+
+The certificate records local transfer positions, generator indices, and
+half-twist extraction counts.  A separate verifier imports neither the
+normalizer nor the optimizer.  It applies the elementary permutation
+operations only after checking their inequalities and indices.  Therefore
+it proves equality of the represented braid throughout the trace, even
+without trusting normal-form uniqueness or the optimizer's choices.
+Version one checks equality of a source interval to the identity or a
+signed generator.  Version two checks that source times inverse target
+replays to the identity.  It also checks source binding, rotation, disjoint
+intervals, strict shortening, target radius, and reconstructed output.
+The digest is an input-binding aid; replay on the actual source supplies
+the equality proof.  It certifies neither kernel optimality nor a knot
+verdict.  A cyclic cut preserves oriented closure by conjugacy, while
+uncut substitutions preserve the braid element itself.
+
+\subsection{Sharing the algebra across cuts and targets}
+
+Write $w$ for the input of length $n$, and $P_j$ for the exact prefix
+products of the doubled word $ww$.  A source interval $[i,j)$ equals a
+target word $v$ precisely when
+\[
+ P_i^{-1}P_j=v\quad\Longleftrightarrow\quad P_i=P_jv^{-1}.
+\]
+This ordering matters in a noncommutative group.  The doubled table lets
+all $n$ cyclic cuts query the same prefix states.  The radius-$\rho$
+dictionary contains every literal signed word of length at most $\rho$,
+including the empty word; its size is
+\[
+ M=\sum_{d=0}^{\rho}(2b-2)^d.
+\]
+Different words may represent the same braid, which causes no correctness
+problem.  A trie of reversed inverse target words shares the appends
+needed to evaluate $P_jv^{-1}$ for one endpoint.  Canonical query states
+are looked up in the sorted prefix table.
+
+For a fixed cut $s$, let $F[j]$ be the maximum saving on the first $j$
+letters.  Immediately before processing $j$, maintain
+\[
+ H(q)=\max_{0\le i<j:\ P_{s+i}=q}(F[i]-i).
+\]
+The recurrence is
+\[
+ F[j]=\max\left(F[j-1],\ \max_{v\in D}
+          \{j-|v|+H(P_{s+j}v^{-1})\}\right).
+\]
+Only afterwards insert $F[j]-j$ under $P_{s+j}$, excluding empty source
+intervals.  Backpointers are updated only on a strict improvement.
+
+\begin{proposition}[Optimal disjoint one-pass kernel]
+The recurrence returns the shortest word obtainable by disjoint interval
+substitutions to the chosen dictionary at that cut.  Minimizing across
+all cyclic cuts gives the corresponding cyclic optimum.
+\end{proposition}
+\begin{proof}
+An optimal prefix plan either retains its last letter or ends with a
+replacement $[i,j)\mapsto v$.  The latter saves $F[i]+j-i-|v|$ and is
+permitted exactly by the prefix-state equality.  Conversely every term
+extends a valid optimal prefix plan.  Induction proves the recurrence.
+A nonshortening substitution has saving at most $F[i]\le F[j-1]$ and
+cannot win strictly, so recorded intervals strictly shorten.  Backtracking
+to their starts makes them disjoint.  Any circular disjoint plan admits
+a cut at a block boundary or an unused boundary, including a block covering
+the entire circle, and is therefore among the tested cuts.
+\end{proof}
+
+This is not optimization over arbitrary sequences of substitutions,
+conjugations or Markov moves.  It extends the earlier interval dynamic
+program by supplying exact unrestricted group queries.  The lower bound
+\[
+ k\ge\max\left(|\operatorname{exp}(w)|,
+                      b-\#\text{cycles of the strand permutation}\right)
+\]
+allows an exact early exit: each letter changes exponent by one and changes
+permutation cycle count by at most one.  Both quantities are unchanged by
+conjugacy.  In particular, a knot closure needs at least $b-1$ letters.
+
+\subsection{Height-sensitive costs and the small-core theorem}
+
+Let $R=\max_{j\le2n}\ell_c(P_j)$, where $\ell_c$ counts proper simple
+factors.  Inversion preserves this length, and multiplication is
+subadditive: move half-twist powers left, concatenate factor lists, and
+normalize without increasing their number.  Thus interval prefixes have
+height at most $2R$, and target queries at most $R+\rho$; always $R\le2n$.
+The following conservative word bound includes a winning proof and replay:
+\begin{align*}
+ T=O\bigl(&nM(R+\rho+1)^2b^3
+       +nM(R+\rho+1)b\log(n+2)\\
+       &+n^2M+M\rho\log(M+2)+n(R+\rho+1)b^3\bigr).
+\end{align*}
+The first term charges the $O(nM)$ exact append queries, the second their
+full-state comparisons, and the third all per-cut scalar dynamic programs.
+The next term builds the target dictionary and trie.  In the last term,
+disjoint winning source intervals total at most $n$ letters and their
+strictly shorter targets total at most $n$; the height bound and transfer
+potential therefore charge proof generation and replay to
+$O(n(R+\rho+1)b^3)$.  Proof size is
+$O(n(R+\rho+1)b^2)$ elementary records.  Search workspace, excluding that
+output, is
+\[
+ O\bigl(n(R+1)b+nM+M\rho+\rho(R+\rho+1)b\bigr)
+\]
+words.  Each index word occupies $O(\log(n+b+\rho+M+2))$ bits, giving
+the corresponding bit-storage bound.  Elementary index arithmetic adds at
+most a polynomial in this logarithm to the word-operation cost in bit time.  With fixed $\rho$, the computation is polynomial
+in $n,b$; leading conservative terms are $O(n^3b^4)$ for radius one and
+$O(n^3b^5)$ for radius two.  An arbitrary binary-encoded radius is not a
+fixed parameter: its dictionary is exponential in $\rho\log(b+1)$.
+
+A cheaper portfolio stage first expands the whole-word normal form only
+if its calculated Artin length is smaller than the input.  It independently
+proves this equality.  If the candidate attains the universal lower bound,
+it returns immediately; otherwise it compares that candidate with the cyclic
+kernel.  The returned word is no longer than the kernel optimum, but need
+not itself be an optimal radius-specific interval plan.  Evidence distinguishes
+\code{whole-normal-form} from \code{cyclic-kernel}.
+
+\begin{proposition}[Constructive restricted recognition bound]
+For fixed radius $\rho$, uncapped certified preprocessing followed by an
+uncapped conventional exact recognizer has cost
+\[
+ \operatorname{poly}_{\rho}(n,b)+\operatorname{poly}(k)2^{O(k)},
+\]
+where $k$ is the resulting word length.  It is quasi-polynomial on families
+whose cyclic radius-$\rho$ optimum is $O(\log^2(n+2))$.
+\end{proposition}
+\begin{proof}
+The optimizer and verifier have the polynomial bounds just given.  Closure
+is preserved and remains one component, so $b\le k+1$.  A conventional
+Khovanov cube on the resulting $k$ crossings has $2^k$ resolutions with
+at most $b+k$ circles each.  Hence its enhanced-state dimension is
+$2^{O(k)}$, and exact matrix ranks over $\F$ can be obtained in polynomial
+work in that dimension.  Reduced rank one detects the unknot: the rational
+unknot-detection theorem and the universal coefficient theorem imply the
+same rank-one criterion over $\F$.  The maintained exact fallback supplies
+this decision.  Substitution of the small-core bound gives
+$2^{O(\log^2(n+2))}$.  Local probe cutoffs are disabled in this theorem.
+\end{proof}
+
+There is a proved family for which the decomposition need not be supplied.
+Partition a short core into blocks of length at most $\rho$, replace each
+by a no-shorter equal braid word, and insert disjoint identity blocks,
+forming $y$.  Surround it by $u,v$ with $vu=1$, forming $uyv$.
+A cyclic cut exposes $yvu$; deleting the sleeve and identity blocks and
+shortening the inflated core blocks is an admissible disjoint plan.
+The optimizer discovers a result no longer than the original core without
+being told this decomposition.  This generalizes rank-two inflation to
+arbitrary supports and multi-letter targets.  It does not establish a small
+core for every unknot or a general sub-exponential recognition algorithm.
+
+\subsection{Two limitations of short-word approaches}
+
+First, increasing target radius can be essential even for an unknot.
+In $B_4$ write $a=\sigma_1$, $b=\sigma_2$, $c=\sigma_3$ and, for $m\ge2$,
+\[
+ X_m=a^{-m}c^m a^{m+1}c^{-(m-1)},\qquad W_m=X_m b.
+\]
+Since $ac=ca$, $X_m=ac$ and the closure of $W_m$ is the unknot.
+Nevertheless, the cyclic radius-one optimum is $4m+1$, while radius two
+returns three letters.  In $\langle a,c\rangle\cong\mathbb Z^2$, the
+prefix path visits successively $(0,0),(-m,0),(-m,m),(1,m),(1,1)$.
+It is simple and has no nonconsecutive lattice-neighbor vertices.  Thus
+no interval in $X_m$ is an identity or a long signed-letter replacement.
+An interval containing the sole $b$ has form $p b q$ with $p,q$ in this
+commuting subgroup.  The permutation double cosets force both $p,q$ to
+be pure if this equals a signed $b$.  Write $p=a^{2r}c^{2s}$ and
+$q=a^{2u}c^{2v}$.  Signed crossings between original strand labels occur
+on pairs $12,34,13,24$ with counts $2r,2s,2u,2v$ respectively, and pair
+$23$ has count $+1$.  These equality invariants force $p=q=1$ and the
+positive sign.  The simple prefix path then permits only the original
+single letter, which does not shorten.  This covers intervals at every
+cyclic cut.  Radius two replaces $X_m$ by $ac$; the four-cycle permutation
+requires at least three output letters.  A whole-word normal form also
+exposes the short simple braid, so the practical portfolio avoids the
+larger dictionary on this family.  The theorem separates interval rules,
+not all braid algorithms.
+
+Second, preserving the braid element itself cannot universally give a
+polylogarithmic core, even at three strands.  In $B_3$, the unknot braid
+\[
+ G_m=a^{m+1}ba^{-m}=a^m(ab)a^{-m}
+\]
+ has minimum equal-braid Artin length exactly $2m+2$.  To see this, quotient
+$B_3$ by its center as $C_2*C_3$, with $x=aba$, $y=ab$.
+The image of $G_m$ is $(y^2x)^m y(xy)^m$, of reduced syllable length
+$4m+1$.  Each signed Artin letter contributes at most two syllables, so
+an equal word has length at least $2m+1$.  Exponent sum two forces even
+length, giving $2m+2$, attained by $G_m$.  A shortening subinterval would
+contradict this geodesicity.  Cyclic rotation, however, exposes the sleeve
+$a^{-m}a^m$ and leaves $ab$ of length two.  Existing free cyclic cleanup
+already handles this example.  The obstruction applies to equality-only
+explicit words, not to compressed representations or closure-preserving
+transformations in general.
+
+\subsection{Production contract and empirical results}
+
+The \code{--garside} option retains the original checked source braid
+through PD simplifications.  The proposal compares its verified output
+length with the current PD's crossing count, not merely with source length.
+An accepted source branch and the earlier PD move trace are recorded
+separately; they are not concatenated into a fictitious move sequence.
+Restart preserves backend, coefficient, reduction, window, and other user
+options, subtracts elapsed time from the global allowance, and disables
+this probe to prevent recursive reapplication.
+
+Search, dictionary construction, and independent replay share a cooperative
+local deadline and operation allowance.  The host's global check always
+runs first.  A local limit or allocation failure skips the probe; global
+exhaustion yields \code{UNKNOWN}.  Invalid certificates propagate as errors.
+Even the lower-bound shortcut checks resources.  These are cooperative
+limits, not hard process-memory or interrupt-latency guarantees; sorting
+and individual array operations can be noninterruptible.
+
+The existing modular Alexander obstruction runs before the optional probe.
+When it is inconclusive and the probe declines, this result is reused on
+the unchanged single-factor diagram.  Individual factors receive their own
+checks.  The selected Jones and requested exact Alexander stages follow
+the probe: successful compression can avoid their work on the larger PD.
+This ordering avoids spending a search allowance on a knot already detected
+by the inexpensive modular test, while retaining the opportunity to shorten
+before a larger invariant computation.  Source-free PD input bypasses the
+probe.  No production default changes.
+
+The delivered suite passes $47$ tests, including $7016$ short-word normal
+forms checked against a faithful Artin action and $1512$ independent interval
+optimization comparisons.  All $45$ archive hashes and six inspected source
+Git blobs were checked.  Three blobs are tied to the named source commit
+and path; three were recorded only by exact blob.  The previously unexecuted
+adapter smoke now passes.  Production adds normalized-homology comparisons
+on $60$ small knot closures, independent replay without the normalizer,
+backend/reduction restarts, corrupted certificates, shared resource hooks,
+and filter-priority/cache-reuse tests.  All $517$ maintained tests pass.
+These are executable checks, not
+formal verification of Python semantics or exhaustive knot classification.
+
+\input{tables/cyclic-garside-integration.tex}
+
+The complete-recognition experiment keeps the normal filters enabled and
+uses fresh validated diagrams, with their construction outside timing.
+Probe search, replay, candidate construction, and restarted recognition are
+included.  Seven shuffled paired warm rounds compare disabled, identical
+control, and radius-one/radius-two enabled policies.  The local allowance is
+$0.1$ seconds and $100000$ ticks, with $100000$ target words; all arms have
+the same two-second global and $50000$-object ceilings.  An exhausted local
+probe is not censored if the remaining exact pipeline completes; a global
+\code{UNKNOWN} would receive no speedup ratio.  Raw samples, repeats,
+verdicts, stages and source hashes are retained.  Isolated compressor
+measurements are reported separately and do not imply the same gain in
+recognition.
+
+
+All $25$ inputs complete with agreeing verdicts in every measured arm.  The
+four larger inflated-unknot fixtures have radius-one gains of $1.34$--$2.05$
+relative to the disabled pipeline.  The two smaller ones have ratios $1.018$
+and $0.811$, so successful shortening need not reduce total work.  Several
+inputs are already decided before any probe; enabled-option overhead makes
+some very short certificates slower, with a ratio as low as $0.750$.  The
+identical-control ratios range from $0.961$ to $1.046$.  These observations
+support an optional policy, not a universal or default performance win.
+On modular-Alexander-detected examples the enabled path returns before
+factorization, which also accounts for modest gains unrelated to Garside
+arithmetic.  Source-free PD inputs do not run the probe.
+
+Two retained diagnostic experiments explain the placement choice.  Putting
+compression before modular Alexander made some already-detectable knots
+roughly $140$ times slower.  Moving all invariant filters before it removed
+that regression but lost the useful inflated-unknot gains, because Jones
+work on the larger PD had already been spent.  The final placement lies
+between modular Alexander and Jones.  These diagnostics retain their own
+source hashes and are not pooled with the final timings.
+
+The isolated shared-prefix compressor improves by $3.90$--$22.51$ on the
+six multi-crossing fixtures, but loses on the one-letter control.  At the
+51-letter barrier, sharing uses $714$ algebra appends instead of $18207$.
+That mechanism result is distinct from the full recognition table: the
+ordinary pipeline already decides the displayed barrier without invoking
+the compressor.  Radius two does not deliver a consistent recognition gain
+on this sample, since the inexpensive whole-normal-form proposal often
+already attains the lower bound.

@@ -295,3 +295,27 @@ if corridor:
         'These timings include scalar and graph setup.\n')
     with open('tables/corridor-transfer-integration.tex', 'w') as handle:
         handle.write(content)
+
+garside = load('../fast/results/cyclic_garside_pipeline_20261008.json')
+garside_kernel = load('../fast/results/cyclic_garside_kernel_20261008.json')
+if garside and garside_kernel:
+    rows = []
+    for row in garside['cases']:
+        ratios = row['paired_ratios']
+        cells = ' & '.join('unknown' if ratios[k] is None else f'{ratios[k]:.3f}'
+                           for k in ('off_over_radius1', 'off_over_radius2', 'off_over_control'))
+        rows.append(f"{esc(row['name'])} & {row['crossings']} & {cells}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+        table('Recognition input & $n$ & Off/radius 1 & Off/radius 2 & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Ratios are medians of paired complete-recognition times; '
+        'values above one favor the enabled policy.\n')
+    rows = [f"{esc(row['case'])} & {row['n']} & {row['paired_speedup']:.3f} & "
+            f"{row['aa_ratio']:.3f}" + r" \\" for row in garside_kernel['summary']]
+    content += (r"\begin{center}" + '\n' +
+        table('Isolated compressor & $n$ & Repeated/shared & A/A', '@{}lrrr@{}', rows) +
+        r"\end{center}" + '\n' +
+        'Both compressor arms search all cuts without lower-bound pruning and '
+        'generate and replay only the winning certificate.\n')
+    with open('tables/cyclic-garside-integration.tex', 'w') as handle:
+        handle.write(content)

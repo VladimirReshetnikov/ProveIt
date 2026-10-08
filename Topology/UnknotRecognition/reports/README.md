@@ -30,7 +30,7 @@ modification times.
 | `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | 152 archive tests and independent arithmetic/local audits pass; checked-source classifier and opt-in local wrapper integrated |
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded transfer and exact symbolic transport integrated; earlier rank law and conditional repair bound reviewed |
 | `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover integration remains under review |
-| `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; production review underway |
+| `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517 production tests pass |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -39,7 +39,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(431 current production tests pass). Local reruns of
+(431 production tests passed at that checkpoint). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -210,5 +210,13 @@ Report `25/` was extracted from `docs/incoming/unknot_cyclic_garside_20261007.zi
 without altering its delivered files. All 45 manifest hashes and six inspected
 source Git blobs were verified (three tied to the pinned path/commit; three
 recorded by exact blob only). Its 47 tests and previously unexecuted adapter
-smoke pass against this checkout. Production integration, complete recognition
-measurements and maintained theory are being reviewed separately.
+smoke pass against this checkout. Its maintained derivative now supplies an
+optional independently replayed source-braid probe with shared local/global
+checks and complete fallback. The modular Alexander obstruction precedes the probe, and an inconclusive result
+is reused on an unchanged diagram. Jones follows the probe so that compression
+can avoid its cost on a larger diagram. All 517
+production tests pass; isolated-compressor and complete-recognition measurements
+are retained separately. The theory, fixed-radius complexity bound, restricted
+small-core theorem and limitations are in `../synthesis/cyclic_garside.tex`.
+The delivered `SHA256SUMS.txt` is explicitly tracked despite the repository's
+general checksum-file ignore rule; the archived bytes remain unchanged.

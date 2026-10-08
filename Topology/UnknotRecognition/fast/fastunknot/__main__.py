@@ -41,6 +41,11 @@ OPTIONS = {
         ("--window-strategy", str, "support", ("support", "minimal"), "allocation-pruned or cancel-before-truncate window strategy"),
         ("--ranktwo", None, False, None, "try one verified rank-two shortening pass on a retained source braid"),
         ("--ranktwo-seconds", float, 0.1, None, "local allowance for optional braid compression and replay"),
+        ("--garside", None, False, None, "try verified cyclic Garside source-braid compression"),
+        ("--garside-radius", int, 1, None, "maximum target word length in the optional cyclic kernel"),
+        ("--garside-seconds", float, 0.1, None, "shared local allowance for Garside search and replay"),
+        ("--garside-max-ticks", int, 100000, None, "cooperative operation allowance for the Garside probe"),
+        ("--garside-max-targets", int, 100000, None, "target dictionary ceiling for the Garside probe"),
         ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
         ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
         ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
@@ -248,6 +253,10 @@ def main(argv: list[str] | None = None) -> int:
         try:
             if args.ranktwo_seconds < 0 or not args.ranktwo_seconds < float("inf"):
                 raise ValueError("--ranktwo-seconds must be finite and nonnegative")
+            if args.garside_seconds < 0 or not args.garside_seconds < float("inf"):
+                raise ValueError("--garside-seconds must be finite and nonnegative")
+            if args.garside_radius < 1 or args.garside_max_targets < 1 or args.garside_max_ticks < 0:
+                raise ValueError("Garside radius/target ceiling must be positive and ticks nonnegative")
             if args.window_seconds < 0 or not args.window_seconds < float("inf"):
                 raise ValueError("--window-seconds must be finite and nonnegative")
             if args.window_radius is not None and args.window_radius < 0:
@@ -255,7 +264,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.window_max_objects < 0:
                 raise ValueError("--window-max-objects must be nonnegative")
         except ValueError as exc:
-            print(f"invalid window options: {exc}", file=sys.stderr)
+            print(f"invalid probe/window options: {exc}", file=sys.stderr)
             return 2
         if args.euler_max_states < 0:
             print("--euler-max-states must be nonnegative", file=sys.stderr)
@@ -266,6 +275,9 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_ranktwo=args.ranktwo, ranktwo_seconds=args.ranktwo_seconds,
+                           use_garside=args.garside, garside_radius=args.garside_radius,
+                           garside_seconds=args.garside_seconds, garside_max_ticks=args.garside_max_ticks,
+                           garside_max_targets=args.garside_max_targets,
                            window_radius=args.window_radius, window_strategy=args.window_strategy, window_max_objects=args.window_max_objects,
                            window_seconds=args.window_seconds,
                            use_seifert=not args.no_seifert, backend=args.backend,
