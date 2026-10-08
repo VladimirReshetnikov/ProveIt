@@ -13,7 +13,9 @@ obstructions, optional exact Alexander, late Reidemeister III, and F2 Khovanov.
 The standard Khovanov scanner remains the default. Optional shared, saturated,
 and euler backends compress literal direct summands; saturated modes preserve
 only a capped rank or a certified lower bound, as named in their evidence.
-Filters never interpret agreement with the unknot invariant as triviality.
+One-sided filters never interpret agreement with the unknot invariant as
+triviality. The optional treewidth-two stage first certifies its restricted
+diagram class, where an exact determinant of one is a complete test.
 An optional twist backend uses checked source-braid runs after the filters.
 If visible factors remain undecided it computes the entire original source,
 never treating that braid as a presentation of one factor.
@@ -325,6 +327,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_seifert: bool = True, backend: str = "standard",
               use_braid: bool = True, braid_backend: str = "free-product",
               use_rational: bool = True,
+              use_treewidth_two: bool = False, treewidth_two_seconds: float | None = 0.1,
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
@@ -358,6 +361,13 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_braid_profile must be boolean")
     if type(use_rational) is not bool:
         raise ValueError("use_rational must be boolean")
+    if type(use_treewidth_two) is not bool:
+        raise ValueError("use_treewidth_two must be boolean")
+    if treewidth_two_seconds is not None:
+        from math import isfinite
+        if (type(treewidth_two_seconds) not in (int, float)
+                or not isfinite(treewidth_two_seconds) or treewidth_two_seconds < 0):
+            raise ValueError("treewidth_two_seconds must be finite and nonnegative, or None")
     if type(use_ranktwo) is not bool:
         raise ValueError("use_ranktwo must be boolean")
     if type(use_garside) is not bool:
@@ -447,6 +457,29 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                 return Result(witness["status"], "source-" + witness["criterion"],
                               original.crossings, diagram.crossings,
                               monotonic() - start, evidence)
+        if use_treewidth_two:
+            probe_start = monotonic()
+            from .treewidth_two import treewidth_two_certificate
+            local_deadline = (None if treewidth_two_seconds is None
+                              else probe_start + treewidth_two_seconds)
+            def treewidth_check():
+                check()
+                if local_deadline is not None and monotonic() >= local_deadline:
+                    raise ScanLimit("treewidth-two local time allowance exhausted")
+            try:
+                witness = treewidth_two_certificate(diagram, check=treewidth_check)
+                treewidth_check()
+            except (ScanLimit, MemoryError) as exc:
+                check()
+                evidence["treewidth_two"] = dict(status="skipped",
+                    reason=str(exc) or "memory allocation failed",
+                    seconds=monotonic()-probe_start)
+            else:
+                evidence["treewidth_two"] = (witness if witness is not None else
+                    dict(status="outside-class", reason="projection treewidth exceeds two"))
+                if witness is not None:
+                    return Result(witness["status"], witness["method"], original.crossings,
+                                  diagram.crossings, monotonic()-start, evidence)
         if use_seifert:
             certificate = seifert_certificate(diagram)
             check()
