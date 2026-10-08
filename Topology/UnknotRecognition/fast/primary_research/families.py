@@ -110,12 +110,13 @@ def two_field_matrix(degree, *, mixing='bridge', seed=2026100809):
                         mixing=mixing, seed=seed, kind='graded algebraic component, not a knot fixture')
 
 
-def two_field_scan(degree, *, mixing='bridge', seed=2026100809, **options):
+def two_field_scan(degree, *, mixing='bridge', seed=2026100809,
+                   scan_class=FittingScan, **options):
     matrix, evidence = two_field_matrix(degree, mixing=mixing, seed=seed)
     size = len(matrix)
     options.setdefault('fitting_max_objects', 2 * size)
     options.setdefault('fitting_max_variables', 2 * size * size)
-    scan = FittingScan(shape_cache=False, **options)
+    scan = scan_class(shape_cache=False, **options)
     matching = scan.algebra.intern(((0, 1), (2, 3)))
     scan.points = frozenset(range(4))
     scan.mid = [matching] * (2 * size)

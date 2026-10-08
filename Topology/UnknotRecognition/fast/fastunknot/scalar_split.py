@@ -79,6 +79,14 @@ def _inverse(columns):
     return inverse
 
 
+def _scalar_blocks(scan, group, *, check=None, preserve_grading=True):
+    shifts = recover_shifts(scan, group, check=check or (lambda: None)) if preserve_grading else {}
+    partitions = {}
+    for v in group:
+        partitions.setdefault((scan.deg[v], scan.mid[v], shifts.get(v)), []).append(v)
+    return list(partitions.values())
+
+
 def scalar_endomorphism_space(scan, group, *, max_variables=1024, check=None,
                               preserve_grading=True):
     """Return blocks, variable indices, nullspace, and equation count; or None.
@@ -87,11 +95,7 @@ def scalar_endomorphism_space(scan, group, *, max_variables=1024, check=None,
     matching, and (by default) recovered quantum shift. A return value None denotes a configured size skip, not a proof
     that no endomorphism or decomposition exists.
     """
-    shifts = recover_shifts(scan, group, check=check or (lambda: None)) if preserve_grading else {}
-    partitions = {}
-    for v in group:
-        partitions.setdefault((scan.deg[v], scan.mid[v], shifts.get(v)), []).append(v)
-    blocks = list(partitions.values())
+    blocks = _scalar_blocks(scan, group, check=check, preserve_grading=preserve_grading)
     variable_count = sum(len(block) ** 2 for block in blocks)
     if max_variables is not None and variable_count > max_variables:
         return None
@@ -221,8 +225,16 @@ def find_scalar_split(scan, group, *, max_variables=1024, basis_trials=64,
         raise ValueError('primary must be a boolean')
     data = scalar_endomorphism_space(scan, group, max_variables=max_variables, check=check,
                                      preserve_grading=preserve_grading)
+    return _find_scalar_split(scan, group, data, basis_trials=basis_trials,
+        combination_trials=combination_trials, check=check, primary=primary)
+
+
+def _find_scalar_split(scan, group, data, *, basis_trials, combination_trials,
+                       check=None, primary=False):
+    """Search a complete space built locally or transported within this pass."""
     metrics = dict(variables=0, equations=0, dimension=0, candidates=0, skipped_variables=0,
-                   primary_candidates=0, primary_splits=0, primary_max_minimal_degree=0)
+                   primary_candidates=0, primary_splits=0, primary_max_minimal_degree=0,
+                   primary_local_certificates=0)
     if data is None:
         metrics['skipped_variables'] = 1
         return None, None, metrics
@@ -263,6 +275,19 @@ def find_scalar_split(scan, group, *, max_variables=1024, basis_trials=64,
             metrics['primary_max_minimal_degree'] = max(
                 metrics['primary_max_minimal_degree'], primary_witness['minimal_degree'])
             if columns is None:
+                # Evaluation F2[t]/(mu_Q) -> R is injective. Equal dimensions
+                # therefore prove R=F2[Q]. A one-dimensional Frobenius-fixed
+                # space makes this algebra local, so R has no nontrivial
+                # idempotent at all. Further candidates cannot split C.
+                if primary_witness['minimal_degree'] == len(basis):
+                    if primary_witness['berlekamp_dimension'] != 1:
+                        raise ArithmeticError('a primary candidate has multiple fixed factors')
+                    if not _commutes(scan, group, blocks, original_columns):
+                        raise ArithmeticError('the local-algebra generator does not commute with d')
+                    metrics['primary_local_certificates'] = 1
+                    metrics['primary_local_certificate'] = dict(primary_witness,
+                        candidate_columns=original_columns, commutant_dimension=len(basis))
+                    return None, None, metrics
                 continue
             changes, kernels, image_dimension, exponent = _fitting_bases(blocks, columns)
             if image_dimension in (0, len(group)):
@@ -318,7 +343,7 @@ class FittingScan(BarcodeScan):
                  fitting_max_splits=16, fitting_basis_trials=64,
                  fitting_combination_trials=16, fitting_cache_entries=4096,
                  record_witnesses=False, preserve_grading=True,
-                 fitting_primary=False, **kwargs):
+                 fitting_primary=False, fitting_reuse_commutant=False, **kwargs):
         super().__init__(*args, **kwargs)
         for name, value in [('fitting_max_objects', fitting_max_objects),
                             ('fitting_max_variables', fitting_max_variables),
@@ -333,8 +358,11 @@ class FittingScan(BarcodeScan):
             raise ValueError("preserve_grading must be a boolean")
         if type(fitting_primary) is not bool:
             raise ValueError('fitting_primary must be a boolean')
+        if type(fitting_reuse_commutant) is not bool:
+            raise ValueError('fitting_reuse_commutant must be a boolean')
         self.preserve_grading = preserve_grading
         self.fitting_primary = fitting_primary
+        self.fitting_reuse_commutant = fitting_reuse_commutant
         self.record_witnesses = record_witnesses
         self.fitting_witnesses = []
         self.scalar_cache = {}
@@ -344,7 +372,10 @@ class FittingScan(BarcodeScan):
                           fitting_max_endomorphism_dimension=0, fitting_cache_hits=0,
                           fitting_cache_misses=0, fitting_skipped_scalar_only=0,
                           fitting_primary_candidates=0, fitting_primary_splits=0,
-                          fitting_primary_max_minimal_degree=0)
+                          fitting_primary_max_minimal_degree=0,
+                          fitting_primary_local_certificates=0,
+                          fitting_commutant_builds=0, fitting_corner_reuses=0,
+                          fitting_corner_vectors=0)
 
     def _compress(self, ancestry, groups=None):
         # Work with views of the current indices until an accepted split really
@@ -355,12 +386,12 @@ class FittingScan(BarcodeScan):
             parent = ancestry[group[0]]
             if any(ancestry[v] != parent for v in group):
                 raise ArithmeticError('a differential joined independent parent summands')
-            pending.append((self, group, parent))
+            pending.append((self, group, parent, None))
         pending.reverse()
         finished = []
         splits = 0
         while pending:
-            source, group, parent = pending.pop()
+            source, group, parent, inherited = pending.pop()
             self._check()
             size = len(group)
             if len({(source.deg[v], source.mid[v]) for v in group}) == size:
@@ -376,6 +407,7 @@ class FittingScan(BarcodeScan):
                 finished.append((source, group, parent))
                 continue
             self.stats['fitting_examined'] += 1
+            space = None
             # Negative search entries depend on which candidate policy ran.
             key = self.fitting_primary, _scalar_key(source, group, self.preserve_grading)
             if key in self.scalar_cache:
@@ -393,11 +425,23 @@ class FittingScan(BarcodeScan):
                                            witness['kernel_dimensions'])
             else:
                 self.stats['fitting_cache_misses'] += 1
-                out, witness, metrics = find_scalar_split(
-                    source, group, max_variables=self.fitting_max_variables,
+                if inherited is not None:
+                    from .corner_split import corner_endomorphism_space
+                    parent_space, parent_witness = inherited
+                    space = corner_endomorphism_space(parent_space, parent_witness,
+                        source, group, check=self._check, preserve_grading=self.preserve_grading)
+                    self.stats['fitting_corner_reuses'] += 1
+                    self.stats['fitting_corner_vectors'] += len(parent_space[2])
+                else:
+                    space = scalar_endomorphism_space(source, group,
+                        max_variables=self.fitting_max_variables, check=self._check,
+                        preserve_grading=self.preserve_grading)
+                    self.stats['fitting_commutant_builds'] += 1
+                out, witness, metrics = _find_scalar_split(
+                    source, group, space,
                     basis_trials=self.fitting_basis_trials,
                     combination_trials=self.fitting_combination_trials, check=self._check,
-                    preserve_grading=self.preserve_grading, primary=self.fitting_primary)
+                    primary=self.fitting_primary)
                 if self.fitting_cache_entries:
                     if len(self.scalar_cache) >= self.fitting_cache_entries:
                         self.scalar_cache.clear()
@@ -405,6 +449,7 @@ class FittingScan(BarcodeScan):
             self.stats['fitting_candidates'] += metrics['candidates']
             self.stats['fitting_primary_candidates'] += metrics['primary_candidates']
             self.stats['fitting_primary_splits'] += metrics['primary_splits']
+            self.stats['fitting_primary_local_certificates'] += metrics['primary_local_certificates']
             self.stats['fitting_primary_max_minimal_degree'] = max(
                 self.stats['fitting_primary_max_minimal_degree'],
                 metrics['primary_max_minimal_degree'])
@@ -429,7 +474,11 @@ class FittingScan(BarcodeScan):
                 self.fitting_witnesses.append(witness)
             changed = _View(source, group, out=out)
             for child in reversed(list(components(changed))):
-                pending.append((changed, child, parent))
+                # Lazy restriction: size/budget skips and cache hits need no
+                # transport. A cached split has no fresh complete parent basis.
+                inherited = ((space, witness) if self.fitting_reuse_commutant
+                             and space is not None else None)
+                pending.append((changed, child, parent, inherited))
         if not splits:
             super()._compress(ancestry, groups=groups)
             return
