@@ -985,8 +985,7 @@ with the construction: for every dimension there are integer constants
 `K,p,q0` such that **under the old width threshold**, every family size
 `q >= q0` has a common proper partition satisfying the new, strictly larger
 width exponent and the corresponding smaller error exponent. The production
-module passed the normal repository checker; the follow-up full facade
-audit is running. The crossover `q0` and dimension constants remain
+module and the follow-up full facade axiom audit pass. The crossover `q0` and dimension constants remain
 existential, so this does not supply numerical improvements for small `q`.
 
 The remaining work is integration into the higher-dimensional lift and
