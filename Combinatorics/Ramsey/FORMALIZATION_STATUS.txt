@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 780 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,004 public Gowers theorems and found only propext,
+  All 782 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,018 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -138,6 +138,22 @@ Uniform pure-power affine cover with cubic slice controls
   counts, the parent box, and its modulus. The line-cover and cubic-provider
   hypotheses remain explicit; this is a large-box result, not Theorem 16.2.
   Both modules pass the full merged audit.
+
+All-box transfer and the complete cubic-control predicate
+  Proofs16AllScaleCoverTransfer caps a positive large-box exponent e at
+    min(e, log(2)/log(max(2,T))).
+  Below the threshold T this makes the target width at most two, so the
+  exact coarse relation cover applies with no exceptional points. For
+  relations with fibres bounded by M, the graph bound becomes
+  max(Q,3^k*M). The transfer includes zero-width boxes and proves positivity
+  of the capped exponent without an extra restriction on T.
+  Proofs16CubicAllScaleCover applies the transfer to partial graphs, whose
+  fibres have size at most one. The cubic affine lift now yields an actual
+  MultiplyLinearWith result on every proper box, with explicit graph,
+  exponent, and threshold functions. The line-cover and cubic slice-provider
+  premises remain explicit, and these controls have not been compared to
+  the manuscript's prescribed multipleQ/multipleC functions. The six open
+  catalogue statements remain open. Both modules pass the full audit.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
