@@ -1,23 +1,23 @@
-\section{Nontrivial roots and Gamma amplitudes}\label{sec:roots}
+\section{Nontrivial roots and Gamma amplitudes}\label{cms:sec:roots}
 \subsection{The root filtered tree series}
 Let $\zeta\ne1$ have exact order $q\geq2$, and put $z=\zeta\ee^{-s}$. In the term of index $r$ of $H_L$, a polylogarithmic singularity occurs precisely when $\zeta^r=1$, or equivalently $q\mid r$. For these terms, the same sign calculation as at the positive root applies. Define
-\begin{equation}\label{eq:BqL}
+\begin{equation}\label{cms:eq:BqL}
 B_{q,L}(s)=\sum_{\substack{1\leq r\leq L\\q\mid r}}
 \frac{r^{r-1}}{r!}\,s^{r-1}\ee^{-rs}.
 \end{equation}
 The corresponding full analytic power series near zero can be expressed as
-\begin{equation}\label{eq:Bq}
+\begin{equation}\label{cms:eq:Bq}
 B_q(s)=\frac1{qs}\sum_{h=0}^{q-1}
  T\bigl(\exp(2\pi\ii h/q)\,s\ee^{-s}\bigr).
 \end{equation}
-The apparent singularity at $s=0$ is removable. Formula \eqref{eq:Bq} is simply the root-of-unity filter applied to \eqref{eq:tree}. Its first term is
-\begin{equation}\label{eq:Bqfirst}
+The apparent singularity at $s=0$ is removable. Formula \eqref{cms:eq:Bq} is simply the root-of-unity filter applied to \eqref{cms:eq:tree}. Its first term is
+\begin{equation}\label{cms:eq:Bqfirst}
 B_q(s)=\frac{q^{q-2}}{(q-1)!}s^{q-1}+O(s^q).
 \end{equation}
 At any fixed Taylor degree, $B_{q,L}$ agrees with $B_q$ once $L$ is large enough. Its omitted terms have degree at least $L$.
 
 Let $\varepsilon_\zeta=1$ if $\zeta=\pm\ii$ and $0$ otherwise. For a sufficiently small slit neighborhood,
-\begin{equation}\label{eq:rootform}
+\begin{equation}\label{cms:eq:rootform}
 P_L(\zeta\ee^{-s})=s^{\varepsilon_\zeta}U_{\zeta,L}(s)
  \exp\bigl(-B_{q,L}(s)\log s\bigr),
 \end{equation}
@@ -32,9 +32,9 @@ converges by Dirichlet's test. For $j\geq2$, the difference between $\log(1+\zet
 
 The limit here means the original ordering of factors. At roots of unity, grouping finitely many consecutive residue classes preserves convergence. The same value is approached from inside the disk: the linear logarithmic term obeys Abel's theorem, and the quadratic remainder converges uniformly by its $j^{-2}$ majorant. This also identifies the product limit with the constant term of the finite boundary jet.
 
-\begin{proposition}[Gamma product for a root value]\label{prop:gamma}
+\begin{proposition}[Gamma product for a root value]\label{cms:prop:gamma}
 If $\zeta$ has exact order $q\geq2$ and $\zeta\ne\pm\ii$, then
-\begin{equation}\label{eq:gamma}
+\begin{equation}\label{cms:eq:gamma}
 F(\zeta)=\prod_{r=1}^{q}
 \frac{\Gamma(r/q)}{\Gamma\bigl((r+\zeta^{r+1})/q\bigr)}\ne0.
 \end{equation}
@@ -51,31 +51,31 @@ The ratio depending on $N$ is $N^{c_r/q}(1+O(N^{-1}))$. Multiplication over $r=1
 \[
 \sum_{r=1}^{q}c_r=\sum_{r=1}^{q}\zeta^{r+1}=0.
 \]
-Taking $N\to\infty$ proves \eqref{eq:gamma}.
+Taking $N\to\infty$ proves \eqref{cms:eq:gamma}.
 
 A factor of the original product can vanish only if $j=1$ and $\zeta^2=-1$. Equivalently, in the Gamma expression only $r=1$, $c_1=-1$ can make a denominator argument zero or a negative integer: for $r\geq2$, its real part is at least $(r-1)/q>0$. The excluded roots are therefore the only zeros. This also follows directly from convergence of the logarithmic remainder.
 \end{proof}
 
 \subsection{The leading singularity and the natural boundary}
-For $\zeta\ne1,\pm\ii$ of exact order $q$, let $t=1-z/\zeta$. We have $s=-\log(1-t)=t+O(t^2)$. Equations \eqref{eq:rootform} and \eqref{eq:Bqfirst}, multiplied by the Taylor jet of $Q_L$, show that the first nonanalytic term is
-\begin{equation}\label{eq:rootleading}
+For $\zeta\ne1,\pm\ii$ of exact order $q$, let $t=1-z/\zeta$. We have $s=-\log(1-t)=t+O(t^2)$. Equations \eqref{cms:eq:rootform} and \eqref{cms:eq:Bqfirst}, multiplied by the Taylor jet of $Q_L$, show that the first nonanalytic term is
+\begin{equation}\label{cms:eq:rootleading}
 -F(\zeta)\frac{q^{q-2}}{(q-1)!}\,
  t^{q-1}\log t.
 \end{equation}
 Its coefficient is nonzero. Choosing $L$ so that the smooth tail has more than $q$ derivatives rules out cancellation of the logarithmic divergence by the remainder. In particular, $F$ does not extend holomorphically through this root.
 
-\begin{corollary}\label{cor:natural}
+\begin{corollary}\label{cms:cor:natural}
 The unit circle is a natural boundary of $F$.
 \end{corollary}
 \begin{proof}
-Roots of unity other than $1$ and $\pm\ii$ are dense on the circle, and each is singular by \eqref{eq:rootleading}. Analytic continuation through any open arc would contradict one of those singularities. The radius of convergence is exactly $1$, already ensured by the pole at $1$.
+Roots of unity other than $1$ and $\pm\ii$ are dense on the circle, and each is singular by \eqref{cms:eq:rootleading}. Analytic continuation through any open arc would contradict one of those singularities. The radius of convergence is exactly $1$, already ensured by the pole at $1$.
 \end{proof}
 
 For later reference, the generic leading coefficient from a single order-$q$ root, expressed in the coefficient index $m$, is
-\begin{equation}\label{eq:genericcoefficient}
+\begin{equation}\label{cms:eq:genericcoefficient}
 (-1)^{q+1}q^{q-2}F(\zeta)\zeta^{-m}m^{-q}.
 \end{equation}
-This follows from the transfer formula in Section~\ref{sec:transfer}. It is the leading contribution of that root, not the whole term of order $m^{-q}$, since roots of smaller order also have higher corrections.
+This follows from the transfer formula in Section~\ref{cms:sec:transfer}. It is the leading contribution of that root, not the whole term of order $m^{-q}$, since roots of smaller order also have higher corrections.
 
 \subsection{The zeros at the order four roots}
 Define the product with its first factor removed by
@@ -84,12 +84,12 @@ Define the product with its first factor removed by
  =\prod_{j\geq2}\left(1+\frac{z^{j+1}}j\right).
 \]
 The same convergence proof gives nonzero boundary values at $\pm\ii$. Grouping the factors at $\ii$ gives
-\begin{equation}\label{eq:Qi}
+\begin{equation}\label{cms:eq:Qi}
 Q_{\ii}:=\widehat F(\ii)
 =\frac{\Gamma(5/4)\Gamma(1/2)\Gamma(3/4)}
  {\Gamma((2-\ii)/4)\Gamma((4+\ii)/4)}\ne0.
 \end{equation}
-For example, the residue class $j\equiv1\pmod4$ starts at $j=5$ because $j=1$ has been removed; its Gamma ratio is $\Gamma(5/4)/\Gamma(1)$. The other three residue classes give the remaining factors in \eqref{eq:Qi}.
+For example, the residue class $j\equiv1\pmod4$ starts at $j=5$ because $j=1$ has been removed; its Gamma ratio is $\Gamma(5/4)/\Gamma(1)$. The other three residue classes give the remaining factors in \eqref{cms:eq:Qi}.
 
 At $z=\ii\ee^{-s}$,
 \[
@@ -97,12 +97,12 @@ At $z=\ii\ee^{-s}$,
 B_4(s)=\frac83s^3+O(s^4).
 \]
 Hence the first nonanalytic term of $F$ is
-\begin{equation}\label{eq:izero}
+\begin{equation}\label{cms:eq:izero}
 -\frac{16}{3}Q_{\ii}s^4\log s
 =-\frac{16}{3}Q_{\ii}t^4\log t+\text{higher nonanalytic terms}.
 \end{equation}
 Thus the order-four roots first affect coefficients at order $m^{-5}$, rather than $m^{-4}$. Indeed their conjugate pair contributes at its first order
-\begin{equation}\label{eq:ipair}
+\begin{equation}\label{cms:eq:ipair}
 256\Rea(Q_{\ii}\ii^{-m})m^{-5}.
 \end{equation}
 This is only the contribution of this pair at that order. It is not a claimed complete formula for $P_5$. The zero delays the logarithmic singularity; it does not remove it. In particular $\pm\ii$ are singular as well, although they were unnecessary for the density argument.

@@ -1,6 +1,6 @@
-\section{Controlled inversion and integer thresholds}\label{sec:inverse}
+\section{Controlled inversion and integer thresholds}\label{tks:sec:inverse}
 There are two different inverse questions. If the input is promised to be an exact sequence value $A=a_n$, one seeks its integer index. For an arbitrary positive threshold $A$, one seeks
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{tks:eq:threshold}
 N(A)=\min\{n\geq0:a_n\geq A\}.
 \end{equation}
 For large $A$ the equality $a_0=a_1=1$ is immaterial, but a continuous approximation must still be rounded with care.
@@ -11,31 +11,31 @@ Fix $K\geq0$ and set
 G(x)&=\frac x2(\log x-1),\notag\\
 F_K(x)&=G(x)+\sqrt x+\kappa_0
                          +\sum_{j=1}^{K}\beta_jx^{-j/2}.
-                         \label{eq:FK}
+                         \label{tks:eq:FK}
 \end{align}
 For sufficiently large $x$,
-\begin{equation}\label{eq:FKderivative}
+\begin{equation}\label{tks:eq:FKderivative}
 F_K'(x)=\frac12\log x+\frac1{2\sqrt x}
  -\sum_{j=1}^{K}\frac{j\beta_j}{2}x^{-j/2-1}>0,
 \qquad F_K''(x)=O_K(1/x).
 \end{equation}
 Let $L=\log A$, and let $\rho_K$ be the unique sufficiently large root of $F_K(\rho_K)=L$.
 
-\begin{proposition}\label{prop:inverse}
+\begin{proposition}\label{tks:prop:inverse}
 If $A=a_n$, then
-\begin{equation}\label{eq:modelinverseerror}
+\begin{equation}\label{tks:eq:modelinverseerror}
 \rho_K=n+O_K\left(\frac{n^{-(K+1)/2}}{\log n}\right).
 \end{equation}
 Let $W_0$ be the principal positive-real Lambert $W$ branch, and set
-\begin{equation}\label{eq:Wseed}
+\begin{equation}\label{tks:eq:Wseed}
 x_0=\frac{2L}{W_0(2L/e)}.
 \end{equation}
 Starting from this value, the Newton iterates
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{tks:eq:newton}
 x_{q+1}=x_q-\frac{F_K(x_q)-L}{F_K'(x_q)}
 \end{equation}
 satisfy, for each fixed $q\geq0$,
-\begin{equation}\label{eq:newtonerror}
+\begin{equation}\label{tks:eq:newtonerror}
 x_q-\rho_K
  =O_{K,q}\left(
  x_0^{1-2^{q-1}}(\log x_0)^{-(2^{q+1}-1)}\right).
@@ -43,12 +43,12 @@ x_q-\rho_K
 Thus finitely many terms and finitely many Newton steps achieve any prescribed fixed algebraic index accuracy asymptotically.
 \end{proposition}
 \begin{proof}
-The expansion \eqref{eq:loga} and the mean value theorem, with $F_K'\asymp\log x$, prove \eqref{eq:modelinverseerror}. No derivative of the unknown remainder is used. The seed solves $G(x_0)=L$ exactly, and $F_K(x)-G(x)=O(\sqrt x)$. Hence $x_0-\rho_K=O(\sqrt{x_0}/\log x_0)$, in a neighborhood where $x\asymp x_0$. Taylor's theorem for the explicit smooth function $F_K$ gives the Newton error recurrence
+The expansion \eqref{tks:eq:loga} and the mean value theorem, with $F_K'\asymp\log x$, prove \eqref{tks:eq:modelinverseerror}. No derivative of the unknown remainder is used. The seed solves $G(x_0)=L$ exactly, and $F_K(x)-G(x)=O(\sqrt x)$. Hence $x_0-\rho_K=O(\sqrt{x_0}/\log x_0)$, in a neighborhood where $x\asymp x_0$. Taylor's theorem for the explicit smooth function $F_K$ gives the Newton error recurrence
 \[
 e_{q+1}=O_K\left(\frac{e_q^2}{x_0\log x_0}\right),
 \qquad e_q=x_q-\rho_K.
 \]
-Induction yields \eqref{eq:newtonerror}. Its successive orders are
+Induction yields \eqref{tks:eq:newtonerror}. Its successive orders are
 \[
 O\left(\frac{\sqrt{x_0}}{\log x_0}\right),\quad
 O((\log x_0)^{-3}),\quad
@@ -68,16 +68,16 @@ For exact-term inputs $A=a_n$,
 n={}&x-\frac{2\sqrt x}{\ell}+\frac2{\ell^2}-\frac2{\ell^3}\notag\\
  &-x^{-1/2}\left(\frac{2\beta_1}{\ell}
        +\frac1{\ell^3}-\frac{14}{3\ell^4}+\frac4{\ell^5}\right)
-       +O\left(\frac{x^{-1}}{\ell}\right).\label{eq:centeredinverse}
+       +O\left(\frac{x^{-1}}{\ell}\right).\label{tks:eq:centeredinverse}
 \end{align}
 Here $2\beta_1/\ell=7/(12\ell)$. The next term is
-\begin{equation}\label{eq:centerednext}
+\begin{equation}\label{tks:eq:centerednext}
 x^{-1}\left(-\frac{2\beta_2}{\ell}-\frac{4\beta_1}{\ell^3}
        -\frac4{\ell^5}+\frac{40}{3\ell^6}-\frac{10}{\ell^7}\right);
 \end{equation}
 including it improves the error to $O(x^{-3/2}/\ell)$.
 Without centering, take $x=2L/W_0(2L/e)$ and $\ell=\log x$. Then
-\begin{equation}\label{eq:uncenteredinverse}
+\begin{equation}\label{tks:eq:uncenteredinverse}
 n=x-\frac{2\sqrt x}{\ell}-\frac{2\kappa_0}{\ell}
         +\frac2{\ell^2}-\frac2{\ell^3}
         +O(x^{-1/2}/\ell).
@@ -88,26 +88,61 @@ $n=x+\sum_{j=-1}^{M}d_j(\ell)x^{-j/2}$ in $F_K(n)-L$ and cancelling successive p
 \subsection{A precise two ceiling enclosure}
 The matrix model proves $a_{n+1}>a_n$ for every $n\geq1$. Append a final row and column of zeros except for a new diagonal $1$. Every old margin is at least $1$, so weakly decreasing order is preserved, and deletion recovers the original matrix. The one-entry matrix $[n+1]$ is outside the image, which has at least two rows. This proves strict increase; it does not claim strict increase between $n=0$ and $n=1$.
 
-Put $p=(K+1)/2$. By \eqref{eq:loga} there exist constants $B>0$ and $N_0$ such that
-\begin{equation}\label{eq:logerrorbound}
+Put $p=(K+1)/2$. By \eqref{tks:eq:loga} there exist constants $B>0$ and $N_0$ such that
+\begin{equation}\label{tks:eq:logerrorbound}
 |\log a_n-F_K(n)|\leq Bn^{-p}\qquad(n\geq N_0).
 \end{equation}
 Increase $N_0$ so that both $F_K(x)+Bx^{-p}$ and $F_K(x)-Bx^{-p}$ are increasing. For sufficiently large $L=\log A$, define $x_-$ and $x_+$ by
-\begin{equation}\label{eq:enveloperoots}
+\begin{equation}\label{tks:eq:enveloperoots}
 F_K(x_-)+Bx_-^{-p}=L,\qquad
 F_K(x_+)-Bx_+^{-p}=L.
 \end{equation}
 
-\begin{theorem}\label{thm:ceilings}
+\begin{theorem}\label{tks:thm:ceilings}
 For every sufficiently large threshold $A$,
-\begin{equation}\label{eq:ceilings}
+\begin{equation}\label{tks:eq:ceilings}
 \ceil{x_-}\leq N(A)\leq\ceil{x_+},\qquad
 x_+-x_-=O_K\left(\frac{x_-^{-p}}{\log x_-}\right).
 \end{equation}
 Eventually the two displayed ceilings either coincide or are consecutive integers.
 \end{theorem}
 \begin{proof}
-Every integer $n<\ceil{x_-}$ in the range of \eqref{eq:logerrorbound} has $\log a_n<L$ by the upper envelope. Once $A$ is sufficiently large, all smaller integers in the omitted finite prefix also have $a_n<A$. Conversely $n=\ceil{x_+}$ has $\log a_n\geq L$ by the lower envelope. These prove the two inequalities. The mean value theorem, with derivative comparable to $\log x_-$, gives the width estimate. It is eventually less than $1$.
+Every integer $n<\ceil{x_-}$ in the range of \eqref{tks:eq:logerrorbound} has $\log a_n<L$ by the upper envelope. Once $A$ is sufficiently large, all smaller integers in the omitted finite prefix also have $a_n<A$. Conversely $n=\ceil{x_+}$ has $\log a_n\geq L$ by the lower envelope. These prove the two inequalities. The mean value theorem, with derivative comparable to $\log x_-$, gives the width estimate. It is eventually less than $1$.
 \end{proof}
 
-For promised exact terms, any approximation with an eventually proved $o(1)$ absolute index error recovers $n$ by nearest-integer rounding for all sufficiently large $n$. For arbitrary thresholds, blindly taking $\ceil{\rho_K}$ is unjustified near a jump: $A$ may lie arbitrarily close to an exact sequence value. If certified roots and remainder constants are available, the two candidates in \eqref{eq:ceilings} can be resolved by exact neighboring-term comparison. The present existence-form bounds do not supply numerical values of $B,N_0$, a finite-input onset, or a certified rounding decision at any particular input.
+For promised exact terms, any approximation with an eventually proved $o(1)$ absolute index error recovers $n$ by nearest-integer rounding for all sufficiently large $n$. For arbitrary thresholds, blindly taking $\ceil{\rho_K}$ is unjustified near a jump: $A$ may lie arbitrarily close to an exact sequence value. If certified roots and remainder constants are available, the two candidates in \eqref{tks:eq:ceilings} can be resolved by exact neighboring-term comparison. The present existence-form bounds do not supply numerical values of $B,N_0$, a finite-input onset, or a certified rounding decision at any particular input.
+
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{tks:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} $\log a_n=\frac n2(\log n-1)+\sqrt n+\kappa_0+O(n^{-1/2})$
+by~\eqref{tks:eq:loga}, with a term $n\log n$ (and the companions likewise
+by~\eqref{tks:eq:companionlog}), so none of the three sequences is of the
+exponential--power form of \file{p0:def:model}; no instance of the volume's
+model is claimed.
+\item \emph{The Lambert seeds.} With $w=\log x_0-1$, the seed
+equation $G(x_0)=L$ of~\eqref{tks:eq:Wseed} becomes $w+\log w=\log(2L)-1$:
+the volume's dominant block \file{p0:thm:lambert-core} with unit slope, unit
+logarithmic coefficient and target $\log(2L)-1$, whose principal branch gives
+the displayed $x_0$. An exact instance; so is the companion
+seed~\eqref{tks:eq:companionseed}, with target $\log L-1$.
+\item \emph{The model root, the Newton iterates and the explicit inverse
+terms.} The model $F_K$ adds to the Lambert block the term $\sqrt x$ and
+powers $x^{-j/2}$, which in the chart of $\log x$ are not series in its
+reciprocal with coefficients polynomial in its logarithm; the
+expansions~\eqref{tks:eq:centeredinverse}--\eqref{tks:eq:uncenteredinverse}
+proceed in powers of $x^{-1/2}$ with coefficients rational in $\log x$. So
+the write has not shown $\rho_K$, the iterates or these expansions to be
+instances of \file{plt:thm:lw-template}; they are proved directly.
+\item \emph{The thresholds.} $N(A)$ is the volume's staircase
+(\file{p0:def:three-inverses}(1)) of $a_n$, strictly increasing from $n=1$.
+The functions $F_K\pm Bx^{-p}$ are smooth and eventually increasing but do not
+take the values $\log a_n$ at the integers, so they are not admissible
+interpolations; Theorem~\ref{tks:thm:ceilings}, proved directly at the
+integers, is an analogue of \file{p0:thm:staircase}(2), and the
+nearest-integer recovery of a promised exact term an analogue of
+\file{p0:thm:staircase}(3), not instances. The companion thresholds of
+Section~\ref{tks:sec:companions} are analogues in the same sense.
+\end{enumerate}
+\end{remark}

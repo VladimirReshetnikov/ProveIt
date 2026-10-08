@@ -1,30 +1,30 @@
-\section{The exceptional vector and a sharp Poisson law}\label{sec:likelihood}
+\section{The exceptional vector and a sharp Poisson law}\label{sfh:sec:likelihood}
 At the saddle $r$, let $Q$ be the product law of independent Poisson variables with means
-\begin{equation}\label{eq:means}
+\begin{equation}\label{sfh:eq:means}
  \lambda_1=r,\qquad \lambda_3=\frac{r^4}{6},\qquad
  \lambda_4=\frac{r^4}{24}.
 \end{equation}
 Under this law define
 \begin{align}
  W&=S+4T_3+4T_4,& \mu&=\E_QW=r+\frac{5r^4}{6},\nonumber\\
- v&=\Var_QW=r+\frac{10r^4}{3},& \delta&=W-\mu.\label{eq:W}
+ v&=\Var_QW=r+\frac{10r^4}{3},& \delta&=W-\mu.\label{sfh:eq:W}
 \end{align}
 We use $\TV(P,Q)=\sup_A|P(A)-Q(A)|=\tfrac12\int|\dd P/\dd Q-1|\,\dd Q$.
 
-\begin{theorem}[Summable likelihood and sharp total variation]\label{thm:TV}
+\begin{theorem}[Summable likelihood and sharp total variation]\label{sfh:thm:TV}
 The exact likelihood $h=\dd\Law_n(X)/\dd Q$ satisfies
-\begin{equation}\label{eq:likelihood}
+\begin{equation}\label{sfh:eq:likelihood}
  h(X)=1+\frac{v-\delta^2}{2b}
           +\frac{\kappa_3\delta}{2b^2}+R(X),
  \qquad \E_Q|R(X)|=O(r^6/n^2).
 \end{equation}
 Consequently, with $\phi(1)=e^{-1/2}/\sqrt{2\pi}$,
-\begin{equation}\label{eq:TV}
+\begin{equation}\label{sfh:eq:TV}
  \TV(\Law_n(X),Q)\sim\phi(1)\frac vb
        \sim\frac{10}{3}\phi(1)\frac{r^3}{n}.
 \end{equation}
 \end{theorem}
-The comparison law has growing means. Small absolute total variation alone says nothing relatively accurate about an exponentially rare zero-count event. Those events are treated separately in Section~\ref{sec:deletion}.
+The comparison law has growing means. Small absolute total variation alone says nothing relatively accurate about an exponentially rare zero-count event. Those events are treated separately in Section~\ref{sfh:sec:deletion}.
 
 \subsection{Exact conditioning and the correct centering}
 The assembly construction gives independent Poisson counts of all component types with means equal to their connected EGF weights at $r$. Conditional on total vertex count $N=n$, they give exactly the uniform labelled assembly: multiplying the Poisson probabilities leaves the assembly factors after the common $r^n$ and exponential normalization cancel. This is the standard refined conditioned-process representation \cite[Sections 2--3 and 6]{arratia}.
@@ -34,25 +34,25 @@ Remove the three exceptional types by putting
  P(z)=z+\frac{5z^4}{24},\qquad C_0(z)=C(z)-P(z),\qquad N_0=N-W.
 \]
 The series $C_0$ has nonnegative coefficients and retains the single edge and all pair-stars. Since $N_0$ and $X$ are independent,
-\begin{equation}\label{eq:exacth}
+\begin{equation}\label{sfh:eq:exacth}
  h(X)=\frac{\PP(N_0=n-W)}{\PP(N=n)}.
 \end{equation}
-This exact likelihood reduction is also classical \cite[Theorems 3 and 5]{arratia}. The numerator is centered at its own mean $n-\mu$, so its target displacement is $-\delta$, not $-W$. That centering is responsible for the signed mass-zero quadratic term in \eqref{eq:likelihood}.
+This exact likelihood reduction is also classical \cite[Theorems 3 and 5]{arratia}. The numerator is centered at its own mean $n-\mu$, so its target displacement is $-\delta$, not $-W$. That centering is responsible for the signed mass-zero quadratic term in \eqref{sfh:eq:likelihood}.
 
 \subsection{A local expansion uniform over all targets}
-\begin{lemma}[Global polynomial remainder]\label{lem:local}
+\begin{lemma}[Global polynomial remainder]\label{sfh:lem:local}
 For $G=C$ or $C_0$ at $r$, write $a_G=\De G(r)$, $b_G=\De^2G(r)$, and $k_j=\De^jG(r)$. Put
 \[
  A_1(G)=\frac{k_4}{8b_G^2}-\frac{5k_3^2}{24b_G^3}.
 \]
 For every real $\delta$ such that $a_G-\delta$ is an integer, including a negative integer,
-\begin{equation}\label{eq:local}
+\begin{equation}\label{sfh:eq:local}
  \sqrt{2\pi b_G}\,\PP(N_G=a_G-\delta)
  =1+A_1(G)-\frac{\delta^2}{2b_G}
         +\frac{k_3\delta}{2b_G^2}+R_G(\delta),
 \end{equation}
 where $x=\delta/\sqrt{b_G}$ satisfies the global bound
-\begin{equation}\label{eq:globalR}
+\begin{equation}\label{sfh:eq:globalR}
  |R_G(\delta)|\le C\{x^4+\eps^{1/2}|x|^3+\eps x^2
                          +\eps^{3/2}|x|+\eps^2\}.
 \end{equation}
@@ -69,10 +69,10 @@ where
  V_5=\frac{\ii k_5t^5}{120b_G^{5/2}}.
 \]
 On $|t|\le\eps^{-1/24}$ expand the exponential through weighted degree three:
-\begin{equation}\label{eq:weighted3}
+\begin{equation}\label{sfh:eq:weighted3}
  1+V_3+(V_4+V_3^2/2)+(V_5+V_3V_4+V_3^3/6).
 \end{equation}
-The omitted terms, multiplied by $e^{-t^2/2}$, have $L^1(\dd t)$ norm $O(\eps^2)$. In detail, $|V_j|\le C\eps^{(j-2)/2}|t|^j$, the omitted monomials have weight at least four, and the sum of the retained phase magnitudes and phase remainder tends to zero uniformly on this window. Exponential Taylor's remainder is bounded by $C\eps^2$ times a fixed Gaussian-integrable polynomial. The same estimate holds with any fixed extra polynomial weight in $t$. Lemma~\ref{lem:arcs} handles the complementary arcs, and the Gaussian-polynomial tails permit extending the retained integrals to $\R$.
+The omitted terms, multiplied by $e^{-t^2/2}$, have $L^1(\dd t)$ norm $O(\eps^2)$. In detail, $|V_j|\le C\eps^{(j-2)/2}|t|^j$, the omitted monomials have weight at least four, and the sum of the retained phase magnitudes and phase remainder tends to zero uniformly on this window. Exponential Taylor's remainder is bounded by $C\eps^2$ times a fixed Gaussian-integrable polynomial. The same estimate holds with any fixed extra polynomial weight in $t$. Lemma~\ref{sfh:lem:arcs} handles the complementary arcs, and the Gaussian-polynomial tails permit extending the retained integrals to $\R$.
 
 Fourier inversion adds $e^{\ii xt}$, of modulus one. Hence the integrated $O(\eps^2)$ error is uniform in the target. The retained integrals have the following global bounds:
 \begin{itemize}
@@ -81,7 +81,7 @@ Fourier inversion adds $e^{\ii xt}$, of modulus one. Hence the integrated $O(\ep
 \item The real even term $V_4+V_3^2/2$ has value $A_1(G)$ at $x=0$; its change is $O(\eps x^2)$ by $|\cos(xt)-1|\le x^2t^2/2$
 \item The imaginary odd weight-three terms have entire integral $O(\eps^{3/2}|x|)$ by $|\sin(xt)|\le|xt|$
 \end{itemize}
-All the trigonometric inequalities hold on the entire real line. Thus \eqref{eq:globalR} remains valid even at targets where the actual lattice probability is zero.
+All the trigonometric inequalities hold on the entire real line. Thus \eqref{sfh:eq:globalR} remains valid even at targets where the actual lattice probability is zero.
 \end{proof}
 
 \subsection{Summing the error without an exceptional-count cutoff}
@@ -91,19 +91,19 @@ Under $Q$, compound-Poisson moments give
  \E_Q\delta^4&=3v^2+\De^4P(r)=O(r^8),&
  \E_Q|\delta|^3&\le(\E_Q\delta^4)^{3/4}=O(r^6).
 \end{align*}
-Since $b_0:=\De^2C_0(r)=b-v\sim nr$, the five terms on the right of \eqref{eq:globalR}, averaged over $Q$, have orders
-\begin{equation}\label{eq:fiveerrors}
+Since $b_0:=\De^2C_0(r)=b-v\sim nr$, the five terms on the right of \eqref{sfh:eq:globalR}, averaged over $Q$, have orders
+\begin{equation}\label{sfh:eq:fiveerrors}
  O(r^6/n^2),\quad O(r^5/n^2),\quad O(r^4/n^2),\quad
  O(r^3/n^2),\quad O(r^2/n^2),
 \end{equation}
 respectively. This proves a summable local error over all exceptional counts; a pointwise error with an unproved cutoff is not being integrated.
 
-For the denominator of \eqref{eq:exacth}, take $G=C$, $\delta=0$:
+For the denominator of \eqref{sfh:eq:exacth}, take $G=C$, $\delta=0$:
 \[
  \sqrt{2\pi b}\,\PP(N=n)=1+A_1(C)+O(\eps^2).
 \]
 The rational formula for $A_1$ gives
-\begin{equation}\label{eq:A1change}
+\begin{equation}\label{sfh:eq:A1change}
  A_1(C_0)-A_1(C)=O(r^4/n^2).
 \end{equation}
 Indeed the changes in $b,\kappa_3,\kappa_4$ are all $O(r^4)$; their corresponding partial derivatives in $A_1$ are $O(n^{-2})$, $O((n^2r)^{-1})$, and $O((n^2r^2)^{-1})$. The perturbations are small fractions of the positive original quantities, so the mean value theorem applies uniformly.
@@ -115,22 +115,22 @@ Finally,
  \frac{\kappa_3-\De^3P(r)}{b_0^2}
  &=\frac{\kappa_3}{b^2}+O(r^3/n^2+r^4/n^2).
 \end{align*}
-The last bound is deliberately loose but sufficient after multiplication by $\E_Q|\delta|$. Divide the numerator expansion by the denominator and use \eqref{eq:fiveerrors}. Every discarded product has $L^1(Q)$ size $O(r^6/n^2)$: the prefactor error is $O(v^2/b^2)$, and products with $A_1=O(r/n)$ are smaller. This proves \eqref{eq:likelihood}.
+The last bound is deliberately loose but sufficient after multiplication by $\E_Q|\delta|$. Divide the numerator expansion by the denominator and use \eqref{sfh:eq:fiveerrors}. Every discarded product has $L^1(Q)$ size $O(r^6/n^2)$: the prefactor error is $O(v^2/b^2)$, and products with $A_1=O(r/n)$ are smaller. This proves \eqref{sfh:eq:likelihood}.
 
 \subsection{The constant and an independent tail check}
 Under $Q$, $T_3+T_4$ is Poisson with mean $5r^4/24\to\infty$, and the centered isolate count is negligible on the $r^2$ scale. Hence $\delta/\sqrt v$ converges to a standard normal $Z$. Its standardized fourth moments stay bounded, making the squares uniformly integrable. Direct Gaussian integration gives
 \[
  \E_Q|1-\delta^2/v|\longrightarrow\E|1-Z^2|=4\phi(1).
 \]
-The linear term in \eqref{eq:likelihood} has $L^1$ size
-$O(\kappa_3\sqrt v/b^2)=O(r^2/n)=o(v/b)$, and the remainder is also $o(v/b)$. Multiplication by the total-variation factor $1/2$ proves \eqref{eq:TV}.
+The linear term in \eqref{sfh:eq:likelihood} has $L^1$ size
+$O(\kappa_3\sqrt v/b^2)=O(r^2/n)=o(v/b)$, and the remainder is also $o(v/b)$. Multiplication by the total-variation factor $1/2$ proves \eqref{sfh:eq:TV}.
 
 For later use, the centered cumulant generating function is
 \[
  r(e^t-1-t)+\frac{5r^4}{24}(e^{4t}-1-4t)\le Cr^4t^2
 \]
 for $|t|$ below a fixed constant. Chernoff's bound with $t$ a sufficiently small constant times $1/r$ yields
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{sfh:eq:tail}
  Q(|\delta|>r^3)\le2e^{-cr^2}.
 \end{equation}
-Also $h\le1/\PP(N=n)=O(\sqrt b)$, so the true exceptional marginal has tail $e^{-cr^2+O(r)}$, smaller than every fixed power of $n^{-1}$. This tail argument is useful later, but was not needed to justify the summation in \eqref{eq:fiveerrors}.
+Also $h\le1/\PP(N=n)=O(\sqrt b)$, so the true exceptional marginal has tail $e^{-cr^2+O(r)}$, smaller than every fixed power of $n^{-1}$. This tail argument is useful later, but was not needed to justify the summation in \eqref{sfh:eq:fiveerrors}.

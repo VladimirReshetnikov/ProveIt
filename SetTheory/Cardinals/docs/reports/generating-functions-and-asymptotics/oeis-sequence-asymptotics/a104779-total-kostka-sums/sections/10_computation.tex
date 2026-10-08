@@ -1,21 +1,50 @@
-\section{Reproducible computations and their limits}\label{sec:computation}
+\section{Reproducible computations and their limits}\label{tks:sec:computation}
 The accompanying source package contains the complete \LaTeX\ article, the PDF, bounded Python programs, exact receipts, a dependency list, public source notes, and a build-and-replay guide. Computations serve three distinct roles.
 
 \subsection{Exact arithmetic checks}
-The finite cycle-index product \eqref{eq:F}, evaluated with rational coefficients, yields the exact values of all three sequences through $n=20$. The three weightings are respectively $r(\nu)$, $z_\nu$, and $(-1)^{n-\ell(\nu)}z_\nu$. They agree with the stated OEIS prefixes: A104779 and A321652 at $n=0,\ldots,20$, and A068313 at $n=1,\ldots,20$. The binary $n=0$ value is labelled as an extension.
+The finite cycle-index product \eqref{tks:eq:F}, evaluated with rational coefficients, yields the exact values of all three sequences through $n=20$. The three weightings are respectively $r(\nu)$, $z_\nu$, and $(-1)^{n-\ell(\nu)}z_\nu$. They agree with the stated OEIS prefixes: A104779 and A321652 at $n=0,\ldots,20$, and A068313 at $n=1,\ldots,20$. The binary $n=0$ value is labelled as an extension.
 
 An independent symmetric-matrix recursion checks the Kostka total by prescribed margins. Choose a row of least positive margin, enumerate its off-diagonal entries within the remaining capacities, and place its unused margin on the diagonal. Recurse on the residual symmetric matrix. Equal residual margins are grouped for speed, with multinomial factors restoring every labelled assignment; matrices are never identified under permutation. Summing over partitions of $n$ produces an independent exact count. Two useful normalization identities are
-\begin{equation}\label{eq:fixedmarginchecks}
+\begin{equation}\label{tks:eq:fixedmarginchecks}
 M(2,1^{n-2})=\frac{I_n}{2},\qquad
 M(3,1^{n-3})=\frac{I_n+2I_{n-3}}6,
 \end{equation}
 in their natural ranges $n\geq2$ and $n\geq3$. They also follow immediately from the Young-subgroup formula for $S_2$ and $S_3$.
 
-Exact finite multivariate coefficients independently recover \eqref{eq:H3}--\eqref{eq:H6}. The certificate program computes rational approximants at $J=70$, adds the proved rational tail bounds, and uses integer floors and ceilings to print the enclosing intervals. Exact symbolic calculations verify the saddle coefficients, logarithmic and multiplicative conversions, shifted ratios, and inverse reversion displayed in the article. These checks do not substitute for the global support estimate, analytic stabilization, saddle remainder, or mean-value arguments.
+Exact finite multivariate coefficients independently recover \eqref{tks:eq:H3}--\eqref{tks:eq:H6}. The certificate program computes rational approximants at $J=70$, adds the proved rational tail bounds, and uses integer floors and ceilings to print the enclosing intervals. Exact symbolic calculations verify the saddle coefficients, logarithmic and multiplicative conversions, shifted ratios, and inverse reversion displayed in the article. These checks do not substitute for the global support estimate, analytic stabilization, saddle remainder, or mean-value arguments.
 
 \subsection{Diagnostics and safe reproduction}
 Floating-point evaluations are kept separate from deterministic exact receipts. A long decimal output or a small numerical residual is a diagnostic, not a directed interval certificate. In particular, comparison against exact involution integers at large finite $n$ cannot certify a uniform remainder constant or an onset for inverse rounding.
 
 The public interfaces are intentionally bounded. Their parameter and path checks raise explicit exceptions, including when Python is run with optimization enabled. No correctness check relies on an assertion. The integer-to-string conversion limit remains enabled, including tests at a cap of $640$ digits; large exact integers are not dumped into receipts. Child Python processes use the no-bytecode option. The build uses an exclusive external output directory, leaves the source tree unchanged, and disables shell escape during \TeX\ format preparation and compilation. The actual ZIP replay checks member names and metadata, the manifest, regenerated exact receipts, and the reproduced PDF under both ordinary and optimized execution. The package guide states the precise tested commands and ranges.
 
-The bounded programs illustrate and verify the mathematical algorithms at stated orders; they are not advertised as unrestricted arbitrary-order software. The mathematical effectivity assertion in Proposition~\ref{prop:tails} is broader: any \emph{fixed} target weight and precision admit a finite computation with a proved stopping rule. No third-party paper PDF is redistributed.
+The bounded programs illustrate and verify the mathematical algorithms at stated orders; they are not advertised as unrestricted arbitrary-order software. The mathematical effectivity assertion in Proposition~\ref{tks:prop:tails} is broader: any \emph{fixed} target weight and precision admit a finite computation with a proved stopping rule. No third-party paper PDF is redistributed.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF, the manifest and the delivered README are not shipped; the
+programs are \file{code/*.py} (the builder as \file{code/build.py}), and the
+receipts \file{code/*_receipt.json} and the requirements are shipped under
+\file{data/}. The checkers write to standard output and run from the shipped
+files; the builder and the archive verifier expect the delivered layout and
+the manifest, so they run only in a re-extracted archive. The report README
+gives commands.
+\end{writenote}
+
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{tks:rem:oeis}
+The write read the entries in the internal format on 7~October 2026.
+\emph{A104779}, revision \#14 (4 September 2025), by Alford Arnold (24 March
+2005): ``a(n) is the sum of entries of n-th Kostka matrix for the partitions
+of n.'', with the matrix interpretation by Ludovic Schwob (29 August 2023), a
+link to Schwob's paper (``See p.~13'') and a b-file by Schwob for
+$n=0,\ldots,39$. \emph{A178718}, revision \#60 (4 September 2025), by Wouter
+Meeussen (26 December 2010): ``Duplicate of A104779.'', offset~1, b-file by
+Schwob for $n=1,\ldots,39$, equal to A104779 at the same indices, as the
+source says. \emph{A321652}, revision \#18 (11 June 2025), by Gus Wiseman (15
+November 2018), and \emph{A068313}, revision \#25 (11 June 2025), by Axel
+Kohnert (25 February 2002), with b-files by Schwob for $n=0,\ldots,39$ and
+$n=1,\ldots,37$; offsets $0$ and~$1$, as the source says. None of the four
+entries has an asymptotic formula or a conjecture. \emph{Checks.} The b-file
+terms for $n\le14$ equal the write's Kostka computation, all terms of
+A178718 equal those of A104779, and the values for $n\le39$ and $n\le37$ were
+used in the comparisons of Section~\ref{tks:sec:provenance}. No OEIS edit is
+part of this work.
+\end{remark}

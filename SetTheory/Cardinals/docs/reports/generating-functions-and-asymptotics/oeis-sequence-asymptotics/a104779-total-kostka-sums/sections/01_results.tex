@@ -1,6 +1,6 @@
-\section{The counting model and main results}\label{sec:results}
+\section{The counting model and main results}\label{tks:sec:results}
 For partitions $\lambda,\mu\vdash n$, let $K_{\lambda\mu}$ be the ordinary Kostka number: the number of semistandard Young tableaux of shape $\lambda$ and content $\mu$. Define
-\begin{equation}\label{eq:defa}
+\begin{equation}\label{tks:eq:defa}
 a_n=\sum_{\lambda\vdash n}\sum_{\mu\vdash n}K_{\lambda\mu},\qquad a_0=1.
 \end{equation}
 This is OEIS A104779 \cite{A104779}. The former entry A178718 is officially a duplicate, with offset $1$ instead of $0$; its positive indices agree with those of A104779, without an index shift \cite{A178718}. The initial values, at $n=0,1,\ldots$, are
@@ -10,24 +10,24 @@ This is OEIS A104779 \cite{A104779}. The former entry A178718 is officially a du
 An equivalent model counts symmetric nonnegative integer matrices, of variable dimension, whose total entry sum is $n$, whose rows are nonzero, and whose row sums are weakly decreasing. Positions remain distinct when margins coincide. In particular, simultaneous permutations among equal-margin rows and columns are \emph{not} identified. Symmetry makes the column conditions automatic. The empty matrix gives $a_0=1$.
 
 All logarithms are natural. Write $I_n$ for the number of involutions in the symmetric group $S_n$, with
-\begin{equation}\label{eq:involutionrec}
+\begin{equation}\label{tks:eq:involutionrec}
 I_0=I_1=1,\qquad I_n=I_{n-1}+(n-1)I_{n-2}\quad(n\geq2),
 \end{equation}
 and put
-\begin{equation}\label{eq:Cintro}
+\begin{equation}\label{tks:eq:Cintro}
 C=\prod_{j\geq2}(1-1/j!)^{-1}
   =2.5294774720791526481801161542539542411787\ldots.
 \end{equation}
 The product converges because $\sum_{j\geq2}1/j!<\infty$.
 
-\begin{theorem}\label{thm:main}
+\begin{theorem}\label{tks:thm:main}
 There are nonnegative, effectively computable constants $H_s$, $s\geq0$, with $H_0=1$ and $H_1=H_2=0$, such that for every fixed integer $S\geq0$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{tks:eq:main}
 a_n=C\sum_{s=0}^{S}H_s I_{n-s}
        +O_S\bigl(I_n n^{-(S+1)/2}\bigr)\qquad(n\to\infty).
 \end{equation}
-The shifted terms are used only for $n\geq S$. Each constant is specified by the convergent coefficient product in Section~\ref{sec:identity}, and has a finite rational approximation algorithm with a proved error bound. In particular,
-\begin{equation}\label{eq:firstrelative}
+The shifted terms are used only for $n\geq S$. Each constant is specified by the convergent coefficient product in Section~\ref{tks:sec:identity}, and has a finite rational approximation algorithm with a proved error bound. In particular,
+\begin{equation}\label{tks:eq:firstrelative}
 \frac{a_n}{CI_n}=1+H_3n^{-3/2}
  +(H_4-\tfrac32H_3)n^{-2}+O(n^{-5/2}),
 \end{equation}
@@ -35,11 +35,11 @@ where $H_3=0.9887340176\ldots$ and $H_4=6.0121093539\ldots$.
 \end{theorem}
 
 Combining this result with the classical involution expansion gives a Poincar\'e expansion at every fixed half-integer order. Its leading equivalent is
-\begin{equation}\label{eq:leading}
+\begin{equation}\label{tks:eq:leading}
 a_n\sim \frac{C}{\sqrt2}\left(\frac ne\right)^{n/2}
                    \exp(\sqrt n-1/4).
 \end{equation}
-Section~\ref{sec:expansions} supplies all terms through $n^{-3}$ in the multiplicative and logarithmic normalizations. The absence of relative orders $n^{-1/2}$ and $n^{-1}$ in \eqref{eq:firstrelative} is specific to normalization by the \emph{exact} involution number. Those orders are present if the leading equivalent in \eqref{eq:leading} is used instead.
+Section~\ref{tks:sec:expansions} supplies all terms through $n^{-3}$ in the multiplicative and logarithmic normalizations. The absence of relative orders $n^{-1/2}$ and $n^{-1}$ in \eqref{tks:eq:firstrelative} is specific to normalization by the \emph{exact} involution number. Those orders are present if the leading equivalent in \eqref{tks:eq:leading} is used instead.
 
 There are two further consequences. Under the uniform distribution on the matrices counted by $a_n$, the multiplicities of margins $j\geq2$ converge jointly, in total variation on the entire profile space, to independent geometric variables with parameter $1/j!$. The sharp leading error is $(2H_3/C)n^{-3/2}$. For the nonnegative and binary rectangular sorted-margin models, A321652 and A068313, the analogous expansion has scale $C^2n!$, integer inverse powers, and opposite first relative corrections at order $n^{-2}$.
 
@@ -48,4 +48,154 @@ Schwob's exact enumeration of self-inverse double cosets supplies both the Kostk
 
 The contribution developed here is the global support estimate and stabilization argument for this aggregate, its computable coefficient family, and the consequences for inversion, full margin profiles, and factorial-scale companions. Source comparison is bounded to the actual public versions inspected. In particular, Schwob's arXiv version 1 was inspected, while the journal full text was inaccessible; no claim about an unexamined journal revision is made. Neither a missing formula in an OEIS entry nor a bounded literature search proves global priority.
 
-The phrase ``all fixed orders'' means that the truncation order is fixed before $n\to\infty$. Appendix~\ref{sec:sectors} strengthens the algebraic result with an exact half-axis decomposition and separate fixed-order expansions for its dominant and alternating recessive sectors. It transfers a classical Gaussian-moment and parabolic-cylinder structure through the proved support estimates. We do not prove convergence of the infinite asymptotic series, uniformity for growing truncation order, optimal truncation, or a complete description of additional exponential effects, Stokes data, or resurgence. Coefficient certificates are effective; the constants and onsets in the asymptotic remainders are not numerically certified. This distinction remains essential when rounding an inverse.
+The phrase ``all fixed orders'' means that the truncation order is fixed before $n\to\infty$. Appendix~\ref{tks:sec:sectors} strengthens the algebraic result with an exact half-axis decomposition and separate fixed-order expansions for its dominant and alternating recessive sectors. It transfers a classical Gaussian-moment and parabolic-cylinder structure through the proved support estimates. We do not prove convergence of the infinite asymptotic series, uniformity for growing truncation order, optimal truncation, or a complete description of additional exponential effects, Stokes data, or resurgence. Coefficient certificates are effective; the constants and onsets in the asymptotic remainders are not numerically certified. This distinction remains essential when rounding an inverse.
+
+\subsection{Provenance, sources and reading conventions}\label{tks:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~237 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report237.zip} ($633{,}646$ bytes, 33 files, wrapper directory
+\file{Report237/}), arrival commit \file{60f54ea06}, placed in
+\file{a4186a946}. The text is the delivered \file{article.tex} (55 lines)
+with its thirteen \verb|\input| files under \file{sections/} (25 pages, dated
+5~October 2026), shipped under the same names. The programs are shipped under
+\file{code/} (the delivered root \file{build.py} as \file{code/build.py}); the
+four receipts, delivered in \file{code/}, and the requirements under
+\file{data/}; \file{COMPUTATION.md} and \file{SOURCES.md} as delivered. Not
+shipped, and retrievable from the arrival commit: the delivered
+\file{Report237.pdf}, the checksum manifest \file{MANIFEST.sha256} (32
+entries, all verified at the write) and the delivered \file{README.md}, which
+the report README replaces. The package records no ProveIt commit; it carries
+no ``prepared for private review'' line (\file{SOURCES.md} only states that
+it contains no private review notes) and no personal data. It is a
+single-source report, so no merge choice was made; it is not a Part of
+\file{a138178-symmetric-packed-matrices} (relation below). The write prefixed
+the 123 delivered labels with \file{tks:} and updated the references to
+them (64 \verb|\eqref|, 18 \verb|\ref|); it added this subsection, the notes marked [write] and
+Remarks~\ref{tks:rem:transseries} and~\ref{tks:rem:oeis}, each the last
+statement of its section, and inserted no numbered display, so every section,
+theorem and equation of the source keeps its delivered number. One preamble
+line sets the bibliography ragged right (\texttt{etoolbox}), which removes the
+one underfull line of the delivered build (the entry of Schwob).
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A104779,
+A178718, A321652 and A068313 in the internal format, with their b-files
+(Remark~\ref{tks:rem:oeis}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}, \file{plt:def:lw-monomial-log-datum},
+\file{plt:thm:lw-template}). Not read by the write: Schwob (arXiv and
+journal), Moser--Wyman, Bornemann, Olver and the DLMF; the source's account
+of them (Section~\ref{tks:sec:results} and \file{SOURCES.md}) is reported, not
+confirmed, in particular the locators \S3.1, \S4.3 and (4.5)--(4.11) in
+Schwob's paper.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim, recorded Schwob's identities as imported,
+decided that the report is not a Part of
+\file{a138178-symmetric-packed-matrices}, and reran the delivered suite on a
+copy (it reproduces). \emph{What the write checked.} It read every proof and
+found no error. With its own code (Python 3.14.4, exact integers and
+fractions; SymPy 1.14.0; mpmath 1.3.0 at 30--60 digits), not importing the
+delivered programs, it
+\begin{itemize}\raggedright
+\item computed all Kostka numbers for $n\le14$ by horizontal-strip branching
+and from them $a_n$, and by the Robinson--Schensted--Knuth and dual
+correspondences $b_n=\sum_\lambda(\sum_\mu K_{\lambda\mu})^2$ and
+$c_n=\sum_\lambda(\sum_\mu K_{\lambda\mu})(\sum_\nu K_{\lambda'\nu})$: equal to
+the b-files of A104779, A321652 and A068313; counted symmetric matrices with
+sorted margins directly for $n\le7$ and checked~\eqref{tks:eq:fixedmarginchecks}
+for $n\le8$; evaluated Schwob's identities~\eqref{tks:eq:schwob}
+and~\eqref{tks:eq:companionexact} with its own cycle-index code for $n\le11$
+(all three agree); checked the square-root formula~\eqref{tks:eq:rootcycles}
+against a brute-force count for every cycle type of size at most~7;
+\item recomputed $C$ and $H_3,\ldots,H_6$ twice, by its own extraction from
+the product~\eqref{tks:eq:P} at $J=60$ and by~\eqref{tks:eq:H3}--\eqref{tks:eq:H6}
+(agreement to 50 digits): all five lie in the printed intervals (note after
+the table in Section~\ref{tks:sec:constants}); $H_2=0$, $q_{(2)}=\eta_2$,
+$q_{(4)}=D_4/4$, $q_{(2,2)}=H_4/2$, $C_0<6$, $\E_\pi T_3=H_3$ and
+$\PP_\pi(T_3=0)=2/C$; the bounds of Lemma~\ref{tks:lem:bounds} for $k<3000$;
+\item implemented the recursion~\eqref{tks:eq:saddlerec}: the
+coefficients~\eqref{tks:eq:gammas} are as printed, and with exact $I_n$ for
+$n=1000$, $4000$, $20000$ the remainders of~\eqref{tks:eq:saddleexpansion}
+and~\eqref{tks:eq:Ialpha} after the printed terms, times $r^7$ and $n^{7/2}$,
+are bounded ($-0.26$ and $0.033$); derived~\eqref{tks:eq:logI},
+\eqref{tks:eq:shiftratio}, \eqref{tks:eq:normalizeda},
+\eqref{tks:eq:amultiplier} and~\eqref{tks:eq:betas} symbolically from the
+$\alpha_j$ (all equal);
+\item checked the inverse formulas~\eqref{tks:eq:centeredinverse}--\eqref{tks:eq:uncenteredinverse}
+and~\eqref{tks:eq:companioninverse} on the model at $n=10^3,\ldots,10^9$ (each
+remainder, times its stated scale, stays bounded) and the Newton
+error orders of Proposition~\ref{tks:prop:inverse};
+\item compared $a_n$ for $15\le n\le39$ (b-file) with the two-sector
+expansion~\eqref{tks:eq:sectorseries} (note at the end of
+Appendix~\ref{tks:sec:sectors}); checked~\eqref{tks:eq:exactIsplit}
+and~\eqref{tks:eq:parabolic} by quadrature, and~\eqref{tks:eq:sectorratio};
+compared $b_n$, $c_n$ for $n\le37$ with~\eqref{tks:eq:companionordinary}
+and~\eqref{tks:eq:bratio} (consistent, not yet in the asymptotic regime).
+\end{itemize}
+It reran, on a fresh copy of the delivered layout, \file{exact_counts.py},
+\file{certify_constants.py}, \file{symbolic_coefficients.py},
+\file{diagnostics.py} and \file{sector_diagnostics.py} (normal and
+\texttt{-O}): the three receipts equal the shipped ones as JSON (on Windows
+the standard output has CRLF line ends). The guard suite stops on Windows
+with ``backslash output components are forbidden'', a path test, not a
+mathematical failure. The PDF and ZIP builder and \file{reproduce_zip.py}
+were not run. Floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~113 the repository named
+A321652 and A178718 only in \file{a260700-parabolic-double-cosets}, which
+cites Schwob's paper as studying these aggregates and draws no asymptotic for
+them; this report gives their asymptotics (A178718 being A104779). The
+report \file{a138178-symmetric-packed-matrices} treats symmetric matrices on
+the same involution scale and names decreasing-margin variants among its
+further questions; the present aggregate needs a different transform
+(Schwob's cycle index, no geometric transform), has its own constants, and
+adds two rectangular sequences on the factorial scale, so it is a separate
+report. Neither result is shared; reciprocal notes for both reports are
+proposed, not applied. No Lean or Rocq file treats these sequences; no
+statement of this report is formalized, and its place in the collection
+confers no formal status. The inverse is compared with the transseries
+volume in Remark~\ref{tks:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+Schwob's cycle-index and Young-subgroup identities and the companion
+identities are prior; the involution saddle and its all-order expansion are
+classical (Moser--Wyman; Bornemann for the displayed coefficients); the
+parabolic-cylinder sectors are classical (DLMF, Olver). No global novelty
+from a bounded search or a missing OEIS formula; the journal version of
+Schwob was not compared. Not claimed: convergence of the asymptotic series,
+uniformity in the order, optimal truncation, a complete description of
+exponentially small effects, Stokes data or resurgence; numerical constants
+or onsets in the remainders; a certified finite-input inverse or rounding
+decision; that a fixed dominant truncation isolates the recessive sector;
+moment convergence of the dimension deficit; unrestricted arbitrary-order
+software; the official offset of A068313 at $n=0$. \emph{The write adds:}
+its checks are exact or floating computations; its transseries remark claims
+no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{5.3in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$A$, $a_n$, $\mathcal A_n^\sigma$ & $a_n$ the Kostka totals; $A$ the threshold in Section~\ref{tks:sec:inverse}; $\mathcal A_n^\sigma$ the sectors. \emph{False reading:} $A$ is not a constant.\\
+$B$ & $B(n)$ the elementary leading function~\eqref{tks:eq:Bofn}, $B_\sigma(n)$ its sector versions; $B$ the envelope constant in~\eqref{tks:eq:logerrorbound}; $B_{n,s}$ the support coefficients~\eqref{tks:eq:Bns}; $B_{2k}$ Bernoulli numbers. \emph{False reading:} the $B$ of~\eqref{tks:eq:logerrorbound} is not $B(n)$.\\
+$C$ & $C=\prod_{j\ge2}(1-1/j!)^{-1}$; $C_0$, $C_J$ its majorant and truncations.\\
+$F$, $G$ & $F(p)$ the cycle-index product, $F(x,t)$ its marked version, $F_K$ the inverse model~\eqref{tks:eq:FK}; $G(x,t)$, $G(x,u)$ products and $G(x)=\frac x2(\log x-1)$ in Section~\ref{tks:sec:inverse}.\\
+$H$, $h$ & $H_s$ the support constants; $h_j(p)$ and $\mathcal H_j(x,t)$ cycle-index polynomials.\\
+$J$, $K$ & $J_s^\pm$ the companion constants; $J$ a product cutoff and the order in Proposition~\ref{tks:prop:saddle}; $K_{\lambda\mu}$ Kostka numbers, $K$ an order, $K_n$ the matrix dimension, $\mathcal K(t)$ the full series.\\
+$L$, $\ell$ & $L=\log A$, $L_c$; $\ell$ a cycle length, $\ell(\nu)$ the number of parts, and $\ell=\log x$ in~\eqref{tks:eq:centeredinverse}.\\
+$M$, $P$, $\PP$ & $M_j$ margin multiplicities, $M(\mu)$ fixed-margin counts~\eqref{tks:eq:fixedmarginchecks}, $\mathcal M_m^\sigma$ half-axis moments; $P(u)$ the product~\eqref{tks:eq:P}, $P_n$ the profile law; $\PP$ probability.\\
+$q$, $r$, $R$ & $q_\rho$ product coefficients, $q_n=I_{n-3}/I_n$, $q$ a Newton step; $r(\nu)$ square-root counts and $r$ the involution saddle~\eqref{tks:eq:saddle}; $R$ a radius, $R_s^*$, $R(t)$, $R_k$, $R_k^\sigma$ ratios. \emph{False reading:} $q_n$ is not a $q_\rho$.\\
+$\rho$, $s$, $\sigma$ & $\rho$ a cycle type without fixed points, and $\rho_K$ the model root of Section~\ref{tks:sec:inverse}; $s$ the support size and the shift in~\eqref{tks:eq:shiftratio}; $\sigma$ a permutation and the sector sign.\\
+$t$, $T$ & $t=n^{-1/2}$; $t$, $t_0=1/4$ the marking variable of~\eqref{tks:eq:Hjt}; $T$ a support cutoff; $T_3$ the margin statistic.\\
+$\alpha$, $\gamma$, $\delta$ & $\alpha_\nu$ cycle-index coefficients; $\alpha_j$, $\alpha_j^\sigma$ involution coefficients; $\gamma_j$ saddle coefficients; $\delta_j$ companion log coefficients, $\delta_j$ in~\eqref{tks:eq:geomconstanttail}'s proof. \emph{False reading:} $\alpha_j$ is not $\alpha_\nu$.\\
+$D$, $W$, $N$ & $D_k$ the sums~\eqref{tks:eq:Dk} and $D$ the limiting deficit; $W(m)$ the profile weight and $W_0$ Lambert's function; $N(A)$ the threshold and $N=\sqrt n$ in the appendix.\\
+\bottomrule
+\end{longtable}
+\endgroup
