@@ -40,7 +40,10 @@ def coloring(pd):
 
 
 class BoundaryTait:
-    def __init__(self, pd, order, stage, palette=None):
+    def __init__(self, pd, order, stage, palette=None, *, arithmetic='rational'):
+        if arithmetic not in ('rational', 'integer'):
+            raise ValueError('terminal arithmetic must be rational or integer')
+        self.arithmetic = arithmetic
         if not 0 <= stage < len(order):
             raise ValueError('nonempty suffix required')
         palette = coloring(pd) if palette is None else palette
@@ -114,8 +117,14 @@ class BoundaryTait:
 
     def prepare_kernel(self, verify=False):
         if self.kernel is None:
-            kernel = TerminalKernel.build(self.laplacian, self.terminals)
-            if verify and not verify_kernel(self.laplacian, kernel):
+            if self.arithmetic == 'integer':
+                from fastunknot.terminal_determinant import IntegerTerminalKernel, verify_integer_terminal_kernel
+                kernel = IntegerTerminalKernel.build(self.laplacian, self.terminals)
+                valid = not verify or verify_integer_terminal_kernel(self.laplacian, kernel)
+            else:
+                kernel = TerminalKernel.build(self.laplacian, self.terminals)
+                valid = not verify or verify_kernel(self.laplacian, kernel)
+            if not valid:
                 raise ArithmeticError('terminal kernel certificate failed')
             self.kernel = kernel
 
