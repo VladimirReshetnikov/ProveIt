@@ -4,6 +4,8 @@ The complete fallback searches all cyclic rotations and partial overlaps.
 Failure is a search stall, never a conclusion about the presented group.
 """
 from .compressed_match import first_occurrence
+from .compressed_lcs import adjacent_pairs
+from .compressed_words import CompressedLimit
 
 
 def whole_donor_move(arena, roots):
@@ -13,7 +15,17 @@ def whole_donor_move(arena, roots):
     # occurrence. This does not maximize gain over every possible overlap.
     donors = sorted(nonempty, key=lambda item: (-arena.lengths[item[1]], item[0]))
     counts = {i: arena.summarize([root])[0] for i, root in nonempty}
-    doubled = {}
+    doubled, pairs, pair_cells = {}, {}, 0
+
+    def internal_pairs(root):
+        nonlocal pair_cells
+        if root not in pairs:
+            found = adjacent_pairs(arena, arena._reachable([root]))
+            pair_cells += len(found)+1
+            if pair_cells > arena.max_nodes:
+                raise CompressedLimit('compressed-overlap adjacency cache allowance exhausted')
+            pairs[root] = found
+        return pairs[root]
     for donor, source in donors:
         size = arena.lengths[source]
         eligible = []
@@ -24,9 +36,22 @@ def whole_donor_move(arena, roots):
                 eligible.append((target, other))
         if not eligible:
             continue
+        source_pairs = internal_pairs(source)
         for inverse in (False, True):
-            pattern = arena.inverse(source) if inverse else source
+            arena.tick(len(source_pairs)+1)
+            required = {(-y, -x) for x, y in source_pairs} if inverse else source_pairs
+            compatible = []
             for target, other in eligible:
+                arena.tick(len(required)+1)
+                available = internal_pairs(other) | {(arena.last[other], arena.first[other])}
+                if required <= available:
+                    compatible.append((target, other))
+                else:
+                    arena.stats['overlap_adjacency_skips'] = arena.stats.get('overlap_adjacency_skips', 0)+1
+            if not compatible:
+                continue
+            pattern = arena.inverse(source) if inverse else source
+            for target, other in compatible:
                 arena.tick()
                 if target not in doubled:
                     doubled[target] = arena.concat(other, other)

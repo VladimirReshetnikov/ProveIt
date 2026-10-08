@@ -9,6 +9,18 @@ from .compressed_match import MatchTable, _clip, _last
 from .compressed_words import CompressedLimit
 
 
+def adjacent_pairs(arena, nodes):
+    """Exact directed signed bigrams: each occurs at some reachable rule cut."""
+    pairs = set()
+    for node in nodes:
+        arena.tick()
+        rule = arena.rules[node]
+        if rule[0] == 'c':
+            pairs.add((arena.last[rule[1]], arena.first[rule[2]]))
+    arena.stats['adjacency_rules'] = arena.stats.get('adjacency_rules', 0)+len(nodes)
+    return pairs
+
+
 class CommonSubstring:
     def __init__(self, arena):
         self.arena, self.cache, self.cache_cells = arena, {}, 0
@@ -116,6 +128,12 @@ class CommonSubstring:
         Terminal ids encode signed letters uniquely within one arena. A letter
         outside common is a separator that no common substring can cross.
         """
+        return self._runs(nodes, common, None, 'lcs_bound_nodes')
+
+    def transition_runs(self, nodes, common, transitions):
+        return self._runs(nodes, common, transitions, 'lcs_transition_bound_nodes')
+
+    def _runs(self, nodes, common, transitions, counter):
         a, prefix, suffix, longest = self.arena, {}, {}, {}
         for node in nodes:
             a.tick()
@@ -124,10 +142,11 @@ class CommonSubstring:
                 prefix[node] = suffix[node] = longest[node] = int(node in common)
             else:
                 left, right = rule[1:]
-                prefix[node] = prefix[left]+prefix[right] if prefix[left] == a.lengths[left] else prefix[left]
-                suffix[node] = suffix[right]+suffix[left] if suffix[right] == a.lengths[right] else suffix[right]
-                longest[node] = max(longest[left], longest[right], suffix[left]+prefix[right])
-        a.stats['lcs_bound_nodes'] = a.stats.get('lcs_bound_nodes', 0)+len(nodes)
+                join = transitions is None or (a.last[left], a.first[right]) in transitions
+                prefix[node] = prefix[left]+prefix[right] if join and prefix[left] == a.lengths[left] else prefix[left]
+                suffix[node] = suffix[right]+suffix[left] if join and suffix[right] == a.lengths[right] else suffix[right]
+                longest[node] = max(longest[left], longest[right], suffix[left]+prefix[right] if join else 0)
+        a.stats[counter] = a.stats.get(counter, 0)+len(nodes)
         return longest
 
     def extensions(self, u, v):
@@ -170,6 +189,16 @@ class CommonSubstring:
             best = 1, xp[terminal], yp[terminal]
         if best[0] == limit:
             a.stats['lcs_bound_stops'] = a.stats.get('lcs_bound_stops', 0)+1
+            return best
+        xe, ye = adjacent_pairs(a, xn), adjacent_pairs(a, yn)
+        transitions = xe & ye
+        if transitions != xe:
+            xb = self.transition_runs(xn, common, transitions)
+        if transitions != ye:
+            yb = self.transition_runs(yn, common, transitions)
+        limit = min(limit, xb[x], yb[y])
+        if best[0] == limit:
+            a.stats['lcs_transition_stops'] = a.stats.get('lcs_transition_stops', 0)+1
             return best
         xs = sorted((n for n in xn if a.rules[n][0] == 'c'), key=lambda n: -xb[n])
         ys = sorted((n for n in yn if a.rules[n][0] == 'c'), key=lambda n: -yb[n])
