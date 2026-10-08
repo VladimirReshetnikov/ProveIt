@@ -1,3 +1,6 @@
+/- Modified for ProveIt: use MvPolynomial.coeff_zero for the Lean 4.32
+polynomial representation in integerRowPolynomial_truncateTaggedFrequency.
+All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.ActualResidueSpatialFreezing
 
 namespace OAI
@@ -354,7 +357,7 @@ theorem integerRowPolynomial_truncateTaggedFrequency (d : ℕ)
   · simp only [truncateTaggedFrequency, hj, ite_false]
     ext α
     simp only [integerRowPolynomial_coeff, Int.cast_zero, zero_mul,
-      Finset.sum_const_zero, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+      Finset.sum_const_zero, MvPolynomial.coeff_zero]
 
 theorem normalizedTwistFrequencyPolynomial_truncate (cover d : ℕ)
     (a : (Σ j, J j) → ℤ) (poly : ∀ j, VectorPolynomial X ℝ (J j → ℝ)) :
