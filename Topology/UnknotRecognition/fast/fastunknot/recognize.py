@@ -363,6 +363,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_regina: bool = False, regina_seconds: float | None = 2.0,
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
+              group_compressed: bool = False,
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
@@ -404,6 +405,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_group must be boolean")
     if type(group_relators) is not bool:
         raise ValueError("group_relators must be boolean")
+    if type(group_compressed) is not bool:
+        raise ValueError("group_compressed must be boolean")
     if type(group_max_work) is not int or group_max_work < 0:
         raise ValueError("group_max_work must be a nonnegative integer")
     if group_seconds is not None:
@@ -660,6 +663,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        normal_options=dict(seconds=regina_seconds) if use_regina else None,
                        group_options=dict(seconds=group_seconds, relator_moves=group_relators,
+                                          compressed_verification=group_compressed,
                                           max_work=group_max_work) if use_group else None,
                        window_options=None if window_radius is None else dict(
                            radius=window_radius, max_objects=window_max_objects, seconds=window_seconds,

@@ -11,8 +11,36 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 631 passing tests
+diagram is not checked twice. The integrated suite now has 637 passing tests
 with the optional Regina dependency installed.
+
+`--group-compressed` enables exact SLP-based replay of group certificates.
+Its deterministic word kernel supports equality, slicing, inversion and free
+reduction without expanding the represented strings. Recognition still searches
+with explicit relators. The existing certificate formats remain unchanged;
+Python callers select `group_compressed=True` together with `use_group=True`,
+or call `verify_group_certificate(diagram, certificate, compressed=True)`.
+
+This is an experimental capacity extension. In constructed proof traces, it
+checks intermediate words with 90-bit lengths using 904 grammar nodes, while
+the explicit checker exhausts its letter cap. On the present knot corpus it
+costs more: Gordian's median whole query rises from 1.236 to 1.417 seconds.
+Explicit replay remains the default. The node/assertion ceiling is 100,000;
+standalone verification accepts `max_nodes`, `max_work`, and a `stats` dictionary.
+In compressed mode `max_letters` bounds the initial presentation only.
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-relators --group-compressed --group-seconds 2 \
+  --group-max-work 10000000 --seconds 4
+python -B benchmark_compressed_words.py --output results/compressed_local.json
+```
+
+See [`compressed_words.tex`](../synthesis/compressed_words.tex) for the
+split-and-compaction equality proof, exact boundary cancellation, validation,
+and the distinction between polynomial word operations and unbounded search
+or grammar growth. Raw whole-query and constructed-capacity measurements are
+in [`results/compressed_words_20261008.json`](results/compressed_words_20261008.json).
 
 `--group-relators` adds exact relator-overlap substitutions to the group
 certificate stage and enables it. It uses suffix automata to avoid expanding

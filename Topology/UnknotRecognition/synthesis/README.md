@@ -2,6 +2,23 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`compressed_words.tex` describes the deterministic SLP word kernel and its
+optional integration into independent group-certificate replay. Equality uses
+split assertions and periodicity compaction; longest-prefix queries provide
+exact free reduction and cyclic reduction. An audit compares noncanonical
+words longer than 2^100 letters without expansion. A deliberately inflated
+three-crossing unknot trace verifies with 904 grammar nodes and a 90-bit
+intermediate word length, beyond the explicit checker's letter allowance.
+
+Whole-query measurements show overhead on the current knot corpus: fourteen
+small cases total 137.53 ms in summed medians versus 51.02 ms explicit, and
+Gordian costs 1.417 versus 1.236 seconds. The extension remains opt-in; search
+is still explicit and no general sub-exponential recognition theorem follows.
+All 637 tests pass with Regina installed in 121.284 seconds
+(`data/compressed-words-integrated-tests.txt`). Timing scopes, synthetic traces
+and kernel counts are preserved in the raw benchmark artifact. The rebuilt
+article has 161 pages.
+
 `relator_overlap.tex` extends the native group certificate with a verified
 normal-closure-preserving relator substitution, found by suffix automata.
 The Gordian fixture now has a native certificate with 140 generator
