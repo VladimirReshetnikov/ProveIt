@@ -530,3 +530,22 @@ being closed as stated by the openai-math port.
    - With polynomial rank, it would give the exact Theorem 16.2 in every
      dimension.
    - The dimension-two route alone cannot reach dimension three (H.3).
+5. **Theorems 18.2 and 18.7 from openai-math with explicit constants.**
+   *Proved arithmetic; the port is infeasible for now.*
+   - Theorem 18.2 assumes δ ≤ 1/2 and
+     `N ≥ 2^(2^X)` with `X = δ^(−2^(2^(k+9)))`, so `log log N ≥ X·log 2 − 1`.
+     The openai-math bound
+     `r_k(N) ≤ C·N·exp(−c·(log log N)^(1+η))` falls below `δN` as soon as
+     `c·(X/2)^(1+η) > log C + log(1/δ)`. Since `log(1/δ) = (log X)/2^(2^(k+9))`
+     and `X ≥ 2^(2^(2^(k+9)))`, this needs only `log C / c` to be at most
+     about that size.
+   - Corollary 18.7 already follows from 18.2
+     (`corollary_18_7_holds_of_theorem_18_2`).
+   - Upstream, however, states and proves `QuantitativeDensityBound` with
+     `∃ C c η`. The headline's witness comes from an induction of
+     existential powers (`exists_manuscriptRelativePatchPower`).
+   - Scale of the Progressions tree: 4,774 Lean files, 128 of which use
+     filter asymptotics (412 occurrences), and 4,844 `exists_*` theorems.
+     Making the constants explicit would mean re-proving much of a
+     million-line development. Asking upstream for an explicit-constant
+     headline is the realistic form of this route.
