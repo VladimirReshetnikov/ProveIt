@@ -103,6 +103,42 @@ dated note under Vladimir's standing rule of 4 October 2026; added from the
 non-claims: explicit constants for Theorem 4.1 and certified diagnostics. No
 claim of the source was found false; nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-113 write (`8748cfc59`) used
+its own code. It read A323297 (#14), A323296 (#15) and A323294 (#34) again;
+the quotations of Remark 10.1 are verbatim.
+
+- **Counts.** A separate backtracking enumeration of all admissible edge sets
+  for n ≤ 7 reproduces `A_n`, `B_n`, `c_m` and the defect identity on every
+  object. Power-series exponentiation of (1.1) reproduces all 201 b-file
+  terms of A323297 and A323296.
+- **Expansions.** With counts to 80 digits, all of the following equal the
+  write's values for n = 100…1200: the remainders of (3.2) for J = 0, 1, 2;
+  the deletion remainders of (6.7) and (6.5); and `(log A_n − n g(r))/r⁵`.
+- **Inverse.** An own symbolic reversion gives exactly (4.11) and (4.8).
+  Remark 4.3(2) was checked against `plt:def:lw-monomial-log-datum`:
+  `(ρ, μ, β) = (1, 4, −log 2)`, with the perturbation in
+  `t ℚ(log 2)[log r][[t]]`.
+- **Table of Section 10.2.** All sixteen entries were recomputed from the
+  exact conditioning formula (5.5) and agree to eight digits. The five values
+  named in the dated note are roundings; the other eleven are truncations.
+  `E|1 − Z²| = 4φ(1)` was also confirmed.
+- **Precision added (bracketed dated notes, Section 1.3 and Remark 10.1).**
+  "Equal to all 1001 terms of A323294" holds for `2 ≤ m ≤ 1000`. A323294
+  counts spanning hypergraphs, so its `a(0) = 1` and `a(1) = 0` are its own
+  conventions (its e.g.f. is `1 + C(x) − x`), while here `c_1 = 1` is the
+  isolated vertex.
+- **Also confirmed.**
+  - The provenance figures (601,277 bytes, 30 files, 52 lines, 21 pages, 29
+    manifest entries).
+  - The byte identity of the staged files and the README listing.
+  - The numbering: 83 delivered labels, 0 differences against the `.aux` of
+    a build of the placed text.
+
+No claim of the write was found wrong. The check is recorded at the end of
+Section 1.3.
+
 ## Relation to the repository
 
 No other file of the repository names A323297, A323296 or A323294, and no
@@ -226,6 +262,10 @@ The committed PDF was built from these files with MiKTeX pdfLaTeX (three
 passes, 7 October 2026): 26 pages; no errors or warnings, no undefined
 references, no multiply defined labels, no duplicate destinations, no
 overfull or underfull boxes. The delivered text gives 21 pages, equally clean.
+(MiKTeX prints 684 pdfTeX notices of duplicate font-map entries in both
+builds; these are not LaTeX warnings.) The independent check rebuilt the PDF
+on 7 October 2026, three passes: 26 pages, equally clean, label numbers
+unchanged.
 
 ## Provenance
 

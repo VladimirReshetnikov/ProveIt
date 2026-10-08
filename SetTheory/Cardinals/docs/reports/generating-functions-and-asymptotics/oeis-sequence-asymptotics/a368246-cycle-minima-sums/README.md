@@ -16,7 +16,7 @@ addressee.
 
 | Source | Archive | Placed | Shipped as |
 |---|---|---|---|
-| *Record Sum Diagonal Expansions and Integer Inverses* ("Report 234", 5 October 2026) | `Report234.zip` (648,517 bytes, 25 files, wrapper `Report234/`; `article.tex`, 67 lines, with eleven `\input` files in `sections/`, 29 pp.) | `a4186a946` | `article.tex` and `sections/*.tex` |
+| *Record Sum Diagonal Expansions and Integer Inverses* ("Report 234", 5 October 2026) | `Report234.zip` (648,517 bytes, 24 files (the write said 25; corrected by the independent check), wrapper `Report234/`; `article.tex`, 67 lines, with eleven `\input` files in `sections/`, 29 pp.) | `a4186a946` | `article.tex` and `sections/*.tex` |
 
 The package records no ProveIt commit, so no pin is recorded (its
 `SOURCES.md` names five reports of this collection and four blob hashes, all
@@ -105,7 +105,51 @@ certified higher amplitudes, general exponent patterns, large order), with a
 dated note under Vladimir's standing rule of 4 October 2026; added from the
 non-claims: interval enclosures of the Gamma amplitudes and an implementation
 of the higher `P_j`. No claim of the source was found false; Kotěšovec's
-conjecture is proved.
+conjecture is proved. (The independent check qualified the note's word
+"proved" for the constant-shift observation: see below.)
+
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-113 write (`f24d4b02b`) used
+its own code. It read A368246 (#22), A143946 (#38) and A080130 again; the
+quotations of Remark 11.1 are verbatim.
+
+- **Checked hardest: Kotěšovec's conjecture, as posted, is proved.**
+  - GSW's Theorem 2.1 was read in arXiv:1309.1578v1 (fetched again, same
+    SHA-256). It holds for every integer `κ_n` with `κ_n/n → x > 0`, with
+    the model of Section 2.3.
+  - The identity `n P(T_n = n) = b_n` was verified exactly for `n ≤ 30`.
+    With `κ_n = n` and `ρ(1) = 1` it gives `a_n ~ e^{−γ}(n−1)!`, as does
+    Theorem 1.1.
+  - One exact integer evaluation of (2.1) to `N = 2000` reproduces all 452
+    b-file terms.
+  - Brute force over all permutations with `n ≤ 8` confirms both statistics
+    and the equality of their distributions.
+  - With exact `b_n`, the Theorem 1.2 remainder times `n⁴/(1+log n)²` is
+    0.650, −5.517, −3.998, 0.295, −2.616 at n = 100, 200, 500, 1000, 2000.
+    It is at most 5.5171 in absolute value for 200 ≤ n ≤ 2000, as the
+    write found.
+- **Also confirmed.**
+  - `C_ω` (Gamma product, 50 digits) and the dated note on its printed digits.
+  - `Q_i` against partial products, and `S = 2 log 2 + 1 − ζ(2)`.
+  - Remark 9.3 against the volume.
+  - The four `SOURCES.md` blobs (two current; the other two in `3412ae074`
+    and `a4198a037`).
+  - The byte identity of the staged files and the README listing.
+  - The numbering: 104 delivered labels, 0 differences against the `.aux` of
+    a build of the placed text.
+- **Corrected by a bracketed dated note:** the archive has 24 files, not 25.
+  This is fixed in Section 1.4 and in the table above.
+- **Qualified by a bracketed dated note (Section 12):** the constant-shift
+  observation is derived, not proved.
+  - The text computes the positive sector for every `d`.
+  - The transfer of Sections 3–7 is written only for `d = 1`. For other `d`
+    the factor `1 + z^{1+d}` vanishes at the `(d+1)`-th roots of −1, so the
+    adaptation looks routine but has not been carried out.
+  - The check's own numbers agree: `m(b^{(d)}_m − A)/(A(1−d))` at m = 3000
+    is 0.99705 (d = 0), 1.00176 (d = 2) and 1.0044 (d = 3).
+
+The check is recorded at the end of Section 1.4.
 
 ## Relation to the repository
 
@@ -227,6 +271,10 @@ The committed PDF was built from these files with MiKTeX pdfLaTeX (three
 passes, 7 October 2026): 33 pages; no errors or warnings, no undefined
 references, no multiply defined labels, no duplicate destinations, no
 overfull or underfull boxes. The delivered text gives 29 pages, equally clean.
+(MiKTeX prints 684 pdfTeX notices of duplicate font-map entries, both in the
+delivered and in the written build. These are not LaTeX warnings.) The
+independent check rebuilt the PDF on 7 October 2026, three passes: 33 pages,
+equally clean, label numbers unchanged.
 
 ## Provenance
 
