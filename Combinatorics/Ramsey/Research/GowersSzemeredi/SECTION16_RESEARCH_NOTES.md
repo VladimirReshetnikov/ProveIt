@@ -873,6 +873,29 @@ composition.
   `bilinearBohrVariety_contains_box_at`. That would avoid shifted-family
   regularity. Not yet checked in detail.
 
+**Formalized (same day).** `BohrBohrIsBohr D` (Prop. 2.37, d = 1, as a
+hypothesis) and `variety_full_section_contains_bohr`: for every
+x ∈ B(Γ;ρ), {x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
+ρ″ ≥ ρ/loss^D (`Proofs16BohrBohrSections`).
+
+**Two observations from attempting the packing.**
+1. **x-fibres need no hypothesis.** For fixed y, the x-section of V is
+   exactly the Bohr set B(Γ ∪ {L_k(y)}; ρ). Proposition 2.37 is needed
+   only for y-sections.
+2. **The real obstruction is partial cells.** `MultiplyLinear` asks that,
+   on each cell, Φ's graph over V ∩ cell ∩ H be covered by few
+   multilinear functions. If V ∩ cell is not a product set, the bi-affine
+   argument breaks at the boundary, because the quadruple chains leave V.
+   Two options:
+   - use only cells inside V, and put the boundary mass in the θ-loss set
+     H^c. That needs boundary mass ≤ θ, a regularity statement for V
+     itself: the shifted-family issue again, but only for the boundary;
+   - prove that Φ on a "convex" V ∩ cell, an interval on each line, is
+     still covered by O(1) multilinear pieces. That needs quadruples
+     linking neighbouring lines inside V.
+
+   Either is a genuine lemma, not bookkeeping.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
