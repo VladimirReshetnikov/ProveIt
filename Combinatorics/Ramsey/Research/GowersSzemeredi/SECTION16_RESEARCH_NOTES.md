@@ -747,6 +747,35 @@ item (D).
    the total rank by the exponents above. That is the (D)-type win.
 3. **The pre-extension hypothesis** `MilicevicVarietyStructure D`, from
    the paper, not proved here.
+
+Item 2 is done: `varieties_common_product` (`Proofs16VarietyUnions`)
+gives one box common to n varieties, with step exponents
+|⋃Γ| + 2Σr and |⋃Ψ|, linear in the total codimension and rank.
+
+**Item 1 decomposed.** On a cell (x₀ + i·d) × (y₀ + j·e),
+
+  L_k(y₀ + je)·(x₀ + id) = L_k(y₀)x₀ + i·L_k(y₀)d + j·Δ_k x₀ + ij·Δ_k d,
+
+where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
+- **Variation terms** (the last three) must be ≤ εN on the cell. They are
+  common-difference products of linear forms with the cell's steps. That is
+  exactly the form of the peer's polynomial-exponent Lemma 16.1
+  (`exists_simultaneous_commonDiff_partition_two_bound`, exponent
+  p·(q+1)^(2^(k+2))), applied to the forms y ↦ L_k(y) and x ↦ Δ_k·x. The
+  same holds for the Bohr frequencies Γ, Ψ.
+- **The constant term** L_k(y₀)x₀, and γx₀, ψy₀, decides whether the cell
+  is inside V, outside V, or straddles its boundary. Straddling cells are
+  the loss. Bounding their mass by θ is Bourgain's regular-Bohr-set
+  argument: choose ρ so that B(ρ(1+κ)) ∖ B(ρ(1−κ)) has relative size
+  O(κ·rank). The corpus has Gowers's Lemmas 10.10 and 10.11, not
+  regularity in this form.
+
+So off-origin covers of V's graph reduce to two inputs: the peer's
+Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
+variety's frequencies, with radius losses polynomial in the rank. Both
+are standard. Composing them into `CubicStackableClass` members is
+bookkeeping-heavy but has no new mathematics left in it, apart from the
+pre-extension hypothesis.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
