@@ -648,13 +648,29 @@ formalization step.
 1. **Cocycle.** Let φ be an E-homomorphism on a progression. Then
    c(x, y) = φ(x+y) − φ(x) − φ(y) + φ(0) lies in E (take the quadruple
    (x+y, 0, x, y)). So c takes at most 2^r values.
-2. **Bracket structure.** Suppose E's generators a₁..a_r are in general
-   position, meaning their small integer combinations are distinct. Then
-   reading c in those coordinates gives r integer-valued quasimorphisms with
-   bounded defect. By the Ulam/homogenization argument each is ⌊α_i x + β_i⌋
-   + O(1), so φ(x) = λx + Σ_i (⌊α_i x + β_i⌋ + O(1))·a_i is bracket-linear.
-   In general the generators are not in general position. Reducing to that
-   case is the research content.
+2. **Bracket structure (corrected the same day).** The defect of an
+   E-homomorphism lies in E ∩ (−E): reversing the quadruple negates the
+   defect. So if E's generators were in general position, φ would be an
+   exact Freiman homomorphism, which is the trivial case. The genuine cases
+   have relations. A bracket ⌊αx⌋ has defects in {−1, 0, 1}, with
+   generators 1 and −1.
+
+   The usable structure is in the first differences
+   D(j) = φ(x₀ + (j+1)u) − φ(x₀ + ju) along a progression.
+   - The quadruple (j+1, j′, j, j′+1) gives D(j) − D(j′) ∈ E, so D takes at
+     most |E| ≤ 2^r values.
+   - The quadruple (j+h, j′, j, j′+h) gives that window sums of equal length
+     differ by an element of E.
+
+   So D is a **balanced sequence** over a finite alphabet in Z_N. For two
+   letters, Morse–Hedlund applies: finite balanced binary words are exactly
+   the factors of Sturmian (mechanical) words ⌊(t+1)α + β⌋ − ⌊tα + β⌋
+   (Lothaire, *Algebraic Combinatorics on Words*, Ch. 2). Each letter's
+   counting function is then a bracket, so φ is bracket-linear along the
+   progression. For alphabets larger than two, balance per letter can fail
+   (Fraenkel's problem). The quantity actually needed is the window
+   discrepancy of each letter, bounded by a constant depending on r. That
+   multi-letter structure is the research content of step 2.
 3. **Linearization.** Take u ≤ M^r with every ‖u·α_i‖ ≤ 1/M; this is
    simultaneous Dirichlet, `simultaneous_small_multiplier` with exponent
    1/r. Along x₀ + j·u the brackets have no carries, except at most r·O(1)
@@ -670,8 +686,9 @@ formalization step.
    §1.1, so it should be checked against his Sections 5–11 before any
    formalization.
 
-Effort: step 3 is formalizable now on top of
-`Proofs05SimultaneousDirichlet`. Steps 2 and 4 are research.
+Status: step 3 is formalized (`Proofs16BracketWindow`:
+`exists_common_constant_window`, `bracketLinear_affine_window`). Steps 2
+and 4 are research. Step 2's two-letter case reduces to Morse–Hedlund.
 
 **Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
