@@ -1,0 +1,283 @@
+\section{Twist compression and a restricted quasi-polynomial family}
+\label{sec:twist-integration}
+
+Report 11 supplies a different way to reduce the exponential dependence:
+simplify an entire two-strand twist before constructing the closed chain
+complex. We have integrated this backend as an explicit option, after
+checking its local model, degree convention, and production comparisons.
+Unlike component contraction, which changes one morphism product, this
+replacement reduces the number of terms in the selected complex.
+The parameter is the number of signed runs in a supplied braid word.
+It is neither the minimal braid index nor an invariant of an arbitrary
+PD presentation.
+
+\subsection{Local replacement and exact assembly}
+Write the braid on $b$ strands as
+\[
+ \beta=\sigma_{i_1}^{\epsilon_1m_1}\cdots
+        \sigma_{i_t}^{\epsilon_tm_t},
+ \qquad m_j>0,\quad \epsilon_j\in\{-1,1\},\quad n=\sum_jm_j.
+\]
+The production adapter groups maximal equal signed letters. It does not
+perform a hidden search for a shorter braid presentation. The standalone
+run API also accepts binary-encoded exponents, but every complexity bound
+below is in the expanded crossing count $n$, not their encoding length.
+
+Let $I$ be the identity smoothing and $E$ the turnback. A positive
+$m$-crossing twist has the local representative
+\[
+ I\xrightarrow{s}E\xrightarrow{D}E\xrightarrow{D}\cdots
+ \xrightarrow{D}E,\qquad D=X_{\mathrm{top}}+X_{\mathrm{bottom}},
+\]
+with terms in degrees $0,\ldots,m$. The negative twist is its dual,
+in degrees $-m,\ldots,0$, with the saddle entering the final $I$.
+This is the characteristic-two, quantum-ungraded specialization of
+\href{https://arxiv.org/abs/1701.07525}{Thompson's Proposition 4.1}
+(version 2, December 2018), using Bar-Natan's local delooping and
+cancellation. It is a homotopy equivalence relative to the boundary,
+so inserting it into the surrounding braid preserves homology.
+The integer dot sums and differences become the same map over
+$\mathbb F_2$. This locality theorem, not merely a $d^2=0$ check,
+justifies replacing the crossing cube.
+
+A macro state chooses $k_j\in\{0,\ldots,m_j\}$ in each block.
+Its homological degree is $\sum_j\epsilon_j k_j$, and its geometry
+depends only on the support $S=\{j:k_j>0\}$. The implementation closes
+the corresponding $I/E$ picture on a $(t+1)$-by-$b$ grid and caches
+its circle partition by $S$. A marked closing arc fixes one circle's
+label to $X$ in $\mathbb F_2[X]/(X^2)$; the other circles carry binary
+labels. A state with $c(S)$ circles therefore contributes $2^{c(S)-1}$
+reduced basis elements.
+
+Transitions at the end of a run use the multiplication or
+comultiplication saddle. Internal transitions apply the two dot maps.
+If the top and bottom arcs lie on one circle their dot contributions
+cancel; a dot on the marked circle vanishes. Different blocks commute,
+so cross terms cancel in characteristic two. Exact bit-column
+elimination computes each boundary rank and hence each homology degree.
+The existing rank-one reduced Khovanov detector then decides the knot.
+
+\subsection{Counting the selected complex}
+For each support $S$, precisely $\prod_{j\in S}m_j$ states have that
+support. Thus the full reduced chain dimension is exactly
+\begin{equation}
+ N=\sum_{S\subseteq[t]}2^{c(S)-1}\prod_{j\in S}m_j.
+ \label{eq:twist-exact-N}
+\end{equation}
+This is a chain dimension, not a Betti number. The same formula with
+$m_j$ replaced by $z^{\epsilon_j}+\cdots+z^{m_j\epsilon_j}$ gives
+the dimension in every degree. The Temperley--Lieb trace of
+$\prod_j(I+m_jE_{i_j})$ at loop value two, divided by two for the mark,
+computes $N$ without expanding the run lengths. This provides the
+adapter's exact size preflight. A separate polynomial transfer computes
+the degree profile using sliding windows for these consecutive powers.
+
+Here is the useful structural bound from report 11. If $d(S)$ counts
+distinct generator indices active in $S$, then
+\[
+ c(S)\le b+|S|-2d(S).
+\]
+Begin with $b$ vertical circles and activate turnbacks in word order.
+At the first use of index $i$, no prior connection crosses the cut
+between positions $i$ and $i+1$. Its two arcs are therefore in different
+circles, and that saddle must merge them. Every other activation can
+increase the circle count by at most one. Counting the $d(S)$ forced
+merges proves the inequality; its slack is an even nonnegative integer.
+
+Set $Q_i=\prod_{j:i_j=i}(1+2m_j)$. Inserting the bound into
+\eqref{eq:twist-exact-N} and grouping subsets by their generator gives
+\[
+ N\le 2^{b-1}\prod_{i=1}^{b-1}
+       \left(1+\frac{Q_i-1}{4}\right)
+   =U:=\prod_{i=1}^{b-1}\frac{Q_i+3}{2}.
+\]
+A knot closure uses every generator index: otherwise its strand
+permutation preserves the two nonempty sides of an unused cut.
+Consequently $Q_i\ge3$, $b\le t+1$, and, for $t>0$,
+\begin{equation}
+ N\le U\le\prod_j(1+2m_j)
+       \le\left(1+\frac{2n}{t}\right)^t.
+ \label{eq:twist-run-bound}
+\end{equation}
+The last step is arithmetic--geometric mean. The bound is sharp for
+two-strand presentations and when each generator appears in just one
+block. It is not a bound on the smallest possible presentation of a
+given knot.
+
+There are at most $N$ macro states, each with polynomial bookkeeping
+in $n+b$. Differential matrices have at most $N$ rows and columns,
+and their bit elimination costs at most a fixed polynomial times
+$N^3$, with storage at most a fixed polynomial times $N^2$. Therefore
+the uncapped algorithm satisfies
+\[
+ T\le\operatorname{poly}(n+b)N^3
+   =\operatorname{poly}(n)2^{O(t\log(2+n/t))}.
+\]
+In particular, for every fixed $c$, supplied knot braids with
+$t\le c\log(n+2)$ admit a uniform $2^{O(\log^2(n+2))}$ bound.
+Fixed $t$ gives a polynomial whose exponent may depend on $t$; this
+is not an FPT claim. Finite allocation and time limits can still cause
+an invocation to return \code{UNKNOWN}. No algorithm here constructs
+such a short-run braid for every knot diagram.
+
+\subsection{A sharper degree-sensitive bound}
+The actual implementation eliminates each homological degree separately.
+Writing $d_h=\dim C^h$, define
+\[
+ M=\sum_h d_hd_{h+1},\qquad
+ W=\sum_h d_hd_{h+1}\min(d_h,d_{h+1}).
+\]
+There are at most $d_h\min(d_h,d_{h+1})$ column reductions for the
+$h$th differential, each touching at most $d_{h+1}$ bits. Thus $W$
+bounds their total XOR bit work; reading columns and bookkeeping add
+at least $O(N)$ work and polynomial factors in index bit lengths.
+$M$ is the dense coefficient-bit storage bound. These more informative
+quantities are reported by both the assembly and degree-profile
+preflight as \code{matrix\_bit\_upper\_bound} and
+\code{rank\_xor\_bit\_upper\_bound}. They are analytical bounds,
+not sampled CPU times or process-memory measurements.
+
+This gives an additional consequence for a single lengthening block.
+Hold the strand count, block positions, signs, and all $m_j$ except
+$m_r$ fixed. For any assignment of the other local indices and any
+degree $h$, the equation $\sum_j\epsilon_jk_j=h$ determines at most
+one value of $k_r$. Every state has dimension at most $2^{b+t-1}$.
+Hence
+\[
+ d_h\le 2^{b+t-1}\prod_{j\ne r}(m_j+1),
+\]
+independent of $m_r$. The number of degrees and macro states is
+$O(m_r+1)$, while the finite list of support geometries and local maps
+is unchanged. It follows that $N,M,W=O(m_r+1)$, with constants depending
+on the fixed surrounding word. The code therefore has linear word-level
+work in this family, with logarithmic factors for index arithmetic in
+a conservative bit model. This conclusion is substantially sharper
+than substituting a linear $N$ into the generic cubic bound.
+
+For a single positive two-strand twist, explicitly $d_0=2$ and
+$d_1=\cdots=d_m=1$. Thus $N=m+2$, the peak degree dimension is two,
+and $M=W=m+1$. Tests compare these closed formulas to independently
+computed profiles and assembled complexes at lengths 3, 31, and 301.
+This is a homology-computation improvement; recognition already has
+the faster elementary two-strand certificate.
+
+\subsection{Integration, provenance, and failure semantics}
+\code{backend="twist"} or \code{--backend twist} selects this backend
+after the existing reduction, factorization, and invariant stages.
+The direct rank CLI uses \code{khovanov --twist}. The adapter accepts
+only retained, checked source-braid provenance. If the entire diagram
+was simplified, its original braid still represents the same knot.
+If factorization produced several diagrams, that braid is never passed
+to an individual factor. Cheap tests may still decide a factor and thus
+the sum. Remaining factors are recorded as inconclusive with
+\code{twist\_deferred}; if necessary the backend then decides the
+original whole braid once, with its rank recorded only at the top level.
+This avoids losing the restricted run-count bound by sending factors
+without braid provenance to an unrestricted scanner. Ordinary PD or grid
+input has no source word at all and uses the standard scanner, recording
+\code{twist\_skipped}. The raw twist-rank API instead
+rejects input without provenance.
+
+The macro degree convention differs from the scanner's cube degree:
+\[
+ h_{\mathrm{macro}}=n_+-h_{\mathrm{cube}},\qquad
+ \dim H_{\mathrm{unred}}^{h_{\mathrm{cube}}}
+       =2\dim H_{\mathrm{red}}^{h_{\mathrm{macro}}}.
+\]
+Here $n_+$ counts positive letters of the \emph{original source braid}.
+The adapter converts its output to that original cube grading and
+labels the evidence explicitly, even when the current PD has fewer
+crossings. A guessed shift or a factor's crossing count would be wrong.
+Normalized macro degrees are also retained for inspection.
+
+The adapter first rejects a macro-state count exceeding its budget,
+then computes the exact reduced basis count by Temperley--Lieb transfer.
+Only a successful count within the basis ceiling permits matrix assembly.
+Preflight and assembly consume one common time budget. The preflight has
+separate limits of 4096 matchings and 256 strands; exhausting a guard
+raises a resource limit, not a verdict. The all-$I$ state's dimension
+also provides an immediate lower bound before any large geometry is
+allocated. The state-count guard uses bounded multiplication, avoiding
+construction and decimal formatting of enormous products for succinct
+run inputs.
+
+The production recognition option \code{twist\_max\_basis} defaults
+to one million, independently of the standard scanner's object ceiling.
+The raw \code{Budget} also controls macro states, matrix bits, XORs,
+and time. Matrix-bit limits concern coefficient capacity rather than
+Python resident memory. Allocation/time exhaustion yields
+\code{UNKNOWN} in recognition and the CLI, and \code{ScanLimit} or
+\code{MemoryError} in the raw production adapter. The separate
+\code{fastunknot.twist} module retains the advanced signed-run,
+homology, and preflight interfaces from the report.
+
+For context, \href{https://arxiv.org/abs/2601.02119}{Kelom\"aki and
+Sch\"utz (2026)} give a polynomial homology algorithm for all
+three-braids and show exponential behavior of ordinary scanning on
+simple three-braid families. The run-count bound above is a different
+restriction and does not subsume their result. Our existing three-braid
+recognition shortcut already decides that knot class without computing
+its homology; it remains ahead of this optional backend.
+
+\subsection{Production checks and observed scaling}
+The full production suite passes 209 tests, including the report's 62
+local algebra/topology tests and new production integration regressions.
+A seeded corpus of 100 knot braid closures on two through five strands
+agrees with the existing scanner in every raw cube degree, with
+$d^2=0$ checked in both engines. The earlier 200-case production
+cross-check remains recorded separately. These are comparisons of
+presentations, not counts of distinct knots. New tests also exercise
+mirrors, whole-diagram simplification, proper-factor deferral, cheap
+factor obstructions, missing provenance, huge encoded counts, exact
+preflight rejection, shared time accounting, and CLI resource handling.
+
+Seven randomized paired rounds compare fresh raw homology computations,
+with a second standard-scanner arm as an A/A control. Diagram creation
+and input loading are outside the timed interval; scanner ordering and
+twist size preflight are inside. Every timed computation must agree in
+rank and every original cube degree. The results are:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Input family & Size parameter & Scanner/twist & A/A\\
+\midrule
+Single two-strand twist & 51 & 31.61 & 1.013\\
+ & 201 & 134.74 & 0.973\\
+ & 801 & 574.45 & 1.004\\
+Fixed four-strand context & 3 & 0.19 & 1.012\\
+ & 15 & 0.30 & 1.002\\
+ & 51 & 0.48 & 0.995\\
+ & 201 & 1.26 & 1.016\\
+ & 801 & 4.29 & 1.024\\
+Alternating three-braid, no run compression & 8 crossings & 0.22 & 0.995\\
+Morton's four-strand unknot & 11 crossings & 0.06 & 0.972\\
+\bottomrule
+\end{tabular}
+\end{center}
+The four-strand word is
+$\sigma_1^m\sigma_2\sigma_3^{-1}\sigma_2\sigma_3\sigma_1\sigma_2^{-1}$
+with odd $m$. Its measured chain dimension is $N=177m+234$,
+verified by exact assembly and the independent preflight in each sample.
+Its peak degree dimension is 177 for the listed $m\ge15$, while the
+small $m=3$ example peaks at 160. Thus the code exhibits the fixed-context
+bound above; this finite sample is not a proof of the general bound.
+The larger context measurements were run separately after the first
+corpus, with the same paired protocol.
+
+The raw scanner took approximately 2.302 seconds on the 801-crossing
+two-strand case, compared with 0.004 seconds for the macro adapter.
+These are \emph{homology} timings: the default recognition pipeline
+already decides all the long-twist examples by its braid obstruction.
+The alternating control is about 4.5 times slower under the macro
+backend, and the Morton example about 15.8 times slower. These regressions
+preclude an unconditional default switch. In particular, a small run
+count gives a useful asymptotic theorem but need not beat the scanner's
+cancellations at a particular finite size.
+
+Reproduce with \code{fast/benchmark\_twist.py}; add
+\code{--context-only} for the larger four-strand cases. Raw timings,
+inputs, degree ranks, work bounds, and the method chosen by default
+recognition are saved in
+\code{fast/results/twist\_integration\_20261007.json} and
+\code{fast/results/twist\_context\_scaling\_20261007.json}.
+No archive files were changed to obtain these results.
