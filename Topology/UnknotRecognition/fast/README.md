@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 582 passing tests.
+diagram is not checked twice. The integrated suite now has 589 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -990,6 +990,39 @@ all six measured cases; it remains optional despite its stronger conditional
 bound. These partial-query ratios are not end-to-end recognition speedups.
 
 ## Optional exact Potts Jones filters
+
+`potts-separator` first constructs and verifies a balanced separator hierarchy,
+then chooses the smaller frontier of its order and the existing greedy order.
+For every closed classical projection it guarantees `O(sqrt(n))` crossing
+frontier. At fixed color count, the uncapped exact scalar query therefore has
+`poly(n) 2^O(sqrt(n))` bit complexity. This is a general subexponential **scalar
+evaluation**, not a general subexponential unknot recognizer: equality is
+inconclusive and the fallback's surviving homology objects remain uncontrolled.
+
+```sh
+python -B -m fastunknot jones examples/conway.json --backend potts-separator
+python -B -m fastunknot recognize examples/conway.json --jones-backend potts-separator
+python -B audit_separator_orders.py --output results/separator_orders_local.json
+```
+
+The Python API `fastunknot.separator_potts.separator_potts_exact` accepts
+`max_states=None, max_transitions=None` for an uncapped query. Its
+`order_certificate` is checked by
+`fastunknot.separator_order.verify_width_bounded_order(diagram.pd, certificate)`.
+The same certificate builder, `width_bounded_scan_order`, can supply an order
+to any existing scanner. Verification uses graph partitions and frontier counts;
+it does not call the planar-map constructor. It does not certify common-disk
+prefixes. A completed certificate survives local scalar exhaustion; a later
+crossing-changing reduction rebuilds it before homology. Preparation remains
+subject to the global deadline.
+
+This option adds ordering overhead and is not the default. The retained audit
+checks 114 inputs with independent union-find logic. On tree-medial stress
+diagrams, a 1,022-crossing frontier drops from 256 to 18; on the grid examples,
+greedy remains better. A 62-crossing matching query improves 24.6x excluding
+preparation, while exact Potts already handles those trees cheaply. No complete
+recognition timing improvement is established. See
+[`../synthesis/separator_orders.tex`](../synthesis/separator_orders.tex).
 
 `recognize --jones-backend potts-exact` uses integer pairs in
 `Z[x]/(x²−(q−2)x+1)`, with six colors by default. The

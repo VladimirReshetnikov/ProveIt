@@ -1,7 +1,7 @@
 """Validated lazy selection of optional one-sided Jones filters."""
 from .filters import jones_obstruction
 
-JONES_BACKENDS = ("matching", "potts5", "potts-exact", "potts-exact-factorized")
+JONES_BACKENDS = ("matching", "potts5", "potts-exact", "potts-exact-factorized", "potts-separator")
 
 
 def validate_jones_options(backend, colors, max_states, max_transitions):
@@ -25,5 +25,8 @@ def select_jones_filter(backend, colors=6):
     if backend == "potts-exact":
         from .potts_exact import potts_exact_obstruction
         return potts_exact_obstruction, "jones-potts-exact", {"colors": colors}
+    if backend == "potts-separator":
+        from .separator_potts import separator_potts_obstruction
+        return separator_potts_obstruction, "jones-potts-separator", {"colors": colors}
     from .potts_factorized_exact import factorized_potts_exact_obstruction
     return factorized_potts_exact_obstruction, "jones-potts-exact-factorized", {"colors": colors}

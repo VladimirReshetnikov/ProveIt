@@ -479,3 +479,22 @@ if fallback:
                            '@{}lrrrrrr@{}', rows) + r'\end{center}' + '\n' +
                      'Ratios are median paired baseline/fallback times for complete raw scans. '
                      'Stop columns give the processed crossing count. A/A compares identical baselines.\n')
+
+separator_orders = load('../fast/results/separator_orders_20261008.json')
+if separator_orders:
+    names = {'grid-8': r'Grid $8\times8$', 'grid-32': r'Grid $32\times32$',
+             'tree-5': 'Tree medial, height 5', 'tree-7': 'Tree medial, height 7',
+             'tree-9': 'Tree medial, height 9'}
+    rows = []
+    for row in separator_orders['ordering']:
+        if row['name'] not in names:
+            continue
+        bounded = row['bounded']
+        cells = [names[row['name']], str(row['n']), str(row['greedy_profile'][0]),
+                 str(bounded['separator']['profile'][0]), str(bounded['profile'][0]),
+                 f"{1000*row['median_seconds']['greedy']:.3f}",
+                 f"{1000*row['median_seconds']['bounded']:.3f}"]
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/separator_orders.tex', 'w') as handle:
+        handle.write(table('Family & $n$ & Greedy & Separator & Selected & Greedy ms & Bounded ms',
+                           '@{}lrrrrrr@{}', rows))
