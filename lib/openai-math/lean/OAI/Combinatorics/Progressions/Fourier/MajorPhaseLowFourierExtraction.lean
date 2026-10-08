@@ -1,6 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Mathematical statements are unchanged from the pinned upstream source.
-Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+Use IsModuleTopology.topologicalAddGroup and MvPolynomial.coeff_zero on
+Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Dynamics.NormalizedTwistExtractionBudget
 import OAI.Combinatorics.Progressions.Nilpotent.MajorTranslationPartnerNiltest
@@ -362,7 +363,7 @@ theorem normalizedTwistFrequencyPolynomial_eq_zero_of_annihilates
     normalizedTwistFrequencyPolynomial cover a poly = 0 := by
   have hz (j : Fin m) : integerRowPolynomial (fun i => a ⟨j, i⟩) (poly j) = 0 := by
     ext α
-    rw [integerRowPolynomial_coeff, AddMonoidAlgebra.coeff_zero, ← integerRowLinear_apply]
+    rw [integerRowPolynomial_coeff, MvPolynomial.coeff_zero, ← integerRowLinear_apply]
     exact ha j (hm j α)
   simp only [normalizedTwistFrequencyPolynomial, hz, Finset.sum_const_zero, mul_zero]
 
