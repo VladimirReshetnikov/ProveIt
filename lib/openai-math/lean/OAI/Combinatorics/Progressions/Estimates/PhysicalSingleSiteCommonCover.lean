@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Supply per-layer measurable-addition instances explicitly in the common-cover
+measure-preservation proof for Lean 4.32. All theorem statements are unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.AllocatedOriginalSampleFullSliceLipschitz
 import OAI.Combinatorics.Progressions.Geometry.AllocatedFullSiteSupport
@@ -861,6 +862,12 @@ local notation "haar" => Measure.pi (fun j => Measure.pi (fun _ : Unit => ν j))
 
 theorem singleSiteIntegerCover_measurePreserving (d : ℕ) (hd : 0 < d) :
     MeasurePreserving (singleSiteIntegerCover U d) haar haar := by
+  let : ∀ j, MeasurableAdd (euclideanSubspace (U j) ⧸
+      (latticeSection (standardEuclideanLattice (J j))
+        (euclideanSubspace (U j))).toAddSubgroup) := fun _ => inferInstance
+  let : ∀ j, MeasurableAdd (Unit → euclideanSubspace (U j) ⧸
+      (latticeSection (standardEuclideanLattice (J j))
+        (euclideanSubspace (U j))).toAddSubgroup) := fun _ => inferInstance
   let : ∀ j, IsProbabilityMeasure (Measure.pi (fun _ : Unit => ν j)) :=
     fun _ => Measure.pi.instIsProbabilityMeasure _
   let : IsProbabilityMeasure haar := Measure.pi.instIsProbabilityMeasure _
