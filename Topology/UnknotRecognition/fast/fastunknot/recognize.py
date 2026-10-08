@@ -16,6 +16,9 @@ only a capped rank or a certified lower bound, as named in their evidence.
 One-sided filters never interpret agreement with the unknot invariant as
 triviality. The optional treewidth-two stage first certifies its restricted
 diagram class, where an exact determinant of one is a complete test.
+The optional group stage searches for an independently replayed reduction of
+the whole Wirtinger presentation to one free generator, after the filters.
+Its local timeout or stalled search resumes the remaining exact pipeline.
 An optional twist backend uses checked source-braid runs after the filters.
 If visible factors remain undecided it computes the entire original source,
 never treating that braid as a presentation of one factor.
@@ -201,7 +204,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                           max_objects, deadline,
                           check_d_squared, scan_options, window_options=None,
                           twist_source=None, defer_twist=False, checked_modular=False,
-                          r3_options=None, normal_options=None) -> tuple[str, str]:
+                          r3_options=None, normal_options=None, group_options=None) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -215,6 +218,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         check=check)
     if method is not None:
         return "KNOTTED", method
+    if group_options is not None:
+        from .group_certificate import group_decide
+        witness = group_decide(diagram, check=check, **group_options)
+        check()
+        evidence["group"] = witness
+        if witness["status"] == "UNKNOT":
+            return "UNKNOT", "wirtinger-cyclic-group"
     if normal_options is not None and diagram.crossings >= 32:
         # Startup dominates the small survivors in our corpus. Once cheap
         # filters fail on a larger diagram, try a different complete algorithm
@@ -351,6 +361,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_rational: bool = True,
               use_treewidth_two: bool = False, treewidth_two_seconds: float | None = 0.1,
               use_regina: bool = False, regina_seconds: float | None = 2.0,
+              use_group: bool = False, group_seconds: float | None = 0.05,
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
@@ -388,6 +399,13 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_treewidth_two must be boolean")
     if type(use_regina) is not bool:
         raise ValueError("use_regina must be boolean")
+    if type(use_group) is not bool:
+        raise ValueError("use_group must be boolean")
+    if group_seconds is not None:
+        from math import isfinite
+        if (type(group_seconds) not in (int, float)
+                or not isfinite(group_seconds) or group_seconds < 0):
+            raise ValueError("group_seconds must be finite and nonnegative, or None")
     if regina_seconds is not None:
         from math import isfinite
         if (type(regina_seconds) not in (int, float)
@@ -636,6 +654,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        normal_options=dict(seconds=regina_seconds) if use_regina else None,
+                       group_options=dict(seconds=group_seconds) if use_group else None,
                        window_options=None if window_radius is None else dict(
                            radius=window_radius, max_objects=window_max_objects, seconds=window_seconds,
                            strategy=window_strategy),
