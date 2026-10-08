@@ -695,10 +695,29 @@ input for a formalization.
 - Theorem 16.2 in dimension three would then be conditional on a
   quasi-polynomial stackable structure, plus the readout (R) of J.2.
 
-**Effort.** Formalizing a Schmidt/Maynard/Lau-type bound is a major
-project: Weyl differencing, van der Corput and geometry of numbers. Its
-quadratic case (d = 2), the one dimension three needs, is the place to
-start.
+**Existing checked Schmidt input (2026-10-08).** The density port already
+contains `OAI.Erdos3.simultaneous_monomial_recurrence` in
+[`PolynomialCoordinatePartition.lean`](../../../../lib/openai-math/lean/OAI/Combinatorics/Progressions/Polynomial/PolynomialCoordinatePartition.lean).
+For each fixed degree `j+1` it supplies constants `K >= 1`, `p > 0`,
+independent of the number `d` of coefficients. If
+`N >= (K*(d+1)/R)^(p*(d+1)^2)`, with `0 < R <= 1`, there is an integer
+`1 <= q <= N` making all `q^(j+1)*alpha_i` within `R` of integers.
+Thus the required polynomial dependence on the number of simultaneous
+monomials is already formalized, including the quadratic case.
+
+The same module proves `exists_polynomial_coordinate_partition_bound`:
+for fixed degree `k`, constants `K,p` give an arithmetic-progression
+partition whenever `H >= K*(d+1)` and `N >= H^(p*(d+1)^(2*k))`.
+It bounds `card(labels)*H <= 2^k*N` and the coordinate error by `k/H`.
+This is an average-length bound, not a minimum length for every cell.
+
+This is manifest entry 3295, included in the completed prefix-3400 build
+and axiom audit. No additional upstream port is needed to use these results.
+The remaining work is the bridge to a simultaneous multilinear **box**
+partition satisfying Lemma 16.1's minimum-width and uniform-smallness
+requirements, and adequate degree constants. The constants above are
+existential; neither the bridge nor the printed final threshold follows
+merely by importing the module.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
