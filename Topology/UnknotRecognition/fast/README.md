@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 426 passing tests.
+diagram is not checked twice. The integrated suite now has 431 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -1019,6 +1019,16 @@ so transfer failure preserves the current differential.
 See [graded_research/README.md](graded_research/README.md) for reproducible
 checks and measurements and [the theory](../synthesis/graded_transfer.tex)
 for the finite-transfer proof, cost accounting and unresolved multiplicity
-bounds. The new full suite has 426 passing tests. The report's separate
-symbolic CLI, earlier tail-rank threshold and repair-DAG proposals remain
-under review.
+bounds. The new full suite has 426 passing tests. The report's remaining proposals are reviewed in
+[the symbolic continuation section](../synthesis/symbolic_runs.tex).
+
+
+The run frontend now transports huge integer values and degree keys using exact
+hexadecimal strings, accepts either signed runs or an explicit word, and
+supports independent replay of serialized structural certificates. Use
+`fastunknot.integer_codec.decode_degree_profile` after a JSON round trip.
+The earlier total-rank law at context length plus one is documented and audited;
+the full-profile computation keeps its context-length-plus-two reference.
+All 431 maintained tests pass. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md)
+for the extended schema and [the theory](../synthesis/symbolic_runs.tex) for
+succinct complexity and the conditional repair-DAG research target.

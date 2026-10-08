@@ -173,6 +173,8 @@ def tail_homology(strands: int, runs: Iterable[Run], *,
     certificate = {
         'run_index': index, 'generator': chosen.generator, 'sign': sign,
         'original_magnitude': m, 'reference_magnitude': threshold,
+        'one_full_slice_magnitude': threshold - 1,
+        'one_full_slice_reduced_rank': baseline['reduced_rank'] - slope,
         'other_degree_min': a, 'other_degree_max': b,
         'central_map_degree': center, 'central_dimension': dimension,
         'central_map_rank': matrix_rank, 'plateau_dimension': slope,

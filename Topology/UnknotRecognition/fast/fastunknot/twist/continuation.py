@@ -3,6 +3,8 @@
 Usage: python -m fastunknot.twist.continuation input.json
 
 Input is {"strands": b, "runs": [[generator, signed_exponent], ...]}.
+An explicit "word" array may replace "runs". Integer fields also accept
+signed hexadecimal strings; large outputs use exact hexadecimal transport.
 The default is recognition with structural certificates first and the tail
 backend after an inconclusive certificate. Homology mode always computes the
 selected exact homology, even if a cheaper certificate would decide the knot.
@@ -20,28 +22,34 @@ from time import monotonic
 from typing import Iterable
 
 from ..braid_profile import structural_runs_certificate
+from ..integer_codec import encoded_integer, json_safe
 from . import core, streaming
-from .core import Budget, ResourceLimit, Run, components, validate_runs
+from .core import Budget, ResourceLimit, Run, components, runs_from_word, validate_runs
 from .streaming import StreamBudget
 from .tail import tail_homology, tail_recognize
 
 
 def load_runs(value: dict) -> tuple[int, tuple[Run, ...]]:
-    """Validate the explicit RLE schema without expanding any exponent."""
+    """Validate runs or an explicit word, without expanding any exponent."""
     if not isinstance(value, dict):
         raise ValueError('input must be a JSON object')
     data = value.get('braid', value)
-    if not isinstance(data, dict) or 'strands' not in data or 'runs' not in data:
-        raise ValueError('expected strands and runs; PD, grid, and word inputs are not supported')
+    if not isinstance(data, dict) or 'strands' not in data:
+        raise ValueError('expected strands; PD and grid inputs are not supported')
+    if ('word' in data) == ('runs' in data):
+        raise ValueError('provide exactly one of word or runs')
+    strands = encoded_integer(data['strands'])
     if 'word' in data:
-        raise ValueError('provide runs without a word field')
+        if not isinstance(data['word'], list):
+            raise ValueError('word must be a list of signed generators')
+        return strands, runs_from_word(strands, (encoded_integer(x) for x in data['word']))
     pairs = data['runs']
     if not isinstance(pairs, list) or any(
         not isinstance(pair, list) or len(pair) != 2 for pair in pairs
     ):
         raise ValueError('runs must be [positive_generator, nonzero_signed_exponent] pairs')
-    strands = data['strands']
-    return strands, validate_runs(strands, (Run(*pair) for pair in pairs))
+    return strands, validate_runs(strands, (
+        Run(encoded_integer(g), encoded_integer(e)) for g, e in pairs))
 
 
 def compute(strands: int, runs: Iterable[Run], *, mode: str = 'recognize',
@@ -84,6 +92,7 @@ def compute(strands: int, runs: Iterable[Run], *, mode: str = 'recognize',
                 raise ValueError('recognition and structural profiles require a one-component closure')
             certificate = structural_runs_certificate(
                 strands, ((r.generator, r.exponent) for r in runs), check=check)
+            check()
             if mode == 'profile':
                 return {
                     'mode': 'profile', 'status': certificate['status'],
@@ -188,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
         result = compute(strands, runs, mode=args.mode, method=args.method,
                          budget=budget, run_index=args.run_index,
                          check_d2=args.check_d2)
-        encoded = json.dumps(result, indent=2, sort_keys=True)
+        encoded = json.dumps(json_safe(result), indent=2, sort_keys=True)
     except (OSError, ValueError, TypeError) as exc:
         print(json.dumps({'status': 'INVALID', 'reason': str(exc)}))
         return 2
