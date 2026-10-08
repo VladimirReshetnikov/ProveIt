@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 778 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,995 public Gowers theorems and found only propext,
+  All 780 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,004 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -124,6 +124,20 @@ Uniform sample controls and a quartic candidate bound
       <= 9*max(1,r)^4*q^2
   for q > 0, including the empty-sample fallback. These are uniform local
   controls; the full audit passes and no catalogue statement is closed.
+
+Uniform pure-power affine cover with cubic slice controls
+  Proofs16ParametricLineExponent rewrites lemma9WidthWith as z*m^e,
+  proves e positive, and controls it uniformly by increasing the spectrum
+  graph count to its explicit ceiling. Proofs16CubicUniformPowerCover
+  combines this estimate with the cubic slice provider and the proved
+  rounding threshold. For R=section16UniformSampleCount(sigma,theta,gamma,k),
+  a=cubicBaseExponent(R*q,sigma), and the uniform line exponent e, every
+  b<e*a/2 gives cell width at least m^b above the explicit
+  section16RoundedExponentThreshold(z,e,a,b). The candidate count is at
+  most 9*R^4*q^2. The bounds are independent of locally selected graph
+  counts, the parent box, and its modulus. The line-cover and cubic-provider
+  hypotheses remain explicit; this is a large-box result, not Theorem 16.2.
+  Both modules pass the full merged audit.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
