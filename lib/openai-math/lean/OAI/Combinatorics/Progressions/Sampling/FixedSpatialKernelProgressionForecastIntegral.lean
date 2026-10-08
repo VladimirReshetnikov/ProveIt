@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: construct mapped probability-measure instances from
+the existing measurability proofs on Lean 4.32. All upstream statements and
+quantitative bounds are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Geometry.FixedSpatialEmptyCoordinates
 import OAI.Combinatorics.Progressions.Linear.FixedSpatialKernelSliceDensity
 import OAI.Combinatorics.Progressions.Sampling.ForecastOriginalSampleUniformBudget
@@ -119,8 +124,9 @@ theorem fixedSpatialOriginalSampleForecastSource_probability :
     IsProbabilityMeasure (source sample) := by
   let := fixedSpatialBlockDensity_probability μ center hrest A₁ A₂
   let : IsProbabilityMeasure ((unitBoxMeasure Input).map
-      (allocatedOriginalSampleLiftMap B U basis S lower width sample)) := by
-    infer_instance
+      (allocatedOriginalSampleLiftMap B U basis S lower width sample)) :=
+    Measure.isProbabilityMeasure_map
+      (allocatedOriginalSampleLiftMap_fixed_measurable B U basis S lower width sample).aemeasurable
   change IsProbabilityMeasure ((realDensityMeasure volume spatial).prod _)
   infer_instance
 
@@ -475,7 +481,10 @@ omit hR hσ [Fintype X] [DecidableEq X] in
 theorem fixedSpatialKernelOriginalForecastSource_probability :
     IsProbabilityMeasure (source sample) := by
   unfold fixedSpatialKernelOriginalForecastSource
-  infer_instance
+  exact Measure.isProbabilityMeasure_map
+    (((fixedSpatialKernelMap_measurable W L z).comp measurable_fst).prodMk
+      ((allocatedOriginalSampleLiftMap_fixed_measurable B U basis S lower width sample).comp
+        measurable_snd)).aemeasurable
 
 include hR hσ hδ hw hl hs in
 theorem fixedSpatialKernelOriginalForecastDensity_test_integral
