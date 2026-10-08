@@ -306,6 +306,7 @@ import GowersSzemeredi.Proofs16BracketWindow
 import GowersSzemeredi.Proofs16FreimanBilinearReadout
 import GowersSzemeredi.Proofs16BilinearBohrVariety
 import GowersSzemeredi.Proofs16VarietyBoxes
+import GowersSzemeredi.Proofs16VarietyUnions
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
