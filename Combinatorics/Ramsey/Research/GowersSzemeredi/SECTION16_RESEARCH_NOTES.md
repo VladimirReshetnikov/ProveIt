@@ -50,7 +50,7 @@ polynomial targets once N is large.
 So the sampling lift cannot be repaired by special-casing small boxes. The
 lift itself must have controls polynomial in `1/θ′`.
 
-## B. A second, independent break: Lemma 16.1 is exponential in the graph count
+## B. The original Lemma 16.1 route loses exponentially in the graph count
 
 Lemma 16.1 (Corollary 5.11) refines a box so that q multilinear forms are
 simultaneously small. Its cell-width exponent is `K^(−2^(k+1)·q)`, with
@@ -1459,13 +1459,18 @@ already proved here (`theorem_18_2_le_five`). Six-term progressions need
 the trilinear case, and no quasi-polynomial bound is known for it
 (Gowers–Milićević 2020: iterated exponential).
 
-Feeding a quasi-polynomial two-variable count into the lift does not
-help either. Lemma 16.1's width exponent is exponential in the graph count
-(Part B). Then log₂(1/β) ≈ exp(728^A) ≫ 2^32768 for every A ≥ 2.
+The original lift used in the gap calculation loses exponentially in
+the graph count (Part B). That calculation does not apply unchanged to
+the subsequently proved polynomial recurrence route. Its new all-scale
+line exponent eventually improves the old exponent, and the improvement
+now propagates through actual two-dimensional graph pieces and relation
+decomposition. The dimension constants remain existential, so this does
+not yet certify the printed six-term threshold.
 
-So **Corollary 18.7 at k = 6, like the all-k statements, needs a
-quasi-polynomial (or better) trilinear inverse input that the literature
-does not provide.**
+**Corollary 18.7 at k = 6 and the all-k statements remain open in this
+development.** The existing gap theorems rule out the encoded earlier
+parameter choices; they do not prove that every alternative route needs
+a particular external inverse theorem.
 
 ## F. Routes
 
@@ -1491,7 +1496,7 @@ does not provide.**
    unless their constants were migrated. It touches about 46 modules
    (about 18k lines of `Proofs16*`).
 3. **Theorem 1.3 independently.** Port the openai/math headline:
-   4,136-module closure, of which 128 are already vendored.
+   4,134-module scoped closure, including the 128 earlier modules.
 4. **Bohr-structured induction (H.4).** Carry Bohr-multilinearity rather
    than `Theorem162At` through the induction.
    - Steps (i) and (ii) are formalizable now. Step (ii) generalizes
@@ -1503,7 +1508,7 @@ does not provide.**
      dimension.
    - The dimension-two route alone cannot reach dimension three (H.3).
 5. **Theorems 18.2 and 18.7 from openai-math with explicit constants.**
-   *Proved arithmetic; the port is infeasible for now.*
+   *Proved arithmetic; explicit upstream constants remain unformalized.*
    - Theorem 18.2 assumes δ ≤ 1/2 and
      `N ≥ 2^(2^X)` with `X = δ^(−2^(2^(k+9)))`, so `log log N ≥ X·log 2 − 1`.
      The openai-math bound
@@ -1554,3 +1559,18 @@ with exponent constant `2*p` to absorb the additional factor-two loss.
 The production module and full facade axiom audit pass. This is a comparison
 of exponents; it does not assert superiority at every small box scale or
 improve the final all-length Szemeredi threshold.
+
+### Actual pieces from the polynomial recurrence
+
+`Proofs16PolynomialCommonBaseCover` supplies the geometric inputs from
+`Section16CommonBaseDataWith` and caps the cubic lift exponent to obtain
+`MultiplyLinearWith` on every proper box. `Proofs16PolynomialStructuredPiece`
+constructs both the spectrum cover and the slice provider in dimension two,
+then translates the selected graph into the original product-property graph.
+`Proofs16PolynomialRelationDecomposition` uses graph selection and greedy
+removal to cover a large base domain by a bounded family of these pieces.
+The previous piece mass and family count are retained. Constants `C,p` are
+independent of the density parameters, modulus, and relation, but remain
+existential. All three production modules and their transitive axiom checks
+pass; the full facade audit is queued. No new upstream module is imported,
+and no remaining all-dimension structure statement is claimed.
