@@ -1210,3 +1210,21 @@ if orbit_proofs:
             'Median milliseconds per complete incidence query. Certified includes '
             'proof construction and independent replay; ratio is the median paired '
             'fresh/reuse time. Queries are fresh/reuse.\n')
+
+# Native compressed braid discovery includes independent replay.
+cb = load('../fast/results/compressed_braid_20261008.json')
+if cb:
+    rows = []
+    selected = {'sleeve_0_0', 'sleeve_8_0', 'sleeve_12_0', 'sleeve_16_0',
+                'sleeve_16_1', 'sleeve_4096_0', 'explicit_random_500', 'forest_16'}
+    for r in cb['cases']:
+        if r['name'] not in selected:
+            continue
+        explicit = r['medians'].get('explicit')
+        old = '--' if explicit is None else f'{1000*explicit:.3f}'
+        ratio = '--' if explicit is None else f"{r['paired_ratios']['native']:.3f}"
+        rows.append(f"{esc(r['name'])} & {r['rules']} & {old} & "
+                    f"{1000*r['medians']['native']:.3f} & {ratio} \\\\")
+    open('tables/compressed_braid.tex', 'w').write(
+        '\\begin{center}\n' + table('Input & rules & explicit ms & native ms & paired ratio',
+                                    '@{}lrrrr@{}', rows) + '\\end{center}\n')

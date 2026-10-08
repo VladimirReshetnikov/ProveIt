@@ -1,0 +1,308 @@
+\section{Native compressed braid recognition and singleton forests}
+\label{sec:compressed-braid}
+
+The compressed-braid delivery arriving at commit \texttt{36f1dd8ef}
+provides a useful complete algorithm on a restricted input domain.
+We integrate its three-braid normal forms, singleton decompositions and local
+proofs with the maintained exact string kernel. The result decides a supplied
+binary grammar for a three-braid in polynomial bit time, given sufficient
+resources, even when its expanded word is exponentially long. It is a separate
+source-bound interface, not a conversion from arbitrary planar diagrams.
+The earlier explicit three-braid criterion is unchanged; the contribution is
+compressed discovery with bounded intermediate representation growth and replay.
+
+\subsection{Input and exact finite summaries}
+
+An input contains a strand count $m$, an ordered rule list and a root index.
+Rule zero is empty. Subsequent rules are either a signed Artin generator
+$\sigma_j^{\pm1}$, $1\le j<m$, or concatenation of two strictly earlier rules.
+The represented object is the ordinary closure of the root word. Builder
+operations for powering and inversion produce these same binary rules:
+binary powering needs $O(\log(q+1))$ rules for exponent $q$, and inversion
+reverses concatenations with memoization. Neither is an extra input operation.
+
+Let $g$ denote input bit size, $s$ the number of nonempty rules, and
+\[
+ N_* = \max_i |W_i|,\qquad
+ B=\lceil\log_2(N_*+2)\rceil.
+\]
+All supplied rules count, including unreachable ones, since validation examines
+them. Strict back references give $N_*\le 2^s$ and $B=O(s+1)$.
+Length and exponent sum are additive at concatenations; strand permutations
+compose. For three strands this costs $O(s)$ operations on $O(B)$-bit integers
+and constant-size permutations. The root permutation's cycles are exactly the
+closure components. A non-knot closure returns \texttt{LINK}, separately from
+\texttt{KNOTTED}. Boolean aliases for integer fields are rejected.
+
+\subsection{The complete three-braid test}
+
+Write $a=\sigma_1$, $b=\sigma_2$, $x=aba$, $y=ab$, and $z=y^2$.
+Then
+\[
+ B_3=\langle x,y\mid x^2=y^3\rangle,\qquad
+ B_3/Z(B_3)=C_2*C_3.
+\]
+The central generator has exponent sum six. Thus quotient element and exact
+exponent sum together determine a braid: an element trivial in both is a
+central power with zero exponent. The same argument lifts quotient conjugacy
+when the exponent sums agree. In the quotient,
+\[
+ a\mapsto zx,\quad a^{-1}\mapsto xy,\quad
+ b\mapsto xz,\quad b^{-1}\mapsto yx.
+\]
+Reduced syllables alternate between the $x$ factor and the $\{y,z\}$ factor.
+For a one-component closure with exponent $e$ and cyclically reduced quotient
+core $C$, the existing complete criterion is
+\[
+\begin{array}{c|l}
+ e & \text{unknot core, up to cyclic rotation}\\\hline
+ 2 & y\\
+ -2 & z\\
+ 0 & \text{four syllables: two }x\text{'s, one }y\text{ and one }z.
+\end{array}
+\]
+Only cores of length at most four need explicit inspection.
+
+Here is the algebraic reason the criterion is complete. Bennequin's inequality
+applied to an unknot and its mirror gives $|e|\le2$. For the reduced Burau
+matrix $M$ at $t=-1$, the three-braid Alexander formula gives
+$\det K=|2-\operatorname{tr}M|$. An unknot therefore requires trace one or
+three. A cyclically reduced quotient word of length greater than one rotates
+to a product of $xy$ and $xz$. Up to overall sign and a fixed conjugation,
+its matrix is a positive product of
+\[
+ L=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ R=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+\]
+If it contains $p>0$ copies of $L$ and $q>0$ copies of $R$, expansion of
+these matrices as identity plus a nonnegative elementary matrix gives trace
+at least $2+pq$: each choice of one upper and one lower elementary term
+contributes one to trace. Absolute trace three forces $p=q=1$; a pure
+power has trace two. The remaining cores $1,x,y,z$ have absolute traces
+$2,0,1,1$. Their exponent residues modulo six, together with $|e|\le2$,
+give precisely the three rows above. Conversely these rows are quotient
+conjugate to $ab$, $b^{-1}a^{-1}$ and $ab^{-1}$ with the same exponent.
+The central ambiguity vanishes, and each canonical closure destabilizes
+to an unknot. This restricted argument does not make determinant one a
+general unknot certificate.
+
+\subsection{One prefix query replaces expanded reduction}
+
+The native \texttt{WordArena} supplies exact concatenation, substring,
+equality and longest common prefix (LCP) on straight-line programs.
+Syllable inversion here reverses strings, fixes $x$ and exchanges $y,z$;
+it does not use free-group integer sign negation. For reduced strings $U,V$,
+compute
+\[
+ k=\operatorname{LCP}(U^{-1},V),\qquad
+ U'=U[0:|U|-k],\quad V'=V[k:|V|].
+\]
+If either remainder is empty, the other is the product. If the surviving
+endpoints have different factors, concatenate them. Otherwise maximality
+excludes inverse endpoints, leaving only $yy$ or $zz$; replace these by $z$
+or $y$. The neighbors of this new syllable, if present, are $x$, so reduction
+cannot cascade. Each input concatenation requires one LCP and at most one
+additional factor multiplication, regardless of expanded length.
+
+For cyclic reduction of a reduced $W$, take
+\[
+ t=\operatorname{LCP}(W,W^{-1},\lfloor |W|/2\rfloor),\qquad
+ P=W[0:t],\quad R=W[t:|W|-t].
+\]
+If $R$ has at most one syllable or endpoints in different factors, its core
+is $R$ and conjugator $P$. Otherwise maximality forces $R=fMf$ with
+$f\in\{y,z\}$. Set $C=Mf^2$ and $Q=Pf$. Then
+$QCQ^{-1}=PfMfP^{-1}=W$, and $C$ is cyclically reduced.
+All trimming positions are binary integers; the operation never iterates over
+removed syllables.
+
+\subsection{Representation size and bit complexity}
+
+A substring of a height-$h$ binary string grammar requires $O(h)$ new nodes:
+only its two boundary paths are partly retained, and complete subtrees are
+reused. Reassembling in the original tree shape does not increase height.
+Inversion preserves height. A reduced input rule at dependency depth $d$
+therefore has height at most $2d+2$: a terminal image has height two, and
+product reassembly adds at most two levels above sliced children.
+
+The maintained LCP routine first tries a bounded direct DAG comparison, then
+uses exact equality and bisection. Its worst-case equality query count is
+$O(B+1)$. There are $O(s)$ product/cyclic prefix queries, and every scratch
+substring adds $O(s)$ nodes. Memoized inversion adds only a constant number
+of rules per newly visited rule. Consequently the total string allocation is
+\[
+ S=O(s^2(B+1)),\qquad
+ \text{equality calls}=O(s(B+1)).
+\]
+If $E(S,B)$ is the deterministic polynomial bit bound for the maintained
+exact SLP equality procedure, discovery costs
+\[
+ O\!\left(s(B+1)E(Cs^2(B+1),B+O(1))\right)
+ +\operatorname{poly}(g)
+\]
+for a fixed constant $C$. Exact compressed equality is the essential
+primitive~\cite{schleimer-compressed}; a bounded heuristic alone would not
+justify this theorem. Since $B=O(s+1)$, this is polynomial in input bit size.
+The cubic specialization of the allocation bound is \emph{not} a cubic
+running-time claim. Dictionary and integer costs also belong in the polynomial
+term. The finite default budgets are operational limits; increasing all
+allowances geometrically recovers the uncapped decision procedure.
+
+\subsection{Independent replay and the host contract}
+
+A proof binds the original grammar by exact canonical JSON, not merely a
+hash. It records finite summaries, the string-rule DAG, one reduced root and
+cancellation length per source rule, and the cyclic reduction witness.
+The verifier reconstructs the supplied string DAG in a fresh native arena.
+It checks reducedness, exact inverse cancellation equality and residual
+endpoints; these endpoints establish maximality without searching for an
+LCP. It then checks the cyclic witness and finite unknot criterion.
+It imports neither the reducer nor its prefix-search procedure. The trusted
+base still includes exact string equality, integer arithmetic, input parsing
+and the topological criterion. Independent structure does not mean absence
+of shared primitives.
+
+Certificates have
+$O(g+S\log(S+2)+sB)$ bits and replay uses $O(s)$ exact equality calls plus
+polynomial work. Arbitrary supplied proofs are verified in time polynomial
+in their combined input and proof sizes. The public \texttt{recognize}
+function publishes a proof-bearing result only after independent replay.
+Standalone \texttt{verify} performs the same source binding with fresh budgets.
+
+The host shares one work allowance and one cumulative string-node allowance
+across metadata, every factor, discovery and replay. It also caps input rules,
+canonical input bytes, proof bytes and optional elapsed time. Defaults are
+100,000 input rules, 100,000 allocated string nodes, ten million abstract work
+units, 16 MB of canonical input and 64 MB of proof. Exhaustion returns
+\texttt{INCONCLUSIVE} without a partial certificate. External cancellation
+and unexpected implementation errors propagate; they are not converted into
+mathematical verdicts. These are cooperative allowances, not hard CPU or
+resident-memory guarantees. CLI input-byte checking precedes JSON parsing;
+the API time allowance does not include that CLI parse.
+
+\subsection{Singleton cuts on a compressed braid}
+
+For general $m$, a reverse DAG pass propagates root multiplicities and sums
+unsigned generator occurrences. A repeated child receives both contributions.
+This counts occurrences in the root, rather than counting distinct terminal
+rules. A missing generator separates two nonempty strand blocks with no
+crossing between them, so the closure is a link. This test precedes allocating
+an $m$-entry permutation. Otherwise all $m-1$ generators occur and
+$m\le s+1$, bounding subsequent permutation work polynomially in $g$ even
+when the declared strand count was supplied in binary.
+
+A generator $\sigma_j$ occurring exactly once gives a connected-sum cut.
+Rotate the braid to put that crossing at the closure seam. Every other
+crossing lies entirely within the first $j$ or last $m-j$ strands, and
+crossings in these two groups commute. A sphere through the single seam
+separates the two projected closures, joined by the one crossing, of either
+sign. The closure component count is the sum of the two projected component
+counts minus one; a one-component parent therefore has knot factors.
+Doing all such cuts yields ordered strand intervals. Projecting to an
+interval removes other generators, shifts retained indices, and suppresses
+empty concatenations in one pass through the input DAG. There are at most
+$m$ factors and $O(s)$ projected rules per factor.
+
+The verifier recomputes occurrence counts, exact cut locations and projected
+grammars, then checks each leaf proof. Leaves with at most two strands use
+their complete exponent criterion; three-strand leaves use compressed quotient
+replay. Wider leaves may be rejected by $|e|>m-1$. An unresolved wider leaf
+stays explicitly \texttt{INCONCLUSIVE}. A replayed forest certificate can
+certify that residual description without certifying unknotness. For a forest
+of knots, all trivial factors imply an unknot, and a nontrivial factor implies
+a nontrivial connected sum.
+
+\subsection{A conditional exceptional-factor bound}
+
+After all singleton cuts, every retained generator in an unresolved factor
+occurs at least twice. For its expanded crossing count $n_i$, strand count
+$m_i$ and minority-sign count $\kappa_i$, this gives
+\[
+ m_i-1\le n_i/2,\qquad |e_i|=n_i-2\kappa_i.
+\]
+If its Bennequin obstruction does not already decide the factor, then
+$n_i-2\kappa_i\le m_i-1$, hence
+\[
+ n_i\le4\kappa_i,\qquad m_i\le2\kappa_i+1.
+\]
+A complete exponential decision fallback on just these expanded exceptional
+factors would therefore yield
+\[
+ \operatorname{poly}(g)+\sum_{i\text{ unresolved}}2^{O(\kappa_i)}.
+\]
+The solved compressed three-braid factors are excluded from the sum even when
+their minority counts are exponentially large. With polynomially many factors
+and $\max_i\kappa_i=O((\log g)^2)$, this bound is quasi-polynomial in $g$.
+This is a conditional composition theorem: the delivered and maintained forest
+interfaces do not yet connect that complete fallback or its source-projection
+certificate contract. No theorem bounds the exceptional parameters for every
+knot diagram.
+
+\subsection{Why matrix evaluation can destroy compression}
+
+Let $u=ab^{-1}$ and $\beta_m=u^m(ab)u^{-m}$. Its grammar has
+$O(\log(m+1))$ rules and its closure is an unknot. Under Burau at $-1$,
+$u$ maps to $\left(\begin{smallmatrix}2&1\\1&1\end{smallmatrix}\right)$.
+Writing $b=F_{2m}$ and $d=F_{2m-1}$, one entry of the conjugated matrix is
+$3b^2+3bd+d^2$. It has $\Omega(m)$ bits despite trace one. Taking $m=2^k$
+therefore makes explicit integer matrix evaluation exponentially costly in
+$k$, while the string proof remains polynomial. This is an obstruction to
+materializing those integers, not to symbolic matrix circuits or modular
+methods.
+
+\subsection{Native validation and measurements}
+
+All 53 files in the delivery manifest match their hashes. The original 42
+tests pass, and the adapted 42 tests plus 12 host tests pass with the actual
+maintained \texttt{WordArena}. The full maintained suite passes 885 tests with
+Regina in 204.549 seconds. Host tests cover shared budget boundaries across
+factor production and replay, cancellation during validation and replay,
+Boolean field substitutions, source rebinding, legacy proofs and CLI limits.
+Replay succeeds with producer reduction and LCP disabled. Huge inputs are
+checked with the debug expansion method disabled.
+
+The broader native audit checks all 87,381 words through length eight against
+the maintained explicit gateway, an explicit free-product oracle and a separate
+Burau computation. It finds 41,005 links, 22,208 unknots and 24,168 nontrivial
+knots, with no disagreement. Four hundred shared random grammars agree with
+the explicit controls; another 400 quotient checks force the polynomial
+fallback by disabling fast prefix/equality probes. Capacity cases include
+conjugating powers $2^{4096}$, differently associated conjugators, and forests
+with 96 strands. Public discovery and standalone replay both pass. The
+36.061-second audit and its exact source hashes are retained in
+\path{data/compressed-braid-native-audit.json}.
+
+\input{tables/compressed_braid.tex}
+
+The paired benchmark starts each arm with the same grammar. Its explicit
+arm validates, expands under a $2^{20}$-letter cap, and calls the maintained
+explicit braid gateway. Its native arm includes input/proof limits, discovery
+and independent replay. Thus the native arm pays for a stronger proof output;
+we do not subtract replay time to improve its comparison. Each algorithm has
+an identical A/A control, one shuffled warmup and five shuffled measured
+rounds. Small cases are batched ten times. Oversized explicit inputs are
+omitted by preflight, not reported as timeouts or assigned speedup ratios.
+Forest cases have no matched complete wider explicit gateway and report only
+native timings. All raw samples, orders, budgets and source hashes are in
+\path{../fast/results/compressed_braid_20261008.json}.
+
+For the unknot sleeve with conjugating exponent $2^{16}$ (262,146 expanded
+letters), the explicit median is 305.270 ms and native discovery plus replay
+is 2.580 ms, with paired ratio 118.476. The nontrivial-core sleeve at the same
+exponent improves from 254.164 to 17.952 ms, with paired ratio 14.169.
+At exponent $2^8$, the explicit unknot path is still faster (1.198 versus
+1.641 ms). Random explicit conjugators of length 500 likewise favor the
+explicit gateway: 1.651 versus 48.793 ms. These regressions are retained.
+The $2^{4096}$ unknot sleeve takes 434.503 ms including replay and emits
+349,628 canonical proof bytes. The 48-strand forest of 16 compressed factors
+takes 393.375 ms. These last two have no explicit comparison. Identical-arm
+ratios show a few percent variation, so the measurements support the large
+family-specific gains, not fine timing distinctions.
+
+The ordinary explicit recognizer remains the default for explicit braid words.
+This separate native grammar interface removes an exponential expansion cost
+on a useful input class; it does not demonstrate an improvement for arbitrary
+planar diagrams. An adaptive composition should use the explicit path when
+expansion is cheap, retain compression for large shared words, and send only
+unsupported residual factors to a complete fallback. A crossover observed on
+one family is insufficient to install a universal timing threshold.

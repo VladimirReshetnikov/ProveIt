@@ -744,3 +744,14 @@ Use `../fast/cover_research/audit_markings.py --output FILE` and
 and geometric measurements. The tables read `../fast/results/surface_cover_20261008.json`;
 its 12 complete-topology cases and nine prepared-query cases have raw paired
 samples, A/A controls and source hashes. They are not knot-recognition timings.
+
+`compressed_braid.tex` integrates the 2026-10-08 compressed-braid delivery with
+the maintained exact string arena. It proves the polynomial input-bit bound
+for native three-braid grammars, explains independent reduction replay and
+singleton connected-sum forests, and distinguishes the implemented restricted
+recognizer from the unwired exceptional-minority fallback theorem. The 885-test
+checkpoint and 87,381-word exhaustive audit are in `data/compressed-braid-*`.
+`../fast/benchmark_compressed_braid.py` reproduces the paired explicit/native
+measurements, including identical controls and complete native replay. Raw
+results are in `../fast/results/compressed_braid_20261008.json`. This is a
+supplied-braid grammar API, with no general PD-to-grammar complexity claim.

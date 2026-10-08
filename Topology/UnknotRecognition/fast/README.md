@@ -1866,3 +1866,62 @@ legacy behavior and its `O(n*m)` upper bound. This changes neither the sufficien
 endpoint criterion nor the general unknot complexity bound. The separate matrix
 three-braid backend retains its quadratic bit-arithmetic term. See
 [`braid_descent.tex`](../synthesis/braid_descent.tex) for proof and measurements.
+
+### Compressed three-braids and singleton forests
+
+`fastunknot.compressed_braid` accepts a binary Artin-word grammar:
+
+```python
+from fastunknot.compressed_braid import Builder, recognize, verify
+
+b = Builder()
+u = b.power(b.word([1, -2]), 1 << 512)
+root = b.concat(b.concat(u, b.word([1, 2])), b.inverse(u))
+data = b.data(root)
+result = recognize(data)
+assert result['status'] == 'UNKNOT' and result['verified']
+assert verify(data, result['certificate']) == 'UNKNOT'
+```
+
+The general input has exactly `strands`, `rules`, and `root`. Rule zero is
+`["e"]`; subsequent rules are `["g", signed_generator]` or `["c", left, right]`
+with strictly earlier references. The represented object is that word's braid
+closure. It is not a certificate of conversion from a separate PD diagram.
+The builder shown above is for three strands; the general forest interface
+also accepts directly supplied grammars with arbitrary strand count.
+
+Given sufficient resources, the three-strand algorithm is complete and
+polynomial in grammar bit size. It uses the maintained exact string kernel,
+checks closure components and exponent sum, then reduces the quotient
+`C2 * C3` without expansion. Independent replay checks source binding and
+local reduction equalities without repeating prefix searches. General
+strand counts first detect missing generators, then split singleton-generator
+connected sums. Factors with at most three strands are completely decided;
+unresolved wider factors remain `INCONCLUSIVE`. The minority-sign exponential
+fallback theorem in the article is not yet connected to this interface.
+
+Public `recognize` includes replay. `verify` independently returns the certified
+status or raises. Defaults share 10,000,000 abstract work units and 100,000
+cumulative string nodes across all factors and replay. Additional controls are
+`max_input_rules=100_000`, `max_input_bytes=16_000_000`,
+`max_certificate_bytes=64_000_000`, `seconds=None`, and a `check` callback.
+Limits are cooperative, not hard process-memory or CPU limits. Exhaustion
+returns `INCONCLUSIVE` without a partial proof. An unsupported wider forest
+can instead return `INCONCLUSIVE` with a verified residual certificate;
+`verified=True` alone never means unknot. External cancellation propagates.
+
+```sh
+python -B -m fastunknot.compressed_braid recognize input.json
+python -B -m fastunknot.compressed_braid verify input.json --certificate proof.json
+python -B compressed_braid_research/audit.py --output results/native_audit.json
+python -B benchmark_compressed_braid.py --output results/native_benchmark.json
+```
+
+The CLI recognizer prints the complete result; pass its `certificate` member
+to the verifier's proof file. CLI input files have byte limits before parsing.
+The ordinary explicit braid API remains the default for explicit words.
+On the measured conjugation sleeves at exponent `2**16`, compressed recognition
+including replay is about 118 times faster for the unknot and 14 times faster
+for the nontrivial knot. Small explicit controls remain substantially faster
+with the explicit API. The source-bound theorem, proofs, measurements and
+limitations are in [`compressed_braid.tex`](../synthesis/compressed_braid.tex).

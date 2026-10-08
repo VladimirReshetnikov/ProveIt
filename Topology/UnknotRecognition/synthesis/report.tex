@@ -683,6 +683,7 @@ No general quasi-polynomial recognition bound is proved.
 \input{integer_terminal.tex}
 \input{interval_orbits.tex}
 \input{orbit_certificates.tex}
+\input{compressed_braid.tex}
 
 \section{Assessment and recommendations}
 
@@ -697,13 +698,15 @@ need; and one recognizer whose practical reach is well beyond the
 $2^n$-state cubes.
 
 \paragraph{Obstacles that remain.}
-The six items of Section \ref{sec:missing}. They are research problems in
-3-manifold topology and algorithm design, not coding tasks: the specification
-of the accelerated hierarchy exists only as a sketch on slides, and the one
-detailed paper on the subject states that its steps are not specified
-precisely enough for a running-time estimate. Until that changes, any
-``$\qp$ implementation'' would be an exponential search with a mislabelled
-bound, which is exactly what all six archives refused to deliver.
+The six items of Section \ref{sec:missing} remain obligations for a general
+complexity theorem. Lackenby's July 2026 paper~\cite{lackenby2026} develops
+the hierarchy and distinguishes iteration counts from the cost of its encoded
+operations; the refined acceleration still requires a complete running-time
+accounting. The local polynomial orbit and compressed-braid algorithms above
+resolve useful subproblems. They do not establish polynomially bounded
+geometric state descriptions or a quasi-polynomial complete search for every
+knot diagram. An implementation must retain this distinction between proved
+local bounds, restricted-input theorems and the announced general target.
 
 \paragraph{If work continues.}
 (1) Track the published record: a full version of the 2021 announcement, or
