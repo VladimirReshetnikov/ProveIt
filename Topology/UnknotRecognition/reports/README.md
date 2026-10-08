@@ -52,6 +52,7 @@ modification times.
 | `44/` | `unknot_dynamic_terminal_20261008.zip` | terminal-update code (`44/terminal_updates/`, `44/integration/`) | rank-two terminal contractions of anchored partitions; singularity-safe modular observers | — | not run |
 | `45/` | `unknot_christoffel_20261008.zip` | code with integration material (`45/code/`, `45/integration/`) | compressed Christoffel width; exact compressed primitive-power test and torsion-free elimination | — | not run |
 | `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | not run |
+| `47/` | `unknot_native_orbits_20261008.zip` | source snapshot and integration patch (`47/snapshot/`) | native normal-orbit research with an article, raw data and representative certificates | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -79,14 +80,14 @@ ship a patch against `../fast/` and a pinned copy of the project under
 `research/twist-continuation-20261008/` as its home; it is kept here as
 delivered.
 
-`35/`–`46/` were placed the same way on 8 October 2026, numbered by arrival
+`35/`–`47/` were placed the same way on 8 October 2026, numbered by arrival
 commit (`36/` before `37/` within one commit, by member times). Their
 checksum files are dropped; the delivered self-check scripts that read them
 (`35/scripts/reproduce.py`, `36/verify_release.py`,
 `37/code/check_manifest.py`, `40/scripts/checksums.py`,
 `42/scripts/check_hashes.py`, `44/scripts/verify_manifest.py`,
-`45/verify_manifest.py`, `46/verify_package.py`) therefore report the
-manifest absent.
+`45/verify_manifest.py`, `46/verify_package.py`, `47/verify_bundle.py`)
+therefore report the manifest absent.
 `37/results/benchmark_medians.csv` is stored with LF. Each delivery states
 that it does not prove general quasi-polynomial recognition.
 
