@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: remove a redundant rfl after field_simp completes the
+physical expansion identity on Lean 4.32. All upstream statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Lattices.ForecastOriginalSampleResidueFactor
 import OAI.Combinatorics.Progressions.Sampling.ForecastActualPhysicalSourceContinuous
 
@@ -563,7 +567,6 @@ theorem exists_forecastDensityBufferedNativeExpansion
     rw [← mul_div_assoc, h]
     dsimp only [result, NormalizedPolynomialTwist.eval_mono]
     field_simp
-    rfl
   choose twists hmod hcover hvalue hzero using hone
   refine ⟨twists, fun t => ⟨hmod t, hcover t⟩, ?_⟩
   intro poly hpoly coefficient target mass ε hmass hε hkeep herror
