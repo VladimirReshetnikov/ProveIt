@@ -1,3 +1,7 @@
+/- Modified for ProveIt: prove principalResidueWeights_normalized_law
+pointwise using nonnegative products, and principalResidueWeights_eq_normalized_pi
+by equality of the individual weights. This avoids Lean 4.32 kernel memory
+exhaustion in whole-structure PMF conversions. Theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Probability.ContainedSupportedProgressionJetLaw
 
 namespace OAI
@@ -161,9 +165,19 @@ theorem principalResidueWeights_normalized_law :
       dependentProductPMF (fun t => ((sources) t).source.toPMF) := by
   have hp : (principalResidueWeights B h L hL q hq r hsize).toPMF =
       dependentProductPMF (fun t => (scalarCubeResidueWeights α (L t) q (hL t)
-        (fun _ => q) (r t) (fun _ => hq) (fun _ => le_rfl) (hsize t)).toPMF) :=
-    FiniteProbabilityWeights.toPMF_pi (fun t => scalarCubeResidueWeights α (L t) q (hL t)
-      (fun _ => q) (r t) (fun _ => hq) (fun _ => le_rfl) (hsize t))
+        (fun _ => q) (r t) (fun _ => hq) (fun _ => le_rfl) (hsize t)).toPMF) := by
+    ext x
+    rw [FiniteProbabilityWeights.toPMF_apply, dependentProductPMF_apply]
+    simp only [FiniteProbabilityWeights.toPMF_apply]
+    change ENNReal.ofReal (∏ t,
+      (scalarCubeResidueWeights α (L t) q (hL t) (fun _ => q) (r t)
+        (fun _ => hq) (fun _ => le_rfl) (hsize t)).weight (x t)) =
+      ∏ t, ENNReal.ofReal
+        ((scalarCubeResidueWeights α (L t) q (hL t) (fun _ => q) (r t)
+          (fun _ => hq) (fun _ => le_rfl) (hsize t)).weight (x t))
+    exact ENNReal.ofReal_prod_of_nonneg (fun t _ =>
+      (scalarCubeResidueWeights α (L t) q (hL t) (fun _ => q) (r t)
+        (fun _ => hq) (fun _ => le_rfl) (hsize t)).nonneg (x t))
   exact hp.trans (congrArg
     (fun p : ∀ t, PMF (IntegerScalarCubeBox α (L t)) => dependentProductPMF p)
     (funext (fun t => (principalResidueNormalizedSource_toPMF B h L hL q hq r hsize t).symm)))
@@ -171,9 +185,11 @@ theorem principalResidueWeights_normalized_law :
 theorem principalResidueWeights_eq_normalized_pi :
     principalResidueWeights B h L hL q hq r hsize =
       FiniteProbabilityWeights.pi (fun t => ((sources) t).source) := by
-  apply FiniteProbabilityWeights.toPMF_injective
-  exact (principalResidueWeights_normalized_law B h L hL q hq r hsize).trans
-    (FiniteProbabilityWeights.toPMF_pi (fun t => ((sources) t).source)).symm
+  unfold principalResidueWeights
+  apply congrArg (fun weights : ∀ t, FiniteProbabilityWeights (IntegerScalarCubeBox α (L t)) =>
+    FiniteProbabilityWeights.pi weights)
+  funext t
+  exact (principalResidueNormalizedSource_source B h L hL q hq r hsize t).symm
 
 theorem principalResidueWeights_normalized_blocks :
     (principalResidueWeights B h L hL q hq r hsize).toPMF.map
