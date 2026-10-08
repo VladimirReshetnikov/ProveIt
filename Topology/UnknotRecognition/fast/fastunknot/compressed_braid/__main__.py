@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--seconds', type=float)
     parser.add_argument('--fallback-max-crossings', type=int, default=12)
     parser.add_argument('--fallback-max-generators', type=int, default=200000)
+    parser.add_argument('--no-fallback-reduction', action='store_true')
     args = parser.parse_args()
     if args.action == 'verify' and args.certificate is None:
         parser.error('verify requires --certificate')
@@ -38,7 +39,7 @@ def main():
     try:
         data = load(args.input, args.max_input_bytes)
         if args.action == 'recognize':
-            result = recognize(data, **options)
+            result = recognize(data, use_fallback_reduction=not args.no_fallback_reduction, **options)
         else:
             cert = load(args.certificate, args.max_certificate_bytes)
             if isinstance(cert, dict):
