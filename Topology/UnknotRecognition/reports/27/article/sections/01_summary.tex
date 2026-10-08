@@ -1,0 +1,99 @@
+\section{Executive summary}
+\label{sec:summary}
+
+\subsection{What is new}
+
+The principal new object is a causal parameter for local Reidemeister search.
+At a stalled diagram, an RIII move is \emph{neutral}: it preserves crossing
+number but can change which RI/RII reductions are available.  A sequence of
+neutral moves is \emph{first-unlocking} when no RI/RII move is available before
+the last neutral move, and at least one is available immediately afterwards.
+Each RIII trial changes a bounded set of fixed darts.  We call that set its
+\emph{footprint}.
+
+A move is a \emph{birth} when its footprint is disjoint from the union of all
+previous footprints.  The birth number $b$ counts independent causal branches.
+All other moves touch the accumulated footprint.  The core normal-form theorem
+says that every first-unlocking trace can be replaced, without increasing its
+length or birth number, by one in which all births occur first.  This is not a
+mere presentation convention: it converts a global search into $b$ global
+choices followed by a bounded-local search.
+
+For depth $k$ and birth budget $b$, the resulting deterministic search has the
+form
+\[
+ \underbrace{N\cdots N}_{b\text{ global births}}
+ \;\underbrace{(C b)(C(b+1))\cdots(Ck)}_{\text{connected extensions}},
+\]
+up to polynomial bookkeeping.  Thus its running time is bounded by
+$N^{b+O(1)}(Ck)^k$.
+
+\subsection{What this proves for unknot simplification}
+
+Let $D$ be an $N$-crossing diagram.  Fix deterministic orders for RI/RII
+exhaustion and for the complete birth-front tree, and consider the
+crossing-nonincreasing scheme that repeatedly:
+\begin{enumerate}
+\item exhausts all available RI/RII reductions;
+\item when stalled, searches for an RIII first-unlocking trace of depth at most
+      $k$ and birth number at most $b$;
+\item applies the trace and resumes RI/RII reduction.
+\end{enumerate}
+Every successful run is a checkable Reidemeister certificate that $D$ is an
+unknot.  Completeness below is for the policy-defined class on which these fixed
+choices reach the empty diagram; mere existence of some different successful
+episode sequence would require outer backtracking and is not claimed.  There are at most $N$ successful unlock episodes, because every episode
+is followed by a reduction removing at least one crossing.  Therefore the total
+running time remains
+\[
+  N^{b+O(1)}(Ck)^k.
+\]
+This yields three clean regimes.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Birth bound & Depth bound & Consequence \\
+\midrule
+$b=O(1)$ & $k=O(\log N/\log\log N)$ & polynomial time \\
+$b=O(1)$ & $k=O(\log N)$ & $N^{O(\log\log N)}$ \\
+$b=O(\log N)$ & $k=O(\log N)$ & $N^{O(\log N)}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last two are quasi-polynomial.  The first is a genuinely polynomial
+restricted class.
+
+\subsection{What this does not prove}
+
+No argument in this report shows that every unknot diagram admits a
+crossing-nonincreasing RIII/RI/RII simplification with logarithmic depth or birth
+number.  General Reidemeister sequences may need crossing-increasing moves, and
+Lackenby's polynomial upper bound on the total number of Reidemeister moves does
+not imply the monotone local hypotheses used here.  The complete ProveIt
+recognizer must retain its exact fallback.
+
+The result should therefore be read as a new explicit-parameter and
+quasi-polynomial \emph{island}: it identifies two explicit structural parameters
+whose control is sufficient, supplies the complete search under those
+parameters, and narrows the remaining geometric problem to proving or predicting
+such control on important diagram families.
+
+\subsection{Artifact map}
+
+The accompanying archive contains:
+\begin{itemize}
+\item this article in LaTeX and PDF;
+\item \code{prototype/causal\_search.py}, a generic executable model;
+\item \code{tests/test\_causal\_search.py}, including two strict separation
+      fixtures;
+\item \code{experiments/exhaustive\_validation.py} and the resulting JSON from
+      5,000 deterministic generated systems;
+\item \code{experiments/exhaustive\_catalog.py}, covering a finite catalog of
+      608,400 three-site instances without sampling;
+\item \code{integration/clustered\_r3\_snippet.py}, an opt-in adapter for the
+      private ProveIt \code{\_Darts} representation;
+\item a review patch and explicit integration checklist;
+\item a claims ledger distinguishing proved, tested, untested, and open items.
+\end{itemize}

@@ -1,0 +1,85 @@
+artifact: report25-causal-r3
+reviewed_repository:
+  repository: VladimirReshetnikov/ProveIt
+  commit: 23893144e3aafd074a23cfb633222ab7e03e6d2e
+  simplify_blob: 2fcaabb51eaa45cf84bdee32cd1b4e18acf2c478
+  reviewed_date: 2026-10-07 America/Los_Angeles
+claims:
+  - id: dependency-connectedness
+    statement: >-
+      In a bounded-local reversible rewrite system with strong commutation of
+      footprint-disjoint actions, the action-support graph of any shortest
+      first-unlocking neutral trace together with its terminal reduction is
+      connected.
+    status: proved_in_article
+    formalized: false
+    external_peer_review: false
+  - id: birth-front-normal-form
+    statement: >-
+      Every first-unlocking trace of length k and birth number b is
+      trace-equivalent, up to commuting footprint-disjoint actions and possible
+      truncation at an earlier terminal state, to a trace of length at most k
+      with at most b births, all occurring first, after which every action meets
+      the accumulated footprint.
+    status: proved_in_article
+    formalized: false
+    external_peer_review: false
+  - id: parameterized-enumeration
+    statement: >-
+      Under linear global move incidence and bounded local incidence, traces of
+      depth at most k and birth number at most b can be enumerated in
+      N^{b+O(1)} (C k)^k time and polynomial working memory, for an absolute
+      rule-set constant C.
+    status: proved_in_article
+    formalized: false
+    external_peer_review: false
+  - id: r3-specialization
+    statement: >-
+      The fixed-dart representation of Reidemeister III and Reidemeister I/II
+      used by fastunknot satisfies the bounded-footprint hypotheses with
+      absolute constants, so the parameterized bound applies to the opt-in RIII
+      unlock preprocessor.
+    status: proof_audited_against_source
+    formalized: false
+    full_repository_regression: false
+  - id: restricted-quasipolynomial-class
+    statement: >-
+      Repeated RIII unlocking followed by crossing-decreasing RI/RII is
+      quasi-polynomial on diagram families whose per-episode unlock depth k and
+      birth number b are both O(log N), and runs in
+      N^{O(log log N)} when b=O(1) and k=O(log N).
+    status: corollary_of_parameterized_enumeration
+    scope: deterministic_policy_defined_input_family
+  - id: general-quasipolynomial-unknot-recognition
+    statement: >-
+      All N-crossing unknot diagrams have logarithmic unlock depth and birth
+      number, or the complete ProveIt recognizer is quasi-polynomial.
+    status: not_claimed_open
+  - id: implementation-validation
+    statement: >-
+      The abstract search matched an unrestricted BFS oracle on every witnessed
+      case among 5,000 generated six-site local rewrite systems; no normal-form,
+      frontloading, or dependency-connectedness discrepancy was observed.
+    status: executed
+    result_file: results/validation.json
+    scope: abstract_boolean_systems_only
+  - id: exhaustive-finite-catalog
+    statement: >-
+      The abstract search matched the unrestricted oracle on all 171,968
+      witnessed cases in the stated exhaustive catalog of 608,400 three-site
+      instances, with zero front-loading, completeness, or dependency-graph
+      discrepancies.
+    status: executed
+    result_file: results/exhaustive_catalog.json
+    scope: finite_abstract_boolean_catalog_only
+  - id: production-integration
+    statement: >-
+      The supplied RIII adapter passes the full ProveIt suite and improves wall
+      time on the maintained knot corpus.
+    status: not_claimed_not_executed
+novelty:
+  status: not_established_by_exhaustive_literature_search
+  wording: >-
+    The results are new relative to the reviewed ProveIt code and synthesis.
+    No claim of priority in the mathematical literature is made without expert
+    review.

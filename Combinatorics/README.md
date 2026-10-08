@@ -26,16 +26,46 @@ and exact growth-rate bounds for square-lattice polyominoes.
   builds on its parity recurrences and Sharma's Theorem 2.8; its own
   theorems are not formalized.  Beside the Gowers–Szemerédi development,
   [`Ramsey/Research/GowersSzemeredi/local-quantitative-refinements`](Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md)
-  is a research report built from fifty-nine external manuscripts of
-  6 October 2026 (batches 115–125 of [`docs/incoming`](../docs/incoming/README.md);
-  sources 01–39 written in so far, 40–59 placed): sharper local estimates
+  is a research report built from one hundred and six external manuscripts
+  of 6 and 7 October 2026 (batches 115–137 of [`docs/incoming`](../docs/incoming/README.md),
+  all written in): sharper local estimates
   for density transfer and phase-flat partitions, the inverse step, cube
   and progression counts and the Proposition 17.7 phase extraction, each
   compared with the corrected statements of the Lean catalogue and its
   ledger `gowers-proof-status.json`.  Some sources give written proofs of
   catalogue statements that were open when they arrived, and
   `FORMALIZATION_STATUS.txt` points at them; the report itself is not
-  formalized and gains no formal status from its placement.
+  formalized and gains no formal status from its placement.  Three more
+  research reports sit under `Ramsey/Research/`, placed on 7 October 2026
+  from manuscripts that arrived with the Gowers batches but do not concern
+  Gowers's argument, with their delivered layout and their writes pending:
+  [`VanDerWaerden/superexponential-lower-bounds`](Ramsey/Research/VanDerWaerden/superexponential-lower-bounds/)
+  (superexponential lower bounds for two-colour van der Waerden numbers by
+  robust colourings),
+  [`SquareDifferences/spectral-list-mixing`](Ramsey/Research/SquareDifferences/spectral-list-mixing/)
+  (two merged manuscripts sharpening the finite mixing layer of an external
+  construction for square-difference-free sets) and
+  [`QuasipolynomialProgressions/sparse-grid-moments`](Ramsey/Research/QuasipolynomialProgressions/sparse-grid-moments/)
+  (exact relation codes and quadratic closure for grid moments of sampled
+  polynomial values).  Each refines an external openai/math release, with
+  attribution; none continues the Lean development, and none is formalized.
+
+- [`BooleanFunctions/`](BooleanFunctions/), [`Sidorenko/`](Sidorenko/) and
+  [`OrderedMatrices/`](OrderedMatrices/), opened on 7 October 2026, hold
+  research reports only, placed from [`docs/incoming`](../docs/incoming/README.md)
+  with their delivered layout and their writes pending:
+  `BooleanFunctions/Research/square-root-degree-bound` (cell Fourier degree
+  against retained variance on the Boolean cube, from three manuscripts) and
+  `BooleanFunctions/Research/sensitivity-block-sensitivity` (an explicit
+  exponent above 65/32 for block against ordinary sensitivity);
+  `Sidorenko/Research/local-fourier-sign-codes`,
+  `Sidorenko/Research/polar-discriminant-mixing` and
+  `Sidorenko/Research/sharp-incidence-stability`, three refinements of one
+  external Sidorenko preprint that share no theorem; and
+  `OrderedMatrices/Research/ordered-matrix-removal` (a 5 × 5 pattern for
+  which polynomial ordered matrix removal fails, under a nested Apache-2.0
+  licence).  Each builds on an external openai/math release, with
+  attribution; none is formalized.
 
 The A198683 research corpus is preserved under
 `PowerTowers/Research/A198683`; its wave-5 ledger is the authoritative account

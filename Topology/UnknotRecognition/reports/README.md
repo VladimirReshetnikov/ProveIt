@@ -31,6 +31,9 @@ modification times.
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded transfer and exact symbolic transport integrated; earlier rank law and conditional repair bound reviewed |
 | `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | 268 archive tests pass; corridor transfer and sparse scalar setup integrated; surface-cover kernel and ordered-point queries maintained separately, 534-test checkpoint |
 | `25/` | `unknot_cyclic_garside_20261007.zip` | exact cyclic Garside compressor and independent replay (`25/cyclic_garside/`) | shared prefix/target arithmetic, fixed-radius interval optimization, certified source-braid portfolio | quasi-polynomial recognition for a proved class of inflated small braid cores | 45 file hashes verified; all 47 delivered tests and upstream adapter smoke pass; bounded source probe integrated, 517-test integration checkpoint |
+| `26/` | `ProveIt_Unknot_Determinant_Continuations_2026-10-07.zip` | marked residue-four observer and singular-safe terminal kernel (`26/detshadow/`) | quantum recovery, exact marked continuation norm, bordered determinant queries, critical square law | conditional `poly(n,R) 2^O(W)` stopping-prefix bound | 27 delivered hashes and four pinned paths verified; 35 delivered tests pass; geometry and production integration under review |
+| `27/` | `ProveIt_Report25_Causal_R3_2026-10-07.zip` | local rewrite prototype and RIII adapter (`27/prototype/`, `27/integration/`) | canonical initial births followed by accumulated-support search | conditional `N^(b+O(1)) (Ck)^k` unlocking bound | 42 delivered hashes and pinned simplifier verified; 7 delivered tests pass; production replay and pruning obligations under review |
+| `28/` | `unknot_classical_closure_research_20261007.zip` | closure-rank compression and reset driver (`28/src/closure_reset/`) | scalar/total-linear first jet, pure block bounds, geometric single-survivor resets | conditional `poly(n) 2^O(g)` bound in actual reset gap | 62 delivered hashes and four exact source blobs verified; 29 delivered tests pass; source fixture and production integration under review |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -224,5 +227,27 @@ can avoid its cost on a larger diagram. The integration checkpoint passed all 51
 production tests; isolated-compressor and complete-recognition measurements
 are retained separately. The theory, fixed-radius complexity bound, restricted
 small-core theorem and limitations are in `../synthesis/cyclic_garside.tex`.
-The delivered `SHA256SUMS.txt` is explicitly tracked despite the repository's
-general checksum-file ignore rule; the archived bytes remain unchanged.
+The checksum-only `SHA256SUMS.txt`, temporarily tracked at the integration
+checkpoint, is now omitted under the intake policy. Its 45 verified entries
+remain recorded in the source audit; the original archive is recoverable from
+arrival commit `09c9cfe4b`. The non-manifest delivered files remain unchanged.
+
+
+Reports `26/`--`28/` are numbered in arrival order (`a58110851`, `3990b5c80`,
+`8f5820a52`). The title "Report 25" inside `27/` is the supplier's numbering;
+it does not replace this collection's earlier Garside report. Each single
+wrapper was removed, and checksum-only files were verified in scratch and
+omitted: `26/MANIFEST.sha256`, `27/SHA256_MANIFEST.txt`, `28/SHA256SUMS`.
+Delivered instructions referring to them require recovery of the original
+archive from its arrival commit. Only `28/results/benchmarks.csv` required
+CRLF-to-LF normalization. All other placed bytes match delivery.
+The intake and source-pin audit is retained in
+`../synthesis/data/incoming-26-28-source-audit.json`; unit-test logs are separate.
+The archives have been retired from the drop zone under its documented policy,
+including the previously placed Garside archive after verification against its
+placement commit. No delivered code, article or data is replaced by maintained
+integration work. Reviews of `26/` and `28/` remain open.
+
+Report `27/` retains three delivered trailing spaces in its recorded LaTeX/PDF
+inspection logs. They are part of the archived evidence, not new formatting in
+the maintained implementation. Executable script modes are preserved from ZIP.

@@ -1,0 +1,168 @@
+\section{Causal structure and the birth-front normal form}
+\label{sec:causal}
+
+\subsection{Shortest traces have connected dependency graphs}
+
+\begin{theorem}[Causal connectedness]
+\label{thm:causal-connected}
+Assume strong disjoint commutation.  If $\tau$ is a shortest first-unlocking
+trace and $r$ is a terminal reduction exposed at its end, then
+$H(\tau,r)$ is connected.
+\end{theorem}
+
+\begin{proof}
+Suppose $H(\tau,r)$ is disconnected.  Let $C$ be a connected component not
+containing the terminal vertex $\star$.  Every action in $C$ has footprint
+disjoint from every action outside $C$ and from the terminal reduction.
+
+Use the commutation diamond repeatedly to move every action of $C$ to the right,
+preserving the relative order inside $C$ and the relative order of all actions
+outside $C$.  Each adjacent swap is legal, preserves the reached state, and
+preserves the relevant footprints.  We obtain a trace-equivalent word
+\[
+   \tau'\,\sigma_C,
+\]
+where $\sigma_C$ consists exactly of the actions in $C$.
+
+The terminal reduction is legal after $\tau'\sigma_C$.  Since its footprint is
+disjoint from every footprint in $\sigma_C$, terminal locality moves it left
+across the entire block.  Hence it is already legal after $\tau'$.  Deleting
+$\sigma_C$ gives a strictly shorter trace that exposes a terminal reduction;
+if one was exposed at an earlier prefix of $\tau'$, truncate at its first such
+prefix.  In either case we obtain a strictly shorter first-unlocking trace from
+$x_0$, contradicting the minimality of $\tau$.
+\end{proof}
+
+\begin{corollary}
+Every birth in a shortest trace has a path, through overlapping later action
+footprints, to the terminal reduction.
+\end{corollary}
+
+This corollary is qualitative.  It rules out irrelevant disconnected work, but
+it does not bound the number of births.  A connected dependency tree can have
+many leaves.
+
+\subsection{Why connected prefixes are false}
+
+The following proposition records the proof-audit failure that led to the birth
+parameter.
+
+\begin{proposition}[Branching obstruction]
+\label{prop:branching-obstruction}
+There exists a strongly local reversible rewrite system with a shortest
+first-unlocking trace of length three such that every first-unlocking trace of
+length three has birth number two.  In particular, no commuting-equivalent
+first-unlocking trace has connected chronological prefixes.
+\end{proposition}
+
+\begin{proof}
+Use three Boolean sites $0,1,2$, initially all zero.  Action $A$ toggles site
+$0$ and has footprint $\{0\}$.  Action $B$ toggles site $2$ and has footprint
+$\{2\}$.  Action $C$ is legal exactly when sites $0$ and $2$ are one; it toggles
+site $1$ and has footprint $\{0,1,2\}$.  The terminal reduction is legal exactly
+when site $1$ is one.
+
+The moves are involutions, and disjoint supports commute.  Neither $A$ nor $B$
+alone enables $C$, so at least two moves are required before $C$.  The words
+$ABC$ and $BAC$ unlock the reduction in three moves.  Their first two footprints
+are disjoint, so each has two births.  No trace with one birth can set both sites
+$0$ and $2$ before applying $C$.
+\end{proof}
+
+The fixture is implemented as \code{branching\_example()} in the prototype.  It
+is not asserted to be a knot diagram; its purpose is to refute an invalid
+general lemma before that lemma is imported into knot topology.
+
+\subsection{Births commute to the front}
+
+\begin{lemma}[Births are pairwise disjoint]
+\label{lem:birth-disjoint}
+The footprints of distinct births in one trace are disjoint.
+\end{lemma}
+
+\begin{proof}
+A later birth is disjoint from the union of every earlier footprint, including
+the footprint of any earlier birth.
+\end{proof}
+
+\begin{lemma}[Left commutation of a birth]
+\label{lem:birth-left}
+A birth action can be commuted left across every action preceding it.
+\end{lemma}
+
+\begin{proof}
+By definition, its footprint is disjoint from each preceding footprint.  Apply
+the backward-and-forward commutation diamond one adjacent predecessor at a
+time.  Footprints remain unchanged under each swap, so the next swap remains
+valid.
+\end{proof}
+
+\begin{theorem}[Birth-front normal form]
+\label{thm:birth-front}
+Let $\tau$ be a first-unlocking trace of length $k$ and birth number $b$ in a
+strongly local reversible system.  There is a first-unlocking trace
+$\widehat\tau$ of length at most $k$ and birth number at most $b$ such that:
+\begin{enumerate}
+\item all births of $\widehat\tau$ occur before every nonbirth action;
+\item after the birth block, every action footprint intersects the union of all
+      earlier footprints.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Identify the births in the original trace.  By Lemma~\ref{lem:birth-left}, move
+each birth left across all predecessors.  By
+Lemma~\ref{lem:birth-disjoint}, births commute with one another, so choose any
+fixed canonical order for them.  Preserve the relative order of all nonbirth
+actions.
+
+Consider an original nonbirth action $a_i$.  It overlapped at least one earlier
+action.  If that earlier action was a birth, it has moved farther left.  If it
+was a nonbirth, their relative order was preserved.  Thus $a_i$ still meets the
+accumulated earlier footprint in the reordered word.  Strong commutation shows
+that the reordered word is legal and reaches the same final state.
+
+It is possible that the terminal reduction becomes legal at an earlier prefix
+of the reordered word.  In that case truncate at the first such prefix.  The
+length and number of births can only decrease.  The truncated word is
+first-unlocking and has the two stated properties.
+\end{proof}
+
+\begin{remark}[Normal form versus a chronological invariant]
+The birth number is defined on a trace, not just its final state.  The theorem
+shows that it has algorithmic meaning: it is an upper bound on the number of
+global choices needed before all remaining choices are local.  One may minimize
+$b$ over shortest traces to obtain an input parameter, but the search does not
+need to know that minimum in advance; it can deepen in $b$.
+\end{remark}
+
+\subsection{Accumulated support strictly improves last-touch search}
+
+The current ProveIt recursion follows the neighborhood of the immediately
+previous RIII move.  The next proposition shows that even the one-birth normal
+form is strictly more general in local rewrite systems.
+
+\begin{proposition}[Strict separation]
+\label{prop:last-vs-accumulated}
+There is a strongly local reversible system with a one-birth first-unlocking
+trace of length three, but no first-unlocking trace of length at most three in
+which consecutive action footprints always intersect.
+\end{proposition}
+
+\begin{proof}
+Use sites $0,1,2,3$, initially zero.  Action $A$ toggles sites $0$ and $1$ and
+has footprint $\{0,1\}$.  Action $B$ requires site $0=1$, toggles site $2$, and
+has footprint $\{0,2\}$.  Action $C$ requires site $1=1$, toggles site $3$, and
+has footprint $\{1,3\}$.  The terminal reduction requires sites $2=3=1$.
+
+After $A$, both $B$ and $C$ are legal.  They commute because their footprints
+are disjoint.  Either $ABC$ or $ACB$ unlocks the terminal reduction.  There is
+one birth, namely $A$, and each leaf meets the accumulated footprint of $A$.
+However, $B$ and $C$ do not meet one another, so neither length-three ordering
+has pairwise-intersecting consecutive footprints.  No shorter word can set both
+sites $2$ and $3$.
+\end{proof}
+
+The fixture is \code{accumulated\_strict\_example()} in the prototype.  For knot
+diagrams, this proposition motivates the accumulated-footprint search; it does
+not by itself exhibit a concrete RIII diagram with the same separation.

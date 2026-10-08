@@ -1,0 +1,138 @@
+\section{A bounded-local reversible rewrite model}
+\label{sec:model}
+
+This section isolates exactly the hypotheses used later.  The model is broad
+enough for the fixed-dart Reidemeister implementation and narrow enough that
+commutation arguments are valid without hidden geometric assumptions.
+
+\subsection{States, actions, and stable sites}
+
+Fix a finite set $V$ of \emph{sites}, with $|V|\leq c_0N$ for an input-size
+parameter $N$.  A state belongs to a set $\Omega_N$.  There are two kinds of
+local operation.
+
+\begin{definition}[Neutral action]
+A neutral action instance $a$ legal at $x\in\Omega_N$ is a reversible transition
+\[
+  x \xrightarrow{a} a x
+\]
+with a footprint $\Phi_x(a)\subseteq V$.  We assume
+$|\Phi_x(a)|\leq f$, where $f$ is independent of $N$.
+\end{definition}
+
+\begin{definition}[Terminal reduction]
+A terminal reduction instance $r$ legal at $x$ is a local decreasing operation
+with footprint $\Psi_x(r)\subseteq V$, with
+$|\Psi_x(r)|\leq g$.  During an unlocking search we only ask whether $r$ is
+legal; the reduction is applied after a trace succeeds.
+\end{definition}
+
+For RIII, the neutral action preserves the number of crossings.  RI/RII are the
+terminal reductions.  Stable sites are fixed input darts, so a crossing can be
+moved combinatorially without renaming its darts.
+
+\subsection{Strong locality}
+
+The main axiom is a two-sided commutation diamond.  It is stated for executed
+action instances, because a later move need not be syntactically visible before
+an earlier local update.
+
+\begin{definition}[Strong disjoint commutation]
+A rewrite system has strong disjoint commutation when the following hold.
+\begin{enumerate}[label=(L\arabic*)]
+\item \textbf{Backward and forward diamond.}  Suppose
+      $x\xrightarrow{a}y\xrightarrow{b}z$, and the residual footprints of $a$
+      and $b$ are disjoint.  Then $b$ is legal at $x$, $a$ is legal after $b$,
+      both orders reach the same state, and the two footprints are unchanged by
+      swapping the order.
+\item \textbf{Terminal locality.}  If
+      $x\xrightarrow{a}y$ and a terminal reduction $r$ is legal at one endpoint
+      with footprint disjoint from $\Phi_x(a)$, then its corresponding residual
+      is legal at the other endpoint with the same footprint.
+\item \textbf{Reversibility.}  Every neutral action has a local inverse whose
+      footprint is the same bounded set of sites.
+\end{enumerate}
+\end{definition}
+
+The backward half of (L1) is essential.  It says that a move observed after an
+unrelated action was already legal before that action.  This is what permits a
+birth action to commute left.
+
+\begin{remark}
+For a concrete implementation, one can use a conservative footprint larger than
+the minimal topological support.  This can only classify more actions as
+interacting.  The search becomes less sharply pruned, but all commutation claims
+remain safe.
+\end{remark}
+
+\subsection{Incidence bounds}
+
+We separate the number of moves available globally from the number meeting a
+small active region.
+
+\begin{definition}[Bounded incidence]
+A rule family has constants $A,B>0$ when, for every state $x$,
+\begin{align*}
+  |\{a:a\text{ neutral and legal at }x\}| &\leq AN, \\
+  |\{a:a\text{ neutral and legal at }x,
+      \ \Phi_x(a)\cap S\neq\varnothing\}| &\leq B|S|
+\end{align*}
+for every $S\subseteq V$.
+\end{definition}
+
+The first bound permits $O(N)$ possible locations for a new independent branch.
+The second says that continuation from a region of $O(k)$ sites has only $O(k)$
+choices.  In a finite local rule system on a bounded-degree combinatorial
+structure, such constants are natural.
+
+\subsection{Unlocking traces}
+
+Let
+\[
+ x_0\xrightarrow{a_1}x_1\xrightarrow{a_2}\cdots
+ \xrightarrow{a_k}x_k
+\]
+be a neutral trace.
+
+\begin{definition}[First-unlocking trace]
+The trace is first-unlocking when no terminal reduction is legal at
+$x_0,\ldots,x_{k-1}$ and at least one terminal reduction $r$ is legal at $x_k$.
+Its length is $k$.  It is \emph{shortest} when no first-unlocking trace from
+$x_0$ has smaller length.
+\end{definition}
+
+A search can stop at the first terminal reduction.  Therefore any trace that
+exposes a reduction earlier than expected is automatically replaced by its
+shorter prefix.
+
+\begin{definition}[Birth and birth number]
+Write $\Phi_i=\Phi_{x_{i-1}}(a_i)$.  Action $a_i$ is a \emph{birth} when
+\[
+  \Phi_i\cap\bigcup_{j<i}\Phi_j=\varnothing.
+\]
+The birth number $\beta(\tau)$ is the number of birth actions in $\tau$.
+\end{definition}
+
+The first action is always a birth.  A birth is not necessarily topologically
+remote forever: later actions may connect its footprint to other branches.
+
+\subsection{The action-support graph}
+
+Fix a terminal reduction $r$ legal at $x_k$.  The action-support graph
+$H(\tau,r)$ has vertices $1,\ldots,k,\star$.  Vertex $i$ represents $a_i$ and
+$\star$ represents $r$.  Put an edge between two action vertices when their
+executed footprints intersect, and an edge $i\star$ when $\Phi_i$ intersects
+the terminal footprint $\Psi_{x_k}(r)$ after the canonical residual
+identification supplied by strong locality.
+
+In the fixed-site situations used here, the residual identification is literal:
+the same dart labels are compared throughout.  The graph records causal
+noncommutation, not chronological adjacency.
+
+\begin{example}[Two branches before a join]
+Let actions $A$ and $B$ have disjoint footprints.  Let $C$ overlap both, and let
+the terminal reduction overlap $C$.  The chronological word $ABC$ has two
+support components after its second letter, but the full action-support graph is
+connected.  This is the smallest obstruction to the naive claim that every
+shortest trace can be given connected prefixes.
+\end{example}

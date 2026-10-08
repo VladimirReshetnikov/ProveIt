@@ -31,7 +31,7 @@ synthesis, cross-validation, and a faster exact recognizer}
 \maketitle
 
 \begin{abstract}
-Six independently produced archives each tried to implement the $\qp$ unknot
+Six independently produced archives each tried to implement the quasi-polynomial unknot
 recognition algorithm announced in Marc Lackenby's February 2021 talk. This
 report extracts them into numbered directories, reads their reports, reviews
 their code, re-runs their test suites, and cross-validates them against each
@@ -127,10 +127,31 @@ also supplies two facts the archives use: Proposition 2.6 (a pattern on a
 planar dual is simple and 4-connected or $K_3$ or $K_4$) and Definition 3.4
 (pattern-complexity $\chi_P(S)=-4\chi(S)+|S\cap P|$).
 
-So the accelerated, logarithmic-depth algorithm of the talk is, as of
-September 2026, announced but not specified in any source available to us.
+So the accelerated, logarithmic-depth algorithm of the talk remains
+announced but not specified in any source available to us on rechecking
+the author's page and the preprint on 7 October 2026.
 This is the single obstacle behind every ``partial'' verdict below, and it is
 mathematical, not an engineering shortfall.
+
+\paragraph{Plausibility and the precise target.}
+The announced bound is $2^{O((\log n)^3)}=n^{O((\log n)^2)}$;
+the stronger $\qp$ target used elsewhere in this report must not be
+attributed to that announcement.  Both are quasi-polynomial and hence
+$2^{o(n)}$.  The hierarchy strategy is a credible route to such a bound:
+it replaces exhaustive global witness search with decomposition,
+compression and controlled corrections.  The preprint supplies substantial
+topological machinery for that route.  This is our assessment of plausibility,
+not a verification of its announced asymptotics.
+Even given the iteration estimate $L(g+1)^L$, an implementation must bound
+the bit cost $C(n)$ of each operation on its largest intermediate encoding.
+A sufficient accounting condition is
+\[
+ \log C(n)+\log(L+1)+L\log(g+1)=O((\log n)^3).
+\]
+Efficiently handling one compressed surface, or proving termination,
+does not establish this condition.  No general sub-exponential bound for
+our recognizer follows from the current report or from adaptive switching
+among its present backends.
 
 \subsection{Outcome in one paragraph}
 None of the six archives, and not the new package either, implements a
@@ -597,6 +618,7 @@ to repeat, it is not quasi-polynomial.
 \input{corridor_transfer.tex}
 \input{cyclic_garside.tex}
 \input{surface_covers.tex}
+\input{causal_r3.tex}
 
 \section{Assessment and recommendations}
 

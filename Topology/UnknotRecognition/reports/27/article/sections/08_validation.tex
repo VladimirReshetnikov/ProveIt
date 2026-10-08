@@ -1,0 +1,155 @@
+\section{Executable validation and negative controls}
+\label{sec:validation}
+
+The mathematical proof does not depend on experiments.  The experiments serve
+three narrower purposes: catch implementation mistakes, demonstrate the two
+strict separations, and make the scope of evidence explicit.
+
+\subsection{Reference implementation}
+
+The file \code{prototype/causal\_search.py} implements a finite class of Boolean
+local rewrite systems.  A neutral action has:
+\begin{itemize}
+\item a stable support;
+\item guards that read only support sites;
+\item toggles on support sites not read by the guards.
+\end{itemize}
+Applying a legal action twice restores the state.  Actions with disjoint
+supports commute and preserve one another's legality.  A terminal reduction is
+a local bit-pattern predicate.
+
+Three searches are included.
+\begin{enumerate}
+\item unrestricted breadth-first search, used as a finite oracle;
+\item the birth-front search proved complete under the parameter bound;
+\item a last-touch search modeling the current immediate-predecessor locality
+      restriction.
+\end{enumerate}
+
+\subsection{Hand-checked strict examples}
+
+The two examples from Propositions~\ref{prop:branching-obstruction} and
+\ref{prop:last-vs-accumulated} are executable.  A third fixture checks a
+subtler implementation point: accumulated support is search state even when the
+physical rewrite state repeats.
+
+\begin{center}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Fixture & Witness depth & Minimum births & Distinguished failure \\
+\midrule
+Two independent births, then join & 3 & 2 & one-birth search fails \\
+One birth, two commuting leaves & 3 & 1 & last-touch search fails \\
+State repeat extends support & 4 & 1 & state-only pruning fails \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are negative controls.  They ensure the implementation is not silently
+reinstating either rejected claim.
+
+\subsection{Generated finite systems}
+
+The deterministic validation script generated 5,000 systems with six Boolean
+sites, nine neutral actions, three terminal reductions, and search depth at most
+six.  The random seed is the system index.  The outcome was:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Category & Count \\
+\midrule
+Initially reducible & 3,209 \\
+No witness within depth six & 131 \\
+Witness found by unrestricted BFS & 1,660 \\
+Front-loading failures & 0 \\
+Birth-front completeness discrepancies & 0 \\
+Disconnected shortest dependency graphs & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Among the 1,660 witnessed systems, the unrestricted oracle returned depths
+$1,2,3,4,5$ with counts $1381,223,47,8,1$.  The birth-front search needed birth
+bound one in 1,603 cases and birth bound two in 57 cases.  The oracle's first
+returned shortest trace had birth counts one, two, and three in 1,548, 110, and
+two cases respectively; a different shortest trace sometimes used fewer births.
+
+The unrestricted BFS explored 3,863 dequeued states across these runs; the
+iterative birth-front comparisons explored 12,457 recursive nodes.  This is not
+a speed benchmark: the state space has only 64 states, BFS deduplicates globally,
+and the parameterized search deliberately mirrors a local depth-first
+implementation.  The relevant result is equality of witnessed behavior, not a
+runtime win on toy Boolean systems.
+
+\subsection{Exhaustive three-site catalog}
+
+A second script exhausts a fully specified finite catalog rather than sampling.
+There are 27 one-bit involution templates on three sites: choose the toggled
+site, and for each of the other two sites choose guard value zero, guard value
+one, or absence.  The script checks every three-move subset, every one of the 26
+nonempty local terminal predicates, and all eight initial states, for a total of
+608,400 instances through depth four.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Catalog outcome & Count \\
+\midrule
+Initially reducible & 163,800 \\
+No witness within depth four & 272,632 \\
+Witnessed & 171,968 \\
+Front-loading failures & 0 \\
+Birth-front completeness discrepancies & 0 \\
+Disconnected shortest dependency graphs & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This catalog is still only a finite software check, but it removes sampling
+uncertainty inside the stated model class.  The exact parameters and counts are
+stored in \code{results/exhaustive\_catalog.json}.
+
+\subsection{Unit tests}
+
+Five generic-search and two adapter-contract checks cover:
+\begin{enumerate}
+\item the two-birth branching fixture;
+\item strict improvement of accumulated support over last-touch locality;
+\item preservation or shortening under front-loading;
+\item the support-history state-repeat regression;
+\item 200 additional generated-system oracle comparisons;
+\item exact adapter restoration after failure; and
+\item footprint-stable inverse replay after adapter success.
+\end{enumerate}
+All seven checks pass under the Python interpreter in the artifact environment.
+
+\subsection{What was not tested}
+
+No full ProveIt checkout was available to the container runtime.  Consequently:
+\begin{itemize}
+\item the 431 maintained repository tests were not rerun;
+\item the adapter was exercised only against a twelve-dart contract gadget,
+      not actual validated PD diagrams;
+\item no timing claim is made for clustered RIII search;
+\item no knot fixture is claimed to separate last-touch and accumulated support;
+\item no corpus claim is extrapolated from the Boolean model.
+\end{itemize}
+
+The integration snippet was syntax-checked and its success/failure mutation
+contract was tested against a twelve-dart implementation of the reviewed RIII
+formulas.  Its baseline source and blob hashes
+are pinned so that repository-side review can detect drift.
+
+\subsection{Interpretation}
+
+The validation supports four modest conclusions.
+\begin{enumerate}
+\item The generic implementation agrees with the theorem on a substantial
+      finite sample.
+\item The false connected-prefix conjecture is concretely guarded against.
+\item The accumulated-support algorithm is genuinely different from the legacy
+      last-touch algorithm.
+\item Production correctness still depends on repository-native replay,
+      restoration, invariant, and regression tests.
+\end{enumerate}

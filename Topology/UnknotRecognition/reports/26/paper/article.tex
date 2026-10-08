@@ -1,0 +1,1476 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,hyperref,fancyhdr,listings}
+\definecolor{inkblue}{RGB}{25,54,77}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=inkblue,urlcolor=inkblue,
+ pdftitle={Marked Determinant Continuations and Singular-Safe Boundary Compression},
+ pdfauthor={OpenAI, research assistance for the ProveIt project}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Marked determinant continuations}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{{\mathbb F_2}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\corank}{\operatorname{corank}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\sig}{\sigma_4}
+\newcommand{\nuFour}{\nu_4}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_1}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\zero}{\mathbf 0}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!20},aboveskip=8pt,belowskip=8pt}
+\title{\color{inkblue}\bfseries Marked Determinant Continuations\\[4pt]
+\Large and Singular-Safe Boundary Compression\\[7pt]
+\large Recovered quantum gradings, residue-four witnesses,\\
+critical square laws, and stopping-prefix complexity}
+\author{Research assistance prepared for the ProveIt project}
+\date{7 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We develop a read-only obstruction layer for the repository's exact
+Bar--Natan scanning algorithm. The layer evaluates actual completed direct
+summands rather than only the original knot's determinant. A retained marked
+arc makes reduced completion functorial. Homogeneous differential entries
+recover the erased quantum shifts of each connected component, uniquely up
+to a constant, so the existing ungraded component keys suffice. The
+$\ell^1$ norm of the quantum Euler polynomial modulo $q^4-1$ then gives a
+monotone lower bound on reduced Khovanov rank. Its matching-level values are
+computable by link connectivity and a signed Tait determinant, without
+expanding the remaining crossing cube.
+
+For repeated determinant queries we prove a singular-safe terminal reduction.
+An interior block of corank $r$ is retained as a zero block coupled to the
+boundary; each nonzero query uses a matrix of order at most $2b-2$, where
+$b$ is the terminal count. At the critical number $r+1$ of terminal blocks,
+all nonzero quotient determinants lie in one signed rational square class.
+The corank threshold is sharp. Exact Python implementations, independent
+state-sum and homology oracles, and paired graph-kernel measurements accompany
+the proofs.
+
+The resulting quasi-polynomial estimate is a theorem about successful
+prefixes with bounded physical representation size and frontier width.
+No universal bound on those parameters, unrestricted quasi-polynomial
+recognizer, or end-to-end production speedup is claimed.
+\end{abstract}
+\vfill
+{\small\textbf{Status.} Research manuscript with written proofs and executable
+checks; not peer reviewed or formally verified. The package is an integration
+candidate, not a modification of the remote repository. Exact scope and
+remaining obligations are stated in Sections~\ref{sec:scope} and~\ref{sec:validation}.}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Research target and position relative to earlier work}
+\label{sec:scope}
+
+\subsection{The bottleneck being addressed}
+The project in \path{Topology/UnknotRecognition} already has an exact scanning
+backend, literal direct-sum sharing, scalar-unit cancellation, and an
+Euler-based completed-component observer. Recent continuations have addressed
+twist blocks, homogeneous coefficient multiplication, radical residue
+profiles, and exact homological windows. Those are starting points, not
+results claimed again here. The reviewed component implementation stores a
+matching identifier, a relative homological degree, and every differential
+coefficient in a complete key~\cite{repo,component}. Its multiplicities are
+ordinary nonnegative integers, not elements of $\F$.
+
+We address a different question:
+\begin{quote}
+Can one extract a stronger, inexpensive obstruction from the actual
+remaining diagram and the already discovered direct summands, without
+computing the suffix's homology or changing the existing ungraded sharing
+keys?
+\end{quote}
+The answer is affirmative under precise relative-complex assumptions. The
+observer combines the $q=1$ and $q=i$ specializations of the reduced quantum
+Euler polynomial. The former is controlled by link connectivity; the latter
+is a signed determinant. The norm is taken \emph{after summing within each
+true chain summand and before summing across independent summands}. This
+order prevents cancellations between independent homology groups from hiding
+an obstruction.
+
+A second question is algorithmic. Many matching completions can share a large
+signed graph interior. Ordinary electrical-network elimination suggests a
+boundary response matrix, but signed weights invalidate the automatic
+invertibility of the interior block. We retain exactly the missing nullspace
+coupling. The result is a small determinant formula, a sharp vanishing gate,
+and a square-class law for critical terminal partitions.
+
+\subsection{What is classical and what is established here}
+The foundations are Khovanov's categorification~\cite{khovanov},
+Bar--Natan's tangle formalism and local cancellation~\cite{bn-tangles,bn-fast},
+and the classical relation between Jones specializations and signed graph
+matrices; see also Boninger~\cite{boninger}. Schur complements and Kron
+reduction are established tools~\cite{kron}. We do not claim these ingredients
+as discoveries.
+
+The contributions developed and proved in this continuation are the
+following precise statements and their compatibility with this scanner:
+\begin{enumerate}
+\item Connected ungraded component keys determine quantum shift differences;
+therefore they also determine the completed residue norm, despite forgetting
+absolute quantum grading.
+\item A mark-preserving completion theorem gives a monotone residue-four
+rank obstruction, with an exact formula for the rank it fails to see.
+\item A signed terminal kernel remains valid when the interior is singular.
+Its corank gate is sharp, and critical partitions obey a signed square law.
+\item These operations have explicit output-sensitive costs, with a
+quasi-polynomial consequence for controlled successful scan prefixes.
+\end{enumerate}
+The mathematical arguments are supplied in full. A comprehensive novelty or
+priority search has not been completed, and no theorem is presented as an
+independently reviewed resolution of the unrestricted recognition problem.
+
+\subsection{Current complexity status}
+Lackenby's July 2026 preprint gives a hierarchy-based incompressibility and
+unknot-recognition algorithm. Section 9 explicitly distinguishes estimates
+for the number of steps from a running-time estimate for implementations
+whose operations are not yet specified at that level~\cite[Section 9]{lackenby}.
+Our algebraic observer is not an implementation of that hierarchy algorithm.
+
+Kronheimer--Mrowka prove that reduced Khovanov rank one detects the
+unknot~\cite{km}. For the early rejection result here, only the simpler fact
+$\dim_{\F}\widetilde{\Kh}(U)=1$ and invariance are needed. A lower bound greater
+than one rules out the unknot. Equality of a \emph{lower bound} with one does
+not establish equality of the actual rank.
+
+Three different meanings of ``small'' must remain separate. A small frontier
+limits the size of one coefficient algebra. A small number of matching types
+does not bound their multiplicities. A small observed component key does not
+bound the number of physically materialized intermediate objects. Our cost
+statement uses the latter quantity explicitly, including temporary expansion
+before cancellation.
+
+\subsection{Source audit and reproducibility boundary}
+The observed repository head was
+\begin{center}\small\texttt{8e5edcedb580523bdd4946233f7d0b42a97901d4}.\end{center}
+The current component key and the Conway input were inspected at that
+revision. The scanner allocation and recovered-grading diagnostic were
+inspected at
+\begin{center}\small\texttt{dfc762327721d9d8040eb62a36a4ab20c005b9e5}.\end{center}
+Per-file blob hashes and the exact scope of each read are recorded in
+\path{provenance.json}. This is a source audit, not a claim that an entire
+checkout of either revision was tested. The local independent package was
+executed; the supplied upstream diagnostic was not.
+
+\section{Recovering quantum information from ungraded components}
+\label{sec:grading}
+
+\subsection{Objects, coefficients, and weights}
+Fix a valid frontier with $2k$ endpoints. Matching objects have $k$ arcs.
+For two objects $a,b$, let $c(a,b)$ be the number of circles in their overlay.
+A coefficient is a binary linear combination of dotted basis morphisms,
+indexed by subsets of these circles. If a subset $S$ contains $d$ circles,
+its intrinsic weight is
+\begin{equation}\label{eq:weight}
+ \omega(x_S:a\longrightarrow b)=k-c(a,b)+2d.
+\end{equation}
+The negative of this weight is the intrinsic quantum degree of the
+cobordism in the scanner's convention. A nonzero homogeneous coefficient has
+one common dot count $d$ across all its monomials.
+
+Write $h_v$ for the homological degree and $q_v$ for the quantum shift of
+object $v$. A differential entry $f_{uv}$ satisfies $h_v=h_u+1$ and
+\begin{equation}\label{eq:potential}
+ q_v-q_u=k-c(a_u,a_v)+2d(f_{uv}).
+\end{equation}
+The repository's grading diagnostic uses precisely this identity, rearranged
+as $2d=c-k+q_v-q_u$~\cite{grading}.
+
+\begin{lemma}[Preservation of homogeneity]\label{lem:homogeneity}
+Start from a genuine graded crossing complex and apply graded delooping and
+scalar-unit cancellations, while erasing shifts only from storage. Every
+remaining nonzero differential coefficient is homogeneous. A unit entry
+between equal matching objects is the undotted identity.
+\end{lemma}
+\begin{proof}
+The crossing complex and the Frobenius delooping maps are homogeneous.
+Composition adds intrinsic degrees. A coefficient between two fixed shifted
+objects can therefore contain only monomials of their prescribed degree.
+For equal matchings $c(a,a)=k$. If a homogeneous unit has a scalar term, that
+term has dot count zero and forces $q_v-q_u=0$ in
+\eqref{eq:potential}. Every other monomial would have positive dot count and
+thus a different degree. No such term can occur, so the unit is exactly the
+identity. Cancelling this entry is a homogeneous change of complex: the
+usual Schur correction is a composition of homogeneous maps of the required
+degree. Induction proves the assertion throughout genuine cancellations.
+\end{proof}
+
+This lemma does not license applying the procedure to arbitrary fabricated
+bit matrices. The validity of the relative complex remains a precondition.
+The implementation checks coefficient homogeneity and potential consistency
+but does not reprove the provenance of the entire input complex.
+
+\subsection{The quantum-potential theorem}
+\begin{theorem}[Recovery and uniqueness]\label{thm:quantum}
+Let $T$ be a connected nonzero-differential component of a genuine partial
+complex. Its matching objects and homogeneous coefficients determine all
+quantum shifts up to one additive integer constant. One can recover them by
+assigning zero to one vertex and propagating~\eqref{eq:potential} along the
+undirected differential graph. Every remaining edge gives a consistency
+check.
+
+If two connected components have equal complete ungraded serialized keys,
+the key's vertex correspondence is a graded chain isomorphism after a single
+uniform quantum shift, in addition to the uniform homological shift already
+allowed by the key.
+\end{theorem}
+\begin{proof}
+Orient each nonzero differential edge from its source to its target and give
+it the integer weight on the right-hand side of~\eqref{eq:potential}. Give
+the reverse edge the negative weight. Genuine quantum shifts solve these
+equations, so the sum of weights around every closed walk is zero. The sum
+along a path from the chosen root is consequently independent of the path.
+It is the desired potential after subtracting the root's true shift.
+
+If $q$ and $q'$ are two solutions, their difference has zero change along
+every edge. Connectedness makes that difference constant. A one-vertex
+component is included: its single shift is unconstrained but immaterial up
+to translation.
+
+Equal ungraded keys preserve matching objects, nonzero edges, coefficients,
+and relative homological degrees. In particular they preserve every weight
+in~\eqref{eq:potential}. Pulling the second component's potential back to
+the first therefore gives another solution, which differs by one constant.
+With that shift the explicit vertex correspondence preserves both gradings
+and every differential entry.
+\end{proof}
+
+\begin{corollary}[No new absolute grading key is required]\label{cor:key}
+Any quantity on completed components invariant under uniform homological and
+quantum shifts can be evaluated from the existing complete ungraded keys.
+It is unnecessary to expand a shared multiplicity into its unknown absolute
+quantum-shift distribution.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:quantum} identifies all copies with a chosen recovered graded
+representative up to precisely the shifts under which the quantity is
+invariant. Each copy contributes the same value.
+\end{proof}
+
+\paragraph{Cost and implementation.}
+If there are $s$ vertices and $e$ stored differential entries, propagation
+uses $O(s+e)$ graph operations after edge weights have been obtained.
+Homogeneity checking scans the actual coefficient support. It is not a
+constant-time operation on exponentially long bit-packed values. The
+observer therefore retains the scanner's coefficient-size factor in its
+complexity bound. The function \code{recover\_quantum\_shifts} checks cycles
+and rejects inhomogeneous coefficients; it does not silently choose the
+lowest-degree term of a mixed coefficient.
+
+\section{Marked completion and residue-four rank witnesses}
+\label{sec:marked}
+
+\subsection{Why the marked arc cannot be omitted}
+Let $A=\F[x]/(x^2)$, with the usual Khovanov Frobenius grading. A marked point
+on a link gives an $A$-action by adding a dot to the marked component. We use
+the reduced complex normalized so that a single marked circle contributes
+one generator in quantum degree zero. Equivalently, use the quotient by the
+marked $x$-action with its conventional overall shift, or the marked-$x$
+subcomplex with the opposite normalization shift.
+
+At scan stage $i$, let $C_i$ be the processed relative tangle complex. Its
+actual remaining diagram defines a completion operation $F_i$. Choose a
+point on a small arc in the unprocessed suffix, disjoint from all processed
+operations. Denote completion followed by marked reduction by
+$F_i^\bullet$. A practical choice is to keep one root crossing last and mark
+an incident segment close to that crossing. All proper prefixes retain it.
+
+\begin{theorem}[Marked completion preserves relative equivalences]
+\label{thm:mark}
+Suppose every chain map and chain homotopy in a relative equivalence of
+processed tangle complexes is extended by the identity near the retained
+marked arc. Marked completion preserves that chain-homotopy equivalence and
+preserves finite direct sums.
+\end{theorem}
+\begin{proof}
+After completion, every map commutes with the dot action at the fixed marked
+arc: the map is the identity on a neighborhood of that arc, and the
+Frobenius construction is compatible with its marked $A$-action. The maps
+and homotopies are therefore $A$-linear. Suppose $f,g$ and homotopies $H,K$
+satisfy
+\[
+ gf-1=dH+Hd,\qquad fg-1=dK+Kd.
+\]
+Passing to the marked quotient applies an additive functor to each identity.
+The same equations still hold on the reduced complexes. No assertion that
+the quotient functor is exact, or that its coefficient module is flat, is
+required: these are preserved explicit homotopy equations. Completion and
+the quotient both commute with finite direct sums. Uniform grading
+normalization does not alter the argument.
+\end{proof}
+
+\begin{remark}[A forbidden shortcut]\label{rem:divide}
+It is incorrect to take arbitrary summands of a fully delooped, unmarked
+closed complex and divide each summand's Euler polynomial by
+$q+q^{-1}$. A single surviving unmarked generator need not be a free marked
+$A$-summand. The total complex may admit a marked reduction without the
+chosen unmarked splitting respecting it. Keeping the mark in the suffix is
+what makes the direct-sum statement above legitimate. The provided observer
+requires a nonempty marked suffix and declines a final unmarked closure.
+\end{remark}
+
+\subsection{An integral four-coordinate shadow}
+For a finite bigraded cochain complex $X$ with quantum-degree-preserving
+differential, define
+\[
+ \chi_X(q)=\sum_{h,j}(-1)^h\dim_\F X^{h,j}\,q^j.
+\]
+Reduction modulo $q^4-1$ gives a unique vector in $\Z^4$:
+\begin{equation}\label{eq:sigma}
+ \sig(X)_r=\sum_{h,\ j\equiv r\ (4)}(-1)^h\dim_\F X^{h,j},
+ \qquad \nuFour(X)=\norm{\sig(X)}.
+\end{equation}
+These are \emph{integer} alternating sums even though the differential is
+computed over $\F$.
+
+\begin{lemma}[Shadow norm properties]\label{lem:shadow}
+The vector $\sig$ is invariant under graded chain-homotopy equivalence and
+additive under direct sums. Its norm satisfies
+\[
+ 0\le\nuFour(X)\le\dim_\F H(X).
+\]
+A uniform homological shift changes the sign of the vector when odd; a
+uniform quantum shift permutes its coordinates. Both preserve $\nuFour$.
+\end{lemma}
+\begin{proof}
+For each quantum degree, the alternating dimension of a finite complex
+agrees with that of its homology, by cancellation of boundary dimensions in
+adjacent homological degrees. Summing by quantum residue proves invariance.
+Additivity is immediate. In each residue class, the absolute value of the
+alternating sum is no greater than the sum of the homology dimensions;
+summing proves the inequality. The shift statements follow directly
+from~\eqref{eq:sigma}.
+\end{proof}
+
+\begin{theorem}[Marked completed-component obstruction]\label{thm:bound}
+Assume the original input is a validated classical knot $K$, and a genuine
+relative decomposition at stage $i$ has the form
+\[
+ C_i\simeq\bigoplus_a\ \bigoplus_{h,j}
+ T_a[h]\{j\}^{\oplus p_{a,h,j}},\qquad p_{a,h,j}\in\N.
+\]
+Set $m_a=\sum_{h,j}p_{a,h,j}$. Then
+\begin{equation}\label{eq:bound}
+ B_4(i)=\sum_a m_a\nuFour(F_i^\bullet T_a)
+ \ \le\ \dim_\F\widetilde{\Kh}(K;\F).
+\end{equation}
+In particular $B_4(i)>1$ certifies that $K$ is nontrivial. The norm of each
+completed template can be evaluated using its recovered quantum potentials;
+absolute quantum shifts of shared copies are unnecessary.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:mark} transports the displayed relative decomposition to a
+direct sum of reduced completed complexes for $K$, up to the irrelevant
+global diagram normalization. Homology of this finite direct sum is the
+direct sum of its homologies. Each shifted copy has the same total homology
+dimension and, by Lemma~\ref{lem:shadow}, the same shadow norm as its
+representative. Apply the norm bound separately to every copy and sum.
+The normalized reduced homology of the unknot has dimension one, proving
+rejection when the lower bound is larger. Finally
+Corollary~\ref{cor:key} applies because the norm is shift-invariant.
+\end{proof}
+
+\begin{proposition}[Monotonicity under refinement]\label{prop:monotone}
+Suppose one scan step extends each current representative additively,
+performs genuine relative cancellations, and splits the result into direct
+summands. The resulting $B_4$ cannot decrease while the mark is retained.
+Exact sharing of equal keys does not change the value.
+\end{proposition}
+\begin{proof}
+For a parent $T$, completing before or after that scan step gives homotopy
+equivalent reduced complexes. If the extended parent splits into children
+$S_j$ with shifts, its shadow equals the sum of the shifted child shadows.
+By the triangle inequality, its norm is at most the sum of their norms.
+Multiply by the parent's nonnegative multiplicity and sum over parents.
+Merging equal child keys merely adds the numbers of identical contributions.
+\end{proof}
+
+An arbitrary change of direct-sum decomposition need not be a refinement,
+so the proposition must not be asserted for every unrelated decomposition
+chosen by another algorithm. The maintained component engine's parent-local
+extension and splitting is the relevant situation.
+
+\subsection{Comparison with simpler observers}
+For $v=(v_0,v_1,v_2,v_3)$, define
+\[
+ e(v)=\left|\sum_r v_r\right|,
+ \qquad d(v)=|v_0-v_2|+|v_1-v_3|.
+\]
+The first is the absolute Euler characteristic. The second is the
+$\ell^1$ norm of the Gaussian integer obtained by evaluating at $i$.
+Both are bounded by $\norm{v}$. Hence $B_4$ dominates the corresponding
+\emph{reduced marked} completed-component Euler bound and the determinant
+character bound. This does not identify it numerically with a particular
+unreduced observer in the production pipeline; normalizations must be
+compared at the same marked level.
+
+If a component's Euler polynomial has only one parity of quantum exponents,
+its four-vector has only two possible nonzero coordinates. For their sum
+$a$ and difference $d$, its norm is
+\begin{equation}\label{eq:max}
+ \left|\frac{a+d}{2}\right|+
+ \left|\frac{a-d}{2}\right|=\max(|a|,|d|).
+\end{equation}
+In general the four-vector formulation is safer than imposing a parity
+promise on an arbitrary formal component.
+
+\begin{proposition}[Exact invisible-rank formula]\label{prop:defect}
+Let $E_r$ and $O_r$ be the total homology dimensions in quantum residue $r$
+and even and odd homological degrees, respectively. Then
+\begin{equation}\label{eq:defect}
+ \dim H(X)-\nuFour(X)=2\sum_{r=0}^3\min(E_r,O_r).
+\end{equation}
+Consequently the shadow is exact if and only if, in every quantum residue,
+homology occurs in at most one homological parity.
+\end{proposition}
+\begin{proof}
+The residue coordinate is $E_r-O_r$. Subtract $|E_r-O_r|$ from $E_r+O_r$;
+the difference is $2\min(E_r,O_r)$. Sum over residues. All summands are
+nonnegative, giving the equality criterion.
+\end{proof}
+
+\subsection{Strictness, with a realization boundary}
+\begin{example}[Independent summands can reveal hidden rank]\label{ex:strict}
+Let $I$ be a two-ended interval object. Consider the dotted two-term complex
+\[
+ T=\bigl(I\xrightarrow{x}I\{2\}\bigr)
+\]
+in homological degrees zero and one. Complete with a marked crossingless
+arc. On marked reduction the dotted map is zero, so its Euler polynomial is
+$1-q^2$ and its reduced rank is two. The admissible relative complex
+\[
+ I\ \oplus\ T\ \oplus\ T[1]\{4\}
+\]
+has global residue-four norm one but split residue-four bound five. Its
+split ordinary Euler bound is one because each two-term block has Euler
+characteristic zero. The dotted blocks are connected in the differential
+graph before marked reduction.
+
+This is a strict example in the relative algebraic category. No claim is
+made that this particular complex is the invariant of a knot tangle. In
+particular it is not a construction of a nontrivial knot with trivial Jones
+polynomial. Its purpose is to prove that the proposed norm and the position
+at which it is applied can matter strictly.
+\end{example}
+
+\paragraph{Safe saturation.}
+For a rejection threshold of two on reduced rank, nonnegative multiplicities
+and final nonnegative contributions may be capped at two. If the existing
+backend supplies multiplicities capped at three, those are still safe lower
+bounds. Signed coordinates must be accumulated exactly until the norm is
+taken. Replacing $M-(M-1)$ by independently capped terms can turn a true
+value of one into zero or otherwise change a subtraction; saturation is not
+a homomorphism on signed integer arithmetic.
+
+There is a further distinction for a saturated scanner. If every multiplicity
+is capped at a fixed integer $c\ge2$, then
+\[
+ \min\!\left(2,\sum_a\min(c,m_a)\nuFour(F_i^\bullet T_a)\right)
+ =\min(2,B_4(i)).
+\]
+Indeed, any changed nonzero product already reaches two; unchanged products
+are exact. Thus the threshold-capped value remains monotone. The
+\emph{uncapped sum made from capped multiplicities} need not be monotone:
+merging two contributions of multiplicity three can replace their sum six
+by a shared capped multiplicity three. It is still a valid lower bound.
+The observer reports which monotonicity statement applies and includes the
+threshold-capped field explicitly. A multiplicity cap below two is rejected.
+
+\section{A polynomial-time oracle for actual matching completions}
+\label{sec:oracle}
+
+\subsection{Diagram and normalization conventions}
+A PD crossing is a cyclic four-tuple of edge labels. Opposite slots are the
+same strand. The two smoothings are
+\[
+ 0:(0,1)(2,3),\qquad 1:(0,3)(1,2).
+\]
+A closed diagram has each edge label exactly twice. The rotation system must
+be spherical; arbitrary four-valent incidence data are not a classical link
+certificate. The reference constructor checks this using the edge
+involution and face permutation. If the crossing shadow has $s$ connected
+components and $n$ crossings, the spherical condition is $f=n+2s$, checked
+on the resulting orientable combinatorial maps. Empty PD data additionally
+specify the number of crossingless components, rather than silently treating
+the empty monoidal unit as an unknot.
+
+For a diagram $D$ and state $s\in\{0,1\}^n$, let $c(s)$ count its resolved
+circles and $|s|$ its number of one-smoothings. Define the raw reduced bracket
+\begin{equation}\label{eq:bracket}
+ J_D(q)=\sum_{s\in\{0,1\}^n}(-q)^{|s|}
+             (q+q^{-1})^{c(s)-1}.
+\end{equation}
+For a marked diagram this is its raw reduced quantum Euler polynomial.
+Orientation and writhe normalization multiply it by an overall signed
+monomial. Such factors must be tracked consistently when summing object
+contributions but do not change the norm of a whole completed summand.
+The implementation uses~\eqref{eq:bracket} throughout, avoiding objectwise
+normalizations that would introduce incompatible phases.
+
+\subsection{The value at one and exponent parity}
+\begin{lemma}\label{lem:one}
+Orient each component of $D$ arbitrarily. Let $n_-(D)$ be the number of
+crossings whose oriented smoothing is state one in the above convention,
+and let $\ell(D)$ count link components. Then
+\begin{equation}\label{eq:one}
+ J_D(1)=(-1)^{n_-(D)}2^{\ell(D)-1}.
+\end{equation}
+Every exponent of $J_D$ has parity
+\begin{equation}\label{eq:parity}
+ \epsilon=c(0)-1\pmod2.
+\end{equation}
+Both quantities can be computed in polynomial time, without enumerating
+states.
+\end{lemma}
+\begin{proof}
+At $q=1$, switching a crossing interchanges its zero and one smoothings.
+Their signed contributions in~\eqref{eq:bracket} are interchanged with an
+overall minus sign. The oriented smoothing bit at that crossing also
+changes. Hence $(-1)^{n_-}J_D(1)$ is invariant under crossing switches, in
+addition to the usual normalized bracket's Reidemeister invariance.
+Crossing switches can make each component descending and separate the
+components by an ordering of their overcrossings. The result is an unlink
+with the same $\ell$. On an $\ell$-component unlink,
+\eqref{eq:bracket} is $(q+q^{-1})^{\ell-1}$, giving~\eqref{eq:one}.
+This is the standard $q=1$ specialization, with its raw sign written out.
+
+An exponent contributed by a state is $|s|+c(s)-1-2j$ for some integer $j$.
+Changing one smoothing changes $|s|$ by one and changes $c(s)$ by one in
+absolute value. Thus $|s|+c(s)-1$ has constant parity, namely that of the
+zero state. Edge pairing and opposite-slot pairing compute link components
+and a choice of orientations. One smoothing computation gives $c(0)$.
+These traversals are polynomial and in fact nearly linear with standard
+union--find bookkeeping.
+\end{proof}
+
+\subsection{The determinant specialization, including its phase}
+Assume for the moment that the crossing shadow is nonempty and connected.
+Checkerboard-color its spherical complement, and let $G$ be its black Tait
+graph. A crossing gives one edge, including possible loops or parallel
+edges. For each edge $e$, let $b_e\in\{0,1\}$ be the smoothing bit that
+\emph{does not} join its black regions. Put
+\[
+ v=|V(G)|,\qquad B=\sum_e b_e,\qquad w_e=(-1)^{b_e}.
+\]
+Let $L_G$ be the signed weighted Laplacian: a nonloop edge of weight $w$
+adds $w$ to both endpoint diagonals and $-w$ to the two off-diagonals. Loops
+are omitted because they belong to no spanning tree. A deleted root row and
+column are denoted by $L_G^{(r)}$.
+
+\begin{theorem}[Exact determinant continuation value]\label{thm:tait}
+For a nonempty connected classical shadow,
+\begin{equation}\label{eq:tait}
+ J_D(i)=(-i)^{B+v-1}\det L_G^{(r)}.
+\end{equation}
+If the shadow is disconnected, or there is an additional crossingless
+component, then $J_D(i)=0$. For a single crossingless unknot it is one.
+\end{theorem}
+\begin{proof}
+At $q=i$, the circle factor $q+q^{-1}$ is zero. Only states with exactly one
+circle contribute to~\eqref{eq:bracket}.
+
+For a subset $T$ of black edges, its planar ribbon neighborhood has
+$k(T)$ components and Euler characteristic $v-|T|$. Being planar, its number
+of boundary components is
+\[
+ c(T)=2k(T)-v+|T|.
+\]
+A spanning forest inequality gives $|T|\ge v-k(T)$. If $c(T)=1$, the displayed
+formula forces $1\ge k(T)$, so $k(T)=1$ and $|T|=v-1$. Thus $T$ is a spanning
+tree. Conversely a tree has a disk neighborhood and one boundary component.
+Connected classical shadows have disk faces, so this ribbon-neighborhood
+correspondence applies without hidden holes in a checkerboard region.
+
+For its associated state, an edge outside $T$ contributes smoothing $b_e$,
+and an edge inside $T$ contributes $1-b_e$. Therefore
+\[
+ |s(T)|=B+\sum_{e\in T}(1-2b_e),
+\]
+and since $|T|=v-1$,
+\[
+ (-i)^{|s(T)|}=(-i)^{B+v-1}\prod_{e\in T}(-1)^{b_e}.
+\]
+Sum over spanning trees. The weighted matrix-tree identity gives their
+signed weight sum as $\det L_G^{(r)}$.
+
+For completeness, the signed identity follows by writing a grounded
+incidence matrix $E$ and $W=\operatorname{diag}(w_e)$. Then
+$L_G^{(r)}=EWE^T$. Cauchy--Binet expands its determinant as
+$\sum_{|T|=v-1}\det(E_T)^2\prod_{e\in T}w_e$.
+An incidence minor is zero unless $T$ is a spanning tree, and is $\pm1$ for
+a tree, by leaf elimination. This proof uses no positivity of the weights.
+
+Finally, different shadow components can never be joined by smoothings.
+Every state then has at least two circles, and the specialization vanishes.
+An extra crossingless component has the same effect. A single circle has
+reduced bracket one by definition.
+\end{proof}
+
+The unsigned quantity $|J_D(i)|$ is the usual determinant specialization,
+but the phase in~\eqref{eq:tait} cannot be discarded when the result is an
+object's contribution to a larger formal summand. The implementation uses
+pairs of integers for Gaussian integers; no floating-point roots of unity
+or numerical determinants occur.
+
+\subsection{Reconstructing the entire residue-four vector}
+\begin{corollary}[Two evaluations suffice]\label{cor:fouroracle}
+Let $a=J_D(1)$, $\epsilon$ be as in~\eqref{eq:parity}, and
+$d=i^{-\epsilon}J_D(i)$. Then $d\in\Z$ and
+\begin{equation}\label{eq:reconstruct}
+ \sig(J_D)_\epsilon=(a+d)/2,\qquad
+ \sig(J_D)_{\epsilon+2}=(a-d)/2,
+\end{equation}
+with the other two coordinates zero. The two displayed halves are integers.
+Thus the residue-four vector of a completed matching can be obtained in
+polynomial bit time.
+\end{corollary}
+\begin{proof}
+By parity, only the two indicated residues occur. Let their integer
+coefficients be $u,v$. Evaluation at one gives $a=u+v$, and evaluation at $i$
+gives $J_D(i)=i^\epsilon(u-v)$. Solving yields~\eqref{eq:reconstruct} and all
+integrality statements. The two evaluations were computed polynomially in
+Lemma~\ref{lem:one} and Theorem~\ref{thm:tait}; exact integer determinants
+have polynomial bit complexity.
+\end{proof}
+
+\paragraph{Completion of a matching.}
+The suffix PD has boundary edge labels occurring once and internal labels
+occurring twice. A matching pairs every boundary label exactly once. Join
+paired labels by union--find, relabel the suffix crossings, and validate the
+resulting closed PD rotation system. This constructs the actual completion
+at the level needed by the state sum. The observer caches the answer for
+each distinct matching. Nonclassical completions or inconsistent boundaries
+are rejected rather than assigned an arbitrary determinant.
+
+For a component with recovered shifts $q_v$ and homological degrees $h_v$,
+the completed vector is
+\begin{equation}\label{eq:objectsum}
+ \sig(F_i^\bullet T)=\sum_v(-1)^{h_v}q^{q_v}
+                     \sig(J_{D_i(a_v)})\pmod{q^4-1}.
+\end{equation}
+No differentials of the completed suffix are required to evaluate this
+Euler expression. Their existence and grading are what justify its use as a
+homological lower bound.
+
+\section{Singular-safe boundary compression for signed determinants}
+\label{sec:kernel}
+
+\subsection{Terminal identifications and the precise algebraic problem}
+Let $L$ be a symmetric integer matrix indexed by $N$ vertices. In the graph
+application it is a signed weighted Laplacian. Choose an ordered nonempty
+terminal set $\mathcal B$ of size $b$, and let $\mathcal I$ be the remaining
+vertices. A partition $\pi$ of the terminals identifies terminals in each
+block. Ground the block containing the first terminal.
+
+If $\pi$ has $p$ blocks, put $q=p-1$. Let $Q_\pi$ be the $b\times q$ matrix
+whose columns indicate the nongrounded blocks. Terminal rows in the grounded
+block are zero. The grounded quotient matrix is exactly
+\begin{equation}\label{eq:quotient}
+ M_\pi=
+ \begin{pmatrix}I&0\\0&Q_\pi\end{pmatrix}^{\!T}
+ L
+ \begin{pmatrix}I&0\\0&Q_\pi\end{pmatrix},
+\end{equation}
+where the identity is indexed by $\mathcal I$. For a Laplacian this sums
+entries over identified vertices, with root rows and columns removed.
+Loops created by identification cancel in the resulting Laplacian.
+
+Writing $A=L_{\mathcal I\mathcal I}$, the usual formula
+$\det M_\pi=\det A\det(Q_\pi^T S Q_\pi)$ is legitimate only if $A$ is
+invertible. Signed graph interiors can fail that hypothesis even when a
+quotient determinant is nonzero. A Moore--Penrose inverse inserted without
+an additional border does not repair the determinant identity.
+
+\subsection{A maximal principal block}
+\begin{lemma}[Symmetric rank-revealing elimination]\label{lem:principal}
+Every symmetric rational matrix $A$ has a nonsingular principal submatrix
+$P$ of order $\rk A$. After permuting coordinates,
+\[
+ A=\begin{pmatrix}P&U\\U^T&V\end{pmatrix},
+ \qquad V-U^TP^{-1}U=0.
+\]
+Such a block can be found by exact symmetric pivots of orders one and two
+using $O(N^3)$ rational arithmetic operations for an $N\times N$ matrix.
+The empty block is allowed and has determinant one.
+\end{lemma}
+\begin{proof}
+If a diagonal entry is nonzero, use it as a one-dimensional pivot. If all
+diagonal entries vanish but some off-diagonal entry $a_{ij}$ is nonzero,
+the principal block on $i,j$ is
+$\left(\begin{smallmatrix}0&a_{ij}\\a_{ij}&0\end{smallmatrix}\right)$,
+with determinant $-a_{ij}^2\ne0$. Symmetric Schur elimination preserves
+symmetry on the remaining coordinates. Continue until the residual matrix
+is zero. At each pivot the rank drops by precisely the pivot order, so the
+selected principal block has order $\rk A$ and is nonsingular. Its residual
+Schur complement is zero. Each step updates a quadratic number of entries;
+there are at most $N$ steps.
+\end{proof}
+
+Apply this lemma only to the interior block, while updating its couplings
+to terminals. Let $r=\corank A$. In the order selected interior, residual
+interior, terminals, write
+\begin{equation}\label{eq:fullblocks}
+ L=\begin{pmatrix}
+ P&U&C_1\\
+ U^T&V&C_2\\
+ C_1^T&C_2^T&D
+ \end{pmatrix}.
+\end{equation}
+Define
+\begin{equation}\label{eq:RS}
+ R=C_2-U^TP^{-1}C_1,\qquad
+ S=D-C_1^TP^{-1}C_1,\qquad \alpha=\det P.
+\end{equation}
+The $r\times b$ matrix $R$ is the essential nullspace coupling. Dropping it
+is exactly the error avoided by the next theorem.
+
+\begin{theorem}[Singular-safe terminal kernel]\label{thm:kernel}
+For every terminal partition $\pi$,
+\begin{equation}\label{eq:kernel}
+ \det M_\pi=\alpha\det
+ \begin{pmatrix}
+ 0_{r\times r}&R Q_\pi\\
+ Q_\pi^T R^T&Q_\pi^T S Q_\pi
+ \end{pmatrix}.
+\end{equation}
+If $r>p-1$, or if $RQ_\pi$ has rank less than $r$, then this determinant is
+zero. In particular $r>b-1$ forces every terminal-partition query to vanish.
+Otherwise every potentially nonzero query in~\eqref{eq:kernel} has order at
+most $2b-2$.
+\end{theorem}
+\begin{proof}
+Eliminate $P$ from~\eqref{eq:fullblocks} by multiplying on the left and right
+by mutually transposed block-unitriangular matrices. Their determinants are
+one. The result is
+\[
+ \begin{pmatrix}P&0&0\\0&0&R\\0&R^T&S\end{pmatrix},
+\]
+because the interior residual $V-U^TP^{-1}U$ vanishes. Terminal
+identification and grounding leave the selected interior coordinates
+untouched. The same elimination is therefore valid in~\eqref{eq:quotient},
+with the terminal factors replaced by $Q_\pi$. Taking determinants gives
+\eqref{eq:kernel}.
+
+If $RQ_\pi$ has rank less than $r$, choose a nonzero vector $z$ in the kernel
+of $Q_\pi^TR^T$. Then $(z,0)$ is a kernel vector of the bordered matrix.
+This includes $r>q=p-1$. A nonzero query must therefore have $r\le p-1\le b-1$,
+so its order $r+p-1$ is at most $2b-2$.
+\end{proof}
+
+The theorem is algebraic: it holds for any symmetric integer input, not
+only positive Laplacians or planar graphs. A geometric extraction theorem
+is a separate matter, treated in Section~\ref{sec:integration}.
+
+\subsection{The critical square law}
+\begin{theorem}[Critical terminal partitions have a fixed square class]
+\label{thm:square}
+In the setting of Theorem~\ref{thm:kernel}, suppose $\pi$ has exactly $r+1$
+blocks. Then
+\begin{equation}\label{eq:square}
+ \det M_\pi=(-1)^r\alpha\,\det(RQ_\pi)^2.
+\end{equation}
+Consequently all nonzero critical-partition determinants have the same sign
+and the same class in $\Q^\times/(\Q^\times)^2$. For integer $L$, the product
+of any two nonzero such determinants is a positive integer square.
+\end{theorem}
+\begin{proof}
+Now $Q_\pi$ has $r$ columns. Write $C=RQ_\pi$ and $E=Q_\pi^TSQ_\pi$.
+Interchanging the two groups of $r$ columns in
+$\left(\begin{smallmatrix}0&C\\C^T&E\end{smallmatrix}\right)$ has sign
+$(-1)^{r^2}=(-1)^r$ and yields the block-triangular matrix
+$\left(\begin{smallmatrix}C&0\\E&C^T\end{smallmatrix}\right)$.
+Its determinant is $\det(C)^2$, including when $C$ is singular.
+Equation~\eqref{eq:kernel} proves~\eqref{eq:square}.
+
+Nonzero squares in $\Q$ are positive. Thus the common sign and square class
+are those of $(-1)^r\alpha$. For two partitions the product is the square
+of the rational number $\alpha\det(RQ_\pi)\det(RQ_\rho)$. It is also an
+integer. A rational number whose square is an integer is itself an integer:
+write it in lowest terms and compare prime factors of the denominator.
+This proves the final assertion.
+\end{proof}
+
+The response matrix $S$ does not affect critical queries at all. This gives
+an exact shortcut, implemented in \code{TerminalKernel.query}, and a useful
+metamorphic test: changing $S$ while preserving the other hypotheses cannot
+change a critical answer. The statement concerns graph cofactors. Converting
+it to a claim about a family of tangle closures still requires a correct
+common-graph extraction and the phase bookkeeping of~\eqref{eq:tait}.
+
+\subsection{Sharpness and a minimal counterexample}
+\begin{example}[A singular interior with nonzero determinant]\label{ex:singular}
+Take one interior vertex $u$ and terminals $t_0,t_1$, with edge weights $+1$
+on $ut_0$ and $-1$ on $ut_1$. In this order the Laplacian is
+\[
+ L=\begin{pmatrix}0&-1&1\\-1&1&0\\1&0&-1\end{pmatrix}.
+\]
+The interior block is zero. For distinct terminals, grounding $t_0$ leaves
+$\left(\begin{smallmatrix}0&1\\1&-1\end{smallmatrix}\right)$, of determinant
+$-1$. Identifying both terminals gives determinant zero. Thus singularity of
+$A$ does not make all completions vanish. This is already a planar signed
+graph, not an artifact restricted to nonplanar test matrices.
+\end{example}
+
+\begin{proposition}[The corank gate is sharp]\label{prop:sharp}
+For every $b\ge2$ there is a planar signed graph with $b$ terminals and
+interior corank $b-1$ whose distinct-terminal determinant is nonzero.
+Hence the threshold $r>b-1$ cannot be improved using only $r$ and $b$.
+\end{proposition}
+\begin{proof}
+Put $r=b-1$. Use terminals $t_0,\ldots,t_r$ and interior vertices
+$u_1,\ldots,u_r$. Add edges $u_jt_0$ of weight $+1$ and $u_jt_j$ of weight
+$-1$. The graph is a subdivided star and hence planar. Each interior diagonal
+is zero and there are no interior off-diagonals, so $A=0_r$ has corank $r$.
+For the distinct-terminal partition, $RQ=I_r$ up to a simultaneous sign
+convention, and~\eqref{eq:square} gives $(-1)^r$. Equivalently, the graph
+itself is its unique spanning tree and has that signed product.
+\end{proof}
+
+This proves sharpness of the \emph{vanishing threshold}, not a lower bound
+on every possible representation of the determinant function. In particular
+one must not infer an information-theoretic necessity for a $2b-2$ matrix
+from the size of the displayed bordered formula.
+
+\subsection{Batch arithmetic cost and exact bit sizes}
+\begin{corollary}[Batch cost]\label{cor:batch}
+For a fixed symmetric integer matrix of order $N$, $b$ terminals, and $M$
+terminal-partition queries, the kernel can be prepared and queried in
+\[
+ O(N^3+Mb^3)
+\]
+rational arithmetic operations. After the all-zero corank test, its numeric
+query core needs $O(b^2)$ rational entries. Preprocessing may use $O(N^2)$
+workspace; certificate and original-input storage are separate.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:principal} gives cubic preprocessing. If $r>b-1$, every answer
+is zero and the numeric query data can be replaced by that certified flag.
+Otherwise $R$ and $S$ have $O(b^2)$ entries. Since $Q$ is a partition
+indicator, aggregation into $RQ$ and $Q^TSQ$ costs $O(b^2)$ additions. The
+remaining determinant has order at most $2b-2$ and costs $O(b^3)$ rational
+operations. Reading each partition costs $O(b)$ and is absorbed.
+\end{proof}
+
+To turn this into a bit statement, suppose $|L_{ij}|\le H$. Hadamard's
+inequality bounds a minor of order $t\le N$ by $(\sqrt t\,H)^t$. Its bit
+length is $O(N(\log(N+2)+\log(H+2)))$. The entries in $R,S$ are ratios of
+bordered minors to $\det P$; their reduced numerators and denominators
+therefore have polynomially bounded bit length. Exact query elimination
+involves minors of matrices of order $O(b)$ with those rational entries,
+so its bit cost is polynomial in $N,b,\log(H+2)$ per query. No arithmetic
+operation on a long integer is assumed to cost one bit operation.
+
+For signed unit-weight Tait graphs with at most $n$ edges, one may take
+$H\le n$ and $N=O(n)$, giving polynomial bit cost in the original crossing
+count. The reference code uses Python integers and \code{Fraction}, an
+integer Bareiss determinant for the direct oracle, and exact symmetric
+Schur elimination for the kernel. It retains extra index and block data for
+independent certificate checking, including in all-zero cases; thus the
+certificate-retaining object is not advertised as a minimal $O(b^2)$-entry
+serialization in every degenerate case.
+
+\section{Integration contracts and executable algorithms}
+\label{sec:integration}
+
+\subsection{The general read-only observer}
+The package provides an observer for the stable in-memory shape of
+\code{FastScan} and \code{ComponentScan}. It reads matching identifiers,
+homological degrees, nonzero differential rows, and the algebra's matching
+pairs. When available, it also reads owner identifiers and multiplicity
+weights. It neither changes the differential nor imports the production
+scanner to run its local unit tests.
+
+\begin{lstlisting}
+observe(valid_relative_scan, actual_nonempty_suffix, retained_mark):
+    check that the mark remains in the suffix
+    find connected components of the live nonzero differential graph
+    for each stored component T:
+        check homogeneous coefficients and recover relative q-potentials
+        for each object a in T:
+            complete a with the actual suffix
+            validate its closed classical PD
+            cache its residue-four vector using q=1 and q=i
+        add the signed, q-shifted object vectors within T
+        take the integral l1 norm
+        multiply by T's nonnegative multiplicity
+    return the sum as a reduced-rank lower bound
+\end{lstlisting}
+
+The implementation is \path{detshadow/continuation.py}. It explicitly rejects
+an absent mark, mismatched boundaries, a nonhomogeneous coefficient, an
+inconsistent quantum potential, and invalid differential endpoints. These
+checks are necessary but not a complete proof-carrying reconstruction of
+$C_i$ from the original knot. An arbitrary object with scanner-like fields
+is not automatically a knot certificate.
+
+The returned record distinguishes the residue-four, Euler, and determinant
+character lower bounds. It always reports that it does not certify an
+unknot. Calling code may reject a \emph{validated knot} when the first bound
+is greater than one, provided the relative provenance contract has been
+met. A resource limit is not a topological result.
+
+\subsection{When one terminal kernel may be reused}
+For a batch of completed matchings, one would like a fixed signed graph
+$G_i$ with terminals, and for each matching $a$ a partition $\pi_a$ and phase
+$\eta_a$ such that
+\begin{equation}\label{eq:geometrycontract}
+ J_{D_i(a)}(i)=\eta_a\det L_{G_i/\pi_a}^{(\mathrm{root})}.
+\end{equation}
+A certificate for this must justify the graph correspondence and phase,
+not merely exhibit a numerically convenient partition. A common-disk tangle
+picture often motivates terminal identifications of black regions, but an
+arbitrary PD frontier does not automatically supply that picture. Closed
+regions, disconnected shadows, nesting, and the retained marked arc must
+all be handled explicitly.
+
+This package supplies a conservative \emph{verifier} for a proposed quotient
+identification. It independently constructs the actual completion's Tait
+cofactor and checks its equality, under a supplied row-and-column
+permutation, with the proposed quotient cofactor. The raw phase is obtained
+from the actual PD, not guessed from an unsigned determinant. Combined with
+the separate kernel block-identity verifier, this certifies the numerical
+bridge. It does not automatically \emph{find} a useful fixed graph or the
+terminal partitions.
+
+That verification has $O(N^2)$ matrix-comparison overhead per query, in
+addition to constructing the actual Tait graph. Therefore the pure
+$O(N^3+Mb^3)$ batch theorem is not advertised as the cost of an automatically
+extracted arbitrary-PD observer. With per-query cofactor certificates the
+additional $O(MN^2)$ work must be charged. A proved boundary-only extractor
+would be needed to remove that term. The general observer in the package
+uses fresh actual completions and remains valid without any common-graph
+hypothesis.
+
+\subsection{Certificate layers}
+There are three logically distinct certificates:
+\begin{description}[style=nextline]
+\item[Relative chain provenance.]
+The original knot diagram, scan order, valid local operations, cancellation
+maps, and direct-sum ancestry justify the processed complex. The present
+observer takes this as an input contract of the existing scanner.
+\item[Completion geometry.]
+A matching covers the actual suffix boundary, the completed rotation system
+is classical, and a retained mark makes reduced completion legitimate.
+For batch reuse, an additional quotient identification and phase are needed.
+\item[Exact linear algebra.]
+The selected principal block is nonsingular, the residual interior Schur
+block is zero, and $R,S,\alpha$ satisfy~\eqref{eq:RS}. The function
+\code{verify\_kernel} checks these identities using a separate block solve,
+not by trusting the builder's stored pivot history.
+\end{description}
+Neither a checked determinant nor a checked $d^2=0$ identity substitutes for
+the first two layers. Conversely, once those layers are valid, the observer
+does not need to enumerate the suffix crossing cube.
+
+\subsection{Diagnostic runner and release boundaries}
+The supplied \path{integration/upstream_probe.py} accepts a local
+\path{fast/} checkout. It observes proper prefixes of natural and shuffled
+orders, then completes each scanner and compares all lower bounds with its
+reduced rank. It also compares small cases with the independent cube,
+checks $d^2=0$, and records imported source hashes. Object exhaustion yields
+an explicit \code{UNKNOWN} record.
+
+This diagnostic was \emph{not run against an upstream checkout in this
+session}. It is not a production performance patch. In particular, the
+reference determinant observer is not yet interruptible inside a long
+integer elimination, so it must not be inserted into a hard-deadline
+production path without a budget policy or process boundary. The safe
+initial integration is opt-in, read-only observation with regression checks,
+not a new default recognizer.
+
+\section{Stopping-prefix complexity and the quasi-polynomial target}
+\label{sec:complexity}
+
+\subsection{Execution parameters rather than an unproved structural promise}
+Let $n$ be the original crossing count, and fix a scan order. Let $j$ be a
+proper prefix at which a marked residue-four witness is found. Define $W$
+to be the largest frontier size among the \emph{visited} scan stages, and
+let $R\ge1$ bound the physically allocated object count at every such stage,
+including expansion before reduction, cancelled slots still stored in
+arrays, and representatives before sharing. Coefficient support sizes and
+exact multiplicity bit lengths are charged separately below.
+
+These are actual execution parameters. Replacing $R$ by the number of
+matching types, or by a minimal survivor count that omits temporary
+expansion, would not justify the same bound. Likewise, existence of a good
+order does not give an algorithm to find one; order generation must be
+supplied or included in the cost.
+
+\begin{theorem}[Controlled successful-prefix bound]\label{thm:complexity}
+Assume the existing exact scanner is run by explicit crossing extension and
+ordinary finite scalar-unit elimination, with polynomial bookkeeping in its
+physical object count and coefficient operations costing $2^{O(W)}$ times
+polynomial factors. Suppose its stagewise decompositions satisfy the marked
+and grading hypotheses proved above. Using the general actual-completion
+observer at at most $n$ visited stages adds no dependence on the maximum
+frontier of an unvisited suffix, and the total work through a successful
+prefix is bounded by
+\begin{equation}\label{eq:cost}
+ T_{\mathrm{stop}}\le \poly(n,R)\,2^{O(W)}
+\end{equation}
+in bit operations, with an additional separately charged order-construction
+cost. In particular, if $W=O(\log^2(n+2))$ and
+$\log R=O(\log^2(n+2))$, the stopping-prefix work is
+$2^{O(\log^2(n+2))}=n^{O(\log n)}$.
+\end{theorem}
+\begin{proof}
+At each visited stage there are at most $R$ objects and $O(R^2)$ potential
+differential entries. At a frontier with $W$ endpoints, an overlay has at
+most $W/2$ circles, so a fully stored binary coefficient has at most
+$2^{W/2}$ bits. The assumed finite elimination and its bookkeeping are
+therefore bounded by a polynomial in $n,R$ times $2^{O(W)}$. This is a
+conservative bound, not a prediction of sparse performance.
+
+Finding differential components and recovering shifts requires traversal of
+these explicit entries and, for validation, their coefficient supports.
+The same factor covers it. A matching completion retains at most $n$
+crossings and is built from polynomial-size PD data. Its connectivity,
+checkerboard graph, signed integer cofactor, and residue reconstruction all
+cost polynomial bit time in $n$. There are at most $R$ distinct matching
+queries per observation and at most $n$ observations.
+
+Each crossing has two smoothings and can create at most two closed circles
+in a local gluing. Delooping therefore creates at most eight children per
+old object. The virtual expanded object count through $n$ crossings is at
+most $8^n$ starting from the unit. Exact multiplicities consequently have
+$O(n)$ bits. An object-completion Euler value has at most exponential
+magnitude in $n$, and adding at most $R$ such values uses
+$O(n+\log(R+1))$ bits. Recovering shifts and applying them modulo four also
+uses polynomial-size integers. Thus neither signed accumulation nor
+multiplicity arithmetic hides another uncharged exponential bit cost.
+
+The suffix is evaluated by a determinant of polynomial order, not by
+scanning its crossing cube. Hence its possible scan-frontier width does
+not enter this observer cost. Combining these estimates proves
+\eqref{eq:cost}. Substitution of the two logarithmic-square hypotheses
+proves the final statement.
+\end{proof}
+
+The inherited Euler observer already has a direct connectivity route. The
+new point is not that every old suffix-width dependence is newly removed;
+it is that the \emph{stronger marked determinant/residue observer} also has
+a polynomial completion oracle, while its erased grading can be recovered
+from the existing keys.
+
+\subsection{What this theorem does not establish}
+Equation~\eqref{eq:cost} does not force $B_4$ to become larger than one before
+$R$ or $W$ grows. It also does not show that a nontrivial knot must be exposed
+by this observer while the mark remains in a proper suffix. An unknot never
+has such a rejection witness. It still needs a separate complete certificate
+or the existing exact backend. The current source and this package provide
+no universal bound placing all inputs in the stated quasi-polynomial regime.
+
+A final reduced complex with zero differential can be split into individual
+graded generators, at which point its sum of shadow norms is exactly its
+rank. This mathematical observation is not a shortcut: obtaining that
+complex may already have incurred exponential work. It also differs from
+illegally dividing arbitrary unmarked closed summands, as warned in
+Remark~\ref{rem:divide}.
+
+For completeness, full reduced rank one over $\F$ still suffices for
+unknot recognition. Universal coefficients bound the reduced rational rank
+by the $\F$ dimension. The rational rank is at least one, for instance by
+its normalized Euler value at one. Thus $\F$ rank one forces rational rank
+one, and Kronheimer--Mrowka apply~\cite{km}. None of these implications says
+that a partial lower bound of one is sufficient.
+
+\subsection{A reasonable performance policy}
+The observer should initially be used where the maintained algorithm has
+already discovered several distinct summands or where cached completions
+make its cost modest. An optional policy can skip a probe after its budget
+is exhausted and continue the original scanner. Such skipping loses a
+possible early certificate but cannot change the represented complex.
+The lower bound from an earlier successful probe remains valid.
+
+To evaluate actual improvement, measure the added determinant cost, the
+first stage exposing $B_4>1$, and the remaining scan work avoided. Reporting
+only a faster determinant kernel would omit the decisive end-to-end
+question. Conversely, large virtual multiplicities can make a small
+positive template contribution decisive, but only after that contribution
+has been justified by marked completion.
+
+\section{Validation, measurements, and reproducible artifacts}
+\label{sec:validation}
+
+\subsection{Independent checks actually executed}
+All computations in the delivered local package use the Python standard
+library. The independent cube is an exponential validation oracle and is
+not called by the fast matching-specialization path. The completed checks
+are summarized in Table~\ref{tab:checks}; full inputs and outcomes are
+retained in the JSON records.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lr}
+\toprule
+Check & Completed count\\
+\midrule
+Unit-test methods & 35\\
+Diagram shadow comparisons & 701\\
+Explicit smoothing states in those comparisons & 133,923\\
+Reduced homology comparisons & 83\\
+Columns checked for $d^2=0$ & 62,904\\
+Signed random graphs & 160\\
+Graphs with singular interior blocks & 57\\
+Terminal-quotient determinant comparisons & 4,000\\
+\bottomrule
+\end{tabular}
+\caption{Executed local checks. Counts refer to the delivered run, not to
+an upstream production test suite.}\label{tab:checks}
+\end{table}
+
+The diagram experiment uses seed 20261007 and 700 generated braid closures
+on two through six strands with at most ten crossings, including links,
+unused strands, and disconnected shadows. It adds the repository's
+11-crossing Conway PD~\cite{conwayinput}. Every fast residue vector is compared with the full
+state sum, which independently expands the factors
+$(q+q^{-1})^{c(s)-1}$. A bounded subset is compared with a separately built
+marked reduced differential and exact binary homology. In that oracle the
+marked circle is forced to carry $x$, with its conventional reduced grading
+shift. Merge and split maps are implemented directly from the Frobenius
+rules; every generated two-step differential column is checked.
+
+The Conway input has reduced $\F$ rank 33 in the independent computation,
+while its global residue-four norm is one. The positive three-braid
+$(\sigma_1\sigma_2)^5$ has reduced rank seven and again global residue norm
+one. These are controls demonstrating the incompleteness of the global
+specialization. They do \emph{not} demonstrate an early component-stage
+speedup on these knots, because no upstream scan of them with the observer
+was executed here.
+
+The graph experiment compares every kernel query with an independently
+constructed quotient matrix and an integer Bareiss determinant. It includes
+singular interiors and checks the kernel by an independent block-identity
+solve. Unit tests additionally cover zero-dimensional determinants,
+two-dimensional pivots with zero diagonals, all partitions of small terminal
+sets, the sharp-corank family through $r=12$, the critical square law,
+coefficient homogeneity, potential cycle failures, and deliberately corrupted
+algebraic or geometry certificates.
+
+Finite computations support the implementation and expose normalization
+errors; they are not substitutes for the written proofs. Passing these
+checks is not a Lean formalization, an exhaustive theorem-priority review,
+or a complete topological certificate for arbitrary externally supplied
+scanner objects.
+
+\subsection{Paired exact determinant-kernel benchmark}
+The benchmark compares two fresh direct controls, A and B, with a compressed
+arm. Each direct arm rebuilds every quotient matrix and computes its exact
+Bareiss determinant. The compressed arm includes both kernel preprocessing
+and all its queries. Graph construction precedes the timed arms; independent
+certificate verification is excluded from all arms. Arm order is randomized
+in each of three paired rounds. Every integer answer is checked for equality.
+Each case has six terminals and 96 queries.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrrrr}
+\toprule
+$N$ & $r$ & Direct A (s) & Compressed (s) & A/compressed & A/B\\
+\midrule
+32 & 0 & 0.1054 & 0.0189 & 5.52 & 1.002 \\
+56 & 0 & 0.5727 & 0.0830 & 6.90 & 1.011 \\
+80 & 0 & 1.8632 & 0.2928 & 6.43 & 1.031 \\
+56 & 1 & 0.6086 & 0.0864 & 7.05 & 0.971 \\
+\bottomrule
+\end{tabular}
+\caption{Exact determinant-kernel measurements. Times are medians; ratios are
+medians of paired ratios, not ratios of medians. The compressed arm includes
+preprocessing. Each case uses six terminals and 96 queries.}\label{tab:bench}
+\end{table}
+
+The measurements are from CPython 3.13.5 on the recorded Linux x86-64 host.
+They are small-sample, host-dependent kernel measurements, not fitted
+asymptotic exponents or hardware-independent guarantees. The A/A ratios
+measure ordinary timing variability; three rounds are not a confidence
+interval. The signed graph family is not asserted to be the frontier graph
+of a measured knot scan. In particular the table does not establish that
+recognizing a knot is faster by its listed factors.
+
+\subsection{Package map and reproduction}
+The package contains the self-contained article source and compiled PDF,
+six implementation modules, unit tests, complete validation and benchmark
+JSON, a worked singular-kernel certificate, source provenance, and integration
+notes. The important paths are:
+\begin{center}\small
+\begin{tabular}{p{0.40\linewidth}p{0.53\linewidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\path{detshadow/continuation.py} & Quantum recovery and read-only component observer.\\
+\path{detshadow/diagram.py} & PD validation, signed Tait phase, residue oracle.\\
+\path{detshadow/linalg.py} & Exact determinants, singular kernel, independent verification.\\
+\path{detshadow/geometry_certificate.py} & Proposed quotient-to-actual-PD verifier.\\
+\path{detshadow/cube.py} & Independent reduced homology validation oracle.\\
+\path{experiments/} & Seeded comparisons and paired kernel benchmark.\\
+\path{integration/upstream_probe.py} & Local-checkout diagnostic, supplied but not executed here.\\
+\path{results/} & Raw evidence, not merely aggregate speed claims.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+From the package root:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+PYTHONPATH=. python experiments/validate.py
+PYTHONPATH=. python experiments/benchmark.py
+cd paper && sh build.sh
+\end{lstlisting}
+No knot-library dependency is required. Running the experiments overwrites
+the corresponding JSON with fresh local measurements; the delivered PDF
+records the delivered run. Preserve those records before producing a
+comparison. The article's TeX file embeds its tables and bibliography, so
+it can also be compiled independently.
+
+\section{Further research questions with concrete success criteria}
+\label{sec:questions}
+
+\subsection{Immediate correctness and integration questions}
+\paragraph{1. Complete upstream prefix regression.}
+Run the supplied diagnostic on a pinned complete checkout, with natural,
+greedy, and shuffled orders. The immediate success criterion is agreement
+with full reduced ranks, valid recovered potentials at every tested stage,
+and monotonicity whenever the component decomposition evolves by refinement.
+Tests should include determinant-one knots and RI/RII-expanded unknots.
+A failed potential equation should be diagnosed as a grading or interface
+failure, not bypassed.
+
+\paragraph{2. A certified terminal-partition producer.}
+Construct a map from a suitable frontier embedding to one signed suffix
+graph and the partition and phase for every matching. Prove exactly when
+black-region identifications are sufficient and when extra region or
+connectivity data are needed. A useful result would give $\poly(b)$
+per-matching extraction and a checkable embedding certificate, rather than
+only an $O(N^2)$ cofactor comparison. Arbitrary PD frontiers must not be
+silently treated as one disk.
+
+\paragraph{3. Interruptible exact arithmetic and inference budgets.}
+Add cancellation-safe interruption points or isolate determinant probes in
+bounded worker processes. Record preprocessing, rational bit sizes,
+coefficient support scans, and observer time separately from scanner time.
+The success criterion is that exhausted optional inference leaves the
+original complex untouched and never becomes an unknot verdict.
+
+\subsection{Questions about exposing useful witnesses}
+\paragraph{4. Early residue witnesses for determinant-one knots.}
+On the repository's Conway, Kinoshita--Terasaka, and determinant-one stress
+inputs, determine whether literal component splitting exposes $B_4>1$
+substantially before the complete backend. A positive result needs paired
+end-to-end measurements and the associated stage records. A negative result
+would be equally informative if it identifies why summands remain coupled.
+
+\paragraph{5. Root and order optimization.}
+The retained root crossing constrains the final part of an order. Can one
+choose a root and order jointly to minimize observed cost until a witness
+appears? A proved target would be a constructive family theorem, not just
+the existence of a good order found by exhaustive search. Certificate
+quality and frontier width need not be optimized by the same order.
+
+\paragraph{6. Coherence after local simplification.}
+Proposition~\ref{prop:defect} gives an exact target: eliminate overlap between
+even and odd homological parity in each quantum residue of completed
+summands. Identify a nontrivial class of genuine knot tangles for which
+local simplification guarantees this coherence. Such a theorem would turn
+the residue observer from a lower bound into an exact rank computation on
+that class. The abstract dotted-block example is not such a realization
+theorem.
+
+\subsection{Stronger algebraic and structural questions}
+\paragraph{7. Dynamic singular kernels.}
+As the scan moves, the suffix graph changes. Can $P,R,S$ be updated under
+crossing deletion and terminal promotion without rebuilding from scratch,
+while certifying rank changes and preserving polynomial bit bounds? An
+algorithm assuming constant corank would need a separate mechanism for
+rank-drop events; those are precisely where an ordinary inverse update
+fails.
+
+\paragraph{8. Topological meaning of the critical square class.}
+When a fixed-graph tangle family satisfies the quotient contract, the
+critical-partition determinants share one rational square class. Determine
+which tangle families realize large corank and whether their square-class
+constraint yields useful pruning before exact determinant computation.
+Any statement about link determinants must remove raw phases correctly and
+handle zero determinants separately.
+
+\paragraph{9. Higher cyclotomic residue observers.}
+Replace $q^4-1$ by another explicitly tractable quotient. The algebraic
+norm proof extends immediately, but the matching-completion oracle may no
+longer be polynomial-time. The substantive target is a stronger observer
+with a proved exact evaluation algorithm and bit-cost bound, not simply
+more sample points evaluated exponentially.
+
+\paragraph{10. Physical-size bounds and witness exposure.}
+Prove, for a meaningful family of input diagrams, that a useful marked
+witness is exposed while $W$ and $\log R$ stay polylogarithmic. This is the
+missing bridge to a family-level quasi-polynomial recognition theorem.
+Bounds on coefficient algebra dimension or matching-type count alone do
+not supply it. A strong negative result would construct families forcing
+large physical representation before every witness in this observer class.
+
+\paragraph{11. Combining windows, twists, and component observers.}
+The new observer can in principle share a valid intermediate complex with
+the existing window and twist mechanisms. A composition theorem must track
+which guard degrees, marked arcs, and decomposition maps survive the
+handoff. A claimed combined speedup should be measured against each existing
+mechanism separately as well as against the default pipeline.
+
+\paragraph{12. Formal proof and minimal certificate development.}
+The matrix identities, square law, residue norm properties, and graph
+potential uniqueness are good initial formalization targets. The harder
+step is connecting scanner operations to a marked graded tangle category.
+A small numerical certificate is not enough until that semantic bridge is
+also trusted or verified.
+
+\section{Conclusion}
+The completed continuation supplies a stronger exact observer and a
+singular-safe determinant engine. Its most useful interface result is that
+homogeneous coefficients recover enough quantum information from existing
+ungraded connected-component keys. Its most concrete new algebraic
+consequence is the critical-partition square law, together with a sharp
+corank gate and a batch determinant formula valid for signed weights.
+
+These results isolate a tractable portion of the recognition problem:
+completed summand obstructions can be evaluated without expanding the
+suffix cube, and shared graph interiors can be compressed without assuming
+invertibility that signed graphs do not possess. The remaining global
+question is whether genuine knot computations expose decisive summands
+before physical representation growth becomes large. The package provides
+proofs, executable checks, and explicit integration boundaries for studying
+that question, rather than treating a local kernel improvement as a proof
+of unrestricted quasi-polynomial recognition.
+
+\appendix
+\section{Worked phase and square-law examples}
+\label{app:worked}
+
+\subsection{A trefoil state-sum check}
+For the package's positive two-strand word $(\sigma_1)^3$, the raw reduced
+polynomial computed by the independent state sum is a signed monomial
+normalization of the usual trefoil polynomial. Rather than making an
+orientation-dependent table a convention, the test checks the complete
+Laurent dictionary against the signed Tait phase and against all four
+residues. The reduced rank is three, the absolute Euler value at one is one,
+and the determinant character norm is three. Thus the initial residue
+observer already detects this knot, although the production pipeline's
+existing determinant filter would do so more cheaply. This example validates
+normalization; it is not evidence of a new pipeline advantage.
+
+\subsection{A square-class family with a nontrivial scale}
+Start with $r$ balanced interior vertices: each is incident only to terminals,
+and the sum of its signed incident weights is zero. Thus their interior
+block is zero. Add an additional interior leaf attached to the root
+terminal by a weight-two edge, or equivalently by two parallel unit edges.
+Its selected principal block is $P=(2)$, so $\alpha=2$. For any critical
+partition into $r+1$ terminal blocks,
+\[
+ \det M_\pi=(-1)^r\,2\,\det(RQ_\pi)^2.
+\]
+In this construction $R$ is integral. The nonzero absolute determinants
+are twice integer squares, regardless of arbitrary additional terminal
+edges in the response block. This is the family used to test the critical
+shortcut for $r=1,2,3$ with five terminals and all critical partitions.
+No factorization algorithm or probabilistic square test is involved in the
+formula.
+
+\section{Proof and implementation failure checklist}
+\label{app:checklist}
+\begin{longtable}{p{0.33\linewidth}p{0.60\linewidth}}
+\toprule
+Tempting shortcut & Required correction\\
+\midrule
+\endhead
+Discard quantum information completely & Recover edge-weight potentials within each connected component; check homogeneity and cycles.\\[3pt]
+Use arbitrary unmarked closed summands & Retain a mark outside processed operations before taking reduced completion.\\[3pt]
+Use $p_a(-1)$ as multiplicity & Count copies nonnegatively with $p_a(1)$; shifts act only before a shift-invariant norm.\\[3pt]
+Saturate signed Euler coordinates & Accumulate exactly; cap only nonnegative contributions after the norm.\\[3pt]
+Replace a complex by disconnected vector records & Require genuine relative decomposition and ancestry, not only the appearance of a sparse matrix.\\[3pt]
+Drop the phase of $J_D(i)$ & Retain $(-i)^{B+v-1}$ until all terms of a component are summed.\\[3pt]
+Use a Tait cofactor on a disconnected shadow & Return the zero specialization, or justify a separately correct disconnected formula.\\[3pt]
+Set all queries to zero when $A$ is singular & Keep the residual nullspace coupling $R$; use the bordered formula.\\[3pt]
+Use a pseudoinverse as an ordinary inverse & Prove the relevant singular determinant identity; the missing border cannot be omitted.\\[3pt]
+Apply a batch graph kernel to every matching & Establish the fixed-graph quotient and phase contract for that geometry.\\[3pt]
+Call a parameterized stopping bound universal & Prove constructive bounds on visited physical size and witness exposure for the intended input class.\\[3pt]
+Report kernel speedup as recognition speedup & Run the complete opt-in and baseline pipelines with paired measurements.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{khovanov}
+M. Khovanov, \emph{A categorification of the Jones polynomial},
+1999, \href{https://arxiv.org/abs/math/9908171}{arXiv:math/9908171}.
+
+\bibitem{bn-tangles}
+D. Bar--Natan, \emph{Khovanov's homology for tangles and cobordisms},
+2004, \href{https://arxiv.org/abs/math/0410495}{arXiv:math/0410495}.
+
+\bibitem{bn-fast}
+D. Bar--Natan, \emph{Fast Khovanov Homology Computations},
+2006, \href{https://arxiv.org/abs/math/0606318}{arXiv:math/0606318}.
+
+\bibitem{km}
+P. B. Kronheimer and T. S. Mrowka,
+\emph{Khovanov homology is an unknot-detector},
+2010, \href{https://arxiv.org/abs/1005.4346}{arXiv:1005.4346}.
+
+\bibitem{boninger}
+J. Boninger, \emph{The Jones Polynomial from a Goeritz Matrix},
+2021, \href{https://arxiv.org/abs/2110.03082}{arXiv:2110.03082}.
+
+\bibitem{kron}
+F. D\"orfler and F. Bullo,
+\emph{Kron Reduction of Graphs with Applications to Electrical Networks},
+2011, \href{https://arxiv.org/abs/1102.2950}{arXiv:1102.2950}.
+
+\bibitem{lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+25 July 2026, \href{https://arxiv.org/html/2607.23350v1}{arXiv:2607.23350v1}.
+
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, source repository,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8e5edcedb580523bdd4946233f7d0b42a97901d4/Topology/UnknotRecognition}{observed October 2026 revision}.
+See \path{provenance.json} for the exact per-file audit scope.
+
+\bibitem{component}
+ProveIt, \emph{component\_scan.py},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8e5edcedb580523bdd4946233f7d0b42a97901d4/Topology/UnknotRecognition/fast/fastunknot/component_scan.py}{pinned source}.
+
+\bibitem{grading}
+ProveIt, \emph{audit\_grading.py},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/dfc762327721d9d8040eb62a36a4ab20c005b9e5/Topology/UnknotRecognition/fast/audit_grading.py}{pinned grading diagnostic}.
+
+\bibitem{conwayinput}
+ProveIt, \emph{examples/conway.json},
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/8e5edcedb580523bdd4946233f7d0b42a97901d4/Topology/UnknotRecognition/fast/examples/conway.json}{pinned Conway PD}.
+\end{thebibliography}
+\end{document}
