@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Supply the proved EuclideanJetLayers Borel structure explicitly as
+OpensMeasurableSpace in the integrable-mass proof to avoid instance-search
+timeout. All upstream theorem statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.CoveredJetAmbientLift
 import OAI.Combinatorics.Progressions.Estimates.PhysicalJetCoverCancellation
@@ -407,6 +409,8 @@ theorem allocatedProbabilityMajorant_integrable_mass (η A : ℝ≥0) (C V : Fin
     (∫ y, allocatedProbabilityMajorant B U b S o p η A d y ∂haar) ≤
       (η : ℝ) * A * (2 * (∑ j, (C j : ℝ) * ((Fintype.card (J j) : ℝ) + 1)) + 1) ^
         Fintype.card (Σ a : LayerSamplerAxis I n, O a.1) := by
+  let : OpensMeasurableSpace (EuclideanJetLayers U O) :=
+    @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
   let g := allocatedProbabilityMajorant B U b S o p η A d
   have hp := allocatedProbabilityTorusKernel_bounds B U b S o p η A C V hC hV
   have hg0 (y) : 0 ≤ g y := (hp.1 (coveredJetAmbientTorus U d y)).1
