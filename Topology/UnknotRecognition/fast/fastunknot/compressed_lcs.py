@@ -110,6 +110,36 @@ class CommonSubstring:
                     positions[child] = min(positions.get(child, offset), offset)
         return nodes, positions
 
+    def shared_runs(self, nodes, common):
+        """Maximum contiguous run using only the shared signed alphabet.
+
+        Terminal ids encode signed letters uniquely within one arena. A letter
+        outside common is a separator that no common substring can cross.
+        """
+        a, prefix, suffix, longest = self.arena, {}, {}, {}
+        for node in nodes:
+            a.tick()
+            rule = a.rules[node]
+            if rule[0] == 't':
+                prefix[node] = suffix[node] = longest[node] = int(node in common)
+            else:
+                left, right = rule[1:]
+                prefix[node] = prefix[left]+prefix[right] if prefix[left] == a.lengths[left] else prefix[left]
+                suffix[node] = suffix[right]+suffix[left] if suffix[right] == a.lengths[right] else suffix[right]
+                longest[node] = max(longest[left], longest[right], suffix[left]+prefix[right])
+        a.stats['lcs_bound_nodes'] = a.stats.get('lcs_bound_nodes', 0)+len(nodes)
+        return longest
+
+    def extensions(self, u, v):
+        """Yield witnesses as soon as checked, so proved bounds can stop work."""
+        a = self.arena
+        yield self.extension(u, v, 0)
+        for left, right, swapped in ((u, v, False), (v, u, True)):
+            for ap in self.overlaps(a.rules[left][1], a.rules[right][2]):
+                for k in self.critical(left, right, ap):
+                    length, first, second = self.extension(left, right, k)
+                    yield (length, second, first) if swapped else (length, first, second)
+
     def longest(self, x, y, cap=None):
         """Return (min(LCS length, cap), x start, y start); empty uses (0,0,0)."""
         a = self.arena
@@ -127,36 +157,39 @@ class CommonSubstring:
             return best
         xn, xp = self.offsets(x)
         yn, yp = self.offsets(y)
-        terminals = set(n for n in xn if a.rules[n][0] == 't')
-        common = next((n for n in yn if n in terminals), None)
-        if common is None:
+        xt = {n for n in xn if a.rules[n][0] == 't'}
+        yt = {n for n in yn if a.rules[n][0] == 't'}
+        common = xt & yt
+        if not common:
             return 0, 0, 0
+        xb = self.shared_runs(xn, common) if common != xt else a.lengths
+        yb = self.shared_runs(yn, common) if common != yt else a.lengths
+        limit = min(limit, xb[x], yb[y])
         if not best[0]:
-            best = 1, xp[common], yp[common]
+            terminal = min(common)
+            best = 1, xp[terminal], yp[terminal]
         if best[0] == limit:
+            a.stats['lcs_bound_stops'] = a.stats.get('lcs_bound_stops', 0)+1
             return best
-        xs = sorted((n for n in xn if a.rules[n][0] == 'c'), key=lambda n: -a.lengths[n])
-        ys = sorted((n for n in yn if a.rules[n][0] == 'c'), key=lambda n: -a.lengths[n])
+        xs = sorted((n for n in xn if a.rules[n][0] == 'c'), key=lambda n: -xb[n])
+        ys = sorted((n for n in yn if a.rules[n][0] == 'c'), key=lambda n: -yb[n])
         for u in xs:
-            if a.lengths[u] <= best[0]:
+            if xb[u] <= best[0]:
                 break
             for v in ys:
                 a.tick()
-                if a.lengths[v] <= best[0]:
+                if yb[v] <= best[0]:
                     break
                 a.stats['lcs_cut_pairs'] = a.stats.get('lcs_cut_pairs', 0)+1
-                candidates = [(self.extension(u, v, 0), False)]
-                for left, right, swapped in ((u, v, False), (v, u, True)):
-                    for ap in self.overlaps(a.rules[left][1], a.rules[right][2]):
-                        for k in self.critical(left, right, ap):
-                            candidates.append((self.extension(left, right, k), swapped))
-                for (length, first, second), swapped in candidates:
+                pair_limit = min(xb[u], yb[v], limit)
+                for length, first, second in self.extensions(u, v):
                     if length > best[0]:
-                        if swapped:
-                            first, second = second, first
                         best = min(length, limit), xp[u]+first, yp[v]+second
                         if best[0] == limit:
                             return best
+                    if best[0] >= pair_limit:
+                        a.stats['lcs_pair_stops'] = a.stats.get('lcs_pair_stops', 0)+1
+                        break
         return best
 
 
