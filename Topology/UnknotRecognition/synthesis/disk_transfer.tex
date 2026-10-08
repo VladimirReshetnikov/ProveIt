@@ -1,0 +1,227 @@
+\section{Disk-certified transfer after an adaptive pause}
+\label{sec:disk-transfer-integration}
+
+Report 21 supplies the geometric certificate needed to apply a finite radical
+transfer to actual scan prefixes. The integrated option
+\code{--reduction disk-adaptive} extends the existing adaptive policy:
+ordinary sparse cancellation first, the cheap binary survivor test second,
+and a bounded full-transfer attempt only if adjacent surviving degrees prevent
+that shortcut. Successful transfer retains the radical differential between
+those degrees. Failure of the geometric or local-work gate resumes the same
+partially reduced complex. The default remains \code{standard}.
+This is an implementation of another exact cancellation strategy within the
+local-complex framework of Bar-Natan \cite{barnatan}, not a new recognition
+criterion or a general quasi-polynomial algorithm.
+
+\subsection{Certifying the boundary from the processed rotation system}
+For a processed prefix $P$, pair the darts of every internal edge and fix each
+frontier dart. Call this permutation $\alpha$; let $\sigma$ rotate the four
+darts at each crossing. The cycles of $\sigma\alpha$ are boundary walks of
+the ribbon neighborhood of $P$. The implementation checks that this prefix
+is connected, that
+\[
+ |V(P)|-|E_{\rm internal}(P)|+\#\text{boundary walks}=2,
+\]
+and that all frontier darts occur on one boundary walk. These conditions
+certify a genus-zero neighborhood with one marked boundary component.
+Filling its unmarked holes gives a disk. In a validated connected full
+diagram, no unprocessed crossing component can hide in such a hole: a
+connection to the rest would produce a frontier dart on that boundary.
+
+Reading the marked boundary gives the common cyclic endpoint order. Every
+smoothing is embedded in this disk, so its matching is noncrossing in that
+order. Delooping closed circles leaves endpoint pairings unchanged. The code
+also checks all distinct live matching types against the order, using the
+usual stack test for nested arcs. Numeric edge labels do not themselves
+specify an order. In particular the three pairings of four points cannot all
+be noncrossing in one cyclic order; applying a disk-algebra theorem to them
+without this check would be invalid.
+
+The certificate records the boundary walks, vertex and internal-edge counts,
+cyclic order, and a digest of the actual prefix. The digest binds data but
+does not authenticate a source. Replay recomputes all the fields. Certificate
+construction is linear in indexed prefix darts; checking every prefix
+independently costs $O(n^2)$ such graph operations. The adapter records the
+actual supplied scan order and verifies its current frontier against the
+certificate. It does not replace a good greedy order automatically.
+
+The report also supplies a polynomial ear-insertion construction of connected
+prefix-and-suffix orders for biconnected crossing graphs. Such a cut admits
+the disk certificate, but the construction need not preserve a small width.
+The helper is retained for experiments and independently checked on smoothing
+states; no claim of a width approximation or a universally good order follows.
+
+\subsection{Retaining the maps that the binary profile cannot determine}
+For a frontier of $2b$ points, let $J$ be the positive-weight radical in its
+disk matching category. A dotted basis map from matching $a$ to matching $c$
+has weight $b-k(a,c)+2|S|$, where $k(a,c)$ is the number of overlay circles.
+Composition adds weights; the only weight-zero basis maps are identity maps
+of equal matchings. The earlier radical analysis gives $J^{2b}=0$ for
+$b\ge1$. Briefly, the weight bound first gives $J^{2b+1}=0$; a potentially
+nonzero product of $2b$ positive factors would consist entirely of undotted
+weight-one surfaces and produce a fully dotted endomorphism. Over $\F$, an
+undotted positive-genus component vanishes and every surviving genus-zero
+component leaves an output circle undotted. The fully dotted term is
+therefore impossible. If all positive maps preserve their matching, the
+square-free endomorphism ring gives the stronger exponent $b+1$.
+
+Split the actual differential as $d=d_0+\delta$, retaining in $d_0$ only
+the constant coefficient of maps between equal matchings. Undotted maps
+between distinct matchings belong to $\delta$; bit zero alone is not an
+identity test. Binary elimination constructs a contraction onto the residue
+homology with inclusion $i$, projection $p$, and degree-minus-one homotopy $h$:
+\[
+ pi=1,\quad d_0h+hd_0=1+ip,\quad hi=ph=h^2=0,\quad d_0i=pd_0=0.
+\]
+All three maps have scalar identity coefficients. Hence nilpotence makes
+the following inverse series finite:
+\begin{align*}
+ I&=(1+h\delta)^{-1}i,&
+ D&=p\delta(1+h\delta)^{-1}i,\\
+ H'&=(1+h\delta)^{-1}h,&
+ P&=p(1+\delta h)^{-1}.
+\end{align*}
+These are the characteristic-two perturbation formulas; the standard
+homological perturbation lemma supplies the deformation retract
+\cite{crainic-perturbation}. In particular
+\[
+ D=\sum_{j=0}^{2b-2}p\delta(h\delta)^ji
+\]
+for $b\ge1$, with at most $b$ positive factors needed in the
+matching-preserving case. At a closed frontier $D=0$ and binary homology
+already suffices. The output has exactly the previously predicted minimal
+matching multiplicities, with its nonzero adjacent-degree maps intact.
+
+The kernel streams one residual column at a time: apply $\delta$, accumulate
+its projection by $p$, and replace the current vector by its image under
+$h\delta$. It computes an additional final zero check rather than silently
+cutting off a nonzero term. Unexpected failure of nilpotence raises an
+algebraic error; it does not become a local resource decline or a knot verdict.
+Optional full certificates include $I,P,H'$ and are verified by separate
+typed matrix multiplication. The checks include both square-zero equations,
+both chain-map equations, $PI=1$, $dH'+H'd=1+IP$, and the three side
+conditions $H'I=PH'=(H')^2=0$.
+
+\subsection{The adaptive implementation and its transactional boundary}
+As before, a stage permits $\max(256,4N)$ ordinary Schur-update pairs before
+pausing between complete pivots. A successful cheap residue/degree-gap test
+finishes the stage immediately. Otherwise the disk option takes a compact
+snapshot and attempts the geometric certificate and finite transfer.
+The new differential and reverse incidences are built separately, and all
+five object arrays are installed together only after the last budget check.
+The old coefficient-result cache is cleared at installation; typed algebra
+plans remain valid. A declined attempt leaves the old differential and its
+completed sparse cancellations intact.
+
+The default experimental allowance is $\max(4096,64N)$ cooperative polls for
+one attempt. Geometry traversal, contraction columns, series steps, coefficient
+products, and scalar incidences poll this guard. The global deadline is
+checked first at each poll; global exhaustion still raises \code{ScanLimit}
+and becomes \code{UNKNOWN} in recognition. Local exhaustion only declines
+the attempt. This poll allowance is neither a bit-operation budget nor a
+memory ceiling: binary vector work and a coefficient composition can cost
+more than one elementary operation. There is no competitive-runtime theorem
+for this scheduler. Direct kernel calls can perform the complete finite
+transfer without that experimental allowance.
+
+The new policy is available to raw homology, recognition, allocation-pruned
+windows, and minimal windows. The window adapter records each processed
+crossing before either its ordinary or pruned extension calls cancellation,
+so the geometric certificate remains bound to the correct prefix. Existing
+component coefficient engines are compatible; component-owner arrays,
+saturated weights, races, and alternative scanner representations are not
+silently reinterpreted. The same standard-scanner restrictions as the earlier
+adaptive policy apply. Evidence includes attempts, completed transfers,
+geometry declines, local-budget fallbacks, transfer compositions, and maximum
+radical depth. Full replay certificates are an explicit kernel diagnostic,
+not an extra default allocation during recognition.
+
+\subsection{Cost separation and the missing global parameter bound}
+Let $N$ be the pre-reduction object count, $r$ the residue survivor count,
+$E_\delta$ the number of nonzero radical entries, and $S_h,S_p$ the numbers
+of scalar incidences in the homotopy and projection. Write $A_b,M_b$ for
+coefficient addition and correctly typed composition costs. The column
+algorithm has the conservative mixed-cost bound
+\[
+ O(N^3)+O\!\left(N+E_\delta+
+ \ell r\bigl(E_\delta M_b+(S_h+S_p)A_b\bigr)\right),\quad \ell\le2b.
+\]
+The first term is binary contraction. Dense coefficient work is thus
+$O(brN^2M_b)$, instead of a generic $O(N^3M_b)$ scalar-pivot bound. It can
+help when $r\ll N$ and sparse elimination would create expensive fill.
+It need not help sparse matrices. The product cache is bounded at 4096
+entries; optional full certificates require additional storage and work.
+
+For a fixed disk-certified full scan, let $B$ be its maximum boundary
+half-width and $R$ its largest minimal explicit object count. Attaching one
+crossing creates at most eight objects per old object, so stage input size
+is at most $8R$. Coefficients occupy at most $2^B$ bits and even elementary
+composition has cost $\operatorname{poly}(B)2^{O(B)}$. Noncrossing matching
+types number at most $4^B$. Charging algebra caches and geometry as well as
+matrices yields
+\[
+ \operatorname{poly}(n,1+R)2^{O(B)}.
+\]
+This conditional explicit-scan bound is compatible with ordinary exhaustive
+pivots too; the new transfer improves how expensive coefficient work is
+organized. It does not prove smaller intrinsic minimal multiplicities.
+The condition $B+\log(1+R)=O(\log^2 n)$ is sufficient for quasi-polynomial
+time, but no universal extraction theorem for those parameters is supplied.
+
+\subsection{Why changing crossing order alone cannot suffice}
+Report 21 constructs an unknot diagram on an $m\times m$ crossing grid,
+with $n=m^2$. Pair exterior endpoints adjacent in their remaining cyclic
+order, always joining distinct open paths until only one closed strand
+remains. This adds no crossings and preserves the internal grid as a
+spanning subgraph. Make the first visit to each crossing an overpass; the
+result is descending and hence an unknot.
+
+Every ordering has a prefix containing between $m^2/3$ and $2m^2/3$
+vertices. If at least $m/3$ rows are mixed across the prefix cut, each
+contributes a horizontal cut edge. Otherwise there is both a full and an
+empty row: mixed rows alone cannot contain either side's required size.
+Each column then contributes a vertical cut edge between those rows.
+Thus every ordering has at least $m/3$ raw frontier edges, or
+$B\ge m/6=\Omega(\sqrt n)$.
+This refutes a universal polylogarithmic \emph{raw-order-width} strategy.
+It is not a recognition lower bound: the descending certificate and ordinary
+Reidemeister simplification bypass these diagrams. In the production audit,
+all generated inputs through 64 crossings were recognized before homology;
+independent cube ranks were checked only through nine crossings.
+
+\subsection{Validation and measured scope}
+The report's 52 tests pass unchanged. Its source-derived fixture was audited
+against the pinned Git blobs for \code{scan\_fast.py}, \code{planar.py}, and
+the scoped geometry definitions; executable ASTs agree after stripping
+documentation. The production suite now passes 344 tests, including 100
+seeded small diagram comparisons with an independent cube, intermediate
+minimal-profile comparisons, adjacent-map synthetic checks, failure atomicity,
+both window implementations, coefficient composition, and global limits.
+An eager test control deliberately exercises transfer on actual prefixes;
+this is distinct from observing a production adaptive switch.
+
+The separately rerun geometric audit accepted 71 of 80 order candidates,
+checked 14,658 complete smoothing states and 71 independent cube ranks,
+and generated and verified seven typed full chain-homotopy certificates.
+Data and the source audit are retained under \path{synthesis/data/}; the
+reproduction driver is \path{fast/check_disk_geometry.py}.
+
+Seven shuffled paired rounds in \path{fast/benchmark_disk_transfer.py}
+compare fresh states under ordinary, A/A, residue-adaptive, and disk-adaptive
+policies. Dense synthetic two-term blocks with nonzero survivor maps gained
+1.126, 2.948, 4.078, and 3.307 times for the four retained cases; every disk
+run made one successful full-transfer call. Independent binary regular-
+representation homology agrees before and after reduction. These synthetic
+blocks, including their coefficient-degree mixtures, are not asserted to be
+actual knot-prefix complexes.
+
+The sparse diagonal control stayed on ordinary pivots: no transfer attempt
+was made, and its ratio was 0.959 rather than the eager prototype's large
+regression. The four full diagram scans (Conway, Kinoshita--Terasaka, the
+36-crossing stress braid, and the eight-crossing hard unknot) made zero full
+transfer calls. Their ratios ranged from 0.960 to 1.010, while A/A controls
+ranged from 0.992 to 1.012. Normal recognition decided all four in earlier
+certificate or invariant stages. These measurements support the overhead
+guard on these controls; they establish no recognition speedup from full
+transfer. Defaults remain unchanged and the goal of general quasi-polynomial
+recognition remains open.

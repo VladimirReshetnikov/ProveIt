@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 798 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,108 public Gowers theorems and found only propext,
+  All 800 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,117 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -242,8 +242,11 @@ Cubic source-scale numerical budgets
   (2/(gamma*theta))^10002. Proofs16CubicSpectrumBudget propagates this
   sharper count to the actual spectrum: its count is at most
   s(theta,gamma,1), independent of the inner cover loss.
-  All four modules pass the full audit. These discharge specific numerical
-  substeps; the general structural theorem and six catalogue gaps remain.
+  Proofs16CubicSourceScale bounds the halved-density remainder count by
+  U^6, the spectrum count by U^2, and the slice family count by U, where
+  U=s(theta,gamma,1). Proofs16CubicPowerAbsorption proves that the source
+  power at U^8 pays for the scalar recurrence and polynomial losses.
+  These six modules pass the full audit and discharge numerical substeps; the general structural theorem and six catalogue gaps remain.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
@@ -3067,6 +3070,22 @@ Higher-dimensional stackability gap (research notes, Part H)
   stackable invariant: ranks add under unions. They isolate its open step,
   preservation under the lift, which is a multilinear Bogolyubov-type
   inverse theorem over Z_N. Research only: the count stays 114/6.
+  Proofs16WithUnion formalizes the sequential-union bound (Part H.2) for
+  arbitrary controls: MultiplyLinearWith.union covers two relations at losses
+  lam*s and (1-lam)*s, with counts adding and width exponents multiplying.
+  MultiplyLinearWith.fin_union and .finsetUnion unite q relations with
+  common controls (Q,E) into count q*Q(s/q) and exponent E(s/q)^q. The module
+  also adds congr_controls and subset. It was compiled locally against its
+  115-module closure, and all six theorems use only propext,
+  Classical.choice and Quot.sound.
+  Part H.5 (literature): Milicevic, General inverse theory for the U4 norm
+  (arXiv:2601.01682, 2026), Theorem 1.4, is a quasipolynomial structure
+  theorem for Freiman bihomomorphisms in every finite abelian group. With
+  simultaneous Bohr unions, quasipolynomial ranks fit the exact budget,
+  which plausibly unlocks Theorem162At 3. Every dimension would need the
+  (k+1)-linear analogue over Z_N, which is not known. Decision recorded
+  there: the printed statements 16.2, 16.11, 18.1, 18.2 and 18.7 stay
+  exact and are not restated.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

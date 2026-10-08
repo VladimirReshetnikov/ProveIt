@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 315 passing tests.
+diagram is not checked twice. The integrated suite now has 344 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -905,3 +905,35 @@ faster on Conway and Kinoshita–Terasaka in this small run; earlier certificate
 bypassed the new filter in the other five cases. These observations do not
 justify an automatic switch or a default change. See the complete theory,
 limitations and measurements in [`../synthesis/potts.tex`](../synthesis/potts.tex).
+
+## Adaptive transfer on certified disk frontiers
+
+`--reduction disk-adaptive` adds a full finite radical transfer after sparse
+cancellation pauses and the existing cheap residue shortcut declines. It keeps
+nonzero maps between adjacent surviving degrees. Geometry is certified from
+the actual processed rotation system and checked against live matching types.
+A local work guard can decline the attempt; the unchanged partial complex then
+resumes ordinary cancellation. Global deadlines still produce UNKNOWN.
+
+This option works with full homology, recognition, either window strategy, and
+component coefficient composition, under the existing adaptive scanner
+restrictions. Evidence reports actual transfer calls, geometry declines, budget
+fallbacks, and transfer work. The local allowance counts cooperative polls,
+not elementary bit operations or total memory. It is an experimental policy,
+not a competitive scheduling guarantee. `standard` remains the default.
+
+```sh
+python -m fastunknot khovanov examples/conway.json --reduction disk-adaptive
+python -m fastunknot recognize examples/conway.json --reduction disk-adaptive
+python -m fastunknot window examples/conway.json --upper 2 --reduction disk-adaptive
+python -B check_disk_geometry.py /tmp/disk-audit
+python -B benchmark_disk_transfer.py --output results/disk_local.json
+```
+
+Dense synthetic blocks gained up to 4.08× while retaining nonzero survivor maps;
+the sparse control avoided transfer altogether. None of the four ordinary
+diagram benchmarks made a full-transfer call, so no recognition speedup follows.
+The [theory section](../synthesis/disk_transfer.tex) covers certificates, finite
+perturbation, rollback, cost accounting, and explicit unknot diagrams whose raw
+frontier is Ω(√n) in every order. The latter limit an order-only approach, not
+recognition with simplification and structural certificates.
