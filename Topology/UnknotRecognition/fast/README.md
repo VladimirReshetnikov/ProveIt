@@ -1,5 +1,14 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+When compressed group search would stall above the explicit-letter cap,
+`--group-relators` now enables exact whole-donor deletion without expansion.
+A fully compressed substring matcher uses arithmetic-progression occurrence
+tables and a safe first-letter probe. It searches every cyclic target position
+for the donor's recorded spelling or inverse; arbitrary donor rotations and
+partial overlaps remain outside this fallback. Accepted moves use the existing
+independent relator certificate replay. Work and storage limits remain
+inconclusive, and no general subexponential bound is claimed.
+
 Compressed group search now batches powers of a selected Whitehead automorphism
 when the move repeats or expanded length exceeds four times allocated grammar
 size. An exact weighted-median gap profile chooses the first minimizing power
@@ -26,7 +35,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 658 passing tests
+diagram is not checked twice. The integrated suite now has 666 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then
