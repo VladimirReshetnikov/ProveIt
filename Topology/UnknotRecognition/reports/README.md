@@ -50,8 +50,8 @@ modification times.
 | `42/` | `unknot_affine_families_20261008.zip` | source changes and patches (`42/source/`, `42/patches/`) | affine families and inherited structure: three exact improvements with a claim ledger | — | not run |
 | `43/` | `unknot_whitehead_exposure_20261008.zip` | opt-in package with integration notes (`43/src/`, `43/integration/`) | certified Whitehead exposure beyond length descent | — | not run |
 | `44/` | `unknot_dynamic_terminal_20261008.zip` | terminal-update code (`44/terminal_updates/`, `44/integration/`) | rank-two terminal contractions of anchored partitions; singularity-safe modular observers | — | not run |
-| `45/` | `unknot_christoffel_20261008.zip` | code with integration material (`45/code/`, `45/integration/`) | compressed Christoffel width; exact compressed primitive-power test and torsion-free elimination | — | not run |
-| `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | not run |
+| `45/` | `unknot_christoffel_20261008.zip` | code with integration material (`45/code/`, `45/integration/`) | compressed Christoffel width; exact compressed primitive-power test and torsion-free elimination | — | 22 test methods and both saved examples reproduced; native terminal integration pending |
+| `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | orbit/topology and worker subset integrated; 805 maintained tests pass; full overlay not rerun |
 | `47/` | `unknot_native_orbits_20261008.zip` | source snapshot and integration patch (`47/snapshot/`) | native normal-orbit research with an article, raw data and representative certificates | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
