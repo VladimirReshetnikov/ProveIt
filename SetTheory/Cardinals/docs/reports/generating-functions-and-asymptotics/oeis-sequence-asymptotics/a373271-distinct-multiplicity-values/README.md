@@ -324,9 +324,12 @@ both question lists and in Section 25.2) record the re-scoping:
   `α ≥ 0`**, as to fluctuation laws (Theorems 26.1, 26.5, 33.1) and leading
   means (Proposition 30.1, (31.8)); other weights, and mean expansions of
   Part I's precision for `α ≠ 0, 1`, open.
-- Part II, Question 2 (other weights `m^α`): **partly answered**: leading
-  scale and next term for every `α`; the matched expansion of Part II's
-  precision for `α ≠ 1` open.
+- Part II, Question 2 (other weights `m^α`): **partly answered**: the
+  leading scale for every `α`, and the next term for `0 < α ≤ 1` (the write
+  said "for every `α`"; for `α > 1` Part III proves the leading term only,
+  as the independent check records in a dated note in Section 25.2); the
+  matched expansion of Part II's precision for `α ≠ 1`, and any second term
+  for `α > 1`, open.
 - Part II, Question 4 (variance and law of `W`): **answered** by Corollary
   26.3.
 - Questions 1, 3, 5 of both Parts untouched. The earlier notes that call
@@ -413,8 +416,8 @@ Section 27).
 An adversarial check made by the intake after the write (`0064d11e6`), with
 its own code, after fetching again A373271 (#15) and its b-file, A373273
 (#14), A373272 and A373269. It covers Parts I and II as written; Part III
-(the `03-fluct-` files, placed later) is not part of that write. The Part III
-write has not yet been checked independently.
+(the `03-fluct-` files, placed later) is not part of that write; its check
+is the next section.
 
 - **OEIS remarks (1.4, 12.4).** Revisions, dates, author, offsets, names,
   comments, the b-file credit and SHA-256, and the A373273 record (line for
@@ -450,6 +453,61 @@ write has not yet been checked independently.
 - The check read the proofs of both Parts as well and found no error.
 
 The check is recorded in the Guide, after the collected non-claims.
+
+## Independent check of the Part III write (7 October 2026)
+
+An adversarial check of the Part III write (`b0ad11d15`), with its own code,
+after fetching A373271 (#15) and A373273 (#14) again and extracting the
+archive from `7b8ed30e7` afresh.
+
+- **Provenance.** Archive bytes and SHA-256, 32 files, 2,225,214 bytes
+  unpacked, `SHA256SUMS` 31/31, the 12 staged files byte-identical, 2,346
+  lines and 99,736 bytes, 35 delivered pages, the title-page and PDF-author
+  quotations, the pin times, blob `77a379cfb`, the side-branch tree, the
+  not-shipped sizes and the file list (36 files) confirmed.
+- **Numbering.** All 174 earlier labels unchanged; all 118 delivered labels
+  shifted by 25 sections, figures unchanged; 7 added, 299 in all. The 127
+  updated references (83 `\eqref`, 44 `\ref`) are those of the manuscript's
+  Sections 1–9; its reference list has one more `\eqref` (Erdős–Lehner),
+  also updated, and the title page's `\ref` is printed in the quotation of
+  Section 25.1.
+- **Constants.** `V_0`, `v_0` (the printed `0.308000244403717958…` is
+  rounded; truncation `…957`, next digits `652`; the package's `checks.json`
+  has the right digits), `V_{1/4}` (also by a second two-dimensional
+  reduction, to `10^{−14}`), the `r`-integral, `(1 − 2α)V_α → c_*`, `M_α`,
+  `Γ(α+1)ζ(α)`, `C_reg = 1`, the singular part, the mean constant
+  `(3 − γ)/2` (Part II's `c`), `Z_1 = G − γ` in law and so the centering
+  `(3 − 3γ)/2 = 0.634176502647700709…` (Part II's constant minus `γ`, no
+  conflict), 2, 8, `2π⁴/9`, 1, `K_crit` and its Brownian form, Part I's `K`.
+- **Tables.** Brute force over all partitions to `n = 45`; all 41 rows of the
+  moments CSV; the check's own forbidden-pair products to `n = 300` reproduce
+  the write's variances; the covariance table (36 and 71 bins), the kernel
+  limit `0.275589612433705…` and the twelve sample variances; the geometric
+  means of the Section 30 note (same digits). The delivered `verify.py
+  --skip-simulations` rerun by the README recipe: CSV byte-identical, seven
+  `moving_window` floats differ in the last digit.
+- **Independent of the kernel.** Geometric-law variances from the exact one-
+  and two-value absence products: `t^{1/2} Var_t D_0` = 0.348901 … 0.348890
+  for `t = 10^{−2} … 10^{−4}` against `V_0 = 0.348809…`; `V_{1/4}`, the
+  `α = 3/4`, `1`, `2` limits likewise; `(t/H) Var_t D_{1/2}` consistent with
+  `c_*/2` plus an `O(1/H)` term. The gap between the exact `Var_n D_0/n^{1/4}`
+  (0.2343, 0.2458, 0.2516 at `n` = 100, 200, 300) and `v_0` is the
+  size-conditioning correction: `Var_t − Cov_t(D_0, N)²/Var_t N` at the
+  saddle gives 0.2323, 0.2445, 0.2505, and that correction falls like
+  `t_n^{1/2}` (24 % at `n = 100`, 0.78 % at `n = 10^8`); the same for `D_1`.
+  Floating evidence, not proof (note after Corollary 26.2).
+- **Precision.** The write's "leading scale and next term for every `α`"
+  (Section 25.2, Part II's question note, this README) holds for
+  `0 < α ≤ 1`; for `α > 1` Part III proves the leading term only. The check's
+  geometric means at `α = 3/2` suggest a second term `M_{3/2} t^{−5/4}`
+  with `M_α` continued; an observation, not a theorem (dated notes in
+  Section 25.2 and after Part II's questions).
+- **Correction.** The parent of the write is `2bac1ea07`, not `76eca179c`
+  (an earlier merge); the ledger count 114/6 holds at both (dated note in
+  Section 27.1).
+- No claim of Part III was found wrong or unproved as stated.
+
+The check is recorded at the end of Section 25.3.
 
 ## Relation to the repository
 
@@ -533,7 +591,7 @@ and all 118 Part III labels are the delivered numbers shifted by 25 sections
 README.md                                          this guide (replaces Report 197's delivery README)
 03-fluct-code-README.txt                           Part III: the delivered code/README.txt (verify.py, make_figures.py, outputs, quick replay)
 article.tex                                        the merged report (Report197.tex, Report198.tex and Part III's manuscript; labels prefixed, [write] additions)
-article.pdf                                        compiled report, 82 pages
+article.pdf                                        compiled report, 83 pages
 code/03-fluct-verify.py                            Part III exact moments to n = 40, constants, moving-window products, seeded samples (delivered code/verify.py)
 code/03-fluct-make_figures.py                      Part III figure generator (delivered code/make_figures.py; needs Matplotlib)
 code/03-fluct-build.py                             package-level builder of the delivered partitions/ and sensitivity/ (delivered build.py; does not run here)
@@ -685,7 +743,9 @@ pages): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered texts also build without any, 18 and 17
 pages). With Part III (three pdflatex passes, same day): 82 pages, with the
-same result; Part III's delivered text builds to 35 pages.
+same result; Part III's delivered text builds to 35 pages. Rebuilt the same
+day after the notes of the Part III check: 83 pages, with the same result,
+every label number kept.
 
 ## From the delivery READMEs
 

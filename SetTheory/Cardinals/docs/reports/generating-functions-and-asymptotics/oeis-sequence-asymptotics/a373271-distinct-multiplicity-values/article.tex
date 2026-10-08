@@ -1906,6 +1906,12 @@ logarithm appears. The matching constants beyond these two terms, an
 expansion of this Part's precision for $\alpha\ne1$, remain open.
 Questions~1, 3 and~5 are untouched.
 \end{writenote}
+\begin{writenote}[Independent check, 7 October 2026]
+For $\alpha>1$ the note above gives one term only: Part~III proves the
+leading term $\Gamma(\alpha+1)\zeta(\alpha)\tau_n^{-\alpha}$ there and no
+second term. A second term is proved for $0<\alpha\le1$; for $\alpha>1$ it
+is open (precision in Section~\ref{dmv:fl:sec:answers}).
+\end{writenote}
 
 \part{Fluctuations of distinct multiplicities in random integer partitions: exact variance, Gaussian and non-Gaussian limits, and a logarithmic transition window}\label{dmv:fl:part}
 \partsource{A continuation manuscript of 7~October 2026, archive \file{ProveIt_Research_2026-10-07.zip}, delivered as \file{partitions/article.tex} with ten section files (35 pages). Delivered title block ``PROVEIT RESEARCH CONTINUATION / Fluctuations of Distinct Multiplicities in Random Integer Partitions / Exact variance, Gaussian and non-Gaussian limits, and a logarithmic transition window / 7 October 2026 / Research draft prepared with ChatGPT''. Printed as delivered after Section~\ref{dmv:fl:sec:front}, which the write added, with \textbf{[write]} notes; the manuscript's Section~$k$ is Section~$k+25$ here, its statements move with their sections, its equation~($k.m$) is equation~($k{+}25.m$), and its Figures~1 and~2 keep their numbers. Its labels carry the prefix \file{dmv:fl:}, and its citation key \file{oeis} is \file{oeisA373271} and \file{oeisA373273} here. This Part is self-contained: it uses no theorem of Parts~I and~II as a premise.}
@@ -2052,6 +2058,24 @@ Part~I, Questions~1, 3, 5; Part~II, Questions~1, 3, 5 & Untouched. Part~III's Qu
 Dated notes after the two question lists (Sections~\ref{dmv:cnt:sec:sources}
 and~\ref{dmv:sum:sec:further}) say the same; the earlier notes there,
 which call the weights $m^\alpha$ open, are kept as written.
+\begin{writenote}[Independent check, 7 October 2026]
+A precision to the row for Part~II's Question~2 and to the note after
+Part~II's questions. Part~III proves a second term of the mean only for
+$0<\alpha\le1$ (Proposition~\ref{dmv:fl:prop:weightedmeans}). At $\alpha=0$
+its remainder is $O(1)$, so the second term $-\tfrac{23}{16}$ is Part~I's.
+For $\alpha>1$ it states only the leading term, as the asymptotic
+equivalence~\eqref{dmv:fl:eq:highmean}. ``The leading scale and the next
+term for every $\alpha$'' therefore holds for $0<\alpha\le1$; for
+$\alpha>1$ the second term is open. The check's geometric-law means at
+$\alpha=\tfrac32$ suggest
+$\E_tD_{3/2}=\Gamma(\tfrac52)\zeta(\tfrac32)t^{-3/2}+M_{3/2}t^{-5/4}+\cdots$,
+with $M_\alpha=\Gamma(\frac{1-\alpha}2)/(1+\alpha)$ continued to
+$\alpha=\tfrac32$: $t^{5/4}(\E_tD_{3/2}-\Gamma(\tfrac52)\zeta(\tfrac32)t^{-3/2})
+=-2.083$, $-2.004$, $-1.975$ at $t=10^{-2}$, $10^{-3}$, $10^{-4}$, against
+$M_{3/2}=-1.9607\ldots$. This is an observation, not a theorem. For
+$1<\alpha<3$ the collision mean~\eqref{dmv:fl:eq:collisionmean} has the same
+order $t^{-(\alpha+1)/2}$, so a proof must evaluate it as well.
+\end{writenote}
 
 \emph{What Part~III proves again.} Its means at $\alpha=0$ and $\alpha=1$
 re-derive, by a different route and with weaker remainders, the leading
@@ -2127,6 +2151,49 @@ manuscript's pin. \emph{Not read by the write}: Fristedt, Erd\H{o}s and
 Lehner, the \code{math} repository and its family-132 manuscript; for
 Ralaivaosaona and Corteel, Pittel, Savage and Wilf see Parts~I and~II. The
 manuscript's accounts of them are reported, not confirmed.
+\begin{writenote}[Independent check of the Part~III write, 7 October 2026]
+An independent adversarial check of the write \file{b0ad11d15} re-derived
+its statements with its own code. \emph{Confirmed}: the provenance
+(archive bytes and SHA-256, 32 files and 2,225,214 bytes unpacked,
+\file{SHA256SUMS} 31/31, the 12 staged files byte-identical, 2,346 lines and
+99,736 bytes, 35 delivered pages, the title-page and PDF-author quotations,
+the pins and their times, blob \file{77a379cfb}, the side-branch tree, the
+not-shipped sizes); the numbering (all 174 earlier labels unchanged, all 118
+delivered labels shifted by 25 sections, Figures~1 and~2 unchanged, 7
+added, 299 in all); $V_0$, $v_0$ (the printed~\eqref{dmv:fl:eq:vzero} is
+rounded and the truncation is as stated), $V_{1/4}$ (also by a second
+two-dimensional reduction, to $10^{-14}$), the $r$-integral,
+$(1-2\alpha)V_\alpha\to c_*$, $M_\alpha$, $\Gamma(\alpha+1)\zeta(\alpha)$,
+$C_{\rm reg}=1$, the singular part, the mean constant $\tfrac{3-\gamma}2$,
+equal to Part~II's $c$; the identification $Z_1\overset{d}{=}G-\gamma$,
+which makes the centering $\tfrac{3-3\gamma}2=0.634176502647700709\ldots$
+of~\eqref{dmv:fl:eq:gumbel} Part~II's constant minus~$\gamma$, consistent
+with it; the constants $2$, $8$, $\tfrac{2\pi^4}9$ and $1$; $K_{\rm crit}$
+and its Brownian form; Part~I's $K$; the exact tables (its own brute force
+to $n=45$, all 41 rows of the moments table, its own forbidden-pair products
+to $n=300$, which reproduce the write's variances); the covariance and
+sample tables; the geometric-law means of the note at the end of
+Section~\ref{dmv:fl:sec:means} (the same digits); the rerun of the
+delivered verifier; A373271 \#15 and A373273 \#14 live. \emph{Independent of
+the kernel}: geometric-law variances from the exact absence products
+approach $V_0$, $V_{1/4}$ ($t^{3/4}\Var_tD_{1/4}=0.561$, $0.581$, $0.590$ at
+$t=10^{-2},10^{-3},10^{-4}$, against $0.6005$),
+$[\Gamma(\tfrac52)-\Gamma(\tfrac74)^2]\zeta(\tfrac32)$ at $\alpha=\tfrac34$,
+$\pi^2/6$ at $\alpha=1$ and $20\zeta(4)$ at $\alpha=2$; at $\alpha=\tfrac12$,
+$(t/H)\Var_tD_{1/2}=0.267$, \ldots, $0.190$ for $t=10^{-2}$, \ldots,
+$10^{-4}$, consistent with $c_*/2$ plus a term of order $1/H$; and the
+fixed-$n$ gap to $v_0$ is the size-conditioning correction (note after
+Corollary~\ref{dmv:fl:cor:unweighted}). \emph{Precisions and one
+correction}, by dated notes: a second term of the mean is proved for
+$0<\alpha\le1$ only (after the table of Section~\ref{dmv:fl:sec:answers}
+and after Part~II's questions); the parent of the write is \file{2bac1ea07}
+(Section~\ref{dmv:fl:sec:review}). The 127 updated references are those of
+the manuscript's Sections~1--9; its reference list has one more
+\verb|\eqref| (the Erd\H{o}s--Lehner entry), also updated, and the title
+page's \verb|\ref| is printed in the quotation of
+Section~\ref{dmv:fl:sec:provenance}. No claim of Part~III was found wrong
+or unproved as stated.
+\end{writenote}
 
 \subsection{What is not claimed}\label{dmv:fl:sec:nonclaims}
 
@@ -2315,6 +2382,29 @@ $n=40$, $100$, $200$, $300$, increasing towards $v_0$ without deciding it;
 the corresponding $\Var_nD_1/n$ are $0.751$, $0.828$, $0.872$, $0.894$
 (Corollary~\ref{dmv:fl:cor:gumbel}: limit~$1$).
 \end{writenote}
+\begin{writenote}[Independent check, 7 October 2026]
+The digits of $v_0$ and their rounding are confirmed: the closed form at 50
+digits is $0.308000244403717957652\ldots$, and the package's
+\file{checks.json} records the same digits, so only the display
+in~\eqref{dmv:fl:eq:vzero} rounds. The check also located the gap between
+the fixed-$n$ variances above and $v_0$. Under the geometric law $\Q_t$,
+computed from the exact one- and two-value absence products (not from the
+kernel), $t^{1/2}\Var_tD_0=0.348901$, $0.349050$, $0.349008$, $0.348939$,
+$0.348890$ at $t=10^{-2}$, $3\cdot10^{-3}$, $10^{-3}$, $3\cdot10^{-4}$,
+$10^{-4}$, against $V_0=0.348809\ldots$; at the exact saddle $t_n$,
+$\Var_tD_0/n^{1/4}=0.3063$, $0.3072$, $0.3074$ for $n=100$, $200$, $300$.
+Subtracting the Gaussian size-conditioning term
+$\Cov_t(D_0,N)^2/\Var_tN$, also computed exactly, gives $0.2323$,
+$0.2445$, $0.2505$, against the exact $0.2343$, $0.2458$, $0.2516$. That
+term is $24\%$, $20\%$, $19\%$ of $\Var_tD_0$ at these $n$, and $7.7\%$,
+$2.4\%$, $0.78\%$ at $n=10^4$, $10^6$, $10^8$, decreasing like
+$t_n^{1/2}$, within the $L^2$ rate of
+Proposition~\ref{dmv:fl:prop:transfer}. The same holds for $D_1$: $0.834$,
+$0.876$, $0.896$ against the exact $0.828$, $0.872$, $0.894$, with a term
+of $0.59\%$ at $n=10^6$. These are floating computations, not proofs; they
+make the slow approach of the exact variances to $v_0$ and to~$1$
+quantitative.
+\end{writenote}
 
 \begin{corollary}[An explicit Gumbel law]\label{dmv:fl:cor:gumbel}
 Let $G$ have the standard Gumbel distribution
@@ -2486,6 +2576,13 @@ repository is outside this one. The sensitivity companion named above is
 the report
 \path{Combinatorics/BooleanFunctions/Research/sensitivity-block-sensitivity}.
 None of these threads is a premise of Part~III.
+\end{writenote}
+\begin{writenote}[Independent check, 7 October 2026]
+Correction: the parent of the write \file{b0ad11d15} is \file{2bac1ea07},
+not \file{76eca179c}, which is an earlier merge and an ancestor of it. The
+ledger counts 114 and 6 at both, as at \file{456b6e3ad}, \file{c05c2f73e}
+and the current main line, and 113 and 7 at the pin and at \file{4d60e6063};
+the Keller lines quoted are lines~22 and~36 of that README at the pin.
 \end{writenote}
 
 \subsection{The exact ProveIt question answered}
