@@ -6,7 +6,7 @@ where A=B^2, t=z*B, z^4=-1.  The tensor contraction therefore needs
 at most 2^w states at an arbitrary w-edge frontier, with no disk promise.
 An input-sized power-of-two B makes the scalar evaluation faithful and
 allows full Laurent recovery.  Certified separators give the uncapped
-general bit bound poly(n)*2^O(sqrt(n)).  Polynomial one is inconclusive
+general bit bound 2^O(sqrt(n)); polynomial factors are absorbed.  Polynomial one is inconclusive
 for unknot recognition.
 """
 from collections import Counter, defaultdict
@@ -183,6 +183,46 @@ def _multiply_terms(coefficient, terms):
     return phase % 4, answer if phase < 4 else -answer
 
 
+def _normalize_valuation(shift, value):
+    """Exact integer 2**shift * value, with an odd signed mantissa (or zero).
+
+    Normalize binary factors, including those introduced by signed carries;
+    this is a representation of the evaluated integer, not formal monomials.
+    """
+    if not value:
+        return 0, 0
+    magnitude = abs(value)
+    trailing = (magnitude & -magnitude).bit_length()-1
+    return shift+trailing, value >> trailing
+
+
+def _add_valuations(left, right):
+    ls, lv = left
+    rs, rv = right
+    if not lv:
+        return right
+    if not rv:
+        return left
+    if ls < rs:
+        return _normalize_valuation(ls, lv+(rv << (rs-ls)))
+    return _normalize_valuation(rs, rv+(lv << (ls-rs)))
+
+
+def _valuation_terms(terms):
+    phase, monomials = terms
+    least = min(shift for shift, _ in monomials)
+    return phase, least, tuple((shift-least, value) for shift, value in monomials)
+
+
+def _multiply_valuation(coefficient, terms):
+    phase, shift, value = coefficient
+    tensor_phase, least, monomials = terms
+    phase += tensor_phase
+    answer = sum((value << offset)*multiplier for offset, multiplier in monomials)
+    shift, answer = _normalize_valuation(shift+least, answer)
+    return phase % 4, shift, answer if phase < 4 else -answer
+
+
 def _gather(value, positions):
     return sum(((value >> position) & 1) << i for i, position in enumerate(positions))
 
@@ -254,7 +294,8 @@ def reconstruct_spin_jones(result, *, check=lambda: None):
 
 def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
                      order=None, check=lambda: None, statistics=None,
-                     include_polynomial=False, certify_order=True, outer_face=0):
+                     include_polynomial=False, certify_order=True, outer_face=0,
+                     arithmetic='valuation'):
     """Faithful identity/full-Jones query with two states per frontier edge.
 
     The default certifies the existing square-root-width separator order.
@@ -262,11 +303,17 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
     the stated poly(n)*2^O(w) deterministic bit bound for its actual maximum
     frontier w.  A collision-free table gives poly(n)*2^w; ordinary Python
     dictionaries retain the wider deterministic envelope even under collisions.
+    Valuation arithmetic factors powers of two from each exact coefficient;
+    ``arithmetic='shifted'`` retains the original dense-integer arithmetic.
+    Returned scalars and decoding conventions are identical in both modes.
     """
     _budget(max_states, 'max_states')
     _budget(max_transitions, 'max_transitions')
     if type(include_polynomial) is not bool or type(certify_order) is not bool:
         raise ValueError('include_polynomial and certify_order must be boolean')
+    if arithmetic not in ('valuation', 'shifted'):
+        raise ValueError('arithmetic must be valuation or shifted')
+    valued = arithmetic == 'valuation'
     check()
     n = diagram.crossings
     if order is not None:
@@ -292,8 +339,9 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
     cochain_l1 = sum(map(abs, turns))//2
     tensor_shift = 4*n+cochain_l1
     bracket_shift = max(tensor_shift, 6*n+4)
-    states, active = {0: (0, 1)}, []
+    states, active = {0: (0, 0, 1) if valued else (0, 1)}, []
     peak, transitions, max_boundary, coefficient_bits = 1, 0, 0, 1
+    mantissa_bits, max_valuation = 1, 0
     for position, crossing in enumerate(order):
         check()
         row = diagram.pd[crossing]
@@ -305,6 +353,9 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
                            if count == 1 and label not in active))
         following_active = [active[i] for i in keep]+list(new)
         table = _crossing_table(diagram, crossing, old, new, turns, base_log)
+        if valued:
+            table = {key: [(target, _valuation_terms(terms)) for target, terms in entries]
+                     for key, entries in table.items()}
         following = {}
         for state, coefficient in states.items():
             old_key = _gather(state, positions)
@@ -318,15 +369,25 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
                 if not transitions & 255:
                     check()
                 target = kept | (new_key << len(keep))
-                phase, contribution = _multiply_terms(coefficient, terms)
-                previous_phase, previous = following.get(target, (phase, 0))
-                if phase != previous_phase:
-                    raise ArithmeticError('frontier arrows have inconsistent phases')
-                value = previous+contribution
+                if valued:
+                    phase, shift, contribution = _multiply_valuation(coefficient, terms)
+                    previous_phase, ps, previous = following.get(target, (phase, 0, 0))
+                    if phase != previous_phase:
+                        raise ArithmeticError('frontier arrows have inconsistent phases')
+                    shift, value = _add_valuations((ps, previous), (shift, contribution))
+                else:
+                    phase, contribution = _multiply_terms(coefficient, terms)
+                    previous_phase, previous = following.get(target, (phase, 0))
+                    if phase != previous_phase:
+                        raise ArithmeticError('frontier arrows have inconsistent phases')
+                    shift, value = 0, previous+contribution
                 if value:
-                    following[target] = phase, value
+                    following[target] = (phase, shift, value) if valued else (phase, value)
                     peak = max(peak, len(following))
-                    coefficient_bits = max(coefficient_bits, abs(value).bit_length())
+                    bits = abs(value).bit_length()
+                    coefficient_bits = max(coefficient_bits, bits+shift)
+                    mantissa_bits = max(mantissa_bits, bits)
+                    max_valuation = max(max_valuation, shift)
                 else:
                     following.pop(target, None)
                 if max_states is not None and len(following) > max_states:
@@ -338,7 +399,11 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
     if active or any(states):
         raise ArithmeticError('turn-spin scan ended with an open frontier')
     check()
-    phase, scalar = states.get(0, (0, 0))
+    if valued:
+        phase, shift, mantissa = states.get(0, (0, 0, 0))
+        scalar = mantissa << shift
+    else:
+        phase, scalar = states.get(0, (0, 0))
     if phase:
         raise ArithmeticError('closed bracket has nonreal cyclotomic coordinates')
     if n:
@@ -353,12 +418,15 @@ def spin_jones_exact(diagram, *, max_states=4096, max_transitions=200_000,
     coefficient_bits = max(coefficient_bits, abs(scalar).bit_length(),
                            abs(expected).bit_length())
     result = dict(algorithm='integral-turn-spin-v1', ring='Z[z]/(z^4+1)',
+                  arithmetic=arithmetic,
                   crossing_count=n, writhe=writhe, base_log2=base_log,
                   bracket_shift=bracket_shift, tensor_shift=tensor_shift,
                   cochain_l1=cochain_l1, scaled_bracket=scalar,
                   unknot_scaled_bracket=expected, differs=scalar != expected,
                   peak_states=peak, transitions=transitions, max_boundary=max_boundary,
                   max_coefficient_bits=coefficient_bits,
+                  max_frontier_mantissa_bits=mantissa_bits,
+                  max_frontier_valuation=max_valuation,
                   turn_certificate=certificate)
     if order_certificate is not None:
         result['order_certificate'] = order_certificate
