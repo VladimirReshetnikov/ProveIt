@@ -286,7 +286,9 @@ These are the only places where the route uses `Point N 1`
 
 ### H.2 Sequential unions are exponential in the number of pieces
 
-*Proved (elementary; not formalized).* Suppose `Γ₁,…,Γ_m` each satisfy
+*Proved; formalized as `MultiplyLinearWith.fin_union` and
+`MultiplyLinearWith.finsetUnion` in `Proofs16WithUnion`, from the two-relation
+`MultiplyLinearWith.union`.* Suppose `Γ₁,…,Γ_m` each satisfy
 `MultiplyLinearWith Q E`. Then their union satisfies `MultiplyLinearWith`
 with count `m·Q(ρ/m)` and exponent `E(ρ/m)^m`.
 
@@ -332,6 +334,31 @@ Bohr radius `ζ = 2^(−s(θ,γ,1))`, and the Lemma 16.1 exponent
 what made it stackable. Neither computation is an impossibility proof. They
 show only that the dimension-two theorem, as stated and proved, does not
 supply the dimension-three slice provider.
+
+### H.3a Break B in dimension three is the same gap; truncation does not help
+
+Lemma 16.6 feeds the lower-dimensional graph count `q` of the spectrum
+relation into Lemma 16.1, whose exponent is `K^(−2^(k+1)·q)`. That exponent
+is `exp(−poly(1/θ))` only when q is polynomial in `1/θ` and `1/γ`. So break
+B and the stacking gap of H.3 come from one defect.
+
+- **Dimension two.** The spectrum count comes from dimension one:
+  `section16CubicSpectrumCount`, which the peer bounds by `s(θ,γ,1)` in
+  `Proofs16CubicSpectrumBudget`. It is polynomial.
+- **Dimension three.** The count would come from dimension two. Through
+  `section16CubicLiftGraphBound` it is exponential in a polynomial, so
+  Lemma 16.9's width exponent becomes doubly exponential again.
+
+Gowers's definition (`sz-thm-gowers-proof.tex`, line 3342) asks for every
+inner loss, exactly as the encoding does. But its only consumer outside
+Section 16, the proof of Corollary 16.11 (line 3534), uses one loss,
+θ′ = α/8. A version of Theorem 16.2 truncated at `θ′ ≥ ρ₀(θ,γ,k)` looks
+inductive, because the lift requests lower-dimensional losses proportional
+to its own. It would remove break A. It would not remove break B, and the
+catalogue's Corollary 16.11 exponent `(α/8)·c(r⁻¹α/8, α/2, k)^r` is
+`exp(−poly(1/α))`, so truncation alone does not reach the open catalogue
+items. Every route beyond dimension two needs lower-dimensional counts that
+are polynomial in all parameters.
 
 ### H.4 A stackable invariant: Bohr-structured multilinearity (proposal)
 
