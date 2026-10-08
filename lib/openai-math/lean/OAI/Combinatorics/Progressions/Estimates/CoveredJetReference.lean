@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use the proved chart-source Borel instance and specify the chart index
+family explicitly in the density law to avoid older instance-search
+timeouts. The statements are unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Geometry.CoveredJetChart
 
@@ -99,7 +101,9 @@ theorem coveredJetChart_density_law (Ω : ∀ j, O j → Set (EuclideanSpace ℝ
     (realDensityMeasure (coveredJetReference U d) f).map (coveredJetChart U b hb bW d) =
     realDensityMeasure (Measure.pi (fun j => Measure.pi (fun _ : O j => ν j)))
       (restrictedChartDensity (coveredJetChart U b hb bW d) (coveredJetSourceRegion U b d Ω) 1 f) := by
-  apply restrictedChartDensity_law _ (coveredJetChart_continuous U b hb bW d).measurable
+  let : BorelSpace (CoveredJetChartSource U O B n d) := coveredJetChartSource_borel U d
+  apply restrictedChartDensity_law (coveredJetChart (O := O) U b hb bW d)
+    (coveredJetChart_continuous (O := O) U b hb bW d).measurable
     (coveredJetSourceRegion_measurable U b d Ω hΩm)
     (coveredJetChart_embedding U b hb bW d Ω hΩm hΩ) _ _ zero_le_one _ f hf
   simpa only [ENNReal.ofReal_one, one_smul] using

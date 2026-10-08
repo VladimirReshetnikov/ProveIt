@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Provide the explicit chart-source Borel instance for the jet-law proof.
+The theorem statements are unchanged from the pinned upstream source. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.CoveredJetReference
 import OAI.Combinatorics.Progressions.Estimates.CoveredMixedArrayImage
@@ -82,10 +83,13 @@ theorem canonicalCoefficientDeckSample_jet_law (d : ℕ) [NeZero d]
         (PMF.uniformOfFintype (∀ j, O j → B j → ZMod d)).toMeasure)
       (fun p => coefficientDeckJetDensity root A rows d p.2)).map
         (fun p => coveredJetChart U b hb bW d (mixedCoveredJetCoordinates U o d p)) := by
+  let : BorelSpace (CoveredJetChartSource U O B n d) := coveredJetChartSource_borel U d
   have hF := canonicalCoefficientJetArrays_measurable (I := I) (n := n) root A rows
   have hR : Measurable (coefficientDeckJetMap (B := B) root A rows d) := measurable_of_finite _
+  have hchart : Measurable (coveredJetChart (O := O) U b hb bW d) :=
+    (coveredJetChart_continuous (O := O) U b hb bW d).measurable
   have hφ : Measurable (fun p => coveredJetChart U b hb bW d (mixedCoveredJetCoordinates U o d p)) :=
-    (coveredJetChart_continuous (O := O) U b hb bW d).measurable.comp
+    hchart.comp
       (mixedCoveredJetCoordinates_measurable (O := O) (B := B) (n := n) U o d)
   rw [← realDensityMeasure_prod_right _ _ _ (measurable_of_finite _),
     ← coefficientDeckJetDensity_law]
