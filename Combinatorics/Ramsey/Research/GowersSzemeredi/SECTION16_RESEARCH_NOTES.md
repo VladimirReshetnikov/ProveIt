@@ -690,6 +690,28 @@ Status: step 3 is formalized (`Proofs16BracketWindow`:
 `exists_common_constant_window`, `bracketLinear_affine_window`). Steps 2
 and 4 are research. Step 2's two-letter case reduces to Morse–Hedlund.
 
+**A better route for (R): through Milićević's bilinear Bohr varieties
+(2026-10-08).** Milićević §1.1 lists three roughly equivalent classes:
+almost-trilinear forms, E-bilinear maps on B × B, and Freiman-bilinear maps
+on a bilinear Bohr variety. His §§5–11, with the bilinear Bogolyubov
+argument, pass from E-bilinear maps to Freiman-bilinear maps
+Φ : V → Ĝ, where V = {(x, y) ∈ B × B : β_j(x, y) small for j ≤ t} for
+bilinear forms β_j. §12 gives the reverse direction.
+
+- On a product box P × Q ⊆ V, a Freiman-bilinear map is genuinely bilinear
+  (Lemma 7.8 in each variable), which is exactly the readout.
+- Finding product boxes inside V means making the t bilinear forms β_j
+  simultaneously small on boxes. That is the multilinear Lemma 16.1 with
+  exponent polynomial in t: item (D), which the peer is building on
+  Schmidt recurrence (`Proofs05SchmidtRecurrence`, minimum-length
+  simultaneous polynomial partitions).
+
+So **(R) reduces to (D) plus Milićević §§5–12**, with no bracket analysis.
+The bracket route above (steps 1–4) stays as a self-contained alternative
+for the one-variable core, with step 3 formalized. With quasi-polynomial
+t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
+dimension-three budget (H.5).
+
 **Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
