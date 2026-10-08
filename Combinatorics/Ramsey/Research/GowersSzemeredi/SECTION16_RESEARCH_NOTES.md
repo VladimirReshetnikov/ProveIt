@@ -873,10 +873,23 @@ composition.
   `bilinearBohrVariety_contains_box_at`. That would avoid shifted-family
   regularity. Not yet checked in detail.
 
-**Formalized (same day).** `BohrBohrIsBohr D` (Prop. 2.37, d = 1, as a
-hypothesis) and `variety_full_section_contains_bohr`: for every
-x ∈ B(Γ;ρ), {x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
+**Formalized (same day, normalized interface).** `BohrBohrIsBohr D` is a
+one-coordinate hypothesis motivated by Proposition 2.37, with `phi(0)=0`
+explicit. Under this hypothesis and `L_k(0)=0` for every k,
+`variety_full_section_contains_bohr` gives, for every x ∈ B(Γ;ρ),
+{x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
 ρ″ ≥ ρ/loss^D (`Proofs16BohrBohrSections`).
+
+**Normalization correction.** The corpus's four-point
+`IsFreimanLinearOn` identity also admits constant nonzero maps. Since every
+centered Bohr set of nonnegative radius contains zero, an unnormalized
+all-sublevels hypothesis would force every such map to vanish at zero and
+would therefore be false. `bohr_sublevels_require_zero` proves the necessary
+normalization in Lean. The conditional section lemmas now state it, rather
+than silently accepting a vacuous premise. Applying this route to affine
+frequency families with nonzero intercepts requires an additional centering
+or translated-sublevel argument. No existence proof for the normalized
+interface is asserted.
 
 **Two observations from attempting the packing.**
 1. **x-fibres need no hypothesis.** For fixed y, the x-section of V is
@@ -895,6 +908,32 @@ x ∈ B(Γ;ρ), {x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D
      linking neighbouring lines inside V.
 
    Either is a genuine lemma, not bookkeeping.
+
+**Linking option formalized (same day).**
+- `biaffine_coeffs_eq_of_square`, `biaffine_glue`,
+  `freiman_bihom_biaffine_on_chain` (`Proofs16BiaffineGluing`): one
+  bi-affine function on any chain of boxes whose consecutive members share
+  a 2 × 2 square.
+- `bohr_row_convex` (`Proofs16BohrRowIntervals`): in a slow cell each
+  row's Bohr section is an interval. It uses the no-wrap lemma
+  `valMinAbs_add_of_small`.
+- `freiman_bihom_biaffine_on_staircase`: height-3 boxes chained along row
+  intervals whose consecutive triples and quadruples overlap in at least
+  two columns. Height-2 boxes provably cannot be glued, since they share
+  one row.
+
+**Where it bottoms out.** With cell steps making every variation term
+≤ εN (the peer's polynomial Lemma 16.1 supplies this):
+- cells with all variety conditions ≤ (ρ − 3ε)N lie inside V;
+- cells with some condition > (ρ + 3ε)N miss V;
+- only boundary cells are partial. The staircase lemma covers their
+  interiors.
+
+The θ-loss budget still needs **the total mass of boundary cells** to be
+small. That is a regularity statement for V: the mass of V(ρ + 3ε) ∖ V(ρ − 3ε)
+relative to V(ρ), with the shifted-family issue above. So the packing
+reduces exactly to variety regularity (Milićević §3), and every other
+ingredient is now proved here or in the peer's lane.
 
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
@@ -1102,7 +1141,7 @@ recurrence partition, so the existing recurrence API is preserved.
 `exists_eventually_stronger_retiled_linearity` gives this conclusion under
 the old integer threshold for all sufficiently large `q`, with a strictly
 larger exponent. Integer rounding and the length-minus-one margin are
-included. The next full facade audit is pending.
+included. The combined facade audit passes.
 
 `Proofs16PolynomialProductAssembly` also passes Lean. It applies this
 profile to a `MultiplyLinearWith Qb Eb` spectrum cover on short parent
@@ -1113,7 +1152,35 @@ width `(zeta/2)*sqrt(n^epsilon(q))`, where the actual cover count satisfies
 Monotonicity in the family size justifies testing the threshold at the
 known count bound. This makes the recurrence usable in the localized
 spectrum assembly; the threshold, spectrum structure, and local Bohr
-linearity remain explicit. The next combined audit is pending.
+linearity remain explicit. The combined facade audit passes.
+
+`Proofs16PolynomialUniformWidth` proves antitonicity of the recurrence
+exponent and resulting product width in the phase-family size, including
+the zero-width case. Its uniform spectrum assembly has minimum width
+`(zeta/2)*sqrt(n^epsilon(floor(Qb sigma)))`, so the bound depends only on
+the supplied spectrum controls and can be shared across further partition
+refinements. The production source and all three transitive axiom checks
+pass. Its facade import is included in the next combined audit.
+
+`Proofs16PolynomialLemma6.exists_polynomial_lemma_16_6` specializes the
+uniform assembly to the exact induced-function inputs used by Lemma 16.6.
+For `m >= 4` and a positive localized scale `n` below `(m/8)^(Eb sigma)`
+and above the recurrence threshold, it gives proper product cells with
+the uniform polynomial width bound and linear induced restrictions on
+the good base set. Spectrum coverage and the induced selection are still
+premises. Its production source and transitive axiom check pass; the
+facade import is included in the next combined audit.
+
+`Proofs16PolynomialLemma9.exists_polynomial_lemma_16_9` carries the
+improved width through the remainder-cover and line-cover assembly. If
+`w = m^((multipleC(sigma/(2*r),gamma,k+1))^r)` is at least four and a
+positive integer `n <= (w/8)^(Eb(sigma/2))` meets the polynomial recurrence
+threshold at `floor(Qb(sigma/2))`, every remainder cell admits the improved
+Lemma 16.6 construction. Flattening retains one common width
+`(zeta/2)*sqrt(n^epsilon(floor(Qb(sigma/2))))`, the original remainder
+graph-count bound, and good mass at least `1-sigma`. The production source
+passes Lean. Spectrum structure, induced selection, and the remainder
+cover are explicit premises; the combined facade audit is queued.
 
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
