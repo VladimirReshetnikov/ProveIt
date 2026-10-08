@@ -2,7 +2,7 @@
 
 This module never calls the producer's algebra or search helpers. It preserves
 exact SLP words across moves and uses deterministic compressed free reduction.
-Search itself remains explicit; this is a separately selectable verifier.
+This is separate from both the explicit and compressed search implementations.
 """
 from .compressed_words import WordArena, CompressedLimit
 

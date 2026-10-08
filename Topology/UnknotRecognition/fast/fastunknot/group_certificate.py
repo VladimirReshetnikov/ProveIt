@@ -119,7 +119,10 @@ def _mincut(graph, source, target, budget):
 
 
 def _whitehead_move(words, budget):
-    graph = _whitehead_graph(words, budget)
+    return _whitehead_cut(_whitehead_graph(words, budget), budget)
+
+
+def _whitehead_cut(graph, budget):
     best = (0, None, None)
     for a in sorted(graph):
         subset = _mincut(graph, a, -a, budget)
@@ -222,7 +225,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     With compressed=True, reconstruct the same initial presentation but
     replay it as exact straight-line-program words. max_letters then bounds
     only the initial presentation; max_nodes bounds compressed storage and
-    equality assertions. Search remains explicit. No speedup is promised.
+    equality assertions. The search backend is selected separately.
     """
     if type(compressed) is not bool:
         raise ValueError('compressed must be boolean')
@@ -409,12 +412,15 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                  relator_moves=False, compressed_verification=False,
-                 max_nodes=100000, check=lambda: None):
+                 compressed_search=False, max_nodes=100000, check=lambda: None):
     """Bounded search AND independent verification sharing one wall allowance."""
     from math import isfinite
     start = monotonic()
     if type(compressed_verification) is not bool:
         raise ValueError('compressed_verification must be boolean')
+    if type(compressed_search) is not bool:
+        raise ValueError('compressed_search must be boolean')
+    compressed_verification = compressed_verification or compressed_search
     if type(max_nodes) is not int or max_nodes < 0:
         raise ValueError('max_nodes must be a nonnegative integer')
     if seconds is not None and (type(seconds) not in (int, float)
@@ -428,8 +434,14 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             raise GroupLimit('group local time allowance exhausted')
 
     try:
-        certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
-                                        relator_moves=relator_moves)
+        search_stats = {}
+        if compressed_search:
+            from .compressed_search import compressed_certificate
+            certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats)
+        else:
+            certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                                            relator_moves=relator_moves)
         if certificate is not None:
             valid = verify_group_certificate(diagram, certificate, check=tick,
                                               max_letters=max_letters, max_work=max_work,
@@ -438,6 +450,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             if not valid:
                 raise ArithmeticError('produced group certificate failed independent replay')
             return dict(status='UNKNOT', certificate=certificate,
+                        search_backend='compressed-slp' if compressed_search else 'explicit-letters',
+                        search_stats=search_stats,
                         verification_backend='compressed-slp' if compressed_verification else 'explicit-letters',
                         seconds=monotonic()-start)
         reason = 'group simplification stalled'
@@ -445,4 +459,6 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
         check()  # A simultaneous global cancellation must still propagate.
         reason = str(exc)
     check()
-    return dict(status='INCONCLUSIVE', reason=reason, seconds=monotonic()-start)
+    return dict(status='INCONCLUSIVE', reason=reason, seconds=monotonic()-start,
+                search_backend='compressed-slp' if compressed_search else 'explicit-letters',
+                search_stats=search_stats)

@@ -255,6 +255,9 @@ class WordArena:
             if type(cap) is not int or cap < 0:
                 raise ValueError('prefix cap must be a nonnegative integer')
             hi = min(hi, cap)
+        if a == b:
+            self.tick()
+            return hi
         if not hi or self.first[a] != self.first[b]:
             self.tick()
             return 0
@@ -327,6 +330,79 @@ class WordArena:
                 position += self.lengths[a]
                 current = b
         return count, position, self.rules[current][1]
+
+    def singletons(self, roots):
+        """Generators occurring exactly once in each root, using shared masks.
+
+        Presence P and repetition R combine as P=P1|P2 and
+        R=R1|R2|(P1&P2). Dense bit positions avoid dependence on letter labels.
+        """
+        reachable = self._reachable(roots)
+        labels = sorted({abs(self.rules[node][1]) for node in reachable
+                         if self.rules[node][0] == 't'})
+        bits = {g: 1 << i for i, g in enumerate(labels)}
+        present, repeated = {0: 0}, {0: 0}
+        for node in reachable:
+            self.tick()
+            rule = self.rules[node]
+            if rule[0] == 't':
+                present[node], repeated[node] = bits[abs(rule[1])], 0
+            else:
+                _, a, b = rule
+                present[node] = present[a] | present[b]
+                repeated[node] = repeated[a] | repeated[b] | (present[a] & present[b])
+        result = []
+        for root in roots:
+            self.tick()
+            mask, values = present[root] & ~repeated[root], []
+            while mask:
+                self.tick()
+                bit = mask & -mask
+                values.append(labels[bit.bit_length()-1])
+                mask ^= bit
+            result.append(values)
+        return result
+
+    def summarize(self, roots, *, whitehead=False):
+        """Absolute-letter counts and optional cyclic Whitehead graph.
+
+        Propagate occurrence multiplicities down the shared DAG. Every concat
+        contributes its boundary pair with that multiplicity; each nonempty
+        root contributes one closing pair. No expanded letters are visited.
+        Costs O(N log N + m) abstract operations including topological sorting,
+        for N reachable rules and m roots, with exact integer arithmetic.
+        """
+        weights, counts, graph = defaultdict(int), defaultdict(int), {}
+
+        def edge(x, y, weight):
+            # The automorphism convention uses {x, -y}, not {-x, y}.
+            y = -y
+            graph.setdefault(x, {})
+            graph.setdefault(y, {})
+            graph[x][y] = graph[x].get(y, 0)+weight
+            graph[y][x] = graph[y].get(x, 0)+weight
+
+        for root in roots:
+            self.tick()
+            if root:
+                weights[root] += 1
+                if whitehead:
+                    edge(self.last[root], self.first[root], 1)
+        for node in reversed(self._reachable(roots)):
+            self.tick()
+            rule, weight = self.rules[node], weights[node]
+            if rule[0] == 't':
+                counts[abs(rule[1])] += weight
+                if whitehead:
+                    graph.setdefault(rule[1], {})
+                    graph.setdefault(-rule[1], {})
+            else:
+                _, a, b = rule
+                weights[a] += weight
+                weights[b] += weight
+                if whitehead:
+                    edge(self.last[a], self.first[b], weight)
+        return dict(counts), graph
 
     def expand(self, node, *, limit=100000):
         """Bounded debugging oracle; never called by compressed operations."""
