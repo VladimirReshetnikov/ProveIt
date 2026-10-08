@@ -312,6 +312,7 @@ import GowersSzemeredi.Proofs16VarietyUnions
 import GowersSzemeredi.Proofs16ReadoutMultilinear
 import GowersSzemeredi.Proofs16GapCoordinates
 import GowersSzemeredi.Proofs16VarietyBoxAt
+import GowersSzemeredi.Proofs16BohrDoubling
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
