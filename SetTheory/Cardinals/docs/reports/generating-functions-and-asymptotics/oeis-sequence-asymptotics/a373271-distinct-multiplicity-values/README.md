@@ -219,6 +219,48 @@ source was found to be wrong or unproved.**
 - Sources read by the write: the OEIS entries; the transseries volume
   (labels in the Guide). Not read: the cited literature.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`0064d11e6`), with
+its own code, after fetching again A373271 (#15) and its b-file, A373273
+(#14), A373272 and A373269. It covers Parts I and II as written; Part III
+(the `03-fluct-` files, placed later) is not part of that write.
+
+- **OEIS remarks (1.4, 12.4).** Revisions, dates, author, offsets, names,
+  comments, the b-file credit and SHA-256, and the A373273 record (line for
+  line equal to the shipped `.seq`) confirmed; all 200 b-file terms and the
+  43 A373273 terms agree.
+- **Exact tables.** Both statistics by brute force over all partitions for
+  `n ≤ 50`, and by the identity `P(q) Σ_m w(m)(1 − Q_m(q))` with the check's
+  own product code through `n = 2000` (Part I) and `n = 2500` (Part II); the
+  `p(n)` columns; strict increase from `n = 1`.
+- **Constants and tables.** The rational constants `−23/16`,
+  `12365/82944`, `9607/20736`, `19/144`; Part I's `K` in both forms (printed
+  digits a truncation); every entry of Part I's `T(n)` table and of Part II's
+  Table 1; the residuals of the Guide; the two regularized integrals to 25
+  digits by quadrature, and `∫_0^∞ y b''(2y) dy = −1/8`.
+- **Numbering and merge.** Part I's 89 labels unchanged; Part II's 78 shifted
+  by eleven sections, Table 1 unchanged; 7 labels added, 174 in all; 50 and
+  44 references. The merged bibliography keeps every delivered detail; the
+  counterpart correspondences named in Part II's three duplication notes
+  hold display by display.
+- **Transseries remarks (9.1, 21.1).** Re-derived against the volume: the
+  Lambert core of Part I, the two-grid coefficients `c_{0,1} = −ℓ_1/B`,
+  `c_{1,0} = 0`, `c_{0,2} = −ℓ_2/B`, the restriction of the volume's analytic
+  reversion to `δ = 1` (`p0:rem:alpha-one`), the residual-to-root steps, and
+  Part II's `log log x`, which keeps its template outside `p0:def:model`.
+  One precision, in a dated note after Remark 9.1: `p0:thm:staircase`(1)
+  needs `Y ≥ a(n_1)` and `Y > max_{n<n_1} a(n)`, which hold for all large `Y`
+  (the early values the proof excludes are a different set).
+- **Provenance and reruns.** Archive bytes, SHA-256, file counts, lines,
+  delivered pages, manifest entries and the not-shipped sizes; the file list;
+  both verifiers and symbolic checks rerun from the shipped files (four `cmp`
+  silent, `PASS`), Part II's diagnostics differing only in the 15 sector
+  residuals at about the tenth significant digit.
+- The check read the proofs of both Parts as well and found no error.
+
+The check is recorded in the Guide, after the collected non-claims.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -367,6 +409,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX on 7 October 2026 (41
+pages; rebuilt the same day after the independent check's notes, still 41
 pages): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered texts also build without any, 18 and 17
