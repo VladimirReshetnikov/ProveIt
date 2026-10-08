@@ -2,7 +2,7 @@
 from .filters import jones_obstruction
 
 JONES_BACKENDS = ("matching", "potts5", "potts-exact", "potts-exact-factorized",
-                  "potts-separator", "potts-adaptive", "potts-faithful", "spin-faithful")
+                  "potts-separator", "potts-adaptive", "potts-faithful", "spin-faithful", "faithful-adaptive")
 
 
 def validate_jones_options(backend, colors, max_states, max_transitions):
@@ -35,6 +35,9 @@ def select_jones_filter(backend, colors=6):
     if backend == "potts-faithful":
         from .faithful_jones import faithful_potts_obstruction
         return faithful_potts_obstruction, "jones-potts-faithful", {}
+    if backend == "faithful-adaptive":
+        from .adaptive_jones import adaptive_jones_obstruction
+        return adaptive_jones_obstruction, "jones-faithful-adaptive", {}
     if backend == "spin-faithful":
         from .spin_jones import spin_jones_obstruction
         return spin_jones_obstruction, "jones-spin-faithful", {}
