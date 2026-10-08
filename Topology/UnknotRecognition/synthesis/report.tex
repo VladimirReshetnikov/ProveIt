@@ -46,8 +46,8 @@ homology on every rectangular diagram we checked. Building on their ideas we
 add a seventh recognizer, \code{fastunknot}, whose exact part is a scanning
 computation of Khovanov homology (Bar-Natan's local algorithm with delooping
 and Gaussian elimination) preceded by an Alexander-polynomial filter. It is
-still exponential in the worst case, but its cost is governed by the width of
-a scan through the diagram rather than by the crossing number: the
+only justified by an exponential general bound; its practical cost depends
+on scan width and intermediate complex size. For example, the
 80-crossing unknot family on which every cube implementation needs $2^{80}$
 states is decided in eleven milliseconds. Nine further runs then proposed
 accelerations of that recognizer. We extracted and measured all nine on one
@@ -129,14 +129,16 @@ planar dual is simple and 4-connected or $K_3$ or $K_4$) and Definition 3.4
 
 So the accelerated, logarithmic-depth algorithm of the talk remains
 announced but not specified in any source available to us on rechecking
-the author's page and the preprint on 7 October 2026.
+the author's page and the preprint on 8 October 2026.
 This is the single obstacle behind every ``partial'' verdict below, and it is
 mathematical, not an engineering shortfall.
 
 \paragraph{Plausibility and the precise target.}
-The announced bound is $2^{O((\log n)^3)}=n^{O((\log n)^2)}$;
-the stronger $\qp$ target used elsewhere in this report must not be
-attributed to that announcement.  Both are quasi-polynomial and hence
+Later seminar abstracts, including the November 2024 talk
+\cite{lackenby2024-talk}, state
+$2^{O((\log n)^3)}=n^{O((\log n)^2)}$.
+The earlier supplied slides state the stronger $\qp$ target used elsewhere
+in this report; these are distinct formulations. Both are quasi-polynomial and hence
 $2^{o(n)}$.  The hierarchy strategy is a credible route to such a bound:
 it replaces exhaustive global witness search with decomposition,
 compression and controlled corrections.  The preprint supplies substantial
@@ -152,6 +154,20 @@ Efficiently handling one compressed surface, or proving termination,
 does not establish this condition.  No general sub-exponential bound for
 our recognizer follows from the current report or from adaptive switching
 among its present backends.
+
+For intuition, $L=O(\log n)$ and $g=n^{O(1)}$ would make the iteration
+count $2^{O((\log n)^2)}$; allowing suitably bounded quasi-polynomial
+operation cost could still fit the later cubic-logarithm exponent.
+The difficulty is proving compatible bounds throughout all corrections,
+including the size of intermediate compressed descriptions.  A short
+certificate or a terminating hierarchy does not itself give a fast way to
+find one.  Conversely, the growth of our explicit Khovanov complexes is not
+evidence against Lackenby's different hierarchy algorithm.  Our assessment
+is that the claim is mathematically plausible and worth pursuing, while the
+available specification is insufficient to verify or implement its announced
+asymptotics.  Section~\ref{sec:separator-orders} now proves a general
+subexponential scalar computation, with the recognition limitation stated
+separately.
 
 \subsection{Outcome in one paragraph}
 None of the six archives, and not the new package either, implements a
@@ -592,10 +608,12 @@ $n=80$ with two objects after every elimination.
 \subsection{Limits of the new package}
 It is a reference implementation in pure Python; a compiled implementation of
 the same algorithm (as in Bar-Natan's or the KnotJob programs) would be far
-faster. Its scan-order heuristic is greedy; for diagrams whose Tait graph is
-grid-like the width is $\Theta(\sqrt n)$ at best and the minimal complexes can
-be large. It does not produce a spanning disc or a Reidemeister sequence. And,
-to repeat, it is not quasi-polynomial.
+faster. Its default scan-order heuristic is greedy; the optional certified
+separator order added in Section~\ref{sec:separator-orders} guarantees
+$O(\sqrt n)$ width. Grid-like projections can still require
+$\Omega(\sqrt n)$ raw width, and minimal complexes can be large. Homology
+verdicts do not produce a spanning disc or a Reidemeister sequence.
+No general quasi-polynomial recognition bound is proved.
 
 \input{acceleration.tex}
 \input{round3.tex}
@@ -624,6 +642,7 @@ to repeat, it is not quasi-polynomial.
 \input{boundary_reuse.tex}
 \input{tait_blocks.tex}
 \input{shadow_fallback.tex}
+\input{separator_orders.tex}
 
 \section{Assessment and recommendations}
 
@@ -652,14 +671,20 @@ the refined Section 10 algorithm with an explicit cost model, would change the
 picture. (2) Settle the move-set question of Section \ref{sec:grid} from
 Dynnikov's paper, or add shared-corner exchanges to archive 01 and re-run its
 exhaustive validation. (3) The scanning recognizer now exists in Rust (Section \ref{sec:rust});
-the next step there is to replace the greedy order by a
-tree-decomposition-based one; the
-planar separator theorem gives width $O(\sqrt n)$ for the projection graph,
-which would make the empirical behaviour subexponential even if unproved.
+the Python separator backend now guarantees $O(\sqrt n)$ frontier width
+and a subexponential exact scalar query. The next complexity problem is to
+control intermediate homology multiplicities or supply a different complete
+decision fallback; order width alone does not settle it.
 (4) Use the archives' exact recognizers as oracles for any future geometric
 implementation, as several of their reports suggest.
 
 \begin{thebibliography}{99}
+\bibitem{lipton-tarjan} Richard J. Lipton and Robert Endre Tarjan,
+\emph{A separator theorem for planar graphs}, SIAM J. Appl. Math. 36 (1979),
+177--189. \url{https://doi.org/10.1137/0136016}.
+\bibitem{lackenby2024-talk} Marc Lackenby, \emph{Unknot recognition is
+quasi-polynomial time}, YMSC Topology Seminar, 7 November 2024, abstract.
+\url{https://qzc.tsinghua.edu.cn/en/info/1122/4171.htm}.
 \bibitem{nahm-basepoints} Gheehyun Nahm, \emph{Basepoints in Khovanov homology and nonorientable surfaces}, arXiv:2605.08457v1, 8 May 2026, Lemma 2.4. \url{https://arxiv.org/abs/2605.08457}.
 \bibitem{hatcher-covering} Allen Hatcher, \emph{Algebraic Topology}, Cambridge University Press, 2002, Section 1.3. \url{https://pi.math.cornell.edu/~hatcher/AT/ATpage.html}.
 \bibitem{aht-orbits} Ian Agol, Joel Hass and William P. Thurston, \emph{The computational complexity of knot genus and spanning area}, Trans. Amer. Math. Soc. 358 (2006), 3821--3850. \url{https://arxiv.org/abs/math/0205057}.

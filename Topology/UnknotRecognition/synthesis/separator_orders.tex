@@ -1,0 +1,228 @@
+\section{Certified square-root frontiers and a subexponential scalar filter}
+\label{sec:separator-orders}
+
+The previous integration reduced the cost of observing a fixed scan.  We now
+address its order.  The maintained Python implementation constructs a crossing
+order of width $O(\sqrt n)$ for every closed classical projection with $n$
+crossings.  It supplies a separately checkable hierarchy and compares the
+result with the existing greedy order, retaining the smaller measured frontier.
+Combined with the exact fixed-color Potts evaluator, this gives a general
+$\operatorname{poly}(n)2^{O(\sqrt n)}$ bit bound for \emph{one scalar Jones
+specialization}, with optional resource caps disabled.  It does not give that
+bound for unknot recognition: equality with the unknot's scalar is inconclusive.
+
+This is an implementation of classical planar-separator ideas
+\cite{lipton-tarjan}, not a new planar-separator theorem.  The contribution here
+is a constructive order, a graph-only certificate verifier, its integration
+with the existing exact scalar backend, and explicit accounting of which
+recognition bottleneck remains.  Nothing in this section requires connected
+prefixes, a common boundary disk, or a bound on surviving Khovanov objects.
+
+\subsection{A bounded-radius middle band}
+
+Represent the projection by a plane multigraph $G$: crossings are vertices,
+diagram arcs are edges, and the PD rows specify the cyclic orders of half-edges.
+The degree is four, with loops counted twice.  The constructor checks that each
+edge label occurs twice and that the rotation system is spherical on every
+connected component.  Loops may then be deleted for separator construction:
+they neither connect distinct components nor cross a cut of crossing vertices.
+Parallel edges remain in the embedded map.  Disconnected projections are
+handled component by component.
+
+Consider one connected recursive subproblem with $s$ vertices.  Take breadth
+first search levels $V_0,\ldots,V_d$ from a root, and put
+$r=\lceil\sqrt{s}\rceil$.  Let $a$ be the first level for which
+$\sum_{i\le a}|V_i|\ge s/2$.  If $a\ge r$, choose a smallest level in
+$[a-r,a-1]$ as the lower boundary $\ell$; otherwise use the empty virtual
+level $\ell=-1$.  If $a+r\le d$, choose a smallest level in
+$[a+1,a+r]$ as the upper boundary $u$; otherwise put $u=d+1$.
+Each real chosen level has size at most $s/r\le r$.
+
+The vertices strictly below $\ell$ and strictly above $u$ number at most
+$s/2$ on either side.  An edge changes its BFS distance by at most one, so
+removing the two boundary levels separates these outside vertices from the
+middle band.  Retain levels below $u$, and, when $\ell\ge0$, contract the
+connected inner BFS tree on levels at most $\ell$ to the root.  Delete the
+resulting loops.  The resulting plane multigraph $H$ has radius at most
+$2r$.  Give weight one to each original middle-band vertex and weight zero
+to the contracted root.  The total weight is at most $s$.
+
+The ribbon-map implementation contracts a tree by following its boundary
+through the removed half-edges.  It does not repeatedly rebuild the graph
+after individual edge contractions.  This matters for long bands and large
+inner balls.  An independent check after construction verifies the actual
+separator size and every remaining component's size in the original graph.
+
+\subsection{Three short paths from a dual centroid}
+
+For each face of $H$, add a center and a spoke to every corner occurrence.
+Keep the old edges.  A bridge or a repeated vertex on a face walk therefore
+causes repeated spokes, not an assumption that the face boundary is a simple
+cycle.  The resulting map is triangulated; every new center has distance at
+most $2r+1$ from the root.  The one-vertex case is handled directly.
+
+Choose a BFS spanning tree $T$ of this triangulation.  The dual edges of
+primal edges outside $T$ form a dual spanning tree $T^*$.  Assign each weighted
+original vertex to one incident triangular face.  Choose a weighted centroid
+face $f$ of $T^*$: every component of $T^*-f$ has at most half the total
+assigned weight.  Remove the union $P$ of the three primal tree paths from
+the root to the vertices of $f$.
+
+To see balance, consider a dual edge incident to $f$.  Its primal edge and
+the tree path between its endpoints bound a fundamental cycle.  The cycle's
+vertices lie in $P$, since both endpoints belong to $f$.  It separates the
+corresponding branch of the dual cotree from the other branches.  Consequently
+each surviving primal component has its assigned faces in one branch of
+$T^*-f$.  Any weight assigned to $f$ itself belongs to a vertex of $f$, hence
+to $P$.  Every remaining component therefore has at most half the middle-band
+weight.  This argument permits arbitrary nonnegative face weights; it does
+not require each individual assigned weight to be small.
+
+Return only the \emph{original middle-band vertices} of $P$, together with
+the two boundary levels.  Discarding artificial centers from this separator
+is safe: paths in the original graph use old vertices and old edges only.
+The old edges were retained during triangulation, so any original path
+avoiding the returned vertices is also a path in the triangulation avoiding
+$P$.  The contracted root represents vertices already separated from the
+middle by the lower level.  Thus the original graph has a separator $S$ with
+\[
+ |S|\le 2r+3(2r+2)=8\lceil\sqrt{s}\rceil+6,
+ \qquad |C|\le s/2\quad(C\text{ a component of }G-S).
+\]
+The constants are deliberately loose.  Small separators on practical inputs
+matter more than optimizing this universal numerical bound.
+
+\subsection{From the hierarchy to a certified order}
+
+Recursively order each component of $G-S$, then put $S$ last.  Stop at a
+fixed leaf size, eight by default; the API permits integer cutoffs from one
+through 64.  Process distinct initial connected components consecutively.
+At a prefix cut, any crossing arc is incident to a separator on the current
+recursion path, or to a vertex of the current leaf.  Completed sibling
+components have no edges to unvisited siblings.  Since the original degree
+is four, the frontier is at most
+\[
+ 4\left(\sum_{S\text{ on the path}}|S|+|\text{leaf}|\right).
+\]
+Sizes halve along a path.  The square-root terms form a convergent geometric
+sum, while the additive constants contribute $O(\log n)$, giving width
+$O(\sqrt n)$.  This holds for every prefix, including prefixes inside a
+separator's own vertex list.
+
+The JSON certificate records the input digest, leaf cutoff, separator and
+child lists, flattened order, actual maximum and total frontier, and the
+recursively computed bound
+\[
+ b(\text{leaf})=4|\text{leaf}|,\qquad
+ b(\text{node})=4|S|+\max_C b(C).
+\]
+Each crossing occurs once in the hierarchy.  With normalized crossing
+indices the hierarchy uses $O(n\log n)$ bits; arbitrary input-label bit
+length also counts toward input processing.  Construction and verification
+take polynomial time.  The verifier rebuilds adjacency directly from edge
+owners and checks coverage, disjointness, the exact remaining components,
+half-balance, separator sizes, order, actual profile and the bound.  It calls
+no planar-map or separator constructor.  Thus even a mistake in the embedded
+construction cannot silently publish an incorrect certified frontier bound.
+
+The practical wrapper also computes or accepts a candidate order.  It
+chooses the lexicographically smaller pair (maximum frontier, total frontier)
+between that order and the separator order.  If greedy wins, the separator
+witness is retained: explicit profile comparison proves that the selected
+order has the same asymptotic upper bound.  This is a bounded-choice ordering
+policy, not a progress-based restart of a scan.  It complements the earlier
+adaptive elimination and observer fallbacks.
+
+\subsection{Exactly which subexponential computation follows}
+
+For a fixed checkerboard shading, let $f_i$ count Tait vertices incident to
+both processed and unprocessed crossings, and let $w_i$ be the crossing
+frontier.  The corner argument in Section~\ref{sec:potts-integration} gives
+$2f_i\le w_i$, including repeated face walks.  A fixed $q\ge5$ Potts query
+uses at most $q^{f_i+2}$ temporary assignments and exact pairs in
+\[
+ R_q=\mathbb Z[x]/(x^2-(q-2)x+1).
+\]
+Coefficient bit lengths are $O(n\log q)$; arithmetic and boundary-key work
+add polynomial factors.  Substituting the certified width yields
+\[
+ T_{\mathrm{scalar}}(n)=\operatorname{poly}(n)\,2^{O(\sqrt n)}
+ \quad\text{for fixed }q.
+\]
+This is a bit-complexity statement, not a count of unit-cost operations on
+unbounded integers.  For the existing modular matching filter, allowing all
+boundary pairings gives the weaker but still subexponential bound
+$\operatorname{poly}(n)2^{O(\sqrt n\log(n+1))}$ on the same order.
+These are universal upper bounds for scalar evaluation, not claims that
+our implementation or constants are optimal.
+
+The optional \code{potts-separator} Jones backend constructs the witness and
+then calls the existing exact evaluator.  With the Python API, setting both
+\code{max\_states=None} and \code{max\_transitions=None} disables the local
+caps for the theoretical complete query.  Production defaults retain the
+4096-state and 200\,000-transition caps.  Exhaustion is inconclusive, and
+the recognition deadline remains global.  A zero local budget declines
+before constructing a hierarchy.  Once a complete certificate has been
+published, scalar exhaustion retains its order for the homology fallback.
+If subsequent Reidemeister reductions change crossing indices, the witness
+is rebuilt on the reduced diagram before supplying an order to a window
+query or the scanner.  A global interruption during preparation publishes
+no partial certificate.
+
+Three obstacles prevent promoting this to a general recognition theorem.
+First, agreement at a scalar specialization is not an unknot certificate.
+Second, a frontier bound alone does not bound the number of surviving
+relative Khovanov objects or intermediate matrix size.  Third, this hierarchy
+does not certify common-disk prefixes, so the stronger conditional bounds of
+the disk-transfer and nice-window backends cannot simply be substituted.
+The descending grid family already described in this report has raw width
+$\Omega(\sqrt n)$ for every order.  That obstructs a universal
+polylogarithmic-width strategy on a fixed diagram, but it is no lower bound
+for recognition: a descending certificate immediately handles the family.
+
+\subsection{Validation and measurements}
+
+All 589 integrated tests pass.  The new tests compare acceptance of 500 random
+ribbon maps with an independent spherical-map implementation, verify
+certificate corruption is rejected, and exercise loops, disconnected
+projections, long bands and grids.  Sixteen small knot diagrams are checked
+against independent cube homology using actual separator orders; both Potts
+shadings agree with the previous exact evaluator.  Resource tests distinguish
+partial preparation from a completed certificate followed by scalar
+exhaustion, and check that a changed diagram receives a fresh certificate.
+
+The separate reproducible driver \path{fast/audit_separator_orders.py}
+audits 114 inputs, including 100 randomly generated, crossing-permuted and
+edge-relabelled braid closures.  Its independent hierarchy checker uses
+union-find over edge-owner pairs rather than the production component
+traversal.  It independently counts cut edges and checks balance, coverage,
+components and the stored bound.  The result archive retains all inputs,
+certificates, source hashes, five shuffled ordering rounds and three shuffled
+kernel rounds, with warm-ups excluded.  Table~\ref{tab:separator-orders}
+separates measured frontiers from preparation costs.
+
+\begin{table}[ht]
+\centering\small
+\input{tables/separator_orders.tex}
+\caption{Widths and median order-preparation times. Bounded preparation
+includes the separator witness, its verification and the greedy comparison;
+these are additional costs, not speedups.}\label{tab:separator-orders}
+\end{table}
+
+The tree-medial family consists of medial diagrams of embedded complete
+binary trees, with one crossing per tree edge.  These are simple nugatory
+unknot diagrams used to stress the greedy order; they are not hard
+recognition instances.  In isolated modular matching queries, height five
+falls from a median 47.665\,ms to 1.941\,ms (24.6 times), excluding order
+preparation.  At heights six and seven, all greedy runs exhaust the state
+cap while the selected orders finish in 4.126 and 8.788\,ms.  Those censored
+runs have no completion-time speedup ratio.  All completed scalar answers
+are inconclusive for recognition.
+
+The exact Potts queries on these same trees differ little between orders:
+the advantageous checkerboard shading already has trivial frontier.  At
+height seven the medians are 2.572 and 2.585\,ms, far below the extra order
+preparation cost.  The grids also retain their better greedy order.  These
+results support keeping the new option explicit: the certified asymptotic
+bound and a reduction in matching-filter work do not establish a general
+practical speedup, a full-recognition speedup, or a smaller homology complex.

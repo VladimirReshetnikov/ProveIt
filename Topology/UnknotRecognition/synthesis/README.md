@@ -2,6 +2,20 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`separator_orders.tex` proves the maintained optional separator order has
+`O(sqrt(n))` crossing frontier for every closed classical projection. It explains
+the BFS layers, contracted middle band, three paths at a dual-tree centroid,
+independent hierarchy verifier, and comparison with the greedy order. Combined
+with fixed-color exact Potts evaluation this gives a general subexponential
+scalar query, **not** a general subexponential recognition algorithm. The
+section states the remaining multiplicity and common-disk limitations, resource
+semantics, 589 passing tests, and independent audit of 114 inputs. Measurements
+separate preparation cost from scalar kernel work and retain capped outcomes.
+The opening review also reassesses Lackenby's claim against the July 2026
+preprint and distinguishes the earlier slides from later cubic-logarithm talk
+abstracts. The claim remains plausible but its full complexity proof is not
+established by the available specification.
+
 `shadow_fallback.tex` extends the adaptive scheduler: exhausting marked work
 retains direct Euler observations within the original shared query cap; query
 exhaustion then continues the same exact scanner. It states the changed
