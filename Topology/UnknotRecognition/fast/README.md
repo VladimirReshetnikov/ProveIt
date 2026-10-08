@@ -7,6 +7,8 @@ bound, the remaining candidates are skipped. Same-alphabet queries retain the
 complete fallback. All 682 tests pass, including exponentially long inputs
 where tables are forbidden once optimality is already proved. See
 [`lcs_bounds.tex`](../synthesis/lcs_bounds.tex) for the proof and scope.
+Reproduce the isolated component audit with
+`python -B benchmark_lcs_bounds.py --output results/lcs_bounds_local.json`.
 
 When whole-donor search would stall, compressed group search now finds partial
 cyclic overlaps over all donor rotations and both signs. The exact compressed

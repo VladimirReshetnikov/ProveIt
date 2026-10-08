@@ -717,3 +717,47 @@ if compressed_lcs:
             table('Partial move, $h$ & Milliseconds & Nodes & Charged work', '@{}rrrr@{}', rows) +
             r'\end{center}' + '\nIncludes grammar construction, failed whole-donor search, '
             'complete cyclic search and checked application. This is not a knot verdict.\n')
+
+lcs_bounds = load('../fast/results/lcs_bounds_20261008.json')
+if lcs_bounds:
+    from statistics import median
+    arms = ('baseline', 'control', 'full')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in lcs_bounds['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in lcs_bounds['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    with open('tables/lcs_bounds_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Both changes', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all whole-knot queries complete.\n')
+    rows = []
+    for row in lcs_bounds['kernels']:
+        cells = [row['family'].replace('-', ' ').capitalize(), str(row['bits'])]
+        for arm in ('baseline', 'control', 'bounds-only', 'incremental-only', 'full'):
+            samples = [s['measurements'][arm] for s in row['samples']]
+            cells.append(f"{1000*median(s['seconds'] for s in samples):.3f}"
+                         if all(s['status'] == 'COMPLETE' for s in samples) else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/lcs_bounds_kernels.tex', 'w') as handle:
+        handle.write(r'\begin{center}\footnotesize' + '\n' +
+            table('LCS family & $h$ & Before & A/A & Bounds & Incr. & Both', '@{}llrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including construction. '
+            'Bounds retains eager witness collection; Incr. retains ordinary length bounds. '
+            'Limits are censored queries.\n')
+        rows = []
+        for row in lcs_bounds['moves']:
+            cells = [str(row['bits'])]
+            for arm in arms:
+                samples = [s['measurements'][arm] for s in row['samples']]
+                cells.append(f"{1000*median(s['seconds'] for s in samples):.3f}"
+                             if all(s['status'] == 'COMPLETE' for s in samples) else 'limit')
+            full = row['samples'][0]['measurements']['full']
+            cells.extend(str(full[k]) for k in ('nodes',))
+            cells.append(str(full['stats']['work']))
+            rows.append(' & '.join(cells) + r' \\')
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Partial move, $h$ & Before & A/A & Both & Nodes & Work', '@{}rrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including construction, failed whole-donor '
+            'search, cyclic query and checked application. Nodes/work describe both changes.\n')

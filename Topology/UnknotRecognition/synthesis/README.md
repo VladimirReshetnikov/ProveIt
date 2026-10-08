@@ -2,6 +2,20 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`lcs_bounds.tex` adds exact signed-alphabet run bounds and incremental
+optimality checks to the complete compressed substring primitive. It proves
+the grammar summary, distinguishes local-pair from global stopping, and gives
+restricted bit bounds for repeated and interior-match families. Every query
+retains the complete fallback when inexpensive bounds are loose. All 682 tests
+pass with Regina in 182.222 seconds. Raw controlled component comparisons are
+in `../fast/results/lcs_bounds_20261008.json`, with logs in
+`data/lcs-bounds-*`. The audit preserves 225 knot traces and records 225
+uncapped substring queries plus 45 partial-move measurements. At `N=2^500`,
+repeated and interior queries complete in 3.0 and 4.9 ms where historical
+queries exhaust their work allowance; the same-alphabet control still hits
+that limit. The rebuilt article has 194 pages with no new layout warnings
+or unresolved references. The general recognition bound remains unproved.
+
 `compressed_lcs.tex` closes the local cyclic-overlap coverage gap. It proves
 exact dyadic suffix-prefix progressions, cut-pair coverage, the six-critical-
 alignment reduction, and a polynomial bound for the implemented primitive.

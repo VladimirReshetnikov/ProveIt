@@ -1,0 +1,30 @@
+\begin{center}\footnotesize
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+LCS family & $h$ & Before & A/A & Bounds & Incr. & Both \\
+\midrule
+Repeated & 8 & 109.458 & 106.942 & 0.135 & 107.604 & 0.142 \\
+Repeated & 32 & limit & limit & 0.245 & limit & 0.319 \\
+Repeated & 500 & limit & limit & 3.078 & limit & 3.028 \\
+Interior & 8 & 60.409 & 59.386 & 58.950 & 59.761 & 0.177 \\
+Interior & 32 & limit & limit & limit & limit & 0.414 \\
+Interior & 500 & limit & limit & limit & limit & 4.912 \\
+Same alphabet & 8 & 1.124 & 1.116 & 1.111 & 1.127 & 1.117 \\
+Same alphabet & 32 & 8.550 & 8.543 & 8.647 & 8.598 & 8.595 \\
+Same alphabet & 500 & limit & limit & limit & limit & limit \\
+\bottomrule
+\end{tabular}
+\end{center}
+Median milliseconds including construction. Bounds retains eager witness collection; Incr. retains ordinary length bounds. Limits are censored queries.
+\begin{center}\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+Partial move, $h$ & Before & A/A & Both & Nodes & Work \\
+\midrule
+8 & 287.444 & 286.253 & 0.409 & 35 & 527 \\
+32 & limit & limit & 0.875 & 83 & 1439 \\
+500 & limit & limit & 8.418 & 1019 & 19223 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Median milliseconds including construction, failed whole-donor search, cyclic query and checked application. Nodes/work describe both changes.
