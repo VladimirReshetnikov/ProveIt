@@ -3225,6 +3225,46 @@ degree-four inverse theorem (2026-10-08)
   until a structure theorem with graph counts polynomial in 1/theta and
   1/gamma is available.
 
+Part J: Theorem 16.2 and Corollary 16.11 in dimension three, conditionally
+(2026-10-08)
+  Research notes Part J name the input that every dimension >= 3 lacks: a
+  structure theorem whose covers stack, i.e. whose unions keep controls
+  polynomial in the number of pieces. That input is now a Lean Prop, and
+  dimension three is proved from it.
+  - Proofs16PartJInterface: CubicStackableClass d q S (any n members of S
+    have a union of graphs with MultiplyLinearWith count 3*n*q and exponent
+    cubicBaseExponent (n*q)) and StackableStructureAt d Q q (after removing
+    a theta fraction, every product relation in Z_N^d is covered by
+    Q gamma theta members of such a class with parameter q gamma theta).
+    stackableStructureAt_one: the dimension-one instance holds, with the
+    Freiman-one class, so the definition is not vacuous.
+  - Proofs16PartJSlices: Section16FinalStackable and the good-domain slice
+    provider of the general-k cubic lift, built from a stackable class.
+  - Proofs16PartJPiece: the dimension-three structured extraction, the
+    spectrum restriction, and partJ_relation_piece, a cover of mass
+    section16ThetaTwo (section16ThetaOne (theta/2) gamma 2) * N^3 with the
+    lift's MultiplyLinearWith controls.
+  - Proofs16PartJBudget / Proofs16PartJTheorem: the budget comparison at
+    piece parameter U^9, U = multipleS theta gamma 2. It covers the
+    capped-to-power and power-to-algebraic exponents, a width lower bound
+    via section16_cubic_scalar_width, power absorption, the source width,
+    the graph budget, and U^9 <= mass * multipleS theta gamma 3. Results:
+      section16_budgeted_piece_three_of_stackable,
+      theorem_16_2_at_three_of_stackable : Theorem162At 3,
+      corollary_16_11_at_three_of_stackable : Corollary1611At 3,
+    each under (hyp : StackableStructureAt 2 Q q) and PolyBoundedControl Q,
+    PolyBoundedControl q, where PolyBoundedControl f means
+    f gamma theta <= (2/(gamma*theta))^(2^64) on (0,1]^2.
+  Axioms: propext, Classical.choice, Quot.sound only.
+  What this does NOT give. The hypothesis is open. Milicevic's Theorem 1.4
+  (arXiv:2601.01682) gives a Bohr-structured description of Freiman
+  bihomomorphisms with QUASI-polynomial bounds; PolyBoundedControl needs
+  polynomial ones, because the width exponent contains 576^(-24n) with n of
+  the order Q*q, and a quasi-polynomial n overruns the multipleS budget.
+  The bridge from the dimension-three structured pair's slices to
+  bihomomorphisms on dense pieces is also unproved. Theorems 18.1 and 18.2
+  do not follow (Part I). The catalogue count stays 114/6.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py

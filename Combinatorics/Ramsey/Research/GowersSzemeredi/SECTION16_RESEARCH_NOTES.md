@@ -576,6 +576,31 @@ the budget comparison. The result would be `Theorem162At 3` and
 `Corollary1611At 3`, conditional on one published theorem. Neither Theorem
 18.1 nor 18.2 would follow; they need polynomial discrepancy (Part I).
 
+### J.1 Status: dimension three is formalized from (S) (2026-10-08)
+
+The plan above is carried out in Lean, in a slightly different shape.
+(R) and (D) are not proved separately. Instead (S) is stated directly in
+the form the lift consumes: a stackable class whose n-fold unions satisfy
+the dimension-one slice provider's controls (`CubicStackableClass`).
+Covers by such classes are `StackableStructureAt d Q q`.
+
+- `stackableStructureAt_one` checks the definition in dimension one.
+- `theorem_16_2_at_three_of_stackable` and
+  `corollary_16_11_at_three_of_stackable` prove `Theorem162At 3` and
+  `Corollary1611At 3` from `StackableStructureAt 2 Q q`, with
+  `Q, q ≤ (2/(γθ))^(2^64)`.
+- The piece parameter is `s = U^9`, with `U = s(θ,γ,2)`. The budget is
+  `s ≤ θ₂(θ₁(θ/2,γ,2))·s(θ,γ,3)`, via `U^18 ≤ s(θ,γ,3)`.
+
+The polynomial bound matters. The lift's width exponent contains
+`576^(−24n)`, where n is the spectrum count, about `Q·q`. It is absorbed
+by `2^(−240U²)` only if `n ≤ U²`. A quasi-polynomial n, as in Milićević's
+Theorem 1.4, is not absorbed. Two things therefore remain open:
+
+- a polynomially bounded (S) for two-dimensional product relations;
+- the bridge from bihomomorphisms on dense pieces to
+  `CubicStackableClass` members.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

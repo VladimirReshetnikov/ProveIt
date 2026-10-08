@@ -293,6 +293,9 @@ import GowersSzemeredi.Proofs18ExplicitQuarticInverse
 import GowersSzemeredi.Proofs16CorollaryLowDimensions
 import GowersSzemeredi.Proofs16PartJInterface
 import GowersSzemeredi.Proofs16PartJSlices
+import GowersSzemeredi.Proofs16PartJPiece
+import GowersSzemeredi.Proofs16PartJBudget
+import GowersSzemeredi.Proofs16PartJTheorem
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
