@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: use an explicit reducible rewrite for the continuous
+forecast expansion on Lean 4.32. The upstream theorem statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Fourier.ForecastInactiveCharacterSite
 import OAI.Combinatorics.Progressions.Sampling.ForecastInactiveSlicedFixedGridCap
 import OAI.Combinatorics.Progressions.Sampling.ForecastInactiveSlicedFixedScalarCapBudget
@@ -663,7 +667,7 @@ theorem exists_forecastInactive_sliced_continuous_rational_source
     (fun b t z => (hext b).2.2.1 t z), ?_⟩
   intro x z outPoint y
   have hfinal := forecastRetained_continuous_error density Hdensity hHdensity hdensity y (herr x z outPoint)
-  rw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / height a)] at hfinal
+  erw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / height a)] at hfinal
   exact hfinal
 
 end Erdos3.VectorPolynomial
