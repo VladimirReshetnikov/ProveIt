@@ -18,7 +18,9 @@ Mathlib `v4.32.0` workspace.
 - Lake library: `OAI` in the root `lakefile.toml`, with source root
   `lib/openai-math/lean` and module names unchanged from upstream
   (`OAI.Combinatorics.Progressions.*`). The declarations keep their upstream
-  namespaces (`OAI.Erdos3.*`).
+  namespaces (`OAI.Erdos3.*`), except the two extracted Freiman lemmas,
+  which use `OAI.Erdos3.FreimanModel.ProveItExtract` to coexist with their
+  originals when the complete density proof is imported.
 
 With a local checkout of the pinned upstream revision, run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_provenance.py /path/to/math`
@@ -153,6 +155,12 @@ above intentionally omit unrelated declarations; their proof status remains pend
   `import OAI.Compat.<Topic>` line, and nothing else, unless a further change
   is listed in their header comment.
 - `Lattices/FreimanAffineBox.lean` is an extract, as described above.
+  Its two lemmas use the `FreimanModel.ProveItExtract` namespace so they
+  coexist with the originals in `NativeProperAffineRecovery.lean`.
+  `GowersSzemeredi.PortImportAudit` imports the Gowers audit alongside that
+  full upstream module and checks that the extracted propositions match
+  their originals. The combined 2,548-module build passes; this is not an
+  audit of the still-pending full quantitative-density conclusion.
 
 ## Trust
 
@@ -171,3 +179,6 @@ Lake can build any module of `OAI` (`lake build +OAI.<Module>`), but
 their `OAI` imports one `lean` process at a time without Lake's trace pass;
 both use the root workspace's Mathlib. 64 vendored modules import all of
 Mathlib.
+
+Run `python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PortImportAudit`
+to repeat the combined-import and extracted-statement checks.

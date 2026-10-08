@@ -1,4 +1,9 @@
-/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+/-
+Modified for ProveIt: use IsModuleTopology.topologicalAddGroup on Lean 4.32
+and give refiltered_product_expansion_of_recovered a local 400000-heartbeat
+budget for dependent product and quotient reduction. Statements and bounds
+are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.PositiveShiftRefilteredExpansionSpec
 import OAI.Combinatorics.Progressions.Polynomial.ProductPolynomialMaps
 
@@ -23,6 +28,7 @@ variable {ι : Type u} [Fintype ι] [DecidableEq ι] {L : ι → Type u}
   [TopologicalSpace (ℝ ⊗[ℚ] L a)] [IsTopologicalAddGroup (ℝ ⊗[ℚ] L a)]
   [ContinuousSMul ℝ (ℝ ⊗[ℚ] L a)] [T2Space (ℝ ⊗[ℚ] L a)]
 
+set_option maxHeartbeats 400000 in
 theorem refiltered_product_expansion_of_recovered
     (hEF : E.filtration = (pi D).filtration.gradedRefiltration W)
     {p cost : ℝ} {q r : ℕ} (hbase : RefilteredRecoveredExpansionSpec D a W E Q p q r cost) :

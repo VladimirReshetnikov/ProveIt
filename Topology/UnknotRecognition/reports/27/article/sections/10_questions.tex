@@ -1,0 +1,163 @@
+\section{Further research questions and proposed program}
+\label{sec:questions}
+
+The following questions are ordered roughly from immediate engineering tasks to
+longer-term topology.  They are phrased so that a negative answer would also be
+informative.
+
+\subsection{Immediate repository work}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.}]
+\item \textbf{Find a genuine accumulated-support separator.}
+      Does there exist a PD-code unknot for which the reviewed last-touch search
+      fails at a given depth but the one-birth accumulated-footprint search
+      succeeds at that depth?  An exhaustive search over small diagrams would
+      turn Proposition~\ref{prop:last-vs-accumulated} from an abstract warning
+      into a knot-specific regression fixture.
+
+\item \textbf{Find a genuine two-birth RIII unlock.}
+      Is there an unknot diagram whose shortest first-unlocking RIII trace has
+      birth number at least two with the conservative dart footprint?  If so,
+      minimize crossings and depth and add the result as an adversarial test.
+
+\item \textbf{Measure the empirical parameter distribution.}
+      On the existing random closures, scrambled unknots, hard survivors, and
+      named examples, record the minimum successful pair $(b,k)$ under a fixed
+      trial cap.  Separate successful and failed search costs, and publish raw
+      traces rather than only aggregate counts.
+
+\item \textbf{Incremental candidate maintenance.}
+      Can legal RIII triangles meeting the active footprint be updated in
+      amortized constant time per move, rather than rediscovered from nearby
+      darts?  The dart involution changes only a bounded footprint, so a local
+      invalidation table should be possible.
+
+\item \textbf{Canonical commutation reduction.}
+      Beyond sorting births, can independent connected moves be quotiented by a
+      trace-monoid normal form?  A safe partial-order reduction could remove many
+      permutations without changing completeness.
+\end{enumerate}
+
+\subsection{Parameterized topology}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},resume]
+\item \textbf{Bounded births for natural diagram classes.}
+      Are reduced alternating unknot diagrams (necessarily trivial after
+      reduction), positive braid-derived unknots, arborescent unknots, or
+      diagrams of bounded projection-treewidth guaranteed to have bounded birth
+      number during monotone simplification?
+
+\item \textbf{Logarithmic depth from bounded width.}
+      Does bounded treewidth, branchwidth, carving width, or pathwidth of the
+      projection graph imply $k=O(\log N)$ after an appropriate choice of
+      crossing-decreasing reduction order?  A balanced-separator proof would
+      directly combine with the present theorem.
+
+\item \textbf{Birth number versus dependency-tree width.}
+      The support-overlap graph of a shortest trace is connected.  Relate the
+      minimum birth number to standard directed or undirected parameters of this
+      graph: number of sources under chronological orientation, pathwidth,
+      vertex separation, or search number.  Which parameter admits the best
+      deterministic enumeration?
+
+\item \textbf{Lower bounds.}
+      Construct families of unknot diagrams requiring
+      $\Omega(\log N)$, $\Omega(N^\epsilon)$, or $\Omega(N)$ births or RIII
+      depth under crossing-nonincreasing RI/RII/RIII simplification.  Such a
+      family would sharply delimit this route.
+
+\item \textbf{Reduction-order optimization.}
+      The current simplifier takes available RI/RII moves greedily.  Can a
+      different choice of decreasing move reduce the later birth/depth
+      parameters?  Determine the complexity of finding an optimal reduction
+      order and whether local confluence or matroid-like exchange principles
+      apply.
+\end{enumerate}
+
+\subsection{Algorithmic improvements to the birth exponent}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},resume]
+\item \textbf{Color-coding independent births.}
+      Can randomized or derandomized color-coding find $b$ disjoint causal birth
+      footprints in $2^{O(b)}\poly(N)$ rather than $N^b$ time, while still
+      accounting for their later joins?
+
+\item \textbf{Terminal-rooted reverse search.}
+      RIII is an involution.  Can one enumerate causal predecessors backward
+      from potential RI/RII footprints, meeting a forward search in the middle?
+      The obstacle is that the final diagram is unknown; a bounded local-state
+      interface might overcome it.
+
+\item \textbf{Representative families.}
+      When several birth sets induce the same boundary behavior on an active
+      footprint, can all but a small representative family be discarded?  This
+      would parallel rank-based or connectivity-based dynamic programming.
+
+\item \textbf{Planar localization.}
+      Prove that a shortest birth footprint can be chosen inside a bounded-radius
+      neighborhood of the eventual connecting action, or find a counterexample.
+      A positive theorem would replace global $N$ choices by a function of $k$.
+
+\item \textbf{Learning only as a scheduler.}
+      Can a learned model predict which birth candidates to try first while the
+      complete bounded search remains available underneath?  The learned layer
+      must affect order only, never pruning or verdicts.
+\end{enumerate}
+
+\subsection{Combination with exact invariants}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},resume]
+\item \textbf{Khovanov-aware RIII ordering.}
+      Can inexpensive frontier estimates predict which legal RIII move will
+      reduce later Khovanov scan width, not merely crossing count?  The synthesis
+      already observes that fewer crossings can increase scan work.
+
+\item \textbf{Joint parameter theorem.}
+      Suppose RIII birth/depth are moderately large but the resulting diagram
+      has a small exact-scan frontier.  Derive a combined bound that branches on
+      RIII only until a certified frontier threshold is reached, then switches
+      to exact contraction.
+
+\item \textbf{Twist-run compression after causal simplification.}
+      Does a small RIII causal footprint preserve or reveal a low signed-braid
+      run count?  If so, the twist-compression theorem and the present theorem
+      could be composed rather than run as unrelated alternatives.
+
+\item \textbf{Hierarchy transfer.}
+      Relate a bounded RIII causal region to a bounded modification of a handle
+      hierarchy or boundary pattern.  This could provide a three-dimensional
+      certificate that replaces a large remaining diagram search.
+\end{enumerate}
+
+\subsection{Formal verification}
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},resume]
+\item \textbf{Lean formalization of the abstract theorem.}
+      Formalize strong disjoint commutation, causal connectedness, birth
+      front-loading, and the counting bound.  The Boolean prototype supplies a
+      finite executable semantics, but the proof should be independent of it.
+
+\item \textbf{Verified dart footprint.}
+      Prove that the concrete \code{apply\_r3} function writes only the claimed
+      24-dart footprint and is an involution on every validated diagram.
+
+\item \textbf{Proof-carrying traces.}
+      Specify a stable JSON schema for RIII/RI/RII traces, source hashes, budgets,
+      and replay results.  Make the replay kernel the only trusted component for
+      positive simplification verdicts.
+\end{enumerate}
+
+\subsection{A focused next milestone}
+
+The most informative next experiment is not to raise depth globally.  It is to
+implement opt-in $b=1$ accumulated support, preserve the current budget, and run
+paired tests on the exact 117-depth corpus recorded by the synthesis.  Three
+outcomes are all useful:
+\begin{itemize}
+\item new successes establish that last-touch locality was a real completeness
+      bottleneck;
+\item no new successes but low overhead suggests the stronger search can safely
+      replace the heuristic;
+\item high failed-search overhead identifies the need for partial-order
+      reduction or a better scheduler before increasing $b$.
+\end{itemize}

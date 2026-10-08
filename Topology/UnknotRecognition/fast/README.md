@@ -11,7 +11,14 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 534 passing tests.
+diagram is not checked twice. The integrated suite now has 539 passing tests.
+
+New RIII trace entries include `triangle`, the three dart indices of the
+chosen face in the original input diagram. Crossing indices alone can name
+two different legal faces. Replay validates the specified face and accepts
+older crossing-only RIII records only when the face is unambiguous. R1/R2
+records retain their existing format. The causal RIII search proposed in
+report 27 is still under review; this change fixes certificate replay.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:

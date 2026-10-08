@@ -36,7 +36,8 @@ namespace LeanProofs.GowersSzemeredi
 
 namespace FreimanClosure
 
-open OAI.Erdos3.FreimanModel OAI.Erdos3.CyclicCrootSisask
+open OAI.Erdos3.FreimanModel OAI.Erdos3.FreimanModel.ProveItExtract
+  OAI.Erdos3.CyclicCrootSisask
 
 /-- The density parameter `p = log (32 K^16)` of an order-eight dense model. -/
 def modelLog (K : ℝ) : ℝ := Real.log (32 * K ^ 16)
@@ -230,7 +231,7 @@ def bsSize (c0 : ℝ) : ℝ := 2 * bsDoubling c0 ^ 16
 
 end FreimanClosure
 
-open FreimanClosure OAI.Erdos3.FreimanModel in
+open FreimanClosure OAI.Erdos3.FreimanModel OAI.Erdos3.FreimanModel.ProveItExtract in
 /-- **Theorem 7.2 (Balog–Szemerédi).** -/
 theorem theorem_7_2_holds : theorem_7_2 := by
   intro c0 hc0

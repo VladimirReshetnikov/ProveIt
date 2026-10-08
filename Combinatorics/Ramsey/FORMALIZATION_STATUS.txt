@@ -36,6 +36,14 @@ Verification at this checkpoint
   proof now reduces the local let definitions before introducing the two
   cover hypotheses. The repaired statement and all quantitative bounds
   are unchanged. The full combined build and axiom scan now pass.
+  The two vendored Freiman extracts now use the ProveItExtract namespace,
+  preventing declaration collisions with the full upstream affine-recovery
+  module. Their statements and proof bodies are unchanged. After this
+  adjustment the 809-module Gowers audit still checks 5,190 theorems and
+  the same 114/6 catalogue split. GowersSzemeredi.PortImportAudit additionally
+  compiles the facade and full affine-recovery module together as a
+  2,548-module closure and checks equality of the extracted propositions
+  with their originals. This does not certify the remaining density port.
 
 Conditional Section 16 regime splitting
   The merged Proofs16RegimeSplitting gives exact coarse covers for relations

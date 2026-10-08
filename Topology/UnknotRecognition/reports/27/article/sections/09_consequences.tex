@@ -1,0 +1,101 @@
+\section{Consequences, comparisons, and limitations}
+\label{sec:consequences}
+
+\subsection{A new structural target}
+
+Earlier conditional routes in the project parameterize exact computation by
+frontier width, twist-run count, extremal Khovanov windows, transfer rank, or
+hierarchy data.  The present result adds a parameter on the diagram-rewriting
+side:
+\[
+  (\text{birth number},\ \text{unlock depth}).
+\]
+It is independent of homological width.  A diagram may have a difficult exact
+scan but a small causal RIII certificate, or conversely a simple exact invariant
+calculation but no short monotone simplification.
+
+This separation suggests an adaptive policy: estimate local RIII branch growth
+and exact-scan frontier growth, then spend a bounded amount on whichever has the
+more favorable certified parameter.  Such a policy must preserve the existing
+rule that abandoned work cannot affect verdicts.
+
+\subsection{Why the result is stronger than a depth-only bound}
+
+A naive global depth-$k$ RIII search has $O(N)$ choices at each level and hence
+$N^{O(k)}$ behavior.  At $k=O(\log N)$ this is already
+$N^{O(\log N)}$, quasi-polynomial, but with a large exponent and no recognition
+of local causal structure.  More importantly, the current implementation does
+not perform that complete global search because it would be too expensive.
+
+The causal theorem decomposes the exponent.  Only births pay a factor of $N$;
+all connected continuations pay $O(k)$.  When $b$ is constant and
+$k=O(\log N)$, the exponent improves from $O(\log N)$ to
+$O(\log\log N)$.  This is the main asymptotic gain.
+
+\subsection{Why polynomial Reidemeister length is not enough}
+
+Lackenby's polynomial move bound permits crossing increases and controls a much
+broader class of sequences.  A polynomial total length $N^{11}$ inserted into
+our enumeration formula would be useless.  The present theorem needs two finer
+facts:
+\begin{enumerate}
+\item the neutral run between decreases is short;
+\item only a few support-disjoint branches are born during that run.
+\end{enumerate}
+Proving these facts for all unknots would be a major additional theorem and may
+be false for the strictly crossing-nonincreasing move language.
+
+\subsection{Potential relation to planar separators}
+
+The active RIII footprint contains $O(k)$ darts and induces a small subgraph of
+the projection.  If this active region admits balanced separators that are
+stable under local moves, one could attempt a divide-and-conquer search in the
+style of frontier algorithms.  Such a theorem might replace the $N^b$ birth
+factor by a smaller separator-dependent term.  At present, however, a birth can
+occur anywhere, and no safe separator theorem for the dynamic RIII causal graph
+is proved here.
+
+\subsection{Potential relation to hierarchy certificates}
+
+A short RIII causal trace is a two-dimensional diagram certificate; an essential
+hierarchy is a three-dimensional complement certificate.  There may be a
+transfer principle: a uniformly local hierarchy simplification could constrain
+where diagrammatic births occur, while a small causal footprint might identify
+a bounded part of a handle structure that needs modification.  The 2026
+hierarchy algorithm makes this a timely direction, but no such bridge is
+claimed.
+
+\subsection{Lower-bound questions}
+
+The birth parameter also supports negative results.  To prove that this route
+cannot solve the unrestricted problem, one could construct unknot diagrams for
+which every crossing-nonincreasing first-unlocking trace has either large depth
+or large birth number.  The connectedness theorem says a shortest trace cannot
+contain causally irrelevant branches, so a lower bound on births would be a
+meaningful topological obstruction rather than a search artifact.
+
+\subsection{Soundness boundary}
+
+The preprocessor has one-sided semantics:
+\[
+  \text{successful replayable trace}\Rightarrow\Unk,
+  \qquad
+  \text{failure or timeout}\Rightarrow\Unknown.
+\]
+It cannot certify knottedness.  Knottedness remains the responsibility of sound
+invariants or exact complement/homology methods.  This boundary should be
+preserved in every CLI and serialized-certificate interface.
+
+\subsection{Assessment of the research contribution}
+
+Within its scope, the report delivers four concrete advances.
+\begin{enumerate}
+\item It replaces an empirical locality heuristic by an explicit two-parameter
+      completeness theorem.
+\item It proves a restricted quasi-polynomial and polynomial classification.
+\item It identifies and repairs a subtle but natural false proof strategy.
+\item It supplies code and a low-risk opt-in integration path.
+\end{enumerate}
+The unresolved step is geometric: establish useful upper bounds on births and
+depth for broad, natural families of unknot diagrams, or design a different
+certificate when those parameters are large.

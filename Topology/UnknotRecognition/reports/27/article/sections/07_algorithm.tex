@@ -1,0 +1,163 @@
+\section{The restricted recognizer and integration design}
+\label{sec:algorithm}
+
+\subsection{A monotone simplification class}
+
+Fix functions $b(N)$ and $k(N)$, a deterministic RI/RII exhaustion order,
+and a deterministic ordering of the birth-front search tree (for example,
+iterative depth followed by lexicographic triangle keys).  Let
+$\mathsf{BF}_{b,k}$ denote the resulting deterministic preprocessor.  Define
+$\mathcal{U}^{\mathsf{BF}}_{b,k}$ to be the set of unknot diagrams on which this
+specific process reaches the crossing-free circle:
+\begin{enumerate}
+\item exhaust RI/RII in the fixed order;
+\item if crossings remain, run the complete birth-front search with bounds
+      $b(N),k(N)$ and select its first trace in the fixed ordering;
+\item apply that trace, return to step 1, and return $\Unknown$ if no trace is
+      found.
+\end{enumerate}
+The policy qualification is necessary.  Two different successful unlock traces
+can lead to different reduced diagrams, and the existence of one globally good
+sequence does not by itself justify a greedy choice without backtracking.  The
+definition permits the diagram size to fall during the process; using the
+original $N$ as the upper-bound parameter only weakens the estimate.
+
+\begin{theorem}[Restricted-class unknot recognition]
+\label{thm:restricted-recognition}
+There is a deterministic, sound algorithm that returns $\Unk$ on every diagram
+in $\mathcal{U}^{\mathsf{BF}}_{b,k}$ and otherwise returns either $\Unk$ or $\Unknown$.  Its
+running time is
+\[
+  N^{b(N)+O(1)}(Ck(N))^{k(N)}
+\]
+and its working memory is polynomial, apart from any subsequent fallback.
+\end{theorem}
+
+\begin{proof}
+At each stalled state, run the complete birth-front search with the specified
+bounds and fixed ordering.  If it succeeds, select the first trace in that
+ordering, replay it, expose RI/RII, and exhaust reductions in the fixed order.  Reidemeister moves preserve the represented
+knot type.  Therefore reaching the crossing-free circle is a sound unknot
+certificate.
+
+Each successful episode is followed by an RI or RII move and hence removes at
+least one crossing.  There are at most $N$ episodes.  Multiplying the
+single-episode bound from Corollary~\ref{cor:r3-bound} by $N$ is absorbed in the
+$N^{O(1)}$ factor.  If a search fails, return $\Unknown$ or invoke an exact
+fallback; no negative conclusion is drawn.
+\end{proof}
+
+\begin{corollary}
+The policy class $\mathcal{U}^{\mathsf{BF}}_{b,k}$ is recognized in quasi-polynomial time when
+$b(N),k(N)=O(\log N)$, in $N^{O(\log\log N)}$ time when
+$b(N)=O(1)$ and $k(N)=O(\log N)$, and in polynomial time when
+$b(N)=O(1)$ and $k(N)=O(\log N/\log\log N)$.
+\end{corollary}
+
+\subsection{Certificate size and replay}
+
+A successful preprocessor emits the same kind of trace already used by ProveIt:
+for each RIII move, the three stable input crossing indices, followed by RI/RII
+records.  Across at most $N$ reduction episodes, a uniform depth bound $k$ gives
+$O(Nk)$ RIII records.  Each crossing index uses $O(\log N)$ bits, so the
+certificate size is $O(Nk\log N)$ bits.  The existing independent replay routine
+checks legality move by move and rebuilds a validated spherical one-component
+diagram.
+
+This proof-carrying behavior is more important than the heuristic that found the
+trace.  Search policies, budgets, and branch ordering may change without
+changing the trusted replay kernel.
+
+\subsection{Opt-in API}
+
+The supplied review patch adds two optional arguments to
+\code{simplify}:
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Argument & Suggested values & Meaning \\
+\midrule
+\code{r3\_search} & \code{"last"}, \code{"clustered"} & legacy or birth-front search \\
+\code{r3\_births} & positive integer & maximum number of births \\
+\bottomrule
+\end{tabular}
+\end{center}
+The default remains \code{"last"}; therefore applying the patch alone does not
+change existing behavior.  In clustered mode, \code{r3\_births=1} gives the
+accumulated-support search.  Larger values admit independent birth branches.
+The existing \code{r3\_depth}, \code{r3\_budget}, and face-shortcut controls are
+retained.
+
+\subsection{Pseudocode}
+
+A simplified version of one depth-limited search is shown below.
+
+\begin{lstlisting}[language=Python,caption={Birth-front RIII search, schematic}]
+def search(state, depth_left, births_left, birth_phase,
+           active_footprint, last_birth_key, path):
+    if budget_exhausted() or depth_left == 0:
+        return failure
+
+    if birth_phase and births_left > 0:
+        for T in all_legal_triangles(state):
+            F = footprint(state, T)
+            if F intersects active_footprint:
+                continue
+            if key(T) <= last_birth_key:
+                continue
+            apply(T)
+            if RI_or_RII_now_legal(F):
+                return success
+            if search(state, depth_left - 1, births_left - 1,
+                      True, active_footprint union F, key(T), path + [T]):
+                return success
+            undo(T)
+
+    for T in legal_triangles_meeting(state, active_footprint):
+        F = footprint(state, T)
+        apply(T)
+        if RI_or_RII_now_legal(F):
+            return success
+        if search(state, depth_left - 1, births_left,
+                  False, active_footprint union F,
+                  last_birth_key, path + [T]):
+            return success
+        undo(T)
+
+    return failure
+\end{lstlisting}
+
+The production helper contains duplicate suppression, inverse-move avoidance,
+trial accounting, and the last-move face shortcut.
+
+\subsection{Required production tests}
+
+Before clustered mode can be enabled by default, the following checks are
+mandatory.
+
+\begin{enumerate}
+\item \textbf{Trace replay.}  Replay every successful trace with the existing
+      independent checker.
+\item \textbf{Exact restoration.}  Hash the entire $\alpha$ involution before
+      and after every failed search and every budget cutoff.
+\item \textbf{Invariant preservation.}  Compare Alexander data, writhe, and
+      Khovanov ranks on randomized successful RIII traces, as the existing
+      synthesis did for the legacy helper.
+\item \textbf{Verdict equality.}  Compare the full recognizer with clustered
+      mode disabled and enabled on maintained and random corpora.
+\item \textbf{Adversarial branching.}  Add fixtures requiring two disjoint
+      birth footprints before a connecting RIII move, if a genuine knot-diagram
+      example can be found.
+\item \textbf{Performance separation.}  Measure successes and failures
+      separately.  Deep failed searches should remain budgeted and should run
+      only immediately before the expensive exact scan.
+\end{enumerate}
+
+\subsection{Why the exact fallback remains essential}
+
+Even a complete $(b,k)$ search is incomplete for unrestricted unknot diagrams.
+If it fails, the diagram may still be an unknot that needs larger parameters,
+crossing-increasing moves, a different diagram language, or a non-Reidemeister
+certificate.  The ProveIt pipeline should therefore keep its exact Khovanov
+recognizer and every sound obstruction.  Clustered RIII search is a front-end
+optimization with a theorem, not a replacement decision procedure.
