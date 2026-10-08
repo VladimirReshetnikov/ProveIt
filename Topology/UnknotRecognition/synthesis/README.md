@@ -801,3 +801,17 @@ python -B normal_orbit_research/normal_certificates.py benchmark --output result
 The audit compares Regina, report 47's independent polygon-stack geometry, and
 the frozen maintained baseline. Timing separates discovery, proof recording,
 production plus replay, and replay of an already supplied proof.
+
+`normal_multiplicity.tex` proves the common-coordinate scaling reduction,
+including one-sided components, and records version-two quotient certificates.
+All output topology refers to the original input; only the actual orbit
+queries are reduced. Reproduce the audit and paired benchmark from `fast/`:
+
+```sh
+python -B normal_orbit_research/multiplicity.py audit --output ../synthesis/data/normal-multiplicity-audit.json
+python -B normal_orbit_research/multiplicity.py benchmark --output results/normal_multiplicity_20261008.json
+```
+
+The prior `normal_certificates.py` experiment explicitly disables this later
+optimization to retain its version-one comparison. Historical raw measurements
+retain their original source hashes and are not relabelled as new timings.
