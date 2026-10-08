@@ -1,0 +1,241 @@
+\section{Integral shears: exact local optimization and a phase-sensitive bound}
+\label{sec:integral-shears-review}
+
+Commit \texttt{2b6068c604} supplies
+\path{docs/incoming/unknot_integral_shears_20261008.zip}.
+We verified all 42 entries of its checksum manifest before executing its
+code. Intake commit \texttt{7ad289e2b} subsequently placed the delivery in
+\path{reports/41}; all 42 retained files are byte-identical to the archive.
+Only the checksum manifest was omitted. The native audit recovers the original
+ZIP from its arrival commit, so it remains reproducible after intake removal. The full archive SHA256 and the reproduced results are recorded in
+\path{data/integral-shears-review.json}. Its useful contribution is an exact
+joint optimization of commuting automorphisms, together with a direct
+compressed output construction and a separately checked optimality witness.
+This is stronger than optimizing the power along one selected Whitehead
+direction. The distinction between this local result and a complete
+recognition algorithm is essential: neither a general phase bound nor a
+complete terminal-state theorem is supplied.
+
+\subsection{From powered Whitehead moves to integer tensions}
+
+Fix a positive alive generator $a$. For each signed letter $x$ with
+$|x|\ne a$, choose an integer $z_x$ and define
+\[
+ \Phi_{a,z}(a)=a,\qquad
+ \Phi_{a,z}(x)=a^{-z_{-x}}x a^{z_x}.
+\]
+The inverse-letter formula is consistent, and substitution gives
+$\Phi_{a,z}\Phi_{a,t}=\Phi_{a,z+t}$. Thus every potential vector defines
+an automorphism, with inverse $\Phi_{a,-z}$. A powered Whitehead direction
+is the special case $z_x=k[x\in A]$. Conversely, the integral shear factors
+into at most $2(r-1)$ powered singleton directions at rank $r$. Negative
+potentials use the inverse multiplier. These factors commute, although
+individual factors can temporarily increase length.
+
+For a literally cyclically reduced relator, retain the cyclic sequence of
+non-$a^{\pm1}$ letters. If consecutive retained letters are $u,y$, with
+intervening run $a^e$, write $v=-y$. The transformed gap exponent is
+\[
+ e+z_u-z_v.
+\]
+No retained letters cancel. Indeed, a first such cancellation would require
+$y=-u$, hence $v=u$; its exponent remains $e$, which was nonzero by the
+input reduction contract. This argument includes the cyclic seam. Pure
+multiplier powers are fixed. Consequently the exact total cyclic length is
+\begin{equation}
+ L_a(z)=C_a+\sum_{(u,v,e)}w_{uve}|e+z_u-z_v|,
+ \label{eq:shear-review-objective}
+\end{equation}
+where $C_a$ counts retained letters and pure-root lengths. Duplicate relator
+slots contribute with multiplicity. Self-loop records contribute constant
+costs and must be retained.
+
+The gap histogram can be computed on a repetition grammar without expanding
+its words. Each rule stores its first and last retained letters and its
+signed outer multiplier runs. A concatenation creates at most one new gap;
+a repetition creates a copy-seam gap with multiplicity $k-1$. Reverse
+propagation of root multiplicities counts all rule occurrences, and a
+separate root seam closes each non-pure relator. There are $O(s+m)$ gap
+records for $s$ rules and $m$ roots. Large multiplicities and exponents are
+binary integers, not iteration counts. The verifier instead builds
+bottom-up histograms, providing a distinct polynomial recurrence.
+
+\subsection{An exact certificate and a polynomial solver}
+
+For each gap choose an integer $f_{uve}$ satisfying
+\[
+ |f_{uve}|\le w_{uve},\qquad \operatorname{div}f=0.
+\]
+For any potentials $z$, termwise comparison and cancellation of the vertex
+potentials give
+\[
+ \sum w_{uve}|e+z_u-z_v|\ \ge\
+ \sum f_{uve}(e+z_u-z_v)=\sum e f_{uve}.
+\]
+Equality certifies a global integer minimum. The checker needs only exact
+support, integer types, capacities, conservation and equality of these two
+objectives. It does not rerun the optimizer or rely on hashes for mathematical
+word equality.
+
+The delivered optimizer replaces a gap by opposite arcs of capacity $w$ and
+costs $-e,e$. A circulation on these arcs yields $f=g^+-g^-$. Residual-feasible
+vertex potentials provide the primal solution through $z=-\pi$. Its
+capacity-scaling implementation processes bits from most to least significant:
+it doubles old capacities and flows, installs the next capacity bits, saturates
+new negative-reduced-cost arcs, then repairs the resulting imbalances along
+shortest residual paths. Each newly opened negative arc has capacity at most
+one, so the total imbalance is at most the number of arcs. Each integral
+repair reduces this total. There are at most $A$ repairs per capacity bit,
+not one repair per unit of the original large capacities.
+
+Truncated shortest-path distance updates preserve nonnegative residual
+reduced costs, including unreachable vertices. Bellman--Ford recalibration
+after repairs bounds potential bit lengths by simple-path costs. This gives
+a polynomial bit-time algorithm in graph size and the binary input lengths.
+The zero-imbalance self-loop case is included. Balanced offset graphs can
+solve every gap exactly by graph traversal. Forests of parallel-edge bundles
+admit weighted-median differences on each bundle; acyclicity makes those
+independent choices compatible. The same primal--dual checker validates the
+shortcut results. These observations explain why forcing the general flow
+solver on every structured input is unnecessary.
+
+The archive's work budget charges circulation operations. It is not a global
+service allowance: histogram construction, balanced/forest shortcuts,
+certificate checking and grammar allocation also need host accounting before
+any bounded production probe is introduced.
+
+\subsection{Why the retained representation matters}
+
+For each non-pure rule $U$, construct a transformed core $M_U$ between its
+first and last retained letters. Concatenation joins child cores with the
+one transformed multiplier run. If $U=V^k$ is non-pure and $h$ is the
+transformed copy-seam exponent, use
+\[
+ M_U=(M_Va^h)^{k-1}M_V.
+\]
+Append the transformed cyclic seam at each root. Skeleton invariance proves
+that the output is already freely and cyclically reduced. This construction
+uses no generic free-reduction or equality queries. Each old rule introduces
+a bounded number of new rules, provided repetition rules with binary
+exponents remain part of the representation.
+
+Writing $G=s+m+r+2$, the report's conservative bound is $G'\le8G$.
+A different verifier recurrence stores decorated images with outer multiplier
+runs and associates the repeated core in the opposite order. It has the same
+constant-factor growth property. During strictly shortening phases, expanded
+length is bounded by its initial value and integer bit lengths grow only
+with the initial encoding size and the logarithm of the rule count.
+Accordingly $q$ such phases, their local optimality certificates and their
+independent replay cost
+\[
+ \operatorname{poly}(\sigma)\,2^{O(q)}
+\]
+in the initial binary encoding size $\sigma$. Polynomial factors in $q$
+are absorbed into the exponential; the zero-phase case remains polynomial.
+For $\sigma\le n^{O(1)}$ and $q=O(\log^2(n+2))$, this is
+$2^{O(\log^2(n+2))}$, a quasi-polynomial bound. With logarithmically many
+phases the same computation is polynomial.
+
+This is a conditional class bound, not a general unknot theorem. A knot
+algorithm must also provide checked full-presentation provenance, a phase
+bound, a sufficient terminal predicate, and bounds for interleaved relator
+operations. In particular, the maintained \code{WordArena} represents powers
+by binary concatenation. Exporting every new repetition rule to that arena
+adds a bit-length factor per phase and does not inherit the displayed
+constant-factor growth theorem. Legacy substitution and reduction have their
+own costs as well.
+
+\subsection{A concrete limit of automorphic descent}
+
+The pure-power terminal predicate has a simple complete algebraic meaning.
+If each nonempty relator is a power of a single alive generator, take the gcd
+$d_j$ of its nonzero exponents, with $d_j=0$ when that generator has no
+relation. The group is the free product of the cyclic factors $C_{d_j}$,
+where $C_0=\mathbb Z$ and $C_1$ is trivial. It is infinite cyclic precisely
+when exactly one $d_j$ is zero and all others are one. Absent generators
+must therefore remain in the alive set.
+
+Even unlimited strictly shortening automorphisms do not always reach this
+terminal class. For $N\ge2$, consider
+\[
+ \langle a,b\mid a^N,a^{N+1},[a,b]\rangle.
+\]
+The first two relators kill $a$, so this is an infinite-cyclic group, but it
+has no singleton relation and the commutator is not a pure-power root.
+Under any free-group automorphism the first two relators have combined
+cyclic length at least $2N+1$. The commutator image is a nontrivial element
+with zero abelianization, hence cyclic length at least four. The original
+total $2N+5$ already attains that lower bound. This is a plateau under all
+free-group automorphisms, not merely a poor choice of multiplier.
+
+Relator combinations or other Tietze operations can escape this example;
+our maintained overlap and relator-power machinery is relevant to that
+separate task. The example is an abstract presentation, not a family of hard
+knot diagrams. It establishes that a phase-count result by itself would
+still leave a terminal-completeness obligation.
+
+\subsection{Reproduced delivery and maintained-source experiments}
+
+All 51 delivered unit tests passed in 3.325 seconds. The deterministic audit
+also reproduced 1,200 circulation instances, 360 stages from 180 connected
+braid closures, 1,012 individual relator-image comparisons and three large
+serialized presentation certificates. It completed in 5.220 seconds. These
+are correctness checks, not comparative performance measurements.
+
+The delivery's source-pinned gateway passed all 160 comparisons against the
+actual maintained \code{WordArena}, selected-power formulas and legacy
+replay. All four pinned Git blobs match; no unpinned override was required.
+The independently implemented Artin-presentation corpus in the delivery is
+useful, but it does not exercise our actual PD presentation constructor or
+singleton scheduler. We therefore added
+\path{data/audit_integral_shears.py}.
+
+This audit reconstructs full native Wirtinger presentations from 30 validated
+one-component diagrams already recorded in the port-register audit. For
+each diagram it checks the raw state and the state after the maintained
+\code{\_search} performs its singleton prelude. The exact selected-power
+comparator minimizes the power along the maintained cut direction, even
+where the production heuristic would skip that extra query. It is a local
+length comparator, not a timing of the production policy.
+
+On all 60 states the delivered legacy macro replay agrees, up to cyclic
+rotation, with both the direct constructor and explicit letter substitution.
+This gives 234 relator-image checks. The joint query strictly improves the
+selected-power length on 12 of the 30 raw states and on none of the 30
+post-singleton states. These are paired stages of the same diagrams, not
+60 independent knot samples.
+
+We then continue the maintained search from the legacy representatives and
+the corresponding recorded moves. Forty-six traces finish and pass both
+explicit and compressed independent full-source certificate verification;
+14 stall and none hits the continuation cap. A stall remains inconclusive.
+These checks establish compatibility of successful composed traces, not a
+speedup or a larger recognized class.
+
+The experiment also finds 19 literal representative differences between
+direct construction and legacy replay. Their cyclic words agree, but later
+overlap records refer to positions in a particular representative. Thus
+installing direct roots while recording only legacy moves can invalidate
+subsequent positional replay. An atomic-shear certificate would need its
+own specified representative convention and independently tested verifier.
+Our audit deliberately continues from the actual legacy roots.
+
+The delivery likewise reports 21 improved raw Artin presentations and zero
+improvements after its singleton elimination. Its supplied small-stage
+measurements show overhead; we have not rerun those comparative timings.
+The reported gains on large synthetic presentations concern an independently
+implemented selected-line baseline, not our maintained recognizer. Combined
+with the native-stage experiment, this is insufficient evidence to change
+runtime defaults or add an unconditional joint query.
+
+\subsection{Integration decision and next proof obligation}
+
+We retain the source-pinned gateway result, reproducible native adapter audit,
+mathematical construction and explicit counterexample in the maintained
+synthesis. The producer remains unchanged. A future runtime experiment should
+first identify highly compressed post-singleton states where joint optimization
+changes the search, then compare complete verified runs with the same resource
+allowances. If direct construction is needed for asymptotics, that experiment
+also requires a retained repetition representation and an atomic certificate
+protocol. A bound on multiplier changes and on intervening relator operations
+would be the next substantive step toward the quasi-polynomial target.
