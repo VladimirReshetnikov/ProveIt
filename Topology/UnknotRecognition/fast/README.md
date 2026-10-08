@@ -1637,7 +1637,7 @@ number of possible hierarchy states. The theory is maintained in
 The optional `spin-faithful` backend uses one orientation bit per cut edge,
 a checked integral turning cochain, and an injective integer encoding of the
 full Jones polynomial. With its certified separator order and caps/deadlines
-disabled, it computes the full polynomial in `poly(n) 2^O(sqrt(n))` deterministic
+disabled, it computes the full polynomial in `2^O(sqrt(n))` deterministic
 bit time. A polynomial different from one certifies knottedness; polynomial
 one continues to the independent recognizer.
 
@@ -1660,3 +1660,15 @@ See `spin_jones_research/README.md` for provenance and the synthesis article's
 binary-tensor chapter for the proof. Measured regressions justify retaining
 the existing default. The other newly delivered research components remain
 under component-level review; the synthesis records their current status.
+
+
+The spin backend now defaults to **valuation arithmetic**: each frontier integer
+is stored as an odd signed mantissa and a separate power of two. This removes
+monomial padding exactly, including signed cancellation and carries. Python
+callers may pass `arithmetic="shifted"` to compare the original representation.
+Both modes produce the same exact final scalars, polynomials, states and
+transition counts. The existing `max_coefficient_bits` includes represented
+full integers and final normalization; `max_frontier_mantissa_bits` and
+`max_frontier_valuation` describe the compressed frontier representation.
+The general Jones bound is `2^O(sqrt(n))`; its polynomial factor is absorbed.
+For a separately supplied width `w`, retain `poly(n) 2^O(w)`.

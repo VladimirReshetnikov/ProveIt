@@ -981,3 +981,22 @@ if tensor_candidates:
             table('Input & Spin & A/A & Valuation & Global shift', '@{}lrrrr@{}', rows) +
             r'\end{center}' + '\nMedian milliseconds on a common prepared order. '
             'The last two arms load the delivered research module directly.\n')
+
+spin_valuation = load('../fast/results/spin_valuation_20261008.json')
+if spin_valuation:
+    arms = ('baseline', 'control', 'shifted', 'valuation', 'potts')
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'stress_braid5_36': 'Braid5 36', 'grid-8-shuffled': 'Grid 8 shuffled'}
+    for row in spin_valuation['rows']:
+        cells = [names.get(row['name'], row['name'].replace('-', ' ').capitalize())]
+        for arm in arms:
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                         if row['completed'][arm] == spin_valuation['rounds'] else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/spin_valuation.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Input & Before & A/A & Shifted & Valuation & Potts', '@{}lrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
+            'Current shifted arithmetic controls for the new dispatch and counters. '
+            'Limits are censored.\n')

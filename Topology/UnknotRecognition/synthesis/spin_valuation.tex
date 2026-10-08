@@ -1,0 +1,165 @@
+\section{Valuation arithmetic in the maintained binary Jones backend}
+\label{sec:spin-valuation}
+
+\subsection{Integrating the second report's arithmetic idea}
+The common-order comparison in Section~\ref{sec:incoming-oct8} identified
+large intermediate monomial padding as a practical cost of exact tensor
+contraction. The certified-primitives report supplied by commit
+\code{bc5b91385} removes such padding with valuation-normalized arithmetic.
+We transfer that idea into the maintained spin backend while retaining its
+own turning certificate, cyclotomic phases, local tensor aggregation,
+crossing-order policy and faithful Jones decoder.
+
+The new default within \code{spin-faithful} stores a phase, a binary
+valuation and a signed odd mantissa. The overall recognizer's default Jones
+backend remains unchanged. Python callers can select
+\code{arithmetic='shifted'} to use the previous integer representation;
+\code{arithmetic='valuation'} selects the new one. Both return the same
+materialized exact scalars and polynomial encoding. This makes the arithmetic
+change independently comparable without changing any topological decision.
+
+\subsection{Canonical exact integer arithmetic}
+For a nonzero integer $x$, write
+\[
+ x=2^v m,\qquad v\ge0,\quad m\ \hbox{odd},
+\]
+with $m$ signed. Zero has the unique representation $(0,0)$. We remove
+all binary factors, rather than only whole powers of the faithful base $B$.
+The representation therefore concerns the evaluated integer, including
+arithmetic carries, and makes no assertion about a formal polynomial's
+lowest degree.
+
+For addition of $(v,m)$ and $(u,a)$, let $q=\min(v,u)$ and compute
+\[
+ t=(m\ll(v-q))+(a\ll(u-q)).
+\]
+If $t=0$, return the canonical zero. Otherwise let $r$ be the number of
+trailing zero bits of $|t|$ and return $(q+r,t/2^r)$. The equality
+$2^qt=2^vm+2^ua$ proves exactness. The signed division is exact, so Python's
+arithmetic right shift produces the required signed quotient even for negative
+integers. Cancellation can increase the valuation by more than either input's
+trailing zeros, which is why normalization is performed after addition.
+
+A compiled local tensor has one phase $\zeta^s$ and a bounded sum of
+monomials $\sum_j a_j2^{e_j}$. Its common offset $e=\min_j e_j$ is factored
+out once during local preparation. Multiplication by a stored coefficient
+$\zeta^r2^vm$ therefore computes
+\[
+ t=\sum_j a_j(m\ll(e_j-e)),\qquad
+ \zeta^{r+s}2^{v+e}t.
+\]
+Normalize $t$ as above and reduce $r+s$ modulo four, negating the mantissa
+when $r+s\ge4$, since $\zeta^4=-1$. The per-transition work still uses
+shifts and additions with bounded small multipliers, without multiplying two
+arbitrary large coefficients. Phase agreement is checked before every merge.
+
+Induction on the crossing scan proves that every stored entry represents
+exactly the integer and phase stored by the previous implementation. A key
+is removed if and only if its exact coefficient is zero in either mode.
+Thus all frontier keys, transition counts, peak state counts and cap boundaries
+are identical. At the end, materialize $m\ll v$ once and apply the existing
+padding and normalization. The independent turning verifier and faithful
+polynomial decoder retain their original contracts.
+
+\subsection{Bit complexity and resource interpretation}
+Every shifted integer represented by a frontier entry has the polynomial
+bit bound of Section~\ref{sec:spin-jones}. Its odd mantissa cannot be longer.
+The valuation is at most the represented integer's bit length and itself
+requires only logarithmically many bits in that bound. Aligning unequal
+valuations never creates a larger integer than the old arithmetic would
+have materialized for the same terms, apart from a constant carry allowance.
+The new representation therefore preserves the deterministic
+$\operatorname{poly}(n)2^{O(w)}$ bound for a width-$w$ order and the
+$2^{O(\sqrt n)}$ general Jones bound for the certified order.
+
+The polynomial prefactor is intentionally retained only in the parameterized
+bound. For the general bound, $n^c=2^{O(\log n)}$ is absorbed by
+$2^{O(\sqrt n)}$ for every fixed $c$. Keeping it visible can explain the
+per-entry arithmetic cost, but it does not define a stronger asymptotic class.
+As usual, arbitrary noncanonical input label bit lengths also have their own
+reading and validation cost; the crossing-count bound uses a normalized
+combinatorial diagram encoding.
+
+The established \code{max\_coefficient\_bits} counter still reports the bit
+length of represented full integers, including final scalar and normalization
+values. Two new counters distinguish the largest stored frontier mantissa
+and largest frontier valuation. Neither is a total memory measurement:
+keys, tuples, Python object overhead, both active dictionaries, preparation
+and the final materialized scalars also consume memory. The state and
+transition allowances retain their meanings and do not become byte budgets.
+Caller cancellation and inconclusive local exhaustion keep their existing
+behavior. No unfinished polynomial is published.
+
+\subsection{Validation and controlled comparison}
+Four new tests compare 2000 randomized signed additions and local tensor
+products with literal integer and four-coordinate cyclotomic arithmetic,
+including exact cancellation and carry normalization. They test a common
+valuation of $2^{500}$ without allocating its expanded integer; compare all
+historical scalar, certificate and work fields across 70 mirrored ordered
+knot queries; validate arithmetic choices before preparation; and verify a
+large reduction in stored tree-frontier mantissas with identical exact results.
+The existing 140 independent whole-cube polynomial comparisons, turning and
+gauge tests, decoder tests, CLI/fallback tests and cancellation checks now run
+through valuation arithmetic by default. All 17 focused spin tests pass.
+The full integration suite passes all 718 tests with Regina 7.4.1 in
+158.291 seconds.
+
+\input{tables/spin_valuation.tex}
+
+The benchmark compares the archived spin implementation at \code{ef374a365},
+an identical A/A repeat, current shifted arithmetic, current valuation
+arithmetic, and faithful Potts. Each timer includes fresh PD validation,
+ordering, turning preparation, contraction, normalization and full polynomial
+recovery. Seed 26100865 shuffles five measured rounds after one excluded
+warmup on each of fourteen inputs. Of 350 measurements, 345 complete and
+five Potts queries reach the state cap on the 196-crossing grid. The 70
+warmups are excluded. Every completed polynomial agrees, and every completed
+new spin query reproduces all historical scalar, certificate and work fields,
+including the old full-integer bit counter. Source hashes are checked before
+and after measurement. Limits remain incomplete queries, with no runtime ratio
+against a completed answer.
+
+On the 254-crossing tree, archived/A/A/shifted/valuation medians are
+387.402, 390.981, 394.490 and 112.079 milliseconds. The median paired
+archived/valuation ratio is 3.479; shifted/valuation is 3.482. The largest
+frontier mantissa falls from 195585 to 1536 bits, while peak states remain
+272 and transitions remain 12589. The largest valuation is 195584 bits of
+binary shift, stored as a small integer; this is not a 195584-bit allocation.
+The materialized final scalars still account for the unchanged full-integer
+bit counter.
+
+On the 144-crossing grid, archived/valuation medians are 218.472 and
+176.728 milliseconds, with paired ratio 1.236. Faithful Potts takes
+361.450 milliseconds, giving a paired Potts/valuation ratio of 2.045.
+The 196-crossing grid improves from 752.957 milliseconds (745.677 A/A)
+to 480.545, with paired ratio 1.588. Its frontier mantissa maximum falls
+from 42701 to 1600 bits; the full-integer counter, which also includes
+normalization, remains 59201. Every spin arm completes all five queries,
+whereas Potts is capped in all five. That last comparison is a capacity
+result, not a completed-runtime speedup.
+
+The small-input controls expose normalization overhead. Trefoil medians
+increase from 0.535 to 0.618 milliseconds, Conway from 2.338 to 2.574,
+and the 64-crossing grid from 22.359 to 24.025. The current shifted arm
+separates the new counter/dispatch overhead from normalization itself.
+Faithful Potts also remains faster on the tree, with median 77.981
+milliseconds, and on most small inputs. Thus neither valuation arithmetic
+nor the spin representation dominates all cases. The overall default Jones
+backend remains unchanged, and the shifted mode remains available.
+
+These are full invariant queries, not whole-recognition measurements. The
+new arithmetic does not reduce frontier width, the number of represented
+states, or the number of Khovanov generators. It improves the actual cost
+of exact scalar arithmetic on padded coefficients. A next adaptive experiment
+can use measured coefficient size or padding to decide when to switch
+representations, while charging conversion work and preserving one exact
+contract. A cross-backend policy must additionally account for discarded
+Potts work and its total transition allowance.
+
+Raw evidence is in \path{results/spin_valuation_20261008.json}; test,
+benchmark and source-review records are under \path{synthesis/data/spin-valuation-*}.
+All 21 incoming ZIP archives match their preceding recorded hashes, and the
+suggested \code{openai/math} head is unchanged at \code{fd4aeeb2ee}. The
+remaining report components retain the review queue of
+Section~\ref{sec:incoming-oct8}; this transfer is not blanket approval of
+either complete supplied patch.

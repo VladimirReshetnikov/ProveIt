@@ -1,3 +1,9 @@
+> Maintained continuation: the production spin backend now defaults to exact
+> binary valuation arithmetic, adapted from the certified-primitives report in
+> commit `bc5b91385`. The historical measurements below precede that transfer.
+> See the synthesis valuation chapter and `benchmark_spin_valuation.py` for
+> the current comparison; `arithmetic="shifted"` retains the old representation.
+
 # Exact Jones computation with two edge orientations
 
 `fastunknot/spin_jones.py` computes the full Jones polynomial, or decides
