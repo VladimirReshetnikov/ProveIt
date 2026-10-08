@@ -127,4 +127,49 @@ theorem exists_common_constant_window {r : Nat} (β δ : Fin r → Real) (M : Na
     have hk1 : k * L + L = (k + 1) * L := by ring
     rw [hbefore i j₁ (by omega), hbefore i j₂ (by omega)]
 
+/-- A bracket-linear map `x ↦ λ x + Σ_i ⌊α_i x + β_i⌋ a_i` on `ZMod N`. -/
+def bracketLinear {N r : Nat} (lam : ZMod N) (a : Fin r → ZMod N) (α β : Fin r → Real) (x : Int) :
+    ZMod N :=
+  lam * (x : ZMod N) + ∑ i, ((⌊α i * x + β i⌋ : Int) : ZMod N) * a i
+
+/-- **Bracket-linear maps are affine on a common window.** If the step `u`
+makes every frequency `1/M`-close to an integer `m i`, then along
+`x₀ + j u` the map is affine in `j` on a window of length `M / (r+1)`. -/
+theorem bracketLinear_affine_window {N r : Nat} (lam : ZMod N) (a : Fin r → ZMod N)
+    (α β : Fin r → Real) (x₀ : Int) (u : Int) (m : Fin r → Int) (M : Nat)
+    (hδ : ∀ i, |(u : Real) * α i - m i| * M ≤ 1) :
+    ∃ w : Nat, w + M / (r + 1) ≤ M ∧
+      ∀ j : Nat, w ≤ j → j < w + M / (r + 1) →
+        bracketLinear lam a α β (x₀ + j * u) =
+          bracketLinear lam a α β (x₀ + w * u) +
+            ((j : Int) - w : Int) * (lam * (u : ZMod N) + ∑ i, (m i : ZMod N) * a i) := by
+  obtain ⟨w, hw, hconst⟩ := exists_common_constant_window
+    (fun i => α i * x₀ + β i) (fun i => (u : Real) * α i - m i) M hδ
+  refine ⟨w, hw, fun j hj1 hj2 => ?_⟩
+  -- each bracket splits into an integer drift plus a window-constant part
+  have hsplit : ∀ (t : Nat) (i : Fin r),
+      ⌊α i * ((x₀ + t * u : Int) : Real) + β i⌋ =
+        t * m i + ⌊(α i * x₀ + β i) + t * ((u : Real) * α i - m i)⌋ := by
+    intro t i
+    have : α i * ((x₀ + t * u : Int) : Real) + β i =
+        ((α i * x₀ + β i) + t * ((u : Real) * α i - m i)) + ((t * m i : Int) : Real) := by
+      push_cast; ring
+    rw [this, Int.floor_add_intCast]
+    ring
+  have hc : ∀ i, ⌊(α i * x₀ + β i) + j * ((u : Real) * α i - m i)⌋ =
+      ⌊(α i * x₀ + β i) + w * ((u : Real) * α i - m i)⌋ :=
+    fun i => hconst i j w hj1 le_rfl hj2 (by omega)
+  unfold bracketLinear
+  simp only [hsplit, hc]
+  push_cast
+  set C : Fin r → ZMod N := fun i =>
+    ((⌊(α i * x₀ + β i) + w * ((u : Real) * α i - m i)⌋ : Int) : ZMod N) with hCdef
+  have hsum : (∑ i, ((j : ZMod N) * (m i : ZMod N) + C i) * a i) =
+      (∑ i, ((w : ZMod N) * (m i : ZMod N) + C i) * a i) +
+        ((j : ZMod N) - (w : ZMod N)) * ∑ i, (m i : ZMod N) * a i := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl (fun i _ => by ring)
+  rw [hsum]
+  ring
+
 end LeanProofs.GowersSzemeredi
