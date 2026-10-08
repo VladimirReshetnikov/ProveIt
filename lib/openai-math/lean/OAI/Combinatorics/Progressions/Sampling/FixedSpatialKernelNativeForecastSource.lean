@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: unfold local definitions when rewriting retained
+forecast expansions into their error estimates on Lean 4.32. All upstream
+statements and quantitative bounds are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Sampling.AllocatedForecastShortRawDependence
 import OAI.Combinatorics.Progressions.Sampling.ForecastDensityPhysicalApproximation
 
@@ -454,7 +459,7 @@ theorem exists_forecast_actual_smooth_rational_source
   have hfinal := forecastRetained_actual_smooth_error (X := X)
     B Pg R σ site root dirs hpivot hWsp hLsp (fun j => (hR j).ne') hBactive lower width
     hamin hδslice hprincipal hwidth hlower ractive hractive hκ hroot hminor y herror
-  rw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / scale a)] at hfinal
+  erw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / scale a)] at hfinal
   exact hfinal
 
 end RationalSite
@@ -646,7 +651,7 @@ theorem exists_forecast_continuous_rational_source
     (add_le_add (mul_le_mul_of_nonneg_right hcap
       (div_nonneg hCdecay (Nat.cast_nonneg T))) (le_refl _))
   have hfinal := forecastRetained_continuous_error density H hH hdensity y herror
-  rw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / scale a)] at hfinal
+  erw [(hext outPoint).2.2.2 z (y, fun a => (z a : ℝ) / scale a)] at hfinal
   exact hfinal
 
 end RationalSite
