@@ -1,0 +1,218 @@
+\section{Dynamic terminal contractions: algebra, native replay and zero cones}
+\label{sec:dynamic-terminal-review}
+
+Commit \texttt{49a8af358} supplies
+\path{docs/incoming/unknot_dynamic_terminal_20261008.zip}. Its 51-file manifest
+verifies. The report concerns repeated signed Tait-graph quotient observations
+at a fixed suffix, extending the boundary geometry of
+Section~\ref{sec:boundary-reuse}. It supplies a quadratic field-update method
+for a given terminal merge, including singular intermediate matrices. It
+does not supply a complete unknot criterion or bound how many observations
+a complete recognition procedure must generate. We reproduced its algebra
+checks, ran the previously unexecuted native adapter, and implemented its
+proposed zero-descendant-cone optimization as a research primitive.
+
+\subsection{Keep singular interior directions at each prime}
+
+Let a signed graph have $v$ vertices and $b$ terminals, with terminal zero
+grounded. Write its grounded Laplacian as
+\[
+ A=\begin{pmatrix}D&B\\E&F\end{pmatrix},
+\]
+where $D$ indexes the interior and there are $t=b-1$ non-root terminal
+coordinates. Over a chosen prime field, find invertible left and right
+matrices $P,Q$ such that $PDQ=\operatorname{diag}(I_\rho,0_r)$. Separate
+the active and null rows of $PB$ and columns of $EQ$, and eliminate the
+active identity block. The surviving matrix is
+\[
+ K=\begin{pmatrix}0_r&C\\G&S\end{pmatrix},
+ \qquad S=F-(EQ)_{\rm active}(PB)_{\rm active}.
+\]
+The determinant multiplier is
+$\gamma=(\det P\det Q)^{-1}$. For a partition with $q$ non-root blocks
+and terminal incidence matrix $R$, its quotient cofactor is
+\[
+ \gamma\det\begin{pmatrix}0_r&CR\\R^T G&R^T S R\end{pmatrix}.
+\]
+In particular, $r>q$ forces zero. Different primes can have different $r$;
+a singular interior is retained rather than discarded as a bad prime.
+If $r>t$, all terminal partitions are zero at that prime. Otherwise
+$\dim K=r+t\le2(b-1)$. Separate left and right elimination need not preserve
+symmetry, so $G$ cannot silently be replaced by $C^T$.
+
+\subsection{A fixed matrix and a rank-two merge}
+
+Give each terminal block a retained anchor, with root block anchored at
+zero. Let $e_i$ be the terminal unit column of $K$ and put $e_0=0$.
+Keep the null-direction rows. Replace a non-root anchor row by the sum of
+the \emph{original} terminal rows of $K$ in its block, and replace each
+non-anchor row $i$ in anchor block $a$ by $e_i^T-e_a^T$. Denote the resulting
+fixed-size matrix by $M_\pi$.
+
+Its determinant equals the smaller quotient border above, with no extra
+partition sign. Indeed set $x_i=z_a+z_i$ at non-anchor members of a non-root
+block, and keep its anchor coordinate $x_a=z_a$. This column change is
+$I+N$ with $N^2=0$ and determinant one. Constraint rows become unit rows.
+Clear their columns, then reorder rows and columns by the same permutation;
+the result is the small border direct-summed with an identity. The two
+permutation signs cancel. The identity works over any commutative ring.
+
+Now merge source block $B$ with anchor $s\ne0$ into target anchor $a$.
+Define $e=e_s-e_a$, $\chi_B=\sum_{i\in B}e_i$, and let $w_B^T$ be the sum
+of the original base rows indexed by $B$. Direct row comparison gives
+\[
+ M_{\pi'}-M_\pi=-e w_B^T+\chi_B e^T.
+\]
+The target anchor gains $w_B^T$; the old source anchor becomes a constraint;
+every other source member changes its constraint anchor from $s$ to $a$.
+The root case follows from $e_0=0$. Using current constraint rows to compute
+$w_B$ would be wrong. Anchors need not be minimum labels, but a certificate
+must retain their actual identities to identify the represented matrix.
+
+\subsection{Rank updates without a nonsingularity assumption}
+
+Maintain $L M U=\operatorname{diag}(I_k,0)$ and
+$\eta\det L\det U=1$. A rank-one update transforms to $xy^T$, where
+$x=Lu$ and $y^T=v^TU$. If $x$ has a nonzero null coordinate, pivot that
+coordinate and use its original zero row to clear the other entries of
+$x$. Clear the active part of the new row using active unit rows. A remaining
+null component of $y$ adds a pivot; otherwise rank stays unchanged. The
+case with a null component only in $y$ follows by transposition.
+
+When both tails vanish, set $\alpha=1+y^Tx$. For $\alpha\ne0$ the inverse
+rank-one correction restores the active identity, and $\eta$ is multiplied
+by $\alpha$. If $\alpha=0$, conjugate within the active block to send $x$
+to its final coordinate; its diagonal entry becomes zero and elimination
+removes one pivot. All branches use $O(b^2)$ field operations and never
+invert zero. The determinant is $\eta$ at full rank and zero otherwise.
+Applying this routine twice realizes a terminal merge even if the first
+update temporarily changes rank.
+
+Persistent cursors clone the two normalizing matrices before either update.
+The parent therefore survives an interrupted child construction. This
+transactional property belongs to the cursor API; the low-level mutable
+rank-update object does not promise it.
+
+\subsection{What the local complexity bound includes}
+
+For a supplied merge tree with $J$ edges and $Q$ observations, preparation
+and evaluation take $O(v^3+Jb^2+Q)$ field and indexed operations per prime.
+The cubic term includes interior preparation and the root normalization.
+Depth is at most $b-1$, so depth-first traversal retains $O(v^2+b^3)$ field
+elements, plus the explicit tree and results. Query generation is separate.
+A static competitor should eliminate the smaller $(r+q)$ border, not the
+original graph at every query. Heavy coarsening can make that static border
+much cheaper than retaining a large dynamic matrix.
+
+Signed reconstruction uses the graph-derived bound
+$B=\prod_{e\text{ non-loop}}(1+|w_e|)$: every quotient spanning tree uses
+a subset of the original edges. Select distinct primes with product greater
+than $2B$ and reconstruct the unique signed integer in $[-B,B]$. Independent
+choices of signs modulo each prime do not prove an integer is a unit:
+$41$ is $-1,+1,-1$ modulo $3,5,7$, although their product exceeds $2(41+1)$.
+For $H=\lceil\log_2(B+1)\rceil$, the report gives elementary polynomial
+bounds on the number and size of trial-generated primes, so scalar bit
+costs do not invalidate the stated explicit-graph polynomial bound.
+
+The delivered exact tree walker reconstructs at every visited node, including
+unobserved intermediate nodes. For that implementation, signed reconstruction
+must be charged at $J+1$ nodes, not merely $Q$ requested observations. Our
+per-prime driver reconstructs only requested outputs. This distinction does
+not change the per-prime theorem, but matters for its exact-integer wrapper.
+Neither implementation includes independent endpoint verification in the
+quadratic update bound. Direct verification of the normal forms is cubic;
+the delivered endpoint schema also repeats interior certificates.
+
+All partitions can share a merge tree with Bell-number many nodes. This
+removes repeated intermediate work but leaves
+$\exp(\Theta(b\log(b+2)))$ possible partitions. Thus a suitable polylogarithmic
+boundary bound can make this observer quasi-polynomial; it does not supply
+such a bound for general diagrams or control the other recognition work.
+
+\subsection{Implemented zero cones and independent native validation}
+
+The maintained research helper
+\path{../fast/determinant_research/terminal_plan.py} evaluates a supplied
+prime-specific merge plan. Once $q<r$, every descendant has still fewer
+blocks, so its residue is zero. The helper skips matrix cloning, updates
+and algebraic traversal of that entire cone. Before pruning, it validates
+\emph{every} tree edge with a depth-first live-anchor set, undoing anchor
+deletions on return. An impossible merge hidden below a zero node is still
+rejected. This costs $O(J+Q+b)$ indexed work even when all algebra vanishes.
+The remaining algebra uses $O(v^3+J_{\rm live}b^2)$ field work, where
+$J_{\rm live}$ counts actually updated edges. Requested callbacks propagate
+through validation and the delivered cursor operations; unrequested work
+statistics are not collected. Prime preparation and the full exact adapter
+remain research interfaces without a complete production deadline contract.
+
+The 39 delivered unit tests pass. Its deterministic audit reproduces 19,200
+rank-one updates, 600 graph kernels with 193 singular interiors, 1,772 graph
+quotient comparisons, all 877 partitions of seven terminals, and the three
+exported certificates. Our new traversal additionally agrees with direct
+integer quotient determinants on 15,840 values across 600 randomized field
+plans, with nonminimum anchors and branching. Invalid merges beneath a
+zero cone are rejected, and cancellation propagates.
+
+The native driver \path{data/audit_dynamic_terminal.py} recovers the immutable
+archive, rechecks its manifest and exports actual maintained scanner query
+streams. On 78 diagrams and 582 stages, all 4,503 queries agree in value
+\emph{and metadata} among the maintained rational observer, delivered static
+and dynamic modular adapters, and independently rebuilt completed diagrams.
+There are 1,317 disconnected projection queries. Connected observations also
+agree with the new per-prime traversal and signed reconstruction. All 24
+selected nontrivial native endpoint certificates pass independent algebraic
+replay; that graph-level check is supplemented by the separate geometry
+comparison, not used as a substitute for it.
+
+Across 1,819 prepared prime kernels, 132 interiors are singular and 24 are
+universally zero. The connected query plans contain 4,535 merge edges.
+Beyond universal zeros, the new pruning reduces field-edge updates from
+16,862 to 16,785: only 77 are avoided. This is a real activation on native
+inputs, but a small reduction, not evidence for a broadly effective shortcut.
+These stages have at most ten graph vertices, ten terminals and 200 queries;
+their field-interior nullities are at most two. They therefore test actual
+integration but do not probe the large-boundary asymptotic regime of the
+report's graph microbenchmarks.
+
+\subsection{Controlled native-stage measurements}
+
+\input{tables/dynamic_terminal.tex}
+
+The final benchmark includes fresh PD validation, boundary geometry, kernel
+preparation, matching validation, plan compilation and exact reconstruction.
+It excludes archive import, output hashing and the separate independent
+audits. The rational reference and its identical control retain their
+normalized partition cache. The integer arm constructs full integer quotient
+cofactors and uses fraction-free elimination with the same cache. We measure
+both delivered static modular evaluation and a cached version, delivered
+dynamic evaluation, and the new per-prime pruned traversal. The last arm
+also avoids reconstruction at unrequested tree nodes, so its timing is not
+an isolated measurement of the zero-cone test.
+
+One excluded warmup batch and five shuffled measured rounds use seed
+261008116. The complete 582-stage corpus uses one replay per sample; widest,
+most-query and most-singular stages use respectively 40, 10 and 50 fresh
+replays per batch. All repeated results must have identical hashes including
+metadata. The initial unbatched record is retained separately: its smallest
+case had a 1.78 identical-control ratio, and its new traversal unnecessarily
+collected work counters. The final record uses optional counters and batches
+to address those concrete measurement problems. Frozen initial source and
+audit snapshots permit verification of both records.
+
+All 140 measured batches and 28 warmup batches complete with matching output
+hashes. Across the full corpus the rational median is 351.6 ms, its identical
+control is 360.4 ms, and the integer quotient median is 293.2 ms; the paired
+rational/integer ratio is 1.245. Delivered dynamic evaluation takes 1,276.3 ms
+with paired rational/dynamic ratio 0.278, roughly a 3.6-fold slowdown.
+The new traversal takes 1,406.9 ms and supplies no aggregate timing gain.
+Static modular evaluation is also slower, with or without a partition cache.
+The final identical-control paired ratios range from 0.970 to 1.033 over
+the four workloads, much closer than in the initial small-case measurement.
+These results motivate testing integer/rational adaptation across larger
+native stages before choosing a new policy; they do not establish a
+competitive adaptive bound or justify a cutoff fitted to this small corpus.
+
+These are boundary-observer measurements, not full-recognizer speedups.
+The native adapter and zero-cone helper remain research-only. The report's
+general local theorem is useful, but the native evidence does not justify
+replacing maintained dispatch with an eager dynamic modular observer.

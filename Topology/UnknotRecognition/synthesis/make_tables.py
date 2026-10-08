@@ -1125,3 +1125,22 @@ if overlap_bounds:
             'Query or complete search & Before & A/A & Pruned & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
             'Median milliseconds; ratios are medians of paired before/pruned times. '
             'Native rows include two independent full certificate replays.\n')
+
+dynamic_terminal = load('../fast/results/dynamic_terminal_20261008.json')
+if dynamic_terminal:
+    rows=[]
+    cases=('native_all','native_widest','native_many_queries','native_singular')
+    names={'rational':'Rational','control':'Identical control','integer':'Integer quotient',
+           'static':'Static modular','static_cached':'Cached static modular',
+           'dynamic':'Delivered dynamic','pruned':'Pruned field traversal'}
+    for arm,name in names.items():
+        cells=[name]
+        cells.extend(f"{1000*dynamic_terminal['summary'][case]['arms'][arm]['median_seconds']:.3f}" for case in cases)
+        cells.append(f"{dynamic_terminal['summary']['native_all']['arms'][arm]['paired_rational_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/dynamic_terminal.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Observer & All stages & Widest & Most queries & Singular & Ratio',
+            '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds per fresh replay; the final column is the median paired '
+            'rational/arm ratio for all 582 stages. These are observer timings.\n')
