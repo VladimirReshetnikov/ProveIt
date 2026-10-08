@@ -1,0 +1,271 @@
+\section{Research agenda: precise next theorems and experiments}
+\label{sec:research}
+
+The next stage should prioritize questions that either remove an identified
+asymptotic obstruction or determine whether the new kernels accelerate
+actual difficult inputs. The following questions are deliberately stated
+with success criteria. A negative answer can also be valuable: an explicit
+obstruction prevents effort being spent on an insufficient invariant or
+representation. These are proposed research problems, not claims that the
+necessary bounds have been proved.
+
+\subsection{Near-term algebra and implementation}
+
+\begin{researchquestion}[Realization of directional separation]
+Can a family of actual knot diagrams and legal scan prefixes realize the
+shared-suffix transfer structure of Theorem~\ref{thm:corridor-separation},
+up to uniformly bounded local modifications?
+\end{researchquestion}
+
+The algebraic construction has fixed matching width and a nonzero
+three-dot output, so its separation is not an artifact of an invalid
+differential or zero answer. Its remaining weakness is geometric
+realization. A useful positive result would give explicit diagrams,
+crossing orders, and a proof identifying the relevant scalar contraction
+with the constructed family. One should measure the complete scan as well
+as the isolated stage, and compare with the production minimum-fill
+algorithm. A useful negative result would characterize a restriction on
+scalar contractions of actual prefixes that rules this family out. Random
+diagram searches cannot establish either asymptotic statement.
+
+\begin{researchquestion}[A proved adaptive switching rule]
+Can one choose between sparse Gaussian elimination, forward transfer, and
+reverse transfer with a provable bound relative to the best of the three,
+including the cost of estimating and constructing the candidate reductions?
+\end{researchquestion}
+
+The current adaptive budget permits some sparse work and then builds a
+complete corridor. The six ordinary fixtures did not trigger a switch.
+Thus that experiment supplies no evidence that the threshold identifies
+difficult stages. A promising implementation experiment is to maintain
+cheap online quantities already exposed by scalar pivots: predicted Schur
+update count, scalar component sizes, source/target imbalance, and observed
+coefficient support. The target is a bounded-regret accounting theorem for
+the stage, or a carefully charged portfolio implementation. Paying for two
+large representations before making the decision would defeat this goal.
+
+\begin{researchquestion}[Scalar bases that minimize transfer support]
+What can be proved about minimizing
+\[
+  |\operatorname{supp}i|+|\operatorname{supp}p|
+  +|\operatorname{supp}h|+\sum_j\min(F_j,B_j)
+\]
+over typed special contractions of a fixed scalar complex?
+\end{researchquestion}
+
+The graded survivor multiplicities are fixed, but all four displayed
+support quantities depend on the basis. This separates an invariant
+obstruction from a representation choice. First classify tractable scalar
+graphs, such as forests, bounded-width decompositions, or components of
+bounded size; then compare canonical local bases with minimum-fill choices.
+A hardness proof for the unrestricted optimization would also be useful,
+provided it respects the chain condition and the permitted changes of
+matching and shifts. The delivered component contraction is an exact
+baseline because it preserves the predecessor's basis; it is not proposed
+as a globally optimal basis.
+
+\begin{researchquestion}[Typed support pruning with a favorable cost bound]
+Can the homogeneous support condition in
+Proposition~\ref{prop:corridor-typed} be maintained during graph evaluation
+at less cost than the coefficient work it eliminates on a meaningful input
+class?
+\end{researchquestion}
+
+This condition is proved but is not the pruning policy measured in the
+delivered corridor experiments. Its implementation would maintain source
+and target matching/shift types, rather than blindly applying a pairwise
+test for every possible endpoint. Grouping ports by type and shift may
+reduce that cost. The existing support audit found zero additional
+zero-differential shortcuts beyond the degree-gap certificate, so a new
+experiment must look for savings inside a nonzero transfer, not count the
+same already certified stages again. Both rejected products and setup
+operations should be recorded.
+
+\begin{researchquestion}[Graded transfer inside an exact homological window]
+Can the existing guard-degree window construction retain enough quantum
+data to support a corridor contraction without introducing dependence on
+objects that the window deliberately omitted?
+\end{researchquestion}
+
+This is an integration theorem, not just another command-line choice.
+One needs a commuting restriction statement: the transferred differential
+on each queried degree must agree with that of the full complex, with
+precisely specified guard layers. The proof must address scalar homotopy
+paths that cross the nominal degree boundary. It should then provide an
+allocation bound for the retained graded objects and preserve the current
+resource-limit semantics. Until that theorem and its implementation exist,
+the delivered API rejects corridor reduction together with window probes.
+
+\subsection{Structural algebraic questions controlling global complexity}
+
+\begin{researchquestion}[A universal multiplicity bound or a succinct substitute]
+Does every $n$-crossing knot diagram admit a computable decomposition for
+which the necessary scalar survivor data have total size
+$\exp(O(\log^2 n))$? If explicit survivors are too numerous, can they be
+represented and contracted succinctly within that bound?
+\end{researchquestion}
+
+This is the central scanner question. Counting noncrossing matching types
+does not count copies of a matching, and a boundary-width bound does not
+automatically control the homology of the scalar part. An adequate theorem
+must bound intermediate multiplicities or replace their explicit storage
+by a representation with proved costs for crossing insertion, composition,
+cancellation, and the final decision. Merely compressing equal objects in
+a table while retaining all matrix entries leaves the same possible
+obstruction. The project's existing component-sharing and continuation
+work provide relevant baselines that any proposed representation must
+surpass on a specified family.
+
+\begin{researchquestion}[Computing only the information required for recognition]
+Can an exact continuation quotient or a dual certificate detect the unknot
+without materializing the complete intermediate or final Khovanov complex,
+while preserving correctness under every allowable remaining closure?
+\end{researchquestion}
+
+Full homology can contain information unnecessary for the Boolean
+recognition problem. That observation becomes useful only with an exact
+equivalence relation on partial states and a bounded representation of the
+equivalence classes. A candidate quotient must retain all distinctions
+observable by the remaining tangle; equality of current ranks or Euler
+characteristics is insufficient. A constructive target is a finite
+presentation of the relevant continuation maps, together with a proof
+that their number or descriptive complexity stays quasi-polynomial.
+Equally useful would be a family forcing many independent continuation
+responses, delimiting which quotients can succeed.
+
+\begin{researchquestion}[Transfer with internal separators]
+Can a survivor corridor be evaluated through small internal interfaces,
+rather than from every source or every target, with a bound in terms of
+interface size and coefficient type complexity?
+\end{researchquestion}
+
+The delivered algorithm selects one direction per weak component. A
+component can still have many sources and many targets even when most
+paths pass through a small interface. One may try to factor its path-sum
+matrix through that interface, retaining typed composition order and
+shared intermediate expressions. A rigorous theorem must charge matrix
+fill, coefficient growth, and the possibly dense required output. The
+output-size barrier suggests a factored representation as the natural
+goal. Its subsequent gluing and scalar reduction would then need their
+own exact algorithms; evaluating every output entry immediately would
+discard the possible gain.
+
+\subsection{Geometric extensions and hierarchy search}
+
+\begin{researchquestion}[Recognizing the dihedral presentation from topology]
+Given binary normal-surface coordinates or interval-pairing data for a
+parallelity region, can one construct, or reject, a compatible global
+dihedral covering presentation in polynomial bit complexity, with a
+checkable certificate relating it to the original embedded surface?
+\end{researchquestion}
+
+The new theorem begins after this presentation has been supplied. A
+certificate should identify the smaller base, give its peripheral words,
+choose a common cyclic coordinate on the fibre, and verify every gluing
+map in that coordinate. Locally affine descriptions do not ensure that
+all pieces admit the same global coordinate. Boundaries, omitted intervals,
+and changes of local sheet order are part of the problem. An extraction
+algorithm should report its failure to meet the promise explicitly, so
+that the general compressed topology method remains available.
+
+There is an elementary obstruction to refining every marked interval
+until it is invariant under monodromy. For the single map
+$x\mapsto x+1\pmod W$, the orbit of any one marked breakpoint has
+exactly $W$ distinct positions: equality after $j$ steps first occurs
+when $W$ divides $j$. Such a refinement can therefore have exponential
+size in $\log W$ even for this simplest dihedral presentation. An
+extraction algorithm must keep breakpoint orbits and attachment
+distinctions symbolically instead of expanding them.
+
+\begin{researchquestion}[Piecewise dihedral monodromy]
+What compact classification survives if each monodromy map is a union of
+$p$ affine pieces $x\mapsto\pm x+a$, on binary-encoded intervals, rather
+than a single global map on $\mathbb Z/W\mathbb Z$?
+\end{researchquestion}
+
+The three-family proof uses one translation subgroup and a single
+involution on its residue classes. Piecewise maps need not preserve that
+quotient. A productive first problem is to bound the number of distinct
+component descriptions in terms of $p$ and the base complexity, or to give
+an explicit family disproving such a bound for a proposed format. The
+appropriate goal may be a small program answering component and boundary
+queries, instead of a constant number of surface records. Any extension
+must retain orientation parity and boundary cycle lengths, not merely
+the total number of orbits.
+
+\begin{researchquestion}[Attachment-aware equivalence of compressed components]
+When can two isomorphic cover components be merged as states of a
+three-manifold hierarchy after their attachments to the remaining handles
+and boundary pattern are included?
+\end{researchquestion}
+
+The exact type-count corollary classifies covers over the base. It does not
+identify all embeddings or marked attachments. Even a fixed cover may
+admit many inequivalent markings. A useful theorem would describe the
+automorphisms relevant to the external attachment data and give a
+canonical orbit representative, with polynomial or quasi-polynomial bit
+complexity. The supplied marked-sheet queries are a small necessary
+interface for this task. They allow named attachments to be located but
+do not enumerate or compare arbitrary attachment systems.
+
+\begin{researchquestion}[Bounding hierarchy restarts]
+Can the restart analysis be replaced by an amortized potential or a state
+equivalence for which the number of distinct necessary states is
+$\exp(O(\log^2 n))$, even when the hierarchy depth is linear in $n$?
+\end{researchquestion}
+
+The arithmetic in Section~\ref{sec:accounting} identifies the obstruction:
+a decreasing mixed-radix integer can still have exponentially many
+values. Compressing each state is not a bound on how many states an
+algorithm visits. A successful new potential must constrain which
+patterns can actually follow one another, or show that many decreases
+can be skipped through a certified transition. Another possible route is
+to merge equivalent restart states while retaining enough peripheral and
+attachment information to justify every subsequent operation. An
+example forcing exponentially many distinct states for a proposed
+potential would precisely identify what must be added.
+
+\begin{researchquestion}[Constructing hierarchies rather than checking them]
+Which search operation in the proposed geometric recognizer can be
+implemented within a proved quasi-polynomial budget, under exactly the
+irreducibility and boundary-pattern hypotheses available at that step?
+\end{researchquestion}
+
+The desired result must include the search for a suitable decomposing
+surface or certified alternative, not just the verification of a supplied
+hierarchy. A promising development would isolate one search subproblem
+and give a full input/output contract, encoding bound, and failure
+certificate. The geometric cover kernel can then be a named subroutine
+with established bit complexity. This modular approach makes it possible
+to identify the first still-unproved operation instead of absorbing it
+into an unspecified compressed-topology oracle.
+
+\subsection{Verification as a research instrument}
+
+\begin{researchquestion}[Small independently checkable proof objects]
+Can both kernels emit certificates substantially cheaper to verify than
+recomputing their outputs, and can their finite algebraic cores be
+formalized in the project's intended proof environment?
+\end{researchquestion}
+
+For the geometric kernel, natural certificates are gcd identities,
+parity consistency equations, and boundary permutation formulas. For
+scalar transfer they are local contraction identities and a typed
+acyclic factorization of the survivor map. Dense global certificates may
+be too large even when the computation is succinct, so verification cost
+belongs in the theorem statement. The present tests deliberately use
+independent expanded-sheet and coefficient-level oracles. They support
+implementation confidence but do not replace a formal proof or validate
+all future changes automatically.
+
+\paragraph{Suggested order of work.}
+The immediate engineering priorities are the realization search,
+adaptive cost model, and graded-window compatibility, because they can
+be judged on exact outputs and actual difficult diagrams. In parallel,
+the dihedral extraction problem can turn the standalone geometric
+theorem into a usable hierarchy primitive. The multiplicity/continuation
+questions and restart-state bound deserve the main long-term theoretical
+effort: they address the obstructions that local constant-factor
+improvements cannot remove. Future reports should identify which of
+these obligations a result discharges and retain failed experiments
+that materially change the direction of research.
