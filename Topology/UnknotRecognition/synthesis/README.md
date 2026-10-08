@@ -224,7 +224,7 @@ also contains additions not yet integrated. The production transfer audit
 checks 1,812 stage contractions across 86 diagrams and 258 order presentations.
 All 114 pinned source blobs match. Evidence is in `data/graded-*`; paired raw
 scanner/kernel measurements are in `../fast/results/graded_transfer_20261008.json`.
-The remaining report 23 proposals are reviewed below; report 24 remains under review.
+The remaining report 23 proposals are reviewed below; report 24 scanner integration is described below; its surface-cover kernel remains under review.
 
 
 `symbolic_runs.tex` completes the report 23 review: the existing run frontend
@@ -236,3 +236,19 @@ repair-DAG theorem with its unresolved geometric hypotheses. Evidence includes
 tests in `data/tail-earlier-threshold-audit.json`, `repair-dag-audit.json`, and
 `symbolic-integrated-tests.txt`. The production backend keeps one canonical
 tail implementation; the DAG calculation remains a research diagnostic.
+
+
+`corridor_transfer.tex` integrates report 24's exact survivor pruning and
+bidirectional full transfer, including the sparse scalar and Boolean-port
+variants. The article proves the propagation bounds and complete fixed-algebra
+stage separation, charging scalar setup, graph construction, endpoint masks,
+and vertex visits explicitly. It distinguishes the constructed complex from an
+unproved knot-prefix family. The default reducer remains sparse cancellation.
+All 458 maintained tests pass; production repeats 3,885 transfer comparisons
+on 555 prefixes with full contraction certificates, 639 support comparisons,
+and the sparse/packed scalar-map representation audit. Evidence is in
+`data/corridor-*`; the 11-arm paired measurements are in
+`../fast/results/corridor_integrated_20261008.json`. The delivered archive's
+268 scanner tests and separate cover suite pass in a temporary copy. Its 20
+integration hashes match; its advertised package-wide hash manifest is missing.
+The separate cover kernel is not yet integrated into the maintained theory.

@@ -265,3 +265,33 @@ if minimal:
         handle.write(r"\begin{center}"+'\n'+
             table('Input & Full/support & Full/minimal & Support/minimal & A/A','@{}lrrrr@{}',rows)+
             r"\end{center}"+'\n'+'Ratios are medians of paired times; larger than one favors the denominator.\n')
+
+corridor = load('../fast/results/corridor_integrated_20261008.json')
+if corridor:
+    rows = []
+    for row in corridor['actual']:
+        v = row['paired_ratios']
+        cells = ' & '.join(f"{v[k]:.3f}" for k in (
+            'standard_over_auto', 'standard_over_adaptive',
+            'standard_over_compressed', 'standard_over_control'))
+        switches = row['metrics']['adaptive']['stats'].get('corridor_switches', 0)
+        rows.append(f"{esc(row['name'])} & {cells} & {switches}" + r" \\")
+    content = (r"\begin{center}" + '\n' +
+        table('Raw scan & Std/corridor & Std/adapt. & Std/sparse & A/A & Switches',
+              '@{}lrrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Sparse denotes the component-scalar/Boolean-port configuration. '
+        'Ratios above one favor the denominator.\n')
+    rows = []
+    for row in corridor['kernels']:
+        v = row['paired_ratios']
+        cells = ' & '.join(f"{v[k]:.3f}" for k in (
+            'prior_over_auto', 'prior_over_compressed',
+            'standard_over_compressed', 'standard_over_control'))
+        rows.append(f"{esc(row['name'])} & {cells}" + r" \\")
+    content += (r"\begin{center}" + '\n' +
+        table('Constructed stage & Fwd/corridor & Fwd/sparse & Std/sparse & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Fwd denotes the maintained quantum-ordered forward transfer. '
+        'These timings include scalar and graph setup.\n')
+    with open('tables/corridor-transfer-integration.tex', 'w') as handle:
+        handle.write(content)
