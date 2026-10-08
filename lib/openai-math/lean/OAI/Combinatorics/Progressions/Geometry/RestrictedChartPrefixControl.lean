@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use weightedHomogeneousSubmodule.sub_mem in the chart homogeneity proof
+because the newer IsWeightedHomogeneous.sub lemma is unavailable.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Dynamics.RestrictedSymbolGradeIteration
@@ -108,7 +110,8 @@ theorem normalizedRealPolynomialChart_isWeightedHomogeneous
   | inl i =>
     exact (isWeightedHomogeneous_X (R := ℝ) (Sum.elim wU wB) (Sum.inl i)).C_mul _
   | inr j =>
-    apply (isWeightedHomogeneous_X (R := ℝ) (Sum.elim wU wB) (Sum.inr j)).sub
+    apply (weightedHomogeneousSubmodule ℝ (Sum.elim wU wB) (wB j)).sub_mem
+      (isWeightedHomogeneous_X (R := ℝ) (Sum.elim wU wB) (Sum.inr j))
     rw [rename_eq_aeval]
     exact aeval_isWeightedHomogeneous wU (Sum.elim wU wB) (X ∘ Sum.inl)
       (fun i => isWeightedHomogeneous_X (R := ℝ) (Sum.elim wU wB) (Sum.inl i)) (hA j)
