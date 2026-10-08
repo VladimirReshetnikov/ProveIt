@@ -12,9 +12,10 @@ progressions.
 * `bohr_row_convex`: if `2 (ρN + L |vma(γ d)|) < N` for every `γ ∈ K`, then
   the set of `i < L` with `x₀ + i d ∈ B(K;ρ)` is an interval.
 
-Research notes J.2 need this: every row of `V ∩ cell` is an interval, so
-`V ∩ cell` is a staircase, coverable by a chain of overlapping boxes
-(`freiman_bihom_biaffine_on_chain`). -/
+For the readout in research notes J.2, this supplies row convexity under
+the stated no-wrap budget. A cover by boxes with shared `2 × 2` squares
+still needs additional overlap and thickness hypotheses; row convexity
+alone does not supply the premises of `freiman_bihom_biaffine_on_chain`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
