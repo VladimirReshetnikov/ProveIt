@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 809 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,190 public Gowers theorems and found only propext,
+  All 812 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,219 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -39,10 +39,11 @@ Verification at this checkpoint
   The two vendored Freiman extracts now use the ProveItExtract namespace,
   preventing declaration collisions with the full upstream affine-recovery
   module. Their statements and proof bodies are unchanged. After this
-  adjustment the 809-module Gowers audit still checks 5,190 theorems and
+  adjustment and the merged small-degree results, the 812-module Gowers
+  audit checks 5,219 theorems and
   the same 114/6 catalogue split. GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,548-module closure and checks equality of the extracted propositions
+  2,551-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional Section 16 regime splitting
@@ -327,8 +328,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 2,000 pinned manifest entries compile as a 2,016-module closure.
-  OAI.QuantitativePortAudit checks 33,429 public OAI theorems in this prefix
+  The first 2,100 pinned manifest entries compile as a 2,116-module closure.
+  OAI.QuantitativePortAudit checks 35,302 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.
@@ -3149,6 +3150,34 @@ Higher-dimensional stackability gap (research notes, Part H)
   (k+1)-linear analogue over Z_N, which is not known. Decision recorded
   there: the printed statements 16.2, 16.11, 18.1, 18.2 and 18.7 stay
   exact and are not restated.
+
+Theorems 18.1, 18.2 and Corollary 18.7 degree by degree (2026-10-07)
+  The three catalogue entries quantify over every degree or length. New
+  per-degree and per-length predicates restate them exactly:
+  theorem_18_1_iff_forall_degree, theorem_18_2_iff_forall_length and
+  corollary_18_7_iff_forall_length. Proved instances, with the source's exact
+  exponents and thresholds:
+  - Theorem181At 0 (vacuous: balanced functions sum to zero).
+  - Theorem181At 1, from the large Fourier coefficient and the degree-one,
+    one-cell untwisting theorem. Its exponent is 1/64 and its discrepancy
+    sqrt(alpha)/2.
+  - Theorem181At 2, from the quadratic inverse theorem. Its parameters are
+    at least alpha^24740 and alpha^49462, against alpha^(2^4096).
+  - Theorem182At k and Corollary187At k for every k <= 5. Lengths up to
+    three follow from Roth's theorem with its explicit constant 10^12
+    (roth_explicit_threshold, now public in Proofs02Roth), since
+    exp(exp(10^12/delta)) <= szemerediThreshold delta k for delta <= 1/2.
+    Lengths four and five use the existing four- and five-term proofs.
+    Corollary 18.7 at a length follows from Theorem 18.2 at that length and
+    density one half (corollary_18_7_at_of_half_density).
+  Degree three of Theorem 18.1 is NOT reachable from the proved cubic
+  inverse theorem. Its width exponent e is only certified to satisfy
+  1/e <= exp((2/alpha)^(2^61)). That certified lower bound is exponentially
+  small and falls below alpha^(2^8192) for every alpha <= 1/2, since already
+  at alpha = 1/2 the exponents compare as 2^(2^62) against 2^8192*log 2. Lengths >= 6 of Theorem 18.2 need
+  an explicit modulus threshold for the structural input; Theorem162At
+  provides only an existential N0. The three entries stay open; the count
+  stays 114/6.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

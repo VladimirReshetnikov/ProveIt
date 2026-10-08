@@ -1,4 +1,6 @@
-/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+/- Modified for ProveIt: use IsModuleTopology.topologicalAddGroup on Lean 4.32.
+Give exists_native_induced_marked_model a finite local elaboration budget;
+statements and existing proof text are unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.InducedMarkedBudget
 import OAI.Combinatorics.Progressions.Estimates.CommonDependentCoveredModel
 import OAI.Combinatorics.Progressions.Lattices.MarkedShiftLattice
@@ -462,6 +464,7 @@ namespace Erdos3
 open Module NilpotentLieBCHGroup
 open scoped TensorProduct NNReal
 
+set_option maxHeartbeats 400000 in
 theorem exists_native_induced_marked_model (s u : ℕ) (hs : 1 ≤ s) :
     ∃ C : ℕ, 2 ≤ C ∧ ∀ {I J L : Type*} [Fintype I]
       [LieRing L] [LieAlgebra ℚ L] {r t e n : ℕ}

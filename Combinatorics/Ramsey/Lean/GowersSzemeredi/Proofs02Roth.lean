@@ -1232,12 +1232,14 @@ private theorem roth_interval_core :
               exact rothPullback_subset_range S P) hTdensity
         exact rothPullback_ap S P hPstep hrec
 
-/-- **Gowers, Theorem 2.6 (Roth).**  A subset of `[1,N]` of density at least
-`delta` contains a nonconstant three-term arithmetic progression once `N` is
-at least double exponential in `delta⁻¹`. -/
-theorem theorem_2_6_holds : theorem_2_6 := by
-  refine ⟨rothConstant, by norm_num [rothConstant], ?_⟩
-  intro delta N hdelta hN A hA hAdensity
+/-- Roth's theorem with the explicit constant `10^12` used in the proof:
+a subset of `[1,N]` of density at least `delta` contains a nonconstant
+three-term progression once `exp(exp(10^12/delta)) ≤ N`. -/
+theorem roth_explicit_threshold (delta : Real) (N : Nat) (hdelta : 0 < delta)
+    (hN : Real.exp (Real.exp (1000000000000 * delta⁻¹)) ≤ N)
+    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hAdensity : delta * N ≤ A.card) :
+    HasNatAP A 3 := by
+  change Real.exp (Real.exp (rothConstant * delta⁻¹)) ≤ N at hN
   let P := rothInterval 1 N
   let S := rothPullback A P
   have hPstep : 0 < P.step := by simp [P]
@@ -1257,5 +1259,11 @@ theorem theorem_2_6_holds : theorem_2_6 := by
   have hSAP := roth_interval_core N delta hdelta hN S
     (rothPullback_subset_range A P) hSdensity
   exact rothPullback_ap A P hPstep hSAP
+
+/-- **Gowers, Theorem 2.6 (Roth).**  A subset of `[1,N]` of density at least
+`delta` contains a nonconstant three-term arithmetic progression once `N` is
+at least double exponential in `delta⁻¹`. -/
+theorem theorem_2_6_holds : theorem_2_6 :=
+  ⟨1000000000000, by norm_num, roth_explicit_threshold⟩
 
 end LeanProofs.GowersSzemeredi

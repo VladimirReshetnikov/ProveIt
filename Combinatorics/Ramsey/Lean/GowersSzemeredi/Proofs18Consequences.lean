@@ -84,6 +84,30 @@ theorem corollary_18_7_holds_of_theorem_18_2
   have hfilter := Finset.mem_filter.mp haiA
   exact ⟨hfilter.1, hfilter.2⟩
 
+/-- Corollary 18.7 at a single length `k`, from Theorem 18.2 at that length
+and density one half. The two thresholds coincide at density one half. -/
+theorem corollary_18_7_at_of_half_density {k : Nat}
+    (h : ∀ N : Nat, szemerediThreshold (1 / 2 : Real) k ≤ N →
+      ∀ A : Finset Nat, A ⊆ Finset.Icc 1 N → (1 / 2 : Real) * N ≤ A.card →
+        HasNatAP A k) :
+    ∀ N : Nat, twoColorThreshold k ≤ N →
+      ∀ color : Nat → Fin 2, HasMonochromaticAP N 2 color k := by
+  intro N hN color
+  obtain ⟨c, hc⟩ := exists_two_color_class_half N color
+  let A := (Finset.Icc 1 N).filter fun x => color x = c
+  have hthreshold : szemerediThreshold (1 / 2 : Real) k ≤ N :=
+    (szemeredi_half_threshold_le_two_color k).trans hN
+  have hAsub : A ⊆ Finset.Icc 1 N := Finset.filter_subset _ _
+  have hAcard : (1 / 2 : Real) * N ≤ A.card := by
+    simpa [A, div_eq_mul_inv, mul_comm] using hc
+  obtain ⟨a, d, hd, hmem⟩ := h N hthreshold A hAsub hAcard
+  refine ⟨a, d, c, hd, ?_⟩
+  intro i hi
+  have hai := hmem i hi
+  have haiA : a + i * d ∈ A := hai
+  have hfilter := Finset.mem_filter.mp haiA
+  exact ⟨hfilter.1, hfilter.2⟩
+
 /-- The quantitative theorem also implies the qualitative headline version.
 For densities above one half we simply apply it at density one half. -/
 theorem theorem_1_2_holds_of_theorem_18_2
