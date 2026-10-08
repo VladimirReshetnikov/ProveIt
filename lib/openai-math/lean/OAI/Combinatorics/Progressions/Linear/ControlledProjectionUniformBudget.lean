@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use direct additive monotonicity for the large-power budget comparisons,
+avoiding arithmetic normalization expansion on Lean 4.32.
+All upstream theorem statements and bounds are unchanged. -/
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Estimates.JoinedPairQuotientRefiltration
 import OAI.Combinatorics.Progressions.Linear.ActualOrdinaryPointwiseSpanning
@@ -393,13 +395,12 @@ theorem controlledSymbolFactorizationAtFast_projection_pullback
       (le_add_of_nonneg_right (by positivity))
   have hslow : ((p + 2) ^ 10 + 2) ^ 18 + p ≤ controlledProjectionBudget p := by
     unfold controlledProjectionBudget
-    have := pow_nonneg hq 36
-    linarith
+    exact (le_add_of_nonneg_left (pow_nonneg hq 36)).trans
+      (le_add_of_nonneg_right (by positivity))
   have hheight : preimageBasisBudget p + 1 ≤ controlledProjectionBudget p := by
     unfold controlledProjectionBudget
-    have := pow_nonneg hq 36
-    have := pow_nonneg hq 18
-    linarith
+    exact le_add_of_nonneg_left
+      (add_nonneg (pow_nonneg hq 36) (add_nonneg (pow_nonneg hq 18) hp))
   obtain ⟨A, B, C, hABC, hA, hC, hB⟩ := hsplit.mono F e ω hF hslow hT
   exact ⟨m, A, B, C, u, hm, hmp.trans (Real.exp_le_exp.mpr hden),
     hABC, hA, hC, hu,
@@ -453,7 +454,8 @@ theorem le_controlledProjectionBudget {p : ℝ} (hp : 0 ≤ p) :
   have h36 := pow_nonneg hq 36
   have h18 := pow_nonneg hq 18
   unfold controlledProjectionBudget
-  linarith
+  exact ((le_add_of_nonneg_left h18).trans (le_add_of_nonneg_left h36)).trans
+    (le_add_of_nonneg_right (by positivity))
 
 theorem exists_controlledProjectionBudget_power :
     ∃ C : ℕ, 2 ≤ C ∧ ∀ p : ℝ, 0 ≤ p → controlledProjectionBudget p ≤ (p + C) ^ C := by
