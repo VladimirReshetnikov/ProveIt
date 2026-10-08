@@ -97,7 +97,7 @@ theorem cellGood_of_small_oscillation {N : Nat} [NeZero N] {Γ Ψ : Finset (ZMod
       refine Or.inr fun x hx => ?_
       have := hsub (x 0, x 1) (Finset.mem_image_of_mem _ hx)
       rwa [add_halves] at this
-    · push_neg at hmeet
+    · simp only [not_exists, not_and] at hmeet
       exact Or.inl hmeet
 
 /-- Partitions whose cells miss `V(ρ/2)` or oscillate by at most `ρN/2`.

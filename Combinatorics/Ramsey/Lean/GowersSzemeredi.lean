@@ -337,6 +337,8 @@ import GowersSzemeredi.Proofs16DeepAgreement
 import GowersSzemeredi.Proofs16GoodPartition
 import GowersSzemeredi.Proofs16CellOscillation
 import GowersSzemeredi.Proofs16VarietyTranslate
+import GowersSzemeredi.Proofs16OscillationPartition
+import GowersSzemeredi.Proofs16OscillationPartitionInst
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
