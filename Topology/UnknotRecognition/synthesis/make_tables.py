@@ -186,4 +186,31 @@ if residue:
                      r"\end{center}" + "\n" +
                      "Ratios are median paired standard/new times; values above one are faster.\n")
 
+homogeneous = load('../fast/results/homogeneous_integration_20261008.json')
+graded = load('../fast/results/adaptive_graded_20261008.json')
+if homogeneous and graded:
+    rows = []
+    kernels = {(r['name'], r['scope']): r for r in homogeneous['kernels']}
+    for r in homogeneous['kernels']:
+        if r['scope'] != 'product':
+            continue
+        full = kernels[r['name'], 'full_component']
+        rows.append(f"{esc(r['name'])} & {r['median_speedup']:.2f} & {full['median_speedup']:.2f}" + r" \\")
+    content = (r"\begin{center}" + "\n" +
+               table("Kernel & Product ratio & Full component ratio", "@{}lrr@{}", rows) +
+               r"\end{center}" + "\n")
+    rows = [f"{r['objects']} & {r['median_speedup']:.2f} & {r['median_aa']:.3f}" + r" \\"
+            for r in graded['cases']]
+    content += (r"\begin{center}" + "\n" +
+                table("Graded two-term objects & Adaptive ratio & A/A", "@{}lrr@{}", rows) +
+                r"\end{center}" + "\n")
+    rows = [f"{esc(r['name'])} & {r['median_speedup']:.3f} & {r['median_aa']:.3f}" + r" \\"
+            for r in homogeneous['scans']]
+    content += (r"\begin{center}" + "\n" +
+                table("Forced component scan & Ranked/new ratio & A/A", "@{}lrr@{}", rows) +
+                r"\end{center}" + "\n" +
+                "All speedups are median paired old/new times; values above one are faster.\n")
+    with open('tables/homogeneous-integration.tex', 'w') as handle:
+        handle.write(content)
+
 print('tables written:', sorted(os.listdir('tables')))

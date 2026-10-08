@@ -8,6 +8,7 @@ from __future__ import annotations
 from typing import Callable, Iterator
 
 Check = Callable[[], None]
+_REVERSED_BYTE = bytes(int(f"{i:08b}"[::-1], 2) for i in range(256))
 
 def noop() -> None:
     pass
@@ -57,7 +58,7 @@ def _clmul(a: int, b: int, mask: int) -> int:
     return result & mask
 
 
-def subset_product_fast(f: int, g: int, variables: int, *, check: Check = noop) -> int:
+def subset_product_ranked(f: int, g: int, variables: int, *, check: Check = noop) -> int:
     """Ranked zeta / convolution / Moebius inverse, exact over F2.
 
     O(variables^2 * 2^variables) field operations. Rank polynomials at
@@ -106,6 +107,97 @@ def subset_product_fast(f: int, g: int, variables: int, *, check: Check = noop) 
         if (value >> s.bit_count()) & 1:
             out[s >> 3] ^= 1 << (s & 7)
     return int.from_bytes(out, "little")
+
+
+def homogeneous_degree(value: int, *, check: Check = noop) -> int | None:
+    """Return its dot degree, -1 for zero, or None for mixed-degree support.
+
+    This checks the actual polynomial; callers never infer homogeneity from
+    scanner provenance. Enumerate small bytes rather than shifting bigints.
+    """
+    if type(value) is not int or value < 0:
+        raise ValueError("a polynomial must be a nonnegative integer")
+    degree = -1
+    for count, mask in enumerate(support(value)):
+        if not count & 255:
+            check()
+        current = mask.bit_count()
+        if degree == -1:
+            degree = current
+        elif degree != current:
+            return None
+    return degree
+
+
+def _homogeneous_product(f, g, variables, total_degree, check):
+    """Union convolution restricted to the disjoint-union cardinality."""
+    if total_degree > variables:
+        return 0
+    size = 1 << variables
+    if total_degree == variables:
+        # Only the full monomial can survive. Its coefficient is the binary
+        # inner product of f with g indexed by complementary subsets.
+        check()
+        byte_count = (size + 7) // 8
+        reversed_g = int.from_bytes(g.to_bytes(byte_count, "little").translate(_REVERSED_BYTE)[::-1],
+                                    "little") >> (8 * byte_count - size)
+        return (1 << (size - 1)) if (f & reversed_g).bit_count() & 1 else 0
+    a, b = [0] * size, [0] * size
+    for s in support(f):
+        a[s] = 1
+    for s in support(g):
+        b[s] = 1
+    step = 1
+    while step < size:
+        check()
+        for start in range(0, size, 2 * step):
+            for j in range(start + step, start + 2 * step):
+                a[j] ^= a[j - step]
+                b[j] ^= b[j - step]
+        step *= 2
+    for s in range(size):
+        if not s & 4095:
+            check()
+        a[s] &= b[s]
+    del b
+    step = 1
+    while step < size:
+        check()
+        for start in range(0, size, 2 * step):
+            for j in range(start + step, start + 2 * step):
+                a[j] ^= a[j - step]
+        step *= 2
+    out = bytearray((size + 7) // 8)
+    for s, value in enumerate(a):
+        if value and s.bit_count() == total_degree:
+            out[s >> 3] ^= 1 << (s & 7)
+    return int.from_bytes(out, "little")
+
+
+def subset_product_fast(f: int, g: int, variables: int, *, check: Check = noop) -> int:
+    """Exact dense product, using the cheaper verified homogeneous case.
+
+    Homogeneous inputs use O(variables * 2^variables) binary operations.
+    Top-degree products use one packed complementary-subset inner product.
+    General inputs retain ranked subset convolution. The final
+    cardinality filter is essential: unfiltered union convolution is wrong
+    in the square-free ring (it would allow x*x=x).
+    """
+    validate(f, variables); validate(g, variables)
+    if not f or not g:
+        return 0
+    if f == g:
+        return f & 1
+    if f == 1:
+        return g
+    if g == 1:
+        return f
+    df = homogeneous_degree(f, check=check)
+    if df is not None:
+        dg = homogeneous_degree(g, check=check)
+        if dg is not None:
+            return _homogeneous_product(f, g, variables, df + dg, check)
+    return subset_product_ranked(f, g, variables, check=check)
 
 
 def subset_product_sparse(f: int, g: int, variables: int, *,
