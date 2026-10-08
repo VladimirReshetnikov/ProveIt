@@ -1,0 +1,383 @@
+\section{Exact homology in a moving degree window}
+\label{sec:window-theory}
+
+The next optimization changes which chain groups are constructed.  It is
+useful when the decision procedure needs a prescribed part of Khovanov
+homology, and admits an unconditional complexity analysis for the delivered
+implementation.  It does not assert that a bounded part of homology always
+detects a nontrivial knot.
+
+Throughout this section the coefficient field is $\mathbb F_2$.  The quantum
+grading is forgotten, but the raw cube degree is retained.  A crossing
+complex is supported in raw degrees $0,1$; delooping changes no homological
+degree.  If $\nu$ denotes the number of negative crossings in
+\texttt{Diagram.signs()}, normalized degree $h$ corresponds to raw degree
+$h+\nu$.  This convention must be read from the oriented PD diagram:
+\texttt{Diagram.from\_braid(2,[1])} has $\nu=1$ and raw homology in degree
+$1$, while \texttt{Diagram.from\_braid(2,[-1])} has $\nu=0$ and raw homology
+in degree $0$.  Both closures are unknots.  Counting negative integers in a
+braid word instead would reverse this convention.
+
+\subsection{The support lemma and its guard degrees}
+
+For a cochain complex $C$, write $C[L,U]$ for its brutal interval truncation:
+retain $C^j$ for $L\leq j\leq U$, retain the differentials between these
+groups, and set every other group and differential to zero.  This is a
+complex, but its homology at $L$ and $U$ need not equal that of $C$.
+
+\begin{lemma}[Support under a bounded continuation]
+\label{lem:bounded-continuation}
+Suppose a remaining continuation is a composite of additive planar
+extension operations whose total raw homological support is contained in
+$[u,v]$, followed by closure and the Khovanov functor.  To preserve final
+homology in raw degrees $[a,b]$, it suffices to replace the current complex
+$C$ by
+\[
+ C[a-v-1,b-u+1].
+\]
+This replacement gives exactly the same final chain groups and
+differentials in the three-degree neighborhood $[a-1,b+1]$.
+\end{lemma}
+
+\begin{proof}
+Write the total continuation formally as $Q$.  A summand contributing in
+final degree $j$ comes from current degree $p$ and continuation degree $q$
+with $p+q=j$ and $u\leq q\leq v$.  If $a-1\leq j\leq b+1$, then
+\[
+ a-v-1\leq p\leq b-u+1.
+\]
+Consequently no removed current summand contributes to any of these final
+chain groups.  The total differential is the sum of the current and
+continuation differentials, with the usual tensor signs.  Its entries
+between retained final groups are therefore unchanged as well.  Applying
+the additive closure and Khovanov functors preserves these equalities.
+Finally,
+$H^j=\ker(d^j)/\operatorname{im}(d^{j-1})$ depends only on the groups in
+degrees $j-1,j,j+1$ and the two indicated maps.
+\end{proof}
+
+Both guards are necessary in the general algebraic statement.  The
+two-term complex $\mathbb F_2\xrightarrow{1}\mathbb F_2$ in degrees
+$a-1,a$ has zero $H^a$, whereas discarding degree $a-1$ creates a false
+class.  Placing the same complex in degrees $b,b+1$ shows the corresponding
+problem at the upper end.  Keeping only the desired degrees is therefore
+unsound even after the knot has closed.
+
+For $n-i$ unprocessed crossings the continuation support is $[0,n-i]$.
+Define
+\begin{equation}
+ I_i=[L_i,U_i]\cap[0,i],\qquad
+ L_i=a-(n-i)-1,\qquad U_i=b+1.
+ \label{eq:moving-window}
+\end{equation}
+The upper endpoint is fixed.  The lower endpoint moves upward by one after
+every crossing, because progressively fewer future $1$-resolutions remain
+available to reach the target.
+
+\begin{theorem}[Repeated windowing with arbitrary unit cancellation]
+\label{thm:window-correctness}
+Start from the empty partial diagram, and process crossings in any valid
+scan order.  After each extension, retain only the summands in $I_i$ and
+the differential entries whose two endpoints are retained.  Delooping and
+any sequence of valid Gaussian unit cancellations may be performed at each
+stage.  The resulting closed complex has the exact original Khovanov
+homology in every raw degree $a\leq j\leq b$.
+
+The discarded summands may be excluded before allocation, provided the
+constructed objects and maps equal the brutal truncation of the full next
+extension.
+\end{theorem}
+
+\begin{proof}
+Compare each intermediate complex only after applying its actual remaining
+continuation.  At the beginning this gives the ordinary complete Khovanov
+complex.  One crossing extension merely factors that continuation into its
+first operation and its suffix, so it leaves the completed complex
+unchanged.  Lemma~\ref{lem:bounded-continuation} shows that clipping to
+$I_i$ preserves the completed homology in $[a,b]$.
+
+A Gaussian cancellation is a chain homotopy equivalence of the current
+complex.  Every remaining planar extension is additive and the induced
+operation on total complexes preserves the equations defining a chain
+homotopy.  Closure and the Khovanov functor do the same.  Hence a cancellation
+also preserves the completed target homology.  Induction proves the claim.
+
+This argument does not require the artificial endpoint homology of a
+truncation to be the original endpoint homology.  Its possible effects are
+already outside the final target and its adjacent differential groups.
+Nor does it require the same pivots as an untruncated run.  Pre-allocation
+pruning realizes the same truncated complex by omitting objects and maps
+that the support lemma would immediately delete.
+\end{proof}
+
+\paragraph{Operational form.}
+The following sequence specifies the mathematical operation independently
+of the pivot heuristic:
+\begin{enumerate}
+\item Fix the full validated crossing order and target raw interval $[a,b]$.
+\item At step $i$, compute the band $I_i$ using the original total $n$.
+\item For each current object of degree $h$ and each smoothing
+  $\epsilon\in\{0,1\}$, allocate its delooped children only if
+  $h+\epsilon\in I_i$.
+\item Construct the crossing saddles and transferred old differentials only
+  when both endpoint children were retained.
+\item Cancel invertible entries, then continue to the next crossing.
+\item At closure compute homology using both adjacent differentials, and
+  return only the degrees in $[a,b]$.
+\end{enumerate}
+The frontier itself belongs to the processed subdiagram.  It must advance
+even when the retained algebraic complex is empty.  A resource cap is a cap
+on the retained allocation; exhaustion gives an incomplete computation,
+never a homology value.
+
+\begin{lemma}[Removing isolated guards]
+\label{lem:isolated-window-guards}
+After reduction at a prefix with $r$ crossings remaining, an isolated
+object of raw degree $h$ may be removed whenever
+$[h,h+r]\cap[a,b]=\varnothing$.  A nonisolated guard cannot be removed by
+this test.
+\end{lemma}
+
+\begin{proof}
+An object with no incoming or outgoing nonzero differential entry is an
+independent direct summand.  Completing this summand through the remaining
+crossings gives a complex supported in $[h,h+r]$.  It therefore contributes
+zero homology to the target band.  Direct sums commute with the
+continuation, so deleting the summand is valid.  For a nonisolated object
+an incident differential may create or kill a target class, as the
+two-term examples above demonstrate.
+\end{proof}
+
+With the one-degree guards in~\eqref{eq:moving-window}, a differential
+component whose entire degree support misses $[a-r,b]$ lies in one guard
+degree.  Since differentials change raw degree by one, such components
+are already isolated objects.  Thus this particular additional pruning
+does not require a general graph search.
+
+\subsection{An unconditional bound for the implemented scanner}
+
+Let $s_0(D)$ and $s_1(D)$ denote the numbers of circles in the complete
+all-$0$ and all-$1$ smoothings of a nonempty diagram $D$.  These quantities
+are computed by pairing the appropriate crossing slots and counting
+components.  Let $w$ be the largest number of frontier endpoints in the
+chosen order.  No assumption that these endpoints lie on one boundary
+circle is made.
+
+For $0\leq k\leq n$, put
+\begin{equation}
+ Q(n,k)=\sum_{j=0}^{k}2^j\binom{n}{j},\qquad
+ B_0(D;a,b)=2^{s_0(D)}Q\bigl(n,\min\{n,b+1\}\bigr).
+ \label{eq:elementary-window-bound}
+\end{equation}
+Targets are first intersected with $[0,n]$; an empty intersection has zero
+homology.  The separate input convention that an empty PD represents one
+circle is handled directly by the implementation.
+
+\begin{lemma}[Circle and object counts]
+\label{lem:window-circle-count}
+Every raw cube state of a prefix with $j$ $1$-resolutions has at most
+$s_0(D)+j$ already closed circles.  At every stage the number of retained
+physical summands in the window scanner, including the allocation before
+Gaussian reduction, is at most $B_0(D;a,b)$.
+\end{lemma}
+
+\begin{proof}
+Complete the prefix state with $0$-resolutions at the remaining crossings.
+Every circle already closed in the prefix remains a distinct circle of
+that completion.  The completed state differs from the all-$0$ state at
+$j$ crossings.  Changing one smoothing is a surgery on two arcs and changes
+the total circle count by at most one.  The completed state therefore has
+at most $s_0(D)+j$ circles.
+
+A state with $c$ already closed circles contributes $2^c$ summands after
+delooping.  There are $\binom{i}{j}$ states of degree $j$ at prefix length
+$i$.  Extension and delooping enumerate the usual cube objects; Gaussian
+cancellation and truncation only remove objects.  More formally, surviving
+objects can be assigned distinct original cube-basis labels, and extending
+these labels and adding new circle labels preserves this assignment.
+Consequently the degree-$j$ allocation has size at most
+$2^{s_0(D)+j}\binom{i}{j}$.  Every retained degree satisfies
+$j\leq b+1$.  Summing and using $\binom{i}{j}\leq\binom{n}{j}$ proves the
+bound.
+\end{proof}
+
+One can keep a more informative prefix bound.  If $z_i$ is the number of
+closed circles in the all-$0$ smoothing of the processed prefix, then the
+same local surgery argument gives
+\begin{equation}
+ \#\text{objects after allocation at }i
+ \leq\sum_{j\in I_i}2^{z_i+j}\binom{i}{j}.
+ \label{eq:prefix-window-bound}
+\end{equation}
+This explicitly exhibits the saving from the moving lower boundary.
+Since $z_i\leq s_0(D)$, it implies the uniform bound above.
+
+\begin{theorem}[Bit complexity with unrestricted scan frontiers]
+\label{thm:window-cost}
+For the delivered $\mathbb F_2$ dotted-cobordism representation there is an
+absolute constant $c$ such that the uncapped window computation takes at
+most
+\begin{equation}
+ 2^{c(w+1)}(n+1)^c\bigl(B_0(D;a,b)+1\bigr)^c
+ \label{eq:window-cost-exact}
+\end{equation}
+bit operations, after the normalized PD diagram and order are supplied.
+In particular, if $k=\min\{n,b+1\}$, its time is
+\begin{equation}
+ 2^{O(w+s_0(D)+k)}(n+1)^{O(k+1)}.
+ \label{eq:window-cost-asymptotic}
+\end{equation}
+The implied constants do not depend on the knot, the order, or $k$.
+\end{theorem}
+
+\begin{proof}
+Two matchings on at most $w$ endpoints have at most $w/2$ circle components
+in their union.  The implemented dot-mask basis of the corresponding
+morphism space therefore has at most $2^{w/2}$ elements.  A morphism is
+stored as at most that many bits.  The compiled gluing plans use
+polynomially many boundary records; enumerating their monomials, composing
+maps and evaluating neck-cutting sums takes $2^{O(w)}$ bit operations.
+Adding a crossing introduces only four local slots, which changes this
+bound by a constant factor in the exponent.
+
+With $B=B_0(D;a,b)$ objects, there are at most $B^2$ differential entries.
+At most $B/2$ unit cancellations occur in a stage; each cancellation
+examines at most $B^2$ pairs of incident entries.  Bookkeeping, the lazy
+pivot heap, stage-local caches and equality checks add only polynomial
+factors in $n,B,w$.  The implementation uses $\mathbb F_2$, so coefficient
+growth contributes no additional integer-height parameter.  There are
+$n$ stages.  Lemma~\ref{lem:window-circle-count} now gives
+\eqref{eq:window-cost-exact}.  Finally,
+\[
+ Q(n,k)\leq(k+1)2^k(n+1)^k,
+\]
+which yields~\eqref{eq:window-cost-asymptotic}.
+
+This count never bounds the number of all possible matchings by a Catalan
+number.  It bounds the matchings actually attached to retained cube
+summands, and then bounds the algebra attached to each pair.  Thus the
+frontier issue for arbitrary crossing orders does not enter the proof.
+\end{proof}
+
+\subsection{Choosing the less expensive mirror}
+
+Mirroring swaps the two smoothings.  Over a field, the closed Khovanov
+complex of the mirror is dual to the original complex, with raw degrees
+reversed:
+\[
+ H^j_{\mathrm{raw}}(D^{!};\mathbb F_2)
+ \cong H^{n-j}_{\mathrm{raw}}(D;\mathbb F_2)^*.
+\]
+The underlying crossing graph, and hence the frontier size in a fixed
+crossing order, is unchanged.  Also $s_0(D^{!})=s_1(D)$.  Define
+\begin{equation}
+ B_1(D;a,b)=2^{s_1(D)}Q\bigl(n,\min\{n,n-a+1\}\bigr).
+ \label{eq:mirror-window-bound}
+\end{equation}
+
+\begin{corollary}[A computable choice of direction]
+\label{cor:mirror-window}
+Exact raw homology in $[a,b]$ can be computed with the bound
+\eqref{eq:window-cost-exact} after replacing $B_0$ by
+$\min\{B_0,B_1\}$.  If $B_1<B_0$, run on the mirror with target
+$[n-b,n-a]$, then reverse the returned degree labels.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:window-cost} to either $D$ or $D^{!}$, using the
+displayed duality.  The all-state circle counts are found by finite
+component calculations.  Both $Q$ values have $O(n)$ bits, since
+$Q(n,k)\leq3^n$, so comparing the two explicit bounds has polynomial cost.
+\end{proof}
+
+This choice accounts for the actual circle counts.  Merely choosing the
+smaller extreme depth can miss a large difference between $s_0$ and $s_1$.
+The choice minimizes this proved upper bound; it does not promise to
+predict the faster observed run on every input.
+
+Let $s$ be the number of Seifert circles, and let
+$\mu=\min\{\nu,n-\nu\}$.  The oriented smoothing differs from the all-$0$
+smoothing at exactly $\nu$ crossings and from the all-$1$ smoothing at
+exactly $n-\nu$ crossings in the stated PD convention.  The same one-surgery
+circle bound gives
+\[
+ s_0\leq s+\nu,\qquad s_1\leq s+(n-\nu).
+\]
+For normalized target degrees $[-d,d]$, one may therefore choose a mirror
+and obtain the following useful uniform consequence.
+
+\begin{corollary}[Minority-sign and Seifert-circle parameters]
+\label{cor:seifert-window-cost}
+For $d\geq0$, exact Khovanov homology in normalized degrees $[-d,d]$ can be
+computed by the window scanner in
+\begin{equation}
+ 2^{O(w+s+\mu+d)}(n+1)^{O(\mu+d+1)}
+ \label{eq:seifert-window-cost}
+\end{equation}
+bit operations.  In particular this is quasi-polynomial when
+$w+s=O(\log^2(n+2))$ and $\mu+d=O(\log(n+2))$.
+
+For a knot given as the closure of a $t$-strand braid scanned in braid
+order, $s=t$ and $w\leq2t$.  The bound becomes
+\[
+ 2^{O(t+\mu+d)}(n+1)^{O(\mu+d+1)}.
+\]
+It is polynomial for fixed $t,\mu,d$, and quasi-polynomial for
+$t=O(\log^2(n+2))$ and $\mu+d=O(\log(n+2))$.
+\end{corollary}
+
+\begin{proof}
+On the side with $\mu$ negative PD crossings, the requested raw upper
+degree is at most $\mu+d$, and its upper guard is at most $\mu+d+1$.
+Insert $s_0\leq s+\mu$ in Theorem~\ref{thm:window-cost}.  The logarithm of
+the resulting time is
+$O(w+s+\mu+d+(\mu+d+1)\log(n+2))$, proving the stated regimes.
+
+Oriented smoothing of a braid closure yields its $t$ Seifert circles.  In
+braid order the processed prefix has at most one top and one current end
+per strand, so its frontier has at most $2t$ endpoints.  Substitution gives
+the braid assertions.  The sign convention for braid-word generators does
+not affect $\mu$, although it does affect which mirror is selected.
+\end{proof}
+
+\subsection{Scope and comparison with existing extremal algorithms}
+
+An exact band can reject an unknot whenever it differs from the unknot's
+homology in that band.  In particular, excess dimension in normalized
+degree zero, or nonzero homology in a computed nonzero degree, is a sound
+certificate of nontriviality.  An agreeing band remains inconclusive.
+For example, the trefoil has the unknot's dimension in degree zero and has
+additional homology elsewhere.  A complete recognizer must use a fallback,
+eventually cover every degree, or prove a separate support or witness
+theorem for the input class.
+
+Kelom\"aki--Sch\"utz give an extremal-degree algorithm based on special
+``nice'' scanning sequences and local cancellations
+\cite{kelomaki}.  Their Lemma~5.5 bounds intermediate degree-$j$ summands by
+$\binom{i}{j}$, with a factor two at closure; their finite-field
+Algorithm~3 permits exhaustive Gaussian cancellation.  This can remove
+the all-state circle factor in an appropriate geometric assembly.  It is
+a distinct guarantee from the elementary object bound proved here.  The
+current implementation accepts arbitrary valid crossing orders, and no
+claim that every such order satisfies their nice-scan hypotheses is made.
+
+The cited work also proves polynomial-time computation of full homology
+for three-braid closures by specialized structure, despite exponential
+explicit-basis examples.  Neither that specialized engine nor its general
+fixed-strand extension is supplied by degree clipping.  Our contribution
+here is an exact moving interval implemented before allocation, together
+with a uniform, independently proved bound for that implementation.
+
+\paragraph{Relation to \texttt{openai/math}.}
+The source of \emph{Parabolic intersections in Artin groups} in
+\texttt{openai/math} uses the principle that later functors
+with bounded level amplitude cannot bring discarded layers back to an
+extreme level; see its lemma ``Composition at the bottom'' in
+\texttt{build/sections/03\_layers.tex} \cite{openai_artin}.  Its categorical-action section
+also retains explicit chain homotopies before tensoring.  These are useful
+methodological parallels.  The Artin-module levels are not the raw
+Khovanov degrees used here, and the present proof imports no theorem about
+Artin groups or their parabolic subgroups.  Lemma~\ref{lem:bounded-continuation}
+supplies the required statement directly in the scanner's category.  The
+reviewed repository revision is
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.

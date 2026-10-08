@@ -1,0 +1,238 @@
+\section{Measurements, validation, and repository integration}
+\label{sec:experiments}
+
+The experiments separate three computational questions.  The window
+benchmark measures the cost of obtaining a selected obstruction instead
+of all homology.  The perturbation benchmark computes the same complete
+homology by two reduction engines.  The pattern benchmark compares two
+classifiers for an already known ball.  A speed ratio from one question
+is not an end-to-end speed ratio for the other two.
+
+All stored measurements use Python 3.12.14 on an x86-64 Linux environment
+with glibc 2.39.  Raw repetitions, input diagrams or deterministic fixture
+generators, crossing orders where applicable, and operation counts are
+included.  Wall times are observations on this environment.  The paired
+protocol reduces some variability but does not remove shared-machine
+scheduling noise, especially for millisecond inputs.  Asymptotic claims
+in this paper follow from the preceding proofs, rather than fits to these
+small timing samples.
+
+\subsection{Exact windows: less construction, sometimes an earlier verdict}
+
+The window experiment uses one warmup per variant and seven timed pairs,
+alternating which variant runs first.  Both variants receive identical
+PD data and the same preselected crossing order.  Both use the baseline's
+automatic shape-cache policy.  Diagram loading, order selection, and
+cheap invariant filters are excluded.  The window orientation is fixed
+for each row: the bound-aware automatic mirror selector is available to
+callers but is not being credited for these measurements.
+
+\input{tables/window_timings}
+\input{tables/window_allocations}
+
+The most useful case is the repository's 36-crossing mixed five-braid
+stress diagram.  Its complete unreduced rank is 5898, while its normalized
+degree-zero rank is 698.  Thus this one degree already proves
+nontriviality.  The median full scan took $0.904254$ seconds and the
+window took $0.581562$ seconds, a ratio of approximately $1.55$.
+The peak allocated objects decreased from 17694 to 7692, a reduction of
+about $56.5\%$.  Figure~\ref{fig:window-profile} plots every allocation
+stage, including the large final expansion.
+
+The identical-cap experiment is more informative than a small timing
+difference.  With a 10000-object ceiling the full scan raises
+\texttt{ScanLimit} before allocating 17694 objects, while the window
+completes with peak 7692 and returns the 698-dimensional obstruction.
+This is a reproducible change in which exact question can be answered
+within a stated resource limit.  The cap is an object cap, not a measured
+resident-memory limit; morphisms, dictionaries and caches also use space.
+
+Conway and Kinoshita--Terasaka both have degree-zero dimension 10 in these
+conventions, so their window results are also decisive.  Their short wall
+times should not be overinterpreted: the mirrored Kinoshita--Terasaka row
+is slower with the window.  Truncation incurs bookkeeping, and different
+remaining objects can change the pivot order.
+
+The hard unknot, determinant-one grid knot, and torus controls all have
+degree-zero dimension 2.  Those window results are inconclusive.  In
+particular, the large ratio on the $T(4,7)$ control does not constitute
+a faster complete recognition result: additional homology or a cheap
+invariant still supplies nontriviality.  The standard recognition pipeline
+already dispatches many of these inputs before Khovanov computation.
+These rows deliberately isolate the scanner operation.
+
+The saved JSON also contains the isolated-guard pruning ablation.  Every
+ablation agrees on the requested ranks.  Its allocation profile explains
+what this additional operation deletes, but the ablation was not timed
+and no speed ratio is assigned to it.  For the final stress stage the
+retained allocation is 7692; unit elimination and the valid deletion of
+isolated guards leave the requested 698 objects.
+
+\subsection{Perturbation: an exact prototype with a measured tradeoff}
+
+The second experiment uses five warmed alternating pairs.  The complete
+scanner and perturbation backend receive the same fixed crossing order,
+with shape caching disabled in both.  They agree on the full homological
+rank distribution for every row.  Optional construction and verification
+of all contraction maps is excluded from the timing and tested separately.
+
+\input{tables/perturbation_natural}
+
+The current perturbation implementation loses on every natural diagram
+in Table~\ref{tab:hpl-natural}.  The extra binary basis construction and
+map assembly outweigh the avoided individual cobordism operations in
+these cases.  This is a reason to retain it as an explicit research
+backend, and to use its rank profiles and certificates to design a
+selective hybrid, rather than replace the default elimination routine.
+
+There is nevertheless a regime where the construction has a concrete
+advantage.  Consider two-term algebraic complexes with differential
+\[
+ d=I+xR\quad\text{over }\mathbb F_2[x]/(x^2),
+\]
+where $R$ is a deterministic pseudorandom binary matrix.  The scalar
+differential is the identity, so its homology vanishes.  Moreover
+$(I+xR)^2=I$, making full contractibility immediate.  These are valid
+complexes over the one-arc endomorphism algebra, although no claim that
+they arise from knot diagrams is made.
+
+\input{tables/perturbation_synthetic}
+
+At matrix order 256, the median decreases from $0.204609$ to $0.031587$
+seconds, about $6.48$ times.  Both timings construct the same input.
+The scalar path performs many nilpotent updates; the perturbation path
+detects scalar acyclicity and returns an empty minimal object.  Requiring
+an explicit contracting homotopy would add work.  The benefit therefore
+supports a specific implementation hypothesis---large scalar rank can
+make block reduction attractive---without supplying an end-to-end
+unknot speedup.  The stored small stress cases do check the complete
+contracting identities.
+
+\subsection{Terminal patterns: a large improvement in a narrow subroutine}
+
+\input{tables/terminal_timings}
+\input{tables/terminal_scaling}
+
+The old and new pattern timings both begin with the same prepared
+JSON-like input and include validation, spherical-embedding checks,
+classification, and result construction.  Fixture generation and
+external JSON reading and writing are excluded.  The baseline source is
+the unmodified report-06 implementation, preserved with Git blob hashes.
+Each median uses three calls.
+
+At 192 darts, the new classifier takes about $0.440$ milliseconds and the
+old bond enumerator about $9.53$ seconds.  The very large ratio is
+consistent with eliminating an enumeration of edge subsets followed by
+repeated graph traversal.  On the larger fixture with 98304 darts the new
+classifier takes approximately $0.50$ seconds.  These fixtures provide
+useful checks of the linear-space and near-linear-time construction.
+They give no estimate for normal-surface selection, hierarchy length, or
+the number of terminal components in a complete recognition algorithm.
+
+\subsection{Validation and the remaining trust boundary}
+
+The delivered fast-scanner suite passes 64 test methods, comprising the
+41 baseline methods and 23 additions.  The additions cover exact windows,
+mirror selection and normalization, guarded boundaries, truncation before
+resource accounting, randomized scan orders, cache choices, full-fallback
+semantics, the CLI, and finite perturbation identities.  The hierarchy
+suite adds 10 passing methods.  The full logs are included; individual
+methods may contain many exhaustive or randomized cases.
+
+Two especially relevant checks are more discriminating than agreement on
+one final integer.  First, intermediate perturbation models have the same
+matching-by-degree multiplicities as exhaustive unit cancellation, and
+their explicit maps satisfy all deformation-retraction identities.
+Second, all 10410 small rotation maps are censused by the terminal tests,
+and connected negative witnesses are verified by the old primal-cut
+checker as well as the new verifier.  The tests also reject deliberately
+corrupted certificates and nonspherical inputs.
+
+The saved HPL example is the unreduced four-crossing prefix of the
+eight-crossing $(3,[1,2]^4)$ braid closure.  It reduces 20 source objects
+to 6 minimal objects at a six-endpoint frontier, and its constructor
+uses perturbation depth two.  Its JSON records the source diagram,
+actual endpoint pairings, and all five differential and contraction
+maps.  The verifier reconstructs the source prefix and checks the saved
+maps without recomputing the perturbation construction.  A second JSON
+records a terminal triangle with primal sides of sizes three and three.
+Both artifacts can be reloaded and checked with
+\path{experiments/export_certificates.py --verify-existing}.
+
+The proofs in this article are mathematical arguments accompanied by
+executable checks.  They are not Lean formalizations.  The window API
+returns ranks, a degree convention, and allocation evidence; it does not
+yet export a short, standalone proof of those ranks checkable without the
+scanner.  The perturbation certificate checks trust the exact implemented
+cobordism composition.  The terminal negative verifier is independent of
+the triangle-enumeration algorithm but still trusts its input's known-ball
+precondition.  These are specific interfaces for further formalization,
+not substitutes for the hypotheses in the correctness theorems.
+
+\subsection{Integration contract}
+
+The complete modified \texttt{fast/} directory is included, together with
+\path{integration/fast-window.patch}.  The patch is based on the active
+tree at the pinned revision, and its applicability is checked against that
+exact snapshot.  The report-07 structural patch is a separate lineage;
+combining both continuations requires an ordinary code integration and
+the corresponding combined regression run.  No remote repository is
+changed by preparing this package.
+
+The new recognition stage is opt-in.  Existing calls preserve their
+default behavior.  The main API additions are:
+\begin{lstlisting}[language=Python]
+recognize(diagram, use_window=True, window_radius=0,
+          window_mirror=True, window_max_objects=10000,
+          window_seconds=None)
+\end{lstlisting}
+The target is the normalized interval
+$[-\texttt{window\_radius},\texttt{window\_radius}]$.
+Automatic mirroring compares the exact proved bounds $B_0,B_1$ and
+restores the original raw indices before normalization.  A result
+different from $\{0:2\}$ is a nontriviality obstruction.  Agreement invokes
+the full fallback.  Exhausting a window-specific budget records a skipped
+window and leaves the remaining global budget to that fallback.  Exhausting
+the complete budget yields \texttt{UNKNOWN}.
+
+The lower-level routines distinguish raw-degree queries from this
+normalized decision interface:
+\begin{lstlisting}[language=Python]
+from fastunknot.window_scan import khovanov_window
+from fastunknot.window_bounds import khovanov_window_auto
+
+# Raw degrees, fixed orientation:
+part = khovanov_window(diagram.pd, lower=a, upper=b,
+                       order=order, max_objects=10000)
+
+# The same original raw degrees, selecting a mirror internally:
+part = khovanov_window_auto(diagram, a, b, order=order)
+\end{lstlisting}
+The result field is \texttt{window\_rank}.  A separate
+\texttt{complete\_rank} flag is true only when the requested interval
+covers the entire possible raw range $[0,n]$.  The \texttt{window} CLI
+subcommand also accepts raw bounds, recorded as \texttt{raw\_lower} and
+\texttt{raw\_upper}; it does
+not label a partial answer as a total rank.  The complete recognizer's
+\texttt{--window} flag enables the optional obstruction stage.
+
+The module \texttt{perturbation.py} is available for direct research use
+and certified intermediate reductions; it is not selected by the default
+recognizer.  The \texttt{hierarchy/} directory is a self-contained terminal
+classifier and experiment bundle.  It is intended for a future hierarchy
+implementation or a report appendix with its ambient-ball contract intact.
+
+\paragraph{Reproducibility artifacts.}
+The package includes the TeX source and figure PDFs, raw timing JSON,
+deterministic fixture generators, source provenance, the integration patch,
+and complete tests.  The \texttt{experiments/} scripts regenerate benchmark
+data, figures, tables and example certificates.  Figure generation checks
+the full allocation trace against the saved stress rank and peak before
+plotting it.  The tables are generated directly from the raw JSON so that
+the numerical claims can be updated without manual transcription.
+
+These deliverables support two immediate engineering choices: enable the
+window obstruction for workloads where it can avoid an expensive full
+scan, and replace repeated terminal bond enumeration where the known-ball
+precondition is already certified.  The nilpotent backend supplies a
+separate algebraic foundation for the next optimization cycle.

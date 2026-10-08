@@ -1,0 +1,282 @@
+\section{Further research questions and a proposed programme}
+\label{sec:research}
+
+The next stage should be driven by the parameters that remain in the
+proved bounds. The following questions are proposed research tasks,
+not assertions that their desired answers hold. A useful negative answer
+would often be as valuable as a positive one, because it would prevent
+investment in a compression invariant that cannot control the algorithm.
+
+\subsection{Priority I: the global structural obstruction}
+
+\begin{question}[Connected components after exact reductions]
+\label{q:components}
+For which diagram families, or for which residual inputs after the
+existing certified filters, can one prove a bound on the largest reduced
+connected component size $b$ that makes
+$b^2 B_m=O((\log n)^2)$?
+\end{question}
+This is the most direct missing theorem for the report-07 route. At fixed
+frontier, the sufficient condition permits $b=O(\log n)$; it does not
+permit arbitrary polynomial growth in $b$. Experiments should record
+component sizes, homological spans, matching multiplicities, dot-degree
+layers, and weights at every stage. Families designed to resist
+connected-sum factorization and elementary simplification are especially
+valuable. If $b$ grows too quickly even at fixed width, determine whether
+the growth is forced under every admissible cancellation order, or is
+an artifact of the chosen pivot policy. A proof of such an obstruction
+would redirect the programme toward stronger equivalence relations.
+
+\begin{question}[Compression beyond identical serialized components]
+Can a constructive chain-homotopy normalization replace large connected
+components by a bounded description while preserving the recognition
+criterion and efficient future crossing updates?
+\end{question}
+Exact component sharing only merges identical keys. It does not perform
+arbitrary changes of basis or discover every homotopy equivalence.
+Candidate descriptions include graded module decompositions, interval
+structures in restricted categories, and presentations over small
+endomorphism algebras. Each proposal must specify the allowed basis
+changes, provide an algorithm to compute the description, and bound
+composition after a crossing is added. Merely knowing that equivalent
+complexes have a small representative is insufficient if finding or
+updating it requires enumerating exponentially many bases. Test the
+proposal first on the known multiplicity families and on connected
+examples that cannot be removed by visible sum decomposition.
+
+\begin{question}[Crossing order optimized for the real cost]
+Can crossing orders be constructed with controlled
+$w+\log(N+2)$, or controlled $b^2 B_{w/2}$, rather than with small
+frontier alone?
+\end{question}
+A frontier objective sees only one part of the resource envelope.
+The stress fixture in Table~\ref{tab:scanner} has a small frontier and
+thousands of surviving objects. A useful ordering certificate would
+explain why its chosen local pieces have bounded component growth, not
+just count exposed endpoints. Investigate separator decompositions with
+independent frontier components, preserving a certified disk order only
+where that order actually exists. Any Catalan estimate must carry the
+topological ordering certificate that makes it valid. Approximation or
+heuristic ordering results should charge the time spent finding the order.
+
+\begin{question}[A completeness theorem for a portfolio]
+Can one prove that every diagram either admits a cheap structural or
+finite-target certificate, or enters the homology backend with parameters
+satisfying a quasi-polynomial bound?
+\end{question}
+This formulation respects the difference between complete homology
+calculation and unknot recognition. The full invariant can be expensive
+even when a simple certificate already decides the knot. A successful
+theorem would describe a finite or effectively generated set of cases,
+prove coverage, and bound how the appropriate case is found. It must also
+account for unknot inputs, where knottedness filters cannot help. The
+current three-braid, homogeneous-diagram, connected-sum, Alexander,
+Jones, and finite-target stages are concrete candidates for parts of
+such a partition, but present experiments do not prove that their
+residual class has small $b$ or small width.
+
+\subsection{Priority II: exploit the grading in the representation}
+
+\begin{question}[Rank-layer coefficient storage]
+Can a homogeneous $k$-circle coefficient of dot degree $d$ be stored
+and manipulated in time near $\binom{k}{d}$, with no full $2^k$ table
+allocated during contraction or output reconstruction?
+\end{question}
+Theorem~\ref{thm:homogeneous} reduces the transform arithmetic, while
+Theorem~\ref{thm:types} reduces the number of possible coefficients.
+The current implementation still allocates subset-indexed tables.
+Combinatorial ranking of fixed-cardinality subsets, restricted zeta
+transforms, or sparse-to-layer conversions might realize the counting
+gain in memory as well. The challenge is closure: identifying input
+variables can kill terms and combine them by parity, and the output map
+has nontrivial block structure. A valid result must cover those maps,
+not just multiplication of two already indexed middle layers. Compare
+the resulting cost with both input and output layer sizes.
+
+\begin{question}[A grading-aware scanner interface]
+Should the quantum shifts be stored explicitly to eliminate impossible
+entries earlier, restrict pivot search, and specialize every genuine
+cancellable unit to $1$?
+\end{question}
+The proof shows that the information is recoverable; the current audit
+reconstructs it separately. An explicit grading can reject incompatible
+matrix entries before compiling a surface plan and can provide a useful
+internal consistency check. Measure whether the saved work exceeds the
+cost of maintaining shifts and layer metadata. The interface must retain
+the generic algebra fallback for clients that intentionally supply
+inhomogeneous morphisms. A separate graded object type is preferable to
+silently assuming homogeneity from the packed coefficient's shape.
+
+\begin{question}[Remove sparse-case adapter overhead]
+Can the implementation preserve the baseline cost on small or sparse
+entries while retaining the proved dense envelope?
+\end{question}
+This is a high-confidence engineering task suggested directly by the
+paired timings. A fixed small-frontier dispatch to the original primitive
+preserves the asymptotic theorem, because its cutoff is constant.
+More general dispatch must also charge output expansion and large-integer
+updates; a support-only estimate can be misleading. Profile plan lookup,
+support extraction, homogeneity detection, byte conversion, and cache
+reuse separately. Promote a new default only after paired scans on both
+ordinary inputs and genuinely dense graded stages demonstrate a useful
+tradeoff. Retain raw distributions rather than optimizing one selected
+median on a noisy machine.
+
+\begin{question}[What dense entries can actually occur?]
+Is there an explicit knot-diagram family producing large, dense
+homogeneous differential entries after the prescribed cancellations,
+and can their density be predicted from topology?
+\end{question}
+The arbitrary-algebra family in Section~\ref{sec:convolution} proves a
+local worst-case improvement. It does not supply a knot family realizing
+that local worst case. A useful construction would preserve exact stage
+data and provide a proof of its coefficient support, rather than merely
+an opaque slow example. Conversely, a theorem limiting support density
+in all relevant surviving complexes might make a different sparse
+algorithm the right asymptotic target. This question connects the
+coefficient theorem to end-to-end usefulness.
+
+\begin{question}[Other characteristics and integral coefficients]
+How far does the plan factorization extend with controlled bit complexity
+over odd finite fields or over the integers?
+\end{question}
+Ranked subset convolution works over much more general coefficient rings
+than $\F$~\cite{bhkk}. The geometric specialization needs separate
+attention: the handle multiplier $2x$ no longer vanishes in odd
+characteristic, integer signs must be consistent, and integer coefficient
+growth must be bounded. A graded unit may be a nonzero scalar requiring
+inversion, rather than the unique scalar $1$. An extension should specify
+the exact Frobenius algebra, prove the new component evaluation formula,
+and charge coefficient bit lengths. It should not simply reuse the
+characteristic-two positive-genus shortcut.
+
+\subsection{Priority III: bounded witnesses and target selection}
+
+\begin{question}[Constructive seed-plan quality]
+Can the greedy $O(n^3)$ seed-plan construction be replaced by a faster
+dependency-closure algorithm, with a useful approximation or structural
+bound on the resulting seed count?
+\end{question}
+For fixed targets, lowering $b$ by one saves an exponential factor in
+the search parameter, while a smaller planning constant matters for
+sub-millisecond fixtures. Maintain the crossing dependencies exposed by
+each newly colored arc, and reuse closure information between candidate
+seeds. Prove the setup cost of this reuse and keep the final plan
+independently checkable. The equality between the minimum Wirtinger
+number over diagrams and bridge number~\cite{blair} is a structural
+guide; it does not make minimum-seed search on an arbitrary presented
+diagram free.
+
+\begin{question}[Adaptive finite targets with a completeness bound]
+Can target groups or quandles be constructed from a diagram so that
+every nontrivial residual knot has a witness with
+$b\log(q+1)=O((\log n)^2)$, and both target construction and witness
+search fit the same budget?
+\end{question}
+The palette obstruction rules out a universal bounded palette. The
+NP-completeness result for fixed-target coloring~\cite{kuperbergsamperton}
+also prevents a casual inference from a small target to an easy search
+for every diagram. A constructive target-selection theorem would need
+to exploit special structure or permit a different obstruction when
+a target search is difficult. Count the target description, conjugation
+table or on-demand operation cost, seed plan, and proof of nonconstancy.
+Do not replace all these requirements by an existence theorem for some
+finite nonabelian quotient.
+
+\begin{question}[Sharp detecting-quandle size for determinant-one torus knots]
+What is the smallest size $q(p)$ of a finite quandle that nontrivially
+colors $T(3,p)$, for prime $p>3$? Can the lower bound $q(p)\geq p$
+be improved, and can one give explicit detecting targets with comparable
+upper bounds?
+\end{question}
+The proof uses the exponent of the inner group and works for nonfaithful
+and disconnected quandles. It does not show that a size-$p$ target exists.
+Study conjugacy classes in explicit finite quotients of the torus group,
+and compare their class size with the size of the entire group. Distinguish
+the number of quandle elements from the encoding length of a succinct
+group. Determinant one already removes familiar affine-coloring routes;
+the non-affine constructions discussed by Fish, Lisitsa, and
+Stanovsk\'y~\cite{fish} give relevant precedent. Small computational
+classifications could suggest a sharper theorem, but should not be
+advertised as a bound for untested primes.
+
+\subsection{Priority IV: alternate routes to a global theorem}
+
+\begin{question}[Detecting slices with a completeness guarantee]
+For which broad knot families does nontrivial reduced Khovanov homology
+necessarily appear within a provably shallow extremal homological band?
+\end{question}
+Combine a genuine detection theorem with the prescribed nice-scan
+construction of Kelom\"aki and Sch\"utz~\cite{kelomaki}. For the
+displayed slice envelope, $g=O((\log n)^2)$ and $k=O(\log n)$ would
+fit the stronger $n^{O(\log n)}$ scale, provided the scan is constructed
+within that cost. A fast slice without a theorem locating the required
+homology is only a partial obstruction. Also quantify what happens when
+the useful grading range is specified in normalized knot-theoretic
+degrees rather than unshifted cube degrees; crossing-sign shifts must
+be handled explicitly.
+
+\begin{question}[A complete hierarchy cost ledger]
+Can the hierarchy approach be organized into explicit compressed data
+structures for which every visit, cut, normalization, and violating-disc
+step has a proved bit bound?
+\end{question}
+Lackenby's bound $L(g+1)^L$ has logarithm
+$O(\log(L+1)+L\log(g+1))$~\cite{lackenby2026}. Thus
+$L\log(g+1)=O((\log n)^2)$ is a natural target for the stronger
+scale in this project, while $O((\log n)^3)$ would still yield the
+broader quasi-polynomial scale announced in the 2021 handout.
+If $g$ is polynomial in $n$, these correspond to hierarchy lengths of
+order $\log n$ and $(\log n)^2$, respectively. These statements bound
+visit counts only. Compressed surface coordinates can encode extremely
+large geometric objects, so naive expansion during a cut would destroy
+the argument. The normal-curve algorithms in~\cite{lackenbycurves}
+suggest useful primitives, but the full ledger and construction theorem
+must be written and proved.
+
+\begin{question}[Certificates for the algebraic reduction itself]
+Can every crossing extension and cancellation emit a compact reduction
+certificate whose verifier is substantially simpler than the optimized
+scanner?
+\end{question}
+The finite-target work demonstrates the practical value of a search and
+verifier separation. For homological reduction, record the pivot,
+inclusion and projection maps, and the relevant chain-homotopy identity.
+The challenge is certificate size: an explicit transcript can be as
+large as the computation. Investigate compressed transcripts with
+deterministically replayable local claims, and state whether verification
+requires the same coefficient tables. A formalization can begin with the
+squarefree-algebra factorization, ranked convolution, and scalar
+cancellation identity, while clearly treating the topological
+unknot-detection theorem as a separately cited assumption.
+
+\subsection{Concrete milestones}
+
+The next release can have measurable goals without pretending to settle
+the global problem immediately.
+\begin{enumerate}
+\item \textbf{Instrument the surviving structure.} Merge grading metadata
+with report-07 sharing in an isolated branch, recording $m$, $b$, $N$,
+component weights, and dot-degree distributions. First reproduce the
+existing exact outputs; then publish the component-growth data.
+\item \textbf{Improve ordinary workloads.} Add a constant-frontier legacy
+dispatch and a measured cache policy, while preserving the proved
+coefficient envelope. Require paired ordinary scans and genuine graded
+dense cases before changing defaults.
+\item \textbf{Prove one nontrivial structural family theorem.} Choose a
+family after the existing certified filters and prove its actual
+component-size or homotopy-description bound. A theorem with an explicit
+construction is more informative than a larger table of favorable
+timings.
+\item \textbf{Publish a falsifiable global route.} State exactly which
+structural dichotomy or hierarchy construction would imply the desired
+bound, and keep every unproved lemma visible. Search deliberately for
+counterexamples to those lemmas before expanding the implementation.
+\end{enumerate}
+
+The present continuation has made coefficient operations essentially
+linear in their explicit table size up to polynomial frontier factors,
+and it has improved the available counting argument through a recovered
+grading. The proposed programme now concentrates on the amount and
+structure of data that the algorithm must construct. That is the point
+at which the quasi-polynomial objective will be decided.

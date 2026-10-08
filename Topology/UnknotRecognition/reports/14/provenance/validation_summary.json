@@ -1,0 +1,174 @@
+{
+  "integrated_tests": {
+    "count": 94,
+    "status": "passed",
+    "elapsed_seconds": 22.185,
+    "log": "benchmarks/tests.log",
+    "log_sha256": "3878cf84ef32f43960d90beafdd1da97fcfa71906a4ff9d770683a3b9fdf93c6",
+    "scope": "Final algorithm source after lazy normalization; later README-only edits do not affect tests"
+  },
+  "independent_continuation": {
+    "status": "passed",
+    "complexes": 861,
+    "threshold_comparisons": 10206,
+    "maximum_interval_length": 6,
+    "enumeration": [
+      {
+        "dimensions": [
+          1
+        ],
+        "complexes": 1
+      },
+      {
+        "dimensions": [
+          2
+        ],
+        "complexes": 4
+      },
+      {
+        "dimensions": [
+          2,
+          1
+        ],
+        "complexes": 10
+      },
+      {
+        "dimensions": [
+          1,
+          2
+        ],
+        "complexes": 10
+      },
+      {
+        "dimensions": [
+          2,
+          2
+        ],
+        "complexes": 76
+      },
+      {
+        "dimensions": [
+          2,
+          2,
+          2
+        ],
+        "complexes": 760
+      }
+    ],
+    "universal_cap2_counterexample_ranks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "even_context_cap1_counterexample_ranks": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12
+    ],
+    "implementation_imports": []
+  },
+  "fitting_witnesses": {
+    "count": 2,
+    "independent_dense_verifier": "benchmarks/verify_fitting_witness.py",
+    "complete_scan_replay": "passed",
+    "local_verification": "passed",
+    "input": "Conway"
+  },
+  "benchmark_audit": {
+    "utc": "2026-10-07T23:51:56.595412+00:00",
+    "final_file": "paired_results.json",
+    "final_sha256": "1eb2190c29d24976bed582a3e5814fbd433b1198a1a55766432bae4b85aab2c8",
+    "cases": 19,
+    "source_unchanged_during_final_run": true,
+    "calls": 285,
+    "completed": 279,
+    "limits": [
+      {
+        "case": "conway_sum_3",
+        "backend": "standard",
+        "repetition": 0,
+        "reason": "64251 objects would exceed the ceiling 50000"
+      },
+      {
+        "case": "conway_sum_3",
+        "backend": "standard",
+        "repetition": 1,
+        "reason": "64251 objects would exceed the ceiling 50000"
+      },
+      {
+        "case": "conway_sum_3",
+        "backend": "standard",
+        "repetition": 2,
+        "reason": "64251 objects would exceed the ceiling 50000"
+      },
+      {
+        "case": "conway_sum_8",
+        "backend": "standard",
+        "repetition": 0,
+        "reason": "60984 objects would exceed the ceiling 50000"
+      },
+      {
+        "case": "conway_sum_8",
+        "backend": "standard",
+        "repetition": 1,
+        "reason": "60984 objects would exceed the ceiling 50000"
+      },
+      {
+        "case": "conway_sum_8",
+        "backend": "standard",
+        "repetition": 2,
+        "reason": "60984 objects would exceed the ceiling 50000"
+      }
+    ],
+    "before_file": "paired_results_before_lazy.json",
+    "before_sha256": "c5d5b73e3351948fe48a7108a42d6e975576aad0b1da1770b16fcd3360e75d93",
+    "lazy_comparison": {
+      "backends": [
+        "component",
+        "fitting_exact",
+        "fitting_decision",
+        "fitting_decision_dp"
+      ],
+      "metrics": [
+        "entries",
+        "compositions",
+        "fitting_splits",
+        "barcode_components",
+        "max_component_objects"
+      ],
+      "result_comparisons": 76,
+      "deterministic_stat_comparisons": 380,
+      "differences": [],
+      "all_compared_results_and_stats_equal": true
+    },
+    "all_completed_exact_and_capped_results_agree": true
+  },
+  "patch_verification": {
+    "target": "Topology/UnknotRecognition/fast",
+    "checks": [
+      {
+        "patch": "from_repository.patch",
+        "reference": "repository-fast",
+        "patch_sha256": "6b31759980cfe841d17f71cbcb32c009cdeb1273a0b6725dfc158b6a6adf674b",
+        "source_files_compared": 55,
+        "status": "passed"
+      },
+      {
+        "patch": "from_structural_0_3.patch",
+        "reference": "structural-fast",
+        "patch_sha256": "6b06d3bfdfd3db5e4726ca17da489445b5e9e2b52fab2c7c64b332f90fe01e42",
+        "source_files_compared": 55,
+        "status": "passed"
+      }
+    ],
+    "verification": "git apply --check; git apply; complete SHA-256 inventory equality"
+  },
+  "review": "Independent agent review and dense calculations within the session; not external peer review or full formal verification",
+  "general_quasipolynomial_bound": "not established"
+}

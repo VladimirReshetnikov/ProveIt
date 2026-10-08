@@ -1,0 +1,204 @@
+\section{A deterministic near-linear terminal boundary-pattern algorithm}
+\label{sec:terminal-patterns-new}
+
+The previous terminal implementation in report 06 tests all sets of at most
+three primal edges and traverses the remaining graph for each set.  Its
+$O(E^4)$ worst-case bound can be improved to $O(s_P\log(s_P+2))$ deterministic
+word-RAM operations, where $s_P=2E$ is the number of darts.  The improvement is
+an implemented graph algorithm with an independently checked negative
+certificate.  It does not require a generic four-connectivity routine.
+This is an algorithmic consequence of the established theory of essential
+boundary patterns, rather than a new topological characterization.
+
+\subsection{Input and topological precondition}
+
+The ambient manifold is a known 3-ball $B$.  Its boundary pattern $P$ is a
+disjoint union of embedded trivalent multigraphs and vertex-free circles.
+The input contains a cyclic triple at each graph vertex.  Dart $2e$ is
+paired with dart $2e+1$ by the fixed-point-free involution
+$\alpha(d)=d\mathbin{\mathrm{xor}}1$.  Write $\sigma$ for the permutation
+whose cycles are the supplied triples.  The face walks are the cycles of
+$\phi=\sigma\alpha$.
+
+The implementation checks that the dart list is exactly a permutation of
+$\{0,\ldots,s_P-1\}$, that every vertex has degree three, and that
+$V_i-E_i+F_i=2$ for every connected graph component.  Thus each connected
+rotation system has a spherical embedding.  A rotation system does not
+specify the relative nesting of distinct graph components.  This omission
+does not affect the essentiality decision: any pattern with two or more
+components is inessential, independently of their nesting.
+
+The supplied assertion that the ambient manifold is a 3-ball remains a
+precondition.  In particular, a spherical boundary does not by itself
+establish this precondition.  The routine does not decide whether an
+arbitrary 3-manifold is a ball.
+
+\subsection{The dual triangle criterion}
+
+Recall that a pattern on a ball is essential when every transverse simple
+closed curve meeting $P$ at most three times bounds a boundary disc whose
+intersection with $P$ is empty, a single arc, or a single tripod.
+Lackenby's Proposition 2.6 \cite{lackenby2026} characterizes this property using the planar
+dual and four-connectivity.  We use the following equivalent form.
+
+\begin{theorem}[Terminal dual triangle criterion]
+\label{thm:terminal-triangle}
+Let $P$ be a nonempty connected trivalent graph embedded in a sphere, and
+let $G$ be its embedded dual, with loops and multiple edges retained.
+Then the pattern is essential if and only if:
+\begin{enumerate}
+\item $G$ has no loops;
+\item $G$ has no two distinct edges with the same pair of endpoints;
+\item every three-cycle of $G$ is the boundary of a face of $G$.
+\end{enumerate}
+The complete patterns consisting of the empty set or one vertex-free
+circle are also essential.  Every disconnected nonempty pattern is
+inessential.
+\end{theorem}
+
+\begin{proof}
+We use the elementary bond--cycle duality for connected sphere-embedded
+graphs: a minimal nonempty primal edge cut is dual to a simple dual cycle,
+and conversely.  One way to see this is to thicken either side of a
+minimal edge cut and fill the complementary discs containing no vertices
+on the other side.  Connectedness on both sides leaves one boundary
+curve, crossing exactly the cut edges.  Its arcs through the primal
+faces give the dual cycle.  Conversely, a simple dual cycle is a Jordan
+curve; its two sides give connected primal vertex sets and hence a
+minimal edge cut.  Loops and pairs of parallel dual edges correspond to
+cuts of size one and two, respectively.
+
+An edge cut of size one or two gives a violating boundary curve.  A
+three-edge bond is harmless precisely when one side has a single primal
+vertex: the boundary disc then meets the trivalent graph in a tripod.
+In the dual, this is precisely the condition that its three-cycle is
+facial.  Thus every obstruction in (1)--(3) gives a violating curve.
+
+For completeness, suppose that (1) and (2) hold.  Bond--cycle duality
+implies that the primal graph has no edge cut of size one or two.  Let
+$\gamma$ be a simple closed curve meeting the graph in $k\leq3$ points.
+If one side contains no primal vertex, its intersection with the graph
+is either empty or, when $k=2$, a single arc; that side is allowed.
+Otherwise let $U$ be the vertices on one side.  The edge boundary
+$\delta(U)$ has at most $k$ edges.  Since smaller edge cuts do not exist,
+$|\delta(U)|=k=3$, and $\gamma$ crosses each of these three edges exactly
+once.  The induced graphs on $U$ and on its complement are connected:
+two components on one side would each have at least three outgoing
+edges, exceeding the available three.  Thus $\delta(U)$ is a
+three-edge bond.  By (3), its dual triangle is facial, so one side has a
+single primal vertex and is an allowed tripod disc.  This proves
+essentiality.
+
+The empty pattern and a sole circle satisfy the definition directly.
+When a pattern is disconnected, there is a separating curve disjoint
+from it with nonempty pattern on both sides.  This is violating.
+\end{proof}
+
+The face occurrence convention matters at the smallest input.  For
+$G=K_3$, its unique three-cycle bounds two different faces.  The primal
+pattern is the theta graph, with two tripod sides, and is essential.
+The implementation records two facial occurrences and one distinct
+facial vertex triple.  It accepts the triangle when at least one facial
+occurrence exists.  The $K_4$ exception is handled in exactly the same
+way, with four distinct facial triples.
+
+\subsection{Algorithm and complexity}
+
+After validation and the disconnected, empty, and circle cases, construct
+each dual edge as $(f(d),f(\alpha(d)),e)$, where $f(d)$ is the face
+containing dart $d$.  Sorting these triples detects loops and repeated
+endpoint pairs.  Once the dual is simple, the three faces around each
+primal vertex form a facial triangle of the dual; retain these triples,
+sorted with multiplicity.
+
+Every nonempty subgraph of a simple planar graph has a vertex of degree
+at most five.  Delete such vertices successively.  A queue implementation
+adds a vertex initially if its degree is at most five, or later when its
+degree first falls from six to five.  Thus every vertex is queued once
+and every edge is examined a constant number of times.
+
+Orient each edge from its earlier-deleted endpoint to its later-deleted
+endpoint.  There are at most five forward neighbors at every vertex.
+For each unordered pair of forward neighbors, use binary search in the
+sorted edge list to decide whether the pair completes a triangle.  A
+triangle is encountered exactly once, at its earliest-deleted vertex.
+Use a second binary search in the list of facial triples to decide
+whether the triangle is facial.
+
+\begin{theorem}[Implemented terminal complexity]
+\label{thm:terminal-complexity}
+For a valid input with $s_P$ darts, the classifier uses
+$O(s_P\log(s_P+2))$ deterministic word-RAM operations and $O(s_P)$ words of
+space.  Its triangle scan examines at most $10|V(G)|$ candidate neighbor
+pairs.  All labels are dense integers of $O(\log(s_P+2))$ bits; a conservative
+charge of this many bit operations per word operation gives
+$O(s_P\log^2(s_P+2))$.  The separately supplied circle count also contributes
+its own binary input length.
+\end{theorem}
+
+\begin{proof}
+Validation, face traversal, dual construction, and degree peeling take
+linear time apart from sorting.  All edge and face lists have $O(s_P)$
+entries, so sorting costs $O(s_P\log(s_P+2))$.  Each of the $|V(G)|$ vertices
+contributes at most $\binom{5}{2}=10$ candidate pairs.  Each candidate
+uses a constant number of binary searches and therefore
+$O(\log(s_P+2))$ comparisons.  A returned negative certificate requires one
+additional primal traversal and sorting its two vertex lists, again
+within the stated bound.  Every stored list has linear size.
+\end{proof}
+
+No hash-table assumption enters this bound.  The implementation uses
+sorted edge and face arrays and a queue.  The degree peeling does not
+search for a minimum-degree vertex; any available vertex of degree at
+most five suffices.
+
+\subsection{Certificates and independent verification}
+
+The three connected negative certificate kinds are a dual loop, a dual
+bigon, and a nonfacial dual triangle.  A certificate records the cyclic
+list of dual vertices, the crossed primal edge labels, and the two
+primal vertex sets obtained by deleting these edges.  A separate
+verifier checks all labels, traverses the primal graph after deleting
+the indicated edges, and confirms that the edge boundary of one side
+is exactly the indicated set.  For three edges it also checks that
+both sides contain more than one vertex.  Thus the verifier does not
+rerun the triangle enumeration.
+
+These data determine a violating curve on the known boundary sphere:
+join consecutive crossings within their specified primal face.  Pushing
+one boundary disc slightly into the ball gives a violating properly
+embedded disc.  The disconnected certificate establishes existence of
+a zero-intersection violating curve; without relative nesting data it
+does not specify a particular geometric representative.
+
+A terminal witness is not yet a normal compression disc in the original
+knot exterior.  Transporting it backwards through a hierarchy still
+requires the cut surfaces, boundary identifications, and changes made
+during parallelity-bundle simplification.  The present improvement
+removes repeated small-cut enumeration at the terminal stage; it does
+not supply those geometric operations.
+
+\subsection{Validation and reproducible comparison}
+
+The tests compare the new classifier and its certificates against the
+unmodified report-06 bond enumerator.  The small-map test exhausts all
+$15+10395=10410$ pairings of darts at two and four cyclically ordered
+trivalent vertices.  Of these, 5628 have spherical graph components
+and 4782 are rejected as non-spherical.  Every accepted input is checked
+against the old classifier; every returned connected negative
+certificate is also translated into the old verifier's primal-bond
+format and checked there.
+
+Additional tests use random larger ribbon maps, sphere triangulations
+generated by stellar subdivisions and legal edge flips, relabeling and
+mirroring, malformed inputs, corrupted witnesses, all three obstruction
+types, the $K_3$ double-face case, and an essential pattern with 60000
+darts.  The deterministic benchmark compares complete calls from a
+prepared JSON-like input through validation to the returned result.
+Fixture construction and external JSON reading/writing are excluded
+from both timings.
+
+The full raw timing records, machine description, source provenance,
+and generator parameters are included in the accompanying artifacts.
+They measure this terminal subroutine and do not establish a running-time
+bound for a complete hierarchy-based unknot recognizer.

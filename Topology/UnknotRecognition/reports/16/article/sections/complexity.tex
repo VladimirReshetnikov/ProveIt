@@ -1,0 +1,283 @@
+\section{Homogeneous entries and a cheaper multiplication path}
+\label{sec:homogeneous}
+
+The general dense algorithm works for arbitrary inputs. Genuine scanner
+entries have more structure, even though the original implementation does
+not retain the quantum grading in its object records.
+
+\Needspace{18\baselineskip}
+\begin{samepage}
+\begin{proposition}[Recovering the erased grading]
+\label{prop:grading}
+Assign the initial empty object a shift $q=0$. If a parent object of shift
+$q$ is extended by smoothing $i\in\{0,1\}$, and that smoothing creates
+$c$ closed circles with delooping label $\ell$, assign its child
+\begin{equation}
+ q'=q+i+c-2\operatorname{popcount}(\ell).
+ \label{eq:qshadow}
+\end{equation}
+For a nonzero differential entry from object $u$ to object $v$, every
+supported monomial with $d$ dots satisfies
+\begin{equation}
+ k(a_u,a_v)-m-2d+q_v-q_u=0,
+ \label{eq:qdegree}
+\end{equation}
+where $2m$ is the current frontier. The invariant holds before and after
+each scalar-unit cancellation. In particular, every nonzero entry is
+homogeneous in dot degree, and every cancellable entry between equal
+matchings is exactly the identity coefficient $1$.
+\end{proposition}
+\end{samepage}
+\begin{proof}
+A canonical cobordism with $k$ discs and $d$ dots has degree
+$k-m-2d$, obtained by subtracting the arc normalization $m$ from its
+Euler degree. A crossing saddle has degree $-1$, compensated by the
+smoothing shift $i$. A delooping label on $c$ circles has degree
+$c-2\operatorname{popcount}(\ell)$. Its inclusion contributes this
+degree and its projection the negative degree. Consequently the source
+and target delooping contributions and the smoothing shift cancel exactly
+as in~\eqref{eq:qshadow}. This proves~\eqref{eq:qdegree} inductively
+through a crossing extension and delooping.
+
+For completeness, composition respects the claimed degree. In a
+genus-zero plan without extra dots, Euler characteristic gives
+$2r=k_L+k_R+k_O-m$. Every nonzero output term has
+$d_O=k_O-r+d_L+d_R$ dots; a closed component obeys the same formula
+because its required input dot contributes $-1+1=0$. Substitution shows
+\[
+ k_O-m-2d_O=(k_L-m-2d_L)+(k_R-m-2d_R).
+\]
+Thus map degrees add. A homogeneous entry with equal source and target
+matching has monomial degrees $-2d$. If its constant term is nonzero,
+homogeneity forces $d=0$ for every term, and there is just one such
+monomial. It is therefore $1$, and the two object shifts are equal.
+The Schur-complement correction in a cancellation is a composition of
+homogeneous maps through this identity. Its source and target shifts
+telescope, so it has the same degree as the entry to which it is added.
+This proves preservation by cancellation.
+\end{proof}
+
+This is a recovered grading of the actual ungraded computation. It does
+not rely on guessing a degree from the integer encoding. The grading
+audit checks every entry of its pre- and post-elimination stage complexes;
+transient Schur-complement entries inside a cancellation sequence are
+covered by the proof. The implementation still supports arbitrary ungraded
+morphisms, so it retains the general ranked-convolution fallback.
+
+\begin{theorem}[Homogeneous convolution]
+\label{thm:homogeneous}
+Suppose $F,G\in R_r$ are homogeneous of dot degrees $a,b$. Compute their
+ordinary subset zeta transforms, multiply the resulting scalar arrays
+pointwise, apply inverse zeta transform, and discard every coefficient
+whose subset size is not $a+b$. The result is $FG$ in $R_r$. The
+transform uses $O((r+1)2^r)$ operations in $\F$.
+\end{theorem}
+\begin{proof}
+Unranked zeta multiplication followed by inversion sums over pairs with
+union $S$. Every supported pair has $|A|+|B|=a+b$. Keeping only
+$|S|=a+b$ therefore keeps exactly the disjoint pairs. Overlapping pairs
+have strictly smaller union and are discarded. The zeta transforms each
+perform $r2^{r-1}$ XORs, and the pointwise product and filtering are
+linear in $2^r$.
+\end{proof}
+
+Contraction preserves the degree of every nonzero monomial. Hence the
+theorem applies to contracted genuine scanner entries. The software tests
+homogeneity explicitly, so an incorrectly supplied generic input cannot
+silently enter this fast path. Neither runtime tests nor
+Proposition~\ref{prop:grading} justify applying unranked convolution
+without the final cardinality restriction.
+
+\section{Engineering the bit bound}
+\label{sec:engineering}
+
+\subsection{Packed integers are not unit-cost coefficients}
+
+There are two distinct uses of integers in the implementation. A subset
+mask has at most $m$ bits. A packed morphism can have $2^m$ bits. Repeatedly
+clearing its lowest set bit or XORing a shifted output into it can scan a
+large fraction of the latter integer on each iteration. Counting those
+as constant-time operations would hide an additional exponential factor.
+
+The dense implementation converts a whole morphism to a little-endian
+byte array once, reads coefficients by byte and bit offset, accumulates
+output coefficients in a byte array, and converts the result back once.
+Rank polynomials in the general convolution are integers of only
+$r+1$ bits. Carryless multiplication uses shifts and XORs on these small
+polynomials; ordinary integer multiplication would introduce carries and
+would be mathematically wrong.
+
+\subsection{Adaptive sparse and dense composition}
+
+Dense transforms have setup costs, and most entries in small diagrams
+are sparse. The adapter therefore chooses between an explicit sparse
+evaluation and the dense factorization. Correctness does not depend on
+which branch is selected.
+
+Let $s_F,s_G$ be the support sizes. If component $s$ has $b_s$ output
+circles, a supported monomial pair expands to at most
+\[
+ D=\prod_s\max(1,b_s)
+\]
+output monomials. The sparse cost estimate includes
+\[
+ s_Fs_G\bigl(r+1+(k_O+1)D\bigr),
+\]
+not just $s_Fs_G$. It accounts for output expansion and for the length of
+small monomial masks. The implementation compares this estimate to a
+fixed multiple of
+\[
+ (k_L+1)2^{k_L}+(k_R+1)2^{k_R}
+ +(k_O+1)(r+1)2^{k_O}+(r+1)^2 2^r.
+\]
+The sparse branch toggles individual coefficient bytes instead of
+repeatedly XORing full morphism integers. Its selected work therefore
+differs from the dense envelope by at most a polynomial factor in the
+frontier size. The multiplier is a performance parameter held fixed in
+the asymptotic assertion.
+
+This design also removes the baseline's potentially enormous dictionary
+of individual monomial-pair evaluations for a dense composition. It caches
+the factorization plan, whose storage is proportional to coefficient-table
+size up to a polynomial factor. Retaining many distinct plans can still
+consume substantial memory; a per-plan bound is not a bound on the number
+of plans.
+
+\subsection{Crossing transfers}
+
+Faster composition alone would leave another packed-integer loop in
+crossing transfer. The transfer compiler already isolates the input
+circles touched by the four crossing slots. There are at most four such
+input circles, together with at most two local smoothing discs. The local
+surface has a universally bounded number of output circles and at most
+sixteen source/target delooping-label pairs. For example, if $V\leq6$ is
+the number of local discs and $E\leq4$ the number of local gluings, then
+the sum of local genus-zero boundary counts is at most $V+E\leq10$.
+Capping closed components can only reduce that boundary count.
+
+The byte-transfer path memoizes the local output monomial indices for
+each touched input pattern. It renumbers untouched dots and toggles the
+corresponding output coefficient bytes. The local expansion factor is a
+constant, while renumbering costs a polynomial in the frontier size. A
+fixed small-support fallback retains the old routine; with its support
+bounded by a fixed constant, even full-integer updates fit within
+$\poly(w)2^{w/2}$. Forced-mode tests exercise the byte path even on those
+small cases.
+
+Geometry setup must be charged separately. Even when two overlay
+matchings have only one circle, walking their arcs can require time
+proportional to the frontier. Thus a coefficient bound expressed in
+$k_L,k_R,k_O,r$ presupposes an already compiled plan. The full-call bound
+uses the frontier $w$ and the bit length of its labels.
+
+\section{What the local bound implies for the whole scanner}
+\label{sec:global}
+
+Let $N$ be the largest number of physically stored objects at any stage,
+including objects about to be cancelled, and let $w$ be the largest exposed
+frontier. These are execution parameters; neither is assumed to be small.
+Repeated-summand weights, if another backend uses them, are additional
+data whose arithmetic must also be charged.
+
+\begin{theorem}[Scanner resource envelope]
+\label{thm:execution}
+For the finite characteristic-two scanner with the coefficient routines
+above, standard explicit object and differential storage, and ordinary
+unit-cancellation bookkeeping, the running time is bounded by
+\begin{equation}
+ \poly(n,N,w,\log(n+2))\,2^{w/2}.
+ \label{eq:envelope}
+\end{equation}
+The bound allows polynomial factors for dictionary lookup or a deterministic
+comparison-map replacement. Equivalently, if $Q$ counts all executed
+coefficient operations and primitive data-structure probes, key comparisons,
+and queue moves, a more informative
+execution bound is
+\begin{equation}
+ \poly(n,w,\log(N+2))\,(Q+1)2^{w/2}.
+ \label{eq:executed}
+\end{equation}
+No inference from boundary width alone to $N$ or $Q$ is made.
+\end{theorem}
+\begin{proof}
+A stage has at most $N^2$ possible differential entries. One crossing
+has only a constant number of smoothings and delooping choices per object,
+so allocating objects and transferring entries require polynomially many
+operations in $N$. A unit cancellation removes two objects and updates at
+most $N^2$ entries. There are at most $N/2$ such cancellations per stage.
+
+For a simple implementation that rescans all possible pivots, this already
+gives polynomial control. The shipped lazy min-fill queues also have
+polynomial control. There are polynomially many initial or updated offers;
+a stale offer is reinserted only with a strictly larger integer cost, and
+the cost lies between $0$ and $(N-1)^2$. Thus even the deliberately loose
+bound obtained by charging every offer all possible promotions is
+polynomial in $N$. Plan caches contain no more entries than operations
+that create them; the interning tables across all $n$ stages also have
+polynomially many records in $n,N$. Collision resolution or balanced-tree
+lookup changes only that polynomial bound.
+
+Every composition and transfer has cost $\poly(w,\log(n+2))2^{w/2}$.
+An addition or serialization of a morphism has no larger cost. Object
+identifiers and degree indices have polynomially bounded bit lengths.
+Multiplying the operation count by these costs proves both formulas.
+This proof does not attempt to optimize the polynomial exponent of the
+bookkeeping.
+\end{proof}
+
+\Needspace{12\baselineskip}
+\begin{samepage}
+\begin{corollary}[A sufficient execution regime]
+\label{cor:qp}
+If a family of executions satisfies
+\[
+ w+\log(N+2)=O((\log(n+2))^2),
+\]
+then the improved scanner runs in $n^{O(\log n)}$ time on that family.
+The same conclusion follows from
+$w+\log(Q+2)=O((\log(n+2))^2)$ in~\eqref{eq:executed}.
+\end{corollary}
+\end{samepage}
+\begin{proof}
+Take the logarithm of the right-hand side of the relevant resource
+envelope. Each polynomial factor contributes
+$O(\log(n+2)+\log(N+2)+\log(w+2))$ or the corresponding term in $Q$;
+the coefficient-table factor contributes $O(w)$. The sum is
+$O((\log(n+2))^2)$.
+\end{proof}
+
+The corollary gives a precise target for a structural theorem. It is not
+such a structural theorem. A small frontier bounds the coefficient
+dimension of one morphism, but does not bound how often the same matching
+must occur. If $\mu$ denotes a bound on multiplicity per matching and
+degree, a safe unrestricted matching count on $w$ labeled points is
+$(w-1)!!$. Consequently one obtains, at best from that information alone,
+\[
+ \log N=O\bigl(\log(n+2)+w\log(w+1)+\log(\mu+1)\bigr).
+\]
+A Catalan bound requires an actual certified disk order with noncrossing
+matchings. The prior continuation supplies counterexamples to using such
+a bound for arbitrary disconnected frontiers, so we do not reuse it here.
+
+\input{sections/typecounts}
+
+\subsection{Extremal slices and geometric alternatives}
+
+Kelom\"aki and Sch\"utz give an independent useful route for extremal
+homological slices~\cite{kelomaki}. Their prescribed nice scans and Morse
+cancellations control formal-object multiplicities by binomial coefficients.
+Tracking their parameters yields a slice envelope of the form
+$2^{O(g)}(g+1)^{O(1)}n^{O(k+1)}$, with endpoint girth $g$ and extremal
+depth $k$ from a chosen endpoint of the unshifted homological cube
+grading. Raw shallow-cube enumeration does not justify this bound: it
+can retain exponentially many circle labels. The specified cancellations
+are necessary, and a nice scan of small girth must be supplied.
+
+The dense coefficient kernel could be used in the $\F$ specialization of
+that construction, but
+this archive does not implement or benchmark that integration. Nor do
+extremal slices automatically detect every nontrivial knot: the necessary
+homology may occur outside the selected slice. On the geometric route,
+the analogous missing work is constructive control of hierarchy search,
+compressed cutting, and primitive bit lengths. Both routes are worth
+pursuing, with their construction and verification costs stated separately.

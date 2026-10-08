@@ -1,0 +1,372 @@
+\section{A finite perturbation method for exact minimal complexes}
+\label{sec:perturbation-theory}
+
+The window scanner reduces the portion of a complex that must be
+constructed.  A complementary question is how to reduce a complex once it
+exists.  This section separates scalar linear algebra from the remaining
+cobordism calculation and derives a finite homological perturbation
+algorithm.  The construction uses the established perturbation lemma
+\cite{crainic}; the point here is an explicit nilpotence bound for the
+implemented algebra, an exact multiplicity profile, and a checked
+implementation of the resulting maps.
+
+All objects below have the same current frontier with $w=2k$ endpoints.
+They are loopless matchings, with raw homological placements retained and
+the quantum grading forgotten.  The grading introduced next is an
+intrinsic grading of the morphism algebra.  It is not the raw homological
+degree and does not require the program to reconstruct the forgotten
+quantum shifts.
+
+\subsection{Positive grading without a Catalan frontier assumption}
+
+For two matchings $a,b$, let $c(a,b)$ be the number of circle components in
+the union of $a$ and a reversed copy of $b$.  The implemented morphism
+basis consists of one canonical disk on each such circle, decorated with
+zero or one dot.  This is the familiar dotted-cobordism and arc-algebra
+description\cite{barnatan,khovanov_arc}.  A basis element carrying $d$
+dots receives intrinsic degree
+\begin{equation}
+ \ell(a,b;d)=k-c(a,b)+2d.
+ \label{eq:intrinsic-degree}
+\end{equation}
+
+The relevant matching family is the one occurring in the executed scan.
+Its endpoints need not lie on one noose, and its matchings need not be
+noncrossing with respect to their numerical labels.  Nevertheless the
+spherical projection has a checkerboard face coloring.  Orient each edge
+so that the black face is on its left.  At each crossing the four edge
+directions alternate between incoming and outgoing, and either smoothing
+joins incoming to outgoing.  At a fixed cut this gives a fixed division of
+the frontier into $k$ positive and $k$ negative endpoints; every smoothing
+matching joins opposite classes.
+
+Thus the abstract disk gluings used below are oriented.  This is the
+condition needed for the Euler-characteristic calculation, and it does
+not require a Catalan count.  One should not instead declare every
+unconstrained perfect matching on a labeled set admissible: for four
+endpoints the three distinct pairings together need not admit the required
+common endpoint orientations.  The present argument uses matchings
+actually furnished by a spherical diagram.
+
+\begin{lemma}[Homogeneous composition and degree range]
+\label{lem:intrinsic-grading}
+Every nonzero basis morphism has intrinsic degree in $[0,w]$.
+Composition adds intrinsic degrees.  Degree zero consists precisely of
+scalar identities between equal matchings.
+\end{lemma}
+
+\begin{proof}
+Since $1\leq c(a,b)\leq k$ for a nonempty frontier and
+$0\leq d\leq c(a,b)$,
+\[
+ 0\leq k-c(a,b)+2d\leq k+c(a,b)\leq2k=w.
+\]
+At the empty frontier only the empty object and its scalar endomorphisms
+remain, so the statement also holds for $w=0$.  Degree zero requires
+$c(a,b)=k$ and $d=0$.  The union has $k$ two-edge circles exactly when
+$a=b$, and the undotted canonical cobordism is then the identity.
+
+For composition from $a$ through $b$ to $c$, abbreviate
+$c_{ab}=c(a,b)$, $c_{bc}=c(b,c)$ and $c_{ac}=c(a,c)$.  Before reduction,
+the composite surface has Euler characteristic
+\begin{equation}
+ \chi=c_{ab}+c_{bc}-k,
+ \label{eq:composite-euler}
+\end{equation}
+because $k$ intervals of the middle matching are glued.  Let $d_{\rm in}$
+be the total input dot count.  Replacing this surface by its canonical
+output disks through neck cutting raises Euler characteristic by two for
+each additional dot.  Accordingly every nonzero output monomial satisfies
+\begin{equation}
+ 2d_{\rm out}=2d_{\rm in}+c_{ac}-\chi.
+ \label{eq:dot-euler-balance}
+\end{equation}
+The factor two in this identity is essential.  A positive-genus component
+contributes zero over $\mathbb F_2$ after handle reduction; double dots and
+undotted spheres also vanish, while a dotted sphere evaluates to one.
+These relations preserve the same degree balance whenever a term remains.
+Therefore
+\begin{align*}
+ \ell_{\rm out}
+ &=k-c_{ac}+2d_{\rm out}\\
+ &=k-\chi+2d_{\rm in}\\
+ &=2k-c_{ab}-c_{bc}+2d_{\rm in}
+   =\ell_{\rm first}+\ell_{\rm second}.
+\end{align*}
+The calculation concerns abstract oriented surfaces, so numerical endpoint
+order and the number of boundary components of the scanned region do not
+enter it.
+\end{proof}
+
+Let $J$ be the ideal of positive intrinsic-degree morphisms.  For a finite
+set $\mathcal M$ of distinct executed matchings, the basic algebra is
+$A=\operatorname{End}(\bigoplus_{a\in\mathcal M}a)$.
+
+\begin{corollary}[Uniform nilpotence]
+\label{cor:radical-nilpotence}
+One has
+\[
+ J^{w+1}=0,\qquad A/J\cong\prod_{a\in\mathcal M}\mathbb F_2.
+\]
+The same nilpotence exponent applies to matrices of arbitrary finite size
+over this matching category.  In the additive closure, an object with
+$m_a$ copies of each matching has endomorphism quotient
+$\prod_a\operatorname{Mat}_{m_a}(\mathbb F_2)$, rather than a product of
+one-dimensional fields.  The ideal $J$ is the radical of these
+finite-dimensional algebras.
+\end{corollary}
+
+\begin{proof}
+A product of $w+1$ positive-degree basis terms would have degree at least
+$w+1$, where all morphism spaces vanish by
+Lemma~\ref{lem:intrinsic-grading}.  Expand sums and matrix products into
+composable paths to obtain the same conclusion for arbitrary matrix
+sizes.  The degree-zero description gives the displayed quotients.  A
+nilpotent ideal lies in the radical, while a semisimple quotient forces
+the reverse containment here.
+\end{proof}
+
+\subsection{The scalar differential gives the exact remaining dimensions}
+
+Let $(C,d)$ be a finite complex over this category.  Extract $d_0$ by
+keeping only the undotted constant coefficient between equal matchings;
+put $\delta=d+d_0$.  Every entry of $\delta$ lies in $J$.  Projection to
+degree zero is compatible with composition, so $d^2=0$ implies
+$d_0^2=0$.
+
+For each matching $a$ and raw degree $h$, let $V_{a,h}$ be the vector space
+of its copies in $C^h$.  The scalar differential forms independent binary
+complexes
+\[
+ \cdots\longrightarrow V_{a,h-1}
+ \xrightarrow{d_{0,a,h-1}}V_{a,h}
+ \xrightarrow{d_{0,a,h}}V_{a,h+1}\longrightarrow\cdots.
+\]
+Define
+\begin{equation}
+ m_{a,h}=\dim V_{a,h}
+          -\operatorname{rank}(d_{0,a,h-1})
+          -\operatorname{rank}(d_{0,a,h}).
+ \label{eq:scalar-minimal-profile}
+\end{equation}
+
+\begin{theorem}[Exact minimal multiplicity profile]
+\label{thm:scalar-minimal-profile}
+There exists a complex homotopy equivalent to $(C,d)$ whose differential
+lies entirely in $J$ and which has exactly $m_{a,h}$ copies of matching
+$a$ in degree $h$.  Every such minimal model has the same multiplicities.
+Thus the number of remaining objects can be computed by binary linear
+algebra before carrying out the nonlinear cobordism correction.
+\end{theorem}
+
+\begin{proof}[Construction of the scalar contraction]
+In every binary complex choose decompositions
+\[
+ V_{a,h}=B_{a,h}\oplus H_{a,h}\oplus L_{a,h},
+ \qquad
+ B_{a,h}=\operatorname{im}d_{0,a,h-1},
+\]
+where $B_{a,h}\oplus H_{a,h}=\ker d_{0,a,h}$ and
+$d_0:L_{a,h}\to B_{a,h+1}$ is an isomorphism.  Let
+$H=\bigoplus_{a,h}a^{m_{a,h}}[h]$, using $[h]$ here only to record a raw
+placement.  Let $i:H\to C$ include the chosen homology representatives,
+$p:C\to H$ project along $B\oplus L$, and $h:C\to C$ take each boundary
+back to its chosen preimage in $L$, vanishing on $H\oplus L$.
+
+All these maps have scalar identity entries between equal matchings.  They
+satisfy
+\begin{equation}
+ pi=1,\quad d_0i=0,\quad pd_0=0,\quad
+ d_0h+hd_0=1+ip,\quad hi=0,\quad ph=0,\quad h^2=0.
+ \label{eq:scalar-contraction-identities}
+\end{equation}
+The next theorem lifts this contraction to the full $d$ without changing
+$H$ as an object.  Its resulting differential lies in $J$.  Uniqueness is
+proved below.
+\end{proof}
+
+The program obtains $B$ from independent original image columns and $L$
+from their corresponding source vectors.  It extends $B$ to a basis of
+the kernel to choose $H$, and solves for coordinates in $B\oplus H\oplus L$.
+This provides the actual maps in~\eqref{eq:scalar-contraction-identities},
+not only the ranks in~\eqref{eq:scalar-minimal-profile}.
+
+\subsection{A finite homological perturbation formula}
+
+Composition is written in the conventional order: $fg$ means first $g$,
+then $f$.  The code's composition helper takes its arguments in execution
+order: the second map acts after the first.
+
+\begin{theorem}[Finite lifted contraction]
+\label{thm:finite-hpl}
+Assume~\eqref{eq:scalar-contraction-identities}, let $d=d_0+\delta$ with
+$d^2=0$, and suppose the entries of $\delta$ lie in $J$.  Define
+\begin{align}
+ F&=\sum_{j=0}^{w}(h\delta)^j=(1+h\delta)^{-1},&
+ G&=\sum_{j=0}^{w}(\delta h)^j=(1+\delta h)^{-1},
+ \label{eq:finite-series}\\
+ i'&=Fi,& p'&=pG,& h'&=Fh=hG,\nonumber\\
+ D&=p\delta Fi=pG\delta i.&&
+ \label{eq:finite-hpl-maps}
+\end{align}
+These are finite sums, and $(H,D)$ is a minimal complex with a strong
+deformation retraction from $(C,d)$.  Explicitly,
+\begin{gather}
+ D^2=0,\quad di'=i'D,\quad p'd=Dp',\quad p'i'=1,
+ \label{eq:lifted-chain-identities}\\
+ dh'+h'd=1+i'p',\qquad h'i'=0,\quad p'h'=0,\quad (h')^2=0.
+ \label{eq:lifted-retraction-identities}
+\end{gather}
+The number of perturbation factors needed is at most $w$, independent of
+the number of objects or the size of their scalar blocks.
+\end{theorem}
+
+\begin{proof}
+The maps $i,p,h$ have intrinsic degree zero.  Therefore $h\delta$ and
+$\delta h$ have entries in $J$, and
+Corollary~\ref{cor:radical-nilpotence} proves the inverse identities in
+\eqref{eq:finite-series}.  These are the standard perturbation formulas
+\cite[Sections~2--3]{crainic}; a direct verification in characteristic two
+is short enough to record.
+
+Put $e=ip$ and
+\[
+ A=\delta F=G\delta.
+\]
+The finite series imply
+\begin{equation}
+ A=\delta+\delta hA=\delta+Ah\delta,
+ \quad F=1+hA,\quad G=1+Ah.
+ \label{eq:auxiliary-hpl-identities}
+\end{equation}
+There is also the identity
+\begin{equation}
+ d_0A+Ad_0=AeA.
+ \label{eq:auxiliary-hpl-maurer}
+\end{equation}
+To verify it, multiply its left side by $1+\delta h$ on the left and
+$1+h\delta$ on the right.  Using $AF^{-1}=\delta$ and
+$G^{-1}A=\delta$ gives
+\begin{align*}
+ &(1+\delta h)(d_0A+Ad_0)(1+h\delta)\\
+ &\quad=d_0\delta+\delta d_0
+       +\delta(hd_0+d_0h)\delta\\
+ &\quad=\delta^2+\delta(1+e)\delta=\delta e\delta.
+\end{align*}
+Here $d^2=0$ gives $d_0\delta+\delta d_0=\delta^2$ over
+$\mathbb F_2$.  Multiplying by $G$ and $F$ proves
+\eqref{eq:auxiliary-hpl-maurer}.
+
+Now $D=pAi$, so
+\[
+ D^2=pAeAi=p(d_0A+Ad_0)i=0.
+\]
+Since $i'=i+hAi$, equations
+\eqref{eq:scalar-contraction-identities} and
+\eqref{eq:auxiliary-hpl-identities} give
+\[
+ di'=eAi+hd_0Ai=eAi+hAeAi=i'D.
+\]
+The same calculation on the other side gives $p'd=Dp'$.  Expanding
+$p'i'=(p+pAh)(i+hAi)$ leaves only $pi=1$, by the three side conditions
+$hi=ph=h^2=0$.
+
+Finally $h'=h+hAh$.  Expand $dh'+h'd$ and use
+$A=\delta+\delta hA=\delta+Ah\delta$ to cancel the terms containing a
+single $\delta$.  What remains is
+\begin{align*}
+ dh'+h'd
+ &=1+e+eAh+hAe+h(d_0A+Ad_0)h\\
+ &=1+e+eAh+hAe+hAeAh=1+i'p'.
+\end{align*}
+Expanding $h'i'$, $p'h'$ and $(h')^2$ similarly makes every term contain
+$hi$, $ph$ or $h^2$, so each vanishes.  Each term of $D=p\delta Fi$
+contains a positive-degree factor $\delta$, hence $D$ lies in $J$ and is
+minimal.
+\end{proof}
+
+\begin{lemma}[Uniqueness of minimal models]
+\label{lem:minimal-uniqueness}
+Two finite complexes with differentials in $J$ that are homotopy equivalent
+are chain isomorphic.  Their multiplicities agree matching by matching and
+raw degree by raw degree.  In particular, the multiplicities in
+Theorem~\ref{thm:scalar-minimal-profile} agree with any exhaustive unit
+cancellation result.
+\end{lemma}
+
+\begin{proof}
+Reduce a homotopy equivalence and its inverse modulo $J$.  Both reduced
+differentials are zero, so the homotopy equations say that the reduced
+term maps are inverse in each degree.  Thus the binary multiplicity spaces
+agree.  Each lifted composite differs from the identity by a matrix in
+$J$.  Such a matrix is inverted by a finite geometric series of length
+at most $w+1$.  Consequently each original term map is invertible; its
+inverse commutes with the differential because the term map does.  This
+gives a chain isomorphism.  The assertion concerns multiplicities and
+isomorphism type, not a canonical displayed basis or identical matrices.
+\end{proof}
+
+\subsection{What the implementation checks}
+
+The research module \texttt{perturbation.py} first constructs the scalar
+contraction, then computes $i'$ by repeatedly applying $h\delta$ to its
+current term.  It obtains $D$ from $p\delta i'$.  With certification enabled
+it also constructs $p',h'$ and verifies all identities in
+\eqref{eq:lifted-chain-identities}--\eqref{eq:lifted-retraction-identities},
+together with the original $d^2=0$, over the same exact cobordism algebra
+used by the scanner.  It checks the finite-series termination and the
+absence of scalar units in the output differential.
+
+The corrected maps are stronger evidence than an agreement of final ranks:
+they give the explicit homotopy equivalence needed for continuing the scan.
+Because planar extension preserves homotopies, an installed model can be
+extended through subsequent crossings.  The test suite compares its
+matching-and-degree multiplicities with exhaustive scalar cancellation at
+intermediate prefixes, checks final homology independently, and confirms
+that a corrupted contraction map is rejected.  An additional independent
+grading audit examined all bipartite matching monomial products through
+six endpoints, including the non-Catalan six-endpoint matching: all 3533
+products and 1576 nonzero output monomials obeyed
+Lemma~\ref{lem:intrinsic-grading}.
+
+\subsection{Cost, useful regimes, and remaining obstruction}
+
+Write $N$ for the input object count at one stage and $H=\sum_{a,h}m_{a,h}$
+for the output count.  There are at most $2^{w/2}$ dot-mask coefficients in
+one morphism.  Scalar contraction uses binary matrices with at most $N$
+rows and columns and therefore has polynomial bit cost, with a standard
+cubic bound sufficient here.  The inclusion series performs at most $w$
+iterations on matrices of size at most $N$ by $H$.  A conservative bound
+for the reduction without optional certificates is
+\begin{equation}
+ O\bigl(N^3+(w+1)N^2(H+1)\,2^{O(w)}\bigr).
+ \label{eq:hpl-cost}
+\end{equation}
+Computing and verifying all contraction maps has the coarser bound
+\[
+ O\bigl((w+1)(N+1)^3\,2^{O(w)}\bigr).
+\]
+These estimates allow dense maps; sparsity can help but is not assumed.
+They follow by counting ordinary matrix-composition paths and charging
+$2^{O(w)}$ for a cobordism product and its bit operations.  Cache storage
+and dictionary bookkeeping remain polynomial in $N$ times $2^{O(w)}$.
+
+The attraction is most pronounced when the scalar differential has large
+rank, so $H\ll N$.  In the extreme $H=0$, scalar acyclicity already implies
+full contractibility: the corrected inclusion and reduced differential
+have empty source.  If an explicit contracting homotopy is requested, its
+construction still has a cost.  When scalar cancellation is sparse and
+cheap, assembling a global binary decomposition and dense corrected maps
+can instead add overhead.  Thus no pointwise or asymptotic speed advantage
+over the existing scalar scanner is claimed.  The experiment section
+reports the measured regimes, including the distinction between natural
+knot complexes and synthetic algebraic blocks.
+
+This method does not control $N$ or $H$ by frontier width alone.  It
+computes the minimal multiplicity profile of an already represented
+complex, and an explicit output must still list its $H$ objects.  Known
+fixed-braid-width exponential examples therefore remain an obstruction to
+a universal explicit-basis complexity theorem.  The finite perturbation
+bound supplies a precise local reduction cost and a certificate; combining
+it with window bounds or a separate structural compression theorem is the
+remaining route to stronger global guarantees.

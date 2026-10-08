@@ -1,0 +1,175 @@
+\section{Prioritized research questions}
+\label{sec:research-agenda}
+
+The next investigations should target a quantified obstruction or a
+missing executable operation.  A useful outcome may be a positive
+theorem, a counterexample that rules out a proposed parameterization,
+or an exact implementation with a proved narrower domain.  The following
+questions are ordered by their proximity to the present algorithms and
+their potential to close the remaining complexity gap.
+
+\paragraph{1. How far from degree zero must a knot witness occur?}
+For a nontrivial knot $K$, define its homological witness radius by
+\[
+ d_{\mathrm{wit}}(K)=
+ \min\left\{d\in\mathbb Z_{\geq0}:
+  \exists h\in[-d,d],\
+  \dim_{\F}H_{\mathrm{norm}}^h(K)
+       \ne2\,\mathbf1_{\{h=0\}}\right\}.
+\]
+The full-rank detection criterion makes this finite, but the present
+paper gives no useful uniform bound.  Seek an explicitly recognizable
+family of diagrams for which $d_{\mathrm{wit}}(K)=O(\log n)$ and for
+which the geometric conditions in
+Corollary~\ref{cor:seifert-window-cost} can be achieved algorithmically.
+Such a theorem would turn agreement with one specified window into a
+complete decision on that family.  A counterfamily with a large witness
+radius would identify the necessary extra parameter.  Tests should
+include knots whose degree-zero homology agrees with the unknot; a
+successful degree-zero rejection set alone cannot answer the question.
+
+\paragraph{2. Can geometric assembly remove the all-state circle factor?}
+The bound in Theorem~\ref{thm:window-cost} deliberately allows arbitrary
+valid scan frontiers and pays for the number of circles in an extreme
+smoothing.  Kelom\"aki--Sch\"utz obtain stronger extremal object bounds
+under their geometric scanning hypotheses \cite{kelomaki}.  The concrete
+problem is to construct the required assembly from the current PD input,
+retain the moving interval and its differential guards, and prove a
+bound for every intermediate allocation in that assembly.  It is also
+necessary to track the relation between its raw degrees, normalized
+degrees, and mirror choice.  The desired result is an executable
+construction with a quantified frontier and circle bound, rather than
+an assumption that an arbitrary crossing order is geometrically nice.
+
+\paragraph{3. Which intrinsic multiplicity profiles admit compact continuation?}
+Theorem~\ref{thm:scalar-minimal-profile} makes the numbers $m_{a,h}$
+independent of the chosen minimal model at a fixed frontier.  Consequently
+a different scalar pivot order cannot reduce those intrinsic
+multiplicities.  The relevant question is whether their repeated
+structure, together with every differential incidence, admits a smaller
+description preserved by crossing extension and reduction.
+Candidates include matrix recurrences, shared subcomplexes with shift
+multiplicities, and arithmetic circuits for repeated coefficient blocks.
+A theorem should bound the encoded description, the cost of each
+continuation, and the cost of the final decision query.  Bounding only
+the number of matching labels leaves the known multiplicity obstruction
+untouched.  A first target is a prime-knot family whose minimal object
+count grows rapidly but whose continuation has a provably small
+recurrence.
+
+\paragraph{4. When can the finite perturbation lift be performed by blocks?}
+The cost in~\eqref{eq:hpl-cost} allows dense maps.  Natural scan complexes
+may contain smaller scalar blocks whose interaction through
+positive-degree morphisms has additional structure.  Can one partition
+these blocks so that the cost of all correction terms is bounded by a
+sum of local block costs and a small interface cost?  The proof must
+retain the induced maps between blocks: deleting an apparently isolated
+scalar block can create a nonzero correction elsewhere.  A useful
+parameter would bound the support growth of successive products
+$(h\delta)^j$ for $j\leq w$.  Experiments should compare the complete
+allocation, reduction, and certificate cost on natural knot complexes,
+and distinguish those results from deliberately favorable synthetic
+blocks.
+
+\paragraph{5. Can one certified categorical interface cover every scanner mode?}
+The moving-window and perturbation proofs both depend on exact
+functorial operations and explicit chain homotopies.  Develop a common
+finite interface containing matching objects, oriented cobordism basis
+elements, composition, crossing-extension functors, and contraction
+certificates.  A Lean development can first formalize the positive
+grading, its nilpotence consequence, and the bounded-continuation
+support lemma, then connect these theorems to a checker for finite
+matrix data.  The endpoint-orientation condition in
+Lemma~\ref{lem:intrinsic-grading} must appear as a hypothesis; unrestricted
+abstract perfect matchings are not an interchangeable input category.
+The objective is a small semantic checker shared by full, windowed,
+block, and structurally compressed computations.
+
+\paragraph{6. What is the exact compressed-cut output type?}
+Implement a first complete special case of compressed normal-surface
+cutting with an output contract that includes the nonproduct core,
+product-region multiplicities, bundle sidedness, attachment maps, and
+boundary-pattern data.  The family in
+Proposition~\ref{prop:parallel-disc-output} is a mandatory binary-weight
+test: increasing $W$ must not create $W$ output records.
+Certified parallel copies of a connected two-sided surface give one
+initial domain on which the compression is exact.  Extension beyond
+that domain must handle one-sided base surfaces and disconnected
+primitive coordinate vectors.  State the complexity in the input handle
+count, coordinate bit lengths, and compressed output size, and specify
+which queries on an aggregated family remain efficient.
+
+\paragraph{7. Can a terminal obstruction be transported without expansion?}
+The new terminal verifier supplies a short dual cycle and its primal
+edge-cut interpretation.  Construct the next missing operation: carry
+that curve backwards across one certified cut or bundle simplification,
+producing either a violating disc for the preceding pattern or a
+compression or pattern-compression disc for an earlier surface.
+The record must identify the surface being compressed, retain the
+boundary arcs and their orientations, and preserve the relevant
+intersection count.  Prove a bound on encoded size under a sequence of
+such transfers.  This would connect the implemented terminal algorithm
+to actual hierarchy revision.  Rechecking a graph witness at the end
+does not establish this transport operation.
+
+\paragraph{8. Can actual restart choices satisfy a small branching budget?}
+Apply Theorem~\ref{thm:hierarchy-tree-accounting} to a fully specified
+producer, rather than to a hypothetical collection of good hierarchies.
+The main target is a geometric invariant proving
+$\sum\log b(v)=O(\log^2 n)$ on every explored path, with polynomial
+depth and per-node cost.  A weaker $O(\log^3 n)$ theorem would still
+give a general quasi-polynomial bound.  Forced bundle reductions should
+contribute to depth and work without being counted as artificial
+branching.  Conversely, repeated failed choices, rebuilding a discarded
+suffix, and changing global Heegaard data must all be represented.
+An informative negative result would exhibit a family where a proposed
+budget stays small on successful certificates but grows on unavoidable
+failed continuations.
+
+\paragraph{9. Can surface selection enforce the needed progress bounds?}
+A nonzero cohomology class already supplies a route to a nonseparating
+surface.  The next question is to select a surface with quantitatively
+favorable pattern complexity and subsequent progress, within a proved
+bit-cost bound.  Polynomially checkable optimal-surface certificates do
+not themselves supply that selection procedure.  Investigate restricted
+handle structures on which controlled homology classes, simultaneous
+surfaces, or a provably small candidate family achieves the required
+quality.  Every selection rule must account for pattern intersections,
+not just Euler characteristic or genus.  Its guarantees must survive
+the compressed cuts and witness-driven replacements performed by the
+same engine.  A useful first theorem would identify an invariant class
+of states on which cheap selection also implies a strictly quantified
+decrease in the proposed global resource.
+
+\paragraph{10. Can an exact portfolio inherit the best proved backend bound?}
+The present recognizer combines necessary obstructions, window queries,
+and a complete fallback.  A future hierarchy engine and structured
+minimal-complex engine will add further choices.  Specify a deterministic
+budget schedule and shared certificate format such that, on any input
+where one backend has a proved time bound, the portfolio finishes within
+a controlled factor of that bound plus explicit preprocessing cost.
+Already computed degree windows should be reused only when their
+guard and continuation hypotheses remain valid.  Memory ceilings,
+certificate verification, and repeated state construction belong in
+the accounting.  This problem connects practical dispatch to a precise
+complexity statement without declaring a window agreement or an
+exhausted budget to be a mathematical verdict.
+
+\subsection{Milestones that would change the global claim}
+
+There are two concrete ways to strengthen the package's main
+recognition guarantee.  On the algebraic side, a witness-radius theorem
+combined with an executable parameter-controlled diagram presentation
+would make the prescribed quasi-polynomial window complete on its stated
+input class.  A representation theorem for intrinsically large
+minimal complexes could enlarge that class further.
+
+On the geometric side, the decisive milestone is a producer with
+compressed cutting, certified witness transport, and proved bounds for
+the actual execution quantities $B,D,C$ in
+Corollary~\ref{cor:hierarchy-qp-budget}.  The terminal improvement already
+has its own correctness and complexity theorem, but it cannot replace
+these global estimates.  Either route should culminate in a theorem
+whose hypotheses are checked by the delivered code or stated as an
+explicit input promise, accompanied by a complete certificate on every
+reported decision.

@@ -1,0 +1,64 @@
+\section{Reproducibility and artifact boundaries}
+\label{app:reproduction}
+
+The archive contains the complete \code{fast/} source tree, this article's
+\LaTeX\ sources and PDF, deterministic verification programs, paired timing
+data, two integration patches, and source provenance. The main package
+\code{README.md} gives the shortest entry points; \code{REPRODUCING.md}
+describes each experiment and its scope.
+
+The software uses the Python standard library. From \code{fast/}, run
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+python -m fastunknot recognize examples/conway.json --backend fitting
+python -m fastunknot khovanov examples/conway.json --fitting
+\end{lstlisting}
+The last command computes exact ranks with full interval lengths. The
+recognition command may return through a preceding structural or polynomial
+filter. To reproduce raw backend measurements, use the benchmark script,
+whose inputs, backend options, and order selection are recorded in its JSON.
+
+From the package root, the independent continuation check is
+\begin{lstlisting}
+python verification/verify_continuation.py
+\end{lstlisting}
+It imports no recognizer module. It enumerates small bounded complexes with
+strict square-zero actions, constructs tensor differentials directly as
+binary matrices, checks their squares, and compares homology thresholds for
+different interval lengths. It also records the counterexamples to an
+incorrect universal length-two cutoff without parity and to a geometric
+length-one cutoff.
+
+\par\noindent\begin{minipage}{\linewidth}
+The article can be rebuilt using
+\begin{lstlisting}
+sh scripts/build_pdf.sh
+\end{lstlisting}
+\end{minipage}\par
+This requires a standard \LaTeX\ installation with the packages listed in
+the preamble. All figure PDFs and generated table fragments needed by the
+article are included. Plot regeneration additionally uses Matplotlib; it is
+not required to run the recognizer or its mathematical checks.
+
+\subsection{What the records establish}
+The source manifest establishes exact byte identity with the stated upstream
+files. The patch verification establishes that the supplied textual deltas
+reproduce the delivered source from those references. Unit tests establish
+the stated finite comparisons; paired timings establish observations on the
+recorded host and inputs. None is a substitute for the mathematical
+continuation theorem, a proof that every diagram satisfies the checkpoint
+condition, or a claim of external peer review.
+
+The included witness data certify individual basis changes, including all
+incident maps. An emitted witness is local evidence for a split. The final
+recognizer still relies on the established Khovanov unknot-detection theorem
+and the implementation of the inherited cobordism algebra.
+
+\subsection{Integration order}
+Use the cumulative patch for the pinned repository tree, or the incremental
+patch for the already integrated structural 0.3.0 tree. Do not apply both.
+The patches target \code{Topology/UnknotRecognition/fast/}. Changes in a
+different branch's front-end files should be merged before running the full
+combined suite. All reference material redistributed in the package is
+project source under the supplied MIT-0 license; third-party papers and
+lecture slides are referenced by bibliographic links.

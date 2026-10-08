@@ -1,0 +1,324 @@
+\section{Finite quotient witnesses with independent replay}
+\label{sec:quotients}
+
+The algebra improvement preserves the exact Khovanov computation. A
+complementary strategy is to avoid that computation when a much smaller
+obstruction can be found. We implement one such obstruction using $A_5$.
+The mathematical method is established; the deliverable here is a bounded
+search with explicit certificates, a separate verifier, and a cost
+analysis that includes the actual seed-plan construction.
+
+\subsection{Wirtinger relations and soundness}
+
+Divide a knot diagram into Wirtinger arcs, continuing through an
+overcrossing and ending at an undercrossing. To each arc assign a group
+element. At a crossing, write $u,v$ for the incoming and outgoing
+underarc generators and $o$ for the overarc generator. With the sign
+$\varepsilon$ determined by the oriented crossing convention, the
+relation is
+\begin{equation}
+ v=o^{\varepsilon}u o^{-\varepsilon}.
+ \label{eq:wirtinger}
+\end{equation}
+The software derives these relations from the validated PD traversal.
+A complete satisfying assignment defines a homomorphism from the knot
+group into the target group.
+
+\begin{proposition}[Finite-group obstruction]
+\label{prop:obstruction}
+If a validated one-component knot diagram has a satisfying Wirtinger
+assignment with two distinct meridian images in a finite group, the knot
+is nontrivial. In fact the image of the representation is nonabelian.
+\end{proposition}
+\begin{proof}
+All oriented meridians of a knot are conjugate in its group. Their images
+are therefore conjugate inside the image subgroup. In an abelian subgroup
+conjugate elements are equal. Two distinct meridian images thus imply a
+nonabelian image. The unknot group is infinite cyclic and has only cyclic
+images, so it cannot admit this assignment.
+\end{proof}
+
+The search output has only two logical possibilities. A \texttt{KNOTTED}
+result includes a witness that has passed independent replay. Every other
+result is \texttt{INCONCLUSIVE}, including exhaustive failure for all
+chosen targets. The latter proves only the absence of a witness in that
+palette. It supplies no evidence that the knot is trivial.
+
+\subsection{Why \texorpdfstring{$A_5$}{A5} and what is stored}
+
+The group $A_5$ is represented by even permutations of five symbols. Its
+nonidentity elements have orders $2$, $3$, or $5$. There are fifteen
+double transpositions, twenty $3$-cycles, and two conjugacy classes of
+twelve $5$-cycles each. Conjugation by an odd permutation is an
+automorphism of $A_5$ that exchanges the two $5$-cycle classes. Thus one
+chosen $5$-cycle class suffices for an existence search, together with
+the other two cycle types. This is a symmetry of the search, not an
+assumption that the two classes are equal.
+
+The coefficient field of Khovanov homology and the target group of a
+Wirtinger representation play unrelated roles. In particular, an
+Alexander-polynomial obstruction can be absent while an $A_5$ witness
+exists. Conway and Kinoshita--Terasaka provide concrete fixtures in the
+archive. The use of non-affine quandles in that situation has prior
+computational and theoretical precedent~\cite{clark,fish}.
+
+A certificate contains explicit permutation images attached to the
+diagram, not merely a hash of a search state or a claim that a solver
+accepted. The separate checker reconstructs the edge traversal, verifies
+the permutation format, checks overarc continuity and every crossing
+relation, and checks nonconstancy. It does not import the search's arc
+extraction, precomputed conjugation tables, or propagation routines.
+The integration evidence includes the precise working PD diagram because
+the original pipeline may already have simplified or factored the input.
+
+After a valid diagram has been normalized, replay requires $O(n)$
+fixed-size permutation operations and $O(n)$ stored permutation values.
+The shipped checker also invokes the existing diagram validation and
+normalization, including label sorting. Therefore its entire interface
+is not claimed to have literally linear bit time: sorting alone uses
+$O(n\log n)$ comparisons on ordinary labels, and label bit lengths must
+also be charged.
+
+\section{Certified seeds and exact symmetry reduction}
+\label{sec:seeds}
+
+\subsection{A structural propagation plan}
+
+If the overarc and one underarc at a crossing are known,
+relation~\eqref{eq:wirtinger} uniquely determines the other underarc.
+This observation gives a structural object independent of the target
+group.
+
+\begin{definition}[Wirtinger seed plan]
+A seed plan consists of $b$ designated arc generators and a sequence of
+propagation steps. Each step specifies a crossing whose overarc and one
+underarc were designated or produced earlier, and whose other underarc
+is new. Every nonseed arc must occur exactly once as a newly produced
+arc. A plan is checked by replaying these purely combinatorial
+dependencies.
+\end{definition}
+
+The existence and optimization of such generating systems belong to the
+established Wirtinger-number framework~\cite{blair}. The implementation
+constructs a valid plan greedily; it does not claim to find a minimum
+seed set or the bridge number.
+
+\begin{theorem}[Complete search from a checked plan]
+\label{thm:seedsearch}
+Let $C$ be a conjugacy class of size $q$ in a finite group, and let a
+validated diagram have a checked $b$-seed plan. Fix the first seed image
+to one chosen $c\in C$. Enumerate assignments in $C^{b-1}$ to the
+remaining seeds, propagate the plan, and test all crossing relations.
+This procedure finds a nonconstant $C$-assignment if and only if one
+exists. For a fixed finite target and a supplied plan, its running time
+is $O(nq^{b-1})$ and its working storage can be polynomial in $n,b$.
+\end{theorem}
+\begin{proof}
+Every seed assignment extends in at most one way along the plan because
+each propagation step is a conjugation or its inverse. All generated
+values stay in $C$. Checking every crossing catches relations not used
+for propagation and any inconsistent cycles, so an accepted assignment
+is a genuine representation. Conversely, every representation restricts
+to seed values and is reconstructed from them, by induction over the
+plan. Simultaneous conjugation carries its first seed value to $c$, and
+preserves the relations and nonconstancy. Thus the normalized enumeration
+contains a representative of every possible witness. There are
+$q^{b-1}$ tuples; propagation and verification use $O(n)$ group
+operations per tuple.
+\end{proof}
+
+These operation counts use ordinary arc-index RAM operations and fixed-target
+group or table operations. In a strict bit model, charge polynomial factors
+in the index bit length as well; they do not change the quasi-polynomial
+parameter regimes below.
+
+The greedy plan routine in this archive is conservatively bounded by
+$O(n^3)$ for fixed targets and ordinary arc indices. This setup term is
+included in the implemented bound. A bound for a supplied plan must not
+be advertised as the full interface cost without it.
+
+\subsection{Residual centralizer action}
+
+Fixing one seed color leaves the centralizer $H=Z_{A_5}(c)$ acting by
+simultaneous conjugation on the remaining seed tuple. The program
+generates a transversal of this action directly. Given a tuple prefix,
+it chooses representatives of the current stabilizer's orbits on the next
+color, and then replaces the stabilizer by the subgroup fixing that color.
+It uses an explicit stack to avoid an artificial recursion-depth limit.
+
+\begin{lemma}[Stabilizer-prefix enumeration]
+The recursive orbit construction produces exactly one representative of
+each $H$-orbit of complete seed tuples.
+\end{lemma}
+\begin{proof}
+Two tuples in the same $H$-orbit have first entries in the same $H$-orbit,
+so choose its unique representative. Once this first entry is fixed, the
+elements of $H$ that can identify the remaining suffixes are exactly its
+stabilizer. Apply the same argument inductively. This proves existence
+and uniqueness at each prefix and hence for complete tuples. The
+explicit-stack implementation changes the traversal mechanism but not
+the set of prefixes generated.
+\end{proof}
+
+For $r=b-1$, Burnside's lemma gives exact counts for the three searches:
+\begin{align}
+ N_2(b)&=\frac{15^r+3\cdot3^r}{4},\label{eq:N2}\\
+ N_3(b)&=\frac{20^r+2\cdot2^r}{3},\label{eq:N3}\\
+ N_5(b)&=\frac{12^r+4\cdot2^r}{5}.\label{eq:N5}
+\end{align}
+
+\begin{proposition}[Exact $A_5$ seed-orbit counts]
+Equations~\eqref{eq:N2}--\eqref{eq:N5} count precisely the complete
+tuples generated by the implemented residual inner-centralizer symmetry.
+For $b=3$, the respective counts are $63$, $136$, and $32$.
+\end{proposition}
+\begin{proof}
+For an involution $c$, its centralizer is a Klein four-group. The identity
+fixes all fifteen involution colors; each of its three nonidentity
+elements commutes with exactly three colors in that class. Its action on
+$r$-tuples therefore has fixed-point counts $15^r$ and $3^r$.
+For a $3$-cycle, the centralizer is cyclic of order three. Each
+nonidentity element fixes the two nonidentity powers of that cycle in
+the twenty-element class. For a $5$-cycle, the centralizer is cyclic of
+order five. Each nonidentity centralizer element fixes exactly the two
+powers lying in the chosen twelve-element conjugacy class. Average the
+fixed-point counts in each case. Substitute $r=2$ for the numerical
+values.
+\end{proof}
+
+These formulas refer to this particular symmetry group; they are not a
+claim that every possible automorphism symmetry has been exhausted. They
+give reproducible maximum trial counts and an independent check of the
+tuple generator. For a supplied plan and fixed $A_5$, the seed search
+takes $O(nN_j(b))$ time. The complete interface adds its $O(n^3)$ greedy
+planning cost. The explicit stack stores tuple prefixes, giving a
+conservative auxiliary-space bound $O(n+b^2)$ for fixed $A_5$.
+
+\subsection{Budgets, alternative propagation, and integration}
+
+The seed solver can stop after a prescribed number of complete orbit
+assignments or on a cooperative time limit. A separate constraint solver
+uses bitset supports, arc consistency, and minimum-domain branching. It
+is useful for comparison and can find a witness in a different order,
+but its node count and the seed solver's assignment count are distinct
+resource measures.
+
+The pipeline extension is optional and runs after the existing invariant
+filters, before the expensive homology fallback. Its per-summand time cap
+is intersected with the overall remaining time budget. A timeout gives
+inconclusive evidence and preserves the original exact fallback. Default
+recognition does not enable this search automatically. The measurements
+show why: some existing filters already decide the examples in less time.
+
+For general targets, $q^{b-1}$ becomes quasi-polynomial whenever
+$b\log(q+1)=O((\log(n+2))^2)$ and target construction, table access, and
+plan construction have the corresponding cost bounds. The implemented
+$A_5$ case has constant $q$. This is a parameterized coloring bound, not
+a universal recognition theorem. In fact, deciding nonconstant coloring
+by a fixed nontrivial conjugacy class in a fixed nonabelian finite simple
+group is NP-complete~\cite{kuperbergsamperton}. Thus a universal
+quasi-polynomial algorithm for that stronger fixed-coloring predicate
+would imply $\mathsf{NP}\subseteq\mathsf{QP}$.
+
+\section{An explicit limitation of every small quandle palette}
+\label{sec:palette}
+
+The limitation of finite palettes can be proved without relying on any
+unproved estimate for the size of a finite quotient. The following
+argument also explains why exhausted $A_5$ searches must remain
+inconclusive.
+
+\begin{lemma}[Torus power obstruction]
+\label{lem:power}
+Let $H$ be a finite group of exponent $E$. If $\gcd(p,E)=1$, every
+homomorphism
+\[
+ \langle x,y\mid x^a=y^p\rangle\longrightarrow H
+\]
+has cyclic image.
+\end{lemma}
+\begin{proof}
+Choose an integer $u$ with $pu\equiv1\pmod E$. For the two generator
+images $X,Y$, exponentiation gives
+$Y=(Y^p)^u=(X^a)^u=X^{au}$. Both images lie in the cyclic subgroup
+generated by $X$.
+\end{proof}
+
+A finite quandle $Q$ has bijective right translations
+$R_b(a)=a*b$, satisfies $a*a=a$, and satisfies right
+self-distributivity. Its inner group $\Inn(Q)$ is the subgroup of
+the symmetric group on $Q$ generated by the $R_b$. A quandle coloring
+of a knot induces a knot-group representation into $\Inn(Q)$ by sending
+meridians to the corresponding right translations. The conjugacy relation
+for these translations is precisely the image of a Wirtinger relation.
+
+\begin{lemma}[Cyclic inner image forces a constant knot coloring]
+\label{lem:nonfaithful}
+If the representation induced by a quandle coloring of a one-component
+knot has cyclic image, the coloring is constant. The quandle need not be
+faithful or connected.
+\end{lemma}
+\begin{proof}
+The images of knot meridians are conjugate within the image subgroup,
+so in a cyclic image all used right translations are the same
+permutation $R$. At a crossing with undercolor $a$ and overcolor $b$,
+we therefore have $R_b=R_a=R$. Idempotence gives
+$R_b(a)=R_a(a)=a$. The inverse translation also fixes $a$. Consequently
+the undercolor does not change at a crossing of either sign. The color
+also stays fixed along the overarc. Following the single knot component
+shows that every color is equal. Equality of right translations alone
+would not imply equality of colors in a nonfaithful quandle; the
+idempotence and traversal argument is what completes the proof.
+\end{proof}
+
+\begin{theorem}[Linear lower bound on detecting palette size]
+\label{thm:palette}
+For every prime $p>3$, the torus knot $T(3,p)$ is nontrivial and has a
+standard $n=2p$-crossing diagram with determinant one. It has no
+nonconstant coloring by any finite quandle $Q$ with $|Q|<p$.
+Thus a detecting quandle must have at least $n/2$ elements along this
+family of inputs.
+\end{theorem}
+\begin{proof}
+The closure of $(\sigma_1\sigma_2)^p$ is a single component because
+$\gcd(3,p)=1$, and has $2p$ displayed crossings. The usual decomposition
+of its exterior into the two solid-torus pieces gives, by van Kampen,
+\[
+ G(T(3,p))=\langle x,y\mid x^3=y^p\rangle.
+\]
+Adding the relation $x^3=y^p=1$ gives the nonabelian quotient
+$C_3*C_p$, so the knot group is nonabelian and the knot is nontrivial.
+
+For clarity, its Alexander formula can be read directly from the same
+presentation. In abelianization $x\mapsto t^p$, $y\mapsto t^3$. The
+two abelianized Fox derivatives are, up to units and sign,
+$(t^{3p}-1)/(t^p-1)$ and $(t^{3p}-1)/(t^3-1)$. Their greatest common
+divisor is
+\[
+ \Delta_{3,p}(t)=
+ \frac{(t^{3p}-1)(t-1)}{(t^3-1)(t^p-1)},
+\]
+up to the usual monomial unit, since
+$\gcd(t^3-1,t^p-1)=t-1$. Both parameters are odd, so substituting
+$t=-1$ gives determinant $|\Delta_{3,p}(-1)|=1$.
+
+Now suppose $|Q|<p$. The order of $\Inn(Q)$ divides $|Q|!$, so its
+exponent is coprime to $p$. Lemma~\ref{lem:power} makes the image of
+the induced representation cyclic. Lemma~\ref{lem:nonfaithful} then
+makes the coloring constant.
+\end{proof}
+
+For $A_5$ the exponent is $30$. Every $T(3,p)$ with prime $p\geq7$
+therefore has only cyclic $A_5$ images, even when the selected conjugacy
+class has more than $p$ elements. The supplied $T(3,7)$ negative control
+has a three-seed plan and exhausts exactly $136+63+32=231$ seed-tuple
+orbits. Both search implementations return \texttt{INCONCLUSIVE}.
+
+This obstruction does not make those knots hard for the full program.
+Their full Alexander polynomial is nontrivial, their diagrams are
+homogeneous, and they are three-braid closures. Existing stages can
+recognize their nontriviality. The theorem concerns the expressive limit
+of a palette alone. It also gives a concrete research question: how large
+must a non-affine detecting quandle be for these determinant-one torus
+knots? The lower bound does not assert the existence of a detecting
+quandle of exactly $p$ elements.

@@ -1,0 +1,94 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\usepackage{graphicx,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{listings}
+\usepackage[breaklinks=true,colorlinks=true,linkcolor=blue!45!black,citecolor=teal!65!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\definecolor{navy}{RGB}{24,48,77}
+\definecolor{teal}{RGB}{13,111,116}
+\definecolor{lightgray}{RGB}{246,247,249}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Faster algebra and certified knot obstructions}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlist{topsep=4pt,itemsep=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Inn}{\operatorname{Inn}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{lightgray},breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{gray!25},showstringspaces=false}
+\title{\color{navy}\bfseries Faster Cobordism Composition and Certified Finite Quotient Filters for Unknot Recognition}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We improve two concrete parts of the ProveIt unknot-recognition program.
+First, we factor every genus-zero
+composition in its characteristic-two dotted-cobordism algebra into variable
+identification, multiplication in a squarefree algebra, and an output map.
+Ranked subset convolution then replaces a dense loop over as many as
+$4^m$ pairs of terms by a coefficient algorithm using
+$\poly(m)2^m$ bit operations, where $2m$ is the number of exposed endpoints.
+The implementation also avoids a hidden extra exponential factor from
+repeated updates of large packed integers. Recovering the discarded
+quantum grading sharpens the earlier component-type exponent from
+$b^2 2^m$ to $b^2\binom{m}{\floor{m/2}}$ for components with at most
+$b$ objects. Second, we implement bounded
+$A_5$ searches that return explicit permutation-valued knottedness witnesses
+and have a separate verifier. A constructive Wirtinger seed plan gives an
+exhaustive search bound in terms of the number of seeds.
+
+The article supplies complete proofs, differential and certificate checks,
+paired measurements, an integration patch, and research priorities. We also
+prove a useful limitation: for every prime $p>3$, the determinant-one torus
+knot $T(3,p)$ has no nonconstant coloring by any finite quandle of size less
+than $p$. The standard diagram has $2p$ crossings. This is a limitation of
+finite palettes, not of the complete recognition pipeline. The improved
+local algebra is near its explicit coefficient-table size; the remaining
+global problem is controlling the chain complexes or replacing them with
+constructively bounded geometric data. A general quasi-polynomial running
+time is not established here.
+\end{abstract}
+\thispagestyle{empty}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/overview}
+\input{sections/algebra}
+\input{sections/complexity}
+\input{sections/quotients}
+\input{sections/experiments}
+\input{sections/integration}
+\input{sections/research}
+\input{sections/references}
+\end{document}

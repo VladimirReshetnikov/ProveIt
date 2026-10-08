@@ -1,0 +1,333 @@
+\section{A factorization of the implemented cobordism algebra}
+\label{sec:algebra}
+
+\subsection{Coefficient tables and gluing plans}
+
+Let $a,b$ be loopless matchings on $2m$ exposed endpoints. Gluing $a$ to
+the reflected $b$ produces $k(a,b)$ circles, where $k(a,b)\leq m$. A basis
+of $\Hom(a,b)$ is indexed by the subsets of those circles: a selected circle
+carries a dot. Thus a morphism is a coefficient table of length
+$2^{k(a,b)}$. The program stores this table as an integer
+\[
+ f=\sum_{S\subseteq[k(a,b)]} f_S\,2^{\operatorname{mask}(S)},
+ \qquad f_S\in\{0,1\}.
+\]
+The exponent in this formula is a subset mask. In particular, the bit
+length of the packed integer is exponential in the number of circles.
+
+For a composition
+\[
+ a\xrightarrow{f}b\xrightarrow{g}c
+\]
+write $k_L=k(a,b)$, $k_R=k(b,c)$, and $k_O=k(a,c)$. The existing geometry
+compiler decomposes the glued surface into connected components. For a
+genus-zero component $s$ it records
+\[
+ (L_s,R_s,B_s,e_s),
+\]
+where $L_s$, $R_s$, and $B_s$ are the sets of left input, right input, and
+output circles belonging to the component, and $e_s$ counts any already
+present dots. In ordinary composition $e_s=0$. The generalized notation is
+also useful for crossing-transfer plans with cups and caps.
+
+Within each of the three families the sets are pairwise disjoint and cover
+the corresponding circle set. Empty sets are allowed. A positive-genus
+component gives zero in this characteristic-two theory: the handle
+operator is comultiplication followed by multiplication, and equals
+multiplication by $2x=0$. Two dots on one component also give zero. These
+are exactly the relations used by the baseline~\cite{barnatan,proveit}.
+
+The old composition routine enumerates every supported pair $(S,T)$,
+checks the number of dots on every component, and reconstructs its output.
+Even when most pairs vanish, it has already visited them. If $a=b=c$ has
+$m$ arcs, each input can have $2^m$ supported monomials, producing a
+$\Theta(4^m)$ term-pair loop.
+
+\subsection{Squarefree algebras and contraction}
+
+For a nonnegative integer $r$ let
+\[
+ R_r=\F[y_1,\ldots,y_r]/(y_1^2,\ldots,y_r^2).
+\]
+Write $y_S=\prod_{s\in S}y_s$. Then
+\begin{equation}
+ y_Sy_T=
+ \begin{cases}
+ y_{S\cup T},&S\cap T=\varnothing,\\
+ 0,&S\cap T\ne\varnothing.
+ \end{cases}
+ \label{eq:squarefree}
+\end{equation}
+The dot algebra $A=\F[x]/(x^2)$ is $R_1$.
+
+Suppose a genus-zero plan has $r$ connected components. Define
+\[
+ \rho_L:R_{k_L}\longrightarrow R_r,
+ \qquad x_j\longmapsto y_s\quad(j\in L_s),
+\]
+and similarly define $\rho_R$ using the sets $R_s$. These are well-defined
+algebra homomorphisms because every image variable squares to zero.
+
+\begin{lemma}[Input contraction]
+\label{lem:contraction}
+If an input monomial selects two circles belonging to one component,
+its image under $\rho_L$ is zero. Otherwise its image selects exactly the
+components containing a chosen circle. Coefficients of input monomials
+with the same image add modulo two.
+\end{lemma}
+\begin{proof}
+Substitute the defining image of every variable into the monomial. A
+repeated component introduces a factor $y_s^2$. If there is no repetition,
+the product is the squarefree monomial on the selected component set.
+Linearity gives the coefficient assertion.
+\end{proof}
+
+This contraction can eliminate a large fraction of a dense input before
+the two morphisms are multiplied. It also combines distinct monomials by
+parity, which cannot be reproduced merely by forgetting duplicate
+component labels in a list of supported terms.
+
+\subsection{The output map}
+
+For a component with $b$ output circles, define a linear map
+$T_b:A\to A^{\otimes b}$ by
+\begin{align}
+ T_0(1)&=0, &T_0(x)&=1,\label{eq:trace}\\
+ T_b(1)&=\sum_{j=1}^{b}\prod_{\ell\ne j}z_\ell,
+ &T_b(x)&=\prod_{\ell=1}^{b}z_\ell\qquad(b\geq1).
+ \label{eq:comultiplication}
+\end{align}
+The empty product is one. Formula~\eqref{eq:comultiplication} follows by
+iterating $\Delta(1)=1\otimes x+x\otimes1$ and
+$\Delta(x)=x\otimes x$. The output variable sets belonging to distinct
+components are disjoint.
+
+Let $T=\bigotimes_{s=1}^{r}T_{|B_s|}$, with output variables placed at the
+indices specified by the $B_s$. Multiplication by $y_s^{e_s}$ accounts for
+the dots already supplied by the plan.
+
+\begin{theorem}[Exact composition factorization]
+\label{thm:factorization}
+For any genus-zero compiled plan with the partition properties above,
+the baseline composition is exactly
+\begin{equation}
+ g\circ f
+ =T\left(\rho_L(f)\rho_R(g)\prod_{s=1}^{r}y_s^{e_s}\right).
+ \label{eq:factorization}
+\end{equation}
+If the plan contains a positive-genus component, both sides are understood
+to be zero. If any $e_s\geq2$, the result is zero.
+\end{theorem}
+\begin{proof}
+Both constructions are bilinear in $f$ and $g$, so it suffices to take
+monomial inputs. For each component, the total number of dots is
+\[
+ d_s=|S\cap L_s|+|T\cap R_s|+e_s.
+\]
+The contractions and multiplication in $R_r$ kill the monomial if some
+$d_s\geq2$. This is the two-dot relation used by the baseline. Otherwise
+the component is undotted or singly dotted. If it has no output circle,
+the counit~\eqref{eq:trace} kills precisely the undotted case. If it has
+output circles,~\eqref{eq:comultiplication} is precisely the baseline's
+sum over leaving one output circle undotted, or its single all-dotted
+term. Finally, different components use disjoint output variables, so their
+contributions multiply without any additional identification. These cases
+exhaust the baseline evaluation of the monomial pair. Extend by
+bilinearity.
+\end{proof}
+
+\begin{center}
+\begin{tikzpicture}[node distance=1.15cm,>=Latex,
+ every node/.style={font=\small,align=center},
+ box/.style={draw=navy!60,rounded corners,fill=blue!3,inner sep=7pt}]
+\node[box] (inputs) {Two coefficient tables\\$f\in R_{k_L},\ g\in R_{k_R}$};
+\node[box,below=of inputs] (contract) {Identify input dots by surface component\\$\rho_L(f),\ \rho_R(g)\in R_r$};
+\node[box,below=of contract] (multiply) {Ranked subset convolution\\$H=\rho_L(f)\rho_R(g)$};
+\node[box,below=of multiply] (output) {Trace or comultiply on each component\\$T(H\prod_s y_s^{e_s})\in R_{k_O}$};
+\draw[->] (inputs)--(contract);
+\draw[->] (contract)--(multiply);
+\draw[->] (multiply)--(output);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Output reconstruction without exponential repeated expansion}
+
+Expanding~\eqref{eq:comultiplication} separately for every supported
+component monomial can itself repeat a large amount of work. There is a
+better way: determine the one input coefficient, if any, that contributes
+to a given output coefficient.
+
+Fix an output subset $U\subseteq[k_O]$. For each component define the
+required final dot count
+\[
+ d_s(U)=
+ \begin{cases}
+ 1,&B_s=\varnothing,\\
+ 1,&B_s\subseteq U,\\
+ 0,&|B_s\setminus U|=1,\\
+ \text{invalid},&|B_s\setminus U|\geq2.
+ \end{cases}
+\]
+The first case is the trace condition, not a statement that a closed
+component has an output dot. Subtract the fixed extra-dot count and put
+$v_s(U)=d_s(U)-e_s$. If any requirement is invalid or any $v_s(U)$ lies
+outside $\{0,1\}$, set the output coefficient to zero. Otherwise let
+$D(U)=\{s:v_s(U)=1\}$.
+
+\begin{lemma}[Unique coefficient lookup]
+\label{lem:output}
+Writing $H=\rho_L(f)\rho_R(g)$, the coefficient of $z_U$ in
+\eqref{eq:factorization} is $H_{D(U)}$ when the requirements are valid, and
+zero otherwise.
+\end{lemma}
+\begin{proof}
+For a nonempty output block, a singly dotted input gives exactly the
+all-dotted monomial. An undotted input gives each monomial with exactly
+one missing dot, once. These alternatives have disjoint supports. For an
+empty block the trace requires a singly dotted input. Thus $U$ uniquely
+determines the final dot count on every component. Subtracting the dots
+already supplied determines the unique contributing component monomial.
+There is no multiplicity coefficient to compute.
+\end{proof}
+
+\begin{example}[Why dot identification requires parity]
+Let two left circles belong to one component. The left morphism
+$x_1+x_2+x_1x_2$ contracts to $y+y+0=0$. Treating its two linear terms as
+one supported term would give the wrong result. Conversely, two inputs
+each containing a dot on the same component multiply to zero even if their
+original circle indices are different.
+\end{example}
+
+\begin{example}[Closed components and extra dots]
+A closed component with no extra dot requires the coefficient of $y$;
+with one extra dot it requires the coefficient of $1$. With two extra
+dots it annihilates the plan. For a one-circle output, the map is the
+identity on $A$ before extra dots: an undotted component outputs $1$,
+not $x$.
+\end{example}
+
+\section{Ranked subset convolution and the coefficient bound}
+\label{sec:convolution}
+
+\subsection{The multiplication problem}
+
+By~\eqref{eq:squarefree}, multiplying two coefficient arrays $F,G$ in
+$R_r$ means computing
+\begin{equation}
+ H_S=\sum_{A\subseteq S}F_A G_{S\setminus A}.
+ \label{eq:subsetconvolution}
+\end{equation}
+Enumerating all ordered disjoint pairs takes $3^r$ iterations. The
+baseline's general-purpose pair loop can do even more work by visiting
+overlapping pairs before rejecting them. Ranked subset convolution computes
+all coefficients using $O((r+1)^2 2^r)$ field operations~\cite{bhkk}.
+For completeness, the exact characteristic-two specialization used here
+has the following short verification.
+
+For every $S\subseteq[r]$ form rank polynomials
+\[
+ \widehat F_S(t)=\sum_{A\subseteq S}F_A t^{|A|},
+ \qquad
+ \widehat G_S(t)=\sum_{B\subseteq S}G_B t^{|B|}.
+\]
+Multiply these polynomials and apply subset M\"obius inversion to the
+array indexed by $S$. In characteristic two the M\"obius transform is
+the same XOR transform as the zeta transform. Call the resulting polynomial
+array $W_S(t)$. Then
+\begin{equation}
+ H_S=[t^{|S|}]W_S(t).
+ \label{eq:rankextraction}
+\end{equation}
+
+\begin{proof}[Verification of~\eqref{eq:rankextraction}]
+Before inversion, the term $F_A G_B t^{|A|+|B|}$ occurs at every index
+containing $A\cup B$. After inversion it occurs only at index
+$S=A\cup B$. Requiring its degree to equal $|S|$ gives
+$|A|+|B|=|A\cup B|$, which is equivalent to disjointness. Thus the
+remaining terms are exactly those of~\eqref{eq:subsetconvolution}.
+\end{proof}
+
+Only ranks $0,\ldots,r$ are needed. Higher terms may be discarded before
+the inverse transform because that transform does not mix polynomial
+degrees. An unranked zeta transform would compute union convolution and
+would incorrectly replace $x\cdot x=0$ by $x\cdot x=x$.
+
+\subsection{Why the number of surface components stays small}
+
+\begin{lemma}[Component count for matching composition]
+\label{lem:components}
+For a composition of three matchings on $2m$ endpoints,
+\[
+ k_L,k_R,k_O\leq m,
+ \qquad r\leq\min(k_L,k_R)\leq m.
+\]
+\end{lemma}
+\begin{proof}
+Every circle in a pair of matchings uses at least one arc from either
+matching, giving the first three bounds. Every left input disc meets at
+least one middle-matching arc, and so is glued to a right input disc. The
+same argument applies on the right. Consequently each connected glued
+component contains at least one left disc and one right disc. Distinct
+components contain disjoint input discs, giving the asserted bound on $r$.
+\end{proof}
+
+This argument is needed. For an arbitrary abstract list of surface
+components with many empty input blocks, $r$ can exceed the three circle
+counts. The generic implementation supports such plans but charges for
+$2^r$ explicitly; the matching-composition bound is applied only after
+Lemma~\ref{lem:components}.
+
+\begin{theorem}[Dense local coefficient complexity]
+\label{thm:densecost}
+Given a compiled composition plan of matchings on $2m$ endpoints and the
+two full coefficient tables over $\F$, the output can be computed in
+$\poly(m)2^m$ bit operations and $\poly(m)2^m$ bits of working storage.
+The field-operation count of the ranked multiplication is
+$O((m+1)^2 2^m)$. The implementation's explicit array and index arithmetic
+admits a conservative bound $O((m+1)^3 2^m)$ for the coefficient work in a
+random-access bit-cost model. Label manipulation in constructing the plan
+adds a polynomial in $m$ and the label bit length.
+\end{theorem}
+\begin{proof}
+For each input, precompute the image of every subset by taking off one
+selected variable at a time. Store a sentinel for a repeated component.
+This uses $O(2^{k_L}+2^{k_R})$ entries with $O(m)$ bits per entry.
+Read each coefficient once, and toggle its contracted coefficient if its
+image is valid. Ranked convolution uses arrays of $2^r$ polynomials, each
+of at most $r+1$ bits. Its zeta transforms perform $O(r2^r)$ XORs on
+$O(r)$-bit words. Naive carryless multiplication of two rank polynomials
+takes $O((r+1)^2)$ bit operations, at each of $2^r$ indices.
+
+For every one of $2^{k_O}$ output subsets, inspect its intersection with
+each output block and use Lemma~\ref{lem:output}. This uses only integers
+of $O(m)$ bits. The input and output full morphisms are converted to and
+from byte arrays once. In particular, there is no loop making $2^m$
+updates to an integer of $2^m$ bits. Charging conservatively for array
+indices and small masks adds at most an additional polynomial factor.
+Lemma~\ref{lem:components} bounds all four exponential dimensions by
+$2^m$. The stored tables have $O(2^m)$ entries of $O(m)$ bits, together
+with the packed inputs and output.
+\end{proof}
+
+\begin{remark}[Meaning of the improvement]
+The theorem compares complete coefficient operations. The old
+$\Theta(4^m)$ statement counts term pairs; it is not an assertion that
+the old bit complexity is exactly $\Theta(4^m)$. Its packed-integer
+operations can cost more. The new theorem supplies a bit bound for its
+own coefficient kernel. On a model that explicitly writes the output
+table, the worst-case output size already costs $\Omega(2^m)$, so the
+remaining overhead is polynomial in $m$.
+\end{remark}
+
+\begin{example}[An explicit dense test family]
+In $\End(a)=R_m$, take
+\[
+ F=\prod_{i=1}^m(1+x_i),\qquad G=F+1.
+\]
+The two supports have sizes $2^m$ and $2^m-1$. Since every positive-degree
+element squares to zero in this commutative characteristic-two algebra,
+$F^2=1$ and $FG=F+1$. The baseline nevertheless visits
+$2^m(2^m-1)$ pairs. This is a family of valid algebra inputs, not a claim
+that the scanner must produce these particular morphisms from knot
+diagrams.
+\end{example}

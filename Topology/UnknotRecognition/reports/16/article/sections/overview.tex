@@ -1,0 +1,145 @@
+\section{Outcome, scope, and relation to earlier work}
+\label{sec:overview}
+
+The project already has an exact recognizer. Its unsolved performance
+problem is a worst-case complexity problem, not a missing correctness
+criterion. In particular, the Khovanov backend decides triviality from the
+rank of reduced homology over $\F$~\cite{kronheimer,shumakovitch}.
+Kronheimer and Mrowka prove that a nontrivial knot has reduced rational
+Khovanov rank greater than one. The universal coefficient theorem makes
+the total reduced rank over $\F$ at least that rational rank, whereas the
+unknot has reduced rank one. Over $\F$, unreduced homology is the direct
+sum of two quantum-shifted copies of reduced homology, so dividing its
+total rank by two gives the same decision criterion.
+The present continuation concentrates
+on making an expensive algebraic primitive substantially cheaper and on
+providing a complementary, independently checkable obstruction.
+
+\subsection{What this continuation contributes}
+
+There are five main contributions. The first is an exact factorization of
+the existing compiled cobordism plans. It applies to arbitrary morphisms in
+the implemented algebra, including dense ones; it does not assume that a
+particular knot family creates them. The second is an implementation whose
+coefficient manipulation respects a bit-cost model. The distinction is
+essential because a morphism with $m$ possible dots is a $2^m$-bit integer,
+not an $m$-bit integer. The third recovers a grading invariant and uses it
+to sharpen the sufficient parameter regime for exact component sharing.
+The fourth is a finite-group certificate backend with
+explicit construction and verification semantics. The fifth is a precise
+separation of the local improvement from the global hypotheses that would
+be needed for a quasi-polynomial recognizer.
+
+\begin{center}
+\small
+\begin{tabular}{P{.26\linewidth}P{.40\linewidth}P{.23\linewidth}}
+\toprule
+Result & Mathematical content & Status \\
+\midrule
+Cobordism factorization & Input contraction, squarefree multiplication,
+output reconstruction & Proved and implemented \\
+Dense coefficient bound & $\poly(m)2^m$ bit cost for $2m$ endpoints &
+Unconditional local bound \\
+Homogeneous type count & $b^2\binom{m}{\floor{m/2}}$ in the sufficient
+component-sharing exponent & Proved; conditional global use \\
+Finite-group certificates & Noncyclic $A_5$ representation implies knottedness &
+Proved; separate verifier \\
+Wirtinger seed search & Exhaustive search with $q^{b-1}$ assignments for a
+checked $b$-seed plan & Parameterized bound \\
+Palette obstruction & $T(3,p)$ needs at least $p$ quandle colors &
+Proved; no priority claim \\
+Full quasi-polynomial recognition & Requires bounds on surviving data or a
+constructive geometric hierarchy & Unresolved \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The subset-convolution algorithm itself is due to Bj\"orklund, Husfeldt,
+Kaski, and Koivisto~\cite{bhkk}. Quandle coloring, normalization of one
+meridian color, and the use of non-affine targets after a trivial Alexander
+polynomial also precede this work~\cite{clark,fish}. Our claims concern the
+factorization and implementation for this repository, the accompanying
+bit-cost audit, the concrete certificate backend, and the deductions proved
+below. We make no claim to have invented these underlying theories.
+
+\Needspace{12\baselineskip}
+\subsection{Sources and pinned baseline}
+
+The computational baseline is the \texttt{fast/} subtree at ProveIt commit
+\begin{center}
+\texttt{ca61a1a5f967999d778d6efd7c882e77a2eb379d}.
+\end{center}
+Its tree identifier is
+\texttt{b99a666269f660d932fc82ac8d1f29d3ae42231f}. The baseline source is
+included in the archive so that comparisons do not depend on later
+repository changes. Forty-one baseline unit tests passed in this
+environment before modification.
+
+The audit also read the structural-compression report now stored under
+\texttt{reports/07}, and two recent continuation archives:
+\nolinkurl{unknot_progress_20261007.zip} and
+\nolinkurl{unknot_recognition_progress.zip}. These contain, respectively,
+improved interlacement factorization, sparse Alexander elimination and a
+pointed scanner; and an exact three-braid backend, Markov descent, and a
+study of intrinsic scanner multiplicities. Report 07 contributes
+homogeneous Seifert-graph certificates and exact component sharing. Those
+results are antecedents, not results newly established by the present
+measurements. The integration patch is against the pinned \texttt{fast/}
+baseline, not an untested merge of every recent branch.
+
+We inspected the README and manuscript catalogue of
+\texttt{openai/math} at commit
+\begin{center}
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\end{center}
+The catalogue search did
+not identify a directly applicable unknot-recognition theorem. No theorem
+in the present argument is imported from that collection, and this limited
+catalogue audit is not represented as a verification of its manuscripts.
+The source record includes both repository revisions~\cite{proveit,openai}
+and the relevant
+primary literature.
+
+\subsection{The precise quasi-polynomial target}
+
+We use the standard broad terminology
+\[
+ T(n)=\exp\bigl((\log(n+2))^{O(1)}\bigr)
+\]
+for quasi-polynomial time. The repository's explicit objective
+$n^{O(\log n)}$ is the stronger, particular scale
+$\exp(O((\log n)^2))$.
+
+Lackenby's detailed 2021 handout states an announced bound
+$2^{O((\log n)^3)}$, equivalently $n^{O((\log n)^2)}$~\cite{lackenbytalk}.
+His July 2026 preprint develops incompressible surfaces, boundary patterns,
+and certifiable hierarchies~\cite{lackenby2026}. Its Section 9 separates
+step counts from running time; several operations do not yet have the
+precision needed for that cost analysis. The useful displayed search bound
+is $L(g+1)^L$ in terms of hierarchy length $L$ and pattern complexity $g$.
+The introduction reserves further speed-up for future work. Neither an
+efficiently checkable hierarchy nor that parameterized visit count is, by
+itself, a construction in the desired time bound.
+
+Our end-to-end discussion therefore has two distinct questions. How much
+does each local algebraic operation cost on the data actually present?
+How large can the data become, and can the required data be constructed?
+The first receives an unconditional improvement here. The second remains
+the central research problem.
+
+\subsection{Conventions and trust boundary}
+
+Inputs are validated planar diagrams of a single knot. A diagram has $n$
+crossings and integer edge labels; labels can be renumbered to have
+$O(\log(n+2))$ bits. During a scan, $w=2m$ denotes the number of exposed
+endpoints. Each object is a loopless matching on those endpoints, with a
+homological degree. Closed circles are delooped. All cobordism
+coefficients in this continuation are in $\F$; the integer or odd-prime
+coefficient theories require additional sign and coefficient analysis.
+
+We distinguish three kinds of evidence. A proof justifies an algorithm on
+all inputs satisfying its hypotheses. An exhaustive finite test checks a
+specified finite domain. A benchmark reports a measured execution on a
+specified host and input. None substitutes for either of the others.
+The accompanying proofs have not been formally checked in Lean, and the
+computational checks are stated at their actual scope.
