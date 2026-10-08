@@ -637,6 +637,43 @@ formalization step.
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
 
+### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
+
+Part J's `PolyBoundedControl` hypotheses exist only because of the factor
+576^(−24n) (`partJ_recurrence_lower`). It is the dimension-two instance of
+Lemma 16.1's width exponent m^(K^(−2^(k+1)·q)).
+
+**Origin.** Lemma 16.1 applies Corollary 5.11, which makes the q
+(k+1)-linear forms ν_i(x, y) = μ_i(x)·y simultaneously small on subboxes.
+It does so by refining one form at a time. Each refinement multiplies the
+width exponent by K^(−2^(k+1)), so q forms cost K^(−2^(k+1)·q).
+
+**Corollary 7.11 is not a substitute.** Its exponent is 2^(−14)·α²/q,
+polynomial in q. But it is a one-dimensional statement about order-8
+homomorphisms on a progression; it does not make multilinear forms small on
+boxes.
+
+**A lead (unverified).** Along a progression x₀ + t·d, smallness of
+μ_i(x)·d is a question of simultaneous small fractional parts of q
+polynomials in d of degree k+1. As recalled here, not yet checked against
+the source, W. M. Schmidt's theorem (*Small fractional parts of
+polynomials*, CBMS 32, 1977) has, for fixed degree, exponents polynomial in
+the number of polynomials. If so, a simultaneous-smallness lemma for q
+multilinear forms with width exponent poly(1/q) would be available. That
+is exactly (D).
+
+**Consequences if (D) holds.**
+- The lift's recurrence factor would become poly(1/n) instead of 576^(−24n).
+- Part J's hypotheses would weaken from polynomial to quasi-polynomial
+  counts (J.1).
+- Theorem 16.2 in dimension three would then be conditional on a
+  quasi-polynomial stackable structure, plus the readout (R) of J.2.
+
+**Effort.** Formalizing Schmidt-type bounds is a major project; Weyl
+differencing and van der Corput in several variables are the core. Before
+that, check the exact exponent dependence in Schmidt, and its later
+improvements by Baker.
+
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
 The user's goal changed on 2026-10-08: proofs of the final results, by any
