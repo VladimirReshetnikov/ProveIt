@@ -93,6 +93,43 @@ edge probabilities; added from the non-claims: interval-certified carrier
 coefficients and tables, and the logistic window at moderate `k`. No claim of
 the source was found false; nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-112 write (`0c4f9054d`), with
+its own code, confirmed every claim of the write and added one precision.
+
+- **OEIS.** A340021 (#15) and its b-file read again: name, comment,
+  attributions (Howroyd 2020; Alcover's Mathematica, 2021), twenty displayed
+  terms and b-file range `n = 0..40` as quoted; no formula line, no
+  conjecture.
+- **Exact.** Own evaluation of (5) = all 41 b-file terms; a literal Burnside
+  sum over actual permutations (pair orbits walked, inclusion–exclusion over
+  white cycles) gives `U_0…U_9`; brute-force canonical count `1,1,2,5,16,66`;
+  the identity sum (1) for `n ≤ 8`; the printed `C_1…C_3`, `P_2`, `P_3`, the
+  coefficients of (18) at a test point, `p_1(j)`; the Poisson (19) and
+  Charlier (20) identities at `t = 7`, `50` to `10⁻¹⁰⁹`.
+- **Tables.** Own carrier code at 110 digits recomputes every entry of
+  Tables 2–4; all are correct six-digit roundings, including the close cases
+  `1.232124998…×10⁻⁴`, `3.655745247…×10⁻⁷`, `1.613545413…×10⁻¹⁵`;
+  `q_{k+1} = 0.0878674903…` as the write says; `(z_* − n)x²/(log x)³ = −0.253,
+  −0.131, −0.082, −0.042`.
+- **Remark 7.2** confirmed per statement (the centre `z_0` agrees with
+  `X + q_0` even up to `O(1/x)`; `r_k(t_k) = 1` to `10⁻¹¹⁰`).
+- **Precision** (in the check's note): besides `xurl` the write added a
+  second preamble package, `array`, which Section 1.2 does not mention (this
+  README does); a build of the delivered text with `array` added gives the
+  same 16 pages and the same text layout, so no delivered typesetting changes.
+- **Also confirmed:** the provenance (496,154 bytes, 14 files, 513 lines,
+  16 pages; `MANIFEST.json` 13/13); the 10 staged files byte-identical and
+  the inline tables equal to `data/tables.tex`; 54 delivered labels with
+  their numbers on the check's own builds; the README listing (13 files);
+  no earlier repository mention; the neighbouring reports as described; the
+  three programs reproduce the shipped JSON (also `verify_exact.py` under
+  `-O`).
+
+The check is recorded in a dated note at the end of Section 1.2. Rebuilt:
+20 pages (unchanged), label numbers unchanged.
+
 ## Relation to the repository
 
 No other file of the repository names A340021. `a001425-commutative-magmas`
@@ -203,7 +240,8 @@ The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
 20 pages; no errors or warnings, no undefined references, no multiply
 defined labels, no duplicate destinations, no overfull or underfull boxes.
 The delivered text (with its `tables.tex`) gives 16 pages and one underfull
-line, removed by `xurl`.
+line, removed by `xurl`. Rebuilt at the independent check (7 October 2026,
+pdfLaTeX ×3, with its dated note): 20 pages, the same clean log.
 
 ## Provenance
 
