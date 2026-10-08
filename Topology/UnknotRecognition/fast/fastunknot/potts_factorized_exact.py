@@ -10,7 +10,7 @@ from __future__ import annotations
 from .filters import FilterLimit
 from .ordering import best_scan_order, validate_order
 from .potts import _budget, _canonical, _checkerboard, _schedule, _tait_from_faces
-from .potts_exact import equal_spin, multiply, potts_exact, power, x_power
+from .potts_exact import equal_spin, multiply, potts_exact, power, ring_label, x_power
 from .potts_factorized import relative_alignments
 
 
@@ -217,7 +217,7 @@ def factorized_potts_exact(diagram, *, colors=6, max_states=4096,
     expected = multiply(x_power(-exponent, colors), power((1, 1), vertices + 1, colors), colors)
     if (writhe + vertices + 1) % 2:
         expected = -expected[0], -expected[1]
-    result.update(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=writhe,
+    result.update(q=colors, ring=ring_label(colors), writhe=writhe,
                   unknot_partition=list(expected), differs=result["partition_function"] != list(expected),
                   tait_vertices=vertices, shade=shade, max_boundary=max_boundary,
                   crossing_count=n, normalization_exponent=exponent,
