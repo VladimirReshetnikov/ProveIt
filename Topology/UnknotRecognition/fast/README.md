@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 267 passing tests.
+diagram is not checked twice. The integrated suite now has 272 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -795,3 +795,35 @@ conditional checkpoint theorem no longer needs a bound on the original
 connected component size; it still requires suitable frontier widths and
 frequent pure stages. Proofs and limitations are in
 [`../synthesis/continuations.tex`](../synthesis/continuations.tex).
+
+### Verified rank-two braid preprocessing
+
+`recognize(..., use_ranktwo=True)` or CLI `recognize FILE --ranktwo` enables
+one deterministic AVL pass on a checked source braid, after cheap certificates
+and before expensive descent and fallback. It replaces an optimal collection
+of disjoint two-index subwords by equal empty or single-letter words. A separate
+central-normal-form verifier replays the full transcript before its output is
+used. These are context-safe braid equalities, not closed-braid equivalences.
+
+Search and replay share `ranktwo_seconds` / `--ranktwo-seconds` (default 0.1).
+A local limit skips the optional stage; a global limit remains `UNKNOWN`.
+If the verified word beats the current diagram's crossing count, recognition
+restarts with the shorter validated input, compression disabled, and the
+remaining global budget. Other options are preserved. Evidence under
+`before_ranktwo` and `after_ranktwo` records the distinct reduction branches.
+The former includes the original source word and independently replayable
+certificate. PD input without checked braid provenance bypasses the stage.
+
+The low-level `fastunknot.ranktwo.compress` and `verify` functions also accept
+explicit braid words. Recognition always uses one pass; the low-level default
+`max_passes=None` instead iterates to saturation, with a weaker total bound.
+The one-pass bound is deterministic `O(n log n)` word-RAM time, not a universal
+quasi-polynomial knot-recognition guarantee. Flat rank-two inflations of small
+cores do have a proved conditional recognition bound.
+
+`benchmark_ranktwo.py --output FILE` reproduces seven paired end-to-end rounds,
+including diagram construction and all existing certificates. Sleeve examples
+improve by 3.4–33.8 times locally, while the stress five-braid slows down about
+1.8 times. Default behavior is unchanged. The full suite passes 272 tests;
+proofs, barriers, and measurements are in
+[`../synthesis/ranktwo.tex`](../synthesis/ranktwo.tex).

@@ -243,3 +243,13 @@ if continuations:
                'Ratios are median paired full-scanner/new times; values below one are slower.\n')
     with open('tables/continuation-integration.tex', 'w') as handle:
         handle.write(content)
+
+ranktwo = load('../fast/results/ranktwo_integration_20261008.json')
+if ranktwo:
+    rows = [f"{esc(r['name'])} & {r['median_speedup']:.3f} & {r['median_aa']:.3f}" + r" \\"
+            for r in ranktwo['cases']]
+    with open('tables/ranktwo-integration.tex', 'w') as handle:
+        handle.write(r"\begin{center}" + '\n' +
+                     table('Input & Disabled/enabled & A/A', '@{}lrr@{}', rows) +
+                     r"\end{center}" + '\n' +
+                     'Ratios are median paired end-to-end times; values above one are faster.\n')

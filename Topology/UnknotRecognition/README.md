@@ -86,7 +86,7 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
-The maintained Python suite now passes 267 tests. The latest work adds
+The maintained Python suite now passes 272 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations
 having logarithmically many signed runs, plus optional adaptive cancellation
 (`--reduction adaptive`). The latter preserves sparse cancellation progress,
@@ -183,3 +183,12 @@ component size, but the measured knot corpus shows overhead and no interval
 shortening. Both remain opt-in. The [updated theory](synthesis/continuations.tex)
 includes proofs, 267-test validation, independent continuation algebra checks,
 and paired measurements with negative results.
+
+The new incoming rank-two braid-kernel report supplies optional verified
+preprocessing (`recognize --ranktwo`). One optimal pass shortens supported
+braid subwords, independently replays its certificate, and retries recognition
+on a shorter source under the remaining budget. All 272 tests pass. Complete
+recognition benchmarks show 3.4–33.8x sleeve-family gains and a slowdown on the
+stress five-braid, so the stage remains optional. See the maintained
+[theory and measurements](synthesis/ranktwo.tex), including the small-core
+quasi-polynomial class and an infinite strict-shortening barrier.
