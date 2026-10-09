@@ -4570,10 +4570,33 @@ this checkpoint does not close Theorem 16.2 or Corollary 16.11.
 
 **Verification.** The focused variety-size closure checks 189 modules.
 All 20 newly named theorems pass individual axiom checks. The merged
-facade audit checks 6,831 public Gowers theorems in 5,072 modules (4,152
-OAI modules), or 5,074 modules with both audit consumers. Only `propext`,
+facade audit checks 6,842 public Gowers theorems in 5,073 modules (4,152
+OAI modules), or 5,075 modules with both audit consumers. Only `propext`,
 `Classical.choice`, and `Quot.sound` occur. The merged column extraction
-and dense-level small-image lemmas are included. The source ledger is
+and dense-level small-image lemmas, plus the later common-witness
+counting core, are included. The source ledger is
 identical to the tracked 115 companions and five open entries; the
 selected-port scope check passes. All upstream sources and Apache
 provenance/license files remain unchanged.
+
+
+**Proposition 5.1 (iii), counting core (`Proofs16CommonWitnesses`).** Each
+column `x ∈ X` has a witness set `T x` of size at least `cM` in a type of
+size `M`. In Proposition 5.1 these are the quadruples `(z₁,…,z₄)`
+representing `φ_x`. A double count replaces Milićević's Cauchy–Schwarz
+chain (p. 54):
+- `commonWitness_sum_eq`: the weighted count of additive column
+  quadruples, weighted by their common witnesses, is `Σ_w E(S_w)`, where
+  `S_w = {x : w ∈ T x}`.
+- `additiveCount_ge`: `E(S) ≥ |S|⁴/N`.
+- `sum_pow_four_le`: power mean.
+- `commonWitness_sum_ge`: the total is `≥ c⁴|X|⁴M/N`.
+- `additive_quadruples_card_le`: there are at most `N³` additive
+  quadruples.
+- `many_quadruples_common_witnesses`: at least `(c⁴|X|⁴ − θN⁴)/N`
+  additive quadruples in `X` share `θM` common witnesses.
+
+On a shared witness `(z₁,…,z₄)` the alternating sum
+`Σ(−1)ⁱφ_{xᵢ}(z₁+z₂−z₃−z₄)` vanishes by row-Freiman-linearity of the
+bihomomorphism. With `freiman_image_card_mul_le` this bounds its image.
+That assembly is the next step. Standard axioms; gate clean.
