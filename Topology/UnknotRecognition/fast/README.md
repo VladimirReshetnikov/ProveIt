@@ -2836,3 +2836,28 @@ python -B compressed_word_research/anchored_producer.py kernels --output results
 python -B compressed_word_research/anchored_producer.py source --output results/anchored_producer_source.json
 python -B compressed_word_research/anchored_producer.py pipeline --output results/anchored_producer_pipeline.json
 ```
+
+### Plain-power component certificates
+
+Optional primitive-projection search now tries a connected power-component
+contradiction after its primitive and pair rules fail. A signed cycle with
+unequal exponent products, or a pure-power seed and its connected tree, proves
+that the component's generators are trivial in the source-established
+torsion-free knot group. Components contain at least three labels and retain
+at least one survivor. The version-ten witness stores labels and donor slots;
+it never asks the checker to trust rational potentials or exponent claims.
+
+The producer uses rational graph consistency. The independent checker recovers
+actual cyclic one/two-run words, strips tree leaves and compares signed cycle
+products. Literal replay remains separate. Complete binary cycles with product
+difference one now close where the earlier configured algebraic search stalls.
+Ordinary-diagram certificates and coverage are unchanged in the pinned audit;
+this is a local inference extension, not a general quasipolynomial recognizer.
+See [the proof, source integration and measurements](../synthesis/power_components.tex).
+
+```bash
+python -B compressed_word_research/power_components.py audit --output results/power_component_audit.json
+python -B compressed_word_research/power_components.py stages --output results/power_component_stages.json
+python -B compressed_word_research/power_components.py source --output results/power_component_source.json
+python -B compressed_word_research/power_components.py pipeline --output results/power_component_pipeline.json
+```
