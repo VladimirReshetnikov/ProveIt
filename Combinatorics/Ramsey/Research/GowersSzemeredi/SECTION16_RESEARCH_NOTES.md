@@ -6036,3 +6036,93 @@ The combined audit checks 7,253 public Gowers theorems in 5,156 modules
 approved axioms. The source ledger is identical at 115 companions and
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement.
+
+
+### J.110. Global zero-relation core and a column-domain bihomomorphism
+
+The model-elimination inputs in J.109 are now discharged from the original
+bihomomorphism. The four-anchor model construction in J.108 is instantiated
+at alternating value zero. Write
+
+```
+d = columnSpectrumCap (columnEightDensity alpha)
+delta = globalColumnWordDensity alpha 3
+g = ceil(4*d/delta)
+M = ceil(1/delta)
+rho = globalColumnIdentityRadius alpha
+r = globalColumnModelRadius alpha 3
+u = refinementKernelRadius g d rho (r/2)
+s = min r u
+beta = modelTestDensity g d r
+t = ceil(log(M+1)/beta)
+c = (beta/10)^t * globalColumnVertexDensity alpha / 2
+```
+
+`columnQuadAnchor` encodes an additive quadruple as the list
+`[q 0,q 1,q 2,q 3]`. Its alternating map value is exactly
+`columnQuadValue L q y`. `column_models_initialize` keeps only those models
+which are nonzero somewhere on `bohr Gamma u`. Every discarded model is
+zero there, and hence gives a zero relation at radius `s`. Every active
+model still supplies the comparison at testing radius `r` required for
+elimination. This uses both parts of `s = min r u`.
+
+`modelEliminationRounds_mono` and `column_model_cover_zero_core` replace
+the actual active model count by the uniform cap `M`. The power comparison
+has the correct direction because `0 < beta/10 <= 1`.
+`global_zero_column_core` constructs a nonempty core of at least `c*N`
+columns, a common spectrum of rank at most `g`, and zero alternating map
+values for every additive quadruple on the common and individual radius-`s`
+Bohr neighborhoods. The modulus threshold is the maximum of the previous
+four-anchor threshold, `refinementKernelCap g d rho (r/2)+1`, and `7`.
+All parameters depend only on `alpha`; positivity of the final radius and
+core density is proved.
+
+`zero_columns_bihomomorphism` enlarges each column spectrum from `T x` to
+`Gamma union T x`. Horizontal Freiman identities follow by reordering
+`[a,b,c,d]` to `[a,c,b,d]` in the alternating relation. Vertical identities
+follow from the original column linearity and `s <= rho`.
+`global_column_core_bihomomorphism` applies this to the constructed core,
+with each enlarged spectrum having rank at most `g+d`.
+`columnBohrDomain_card` expresses the full domain cardinality as the sum
+of its column cardinalities. Applying the Bohr lower bound column by
+column gives the additional global guarantee
+
+```
+c*N^2 <= ceil(1/s)^(g+d) * |columnBohrDomain P (Gamma union T) s|.
+```
+
+Thus the constructed two-dimensional domain has a positive density
+bound depending only on `alpha`, as well as a dense set of columns.
+
+The global statements from coherent pairs onward now retain the original
+witness lower bound
+
+```
+columnWitnessDensity (columnEightDensity alpha) * N^4 <= |W x|
+```
+
+for every original column `x` in `X`. This bound was already proved at
+the global relation stage but had been dropped by subsequent interfaces.
+Carrying it through is necessary for a later quantitative agreement
+argument with the original map. The original witness system remains on
+the original spectra at radius `1/(4*pi)`; this does not assert that its
+witness sums lie in the smaller final domain.
+
+**Remaining work.** A column-domain bihomomorphism is now constructed.
+Bilinear organization of its varying spectra, quantitative shifted
+agreement with the original map, and the final numerical budget remain
+open. In particular, the witness count alone does not prove agreement
+on the smaller final domain. The common rank enters the exponent defining
+`beta`; no polynomial dependence on `1/alpha` or fit to the printed
+Gowers bound is asserted. The five numbered open statements and prior
+source-fidelity caveats remain unchanged.
+
+
+**Verification.** The strengthened witness chain and its pair-representation
+consumer pass a 255-module focused build. The final dense-domain construction
+passes a 253-module build. All 16 new named theorems pass individual axiom
+checks. The combined audit checks 7,282 public Gowers theorems in 5,162
+modules (5,160 for the facade, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+identical at 115 companions and five open entries; the selected-port scope
+check passes. There are no new upstream ports or provenance changes.
