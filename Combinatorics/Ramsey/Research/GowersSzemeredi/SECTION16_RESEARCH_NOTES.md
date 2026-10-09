@@ -1904,3 +1904,17 @@ production check but is beyond this audited prefix. Provenance checks
 retain all 4,134 pinned hashes, notices for 976 adapted files, and the
 original license/copyright notices. The full density conclusion remains
 unverified.
+
+### One-piece reduction and 3,900-entry audit checkpoint
+
+`Proofs16BihomPieceReduction` now passes the full audit on this host. The
+combined audit checks 5,854 public Gowers theorems in 2,648 modules; the
+facade reaches 1,412 modules, including 667 OAI modules. The extraction
+step remains the explicit `DenseBihomPiece` hypothesis. The catalogue
+remains 114/6 with its existing source-fidelity caveats.
+
+The 3,900-entry port checkpoint passes over 3,916 build modules. Its
+separate 3,917-module audit checks 58,849 public OAI theorems and the listed
+compatibility declarations. Only the three approved axioms occur. This
+now includes both the relative-patch finite-set repair and the redundant
+CRT tactic repair. The full density conclusion remains unverified.
