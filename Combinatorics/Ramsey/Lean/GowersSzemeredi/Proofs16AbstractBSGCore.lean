@@ -109,7 +109,7 @@ def absBsgEps (c K : Real) : Real := 3 * absBsgDelta2 c K / 16
 def absBsgKappa (c K : Real) : Real := (absBsgEps c K * absBsgEps c K * absBsgEta c K) ^ 2 / K ^ 4
 
 /-- **The core of the abstract Balog–Szemerédi–Gowers theorem.** -/
-theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
+theorem abstract_bsg_rich_core {G : Type*} [AddCommGroup G] [Fintype G]
     (h2 : ∀ d : G, d + d = 0 → d = 0) {A X : Finset G} (hAX : A ⊆ X) (hX : X.Nonempty)
     (Q : Nat → G → G → G → G → Prop)
     (hS1 : ∀ a₁ a₂ a₃ a₄, Q 1 a₁ a₂ a₃ a₄ → Q 1 a₃ a₄ a₁ a₂)
@@ -123,8 +123,13 @@ theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
     (hcX : 4 ≤ c * X.card)
     (hc'1 : 8 * c' ≤ absBsgDelta c K ^ 5 / 16384) (hc'2 : 16 * c' ≤ absBsgKappa c K)
     (hθ : θ < absBsgKappa c K / 2) :
-    ∃ B B' : Finset G, B' ⊆ B ∧ B ⊆ A ∧ absBsgEps c K * X.card ≤ (B'.card : Real) ∧
-      ∀ a ∈ B', θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a := by
+    ∃ P : Finset (G × G), ∃ B B' : Finset G,
+      P ⊆ A ×ˢ A ∧
+      (∀ p ∈ P, ∀ q ∈ P, p.1 - p.2 = q.1 - q.2 → Q 4 p.1 p.2 q.1 q.2) ∧
+      B ⊆ A ∧ B' ⊆ B ∧ absBsgEps c K * X.card ≤ (B'.card : Real) ∧
+      (∀ u ∈ B, ∀ v ∈ B,
+        absBsgEta c K * (X.card : Real)^3 ≤ (walkSet P X u v).card) ∧
+      ∀ a ∈ B', θ * (X.card : Real)^2 ≤ richCount B (Q 16) a := by
   have hXpos : (0 : Real) < X.card := by exact_mod_cast hX.card_pos
   have hδ : 0 < absBsgDelta c K := by unfold absBsgDelta; positivity
   have hδ₂ : 0 < absBsgDelta2 c K := by unfold absBsgDelta2; positivity
@@ -185,9 +190,10 @@ theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
     linarith
   have hpoor := rich_pruning hAX hBA hX hPA Q h20 hS3 hc'0 hWT hK hdoub hη.le hwalk' hε
     (by simpa only [absBsgKappa] using hc'2) (by simpa only [absBsgKappa] using hθ)
-  refine ⟨B, B.filter fun a => θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a,
-    Finset.filter_subset _ _, hBA, ?_, fun a ha => (Finset.mem_filter.mp ha).2⟩
-  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card (s := B)
+  refine ⟨P, B, B.filter fun a => θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a,
+    hPA, h20, hBA, Finset.filter_subset _ _, ?_, hwalk',
+    fun a ha => (Finset.mem_filter.mp ha).2⟩
+  have hsplit := Finset.card_filter_add_card_filter_not (s := B)
     (fun a => θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a)
   have hsplitR : ((B.filter fun a => θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a).card : Real) +
       ((B.filter fun a => ¬ θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a).card : Real) =
@@ -196,5 +202,28 @@ theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
   unfold absBsgEps
   unfold absBsgEps at hpoor
   linarith
+
+
+/-- **The core of the abstract Balog–Szemerédi–Gowers theorem.** -/
+theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
+    (h2 : ∀ d : G, d + d = 0 → d = 0) {A X : Finset G} (hAX : A ⊆ X) (hX : X.Nonempty)
+    (Q : Nat → G → G → G → G → Prop)
+    (hS1 : ∀ a₁ a₂ a₃ a₄, Q 1 a₁ a₂ a₃ a₄ → Q 1 a₃ a₄ a₁ a₂)
+    (hS2 : ∀ a₁ a₂ a₃ a₄, Q 4 a₁ a₂ a₃ a₄ → Q 4 a₂ a₁ a₄ a₃)
+    (hS3 : ∀ i a₁ a₂ a₃ a₄, Q i a₁ a₂ a₃ a₄ → Q i a₁ a₃ a₂ a₄)
+    {c c' K θ : Real} (hc0 : 0 < c) (hc'0 : 0 < c')
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+        Q i a₁ a₂ p.1 p.2 ∧ Q j p.1 p.2 a₃ a₄).card : Real) → Q (i + j) a₁ a₂ a₃ a₄)
+    (hK : 0 < K) (hdoub : ((X - X).card : Real) ≤ K * X.card)
+    (hgood : c * (X.card : Real) ^ 3 ≤ ∑ d ∈ X - X, (diffGoodCount A (Q 1) d : Real))
+    (hcX : 4 ≤ c * X.card)
+    (hc'1 : 8 * c' ≤ absBsgDelta c K ^ 5 / 16384) (hc'2 : 16 * c' ≤ absBsgKappa c K)
+    (hθ : θ < absBsgKappa c K / 2) :
+    ∃ B B' : Finset G, B' ⊆ B ∧ B ⊆ A ∧ absBsgEps c K * X.card ≤ (B'.card : Real) ∧
+      ∀ a ∈ B', θ * (X.card : Real) ^ 2 ≤ richCount B (Q 16) a := by
+  obtain ⟨P, B, B', hPA, h20, hBA, hB'B, hsize, hwalk, hrich⟩ :=
+    abstract_bsg_rich_core h2 hAX hX Q hS1 hS2 hS3 hc0 hc'0 hWT hK hdoub
+      hgood hcX hc'1 hc'2 hθ
+  exact ⟨B, B', hB'B, hBA, hsize, hrich⟩
 
 end LeanProofs.GowersSzemeredi
