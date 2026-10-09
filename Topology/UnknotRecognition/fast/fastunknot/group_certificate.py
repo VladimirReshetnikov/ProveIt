@@ -8,7 +8,8 @@ group torsion-freeness and abelianization then imply infinite cyclicity.
 Version six also replays complete disjoint primitive-pair projections and
 checks raw one-generator exponent endpoints without discarding relator slots.
 Version seven also permits acyclic unit-coordinate forests whose donors may
-share generators.
+share generators. Version eight permits acyclic singleton definitions with
+arbitrary word images, compiled as one simultaneous raw substitution.
 Stalling is inconclusive, including after Whitehead minimization. Explicit
 relator expansion has no polynomial bound in the input crossing number.
 """
@@ -295,9 +296,9 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     if type(certificate) is not dict or type(certificate.get('version')) is not int:
         return False
     version = certificate['version']
-    final_field = 'terminal' if version in (5, 6, 7) else 'remaining_generator'
+    final_field = 'terminal' if version in (5, 6, 7, 8) else 'remaining_generator'
     if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
-            or version not in (1, 2, 3, 4, 5, 6, 7)
+            or version not in (1, 2, 3, 4, 5, 6, 7, 8)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -389,6 +390,13 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
         if type(move) is not dict:
             return False
         kind = move.get('kind')
+        if kind == 'elimination_batch':
+            if certificate['version'] < 8:
+                return False
+            from .elimination_batch_verify import replay_literal_batch
+            if not replay_literal_batch(words, alive, move, budget):
+                return False
+            continue
         if kind == 'primitive_forest':
             if certificate['version'] < 7:
                 return False
@@ -516,10 +524,10 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             budget.size(expanded)
             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
-    if certificate['version'] in (6, 7) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+    if certificate['version'] in (6, 7, 8) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
         from .primitive_projection_verify import verify_literal_rank_one
         return verify_literal_rank_one(words, alive, certificate['terminal'], budget)
-    if certificate['version'] in (5, 6, 7):
+    if certificate['version'] in (5, 6, 7, 8):
         from .primitive_power_verify import verify_literal_terminal
         return verify_literal_terminal(words, alive, certificate['terminal'], budget)
     return alive == {certificate['remaining_generator']} and not any(words)
@@ -528,13 +536,16 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                  relator_moves=False, compressed_verification=False,
                  compressed_search=False, adaptive_search=False, switch_letters=None,
-                 max_nodes=100000, check=lambda: None, primitive_projection=False, primitive_forest=False):
+                 max_nodes=100000, check=lambda: None, primitive_projection=False, primitive_forest=False, elimination_batch=False):
     """Bounded search AND independent verification sharing one wall allowance.
 
     primitive_projection opts into raw disjoint-pair rounds and implies
     compressed search/replay. primitive_forest additionally permits acyclic
     unit-coordinate batches and implies projections. Defaults retain the earlier
-    search policy.
+    search policy. elimination_batch tries general acyclic singleton batches
+    with at most min(max_work//4, 50000) producer work, then restarts the prior
+    compressed policy from the original source on nondecision. Both attempts
+    share the producer work allowance and the existing wall deadline.
     """
     from math import isfinite
     start = monotonic()
@@ -542,12 +553,14 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
         raise ValueError('compressed_verification must be boolean')
     if type(compressed_search) is not bool:
         raise ValueError('compressed_search must be boolean')
+    if type(elimination_batch) is not bool:
+        raise ValueError('elimination_batch must be boolean')
     if type(primitive_projection) is not bool:
         raise ValueError('primitive_projection must be boolean')
     if type(primitive_forest) is not bool:
         raise ValueError('primitive_forest must be boolean')
     primitive_projection = primitive_projection or primitive_forest
-    compressed_search = compressed_search or primitive_projection
+    compressed_search = compressed_search or primitive_projection or elimination_batch
     if type(adaptive_search) is not bool:
         raise ValueError('adaptive_search must be boolean')
     if compressed_search and adaptive_search:
@@ -575,9 +588,36 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                           'compressed-slp' if compressed_search else 'explicit-letters')
         if compressed_search:
             from .compressed_search import compressed_certificate
-            certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
-                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
-                primitive_projection=primitive_projection, primitive_forest=primitive_forest)
+            if elimination_batch:
+                # A different quotient schedule can make later exposure harder.
+                # Cap the speculative producer work and reconstruct the original
+                # source for the maintained policy when this attempt does not close.
+                if type(max_work) is not int or max_work<0:
+                    raise ValueError('max_work must be a nonnegative integer')
+                probe_stats={};probe_limit=min(max_work//4,50000);reason=None
+                try:
+                    certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                        max_work=probe_limit, max_nodes=max_nodes, relator_moves=relator_moves, stats=probe_stats,
+                        primitive_projection=primitive_projection, primitive_forest=primitive_forest, elimination_batch=True)
+                except GroupLimit as exc:
+                    tick();certificate=None;reason=str(exc)
+                # A failure during initial presentation recovery may precede
+                # arena accounting. Reserve the entire probe quota on failure.
+                probe_work=max(probe_stats.get('work',0),probe_limit if reason else 0)
+                if certificate is None:
+                    search_stats['elimination_fallback']=True
+                    search_stats['elimination_probe']=dict(limit=probe_limit,charged_work=probe_work,reason=reason,stats=probe_stats)
+                    try:
+                        certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                            max_work=max(0,max_work-probe_work), max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+                            primitive_projection=primitive_projection, primitive_forest=primitive_forest)
+                    finally:search_stats['work']=search_stats.get('work',0)+probe_work
+                else:search_stats.update(probe_stats)
+                search_stats['elimination_probe']=dict(limit=probe_limit,charged_work=probe_work,reason=reason,stats=probe_stats)
+            else:
+                certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                    max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+                    primitive_projection=primitive_projection, primitive_forest=primitive_forest)
         else:
             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
