@@ -2661,7 +2661,7 @@ Finite-budget outcomes can therefore differ from the old replay path.
 Balanced context assembly bounds the entire raw block polynomially in its
 initial grammar and generator count, even when the expanded words grow
 exponentially. This replaces the per-batch growth accounting for replay.
-The producer still uses its existing representation and search policy;
+The producer integration below extends this bound to raw batch discovery;
 normalization boundaries and general knot discovery remain separate
 complexity obligations. Certificates and literal verification are unchanged.
 See [the proof and measurements](../synthesis/persistent_replay.tex).
@@ -2671,4 +2671,34 @@ python -B compressed_word_research/persistent_replay.py audit --output results/p
 python -B compressed_word_research/persistent_replay.py kernels --output results/persistent_replay_kernels.json
 python -B compressed_word_research/persistent_replay.py stages --output results/persistent_replay_stages.json
 python -B compressed_word_research/persistent_replay.py pipeline --output results/persistent_replay_pipeline.json
+```
+
+### Persistent greedy batch discovery
+
+The optional `elimination_batch` search now retains a private signed circuit
+across consecutive raw batches. It recomputes exact lengths, presence and
+repetition masks after bindings change, and obtains global occurrence counts
+with one reverse dependency pass. The existing greedy scores, cycle checks
+and ordered donor selection are preserved. A first batch that immediately
+reaches rank one or two keeps the direct fast path.
+
+The private block exports once when batch discovery stalls or reaches rank
+below three. Normalization, projections and other moves use the ordinary arena.
+Roots, live generators and moves are published together after successful export;
+private nodes share the ordinary resource allowance. The independent checker,
+certificate format, bounded trial and fallback policy are unchanged.
+
+Balanced contexts give polynomial encoded cost for the entire raw block,
+including its donor discovery. This does not bound the number or cost of later
+normalization/exposure phases. See [the theory and native evidence](../synthesis/persistent_producer.tex).
+The pinned comparison passes 1,116 maintained tests and an 84-diagram audit,
+with identical certificates and no gained or lost positives. Previous replay
+benchmark ratios are not producer speedups. The drivers preserve old packages,
+source hashes, complete samples, A/A controls and incomplete outcomes:
+
+```sh
+python -B compressed_word_research/persistent_producer.py audit --output results/persistent_producer_audit.json
+python -B compressed_word_research/persistent_producer.py source --output results/persistent_producer_source.json
+python -B compressed_word_research/persistent_producer.py stages --output results/persistent_producer_stages.json
+python -B compressed_word_research/persistent_producer.py pipeline --output results/persistent_producer_pipeline.json
 ```
