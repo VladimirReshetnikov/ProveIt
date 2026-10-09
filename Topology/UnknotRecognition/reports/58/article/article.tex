@@ -1,0 +1,90 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{graphicx,xcolor,listings,fancyhdr,float,needspace}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\usepackage[breaklinks=true]{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{teal}{HTML}{086F73}
+\definecolor{soft}{HTML}{F1F5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal,
+ pdftitle={Compressed topology spectra for normal surfaces},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+\usepackage[capitalize,noabbrev]{cleveref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\M}{\mathsf M}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\baseline}{\texttt{eb368edf975695e3e16a8774dcb7846bda0c13a0}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!15},backgroundcolor=\color{soft},
+ showstringspaces=false,commentstyle=\color{teal},keywordstyle=\color{ink}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Compressed normal-surface topology}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\textbf{Compressed topology spectra\\for normal surfaces}\\[0.7em]
+ \large Boundary transversals, two-weight reconstruction,\\
+ and a complete multiplicity kernel for the ProveIt unknot programme}
+\author{Research continuation prepared for Vladimir Reshetnikov}
+\date{9 October 2026 (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop and implement a compressed, independently checkable census of the
+homeomorphism types of all connected components of a supplied normal surface.
+The result is a histogram with binary multiplicities: Euler characteristic,
+number of boundary circles, orientability, and genus or crosscap number. A
+complete interval-orbit trace yields the least original representative of every
+orbit as a union of at most $G$ intervals, where $G$ counts its static gap
+intervals. Marking the representatives of boundary-curve orbits turns boundary
+circle count into an additive weight on surface components. Two weighted
+queries, on the surface and its normal orientation double, then recover the
+entire type census with weight dimension two. A sparse doubling inversion
+handles disconnected surfaces and the torus--Klein-bottle zero-signature case.
+We extend the repository's vertex-link and quadrilateral-content reduction
+from essential-disc counts to the full abstract topology spectrum, accounting
+for the orientation doubles of one-sided components. Complete producer and
+independent replay implementations, tests, bounded Regina comparisons, paired
+measurements, and a reproducible source package accompany the proofs.
+
+Polynomial encoded component-topology computation is classical, notably
+Agol--Hass--Thurston. The contribution is a concrete smaller-observer
+construction and its integration-ready implementation, together with exact
+parameter-dependent savings and explicit limits. The algorithm examines a
+\emph{supplied} admissible normal vector; it does not establish a general
+quasi-polynomial unknot-recognition bound, discover the required surfaces, or
+recover their embedding data for cutting.
+\end{abstract}
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\input{sections/overview.tex}
+\input{sections/transversals.tex}
+\input{sections/spectra.tex}
+\input{sections/kernel.tex}
+\input{sections/implementation.tex}
+\input{sections/experiments.tex}
+\input{sections/research.tex}
+\input{references.tex}
+\end{document}

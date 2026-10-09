@@ -1,0 +1,83 @@
+\subsection{Independent graph audit and paired timings}
+
+The eleven focused tests pass.  An exhaustive audit covers all systems with at most two interval generators
+on universes of size at most five, up to input-generator order: $7{,}398$
+indices across both merger rules and $34{,}026$ literal point checks.
+The random audit prepares indices for $3{,}200$ random
+interval relations under both maintained merger rules, giving $6{,}400$
+checked indices and $208{,}000$ literal minimum comparisons.  A union-find
+oracle explicitly expands only these bounded test inputs.  It also checks
+$64{,}000$ sampled pair queries and all selected representatives, and all six
+trace event types occur. The exhaustive and random tests also check the
+complete canonical minimum interval set, sorted selection and ranks against
+the literal graph. Two deliberately different valid traces establish
+the distinction between canonical minimum labels and emission ordinals.
+
+The geometric audit uses $67$ supplied normal vectors: parallel meridians
+in one through ten tetrahedra and compatible mixtures of an interior
+vertex sphere, a boundary vertex disc, and a one-sided M\"obius band in a
+four-tetrahedron solid torus.  Both surface and boundary arc graphs are
+tested under both merger rules, giving $268$ indices and another $73{,}528$
+literal minimum comparisons.  These checks use the maintained exact
+normal-coordinate adapter, with no native topology package required.
+Separate tests cover $16{,}000$--$20{,}000$-bit endpoints, malformed and
+unfinished proofs, source rebinding, caller mutation, disabled producer
+entry points, and cancellation through false-valued callable objects.  A
+separate exact fixture has $512$ disjoint minimum intervals and a $4{,}107$-bit
+universe; its component count has $4{,}106$ bits, and the predicted $g=512$
+interval bound is attained without enumerating components.
+
+The portable paired benchmark has ten workloads, five shuffled arms,
+one excluded warmup and seven measured rounds.  Single-query cases are
+batched three times.  This gives $490$ measured complete arm calls and
+$70$ warmup calls.  The compiled arm includes discovery, independent
+verification, compilation and all requested comparisons.  The comparison
+baseline shares the initial count and uses exact connected and singleton
+shortcuts; only unresolved comparisons require augmented count schedules.
+The original two-count API and identical controls are retained as separate
+arms.  Every answer is compared outside the timer.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Supplied relation & Queries & Shared (ms) & Compiled (ms) & Paired ratio\\
+\hline
+8-tetrahedron meridian, scale $2^{512}+1$ & 1 & 2.845 & 2.993 & 0.925\\
+8-tetrahedron meridian, scale $2^{512}+1$ & 8 & 12.880 & 2.852 & 4.582\\
+8-tetrahedron meridian, scale $2^{512}+1$ & 32 & 46.957 & 2.996 & 15.629\\
+24-tetrahedron meridian, scale $2^{128}+1$ & 1 & 25.157 & 20.437 & 1.224\\
+24-tetrahedron meridian, scale $2^{128}+1$ & 8 & 111.298 & 20.308 & 5.502\\
+24-tetrahedron meridian, scale $2^{128}+1$ & 32 & 422.509 & 20.539 & 20.686\\
+8-tetrahedron primitive meridian & 32 & 1.231 & 2.546 & 0.461\\
+One-sided band, scale $2^{1024}+1$ & 32 & 1.540 & 0.321 & 4.447\\
+4-tetrahedron compatible mixture & 32 & 29.527 & 2.124 & 13.915\\
+64-pair periodic chain & 32 & 14.182 & 1.629 & 8.757\\
+\hline
+\end{tabular}
+\end{center}
+
+Times are separate medians; the ratio is the median of paired ratios and
+need not equal their quotient.  For the eight-tetrahedron source, the full
+trace has $128$ events but the query program has $13$ point steps.  For
+$24$ tetrahedra these figures are $832$ and $29$.  The periodic chain
+compiles $65$ trace events to two point steps.  These are exact reductions
+in work representation, independent of timer variation.
+
+The primitive meridian is a necessary control: its first count proves the
+relation connected, so the shared baseline answers all comparisons
+immediately and is faster than index preparation.  The single-query
+eight-tetrahedron case likewise shows no improvement.  Across all cases,
+identical shared-control ratios range from $0.959$ to $1.040$, and
+identical compiled-control ratios range from $0.969$ to $1.050$.  Thus the
+large repeated-query effects are supported, while small percentage
+differences should not be overinterpreted.
+
+Raw records, inputs, query points, expected answers, reduction counts,
+all shuffled arm orders and timings, and pre/post source hashes are in
+\path{results/orbit_index.json}.  Audit evidence is in
+\path{results/orbit_index_audit.json}; the portable drivers are in
+\path{orbit_index_research/}.  The historical prototype run is retained
+separately and is not mixed into this table.  Normal triangulation creation,
+vector construction and conversion to interval relations are outside every
+timer.  These results measure repeated queries on a supplied interval system,
+not complete normal-surface calls or unknot-recognition runtime.

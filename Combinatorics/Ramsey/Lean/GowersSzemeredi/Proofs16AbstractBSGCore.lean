@@ -116,7 +116,7 @@ theorem abstract_bsg_rich_core {G : Type*} [AddCommGroup G] [Fintype G]
     (hS2 : ∀ a₁ a₂ a₃ a₄, Q 4 a₁ a₂ a₃ a₄ → Q 4 a₂ a₁ a₄ a₃)
     (hS3 : ∀ i a₁ a₂ a₃ a₄, Q i a₁ a₂ a₃ a₄ → Q i a₁ a₃ a₂ a₄)
     {c c' K θ : Real} (hc0 : 0 < c) (hc'0 : 0 < c')
-    (hWT : ∀ i j a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
         Q i a₁ a₂ p.1 p.2 ∧ Q j p.1 p.2 a₃ a₄).card : Real) → Q (i + j) a₁ a₂ a₃ a₄)
     (hK : 0 < K) (hdoub : ((X - X).card : Real) ≤ K * X.card)
     (hgood : c * (X.card : Real) ^ 3 ≤ ∑ d ∈ X - X, (diffGoodCount A (Q 1) d : Real))
@@ -149,7 +149,7 @@ theorem abstract_bsg_rich_core {G : Type*} [AddCommGroup G] [Fintype G]
     · have hcount : absBsgDelta c K * (X.card : Real) ^ 2 ≤ diffGoodCount A (Q 1) d :=
         (Finset.mem_filter.mp hd).2
       obtain ⟨T, hT⟩ := difference_ladder_rel_four hX hAX Q hS1 hc'0 hδ
-        (fun i a₁ a₂ a₃ a₄ h => hWT i 1 a₁ a₂ a₃ a₄ h) hc'1 hcount
+        (fun i hi a₁ a₂ a₃ a₄ h => hWT i 1 (by omega) a₁ a₂ a₃ a₄ h) hc'1 hcount
       exact ⟨T, fun _ => hT⟩
     · exact ⟨∅, fun h => absurd h hd⟩
   choose T hT using hTex

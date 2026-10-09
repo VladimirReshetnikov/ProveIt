@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Fixture & $D$ & Dense (ms) & Sparse (ms) & Selective (ms) & Sparse/sel.\\
+\midrule
+Tiny & 4 & 0.113 & 0.110 & 0.153 & 0.730\\
+Periodic & 32 & 0.628 & 0.272 & 0.838 & 0.318\\
+Periodic & 128 & 7.101 & 2.006 & 4.908 & 0.408\\
+Periodic & 512 & 108.926 & 8.210 & 22.984 & 0.349\\
+Static & 256 & 8.339 & 0.568 & 0.718 & 0.811\\
+Mixed & 32 & 1.207 & 0.694 & 0.807 & 0.856\\
+Mixed & 128 & 8.464 & 1.540 & 2.169 & 0.710\\
+Mixed & 512 & 143.453 & 5.388 & 9.005 & 0.600\\
+Dense profiles & 64 & 1.966 & 0.808 & 1.657 & 0.503\\
+Dense profiles & 256 & 27.223 & 9.401 & 8.460 & 1.098\\
+Dense profiles & 1024 & 529.922 & 142.426 & 41.131 & 3.471\\
+Reflection & 512 & 74.926 & 2.098 & 4.151 & 0.503\\
+\bottomrule
+\end{tabular}
+\caption{Cold supplied-interval queries. Times are per-arm medians; the last column is the median paired sparse/selective ratio, so values above one favour selective extraction. Discovery, native geometry and terminal disc verification are excluded. All completed results, including losses, are retained.}
+\label{tab:timings}
+\end{table}

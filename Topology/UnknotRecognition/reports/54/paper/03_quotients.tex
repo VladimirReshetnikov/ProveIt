@@ -1,0 +1,202 @@
+\section{Exact quotient action on the compiled census}
+\label{sec:quotients}
+
+\subsection{Full-port coning and its incidence graph}
+
+For $A\subseteq\{0,\ldots,m-1\}$, write $J_A=\bigcup_{j\in A}J_j$.
+The operation $\Cone(A)$ replaces $E$ by the equivalence closure of
+$E\cup(J_A\times J_A)$. Empty $A$ has no effect. A singleton atom set $A$
+need not be a no-op: it identifies all points within that one atom.
+
+Suppose a collection $\mathcal A$ of cone groups is applied. Construct a
+graph with one vertex for each profile type and one vertex for each active
+atom $j\in\bigcup\mathcal A$. Join a type $\profile$ to an active atom $j$
+when $a_j>0$. Join the atom vertices within each $A\in\mathcal A$, using a
+star or path. Let $\mathcal K$ denote the connected components of this graph
+that contain a type vertex, and let $T$ be the set of its type vertices.
+
+\begin{theorem}[Multiplicity-aware quotient formula]
+\label{thm:quotient}
+The profile census after applying $\mathcal A$ is obtained as follows:
+\begin{enumerate}[label=(\roman*)]
+\item Every untouched type $\profile\notin T$ retains its original
+multiplicity $h_E(\profile)$.
+\item Each graph component $K\in\mathcal K$ contributes exactly one orbit,
+with profile
+\[
+ b(K)=\sum_{\profile\in K}h_E(\profile)\profile.
+\]
+\item Equal resulting profiles are coalesced by adding multiplicities.
+\end{enumerate}
+In particular the orbit count is
+\begin{equation}
+ C_{\mathcal A}=\sum_{\profile\notin T}h_E(\profile)+|\mathcal K|.
+ \label{eq:quotient-count}
+\end{equation}
+The resulting census has at most $s$ distinct rows.
+\end{theorem}
+
+\begin{proof}
+First consider a touched type $\profile$ and an incident active atom $j$.
+Each of its $h_E(\profile)$ original orbits contains a point in $J_j$.
+Some applied cone contains the entire atom, so all those points, and
+therefore all copies of that type, become equivalent. This justifies using
+one type vertex instead of $h_E(\profile)$ vertices. It also explains why
+the factor $h_E(\profile)$ must occur in $b(K)$.
+
+An edge from a type to an atom means that the corresponding orbit meets the
+coned set. Edges within a cone group express the same full identification.
+Thus any two type vertices in one graph component become a single orbit.
+Conversely, an identification path between original orbits alternates old
+orbit connections and cone connections. Replacing its old orbit occurrences
+by their types and its cone occurrences by their atom vertices gives a path
+in this graph. No two distinct graph components can therefore merge. An
+untouched original orbit meets no coned set and retains its identity.
+
+All original points in the copies of a touched type enter the same new
+orbit. Their atom counts add, giving $b(K)$. This proves the census formula
+and \eqref{eq:quotient-count}. If $t$ types are touched, at most $t$ graph
+components contain types, while at most $s-t$ untouched rows remain. Merging
+equal outputs can only reduce this number, proving the row bound.
+\end{proof}
+
+No extra orbit is assigned to a purely virtual atom component. Because every
+atom is nonempty and the profile table covers its mass, every active atom
+in a valid complete table actually meets a type. The explicit condition in
+the theorem remains useful in the implementation and its checker.
+
+\begin{example}[A binary population collapses once]
+Let every atom have length $q$, and suppose the source consists of $q$
+parallel components, one point in each atom. Then
+$h_E((1,\ldots,1))=q$. Coning any single atom produces one component with
+profile $(q,\ldots,q)$, not $q$ components and not one component of profile
+$(1,\ldots,1)$. The transformation uses one multiplication per coordinate;
+there is no loop of length $q$.
+\end{example}
+
+\subsection{The exact information retained by the table}
+
+\begin{theorem}[Relative completeness and minimality]
+\label{thm:observational}
+For two equivalence relations $E,F$ on the same partitioned set $X$, the
+following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $h_E=h_F$.
+\item There exists a bijection of $X$ preserving each atom setwise and
+sending the $E$-orbits bijectively to the $F$-orbits.
+\item Every finite sequence of full-port cones, followed by any
+atom-constant additive observation, has the same component-weight histogram
+for the two sources.
+\end{enumerate}
+Thus the census is a complete invariant for this observer interface, and
+any exact summary supporting every such observation must distinguish
+unequal censuses.
+\end{theorem}
+
+\begin{proof}
+If the censuses agree, pair the orbits of each profile type. For each paired
+orbit and each atom, choose a bijection between their equally sized
+intersections. Their union is a bijection of $X$ with the required
+properties. Conversely such a bijection preserves every orbit profile,
+proving (i)$\Leftrightarrow$(ii).
+
+Every full-port cone is unchanged by an atom-preserving permutation, and an
+atom-constant weight is unchanged as well. Therefore the bijection remains
+an isomorphism after any cone sequence and preserves its weight histogram.
+This proves (ii)$\Rightarrow$(iii). Finally take no cones and use the scalar
+weight of \cref{thm:packing}. Its histogram encodes the entire census, so
+(iii) implies (i). The last assertion follows by using this same
+observation to distinguish any two unequal tables.
+\end{proof}
+
+The bijections in this proof may be arbitrary permutations inside atoms;
+they are not asserted to be interval isometries or geometric homeomorphisms.
+The theorem identifies exactly the information forgotten by the observer.
+It does not imply that the full three-dimensional objects represented by
+$E$ and $F$ are equivalent.
+
+\subsection{A small obstruction to more general attachments}
+
+\begin{proposition}[Profiles do not determine partial attachment outcomes]
+\label{prop:barrier}
+A complete source-profile census is insufficient to compute the effect of
+an arbitrary additional interval pairing, even when that pairing has
+singleton domain and range.
+\end{proposition}
+
+\begin{proof}
+Let $X=\{0,1,2,3\}$, with atoms $\{0,1\}$ and $\{2,3\}$. Set
+\[
+ E=\{\{0,2\},\{1,3\}\},\qquad
+ F=\{\{0,3\},\{1,2\}\}.
+\]
+Both have $h((1,1))=2$. Add the singleton pairing $0\sim2$. It is already
+present in $E$, leaving two orbits. In $F$ it connects the two original
+orbits, leaving one. The input summaries are identical and the requested
+additional pairing is identical, but the answers differ.
+\end{proof}
+
+A related error would be to refine an atom after compilation and infer its
+subatom profiles from the old table. Splitting the first atom in the example
+into $\{0\}$ and $\{1\}$ immediately requires information that the old table
+forgot. Refining every point would avoid this particular loss, but can
+require $N$ atoms, exponential in $B$. This is a genuine representation
+barrier, not a reason to abandon richer compressed attachment descriptions.
+
+\subsection{Incremental evaluation without repeated graph construction}
+
+The implementation maintains disjoint-set nodes for the $s$ original types
+and the $m$ atom vertices. Atom nodes are initially inactive and virtual.
+A type not yet touched represents $h_E(\profile)$ separate real components,
+although only one dormant node is stored for it.
+
+When atom $j$ is activated for the first time, scan its adjacent types. If a
+type is still inactive, replace its population by one active node and decrease
+the count by $h_E(\profile)-1$. Join each type to the atom node. Joining two
+roots that both contain real components decreases the count by one; joining
+a virtual root to a real root does not. Once all atoms in the cone group
+are activated, join their nodes together. Duplicate activations never scan
+adjacency again.
+
+\begin{theorem}[Online amortization]
+\label{thm:online}
+Let
+\[
+ e=\sum_{\profile\in\supp h_E}|\{j:a_j>0\}|.
+\]
+After an $O(sm)$ scan of the dense profile coordinates, a monotone sequence
+of cone calls with $u$ total supplied atom occurrences uses
+\[
+ O\bigl((s+m+e+u)\alpha(s+m)+u\log(m+1)\bigr)
+\]
+index-level operations, including canonicalization of input groups. Each
+type population is collapsed at most once and each incidence edge is
+scanned at most once. Count arithmetic uses $B$-bit integers. Materializing
+a complete quotient census is a separate $O(sm)$ arithmetic operation and
+is not hidden inside the set-union bound.
+\end{theorem}
+
+\begin{proof}
+The activation rule implements exactly the two stages of
+\cref{thm:quotient}: collapse all copies of a touched type, then merge
+connected touched types. A type cannot already belong to a disjoint-set
+component when its population is first activated, because edges involving
+that type are inserted only by activation. The ``real root'' indicator
+therefore accounts for every decrease exactly once.
+
+Each atom is activated once, so each incident edge is visited once. There
+are at most $s$ first type activations. Group processing adds at most $u$
+atom-node union attempts. Union by rank and path compression give the
+stated amortized bound, with the sorting term paying for canonical atom
+sets. The count stays between zero and the initial $C\le N$, so it uses at
+most $B$ bits. Census materialization visits each original type and adds
+$h_E(\profile)\profile$ to its current root, then coalesces equal rows.
+This last step uses vector arithmetic and sorting rather than only index
+operations.
+\end{proof}
+
+The prototype stores the original profile table immutably. Branching a
+threshold search clones the small mutable set-union state but shares that
+table and its adjacency lists. It never substitutes a modified census for
+the source certificate. This separation both prevents rebinding mistakes
+and makes the exact cost of repeated state trials visible.

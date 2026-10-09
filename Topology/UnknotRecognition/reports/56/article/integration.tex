@@ -1,0 +1,150 @@
+\section{Integration with the maintained certificate pipeline}
+\label{sec:integration}
+
+The implementation adds a complete producer for one precisely specified
+move class. It does not add an axiom to the certificate checker. This
+distinction is operationally useful: a discovery bug can waste resources
+or propose a rejected certificate, but the accepted knot verdict still
+passes the existing source-bound replay.
+
+\subsection{Producer interfaces and immutable source contracts}
+
+The new module \path{fastunknot/raw_saturation.py} exports a source index,
+a fixed-seed closure query, and an exhaustive rank-one planner. Their
+contracts are as follows.
+\begin{enumerate}
+\item \texttt{build\_index(arena, roots, alive)} validates positive,
+  distinct generator labels and numbered source roots. It computes exact
+  support incidence, raw singleton sets, support counts, and dense-index
+  xors. A source containing a non-live generator is rejected.
+\item \texttt{seed\_closure(arena, index, seeds)} returns the exact least
+  closed set, the distinct donor-slot/generator pairs used to reach it,
+  and whether the whole source alphabet was reached. It accepts any
+  specified survivor set, including the empty set for an abstract
+  presentation query.
+\item \texttt{find\_rank\_one\_plan(arena, roots, alive, cache)} tries
+  singleton seeds in increasing numeric order and returns the first
+  successful source batch. With no attempt cap and sufficient resources,
+  failure is exhaustive for raw singleton reachability to rank one.
+\end{enumerate}
+No discovery interface changes a source root, a live generator, or the
+word grammar. Immutable occurrence summaries and work counters may be
+populated. The optional index cache binds the arena object, the ordered
+root tuple, and the complete live alphabet. A reordered slot list is a
+different source, even when its multiset of words is identical. Strict
+integer checks precede cache-key equality so that Boolean values cannot
+alias valid integer fields.
+
+The production planner places the exact first-firing test before sparse
+incidence construction. Cached root masks can answer this test directly;
+only missing masks invoke the maintained summary operation. A complete
+live-alphabet mask validates every source row before a negative result is
+returned. If every row has more than two support labels or has no raw
+singleton, the planner creates neither an incidence index nor a closure
+queue. This ordering matters for repeated failed probes after
+normalization. It changes the amount of work, not the set of successful
+seeds.
+
+With a cap on seed attempts, an interrupted query is only a partial search.
+With an arena work limit or external cancellation, discovery stops through
+the established cooperative mechanism. Neither outcome authorizes an
+algebraic negative conclusion. Work counters measure charged structural
+operations; they are not elapsed-time limits and do not make a
+large-integer operation constant cost in the bit model.
+
+\subsection{An optional hook with an unchanged proof format}
+
+The option \texttt{raw\_saturation=True} in the compressed group producer
+enables the new query at a normalized source boundary, after the existing
+rank-two terminal attempt and before the older elimination policies. A
+successful query applies one maintained acyclic batch. It then attempts
+the existing exact rank-one arithmetic endpoint. If the query finds no
+plan, the existing mixed search continues.
+
+The certificate still uses version eight and an
+\texttt{elimination\_batch} move whose entries are only original relation
+slots and eliminated generators. No closure table, matrix permanent,
+producer cache, or claimed complexity estimate enters the proof format.
+The verifier reconstructs the source presentation from the input diagram,
+checks the slots, raw singleton occurrences, distinctness, and dependency
+acyclicity, reconstructs the definitions independently, and verifies the
+terminal presentation. The existing literal checker and compressed checker
+both understand the resulting certificate. The baseline checker accepts
+the new certificates without modification.
+
+At rank one, exponent zero is exactly the empty word in the free group
+on the surviving generator. Every retained relator slot must have
+exponent zero; a selected collection of donor equations is insufficient.
+Once the source-bound knot group has been proved isomorphic to
+$\mathbb Z$, the classical unknot characterization applies
+\cite{papakyriakopoulos}. The orbit index, by contrast, proves component
+queries for a supplied interval relation and has no direct knot-verdict
+hook in this delivery.
+
+The library interface enables this with \texttt{use\_group=True} and
+\texttt{group\_raw\_saturation=True} passed to \texttt{recognize}.
+The corresponding command-line switch is
+\texttt{--group-raw-saturation}; it also enables the group stage.
+The default remains false. Explicit false and an omitted option are
+checked against the pinned baseline for certificate and search-statistic
+identity. This compatibility claim concerns the tested deterministic
+source calls, not a universal equality of elapsed times.
+
+\subsection{A source family exposing a greedy donor obstruction}
+
+Consider the following abstract presentation, with $N\ge4$ encoded in
+binary:
+\[
+ \mathcal P_N=\langle x,y,z,a\mid
+ xyz,\; xza^{10},\; xa^{10},\; z^N,\;
+ (ya^{-10})^N\rangle.
+\]
+It presents $\mathbb Z$. The third equation gives $x=a^{-10}$;
+the second then gives $z=1$; the first gives $y=a^{10}$.
+The last two equations are redundant. These substitutions form an
+acyclic source batch with donor order
+\[
+ (R_3,x),\quad (R_2,z),\quad (R_1,y),
+ \qquad S=\{a\}.
+\]
+The maintained local greedy batch selector instead chooses
+$(R_1,x)$ alone on the supplied ordering. It commits the first donor to a
+generator needed by a better simultaneous assignment. The source closure
+planner recovers the full triangular solution without exploring
+substitution orders.
+
+The repeated powers make the distinction computationally visible. The
+grammar has size $O(\log N)$, while a raw substitution followed by
+normalization may create considerably more exact compressed-word work
+than the direct source batch. The experiment varies
+$\log_2 N\in\{8,64,512,2048,4096\}$ and charges source construction
+separately from search. The terminal exponent check validates all five
+slots. This family is an algebraic obstruction to a donor policy; no claim
+is made that its members are hard knot diagrams or that it witnesses the
+worst-case complexity of the full recognizer.
+
+\subsection{What one successful probe does not prove}
+
+There are three different completeness statements to keep apart. First,
+for a frozen source and fixed survivors, the closure theorem is complete
+for every raw singleton elimination order. Second, trying every singleton
+seed is complete for reaching rank one by that move class. Third, the
+mixed recognizer can transform the presentation by other certified moves
+and try again. The first two statements are proved here. No bound on the
+third process follows from them.
+
+Even when a full raw epoch can be replaced by one batch, selecting a
+different donor set may alter the subsequent reduced presentation and
+the producer's choices. Therefore the new option is a deterministic
+alternative search policy with an independently checked output. A finite
+resource allowance can lead it to finish when the previous policy stalls,
+or to spend extra work on unsuccessful queries. Both effects are measured
+below. Failure to find a raw plan is never reported as a nontrivial knot.
+
+The source criterion also does not identify the best transformed
+presentation. Free and cyclic reduction can expose singleton letters;
+Whitehead transformations can change the alphabet; proper-power
+arguments may invoke source-specific torsion-freeness. Each such move
+needs its own proof and cost bound. The main algorithmic gain is that
+there is no longer a reason to search different raw elimination orders
+inside one frozen epoch when the target survivor set is specified.

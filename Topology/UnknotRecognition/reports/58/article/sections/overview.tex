@@ -1,0 +1,229 @@
+\section{Problem, baseline, and the precise advance}
+\label{sec:overview}
+
+\subsection{What this continuation computes}
+
+Let $\mathcal T$ be a finite triangulation of a compact orientable
+three-manifold, and let $x\in\N^{7t}$ be an admissible normal vector, where
+$t$ is the number of tetrahedra. Write $F(x)$ for the associated properly
+embedded normal surface. Its coordinates are stored in binary. A single
+coordinate can therefore describe more normal discs than could be explicitly
+created in any feasible computation. Our output is the finite histogram
+\[
+ \Spec(x)(\chi,b,\epsilon)
+ =\#\{C\in\pi_0F(x):\chi(C)=\chi,\ |\pi_0\partial C|=b,
+                         \ C\text{ has orientability }\epsilon\},
+\]
+where $\epsilon$ distinguishes orientable and nonorientable components.
+Multiplicity is an integer field, never an instruction to repeat a row.
+For orientable components we also give $g=(2-\chi-b)/2$; for
+nonorientable components we give the crosscap number $k=2-\chi-b$.
+
+The mathematical constructions work in the stated orientable ambient setting
+whenever the requisite normal-arc systems are available. The delivered geometry
+validator has the narrower, inherited contract: a finite, compact, connected,
+orientable triangulated three-manifold with exactly one torus boundary.
+Generalized triangulations, repeated global vertices, and loop edges are allowed
+when the validator's manifold checks succeed. Closed components of the supplied
+surface are allowed. No irreducibility hypothesis is imposed.
+
+The distinction between \emph{type} and \emph{embedding} is essential.
+Abstract surface type does not determine an embedding or its peripheral data.
+The output does not assign an individual normal vector to each component,
+provide cutting instructions, or identify a disc as a compressing disc. In
+particular, a vertex-link disc and a meridian disc both have $(\chi,b)=(1,1)$.
+The existing componentwise boundary-homology query remains the appropriate
+operation for essential-disc counts on the supported torus boundary.
+
+\subsection{Repository state and reproducibility}
+
+The baseline is the public ProveIt repository at commit
+\begin{center}\small\baseline.\end{center}
+All source retrievals used this explicit ref after resolving the current main
+branch. The relevant subtree is
+\path{Topology/UnknotRecognition}. Its maintained \path{fast/fastunknot}
+package already contains exact recognition, compressed interval orbit counts,
+normal-surface validation, componentwise weighted queries, and several
+independent certificate checkers. The new work is additive: it introduces six
+runtime modules and three focused test modules without altering the existing
+recognition pipeline or its default choices. The accompanying manifest records
+the exact baseline and delivered-file hashes.
+
+Three earlier developments are particularly relevant. The maintained
+\path{synthesis/normal_multiplicity.tex} derives aggregate orientability and
+component-count formulas under common normal scaling. The maintained
+\path{synthesis/weighted_components.tex}, incorporating report 53, gives
+componentwise Euler/boundary-homology weights and a quadrilateral core for
+essential-disc counts. The \code{coordinates} mode of
+\code{normal\_component\_census} returns component normal vectors in dimension
+$7t$. Its cheaper \code{summary} mode records boundary \emph{intersection
+points}, not the number of boundary circles of each component
+\cite{proveit-baseline}.
+
+The new interface exposes the joint distribution of component topology, beyond
+the separate totals of Euler characteristic, boundary components, or
+orientability. Separate totals cannot determine this joint distribution.
+For example, two tori and a sphere disjoint from a closed genus-two surface
+both have two orientable components, Euler total zero, and no boundary, but
+their type spectra differ. The baseline can already recover the same abstract
+spectrum by composing full-coordinate recovery with a topology query for each
+distinct component coordinate row. Our benchmark retains this exact composed
+route as a reference.
+
+\subsection{Relationship to classical results}
+
+Agol--Hass--Thurston give polynomial encoded orbit counting, weighted orbit
+counting, and component-topology computation for normal surfaces. In their
+Corollary 17, the weights recover all $7t$ normal coordinates of a component;
+their orientability test uses doubled normal coordinates in an orientable
+ambient manifold \cite{aht}. Accordingly, neither the existence of a polynomial
+topology algorithm nor the normal-double orientability principle is claimed
+as new here. Our explicit refinement replaces coordinate recovery by a
+two-coordinate observer, proves a small interval representation for its
+boundary markers, inverts the resulting two histograms, and extends the
+existing numerical core to all abstract component types. Priority for this
+specific combination is not asserted; the primary-source comparison establishes
+the nearest classical baseline.
+
+The dimensions should not be mistaken for a universal speedup theorem.
+The two-coordinate approach requires a boundary transversal and two weighted
+surface queries, and the transversal can introduce more initial weight runs.
+An input on which coordinate recovery is already cheap may therefore favour
+the older route. The operation counts, the core-sensitive bound, and the paired
+measurements below make these tradeoffs explicit.
+
+\subsection{The global quasi-polynomial objective}
+
+The project's intended objective is a practical exact implementation with a
+quasi-polynomial worst-case recognition bound. We retain that goal without
+changing the meaning of the complexity variable: $n$ denotes crossing number
+for a knot-diagram algorithm, whereas $t$ and $B$ below describe a supplied
+triangulation and binary normal vector.
+
+There is also a quantitative distinction in the literature. Lackenby's 2021
+Oxford slides state a recognition bound
+\[
+ 2^{O((\log n)^3)}=n^{O((\log n)^2)}
+\]
+and describe a hierarchy depth of order $(\log n)^2$ \cite{lackenby-talk}.
+This belongs to the general quasi-polynomial class
+$2^{(\log n)^{O(1)}}$; it is weaker than the narrower target
+$n^{O(\log n)}=2^{O((\log n)^2)}$. His July 2026 preprint develops hierarchy
+algorithms but explicitly leaves some local operations insufficiently specified
+for a running-time estimate; Section 9 bounds loop counts in terms of hierarchy
+length and pattern complexity \cite{lackenby2026}. These sources do not supply
+a completed costed implementation of the announced accelerated hierarchy.
+
+The 2026 preprint also proves polynomial encoding and verification of
+essential-hierarchy certificates under its stated hypotheses (Theorem 14.1).
+That theorem is an important model for implementation; it does not give a
+quasi-polynomial deterministic discovery procedure for those certificates.
+The implementation tasks below should therefore build on its encoding
+result, with discovery and total execution cost tracked separately
+\cite{lackenby2026}.
+
+Our new census has a polynomial encoded bound for one supplied vector.
+This prevents an unnecessary expansion bottleneck inside a future hierarchy,
+but it cannot bound the number of candidate vectors visited or the total
+encoded size of successive cut manifolds. No complete recognizer in this
+package acquires a new general asymptotic bound.
+
+\subsection{Results at a glance}
+
+\begin{center}
+\begin{tabular}{p{0.29\linewidth}p{0.61\linewidth}}
+\toprule
+Operation & Proven and implemented result\\
+\midrule
+Original orbit representatives & Least points of all orbits in at most $G$
+intervals, for $G$ static gap intervals in a complete trace.\\
+Boundary distribution & A marker weight counts actual boundary circles inside
+each surface component.\\
+Full type spectrum & One boundary discovery and two weighted surface discoveries;
+weight dimension two; disconnected and one-sided cases included.\\
+Histogram inversion & At fixed weight dimension, ordered-map recovery uses
+$O(s\log(s+1))$ comparisons and $O(s)$ integer operations; zero has a
+separate equation.\\
+Coordinate core & Peel vertex links, divide by quadrilateral content, query the
+small core, and restore the full spectrum with parity-aware scaling.\\
+Evidence & Source-bound producer certificates, independently implemented replay,
+bounded Regina comparisons, mutations, and paired measurements.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Encoded normal surfaces and inherited primitives}
+\label{sec:model}
+
+\subsection{Normal coordinates and the size model}
+
+Each tetrahedron has four triangle types and three quadrilateral types. A
+normal vector is admissible if all entries are nonnegative integers, matching
+equations hold across glued faces, and at most one quadrilateral type is
+nonzero in each tetrahedron. The vector may be zero. We measure its numerical
+size by
+\[
+ B=\max\bigl(1,\max_i\bits(x_i)\bigr).
+\]
+The combinatorial triangulation encoding has size $O(t\log(t+1))$, and the
+coordinate encoding has size $O(tB)$. Let $N$ be the number of intersections
+with global triangulation edges. Since every normal disc has three or four
+corners, $N\le4\sum_i x_i$, and
+\[
+ \log(N+1)=O(B+\log(t+1)).
+\]
+None of the algorithms below has a loop bounded by $N$ or by $\sum_i x_i$.
+
+Let $\M(b)$ denote an upper bound for multiplying two $b$-bit integers.
+Additions, comparisons, division, gcd, histogram keys, and output multiplicities
+are charged at their binary cost. In particular, eliminating a large common
+factor from an orbit query does not eliminate the cost of reading that factor
+in the original input.
+
+\subsection{Interval pairings}
+
+An interval pairing identifies equal-length integer intervals by a translation
+or reflection. The mathematical universe is $[0,N)\cap\Z$. The inherited
+\code{IntervalPairing} stores its domain and image endpoints inclusively;
+all representative and weight intervals in this extension are half open.
+Thus a stored source interval $[a,b]$ becomes the weight interval $[a,b+1)$.
+The implementation and its tests keep this conversion explicit.
+
+The normal arc construction gives $O(t)$ interval pairings on the global
+edge-point universe. A connected orbit is exactly a connected surface
+component. Applying the same construction only to boundary faces and boundary
+edges gives another interval system whose orbits are boundary circles.
+The order on both universes is fixed by the same global edge orientations.
+This matters for one-vertex and loop-edge triangulations: vertex labels alone
+do not determine the order along an edge.
+
+We use the maintained AHT discovery engine and its independently replayable
+local trace. Its operations are identity deletion, reflection trimming,
+periodic merging, transmission, contraction of static intervals, and suffix
+truncation. We use only their established local correctness and polynomial
+encoded bound. For clarity, a static point has no remaining nontrivial pairing
+incident to it and is a singleton of the \emph{current} relation; it may stand
+for many original points removed earlier.
+
+\subsection{Weighted histograms}
+
+For an additive, piecewise-constant integer-vector weight $w$ on the point
+universe, weighted AHT returns
+\[
+ H(v)=\#\left\{O:\sum_{p\in O}w(p)=v\right\}.
+\]
+Overlapping input intervals add their weights. Output keys are unique vectors
+with positive integer multiplicities. Weight transport follows the local trace:
+deleted points transfer their weights to retained equivalent points, and a
+static contraction emits complete orbit weights. The existing independent
+checker verifies the exact relation, weight source, transport, and histogram.
+The extension uses this API directly; it does not substitute mere conservation
+of total weight for orbitwise correctness.
+
+For proofs involving a particular trace, let $E$ be its number of local events
+and let $G$ be the sum, over contractions, of the number of static gap intervals.
+Both count encoded records, not the numbers of represented points. With $k$
+initial pairings, the maintained reductions do not increase the pairing count,
+so each contraction has at most $2k+1$ static gaps; in particular
+$G\le(2k+1)E$. Polynomial trace length makes all the bounds involving $E,G$
+below polynomial in encoded input size.

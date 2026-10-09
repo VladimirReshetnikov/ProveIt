@@ -1,0 +1,152 @@
+\section{One-time compilation into component profiles}
+\label{sec:profiles}
+
+\begin{definition}[Profile census]
+For an $E$-orbit $O$, define
+\[
+ \profile(O)=(|O\cap J_0|,\ldots,|O\cap J_{m-1}|).
+\]
+The profile census $h_E$ maps a vector $\profile$ to the number of orbits
+with that vector. Only positive entries are stored. Write $s=|\supp h_E|$
+and $C=\sum_{\profile}h_E(\profile)$.
+\end{definition}
+
+A nonempty orbit has a nonzero nonnegative profile. For each atom,
+\begin{equation}
+ 0\le a_j\le\ell_j,
+ \qquad
+ \sum_{\profile}h_E(\profile)a_j=\ell_j.
+ \label{eq:mass}
+\end{equation}
+The multiplicity $h_E(\profile)$ is binary. A row can therefore describe
+$2^{16000}$ orbits without listing them. Equal profiles do not mean that the
+orbits are already identified.
+
+\subsection{Capacity-aware scalar weights}
+
+Choose integer radices $R_j>\ell_j$, set
+\[
+ u_0=1,\qquad u_j=\prod_{i<j}R_i,
+ \qquad P=\prod_{j<m}R_j,
+\]
+and assign scalar weight $u_j$ to every point of $J_j$.
+
+\begin{theorem}[Carry-free profile compilation]
+\label{thm:packing}
+The sum of these scalar weights on an orbit is
+\[
+ z(O)=\sum_{j<m}a_j(O)u_j\in[0,P).
+\]
+Successive quotient--remainder division by $R_0,R_1,\ldots,R_{m-1}$ recovers
+$\profile(O)$ uniquely. Consequently one exact scalar weighted orbit
+histogram determines the entire profile census, with the same
+multiplicities. This holds for every interval relation, including relations
+with reflections and static points.
+\end{theorem}
+
+\begin{proof}
+For any profile satisfying \eqref{eq:mass}, its $j$th coordinate is less than
+$R_j$. Reducing $z$ modulo $R_0$ therefore gives $a_0$; subtracting $a_0$ and
+dividing by $R_0$ produces the same representation starting with $a_1$.
+Induction decodes every coordinate. The usual mixed-radix identity
+$\sum_j(R_j-1)u_j=P-1$ bounds $z$. Conversely encoding the decoded digits
+reconstructs $z$, so two distinct profiles cannot collide. Summing scalar
+weights over an orbit gives exactly the displayed formula regardless of
+which pairing descriptions generated that orbit. Grouping equal scalar sums
+therefore groups exactly the same orbits as grouping equal profiles.
+\end{proof}
+
+Two implementations are supplied. The \texttt{mixed} mode sets
+$R_j=\ell_j+1$. The \texttt{binary} mode sets
+\[
+ b_j=\lceil\log_2(\ell_j+1)\rceil,
+ \qquad R_j=2^{b_j},\qquad W=\sum_{j<m}b_j.
+\]
+Binary mode uses fixed-width nonoverlapping fields, with $W$ total bits.
+A decoded field exceeding $\ell_j$ is invalid even if it fits its field.
+Both modes reject negative scalar sums and nonzero leftover high digits.
+
+\begin{proposition}[Packing width and its limited optimality]
+\label{prop:width}
+Mixed-radix packing uses the integer range
+$[0,\prod_j(\ell_j+1))$. Any injective code for the \emph{entire} box
+$\prod_j\{0,\ldots,\ell_j\}$ needs at least
+$\lceil\log_2\prod_j(\ell_j+1)\rceil$ bits in the worst case. Binary mode
+uses less than $m$ extra bits beyond the unrounded logarithmic bound, and
+$W\le mB$.
+\end{proposition}
+
+\begin{proof}
+The box has exactly the stated product cardinality. An injective map to
+$b$-bit strings needs $2^b$ at least that cardinality. Mixed-radix encoding
+is a bijection between the box and its integer range. Rounding each of its
+$m$ logarithmic contributions upward adds less than $m$ in total. Finally
+$\ell_j\le N$ implies $b_j\le B$.
+\end{proof}
+
+This is not an information lower bound for a particular source census,
+whose support can be far smaller than the full box. Nor is it a claim that
+packing beats vector arithmetic on every machine. A scalar of width $W$
+can make multiplication and division more expensive than a short sparse
+vector operation. The engineering hypothesis is reduced tuple and dispatch
+overhead in some weighted-replay workloads; native measurements are still
+required before selecting a default mode.
+
+\begin{example}[Nonuniform capacities]
+Take lengths $(2,5,1)$. Mixed mode has radices $(3,6,2)$ and units $(1,3,18)$.
+The profile $(2,4,1)$ has code $32$. Decoding gives remainders $2,4,1$.
+The full capacity box has $36$ elements and needs six bits. Binary mode has
+widths $(2,3,1)$, also six bits. Using the common universe bound $N=8$ for
+every field would instead allocate twelve bits. The example illustrates
+capacity savings, not a measured native timing claim.
+\end{example}
+
+\subsection{Why the compiled table has polynomial encoded size}
+
+Weighted AHT applied to the $m$ basis-vector weight runs gives a compressed
+profile output in polynomial time in $k,m,B$. Applying it instead to the
+scalar weights above has one coordinate and weight bit sizes $O(W+\log m)$,
+again polynomial in $k,m,B$ \cite{aht}. Decoding and coalescing its polynomial
+number of output runs yields $h_E$. Thus the fact that $s$ is polynomially
+bounded for interval-encoded input follows from classical weighted AHT; it
+is not a new sparsity assumption introduced to make the theorem work.
+
+The article deliberately leaves the underlying polynomial as
+$P(k,m,B)$ rather than guessing a small exponent for the maintained code.
+In particular, a polynomial theorem does not mean that repeated compiled
+queries are costless or that one scalar call has constant-size arithmetic.
+The software records native statistics without interpreting an AHT cycle
+allowance as a bound on all bit operations.
+
+\subsection{Reusing the table for observations}
+
+Let $w_j\in\Z^d$ be a fixed weight vector on atom $J_j$. Define
+\[
+ A_w(\profile)=\sum_{j<m}a_jw_j.
+\]
+Then the component-weight histogram is
+\begin{equation}
+ H_w(v)=\sum_{\profile:A_w(\profile)=v}h_E(\profile).
+ \label{eq:observe}
+\end{equation}
+This formula permits signed weights, including Euler-characteristic charges
+when their geometric ownership was previously validated. It costs $O(smd)$
+integer multiplications and additions plus grouping, with no orbit search
+and no trace transport. Packing is used only for nonnegative source counts;
+signed weights are applied after decoding.
+
+More generally, any explicitly computable predicate $F$ on a profile gives
+$\sum_{\profile:F(\profile)}h_E(\profile)$. Port incidence is recovered by
+checking whether $\sum_{j\in A}a_j$ is positive. Several observations may be
+performed together as a vector map, preserving their joint distribution.
+Computing separate marginal histograms and later combining them generally
+loses correlations; the joint profile table avoids that loss.
+
+\begin{example}[Why marginal caches do not suffice]
+A table with profiles $(1,1)$ and $(2,2)$, each of multiplicity one, has the
+same two coordinate marginals as the table with profiles $(1,2)$ and $(2,1)$.
+Both have atom lengths $(3,3)$. The observation $a_0-a_1$ distinguishes them:
+the first gives two zeroes and the second gives $-1$ and $1$. Full joint
+profiles, rather than independent atom marginals, are needed for universal
+observation reuse.
+\end{example}

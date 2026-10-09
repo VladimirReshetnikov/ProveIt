@@ -38,24 +38,24 @@ theorem rel_four_on_four_walk_set {V : Type*} [Fintype V] [Nonempty V]
     (R : Nat → V → V → Prop) (hsym : ∀ a b, R 1 a b → R 1 b a) {c δ : Real} (hd : 0 < δ)
     (hedges : δ * (Fintype.card V : Real) ^ 2 ≤
       ∑ x : V, ((graphNeighbours (R 1) x).card : Real))
-    (hWT : ∀ i x y, c * (Fintype.card V : Real) ≤
+    (hWT : ∀ i, i + 1 ≤ 4 → ∀ x y, c * (Fintype.card V : Real) ≤
       ((Finset.univ.filter fun z => R i x z ∧ R 1 z y).card : Real) → R (i + 1) x y)
     (hc : 8 * c ≤ δ ^ 5 / 16384) :
     ∃ T : Finset V, 3 * δ * Fintype.card V / 8 ≤ (T.card : Real) ∧
       ∀ u ∈ T, ∀ v ∈ T, R 4 u v := by
   obtain ⟨T, hT, hwalk⟩ := exists_dense_four_walk_set (R 1) hsym hd hedges
   refine ⟨T, hT, fun u hu v hv => ?_⟩
-  have hWT' : ∀ i x y, c * (Finset.univ : Finset V).card ≤
+  have hWT' : ∀ i, i + 1 ≤ 4 → ∀ x y, c * (Finset.univ : Finset V).card ≤
       (((Finset.univ : Finset V).filter fun z => R i x z ∧ R 1 z y).card : Real) →
       R (i + 1) x y := by
-    intro i x y h
-    exact hWT i x y (by simpa only [Finset.card_univ] using h)
+    intro i hi x y h
+    exact hWT i hi x y (by simpa only [Finset.card_univ] using h)
   have hcount : δ ^ 5 / 16384 * ((Finset.univ : Finset V).card : Real) ^ 3 ≤
       chainCount (R 1) Finset.univ 3 u v := by
     rw [chainCount_three_eq, Finset.card_univ]
     have := hwalk u hu v hv
     linarith
-  exact rel_of_chainCount R Finset.univ hWT' 3 u v (by positivity)
+  exact rel_of_chainCount R Finset.univ hWT' 3 u v (by norm_num) (by positivity)
     (by norm_num; linarith) hcount
 
 end LeanProofs.GowersSzemeredi

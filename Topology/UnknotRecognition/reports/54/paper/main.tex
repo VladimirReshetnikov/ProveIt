@@ -1,0 +1,102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,aliascnt}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[hidelinks,pdfusetitle]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,aboveskip=10pt,belowskip=10pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Compiled profiles and port quotients}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\Census}{\operatorname{Census}}
+\newcommand{\Cone}{\operatorname{Cone}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\cost}{\mathsf{Cost}}
+\newcommand{\profile}{\mathbf a}
+\title{\textbf{Compiled Component Profiles\protect\\and Event-Driven Port Quotients}\\[7pt]
+\large Exact local acceleration toward quasi-polynomial unknot recognition}
+\author{Research contribution prepared for the ProveIt project\\
+\small Mathematical development and reference software prepared with ChatGPT}
+\date{8 October 2026\\[4pt]\small Repository baseline: \texttt{1fab6d945be5}}
+\hypersetup{pdftitle={Compiled Component Profiles and Event-Driven Port Quotients},pdfauthor={Research contribution for ProveIt; prepared with ChatGPT}}
+\begin{document}
+\maketitle
+\begin{abstract}
+The maintained ProveIt unknot-recognition project already contains exact
+weighted interval-orbit computations, sparse component incidence, and
+componentwise normal-surface statistics. We develop a different continuation:
+compile a supplied interval relation once into the multiplicities of its
+source-atom profiles, then reuse this census for additive observations and
+monotone full-port identifications. A capacity-aware scalar encoding recovers
+the complete profile census through one weighted orbit call. A
+multiplicity-aware incidence graph computes subsequent quotients without
+expanding components, and its incremental implementation scans each support
+edge at most once during a monotone phase.
+
+The central structural result is a sharp height bound: on $m$ fixed nonempty
+source atoms, at most $2m-1$ full-port coning operations can change the
+component partition. These operations form a commutative idempotent action.
+Consequently a straight-line program containing binary repetitions admits
+compressed final-state and prefix evaluation, a first-threshold search with
+at most $g+1$ state trials for $g$ grammar nodes, and enumeration of every
+count-changing step in $O((h+1)g)$ trials, where $h\le 2m-1$. Large step indices
+remain binary integers; their bit costs are included.
+
+We also prove an exact observational-equivalence characterization and give
+a four-point obstruction to extending the cache to arbitrary pointwise
+attachments. The package includes independent graph and grammar replay,
+25 passing test methods, 9,338 exhaustive finite coning cases, randomized
+checks, and controlled compressed-program measurements. Native weighted-AHT
+integration is supplied as an adapter and an explicit unrun gate, not claimed
+as an executed production benchmark. These are local algorithmic results;
+no general quasi-polynomial unknot-recognition bound is established.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+\input{01_context}
+\input{02_profiles}
+\input{03_quotients}
+\input{04_programs}
+\input{05_certificates}
+\input{06_complexity}
+\input{07_validation}
+\input{08_research}
+\appendix
+\input{09_artifacts}
+\input{references}
+\end{document}

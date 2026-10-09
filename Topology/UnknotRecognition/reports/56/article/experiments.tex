@@ -1,0 +1,218 @@
+\section{Verification and measured performance}
+\label{sec:experiments}
+
+The experiments answer four different questions: whether the mathematical
+conditions agree with independent finite oracles, whether new production
+certificates pass the old checkers, how much work the new local operations
+save, and whether those savings survive the surrounding recognition
+pipeline. These questions have different test populations and timing
+boundaries. Their results must not be pooled into one speedup figure.
+
+\subsection{Evidence and measurement protocol}
+
+All reported measurements use Python 3.12.14 in the supplied Linux
+environment. They are observations from one environment, without a claim
+of dedicated hardware or machine-independent milliseconds. The archive
+retains exact inputs, fixed random seeds, shuffled call orders, every
+measured sample, excluded warmups, work counters, reasons for resource
+exhaustion, and hashes of the source modules actually loaded. The numerical
+tables and figures are generated from these records.
+
+The group benchmarks load the pinned package and the changed package
+under separate module names in one process. Each timed call constructs a
+fresh diagram and search state. Three arms compare the baseline, the new
+code with saturation disabled, and the new code with saturation enabled.
+There is one excluded warmup and five measured rounds with shuffled
+orders. The disabled arm detects effects unrelated to the new policy; the
+abstract kernel also has an exactly identical ordinary-search control.
+The two orbit experiments instead use seven measured rounds and identical
+function controls, with their precise preparation boundaries stated below.
+
+Elapsed times are medians of complete calls. A reported ratio is the median
+of the within-round baseline/new ratios, so it need not equal the quotient
+of the two displayed medians. A ratio is supplied only if all measured
+pairs reach the same conclusive result. An exhausted work, node, or time
+allowance is not a completion time. Its observed elapsed time remains in
+the raw record, but never becomes a speedup denominator. Small percentage
+differences should be read alongside the control variation.
+
+\subsection{Independent checks and compatibility}
+
+The raw theorem has the independent exhaustive and randomized checks in
+Section~\ref{sec:raw-epoch-theorem}. Across the four matrix sizes, there
+are 85,303 matrices, with no disagreement between permutation permanent,
+complete raw pivot search, and source peeling. This is independent
+computational corroboration of the proof, not its replacement.
+
+The production source audit contains 102 actual diagrams: 80 seeded
+held-out braid closures and 22 maintained corpus fixtures. Each is run
+through four arms: pinned baseline, omitted option, explicit false, and
+enabled saturation. Under the common two-million-work producer and replay
+allowances, every
+arm returns 61 positive group certificates and 41 inconclusive results.
+The baseline and both disabled variants have identical certificates;
+the omitted and explicit-false variants have identical search statistics.
+No new status disagreement occurs.
+
+For each positive result from the baseline or enabled producer, both the
+pinned and current compressed source checkers are called. Thus 122 proof
+instances undergo 244 compressed source replays. Sources with at most
+16 crossings also undergo both literal replays, giving 236 literal checks.
+All 244 altered source bindings are rejected. The enabled producer emits
+the already supported version-eight format on 42 of these sources.
+Additional integration tests disable the producer's planner and compiler
+during verification, exercise strict option types and cancellation, and
+check successful group results on 50 seeded small diagrams against the
+full reduced Khovanov calculation.
+
+The pinned source suite passes 1,090 tests. The final integrated suite
+passes 1,114 tests; its complete log is supplied. The
+three new test files exercise the saturation producer, its pipeline
+integration, and the orbit index. Tests of unrelated reference algorithms
+retain their exact pinned dependencies in the archive. Earlier setup
+failures caused by initially missing reference files are retained
+separately from the completed baseline and final logs.
+
+\subsection{Raw source saturation on the algebraic obstruction family}
+
+The family $\mathcal P_N$ in Section~\ref{sec:integration} isolates the
+donor-choice issue. Source construction is outside the timer; the entire
+ordinary or saturation-enabled search is inside. Every successful endpoint
+is checked, and all residual rows are retained. Each arm receives two
+million search-work units after construction. Table~\ref{tab:raw-kernels}
+reports all five exponents.
+
+\begin{table}[htbp]
+\centering
+\caption{Abstract cyclic presentations $\mathcal P_{2^b}$. Times are
+milliseconds. A dash means the ordinary search did not complete within
+the common work allowance; no ratio is assigned to that pair.}
+\label{tab:raw-kernels}
+\input{tables/raw_kernels}
+\end{table}
+
+At $b=64$, the ordinary and saturation medians are 321.108 and 0.650 ms;
+the paired ratio is 498.136. Charged search work falls from 580,732 to
+2,026, and reported arena nodes from 1,950 to 304. This large effect
+therefore has an exact work explanation in addition to the timer result.
+At $b=512,2048,4096$, all five ordinary and control runs exhaust their
+allowance; all saturation runs finish, with medians 3.218, 13.043, and
+27.200 ms. These observations demonstrate successful processing of the
+compressed family at those budgets. They do not provide a finite speedup
+ratio against an unfinished search, or an asymptotic lower bound on the
+ordinary algorithm.
+
+An initial pilot used a much larger 100-million-work allowance. Its
+512-bit block ran long enough to make the remaining planned blocks
+impractical for this comparison. That pilot was explicitly aborted and
+its partial log, driver, and termination metadata were retained. All
+headline kernel values come from the uniform two-million-work final run;
+no successful pilot time is silently combined with a smaller-budget
+failure. A frozen initial-candidate snapshot and its completed
+smaller-budget run are also preserved for the guard comparison.
+
+\subsection{Complete group-stage calls on diagram inputs}
+
+The source-stage benchmark times diagram validation, presentation
+reconstruction, compressed search, and independent certificate
+verification. It disables the elapsed-time allowance, supplies ten million
+work units separately to the producer and replay, and retains the common
+100,000-node cap. Displayed work counters concern the producer. Six elementary
+unknot braid closures with 15 through 511 crossings are mechanism
+controls. The remaining 22 inputs are the maintained corpus, including
+the surviving diagram fixtures and named nontrivial knots. The full
+table appears in Appendix~\ref{app:full-tables}.
+
+On the elementary closure with 255 crossings, complete group-stage time
+falls from 1,036.076 to 22.204 ms, with paired ratio 46.720.
+Reported search work falls from 1,858,854 to 94,861 and nodes from 98,170
+to 2,534. At 511 crossings the old and disabled arms exhaust the node
+cap, while the enabled arm completes in a median 44.922 ms using
+189,965 work units and 5,094 nodes. The absence of a completion ratio
+for that case is intentional. Figure~\ref{fig:raw-stage} shows the
+elapsed and charged-work observations without fitting an asymptotic law.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/raw_stage.pdf}
+\caption{The complete group stage on elementary unknot closures.
+Both source reconstruction and independent replay are included in
+elapsed time. The marked old 511-crossing observation is node-censored.
+These are mechanism controls, not a general hard-knot distribution.}
+\label{fig:raw-stage}
+\end{figure}
+
+The maintained \texttt{unknot\_braid40} fixture improves from 22.536 to
+3.387 ms in this isolated source-stage call, with paired ratio 6.625.
+Other corpus cases show little benefit or regress. The paired ratios are
+0.891 for \texttt{hard\_unknot\_8} and 0.912 for \texttt{monster}.
+For \texttt{gordian}, the ratio is 1.010, too small to support a strong
+elapsed-speed claim given the controls, and the exact work actually
+increases. The source-stage benchmark cannot conclude knottedness when
+group simplification fails: several nontrivial fixtures correctly remain
+inconclusive in this positive-certificate stage.
+
+\subsection{The failed-probe overhead and its correction}
+
+The first candidate built a full support-incidence index before applying
+the exact first-firing rejection test. On \texttt{gordian}, 137 of 139
+queries failed this test, but 38,900 support incidences were nevertheless
+materialized. The candidate used 986,374 work units against the
+baseline's 789,805. Moving the guard before index construction reduces
+this to 852,357, with only two indices and 32 materialized incidences.
+The source audit confirms the same statuses and certificates as before.
+
+This change removes most of the measured unnecessary index work, while
+leaving an approximately 7.9\% work increase over baseline on this source.
+The final work counts on \texttt{survivor-00} are 14,150 baseline versus
+15,108 enabled; on \texttt{monster}, 5,357 versus 5,936. Both initial and
+final records are supplied. It would be misleading to publish the large
+algebraic-family speedup while omitting these failed-query costs.
+
+\subsection{The surrounding recognizer changes the conclusion}
+
+The full pipeline is tested on the 22 corpus fixtures with its normal
+filters, a one-second total allowance, a 0.15-second local group
+allowance, and the same remaining options for all arms. Every raw result
+includes the terminal method and evidence, so an earlier filter's success
+cannot be attributed to the new group producer. All conclusive outcomes
+agree between arms. The full table is in
+Appendix~\ref{app:full-tables}.
+
+For example, \texttt{unknot\_braid40} is settled by the existing
+genus-zero Seifert certificate before the group stage. Its full pipeline
+times are about 0.21 ms in both arms, despite the large improvement when
+the group stage is forced in isolation. The fixture \texttt{gst} is
+rejected by the existing Alexander obstruction in about 1.3 ms, whereas
+its positive-only group search stalls without a certificate. On
+\texttt{gordian}, both pipelines reach the total time allowance and return
+\texttt{UNKNOWN}; neither is credited with recognition.
+
+For the survivor fixtures, enabled/full-pipeline paired ratios are mostly
+slightly below one. The \texttt{monster} ratio is 0.903, corresponding
+to medians 2.993 and 3.297 ms. Thus this corpus does not demonstrate a
+broad improvement in full recognition speed. The new option remains
+explicitly opt-in. Its supported benefit is complete raw reachability
+and substantial improvement on some source-stage workloads, with the
+observed regressions retained for future scheduling research.
+
+\input{orbit_results}
+
+\subsection{What these measurements support}
+
+The strongest conclusions combine mathematical proofs with exact
+representation or work counts: all raw orders reduce to a source closure
+query; repeated component requests reuse one checked trace; minimum
+representatives occupy at most the recorded number of static gaps.
+Large local elapsed improvements are consistent with those mechanisms.
+The same evidence rejects a claim that every diagram, every query count,
+or the complete recognizer necessarily becomes faster.
+
+The recent ReAPR study is relevant to the next empirical comparison:
+its authors report success on a much larger public collection of unknot
+diagrams, while treating general effectiveness as an open mathematical
+question~\cite{reapr}. That study uses different methods and hardware.
+We have not run its full corpus or its implementation here, so no
+cross-paper speed ranking is made. A future complete-recognizer study
+should include those inputs and comparable certified diagram
+simplification strategies, alongside adversarial compressed presentations.
