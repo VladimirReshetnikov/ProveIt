@@ -5230,12 +5230,131 @@ above the allowed `exp(−Θ(r log r))`.
 
 So, as far as counts and exponents go, a polynomial-bound deep structure
 fits the dimension-three budget with enormous room. This is an
-order-of-magnitude comparison, not a formal inequality. The formal
-connection still needs the Part J restatement on the polynomial lift,
-with `IsVarietyPieceB` bounds in place of `milicevicBound`
-(`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
-already names. It also assumes that the remaining Milićević steps lose
-no more than polynomially in their inputs.
+order-of-magnitude comparison, not a formal inequality. It also assumes
+that the remaining Milićević steps lose no more than polynomially in
+their inputs. *Correction (J.5b below):* the formal connection does not go
+through Part J, whose `PolyBoundedControl` belongs to the cubic-stackable
+route. It goes from the variety chain's decomposition to
+`Section16BudgetedPieceAt 3`. That link is blocked by an unbounded constant
+that this order-of-magnitude count does not see.
+
+### J.5b The variety route's last link needs explicit partition constants (2026-10-09)
+
+**Which theorem is missing.** The variety chain ends at
+`exists_ceiling_free_variety_relation_decomposition`, whose pieces are
+`MultiplyLinearWith` with the graph bound and exponent of
+`Proofs16VarietyCeilingFreeDecomposition`. Nothing consumes it yet. Its
+target is `Section16BudgetedPieceAt 3`, which
+`theorem_16_2_of_budgeted_piece` turns into `Theorem162At 3`. That is the
+same glue `theorem_16_2_at_two` uses. For each `(γ, θ)` it asks for a
+mass `η` and a parameter `1 ≤ s ≤ η·s(θ,γ,3)`, with pieces
+`MultiplyLinear γ s`. Part J and its `PolyBoundedControl` are not on this
+path. They serve the cubic-stackable route, whose
+`cubicBaseExponent q σ = 2⁻²⁷σ³/q⁴` is explicit.
+
+**What blocks it.** The chain's exponents carry six constants. All of
+them come from bare `∃ K p` statements, which originate in
+`OAI.Erdos3.simultaneous_monomial_recurrence` (via
+`exists_uniform_modular_monomial_recurrence k` and
+`exists_simultaneous_multilinear_partition_bound k`). There are two
+sources:
+- *The bilinear variety partition* (`k = 2`, monomial degrees 1–2). This is
+  `MultilinearDiameterPartition`, instantiated only in
+  `Proofs16OscillationPartitionInst`. It supplies the variety constants
+  `Cv, pv` (slice provider) and `Cs, ps` (spectrum restriction). For
+  example, the deep cover exponent is
+  `1/(1024·p²·(4C+18)·(milicevicBound D c + 2)^17)`.
+- *The polynomial lift to dimension three* (`k = 3`, degrees 1–3). This
+  runs through `exists_all_scale_polynomial_multilinear_cover 2`, the
+  polynomial Lemmas 16.6/16.9 and
+  `exists_simultaneous_commonDiff_partition_bound 2`, which calls
+  `exists_simultaneous_multilinear_partition_bound 3`. It supplies the
+  decomposition's `C, p`.
+
+`MultiplyLinear γ s` needs the width exponent `E ≥ c(s⁻¹ρ,γ,3)^s`, that is
+`s·2^{2^{11}}·log(s/(γρ)) ≥ log(1/E)`. Here `log(1/E) ≥ log(4C+18)`. So `s`
+must grow with `log C`. Since `C` is an arbitrary witness with no upper
+bound, `s ≤ η·s(θ,γ,3)` cannot be derived at `γ = θ = 1`, where the
+right-hand side is the fixed number `η(1,1)·2^{2^{512}}`. The budget's
+size does not matter: any opaque constant in the exponent blocks the
+comparison. This holds for every bound function. It is independent of `D`,
+of `Proofs16DeepBoundDomination`, and of whether deep structure is proved.
+
+Dimension two avoids it. Its cubic route (`Proofs16DimensionTwo`) uses only
+explicit partitions, and its family count `section16BaseFamilyBound` is
+polynomial. So the exponential-in-count width of the explicit Lemma 16.1
+is affordable there.
+
+**Ways out, in order of cost.**
+1. *Explicit simultaneous recurrences in degrees ≤ 3*: explicit `K, p` for
+   `simultaneous_monomial_recurrence j`, `j ≤ 2`. Candidates are Lau's
+   fully explicit bound (arXiv:2407.01611; see J.3) or an explicit
+   re-proof of the OAI theorem. Every exponent in the chain stays
+   unchanged, and both sources are cleared at once. This is the only
+   option that clears the lift.
+2. *Gowers's own Lemma 16.1, for the bilinear source only*:
+   `lemma_16_1_holds` is proved with explicit constants. Its width
+   exponent `K^(−2^(k+1)·q)` is exponential in the number `q` of forms.
+   For the variety partition, `q` is the rank `R`, polynomial in `Bnd`, and
+   `exp(−O(R))` fits the budget by the J.5-revisited count. For the lift it
+   does not. There `q ≈ r·Q` counts slice graphs, `Q ≈ exp(Bnd)`, and a
+   width `exp(−exp(poly))` is far below the allowed `exp(−Θ(r log r))`.
+   This is the same reason Part J needs `PolyBoundedControl` (J.3). Using
+   Lemma 16.1 on the bilinear side would also mean restating
+   `section16FreimanVarietyExponent` and the exponents above it, which are
+   written for the shape `p(q+1)^8`.
+3. *Bypass the Freiman-variety cover*: show that variety pieces form a
+   `CubicStackableClass` and use Part J. This needs polynomial counts,
+   which variety pieces do not have (`exp(Bnd)`), unless J.3's explicit
+   recurrence is proved first. That brings back option 1.
+
+So option 1 in degree 3 is the real requirement. The counts `exp(Bnd)`
+force a width exponent polynomial in the number of forms, and only an
+explicit Schmidt-type recurrence gives that.
+
+**Option 1 is cheaper than it looked.** The upstream constants are not
+opaque, only packaged. `weylBudget_polynomial_bound` takes
+`A = (weylBudgetPolynomial j).eval 1` and `d = natDegree + 1` of an explicit
+`Polynomial ℕ`. Every later constant is a closed formula:
+- `A·3^d` (`polynomial_weyl_inverse_power_bound`);
+- `schmidtRecurrenceBase C e` and `schmidtRecurrenceExponent e = 15(e+1)+23`;
+- the corpus's `1 + Σ` uniformization;
+- the `max`/product recursion of
+  `exists_simultaneous_multiaffine_partition_bound`.
+
+Each `∃` step's proof is generic in its hypothesis. So the constants can be
+named by restating the steps with fixed witnesses; nothing is re-proved.
+
+`Proofs05ExplicitSchmidtRecurrence` does this up to the partition theorem:
+- `schmidtWeylA/D/C` and `polynomial_weyl_inverse_power_interval_explicit`;
+- `schmidtMonomialK/P` and `simultaneous_modular_monomial_recurrence_explicit`;
+- `uniformSchmidtK/P` and `uniform_modular_monomial_recurrence_explicit`;
+- `multiaffinePartitionK/P` and
+  `simultaneous_multilinear_partition_bound_explicit k`.
+
+It imports the OAI port, so it is checked on the full-verification host.
+Two steps remain:
+1. *Thread the named constants up both chains.* Restate
+   `Proofs16OscillationPartitionInst` as
+   `MultilinearDiameterPartition (multiaffinePartitionK 2 4)
+   (multiaffinePartitionP 2 4)`. Restate
+   `exists_simultaneous_commonDiff_partition_bound 2` and the polynomial
+   Lemma 16.6/16.9 wrappers similarly.
+2. *Bound the numbers.* For example, `degree(weylBudgetPolynomial j)`
+   satisfies `deg_{j+1} = 4 + 6·deg_j`, so `deg = 1, 10, 64` for
+   `j = 0, 1, 2`. Then check `s ≤ η·s(θ,γ,3)` with these bounds. Given
+   the `2^{2^{512}}` room, crude bounds such as `A_j ≤ 2^{2^{20}}` should
+   suffice.
+
+The same session added `Proofs16DeepBoundDomination` (checked locally) and
+`Proofs16DeepBoundSlices` (host). They show that any bound function is
+dominated by `milicevicBound D` at a fixed density, and they give the
+padded slice-class cover from `MilicevicDeepEventuallyPrime Bnd` with `D`
+chosen per `(γ, θ)`.
+
+Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
+eventual, any-bound form) yields the decomposition with the unknown
+constants as parameters, but not `Theorem162At 3`.
 
 ### J.103. Exact additive richness from matched four-walks
 
@@ -5601,3 +5720,216 @@ The combined audit checks 7,139 public Gowers theorems in 5,133 modules
 approved axioms. The source ledger is identical at 115 companions and
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement.
+
+### J.107. Removing all intermediate domains from word identities
+
+**Verified 2026-10-09.** Five modules turn J.106's recursive local map
+identities into identities on only the anchor and output Bohr domains,
+with explicit parameters for every fixed word length.
+
+`Proofs16ColumnWordDomains` flattens a word into `columnWordEntries`
+and proves that its length is `3*k` for a word of `k` triples. Its
+alternating list evaluation is exactly `columnWordEval`. The same
+module defines `columnWordAux`: at each splice it records only the old
+triple's last entry and the old word's first entry, followed by the
+auxiliary entries of the recovered shorter word. A representation of
+`a :: as` therefore has exactly `2*as.length` auxiliary entries. This is
+smaller than counting every vertex of every recursive triple and
+connecting quadruple separately.
+
+All auxiliary entries of a valid representation lie in `B`.
+`columnWordDomain_of_entries_aux` proves that the anchor, output, and
+auxiliary constraints imply the full recursive `columnWordDomain`.
+The proof observes that the connecting quadruple's other two entries
+are output entries, while its two old entries are precisely the two
+new auxiliary entries. No further intermediate constraints are needed.
+
+`Proofs16ColumnListSpectrum` forms the union of the column spectra for
+a finite list. If every spectrum has cardinality at most `d`, the union
+has cardinality at most `length*d`. Membership in its Bohr set is
+exactly membership in every listed column's Bohr set. Alternating list
+evaluations preserve Freiman linearity and normalization. In particular,
+the difference between the anchor map sum and output map sum is
+Freiman-linear on the union of the anchor and output spectra.
+
+`column_word_identity_remove_aux` applies the prime-target
+frequency-removal theorem to this difference. Write `k = as.length`,
+so the represented anchor list has `k+1` terms. The two rank bounds are
+
+```
+D = 4*(k+1)*d,    E = 2*k*d.
+```
+
+The first counts the anchors and the `3*(k+1)` output entries. The
+second counts the auxiliary entries. Given `0 < r <= rho`, set
+
+```
+K = ceil(4/rho)^D * ceil(1/r)^(D+E),
+s = (rho/2)/K.
+```
+
+If the prime modulus satisfies `N > K`, the output map sum equals the
+anchor map sum whenever the argument belongs to the Bohr sets of the
+anchors and output entries at radius `s`. No auxiliary spectrum appears
+in this conclusion. The proof first obtains zero on the intersection
+with the auxiliary constraints at radius `r`, then uses
+`freiman_zero_remove_frequencies` once. The counts of representations
+are unaffected.
+
+`ColumnWordIdentity` packages exactly this conclusion, without recovered
+intermediate domain assumptions. The auxiliary rank bound is `2*k*d`,
+rather than the preliminary `8*(k+1)*d` estimate from counting every
+recursive domain column.
+
+`Proofs16ColumnWordIdentityParameters` specializes these parameters to
+J.106's global construction. It defines
+
+```
+globalColumnWordIdentityRadius alpha k
+  = refinementKernelRadius (4*(k+1)*d) (2*k*d) rho r,
+globalColumnWordIdentityModulusBound alpha k
+  = max(globalColumnRichnessModulusBound alpha,
+        refinementKernelCap (4*(k+1)*d) (2*k*d) rho r + 1),
+```
+
+where `d = columnSpectrumCap (columnEightDensity alpha)`,
+`rho = globalColumnIdentityRadius alpha`, and
+`r = globalColumnRichnessRadius alpha`. Positivity of the new radius and
+the required comparison `r <= rho` are proved.
+
+`global_column_word_identities` constructs the dense core directly from
+the original dense bihomomorphism under this explicit modulus bound.
+It retains the witness system, spectrum rank, normalization, local
+linearity, core density, all triple and arbitrary-length representation
+counts, and full hereditary richness. Every represented word whose
+anchor list has `k+1` terms satisfies `ColumnWordIdentity` at the radius
+above. This finishes removal of the intermediate domains for any fixed
+length, with the stated length-dependent size and radius costs.
+
+**Remaining work.** The core does not yet satisfy all additive map
+identities, and no global bilinear organization or shifted agreement is
+claimed. These structural steps and the final numerical structure budget
+remain open. The earlier radius `r` is not claimed sufficient after
+removing auxiliary conditions; the new radius and threshold are part of
+the theorem.
+
+**Verification.** The global construction checks 231 modules. All 17 new
+named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. The combined audit checks 7,173
+public Gowers theorems in 5,138 modules (5,136 for the facade, including
+4,152 OAI modules). The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement. No upstream
+modules or Apache provenance changed.
+
+### J.108. Bounded local models on a common Bohr domain
+
+**Verified 2026-10-09.** Seven modules use J.107's word identities to
+construct a bounded family of normalized Freiman-linear models in every
+fixed alternating-value fibre of the dense core.
+
+`dense_family_packing` is a finite packing lemma. Suppose the families
+`F i` lie in a common finite universe of size at most `M`, each has
+size at least `delta*M`, and `delta,M > 0`. A subfamily of maximum
+cardinality among the pairwise disjoint subfamilies has an index set
+`J` with `|J|*delta <= 1`. Every original family intersects a selected
+family: otherwise it could be added to the packing. The proof counts
+the disjoint union directly. It requires no probability estimate or
+rounding loss.
+
+`columnWordValueFibre_card_le` proves that words of `k+1` triples with
+one fixed alternating value occupy at most `N^(3*k+2)` possibilities.
+Forget the first entry. The remaining two entries of the first triple
+and the tail determine that entry from the prescribed value, so this
+projection is injective. Thus the representation density in J.106 is a
+density within a single value fibre, with no extra factor of `N` lost
+when packing families.
+
+`ColumnListIdentity` compares the alternating map sums of two finite
+anchor lists on their own Bohr domains. A `ColumnWordIdentity` gives
+such a comparison with the flattened word. If two anchor families
+share a represented word, their map sums therefore agree after adding
+that word's domain constraints. `columnListIdentity_trans_shrink`
+removes the shared word spectra in one application of
+`freiman_zero_remove_frequencies`. For two anchor lists of `k+1` terms,
+the endpoint and auxiliary rank bounds are respectively
+
+```
+D = 2*(k+1)*d,    E = 3*(k+1)*d.
+```
+
+The comparison holds at `refinementKernelRadius D E rho r` when
+`N > refinementKernelCap D E rho r`, with no shared-word spectrum
+remaining in the conclusion.
+
+`column_model_packing` combines these facts. Families of density
+`delta` in one fixed-value fibre yield at most `1/delta` representative
+anchor lists, and each original anchor list has a local map identity
+with one representative. In particular, a nonempty fibre always has a
+selected model; empty fibres are allowed and require no model.
+
+`Proofs16FixedColumnWordFamilies` supplies a common finite word type
+for the application. A `ColumnAnchorTuple N k` is a first anchor and a
+`Fin k` tuple of remaining anchors. Its associated list has length
+`k+1`. A length equivalence transports the list's representation family
+into `ColumnWord N (k+1)`. The equivalence preserves cardinalities,
+entries, alternating values, and all proved map identities. This makes
+the packing argument apply to actual representation families without
+adding a new representation hypothesis.
+
+`columnModelSpectrum` is the union of the selected models' anchor
+spectra. If each anchor list has length at most `m`, it has rank at most
+`|J|*m*d`. All selected alternating map sums are normalized and
+Freiman-linear on this common Bohr domain at the original linearity
+radius. Membership in the common Bohr set supplies every selected
+model's own column constraints.
+
+`global_column_models` applies the construction directly to the
+original dense bihomomorphism. It keeps the original witnesses, local
+linearity and rank bounds, normalization, dense core, and fixed-length
+representation counts. For every value `c`, it constructs a set `J` of
+anchor tuples in the `c` fibre and a common spectrum `Gamma` with
+
+```
+|J|*delta <= 1,
+|Gamma| <= |J|*(k+1)*d,
+|Gamma|*delta <= (k+1)*d,
+```
+
+where `delta = globalColumnWordDensity alpha k`. Each tuple in the
+fibre agrees with a selected normalized Freiman-linear model on the
+intersection of its own column domains and the common Bohr domain.
+The identity comparing the two anchor lists is retained as well.
+
+The new radius and modulus bound are explicit:
+
+```
+s = refinementKernelRadius (2*(k+1)*d) (3*(k+1)*d)
+      (globalColumnIdentityRadius alpha)
+      (globalColumnWordIdentityRadius alpha k),
+N0 = max(globalColumnWordIdentityModulusBound alpha k,
+         corresponding refinementKernelCap + 1).
+```
+
+Both the dense core and these parameters are uniform in `c`. Setting
+`c = 0` gives a bounded family of local models for additive anchor
+relations.
+
+**Remaining work.** The selected models need not be zero. A further
+core-refinement argument must eliminate nonzero additive models before
+claiming all additive map identities on the core. Bilinear organization,
+shifted agreement, and the final numerical budget are still open.
+Neither the packing bound nor a common domain alone proves these steps.
+
+**Verification.** The focused global construction checks 238 modules.
+All 15 new named theorems pass individual axiom checks using only
+`propext`, `Classical.choice`, and `Quot.sound`. No upstream modules or
+Apache provenance changed. The incoming named recurrence constants and
+arbitrary-bound slice interfaces are included in the combined audit
+recorded below; their deep structure inputs remain hypotheses.
+
+The merged combined audit checks 7,223 public Gowers theorems in 5,148
+modules (5,146 for the facade, including 4,152 OAI modules), with the
+same three approved axioms. The source ledger remains identical at 115
+companions and five open entries, and the selected-port scope check
+passes. These counts do not certify fidelity to every printed statement.
