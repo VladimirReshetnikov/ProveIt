@@ -5606,8 +5606,19 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          level-16 zero relations of the column maps. Still to come:
          Proposition 6.1 analogues, Step 3 (robust Bogolyubov–Ruzsa)
          and Steps 4–6.
-4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
-   Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
+4. *Not done.* Proposition 6.1, robust Bogolyubov–Ruzsa (Step 3) and
+   Steps 4–6. The bridging statement is done: J.142 for the abstract
+   engine, and `global_column_word_system` for the original data. The
+   details follow below.
+5. *Proposed lanes (2026-10-09).*
+   - The peer, owner of J.142, continues with the Proposition 6.1
+     analogue for the exact ladder and with Step 3.
+   - This session takes Step 4 in `ℤ/N`. With bounded images on a
+     progression-indexed system, `freiman_small_image_zero` gives the
+     Bohr-respected (zero) relation directly, with no random characters.
+   - Also this session: the quantitative audit of each new global stage
+     against `theorem_16_2_at_three_of_eventually`.
+   - Either side may claim a lane differently by recording it here.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)
