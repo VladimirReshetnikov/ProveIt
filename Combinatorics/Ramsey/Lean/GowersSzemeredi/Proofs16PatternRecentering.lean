@@ -67,12 +67,12 @@ theorem pattern_bohr_of_recentered {N m : Nat} [NeZero N]
 /-- Fixed patterns on a dense row set give a dense set of centered
 parameters inside one common neighborhood. The geometric conclusion
 splits into at most 4ell constant and 2ell varying frequencies. -/
-theorem fixed_patterns_recentered {N m ell : Nat} [NeZero N]
+theorem fixed_patterns_recentered_radius {N m ell : Nat} [NeZero N]
     (A : Finset (ZMod N × ZMod N)) (V : Finset (ZMod N))
     (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
     (S : Fin m → Finset (ZMod N)) (J : Fin 4 → Finset (Fin m)) (z w : ZMod N)
-    {nu rho R eta : Real} (hnu : 0 < nu) (hV : nu * N ≤ V.card)
-    (hrho : 0 ≤ rho) (hR : 0 ≤ R) (heta : 0 ≤ eta)
+    {nu rho sigma R eta : Real} (hnu : 0 < nu) (hV : nu * N ≤ V.card)
+    (hrho : 0 ≤ rho) (hsigma : 0 ≤ sigma) (hsr : sigma ≤ rho) (hR : 0 ≤ R) (heta : 0 ≤ eta)
     (hJ : ∀ i, (J i).card ≤ ell)
     (hS : ∀ i, ((S i).card : Real) ≤ R)
     (hB : ∀ i, IsBHomomorphism (E i) (bohr (S i) rho) (L i))
@@ -80,8 +80,8 @@ theorem fixed_patterns_recentered {N m ell : Nat} [NeZero N]
     (hgeom : ∀ y ∈ V, ∀ d ∈ bohr (patternFrequencies L J y z w) eta, (d, y) ∈ A) :
     ∃ (T F W : Finset (ZMod N)) (a : ZMod N) (psi : Fin m → ZMod N → ZMod N),
       (T.card : Real) ≤ (2 * ell : Nat) * R ∧ F.card ≤ 4 * ell ∧
-      (0 : ZMod N) ∈ W ∧ W ⊆ bohr T rho ∧
-      nu * (bohr T (rho / 2)).card ≤ (W.card : Real) ∧
+      (0 : ZMod N) ∈ W ∧ W ⊆ bohr T sigma ∧
+      nu * (bohr T (sigma / 2)).card ≤ (W.card : Real) ∧
       (∀ i ∈ J 0 ∪ J 2, FreimanHom 2 (bohr T rho) (psi i) ∧ psi i 0 = 0 ∧
         ∀ x ∈ bohr T rho, ∀ y ∈ bohr T rho, x + y ∈ bohr T rho →
           psi i (x + y) = psi i x + psi i y) ∧
@@ -99,7 +99,7 @@ theorem fixed_patterns_recentered {N m ell : Nat} [NeZero N]
     · exact ⟨v + z, (hdom v hv).1 i hi⟩
     · exact ⟨v + w, (hdom v hv).2 i hi⟩
   obtain ⟨T, a, C, psi, hT, ha, hCV, hC, hdiff, hpsi⟩ :=
-    selected_common_bohr_cluster (J 0 ∪ J 2) E L S V hrho hnu hV hE
+    selected_common_bohr_cluster_radius (J 0 ∪ J 2) E L S V hrho hsigma hnu hV hE
       (fun i _ => hS i) (fun i _ => hB i)
   let W := C.image fun y => y - a
   have hWcard : W.card = C.card :=
@@ -129,14 +129,39 @@ theorem fixed_patterns_recentered {N m ell : Nat} [NeZero N]
     · intro i hi
       have hg := (hpsi i (Finset.mem_union_left _ hi)).2.2.2 (y + z)
         ((hdom y (hCV hy)).1 i hi) (a + z) ((hdom a (hCV ha)).1 i hi)
-        (by simpa only [add_sub_add_right_eq_sub] using hdiff y hy a ha)
+        (by simpa only [add_sub_add_right_eq_sub] using bohr_mono_radius T hsr (hdiff y hy a ha))
       rw [add_sub_add_right_eq_sub] at hg
       linear_combination hg
     · intro i hi
       have hg := (hpsi i (Finset.mem_union_right _ hi)).2.2.2 (y + w)
         ((hdom y (hCV hy)).2 i hi) (a + w) ((hdom a (hCV ha)).2 i hi)
-        (by simpa only [add_sub_add_right_eq_sub] using hdiff y hy a ha)
+        (by simpa only [add_sub_add_right_eq_sub] using bohr_mono_radius T hsr (hdiff y hy a ha))
       rw [add_sub_add_right_eq_sub] at hg
       linear_combination hg
+
+/-- The equal-radius specialization of simultaneous recentering. -/
+theorem fixed_patterns_recentered {N m ell : Nat} [NeZero N]
+    (A : Finset (ZMod N × ZMod N)) (V : Finset (ZMod N))
+    (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
+    (S : Fin m → Finset (ZMod N)) (J : Fin 4 → Finset (Fin m)) (z w : ZMod N)
+    {nu rho R eta : Real} (hnu : 0 < nu) (hV : nu * N ≤ V.card)
+    (hrho : 0 ≤ rho) (hR : 0 ≤ R) (heta : 0 ≤ eta)
+    (hJ : ∀ i, (J i).card ≤ ell)
+    (hS : ∀ i, ((S i).card : Real) ≤ R)
+    (hB : ∀ i, IsBHomomorphism (E i) (bohr (S i) rho) (L i))
+    (hdom : ∀ y ∈ V, (∀ i ∈ J 0, y + z ∈ E i) ∧ (∀ i ∈ J 2, y + w ∈ E i))
+    (hgeom : ∀ y ∈ V, ∀ d ∈ bohr (patternFrequencies L J y z w) eta, (d, y) ∈ A) :
+    ∃ (T F W : Finset (ZMod N)) (a : ZMod N) (psi : Fin m → ZMod N → ZMod N),
+      (T.card : Real) ≤ (2 * ell : Nat) * R ∧ F.card ≤ 4 * ell ∧
+      (0 : ZMod N) ∈ W ∧ W ⊆ bohr T rho ∧
+      nu * (bohr T (rho / 2)).card ≤ (W.card : Real) ∧
+      (∀ i ∈ J 0 ∪ J 2, FreimanHom 2 (bohr T rho) (psi i) ∧ psi i 0 = 0 ∧
+        ∀ x ∈ bohr T rho, ∀ y ∈ bohr T rho, x + y ∈ bohr T rho →
+          psi i (x + y) = psi i x + psi i y) ∧
+      (∀ t, (varyingPatternFrequencies psi J t).card ≤ 2 * ell) ∧
+      ∀ t ∈ W, a + t ∈ V ∧ ∀ d ∈ bohr F (eta / 2),
+        d ∈ bohr (varyingPatternFrequencies psi J t) (eta / 2) → (d, a + t) ∈ A := by
+  exact fixed_patterns_recentered_radius A V E L S J z w hnu hV hrho hrho le_rfl hR heta
+    hJ hS hB hdom hgeom
 
 end LeanProofs.GowersSzemeredi
