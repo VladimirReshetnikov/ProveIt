@@ -3194,3 +3194,18 @@ Reproduce the source/Regina/dual audit with
 comparison against all root extrema with the same driver in `benchmark` mode
 and `--rounds 9`. These timings measure the full candidate-construction and
 surface-replay pipeline, not complete knot recognition.
+
+Euler optimization now contracts strongly connected components of zero-slack
+constraints before routing flow. These components force relative potentials
+throughout the entire feasible face; one-way tight edges do not. Equivalent
+objective terms are combined, redundant constraints are removed, and two
+spanning trees lift the resulting dual to the original vertices. The existing
+arithmetic checker receives a full original-model certificate and is unchanged.
+If every component is a singleton, the solver retains its full-network path.
+No height or flow unit is expanded, including during dual reconstruction.
+The geometric worst-case bound remains polynomial; a forced-cycle family
+reduces from n-1 augmentations to zero with linear graph work for lifting.
+Reproduce the source comparison and cycle-family counts using
+`python -B -m normal_orbit_research.quotient audit --output OUTPUT.json`, and
+candidate-pipeline timings with `benchmark --rounds 5` in the same driver.
+The native recognition schedule and its default options remain unchanged.

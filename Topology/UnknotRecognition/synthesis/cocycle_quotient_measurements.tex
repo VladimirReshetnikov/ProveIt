@@ -1,0 +1,44 @@
+\subsection{Complete candidate-pipeline measurements}
+
+All 18 focused tests pass in 1.905 seconds, and all 1,223 maintained tests
+pass in 223.627 seconds. The source comparison and cycle-family audit takes
+35.539 seconds. The correctness audit and full suite partly overlap; these
+elapsed values are not paired performance measurements. Both the audit and
+benchmark pin 505 source files. The arithmetic dual checker, public Euler
+model construction, native recognizer and existing independent positive
+verifiers remain byte-identical to the preceding revision.
+
+The isolated timing experiment compares the old and new flow functions
+within the same complete candidate pipeline: source diagram, finite exterior,
+primitive cocycle, span optimization, Euler optimization, independent
+source-bound surface replay and certificate hash. Both arms include the same
+function-selection wrapper. The baseline module is loaded before timing.
+There is no local work cap and no early native witness short-circuit; these
+are candidate-pipeline measurements rather than full knot recognition.
+
+Five rounds randomize old, old A/A, new and new A/A calls for eight sources,
+following one warm-up round each. All 160 measured calls complete, with 32
+warm-ups; the run takes 45.746 seconds. No tests, audits, builds or commits
+overlap it. Per-arm Euler values, piece counts, operation counts and hashes
+are stable across rounds. The primary-arm medians and median paired ratios
+are as follows; the ratios need not equal quotients of the displayed medians.
+\begin{center}
+\small
+\input{tables/cocycle_quotient_benchmark.tex}
+\end{center}
+All eight selected pipelines improve, by paired factors from 1.128 to 1.670.
+The A/A medians range from 0.978 to 1.017. The smaller complete-pipeline gains,
+compared with the reduction in Euler guard work, include unchanged source,
+cohomology, span and verification costs. This evidence does not establish a
+uniform speedup on arbitrary indexed models: when no forced equality exists,
+the new preprocessing is additional linear work before the full solver.
+
+Contraction is now used inside the explicit Euler optimizer, with the
+singleton fallback described above. The default native recognition schedule
+remains unchanged, and there is no claim of a default-portfolio speedup.
+The update improves exact optimization within the existing restricted family
+and gives an asymptotic improvement on the forced-cycle family; it does not
+supply a general subexponential or quasipolynomial knot-recognition bound.
+Reproduce the audit and timings with \code{normal\_orbit\_research.quotient},
+in \code{audit} or \code{benchmark --rounds 5} mode. The checked incoming
+unknot inventory and \code{openai/math} head \code{fd4aeeb2e} remain unchanged.

@@ -619,3 +619,16 @@ root extrema are mixed; this remains an explicit optimization API. The
 three-crossing unknot control has a certified negative optimum on its
 minimum-span face, demonstrating why this restricted completeness does not
 establish general unknot recognition or a general quasipolynomial bound.
+
+The Euler flow stage now contracts forced potential differences using
+zero-slack strongly connected components, combines equivalent terms, and
+lifts the dual through two directed trees. The unchanged arithmetic checker
+verifies the full original model. A singleton-only graph uses the original
+solver. All 83 previous completed optima are preserved; circle-33 now also
+completes within the shared two-million-guard allowance. The audit retains
+74 distinct arithmetic duals and 14 positive proofs, and rechecks 75 Regina
+controls. All 1,223 tests pass. Eight isolated complete candidate pipelines
+improve by 1.13–1.67x; a forced-cycle family drops from n-1 augmentations to
+zero with linear lifting work. The article distinguishes this restricted
+optimization gain from the still-open general recognition bound and keeps
+the default native candidate schedule unchanged.
