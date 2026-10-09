@@ -856,3 +856,14 @@ passes 2,000 additional planner comparisons, and keeps the independent
 checkers unchanged. The complete suite passes 992 tests. The article records
 amortized candidate costs and fresh complete-call measurements; no new global
 recognition complexity bound follows from the planning optimization.
+
+[`syllable_normalization.tex`](syllable_normalization.tex) includes exact
+bounded-run normalization in the conditional monomial-phase cost bound.
+A separately implemented checker replays the existing normalization move;
+unknown intermediates preserve general fallback. All 998 maintained tests,
+240 actual-diagram mode comparisons and 87,381 short-word comparisons pass.
+The accompanying results retain 760 whole-recognition, 200 checked-stage
+and 240 kernel/replay measurements: conjugate kernels improve, full supplied
+proof replay and unsupported-word fallback regress, and no overall recognition
+speedup is established. The modes remain optional. A global short-depth
+producer and a general quasipolynomial bound are still missing.

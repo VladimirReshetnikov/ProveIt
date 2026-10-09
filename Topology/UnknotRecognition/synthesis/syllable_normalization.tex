@@ -1,0 +1,172 @@
+\section{Bounded-run normalization between primitive phases}
+\label{sec:syllable-normalization}
+
+The raw-phase bounds above deliberately excluded normalization. A useful
+invariant now includes that boundary for a restricted, explicitly represented
+class: each relator is a concatenation of a bounded number of powers of
+individual generators. Monomial substitutions preserve this class, and
+free and cyclic reduction can be performed by integer addition and endpoint
+trimming. The implementation uses this observation at the existing
+\texttt{normalize\_relators} move. It retains the general reducer when the
+bounded probe cannot establish its precondition.
+
+\subsection{Exact summaries and a conservative domain}
+
+A run list is a sequence $(g_1,e_1),\ldots,(g_s,e_s)$ with positive generator
+labels, nonzero signed integer exponents and $g_i\ne g_{i+1}$. It denotes the
+freely reduced word $g_1^{e_1}\cdots g_s^{e_s}$. The producer evaluates an
+SLP in postorder, storing either an exact list of at most $q$ runs or an
+unsupported marker. Terminals have one run. To concatenate two supported
+children, it folds the right list into a stack containing the left list:
+equal adjacent generator labels cause exponent addition, and zero sums
+are removed. The result is stored only if it has at most $q$ runs.
+
+The proof of exactness is induction on the grammar. Each child is freely
+reduced; only its concatenation boundary can create cancellation. Repeated
+boundary cancellation and merging give the unique freely reduced word.
+An unsupported child propagates an unsupported result. In particular, this
+is a sufficient condition on \emph{all intermediate words}, not a complete
+test for whether the final word has at most $q$ runs. For example,
+$(ab)^N((ab)^N)^{-1}$ reduces to the empty word, but its many-run intermediate
+is deliberately unsupported. It proceeds to the maintained general reducer.
+
+For a supported root, cyclic reduction trims opposite-sign powers of the
+same generator at its two ends. It subtracts the smaller absolute exponent,
+removes empty ends, and repeats. Equal-sign endpoint powers are left in
+place: the implementation preserves the same anchored word as ordinary
+cyclic reduction, rather than choosing a rotated conjugate. This matters
+because subsequent proof moves can address word positions.
+
+The production limit is $q=4$. Only roots of expanded length greater than
+64 are probed; short roots keep the existing reducer. If there are no long
+roots, the probe returns immediately. Before building any new word circuit,
+it checks every required long root. A failed probe allocates summaries but
+no new SLP word nodes. A successful probe rebuilds long roots from binary
+powers and retains all relation slots, including empty and repeated slots.
+Short roots require only bounded expanded-word work: with nonempty children
+a binary parse of at most 64 letters has at most 127 node occurrences.
+The gate does not conceal an exponentially long cancellation problem.
+
+Summaries are cached by immutable arena identifier and run limit. Their
+meaning is independent of the current relation slot and live generator set.
+Producer and replayer have separate caches and implementations. The replayer
+merges a left list against a right deque, then trims endpoints with a deque;
+it constructs a left-associated output circuit while the producer balances
+the run concatenations. Neither imports the other's arithmetic helper.
+The old proof move, version rules and full source reconstruction remain in
+force. These routines establish word equality, not an independent knot verdict.
+
+\subsection{Closure under monomial maps}
+
+Suppose the initial relators are given by compact run circuits: each root
+concatenates at most $q$ single-generator powers, and each power is encoded
+by binary powering. A monomial map sends each generator to an integer power
+of one generator, possibly with negative exponent or exponent zero.
+It replaces each original run by at most one run. Therefore it cannot
+increase the number of runs before free reduction, and free or cyclic
+reduction cannot increase that number either.
+
+Every intermediate of the mapped compact circuit also has at most $q$
+freely reduced runs. An intermediate inside a power circuit is uniform;
+an intermediate concatenation covers at most the original $q$ blocks.
+The same is true of the shared powers used to construct forest images:
+they are still powers of a single surviving generator. Consequently the
+bounded probe succeeds throughout any sequence of these substitutions and
+normalizations, if the starting circuit has this form. Its rebuilt output
+again has the required compact form. Short roots use only bounded literal
+work and also admit compact bounded-size circuits.
+
+Both disjoint primitive projections and unit-coordinate forest quotients
+are monomial maps. Initial Wirtinger relators have at most four letters,
+so they satisfy the representation condition. This does not imply that
+the full search stays in the class: nonmonomial Whitehead changes, overlap
+moves and general eliminations can leave it. Nor can an arbitrary grammar
+be admitted solely because its \emph{final} normal form happens to have
+four runs. The intermediate condition is essential to the implemented
+probe and to the stated closure argument.
+
+\subsection{Encoded cost including normalization}
+
+Let $M$ count historical allocated nodes, $S$ the currently reachable nodes,
+$m$ the retained root slots, and $B\ge1$ bound represented-length and exponent
+bit sizes. Constructing previously absent run summaries takes
+$O(SqB)$ bit operations for exponent additions, up to identifier and
+dictionary costs. Stored summaries use $O(MqB)$ bits under the same
+qualification. Cyclic trimming uses $O(mqB)$ exponent work. Rebuilding
+compact roots adds $O(mq(B+1))$ nodes; binary-power construction and
+length bookkeeping have polynomial bit cost, not unit-cost arithmetic.
+Work counters charge traversal and run processing and poll cancellation;
+they do not measure individual big-integer instructions or total process memory.
+
+The compact reachable grammar after a successful normalization satisfies
+\[
+ S_{j+1}=O\bigl(mq(B_{j+1}+1)\bigr),
+\]
+where the fixed short-word gate is absorbed in the constant. Historical
+nodes are not deleted. A projection or forest batch maps each reachable
+input node once and adds $O(r_j(B_j+1))$ image nodes. A following compact
+normalization therefore gives the additive allocation bound
+\[
+ M_{j+1}\le M_j+
+ O\bigl(S_j+r_j(B_j+1)+mq(B_{j+1}+1)\bigr).
+\]
+The distinction between reachable and historical nodes prevents an
+unjustified repeated polynomial blow-up. Without an intervening
+normalization, the earlier raw-round recurrence still applies.
+
+For disjoint-pair rounds, $B_{j+1}\le 2B_j+O(1)$. Combining raw rounds
+with any of these supported normalization boundaries yields an encoded
+time bound
+\[
+ \operatorname{poly}(\text{initial encoded parameters})\,2^{O(d)}
+\]
+for $d$ such rounds, including polynomial-cost candidate checks and replay.
+For mixed forest phases the corresponding bit bound is
+$B_{j+1}=O((r_0+1)(B_j+1))$, giving
+\[
+ \operatorname{poly}(\text{initial encoded parameters})\,
+       2^{O(d\log(r_0+1))}.
+\]
+Here $q$ and the short-word gate are fixed, and the phase count includes
+the monomial batches; redundant normalization alone does not change a
+normalized state. These extend the earlier raw-phase estimates to this
+closed normalized class. They do not bound the number of required phases,
+prove that a terminal is reached, or include arbitrary legacy exposure
+work. A general quasipolynomial recognition theorem still requires those
+missing global ingredients.
+
+\subsection{Correctness audits and measured scope}
+
+Six focused tests cover arbitrary binary parses, changed run limits,
+repeated roots, endpoint signs, huge exponents, conservative failure,
+monomial closure, independent source replay and resource guards. Conjugates
+with exponent $2^{4096}$ normalize with expansion, equality, slicing and
+the general reducer disabled. An actual five-braid source with a supplied
+powered Whitehead prefix passes complete compressed verification with
+all producer normalization helpers disabled. The full maintained suite
+passes 998 tests with Regina in 209.031 seconds.
+
+Against the complete pinned package at \texttt{483b7397a108}, eighty
+validated diagrams give 240 comparisons across default, projection and
+forest modes. All certificates and nondecisions agree; all 159 positive
+mode results pass both full source replayers. An independent literal audit
+checks all 87,381 signed rank-two words through length eight: 66,580 bounded
+probes succeed and 20,801 decline, including the empty-word short gate.
+A declined probe makes no negative word or knot claim.
+
+These finite equalities are not a universal statement about search traces.
+Equivalent rebuilt words may have different grammar shapes, and later
+heuristics or finite resource allowances can depend on allocated nodes
+or charged work. Soundness follows from exact normalization and complete
+source replay, regardless of those possible search differences.
+
+\input{syllable_normalization_results.tex}
+
+The reproduction driver is \path{primitive_power_research/syllables.py}
+under \path{../fast}, with \texttt{audit}, \texttt{benchmark},
+\texttt{stages} and \texttt{kernels} modes. Each result pins the complete
+prior Python package and records current source hashes before and after
+execution. Raw shuffled samples, controls, counters, complete certificates
+and incomplete outcomes are retained. The supplied-prefix timings measure
+verification of a given proof; they do not measure discovering that proof
+or recognizing a difficult knot from scratch.
