@@ -5746,6 +5746,47 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          (`neg_mem_spanBall`) and raising both radii to a common `R`
          (`spanBall_mono`) gives `escape_split`, which is exactly
          `claim_9_4_core`'s per-triple decomposition `ξ₀ − ξ₁ = ξ₂ − ξ₃`.
+         **Claim 9.4 is assembled:** `claim_9_4` (`Proofs16ClaimNineFour`).
+         Take `εN³` prescribed decompositions whose frequency `ξ₀ − ξ₁`
+         avoids a forbidden set `S(x, a)`; in the iteration, `S(x, a)` is
+         the `{-1,0,1}`-span of the current `θ_i(a)`, `i ∈ I_{x+a,x}`. The
+         result is a map `Θ`, a set `B` on which `Θ` is a Freiman
+         8-homomorphism, and `claimNineFourDensity ε R d · N²` pairs
+         `(x, a)` with `a ∈ B`, `Θ(a) ∈ ⟨Γ_{x+a} ∪ Γ_x⟩_{2R}` and
+         `Θ(a) ∉ S(x, a)`. The density is `κ(c/2)²` with `c = (ε/K⁴)²`,
+         `K = (2R+1)^d` and `κ = 2^(−1882)((c/2)^4)^1164`, so it is
+         polynomial in `ε` and `(2R+1)^(−d)`. The route differs from
+         Milićević's in two places.
+         1. *A common value, not a linear part minus a constant.* On the
+            selected triples, `ψ₀(x+a) − ψ₁(x) = ψ₂(y+a) − ψ₃(y)` depends
+            only on `(x, a)` and only on `(a, y)`. For fixed `a`, the
+            edges of value `v` lie in the rectangle
+            `f⁻¹(v) × h⁻¹(v)`, and these rectangles are disjoint. So
+            `exists_dense_value_class` finds a value class with
+            `|S|² ≤ |S_v|·((|X|+|Y|)/2)²`, and `exists_common_value`
+            (`Proofs16CommonValue`) sums this by Cauchy–Schwarz into
+            `Θ : A → V`. No connected components are needed.
+         2. *Freiman-ness of `Θ` from the same Lemma 9.2.*
+            `Θ(a) = ψ₀(x+a) − ψ₁(x)` reads as a separated family for
+            `(f, g) = (Θ, ψ₀)` in the variables `(x+a, −x)`:
+            `Θ((x+a) + (−x)) − ψ₀(x+a) = −ψ₁(x)`. So
+            `freiman_common_value` (`Proofs16CommonValueFreiman`)
+            restricts to popular `a` and applies `milicevic_lemma_9_2_pair`
+            unchanged. The value set of that family is exactly the set of
+            `a`'s, so `Θ` is Freiman on a dense set of differences, with
+            no offset `u` to carry.
+
+         The iteration invariant is also in place
+         (`Proofs16SubsetSumIndependence`). `SubsetSumInjective V`
+         (distinct `{0,1}`-subset sums) is `{-1,0,1}`-independence.
+         `subsetSumInjective_insert` shows that adjoining `w ∉ ⟨V⟩_1` keeps
+         it, which is what `Θ(a) ∉ S(x, a)` supplies.
+         `card_le_of_subsetSumInjective` is the cap
+         `2^|V| ≤ (2|V|R+1)^|Γ|` for `V ⊆ ⟨Γ⟩_R`.
+         Still to do: the round structure (Claim 9.4 adds `Θ` to
+         `I_{x+a,x}` on its pairs; the potential `∑|I_{x,a}|` rises by
+         `δN²` per round and is capped at `s₀N²`), Claim 9.5, and the final
+         selection.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.
