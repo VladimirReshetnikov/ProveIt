@@ -5385,8 +5385,6 @@ chosen per `(γ, θ)`.
    - `milicevicBound D c ≤ (4/c)^D`.
 
 **Remaining**, all mechanical:
-- match `section16VarietyCeilingFreeExponent` and `…GraphBound` to the
-  absorbed shape (via `section16_variety_line_factor_power`);
 - bound `L` by `x^(64·2^256)`. The constants' logs are at most a few
   thousand by the Weyl bounds (`A_j < 2^192`, degree `< 256`), and
   `mb ≤ (4/c)^D`. With `c⁻¹ ≤ x^(2^156)` at the spectrum density, a
@@ -5407,14 +5405,17 @@ Lean traps met here:
 **Full dependency verification (2026-10-09).** The incoming fixed-constant
 chain, `ceilingFreeVarietyRelationDecompositionAt_explicit`, and the new
 count bounds now compile against the actual selected OAI dependency
-closure. The full merged audit checks 7,660 public Gowers theorems in
-5,243 modules and rejects all axioms except `propext`, `Classical.choice`,
+closure. The full merged audit checks 7,669 public Gowers theorems in
+5,244 modules and rejects all axioms except `propext`, `Classical.choice`,
 and `Quot.sound`; no stub or `sorry` is used in this verified closure.
 This supersedes the limited stub-based verification described above.
 The subsequent incoming `Proofs05WeylConstantBounds` also passes the full
 audit: in degrees one to three, the coefficient sums of the Weyl budget
 polynomials are below `2^192` and their degrees are below `256`. These
 are numerical inputs to the remaining recurrence-constant comparison.
+The later `Proofs16VarietyShapeMatch` also passes the full audit, proving
+exact identities for the width exponent and graph count in the absorbed
+variety shape. This discharges the shape-matching step above.
 The full numerical absorption and the deep structural input remain
 undischarged, so this does not yet supply `Theorem162At 3`.
 
@@ -7428,8 +7429,8 @@ here. No new upstream port or licensing change was necessary.
 **Verification.** The all-coordinate extraction closure checks 233
 modules. All fifteen new named theorems pass individual axiom checks.
 After merging the incoming explicit variety-decomposition chain, the
-full audit checks 7,660 public Gowers theorems in 5,243 modules
-(5,241 facade modules, including 4,152 OAI modules), using only
+full audit checks 7,669 public Gowers theorems in 5,244 modules
+(5,242 facade modules, including 4,152 OAI modules), using only
 `propext`, `Classical.choice`, and `Quot.sound`. The incoming assembly
 and count bounds compile with their actual dependencies. The numbered
 ledger remains byte-for-byte unchanged at 115 companions and five open
