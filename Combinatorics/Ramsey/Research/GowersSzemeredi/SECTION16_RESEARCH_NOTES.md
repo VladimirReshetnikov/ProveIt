@@ -4033,3 +4033,75 @@ audits. The incoming prime mixed-Bohr band estimates are included. The
 source ledger matches the tracked 115 companions and five open entries,
 and the selected port-scope check passes. All audited declarations remain
 within the same three-axiom boundary.
+
+### J.92. Dense row retention through the relation iteration
+
+The density-retention and affine-recentering gap recorded in J.91 is now
+resolved by six modules. This does not close the remaining truncation,
+size, and prescribed-constant compatibility obligations.
+
+`Proofs16DenseAffineCluster` proves that any nonempty translated cluster
+inside a common Freiman domain has simultaneous affine formulas
+`L_j(t+x) = c_j + L_j(x)`. Choose one anchor `b` and use the Freiman
+quadruple `(t+x,b,t+b,x)`. Neither the translation `t` itself nor zero
+needs to lie in the cluster; the maps need not be normalized for this
+step. Averaging translates retains ambient density on an arbitrary
+nonempty test set inside the domain.
+
+`Proofs16AffineTupleRows` tracks actual rows of the ambient set, not just
+abstract graph statistics. Adding the offsets `c_j` to the fixed
+frequencies and halving the phase radius preserves the row inclusion
+after recentering. The number of added fixed frequencies is at most
+`k = |kappa|`; the variable maps themselves remain unchanged.
+
+`Proofs16DenseBohrRefinement` retains relative density `alpha` on a
+refined quarter Bohr domain. If `4 ≤ sigma*Q`, its ambient density is at
+least `alpha/Q^|S|`. `Proofs16DenseRelationStep` combines this with the
+strict relation increase and quantitative rank bound of J.91, retaining
+a nonempty set of actual rows at every failed bad-pair estimate.
+
+The fixed frequencies change during this process, so the fixed-tuple
+iteration of J.91 does not by itself establish the desired conclusion.
+`Proofs16DenseRelationBudget` supplies a common budget for the Bohr rank
+and the current number of fixed frequencies:
+
+```
+M(d)   = (2R+1)^(d+2k)
+Psi(d) = d + ceil(16*((theta/M(d))/Q^d)^(-2)) + k.
+```
+
+This monotone recurrence is independent of the ambient modulus. In
+`Proofs16DenseRelationIteration`, let `n` be the initial relation
+codimension, `d = max(|Gamma|,|F|)`, and `D = Psi^[n](d)`. The theorem
+`exists_dense_sparse_relation_domain` produces a refined spectrum `S`,
+fixed frequencies `F'`, recentered row origin, and nonempty parameter
+set `V` with all of the following proved simultaneously:
+
+- `Gamma ⊆ S`, `|S| ≤ D`, and both full and quarter domain containment;
+- `F ⊆ F'` and `|F'| ≤ |F| + n*k`;
+- `V` lies in the refined quarter domain and has ambient density at least
+  `alpha/Q^(n*D)`;
+- the actual row geometry holds at phase radius `eta/2^n`;
+- fewer than `theta*|B(S;sigma/4)|²` bounded bad pairs remain, computed
+  using the final enlarged fixed-frequency set `F'`.
+
+The induction permits early termination and restricts the phase radius
+to the stated uniform bound. Each unsuccessful step strictly raises the
+relation dimension, which bounds the number of steps by `n ≤ k`.
+The varying maps are only restricted to smaller domains, so any initial
+normalization at zero is preserved for subsequent splitting lemmas.
+
+This is a quantitative existence result for dense row geometry with few
+bad relations, not yet the final quasirandom graph or seven-operator
+completion. The Fourier cutoff and size budgets still have to be made
+compatible with these losses. The five numbered open entries, 115
+companions, and all source-fidelity qualifications remain unchanged.
+No upstream source or selected port dependency was added or modified.
+
+Validation: all 15 newly named theorems pass individual transitive axiom
+checks with only `propext`, `Classical.choice`, and `Quot.sound`. The full
+consumer audit passes for 6,710 public Gowers theorems in a 5,040-module
+facade (4,152 OAI modules), or 5,042 modules including both audits. The
+source ledger matches the tracked 115 companions and five open entries;
+the selected port-scope check also passes. The Apache provenance/license
+files and the selected upstream source closure remain unchanged.
