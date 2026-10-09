@@ -3445,6 +3445,59 @@ and five open statements, with prior fidelity caveats retained. The
 selected upstream closure and license/provenance files are unchanged.
 
 
+### J.87. Missing witnesses and the seventh directional operator
+
+`Proofs16CommonNeighborhoodWitnesses` identifies Boolean common counts
+with the cardinalities of the actual witness fibers, including exact
+positive-count and zero-count characterizations. If M has relative size
+at least tau inside Y^J, the common-neighborhood deviation estimate gives
+`missing * (delta^(|I||J|)*tau)^2 <= 4|I||J|*epsilon*|X^I|`.
+The threshold is the full predicted count of a zero-count fiber; it is
+not halved, avoiding a further factor of four in this missing-count
+bound. The single-vertex, triple-witness case is
+`missing * (delta^3*tau)^2 <= 12*epsilon*|X|`.
+
+`Proofs16PatternMissingRows` defines the actual Bohr incidence graph and
+additive representation triples. Its right vertex class is any nonempty
+finite set C, so the theorem applies to pieces obtained from a future
+regularity decomposition, not just to the entire parameter neighborhood.
+Representation triples have all three coordinates and their fourth
+completion in W. The domain bounds on W ensure the four-row argument is
+valid, even though the ambient graph class C is arbitrary.
+
+With the explicit box-norm bound and at least tau*|C|^3 representations
+of y, the missing part of `B(F union psi_J(y);eta/4)` after two vertical
+differences has size D satisfying
+`D*(delta^3*tau)^2 <= 12*epsilon*|B(F;eta)|`. The proof injects a missing
+point into the graph vertices having no common witness; a common witness
+would give precisely the four-row completion proved in J.86.
+
+`Proofs16WeightedBohrFilling` combines weighted defect estimates with the
+dense-Bohr difference lemma. If K has rank at most r, 1<=rho*Q, and the
+missing points satisfy `D*weight <= loss*N`, then
+`4^(r+1)*loss*Q^r <= weight` suffices to cover B(K;rho/2) by differences.
+The Dirichlet-cell lower bound removes the actual Bohr cardinality and
+modulus from this sufficient error budget.
+
+`Proofs16PatternRowFilling` therefore fills the entire row at radius
+eta/8 after the final horizontal difference, assuming
+`4^(r+1)*(12*epsilon)*Q^r <= (delta^3*tau)^2` and 4<=eta*Q.
+`Proofs16GlobalSevenOperatorCompletion` connects this to the original
+global-density construction. The target lies in
+`D_hor D_ver D_ver D_hor D_ver D_hor D_hor A`; its frequency rank is at
+most 6ell and its radius is `1/(256*max(1,ell))`. The graph domain C may
+be any nonempty piece. Graph quasirandomness, positive representation
+density, and the numerical error budget remain explicit hypotheses.
+They have not been derived from global density, so this is not a proof
+of the final structural theorem or a closure of any numbered entry.
+
+The five modules contain eleven new theorem declarations and compile
+in a 120-module closure. The remaining work includes finding appropriate
+regular pieces and enough representations on them, together with the
+proper-progression structure and its quantitative bounds. The five open
+numbered statements and all prior fidelity caveats remain unchanged.
+
+
 ### Claim 34's algebraic core in Z/N (2026-10-09)
 
 `Proofs16BohrSizeFactorization`. Suppose
@@ -3463,3 +3516,22 @@ uses `|δᵢ| ≤ 1`, which is not evident from the definition
 statement therefore keeps `‖W_Λ‖` explicit. Bounding it, for instance
 via `|B(γ ⊔ ℓ)| ≤ |B(γ)|` and a lower bound on `|B(γ)|`, is left to the
 point of use. Three declarations, standard axioms only.
+
+
+The merged audit passes for 6,502 public Gowers theorems, a 5,001-module
+facade (4,152 OAI modules), and 5,003 modules including both audits.
+All eleven new declarations also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger and selected port scope pass, with 115 companions and five open
+statements and all existing fidelity caveats retained. The incoming
+relation-weight factorization is included; its norm factor remains
+explicit. No upstream dependency or provenance changes were made.
+
+A relevant next input already exists in the selected upstream closure:
+`OAI.Combinatorics.Progressions.Fourier.QuarticBohrProgression` provides
+`Erdos3.BohrProgression.exists_large_proper_progression_all`. It constructs
+a proper centered progression in a cyclic Bohr set with rank at most one
+more than its frequency rank and an explicit exponential size bound.
+Bridging its Bohr convention and controlling progression dilations remain
+to be done; discovering this input is not itself a proof of the missing
+progression step. It requires no expansion of the upstream port scope.
