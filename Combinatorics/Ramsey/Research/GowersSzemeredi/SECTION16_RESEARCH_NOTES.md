@@ -2807,3 +2807,39 @@ individual transitive axiom checks. Only propext, Classical.choice, and
 Quot.sound occur. Incoming Fourier inversion and positive-cutoff tail
 results are included. The source ledger remains 115/5 with its existing
 fidelity caveats, and the selected upstream module scope is unchanged.
+
+
+### Polynomial large-spectrum cutoff independent of the modulus
+
+`Proofs16PolynomialSpectrumSpan` removes the modulus from the coefficient
+cutoff. For `k=|K|+1`, `0<rho<1/2`, `0<epsilon<=1`, and
+`N >= 8*k/epsilon`, every Fourier coefficient of the Bohr indicator
+`B(K;rho)` with magnitude at least `epsilon*N` belongs to the bounded
+span with cutoff
+
+`ceil(max(8*k/(epsilon*rho), 128*k^2/epsilon^2))`.
+
+The proof chooses `sigma=min(rho,epsilon/(16*k))`,
+`a=floor(rho*N)` and `c=floor(sigma*N)`. The original Bohr set equals
+the one at grid radius `a/N`. Its boundary-band error satisfies the
+previous budget, including endpoints. A non-wrapping centered interval
+has at least `c+1` points, so `|I_c| >= sigma*N` even when `c=0`.
+This cancels the modulus from the explicit cutoff. Monotonicity of the
+bounded frequency span then gives the displayed common cutoff. Using
+the maximum, rather than the sum of its two terms, avoids an unnecessary
+additional loss. The finite-size hypothesis is still required.
+
+The four new theorem declarations compile in a 50-module source closure.
+This completes the quantitative large-spectrum inclusion needed in the
+Fourier route to bounded-span duality. Bohr-sum containment, the subsequent
+bounded-span selection, algebraic regularity, quasirandomness and the
+final difference-set composition remain separate work; no numbered
+statement is closed by this result.
+
+The combined polynomial-cutoff audit passes: 6,254 public Gowers
+theorems, a 4,956-module facade (4,152 OAI modules), and 4,958 modules
+including the audit and import-compatibility check. All four new theorems
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream module
+scope is unchanged.
