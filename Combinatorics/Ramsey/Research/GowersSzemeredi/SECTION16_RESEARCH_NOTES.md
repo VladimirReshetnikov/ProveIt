@@ -8750,7 +8750,34 @@ without assuming a favorable relation between a fixed input error and the
 density subsequently lost. The finite adaptive modulus bound is explicit;
 no favorable growth rate for it or final Gowers threshold is claimed.
 
-The five new modules compile in a 490-module production closure. The
-remaining structural steps still include graph extraction, transporting
-original column agreement on the final domains, and the final quantitative
-certificate. Full axiom and facade verification follows.
+**Uniform original-input application and agreement.** The finite supremum
+`coherentUniformGraphModulusBound` covers both fixed-frequency cardinality
+and varying-family length up to their common bound. For the actual anchor
+family the cell count is `ceil(32*pi)` and
+`H = ceil(2^(8*jointSelectionRank)/(jointSelectionRadius/2))`; all required
+inequalities and positivity conditions are proved. The initial rank is the
+maximum of the common Bohr rank and `8*jointSelectionRank`.
+
+`IsSingleCoherentProgression.density_controlled_graph` constructs the graph
+under this uniform bound. `global_coherent_density_controlled_graph` starts
+from the original dense bihomomorphism and an explicit threshold depending
+only on its density, the chosen power, and scale. It retains the original
+column witness system, popular anchor witnesses and the graph of that same
+family. There is no regularity or graph-existence oracle in its hypotheses.
+
+`IsSingleCoherentProgression.refined_popular_agreement` transfers actual
+agreement with the original columns to every final domain
+`B' union image(theta_i(u))`. It uses the original popular-arrangement
+witness at `source u`, and proves a fresh agreement density
+`coreAnchorAgreementDensity popularity (fixedBound+ell) g d r tau`.
+It does not infer a density bound merely by restricting an old agreement set.
+
+All ten new modules compile in a 496-module production closure, comprising
+nineteen new named proofs. Full axiom and facade verification follows.
+Graph extraction/weak transitivity, subsequent local linear structure,
+original bihomomorphism transfer and the final quantitative certificate
+remain outstanding. The current graph estimate is for the specified final
+radii; no estimates at further shrunk radii are silently assumed. A finite
+profile of radii can use the same sparse-relation certificate provided its
+cell parameter covers the smallest radius, but this extension remains to
+be formalized. No numbered entry is claimed closed.
