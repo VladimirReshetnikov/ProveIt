@@ -40,6 +40,29 @@ theorem dense_freiman_eight_bohr_extension {N : Nat} [NeZero N]
 
 /-- The selection iteration supplies actual uniformly controlled Bohr
 extensions for every dense piece, while keeping its bad-triple bound. -/
+theorem corollary20_bohr_pieces_budget {N : Nat} [NeZero N] [Fact N.Prime]
+    (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real} (hε : 0 < ε) :
+    ∃ (m : Nat) (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
+      (S : Fin m → Finset (ZMod N)),
+      (m : Real) * corollary20Kappa ε K ≤ K - 1 ∧
+      (∀ i, FreimanHom 8 (E i) (L i) ∧ corollary20Kappa ε K * N ≤ (E i).card ∧
+        (∀ x ∈ E i, L i x ∈ U x) ∧
+        ((S i).card : Real) ≤ 16 * (corollary20Kappa ε K)^(-(2 : Real)) ∧
+        IsBHomomorphism (E i) (bohr (S i) (corollary20Kappa ε K / (32 * Real.pi))) (L i)) ∧
+      ((Finset.univ.filter (IsBadTriple U E L)).card : Real) < ε * (N : Real)^3 := by
+  classical
+  obtain ⟨m, E, L, hm, hE, hbad⟩ := corollary20_dense_eight_budget U h0 hK1 hK hε
+  have hk : 0 < corollary20Kappa ε K := by
+    unfold corollary20Kappa
+    have : (1 : Real) ≤ K := by exact_mod_cast hK1
+    positivity
+  choose S hS hB using fun i =>
+    dense_freiman_eight_bohr_extension (E i) (L i) hk (hE i).2.1 (hE i).1
+  exact ⟨m, E, L, S, hm, fun i =>
+    ⟨(hE i).1, (hE i).2.1, (hE i).2.2, hS i, hB i⟩, hbad⟩
+
+/-- Retain the original count interface as a consequence of the sharper budget. -/
 theorem corollary20_bohr_pieces {N : Nat} [NeZero N] [Fact N.Prime]
     (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real} (hε : 0 < ε) :
@@ -51,15 +74,15 @@ theorem corollary20_bohr_pieces {N : Nat} [NeZero N] [Fact N.Prime]
         ((S i).card : Real) ≤ 16 * (corollary20Kappa ε K)^(-(2 : Real)) ∧
         IsBHomomorphism (E i) (bohr (S i) (corollary20Kappa ε K / (32 * Real.pi))) (L i)) ∧
       ((Finset.univ.filter (IsBadTriple U E L)).card : Real) < ε * (N : Real)^3 := by
-  classical
-  obtain ⟨m, E, L, hm, hE, hbad⟩ := corollary20_dense_eight U h0 hK1 hK hε
+  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_pieces_budget U h0 hK1 hK hε
   have hk : 0 < corollary20Kappa ε K := by
     unfold corollary20Kappa
     have : (1 : Real) ≤ K := by exact_mod_cast hK1
     positivity
-  choose S hS hB using fun i =>
-    dense_freiman_eight_bohr_extension (E i) (L i) hk (hE i).2.1 (hE i).1
-  exact ⟨m, E, L, S, hm, fun i =>
-    ⟨(hE i).1, (hE i).2.1, (hE i).2.2, hS i, hB i⟩, hbad⟩
+  have hmR : (m : Real) ≤ (K : Real) / corollary20Kappa ε K :=
+    (le_div_iff₀ hk).mpr (by linarith)
+  have hmNat : m ≤ ⌊(K : Real) / corollary20Kappa ε K⌋₊ :=
+    (Nat.le_floor_iff (by positivity)).mpr hmR
+  exact ⟨m, E, L, S, by omega, hE, hbad⟩
 
 end LeanProofs.GowersSzemeredi

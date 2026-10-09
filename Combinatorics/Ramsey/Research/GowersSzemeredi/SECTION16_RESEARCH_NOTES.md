@@ -2674,3 +2674,25 @@ and Quot.sound occur. This includes the incoming discrete trapezoid
 sandwich and supersedes the pending audit notice above. The source
 ledger matches the checked 115/5 catalogue, with its existing fidelity
 caveats. The port scope check still passes; no upstream modules were added.
+
+
+### Sharper selection count from the initial covered values
+
+`corollary20_dense_eight_budget` retains the lower potential bound after
+the iteration terminates: the covered potential is at least
+`N + m*kappa*N` and at most `K*N`. Thus `m*kappa <= K-1`, improving the
+previous `m <= floor(K/kappa)+1` conclusion. The initial `N` comes from
+the zero value covered at every point. The termination argument and all
+density and Freiman invariants remain valid.
+
+`corollary20_bohr_pieces_budget` and
+`corollary20_bohr_all_triples_budget` carry this improvement to the Bohr
+extensions. `corollary20_common_bohr_budget` consequently reduces the
+common spectrum bound from `(K/kappa+1)*16*kappa^-2` to
+`((K-1)/kappa)*16*kappa^-2`. The radius, normalized locally additive
+difference maps, and exceptional-triple estimate are retained. At `K=1`
+the new budget forces the family and its common spectrum to be empty.
+The original four theorem interfaces are wrappers around these stronger
+results. This is a local quantitative improvement in the Section 16
+selection argument; the deep structure hypothesis and the five open
+numbered statements remain unresolved.
