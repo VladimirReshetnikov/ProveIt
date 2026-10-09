@@ -1,0 +1,148 @@
+\section{Outcome, baseline, and the remaining target}
+\label{sec:context}
+
+This continuation gives a larger exact reduction operation for the maintained
+unknot recognizer and a concrete asymptotic separation from its preceding
+group-stage policy. The new operation eliminates an entire acyclic system of
+singleton relations in one shared compilation. It includes relations such as
+\[
+ c=a b a^{-1},\qquad d=c b^{-1} a c,
+\]
+which are excluded by a rule restricted to expressing one generator as a
+power of one other generator. The expanded replacement words can be very
+long. The computation instead preserves their common subexpressions.
+
+The principal mathematical result is an $O(M+r)$ output-grammar bound for a
+batch, where $M$ counts the nodes reachable in the original relator grammar
+and $r$ is the number of live generators. This bound does not contain the
+depth of the dependency graph or the length of the expanded words. The
+supporting insight is a disjointness property of the paths to the chosen
+singleton occurrences. It bounds the combined cost of extracting all
+definitions before the global substitution is performed.
+
+The implementation is accompanied by an independent certificate checker and
+measurements against a pinned complete predecessor. It also records a failed
+policy experiment. Applying the larger operation at every opportunity can
+make subsequent heuristic search substantially worse. The delivered public
+option therefore uses a batch when it can finish immediately at an exact
+one-generator endpoint; the general algebraic operation remains available
+for research and supplied witnesses.
+
+\subsection{What was already present}
+
+The baseline is the public ProveIt repository at commit
+\begin{center}\baselinecommit.\end{center}
+Its most recent changes in the relevant directory were committed on
+9 October 2026 at 01:42:56 UTC.
+All predecessor comparisons in this package use that commit, not a small
+reimplementation of the old kernel. The inspected files include
+\code{compressed_search.py}, \code{compressed_words.py},
+\code{primitive_projection.py}, \code{primitive_forest.py}, both source
+replayers, the corresponding tests, and the maintained synthesis sections
+on primitive projections, forests, and planner accounting
+\cite{ProveIt2026}.
+
+The baseline already has several important capabilities. Group words are
+stored as exact binary straight-line programs. The search can perform
+singleton elimination, Whitehead transformations, and relator operations;
+separate source reconstruction replays its certificate. Optional primitive
+projections operate on raw words, so expensive normalization can be deferred.
+The forest extension permits overlapping primitive donors when each chosen
+child is a unit coordinate and their dependencies are acyclic. It shares
+parent-power circuits, and the planner caches immutable word summaries while
+rebuilding slot and live-generator information for each current state.
+These are the starting point of the present work.
+
+The new contribution is therefore not the first use of compression, batching,
+or independent replay in this project. It removes the two-generator,
+coherent-sign, pure-power restriction from a particular simultaneous
+operation and supplies the size argument needed when the definitions are
+general words. This comparison concerns exact singleton elimination, the
+unpowered case of a primitive donor. The predecessor's separate inference
+from proper powers can still use source-established torsion-freeness and
+remains available under its existing hypotheses. Previous certificate
+formats remain accepted.
+
+\subsection{Claims and their exact scope}
+
+\begin{center}
+\small
+\begin{tabular}{p{0.29\linewidth}p{0.61\linewidth}}
+\toprule
+Claim & Scope established in this article \\
+\midrule
+Exact simultaneous elimination & Any finite group presentation with the
+specified raw singleton donors and acyclic dependencies. \\
+Linear grammar growth & One shared batch, retaining every other original
+relator slot; length metadata still has a nonconstant bit cost. \\
+Efficient independent checking & A topologically ordered list of original
+donor slots and pivot labels; no replacement-word claims are trusted. \\
+Asymptotic stage improvement & An explicit family of validated stabilized
+unknot diagrams, relative to the pinned forest policy. \\
+Polynomial positive route & Inputs that expose a checked batch to rank one
+with zero exponent in every retained relation, after polynomial preparation. \\
+General quasi-polynomial recognition & Not established. Global exposure,
+representation growth outside this operation, and search costs remain open. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The distinction in the last two rows matters. A fast certificate checker
+does not imply a fast certificate producer. A fast local reduction does not
+bound how long the search takes to reach its hypotheses. An infinite easy
+family can demonstrate a strict improvement in the relevant operation
+model without establishing a speedup for all difficult unknot diagrams.
+
+\subsection{Relation to the literature}
+
+Shared substitution and compressed free-group algorithms are established
+techniques. Schleimer gives a constructive treatment of compressed word
+problems and applies shared image descriptions to free-group automorphisms
+\cite{Schleimer2008}. Haubold and Lohrey explicitly combine Tietze generator
+elimination with straight-line-program substitution and additive local size
+growth in their work on compressed HNN-extension problems
+\cite{HauboldLohrey2011}. Kapovich's recent Proposition~3.2 gives a quantitative
+layered-substitution bound for a specified sequence from a fixed finite
+endomorphism family in fixed rank \cite{Kapovich2026}. Those results motivate
+the data representation used here. The present proof separately charges
+variable-sized donor contexts and variable-rank dependency systems; its
+claims do not follow merely by citing a fixed-family substitution theorem.
+
+The group-theoretic equivalence behind a singleton elimination is classical
+Tietze elimination. We do not claim that acyclic definitions or that
+equivalence are new ideas in combinatorial group theory. The contribution
+here is a precise shared-grammar bound, the ordered witness that can be
+checked with small summaries, their integration into the current recognizer,
+and a reproducible separation from its preceding policy. No exhaustive
+priority claim is made for the standalone disjoint-path lemma.
+
+The broader geometric target must also be stated accurately. The 2021
+Oxford announcement of Lackenby's work gave $n^{O(\log n)}$, while a 2024
+seminar abstract specified $2^{O((\log n)^3)}$; these are distinct bounds
+within quasi-polynomial time \cite{Lackenby2021Talk,Lackenby2024Talk}.
+The July 2026 preprint develops a hierarchy algorithm and certification
+results. Section~9 explicitly leaves several implementation costs
+unestimated and bounds iteration count using hierarchy length and surface
+pattern-complexity parameters. That preprint does not itself state a
+quasi-polynomial running-time theorem \cite{Lackenby2026Hierarchy}. We have not
+converted that work into a complete implementation with a proved
+quasi-polynomial running time. The group operation in this article is a
+separate constructive advance within the existing recognition pipeline.
+
+\subsection{The group endpoint and source provenance}
+
+For a classical knot $K\subset S^3$, its group is infinite cyclic exactly
+when $K$ is the unknot; the standard implication uses the foundational
+three-manifold results of Papakyriakopoulos \cite{Papakyriakopoulos1957}.
+Consequently, if a sound sequence of presentation equivalences leaves one
+generator and only zero-exponent relations, it supplies an unknot
+certificate. A raw word on one generator need not be the empty string:
+$a^t a^{-t}$ is an immediate example. Its exponent can nevertheless be
+computed exactly by addition on the compressed grammar.
+
+The public checker reconstructs the presentation from the source planar
+diagram and retains every Wirtinger relation, including the redundant one.
+It does not accept an arbitrary abstract presentation as a knot certificate.
+The local singleton theorem needs no torsion-freeness assumption; the
+source binding is still essential for turning its final cyclic-group
+conclusion into a topological verdict.
