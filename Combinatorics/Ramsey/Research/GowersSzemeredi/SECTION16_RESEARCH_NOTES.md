@@ -5732,6 +5732,12 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
     set is a *generalized* Bohr set, and recovering an ordinary Bohr set
     inside it is a geometry-of-numbers step. It is the next formalization
     target if this redesign is pursued.
+  - **Starting point.** The OAI port's
+    `OAI/Combinatorics/Progressions/Fourier/QuarticBohrProgression.lean`
+    proves only the forward inclusion
+    (`bohrCyclicProgression_carrier_subset`). But it builds that
+    progression from successive minima (`minkowskiSecondConstant`), the
+    lattice machinery the reverse inclusion would reuse.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
