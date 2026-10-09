@@ -1,0 +1,87 @@
+{
+  "status": "PASS",
+  "scope": "Local replica with the four exact dependency files and local empty package shim; not a full repository checkout.",
+  "steps": [
+    {
+      "name": "dry_run",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "/mnt/data/unknot_sparse_incidence/experiments/integrate.py",
+        "--repo",
+        "/mnt/data/sparse-integration-check-ypynts81"
+      ],
+      "exit_code": 0,
+      "stdout": "WOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_common.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_verify.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence_verify.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_zeta.py\nWOULD COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/tests/test_sparse_incidence.py\nDry run: 7 additions validated. Use --apply to copy.\n",
+      "stderr": ""
+    },
+    {
+      "name": "apply",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "/mnt/data/unknot_sparse_incidence/experiments/integrate.py",
+        "--repo",
+        "/mnt/data/sparse-integration-check-ypynts81",
+        "--apply"
+      ],
+      "exit_code": 0,
+      "stdout": "COPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_common.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_verify.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence_verify.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_zeta.py\nCOPY /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/tests/test_sparse_incidence.py\nAdded 7 files; no existing file or Git metadata changed.\n",
+      "stderr": ""
+    },
+    {
+      "name": "idempotent_apply",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "/mnt/data/unknot_sparse_incidence/experiments/integrate.py",
+        "--repo",
+        "/mnt/data/sparse-integration-check-ypynts81",
+        "--apply"
+      ],
+      "exit_code": 0,
+      "stdout": "UNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_common.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence_verify.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_signed_incidence_verify.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_zeta.py\nUNCHANGED /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/tests/test_sparse_incidence.py\nAdded 0 files; no existing file or Git metadata changed.\n",
+      "stderr": ""
+    },
+    {
+      "name": "focused_tests_in_local_replica",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_sparse_incidence.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_callbacks_propagate_even_value_error (test_sparse_incidence.BudgetAndValidationTests.test_callbacks_propagate_even_value_error) ... ok\ntest_invalid_inputs_and_bool_rejection (test_sparse_incidence.BudgetAndValidationTests.test_invalid_inputs_and_bool_rejection) ... ok\ntest_shared_cycle_budget_exact_boundary (test_sparse_incidence.BudgetAndValidationTests.test_shared_cycle_budget_exact_boundary) ... ok\ntest_shared_query_budget_exact_boundary (test_sparse_incidence.BudgetAndValidationTests.test_shared_query_budget_exact_boundary) ... ok\ntest_zero_work_allowances (test_sparse_incidence.BudgetAndValidationTests.test_zero_work_allowances) ... ok\ntest_exhaustive_6654_nonnegative_histograms (test_sparse_incidence.GenericRecoveryTests.test_exhaustive_6654_nonnegative_histograms) ... ok\ntest_generic_invalid_parameters (test_sparse_incidence.GenericRecoveryTests.test_generic_invalid_parameters) ... ok\ntest_invalid_oracle_value (test_sparse_incidence.GenericRecoveryTests.test_invalid_oracle_value) ... ok\ntest_nonnegativity_is_a_contract (test_sparse_incidence.GenericRecoveryTests.test_nonnegativity_is_a_contract) ... ok\ntest_term_limit (test_sparse_incidence.GenericRecoveryTests.test_term_limit) ... ok\ntest_unknown_sparsity_and_large_weights (test_sparse_incidence.GenericRecoveryTests.test_unknown_sparsity_and_large_weights) ... ok\ntest_300_literal_parity_graphs (test_sparse_incidence.SignedSparseTests.test_300_literal_parity_graphs) ... ok\ntest_parity_is_not_interval_reversal (test_sparse_incidence.SignedSparseTests.test_parity_is_not_interval_reversal) ... ok\ntest_signed_hex_and_independent_replay (test_sparse_incidence.SignedSparseTests.test_signed_hex_and_independent_replay) ... ok\ntest_signed_invalid_parity (test_sparse_incidence.SignedSparseTests.test_signed_invalid_parity) ... ok\ntest_signed_shared_work_budgets (test_sparse_incidence.SignedSparseTests.test_signed_shared_work_budgets) ... ok\ntest_signed_source_and_histogram_binding (test_sparse_incidence.SignedSparseTests.test_signed_source_and_histogram_binding) ... ok\ntest_bad_histogram_and_duplicate_atoms (test_sparse_incidence.SparseCertificateTests.test_bad_histogram_and_duplicate_atoms) ... ok\ntest_json_roundtrip (test_sparse_incidence.SparseCertificateTests.test_json_roundtrip) ... ok\ntest_malformed_containers (test_sparse_incidence.SparseCertificateTests.test_malformed_containers) ... ok\ntest_mass_and_mask_mutations (test_sparse_incidence.SparseCertificateTests.test_mass_and_mask_mutations) ... ok\ntest_missing_or_non_dominating_zero (test_sparse_incidence.SparseCertificateTests.test_missing_or_non_dominating_zero) ... ok\ntest_producers_disabled_during_replay (test_sparse_incidence.SparseCertificateTests.test_producers_disabled_during_replay) ... ok\ntest_source_binding (test_sparse_incidence.SparseCertificateTests.test_source_binding) ... ok\ntest_truncated_orbit_proofs (test_sparse_incidence.SparseCertificateTests.test_truncated_orbit_proofs) ... ok\ntest_unused_duplicate_and_rebound_union_proofs (test_sparse_incidence.SparseCertificateTests.test_unused_duplicate_and_rebound_union_proofs) ... ok\ntest_1000_literal_graphs_and_300_dense_comparisons (test_sparse_incidence.SparseIncidenceTests.test_1000_literal_graphs_and_300_dense_comparisons) ... ok\ntest_128_ports_16000_bit_universe_and_hex_transport (test_sparse_incidence.SparseIncidenceTests.test_128_ports_16000_bit_universe_and_hex_transport) ... ok\ntest_empty_coincident_nested_and_disjoint_ports (test_sparse_incidence.SparseIncidenceTests.test_empty_coincident_nested_and_disjoint_ports) ... ok\ntest_exact_singleton_query_and_certificate_bounds (test_sparse_incidence.SparseIncidenceTests.test_exact_singleton_query_and_certificate_bounds) ... ok\ntest_gluing_obstruction (test_sparse_incidence.SparseIncidenceTests.test_gluing_obstruction) ... ok\ntest_huge_periodic_and_reflection_systems (test_sparse_incidence.SparseIncidenceTests.test_huge_periodic_and_reflection_systems) ... ok\ntest_input_not_mutated (test_sparse_incidence.SparseIncidenceTests.test_input_not_mutated) ... ok\ntest_no_ports_and_empty_universe (test_sparse_incidence.SparseIncidenceTests.test_no_ports_and_empty_universe) ... ok\ntest_normalization_and_pair_rows (test_sparse_incidence.SparseIncidenceTests.test_normalization_and_pair_rows) ... ok\ntest_unmarked_term_and_completeness (test_sparse_incidence.SparseIncidenceTests.test_unmarked_term_and_completeness) ... ok\n\n----------------------------------------------------------------------\nRan 36 tests in 1.642s\n\nOK\n"
+    },
+    {
+      "name": "refuse_changed_overlay",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "/mnt/data/unknot_sparse_incidence/experiments/integrate.py",
+        "--repo",
+        "/mnt/data/sparse-integration-check-ypynts81",
+        "--apply"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "Integration refused: Refusing to overwrite different target: /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/sparse_incidence.py\n"
+    },
+    {
+      "name": "refuse_changed_dependency",
+      "command": [
+        "/opt/pyvenv/bin/python",
+        "/mnt/data/unknot_sparse_incidence/experiments/integrate.py",
+        "--repo",
+        "/mnt/data/sparse-integration-check-ypynts81",
+        "--apply"
+      ],
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "Integration refused: Target dependency is absent or differs from the pinned source: /mnt/data/sparse-integration-check-ypynts81/Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py\n"
+    }
+  ]
+}

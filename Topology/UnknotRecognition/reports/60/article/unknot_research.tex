@@ -1,0 +1,777 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{graphicx,booktabs,longtable,tabularx,array,enumitem,xcolor}
+\usepackage{fancyhdr,listings,placeins,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\commit}{\texttt{9feb4346b4d050b305f825f0f7257f495960822a}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{1.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: compressed topology and elimination}
+\fancyhead[R]{\small Research continuation, 9 October 2026}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!20},xleftmargin=0.5em,
+  xrightmargin=0.5em,showstringspaces=false}
+\graphicspath{{figures/}}
+\input{generated_numbers.tex}
+\hypersetup{pdftitle={Weighted Component Extraction and Persistent Elimination},
+  pdfauthor={Research continuation for the ProveIt project},
+  pdfsubject={Exact polynomial primitives towards quasi-polynomial unknot recognition}}
+
+\title{\textbf{Weighted Component Extraction\\and Persistent Elimination}\\[0.6em]
+  \large Exact polynomial primitives towards\\quasi-polynomial unknot recognition}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project\\
+  \small AI-assisted mathematical analysis, implementation, and independent audits}
+\date{9 October 2026\\\small Baseline: \commit}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The ProveIt recognizer already contains exact compressed-word operations,
+binary interval-orbit counting, independent local orbit proofs, and a
+portfolio of knot simplification and decision procedures. Its remaining
+asymptotic obstacles are global: finding useful transformations, controlling
+the number of attempted transformations, and keeping every intermediate
+encoding small. This continuation develops two complementary improvements.
+
+First, a weighted observer on the maintained interval proof computes all
+connected-component normal-coordinate vectors of a supplied surface,
+with binary multiplicities. This makes the classical weighted
+Agol--Hass--Thurston construction executable in the current code base,
+replaces dense many-port subset enumeration by sparse incidence, and
+extracts compressing disks from disconnected input surfaces. We prove a
+sharp three-run increase for the actual suffix-transfer schedule and an
+elementary support-sensitive bound: a surface with $v$ triangulation
+vertices and $q$ active quadrilateral coordinates has at most $v+2q$
+distinct component vectors, or $v+q$ when all components are two-sided.
+
+Second, a signed persistent circuit represents an entire block of $k$ raw
+singleton Tietze eliminations with
+$O(S_0+k^2(D_0+1)+k^3\log(D_0+k+2))$ vertices, where $S_0$ and $D_0$
+are the initial circuit size and concatenation depth. A final export to
+an ordinary straight-line program at most doubles that size.
+
+The accompanying code, tests, complete measurement samples, source hashes,
+and independent component audits make these claims reviewable. The results
+are polynomial primitives and a restricted representation theorem. They
+do not establish a general quasi-polynomial bound for unknot recognition.
+We state the missing composition hypotheses explicitly and propose a
+prioritized research programme for resolving them.
+\end{abstract}
+
+\vfill
+\noindent\small\textbf{Reading guide.} The main mathematical additions are the
+suffix-run bound, the component-profile theorem, and the whole-block
+elimination bound. The implementation sections explain exactly what a
+certificate proves. The measurements concern these supplied-input kernels;
+none is presented as a whole-knot speedup.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The research objective and the present result}
+\label{sec:objective}
+
+The input problem is to decide whether a classical one-component knot
+diagram represents the unknot. Write $n$ for its number of crossings,
+using a conventional finite planar-diagram encoding. An asymptotic target
+of quasi-polynomial time means a bound of the form
+\[
+       \exp\bigl(O((\log(n+2))^c)\bigr)
+\]
+for a fixed constant $c$, uniformly over all inputs. The often discussed
+bound $n^{O(\log n)}$ is the case $c=2$. Neither a fast experiment nor a
+polynomial operation on a compressed object establishes such a bound:
+one must also bound how the object is found, how many states are examined,
+and the bit size of every intermediate state.
+
+The present work continues the maintained algorithm at a pinned source
+revision. The source baseline is the
+ProveIt commit identified on the title page \cite{proveit2026}. Its
+\code{Topology/UnknotRecognition/fast} tree contains the maintained
+implementation, while the \code{synthesis} tree records the accumulated
+mathematical and experimental analysis. Relevant existing modules include
+\code{interval\_orbits}, \code{interval\_orbit\_verify},
+\code{interval\_incidence}, the normal-surface geometry and parity
+modules, \code{compressed\_words}, and \code{elimination\_batch}.
+
+There are two concrete bottlenecks worth separating. The geometric code
+could count components and obtain aggregate topology, but it did not
+return the full vectors of the actual connected components of a general
+supplied disconnected surface. Its many-port incidence interface returned
+a dense array with one entry for every subset of the ports. The word code
+could apply a checked acyclic elimination batch, but a polynomial estimate
+for one batch did not itself control the size after many serial batches.
+We address both representation problems directly.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}YY@{}}
+\toprule
+Result & Status in this continuation & Scope of the claim\\
+\midrule
+Weighted interval orbits & Implemented over the maintained checked trace &
+Classical AHT theorem; new repository implementation\\
+Three-run suffix bound & Proved, with a legal sharpness example &
+Full rightmost-range transfer followed by truncation\\
+Sparse port incidence & Implemented and compared with the dense interface &
+Attained supports; no attachment order\\
+Normal component inventory & Implemented, with source-bound replay &
+Supplied finite triangulation and normal vector\\
+$H\le v+2q$, or $v+q$ for two-sided components & Proved and independently audited &
+Distinct component vectors; no priority claim\\
+Persistent singleton blocks & Proved and implemented as a reference prototype &
+Raw singleton eliminations, without intervening normalization\\
+Quasi-polynomial bound for this recognizer & Unresolved &
+Surface/move discovery, growth, branching, and provenance remain obligations\\
+\bottomrule
+\end{tabularx}
+\caption{A precise ledger of what has and has not been established.}
+\label{tab:status}
+\end{table}
+
+\subsection{Relation to the literature}
+
+Weighted interval-orbit counting is established by Agol, Hass, and
+Thurston, whose Theorem~16 and Corollary~17 include polynomial computation
+of normal-component vectors and multiplicities \cite{aht2006}. We use that
+result as mathematical infrastructure. Our transfer proof below is written
+for the precise conventions and trace rules in the maintained code. The
+improved constant comes from its full rightmost-range schedule, not from a
+new solution of the general orbit problem.
+
+Normal-coordinate uniqueness and vertex-link structure are standard
+\cite{burton2009}. The profile bound developed here is an elementary
+deduction from those facts and disjointness. It belongs in the context of
+classical Haken--Kneser finiteness: for example, King's discussion records
+an older linear component bound and explicitly notes that stronger bounds
+were already known \cite{king2003}. We make no claim that our support-sensitive
+formulation is new in the literature.
+
+Compressed group words and polynomial free reduction are also established
+\cite{schleimer2008}. Recent work of Ennes and Maria relates compressed
+Heegaard data to short group presentations \cite{ennesmaria2025}. Our
+word contribution is an explicit cumulative size proof for the particular
+mutable-binding representation and a tested implementation. The proof
+does not rely on identifying this construction as unprecedented.
+
+The global target must be described carefully. Oxford's 2021 announcement
+states Lackenby's quasi-polynomial unknot-recognition result
+\cite{lackenby2021}. The 2026 preprint on incompressible surfaces and
+hierarchies provides a concrete new topological route and discusses future
+acceleration \cite{lackenby2026}. Its Section~9 explicitly distinguishes a
+bound on iterative steps from a precise running-time analysis. A parameter
+linear in the initial combinatorial complexity must not be silently treated
+as logarithmic. We therefore use this work to identify geometric operations
+and proof obligations, without importing a quasi-polynomial bound for our
+implementation. The source version used here is arXiv:2607.23350v1,
+dated 25 July 2026.
+
+\subsection{Why this advances the asymptotic programme}
+
+The geometry improvement turns a large normal sum into a small list of
+actual connected pieces. It can reveal a useful disk that aggregate
+invariants obscure, without enumerating exponentially many parallel
+copies. Its sparse incidence output also removes an exponential dependence
+on the number of ports when the caller only needs attained signatures.
+These are precisely the forms of information that a compressed cutting
+or hierarchy procedure would need to reuse.
+
+The word improvement removes a serial reconstruction mechanism from an
+entire restricted block. A linear number of eliminations can be represented
+with polynomial encoded size even when the raw words become exponentially
+long. This is stronger than merely demonstrating a small grammar for one
+supplied giant word. The proof applies to every valid raw singleton donor
+sequence in the stated model.
+
+Both advances reduce local sources of growth. They deliberately leave the
+harder global question visible: why should a sufficiently short sequence
+of useful geometric or algebraic operations exist and be discoverable for
+every unknot? The final research agenda specifies what a proof would need
+to answer that question.
+
+\section{Encodings, cost parameters, and proof boundaries}
+\label{sec:encodings}
+
+A binary interval system consists of a universe
+$I_N=\{0,\ldots,N-1\}$ and $k$ partially defined translations or
+reflections between integer intervals. Pairing endpoints use binary
+integers, so the relevant size is $k\log(N+1)$, not $N$. The maintained
+pairing objects use inclusive endpoints; weight intervals in this
+continuation are half-open. An explicit distinction prevents off-by-one
+errors at reflections and truncations.
+
+A finite normal surface in a triangulation with $t$ tetrahedra has a
+standard vector in $\NN^{7t}$: four triangle coordinates and three
+quadrilateral coordinates per tetrahedron. Nonnegativity, the matching equations,
+and the quadrilateral constraint describe an embedded normal surface.
+At most one quadrilateral coordinate per tetrahedron is nonzero. We write
+$q\le t$ for the number of active quadrilateral coordinates, $v$ for the
+number of manifold vertices, and $D$ for the total number of normal disks.
+The coordinate input size is $O(t\log(D+1))$ under the usual uniform
+binary bound; it is not $D$.
+
+The theorem on component profiles is stated for finite triangulations of
+compact manifolds with manifold vertex links. The implemented adapter is
+more restrictive: its existing geometry validator accepts connected,
+compact, orientable finite triangulations with one torus boundary component.
+It rejects unsupported or invalid geometry before constructing the orbit
+system. Ideal triangulations, spun surfaces, singular vertex links, and
+general higher-genus boundary patterns are not implicitly included.
+
+For words, $S$ denotes allocated circuit vertices, $M$ the fixed list of
+original relator slots, and $r_0$ the initial generator count. A length
+of $2^{10000}$ has a short binary encoding and may have a small circuit;
+a traversal that performs $2^{10000}$ letter operations is nevertheless
+unacceptable. Conversely, many successive small transformations can create
+a huge circuit even if each transformation is polynomial in its current
+input. The whole-block proof below controls that second problem under
+explicit hypotheses.
+
+All polynomial assertions use exact integer arithmetic with bit costs.
+Hash tables are implementation conveniences rather than a proof of
+deterministic worst-case bounds. Tests against expanded data are performed
+only on small systems; the production interval and word operations do not
+use expansion as their large-input fallback. Resource exhaustion returns
+an inconclusive result rather than a false negative.
+
+\input{weighted_transport.tex}
+
+\section{From component vectors to an exact disk witness}
+\label{sec:disk-extraction}
+
+\subsection{A bounded-size anchor construction}
+
+The arc encoding uses one point for each intersection of the surface with
+a global triangulation edge. Normal arcs in faces pair appropriate
+intervals of those points. Around a local normal disk the boundary arcs
+connect all its corners, and gluing across faces identifies the same
+surface. Consequently the connected components of this interval graph
+are exactly the connected components of the normal surface.
+
+For every active local disk type, choose one incident local edge and put
+its coordinate basis weight at the corresponding stack of edge points.
+Each disk contributes exactly once. The implementation explicitly maps
+the chosen edge interval into the canonical global edge orientation;
+identified local edges add weights at the same global points. The weight
+dimension is $7t$, and the number of additive anchor intervals is at most
+\[
+        h\le 4t+q\le5t.
+\]
+Canonicalizing their endpoints therefore gives at most $2h+1\le10t+1$
+initial weight runs. The face-arc construction uses at most $12t$
+pairings, while $N\le4D$. The resulting weighted input is polynomial in
+$t$ and $\log(D+1)$.
+
+The output vector of an orbit has a stronger meaning than a compatible
+summand of the input vector: it is the vector of one actual connected
+component. This distinction matters because normal coordinate addition
+can involve exchanges and reconnect summands. Verifying only that proposed
+vectors are nonnegative, satisfy matching, and sum to the source would
+not certify a component decomposition. The orbit trace supplies the
+missing connectivity information.
+
+The adapter revalidates each extracted vector against the finite geometry
+and computes its Euler characteristic and boundary normal-arc count. It
+also checks the exact conservation identity
+\[
+             \sum_{j=1}^{H}\mu_j f_j=f,
+\]
+where $f$ is the supplied vector and $\mu_j$ are binary multiplicities.
+This is an additional consistency check, not a replacement for weighted
+connectivity replay.
+
+\subsection{Euler characteristic without expanded disks}
+
+Let $T$ and $Q$ be the sums of the triangle and quadrilateral coordinates
+of an extracted component. Its number of normal disks is $T+Q$, and its
+number of local normal-arc occurrences is $A=3T+4Q$. If $B$ is the number
+of normal arcs on unglued boundary faces, its surface cell structure has
+$(A+B)/2$ edges: interior arcs are counted twice in $A$, while boundary
+arcs are counted once. Its vertices are the distinct intersections with
+global edges, counted by $N_f$. Thus
+\begin{equation}\label{eq:euler}
+             \chi(f)=N_f-\frac{A+B}{2}+T+Q.
+\end{equation}
+Every quantity is obtained by linear arithmetic on binary counts. No loop
+over disks, arcs, or vertices is needed. The manifold and matching checks
+ensure that these are the cells of the embedded surface being described.
+
+\begin{lemma}[Connected disk shortcut]\label{lem:disk-shortcut}
+Let $F$ be a connected compact surface. If $\chi(F)=1$ and
+$\partial F\ne\varnothing$, then $F$ is a disk.
+\end{lemma}
+\begin{proof}
+For an orientable connected surface with genus $g$ and $b\ge1$ boundary
+components, $\chi=2-2g-b$. Equality to one forces $g=0$ and $b=1$.
+For a nonorientable connected surface with $h\ge1$ crosscaps and
+$b\ge1$, $\chi=2-h-b\le0$, so equality to one is impossible.
+\end{proof}
+
+The weighted orbit result already certifies connectedness. Consequently
+the test $\chi(f_j)=1$ and $B_j>0$ suffices to recognize a disk component;
+there is no need to run an orientation-double orbit computation or count
+its boundary components separately. A closed projective plane has Euler
+characteristic one but fails the boundary test, exactly as required.
+This is a computational shortcut derived from information already proved,
+not a change to surface classification.
+
+\subsection{Essentiality on a torus must be tested per component}
+
+A disk in a manifold is a compressing disk for its boundary if its boundary
+curve is essential in that boundary. On a torus an embedded simple closed
+curve is essential exactly when its mod-two homology class is nonzero.
+Indeed, an essential curve has a primitive integral slope $(p,q)$; the
+coordinates cannot both be even. Conversely, a contractible curve is
+homologically zero. This uses the fact that the curve is a single embedded
+simple closed curve, which the disk shortcut has established.
+
+The existing finite boundary parity module constructs and independently
+checks the corresponding cohomology witness. The new adapter invokes
+that module only on extracted disk profiles. It never substitutes an
+aggregate boundary class for the class of an individual disk. Two parallel
+meridians have zero total class modulo two, although each bounds a
+compressing disk. Such cancellation is one reason why component extraction
+adds information that aggregate topology cannot provide.
+
+For a boundary component of higher genus, an essential separating curve
+may be homologically zero. The torus test would then be insufficient.
+Extending the inventory to such manifolds is plausible, but extending its
+essentiality conclusion requires a new boundary-curve decision procedure.
+The current validator's torus hypothesis is part of the theorem used by
+the implementation.
+
+\subsection{A mixed surface with enormous multiplicities}
+
+Take an eight-tetrahedron layered solid torus, a normal meridian disk with
+vector $d$, and its boundary vertex-link disk with vector $\ell$. For
+$K=2^b$, supply
+\begin{equation}\label{eq:capacity-surface}
+                 f=K d+(K+1)\ell.
+\end{equation}
+The vertex link can be taken in a sufficiently small vertex neighbourhood,
+disjoint from the meridian. The components are $K$ meridian disks and
+$K+1$ vertex-link disks. Their multiplicities are coprime. A global
+greatest-common-divisor extraction cannot explain this decomposition.
+
+The inventory returns two profiles, with total component count $2K+1$,
+and identifies exactly $K$ compressing disks. The benchmark includes
+$b=128,1024,4096,16384$; the final case represents
+$2^{16385}+1$ connected components. It completes by transporting binary
+weights on the same small combinatorial orbit trace. The certificate is
+not constant size: its repeated endpoints and multiplicities must still
+carry $O(b)$ bits. The complete serialized certificates and their sizes
+are included in the results.
+
+One-sided surfaces give a different reason to avoid multiplicity guessing.
+A normal Möbius band with vector $m$ has a connected annular frontier with
+vector $2m$. An odd multiple can contain both a Möbius component and
+annular components. The extraction follows actual connectivity, so it
+handles this directly. The next section proves that the number of distinct
+profiles nevertheless remains linearly bounded by the triangulation and
+the active quadrilateral support.
+
+\input{component_profile_bound.tex}
+\input{persistent_elimination.tex}
+
+\section{Implementation, independent checks, and measurements}
+\label{sec:experiments}
+
+\subsection{What changed in the maintained code}
+
+The integration patch adds three production-capable geometry modules and
+three test modules. It does not alter existing recognition dispatch or
+replace the dense incidence API. The additions are
+\code{weighted\_orbits.py}, \code{sparse\_port\_incidence.py}, and
+\code{normal\_components.py}. The persistent circuit remains an explicitly
+separate research prototype in the experiments directory, pending the
+planner and source-replay work described below.
+
+The supplied patch applies to the pinned commit; the accompanying source
+snapshot includes the unchanged dependencies needed for independent
+reproduction. Historical tests import small reference implementations from
+four sibling report directories. Those fixtures and their original licences
+are included with their hashes. The first attempt to run the full suite
+failed at import/setup because those sibling files were absent from the
+sparse checkout. Restoring the unchanged pinned fixtures resolved that
+environment problem; the original failed log is retained rather than
+silently discarded.
+
+\subsection{Tests that exercise mathematical failure modes}
+
+The final maintained suite reports \FullTests{} passing test methods, with
+Regina available. Of these, 26 are the new geometry methods: 14 for weighted
+orbits, five for sparse incidence, and seven for component extraction.
+The separate persistent-circuit suite has six passing methods. These
+method counts understate the number of mathematical instances, because
+the methods contain deterministic exhaustive and randomized comparisons.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.29\textwidth}rY@{}}
+\toprule
+Audit & Instances & Independent comparison or property\\
+\midrule
+Small weighted orbit systems & 15,816 & Expanded union-find orbit sums for all
+systems with at most two pairings and binary point weights through universe size four\\
+Signed vector weights & 2,500 & Expanded signed three-coordinate orbit sums;
+150 also checked with the classical merger\\
+Full-range transfers & 5,000 & Literal pointwise pushforward versus compressed folding\\
+Sparse incidence & 250 & Existing dense histogram versus sparse attained supports\\
+Focused normal extraction & 72 & Exact Regina component-coordinate multisets\\
+Broader normal audit & 1,000 & Regina components, topology, disk status,
+source-bound replay, and profile inequalities\\
+Persistent elimination & 600 traces & Separate literal substitution oracle;
+more than 1,000 successful eliminations\\
+\bottomrule
+\end{tabularx}
+\caption{Mathematical comparison workloads, in addition to malformed-input,
+resource, cancellation, and source-binding tests. Instance collections may
+overlap and are not added to obtain a misleading single total.}
+\label{tab:audits}
+\end{table}
+
+The weighted tests include zero-dimensional vectors, negative weights,
+the sharp three-run example, and analytic systems with 18,001-bit
+endpoints. They mutate weights, dimensions, multiplicities, source pairings,
+and local proof records. Verification is also exercised with the orbit
+search function replaced by a function that raises if called. Certificate
+schema validation rejects Boolean values masquerading as integers.
+
+The broader normal audit uses eleven finite triangulations, including
+layered solid tori, boundary-cap extensions, an interior vertex subdivision, and a solid
+torus connected-summed with $\mathbb{RP}^3$. The last fixture deliberately
+tests geometry beyond knot exteriors. It includes 200 relabelings and 63
+random compatible sums, with 150 cases containing nonorientable boundary
+surfaces and 26 containing closed nonorientable surfaces. There are 116
+cases with compressing disks. All 1,000 component multisets agree exactly
+with Regina. The stronger two-sided profile bound is checked in all 824
+applicable cases. Every certificate replays with both orbit and parity
+search disabled. These are independent finite checks, not substitutes for
+the proofs.
+
+\subsection{Geometry timing protocol}
+
+Measurements use Python 3.12.14 on the recorded Linux x86-64 environment,
+with Regina engine 7.4 and distribution 7.4.1 for the independent audits.
+Comparative timings run without concurrent audit or full-suite workloads.
+Before and after each experiment the scripts hash the relevant source
+files and require equality. All raw samples, shuffled orders, exact inputs,
+completion statuses, and structural counters are retained.
+
+The primary geometry experiment has thirteen cases and four arms:
+the existing dense query, an identical dense control, the new sparse
+query, and the new query followed by certificate verification. Each case
+has one excluded warm-up per arm and five measured shuffled rounds,
+giving 260 measured calls. Timing covers the complete call. Histogram
+comparison is outside the timing interval; proof replay is inside the
+verified arm. No local resource cap censors these runs.
+
+The cases distinguish disjoint, nested, and coincident ports. Static
+systems on $2^{512}$ points expose the unavoidable cost of dense output
+without geometric scheduling work. Native interval systems come from
+an eight-tetrahedron normal meridian and from $2^{64}$ parallel meridians.
+These are supplied normal surfaces, not knot-recognition benchmarks.
+
+\input{geometry_table.tex}
+
+The median paired ratio is formed inside each shuffled round and then
+aggregated; it need not equal the ratio of the two displayed medians.
+The A/A column is the dense median paired ratio against its identical
+control. Values away from one expose the variability of these short
+measurements. Large disjoint-port gains are consistent with eliminating
+the dense subset enumeration. Small gains or reversals are treated more
+cautiously, especially where identical ports already benefit from the
+baseline's marked-union reuse.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{geometry_scaling.pdf}
+\caption{Completed dense and sparse port queries on the final source.
+The horizontal axis counts explicit ports. Static disjoint ports isolate
+the dense output cost; the native parallel-meridian cases also exercise
+the interval scheduler. The axes are logarithmic where indicated.
+Points are medians, not fitted complexity exponents.}
+\label{fig:geometry}
+\end{figure}
+
+\subsection{Batched follow-up and compressed capacity}
+
+The initial measurement pass showed material A/A variation on small
+queries. The final primary pass and a separate follow-up are both retained;
+the original pass is labelled as a development snapshot because minor
+cancellation-polling corrections followed it. The follow-up uses repeated
+complete calls within each timed batch for four predetermined small or
+noisy cases, with seven shuffled rounds. It reports time per call and
+does not replace the primary experiment selectively.
+
+\input{batched_table.tex}
+
+Capacity records are separate from comparative timing. They include
+the mixed normal surfaces in \eqref{eq:capacity-surface} and static sparse
+systems with 32, 128, and 512 disjoint ports. The latter return respectively
+32, 128, and 512 attained signatures. There is no attempt to allocate a
+dense $2^{512}$-entry output, and no claimed measured speedup against such
+an uncompleted allocation.
+
+\input{capacity_table.tex}
+
+For the eight-tetrahedron mixed surfaces, the weighted trace has the same
+275 explicit events, 23 scheduler cycles, and 22 transfers across these
+bit lengths. It uses 40 anchor intervals, dimension 56, and 35 initial
+and peak weight runs. The benchmark demonstrates that enormous
+multiplicities do not force enumeration. It also shows the real encoded
+cost: the largest certificate contains \LargestCertificateBytes{} bytes
+in the stated JSON format. Hexadecimal transport avoids changing Python's
+process-wide decimal conversion limit. Compression of the distribution
+archive is separate from the certificate's mathematical bit-size bound.
+
+\subsection{What the word measurements establish}
+
+The persistent-elimination section gives all five rows of the A/A/B
+comparison and describes the exact artificial source family. At 128
+eliminations the new prototype takes about 0.395 seconds versus 2.853
+seconds for eager serial elimination, a ratio of median times of about
+7.22. Both complete, use the same supplied donors, and keep expansion
+disabled. The retained raw relator has length $2^{128}+2$.
+
+This family was chosen to exercise repeated retained contexts. Its freely
+cancelling padding means that it would be inappropriate to present it as
+a difficult family for the full knot algorithm. The experiment supports
+the practical value of this particular representation and the structural
+bound; it does not establish an exponential lower bound on the old arena,
+whose measured vertex growth on this family is quadratic. A future
+integration benchmark must include donor discovery, normalization, source
+replay, and actual knot diagrams.
+
+\FloatBarrier
+\section{Certificate contracts and integration design}
+\label{sec:contracts}
+
+\subsection{The weighted proof interface}
+
+The weighted certificate contains a version, a dimension, the canonical
+complete weight partition (including zero runs), ordered output classes, and the
+source-bound ordinary orbit certificate. A class is serialized as
+\code{[vector,multiplicity]}; it is not one object per connected component.
+The verifier reconstructs the claimed weights from the explicit source
+arguments, checks the ordinary orbit proof, and replays every weight
+transfer and static emission, comparing the exact ordered classes with the
+claim. The producer and standalone replay utility also check total orbit
+multiplicity and the aggregate vector explicitly.
+
+The ordinary orbit checker is independently implemented relative to the
+scheduler. Weighted production and weighted verification share the small
+transport arithmetic, as does normal geometry reconstruction. Their
+independent validation is supplied by the expanded finite oracles and
+the Regina component comparisons. This separation should remain visible
+in documentation and future proof audits: invoking a shared function twice
+does not create an independent arithmetic implementation.
+
+The sparse certificate additionally binds the normalized input ports and
+the attained histogram. The normal-component certificate binds the
+triangulation and original vector, the weighted proof, the exact profiles,
+and the independently checked boundary parity records. For a disk profile
+the verifier derives its boundary graph from the source geometry and
+the extracted coordinates. It does not trust a supplied assertion of
+connectedness, Euler characteristic, or essentiality.
+
+\subsection{Input provenance and the meaning of a negative result}
+
+The normal inventory's mathematical statement is: these are the connected
+components of this supplied normal surface in this supplied triangulation.
+A compressing disk is therefore a witness about that manifold. Relating
+it to an original knot diagram additionally requires a checked conversion
+from the diagram to its exterior and checked transport through all
+simplifications. The new modules do not silently inherit that provenance
+from a filename, hash, or external-engine claim.
+
+Similarly, an inventory with no compressing disk proves only that this
+particular supplied surface has no such component. It does not prove
+that the manifold has incompressible boundary. The empty vector gives
+an empty inventory, not evidence of knottedness. A future complete
+procedure needs a justified way to choose surfaces or certify a hierarchy.
+The same logical distinction applies to the word prototype: exhausting
+all raw singleton donors is an algebraic stopping condition, not a proof
+that the knot is nontrivial.
+
+\subsection{Resource and cancellation semantics}
+
+The cycle allowance is charged by ordinary orbit discovery. The weighted
+producer currently first builds and checks that ordinary trace, then
+applies its weight-run, output-record, and event allowances during weighted
+replay. Thus these limits do not bound the earlier trace allocation.
+Standalone weighted replay and certificate verification can reject an
+overlong explicit trace before running ordinary replay, but they still
+receive an already materialized input object.
+
+These are cooperative work and output allowances. They are not promises
+about process memory, JSON parser allocation, or wall-clock latency.
+Callbacks are polled in the source and certificate loops; callback
+exceptions propagate instead of being mistaken for malformed data.
+An incomplete weighted result has no count, class list, aggregate, or
+certificate, and the higher-level adapters return an inconclusive status.
+The implementation never presents a partial inventory as complete.
+
+For the persistent circuit, a failed or interrupted construction may
+allocate unreachable temporary concatenations before publishing a binding.
+The mathematical size theorem counts a completed valid block from a fixed
+initial circuit; repeated failed attempts that leave orphan allocations
+are not free. A production transactional wrapper should roll back those
+allocations, collect unreachable nodes, or include their costs explicitly
+in the potential function. The current tests check that an interrupted
+operation does not publish a false generator binding.
+
+\subsection{A concrete integration sequence}
+
+The geometry patch can be reviewed and applied without changing the
+recognizer's existing decisions. Its first callers should be offline
+normal-surface and boundary-pattern experiments. Such callers can reuse a
+single inventory for disk selection and support queries. If they truly
+need a dense table, an explicit final conversion preserves that interface
+and acknowledges its output cost.
+
+The persistent circuit needs more work before production use. Its mutable
+generator bindings change the values of previously allocated nodes.
+Existing caches in the immutable word arena cannot be reused unchanged.
+Occurrence counts, lengths, Whitehead summaries, and donor frontiers need
+a dependency-aware invalidation policy or an explicit recomputation phase.
+The proposed first integration should keep a raw-only block, recompute
+saturated donor counts, and export once at the normalization boundary.
+
+For independent replay, each pivot image must be derived from the
+source-bound donor and its unique raw occurrence. A certificate may specify
+the donor slot and live generator, but it must not be allowed to supply an
+unverified replacement image. The checker can independently reconstruct
+the signed circuit and compare the final exported presentation with the
+existing terminal certificate contract. Replacing a search arena alone
+does not establish this proof path.
+
+The final acceptance experiment should compare the complete integrated
+pipeline with identical resource conventions, retain unchanged-case
+controls, report every timeout as censored, and include native hard-knot
+and hard-unknot families. That experiment is intentionally a future
+milestone: the current package contains kernels and a representation
+prototype, with their exact scope documented.
+
+\input{research_agenda.tex}
+
+\appendix
+\section{Reproduction and artifact map}
+\label{sec:reproduction}
+
+The archive contains the article source, compiled PDF, integration patch,
+source snapshot, exact new tests, benchmark and audit drivers, raw JSON,
+build and test logs, and a SHA-256 manifest. The top-level README records
+the pinned commit and the commands below in their executable directory
+layout. Python's standard library suffices for the weighted and word
+kernels; Regina is needed for the independent normal-surface audit and
+the optional maintained native tests. The recorded environment uses
+Regina distribution 7.4.1.
+
+\begin{lstlisting}
+python -m unittest discover -s code/fast/tests -v
+python -m unittest discover -s experiments -p 'test_persistent_elimination.py' -v
+python experiments/audit_normal_inventory.py --fast code/fast --cases 1000 --output results/normal_inventory_audit_reproduced.json
+python experiments/benchmark_geometry.py --fast code/fast
+python experiments/benchmark_geometry_batched.py --fast code/fast
+python experiments/benchmark_persistent_elimination.py --baseline-fast code/fast --sizes 8 16 32 64 128 --rounds 5
+\end{lstlisting}
+
+The first command is run with \code{code/fast} on \code{PYTHONPATH}, or
+from that directory with \code{-s tests}; the supplied reproduction script
+sets the path explicitly. Run timing experiments sequentially, apart from
+tests and plotting. The artifact README gives the output-path options and
+does not require overwriting the frozen measurement files.
+
+The geometry JSON files use exact hexadecimal strings for exceptionally
+large integers; the supplied \code{integer\_codec} accepts these without
+changing global interpreter settings. A standalone verifier can load the
+source fixture and call
+\code{verify\_normal\_component\_certificate} with the saved object.
+The source hashes bind the empirical report to the files actually timed.
+They are reproducibility metadata, not mathematical substitutes for the
+replay checks.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.37\textwidth}Y@{}}
+\toprule
+Archive path & Purpose\\
+\midrule
+\code{article/} & Main TeX, proof sections, figures, generated tables,
+bibliography, and compiled article\\
+\code{code/fast/} & Maintained source snapshot plus the six new geometry files\\
+\code{code/reports/} & Minimal unchanged reference fixtures required by historical tests\\
+\code{experiments/} & Persistent prototype, exact tests, geometry audits,
+timing drivers, and result-table generation\\
+\code{results/} & Full samples, inputs, proof records, hashes, logs,
+and explicitly labelled development snapshots\\
+\code{integration.patch} & Six additive files relative to the pinned ProveIt baseline\\
+\code{SOURCE\_MANIFEST.json} & File-level origin and SHA-256 information\\
+\bottomrule
+\end{tabularx}
+\caption{The package is intended to be reviewable before repository integration.}
+\end{table}
+
+\section{A compact review checklist for the mathematical claims}
+
+Review of the weighted construction should focus on the local invariant:
+every original weight contribution stays attached to exactly one current
+representative of its original orbit. Full-range transfer, static emission,
+and truncation are the operations that change this attachment. Global
+conservation alone is weaker and must not become the proof obligation.
+
+Review of the profile theorem should preserve the distinction between
+the number of connected components and the number of distinct standard
+vectors. Two-sided disjoint representatives give linear independence;
+one-sided representatives enter through their connected normal frontiers.
+The dimension estimate uses actual manifold vertex links. Applying it to
+a different coordinate system or an ideal triangulation requires a new
+kernel calculation.
+
+Review of the persistent theorem should check raw occurrence semantics,
+acyclicity after a binding, the binding-free depth recurrence, and the
+accounting of historical nodes and original relator slots. Normalization
+and successful singleton elimination are different operations; adding
+the former between every step changes the hypotheses.
+
+Finally, every proposed general complexity conclusion should display an
+explicit upper bound on total explored states and their maximum encoded
+size. Polynomial local arithmetic, a short successful certificate, or
+good benchmark scaling can each be valuable without supplying those two
+global bounds.
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

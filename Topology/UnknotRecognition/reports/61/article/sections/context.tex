@@ -1,0 +1,126 @@
+\section{Objective, source audit, and the complexity target}
+\label{sec:context}
+
+The computational objective is to move the existing exact recognizer toward
+an algorithm whose running time is bounded by
+\(n^{(\log n)^{O(1)}}\), where \(n\) measures the input knot diagram. A useful
+continuation must contribute an implemented step, a proved structural
+bound, or a precisely exposed obstruction. Merely attaching a polynomial
+subroutine to an exponential search does not settle this objective.
+
+The present work targets compressed normal-surface analysis. A normal
+surface can have exponentially many elementary disks while its coordinates
+have only polynomially many bits. Thus a program that follows every normal
+disk, every edge point, or every connected component explicitly is unsuitable
+for the intended complexity target. The interval-pairing representation
+already used by the repository is an appropriate starting point: its input
+size is the number of pairings and the bit length of their endpoints.
+
+\subsection{Pinned repository state}
+
+All changes are relative to ProveIt commit
+\begin{center}
+\baselinecommit.
+\end{center}
+The \path{Topology/UnknotRecognition/fast} Git tree at that commit is
+\begin{center}
+\texttt{72834388419f5016d6db28ca0f028794f30b68db}.
+\end{center}
+The source was accessed through the selected GitHub connection. Locally
+available copies were reused only after matching their Git blob contents to
+the pinned tree; changed source files were fetched at the commit itself.
+This distinction matters because the repository was receiving many concurrent
+research integrations during the audit.
+
+The maintained source contains substantially more than the original
+Khovanov scanner. It includes compressed words and group certificates, braid
+reductions, interval-component sharing, exact homological windows,
+compressed twists, several Jones evaluators, and normal-surface topology
+queries. We did not treat an old delivery snapshot as the current baseline.
+The audit focused on
+\path{fastunknot/interval_orbits.py},
+\path{fastunknot/interval_orbit_verify.py},
+\path{fastunknot/normal_surface_geometry.py}, and
+\path{fastunknot/normal_surface_orbits.py}.
+The corresponding maintained synthesis sections already explain interval
+orbits, independent orbit proofs, coordinate multiplicity, and boundary
+component classification \cite{ProveIt2026}.
+
+Two limitations stand out in that source. Its periodic closure restarts a
+lexicographic all-pairs search after every merge, even though only one
+surviving pairing has changed. Its normal-surface topology query computes
+aggregate Euler and component data, but its
+\code{compressing\_disk} flag concerns the entire supplied surface being
+a disk. The weighted component extraction needed to detect a disk hidden
+inside a disconnected vector is explicitly absent.
+
+The new work addresses these two limitations. It does not repeat the recent
+compressed singleton-elimination or raw-contraction work on group
+presentations. It also does not alter the meaning of the old
+\code{compressing\_disk} field: a separate component query supplies the
+stronger, differently quantified predicate.
+
+\subsection{What the current literature establishes}
+
+Agol, Hass, and Thurston proved polynomial-time counting for interval
+pseudogroups, extended the algorithm to additive vector weights, and
+applied it to compressed normal-surface components
+\cite{AHT2006}. That classical result is the mathematical foundation of
+the implementation here. In particular, the existence of a polynomial
+algorithm for obtaining topology from supplied binary coordinates is not
+a new theorem of this report.
+
+The quasi-polynomial announcement must be stated with its actual
+parameters. Lackenby's March 2021 Oxford handout gives
+\[
+ 2^{O((\log n)^3)}
+ =n^{O((\log n)^2)},
+\]
+with hierarchy length \(L=O((\log n)^2)\) and a polynomial surface-complexity
+parameter \cite{Lackenby2021}. Earlier publicity used the stronger expression
+\(n^{O(\log n)}\). Both are quasi-polynomial, but they are not identical
+bounds and should not be substituted for one another in an implementation
+claim.
+
+Lackenby's July 2026 preprint gives a new hierarchy approach to
+incompressibility and unknot recognition. Section 9 explicitly leaves the
+running time of some operations unspecified; Proposition 9.1 bounds
+iterations by \(L(g+1)^L\). Section 10 refines the hierarchy length, and
+Theorem 14.4 treats compressed cutting and parallelity information
+\cite{Lackenby2026}. These developments are highly relevant specifications
+for future work, but the inspected preprint does not itself assert a
+quasi-polynomial runtime for the full algorithm. The current repository
+already records that qualification correctly.
+
+\subsection{The deliverable's main statements}
+
+The first result is an exact simulation theorem: the new scheduler produces
+the same ordered sequence of successful periodic reductions as the pinned
+implementation. It follows that all later carrier choices, transmissions,
+truncations, and complete certificates agree as well. This is stronger than
+merely observing equal final orbit counts.
+
+The second result is a work bound that is independent of the expanded
+interval size. A pure queue needs at most \((k-1)^2\) merger tests in one
+closure. The adaptive default adds at most \(\binom{k}{2}\) preliminary
+tests. The proof identifies precisely what is cached and what is invalidated;
+it does not count failed arithmetic operations as free.
+
+The third result exhibits a family on which the improvement changes
+the asymptotic cost of a \emph{complete} count. Both old and new algorithms
+take five cycles, so expensive later phases do not conceal the improvement.
+This is an implementation-specific lower bound, not a lower bound for the
+abstract orbit-counting problem.
+
+The fourth result is a source-bound component predicate. Given a validated
+compact orientable triangulation with one torus boundary and an admissible
+normal vector, the new query counts all disk components and all
+compressing-disk components without listing the components individually.
+It uses five coordinates regardless of the triangulation size. This is
+particularly useful when a candidate normal vector includes irrelevant
+vertex links, closed components, or many parallel copies.
+
+Throughout, \(k\) denotes an interval-pairing count, \(N\) its encoded
+universe size, \(t\) a tetrahedron count, and \(n\) a knot-diagram size.
+Bounds in \(k\) or \(t\) do not silently become bounds in \(n\). Any passage
+between these parameters requires the corresponding geometric construction.

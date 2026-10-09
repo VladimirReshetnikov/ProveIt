@@ -1,0 +1,149 @@
+\section{Implementation, interfaces, and trust boundaries}
+\label{sec:implementation}
+
+The implementation adds three production modules and changes the existing
+orbit producer at its periodic-closure call site.  The existing independent
+orbit verifier is retained unchanged.  There is no new dependency in the
+production path: the modules use the Python standard library and the
+repository's existing geometry and integer codecs.  Regina is used only in
+an independent experimental audit.
+
+\subsection{A compatible scheduling interface}
+
+The orbit producer accepts
+\begin{verbatim}
+count_orbits(n, pairings, ..., merger_scheduler='adaptive')
+\end{verbatim}
+with three scheduling choices.  \code{legacy} performs the literal historical
+restart scan.  \code{queue} uses the event queue from the start of every
+periodic closure.  The default, \code{adaptive}, spends a bounded scan
+allowance before switching to that queue.  Both existing periodic rules,
+\code{fine\_wilf} and \code{aht}, remain available.
+
+The scheduling module receives the merger as a callback; it contains no
+second implementation of periodic mathematics.  The callback must be
+deterministic and side-effect free.  It returns the same replacement pairing
+that the old scan would have installed.  Candidate ordering and generation
+invalidation then account for all differences in execution.
+
+The certificate format does not change.  Queue entries use stable original
+row identifiers internally, but a successful operation records the current
+list ranks expected by the existing verifier.  The optional statistics add
+queue runs, adaptive switches, peak queue occupancy, and stale pops.  These
+are execution diagnostics, not parts of the mathematical certificate.
+
+The adaptive implementation has a small fast path: it obtains the first two
+periodic rows lazily.  If their merger succeeds, it restarts immediately.
+Only after that first failure does it finish collecting the periodic index
+list for the remaining lexicographic scan.  Consequently an easy sequence
+of first-pair successes does not rebuild a full index list at each merge.
+The first test is charged to the same allowance and is not repeated.  The
+exact simulation theorem and the quadratic test bound are unchanged.
+
+Callbacks are checked throughout candidate discovery, queue updates, stale
+pops, rank conversion, and output construction.  A raised exception
+propagates.  Python allocation, integer arithmetic, and heap primitives are
+not hard-real-time preemptible; cooperative checking must not be described
+as a strict elapsed-time bound.
+
+\subsection{Weighted profiles and reusable traces}
+
+The new module \path{fastunknot/weighted_orbits.py} exports
+\begin{verbatim}
+weighted_orbit_profile(n, pairings, runs, ...)
+replay_weighted_orbit_profile(n, pairings, runs, certificate, ...)
+\end{verbatim}
+where \code{runs} is the full ordered half-open partition into triples
+\code{(start, stop, weight\_tuple)}.  All tuples have a common positive
+dimension; a separate \code{dimension} argument resolves the empty-input
+case.  The result contains completion status, orbit count, sorted profile
+groups, dimension, producer cycle count when available, and diagnostics.
+Each group is \code{(multiplicity, weight\_tuple)}.  Requesting
+\code{record\_certificate=True} returns the checked unweighted trace.
+
+Supplying an existing certificate avoids producer scheduling.  The replay
+function first validates that trace through
+\path{fastunknot/interval_orbit_verify.py}, then performs the weight
+transfers.  It does not trust a claimed terminal count or a claimed set of
+weights embedded in an arbitrary trace.  A trace is intentionally reusable
+for different input weight fields on the same ordered interval system.
+
+Invalid weight partitions and invalid traces raise
+\code{WeightedOrbitError}.  Caller cancellation exceptions propagate even
+when their type is a common validation exception such as \code{ValueError}.
+A cycle-limited producer that cannot finish returns neither an orbit count
+nor a partial profile nor a certificate.  These semantics prevent an
+interrupted computation from becoming negative evidence.
+
+\subsection{A supplied-surface component query}
+
+The module \path{fastunknot/normal_component_profile.py} exports
+\begin{verbatim}
+normal_component_profile(triangulation, coordinates,
+                         record_certificate=True)
+verify_normal_component_profile(triangulation, coordinates,
+                                certificate)
+\end{verbatim}
+as well as the component-weight construction for research use.  A completed
+query reports the following summary fields:
+\begin{center}
+\begin{tabular}{lp{0.43\textwidth}}
+\toprule
+\code{components} & Total connected components. \\
+\code{disk\_components} & All disk components. \\
+\code{compressing\_disk\_components} & Disks with essential boundary. \\
+\code{has\_compressing\_disk\_component} & Whether that count is positive. \\
+\bottomrule
+\end{tabular}
+\end{center}
+Its group records also report the five integer fields, the two boundary
+parities, and both disk predicates.
+
+The previous topology interface retains its whole-surface
+\code{compressing\_disk} field.  That field and the new existential
+component field answer different questions.  Code consuming either result
+should name that quantifier explicitly.  For example, a meridian plus a
+vertex-linking disk is not a connected compressing disk, but it does contain
+a compressing-disk component.  The coordinate vector can have greatest
+common divisor one, so dividing a common coordinate factor would not solve
+this problem.
+
+The component certificate contains an algorithm tag, a source fingerprint,
+the unweighted orbit certificate, and the profile multiset.  The verifier
+reconstructs the geometry and weights from the supplied triangulation and
+normal vector, validates the trace independently of its producer, replays
+weights, and compares the claimed profiles.  Large signed integers survive
+the existing hexadecimal JSON transport.  A fingerprint is only an identity
+check: it cannot replace the matching equations, cellular construction, or
+local mathematical verification.
+
+This verifier shares the geometry and initial-weight construction with its
+producer.  The independent Regina and literal-component comparisons in
+\cref{sec:experiments} test that shared boundary.  They do not make the
+checker a separately developed geometric implementation.  A future formal
+verification effort should preserve this distinction between independent
+trace checking and shared geometric preprocessing.
+
+\subsection{What is deliberately outside the returned claim}
+
+The query validates the topology of its input manifold, but it does not
+certify that this manifold is the exterior of a particular planar diagram.
+An essential disk in a verified knot exterior would certify the unknot;
+the missing link is the source-preserving construction of that exterior.
+The ordinary recognition dispatcher therefore receives no new unconditional
+acceptance branch in this patch.
+
+A negative query means that the supplied normal surface has no compressing
+disk among its components.  It is not a certificate that all normal vectors
+fail, that the boundary is incompressible, or that a knot is nontrivial.
+Likewise, a positive profile counts disk components but does not yet give
+the chosen disk's complete normal coordinates, attaching maps for a cut,
+or an explicit isotopy.  These stronger artifacts require additional work
+identified in \cref{sec:research}.
+
+The implementation retains a complete orbit trace before weighted replay.
+Its representation is polynomial under the established AHT trace bound,
+but storage can be material.  Streaming verified operations is a useful
+future memory improvement; it must preserve the ability to check a saved
+certificate independently.  The event queue can also have quadratically
+many entries.  Neither cost is hidden behind the word ``compressed.''

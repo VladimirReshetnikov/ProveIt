@@ -1,0 +1,209 @@
+\section{Cost composition and the next research obligations}
+\label{sec:research-agenda}
+
+The results above improve two representation costs: extracting the
+components of a supplied normal surface, and retaining a complete block
+of raw singleton substitutions. The next theorem states precisely how
+such local improvements could contribute to a complete recognition bound.
+It also makes clear which quantities future work must control.
+
+\subsection{A conditional theorem for the whole computation}
+
+Let $n\ge2$ be the bit length of a diagram encoding. Standard encodings
+whose size is polynomial in the crossing count give the same
+quasi-polynomial complexity class. All subsequent sizes are measured in
+bits, including integer coordinates, combinatorial incidence, word
+circuits, retained history and proof references.
+
+\begin{proposition}[Conditional cost composition]
+\label{prop:conditional-cost-composition}
+Suppose a deterministic algorithm constructs and evaluates a search tree
+for an input of size $n$, subject to the following uniform bounds.
+The transition and terminal rules are sound, and exhausting the tree is
+complete for both unknot and knotted verdicts. The tree has depth at most
+$h=h(n)$, and each node at depth $j<h$ has at most $b_j=b_j(n)\ge1$
+children. Failed candidate attempts and repair iterations are included
+in the tree or in its explicitly charged node work.
+
+Every intermediate state has at most $s=s(n)\ge1$ bits. All work at
+one node, including generation of its candidates and rejected proposals,
+has bit cost polynomial in $n+s$, with one polynomial independent of the
+input and node. Each node contributes at most polynomially many bits in
+$n+s$ to a source-bound proof record. The assembled proof is independently
+checkable in time polynomial in its full length and $n$.
+
+Then there is an absolute constant $a$ such that discovery, proof output,
+and independent verification together have cost at most
+\begin{equation}\label{eq:global-composition-cost}
+ \left((h+1)(n+s+2)\prod_{j=0}^{h-1}b_j\right)^a.
+\end{equation}
+In particular, for a fixed $c\ge1$, the sufficient condition
+\begin{equation}\label{eq:global-log-budget}
+ \log_2(n+s+2)+\log_2(h+1)
+       +\sum_{j=0}^{h-1}\log_2 b_j
+       =O\bigl((\log n)^c\bigr)
+\end{equation}
+gives a complete deterministic recognition algorithm of complexity
+$2^{O((\log n)^c)}$.
+\end{proposition}
+
+\begin{proof}
+The number of nodes at depth $j$ is at most
+$\prod_{i=0}^{j-1}b_i$. Since every $b_i\ge1$, the total node count is
+at most $V=(h+1)\prod_{i=0}^{h-1}b_i$. Summing the uniform node cost
+and proof length gives $V(n+s+2)^{O(1)}$ for each. Applying the assumed
+polynomial verifier to that full proof preserves a fixed polynomial in
+$V$ and $n+s+2$, proving~\eqref{eq:global-composition-cost}. Taking
+logarithms gives~\eqref{eq:global-log-budget}. Soundness and completeness,
+which are separate hypotheses, turn this computation bound into a
+recognition bound.
+\end{proof}
+
+For example, $s=n^{O(1)}$, $b_j=n^{O(1)}$ uniformly, and
+$h=O(\log n)$ give $2^{O((\log n)^2)}$. Replacing the depth by
+$O((\log n)^2)$ gives $2^{O((\log n)^3)}$. A deterministic chain with
+polynomially many steps and polynomial state size needs no logarithmic-depth
+hypothesis: its branching factors are all one. A small description of each
+state does not establish the branching term; polynomial-time operations
+do not establish a bound on the largest state. If the terminal rules
+only certify unknottedness, the same analysis bounds a possibly
+inconclusive positive search and does not supply the missing negative
+verdict.
+
+The analogous accounting for an iteration bound $L(g+1)^L$, as in
+Lackenby's hierarchy analysis~\cite[Proposition 9.1]{lackenby2026}, is
+\[
+ \log_2(n+s+2)+\log_2(L+1)+L\log_2(g+1)
+                  =O((\log n)^c).
+\]
+This is conditional on bounded candidate generation, repairs and replay
+throughout the computation. Bounds for an essential boundary pattern
+cannot simply be applied to arbitrary unsuccessful branches.
+
+\subsection{Prioritized questions and concrete targets}
+
+The following questions are ordered by their role in completing the
+geometric and algebraic pipelines. Each asks for a specific constructive
+result or obstruction, rather than an improvement to isolated timings.
+
+\begin{enumerate}
+\item \textbf{How can a useful surface be found?}
+Can one generate a complete family of useful normal or hierarchy surfaces
+after $2^{\operatorname{polylog} n}$ candidate attempts, with uniformly
+bounded encoded coordinates? Component extraction now permits a candidate
+to be disconnected. The missing statement concerns coverage: whenever
+the required compression or hierarchy move exists, some generated
+candidate must contain it. A first result should specify an actual
+diagram or triangulation class and a parameter controlling this search,
+including the cost of finding that parameter's witnessing structure.
+
+\item \textbf{Can cutting be performed directly on compressed coordinates?}
+Given a validated triangulation and a binary normal vector, construct a
+compressed cell or handle description of the cut manifold, together with
+its boundary pattern and a checkable identification with the geometric
+cut. The target is polynomial cost in the input and output bit lengths,
+without allocating one cell per normal disc. Weighted segment tracking
+under crushing already has a concrete precedent in the work of
+He, Sedgwick and Spreer~\cite[Section 4.1]{hesedgwickspreer2025}; a full
+checked cut representation requires additional topology and attachment
+data. State exactly which parts
+require essentiality hypotheses and provide a defined outcome when a
+candidate does not satisfy them.
+
+\item \textbf{Which ordered attachment data admit small descriptions?}
+Extend sparse component incidence to boundary order and transport of
+named arcs, points and intervals. An acceptable representation must
+support the actual gluing operations, not merely count incidences.
+Determine whether a useful class has polynomial-size attachment maps,
+and construct lower-bound examples outside it. The linear bound on
+unmarked component vectors does not bound the number of possible
+markings; relative offsets alone can distinguish many states.
+
+\item \textbf{How is peripheral provenance maintained?}
+Connect the input diagram to a finite exterior triangulation with checked
+meridian and longitude data. Then carry that data through cutting,
+crushing, retriangulation and any change of combinatorial coordinates.
+The desired output is a composable source-bound certificate for the
+peripheral identifications. Recognizing an essential disc in a supplied
+torus-boundary manifold is insufficient until that manifold and its
+markings are linked to the original diagram.
+
+\item \textbf{How small can a selected-component witness be?}
+The complete coalesced inventory is polynomial and has at most $v+2q$
+types. Can a particular disc or marked component be certified with a
+substantially smaller record than the whole weighted trace, while still
+proving connectedness and source membership? Investigate persistent
+anchors, locally checkable transport summaries, and streaming replay.
+Any savings must include locating the component and verifying its boundary
+class; conservation of the total vector is not a substitute.
+
+\item \textbf{Can the geometric checker have a smaller trusted core?}
+Separate combinatorial manifold validation, interval equivalence,
+integer weight transport and surface classification into explicit proof
+interfaces. Formalize the local transport and normal-anchor statements,
+or implement an independently derived second checker. Measure proof
+bytes and maximum replay state as well as arithmetic work. Resource
+limits must preserve the distinction between an invalid certificate and
+an unfinished computation, and malformed records must be charged by
+their actual encoded length.
+
+\item \textbf{Can persistent elimination be integrated without changing semantics?}
+Add source-derived replay for immutable concatenations and generator
+bindings, retaining exact relator-slot identities and the raw singleton
+condition. Produce an end-to-end diagram experiment in which discovery
+and independent replay both use this representation. Ordinary SLP export
+provides a clear boundary to other word kernels. The mathematical target
+is an integrated polynomial bound for each complete raw block, including
+donor identification and proof construction, rather than the substitution
+operation alone.
+
+\item \textbf{What controls growth across normalization boundaries?}
+A polynomial bound for one raw block does not automatically survive
+repeated free reduction, cyclic normalization and reconstruction.
+Seek an amortized potential controlling all allocated grammar vertices,
+integer metadata and proof records across the entire sequence. A useful
+theorem should bound the total composition, not repeatedly apply a fixed
+polynomial whose degree compounds with the number of boundaries.
+Counterexamples for particular normalization policies would identify
+which kinds of sharing must be retained.
+
+\item \textbf{When does donor planning admit a complete efficient policy?}
+Computing all current raw singleton counts is polynomial, but choosing
+an order that reaches a terminal presentation may involve many choices.
+Identify an exchange property, a monotone dependency structure, or a
+restricted-width class on which a specified policy is complete. Charge
+failed exposure moves and alternative orders explicitly. A promising
+first theorem would connect such an algebraic class to a recognizable
+family of diagrams, rather than assuming a successful donor sequence
+as additional input.
+
+\item \textbf{Can hierarchy repairs be accelerated with a proved potential?}
+Construct the actual correction operations and bound both their number
+and the sizes of the descriptions they create. A logarithmic-depth
+theorem needs a quantity that decreases under the accelerated procedure,
+including unsuccessful choices and subsequent repairs. Determine whether
+the potential should combine handle complexity, boundary-pattern
+complexity and compressed attachment size. A terminating integer
+potential whose initial value is exponential does not meet this target.
+
+\item \textbf{How do the geometric and algebraic branching costs compose?}
+Establish bounds for the sum of logarithmic branching factors in
+\eqref{eq:global-log-budget}, allowing depth-dependent choices and shared
+states. Test whether reductions in one representation preserve the
+parameters that make the other efficient. A restricted theorem may be
+valuable even without a universal result, provided its admission
+conditions are recognizable and remain valid after every permitted
+transition. Switching between individually efficient backends is not
+itself a bound on the resulting search.
+
+\item \textbf{Which evidence best tests the proposed global bounds?}
+Build reproducible diagram families that vary coordinate bit length,
+distinct component types, attachment complexity, raw elimination depth
+and normalization frequency independently. Record candidate failures,
+conversion, proof generation, proof bytes, replay and fallback. Include
+cases designed to saturate proved bounds and cases that defeat favorable
+heuristics. Such experiments should guide the next structural conjecture
+and identify its weakest hypothesis; a successful finite corpus cannot
+replace the required completeness and worst-case arguments.
+\end{enumerate}
+

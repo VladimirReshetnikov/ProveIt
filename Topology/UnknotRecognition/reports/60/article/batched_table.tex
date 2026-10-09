@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+Case & Batch & Dense & Sparse & Verified & D/S & D/V & A/A\\
+\midrule
+Static, disjoint, $r=4$ & 128 & 0.324 & 0.049 & 0.117 & 6.474 & 2.715 & 0.995\\
+Static, nested, $r=12$ & 8 & 14.763 & 0.179 & 0.427 & 81.711 & 33.724 & 0.988\\
+Meridian, identical, $r=8$ & 16 & 2.811 & 2.087 & 2.974 & 1.404 & 0.945 & 1.007\\
+Parallel, identical, $r=8$ & 16 & 5.793 & 2.481 & 3.544 & 2.324 & 1.621 & 1.002\\
+\bottomrule
+\end{tabular}
+\caption{Batched follow-up: median milliseconds per call; seven paired rounds, 4,704 measured calls and 672 excluded warm-up calls. D/V compares dense counting with sparse counting plus proof replay. The 0.945 ratio is a retained regression.}
+\label{tab:batched}
+\end{table}

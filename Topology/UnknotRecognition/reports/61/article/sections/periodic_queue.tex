@@ -1,0 +1,300 @@
+\section{Exact periodic scheduling with quadratic merger work}
+\label{sec:queue}
+
+\subsection{Interval pairings and the unchanged merger rule}
+
+An interval pairing identifies the integer points of two intervals of equal
+length by an isometry. We use inclusive endpoints in this section:
+\[
+ g:[a,b]\longrightarrow[c,d],\qquad a\le c,\quad b-a=d-c.
+\]
+The map is either \(x\mapsto x+c-a\) or the reflection
+\(x\mapsto a+d-x\). A periodic pairing is an increasing pairing with
+\(a<c\le b+1\). Its period is \(p=c-a>0\), and its support is \([a,d]\).
+The convention includes two adjacent intervals.
+
+For periodic pairings with periods \(p,q\), write \(h=\gcd(p,q)\).
+The maintained sharp rule merges them when their support overlap has at least
+\[
+ p+q-h
+\]
+integer points. Their union is then represented by a period-\(h\)
+pairing. This is the Fine--Wilf periodicity criterion in the form already
+implemented and verified by the repository \cite{FineWilf1965,ProveIt2026}.
+The alternative classical threshold \(p+q\) remains available. Our
+scheduler uses the existing arithmetic test unchanged. The arguments below
+about scheduling work for either rule.
+
+The historical algorithm scans pairs of list indices in lexicographic order.
+It accepts the first legal pair \((i,j)\), keeps the replacement at \(i\),
+deletes \(j\), and restarts from the beginning. Since a merge changes only
+one surviving row, most failed tests in the repeated prefix compare
+unchanged data.
+
+\subsection{Stable identifiers and generations}
+
+Give each input row a permanent identifier equal to its original list
+position. Active identifiers remain in increasing order when rows are
+deleted. For each identifier keep a generation counter, initially zero.
+Whenever a row is replaced, increment its counter. A heap entry contains
+\[
+ (i,j,\nu_i,\nu_j,\text{replacement}),
+\]
+ordered first by \(i\), then by \(j\). Its generations record the operands
+on which the exact merger test was performed.
+
+Initialisation tests every pair of periodic rows and inserts the successful
+pairs. To perform a merge, discard stale heap minima until the first
+current entry is found. An entry is stale when either identifier has
+disappeared or either generation has changed. Replace the lower-identifier
+row, remove the other, and test exactly the pairs incident to the
+replacement. Entries for untouched pairs remain valid. No equality test
+uses a fingerprint or a probabilistic hash.
+
+\begin{theorem}[Exact simulation of the historical closure]
+\label{thm:queue-exact}
+For every finite ordered pairing list and either maintained periodic
+threshold, the queue closure performs exactly the historical sequence of
+successful merges. It returns the same ordered list. When it records current
+list indices, its merger certificate is identical to the historical
+certificate.
+\end{theorem}
+\begin{proof}
+Maintain the following invariant: each legal current pair has exactly one
+nonstale heap entry, and every nonstale entry is the correct successful test
+on its present operands. Initialisation establishes the invariant.
+
+Suppose it holds before a merge of \(i<j\). Pairs avoiding \(i,j\) have
+unchanged operands, so both their legality and their existing entries are
+unchanged. Deletion of \(j\) invalidates every entry involving \(j\).
+Incrementing the generation of \(i\) invalidates all old entries involving
+\(i\). Testing each surviving partner of the new \(i\) restores precisely
+the missing current entries. The invariant is preserved.
+
+The stable identifiers have the same relative order as current list
+positions. The first nonstale heap entry is therefore the
+lexicographically first legal pair of current rows, which is exactly the
+historical choice. Induction proves equality of successful choices and
+replacements. The rank of an identifier among active identifiers is its
+current list index, giving the same certificate indices.
+\end{proof}
+
+The producer currently computes these ranks by scanning the active
+identifiers. There are at most \(k-1\) mergers, so this adds \(O(k^2)\)
+operations over a closure. A separate order-statistics structure would
+complicate the implementation without improving its displayed asymptotic
+bound.
+
+\begin{corollary}[Complete trace preservation]
+\label{cor:trace}
+Replacing only periodic-closure scheduling in the maintained AHT routine
+preserves the orbit count, the number of AHT cycles, and every complete
+local-reduction certificate.
+\end{corollary}
+\begin{proof}
+After each periodic closure the ordered pairing list is identical by
+\cref{thm:queue-exact}. All subsequent carrier selection, maximal-power
+transmission, suffix truncation, and next-cycle preparation are unchanged
+deterministic operations on that list. Induct over the cycles.
+\end{proof}
+
+Callback invocation counts and scheduler work statistics are intentionally
+not certificate contents. A wall-clock deadline can stop the algorithms at
+different points because their costs differ. The corollary concerns
+completed mathematical traces; a shared cycle cap still counts the same
+begun AHT cycles.
+
+\subsection{Work bound and the adaptive default}
+
+\begin{theorem}[Quadratic candidate count]
+\label{thm:queue-work}
+For a closure starting with \(k\ge1\) rows, pure queue mode performs at most
+\((k-1)^2\) exact merger tests. It requires at most \(O(k^2)\) heap entries.
+For endpoint bit length \(B\), a conservative bit bound is
+\[
+ O\!\left(k^2\bigl(G(B)+B+\log^2(k+1)\bigr)\right),
+\]
+where \(G(B)\) bounds a gcd and the bounded number of endpoint operations
+used in one merger test. The empty list requires no test.
+\end{theorem}
+\begin{proof}
+Initialisation uses at most \(\binom{k}{2}\) tests. A merge leaving \(r\)
+rows creates at most \(r-1\) incident candidates. Since the live row count
+strictly decreases,
+\[
+ \binom{k}{2}+\sum_{r=1}^{k-1}(r-1)
+ =\binom{k}{2}+\binom{k-1}{2}
+ =(k-1)^2.
+\]
+Nonperiodic rows only reduce the number of candidates. Every successful
+test inserts one entry; every entry can be popped at most once, including
+stale entries. Thus the total heap size, insertions, and removals are
+quadratic. Each heap operation takes \(O(\log(k+1))\) identifier
+comparisons, on \(O(\log(k+1))\)-bit keys. Endpoint arithmetic and stored
+replacement construction contribute the other terms. Rank scans and
+output construction fit within the same bound.
+\end{proof}
+
+The storage bound in bits is \(O(k^2(B+\log(k+1)))\), excluding the input
+and any separately retained full trace. This is a real tradeoff:
+historical restarting needs only a linear working list.
+
+Moreover, an eager queue is unnecessary on easy inputs. If every row is
+identical, the historical closure succeeds immediately on its first pair
+\(k-1\) times, whereas the queue begins by checking all
+\(\binom{k}{2}\) pairs.
+
+The adaptive default therefore first follows the historical candidate
+sequence. At each restart it discovers the first two periodic indices and
+tests their pair before collecting further indices. After a failure it
+finishes indexing the periodic rows once, avoiding repeated inner loops
+over nonperiodic rows. It allows at most
+\(\binom{k}{2}\) merger tests in this mode. Only an additional pending test
+switches to the queue on the current residual list.
+
+\begin{corollary}[Adaptive bound]
+\label{cor:adaptive}
+Adaptive closure performs at most
+\[
+ \binom{k}{2}+\max(k-1,0)^2
+\]
+merger tests, preserves the historical trace, and has the same quadratic
+worst-case storage bound as the queue. With no switch, its extra index
+storage is linear. No-merge closures and successive first-pair successes
+avoid heap construction.
+\end{corollary}
+\begin{proof}
+The preliminary allowance gives the first term. At the switch, at most
+\(k\) rows remain, so \cref{thm:queue-work} gives the second.
+Both parts perform the same greedy choices. At most \(k\) index
+reconstructions, each scanning at most \(k\) rows, add \(O(k^2)\) work.
+When no merge succeeds, one pass uses at most the allowance. When the
+first tested pair always succeeds, there are only \(k-1\) tests.
+\end{proof}
+
+This allowance is an internal scheduling threshold, not an incompleteness
+budget. It changes how the answer is found, not whether computation may
+stop with a mathematical verdict.
+
+\subsection{A complete five-cycle family}
+
+A per-phase improvement could be hidden by equally expensive later
+phases. The following family rules out that explanation for this
+particular bottleneck.
+
+\begin{theorem}[An exact cubic-to-quadratic complete-run witness]
+\label{thm:five-cycle}
+Let \(m\ge2\), \(P=10m\), and \(N=23m\). Define
+\[
+ g_i:[i,P+2i-1]\longrightarrow[P+2i,2P+3i-1],
+ \qquad 0\le i\le m.
+\]
+Use the ordered list \(g_0,\ldots,g_{m-1}\), followed by \(m\) copies
+of \(g_m\). Under the sharp periodic rule, the maintained algorithm
+uses exactly five AHT cycles and returns one orbit.
+Its historical merger-test count is
+\[
+ T_{\rm old}(m)=m^3+\frac{m^2+5m}{2}-4,
+\]
+whereas pure queue mode uses
+\[
+ T_{\rm queue}(m)=5m^2-6m+2.
+\]
+Adaptive mode uses \(O(m^2)\) tests. The entire revised count takes
+\(O(m^2\polylog m)\) bit operations on this family.
+\end{theorem}
+\begin{proof}
+The period of \(g_i\) is \(P+i\). For \(i<j\), their overlap contains
+\(2P+3i-j\) points. A sharp merge would require
+\[
+ 2P+3i-j\ge2P+i+j-\gcd(P+i,P+j),
+\]
+or \(\gcd(P+i,P+j)\ge2(j-i)\). The gcd divides \(j-i\), so this is
+impossible. Identical tail copies merge. The supports cover the universe,
+so initially there is no static contraction.
+
+\emph{Cycle 1.}
+With \(r\) tail copies remaining, all \(\binom m2\) pairs among the first
+\(m\) rows and all \(mr\) mixed pairs fail. If \(r\ge2\), the next tail
+pair succeeds. Including the last entirely failed pass, the historical
+closure takes
+\[
+ \sum_{r=1}^{m}\left(\binom m2+mr\right)+(m-1)
+ =m^3+m-1
+\]
+tests. The queue takes \((7m^2-7m+2)/2\).
+The carrier is \(g_m\); no other range is contained in its range.
+Truncating three final points leaves
+\[
+ h_m:[m,P+2m-4]\longrightarrow[P+2m,2P+3m-4]
+\]
+and universe size \(N-3\). This pairing is nonperiodic.
+
+\emph{Cycle 2.}
+The \(m\) untouched original pairings remain pairwise unmergeable.
+Both modes use \(\binom m2\) tests. The carrier
+\(g_{m-1}\) ties \(h_m\) at the right endpoint but has the earlier range
+start. One inverse transmission maps \(h_m\) to
+\[
+ h:[m,P+2m-4]\longrightarrow[m+1,P+2m-3],
+\]
+which has period one. No other original range moves. Truncating another
+three points changes \(g_{m-1}\) to the nonperiodic pairing
+\[
+ q:[m-1,P+2m-6]\longrightarrow[P+2m-2,2P+3m-7].
+\]
+The universe now has size \(N-6\).
+
+\emph{Cycle 3.}
+The first legal merge is \(g_0\) with \(h\): their overlap has
+\(P+m-2\ge P\) points, meeting its sharp threshold. The replacement
+has period one and support \([0,2P-1]\). It immediately merges with
+\(g_1\), then with \(g_2\), through \(g_{m-2}\). Indeed, the
+period-one hull through \(g_j\) overlaps \(g_{j+1}\) in
+\(2P+2j-1\) points, at least \(P+j+1\). The final carrier is
+\[
+ u:[0,N-8]\longrightarrow[1,N-7].
+\]
+The old closure uses \(m-1\) tests before the first success and \(m-2\)
+further immediate successes, or \(2m-3\) altogether. The queue starts
+with \(m\) periodic rows and merges all of them, using \((m-1)^2\) tests.
+
+Both the domain and range of \(q\) lie in the range of \(u\).
+Their maximal inverse powers are \(m-1\) and \(P+2m-2\),
+respectively, so transmission turns \(q\) into the identity on
+\([0,P+m-5]\). Truncation leaves universe size \(P+m-4\).
+
+\emph{Cycles 4 and 5.}
+The fourth cycle deletes this identity and uses the period-one carrier
+to leave one point. The fifth contracts that isolated point, yielding
+one orbit. Neither cycle performs a merger test.
+
+Adding the three displayed phase counts gives the two exact formulas.
+Every other operation occurs in five cycles on at most \(2m\) rows.
+The coordinate bit length is \(O(\log m)\), since \(N=23m\).
+The queue and adaptive work bounds therefore give
+\(O(m^2\polylog m)\) bit operations for the full count.
+\end{proof}
+
+This is a lower bound for the historical \emph{implementation}, not for
+orbit counting. Nor is the family claimed to arise from normal surfaces
+in knot exteriors. Its role is precise: it demonstrates that a real
+redundancy in a maintained component kernel can dominate a complete
+run and that the new scheduler removes it.
+
+\subsection{What remains unchanged in the global AHT analysis}
+
+For general systems, the number of cycles is governed by the classical
+AHT argument. If a run has \(Q\) cycles, the new closure work is bounded by
+\[
+ O\!\left(Q k^2\bigl(G(B)+B+\log^2(k+1)\bigr)\right).
+\]
+One may insert a classical polynomial bound for \(Q\) to obtain a coarse
+explicit polynomial estimate. We do not optimize that global exponent
+or advertise this as a faster abstract AHT theorem.
+
+The exact simulation theorem is the important compatibility property:
+whatever geometric information or independently checkable local trace the
+existing code produces is retained. In particular, a future weighted
+replayer can consume the same trace. This is the bridge to the next two
+sections.

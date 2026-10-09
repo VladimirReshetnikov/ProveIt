@@ -1,0 +1,183 @@
+\section{A linear bound on distinct normal component vectors}
+\label{sec:component-profile-bound}
+
+Weighted orbit extraction produces a compressed inventory even when the
+number of connected components is enormous. For an actual embedded normal
+surface, its fully coalesced inventory satisfies a stronger, linear bound.
+We prove it from normal-coordinate uniqueness and elementary normal
+neighborhoods. This is a finiteness refinement for the present analysis;
+we make no claim of literature-wide priority. Classical normal-surface
+finiteness is discussed by King~\cite[Theorem 2]{king2003}, who attributes
+the underlying result to Haken and Kneser and notes that stronger bounds
+were already known.
+
+Let $\mathcal T$ be a finite triangulation of a compact $3$-manifold $M$,
+possibly with boundary. Tetrahedral faces may be identified within or
+between tetrahedra, but the quotient must be a manifold: every vertex
+link is a connected sphere or disc. Ideal vertices, singular vertex links,
+and immersed surfaces are outside this statement. Write $t$ for the
+number of tetrahedra and $v$ for the number of quotient vertices.
+Orientability of $M$ is not required.
+
+For a properly embedded normal surface $F$, its standard vector
+$\mathbf x(F)\in\mathbb Z_{\ge0}^{7t}$ records four triangle counts and
+three quadrilateral counts in each tetrahedron. These counts satisfy the
+standard matching equations and the quadrilateral constraints. Standard
+vectors determine normal surfaces up to ambient normal isotopy, including
+their connected component multisets~\cite[Lemma 2.5 and Theorem 2.10]{burton2009}.
+Let $Q(F)$ be the set of nonzero quadrilateral coordinates and put
+$q=|Q(F)|\le t$. Count a component vector only once, regardless of how
+many components have that vector, and denote the resulting number by $H$.
+
+\begin{proposition}[Component-type bound]
+\label{prop:component-type-bound}
+Under these hypotheses,
+\[
+                     H\le v+2q.
+\]
+If every component of $F$ is two-sided, then $H\le v+q$.
+Neither conclusion assumes incompressibility, least weight, or
+fundamentality of $F$.
+\end{proposition}
+
+\begin{lemma}[Independence of disjoint two-sided types]
+\label{lem:disjoint-normal-independence}
+Mutually disjoint, connected, two-sided normal surfaces with pairwise
+distinct standard vectors have linearly independent standard vectors.
+\end{lemma}
+
+\begin{proof}
+Write the vectors as $\mathbf y_1,\ldots,\mathbf y_h$. Since their entries
+are integers, a nontrivial real linear dependence implies a nontrivial
+rational dependence: row reduction of the corresponding integer matrix
+computes its kernel over $\mathbb Q$. Clearing denominators gives an
+integer dependence. The vectors are nonzero and coordinatewise
+nonnegative, so the nonzero coefficients cannot all have the same sign.
+Consequently a dependence would give
+\[
+ \sum_{i\in P}a_i\mathbf y_i
+       =\sum_{j\in R}b_j\mathbf y_j,
+ \qquad a_i,b_j\in\mathbb Z_{>0},\quad P\cap R=\varnothing,
+\]
+with both index sets nonempty.
+
+Choose mutually disjoint, sufficiently small normal product neighborhoods
+of the surfaces. Two-sidedness permits any positive number of parallel
+normal copies inside each such neighborhood, each with the same standard
+vector as the original. The two sums therefore represent actual disjoint
+unions having precisely the displayed component multisets. Equality of
+their full vectors gives a normal isotopy between the unions. Such an
+isotopy sends each connected component to a connected component and
+preserves its normal-disc counts. Thus some $\mathbf y_i$ on the left
+equals a $\mathbf y_j$ on the right, contradicting distinctness.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:component-type-bound}]
+Let $V_Q\subseteq\mathbb R^{7t}$ be the real solution space of the
+standard matching equations with all quadrilateral coordinates outside
+$Q(F)$ set to zero. Project $V_Q$ to its $q$ permitted quadrilateral
+coordinates. Its kernel has dimension exactly $v$.
+
+Indeed, when every quadrilateral coordinate vanishes, face matching
+identifies the triangle coefficients at the corners joined through that
+face. The corner triangles around each quotient vertex have connected
+adjacency graph, because its link is a connected surface. Their
+coefficients must therefore agree. Values at different quotient vertices
+are independent. The resulting basis consists of the vertex-link vectors
+$\boldsymbol\ell_1,\ldots,\boldsymbol\ell_v$, each with one triangle at
+every corner of its vertex and no other discs. Rank--nullity gives
+\begin{equation}\label{eq:normal-support-dimension}
+                  \dim V_Q\le v+q.
+\end{equation}
+In particular, every connected triangle-only normal surface is one
+vertex link.
+
+Choose one representative of each component type of $F$ having a nonzero
+quadrilateral coordinate. Retain a two-sided representative unchanged.
+Replace a one-sided representative $S$ by the horizontal frontier of a
+small normal interval neighborhood. The frontier is the connected double
+cover associated to the nontrivial normal line bundle of $S$; it is
+two-sided and has standard vector $2\mathbf x(S)$. For a surface with
+boundary, the vertical boundary of its interval neighborhood lies in
+$\partial M$, and the horizontal frontier is properly embedded.
+
+All these neighborhoods can be chosen mutually disjoint and disjoint
+from retained representatives. Coalesce equal resulting vectors, and let
+$r$ be their number. Adjoin all $v$ vertex links, taking them sufficiently
+close to the triangulation vertices to avoid every chosen surface. The
+resulting $r+v$ surfaces are mutually disjoint, connected and two-sided.
+Their vectors are distinct: the first $r$ have nonzero quadrilateral
+part, whereas vertex links do not. They lie in $V_Q$ and are independent
+by Lemma~\ref{lem:disjoint-normal-independence}. Thus
+\[
+                r+v\le\dim V_Q\le v+q,
+                \qquad r\le q.
+\]
+
+Each resulting nonvertex vector $\mathbf z$ has at most two original
+preimages: a two-sided type with vector $\mathbf z$, and a one-sided
+type with vector $\mathbf z/2$. Two different one-sided vectors cannot
+have the same double. Hence there are at most $2r\le2q$ original
+nonvertex types, and at most $v$ triangle-only types. This proves the
+first bound. If all components are two-sided, the replacement map is
+injective and the same argument gives $H\le v+q$.
+\end{proof}
+
+\subsection{A sharp one-tetrahedron example}
+
+The factor two accounts for a real geometric possibility: a one-sided
+component and its connected two-sided double can coexist. The fixture
+\texttt{layered\_torus(1)} makes this explicit. Label the tetrahedron
+vertices $0,1,2,3$, with face $i$ opposite vertex $i$, and identify face
+$0$ with face $1$ by the permutation
+$(0\,1\,2\,3)$; faces $2$ and $3$ remain boundary faces. This is a
+one-vertex solid torus. Use coordinate order
+\[
+ (T_0,T_1,T_2,T_3;Q_{01|23},Q_{02|13},Q_{03|12}).
+\]
+Its vertex-link disc and a normal M\"obius band have vectors
+\[
+ \boldsymbol\ell=(1,1,1,1;0,0,0),\qquad
+ \mathbf m=(0,0,0,0;0,1,0).
+\]
+For the single quadrilateral of $\mathbf m$, the corners on edges
+$03,23,12$ become one vertex, while its corner on $01$ is another.
+There are three edge cells and one face cell, so its Euler characteristic
+is zero. The two unpaired sides form one boundary circle. The quotient
+is therefore a M\"obius band. Its normal frontier is an annulus with
+vector $2\mathbf m$.
+
+Choose this band, its small frontier, and the vertex link disjointly.
+Their union has vector
+\[
+ \boldsymbol\ell+3\mathbf m=(1,1,1,1;0,3,0)
+\]
+and exactly the three distinct component vectors
+$\boldsymbol\ell,\mathbf m,2\mathbf m$. Thus $H=3=v+2q$ with $v=q=1$.
+The union with vector $\boldsymbol\ell+2\mathbf m$ also attains the
+two-sided bound $H=2=v+q$. The supplied native inventory and independent
+Regina decomposition agree on these explicit components; the full fixture
+and audit record are retained in
+\texttt{results/normal\_inventory\_audit.json}.
+
+\subsection{Consequences for encoded output}
+
+Suppose the supplied coordinates have at most $B\ge1$ bits. Every
+component coordinate is bounded by its source coordinate. A component
+multiplicity is at most the total number of normal discs, hence needs
+$O(B+\log(t+1))$ bits. Since $v\le4t$ and $q\le t$, the coalesced
+normal inventory has
+\[
+             O\bigl(t^2(B+\log(t+1))\bigr)
+\]
+bits. The number of components itself remains unbounded for fixed
+triangulation; it is their number of distinct full vectors that is linear.
+
+AHT already establish polynomial-time recovery of component data from
+binary normal coordinates~\cite[Corollary 17]{aht2006}. The present bound
+sharpens the final output accounting and permits any polynomial-time
+predicate on one connected vector to be evaluated on every type.
+It does not enumerate candidate source surfaces. Nor does equality of
+the weighted sum of proposed component vectors certify decomposition:
+normal sums can reconnect surfaces, so actual component membership still
+comes from the checked orbit calculation.

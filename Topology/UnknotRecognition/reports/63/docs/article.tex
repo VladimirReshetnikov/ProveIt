@@ -1,0 +1,1156 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,float}
+\usepackage{xcolor,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\definecolor{ink}{HTML}{193A54}
+\hypersetup{pdftitle={Power-Conjugacy Saturation for Unknot Recognition},pdfauthor={Research contribution prepared with ChatGPT for the ProveIt project}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Power-conjugacy saturation}\fancyhead[R]{\small ProveIt research continuation}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{3pt}
+\setlist{nosep,leftmargin=*}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=0.3pt,showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\Q}{\mathbb Q}\newcommand{\F}{\mathbb F}
+\newcommand{\bits}{\operatorname{bits}}\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\Kh}{\widetilde{\mathrm{Kh}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\G}{\mathcal G}
+\newcommand{\dead}{\mathcal D}
+\newcommand{\M}{\mathsf M}
+\input{tables/metrics.tex}
+\title{\color{ink}Power-Conjugacy Saturation\\for Unknot Recognition\\[5pt]\large Sharp graph certificates, polynomial deletion closure,\\and binary power-pair kernels}
+\author{Research contribution prepared with ChatGPT\\for Vladimir Reshetnikov's \textit{ProveIt} project}
+\date{8 October 2026\\\small Computational records: 9 October 2026 UTC}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a source-checkable group-presentation operation complementary to
+ProveIt's primitive-pair and unit-coordinate forest contractions. Verified
+relations between conjugates of generator powers define a labelled graph.
+Using the established balancedness property of classical knot groups, an
+inconsistent absolute exponent ratio around a cycle forces every generator
+in its connected component to be trivial. Plain power equalities admit an
+additional signed-cycle test. We prove that these tests are complete for the
+graph abstraction: every surviving component has a simultaneous nontrivial
+realization inside the trefoil group when the discarded conjugator labels
+are treated as independent ambient elements. Thus the distinction between
+absolute and signed consistency is necessary, not an implementation choice.
+
+We give short independently replayable certificates, deterministic exact
+fallback behind a fixed-prime sieve, and a conservative polynomial bit bound
+for complete deletion-only saturation of literal presentations. Binary
+power-pair families permit polynomial-cost elimination where the existing
+local primitive-forest eligibility conditions provide no move; a gcd-of-minors
+criterion also yields an unconditional two-generator triviality theorem.
+A self-contained Python package includes an independent source replayer,
+a small reduced-Khovanov reference oracle, \TestCount{} passing test methods,
+and a \AuditCount{}-input braid audit. The audit has no incorrect positive
+verdict, but adds no coverage over pure-power deletion on that corpus.
+Controlled sieve measurements retain both gains and arithmetic aliasing
+failures. These are local and restricted-input results, not an unrestricted
+quasi-polynomial unknot-recognition theorem or a measured speedup of the
+maintained recognizer.
+\end{abstract}
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research target and relationship to the repository}
+\label{sec:target}
+The input problem is to decide whether an explicitly encoded classical knot
+diagram in $S^3$, with $n$ crossings, represents the unknot. The intended
+asymptotic target is $2^{(\log n)^{O(1)}}$. A correct local simplifier is useful
+for this target only when its own bit cost, its effect on intermediate
+representations, and the cost of discovering the simplifications are all
+accounted for. A terminating sequence of presentation changes is not by
+itself a running-time theorem.
+
+The repository inspection was pinned to commit
+\begin{center}\small\texttt{13d60da8e683ca02b11c6b301c068bda929014e7}.\end{center}
+We read the current synthesis introduction and the primitive-projection,
+primitive-forest and group-certificate sections, together with the synthesis
+README and report 45's README \cite{Repo}. The relevant maintained ideas
+are already substantial. A rank-two primitive-power terminal is implemented;
+disjoint primitive-pair quotients and overlapping unit-coordinate forests
+have independent replay; raw circuits and explicit normalization boundaries
+are distinguished; and later synthesis notes include arbitrary acyclic
+singleton-definition batches. Repeating the rank-two terminal would not
+constitute a continuation.
+
+The present target is the restriction that the forest rule requires acyclic
+unit-coordinate dependencies. In a forest edge $c=p^k$, the child can be
+replaced by a power of its parent. More general relations such as
+\[
+ x^a=u y^b u^{-1}
+\]
+need not solve either generator as an integral power. They may nevertheless
+force both generators to be trivial after comparison with other relations.
+A cycle can supply the missing information. We study that case without
+pretending that every overlapping nonunit relation is a safe forest edge.
+
+\paragraph{Contribution and attribution.}
+The knot-group balancedness lemma used below is prior work, as are Artin
+presentations, the cyclic-knot-group criterion and Khovanov unknot detection
+\cite{HMT,Gemein,Papakyriakopoulos,KM}. The contribution here is the exact
+scope of the labelled-graph inference, its sharpness by a fixed-knot
+countermodel, its certificate and saturation interfaces, and the associated
+restricted complexity results. The gcd-of-minors argument is elementary
+and is presented with its full proof, not as an independently established
+literature-priority claim. No exhaustive novelty search or external referee
+validation is claimed.
+
+\paragraph{The global target remains distinct.}
+Lackenby's inspected 2026 preprint estimates the number of passes through a
+hierarchy algorithm in terms of a hierarchy-length bound $L$ and a surface
+complexity bound $g$. Its Section 9 separates that estimate from the bit
+cost of the operations and gives $L(g+1)^L$ in Proposition 9.1
+\cite{Lackenby}. The present paper supplies neither the missing global
+hierarchy bounds nor a replacement complete quasi-polynomial search. It
+isolates a presentation operation whose saturation does not require a
+logarithmic-depth hypothesis merely to bound its own repeated execution.
+
+\section{Source hypotheses and the topological input}
+\label{sec:background}
+Throughout, a \emph{classical knot group} means
+$G(K)=\pi_1(S^3\setminus K)$ for a single classical knot $K$. A source-replayed
+presentation is a full presentation known, through reconstruction and checked
+changes of presentation, to present this group. It is not an arbitrary
+presentation accompanied by a Boolean assertion of torsion-freeness.
+
+\begin{lemma}[Established knot-group facts]\label{lem:balanced}
+A classical knot group is torsion-free. If $x,u\in G(K)$ and $a,b$ are
+nonzero integers with
+\[
+ x^a=u x^b u^{-1},
+\]
+then either $x=1$ or $|a|=|b|$.
+\end{lemma}
+The second statement is Lemma 2.3 of the arXiv version of
+Himeno--Motegi--Teragaito \cite{HMT}, with the conjugator inverted to match
+our convention. We refer to it as \emph{balancedness}. It is not inferred
+from torsion-freeness alone.
+
+For example, consider affine maps of $\Q$ with $x(t)=t+1$ and $u(t)=t/2$.
+Then $x=u x^2u^{-1}$ and $x\ne1$. The subgroup generated by these maps is
+torsion-free: a nonidentity map with slope $2^k$, $k\ne0$, has infinite
+order, and a nonzero translation also has infinite order. Consequently,
+a purported verifier that replaces ``classical knot group'' by merely
+``torsion-free group'' would be unsound for the absolute-ratio rule.
+
+\begin{proposition}[Cyclic group terminal]\label{prop:terminal}
+If a source-replayed presentation of $G(K)$ has one generator and every
+remaining relator has exponent sum zero in that generator, then $K$ is
+the unknot.
+\end{proposition}
+\begin{proof}
+A word in a single generator is its exponent-sum power. Thus every relator
+is the identity in the free cyclic group and the presented group is $\Z$.
+The boundary homomorphism $\Z^2\to\pi_1(E(K))=\Z$ is not injective.
+The Loop Theorem supplies a compressing disc for the boundary torus. The
+knot exterior is irreducible: a sphere in the exterior has a ball on the
+side not containing the connected knot. A compressible torus boundary in
+this irreducible exterior makes the exterior a solid torus, equivalently
+providing the longitude disc and hence a spanning disc for $K$. This is
+the standard cyclic-knot-group criterion \cite{Papakyriakopoulos}; the
+maintained group checker uses the same full-group criterion \cite{Repo}.
+\end{proof}
+
+\paragraph{Two invalid shortcuts.}
+First, $G(K)^{\mathrm{ab}}\cong\Z$ holds for every knot, so abelianization
+alone cannot authorize Proposition~\ref{prop:terminal}. Second,
+torsion-freeness does not imply that $v^d=w^d$ forces $v=w$.
+The distinction will be especially important for inverse conjugacy and
+for the power-pair arguments below. Those arguments compare powers of the
+\emph{same} element or use explicit B\'ezout combinations of equal powers;
+they do not assume a general unique-root property.
+
+\section{The power-conjugacy graph and its sound inference rules}
+\label{sec:calculus}
+\begin{definition}[Verified power-conjugacy edge]
+Let $X=\{x_v:v\in V\}$ be current live generators. An oriented edge $e:s\to t$
+has nonzero signed integers $(a_e,b_e)$ and a checked relation
+\begin{equation}\label{eq:edge}
+ x_s^{a_e}=u_e x_t^{b_e}u_e^{-1}.
+\end{equation}
+It is \emph{plain} only if $u_e=1$ is established. The supplied implementation
+uses the literal empty word for this flag. The underlying graph is
+undirected for connectivity purposes and permits loops and parallel edges.
+\end{definition}
+An inverse traversal interchanges $(a_e,b_e)$ and uses $u_e^{-1}$ as its
+conjugator. A relator
+\begin{equation}\label{eq:donor}
+ (x_s^a u x_t^{-b}u^{-1})^d=1,\qquad d>0,
+\end{equation}
+provides an edge by torsion-freeness. The source replayer must check the
+relator, the repeated-root decomposition and all cuts before using this
+consequence. The graph routine itself has no access to the knot source.
+
+\begin{lemma}[Path composition]\label{lem:path}
+For a directed traversal $P$ with consecutive exponent pairs
+$(a_1,b_1),\ldots,(a_k,b_k)$, write
+$A_P=\prod_i a_i$, $B_P=\prod_i b_i$, and let $U_P$ be the product of the
+traversed conjugators in path order. Then
+\begin{equation}\label{eq:path}
+ x_{\mathrm{start}(P)}^{A_P}
+ =U_P x_{\mathrm{end}(P)}^{B_P}U_P^{-1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For two successive edges, raise the first equality to $a_2$ and the second
+to $b_1$. The identity $(u z u^{-1})^k=u z^k u^{-1}$, valid for every
+integer $k$, gives
+\[
+ x_0^{a_1a_2}
+ =u_1 x_1^{b_1a_2}u_1^{-1}
+ =u_1u_2 x_2^{b_1b_2}u_2^{-1}u_1^{-1}.
+\]
+Induction proves the statement. No extraction of roots and no multiplication
+of noncommuting base elements is used. In particular, the conjugators are
+not exponentiated when paths are composed.
+\end{proof}
+
+\begin{lemma}[Propagation of triviality]\label{lem:propagate}
+For a verified edge in a torsion-free group, $x_s=1$ if and only if $x_t=1$.
+\end{lemma}
+\begin{proof}
+If $x_s=1$, Equation~\eqref{eq:edge} implies $x_t^{b_e}=1$; since
+$b_e\ne0$, torsion-freeness gives $x_t=1$. Reverse the edge for the converse.
+\end{proof}
+
+\begin{definition}[Two consistency conditions]\label{def:consistency}
+A connected component $C$ is \emph{absolutely consistent} if there are
+$q_v\in\Q_{>0}$ satisfying
+\begin{equation}\label{eq:abs}
+ |a_e|q_s=|b_e|q_t \qquad(e\in E(C)).
+\end{equation}
+Its plain-edge subgraph is \emph{sign-consistent} if there are
+$\epsilon_v\in\{1,-1\}$ satisfying
+\begin{equation}\label{eq:sign}
+ \epsilon_t=\operatorname{sign}(a_eb_e)\epsilon_s
+ \qquad(e\text{ plain}).
+\end{equation}
+The choices in different connected components of the plain subgraph are
+independent. A full component is \emph{bad} if absolute consistency fails
+or plain sign consistency fails. Let $\dead$ be the union of its vertices
+over all bad components.
+\end{definition}
+
+\begin{theorem}[Sound graph annihilation]\label{thm:sound}
+For edges verified in a source-replayed classical knot group, every
+$x_v$ with $v\in\dead$ is the identity. Adjoining these identities,
+deleting the corresponding generators, and substituting the identity for
+them in every retained relator preserves the presented knot group.
+\end{theorem}
+\begin{proof}
+Choose a spanning tree of a full component. Assign $q=1$ at its root and
+propagate the rational ratios $|a|/|b|$ along tree edges. A failed nontree
+edge gives a fundamental cycle $P$ with $|A_P|\ne|B_P|$. Conversely, if
+all such edges agree, the propagated values satisfy every edge. Thus
+absolute inconsistency has a simple-cycle witness. By
+Lemma~\ref{lem:path}, its base generator has conjugate powers with
+different absolute exponents and is trivial by Lemma~\ref{lem:balanced}.
+Lemma~\ref{lem:propagate} kills the entire component.
+
+If the absolute test succeeds but the plain sign test fails, repeat the
+tree argument on a connected component of the plain subgraph. It supplies
+a plain cycle with $A_P=-B_P\ne0$. Its conjugator is the identity, so
+$x^{A_P-B_P}=1$; torsion-freeness gives $x=1$. Propagation again uses
+all edges, not just the plain ones.
+
+Each resulting identity already holds in the full presented group.
+Adjoining it therefore changes no quotient. Tietze elimination of the
+identity generators means deleting their letters from \emph{all} relators.
+Other relators are not discarded simply because they were not selected as
+donors. The group remains isomorphic to the same source knot group, so the
+hypotheses are retained for the next pass.
+\end{proof}
+
+\paragraph{Elementary examples.}
+The plain relations $x^2=y^3$ and $x^5=y^7$ give a two-edge cycle with
+products $14$ and $15$, so $x=y=1$. The same conclusion holds if the two
+equalities have unrelated conjugators, provided the ambient group is a
+classical knot group. In contrast, $x=u x^{-1}u^{-1}$ is not a valid
+annihilation certificate for arbitrary knot groups. The next section
+shows that this last distinction is optimal for the graph abstraction.
+
+\section{Sharpness: every survivor is realizable in one fixed knot group}
+\label{sec:sharp}
+The graph drops most source information. In particular, it forgets the
+words spelling the $u_e$, dependencies among those words, peripheral data,
+and the requirement that the named vertices generate the entire group.
+Sharpness must be stated for that abstraction, not for the original
+presentation.
+
+\begin{definition}[Abstract knot-model]
+An abstract knot-model of a labelled graph is a classical knot group $G(K)$,
+assigned elements $x_v\in G(K)$, and independently chosen ambient elements
+$u_e\in G(K)$ satisfying all edge relations. Plain edges have $u_e=1$.
+There is no assertion that the $x_v$ generate $G(K)$ or that a specified
+source word evaluates to the chosen $u_e$.
+\end{definition}
+
+\begin{theorem}[Exact forced-identity set]\label{thm:sharp}
+A vertex is the identity in every abstract knot-model if and only if it
+belongs to $\dead$. Moreover, a single model in the trefoil group makes
+all vertices outside $\dead$ simultaneously nontrivial.
+\end{theorem}
+\begin{proof}
+The ``if'' assertion is Theorem~\ref{thm:sound}. For the converse use the
+fixed group
+\[
+ T=\langle a,b\mid a^2=b^3\rangle
+\]
+of the trefoil. Put $g=[a,b]=a^{-1}b^{-1}ab$. The common element $a^2=b^3$
+is central, and the commutator identity gives
+\[
+ 1=[a^2,b]=(a^{-1}ga)g.
+\]
+Hence $a^{-1}ga=g^{-1}$; conjugation by $a$ also inverts $g$ because
+$a^2$ is central. The quotient $T\to C_2*C_3$ sends $g$ to the nonempty
+reduced alternating word $a b^{-1} a b$, so $g\ne1$. Torsion-freeness of
+$T$ makes $g$ infinite-order. This is the trefoil specialization of the
+standard even-torus-knot example in \cite{HMT}; the argument is included
+to specify exactly what the construction uses.
+
+For each good component, choose positive rational potentials $q_v$ from
+Equation~\eqref{eq:abs}, clear a common denominator, and obtain positive
+integers $n_v$. Choose signs $\epsilon_v$ satisfying the plain constraints.
+Set
+\[
+ x_v=g^{\epsilon_v n_v}.
+\]
+Every such element is nontrivial. For an edge let
+$A=a_e\epsilon_s n_s$ and $B=b_e\epsilon_t n_t$.
+Absolute consistency says $|A|=|B|$. If $A=B$, choose $u_e=1$; if $A=-B$,
+choose $u_e=a$. In either case $g^A=u_e g^B u_e^{-1}$. For a plain edge,
+Equation~\eqref{eq:sign} ensures $A=B$, so its conjugator is indeed the
+identity. On every bad component assign all vertex elements to $1$ and
+all conjugators to $1$. Different full components have no edges between
+them, completing the simultaneous model.
+\end{proof}
+
+\begin{corollary}[A precise algorithmic barrier]\label{cor:barrier}
+No sound rule using only the graph's endpoint, exponent and plain-flag
+data can universally delete an additional surviving vertex in classical
+knot groups. More coverage requires additional source information or a
+change of presentation, not a more aggressive interpretation of these
+same labels.
+\end{corollary}
+
+This is a barrier for the \emph{abstraction}, not a lower bound for unknot
+recognition. The trefoil assignment may violate the actual source
+conjugator words or its abelianization marking. The original presentation
+can therefore contain decisive information that this graph deliberately
+forgets.
+
+\paragraph{A topologically conditional strengthening.}
+In a knot group having no nontrivial element conjugate to its inverse,
+any signed inconsistency around a full graph cycle is sufficient: a
+relation $x^A=u x^{-A}u^{-1}$ makes the nonidentity element $x^A$ conjugate
+to its inverse. For example, the hyperbolic-knot case has this property
+by \cite[Corollary 1.8]{HMT}. The source must establish the stronger
+hypothesis; the implementation does not assume hyperbolicity. A generic
+``no torsion'' flag cannot replace it.
+
+\section{Algorithms, short certificates and bit cost}
+\label{sec:algorithms}
+\subsection{Exact discovery without factoring exponents}
+The basic algorithm first forms full connected components. Within each,
+a breadth-first search propagates positive fractions using $|a|/|b|$.
+At an inconsistent edge, the two paths to the tree root and that edge
+supply a simple cycle. The whole component is marked for deletion and
+its remaining rational queries are skipped. Good components receive a
+second search in the plain subgraph propagating signs. There is no integer
+factorization and no expansion of a conjugator.
+
+Let $r=|V|$, $m=|E|$, and let $B\ge1$ bound the bit length of each absolute
+edge exponent. A simple tree path has at most $r-1$ edges. A numerator or
+denominator formed before cancellation therefore has $O(rB)$ bits.
+Fraction reduction cannot increase that bound. Products used in a
+fundamental-cycle comparison have the same order of bit size.
+
+\begin{proposition}[Conservative graph bound]\label{prop:graphcost}
+The exact inference has an implementation with
+\begin{equation}\label{eq:graphcost}
+ O\!\left((r+m)\,[rB+\log(r+m+2)]^2\right)
+\end{equation}
+bit operations, using ordinary quadratic integer arithmetic. A conservative
+storage bound is $O(r^2B+mB+(r+m)\log(r+m+2))$ bits. Exponent parsing is
+included. Conjugator verification is not included; it is an input obligation.
+\end{proposition}
+\begin{proof}
+There are $O(r+m)$ graph visits and fraction updates. Each update consists
+of a bounded number of multiplications, divisions, gcd computations and
+comparisons on $O(rB)$-bit integers. Classical quadratic bit bounds suffice.
+Dense relabelling and array adjacency avoid requiring an unproved hashing
+hypothesis; sorting/comparison-map overhead is absorbed by the displayed
+bound. Store at most one fraction and predecessor record per vertex and
+one pair of exponents per edge. The sign pass is less expensive.
+\end{proof}
+The Python reference uses dictionaries, lists and \code{Fraction}. It is
+an exact implementation of this arithmetic algorithm, not a claim that
+Python dictionary operations or big-integer operations cost one bit step.
+The displayed bound is deliberately conservative; improving it is not
+necessary for the subsequent polynomial saturation theorem.
+
+\subsection{Independent replay}
+A local certificate contains a sorted deleted-vertex list and one cycle
+witness per bad full component. A cycle is a list of edge identifiers and
+directions, together with the mode \code{modulus} or \code{plain}. It
+contains no claimed products that an attacker can inflate or falsify.
+The checker validates the walk, its closure and simplicity, recomputes
+signed products, checks either $|A|\ne|B|$ or $A\ne B$ with every edge
+plain, and independently reconstructs full connectivity by union--find.
+It requires the deleted list to equal exactly the union of the justified
+components.
+
+Distinct certified components are vertex-disjoint. Taking one simple cycle
+per component uses at most $r$ edge occurrences in total (including loops
+and two-edge parallel cycles). Thus the combinatorial witness has
+$O(r\log(r+m+2))$ bits, apart from the source edge data already supplied.
+Balanced product trees check all numeric cycle defects in
+$O(\M(rB)\log(r+2))$ bit operations under the usual regular multiplication
+cost assumptions; ordinary multiplication gives a polynomial bound without
+those assumptions. Source reconstruction, edge authentication and the
+connectivity scan must still be charged separately.
+
+The checker intentionally does not rerun fraction discovery or compare its
+answer to the producer's answer. It verifies a shorter mathematical
+consequence. A proof with no deleted vertices is a harmless local
+noncertificate; the source saturation replayer requires a nonempty deletion
+in every recorded round.
+
+\subsection{A deterministic finite-field sieve}
+Before rational discovery, the optional sieve repeats ratio propagation in
+$\F_p^\times$, with $p=65537$. It skips an edge if either exponent vanishes
+modulo $p$. A modular inconsistency gives a cycle whose exact integer
+products cannot have equal absolute values. The ordinary exact cycle
+checker still replays that witness. Every remaining full component then
+receives the rational and plain-sign passes.
+
+\begin{proposition}[One-sided sieve with complete fallback]\label{prop:sieve}
+The sieve-plus-fallback algorithm returns exactly $\dead$ for every input.
+It has no probabilistic equality assumption. Its worst-case bound is not
+better than Proposition~\ref{prop:graphcost}, because an inconsistent
+integer cycle may be consistent modulo $p$.
+\end{proposition}
+\begin{proof}
+An edge used by the field search has invertible numerator and denominator.
+If its discovered cycle had $|A|=|B|$ in $\Z$, their reductions would be
+equal in the field, contradicting the discovery. Skipped edges cannot
+make a produced cycle false. A missed contradiction is processed by the
+exact pass. The sign pass has the same role as before.
+\end{proof}
+
+Here the failure is particularly transparent. For $b$ divisible by $32$,
+\[
+ \frac{2^b+3}{2^b+1}\equiv2\pmod{65537},
+\]
+since $2^{16}=-1$ and $2^{32}=1$ in the field. The element $2$ has order
+$32$. A cycle of length $r$ with that ratio on every edge is inconsistent
+over $\Q$, but invisible to this sieve whenever $32\mid r$. A field pass
+can therefore add work on a whole natural family of power-of-two-sized
+benchmarks. Section~\ref{sec:measurements} retains precisely this control
+rather than treating modular agreement as an exact result.
+
+\section{Exposed donors and polynomial deletion-only saturation}
+\label{sec:saturation}
+\subsection{Literal source extraction}
+Let the current presentation have $r$ live generators and fixed relator
+slots $R_1,\ldots,R_h$. Write
+\[
+ N=r+h+\sum_i |R_i|
+\]
+for its literal size in letters and slots, with generator identifiers
+renumbered into $\{1,\ldots,r\}$ for complexity accounting.
+
+The extractor first freely and cyclically reduces each relator and finds
+its shortest repeated literal root by the standard prefix-function period
+test. A uniform nonempty relator is a single-generator power; in a
+knot group it proves that generator trivial and is represented by a
+plain self-edge $x^2=x$. Otherwise, for each cyclic signed-run boundary
+in a root of length $\ell$, it tests exact decompositions
+\begin{equation}\label{eq:pattern}
+ x^a\,U\,y^{-b}\,U^{-1},\qquad a,b\ne0,
+\end{equation}
+with a maximal initial uniform signed run. The length $k=|U|$ determines
+the middle run length $\ell-|a|-2k$.
+
+For a fixed rotation, precompute the ends of uniform runs and the longest
+common prefix of the candidate $U$ region with the inverse of the whole
+rotated word. The latter says exactly which $k$ make the suffix equal
+to $U^{-1}$. Each possible $k$ then needs a constant number of indexed
+checks. There are $O(\ell)$ rotations and $O(\ell)$ choices per rotation,
+so the scan and its number of candidate outputs are $O(\ell^2)$ at the
+letter-operation level. Identical edge data are deduplicated. We do not
+claim to find every algebraically implied relation of the form
+\eqref{eq:pattern}; the claim is exhaustive discovery in this specified
+literal exposed class.
+
+A donor proof names its source slot, a root period, a rotation, the head
+length and the conjugator length. The separate decoder checks periodicity,
+uniform runs and inverse suffixes directly against the current source
+relator. It does not use the producer's prefix-function or longest-prefix
+routine. A nonminimal but valid repeated-root period would still be sound;
+minimality is an extraction optimization, not a trust requirement.
+
+\subsection{All deletion passes have a polynomial bound}
+The saturation loop is: extract donors, infer and replay the killed set,
+delete its letters from every relator, freely/cyclically reduce, and repeat.
+A nonempty pass deletes at least one generator. An empty pass ends the loop.
+No generator is introduced, no relator slot is silently removed, and no
+word length increases.
+
+\begin{theorem}[Polynomial literal saturation]\label{thm:closure}
+On a supplied source-replayed literal presentation of size $N$, complete
+saturation of this exposed donor class terminates after at most $r$
+nonempty deletion passes and one final unsuccessful pass. Discovery and
+independent replay have a conservative bound
+\begin{equation}\label{eq:closurecost}
+ O\bigl(N^5\log^2(N+2)\bigr)
+\end{equation}
+in bit operations. A polynomial-size trace suffices. No logarithmic
+round-depth hypothesis is needed for this deletion-only closure.
+\end{theorem}
+\begin{proof}
+Deletion followed by reduction never increases the literal size. Every
+round has at most $O(N^2)$ deduplicated candidate edges, each exponent has
+$O(\log(N+2))$ bits, and there are at most $N$ live generators.
+Proposition~\ref{prop:graphcost} is bounded by
+$O(N^4\log^2(N+2))$ per pass. Independent donor replay can scan a complete
+relator for each of $O(N^2)$ candidates, costing at most
+$O(N^3\log(N+2))$ bits per pass; the direct implementation is intentionally
+allowed this redundancy. Word deletion and cyclic reduction are smaller.
+Even naive worst-case duplicate comparisons remain polynomial and fit the
+coarse per-pass bound. Multiply by at most $N+1$ passes. Each donor record
+has a bounded number of $O(\log N)$-bit fields, so retaining all round
+records is polynomial as well. Soundness is preserved by
+Theorem~\ref{thm:sound} at each pass.
+\end{proof}
+
+The theorem concerns an already supplied literal presentation. The
+braid-to-Artin-word construction can have exponentially long words before
+it reaches this stage, and the implementation caps that construction.
+Neither the cap nor the polynomial closure theorem converts that frontend
+into a complete fast general recognizer.
+
+\subsection{What survives under compressed deletion}
+Let a raw straight-line program contain $S$ rules and represent the current
+relators, with maximum represented-length bit size $B$. For a deleted
+set $D$, the homomorphism $x\mapsto1$ for $x\in D$ and $x\mapsto x$
+otherwise is evaluated by one bottom-up pass. It creates at most one
+image node per original rule, plus terminals and the empty node. Lengths
+cannot increase. Re-evaluating an immutable original grammar using the
+cumulative deletion mask avoids counting old allocated nodes as active
+new source size.
+
+\begin{proposition}[Conditional compressed closure]\label{prop:compressed}
+Suppose a source-checked donor interface can completely inspect these raw
+masked grammars in cost $P(S,B,r,h)$, producing at most $m$ edges with
+$B_e$-bit exponents and verifying their source witnesses within the same
+bound. Then at most $r+1$ such calls, $r$ linear grammar mappings and
+$r+1$ applications of Proposition~\ref{prop:graphcost} suffice for deletion
+closure. Active raw grammar size and represented-length bit size do not
+multiply from one deletion pass to the next.
+\end{proposition}
+This statement does not provide the assumed donor-discovery interface.
+A raw masked grammar can contain cancellations; discovering all the exposed
+relations after compressed normalization has a separate cost. The delivered
+graph kernel supports binary exponent data, and the literal source wrapper
+is implemented, but a complete native WordArena donor collector is not.
+The proposition records the useful nonexpansion invariant without hiding
+that missing step.
+
+\section{Binary power blocks beyond forest eligibility}
+\label{sec:binary}
+\subsection{An unconditional gcd-of-minors theorem}
+Consider a two-generator group presented solely by plain power equalities
+\begin{equation}\label{eq:block}
+ H=\left\langle x,y\ \middle|\ x^{a_i}=y^{b_i},\quad
+ 1\le i\le m\right\rangle,
+ \qquad a_i,b_i\in\Z\setminus\{0\}.
+\end{equation}
+Set $D=\gcd_{i<j}|a_i b_j-a_j b_i|$, taking the gcd of an all-zero family
+to be zero.
+
+\begin{theorem}[Exact triviality criterion for two-power blocks]
+\label{thm:minors}
+The group in Equation~\eqref{eq:block} is trivial if and only if $D=1$.
+The implication $D=1\Rightarrow x=y=1$ remains valid when these relations
+are a selected subset of a larger presentation, without torsion-freeness
+or any knot-group hypothesis.
+\end{theorem}
+\begin{proof}
+For every $i,j$, comparison of equal powers gives
+\[
+ x^{a_i b_j}=y^{b_i b_j}=x^{a_j b_i},
+ \qquad
+ y^{b_i a_j}=x^{a_i a_j}=y^{b_j a_i}.
+\]
+Thus both $x$ and $y$ have every nonzero minor as an annihilating exponent.
+A B\'ezout combination of those integers gives $x^D=y^D=1$. In particular,
+$D=1$ makes both elements trivial, in any ambient group.
+
+Conversely, the abelianization of $H$ is the quotient of $\Z^2$ by the
+lattice spanned by $(a_i,-b_i)$. If this lattice has rank less than two,
+that quotient has positive rank and $H$ is nontrivial. At rank two its
+index is the gcd of the absolute $2\times2$ minors, namely $D$; this is
+the elementary rank-two Smith-normal-form index formula. If $D>1$, the
+abelianization is again nontrivial. These alternatives exhaust $D\ne1$.
+\end{proof}
+
+A certificate need not contain a unit minor. For the rows
+$(2,3),(4,9),(5,4)$, the absolute minors are $6,7,29$; none is one,
+but their gcd is one. The delivered checker recomputes only a selected
+list of source-row minors and checks their gcd. During production, after
+the first nonzero minor, every retained new minor strictly lowers the
+positive gcd by a factor of at least two. For $B$-bit coefficients this
+needs only $O(B)$ retained minor pairs. Scanning all pairs costs
+$O(m^2B^2)$ with ordinary arithmetic; the selected index witness has
+$O(B\log(m+2))$ bits and polynomial replay cost. The checker accepts no
+unverified claimed determinant or B\'ezout coefficient.
+
+This result does not say that abelianization detects triviality for
+arbitrary two-generator presentations. The pure two-power shape is the
+entire reason each lattice minor annihilates each individual generator.
+Likewise, $D>1$ does not by itself describe the nonabelian structure of $H$.
+
+\begin{proposition}[Collinear rows]\label{prop:collinear}
+If all rows in Equation~\eqref{eq:block} are integer multiples
+$k_i(a,b)$ of a primitive integer vector $(a,b)$, and
+$d=\gcd_i|k_i|$, then the presentation is equivalent to the single relation
+$x^{ad}=y^{bd}$.
+\end{proposition}
+\begin{proof}
+Put $u=x^a$, $v=y^b$. The given relations say $u^{k_i}=v^{k_i}$.
+Choose $\sum c_i k_i=d$. Multiplying the equalities after taking powers
+$c_i$ gives $u^d=v^d$: the left factors are powers of $u$, and the right
+factors are powers of $v$, so each side can be combined independently.
+Conversely, $d\mid k_i$ implies every original equality from $u^d=v^d$.
+No unique-root property has been used.
+\end{proof}
+
+\subsection{A binary family that a unit forest cannot contract}
+For $M\ge2$ and $k\ge1$, define
+\begin{equation}\label{eq:family}
+ P_{k,M}=\left\langle t,x_1,y_1,\ldots,x_k,y_k\ \middle|\
+ x_i^M=y_i^{M+1},\quad x_i^{M+1}=y_i^{M+2}\ (1\le i\le k)
+ \right\rangle.
+\end{equation}
+Each block has determinant
+\[
+ M(M+2)-(M+1)^2=-1.
+\]
+Theorem~\ref{thm:minors} therefore eliminates every $x_i,y_i$ in an
+arbitrary group and leaves the free generator $t$. In particular,
+$P_{k,M}\cong\Z$ without using external knot provenance.
+
+The word $x^M y^{-(M+1)}$ is not primitive in $F(x,y)$: its one-relator
+quotient surjects onto the nonabelian free product $C_M*C_{M+1}$, whereas
+killing a primitive word would give a cyclic quotient. The same argument
+applies to $x^{M+1}y^{-(M+2)}$. Both have coprime exponent coordinates, so
+neither is a proper power. There are no singleton generator occurrences
+and no eligible primitive unit-coordinate donors in these displayed
+relators. Thus the existing \emph{local donor conditions}, applied to this
+unchanged presentation, provide no forest move. A two-edge graph cycle
+eliminates each pair immediately.
+
+This is a strict separation of eligible operations, not a lower bound on
+Whitehead search, Tietze transformations, or the maintained recognizer.
+The family is a supplied presentation of the unknot group; it is not
+being passed off as a hard family of input knot diagrams.
+
+When $M=2^b$, the expanded relator list has exactly
+$k(4\cdot2^b+4)$ letters, while its two-power encoding has
+$O(k(b+\log(k+2)))$ bits. Direct source-row authentication and the
+unit-minor checker run in $O(kb^2)$ arithmetic bit cost plus indexing,
+without expansion. The graph kernel also remains polynomial in that
+binary size. Thus this family gives a fully implemented binary-input
+local result, not merely a claim that an unspecified compressed extractor
+would be efficient.
+
+\section{A source-bound braid frontend and an independent reference oracle}
+\label{sec:source}
+\subsection{Reconstructing the entire group}
+For a braid with $s$ strands, the closure is a knot exactly when its strand
+permutation is a single cycle. The frontend checks strict integer input
+and this condition; too few crossings to connect all strands is rejected
+before a large permutation allocation. Artin meridian images are then
+constructed with an explicit letter allowance. At a positive crossing the
+current pair of meridian words $(A,B)$ becomes
+\[
+ (ABA^{-1},A),
+\]
+and at a negative crossing it becomes $(B,B^{-1}AB)$. Equating every final
+meridian image to its initial meridian gives the full closed-braid group
+presentation. This is the usual Artin presentation; see
+\cite[Theorem 1.1 and Definition 3.1]{Gemein}.
+
+The producer updates the tuple of current meridians in crossing order.
+The independent replayer instead starts with generator words and applies
+the corresponding literal substitutions in reverse order. This is the
+required reversal for pullback composition, not a discretionary change
+of source. All strand relations, including redundant ones, are retained.
+Neither replayer invokes the graph producer or the donor extractor.
+
+\subsection{The homological obstruction and a controlled basis change}
+\label{sec:homologybarrier}
+Initially every Wirtinger or Artin meridian has abelianization charge one.
+A generator certified trivial must have charge zero. Therefore an
+annihilation-only rule has no direct target among unmodified meridian
+generators. This is a structural reason to change basis rather than merely
+try more graph cycles on the original meridian graph.
+
+Choose the last meridian as $t$ and make the explicit Nielsen change
+\[
+ x_s=t,\qquad x_i=y_i t\quad(i<s).
+\]
+The inverse is $y_i=x_i x_s^{-1}$. All $y_i$ have charge zero and $t$ has
+charge one. The substitution at most doubles the literal letter count,
+and both source reconstructions independently perform it. Throughout
+source replay, any proposal to delete $t$ is rejected. This charge check
+is a necessary sanity guard, not the mathematical justification for
+other deletions.
+
+After each checked round, all dead letters are removed from every relator
+and the surviving words are cyclically reduced. A positive certificate
+must end with exactly $t$ alive and every retained relator having exponent
+sum zero. Proposition~\ref{prop:terminal} then applies. Failed search
+returns \code{INCONCLUSIVE}; a construction allowance failure returns
+\code{RESOURCE\_LIMIT}. Neither is a negative knot verdict.
+
+\subsection{A small exact failure of completeness}
+The three-braid $\sigma_1^{-1}\sigma_2$ closes to an unknot, by two
+successive destabilizations. In the chosen difference basis its reduced
+relators, writing $a=y_1$, $b=y_2$, are
+\begin{align*}
+ R_1&=ba^{-1},\\
+ R_2&=t^{-1}b^{-1}atbtb^{-1}t^{-1}a^{-1},\\
+ R_3&=t^{-1}b^{-1}atb.
+\end{align*}
+The exposed scanner finds only the two orientations of $a=b$ from $R_1$.
+The graph is consistent, so no deletion occurs. Yet substituting $a=b$
+into $R_3$ immediately gives $b=1$, and then $a=1$. The missing move is
+an equality contraction, already within the maintained unit-coordinate
+machinery. This tiny example disproves completeness of the isolated
+annihilation frontend, not completeness of a richer native portfolio.
+It also explains why integration should alternate this operation with
+existing non-deletion changes rather than replace them.
+
+\subsection{The Khovanov audit is a different implementation}
+The reference module resolves all $2^n$ states of a small braid diagram,
+constructs circles by literal connectivity, and uses the Frobenius algebra
+$\F_2[X]/(X^2)$ with
+\[
+ m(1,X)=m(X,1)=X,\quad m(X,X)=0,
+ \qquad \Delta(1)=1\otimes X+X\otimes1,\quad
+ \Delta(X)=X\otimes X.
+\]
+The marked circle is fixed to label $X$, giving the reduced subcomplex.
+The code computes sparse bit-vector boundary ranks and explicitly checks
+$d^2=0$. Suppressing gradings does not change total homology dimension:
+\[
+ \dim\Kh=\sum_h\dim C^h-2\sum_h\operatorname{rank}d_h.
+\]
+Reduced rational homology has nonzero rank, and the universal coefficient
+theorem bounds it by the rank over $\F_2$. Together with
+Kronheimer--Mrowka's unknot detection and the unknot calculation, reduced
+$\F_2$ rank one is therefore an unknot criterion \cite{KM}. The nonzero
+rational rank also follows directly from the normalized Jones Euler
+characteristic at $1$.
+
+This oracle is an exponential, capped audit backend. It is not the
+maintained Bar--Natan scanning implementation, whose local-complex
+approach is a different computational algorithm \cite{BN}. The
+standalone command-line option \code{--cube} uses this reference only
+after an inconclusive probe and reports a cap failure without a verdict.
+Tests of the new code do not constitute execution of the repository's
+full maintained test suite.
+
+\section{Finite validation and measured performance}
+\label{sec:measurements}
+\subsection{Test boundaries}
+The shipped standard-library-only suite has \TestCount{} passing test
+methods, with no failures, errors or skipped methods in the recorded run.
+The methods contain exhaustive and randomized cases, not merely one
+assertion apiece. Selected counts are in Table~\ref{tab:tests}.
+\begin{table}[htbp]\centering
+\input{tables/tests.tex}
+\caption{Selected inner-test counts from \code{test\_summary.json}.}
+\label{tab:tests}\end{table}
+Graph answers are compared against a separate prime-valuation-vector
+oracle on small integers, in addition to comparison between exact and
+sieved discovery. Every positive graph answer is independently replayed.
+The word scanner is compared against a slower all-cut literal oracle.
+Other tests cover source rebinding, bad integer types, invalid cycles,
+forged cuts, prime-divisible exponents, field collisions, trefoil normal
+forms, source construction order, mirror and Markov consistency of the
+reference homology, large binary minors and allocation-limit behavior.
+These checks support implementation correctness but do not replace the
+mathematical proofs or amount to formal verification.
+
+\subsection{Exhaustive short-braid coverage}
+\begin{table}[htbp]\centering\small
+\input{tables/audit.tex}
+\caption{Independent small-braid audit. ``New'' means positive coverage beyond
+pure-power-only deletion in the same difference basis, not beyond the
+maintained recognizer. Inputs are word presentations, not distinct knot types.}
+\label{tab:audit}\end{table}
+The corpus contains the zero-crossing circle; all signed two-braid words
+of lengths $1,3,5,7$; all single-component signed three-braid words of
+lengths $2,4,6$; and 200 seeded four/five-strand knot closures with at most
+nine crossings. Each row is independently evaluated by the reduced
+homology oracle with its square-zero check enabled. All positive group
+certificates undergo complete source replay.
+
+Of \AuditCount{} inputs, 1,943 have reduced rank one. The probe certifies
+1,428 of them and gives no false positive. It misses 515 unknots. No
+source allowance is exhausted. More importantly, the pure-power-only
+ablation leaves exactly the same surviving generator set on every input.
+Every positive graph certificate seeds its deletion from an exposed
+single-generator power. Consequently, this corpus establishes neither
+new detection coverage from inconsistent nonseed cycles nor a need for
+the new balancedness inference on ordinary small examples. The graph
+can propagate a deletion in one batch rather than wait for successive
+powers to become exposed, but that is a different claim.
+
+The retained example $\sigma_1^{-1}\sigma_2$ is the first missed unknot;
+its full relators were displayed in Section~\ref{sec:source}. It is useful
+negative evidence for the frontend design. The largest initial transformed
+presentation in the corpus has 290 letters; successful certificates use
+at most three deletion rounds. No extrapolation from these sizes to hard
+large diagrams is justified.
+
+\subsection{Fixed-prime controls and the follow-up experiment}
+All timed graph arms include exact independent certificate replay. Each
+initial case has seven shuffled repetitions of exact A/A and sieve A/A
+arms, with one warm-up per arm. The nine initial graph cases and twelve
+source cases make 588 measured calls and 84 warm-ups. Raw samples,
+within-round order, returned work counters, Python/platform metadata,
+and source hashes are retained in \code{benchmark.json}.
+
+\begin{table}[H]\centering\small
+\input{tables/graph_original.tex}
+\caption{Initial graph families. Exact and sieve columns are medians;
+``paired ratio'' is the median of within-round exact/sieve time ratios.
+Values below one favor exact-only discovery. All times include replay.}
+\label{tab:graphinitial}\end{table}
+The nominally unbalanced cycles in Table~\ref{tab:graphinitial} have
+lengths divisible by 32, exactly the aliasing condition in
+Proposition~\ref{prop:sieve}'s discussion. Their field pass does not
+remove the rational work. Apparent small timing gains are not evidence
+of successful modular pruning; the recorded rational-edge counters and
+A/A variation show why. Balanced, prime-divisible and residue-collision
+controls likewise retain the fallback cost.
+
+A separate mechanism-focused follow-up brackets multiples of 32 rather
+than replacing the initial observations. It has nine repetitions of
+four shuffled arms per case, for 324 measured graph calls and 36 warm-ups.
+\begin{table}[H]\centering\small
+\input{tables/sieve.tex}
+\caption{Cycle-length follow-up, recorded in \code{sieve\_followup.json}.
+The ratio is paired exact/sieve time including replay. Adjacent multiples
+of 32 deliberately retain the exact fallback.}
+\label{tab:sieve}\end{table}
+The nonmultiples produce genuine field witnesses and avoid the long
+rational scan; their gains are several times the A/A fluctuations.
+The adjacent multiples do not. These are arithmetic-family measurements,
+not a distribution of knot-group presentations and not a uniform
+asymptotic improvement. The initial and pre-validation-hardening timing
+records remain under \path{data/historical/}; current tables are generated
+from the current complete rerun, not from a best-of selection of samples.
+
+\subsection{Binary capacity and full reference-pipeline timings}
+\begin{table}[htbp]\centering
+\input{tables/capacity.tex}
+\caption{Binary family $P_{k,2^b}$. Each timed call constructs source rows,
+checks every unit-minor proof, builds the graph and independently replays
+graph deletion. Seven samples are retained per row. There is no expanded
+baseline completion time assigned to the large cases.}
+\label{tab:capacity}\end{table}
+The largest case represents $128(4\cdot2^{16384}+4)$ relator letters using
+binary coefficients. It verifies all 256 deleted generators while retaining
+one isolated generator. This is a supplied-presentation capacity result.
+It proves neither that a hard knot diagram has this form nor that a
+producer can expose it cheaply.
+
+\begin{table}[htbp]\centering\small
+\input{tables/pipeline.tex}
+\caption{Twelve fixed small sources: the same exponential reference cube alone
+versus the source-replayed probe followed, when needed, by that cube.
+These are not comparisons against \code{fastunknot}.}
+\label{tab:pipeline}\end{table}
+The source timings include positive proof construction and independent
+source replay. The reference cube itself already costs only microseconds
+on the smallest examples, so a checked group probe can be slower. The
+seven-crossing sleeve example benefits by avoiding a full explicit cube,
+but contains obvious inverse crossing pairs. Its improvement is not
+hard-unknot evidence. The inconclusive cases pay extra work before the
+same cube. The A/A records remain available even where they show
+substantial submillisecond variation. No broad maintained-recognizer gain
+or change of production default is recommended on this evidence.
+
+\section{Integration contract for the maintained recognizer}
+\label{sec:integration}
+The archive is an additive research package, not an installed modification
+of the pinned repository. Its certificate version 1 is local to the
+standalone braid wrapper and must not be confused with any maintained
+certificate-version number. The intended native handoff has four parts.
+
+First, the maintained replayer reconstructs the caller's original PD and
+replays the complete preceding presentation trace. Only that step supplies
+classical single-component knot provenance. Second, an exact donor adapter
+binds each power-conjugacy edge to a current relator slot and validates its
+root and conjugator cuts. The graph verifier must not accept a caller's
+unproven \code{plain} flag or a guessed two-power interpretation of a
+compressed word. Third, the new graph record gives cycles and the exact
+component union to be deleted. Finally, the native checker substitutes
+identity into \emph{every} current root and updates the live set before
+continuing with existing endpoints.
+
+\paragraph{Policy.}
+The small-source ablation suggests keeping this optional. Existing cheap
+singletons and unit-coordinate contractions should not be displaced by a
+more elaborate graph pass. A promising trigger is the presence of several
+verified nonunit power-conjugacy edges in a component that has no already
+known pure-power seed. The trigger must be cheap enough not to repeat the
+full donor search merely to decide whether to run it. Conversely, once a
+useful graph exists, batch propagation can replace repeated identical
+connectivity work.
+
+\paragraph{Safe interruption.}
+Failure to find a witness means only that this abstraction is exhausted.
+Cancellation, node/work allowances and failed compressed cut verification
+must preserve the original valid state and return control to existing
+fallbacks. Deletion should be committed only after the entire batch is
+validated. The theorem does not authorize deleting a relator because it
+looked like a donor; it authorizes deleting certified identity generators
+and applying that substitution everywhere.
+
+\paragraph{What was not run.}
+No remote files were changed, no native WordArena adapter was installed,
+and the full maintained recognizer test suite was not executed for this
+package. The source-bound braid wrapper, its tests and its independent
+homology oracle are new self-contained code. The package includes an
+integration checklist rather than an untested production patch.
+
+\section{Further research questions and a route toward the global target}
+\label{sec:questions}
+\subsection{Compressed donor discovery}
+The most immediate algorithmic problem is to find and certify exposed
+forms $x^a U y^{-b}U^{-1}$ in a current compressed relator without
+enumerating expanded cut positions. Source equality of a proposed cut
+and discovery of all useful cuts are distinct tasks. Can candidate cuts
+be organized as arithmetic progressions, periodic families or a small
+set of grammar-boundary alignments? A useful theorem would bound both
+candidate enumeration and rejected-candidate work in the grammar size
+and represented-length bit size, and would remain valid after masking
+identity generators.
+
+\subsection{Does the cycle rule help on genuinely stalled source states?}
+The finite audit found no coverage beyond power deletion. The next
+experiment should use actual maintained search states immediately before
+an expensive Whitehead/overlap exposure step, not more randomly inflated
+circles. For every detected nonunit component, record whether a short
+cycle is new information, whether the old native planner already had an
+available contraction, and whether full source production plus replay
+beats the unchanged baseline. A useful outcome could be positive or
+negative: proving rarity would guide dispatch as much as finding gains.
+
+\subsection{Use the labels that the sharpness theorem discards}
+Theorem~\ref{thm:sharp} says exactly why the graph alone has reached its
+limit. Retain a compressed cyclic conjugator product, prove that it is
+trivial or centralizes the base element, or exploit a peripheral marking.
+Then some cycles with opposite signed products may become safe plain-type
+certificates. Can such extra annotations be verified in polynomial
+encoded cost without requiring a general group-word solver? Any proposed
+extension must fail on the trefoil inverse-conjugacy example unless its
+extra premise genuinely excludes that model.
+
+\subsection{Geometric provenance for stronger signed inference}
+A verified absence of generalized torsion of order two permits signed
+constraints on all edges. Existing geometric characterizations in
+\cite{HMT} provide a theorem-level premise. The algorithmic question is
+whether obtaining that premise is cheaper than the recognition work it
+saves, and how a native certificate should authenticate it. It is not
+legitimate to assume it merely because a diagram appears hyperbolic.
+
+\subsection{Multi-generator unconditional power blocks}
+Theorem~\ref{thm:minors} is exact for the two-generator pure-power class.
+What is the strongest comparably inexpensive unconditional identity rule
+for larger plain power graphs? Unit-defect cycles kill their own cycle
+vertices without torsion-freeness, but propagating to an attached vertex
+with nonunit exponent needs an additional argument. A generalization
+must not confuse a trivial abelianization with a trivial nonabelian group.
+Short B\'ezout/minor certificates and provenance-free replay are natural
+objects to investigate.
+
+\subsection{Amortized arithmetic and modular scheduling}
+The fixed-prime experiment exposes a precise failure mode, not a random
+hash accident. Multiple carefully chosen moduli, cheap bit-length tests
+on cycle products, or progress-sensitive disabling of unproductive field
+passes could improve constants. A deterministic implementation must still
+charge all moduli and preserve exact fallback. The more ambitious goal
+is a near-linear-in-input-bit-size weighted graph algorithm with comparably
+small certificates; exponent factorization should not be introduced as
+an uncharged oracle.
+
+\subsection{The remaining quasi-polynomial obligation}
+Suppose an input diagram of size $n$ is transformed, with source replay,
+into polynomially many presentation states whose total encoded size and
+source-checked exposure cost are at most $2^{O((\log n)^c)}$. Assume useful
+exposures alternate with the deletion closure above until a decisive
+endpoint is reached. Then the displayed local polynomial bounds keep the
+whole alternating computation quasi-polynomial. This implication is a
+cost-accounting statement, not a proof of those hypotheses.
+
+The useful improvement over a naive round-count argument is that
+identity-deletion phases themselves neither introduce generators nor
+expand the current literal words, and raw masked grammar evaluation has
+the analogous active-size invariant. One need not demand logarithmic
+\emph{deletion} depth. The hard missing theorem concerns the availability
+and size of decisive exposure transformations, including those needed
+on knot diagrams where every graph in the current basis is consistent.
+A structural theorem guaranteeing such controlled exposure, rather than
+a faster already polynomial cycle check, is what would advance the
+unrestricted asymptotic target.
+
+\section{Conclusion}
+Power-conjugacy cycles give a valid new operation beyond the acyclic
+unit-coordinate forest interface. The exact graph-level boundary is now
+explicit: absolute inconsistencies in the full graph and signed
+inconsistencies in the plain subgraph generate all universally forced
+identities visible to this abstraction. A trefoil countermodel proves
+that extending the signed rule without extra hypotheses is impossible.
+Independent short certificates and deletion nonexpansion turn this rule
+into a polynomial saturation primitive, while binary power blocks provide
+fully checked restricted-input examples beyond the old donor eligibility.
+
+The empirical conclusion is narrower. The delivered small-braid frontend
+is sound on the audited corpus but incomplete even on a two-crossing
+unknot, and the new nonseed cycle mechanism adds no small-corpus coverage.
+Modular arithmetic helps on selected bit-complexity families and fails
+systematically on adjacent controls. These boundaries identify the next
+research task: source-bound, size-controlled exposure of genuinely useful
+nonunit cycles in the maintained search, not a claim that the general
+quasi-polynomial recognition problem has been completed here.
+
+\appendix
+\section{Certificate schema and executable examples}
+The graph certificate is deliberately small:
+\begin{lstlisting}
+{"killed": [1, 2],
+ "witnesses": [{"mode": "modulus", "walk": [[0, 1], [1, -1]]}]}
+\end{lstlisting}
+Its validity depends on the supplied authenticated edges. A direction is
+a strict integer $+1$ or $-1$; Booleans are not accepted as integers. A
+\code{plain} witness requires all traversed edges to be plain. A
+\code{modulus} witness is checked by exact absolute products even when
+field arithmetic found it. The deletion list must be sorted, duplicate-free
+and exactly the union of the justified connected components.
+
+The standalone source certificate additionally contains the fixed basis
+change, every donor list for every round, and the terminal generator.
+The original braid is supplied independently to replay. A local graph
+proof or two-power minor proof alone is never an unknot certificate.
+
+From the package root:
+\begin{lstlisting}
+python code/cli.py examples/circle.json --proof /tmp/circle-proof.json
+python code/cli.py examples/circle.json --verify /tmp/circle-proof.json
+python code/cli.py examples/figure_eight.json --cube
+python code/run_tests.py --output /tmp/power-tests.json
+python code/audit_braids.py --output /tmp/power-audit.json
+python code/benchmark.py --output /tmp/power-benchmark.json
+python code/benchmark_sieve.py --output /tmp/power-sieve.json
+python verify_manifest.py
+sh build.sh
+\end{lstlisting}
+The last command compiles the article from LaTeX. \code{make\_tables.py}
+regenerates numerical tables from the retained JSON without rerunning
+measurements. Re-running benchmarks gives new machine-dependent samples;
+the data and prose must be reviewed together before replacing the shipped
+observations. The tests need Python 3.10 or later and no external Python
+packages. Building the paper additionally needs \code{pdflatex} and the
+packages in the preamble.
+
+\section{Provenance and reproducibility notes}
+The repository read is a pinned-source inspection, not a full checkout
+or a native performance baseline. The corresponding source inventory is
+in \path{integration/SOURCE_AUDIT.md}. The article's new mathematics and
+code were prepared for this delivery. Primary literature is attributed
+in the references below. Bibliographic dates should not be confused with
+the runtime timestamps: the research-request date is 8 October 2026,
+while the retained machine timestamps are UTC on 9 October 2026.
+
+The main raw files are \path{data/test_summary.json},
+\path{data/braid_audit.json}, \path{data/benchmark.json}, and
+\path{data/sieve_followup.json}. Each timing record includes source hashes;
+all measured calls and warm-ups are retained. The historical records are
+explicitly separate from the current figures. Archive hashes are supplied
+by \path{MANIFEST.sha256}; it intentionally excludes itself and transient
+LaTeX/Python build products. The archive does not contain a Lean
+formalization or claim machine-checked proofs of the mathematical theorems.
+
+\begin{thebibliography}{9}
+\bibitem{HMT}
+K. Himeno, K. Motegi and M. Teragaito,
+\emph{Generalized torsion, unique root property and Baumslag--Solitar
+relation for knot groups}, Hiroshima Mathematical Journal \textbf{53}
+(2023), 345--358. The numbered statements cited here refer to
+arXiv:2208.00621v1 (2022), especially Lemma 2.3, Example 3.1 and
+Corollary 1.8. \url{https://arxiv.org/abs/2208.00621}.
+
+\bibitem{Lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot
+recognition}, arXiv:2607.23350v1 (2026), Section 9 and Proposition 9.1.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{Gemein}
+B. Gemein, \emph{Representations of the singular braid monoid and group
+invariants of singular knots}, Topology and its Applications \textbf{114}
+(2001), 117--140. The classical Artin statements used here are Theorem 1.1
+and Definition 3.1.
+\url{https://www.maths.ed.ac.uk/~v1ranick/papers/gemein.pdf}.
+
+\bibitem{Papakyriakopoulos}
+C. D. Papakyriakopoulos, \emph{On Dehn's lemma and the asphericity of
+knots}, Annals of Mathematics (2) \textbf{66} (1957), 1--26.
+The cyclic-group criterion and Loop-Theorem argument are also explicitly
+recorded in the inspected repository's group-certificate section.
+
+\bibitem{KM}
+P. B. Kronheimer and T. S. Mrowka,
+\emph{Khovanov homology is an unknot-detector}, Publications
+Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208.
+\url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{BN}
+D. Bar--Natan, \emph{Fast Khovanov homology computations},
+Journal of Knot Theory and Its Ramifications \textbf{16} (2007), 243--255.
+\url{https://arxiv.org/abs/math/0606318}.
+
+\bibitem{Repo}
+V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, inspected at
+commit \texttt{13d60da8e683ca02b11c6b301c068bda929014e7}.
+Relevant files: \path{synthesis/primitive_forest.tex},
+\path{synthesis/primitive_projection.tex}, \path{synthesis/group_certificates.tex},
+\path{synthesis/report.tex}, \path{synthesis/README.md}, and
+\path{reports/45/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\end{document}
