@@ -2643,3 +2643,26 @@ invariants, uniform Bohr extensions, all-triples bound, and incoming
 Dirichlet character-sum estimate. Only propext, Classical.choice, and
 Quot.sound occur. The catalogue remains 115/5 with its fidelity caveats;
 this supersedes the pending audit notice for the selection extensions.
+
+
+### A common Bohr neighborhood for the selection family
+
+`Proofs16Corollary20CommonBohr` unions the individual spectra without
+shrinking the radius. `common_bohr_extensions` bounds the common rank by
+the sum of the individual rank bounds. `IsBHomomorphism.normalized_extension`
+extracts a difference map that vanishes at zero and is additive whenever
+its arguments and their sum belong to the neighborhood. Nonempty piece
+domains provide the normalization at zero.
+
+`corollary20_common_bohr` combines these facts with the all-triples
+selection theorem. Writing `kappa=corollary20Kappa (epsilon/2) K`, its
+common spectrum has size at most `(K/kappa+1)*16*kappa^-2`, radius
+`kappa/(32*pi)`, and normalized difference maps for every selected piece.
+It retains the order-eight property, the density and value-membership
+bounds, and fewer than `epsilon*N^3` bad witness triples when
+`N >= 8/epsilon`. No floor occurs in the spectrum bound.
+
+The three new theorem declarations compile in a 60-module source closure.
+They supply common parameters for the remaining bilinear argument; they
+do not discharge bounded-span duality, algebraic regularity, or the deep
+structure hypothesis. The combined audit is pending.
