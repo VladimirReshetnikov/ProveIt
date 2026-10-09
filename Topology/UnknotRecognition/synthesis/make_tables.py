@@ -1394,3 +1394,17 @@ if nb:
     open('tables/normal_boundary.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & queries D/A & direct ms & adaptive ms & count ratio & proof ratio',
         '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+pp = load('../fast/results/primitive_power_pipeline_20261008.json')
+if pp:
+    rows=[]
+    selected={'survivor-00','survivor-02','survivor-11','mirror-03','mirror-08','gordian','trefoil','conway','kinoshita_terasaka'}
+    for r in pp['cases']:
+        if r['source']['name'] not in selected: continue
+        m=r['medians'];q=r['paired_ratios']
+        cells=[esc(r['source']['name'])]+['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','current')]
+        cells += ['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('current','old_AA','current_AA')]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/primitive_power.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & old ms & new ms & ratio & old A/A & new A/A',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')

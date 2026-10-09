@@ -1,8 +1,10 @@
 """Replayable cyclic-knot-group certificates, with bounded Whitehead search.
 
 For validated classical one-component diagrams only. A knot in S^3 with
-infinite cyclic group is the unknot (Loop Theorem). Every accepted trace
-reduces the full Wirtinger presentation to one generator and no relations.
+infinite cyclic group is the unknot (Loop Theorem). Legacy traces reduce
+the full presentation to one generator and no relations. Version five instead
+checks a primitive-power relator at rank two after full prefix replay; knot
+group torsion-freeness and abelianization then imply infinite cyclicity.
 Stalling is inconclusive, including after Whitehead minimization. Explicit
 relator expansion has no polynomial bound in the input crossing number.
 """
@@ -267,7 +269,9 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     The shared budget helper only controls resources. Exhaustion raises
     GroupLimit; invalid evidence returns False. Input validity is the usual
     Diagram contract. All relators are reconstructed, including the redundant
-    Wirtinger relation, and terminal freeness is checked explicitly.
+    Wirtinger relation. Legacy terminal freeness is checked explicitly; version
+    five independently verifies a primitive-power relation at rank two and
+    uses the reconstructed knot-group provenance to conclude cyclicity.
 
     With compressed=True, reconstruct the same initial presentation but
     replay it as exact straight-line-program words. max_letters then bounds
