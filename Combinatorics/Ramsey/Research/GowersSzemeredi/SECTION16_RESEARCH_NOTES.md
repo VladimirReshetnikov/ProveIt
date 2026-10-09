@@ -5633,6 +5633,39 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      - Still to build: Lemma 9.2 (eight maps from one 11-parameter identity
        family) and the independence-counting iteration of Proposition 9.3
        (Claim 9.4, sets `I_{x,y}` of size at most `s₀ = (d + log 1/ρ)^O(1)`).
+     - *Progress.* Lemma 9.2's double Cauchy–Schwarz step is done:
+       `respected_quadruples_of_separated` (`Proofs16SeparatedRespect`).
+       Suppose a family `Q` of `c|G|²|Ω|` triples `(x, a, ω)` has
+       `f(x+a) − g(x)` depending only on `(a, ω)`. Then `f` respects at
+       least `c⁴|G|⁴` additive quadruples
+       `f(x+a) − f(x′+a) = f(x+b) − f(x′+b)`, which is Corollary 7.6's
+       input.
+       `freiman_of_separated` (`Proofs16SeparatedFreiman`) finishes the
+       Theorem 2.26 step polynomially: such an `f` is a Freiman
+       8-homomorphism on a set of size `2^(-1882)·c^4656·N`.
+       `phiAdditiveCount_ge_of_respected` is the `N`-to-one transfer to
+       `phiAdditiveCount`.
+       `shift_agreement` (`Proofs16ShiftAgreement`) is the pairing step
+       `φ₂ = ψ₁ + u`. If `S` separates `f` and `g`, and `ψ` respects
+       additive quadruples on `B` and equals `f` there, then `g = ψ + u`
+       on the largest fiber, of size at least `|S′|/|G|`. In `ℤ/N` this
+       replaces Milićević's rank-and-kernel argument.
+     - *Assembling Lemma 9.2 for one pair (next).* Two gaps remain
+       between these pieces.
+       1. **Popular values.** Restrict to the triples whose value
+          `z = x + a` is popular (`z ∈ Z`), and apply Corollary 7.6 with
+          `B₀ = Z` instead of `univ`. This needs a variant of
+          `respected_quadruples_of_separated` that keeps all four sums
+          `x+a, x′+a, x+b, x′+b` in the value set. They do lie there,
+          since every pair it counts comes from two triples of the family.
+       2. **Domain of `ψ`.** `shift_agreement` needs `x` and `x + a` in the
+          set where `ψ` is a homomorphism. Corollary 7.6 gives `ψ = f`
+          only on a dense set of *values*. So first extend `ψ` to a Bohr
+          set with Lemma 7.8 (`Proofs07BohrHom`), the analogue of
+          Milićević's coset progression `C₁`, and then require `x` in it.
+
+       Each restriction keeps a polynomial fraction of the triples,
+       because popular values carry `(c/2)N|Ω|` triples each.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
@@ -9732,3 +9765,85 @@ and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
 The regenerated catalogue is byte-identical, with 115 companion proofs
 and five open statements. Companion counts do not certify fidelity to
 every printed statement. The selected-port scope check passes.
+
+### J.143. Word image bounds and direct global endpoint identities
+
+Compatible words now carry bounded-image information and exact endpoint
+identities, with their own parameter certificates. The ten new modules
+are recorded separately from the unchanged numbered catalogue.
+
+`relation_word_defect_image_card_le_of_relation` proves that a word of
+`ell` triples has at most `M^(2*ell-1)` defect values on its recursive
+common domain if each permitted quadruple defect has at most `M` values.
+The proof multiplies two relation image bounds at each splice, keeping
+the induction's word image bound separate. It reuses the existing
+alternating defect and list spectrum definitions.
+
+When the varying frequencies are Freiman-linear on the index set,
+`coherent_relation_word_domain` recovers every auxiliary column domain
+from the anchors and output entries at radius `r/9^ell`. Hence the image
+bound holds on the endpoint Bohr set. In a prime cyclic target,
+`coherent_relation_word_exact` then gives exact identities at radius
+`r/(9^ell*M^(2*ell-1))`, with no new frequencies. The uniform radius for
+all words of length at most `k+1` is
+
+```
+boundedImageWordRadius r M k = r/(9^(k+1)*M^(2*k+1)).
+```
+
+The endpoint spectrum has at most `4*(k+1)*(base rank+varying rank)`
+frequencies. `abstract_bsg_bounded_image_words` retains the same actual
+BSG word families and maps throughout the density, rank and identity
+conclusions. `bounded_image_quad_word_system` instantiates the relation
+levels with image bounds `E^i`, automatically proving all three symmetries
+and doubling one. Its weak-transitivity and Freiman frequency-structure
+inputs remain explicit; symmetry does not establish those inputs.
+
+**Direct original-data construction after the incoming merge.**
+The incoming `global_column_word_system` applies J.142's BSG engine to
+J.98's column data through the direct zero-relation ladder. Its stronger
+version `global_column_word_witness_system` now retains the original
+`IsColumnWitnessSystem A phi X T L W`, the witness mass bounds and all
+local-map data. The previous theorem remains a corollary.
+
+`relation_word_exact_representation` transfers arbitrary-relation words
+with exact local-map identities to the existing exact column words.
+Thus `relation_word_identity_remove_aux` reuses the already proved kernel
+removal theorem. It requires no Freiman structure for varying frequencies.
+
+`global_column_word_endpoint_system` starts from the original dense
+bihomomorphism and an explicit modulus threshold. It returns the original
+witness-linked maps, dense sets `B′ ⊆ B ⊆ X`, threshold richness, every
+bounded-length compatible word family and its endpoint identity. Put
+
+```
+d = columnSpectrumCap (columnEightDensity alpha),
+r16 = zeroLadderRadius d (1/(4*pi)) (globalColumnIdentityRadius alpha) 15,
+rout = refinementKernelRadius (4*(k+1)*d) (2*k*d) (1/(4*pi)) r16.
+```
+
+The new modulus threshold is the maximum of the existing global BSG
+threshold and the corresponding endpoint kernel cap plus one. The radius
+is positive. Rank monotonicity proves this single threshold and radius
+work for every shorter word. Kernel costs are paid for a fixed number of
+columns per word, independently of the total number of words or models.
+No global model packing or elimination appears in this construction.
+
+The original-data theorem supplies a concrete input for the
+Proposition 6.1/Claim 6.2 route. It does not establish the almost-all
+additive 16-tuple image conclusion, robust Bogolyubov–Ruzsa progression
+extraction, the later common-extension and structure steps, or the final
+printed numerical comparison. The five numbered open entries remain.
+No upstream code is ported at this checkpoint.
+
+Verification after merging the direct column BSG application, its word
+construction, prime-target Step 4 and the BSG growth certificates:
+all 31 new named proofs pass individual axiom checks. The complete global
+endpoint production closure compiles across 245 modules; the generic
+bounded-image integration closure has 475 modules. The full combined
+audit checks 8,918 public Gowers theorems across 5,477 modules (5,475 in
+the facade closure), using only `propext`, `Classical.choice`, and
+`Quot.sound`. The selected OAI audit closure remains 4,152 modules. The
+regenerated catalogue is byte-identical: 115 companion proofs and five
+open statements; this count does not certify fidelity to every printed
+statement. The selected-port scope check passes.

@@ -25,14 +25,16 @@ open Classical
 open scoped Pointwise
 
 /-- **Word representations for the column system of a dense bihomomorphism.** -/
-theorem global_column_word_system {N : Nat} [NeZero N] [Fact N.Prime]
+theorem global_column_word_witness_system {N : Nat} [NeZero N] [Fact N.Prime]
     (A : Finset (ZMod N × ZMod N)) (phi : ZMod N × ZMod N → ZMod N)
     {alpha : Real} (ha : 0 < alpha) (ha1 : alpha ≤ 1)
     (hA : alpha * (N : Real)^2 ≤ A.card) (hphi : IsEBihomomorphism A phi {0})
     (hN : globalColumnBSGModulusBound alpha ≤ N) (k : Nat) :
     ∃ (X : Finset (ZMod N)) (T : ZMod N → Finset (ZMod N)) (L : ZMod N → ZMod N → ZMod N)
-      (B B' : Finset (ZMod N)),
+      (W : ZMod N → Finset (Fin 4 → ZMod N)) (B B' : Finset (ZMod N)),
       alpha / 2 * N ≤ X.card ∧
+      IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ columnSpectrumCap (columnEightDensity alpha) ∧
         IsFreimanLinearOn (bohr (T x) (1 / (4 * Real.pi))) (L x) ∧ L x 0 = 0) ∧
       B' ⊆ B ∧ B ⊆ X ∧
@@ -60,7 +62,7 @@ theorem global_column_word_system {N : Nat} [NeZero N] [Fact N.Prime]
       ((le_max_right _ _).trans hN)))
   have hNγ : ⌈8 / (alpha * globalColumnQuadrupleDensity alpha)⌉₊ ≤ N :=
     (le_max_right _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans hN))
-  obtain ⟨X, T, L, W, hX, -, hT, hL, hzero, -, hρ, hγ, hcount⟩ :=
+  obtain ⟨X, T, L, W, hX, hsys, hT, hL, hzero, hW, hρ, hγ, hcount⟩ :=
     global_many_exact_column_quadruples A phi ha ha1 hA hphi hN1
   set γ := globalColumnQuadrupleDensity alpha with hγdef
   set d := columnSpectrumCap (columnEightDensity alpha) with hddef
@@ -119,6 +121,36 @@ theorem global_column_word_system {N : Nat} [NeZero N] [Fact N.Prime]
     abstract_bsg_word_system (by omega) X Q
       (columnZeroQ_S1 X T L d _ _ 1) (columnZeroQ_S2 X T L d _ _ 4)
       (fun i => columnZeroQ_S3 X T L d _ _ i) hγ hc' zero_lt_one hWT hdoub hgood hcN k le_rfl
-  exact ⟨X, T, L, B, B', hXlow, hcol, hB'B, hBX, hsize, hrich, hwords⟩
+  exact ⟨X, T, L, W, B, B', hXlow, hsys, hW, hcol, hB'B, hBX, hsize, hrich, hwords⟩
+
+
+/-- Compatible words, forgetting only the explicit original witness data. -/
+theorem global_column_word_system {N : Nat} [NeZero N] [Fact N.Prime]
+    (A : Finset (ZMod N × ZMod N)) (phi : ZMod N × ZMod N → ZMod N)
+    {alpha : Real} (ha : 0 < alpha) (ha1 : alpha ≤ 1)
+    (hA : alpha * (N : Real)^2 ≤ A.card) (hphi : IsEBihomomorphism A phi {0})
+    (hN : globalColumnBSGModulusBound alpha ≤ N) (k : Nat) :
+    ∃ (X : Finset (ZMod N)) (T : ZMod N → Finset (ZMod N)) (L : ZMod N → ZMod N → ZMod N)
+      (B B' : Finset (ZMod N)),
+      alpha / 2 * N ≤ X.card ∧
+      (∀ x ∈ X, (T x).card ≤ columnSpectrumCap (columnEightDensity alpha) ∧
+        IsFreimanLinearOn (bohr (T x) (1 / (4 * Real.pi))) (L x) ∧ L x 0 = 0) ∧
+      B' ⊆ B ∧ B ⊆ X ∧
+      absBsgEps (globalColumnQuadrupleDensity alpha) 1 * N ≤ (B'.card : Real) ∧
+      ThresholdRelationRichness B
+        (columnZeroQ X T L (columnSpectrumCap (columnEightDensity alpha)) (1 / (4 * Real.pi))
+          (globalColumnIdentityRadius alpha) 16)
+        (absBsgWordBeta (globalColumnQuadrupleDensity alpha) 1 k)
+        (absBsgWordEta (globalColumnQuadrupleDensity alpha) 1) ∧
+      ∀ a : ZMod N, ∀ as : List (ZMod N), (∀ x ∈ a :: as, x ∈ B') → as.length ≤ k →
+        thresholdColumnWordDensity (absBsgWordLambda (globalColumnQuadrupleDensity alpha) 1)
+            (absBsgWordEta (globalColumnQuadrupleDensity alpha) 1) as.length *
+          (N : Real) ^ (3 * as.length + 2) ≤
+        (relationWordRepresentations B
+          (columnZeroQ X T L (columnSpectrumCap (columnEightDensity alpha)) (1 / (4 * Real.pi))
+            (globalColumnIdentityRadius alpha) 16) (a :: as)).card := by
+  obtain ⟨X, T, L, W, B, B', hX, hsys, hW, hcol, hB'B, hBX, hsize, hrich, hwords⟩ :=
+    global_column_word_witness_system A phi ha ha1 hA hphi hN k
+  exact ⟨X, T, L, B, B', hX, hcol, hB'B, hBX, hsize, hrich, hwords⟩
 
 end LeanProofs.GowersSzemeredi
