@@ -12,8 +12,8 @@ In arXiv:2109.03093, Lemma 19, a witness quadruple
   with `(b′, d′) ∈ A′ × A′` and `A′ = {f y ∈ W y}`;
 * Cauchy–Schwarz (`two_new_points_energy`) turns `X ≥ δN³` such matches into
   `≥ δ²N³` respected quadruples inside `A′`;
-* `lineFreimanExtraction_holds` (Gowers's Corollary 7.6) gives the Freiman
-  piece, of size `≥ 2^(−1882)(δ²)^1164·N`.
+* `lineFreimanExtraction_eight` (Gowers's Corollary 7.6) gives an order-eight
+  Freiman piece, of size `≥ 2^(−1882)(δ²)^1164·N`.
 
 `lemma19_two_new_piece` therefore replaces `lemma19_selection_piece`, whose
 four-new-points hypothesis is stronger than [49] provides.
@@ -23,7 +23,9 @@ four-new-points hypothesis is stronger than [49] provides.
 `q₃` (second of the second pair). Two Cauchy–Schwarz rounds
 (`one_new_each_energy`) give the same bound. With the four witnesses
 `(a, b, c, d)` of a failing triple, cases (b,d) and (a,c) regroup to
-`lemma19_two_new_piece`, and cases (a,d) and (b,c) to `lemma19_mixed_piece`. -/
+`lemma19_two_new_piece`, and cases (a,d) and (b,c) to `lemma19_mixed_piece`. The `_eight` variants retain the stronger
+order-eight conclusion needed for Bohr extension; the original interfaces
+follow by restricting to order two. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -31,7 +33,7 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 /-- **[49] Lemma 19 in `ℤ/N`, two new points.** -/
-theorem lemma19_two_new_piece {N : Nat} [NeZero N] [Fact N.Prime]
+theorem lemma19_two_new_piece_eight {N : Nat} [NeZero N] [Fact N.Prime]
     (U W : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
     (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
@@ -43,7 +45,7 @@ theorem lemma19_two_new_piece {N : Nat} [NeZero N] [Fact N.Prime]
     ∃ f : ZMod N → ZMod N, (∀ x, f x ∈ U x) ∧
       ∃ E' : Finset (ZMod N), (∀ x ∈ E', f x ∈ W x) ∧
         (2 : Real) ^ (-(1882 : Real)) * (δ ^ 2) ^ 1164 * N ≤ E'.card ∧
-        IsFreimanLinearOn E' f := by
+        FreimanHom 8 E' f := by
   have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   let rq := quadRequirement val
   let T' := T.image rq
@@ -164,11 +166,29 @@ theorem lemma19_two_new_piece {N : Nat} [NeZero N] [Fact N.Prime]
     rw [mul_comm ((N : Real) ^ 3)] at this
     exact le_of_mul_le_mul_right this hN3
   obtain ⟨E', hE'A, hE'card, hE'F⟩ :=
-    lineFreimanExtraction_holds.2 N A' f (δ ^ 2) (by positivity) henergy
+    lineFreimanExtraction_eight N A' f (δ ^ 2) (by positivity) henergy
   exact ⟨E', fun x hx => (Finset.mem_filter.mp (hE'A hx)).2, hE'card, hE'F⟩
 
+/-- The order-two interface follows from the retained order-eight extraction. -/
+theorem lemma19_two_new_piece {N : Nat} [NeZero N] [Fact N.Prime]
+    (U W : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
+    (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
+    (hadd : ∀ q ∈ T, q 0 - q 2 = q 1 - q 3 ∧ val q 0 - val q 2 = val q 1 - val q 3)
+    (hU : ∀ q ∈ T, ∀ i, val q i ∈ U (q i))
+    (hW : ∀ q ∈ T, val q 1 ∈ W (q 1) ∧ val q 3 ∈ W (q 3))
+    (hcons : ∀ q ∈ T, ∀ i j, q i = q j → val q i = val q j)
+    {δ : Real} (hδ : 0 < δ) (hT : δ * (N : Real) ^ 3 * (256 * K ^ 4) ≤ T.card) :
+    ∃ f : ZMod N → ZMod N, (∀ x, f x ∈ U x) ∧
+      ∃ E' : Finset (ZMod N), (∀ x ∈ E', f x ∈ W x) ∧
+        (2 : Real) ^ (-(1882 : Real)) * (δ ^ 2) ^ 1164 * N ≤ E'.card ∧
+        IsFreimanLinearOn E' f := by
+  obtain ⟨f, hf, S, hS, hcard, hF⟩ := lemma19_two_new_piece_eight U W hne hK1 hK T val
+    hadd hU hW hcons hδ hT
+  exact ⟨f, hf, S, hS, hcard, hF.isFreimanLinearOn (by decide)⟩
+
 /-- **[49] Lemma 19 in `ℤ/N`, mixed case: one new point in each pair.** -/
-theorem lemma19_mixed_piece {N : Nat} [NeZero N] [Fact N.Prime]
+theorem lemma19_mixed_piece_eight {N : Nat} [NeZero N] [Fact N.Prime]
     (U W : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
     (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
@@ -180,7 +200,7 @@ theorem lemma19_mixed_piece {N : Nat} [NeZero N] [Fact N.Prime]
     ∃ f : ZMod N → ZMod N, (∀ x, f x ∈ U x) ∧
       ∃ E' : Finset (ZMod N), (∀ x ∈ E', f x ∈ W x) ∧
         (2 : Real) ^ (-(1882 : Real)) * (δ ^ 2) ^ 1164 * N ≤ E'.card ∧
-        IsFreimanLinearOn E' f := by
+        FreimanHom 8 E' f := by
   have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   let rq := quadRequirement val
   let T' := T.image rq
@@ -303,7 +323,25 @@ theorem lemma19_mixed_piece {N : Nat} [NeZero N] [Fact N.Prime]
     rw [mul_comm ((N : Real) ^ 3)] at this
     exact le_of_mul_le_mul_right this hN3
   obtain ⟨E', hE'A, hE'card, hE'F⟩ :=
-    lineFreimanExtraction_holds.2 N A' f (δ ^ 2) (by positivity) henergy
+    lineFreimanExtraction_eight N A' f (δ ^ 2) (by positivity) henergy
   exact ⟨E', fun x hx => (Finset.mem_filter.mp (hE'A hx)).2, hE'card, hE'F⟩
+
+/-- The order-two interface follows from the retained order-eight extraction. -/
+theorem lemma19_mixed_piece {N : Nat} [NeZero N] [Fact N.Prime]
+    (U W : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
+    (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
+    (hadd : ∀ q ∈ T, q 0 - q 1 = q 2 - q 3 ∧ val q 0 - val q 1 = val q 2 - val q 3)
+    (hU : ∀ q ∈ T, ∀ i, val q i ∈ U (q i))
+    (hW : ∀ q ∈ T, val q 0 ∈ W (q 0) ∧ val q 3 ∈ W (q 3))
+    (hcons : ∀ q ∈ T, ∀ i j, q i = q j → val q i = val q j)
+    {δ : Real} (hδ : 0 < δ) (hT : δ * (N : Real) ^ 3 * (256 * K ^ 4) ≤ T.card) :
+    ∃ f : ZMod N → ZMod N, (∀ x, f x ∈ U x) ∧
+      ∃ E' : Finset (ZMod N), (∀ x ∈ E', f x ∈ W x) ∧
+        (2 : Real) ^ (-(1882 : Real)) * (δ ^ 2) ^ 1164 * N ≤ E'.card ∧
+        IsFreimanLinearOn E' f := by
+  obtain ⟨f, hf, S, hS, hcard, hF⟩ := lemma19_mixed_piece_eight U W hne hK1 hK T val
+    hadd hU hW hcons hδ hT
+  exact ⟨f, hf, S, hS, hcard, hF.isFreimanLinearOn (by decide)⟩
 
 end LeanProofs.GowersSzemeredi

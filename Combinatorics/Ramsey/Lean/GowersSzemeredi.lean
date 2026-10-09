@@ -384,6 +384,9 @@ import GowersSzemeredi.Proofs16PairEnergyCS
 import GowersSzemeredi.Proofs16Lemma19TwoNew
 import GowersSzemeredi.Proofs16Corollary20Step
 import GowersSzemeredi.Proofs16Corollary20
+import GowersSzemeredi.Proofs16Corollary20Dense
+import GowersSzemeredi.Proofs16Corollary20Bohr
+import GowersSzemeredi.Proofs16Corollary20AllTriples
 import GowersSzemeredi.Proofs16BohrSpectrum
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
