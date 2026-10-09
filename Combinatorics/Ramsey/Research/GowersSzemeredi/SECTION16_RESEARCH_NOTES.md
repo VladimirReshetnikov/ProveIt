@@ -1549,7 +1549,10 @@ the elementary lemmas of its §2:
   |aᵢ| ≤ K = O(k/(εη)). That is polynomial. The proof sandwiches 1_B
   between products of trapezoids, truncates their Fourier series
   (coefficients decay like 1/ξ²), and expands the product. Weak
-  regularity holds at every radius in ℤ/N (`bohr_annulus_card_le`).
+  regularity follows from `bohr_annulus_card_le` when the inner radius
+  is nonnegative and `|K|*(4*eta*N+2) <= (epsilon/2)*N`. The finite-size
+  term `2*|K|` must be retained; the statement is not uniform over
+  arbitrarily small epsilon at a fixed modulus.
   Formalization on ℤ/N, discretely:
   - **brick 1 done** (`Proofs16DirichletBound`, kernel-checked):
     `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
@@ -2626,3 +2629,12 @@ three new modules, registered in the facade. The combined audit is pending.
 This supplies genuine Bohr extensions, but does not establish the remaining
 bilinear structure, bounded-span duality, or printed Theorem 16.2 budget.
 No upstream port modules or numbered catalogue claims are added.
+
+
+The combined Bohr-selection audit now passes: 6,154 public Gowers theorems,
+a 4,944-module facade (4,152 OAI modules), and a 4,946-module combined audit
+closure. It includes the retained order-eight conclusions, dense selection
+invariants, uniform Bohr extensions, all-triples bound, and incoming
+Dirichlet character-sum estimate. Only propext, Classical.choice, and
+Quot.sound occur. The catalogue remains 115/5 with its fidelity caveats;
+this supersedes the pending audit notice for the selection extensions.
