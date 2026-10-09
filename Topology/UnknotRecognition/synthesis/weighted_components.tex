@@ -1,0 +1,203 @@
+\section{Native weighted normal components and essential-disc counts}
+\label{sec:weighted-components}
+
+The weighted component operations of report 53 are now integrated into the
+maintained package. They answer a question unavailable from the earlier
+aggregate normal-surface statistics: how many components of this supplied
+surface are compressing discs? Binary normal coordinates stay compressed.
+The full component census and the reduced count-only query have independent
+source-bound certificate replay. They require the existing validated finite,
+connected, orientable triangulation with one torus boundary. A positive answer
+concerns that manifold and vector; relating the manifold to an input knot
+exterior remains a separate provenance obligation.
+
+\subsection{Transport additive weights along an orbit trace}
+
+Assign a vector $w(x)\in\mathbb Z^d$ to each point of an interval-pairing
+universe $[0,N)$. The input is an additive list of half-open intervals with
+constant vectors, possibly overlapping and with signed entries. Unmarked
+points have weight zero. Endpoint differences combine the intervals into
+canonical constant runs. The desired compressed histogram records
+\[
+ H(v)=\#\left\{O\text{ an orbit}:\sum_{x\in O}w(x)=v\right\}.
+\]
+Equal vectors share one row with binary multiplicity. Negative Euler weights
+are ordinary signed integers; the multiplicities remain nonnegative counts.
+
+The producer first obtains a complete trace from the maintained AHT engine.
+It then transports weights through its local moves. Identity deletion,
+trimming, periodic merging and transmission alter the description of the
+same equivalence relation and require no weight change. Truncation removes
+points after transferring their weights to surviving representatives.
+Contraction emits the weights of static singleton representatives and closes
+their gaps. At the end, every original orbit has one emitted representative
+carrying its complete sum. The total count and every coordinate's total
+weighted mass are checked against the original source.
+
+For a translation truncation with new endpoint $c$ and period $p$, set
+$b=c-p$. A removed point $x$ maps to
+\[
+ b+((x-b)\bmod p)\in[b,c).
+\]
+For a constant-weight deleted interval of length $\ell=qp+r$, add $q$
+copies of its vector to the whole period and one copy to the cyclic remainder,
+which has at most two ordinary interval pieces. Keep the preexisting prefix
+weights as well. All arithmetic uses the binary quotient, remainder and
+endpoints; no loop has $q$ iterations. For a reflection $x\mapsto a+N-1-x$,
+a removed half-open interval $[u,v)$ contributes its weight to
+$[a+N-v,a+N-u)$. This reverses the interval, with the endpoint convention
+accounted for exactly.
+
+The independent weighted verifier first checks the unweighted source trace,
+then reconstructs the weight transport with separate prefix-event and
+residue-anchor formulas. It does not call the producer's transport helpers.
+Its final canonical histogram must match the certificate, including sorted
+unique vectors, positive multiplicities and total mass. Conservation alone
+would be insufficient; the local trace replay establishes which original
+weights belong to each orbit. Tests disable producer entry points during
+replay and mutate arithmetic, source and trace fields.
+
+This is an implementation of classical weighted AHT's polynomial encoded
+operation~\cite[Theorem 16]{aht-orbits}. Canonical runs prevent an implicit
+expansion of the point universe. A translation fold maps old suffix breakpoints
+into one period and introduces only a constant number of boundary points;
+reflection also transports breakpoints directly. Static gap boundaries are
+charged to the explicit pairing system. Thus the number of weight runs and
+emitted histogram blocks remains polynomial in input runs, pairings and
+trace length. Coordinate magnitudes can grow by summing many original points,
+but their bit lengths grow only by the logarithm of the represented mass.
+The dimension $d$, endpoint bits, signed weight bits and exact integer
+arithmetic are all part of the cost model.
+
+The trace is needed internally even when the caller does not request a
+certificate. A supplied source-bound trace can instead be checked and reused,
+allowing several different weight queries on the same interval system.
+This still performs exact arithmetic replay; it avoids discovering a new
+orbit-reduction schedule. The cycle allowance bounds orbit discovery. Later
+weight transport and independent verification are controlled by their
+cooperative callbacks, not silently charged to that cycle counter.
+
+\subsection{Three weights suffice on a torus boundary}
+
+The validated normal arc system has one orbit per connected surface component.
+Integral ownership assigns $+1$ per surface vertex, $-1$ per arc and $+1$ per
+polygon, with every charge placed at an intersection point in that cell's
+component. The sum is its Euler characteristic. Two more interval weights
+measure intersections of its boundary with a homology basis of the ambient
+boundary torus. The producer constructs that basis by a primal tree and a
+disjoint dual tree. The verifier independently checks that the proposed cycles
+are closed and independent modulo face boundaries using binary elimination.
+Generalized triangulations with loops and repeated face edges are supported.
+
+As proved in Section~\ref{sec:incoming-2c7f}, a component is a compressing
+disc exactly when its Euler characteristic is one and its two boundary
+parities are not both zero. A nonzero boundary class ensures the component
+has boundary; classification then forces a disc. On a torus an essential
+embedded circle has primitive slope and nonzero mod-two class. A closed
+projective plane also has Euler characteristic one but zero boundary values,
+so it is excluded without an irreducibility assumption.
+
+Componentwise evaluation is necessary. Two parallel meridian discs have zero
+total mod-two boundary class but contribute two discs. Conversely a
+vertex-link disc and a nondisc component can yield misleading aggregate
+Euler/homology values. The weighted histogram distinguishes their contributions.
+The external audit includes both phenomena and one-sided components.
+
+The public census has three modes. \texttt{disk} uses three weights;
+\texttt{summary} uses five, adding polygon and boundary-point counts;
+\texttt{coordinates} uses $7t$ weights and returns actual connected-component
+normal coordinate vectors with multiplicities. Boundary-point count is not
+the number of boundary circles. Full-coordinate mode is useful when an actual
+disc vector must be supplied to a later geometric operation; the cheaper
+three-weight query is sufficient when only the count is needed. All modes
+can reuse the same verified unweighted trace.
+
+\subsection{The quadrilateral core shrinks the numerical query}
+
+For each global vertex, subtract the minimum incident triangle count times
+its vertex-link vector. These links can be realized disjointly from the
+remaining surface. Their boundary discs are inessential and do not affect
+the compressing-disc count. Let $Y$ be the remainder and let $g$ be the gcd
+of the original quadrilateral coordinates. Matching equations propagate
+divisibility by $g$ from a zero triangle at each global vertex, so $P=Y/g$
+is integral and admissible whenever $g>0$. If all quadrilaterals vanish,
+$Y=0$ and the essential-disc count is zero without any orbit query.
+
+The proof in Section~\ref{sec:incoming-2c7f} gives
+\[
+ D(x)=gD(P),\qquad
+ \max_i P_i\le(4t-1)\frac{Q_{\max}}g.
+\]
+This identity concerns discs. It is false for the total number of components:
+two copies of a one-sided normal surface can form its connected orientation
+double. The count-only API consequently reports no inferred total component
+count. The original unreduced census remains available for that question.
+
+For $x=gD+(g+1)L$, where $D$ is a fixed primitive vertex-reduced meridian and
+$L$ is a vertex link, the full coordinate gcd can be one. Common scaling
+alone then achieves nothing. The new operation removes the $g+1$ links and
+queries the fixed core $D$, returning exactly $g$ essential discs. The core
+orbit endpoints have size independent of the bit length of $g$. Reading,
+validating and fingerprinting $x$, computing its minima/gcd and verifying the
+outer count still depend on the original input bits. The optimization removes
+those bits from the expensive component query, not from the entire call.
+
+The producer validates the original vector, constructs the core, and invokes
+a source-validated three-weight census on it. The count certificate binds the
+original source, all removed link multiplicities, the divisor, core vector,
+core certificate and final multiplication. The verifier independently
+reconstructs the minima and gcd rather than invoking the core producer.
+A modified original vector is rejected even if it has the same reduced core.
+This prevents replacing the original source binding with only a small-core
+fingerprint.
+
+\subsection{Native contracts and validation}
+
+The maintained census, independent census verifier and reduced count query
+are available through these entry points:
+\begin{quote}\small
+\path{normal_surface_components.normal_component_census}\\
+\path{normal_component_verify.verify_normal_component_certificate}\\
+\path{normal_disk_kernel.normal_compressing_disk_count}
+\end{quote}
+The last module also supplies the independent count-certificate verifier.
+The generic weighted APIs are in \path{weighted_orbits} and
+\path{weighted_orbit_verify}. The census can receive a supplied orbit trace;
+then \texttt{max\_cycles} must be \texttt{None}, because no orbit discovery
+runs. Invalid mode, cycle and periodic-rule options are rejected before
+geometry work. Incomplete queries publish no component histogram, disc count
+or certificate. Cancellation propagates during validation, discovery,
+transport, interpretation and replay, including for false-valued callables.
+
+The original geometry validator and orbit engine are byte-identical to baseline
+\texttt{04a66388e255}. Six new runtime modules implement the extension. Normal
+geometry and its exact source encoding are shared trusted reconstruction;
+weight arithmetic, basis verification, component interpretation and core
+arithmetic have separate checking paths. This independence is supplemented
+by an external Regina oracle, which does not use producer geometry or weight
+transport to obtain expected components.
+
+The report's 30 new test methods and four integration tests pass. They include
+source/summary mutations, generalized boundary bases, actual component-vector
+multisets, enormous multiplicities, one-sided scaling and source-bound trace
+reuse across all three modes with orbit discovery disabled. The native audit
+repeats 10,000 small weighted-system comparisons across the two periodic rules,
+2,500 independent checker cases, 366 mutation checks and huge endpoint tests.
+Its frozen external corpus contains 1,275 vectors on 45 triangulations, with
+3,825 census comparisons and replays plus 1,275 core-count comparisons and
+replays. Regina explicitly expands only these bounded fixtures; the maintained
+queries use compressed coordinates. The corpus includes 198 cases with discs
+whose total boundary class cancels, and cases whose aggregate data suggests
+a disc that is absent. The native implementations pass all these checks.
+
+\input{weighted_components_results.tex}
+
+Reproduction uses \path{../fast/weighted_research/native.py}, with
+\texttt{audit} and \texttt{benchmark} modes. It pins the unchanged native
+dependencies and all runtime, driver, test, fixture and corpus hashes before
+and after each run. Data are in \path{data/weighted-components-*}; the delivered
+report is unchanged. The two-weight ambient-homology refinement remains
+unimplemented. The next global tasks are certified diagram-to-exterior
+construction, useful normal-vector discovery, and hierarchy moves with
+controlled encoded cost. Efficiently counting discs in one supplied vector
+does not settle those tasks or establish general quasipolynomial recognition.

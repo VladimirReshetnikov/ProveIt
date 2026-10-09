@@ -3173,6 +3173,54 @@ pass individual transitive axiom checks. Only propext, Classical.choice,
 and Quot.sound occur. The source ledger remains 115/5 with its existing
 fidelity caveats. The selected upstream module closure and license notices
 are unchanged.
+
+
+### J.84. Fixed small patterns and quantitative row fibers
+
+`Proofs16SmallIndexPatterns` bounds the number of subsets of [m] having
+size at most ell by `(m+1)^ell`. Its induction removes one element from
+a nonempty set and uses an optional index to reconstruct it. This counts
+variable-size patterns directly; no inactive selected-map indices are
+added to make patterns have equal cardinality.
+
+`Proofs16IndexPatternAveraging` labels each triple by its four index sets
+and its two offsets z,w. A maximal fiber has
+`|T| <= (m+1)^(4ell) * N^2 * |V|`. Projection onto the remaining row
+parameter is injective on the fiber because z,w are fixed. All four
+index-set equalities are retained pointwise on V.
+
+`Proofs16GoodRowTriples` supplies the triple count for an actual row set Y.
+The pair-offset fibers have total size |Y|^2, and admissible quadruple
+triples are counted by their squared sizes. Cauchy-Schwarz gives
+`|Y|^4 <= N * |rowQuadrupleTriples Y|`. If `|Y|>=beta*N` and an exceptional
+set B has size at most epsilon*N^3, the retained triples have size at least
+`(beta^4-epsilon)*N^3`. Combining this with pattern averaging yields
+`(beta^4-epsilon)*N <= (m+1)^(4ell)*|V|`.
+
+`Proofs16PatternBohrContainment` proves that the four covered-row Bohr
+conditions at radius 1/16 control every common difference at radius 1/4
+on a nonexceptional triple. The chosen small patterns supply those four
+conditions, and their union has at most 4ell frequencies.
+
+`Proofs16FixedBohrPatterns.dense_row_fixed_bohr_patterns` applies all of
+this to the original set A. Use the density parameters delta for each
+row in Y and beta for Y itself; epsilon>0 requires N>=8/epsilon.
+With r,R,K,kappa from J.81 and `ell=spanGeneratorBound r R`, the theorem
+produces the selected order-eight Freiman pieces (including their density
+and individual Bohr extensions), four fixed index sets J, fixed z,w, and
+V with the density bound above. For every y in V all chosen map evaluations
+are inside their original selected pieces, and the Bohr set of the at most
+4ell resulting frequencies, at radius `1/(16*max(1,ell))`, lies in row y
+of `D_hor D_ver D_hor D_hor A`. When epsilon<beta^4 the bound forces V to
+be nonempty. This supplies the fixed-pattern geometry corresponding to
+Claim 36 on prime cyclic groups, with the explicit bounds proved here.
+
+The five modules contain fifteen theorem declarations and compile in a
+101-module closure. The later common-domain construction and algebraic
+regularity remain open, as do the five numbered catalogue entries.
+No paper-fidelity caveat or deep structural hypothesis is discharged by
+this intermediate result.
+
 ### Quasirandom bipartite graphs: [49] Appendix B (2026-10-09)
 
 `Proofs16BipartiteQuasirandom` formalizes Lemmas 41 and 43 of [49]
@@ -3230,3 +3278,13 @@ nor the triangle inequality is needed.
   atypical `I`-tuples by `4|I||J|(3ε)^{1/4}η⁻²|X^I|`.
 
 Four theorems, standard axioms only, collision gate clean.
+
+
+The combined audit after merging the fixed-pattern and quasirandomness
+work passes: 6,422 public Gowers theorems, a 4,984-module facade
+(4,152 OAI modules), and 4,986 modules including both audits. The fifteen
+new fixed-pattern declarations also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger remains 115 companions and five open statements, with all prior
+fidelity caveats retained. No additional upstream modules were ported,
+and the selected dependency closure and Apache provenance are unchanged.

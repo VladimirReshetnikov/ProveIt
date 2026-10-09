@@ -1600,3 +1600,21 @@ if sparse_incidence:
         rows.append(' & '.join(cells)+r' \\')
     open('tables/sparse_incidence_pipeline.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & dense ms & linear ms & split ms & dense/linear & dense/split','@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+
+weighted_components=load('data/weighted-components-benchmark.json')
+if weighted_components:
+    for kind in ('dimension','core'):
+        rows=[]
+        old,new=('full_coordinates','three_weights') if kind=='dimension' else ('three_weights','core')
+        for r in weighted_components['records']:
+            if r['kind']!=kind:continue
+            m,q=r['medians'],r['paired_median_ratios']
+            cells=[str(r['parameter'])]+[f'{1000*m[a]["total"]:.3f}' for a in (old,new)]
+            cells += [f'{q[f"{old}/{new}"]:.3f}']
+            cells += [f'{q[f"{a}/{a}_control"]:.3f}' for a in (old,new)]
+            rows.append(' & '.join(cells)+r' \\')
+        heading=('Tetrahedra & full ms & three ms & full/three & full A/A & three A/A' if kind=='dimension' else
+                 '$b$, $g=2^b$ & raw ms & core ms & raw/core & raw A/A & core A/A')
+        open(f'tables/weighted_components_{kind}.tex','w').write('\\begin{center}\\small\n'+table(
+            heading,'@{}rrrrrr@{}',rows)+'\\end{center}\n')
