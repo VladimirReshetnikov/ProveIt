@@ -2933,6 +2933,40 @@ audit and import-compatibility check. All twelve new declarations also
 pass individual transitive axiom checks. Only propext, Classical.choice,
 and Quot.sound occur. The source ledger remains 115/5 with its existing
 fidelity caveats, and the selected upstream module scope is unchanged.
+
+
+### J.80. Dense-row alphabets and directional containment
+
+`Proofs16BohrSumRankCap` supplies one Bohr-sum cutoff for all pairs of
+spectra with a common rank cap. The Fourier threshold decreases with the
+rank cap and the polynomial cutoff increases with it. Consequently the
+same coefficient interval can be used for every row in the selection step.
+
+`Proofs16BoundedSpanAlgebra` proves bounded-span symmetry and the inclusion
+`Span_R(K union L) subset Span_R(K) - Span_R(L)`. Assigning the overlapping
+frequencies entirely to K avoids increasing R. These are actual finite
+spans with centered modular coefficients, including when R exceeds N/2.
+
+`Proofs16DirectionalBohrSpan` puts `U_y = Span_R(Gamma_y)`. If each Gamma_y
+has rank at most r, then every U_y contains zero and has cardinality at
+most `(2R+1)^r`. For four rows y+z,z,y+w,w in Y, the Bohr set of
+`(U_(y+z)-U_z) intersect (U_(y+w)-U_w)` at radius `1/(4*pi)` lies in row y
+of `D_hor D_ver A`, provided the rows of A contain `B(Gamma_y;rho)`.
+The uniform cutoff is
+`R = polynomialSpectrumCutoff (2r) (rho/2) (1/(4*M^(2r)*M^(2r)))`,
+where M is positive and `rho*M >= 2`. No lower bound on the prime modulus
+is needed.
+
+`Proofs16DenseRowAlphabets` discharges the row-Bohr premise for an original
+set A whose rows in Y have density at least delta>0. Row Bogolyubov gives
+`r=ceil(16*delta^(-2))` and `rho=1/(8*pi)`; empty spectra are assigned
+outside Y. The resulting alphabet family satisfies the selection theorem's
+zero and size conditions, and its common row-difference Bohr sets lie in
+`D_hor D_ver D_hor D_hor A`. This supplies the geometric input to selection;
+it does not yet prove the subsequent algebraic regularity or the remaining
+five numbered statements. The four modules contain eleven new theorem
+declarations, checked in a 63-module source closure.
+
 ### Quarter-radius mixed Bogolyubov (2026-10-08)
 
 `Proofs16SpectrumPairSumset` sharpens `mixed_bogolyubov` and the
@@ -2973,6 +3007,172 @@ use only propext, Classical.choice, and Quot.sound. The collision gate
 passes. No numbered statement changes status.
 
 
+The combined audit after merging the quarter-radius proofs and the dense-row
+alphabet construction passes: 6,326 public Gowers theorems, a 4,967-module
+facade (4,152 OAI modules), and 4,969 modules including the audit and import
+compatibility check. All eleven new directional declarations also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. The source ledger remains 115/5 with the existing fidelity
+caveats; the selected upstream closure and provenance are unchanged.
+The quarter-radius improvement has not yet been propagated through the
+uniform rank-cap and directional-alphabet interfaces.
+
+
+### J.81. Quarter-radius dense-row selection
+
+`Proofs16UniformQuarterBohrSum` propagates the quarter-radius improvement
+through the uniform large-spectrum theorem. The actual mixed threshold is
+at most 1/4, so twice this threshold remains in the permitted interval.
+`bohr_sum_contains_span_intersection_uniform_quarter` removes both
+finite-modulus restrictions from the incoming quarter-radius theorem.
+`bohr_sum_contains_rank_cap_span_quarter` uses the doubled uniform lower
+threshold `2/(4*M^r*M^r)` for any pair of ranks at most r.
+
+`Proofs16QuarterRowAlphabets` carries this into the directional construction.
+The common-difference Bohr radius is 1/4 rather than 1/(4*pi), and
+`directionalQuarterSpanCutoff_le` verifies that the coefficient cutoff
+never increases. Before taking the maximum and ceiling, doubling the
+threshold divides the linear cutoff term by two and the quadratic term
+by four. The dense-row input is proved for every prime modulus.
+
+`Proofs16SelectedRowBohr` supplies the geometric consequence of selection.
+Without a bad witness, every common row difference is in the sum of the
+two covered difference sets. Four selected row spectra at radius 1/16
+therefore control the entire common-difference spectrum at radius 1/4.
+Their union has at most 4m frequencies, even though the underlying row
+alphabets can be much larger. The zero values in the covered sets require
+no additional frequencies.
+
+`Proofs16DenseRowSelection.dense_row_selected_bohr` applies this to the
+original set A. For rows in Y of density at least delta>0, set
+`r=ceil(16*delta^(-2))`, `R=directionalQuarterSpanCutoff r 64 (1/(8*pi))`,
+`K=(2R+1)^r`, and `kappa=corollary20Kappa (epsilon/2) K`.
+The fixed cell count 64 satisfies the radius condition by pi<4.
+For epsilon>0 and N>=8/epsilon, there are m selected pieces and fewer than
+epsilon*N^3 exceptional triples, with `m*kappa <= K-1`. Every piece has
+size at least kappa*N, is Freiman of order eight, and retains its Bohr
+extension with rank at most `16*kappa^(-2)` and radius `kappa/(32*pi)`.
+For every nonexceptional triple whose four rows are in Y, the Bohr set of
+its at most 4m selected values at radius 1/16 lies in row y of
+`D_hor D_ver D_hor D_hor A`. All parameters depend only on delta and epsilon.
+
+The four modules contain twelve theorem declarations, checked in a
+91-module source closure and individually audited for transitive axioms.
+This connects the previously separate geometric and selection arguments.
+The later algebraic-regularity argument and the five open numbered
+statements remain unresolved; the catalogue fidelity caveats still apply.
+
+
+The completed combined audit checks 6,347 public Gowers theorems in a
+4,971-module facade (4,152 OAI modules), and 4,973 modules including the
+audit and import-compatibility check. Only propext, Classical.choice, and
+Quot.sound occur. A full disk interrupted the first audit artifact write;
+after clearing redundant package caches, the artifact was rebuilt and the
+import check passed. The source ledger remains 115/5 and the selected
+upstream module scope is unchanged. No ported sources or license notices
+were changed.
+
+
+### J.82. A common neighborhood and dense recentering
+
+`Proofs16DenseRowCommonBohr.dense_row_common_bohr` puts the actual maps
+selected from the original set on a common Bohr neighborhood. With K and
+kappa from J.81, its rank is at most `((K-1)/kappa)*16*kappa^(-2)` and its
+radius is `kappa/(32*pi)`. All normalized difference maps vanish at zero,
+are Freiman of order two there, and are additive whenever both arguments
+and their sum stay in the neighborhood. The earlier directional containment,
+4m rank bound for selected triple spectra, and exceptional-triple count
+are retained for the same maps and pieces.
+
+`Proofs16BohrRecentering` proves an exact translation-average identity:
+for finite E,B in Z/N, the sum over t of `|{x in B : t+x in E}|` is
+`|E|*|B|`. Hence a set of density at least kappa retains at least
+`kappa*|B|` points in some translate of B. Taking B to be the half-radius
+common Bohr set and choosing one retained point as center gives a cluster
+C inside E with all pairwise differences in the full-radius neighborhood.
+Its size is at least kappa times the half-radius Bohr cardinality. For
+any positive integer M with `rho*M >= 2`, the verified Dirichlet bound
+also gives ambient density at least `kappa/M^|Gamma|` for that cluster.
+
+`IsBHomomorphism.dense_recenter` writes a Bohr-extended map on this cluster
+as `f(x)=f(a)+psi(x-a)`, with psi normalized and locally additive.
+`Proofs16DenseRowRecentered.dense_row_common_bohr_recentered` does this for
+every selected piece while preserving the very same common maps psi,
+the original maps L, and their directional containment. It does not
+replace L outside the retained cluster or assert that the entire Bohr
+translate lies inside E. No additional rank or radius loss is introduced.
+
+The three modules contain seven theorem declarations, checked in a
+97-module source closure. This establishes the common-neighborhood and
+cluster recentering input. The simultaneous choice of index patterns,
+algebraic regularity, quasirandomness and subsequent directional steps
+remain to be proved; no numbered statement changes status.
+
+
+The combined recentering audit passes: 6,355 public Gowers theorems,
+a 4,974-module facade (4,152 OAI modules), and 4,976 modules including
+the audit and import-compatibility check. The seven new declarations
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats; upstream module scope and licenses
+are unchanged.
+
+
+### J.83. Small generators by dissociation, with unit coefficients
+
+The next selection step requires a small set of actual row generators.
+Reference [49], Section 7, uses its Theorem 31 before averaging over four
+index patterns (Claim 36): https://arxiv.org/html/2109.03093#S7.
+The following independent counting proof supplies this input on Z/N.
+
+For any B inside `Span_R(K)`, `boundedSpan_small_generators` produces
+`D subset B` such that `B subset Span_1(D)` and
+`|D| <= ceil(16*|K|^2 + 4*|K|*log(2R+1))`.
+This includes empty B, rank zero, zero cutoff, and every nonzero modulus;
+primality is unnecessary. In particular the new generators are values
+of the original set and every coefficient has centered size at most one.
+
+`Proofs16SpanSumCounting` proves the counting estimate. If D is
+additively dissociated, all of its subset sums are distinct. Adding at
+most |D| points of `Span_R(K)` places those sums in `Span_(|D|R)(K)`.
+Thus `2^|D| <= (2|D|R+1)^|K|`. `Proofs16SmallSpanGenerators` solves this
+inequality explicitly: take logarithms, use `log 2 >= 1/2` and
+`log d <= 2 sqrt(d)`, and absorb the square-root term using
+`(sqrt(d)/2-2k)^2 >= 0`. This yields `d <= 16k^2+4k log(2R+1)`.
+Mathlib's `Finset.exists_subset_addSpan_card_le_of_forall_addDissociated`
+then supplies a maximal dissociated generating subset. The proof uses
+Mathlib through imports; no new upstream files are ported.
+
+`Proofs16BoundedSpanPhase` proves the matching phase bound: Bohr control
+at radius rho on k generators controls their R-bounded span at radius
+k*R*rho. The proof uses submultiplicativity and subadditivity of the
+centered modular absolute value, including cutoffs above N/2.
+
+`Proofs16SmallCoverIndices` applies this to the covered values of the
+actual bounded-span row alphabets. It chooses at most
+`ell=spanGeneratorBound r R` indices at each row. Every chosen index is
+active: the row is in the selected piece and its map value is in the
+row alphabet. These values span all covered values with unit coefficients.
+The index lift discards zero before choosing indices, so zero costs no
+index and requires no domain-membership assertion.
+`covered_values_small_bohr` gives Bohr control of all covered values at
+radius 1/16 from the chosen values at radius `1/(16*max(1,ell))`.
+This replaces a dependence on all m selected maps by the explicit small
+rank ell, without a large coefficient factor in the radius.
+
+The four modules contain fourteen theorem declarations and compile in a
+95-module closure. The subsequent averaging over four index patterns and
+the final structure theorem are not yet proved. No numbered statement
+changes status, and the existing paper-fidelity caveats remain in force.
+
+
+The combined small-generator audit passes: 6,373 public Gowers theorems,
+a 4,978-module facade (4,152 OAI modules), and 4,980 modules including the
+audit and import-compatibility check. All fourteen new declarations also
+pass individual transitive axiom checks. Only propext, Classical.choice,
+and Quot.sound occur. The source ledger remains 115/5 with its existing
+fidelity caveats. The selected upstream module closure and license notices
+are unchanged.
 ### Quasirandom bipartite graphs: [49] Appendix B (2026-10-09)
 
 `Proofs16BipartiteQuasirandom` formalizes Lemmas 41 and 43 of [49]
