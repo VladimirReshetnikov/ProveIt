@@ -2015,6 +2015,23 @@ Route: `quartic_function_inverse_explicit`, then
 - **Quasi-polynomial** c(α) = exp(−C·log^A(1/α)) fits whenever A ≲ 3400,
   with moderate C.
 
+*Scope (added 2026-10-09).* Both bullets compare at the single density
+δ = 1/2, which is all Corollary 18.7 needs. Theorem 18.2 at length six
+must hold for every δ ≤ 1/2, with α = `intervalUniformityParameter δ 6`
+= (δ⁶/(512·216))^32, so log(1/α) = 192·log(1/δ) + 32·log(110592).
+- The route's log₂log₂ threshold is about 1/c(α). The allowed one,
+  `szemerediThreshold δ 6`, has log₂log₂ = δ^(−M) = exp(M·log(1/δ)).
+- **Polynomial** c = α^D needs D·log(1/α) ≲ M·log(1/δ). The ratio
+  log(1/α)/log(1/δ) is largest at δ = 1/2, where it is about 728. So the
+  half-density bound D ≲ M/728 already covers every δ.
+- **Quasi-polynomial** c gives 1/c = exp(C·(192·log(1/δ))^A). For A > 1
+  this exceeds exp(M·log(1/δ)) once log(1/δ)^(A−1) ≳ M/(C·192^A), so it
+  fails for small δ.
+
+So Theorem 18.2 at length six needs a dense trilinear piece of density
+*polynomial* in α. Quasi-polynomial densities suffice only for the
+half-density corollary.
+
 **Correction (same day).** An earlier version of this paragraph proposed
 Milićević's 2026 theorem as that input. It is not. That theorem
 (arXiv:2601.01682) is a quasi-polynomial **U⁴** inverse theorem, built on a
@@ -5237,6 +5254,9 @@ through Part J, whose `PolyBoundedControl` belongs to the cubic-stackable
 route. It goes from the variety chain's decomposition to
 `Section16BudgetedPieceAt 3`. That link is blocked by an unbounded constant
 that this order-of-magnitude count does not see.
+*Second correction (J.5c below):* the assumption that the remaining steps
+lose only polynomially fails for the model-elimination stage. Its
+guaranteed agreement density is triple-exponentially small.
 
 ### J.5b The variety route's last link needs explicit partition constants (2026-10-09)
 
@@ -5523,6 +5543,333 @@ structural input remain undischarged, so this does not yet supply
 Until the remaining bound comparison is proved,
 `MilicevicDeepVarietyStructure D` (or its eventual, any-bound form) yields
 the decomposition with these named constants, but not `Theorem162At 3`.
+
+### J.5c The zero-core chain loses triple-exponentially (2026-10-09, kernel-checked)
+
+J.5 revisited assumed that the remaining pipeline steps "lose no more
+than polynomially". The model-elimination stage built since (J.109–J.111)
+does not. `Proofs16ZeroCoreGrowth` bounds the density that
+`global_column_shifted_agreement` guarantees, from the definitions alone.
+Write `d = columnSpectrumCap (columnEightDensity alpha)`, about
+`2^13080·alpha^(-9312)` (J.5 revisited dropped the `alpha/2` halving).
+
+1. **The word density is exponentially small.** Every density in the
+   anchor/walk/word chain is at most the witness density
+   `columnWitnessDensity ≤ 13^(-d)` (`globalColumnWordDensity_le_witness`,
+   `columnWitnessDensity_le`).
+2. **That density becomes a rank.** `globalColumnModelRank = ⌈4d/δ⌉`
+   divides by the word density `δ`, so the rank is at least `13^d`
+   (`thirteen_pow_le_globalColumnModelRank`). The guaranteed rank bound
+   for the final column spectra, `g + d`, is therefore already
+   exponential in `1/alpha`, beyond every polynomial `Bnd`.
+3. **The rank becomes an exponent.** The test density is
+   `1/(4·⌈2/r⌉^(g+d)) ≤ 2^(-g)` (`modelTestDensity_le_inv_two_pow`; every
+   cell count is at least two because `r ≤ 1/(4π)`).
+4. **The test density becomes a round count.** Elimination runs
+   `⌈log(M+1)/β⌉ ≥ 2^g/2` rounds, and each costs a factor `β/10 ≤ e^(-1)`.
+   So the zero-core density is at most `exp(-2^g/2)`
+   (`globalColumnZeroDensity_le`).
+
+Hence `globalColumnAgreementDensity alpha ≤ exp(-2^(13^d)/2)`
+(`globalColumnAgreementDensity_le_triple_exp`): triple-exponentially small
+in a polynomial of `1/alpha`. In particular, for `alpha ≤ 1/2` and every
+`K ≤ 2^64`,
+
+```
+globalColumnAgreementDensity alpha < exp(-(4/alpha)^K)
+```
+
+(`globalColumnAgreementDensity_lt_polynomial_contract`). The right side is
+the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
+`Bnd alpha ≤ (4/alpha)^K`, the hypothesis of
+`theorem_16_2_at_three_of_eventually`.
+
+**What this does and does not show.**
+- These are upper bounds on the *guaranteed* density, not on the actual
+  agreement set. The shortfall is not a matter of constants: the
+  structure side needs `log(1/density)` polynomial in `1/alpha`, and here
+  it is at least `2^(13^d)`.
+- The same rank also enters the zero-core radius:
+  `globalColumnZeroRadius ≤ (ρ/2)/(⌈4/ρ⌉^g·…)`, which is doubly
+  exponentially small. The contract's `exp(-Bnd c) ≤ ρ` therefore fails
+  too (kernel-checked in `Proofs16CoherentAnchorGrowth`). Both zero-core
+  radii are at most `2^(-g)` (`globalColumnZeroRadius_le_inv_two_pow`,
+  `globalEvenColumnZeroRadius_le_inv_two_pow`). So any `B` with `exp(-B)`
+  at most the radius of `global_column_shifted_agreement` or of
+  `global_coherent_column_anchors` has `B ≥ 13^d/2`
+  (`globalColumnZeroRadius_bound_ge`, `globalCoherentAnchorRadius_bound_ge`).
+  `global_column_difference_extensions` (J.112) works at exactly this
+  rank and radius. The even-length variant
+  (`Proofs16GlobalEvenZeroCoreParameters`) has the same shape: rank
+  `⌈2k·d/δ⌉` and per-round factor `β/(5k)`.
+- **The current mainline inherits it (kernel-checked).**
+  `global_coherent_column_anchors` (J.129) starts from the even core at
+  length four. `Proofs16CoherentAnchorGrowth` proves that
+  `globalEvenColumnZeroDensity alpha k` (every `k ≥ 1`),
+  `globalCoherentAnchorDensity` and `globalCoherentAnchorTolerance` are at
+  most `exp(-2^(13^d)/2)`, and that `globalCoherentAnchorRank ≥ 13^d`.
+  `globalCoherentAnchorDensity_lt_polynomial_contract` is the
+  contract comparison for the anchor density. J.129 itself notes that no
+  polynomial bound on these composite parameters is asserted. These
+  results show that none is available.
+  `global_single_coherent_progression`, which the later global modules
+  (`GlobalCoherentBridge`, `…WordSystem`, `…RichSystem`, `…RobustSystem`,
+  `…Graph`) import, is stated entirely in these parameters:
+  - `z = globalEvenColumnZeroDensity alpha 4`, together with `z^8/4`,
+    `globalPopularAnchorTolerance = z^16/20` and the anchor density;
+  - the even rank and the even radius.
+
+  `global_single_progression_parameters_le` (`Proofs16SingleProgressionGrowth`)
+  bundles their bounds: each density is at most `exp(-2^(13^d)/2)`, the
+  rank is at least `13^d`, and the radius forces `B ≥ 13^d/2`.
+  The shared steps are generic in `Proofs16ZeroCoreGrowth`:
+  - `thirteen_pow_le_rank_ceil` covers any rank `⌈m·d/δ_k⌉` with `m ≥ 1`;
+  - `elimination_density_le` covers any per-round divisor `m ≥ 1`;
+  - `lt_polynomial_contract_of_le_triple_exp` does the final comparison.
+- Later stages that start from this agreement set can only lose more,
+  so the present chain cannot supply the polynomial contract however the
+  bilinear organization is finished. Nor can it supply Milićević's
+  quasi-polynomial form.
+- It does not show that no route can. The two blow-ups come from two
+  design choices, and each repair alone removes exactly one exponential
+  (triple to double):
+  - **Rank.** The common spectrum `⌈4d/δ⌉` charges `4d` frequencies to
+    each of up to `1/δ` packed models (J.108). A rank `poly(1/alpha)`
+    needs `δ ≥ poly(alpha)`, or models that share frequencies. Then
+    `β = exp(-poly)`, but `t = log M/β = exp(poly)` rounds still cost
+    `exp(-exp(poly))`.
+  - **Elimination.** Each round keeps `β/10` of the columns and kills
+    only a `β` fraction of the models, so the total cost
+    `(β/10)^(log M/β)` is exponential in `1/β`. The requirement is a
+    total cost `β^O(log M)`, i.e. each round must kill a *constant*
+    fraction of the active models at column cost `β^O(1)`.
+    - Killing `β^O(1)` per *model* is not enough, since there are
+      `M = ⌈1/δ⌉ = exp(poly)` models.
+    - Nor is "β polynomial in `1/alpha`" available: `β` is a Bohr-set
+      density, exponentially small in the rank.
+    - Counting tests relative to the common Bohr set `B(Γ;·)` would
+      remove `g` from `β` but leave `d`. It fixes the rank's
+      contribution, not the `1/β` round count.
+- With both repaired (rank `poly`, total cost `β^O(log M)`), the stage
+  would lose `exp(-poly(1/alpha))`. That is the polynomial-`Bnd` regime
+  J.5 revisited assumed. No such elimination scheme is proposed here.
+
+**Leads for the redesign** (heuristic, not proved)
+- *E = {0} is not the expensive part in Milićević's proof.* J.2 records
+  that his Freiman bihomomorphism on a bilinear Bohr variety, the form
+  `DeepStructureAt` asks for, is an intermediate object of his §§5–11,
+  with quasi-polynomial bounds. Only his final step extends it to the
+  `E`-bihomomorphism (`SetRankLE E r`) of Theorem 1.4. J.2 also shows that
+  the consumers cannot use the `E`-form directly (the readout (R) is not
+  elementary). So the contract's `{0}` is right, and the cost of reaching
+  it here comes from this pipeline's route, not from the target.
+- *Constrain rather than delete: Milićević's own mechanism.* His
+  Proposition 8.1 (arXiv:2601.01682, printed pp. 61–62) reaches the zero
+  relation without touching the index set.
+  - **Hypothesis.** Freiman-linear maps `φ_x : B_x → H` are indexed by a
+    proper coset progression `C`, with Bohr sets of codimension `≤ d` and
+    radius `ρ`. Every alternating `2k`-sum takes **at most `K` values** on
+    the intersection of its domains.
+  - **Construction.** Draw `m = O(log(kK/(εc)))` random characters
+    `χ_i` of `H` and set `U_x = {y ∈ B_x : χ_i(φ_x(y)) ∈ (-1/20k, 1/20k) ∀ i}`.
+  - **Why it works.** A nonzero value `h` attained on `∩ U_{x_i}` must
+    have every `χ_i(h)` small, which has probability at most `2^(-m)`.
+    So all but an `ε` fraction of the chosen tuples vanish identically
+    on `∩ U_{x_i}`.
+  - **Cost.** `U_x` contains a Bohr set of codimension
+    `(2d·log(kK/(εc)))^O(1)` and radius `(2kd·log(1/ε))^(-O(1))` (his
+    Lemma 2.37). `C` is unchanged ("C is not modified by this choice").
+    His Step 6 (§10, abstract Balog–Szemerédi–Gowers) then passes from
+    `1-ε` of the tuples to all of them.
+  - **Comparison.** Here the cost of `K` nonzero values is
+    `O(log K)` extra frequencies. The present pipeline pays a column
+    factor `(β/10)` per test and `log M/β` tests.
+  - **Precondition.** The *bounded image* is decisive. A nonzero
+    Freiman-linear model has a large image, and constraining
+    `χ_i(f(y))` to be small leaves `f(y)` in a Bohr set of `H`, which
+    still contains nonzero elements unless `m ≈ log N`. So Proposition 8.1
+    does not apply to J.109's models directly. Milićević gets the bounded
+    image beforehand: `#Im ≤ K` for the alternating sums (his Steps 1–3,
+    §§5–7: a variant of rank-`O(1)` respectedness, abstract BSG and robust
+    Bogolyubov–Ruzsa onto `C`).
+
+  So the most direct redesign is to aim the J.108 stage at bounded-image
+  alternating sums rather than at a packing of linear models. Then a
+  Proposition 8.1 analogue can kill the nonzero values at polylog
+  codimension cost.
+
+  *Formalized core (2026-10-09).* `Proofs16CharacterRefinement` proves the
+  deterministic selection behind Proposition 8.1 by averaging over all
+  `N^m` character tuples, with no probability.
+  - `exists_character_refinement`: suppose each signed sum
+    `∑ j, s j * f q j y` (signs `±1`) takes at most `K` values on
+    `⋂ j, B q j`. Then some `χ : Fin m → ZMod N` makes it vanish on the
+    refinements `characterRefinement χ n (B q j) (f q j)` for all but
+    `K·|Q|/2^m` of the indices `q`. The index set is not shrunk.
+  - `nonseparating_tuples_card_le` and `not_separates_signed_sum` are the
+    two ingredients.
+
+  Still open: the Bohr-set containment of the refined domains and the
+  bounded-image input. The containment is Milićević's Proposition 2.37
+  ("Bohr–Bohr sets are Bohr", printed p. 31).
+  - **Statement.** For a Freiman-linear `ψ : B(Γ;ρ) → T^d`, the set
+    `{x ∈ B : ‖ψ(x)‖ ≤ ε}` contains a Bohr set of codimension
+    `d + (2r·log(1/(ερ)))^O(1)` and radius `ε·(2r·log(1/(ερ)))^(-O(1))`,
+    where `r = |Γ|`.
+  - **Proof.** A proper coset progression `C ⊆ B` (his Prop. 2.35); a
+    homomorphism approximating `ψ` on a sub-progression (Lemma 2.22); a
+    Bohr set inside that sub-progression (Prop. 2.13); then add the
+    approximating characters as frequencies.
+  - **What the corpus has, for ℤ/N.**
+    - A proper progression inside a Bohr set:
+      `exists_proper_progression_in_bohr`, through the OAI port.
+    - Coordinate affinity of Freiman-linear maps on it:
+      `freiman_linear_gap_affine`.
+    - Simultaneous Dirichlet: `simultaneous_small_multiplier`.
+  - **What is missing.** The reverse inclusion, a Bohr set inside a proper
+    progression (Prop. 2.13). In ℤ/N a Freiman-linear map on a rank-`r`
+    Bohr set is `∑ nᵢ(y)·bᵢ` in progression coordinates. So the refined
+    set is a *generalized* Bohr set, and recovering an ordinary Bohr set
+    inside it is a geometry-of-numbers step. It is the next formalization
+    target if this redesign is pursued.
+  - **Starting point.** The OAI port's
+    `OAI/Combinatorics/Progressions/Fourier/QuarticBohrProgression.lean`
+    proves only the forward inclusion
+    (`bohrCyclicProgression_carrier_subset`). But it builds that
+    progression from successive minima (`minkowskiSecondConstant`), the
+    lattice machinery the reverse inclusion would reuse.
+
+  **Correction (same day): in ℤ/N neither step is needed.** For `N`
+  prime, `freiman_small_image_zero` (`Proofs16PrimeSmallRange`, J.97)
+  already turns a bounded image into exact vanishing, with no new
+  frequencies: a normalized Freiman-linear map on `B(T;ρ)` with at most
+  `K < N` values is zero on `B(T;ρ/K)`.
+  - An alternating sum `∑ ±φ_{x_i}` is Freiman-linear on the common domain
+    `⋂ B(T_{x_i};ρ) = B(⋃ T_{x_i};ρ)`. So a bound `K` on its image gives
+    the zero relation at radius `ρ/K`, which costs `log K` in
+    `log(1/radius)` and nothing in codimension.
+  - Milićević needs random characters and Proposition 2.37 only because
+    a general finite abelian group has small subgroups. A prime cyclic
+    group has none.
+  - So `Proofs16CharacterRefinement` is not needed for ℤ/N. It stays as
+    a group-agnostic formalization of Proposition 8.1's core. The
+    Bohr-inside-progression step above is *not* a prerequisite here.
+
+  The redesign question therefore reduces to two inputs:
+  1. bounded-image (`log K` polynomial) alternating sums for many
+     additive quadruples; the exact identities of J.98 are a special
+     case;
+  2. the pass from many quadruples to all of them on a dense index set.
+
+  For (2) Milićević uses the abstract Balog–Szemerédi–Gowers theorem
+  (his Theorem 4.1, Steps 2 and 6). J.108–J.110 use model packing and
+  elimination instead, which is where the triple exponential enters. A
+  polynomial-loss abstract BSG for "respected" quadruple families is the
+  natural replacement to formalize next.
+
+  **The abstract BSG, and what the corpus already has for it.**
+  Milićević's Theorem 4.1 (printed p. 47) has the following shape.
+  - **Hypotheses.** Take `X` with `|X−X| ≤ K|X|` and `A ⊆ X`, and
+    quadruple families `Q_1, …, Q_36` in `A` with:
+    - *largeness:* `|Q_1| ≥ c|X|^3`;
+    - *symmetry:* closure under `(a₃,a₄,a₁,a₂)`, `(a₂,a₁,a₄,a₃)` and
+      `(a₁,a₃,a₂,a₄)`;
+    - *weak transitivity:* if `(a₁,a₂,b,b′) ∈ Q_i` and
+      `(b,b′,a₃,a₄) ∈ Q_j` for at least `c′|X|` pairs, then
+      `(a₁,a₂,a₃,a₄) ∈ Q_{i+j}`.
+  - **Conclusion.** A subset `A′` of size `(c/2K)^O(1)|X|` in which every
+    `ℓ`-tuple has `(c/2K)^O(1)|X|^(3ℓ−1)` bridging representations through
+    `Q_36`, for `ℓ ≤ k`. All losses are polynomial.
+  - **Application.** Proposition 6.1 takes `Q_i` to be the quadruples
+    whose alternating sum has image at most `K^i` on the common domain.
+    Each transitivity step multiplies the image bound and intersects the
+    domains.
+  - **Corpus.** The robust-connectivity input (his Lemma 4.2, many short
+    paths between any two vertices of a dense set) exists here as
+    `exists_dense_four_walk_set` (J.102), with polynomial bounds.
+  - **Plan.** Prove Theorem 4.1 for ℤ/N from J.102. Apply it with `Q_i` =
+    "alternating sum has at most `K^i` values on the radius-`ρ/2^i`
+    common domain". Then `freiman_small_image_zero` turns the conclusion
+    into exact zero relations at radius `ρ/K^O(1)`. The losses stay
+    `exp(-poly)` provided `K` and the spectrum rank are polynomial.
+    This would replace J.108–J.110.
+  - **Progress (2026-10-09).**
+    - `Proofs16WeakTransitivityLadder` proves the engine of Claims 4.3
+      and 4.4 for any relation family `R i` on a finite vertex set `S`.
+      Suppose `R` is weakly transitive against `R 1` with constant `c`:
+      `c·|S|` common `z` with `R i x z ∧ R 1 z y` give `R (i+1) x y`.
+      Then at least `η·|S|^m` chains of `m` intermediate `R 1`-steps, with
+      `2^m·c ≤ η`, give `R (m+1) x y` (`rel_of_chainCount`). The proof
+      averages over the last vertex, losing a factor `2` per step.
+    - `Proofs16FourWalkLadder` combines it with J.102 into Claim 4.3,
+      four-walk form (`rel_four_on_four_walk_set`). If `R 1` is
+      symmetric with ordered-edge density `δ` and `c ≤ δ^5/2^17`, a set of
+      `3δn/8` vertices has `R 4 u v` for all its pairs.
+      `chainCount_three_eq` identifies the chain count with
+      `graphFourWalks`.
+    - `Proofs16AbstractBSGDifferences` does the difference-graph step
+      in any abelian group.
+      - `exists_popular_differences`: suppose the good pairs of pairs
+        `(x+d,x),(y+d,y)` number at least `c|X|^3` in total and
+        `|X−X| ≤ K|X|`. Then at least `(c/2)|X|` differences each carry
+        `(c/2K)|X|^2` of them.
+      - `difference_ladder_rel_four`: fix such a `d`. Assume `Q 1` has
+        symmetry (S1), and `Q` is weakly transitive against `Q 1` with
+        `0 < c′ ≤ δ^5/2^17`. Then a set of `3δ|X|/8` vertices `u` has
+        `Q 4 (u+d) u (v+d) v` for all its pairs. That is Claim 4.3, via
+        the subtype graph on `X` and `rel_four_on_four_walk_set`.
+    - `Proofs16AbstractBSGUnion` builds the union graph, assuming no
+      2-torsion.
+      - `exists_antipodal_free_subset` picks representatives `D′` with
+        `|D| ≤ 2|D′| + 1`.
+      - `diffUnion D′ T` is the union graph, symmetric and inside
+        `A × A`.
+      - `diffUnion_same_difference` is property (20): two pairs with the
+        same difference are `Q 4`-related, using (S2) for swapped pairs.
+      - `diffUnion_card_ge`: the graph has at least `∑_{d∈D′} |T d|`
+        edges.
+    - `Proofs16AbstractBSGClaim44` proves Claim 4.4 in four-walk form
+      (`claim_4_4`).
+      - **Hypotheses.** A graph `P ⊆ A × A` has property (20) for `Q 4`,
+        and `Q` has symmetry (S3) and weak transitivity. Any two
+        vertices of `B` are joined by `η|X|^3` four-walks.
+      - **Conclusion.** For `B₁, B₂ ⊆ B` of densities `ε₁, ε₂` and
+        `|X−X| ≤ K|X|`, at least `(κ/2)|X|^3` additive quadruples of
+        `B₁² × B₂²` lie in `Q 16`, where `κ = (ε₁ε₂η)²/K⁴` and
+        `16c′ ≤ κ`.
+      - **Proof.** Walk count (`walkTuples_card`); fiber Cauchy–Schwarz
+        over difference sequences (`collisions_ge`); collision geometry,
+        where equal differences force a common shift `e`; each
+        quadruple's fiber injects into its `shiftRel`-chains; averaging;
+        then the ladder at levels `4i`.
+    - `Proofs16AbstractBSGPruning` proves the pruning step
+      (`rich_pruning`). Take `θ < κ/2` with `κ = (ε²η)²/K⁴`. Then fewer
+      than `ε|X|` elements of `B` lie in fewer than `θ|X|²` additive
+      `Q 16`-quadruples (`richCount`). Otherwise Claim 4.4 on those
+      poor elements gives more quadruples than they carry.
+    - Still needed for Theorem 4.1: the bridging statement
+      (`|Z_ℓ(a)| ≥ (c/2K)^O(1)|X|^(3ℓ−1)`).
+    - **Correction to the plan above (same day).** Theorem 4.1 does not
+      conclude that *all* additive quadruples of `A′` are respected. It
+      gives many bridging representations for every tuple of `A′`.
+      - Proposition 6.1 turns that into image bounds for all but an `ε`
+        fraction of the 16-tuples.
+      - "All" is reached only after robust Bogolyubov–Ruzsa onto a
+        progression (Step 3) and Steps 4–6, where Step 6 is a second
+        abstract BSG.
+      - So replacing J.108–J.110 needs that chain, not Theorem 4.1 plus
+        `freiman_small_image_zero` alone. The layers above formalize the
+        engine those steps share.
+- *Small additive rank.* Otherwise, a model family spanned by `R` basic
+  maps might be eliminated with one test per generator, at column cost
+  `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
+  polynomial.
+
+None of these is established. They are recorded as the most direct leads.
+
+This is the audit the J.5 revisited estimate called for. It does not
+change any proved statement; it shows that the order-of-magnitude
+`Bnd(c) ≤ A·c^(-p)` there is not what the current parameters deliver.
 
 ### J.103. Exact additive richness from matched four-walks
 
