@@ -5184,39 +5184,16 @@ new named theorems pass individual axiom checks using only `propext`,
 changes to Apache provenance were required.
 
 
-### Robustly connected pieces of dense graphs: Milićević's Lemma 4.2 (2026-10-09)
+### Robustly connected pieces of dense graphs (2026-10-09): duplicate retired
 
-J.100 leaves the graph extraction open: it has a dense family of
-coherent column pairs, and needs a dense set of columns. Milićević's
-abstract Balog–Szemerédi–Gowers theorem (Theorem 4.1) does that
-extraction. Its graph engine is Lemma 4.2 (p. 48, after Gowers and [50,
-Lemma 6]): a graph with `cn²` edges has a vertex set `X` with
-`|X| ≥ 2⁻⁵cn` such that every two vertices of `X` are joined by
-`2⁻³⁵c⁹n⁵` walks of length six.
-
-`Proofs16RobustWalks.robust_walks` proves it for a symmetric relation on
-any finite type. The bounds are `|X| ≥ cn/3` and
-`walkCount6 G u v ≥ (9/64)(c²/32)³c²n⁵` for all `u, v ∈ X`, which is
-order `c⁸` (the source has `c⁹`). Here `walkCount6 G u v` is
-`Σ_{z,z′} codeg(u,z)·codeg(z,z′)·codeg(z′,v)`: walks of length six split
-at their second and fourth vertices.
-
-The proof:
-1. `sum_deg_sq_eq_sum_codeg`: `Σ_w deg(w)² = Σ_{u,v} codeg(u,v)` (by
-   symmetry), which is at least `c²n³` by Cauchy–Schwarz.
-2. `sum_badPairs_le`: pairs inside a neighbourhood with codegree below
-   `εn`, summed over the centre, number at most `εn³`.
-3. `exists_good_neighbourhood` is dependent random choice with
-   `ε = c²/32` and multiplier 16. It gives a neighbourhood `S` with
-   `|S|² ≥ c²n²/2` containing at most `|S|²/16` bad pairs.
-4. Cleanup removes the vertices with more than `|S|/8` bad partners;
-   this keeps half of `S`.
-5. For `u, v` in the cleaned set, at least `3|S|/8` middle vertices `z`
-   and `3|S|/4` vertices `z′` have all three codegrees at least `εn`.
-
-Standard axioms; collision gate clean. This is a leaf for the J.100
-graph extraction. It does not itself extract a dense set of coherent
-columns.
+`Proofs16RobustWalks` proved Milićević's Lemma 4.2 for walks of length
+six (`robust_walks`, `robust_walks_explicit`: `|X| ≥ cn/3` and order
+`c⁸n⁵` walks between every pair, by dependent random choice). It was
+written in the same hour as J.102's `exists_dense_four_walk_set`, which
+gives walks of length four with `δ⁵N³/16384` walks between every pair
+of a set of size `3δN/8`. That is stronger and is already wired into the
+column-graph chain, so the six-walk module was removed. Git history
+keeps it.
 
 Integration note: J.102 independently supplies four-walk extraction and
 its global column application. Both walk lengths are retained; the
@@ -5228,3 +5205,34 @@ including 4,152 OAI modules), using only the three approved standard
 axioms. The source ledger is unchanged at 115 companions and five open
 entries, and the selected-port scope check passes. The companion count
 does not establish fidelity to every printed statement.
+
+
+### J.5 revisited with the pipeline's actual losses (2026-10-09, order-of-magnitude)
+
+J.5 compared the structure side against `Theorem162At 3` assuming
+Milićević's quasi-polynomial bound. The corpus pipeline instead loses
+polynomially, through these parameters:
+- Column core density `κ = 2⁻¹⁸⁸²(α⁴)¹¹⁶⁴` (Corollary 7.6 at energy
+  `α⁴`).
+- Column spectrum cap `d ≈ 16κ⁻² ≈ 2³⁷⁶⁸α⁻⁹³¹²`.
+- Witness density `13^{-d}`. This is the dominant loss, `exp(−poly(1/α))`.
+
+If the remaining steps (graph extraction, bilinear organization,
+shifted agreement) stay of the same type, the deep structure holds with
+some `Bnd(c) ≤ A·c^{-p}`, where `A = 2^{O(10⁴)}` and `p = O(10⁵)`. The
+structure side evaluates it at `c = θ/(2m)`, with `m` polynomial of
+degree about `10⁸` in `1/(γθ)` (J.4). So the piece count is
+`exp(Bnd) = exp(poly(1/(γθ)))`, of degree about `10¹³`.
+`Theorem162At 3` allows counts `exp(Θ(r log r))`, with
+`r ≥ (2/(θγ))^{2⁵¹²}`. That is degree `2⁵¹²`, and `r ≥ 2^{2⁵¹²}` absorbs
+any constant `A ≤ 2^{2⁵⁰⁰}`. Width exponents `1/poly(n·Bnd)` sit far
+above the allowed `exp(−Θ(r log r))`.
+
+So, as far as counts and exponents go, a polynomial-bound deep structure
+fits the dimension-three budget with enormous room. This is an
+order-of-magnitude comparison, not a formal inequality. The formal
+connection still needs the Part J restatement on the polynomial lift,
+with `IsVarietyPieceB` bounds in place of `milicevicBound`
+(`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
+already names. It also assumes that the remaining Milićević steps lose
+no more than polynomially in their inputs.

@@ -6,7 +6,8 @@ Raw cyclic two-run donors are recognized without expanding or cancelling words.
 """
 
 
-def plan_power_pairs(arena, roots, alive, cache=None):
+def power_rows(arena, roots, alive, cache=None):
+    """Exact current-slot cyclic one/two-run rows, sharing immutable metadata."""
     if cache is None:cache={}
     runs=cache.setdefault('power_pair_runs',{0:()})
     for root in roots:
@@ -26,7 +27,7 @@ def plan_power_pairs(arena, roots, alive, cache=None):
                     if row and row[-1][0]==letter:row[-1]=(letter,row[-1][1]+count)
                     else:row.append((letter,count))
                 runs[node]=tuple(row) if len(row)<=3 else None
-    groups={};pure={}
+    rows=[]
     for slot,root in enumerate(roots):
         arena.tick();row=runs[root]
         if not row:continue
@@ -35,10 +36,22 @@ def plan_power_pairs(arena, roots, alive, cache=None):
             row[0]=(row[0][0],row[0][1]+row.pop()[1])
         if len(row)>2 or any(abs(g) not in alive for g,n in row):continue
         if len(row)==1:
-            g,n=row[0];pure.setdefault(abs(g),(slot,n if g>0 else -n));continue
+            g,n=row[0];rows.append((slot,((abs(g),n if g>0 else -n),)));continue
         if abs(row[0][0])==abs(row[1][0]):continue
         values={abs(g):n if g>0 else -n for g,n in row};pair=tuple(sorted(values))
-        groups.setdefault(pair,[]).append((slot,values[pair[0]],values[pair[1]]))
+        rows.append((slot,tuple((g,values[g]) for g in pair)))
+    return rows
+
+
+def plan_power_pairs(arena, roots, alive, cache=None, *, _prepared=None):
+    rows=power_rows(arena,roots,alive,cache) if _prepared is None else _prepared
+    groups={};pure={}
+    for slot,row in rows:
+        arena.tick()
+        if len(row)==1:
+            g,n=row[0];pure.setdefault(g,(slot,n));continue
+        (a,u),(b,v)=row
+        groups.setdefault((a,b),[]).append((slot,u,v))
     selected=[];used=set()
     for pair,rows in sorted(groups.items()):
         arena.tick()
