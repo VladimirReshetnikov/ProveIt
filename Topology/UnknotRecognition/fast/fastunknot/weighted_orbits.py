@@ -38,11 +38,11 @@ def _add(delta, lo, hi, value, multiplier=1):
             row[j] += sign * entry
 
 
-def _canonical(size, dimension, delta, check):
+def _canonical(size, dimension, delta, check, start=0):
     """Turn endpoint differences into a covering, coalesced run list."""
-    if not size:
+    if start == size:
         return []
-    endpoints = sorted(set(delta) | {0, size})
+    endpoints = sorted(set(delta) | {start, size})
     value = [0] * dimension
     runs = []
     for lo, hi in zip(endpoints, endpoints[1:]):
@@ -51,6 +51,45 @@ def _canonical(size, dimension, delta, check):
             value[j] += entry
         _append(runs, lo, hi, tuple(value))
     return runs
+
+
+def _overlay_prefix(runs, cut, lower, upper, delta, dimension, check):
+    """Add transported weights only on their image, reusing untouched tuples.
+
+    The old run partition is canonical. Runs strictly before the image can
+    therefore be copied without vector addition or equality comparisons.
+    At the image and its boundary, coalescing restores the canonical partition.
+    """
+    added = _canonical(upper, dimension, delta, check, start=lower)
+    active = [any(value) for _, _, value in added]
+    result, index, unchanged_tail = [], 0, False
+    for lo, hi, value in runs:
+        check()
+        if lo >= cut:
+            break
+        hi = min(hi, cut)
+        if hi <= lower:
+            result.append((lo, hi, value))
+            continue
+        if unchanged_tail:
+            result.append((lo, hi, value))
+            continue
+        if lo < lower:
+            result.append((lo, lower, value))
+            lo = lower
+        while lo < min(hi, upper):
+            check()
+            while added[index][1] <= lo:
+                index += 1
+            stop = min(hi, added[index][1])
+            combined = (tuple(a+b for a, b in zip(value, added[index][2]))
+                        if active[index] else value)
+            _append(result, lo, stop, combined)
+            lo = stop
+        if lo < hi:
+            _append(result, lo, hi, value)
+            unchanged_tail = True
+    return result
 
 
 def _append(runs, lo, hi, value):
@@ -98,8 +137,6 @@ def _truncate_translation(runs, size, cut, period, dimension, check):
     delta = {}
     for lo, hi, value in runs:
         check()
-        if lo < cut:
-            _add(delta, lo, min(hi, cut), value)
         left = max(lo, cut)
         if left >= hi:
             continue
@@ -109,7 +146,7 @@ def _truncate_translation(runs, size, cut, period, dimension, check):
         first = min(remainder, cut - start)
         _add(delta, start, start + first, value)
         _add(delta, base, base + remainder - first, value)
-    return _canonical(cut, dimension, delta, check)
+    return _overlay_prefix(runs, cut, base, cut, delta, dimension, check)
 
 
 def _truncate_reflection(runs, size, cut, left_endpoint, dimension, check):
@@ -117,13 +154,12 @@ def _truncate_reflection(runs, size, cut, left_endpoint, dimension, check):
     delta = {}
     for lo, hi, value in runs:
         check()
-        if lo < cut:
-            _add(delta, lo, min(hi, cut), value)
         left = max(lo, cut)
         if left < hi:
             _add(delta, left_endpoint + size - hi,
                  left_endpoint + size - left, value)
-    return _canonical(cut, dimension, delta, check)
+    return _overlay_prefix(runs, cut, left_endpoint, left_endpoint+size-cut,
+                           delta, dimension, check)
 
 
 def _contract_weights(runs, size, gaps, histogram, check):
