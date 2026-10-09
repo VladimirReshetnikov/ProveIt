@@ -487,3 +487,11 @@ stage-input PD to the compact exterior and an independently checked essential
 disc. See `../synthesis/cocycle_seeds.tex` for the local complexity theorem,
 connectedness argument, actual five-crossing optimized success, source audit,
 Regina controls and complete-operation timings. The delivery remains unchanged.
+
+Primitive discovery now schedules sparse equations by support size and live
+column incidence, retaining exact rational pivots and the previous primitive
+sign. All 84 source seeds and 17 positive certificate hashes are preserved.
+Complete preparation improves 1.34–2.22× on the measured larger inputs, while
+the smallest case adds about 3% overhead and full-recognition calls show no
+broad gain. See `../synthesis/cocycle_sparse.tex`; the conservative dense
+cohomology bound remains cubic.

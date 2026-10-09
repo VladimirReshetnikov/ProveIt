@@ -1,0 +1,50 @@
+\subsection{Serial measurements of complete operations}
+
+Both experiments run serially after the tests, source audit and runtime
+publication. Each uses five shuffled paired rounds, old and new A/A arms,
+and an excluded warmup per arm and input. All 220 measured calls and
+44 warmups finish. Tables report individual-arm medians and medians of
+within-round ratios; the latter need not equal ratios of the former.
+
+The preparation endpoint starts from a fresh PD, constructs the canonical
+exterior, independently replays its source geometry, obtains the primitive
+cocycle and validates all normal coordinates on the reconstructed manifold.
+Only the cocycle solver changes. This includes construction and validation
+costs rather than timing an isolated elimination loop.
+
+\begin{center}
+\small
+\input{tables/cocycle_sparse_prepare.tex}
+\end{center}
+
+All 120 measured calls and 24 warmups finish in 59.152 seconds of driver
+elapsed time. Every old and new repetition produces the same seed hash.
+The larger circles and survivor input improve by $1.343$--$1.400$; Gordian
+improves by $2.222$, with medians falling from 2.244886 to 1.014818 seconds.
+Old A/A ratios range from $0.989$ to $1.012$, and new A/A from $0.996$ to
+$1.073$. The one-crossing input has paired ratio $0.969$: about three
+percent overhead, with individual medians 4.901 and 5.005 milliseconds.
+Maintaining all row buckets and incidence sets has a small-input cost.
+
+The recognition endpoint uses the same current recognizer in both arms
+and swaps only primitive cocycle discovery. Earlier shortcuts are disabled
+so that the native stage is reached. A raw seed proves both stabilized
+circles, the five-crossing example needs span optimization, and the two
+remaining cases continue to the exact Khovanov fallback. Every verdict
+matches the known input. Positive native paths include their normal
+component query and independent source-proof replay.
+
+\begin{center}
+\small
+\input{tables/cocycle_sparse_recognize.tex}
+\end{center}
+
+All 100 measured recognitions and twenty warmups finish in 60.576 seconds.
+Paired old/new ratios range from $0.990$ to $1.042$, old A/A from $0.957$
+to $1.007$, and new A/A from $0.930$ to $1.035$. These results do not
+establish a broad whole-recognition gain. In particular, the optimized
+positive's apparent paired gain is smaller than its control fluctuations;
+its separate arm medians even reverse order. Component queries, span
+optimization and fallback dominate these complete calls. The native option
+remains disabled by default, and this experiment makes no new claim about
+the ordinary portfolio that decides its inputs before reaching this stage.

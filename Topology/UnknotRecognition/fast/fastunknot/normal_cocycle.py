@@ -85,7 +85,7 @@ def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
         e = _edge(t, a, b)
         return index.get(p['edge_roots'][e]), -1 if p['edge_orientations'][e] else 1
 
-    basis, eliminations, nonunit_pivots = {}, 0, 0
+    rows = []
     for t in range(n):
         for a, b, c in combinations(range(4), 3):
             budget.tick()
@@ -94,37 +94,8 @@ def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
                 i, orientation = oriented_edge(t, left, right)
                 if i is not None:
                     row[i] = row.get(i, 0) + sign*orientation
-            row = {i: value for i, value in row.items() if value}
-            while row:
-                budget.tick()
-                pivot = min(row)
-                coefficient = row[pivot]
-                if pivot not in basis:
-                    nonunit_pivots += abs(coefficient) != 1
-                    basis[pivot] = {i: (value/coefficient if isinstance(value, Fraction)
-                                        or isinstance(coefficient, Fraction) else
-                                        value//coefficient if abs(coefficient) == 1 else
-                                        Fraction(value, coefficient))
-                                    for i, value in row.items()}
-                    break
-                for i, value in basis[pivot].items():
-                    budget.tick()
-                    row[i] = row.get(i, 0) - coefficient*value
-                    if not row[i]:
-                        del row[i]
-                    eliminations += 1
-    free = set(range(len(chords))) - basis.keys()
-    if len(free) != 1:
-        raise NormalOrbitError('cocycle seed requires first Betti number one')
-    values = [0] * len(chords)
-    values[free.pop()] = 1
-    for pivot in sorted(basis, reverse=True):
-        total = 0
-        for i, value in basis[pivot].items():
-            budget.tick()
-            if i != pivot:
-                total += value*values[i]
-        values[pivot] = -total
+            rows.append({i: value for i, value in row.items() if value})
+    values, kernel_stats = _rank_one_kernel(rows, len(chords), budget)
     denominator = 1
     for value in values:
         budget.tick()
@@ -135,6 +106,10 @@ def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
         value = int(value*denominator)
         integers.append(value)
         common = gcd(common, value)
+    # The old left-to-right echelon form sets its last nonzero coordinate
+    # positive. Preserve that orientation regardless of the sparse pivot order.
+    if next(value for value in reversed(integers) if value) < 0:
+        common = -common
     integers = [value//common for value in integers]
     heights, coordinates = [], []
     for t in range(n):
@@ -147,6 +122,86 @@ def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
         coordinates.append(local_coordinates(row))
     return dict(vertices=[p['vertex_roots'][4*t:4*t+4] for t in range(n)],
                 heights=heights, coordinates=coordinates,
-                stats=dict(work=budget.work, chords=len(chords), pivots=len(basis),
-                           eliminations=eliminations, nonunit_pivots=nonunit_pivots,
+                stats=dict(work=budget.work, chords=len(chords), **kernel_stats,
                            height_bits=max(abs(x).bit_length() for row in heights for x in row)))
+
+
+def _rank_one_kernel(rows, dimension, budget):
+    """Sparse exact elimination, prioritizing short rows and unit pivots.
+
+    Each eliminated variable is stored in terms of still-live variables.
+    Reverse elimination order, rather than column order, reconstructs the
+    kernel. Column incidence limits updates to rows containing the pivot.
+    """
+    columns = [set() for _ in range(dimension)]
+    buckets = [set() for _ in range(dimension+1)]
+    for r, row in enumerate(rows):
+        budget.tick()
+        if row:
+            buckets[len(row)].add(r)
+        for i in row:
+            budget.tick()
+            columns[i].add(r)
+    basis, eliminations, nonunit_pivots = {}, 0, 0
+    shortest = 1
+    peak_row = max(map(len, rows), default=0)
+    while True:
+        while shortest <= dimension and not buckets[shortest]:
+            budget.tick()
+            shortest += 1
+        if shortest > dimension:
+            break
+        budget.tick()
+        r = min(buckets[shortest])
+        buckets[shortest].remove(r)
+        row = rows[r]
+        pivot = min(row, key=lambda i: (abs(row[i]) != 1, len(columns[i]), i))
+        coefficient = row[pivot]
+        nonunit_pivots += abs(coefficient) != 1
+        normalized = {}
+        for i, value in row.items():
+            budget.tick()
+            normalized[i] = (value/coefficient if isinstance(value, Fraction)
+                              or isinstance(coefficient, Fraction) else
+                              value//coefficient if abs(coefficient) == 1 else
+                              Fraction(value, coefficient))
+            columns[i].remove(r)
+        basis[pivot] = normalized
+        rows[r] = {}
+        # Updates only remove entries from columns[pivot], so take a snapshot.
+        for other in sorted(columns[pivot]):
+            budget.tick()
+            target = rows[other]
+            buckets[len(target)].remove(other)
+            factor = target[pivot]
+            for i, value in normalized.items():
+                budget.tick()
+                old = target.get(i, 0)
+                new = old-factor*value
+                if new:
+                    target[i] = new
+                    if not old:
+                        columns[i].add(other)
+                else:
+                    del target[i]
+                    columns[i].remove(other)
+                eliminations += 1
+            if target:
+                size = len(target)
+                buckets[size].add(other)
+                shortest = min(shortest, size)
+                peak_row = max(peak_row, size)
+    free = set(range(dimension))-basis.keys()
+    if len(free) != 1:
+        raise NormalOrbitError('cocycle seed requires first Betti number one')
+    values = [0]*dimension
+    values[free.pop()] = 1
+    for pivot, row in reversed(basis.items()):
+        total = 0
+        for i, value in row.items():
+            budget.tick()
+            if i != pivot:
+                total += value*values[i]
+        values[pivot] = -total
+    return values, dict(pivots=len(basis), eliminations=eliminations,
+                        nonunit_pivots=nonunit_pivots, peak_row=peak_row)

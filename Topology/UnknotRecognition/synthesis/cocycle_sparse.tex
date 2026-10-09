@@ -1,0 +1,61 @@
+\section{Sparse pivot scheduling for primitive cocycle discovery}
+\label{sec:cocycle-sparse}
+
+Section~\ref{sec:cocycle-seeds} separates cocycle discovery from span
+optimization. The former is another significant cost: its initial solver
+processes triangular-face equations in tetrahedron order and always pivots
+on the leftmost remaining column. Even sparse input can then create dense
+intermediate rows and nonunit rational pivots. We now retain the same
+maximal-tree gauge and all face equations, but change their elimination order.
+
+\subsection{Exact elimination with live column incidence}
+
+Maintain every active row as a sparse dictionary and every column as the
+set of active rows containing it. Buckets indexed by row support size select
+a shortest nonzero row; row index breaks ties. Within that row, prefer a
+coefficient of absolute value one, then a column appearing in fewer active
+rows, then the column index. These choices are deterministic. They aim to
+reduce fill and rational arithmetic; they are not a theorem that either
+quantity remains small on all knot exteriors.
+
+Normalize the chosen row at its pivot $p$ and store it as an equation
+\[
+ x_p=-\sum_{i\ne p}a_i x_i.
+\]
+Remove that row from all active column sets. Only rows in the incidence set
+of $p$ need an elimination update. For each one, subtract its pivot
+coefficient times the normalized row, maintaining exact rational values,
+column incidence and support-size buckets. A row that becomes zero is
+retired. Repeated global edges in a face were already combined before
+this procedure, so no simplicial independence is assumed.
+
+The invariant is that stored pivot equations and active rows have exactly
+the original rational nullspace. Normalization and row subtraction are
+invertible row operations. Every active row has zero entries in previously
+eliminated columns. Thus a stored pivot equation only refers to variables
+eliminated later or left free. Reverse \emph{elimination order}, rather than
+reverse column order, gives valid back substitution. The number of free
+variables is the exact nullity; the API still requires one.
+
+Clearing denominators and dividing by the coordinate gcd gives the primitive
+integer generator as before. Require its last nonzero chord coordinate to
+be positive. This recovers the initial solver's sign convention: in its
+leftmost-pivot echelon form, the only free coordinate is the last nonzero
+coordinate of the kernel vector. Since the tree gauge, chord ordering and
+primitive sign are unchanged, the new method returns the identical heights
+and normal coordinates, not merely a homologous representative. Consequently
+the downstream span problem and source-disc certificate remain the same
+whenever the shared budget lets both versions finish.
+
+There are $O(T)$ rows and columns. Active rows, column incidence and stored
+pivot equations can require $O(T^2)$ entries. A conservative dense bound is
+still $O(T^3)$ exact arithmetic updates, with polynomial bit cost controlled
+by minors of the original sparse integer matrix. Shortest-bucket scans,
+deterministic row selection and incidence ordering do not improve that
+worst-case bound. The implementation exposes peak active-row support and
+nonunit pivot counts to distinguish observed sparsity from a global theorem.
+Cooperative work guards cover initialization, pivot normalization, incidence
+updates and back substitution; they remain an operational allowance rather
+than a bit-complexity measure.
+
+\input{cocycle_sparse_results.tex}

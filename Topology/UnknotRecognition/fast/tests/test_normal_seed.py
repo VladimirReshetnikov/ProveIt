@@ -1,5 +1,6 @@
 """Primitive cocycles, native source proofs and sound portfolio fallbacks."""
 from copy import deepcopy
+from fractions import Fraction
 import importlib.util
 import json
 import random
@@ -12,7 +13,7 @@ from unittest.mock import patch
 
 from fastunknot import Diagram, recognize
 from fastunknot.diagram_exterior import diagram_exterior
-from fastunknot.normal_cocycle import rank_one_cocycle_seed, CocycleLimit
+from fastunknot.normal_cocycle import rank_one_cocycle_seed, CocycleLimit, _rank_one_kernel, _Budget
 from fastunknot.normal_seed import normal_seed_decide
 from fastunknot.normal_seed_verify import verify_normal_seed_certificate
 from fastunknot.normal_surface_geometry import _prepare, _coordinates, NormalOrbitError
@@ -28,6 +29,44 @@ OPTIONS = dict(use_reduction=False, use_descending=False, use_seifert=False,
 
 
 class NormalSeedTests(unittest.TestCase):
+    def test_sparse_kernel_against_dense_rational_rank_and_nullspace(self):
+        rng = random.Random(261009463)
+        for trial in range(240):
+            dimension = rng.randrange(1, 10)
+            matrix = [[rng.randrange(-4, 5) if rng.random() < .4 else 0
+                       for _ in range(dimension)] for _ in range(rng.randrange(0, 14))]
+            if trial == 239:
+                matrix = [[(1 << 2000)*x for x in row] for row in matrix]
+            dense = [[Fraction(x) for x in row] for row in matrix]
+            pivots = []
+            for column in range(dimension):
+                selected = next((r for r in range(len(pivots), len(dense)) if dense[r][column]), None)
+                if selected is None:
+                    continue
+                r = len(pivots)
+                dense[r], dense[selected] = dense[selected], dense[r]
+                coefficient = dense[r][column]
+                dense[r] = [x/coefficient for x in dense[r]]
+                for other in range(len(dense)):
+                    if other != r:
+                        factor = dense[other][column]
+                        dense[other] = [a-factor*b for a, b in zip(dense[other], dense[r])]
+                pivots.append(column)
+            rows = [{i: x for i, x in enumerate(row) if x} for row in matrix]
+            if dimension-len(pivots) != 1:
+                with self.assertRaises(NormalOrbitError):
+                    _rank_one_kernel(rows, dimension, _Budget(lambda: None, None))
+                continue
+            actual, _ = _rank_one_kernel(rows, dimension, _Budget(lambda: None, None))
+            free = next(i for i in range(dimension) if i not in pivots)
+            expected = [Fraction(0)]*dimension
+            expected[free] = 1
+            for r, pivot in enumerate(pivots):
+                expected[pivot] = -dense[r][free]
+            self.assertNotEqual(actual[free], 0)
+            self.assertEqual([Fraction(x)/actual[free] for x in actual], expected)
+            self.assertTrue(all(sum(x*y for x, y in zip(row, actual)) == 0 for row in matrix))
+
     def test_primitive_layered_meridians_and_cocycle_face_transitions(self):
         rng = random.Random(261009462)
         for n in (1, 2, 4, 8, 32):
