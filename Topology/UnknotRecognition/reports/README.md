@@ -604,3 +604,31 @@ on later tree positives and 1.89–2.00x on continuing misses, with about two
 percent overhead on immediate positives. The article retains both timing
 runs, A/A variation, all 496 source pins, and the unchanged coverage and
 optional-stage defaults. No general recognition-complexity bound follows.
+
+The next theoretical integration exactly maximizes Euler characteristic on
+an entire certified minimum-span face when all edge face-incidence counts
+are at least two. A nonnegative weighted absolute-difference objective and
+matching-defined constraints give an integral flow dual with O(N² log N)
+indexed arithmetic operations and polynomial binary cost. A separate checker
+certifies feasibility, balance and exact primal–dual equality. Existing
+positive surface verifiers and the default recognition schedule are unchanged.
+The 85-source audit completes 83 cases, improves ten selected Euler values,
+replays 73 distinct arithmetic duals and 13 positive proofs, and agrees with
+Regina on 75 small-source controls. All 1,219 tests pass. Timings against all
+root extrema are mixed; this remains an explicit optimization API. The
+three-crossing unknot control has a certified negative optimum on its
+minimum-span face, demonstrating why this restricted completeness does not
+establish general unknot recognition or a general quasipolynomial bound.
+
+The Euler flow stage now contracts forced potential differences using
+zero-slack strongly connected components, combines equivalent terms, and
+lifts the dual through two directed trees. The unchanged arithmetic checker
+verifies the full original model. A singleton-only graph uses the original
+solver. All 83 previous completed optima are preserved; circle-33 now also
+completes within the shared two-million-guard allowance. The audit retains
+74 distinct arithmetic duals and 14 positive proofs, and rechecks 75 Regina
+controls. All 1,223 tests pass. Eight isolated complete candidate pipelines
+improve by 1.13–1.67x; a forced-cycle family drops from n-1 augmentations to
+zero with linear lifting work. The article distinguishes this restricted
+optimization gain from the still-open general recognition bound and keeps
+the default native candidate schedule unchanged.

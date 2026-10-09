@@ -8147,3 +8147,191 @@ The actual merged closure passes: 7,920 public Gowers theorems in 5,296
 combined modules (5,294 facade modules), with the same three allowed
 axioms. The ledger adds four conditional consequences and updates source
 locations; its 115 companions and five open entries remain unchanged.
+
+
+### J.128. Dense supported arrangements and sparse-failure removal
+
+Eleven modules prove thirty-three named results constructing the dense good
+family required in J.127. The final `exists_supported_coherent_anchor_maps`
+starts with a column set `W` of density at least `alpha`, normalized local
+Freiman column maps with spectra of size at most `d`, and quantitative
+bounds on the two kinds of original column failures. It performs joint
+frequency selection and chooses global anchors with at least
+`(alpha^16 - 4*eps - 2*eta - 5*delta)/2 * N^3` coherent additive
+quadruples of distinct shifts, provided
+`8 <= (alpha^16 - 4*eps - 2*eta - 5*delta)*N`.
+Here `eps*N^3` bounds incompatible supported anchor quadruples,
+`eta*N^7` bounds unrespected supported eight-column tuples, and
+`delta > 0` is the requested tolerance of each joint-selection failure
+set. The modulus is prime, and `0 < r < 4`, as required by the existing
+joint-selection theorem. Every resulting arrangement keeps all sixteen
+columns in `W`.
+
+**Projection fibres.** A matched anchor quadruple at one of the four
+positions fixes the shared shift and both anchor bases, leaving eight
+free coordinates. An explicit injective encoding proves the `N^8`
+fibre bound; coordinate symmetries transfer it to every position.
+Fixing all eight columns on one side fixes seven parameters and leaves
+only the four bases on the other side. Another encoding gives `N^4`
+fibres for both sides. These are bounds for arbitrary input families,
+with no uniformity hypothesis.
+
+**Actual failure removal.** `higherArrangementBadData` is a finite union
+of the four anchor failure preimages, the two column failure preimages,
+and the higher failure set. Its cardinality is at most
+`4*|E|*N^8 + (|VL|+|VR|)*N^4 + |B|`. The complementary family has the
+corresponding density lower bound. `columnTupleFailures` tests the
+original four-difference identity on the actual common quarter-radius
+Bohr domain, and `incompatibleAnchorQuadruples` tests the compatibility
+needed for gluing.
+
+`jointGoodHigherArrangements` removes these original failures together
+with the actual `jointQuadrupleFailures` and `jointHigherFailures`.
+Every retained member satisfies `GoodHigherAnchorArrangement`. A family
+of density `kappa` retains density at least
+`kappa - 4*eps - 2*eta - 5*delta`. The factor five comprises the four
+individual containment preimages and the one higher containment failure.
+`exists_joint_coherent_anchor_maps` combines this with actual joint
+selection and anchor averaging, preserving input-family membership in
+addition to normalized local linearity and common-domain coherence.
+
+**The supported family is dense.** No progression overlap estimate is
+needed for this counting step. The generic
+`card_four_le_mapped_additive_quadruples` applies the existing finite
+key-collision Cauchy--Schwarz bound to pairs of indexed objects; it does
+not collapse objects with equal images. Applying the same argument to
+differences of pairs in `W` gives at least `|W|^4/N` supported anchor
+quadruples. Applying the mapped-quadruple bound to their shifts gives
+at least `|W|^16/N^5` higher arrangements. An explicit reconstruction
+recovers all four anchor quadruples, proving injectivity and preserving
+all sixteen column values. Thus
+`|W|^16 <= |supportedHigherArrangements W|*N^5`, and density `alpha`
+of `W` gives density `alpha^16` of the higher family. Its projections
+lie in the supported additive quadruple and eight-column families,
+so the sparse-failure removal theorem applies directly.
+
+**Remaining work.** The original compatibility and eight-column failure
+bounds are still hypotheses and must be supplied by the preceding
+column construction with suitable parameters. The next steps also need
+sufficient agreement with many original columns, a fixed small family
+of frequency maps with usable common progression domains, and the
+subsequent structural argument. The finite averaging now constructs
+its dense good family, but does not supply those further properties
+or the missing deep variety theorem. No numbered entry or final
+Gowers-bound improvement is claimed closed. No upstream port or license
+scope is added.
+
+**Verification.** The production closure checks 355 modules. Individual
+axiom checks and final merged audit totals are recorded below.
+
+
+**Final verification.** All thirty-three new named results pass individual
+axiom checks. The merged full audit passes 7,974 public Gowers theorems
+in 5,307 combined modules (5,305 facade modules, including 4,152 OAI
+modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+The regenerated source ledger is unchanged: 115 companions and five
+open entries, with the documented statement-fidelity qualifications.
+The port-scope check remains at 4,134 upstream and 17 compatibility
+modules, excluding reciprocal-only dependencies. The merged remote
+changes affect only the independent topology development.
+
+
+### J.129. Global coherent anchors and a fixed small index set
+
+Eleven modules prove twenty-six named results connecting the even-column
+core to the coherent-anchor construction, then retaining many whole
+quadruples under one small index set. The global construction starts with
+the original dense Freiman bihomomorphism and retains its column witness
+system; the compatibility, eight-column failure, and arrangement-density
+assumptions from J.128 are now discharged through that core.
+
+**Absorb the common spectrum.** On the retained core `P`,
+`coreColumnSpectrum` is `Gamma union T(x)` and `coreColumnMap` is `L(x)`.
+Outside `P` they are the empty spectrum and zero map. These extensions
+have a global spectrum-cardinality bound and normalized local Freiman
+linearity at the core radius. The common spectrum is therefore present
+on every supported column domain used below.
+
+The length-four even-core identity, applied in order
+`[q0,q1,q3,q2]`, proves compatibility of the two matched column
+differences. The length-eight identity, applied in order
+`[v0,v1,v2,v3,v5,v4,v7,v6]`, proves the required four-difference
+quadruple relation on the common quarter-radius domain. Consequently
+both `incompatibleAnchorQuadruples` and `columnTupleFailures` are empty
+for the supported families on `P`.
+
+**Global construction.** `coherent_anchor_system_of_even_core` chooses
+joint-selection tolerance `beta^16/10` for a core of density `beta`.
+The J.128 error budget and anchor averaging give density `beta^16/4`
+of coherent distinct-shift quadruples once `16 <= beta^16*N`.
+`HasCoherentAnchorSystem` records the actual selected state, its map-count
+budget, both global anchor functions, the quadruple family, and the local
+linearity and coherence identities. Every realized arrangement remains
+supported on `P`.
+
+`global_coherent_column_anchors` supplies this system from
+`global_even_zero_column_core` at maximum half-length four. Its parameters
+are explicit functions of the original density `alpha`: core density
+`globalEvenColumnZeroDensity alpha 4`, spectrum rank bound equal to the
+core common rank plus the original column spectrum cap, core radius, and
+modulus threshold equal to the maximum of the existing core threshold
+and `ceil(16/beta^16)`. The original witness system, full-radius column
+linearity, witness density, and core identities are retained in the
+conclusion. No additional original-column failure oracle is assumed.
+
+**Retain whole quadruples with common indices.** For a set of at most
+`K` indices among `m`, `boundedIndexCode` sorts its elements and pads to
+length `K` with `none`. Equality of codes implies equality of the sets.
+A finite double count selects a nonempty subfamily with one common set,
+losing at most `(m+1)^K`. Empty index sets and `m < K` require no special
+exception. This counts bounded sets rather than all `2^m` subsets.
+
+`joint_anchor_common_indices` chooses exact pair-frequency index sets
+from the actual joint state. The union for a quadruple has size at most
+`8*jointSelectionRank d r`. It retains a subfamily of the original
+quadruples with one such common union `J`; the actual selected frequencies
+at all four shifts lie in the image of `J`. Thus it preserves quadruple
+relations, not merely the number of individually retained shifts.
+
+`HasCoherentAnchorSystem.common_indices` restricts the anchor maps to
+Bohr domains defined by this same index set. These domains are subsets
+of the prior selected domains, so local linearity, normalization, and
+all retained coherence identities persist. The loss is at most
+`(m+1)^(8*rank)`. The proved map-count budget further yields the positive,
+modulus-independent density
+`kappa/(rank/jointSelectionGain delta d r + 1)^(8*rank)`, implemented as
+`uniformAnchorIndexDensity` and used in `common_indices_uniform`.
+
+**Quantitative and structural limits.** The even-core density preserves
+its existing elimination formula, with test density
+`1/(4*refinementCells(r/2)^(g+d))` and round count
+`ceil(log(M+1)/testDensity)`. No bound establishing that the resulting
+composite parameters satisfy the polynomial deep-structure budget has
+been proved here. This global structural construction must not be
+reported as a final Gowers-bound improvement.
+
+The selected frequency maps are Freiman maps on their own translated
+progressions. Membership in an original selected pair-index set gives
+domain membership for that shift; membership in the larger common `J`
+does not give membership in every map's domain at every retained shift.
+The Bohr restriction above is valid because the maps have total value
+functions, but further progression-domain work is required before using
+joint Freiman linearity or algebraic regularity for that fixed family.
+Agreement with sufficiently many original columns and the remaining
+deep-structure argument are also still required. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Verification.** The production closure checks 400 modules. Individual
+axiom checks and the final merged audit are recorded below.
+
+
+**Final verification.** All twenty-six new named theorems pass individual
+axiom checks. The complete merged audit checks 8,033 public Gowers
+theorems in 5,318 combined modules (5,316 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and
+`Quot.sound`. The regenerated numbered ledger is unchanged at 115
+companions and five open entries, with the existing statement-fidelity
+qualifications. The selected dependency scope remains 4,134 upstream
+and 17 compatibility modules, excluding reciprocal-only dependencies.
+The fetched and merged remote delta changes only the independent
+topology development; no upstream source or license scope is added.

@@ -8,7 +8,7 @@ from heapq import heappop, heappush
 from .cocycle_euler_verify import verify_difference_optimum
 
 
-def _minimize_difference(n, edges, constraints, initial, check):
+def _minimize_difference_full(n, edges, constraints, initial, check):
     source, sink = n, n+1
     graph = [[] for _ in range(n+2)]
     balance = [0]*n
@@ -122,3 +122,9 @@ def _minimize_difference(n, edges, constraints, initial, check):
     return dict(certificate=certificate, stats=dict(augmentations=augmentations,
         sent_units=sent, weight_sum=total_weight, arc_scans=scans, heap_pops=pops,
         network_nodes=n+2, network_arcs=sum(map(len, graph))//2))
+
+
+def _minimize_difference(n, edges, constraints, initial, check):
+    """Use forced equalities when present, otherwise retain the full solver."""
+    from .cocycle_euler_quotient import _contracted_difference
+    return _contracted_difference(n, edges, constraints, initial, check, _minimize_difference_full)
