@@ -1180,6 +1180,23 @@ The variety route splits this into three steps.
    owned by j. So if step 1 covers a relation Γ over J by the graphs of φ_j
    on A_j, then Γ over J ∖ U is covered by the pieces' graphs. That is the
    covering half of `StackableStructureAt 2`.
+   **Assembled (`Proofs16VarietyStructureSide`, kernel-checked).** Step 1
+   is now the precise Prop `BihomExtraction m`, quantified exactly as
+   `StackableStructureAt`. Fix γ and θ in (0, 1]. For prime N ≥ N₀, every
+   relation Γ ⊆ Z_N² × Z_N with |Γ| ≤ γ⁻²N² and the product property has
+   two properties after removing θN² base points:
+   - its restriction is covered by the graphs of m(γ,θ) Freiman
+     bihomomorphisms on their domains;
+   - each value z.2 is the value of some φ_j.
+
+   `variety_structure_side` proves the covering clause of
+   `StackableStructureAt 2` from `BihomExtraction m` and
+   `MilicevicDeepVarietyStructure D`. After removing θN² base points, Γ is
+   covered by K ≤ m·exp(B(θ/(2m))) variety pieces with m = m(γ, θ/2). Each
+   piece is read as a partial function on `Point N 2` (via `pairPoint`), in
+   `section16FinsetUnion`/`partialGraph` form. If m(γ,θ) is
+   quasi-polynomial, so is K. What `StackableStructureAt 2` additionally
+   asks is that the class be stackable (step 3).
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.

@@ -328,6 +328,44 @@ def normal_arc_pairings(triangulation, coordinates, *, boundary=False,
     return _arc_system(prepared, analysed, boundary=boundary, check=check)
 
 
+def _boundary_intervals(prepared, analysed, *, scale=1, check=lambda: None):
+    """Boundary-edge points in the full surface's canonical edge ordering.
+
+    Every component meets the ambient boundary exactly when its normal-arc
+    orbit meets this union. Scaling coordinates scales every block endpoint;
+    the double-vector ordering is not two concatenated copies of this union.
+    """
+    intervals, offset = [], 0
+    for edge in sorted(analysed['weights']):
+        check()
+        stop = offset + scale * analysed['weights'][edge]
+        if edge in prepared['boundary_incidence'] and stop > offset:
+            if intervals and intervals[-1][1] == offset:
+                intervals[-1] = (intervals[-1][0], stop)
+            else:
+                intervals.append((offset, stop))
+        offset = stop
+    return tuple(intervals)
+
+
+def _coned_pairings(pairings, intervals, check):
+    """Join a validated nonempty interval union using the existing cone rule."""
+    from .interval_incidence import _cone_rows
+    if not intervals:
+        raise ArithmeticError('cannot cone an empty boundary union')
+    result = list(pairings)
+    for a, b, c, d, _ in _cone_rows(intervals):
+        check()
+        result.append(IntervalPairing(a, b, c, d))
+    return result
+
+
+_BOUNDARY_FIELDS = ('components_with_boundary', 'closed_components',
+                    'orientable_components_with_boundary',
+                    'nonorientable_components_with_boundary',
+                    'closed_orientable_components', 'closed_nonorientable_components')
+
+
 def _boundary_graph(prepared, analysed, check):
     """Reconstruct the mod-two boundary cocycle in fixed edge order."""
     graph = []
