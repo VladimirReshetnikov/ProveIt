@@ -2368,3 +2368,35 @@ using only propext, Classical.choice, and Quot.sound. The combined audit
 is queued. The source ledger
 retains its six open statements, with the existing fidelity caveats. No
 upstream modules are added by these consumers.
+
+
+### Ceiling-free inner-loss bounds for the variety lift
+
+`Proofs16VarietySampleBudget` proves that, for `0<sigma,theta,gamma<=1`,
+`r=section16Lemma9R(theta/2,gamma,2)` and
+`u=multipleC(sigma/(2*r),gamma,3)^r` satisfy `0<u<=1`, and the sample
+ceiling is at most `7/(sigma*u)`. Consequently the interpolation graph
+count is at most `81*(7/(sigma*u))^4*Q^2`. The joint slice exponent at
+that sample ceiling times `Q` is bounded below by
+
+```
+(sigma*u)^17 /
+  (1024*pv^2*(4*Cv+18)*(milicevicBound D c+2)^17*7^17*(Q+1)^17).
+```
+
+`Proofs16VarietyExplicitExponent` combines this with the exact line
+exponent `u*E/(8*p*(q+1)^16)` and the logarithmic cap estimate. For a
+fixed spectrum count `q` and exponent `E`, the actual common-base
+all-box exponent is at least the product of those two displayed factors,
+divided by `16+4*log(16/z)`, where
+`z=section16Zeta(theta/2,gamma,2)/(4*C*(q+1))`. Thus the lower bound
+contains the explicit factor `sigma^17*u^18`; neither a sample ceiling
+nor a rounded threshold remains. The spectrum losses are independent of
+`sigma` in the dimension-three construction above.
+
+Both production modules and all six transitive axiom checks pass, using
+only propext, Classical.choice, and Quot.sound. Facade registration and
+the combined audit remain pending while the earlier full audit runs.
+The constants `C,p,Cv,pv,D` remain explicit parameters. This does not
+prove deep structure, the printed Theorem 16.2 budget, or a new final
+Szemeredi threshold, and it adds no upstream modules.
