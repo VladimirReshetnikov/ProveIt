@@ -5844,6 +5844,17 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
         then the ladder at levels `4i`.
     - Still needed for Theorem 4.1: the final pruning to `A′` (elements
       in many `Q 16` quadruples) and the bridging statement.
+    - **Correction to the plan above (same day).** Theorem 4.1 does not
+      conclude that *all* additive quadruples of `A′` are respected. It
+      gives many bridging representations for every tuple of `A′`.
+      - Proposition 6.1 turns that into image bounds for all but an `ε`
+        fraction of the 16-tuples.
+      - "All" is reached only after robust Bogolyubov–Ruzsa onto a
+        progression (Step 3) and Steps 4–6, where Step 6 is a second
+        abstract BSG.
+      - So replacing J.108–J.110 needs that chain, not Theorem 4.1 plus
+        `freiman_small_image_zero` alone. The layers above formalize the
+        engine those steps share.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
