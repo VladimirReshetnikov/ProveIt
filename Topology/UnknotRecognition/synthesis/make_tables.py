@@ -1679,3 +1679,7 @@ if os.path.exists('data/coherent-escape-benchmark.json'):
 if os.path.exists('data/coorientation-benchmark.json'):
     import runpy
     runpy.run_path('data/coorientation_tables.py')
+
+if os.path.exists('data/orbit-direction-benchmark.json'):
+    import runpy
+    runpy.run_path('data/orbit_direction_tables.py')
