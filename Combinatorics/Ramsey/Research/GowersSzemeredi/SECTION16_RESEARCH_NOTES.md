@@ -6233,3 +6233,103 @@ modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
 The numbered ledger is unchanged at 115 companions and five open entries;
 the selected-port scope check passes. No upstream code or licensing
 changes were needed.
+
+
+### J.112. Compatible map extension on bounded-span intersection domains
+
+The next domain-organization step requires more than geometric containment:
+values must extend to the enlarged domains. The local construction below is
+motivated by the gluing argument in [Milićević, Lemma 9.1 and Proposition
+9.3](https://arxiv.org/pdf/2601.01682). Our formal statement uses quarter
+neighborhoods and proves the additive-quadruple formulation of Freiman
+linearity directly. It is not a claim to have formalized Proposition 9.3.
+
+**Local gluing.** Suppose normalized maps `f` and `g` are Freiman-linear
+on `bohr T r` and `bohr U r`, and agree on their intersection.
+`compatible_bohr_sum_quadruple` proves that the represented values
+`f(a)+g(b)` respect every additive quadruple whose `a` coordinates lie
+in `bohr T (r/4)` and whose `b` coordinates lie in `bohr U (r/4)`.
+The four-term difference in the first domain equals the reversed
+four-term difference in the second. Both lie in the full domains by
+`bohr_four_term_mem`; compatibility and `freiman_bohr_four_term` give the
+value identity. In particular, two representations of the same point
+have the same value.
+
+`bohrSumExtension T U f g r` chooses a quarter-radius representation when
+one exists. Its value is independent of that choice. It is normalized
+and Freiman-linear on `bohrQuarterSum T U r`, the entire sum of the two
+quarter neighborhoods. It equals each original map on that map's quarter
+neighborhood. Values outside the sum are defined as zero, with no
+linearity assertion there.
+
+**Explicit enlarged Bohr domain.** For ranks at most `d` and `0 < r < 4`,
+set
+
+```
+M = ceil(8/r)
+R = polynomialSpectrumCutoff d (r/8) (bohrSumRankThreshold d d M M)
+K = boundedFrequencySpan T R intersect boundedFrequencySpan U R.
+```
+
+`bohrExtensionSpectrum_subset_sum` applies the existing uniform Bohr-sum
+containment theorem at radius `r/4` to prove
+
+```
+bohr K (1/(4*pi)) subset bohrQuarterSum T U r.
+```
+
+Thus `bohrSumExtension_freiman_span` gives an actual Freiman-linear map
+on this Bohr set. `bohrExtensionSpectrum_card_le` supplies the spectral
+cap `(2*R+1)^d`. These bounds depend on the radius and rank, with no
+modulus-size hypothesis beyond primality for the containment theorem.
+
+**Column differences.** For a pair `p`, define its spectrum as
+`T(p.1) union T(p.2)` and its map as `L(p.1,y)-L(p.2,y)`.
+`columnDifferenceMap_freiman` derives local linearity from the vertical
+identity of a column-domain bihomomorphism. If two pairs have the same
+index difference, `columnDifferenceMap_compatible` uses the horizontal
+identity to show agreement on their common domain.
+`column_differences_span_extension` therefore extends the two difference
+maps simultaneously, with spectral rank bounded by
+
+```
+(2*bohrExtensionCutoff (2*d) r+1)^(2*d).
+```
+
+`global_column_difference_extensions` applies this to the actual global
+zero core, directly from the original dense bihomomorphism and the same
+modulus threshold. It retains core density, original witness counts,
+normalization, and the column-domain bihomomorphism. Every two pairs in
+the core with equal index difference have the stated extension. This is
+a family of pairwise extensions; compatibility among all choices of
+extensions on their enlarged domains is not asserted.
+
+**Remaining structural work.** The intersection spectra still depend on
+the two representing pairs. They have not been replaced by values of a
+single bounded list of Freiman frequency maps indexed by the difference.
+The source's Proposition 9.3 performs this selection and also controls
+higher arrangements. Its hypotheses include a structured index domain
+and control of higher additive tuples; our current dense four-quadruple
+core does not automatically supply those hypotheses. A subsequent
+construction must provide the requisite parameter geometry and retain
+map-value agreement. Bilinear-variety structure, the final numerical
+budget, and the five numbered open statements remain unproved.
+
+**Incoming budget lemma.** This checkpoint also merges
+`Proofs16MonomialControlAbsorption` from `origin/main`. It rewrites the
+source width control as a real power and proves that monomial count and
+width controls imply `MultiplyLinear`, assuming explicit exponent and
+logarithmic coefficient bounds. Those numerical conditions remain to be
+discharged in the final variety route; the lemma does not prove the deep
+structure input.
+
+
+**Verification.** The local gluing closure checks 139 modules, the span
+extension 140, the column-difference application 145, and the global
+application 277. All 12 new named extension theorems and the five incoming
+monomial-control theorems pass individual axiom checks. The combined
+audit checks 7,320 public Gowers theorems in 5,172 modules (5,170 for the
+facade, including 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The numbered ledger remains identical
+at 115 companions and five open entries, and selected-port scope passes.
+No upstream ports or Apache provenance changes were needed.
