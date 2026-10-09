@@ -994,3 +994,16 @@ prove failure on the canonical diagram exteriors or change the recognition
 schedule. Reproduce or replay with
 `../fast/normal_orbit_research/coherent_obstruction.py`; the retained proof,
 source hashes, audit and full-suite log are `data/coherent-obstruction-*`.
+
+[`coherent_escape.tex`](coherent_escape.tex) gives an independently checked
+3–2 move that escapes the genus-two example and yields a 36-piece normal disc.
+It also proves and implements a direct linear arithmetic span certificate
+when every corner has the same global vertex: no potential can change the
+answer. The existing checker and multiple-vertex solver are preserved.
+All 1,245 tests pass; 400 mixed Pachner moves agree with Regina, 600 arithmetic
+queries agree with the old solver, and all 252 native source records and 47
+positive proofs are unchanged. Greedy 3–2 simplification adds no source labels
+beyond the extended search in the tested corpus and remains experimental.
+Separate arithmetic, supplied-triangulation and complete-recognition timings
+are retained in `data/coherent-escape-*`, with source pins and reproduction
+in `../fast/normal_orbit_research/coherent_escape.py`.

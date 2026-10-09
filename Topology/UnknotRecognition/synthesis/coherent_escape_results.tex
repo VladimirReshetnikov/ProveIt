@@ -1,0 +1,44 @@
+All 18 focused tests pass in 0.772 seconds and all 1,245 maintained tests pass
+in 240.628 seconds. The final audit takes 47.974 seconds and partly overlaps
+the full suite; these are validation costs. The audit and benchmark records
+pin 522 source and evidence files.
+
+The timing run is isolated from tests, audits, article builds and commits.
+It uses five shuffled paired rounds of old, old-A/A, new and new-A/A calls,
+after one warmup of each arm. All 280 measured calls and 56 warmups complete.
+The 190.714-second run checks every result and records all raw samples.
+Ratios below are medians of paired old/new times, so they need not equal
+the quotient of the two displayed marginal medians. Larger factors favor
+the new solver. The A/A paired medians across all rows range from 0.965 to
+1.059.
+
+The first table measures the supplied arithmetic problem, including the
+solver's internal proof replay, another independent replay, and result
+hashing. These distinct-span rows need not be compatible with any manifold
+triangulation and are not knot-recognition inputs.
+\input{tables/coherent_escape_kernel.tex}
+The largest local factor is 189.235, but its scope is this arithmetic call.
+The guard counts expose the separate asymptotic improvement without relying
+on wall-clock ratios.
+
+The second table includes two broader workloads. Coherent analysis starts
+from a supplied triangulation and repeats cocycle extraction, span
+optimization, normal-surface topology production, both independent proof
+replays and hashing inside every timed call. Its input construction is
+outside the timer. Diagram recognition instead runs the complete forced-native
+recognizer and independently replays any returned native proof. Earlier easy
+stages are disabled equally in both arms; the established exact fallback
+remains enabled. The fallback unknot and trefoil controls finish through
+reduced Khovanov homology.
+\input{tables/coherent_escape_pipeline.tex}
+
+On the five one-vertex supplied-triangulation analyses, paired gains are
+1.086--1.158. In particular, the 256-tetrahedron layered torus still takes
+about 2.95 seconds in the new complete analysis: eliminating the flow does
+not eliminate topology processing. The two canonical multiple-vertex
+analysis controls and all three complete-recognition controls show no
+improvement attributable to the new branch. Their result records, work
+counts and proof hashes are identical across all arms. All supplied
+one-vertex coordinate vectors and topology summaries also agree, although
+their span matchings and work counts change. These distinctions prevent a
+large arithmetic factor from being presented as a general recognition gain.
