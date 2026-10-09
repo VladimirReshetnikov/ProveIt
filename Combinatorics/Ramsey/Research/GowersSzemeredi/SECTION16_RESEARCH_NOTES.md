@@ -3433,3 +3433,13 @@ Eight declarations, standard axioms only, collision gate clean. No
 numbered statement changes status. Next in this lane: Claim 34 (Bohr
 sizes are determined by the relation lattice), then the iteration of
 Theorem 33.
+
+
+The combined audit after the four-row work and incoming Bohr-size
+relation estimates passes: 6,479 public Gowers theorems, a 4,995-module
+facade (4,152 OAI modules), and 4,997 modules including both audits.
+The thirteen new declarations and the two equal-radius wrappers also
+pass individual transitive axiom checks. Only propext, Classical.choice,
+and Quot.sound occur. The numbered source ledger remains 115 companions
+and five open statements, with prior fidelity caveats retained. The
+selected upstream closure and license/provenance files are unchanged.
