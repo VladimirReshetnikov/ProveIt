@@ -1686,3 +1686,23 @@ bihomomorphism and the deep-agreement structure theorem remain hypotheses.
 The new controls depend on the actual ranks and radius, with existential
 universal `C,p`; comparison with the manuscript's prescribed all-dimension
 controls and final explicit bounds remains separate.
+
+### Uniform controls and the conditional deep-agreement consequence
+
+`Proofs16FreimanVarietyUniform` proves the required comparisons explicitly:
+increasing either rank bound and decreasing a positive radius lower bound
+can only weaken the capped cover exponent. The resulting uniform cover
+uses rank bounds `S,R` and radius lower bound `delta`, independently of the
+particular variety.
+
+`Proofs16DeepVarietyCover.exists_deep_variety_graph_cover` then sets
+`B=milicevicBound D c`, `R=ceil(B)`, `S=2*R`, and `delta=exp(-B)`.
+Conditional on `MilicevicDeepVarietyStructure D`, every eligible density-`c`
+partial bihomomorphism has a subgraph of size at least `exp(-B)*N^2` with
+nine-map all-box controls. Its positive exponent depends only on `c,D` and
+the universal constants `C,p`. Encoding the agreement set and translating
+to the original graph are injective, so no agreement mass is lost. Here
+`B=(2+2*log(c^(-1)))^D`; the exponential appears in the mass and radius
+bounds. The deep structure statement remains an explicit hypothesis.
+Both production sources and all eight new transitive axiom checks pass;
+the combined facade audit is queued. No new upstream module is added.
