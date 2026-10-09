@@ -1,0 +1,94 @@
+\section{Certified mandatory-type propagation and its parameter}\label{sec:propagation}
+
+Sector LP removes ray enumeration from a fixed compatible query. It does not remove the $3^t$ possible singleton-type choices. To address that outer search, begin with the standard matching cone while allowing several quadrilateral types per tetrahedron. The point of the relaxation is to justify type deletions before making guesses.
+
+\subsection{Anchored relaxed cones}
+
+Choose one zero triangle coordinate at every global vertex. In this section anchors refer to the original standard coordinate groups, not to a particular already-compatible contracted kernel. Write
+\[
+ A(T)=\prod_v m_v,
+\]
+where $m_v$ is the number of local triangle corners representing global vertex $v$. Then $\sum_vm_v=4t$, and $A(T)=4t$ in a one-vertex triangulation. The distinction from the sector factor $P$ in \eqref{eq:anchor-count} prevents an inappropriate transfer of a sector-specific count to the full relaxed search.
+
+Let $U$ be the universe of quadrilateral coordinates, and let $Z\subseteq U$ be the forbidden ones. For the chosen anchors define
+\begin{equation}\label{eq:relaxation}
+ C_Z=\{x\ge0:M_0x=0,\ x_a=0\text{ at all anchors},\ x_i=0\ (i\in Z)\},
+ \qquad P_Z=\{x\in C_Z:c_0^Tx\ge1\}.
+\end{equation}
+Here $c_0$ is the full integer Euler extension. A point in $P_Z$ can violate quadrilateral compatibility; this is why a positive LP relaxation is not yet a normal-surface answer.
+
+\begin{definition}[Mandatory type]
+A still-allowed quadrilateral coordinate $i$ is mandatory at $Z$ if every point of $P_Z$ has $x_i>0$. Infeasibility of $P_Z$ is handled first as a terminal negative branch.
+\end{definition}
+
+Let $J$ be the columns surviving the anchor and $Z$ restrictions. The condition that $i$ is mandatory is equivalent to infeasibility of the positive-Euler query with $x_i=0$. By Theorem~\ref{thm:dual}, it has the exact certificate
+\begin{equation}\label{eq:mandatory-dual}
+ (M_0)_{J\setminus\{i\}}^Ty\ge(c_0)_{J\setminus\{i\}}.
+\end{equation}
+This is a strict positivity implication justified by an ordinary closed rational feasibility problem. There is no numerical threshold for deciding whether a coordinate is ``almost zero''.
+
+\begin{theorem}[Preservation under mandatory propagation]\label{thm:preservation}
+If $i$ is mandatory, forbidding its two incompatible quadrilateral peers preserves every admissible point of $P_Z$. If two incompatible types are mandatory, there is no admissible positive-Euler point in the branch. A negative relaxed LP after any sequence of such deletions proves absence of admissible positive-Euler points in the original anchored branch.
+\end{theorem}
+\begin{proof}
+Every admissible candidate has $x_i>0$. The quadrilateral constraint therefore sets both peers to zero. Two mandatory peers would require two incompatible positive coordinates in the same tetrahedron. Induction over the sequence of deletions proves preservation, and the terminal negative LP excludes every surviving candidate.
+\end{proof}
+
+The implementation need not have a separate mandatory-conflict terminal schema. After one mandatory type deletes its peers, an incompatible mandatory requirement makes the next relaxed positive query infeasible; its dual is a sufficient terminal proof.
+
+\subsection{A well-defined closure}
+
+\begin{theorem}[Confluence of exhaustive mandatory closure]\label{thm:closure}
+Exhaustive synchronous propagation and any fair asynchronous propagation reach the same least closed forbidden set, or the same terminal inconsistency, above the initial $Z$. There are at most $3t$ strict forbidden-set enlargements. A straightforward implementation uses $O(t^2)$ rational LP tests per closure.
+\end{theorem}
+\begin{proof}
+If $Z\subseteq Z'$, then $P_{Z'}\subseteq P_Z$. As long as the latter restricted set is nonempty, any coordinate mandatory at $Z$ remains mandatory at $Z'$. If a previously mandatory coordinate becomes forbidden, the restricted positive set is empty and inconsistency is absorbing. A mandatory conflict also persists or becomes LP infeasibility.
+
+The operator that adds all currently justified peers is therefore monotone and inflationary on the finite lattice of forbidden subsets, augmented with an absorbing inconsistent state. Its iterates reach the least fixed point above $Z$. Every justified asynchronous deletion belongs to that least fixed point. A fair schedule that terminates must itself be closed, so it reaches the same fixed point. At most $|U|\le3t$ variables can be added. Testing all $O(t)$ remaining coordinates after each enlargement yields $O(t^2)$ LP calls of polynomial encoded size.
+\end{proof}
+
+The word ``exhaustive'' is substantive. A search may stop immediately on an admissible positive LP witness, which is sound and desirable, without computing the remaining closure. A capped search may stop inconclusively. Neither execution alone establishes the size of a structural parameter defined using all branches and completed closure.
+
+\begin{remark}[Optional stronger rules]
+A coordinate is identically zero on $\{z\ge0:Az=0\}$ exactly when a multiplier satisfies $A^Ty\ge e_i$. If the cone contains a positive-Euler point, vanishing on all positive-Euler points is equivalent to vanishing on the entire cone: adding a sufficiently small positive multiple of any other cone vector preserves positive Euler. Such forced-zero deletions can strengthen propagation, and the same monotonicity proof applies. They are not implemented as a separate rule here. The main parameter below uses only mandatory-type implications, so its theorem matches the delivered algorithm.
+\end{remark}
+
+\subsection{A strong propagation backdoor}
+
+\begin{definition}[Uniform strong backdoor]\label{def:backdoor}
+A set $B$ of tetrahedra is a strong mandatory-LP backdoor for $T$ if, for every standard triangle-anchor tuple and every assignment of one allowed quadrilateral type to each tetrahedron in $B$, exhaustive mandatory-type propagation either rejects the anchored branch or leaves at most one allowed type in every tetrahedron. Let $\beta_{\mathrm{LP}}(T)$ be the minimum size of such a uniform set.
+\end{definition}
+
+An assignment on $B$ sets the other two types in each of its tetrahedra to zero. It does not require the selected type to be positive. Hence a surface with no quadrilateral in a guessed tetrahedron is covered, possibly by several assignments; no fourth all-zero branch is needed. Overlap is harmless for existence and absence proofs.
+
+The parameter is defined on positive and negative instances alike. Taking every tetrahedron in $B$ leaves an immediately compatible mask, so $0\le\beta_{\mathrm{LP}}(T)\le t$. It measures residual incompatible choices after exact consequences, rather than the number of nonzero coordinates in a witness.
+
+\begin{theorem}[Search with a supplied backdoor]\label{thm:backdoor}
+If a strong backdoor $B$ of size $b$ is supplied, canonical positive-Euler existence can be decided in
+\begin{equation}\label{eq:backdoor-cost}
+ A(T)\,3^b\,\poly(t)
+\end{equation}
+bit operations using polynomial-time rational LP. A positive result can be represented by a primitive standard extreme ray. A negative result has an independently checkable exhaustive anchor/type tree of Farkas implications and negative leaves, of size bounded by the same expression up to a polynomial factor.
+\end{theorem}
+\begin{proof}
+Every canonical admissible vector has a zero triangle at each global vertex. At each tetrahedron of $B$, choose its nonzero type if one exists, and otherwise choose any type. Thus every candidate lies in at least one of the $A(T)3^b$ anchored assignments. The preservation theorem prevents removal of that candidate. By the backdoor property, every nonrejected leaf has a compatible mask; positive feasibility there is actual normal-surface feasibility. Support descent, or a positive basic point of its normalized anchored LP, gives an extreme ray, then primitive normalization gives a connected surface.
+
+Each closure takes polynomially many LP calls. The matching matrices have $O(t)$ rows and columns and polynomial-length rational data. Standard determinant bounds give polynomial-size duals. Repeating over all assignments proves the time and certificate estimates. For a negative certificate, the checker reconstructs every anchor and verifies that each branch has exactly all currently allowed singleton children. Each propagation step is justified by \eqref{eq:mandatory-dual}; each terminal leaf by the homogeneous negative dual.
+\end{proof}
+
+An unknown backdoor of size at most $b$ can be found, or a decisive witness found earlier, by trying all subsets of size at most $b$. For each candidate, run the full anchored assignment procedure; if a residual compatible mask is not reached and no witness or negative conclusion is available, reject that candidate set. The work is at most
+\begin{equation}\label{eq:unknown-backdoor}
+ A(T)\sum_{j=0}^{b}\binom tj3^j\poly(t)
+ \le A(T)(3t)^{O(b)}\poly(t).
+\end{equation}
+This is an XP bound in $b$, not an established fixed-parameter bound for discovering $B$. That difference is responsible for the logarithm in the conditional quasi-polynomial exponent.
+
+\input{sections/backdoor_obstruction}
+
+\subsection{What the prototype actually explores}
+
+The code first solves the current relaxed positive-Euler LP. It returns immediately if the basic witness is admissible. Otherwise it fairly scans all allowed quadrilateral types in unresolved tetrahedra, tests their deletion, and keeps the first certified mandatory type before restarting. If none is forced, it branches on a tetrahedron. All calls share an aggregate pivot allowance.
+
+With \code{allowed_branch_tetrahedra=B}, the search prefers a current conflict in $B$, but if none exists it branches on another unresolved tetrahedron in $B$. That fallback is necessary: the current basic witness may conflict only outside $B$ while a choice inside $B$ is still needed to unlock propagation. Exhausting $B$ with an unresolved incompatible relaxation returns \status{INCONCLUSIVE}; it does not refute the input or establish that no other useful $B$ exists.
+
+The default depth cap counts only guessed quadrilateral choices, not deterministic propagations. A measured successful search depth is different from $\beta_{\mathrm{LP}}$: it may cover only the first successful anchor, and its branch set can vary between paths. The Fibonacci theorem in the next section proves the stronger all-anchor, all-$t$ claim symbolically. The finite branching controls in the experiments are reported only as properties of their actual executions.

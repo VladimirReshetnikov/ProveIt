@@ -1,0 +1,76 @@
+\section{Further research questions and proposed programme}\label{sec:research}
+
+The next stage should aim to prove or refute sharply stated structural claims while improving the parts already justified. A favorable timing curve cannot substitute for a parameter theorem, and a parameter theorem should expose the algorithm that finds and preserves its useful structure. The following questions are ordered roughly by their effect on the recognition goal.
+
+\subsection{Which propagation parameter is actually small?}
+
+\textbf{Question 1: Can a useful logarithmic bound survive the unused-type obstruction?}
+The mandatory-only strong backdoor requires every surviving mask to be compatible. A canonical positive witness avoiding a tetrahedron prevents any type there from becoming mandatory along the branch containing that witness. Thus harmless unused tetrahedra can force a large strong backdoor even when finding a positive surface is easy. Before proposing a universal bound, characterize this obstruction under a specified one-vertex reduction policy. Does that policy eliminate enough such freedom, or is the strong parameter fundamentally the wrong universal target?
+
+A useful result would be either an explicit family of genuine knot-exterior triangulations with a proved linear lower bound after the permitted preprocessing, or a theorem bounding the obstruction for a rigorously specified class. Reducible torus-boundary manifolds and arbitrary abstract matching systems are valuable controls, but they cannot stand in for knot exteriors when asserting a lower bound relevant to unknot recognition.
+
+\textbf{Question 2: Can the deciding-set parameter be bounded geometrically?}
+Allowing a verified positive leaf before all unused masks are fixed removes the logical necessity behind the strong-mask obstruction. The resulting parameter depends on the exact LP witness and search policy. Find conditions under which a fixed polynomial LP policy has logarithmic deciding sets, or replace policy dependence by a geometric quantity with an explicit constructive reduction. A proof must control both negative branches and the time needed to discover a positive leaf; the mere existence of a short disc certificate does not bound search time.
+
+\textbf{Question 3: Can useful sets be found in fixed-parameter time?}
+Subset enumeration gives $(3t)^{O(b)}$, which is enough for a logarithmic quasi-polynomial target but loses a factor of $\log t$ in the exponent. Can a failed closure return a small obstruction set that every valid strong backdoor must meet? If so, branch on that obstruction and seek an $f(b)\poly(t)$ algorithm. One must prove that the obstruction covers \emph{all} valid sets, including sets whose choices alter the relaxed witness indirectly. The fixed-$B$ regression in this package shows why simply branching on the current LP witness's conflicts is insufficient for that purpose.
+
+\subsection{Can the closure be made stronger without hiding hard work?}
+
+\textbf{Question 4: What do forced-zero and dominance rules buy?}
+Implement the optional whole-cone zero test and compare the resulting closure with mandatory-only propagation. Study whether it removes irrelevant masks and weakens the unused-type obstruction in genuine triangulations. A zero-coordinate certificate is a linear dual inequality, so its replay is straightforward. Its structural effect is not: coordinates can vanish on all admissible positive surfaces without vanishing on the relaxed cone, leaving a substantial gap.
+
+For anchor objectives, go beyond componentwise dominance. A potential $\ell_a$ is removable from a vertex minimum if a retained $\ell_b\le\ell_a$ throughout $Q_S$; the inequality itself has a Farkas proof. More generally, test whether an anchor can ever be the unique minimum. Remove redundant anchors sequentially, retaining at least one representative of ties. Simultaneously removing every tied representative would destroy the minimum. The target is a certified reduction in anchor count, not an unproved claim that every lower envelope is small.
+
+\textbf{Question 5: Which mixed normal constraints have a bounded proof width?}
+The current rules use one forbidden coordinate at a time. Small sets of forbidden types may expose implications invisible to every singleton test. Define a bounded-width implication system, its certificate grammar and its exhaustive closure, then ask whether geometric classes admit small width. Cost must be charged for finding these implications: trying all $r$-sets costs $t^{O(r)}$. A new proof system is useful only if its stronger consequences repay that search and can be retained through topology transitions.
+
+The abstract hardness result of Burton--He is a warning against treating arbitrary algebraic matching data as automatically easy \cite{BurtonHe}. It concerns an abstract normal-surface constraint problem and does not establish hardness of this genuine knot-exterior query. Any favorable theorem must identify the geometric restriction it exploits; any negative reduction must preserve that restriction.
+
+\subsection{How should the exact solver and certificate backend improve?}
+
+\textbf{Question 6: Can the current dense simplex bottleneck be removed?}
+The figure-eight cap is a concrete target. The propagation code repeatedly rebuilds dense $7t$-coordinate LPs and starts cold. Test a revised sparse exact simplex, basis reuse across anchor objectives, and incremental deletion of forbidden columns. Investigate rational reconstruction from a numerical proposed basis with exact primal/dual acceptance checks. Report reconstruction failures and fallback costs as part of the result. A numerically plausible infeasibility claim must never become a negative certificate.
+
+For an asymptotic implementation, provide a polynomial rational-LP backend with explicit encoded-size and support-recovery bounds. For a practical implementation, a rigorously checked hybrid may be substantially faster than a purely theoretical backend. These are separate evaluation criteria; both should be recorded.
+
+\textbf{Question 7: Can the support kernel be maintained during propagation?}
+After a mandatory deletion, some triangle equations become zero-labelled and their classes can merge. Rebuilding a contracted kernel should shrink the next LP, but it must preserve original row identities or a checkable row transformation for dual replay. A suitable data structure would maintain graph components, integer potentials, cycle constraints and the Euler covector under type deletions. The proof obligation is exact equivalence of the updated cone, including nonzero-labelled self-loops and inactive vertex-link factors. This is a natural connection to the project's earlier compiled-transfer work.
+
+\textbf{Question 8: How small can negative proofs be made?}
+The envelope reduced serialized proof bytes in the present audit, while increasing pivot count. Separate the optimization objectives of producer time, replay time and proof size. Intern repeated multipliers; retain a sparse set of original independent rows; or search for one dual dominating a family of anchor objectives. Determine when a compact covering family replaces all $P$ tuples with a coverage proof of polynomial size. The sharp anchored-standard determinant bound suggests small numerators exist; it does not ensure that the present solver discovers the sparsest or shortest such certificate.
+
+An important test is whether a compressed negative proof can be verified without reconstructing the very exponential enumeration it replaces. A list of anchor hashes is not a coverage proof; a compressed proof grammar must have an independently checked meaning.
+
+\subsection{How does the structure behave under topology changes?}
+
+\textbf{Question 9: Is there a transition-stable potential controlling branch work?}
+Measure and then analyse the chosen parameter before and after one-vertex conversion, Pachner moves, boundary simplification and crushing. A useful theorem might bound an amortized sum of branch exponents along the full recognition trajectory rather than bounding every stage separately. Conversely, construct examples where a locally attractive reduction sharply increases the parameter. An amortized result must count all visited states, including unsuccessful alternative reductions, rather than only the ultimately successful path.
+
+The infinite-family Fibonacci proof offers a model: matching identities expose local forced choices that survive all anchors. Seek analogous symbolic identities in more general layered blocks, cables and gluing constructions, keeping peripheral information explicit. Prove how forcing relations compose across an interface before claiming that a small interface bounds global choices.
+
+\textbf{Question 10: Can hierarchy and parallelity data produce certified implications?}
+Lackenby's hierarchy work provides a distinct geometric route involving normal surfaces and controlled decompositions \cite{Lackenby2026}. Investigate whether parallelity regions or boundary-pattern simplifications can be translated into LP implications, compressed interface states or a bound on deciding sets. The relationship is presently a research question; no result in that paper identifies its hierarchy complexity with $k$, $d$ or $\beta_{\mathrm{LP}}$ here.
+
+For interface methods, a bounded number of ports is not enough by itself: normal multiplicities are unbounded integers. Any finite-state or bounded-width claim must explain exactly which arithmetic information is retained, how its bit length is controlled, and why gluing preserves feasibility and essentiality. The earlier topology-spectrum and sparse-incidence continuations are relevant foundations for this question.
+
+\subsection{How should the evidence and trust boundary expand?}
+
+\textbf{Question 11: Where does the sector LP actually beat enumeration?}
+The frozen audit has only 30 sectors of nullity five and none of higher nullity. Extend it with topology-validated, source-frozen families that increase nullity, active vertex count and coefficient bit length independently. Include incompressible knot exteriors, easy positive controls, deliberately awkward triangulations, and repeated refinements of the same manifold. Select benchmark cases by structure before timing, retain all outcomes and caps, and report both distinct surfaces and repeated sector outputs. This will identify a defensible hybrid dispatch rule and show whether a practical crossover exists on relevant inputs.
+
+\textbf{Question 12: Can primitive-ray verification become uniformly complete and nearly linear?}
+The fixed-prime rank strategy is sound but not complete. Provide a deterministic prime schedule with a proved stopping bound from the matching minor height, or a fraction-free fallback. Study fill-in on topology-derived support matrices and reuse rank witnesses along source-certified triangulation transformations. A proposed nearly linear bound must include manifold validation, coordinate arithmetic, boundary homology and source binding, not merely a fast elimination kernel.
+
+Extend the short proof only where its hypotheses justify it. Primitive nonextreme vectors need not be connected, and Euler/parity alone fail on the M\"obius-plus-link example. A broader endpoint could combine small-rank decomposition with the existing compressed component certificates, but must preserve one-sided and multiplicity behavior.
+
+\textbf{Question 13: What is the smallest complete independently checked recognition pipeline?}
+Integrate diagram provenance, candidate search, primitive-ray or general geometry replay, and topology-preserving reduction certificates. State every terminal rule and every base case, and run the complete pipeline on both unknots and nontrivial knots. For a negative decision, retain a checked exhaustion or hierarchy proof; for a positive decision, retain an authenticated essential disc. This integration is a prerequisite for comparing end-to-end recognition latency rather than isolated surface queries.
+
+Formalization can then begin with the small arithmetic core: nonnegative-kernel dual soundness, modular rank lower bounds, gcd/primitivity, anchor coverage and propagation-tree semantics. The difficult topology boundary should be named explicitly rather than hidden behind a Boolean validator. A useful first formal milestone is a theorem that every accepted negative proof excludes the specified canonical surface class, with a separate theorem connecting that class to a complete knot-exterior algorithm.
+
+\subsection{Suggested order of work}
+
+The immediate engineering sequence is: integrate the primitive-ray fast path with its fallback; build sparse/reused LP state against the figure-eight cap; and add the closure refinements with independent dual replay. In parallel, the mathematical priority is to test the strong-backdoor obstruction and develop a parameter that captures early positive termination without hiding policy-dependent search. Only after that should a universal logarithmic conjecture be promoted to the main target.
+
+The next research report should have three concrete deliverables: a substantially larger frozen high-nullity corpus with paired query timings; either a proved useful family bound or a genuine knot-exterior lower-bound construction for the selected parameter; and a source-bound search-and-reduction integration prototype. Those deliverables would turn the present conditional complexity statement into a sharper, falsifiable programme.

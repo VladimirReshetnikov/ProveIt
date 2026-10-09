@@ -1,0 +1,61 @@
+\section{What would make the complete recognizer quasi-polynomial?}\label{sec:complexity}
+
+\subsection{Three parameters that must not be conflated}
+
+The sector support $k$, matching nullity $d$, and propagation backdoor $b$ measure different things. The inherited kernel is effective when $k$ is small. Its arrangement methods are effective when $d$ is small. The new propagation programme can be effective when $b$ is small even if both support and coordinate magnitudes are large. The Fibonacci theorem establishes an actual separation: $b=0$ while essential vertex-disc support is $\Omega(t)$. It supplies no universal bound on $b$.
+
+There is also a fourth independent quantity: the bit length $L$ of coordinates. A primitive standard ray has exponential coordinate magnitude but polynomial bit length, by the usual determinant argument and the support-sensitive refinement. A run that expands one object per normal disc can therefore be exponential even if the surface was obtained by a short LP search. Both the rank checker and the inherited compressed topology routines address this encoding issue. Improving one parameter does not bound the others automatically.
+
+\subsection{Supplied versus discovered structure}
+
+For one vertex, Theorem~\ref{thm:backdoor} becomes
+\[
+ 3^b\poly(t)
+\]
+when a suitable $B$ is supplied. Thus $b=O(\log t)$ gives \emph{polynomial} search, and $b=O((\log t)^2)$ gives quasi-polynomial search. If $B$ must be found by subset enumeration, \eqref{eq:unknown-backdoor} instead gives
+\[
+ \exp(O(b\log t))\poly(t).
+\]
+Now $b=O(\log t)$ gives $t^{O(\log t)}=\exp(O((\log t)^2))$. More generally $b=O((\log t)^c)$ gives $\exp(O((\log t)^{c+1}))$ by this discovery method.
+
+This difference suggests two distinct research targets. Proving a logarithmic bound without an efficient method to find $B$ would already yield a quasi-polynomial conditional assembly. Finding logarithmic backdoors in polynomial time would give the stronger polynomial assembly. Neither assertion follows from the definition or from small measured search trees.
+
+\subsection{A complete conditional assembly theorem}
+
+Let a knot diagram have $n\ge2$ crossings. We use the classical complete positive-Euler search-and-crush architecture as a topological premise: construct a finite exterior triangulation of $O(n)$ tetrahedra, pass to one vertex without increasing size, and, after finding a connected non-vertex-link positive-Euler surface, either accept an essential disc or continue through a smaller triangulation of the same exterior. The relevant one-vertex conversion and crushing results are established in the published framework \cite{BO}; initial exterior construction and normal-disc completeness are standard \cite{HLP}.
+
+\begin{theorem}[Conditional quasi-polynomial recognition]\label{thm:conditional}
+Fix a complete topological transition policy for that framework. Assume:
+\begin{enumerate}
+\item The initial finite exterior construction and all one-vertex conversions, reductions and nonterminal crushing transitions have polynomial bit cost, preserve a checked correspondence with the input knot exterior, and keep $t=O(n)$.
+\item Every nonterminal positive surface is a connected admissible normal surface of positive Euler characteristic that is not a vertex link; every nonterminal round strictly decreases the tetrahedron count. The finitely many terminal small cases are handled completely.
+\item Every one-vertex triangulation $T$ actually visited under this fixed policy satisfies $\beta_{\mathrm{LP}}(T)\le b(n)$.
+\item Exact LP subproblems use a polynomial-time rational algorithm, with basic-ray recovery or support descent when required.
+\end{enumerate}
+Then complete unknot recognition has bit complexity $n^{O(b(n)+1)}$ using exhaustive backdoor discovery. In particular $b(n)=O(\log n)$ gives $n^{O(\log n)}$. If a suitable backdoor is supplied or found in polynomial time at each stage, the bound improves to $3^{b(n)}\poly(n)$.
+\end{theorem}
+\begin{proof}
+At a one-vertex stage, all $4t$ triangle anchors and all assignments on a valid $B$ are covered by the positive-Euler query. If no canonical positive-Euler surface exists, no essential normal disc exists: a connected essential disc cannot contain a separate vertex-link component, so it has the required zero-anchor property \cite[Lemma~8]{BO}. Normal-disc completeness therefore rejects the unknot.
+
+If the query is positive, obtain a primitive standard ray and hence a connected surface. A genuine knot exterior in $S^3$ contains no embedded projective plane, so a connected positive-Euler surface is a sphere or disc. An essential disc certifies the unknot. Otherwise apply the assumed complete topological transition to a smaller exterior triangulation and restore one vertex. All coordinates needed for a primitive ray have polynomial bit length, and each transition has the assumed polynomial bit cost.
+
+There are at most $O(n)$ nonterminal decreases. Unknown-backdoor enumeration costs at most $(3t)^{O(b(n))}\poly(t)$ per stage by \eqref{eq:unknown-backdoor}. Summing over stages, with $t=O(n)$, gives the first estimate. With a supplied or efficiently found $B$, use \eqref{eq:backdoor-cost} instead. The checked correspondence keeps each surface and negative conclusion attached to the original knot problem.
+\end{proof}
+
+The same assembly proof applies with $\delta_{\mathrm{LP}}^{\Pi}$ in place of $\beta_{\mathrm{LP}}$, provided $\Pi$ fixes a polynomial-time LP and witness-recovery policy at every stage. The unused-tetrahedron obstruction makes this refinement significant on positive instances; on negative instances the two parameters agree. A small value measured with the shipped simplex cannot be transferred automatically to a different LP policy.
+
+The assumption is trajectory-wide. A small backdoor for the initial triangulation is insufficient if crushing produces a later hard stage. Existence of one favorable triangulation, or one favorable sequence of transformations, is also insufficient unless that sequence can be found within the claimed bound. A search policy cannot hide an exponential triangulation optimization step inside the word ``preprocessing''.
+
+The theorem does not claim that a complete standard-sector enumeration is quasi-polynomial. It replaces that enumeration query by LP and then isolates the type-choice parameter. It also does not use a successful positive run as a certificate that its observed branch set is a strong backdoor: a positive witness suffices to decide that stage, while the structural parameter requires all-anchor coverage.
+
+\subsection{The implementation gap is concrete}
+
+Three remaining obligations prevent this package from being advertised as a quasi-polynomial recognizer.
+
+First, there is no general small-backdoor theorem for knot exteriors, under any specified useful reduction policy. The new family theorem refutes a proposed obstruction based solely on large support; it does not prove the desired universal structural statement.
+
+Second, the exact Bland simplex implementation has finite exact pivoting but no polynomial worst-case pivot bound. Replacing it by a polynomial rational-LP oracle preserves the mathematical reduction, yet delivering a fast, robust such backend is a separate task. A numerical LP proposal followed by exact reconstruction could be a useful practical hybrid, provided failure to reconstruct remains inconclusive and a complete fallback is retained.
+
+Third, the prototype searches positive-Euler surfaces in supplied triangulations. It does not integrate a full independently checked crushing and diagram-provenance pipeline. The general normal-component routines remain available, but the new short rank endpoint deliberately certifies only primitive disc rays. A failed short certificate must go to an appropriate complete geometric test or continuation, not to a negative knot verdict.
+
+These gaps are testable research obligations with specified interfaces. There is no appeal to unspecified ``efficient simplification'', no replacement of bit complexity by unit-cost arithmetic, and no inference from small experiments to an asymptotic theorem.

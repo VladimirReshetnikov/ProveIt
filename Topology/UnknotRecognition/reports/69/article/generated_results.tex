@@ -1,0 +1,89 @@
+% Automatically generated from the retained benchmark; do not hand-edit numerical rows.
+Table entries are separate medians in milliseconds. Each ratio is the median
+of the first time divided by the second time within the same measured round;
+it need not equal the ratio of the two displayed medians. Warm-ups are excluded.
+
+\begin{table}[tbp]
+\centering\small
+\setlength{\tabcolsep}{4.5pt}
+\caption{Fibonacci meridian disc counts. Both methods include fresh generation and one external replay; the ray producer also performs its existing internal replay. The 512-tetrahedron entry is a ray-only capacity measurement, with no baseline ratio.}
+\label{tab:raytimes}
+\begin{tabular}{rrrrr}
+\toprule
+$t$ & Pairs/calls & Old disc (ms) & Ray disc (ms) & Old/ray \\
+\midrule
+8 & 5 & 3.603 & 2.428 & 1.484 \\
+16 & 5 & 8.400 & 4.597 & 1.830 \\
+32 & 5 & 23.453 & 8.409 & 2.733 \\
+64 & 5 & 82.226 & 19.655 & 4.279 \\
+128 & 5 & 282.173 & 36.260 & 7.524 \\
+256 & 3 & 1351.121 & 72.965 & 18.704 \\
+512 & 3 & --- & 227.015 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[tbp]
+\centering\small
+\setlength{\tabcolsep}{4.5pt}
+\caption{Complete coordinate censuses on the same Fibonacci sources: dimension reduction does not compensate for general rank-compilation overhead in this experiment. The old implementation already uses its single-orbit shortcut. There are five pairs through $t=128$ and three at $t=256$.}
+\label{tab:coordinatetimes}
+\begin{tabular}{rrrrrrr}
+\toprule
+$t$ & $q+a$ & $d$ & Old (ms) & $d$-vector (ms) & Packed (ms) & Old/packed \\
+\midrule
+8 & 8 & 1 & 2.938 & 3.130 & 3.143 & 0.916 \\
+16 & 16 & 1 & 7.163 & 8.576 & 8.176 & 0.868 \\
+32 & 32 & 1 & 22.625 & 26.072 & 26.098 & 0.867 \\
+64 & 64 & 1 & 79.959 & 97.105 & 93.013 & 0.855 \\
+128 & 128 & 1 & 288.641 & 368.977 & 347.524 & 0.820 \\
+256 & 256 & 1 & 1335.527 & 1445.574 & 1707.417 & 0.782 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[tbp]
+\centering\small
+\setlength{\tabcolsep}{4.5pt}
+\caption{Control cases, five pairs per row. The first and second methods are named in each group heading. Fixed-trace transport uses an identical selected basis and independently checked orbit trace in both arms; its excluded setup contains geometry, compilation, weight construction, and orbit discovery.}
+\label{tab:controls}
+\begin{tabular}{lrrr}
+\toprule
+Case & First (ms) & Second (ms) & First/second \\
+\midrule
+\multicolumn{4}{l}{\emph{Disc counts: old kernel / ray interface}} \\
+Vertex links & 0.398 & 1.515 & 0.259 \\
+Three-way mixture & 1.394 & 3.323 & 0.416 \\
+Capped meridian & 5.568 & 15.471 & 0.346 \\
+\addlinespace[3pt]
+\multicolumn{4}{l}{\emph{Coordinate censuses: old compact / packed}} \\
+Vertex links & 2.381 & 2.551 & 0.920 \\
+Three-way mixture & 2.873 & 3.356 & 0.917 \\
+Capped meridian & 18.637 & 16.711 & 1.087 \\
+\addlinespace[3pt]
+\multicolumn{4}{l}{\emph{Fixed-trace transport: vector / packed}} \\
+Vertex links & 0.886 & 0.914 & 0.953 \\
+Three-way mixture & 1.003 & 1.059 & 1.004 \\
+Capped meridian & 9.502 & 9.199 & 1.042 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[tbp]
+\centering\small
+\setlength{\tabcolsep}{4.5pt}
+\caption{Source-bound certificates for stabilized-circle diagrams. The existing cocycle discovers the supplied vector outside the timers. Generation includes two internal disc replays, followed by a separately timed external source-bound replay. These are new-wrapper A/A stages, not a comparison of complete automatic recognizers. Separate stage medians need not sum to the total median.}
+\label{tab:diagramtimes}
+\begin{tabular}{rrrrrrr}
+\toprule
+Crossings & $t$ & Calls & Generate (ms) & Verify (ms) & Total (ms) & Proof bytes \\
+\midrule
+1 & 20 & 5 & 8.072 & 2.878 & 11.023 & 4,283 \\
+4 & 80 & 5 & 24.331 & 8.686 & 34.129 & 16,333 \\
+8 & 160 & 5 & 54.233 & 17.607 & 70.303 & 32,823 \\
+16 & 320 & 3 & 111.712 & 45.605 & 159.955 & 66,815 \\
+32 & 640 & 3 & 255.049 & 81.645 & 342.695 & 134,943 \\
+\bottomrule
+\end{tabular}
+\end{table}
+

@@ -5677,7 +5677,7 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        separating `f` and `g`. It gives `g x − g x′ = ψ(x − x′)` whenever
        `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. So `g` shares the linear
        part `ψ`, which is Milićević's `φ₂ = ψ₁ + u`.
-       **Lemma 9.2 for one pair is assembled:** `lemma_9_2_pair`
+       **Lemma 9.2 for one pair is assembled:** `milicevic_lemma_9_2_pair`
        (`Proofs16Lemma92Pair`). Start from `cN²|Ω|` triples separating
        `f` and `g`. The result is a set `B` of values, of density
        `2^(-1882)·c^4656` in `V`, on which `f` is a Freiman
@@ -5704,11 +5704,34 @@ the decomposition with these named constants, but not `Theorem162At 3`.
             probability `(2R+1)^(−4d)`, is exactly
             `exists_good_selection` (`Proofs16SelectionAveraging`, four
             fixed points per requirement, `K = (2R+1)^d`).
-         3. Lemma 9.2 (`lemma_9_2_pair`, applied pairwise) gives a new
+         3. Lemma 9.2 (`milicevic_lemma_9_2_pair`, applied pairwise) gives a new
             Freiman `θ`, independent of the current indices on many
             pairs.
 
          Claim 9.5 is the same for 12-tuples.
+         Step 2 is done: `claim_9_4_selection`
+         (`Proofs16ClaimNineFourSelection`) chooses `ψ : Fin 4 → G → G`
+         with `ψ i z ∈ spanBall (Γ z) R` that realize a prescribed
+         decomposition at `(x + a, x, y + a, y)` for a
+         `(2R+1)^(−4d)` fraction of the triples. The four independent
+         maps make the fixed points distinct.
+         `exists_good_selection_indexed` counts over an index family.
+         Step 3 is done: `claim_9_4_core` (`Proofs16ClaimNineFourCore`).
+         From `εN³` prescribed decompositions `ξ₀ − ξ₁ = ξ₂ − ξ₃` it gets
+         the selected maps, an event set `E` of size
+         `ε(2R+1)^(−4d)N³`, and Lemma 9.2 for `(ψ₀, ψ₁)` with `ω = y`.
+         The result is a Freiman 2-homomorphism `θ` on a Bohr set with
+         `ψ₁ x − ψ₁ x′ = θ(x − x′)` on the event fibers. The escaping
+         frequency is `ψ₀(x+a) − ψ₁(x) = ξ₀ − ξ₁` on `E`.
+         Step 1 is done: `escape_frequency`
+         (`Proofs16ClaimNineFourEscape`). Suppose some `d` with
+         `|θ_i·d| ≤ ηN` and `sη ≤ 1/4` is not in `B(K;ρ) + B(L;σ)`. Then a
+         frequency of `⟨K⟩ ∩ ⟨L⟩` escapes the `{-1,0,1}`-span of the
+         `θ_i`, by the corpus's quarter-radius Theorem 27. With
+         `K = Γ_{x+a} ∪ Γ_x` and `L = Γ_{y+a} ∪ Γ_y`, it splits as
+         `ξ₀ − ξ₁ = ξ₂ − ξ₃`. Still to do: the per-triple splitting into
+         span balls, θ's values growing the index sets, and the
+         iteration.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.
@@ -9897,3 +9920,124 @@ the facade closure), using only `propext`, `Classical.choice`, and
 regenerated catalogue is byte-identical: 115 companion proofs and five
 open statements; this count does not certify fidelity to every printed
 statement. The selected-port scope check passes.
+
+### J.144. Individual tuple classes and the prime-group sampling step
+
+The direct original-data construction now groups fixed alternating-value
+tuples into bounded classes and supplies the sample used by Claim 6.3's
+almost-all tuple argument. It preserves the original witness system and
+column maps throughout.
+
+`fixedRelationWordRepresentations` places the compatible words in a common
+fixed-length type, preserving cardinality, entries, alternating value and
+endpoint identity. `column_tuple_class_cover` reuses the existing maximal
+disjoint-family argument. It selects `J` with `|J|·delta ≤ 1`, assigns each
+tuple to a representative, and proves pairwise identities inside a class.
+The two kernel costs use only a fixed number of columns:
+
+```
+s = refinementKernelRadius (2*(k+1)*d) (3*(k+1)*d) rho rword,
+t = refinementKernelRadius (2*(k+1)*d) ((k+1)*d) rho s.
+```
+
+`global_column_tuple_classes` instantiates this from the original dense
+bihomomorphism, with the J.143 word density and endpoint radius. Each
+representative has its own spectrum of size at most `(k+1)*d`, normalized
+Freiman-linear map, and a class label. The number of representatives does
+not enter either kernel radius. No union of all model spectra is formed.
+
+**Finite sampling counts.** `linear_sample_preimage_card_le` recovers one
+sample coordinate from a nonzero linear combination, proving
+`# {e : Fin r → ZMod N | sum_i c_i e_i ∈ Z} ≤ |Z| N^(r-1)`.
+Union over the at most `3^r` nonzero ternary coefficient vectors gives
+`ternary_samples_meeting_card_le`. Boolean subsum collisions are a special
+case with `Z = {0}`, giving at most `3^r N^(r-1)` colliding samples.
+
+`sample_retention_sum_ge` counts retained indices through product domains.
+`sample_bad_indices_sum_le` counts sparse-kernel tuple events by signed
+subsums. `exists_sample_of_mean_bounds` combines the two estimates with a
+collision penalty in one finite weighted average. It produces a sample
+with many retained indices, few bad tuples and no Boolean collisions.
+
+`prime_group_sample_selection` and `bohr_sample_selection` give the
+explicit statement. If `|X| ≥ bN`, every sample domain has density at least
+`beta`, kernel sets have size at most `eta N`, and `|Q| ≤ N^m`, it suffices
+that
+
+```
+8·3^r·eta ≤ epsilon·b·beta^r,
+8·3^r ≤ b·beta^r·N.
+```
+
+Then the retained set has size at least `b·beta^r N/2`, the Boolean cube has
+`2^r` distinct points, and at most `epsilon N^m/2` original tuples hit a
+kernel by a nonzero signed coefficient vector. The retained density does
+not depend on `epsilon`. The Bohr specialization uses `beta = 1/q^d` and
+`1 ≤ tau q` with a common rank bound `d`.
+
+**Original-data sample.** `columnAnchorFibre_card_le` proves the exact
+ambient budget `N^k` for `(k+1)`-tuples with a fixed alternating value.
+`sparseColumnTuples` is the additive fibre whose local tuple zero level has
+at most `eta N` points. `global_column_tuple_sample_system` constructs all
+of this from the original dense bihomomorphism. Put
+
+```
+b = absBsgEps (globalColumnQuadrupleDensity alpha) 1,
+tau = globalColumnTupleClassRadius alpha k/(100r),
+q = ceil(1/tau),  beta = 1/q^d,
+eta = epsilon·b·beta^r/(8·3^r).
+```
+
+Its explicit modulus threshold covers the class construction, `N ≥ 7`,
+and `N ≥ 8·3^r/(b·beta^r)`. It is independent of `epsilon`, as is the
+retained density `b·beta^r/2`. The output retains original witnesses,
+individual model spectra, class labels and identities; the bad-tuple bound
+is measured on the original index set, before retention.
+
+For `k = 15`, this is the sampling step for additive 16-tuples. Remaining
+work in Proposition 6.1 is to choose representative tuples in classes that
+meet the retained set outside the bad family, separate their finite
+sample-value sets by a logarithmic number of characters, take a popular
+box of column values, and turn the resulting dense tuple zero levels into
+image bounds. The robust Bogolyubov–Ruzsa progression step and subsequent
+structure arguments remain open, as does the final printed numerical
+comparison. No numbered catalogue entry or final bound improvement is
+claimed here. No upstream code is ported at this checkpoint.
+
+**Simplification to check next (not yet formalized).** The present tuple
+classes give exact identities, rather than bounded-image differences.
+For the balanced 16-tuple consumer this should allow separation only of
+representative values at the `r` sampled points, instead of the entire
+Boolean cube. In each class meeting the retained additive-tuple fibre,
+choose any tuple in that fibre as the representative. Its value at each
+sample equals the value of every retained tuple in the same class, because
+all their corner indices satisfy the small sample-domain constraints.
+
+The separating set then has at most `|J|·r` values. Put columns into common
+Dirichlet cells for each character and sample. Balanced alternating sums
+cancel the common cell centres, and a constant cell count depending only
+on tuple length makes each tuple value too small in every chosen character
+to be separated. Exact class agreement and separation force that tuple
+value to be zero at every sample. Boolean injectivity ensures a sample is
+nonzero. Thus a tuple with sparse zero level lies in the previously counted
+bad family. Every other tuple has a dense zero level, from which the
+existing dense-level image theorem supplies the desired image bound on a
+half-radius Bohr domain. The cardinality, cell, and containment arguments
+still need Lean proofs; this paragraph records the proposed simplification.
+
+Catalogue hygiene: the incoming one-pair lemma from Milićević's Lemma 9.2
+is named `milicevic_lemma_9_2_pair`. Its former name matched the Gowers
+catalogue's related-theorem prefix for Lemma 9.2, even though it concerns
+a different paper. The explicit source prefix removes that erroneous
+association without changing its mathematical statement or proof.
+
+Verification after merging the incoming Step 5 pairing and independence
+results, and correcting the modern-source lemma name: all 32 new named
+proofs pass individual axiom checks. The complete original-data sampling
+production closure compiles across 269 modules. The combined audit checks
+9,018 public Gowers theorems across 5,493 modules (5,491 in the facade
+closure), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The selected OAI audit closure remains 4,152 modules. The regenerated
+catalogue is byte-identical to the prior verified inventory, with 115
+companion proofs and five open statements. These counts do not certify
+fidelity to every printed statement. The selected-port scope check passes.

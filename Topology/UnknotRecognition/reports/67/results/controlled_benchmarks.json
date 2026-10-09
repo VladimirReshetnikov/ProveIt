@@ -1,0 +1,4717 @@
+{
+  "schema": "dual-continuation-controlled-benchmarks-v1",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "logical_cpus": 9,
+    "timer": "perf_counter_ns",
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "repeats": 5,
+  "seed": 20261009,
+  "isolation": "Run after all other task research/audit/test jobs finished; shared host scheduling remains uncontrolled.",
+  "scope": "Full producer and independent replay separately; no input construction, JSON serialization, file I/O or oracle enumeration inside timed region.",
+  "selection": "Predeclared fixture/polarity strata; highest nullity, then active vertices, then support size, then lexicographic support. No time-based selection.",
+  "source_sha256": {
+    "benchmark_dual_continuation.py": "a7583bf0c042e5329c6be557abd9ea363069fc3e635e6a377c9fa0a9d03a9801",
+    "normal_euler.py": "600877f728e508704083031947124b37bdfd8161e9e9c6cea278206e83de873e",
+    "exact_lp.py": "c1e2f3bcb807a3902db0cb2c5df5385a6df7fc67a399dbe9fa3dc251302279a8",
+    "normal_ray.py": "07d9e26cf87f521a18105bea4f94f738c994375596c064993cee5d95b2092389",
+    "normal_ray_verify.py": "d1d7da98a6ca877a7932838e0f369be4c2aae445ebc496ddb46f2e99e8e0251e",
+    "normal_disk_kernel.py": "e24adddb23ec8aa2b28adff5de926413495627337e8df19701cf80f1d9f50c76"
+  },
+  "sectors": [
+    {
+      "fixture_id": "fibonacci_lst_10",
+      "tetrahedra": 10,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          1
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 4,
+      "active_vertices": 1,
+      "anchors_total": 9,
+      "order": [
+        [
+          "anchors",
+          "old",
+          "envelope",
+          "old_copy"
+        ],
+        [
+          "old_copy",
+          "envelope",
+          "old",
+          "anchors"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "old",
+          "envelope"
+        ],
+        [
+          "old",
+          "old_copy",
+          "anchors",
+          "envelope"
+        ],
+        [
+          "old",
+          "envelope",
+          "old_copy",
+          "anchors"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.006238776,
+          "minimum": 0.005896588,
+          "maximum": 0.007093662,
+          "observations": [
+            0.005896588,
+            0.007093662,
+            0.007023248,
+            0.006238776,
+            0.005926463
+          ]
+        },
+        "old_copy": {
+          "median": 0.005967714,
+          "minimum": 0.005859884,
+          "maximum": 0.007026473,
+          "observations": [
+            0.005967714,
+            0.005897219,
+            0.007026473,
+            0.005859884,
+            0.00604577
+          ]
+        },
+        "anchors": {
+          "median": 0.012881931,
+          "minimum": 0.012149455,
+          "maximum": 0.017015867,
+          "observations": [
+            0.012586953,
+            0.013640164,
+            0.017015867,
+            0.012881931,
+            0.012149455
+          ]
+        },
+        "envelope": {
+          "median": 0.014988372,
+          "minimum": 0.013533016,
+          "maximum": 0.015721528,
+          "observations": [
+            0.013533016,
+            0.015721528,
+            0.015395145,
+            0.013719722,
+            0.014988372
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.002150096,
+          "minimum": 0.002083678,
+          "maximum": 0.002423311,
+          "observations": [
+            0.002241071,
+            0.002150096,
+            0.002423311,
+            0.002114464,
+            0.002083678
+          ]
+        },
+        "envelope": {
+          "median": 0.002187411,
+          "minimum": 0.002094995,
+          "maximum": 0.002428649,
+          "observations": [
+            0.002187411,
+            0.00221359,
+            0.002094995,
+            0.002141313,
+            0.002428649
+          ]
+        }
+      },
+      "stats": {
+        "anchors": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 20,
+          "triangle_classes": 9,
+          "kernel_variables": 19,
+          "kernel_equations": 20,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 9,
+          "anchors_tested": 9,
+          "strategy": "anchors",
+          "lp_calls": 6,
+          "reused_anchors": 3,
+          "envelope_calls": 0,
+          "lp_pivots": 18,
+          "lp_tableau_updates": 8772,
+          "maximum_tableau_bits": 3
+        },
+        "old": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 20,
+          "triangle_classes": 9,
+          "kernel_variables": 19,
+          "kernel_equations": 20,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "bases_attempted": 20,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 6,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 20,
+          "triangle_classes": 9,
+          "kernel_variables": 19,
+          "kernel_equations": 20,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 9,
+          "anchors_tested": 9,
+          "strategy": "envelope",
+          "lp_calls": 7,
+          "reused_anchors": 3,
+          "envelope_calls": 1,
+          "lp_pivots": 22,
+          "lp_tableau_updates": 10336,
+          "maximum_tableau_bits": 4
+        },
+        "old_copy": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 20,
+          "triangle_classes": 9,
+          "kernel_variables": 19,
+          "kernel_equations": 20,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "bases_attempted": 20,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 6,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 1146,
+        "envelope": 1146
+      }
+    },
+    {
+      "fixture_id": "fibonacci_lst_10",
+      "tetrahedra": 10,
+      "support": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 1,
+      "active_vertices": 1,
+      "anchors_total": 21,
+      "order": [
+        [
+          "old",
+          "anchors",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "old_copy",
+          "anchors",
+          "old"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "old",
+          "old_copy",
+          "envelope",
+          "anchors"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.008443353,
+          "minimum": 0.007822663,
+          "maximum": 0.010565447,
+          "observations": [
+            0.007822663,
+            0.008443353,
+            0.010565447,
+            0.008137228,
+            0.008798129
+          ]
+        },
+        "old_copy": {
+          "median": 0.00792154,
+          "minimum": 0.007779168,
+          "maximum": 0.008280712,
+          "observations": [
+            0.00792154,
+            0.007874189,
+            0.008280712,
+            0.008068287,
+            0.007779168
+          ]
+        },
+        "anchors": {
+          "median": 0.007929241,
+          "minimum": 0.007826117,
+          "maximum": 0.390782651,
+          "observations": [
+            0.007837554,
+            0.007929241,
+            0.390782651,
+            0.007826117,
+            0.008452377
+          ]
+        },
+        "envelope": {
+          "median": 0.012926126,
+          "minimum": 0.012604489,
+          "maximum": 0.015744462,
+          "observations": [
+            0.012604489,
+            0.012620713,
+            0.015744462,
+            0.012926126,
+            0.013991214
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000475495,
+          "minimum": 0.000457307,
+          "maximum": 0.000835589,
+          "observations": [
+            0.000457307,
+            0.000543926,
+            0.000835589,
+            0.000462215,
+            0.000475495
+          ]
+        },
+        "envelope": {
+          "median": 0.000474663,
+          "minimum": 0.000456146,
+          "maximum": 0.000694059,
+          "observations": [
+            0.000491158,
+            0.000474663,
+            0.000463407,
+            0.000694059,
+            0.000456146
+          ]
+        }
+      },
+      "stats": {
+        "old": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 38,
+          "triangle_classes": 21,
+          "kernel_variables": 31,
+          "kernel_equations": 38,
+          "matching_nullity": 1,
+          "matching_rank": 9,
+          "removed_link_factors": 0,
+          "bases_attempted": 1,
+          "positive_directions": 1,
+          "nonextreme_directions": 0,
+          "emitted_rays": 1,
+          "hyperplanes": 1,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 38,
+          "triangle_classes": 21,
+          "kernel_variables": 31,
+          "kernel_equations": 38,
+          "matching_nullity": 1,
+          "matching_rank": 9,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 21,
+          "anchors_tested": 3,
+          "strategy": "anchors",
+          "lp_calls": 2,
+          "reused_anchors": 1,
+          "envelope_calls": 0,
+          "lp_pivots": 18,
+          "lp_tableau_updates": 6048,
+          "maximum_tableau_bits": 8
+        },
+        "old_copy": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 38,
+          "triangle_classes": 21,
+          "kernel_variables": 31,
+          "kernel_equations": 38,
+          "matching_nullity": 1,
+          "matching_rank": 9,
+          "removed_link_factors": 0,
+          "bases_attempted": 1,
+          "positive_directions": 1,
+          "nonextreme_directions": 0,
+          "emitted_rays": 1,
+          "hyperplanes": 1,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 38,
+          "triangle_classes": 21,
+          "kernel_variables": 31,
+          "kernel_equations": 38,
+          "matching_nullity": 1,
+          "matching_rank": 9,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 21,
+          "anchors_tested": 3,
+          "strategy": "envelope",
+          "lp_calls": 3,
+          "reused_anchors": 1,
+          "envelope_calls": 1,
+          "lp_pivots": 28,
+          "lp_tableau_updates": 10240,
+          "maximum_tableau_bits": 8
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 483,
+        "envelope": 483
+      }
+    },
+    {
+      "fixture_id": "cap_3_5_3",
+      "tetrahedra": 6,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 2,
+      "active_vertices": 1,
+      "anchors_total": 5,
+      "order": [
+        [
+          "envelope",
+          "old",
+          "old_copy",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "old",
+          "anchors",
+          "envelope",
+          "old_copy"
+        ],
+        [
+          "old",
+          "old_copy",
+          "anchors",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old_copy",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.000743913,
+          "minimum": 0.000673688,
+          "maximum": 0.001685298,
+          "observations": [
+            0.001685298,
+            0.001006521,
+            0.000731063,
+            0.000743913,
+            0.000673688
+          ]
+        },
+        "old_copy": {
+          "median": 0.000695781,
+          "minimum": 0.000682721,
+          "maximum": 0.001413725,
+          "observations": [
+            0.000801868,
+            0.001413725,
+            0.000693087,
+            0.000695781,
+            0.000682721
+          ]
+        },
+        "anchors": {
+          "median": 0.000347705,
+          "minimum": 0.000338371,
+          "maximum": 0.001778025,
+          "observations": [
+            0.00042506,
+            0.001778025,
+            0.000347705,
+            0.000338371,
+            0.000347114
+          ]
+        },
+        "envelope": {
+          "median": 0.000374915,
+          "minimum": 0.000354966,
+          "maximum": 0.005952932,
+          "observations": [
+            0.000354966,
+            0.005952932,
+            0.000376709,
+            0.000374915,
+            0.000366092
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.00038503,
+          "minimum": 0.000368196,
+          "maximum": 0.000663934,
+          "observations": [
+            0.00058729,
+            0.00038503,
+            0.000663934,
+            0.000368196,
+            0.000372392
+          ]
+        },
+        "envelope": {
+          "median": 0.000342328,
+          "minimum": 0.000320916,
+          "maximum": 0.000592989,
+          "observations": [
+            0.000342328,
+            0.000592989,
+            0.000358331,
+            0.000324421,
+            0.000320916
+          ]
+        }
+      },
+      "stats": {
+        "envelope": {
+          "tetrahedra": 6,
+          "allowed_types": 3,
+          "active_equations": 6,
+          "triangle_classes": 5,
+          "kernel_variables": 8,
+          "kernel_equations": 6,
+          "matching_nullity": 2,
+          "matching_rank": 1,
+          "removed_link_factors": 3,
+          "active_vertices": 1,
+          "anchors_total": 5,
+          "anchors_tested": 0,
+          "strategy": "envelope",
+          "lp_calls": 1,
+          "reused_anchors": 0,
+          "envelope_calls": 1,
+          "lp_pivots": 0,
+          "lp_tableau_updates": 0,
+          "maximum_tableau_bits": 1
+        },
+        "old": {
+          "tetrahedra": 6,
+          "allowed_types": 3,
+          "active_equations": 6,
+          "triangle_classes": 5,
+          "kernel_variables": 8,
+          "kernel_equations": 6,
+          "matching_nullity": 2,
+          "matching_rank": 1,
+          "removed_link_factors": 3,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 2,
+          "method": "arrangement"
+        },
+        "old_copy": {
+          "tetrahedra": 6,
+          "allowed_types": 3,
+          "active_equations": 6,
+          "triangle_classes": 5,
+          "kernel_variables": 8,
+          "kernel_equations": 6,
+          "matching_nullity": 2,
+          "matching_rank": 1,
+          "removed_link_factors": 3,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 2,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 6,
+          "allowed_types": 3,
+          "active_equations": 6,
+          "triangle_classes": 5,
+          "kernel_variables": 8,
+          "kernel_equations": 6,
+          "matching_nullity": 2,
+          "matching_rank": 1,
+          "removed_link_factors": 3,
+          "active_vertices": 1,
+          "anchors_total": 5,
+          "anchors_tested": 5,
+          "strategy": "anchors",
+          "lp_calls": 0,
+          "reused_anchors": 5,
+          "envelope_calls": 0,
+          "lp_pivots": 0,
+          "lp_tableau_updates": 0,
+          "maximum_tableau_bits": 0
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 411,
+        "envelope": 232
+      }
+    },
+    {
+      "fixture_id": "cap_3_5_3",
+      "tetrahedra": 6,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 5,
+      "active_vertices": 2,
+      "anchors_total": 12,
+      "order": [
+        [
+          "anchors",
+          "envelope",
+          "old_copy",
+          "old"
+        ],
+        [
+          "anchors",
+          "old",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "old_copy",
+          "anchors",
+          "old"
+        ],
+        [
+          "envelope",
+          "old_copy",
+          "old",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old",
+          "envelope",
+          "old_copy"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.001499312,
+          "minimum": 0.001372023,
+          "maximum": 0.001676134,
+          "observations": [
+            0.001499312,
+            0.001531721,
+            0.001372023,
+            0.001676134,
+            0.001375299
+          ]
+        },
+        "old_copy": {
+          "median": 0.001632469,
+          "minimum": 0.001456278,
+          "maximum": 0.001822961,
+          "observations": [
+            0.001687741,
+            0.001822961,
+            0.001456278,
+            0.001469287,
+            0.001632469
+          ]
+        },
+        "anchors": {
+          "median": 0.000651496,
+          "minimum": 0.000611797,
+          "maximum": 0.000738384,
+          "observations": [
+            0.000651496,
+            0.000656333,
+            0.000738384,
+            0.000641861,
+            0.000611797
+          ]
+        },
+        "envelope": {
+          "median": 0.000791933,
+          "minimum": 0.000682061,
+          "maximum": 0.000958861,
+          "observations": [
+            0.000791933,
+            0.000958861,
+            0.000682061,
+            0.000869448,
+            0.000694209
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000284341,
+          "minimum": 0.000249881,
+          "maximum": 0.000358612,
+          "observations": [
+            0.000249881,
+            0.000346023,
+            0.000255568,
+            0.000358612,
+            0.000284341
+          ]
+        },
+        "envelope": {
+          "median": 0.000269219,
+          "minimum": 0.000250151,
+          "maximum": 0.000297831,
+          "observations": [
+            0.000252304,
+            0.000297831,
+            0.000269219,
+            0.000284201,
+            0.000250151
+          ]
+        }
+      },
+      "stats": {
+        "anchors": {
+          "tetrahedra": 6,
+          "allowed_types": 6,
+          "active_equations": 8,
+          "triangle_classes": 8,
+          "kernel_variables": 14,
+          "kernel_equations": 8,
+          "matching_nullity": 5,
+          "matching_rank": 1,
+          "removed_link_factors": 2,
+          "active_vertices": 2,
+          "anchors_total": 12,
+          "anchors_tested": 2,
+          "strategy": "anchors",
+          "lp_calls": 1,
+          "reused_anchors": 1,
+          "envelope_calls": 0,
+          "lp_pivots": 1,
+          "lp_tableau_updates": 20,
+          "maximum_tableau_bits": 1
+        },
+        "envelope": {
+          "tetrahedra": 6,
+          "allowed_types": 6,
+          "active_equations": 8,
+          "triangle_classes": 8,
+          "kernel_variables": 14,
+          "kernel_equations": 8,
+          "matching_nullity": 5,
+          "matching_rank": 1,
+          "removed_link_factors": 2,
+          "active_vertices": 2,
+          "anchors_total": 12,
+          "anchors_tested": 2,
+          "strategy": "envelope",
+          "lp_calls": 2,
+          "reused_anchors": 1,
+          "envelope_calls": 1,
+          "lp_pivots": 2,
+          "lp_tableau_updates": 40,
+          "maximum_tableau_bits": 1
+        },
+        "old_copy": {
+          "tetrahedra": 6,
+          "allowed_types": 6,
+          "active_equations": 8,
+          "triangle_classes": 8,
+          "kernel_variables": 14,
+          "kernel_equations": 8,
+          "matching_nullity": 5,
+          "matching_rank": 1,
+          "removed_link_factors": 2,
+          "bases_attempted": 3,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 5,
+          "method": "arrangement"
+        },
+        "old": {
+          "tetrahedra": 6,
+          "allowed_types": 6,
+          "active_equations": 8,
+          "triangle_classes": 8,
+          "kernel_variables": 14,
+          "kernel_equations": 8,
+          "matching_nullity": 5,
+          "matching_rank": 1,
+          "removed_link_factors": 2,
+          "bases_attempted": 3,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 5,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 369,
+        "envelope": 369
+      }
+    },
+    {
+      "fixture_id": "finite_trefoil",
+      "tetrahedra": 5,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 2,
+      "active_vertices": 1,
+      "anchors_total": 6,
+      "order": [
+        [
+          "envelope",
+          "anchors",
+          "old_copy",
+          "old"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "envelope",
+          "old"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "envelope",
+          "old"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "envelope",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.001104127,
+          "minimum": 0.000903329,
+          "maximum": 0.002177748,
+          "observations": [
+            0.000903329,
+            0.002177748,
+            0.001104127,
+            0.001188732,
+            0.001045339
+          ]
+        },
+        "old_copy": {
+          "median": 0.000979391,
+          "minimum": 0.000904651,
+          "maximum": 0.001038089,
+          "observations": [
+            0.001038089,
+            0.001026351,
+            0.000930879,
+            0.000904651,
+            0.000979391
+          ]
+        },
+        "anchors": {
+          "median": 0.002567165,
+          "minimum": 0.002484492,
+          "maximum": 0.009214566,
+          "observations": [
+            0.002656086,
+            0.002484492,
+            0.002524511,
+            0.002567165,
+            0.009214566
+          ]
+        },
+        "envelope": {
+          "median": 0.003119402,
+          "minimum": 0.002966696,
+          "maximum": 0.006033692,
+          "observations": [
+            0.00331335,
+            0.003107014,
+            0.002966696,
+            0.006033692,
+            0.003119402
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000618967,
+          "minimum": 0.000611035,
+          "maximum": 0.000921615,
+          "observations": [
+            0.000633299,
+            0.000611035,
+            0.000618967,
+            0.000616113,
+            0.000921615
+          ]
+        },
+        "envelope": {
+          "median": 0.000672757,
+          "minimum": 0.000607009,
+          "maximum": 0.001236803,
+          "observations": [
+            0.000672757,
+            0.000637745,
+            0.001236803,
+            0.000813916,
+            0.000607009
+          ]
+        }
+      },
+      "stats": {
+        "envelope": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 11,
+          "triangle_classes": 6,
+          "kernel_variables": 11,
+          "kernel_equations": 11,
+          "matching_nullity": 2,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 6,
+          "anchors_tested": 6,
+          "strategy": "envelope",
+          "lp_calls": 5,
+          "reused_anchors": 2,
+          "envelope_calls": 1,
+          "lp_pivots": 15,
+          "lp_tableau_updates": 2057,
+          "maximum_tableau_bits": 3
+        },
+        "anchors": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 11,
+          "triangle_classes": 6,
+          "kernel_variables": 11,
+          "kernel_equations": 11,
+          "matching_nullity": 2,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 6,
+          "anchors_tested": 6,
+          "strategy": "anchors",
+          "lp_calls": 4,
+          "reused_anchors": 2,
+          "envelope_calls": 0,
+          "lp_pivots": 11,
+          "lp_tableau_updates": 1496,
+          "maximum_tableau_bits": 3
+        },
+        "old_copy": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 11,
+          "triangle_classes": 6,
+          "kernel_variables": 11,
+          "kernel_equations": 11,
+          "matching_nullity": 2,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 2,
+          "method": "arrangement"
+        },
+        "old": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 11,
+          "triangle_classes": 6,
+          "kernel_variables": 11,
+          "kernel_equations": 11,
+          "matching_nullity": 2,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 2,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 610,
+        "envelope": 610
+      }
+    },
+    {
+      "fixture_id": "finite_trefoil_interior",
+      "tetrahedra": 8,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 3,
+      "active_vertices": 1,
+      "anchors_total": 10,
+      "order": [
+        [
+          "envelope",
+          "old",
+          "old_copy",
+          "anchors"
+        ],
+        [
+          "old_copy",
+          "envelope",
+          "old",
+          "anchors"
+        ],
+        [
+          "envelope",
+          "old",
+          "old_copy",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old",
+          "old_copy"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002865437,
+          "minimum": 0.002493655,
+          "maximum": 0.004884818,
+          "observations": [
+            0.002493655,
+            0.002865437,
+            0.003063009,
+            0.004884818,
+            0.002583889
+          ]
+        },
+        "old_copy": {
+          "median": 0.002674964,
+          "minimum": 0.002538843,
+          "maximum": 0.003666103,
+          "observations": [
+            0.003235705,
+            0.002617229,
+            0.002538843,
+            0.003666103,
+            0.002674964
+          ]
+        },
+        "anchors": {
+          "median": 0.005460422,
+          "minimum": 0.005365722,
+          "maximum": 0.005552959,
+          "observations": [
+            0.005410007,
+            0.005520701,
+            0.005460422,
+            0.005365722,
+            0.005552959
+          ]
+        },
+        "envelope": {
+          "median": 0.006454115,
+          "minimum": 0.006116664,
+          "maximum": 0.00666044,
+          "observations": [
+            0.006116664,
+            0.006454115,
+            0.006565479,
+            0.006291494,
+            0.00666044
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.001724686,
+          "minimum": 0.001625248,
+          "maximum": 0.002628055,
+          "observations": [
+            0.001625248,
+            0.001665328,
+            0.0017811,
+            0.002628055,
+            0.001724686
+          ]
+        },
+        "envelope": {
+          "median": 0.001558069,
+          "minimum": 0.001494885,
+          "maximum": 0.001787799,
+          "observations": [
+            0.001534715,
+            0.001594212,
+            0.001494885,
+            0.001558069,
+            0.001787799
+          ]
+        }
+      },
+      "stats": {
+        "envelope": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 21,
+          "triangle_classes": 10,
+          "kernel_variables": 18,
+          "kernel_equations": 21,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 1,
+          "active_vertices": 1,
+          "anchors_total": 10,
+          "anchors_tested": 10,
+          "strategy": "envelope",
+          "lp_calls": 5,
+          "reused_anchors": 6,
+          "envelope_calls": 1,
+          "lp_pivots": 19,
+          "lp_tableau_updates": 4238,
+          "maximum_tableau_bits": 2
+        },
+        "old": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 21,
+          "triangle_classes": 10,
+          "kernel_variables": 18,
+          "kernel_equations": 21,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 1,
+          "bases_attempted": 6,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "old_copy": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 21,
+          "triangle_classes": 10,
+          "kernel_variables": 18,
+          "kernel_equations": 21,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 1,
+          "bases_attempted": 6,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 21,
+          "triangle_classes": 10,
+          "kernel_variables": 18,
+          "kernel_equations": 21,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 1,
+          "active_vertices": 1,
+          "anchors_total": 10,
+          "anchors_tested": 10,
+          "strategy": "anchors",
+          "lp_calls": 4,
+          "reused_anchors": 6,
+          "envelope_calls": 0,
+          "lp_pivots": 16,
+          "lp_tableau_updates": 3640,
+          "maximum_tableau_bits": 2
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 1074,
+        "envelope": 1074
+      }
+    },
+    {
+      "fixture_id": "finite_trefoil_interior",
+      "tetrahedra": 8,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 3,
+      "active_vertices": 2,
+      "anchors_total": 14,
+      "order": [
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "envelope",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "envelope",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "envelope",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002581356,
+          "minimum": 0.002504742,
+          "maximum": 0.002943792,
+          "observations": [
+            0.002943792,
+            0.002581356,
+            0.002683207,
+            0.002504742,
+            0.002510941
+          ]
+        },
+        "old_copy": {
+          "median": 0.002525933,
+          "minimum": 0.002505343,
+          "maximum": 0.00298952,
+          "observations": [
+            0.002525933,
+            0.00251718,
+            0.00298952,
+            0.002951183,
+            0.002505343
+          ]
+        },
+        "anchors": {
+          "median": 0.010838121,
+          "minimum": 0.010381495,
+          "maximum": 0.011507664,
+          "observations": [
+            0.010838121,
+            0.01105283,
+            0.010603584,
+            0.011507664,
+            0.010381495
+          ]
+        },
+        "envelope": {
+          "median": 0.011949008,
+          "minimum": 0.011852485,
+          "maximum": 0.012396732,
+          "observations": [
+            0.012318025,
+            0.011852485,
+            0.011949008,
+            0.012396732,
+            0.011943029
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000390599,
+          "minimum": 0.000377219,
+          "maximum": 0.000452471,
+          "observations": [
+            0.000377219,
+            0.000452471,
+            0.000390599,
+            0.000414835,
+            0.000387945
+          ]
+        },
+        "envelope": {
+          "median": 0.000374285,
+          "minimum": 0.000370379,
+          "maximum": 0.000522645,
+          "observations": [
+            0.000374285,
+            0.000522645,
+            0.000370379,
+            0.000374235,
+            0.000374595
+          ]
+        }
+      },
+      "stats": {
+        "anchors": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 17,
+          "kernel_equations": 18,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 0,
+          "active_vertices": 2,
+          "anchors_total": 14,
+          "anchors_tested": 12,
+          "strategy": "anchors",
+          "lp_calls": 7,
+          "reused_anchors": 5,
+          "envelope_calls": 0,
+          "lp_pivots": 30,
+          "lp_tableau_updates": 7476,
+          "maximum_tableau_bits": 2
+        },
+        "old_copy": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 17,
+          "kernel_equations": 18,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 0,
+          "bases_attempted": 5,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "old": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 17,
+          "kernel_equations": 18,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 0,
+          "bases_attempted": 5,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 8,
+          "allowed_types": 8,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 17,
+          "kernel_equations": 18,
+          "matching_nullity": 3,
+          "matching_rank": 5,
+          "removed_link_factors": 0,
+          "active_vertices": 2,
+          "anchors_total": 14,
+          "anchors_tested": 12,
+          "strategy": "envelope",
+          "lp_calls": 8,
+          "reused_anchors": 5,
+          "envelope_calls": 1,
+          "lp_pivots": 34,
+          "lp_tableau_updates": 8344,
+          "maximum_tableau_bits": 2
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 417,
+        "envelope": 417
+      }
+    },
+    {
+      "fixture_id": "finite_figureEight",
+      "tetrahedra": 10,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          1
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 4,
+      "active_vertices": 1,
+      "anchors_total": 12,
+      "order": [
+        [
+          "old_copy",
+          "old",
+          "envelope",
+          "anchors"
+        ],
+        [
+          "old",
+          "anchors",
+          "envelope",
+          "old_copy"
+        ],
+        [
+          "old",
+          "old_copy",
+          "anchors",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "anchors",
+          "envelope"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.01471059,
+          "minimum": 0.014335515,
+          "maximum": 0.017583439,
+          "observations": [
+            0.014335515,
+            0.014499077,
+            0.01471059,
+            0.017583439,
+            0.014713385
+          ]
+        },
+        "old_copy": {
+          "median": 0.014613446,
+          "minimum": 0.012802172,
+          "maximum": 0.01558147,
+          "observations": [
+            0.014613446,
+            0.014620657,
+            0.013662177,
+            0.01558147,
+            0.012802172
+          ]
+        },
+        "anchors": {
+          "median": 0.021350621,
+          "minimum": 0.021125287,
+          "maximum": 0.024849737,
+          "observations": [
+            0.024849737,
+            0.022789493,
+            0.021125287,
+            0.021253155,
+            0.021350621
+          ]
+        },
+        "envelope": {
+          "median": 0.023346257,
+          "minimum": 0.022514666,
+          "maximum": 0.026282229,
+          "observations": [
+            0.022514666,
+            0.02375307,
+            0.023346257,
+            0.026282229,
+            0.022907006
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.003109959,
+          "minimum": 0.002784146,
+          "maximum": 0.005058116,
+          "observations": [
+            0.005058116,
+            0.003109959,
+            0.003133524,
+            0.0028209,
+            0.002784146
+          ]
+        },
+        "envelope": {
+          "median": 0.003058783,
+          "minimum": 0.002836745,
+          "maximum": 0.003249606,
+          "observations": [
+            0.002836745,
+            0.003249606,
+            0.002992175,
+            0.003058783,
+            0.003092334
+          ]
+        }
+      },
+      "stats": {
+        "old_copy": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 25,
+          "triangle_classes": 12,
+          "kernel_variables": 22,
+          "kernel_equations": 25,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "bases_attempted": 56,
+          "positive_directions": 5,
+          "nonextreme_directions": 0,
+          "emitted_rays": 5,
+          "hyperplanes": 8,
+          "method": "arrangement"
+        },
+        "old": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 25,
+          "triangle_classes": 12,
+          "kernel_variables": 22,
+          "kernel_equations": 25,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "bases_attempted": 56,
+          "positive_directions": 5,
+          "nonextreme_directions": 0,
+          "emitted_rays": 5,
+          "hyperplanes": 8,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 25,
+          "triangle_classes": 12,
+          "kernel_variables": 22,
+          "kernel_equations": 25,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 12,
+          "anchors_tested": 12,
+          "strategy": "envelope",
+          "lp_calls": 7,
+          "reused_anchors": 6,
+          "envelope_calls": 1,
+          "lp_pivots": 34,
+          "lp_tableau_updates": 18792,
+          "maximum_tableau_bits": 4
+        },
+        "anchors": {
+          "tetrahedra": 10,
+          "allowed_types": 10,
+          "active_equations": 25,
+          "triangle_classes": 12,
+          "kernel_variables": 22,
+          "kernel_equations": 25,
+          "matching_nullity": 4,
+          "matching_rank": 6,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 12,
+          "anchors_tested": 12,
+          "strategy": "anchors",
+          "lp_calls": 6,
+          "reused_anchors": 6,
+          "envelope_calls": 0,
+          "lp_pivots": 29,
+          "lp_tableau_updates": 16452,
+          "maximum_tableau_bits": 3
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 1518,
+        "envelope": 1518
+      }
+    },
+    {
+      "fixture_id": "finite_figureEight_interior",
+      "tetrahedra": 13,
+      "support": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          12,
+          0
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 5,
+      "active_vertices": 1,
+      "anchors_total": 16,
+      "order": [
+        [
+          "envelope",
+          "old",
+          "anchors",
+          "old_copy"
+        ],
+        [
+          "envelope",
+          "anchors",
+          "old_copy",
+          "old"
+        ],
+        [
+          "envelope",
+          "anchors",
+          "old_copy",
+          "old"
+        ],
+        [
+          "anchors",
+          "old",
+          "envelope",
+          "old_copy"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old",
+          "old_copy"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.048577972,
+          "minimum": 0.047862212,
+          "maximum": 0.053650848,
+          "observations": [
+            0.053650848,
+            0.047862212,
+            0.048577972,
+            0.051149762,
+            0.048305048
+          ]
+        },
+        "old_copy": {
+          "median": 0.04846844,
+          "minimum": 0.047928833,
+          "maximum": 0.051184893,
+          "observations": [
+            0.047928833,
+            0.049385708,
+            0.04846844,
+            0.051184893,
+            0.048010942
+          ]
+        },
+        "anchors": {
+          "median": 0.055054766,
+          "minimum": 0.053386675,
+          "maximum": 0.057749027,
+          "observations": [
+            0.055171692,
+            0.055054766,
+            0.053386675,
+            0.05394012,
+            0.057749027
+          ]
+        },
+        "envelope": {
+          "median": 0.060878974,
+          "minimum": 0.058725053,
+          "maximum": 0.063905522,
+          "observations": [
+            0.063257643,
+            0.058725053,
+            0.059304031,
+            0.063905522,
+            0.060878974
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.005608027,
+          "minimum": 0.005148977,
+          "maximum": 0.006605856,
+          "observations": [
+            0.005228067,
+            0.005772632,
+            0.005608027,
+            0.006605856,
+            0.005148977
+          ]
+        },
+        "envelope": {
+          "median": 0.005599725,
+          "minimum": 0.005006867,
+          "maximum": 0.006155698,
+          "observations": [
+            0.005609643,
+            0.005599725,
+            0.005006867,
+            0.006155698,
+            0.005084813
+          ]
+        }
+      },
+      "stats": {
+        "envelope": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 35,
+          "triangle_classes": 16,
+          "kernel_variables": 29,
+          "kernel_equations": 35,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 1,
+          "active_vertices": 1,
+          "anchors_total": 16,
+          "anchors_tested": 16,
+          "strategy": "envelope",
+          "lp_calls": 8,
+          "reused_anchors": 9,
+          "envelope_calls": 1,
+          "lp_pivots": 75,
+          "lp_tableau_updates": 56416,
+          "maximum_tableau_bits": 4
+        },
+        "old": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 35,
+          "triangle_classes": 16,
+          "kernel_variables": 29,
+          "kernel_equations": 35,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 1,
+          "bases_attempted": 210,
+          "positive_directions": 7,
+          "nonextreme_directions": 0,
+          "emitted_rays": 7,
+          "hyperplanes": 10,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 35,
+          "triangle_classes": 16,
+          "kernel_variables": 29,
+          "kernel_equations": 35,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 1,
+          "active_vertices": 1,
+          "anchors_total": 16,
+          "anchors_tested": 16,
+          "strategy": "anchors",
+          "lp_calls": 7,
+          "reused_anchors": 9,
+          "envelope_calls": 0,
+          "lp_pivots": 67,
+          "lp_tableau_updates": 50697,
+          "maximum_tableau_bits": 4
+        },
+        "old_copy": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 35,
+          "triangle_classes": 16,
+          "kernel_variables": 29,
+          "kernel_equations": 35,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 1,
+          "bases_attempted": 210,
+          "positive_directions": 7,
+          "nonextreme_directions": 0,
+          "emitted_rays": 7,
+          "hyperplanes": 10,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 2150,
+        "envelope": 2150
+      }
+    },
+    {
+      "fixture_id": "finite_figureEight_interior",
+      "tetrahedra": 13,
+      "support": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          12,
+          2
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 5,
+      "active_vertices": 2,
+      "anchors_total": 26,
+      "order": [
+        [
+          "old",
+          "anchors",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "old",
+          "anchors",
+          "old_copy"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "envelope",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "envelope",
+          "anchors"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "old",
+          "envelope"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.023288248,
+          "minimum": 0.021147316,
+          "maximum": 0.032136767,
+          "observations": [
+            0.023288248,
+            0.022271492,
+            0.024725758,
+            0.021147316,
+            0.032136767
+          ]
+        },
+        "old_copy": {
+          "median": 0.021993159,
+          "minimum": 0.021657092,
+          "maximum": 0.026269495,
+          "observations": [
+            0.0227701,
+            0.021887603,
+            0.021993159,
+            0.026269495,
+            0.021657092
+          ]
+        },
+        "anchors": {
+          "median": 0.163686374,
+          "minimum": 0.158850786,
+          "maximum": 0.189448337,
+          "observations": [
+            0.173968321,
+            0.163221771,
+            0.163686374,
+            0.158850786,
+            0.189448337
+          ]
+        },
+        "envelope": {
+          "median": 0.169085713,
+          "minimum": 0.16405781,
+          "maximum": 0.173507107,
+          "observations": [
+            0.166093805,
+            0.17008728,
+            0.16405781,
+            0.169085713,
+            0.173507107
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.00066112,
+          "minimum": 0.000612798,
+          "maximum": 0.001084677,
+          "observations": [
+            0.000630675,
+            0.000612798,
+            0.000689141,
+            0.00066112,
+            0.001084677
+          ]
+        },
+        "envelope": {
+          "median": 0.000607329,
+          "minimum": 0.000588922,
+          "maximum": 0.000712746,
+          "observations": [
+            0.000607329,
+            0.000697484,
+            0.000712746,
+            0.000601051,
+            0.000588922
+          ]
+        }
+      },
+      "stats": {
+        "old": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 32,
+          "triangle_classes": 15,
+          "kernel_variables": 28,
+          "kernel_equations": 32,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 0,
+          "bases_attempted": 107,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 10,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 32,
+          "triangle_classes": 15,
+          "kernel_variables": 28,
+          "kernel_equations": 32,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 0,
+          "active_vertices": 2,
+          "anchors_total": 26,
+          "anchors_tested": 26,
+          "strategy": "anchors",
+          "lp_calls": 14,
+          "reused_anchors": 12,
+          "envelope_calls": 0,
+          "lp_pivots": 203,
+          "lp_tableau_updates": 161351,
+          "maximum_tableau_bits": 4
+        },
+        "old_copy": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 32,
+          "triangle_classes": 15,
+          "kernel_variables": 28,
+          "kernel_equations": 32,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 0,
+          "bases_attempted": 107,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 10,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 13,
+          "allowed_types": 13,
+          "active_equations": 32,
+          "triangle_classes": 15,
+          "kernel_variables": 28,
+          "kernel_equations": 32,
+          "matching_nullity": 5,
+          "matching_rank": 8,
+          "removed_link_factors": 0,
+          "active_vertices": 2,
+          "anchors_total": 26,
+          "anchors_tested": 26,
+          "strategy": "envelope",
+          "lp_calls": 15,
+          "reused_anchors": 12,
+          "envelope_calls": 1,
+          "lp_pivots": 210,
+          "lp_tableau_updates": 164970,
+          "maximum_tableau_bits": 4
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 540,
+        "envelope": 540
+      }
+    },
+    {
+      "fixture_id": "solid_torus_sum_rp3",
+      "tetrahedra": 5,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 3,
+      "active_vertices": 1,
+      "anchors_total": 11,
+      "order": [
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "old",
+          "anchors",
+          "old_copy",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "anchors",
+          "old",
+          "old_copy"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "envelope",
+          "old"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old_copy",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002237534,
+          "minimum": 0.002118608,
+          "maximum": 0.002385484,
+          "observations": [
+            0.002385484,
+            0.002219397,
+            0.002237534,
+            0.002321368,
+            0.002118608
+          ]
+        },
+        "old_copy": {
+          "median": 0.002156044,
+          "minimum": 0.002090897,
+          "maximum": 0.003103067,
+          "observations": [
+            0.003103067,
+            0.002156044,
+            0.002154261,
+            0.002090897,
+            0.002209524
+          ]
+        },
+        "anchors": {
+          "median": 0.000484638,
+          "minimum": 0.000453892,
+          "maximum": 0.000716402,
+          "observations": [
+            0.000453892,
+            0.000508022,
+            0.000716402,
+            0.000463206,
+            0.000484638
+          ]
+        },
+        "envelope": {
+          "median": 0.000588031,
+          "minimum": 0.000512889,
+          "maximum": 0.000733196,
+          "observations": [
+            0.000733196,
+            0.000588031,
+            0.000517096,
+            0.000512889,
+            0.000616474
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000673888,
+          "minimum": 0.000616313,
+          "maximum": 0.000932592,
+          "observations": [
+            0.000616313,
+            0.000694299,
+            0.000660298,
+            0.000673888,
+            0.000932592
+          ]
+        },
+        "envelope": {
+          "median": 0.000402927,
+          "minimum": 0.000374595,
+          "maximum": 0.000473331,
+          "observations": [
+            0.000402927,
+            0.000473331,
+            0.000395586,
+            0.000374595,
+            0.000440793
+          ]
+        }
+      },
+      "stats": {
+        "anchors": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 14,
+          "triangle_classes": 11,
+          "kernel_variables": 16,
+          "kernel_equations": 14,
+          "matching_nullity": 3,
+          "matching_rank": 2,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 11,
+          "anchors_tested": 11,
+          "strategy": "anchors",
+          "lp_calls": 0,
+          "reused_anchors": 11,
+          "envelope_calls": 0,
+          "lp_pivots": 0,
+          "lp_tableau_updates": 0,
+          "maximum_tableau_bits": 0
+        },
+        "old_copy": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 14,
+          "triangle_classes": 11,
+          "kernel_variables": 16,
+          "kernel_equations": 14,
+          "matching_nullity": 3,
+          "matching_rank": 2,
+          "removed_link_factors": 0,
+          "bases_attempted": 3,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 3,
+          "method": "arrangement"
+        },
+        "old": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 14,
+          "triangle_classes": 11,
+          "kernel_variables": 16,
+          "kernel_equations": 14,
+          "matching_nullity": 3,
+          "matching_rank": 2,
+          "removed_link_factors": 0,
+          "bases_attempted": 3,
+          "positive_directions": 3,
+          "nonextreme_directions": 0,
+          "emitted_rays": 3,
+          "hyperplanes": 3,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 14,
+          "triangle_classes": 11,
+          "kernel_variables": 16,
+          "kernel_equations": 14,
+          "matching_nullity": 3,
+          "matching_rank": 2,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 11,
+          "anchors_tested": 0,
+          "strategy": "envelope",
+          "lp_calls": 1,
+          "reused_anchors": 0,
+          "envelope_calls": 1,
+          "lp_pivots": 0,
+          "lp_tableau_updates": 0,
+          "maximum_tableau_bits": 2
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 785,
+        "envelope": 256
+      }
+    },
+    {
+      "fixture_id": "solid_torus_sum_rp3",
+      "tetrahedra": 5,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 5,
+      "active_vertices": 1,
+      "anchors_total": 8,
+      "order": [
+        [
+          "envelope",
+          "old",
+          "anchors",
+          "old_copy"
+        ],
+        [
+          "anchors",
+          "envelope",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "envelope",
+          "old_copy",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "old_copy",
+          "envelope",
+          "anchors",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.000976897,
+          "minimum": 0.000946893,
+          "maximum": 0.001073009,
+          "observations": [
+            0.001073009,
+            0.000961174,
+            0.001017778,
+            0.000976897,
+            0.000946893
+          ]
+        },
+        "old_copy": {
+          "median": 0.000978058,
+          "minimum": 0.000933302,
+          "maximum": 0.001041664,
+          "observations": [
+            0.000963207,
+            0.001041664,
+            0.000981985,
+            0.000978058,
+            0.000933302
+          ]
+        },
+        "anchors": {
+          "median": 0.000503556,
+          "minimum": 0.000478038,
+          "maximum": 0.000529324,
+          "observations": [
+            0.000517116,
+            0.000529324,
+            0.000503556,
+            0.000490296,
+            0.000478038
+          ]
+        },
+        "envelope": {
+          "median": 0.000559429,
+          "minimum": 0.000555003,
+          "maximum": 0.000628411,
+          "observations": [
+            0.000628411,
+            0.000555003,
+            0.000559429,
+            0.000562894,
+            0.000556274
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000235749,
+          "minimum": 0.000226826,
+          "maximum": 0.000300846,
+          "observations": [
+            0.000300846,
+            0.000235749,
+            0.000245614,
+            0.000226826,
+            0.000227497
+          ]
+        },
+        "envelope": {
+          "median": 0.000232765,
+          "minimum": 0.000225635,
+          "maximum": 0.000248288,
+          "observations": [
+            0.000232765,
+            0.000225635,
+            0.000247036,
+            0.000248288,
+            0.00023011
+          ]
+        }
+      },
+      "stats": {
+        "envelope": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 7,
+          "triangle_classes": 8,
+          "kernel_variables": 13,
+          "kernel_equations": 7,
+          "matching_nullity": 5,
+          "matching_rank": 0,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 8,
+          "anchors_tested": 1,
+          "strategy": "envelope",
+          "lp_calls": 2,
+          "reused_anchors": 0,
+          "envelope_calls": 1,
+          "lp_pivots": 2,
+          "lp_tableau_updates": 28,
+          "maximum_tableau_bits": 1
+        },
+        "old": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 7,
+          "triangle_classes": 8,
+          "kernel_variables": 13,
+          "kernel_equations": 7,
+          "matching_nullity": 5,
+          "matching_rank": 0,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 5,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 7,
+          "triangle_classes": 8,
+          "kernel_variables": 13,
+          "kernel_equations": 7,
+          "matching_nullity": 5,
+          "matching_rank": 0,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 8,
+          "anchors_tested": 1,
+          "strategy": "anchors",
+          "lp_calls": 1,
+          "reused_anchors": 0,
+          "envelope_calls": 0,
+          "lp_pivots": 1,
+          "lp_tableau_updates": 14,
+          "maximum_tableau_bits": 1
+        },
+        "old_copy": {
+          "tetrahedra": 5,
+          "allowed_types": 5,
+          "active_equations": 7,
+          "triangle_classes": 8,
+          "kernel_variables": 13,
+          "kernel_equations": 7,
+          "matching_nullity": 5,
+          "matching_rank": 0,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 5,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 345,
+        "envelope": 345
+      }
+    },
+    {
+      "fixture_id": "solid_torus_sum_s2xs1",
+      "tetrahedra": 7,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "status": "NO_POSITIVE_EULER",
+      "matching_nullity": 4,
+      "active_vertices": 1,
+      "anchors_total": 8,
+      "order": [
+        [
+          "anchors",
+          "envelope",
+          "old",
+          "old_copy"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "old",
+          "envelope"
+        ],
+        [
+          "old_copy",
+          "anchors",
+          "old",
+          "envelope"
+        ],
+        [
+          "envelope",
+          "anchors",
+          "old",
+          "old_copy"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "envelope",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002417772,
+          "minimum": 0.002319356,
+          "maximum": 0.002625679,
+          "observations": [
+            0.002431572,
+            0.002417772,
+            0.002379485,
+            0.002625679,
+            0.002319356
+          ]
+        },
+        "old_copy": {
+          "median": 0.002386596,
+          "minimum": 0.002283162,
+          "maximum": 0.002580893,
+          "observations": [
+            0.002403861,
+            0.002283162,
+            0.002372665,
+            0.002386596,
+            0.002580893
+          ]
+        },
+        "anchors": {
+          "median": 0.00098545,
+          "minimum": 0.000865992,
+          "maximum": 0.001096855,
+          "observations": [
+            0.001096855,
+            0.001040431,
+            0.000980112,
+            0.000865992,
+            0.00098545
+          ]
+        },
+        "envelope": {
+          "median": 0.000907164,
+          "minimum": 0.000845653,
+          "maximum": 0.001034122,
+          "observations": [
+            0.001034122,
+            0.000845653,
+            0.000912162,
+            0.000907164,
+            0.000906993
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000988985,
+          "minimum": 0.000868256,
+          "maximum": 0.001288929,
+          "observations": [
+            0.000914405,
+            0.000868256,
+            0.000988985,
+            0.001288929,
+            0.001044758
+          ]
+        },
+        "envelope": {
+          "median": 0.000595022,
+          "minimum": 0.000562343,
+          "maximum": 0.000603394,
+          "observations": [
+            0.000603394,
+            0.000562343,
+            0.000586079,
+            0.000597956,
+            0.000595022
+          ]
+        }
+      },
+      "stats": {
+        "anchors": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 15,
+          "triangle_classes": 8,
+          "kernel_variables": 15,
+          "kernel_equations": 15,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 8,
+          "anchors_tested": 8,
+          "strategy": "anchors",
+          "lp_calls": 1,
+          "reused_anchors": 7,
+          "envelope_calls": 0,
+          "lp_pivots": 1,
+          "lp_tableau_updates": 102,
+          "maximum_tableau_bits": 2
+        },
+        "envelope": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 15,
+          "triangle_classes": 8,
+          "kernel_variables": 15,
+          "kernel_equations": 15,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 8,
+          "anchors_tested": 0,
+          "strategy": "envelope",
+          "lp_calls": 1,
+          "reused_anchors": 0,
+          "envelope_calls": 1,
+          "lp_pivots": 1,
+          "lp_tableau_updates": 102,
+          "maximum_tableau_bits": 2
+        },
+        "old": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 15,
+          "triangle_classes": 8,
+          "kernel_variables": 15,
+          "kernel_equations": 15,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 4,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "old_copy": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 15,
+          "triangle_classes": 8,
+          "kernel_variables": 15,
+          "kernel_equations": 15,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 4,
+          "positive_directions": 4,
+          "nonextreme_directions": 0,
+          "emitted_rays": 4,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 696,
+        "envelope": 275
+      }
+    },
+    {
+      "fixture_id": "solid_torus_sum_s2xs1",
+      "tetrahedra": 7,
+      "support": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "status": "POSITIVE_EULER",
+      "matching_nullity": 4,
+      "active_vertices": 1,
+      "anchors_total": 9,
+      "order": [
+        [
+          "old",
+          "envelope",
+          "old_copy",
+          "anchors"
+        ],
+        [
+          "anchors",
+          "old",
+          "envelope",
+          "old_copy"
+        ],
+        [
+          "old_copy",
+          "old",
+          "anchors",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "old_copy",
+          "old",
+          "envelope"
+        ],
+        [
+          "anchors",
+          "old",
+          "old_copy",
+          "envelope"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002385754,
+          "minimum": 0.001906034,
+          "maximum": 0.002881709,
+          "observations": [
+            0.002199948,
+            0.002881709,
+            0.002385754,
+            0.001906034,
+            0.00247729
+          ]
+        },
+        "old_copy": {
+          "median": 0.002008195,
+          "minimum": 0.00187716,
+          "maximum": 0.002541985,
+          "observations": [
+            0.002541985,
+            0.00213298,
+            0.002008195,
+            0.001969507,
+            0.00187716
+          ]
+        },
+        "anchors": {
+          "median": 0.002183885,
+          "minimum": 0.002017108,
+          "maximum": 0.003709796,
+          "observations": [
+            0.002183885,
+            0.003709796,
+            0.00226829,
+            0.002093382,
+            0.002017108
+          ]
+        },
+        "envelope": {
+          "median": 0.002221581,
+          "minimum": 0.002062475,
+          "maximum": 0.002899605,
+          "observations": [
+            0.002221581,
+            0.002479172,
+            0.002899605,
+            0.002062475,
+            0.002164286
+          ]
+        }
+      },
+      "replay_seconds": {
+        "anchors": {
+          "median": 0.000362908,
+          "minimum": 0.000323429,
+          "maximum": 0.00042548,
+          "observations": [
+            0.00042548,
+            0.000375456,
+            0.000362908,
+            0.000323429,
+            0.000323829
+          ]
+        },
+        "envelope": {
+          "median": 0.000353694,
+          "minimum": 0.00032358,
+          "maximum": 0.000568062,
+          "observations": [
+            0.00032358,
+            0.000353694,
+            0.000568062,
+            0.000354796,
+            0.000326133
+          ]
+        }
+      },
+      "stats": {
+        "old": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 16,
+          "kernel_equations": 18,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "envelope": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 16,
+          "kernel_equations": 18,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 9,
+          "anchors_tested": 4,
+          "strategy": "envelope",
+          "lp_calls": 4,
+          "reused_anchors": 1,
+          "envelope_calls": 1,
+          "lp_pivots": 9,
+          "lp_tableau_updates": 714,
+          "maximum_tableau_bits": 2
+        },
+        "old_copy": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 16,
+          "kernel_equations": 18,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "bases_attempted": 2,
+          "positive_directions": 2,
+          "nonextreme_directions": 0,
+          "emitted_rays": 2,
+          "hyperplanes": 4,
+          "method": "arrangement"
+        },
+        "anchors": {
+          "tetrahedra": 7,
+          "allowed_types": 7,
+          "active_equations": 18,
+          "triangle_classes": 9,
+          "kernel_variables": 16,
+          "kernel_equations": 18,
+          "matching_nullity": 4,
+          "matching_rank": 3,
+          "removed_link_factors": 0,
+          "active_vertices": 1,
+          "anchors_total": 9,
+          "anchors_tested": 4,
+          "strategy": "anchors",
+          "lp_calls": 3,
+          "reused_anchors": 1,
+          "envelope_calls": 0,
+          "lp_pivots": 7,
+          "lp_tableau_updates": 561,
+          "maximum_tableau_bits": 2
+        }
+      },
+      "certificate_bytes": {
+        "anchors": 393,
+        "envelope": 393
+      }
+    }
+  ],
+  "ray_paired": [
+    {
+      "tetrahedra": 4,
+      "maximum_coordinate_bits": 3,
+      "normal_disc_count": "29",
+      "order": [
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old",
+          "ray",
+          "old_copy"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.00095168,
+          "minimum": 0.000872814,
+          "maximum": 0.001098949,
+          "observations": [
+            0.00095168,
+            0.001069095,
+            0.000872814,
+            0.001098949,
+            0.000880475
+          ]
+        },
+        "old_copy": {
+          "median": 0.000893394,
+          "minimum": 0.000846605,
+          "maximum": 0.001109925,
+          "observations": [
+            0.001109925,
+            0.000948556,
+            0.000893394,
+            0.000874947,
+            0.000846605
+          ]
+        },
+        "ray": {
+          "median": 0.000483717,
+          "minimum": 0.000279084,
+          "maximum": 0.000547291,
+          "observations": [
+            0.000483717,
+            0.000297992,
+            0.000547291,
+            0.000279084,
+            0.00049277
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.000751273,
+          "minimum": 0.000722331,
+          "maximum": 0.000845934,
+          "observations": [
+            0.000722331,
+            0.000751273,
+            0.000749341,
+            0.000762891,
+            0.000845934
+          ]
+        },
+        "old_copy": {
+          "median": 0.000807237,
+          "minimum": 0.000752134,
+          "maximum": 0.000859394,
+          "observations": [
+            0.000827507,
+            0.000752134,
+            0.000807237,
+            0.000859394,
+            0.000793056
+          ]
+        },
+        "ray": {
+          "median": 0.000260556,
+          "minimum": 0.000240746,
+          "maximum": 0.000338401,
+          "observations": [
+            0.000285813,
+            0.000255469,
+            0.000240746,
+            0.000260556,
+            0.000338401
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.001726409,
+          "minimum": 0.0016221550000000001,
+          "maximum": 0.00186184,
+          "observations": [
+            0.001674011,
+            0.001820368,
+            0.0016221550000000001,
+            0.00186184,
+            0.001726409
+          ]
+        },
+        "old_copy": {
+          "median": 0.00170069,
+          "minimum": 0.001639661,
+          "maximum": 0.0019374320000000002,
+          "observations": [
+            0.0019374320000000002,
+            0.00170069,
+            0.0017006310000000002,
+            0.001734341,
+            0.001639661
+          ]
+        },
+        "ray": {
+          "median": 0.00076953,
+          "minimum": 0.0005396400000000001,
+          "maximum": 0.000831171,
+          "observations": [
+            0.00076953,
+            0.000553461,
+            0.000788037,
+            0.0005396400000000001,
+            0.000831171
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "old_copy": 4485,
+        "old": 4485,
+        "ray": 226
+      },
+      "stats": {
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 9,
+          "orbit_stats": {
+            "initial_pairings": 18,
+            "input_bits": 6,
+            "identity_deletions": 6,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 7,
+            "pair_tests": 18,
+            "transmissions": 30,
+            "truncations": 8,
+            "truncated_points": 31,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 9,
+            "merger_support_scans": 6
+          }
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 9,
+          "orbit_stats": {
+            "initial_pairings": 18,
+            "input_bits": 6,
+            "identity_deletions": 6,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 7,
+            "pair_tests": 18,
+            "transmissions": 30,
+            "truncations": 8,
+            "truncated_points": 31,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 9,
+            "merger_support_scans": 6
+          }
+        },
+        "ray": {
+          "support_size": 12,
+          "prime": 65521,
+          "rank_operations": 59
+        }
+      }
+    },
+    {
+      "tetrahedra": 8,
+      "maximum_coordinate_bits": 6,
+      "normal_disc_count": "228",
+      "order": [
+        [
+          "ray",
+          "old",
+          "old_copy"
+        ],
+        [
+          "old",
+          "ray",
+          "old_copy"
+        ],
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.002013796,
+          "minimum": 0.00178079,
+          "maximum": 0.002297426,
+          "observations": [
+            0.002297426,
+            0.00178079,
+            0.002102376,
+            0.001834059,
+            0.002013796
+          ]
+        },
+        "old_copy": {
+          "median": 0.001903863,
+          "minimum": 0.001810384,
+          "maximum": 0.002149857,
+          "observations": [
+            0.002149857,
+            0.001903863,
+            0.001810384,
+            0.001859236,
+            0.001924473
+          ]
+        },
+        "ray": {
+          "median": 0.00048562,
+          "minimum": 0.000414204,
+          "maximum": 0.000572158,
+          "observations": [
+            0.000414204,
+            0.00048562,
+            0.000572158,
+            0.000557286,
+            0.000429827
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.001534024,
+          "minimum": 0.001428207,
+          "maximum": 0.001620012,
+          "observations": [
+            0.001620012,
+            0.001488016,
+            0.001534024,
+            0.001428207,
+            0.001542406
+          ]
+        },
+        "old_copy": {
+          "median": 0.001502197,
+          "minimum": 0.001345915,
+          "maximum": 0.001729514,
+          "observations": [
+            0.001729514,
+            0.001345915,
+            0.001693962,
+            0.001493865,
+            0.001502197
+          ]
+        },
+        "ray": {
+          "median": 0.000499901,
+          "minimum": 0.00043166,
+          "maximum": 0.000612528,
+          "observations": [
+            0.000612528,
+            0.000499901,
+            0.000565368,
+            0.000468144,
+            0.00043166
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.003556202,
+          "minimum": 0.0032622659999999998,
+          "maximum": 0.0039174380000000005,
+          "observations": [
+            0.0039174380000000005,
+            0.003268806,
+            0.0036363999999999997,
+            0.0032622659999999998,
+            0.003556202
+          ]
+        },
+        "old_copy": {
+          "median": 0.0034266699999999997,
+          "minimum": 0.003249778,
+          "maximum": 0.0038793709999999995,
+          "observations": [
+            0.0038793709999999995,
+            0.003249778,
+            0.003504346,
+            0.003353101,
+            0.0034266699999999997
+          ]
+        },
+        "ray": {
+          "median": 0.00102543,
+          "minimum": 0.000861487,
+          "maximum": 0.001137526,
+          "observations": [
+            0.001026732,
+            0.000985521,
+            0.001137526,
+            0.00102543,
+            0.000861487
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "ray": 262,
+        "old": 10342,
+        "old_copy": 10342
+      },
+      "stats": {
+        "ray": {
+          "support_size": 24,
+          "prime": 65521,
+          "rank_operations": 147
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 13,
+          "orbit_stats": {
+            "initial_pairings": 34,
+            "input_bits": 8,
+            "identity_deletions": 14,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 11,
+            "pair_tests": 48,
+            "transmissions": 90,
+            "truncations": 12,
+            "truncated_points": 230,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 49,
+            "merger_support_scans": 10
+          }
+        },
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 13,
+          "orbit_stats": {
+            "initial_pairings": 34,
+            "input_bits": 8,
+            "identity_deletions": 14,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 11,
+            "pair_tests": 48,
+            "transmissions": 90,
+            "truncations": 12,
+            "truncated_points": 230,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 49,
+            "merger_support_scans": 10
+          }
+        }
+      }
+    },
+    {
+      "tetrahedra": 16,
+      "maximum_coordinate_bits": 11,
+      "normal_disc_count": "10941",
+      "order": [
+        [
+          "ray",
+          "old",
+          "old_copy"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old_copy",
+          "ray",
+          "old"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.005207659,
+          "minimum": 0.005038259,
+          "maximum": 0.005943631,
+          "observations": [
+            0.005943631,
+            0.005127411,
+            0.005038259,
+            0.005519823,
+            0.005207659
+          ]
+        },
+        "old_copy": {
+          "median": 0.004933434,
+          "minimum": 0.004687519,
+          "maximum": 0.005260589,
+          "observations": [
+            0.004933434,
+            0.005260589,
+            0.005145278,
+            0.004848398,
+            0.004687519
+          ]
+        },
+        "ray": {
+          "median": 0.00092407,
+          "minimum": 0.000793827,
+          "maximum": 0.000995917,
+          "observations": [
+            0.000985851,
+            0.00092407,
+            0.000995917,
+            0.000793827,
+            0.00089048
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.003363737,
+          "minimum": 0.003268445,
+          "maximum": 0.00422961,
+          "observations": [
+            0.003268445,
+            0.00422961,
+            0.003633115,
+            0.003355144,
+            0.003363737
+          ]
+        },
+        "old_copy": {
+          "median": 0.003187415,
+          "minimum": 0.003044583,
+          "maximum": 0.003424787,
+          "observations": [
+            0.003187415,
+            0.00327823,
+            0.003044583,
+            0.003048839,
+            0.003424787
+          ]
+        },
+        "ray": {
+          "median": 0.00083684,
+          "minimum": 0.000804633,
+          "maximum": 0.00111972,
+          "observations": [
+            0.00087724,
+            0.00083684,
+            0.000823702,
+            0.000804633,
+            0.00111972
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.008874967000000001,
+          "minimum": 0.008571396,
+          "maximum": 0.009357021,
+          "observations": [
+            0.009212076,
+            0.009357021,
+            0.008671373999999999,
+            0.008874967000000001,
+            0.008571396
+          ]
+        },
+        "old_copy": {
+          "median": 0.008120849,
+          "minimum": 0.007897237,
+          "maximum": 0.008538819,
+          "observations": [
+            0.008120849,
+            0.008538819,
+            0.008189861,
+            0.007897237,
+            0.008112306
+          ]
+        },
+        "ray": {
+          "median": 0.0018196190000000002,
+          "minimum": 0.00159846,
+          "maximum": 0.0020102,
+          "observations": [
+            0.001863091,
+            0.00176091,
+            0.0018196190000000002,
+            0.00159846,
+            0.0020102
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "ray": 334,
+        "old": 32169,
+        "old_copy": 32169
+      },
+      "stats": {
+        "ray": {
+          "support_size": 48,
+          "prime": 65521,
+          "rank_operations": 323
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 21,
+          "orbit_stats": {
+            "initial_pairings": 66,
+            "input_bits": 14,
+            "identity_deletions": 30,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 19,
+            "pair_tests": 156,
+            "transmissions": 330,
+            "truncations": 20,
+            "truncated_points": 10943,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 225,
+            "merger_support_scans": 18
+          }
+        },
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 21,
+          "orbit_stats": {
+            "initial_pairings": 66,
+            "input_bits": 14,
+            "identity_deletions": 30,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 19,
+            "pair_tests": 156,
+            "transmissions": 330,
+            "truncations": 20,
+            "truncated_points": 10943,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 225,
+            "merger_support_scans": 18
+          }
+        }
+      }
+    },
+    {
+      "tetrahedra": 32,
+      "maximum_coordinate_bits": 22,
+      "normal_disc_count": "24157812",
+      "order": [
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ],
+        [
+          "old",
+          "ray",
+          "old_copy"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.014655446,
+          "minimum": 0.013344333,
+          "maximum": 0.015474359,
+          "observations": [
+            0.014655446,
+            0.013966615,
+            0.015474359,
+            0.013344333,
+            0.014850255
+          ]
+        },
+        "old_copy": {
+          "median": 0.014113643,
+          "minimum": 0.013492071,
+          "maximum": 0.014915812,
+          "observations": [
+            0.01407136,
+            0.014136496,
+            0.014915812,
+            0.014113643,
+            0.013492071
+          ]
+        },
+        "ray": {
+          "median": 0.001731507,
+          "minimum": 0.001591789,
+          "maximum": 0.002234943,
+          "observations": [
+            0.002234943,
+            0.001716054,
+            0.001731507,
+            0.001591789,
+            0.001748983
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.007309285,
+          "minimum": 0.00727851,
+          "maximum": 0.0081351,
+          "observations": [
+            0.007829676,
+            0.007299511,
+            0.00727851,
+            0.007309285,
+            0.0081351
+          ]
+        },
+        "old_copy": {
+          "median": 0.007790028,
+          "minimum": 0.007477315,
+          "maximum": 0.00804716,
+          "observations": [
+            0.007477315,
+            0.00804716,
+            0.007790028,
+            0.0079592,
+            0.007668338
+          ]
+        },
+        "ray": {
+          "median": 0.001913977,
+          "minimum": 0.001655614,
+          "maximum": 0.002829845,
+          "observations": [
+            0.002829845,
+            0.002169837,
+            0.001913977,
+            0.001822772,
+            0.001655614
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.022485122000000003,
+          "minimum": 0.020653618,
+          "maximum": 0.022985355,
+          "observations": [
+            0.022485122000000003,
+            0.021266126,
+            0.022752869000000002,
+            0.020653618,
+            0.022985355
+          ]
+        },
+        "old_copy": {
+          "median": 0.022072843,
+          "minimum": 0.021160408999999998,
+          "maximum": 0.02270584,
+          "observations": [
+            0.021548675,
+            0.022183656,
+            0.02270584,
+            0.022072843,
+            0.021160408999999998
+          ]
+        },
+        "ray": {
+          "median": 0.003645484,
+          "minimum": 0.0034045969999999997,
+          "maximum": 0.005064788000000001,
+          "observations": [
+            0.005064788000000001,
+            0.003885891,
+            0.003645484,
+            0.003414561,
+            0.0034045969999999997
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "old_copy": 116542,
+        "old": 116542,
+        "ray": 521
+      },
+      "stats": {
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 37,
+          "orbit_stats": {
+            "initial_pairings": 130,
+            "input_bits": 25,
+            "identity_deletions": 62,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 35,
+            "pair_tests": 564,
+            "transmissions": 1290,
+            "truncations": 36,
+            "truncated_points": 24157814,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 961,
+            "merger_support_scans": 34
+          }
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 37,
+          "orbit_stats": {
+            "initial_pairings": 130,
+            "input_bits": 25,
+            "identity_deletions": 62,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 35,
+            "pair_tests": 564,
+            "transmissions": 1290,
+            "truncations": 36,
+            "truncated_points": 24157814,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 961,
+            "merger_support_scans": 34
+          }
+        },
+        "ray": {
+          "support_size": 96,
+          "prime": 65521,
+          "rank_operations": 675
+        }
+      }
+    },
+    {
+      "tetrahedra": 64,
+      "maximum_coordinate_bits": 44,
+      "normal_disc_count": "117669030460989",
+      "order": [
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ],
+        [
+          "ray",
+          "old",
+          "old_copy"
+        ],
+        [
+          "old",
+          "ray",
+          "old_copy"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.050708912,
+          "minimum": 0.048288033,
+          "maximum": 0.053618295,
+          "observations": [
+            0.048288033,
+            0.053618295,
+            0.049706586,
+            0.050712979,
+            0.050708912
+          ]
+        },
+        "old_copy": {
+          "median": 0.05226546,
+          "minimum": 0.050873616,
+          "maximum": 0.052511955,
+          "observations": [
+            0.050873616,
+            0.052511955,
+            0.051090168,
+            0.052480559,
+            0.05226546
+          ]
+        },
+        "ray": {
+          "median": 0.003813173,
+          "minimum": 0.003692133,
+          "maximum": 0.005004679,
+          "observations": [
+            0.003692133,
+            0.003813173,
+            0.005004679,
+            0.003808626,
+            0.003979079
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.022171738,
+          "minimum": 0.021625648,
+          "maximum": 0.024373001,
+          "observations": [
+            0.02183594,
+            0.022171738,
+            0.021625648,
+            0.023131221,
+            0.024373001
+          ]
+        },
+        "old_copy": {
+          "median": 0.023952909,
+          "minimum": 0.02168024,
+          "maximum": 0.027050451,
+          "observations": [
+            0.023100896,
+            0.02168024,
+            0.024587669,
+            0.023952909,
+            0.027050451
+          ]
+        },
+        "ray": {
+          "median": 0.003572556,
+          "minimum": 0.003263178,
+          "maximum": 0.003888394,
+          "observations": [
+            0.003748878,
+            0.003415533,
+            0.003263178,
+            0.003572556,
+            0.003888394
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.0738442,
+          "minimum": 0.070123973,
+          "maximum": 0.075790033,
+          "observations": [
+            0.070123973,
+            0.075790033,
+            0.071332234,
+            0.0738442,
+            0.075081913
+          ]
+        },
+        "old_copy": {
+          "median": 0.075677837,
+          "minimum": 0.073974512,
+          "maximum": 0.079315911,
+          "observations": [
+            0.073974512,
+            0.074192195,
+            0.075677837,
+            0.076433468,
+            0.079315911
+          ]
+        },
+        "ray": {
+          "median": 0.007441011,
+          "minimum": 0.007228706,
+          "maximum": 0.008267857,
+          "observations": [
+            0.007441011,
+            0.007228706,
+            0.008267857,
+            0.007381182,
+            0.007867473
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "old_copy": 452250,
+        "old": 452250,
+        "ray": 905
+      },
+      "stats": {
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 69,
+          "orbit_stats": {
+            "initial_pairings": 258,
+            "input_bits": 47,
+            "identity_deletions": 126,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 67,
+            "pair_tests": 2148,
+            "transmissions": 5130,
+            "truncations": 68,
+            "truncated_points": 117669030460991,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 3969,
+            "merger_support_scans": 66
+          }
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 69,
+          "orbit_stats": {
+            "initial_pairings": 258,
+            "input_bits": 47,
+            "identity_deletions": 126,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 67,
+            "pair_tests": 2148,
+            "transmissions": 5130,
+            "truncations": 68,
+            "truncated_points": 117669030460991,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 3969,
+            "merger_support_scans": 66
+          }
+        },
+        "ray": {
+          "support_size": 192,
+          "prime": 65521,
+          "rank_operations": 1379
+        }
+      }
+    },
+    {
+      "tetrahedra": 128,
+      "maximum_coordinate_bits": 89,
+      "normal_disc_count": "2791715456571051233611642548",
+      "order": [
+        [
+          "old_copy",
+          "old",
+          "ray"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "old_copy",
+          "ray"
+        ],
+        [
+          "ray",
+          "old_copy",
+          "old"
+        ],
+        [
+          "old",
+          "ray",
+          "old_copy"
+        ]
+      ],
+      "producer_seconds": {
+        "old": {
+          "median": 0.182019154,
+          "minimum": 0.176653096,
+          "maximum": 0.222640128,
+          "observations": [
+            0.222640128,
+            0.176653096,
+            0.180292398,
+            0.182019154,
+            0.207298304
+          ]
+        },
+        "old_copy": {
+          "median": 0.191936266,
+          "minimum": 0.175563801,
+          "maximum": 0.238828561,
+          "observations": [
+            0.238828561,
+            0.19376371,
+            0.176749517,
+            0.175563801,
+            0.191936266
+          ]
+        },
+        "ray": {
+          "median": 0.007079258,
+          "minimum": 0.006785683,
+          "maximum": 0.010677758,
+          "observations": [
+            0.00717104,
+            0.006808573,
+            0.007079258,
+            0.006785683,
+            0.010677758
+          ]
+        }
+      },
+      "replay_seconds": {
+        "old": {
+          "median": 0.071054174,
+          "minimum": 0.070508576,
+          "maximum": 0.108229667,
+          "observations": [
+            0.09039257,
+            0.070738073,
+            0.070508576,
+            0.071054174,
+            0.108229667
+          ]
+        },
+        "old_copy": {
+          "median": 0.071666936,
+          "minimum": 0.069170103,
+          "maximum": 0.087888178,
+          "observations": [
+            0.087888178,
+            0.071666936,
+            0.070134762,
+            0.069170103,
+            0.07261091
+          ]
+        },
+        "ray": {
+          "median": 0.007611454,
+          "minimum": 0.006949115,
+          "maximum": 0.008041261,
+          "observations": [
+            0.008041261,
+            0.007611454,
+            0.007018848,
+            0.006949115,
+            0.007661881
+          ]
+        }
+      },
+      "combined_seconds": {
+        "old": {
+          "median": 0.253073328,
+          "minimum": 0.24739116900000002,
+          "maximum": 0.31552797099999996,
+          "observations": [
+            0.313032698,
+            0.24739116900000002,
+            0.250800974,
+            0.253073328,
+            0.31552797099999996
+          ]
+        },
+        "old_copy": {
+          "median": 0.264547176,
+          "minimum": 0.244733904,
+          "maximum": 0.326716739,
+          "observations": [
+            0.326716739,
+            0.265430646,
+            0.24688427899999998,
+            0.244733904,
+            0.264547176
+          ]
+        },
+        "ray": {
+          "median": 0.014420027,
+          "minimum": 0.013734798,
+          "maximum": 0.018339639,
+          "observations": [
+            0.015212301,
+            0.014420027,
+            0.014098106,
+            0.013734798,
+            0.018339639
+          ]
+        }
+      },
+      "certificate_bytes": {
+        "old_copy": 1784558,
+        "old": 1784558,
+        "ray": 1673
+      },
+      "stats": {
+        "old_copy": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 133,
+          "orbit_stats": {
+            "initial_pairings": 514,
+            "input_bits": 92,
+            "identity_deletions": 254,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 131,
+            "pair_tests": 8388,
+            "transmissions": 20490,
+            "truncations": 132,
+            "truncated_points": 2791715456571051233611642550,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 16129,
+            "merger_support_scans": 130
+          }
+        },
+        "old": {
+          "input_weight_runs": 7,
+          "maximum_weight_runs": 7,
+          "translation_pushes": 0,
+          "reflection_pushes": 0,
+          "emitted_weight_runs": 1,
+          "replay_events": 0,
+          "single_orbit_shortcut": 1,
+          "orbit_cycles": 133,
+          "orbit_stats": {
+            "initial_pairings": 514,
+            "input_bits": 92,
+            "identity_deletions": 254,
+            "static_points": 1,
+            "contractions": 1,
+            "trims": 0,
+            "mergers": 131,
+            "pair_tests": 8388,
+            "transmissions": 20490,
+            "truncations": 132,
+            "truncated_points": 2791715456571051233611642550,
+            "merger_queue_runs": 0,
+            "merger_queue_switches": 0,
+            "merger_peak_queue": 0,
+            "merger_stale_pops": 0,
+            "merger_overlap_candidates": 16129,
+            "merger_support_scans": 130
+          }
+        },
+        "ray": {
+          "support_size": 384,
+          "prime": 65521,
+          "rank_operations": 2787
+        }
+      }
+    }
+  ],
+  "ray_scaling": [
+    {
+      "tetrahedra": 256,
+      "maximum_coordinate_bits": 178,
+      "normal_disc_count": "1571408518427546378167846658524186148133445300987550781",
+      "producer_seconds": {
+        "median": 0.014339163,
+        "minimum": 0.013974583,
+        "maximum": 0.015863501,
+        "observations": [
+          0.014339163,
+          0.015602324,
+          0.015863501,
+          0.013974583,
+          0.014325202
+        ]
+      },
+      "replay_seconds": {
+        "median": 0.015234669,
+        "minimum": 0.014055933,
+        "maximum": 0.018358437,
+        "observations": [
+          0.018358437,
+          0.015383941,
+          0.015152968,
+          0.015234669,
+          0.014055933
+        ]
+      },
+      "combined_seconds": {
+        "median": 0.030986265,
+        "minimum": 0.028381135000000002,
+        "maximum": 0.0326976,
+        "observations": [
+          0.0326976,
+          0.030986265,
+          0.031016468999999998,
+          0.029209251999999998,
+          0.028381135000000002
+        ]
+      },
+      "certificate_bytes": 3474,
+      "stats": {
+        "support_size": 768,
+        "prime": 65521,
+        "rank_operations": 5603
+      }
+    },
+    {
+      "tetrahedra": 512,
+      "maximum_coordinate_bits": 355,
+      "normal_disc_count": "497880373953008128101310739865699088316199429139329072639731816100301319690449020710377940634148387209607092",
+      "producer_seconds": {
+        "median": 0.029415438,
+        "minimum": 0.028369909,
+        "maximum": 0.030696516,
+        "observations": [
+          0.028369909,
+          0.030696516,
+          0.030478223,
+          0.029415438,
+          0.029160991
+        ]
+      },
+      "replay_seconds": {
+        "median": 0.028785915,
+        "minimum": 0.02860731,
+        "maximum": 0.031427579,
+        "observations": [
+          0.028663865,
+          0.029297523,
+          0.028785915,
+          0.031427579,
+          0.02860731
+        ]
+      },
+      "combined_seconds": {
+        "median": 0.059264137999999994,
+        "minimum": 0.057033773999999995,
+        "maximum": 0.060843017,
+        "observations": [
+          0.057033773999999995,
+          0.059994039,
+          0.059264137999999994,
+          0.060843017,
+          0.057768301
+        ]
+      },
+      "certificate_bytes": 7314,
+      "stats": {
+        "support_size": 1536,
+        "prime": 65521,
+        "rank_operations": 11235
+      }
+    },
+    {
+      "tetrahedra": 1024,
+      "maximum_coordinate_bits": 711,
+      "normal_disc_count": "49980064822920523124529127949171555941709421530367357680990098541737092681687097088118424671194865433708778880992594500711831152064480690436315559825116862889485746915671041855116435128363831534628490028928736908349",
+      "producer_seconds": {
+        "median": 0.066580506,
+        "minimum": 0.061422475,
+        "maximum": 0.069162597,
+        "observations": [
+          0.061422475,
+          0.069162597,
+          0.064695855,
+          0.066580506,
+          0.066904301
+        ]
+      },
+      "replay_seconds": {
+        "median": 0.065689941,
+        "minimum": 0.062201629,
+        "maximum": 0.073578403,
+        "observations": [
+          0.065089968,
+          0.073578403,
+          0.065689941,
+          0.062201629,
+          0.067638864
+        ]
+      },
+      "combined_seconds": {
+        "median": 0.130385796,
+        "minimum": 0.126512443,
+        "maximum": 0.142741,
+        "observations": [
+          0.126512443,
+          0.142741,
+          0.130385796,
+          0.128782135,
+          0.13454316500000002
+        ]
+      },
+      "certificate_bytes": 14994,
+      "stats": {
+        "support_size": 3072,
+        "prime": 65521,
+        "rank_operations": 22499
+      }
+    }
+  ]
+}

@@ -92,4 +92,19 @@ theorem independent_card_le {G : Type*} [AddCommGroup G] (Γ : Finset G) (R s : 
     _ ≤ (2 * (s * R) + 1) ^ Γ.card := spanBall_card_le Γ (s * R)
     _ = (2 * s * R + 1) ^ Γ.card := by ring_nf
 
+/-- **The cap in logarithmic form:** `s ≤ |Γ|·(log₂(2sR+1) + 1)`. -/
+theorem independent_card_le_log {G : Type*} [AddCommGroup G] (Γ : Finset G) (R s : Nat)
+    (v : Fin s → G) (hv : ∀ i, v i ∈ spanBall Γ R)
+    (hind : Function.Injective fun ε : Fin s → Bool => ∑ i, if ε i then v i else 0) :
+    s ≤ Γ.card * (Nat.log 2 (2 * s * R + 1) + 1) := by
+  have h := independent_card_le Γ R s v hv hind
+  have hlt : 2 * s * R + 1 < 2 ^ (Nat.log 2 (2 * s * R + 1) + 1) :=
+    Nat.lt_pow_succ_log_self (by norm_num) _
+  have h2 : (2 * s * R + 1) ^ Γ.card ≤ (2 ^ (Nat.log 2 (2 * s * R + 1) + 1)) ^ Γ.card :=
+    Nat.pow_le_pow_left hlt.le _
+  rw [← pow_mul] at h2
+  have := h.trans h2
+  rw [mul_comm] at this
+  exact (Nat.pow_le_pow_iff_right (by norm_num)).mp this
+
 end LeanProofs.GowersSzemeredi

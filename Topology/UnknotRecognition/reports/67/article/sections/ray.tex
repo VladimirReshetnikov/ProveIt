@@ -1,0 +1,58 @@
+\section{A short essential-disc certificate for primitive normal rays}\label{sec:ray}
+
+The existing general component machinery is needed for arbitrary normal vectors, particularly sums, multiples and one-sided surfaces. Compressed orbit methods provide a general foundation for such computations \cite{AHT}. A primitive extreme ray is a narrower input class with a much shorter connectedness proof. The sector LP naturally supplies this class; direct standard-coordinate searches can supply it as well.
+
+\subsection{Connectedness from support rank and primitivity}
+
+\begin{lemma}[Primitive extreme vectors are connected]\label{lem:primitive-connected}
+Let $x\in\Z_{\ge0}^{7t}\setminus\{0\}$ be an admissible matching vector that spans an extreme ray of the nonnegative standard matching cone. If $\gcd(x)=1$, its normal surface is connected.
+\end{lemma}
+\begin{proof}
+Each nonempty connected component has a nonzero integral admissible matching vector $x_i$, and $x=\sum_i x_i$. Extremality forces $x_i=\alpha_i x$ with $\alpha_i>0$. Since $x$ is primitive, a Bezout combination of its entries equals one. Apply that same integer combination to the entries of $x_i$: it equals $\alpha_i$, which is therefore an integer. The positive integers $\alpha_i$ sum to one, so there is exactly one component. The argument does not assume that the surface is two-sided or orientable.
+\end{proof}
+
+This is the standard primitive-ray connectedness argument used in normal-surface algorithms \cite{HLP,BO}. The new engineering point is to give it a small independently replayable rank witness tied to the existing validator.
+
+\begin{theorem}[Modular rank certificate]\label{thm:ray-rank}
+Let $x\in\Z_{\ge0}^{7t}\setminus\{0\}$ be an exactly validated integer matching vector, and put $I=\supp(x)$, $s=|I|$. If $s-1$ source matching rows restricted to $I$ have rank $s-1$ over a prime field $\mathbb F_p$, then $x$ spans a standard extreme ray over $\Q$.
+\end{theorem}
+\begin{proof}
+The submitted rows have a nonzero $(s-1)$-minor modulo $p$, so that integer minor is nonzero over $\Q$. Thus $\rank_\Q(M_{0,I})\ge s-1$. Exact matching supplies the nonzero vector $x_I$ in its rational kernel, so its rank is at most $s-1$. Equality follows. The face obtained by zeroing every off-support coordinate has one-dimensional linear kernel and contains the positive vector $x_I$; it is exactly a ray. It is a face of the original nonnegative matching cone.
+\end{proof}
+
+The upper rank bound comes from exact matching, not from another modular test. This is essential: a rank computation modulo a prime can underestimate rational rank, but the two-sided argument above is conclusive when it succeeds. Failure at the tried primes is not evidence of nonextremality. Every relevant minor could be divisible by those primes. The finite whitelist in the prototype is a sufficient certificate strategy, not a complete primality or rank-search procedure for all inputs.
+
+\begin{theorem}[Primitive-ray essential-disc endpoint]\label{thm:ray-disc}
+In the validated finite orientable manifold with one torus boundary, an admissible integer vector $x$ represents an essential disc if all of the following hold:
+\begin{enumerate}
+\item $\gcd(x)=1$;
+\item the rank certificate of Theorem~\ref{thm:ray-rank} succeeds;
+\item $\chi(x)=1$ and the surface has nonempty boundary;
+\item the total boundary class is nonzero in $H_1(\partial T;\Ftwo)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first two conditions and Lemma~\ref{lem:primitive-connected} give a connected compact surface. Classification of compact surfaces shows that a connected surface with nonempty boundary and Euler characteristic one is a disc: the orientable formula is $2-2g-b$, and the nonorientable formula is $2-g-b$. Its boundary is consequently a single embedded circle. A nonzero homology class prevents that circle from bounding a disc on the boundary torus, so the disc is essential. Conversely, an essential simple circle on a torus has primitive integral homology class and hence nonzero mod-two class; the parity test does not lose essential primitive disc rays in this setting.
+\end{proof}
+
+No meridian marking is required to establish essentiality in the supplied torus boundary. A marking may still be needed for other tasks, and a checked diagram-to-exterior correspondence is still needed for a verdict about the input knot.
+
+\subsection{Why the rank condition cannot be omitted}
+
+On the one-tetrahedron Fibonacci solid torus, consider
+\[
+ x=(1,1,1,1;0,1,0).
+\]
+It is the compatible sum of the vertex-link disc $(1,1,1,1;0,0,0)$ and the type-1 M\"obius band $(0,0,0,0;0,1,0)$. It is primitive, has Euler characteristic one and nonempty boundary, and its total boundary homology class modulo two is nonzero. Yet it has no essential-disc component: the disc component is the vertex link.
+
+The support size is five, while the source matching matrix on that support has rank three, not four. The short checker correctly rejects this vector. The maintained weighted component checker independently reports zero compressing-disc components. This control rules out the tempting but false shortcut ``primitive plus Euler one plus nonzero boundary homology implies an essential disc''. Connectedness, or a separate component analysis, is indispensable.
+
+\subsection{Certificate size, verification cost and fallback}
+
+The proof object contains a schema identifier, the source-coordinate digest, a prime from an explicit whitelist, $s-1$ distinct source row indices, and the existing boundary homology proof. It does not contain a full rational nullspace basis, all normal discs, or an orbit history. Source matching coefficients are small integers. The additional rank witness has $O(t\log t)$ bits, plus the boundary proof; the input coordinate vector itself has $O(tL)$ bits.
+
+The producer uses sparse forward elimination with ascending pivots and retains original row identities. The independent verifier processes the submitted rows using descending pivots. It validates matching, admissibility, gcd, Euler characteristic, boundary data and the source fingerprint independently of the rank producer. Both share the maintained low-level manifold and coordinate validator. Thus ``independent'' means a separate proof replay and algebraic control path, not two independently developed topology foundations.
+
+With a fixed prime, modular arithmetic has bounded word size. Dense elimination supplies a conservative polynomial bound in $t$; actual sparse fill depends on the triangulation. Coordinate operations and fingerprints are polynomial in $t$ and $L$. The linear-looking counts on the Fibonacci fixtures are measurements for that family, not a general linear-time theorem.
+
+If this endpoint returns \status{NOT\_CERTIFIED}, the caller may use the existing general component certificate. The correct integration is an opt-in fast path before that fallback. Nonprimitive input must not be silently divided when the requested task concerns the original vector's component counts. A rank-operation cap returns \status{INCONCLUSIVE}; it does not produce a negative topological result. This restricted endpoint therefore improves a common positive certificate path while preserving the need for general machinery elsewhere.
