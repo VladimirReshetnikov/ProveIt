@@ -1,0 +1,76 @@
+\section{Conservation determines every weight on a certified single orbit}
+\label{sec:single-orbit-weights}
+
+Normal-component queries attach additive integer vectors to interval points:
+Euler characteristic and boundary intersection numbers for disc detection,
+or normal-coordinate counters for component extraction. The maintained AHT
+producer first computes an unweighted orbit certificate, then transports
+these weights along its reductions. Once that certificate proves that there
+is exactly one orbit, the transport step has a simpler exact replacement.
+
+\subsection{A complete invariant under a checked connectivity hypothesis}
+
+Let $X=\{0,\ldots,N-1\}$ and let $w:X\to\mathbb Z^d$ be the additive
+weight function. If the interval-pairing relation has exactly one orbit,
+its histogram is forced to be
+\[
+ \left\{\left(\sum_{x\in X}w(x),\ 1\right)\right\}.
+\]
+For a canonical run partition $(\ell_i,r_i,v_i)_{i=1}^R$, using half-open
+intervals, the weight is computed without expanding points:
+\[
+ W=\sum_{i=1}^R (r_i-\ell_i)v_i.
+\]
+Signed coordinates, zero runs and overlapping source intervals are allowed;
+the existing independent canonicalization first recovers their summed
+piecewise-constant function. This is conservation plus \emph{proved}
+connectedness, not a connectedness conjecture about primitive normal surfaces.
+
+The producer takes this path only after its complete unweighted AHT run
+returns one orbit. Public reuse of a supplied trace verifies it before
+entering the same result routine. The independent weighted checker first
+reconstructs the source weights, checks their binding to the certificate,
+and fully replays the unweighted orbit proof. Only then may it replace
+weight transport by the mass formula. A forged orbit count of one never
+bypasses the local-rule checker.
+
+The existing \code{weighted-interval-orbits-v1} format is sufficient. Its
+canonical weights, unweighted proof and histogram are unchanged, so old and
+new complete certificates agree exactly. This is shorter computation, not
+a claim of fewer serialized certificate bytes. The producer uses direct
+coordinate accumulation; the independent checker uses its own tuple-vector
+arithmetic and reconstructed weight function. Neither implementation calls
+the other's transport code to justify the shortcut.
+
+For $R$ runs and dimension $d$, the extra mass calculation uses $O(Rd)$
+integer products and additions and $O(d)$ accumulator space. If endpoint
+lengths have at most $B$ bits and entries at most $C$ bits, intermediate
+signed sums have $O(B+C+\log(R+1))$ bits. A conservative bit bound is
+\[
+ O\!\left(Rd\,\mathsf M(B+C+\log(R+1))\right),
+\]
+where $\mathsf M$ bounds integer multiplication and dominates addition.
+This excludes source canonicalization and the mandatory unweighted proof
+search or replay. It removes weighted work depending on all intermediate
+transport partitions, but does not make the full orbit query linear.
+
+\subsection{Why several orbits still require transport}
+
+Conservation alone is insufficient when there is more than one orbit.
+For example, pair $0$ with $2$ and $1$ with $3$, and assign weights
+$1,2,3,4$ respectively. The two orbit weights are $4$ and $6$. A forged
+histogram with two weights equal to $5$ conserves total mass and has the
+right orbit count, but is false. The maintained multi-orbit path therefore
+keeps the complete independent weighted transport and rejects that forgery.
+An empty universe also retains its existing empty histogram; a one-point
+universe uses the single-orbit identity.
+
+For a connected normal surface the three-weight disc query now obtains
+Euler characteristic and both boundary parities directly from total mass,
+after authenticating connectedness by its interval proof. The existing
+surface classifier and source-to-exterior verifier still supply the
+topological and provenance obligations. No new genus assumption, negative
+knot verdict or source-certificate schema is introduced. The same shortcut
+works for connected full-coordinate queries and for signed abstract weights.
+
+\input{single_orbit_results.tex}

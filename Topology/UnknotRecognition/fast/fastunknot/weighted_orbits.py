@@ -275,8 +275,23 @@ def _conservation(runs, histogram, dimension):
 
 
 def _result(size, dimension, runs, proof, check, record_certificate, stats_extra):
-    histogram, stats = _replay(size, dimension, runs, proof, check)
-    _conservation(runs, histogram, dimension)
+    if encoded_integer(proof['orbit_count']) == 1:
+        # The complete trusted orbit trace establishes connectedness. The
+        # unique orbit contains every point, so its weight is the total mass.
+        # Public trace reuse validates the trace before reaching this helper.
+        total = [0]*dimension
+        for lo, hi, value in runs:
+            check()
+            for j, entry in enumerate(value):
+                total[j] += (hi-lo)*entry
+        histogram = [dict(weight=total, orbits=1)]
+        stats = dict(input_weight_runs=len(runs), maximum_weight_runs=len(runs),
+                     translation_pushes=0, reflection_pushes=0,
+                     emitted_weight_runs=1, replay_events=0, single_orbit_shortcut=1)
+    else:
+        histogram, stats = _replay(size, dimension, runs, proof, check)
+        _conservation(runs, histogram, dimension)
+        stats['single_orbit_shortcut'] = 0
     stats.update(stats_extra)
     answer = dict(status='COMPLETE', orbit_count=encoded_integer(proof['orbit_count']),
                   histogram=histogram, stats=stats)

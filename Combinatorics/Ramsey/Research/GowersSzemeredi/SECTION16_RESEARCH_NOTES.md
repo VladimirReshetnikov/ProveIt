@@ -6333,3 +6333,338 @@ facade, including 4,152 OAI modules), with only `propext`,
 `Classical.choice`, and `Quot.sound`. The numbered ledger remains identical
 at 115 companions and five open entries, and selected-port scope passes.
 No upstream ports or Apache provenance changes were needed.
+
+
+## J.113. Zero column relations of every bounded even length
+
+The arbitrary-word model construction now feeds an elimination theorem
+for every fixed even length, rather than only quadruples. This supplies
+the higher identities identified as missing in J.112. It does not supply
+the structured index domain required by the source's Proposition 9.3.
+
+**Arity-dependent elimination.** Fix `k > 0`. If all entries of an
+alternating list of length `2*k` occupy one of `Q` Dirichlet cells, then
+
+```
+centeredAbs (gamma * columnAnchorEval f as) * Q <= k*N.
+```
+
+Pair consecutive entries, use cell closeness for each difference, and
+apply the centered-distance triangle inequality. With `Q = 5*k`, this
+precludes the separation condition `N < 5*centeredAbs(...)`. Thus the
+same evaluation test used for quadruples removes every detected model
+on a cell retaining at least `beta/(5*k)` of the columns. The common
+Bohr testing point and all individual column domains are retained.
+
+`even_model_elimination_iterate` and `even_model_elimination_zero_core`
+carry this loss through the logarithmic elimination rounds.
+`even_models_initialize` converts the full model cover of
+`columnAnchorFibre A (2*k-1) 0` into alternatives: inactive models already
+vanish on the kernel neighborhood, and active models keep their original
+testing-radius comparisons. `even_model_cover_zero_core` gives a
+nonempty core retaining
+
+```
+(beta/(5*k))^(modelEliminationRounds beta M) * A.card
+```
+
+when the full model count is at most `M`. At `k=2` the cell count is the
+previous ten-cell bound. The earlier quadruple interfaces remain valid.
+
+**Global parameters.** Define
+
+```
+d     = columnSpectrumCap (columnEightDensity alpha)
+delta = globalColumnWordDensity alpha (2*k-1)
+g     = ceil((2*k)*d/delta)
+M     = ceil(1/delta)
+rho   = globalColumnIdentityRadius alpha
+r     = globalColumnModelRadius alpha (2*k-1)
+s     = min r (refinementKernelRadius g d rho (r/2))
+beta  = modelTestDensity g d r
+c     = (beta/(5*k))^(modelEliminationRounds beta M)
+          * globalColumnVertexDensity alpha/2.
+```
+
+The exported names are `globalEvenColumnModelRank`,
+`globalEvenColumnModelCount`, `globalEvenColumnZeroRadius`, and
+`globalEvenColumnZeroDensity`. The modulus threshold is the maximum of
+the global model threshold at `2*k-1`, the new kernel cap plus one, and
+seven. The radius is positive and at most `rho`; the density is positive
+for positive `k` and `0 < alpha <= 1`.
+
+`global_even_zero_column_core` starts with the original dense
+bihomomorphism, the density assumptions, primality, and that explicit
+modulus threshold. It produces `X,T,L,W,P,Gamma`, retaining the original
+witness system, full-radius column linearity, witness counts, small-radius
+linearity, normalization, and original column ranks. The core `P` is a
+nonempty subset of `X`, has size at least `c*N`, and `Gamma.card <= g`.
+For every `m <= k`, every length-`2*m` list from `P` whose alternating
+index sum is zero has zero alternating map value on the intersection
+of the common and individual Bohr domains at radius `s`.
+
+**All shorter even relations on one core.** `columnPairPadding` prepends
+pairs of the same anchor. Its length grows by two per pair, its
+alternating value is unchanged, and all its entries satisfy any
+predicate satisfied by the anchor and the original list. For a nonempty
+shorter list, use its own first entry as the repeated anchor. Hence
+`even_zero_relations_mono` needs no extra frequency or Bohr-domain
+assumption. The empty-list case is immediate. In particular, choosing
+`k=8` in the global theorem supplies the 4-, 8-, and 16-term identities
+simultaneously. No implication from quadruple identities to higher
+identities is assumed.
+
+**Remaining work.** These are identities on a dense set with arbitrary
+bounded-rank column spectra. Structured index geometry, coherent
+frequency selection, preservation of agreement under that construction,
+and the final numerical bounds remain to be proved. The common rank
+still depends on `1/delta`; no fit to the printed density budget is
+claimed. The five numbered open entries and existing source-fidelity
+caveats are unchanged. No new upstream code was ported.
+
+**Incoming numeric controls.** `Proofs16VarietyControlAbsorption`, merged
+from `origin/main`, converts variety-shaped width and graph-count bounds
+into `MultiplyLinear gamma (18*r/gamma + 64 + L)`. Its hypotheses include
+positive width coefficient, the scale and density conditions, and
+explicit logarithmic bounds absorbed by `L`. This is a numeric bridge
+for the variety route; the required deep structure is still open.
+
+
+**Verification.** The generic elimination closure passes 255 modules,
+and the global theorem with shorter-relation padding passes 259 modules.
+All 17 new named theorems and the five incoming variety-control theorems
+pass individual axiom checks. The final merged audit checks 7,359 public
+Gowers theorems in 5,182 modules (5,180 facade modules, including 4,152
+OAI modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger remains identical at 115 companions and five open
+entries. Selected-port scope remains 4,134 upstream modules and 17
+compatibility modules, with reciprocal-only modules excluded; Apache
+license and provenance files are unchanged.
+
+
+## J.114. Escaping frequencies, indexed selection, and a sharper loss
+
+The first steps of the frequency-selection argument in Claim 9.4 of
+[the general U4 inverse theory](https://arxiv.org/pdf/2601.01682) are now
+formalized with explicit finite bounds. The new results concern actual
+failed containments and selected frequency values; they do not yet
+extract the coherent Freiman frequency maps required by Proposition 9.3.
+
+**From failed containment to a new frequency.** Suppose `T` and `U` have
+rank at most `d`, `0 < r < 4`, and the selected set `D` satisfies
+`D.card*sigma <= 1/(4*pi)`. If `bohr D sigma` is not contained in the sum
+of the quarter-radius Bohr sets for `T` and `U`, then
+`bohr_sum_frequency_escape` gives a point `y` in that selected Bohr set
+and a frequency `q` in `bohrExtensionSpectrum T U d r` such that
+
+```
+N/(4*pi) < centeredAbs(q*y)
+q not in boundedFrequencySpan D 1.
+```
+
+The point cannot lie in the intersection-spectrum Bohr set, by the
+previous containment theorem. A violated frequency condition gives `q`.
+The bounded-span phase estimate shows that every frequency in the unit
+span of `D` has phase at most `N/(4*pi)` at `y`, proving the exclusion.
+No duality or separation assumption is added.
+
+`column_pair_frequency_escape` applies this to the unions of the spectra
+of four columns. Splitting each union span gives four values `v_i`, each
+in its own column's bounded span at cutoff `R = bohrExtensionCutoff
+(2*d) r`, with `v_0-v_1 = v_2-v_3` outside the unit span of `D`. Overlap
+between the two frequency sets in a union does not increase the cutoff.
+
+**Indexed averaging.** `exists_good_indexed_selection` counts requirements
+by their original indices, even when several indices prescribe identical
+values on identical supports. If every allowed-value set has at most `K`
+elements and every requirement specifies at most `m` values, one
+selection meets at least a `K^(-m)` fraction of the indexed requirements.
+This follows by counting all assignments and interchanging two finite
+sums. There is no support-image multiplicity loss.
+
+`exists_good_colored_selection` uses the domain `Fin m × X` to select
+`m` independent functions. Each requirement prescribes one value per
+color. Positions in `X` may repeat: their colors distinguish the specified
+assignments. Consequently no distinct-position hypothesis or discarded
+diagonal count is needed for this result.
+
+`exists_escaping_frequency_selection` combines those facts. Given an
+arbitrary finite indexed family `B` of failed containments, spectra of
+rank at most `d`, and the stated selected-set radius bound for each
+configuration, it produces four frequency maps `f_i`, all taking values
+in the relevant bounded column spans, such that
+
+```
+B.card <= (2*R+1)^(4*d) * good.card.
+```
+
+Here `good` counts the original configurations for which the selected
+frequency differences agree and escape the prescribed unit span. This
+is the exact finite averaging loss for this construction; index-additivity
+can be imposed by the choice of `B`, but is not needed by the selection
+itself. The four maps are not asserted to be Freiman maps.
+
+**Independent-family growth.** A frequency outside the unit bounded span
+of a dissociated set can be inserted while preserving dissociation.
+`bounded_span_escape_rank_budget` then proves
+
+```
+D.card + 1 <= spanGeneratorBound K.card R
+```
+
+when both the selected family and the new frequency lie in the bounded
+span of `K` at cutoff `R`. `bohr_escape_extends_independent_family` applies
+this to the frequency supplied by an actual failed containment. This
+provides the pointwise insertion and rank-budget facts for a later global
+selection iteration; the global iteration is not yet constructed.
+
+**Quantitative improvement to the existing selection lemma.** For a
+single selected function, `exists_good_quad_selection` still requires
+consistent prescriptions at repeated indices. It counts the original
+quadruples directly with loss `K^4`. Combining it with the existing energy
+extraction proves `lemma19_indexed_selection_piece_eight`: if all four
+prescribed values belong to the new-value sets and
+
+```
+delta*N^3*K^4 <= T.card,
+```
+
+there is an order-eight Freiman piece of size at least
+`2^(-1882)*delta^1164*N`. The previous all-new-values interface required
+`256*delta*N^3*K^4`. Thus, for fixed `delta`, the required configuration
+count improves by a factor 256. The two-new-value and mixed selection
+interfaces and the downstream `corollary20Kappa` parameter have not yet
+been strengthened. No improved final density bound follows here.
+
+**Scope.** Structured index geometry, extraction of coherent new Freiman
+frequency maps from the escaping configurations, the higher-arrangement
+selection, and preservation of agreement through that organization
+remain open. The five numbered open entries and all documented
+source-fidelity caveats remain unchanged. No upstream code was ported,
+and the Apache license and provenance files are unchanged.
+
+
+**Verification.** The escaping-frequency selection closure checks 143
+modules, the independent-family extension checks 142, and the stronger
+Freiman selection checks 53. All ten new named theorems pass individual
+axiom checks. The combined audit checks 7,389 public Gowers theorems in
+5,187 modules (5,185 facade modules, including 4,152 OAI modules), with
+only `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
+is identical at 115 companions and five open entries. The selected-port
+scope check passes with 4,134 upstream and 17 compatibility modules.
+
+
+## J.115. Freiman extraction retaining mixed frequency configurations
+
+The four frequency maps selected in J.114 can now be made Freiman on
+four dense coordinate domains, while an explicitly dense subfamily of
+the original escaping configurations remains. This supplies the
+coordinate-extraction part of the structural argument; the four maps
+have not yet been identified with one common difference-index map.
+
+**Mixed energy.** `keyMatchingCount` counts pairs from two finite families
+whose keys, computed by possibly different functions, agree. Its finite
+fibre-sum formula and Cauchy--Schwarz inequality give the generic counting
+step. For column maps, the mixed key of `(x,y)` is
+`(x-y,f(x)-g(y))`. `mixedColumnEnergy A B C D f g h l` counts equal keys
+between `A × B` and `C × D`.
+
+Regrouping a self-comparison of the mixed keys of `f,g` gives a comparison
+of the ordinary difference keys of `f` on `A × A` and `g` on `B × B`.
+Two Cauchy--Schwarz steps therefore prove
+
+```
+mixedColumnEnergy A B C D f g h l ^ 4
+  <= phiAdditiveCount A f * phiAdditiveCount B g
+       * phiAdditiveCount C h * phiAdditiveCount D l.
+```
+
+The unrestricted energy of each of the last three maps is at most `N^3`.
+Consequently, any family of at least `delta*N^3` mixed additive quadruples
+with first coordinate in `A` forces at least `delta^4*N^3` respected
+quadruples of `f` on `A`. `mixed_quadruples_freiman_piece` applies the
+existing order-eight Corollary 7.6 extractor, giving a subset of `A` of
+size at least `2^(-1882)*(delta^4)^1164*N` where `f` is Freiman of order
+eight. The other three maps need not agree with `f`.
+
+**Retaining the original configurations.** A Freiman piece in an arbitrary
+coordinate projection need not support many original configurations.
+Before extraction, retain only first-coordinate fibres containing at
+least `delta*N^2/2` configurations. The new generic
+`popular_fibre_retained_mass` shows that this discards at most
+`delta*N^3/2` configurations. It requires no upper bound on fibre size.
+`fibre_filter_mass_lower` then controls the mass retained by every subset
+of popular endpoints.
+
+Define the explicit positive retention function
+
+```
+H(delta) = delta/2 * (2^(-1882) * ((delta/2)^4)^1164).
+```
+
+`mixed_configurations_retain_freiman_piece` yields a coordinate set `E`
+and a subfamily `R` of the original family, all of whose first coordinates
+lie in `E`, with `FreimanHom 8 E (f 0)` and `R.card >= H(delta)*N^3`.
+The proof retains the original configurations by filtering, so any extra
+property of those configurations, including escape from a selected
+frequency span, is preserved.
+
+**Every coordinate.** The four permutations
+
+```
+[0,1,2,3], [1,0,3,2], [2,3,0,1], [3,2,1,0]
+```
+
+preserve the equation `x0-x1 = x2-x3` and move the chosen coordinate to
+position zero. Reindexing and its inverse preserve cardinality and the
+original subfamily relation. `mixed_configurations_retain_coordinate`
+therefore gives the same retention bound for any coordinate.
+
+Set `mixedConfigurationDensity delta 0 = delta` and recursively apply
+`H` for each additional extraction. An induction over a finite set of
+coordinates restricts configurations while retaining all previously
+proved Freiman properties. `mixed_configurations_freiman_family` treats
+all four coordinates: it returns four sets `E_i` and a subfamily `R`,
+with each `f_i` Freiman of order eight on `E_i`, every `q_i` in `E_i`,
+and `R.card >= mixedConfigurationDensity delta 4*N^3`.
+
+Each coordinate set also has density at least
+`mixedConfigurationDensity delta 4`. Indeed, three coordinates determine
+an additive quadruple, so a family whose chosen coordinate lies in `E`
+has size at most `E.card*N^2`. Both this exact finite bound and its real
+density consequence are proved in `Proofs16MixedCoordinateDensity`.
+
+**Application to failed Bohr containments.** For
+`R = bohrExtensionCutoff (2*d) r`, define
+
+```
+escapingFreimanDensity delta d r
+  = mixedConfigurationDensity (delta/(2*R+1)^(4*d)) 4.
+```
+
+`failed_containments_freiman_family` starts from at least `delta*N^3`
+additive index quadruples, bounded column spectra, and the actual
+selected-frequency containment failures of J.114. It obtains four maps
+taking values in their column bounded spans, four dense order-eight
+Freiman coordinate domains, and a subfamily of density at least
+`escapingFreimanDensity delta d r`. Every retained configuration still
+has equal map differences outside its prescribed selected unit span.
+The same density lower-bounds all four coordinate domains. Positivity of
+the recursive density and of this applied density is proved.
+
+**Remaining structural work.** The four maps live on distinct dense
+coordinate sets. A common map indexed by column differences, suitable
+Bohr/progression extensions, higher-arrangement selection, and the global
+independent-family iteration remain to be constructed. The final
+bilinear-variety structure and numerical budget are still open. No
+numbered source statement is closed by this checkpoint, and no new
+upstream port or license change was needed.
+
+
+**Verification.** The complete failed-containment Freiman-family closure
+checks 251 modules. All 23 new named theorems pass individual axiom
+checks. The full audit checks 7,431 public Gowers theorems in 5,196
+modules (5,194 facade modules, including 4,152 OAI modules), with only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+identical at 115 companions and five open entries; the selected-port
+scope check still passes with 4,134 upstream and 17 compatibility modules.

@@ -199,9 +199,10 @@ signed components would form a forbidden zero-class union. All signs
 therefore agree, and a primitive total class permits only one component.
 The optimized seed is connected under these hypotheses.
 
-The native positive certificate nevertheless retains the independent
-component-level disc proof. It does not ask a verifier to trust the cocycle
-generator's rank computation, primitivity or connectedness. In particular,
+The initial native positive certificate retained the independent
+component-level disc proof. Section~\ref{sec:cocycle-connectivity} now
+checks rank-one provenance, primitivity and connectedness independently
+and omits that orbit search for these restricted surfaces. In particular,
 the primitive cocycle for the closure of the two-braid $(1,1,-1)$ has a
 45-piece genus-one surface; span minimization reduces it to 43 pieces but
 still gives genus one. That closure is an unknot. Optimizing this restricted
@@ -209,15 +210,17 @@ family is not a complete unknot test.
 
 \subsection{Adaptive source integration and the remaining search problem}
 
-The optional native stage tries the initial primitive cocycle surface first.
+The initial optional native stage tries the primitive cocycle surface first.
 If its independent component query certifies a compressing disc, it returns
 immediately. Otherwise it can run span optimization and test that second
 surface. The work allowance is shared by source validation, exterior
 construction, cocycle elimination, optimization, both component queries and
-positive replay. It counts cooperative guards, not bit operations or time.
+positive replay. The later connectedness certificates replace the two
+component queries while preserving these candidate vectors and the shared
+allowance. It counts cooperative guards, not bit operations or time.
 The surrounding recognizer's deadline remains active throughout.
 
-Every positive witness contains the exact stage-input PD, the canonical
+In that version every positive witness contains the exact stage-input PD, the canonical
 exterior, normal coordinates and the existing normal-disc-count certificate.
 A separate verifier checks the PD-to-exterior construction, replays the
 surface proof and requires a strictly positive disc count. Seed discovery,

@@ -1,0 +1,50 @@
+\subsection{Compatibility and source audits}
+
+Four focused tests pass in 0.004 seconds. They exercise signed overlapping
+weights on a $2^{20000}$-point connected system with both weight-transport
+routines disabled, including JSON hexadecimal round trips and supplied-trace
+reuse. They reject a false multi-orbit histogram with correct total mass,
+a forged single-orbit count, modified unweighted operations, incorrect source
+weights and Boolean counts. Empty and singleton universes retain their
+expected behavior. Cancellation still propagates through verification.
+The sixteen existing weighted tests also pass in 1.251 seconds.
+The first full run exposes one obsolete cancellation threshold: the
+six-tetrahedron fixture's verifier now finishes in 348 callbacks, before
+the test's hard-coded 600th callback. The test now measures each operation
+and requires cancellation at its entry, middle and final guards. All
+seventeen component tests pass in 0.917 seconds; the original failure log
+is retained. No artificial work is added to preserve a historical callback
+count.
+The final full suite passes all 1,175 tests in 242.337 seconds. The final
+source audit takes 32.626 seconds while that suite also runs; this elapsed
+time is not a performance comparison.
+
+The pinned audit compares 300 random weighted systems with the published
+producer and checker. All entire certificates agree. The old checker accepts
+every new certificate and the new checker accepts every old certificate.
+Of these systems, 226 have one orbit; only those use the new branch. Total
+producer weight-replay events fall from 17,415 to 1,706. The latter events
+remain necessary for the other systems; this count does not include the
+mandatory unweighted proof operations.
+
+All 84 source queries are repeated at the existing shared two-million-guard
+allowance. The same seventeen positive proofs replay independently with
+their previous hashes. Sixty-four restricted misses finish and three cases
+remain capped, compared with sixty-three misses and four caps before.
+The newly finished query is \code{survivor-02}, at 1,998,613 guards; it still finds no disc in
+either candidate, so there is no new unknot verdict. Gordian and the
+32-crossing stabilized circle remain among the capped cases. The 16-crossing
+circle's shared work falls from 988,196 to 782,613 guards while preserving
+its certificate. Budget counters measure cooperative work, not bit time.
+
+\input{single_orbit_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/single_orbit.py}.
+
+Its modes are \code{audit}, \code{weighted} and \code{recognize}. The
+baseline is commit \code{8160ec448}. All 475 runtime, driver, fixture and
+prior-audit source pins agree across the final experiments. The incoming
+archive inventory and the \code{openai/math} head \code{fd4aeeb2e} are
+unchanged at this intake check. The arithmetic observation here supplements
+the integrated weighted-component machinery without assuming any new
+global theorem about unknot recognition.
