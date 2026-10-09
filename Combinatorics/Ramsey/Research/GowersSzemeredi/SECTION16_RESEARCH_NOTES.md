@@ -2835,3 +2835,11 @@ Fourier route to bounded-span duality. Bohr-sum containment, the subsequent
 bounded-span selection, algebraic regularity, quasirandomness and the
 final difference-set composition remain separate work; no numbered
 statement is closed by this result.
+
+The combined polynomial-cutoff audit passes: 6,254 public Gowers
+theorems, a 4,956-module facade (4,152 OAI modules), and 4,958 modules
+including the audit and import-compatibility check. All four new theorems
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream module
+scope is unchanged.
