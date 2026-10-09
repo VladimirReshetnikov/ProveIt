@@ -2400,3 +2400,25 @@ the combined audit remain pending while the earlier full audit runs.
 The constants `C,p,Cv,pv,D` remain explicit parameters. This does not
 prove deep structure, the printed Theorem 16.2 budget, or a new final
 Szemeredi threshold, and it adds no upstream modules.
+
+`Proofs16VarietyCeilingFreeCover` transfers these controls to actual
+multilinear covers, including their mass and partition guarantees on all
+boxes. Its positive width control and graph-count bound require no
+additional geometric premise. `Proofs16VarietyLossPower` separates the
+inner loss exactly: writing `b=2^2048*r`, the line factor is
+`(gamma/(2*r))^b*sigma^b`, and
+
+```
+u*(sigma*u)^17 = (gamma/(2*r))^(18*b)*sigma^(17+18*b).
+```
+
+Thus the power of the inner loss depends only on the outer densities.
+`Proofs16VarietyCeilingFreeDecomposition` applies these controls to every
+piece in the actual conditional relation decomposition, retaining the
+same family-count bound, large base domain, and union cover. The slice
+and spectrum counts can still involve ceilings in the outer parameters;
+only ceilings and thresholds involving the inner loss have been removed.
+All three further production modules and all six transitive axiom checks
+pass with the same three approved axioms. Their facade registration and
+combined audit also await the running audit. No catalogue claim or port
+scope is changed.
