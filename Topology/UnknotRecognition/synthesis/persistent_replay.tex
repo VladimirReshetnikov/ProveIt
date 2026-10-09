@@ -16,9 +16,10 @@ consecutive version-eight \texttt{elimination\_batch} moves. It changes neither
 the certificate schema nor producer selection. The new checker reconstructs
 all contexts from the already independently recovered presentation, imports
 no producer routines, and exports once at the next different move or terminal.
-The separately implemented literal verifier is unchanged. The producer still
-uses its existing immutable arena and needs a later representation integration
-before the whole-block bound applies to its search.
+The separately implemented literal verifier is unchanged. At this checker
+checkpoint the producer still used its existing immutable arena.
+Section~\ref{sec:persistent-producer} subsequently integrates a separate
+persistent producer and proves the whole-block bound for its discovery work.
 
 \subsection{Bindings and raw word semantics}
 
@@ -177,11 +178,11 @@ move ends the group before its own semantics are replayed. No normalization
 is silently inserted or removed, and all existing certificate versions remain
 subject to their original source and terminal contracts.
 
-This is a real strengthening of replay for an entire raw block. It is not
-yet a persistent producer or an exhaustive compressed donor-discovery theorem.
-The existing producer may still materialize intermediate grammars. Arbitrary
+At this checkpoint the strengthening concerns replay of an entire raw block;
+the producer still materializes intermediate grammars.
+Section~\ref{sec:persistent-producer} subsequently supplies a compatible
+persistent planner and its polynomial raw-block discovery bound. Arbitrary
 alternations with normalization, Whitehead moves and new exposures have not
 received a comparable global bound. Nor does a supplied block guarantee an
-unknot terminal. Integrating a compatible persistent planner and controlling
-those remaining operations are subsequent steps toward the original general
+unknot terminal. Controlling those remaining operations is necessary for the original general
 quasipolynomial goal, which remains open.
