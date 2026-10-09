@@ -3639,3 +3639,9 @@ five open statements, and all existing fidelity caveats. The incoming
 dense-kernel and relation-subspace results are included in this audit.
 The upstream progression code was reused without changes; its existing
 Apache license and provenance records remain applicable and unchanged.
+
+After the main push encountered a concurrent update, the box-sum
+transposition and right-sided codegree lemmas were merged and the combined
+audit rerun. It passes for 6,540 public Gowers theorems in the same
+5,010-module closure, with the same three-axiom boundary. No numbered
+statement status or selected upstream port scope changed.
