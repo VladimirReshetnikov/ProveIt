@@ -4692,10 +4692,11 @@ No additional `openai/math` code is ported by this checkpoint.
 
 **Verification.** The focused column-family and dense-level closures pass
 in 42 and 43 modules. All 14 new named theorems pass individual axiom
-checks. The full merged facade audit checks 6,882 public Gowers theorems
-in 5,078 modules (4,152 OAI modules), or 5,080 modules with both audit
+checks. The full merged facade audit checks 6,893 public Gowers theorems
+in 5,079 modules (4,152 OAI modules), or 5,081 modules with both audit
 consumers. Only `propext`, `Classical.choice`, and `Quot.sound` occur.
-The incoming public represented-map construction is included. The source
+The incoming public represented-map and robust column-witness
+constructions are included. The source
 ledger matches the tracked 115 companions and five open entries, and
 the selected-port scope check passes. Upstream source bytes and Apache
 provenance/license files are unchanged.
