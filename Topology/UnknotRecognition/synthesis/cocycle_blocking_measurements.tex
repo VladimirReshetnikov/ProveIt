@@ -1,0 +1,64 @@
+\subsection{Complete optimization and recognition measurements}
+
+The final measurements run serially, without tests, audits, builds or
+commits overlapping them. Each case has one warm-up round followed by
+five measured rounds, each randomly ordering old, old A/A, new and new
+A/A endpoints. All 260 measured endpoints and 52 warm-ups complete.
+Tables give median primary-arm times and medians of paired ratios;
+the latter need not equal ratios of the median times. Each implementation's
+certificate hashes remain stable across repetitions, and all comparable
+coordinate hashes agree between implementations. Valid matching choices
+can make complete certificate hashes differ.
+
+The first experiment includes input construction, span optimization,
+an additional independent certificate check and hashing. For the two
+source-derived cases, every timed endpoint also constructs the canonical
+exterior and solves its primitive cohomology. The binary case scales its
+four-crossing cocycle heights by $2^{4096}$ before making the arithmetic
+span query; it is not being used as a primitive source-disc certificate.
+The random control aggregates 24 complete, independently verified
+24-row problems per endpoint to reduce timer noise on small queries.
+The other optimizer endpoints contain one query each. This mode completes
+140 measured endpoints and 28 warm-ups in 46.753 seconds.
+
+\begin{center}
+\small\input{tables/cocycle_blocking_optimize.tex}
+\end{center}
+
+On the equal-cost family, complete endpoints improve from $2.85\times$
+at 32 rows to $35.56\times$ at 512 rows, consistent with the proved
+residual-search improvement. The largest median falls from 1.164 seconds
+to 0.033 seconds. The distinct-cost control is close to parity, with a
+paired ratio of 0.985 after the bounded handoff. The random control is
+about 17 percent slower by its paired ratio; its new-arm A/A ratio of
+1.069 also shows visible variation. This is consistent with the adverse
+guard-work result above, and prevents a claim of uniformly faster span
+optimization.
+
+The two source-derived optimization endpoints improve $3.91\times$ and
+$1.81\times$. The 32-crossing case includes source construction and
+cohomology, falling from 1.684 to 0.430 seconds. This is a timing of its
+optimization query: the recognizer normally succeeds on its raw surface
+and does not run that optimization.
+
+The second experiment starts from the input PD and times the complete
+recognizer, including its earlier setup, native discovery, exact fallback
+when required, an additional independent replay of any returned native
+proof and certificate/coordinate hashing. Earlier shortcuts are disabled
+to make the native stage reachable. Both arms use no local seed cap and
+retain the recognizer's twelve-second global deadline. The late-tree
+case requests 24 trials; the others use four. This mode completes 120
+measured calls and 24 warm-ups in 11.591 seconds.
+
+\begin{center}
+\small\input{tables/cocycle_blocking_recognize.tex}
+\end{center}
+
+The four cases reaching span optimization improve $1.28$--$1.46\times$.
+They preserve the optimized and late-tree positive proofs' conclusions,
+and preserve the genus-one unknot miss and trefoil's exact fallback
+verdicts. The early tree positive has a paired ratio of 0.999 and avoids
+flow in both arms. The raw-circle control's 1.034 ratio is comparable to
+its old-arm A/A ratio of 1.032; no algorithmic gain is claimed for that
+unchanged branch. These are selected native-stage timings, not evidence
+of improved ordinary portfolio performance or a general recognition bound.
