@@ -4833,3 +4833,14 @@ scope check passes. Upstream source bytes and license files are unchanged.
   vanishing for abstract column-witness systems over `IsEBihomomorphism`.
   With the prime small-image rigidity they then go further, to exact
   column identities, and `many_exact_column_quadruples` does the count.
+
+
+### Proposition 5.1 assembled (2026-10-09): duplicate retired
+
+`Proofs16BihomWitnessSystem` assembled Proposition 5.1 from
+`Proofs16MilicevicColumns` and `Proofs16ColumnRepSystem`
+(`bihom_many_exact_column_quadruples`, with `(δ/2)N` dense columns). It
+landed in the same hour as `Proofs16GlobalExactColumnQuadruples`
+(`global_many_exact_column_quadruples`), which proves the same statement
+with the slightly better column count `α/(2−α)·N`. The duplicate was
+removed before merging; git history keeps it.
