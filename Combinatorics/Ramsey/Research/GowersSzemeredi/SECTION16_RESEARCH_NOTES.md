@@ -2522,3 +2522,36 @@ pass with only propext, Classical.choice, and Quot.sound. They await
 facade registration and integration into `section16VarietyExtractionFamily`
 after the running full audit. Deep structure and the printed numerical
 budget remain open, and no upstream modules are added.
+
+
+### Complete density port and exact Theorem 1.3
+
+The complete selected density closure now compiles: 4,134 pinned upstream
+modules and 17 compatibility modules. Its 4,152-module axiom audit checks
+63,855 public OAI theorems and the listed compatibility declarations, using
+only propext, Classical.choice, and Quot.sound. The original licenses,
+provenance, and modification notices are retained. The reciprocal-only
+branches remain excluded; no new upstream modules were added.
+
+`Proofs01QuantitativeDensityHeadline.theorem_1_3_holds` applies the checked
+finite-set bridge to `OAI.Erdos3.manuscriptQuantitativeDensityTheorem`.
+The exact companion and its upstream input pass their own transitive axiom
+checks. This closes the encoded Theorem 1.3 and changes the source ledger
+to 115 companions and five open statements. The existing statement-fidelity
+caveats still apply to that count. The port's existential asymptotic
+constants do not prove the fixed threshold in Theorem 18.2.
+
+The earlier full Gowers audit completed with 6,023 public theorems and a
+2,680-module combined closure, before the new headline and sharper-family
+integration. It validates the previously queued dimension-three variety
+construction and the incoming selection lemmas through `lemma19_two_new_piece`.
+The source ledger at that checkpoint was still 114/6.
+
+The sharper family is now used by `section16VarietyExtractionFamily`.
+An isolated rebuild of all six affected modules on the path to the actual
+ceiling-free relation decomposition passes, as do all 23 transitive axiom
+checks for the new inner-loss and sharper-extraction results. All eight
+modules and the density headline are registered in the facade. A new
+combined audit, including the latest incoming Corollary 20 and Bohr
+spectrum results, is pending; this supersedes their registration-pending
+notes above, without claiming that the new full audit has completed.
