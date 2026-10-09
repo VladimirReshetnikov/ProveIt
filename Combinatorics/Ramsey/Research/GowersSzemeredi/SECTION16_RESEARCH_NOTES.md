@@ -9594,3 +9594,69 @@ every printed statement. The selected-port scope check passes.
 After also merging `Proofs16AbstractBSGCore`, the final audit passes with
 8,715 public Gowers theorems, 5,458 combined modules and 5,456 facade
 modules. The axiom boundary, port scope and numbered catalogue are unchanged.
+
+### J.142. Abstract BSG compatible words with polynomial losses
+
+The replacement route now has an abstract BSG theorem for every tuple
+of anchors of bounded length in a prime cyclic ambient group.
+`abstract_bsg_rich_core` retains the union graph, its same-difference
+coherence, the dense sets `B′ ⊆ B ⊆ A`, and the robust four-walk certificate.
+The previous `abstract_bsg_core` is a corollary. The incoming restriction
+of weak transitivity to indices whose sum is at most 16 is retained.
+
+`Proofs16AbstractBSGWords` defines triple and word representations for an
+arbitrary quadruple relation `R`. The original triples and every splice
+quadruple satisfy that same relation. Output words lie in `B` and have
+the alternating value of their anchor list. Thus this interface can be
+instantiated by bounded-image relations; it does not assume exact map
+identities. The existing injective splice geometry is reused.
+
+`Proofs16AbstractBSGBridging` proves the bounded-length induction. Write
+`λ` for the retained triple density and `η` for the mixed-quadruple
+coefficient. Its densities are
+
+```
+δ₀ = λ,
+δⱼ₊₁ = η² λ³ δⱼ³ / 128.
+```
+
+`abstract_bsg_word_system` combines this with the core. For every anchor
+list of length `j+1 ≤ k+1` in `B′`, its actual compatible representation
+family has at least `δⱼ N^(3j+2)` members. It also returns the threshold
+richness needed by further consumers. Its explicit positive transitivity
+budget is the minimum of the core budget and the mixed-quadruple budget
+at the smallest subset cutoff; no model packing or elimination appears.
+The four-walk variant uses `Q 16`, rather than the six-walk paper's
+`Q 36`. The word recursion prepends triples, consistently with the
+existing column-word geometry.
+
+`Proofs16AbstractBSGWordBounds` proves the exact parameter dependence:
+
+```
+λ = λ(1,1) c^28 / K^18,
+η = η(1,1) c^10 / K^7,
+δⱼ = Cⱼ c^(80·3^j−52) / K^(52·3^j−34),   Cⱼ > 0.
+```
+
+For `0 < c ≤ 1` and `1 ≤ K`, the cutoff is exactly `δₖ/2` and has the
+same monomial dependence. All displayed density losses are polynomial
+in `c` and `K` at each fixed tuple length. The input budget is positive
+and explicit; this is not yet a comparison with the final Gowers budget.
+
+Remaining replacement steps include obtaining bounded-image relations
+with the required weak transitivity from the original dense column data,
+Proposition 6.1's almost-all tuple image bound, the robust
+Bogolyubov–Ruzsa progression step, and the subsequent common-extension
+and structural arguments. The generic compatible-word theorem alone
+cannot replace the globally instantiated zero-core chain. The five
+numbered open entries and the final quantitative bounds remain open.
+No upstream code is ported at this checkpoint.
+
+Verification: the final production closure compiles across 238 modules.
+All 23 new named proofs pass individual axiom checks. The full combined
+facade audit checks 8,804 public Gowers theorems across 5,462 modules
+(5,460 in the facade closure), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
+The regenerated catalogue is byte-identical, with 115 companion proofs
+and five open statements. Companion counts do not certify fidelity to
+every printed statement. The selected-port scope check passes.
