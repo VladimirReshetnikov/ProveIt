@@ -1,0 +1,911 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{fancyhdr,hyperref}
+\usepackage{xurl}
+\hypersetup{hidelinks,pdftitle={Deterministic relative approximation of product-distribution total variation},pdfauthor={AI-assisted research manuscript prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Deterministic Fourier approximation of total variation}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist[enumerate]{itemsep=5pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Ninput}{N}
+\newcommand{\pos}[1]{\left(#1\right)_{+}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\C}{\mathbb C}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\cR}{\mathcal R}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\softO}{\widetilde O}
+
+\title{\vspace{-1.2em}Deterministic relative approximation of\\product-distribution total variation\\[0.5em]
+\large Logarithmic frequency quadrature, explicit certificates,\\and extensions to Markov paths and Bayes risk}
+\author{AI-assisted research manuscript\\\small Prepared for Vladimir Reshetnikov}
+\date{October 8, 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $P=\bigotimes_{i=1}^nP_i$ and $Q=\bigotimes_{i=1}^nQ_i$ be finite product distributions, supplied by marginal probability tables with $N$ entries in each collection, and let $d=d_{\TV}(P,Q)>0$. We derive a deterministic relative approximation using
+\[
+ O\!\left(\frac{N}{\eps}\log^2\frac{2}{\eps d}\right)
+\]
+elementary real operations. The algorithm does not enumerate the product space. Its central estimate bounds the variation of a logarithmic-frequency integrand by $d$ itself, rather than by an absolute constant. This turns a classical Fourier representation of the intersection kernel into a relative-error quadrature. For rational marginal probabilities with at most $b$ bits per numerator and denominator, we establish a polynomial-bit implementation; for fixed accuracy and $b=O(\log N)$, its bit complexity is $\softO(N)$. The same oracle theorem applies to fully observed finite-state Markov paths. A complementary equally spaced Fourier rule gives dimension-independent additive error, an exact identity for periodization error, and one compressed representation that approximates the entire normalized Bayes-risk curve uniformly in the prior. Proofs, exact-rational enumeration checks, interval-arithmetic certificates, and reproducible code accompany the manuscript. Fourier feature representations themselves are established prior art; the contribution proposed here is their TV-relative error analysis and its algorithmic consequences.
+\end{abstract}
+
+\noindent\textbf{Status.} The mathematical arguments below are self-contained research claims, not externally refereed or proof-assistant-verified results. The literature comparison concerns the specific bounds cited, not a certified global priority claim. The motivating repository's unverified results are not used as premises.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem and the principal strengthening}
+\label{sec:intro}
+
+Given explicit probability vectors $P_i,Q_i$ on finite alphabets $\Omega_i$, one can evaluate a product probability quickly. In contrast, directly summing
+\begin{equation}
+ d_{\TV}(P,Q)=\frac12\sum_{x\in\prod_i\Omega_i}|P(x)-Q(x)|
+ \label{eq:tv}
+\end{equation}
+requires visiting an exponentially large space in the usual bounded-alphabet setting. Exact evaluation is known to be \#P-hard even for Boolean product distributions \cite{BGM23}. Approximation is therefore the appropriate algorithmic target.
+
+This manuscript studies \emph{relative} accuracy: for $0<\eps\le1$, return $\widehat d$ such that
+\begin{equation}
+ (1-\eps)d\le\widehat d\le(1+\eps)d.
+ \label{eq:relative}
+\end{equation}
+This is stronger than a fixed additive error when $d$ is small. Equality is recognized separately and yields the exact answer zero.
+
+Write $q_i=|\Omega_i|$ and $N=\sum_iq_i$; the two input collections together have $2N$ probability entries. All logarithms in the analysis are natural unless a base is indicated. An \emph{elementary real operation} means arithmetic, comparison, or evaluation of $\sqrt{\cdot}$, $\log$, $\exp$, $\sin$, or $\cos$. This computational convention is stated explicitly because a trigonometric evaluation is not a unit-cost rational arithmetic operation in a bit model.
+
+\begin{theorem}[Main product-distribution algorithm]
+\label{thm:main}
+For arbitrary finite product distributions $P,Q$ and $0<\eps\le1$, there is a deterministic algorithm satisfying \eqref{eq:relative}. If $d>0$, it uses
+\begin{equation}
+ O\!\left(\frac{N}{\eps}\log^2\frac{2}{\eps d}\right)
+ \label{eq:maincost}
+\end{equation}
+elementary real operations. Zero probabilities are allowed. There is no mixing assumption or lower bound on positive marginal probabilities in this operation count.
+
+If each input probability is rational with numerator and denominator of at most $b$ bits, the algorithm has a bit implementation with cost
+\begin{equation}
+ O\!\left[\frac{N}{\eps}
+ \bigl(1+b+\log(1/\eps)\bigr)^2
+ \poly\bigl(b+\log(N/\eps)\bigr)\right],
+ \label{eq:bitcost}
+\end{equation}
+where the polynomial has a fixed degree. The bit statement uses a dyadic accuracy parameter; a general requested accuracy can be rounded downward to a dyadic within a factor of two. In particular, for fixed $\eps$ and $b=O(\log N)$, the bit complexity is $\softO(N)$ on valid normalized input.
+\end{theorem}
+
+The proof has three independent parts. First, a Fourier identity expresses $d$ as a nonnegative baseline plus a nonnegative one-dimensional integral. Second, the variation of that integrand on a logarithmic frequency axis is at most $d$ times a logarithmic factor. Third, the required Fourier transform factorizes across the input marginals. Sections~\ref{sec:kernel}--\ref{sec:products} prove these statements, including error constants and a finite-precision implementation.
+
+\subsection{What improves, and what is not being claimed}
+
+Feng, Liu, and Liu give a deterministic relative approximation for distributions on $[q]^n$ with running time
+\begin{equation}
+ O\!\left(\frac{qn^2}{\eps}\log q\,
+       \log\frac{n}{\eps d}\right)
+ \label{eq:fll}
+\end{equation}
+using likelihood-ratio sparsification \cite{FLL24}. Anand, Benford, and Guo give a randomized relative approximation in $O(qn\eps^{-2}\log(1/\delta))$ time with failure probability at most $\delta$ \cite{ABG26}, following the earlier randomized work of Feng, Guo, Jerrum, and Wang \cite{FGJW23}.
+
+For fixed $q,\eps$ and $d\ge n^{-C}$ with fixed $C$, \eqref{eq:maincost} is $O(n\log^2 n)$, whereas the cited deterministic bound \eqref{eq:fll} is $O(n^2\log n)$. If $d$ is bounded below by a positive constant, the new elementary-operation count is $O(n)$. The bit statement in Theorem~\ref{thm:main} makes the dimension improvement meaningful beyond an elementary-function oracle: bounded-logarithmic-precision rational inputs admit a quasilinear bit algorithm.
+
+These comparisons do not assert domination in every joint regime of $n,\eps,d,b$. The square of a logarithm can matter when $d$ is extraordinarily small. Nor does the result remove the distance-dependent factor from deterministic relative approximation; the randomized bound above does not have that factor. The code is a reference implementation, not an implementation of the other algorithms, and the experiments are not head-to-head benchmarks.
+
+\subsection{Connection to the supplied repository and established Fourier methods}
+
+The repository \texttt{openai/math} contains a manuscript on total-variation cutoff for high-temperature Sherrington--Kirkpatrick heat-bath dynamics \cite{OpenAISk26}. Its discussion distinguishes a relaxation estimate from an actual total-variation comparison. At zero interaction, the dynamics reduce to independent coordinates, motivating a computational question: can one evaluate their finite-size distinguishability without enumerating configurations? We turn that question into an algorithm for arbitrary product laws and, separately, Markov path laws. No interacting-spin cutoff theorem from the repository is imported.
+
+The Fourier representation of $\min(p,q)$ through $\sqrt{pq}$ and $\log(p/q)$ is not new. Vedaldi and Zisserman explicitly develop it as the intersection kernel and study finite Fourier feature approximations \cite{VZ10}. Fourier methods for privacy-loss composition, with rigorous approximation analyses, also predate this work \cite{KJPH21,KH21,GLW21}. The present proposed strengthening is more specific: an integrand-variation bound proportional to \emph{the unknown TV distance}, a constructive relative quadrature based on that bound, and its factorized computational realization. The auxiliary periodization theorem supplies a global normalization-weighted error certificate without restricting the log-likelihood range.
+
+\section{The kernel identity and TV-controlled moments}
+\label{sec:kernel}
+
+For this section, let $P=(p_x)$ and $Q=(q_x)$ be arbitrary probability vectors on a finite common space $\Omega$. They need not be products. Define their common support and its masses by
+\[
+ C=\{x:p_xq_x>0\},\qquad U=P(C)+Q(C),
+\]
+and, for $x\in C$, put
+\begin{equation}
+ w_x=\sqrt{p_xq_x},\qquad s_x=\log(p_x/q_x),\qquad
+ A=\sum_{x\in C}w_x.
+ \label{eq:weights}
+\end{equation}
+The number $A$ is the Hellinger affinity. Define
+\begin{equation}
+ F(t)=\sum_{x\in C}w_x e^{\ii t s_x},\qquad
+ H(t)=A-\Rea F(t)=\sum_{x\in C}w_x(1-\cos(ts_x)).
+ \label{eq:transform}
+\end{equation}
+Thus $|F(t)|\le A\le1$, $H(t)\ge0$, and $F(-t)=\overline{F(t)}$.
+A term outside $C$ contributes zero to $F$; no logarithm of zero is evaluated.
+
+Let $O=\sum_x\min(p_x,q_x)$ be the overlap. The elementary identities
+\begin{equation}
+ O=1-d,\qquad
+ O=\sum_{x\in C}w_x e^{-|s_x|/2}
+ \label{eq:overlap}
+\end{equation}
+will be used repeatedly. The distinction between $1-A$ and $d$ is important: the former is often of order $d^2$ near equality.
+
+\begin{lemma}[Affinity bounds and moment control]
+\label{lem:moments}
+For arbitrary finite $P,Q$,
+\begin{equation}
+ 1-A\le d\le\sqrt{1-A^2},\qquad 1-A\ge d^2/2.
+ \label{eq:hellbounds}
+\end{equation}
+Moreover,
+\begin{equation}
+ M_1:=\sum_Cw_x|s_x|\le2d,
+ \qquad
+ M_2:=\sum_Cw_xs_x^2\le6d.
+ \label{eq:moments}
+\end{equation}
+In particular $A=1$ if and only if $P=Q$.
+\end{lemma}
+\begin{proof}
+Since $\min(p,q)\le\sqrt{pq}$, \eqref{eq:overlap} gives the lower bound $1-A\le d$. Cauchy--Schwarz gives
+\begin{align*}
+ d&=\frac12\sum_x|\sqrt{p_x}-\sqrt{q_x}|(\sqrt{p_x}+\sqrt{q_x})\\
+ &\le\frac12\sqrt{(2-2A)(2+2A)}=\sqrt{1-A^2}.
+\end{align*}
+Hence $d^2\le(1-A)(1+A)\le2(1-A)$.
+
+For the moment estimates, separate the singular and common parts:
+\begin{equation}
+ d=d_s+d_C,\qquad
+ d_s=1-U/2,\qquad
+ d_C=\sum_Cw_x\sinh(|s_x|/2)=U/2-O.
+ \label{eq:decomp}
+\end{equation}
+The identity follows from $w_x\sinh(|s_x|/2)=|p_x-q_x|/2$ on $C$. Since $z\le\sinh z$ for $z\ge0$, $M_1\le2d_C\le2d$. For the second estimate, observe that
+\[
+ 6\sinh z\ge6z+z^3\ge4z^2,
+ \qquad z^3-4z^2+6z=z((z-2)^2+2)\ge0.
+\]
+Taking $z=|s_x|/2$ yields $s_x^2\le6\sinh(|s_x|/2)$. Summing gives $M_2\le6d_C\le6d$.
+\end{proof}
+
+\begin{lemma}[Nonnegative Fourier deficit]
+\label{lem:fourier}
+With the preceding notation,
+\begin{equation}
+ d=1-A+\frac1\pi\int_0^\infty
+       \frac{H(t)}{t^2+1/4}\dd t.
+ \label{eq:nonnegative}
+\end{equation}
+Every summand and the integral on the right are nonnegative.
+\end{lemma}
+\begin{proof}
+The Fourier transform, with convention $\widehat f(t)=\int_{\R}f(s)e^{-\ii ts}\dd s$, of $f(s)=e^{-|s|/2}$ is
+\[
+ \widehat f(t)=2\int_0^\infty e^{-s/2}\cos(ts)\dd s
+             =\frac1{t^2+1/4}.
+\]
+Fourier inversion, or direct evaluation of this integrable transform, gives
+\[
+ 1-e^{-|s|/2}=\frac1\pi\int_0^\infty
+      \frac{1-\cos(ts)}{t^2+1/4}\dd t.
+\]
+Multiply by $w_x$ and sum. The result is $A-O$; adding $1-A$ proves the assertion. Interchange is immediate for a finite sum and also follows from nonnegativity.
+\end{proof}
+
+\begin{remark}[Why the Hellinger weighting matters]
+The log-likelihood ratio may be arbitrarily large, but its first two moments under the \emph{subprobability weights} $w_x$ satisfy \eqref{eq:moments} without any range assumption. A worst-case bound on $\max_x|s_x|$ would lose this property, and can introduce spurious dependence on dimension or very small input probabilities. The relative algorithm below depends on the weighted moments, not on that maximum.
+\end{remark}
+
+\section{Relative quadrature on a logarithmic frequency axis}
+\label{sec:relative}
+
+Set
+\begin{equation}
+ G(u)=\frac{e^u H(e^u)}{\pi(e^{2u}+1/4)}.
+ \label{eq:G}
+\end{equation}
+Then $G\ge0$ and $\int_{\R}G(u)\dd u=A-O\le d$.
+The following estimate is the principal analytic step.
+
+\begin{lemma}[TV-relative variation bound]
+\label{lem:variation}
+For $0<a<T$,
+\begin{equation}
+ \int_{\log a}^{\log T}|G'(u)|\dd u
+ \le d\left(1+\frac1\pi
+          \log\frac{T^2+1/4}{a^2+1/4}\right)
+ \le d\left(1+\frac13\log(1+4T^2)\right).
+ \label{eq:variation}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $v(t)=t/[\pi(t^2+1/4)]$, so $G(u)=v(t)H(t)$ with $t=e^u$. Direct differentiation gives
+\[
+ \left|\frac{tv'(t)}{v(t)}\right|
+ =\left|\frac{1/4-t^2}{1/4+t^2}\right|\le1.
+\]
+Also $|H'(t)|\le M_1\le2d$. Therefore
+\begin{align*}
+ \int_{\log a}^{\log T}|G'(u)|\dd u
+ &\le\int_{\log a}^{\log T}G(u)\dd u
+       +\int_a^T v(t)|H'(t)|\dd t\\
+ &\le d+\frac{2d}{\pi}\int_a^T\frac{t}{t^2+1/4}\dd t\\
+ &=d\left(1+\frac1\pi\log\frac{T^2+1/4}{a^2+1/4}\right).
+\end{align*}
+Use $a^2+1/4\ge1/4$ and $\pi\ge3$ for the last bound.
+\end{proof}
+
+\begin{lemma}[Tail bounds]
+\label{lem:tails}
+For $a,T>0$,
+\begin{align}
+ \frac1\pi\int_0^a\frac{H(t)}{t^2+1/4}\dd t
+ &\le\frac{4a^3}{\pi}d,
+ \label{eq:lowtail}\\
+ \frac1\pi\int_T^\infty\frac{H(t)}{t^2+1/4}\dd t
+ &\le\frac{2A}{\pi T}\le\frac2{\pi T}.
+ \label{eq:hightail}
+\end{align}
+\end{lemma}
+\begin{proof}
+The inequality $1-\cos z\le z^2/2$ and Lemma~\ref{lem:moments} give $H(t)\le t^2M_2/2\le3dt^2$. Since $(t^2+1/4)^{-1}\le4$, integration gives \eqref{eq:lowtail}. The bound $H(t)\le2A$ and $(t^2+1/4)^{-1}\le t^{-2}$ give \eqref{eq:hightail}.
+\end{proof}
+
+\subsection{A fully explicit parameter choice}
+
+Assume $d>0$ and suppose a positive lower bound $\ell\le d$ is available. For $0<\eps\le1$, choose
+\begin{equation}
+ a=\eps/4,\qquad T=\frac8{\eps\ell},\qquad
+ W=\log(T/a),\qquad V=1+\frac13\log(1+4T^2).
+ \label{eq:plan}
+\end{equation}
+Let
+\begin{equation}
+ m=\left\lceil\frac{4VW}{\eps}\right\rceil,\qquad
+ h=W/m,\qquad t_j=a\exp((j+\tfrac12)h),\quad 0\le j<m.
+ \label{eq:nodes}
+\end{equation}
+The proposed approximation is
+\begin{equation}
+ B=1-A+\sum_{j=0}^{m-1}
+       \frac{h t_j}{\pi(t_j^2+1/4)}\bigl(A-\Rea F(t_j)\bigr).
+ \label{eq:B}
+\end{equation}
+The coefficients and the exact parenthesized terms are nonnegative.
+
+\begin{theorem}[Universal relative quadrature]
+\label{thm:quadrature}
+For arbitrary finite probability laws, the choices \eqref{eq:plan}--\eqref{eq:nodes} satisfy
+\begin{equation}
+ -\frac{11\eps}{48}d\le B-d\le\frac{\eps}{8}d.
+ \label{eq:Berror}
+\end{equation}
+The number of transform evaluations is
+\begin{equation}
+ m=O\!\left(\eps^{-1}\log^2\frac{2}{\eps\ell}\right).
+ \label{eq:oraclem}
+\end{equation}
+Choosing $\ell=1-A$ gives
+$m=O(\eps^{-1}\log^2(2/(\eps d)))$.
+\end{theorem}
+\begin{proof}
+For an absolutely continuous function $g$ on a mesh interval $I$ of length $h$ with midpoint $u_I$,
+\[
+ \left|\int_I g(u)\dd u-hg(u_I)\right|
+ \le\frac h2\int_I|g'(u)|\dd u.
+\]
+Indeed, write $g(u)-g(u_I)$ as an integral of $g'$ along the segment between $u$ and $u_I$, then interchange the two integrations. Each derivative value is weighted by a length at most $h/2$.
+
+Apply this estimate to $G$ and use Lemma~\ref{lem:variation}. The midpoint error on $[\log a,\log T]$ is at most $hVd/2\le\eps d/8$. The low-frequency tail is at most
+\[
+ \frac{4a^3}{\pi}d=\frac{\eps^3}{16\pi}d\le\frac{\eps}{48}d.
+\]
+The high-frequency tail is at most
+$2/(\pi T)=\eps\ell/(4\pi)\le\eps d/12$.
+Both discarded tails are nonnegative. Thus the approximation can exceed $d$ only by the midpoint error, while its deficit is at most
+\[
+ (\tfrac18+\tfrac1{48}+\tfrac1{12})\eps d
+ =\tfrac{11}{48}\eps d.
+\]
+This proves \eqref{eq:Berror}.
+
+Since $\ell\le1$, both $V$ and $W$ are $O(\log(2/(\eps\ell)))$. Finally, $1-A\ge d^2/2$ by Lemma~\ref{lem:moments}; substituting this lower bound changes the logarithm by at most an absolute factor.
+\end{proof}
+
+\subsection{Certified finite-precision output}
+
+A numerical evaluation of \eqref{eq:B} must not be confused with its exact value. Suppose directed interval arithmetic gives
+\[
+ B\in[\underline B,\overline B].
+\]
+The proof above also gives an explicit interval for the unknown distance:
+\begin{equation}
+ \boxed{\quad
+ d\in\left[
+   \max\left(0,\frac{\underline B}{1+\eps/8}\right),
+   \min\left(1,\frac{\overline B+\eps\ell/12}{1-7\eps/48}\right)
+       \right].\quad}
+ \label{eq:relativecert}
+\end{equation}
+To see the upper endpoint, retain the absolute high-tail bound $\eps\ell/12$ and move the midpoint and low-tail errors, at most $7\eps d/48$, to the left. The lower endpoint follows from $B\le(1+\eps/8)d$.
+
+If $\overline B-\underline B\le\eps\ell/2$, the midpoint $\widetilde B$ obeys
+\[
+ |\widetilde B-d|\le\left(\frac{11}{48}+\frac14\right)\eps d
+                  =\frac{23}{48}\eps d<\eps d.
+\]
+Projecting $\widetilde B$ onto any certified interval containing $d$ cannot increase this error. Known lower bounds, such as marginal or cylinder-event distances, can be intersected with \eqref{eq:relativecert}.
+
+The reference implementation uses outward interval enclosures for elementary functions, chooses $m$ from an \emph{upper} enclosure of $4VW/\eps$, and increases precision until the stated width test passes. It stores final endpoints as exact rational numbers. This is a computational certificate conditional on the interval backend's arithmetic correctness, not a machine-checked proof of that backend.
+
+\section{Product factorization, lower bounds, and bit complexity}
+\label{sec:products}
+
+For a product pair, write $p_{ia}=P_i(a)$ and $q_{ia}=Q_i(a)$. The global transform factorizes:
+\begin{equation}
+ F(t)=\prod_{i=1}^n f_i(t),\qquad
+ f_i(t)=\sum_{a:p_{ia}q_{ia}>0}
+      \sqrt{p_{ia}q_{ia}}\,
+      e^{\ii t\log(p_{ia}/q_{ia})}.
+ \label{eq:factor}
+\end{equation}
+Every factor has modulus at most $a_i=f_i(0)\le1$, and $A=\prod_i a_i$. Expanding the product proves \eqref{eq:factor} exactly, including support zeros. A transform evaluation costs $O(N)$ elementary operations. The logarithms and square-root weights can be precomputed once.
+
+The algorithm evaluates $F$ at $m$ geometrically spaced positive frequencies, not at all points in the product space. Frequency evaluations are independent and can be parallelized. A streaming implementation stores the local weights and log ratios and a running sum, using $O(N)$ auxiliary real words; a vectorized implementation storing all frequency values uses $O(N+m)$.
+
+\subsection{A rational lower bound and an adaptive affinity bound}
+
+The simplest exact rational lower bound is
+\begin{equation}
+ \ell_0=\max_{i,a}|p_{ia}-q_{ia}|.
+ \label{eq:l0}
+\end{equation}
+The event $\{X_i=a\}$ shows that $\ell_0\le d$. Further, $\ell_0=0$ if and only if the product laws agree. This avoids exact summation of many rational terms merely to produce a nonzero lower bound.
+
+For a precision-efficient choice of $\ell$, enclose $A$ by $[A_-,A_+]$ with width at most $\ell_0$, and replace the endpoints by their intersection with $[0,1]$. Set
+\begin{equation}
+ \ell=\max(\ell_0,1-A_+).
+ \label{eq:adaptiveell}
+\end{equation}
+Then $0<\ell\le d$. Also
+\begin{equation}
+ \ell\ge\frac{1-A}{2}\ge\frac{d^2}{4}.
+ \label{eq:ellquality}
+\end{equation}
+Indeed, if $1-A\le2\ell_0$, use $\ell\ge\ell_0$; otherwise $1-A_+\ge1-A-\ell_0\ge(1-A)/2$. Thus the practical certified rule preserves the distance-dependent operation count of Theorem~\ref{thm:main} without exact evaluation of an irrational affinity.
+
+\begin{proof}[Proof of the elementary-operation part of Theorem~\ref{thm:main}]
+Test equality of all marginal entries and return zero if they agree. Otherwise compute $A$, choose $\ell=1-A$ in exact elementary arithmetic, or use \eqref{eq:adaptiveell} in a certified implementation. Evaluate \eqref{eq:B} by \eqref{eq:factor}. Theorem~\ref{thm:quadrature} and \eqref{eq:ellquality} give \eqref{eq:maincost}; the interval procedure gives \eqref{eq:relative}. If $A=0$, the supports are disjoint and the exact answer is one.
+\end{proof}
+
+\subsection{Why polynomial precision suffices}
+
+Assume positive input probabilities are rational numbers whose numerator and denominator have at most $b$ bits. Every positive probability is at least $2^{-b}$. A nonzero difference between two such rationals is at least $2^{-2b}$, so
+\begin{equation}
+ \ell_0\ge2^{-2b}\quad\text{whenever }P\ne Q.
+ \label{eq:bitgap}
+\end{equation}
+The node count is consequently
+\begin{equation}
+ m=O\!\left(\eps^{-1}(1+b+\log(1/\eps))^2\right).
+ \label{eq:bitnodes}
+\end{equation}
+Local log ratios have magnitude $O(b)$, while $T\le8/(\eps\ell_0)$. Thus the \emph{binary length} of every phase $t_js_{ia}$ is $O(b+\log(1/\eps)+\log(1+b))$, even though its magnitude may be large.
+
+Two stability observations rule out exponential precision in $N$. If $|z_i|\le1$ and $|\widetilde z_i-z_i|\le\delta_i$, telescoping gives
+\begin{equation}
+ \left|\prod_i\widetilde z_i-\prod_i z_i\right|
+ \le\prod_i(1+\delta_i)-1
+ \le\exp\left(\sum_i\delta_i\right)-1.
+ \label{eq:productstability}
+\end{equation}
+Second, the quadrature coefficients have a controlled sum:
+\begin{equation}
+ \sum_{j=0}^{m-1}\frac{h t_j}{\pi(t_j^2+1/4)}
+ \le W/\pi,
+ \label{eq:weightsum}
+\end{equation}
+since $t/(t^2+1/4)\le1$. Consequently, suitably small absolute errors in local factors, nodes, and weights lead to an absolute error $O(\eps\ell)$ in $B$ with only logarithmic guard factors in $N$ and $m$.
+
+More explicitly, it is enough to use
+\begin{equation}
+ p=O\!\left(b+\log\frac{Nm}{\eps\ell_0}\right)
+   =O\bigl(b+\log(N/\eps)\bigr)
+ \label{eq:workingprecision}
+\end{equation}
+working bits, with a sufficiently large absolute constant and the usual argument-reduction guards. The factor $T$ multiplying a local log error adds only $O(\log T)$ bits, already included in \eqref{eq:workingprecision}. The error in a product of $n$ local factors is controlled by \eqref{eq:productstability}, and summation and weight errors by \eqref{eq:weightsum}. Computing a ceiling need not resolve proximity to an integer: taking the ceiling of a certified upper endpoint is safe and adds at most a constant number of nodes once that endpoint has width less than one.
+
+For completeness, the elementary functions needed here admit algorithms polynomial in $p$ and the binary argument length. For a positive rational, dyadic scaling followed by
+\[
+ \log y=2\sum_{k\ge0}\frac{z^{2k+1}}{2k+1},
+ \qquad z=(y-1)/(y+1),
+\]
+with scaled $y\in[1,2]$, gives a geometrically convergent logarithm series. Exponentials can be range-reduced to a bounded interval. Sine and cosine can be reduced modulo $2\pi$, using sufficient additional bits of $\pi$, and evaluated by Taylor series with explicit remainder bounds. Square roots admit bisection or Newton iteration. Fixed-point arithmetic with outward error bounds makes these polynomial-bit constructions explicit; no unproved numerical oracle is required for existence of the bit algorithm.
+
+Combining a fixed polynomial cost per elementary evaluation with \eqref{eq:bitnodes} and \eqref{eq:workingprecision} proves \eqref{eq:bitcost}. This is deliberately a conservative polynomial-bit bound, not a claim of an optimal bit exponent. Exact verification of normalization for arbitrary invalid rational inputs is a separate input-validation task; the complexity theorem takes normalized probability tables as its promised input, while the supplied code additionally validates them.
+
+\section{Fully observed Markov paths}
+\label{sec:markov}
+
+Consider two time-inhomogeneous Markov laws on paths $(X_0,\ldots,X_k)$ in a state space of size $r$:
+\[
+ P(x_0,\ldots,x_k)=p_0(x_0)\prod_{i=1}^kP_i(x_{i-1},x_i),
+\]
+with an analogous expression for $Q$ using $q_0,Q_i$. The path is fully observed; this is not the distribution of observations from a hidden Markov model.
+
+For $t\in\R$, define a row vector and transfer matrices by
+\begin{align}
+ v_t(x)&=\sqrt{p_0(x)q_0(x)}
+        e^{\ii t\log(p_0(x)/q_0(x))},\\
+ M_{i,t}(x,y)&=\sqrt{P_i(x,y)Q_i(x,y)}
+        e^{\ii t\log(P_i(x,y)/Q_i(x,y))},
+ \label{eq:markovmat}
+\end{align}
+where an entry is zero when either of its two probabilities is zero. Expansion along paths gives
+\begin{equation}
+ F(t)=v_t M_{1,t}\cdots M_{k,t}\mathbf1.
+ \label{eq:markovfactor}
+\end{equation}
+Cauchy--Schwarz gives
+\begin{equation}
+ \sum_y|M_{i,t}(x,y)|\le1,\qquad \sum_x|v_t(x)|\le1.
+ \label{eq:substochastic}
+\end{equation}
+The transfer computation is therefore contractive in the row-vector $\ell^1$ norm in exact arithmetic, and perturbations accumulate by a telescoping bound analogous to \eqref{eq:productstability}.
+
+\begin{corollary}[Relative approximation of Markov path distance]
+\label{cor:markov}
+For distinct fully observed Markov path laws, a relative-$\eps$ approximation of their TV distance $d$ can be computed deterministically in
+\begin{equation}
+ O\!\left(\frac{r+kr^2}{\eps}\log^2\frac{2}{\eps d}\right)
+ \label{eq:markovcost}
+\end{equation}
+elementary real operations. No irreducibility, reversibility, stationarity, or mixing assumption is required.
+\end{corollary}
+\begin{proof}
+Compute $A=F(0)$ from \eqref{eq:markovfactor}, use $\ell=1-A$, and apply Theorem~\ref{thm:quadrature}. Each transform costs $O(r+kr^2)$ operations.
+\end{proof}
+
+A rational lower bound and an exact equality test are also available. Compute the initial marginals and all adjacent-pair probabilities under both laws. Let $\ell_0$ be the maximum absolute difference between corresponding \emph{individual} initial or adjacent-pair probabilities. Every such event is a path cylinder, hence $\ell_0\le d$. If all these probabilities agree, the time marginals agree, and the transition kernels agree at every state with positive marginal mass; induction then shows that the full path laws agree. Differences at unreachable states are correctly ignored. Therefore $\ell_0>0$ whenever the path laws differ, and \eqref{eq:adaptiveell} applies.
+
+For rational input, these forward probabilities have polynomial bit length in the total input bit length, giving a polynomial-bit implementation. We do not claim the product case's uniform quasilinear bit bound for arbitrary Markov inputs: a distinguishable transition may be reached with exponentially small probability along a long path.
+
+\begin{remark}[Limits of the transfer argument]
+If the observation law marginalizes a hidden state, one encounters square roots and complex powers of \emph{sums} of path weights. These do not distribute across transitions. Formula~\eqref{eq:markovfactor} then fails in general. Likewise, a mixture of product laws does not automatically inherit the product factorization of $F$. The theorem is an oracle reduction, not a solution to all succinctly represented distribution-comparison problems.
+\end{remark}
+
+\section{A complementary dimension-independent additive certificate}
+\label{sec:periodic}
+
+The relative rule uses geometrically spaced frequencies and adapts to a distance lower bound. For additive accuracy, a simpler equally spaced rule yields a common reusable Fourier table. This section gives its exact global error analysis.
+
+For $L>0$, set
+\begin{equation}
+ \rho=e^{-L/2},\quad t_j=2\pi j/L,\quad
+ c_j=\frac1{L(1/4+t_j^2)},\quad
+ g_L(s)=\sum_{z\in\Z}e^{-|s+zL|/2}.
+ \label{eq:perioddef}
+\end{equation}
+The periodized kernel has the Fourier series
+\begin{equation}
+ g_L(s)=\sum_{j\in\Z}c_j e^{\ii t_js},\qquad
+ \sum_{j\in\Z}c_j=g_L(0)=\frac{1+\rho}{1-\rho}.
+ \label{eq:periodseries}
+\end{equation}
+To verify the coefficients, integrate the periodization over one period and unfold the sum to the Fourier transform of $e^{-|s|/2}$. Absolute summability of $c_j=O(j^{-2})$ justifies uniform convergence and the identities.
+
+Let
+\begin{equation}
+ C_L=\sum_Cw_xg_L(s_x),\qquad
+ S_{L,K}=\frac4L A+2\sum_{j=1}^Kc_j\Rea F(t_j),\quad K\ge1.
+ \label{eq:SK}
+\end{equation}
+
+\begin{theorem}[Weighted periodization and finite Fourier certificate]
+\label{thm:periodic}
+For all finite $P,Q$, all $L>0$, and all integers $K\ge1$,
+\begin{align}
+ 0\le C_L-O&\le B_L:=U\frac{\rho}{1-\rho},
+ \label{eq:aliasbound}\\
+ |C_L-S_{L,K}|&\le E_{L,K}:=\frac{AL}{2\pi^2K}.
+ \label{eq:periodtail}
+\end{align}
+Consequently,
+\begin{equation}
+ d\in[1-S_{L,K}-E_{L,K},\;1-S_{L,K}+E_{L,K}+B_L]\cap[0,1].
+ \label{eq:periodcert}
+\end{equation}
+The alias bound is sharp, and equality in \eqref{eq:aliasbound}'s upper bound holds whenever every common-support log ratio satisfies $|s_x|\le L$.
+\end{theorem}
+\begin{proof}
+For $z\ge1$,
+\[
+ e^{-|s+zL|/2}\le e^{-s/2}\rho^z,
+ \qquad
+ e^{-|s-zL|/2}\le e^{s/2}\rho^z.
+\]
+The noncentral translates are therefore bounded by
+$(e^{-s/2}+e^{s/2})\rho/(1-\rho)$. Multiplying by $w_x$ and summing gives $U\rho/(1-\rho)$, since $w_xe^{\pm s_x/2}$ are $p_x,q_x$. This step, which uses normalization rather than a uniform likelihood-range bound, is what makes the error independent of the size of $\Omega$.
+
+If $|s|\le L$, both displayed inequalities are equalities for every $z\ge1$; this proves the equality claim and sharpness, including the example $P=Q$.
+
+For the Fourier tail, $|F(t_j)|\le A$ and
+\[
+ c_j\le\frac{L}{4\pi^2j^2},\qquad
+ \sum_{j>K}j^{-2}\le K^{-1}.
+\]
+Thus the two-sided omitted tail has modulus at most $AL/(2\pi^2K)$. Combining the two bounds with $d=1-O$ proves \eqref{eq:periodcert}.
+\end{proof}
+
+\subsection{Explicit additive complexity and finite-precision stability}
+
+For target additive accuracy $0<\eta\le1$, an entirely conservative plan is
+\begin{equation}
+ r=\left\lceil\log_2\frac{16}{\eta}\right\rceil,
+ \quad L=2r,
+ \quad K=\left\lceil\frac{2L}{9\eta}\right\rceil.
+ \label{eq:addplan}
+\end{equation}
+Because $e\ge2$, $\rho=e^{-r}\le2^{-r}\le\eta/16$. Since $U\le2$, $A\le1$, and $\pi^2\ge9$,
+\begin{equation}
+ B_L\le\frac{2\eta}{16-\eta}\le\frac{2\eta}{15},
+ \qquad E_{L,K}\le\frac{L}{18K}\le\frac\eta4.
+ \label{eq:addbudget}
+\end{equation}
+The exact interval in \eqref{eq:periodcert} has width at most $19\eta/30$. If an enclosure of $S_{L,K}$ has width at most $\eta/4$, the resulting distance interval has width at most $53\eta/60<\eta$. Its midpoint is, in particular, an additive-$\eta$ approximation.
+
+Using \eqref{eq:factor}, the elementary-operation cost is
+\begin{equation}
+ O\!\left(N\eta^{-1}\log(1/\eta+1)\right).
+ \label{eq:addcost}
+\end{equation}
+For Markov paths replace $N$ by $r+kr^2$. The number of frequencies does not depend on $d$, dimension, or the smallest positive probability. Finite-precision costs still depend on input bit lengths.
+
+The equally spaced coefficient sum gives a useful stability guarantee: if each transform value has absolute error at most $\xi$, the induced error in $S_{L,K}$, before coefficient-rounding errors, is at most
+\[
+ \xi\sum_{j\in\Z}c_j=\xi\frac{1+\rho}{1-\rho}.
+\]
+An additional inexpensive shortcut is $O\le A$, yielding $d\in[1-A,1]$. An affinity already below the requested additive tolerance makes all frequency evaluations unnecessary.
+
+\section{An exact alias identity and a positive spectral representation}
+\label{sec:aliasidentity}
+
+The estimate \eqref{eq:aliasbound} can be sharpened to an exact identity. For $a\ge1$, define the restricted hockey-stick functional
+\begin{equation}
+ D_a(p_C\|q_C)=\sum_{x\in C}\pos{p_x-aq_x}.
+ \label{eq:hockey}
+\end{equation}
+These are functionals of the \emph{common-support submeasures}. Substituting full probability measures when their supports differ would be incorrect in the following formula.
+
+\begin{theorem}[Exact alias defect]
+\label{thm:aliasidentity}
+Let $R_L=B_L-(C_L-O)$. Then
+\begin{equation}
+ R_L=\sum_{z\ge1}\rho^z\left[
+ D_{e^{zL}}(p_C\|q_C)+D_{e^{zL}}(q_C\|p_C)\right].
+ \label{eq:aliasidentity}
+\end{equation}
+The terms are nonnegative. For finite laws, only finitely many terms can be nonzero.
+\end{theorem}
+\begin{proof}
+For $s>zL$, the excess of the majorant $e^{s/2}\rho^z$ over $e^{-|s-zL|/2}$, after multiplication by $w=\sqrt{pq}$, is
+\[
+ p\rho^z-q\rho^{-z}=\rho^z(p-e^{zL}q).
+\]
+For $s\le zL$ that excess is zero. The other translate gives the analogous term $\rho^z(q-e^{zL}p)_+$. Sum over $x$ and $z$. Each ratio $p_x/q_x$ on $C$ is finite and positive, so a sufficiently large $z$ makes both terms zero at every $x$.
+\end{proof}
+
+Recall $d_C=U/2-O$ and $d_s=1-U/2$. Define
+\begin{equation}
+ V_L=\sum_{j\in\Z}c_j\bigl(U/2-\Rea F(t_j)\bigr).
+ \label{eq:positiveV}
+\end{equation}
+Every bracket is nonnegative because $\Rea F(t_j)\le A\le U/2$.
+
+\begin{corollary}[A positive multiplicative discretization]
+\label{cor:positive}
+The absolutely convergent series \eqref{eq:positiveV} satisfies
+\begin{equation}
+ V_L=d_C+R_L,
+ \qquad d_C\le V_L\le\frac{1+\rho}{1-\rho}d_C.
+ \label{eq:Vbound}
+\end{equation}
+If $V_{L,K}$ denotes its partial sum over $|j|\le K$, then
+\begin{equation}
+ d_s+\frac{V_{L,K}}{(1+\rho)/(1-\rho)}
+ \le d\le d_s+V_{L,K}+\frac{(U/2+A)L}{2\pi^2K}.
+ \label{eq:Vcert}
+\end{equation}
+\end{corollary}
+\begin{proof}
+By \eqref{eq:periodseries},
+\[
+ V_L=\frac U2\frac{1+\rho}{1-\rho}-C_L
+     =\frac U2-O+\left(\frac{U\rho}{1-\rho}-(C_L-O)\right)
+     =d_C+R_L.
+\]
+For $a\ge1$, the sum of the two hockey-stick functionals in \eqref{eq:aliasidentity} is at most $\sum_C|p_x-q_x|=2d_C$. Thus $R_L\le2d_C\rho/(1-\rho)$, proving \eqref{eq:Vbound}. Nonnegativity gives $V_{L,K}\le V_L$, while the tail is at most $(U/2+A)L/(2\pi^2K)$ by the same $j^{-2}$ summation used above. Rearrangement yields \eqref{eq:Vcert}.
+\end{proof}
+
+The infinite equally spaced discretization is already multiplicatively accurate on the common part. Its finite tail bound is additive, however. This pinpoints why simply truncating a uniform frequency grid does not yield the relative complexity of Theorem~\ref{thm:main}; the logarithmic-grid variation argument addresses that separate issue.
+
+\section{A uniform compressed Bayes-risk curve}
+\label{sec:bayes}
+
+Suppose hypothesis $P$ has prior probability $\alpha$ and hypothesis $Q$ has probability $1-\alpha$. The optimal probability of classification error is
+\begin{equation}
+ \cR(\alpha)=\sum_x\min(\alpha p_x,(1-\alpha)q_x).
+ \label{eq:risk}
+\end{equation}
+The formula follows by choosing, separately at each outcome, the hypothesis with the larger weighted likelihood. At equal priors, $\cR(1/2)=(1-d)/2$.
+
+For $0<\alpha<1$, let $b_\alpha=\log(\alpha/(1-\alpha))$. Then
+\begin{equation}
+ \cR(\alpha)=\sqrt{\alpha(1-\alpha)}
+   \sum_Cw_xe^{-|s_x+b_\alpha|/2}.
+ \label{eq:riskkernel}
+\end{equation}
+Using the same precomputed values $F(t_j)$ as in Section~\ref{sec:periodic}, define
+\begin{equation}
+ \widehat\cR_{L,K}(\alpha)=\sqrt{\alpha(1-\alpha)}
+ \left[\frac4L A+2\sum_{j=1}^Kc_j
+       \Rea\bigl(e^{\ii t_jb_\alpha}F(t_j)\bigr)\right],
+ \label{eq:riskapprox}
+\end{equation}
+and set the approximation to zero at the endpoints.
+
+\begin{theorem}[Simultaneous approximation for every prior]
+\label{thm:risk}
+For all $\alpha\in[0,1]$,
+\begin{equation}
+ \left|\widehat\cR_{L,K}(\alpha)-\cR(\alpha)\right|
+ \le\frac{\rho}{1-\rho}+\frac{AL}{4\pi^2K}.
+ \label{eq:riskerror}
+\end{equation}
+The bound is uniform in $\alpha$ and needs no discretization of the prior interval. The transform table costs $O(NK)$ operations for products, and each subsequent prior evaluation costs $O(K)$.
+\end{theorem}
+\begin{proof}
+Apply the proof of Theorem~\ref{thm:periodic} to the nonnegative subprobability vectors $\alpha P$ and $(1-\alpha)Q$. Their common-support total mass is
+$\alpha P(C)+(1-\alpha)Q(C)\le1$, so the alias bound is at most $\rho/(1-\rho)$. Their affinity is $\sqrt{\alpha(1-\alpha)}A\le A/2$, giving the Fourier-tail bound $AL/(4\pi^2K)$. The shifted transform in \eqref{eq:riskapprox} is exactly the transform of these weighted vectors.
+\end{proof}
+
+This is a finite representation with a simultaneous error theorem, not an instruction to output uncountably many numbers. The approximating function need not be concave or remain inside the exact feasible range; a pointwise certified interval can be intersected with $[0,\min(\alpha,1-\alpha)]$. The implementation does so. These are \emph{absolute} risk guarantees; the theorem does not claim relative accuracy when the Bayes risk is arbitrarily small.
+
+The hockey-stick functional from privacy analysis is related by a change of prior and scale. That scale can magnify errors for extreme thresholds, so \eqref{eq:riskerror} should not be advertised as a uniform additive guarantee for every unnormalized privacy profile.
+
+\section{Examples, tests, and reproducibility}
+\label{sec:experiments}
+
+\subsection{Independent heat-bath dynamics as a motivating application}
+
+Consider independent fair spins, initially all $+1$, with coordinate $i$ refreshed to a fair spin at rate $\lambda_i>0$. At time $t$,
+\[
+ P_{i,t}(+1)=\frac{1+e^{-\lambda_i t}}2,\qquad Q_i(+1)=\frac12.
+\]
+The distance to equilibrium is a product-distribution TV distance. Both Fourier schemes evaluate it at finite size for arbitrary heterogeneous rates. This application uses only the independent-coordinate calculation, not the interacting Sherrington--Kirkpatrick claims in the motivating repository. Certified transcendental input probabilities require input enclosures in addition to the rational-input interface supplied here.
+
+For the scaling experiment below we instead use rational Bernoulli probabilities $1/2+\theta_n$ with $\theta_n$ a rational approximation to $0.4/\sqrt n$. This keeps the distance away from zero and one while dimension grows. The implementation deliberately processes every coordinate; it does not group identical marginals.
+
+\subsection{Exact enumeration and interval checks}
+
+Twenty-three product or Markov pairs are evaluated by \texttt{tests/run\_checks.py} using interval arithmetic and checked against exact rational enumeration. Cases include equality, disjointness, partial support, a $10^{-30}$ probability, distance $10^{-12}$, a three-coordinate distance $1.5\times10^{-12}-2\times10^{-36}$, and unreachable Markov states. The tolerance is $1/5$, except one heterogeneous-product test at $1/100$; all runs use 40 decimal digits.
+
+Separately, all 625 ordered pairs of two-coordinate Bernoulli products whose success probabilities belong to $\{0,1/4,1/2,3/4,1\}$ are checked with the fast implementation against exact enumeration. These fast computations are numerical cross-checks, \emph{not} outward-rounded certificates. A single periodic table is checked against exact Bayes risks at 51 priors. Finally, 112 periodization/alias identities are checked at 70-digit precision, including likelihood ratios outside the period and support zeros.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Case & Exact $d$ (rounded) & Certified lower & Certified upper & Nodes\\
+\midrule
+One coordinate & $0.166666667$ & $0.166666667$ & $0.173186052$ & 868\\
+Partial support & $0.402777778$ & $0.391097918$ & $0.418641292$ & 725\\
+Heterogeneous binary & $0.226394558$ & $0.219618037$ & $0.234732634$ & 868\\
+Near-equal four coordinates & $4.50004\!\times10^{-5}$ & $4.36301\!\times10^{-5}$ & $4.67511\!\times10^{-5}$ & 3589\\
+Tiny distance & $10^{-12}$ & $10^{-12}$ & $1.03912\!\times10^{-12}$ & 15334\\
+Positive Markov paths & $0.193287037$ & $0.187433332$ & $0.200752217$ & 868\\
+\bottomrule
+\end{tabular}
+\caption{Selected interval tests. Printed endpoints are rounded for readability and are not themselves outward-rounded decimal certificates. Exact rational endpoints are in \texttt{data/verification.json}. Equality and disjointness shortcuts use no frequency nodes.}
+\label{tab:interval}
+\end{table}
+
+All checks passed in the recorded run. The largest observed relative error among the 625 fast cases was approximately $0.007763$, below the requested $0.2$. The largest residual in the 70-digit alias-identity checks was approximately $1.09\times10^{-70}$. Neither statistic is a proof of correctness; correctness of the analytic algorithm is established by the preceding arguments. The interval tests additionally check the implementation against independent exact enumerations.
+
+\subsection{Dimension scaling}
+
+The file \texttt{tests/benchmark.py} runs the fast NumPy implementation three times at each dimension with requested relative tolerance $0.1$. It records the median wall time. A separate 80-digit binomial reduction supplies a reference value for the homogeneous Bernoulli example; this high-precision reference is not an interval certificate.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$n$ & Frequencies & Median seconds & Reference $d$ & Observed relative error\\
+\midrule
+10 & 2337 & 0.00147 & 0.320855 & 0.001450\\
+100 & 2592 & 0.01432 & 0.310473 & 0.000882\\
+1000 & 2593 & 0.16327 & 0.310935 & 0.000913\\
+5000 & 2593 & 1.00206 & 0.310850 & 0.000916\\
+10000 & 2593 & 1.79441 & 0.310840 & 0.000908\\
+\bottomrule
+\end{tabular}
+\caption{Descriptive timings for processing every coordinate. Hardware, interpreter, and vectorization affect wall times; the asymptotic claim follows from the proof, not this table. The fast implementation's intervals ignore roundoff and are labeled uncertified.}
+\label{tab:scaling}
+\end{table}
+
+The frequency count stabilizes because the affinity supplies a lower bound bounded away from zero in this family. This illustrates why the adaptive choice \eqref{eq:adaptiveell} is preferable to using only the largest marginal discrepancy, which shrinks with $n$ in this example.
+
+\subsection{What the package does and does not verify}
+
+The reference backend is \texttt{mpmath.iv} version 1.3.0 with exact rational input and exact extraction of dyadic interval endpoints. Its elementary-function interval arithmetic is part of the trusted numerical base. No Lean formalization or independently verified elementary-function implementation is included. The fast NumPy path is intended for exploration and timing, and is explicitly labeled noncertified. It can underflow on extremely small probabilities or lose meaningful digits near equality; such cases should use the interval path.
+
+The supplied tests do not establish global novelty, optimality of the constants, or uniform performance on every numerical condition. The source code raises an error rather than silently weakening the guarantee when its node or precision resource limits are exceeded. The mathematical algorithm has no such fixed resource cutoffs.
+
+\section{Limitations and further research questions}
+\label{sec:future}
+
+The principal result is a deterministic relative approximation, not exact evaluation and not a resolution of a \#P-hard counting problem. Its logarithmic dependence on $d$ remains, and its conservative constants are not optimized. It applies when the complex power sum $F(t)$ is efficiently evaluable; that structural requirement is essential.
+
+The following questions would materially extend the result.
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Remove one logarithm.} Can the absolute-variation estimate in Lemma~\ref{lem:variation} be replaced by a cancellation-sensitive quadrature analysis, giving $O(N\eps^{-1}\log(2/(\eps d)))$ elementary operations while keeping a deterministic certificate?
+
+\item \textbf{Remove distance dependence from the node count.} Is there a deterministic relative scheme with $O(N\poly(1/\eps))$ operations and no $\log(1/d)$ factor? The randomized relative result of \cite{ABG26} makes this a natural derandomization target. A fixed bounded-frequency positive quadrature cannot suffice; Appendix~\ref{app:obstruction} states the precise restricted obstruction.
+
+\item \textbf{Optimize adaptive certification.} Can local oscillation bounds, exact tail masses, or combinations of the logarithmic and periodic certificates reduce constants dramatically without relying on unvalidated adaptive-quadrature heuristics? A certified stopping rule using both formulations is particularly attractive.
+
+\item \textbf{Exploit repeated structure.} Identical product factors or repeated transition matrices permit powers rather than repeated multiplications. Determine bit-stable algorithms that exploit these repetitions and quantify when frequency reuse across time or parameter values reduces cost further.
+
+\item \textbf{Extend beyond paths with explicit structural parameters.} For two laws on a common tree or bounded-treewidth factor graph, identify the exact cost of evaluating their complex power sum by message passing. When the graphs differ, the treewidth of the combined factorization, not that of either graph separately, is likely the relevant parameter.
+
+\item \textbf{Relative Bayes-risk curves.} Under what assumptions can one compressed transform table provide relative, rather than additive, guarantees on a prior interval? Any theorem must state a positive lower bound on the risk or an appropriate nonuniform error requirement.
+
+\item \textbf{Controlled departures from independence.} Combine the product comparison algorithm with certified approximation of a weakly dependent law by a product or tractable graphical model. The resulting total-variation error must include the model-approximation error; a fast product computation alone does not establish an interacting-spin cutoff theorem.
+
+\item \textbf{Formal verification and sharper bit bounds.} Formalize the moment and variation lemmas, the interval rearrangements, and the support-zero cases. Replace the present trusted interval backend by a small verified checker, and determine a sharp bit-complexity exponent rather than the conservative polynomial bound proved here.
+\end{enumerate}
+
+\section{Conclusion}
+
+A classical Fourier representation becomes algorithmically stronger when its error is measured in the correct scale. The estimates $\sum\sqrt{pq}|\log(p/q)|\le2d$ and $\sum\sqrt{pq}\log^2(p/q)\le6d$ make both the low-frequency tail and logarithmic-grid quadrature error proportional to total variation. Hellinger affinity supplies the needed positive lower bound on $d$ without enumerating the outcome space. For products and fully observed Markov paths, the transform itself is computable by factorization, giving the stated deterministic relative algorithms. A separate normalization-weighted periodization argument yields short additive certificates and a reusable Bayes-risk representation. These are explicit, checkable strengthening claims with identified computational models and limitations; independent mathematical and bibliographic review remains the next validation step.
+
+\appendix
+\section{A restricted obstruction to fixed bounded-frequency rules}
+\label{app:obstruction}
+
+The logarithmic rule moves its high-frequency endpoint as the distance shrinks. This is not an incidental implementation choice for positive quadrature formulas of the form used here.
+
+\begin{proposition}
+\label{prop:fixedrule}
+Fix finitely many real frequencies $t_1,\ldots,t_m$ and nonnegative finite coefficients $b_1,\ldots,b_m$, independently of $P,Q$. The formula
+\[
+ \mathcal B(P,Q)=1-A+\sum_{j=1}^m b_j(A-\Rea F(t_j))
+\]
+cannot be a relative approximation with any fixed factor bounded away from zero uniformly over all probability pairs.
+\end{proposition}
+\begin{proof}
+Take $Q=(1/2,1/2)$ and $P_\theta=(1/2+\theta,1/2-\theta)$, with $0<\theta<1/2$. Then $d=\theta$. Taylor expansion at zero gives
+\[
+ A=\tfrac12\sqrt{1+2\theta}+\tfrac12\sqrt{1-2\theta}
+   =1-\tfrac12\theta^2+O(\theta^4),
+\]
+and $s_\pm=\log(1\pm2\theta)=\pm2\theta+O(\theta^2)$. For each fixed $t_j$, $A-\Rea F(t_j)=O(\theta^2)$. Hence $\mathcal B(P_\theta,Q)=O(\theta^2)$, so $\mathcal B/d\to0$.
+\end{proof}
+
+This is an obstruction only to the stated fixed finite quadrature form. It is not a lower bound for arbitrary nonlinear algorithms accessing finitely many transform values, nor for algorithms whose nodes or coefficients adapt to the input.
+
+\section{Implementation protocol and reproduction commands}
+\label{app:reproduction}
+
+The package separates the mathematical specification from its numerical implementations. The principal public entry points in \texttt{code/fourier\_tv.py} are
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Entry point & Purpose\\
+\midrule
+\texttt{ProductPair.create} & Exact rational product input and validation\\
+\texttt{MarkovPair.create} & Exact rational fully observed path input\\
+\texttt{relative\_certificate} & Relative interval certificate\\
+\texttt{relative\_fast} & Noncertified vectorized prototype\\
+\texttt{periodic\_table} & Reusable equally spaced Fourier data\\
+\texttt{periodic\_tv\_certificate} & Additive TV enclosure\\
+\texttt{bayes\_risk\_certificate} & Bayes-risk enclosure for a rational prior\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Inputs use integers, rational strings, decimal strings, or \texttt{Fraction} values. Binary floating-point inputs are deliberately rejected by the certified input constructors. To reproduce the recorded checks from the package root:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python tests/run_checks.py
+python tests/benchmark.py
+make paper
+\end{verbatim}
+
+The JSON files preserve exact fractions; the CSV tables and printed manuscript decimals are for inspection. The test script's finite checks do not replace the analytic proofs. The package's \texttt{AUDIT.md} records the source comparison, the trust boundary of the interval backend, and the distinction between proved statements, experimental observations, and priority claims.
+
+\begin{thebibliography}{9}
+\bibitem{ABG26}
+Konrad Anand, Alistair Benford, and Heng Guo.
+\newblock Linear time approximation of the TV distance between product distributions.
+\newblock arXiv:2607.27088, 2026.
+\newblock \url{https://arxiv.org/abs/2607.27088}.
+
+\bibitem{BGM23}
+Arnab Bhattacharyya, Sutanu Gayen, Kuldeep S. Meel, Dimitrios Myrisiotis,
+A. Pavan, and N. V. Vinodchandran.
+\newblock On approximating total variation distance.
+\newblock In \emph{Proceedings of IJCAI}, 2023.
+\newblock \url{https://www.ijcai.org/proceedings/2023/387}.
+
+\bibitem{FLL24}
+Weiming Feng, Liqiang Liu, and Tianren Liu.
+\newblock On deterministically approximating total variation distance.
+\newblock In \emph{Proceedings of the ACM--SIAM Symposium on Discrete Algorithms},
+  pages 1766--1791, 2024.
+\newblock \url{https://arxiv.org/abs/2309.14696}.
+
+\bibitem{FGJW23}
+Weiming Feng, Heng Guo, Mark Jerrum, and Jiaheng Wang.
+\newblock A simple polynomial-time approximation algorithm for the total variation distance between two product distributions.
+\newblock \emph{TheoretiCS}, 2, Article 8, pages 1--7, 2023.
+\newblock doi:10.46298/theoretics.23.8.
+
+\bibitem{GLW21}
+Sivakanth Gopi, Yin Tat Lee, and Lukas Wutschitz.
+\newblock Numerical composition of differential privacy.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume 34, pages 11631--11642, 2021.
+\newblock \url{https://arxiv.org/abs/2106.02848}.
+
+\bibitem{KH21}
+Antti Koskela and Antti Honkela.
+\newblock Computing differential privacy guarantees for heterogeneous compositions using FFT.
+\newblock arXiv:2102.12412, 2021.
+\newblock \url{https://arxiv.org/abs/2102.12412}.
+
+\bibitem{KJPH21}
+Antti Koskela, Joonas J{\"a}lk{\"o}, Lukas Prediger, and Antti Honkela.
+\newblock Tight differential privacy for discrete-valued mechanisms and for the subsampled Gaussian mechanism using FFT.
+\newblock In \emph{Proceedings of AISTATS}, Proceedings of Machine Learning Research,
+  volume 130, pages 3358--3366, 2021.
+\newblock \url{https://proceedings.mlr.press/v130/koskela21a.html}.
+
+\bibitem{OpenAISk26}
+OpenAI.
+\newblock Cutoff throughout the high-temperature Sherrington--Kirkpatrick phase.
+\newblock Research manuscript dated September 24, 2026, in the \texttt{openai/math} repository.
+\newblock \url{https://github.com/openai/math}.
+\newblock Source inspected October 8, 2026; used as motivation, not as a theorem dependency.
+
+\bibitem{VZ10}
+Andrea Vedaldi and Andrew Zisserman.
+\newblock Efficient additive kernels via explicit feature maps.
+\newblock In \emph{IEEE Conference on Computer Vision and Pattern Recognition}, 2010.
+\newblock \url{https://www.robots.ox.ac.uk/~vgg/publications/2010/Vedaldi10/}.
+\end{thebibliography}
+\end{document}

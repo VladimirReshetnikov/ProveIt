@@ -298,18 +298,16 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
     """Yield primitive non-link standard rays in a supplied quad sector.
 
     'quadrilateral' yields only canonical lifts of Q-cone extreme rays.
-    'standard' uses actual minimum envelopes at matching nullity at most two
-    in automatic mode, and otherwise chooses potential arrangements or
-    positive supports. Explicit methods remain available. k=0 and nullity=0
-    yield no non-link ray. max_bases counts begun candidates; the envelope
-    method attempts exactly the actual output rays.
+    'standard' enumerates the potential arrangement, then filters by exact
+    standard-cone extremality.  k=0 and nullity=0 yield no non-link ray.
+    max_bases limits attempted linear systems, not just successful rays.
     """
     if phase not in ('quadrilateral', 'standard'):
         raise ValueError('phase must be quadrilateral or standard')
-    if method not in ('auto', 'arrangement', 'supports', 'envelope'):
-        raise ValueError('method must be auto, arrangement, supports, or envelope')
-    if phase == 'quadrilateral' and method in ('supports', 'envelope'):
-        raise ValueError('supports and envelope are standard-ray methods')
+    if method not in ('auto', 'arrangement', 'supports'):
+        raise ValueError('method must be auto, arrangement, or supports')
+    if phase == 'quadrilateral' and method == 'supports':
+        raise ValueError('support enumeration is a standard-ray method')
     if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
         raise ValueError('max_bases must be a nonnegative integer or None')
     if stats is None:
@@ -317,10 +315,6 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
     stats.update(bases_attempted=0, positive_directions=0,
                  nonextreme_directions=0, emitted_rays=0)
     d = len(kernel.basis)
-    if phase == 'standard' and (method == 'envelope' or (method == 'auto' and 1 <= d <= 2)):
-        from .sector_envelope import sector_envelope_rays
-        yield from sector_envelope_rays(kernel, check=check, max_bases=max_bases, stats=stats)
-        return
     if d == 0:
         stats['hyperplanes'] = 0
         stats['method'] = 'empty'
@@ -379,7 +373,7 @@ def enumerate_sector(triangulation, allowed_types, *, phase='standard', method='
 
 
 def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
-                       method='auto', max_bases=None, max_orbit_cycles=None, check=lambda: None):
+                       max_bases=None, max_orbit_cycles=None, check=lambda: None):
     """Find a independently certified essential-disc component, if encountered.
 
     A complete Q phase also decides existence of a positive-Euler canonical
@@ -389,10 +383,6 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
     """
     if phase not in ('quadrilateral', 'standard'):
         raise ValueError('unknown search phase')
-    if method not in ('auto', 'arrangement', 'supports', 'envelope'):
-        raise ValueError('unknown ray method')
-    if phase == 'quadrilateral' and method in ('supports', 'envelope'):
-        raise ValueError('supports and envelope are standard-ray methods')
     if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
         raise ValueError('invalid basis allowance')
     if max_orbit_cycles is not None and (
@@ -402,7 +392,7 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
     stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
     transcript = []
     try:
-        for rows in sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
+        for rows in sector_rays(kernel, phase=phase, max_bases=max_bases,
                                 check=check, stats=stats):
             analysed = _coordinates(kernel.prepared, rows, check)
             chi = analysed['euler_characteristic']
