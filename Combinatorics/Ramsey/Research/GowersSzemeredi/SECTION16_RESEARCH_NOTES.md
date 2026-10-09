@@ -8352,3 +8352,62 @@ entry is closed by this interface alone.
 **Initial verification.** The six new modules through the row interface
 check in a 417-module production closure. All eight named theorems pass
 individual axiom checks with only the three permitted axioms.
+
+**Rectify the actual progression domains.** For a centered progression
+coordinate of radius `r_i`, use cells of integer width `floor(r_i/8)+1`.
+There are at most sixteen labels per coordinate. Two parameters with the
+same label differ in that coordinate by at most `floor(r_i/8)`. Thus the
+difference between sums of eight matched parameters has absolute value
+at most `r_i`. Properness of the original progression makes any vanishing
+ambient eight-term relation an exact relation in every integer coordinate.
+`progression_cell_relation_lifts` proves this, including radius-zero and
+rank-zero cases.
+
+`translated_progression_coordinate_affine` applies the existing coordinate
+affinity theorem to an order-two Freiman map on a translated progression.
+The lifted coordinate relations then imply order-eight preservation on
+every cell. The finite-sum-to-multiset bridge explicitly retains repeated
+elements. `PairFrequencyMap.eightCover` covers the actual translated
+map domain by at most `16^progression.rank` cells, each supporting the
+original map as a Freiman homomorphism of order eight. The cells depend
+on the progression alone. No new upstream module is ported.
+
+**Retain whole quadruples through all covers.** `exists_dense_cover_pattern`
+selects one cell from each finite cover and retains a subfamily of the
+input configurations, with loss at most `M^|I|` for `|I|` covers of size
+at most `M`. Apply it only to the actual row-index pairs `(j,i)` with
+`i ∈ J j`. There are at most `8*jointSelectionRank d r` such pairs,
+and every selected progression has rank at most `jointMapRank delta d r`.
+Consequently `joint_rows_eight_density` retains quadruple density
+
+`rowEightDensity delta kappa d r = kappa / 16^(8*rank*mapRank)`.
+
+Each resulting row support has at least that density, and every selected
+frequency map is order eight on the entire corresponding row support.
+The retained family is a subset of the input family, preserving all
+previous coherence, popularity, and column-agreement assertions.
+
+**One Bohr difference domain for all four rows.** The spectrum in the
+constant-radius Bogolyubov--Freiman theorem depends only on its dense
+input set, not on the map. `dense_eight_shared_bohr_spectrum` makes this
+uniformity explicit: all order-eight maps on a set of density at least
+`eta` use one spectrum of size at most `16*eta^(-2)` and radius
+`1/(8*pi)`. Taking the union of the four row spectra costs at most
+`64*eta^(-2)`, independent of the number of selected frequency maps.
+`four_row_common_frequency_bohr` provides normalized Freiman difference
+extensions for all these maps on this same Bohr set, with agreement for
+every pair of original row points whose difference lies in it.
+
+The final `joint_rows_common_bohr` connects this result to the actual
+joint selection state and retains the refined quadruple family. This
+replaces the missing domain-membership inference by a proved finite
+refinement and genuine common difference extensions. Further clustering
+and translation are still needed to express the original row frequencies
+affinely on a common progression, and the later regularity/BSG and final
+quantitative steps remain open. The positive density and spectrum bounds
+here are explicit; they are not yet a certificate for the final Gowers
+threshold.
+
+**Production verification.** All sixteen new modules check in a
+428-module production closure. The full facade, individual axiom checks,
+merged state, and unchanged catalogue are verified below.

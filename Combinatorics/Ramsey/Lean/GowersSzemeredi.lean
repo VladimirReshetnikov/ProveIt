@@ -938,6 +938,7 @@ import GowersSzemeredi.Proofs16JointAnchorCommonIndices
 import GowersSzemeredi.Proofs16CommonIndexAnchorDomains
 import GowersSzemeredi.Proofs16UniformAnchorIndexDensity
 import GowersSzemeredi.Proofs16PopularCommonIndexAgreement
+import GowersSzemeredi.Proofs16JointRowCommonBohr
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
