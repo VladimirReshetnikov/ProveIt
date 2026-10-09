@@ -80,9 +80,9 @@ theorem varietyPieceClassCoverAt_explicit :
   have b5 := polynomialVarietyPieceFamilyCoverAt_of hC hp b4
   exact varietyPieceClassCoverAt_of hC hp b5
 
-/-- **The ceiling-free decomposition with named constants.** -/
-theorem ceilingFreeVarietyRelationDecompositionAt_explicit :
-    CeilingFreeVarietyRelationDecompositionAt explicitLiftK explicitLiftP
+/-- **Relation pieces with named constants.** -/
+theorem polynomialVarietyRelationPieceAt_explicit :
+    PolynomialVarietyRelationPieceAt explicitLiftK explicitLiftP
       explicitVarietyK explicitVarietyP explicitVarietyK explicitVarietyP := by
   have hC := two_le_explicitLiftK
   have hp := explicitLiftP_pos
@@ -96,8 +96,18 @@ theorem ceilingFreeVarietyRelationDecompositionAt_explicit :
   have t3 := polynomialVarietyStructuredPieceAt_of hC hp hCv hpv hCv hpv t2
     (varietySpectrumRestrictionAt_of hCv hpv hclass)
   have t4 := polynomialVarietyProductGraphPieceAt_of hC hp hCv hpv hCv hpv t3
-  have t5 := polynomialVarietyRelationPieceAt_of hC hp hCv hpv hCv hpv t4
-  have t6 := polynomialVarietyRelationDecompositionAt_of hC hp hCv hpv hCv hpv t5
-  exact ceilingFreeVarietyRelationDecompositionAt_of hC hp hCv hpv hCv hpv t6
+  exact polynomialVarietyRelationPieceAt_of hC hp hCv hpv hCv hpv t4
+
+/-- **The ceiling-free decomposition with named constants.** -/
+theorem ceilingFreeVarietyRelationDecompositionAt_explicit :
+    CeilingFreeVarietyRelationDecompositionAt explicitLiftK explicitLiftP
+      explicitVarietyK explicitVarietyP explicitVarietyK explicitVarietyP := by
+  have hC := two_le_explicitLiftK
+  have hp := explicitLiftP_pos
+  have hCv := two_le_explicitVarietyK
+  have hpv := explicitVarietyP_pos
+  exact ceilingFreeVarietyRelationDecompositionAt_of hC hp hCv hpv hCv hpv
+    (polynomialVarietyRelationDecompositionAt_of hC hp hCv hpv hCv hpv
+      polynomialVarietyRelationPieceAt_explicit)
 
 end LeanProofs.GowersSzemeredi
