@@ -1430,9 +1430,57 @@ the elementary lemmas of its §2:
   coordinates replaced by singletons (`card_meeting`), so they number
   ≥ K^(−4)·Π|U_y| (`card_all_le_mul_meeting`). This replaces [49]'s
   random choice.
-- Next: assemble [49] Lemma 19 in ℤ/N, as selection averaging, then
-  respected quadruples of f on A′, then Corollary 7.6 (and Lemma 7.8 for
-  the Bohr extension).
+- **[49] Lemma 19 in ℤ/N, done with polynomial bounds
+  (`Proofs16Lemma19Selection`, kernel-checked).**
+  `lemma19_selection_piece`: prescribed additive values on |T| quadruples,
+  with |T| ≥ δN³·256K⁴, each in the "new" sets W(q i) ⊆ U(q i) with
+  |U| ≤ K. Then some selection f(y) ∈ U_y is Freiman-linear on a set E′
+  of size ≥ 2⁻¹⁸⁸²δ¹¹⁶⁴N, on which f(y) ∈ W_y. Each quadruple becomes a
+  requirement on its image (`quadRequirement`), with at most 256
+  preimages per requirement. After that come `exists_good_selection` and
+  `lineFreimanExtraction_holds`. This replaces [49]'s random choice and
+  Theorem 17 (Sanders).
+- **Correction to the Lemma 19 shape (same night).** In [49]'s proof the
+  witnesses force only **two** of a quadruple's four points into
+  A′ = {f(y) ∈ U_y ∖ ℒ_y(y)}. Quadruples entirely inside A′ come from
+  Cauchy–Schwarz. `lemma19_selection_piece` assumes all four points are
+  new, which is stronger than [49] provides. The Cauchy–Schwarz step is now
+  formalized (`Proofs16PairEnergyCS`, kernel-checked). Group pairs by the
+  key (a − c, f a − f c); then `two_new_points_energy` gives
+  pairEnergy(all, A′×A′)² ≤ N³·phiAdditiveCount(A′, f), via
+  `pairEnergy_sq_le` (Cauchy–Schwarz), `pairEnergy_univ_le` (≤ N³), and
+  `pairEnergy_self_eq_phiAdditiveCount`.
+- **[49] Lemma 19 in its original shape, done
+  (`Proofs16Lemma19TwoNew`, kernel-checked).** `lemma19_two_new_piece`:
+  witnesses q with q₀ − q₂ = q₁ − q₃ and matching value differences, all
+  values in U, new values (∈ W) only at q₁ and q₃, with
+  |T| ≥ δN³·256K⁴. Then a selection f is Freiman-linear on a set E′ of
+  size ≥ 2⁻¹⁸⁸²(δ²)¹¹⁶⁴N with f(y) ∈ W_y there. The chain is
+  selection averaging, then matched pairs-of-pairs, then
+  `two_new_points_energy`, then Corollary 7.6. It supersedes the
+  four-new-points `lemma19_selection_piece`, which stays as a true but
+  weaker statement.
+- **Open subtlety before Corollary 20: the "WLOG" in [49] Lemma 19.** A
+  failing triple (y,z,w) has witnesses a ∈ U_{y+z}, b ∈ U_z, c ∈ U_{y+w},
+  d ∈ U_w with a − b = c − d. Since 0 ∈ every ℒ-family, one of a, b is new
+  and one of c, d is new. That leaves four cases: (a,c), (a,d), (b,c),
+  (b,d). [49] (as summarized from the ar5iv text) takes (b,d) "without
+  loss of generality".
+  - (a,c) ↔ (b,d) by swapping the roles of the two pairs.
+  - The failing set is closed under (y,z,w) ↦ (−y, y+z, y+w), which
+    exchanges (a,b) and (c,d). That maps (a,d) ↔ (b,c).
+  - So the mixed cases (a,d) and (b,c) are not reduced to (b,d) by these
+    symmetries. In them each Cauchy–Schwarz pair (key a − b = c − d)
+    carries exactly one new point, and `two_new_points_energy` does not
+    apply directly. Either a second Cauchy–Schwarz round is needed, or
+    there is a different grouping.
+  Check this against [49]'s full text (the WebFetch summaries cover only
+  its first 100k characters) before formalizing Corollary 20.
+
+- Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
+  extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
+  coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
+  Lemma 7.8 are the natural domains.
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
