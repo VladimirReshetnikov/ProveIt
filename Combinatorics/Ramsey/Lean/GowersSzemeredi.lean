@@ -70,6 +70,7 @@ import GowersSzemeredi.Proofs16FreimanVarietyProfile
 import GowersSzemeredi.Proofs16FreimanVarietyCover
 import GowersSzemeredi.Proofs16FreimanVarietyUniform
 import GowersSzemeredi.Proofs16DeepVarietyCover
+import GowersSzemeredi.Proofs16FreimanVarietyCapBound
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct

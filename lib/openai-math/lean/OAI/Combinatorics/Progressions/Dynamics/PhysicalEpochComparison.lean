@@ -2,6 +2,9 @@ import OAI.Combinatorics.Progressions.Lattices.RetainedAffineResidueEpoch
 import OAI.Combinatorics.Progressions.Linear.EpochEventRank
 import OAI.Combinatorics.Progressions.Polynomial.ResidueDegreeZero
 
+/- Modified for ProveIt: prove the empty-index infimum explicitly in
+   epochRecordIntersection_eq_iInf on Lean 4.32. Statements and bounds are unchanged. -/
+
 namespace OAI
 
 section
@@ -98,7 +101,7 @@ inductive EpochRecordHistory : List (EpochSymbolRecord D ω hF T) → Prop
 theorem epochRecordIntersection_eq_iInf (rs : List (EpochSymbolRecord D ω hF T)) :
     epochRecordIntersection rs = ⨅ i : Fin rs.length, (rs.get i).fast := by
   induction rs with
-  | nil => simp [epochRecordIntersection]
+  | nil => exact le_antisymm (le_iInf fun i => Fin.elim0 i) le_top
   | cons r rs ih =>
     change r.fast ⊓ epochRecordIntersection rs = ⨅ i : Fin (r :: rs).length, ((r :: rs).get i).fast
     apply le_antisymm

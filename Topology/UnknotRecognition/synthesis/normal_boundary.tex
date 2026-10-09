@@ -1,0 +1,245 @@
+\section{Adaptive boundary classification of a supplied normal surface}
+\label{sec:normal-boundary}
+
+Report 47 supplies a useful refinement of normal component counting:
+distinguish closed components from components meeting the ambient boundary,
+and separate each class by orientability. We now integrate this refinement
+with the maintained finite-manifold validator, edge-point interval model,
+common-multiplicity reduction and independent certificate replay. The
+public option \texttt{classify\_boundary=True} returns these additional
+counts. It defaults to false, preserving the previous result structure and
+version-one/version-two proofs.
+
+This is a local normal-surface operation. The input is still a supplied
+finite triangulation and an admissible integral normal vector. No
+triangulation-to-diagram provenance or normal-vector search is added.
+In particular, separating closed and boundary-touching component counts
+does not give the Euler characteristic of each component or decide whether
+a disconnected supplied surface contains an essential disc. The existing
+\texttt{compressing\_disk} predicate still requires the entire supplied
+surface to be connected, with Euler characteristic one, one boundary
+circle and nonzero mod-two boundary class.
+
+\subsection{Mark boundary edges in the maintained orbit universe}
+
+Let $Q$ denote the normal surface after dividing out any common coordinate
+factor. The maintained surface interval system has one point for each
+intersection with an ambient edge, ordered in blocks by canonical edge
+representative. Its orbits are precisely the connected components of $Q$.
+Let $A$ be the union of blocks belonging to ambient boundary edges. A normal
+surface component meets the ambient boundary exactly when its orbit meets
+$A$: every nonempty normal boundary curve contains boundary-edge points,
+and such a point lies on the boundary of the proper normal surface.
+
+Empty blocks are omitted and adjacent marked blocks are merged. There are
+$O(t)$ blocks for $t$ tetrahedra, with binary endpoints; no list of normal
+discs or individual edge intersections is created. For the doubled vector
+$2Q$, each edge block doubles in length, so a marked interval $[a,b)$ becomes
+$[2a,2b)$. This detail depends on the maintained coordinate ordering.
+Appending a second copy of $A$ shifted by the old total universe length
+would instead describe a different ordering, and is not the construction
+used here.
+
+For nonempty $A$, add the existing interval-incidence cone relations:
+translations identify all points within each marked interval, and a star
+joins one representative from every marked interval. These relations merge
+all original orbits touching $A$ into one, and leave every disjoint orbit
+unchanged. If $C$ is the original orbit count, $C_A$ the count after coning,
+and $T$ the number of touched components, then
+\[
+ C_A=C-T+1,\qquad T=C-C_A+1.
+\]
+This is a counting reduction, not an operation on the actual embedded
+surface. It adds $O(t)$ interval pairings and retains binary endpoints.
+The empty marked set has $T=0$ without a cone query.
+
+\subsection{Orientation covers refine the boundary partition}
+
+Write $C_2$ for the number of components of $2Q$, and $T_2$ for the number
+of its components meeting the ambient boundary. Since the supported
+ambient manifold is orientable, doubling normal coordinates gives the
+normal orientation cover. An orientable component has two lifts; a
+nonorientable component has one connected orientable lift. Boundary
+presence is preserved by this covering. Therefore, with subscripts $b$
+denoting components with boundary,
+\[
+ T=O_b+N_b,\qquad T_2=2O_b+N_b,
+ \qquad O_b=T_2-T,\quad N_b=2T-T_2.
+\]
+The already verified total counts $O=C_2-C$ and $N=2C-C_2$ then give
+closed counts $O_c=O-O_b$ and $N_c=N-N_b$. The implementation checks
+nonnegativity and containment in the total orientation classes. If $b$
+is the number of boundary circles of $Q$, a nonempty boundary also
+requires $1\le T\le\min(C,b)$.
+
+For an original vector $X=gQ$, the sheet-pairing argument of
+Section~\ref{sec:normal-multiplicity} applies independently to components
+with and without boundary. Thus
+\[
+ O_b(X)=gO_b+\lfloor g/2\rfloor N_b,
+ \qquad N_b(X)=(g\bmod2)N_b.
+\]
+All reported counts concern $X$. The original source fingerprint,
+Euler characteristic, normal-disc count and boundary-cohomology witness
+continue to concern $X$ as well.
+
+An even multiplier yields a further useful deduction. If $g$ is even,
+$X$ consists of $g/2$ copies of the orientable normal surface $2Q$.
+Consequently
+\[
+ O_b(X)=(g/2)T_2,\qquad N_b(X)=0.
+\]
+Computing $T$ is unnecessary in this case. In particular, for a primitive
+surface with both orientation types the algorithm can omit the cone query
+on $Q$, compute only $T_2$, and still determine all six requested original
+counts. It does not claim to have recovered the unknown partition of $Q$.
+
+\subsection{Choose queries from already established progress}
+
+The three base queries still compute $C$, $C_2$ and $b$. The adaptive
+policy then uses exact deductions before scheduling any further query:
+\begin{itemize}
+\item If $b=0$, both touched counts are zero. If $C=1$ and $b>0$,
+      they are $T=1$ and $T_2=C_2$.
+\item If the marked union is the entire edge-point universe, every
+      component touches the boundary: $T=C$ and $T_2=C_2$.
+\item If $b=1$, exactly one component touches the boundary, so $T=1$.
+\item If $C_2=2C$, every component is orientable and $T_2=2T$.
+      If $C_2=C$, every component is nonorientable and $T_2=T$.
+      Either case needs at most one cone query.
+\item If both orientation types occur and $g$ is even, compute only the
+      doubled cone count when the preceding deductions do not suffice.
+      Otherwise compute any still-needed counts on $Q$ and $2Q$.
+\end{itemize}
+Thus the feature uses zero, one or two additional orbit queries. This is
+an adaptive reduction in the information that must be computed, rather
+than a heuristic choice of an unverified result. A private research
+ablation requests both cones whenever the boundary is nonempty; it is
+not a new public option.
+
+Each cone system still has $O(t)$ pairings and logarithmic dependence on
+the edge-point universe size. At most five interval-orbit queries therefore
+preserve the polynomial local bound in the encoded triangulation and
+normal coordinates. No quasipolynomial bound for finding a useful normal
+vector follows from this operation. The gains measured below concern
+complete calls on supplied vectors, including validation, rather than
+repeated queries on a prevalidated geometry object.
+
+\subsection{Proof version three and independent replay}
+
+Opting into classification with certificate recording produces
+\texttt{normal-surface-topology-v3}. It binds the full original input,
+records an exact coordinate divisor $g\ge1$, retains all three base
+orbit proofs and the original boundary-cohomology witness, and includes
+zero to two cone proofs. The claimed topology includes the six new fields:
+the two boundary-presence totals and their four orientability subclasses.
+The empty surface uses $g=1$ and six zero counts. As before, the checker
+accepts any valid common divisor, not only the producer's gcd.
+
+The checker validates the original source, divides coordinates exactly,
+reconstructs both interval systems and the marked blocks, and replays
+every supplied cone proof. It derives omitted counts directly from verified
+base counts and the reconstructed marked support. It does not call the
+producer's query planner, orbit search or gcd selection. Redundant valid
+cone proofs are accepted and checked. Pure orientability permits inference
+in either direction, so a sound alternate proof choice also verifies.
+A proof containing only the doubled touched count can suffice for even
+$g$; changing that divisor to an odd value without supplying the missing
+information is rejected.
+
+The producer's \texttt{max\_cycles} allowance is shared across the base
+and all additional queries. Exhaustion during a cone query returns an
+inconclusive result with query diagnostics, without partial topology
+claims or a certificate. The verifier's \texttt{max\_operations} counts
+all supplied orbit events before replay, including redundant cone proofs.
+Cancellation callbacks propagate through both routes. Version-one and
+version-two formats retain their earlier meanings; the older checker
+is not claimed to understand version three.
+
+\subsection{Independent geometry audit and measurements}
+
+The pinned baseline is commit \texttt{ce180ce1e640}, loaded directly from
+Git. The native audit checks 548 supplied surfaces against both Regina 7.4
+component decomposition and report 47's delivered component implementation.
+Every new count agrees; all default results and certificates equal the
+actual maintained baseline exactly, with default proofs replayed in both
+versions. Direct and adaptive classification agree and independently
+verify on every input. The audit includes 404 three-query cases, 95
+four-query cases and 49 five-query cases.
+
+The corpus reuses 270 layered-solid-torus and boundary-cap inputs, adds
+all 64 small combinations of an interior vertex sphere, a boundary vertex
+disc and a M\"obius band in a fixed four-tetrahedron subdivision, and
+includes vertex normal surfaces and compatible combinations in a
+nine-tetrahedron solid-torus connected sum with $\mathbb{RP}^3$.
+That final manifold is deliberately not a knot exterior: it supplies a
+closed one-sided projective plane for validating the general local
+classifier, without asserting nonexistent knot-diagram provenance.
+The audit contains 74 inputs with closed orientable components, 15 with
+closed nonorientable components, 473 with orientable components meeting
+the boundary and 98 with nonorientable components meeting the boundary.
+These classes overlap. Raw data: \path{data/normal-boundary-native-audit.json}.
+
+Eight focused tests additionally exercise 5,001-bit multiplicities,
+proper common divisors, the unknown primitive partition in the even case,
+missing and forged cone proofs, mutated topology claims, shared exhaustion
+and replay limits, caller cancellation and empty inputs. Replay is also
+tested with the producer's planner, gcd routine and orbit search disabled.
+The full maintained suite passes 966 tests with Regina in 213.279 seconds.
+
+\input{tables/normal_boundary.tex}
+
+The paired benchmark has twelve supplied-vector inputs, eight arms, five
+measured rounds and one excluded warmup: 1,920 measured complete calls and
+384 warmup calls. Some small cases are batched. Direct and adaptive arms
+answer the same six-field classification question, with common multiplicity
+reduction enabled on both sides. Separate certified arms include proof
+production and fresh independent replay. Identical direct and adaptive
+controls expose timing variation. Two further arms compare the actual old
+and new default operation, which answers a smaller question and is not
+used as the classification speedup baseline. Source preparation, manifold
+validation, coordinate validation and all queries are inside each timer;
+policy binding, serialization and fixture loading are outside.
+The 99.926-second run retains every input, shuffled arm order, sample,
+query statistic, event count and source hash in
+\path{../fast/results/normal_boundary_20261008.json}.
+
+For the eight-tetrahedron meridian, the query count falls from five to
+three and the paired count ratio is 1.222. Production plus replay has
+ratio 1.238, with median times 10.121 and 8.263 ms. The compact proof falls
+from 33,609 to 20,613 bytes and from 501 to 278 orbit events. The
+32-tetrahedron input has a smaller count ratio, 1.088. At 96 tetrahedra,
+the three mandatory queries dominate: the count ratio is 0.999 and the
+certified ratio is 0.971, despite reducing orbit events from 26,591 to
+24,038. This run establishes no elapsed improvement for that large case;
+its identical-control ratios are 0.959 and 0.978.
+
+On the four-tetrahedron mixture of a sphere, a boundary disc and a
+M\"obius band, odd primitive multiplicity needs both cones. Doubling that
+vector permits the new even shortcut: five queries become four, 55 cycles
+become 44, and 351 events become 270. The proof decreases from 23,322 to
+18,080 bytes. The paired count and certified ratios are 1.259 and 1.243.
+The purely orientable sphere-plus-two-discs input also needs only one cone,
+with ratios 1.338 and 1.279. A sphere plus a single M\"obius band already
+has $b=1$, eliminating the original-surface cone and yielding ratios 1.185
+and 1.149.
+
+Large binary multiplicities retain the same query savings after gcd
+reduction. The even $2^{5000}$ mixed input has paired count ratio 1.245
+and certified ratio 1.211. Its separate count medians are 7.536 and
+7.700 ms: the median of paired ratios need not equal a ratio of separate
+medians, particularly with timing shifts between rounds. These raw data
+are retained without selecting favorable rounds. The corresponding odd
+$2^{5000}+1$ case still requires both cones and has ratios 0.989 and
+0.986. The closed one-sided mixed input likewise requires both cones and
+has ratios 0.994 and 0.998. The closed-only input requires no cone under
+either policy.
+
+Across all inputs the identical direct ratios range from 0.959 to 1.031
+and the identical adaptive ratios from 0.978 to 1.008. The smaller default
+operation has old/new ratios from 0.986 to 1.023. The primitive mixed-odd
+case has identical query counts and proof size yet a certified ratio of
+1.110; this is timing variation, not evidence of a saved query. Exact
+query, cycle and proof-size reductions support the adaptive mechanism;
+the elapsed measurements support modest gains on selected supplied
+surfaces, not a universal speedup or a general recognition bound.

@@ -1376,3 +1376,21 @@ if jp:
     open('tables/joint_overlap_pipeline.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & explicit old/new ms & ratio & compressed old/new ms & ratio',
         '@{}lrrrr@{}',rows)+'\\end{center}\n')
+
+nb = load('../fast/results/normal_boundary_20261008.json')
+if nb:
+    rows = []
+    names = {'parallel5000':'parallel 5000', 'pure_orientable':'pure orientable',
+             'one_boundary':'one boundary', 'mixed_odd':'mixed odd',
+             'mixed_even':'mixed even', 'mixed_even5000':'even 5000',
+             'mixed_odd5000':'odd 5000', 'closed_one_sided':'closed one-sided'}
+    for r in nb['cases']:
+        m, q = r['medians'], r['paired_ratios']
+        cells = [esc(names.get(r['name'],r['name'])),
+                 f"{len(r['direct']['queries'])}/{len(r['adaptive']['queries'])}",
+                 f"{1000*m['direct']:.3f}",f"{1000*m['adaptive']:.3f}",
+                 f"{q['count']:.3f}",f"{q['certified']:.3f}"]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/normal_boundary.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & queries D/A & direct ms & adaptive ms & count ratio & proof ratio',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')

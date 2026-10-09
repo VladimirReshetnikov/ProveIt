@@ -1863,3 +1863,44 @@ source-fidelity caveats. The separate 3,700-entry quantitative port audit
 checks 56,621 public OAI theorems; the full density conclusion is still
 unverified. The earlier queued-audit notices above are superseded by this
 checkpoint.
+
+### Explicit inverse-polynomial variety exponent
+
+`Proofs16FreimanVarietyCapBound` removes the opaque threshold from the
+conditional cover's numerical controls. For `B=milicevicBound D c` and
+`0<c<=1`, its all-box exponent is at least
+
+`1 / (1024*p^2*(4*C+18)*(B+2)^17)`.
+
+The proof bounds the logarithm of the integer radius threshold before
+capping, so the `exp(-B)` radius costs a factor linear in `B`. The two
+phase counts contribute degree sixteen. Ceiling rounding is included,
+and the resulting graph-cover theorem keeps all `exp(-B)*N^2` agreement
+mass and the nine-map count. Constants `C>=2,p>0` remain existential.
+The deep structure assertion is still a hypothesis; this is not a new
+unconditional density or all-dimension structure theorem.
+
+The full combined audit now checks these three results and the incoming
+single-map greedy variety cover: 5,838 public Gowers theorems, 1,410 facade
+modules (667 OAI), and 2,646 combined modules. Only the three approved
+axioms occur. The catalogue remains at 114 companions and six open
+statements, with its existing source-fidelity caveats.
+
+### Family assembly and 3,800-entry audit checkpoint
+
+The combined Gowers audit now includes `greedy_variety_cover_family` and
+`variety_structure_side`: 5,849 public Gowers theorems, a 1,411-module
+facade (667 OAI modules), and 2,647 combined modules. Only the three
+approved axioms occur. The structure-side result retains both
+`BihomExtraction` and `MilicevicDeepVarietyStructure` as hypotheses.
+The numbered ledger reproduces exactly and remains 114/6 with its
+existing fidelity caveats.
+
+The first 3,800 pinned quantitative-port entries also pass: 3,816 build
+modules and 57,875 public OAI theorems in the separate 3,817-module axiom
+audit. This includes the explicit empty epoch-intersection compatibility
+repair. The later relative-patch finite-set repair passes its isolated
+production check but is beyond this audited prefix. Provenance checks
+retain all 4,134 pinned hashes, notices for 976 adapted files, and the
+original license/copyright notices. The full density conclusion remains
+unverified.

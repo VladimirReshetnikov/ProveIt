@@ -2140,3 +2140,38 @@ python -B cyclic_overlap_research/native.py pipeline --output results/joint_over
 The driver loads the actual maintained baseline at `bec1afd07cd2` and the delivered
 report in separate modules, verifies source hashes, and retains source words,
 diagrams, certificates, work counts, warmups, shuffled raw samples and A/A controls.
+
+### Optional boundary classification for normal surfaces
+
+`normal_surface_topology(triangulation, coordinates, classify_boundary=True)`
+now separates closed components from components with boundary and gives the
+orientable and nonorientable counts in each class. Existing base counts can
+eliminate zero, one, or both additional interval-cone queries. For an even
+common coordinate factor, counting touched components of the doubled quotient
+is enough; the unknown boundary partition of the primitive quotient is not
+claimed. Every returned count concerns the original supplied vector.
+
+With `record_certificate=True`, this option produces a source-bound
+`normal-surface-topology-v3` proof. The independent verifier reconstructs
+markings, replays every supplied cone and justifies omitted queries without
+calling the search planner. Cycle and proof-event allowances cover all queries.
+The default option is false and preserves the earlier result/proof formats.
+
+The independent audit checks 548 surfaces against Regina and report 47, including
+closed orientable and nonorientable components. This is a supplied-normal-vector
+operation, with no new vector search, PD provenance, or general unknot bound.
+It does not determine whether a disconnected surface contains a compressing disc.
+See [`normal_boundary.tex`](../synthesis/normal_boundary.tex) for the covering,
+coning, multiplicity and adaptive-query arguments and measured performance.
+
+From this directory (the audit requires Regina):
+
+```sh
+python -B normal_orbit_research/boundary.py audit --output ../synthesis/data/normal-boundary-native-audit.json
+python -B normal_orbit_research/boundary.py benchmark --output results/normal_boundary_20261008.json
+```
+
+The driver compares adaptive classification with the same implementation forced
+to compute both cone counts, includes identical A/A controls and production plus
+independent replay, and separately checks the smaller default feature against
+the actual baseline at `ce180ce1e640`. Timed calls reconstruct all geometry.
