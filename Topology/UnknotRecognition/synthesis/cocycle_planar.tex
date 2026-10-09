@@ -1,0 +1,143 @@
+\section{Compressed planar capping beyond nonnegative Euler characteristic}
+\label{sec:cocycle-planar}
+
+The annulus criterion suggests checking genus rather than Euler
+characteristic alone. A connected orientable surface with Euler
+characteristic $-5$ can be planar with seven boundary circles. If precisely
+one of those circles is essential on the exterior torus, the other six can
+be capped, giving a compressing disc. The new optional native branch
+recognizes this configuration using a compressed boundary census and
+independent replay. It introduces no additional surface candidates.
+
+\subsection{The elementary capping criterion}
+
+Let $M$ be an authenticated knot exterior with boundary torus $T$, and let
+$S$ be a connected orientable properly embedded surface. Write $b$ for its
+number of boundary circles. Classification gives
+\[
+ 2g(S)=2-\chi(S)-b.
+\]
+Suppose $\chi(S)+b=2$ and exactly one boundary circle is essential on $T$.
+Every other boundary circle bounds a disc on $T$. Choose an innermost
+inessential circle among those remaining. Its boundary disc has interior
+disjoint from the remaining boundary curves. Attach this disc to $S$ and
+push the cap slightly into a boundary collar, rounding the corner.
+Properness supplies a sufficiently small collar in which this operation
+avoids the rest of the surface. Repeat for all inessential circles,
+choosing collar depths to preserve disjointness of the caps. This also
+handles nested boundary circles; the boundary discs need not initially
+have pairwise disjoint interiors on $T$.
+
+Each cap preserves connectedness and orientability, increases Euler
+characteristic by one and removes one boundary component. The resulting
+surface has one boundary component and Euler characteristic
+$\chi(S)+(b-1)=1$. It is therefore a disc, and its remaining boundary is
+essential on $T$. The source knot is the unknot. The certificate stores
+$S$ and the boundary census; it does not claim that the stored normal
+surface contains a disc component or extract a normal vector for the
+capped disc.
+
+Primitivity is not an additional requirement of this topological capping
+lemma. The implementation nevertheless retains its established restricted
+cocycle inspector: authenticated source geometry, coherent primitive class,
+and either a zero spanning tree or a checked minimum-span witness. These
+supply connectedness and orientability. Euler characteristic and boundary
+counts alone cannot replace those hypotheses. In particular, a disconnected
+surface can satisfy a total Euler identity without being planar and
+connected.
+
+\subsection{Counting essential circles with two compressed weights}
+
+The boundary-only normal arc system has one point for each intersection
+of $\partial S$ with a boundary edge of the triangulation. Its interval
+pairings follow normal arcs in boundary faces. Orbits of this system are
+exactly the boundary circles. This point order differs from the full
+surface edge-point order; the new geometry helper constructs its offsets
+from the sorted boundary edges themselves.
+
+Choose two cycles forming a basis of $H_1(T;\mathbb F_2)$. On the block
+for a boundary edge, put a two-dimensional integer weight whose entries
+indicate whether that edge belongs to each basis cycle. The weight of an
+orbit counts its intersections with the two cycles. Reduction modulo two
+gives its homological intersection vector. Since the intersection form of
+a torus is nondegenerate, this vector vanishes exactly when the curve's
+mod-two homology vanishes. An essential simple curve on a torus represents
+a primitive integral class, whose reduction modulo two is nonzero.
+Consequently a boundary orbit is essential exactly when at least one
+of its two weight sums is odd.
+
+The maintained weighted interval-orbit engine computes a histogram
+$(w,m_w)$, where $m_w$ counts circles with integer weight vector $w$.
+The two required counts are
+\[
+ b=\sum_w m_w,\qquad
+ e=\sum_{w:\,w\bmod2\ne(0,0)}m_w.
+\]
+Connectedness and orientability already come from the cocycle witness,
+so this query needs neither a full-surface orbit census nor its orientation
+double. Only boundary orbits carry weights.
+Zero-weight circles remain present in the histogram. Counts and
+multiplicities stay binary. There is no loop over boundary points, normal
+pieces or individual circles in discovery or replay.
+
+For $N$ tetrahedra the boundary relation and initial weight intervals have
+$O(N)$ descriptions, with weight dimension two. They use the already
+accounted-for weighted-AHT transport bounds of the earlier component
+sections, including polynomially many run breakpoints in the explicit
+input and trace. Geometry, integer bit costs, basis construction and
+independent binary rank checking remain part of the cost. This is a
+polynomial encoded query on a supplied surface, not a complete search for
+a genus-zero surface. The candidate family's incompleteness remains the
+obstacle to a general recognition bound.
+
+\subsection{Certificate separation and bounded optional discovery}
+
+The new schema is \code{diagram-cocycle-planar-v1}. It contains the six
+cocycle fields plus a boundary homology basis and a weighted boundary-orbit
+certificate. Its independent inspector first replays the
+cocycle-surface checker with its existing acceptance rules. It then builds
+the boundary relation from that call's validated geometry, validates
+the supplied basis by binary homology rather than repeating the producer's
+tree--cotree construction, and invokes the independently implemented
+weighted-orbit verifier. Only the replayed histogram supplies $b$ and $e$.
+Acceptance requires $\chi+b=2$ and $e=1$.
+
+The wrapper imports no cocycle, flow, orbit or weight-transport discovery.
+The public seed verifier dispatches the new tag without changing the
+acceptance rules of disc, annulus or legacy component certificates. Its
+summary records genus zero and \code{unknot\_witness=planar-cap};
+\code{compressing\_discs} still describes the actual stored surface.
+
+The native search tries this query only after a candidate fails the
+existing disc and enabled annulus tests. Raw, tree, optimized and optional
+face candidates retain their previous order. A discovered planar proof
+must pass the full independent source and boundary inspector before a
+positive verdict is emitted. Negative query results supply no knottedness
+claim. The first implementation repeated finite-triangulation preparation
+inside the boundary producer and twice inside each positive checker.
+Profiling identified this as the largest cost. The revised cocycle
+inspector has a private detailed return carrying its freshly reconstructed
+geometry and coordinate analysis; its public return remains the same
+summary. The planar checker uses that result within the current call.
+The producer likewise retains validated source geometry and its chosen
+boundary basis only for the current native search. It reuses coordinate
+analysis when that candidate has just been fully inspected, and otherwise
+checks its new coordinate vector against the retained geometry.
+
+No caller-supplied geometry cache is accepted by the certificate checker.
+Each independent replay still reconstructs and authenticates its own
+source, and checks all surface and boundary claims. This removes repeated
+work without replacing positive replay by trust in discovery. All work uses the existing shared guard allowance; the seed API's
+\code{max\_cycles} additionally bounds the sum of boundary orbit-discovery
+cycles over all candidates. Incomplete boundary queries can fall through
+to later candidates, while global work exhaustion and cancellation still
+terminate the bounded stage.
+
+The new query is explicitly requested with \code{planar=True} in the seed
+API. The recognizer exposes \code{normal\_seed\_planar=True}; the CLI flag
+is \code{--normal-seed-planar}. Its default is false. This preserves the
+previous search records exactly when the new query is not requested.
+Unlike the annulus implication, the planar test adds an orbit computation
+on continuing candidates; the measurements below evaluate that cost.
+
+\input{cocycle_planar_results.tex}
