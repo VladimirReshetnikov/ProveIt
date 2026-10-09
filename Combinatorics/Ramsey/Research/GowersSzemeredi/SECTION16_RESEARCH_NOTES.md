@@ -5645,6 +5645,11 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        8-homomorphism on a set of size `2^(-1882)·c^4656·N`.
        `phiAdditiveCount_ge_of_respected` is the `N`-to-one transfer to
        `phiAdditiveCount`.
+       `shift_agreement` (`Proofs16ShiftAgreement`) is the pairing step
+       `φ₂ = ψ₁ + u`. If `S` separates `f` and `g`, and `ψ` respects
+       additive quadruples on `B` and equals `f` there, then `g = ψ + u`
+       on the largest fiber, of size at least `|S′|/|G|`. In `ℤ/N` this
+       replaces Milićević's rank-and-kernel argument.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`

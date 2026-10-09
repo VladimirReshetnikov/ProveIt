@@ -876,6 +876,7 @@ import GowersSzemeredi.Proofs16StepFourPrime
 import GowersSzemeredi.Proofs16ColumnBSGGrowth
 import GowersSzemeredi.Proofs16SeparatedRespect
 import GowersSzemeredi.Proofs16SeparatedFreiman
+import GowersSzemeredi.Proofs16ShiftAgreement
 import GowersSzemeredi.Proofs16AbstractBSGWordBounds
 import GowersSzemeredi.Proofs16BoundedImageQuadWordSystem
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
