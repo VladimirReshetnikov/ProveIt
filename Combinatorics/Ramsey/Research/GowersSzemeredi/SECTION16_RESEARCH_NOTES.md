@@ -3760,3 +3760,172 @@ audits. It includes the incoming per-frequency-radius Bohr relation and
 factorization results. The source ledger matches its tracked version
 (115 companions, five open statements), and the selected port-scope
 check passes. The full audit retains the same three-axiom boundary.
+
+
+### Split relations make the bilinear Bohr variety quasirandom (2026-10-09)
+
+`Proofs16SplitProfile.split_profile_quasirandom` composes Claim 34 with
+Appendix B. It is the general form of the box-quasirandomness hypothesis
+left open in `global_seven_operator_completion`. The graph has
+`x ∈ X = B(γ; a−c)` (mixed radii), `y ∈ Y`, and an edge when
+`x ∈ B(ℓ(y); b−c)`. Suppose that:
+- for all but `η|Y|` vertices, the bounded relations of `γ ⊔ ℓ(y)` split
+  with a fixed `Λ`;
+- for all but `η|Y|²` pairs, those of `γ ⊔ ℓ(y) ⊔ ℓ(y′)` split with
+  `Λ × Λ`;
+- the corresponding mixed Bohr sets satisfy the weak-regularity band
+  condition at error `εN`;
+- one truncation budget holds;
+- `20εN ≤ |X|`.
+
+Then for some real `δ ∈ [0,1]`,
+`boxSum (G − δ) ≤ 3(80εN/|X| + η)|X|²|Y|²`.
+
+Ingredients:
+- `mixedBohr_sumElim`: degrees and codegrees are mixed Bohr sets of
+  concatenated tuples.
+- `latticeWeightMixed_sumElim_prod`: the pair weight is `W·W`.
+- One typical vertex bounds `‖W‖ ≤ 2`, so [49]'s tacit `|δᵢ| ≤ 1` is
+  replaced by a proved bound.
+- `boxSum_le_of_complex_profile` (`Proofs16ComplexProfileQuasirandom`)
+  reads `δ` off a typical vertex and absorbs the complex weight.
+- `boxSum_le_of_typical_codegrees` turns typical-vertex estimates into
+  averaged ones.
+
+Standard axioms throughout; collision gate clean. What remains to feed
+the completion is the Theorem 33 iteration, which produces a domain where
+relations split for most `y`. Its two simplified steps are
+`freiman_const_on_bohr_of_dense` and `strict_chain_length_le`. Also
+needed is the identification of the pattern graph (`patternEdge` on
+`bohr F (θ/2)`) with this graph, via `bohr_floor_radius` and an
+enumeration of `F`.
+
+### J.90. Actual pattern degrees and the relation-density bridge
+
+The pattern graph now has exact degree and codegree identities at its
+actual real radii. `Proofs16PatternBohrDegrees` defines the fixed tuple
+on `F` and the varying tuple on `J 0 ∪ J 2`. The degree is the mixed Bohr
+set on their concatenation, with integer radii `floor(eta*N)` and
+`floor(eta*N/4)`. The codegree uses two varying blocks and preserves
+repeated frequencies. Rounding is exact because centered norms are
+integers. The identities count vertices of the actual subtype graph.
+
+`Proofs16PatternBohrQuasirandom` applies typical degree/codegree averaging:
+if the exceptional vertex and pair fractions are at most `chi`, and the
+typical absolute errors are at most `e*|B(F;eta)|`, then
+
+```
+boxSum (patternGraph - delta) ≤ 3(e+chi) |B(F;eta)|² |C|².
+```
+
+The budget form accepts `3(e+chi) ≤ epsilonGraph⁴` and supplies precisely
+the box-sum inequality consumed by the J.89 row-filling construction.
+
+The relation factor is no longer left with an uncontrolled complex norm.
+`Proofs16RelationWeightDensity` proves that a mixed relation weight is
+within the Fourier truncation error of a real `delta ∈ [0,1]`: use the
+normalized average of the product of trapezoids. No annulus regularity
+is required for this density fact. Setting the fixed coefficients to zero
+in a splitting identity identifies the common lattice weight with the
+varying tuple's relation weight. One splitting tuple therefore supplies
+a common approximate density for the whole relation class.
+
+`Proofs16PairedRelationDensity` proves exact product factorization of
+lattice weights. If the single weight is within `zeta` of `delta`, the
+paired weight is within `zeta*(2+zeta)` of `delta²`. Thus single and paired
+estimates use the same real density, rather than unrelated approximations.
+
+`Proofs16BohrDensityFactorization` converts the complex factor estimate
+into the real error
+
+```
+|B_full - delta*B_base| ≤ (4+2*zeta)*epsilon*N + zeta*B_base.
+```
+
+The last term retains the base Bohr cardinality. `Proofs16BohrDensityAtRadii`
+shifts the smoothing radii by `c`, expressing the conclusion directly at
+the desired inner radii and the annulus at the radii enlarged by `2c`.
+It supplies both the single and paired versions.
+
+`Proofs16PatternRelationsQuasirandom.pattern_boxSum_of_relation_splitting`
+composes these estimates with the exact pattern counts. Its hypotheses
+are the typical splitting identities, the single and paired annulus
+bounds, explicit truncation budgets, and the numerical conversion to
+relative degree error. Its conclusion is the actual pattern graph's box
+bound. This is the algebraic-to-graph implication, not a proof that those
+splitting identities and regular annuli exist on a suitable domain.
+
+`Proofs16PatternDensityLower` also removes a possible degeneracy of the
+approximate density. If the union of the fixed and varying frequencies
+has rank at most `r` and `4 ≤ eta*Q`, every pattern degree satisfies
+
+```
+N ≤ Q^r * degree(t).
+```
+
+A single typical degree with error `e*|B(F;eta)|` then gives
+`delta ≥ Q^(-r)-e`. In particular `e < Q^(-r)` supplies the strict positive
+density required by row filling.
+
+The incoming `Proofs16ComplexProfileQuasirandom` and `Proofs16SplitProfile`
+provide a complementary generic route using a typical vertex's actual
+degree as the density. They are retained. The new direct-radius
+intersection identity is named `mixedBohr_sumElim_radii`, while the
+incoming `mixedBohr_sumElim` takes an additional radius subtraction.
+Their public names and assumptions are distinct.
+
+All 25 new declarations pass individual transitive axiom checks, using
+only `propext`, `Classical.choice`, and `Quot.sound`; the final source
+check covers 145 modules. No ported code was added or modified. The
+algebraic regularity existence/iteration, its prescribed quantitative
+budgets, all five numbered open statements, and the previously recorded
+source-fidelity limitations remain unresolved.
+
+The full merged audit passes for 6,630 public Gowers theorems in the
+5,023-module facade (4,152 OAI modules), or 5,025 modules including both
+audits. The source ledger matches its tracked version, with 115
+companions and five open statements, and the selected port-scope check
+passes. The merged typical-codegree, complex-profile, and split-profile
+results are covered by the same three-axiom audit.
+
+A concurrent main update added `Proofs16RelationAveraging`: the popular
+witness pigeonhole step and the collision-pair Cauchy--Schwarz estimate.
+After the rejected main push, those results were reviewed, merged, and
+audited. The combined audit now passes for 6,641 public Gowers theorems
+in 5,026 modules (5,024 in the facade, including 4,152 OAI modules),
+with the same three allowed axioms and unchanged numbered-statement status.
+
+
+
+### No radius selection in prime Z/N; the remaining lane (2026-10-09)
+
+`Proofs16PrimeBandSplit`.
+- `mixedBohr_band_le`: in prime `ℤ/N`,
+  `|B(γ; a+c)| ≤ |B(γ; a−c)| + |ι|(4c+2)` for `c ≤ aᵢ`, at every radius.
+  So [49]'s choice of a regular radius ρᵢ per piece ((10)–(12)) is not
+  needed.
+- `split_profile_quasirandom_prime`: the quasirandomness bridge with all
+  band hypotheses discharged at `ε = m(4c+2)/N`, where
+  `m = |ι ⊕ (κ ⊕ κ)|`. The remaining hypotheses are:
+  - relation splitting for all but `η|Y|` vertices and all but `η|Y|²`
+    pairs;
+  - the truncation budget;
+  - `20m(4c+2) ≤ |B(γ; a−c)|`.
+
+  The conclusion is
+  `boxSum (G − δ) ≤ 3(80m(4c+2)/|X| + η)|X|²|Y|²` for a real
+  `δ ∈ [0,1]`.
+
+`Proofs16RelationAveraging` holds the counting steps of the iteration:
+`exists_popular_witness` (pigeonhole onto one relation) and
+`collision_pairs_ge` (Cauchy–Schwarz from `f(y) = h(y′)` to
+`f(y₁) = f(y₂)`).
+
+**Lane note (claude session).** I am continuing with the Theorem 33
+iteration itself. It produces, inside the graph class `C`, a sub-piece
+on which the relations of `F ∪ V(y)` split for typical `y` and pairs.
+Its parts are `freiman_const_on_bohr_of_dense`, `strict_chain_length_le`
+and the two counting steps above. One input remains open: the
+representation density on the chosen piece. `proper_progression_pattern_completion`
+currently takes `C = Q.carrier`; a piece-relative witness count would
+be needed if the piece is a proper subset.
