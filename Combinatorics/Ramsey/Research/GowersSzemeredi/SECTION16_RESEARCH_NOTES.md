@@ -2761,3 +2761,49 @@ Combining the centered-frequency multiplicity bound of two with these
 finite inverse-square tail bounds and `fourier_trapezoid_le` is the next
 concrete analytic step. The product error must then be controlled before
 applying the new large-coefficient bridge.
+
+
+### Uniform truncation and an explicit bounded-span cutoff
+
+The uniform approximation hypothesis in the previous bounded-span bridge
+has now been discharged. `Proofs16FourierTail` uses the incoming
+centered-frequency multiplicity lemma and Mathlib's finite inverse-square
+tail bound to obtain `sum_{|r|>R} |r|^-2 <= 4/(R+1)` for every natural
+cutoff, including zero. The incoming positive-cutoff `2/R` estimate is
+also retained.
+
+`Proofs16UniformTruncation` defines the actual centered Fourier truncation.
+Fourier inversion bounds its error by the normalized omitted Fourier
+mass. Applying the trapezoid decay gives the uniform error
+`eta = N/(|I_c|*(R+1))` when `2a<N` and `2c<N`.
+
+`Proofs16ProductApproximation` proves a finite product error bound
+`(1+eta)^|K|-1`, and applies it to the explicit truncated Fourier
+coefficients. `large_bohr_fourier_mem_boundedSpan_of_budget` therefore
+needs only a numerical total-error inequality; it has no approximation
+or structure hypothesis.
+
+`Proofs16BohrSpectrumBudget` proves `(1+eta)^m-1 <= 2m*eta` when
+`m*eta <= 1/2`. For `0<epsilon<=1`, the explicit cutoff
+`R=ceil(8*(|K|+1)*N/(epsilon*|I_c|))` makes the product error at most
+`epsilon/4`. If `c<=a`, `2a<N`, `2c<N`, and
+`|K|*(4c+2) <= (epsilon/2)*N`, then every Fourier coefficient of the
+Bohr indicator at radius `a/N` with magnitude at least `epsilon*N`
+belongs to the bounded span with this cutoff. Its cardinality is bounded
+by the already proved `(2R+1)^|K|`. This retains the finite endpoint
+condition and is not a claim about arbitrarily small epsilon at fixed N.
+
+These four new modules contain ten theorem declarations and compile in
+a 49-module source closure. The remaining Section 16 structure work
+includes the Bohr-sum containment and bounded-span selection argument,
+algebraic regularity, quasirandomness, and the final difference-set
+composition. No numbered statement or deep hypothesis is marked closed
+by this analytic milestone.
+
+The combined explicit-cutoff audit passes: 6,241 public Gowers theorems,
+a 4,955-module facade (4,152 OAI modules), and 4,957 modules including the
+audit and import-compatibility check. All ten new theorems also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. Incoming Fourier inversion and positive-cutoff tail
+results are included. The source ledger remains 115/5 with its existing
+fidelity caveats, and the selected upstream module scope is unchanged.
