@@ -7771,3 +7771,80 @@ The regenerated ledger adds precisely the two new conditional theorem
 records; it still reports 115 companions and five open entries. The
 port-scope check passes with 4,134 upstream and 17 compatibility
 modules. No upstream source or license scope was changed.
+
+
+### J.126 Selected Bohr gluing and shift-anchor coherence
+
+Eight original modules prove seventeen named theorems connecting the
+simultaneous frequency selection to actual local maps on the selected
+Bohr domains. Compatibility of the chosen anchors and the original
+column identities remain explicit hypotheses. In particular, these
+lemmas do not assume global compatibility of all column quadruples.
+
+**Local extension.** `selected_bohr_sum_extension` restricts the
+existing, explicitly defined `bohrSumExtension` to any selected Bohr
+set contained in the sum of the two quarter-radius neighborhoods.
+The result is Freiman-linear there, is zero at zero, and agrees with
+both original maps on their respective quarter-radius neighborhoods.
+The original maps need to be normalized and Freiman-linear on their
+full-radius domains, and to agree on the full intersection.
+
+`columnDifferenceMap_freiman_of_local` obtains the required local
+linearity from the two individual columns. `ColumnPairCompatible`
+records agreement for just the chosen pair of differences, and
+`column_pair_selected_extension` supplies the corresponding actual
+`columnPairExtension`. No global bihomomorphism is used.
+
+**Common representations preserve relations.** Suppose a set is
+contained in the sum of the common quarter-radius domains of two
+finite families. Each point then has one representation `u+v` valid
+for every member of both families. The value formula for each glued
+map is consequently `f_i(u)+g_i(v)`. Thus every fixed finite linear
+relation which vanishes in each original family also vanishes in the
+glued family (`bohr_sum_extensions_preserve_relation`). Its four-map
+specialization transfers `f_0+f_1=f_2+f_3` and the corresponding
+identity for `g` to the four extensions.
+
+**The actual higher arrangement.** Three spectrum identities identify
+the left and right sixteen-column unions with unions of the four
+anchor-pair spectra and identify the selected union with the union of
+the four selected anchor domains. `higher_anchor_extensions_coherent`
+then applies the common-representation theorem to the actual higher
+containment. Both original eight-column identities are required on
+their respective common quarter-radius domains. The resulting identity
+uses signs `+,+,-,-`, as appropriate for the additive shift relation;
+this differs from the all-positive four-term sum used in the earlier
+frequency escape argument.
+
+`joint_good_quadruple_extension` and `joint_good_higher_coherence`
+obtain their containments from membership in the complements of the
+actual joint-selection failure sets. Thus the gluing lemmas apply
+directly to the family selected in J.125.
+
+**One map for each shift.** Anchor functions `x(a), y(a)` define
+`shiftAnchorPair x a = (x(a)+a,x(a))`, and `shiftAnchorMap` glues the two
+associated column differences. `shiftAnchorArrangement` places an
+additive quadruple of shifts into the eleven-parameter arrangement.
+Its left and right endpoint pairs are exactly the corresponding
+shift anchors, and its selected frequency union is exactly the union
+of their four domains. The definitions use the same anchors whenever
+a shift repeats; no independence of repeated shifts is assumed.
+
+`shiftAnchorMap_local` gives normalized local Freiman maps and both
+quarter-domain restrictions for every good compatible anchor pair.
+`shiftAnchorMaps_coherent` gives their additive quadruple identity on
+the intersection of the four selected Bohr domains whenever the
+corresponding higher arrangement is good and its two original
+column identities hold.
+
+**Remaining work.** The quantitative choice of anchor functions with
+many good arrangements is still open. It must combine popular shifts,
+high-degree compatible pairs, the joint containment error bounds, and
+the original column identities. Repeated-shift dependence must be
+handled in that averaging argument. These gluing results do not
+construct the missing deep bilinear variety structure or close any
+numbered catalogue entry. No upstream port or license scope is added.
+
+**Verification.** The complete shift-anchor-map closure checks 337
+modules. All seventeen new named theorems are included in individual
+axiom checks. Final merged audit results are recorded below.

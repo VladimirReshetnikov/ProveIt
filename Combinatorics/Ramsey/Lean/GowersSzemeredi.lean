@@ -896,6 +896,14 @@ import GowersSzemeredi.Proofs16JointSelectionState
 import GowersSzemeredi.Proofs16JointSelectionSteps
 import GowersSzemeredi.Proofs16JointSelectionTermination
 import GowersSzemeredi.Proofs16JointSelectionUniformControls
+import GowersSzemeredi.Proofs16BohrGluingQuadruples
+import GowersSzemeredi.Proofs16HigherAnchorCoherence
+import GowersSzemeredi.Proofs16HigherAnchorSpectra
+import GowersSzemeredi.Proofs16JointSelectedGluing
+import GowersSzemeredi.Proofs16SelectedBohrGluing
+import GowersSzemeredi.Proofs16SelectedColumnExtensions
+import GowersSzemeredi.Proofs16ShiftAnchorArrangement
+import GowersSzemeredi.Proofs16ShiftAnchorMaps
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
