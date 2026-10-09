@@ -1,0 +1,441 @@
+% Self-contained mathematical notes for incorporation into the main manuscript.
+% No preamble; requires amsmath, amssymb, amsthm.  Prepared independently.
+
+\section{A positive spectral representation of the entire remainder}
+\label{sec:spectral-notes}
+
+Put
+\[
+ a_j=\int_j^{j+1}\log x\,dx\quad(j\ge1),\qquad
+ g_0=1,\qquad g_n=\sum_{j=1}^n a_jg_{n-j},
+\]
+and write $A(z)=\sum_{j\ge1}a_jz^j$ and
+$G(z)=\sum_{n\ge0}g_nz^n=1/(1-A(z))$.  Let $\rho\in(0,1)$
+be the unique solution of $A(\rho)=1$, put $w_0=\rho^{-1}$, and set
+\[
+ \gamma=\frac1{\rho A'(\rho)},\qquad
+ h(t)=\frac{(1-t)^2}{\log^2t}\quad(0<t<1),\qquad c=2\log2.
+\]
+The continuous extensions are $h(0)=0$ and $h(1)=1$.  The constant
+$\gamma$ is the residue amplitude; Euler's constant is denoted below
+by $\gamma_{\!E}$.
+
+\subsection{Elementary integral identities}
+
+The identity
+\[
+ \frac{1-t}{-\log t}=\int_0^1t^u\,du
+\]
+gives the useful representation
+\begin{equation}
+ h(t)=\int_0^1\int_0^1t^{u+v}\,du\,dv.
+ \label{eq:spec-h-mixture}
+\end{equation}
+In particular, Jensen's inequality and $0<t<1$ imply
+\begin{equation}
+ t\le h(t)\le1.
+ \label{eq:spec-h-bounds}
+\end{equation}
+Direct differentiation of the formula for $a_j$, followed by the
+elementary identity $\log(v/u)=\int_0^\infty(e^{-ux}-e^{-vx})\,dx/x$,
+gives
+\begin{equation}
+ a_{j+1}-a_j=\int_0^1t^{j-1}h(t)\,dt\qquad(j\ge1).
+ \label{eq:spec-differences}
+\end{equation}
+For completeness, one may also integrate the right side of
+\eqref{eq:spec-h-mixture} first in $t$: it equals
+$\int_0^1\int_0^1(j+u+v)^{-1}\,du\,dv$, and the two elementary
+integrations yield
+$(j+2)\log(j+2)-2(j+1)\log(j+1)+j\log j$.
+Consequently
+\[
+ (1-z)A(z)=a_1z+z^2\int_0^1\frac{h(t)}{1-tz}\,dt,
+ \qquad a_1=c-1.
+\]
+Define, off $[0,1]$,
+\begin{equation}
+ J(w)=w-c-\int_0^1\frac{h(t)}{w-t}\,dt.
+ \label{eq:spec-J}
+\end{equation}
+Then initially for large $|w|$, and thereafter by analytic continuation,
+\begin{equation}
+ G(1/w)=\frac{w-1}{J(w)}.
+ \label{eq:spec-G-J}
+\end{equation}
+Finally,
+\begin{equation}
+ \int_0^1\frac{h(t)}t\,dt
+ =\int_0^\infty\frac{(1-e^{-x})^2}{x^2}\,dx=2\log2=c.
+ \label{eq:spec-zeroidentity}
+\end{equation}
+Integration by parts reduces the last integral to
+$2\int_0^\infty(e^{-x}-e^{-2x})\,dx/x=2\log2$.
+
+\subsection{A bounded self-adjoint operator}
+
+Work in the Hilbert space
+$\mathcal H=\mathbb C\oplus L^2((0,1),h(t)\,dt)$ and define
+\begin{equation}
+ B(x,f)=\left(cx+\int_0^1f(t)h(t)\,dt,\ x+tf(t)\right).
+ \label{eq:spec-operator}
+\end{equation}
+This is a bounded self-adjoint operator: multiplication by $t$ has
+norm at most one and the off-diagonal map is the bounded rank-one
+map induced by the constant function.  Moreover,
+\begin{equation}
+ \langle B(x,f),(x,f)\rangle
+ =\int_0^1t h(t)\left|f(t)+\frac{x}{t}\right|^2\,dt\ge0.
+ \label{eq:spec-positive}
+\end{equation}
+The displayed square is integrable because
+$\int h(t)/t\,dt=c<\infty$; expanding it gives the preceding
+quadratic form exactly.  Thus $B$ is positive.
+
+Let $e_0=(1,0)$.  Solving $(w-B)(x,f)=e_0$ by its second component
+gives $f(t)=x/(w-t)$ and hence
+\begin{equation}
+ \langle(w-B)^{-1}e_0,e_0\rangle=\frac1{J(w)}.
+ \label{eq:spec-resolvent}
+\end{equation}
+By the bounded self-adjoint spectral theorem \cite{Teschl} there is a positive probability measure
+$\sigma$, supported in the bounded spectrum of $B$, such that
+\begin{equation}
+ \frac1{J(w)}=\int\frac{\sigma(dt)}{w-t}.
+ \label{eq:spec-measure}
+\end{equation}
+
+There is exactly one spectral point above one.  Indeed, on $(1,\infty)$,
+\[
+ J'(w)=1+\int_0^1\frac{h(t)}{(w-t)^2}\,dt>0,
+\]
+whereas $J(w)\to-\infty$ as $w\downarrow1$ and $J(w)\to\infty$
+as $w\to\infty$.  The unique zero is $w_0=\rho^{-1}$.  The
+Schur-complement calculation shows that every real $w\notin[0,1]$
+with $J(w)\ne0$ is in the resolvent set.  Positivity excludes negative
+spectrum.  Thus
+\[
+ \operatorname{supp}\sigma\subseteq[0,1]\cup\{w_0\}.
+\]
+The mass at $w_0$ is
+\begin{equation}
+ b_0=\sigma(\{w_0\})=\frac1{J'(w_0)},\qquad
+ \gamma=\frac{w_0-1}{w_0J'(w_0)}=(1-\rho)b_0.
+ \label{eq:spec-atom}
+\end{equation}
+The final equality can either be read from the residue in
+\eqref{eq:spec-G-J} or checked by differentiating that identity.
+
+\subsection{No hidden singular measure}
+
+For $0<t<1$, put
+\begin{align}
+ R(t)&=t-c-\operatorname{PV}\int_0^1\frac{h(s)}{t-s}\,ds,\\
+ J_+(t)&=R(t)+i\pi h(t).
+ \label{eq:spec-boundary}
+\end{align}
+The sign of the imaginary part follows from the upper-half-plane
+boundary value of $(w-s)^{-1}$.  Since $h$ is smooth and positive
+on compact subintervals of $(0,1)$, the principal value and the
+boundary values are continuous there; the convergence from the upper
+half-plane is uniform on every smaller compact interval.  Because
+$|J_+(t)|\ge\pi h(t)>0$, Stieltjes inversion applied on these
+intervals proves absolute continuity, with density
+\begin{equation}
+ \frac{d\sigma}{dt}=\frac{h(t)}{|J_+(t)|^2}
+ \quad(0<t<1).
+ \label{eq:spec-density}
+\end{equation}
+For clarity, this also excludes singular continuous mass in the open
+interval: inversion gives the measure of each compact interval as the
+integral of the continuous boundary density; such intervals exhaust
+$(0,1)$.
+
+Only endpoint atoms remain to be checked.  From
+\eqref{eq:spec-zeroidentity}, for $\varepsilon>0$,
+\[
+ J(-\varepsilon)
+ =-\varepsilon\left(1+\int_0^1
+            \frac{h(t)}{t(t+\varepsilon)}\,dt\right).
+\]
+Since $\int_0^1h(t)/t^2\,dt=\infty$,
+\begin{equation}
+ \sigma(\{0\})
+ =\lim_{\varepsilon\downarrow0}\frac{-\varepsilon}{J(-\varepsilon)}=0.
+ \label{eq:spec-nozero}
+\end{equation}
+The divergence follows immediately from
+$h(t)\sim1/\log^2t$ at zero.  At the other endpoint,
+$J(1+\varepsilon)\to-\infty$, so
+\begin{equation}
+ \sigma(\{1\})
+ =\lim_{\varepsilon\downarrow0}\frac{\varepsilon}{J(1+\varepsilon)}=0.
+ \label{eq:spec-noone}
+\end{equation}
+The isolated atom at $w_0$ contributes zero to this latter limit.
+These arguments account for the entire measure:
+\begin{equation}
+ \sigma=b_0\delta_{w_0}
+ +\frac{h(t)}{|J_+(t)|^2}\,\mathbf1_{(0,1)}(t)\,dt.
+ \label{eq:spec-fullmeasure}
+\end{equation}
+
+\subsection{Exact positive remainder and its consequences}
+
+Since $\sigma$ has total mass one, equations
+\eqref{eq:spec-G-J} and \eqref{eq:spec-measure} give
+\[
+ G(1/w)-1=(w-1)\int\frac{\sigma(dt)}{w-t}-1
+         =\int\frac{t-1}{w-t}\,\sigma(dt).
+\]
+Expanding at infinity is justified by bounded spectral support.
+For every integer $n\ge1$,
+\begin{equation}
+ \boxed{\quad
+ E_n:=\gamma\rho^{-n}-g_n
+     =\int_0^1t^{n-1}\ell(t)\,dt>0,
+ \qquad
+ \ell(t)=\frac{(1-t)h(t)}{|J_+(t)|^2}.
+ \quad}
+ \label{eq:spec-exact-remainder}
+\end{equation}
+This indexing is essential.  The expression
+$\int t^nk(t)\,dt$ with $k=\ell/t$ is equivalent for $n\ge1$,
+but it must not be extended to $n=0$: the corresponding density is
+not integrable at zero.  Indeed $J(-\varepsilon)\to0^-$ by dominated
+convergence in \eqref{eq:spec-J} and \eqref{eq:spec-zeroidentity}, so
+$G(-1/\varepsilon)-1\to+\infty$ in
+\eqref{eq:spec-G-J}.  Its Cauchy representation is a bounded isolated
+pole term plus $\int_0^1\ell(t)/(t+\varepsilon)\,dt$; monotone
+convergence proves $\int_0^1\ell(t)/t\,dt=\infty$.
+The exact generating-function identity is
+\begin{equation}
+ G(z)=1+\frac{\gamma\rho^{-1}z}{1-z/\rho}
+             -z\int_0^1\frac{\ell(t)}{1-tz}\,dt.
+ \label{eq:spec-regularized-generating}
+\end{equation}
+
+The representation proves strict complete monotonicity:
+\begin{equation}
+ (-1)^k\Delta^k E_n
+ =\int_0^1t^{n-1}(1-t)^k\ell(t)\,dt>0
+ \qquad(n\ge1,\ k\ge0),
+ \label{eq:spec-complete-monotone}
+\end{equation}
+where $\Delta E_n=E_{n+1}-E_n$.  Every finite Hankel matrix
+$(E_{r+i+j})_{0\le i,j\le m}$ is positive definite when $r\ge1$:
+for any nonzero real polynomial $P(t)=\sum_{i=0}^mc_it^i$,
+\[
+ \sum_{i,j=0}^mc_ic_jE_{r+i+j}
+ =\int_0^1t^{r-1}P(t)^2\ell(t)\,dt>0.
+\]
+In particular $E_{n+1}^2<E_nE_{n+2}$.  These are exact finite-$n$
+statements, independent of any asymptotic expansion.
+
+Several exact sum rules are also available.  Comparing the coefficient
+of $1/w$ gives
+\begin{equation}
+ \int_0^1\ell(t)\,dt=\gamma\rho^{-1}-a_1<1.
+ \label{eq:spec-massell}
+\end{equation}
+Monotone convergence and the total mass of $\sigma$ give
+\begin{equation}
+ \sum_{n=1}^\infty E_n
+ =\int_0^1\frac{\ell(t)}{1-t}\,dt
+ =1-b_0=1-\frac\gamma{1-\rho}.
+ \label{eq:spec-sum0}
+\end{equation}
+Letting $w\downarrow1$ in \eqref{eq:spec-measure} shows that
+$\int_0^1(1-t)^{-1}\,\sigma(dt)=b_0/(w_0-1)$: the continuous
+part increases monotonically and the left side $1/J(w)$ tends to zero,
+while the isolated-pole term tends to $-b_0/(w_0-1)$.  Consequently
+\begin{equation}
+ \sum_{n=1}^\infty nE_n
+ =\int_0^1\frac{\ell(t)}{(1-t)^2}\,dt
+ =\frac{b_0}{w_0-1}
+ =\frac{\gamma\rho}{(1-\rho)^2}.
+ \label{eq:spec-sum1}
+\end{equation}
+
+\section{Explicit finite-index bounds and the sharp leading scale}
+\label{sec:spectral-bounds-notes}
+
+We next prove actual numerical constants without needing certified
+quadrature for the spectral density.  They are deliberately conservative;
+the exact integral \eqref{eq:spec-exact-remainder} supports much tighter
+numerical enclosures.
+
+\subsection{The logarithmic endpoint constant}
+
+Define
+\[
+ C=\int_0^1\frac{h(s)-1}{1-s}\,ds.
+\]
+With $s=e^{-x}$ this becomes
+\[
+ C=\int_0^\infty\left(
+       \frac{e^{-x}-e^{-2x}}{x^2}-\frac1{e^x-1}\right)dx.
+\]
+Writing $\operatorname{E}_1(a)=\int_a^\infty e^{-x}\,dx/x$,
+integration by parts after a cutoff $\varepsilon$ gives
+\[
+ C=\lim_{\varepsilon\downarrow0}
+ \left\{
+ \frac{e^{-\varepsilon}-e^{-2\varepsilon}}\varepsilon
+ -\operatorname{E}_1(\varepsilon)
+ +2\operatorname{E}_1(2\varepsilon)
+ +\log(1-e^{-\varepsilon})\right\}.
+\]
+The standard integral definition
+$\gamma_{\!E}=-\lim_{\varepsilon\downarrow0}
+ (\operatorname{E}_1(\varepsilon)+\log\varepsilon)$ therefore yields
+\begin{equation}
+ C=1-2\log2-\gamma_{\!E}.
+ \label{eq:spec-Cconstant}
+\end{equation}
+Only $0<\gamma_{\!E}<1$ is needed for the explicit bounds below.
+These inequalities follow, for example, from
+\[
+ \gamma_{\!E}=\int_0^1\frac{1-e^{-x}}x\,dx
+                  -\int_1^\infty\frac{e^{-x}}x\,dx.
+\]
+
+Put $r(s)=(h(s)-1)/(1-s)$ and extend it at one by $r(1)=-1$.
+By \eqref{eq:spec-h-bounds}, $-1\le r(s)\le0$.  If $t=1-u$,
+then a direct decomposition $h(s)=1+(1-s)r(s)$ gives
+\begin{equation}
+ R(1-u)=\log u+\gamma_{\!E}+\eta(u),\qquad
+ \eta(u)=-u-\log(1-u)
+       -u\operatorname{PV}\int_0^1\frac{r(s)}{1-u-s}\,ds.
+ \label{eq:spec-etaidentity}
+\end{equation}
+Here $R$ is the real part in \eqref{eq:spec-boundary}.
+
+We record explicit estimates for the last principal value.  From
+\eqref{eq:spec-h-mixture}, for $s\in[1/4,1]$,
+$|h''(s)|\le32$: indeed $|q(q-1)|\le2$ for $0\le q\le2$ and
+$s^{q-2}\le16$.  Since $r$ is the negative average of $h'$ over
+$[s,1]$, this implies $|r'(s)|\le16$ on that interval.  For
+$t\in[1/2,1)$,
+\[
+ \operatorname{PV}\int_0^1\frac{r(s)}{t-s}\,ds
+ =r(t)\log\frac{t}{1-t}
+       +\int_0^1\frac{r(s)-r(t)}{t-s}\,ds.
+\]
+The integral over $[0,1/4]$ has absolute value at most one; the
+remaining part has absolute value at most $16(3/4)=12$.  Therefore,
+with $L=\log(1/u)$ and $0<u\le1/2$,
+\begin{equation}
+ |\eta(u)|\le u(L+14).
+ \label{eq:spec-eta-bound}
+\end{equation}
+We used $0\le-u-\log(1-u)\le u^2$ for $u\le1/2$.
+In particular,
+\begin{equation}
+ J_+(1-u)=\log u+\gamma_{\!E}+i\pi
+                  +O(u\log(1/u)),
+ \qquad
+ \ell(1-u)\sim\frac{u}{\log^2(1/u)}.
+ \label{eq:spec-local-equivalence}
+\end{equation}
+
+\subsection{Two-sided density bounds with actual constants}
+
+For $0<u\le e^{-4}$, $L\ge4$ and
+$u(L+14)\le18e^{-4}<1/3$.  Using $0<\gamma_{\!E}<1$,
+\eqref{eq:spec-eta-bound} implies
+\[
+ \frac23L\le |R(1-u)|\le\frac43L.
+\]
+Also $h(1-u)\ge1-u>1/2$, $h(1-u)\le1$, and
+$\pi h(1-u)\le\pi<L$.  Hence
+\begin{equation}
+ \boxed{\qquad
+ \frac9{50}\frac{u}{\log^2(1/u)}
+ \le\ell(1-u)\le
+ \frac94\frac{u}{\log^2(1/u)}
+ \quad(0<u\le e^{-4}).
+ \qquad}
+ \label{eq:spec-explicit-density}
+\end{equation}
+
+\subsection{A fully explicit finite-index theorem}
+
+For every integer $n\ge4096$,
+\begin{equation}
+ \boxed{\qquad
+ \frac{1}{200\,n(n+1)\log^2n}
+ \le \gamma\rho^{-n}-g_n
+ \le\frac{10}{n(n+1)\log^2n}.
+ \qquad}
+ \label{eq:spec-explicit-n}
+\end{equation}
+To prove the upper bound, split the integral in
+\eqref{eq:spec-exact-remainder} at $u=n^{-1/2}\le e^{-4}$.
+On the part $u\le n^{-1/2}$, $\log(1/u)\ge\tfrac12\log n$, so
+\[
+ \int_0^{n^{-1/2}}(1-u)^{n-1}\ell(1-u)\,du
+ \le\frac9{\log^2n}\int_0^1(1-u)^{n-1}u\,du
+ =\frac9{n(n+1)\log^2n}.
+\]
+On the complement use $\int\ell\le1$, a consequence of the
+probability measure $\sigma$:
+\[
+ \int_{n^{-1/2}}^1(1-u)^{n-1}\ell(1-u)\,du
+ \le e^{-\sqrt n+1/\sqrt n}
+ \le\frac1{n(n+1)\log^2n}.
+\]
+For the last elementary inequality set $r=\sqrt n\ge64$.  The
+difference between the logarithms of the two sides, with signs reversed,
+is
+\[
+ r-r^{-1}-4\log r-\log(1+r^{-2})-2\log(2\log r).
+\]
+It is positive at $r=64$ (use $\log64<5$ and $\log10<3$), and its
+derivative is positive for $r\ge64$.
+
+For the lower bound restrict to $1/(2n)\le u\le1/n$.  On that
+interval, $(1-u)^{n-1}\ge e^{-1}>1/3$ and
+$\log(1/u)\le\log(2n)\le2\log n$.  Equation
+\eqref{eq:spec-explicit-density} gives
+\[
+ E_n\ge\frac{9}{600\log^2n}
+               \int_{1/(2n)}^{1/n}u\,du
+      =\frac9{1600\,n^2\log^2n}
+      \ge\frac1{200\,n(n+1)\log^2n}.
+\]
+No numerical root approximation, numerical principal value, or numerical
+integration is used in \eqref{eq:spec-explicit-n}.
+
+A weaker bound valid at every $n\ge2$ follows from
+$|J_+(t)|^2\ge\pi^2h(t)^2$ and $h(t)\ge t$:
+\begin{equation}
+ 0<E_n\le\frac1{\pi^2 n(n-1)}\qquad(n\ge2).
+ \label{eq:spec-global-simple}
+\end{equation}
+
+\subsection{Sharp asymptotic constant}
+
+The same estimates give
+\begin{equation}
+ \boxed{\qquad
+ E_n\sim\frac1{n^2\log^2n}.
+ \qquad}
+ \label{eq:spec-leading}
+\end{equation}
+Here are details avoiding an implicit Tauberian hypothesis.  The part
+$u\ge n^{-1/2}$ is negligible after multiplication by $n^2\log^2n$,
+as just shown.  In the remaining integral put $v=nu$.  For each fixed
+$v>0$, \eqref{eq:spec-local-equivalence} gives
+\[
+ n^2\log^2n\,(1-v/n)^{n-1}\ell(1-v/n)\,\frac{dv}{n}
+ \longrightarrow ve^{-v}\,dv.
+\]
+For $v\le\sqrt n$, \eqref{eq:spec-explicit-density} bounds the
+integrand by $9ve^{-v/2}$ for all sufficiently large $n$.  Dominated
+convergence applies, and $\int_0^\infty ve^{-v}\,dv=1$.
+
+Thus the error has a fixed negative sign in $g_n-\gamma\rho^{-n}$,
+its absolute order $n^{-2}(\log n)^{-2}$ cannot be improved, and its
+entire finite-index shape is constrained by a positive Hausdorff moment
+representation.

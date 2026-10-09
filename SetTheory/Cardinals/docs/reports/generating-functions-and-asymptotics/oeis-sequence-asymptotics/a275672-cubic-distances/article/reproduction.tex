@@ -1,0 +1,46 @@
+
+The root of the ZIP contains this document's \code{a275672.tex} and
+compiled PDF. The \code{src} directory contains independent
+certificate verifiers and the exact finite-bound calculator.
+The \code{data} directory contains coordinates and verified numerical
+results. Search source snapshots and retained run records are in
+\code{computations/exact}; constructive programs and immutable starting
+configurations are in \code{computations/constructions}. The
+\code{validation} directory contains the separate source audit and
+small-instance comparisons against an exhaustive reference enumerator.
+Its \code{fresh\_audit} subdirectory contains a second independent
+source review, differential tests, and sanitizer-run records. The
+\code{computations/exploratory} directory retains explicitly
+inconclusive larger-case attempts and the later filtered sources.
+
+The numerical bounds can be regenerated with Python 3:
+\begin{lstlisting}
+python3 src/verify_results.py
+python3 src/verify_gaussian_certificate.py
+python3 src/finite_bounds.py 50 100 200 500 1000
+\end{lstlisting}
+The first command checks the complete construction catalogue, the
+diameter-case coverage of the exact runs, arithmetic lemmas, and an
+independent rational implementation of the potential certificate. The
+second runs the original rational potential verifier. The third uses
+rational exponential intervals and prints rigorous finite upper
+bounds. None requires a numerical optimization library.
+
+The C++ search programs require a C++17 compiler. Full target searches
+may run substantially longer than witness checks. The README gives the
+exact invocation and source version for each completed case run. A
+reported time limit, an interruption, or a partial-case run must never
+be interpreted as a proof for the entire cube.
+The validated front end \code{src/run\_exact.py} checks arguments and
+builds the selected source automatically; for example,
+\begin{lstlisting}
+python3 src/run_exact.py 8 13 --mode top6 --seconds 3600
+\end{lstlisting}
+It also resolves trivially oversized targets before they reach the
+unchanged historical C++ sources, whose signed-integer pair-count
+expression assumes an ordinary target within the supported grid.
+
+The PDF can be rebuilt with \code{latexmk -pdf a275672.tex}. Standard
+LaTeX packages and the included figure assets suffice; no Internet
+access is needed for the rebuild. The supplied checksum manifest records
+the packaged artifacts used for the reported computations.

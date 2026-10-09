@@ -1,0 +1,231 @@
+SOURCE PROVENANCE AND RESEARCH STATUS
+Prepared 8 October 2026 (UTC)
+
+1. PURPOSE AND STATUS
+
+This package was prepared in an AI-assisted mathematical research session
+in response to a request for sharper asymptotic bounds related to the
+openai/math and VladimirReshetnikov/ProveIt repositories. The accompanying
+article contains proofs developed in this session, together with explicit
+citations for the prior results it uses. It is an unrefereed research
+manuscript. Its proposed contributions have not been independently
+validated by a specialist referee, and its priority has not been settled
+by an exhaustive literature review.
+
+The package is a standalone deliverable intended for subsequent repository
+integration. No remote repository file was changed, no commit was pushed,
+and no issue, pull request, or message to a third party was created during
+its preparation. Inclusion here does not imply approval or endorsement by
+either repository's maintainers or by any cited author.
+
+No Lean, Coq, Isabelle, or other machine-checked formal proof is supplied
+or claimed. The numerical and symbolic checks are supporting checks, not
+formal certificates for the infinite asymptotic estimates. See the article
+and numerical verification files for their precise scope.
+
+2. REPOSITORY SOURCES
+
+2.1 ProveIt nested-cycle report
+
+Repository:
+  https://github.com/VladimirReshetnikov/ProveIt
+
+Exact repository path:
+  SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a308338-nested-cycle-assemblies/article.tex
+
+Human-readable branch URL (mutable):
+  https://github.com/VladimirReshetnikov/ProveIt/blob/main/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a308338-nested-cycle-assemblies/article.tex
+
+Inspected Git blob SHA:
+  07022425b718ab5fe3bd332a551baec7cd512379
+
+Content-addressed GitHub API URL:
+  https://api.github.com/repos/VladimirReshetnikov/ProveIt/git/blobs/07022425b718ab5fe3bd332a551baec7cd512379
+
+The blob SHA identifies the inspected file content. The file was also
+retrieved at this repository commit, and its returned blob SHA matched:
+  2bac1ea07b980962027249a9864db0f7f732a75f
+
+Frozen source URL:
+  https://github.com/VladimirReshetnikov/ProveIt/blob/2bac1ea07b980962027249a9864db0f7f732a75f/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a308338-nested-cycle-assemblies/article.tex
+
+The mutable branch URL above must not be treated as a frozen snapshot.
+
+The source title is "Asymptotics of assemblies of nested cycles: Exact
+counts and fixed order marked saddle expansions". Its author line is
+"Report 167", its document date is 3 October 2026, and its repository
+annotations are dated 6 October 2026. The bibliography preserves that
+author designation rather than assigning authorship to the repository
+owner. The report itself describes its unrefereed, AI-assisted status.
+
+Use made of this source: identification of the nested-cycle assembly
+program, its generating function, its existing marked enumeration and
+component-count results, and its cited analytic background. The present
+general maximum theorem does not assume the older report's marked
+expansions as a probabilistic black box. Its necessary component-weight
+estimate is attributed directly to the published source listed below.
+
+2.2 openai/math
+
+Repository:
+  https://github.com/openai/math
+
+Inspected repository commit:
+  adc7f1241b42e322a6451854ab7e4b4c146bf78a
+
+Frozen repository URL:
+  https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a
+
+Manuscript index at that revision:
+  https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/CONTENTS.md
+
+Research selection examined result family 229, including these manuscripts:
+
+  The Reconstruction Threshold for the Ferromagnetic Four-State Potts Model
+  https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/The-Reconstruction-Threshold-for-the-Ferromagnetic-Four-State-Potts-Model-October-5-2026/four-state-potts.pdf
+
+  A Capacity Criterion for Four-State Potts Reconstruction on Trees
+  https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-Capacity-Criterion-for-Four-State-Potts-Reconstruction-on-Trees-October-5-2026/four-state-capacity.pdf
+
+A candidate critical cubic coefficient arising during this exploration
+was compared with Mossel--Sly--Sohn, Proposition 4.12 and equations
+(105)--(106) in arXiv:2212.03362v2. It was already present there and is not
+presented as a new result of this package. The assembly maximum problem
+was selected afterward. No Potts result is a proof dependency of the
+assembly theorems, and the correctness of the entire manuscript repository
+has not been audited or endorsed.
+
+3. PRIMARY MATHEMATICAL AND BIBLIOGRAPHIC SOURCES
+
+All URLs below were consulted during this session on 8 October 2026 UTC,
+unless a version date is explicitly given. Dates attached to versions
+identify the source version, not the date of this research session.
+
+[oeis308338]
+  Ilya Gutkovskiy and OEIS contributors, A308338.
+  https://oeis.org/A308338
+  Original entry date: 20 May 2019, as recorded on the entry.
+  The entry specifies the exponential generating function and integer
+  sequence. Its nested-cycle interpretation is credited there to Marko
+  Riedel, 14 January 2026. The live entry was inspected; no frozen OEIS
+  revision number is claimed for the present retrieval.
+
+[FFGPP]
+  Philippe Flajolet, Eric Fusy, Xavier Gourdon, Daniel Panario,
+  Nicolas Pouyanne.
+  A Hybrid of Darboux's Method and Singularity Analysis in
+  Combinatorial Asymptotics.
+  The Electronic Journal of Combinatorics 13(1), R103, 1--35 (2006).
+  Publication date: 13 November 2006.
+  DOI: 10.37236/1129.
+  Publisher metadata:
+    https://www.combinatorics.org/ojs/index.php/eljc/article/view/v13i1r103
+  Author-hosted published PDF:
+    https://pouyanne.perso.math.cnrs.fr/hybridEjc.pdf
+  Preprint:
+    https://arxiv.org/abs/math/0606370
+    https://arxiv.org/pdf/math/0606370
+  Relevant input: Section 3, equation (22), the estimate
+    p_k = exp(-gamma)*(1+1/k) + O(log(k)/k^2),
+  which the authors attribute to Greene and Knuth. Proposition 1 develops
+  a fuller expansion with periodic terms. This package cites the inspected
+  published exposition and does not claim to have inspected the original
+  Greene--Knuth source independently.
+
+[PR]
+  Konstantinos Panagiotou and Leon Ramzews.
+  Cluster Statistics in Expansive Combinatorial Structures.
+  arXiv:2208.00925v1, 1 August 2022.
+  https://arxiv.org/abs/2208.00925v1
+  https://arxiv.org/pdf/2208.00925
+  https://arxiv.org/html/2208.00925v1
+  Relevant prior result: Theorem 1.2, qualitative Gumbel convergence for
+  largest clusters in expansive structures. The present article does not
+  attribute an unquoted quantitative error bound to this source.
+
+[BMWconf]
+  Mireille Bousquet-Melou and Kerstin Weller.
+  Asymptotic properties of some minor-closed classes of graphs
+  (conference version).
+  DMTCS Proceedings AS, FPSAC 2013, 599--610 (2013).
+  DOI: 10.46298/dmtcs.2327.
+  https://dmtcs.episciences.org/2327/pdf
+  https://dmtcs.episciences.org/articles/2327
+  Relevant prior result: Proposition 9, qualitative Gumbel convergence
+  for the largest path in a uniformly sampled labelled forest of paths.
+  Proposition 8 records the connected-path generating function.
+  The publication year 2013 follows the PDF's printed proceedings header
+  and conference designation. The current landing page also contains an
+  inconsistent "Published on December 31, 2012" metadata field; it is
+  not used to change the proceedings year.
+
+[BMW]
+  Mireille Bousquet-Melou and Kerstin Weller.
+  Asymptotic Properties of Some Minor-Closed Classes of Graphs.
+  Combinatorics, Probability and Computing 23(5), 749--795 (2014).
+  DOI: 10.1017/S0963548314000303.
+  https://doi.org/10.1017/S0963548314000303
+  https://www.cambridge.org/core/journals/combinatorics-probability-and-computing/article/abs/asymptotic-properties-of-some-minorclosed-classes-of-graphs/AD547F576830682437B0EC7DD45AB521
+  https://arxiv.org/abs/1303.3836v2
+  Author names, volume, issue, page range and year were verified against
+  the publisher and arXiv metadata. The first author's given name is
+  Mireille. The arXiv revision is dated 5 February 2014. The accessible
+  conference text was read for the maximum theorem; the full journal
+  proof was not completely inspected in this session.
+
+[MSS]
+  Elchanan Mossel, Allan Sly and Youngtak Sohn.
+  Exact Phase Transitions for Stochastic Block Models and
+  Reconstruction on Trees.
+  arXiv:2212.03362v2, 22 February 2025;
+  first version posted 6 December 2022.
+  https://arxiv.org/abs/2212.03362v2
+  https://arxiv.org/html/2212.03362v2
+  https://arxiv.org/pdf/2212.03362v2
+  The bibliography cites the explicit version whose proposition and
+  equation numbers were inspected. Its role is the priority check for
+  the discarded Potts coefficient, not a dependency of the new proofs.
+
+4. LITERATURE REVIEW BOUNDARY
+
+The directed review covered expansive assemblies and multisets, largest-
+component Gumbel laws, random Lah assemblies and sets of lists, path
+forests, second-order extreme-value expansions, convergence rates, and
+the component coefficients for permutations with distinct cycle lengths.
+The repository documents and primary sources above were the substantive
+inputs. Search-result absence was not treated as proof of absence from
+the literature. Searches were bounded in time and scope and did not
+systematically inspect every work citing these papers, every thesis, or
+every non-English source.
+
+The qualitative Gumbel laws and the component coefficient estimate are
+explicitly prior results. The universal conditioning profile, the affine
+normalization obstruction, the continuous calibration at the leading
+lattice lower bound, and the further lattice/component corrections are
+proved in the accompanying manuscript as proposed contributions of this
+session. The reviewed sources did not supply these exact statements, but
+this fact alone does not establish worldwide priority or justify calling
+the work a confirmed breakthrough. Specialist review and additional
+priority checking remain appropriate before publication.
+
+5. PROOF AND COMPUTATION BOUNDARY
+
+The general probability arguments start from the article's stated
+nonnegative weight hypothesis p_k=c+O(1/k), c>0, and use conditioned
+Poisson identities, Fourier inversion, Taylor estimates and elementary
+sum bounds. The more refined model-dependent result has its own stronger
+weight hypothesis; it must not be applied under the weaker hypothesis
+without the additional assumption.
+
+The nested-cycle specialization uses the cited published coefficient
+estimate. Exact finite coefficient checks and numerical Fourier inversion
+check examples and constants. They do not prove a uniform asymptotic
+bound for all sufficiently large n, provide an effective threshold for
+the O-constants, or establish a computer-assisted proof. Numerical
+quadrature comparisons, grid limitations, and the independent path-
+forest coefficient check are documented in the data and code artifacts.
+
+The package's sources, bibliography, proofs, numerical code, and proposed
+research questions were assembled for review. They should be assessed
+on their explicit arguments and reproducible evidence, with the above
+source and status boundaries preserved during repository integration.

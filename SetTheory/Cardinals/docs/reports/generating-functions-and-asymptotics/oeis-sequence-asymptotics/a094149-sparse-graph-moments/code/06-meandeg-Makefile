@@ -1,0 +1,25 @@
+PYTHON ?= python3
+
+.PHONY: all pdf verify exact symbolic diagnostics clean
+
+all: pdf
+
+pdf:
+	./build.sh
+
+verify:
+	$(PYTHON) code/verify_exact.py --order 128 --enumerate-through 7
+	$(PYTHON) code/verify_symbolic.py
+	$(PYTHON) code/numerical_diagnostics.py
+
+exact:
+	$(PYTHON) code/verify_exact.py --order 128 --enumerate-through 7
+
+symbolic:
+	$(PYTHON) code/verify_symbolic.py
+
+diagnostics:
+	$(PYTHON) code/numerical_diagnostics.py
+
+clean:
+	rm -f article.aux article.log article.out article.toc article.fls article.fdb_latexmk article.synctex.gz
