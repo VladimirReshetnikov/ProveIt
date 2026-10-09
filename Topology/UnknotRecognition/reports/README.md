@@ -53,7 +53,7 @@ modification times.
 | `45/` | `unknot_christoffel_20261008.zip` | code with integration material (`45/code/`, `45/integration/`) | compressed Christoffel width; exact compressed primitive-power test and torsion-free elimination | — | 22 test methods and both saved examples reproduced; native terminal integration pending |
 | `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | orbit/topology and worker subset integrated; 805 maintained tests pass; full overlay not rerun |
 | `47/` | `unknot_native_orbits_20261008.zip` | source snapshot and integration patch (`47/snapshot/`) | native normal-orbit research with an article, raw data and representative certificates | — | orbit replay and shared incidence integrated; 831 maintained tests pass; native-disc adapter and seed search pending |
-| `48/` | `ProveIt_compressed_braid_certificates_2026-10-08.zip` | standard-library `compressed_b3` (`48/compressed_b3/`, integration notes in `48/integration/`) | native compressed three-braid recognition on binary straight-line programs, replayable certificates, singleton connected-sum forests with `INCONCLUSIVE` for unsupported wider leaves | — | not run |
+| `48/` | `ProveIt_compressed_braid_certificates_2026-10-08.zip` | standard-library `compressed_b3` (`48/compressed_b3/`, integration notes in `48/integration/`) | native compressed three-braid recognition on binary straight-line programs, replayable certificates, singleton connected-sum forests with `INCONCLUSIVE` for unsupported wider leaves | conditional exceptional-minority bound | already integrated before numbered placement; 53 manifest files reconciled; prior 42 delivery tests and actual-kernel audit pass |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -335,3 +335,15 @@ general subexponential fixed-color scalar query, not a general subexponential
 recognizer. The 595-test checkpoint includes independent scalar comparisons,
 while the benchmark retains initial-policy source, gains, regressions and
 censored queries. The delivered report is unchanged.
+
+Report `48/` is the identical delivery already integrated in the maintained
+compressed-braid backend and reviewed in `../synthesis/compressed_braid.tex`.
+The numbered placement was checked against the original archive and its prior
+integration hashes: all 53 delivered files match. Its omitted `SHA256SUMS` has
+been restored verbatim. See `../synthesis/data/report48-placement-audit.json`.
+The prior 42 delivery tests, actual-kernel injection, exhaustive 87,381-word
+audit and native integration remain recorded in `../synthesis/data/`; these
+are previous executions, not new runs caused by relocation. Subsequent native
+work adds independently verified wider-factor fallbacks, adaptive and lazy
+factor preparation, and compact root permutations. Arbitrary diagram-to-grammar
+construction with a general favorable complexity bound remains open.
