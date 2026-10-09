@@ -8630,3 +8630,15 @@ The four new modules check in a 461-module production closure. Eight new
 named theorems and eight affected existing/global theorems pass individual
 axiom checks with only `propext`, `Classical.choice`, and `Quot.sound`.
 No upstream code is added and no numbered catalogue entry is closed.
+
+
+**Final merged verification.** The complete audit checks 8,221 public
+Gowers theorems in 5,366 combined modules (5,364 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+The eight new named theorems and eight affected existing/global proofs
+also pass individual axiom checks. The numbered ledger is byte-for-byte
+unchanged at 115 companions and five open entries, retaining all existing
+statement-fidelity qualifications. The port scope remains 4,134 upstream
+and 17 compatibility modules. Reviewed incoming changes concern only the
+independent topology obstruction certificates, code, tests, and report;
+they add no Gowers dependency or licensing scope.
