@@ -3645,3 +3645,39 @@ transposition and right-sided codegree lemmas were merged and the combined
 audit rerun. It passes for 6,540 public Gowers theorems in the same
 5,010-module closure, with the same three-axiom boundary. No numbered
 statement status or selected upstream port scope changed.
+
+
+### Proposition 23 and Claim 34 with a radius per frequency (2026-10-09)
+
+`global_seven_operator_completion` leaves one input as a hypothesis: box
+quasirandomness of the pattern graph between `d ∈ B(F; θ/2)` and
+`t ∈ C`, whose edge is `d ∈ B(V(t); θ/8)`. Its degrees and codegrees
+are Bohr sets with two radii. So Proposition 23 and the Claim 34
+factorization are now stated for per-frequency integer radii.
+
+- `mixedBohr γ a = {x : |γᵢx| ≤ aᵢ}`.
+- `relationWeightMixed`, `latticeWeightMixed`: per-index trapezoid
+  coefficients.
+- `bohr_card_approx_relations_mixed`.
+- `relationWeightMixed_sumElim_of_split` and
+  `bohr_card_factor_of_split_mixed`, with radii `a` on `Γ` and `b` on
+  the maps.
+
+The common-radius theorems are corollaries via `mixedBohr_const`.
+`truncation_budget_of_cutoff` isolates the explicit cutoff computation.
+
+In `Proofs16OneSidedQuasirandom`:
+- `boxSum_eq_pairs`, `boxSum_transpose`: the box norm is symmetric.
+- `boxSum_le_of_codegrees_right`: sharpened Lemma 44, with degree and
+  codegree control over the second vertex class. That is the `t`-side in
+  the pattern graph, where codegrees are Bohr sets of `F ∪ V(t) ∪ V(t′)`.
+
+Standard axioms throughout; collision gate clean.
+
+Remaining to feed the completion:
+- express the pattern graph's degrees and codegrees as `mixedBohr`
+  sizes (subtype enumeration of `F`, `bohr_floor_radius` for the real
+  radii);
+- the relation-splitting hypothesis for most `t`. This is the Theorem 33
+  iteration, with `freiman_const_on_bohr_of_dense` and
+  `strict_chain_length_le` as its two simplified steps.

@@ -1,0 +1,189 @@
+\section{Adaptive periodic closure with unchanged orbit certificates}
+\label{sec:adaptive-merger}
+
+The component-certificates delivery in commit \texttt{92efcbaed} identifies
+repeated work in the maintained AHT producer: its periodic-merger scan restarts
+from the beginning after every successful merge. The new native scheduler
+remembers successful candidates whose operands have not changed. Its adaptive
+policy first uses indexed scans, then switches to a heap after spending an
+all-pairs allowance. This is an implementation improvement to the existing
+exact periodic rule, with a quadratic per-closure candidate bound and identical
+completed certificates. It does not change the classical AHT cycle argument
+or establish general quasipolynomial unknot recognition.
+
+The delivered reference producer is byte-identical to maintained baseline
+\texttt{109dabf896f2}. The integration installs the delivered scheduler,
+producer change and 11 scheduler tests, plus four native integration tests.
+The delivery's alternative weighted and normal-profile modules are not needed:
+our newer weighted census, quadrilateral core and separately implemented
+arithmetic verifier remain intact. This avoids replacing their source-binding
+and independent-replay contracts with a different research interface.
+
+\subsection{Stable identifiers preserve the historical greedy choice}
+
+A periodic increasing pairing with period $p$ and inclusive support $[a,d]$
+can merge with one of period $q$ when their support overlap contains at least
+$p+q-\gcd(p,q)$ points. The classical alternative threshold is $p+q$.
+Both existing exact rules remain unchanged. The old closure tests current
+list pairs $(i,j)$, $i<j$, in lexicographic order, accepts the first legal
+merge, replaces row $i$, deletes row $j$, and restarts.
+
+Assign each input row its original position as a permanent identifier.
+Active identifiers retain their original relative order under deletions.
+A row's generation starts at zero and increases each time it is replaced.
+The heap stores successful tests as
+\[
+ (i,j,\nu_i,\nu_j,\hbox{replacement}).
+\]
+It orders first by the two identifiers. An entry is stale if an operand has
+been deleted or its generation has changed. Initially every pair of periodic
+rows is tested. After merging $i<j$, delete $j$, increase $i$'s generation,
+and test precisely the surviving periodic partners of the new row $i$.
+A failed test between two unchanged operands never needs to be repeated.
+
+The invariant is that every currently legal pair has exactly one nonstale
+entry, and every nonstale entry contains its exact current replacement.
+Initialization establishes it. A merge leaves all pairs avoiding $i,j$
+unchanged; deletion and the generation increment invalidate the other old
+entries; the new incident tests restore the missing current entries. Thus
+induction preserves the invariant. Removing stale minima then exposes the
+lexicographically first legal pair of active identifiers. Its order is exactly
+the order of current list positions, so it is the historical greedy choice.
+
+For a recorded merge, the producer counts active identifiers below each operand
+to recover the old current-list indices. At most $k-1$ merges occur in a
+closure with $k$ starting rows, so these rank scans cost $O(k^2)$ operations.
+The surviving ordered list is identical after every closure. Subsequent
+carrier selection, transmission, truncation and next-cycle preparation are
+unchanged deterministic operations. Induction over cycles therefore gives
+identical orbit counts, begun-cycle counts and complete certificates, for
+either periodic rule. The orbit and weighted checkers need no new proof rule.
+
+This equality concerns completed mathematical traces. Polling schedules and
+work statistics can change, so a cooperative wall-clock deadline may stop at
+a different point. A fixed cycle allowance still counts the same begun AHT
+cycles. Cancellation propagates, and incomplete runs publish no count or
+certificate.
+
+\subsection{Quadratic tests with an adaptive fast path}
+
+Pure queue closure on $k\ge1$ rows performs at most
+\[
+ \binom{k}{2}+\sum_{r=1}^{k-1}(r-1)=(k-1)^2
+\]
+merger tests. The first term initializes the heap. A merge leaving $r$ rows
+retests at most $r-1$ partners of the replacement. Nonperiodic rows only
+reduce these counts. Each successful test creates one heap entry and each
+entry is popped at most once, including stale entries. Hence total heap work
+and worst-case heap storage are quadratic up to the heap's logarithmic factors.
+For $B$-bit endpoints, a conservative per-closure bit bound is
+\[
+ O\!\left(k^2\bigl(G(B)+B+\log^2(k+1)\bigr)\right),
+\]
+where $G(B)$ bounds the merger's gcd and bounded endpoint arithmetic. Heap
+keys contain $O(\log(k+1))$-bit identifiers and generations. Working storage
+is $O(k^2(B+\log(k+1)))$ bits, excluding the separately retained full trace.
+This is a real space tradeoff with the historical linear working list.
+
+An eager heap is wasteful when the first candidate repeatedly succeeds: $k$
+identical periodic rows require only $k-1$ old tests, but initializing a heap
+already requires $\binom{k}{2}$. The adaptive policy therefore begins with
+the historical candidate order. It finds the first two periodic rows lazily,
+tests that pair immediately, and restarts immediately on success. After the
+first failure it collects the remaining periodic indices once, then resumes
+the same lexicographic sequence without revisiting that failed pair. This
+also avoids repeated inner scans through nonperiodic rows.
+
+Allow this scan at most $\binom{k}{2}$ candidate tests, where $k$ is the
+original closure size. A further pending test triggers the queue on the
+current residual list. It follows that adaptive closure makes at most
+\[
+ \binom{k}{2}+\max(k-1,0)^2
+\]
+merger tests. At most $k$ index reconstructions each scan at most $k$ rows.
+No-merge closures and repeated first-pair successes build no heap; their extra
+index storage is linear. The threshold is an internal scheduling policy,
+not a limit that returns an inconclusive mathematical answer. In particular,
+it is not substituted for the caller's cycle allowance or cancellation hook.
+
+The public selector is \texttt{merger\_scheduler}, accepting
+\texttt{adaptive} (the default), \texttt{legacy} and \texttt{queue}.
+The last two provide controlled comparisons and a linear-scheduler-space
+option. Existing weighted, sparse-incidence and normal-surface consumers
+inherit the adaptive default. New statistics record queue runs, switches,
+peak heap entries and stale pops; the old non-scheduler event counts agree.
+
+\subsection{A cubic-to-quadratic complete-count witness}
+
+The delivery proves that redundant merger scans can dominate a complete run,
+not merely an isolated phase. For $m\ge2$, set $P=10m$, $N=23m$ and take
+\[
+ g_i:[i,P+2i-1]\longrightarrow[P+2i,2P+3i-1].
+\]
+The input is $g_0,\ldots,g_{m-1}$ followed by $m$ copies of $g_m$, hence
+$2m$ pairings. Under the sharp rule the complete maintained calculation has
+five cycles and one orbit, with exact test counts
+\[
+ T_{\rm old}=m^3+\frac{m^2+5m}{2}-4,\qquad
+ T_{\rm queue}=5m^2-6m+2.
+\]
+For distinct $i<j$, a merger would require
+$\gcd(P+i,P+j)\ge2(j-i)$, impossible because the gcd divides $j-i$.
+Only duplicate tail rows initially merge. With $r$ duplicates left, the old
+scan repeats $\binom m2+mr$ failed tests before the next success, or before
+its final failed pass. Cycle one consequently has $m^3+m-1$ tests. The
+queue instead has $(7m^2-7m+2)/2$ tests in that cycle.
+
+Truncation removes three points and makes the last row nonperiodic.
+Cycle two tests $\binom m2$ pairs. Its carrier transmission creates a
+period-one row, and another three-point truncation leaves one further
+nonperiodic row. In cycle three, the period-one row first merges with $g_0$
+and then successively absorbs the remaining periodic rows. The old scan uses
+$2m-3$ tests, while the queue uses $(m-1)^2$. Transmission makes the remaining
+nonperiodic row an identity. Cycle four deletes that identity and truncates
+to one point; cycle five contracts that point. Adding the three nonzero
+phase counts gives the displayed formulas. The native tests check the full
+counts, cycles and identical independently replayed certificates.
+
+Since there are five cycles, $O(m)$ rows and $O(\log m)$-bit endpoints,
+the revised complete count on this family has $O(m^2\operatorname{polylog}m)$
+bit cost, replacing the historical cubic merger bottleneck. This is a lower
+bound for that implementation on explicit interval systems, not a lower bound
+for orbit counting or a constructed family of hard knot diagrams. On general
+inputs, the closure bound must still be multiplied by the actual polynomial
+AHT cycle bound. No improved general degree or quasipolynomial hierarchy theorem
+is inferred from this family.
+
+\subsection{Native verification and scope}
+
+All 1,105 maintained tests pass with Regina in 210.773 seconds. The 11 delivered
+scheduler tests pass in 0.537 seconds and four native integration tests in
+0.156 seconds. They exercise stale generations and current-index reconstruction,
+easy cases with no heap, unchanged candidate order, both periodic rules,
+invalid options before input consumption, false-valued cancellation callbacks,
+every allowance around the five-cycle endpoint, huge binary inputs, weighted
+proofs and all three normal-census modes plus the reduced core query.
+Independent weighted replay succeeds with the schedulers disabled.
+
+The separate native audit takes 32.419 seconds. It compares 1,500 random
+systems against literal connectivity, using both periodic rules and all three
+new scheduler choices against the unchanged pinned producer. All 9,000
+old/new complete certificates and cycles agree, with 12,000 independent random
+certificate replays. Four analytic cases include 4,096-bit coordinates and
+check the exact five-cycle work formulas. The frozen Regina corpus contributes
+1,275 normal vectors on 45 triangulations: 3,825 census checks and 1,275
+core-count checks, each with independent replay, all passing. These validate
+the new default throughout the existing weighted pipeline.
+
+\input{adaptive_merger_results.tex}
+
+The maintained driver is \path{../fast/merger_research/native.py}, with
+\texttt{audit}, \texttt{intervals} and \texttt{normal} modes. Records are in
+\path{data/adaptive-merger-*}. All runtime dependencies except the orbit
+producer match baseline \texttt{109dabf896f2}; the scheduler is a new module.
+Each execution freezes 428 Python and corpus hashes. The delivered archive
+is retained unchanged, and its Git-blob provenance was checked before copying
+the three scheduler-related files. The two other new deliveries, including
+the persistent signed-circuit representation for whole raw singleton blocks,
+remain separate research integrations. The new scheduler improves a supplied
+component kernel and adds no automatic knot-decision stage.

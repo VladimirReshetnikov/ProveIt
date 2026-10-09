@@ -1,0 +1,87 @@
+\subsection{Certified native measurements}
+
+The interval benchmark retains 420 measured calls and 84 warm-ups over
+14 fixtures, with five shuffled rounds and separate A/A copies of the
+historical, adaptive and pure-queue arms. All complete and return identical
+certificates across arms. The 101.440-second execution includes fresh pairing
+construction, complete counting, certificate generation and independent replay
+in every timed call. Native meridian arc geometry is prepared outside these
+interval timers. Serialization and cross-arm certificate comparisons are also
+outside the timers. Table entries are separate median milliseconds; ratios
+are medians of the five paired old/new ratios, not ratios of those medians.
+
+\input{tables/adaptive_merger_intervals.tex}
+
+At $m=128$, the five-cycle input takes 2,405.376 ms historically and
+167.526 ms adaptively, with paired ratio 14.413. Merger tests fall from
+2,105,660 to 97,409; the pure queue makes 81,154 tests but takes 179.342 ms.
+The adaptive heap peaks at 11,907 entries, versus 12,097 for the pure queue.
+The five cycles and 15,396-byte certificate are unchanged. This exhibits the
+proved removal of redundant candidate tests while also showing that test
+counts alone do not predict Python heap overhead.
+
+For 256 identical rows, the old and adaptive engines each make 255 tests;
+adaptive closure constructs no heap. Their times are 4.090 and 4.107 ms,
+with paired ratio 1.003. Pure queue closure makes 65,025 tests, peaks at
+48,769 heap entries and takes 291.486 ms. The adaptive first-pair fast path
+therefore matters. At 16 duplicate rows the adaptive ratio is 0.969, a small
+regression rather than a universal speedup claim.
+
+For the supplied 128-tetrahedron meridian, the paired adaptive ratio is
+1.463 (1,578.288 versus 1,088.357 ms). Both engines make 349,764 candidate
+tests, and the adaptive engine never enters the queue: this gain comes from
+indexing the periodic rows instead of rescanning nonperiodic rows inside each
+inner loop. All 133 cycles and the 1,776,281-byte certificate agree. At fixed
+$m=16$, increasing the binary scale to 4,096 bits gives adaptive ratio 2.587
+and pure-queue ratio 2.828, with the same deterministic candidate counts as
+the small-coordinate case.
+
+Across interval fixtures the median A/A ratios range from 0.974 to 1.021
+historically, 0.965 to 1.021 adaptively, and 0.956 to 1.013 for the queue.
+Individual observations can vary more: the smallest five-cycle fixture
+contains a 4.045-ms historical call alongside roughly 1-ms calls. All rounds
+are retained; neither those observations nor warm-ups are silently discarded.
+These are supplied interval systems, not whole-knot recognition timings.
+
+The separate normal-query benchmark takes 539.262 seconds and retains
+180 measured calls plus 36 warm-ups across nine fixtures, with historical
+and adaptive arms and an A/A copy of each. Each timed call includes fresh
+validation of the original triangulation and vector, geometry construction,
+the requested census or reduced-core query, certificate production and the
+independent normal-source verifier. Both engines answer exactly the same
+query; every call completes and every certificate is identical across arms.
+No tests, article builds or other benchmark drivers ran concurrently.
+
+\input{tables/adaptive_merger_normal.tex}
+
+For the 128-tetrahedron disk query, the complete paired ratio is 1.361:
+1,691.973 ms historically versus 1,246.086 ms adaptively. The five individual
+ratios lie between 1.265 and 1.441. There are still 133 orbit cycles,
+21,008 weighted replay events and at most eight weight runs; the certificate
+is still 1,777,349 bytes. The change is confined to finding the same periodic
+merges more efficiently. All nine normal fixtures retain their merger-test
+counts and take the indexed-scan path without switching to a heap.
+
+The full-coordinate census retains much more work outside merger scheduling.
+At 128 tetrahedra it carries 896 coordinates and reaches 385 weight runs;
+its unchanged certificate has 2,504,362 bytes. Separate old/new medians are
+16,871.366 and 16,881.820 ms. Although the paired median ratio is 1.014,
+the five ratios are 1.014, 1.021, 1.026, 0.629 and 0.733. In the final two
+rounds the new arm takes 26,811.822 and 23,415.500 ms, well above its earlier
+roughly 16--17-second calls. The median A/A ratios near one do not explain
+away this variation. These data establish no reliable full-coordinate
+speedup. The 64-tetrahedron disk query also has a new-arm A/A ratio of 0.903;
+its paired ratios range from 0.914 to 1.434, so its median 1.224 gain has
+appreciable noise.
+
+The core fixtures use $x=gD+(g+1)L$, $g=2^b$, on the 16-tetrahedron solid
+torus, with $D$ its meridian vector and $L$ its vertex-link vector. Both
+engines already apply the same quadrilateral normalization. Their paired
+ratios range only from 1.021 to 1.030; at $b=32,768$ the medians are 35.037
+and 34.245 ms. The unchanged reduced query still has 21 cycles, 400 events
+and a 56,757-byte source-bound certificate. These small timing differences
+are not a second claim of the much larger normalization gain reported in
+the preceding weighted-component section. Across normal fixtures the
+historical median A/A ratios range from 0.981 to 1.007 and the new ratios
+from 0.903 to 1.038. All 600 measured calls and 120 warm-ups in the two
+new benchmarks complete, but none is a whole-knot recognition measurement.
