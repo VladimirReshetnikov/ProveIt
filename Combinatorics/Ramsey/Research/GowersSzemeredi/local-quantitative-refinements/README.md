@@ -2,8 +2,8 @@
 
 **Density transfer and phase-flat partitions; energies, restriction and dependent random choice; cube and progression counts; floor patterns and the Proposition 17.7 phase extraction**
 
-This is a research report built on 6–7 October 2026 from one hundred and six research
-manuscripts, dated 6 October 2026 (sources 42, 45, 51–53, 57–60, 63, 67, 68 and 70–106: 7
+This is a research report built on 6–9 October 2026 from one hundred and seven research
+manuscripts, dated 6 October 2026 (sources 42, 45, 51–53, 57–60, 63, 67, 68 and 70–107: 7
 October 2026 on their title pages; 55's says October 2026). Sources 01–05 were merged in the first write
 (batch 115, `18507e2b2`); sources 06–10 were added in a second write the same day
 (`9f83dbe0f`), sources 11–14 (batch 116) in a third (`b16ce380d`), sources 15–20
@@ -13,8 +13,9 @@ fifth (`4b7266a65`), sources 28–33 (batch 121) in a sixth (`bec460a33`), and s
 eighth (`b51c063c2`), sources 47–53 (batch 124) in a ninth (`52faf9fcd`), sources
 54–59 (batch 125) in a tenth (`dfc1a5a68`), sources 60–69 (batches 126–127) in an
 eleventh (`32057611f`), sources 70–81 (batches 128–129) in a twelfth (`ddafb95a8`), and
-sources 82–94 (batches 130–131) in a thirteenth (`803a5be32`), and sources 95–106
-(batches 132–137) in a fourteenth, each time as dated
+sources 82–94 (batches 130–131) in a thirteenth (`803a5be32`), sources 95–106
+(batches 132–137) in a fourteenth (`88296c9fc`), and source 107 (batch 138) in a
+fifteenth, each time as dated
 additions that renumber and relabel nothing printed before. Each source
 sharpens local estimates of W. T. Gowers, *A new proof of Szemerédi's theorem*,
 GAFA 11 (2001), 465–588, and compares its statements with the *corrected*
@@ -29,7 +30,7 @@ The report is filed under `Combinatorics/Ramsey/Research/` by Vladimir's directi
 Every manuscript spans several themes, so the article is arranged in five
 **thematic Parts**, with each source's sections printed whole inside them:
 
-- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19; 23, 26; 32; 35, 37; 41, 42; 67; 90, 93; 102, 106).
+- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19; 23, 26; 32; 35, 37; 41, 42; 67; 90, 93; 102, 106, 107).
   - A sharp one-sided density–mass bound `P(X > t) ≥ ((a+t)T − at)/(a(b−t))`,
     proved independently in six sources (01, 02, 03, 05, 06, 10).
   - A sharp one-cell phase envelope `C² ≤ (1−ρ²)F² + ρ²L²`.
@@ -120,6 +121,15 @@ Every manuscript spans several themes, so the article is arranged in five
     **`ρ(q) ~ 2√q`** (106, every `q > 2`), so 102's upper bound `√(4q − 3)` is
     asymptotically sharp; `4q² − 5q + 2 ≤ P₂,₃(q) ≤ 4q² − 3q`. The optima use singleton
     cells, so nothing transfers to the formal `quadratic_family_phase_localization`.
+  - **Source 107, continuing 102 and 106 (guide I.107):** for products of `s`-arm crosses
+    over `𝔽_q`, `q > 2`, `t = q − 1`, 106's point–torus bound
+    `B₀ = t(st)^m − (t − 1)(1 + st)^m` is the **exact cost** for `m/s + C(m,2)/s² ≤ 1`
+    (`P₃,₂(q) = 3q² − q − 1`, `P₄,₃(q) = 16q³ − 12q² − 13q + 10`) and, by colour coding,
+    to within `exp(O(log s/log log s))` of the capacity endpoint `t log(1 + 1/t)·s`; for
+    fixed `q`, **`ρ_s(q) = ts − γ_q + O(s^{−1+ε})`**, `γ_q = log t/log(1 + 1/t)`. So 106's
+    second-coefficient question is answered there (the Hall-matching blocks miss it by
+    `C(m,2)s^{m−2}`), and **`ρ_s(q) = U_{s,s}(q)^{1/s}` is false** in general, already at
+    `q = s = 3` (dated notes; 107 draws neither conclusion).
 - **Part II — the inverse step** (02, 03, 04; 07, 10; 11, 12, 14; 15, 17, 18, 19; 22–25, 27; 28–31, 33; 34, 35, 38, 39; 40, 44, 45; 48–53; 54–59; 60–62, 66–68; 70–81; 82, 83, 85, 87, 88, 90, 93; 96, 98, 99, 101, 103, 104).
   - A mixed, weighted extension of Proposition 6.1 on every finite abelian
     group, with coefficient one.
@@ -532,7 +542,7 @@ Every manuscript spans several themes, so the article is arranged in five
     extremizer and a dimension-free threshold.
 - **Part V — formal interface, ledger crosswalk, research questions.** The
   writes' crosswalk to the ledger, the deduplicated list of the sources'
-  987 questions, iteration bookkeeping, a chapter on the repository's explicit five-term
+  998 questions, iteration bookkeeping, a chapter on the repository's explicit five-term
   thresholds (V.302; 84, 86), (03, 06, 10), and each source's
   formalization plan, questions, conclusions and appendices.
 
@@ -644,6 +654,7 @@ Every manuscript spans several themes, so the article is arranged in five
 | 104 | *Odd-order cube stability and sharp subgroup boundaries* | `odd_cube_stability_ProveIt.zip` (429,299 B, 15) | `article.tex`, 982 lines, 23 pp. | `42906e55b` | `bb6ecb32b` | F.109; II.539–544 (in II.520's chapter); II.545 (in II.520's chapter); V.393–394 |
 | 105 | *Sharp ternary quartic phase energy* | `ternary_quartic_obstruction.zip` (754,102 B, 14) | `ternary_quartic_obstruction.tex`, 1,373 lines, 20 pp. | `f0ac99f2a` | `bb6ecb32b` | F.110; IV.123–129 (in IV.122's chapter); V.395–399 |
 | 106 | *Torus Defects and Sharp Affine Partition Laws* | `torus_defect_affine_partitions.zip` (462,149 B, 11) | `article.tex`, 1,035 lines, 23 pp. | `6896b6297` | `bb6ecb32b` | F.111; I.97–105 (in I.87's chapter); I.106 (in I.87's chapter); V.400–404 |
+| 107 | *Color-Coded Affine Partitions: Exact Boundary Saturation and a Two-Term Growth Law* | `color_coded_affine_partitions_20261007.zip` (470,344 B, 23) | `article.tex`, 1,031 lines, 22 pp. | `579bea70c` (main; blob of 106's note) | `0e05d71a1` | F.112–113; I.107 (guide), I.108–116 (in I.87's chapter); V.405–408 |
 
 The first five archives arrived in `66f24b0d0` ("New research reports", 6 October
 2026) and survive there (`git show 66f24b0d0:docs/incoming/<archive> > <archive>`);
@@ -811,6 +822,18 @@ the twelve PDFs, manuscripts and delivery READMEs, 99's nested `.gitignore`, 101
 generated `repository_snapshot.tex` (printed in its place), the checksum manifests. 105's
 two `*.log` records were added with `-f` (the root `.gitignore` ignores `*.log`).
 
+Source 107 arrived on 8 October 2026 in `b28d0850b` (08:39, its only Gowers archive);
+`0e05d71a1` ("Place batch 138 (Gowers)") staged it and retired its archive (intake record
+`dossier138_GOWERS`); its proposed subdirectory was declined in favour of the prefixed
+layout. It read `main` at `579bea70c` and a search index at `58175ca45` (both after the
+fourteenth write, ledger 114/6 at both), identifies 106's integration note by its blob
+`7a96b465`, and read 106's and 102's manuscripts in part from private copies (their upload
+names, in its staged `SOURCE_AUDIT.md`, are not repeated in the article). Its Section 3
+reproves 106's tools at `k = 0`, credited, and is printed once with notes. Staged as
+delivered, its checksum list included (Vladimir's rule of 9 October 2026: line ends and
+checksum manifests are not part of intake). Not staged: the PDF, manuscript, delivery README
+and `references.bib` (its bibliography is inline).
+
 **Status.** Unrefereed; nothing proved here has been checked by a proof
 assistant. The one exception, a lifting lemma, was formalized before the sources
 arrived (below). **Authorship disclosures:**
@@ -934,12 +957,14 @@ arrived (below). **Authorship disclosures:**
   text "an AI-assisted research draft"; 101 and 105 make no such statement on their title
   pages (105's provenance record says it was developed in its session), and none is
   invented here.
+- **Source 107**: its title page says "AI-assisted mathematical development", its delivery
+  README "an AI-assisted research manuscript"; recorded, none invented.
 
-Every result, proof, example, remark, question and limitation of the one hundred and six
+Every result, proof, example, remark, question and limitation of the one hundred and seven
 manuscripts is printed. No proof was replaced by a pointer. Eight delivered sections of
 73, 76 and 80 repeat 55, 78 and 81 word for word and are printed once; their places keep
 the heading, every sentence that differs and a note naming the counterpart. Every
-delivered section of 82–94 and of 95–106 is printed whole.
+delivered section of 82–94, of 95–106 and of 107 is printed whole.
 
 **Repaired at the fourteenth write.** The twelfth and thirteenth writes announced the
 delivered abstracts and title-page statements of sources 70–94 in their front-matter
@@ -948,10 +973,9 @@ the TeX comment lines `%ABSTRACT%` and `%POST%`. The fourteenth write prints tho
 abstracts and their statements in place, converted exactly as at those writes; nothing
 else there changes, and no number moves.
 
-**Further sources.** None: sources 95–106, placed by `09f5b745a`, `9599d8566`,
-`53eedc74c`, `3a5a735dc`, `e38d7731f` and `bb6ecb32b` ("Place batch 132" to "Place batch
-137"), are written in by the fourteenth write, and no later Gowers–Szemerédi member had
-been placed at its HEAD.
+**Further sources.** None: source 107, placed by `0e05d71a1` ("Place batch 138 (Gowers)"),
+is written in by the fifteenth write, and no later Gowers–Szemerédi member had been placed
+at its HEAD.
 
 ## Why thematic Parts, and how they are filled
 
@@ -1079,6 +1103,8 @@ Sections 5–6 and Appendix A), continuing 33's II.136 and 60's II.331; the quad
 continuing 47's IV.42 and IV.51 (65, 69); simultaneous integration (IV.113; 95) and the
 ternary quartic (IV.122; 105), continuing IV.69. Source 96 is split by subject.
 All stand at the end of their Parts because nothing printed earlier may move.
+The fifteenth write adds one guide, I.107, for source 107's Sections 3–11 at the end of
+Part I, continuing the chapter on exact affine cells (I.87; 102, 106).
 
 **Results proved by several sources** are printed in each source's own form,
 because the forms and hypotheses differ and the proofs are independent. Examples:
@@ -1172,17 +1198,21 @@ route:
   `k = 2` coset envelope (14, 45, 68; 101 on a smaller range); the odd-order cubic profile
   (103 first; 104 independently, the same identity in occupancy form); 102's cross-square
   cost (106 again, for every `q > 2`).
+- added in the fifteenth write: 106's orthant containment, torus capacity, defect identity
+  at `k = 0`, rate existence and Jensen bound (107's Section 3, credited as predecessor
+  tools; printed once, as delivered, with notes; 107's Corollary 3.4 is 106's equality
+  clause at `k = 0`).
 
 ## Files
 
-The directory holds 985 files: 181 at the root, 375 in `code/`, 375 in `data/`, 54 in
+The directory holds 1,004 files: 186 at the root, 379 in `code/`, 385 in `data/`, 54 in
 `figures/`. Of these, 38 were placed with sources 01–05 (besides the base's
 `article.tex` and `README.md`, which the first write replaced), 46 with sources
 06–10, 39 with sources 11–14, 42 with sources 15–20, 60 with sources 21–27, 61 with
 sources 28–33, 77 with sources 34–39, 52 with sources 40–46, 58 with sources 47–53,
 55 with sources 54–59, 123 with sources 60–69, 81 with sources 70–81, 139 with sources
-82–94 and 111 with sources 95–106; `article.pdf` was added by the first write and rebuilt by
-the second to fourteenth.
+82–94, 111 with sources 95–106 and 19 with source 107; `article.pdf` was added by the first
+write and rebuilt by the second to fifteenth.
 
 **Report files**, written in the writes:
 
@@ -3098,16 +3128,47 @@ data/106-torus-defect-theorem_status.json
 data/106-torus-defect-verification_results.json
 ```
 
+**Source 107, prefix `107-color-coded-`** (19 files). At the root, its formalization
+plan, integration notes, proof audit and source audit, and its certificates' README.
+`code/`: its verifier (standard library; imports its construction module by the
+delivered name `cross_partitions`; safe under `-O`), the construction module, the bound
+script (mpmath) and `Makefile`. `data/`: its theorem status, checksum list (shipped as
+delivered), requirements, the two line certificates, the verification record, the
+rational budget certificates and rate intervals (JSON and CSV), and two records of the
+unshipped PDF build and of a Linux run.
+
+```
+107-color-coded-FORMALIZATION_PLAN.md
+107-color-coded-INTEGRATION.md
+107-color-coded-PROOF_AUDIT.md
+107-color-coded-SOURCE_AUDIT.md
+107-color-coded-certificates-README.md
+code/107-color-coded-Makefile
+code/107-color-coded-asymptotic_bounds.py
+code/107-color-coded-cross_partitions.py
+code/107-color-coded-verify.py
+data/107-color-coded-SHA256SUMS
+data/107-color-coded-THEOREM_STATUS.json
+data/107-color-coded-asymptotic_bounds.csv
+data/107-color-coded-asymptotic_bounds.json
+data/107-color-coded-build_validation.json
+data/107-color-coded-colored_q4_s6_m3.json
+data/107-color-coded-environment.json
+data/107-color-coded-requirements.txt
+data/107-color-coded-simple_q3_s3_m2.json
+data/107-color-coded-verification_results.json
+```
+
 **Not shipped**, all retrievable from the arrival commits (`66f24b0d0` for 01–05,
 `62e21161f` for 06–10, `08ab4187e` for 11–13, `d179062cc` for 14, and those named
-above for 15–106):
-- the one hundred and six PDFs;
-- the manuscripts of sources 01, 02, 03, 05 and 06–106 (45's main file with its nine
+above for 15–107):
+- the one hundred and seven PDFs;
+- the manuscripts of sources 01, 02, 03, 05 and 06–107 (45's main file with its nine
   section files and `references.bib`, 56's main file with its thirteen section files,
   67's front and end matter and four section files besides its assembly, 68's
   `main.tex` and eleven section files besides its expansion), which are printed in the
   article;
-- the delivery READMEs of 01, 02, 03, 05 and 06–106 (their limitations are carried
+- the delivery READMEs of 01, 02, 03, 05 and 06–107 (their limitations are carried
   below);
 - the run logs of 61 (`checks/run.log`, a byte copy of its results), 64
   (`verification.log`, with a sandbox path) and 66 (`data/verification.log`);
@@ -3145,7 +3206,8 @@ above for 15–106):
   generated `repository_snapshot.tex` (its failed retrievals; printed in the article in
   place of its `\input`);
 - the files of the other paper of 98's archive (`spectral_transfer`), placed with that paper
-  in `SquareDifferences/spectral-list-mixing` (`d294770a7`).
+  in `SquareDifferences/spectral-list-mixing` (`d294770a7`);
+- 107's `references.bib` (its bibliography is inline in its manuscript).
 
 **Delivery names.** A shipped file is its delivered path, flattened, behind its
 prefix:
@@ -3325,8 +3387,15 @@ statement and equation indices of 95–106 unchanged (95, 99, 102 and 106 number
 equations consecutively; here they are numbered within sections). 95 delivers `spi:` stems
 (21 of its labels typed for `cleveref`, the type dropped), 104 `ocb:` stems, the others plain
 stems, under `gsr:<part>:95:` to `gsr:<part>:106:`.
+The fifteenth write added the 84 delivered labels of 107, a label on each of its 15
+delivered sections, the chapter guide `gsr:dt:sec:colorcoded`: **10,981 labels**, all
+distinct. A comparison of the `.aux` with the build of `88296c9fc` found every one of its
+10,881 labels with the same printed number, and a comparison with a separate build of the
+delivered manuscript found all 28 labelled statement indices of 107 unchanged (107
+numbers its equations consecutively, 42 of them labelled; here they are numbered within
+sections). 107 delivers plain stems under `gsr:<part>:107:`.
 
-**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.111
+**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.113
 in the front matter). Statements and equations are numbered within sections. A
 delivered statement or equation `k.j` keeps its index `j`; the exceptions are the
 equations of sources 02, 03, 06, 11, 12, 13, 26 (omitted from this list at the fifth
@@ -3334,9 +3403,9 @@ write), 30, 32 and 51–53, which numbered them through the whole manuscript, an
 of sources 06–10 are numbered within their sections (Figure IV.9.1), so that the
 global table and figure numbers of 01–05 do not move; the write's remark on the
 false quartic bound is Remark W1; the third write's remarks have their own counter and
-are W2–W4 (the fourth to fourteenth writes needed none). Source 16 numbers its equations by
+are W2–W4 (the fourth to fifteenth writes needed none). Source 16 numbers its equations by
 explicit tags `(k.j)`, kept as delivered; source 20's Questions, numbered on their
-own counter there, are numbered within their section here and keep their indices. So are 25's Questions 1–8; 22's and 23's explicit equation tags ((D1.1)–(D1.7), (F1)–(F13)) are kept. So are 28's Research questions 1–15, 30's Questions 1–12 and 33's Research questions 1–12, and 36's Research questions 13.1–13.12 and 37's Questions 11.1–11.10, and 45's Questions 6.1–6.16. 43's Research questions, numbered 1–10 on their own counter, are numbered within their section here, and so are 47's and 50's (1–9, 1–10); 49's Questions 10.1–10.16 keep their indices. 57's Research questions 1–12, on their own counter, are numbered within their section here and keep their indices, and so do 58's and 59's Questions 13.1–13.10 and 12.1–12.10. 60's, 65's and 69's Research questions (1–14, 1–9, 1–10), on their own counters, are numbered within their sections here and keep their indices; the questions of 61–64 and 66–68 keep theirs (68's begin at 8.2). 73–75's Questions keep their numbers on the shared counters; the questions of 70 and 76–81 are enumerated lists and those of 71 and 72 paragraphs, as delivered (V.2 calls them "70 Q1" and so on). 88's, 89's and 91's questions keep their numbers on the shared counters; 90's and 93's Research questions, numbered 1–13 and 1–16 on their own counters, are numbered within their sections here and keep their indices; 82–86 enumerate their questions, 87 writes paragraphs and 94 subsections (V.2: "82 Q1" and so on). 97's Research questions 1–8, on their own counter, are numbered within their section here and keep their indices; 95's and 100's Questions (own counters within sections) and the questions of 96, 102 and 104–106 keep theirs; 98 enumerates, 99, 101 and 104 use subsections, 103 numbered paragraphs (V.2: "95 Q1" and so on; 101's conjecture is its Conjecture 12.1). Source 04's tags (M1)–(M7), (R1)–(R32),
+own counter there, are numbered within their section here and keep their indices. So are 25's Questions 1–8; 22's and 23's explicit equation tags ((D1.1)–(D1.7), (F1)–(F13)) are kept. So are 28's Research questions 1–15, 30's Questions 1–12 and 33's Research questions 1–12, and 36's Research questions 13.1–13.12 and 37's Questions 11.1–11.10, and 45's Questions 6.1–6.16. 43's Research questions, numbered 1–10 on their own counter, are numbered within their section here, and so are 47's and 50's (1–9, 1–10); 49's Questions 10.1–10.16 keep their indices. 57's Research questions 1–12, on their own counter, are numbered within their section here and keep their indices, and so do 58's and 59's Questions 13.1–13.10 and 12.1–12.10. 60's, 65's and 69's Research questions (1–14, 1–9, 1–10), on their own counters, are numbered within their sections here and keep their indices; the questions of 61–64 and 66–68 keep theirs (68's begin at 8.2). 73–75's Questions keep their numbers on the shared counters; the questions of 70 and 76–81 are enumerated lists and those of 71 and 72 paragraphs, as delivered (V.2 calls them "70 Q1" and so on). 88's, 89's and 91's questions keep their numbers on the shared counters; 90's and 93's Research questions, numbered 1–13 and 1–16 on their own counters, are numbered within their sections here and keep their indices; 82–86 enumerate their questions, 87 writes paragraphs and 94 subsections (V.2: "82 Q1" and so on). 97's Research questions 1–8, on their own counter, are numbered within their section here and keep their indices; 95's and 100's Questions (own counters within sections) and the questions of 96, 102 and 104–106 keep theirs; 98 enumerates, 99, 101 and 104 use subsections, 103 numbered paragraphs (V.2: "95 Q1" and so on; 101's conjecture is its Conjecture 12.1). 107's Questions 13.1–13.11 keep their numbers on the shared counter (V.2: "107 Q13.1"). Source 04's tags (M1)–(M7), (R1)–(R32),
 (A1)–(A14), (Q1), (Q2) and (∗) are kept. **Bare numbers such as "Lemma 5.15"
 refer to Gowers's paper**, as in the sources; this report's own numbers always
 carry a Part numeral or an F. Section F.1 holds the full concordance of delivered
@@ -3506,6 +3575,11 @@ reading-conventions tables (one for 01–05, one for 06–10). The main collisio
   99's `\norm` and `\TV`; 100's `\U` and `\ee`; the `\sym` of 101 and 104; 102's `\A`;
   103's `\Ck`, `\EE`, `\BB`, `\WW`; 104's `\C`; 105's `\digit`), printing as delivered.
   **95 and 105 use `cleveref`**; their references are written out.
+- **Source 107**: `q` is the order of the field, and `P_{s,m}`, `ρ_s`, `D`, `U_{s,m}` are
+  106's; its `G(d)` and `B₀` are 106's `G₀` and `B_k` at `k = 0`; its `R` is a hash cutoff,
+  **not** 106's `R = M/N`; its `h` a colouring, **not** 104's `h = |H|` or 106's block
+  length; its `𝒦_s`, `K_z(s)` are hash budgets, **not** 105's `𝒦`; `c_q`, `γ_q`, `ν_s(q)`
+  are new. Its `\F` and `\T` are set as `\Fq` and `\Tcal`, printing as delivered.
 
 ## What the report claims
 
@@ -3866,6 +3940,12 @@ length propagation.
 - 105: `m₃,₁ = 11/27` (92's conjecture), every extremizer, the threshold in every dimension.
 - 106: products of crosses, `ρ_s(q) ~ s q^{1−1/s}`, `ρ(q) ~ 2√q`; `P₂,₃(q)` bracketed.
 
+**Source 107 (fifteenth write).**
+- 107: `P_{s,m}(q) = B₀` for `m/s + C(m,2)/s² ≤ 1` and on a colour-coded region near the
+  capacity endpoint (uniformly in `q`); saturation hereditary, `ν₂, ν₃, ν₄ = 1, 2, 3`;
+  `ρ_s(q) = ts − γ_q + O(s^{−1+ε})` for fixed `q`, error exponent exactly `−1`; the
+  critical-window correction.
+
 **Proved in the first write** (dated notes, each with its proof; listed in F.1):
 1. **01's increment is at least 3/2 times 05's** (and 03's at `λ = 1/2`) at the
    stated parameters. With `κ = η/(2δb)`, the ratio is
@@ -4168,6 +4248,23 @@ Script and output: not shipped (the write's scratch record, 55 checks).
     106's lower bound `4q − 3`, `4q² − 5q + 2` for all 59 prime powers below 200; the rates.
 Script and output: not shipped (the write's scratch record, 35 checks).
 
+**Proved or checked in the fifteenth write** (dated notes, each with its argument):
+88. **Source 107 and 106's questions**: inside 107's elementary region (and wherever its
+    colour-coded theorem holds for all large `q`, e.g. `(s, m) = (30, 23)`, `q ≥ 7`) the
+    `q^{m−1}` coefficient of `P_{s,m}` is `m s^{m−1}(m+1−s) − C(m,2)s^{m−2}`, and 106's
+    Hall-matching blocks miss it by `C(m,2)s^{m−2}` (**106's Question 13.2 answered there**;
+    symbolic, 55 pairs); **`ρ_s(q) = U_{s,s}(q)^{1/s}` is false**: `ρ₃(3) ≤ P₃,₁(3) = 5 <
+    127^{1/3}`, also at `q = s = 4`, at `q = 5`, `s = 109`, and for every `q > 2` at large
+    `s` (`U_{s,s}^{1/s} ≥ st − t log t`, `γ_q > t log t`).
+89. **Source 107**: the closed forms; the elementary endpoint (`s ≤ 3000`); the capacity
+    threshold (26 prime powers, `s ≤ 300`); an independent implementation of its elementary
+    construction over `𝔽₃, 𝔽₄, 𝔽₅, 𝔽₇, 𝔽₈, 𝔽₉` (11 triples, all exactly `B₀`); an
+    independent checker on both certificates and their 24 nonzero final-block slices;
+    the `q = 3` budget table in exact rationals; the first colour-coded blocks beyond the
+    elementary region (`s = 643, 356, 296`); the canonical cutoff; `(5, 4)`, the first
+    open case; `γ₄ = 3.8188416793064180…` (printed `…419`).
+Script and output: not shipped (the write's scratch record, 33 checks).
+
 Recomputed independently at the second write: the `ℤ/11` counterexample (exact
 enumeration of all `11⁴` frequency choices, and direct summation over all cubes);
 09's determinant-5 configuration (`det B = −5`, `M_S r = (10,5,5,5,5,5)`, Smith form
@@ -4193,7 +4290,7 @@ global bound is claimed, and 61, 62 and 65 make no global claim; 70 and 72–81 
 global bound is claimed or that their results are local, and 71 that nothing beyond its
 moduli is settled; 82–94 state that their results are local or comparative (90, 92 and 93
 cite Leng–Sah–Sawhney for context), and so do 95–106 (96 and 105 cite Leng–Sah–Sawhney for
-context). No source claims literature
+context) and 107 (novelty "relative to the inspected project baseline"). No source claims literature
 priority or an exhaustive priority search, Lean compilation, or kernel
 verification. Further limitations, kept in place and collected in Section V.2:
 - sharpness in the weighted model, not for arithmetic characters (01);
@@ -4388,6 +4485,9 @@ verification. Further limitations, kept in place and collected in Section V.2:
   hypotheses in 104;
 - 102, 106: whole-field affine cells; `P₂,₃(q)`, `ρ(q)` at fixed `q` open;
 - 105: an already symmetric tensor; computer-assisted;
+- 107: whole-field cells, `q > 2`; constants depend on `q`; the colour-coded range beyond
+  the elementary region has no finite certificate; capacity not shown sufficient; the `1/s`
+  coefficient undetermined; `ρ₂(q)`, `P₂,₃(q)` untouched;
 - finite and numerical checks prove nothing general (all).
 
 From the delivery READMEs:
@@ -4431,16 +4531,28 @@ energy) or dated sentences — 775 questions. The thirteenth write adds the 107 
 IV.depth, V.fiveterm) or dated sentences — 882 questions. The fourteenth write adds the
 105 questions of 95–106 (95: 10, 96: 12, 97: 8, 98: 7, 99: 7, 100: 12, 101: 5 and a
 conjecture, now proved, 102: 8, 103: 11, 104: 8, 105: 8, 106: 9) as two new items
-(I.affinecells, II.cubestability) or dated sentences — **987 questions in all**:
-- **I**, density transfer: 22 items, 101 questions;
+(I.affinecells, II.cubestability) or dated sentences — 987 questions. The fifteenth write
+adds the 11 questions of 107 by dated sentences (I.affinecells, I.ownstep, V.library) —
+**998 questions in all**:
+- **I**, density transfer: 22 items, 111 questions;
 - **II**, the inverse step: 64 items, 463 questions and two paragraphs, plus five
   marked questions of the intakes (below; 40's joins 35's; 11's marked cutoff `30` is
   superseded by 59's `16`, and 60 proves the marked threshold composition with one power
   of `L` less);
 - **III**, cubes and progressions: 31 items, 166 questions and one paragraph;
 - **IV**, floor patterns: 12 items, 125 questions;
-- **V**, integration and formalization: 4 items, 132 questions.
+- **V**, integration and formalization: 4 items, 133 questions.
 
+- **Answered or refuted in the fifteenth write** (dated notes at the questions):
+  - **106's Question 13.2 is answered** inside 107's exact regions (the second coefficient,
+    and the Hall-matching loss `C(m,2)s^{m−2}`); 107 does not say so.
+  - **The general form of 106's Question 13.3, `ρ_s(q) = U_{s,s}(q)^{1/s}`, is false**,
+    at `q = s = 3` by 106's own `P₃,₁(3) = 5`, and for every `q > 2` at large `s`; it stays
+    printed with the counterexample. `ρ₂(q) = √(4q − 3)?` and `P₂,₃(q)` stay open.
+- **Fifteenth write:** no mathematical claim of 107 was found wrong or unproved; one
+  misprinted digit (`γ₄`); its Corollary 3.4 credited to 106; scope caveats kept with the
+  statements (the canonical cutoff needs `s` between `10⁶` and `10⁹`; the colour-coded
+  range beyond the elementary region has no finite certificate).
 - **Answered or advanced in the fourteenth write** (dated notes at the questions):
   - **101's Conjecture 12.1 is proved** by 103 and again by 104 (numbered 12.1; the batch-136
     dossier and placement commit called it "9.1", corrected); 101's Questions 12.3–12.4 are
@@ -4839,6 +4951,21 @@ Python version, and 45's stdout record in the sandbox path and one path separato
 and 42's companions run, and their 51 and 35 companion tests pass, normally and with
 `-O` (their builders and `test_build.py` need Linux and were not run).
 
+**At the fifteenth write:** every comparison of 107 with the formal project was checked at
+HEAD `36418cfb6` (Section V.1, fifteenth table; every cited file and line read there: 16 pairs, 14 file names and 42 declaration names
+of the new text); the earlier tables' citations were re-read there too: four moved with
+edits to their files since `a0c3e9b67` (`theorem_2_6_holds`, `theorem_7_1_holds`,
+`theorem_7_2_holds`, `lemma_15_5_holds`; new lines in V.1), the seven historical mismatches
+are unchanged. The provenance records were re-verified in 19 checks (the arrival, the
+archive blob and members, the 19 staged files against a fresh extraction, the pins and the
+blob of 106's note, the ledger at 107's reads). 107's statements were re-derived or
+recomputed by the write's own programs (33 checks, exact wherever the statement is exact);
+merge fidelity was checked word by word against the delivered sections, and statement
+indices against a separate build of the manuscript. Its companion was rerun on copies of a
+fresh extraction, normally and with `-O` (identical as data to the delivered records, 10
+comparisons), and the route below, run from the shipped files, gives the same outputs (5
+comparisons).
+
 **At the fourteenth write:** every comparison of 95–106 with the formal project was checked
 at HEAD `a0c3e9b67` (Section V.1, fourteenth table; every cited file and line read there: 57 pairs, 18 file names and 67 declaration names
 of the new text, and the earlier tables' 203 citations, none changed since `bf285410b`;
@@ -5037,7 +5164,10 @@ all kernel-checked, with 770 modules and 4,912 theorems in the last complete aud
 thirteenth write (HEAD `bf285410b`) still 114 and 6, with 771 modules and 4,931 theorems in the
 last complete audit (sources 82–94 quote no counts; at all their pins 113/7); at the
 fourteenth write (HEAD `a0c3e9b67`) still 114 and 6, with 792 modules and 5,079 theorems in the
-last complete audit (at the pins of 95–100 113/7, of 102 and 104–106 114/6). Since
+last complete audit (at the pins of 95–100 113/7, of 102 and 104–106 114/6); at the
+fifteenth write (HEAD `36418cfb6`) 115 and 5 (`theorem_1_3` exact since `e1ae6ecd8`, 8 October),
+with 1,421 modules and 5,902 theorems in the last complete audit, whose prose still says 114/6
+(at 107's reads 114/6). Since
 `128f514af` the first obligation of `FORMALIZATION_STATUS.txt` (Corollary 5.8) names
 source 41 as a written proof and 26 and 32 as its precursors. Each source's comparison
 with a corrected statement is accurate at HEAD except stale claims, which the
@@ -5302,6 +5432,15 @@ outside `lemma_17_1` and `proposition_17_2` (which assume `(k+1)!` invertible). 
 candidates, not claimed: 95's Pfaffian certificate; 105's Gram certificate; 98's cyclic
 certificate; 101's boundary inequality and 103's Bernstein table; 102's `P(C²)` for small
 prime `q`; 99's `ℤ/10007` instance; 100's `|ℛ_d|` and `P_d`.
+
+**Source 107.** No statement of it is formalized, and no formal development concerns flats
+of `𝔽_q^n`, coordinate crosses or hash families. As for 102 and 106, it neighbours
+`quadratic_family_phase_localization` behind `lemma_13_5_holds`, and nothing transfers (the
+optima use singleton cells); the minimum-length simultaneous progression partitions added
+to the Lean development on 8–9 October (`Proofs05MinimumPolynomialPartition` and its
+neighbours) are the kind of interface a transfer would target. Formalization candidates,
+not claimed: orthant containment and torus capacity over a finite field; the `k = 0` defect
+identity and boundary-line criterion; the rainbow-fibre bijection; the slicing lemma.
 
 **Nothing else here is formalized, and the report gains no formal status.**
 Pointers for `FORMALIZATION_STATUS.txt` are left to the session that maintains
@@ -5568,6 +5707,10 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     105's and 106's build records describe unshipped PDFs. Rerun on a copy with the
     delivered layout (the route below). 98's, 100's and 103's verifiers use bare `assert`
     (do not run them with `-O`; 102's and 106's READMEs say so).
+  - 107's verifier imports `cross_partitions` by its delivered name, and both its scripts
+    write `results/` and `certificates/` relative to the working directory; its
+    `build_validation.json` and `environment.json` describe the unshipped PDF build and a
+    Linux run. Rerun on a copy with the delivered layout (the route below).
 - **Delivery names inside shipped text.**
   - 04's and 07's and 10's `source_manifest.json`, 03's `SOURCE_NOTES.txt`, 06's
     `provenance.json` and `README_VERIFICATION.txt`, 08's `source_provenance.json`,
@@ -5618,6 +5761,8 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     `code/verify.py`, `data/…`).
   - the formalization plans, audits, integration notes and Makefiles of 95–106 name
     delivered files (`checks/verify.py`, `code/run_all.py`, `verification/verify.py`, …).
+  - 107's formalization plan, audits, integration notes, certificates' README and
+    `Makefile` name delivered files (`code/verify.py`, `results/…`, `certificates/…`).
 - **Edits of delivered text in the article**, listed in F.1:
   - prefixed labels and unified citation keys;
   - source tags on headings;
@@ -5719,6 +5864,9 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     within their section; the post-abstract statements of all twelve printed in their
     front-matter sections; and the 25 abstracts of 70–94, announced but not printed by the
     twelfth and thirteenth writes, printed in place.
+  - fifteenth write: 107's `\F` and `\T` set as `\Fq` and `\Tcal`; its two predecessor
+    citations mapped to new entries naming sources 102 and 106; its status paragraph printed
+    in its front-matter section; its equations numbered within sections.
 
 ## Rerunning the checks
 
@@ -6310,6 +6458,32 @@ put 106 \
 (cd "$T/r106" && $PY -B verify.py)                                        # rewrites verification_results.json; not under -O
 ```
 
+Source 107 (added in the fifteenth write; same variables and `put`; from the repository root):
+
+```sh
+put 107 \
+  107-color-coded-FORMALIZATION_PLAN.md=FORMALIZATION_PLAN.md \
+  107-color-coded-INTEGRATION.md=INTEGRATION.md \
+  107-color-coded-PROOF_AUDIT.md=PROOF_AUDIT.md \
+  107-color-coded-SOURCE_AUDIT.md=SOURCE_AUDIT.md \
+  107-color-coded-certificates-README.md=certificates/README.md \
+  code/107-color-coded-Makefile=Makefile \
+  code/107-color-coded-asymptotic_bounds.py=code/asymptotic_bounds.py \
+  code/107-color-coded-cross_partitions.py=code/cross_partitions.py \
+  code/107-color-coded-verify.py=code/verify.py \
+  data/107-color-coded-SHA256SUMS=SHA256SUMS \
+  data/107-color-coded-THEOREM_STATUS.json=THEOREM_STATUS.json \
+  data/107-color-coded-requirements.txt=requirements.txt \
+  data/107-color-coded-asymptotic_bounds.csv=results/asymptotic_bounds.csv \
+  data/107-color-coded-asymptotic_bounds.json=results/asymptotic_bounds.json \
+  data/107-color-coded-build_validation.json=results/build_validation.json \
+  data/107-color-coded-environment.json=results/environment.json \
+  data/107-color-coded-verification_results.json=results/verification_results.json \
+  data/107-color-coded-colored_q4_s6_m3.json=certificates/colored_q4_s6_m3.json \
+  data/107-color-coded-simple_q3_s3_m2.json=certificates/simple_q3_s3_m2.json
+(cd "$T/r107" && $PY -B code/verify.py && $PY -B code/asymptotic_bounds.py)   # mpmath; rewrites results/ and certificates/; safe under -O
+```
+
 Requirements and run times:
 - 02 and 10 need NumPy; 05's `verify.py` needs mpmath (even for `--part exact`);
   09's `verify_lattices.py` needs SymPy (1.14.0 was used); 12's
@@ -6365,6 +6539,8 @@ Requirements and run times:
   and mpmath, 102's optional MILP SciPy, 104 NumPy and SymPy; each run takes under a
   minute (96's runner about 20 s, 103's verifier about 30 s). Several outputs record
   timings, versions or the interpreter path; compare parsed values.
+- 107's verifier uses the standard library (about 10 s), its bound script mpmath (about
+  3 s); its JSON records compare equal as data, its CSV byte for byte.
 - 13's cube and Fourier summaries record floating-point error magnitudes and the
   NumPy version; compare them field by field, not byte by byte.
 - Do not run Python with `-O`: the 02, 05 and 06 checkers rely on assertions (06's
@@ -6390,8 +6566,10 @@ write"), at the eleventh write the 60–69 checks (in their delivered layout, an
 block above, see "At the eleventh write"), at the twelfth write the 70–81 checks (in their
 delivered layout, and the block above, see "At the twelfth write"), at the thirteenth
 write the 82–94 checks (in their delivered layout, and the block above, see "At the
-thirteenth write"), and at the fourteenth write the 95–106 checks (in their delivered
-layout, and the block above, see "At the fourteenth write") run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
+thirteenth write"), at the fourteenth write the 95–106 checks (in their delivered
+layout, and the block above, see "At the fourteenth write"), and at the fifteenth write the
+107 checks (in their delivered layout, and the block above, see "At the fifteenth write")
+run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
 `uv run --no-project --with sympy==1.14.0` and `--with numpy`), completed all
 comparisons. The longer checks also run on these copies:
 - 01: `check_refinements.py` (NumPy, SymPy);
@@ -6410,7 +6588,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Use pdfLaTeX (MiKTeX or TeX Live), in a scratch copy that contains `figures/`.
-The build gives 3050 pages, with no LaTeX warnings, no undefined references, no
+The build gives 3082 pages, with no LaTeX warnings, no undefined references, no
 duplicate destinations and no overfull boxes. Packages: amsmath, amssymb, amsthm,
 mathtools, lmodern, geometry, microtype, graphicx, booktabs, longtable, tabularx,
 array, enumitem, needspace, placeins, xcolor, hyperref, xurl, bookmark, mathrsfs
