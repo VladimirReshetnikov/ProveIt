@@ -2903,3 +2903,51 @@ These are geometry costs, not recognition speedups.
 python -B -m normal_orbit_research.exteriors audit --output results/diagram_exterior_audit.json
 python -B -m normal_orbit_research.exteriors benchmark --output results/diagram_exterior_benchmark.json
 ```
+
+### Native cocycle normal-disc search
+
+`normal_seed.normal_seed_decide` now constructs candidates on the canonical
+source exterior. It recovers a primitive integral cocycle using a maximal-tree
+gauge and exact rational elimination, then tests the corresponding normal
+surface. If needed, it minimizes the number of pieces by integer vertex
+potentials before testing a second surface. Every positive result includes
+a source geometry certificate and independently replayed normal-disc proof.
+
+```python
+from fastunknot import Diagram
+from fastunknot.normal_seed import normal_seed_decide
+from fastunknot.normal_seed_verify import verify_normal_seed_certificate
+
+diagram = Diagram.from_braid(4, [-1, 2, 1, -2, 3])
+answer = normal_seed_decide(diagram)
+assert answer['status'] == 'UNKNOT'
+assert verify_normal_seed_certificate(diagram, answer['certificate'])
+```
+
+For this five-crossing input, the raw 194-piece surface has no compressing
+disc, while the optimized 84-piece surface has one. The optimizer is exact
+for piece count, but it does not minimize genus: the unknot represented by
+the two-braid `[1, 1, -1]` remains a genus-one miss, even after reduction from
+45 to 43 pieces. An unsuccessful or capped query is always `INCONCLUSIVE`.
+
+Enable the bounded portfolio stage with `recognize(..., use_normal_seed=True)`
+or CLI `--normal-seed`. It follows filters and an enabled group search, then
+falls back to the established exact path when needed. The default is disabled.
+`--normal-seed-max-work` controls the shared guard-count allowance, including
+positive replay; `--normal-seed-no-optimize` tests only the first surface.
+The API also accepts a cancellation callback and a component-orbit cap.
+
+The span optimizer and its arithmetic checker are separately available as
+`cocycle_span.minimize_cocycle_span` and
+`cocycle_span_verify.verify_cocycle_span`. Reduced-cost Dijkstra augmentations
+take `O(T^2 log T)` arithmetic operations, with one flow unit per tetrahedron
+regardless of binary height size. The separate cohomology preprocessing can
+still take cubic arithmetic work. No complete recognition bound follows.
+See [the theory, counterexample and measurements](../synthesis/cocycle_seeds.tex).
+
+```bash
+python -B -m normal_orbit_research.seeds audit --output results/cocycle_seed_audit.json
+python -B -m normal_orbit_research.seeds optimize --output results/cocycle_seed_optimize.json
+python -B -m normal_orbit_research.seeds source --output results/cocycle_seed_source.json
+python -B -m normal_orbit_research.seeds pipeline --output results/cocycle_seed_pipeline.json
+```

@@ -1,0 +1,237 @@
+\section{Native normal-disc discovery from optimized integral cocycles}
+\label{sec:cocycle-seeds}
+
+Section~\ref{sec:diagram-exterior} supplies source-authenticated compact
+exteriors. We now construct normal-surface candidates in them and return
+native disc certificates when a candidate succeeds. The arithmetic idea
+comes from report~31, \code{unknot\_certified\_primitives\_20261008.zip}:
+minimize the number of pieces in a cocycle-dual normal surface by changing
+integer vertex potentials. The maintained implementation adds primitive
+cocycle discovery, a faster network solver, an independent arithmetic
+checker, and an optional recognition stage. The local optimization is
+polynomial. The candidate family is incomplete, with an explicit unknot
+miss retained below.
+
+\subsection{Integral cohomology in a maximal-tree gauge}
+
+Start with the canonical finite exterior and its validated face pairings.
+Choose an orientation for each global edge. The native geometry validator
+already computes signed equivalences of local edges; the new producer uses
+those signs to recover consistent global endpoints. The old unoriented
+endpoint dictionary suffices for mod-two boundary tests but does not suffice
+for this integer computation.
+
+Choose a maximal tree in the connected one-skeleton. Any integral cocycle
+can be changed by an integral vertex coboundary to vanish on the tree:
+integrate its values along the unique tree paths. This gauge is unique up to
+an irrelevant constant vertex potential. Put one variable on each remaining
+edge and impose the oriented triangular-face equations
+\[
+ c([a,b])+c([b,c])-c([a,c])=0.
+\]
+Local signs transport each term to its global edge orientation. Coincident
+global edges contribute to the same coefficient; they must not be mistaken
+for distinct simplicial edges.
+
+Sparse exact rational elimination computes the gauged kernel. The API
+requires nullity one. Clear the denominators of its nonzero vector and
+divide by the gcd of all its entries. The result is an integral primitive
+generator: the integer kernel is saturated in the ambient edge lattice,
+and a rational line meets that lattice in precisely the multiples of its
+coordinate-primitive vector. This rank-one argument does not assert that
+separately normalized rational basis vectors give a saturated basis in
+higher rank. The implementation explicitly rejects that case.
+
+A knot exterior has $H^1(M;\mathbb Z)\cong\mathbb Z$, so the canonical
+source lies in the supported case. There are $O(T)$ variables and equations
+for $T$ tetrahedra. Each original row has at most three signed contributions.
+Hadamard bounds on the relevant minors give $O(T)$ bits for a primitive
+kernel generator. Rational elimination uses polynomial bit cost; its
+worst-case fill is quadratic and its arithmetic operation count is cubic.
+The subsequent network improvement therefore does not by itself improve
+this entire preprocessing bound. Work caps and cancellation also cover
+elimination and the preceding manifold reconstruction.
+
+\subsection{A normal surface without expanding its pieces}
+
+In tetrahedron $t$, set $h_{t,0}=0$ and
+$h_{t,i}=c([0,i])$. Closure makes every other edge value the corresponding
+height difference. On a glued face, transported heights differ by one
+integer constant. The union of half-integral affine levels therefore glues
+to a cooriented normal surface. Its signed intersections with each oriented
+global edge are the cocycle values, so it represents the Poincar\'e dual
+of the integral class.
+
+If the local heights, ordered by vertex, are
+$a_0\le a_1\le a_2\le a_3$, the three gaps give a triangle at the lowest
+vertex, a quadrilateral separating the lower pair from the upper pair,
+and a triangle at the highest vertex. Zero gaps make ties harmless.
+There is at most one quadrilateral type, and the number of normal pieces
+is $a_3-a_0$. All seven coordinates are stored as binary integers;
+neither the producer nor the native component query enumerates those pieces.
+
+Let $v_{t,i}$ be the global vertex of local corner $i$. Changing the
+cocycle by an integer potential $f$ changes the heights to
+$h_{t,i}+f(v_{t,i})$. The restricted objective is
+\[
+ D(f)=\sum_t\left(\max_i(h_{t,i}+f(v_{t,i}))
+                    -\min_i(h_{t,i}+f(v_{t,i}))\right).
+\]
+It measures normal pieces. It is not Euler characteristic, genus or
+Thurston norm.
+
+\subsection{The network and a linear-size independent witness}
+
+Introduce variables $L_t,U_t$ and impose
+\[
+ U_t-f(v_{t,i})\ge h_{t,i},\qquad
+ f(v_{t,i})-L_t\ge-h_{t,i}.
+\]
+Minimizing $\sum_t(U_t-L_t)$ gives the span objective. Its dual is a
+three-layer transshipment with lower nodes $\ell_t$, vertex nodes $v$, and
+upper nodes $u_t$. Each lower node supplies one unit and each upper node
+demands one. The arcs $\ell_t\to v_{t,i}$ and $v_{t,i}\to u_t$ have
+rewards $-h_{t,i}$ and $h_{t,i}$ respectively. Feasibility follows by routing
+each tetrahedron through one of its own corners. Integral optimal flow
+chooses one outgoing corner per lower node and one incoming corner per
+upper node.
+
+At each global vertex, match the chosen incoming and outgoing corners.
+This gives $T$ quadruples $(t,i,s,j)$ with sources $t$ and targets $s$ each
+appearing once and $v_{t,i}=v_{s,j}$. For every real potential,
+\[
+ D(f)\ \ge\ Q:=\sum_{(t,i,s,j)}(h_{s,j}-h_{t,i}),
+\]
+because the common vertex potential cancels in each term and the source
+and target permutations sum every minimum and maximum once. An integer
+potential satisfying $D(f)=Q$ proves optimality over both real and integer
+potentials. The checker needs no network solver.
+
+The maintained checker also reconstructs coordinates independently. With
+$w_{ab}=|a_a-a_b|$, its triangle count at vertex $v$ is
+\[
+ x_v=\frac12\min_{a,b\ne v,\ a\ne b}(w_{va}+w_{vb}-w_{ab}).
+\]
+Write $A=w_{01}-x_0-x_1$, $B=w_{02}-x_0-x_2$ and
+$C=w_{03}-x_0-x_3$. The quadrilateral counts are
+$(B+C-A,A+C-B,A+B-C)/2$. For integer local heights these are nonnegative
+integers and agree with the level-set surface. The checker compares the
+whole vector, checks exact index types and the dual permutation, and
+requires primal--dual equality. It accepts binary hexadecimal transport
+without changing the interpreter's decimal-conversion limit.
+
+\subsection{Reduced-cost augmentation improves the local bound}
+
+Report~31 uses Bellman--Ford for each unit augmentation, with a conservative
+$O(T^3)$ relaxation bound. The native solver uses a DAG initialization and
+reduced-cost Dijkstra searches. Negate rewards to obtain costs, add a source
+and sink with unit supply/demand arcs, and give every original internal arc
+capacity $T+1$. No internal forward arc can saturate under a total flow of
+$T$. The network has $O(T)$ vertices and arcs, even when heights have
+thousands of bits.
+
+Initially the usable arcs follow the order source, lower nodes, vertex
+nodes, upper nodes, sink. Exact shortest distances in this DAG supply
+potentials $\pi$ with nonnegative reduced costs
+$c(u,v)+\pi_u-\pi_v$. In each augmentation run Dijkstra, let $d$ be its
+reduced distances, and put $\Delta=d(\mathrm{sink})$. Stop as soon as the
+sink is settled, prioritizing it among equal-distance choices. Update every potential
+by $\min(d(v),\Delta)$, assigning the increment $\Delta$ to unreachable
+or unsettled vertices. Every unsettled distance is at least $\Delta$, so
+this gives the same truncated increments as a full search. This rule matters for disconnected abstract incidence
+inputs; updating reachable vertices alone need not preserve all inequalities.
+
+For any residual arc of reduced cost $c'\ge0$, the truncated increments
+satisfy $a_v\le a_u+c'$. If $u$ is reachable this follows from the shortest
+path inequality; otherwise $a_u=\Delta\ge a_v$. Hence all updated reduced
+costs remain nonnegative. Along the augmenting path both distances are at
+most $\Delta$ and each shortest-path inequality is tight, so newly introduced
+reverse arcs have zero reduced cost. The invariant holds inductively.
+
+After $T$ augmentations every original internal arc remains forward-residual,
+and every used arc also has its reverse. Thus the two reduced-cost
+inequalities make every used arc tight. Taking $x=-\pi$ gives feasible
+$L_t=x_{\ell_t}$, $U_t=x_{u_t}$ and $f_v=x_v$. Summing tight equalities
+over the integral flow proves $\sum_t(U_t-L_t)=Q$. Weak duality and
+$D(f)\le\sum_t(U_t-L_t)$ then force $D(f)=Q$. The producer checks the
+independent witness before returning it.
+
+For $B$-bit heights, every original cost has magnitude at most $H<2^B$.
+The source potential stays zero, and the updated sink potential is the
+original cost of a simple augmenting path, bounded by $O(TH)$. Since all
+increments are nonnegative and bounded by the sink increment, the other
+potentials also have magnitude $O(TH)$. Arithmetic therefore needs
+$O(B+\log(T+1))$ bits. A lazy binary heap gives
+\[
+ O(T^2\log(T+1))\ \text{arithmetic operations},\qquad
+ O\!\left(T^2\log(T+1)(B+\log(T+1))\right)
+\]
+bit time for additions and comparisons, apart from input-label indexing
+and transport. The network uses linear storage. The witness uses
+$O(T\log(T+1))$ index bits and $O(T(B+\log(T+1)))$ numerical bits.
+These bounds are for span optimization, not all cohomology preprocessing
+or complete unknot recognition.
+
+\subsection{Connectedness is useful, but does not give minimum genus}
+
+The report also proves a useful geometric consequence. Call a cooriented
+normal surface edge coherent if all its crossings with any oriented global
+edge have the same sign. Local-height surfaces have this property, which
+survives deletion of component unions. Their signed edge counts form
+cocycles. Admissible normal coordinates are uniquely determined by unsigned
+edge counts: the kernel of the six local edge-weight equations is generated
+by $(1,1,1,1,-1,-1,-1)$, and two distinct admissible vectors differing by
+such a multiple would force three positive quadrilateral types in one of
+them.
+
+Suppose a nonempty component union of an optimal surface were zero in
+$H_2(M,\partial M;\mathbb Z)$. Its signed cocycle would be an integral
+coboundary. Deleting it preserves edge coherence and admissibility, and
+the uniqueness just proved reconstructs the remaining surface from another
+vertex potential in the same class. Its piece count is strictly smaller,
+a contradiction. Thus there is no such zero-class union.
+
+If $H^1(M;\mathbb Z)=\mathbb Z$ and the chosen class is primitive, each
+component is nonseparating and represents a signed primitive generator.
+A connected cooriented nonseparating surface is primitive because a loop
+can cross it once and return through its connected complement. Oppositely
+signed components would form a forbidden zero-class union. All signs
+therefore agree, and a primitive total class permits only one component.
+The optimized seed is connected under these hypotheses.
+
+The native positive certificate nevertheless retains the independent
+component-level disc proof. It does not ask a verifier to trust the cocycle
+generator's rank computation, primitivity or connectedness. In particular,
+the primitive cocycle for the closure of the two-braid $(1,1,-1)$ has a
+45-piece genus-one surface; span minimization reduces it to 43 pieces but
+still gives genus one. That closure is an unknot. Optimizing this restricted
+family is not a complete unknot test.
+
+\subsection{Adaptive source integration and the remaining search problem}
+
+The optional native stage tries the initial primitive cocycle surface first.
+If its independent component query certifies a compressing disc, it returns
+immediately. Otherwise it can run span optimization and test that second
+surface. The work allowance is shared by source validation, exterior
+construction, cocycle elimination, optimization, both component queries and
+positive replay. It counts cooperative guards, not bit operations or time.
+The surrounding recognizer's deadline remains active throughout.
+
+Every positive witness contains the exact stage-input PD, the canonical
+exterior, normal coordinates and the existing normal-disc-count certificate.
+A separate verifier checks the PD-to-exterior construction, replays the
+surface proof and requires a strictly positive disc count. Seed discovery,
+optimization and external topology engines are absent from this replay.
+The certificate is bound to the PD passed to the stage; portfolio evidence
+also records any preceding reductions or connected-sum factorization.
+
+The stage follows invariant filters and an enabled group search, precedes
+the optional external-engine fallback, and is disabled by default. A local
+cap or an unsuccessful surface returns \code{INCONCLUSIVE}; the exact
+recognizer resumes its existing path. No absent disc in one or two seeds
+proves knottedness. The current successes supply native geometric proofs,
+while the miss above and recorded budget exhaustions motivate further
+candidate families and certified simplification. They do not establish
+general quasipolynomial recognition.
+
+\input{cocycle_seeds_results.tex}
