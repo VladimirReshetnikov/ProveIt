@@ -4600,3 +4600,25 @@ On a shared witness `(z₁,…,z₄)` the alternating sum
 `Σ(−1)ⁱφ_{xᵢ}(z₁+z₂−z₃−z₄)` vanishes by row-Freiman-linearity of the
 bihomomorphism. With `freiman_image_card_mul_le` this bounds its image.
 That assembly is the next step. Standard axioms; gate clean.
+
+**Proposition 5.1 (ii)–(iii) per column and per quadruple.**
+- `Proofs16RepresentedMap`: the public induced map `repMap` of a
+  Freiman 8-homomorphism. `repMap (a+e−b−c) = f a + f e − f b − f c` for
+  every representation, and the map is Freiman-linear on represented
+  points.
+- `Proofs16ColumnRepSystem.column_rep_system` covers one column. Take
+  `S = commonLargeSpectrum B B (√β³/4)`. Then `|S| ≤ 16/β²`, `repMap` is
+  Freiman-linear on `B(S;1/(4π))`, and every point there has at least
+  `β⁴N³/4` representing four-tuples (the peer's robust self-correlation
+  count). `column_witness_card_ge` turns this into a witness density.
+- `Proofs16MilicevicQuadrupleImage.alternating_image_bound` covers one
+  additive column quadruple `x₀ + x₁ = x₂ + x₃`. With `θN⁴` common
+  witnesses in the four Bohr sets, the combination
+  `ψ₀ + ψ₁ − ψ₂ − ψ₃` satisfies
+  `#Im · θN · |B(Γ;1/(16π))| ≤ N²` on `B(Γ;1/(8π))`, where `Γ = ⋃ Sᵢ`.
+  The combination vanishes on common witnesses
+  (`alternating_repMap_vanishes`, from the four row identities).
+
+What remains for the full Proposition 5.1 is assembly: choosing column
+data for every dense column (`column_freiman_bohr`), and counting
+quadruples with `many_quadruples_common_witnesses`.
