@@ -2247,3 +2247,46 @@ selection, the remainder cover, and variety-piece membership of every
 relevant slice remain premises. This does not close a numbered catalogue
 statement or establish a new final Szemeredi threshold. These original
 consumers add no upstream modules or license-scope changes.
+
+
+### From deep variety structure to the actual slice provider
+
+`Proofs16VarietyPieceClass` expresses the variety-piece class on `Point N 2`,
+proves that the empty partial function belongs to it, and supplies joint
+polynomial covers for arbitrary subrelations of finite unions of class
+members. `Proofs16VarietyFamilySlices` then constructs the provider on
+every common-base good domain whenever each original final-coordinate
+slice is covered by `Q` class members. For `r` samples the count is
+`9*(r*Q)` and the exponent is the polynomial variety control at `r*Q`.
+The empty sample is included; positive `Q` gives all range conditions.
+
+`Proofs16VarietyStructureSlices` pads the family from
+`structure_side_of_milicevic` to the uniform count
+`Q=ceil(m*exp(B(c)))+1`, where `m` is the polynomial bihomomorphism family
+size at `(gamma,theta/2)` and `c=theta/(2*m)`. The padding uses empty
+members. Applying the existing slice-restriction argument keeps a subset
+`A` with `|A| >= |B|-theta*N^3`, on which every slice has such a cover.
+
+`Proofs16VarietyRestrictionProvider` combines these results. Under
+`MilicevicDeepVarietyStructure D` and the original product property,
+the restricted set supplies the polynomial provider on every common-base
+good domain. Structured slices are now a conclusion of this conditional
+reduction, rather than a further hypothesis. Deep structure itself and
+the subsequent printed numerical budget remain unproved.
+
+All four production sources and their nine transitive axiom checks pass;
+only propext, Classical.choice, and Quot.sound occur. The combined facade
+audit is queued. No numbered catalogue claim is advanced, and these
+consumers add no upstream modules.
+
+
+`Proofs16VarietyFamilyLiftControls` and
+`Proofs16PolynomialVarietyFamilyPowerCover` carry the slice-family count
+through the actual three-dimensional cover. With `Q` pieces per slice
+and uniform sample ceiling `R`, the interpolation count is at most
+`81*R^4*Q^2`, and the uniform exponent is the polynomial variety control
+at `R*Q`. Thus any `b<e*a/2` gives cell width `m^b` above the explicit
+rounded threshold, retaining mass `1-rho`. These two production sources
+and their three transitive axiom checks pass with only the three approved
+axioms. The combined audit is queued. The spectral, selection, and
+remainder inputs remain explicit.
