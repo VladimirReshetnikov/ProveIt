@@ -918,3 +918,26 @@ supplied-proof replay changes little. All 760 whole-recognition measurements
 complete, showing modest savings on several search inputs and retaining
 schedule regressions and A/A variation. The 352-page article records the
 proof, boundaries and reproducible evidence; the general QP goal is open.
+
+The subsequent integrations are documented in
+[`sparse_substitution.tex`](sparse_substitution.tex),
+[`sparse_incidence.tex`](sparse_incidence.tex),
+[`weighted_components.tex`](weighted_components.tex), and
+[`ordered_batch.tex`](ordered_batch.tex). The review of commit `2c7f4fd68`
+and reports 49–53 is in [`incoming_2c7f.tex`](incoming_2c7f.tex).
+These cover support-aware word substitution, sparse component incidence,
+independently checked weighted normal-component counts, the quadrilateral
+disc-count core, and ordered singleton replay with legacy compatibility.
+
+[`adaptive_merger.tex`](adaptive_merger.tex) integrates the periodic-closure
+scheduler from the later component-certificates delivery in `92efcbaed`.
+It preserves the historical greedy trace, uses a bounded scan before switching
+to a generation-stamped heap, and proves quadratic merger tests per closure.
+All 1,105 maintained tests pass; the separate audit checks 9,000 exact
+old/new traces and 5,100 native normal-surface queries against the frozen
+Regina corpus. Full certified interval measurements show a 14.413x paired
+gain on the largest five-cycle fixture while retaining easy duplicate inputs
+without a heap. The article records memory costs, complete normal-query
+timings, A/A controls and regressions. Reproduce the evidence with
+`../fast/merger_research/native.py` (`audit`, `intervals`, `normal`);
+records are in `data/adaptive-merger-*`. General QP recognition remains open.

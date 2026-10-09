@@ -1635,3 +1635,21 @@ for ordered_mode in ('kernels','stages','pipeline'):
     heading += ' & old ms & new ms & old/new & old A/A & new A/A'
     open(f'tables/ordered_batch_{ordered_mode}.tex','w').write('\\begin{center}\\small\n'+table(
         heading,'@{}l'+('r'* (6 if ordered_mode=='kernels' else 5))+'@{}',rows)+'\\end{center}\n')
+
+
+for merger_mode in ('intervals','normal'):
+    data=load(f'data/adaptive-merger-{merger_mode}.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['source']['name'])]
+        arms=('old','adaptive','queue') if merger_mode=='intervals' else ('old','current')
+        cells += [f'{1000*m[a]:.3f}' for a in arms]
+        ratios=('adaptive','queue') if merger_mode=='intervals' else ('current','old_AA','current_AA')
+        cells += [f"{q[a]['median']:.3f}" for a in ratios]
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Input & old ms & adaptive ms & queue ms & old/adapt. & old/queue' if merger_mode=='intervals' else
+             'Query & old ms & new ms & old/new & old A/A & new A/A')
+    open(f'tables/adaptive_merger_{merger_mode}.tex','w').write('\\begin{center}\\small\n'+table(
+        heading,'@{}lrrrrr@{}',rows)+'\\end{center}\n')
