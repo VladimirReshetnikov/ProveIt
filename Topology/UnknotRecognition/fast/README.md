@@ -2099,3 +2099,44 @@ The benchmark pins the entire old compressed-braid package at `d0f0e37761b5`,
 measures complete public calls with mandatory replay, includes identical A/A
 controls and a dense-storage ablation, and records source hashes and raw inputs.
 Memory measurements run separately from elapsed-time samples.
+
+### Shared cyclic overlap search with a bounded prelude
+
+Explicit relator-overlap search now defaults to an adaptive policy. It tries
+long donors first, retaining the maintained donor-length and full-match cutoffs.
+After `O(L log(L+1))` charged prelude work it switches to report 46's exact shared
+capped suffix-link index. Here `L` is the total **explicit** relator length.
+At most four nonempty slots retain the previous pairwise query. Local handoff
+keeps the original global budget; global exhaustion and cancellation propagate.
+
+The exact query bound improves from `O(s + m*L)` to `O(s + L log(L+1))` dictionary
+operations for `s` original slots and `m` nonempty relators. This is a local bound
+under the stated dictionary-cost model, with no general recognition theorem.
+Tied maximum-gain witnesses may change. The existing explicit and compressed
+certificate replayers remain unchanged and verify the complete source-bound trace.
+
+The low-level `fastunknot.relator_overlap.overlap_move` accepts
+`backend='adaptive'`, `'pairwise'`, or `'joint'`, and optional `stats={}`. Ordinary
+recognition still uses the existing `use_group=True, group_relators=True`
+opt-in, or `--group-relators` on the CLI. The new index is invoked only for explicit overlap queries reached by
+that stage, including explicit fallback queries from compressed search.
+
+The native study checks 1,140 complete recognition calls on nineteen diagrams.
+Gordian has paired old/new ratios 1.238 with explicit search and 1.120 with
+compressed search. Small and repeated-word queries can be slower; the joint
+index alone is also slower on Gordian. See
+[`joint_overlap.tex`](../synthesis/joint_overlap.tex) for the capped-tree proof,
+pruning and budget argument, bit-cost qualifications, baseline reconciliation,
+independent replay audits and all controls.
+
+From this directory:
+
+```sh
+python -B cyclic_overlap_research/native.py audit --output ../synthesis/data/joint-overlap-audit.json
+python -B cyclic_overlap_research/native.py kernels --output results/joint_overlap_kernels_20261008.json
+python -B cyclic_overlap_research/native.py pipeline --output results/joint_overlap_pipeline_20261008.json
+```
+
+The driver loads the actual maintained baseline at `bec1afd07cd2` and the delivered
+report in separate modules, verifies source hashes, and retains source words,
+diagrams, certificates, work counts, warmups, shuffled raw samples and A/A controls.

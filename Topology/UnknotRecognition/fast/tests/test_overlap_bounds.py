@@ -1,7 +1,11 @@
-"""Global length bounds must preserve exact donor/sign/rotation tie breaking."""
+"""Historical pairwise bounds preserve donor/sign/rotation order and polls.
+
+The adaptive scheduler can terminate before visiting the remaining donors;
+its handoff and cancellation checks are in test_cyclic_overlap_index.
+"""
 import unittest
 from fastunknot.group_certificate import _Budget,GroupLimit
-from fastunknot.relator_overlap import overlap_move
+from fastunknot.relator_overlap import pairwise_overlap_move as overlap_move
 from test_relator_overlap import brute_gain
 
 

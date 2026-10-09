@@ -1671,3 +1671,44 @@ in a concrete case. Freiman linearity only on a Bohr set does not yet supply
 the parent-box multilinearity premise, and an all-box positive-power
 oscillation partition is not asserted. The result reuses the already
 scoped Schmidt recurrence input and adds no upstream module.
+
+`Proofs16PolynomialVarietyProfile` now chooses a rounded integer scale to
+obtain good cells of width at least `W^(1/(2*p*(q+1)^8))`, where `W` is the
+parent width and `q=|Gamma|+|Psi|+r`. Its integer threshold is
+`max(C*(q+1),ceil(8/rho))^(2*p*(q+1)^8)`, with fixed existential `C>=2,p>0`.
+`Proofs16PolynomialVarietyCover` uses one multilinear map on the good cells
+and the existing nine-map coarse cover below that threshold. Capping the
+positive exponent gives `MultiplyLinearWith` on every proper box, with
+controls independent of the requested loss. This discharges the partition
+input for globally multilinear mixed phases, including globally affine
+coordinate functions. It makes no such claim for general Freiman maps
+on Bohr sets. Both production modules and their five transitive axiom checks
+pass; the combined facade audit remains queued behind the port build.
+
+### All-box covers for local Freiman variety phases
+
+The incoming two-stage construction has now been checked against the
+simultaneous multilinear partition theorem on this host, including
+`Proofs16OscillationPartitionInst`. `Proofs16FreimanVarietyProfile` chooses
+both integer scales. Set `s=|Gamma|+|Psi|` and
+`D=(p*(r+1)^8)*(p*(s+1)^8)`. Above the integer threshold
+`max(C*(s+r+1),ceil(16/rho))^(2*D)`, the resulting good cells have width
+at least `parent.width^(1/(2*D))`.
+
+`Proofs16FreimanVarietyCover.exists_freiman_variety_cover` then proves
+`MultiplyLinearWith` on every proper box for any subgraph of a Freiman
+bihomomorphism on `V(rho)`, restricted to `V(rho/2)`. It assumes only that
+the coordinate maps `L_i` are Freiman-linear on `bohr Psi rho`. Large cells
+use one multilinear map; small boxes use the existing nine-map coarse
+cover, with the positive exponent capped by the threshold. The controls
+are independent of the requested loss. Global multilinearity and an
+oscillation-partition hypothesis have both been removed from this cover
+result. The stronger `OscillationPartitionsExist` predicate at every box
+scale is not claimed or needed.
+
+The complete production sources and transitive axiom checks pass; the
+combined facade audit remains queued. Existence of the structured
+bihomomorphism and the deep-agreement structure theorem remain hypotheses.
+The new controls depend on the actual ranks and radius, with existential
+universal `C,p`; comparison with the manuscript's prescribed all-dimension
+controls and final explicit bounds remains separate.
