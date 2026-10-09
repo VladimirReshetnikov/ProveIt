@@ -4570,10 +4570,11 @@ this checkpoint does not close Theorem 16.2 or Corollary 16.11.
 
 **Verification.** The focused variety-size closure checks 189 modules.
 All 20 newly named theorems pass individual axiom checks. The merged
-facade audit checks 6,831 public Gowers theorems in 5,072 modules (4,152
-OAI modules), or 5,074 modules with both audit consumers. Only `propext`,
+facade audit checks 6,842 public Gowers theorems in 5,073 modules (4,152
+OAI modules), or 5,075 modules with both audit consumers. Only `propext`,
 `Classical.choice`, and `Quot.sound` occur. The merged column extraction
-and dense-level small-image lemmas are included. The source ledger is
+and dense-level small-image lemmas, plus the later common-witness
+counting core, are included. The source ledger is
 identical to the tracked 115 companions and five open entries; the
 selected-port scope check passes. All upstream sources and Apache
 provenance/license files remain unchanged.
