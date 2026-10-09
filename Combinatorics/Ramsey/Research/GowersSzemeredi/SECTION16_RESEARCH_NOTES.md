@@ -4487,7 +4487,7 @@ set has a small image. Standard axioms only; collision gate clean.
 Milićević's "many zeroes imply small range" (p. 35) picks a regular
 radius `ρ′` with a small annulus. In `ℤ/N` a translate-averaging argument
 avoids that step, and it works for any level set.
-- `exists_dense_translate`: some `t` has
+- `exists_dense_level_translate`: some `t` has
   `|Z ∩ (t + B)|·N ≥ |Z|·|B|`.
 - `freiman_image_card_mul_le`: let `φ` be Freiman-linear on `B(Γ;ρ)` and
   constant on `Z ⊆ B(Γ;ρ)`. Then

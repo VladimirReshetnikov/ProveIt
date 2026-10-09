@@ -6,7 +6,7 @@ without regular radii.
 
 Let `φ` be Freiman-linear on `B(Γ;ρ)` and constant (`= v`) on `Z ⊆ B(Γ;ρ)`.
 * Averaging over translates gives `t` with
-  `|Z ∩ (t + B(Γ;ρ/4))| · N ≥ |Z|·|B(Γ;ρ/4)|` (`exists_dense_translate`).
+  `|Z ∩ (t + B(Γ;ρ/4))| · N ≥ |Z|·|B(Γ;ρ/4)|` (`exists_dense_level_translate`).
 * Fix `z₀` there. The differences `W = (Z ∩ (t + B(ρ/4))) − z₀` lie in
   `B(ρ/2)`, and `φ(w) = φ(0)` on them, by the quadruple
   `z₀ + (z − z₀) = z + 0`.
@@ -24,7 +24,7 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 /-- **A dense translate.** -/
-theorem exists_dense_translate {N : Nat} [NeZero N] (Z B : Finset (ZMod N)) :
+theorem exists_dense_level_translate {N : Nat} [NeZero N] (Z B : Finset (ZMod N)) :
     ∃ t : ZMod N, Z.card * B.card ≤ N * (Z.filter fun z => z - t ∈ B).card := by
   by_contra hno
   push Not at hno
@@ -50,7 +50,7 @@ theorem freiman_image_card_mul_le {N : Nat} [NeZero N] (Γ : Finset (ZMod N)) {�
     (Z : Finset (ZMod N)) (hZ : Z ⊆ bohr Γ ρ) {v : ZMod N} (hv : ∀ z ∈ Z, φ z = v) :
     ((bohr Γ (ρ / 2)).image φ).card * (Z.card * (bohr Γ (ρ / 4)).card) ≤
       N * (bohr Γ ρ).card := by
-  obtain ⟨t, ht⟩ := exists_dense_translate Z (bohr Γ (ρ / 4))
+  obtain ⟨t, ht⟩ := exists_dense_level_translate Z (bohr Γ (ρ / 4))
   set W₀ := Z.filter fun z => z - t ∈ bohr Γ (ρ / 4) with hW₀
   by_cases hW₀e : W₀ = ∅
   · -- then `|Z|·|B(ρ/4)| = 0`
