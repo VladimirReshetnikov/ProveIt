@@ -5221,3 +5221,10 @@ columns.
 Integration note: J.102 independently supplies four-walk extraction and
 its global column application. Both walk lengths are retained; the
 remaining additive-richness and identity-extension stages are shared.
+
+After merging the independent six-walk lemma, the combined audit checks
+7,050 public Gowers theorems in 5,110 modules (5,108 for the facade,
+including 4,152 OAI modules), using only the three approved standard
+axioms. The source ledger is unchanged at 115 companions and five open
+entries, and the selected-port scope check passes. The companion count
+does not establish fidelity to every printed statement.
