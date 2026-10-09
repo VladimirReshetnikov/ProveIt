@@ -9,7 +9,7 @@ from .primitive_projection import projection_candidates
 from .primitive_power import primitive_power_terminal
 
 
-def plan_forest(arena, roots, alive, cache=None, *, _prepared=None):
+def plan_forest(arena, roots, alive, cache=None, *, _prepared=None, _power=None):
     if cache is None:cache = {}
     candidates,powers = projection_candidates(arena,roots,alive,cache) if _prepared is None else _prepared
     vectors=cache.setdefault('forest_vectors',{})
@@ -39,7 +39,7 @@ def plan_forest(arena, roots, alive, cache=None, *, _prepared=None):
                 powers[root]=dict(kind='rank_two_primitive_power',relation=0,
                     generators=list(pair),primitive_vector=[u,v],exponent=1,width=abs(u)+abs(v)-1)
             else:
-                powers[root]=primitive_power_terminal(arena,[root],set(pair))
+                powers[root]=(_power or primitive_power_terminal)(arena,[root],set(pair))
         if powers[root] is None:continue
         child=max(choices)
         edges.append(dict(child=child,proof=dict(powers[root],relation=slot)))
