@@ -1383,9 +1383,17 @@ the elementary lemmas of its §2:
   `bohr_card_le_four_pow`), regular radii (`bohr_exists_regular_step`), and
   Freiman-linearity in coordinates, equation (9)
   (`freiman_linear_gap_affine`).
-- Next leaves: Lemma 2.7 (radius functions with small boundary), then the
-  bilinear Bogolyubov argument (Theorem 1.6, §11 of the overview). The
-  latter is the first substantial component.
+- **Lemmas 2.7/2.8, done in ℤ/N form (`Proofs16BohrAnnulus`,
+  kernel-checked).** Milićević perturbs radii only because of characters
+  with a small image. In ℤ/N with N prime, every nonzero frequency is a
+  bijection, and the zero frequency never leaves the band around 0. So no
+  perturbation is needed. `bohr_annulus_card_le` proves
+  |B(K;ρ+η) ∖ B(K;ρ−η)| ≤ |K|·(4ηN + 2) for 0 ≤ ρ − η, and
+  `band_card_le` counts residues with centered value in (a, b].
+  Weak regularity therefore holds at every radius, with ε = |K|(4η + 2/N).
+- Next: Lemma 2.6 (separating characters, probabilistic) and the
+  bilinear Bogolyubov argument (Theorem 1.6), the first substantial
+  component.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
