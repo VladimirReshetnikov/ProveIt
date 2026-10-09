@@ -8717,3 +8717,73 @@ the same three axioms. The facade closure has 5,371 modules, including
 4,152 OAI modules. The generated ledger is byte-identical to the tracked
 115-companion / five-open ledger, and the port scope check passes for the
 unchanged 4,134 upstream and 17 compatibility modules.
+
+## J.136. Adaptive coherent regularity at the retained density
+
+The prescribed-error construction in J.135 did not control its error relative
+to the density lost during refinement. The new adaptive construction uses an
+exact state `(d, kappa)`, recording both a rank bound and coherent-quadruple
+density. At a failed regularity test the next rank is the coherent relation
+budget at the current error/cutoff, and the next density is exactly
+`kappa * coherentIterationLoss nextRank rho`. Error and cutoff may depend
+on both coordinates; neither schedule is required to be monotone.
+
+`coherent_adaptive_relation_iteration` stops after at most the remaining
+relation-space dimension. It preserves the same varying frequency family,
+source witnesses for original points and quadruples, and at most `4^s`
+source offsets after `s` steps. Fixed frequencies grow by at most `4*s*ell`.
+The conclusion uses the exact stopping state and vertical radius `sigma/2^s`.
+A finite supremum of collision thresholds over the possible states supplies
+a modulus bound independent of the ambient modulus.
+
+`exists_coherent_adaptive_dense_graph` adds the Fourier smoothing thresholds
+and constructs a graph on that same refined domain. For
+`m = |B| + 4*ell^2 + 2*ell`, its density is at least
+`1/(2*(4*H)^m)`. Its box error is the fourth power of an accuracy schedule
+evaluated at the exact final state. All coherence and source data remain.
+
+`exists_coherent_density_controlled_graph` specializes to
+`min(1/(2*(4*H)^m), kappa^power/scale)`, for arbitrary natural `power` and
+positive `scale`. Consequently its normalized box error is at most
+`(retainedDensity^power/scale)^4`. This resolves the circular error choice
+without assuming a favorable relation between a fixed input error and the
+density subsequently lost. The finite adaptive modulus bound is explicit;
+no favorable growth rate for it or final Gowers threshold is claimed.
+
+**Uniform original-input application and agreement.** The finite supremum
+`coherentUniformGraphModulusBound` covers both fixed-frequency cardinality
+and varying-family length up to their common bound. For the actual anchor
+family the cell count is `ceil(32*pi)` and
+`H = ceil(2^(8*jointSelectionRank)/(jointSelectionRadius/2))`; all required
+inequalities and positivity conditions are proved. The initial rank is the
+maximum of the common Bohr rank and `8*jointSelectionRank`.
+
+`IsSingleCoherentProgression.density_controlled_graph` constructs the graph
+under this uniform bound. `global_coherent_density_controlled_graph` starts
+from the original dense bihomomorphism and an explicit threshold depending
+only on its density, the chosen power, and scale. It retains the original
+column witness system, popular anchor witnesses and the graph of that same
+family. There is no regularity or graph-existence oracle in its hypotheses.
+
+`IsSingleCoherentProgression.refined_popular_agreement` transfers actual
+agreement with the original columns to every final domain
+`B' union image(theta_i(u))`. It uses the original popular-arrangement
+witness at `source u`, and proves a fresh agreement density
+`coreAnchorAgreementDensity popularity (fixedBound+ell) g d r tau`.
+It does not infer a density bound merely by restricting an old agreement set.
+
+All ten new modules compile in a 496-module production closure, comprising
+nineteen new named proofs. All nineteen pass individual axiom checks using
+only `propext`, `Classical.choice`, and `Quot.sound`. The completed merged
+facade audit checks 8,299 public Gowers theorems with the same axiom boundary:
+5,381 facade modules, including 4,152 OAI modules, and 5,383 combined audit
+modules. The ledger is byte-identical to the tracked 115-companion / five-open
+catalogue. Port scope remains 4,134 upstream and 17 compatibility modules;
+no upstream source or licensing scope changes.
+Graph extraction/weak transitivity, subsequent local linear structure,
+original bihomomorphism transfer and the final quantitative certificate
+remain outstanding. The current graph estimate is for the specified final
+radii; no estimates at further shrunk radii are silently assumed. A finite
+profile of radii can use the same sparse-relation certificate provided its
+cell parameter covers the smallest radius, but this extension remains to
+be formalized. No numbered entry is claimed closed.
