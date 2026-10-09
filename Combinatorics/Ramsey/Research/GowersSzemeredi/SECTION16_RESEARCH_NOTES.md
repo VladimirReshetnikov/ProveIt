@@ -1368,6 +1368,25 @@ OAI-free and builds locally, but it is wired to Gowers's lift. The
 restatement on the polynomial lift imports OAI through
 `Proofs05SchmidtRecurrence`, so it belongs on the full-verification host.
 
+### J.6 Formalizing Milićević's pipeline from the leaves (2026-10-08)
+
+The variety route now rests on `MilicevicDeepVarietyStructure` alone. That
+hypothesis is a reformulation of arXiv:2601.01682's construction (J.2), so
+formalizing the paper is the only way to discharge it. The work starts with
+the elementary lemmas of its §2:
+- **Lemma 2.5, done (`Proofs16BohrDenseDifference`, kernel-checked).**
+  `bohr_dense_sub_cover`: if 4^(k+1)·|B(Γ;ρ) ∖ A| ≤ |B(Γ;ρ)| with k = |Γ|,
+  then every d ∈ B(Γ;ρ/2) is a difference of two elements of A. The proof
+  counts with `bohr_card_le_four_pow`. Helpers: `bohr_add_half`,
+  `zero_mem_bohr`.
+- Already in the corpus: Lemma 2.4-type bounds (`bohr_card_lower`,
+  `bohr_card_le_four_pow`), regular radii (`bohr_exists_regular_step`), and
+  Freiman-linearity in coordinates, equation (9)
+  (`freiman_linear_gap_affine`).
+- Next leaves: Lemma 2.7 (radius functions with small boundary), then the
+  bilinear Bogolyubov argument (Theorem 1.6, §11 of the overview). The
+  latter is the first substantial component.
+
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
 Part J's `PolyBoundedControl` hypotheses exist only because of the factor
