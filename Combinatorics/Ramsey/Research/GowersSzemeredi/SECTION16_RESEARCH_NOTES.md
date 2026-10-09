@@ -1430,9 +1430,20 @@ the elementary lemmas of its §2:
   coordinates replaced by singletons (`card_meeting`), so they number
   ≥ K^(−4)·Π|U_y| (`card_all_le_mul_meeting`). This replaces [49]'s
   random choice.
-- Next: assemble [49] Lemma 19 in ℤ/N, as selection averaging, then
-  respected quadruples of f on A′, then Corollary 7.6 (and Lemma 7.8 for
-  the Bohr extension).
+- **[49] Lemma 19 in ℤ/N, done with polynomial bounds
+  (`Proofs16Lemma19Selection`, kernel-checked).**
+  `lemma19_selection_piece`: prescribed additive values on |T| quadruples,
+  with |T| ≥ δN³·256K⁴, each in the "new" sets W(q i) ⊆ U(q i) with
+  |U| ≤ K. Then some selection f(y) ∈ U_y is Freiman-linear on a set E′
+  of size ≥ 2⁻¹⁸⁸²δ¹¹⁶⁴N, on which f(y) ∈ W_y. Each quadruple becomes a
+  requirement on its image (`quadRequirement`), with at most 256
+  preimages per requirement. After that come `exists_good_selection` and
+  `lineFreimanExtraction_holds`. This replaces [49]'s random choice and
+  Theorem 17 (Sanders).
+- Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
+  extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
+  coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
+  Lemma 7.8 are the natural domains.
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
