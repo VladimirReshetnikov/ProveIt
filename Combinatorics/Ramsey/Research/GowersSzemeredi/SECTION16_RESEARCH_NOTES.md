@@ -4283,3 +4283,13 @@ indices. The original paper's precise constants and the deep variety
 statement remain unresolved. All five numbered open entries, 115
 companions, and source-fidelity qualifications remain unchanged. No
 upstream source or selected port dependency was changed.
+
+Validation: the final focused build covers 167 modules. All 12 newly
+named theorems pass individual transitive axiom checks. The full audit
+passes for 6,748 public Gowers theorems in a 5,054-module facade (4,152
+OAI modules), or 5,056 modules including both audits. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The source ledger matches
+the unchanged 115 companions and five open entries, and the selected
+port-scope check passes. Apache provenance/license files and upstream
+sources are unchanged. Subsequent merged main changes concern topology
+only and do not alter the audited Gowers dependency closure.
