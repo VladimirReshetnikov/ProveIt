@@ -1,0 +1,945 @@
+% Research continuation for ProveIt. Source snapshot: 2026-10-07.
+% Additive draft: this file does not overwrite the historical source articles.
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Stieltjes zeros, distribution modules, and duality}
+\fancyhead[R]{\small ProveIt research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\D}{\mathcal D}
+\newcommand{\Tcal}{\mathcal T}
+\newcommand{\W}{W_\rho}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Cl}{Cl}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\hypersetup{pdftitle={Zeros, Distribution Modules, and Regularized Duality in the Stieltjes Parameter-Derivative Tower},pdfauthor={Research continuation prepared for the ProveIt project},pdfsubject={Rigorous analytic results, a focused draft audit, and reproducible calculations}}
+
+\title{\bfseries Zeros, Distribution Modules, and Regularized Duality\\[4pt]
+\large in the Stieltjes Parameter-Derivative Tower}
+\author{Research continuation prepared for the ProveIt project\thanks{Prepared with AI assistance in response to Vladimir Reshetnikov's research request. Research draft for mathematical review; not independently refereed or formally verified.}}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We continue the generalized-Stieltjes, Hurwitz-jet, and cyclotomic-polylogarithm program in the ProveIt drafts. The main analytic result is a zero theorem for every parameter derivative of every generalized Stieltjes function. A reciprocal-gamma Appell polynomial supplies a Laplace kernel with exactly $n$ sign changes, proving that $\gamma_n^{(k)}(a)$ has at most $n$ positive zeros, counted with multiplicity. For each fixed $n$, all $n$ zeros are simple once $k$ is sufficiently large. Their locations have complete expansions in descending powers of $k$; the first two terms are explicit in the roots of the Appell polynomial. These results hold uniformly in a positive Lerch deformation $0\leq\rho\leq1$, whose leading zero slopes are independent of $\rho$. At $n=1$ we also obtain all-$k$ harmonic-number brackets and strict monotonicity in the deformation parameter.
+
+On rational grids, we prove the draft's experimentally supported distribution-rank formula for every denominator and every positive derivative order, by constructing an explicit nonresonant distribution module and its character basis. The construction extends to all finite jets and transports through the cyclotomic Fourier transform. Finally, a normalized functional equation treats trivial and nontrivial negative-integer $L$-values uniformly, gives every logarithmic jet coefficient, and makes the necessary factor $1/2$ at a simple trivial zero explicit. A focused audit separates repairs from already recorded defects and numerical evidence from arithmetic independence. Exact-arithmetic tests, numerical cross-checks, an analytic truncation bound, source provenance, and an integration guide accompany the article.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Scope, antecedents, and the research questions}
+\label{sec:scope}
+
+The immediate source is the directory
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms/docs}.
+\end{center}
+The source review is pinned to repository commit
+\begin{center}\small\texttt{c78c7c3dc2fc742a1af9492e47d578b3fb4e01e7}.
+\end{center}
+The principal antecedent is \emph{The Parameter-Derivative Tower of the Generalized Stieltjes Constants} \cite{RepoTower}, together with its supporting report \cite{RepoReport}. We also inspect the relevant parts of the antiderivative ladder \cite{RepoAnti} and the polylogarithm--polygamma bridge \cite{RepoBridge}. This is a focused continuation and audit, not an exhaustive referee report on all eight articles and all thirty-one reports described by the project README \cite{RepoReadme}.
+
+The source tower provides a useful harmonic-number organization of a classical formula of Coffey \cite[Corollary~2]{Coffey}. Its rational-grid rank assertion, however, is supported in the text by a finite range of exact computations rather than a general proof. Its trivial-zero functional-equation variant is only described, not fully written out. Some claims of independence exceed what a negative integer-relation search establishes. These are distinct issues: the rank statement can be repaired by algebra; the functional equation can be completed analytically; the independence assertions must be weakened unless new arithmetic input is supplied.
+
+The additional question pursued here is function-theoretic: as the derivative order $k$ grows, how many positive zeros can $\gamma_n^{(k)}$ have, and where do they go? This is not an asymptotic statement about $\gamma_n(1)$ as $n\to\infty$. Throughout the main zero theorem, $n$ is fixed and $k\to\infty$. A reciprocal-gamma polynomial turns the problem into a positive-kernel transform and then into a gamma-concentration problem.
+
+\paragraph{What is classical, and what is established here.}
+The Laurent definition, the Hurwitz Mellin integral, the parameter differentiation identity, the gamma product, the cyclotomic Fourier transform, and the Dirichlet functional equation are classical \cite{Coffey,DLMFHurwitz,DLMFGamma,DLMFL}. Real-rooted Appell polynomials fit the Jensen--P\'olya--Schur framework; see, for example, \cite{Duran}. Distribution modules have a substantial classical theory, notably Kubert's universal ordinary distribution \cite{Kubert}. Related recent derivative-expansion work includes Pr\'evost \cite{Prevost}; none of its results is used as a premise of the zero theorem here. We do not claim those constructions or principles as inventions of this article.
+
+Our contribution to the supplied drafts is the explicit combination of these tools into the zero bound, the uniform positive-Lerch zero expansion, the all-order correction formula, the nonresonant all-denominator rank proof with a constructive normal form, and the regularized all-jet duality. Full proofs are given below. The precise zero-location statements and their uniform deformation are proposed research contributions; the literature search undertaken for this draft does not establish an exhaustive priority claim. In particular, Coffey already proves the uniqueness of the stationary point of $\gamma_1(a)$, at approximately $1.39112$ \cite[Proposition~5]{Coffey}. That special case is not new here.
+
+\paragraph{Status of verification.}
+The proofs are ordinary mathematical proofs, not Lean or other proof-assistant certificates. The exact linear-algebra computations are finite independent checks of formulas used in the proofs. Floating-point checks are additional evidence of transcription and implementation accuracy, not proofs of identities, interval certificates, or proofs of transcendence. No arithmetic independence result is asserted anywhere in this article.
+
+\section{A unified Stieltjes--Lerch derivative family}
+\label{sec:family}
+
+For $a>0$, write
+\begin{equation}\label{eq:laurent}
+ \zeta(s,a)=\frac1{s-1}+\sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n.
+\end{equation}
+The superscript in $\gamma_n^{(k)}(a)$ means differentiation $k$ times in $a$. In contrast, $\zeta^{(j)}(s,a)$ denotes differentiation $j$ times in $s$. Set
+\begin{equation}\label{eq:Pk}
+ P_k(t)=\prod_{j=1}^k\left(1+\frac tj\right)
+       =\sum_{i=0}^k e_i(k)t^i,
+ \qquad H_k^{(r)}=\sum_{j=1}^k j^{-r},\quad H_k=H_k^{(1)}.
+\end{equation}
+We take $H_0^{(r)}=0$.
+
+For $0\leq\rho<1$, define the convergent Lerch coefficients
+\begin{equation}\label{eq:lambda}
+ \lambda_n(\rho,a)=\sum_{m\geq0}\frac{\rho^m\log^n(a+m)}{a+m}
+   =(-1)^n\left.\partial_s^n\Phi(\rho,s,a)\right|_{s=1},
+ \qquad
+ \Phi(\rho,s,a)=\sum_{m\geq0}\frac{\rho^m}{(a+m)^s}.
+\end{equation}
+For $k\geq1$ put
+\begin{equation}\label{eq:Dfamily}
+ \D_{n,k}^{\rho}(a)=
+ \begin{cases}
+ \partial_a^k\lambda_n(\rho,a),&0\leq\rho<1,\\
+ \gamma_n^{(k)}(a),&\rho=1.
+ \end{cases}
+\end{equation}
+Only the derivative family is unified at $\rho=1$: the series defining $\lambda_n$ generally diverges there. For $0<\rho<1$ the specialization $a=1$ is directly polylogarithmic,
+\begin{equation}
+ \lambda_n(\rho,1)=\frac{(-1)^n}{\rho}
+       \left.\partial_s^n\Li_s(\rho)\right|_{s=1}.
+\end{equation}
+At $\rho=0$ it is simply $\log^n a/a$.
+
+\begin{proposition}[The classical master identity]\label{prop:master}
+For $k\geq1$, $n\geq0$, and $a>0$,
+\begin{equation}\label{eq:master}
+ \gamma_n^{(k)}(a)=(-1)^{n+k}k!n!
+     \sum_{i+j=n}e_i(k)\frac{\zeta^{(j)}(k+1,a)}{j!}.
+\end{equation}
+The same formula with $\Phi(\rho,\cdot,a)$ in place of $\zeta(\cdot,a)$ holds for $\D_{n,k}^{\rho}$ when $\rho<1$.
+\end{proposition}
+\begin{proof}
+The normally convergent defining series gives
+$\partial_a^k\zeta(s,a)=(-1)^k(s)_k\zeta(s+k,a)$ first in a right half-plane, and then by meromorphic continuation. Apply it to \eqref{eq:laurent}, noting that the pole term is independent of $a$. Substituting $s=1+t$ and using $(1+t)_k=k!P_k(t)$ gives
+\begin{equation}\label{eq:mastergen}
+ \sum_{n\geq0}\frac{(-1)^n}{n!}\gamma_n^{(k)}(a)t^n
+     =(-1)^k k!P_k(t)\zeta(k+1+t,a).
+\end{equation}
+Coefficient comparison proves \eqref{eq:master}. For $\rho<1$ the same calculation is justified directly by locally uniform convergence of the Lerch series. This is Coffey's Stirling-number formula in the harmonic/symmetric-function coordinates used by the source draft.
+\end{proof}
+
+\begin{definition}[Reciprocal-gamma Appell polynomials]\label{def:Q}
+Define the monic polynomials $Q_n$ by
+\begin{equation}\label{eq:Qgen}
+ \frac{e^{xt}}{\Gamma(1+t)}=\sum_{n\geq0}Q_n(x)\frac{t^n}{n!}.
+\end{equation}
+Set $W_\rho(x)=(1-\rho e^{-x})^{-1}$ for $x>0$ and $0\leq\rho\leq1$.
+\end{definition}
+
+Writing $y=x+\gamma$ and $\zeta_r=\zeta(r)$, the first polynomials are
+\begin{align}
+ Q_0(x)&=1,& Q_1(x)&=y,\notag\\
+ Q_2(x)&=y^2-\zeta_2,& Q_3(x)&=y^3-3\zeta_2y+2\zeta_3,\label{eq:Qsmall}\\
+ Q_4(x)&=y^4-6\zeta_2y^2+8\zeta_3y+3\zeta_2^2-6\zeta_4.\notag
+\end{align}
+They satisfy $Q_n'=nQ_{n-1}$ and the explicit recurrence
+\begin{equation}\label{eq:Qrec}
+ Q_{n+1}(x)=(x+\gamma)Q_n(x)
+       +\sum_{r=1}^n(-1)^r\binom nr r!\zeta(r+1)Q_{n-r}(x).
+\end{equation}
+This follows by differentiating \eqref{eq:Qgen} in $t$ and using
+$-\psi(1+t)=\gamma+\sum_{r\geq1}(-1)^r\zeta(r+1)t^r$ near zero.
+
+\begin{theorem}[Appell--Laplace representation]\label{thm:laplace}
+For all $n\geq0$, $k\geq1$, $a>0$, and $0\leq\rho\leq1$,
+\begin{equation}\label{eq:laplace}
+ F_{n,k}^{\rho}(a):=(-1)^{n+k}\D_{n,k}^{\rho}(a)
+   =\int_0^\infty x^k e^{-ax}W_\rho(x)Q_n(\log x)\dd x.
+\end{equation}
+The integral and every fixed number of its $a$-derivatives converge locally uniformly for $a>0$, uniformly in $\rho\in[0,1]$.
+\end{theorem}
+\begin{proof}
+The Hurwitz and Lerch Mellin integrals give, for $|t|$ sufficiently small,
+\[
+ k!P_k(t)\Phi(\rho,k+1+t,a)
+   =\frac1{\Gamma(1+t)}\int_0^\infty x^{k+t}e^{-ax}W_\rho(x)\dd x,
+\]
+where $\Phi(1,s,a)$ means $\zeta(s,a)$ in its convergent half-plane. The cancellation of $\Gamma(k+1+t)$ is the reason for introducing $Q_n$. Extract the coefficient of $t^n$ and apply \eqref{eq:mastergen}.
+
+For justification, $W_\rho(x)\leq W_1(x)=O(x^{-1})$ at zero and $W_\rho(x)=O(1)$ at infinity, uniformly in $\rho$. On $|t|\leq\eta<k$, the integrand near zero is bounded by a constant times $x^{k-1-\eta}$, and its coefficient derivatives introduce only powers of $|\log x|$. At infinity, a fixed positive lower bound on $a$ supplies exponential domination. Multiplication by any fixed power of $x$ handles the $a$-derivatives. These estimates also prove continuity at $\rho=1$.
+\end{proof}
+
+\section{Real-rootedness and a global zero bound}
+\label{sec:zerobound}
+
+\begin{lemma}[A real-root preserving operator]\label{lem:operator}
+If a real polynomial $f$ of degree $n$ has only real roots and $c\neq0$ is real, then $f+cf'$ has only real roots. An inherited root of multiplicity $m$ has multiplicity $m-1$ if $m\geq2$, and every other root of $f+cf'$ is simple. Consequently, after $n-1$ such operators, any real-rooted polynomial of degree $n$ becomes strictly real-rooted.
+\end{lemma}
+\begin{proof}
+Away from the distinct roots $r_i$ of $f$, of multiplicities $m_i$, the new roots solve
+\[
+ \frac{f'(x)}{f(x)}=\sum_i\frac{m_i}{x-r_i}=-\frac1c.
+\]
+The left side is strictly decreasing on each complementary interval because its derivative is $-\sum_i m_i/(x-r_i)^2<0$. It has one solution between each consecutive pair of distinct roots and one further solution in the appropriate exterior interval. All these solutions are simple. Factoring at $r_i$ proves the inherited multiplicity assertion, and counting degrees accounts for all roots. Repeating reduces every possible multiple root at each step; new roots never introduce multiplicity.
+\end{proof}
+
+\begin{theorem}[Strictly real-rooted reciprocal-gamma polynomials]\label{thm:Qroots}
+For every $n\geq1$, $Q_n$ has exactly $n$ distinct real roots. The roots of $Q_{n-1}$ strictly interlace those of $Q_n$.
+\end{theorem}
+\begin{proof}
+The classical Weierstrass product \cite{DLMFGamma} is
+\begin{equation}\label{eq:weierstrass}
+ \frac1{\Gamma(1+t)}=e^{\gamma t}
+       \prod_{m=1}^\infty(1+t/m)e^{-t/m},
+\end{equation}
+with locally uniform convergence. For a finite product, extracting $n![t^n]$ after multiplication by $e^{xt}$ is equivalent to applying operators $1+\partial_x/m$ and real translations to $x^n$. Lemma~\ref{lem:operator} therefore proves real-rootedness of each finite-product polynomial. Coefficient convergence and closure of the set of monic real-rooted polynomials prove real-rootedness in the limit.
+
+A limit of simple-rooted polynomials alone would not prove simplicity. To obtain it, remove the first $n-1$ factors $(1+t/m)e^{-t/m}$ from \eqref{eq:weierstrass}. The Appell polynomial associated with the remaining tail is still real-rooted by the same finite-product argument. Restore the removed factors. The translations preserve multiplicity and commute with the differential operators; the $n-1$ operators $1+\partial_x/m$ make all roots simple by Lemma~\ref{lem:operator}. Finally $Q_n'=nQ_{n-1}$ and Rolle's theorem give strict interlacing.
+\end{proof}
+
+\begin{lemma}[Laplace variation bound, with multiplicity]\label{lem:variation}
+Let $g:(0,\infty)\to\RR$ have exactly $N$ sign changes, with constant nonzero sign between the sign-change points, up to null sets. Suppose all exponentially weighted polynomial moments needed below are absolutely integrable. Its Laplace transform
+$G(a)=\int_0^\infty e^{-ax}g(x)\dd x$ is not identically zero and has at most $N$ zeros on $(0,\infty)$, counted with multiplicity.
+\end{lemma}
+\begin{proof}
+For $N=0$ the transform has a fixed strict sign. For $N>0$, choose a sign-change point $x_0$. Multiplying $g$ by $x_0-x$ removes that sign change and introduces no others. The transform of the new function is
+\[
+ (\partial_a+x_0)G(a)=e^{-x_0a}\frac{\mathrm d}{\mathrm da}\bigl(e^{x_0a}G(a)\bigr).
+\]
+By induction it has at most $N-1$ zeros. If $G$ has any finite collection of zeros of total multiplicity $M$, Rolle's theorem with multiplicity gives at least $M-1$ zeros of the displayed derivative between the first and last zero, including inherited multiplicities at the endpoints when appropriate. Thus $M\leq N$. This bounds every finite collection, and hence all zeros. The induction hypothesis also says that the transform of the new kernel is not identically zero. If $G$ were identically zero, its displayed transformed derivative would be identically zero as well, a contradiction. This completes the induction including nonvanishing.
+\end{proof}
+
+\begin{theorem}[Global bound on positive zeros]\label{thm:globalzeros}
+For every $n\geq0$, $k\geq1$, and $0\leq\rho\leq1$, the function $\D_{n,k}^{\rho}(a)$ has at most $n$ positive zeros, counted with multiplicity. In particular, this holds for $\gamma_n^{(k)}(a)$.
+\end{theorem}
+\begin{proof}
+The factor $x^kW_\rho(x)$ in \eqref{eq:laplace} is strictly positive. By Theorem~\ref{thm:Qroots}, $Q_n(\log x)$ has precisely $n$ simple sign changes on $(0,\infty)$. The estimates in Theorem~\ref{thm:laplace} justify every step of Lemma~\ref{lem:variation}. The transform is not identically zero: as $a\downarrow0$, scaling $x=u/a$ gives
+\begin{equation}\label{eq:small-a}
+ F_{n,k}^{\rho}(a)\sim k!a^{-k-1}\log^n(1/a),
+\end{equation}
+uniformly in $\rho$, with the convention $\log^0(1/a)=1$. This follows from monicity of $Q_n$ and $W_\rho(u/a)\to1$, using the same integrable bounds after splitting at $u=a$. The variation bound now applies.
+\end{proof}
+
+\begin{remark}[The elementary endpoint explains possible multiplicity]
+At $\rho=0$ one has
+\[
+ F_{n,k}^{0}(a)=k!a^{-k-1}\,n![t^n]P_k(t)e^{-t\log a}.
+\]
+The polynomial in $x=-\log a$ is $\prod_{j=1}^k(1+\partial_x/j)x^n$. It has $n$ real roots counted with multiplicity by Lemma~\ref{lem:operator}. When $n>k$, the root $x=0$ has multiplicity exactly $n-k$. Thus all zeros cannot be declared simple uniformly in $\rho$ at small $k$. Any uniform simplicity threshold for $n\geq2$ must be at least $n-1$.
+\end{remark}
+
+\section{An all-order concentration expansion}
+\label{sec:concentration}
+
+The scale on which the zeros move is $a=ck$, with $c$ bounded away from zero and infinity. Set
+\begin{equation}\label{eq:normalized}
+ \Tcal_{n,k}^{\rho}(c)
+   =\frac{(-1)^{n+k}(ck)^{k+1}}{k!}\D_{n,k}^{\rho}(ck),
+ \qquad h_{n,\rho}(x)=W_\rho(x)Q_n(\log x).
+\end{equation}
+Let $Y_k$ have gamma density
+\[
+ \frac{k^{k+1}}{k!}y^k e^{-ky},\qquad y>0.
+\]
+Then $\EE Y_k=1+1/k$, and \eqref{eq:laplace} becomes the exact identity
+\begin{equation}\label{eq:expectation}
+ \Tcal_{n,k}^{\rho}(c)=\EE\,h_{n,\rho}(Y_k/c).
+\end{equation}
+The shape is $k+1$, not $k$; the resulting $1/k$ shift matters for the constant term of each zero.
+
+Define polynomials $C_j$ by the formal generating function
+\begin{equation}\label{eq:Cgen}
+ \sum_{j\geq0}C_j(z)w^j
+   =\exp\left\{\sum_{\ell\geq1}w^\ell
+       \left(\frac{z^\ell}{\ell}+\frac{z^{\ell+1}}{\ell+1}\right)\right\}.
+\end{equation}
+For $C_j(z)=\sum_r c_{j,r}z^r$, use the \emph{normal-ordered} differential operator
+\begin{equation}\label{eq:Aj}
+ (A_jh)(x)=\sum_r c_{j,r}x^r h^{(r)}(x).
+\end{equation}
+This notation does not mean $C_j(x\partial_x)$: the powers of $x$ stand to the left of the derivatives. For example,
+\begin{align}
+ A_0h&=h,\notag\\
+ A_1h&=xh'+\tfrac12x^2h'',\label{eq:Afirst}\\
+ A_2h&=x^2h''+\tfrac56x^3h'''+\tfrac18x^4h^{(4)}.\notag
+\end{align}
+
+\begin{theorem}[Uniform complete expansion]\label{thm:expansion}
+Fix $n,J,r\geq0$ and a compact interval $I\subset(0,\infty)$. As $k\to\infty$,
+\begin{equation}\label{eq:expansion}
+ \Tcal_{n,k}^{\rho}(c)
+   =\sum_{j=0}^J\frac{(A_jh_{n,\rho})(1/c)}{k^j}
+          +O_{n,J,r,I}(k^{-J-1}),
+\end{equation}
+uniformly for $c\in I$ and $0\leq\rho\leq1$, also after any number of $c$-derivatives up to $r$.
+\end{theorem}
+\begin{proof}
+The centered moment generating function is
+\[
+ \EE e^{z(Y_k-1)}=e^{-z}(1-z/k)^{-k-1}.
+\]
+For fixed $z$ near zero its logarithm is exactly the convergent expansion
+\begin{equation}\label{eq:mgf}
+ \log\EE e^{z(Y_k-1)}
+  =\sum_{\ell\geq1}k^{-\ell}
+       \left(\frac{z^\ell}{\ell}+\frac{z^{\ell+1}}{\ell+1}\right).
+\end{equation}
+Consequently the coefficient of $k^{-j}$ in
+$\EE(Y_k-1)^m/m!$ is $[z^m]C_j(z)$. For fixed $m$, these moments are finite polynomials in $1/k$, since only finitely many terms of the exponential can contribute to $z^m$. The degree of $C_j$ is at most $2j$.
+
+Here are the estimates needed to turn coefficient comparison into a uniform asymptotic statement. On $1/2\leq y\leq3/2$, all derivatives of $h_{n,\rho}(y/c)$ of any fixed order in $y$ and $c$ are uniformly bounded for $c\in I$ and $\rho\in[0,1]$. Indeed $y/c$ stays in a compact subinterval of $(0,\infty)$ and $1-\rho e^{-y/c}$ is uniformly positive there. Taylor's theorem at $y=1$, through degree $2J+1$, has remainder bounded by $C|y-1|^{2J+2}$. Formula \eqref{eq:mgf} gives
+\[
+ \EE|Y_k-1|^{2J+2}=O(k^{-J-1}).
+\]
+Replacing truncated central moments by full central moments changes the answer only exponentially, as we now verify.
+
+For each fixed derivative order, the functions to be averaged admit bounds
+\[
+ |\partial_c^u h_{n,\rho}(y/c)|
+    \leq C\bigl(y^{-B}+y^B\bigr)(1+|\log y|^n)
+\]
+for some fixed $B$ and $C$, uniformly in the stated parameters. These follow from $W_1(x)=O(1+x^{-1})$ and its differentiated forms; enlarging $B$ absorbs the logarithm if convenient. For a fixed real exponent $v$,
+\[
+ \EE\bigl[Y_k^v\mathbf1_{Y_k\notin[1/2,3/2]}\bigr]
+ =\frac{\Gamma(k+1+v)}{\Gamma(k+1)k^v}
+   \Pr\{Z_{k,v}\notin[1/2,3/2]\},
+\]
+where $Z_{k,v}$ has shape $k+1+v$ and rate $k$, for all sufficiently large $k$. The prefactor is bounded, and a Chernoff bound obtained from the gamma moment generating function makes the probability $O(e^{-\eta k})$ for some $\eta>0$. The same holds for the finitely many polynomial and inverse-polynomial bounds just used. This proves exponentially small tails for the Taylor remainder and all retained moments.
+
+Taylor expansion in \eqref{eq:expectation}, followed by \eqref{eq:mgf}, therefore gives exactly \eqref{eq:expansion} and the coefficients \eqref{eq:Aj}. Applying the same argument to $\partial_c^u h_{n,\rho}(y/c)$ proves the stated derivative uniformity. No differentiation of an uncontrolled big-$O$ term is used.
+\end{proof}
+
+\begin{remark}[What uniformity does not say]
+The constants in Theorem~\ref{thm:expansion} may depend on $n$ and on the compact $c$-interval. The theorem does not supply estimates uniform when $n$ grows with $k$, nor when $c\downarrow0$ or $c\to\infty$. These are separate problems, especially because the extreme roots of $Q_n$ then control very different scales.
+\end{remark}
+
+\section{Exactly \texorpdfstring{$n$}{n} eventual zeros and their locations}
+\label{sec:zerolocations}
+
+Order the Appell roots and define the corresponding slopes by
+\begin{equation}\label{eq:slopes}
+ x_{n,1}>x_{n,2}>\cdots>x_{n,n},\qquad
+ c_{n,j}=e^{-x_{n,j}},
+ \quad 0<c_{n,1}<\cdots<c_{n,n}.
+\end{equation}
+
+\begin{theorem}[Uniform eventual zero theorem]\label{thm:zeroasympt}
+For every fixed $n\geq1$ there is an integer $K_n$ such that, for every $k\geq K_n$ and every $\rho\in[0,1]$, $\D_{n,k}^{\rho}$ has exactly $n$ positive zeros, all simple. Number them increasingly as $a_{n,j,k}^{\rho}$. Uniformly in $\rho$,
+\begin{equation}\label{eq:zero2}
+ a_{n,j,k}^{\rho}=kc_{n,j}+d_{n,j}(\rho)+O_n(k^{-1}),
+\end{equation}
+where
+\begin{equation}\label{eq:offset}
+ d_{n,j}(\rho)=\frac{c_{n,j}}2
+   \left(1+\frac{Q_n''(x_{n,j})}{Q_n'(x_{n,j})}\right)
+       -\frac{\rho}{\exp(1/c_{n,j})-\rho}.
+\end{equation}
+More generally, for every fixed $J\geq0$ there are coefficients $b_{n,j,\ell}(\rho)$ such that
+\begin{equation}\label{eq:zeroall}
+ a_{n,j,k}^{\rho}=kc_{n,j}+d_{n,j}(\rho)
+   +\sum_{\ell=1}^J b_{n,j,\ell}(\rho)k^{-\ell}
+   +O_{n,J}(k^{-J-1}),
+\end{equation}
+uniformly for $\rho\in[0,1]$. These coefficients are recursively computable from \eqref{eq:Cgen}.
+\end{theorem}
+\begin{proof}
+The leading term in Theorem~\ref{thm:expansion} is
+\[
+ G_0(c,\rho)=W_\rho(1/c)Q_n(-\log c).
+\]
+Its zeros are exactly the $c_{n,j}$, and its derivative at such a zero is
+\begin{equation}\label{eq:G0prime}
+ \partial_cG_0(c_{n,j},\rho)
+      =-\frac{W_\rho(1/c_{n,j})}{c_{n,j}}Q_n'(x_{n,j})\neq0.
+\end{equation}
+Choose disjoint closed intervals around these slopes on whose endpoints $Q_n(-\log c)$ has opposite signs. Since $1\leq W_\rho(1/c)\leq W_1(1/c)$ on their union, the endpoint absolute values are bounded away from zero uniformly in $\rho$. The uniform $J=0$ approximation gives one zero in each interval for all sufficiently large $k$, uniformly in $\rho$. The global bound of Theorem~\ref{thm:globalzeros} excludes any further zero and, because it counts multiplicity, makes every one of the $n$ zeros simple.
+
+Put $c=c_{n,j}+d/k+O(k^{-2})$. The $k^{-1}$ coefficient of \eqref{eq:expansion} gives
+\begin{equation}\label{eq:dimplicit}
+ d=-\frac{G_1(c_{n,j},\rho)}{\partial_cG_0(c_{n,j},\rho)},
+ \qquad G_1(c,\rho)=(A_1h_{n,\rho})(1/c).
+\end{equation}
+At $x=1/c_{n,j}$, write $Q'=Q_n'(x_{n,j})$ and $Q''=Q_n''(x_{n,j})$. Because $Q_n(\log x)=0$,
+\[
+ xh'+\tfrac12x^2h''
+   =\tfrac12W_\rho(x)(Q'+Q'')+xW_\rho'(x)Q'.
+\]
+Also
+\[
+ \frac{W_\rho'(x)}{W_\rho(x)}=-\frac{\rho}{e^x-\rho}.
+\]
+Substitution in \eqref{eq:dimplicit} proves \eqref{eq:offset}.
+
+For completeness, the all-order assertion does not require a convergent power series in $1/k$. Apply Theorem~\ref{thm:expansion} to one additional order at each step. Substitute a finite ansatz for $c$ into the finite expansion. At every new order the unknown coefficient occurs linearly with the nonzero multiplier \eqref{eq:G0prime}; hence it is uniquely determined. This derivative is bounded away from zero uniformly in $\rho$. The residual of a truncation, divided by a uniform lower derivative bound on a smaller root interval, bounds the error in the true zero by the mean value theorem. Expanding one order farther than the desired expansion of $a=kc$ gives \eqref{eq:zeroall} with its stated uniform remainder.
+\end{proof}
+
+\subsection{Examples and the first zero}
+For $n=1$, $x_{1,1}=-\gamma$ and $c_{1,1}=e^\gamma$. Thus the unique zero of $\gamma_1^{(k)}$ satisfies
+\begin{equation}\label{eq:n1asympt}
+ a_{1,1,k}^{1}
+   =e^\gamma k+\frac{e^\gamma}{2}
+      -\frac1{\exp(e^{-\gamma})-1}+O(k^{-1}).
+\end{equation}
+The constant term is approximately $-0.4370805068$. At $\rho=0$ the zero is exactly $e^{H_k}$, whose constant term is $e^\gamma/2$; the Lerch kernel therefore changes the constant term, not the slope.
+A fully explicit refinement, obtained from Appendix~\ref{app:nextzero}, is available throughout the deformation. Put $c=e^\gamma$ and $g=\rho/(e^{1/c}-\rho)$. Then, uniformly in $\rho\in[0,1]$,
+\begin{equation}\label{eq:n1third}
+ a_k(\rho)=ck+\frac c2-g
+   +\frac1k\left\{\frac c{24}+\frac{g(g+1)}c
+          -\frac{g(g+1)(2g+1)}{2c^2}\right\}+O(k^{-2}).
+\end{equation}
+At $\rho=1$, the coefficient of $k^{-1}$ is approximately $0.0288707254211$. At $\rho=0$ it is $c/24$, agreeing with the expansion of the exact zero $e^{H_k}$.
+
+
+For $n=2$ the roots are $-\gamma\pm\sqrt{\zeta(2)}$, and hence
+\begin{equation}\label{eq:n2slopes}
+ c_{2,1}=e^{\gamma-\pi/\sqrt6},\qquad
+ c_{2,2}=e^{\gamma+\pi/\sqrt6}.
+\end{equation}
+The identity $Q_n''(x_j)/Q_n'(x_j)=2\sum_{i\neq j}(x_j-x_i)^{-1}$ gives an alternative expression for every offset entirely in terms of the Appell roots.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $j$ & slope $c_{n,j}$ & offset $d_{n,j}(1)$\\
+\midrule
+1&1&1.781072417990&$-0.437080506782$\\
+2&1&0.493943487920&$\phantom{-}0.287385687369$\\
+2&2&6.422230550060&$-5.227782104747$\\
+3&1&0.261424326196&$\phantom{-}0.354674627668$\\
+3&2&1.064376550729&$-0.506464646434$\\
+3&3&20.305020815096&$-21.208385701520$\\
+4&1&0.172347335379&$\phantom{-}0.355378064541$\\
+4&2&0.465599872096&$\phantom{-}0.040510911109$\\
+4&3&2.062627326998&$-2.178710104429$\\
+4&4&60.797835737559&$-70.712693097880$\\
+\bottomrule
+\end{tabular}
+\caption{Numerical evaluations of the exact slope and offset formulas. These decimals are not isolating intervals. The accompanying CSV records zero computations at $k=10,40,160$.}
+\label{tab:slopes}
+\end{table}
+
+\subsection{Nonasymptotic information at \texorpdfstring{$n=1$}{n=1}}
+\begin{theorem}[Harmonic brackets and monotonicity]\label{thm:n1brackets}
+For each $k\geq1$ and $\rho\in[0,1]$, $\D_{1,k}^{\rho}$ has exactly one positive zero, denoted $a_k(\rho)$. It is simple, and
+\begin{equation}\label{eq:brackets}
+ e^{H_{k-1}}<a_k(\rho)\leq e^{H_k}.
+\end{equation}
+Equality at the upper endpoint occurs exactly when $\rho=0$. The function $\rho\mapsto a_k(\rho)$ is continuous on $[0,1]$ and strictly decreasing. In particular, $a_k(1)<a_k(\rho)<e^{H_k}$ for $0<\rho<1$.
+\end{theorem}
+\begin{proof}
+Normalize the positive density proportional to $x^ke^{-ax}W_\rho(x)$ and write $m(a,\rho)$ for its expectation of $\log X+\gamma$. The sign of $F_{1,k}^{\rho}(a)$ is the sign of $m$. Under an unweighted gamma density of shape $k+1$ and rate $a$, this expectation equals $H_k-\log a$. Weighting by the decreasing function $W_\rho$ lowers the expectation of the increasing function $\log X$; the decrease is strict when $\rho>0$. The elementary covariance identity
+\[
+ 2\Cov(f(X),g(X))
+   =\EE\bigl[(f(X)-f(X'))(g(X)-g(X'))\bigr]
+\]
+for independent identically distributed $X,X'$ justifies this comparison without an external stochastic-order theorem. Hence $m(e^{H_k},\rho)\leq0$, with equality exactly at $\rho=0$.
+
+Alternatively use a gamma density of shape $k$ and rate $a$ and weight it by $xW_\rho(x)$. This weight is strictly increasing, since
+\[
+ \frac{\mathrm d}{\mathrm dx}\frac{x}{1-\rho e^{-x}}
+     =\frac{1-\rho(1+x)e^{-x}}{(1-\rho e^{-x})^2}>0\qquad(x>0).
+\]
+The unweighted expectation is $H_{k-1}-\log a$, so $m(e^{H_{k-1}},\rho)>0$. A zero exists between the brackets, and Theorem~\ref{thm:globalzeros} proves uniqueness and simplicity.
+
+For fixed $\rho$, exponential tilting gives
+$\partial_a m=-\Cov(\log X,X)<0$. For $\rho_2>\rho_1$, the ratio
+\[
+ \frac{W_{\rho_2}(x)}{W_{\rho_1}(x)}
+    =\frac{1-\rho_1e^{-x}}{1-\rho_2e^{-x}}
+\]
+is strictly decreasing in $x$. The same covariance comparison therefore gives $m(a,\rho_2)<m(a,\rho_1)$. Together with strict decrease in $a$, this implies $a_k(\rho_2)<a_k(\rho_1)$. Continuity follows from locally uniform dominated convergence in \eqref{eq:laplace}, uniqueness of the root, and the common compact bracket. No differentiability in $\rho$ at the endpoint $\rho=1$ is assumed.
+\end{proof}
+
+\subsection{Propagation and interlacing in the derivative order}
+\begin{corollary}[Persistence and rightward interlacing]\label{cor:interlacing}
+Fix $n\geq1$ and $\rho\in[0,1]$. Once $F_{n,k}^{\rho}$ has $n$ distinct positive zeros, the same is true at every larger derivative order. At consecutive such orders,
+\begin{equation}\label{eq:interlacing}
+ a_{n,j,k}^{\rho}<a_{n,j,k+1}^{\rho}<a_{n,j+1,k}^{\rho}\quad(1\leq j<n),
+ \qquad a_{n,n,k}^{\rho}<a_{n,n,k+1}^{\rho}.
+\end{equation}
+Thus the unique $n=1$ zero moves strictly rightward for every $k\geq1$.
+\end{corollary}
+\begin{proof}
+Differentiating the integral gives $F_{n,k+1}^{\rho}=-\partial_aF_{n,k}^{\rho}$. Rolle's theorem supplies a zero between each pair of consecutive simple zeros. Also $F_{n,k}^{\rho}(a)\to0$ as $a\to\infty$, and it has a constant nonzero sign after its last zero. There must be a stationary point after that zero: otherwise its nonzero derivative would have constant sign and could not both depart from zero and tend back to zero. Hence there are at least $n$ distinct zeros at the next order. Theorem~\ref{thm:globalzeros} gives exactly those zeros, all simple, and excludes any zero before the first interval or a coincident zero at an old simple root. Induction proves persistence.
+\end{proof}
+
+\section{The all-denominator distribution-rank theorem}
+\label{sec:rank}
+
+We now prove the rational-grid rank law in a form that states precisely which dimension is being computed. The relevant object is a quotient by \emph{specified distribution relations}, not the span of actual transcendental numbers.
+
+\begin{definition}[Finite nonresonant distribution module]\label{def:module}
+Let $q\geq2$, $s\in\CC$, and $\Re s>0$. Start with a complex vector space with basis $[a]$ for $a\in\ZZ/q\ZZ$. Quotient by the relations
+\begin{equation}\label{eq:relations}
+ R_{p,b}=\sum_{j=0}^{p-1}[b+jq/p]-p^s[pb],
+ \qquad p\mid q\text{ prime},\quad b\in\ZZ/(q/p)\ZZ,
+\end{equation}
+where $p^s=\exp(s\log p)$. Denote the quotient by $M_q(s)$. The symbol $[0]$ represents the integral argument, namely $a/q=1$ when the grid is interpreted by Hurwitz values.
+\end{definition}
+
+Prime rows generate all composite distribution rows on this grid. To see this, write
+\[
+ R_u(y)=\sum_{ux=y}[x]-u^s[y],\qquad y\in u(\ZZ/q\ZZ),
+\]
+for $u\mid q$. If $uv\mid q$ and $y\in uv(\ZZ/q\ZZ)$, then every solution of $vz=y$ lies in $u(\ZZ/q\ZZ)$, and direct expansion gives
+\[
+ R_{uv}(y)=\sum_{vz=y}R_u(z)+u^sR_v(y).
+\]
+Induction on the number of prime factors of the divisor proves the assertion. The same identity holds with $s+t$ in place of $s$.
+
+\begin{theorem}[Formal rank, with explicit coordinates]\label{thm:rank}
+For every $q\geq2$ and $\Re s>0$,
+\begin{equation}\label{eq:rank}
+ \dim_\CC M_q(s)=\varphi(q),\qquad
+ \dim_\CC M_q(s)/\CC[0]=\varphi(q)-1.
+\end{equation}
+The images of the symbols $[a]$ with $\gcd(a,q)=1$ form a basis of $M_q(s)$. At positive integer $s$, the relation matrix is rational and has rank $q-\varphi(q)$ over $\QQ$. Deleting its column for $[0]$ does not change that rank.
+\end{theorem}
+
+\subsection{Prime-step elimination}
+Write $U_d=(\ZZ/d\ZZ)^\times$, and use a single formal coordinate for $d=1$. A linear functional on the unquotiented grid can be regarded as functions $F_d$ on the primitive fractions $a/d$, $a\in U_d$, for every $d\mid q$. This is just the unique reduced-denominator decomposition of a rational class modulo one. A functional descends to $M_q(s)$ if and only if it annihilates \eqref{eq:relations}.
+
+For $pd\mid q$, the preimages of $a/d$ under multiplication by $p$ give two types of equations. If $p\mid d$, all $p$ preimages are primitive of denominator $pd$, and
+\begin{equation}\label{eq:prime-div}
+ p^s F_d(a)=\sum_{\substack{b\in U_{pd}\\b\equiv a\ (d)}}F_{pd}(b).
+\end{equation}
+If $p\nmid d$, exactly one preimage has denominator $d$, with coordinate $p^{-1}a$, so
+\begin{equation}\label{eq:prime-new}
+ (p^s I-P_p)F_d=S_{pd,d}F_{pd},
+ \quad (P_pF)(a)=F(p^{-1}a),\quad
+ (S_{pd,d}G)(a)=\sum_{\substack{b\in U_{pd}\\b\equiv a\ (d)}}G(b).
+\end{equation}
+At $d=1$, $P_p=I$ and the sum runs over $U_p$.
+
+If $P_p$ has order $\ell$, then
+\begin{equation}\label{eq:prime-inverse}
+ (p^sI-P_p)^{-1}
+  =\frac{\displaystyle\sum_{j=0}^{\ell-1}p^{s(\ell-1-j)}P_p^j}
+         {p^{s\ell}-1}.
+\end{equation}
+The denominator cannot vanish when $\Re s>0$. Descending through divisors of $q$ therefore determines every $F_d$ uniquely from $F_q$. This proves the upper bound $\dim M_q(s)\leq\varphi(q)$ and gives a rational elimination algorithm at positive integer $s$. It remains to prove that arbitrary unit data extend consistently; uniqueness alone would not prove existence.
+
+\subsection{A character extension proving consistency}
+Let $\chi$ be any Dirichlet character modulo $q$, of conductor $f$. When $f\mid d\mid q$, write $\chi_d$ for the character induced on $U_d$ by the primitive character of conductor $f$. Define
+\begin{equation}\label{eq:Cqd}
+ C_{q,d}(s,\chi)=\left(\frac qd\right)^{1-s}
+       \prod_{\substack{p\mid q\\p\nmid d}}
+       \frac{1-p^{-1}}{1-\overline{\chi_d(p)}p^{-s}}.
+\end{equation}
+The arguments $p$ in the product are coprime to $d$, so these character values are nonzero. For $d=1$ only the principal character contributes; its character factor is interpreted as $1$.
+
+\begin{lemma}[Character normal form]\label{lem:characterbasis}
+The functions
+\begin{equation}\label{eq:characterextension}
+ F_{\chi,d}(a)=
+ \begin{cases}
+ C_{q,d}(s,\chi)\chi_d(a),&f\mid d,\\
+ 0,&f\nmid d,
+ \end{cases}
+\end{equation}
+satisfy all the distribution equations and restrict to $\chi$ on $U_q$. They form a basis of the dual of $M_q(s)$.
+\end{lemma}
+\begin{proof}
+When $f\mid d$ and $p\mid d$, the character is constant on each fiber in \eqref{eq:prime-div}, which has $p$ elements. Formula \eqref{eq:Cqd} gives
+$C_{q,d}=p^{1-s}C_{q,pd}$, exactly the required equation.
+
+When $f\mid d$ and $p\nmid d$, the primitive fiber has $p-1$ elements and $P_p\chi_d=\overline{\chi_d(p)}\chi_d$. Formula \eqref{eq:Cqd} gives
+\[
+ (p^s-\overline{\chi_d(p)})C_{q,d}=(p-1)C_{q,pd},
+\]
+which proves \eqref{eq:prime-new}.
+
+When $f\mid pd$ but $f\nmid d$, the restriction of $\chi_{pd}$ to the kernel of $U_{pd}\to U_d$ is nontrivial. Otherwise the character would factor through $d$, contradicting its conductor. Its sum on every fiber is therefore zero, while $F_{\chi,d}=0$. If $f\nmid pd$, both sides are zero. These cases cover every prime-step relation and prove consistency. Since $C_{q,q}=1$, the restrictions to $U_q$ are precisely the $\varphi(q)$ distinct characters, a basis of the functions on $U_q$. Uniqueness of extension proves the last assertion.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:rank}]
+The upper bound and Lemma~\ref{lem:characterbasis} give $\dim M_q(s)=\varphi(q)$ and the unit-coordinate basis. At the denominator-one coordinate, every nonprincipal character vanishes, whereas the principal character has value
+\begin{equation}\label{eq:principalzero}
+ F_{\chi_0,1}
+   =\frac{\varphi(q)}{q^s\displaystyle\prod_{p\mid q}(1-p^{-s})}\neq0.
+\end{equation}
+Thus $[0]$ is nonzero in the module, and quotienting by it lowers the dimension by one. At integral $s>0$, rank over $\QQ$ equals rank after extending scalars to $\CC$. Moreover, a relation supported solely in the column $[0]$ would make $[0]=0$ in the quotient, contrary to \eqref{eq:principalzero}. Restricting the relation rows to the other $q-1$ columns is therefore injective on their row space; it preserves rank $q-\varphi(q)$.
+\end{proof}
+
+\paragraph{Example.}
+For $q=4$ and $s=2$, the two prime-step rows are
+$[2]-3[0]$ and $[1]+[3]-4[2]$. The full quotient has basis $[1],[3]$ and dimension $2$. After making the integral coordinate background, $[2]=0$ and $[1]+[3]=0$, leaving dimension $1=\varphi(4)-1$. This is a formal statement about those rows; it is not an assertion that a particular remaining numerical value is irrational.
+
+\paragraph{Relation to universal distributions.}
+Kubert's ordinary distribution has weight $p^s=1$ and requires different treatment of the resonant directions \cite{Kubert}. The present finite module is a weighted, nonresonant relative. The inverse \eqref{eq:prime-inverse}, not a claim of new universal-distribution theory, is what makes the all-$q$ proof especially transparent for $s=k+1>1$.
+
+\section{Jet modules and the cyclotomic polylogarithm bridge}
+\label{sec:jets}
+
+\subsection{Flat finite jets}
+\begin{theorem}[The rank law at every jet order]\label{thm:jetmodule}
+Fix $N\geq0$ and let $A_N=\CC[t]/(t^{N+1})$. Replace every $p^s$ in \eqref{eq:relations} by $p^{s+t}=p^s e^{t\log p}$, interpreted in $A_N$. For $\Re s>0$, the resulting module is free over $A_N$ of rank $\varphi(q)$. After quotienting by the $A_N$-submodule generated by $[0]$, it is free of rank $\varphi(q)-1$, hence has complex dimension $(N+1)(\varphi(q)-1)$.
+\end{theorem}
+\begin{proof}
+All denominators in \eqref{eq:prime-inverse} and \eqref{eq:Cqd}, with $s$ replaced by $s+t$, have nonzero constant terms. They are units in $A_N$. Applying those invertible prime-step matrices directly to the relation vectors expresses every nonunit symbol in terms of the unit symbols. Thus the unit symbols generate the module. The same character functions give functionals whose matrix on the unit symbols is the invertible character table, so no nonzero relation among the unit symbols remains. This proves an isomorphism of the presented module with $A_N^{\varphi(q)}$. In these character-dual coordinates $[0]$ has only its principal coordinate nonzero, and that coordinate is the unit \eqref{eq:principalzero} with $s+t$ substituted. It spans a rank-one direct summand. The quotient is therefore free of the claimed rank. No claim about linear independence of logarithms over $\QQ$ is needed.
+\end{proof}
+
+\begin{corollary}[All-order Stieltjes distribution law]\label{cor:distribution}
+For $d\geq2$, $k\geq1$, $n\geq0$, and $a>0$,
+\begin{equation}\label{eq:distributionall}
+ \sum_{j=0}^{d-1}\gamma_n^{(k)}\left(\frac{a+j}{d}\right)
+  =d^{k+1}\sum_{\ell=0}^n\binom n\ell
+       (-\log d)^{n-\ell}\gamma_\ell^{(k)}(a).
+\end{equation}
+On a grid of denominator $q$, with the integral coordinate and lower jets treated as background, the formal residual dimension of the highest jet is $\varphi(q)-1$, for every $q,k,n$.
+\end{corollary}
+\begin{proof}
+Group the Hurwitz series into residue classes to obtain
+$\sum_{j<d}\zeta(s,(a+j)/d)=d^s\zeta(s,a)$ and substitute the generating identity \eqref{eq:mastergen}. Coefficient comparison gives \eqref{eq:distributionall}. Multiplication by $P_k(t)$ is invertible in $A_N$, so it changes jet coordinates but not their module rank. Once lower jets are fixed, the highest-order relation rows have precisely the coefficients \eqref{eq:relations} at $s=k+1$; the other terms are known inhomogeneous data. Theorem~\ref{thm:rank} applies.
+\end{proof}
+
+At $n=1$, $\gamma_0^{(k)}=-\psi^{(k)}$, and \eqref{eq:distributionall} is exactly the distribution row printed in the source tower. Thus Corollary~\ref{cor:distribution} supplies the missing universal proof of the source's rank assertion, with an explicit interpretation of ``residual dimension.'' It does not exclude additional relations among evaluated constants, and it does not prove that differentiation destroys all possible arithmetic reflection relations. Those are stronger questions than a rank computation for the specified rows.
+
+\subsection{Fourier transport at every order}
+Let $\omega_q=e^{2\pi i/q}$. Grouping absolutely convergent series and applying finite Fourier inversion gives
+\begin{equation}\label{eq:DFT}
+ \Li_s(\omega_q^b)=q^{-s}\sum_{a=1}^q\omega_q^{ab}\zeta(s,a/q),
+ \qquad
+ \zeta(s,a/q)=q^{s-1}\sum_{b=0}^{q-1}\omega_q^{-ab}\Li_s(\omega_q^b),
+\end{equation}
+for $\Re s>1$. This is the classical bridge used in \cite{RepoBridge}.
+
+\begin{proposition}[Stieltjes jets as polylogarithm order jets]\label{prop:DFTjets}
+For $1\leq a\leq q$, $n\geq0$, and $k\geq1$,
+\begin{equation}\label{eq:DFTjets}
+ \gamma_n^{(k)}(a/q)
+ =(-1)^{n+k}k!n!q^k\sum_{b=0}^{q-1}\omega_q^{-ab}
+       [t^n]\left\{P_k(t)e^{t\log q}\Li_{k+1+t}(\omega_q^b)\right\}.
+\end{equation}
+Consequently distribution relations, with all their order derivatives, can be transported by an invertible cyclotomic Fourier matrix.
+\end{proposition}
+\begin{proof}
+Insert the inverse transform in \eqref{eq:mastergen}. The series defining $\Li_{k+1+t}(\omega_q^b)$ and every fixed number of its $t$-derivatives converge normally for $|t|<k$ on any smaller closed disk; the majorant is a convergent logarithm-weighted Dirichlet series. Coefficient extraction is therefore legitimate. Invertibility is the usual finite Fourier orthogonality, valid also over the truncated jet ring.
+\end{proof}
+
+\paragraph{Parity correction to the source bridge.}
+The source defines
+$\Cl_{2m}(\theta)=\Im\Li_{2m}(e^{i\theta})$ and
+$\Cl_{2m+1}(\theta)=\Re\Li_{2m+1}(e^{i\theta})$. With these conventions,
+\begin{equation}\label{eq:parity}
+ \Cl_w(-\theta)=(-1)^{w+1}\Cl_w(\theta).
+\end{equation}
+Thus the residual Clausen component is odd at even weight and even at odd weight. The statement in the source's DFT consequences that it is always the odd part of the polygamma grid needs this qualification. In weight three, the cosine/Clausen part belongs to the symmetric combination of the tetragamma grid, not its antisymmetric combination. This correction is algebraic and does not depend on a numerical independence hypothesis.
+
+\section{Regularized Dirichlet duality at every jet order}
+\label{sec:duality}
+
+Let $\chi$ be primitive of conductor $q$ and parity $\epsilon\in\{0,1\}$, so $\chi(-1)=(-1)^\epsilon$. The case $q=1$, with $L=\zeta$, may be included. Fix $k\geq1$ and put
+\begin{equation}\label{eq:delta}
+ \delta=\begin{cases}1,&\epsilon\equiv k\pmod2,\\0,&\epsilon\not\equiv k\pmod2,\end{cases}
+ \qquad V(t)=\frac{L(-k+t,\overline\chi)}{t^\delta}.
+\end{equation}
+The functional equation and the nonvanishing Euler product at $k+1>1$ imply that $V$ is analytic and $V(0)\neq0$. When $\delta=1$, the negative value has a simple trivial zero; when $\delta=0$, it does not vanish.
+
+\begin{theorem}[An exact normalized germ]\label{thm:normalizedFE}
+Near $t=0$,
+\begin{equation}\label{eq:normalizedFE}
+ \frac{L(k+1+t,\chi)}{L(k+1,\chi)}
+   =\left(\frac{2\pi}{q}\right)^t
+      \frac{\Gamma(k+1)}{\Gamma(k+1+t)}
+      T_\delta(t)\frac{V(-t)}{V(0)},
+\end{equation}
+where
+\begin{equation}\label{eq:Tdelta}
+ T_0(t)=\sec\frac{\pi t}{2},\qquad
+ T_1(t)=\frac{\pi t/2}{\sin(\pi t/2)},\quad T_1(0)=1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The primitive Dirichlet functional equation \cite{DLMFL}, after gamma reflection and duplication, takes the form
+\begin{equation}\label{eq:trigFE}
+ L(1-s,\overline\chi)=C_\chi
+       \left(\frac{q}{2\pi}\right)^s\Gamma(s)
+       \cos\frac{\pi(s-\epsilon)}2\,L(s,\chi),
+ \qquad C_\chi=\frac{2i^\epsilon}{\tau(\chi)},
+\end{equation}
+where $\tau(\chi)$ is the nonzero Gauss sum. At $s=k+1+t$, if $\delta=0$, the ratio of the cosine factor to its value at $t=0$ is $\cos(\pi t/2)$. Divide \eqref{eq:trigFE} by its nonzero value at zero and rearrange to obtain \eqref{eq:normalizedFE} with $T_0$.
+
+If $\delta=1$, both $L(-k-t,\overline\chi)$ and the cosine factor vanish simply in $t$. Write the former as $(-t)V(-t)$, divide out $t$, and then normalize at zero. The ratio of the regularized trigonometric factor is $\sin(\pi t/2)/(\pi t/2)$. Its reciprocal gives $T_1$. All character-dependent constants, including the root-number phase, cancel under normalization. This derivation also proves simplicity of the negative zero and $V(0)\neq0$.
+\end{proof}
+
+Define unambiguously local logarithmic derivatives by
+\begin{equation}\label{eq:uv}
+ u_r=\left.\partial_t^r\log\frac{L(k+1+t,\chi)}{L(k+1,\chi)}\right|_{t=0},
+ \qquad
+ v_r=\left.\partial_t^r\log\frac{V(t)}{V(0)}\right|_{t=0}.
+\end{equation}
+The normalized functions equal $1$ at zero, so the logarithms are the analytic germs vanishing there, irrespective of global logarithm branches.
+
+\begin{theorem}[All logarithmic-jet coefficients]\label{thm:cumulants}
+For every integer $r\geq1$,
+\begin{equation}\label{eq:cumulants}
+ u_r+(-1)^{r+1}v_r=A_r(k,q,\delta),
+\end{equation}
+with
+\begin{align}
+ A_1(k,q,\delta)&=\gamma+\log(2\pi/q)-H_k,\label{eq:A1FE}\\
+ A_r(k,q,\delta)&=(r-1)!\bigl(\zeta(r)-H_k^{(r)}\bigr),
+       &&r\geq3\text{ odd},\label{eq:AoddFE}\\
+ A_r(k,q,\delta)&=(r-1)!\left(H_k^{(r)}
+          +(-1)^\delta(1-2^{1-r})\zeta(r)\right),
+       &&r\geq2\text{ even}.\label{eq:AevenFE}
+\end{align}
+\end{theorem}
+\begin{proof}
+Take logarithms in \eqref{eq:normalizedFE}. The gamma contribution at order one is $-\psi(k+1)=\gamma-H_k$. At order $r\geq2$, it is
+\[
+ -\psi^{(r-1)}(k+1)=(-1)^{r+1}(r-1)!
+       \bigl(\zeta(r)-H_k^{(r)}\bigr).
+\]
+Both $T_\delta$ are even. The cosine and sine products give
+\begin{align*}
+ \log T_0(t)&=\sum_{m\geq1}\frac{(1-2^{-2m})\zeta(2m)}m\,t^{2m},\\
+ \log T_1(t)&=\sum_{m\geq1}\frac{2^{-2m}\zeta(2m)}m\,t^{2m}.
+\end{align*}
+At even $r$, their $r$th derivatives at zero are respectively
+$(r-1)!(2-2^{1-r})\zeta(r)$ and $(r-1)!2^{1-r}\zeta(r)$.
+Combining terms yields \eqref{eq:A1FE}--\eqref{eq:AevenFE}. The substitution $V(-t)$ contributes $(-1)^rv_r$, which moved to the left gives \eqref{eq:cumulants}.
+\end{proof}
+
+\subsection{The explicit trivial-zero bridge}
+When $\delta=0$, the $r=1$ identity is the source draft's correct harmonic bridge:
+\begin{equation}\label{eq:bridge-nonzero}
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+   +\overline{\frac{L'(-k,\chi)}{L(-k,\chi)}}
+       =\gamma+\log(2\pi/q)-H_k.
+\end{equation}
+When $\delta=1$, Taylor expansion gives
+\[
+ V(t)=L'(-k,\overline\chi)
+       +\frac{L''(-k,\overline\chi)}2t
+       +\frac{L'''(-k,\overline\chi)}6t^2+\cdots.
+\]
+Therefore the replacement is
+\begin{equation}\label{eq:bridge-zero}
+ \boxed{\quad
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+  +\overline{\frac{L''(-k,\chi)}{2L'(-k,\chi)}}
+       =\gamma+\log(2\pi/q)-H_k.\quad}
+\end{equation}
+The factor $1/2$ is forced by regularization. A vague instruction to take a ``ratio of leading derivatives'' is not a substitute for this normalization.
+
+At second order in the trivial-zero case,
+\begin{equation}\label{eq:secondzero}
+ \left(\frac{L''}{L}-\frac{(L')^2}{L^2}\right)(k+1,\chi)
+ -\overline{\left\{\frac{L'''(-k,\chi)}{3L'(-k,\chi)}
+        -\left(\frac{L''(-k,\chi)}{2L'(-k,\chi)}\right)^2\right\}}
+       =H_k^{(2)}-\frac{\zeta(2)}2.
+\end{equation}
+Without a trivial zero, replace the regularized brace by $(L''/L)-(L'/L)^2$ at $-k$, and replace the right side by $H_k^{(2)}+\zeta(2)/2$.
+
+\subsection{A precise statement of the negative-jet cost}
+\begin{corollary}[Triangular jet conversion]\label{cor:jetcost}
+A positive $L$-jet through order $N$ at $k+1$ is recovered from the regularized negative jet $V$ through order $N$ by an invertible triangular transformation. In raw negative derivatives, this requires order $N+\delta$. The extra derivative at a trivial zero is a sharp requirement of this formal triangular transformation.
+\end{corollary}
+\begin{proof}
+In \eqref{eq:normalizedFE}, every factor except $V(-t)/V(0)$ is an explicitly known analytic unit. The coefficient of the highest negative derivative in $L^{(N)}(k+1,\chi)$ is
+\[
+ \frac{(-1)^N L(k+1,\chi)}{L(-k,\overline\chi)}\quad(\delta=0),
+ \qquad
+ \frac{(-1)^N L(k+1,\chi)}{(N+1)L'(-k,\overline\chi)}\quad(\delta=1),
+\]
+respectively multiplying $L^{(N)}(-k,\overline\chi)$ or $L^{(N+1)}(-k,\overline\chi)$. Both coefficients are nonzero. This proves triangular invertibility and the formal order count. It makes no assertion that these Taylor coefficients are arithmetically independent numbers.
+\end{proof}
+
+For an imprimitive character, one must first use its conductor and remove the missing Euler factors. Their logarithmic derivatives then contribute explicit correction terms. Substituting the modulus of an induced character into the primitive functional equation without those factors is not valid.
+
+\section{A truncation bound and reproducible checks}
+\label{sec:verification}
+
+\subsection{A rigorous absolute tail estimate}
+For computation directly from the convergent differentiated series, put
+\begin{equation}\label{eq:Bnk}
+ B_{n,k}(x)=n![t^n]P_k(t)e^{-xt},\qquad
+ S_M^{\rho}=(-1)^{n+k}k!\sum_{m=0}^{M-1}
+          \frac{\rho^m B_{n,k}(\log(a+m))}{(a+m)^{k+1}}.
+\end{equation}
+
+\begin{theorem}[Explicit truncation error]\label{thm:tail}
+Suppose $M\geq1$, $a>0$, $B=a+M\geq1$, and $0<R<k$. Then for $0\leq\rho\leq1$,
+\begin{equation}\label{eq:tail}
+ |\D_{n,k}^{\rho}(a)-S_M^{\rho}|
+ \leq k!n!R^{-n}P_k(R)\rho^M
+       B^{-k-1+R}\left(1+\frac{B}{k-R}\right).
+\end{equation}
+For $\rho<1$, the last parenthesis may be replaced by
+\begin{equation}\label{eq:tail-geometric}
+ \min\left\{1+\frac{B}{k-R},\frac1{1-\rho}\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact remainder is $(-1)^{n+k}k!n!$ times the coefficient of $t^n$ in
+\[
+ P_k(t)\sum_{m=M}^\infty\rho^m(a+m)^{-k-1-t}.
+\]
+On $|t|=R$, positivity of the coefficients of $P_k$ gives $|P_k(t)|\leq P_k(R)$, and $a+m\geq B\geq1$ gives an absolute bound by $(a+m)^{-k-1+R}$. Cauchy's coefficient estimate and the decreasing-function integral test yield
+\[
+ \sum_{m=M}^\infty\rho^m(a+m)^{-k-1+R}
+ \leq\rho^M\left(B^{-k-1+R}
+           +\frac{B^{-k+R}}{k-R}\right).
+\]
+The geometric bound is $\rho^M B^{-k-1+R}/(1-\rho)$ when $\rho<1$. Taking the smaller bound proves the result. The $\rho=0$ tail is zero, since $M\geq1$.
+\end{proof}
+
+The bound is absolute. It cannot become a useful uniform relative bound in neighborhoods of the zeros. For interval-certified root isolation, the finite sum and the bound should be evaluated with outward rounding and combined with the zero count. The supplied mpmath implementation evaluates the formula at arbitrary precision but does \emph{not} provide outward rounding; its output is not an interval certificate.
+
+\subsection{What the accompanying computation verifies}
+The package includes a self-contained implementation of the prime-step inverses using Python's exact rational arithmetic, a separate SymPy rank check, a Hurwitz-jet implementation, an independent Mellin-integral implementation, a positive Lerch series implementation, a character functional-equation check including a genuinely complex character, and numerical root computations. The principal test ranges are recorded in Table~\ref{tab:checks}. The exact result files, rather than rounded displays in this paper, are the verification record.
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{p{0.43\textwidth}p{0.43\textwidth}}
+\toprule
+Check & Range or independent comparison\\
+\midrule
+Exact prime-step extensions & $2\leq q\leq60$, $s=2,3,7$; 45,105 rational coefficient equalities\\
+Independent relation-matrix ranks & $2\leq q\leq24$, $s=2,3$; full matrix and integral-column deletion\\
+Central-moment operators & Symbolic $C_0,\ldots,C_4$\\
+Laplace representation & $0\leq n\leq3$, $k=1,2,4$, $a=0.7,2.3$\\
+Direct Stieltjes differentiation & $0\leq n\leq2$, $k=1$, $a=1.25$\\
+Analytic tail bound & $0\leq n\leq4$, $k=2,5,12$, two values of $a$\\
+Lerch deformation & $\rho=0,1/2$, $0\leq n\leq3$, $k=3$\\
+Regularized $L$-duality & Four primitive characters, $k=1,2,3$, logarithmic orders $1,2,3$\\
+Polylogarithm Fourier jets & $q=3,4$, order differentiation by a Cauchy contour discretization\\
+First-zero brackets and third coefficient & $1\leq k\leq12$; coefficient checks at $\rho=0,1/2,1$\\
+Zero asymptotics & All roots for $1\leq n\leq4$, $k=10,40,160$; four large-order scale-first integral checks\\
+\bottomrule
+\end{tabular}
+\caption{Reproducibility coverage. The ranges are finite checks, not substitutes for the all-parameter proofs.}
+\label{tab:checks}
+\end{table}
+
+The floating-point tests target 55 decimal digits, with scale-dependent guard precision for Hurwitz-jet evaluations. The implementation adds $10+\lceil(k+1)\max(0,\log_{10}a)\rceil$ guard digits before multiplying a tiny unscaled jet by $a^{k+1}$. The independent Mellin comparisons have relative residuals of order $10^{-52}$ in this run, and the direct parameter-derivative comparisons agree at the recorded working precision under the normalization $|u-v|/\max(1,|u|,|v|)$. The largest observed ratio of actual truncation error to the evaluated analytic bound is approximately $0.04314$. The full run completed 380 test cases, including 45,105 rational coefficient equalities. The largest normalized residual in the four scale-first large-order zero checks was below $3.44\times10^{-53}$. These figures describe the selected tests, not global numerical guarantees.
+
+A useful implementation warning arose during checking: tiny-step numerical differentiation of \texttt{mpmath.polylog} in its order at an integer did not reproduce the Fourier-jet identity accurately in one initial test. We replaced that numerical route with a fixed Cauchy contour discretization, leaving the proven formula unchanged. A second check found that unscaled Hurwitz jets at large $a$ and $k$ could lose accuracy after multiplication by $a^{k+1}$ unless guard precision was increased. Scale-first gamma-expectation quadrature supplies an independent check in that regime. The package records the methods and comparison residuals; working precision by itself is not a reliability argument.
+
+The root CSV records both $k(a_{n,j,k}^1-kc_{n,j}-d_{n,j}(1))$ and the corresponding residual after the next correction from Appendix~\ref{app:nextzero}. The bounded behavior of the first quantity is the expected numerical signature of the proved $O(k^{-1})$ remainder. It does not by itself prove that remainder, nor does finding $n$ approximate roots establish exact isolating intervals.
+
+\section{Focused corrections to the source drafts}
+\label{sec:audit}
+
+The audit is deliberately separated from the analytic theorems. Source files are preserved; the bundle supplies suggested replacement language and mathematical fragments for review before integration.
+
+\subsection{A theorem-level proof gap now repaired}
+In \cite{RepoTower}, \texttt{thm:rank} is stated for all denominators and derivative orders, while the following paragraph cites exact row reductions on a finite range. The README already records this gap. Replace that evidentiary paragraph by a reference to Theorem~\ref{thm:rank} and Corollary~\ref{cor:distribution}, and state that the rank is the rank of the \emph{specified distribution-relation matrix}. The residual dimension is not automatically the dimension of a space of evaluated constants modulo an unspecified collection of ``known'' constants.
+
+The original exact-computation scripts referenced by the source are not present in the imported ProveIt tree. The proof and exact normal-form implementation supplied here are independent replacements for verifying the all-parameter rank statement; they do not purport to reproduce an unavailable internal data format.
+
+\subsection{Independence language not justified by PSLQ}
+The section headed \emph{The new atoms are genuine} in \cite{RepoTower} concludes that six second-$s$-derivative constants are mutually independent on the basis of a negative PSLQ sweep. Its companion report uses similar language. A negative search over a chosen basis, precision, coefficient-height bound, and iteration budget proves no general linear or algebraic independence statement. The proposed replacement is:
+\begin{quote}
+The reported searches found no relation in the tested basis and search range. These computations support the choice of separate basis symbols for experimental reduction; they do not establish irrationality, non-elementarity, or linear or algebraic independence of the evaluated constants.
+\end{quote}
+This issue is additional to the README's specific warning about the rank theorem. Planted controls and independent numerical engines are good safeguards against implementation mistakes, but do not change the logical status of a negative search.
+
+\subsection{The trivial-zero bridge needs its regularization factor}
+The parity remark in \cite{RepoTower} describes a first-nonzero-order variant without displaying its coefficients. Insert \eqref{eq:bridge-zero}; at second order insert \eqref{eq:secondzero}. The correction is a completion of an underspecified statement, not a claim that the source explicitly printed a wrong factor $1/2$. At every order, Theorem~\ref{thm:cumulants} and Corollary~\ref{cor:jetcost} replace informal references to ``leading derivatives'' by exact Taylor-coefficient normalization.
+
+\subsection{Residual zeta jets must not be called elementary}
+The source's quarter-argument duality paragraph says that the relevant parameter derivative is a finite combination of a negative-order polygamma value and elementary constants. Its displayed $k=2$ formula still contains $\zeta'(3)$, $\zeta(3)$, and other named constants. A justified wording is that the formula eliminates the nonprincipal beta-derivative coordinate in favor of the specified negative-order polygamma value, \emph{while retaining the explicitly displayed principal-character zeta jets and named constants}. We neither prove nor assume that every retained constant is non-elementary; the point is that the displayed derivation does not eliminate them into an elementary vocabulary.
+
+Likewise, calling $\beta'(-1)=2G/\pi$ ``elementary'' conflates reduction to the lower Catalan-value coordinate with reduction to elementary constants. The proposed wording is ``a lower $L$-value (Catalan) coordinate.'' The identity itself is not challenged.
+
+\subsection{Character primitivity and Clausen parity}
+The character-coordinate identity obtained by summing Hurwitz values against $\chi$ is valid for every character modulo $q$, not only primitive ones. Primitivity is essential instead for the unmodified conductor-$q$ functional equation. Separate those hypotheses. In \cite{RepoBridge}, the DFT consequence describing the Clausen component as always odd should be replaced by \eqref{eq:parity}: odd at even weight, even at odd weight.
+
+\subsection{Previously recorded defects are not new discoveries}
+The project README already distinguishes numerical non-membership evidence from proofs in the Gaussian-depth papers, notes the conditional status of gamma-relation completeness, records a dilogarithm error in an external input, and lists stale PDF cross-references. We have not re-certified all those materials here. They remain relevant integration warnings, but should not be reported as new findings of this continuation. In particular, no proof of Rohrlich's conjecture, period-conjectural depth independence, or independence of the six Stieltjes derivative atoms follows from the present work.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\paragraph{1. Effective zero thresholds.}
+The proof of Theorem~\ref{thm:zeroasympt} supplies existence of $K_n$, uniformly in $\rho$, but not a practical bound as a function of $n$. Obtain explicit lower bounds for Appell root separation and $|Q_n'(x_{n,j})|$, combine them with explicit gamma-concentration remainders, and bound $K_n$. The endpoint $\rho=0$ shows $K_n\geq n-1$ for uniform simplicity. Is $K_n=\max(1,n-1)$ sufficient, or can the positive Lerch kernel force a larger threshold?
+
+\paragraph{2. The exact small-$k$ zero count.}
+For $\rho=1$, does $\gamma_n^{(k)}$ have exactly $n$ positive zeros counted with multiplicity for every $n\geq1$ and $k\geq1$? The upper bound and eventual equality are proved here; they do not decide every small-$k$ case. Corollary~\ref{cor:interlacing} reduces an all-larger-$k$ certification for a fixed $n$ to finding one rigorously isolated full set of zeros. Determine whether strict simplicity also holds at the undeformed endpoint before the uniform threshold.
+
+\paragraph{3. Growing $n$ and extreme slopes.}
+Investigate the root distribution of $Q_n$ as $n\to\infty$ and the extreme slopes $e^{-x_{n,1}}$ and $e^{-x_{n,n}}$. A joint regime $n=n(k)$ requires more than the compact, fixed-$n$ expansion proved here. Quantitative Appell root estimates would explain how rapidly the largest zero scale spreads and where a single $a=ck$ scaling ceases to be uniform.
+
+\paragraph{4. Monotonicity of higher zero branches.}
+At $n=1$ every zero decreases strictly with $\rho$. For $n>1$, the first correction satisfies
+\[
+ \frac{\mathrm d}{\mathrm d\rho}d_{n,j}(\rho)
+    =-\frac{e^{1/c_{n,j}}}{(e^{1/c_{n,j}}-\rho)^2}<0.
+\]
+Thus the leading deformation effect has the same sign on every branch. Does strict monotonicity hold for the exact roots throughout a zero-simple parameter region? A proof needs control of a sign-changing kernel, not merely the covariance comparison used at $n=1$.
+
+\paragraph{5. Certified computation.}
+Implement outward-rounded versions of the finite sums, gamma-concentration remainder bounds, and polynomial root isolation. Use Theorem~\ref{thm:globalzeros} to turn sign-isolating intervals into a global positive-zero certificate. The present exact distribution tests are rational certificates of finite identities; the mpmath root records are not analytic root certificates.
+
+\paragraph{6. Resonant weights and integral structure.}
+Study the finite module when $p^{s\ell}=1$ for a relevant permutation order. The nonresonant inverse fails there. Determine the rank jumps or changes in coordinate geometry, their relation to ordinary universal distributions, and whether one can describe integral Smith normal forms at positive integer weights. Rank over $\QQ$ alone does not answer torsion questions over $\ZZ$.
+
+\paragraph{7. Formalization and certificate transport.}
+Formalize the prime-step inverse, the character extension, and the jet-module theorem first: they have a sharply finite algebraic interface. Then formalize the coefficient-extraction identities and the variation argument. For analytic certification, the dominant libraries needed are Mellin/Laplace integration, parameter differentiation, and uniform asymptotics. Fourier transport provides an exact route between certificates expressed in Hurwitz jets and polylogarithm order jets.
+
+\paragraph{8. Arithmetic relations beyond the formal module.}
+Specify a coefficient field and a precise background algebra before asking whether the remaining character coordinates are independent. Separate the effect of functional equations, products, and known special values from the question of additional numerical relations. The formal rank theorem is a useful upper bound on the number of symbols needed for reduction, not a lower bound on the number of arithmetically independent periods or $L$-jets.
+
+\appendix
+\section{Integration layout and reproducibility}
+\label{app:layout}
+
+The bundle is additive and mirrors the repository's directory layout. The new article is
+\begin{center}\small
+\texttt{docs/articles/stieltjes-zeros-distribution-duality.tex}
+\end{center}
+with its compiled PDF. The focused audit and copy-ready correction fragment are under \texttt{docs/reports/}. The implementation is
+\begin{center}\small\texttt{tools/stieltjes\_tower/tower.py},\end{center}
+and the test entry point is
+\begin{center}\small\texttt{tests/stieltjes\_tower/verify.py}.\end{center}
+The data directory contains \texttt{verification.json}, \texttt{central\_moment\_operators.json}, and \texttt{zero\_asymptotics.csv}. The root integration guide gives build commands and a source manifest. No original source file is overwritten, and no commit or pull request has been made by generating this bundle.
+
+From the extracted bundle root, the complete check is
+\begin{quote}\small\ttfamily
+python Analysis/Polylogarithms/tests/stieltjes\_tower/verify.py --full
+\end{quote}
+It requires Python, mpmath, and SymPy. Exact extension construction does not depend on SymPy; the independent matrix-rank comparison does. The TeX source has a self-contained bibliography and no external image or data inputs; three LaTeX passes resolve its references from a clean build.
+
+\section{A recurrence for the next zero coefficient}
+\label{app:nextzero}
+For a particular root, abbreviate $c_0=c_{n,j}$ and
+$G_m(c,\rho)=(A_mh_{n,\rho})(1/c)$. Suppose
+\[
+ a_{n,j,k}^{\rho}=kc_0+d+\frac{b_1}{k}+O(k^{-2}).
+\]
+Taylor expansion of \eqref{eq:expansion} gives
+\begin{equation}\label{eq:b1}
+ b_1=-\frac{\tfrac12\,\partial_c^2G_0(c_0,\rho)d^2
+                +\partial_cG_1(c_0,\rho)d+G_2(c_0,\rho)}
+               {\partial_cG_0(c_0,\rho)}.
+\end{equation}
+Here $d$ is \eqref{eq:offset}, $G_2$ is explicit from \eqref{eq:Afirst}, and the denominator is nonzero by \eqref{eq:G0prime}. This is often more usable than a long expanded expression involving several root separations. It also explains why the quantity $k(a-kc_0-d)$ tends to a finite limit. Higher coefficients follow by the same triangular recursion.
+
+\begin{thebibliography}{99}
+\bibitem{Coffey} M.~W.~Coffey, \emph{Series representations for the Stieltjes constants}, Rocky Mountain J. Math. \textbf{44} (2014), 443--477; preprint arXiv:0905.1111, version 2 (2009). \url{https://arxiv.org/abs/0905.1111}. In particular Corollary~2 and Proposition~5.
+\bibitem{DLMFHurwitz} NIST Digital Library of Mathematical Functions, \S25.11, \emph{Hurwitz Zeta Function}; parameter derivatives and Mellin integral. \url{https://dlmf.nist.gov/25.11}. Accessed 7 October 2026.
+\bibitem{DLMFGamma} NIST Digital Library of Mathematical Functions, \S5.8, \emph{Infinite Products}; reciprocal-gamma Weierstrass product. \url{https://dlmf.nist.gov/5.8}. Accessed 7 October 2026.
+\bibitem{DLMFL} NIST Digital Library of Mathematical Functions, \S25.15, \emph{Dirichlet $L$-functions}; functional equation and trivial zeros. \url{https://dlmf.nist.gov/25.15}. Accessed 7 October 2026.
+\bibitem{Kubert} D.~S.~Kubert, \emph{The universal ordinary distribution}, Bull. Soc. Math. France \textbf{107} (1979), 179--202. DOI: 10.24033/bsmf.1891. \url{https://www.numdam.org/item/BSMF_1979__107__179_0/}.
+\bibitem{Duran} A.~J.~Dur\'an, \emph{Brenke polynomials with real zeros and the Riemann Hypothesis}, preprint arXiv:2405.18940 (2024). \url{https://arxiv.org/abs/2405.18940}. Cited for the classical Appell real-rootedness framework; the special case needed here is proved directly.
+\bibitem{Prevost} M.~Pr\'evost, \emph{Expansions of generalized Stieltjes constants in terms of derivatives of Hurwitz zeta function}, preprint arXiv:2305.15806; Ramanujan J. \textbf{70}, article 57 (2026). DOI: 10.1007/s11139-026-01433-2. Related derivative-expansion literature, not used as a premise of the zero theorem.
+\bibitem{RepoTower} V.~Reshetnikov, with stated agentic assistance, \emph{The Parameter-Derivative Tower of the Generalized Stieltjes Constants: a Uniform Harmonic-Number Theorem}, source draft, June 2026. ProveIt path \nolinkurl{Analysis/Polylogarithms/docs/articles/stieltjes-parameter-derivative-tower.tex}. Git blob \texttt{e4d53b7c921c72ff40c5393a9d3ac5cfb44ea6bb}; reviewed at the commit specified in \S\ref{sec:scope}.
+\bibitem{RepoReport} V.~Reshetnikov's PolyLog research corpus, \emph{The uniform $H_k$ theorem for parameter-derivatives of generalized Stieltjes constants}, source report, June 2026. ProveIt filename \texttt{stieltjes-general-k-duality-and-gamma2-tables\_\_a4f0bee12e5b.md}, under \texttt{Analysis/Polylogarithms/docs/reports/}.
+\bibitem{RepoAnti} V.~Reshetnikov, with stated agentic assistance, \emph{Stieltjes Antiderivatives, Hurwitz Zeta Jets, and Polygamma Functions of Negative Order}, source draft, June 2026. ProveIt filename \texttt{stieltjes-antiderivative-ladder.tex}; Git blob \texttt{dd06a388cb730e79d3464c956b0a06684016d070}.
+\bibitem{RepoBridge} V.~Reshetnikov, with stated agentic assistance, \emph{The Polylogarithm--Polygamma Bridge}, source draft, June 2026. ProveIt filename \texttt{polylog-polygamma-bridge.tex}; Git blob \texttt{ec42cc3f5249f1ac03aaa7553d1d2c31e833db18}.
+\bibitem{RepoReadme} V.~Reshetnikov, ProveIt, \texttt{Analysis/Polylogarithms/README.md}, source-status and intake notes, 7 October 2026. Git blob \texttt{40f7dd8b1525e4c42e3fb83baf2fa1604e9cf248}. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/Polylogarithms}.
+\end{thebibliography}
+\end{document}
