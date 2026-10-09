@@ -1,0 +1,340 @@
+\chapter{Gamma grids and exact certificates}
+\label{ch:05-gamma}
+
+An experiment proposes a relation; a certificate explains why it holds.
+For gamma values at rational points, taking logarithms turns reflection and
+multiplication into rational rows. Their row combinations yield an exact,
+terminating reduction procedure relative to a specified law matrix. This
+computational completeness must be distinguished from the open arithmetic
+completeness conjecture.
+
+\section{The lattice model}\label{gamma:sec:lattice}
+
+Work on the denominator-$N$ grid, in coordinates $x_k=\log\Gamma(k/N)$, $k=1,\dots,N-1$.
+The two classical law families become exact $\mathbb{Q}$-linear rows with symbolic
+right-hand sides over the atoms $\log\pi$, $\log n$, $\log\sin(\pi k/N)$:
+\begin{itemize}
+\item reflection, for $k<N/2$:
+\[
+x_k+x_{N-k}=\log\pi-\log\sin\!\Bigl(\frac{\pi k}{N}\Bigr);
+\]
+\item Gauss multiplication, for each divisor $d\ge2$ of $N$ and $k=1,\dots,N/d$:
+\[
+\sum_{j=0}^{d-1}x_{k+jN/d}\;-\;[dk<N]\;x_{dk}
+=\frac{d-1}{2}\bigl(\log2+\log\pi\bigr)+\Bigl(\frac12-\frac{dk}{N}\Bigr)\log d ,
+\]
+the instance at $z=k/N$ of the Gauss multiplication theorem \cite{gamma:Gauss},
+\[
+\prod_{j=0}^{d-1}\Gamma\Bigl(z+\frac{j}{d}\Bigr)=(2\pi)^{(d-1)/2}\,d^{\,1/2-dz}\,\Gamma(dz),
+\]
+with the convention $x_N:=\log\Gamma(1)=0$ in the boundary case $dk=N$.
+\end{itemize}
+The matrix is small ($O(N\sum_{d\mid N}1/d)$ rows $\times$ $(N-1)$ columns). One exact row reduction of the
+augmented block $[M\mid I]$ over $\mathbb{Q}$ (columns ordered numerator-descending, so
+pivots land on large numerators) yields simultaneously:
+\begin{enumerate}
+\item a reduction $\Gamma(k/N)=\exp(\text{elementary})\cdot\prod\Gamma(\text{basis})^{\mathbb{Q}}$
+for \emph{every} non-basis $k$ at once, the elementary side computed exactly as
+(combination matrix)$\,\cdot\,$(right-hand-side vector) --- no \texttt{FullSimplify}
+anywhere;
+\item the grid's \emph{basis} --- its free formal gamma coordinates --- and with it a
+termination guarantee: the lattice rank says the number of free coordinates in this presented system.
+\end{enumerate}
+
+\begin{proposition}[Completeness relative to the law matrix]\label{gamma:law:ko}
+For a fixed denominator grid and a fixed finite family of reflection and
+multiplication rows, exact row reduction computes every linear consequence
+of those rows. The free columns give a basis of the formal quotient by that
+row space, and the augmented matrix records a certificate for each reduction.
+\end{proposition}
+\begin{proof}
+Elementary row operations preserve the row space and are invertible.
+The reduced echelon matrix therefore spans exactly the same consequences.
+Each pivot equation is a recorded rational combination of the original rows.
+The nonpivot columns are free in the presented quotient.
+\end{proof}
+Unrestricted completeness of the standard relations for gamma monomials at
+rational arguments is Rohrlich's conjecture. Koblitz--Ogus prove a
+sufficient algebraicity criterion, not its converse. Thus irreducibility
+of the numerical gamma basis is conditional, and a finite-grid computation
+also needs care if it is compared with relations using larger grids.
+See the discussion of standard relations in Rivoal and Roques,
+\emph{Hadamard products of algebraic functions} (Section~3).
+
+\begin{result}[benchmarks and coverage]\label{gamma:res:bench}
+Implementations: \texttt{tools/gamma-reducer.wl} (Wolfram) and
+\texttt{tools/gamma\_reducer.py} (pure Python: exact $\mathbb{Q}$ arithmetic via
+\texttt{fractions.Fraction}, sparse atom-coefficient right-hand sides, mpmath
+verification). Both produce \emph{identical} output (same rules, same bases).
+
+\begin{center}
+\begin{tabular}{l r r}
+\toprule
+workload (generation only) & Wolfram & Python\\
+\midrule
+denominator-$120$ grid ($103$ rules, $16$-element basis) & $0.42$ s & $0.056$ s\\
+all $151$ legacy-database grids, denominators $\le308$ ($15\,588$ rules) & $75.3$ s & $7.44$ s\\
+mpmath verification of all $15\,588$ rules & --- & $8.32$ s\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Coverage of the $550$ recovered \texttt{GammaRules.wdx} arguments: $550/550$. The original
+prover needed multi-hour sessions for $550$ rules with no terminus; either implementation
+beats it by orders of magnitude \emph{with} a completeness guarantee. Sample output (the
+sine values collapse to radicals on their own):
+\[
+\Gamma\!\Bigl(\frac{5}{12}\Bigr)
+=\frac{2^{2/3}\sqrt{\pi}\;\Gamma\!\bigl(\tfrac1{12}\bigr)}
+{(1+\sqrt3)\,\Gamma\!\bigl(\tfrac16\bigr)} .
+\]
+\end{result}
+
+\begin{remark}
+The row-combination matrix produced by the augmented reduction is, at the same time, a
+\emph{multiplier certificate} in the sense of Section~\ref{gamma:sec:certmodel}: the reducer's
+output is born proved, not merely verified.
+\end{remark}
+
+\section{Trig-root \texorpdfstring{$\Gamma$}{Gamma} identities: mechanism and census}
+\label{gamma:sec:trigroot}
+
+The prompt for this investigation was the identity
+\[
+\frac{\Gamma\bigl(\tfrac27\bigr)\Gamma\bigl(\tfrac{11}{42}\bigr)}{\Gamma\bigl(\tfrac1{21}\bigr)}
+=\frac{8\sin\bigl(\tfrac{\pi}{7}\bigr)\,
+\sqrt{\pi\,\sin\bigl(\tfrac{\pi}{21}\bigr)\sin\bigl(\tfrac{4\pi}{21}\bigr)
+\sin\bigl(\tfrac{5\pi}{21}\bigr)}}
+{2^{1/42}\,7^{1/3}\,3^{9/28}},
+\]
+of the kind that has surprised mathematicians before the mechanism was recognized
+\dps{verified RootReduce-exactly against the legacy table}.
+
+\begin{result}[the mechanism, in lattice terms]\label{gamma:res:trigmech}
+When the lattice solve expresses a target $\log\Gamma(k/N)$, the elimination may pass
+through a combination in which the target appears with multiplicity $D>1$ --- i.e.\ the
+relation natively proves $\Gamma(k/N)^D=(\text{elementary})\cdot(\Gamma\text{-monomial})$.
+Dividing by $D$ puts coefficient $1/D$ on the elementary $\log\sin$ atoms, and
+exponentiating yields a $D$-th root of a sine product; positivity of all factors fixes the
+branch. The root is a property of the \emph{derivation path}, not of the value: the same
+$\Gamma(11/42)$ carries a square root in the harvested spelling above and cube roots in
+the lattice's own reduction --- both exactly correct.
+\end{result}
+
+The surprise dissolves further at grids whose sines are radical-expressible: for
+$N=30,60$ the renderer collapses $\sqrt{\sin\cdots}$ into golden-ratio radicals and
+nothing looks trig-rooted at all. The phenomenon is only \emph{visible} when the sine
+arguments have large totient ($21$, $39$, $78$, \dots), where nested square-root expressions need not exist; general radical expressibility is a different question.
+
+\begin{result}[census, denominator grids $N\le200$, primitive arguments]\label{gamma:res:census}
+$856$ lattice reductions carry fractional $\log\sin$ coefficients. By root degree $D$
+(the lcm of the coefficient denominators):
+\begin{center}
+\begin{tabular}{l rrrrrr}
+\toprule
+$D$ & $2$ & $3$ & $4$ & $6$ & $8$ & $16$\\
+\midrule
+rules & $616$ & $46$ & $106$ & $26$ & $42$ & $20$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Demanding \emph{integral} $\Gamma$-exponents (so only the trigonometric part is rooted, as
+in the prompt identity) leaves exactly $10$ rules, all $D=4$, at $\Gamma(71/78)$,
+$\Gamma(85/156)$, $\Gamma(65/114)$, $\Gamma(167/198)$ and conjugate-numerator siblings.
+The $D=16$ cases live on the $N=168$ grid with $26$ sines under the radical.
+\end{result}
+
+\begin{result}[showpieces]\label{gamma:res:showpieces}
+\dps{verified to $30$+ digits in both implementations}
+The fourth-root champion ($N=78$; $\varphi(78)=24$, so square-root-only expressions are unavailable):
+\begin{align*}
+\Gamma\!\Bigl(\frac{71}{78}\Bigr)
+={}&2\cdot2^{55/312}\,\pi\,\sqrt{\cos\tfrac{\pi}{78}}\;
+\cos^{1/8}\!\tfrac{\pi}{39}\;\cos^{3/4}\!\tfrac{\pi}{26}\;
+\cos^{5/8}\!\tfrac{2\pi}{39}\;\cos^{11/8}\!\tfrac{4\pi}{39}\;
+\bigl(\cos\tfrac{\pi}{13}\,\sec\tfrac{7\pi}{78}\bigr)^{3/8}\,
+\Gamma\!\Bigl(\frac{1}{39}\Bigr)\\
+&\Big/\;\Bigl[\,13^{1/48}\,
+\cos^{1/4}\!\tfrac{5\pi}{78}\;\cos^{3/2}\!\tfrac{3\pi}{26}\;
+\cos^{7/8}\!\tfrac{5\pi}{39}\;\cos^{5/8}\!\tfrac{11\pi}{78}\;
+\Gamma\!\Bigl(\frac{2}{39}\Bigr)\Gamma\!\Bigl(\frac{5}{78}\Bigr)\Bigr],
+\end{align*}
+and the lattice's cube-root reduction of the prompt's own $\Gamma(11/42)$:
+\[
+\Gamma\!\Bigl(\frac{11}{42}\Bigr)
+=\frac{7^{1/6}\sqrt{\pi}\;\Gamma\!\bigl(\tfrac1{42}\bigr)\Gamma\!\bigl(\tfrac1{21}\bigr)
+\bigl(\sec\tfrac{\pi}{42}\sec\tfrac{\pi}{21}\bigr)^{2/3}
+\sec^2\!\tfrac{\pi}{14}\,\bigl(\cos\tfrac{2\pi}{21}\sec\tfrac{5\pi}{42}\bigr)^{1/3}}
+{8\cdot2^{5/21}\,3^{3/7}\,\Gamma\!\bigl(\tfrac2{21}\bigr)\Gamma\!\bigl(\tfrac3{14}\bigr)} .
+\]
+\end{result}
+
+\section{The trigamma analogue}\label{gamma:sec:trigamma}
+
+The same construction applies one weight up. On the grid $y_k=\psi^{(1)}(k/N)$ the lattice
+rows are the reflection law
+$\psi^{(1)}(k/N)+\psi^{(1)}(1-k/N)=\pi^2\csc^2(\pi k/N)$
+and the multiplication theorem
+$\psi^{(1)}(dk/N)=d^{-2}\sum_{j=0}^{d-1}\psi^{(1)}(k/N+j/d)$,
+with the pin $\psi^{(1)}(1)=\pi^2/6$ wherever an argument hits $1$; the elementary atoms
+are $\pi^2$ and the $\pi^2\csc^2(\pi k/N)$ values.
+
+\begin{result}\label{gamma:res:psicensus}
+\texttt{tools/psi\_reducer.py} derives the complete trigamma reduction tables for grids
+$N=3,\dots,100$: $3428$ rules, all mpmath-verified, in $7.7$ s total, with basis
+dimensions equal to $\varphi(N)/2$ throughout --- the same dimension count as the
+cyclotomic-polylogarithm lattice, which the exact DFT bridge between the two worlds
+explains (the DFT provides a change of algebraic coordinates between the value systems).
+\end{result}
+
+This subsumes, by a factor of ${\sim}50$, a legacy $70$-entry hand/PSLQ-era workbook of
+$\psi^{(1)}(k/n)$ closed forms (denominators $2$--$16$), which is preserved separately as a
+harvested store.
+
+\section{The harvest: legacy notebooks, verified and taxonomized}\label{gamma:sec:harvest}
+
+A kernel-free pipeline (notebook box parser, custom
+\texttt{TraditionalForm}/\texttt{InputForm} interpreter, mpmath $60$-digit verification)
+mined the owner's OneDrive notebook corpus into verified identity stores:
+
+\begin{itemize}
+\item \texttt{harvested-gammaprover-rules.wl} --- the recovered $550$-rule saturation-prover
+database, every rule verified in-kernel to $|\,\mathrm{N}[\Gamma(\text{arg})-\text{closed
+form},40]\,|<10^{-30}$, zero failures;
+\item \texttt{harvested-gamma-values.wl} --- $508$ verified $\Gamma$ reductions from four
+further notebook families (including a $451$-rule table recovered from a single $700$\,KB
+output cell, and $637$ sine-product reductions from a working-table pair identified during
+the sweep);
+\item \texttt{harvested-trigamma-values.wl} --- all $70$ identities of the trigamma
+workbook, mpmath-verified at $60$ digits and re-verified in-kernel.
+\end{itemize}
+
+\begin{result}[novelty taxonomy]\label{gamma:res:novelty}
+Measured against the $670$-rule \texttt{FunctionTransformations} $\Gamma$ table
+\cite{gamma:FT} (denominators $\le120$) that anchors the corpus: $314$ distinct harvested arguments lie
+beyond the table --- $280$ ceiling-breakers from the prover database (denominators
+$123$--$308$) plus $34$ arguments that only the notebook harvest reaches: one further
+ceiling-breaker, $\Gamma(67/160)$, and $33$ upper-half reflection twins of table
+arguments. (Eight more harvest ceiling-breakers duplicate prover-database arguments;
+an earlier recorded decomposition ``$280+8+34$'' double-counted them.)
+\end{result}
+
+\section{Multiplier certificates}\label{gamma:sec:certmodel}
+
+Before this program, every identity in the project's stores carried one badge:
+\emph{numerically verified} ($\gtrsim25$ digits). The certificate program adds a
+qualitatively stronger badge: \emph{derived} --- a recorded, machine-checkable certificate
+exhibiting the value as an exact linear combination of verified functional-equation
+instances, replayed with no search and no numerics in the algebraic replay path of the historical checker. Its numerical branch guards remain outside the exact certificate guarantee.
+
+\subsection{The model}
+
+A certificate stores law \emph{names} plus concrete substitution strings (parsed through a restricted substitution grammar; strings alone do not guarantee safe or valid instantiation) and two exact
+multiplier vectors over a canonical real/imaginary splitting of the instances. Validity
+means the claim $\mathrm{lhs}-\mathrm{rhs}$ equals the recorded linear combination
+\emph{identically}: every inert $\Li/\psi$ atom coefficient cancels
+\texttt{RootReduce}-exactly, and the elementary residual is killed by a dedicated sound
+zero test (certified principal-branch log normalization, certified multiplicative
+log-basis reduction, formal coefficient comparison). Numerics appear in exactly two
+proposal/guard roles: proposing root-of-unity decompositions that exact algebra then
+certifies, and a numerical per-instance branch guard. That guard can reject bad instances, but is not an exact domain proof; branch validity is a separate obligation. Linear systems subsume orbit
+words, fixed-point arguments, and multi-value systems in one format.
+
+A \texttt{derived} certificate proves its claim \emph{relative to} a declared axiom
+layer: (a) the classical laws of the project's functional-equation store \cite{gamma:Lewin} ---
+Euler reflection, inversion, Landen, duplication/triplication/multiplication, the five-term
+family, the Kummer-class relations, Schwarz conjugation, the cyclotomic polygamma sum,
+and the polygamma reflection/multiplication laws, each numerically verified at recorded
+test points; (b) definitional pins ($\Li_n(1)=\zeta(n)$,
+$\psi^{(m)}(1)=(-1)^{m+1}m!\,\zeta(m+1)$, and the two Catalan pins below); (c) Euler's
+$\zeta(2k)\in\mathbb{Q}\pi^{2k}$ and trigonometric values at rational multiples of $\pi$;
+(d) \texttt{RootReduce} as the exact algebraic-number oracle.
+
+\subsection{Findings the linear algebra produced}
+
+\begin{finding}[Schwarz conjugation is a necessary axiom]\label{gamma:find:schwarz}
+The anharmonic orbit of $i$ is the six-point family $\{i,-i,1\pm i,(1\pm i)/2\}$, and
+inversion and duplication at $i$ produce the same sum relation. The full system of
+reflection/inversion/Landen/duplication instances over the orbit is rank-deficient by
+\emph{exactly one} dimension, and the missing direction is precisely
+$\Li_2(\bar z)=\overline{\Li_2(z)}$. No combination of the single-variable transformation
+laws separates $\Li_2(i)$ from $\Li_2(-i)$ --- the transformation laws are
+M\"obius/algebraic in the argument and blind to conjugation. Obvious in hindsight; the
+linear algebra \emph{measured} it.
+\end{finding}
+
+\begin{finding}[Catalan is definitional; the rest is not]\label{gamma:find:catalan}
+$\beta(2)$ admits no derivation from the stored laws: it enters every certificate that
+needs it through one of two recorded definitional pins, both termwise series identities,
+\[
+\operatorname{Im}\Li_2(i)=\Catalan
+\qquad\text{or}\qquad
+\psi^{(1)}\!\bigl(\tfrac14\bigr)-\psi^{(1)}\!\bigl(\tfrac34\bigr)=16\,\Catalan .
+\]
+By contrast $\Li_2(-1)=-\pi^2/12$ (duplication at $z=1$), the four golden-ratio dilogarithm
+values, $\Li_3(\tfrac12)$, the golden trilogarithm $\Li_3(1/\varphi^2)$, and $\Li_2(2)$
+are all honestly derived; the flagship compaction is $\Li_2(\tfrac12)$ as a
+\emph{one-instance} certificate (Euler reflection at its own fixed point), and each
+golden-ratio dilogarithm carries exactly the classical four-equation linear system, the
+coincidence $1-1/\varphi=1/\varphi^2=(1/\varphi)^2$ doing all the work. Within this law
+vocabulary, the tested imaginary orbit uses Catalan as its single additional named constant. The whole imaginary line also carries $\Ti_2(y)$; this finite orbit calculation is not a universal reduction theorem.
+\end{finding}
+
+\begin{finding}[prime denominators need the full multiplication row]\label{gamma:find:primeq}
+For the cyclotomic values $\Li_n(e^{2\pi ip/q})$ the polygamma vocabulary pins the
+$\psi$-grid via proper-divisor multiplication instances when $q$ is composite; for
+\emph{prime} $q$ the only $\psi$-sum relation is the full row $d=q$ --- the multiplication
+theorem at $z=1/q$,
+\[
+\psi^{(m)}(1)=q^{-m-1}\sum_{k=1}^{q}\psi^{(m)}\!\Bigl(\frac{k}{q}\Bigr),
+\]
+whose $k=q$ term is $\psi^{(m)}(1)$ itself --- and the DFT coefficients are the source of the algebraic irrational coefficients --- e.g.\ the
+$\sqrt5\,\zeta(3)$ terms in the $q=5$ trilogarithm closed forms. Omitting $d=q$ cost
+precisely the prime-$q$ certificates and nothing else.
+\end{finding}
+
+\begin{finding}[a trusted layer must be applied, not assumed]\label{gamma:find:trig}
+In the historical checker, a trigonometric normalization step was omitted: the $q=8$ certificates
+initially failed because $\csc^2(\pi/8)$ survived as an opaque atom in the formal zero
+test while being numerically zero all along. The fix is policy, not code volume: trig at
+rational multiples of $\pi$ is part of the declared trusted base and is applied explicitly
+during law instantiation and residual checking. A trusted constant layer is only trusted
+if the checker actually \emph{invokes} it; silent reliance on auto-evaluation makes the
+trust boundary version-dependent.
+\end{finding}
+
+\subsection{Coverage ledger}
+
+At the repository snapshot, the certificate ledger replayed by the independent checker
+under the regression guard is \textbf{$212$ derived $+$ $4$ definitional, zero failures}:
+
+\begin{center}
+\begin{tabular}{l l l}
+\toprule
+store & derived / attempted & notes\\
+\midrule
+curated values & $45+4$ definitional & every concrete curated value\\
+legacy polylog table, order-2 real & $82/83$ & one honest holdout (below)\\
+legacy $\Gamma$ table, denominators $\le40$ & $85/100$ & complete-lattice law pool\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $\Gamma$ certificates use the complete denominator-$q$ relation lattice of
+Section~\ref{gamma:sec:lattice} as the law pool ($20/20$ on the pilot slice, versus $3/20$ for
+the earlier heuristic pool). The polylog order-2 sweep was driven by three cumulative
+generator upgrades --- atom-closure five-term pairs with structured one-parameter pair
+families $(x,1-x)$, $(x,x/(x-1))$, $(x,-x)$; square-root argument seeding for
+duplication ladders; and a height-weighted cluster retry that pools orbit vocabulary
+across related rules without ever using a related \emph{claim} (no circularity) --- the
+largest certificate being $80$ instances.
+
+\begin{negative}[the honest holdout]\label{gamma:neg:holdout}
+$\Li_2(-7/10)$, the deepest reduction ladder in its slice ($10$ residual dilogarithms),
+remains rank-deficient even at deep search caps: the orbit pairs demand an internal
+$17$-flavoured cancellation that no implemented pair family reaches. The natural next
+lever is second-order stray matching or ladder relations beyond the stored law set.
+On the $\Gamma$ side, the frontier is $15$ no-certs of $q=40$ grade (sine-product exact
+algebra blow-ups) and the $q>40$ tail, awaiting cyclotomic-unit arithmetic or certificate
+transport through the exact DFT bridge to the lighter $\psi$-side atoms.
+\end{negative}
