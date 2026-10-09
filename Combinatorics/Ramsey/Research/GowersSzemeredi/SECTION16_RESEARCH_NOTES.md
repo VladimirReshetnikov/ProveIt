@@ -2169,3 +2169,21 @@ line-wise-to-bihomomorphism reduction pass the completed combined audit:
 combined modules. Only the three approved axioms occur. The catalogue
 remains 114/6 with its source-fidelity caveats. The earlier queued-audit
 notices for these modules are superseded by this checkpoint.
+
+
+### Polynomial line extraction and the 4,000-entry port checkpoint
+
+The full Gowers checker now includes the unconditional polynomial
+`LineExtractor`, its dense-bihomomorphism consequence, and the resulting
+structure-side reduction with only the deep-structure hypothesis.
+The audit checks 5,902 public Gowers theorems in a 1,421-module facade
+(667 OAI modules) and a 2,657-module combined closure. It permits only
+`propext`, `Classical.choice`, and `Quot.sound`; the catalogue remains
+114 companions and six open statements, with the existing fidelity caveats.
+
+The first 4,000 pinned port entries compile in a 4,016-module closure.
+Their separate 4,017-module axiom audit checks 60,327 public OAI theorems
+and the listed compatibility declarations with the same three axioms.
+This includes the finite local heartbeat repair in
+`PreparedFiniteNestedSourceLatePowerBudget`. The full quantitative density
+conclusion remains unverified and outside the Gowers facade.
