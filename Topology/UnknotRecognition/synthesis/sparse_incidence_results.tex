@@ -1,0 +1,47 @@
+The maintained suite passes all 1,050 tests with Regina in 207.266 seconds.
+The native audit takes 0.422 seconds. The separate timing run has eight
+supplied interval systems, six shuffled arms (dense, linear, split and their
+A/A copies), five measured rounds and one warm-up. All 240 measured calls
+and 48 warm-ups complete in 7.354 seconds. Each timed call includes input
+validation, complete discovery, certificate construction and independent
+source replay. Serialization and analytic histogram assertions are outside
+the timing. All runs freeze 139 source hashes; the four dense/orbit dependency
+modules match the pinned baseline exactly.
+
+\input{tables/sparse_incidence_pipeline.tex}
+
+Ratios are medians of paired elapsed times. Disjoint and coincident fixtures
+use blocks of length $L=2^{256}$. The table's port count is part of the explicit
+input; it is not the number of expanded points. On ten disjoint ports the
+dense/linear/split medians are 225.918/4.996/2.644 ms. Paired dense-over-split
+is 85.953. Orbit queries fall from 1,024 to 26 and cycles from 5,633 to 75.
+Both sparse policies produce a 26,538-byte certificate, compared with
+2,498,706 bytes for dense. The split policy also avoids many counts needed
+during linear discovery even though the retained minimality witnesses coincide.
+
+The genuinely paired eight-port fixture has both a translation and a
+reflection on huge blocks. Dense-over-split is 19.357, queries fall from 256
+to 21 and certificate bytes from 730,590 to 35,055. Coincident and nested
+ports demonstrate a different saving: canonical-union caching already gives
+both dense and sparse the same number of expensive orbit counts. At ten
+coincident ports both make two counts, and at ten nested ports both make
+eleven. Sparse still avoids scanning and certifying the entire subset cube.
+Linear deletion is faster than split on these two fixtures, so split is not
+a universal scheduling improvement.
+
+The all-signatures fixture uses six ports on 64 singleton components, one
+component for every signature. All methods make 64 orbit queries and 599
+cycles. Sparse adds peeling and zero-witness overhead: dense/linear/split
+medians are 36.452/41.743/42.602 ms, with dense-over-split ratio 0.858.
+The sparse certificate grows from the dense 42,130 bytes to 49,505 bytes.
+This regression motivates retaining the explicit dense API for callers whose
+output is actually dense. No automatic policy inference from these eight
+fixtures is installed.
+
+Across the cases, dense A/A ratios range from 0.990 to 1.021, linear A/A
+from 0.933 to 1.014 and split A/A from 0.978 to 1.053. The large sparse-case
+gains substantially exceed these controls; the observed all-signatures
+regression remains visible. The results establish practical savings for these
+complete supplied-system queries, including verification. They measure neither
+normal-surface candidate generation nor complete knot recognition. In
+particular the implementation does not add a new automatic knot-decision stage.

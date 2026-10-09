@@ -1588,3 +1588,15 @@ for sparse_mode, filename in (('pipeline','benchmark'),('kernels','kernels')):
     heading=('Input & default old/new ms & ratio & portfolio old/new ms & ratio' if sparse_mode=='pipeline' else
         'Family & size & old ms & new ms & ratio & old/new A/A')
     open(f'tables/sparse_substitution_{sparse_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (4 if sparse_mode=='pipeline' else 5))+'@{}',rows)+'\\end{center}\n')
+
+
+sparse_incidence=load('data/sparse-incidence-benchmark.json')
+if sparse_incidence:
+    rows=[]
+    for r in sparse_incidence['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['name'])]+[f'{1000*m[a]:.3f}' for a in ('dense','linear','split')]
+        cells += [f'{q[a]:.3f}' for a in ('linear','split')]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/sparse_incidence_pipeline.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & dense ms & linear ms & split ms & dense/linear & dense/split','@{}lrrrrr@{}',rows)+'\\end{center}\n')
