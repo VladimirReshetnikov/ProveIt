@@ -1970,3 +1970,31 @@ pass. The full facade audit is queued. Uniform rank padding and the
 packaging as a general slice provider remain further steps; no missing
 extraction or deep-structure hypothesis is asserted. These consumers
 reuse the scoped recurrence and add no upstream modules.
+
+### Uniform variety-piece families supply the general slice provider
+
+`Proofs16JointVarietyUniform` zero-pads each member's mixed phases to a
+common upper rank, proves that both full and half-radius varieties are
+unchanged, and bounds the union of linear frequencies by the sum of the
+member ranks. Its cover therefore depends only on common rank bounds
+and a positive radius lower bound, with count `9*n` for a family of size
+`n`. The original ranks may differ.
+
+`Proofs16VarietyPieceFamilyCover` chooses the data stored by each
+`IsVarietyPiece D c` and uses `R=ceil(milicevicBound D c)`, linear rank
+bound `2*R`, and radius lower bound `exp(-milicevicBound D c)`. Arbitrary
+finite families of their graphs receive one simultaneous cover.
+`Proofs16VarietySliceProvider` then constructs `Section16SliceProvider`
+for every sampled family of final-coordinate sections, assuming each
+section belongs to this class. It proves `Section16SliceProviderRanges`
+as well: for positive sample size, the count is at least one and the
+exponent lies in `(0,1]`. This supplies the general provider used by the
+polynomial affine lift, without forcing its exponent into the older
+cubic class interface. Extraction of such slices is still separate.
+
+All seven joint-family/provider production modules and the incoming
+line-wise-to-bihomomorphism reduction pass the completed combined audit:
+5,892 public Gowers theorems, a 1,420-module facade (667 OAI), and 2,656
+combined modules. Only the three approved axioms occur. The catalogue
+remains 114/6 with its source-fidelity caveats. The earlier queued-audit
+notices for these modules are superseded by this checkpoint.
