@@ -905,6 +905,13 @@ import GowersSzemeredi.Proofs16SelectedBohrGluing
 import GowersSzemeredi.Proofs16SelectedColumnExtensions
 import GowersSzemeredi.Proofs16ShiftAnchorArrangement
 import GowersSzemeredi.Proofs16ShiftAnchorMaps
+import GowersSzemeredi.Proofs16BalancedIncidenceSelection
+import GowersSzemeredi.Proofs16CoherentAnchorSelection
+import GowersSzemeredi.Proofs16CoordinateRestrictionCount
+import GowersSzemeredi.Proofs16DenseHigherAnchorSelection
+import GowersSzemeredi.Proofs16HigherAnchorAveraging
+import GowersSzemeredi.Proofs16HigherAnchorRestriction
+import GowersSzemeredi.Proofs16HigherShiftCollisionCount
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

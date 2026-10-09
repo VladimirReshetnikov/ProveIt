@@ -7932,3 +7932,50 @@ locations; its 115 companions and five open entries are unchanged.
 The port-scope check still reports 4,134 upstream and 17 compatibility
 modules, with reciprocal-only dependencies excluded. No upstream
 source or license scope was changed.
+
+
+### J.127. Quantitative selection of coherent global anchors
+
+Seven modules prove seventeen named results selecting one pair of global
+anchor functions from a dense family of higher arrangements. The final
+result `exists_dense_coherent_anchor_maps` produces at least
+`(kappa/2)*N^3` additive quadruples of distinct shifts when the good family
+has at least `kappa*N^11` members and `8 <= kappa*N`. Their actual selected
+anchor maps are normalized local Freiman maps and satisfy the additive
+quadruple identity on the intersection of their four selected Bohr domains.
+
+**Exact restriction counting.** An injective coordinate restriction has
+`|V|^(|I|-|J|)` extensions, by an explicit equivalence with functions on
+the complementary coordinates. For four distinct shifts and pair-valued
+anchors this gives the exact balancing identity
+`card(realizations)*N^8 = card(all global anchor functions)`.
+A finite incidence double count then selects a global function realizing
+at least the average number of arrangements. Each realized arrangement
+is reconstructed from its four shifts and the chosen anchors, so mapping
+to shift quadruples preserves cardinality. No independent sampling of
+repeated occurrences of the same shift is assumed.
+
+**Repeated shifts.** Among shifts `a,b,c,a+b-c`, every repetition belongs
+to one of four families: `a=b`, `a=c`, `b=c`, or `a=2*c-b`. Each family
+has at most `N^10` higher arrangements, using explicit ten-coordinate
+injective encodings. Thus at most `4*N^10` arrangements are removed.
+The hypothesis `8 <= kappa*N` makes this at most half the original
+mass. The four-family estimate improves the direct six-pair union bound
+and works for every nonzero modulus, without dividing by two.
+
+**Coherence.** `GoodHigherAnchorArrangement` records the four pair
+compatibilities, their selected-domain containments, the higher
+containment, and the two original column quadruple identities.
+`shift_anchor_maps_of_good_arrangement` transfers these to the actual
+shift-anchor maps by the previously checked gluing results. Quantitative
+anchor selection applies this to a dense family satisfying that predicate.
+
+**Remaining work.** The density of such a good family still has to be
+proved from popular shifts, compatible-pair degrees, sparse containment
+failures, and the original column identities. Further common-domain and
+structural steps are also required. This is not a proof of the missing
+deep variety theorem or a closure of a numbered catalogue entry.
+No additional upstream code or license scope is introduced.
+
+**Verification.** The production closure checks 344 modules. Individual
+axiom checks and the merged facade audit are recorded below after completion.
