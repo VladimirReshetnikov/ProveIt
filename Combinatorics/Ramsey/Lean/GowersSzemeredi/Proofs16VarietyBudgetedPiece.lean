@@ -155,14 +155,21 @@ theorem nine_le_exp_three : (9 : Real) ≤ Real.exp 3 := by
   calc (9 : Real) ≤ 2.7182818283 ^ 3 := by norm_num
     _ ≤ Real.exp 1 ^ 3 := pow_le_pow_left₀ (by norm_num) he.le 3
 
-/-- **The loss of the dimension-three pieces fits the budget.** -/
-theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < theta)
-    (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hD : D ≤ 2 ^ 64)
+/-- **The loss of the dimension-three pieces fits the budget**, given bounds on the two
+Milićević values; `D` enters nowhere else. -/
+theorem section16VarietyThreeLoss_le_of_bounds {D : Nat} {theta gamma : Real} (ht : 0 < theta)
+    (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (hm1x : milicevicBound D (section16VarietyExtractionDensity gamma (theta / 4)) ≤
+      (2 / (theta * gamma)) ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))))
+    (hm2x : milicevicBound D (section16VarietySpectrumDensity (theta / 2) gamma) ≤
+      (2 / (theta * gamma)) ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))))
     (hconst : (explicitLiftK : Real) ≤ 2 ^ 1700 ∧ (explicitLiftP : Real) ≤ 2 ^ 1700 ∧
       (explicitVarietyK : Real) ≤ 2 ^ 1700 ∧ (explicitVarietyP : Real) ≤ 2 ^ 1700) :
     0 < section16VarietyThreeWidthCoeff D theta gamma ∧
       section16VarietyThreeLoss D theta gamma ≤
         (2 / (theta * gamma)) ^ (64 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) := by
+  -- big-power hypotheses must not be visible to `linarith`; reintroduced below
+  revert hm1x hm2x
   obtain ⟨hK, hP, hVK, hVP⟩ := hconst
   obtain ⟨hc1, hc11⟩ := section16VarietyExtractionDensity_pos_le_one gamma
     (show 0 < theta / 4 by positivity) (by linarith)
@@ -194,16 +201,12 @@ theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < th
   -- the power bounds, all in `x = 2/(θγ)`
   have hF1 : (section16VarietyExtractionFamily gamma (theta / 4) : Real) ≤
       (2 / (theta * gamma)) ^ ((2 : Nat) ^ 26) := variety_family_le ht ht1 hg hg1
-  have hd1 := variety_density_inv_le ht ht1 hg hg1
   have hF2 : (section16VarietyExtractionFamily (section16Delta (section16ThetaOne (theta / 2) gamma 2))
       (section16ThetaOne (theta / 2) gamma 2 / 8) : Real) ≤
       (2 / (theta * gamma)) ^ ((2 : Nat) ^ 157) := spectrum_family_le ht ht1 hg hg1
-  have hd2 := spectrum_density_inv_le ht ht1 hg hg1
   have hSx := multipleS_half_two_le ht ht1 hg hg1
   have hx := two_le_two_div ht ht1 hg hg1
-  have hmb1 := milicevicBound_le_pow (D := D) hc1 hc11 hd1
-  have hmb2 := milicevicBound_le_pow (D := D) hc2 hc21 hd2
-  clear hd1 hd2
+  intro hmb1 hmb2
   have hF10 : (0 : Real) ≤ (section16VarietyExtractionFamily gamma (theta / 4) : Real) :=
     Nat.cast_nonneg _
   have hF20 : (0 : Real) ≤ (section16VarietyExtractionFamily
@@ -285,15 +288,11 @@ theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < th
   -- `112·Λ ≤ x^(64·2^256)`
   have hE : ∀ k : Nat, k ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) →
       x ^ k ≤ x ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) := fun k hk => pow_le_pow_right₀ hx1 hk
-  have hD1 : 2 ^ 27 * D ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) :=
-    (Nat.mul_le_mul_left _ hD).trans (by norm_num)
-  have hD2 : 2 ^ 158 * D ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) :=
-    (Nat.mul_le_mul_left _ hD).trans (by norm_num)
   have hB' := hBx.trans (hE 1700 (by norm_num))
   have hF1' := hF1.trans (hE _ (by norm_num))
   have hF2' := hF2.trans (hE _ (by norm_num))
-  have hm1' := hmb1.trans (hE _ hD1)
-  have hm2' := hmb2.trans (hE _ hD2)
+  have hm1' := hmb1
+  have hm2' := hmb2
   have h14 : (16384 : Real) ≤ x ^ 14 :=
     le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hx 14)
   have htop : x ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) * x ^ 14 ≤
@@ -313,6 +312,29 @@ theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < th
       _ ≤ Z := htop
   exact ⟨hWpos, max_le (hlogW.trans hfin) (hlogQ.trans hfin)⟩
 
+
+/-- **The loss of the dimension-three pieces fits the budget** for `D ≤ 2^64`. -/
+theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < theta)
+    (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hD : D ≤ 2 ^ 64)
+    (hconst : (explicitLiftK : Real) ≤ 2 ^ 1700 ∧ (explicitLiftP : Real) ≤ 2 ^ 1700 ∧
+      (explicitVarietyK : Real) ≤ 2 ^ 1700 ∧ (explicitVarietyP : Real) ≤ 2 ^ 1700) :
+    0 < section16VarietyThreeWidthCoeff D theta gamma ∧
+      section16VarietyThreeLoss D theta gamma ≤
+        (2 / (theta * gamma)) ^ (64 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) := by
+  obtain ⟨hc1, hc11⟩ := section16VarietyExtractionDensity_pos_le_one gamma
+    (show 0 < theta / 4 by positivity) (by linarith)
+  obtain ⟨hc2, hc21⟩ := section16VarietySpectrumDensity_pos_le_one
+    (show 0 < theta / 2 by positivity) (by linarith) hg hg1
+  have hx1 : (1 : Real) ≤ 2 / (theta * gamma) := le_trans (by norm_num) (two_le_two_div ht ht1 hg hg1)
+  have hD1 : 2 ^ 27 * D ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) :=
+    (Nat.mul_le_mul_left _ hD).trans (by norm_num)
+  have hD2 : 2 ^ 158 * D ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) :=
+    (Nat.mul_le_mul_left _ hD).trans (by norm_num)
+  exact section16VarietyThreeLoss_le_of_bounds ht ht1 hg hg1
+    ((milicevicBound_le_pow hc1 hc11 (variety_density_inv_le ht ht1 hg hg1)).trans
+      (pow_le_pow_right₀ hx1 hD1))
+    ((milicevicBound_le_pow hc2 hc21 (spectrum_density_inv_le ht ht1 hg hg1)).trans
+      (pow_le_pow_right₀ hx1 hD2)) hconst
 
 /-- **The source's piece budget in dimension three, from deep variety structure.**
 The named constants enter only through their bounds `hconst`. -/
