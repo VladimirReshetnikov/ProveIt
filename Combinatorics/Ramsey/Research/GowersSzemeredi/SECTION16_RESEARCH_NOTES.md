@@ -10318,3 +10318,14 @@ quadruple of a smaller progression, the eight-term source agreement, the
 remaining structure assembly and the final printed numerical comparison
 are not yet proved. The five numbered open entries remain. No upstream
 code is ported at this checkpoint.
+
+Verification after synchronizing the independent repository updates:
+all 26 new named proofs pass individual axiom checks. The full original-data
+selected-map production closure compiles across 383 modules. The combined
+audit checks 9,169 public Gowers theorems across 5,518 modules (5,516 in the
+facade closure), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The selected OAI audit closure remains 4,152 modules. The generated catalogue
+is byte-identical, with 115 companion proofs and five open statements.
+These counts do not certify fidelity to every printed statement. The
+selected-port scope check passes; no upstream code or licensing scope is
+added at this checkpoint.
