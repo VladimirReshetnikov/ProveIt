@@ -211,7 +211,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                           check_d_squared, scan_options, window_options=None,
                           twist_source=None, defer_twist=False, checked_modular=False,
                           r3_options=None, normal_options=None, group_options=None,
-                          two_meridian_options=None) -> tuple[str, str]:
+                          two_meridian_options=None, normal_seed_options=None) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -239,6 +239,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         evidence["group"] = witness
         if witness["status"] == "UNKNOT":
             return "UNKNOT", "wirtinger-cyclic-group"
+    if normal_seed_options is not None:
+        from .normal_seed import normal_seed_decide
+        witness = normal_seed_decide(diagram, check=check, **normal_seed_options)
+        check()
+        evidence["normal_seed"] = witness
+        if witness["status"] == "UNKNOT":
+            return "UNKNOT", "native-normal-cocycle"
     if normal_options is not None and diagram.crossings >= 32:
         # Startup dominates the small survivors in our corpus. Once cheap
         # filters fail on a larger diagram, try a different complete algorithm
@@ -377,6 +384,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_rational: bool = True,
               use_treewidth_two: bool = False, treewidth_two_seconds: float | None = 0.1,
               use_regina: bool = False, regina_seconds: float | None = 2.0,
+              use_normal_seed: bool = False, normal_seed_max_work: int | None = 2000000,
+              normal_seed_optimize: bool = True,
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
@@ -423,6 +432,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_treewidth_two must be boolean")
     if type(use_regina) is not bool:
         raise ValueError("use_regina must be boolean")
+    if type(use_normal_seed) is not bool or type(normal_seed_optimize) is not bool:
+        raise ValueError("normal-seed switches must be boolean")
+    if normal_seed_max_work is not None and (type(normal_seed_max_work) is not int or normal_seed_max_work < 0):
+        raise ValueError("normal_seed_max_work must be a nonnegative integer or None")
     if type(use_group) is not bool:
         raise ValueError("use_group must be boolean")
     if type(use_two_meridian) is not bool:
@@ -713,6 +726,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        normal_options=dict(seconds=regina_seconds) if use_regina else None,
+                       normal_seed_options=dict(max_work=normal_seed_max_work,
+                           optimize=normal_seed_optimize) if use_normal_seed else None,
                        two_meridian_options=dict(seconds=two_meridian_seconds,
                            max_work=two_meridian_max_work,
                            max_attempts=two_meridian_max_attempts) if use_two_meridian else None,
