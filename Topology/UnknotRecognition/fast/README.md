@@ -2503,3 +2503,60 @@ and complete certified-query measurements with:
 python -B incidence_research/sparse.py audit --output results/sparse_incidence_audit.json
 python -B incidence_research/sparse.py benchmark --output results/sparse_incidence_benchmark.json
 ```
+
+### Weighted normal components and essential-disc counts
+
+`normal_surface_components.normal_component_census` now classifies components
+of an admissible binary normal vector in a validated compact orientable
+triangulation with one torus boundary. `mode='disk'` uses three weights per
+orbit: Euler characteristic and two boundary-homology evaluations. `summary`
+adds polygon and boundary-point counts; `coordinates` returns full connected
+component vectors and their multiplicities. The census can detect discs when
+aggregate boundary parity cancels between components.
+
+`normal_disk_kernel.normal_compressing_disk_count` removes vertex-link
+components and divides the remaining coordinates by their quadrilateral gcd
+before its expensive component query. It rescales the essential-disc count
+exactly. It does not infer a total component count, since one-sided components
+can have connected orientation doubles. For example, from the repository's
+`fast/` directory:
+
+```python
+from normal_orbit_research.fixtures import layered_torus
+from fastunknot.normal_disk_kernel import (
+    normal_compressing_disk_count, verify_normal_disk_count_certificate,
+)
+triangulation, meridian = layered_torus(4)
+g = 1 << 4096
+coordinates = [[g*x + (g+1 if j < 4 else 0)
+                for j, x in enumerate(row)] for row in meridian]
+r = normal_compressing_disk_count(triangulation, coordinates,
+                                  record_certificate=True)
+assert r['status'] == 'COMPLETE' and r['compressing_disk_components'] == g
+assert verify_normal_disk_count_certificate(
+    triangulation, coordinates, r['certificate'])
+```
+
+The count certificate binds the original coordinates, including the removed
+vertex links, and independently checks the core and its weighted proof.
+`normal_component_verify.verify_normal_component_certificate` checks a census.
+The generic `weighted_orbits` APIs also support arbitrary signed integer-vector
+weights on interval systems; `weighted_orbit_verify` independently replays them.
+
+A previously checked orbit trace can be supplied to the census for new weight
+queries, with `max_cycles=None`. Otherwise `max_cycles` limits orbit discovery;
+`check` also controls weight transport and independent replay. An incomplete
+query returns no histogram, disc count or certificate. Use `json_safe` from
+`integer_codec` for binary-integer serialization.
+
+A zero count rejects this vector, not all possible disc vectors. A positive
+count becomes an unknot witness only after certified provenance identifies
+the triangulation with the input knot exterior. That construction and general
+candidate search remain separate work. See [the theory](../synthesis/weighted_components.tex).
+
+```sh
+python -B weighted_research/native.py audit --output results/weighted_components_audit.json
+python -B weighted_research/native.py benchmark --output results/weighted_components_benchmark.json
+```
+
+The audit uses the optional Regina oracle; the runtime APIs do not require it.
