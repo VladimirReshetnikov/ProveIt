@@ -5,25 +5,29 @@ integer power of its parent. Acyclic dependencies permit one simultaneous
 substitution even when donors overlap. Other primitive pairs are excluded.
 """
 from math import gcd
-from .primitive_projection import projection_metadata
+from .primitive_projection import projection_candidates
 from .primitive_power import primitive_power_terminal
 
 
-def plan_forest(arena, roots, alive, cache=None):
-    meta,powers = projection_metadata(arena,roots,cache)
-    components={g:g for g in alive};sizes={g:1 for g in alive}
+def plan_forest(arena, roots, alive, cache=None, *, _prepared=None):
+    if cache is None:cache = {}
+    candidates,powers = projection_candidates(arena,roots,alive,cache) if _prepared is None else _prepared
+    vectors=cache.setdefault('forest_vectors',{})
+    components={};sizes={}
     used=set();edges=[]
     def find(g):
+        if g not in components:
+            arena.tick();components[g]=g;sizes[g]=1
         while components[g]!=g:
             arena.tick();components[g]=components[components[g]];g=components[g]
         return g
-    for slot,root in enumerate(roots):
-        arena.tick();counts=meta[root]
-        if counts is None or len(counts)!=2 or any(p and n for p,n in counts.values()):continue
-        pair=sorted(counts)
-        if not set(pair)<=alive:continue
-        a,b=pair;u,v=(counts[g][0]-counts[g][1] for g in pair)
-        d=gcd(abs(u),abs(v));u//=d;v//=d
+    for slot,root,(pair,raw_vector) in candidates:
+        arena.tick()
+        if root not in vectors:
+            u,v=raw_vector;d=gcd(abs(u),abs(v));u//=d;v//=d
+            vectors[root]=(u,v,d) if min(abs(u),abs(v))==1 else None
+        if vectors[root] is None:continue
+        a,b=pair;u,v,d=vectors[root]
         choices=[g for g,k in zip(pair,(u,v)) if abs(k)==1 and g not in used]
         if not choices:continue
         left,right=find(a),find(b)
@@ -33,7 +37,7 @@ def plan_forest(arena, roots, alive, cache=None):
                 # A coherent word containing one occurrence of one generator
                 # is a cyclic conjugate of a power of the other followed by it.
                 powers[root]=dict(kind='rank_two_primitive_power',relation=0,
-                    generators=pair,primitive_vector=[u,v],exponent=1,width=abs(u)+abs(v)-1)
+                    generators=list(pair),primitive_vector=[u,v],exponent=1,width=abs(u)+abs(v)-1)
             else:
                 powers[root]=primitive_power_terminal(arena,[root],set(pair))
         if powers[root] is None:continue

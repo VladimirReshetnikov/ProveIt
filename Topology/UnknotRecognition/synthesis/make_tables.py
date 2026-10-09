@@ -1460,3 +1460,21 @@ if pf:
     open('tables/primitive_forest_stages.tex','w').write('\\begin{center}\\small\n'+table(
         'Crossings & old ms & pair ms & forest ms & old/forest & pair/forest',
         '@{}rrrrrr@{}',rows)+'\\end{center}\n')
+
+for planner_mode in ('pipeline','stages'):
+    pp = load(f'../fast/results/primitive_planner_{planner_mode}_20261008.json')
+    if not pp:continue
+    rows=[]
+    selected={'survivor-00','survivor-06','survivor-08','mirror-03','gordian','trefoil','conway'}
+    for r in pp['cases']:
+        if planner_mode=='pipeline' and r['source']['name'] not in selected:continue
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['source']['name']) if planner_mode=='pipeline' else str(r['source']['crossings'])]
+        for mode in ('projection','forest'):
+            cells.append('/'.join('--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old_'+mode,mode)))
+            cells.append('--' if q[mode]['median'] is None else f"{q[mode]['median']:.3f}")
+        rows.append(' & '.join(cells)+r' \\')
+    first='Input' if planner_mode=='pipeline' else 'Crossings'
+    open(f'tables/primitive_planner_{planner_mode}.tex','w').write('\\begin{center}\\small\n'+table(
+        first+' & pair old/new ms & ratio & forest old/new ms & ratio',
+        '@{}lrrrr@{}',rows)+'\\end{center}\n')

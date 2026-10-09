@@ -2287,3 +2287,32 @@ python -B primitive_power_research/forests.py audit --output results/primitive_f
 python -B primitive_power_research/forests.py benchmark --output results/primitive_forest_pipeline_20261008.json
 python -B primitive_power_research/forests.py stages --output results/primitive_forest_stages_20261008.json
 ```
+
+
+### Shared primitive planning
+
+Projection and forest search now share one current candidate list. Structural
+word eligibility and normalized unit vectors are cached by immutable root;
+original relation slots and live generator membership are rebuilt each time.
+Forest setup is skipped when fewer than two candidate slots exist, which
+cannot support the existing two-edge batch threshold. Forest graph entries
+are allocated only for encountered candidate generators.
+
+The change preserves all 240 certificates/nondecisions in an 80-diagram,
+three-mode audit against the previous package; every positive passes both
+independent replayers. Another 2,000 raw-state planner comparisons agree.
+All 992 tests pass. Existing options, proof formats and checkers are unchanged;
+finite budget outcomes can differ when accounting or execution cost changes.
+See [`primitive_planner.tex`](../synthesis/primitive_planner.tex) for the
+amortized accounting, whole-recognition timings and separate stage timings.
+All 760 complete-recognition and 200 checked-stage measurements finish.
+Whole-call differences are small relative to controls; at 128 crossings,
+the checked circle stage has paired speed ratios 1.07x for projections and
+1.13x for forests over their prior implementations. The smallest stage
+regresses slightly, so this is not a universal speedup.
+
+```sh
+python -B primitive_power_research/planner.py audit --output results/primitive_planner_audit_20261008.json
+python -B primitive_power_research/planner.py benchmark --output results/primitive_planner_pipeline_20261008.json
+python -B primitive_power_research/planner.py stages --output results/primitive_planner_stages_20261008.json
+```

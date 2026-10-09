@@ -1,0 +1,192 @@
+\section{Sharing structural candidates between primitive planners}
+\label{sec:primitive-planner}
+
+The preceding forest operation improves selected algebraic families, but
+its ordinary-corpus overhead comes largely from looking for donors that
+are absent. Previously, each search state ran a complete forest planner
+and, when fewer than two edges were selected, a second disjoint-pair
+planner. Both rebuilt structural eligibility from the same immutable
+words. We now prepare one current candidate list, cache word-content
+classification, and dispatch only the planners whose elementary
+preconditions can hold. The selected certificate is preserved; this is
+an implementation improvement rather than a new knot theorem.
+
+\subsection{What can be cached, and what must remain current}
+
+A word arena has immutable rules and never reuses an allocated node identifier.
+For a root, raw support, signed occurrence counts and sign coherence therefore
+do not depend on the current relation slot or on the previously applied
+presentation moves. The planner stores either an ineligible marker or the
+ordered two-generator support together with its two signed counts. A word
+with more than two generators, mixed signs for either generator, or fewer
+than two generators is outside the supported candidate class.
+
+The underlying capped-support metadata still visits each allocated node at
+most once. The new root descriptor is also computed at most once per distinct
+root. Repeated roots share the descriptor; empty root zero is ineligible
+from initialization. Each search state deduplicates the roots whose descriptors
+are missing, computes only that metadata, and then constructs a candidate
+list in original slot order. It checks both generator labels against the
+\emph{current} live set. Neither a donor's slot nor its live membership is
+stored in the immutable descriptor.
+
+This distinction preserves three important cases. Reordering or duplicating
+roots changes the selected slot while reusing their content summaries.
+Removing a live generator makes a descriptor ineligible for the present
+state without invalidating its stored word content. Normalization or
+substitution that changes the word creates a different root and receives
+a new descriptor. If an arena reuses an already interned root, its exact word
+content is unchanged, so the earlier descriptor is valid. Raw cancellation
+is never inferred merely from a smaller live set.
+
+The fresh list is a producer-internal snapshot of the current roots and
+live set. The forest planner and its possible pair fallback consume that
+same snapshot before any presentation mutation. They still create fresh
+witness records carrying the actual donor slot. Independent source replay
+continues to reconstruct the whole presentation and derive the evidence
+from its own words; it does not trust these caches or snapshots.
+
+\subsection{An exact dispatch bound and sparse graph setup}
+
+The producer uses a forest batch only when it selects at least two edges,
+with distinct donor slots. Consequently fewer than two structurally eligible
+current slots make a forest batch impossible. In that case it skips forest
+setup and tries the pair planner directly. This cannot hide a batch that
+the preceding forest policy would select. It is an exact upper bound on
+the possible number of selected edges, not a guess based on the last few
+failed searches or a timeout that could suppress an available move.
+
+When a forest is possible, its union-find maps are created lazily for the
+generators encountered by eligible unit-coordinate candidates. Isolated live
+generators do not require graph entries. The orientation choice, original-slot
+scan order and cycle tests are unchanged. The pair fallback consumes the
+same candidate list instead of scanning all relators again. A negative
+primitive-power classification remains cached by its exact word root.
+
+For forest candidates, the gcd-normalized signed vector and the result of
+the unit-coordinate test are cached separately. This avoids repeating big
+integer gcd work on an unchanged donor. A coherent word whose raw count of
+one generator is one is already a cyclic conjugate of $a^u b^{\pm1}$,
+so the pair planner can construct the same exponent-one primitive witness
+without running a prefix-profile query. The forest planner already used
+this theorem. The independent checker still verifies the full arithmetic
+profile. Proper powers and non-unit primitive vectors continue to use the
+existing exact classification routine.
+
+On the Gordian source audit, the old forest policy made 141 forest attempts.
+Only three candidate-slot occurrences exist across those states. The new
+policy skips graph setup on 140 states and runs the forest planner once,
+selecting the same two-edge batch as before. All 141 states still rebuild
+current slot/live membership; the optimization does not claim to eliminate
+that remaining scan.
+
+\subsection{Cost, resource accounting and unchanged proof contracts}
+
+Let $p$ be the number of queried presentation states, $m$ the retained slot
+count, $M$ the total allocated grammar nodes, $B$ a maximum length/count bit
+size and $q_j$ the candidate-slot count at state $j$. Descriptors cover at
+most $M$ roots and take a constant number of signed count operations each.
+The underlying grammar summaries also cover at most $M$ nodes. Using ordinary
+integer arithmetic, a conservative accumulated structural/gcd cost is
+\[
+ O\!\left(p(m+1)+MB^2+\sum_{j=1}^{p}q_j\right)
+\]
+up to generator/node identifier encoding and dictionary-access qualifications.
+This is for preparing and filtering candidates. Forest selection additionally
+pays its usual union-find cost over candidate vertices. Uncached primitive
+profile queries, applying moves, normalization and the rest of recognition retain
+their separately stated costs. Lazy forest storage at a state uses only
+$O(q_j)$ vertex entries, bounded also by the live rank. Persistent summaries
+remain proportional to the allocated grammar and its encoded count sizes.
+
+The implementation charges both complete slot scans before allocating the
+fresh-root and current-candidate lists. It additionally charges fresh
+summaries, donor processing and graph traversal. List-comprehension work is
+charged in aggregate, while grammar and arithmetic passes continue polling
+cancellation. These cooperative counters are conservative accounting units,
+not elapsed-time or per-bit CPU measurements. In fact, the new pair-only
+path can record slightly \emph{more} charged work because new descriptor
+accounting is explicit, even where its Python execution gets faster.
+
+No certificate version, schema, checker, word operation, source reconstruction
+or public option changes. The entire previous verifier/host/word modules are
+checked byte-for-byte against the pinned baseline in the audit. Default,
+disjoint-projection and forest modes retain the same choices when both runs
+complete without exhausting resources. A finite work or wall allowance can
+change which run finishes because accounting and execution costs change;
+that is not an unconditional equality claim for all budgeted results.
+The general bound on finding a short successful schedule remains open.
+
+\subsection{Equivalence audits and complete-call evidence}
+
+The pinned package is \texttt{b5b0ae50c4e4}. Eighty actual diagrams are run
+in all three modes, giving 240 baseline/current comparisons. Every certificate
+and nondecision is identical. All 159 positive mode results pass both
+independent source-reconstructing replay paths. Another 2,000 planner
+comparisons cover one thousand raw-word states with repeated roots, changed
+slot orders and varying live sets. Those are planning tests on arbitrary
+words, not knot verdicts.
+
+Four new test methods exercise cached negative structural/profile results,
+changing slots and live labels, normalization that exposes a newly eligible
+root, shared current snapshots, strict resource exhaustion and caller
+cancellation. A donor of the form $a^{2^{4096}}b^{-1}$ is selected and
+independently replayed with expansion and the producer's general profile
+query disabled. A one-candidate search skips the forest planner and returns
+the same pair witness. The earlier primitive tests also pass unchanged.
+The full maintained suite passes 992 tests in 234.493 seconds with Regina;
+the log is \path{data/primitive-planner-full-tests.txt}.
+
+\input{tables/primitive_planner_pipeline.tex}
+\input{tables/primitive_planner_stages.tex}
+
+The whole-recognition benchmark compares previous/current disjoint and forest
+modes on nineteen fresh validated diagrams, with five measured rounds, one
+warm-up per arm and an A/A control for each of the four implementations.
+It includes source reconstruction and mandatory proof replay. The separate
+checked group-stage experiment uses actual stabilized circles, bypassing
+earlier simplification; its ratios are not whole-recognition speedups.
+Both runs preserve all samples and incomplete outcomes, if any, and pin
+the complete prior Python package. Their tables report medians of paired
+old/current times, so values above one favor the new planner and need not
+equal ratios of the displayed separate time medians.
+
+All 760 whole-recognition calls and 200 checked-stage calls complete,
+with 152 and 40 respective warm-ups. The runs take 96.775 and 11.452
+seconds. Whole-call pair-mode ratios range from 0.983 to 1.018, and
+forest-mode ratios from 0.986 to 1.036. The old/new pair A/A ranges are
+0.986--1.023 and 0.942--1.035; the old/new forest A/A ranges are
+0.977--1.018 and 0.981--1.034. These controls limit attribution of the
+small whole-call differences to the planner alone. Gordian's forest ratio
+is 1.026, while its forest A/A ratio is 1.034. Its old/new pair ratio is
+0.999 despite separate medians 1,636.125 and 1,565.059 milliseconds.
+Survivor 00 similarly has pair ratio 1.018 despite old/new separate medians
+22.165 and 28.465 milliseconds. Within-run variation explains why neither
+ratio of separate medians should replace the retained paired observations.
+
+The larger checked group stages show a clearer effect. At 128 crossings,
+pair medians are 200.361/185.550 milliseconds and forest medians are
+131.456/119.081 milliseconds, with paired ratios 1.072 and 1.132.
+The forest planner skips 63 unsuccessful graph setups and makes 63 productive
+attempts instead of 126 attempts. Charged forest work falls from 185,764
+to 170,833. Pair work increases slightly from 263,317 to 264,451 under the
+new accounting, despite its elapsed improvement. Both modes retain 1,017
+allocated nodes; their respective proof sizes remain exactly 24,517 and
+24,286 bytes. The words, proofs, round counts and normalization handoffs
+are unchanged.
+
+This benefit is not universal: the eight-crossing stage has pair/forest
+ratios 0.948/0.974. At sixteen crossings they are 0.970/1.037, increasing
+to 1.064/1.110 at sixty-four. Across the stage inputs, old/new pair A/A
+ranges are 0.980--0.998 and 0.968--1.032; old/new forest A/A ranges are
+0.979--1.025 and 1.007--1.037. Forest controls show some systematic variation,
+but their largest paired shift is smaller than the 128-crossing result.
+The measured evidence supports cheaper planning on larger exposed stages,
+not a universal whole-recognition gain. Both modes remain optional.
+
+The driver is \path{primitive_power_research/planner.py} under
+\path{../fast}; its \texttt{audit}, \texttt{benchmark} and \texttt{stages}
+modes save full proofs, work counters, source hashes and shuffled sample
+orders. These measurements concern the same certified move choices under
+cheaper planning, not an enlarged class of solved inputs or a general
+quasipolynomial recognition result.

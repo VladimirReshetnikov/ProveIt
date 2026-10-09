@@ -41,23 +41,44 @@ def projection_metadata(arena, roots, cache=None):
     return meta, powers
 
 
-def plan_projection(arena, roots, alive, cache=None):
-    """Greedily select disjoint coherent donors; cache immutable node summaries."""
-    meta,powers = projection_metadata(arena,roots,cache)
-    selected,used = [],set()
-    for slot,root in enumerate(roots):
-        arena.tick()
-        counts = meta[root]
+def projection_candidates(arena, roots, alive, cache=None):
+    """One current-slot snapshot with immutable structural eligibility cached.
+
+    Slot numbers and live membership are rebuilt every time. Only word content
+    is cached; normalization and substitution create new roots when it changes.
+    """
+    if cache is None:cache = {}
+    records = cache.setdefault('candidates',{0:None})
+    # Charge both complete slot scans before constructing their temporary lists.
+    arena.tick(2*len(roots)+1)
+    fresh = list(dict.fromkeys(root for root in roots if root not in records))
+    meta,powers = projection_metadata(arena,fresh,cache)
+    for root in fresh:
+        arena.tick();counts = meta[root]
         if counts is None or len(counts)!=2 or any(p and n for p,n in counts.values()):
-            continue
-        pair = sorted(counts)
-        if not set(pair)<=alive or used.intersection(pair):
-            continue
-        if arena.lengths[root]==2:
-            # Two distinct signed letters are an immediate primitive word.
-            vector = [counts[g][0]-counts[g][1] for g in pair]
-            evidence = dict(kind='rank_two_primitive_power',relation=slot,generators=pair,
-                            primitive_vector=vector,exponent=1,width=1)
+            records[root] = None
+        else:
+            pair = tuple(sorted(counts))
+            records[root] = pair,tuple(counts[g][0]-counts[g][1] for g in pair)
+        arena.stats['projection_candidate_roots'] = arena.stats.get('projection_candidate_roots',0)+1
+    candidates = [(slot,root,records[root]) for slot,root in enumerate(roots)
+                  if records[root] is not None and all(g in alive for g in records[root][0])]
+    arena.stats['projection_candidate_slots'] = arena.stats.get('projection_candidate_slots',0)+len(candidates)
+    return candidates,powers
+
+
+def plan_projection(arena, roots, alive, cache=None, *, _prepared=None):
+    """Select disjoint coherent donors from a current structural snapshot."""
+    candidates,powers = projection_candidates(arena,roots,alive,cache) if _prepared is None else _prepared
+    selected,used = [],set()
+    for slot,root,(pair,vector) in candidates:
+        arena.tick()
+        if used.intersection(pair):continue
+        if min(abs(x) for x in vector)==1:
+            # A coherent word with a single occurrence of one generator is
+            # primitive, regardless of the other generator's exponent.
+            evidence = dict(kind='rank_two_primitive_power',relation=slot,generators=list(pair),
+                            primitive_vector=list(vector),exponent=1,width=sum(abs(x) for x in vector)-1)
         else:
             if root not in powers:
                 powers[root] = primitive_power_terminal(arena,[root],set(pair))

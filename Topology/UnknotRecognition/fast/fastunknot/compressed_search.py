@@ -31,17 +31,22 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 primitive_terminal.update(evidence)
                 return True
 
-        if primitive_forest:
-            from .primitive_forest import plan_forest, apply_forest
-            edges = plan_forest(arena, roots, alive, projection_cache)
-            if len(edges) >= 2:
-                apply_forest(arena, roots, alive, edges)
-                moves.append(dict(kind='primitive_forest', edges=edges))
-                raw = True
-                continue
         if primitive_projection:
-            from .primitive_projection import plan_projection, apply_projection
-            selected = plan_projection(arena, roots, alive, projection_cache)
+            from .primitive_projection import projection_candidates, plan_projection, apply_projection
+            prepared = projection_candidates(arena, roots, alive, projection_cache)
+            if primitive_forest and len(prepared[0]) >= 2:
+                from .primitive_forest import plan_forest, apply_forest
+                edges = plan_forest(arena, roots, alive, projection_cache, _prepared=prepared)
+                if len(edges) >= 2:
+                    apply_forest(arena, roots, alive, edges)
+                    moves.append(dict(kind='primitive_forest', edges=edges))
+                    raw = True
+                    continue
+            elif primitive_forest:
+                # Two edges need two current donor slots. Skip graph setup;
+                # this bound is exact, not a heuristic suspension of discovery.
+                arena.stats['forest_candidate_skips'] = arena.stats.get('forest_candidate_skips',0)+1
+            selected = plan_projection(arena, roots, alive, projection_cache, _prepared=prepared)
             if selected:
                 apply_projection(arena, roots, alive, selected)
                 moves.append(dict(kind='primitive_projection', pairs=selected))
