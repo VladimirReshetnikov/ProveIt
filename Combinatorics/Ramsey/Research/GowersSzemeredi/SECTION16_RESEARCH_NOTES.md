@@ -1568,9 +1568,8 @@ the elementary lemmas of its §2:
     `fourier_centeredBall_le` (|Î_a(ξ)| ≤ N/(2|ξ|)), `fourier_trapezoid`
     (ĝ = Î_a·Î_c/|I_c|), and `fourier_trapezoid_le`
     (|ĝ(ξ)| ≤ (N/(2|ξ|))²/|I_c|);
-  - next (was: the trapezoid's DFT via
-    convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
-    bound, and the expansion.
+  - next: Fourier truncation, the telescoping product bound, and the
+    expansion into bounded spans.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
   intersections, needing lattices or duality), Theorem 31, Proposition 18,
   Theorem 33 (algebraic regularity), Corollary 16 (robust
@@ -2701,3 +2700,12 @@ The original four theorem interfaces are wrappers around these stronger
 results. This is a local quantitative improvement in the Section 16
 selection argument; the deep structure hypothesis and the five open
 numbered statements remain unresolved.
+
+The combined audit for the tighter selection budget passes: 6,199 public
+Gowers theorems, a 4,947-module facade (4,152 OAI modules), and 4,949 modules
+including the audit and import-compatibility check. Only propext,
+Classical.choice, and Quot.sound occur. All eight new and retained
+selection interfaces also pass individual transitive axiom checks. The
+audit includes the incoming trapezoid Fourier estimates. The source ledger
+remains 115/5 with its existing fidelity caveats, and the selected upstream
+module scope is unchanged.
