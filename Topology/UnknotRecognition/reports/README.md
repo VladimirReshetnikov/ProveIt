@@ -504,3 +504,12 @@ the maintained suite passes 1,171 tests. Complete recognition improves
 1.17–2.11× on five inputs deliberately routed through the native stage.
 See `../synthesis/orbit_support.tex` for the per-closure bound, explicit
 disjoint-system improvement, remaining default-budget caps and measurement scope.
+
+Once the unweighted certificate proves one orbit, weighted production and
+independent verification now use total input mass instead of transporting
+weights through every event. The old certificate format and contents remain
+valid; multiple orbits still require full transport. All 300 weighted audit
+certificates and 17 source proofs are preserved, and 1,175 tests pass.
+Complete native-stage recognition improves 1.08–1.35× on the measured five
+inputs. See `../synthesis/single_orbit_weights.tex` for the conditional linear
+mass bound, multi-orbit counterexample, compatibility checks and timings.

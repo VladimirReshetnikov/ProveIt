@@ -2980,3 +2980,17 @@ python -B -m normal_orbit_research.supports audit --output results/orbit_support
 python -B -m normal_orbit_research.supports orbits --output results/orbit_support_orbits.json
 python -B -m normal_orbit_research.supports recognize --output results/orbit_support_recognize.json
 ```
+
+Weighted queries now use conservation after the complete interval proof
+establishes exactly one orbit: its vector is the total input weight. The
+independent checker validates the entire unweighted proof before applying
+the same mathematical identity with its own weight reconstruction. This
+avoids weight transport in connected queries and preserves the existing
+certificate bytes and schemas. Multi-orbit queries retain full transport;
+matching the total weight alone cannot certify their histogram.
+
+```bash
+python -B -m normal_orbit_research.single_orbit audit --output results/single_orbit_audit.json
+python -B -m normal_orbit_research.single_orbit weighted --output results/single_orbit_weighted.json
+python -B -m normal_orbit_research.single_orbit recognize --output results/single_orbit_recognize.json
+```

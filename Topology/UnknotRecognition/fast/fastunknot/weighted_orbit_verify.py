@@ -328,8 +328,17 @@ def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certific
         proof = certificate["orbit_proof"]
         if not verify_orbit_certificate(size, pairings, proof, check=poll):
             return False
-        pairs = _canonical_pairings(size, pairings)
-        actual = _replay(size, pairs, runs, proof["operations"], dimension, poll)
+        # Only a fully replayed unweighted certificate permits the shortcut.
+        # With one orbit, conservation determines its entire vector uniquely.
+        original_mass = (0,) * dimension
+        for lo, hi, value in runs:
+            poll()
+            original_mass = _add(original_mass, _scale(value, hi-lo))
+        if _integer(proof["orbit_count"]) == 1:
+            actual = {original_mass: 1}
+        else:
+            pairs = _canonical_pairings(size, pairings)
+            actual = _replay(size, pairs, runs, proof["operations"], dimension, poll)
         supplied = certificate["histogram"]
         if not isinstance(supplied, list):
             return False
@@ -346,9 +355,6 @@ def verify_weighted_orbit_certificate(size, pairings, weight_intervals, certific
         if claimed != actual or sum(actual.values()) != _integer(proof["orbit_count"]):
             return False
         # An independently cheap conservation identity also covers signed values.
-        original_mass = (0,) * dimension
-        for lo, hi, value in runs:
-            original_mass = _add(original_mass, _scale(value, hi - lo))
         final_mass = (0,) * dimension
         for value, count in actual.items():
             final_mass = _add(final_mass, _scale(value, count))
