@@ -977,6 +977,7 @@ import GowersSzemeredi.Proofs16GlobalCoherentRobustSystem
 import GowersSzemeredi.Proofs16GlobalCoherentRichSystem
 import GowersSzemeredi.Proofs16GlobalCoherentWordSystem
 import GowersSzemeredi.Proofs16GlobalCoherentNestedSystem
+import GowersSzemeredi.Proofs16SpanBallSplit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
