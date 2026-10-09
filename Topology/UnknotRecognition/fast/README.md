@@ -3401,7 +3401,7 @@ to distinguish tori and Klein bottles. No component population is expanded.
 The default `reduce_core=True` peels vertex links and divides quadrilateral
 content before orbit discovery, then restores the original types with the
 correct one-sided scaling rule. Set `reduce_core=False` for the direct observer.
-All three discoveries share `max_cycles`; callback checks cover compilation
+All orbit discoveries share `max_cycles`; callback checks cover compilation
 and verification. Incomplete runs return no spectrum or certificate.
 `normal_topology_verify.verify_normal_topology_spectrum` reconstructs the
 original source, checks the decomposition and weighted proofs, and verifies
@@ -3459,3 +3459,37 @@ The [unit-ray article](../synthesis/unit_ray.tex) proves connectedness, scaling,
 primitive disc classification, the all-size Fibonacci family and protocol
 semantics. The [mathematical review](../synthesis/completion_theorems.tex) preserves
 other results from reports 64–69, including results not selected for native code.
+
+The topology observer now enables `coorientation=True` by default. After a
+complete base weighted query, a checked finite block colouring can trivialize
+the normal double into two copies. The Euler and boundary-marker point weights
+pull back unchanged, so the doubled histogram has the same signatures and twice
+the multiplicities. This skips the second weighted discovery and replay; a missed
+colouring retains the complete previous result. A miss does not imply
+nonorientability. `coorientation=False` or the CLI `--no-coorientation` reproduces
+the old schedule. All actual discoveries share the cycle allowance.
+
+Derived evidence uses `normal-topology-spectrum-v2` with a strict source-bound
+`normal-topology-double-coorientation-v1` inner proof. Independent replay checks
+the original graph and certified base histogram; it does not call the colouring
+planner or any discovery. Legacy v1 certificates remain accepted. Pure reduced
+vertex links retain their zero-query v1 proof.
+
+All 1,322 tests pass. Every one of 5,100 corpus configurations agrees with the
+frozen baseline and component oracle; 1,088 skip the double query. Fresh Regina
+checks match 664 vectors and independently verify 1,395 certificates. Isolated
+production, replay and serialization improves layered inputs 1.87–2.26x, and the
+primitive coordinate-reference comparison 1.76–2.10x. Both the noisy initial
+fallback measurement and a longer isolated repeat showing small overhead are
+retained. These are supplied-vector timings; source recognition coverage and the
+general QP question remain unchanged. Reproduce from `fast/`:
+
+```sh
+python -B -m normal_orbit_research.coorientation_spectra audit --output /tmp/weighted-spectrum-audit.json
+python -B -m normal_orbit_research.coorientation_spectra benchmark --rounds 5 --output /tmp/weighted-spectrum-benchmark.json
+```
+
+The [weighted coorientation proof](../synthesis/weighted_coorientation.tex)
+establishes the general additive-weight cover theorem and explains its two-weight
+application, strict protocol, complete fallback and binary work. Raw records,
+source pins and reproduction scripts are `../synthesis/data/weighted-coorientation-*`.

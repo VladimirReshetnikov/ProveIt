@@ -81,6 +81,13 @@ modification times.
 | `68/` | `unknot_geometric_transport_20261009.zip` | cocycle transport, collapse scoring and ordered boundary interfaces | exact Pachner changes, endpoint moment recovery and a disconnected primitive-fibre example | peeled scoring refinement unimplemented; no added corpus recognition coverage | mathematical results preserved in synthesis completion_theorems.tex; fresh source-bound splitting replay and 3,125 height checks pass; transport overlay not promoted |
 | `69/` | `unknot_support_sensitive_certificates_20261009.zip` | support projections and unit-pivot ray certificates | decoder optimality, component-type bound and exact Fibonacci unit propagation | general projection interface has measured regressions; global discovery remains open | full projection and component-type theorems preserved; native unit-ray disc gate integrated, all 1,317 tests and 2,550 corpus comparisons pass; layered-256 query improves 31.39x |
 
+| `70/` | `ProveIt_Affine_Orbit_Profiles_2026-10-09.zip` | complete delivered manuscript, code and evidence | affine orbit profiles research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+| `71/` | `ProveIt_Cycle_Envelope_Kernels_20261009.zip` | complete delivered manuscript, code and evidence | cycle envelope kernels research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+| `72/` | `ProveIt_Rooted_Disc_Components_2026-10-09.zip` | complete delivered manuscript, code and evidence | rooted disc components research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+| `73/` | `unknot_active_faces_batched_descent_20261009.zip` | complete delivered manuscript, code and evidence | active faces and batched descent research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+| `74/` | `unknot_minimum_envelopes_20261009.zip` | complete delivered manuscript, code and evidence | minimum envelopes research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+| `75/` | `unknot_trace_search_20261009.zip` | complete delivered manuscript, code and evidence | trace search research | delivered overlay retained inside report; not applied during placement | arrival `8188525b7` preserved; mathematical review and native validation pending under the active performance goal |
+
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
 
@@ -666,3 +673,14 @@ gluing, exact ranks, finite-group formula, propagation obstruction, transport
 counterexample, endpoint recovery and normal component-type bound independently
 of runtime promotion. Original archive provenance and all preserved-file hashes
 are in `../synthesis/data/incoming-fe88-placement.json`.
+
+The later native topology integration derives a complete weighted normal-double
+histogram from the finite coorientation already used for scalar counts. The
+[weighted cover theorem](../synthesis/weighted_coorientation.tex) proves that
+both point weights pull back unchanged and gives strict source-bound v2 replay;
+v1 and unsuccessful-gate results remain supported. All 1,322 tests, 5,100 corpus
+configurations and 1,395 fresh Regina certificate checks pass. Complete layered
+observer calls improve 1.87–2.26x, including a fresh 1.76–2.10x gain over the
+primitive coordinate reference. This is an implementation refinement of the
+report 58 observer and established coorientation theory, with no new diagram
+coverage or general QP claim.

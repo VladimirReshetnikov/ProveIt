@@ -1,0 +1,119 @@
+\section{Geometric, algebraic, and encoding conventions}
+
+\subsection{Finite triangulations and local identifications}
+
+Let $T$ be a finite generalized triangulation with $t$ tetrahedra. Each
+tetrahedron has four numbered vertices. A face is either unpaired or is
+paired to another face by a permutation of the four local vertices.
+The reciprocal pairing and its inverse are both recorded. Local corners,
+edges, and faces are distinguished from global equivalence classes under
+these identifications. In particular, several corners of a tetrahedron
+can represent the same global vertex.
+
+The implemented geometric validator requires a connected orientable
+compact three-manifold with one torus boundary component. It checks
+reciprocal pairings, orientation consistency, edge identifications,
+vertex links, and the boundary's connectedness and Euler characteristic.
+An interior vertex link is a sphere; a boundary vertex link is a disc.
+These are the hypotheses under which the following normal-coordinate and
+Pachner operations are used. Establishing that an arbitrary supplied
+triangulation is the exterior of the user's knot is a separate provenance
+obligation, supported by the repository's diagram-exterior routines.
+
+\subsection{Normal coordinates}
+
+Write a standard normal vector as
+\[
+ x=(a_{iv},q_{ij})\in\R_{\ge0}^{7t},
+ \qquad 0\le i<t,\quad 0\le v<4,\quad 0\le j<3.
+\]
+Here $a_{iv}$ counts triangles cutting off vertex $v$ in tetrahedron $i$,
+and $q_{ij}$ counts quadrilaterals of type $j$. Across each paired face,
+the three normal-arc counts agree. These conditions form a sparse integer
+linear system $Ax=0$. Each arc equation is a difference of two triangle
+coordinates and two quadrilateral coordinates, with coincidences combined.
+The additional quadrilateral condition requires at most one positive
+$q_{ij}$ in each tetrahedron. It is this nonconvex condition that necessitates
+sector choices or a different global method.
+
+On the linear matching space the Euler characteristic is a rational
+linear functional $c^Tx$. One may calculate it by assigning each global
+edge-intersection count to a representative local edge and counting one
+copy of each glued normal arc. For integral admissible vectors the result
+is the integer Euler characteristic of the corresponding surface.
+The linear formula remains algebraically defined on relaxed vectors
+with incompatible quadrilaterals; those vectors do not necessarily
+represent embedded surfaces.
+
+The full integral vector can be very large in value but small in encoding.
+Let $B$ bound the bit length of its coordinates or local height differences.
+Algorithms here manipulate $O(t)$ binary integers, not one object per
+normal disc. Any theoretical polynomial LP bound refers to the full
+rational input bit length. The shipped exact simplex is an implementation
+choice with explicit resource limits, and has no polynomial pivot bound.
+
+\subsection{Anchors and vertex links}
+
+For a global vertex $v$, let $C_v$ be its set of local corner records.
+The normal vertex-link vector $L_v$ has one triangle at every corner in
+$C_v$ and zero quadrilaterals. The maximal removable multiplicity is
+\[
+ m_v(x)=\min_{c\in C_v} a_c,
+ \qquad
+ \peel(x)=x-\sum_v m_v(x)L_v.
+\]
+The peeled vector is nonnegative, obeys the same matching equations,
+and is admissible when $x$ is. Choosing one triangle coordinate at each
+global vertex and setting it to zero gives an \emph{anchor face}. Every
+peeled vector lies on some anchor face. A one-vertex triangulation has
+at most $4t$ raw corner anchors, with additional contractions possible
+as in the incoming dual report.
+
+Peeling is distinct from division by the common divisor of quadrilateral
+coordinates. The latter can be useful for component-count queries, but
+it changes all coordinates and is not part of the local-update theorem.
+For $\lambda_v=\chi(L_v)\in\{1,2\}$ and $d_v=|C_v|$,
+\begin{equation}\label{eq:peel-identities}
+ \chi(\peel(x))=\chi(x)-\sum_v\lambda_vm_v(x),
+ \qquad
+ P(\peel(x))=P(x)-\sum_vd_vm_v(x),
+\end{equation}
+where $P$ is the number of normal discs before gluing. These identities
+also explain why vertices shared by disjoint local replacements can
+couple their peeled scores.
+
+\subsection{Integral cocycles and coherent fibres}
+
+An integral cocycle can be represented in each tetrahedron by four
+integer heights $h_{i0},\ldots,h_{i3}$. The signed height differences
+agree on globally identified edges. Adding the same constant to all
+four heights of one tetrahedron does not change those differences.
+Sorting its four heights as $h_a\le h_b\le h_c\le h_d$ gives the
+coherent normal vector with $h_b-h_a$ triangles at $a$,
+$h_d-h_c$ triangles at $d$, and $h_c-h_b$ quadrilaterals separating
+$\{a,b\}$ from $\{c,d\}$. Equal heights cause zero counts and require
+no special perturbation.
+
+The construction is the normal level set of the local affine height
+functions, with unit-separated levels taken modulo integral shifts.
+It is cooriented and its boundary and normal matching data agree under
+face gluings. A transport operation preserves the integral cohomology
+class but can split, join, or change components of this fibre. The
+incoming transport package contains a verified example in which one
+disc becomes a disc and two spheres \cite{priorTransport}. Thus component
+analysis remains necessary after any geometric search policy.
+
+\subsection{Cost model and certificate scope}
+
+The comparison model counts arithmetic on integers separately from its
+bit cost. An operation on a bounded number of $B$-bit heights takes
+polynomial bit time in $B$; multiplication by a corner count introduces
+$O(\log t)$ additional bits. We write $\M(b)$ for a chosen integer
+multiplication cost and avoid treating a large integer as a machine word.
+Combinatorial indices use $O(\log(t+2))$ bits.
+
+Three kinds of output are deliberately distinct: an algebraic certificate
+about a supplied matching system; a geometric certificate relating two
+triangulations and transported cocycles; and a knot verdict tied to the
+original diagram. The first two can accelerate the third but do not
+replace its end-to-end proof requirements.

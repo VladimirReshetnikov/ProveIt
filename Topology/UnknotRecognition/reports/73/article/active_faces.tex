@@ -1,0 +1,430 @@
+\section{Active normal cones: complete support proofs and a structural obstruction}
+\label{sec:active-faces}
+
+The previous continuation replaces some normal-ray enumeration queries by
+exact positive-Euler linear programmes and certifies their negative answers
+by Farkas multipliers.  It also identifies a difficulty with a strong
+mandatory-type backdoor: a tetrahedron unused by a positive surface can
+retain several allowed types, even when that surface is easy to find
+\cite{priorDual}.  An immediate response is to distinguish an allowed
+coordinate from one that is actually positive somewhere in the relaxed cone.
+This section makes that distinction exact, implements its certificate, and
+then proves a limitation of the resulting structural parameter.
+
+The linear-programming ingredients are classical.  Strict complementarity
+and maximal support belong to the Goldman--Tucker framework
+\cite{GoldmanTucker}; coordinate-face traversal and normal-surface LP search
+have substantial precedents \cite{BurtonFaces,BurtonOzlen}.  Our purpose is
+to give a source-sized proof interface, an explicit homogeneous construction
+compatible with the supplied exact solver, and a precise complexity bound
+for the adaptive tree.  Familiar local matching identities then yield a
+linear lower bound for its root parameter on genuine normal-coordinate
+inputs, including the maintained diagram-exterior construction.
+
+\subsection{One primal--dual pair identifies every active coordinate}
+
+Let $A\in\Q^{m\times N}$ and $c\in\Q^N$.  Put
+\begin{equation}\label{eq:active-cone-def}
+ C=\{x\in\R^N:x\ge0,\ Ax=0\},\qquad
+ S(C)=\{j:\text{some }z\in C\text{ has }z_j>0\}.
+\end{equation}
+The set $S(C)$ is the \emph{active support of the cone}; it need not equal the
+support of a particular basic solution.  Write
+$P_c=\{x\in C:c^Tx>0\}$.  If $P_c$ is nonempty, its active support is also
+$S(C)$.  Indeed, if $p\in P_c$ and $z\in C$ has $z_j>0$, then
+$p+\varepsilon z\in P_c$ for sufficiently small positive $\varepsilon$.
+The objective of $z$ may be negative.  Activity on the positive-objective
+part therefore cannot be inferred from the sign of an individual direction's
+objective.
+
+\begin{lemma}[Complete active-support alternative]\label{lem:active-pair}
+Exactly one of the following alternatives holds:
+\begin{enumerate}
+\item There are rational vectors $x\in\Q^N$ and $y\in\Q^m$ satisfying
+\begin{equation}\label{eq:active-primal-dual}
+ Ax=0,\quad x\ge0,\quad c^Tx\ge1,\qquad
+ s:=A^Ty\ge0,\quad x+s\ge\mathbf1.
+\end{equation}
+\item There is a rational vector $h\in\Q^m$ such that
+\begin{equation}\label{eq:active-negative}
+ A^Th\ge c.
+\end{equation}
+\end{enumerate}
+In the first alternative, $x_j\ge1$ exactly when $j\in S(C)$, and
+$s_j\ge1$ exactly when $j\notin S(C)$.
+\end{lemma}
+
+\begin{proof}
+For a pair satisfying \eqref{eq:active-primal-dual},
+\[
+ x^Ts=x^TA^Ty=(Ax)^Ty=0.
+\]
+Both vectors are nonnegative.  Hence $x_js_j=0$ in every coordinate, while
+$x_j+s_j\ge1$ ensures that exactly one of the two entries is at least one.
+For any $z\in C$, the same calculation gives $z^Ts=0$.  Thus $s_j>0$
+forces $z_j=0$ throughout $C$, whereas $x_j>0$ explicitly demonstrates
+activity.  This proves the support assertion.
+
+Suppose $P_c\ne\varnothing$.  For each $j\in S(C)$ choose a rational
+$z^{(j)}\in C$ with $z^{(j)}_j>0$.  Rational witnesses exist because the
+relevant linear systems are rational.  Their sum $z$ is positive on all of
+$S(C)$.  Starting from a rational $p\in P_c$, choose a sufficiently small
+positive rational $\varepsilon$ and then rescale $p+\varepsilon z$ to obtain
+$x_j\ge1$ on $S(C)$ and $c^Tx\ge1$.
+
+For every inactive coordinate $j$, the functional $e_j^Tz$ is nonpositive
+on $C$; in fact it is identically zero.  The homogeneous Farkas alternative
+gives a rational $y^{(j)}$ with $A^Ty^{(j)}\ge e_j$.  Let
+$y=\sum_{j\notin S(C)}y^{(j)}$, with the empty sum interpreted as zero.
+Its residual is nonnegative everywhere and at least one off $S(C)$.
+Orthogonality with the constructed $x$ makes it zero on $S(C)$.  Thus
+\eqref{eq:active-primal-dual} holds.
+
+If $P_c=\varnothing$, homogeneous Farkas gives
+\eqref{eq:active-negative}.  Conversely, pairing that inequality with any
+nonnegative kernel vector gives $c^Tx\le h^TAx=0$, which excludes the first
+alternative.
+\end{proof}
+
+The proof has a useful verification consequence.  The checker does not need
+one infeasibility test per inactive coordinate, and it does not reproduce a
+relative-interior algorithm.  It checks two matrix products, signs, and the
+coordinatewise coverage inequality in \eqref{eq:active-primal-dual}.  One
+multiplier exposes all inactive coordinates simultaneously; one positive
+vector proves that no remaining coordinate has been silently omitted.
+
+The claim is about the relaxed cone.  For example,
+\[
+ A=(1,-1),\qquad c=(1,1),\qquad C=\{(a,a):a\ge0\}
+\]
+has both coordinates active and positive objective away from zero.  If the
+two coordinates are declared incompatible, it has no admissible positive
+point.  A complete active-support vector can thus be a particularly
+incompatible relaxation vector.
+
+\subsection{A single homogeneous query with a small negative output}
+
+The inherited solver accepts positive-objective queries over a nonnegative
+homogeneous kernel.  We can use that interface directly.  Introduce
+nonnegative variables
+\[
+ (x,y^+,y^-,s,u,v,\tau),
+\]
+where $x,s,u$ have $N$ entries, $y^+,y^-$ have $m$ entries, and $v,\tau$ are
+scalars.  Impose
+\begin{align}
+ Ax&=0, &
+ s-A^T(y^+-y^-)&=0,\label{eq:active-lift-a}\\
+ x+s-u-\tau\mathbf1&=0, &
+ c^Tx-v-\tau&=0.\label{eq:active-lift-b}
+\end{align}
+There are $3N+2m+2$ nonnegative variables and $m+2N+1$ equations.  The
+objective is $\tau$.  A point with $\tau>0$, divided by $\tau$, yields
+\eqref{eq:active-primal-dual} with $y=y^+-y^-$.  Conversely, split any
+multiplier from that certificate into its positive and negative parts, set
+$\tau=1$, and use the nonnegative surpluses for $u$ and $v$.  The lifted
+positive query is therefore equivalent to $P_c\ne\varnothing$.
+
+It is also possible to discard the large lifted dual after a negative
+answer.  The following projection is useful because the consumer can remain
+an ordinary homogeneous-Farkas checker on the original matrix.
+
+\begin{proposition}[Projection of a lifted negative proof]
+\label{prop:active-dual-projection}
+Let $(\alpha,\beta,\gamma,\delta)$ be a negative Farkas multiplier for the
+lifted positive-$\tau$ query, grouped according to the four displayed sets of
+equations.  Then $\delta<0$, and $h=\alpha/(-\delta)$ satisfies
+$A^Th\ge c$.
+\end{proposition}
+
+\begin{proof}
+The lifted column inequalities are
+\begin{align*}
+ A^T\alpha+\gamma+\delta c&\ge0,& A\beta&=0,\\
+ \beta+\gamma&\ge0,& \gamma&\le0,\\
+ \delta&\le0,&-\mathbf1^T\gamma-\delta&\ge1.
+\end{align*}
+The equality $A\beta=0$ comes from the two oppositely signed columns for
+each free dual variable.  If $\delta=0$, then
+$\beta\ge-\gamma\ge0$.  Pairing the first inequality with $\beta$ gives
+\[
+ 0\le\beta^T\gamma\le-\sum_j\gamma_j^2.
+\]
+Thus $\gamma=0$, which contradicts
+$-\mathbf1^T\gamma-\delta\ge1$.  Hence $\delta<0$.  Finally,
+\[
+ A^T\alpha\ge-\gamma-\delta c\ge-\delta c,
+\]
+and division by $-\delta$ gives the required original-cone dual.
+\end{proof}
+
+The enlarged system has polynomial encoding length in the original rational
+input.  Standard rational-LP algorithms consequently decide it in polynomial
+bit complexity, with polynomial-bit primal or dual witnesses.  The executable
+producer uses the exact Bland-simplex routine inherited from the previous
+continuation \cite{priorDual}.  Its arithmetic is exact and its configured
+pivot allowance is explicit; this implementation is not asserted to have a
+polynomial worst-case pivot count.  The distinction is material: one large
+degenerate LP can cost much more than several small support probes.  The
+experiments section reports that tradeoff, including unfavorable outcomes.
+
+\subsection{An intrinsic rank for the remaining incompatibilities}
+
+Let $\mathcal G$ be a collection of coordinate conflict groups.  In normal
+coordinates these are the three quadrilateral types in each tetrahedron.
+A vector is admissible when each group contains at most one positive
+coordinate.  The following definition also permits overlapping groups, since
+the proof uses only their incompatibility disjunctions.
+
+\begin{definition}[Active ambiguity rank]\label{def:active-ambiguity}
+For $C$ as in \eqref{eq:active-cone-def}, let $V=\spanof(C)$ and put
+\[
+ J(C)=\bigcup_{\substack{G\in\mathcal G\\|G\cap S(C)|\ge2}}
+             (G\cap S(C)).
+\]
+Define
+\begin{equation}\label{eq:active-rho}
+ \rho(C)=\dim\spanof\{e_j|_V:j\in J(C)\}.
+\end{equation}
+\end{definition}
+
+This quantity depends on the cone and the conflict groups, not on the LP
+solver's particular basic point.  Universally zero coordinates do not
+contribute.  Neither do independent directions carried only by coordinates
+outside every active conflict.
+
+It is an exact linear-algebraic quantity once the active-support certificate
+has been checked.  If $S=S(C)$, then
+\begin{equation}\label{eq:active-dimension}
+ V=\{z:Az=0,\ z_j=0\ (j\notin S)\},\qquad
+ \dim V=|S|-\rank A_S.
+\end{equation}
+Indeed, a vector positive on $S$ has a relative neighborhood in
+$\ker A_S$ that remains nonnegative, so the cone spans that entire kernel.
+Writing $E_J$ for the indicated coordinate rows restricted to $S$ gives
+\begin{equation}\label{eq:active-rho-rank}
+ \rho(C)=\rank\begin{pmatrix}A_S\\E_J\end{pmatrix}-\rank A_S.
+\end{equation}
+Rank computation is useful for interpretation and complexity accounting; the
+certificate checker does not need to trust a reported rank in order to accept
+a positive witness or a negative search tree.
+
+\begin{theorem}[Binary active-face search]\label{thm:active-tree}
+Suppose $C$ contains a point of positive objective.  At each nonterminal
+positive node, compute complete active support and choose any incompatible
+active pair $i,j$.  Recurse on
+\[
+ C\cap\{x_i=0\}\qquad\text{and}\qquad C\cap\{x_j=0\}.
+\]
+Terminate at a nonpositive cone or at a positive cone whose active support is
+compatible.  This decides admissible positive-objective existence.  Its
+complete binary tree has at most $2^{\rho(C)+1}-1$ nodes.  With polynomial
+rational LP, its bit cost and certificate length are
+$2^{\rho(C)}\poly(L)$, where $L$ is the original encoded input length.
+\end{theorem}
+
+\begin{proof}
+Every admissible vector satisfies $x_i=0$ or $x_j=0$, so the two children cover
+all admissible possibilities.  Their overlap is harmless.  A coordinate
+deleted using an active-support dual is zero on the entire current cone;
+such a deletion preserves every admissible candidate.  A negative dual
+excludes positive objective.  At a compatible positive leaf, the active
+primal vector is itself admissible.  These observations prove correctness.
+
+For the bound, let $C'$ be a child whose positive-objective part is nonempty,
+and put $V'=\spanof(C')$.  Coordinate restriction cannot create new active
+coordinates, so $J(C')\subseteq J(C)$.  Let
+\[
+ W=\spanof\{e_k|_V:k\in J(C)\}.
+\]
+In the child $x_i=0$, restriction from $V$ to $V'$ kills $e_i|_V$.  That
+functional is nonzero because $i$ was active, and it belongs to $W$ because
+$i$ was part of an active conflict.  The restriction map on $W$ therefore
+has nontrivial kernel.  Its image has dimension at most $\rho(C)-1$, and
+the defining functionals for $\rho(C')$ lie in that image.  Consequently
+\[
+ \rho(C')\le\rho(C)-1.
+\]
+The same argument applies to the other child.
+
+If $\rho=0$, there is no active incompatible pair: any active coordinate in
+such a pair would be a nonzero defining functional.  Hence every positive
+branching node has rank at least one.  Along a path, ranks decrease at each
+edge whose child remains positive.  A final negative leaf can occur after
+the last rank-one branching node, so the full path still contains at most
+$\rho(C)$ branches.  Binary tree counting yields the stated node bound.
+Every query and arithmetic witness has polynomial encoded size, and a
+negative tree retains both children at each split, giving the time and
+certificate estimates.
+\end{proof}
+
+The proof makes no assumption that the selected coordinate-zero face drops
+dimension by exactly one.  A child may lose several coordinates at once,
+which only improves the bound.  It also permits additional early terminal
+rules.  In particular, a small ordinary LP may first return a negative dual
+or an already admissible basic vector.  Stopping in either case shortens the
+tree.  The implementation uses this precheck by default and invokes the
+larger active-support LP only for an incompatible positive relaxation.
+
+\subsection{Normal anchors and the precise scope of a conclusion}
+
+For a finite triangulation, choose one zero triangle coordinate at every
+global vertex.  Let $m_v$ be the number of local triangle corners representing
+vertex $v$.  The complete anchor product has size
+\[
+ \mathcal A(T)=\prod_v m_v,\qquad \sum_v m_v=4t.
+\]
+In the one-vertex case, $\mathcal A(T)=4t$.  Restricting the standard matching
+matrix and an exact Euler covector to the surviving columns gives the
+anchored systems used above.  Every canonical admissible normal vector
+belongs to at least one such anchored cone.
+
+If $\rho_{\max}$ bounds the roots that require positive relaxed search, the
+complete anchored positive-Euler query therefore has the conditional cost
+\begin{equation}\label{eq:active-normal-cost}
+ \mathcal A(T)\,2^{\rho_{\max}}\poly(t)
+\end{equation}
+with a polynomial rational-LP backend.  A negative proof contains every
+anchor tuple in the independently reconstructed product, with a complete
+binary proof tree for each tuple.  Missing anchors, a missing child, or an
+uncertified coordinate deletion invalidate coverage.
+
+A positive conclusion here is a canonical admissible normal vector with
+positive Euler characteristic.  A maximal-support vector may have several
+components; clearing denominators and dividing by the gcd does not turn it
+into an extreme ray or prove connectedness.  The maintained geometric
+component/disc endpoint is still required to identify an essential disc.
+Conversely, a negative positive-Euler query is one ingredient in a complete
+normal-surface recognition architecture, whose provenance and crushing
+transitions must also be justified \cite{BurtonOzlen,priorDual}.  The new
+module does not convert either status directly into a knot verdict.
+
+\subsection{A linear obstruction already present in genuine root cones}
+
+The active parameter removes identically zero coordinates after restrictions.
+At an unrestricted normal root, however, there is a universal source of
+activity.  Let $v(T)$ denote the \emph{total} number of global vertices; this
+includes boundary vertices and is distinct from the number of interior
+vertices used in the batch-selection results.  Fix one zero triangle anchor
+per global vertex, and let $u$ be the number of tetrahedra containing at least
+one selected anchor.
+
+\begin{theorem}[Unrestricted anchored normal-cone obstruction]
+\label{thm:active-root-obstruction}
+Allow all three quadrilateral types in every tetrahedron and impose only
+the matching, nonnegativity, and chosen triangle-anchor equations.  Then
+every quadrilateral coordinate is active, and
+\begin{equation}\label{eq:active-root-lower}
+ \rho(C)\ge t-u\ge t-v(T).
+\end{equation}
+This conclusion does not require positive Euler feasibility.  If the
+positive-Euler part is nonempty, all quadrilateral coordinates are also
+active on that part.  In particular, a one-vertex root satisfies
+$\rho(C)\ge t-1$.
+\end{theorem}
+
+\begin{proof}
+Let $r$ have every triangle coordinate zero and every quadrilateral
+coordinate one.  Each triangular face receives one arc of each normal arc
+type from these three quadrilaterals.  Thus all face-matching equations
+hold.  Every selected triangle anchor vanishes, so $r\in C$ and every
+quadrilateral coordinate is active.  Each tetrahedron consequently belongs
+to an active three-type conflict.
+
+For a tetrahedron $a$ containing no selected anchor, define $w_a$ to have
+value $+1$ in its four triangle coordinates, value $-1$ in its three
+quadrilateral coordinates, and zero elsewhere.  A local normal arc count
+has the form $T+Q$.  Its change under $w_a$ is therefore $1-1=0$, on every
+face of $a$.  This verifies the matching-kernel identity also when faces of
+the same tetrahedron are identified.  Both $r$ and $r+w_a$ are nonnegative
+and satisfy all chosen anchors.  Hence $w_a\in\spanof(C)$.
+
+The quadrilateral image of $w_a$ is $-1$ precisely in the three coordinates
+of tetrahedron $a$.  These images have disjoint supports as $a$ ranges over
+the $t-u$ unanchored tetrahedra, so they are linearly independent.  All of
+their coordinate functionals occur in the definition of $\rho(C)$ because
+all quadrilateral types are active.  Thus the map defining the ambiguity
+rank has rank at least $t-u$.  There is at most one selected anchor per
+global vertex, and hence $u\le v(T)$, proving the displayed inequality.
+
+Finally, if $p\in C$ has positive Euler characteristic, then
+$p+\varepsilon r$ still has positive Euler characteristic for sufficiently
+small positive $\varepsilon$, and it has every quadrilateral coordinate
+positive.  This proves the last activity assertion.
+\end{proof}
+
+The vectors $r$ and $r+w_a$ are incompatible relaxation vectors.  The proof
+does not assert that they are embedded surfaces.  Their role is to expose
+freedom that an LP relaxation necessarily retains before useful type
+restrictions or admissibility implications have been imposed.
+
+The maintained source constructor gives a direct family-specific form of
+the obstruction.
+
+\begin{corollary}[The pulling diagram-exterior source]
+\label{cor:active-pulling-source}
+Let a classical one-component diagram have $n$ crossings and put
+$n'=\max\{1,n\}$.  For the maintained pulling construction, with its checked
+compact knot-exterior interpretation, every unrestricted anchor root
+satisfies
+\begin{equation}\label{eq:active-source-linear}
+ \rho(C)\ge16n'-2.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+The source has $4n'$ truncated corner cells and uses five tetrahedra in each
+cell, so $t=20n'$.  Each cell contributes two truncation triangles to the
+boundary, giving $f_\partial=8n'$.  These counts are part of the maintained
+pulling template and source correspondence \cite{ProveItSource}.  The
+boundary is a triangulated torus; counting incidences and using its Euler
+characteristic gives
+\[
+ e_\partial=\frac32f_\partial=12n',\qquad
+ v_\partial=e_\partial-f_\partial=4n'.
+\]
+The pulling subdivision introduces no interior vertices beyond the two
+finite pole classes of the corner construction.  Its remaining vertices
+are boundary cut points.  Thus $v(T)=4n'+2$.  Applying
+\eqref{eq:active-root-lower} yields
+$\rho(C)\ge20n'-(4n'+2)=16n'-2$.
+For $n=0$, the constructor uses its specified one-curl representative of
+the crossing-free circle, so the same count with $n'=1$ applies.
+\end{proof}
+
+These lower bounds rule out a universal polylogarithmic bound for this
+\emph{unrestricted-root} rank along the displayed source family.  They do
+not give a lower bound for the recognizer's actual runtime: a negative
+ordinary LP or an early admissible point can finish a stage before the
+active query runs.  They also do not rule out small parameters after
+mandatory propagation, certified type restrictions, or topology changes.
+The distinction is concrete.  The earlier continuation proves that its
+one-vertex layered Fibonacci family requires no guessed types under the
+mandatory rule \cite{priorDual}, whereas
+Theorem~\ref{thm:active-root-obstruction} gives a linearly growing
+unrestricted active rank on the same family.
+
+\subsection{Implementation contract and research consequence}
+
+The additive implementation has three levels.  The rational-cone primitive
+returns a complete active-support pair, an ordinary negative multiplier, or
+an inconclusive resource-limit outcome.  The conflict-group search adds
+complete binary proof trees.  The normal wrapper reconstructs finite
+matching equations, the Euler covector, and the full anchor product, and
+binds its final certificate to the source triangulation.  Its independent
+checker imports neither the producer nor an LP solver.  Seventeen focused
+tests cover arithmetic alternatives, hidden active coordinates, malformed
+rationals, incomplete branches, cancellation, anchor/source substitution,
+and actual normal positive and negative controls.  In particular, the
+positive meridian control is passed onward to the maintained geometric
+essential-disc counter.
+
+The mathematical reduction and the executable backend have different roles.
+The active-support pair is a short, complete interface for deleting inactive
+coordinates.  The binary theorem gives an honest intrinsic bound at any
+restricted cone.  The root obstruction identifies an unavoidable linear
+source of ambiguity before such restrictions.  Further progress must
+therefore explain how geometric information, admissibility implications,
+or a controlled transition removes that freedom, or why a verified endpoint
+is found before it matters.  Merely replacing allowed masks by active
+supports cannot supply the missing global quasi-polynomial theorem.

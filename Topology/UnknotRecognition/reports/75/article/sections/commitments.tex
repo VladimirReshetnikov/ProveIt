@@ -1,0 +1,215 @@
+\section{Commitments and the single-exponential bound}\label{sec:commitments}
+
+\subsection{The relative-boundary commutation lemma}
+
+\begin{lemma}[Commuting disjoint supports]\label{lem:commute}
+Let $a,b$ be simultaneously legal formal replacements in a triangulation,
+and suppose that their sets of consumed tetrahedron incarnations are disjoint.
+After applying $a$, the transported event $b$ remains legal; the symmetric
+statement holds. The results of $ab$ and $ba$ have a canonical combinatorial
+isomorphism fixing every surviving old tetrahedron and respecting the two
+replacement regions, their boundary attachments and their transported cocycles.
+\end{lemma}
+\begin{proof}
+Regard each consumed region as a separate formal bipyramid before the global
+face identifications. Both fillings have the same labelled six-facet boundary.
+One can replace both fillings simultaneously and then impose the original
+attaching maps. Replacing them in either order gives exactly this quotient.
+This also covers the case that a boundary face of one region is attached to
+a boundary face of the other: the common attaching permutation is retained
+in the simultaneous construction.
+
+The internal face of a $2$--$3$ event belongs to its two consumed tetrahedra.
+The complete central-edge star of a $3$--$2$ event belongs to its three
+consumed tetrahedra. A disjoint replacement changes neither of these internal
+configurations. Its updates to exterior attachments merely apply the same
+relative-boundary identifications. Hence the second event stays legal.
+
+For the marking, the five heights in each formal region are reconstructed
+from the same old edge differences. Changes of additive row constants have
+no effect. The regions use disjoint old tetrahedron interiors and retain the
+same boundary edge values. The two independently obtained sets of new rows
+therefore agree after the stated isomorphism and normalization. No claim
+that the intermediate coherent surfaces have identical topology is required.
+\end{proof}
+
+Disjoint support is sufficient, not necessary. Overlapping moves can also
+have special relations, as in the earlier Pachner-graph literature
+\cite{BurtonPachner}; the present proof deliberately requires only the
+uniformly checked relation in Lemma~\ref{lem:commute}.
+
+\subsection{A constant alphabet on each incarnation}
+
+Assign an incarnation one of the following eleven symbols:
+\[
+ \mathcal A=\{\text{idle}\}
+ \cup\{\text{down at edge }e:0\le e<6\}
+ \cup\{\text{up at face }f:0\le f<4\}.
+\]
+The six edges use a fixed ordering of the pairs of local vertices.
+An enabled downward event is \emph{ready} if all three source incarnations
+are committed to their local copy of its central edge. An upward event is
+ready if both source incarnations are committed to the common face. Upward
+events are disabled when the total upward budget is exhausted.
+
+\begin{lemma}[Ready events cannot compete]\label{lem:ready}
+Two different ready events consume disjoint sets of incarnations.
+\end{lemma}
+\begin{proof}
+A shared incarnation would have to select the same symbol for both events.
+The idle symbol selects no event. A selected local face identifies its unique
+partner and hence its unique $2$--$3$ event. A selected local edge identifies
+its entire global edge star and hence the unique legal $3$--$2$ event at
+that edge. Thus the purported events would be equal.
+\end{proof}
+
+The committed search uses a fixed deterministic order of ready events. If
+one exists, it executes the first, preserves commitments on survivors and
+leaves new incarnations unassigned. If none exists, it assigns the first
+unassigned live incarnation one of the alphabet symbols, branching on every
+choice. If none is unassigned, that branch stops. An assignment need not be
+consistent with any eventual move; inert assignments are allowed and counted.
+
+The implementation evaluates a state predicate at each newly encountered
+marked endpoint, before deciding whether to continue. This avoids the extra
+assumption that a useful surface survives every later downward choice.
+
+\begin{theorem}[Complete commitment encoding]\label{thm:commitment}
+Let $T$ have $t$ tetrahedra and let $U\ge0$. Every permitted trace defining
+an endpoint in $\Reach_U(T,h)$ is equivalent to an execution of the
+deterministic committed scheduler.
+At most $3t+5U$ incarnation symbols are needed. Consequently the number of
+commuting trace classes, including classes of all finite prefixes, is at most
+\begin{equation}\label{eq:commitment-count}
+ 11^{3t+5U}.
+\end{equation}
+For $U=0$, the alphabet can be restricted to seven symbols and the corresponding
+bound is $7^{3t}$.
+\end{theorem}
+\begin{proof}
+Fix a target finite trace. For each incarnation appearing in it, record the
+local port of the event that eventually consumes it; if it survives to the
+target endpoint, record idle. Follow these assignments in the deterministic
+scheduler, interpreting them under the transported local labels.
+
+Suppose an event is currently ready. Consider the first event in the
+remaining target trace that touches one of its source incarnations. Until
+that first touch, the ready event's common face or full central-edge star is
+unchanged. The touched incarnation's commitment specifies the local port of
+its eventual consuming event. This is the ready event's port, so uniqueness
+at that port implies that the first touching event is exactly the ready
+event. All earlier target events have disjoint consumed supports. By
+Lemma~\ref{lem:commute}, the ready event can be moved to the front across all
+of them. This interchange preserves the endpoint, the marking and the total
+upward count. Its new prefix cannot exceed the total allowed upward count.
+
+If no event is ready, assign the next unassigned incarnation its recorded
+symbol. Once the participants of the first remaining target event have
+received their symbols, that event is ready. Thus this process cannot stop
+before all target events have been performed, apart from harmless
+reordering. All target survivors are idle, so it stops at the required
+endpoint after the assignments are completed. This proves completeness and
+trace equivalence without asserting confluence of uncommitted downward
+rewriting.
+
+If the execution has $u$ upward and $d$ downward events, the total number of
+incarnations is
+\[
+ N=t+3u+2d\le t+3u+2(t+u)=3t+5u\le3t+5U.
+\]
+Each is assigned at most once. Encode the assignments in the deterministic
+order in which the scheduler requests them, and pad a shorter encoding to
+length $3t+5U$ by idle symbols. Replaying a word determines one execution.
+If two trace classes had the same encoding, they would both commute to
+that same execution and would be equal. Hence there are at most the number
+of such words. The same construction applied to any target prefix, giving
+its survivors idle, proves the assertion for all prefix classes. Omitting
+upward symbols gives the last statement.
+\end{proof}
+
+\begin{remark}[Assignments are not geometric steps]
+The encoding algorithm is a proof device as well as a reference implementation.
+Many assignments lead nowhere. Its tree has at most
+$(11^{N+1}-1)/10$ assignment vertices, with polynomially many forced-move
+operations along an assignment path. It can be much slower on a small
+triangulation than direct trace reduction. The bound does not justify a
+claim of practical speed by itself.
+\end{remark}
+
+\subsection{Sleep sets give an efficient realization of the same bound}
+
+At a search node maintain a set of sleeping event identities. Explore the
+enabled events in deterministic order. Skip a sleeping event. After exploring
+an event $a$, add $a$ to the local sleep set for later sibling branches.
+For a child reached by $b$, retain only sleeping events whose consumed support
+is disjoint from $b$'s support. Thus an event is remembered across a replacement
+exactly when the proved commutation rule permits it to move past that replacement.
+
+\begin{theorem}[Sleep-set coverage and uniqueness]\label{thm:sleep}
+With exact incarnation identities, one canonical event per eligible edge or
+face, and the independence relation of Lemma~\ref{lem:commute}, sleep-set
+exploration visits at most one representative of each commuting trace class.
+Every reachable marked endpoint has a visited representative. Hence the
+number of visited trace nodes is at most $11^{3t+5U}$, or $7^{3t}$ when $U=0$.
+\end{theorem}
+\begin{proof}
+For uniqueness, suppose equivalent traces first diverge at a state where the
+earlier branch takes $a$ and a later branch takes $b$. The later branch starts
+with $a$ sleeping. Legal interchanges preserve exact event identities, so it
+must eventually perform that same event $a$. None of its consumed
+incarnations can have been destroyed in the intervening prefix: an
+incarnation never reappears after destruction. Every intervening event thus
+has consumed support disjoint from $a$. Initially $a$ is enabled, and
+Lemma~\ref{lem:commute} inductively keeps it enabled across that prefix.
+The sleep-update rule retains $a$ throughout, so its eventual occurrence is
+forbidden. This is a contradiction.
+
+For coverage, choose among the finitely many representatives of any target
+trace class the first one in the deterministic search order. If it were
+blocked by a sleeping event, the earlier occurrence that put that event to
+sleep could be commuted across the intervening independent events, giving
+an earlier representative of the same class. This contradicts the choice.
+Equivalently, repeatedly move the earliest blocking event left until no
+blocking event remains; the finite lexicographic order decreases. Thus
+the chosen representative is visited. Lemma~\ref{lem:commute} supplies
+the persistence of all transported enabled events used in this argument.
+
+The total-upward restriction is invariant under these interchanges. Protected
+initial cells, when present, are also invariant. Apply
+Theorem~\ref{thm:commitment} to the resulting representatives.
+\end{proof}
+
+This proof uses the standard sleep-set principle \cite{Godefroid}, but its
+hypotheses are checked for these geometric events. The implementation does
+not merge search continuations merely because their raw triangulations agree.
+Different remaining upward budgets and sleep sets can permit different
+continuations. A separate exact state table suppresses repeated endpoint
+queries only; exploration continues from every scheduled state.
+
+Independence here concerns simultaneously enabled events, or legal adjacent
+interchanges. It is not a static relation inferred only from the consumed
+sets of arbitrary historical events: a later event can consume an output
+born from an earlier event even though their consumed sets are disjoint.
+The persistence and nonresurrection argument above is what justifies the
+actual sleep update.
+
+\subsection{A genuine factorial-to-subset separation}
+
+Suppose $p$ independent downward events are enabled, no other downward event
+is created, and each can be executed at most once. Unreduced all-prefix
+enumeration visits
+\begin{equation}\label{eq:factorial}
+ N_{\rm naive}(p)=\sum_{j=0}^{p}\frac{p!}{(p-j)!}
+ =p!\sum_{k=0}^{p}\frac1{k!}.
+\end{equation}
+Every subset of events is a distinct prefix endpoint and all orderings of
+that subset commute. Sleep exploration visits exactly $2^p$ nodes. Full
+maximal orders alone are reduced from $p!$ to one.
+
+The artifact realizes this situation by disjoint inverse bipyramids in a
+layered solid torus and verifies the move inventory and endpoints. It is
+therefore an actual geometric control. Equation~\eqref{eq:factorial} is a
+proof under its stated event-inventory hypothesis; finite tests of the
+construction are reported at the tested sizes. We do not extrapolate the
+measured construction to a universal claim about all solid-torus
+triangulations.

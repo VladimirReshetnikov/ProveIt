@@ -1,0 +1,211 @@
+\section{Exact witness screening for normal-surface propagation}\label{sec:witness}
+
+The second implementation addresses a repeated algebraic cost already
+identified in the incoming dual-certificate report. It is independent of
+Pachner search and reuses exactly the baseline's positive and negative
+certificate formats.
+
+\subsection{The query and its exact evidence}
+
+Fix an integer matrix $A\in\Z^{m\times q}$ and an integer Euler covector
+$c\in\Z^q$. For allowed columns $J\subseteq\{1,\ldots,q\}$ write
+\[
+ K(J)=\{x\in\R^q:x\ge0,\ Ax=0,\ \supp(x)\subseteq J,\ c^Tx>0\}.
+\]
+The actual model uses standard normal coordinates, including fixed zero
+triangle anchors and forbidden quadrilateral types. A coordinate $j$ is
+mandatory at $J$ when every member of $K(J)$ has $x_j>0$. The baseline
+tests this by solving the positive query with $j$ deleted. A negative
+answer is justified by its exact Farkas multiplier and forces incompatible
+quadrilateral peers to zero.
+
+\begin{lemma}[A feasible witness excludes mandatory zeroes]\label{lem:screen}
+If $w\in K(J)$ and $w_j=0$, then $K(J\setminus\{j\})$ is nonempty.
+More generally, a previously verified positive kernel vector $w$ proves
+nonemptiness of any $K(J')$ containing its full support.
+\end{lemma}
+\begin{proof}
+The same vector $w$ satisfies every defining equation and inequality of
+the more restricted query. Its positive objective is unchanged.
+\end{proof}
+
+The apparent simplicity is operationally useful: a current LP point often
+has many zero quadrilateral coordinates, and the baseline was testing their
+deletion again from a cold simplex basis. A known positive point already
+answers all of those feasibility questions.
+
+\begin{proposition}[Support-antichain dominance]\label{prop:antichain}
+If two verified positive kernel vectors have supports $S_1\subseteq S_2$,
+every zero-coordinate query answered by the second is answered by the first.
+It is therefore sound to retain only inclusion-minimal supports. Arbitrary
+eviction from this collection can lose acceleration but cannot invalidate
+an answer.
+\end{proposition}
+\begin{proof}
+Any allowed set containing $S_2$ contains $S_1$. Apply
+Lemma~\ref{lem:screen}. Eviction removes evidence and never creates it.
+\end{proof}
+
+The cache checks every candidate integer vector against the original full
+matrix and covector, not merely against a saved support mask. It then uses
+exact integer bit masks for support inclusion. Reuse across anchors and
+sibling branches checks the entire new column mask. A zero at the tested
+coordinate alone would not establish that the witness satisfies the new
+triangle anchors or previous branch restrictions.
+
+\begin{proposition}[Sparse cones can have exponentially many minimal supports]
+\label{prop:exponential-antichain}
+For every $k\ge1$, there is a positive-kernel query in $2k+1$ variables,
+with $k$ equations and only coefficients in $\{-1,0,1\}$, having exactly
+$2^k$ inclusion-minimal positive supports.
+\end{proposition}
+\begin{proof}
+Use nonnegative variables $z,a_1,b_1,\ldots,a_k,b_k$, equations
+$a_i+b_i=z$, and positive objective $z$. Every positive vector has $z>0$
+and at least one positive member of each pair $\{a_i,b_i\}$. Conversely,
+choosing exactly one member of every pair and assigning it value one,
+with $z=1$ and all unchosen coordinates zero, gives a feasible positive
+vector. Its support is minimal. A support containing both members of any
+pair contains one of these smaller feasible supports and is not minimal.
+The $2^k$ choices give exactly the stated antichain.
+\end{proof}
+
+This is an algebraic example, not a normal-triangulation realization. It
+shows that sparse unit coefficients alone cannot justify a polynomial
+unlimited-cache claim.
+
+\subsection{Preserving the exact baseline policy}
+
+The new producer always solves the current-node LP afresh using the
+unchanged ordered columns and unchanged exact engine. It keeps that witness
+separately for the current propagation sweep. It screens only coordinate
+deletion queries. If no known witness answers one of them, it calls the
+original solver. Tetrahedra and types are scanned in the same order, and
+the first proved mandatory coordinate is propagated as before.
+
+\begin{theorem}[Certificate and budget preservation]\label{thm:lp-policy}
+With the deterministic LP engine and fixed baseline branch policy, every
+completed baseline run is reproduced by the screened producer with exactly
+the same positive or negative certificate. This remains true with identical
+finite node, branch-depth and pivot allowances, provided there is no external
+wall-clock or callback cutoff. The screened run spends no more simplex pivots
+before any corresponding unskipped query. A capped baseline may become
+complete after screening.
+\end{theorem}
+\begin{proof}
+Induct over the common logical execution. The current-node LP has the same
+matrix, objective and column order, so whenever it completes its deterministic
+answer agrees. Every omitted deletion query is positive by
+Lemma~\ref{lem:screen}; it could not have supplied a negative implication or
+changed the first mandatory coordinate. All remaining deletion queries are
+solved on the same data. Hence the mandatory step, next node or branch,
+selected conflict, and child order agree. The positive certificates contain
+the same final coordinates. The negative certificates contain the same
+mandatory and terminal multipliers and the same exhaustive branch structure.
+Positive answers to the omitted deletion queries are not included in either
+final proof, so their omission does not change the serialized proof data.
+
+Before any corresponding unskipped query, only some nonnegative pivot costs
+have been removed. The remaining pivot allowance in the screened run is
+therefore at least the baseline's. A query completed by the baseline cannot
+be cut off earlier by the screened budget. The logical node and branch-depth
+counts agree along this common execution. Thus any baseline completion is
+preserved even under those finite allowances. An external time cutoff is
+excluded because exact cache validation and support comparisons add work
+outside the simplex pivot counter.
+\end{proof}
+
+\begin{corollary}[Support-sensitive sweep cost]\label{cor:lp-support}
+If the current witness has $s$ positive unresolved quadrilateral coordinates,
+one propagation sweep uses at most $s$ deletion LPs. This holds even when
+global cache capacity is zero.
+\end{corollary}
+\begin{proof}
+Every other deletion is answered by the pinned current witness. The scan
+visits each unresolved coordinate at most once before it stops or restarts.
+Additional valid cached witnesses can only omit more queries.
+\end{proof}
+
+There is no claimed polynomial bound on an unlimited antichain. The default
+capacity is 256 vectors, and a smaller finite capacity is supported. With
+capacity $H$, cache validation and lookup require polynomial overhead in
+$H$, the source matrix dimensions and witness bit lengths. Setting
+$H=0$ retains the local guarantee while eliminating persistent antichain
+storage. The unchanged Bland simplex remains an exact finite algorithm
+without a proved polynomial worst-case pivot bound.
+
+\subsection{A rigorous quadratic-to-linear LP-call separation}
+
+The next family isolates the cause of redundant calls. It is an algebraic
+control with seven-coordinate blocks, not a claim that the matrices are
+realized by triangulations.
+
+For $s\ge1$, use $s$ irrelevant prefix blocks, $s$ mandatory blocks, and
+$\lceil s/4\rceil$ auxiliary blocks. Let the first two quadrilateral
+coordinates of mandatory block $j$ be $q_{j,0},q_{j,1}$, and put
+$z=q_{0,0}$. Distinct triangle coordinates of the later auxiliary blocks
+are $p_j$. Impose
+\begin{equation}\label{eq:lp-family}
+ q_{j,0}=z\quad(1\le j<s),\qquad q_{j,1}+p_j=z\quad(0\le j<s),
+\end{equation}
+and maximize the positive query with objective $z$. All remaining columns
+and objective coefficients are zero. Every $p_j$ has a larger original
+column index than $q_{j,1}$. The test harness explicitly substitutes this
+model and uses a matching algebraic final analysis; its proof is not submitted
+to the geometric normal-surface verifier.
+
+\begin{lemma}[Earlier duplicate columns under Bland's rule]\label{lem:duplicate}
+In the specified all-slack Bland implementation, if two original nonnegative
+variables have identical constraint and objective columns, the later variable
+does not enter while the earlier variable is still available and started
+nonbasic with it.
+\end{lemma}
+\begin{proof}
+Every pivot applies the same linear row operations to both columns. Their
+tableau columns and reduced costs therefore agree. While both are nonbasic,
+Bland's entering rule selects the earlier one whenever either could enter.
+If the earlier variable is basic, its reduced cost is zero, as is that of
+its twin. If it later leaves, the equality remains valid. Induction over
+pivots proves that the later twin never enters in the stated period.
+\end{proof}
+
+\begin{theorem}[Exact oracle-call counts]\label{thm:lp-family}
+For the family \eqref{eq:lp-family}, with the specified block ordering and
+uncapped baseline solver, the baseline and screened propagation producers
+make respectively
+\begin{equation}\label{eq:lp-counts}
+ L_{\rm base}(s)=3s^2+2s+1,\qquad
+ L_{\rm screened}(s)=2s+1
+\end{equation}
+LP calls and return the same final algebraic certificate. Global cache
+capacity zero suffices for the screened count.
+\end{theorem}
+\begin{proof}
+The columns $q_{j,1}$ and $p_j$ agree, including the normalization row
+used by the exact solver. By Lemma~\ref{lem:duplicate}, an available
+$q_{j,1}$ keeps $p_j$ nonbasic and zero. Every positive current witness has
+$z>0$, so each unresolved mandatory block has
+$q_{j,0}=q_{j,1}=z>0$ and contains a quadrilateral conflict.
+
+At each of the $s$ propagation stages, the baseline tests the $3s$
+irrelevant prefix quadrilateral coordinates. Their deletion leaves the
+positive query feasible. It then reaches type zero in the first unresolved
+mandatory block. Deleting this coordinate forces $z=0$, so the test is
+negative and that type is propagated. Its incompatible type-one coordinate
+is then removed, allowing $p_j$ to replace it in later positive points.
+After all $s$ stages, the current witness is admissible. There are $s+1$
+current-node LPs and $s(3s+1)$ deletion LPs, proving the first formula.
+
+The irrelevant coordinates are zero in each current basic witness:
+they have zero objective and zero matching columns and never acquire a
+positive reduced cost. Screening omits their $3s$ tests at every stage.
+It retains the $s$ genuinely negative mandatory tests and the $s+1$
+current-node queries. This proves the second formula using only the
+pinned current witness. Theorem~\ref{thm:lp-policy} proves certificate equality.
+\end{proof}
+
+Appendix~\ref{sec:pivot-appendix} strengthens this result for the specified
+engine: Theorem~\ref{thm:lp-pivots} proves exact total pivot counts
+$6s^3+3s^2+s$ and $3s^2+s$. These oracle and pivot separations do not by
+themselves establish the bit cost of every exact tableau operation or a
+normal-surface realizability theorem for this family.

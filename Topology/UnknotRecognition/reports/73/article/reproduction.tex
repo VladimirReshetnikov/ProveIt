@@ -1,0 +1,108 @@
+\section{Package map and reproduction}
+\label{sec:reproduction}
+
+The archive is rooted at
+\texttt{unknot\_active\_faces\_batched\_descent\_20261009/}.
+The top-level README gives exact commands and the integration contract.
+The manifest records source revisions, incoming dependency hashes, and
+the identities of retained fixtures. Relative paths are used throughout
+the executable research scripts.
+
+\begin{longtable}{p{0.30\textwidth}p{0.63\textwidth}}
+\toprule
+Path & Contents \\
+\midrule
+\endhead
+\texttt{article/} & Complete modular \LaTeX{} source, final PDF, and vector
+performance figure. \\
+\texttt{code/fast/} & Pinned supporting implementation, additive modules,
+focused and maintained tests, benchmark and replay scripts. \\
+\texttt{code/synthesis/data/} & The two pinned historical fixtures needed
+by maintained test imports. \\
+\texttt{code/reports/} & Historical oracle helpers required by existing
+tests, with provenance recorded. \\
+\texttt{integration/} & Additive patch against the pinned tree, file
+lineage, and the patch-check result. \\
+\texttt{evidence/geometry/} & All 24 fixed-batch inputs, source bindings,
+expansion records, both witnesses, and raw paired timing samples. \\
+\texttt{evidence/counterexample/} & The realized shared-vertex example,
+portable construction, retained 24-tetrahedron seed, and batch witness. \\
+\texttt{evidence/validation/} & Complete test logs, independent dynamic
+audit, cold-census timings, environment, and replay summaries. \\
+\texttt{tools/} & Figure regeneration and package verification helpers. \\
+\bottomrule
+\end{longtable}
+
+From \texttt{code/fast/}, the fast certificate checks do not need an LP
+solver or optional graph library:
+\begin{lstlisting}
+python -S active_research/replay.py
+python -S batched_descent_research/replay_evidence.py
+\end{lstlisting}
+The full test suite is run with:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+\end{lstlisting}
+NetworkX enables the five general matching tests; the source-specific
+small-cover tests still run with site packages disabled. Exact geometric
+and arithmetic replay use only included modules. The optional regeneration
+of the barycentric torus from its original triangulation library is
+separate from replay of the retained seed.
+
+The checked producer benchmark can be rerun with the supplied
+\path{batched_descent_research/benchmark_batch.py}; it reconstructs
+source-bound inputs and performs alternating paired runs. Its command-line
+help describes size and output controls. The peeled-census benchmark takes
+the retained evidence directory as an explicit argument, and
+\texttt{active\_research/benchmark.py} reconstructs its masks and support
+queries from the supplied source file. Reproducing exact elapsed times is
+not expected across hosts; reproducing exact face pairings, heights,
+supports, objective values, and valid certificates is the relevant
+correctness condition.
+
+Compile the article from its directory with:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The final PDF was rendered and visually checked in addition to successful
+\LaTeX{} compilation. The package does not require downloading the three
+large incoming archives: the few unchanged prerequisite modules are
+included and explicitly attributed. It also does not include a new claim
+that the complete recognizer has quasipolynomial worst-case complexity.
+
+\section{The general two-endpoint algebraic extension}
+\label{sec:general-reward-extension}
+
+The exported algebraic selector allows nonnegative costs $r_i$ and at most
+two nonnegative endpoint rewards $c_{vi}$ even when the geometric bound
+$c_{vi}\le r_i$ is absent. This extension is not needed for the main
+geometric theorem. Here is the correctness argument for its implementation.
+Let
+\[
+ b_v=\max\bigl(0,\max_i(c_{vi}-r_i)\bigr).
+\]
+A two-endpoint item $i$ on distinct vertices $u,v$ receives adjusted edge
+weight $c_{ui}+c_{vi}-r_i-b_u-b_v$. Discard nonpositive edges and retain the
+largest parallel edge. Then the optimum of $H$ is the sum of the $b_v$
+plus the maximum adjusted matching weight.
+
+To prove the upper bound, take any omitted set and assign each vertex's
+positive maximum reward to one attaining item. Delete items assigned no
+vertex; their costs are nonnegative. Each remaining item is assigned one
+or two vertices. A singly assigned item contributes at most $b_v$. The
+doubly assigned items form a matching on their assigned pairs and
+contribute their adjusted weights plus those vertices' baselines. Unused
+nonnegative baselines can only enlarge the bound. Dropping nonpositive
+adjusted edges can also only enlarge it.
+
+For the reverse bound, choose a maximum adjusted matching and, for each
+unmatched vertex with positive baseline, choose a baseline-attaining item.
+Take the union of these items with the matching items. At each vertex
+the actual maximum reward is at least the assigned one; an item chosen
+more than once is paid for only once, so its actual total cost is at most
+the sum charged in the assignment. Thus $H$ is at least the proposed
+matching-plus-baseline value. The upper bound proves equality. In the
+geometric case all baselines vanish, and this reduces to the main theorem.
+Outside that case the secondary matching-cardinality rule need not minimise
+the number of reconstructed singleton items; the API records this limit.
+

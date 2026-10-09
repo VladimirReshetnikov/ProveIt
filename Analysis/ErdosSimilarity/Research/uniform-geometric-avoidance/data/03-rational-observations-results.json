@@ -1,0 +1,510 @@
+{
+  "schema_version": 1,
+  "arithmetic": "Python fractions.Fraction; all comparisons exact",
+  "purpose": "Check normalization, oscillatory cancellations, repeated roots, original-term selection, boundary equality, annular separation, and rational sign clearing.",
+  "limitation": "These finite checks support the implementation and exposition. They do not prove the continuum theorem or instantiate its random routing tree.",
+  "status": "PASS",
+  "total_assertions": 3380,
+  "assertions_by_category": {
+    "coordinate_ties": 27,
+    "metric_lower_bound": 3,
+    "metric_upper_bound": 3,
+    "norm_contraction_lower": 3,
+    "norm_contraction_upper": 3,
+    "exact_initial_normalization": 3,
+    "invertible_state_transition": 3,
+    "exact_quarter_energy_identity": 2,
+    "denominator_metric_lower_bound": 3,
+    "denominator_metric_upper_bound": 3,
+    "denominator_shared_contraction_lower": 3,
+    "denominator_shared_contraction_upper": 3,
+    "denominator_initial_state_bound": 3,
+    "strict_annular_ratio": 3,
+    "crossing_index_constant": 3,
+    "independent_scalar_formula": 284,
+    "state_coordinate_is_original_term": 866,
+    "denominator_independent_state_realization": 284,
+    "denominator_uniform_lower_bound": 568,
+    "state_energy_contraction": 281,
+    "first_crossing_including_equality": 24,
+    "crossing_energy_lower_bound": 24,
+    "original_prefix_cutoff": 48,
+    "selected_coordinate_is_original_term": 24,
+    "signed_quotient_envelope": 24,
+    "selected_term_is_nonzero": 24,
+    "quotient_boundary_sign_clearing_including_zero": 648,
+    "selected_indices_are_distinct": 84,
+    "signed_pairwise_separation": 84,
+    "successive_crossings_leave_a_full_scalar_block": 21,
+    "selected_indices_strictly_increase": 21,
+    "exact_lyapunov_equation": 1,
+    "both_displacement_signs_occur": 1,
+    "threshold_equalities_are_tested": 1
+  },
+  "exact_threshold_equality_witnesses": 16,
+  "examples": [
+    {
+      "example": "quarter_turn",
+      "description": "a_n=2^(-n) cos(n*pi/2); every odd scalar term is zero.",
+      "matrix": [
+        [
+          "0",
+          "1"
+        ],
+        [
+          "-1/4",
+          "0"
+        ]
+      ],
+      "metric": [
+        [
+          "1",
+          "0"
+        ],
+        [
+          "0",
+          "4"
+        ]
+      ],
+      "initial_state": [
+        "1",
+        "0"
+      ],
+      "alpha": "1/2",
+      "beta": "3/4",
+      "metric_bound_K": 4,
+      "annular_c": "1/48",
+      "annular_Q": "1/128",
+      "crossing_index_T": 17,
+      "original_prefix_bound_for_B_8": 137,
+      "computed_state_prefix_length": 59,
+      "denominator_realization": {
+        "matrix": [
+          [
+            "-1/2"
+          ]
+        ],
+        "metric": [
+          [
+            "1"
+          ]
+        ],
+        "initial_state": [
+          "1/4"
+        ],
+        "formula": "e_n=(1/4)(-1/2)^n",
+        "bounds": "Uses the same alpha, beta, and K as the numerator family."
+      },
+      "selected_witnesses": [
+        {
+          "j": 1,
+          "crossing": 7,
+          "coordinate": 1,
+          "index": 8,
+          "term": "1/256",
+          "quotient": "2/1025",
+          "energy": "1/16384",
+          "previous_energy": "1/4096",
+          "threshold": "1/16384"
+        },
+        {
+          "j": 2,
+          "crossing": 14,
+          "coordinate": 0,
+          "index": 14,
+          "term": "-1/16384",
+          "quotient": "-2/65537",
+          "energy": "1/268435456",
+          "previous_energy": "1/67108864",
+          "threshold": "1/268435456"
+        },
+        {
+          "j": 3,
+          "crossing": 21,
+          "coordinate": 1,
+          "index": 22,
+          "term": "-1/4194304",
+          "quotient": "-2/16777217",
+          "energy": "1/4398046511104",
+          "previous_energy": "1/1099511627776",
+          "threshold": "1/4398046511104"
+        },
+        {
+          "j": 4,
+          "crossing": 28,
+          "coordinate": 0,
+          "index": 28,
+          "term": "1/268435456",
+          "quotient": "2/1073741825",
+          "energy": "1/72057594037927936",
+          "previous_energy": "1/18014398509481984",
+          "threshold": "1/72057594037927936"
+        },
+        {
+          "j": 5,
+          "crossing": 35,
+          "coordinate": 1,
+          "index": 36,
+          "term": "1/68719476736",
+          "quotient": "2/274877906945",
+          "energy": "1/1180591620717411303424",
+          "previous_energy": "1/295147905179352825856",
+          "threshold": "1/1180591620717411303424"
+        },
+        {
+          "j": 6,
+          "crossing": 42,
+          "coordinate": 0,
+          "index": 42,
+          "term": "-1/4398046511104",
+          "quotient": "-2/17592186044417",
+          "energy": "1/19342813113834066795298816",
+          "previous_energy": "1/4835703278458516698824704",
+          "threshold": "1/19342813113834066795298816"
+        },
+        {
+          "j": 7,
+          "crossing": 49,
+          "coordinate": 1,
+          "index": 50,
+          "term": "-1/1125899906842624",
+          "quotient": "-2/4503599627370497",
+          "energy": "1/316912650057057350374175801344",
+          "previous_energy": "1/79228162514264337593543950336",
+          "threshold": "1/316912650057057350374175801344"
+        },
+        {
+          "j": 8,
+          "crossing": 56,
+          "coordinate": 0,
+          "index": 56,
+          "term": "1/72057594037927936",
+          "quotient": "2/288230376151711745",
+          "energy": "1/5192296858534827628530496329220096",
+          "previous_energy": "1/1298074214633706907132624082305024",
+          "threshold": "1/5192296858534827628530496329220096"
+        }
+      ]
+    },
+    {
+      "example": "rational_complex",
+      "description": "a_n=Re((1/2+3i/8)(3/10+2i/5)^n); phase cancellation is present.",
+      "matrix": [
+        [
+          "0",
+          "1"
+        ],
+        [
+          "-1/4",
+          "3/5"
+        ]
+      ],
+      "metric": [
+        [
+          "4",
+          "-24/5"
+        ],
+        [
+          "-24/5",
+          "16"
+        ]
+      ],
+      "initial_state": [
+        "1/2",
+        "0"
+      ],
+      "alpha": "1/2",
+      "beta": "3/4",
+      "metric_bound_K": 20,
+      "annular_c": "1/240",
+      "annular_Q": "1/512",
+      "crossing_index_T": 22,
+      "original_prefix_bound_for_B_8": 177,
+      "computed_state_prefix_length": 76,
+      "denominator_realization": {
+        "matrix": [
+          [
+            "-1/2"
+          ]
+        ],
+        "metric": [
+          [
+            "1"
+          ]
+        ],
+        "initial_state": [
+          "1/4"
+        ],
+        "formula": "e_n=(1/4)(-1/2)^n",
+        "bounds": "Uses the same alpha, beta, and K as the numerator family."
+      },
+      "selected_witnesses": [
+        {
+          "j": 1,
+          "crossing": 9,
+          "coordinate": 0,
+          "index": 9,
+          "term": "-11067/10000000",
+          "quotient": "-88536/159921875",
+          "energy": "1/262144",
+          "previous_energy": "1/65536",
+          "threshold": "1/262144"
+        },
+        {
+          "j": 2,
+          "crossing": 18,
+          "coordinate": 1,
+          "index": 19,
+          "term": "396899745957/400000000000000000",
+          "quotient": "793799491914/1599999237060546875",
+          "energy": "1/68719476736",
+          "previous_energy": "1/17179869184",
+          "threshold": "1/68719476736"
+        },
+        {
+          "j": 3,
+          "crossing": 27,
+          "coordinate": 0,
+          "index": 27,
+          "term": "159015585781519737/40000000000000000000000000",
+          "quotient": "318031171563039474/159999999701976776123046875",
+          "energy": "1/18014398509481984",
+          "previous_energy": "1/4503599627370496",
+          "threshold": "1/18014398509481984"
+        },
+        {
+          "j": 4,
+          "crossing": 36,
+          "coordinate": 0,
+          "index": 36,
+          "term": "-627262800115393769619371/80000000000000000000000000000000000",
+          "quotient": "-627262800115393769619371/160000000000582076609134674072265625",
+          "energy": "1/4722366482869645213696",
+          "previous_energy": "1/1180591620717411303424",
+          "threshold": "1/4722366482869645213696"
+        },
+        {
+          "j": 5,
+          "crossing": 45,
+          "coordinate": 1,
+          "index": 46,
+          "term": "5510589277965249335113941560579/800000000000000000000000000000000000000000000",
+          "quotient": "5510589277965249335113941560579/1600000000000005684341886080801486968994140625",
+          "energy": "1/1237940039285380274899124224",
+          "previous_energy": "1/309485009821345068724781056",
+          "threshold": "1/1237940039285380274899124224"
+        },
+        {
+          "j": 6,
+          "crossing": 54,
+          "coordinate": 0,
+          "index": 54,
+          "term": "2496871198528981524337898519105539739/80000000000000000000000000000000000000000000000000000",
+          "quotient": "2496871198528981524337898519105539739/160000000000000002220446049250313080847263336181640625",
+          "energy": "1/324518553658426726783156020576256",
+          "previous_energy": "1/81129638414606681695789005144064",
+          "threshold": "1/324518553658426726783156020576256"
+        },
+        {
+          "j": 7,
+          "crossing": 63,
+          "coordinate": 0,
+          "index": 63,
+          "term": "-2194688335537296803456322324924997027636653/40000000000000000000000000000000000000000000000000000000000000",
+          "quotient": "-4389376671074593606912644649849994055273306/159999999999999999995663191310057982263970188796520233154296875",
+          "energy": "1/85070591730234615865843651857942052864",
+          "previous_energy": "1/21267647932558653966460912964485513216",
+          "threshold": "1/85070591730234615865843651857942052864"
+        },
+        {
+          "j": 8,
+          "crossing": 72,
+          "coordinate": 1,
+          "index": 73,
+          "term": "4709146159606268725437221038178437434830790118893/100000000000000000000000000000000000000000000000000000000000000000000000",
+          "quotient": "173609075008526035960819208780771886998370142632/7373271889400921658985979946325517442318187022465281188488006591796875",
+          "energy": "1/22300745198530623141535718272648361505980416",
+          "previous_energy": "1/5575186299632655785383929568162090376495104",
+          "threshold": "1/22300745198530623141535718272648361505980416"
+        }
+      ]
+    },
+    {
+      "example": "repeated_complex",
+      "description": "Normalized (n+1)2^(-n) cos(n*pi/2); characteristic polynomial (z^2+1/4)^2 and exact Lyapunov equation P-A^T P A=I before scaling.",
+      "matrix": [
+        [
+          "0",
+          "1",
+          "0",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        [
+          "-1/16",
+          "0",
+          "-1/2",
+          "0"
+        ]
+      ],
+      "metric": [
+        [
+          "220352/169097",
+          "0",
+          "32768/169097",
+          "0"
+        ],
+        [
+          "0",
+          "436352/169097",
+          "0",
+          "32768/169097"
+        ],
+        [
+          "32768/169097",
+          "0",
+          "898112/169097",
+          "0"
+        ],
+        [
+          "0",
+          "32768/169097",
+          "0",
+          "1114112/169097"
+        ]
+      ],
+      "initial_state": [
+        "1/2",
+        "0",
+        "-3/8",
+        "0"
+      ],
+      "alpha": "1/16",
+      "beta": "15/16",
+      "metric_bound_K": 16,
+      "annular_c": "1/3072",
+      "annular_Q": "1/131072",
+      "crossing_index_T": 183,
+      "original_prefix_bound_for_B_8": 1467,
+      "computed_state_prefix_length": 149,
+      "denominator_realization": {
+        "matrix": [
+          [
+            "-1/2"
+          ]
+        ],
+        "metric": [
+          [
+            "1"
+          ]
+        ],
+        "initial_state": [
+          "1/4"
+        ],
+        "formula": "e_n=(1/4)(-1/2)^n",
+        "bounds": "Uses the same alpha, beta, and K as the numerator family."
+      },
+      "selected_witnesses": [
+        {
+          "j": 1,
+          "crossing": 21,
+          "coordinate": 1,
+          "index": 22,
+          "term": "-23/8388608",
+          "quotient": "-23/16777217",
+          "energy": "2069761/92962058861019136",
+          "previous_energy": "29738897/185924117722038272",
+          "threshold": "1/17179869184"
+        },
+        {
+          "j": 2,
+          "crossing": 39,
+          "coordinate": 1,
+          "index": 40,
+          "term": "41/2199023255552",
+          "quotient": "41/4398046511105",
+          "energy": "6510721/6388304041230467173602820096",
+          "previous_energy": "100828817/12776608082460934347205640192",
+          "threshold": "1/295147905179352825856"
+        },
+        {
+          "j": 3,
+          "crossing": 57,
+          "coordinate": 1,
+          "index": 58,
+          "term": "-59/576460752303423488",
+          "quotient": "-59/1152921504606846977",
+          "energy": "13430281/439000910943831873750810668891065286656",
+          "previous_energy": "214054937/878001821887663747501621337782130573312",
+          "threshold": "1/5070602400912917605986812821504"
+        },
+        {
+          "j": 4,
+          "crossing": 74,
+          "coordinate": 0,
+          "index": 74,
+          "term": "-75/37778931862957161709568",
+          "quotient": "-75/75557863725914323419137",
+          "energy": "369417257/60335825773374924501828245644000319769228326469632",
+          "previous_energy": "21661801/1885494555417966390682132676375009992788385202176",
+          "threshold": "1/87112285931760246646623899502532662132736"
+        },
+        {
+          "j": 5,
+          "crossing": 91,
+          "coordinate": 1,
+          "index": 92,
+          "term": "93/9903520314283042199192993792",
+          "quotient": "93/19807040628566084398385987585",
+          "energy": "33263161/129570199236899604140910703625017916011188964671940288577536",
+          "previous_energy": "542890697/259140398473799208281821407250035832022377929343880577155072",
+          "threshold": "1/1496577676626844588240573268701473812127674924007424"
+        },
+        {
+          "j": 6,
+          "crossing": 109,
+          "coordinate": 1,
+          "index": 110,
+          "term": "-111/2596148429267413814265248164610048",
+          "quotient": "-111/5192296858534827628530496329220097",
+          "energy": "47343121/8903996292139007299528922363612809546914101973473326532885111684202496",
+          "previous_energy": "777843617/17807992584278014599057844727225619093828203946946653065770223368404992",
+          "threshold": "1/25711008708143844408671393477458601640355247900524685364822016"
+        },
+        {
+          "j": 7,
+          "crossing": 125,
+          "coordinate": 1,
+          "index": 126,
+          "term": "-127/170141183460469231731687303715884105728",
+          "quotient": "-127/340282366920938463463374607431768211457",
+          "energy": "61939441/38242372878442298237381997757840037410672645697276996987070623208957200161570816",
+          "previous_energy": "1022064257/76484745756884596474763995515680074821345291394553993974141246417914400323141632",
+          "threshold": "1/441711766194596082395824375185729628956870974218904739530401550323154944"
+        },
+        {
+          "j": 8,
+          "crossing": 143,
+          "coordinate": 1,
+          "index": 144,
+          "term": "145/44601490397061246283071436545296723011960832",
+          "quotient": "29/17840596158824498513228574618118689204784333",
+          "energy": "80701201/2627995853349552869642146000465092612452088554105597093000941784396955983322761131328536576",
+          "previous_energy": "1336607777/5255991706699105739284292000930185224904177108211194186001883568793911966645522262657073152",
+          "threshold": "1/7588550360256754183279148073529370729071901715047420004889892225542594864082845696"
+        }
+      ]
+    }
+  ]
+}

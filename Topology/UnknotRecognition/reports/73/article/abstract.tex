@@ -1,0 +1,38 @@
+\begin{abstract}
+We develop and implement certified improvements at two interfaces of the
+ProveIt unknot-recognition programme. The principal geometric result is an
+exact polynomial reduction of optimal vertex-link-peeled Euler scoring,
+over every subbatch of a fixed tetrahedron-disjoint family of coherent
+$3$--$2$ Pachner moves, to maximum-weight matching. A minimum-omission
+optimum omits at most one move per relevant interior vertex. The maintained
+pulling construction has exactly two interior vertices, so its optimum
+omits at most two moves and its matching stage has a linear arithmetic-time
+selector.
+The conflict graph of all distinct legal central edges has degree at most
+nine; consequently a packed optimum retains at least
+$\max\{0,\lceil M/10\rceil-2\}$ of $M$ current candidates. We also prove
+relative-boundary commutation, implement one simultaneous certificate, and
+maintain exact peeling minima with deterministic balanced trees. A genuine
+32-tetrahedron solid-torus example shows why adding singleton peeled scores
+would be incorrect.
+
+On the linear-programming side, a primal--dual pair certifies the entire
+active support of a rational nonnegative matching cone. A homogeneous lift
+produces that pair or an ordinary small negative certificate. An adaptive
+quadrilateral search has at most $2^{\rho+1}-1$ nodes in terms of an intrinsic
+active ambiguity rank $\rho$. However, explicit local normal-coordinate
+directions prove $\rho\ge t-v$ at unrestricted anchored roots, and
+$\rho\ge16\max\{1,n\}-2$ on the maintained $n$-crossing pulling source.
+This is a structural obstruction to obtaining a universal polylogarithmic
+bound from active support alone.
+
+The additive implementation includes independent consumers, exact replay
+fixtures, paired timing data, and a pinned integration patch. Four
+64-move workloads show approximately $117$--$123$-fold producer improvements
+over literal sequential replay, while the enlarged support LP regresses
+against small unary probes. These are subroutine results. We identify the
+remaining witness-coverage, transition-count, anchor, and bit-complexity
+theorems required for a complete quasipolynomial recognizer, and propose a
+concrete research programme to address them.
+\end{abstract}
+

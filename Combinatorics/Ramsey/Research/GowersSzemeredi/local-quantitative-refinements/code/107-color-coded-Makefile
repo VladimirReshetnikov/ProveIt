@@ -1,0 +1,20 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+.PHONY: all pdf verify numeric clean
+all: verify numeric pdf
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	$(PYTHON) code/verify.py
+
+numeric:
+	$(PYTHON) code/asymptotic_bounds.py
+
+clean:
+	rm -f article.aux article.log article.out article.toc article.fls article.fdb_latexmk
+	rm -rf code/__pycache__
