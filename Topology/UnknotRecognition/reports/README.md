@@ -385,8 +385,9 @@ from `unknot_component_certificates_20261009.zip` is now integrated into the
 maintained AHT producer with unchanged complete certificates; see
 `../synthesis/adaptive_merger.tex`. Its alternative weighted/profile overlay
 is not applied over the newer native census and independent verifier. The
-other two deliveries remain under review, particularly persistent raw
-singleton blocks and component-support bounds. Original archives are retained.
+other two deliveries initially remained under review. Subsequent persistent
+circuit and component-support integrations are recorded below; the alternative
+weighted transport and sparse-incidence overlay are not adopted. Original archives are retained.
 
 The persistent signed-circuit idea in
 `ProveIt_UnknotRecognition_Research_2026-10-09.zip` is now adapted to the
@@ -412,3 +413,13 @@ already source-established torsion-free premise to accept any nonzero minor.
 All 1,121 maintained tests pass. The broader conjugacy graph, compressed
 conjugator discovery and claimed graph-abstraction boundary remain outside
 this integration. Delivered braid-audit and timing records are not native runs.
+
+The component-profile chapter of the same research archive is now reviewed in
+`../synthesis/compact_coordinates.tex`. Its fixed-support dimension argument
+reduces the maintained full-coordinate census to positive quadrilaterals plus
+positive source-minimum vertex anchors. Full vectors are reconstructed by
+separate producer and checker algorithms. The proof of `H <= v + 2*q` distinct
+component vectors, and `H <= v + q` for two-sided components, is included with
+its sharp one-tetrahedron example. All 1,125 maintained tests pass; 1,275
+Regina cases preserve the dense inventories, legacy replay and orbit proofs.
+The archive's separate full-carrier weighted-run bound remains under review.

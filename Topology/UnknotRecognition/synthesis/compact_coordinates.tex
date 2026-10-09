@@ -1,0 +1,169 @@
+\section{Compact coordinates for certified component inventories}
+\label{sec:compact-coordinates}
+
+The chapter in
+\code{ProveIt\_UnknotRecognition\_Research\_2026-10-09.zip} gives a useful
+bound on the number of distinct connected normal vectors in one supplied
+surface. Its matching-space argument also identifies redundant coordinates
+in our weighted census. We now use this observation to reduce the weights
+transported by the native \code{coordinates} query, while returning exactly
+the same full-coordinate inventory. This section separates that local
+implementation improvement from the unresolved search for useful surfaces.
+
+\subsection{A linear bound on the number of component types}
+
+Let $F$ be an embedded normal surface in a finite compact triangulated
+3-manifold with $t$ tetrahedra and $v$ quotient vertices, whose links are
+connected spheres or discs. Let $Q$ be the set of positive quadrilateral
+coordinates of $F$, and put $q=|Q|\le t$. A \emph{type} means a distinct
+full $7t$-coordinate vector of a connected component, with repeated copies
+stored by a binary multiplicity. The report proves
+\[
+ H\le v+2q,\qquad
+ H\le v+q\quad\hbox{if all components are two-sided}.
+\]
+These statements concern one simultaneously embedded surface. They do not
+bound the number of candidate normal surfaces in the triangulation.
+
+Here is a proof, including the role of one-sided components. In the real
+matching space $V_Q$ supported on $Q$, the kernel of projection to the $q$
+quadrilateral coordinates consists exactly of the $v$ vertex-link directions.
+Indeed, triangle-only face equations identify the corner coefficients around
+each quotient vertex, whose corner adjacency graph is connected. Thus
+$\dim V_Q\le v+q$.
+
+Distinct full vectors of disjoint connected two-sided normal surfaces are
+linearly independent. Otherwise, clearing denominators in an integer-matrix
+kernel gives an equality between positive integer combinations on disjoint
+sets of types. Take the required parallel copies in disjoint normal product
+neighborhoods. Equality of full normal coordinates implies normal isotopy,
+which preserves the multiset of connected vectors. This contradicts the
+disjoint sets of types. The coordinate uniqueness used here is the classical
+normal-surface statement recorded in Burton's Lemma~2.5\cite{burton-convert}.
+
+Choose one representative of each nonvertex type of $F$. Replace each
+one-sided representative by the horizontal frontier of a small normal
+interval neighborhood. Its nontrivial normal line bundle makes this a
+connected two-sided surface with twice the original vector. For properly
+embedded surfaces with boundary, the vertical boundary lies in the ambient
+boundary. Retain two-sided representatives and coalesce equal resulting
+vectors. These $r$ representatives can be taken mutually disjoint and
+disjoint from all $v$ small vertex links. Independence gives
+$r+v\le\dim V_Q\le v+q$, hence $r\le q$. Each resulting vector $z$ has at
+most two original preimages, $z$ and $z/2$. Adding at most $v$ triangle-only
+types proves $H\le v+2q$. When all components are two-sided the replacement
+is injective and gives the stronger bound.
+
+The factor two is necessary. In the one-tetrahedron layered solid torus,
+identify face $0$ with face $1$ by the cycle $(0\,1\,2\,3)$ and leave the
+other faces on the boundary. In our coordinate order, the vertex-link disc
+and a M\"obius band have vectors
+\[
+ \ell=(1,1,1,1;0,0,0),\qquad m=(0,0,0,0;0,1,0).
+\]
+The source $\ell+3m$ decomposes into the three types $\ell,m,2m$, attaining
+$v+2q=3$. The source $\ell+2m$ attains the two-sided bound $v+q=2$.
+Our native tests preserve the distinction between the M\"obius band and its
+annular double, including large binary multiplicities.
+
+If source coordinates have at most $B\ge1$ bits, each component coordinate
+is bounded by its source entry, and multiplicities are bounded by the total
+number of normal discs. Since $v\le4t$, the coalesced full inventory requires
+$O(t^2(B+\log(t+1)))$ bits. AHT already provide polynomial-time component
+recovery from binary normal coordinates\cite[Corollary 17]{aht-orbits}.
+The present argument sharpens output accounting; it is not a new proof of
+polynomial-time normal-surface classification. Equality of the sum of
+proposed component vectors with the source is insufficient evidence:
+normal addition can reconnect surfaces. Orbit membership must still be
+certified.
+
+\subsection{An injective additive coordinate projection}
+
+For each quotient vertex choose a triangle coordinate $a_V$ minimizing its
+value in the supplied source $x$, with ties broken by flat coordinate index.
+Retain every positive source quadrilateral coordinate and each anchor with
+$x_{a_V}>0$. Let $a$ be the number of retained anchors. The transported
+dimension is now
+\[
+ d=\max(1,q+a),\qquad a\le v,
+\]
+where the single dummy weight handles the empty source under the existing
+weighted-orbit API. All omitted source-zero quadrilaterals and anchors are
+zero on every component, because component vectors are nonnegative and sum
+to $x$. Selecting the source minimum maximizes the opportunity to omit an
+anchor: a vertex with any zero triangle needs no anchor weight.
+
+The projection is injective on possible component vectors. Two vectors with
+the same retained entries have equal quadrilaterals; their difference is
+triangle-only, so its corner entries are constant around each vertex. Its
+anchor value is zero at every vertex, forcing the difference to vanish.
+Consequently equal projected orbit weights mean equal full component vectors.
+Coalescing by projected weight loses no component types or multiplicities.
+This is a source-dependent linear projection, not a claim that quadrilateral
+coordinates alone distinguish vertex links.
+
+For a glued face, matching has the form
+\[
+ T_{t,v}+Q_{t,\alpha}=T_{u,p(v)}+Q_{u,\beta}.
+\]
+After assigning quadrilaterals and anchors, propagate
+$T_{u,p(v)}=T_{t,v}+Q_{t,\alpha}-Q_{u,\beta}$ along a corner spanning forest.
+The producer constructs this forest once from the face pairings. Each
+histogram entry then takes $O(t)$ integer additions and comparisons to
+recover, followed by the existing full-vector matching and topology checks.
+Values are checked against the original source. With $H=O(t)$, decoding
+adds $O(t^2)$ arithmetic operations on $O(B+\log(t+1))$-bit integers;
+source indexing and sorting have their usual additional polynomial costs.
+
+The orbit relation and its trace are unchanged. The existing disk-corner
+weight construction now selects only the retained coordinates, reducing
+both dense vector dimension and the number of initial indicator intervals.
+The number of selected indicators is at most $q+a$. Weighted transport and
+its independent prefix-sum arithmetic are unchanged. For a meridian in our
+$t$-tetrahedron layered fixture, $q=t$ and $a=0$, so $d$ drops from $7t$ to
+$t$. In general this improves a local polynomial routine; it does not change
+the asymptotic complexity class of the complete recognizer.
+
+\subsection{Certificate compatibility and independent reconstruction}
+
+New full-coordinate censuses use \code{normal-component-census-v2}.
+The source fingerprint, boundary basis and checked weighted-orbit trace
+remain mandatory. The selected indices are recomputed from the original
+source; no claimed coordinate basis or spanning tree is trusted. The
+summary still contains full $7t$-coordinate vectors. The public
+\code{weight\_dimension} now reports the smaller transported dimension.
+Disk and summary queries continue to emit version one with three and five
+weights respectively. The verifier retains the original dense interpretation
+of all version-one coordinate certificates.
+
+The checker selects anchors independently. Instead of the producer's
+face-pair spanning forest, it builds an adjacency index of the validated
+matching equations and repeatedly solves a row with one unknown triangle.
+It checks source bounds and then runs the full matching/signature validation
+on every recovered vector. Its arithmetic decoder neither imports nor calls
+the producer's coordinate-basis module. Shared finite-manifold geometry
+validation remains part of the pre-existing trust contract. The weighted
+checker still performs its separate transport replay.
+
+Tests exercise both schemas, reject changing a dense proof's version or a
+compact proof's version, disable producer reconstruction during verification,
+and alter both projected and recovered coordinates. Other cases include
+empty surfaces, several quotient vertices, relabelings, zero anchors,
+triangle-only sources, cancellation late in reconstruction, and a multiplicity
+$2^{5000}+1$ without sheet expansion. The finite compact torus-boundary
+contract remains unchanged, as does the separate obligation to certify a
+knot-diagram-to-triangulation correspondence.
+
+\subsection{What the bound leaves open}
+
+The type bound controls the size of one completed inventory. It does not
+control how many quadrilateral supports a recognizer must try, how encoded
+coordinates grow under a geometric hierarchy, or the size of triangulations
+after cutting and simplification. Nor does a histogram of full component
+vectors label individual boundary ports for arbitrary future gluing. Those
+operations still need the incidence information and sufficiency arguments
+discussed in the sparse-observer sections. Reducing an existing polynomial
+component query is useful implementation progress, but supplies none of those
+missing global search or state bounds by itself.
+
+\input{compact_coordinates_results.tex}
