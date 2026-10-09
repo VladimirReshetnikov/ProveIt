@@ -2316,3 +2316,32 @@ python -B primitive_power_research/planner.py audit --output results/primitive_p
 python -B primitive_power_research/planner.py benchmark --output results/primitive_planner_pipeline_20261008.json
 python -B primitive_power_research/planner.py stages --output results/primitive_planner_stages_20261008.json
 ```
+
+### Bounded-run normalization
+
+The existing projection/forest normalization boundary now tries exact
+run-length arithmetic on long roots whose every intermediate reduces to at
+most four generator-power runs. Exponents stay binary; short roots retain
+the general reducer. An unsupported probe builds no word nodes and falls
+back. Compressed proof replay uses a separate implementation, with the
+same certificate schema and full source reconstruction.
+
+All 998 tests pass. An 80-diagram audit preserves 240 three-mode results,
+and 87,381 short words agree with independent literal normalization.
+The article proves closure under monomial substitutions and includes these
+normalizations in the conditional phase bound; general short-depth discovery
+and a general quasipolynomial recognizer remain open.
+
+All 760 whole-recognition, 200 checked-stage and 240 kernel/replay timing
+calls complete. Whole-call changes are within the control variation.
+Conjugate kernels improve, but supplied-proof replay and unsupported-word
+fallback regress. The article retains all measurements and explains these
+limits; projection and forest modes remain optional.
+See [`syllable_normalization.tex`](../synthesis/syllable_normalization.tex).
+
+```sh
+python -B primitive_power_research/syllables.py audit --output results/syllable_normalization_audit_20261008.json
+python -B primitive_power_research/syllables.py benchmark --output results/syllable_normalization_pipeline_20261008.json
+python -B primitive_power_research/syllables.py stages --output results/syllable_normalization_stages_20261008.json
+python -B primitive_power_research/syllables.py kernels --output results/syllable_normalization_kernels_20261008.json
+```
