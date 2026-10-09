@@ -2740,3 +2740,29 @@ See [the proof, scope and measurements](../synthesis/power_pairs.tex).
 python -B compressed_word_research/power_pairs.py audit --output results/power_pairs_audit.json
 python -B compressed_word_research/power_pairs.py benchmark --output results/power_pairs_benchmark.json
 ```
+
+### Compact full-coordinate component inventories
+
+`normal_component_census(..., mode='coordinates')` now transports the positive
+quadrilateral coordinates and one positive source-minimum triangle anchor per
+quotient vertex. Matching equations recover the complete component vectors.
+The reported `weight_dimension` is `max(1, q + a)` instead of `7*t`, where `q`
+is the positive quadrilateral support and `a` the number of positive anchors.
+The output still contains the full coordinates and binary multiplicities.
+
+New coordinate certificates use `normal-component-census-v2`. The independent
+checker reconstructs triangles by solving matching rows, without the producer's
+spanning forest. Existing dense version-one certificates remain accepted;
+disk and summary queries keep their existing certificates. Empty sources,
+vertex links and one-sided components are supported under the existing finite
+compact torus-boundary manifold contract.
+
+The component-profile report also gives `H <= v + 2*q` distinct full component
+vectors (`H <= v + q` when all are two-sided). This bounds the output for a
+supplied surface; it does not bound normal-surface search or establish general
+quasi-polynomial unknot recognition. See [the theory and native measurements](../synthesis/compact_coordinates.tex).
+
+```sh
+python -B weighted_research/compact_coordinates.py audit --output results/compact_coordinates_audit.json
+python -B weighted_research/compact_coordinates.py benchmark --output results/compact_coordinates_benchmark.json
+```
