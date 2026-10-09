@@ -5,7 +5,7 @@ Images may be arbitrary words, unlike monomial primitive-forest quotients.
 """
 
 
-def plan_batch(arena, roots, alive, cache=None):
+def plan_batch(arena, roots, alive, cache=None, *, ordered=False):
     if cache is None:cache={}
     labels=cache.setdefault('labels',sorted(alive))
     bits=cache.setdefault('bits',{g:1<<i for i,g in enumerate(labels)})
@@ -55,7 +55,23 @@ def plan_batch(arena, roots, alive, cache=None):
                 pending.extend(incoming.get(ancestor,()))
         graph[g]=deps;slots.add(slot);selected.append(dict(relation=slot,generator=g))
     arena.stats['elimination_batch_attempts']=arena.stats.get('elimination_batch_attempts',0)+1
-    return selected
+    if not ordered:return selected
+    # Emit a topological witness without changing the selected donors. The
+    # checker independently validates this claim from raw source words.
+    from collections import deque
+    remaining={};followers={g:[] for g in graph}
+    for g,deps in graph.items():
+        inside=deps&graph.keys();arena.tick(len(inside)+1)
+        remaining[g]=len(inside)
+        for parent in inside:followers[parent].append(g)
+    queue=deque(g for g in graph if not remaining[g]);by_generator={e['generator']:e for e in selected};result=[]
+    while queue:
+        arena.tick();g=queue.popleft();result.append(by_generator[g])
+        for child in followers[g]:
+            arena.tick();remaining[child]-=1
+            if not remaining[child]:queue.append(child)
+    if len(result)!=len(selected):raise ArithmeticError('selected batch contains a cycle')
+    return result
 
 
 def apply_batch(arena, roots, alive, selected):
