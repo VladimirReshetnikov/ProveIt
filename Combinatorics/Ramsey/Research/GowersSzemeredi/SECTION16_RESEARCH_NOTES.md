@@ -3061,3 +3061,13 @@ The four modules contain twelve theorem declarations, checked in a
 This connects the previously separate geometric and selection arguments.
 The later algebraic-regularity argument and the five open numbered
 statements remain unresolved; the catalogue fidelity caveats still apply.
+
+
+The completed combined audit checks 6,347 public Gowers theorems in a
+4,971-module facade (4,152 OAI modules), and 4,973 modules including the
+audit and import-compatibility check. Only propext, Classical.choice, and
+Quot.sound occur. A full disk interrupted the first audit artifact write;
+after clearing redundant package caches, the artifact was rebuilt and the
+import check passed. The source ledger remains 115/5 and the selected
+upstream module scope is unchanged. No ported sources or license notices
+were changed.
