@@ -1412,8 +1412,27 @@ the elementary lemmas of its §2:
 
   This is OAI-free. The quasi-polynomial alternative is the port's
   `exists_quartic_bogolyubov`.
-- Next: step 2, the Freiman-linear maps L_i from random selection plus a
-  Freiman inverse theorem, i.e. [49] Lemma 19 and Corollary 20.
+- **A polynomial Theorem 17 analogue is already in the corpus.**
+  Gowers's Corollary 7.6 (`corollary_7_6_holds`) turns γ(αN)³ respected
+  quadruples into a Freiman 8-homomorphism on ≥ 2⁻¹⁸⁸²γ¹¹⁶⁴αN points.
+  Lemma 7.8 then extends such maps from dense sets to Bohr sets. Together
+  they are the ℤ/N polynomial-bound form of [49] Theorem 17, the engine of
+  Lemma 19. As a first use, `lineFreimanExtraction_holds`
+  (`Proofs16LineFreimanUnconditional`, kernel-checked) proves
+  `LineFreimanExtraction` with κ(δ) = 2⁻¹⁸⁸²δ¹¹⁶⁴. The identity
+  `energy_eq_phiAdditiveCount` matches the two energy notions. So the
+  energy route `densePiece_energy_unconditional` is unconditional too.
+- **Selection averaging, done (`Proofs16SelectionAveraging`,
+  kernel-checked).** `exists_good_selection`: if every requirement fixes
+  at most 4 points to allowed values, some selection f ∈ Π U_y meets
+  ≥ |T|/K⁴ of them. The proof double counts over `Fintype.piFinset U`.
+  The selections meeting one requirement form the product with the fixed
+  coordinates replaced by singletons (`card_meeting`), so they number
+  ≥ K^(−4)·Π|U_y| (`card_all_le_mul_meeting`). This replaces [49]'s
+  random choice.
+- Next: assemble [49] Lemma 19 in ℤ/N, as selection averaging, then
+  respected quadruples of f on A′, then Corollary 7.6 (and Lemma 7.8 for
+  the Bohr extension).
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:

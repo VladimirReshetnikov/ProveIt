@@ -2246,3 +2246,44 @@ quotient proof, raw-round bound, noisy controls, and full measurement scope.
 python -B primitive_power_research/projections.py audit --output results/primitive_projection_audit_20261008.json
 python -B primitive_power_research/projections.py benchmark --output results/primitive_projection_pipeline_20261008.json
 ```
+
+
+### Optional unit-coordinate primitive forests
+
+`--group-primitive-forest` extends the projection route with acyclic batches
+whose primitive donor roots solve a chosen generator as an integer power of
+another. Donors may share generators. The producer composes shared parent
+power circuits, substitutes into every original relator slot and emits a
+version-seven certificate. An independent checker validates the entire forest
+before replay. Cycles, duplicate children/slots and non-unit children are
+rejected; general overlapping primitive pairs do not justify this operation.
+
+Use `compressed_certificate(..., primitive_forest=True)`,
+`group_decide(..., primitive_forest=True)`, or
+`recognize(..., use_group=True, group_primitive_forest=True)`. The option implies
+compressed projections and mandatory independent replay. It defaults to false;
+existing default and disjoint-only modes remain available. It is mutually
+exclusive with the older `group_adaptive` representation-switching option.
+
+All 988 tests pass. The 80-diagram audit preserves both old modes exactly and
+verifies every forest-positive proof through literal and compressed replay.
+No additional diagram was solved in this sample. Abstract star, chain and
+balanced presentations contract in one raw batch; the star family proves that
+disjoint matching alone can require linearly many rounds. A forest batch has
+polynomial encoded cost independent of tree depth, but this does not bound
+general discovery, normalization or total search.
+
+The 760-call whole-recognition benchmark still shows ordinary-corpus overhead.
+A separate 150-call actual-circle group-stage benchmark reaches a 2.81x
+paired speedup over the old default and 1.52x over disjoint projections at
+128 crossings, including proof replay. These stage timings bypass earlier
+diagram simplification and are not whole-recognizer gains.
+
+See [`primitive_forest.tex`](../synthesis/primitive_forest.tex) for the proof,
+source-bound replay contract, complete timings and their limitations.
+
+```sh
+python -B primitive_power_research/forests.py audit --output results/primitive_forest_audit_20261008.json
+python -B primitive_power_research/forests.py benchmark --output results/primitive_forest_pipeline_20261008.json
+python -B primitive_power_research/forests.py stages --output results/primitive_forest_stages_20261008.json
+```

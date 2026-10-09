@@ -16,6 +16,13 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             if type(move) is not dict:
                 return False
             kind = move.get('kind')
+            if kind == 'primitive_forest':
+                if certificate['version'] < 7:
+                    return False
+                from .primitive_forest_verify import replay_compressed_forest
+                if not replay_compressed_forest(arena, roots, alive, move):
+                    return False
+                continue
             if kind == 'primitive_projection':
                 if certificate['version'] < 6:
                     return False
@@ -119,10 +126,10 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             else:
                 return False
         arena.tick()
-        if certificate['version'] == 6 and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+        if certificate['version'] in (6, 7) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
             from .primitive_projection_verify import verify_compressed_rank_one
             return verify_compressed_rank_one(arena, roots, alive, certificate['terminal'])
-        if certificate['version'] in (5, 6):
+        if certificate['version'] in (5, 6, 7):
             from .primitive_power_verify import verify_compressed_terminal
             return verify_compressed_terminal(arena, roots, alive, certificate['terminal'])
         return alive == {certificate['remaining_generator']} and not any(roots)

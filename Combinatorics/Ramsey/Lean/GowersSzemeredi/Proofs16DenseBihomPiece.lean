@@ -45,7 +45,9 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 /-- **Line-wise Freiman input** (a consequence of Theorem 2.26 of
-arXiv:2601.01682). A hypothesis; not asserted. -/
+arXiv:2601.01682). Stated here as a hypothesis. It is proved, with a
+polynomial `κ`, from Gowers's Corollary 7.6 in
+`Proofs16LineFreimanUnconditional` (`lineFreimanExtraction_holds`). -/
 def LineFreimanExtraction (κ : Real → Real) : Prop :=
   (∀ δ : Real, 0 < δ → 0 < κ δ) ∧
   ∀ (N : Nat) [NeZero N] [Fact N.Prime] (E : Finset (ZMod N)) (f : ZMod N → ZMod N) (δ : Real),

@@ -837,3 +837,13 @@ pass both literal and compressed source replay. The 570-call benchmark shows
 ordinary-corpus overhead, so this mode remains opt-in. The article proves
 only the conditional `poly(initial parameters) * 2^O(d)` bound for consecutive
 raw rounds; a general short-depth producer and endpoint guarantee remain open.
+
+
+[`primitive_forest.tex`](primitive_forest.tex) extends the report-45 projection
+work to acyclic unit-coordinate forests with overlapping donors. Shared parent
+power circuits and independent version-seven replay contract a selected forest
+in polynomial encoded cost, regardless of its depth. The 988-test suite passes;
+both existing modes are exactly preserved in an 80-diagram audit. The star
+example isolates a limitation of disjoint matching, not a lower bound for all
+unknot recognition. Forest mode remains opt-in, and a general short-depth
+producer with controlled exposure/normalization remains unproved.
