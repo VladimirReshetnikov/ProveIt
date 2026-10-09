@@ -561,6 +561,7 @@ import GowersSzemeredi.Proofs16TripleEndpointFibres
 import GowersSzemeredi.Proofs16FibreGluingCount
 import GowersSzemeredi.Proofs16ColumnPairSplice
 import GowersSzemeredi.Proofs16ColumnPairGluing
+import GowersSzemeredi.Proofs16GlobalColumnPairRepresentations
 import GowersSzemeredi.Proofs16CommonWitnesses
 import GowersSzemeredi.Proofs16RepresentedMap
 import GowersSzemeredi.Proofs16ColumnRepSystem
