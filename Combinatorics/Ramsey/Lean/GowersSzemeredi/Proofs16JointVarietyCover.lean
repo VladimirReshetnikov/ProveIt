@@ -30,10 +30,8 @@ theorem graph_family_fiber_card_le {N n : Nat} [NeZero N]
     _ ≤ ∑ _i : Fin n, 1 := Finset.sum_le_sum fun i _ => (hG i).fiber_card_le_one x
     _ = n := by simp
 
-/-- A union of translated variety graphs has common all-box controls with
-linear map count and a polynomial phase-count exponent. -/
-theorem exists_joint_freiman_variety_cover :
-  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+/-- The statement of `exists_joint_freiman_variety_cover` at fixed constants. -/
+def JointFreimanVarietyCoverAt (C p : Nat) : Prop :=
   ∀ (N n r : Nat) [NeZero N] [Fact N.Prime]
     (Gamma Psi : Fin n → Finset (ZMod N)) (L : Fin n → Fin r → ZMod N → ZMod N)
     (rho : Fin n → Real) (a b : Fin n → ZMod N) (delta : Real),
@@ -49,10 +47,13 @@ theorem exists_joint_freiman_variety_cover :
         (fun _ => section16CappedWidthExponent
           (section16FreimanVarietyExponent p (jointVarietyLinearRank Gamma Psi) (n * r))
           (section16FreimanVarietyThreshold C p (jointVarietyLinearRank Gamma Psi) (n * r) delta))
-        (section16FinsetUnion G) := by
+        (section16FinsetUnion G)
+
+/-- `exists_joint_freiman_variety_cover` at the constants of its input. -/
+theorem jointFreimanVarietyCoverAt_of {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hpartition : JointFreimanVarietyGoodPartitionAt C p) : JointFreimanVarietyCoverAt C p := by
   classical
-  obtain ⟨C, p, hC, hp, hpartition⟩ := exists_joint_freiman_variety_good_partition
-  refine ⟨C, p, hC, hp, ?_⟩
+  unfold JointFreimanVarietyCoverAt
   intro N n r _ _ Gamma Psi L rho a b delta hd hdelta hL Phi hPhi G hG
   let e := section16FreimanVarietyExponent p (jointVarietyLinearRank Gamma Psi) (n * r)
   let T : Real := section16FreimanVarietyThreshold C p (jointVarietyLinearRank Gamma Psi) (n * r) delta
@@ -77,5 +78,28 @@ theorem exists_joint_freiman_variety_cover :
     rw [show (3^2 * n : Nat) = 9 * n by norm_num, Nat.cast_mul, Nat.cast_ofNat]
     exact max_eq_right (by nlinarith [(Nat.cast_nonneg n : (0 : Real) ≤ n)])
   simpa only [hcount] using hML
+
+/-- A union of translated variety graphs has common all-box controls with
+linear map count and a polynomial phase-count exponent. -/
+theorem exists_joint_freiman_variety_cover :
+  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+  ∀ (N n r : Nat) [NeZero N] [Fact N.Prime]
+    (Gamma Psi : Fin n → Finset (ZMod N)) (L : Fin n → Fin r → ZMod N → ZMod N)
+    (rho : Fin n → Real) (a b : Fin n → ZMod N) (delta : Real),
+    0 < delta → (∀ i, delta ≤ rho i) →
+    (∀ i k, IsFreimanLinearOn (bohr (Psi i) (rho i)) (L i k)) →
+    ∀ Phi : Fin n → ZMod N × ZMod N → ZMod N,
+      (∀ i, IsEBihomomorphism (bilinearBohrVariety (Gamma i) (Psi i) (L i) (rho i)) (Phi i) {0}) →
+    ∀ G : Fin n → Finset (Point N 2 × ZMod N),
+      (∀ i, IsGraphOver (G i)
+        (shiftPairs (bilinearBohrVariety (Gamma i) (Psi i) (L i) (rho i / 2)) (a i) (b i))
+        (fun q => Phi i (q.1 - a i, q.2 - b i))) →
+      MultiplyLinearWith (fun _ => 9 * n)
+        (fun _ => section16CappedWidthExponent
+          (section16FreimanVarietyExponent p (jointVarietyLinearRank Gamma Psi) (n * r))
+          (section16FreimanVarietyThreshold C p (jointVarietyLinearRank Gamma Psi) (n * r) delta))
+        (section16FinsetUnion G) := by
+  obtain ⟨C, p, hC, hp, hpartition⟩ := exists_joint_freiman_variety_good_partition
+  exact ⟨C, p, hC, hp, jointFreimanVarietyCoverAt_of hC hp hpartition⟩
 
 end LeanProofs.GowersSzemeredi

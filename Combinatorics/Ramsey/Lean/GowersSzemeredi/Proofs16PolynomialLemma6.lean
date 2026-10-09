@@ -12,10 +12,8 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- Lemma 16.6 with the polynomial recurrence, above the explicit localized
-input threshold. The graph-count bound controls one common width. -/
-theorem exists_polynomial_lemma_16_6 (k : Nat) :
-  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+/-- The statement of `exists_polynomial_lemma_16_6` at fixed constants. -/
+def PolynomialLemma166At (k : Nat) (C p : Nat) : Prop :=
   ∀ (N m n : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
     ∀ (theta gamma sigma : Real),
     0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
@@ -49,9 +47,12 @@ theorem exists_polynomial_lemma_16_6 (k : Nat) :
                 ((n : Real) ^ section16SimultaneousExponent k p (Nat.floor (Qb sigma))) ≤ (S u).width) ∧
               ∀ u h, h ∈ G → h ∈ H1 → h ∈ (T u).carrier →
                 LinearOn ((A u).carrier.filter fun x =>
-                  (h, x) ∈ section16InducedDomain B H Y) (phiPrime h) := by
-  obtain ⟨C, p, hC, hp, hassembly⟩ := exists_uniform_polynomial_spectrum_product_linearity k
-  refine ⟨C, p, hC, hp, ?_⟩
+                  (h, x) ∈ section16InducedDomain B H Y) (phiPrime h)
+
+/-- `exists_polynomial_lemma_16_6` at the constants of its input. -/
+theorem polynomialLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hassembly : UniformPolynomialSpectrumProductLinearityAt k C p) : PolynomialLemma166At k C p := by
+  unfold PolynomialLemma166At
   intro N m n _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb hQ ha
     hm4 hn hnscale hnthreshold B phi H Jbase H1 Y phiPrime
   dsimp only
@@ -100,5 +101,46 @@ theorem exists_polynomial_lemma_16_6 (k : Nat) :
   · intro j x hxG hxH hxT
     have h := hSlin j x hxG hxH hxT
     simpa only [D, Finset.inter_filter, Finset.inter_univ] using h
+
+/-- Lemma 16.6 with the polynomial recurrence, above the explicit localized
+input threshold. The graph-count bound controls one common width. -/
+theorem exists_polynomial_lemma_16_6 (k : Nat) :
+  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+  ∀ (N m n : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma sigma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    0 < sigma → sigma ≤ 1 →
+    ∀ (Qb Eb : Real → Real), 0 ≤ Qb sigma → 0 ≤ Eb sigma →
+    4 ≤ m → 0 < n → (n : Real) ≤ ((m : Real) / 8) ^ (Eb sigma) →
+    section16SimultaneousThreshold k C p (Nat.floor (Qb sigma)) ≤ n →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H Jbase H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (phiPrime : Point N k → ZMod N → ZMod N),
+    let theta1 := section16ThetaOne theta gamma k
+    let delta := section16Delta theta1
+    let zeta := section16Zeta theta gamma k
+    H1 = H ∩ Jbase →
+    MultiplyLinearWith Qb Eb
+      (restrictRelation (section16SpectrumRelation B delta) Jbase) →
+    Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime →
+    ∀ (P : Box N (k + 1)) (Q : Box N k) (I : ModAP N),
+      P.IsProper → IsLastCoordinateBoxProduct P Q I → m ≤ P.width →
+      ∃ G : Finset (Point N k), ∃ M : Nat,
+          ∃ S : Fin M → Box N (k + 1),
+            ∃ T : Fin M → Box N k, ∃ A : Fin M → ModAP N,
+              G ⊆ Q.carrier ∧
+              (1 - sigma) * Q.carrier.card ≤ G.card ∧
+              IsBoxPartition S P ∧ (∀ u, (S u).IsProper) ∧
+              (∀ u, IsLastCoordinateBoxProduct (S u) (T u) (A u)) ∧
+              (∀ u, (zeta / 2) * Real.sqrt
+                ((n : Real) ^ section16SimultaneousExponent k p (Nat.floor (Qb sigma))) ≤ (S u).width) ∧
+              ∀ u h, h ∈ G → h ∈ H1 → h ∈ (T u).carrier →
+                LinearOn ((A u).carrier.filter fun x =>
+                  (h, x) ∈ section16InducedDomain B H Y) (phiPrime h) := by
+  obtain ⟨C, p, hC, hp, hassembly⟩ := exists_uniform_polynomial_spectrum_product_linearity k
+  exact ⟨C, p, hC, hp, polynomialLemma166At_of k hC hp hassembly⟩
 
 end LeanProofs.GowersSzemeredi

@@ -20,10 +20,9 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- A simultaneous version of the recurrence used in Lemma 16.1.
-For fixed dimension, the input-width exponent is polynomial in family size. -/
-theorem exists_simultaneous_commonDiff_partition_bound (k : Nat) :
-    ∃ (K : Real) (p : Nat), 2 ≤ K ∧ 0 < p ∧
+/-- The statement of `exists_simultaneous_commonDiff_partition_bound` at
+fixed constants. -/
+def CommonDiffPartitionBoundAt (k : Nat) (K : Real) (p : Nat) : Prop :=
       ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
         ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
         ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
@@ -33,10 +32,14 @@ theorem exists_simultaneous_commonDiff_partition_bound (k : Nat) :
             (∀ j, (H : Real) ≤ (Q j).width) ∧
             ∀ i j x, x ∈ (Q j).carrier →
               (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
-                ((2 : Real) ^ (k + 1) / H) * N := by
+                ((2 : Real) ^ (k + 1) / H) * N
+
+/-- `exists_simultaneous_commonDiff_partition_bound` from the multilinear
+partition in dimension `k + 1`, with the same constants. -/
+theorem commonDiffPartitionBoundAt_of (k : Nat) {K : Real} {p : Nat} (hK : 2 ≤ K) (hp : 0 < p)
+    (hpartition : MultilinearPartitionBoundAt (k + 1) K p) : CommonDiffPartitionBoundAt k K p := by
   classical
-  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_multilinear_partition_bound (k + 1) (by omega)
-  refine ⟨K, p, hK, hp, ?_⟩
+  unfold CommonDiffPartitionBoundAt
   intro N _ q P hP mu hmu H hH hscale hsize
   have hPW : 0 < P.width := (pow_pos hH _).trans_le hsize
   have hk : 0 < k := by
@@ -69,9 +72,9 @@ theorem exists_simultaneous_commonDiff_partition_bound (k : Nat) :
     have hw : 2 ≤ (Q (j a)).width := by exact_mod_cast hH2.trans (hwidth (j a))
     exact lifted_diameter_commonDiff (Q (j a)) (mu i) _ (hdiam i (j a)) hw I.start (hj a) x hx
 
-/-- Absorb the dimension-dependent diameter coefficient into the exponent
-constant, retaining the factor 2 in the common-difference error. -/
-theorem exists_simultaneous_commonDiff_partition_two_bound (k : Nat) :
+/-- A simultaneous version of the recurrence used in Lemma 16.1.
+For fixed dimension, the input-width exponent is polynomial in family size. -/
+theorem exists_simultaneous_commonDiff_partition_bound (k : Nat) :
     ∃ (K : Real) (p : Nat), 2 ≤ K ∧ 0 < p ∧
       ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
         ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
@@ -81,9 +84,29 @@ theorem exists_simultaneous_commonDiff_partition_two_bound (k : Nat) :
             IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
             (∀ j, (H : Real) ≤ (Q j).width) ∧
             ∀ i j x, x ∈ (Q j).carrier →
-              (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤ (2 / H : Real) * N := by
-  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_commonDiff_partition_bound k
-  refine ⟨K, (k + 1) * p, hK, Nat.mul_pos (by omega) hp, ?_⟩
+              (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
+                ((2 : Real) ^ (k + 1) / H) * N := by
+  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_multilinear_partition_bound (k + 1) (by omega)
+  exact ⟨K, p, hK, hp, commonDiffPartitionBoundAt_of k hK hp hpartition⟩
+
+/-- The statement of `exists_simultaneous_commonDiff_partition_two_bound` at
+fixed constants. -/
+def CommonDiffPartitionTwoBoundAt (k : Nat) (K : Real) (p : Nat) : Prop :=
+      ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
+        ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
+        ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
+          H ^ (p * (q + 1) ^ (2 * (2 ^ (k + 1)))) ≤ P.width →
+          ∃ M : Nat, ∃ Q : Fin M → Box N k,
+            IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+            (∀ j, (H : Real) ≤ (Q j).width) ∧
+            ∀ i j x, x ∈ (Q j).carrier →
+              (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤ (2 / H : Real) * N
+
+/-- The factor-two form, with exponent constant `(k + 1) * p`. -/
+theorem commonDiffPartitionTwoBoundAt_of (k : Nat) {K : Real} {p : Nat} (hK : 2 ≤ K) (hp : 0 < p)
+    (hpartition : CommonDiffPartitionBoundAt k K p) :
+    CommonDiffPartitionTwoBoundAt k K ((k + 1) * p) := by
+  unfold CommonDiffPartitionTwoBoundAt
   intro N _ q P hP mu hmu H hH hscale hsize
   have hH2 : 2 ≤ H := by
     have hc : (1 : Real) ≤ (q : Real) + 1 := by norm_num
@@ -112,5 +135,22 @@ theorem exists_simultaneous_commonDiff_partition_two_bound (k : Nat) :
   push_cast
   rw [pow_succ]
   field_simp
+
+/-- Absorb the dimension-dependent diameter coefficient into the exponent
+constant, retaining the factor 2 in the common-difference error. -/
+theorem exists_simultaneous_commonDiff_partition_two_bound (k : Nat) :
+    ∃ (K : Real) (p : Nat), 2 ≤ K ∧ 0 < p ∧
+      ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
+        ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
+        ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
+          H ^ (p * (q + 1) ^ (2 * (2 ^ (k + 1)))) ≤ P.width →
+          ∃ M : Nat, ∃ Q : Fin M → Box N k,
+            IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+            (∀ j, (H : Real) ≤ (Q j).width) ∧
+            ∀ i j x, x ∈ (Q j).carrier →
+              (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤ (2 / H : Real) * N := by
+  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_commonDiff_partition_bound k
+  exact ⟨K, (k + 1) * p, hK, Nat.mul_pos (by omega) hp,
+    commonDiffPartitionTwoBoundAt_of k hK hp hpartition⟩
 
 end LeanProofs.GowersSzemeredi

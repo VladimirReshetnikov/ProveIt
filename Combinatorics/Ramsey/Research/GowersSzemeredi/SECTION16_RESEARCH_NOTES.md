@@ -5352,6 +5352,58 @@ dominated by `milicevicBound D` at a fixed density, and they give the
 padded slice-class cover from `MilicevicDeepEventuallyPrime Bnd` with `D`
 chosen per `(γ, θ)`.
 
+**Progress on the last link (2026-10-09, night).**
+1. *Constants threaded.* Every `∃`-constant layer of the variety route now
+   has a fixed-constant form: a predicate `…At C p` and a theorem
+   `…At_of`, with the old `exists_…` kept as an unchanged wrapper. This
+   covers 25 layers in 23 modules: B1–B8 on the variety side, L0–L9 on the
+   lift side, and T1–T7 at the top. `Proofs16ExplicitVarietyDecomposition`
+   chains them into `ceilingFreeVarietyRelationDecompositionAt_explicit`,
+   at
+   - `explicitLiftK = ⌈multiaffinePartitionK 3 8⌉`,
+     `explicitLiftP = 3·multiaffinePartitionP 3 8`;
+   - `explicitVarietyK = ⌈multiaffinePartitionK 2 4⌉`,
+     `explicitVarietyP = multiaffinePartitionP 2 4`.
+
+   *Verification.* All OAI enters through `Proofs05SchmidtRecurrence`.
+   The refactor was compiled against a stub of that module, with its one
+   OAI-backed proof replaced by `sorry`: 143 modules, no errors. The
+   assembly was compiled against a second stub of the explicit module. The
+   full check, including the OAI-backed steps, belongs to the
+   full-verification host.
+2. *Absorption* (checked locally). `Proofs16MonomialControlAbsorption`
+   and `Proofs16VarietyControlAbsorption` show the following. Controls of
+   the variety shape are `MultiplyLinear γ s` with `s = 18r/γ + 64 + L`,
+   for any `L` above `log W⁻¹` and `log(81·7⁴Q² + 27)`.
+3. *Budget* (checked locally). `Proofs16VarietyPieceBudget` gives
+   `s ≤ η·s(θ,γ,3)` whenever `L ≤ x^(64·2^256)`, `x = 2/(θγ)`. Here `η` is
+   the variety piece mass.
+4. *Counts* (checked locally). `Proofs16VarietyCountBounds` gives:
+   - the family size is at most `x^(2^24)`, via piece mass
+     `≥ (θγ/2)^14424120`;
+   - a count `⌈fam·e^mb⌉ + 1` costs `log(fam+3) + mb`;
+   - `milicevicBound D c ≤ (4/c)^D`.
+
+**Remaining**, all mechanical:
+- match `section16VarietyCeilingFreeExponent` and `…GraphBound` to the
+  absorbed shape (via `section16_variety_line_factor_power`);
+- bound `L` by `x^(64·2^256)`. The constants' logs are at most a few
+  thousand by the Weyl bounds (`A_j < 2^192`, degree `< 256`), and
+  `mb ≤ (4/c)^D`. With `c⁻¹ ≤ x^(2^156)` at the spectrum density, a
+  hypothesis such as `D ≤ 2^64` leaves vast room;
+- assemble `Section16BudgetedPieceAt 3`, hence `Theorem162At 3` and
+  `Corollary1611At 3`, from `MilicevicDeepVarietyStructure D`.
+
+Lean traps met here:
+- `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
+  to a literal (`2^(2^8)` folds; `2^510` does not). `Nat.pow` then panics,
+  even from an unrelated hypothesis in scope, so clear it or keep
+  exponents as variables.
+- `rfl` checks against `t^14424120` overflow recursion; rewrite forward
+  instead.
+- `linarith` treats `4·(M·r)·log X` and `18·(M·r)·log X` as unrelated
+  atoms.
+
 Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
 eventual, any-bound form) yields the decomposition with the unknown
 constants as parameters, but not `Theorem162At 3`.
@@ -7173,6 +7225,96 @@ claimed here. No new port or licensing change was necessary.
 modules. All twelve new named theorems pass individual axiom checks.
 The full audit checks 7,526 public Gowers theorems in 5,228 modules
 (5,226 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
+
+
+### J.121. Higher-arrangement extraction with controlled multiplicity
+
+The first-coordinate extraction for the sixteen-map arrangement is now
+proved. The argument first treats a general indexed offset equation and
+then specializes it to the eleven free parameters of the larger
+arrangement. It retains actual configurations rather than only their
+endpoint image.
+
+**Indexed collisions.** Let `Q` be a subset of `I x ZMod N`, let
+`a,v : I -> ZMod N`, and suppose every offset fibre `a^{-1}(z)` has
+cardinality at most the positive integer `M`. Assume
+
+```
+f(x+a(i)) - g(x) = v(i)  for every (i,x) in Q,
+card Q >= delta*M*N^2.
+```
+
+Cauchy--Schwarz gives `card Q^2 <= card W * card I`, where `W` is the
+family of pairs in `Q` with equal parameter `i`. The offset-fibre bound
+also gives `card I <= M*N`. Project a collision to
+
+```
+(x+a(i), x, y+a(i), y).
+```
+
+The projection's multiplicity is at most `M`: its image fixes `x`, `y`,
+and `a(i)`, leaving at most `M` choices of `i`. Consequently its image
+has at least `delta^2*N^3` distinct mixed quadruples. Their endpoint
+and value relations agree with the already proved mixed-quadruple
+extraction theorem. This establishes `offset_equation_freiman_piece`
+without dropping the multiplicity factor.
+
+**Retaining the original family.** Use popular endpoints `x+a(i)` at
+threshold `delta*M*N/2`. At least `delta*M*N^2/2` original configurations
+survive this restriction. Applying the collision argument to that family
+gives an order-eight Freiman set `E` with
+
+```
+card E >= 2^(-1882) * (((delta/2)^2)^4)^1164 * N.
+```
+
+Retaining all original configurations whose endpoint belongs to `E`
+therefore gives a family `R` with
+
+```
+card R >= H(delta)*M*N^2,
+H(delta) = delta/2 * (2^(-1882) * (((delta/2)^2)^4)^1164).
+```
+
+The formal definition is `offsetFreimanRetention`; it is positive for
+positive `delta`. The theorem also records `R subset Q`, the endpoint
+membership for every member of `R`, and `E subset` the original endpoint
+image. The normalized density loss is independent of `M` and `N`.
+
+**Sixteen endpoints and eleven free parameters.** Write the parameter
+as `((a,z),x)` with `z : Fin 9 -> ZMod N`. Set the four shifts to
+`a`, `z0`, `z1`, and `a+z0-z1`, so their required additive relation is
+identically satisfied. The four left base points are `x,z2,z3,z4` and
+the four right base points are `z5,z6,z7,z8`. Each base point and its
+shifted copy supply two endpoints. `HigherArrangementEquation` equates
+the sum of the four left map differences to the sum of the four right
+map differences.
+
+Separating the first base point `x` writes this equation as
+`f0(x+a)-f1(x)=v(a,z)`. The offset fibres have exactly `N^9` parameters,
+and the full parameter space has exactly `N^11` elements. Thus
+`higher_arrangements_retain_first_freiman_piece` takes a family of at
+least `delta*N^11` solutions and retains at least `H(delta)*N^11`
+original solutions whose first endpoint lies in an order-eight Freiman
+set for `f0`, with the explicit size bound above.
+
+**Remaining work.** This extracts only the first coordinate. Transport
+to the other fifteen endpoints and successive extraction on the same
+retained family remain to be proved. Common pair-map alignment, the
+higher-arrangement improvement, simultaneous selection, anchor coherence,
+and the final bilinear variety structure are also still open. The
+quadruple selection in J.120 does not by itself supply these conclusions.
+No numbered catalogue entry or final source-theorem bound is claimed
+here. No new upstream port or licensing change was necessary.
+
+**Verification.** The first-coordinate extraction closure checks 227
+modules. All twelve new named theorems pass individual axiom checks.
+The full audit checks 7,545 public Gowers theorems in 5,234 modules
+(5,232 facade modules, including 4,152 OAI modules), using only
 `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
 byte-for-byte unchanged at 115 companions and five open entries. The
 selected-port scope remains 4,134 upstream and 17 compatibility modules,

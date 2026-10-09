@@ -845,8 +845,16 @@ import GowersSzemeredi.Proofs16DeepBoundDomination
 import GowersSzemeredi.Proofs16DeepBoundSlices
 import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
 import GowersSzemeredi.Proofs16MonomialControlAbsorption
+import GowersSzemeredi.Proofs16ExplicitVarietyDecomposition
+import GowersSzemeredi.Proofs16VarietyCountBounds
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
 import GowersSzemeredi.Proofs16VarietyPieceBudget
+import GowersSzemeredi.Proofs16KeyCollisionDensity
+import GowersSzemeredi.Proofs16OffsetCollisionProjection
+import GowersSzemeredi.Proofs16OffsetCollisionDensity
+import GowersSzemeredi.Proofs16OffsetFreimanRetention
+import GowersSzemeredi.Proofs16HigherArrangementModel
+import GowersSzemeredi.Proofs16HigherArrangementFirstExtraction
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

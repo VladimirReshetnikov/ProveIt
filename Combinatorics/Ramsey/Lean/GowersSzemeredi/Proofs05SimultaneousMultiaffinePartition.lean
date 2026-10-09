@@ -205,10 +205,9 @@ theorem exists_simultaneous_multiaffine_partition_bound (k : Nat) (hk : 0 < k) (
     exact ⟨max K C, p * (2 * (k + 1) * e + 4), hK.trans (le_max_left _ _),
       Nat.mul_pos hp (by omega), hpartition.step hk hK hp hC hrec⟩
 
-/-- All simultaneous multilinear phases on a proper box share a minimum-width
-partition with polynomial family-size dependence in the required input width. -/
-theorem exists_simultaneous_multilinear_partition_bound (k : Nat) (hk : 0 < k) :
-    ∃ (K : Real) (p : Nat), 2 ≤ K ∧ 0 < p ∧
+/-- The multilinear partition statement in dimension `k` at constants `K, p`:
+the body of `exists_simultaneous_multilinear_partition_bound`. -/
+def MultilinearPartitionBoundAt (k : Nat) (K : Real) (p : Nat) : Prop :=
       ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
         ∀ mu : Fin q → Point N k → ZMod N, (∀ i, MultilinearOn P.carrier (mu i)) →
         ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
@@ -216,10 +215,15 @@ theorem exists_simultaneous_multilinear_partition_bound (k : Nat) (hk : 0 < k) :
           ∃ M : Nat, ∃ Q : Fin M → Box N k,
             IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
             (∀ j, (H : Real) ≤ (Q j).width) ∧
-            ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ k : Real) / H * N) := by
+            ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ k : Real) / H * N)
+
+/-- The multilinear partition from the multiaffine one at `2^k` monomial
+families, with the same constants. -/
+theorem multilinearPartitionBoundAt_of {k : Nat} {K : Real} {p : Nat}
+    (hpartition : SimultaneousMultiaffinePartitionBound k (2 ^ k) K p) :
+    MultilinearPartitionBoundAt k K p := by
   classical
-  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_multiaffine_partition_bound k hk (2 ^ k)
-  refine ⟨K, p, hK, hp, ?_⟩
+  unfold MultilinearPartitionBoundAt
   intro N _ q P hP mu hmu H hH hscale hsize
   choose psi hpsi heq using hmu
   choose c hc using (fun i => (isMultilinear_iff_multiaffineEval (psi i)).mp (hpsi i))
@@ -233,5 +237,20 @@ theorem exists_simultaneous_multilinear_partition_bound (k : Nat) (hk : 0 < k) :
     exact (heq i x (IsPartition.cell_subset hQpart j hx)).trans (hc i x)
   rw [himage]
   simpa only [Nat.cast_pow, Nat.cast_ofNat] using hQdiam i j
+
+/-- All simultaneous multilinear phases on a proper box share a minimum-width
+partition with polynomial family-size dependence in the required input width. -/
+theorem exists_simultaneous_multilinear_partition_bound (k : Nat) (hk : 0 < k) :
+    ∃ (K : Real) (p : Nat), 2 ≤ K ∧ 0 < p ∧
+      ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
+        ∀ mu : Fin q → Point N k → ZMod N, (∀ i, MultilinearOn P.carrier (mu i)) →
+        ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
+          H ^ (p * (q + 1) ^ (2 * (2 ^ k))) ≤ P.width →
+          ∃ M : Nat, ∃ Q : Fin M → Box N k,
+            IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+            (∀ j, (H : Real) ≤ (Q j).width) ∧
+            ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ k : Real) / H * N) := by
+  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_multiaffine_partition_bound k hk (2 ^ k)
+  exact ⟨K, p, hK, hp, multilinearPartitionBoundAt_of hpartition⟩
 
 end LeanProofs.GowersSzemeredi

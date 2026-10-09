@@ -48,6 +48,35 @@ theorem MultiplyLinearWith.variety_three_ceiling_free {N C p Cv pv Cs ps D : Nat
     dsimp only [section16VarietyThreePieceExponent, section16PolynomialVarietyThreeExponent]
     simp only [Nat.cast_mul, Nat.cast_ofNat]
 
+/-- The statement of `exists_ceiling_free_variety_relation_decomposition` at fixed constants. -/
+def CeilingFreeVarietyRelationDecompositionAt (C p Cv pv Cs ps : Nat) : Prop :=
+  ∀ D : Nat, MilicevicDeepVarietyStructure D →
+  ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+      ∀ Gamma : Finset (Point N 3 × ZMod N),
+        (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real)^3 →
+        RelationProductProperty gamma Gamma →
+        ∃ q : Nat, ∃ G : Fin q → Finset (Point N 3 × ZMod N), ∃ J : Finset (Point N 3),
+          (∀ i, G i ⊆ Gamma ∧ MultiplyLinearWith
+            (section16VarietyThreeCeilingFreeGraphBound D theta gamma)
+            (section16VarietyThreeCeilingFreeExponent C p Cv pv Cs ps D theta gamma)
+            (G i)) ∧
+          (q : Real) ≤ gamma ^ (-(2 : Int)) / section16VarietyPieceMass theta gamma ∧
+          (1 - theta) * (N : Real)^3 ≤ J.card ∧
+          restrictRelation Gamma J ⊆ section16FinsetUnion G
+
+/-- `exists_ceiling_free_variety_relation_decomposition` at the constants of its input. -/
+theorem ceilingFreeVarietyRelationDecompositionAt_of {C p Cv pv Cs ps : Nat} (hC : 2 ≤ C) (hp : 0 < p) (hCv : 2 ≤ Cv) (hpv : 0 < pv) (hCs : 2 ≤ Cs) (hps : 0 < ps)
+    (hcover : PolynomialVarietyRelationDecompositionAt C p Cv pv Cs ps) : CeilingFreeVarietyRelationDecompositionAt C p Cv pv Cs ps := by
+  unfold CeilingFreeVarietyRelationDecompositionAt
+  intro D hD theta gamma ht ht1 hg hg1
+  obtain ⟨N0, hN0⟩ := hcover D hD theta gamma ht ht1 hg hg1
+  refine ⟨N0, ?_⟩
+  intro N _ _ hN Gamma hcard hprod
+  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := hN0 N hN Gamma hcard hprod
+  exact ⟨q, G, J, fun i => ⟨(hG i).1,
+    (hG i).2.variety_three_ceiling_free hC hp hCv hpv hCs hps ht ht1 hg hg1⟩, hq, hJ, hcov⟩
+
 /-- Actual relation covers inherit the explicit inner-loss powers, without
 any additional geometric assumptions beyond deep variety structure. -/
 theorem exists_ceiling_free_variety_relation_decomposition :
@@ -66,15 +95,7 @@ theorem exists_ceiling_free_variety_relation_decomposition :
           (q : Real) ≤ gamma ^ (-(2 : Int)) / section16VarietyPieceMass theta gamma ∧
           (1 - theta) * (N : Real)^3 ≤ J.card ∧
           restrictRelation Gamma J ⊆ section16FinsetUnion G := by
-  obtain ⟨C, p, Cv, pv, Cs, ps, hC, hp, hCv, hpv, hCs, hps, hcover⟩ :=
-    exists_polynomial_variety_relation_decomposition
-  refine ⟨C, p, Cv, pv, Cs, ps, hC, hp, hCv, hpv, hCs, hps, ?_⟩
-  intro D hD theta gamma ht ht1 hg hg1
-  obtain ⟨N0, hN0⟩ := hcover D hD theta gamma ht ht1 hg hg1
-  refine ⟨N0, ?_⟩
-  intro N _ _ hN Gamma hcard hprod
-  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := hN0 N hN Gamma hcard hprod
-  exact ⟨q, G, J, fun i => ⟨(hG i).1,
-    (hG i).2.variety_three_ceiling_free hC hp hCv hpv hCs hps ht ht1 hg hg1⟩, hq, hJ, hcov⟩
+  obtain ⟨C, p, Cv, pv, Cs, ps, hC, hp, hCv, hpv, hCs, hps, hcover⟩ := exists_polynomial_variety_relation_decomposition
+  exact ⟨C, p, Cv, pv, Cs, ps, hC, hp, hCv, hpv, hCs, hps, ceilingFreeVarietyRelationDecompositionAt_of hC hp hCv hpv hCs hps hcover⟩
 
 end LeanProofs.GowersSzemeredi
