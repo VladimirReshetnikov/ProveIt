@@ -5592,7 +5592,12 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
 - The same rank also enters the zero-core radius:
   `globalColumnZeroRadius ≤ (ρ/2)/(⌈4/ρ⌉^g·…)`, which is doubly
   exponentially small. The contract's `exp(-Bnd c) ≤ ρ` therefore fails
-  too. This is read off the definition and is not formalized.
+  too (kernel-checked in `Proofs16CoherentAnchorGrowth`). Both zero-core
+  radii are at most `2^(-g)` (`globalColumnZeroRadius_le_inv_two_pow`,
+  `globalEvenColumnZeroRadius_le_inv_two_pow`). So any `B` with `exp(-B)`
+  at most the radius of `global_column_shifted_agreement` or of
+  `global_coherent_column_anchors` has `B ≥ 13^d/2`
+  (`globalColumnZeroRadius_bound_ge`, `globalCoherentAnchorRadius_bound_ge`).
   `global_column_difference_extensions` (J.112) works at exactly this
   rank and radius. The even-length variant
   (`Proofs16GlobalEvenZeroCoreParameters`) has the same shape: rank
