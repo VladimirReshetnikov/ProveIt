@@ -1399,8 +1399,19 @@ the elementary lemmas of its §2:
   (`exists_halving_frequency`). Hence |D| < 2^m differences are separated
   by m frequencies (`separating_frequencies`). For D = (S − S) ∖ {0} that
   is 2⌈log₂|S|⌉ frequencies, matching the paper's O(log k).
-- Next: the bilinear Bogolyubov argument (Theorem 1.6), the first
-  substantial component.
+- **Bilinear Bogolyubov, step 1 (row Bogolyubov), done with polynomial
+  bounds (`Proofs16BilinearBogolyubovRows`, kernel-checked).**
+  - `bogolyubov_classical` is a new public wrapper appended to
+    `Proofs07BohrHom`, extracted from Gowers's Lemma 7.8 proof: density α
+    gives a spectrum K with |K| ≤ 16α⁻² and B(K; 1/(8π)) ⊆ 2A − 2A.
+  - `horDiff`/`verDiff`/`rowOf` define the directional difference sets.
+  - `row_bogolyubov`: every nonempty row of D_hor D_hor A contains such a
+    Bohr set.
+
+  This is OAI-free. The quasi-polynomial alternative is the port's
+  `exists_quartic_bogolyubov`.
+- Next: step 2, the Freiman-linear maps L_i from random selection plus a
+  Freiman inverse theorem, i.e. [49] Lemma 19 and Corollary 20.
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
