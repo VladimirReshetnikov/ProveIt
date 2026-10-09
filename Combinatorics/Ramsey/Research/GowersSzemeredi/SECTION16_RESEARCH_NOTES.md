@@ -8053,3 +8053,79 @@ The actual merged closure passes: 7,920 public Gowers theorems in 5,296
 combined modules (5,294 facade modules), with the same three allowed
 axioms. The ledger adds four conditional consequences and updates source
 locations; its 115 companions and five open entries remain unchanged.
+
+
+### J.128. Dense supported arrangements and sparse-failure removal
+
+Eleven modules prove thirty-three named results constructing the dense good
+family required in J.127. The final `exists_supported_coherent_anchor_maps`
+starts with a column set `W` of density at least `alpha`, normalized local
+Freiman column maps with spectra of size at most `d`, and quantitative
+bounds on the two kinds of original column failures. It performs joint
+frequency selection and chooses global anchors with at least
+`(alpha^16 - 4*eps - 2*eta - 5*delta)/2 * N^3` coherent additive
+quadruples of distinct shifts, provided
+`8 <= (alpha^16 - 4*eps - 2*eta - 5*delta)*N`.
+Here `eps*N^3` bounds incompatible supported anchor quadruples,
+`eta*N^7` bounds unrespected supported eight-column tuples, and
+`delta > 0` is the requested tolerance of each joint-selection failure
+set. The modulus is prime, and `0 < r < 4`, as required by the existing
+joint-selection theorem. Every resulting arrangement keeps all sixteen
+columns in `W`.
+
+**Projection fibres.** A matched anchor quadruple at one of the four
+positions fixes the shared shift and both anchor bases, leaving eight
+free coordinates. An explicit injective encoding proves the `N^8`
+fibre bound; coordinate symmetries transfer it to every position.
+Fixing all eight columns on one side fixes seven parameters and leaves
+only the four bases on the other side. Another encoding gives `N^4`
+fibres for both sides. These are bounds for arbitrary input families,
+with no uniformity hypothesis.
+
+**Actual failure removal.** `higherArrangementBadData` is a finite union
+of the four anchor failure preimages, the two column failure preimages,
+and the higher failure set. Its cardinality is at most
+`4*|E|*N^8 + (|VL|+|VR|)*N^4 + |B|`. The complementary family has the
+corresponding density lower bound. `columnTupleFailures` tests the
+original four-difference identity on the actual common quarter-radius
+Bohr domain, and `incompatibleAnchorQuadruples` tests the compatibility
+needed for gluing.
+
+`jointGoodHigherArrangements` removes these original failures together
+with the actual `jointQuadrupleFailures` and `jointHigherFailures`.
+Every retained member satisfies `GoodHigherAnchorArrangement`. A family
+of density `kappa` retains density at least
+`kappa - 4*eps - 2*eta - 5*delta`. The factor five comprises the four
+individual containment preimages and the one higher containment failure.
+`exists_joint_coherent_anchor_maps` combines this with actual joint
+selection and anchor averaging, preserving input-family membership in
+addition to normalized local linearity and common-domain coherence.
+
+**The supported family is dense.** No progression overlap estimate is
+needed for this counting step. The generic
+`card_four_le_mapped_additive_quadruples` applies the existing finite
+key-collision Cauchy--Schwarz bound to pairs of indexed objects; it does
+not collapse objects with equal images. Applying the same argument to
+differences of pairs in `W` gives at least `|W|^4/N` supported anchor
+quadruples. Applying the mapped-quadruple bound to their shifts gives
+at least `|W|^16/N^5` higher arrangements. An explicit reconstruction
+recovers all four anchor quadruples, proving injectivity and preserving
+all sixteen column values. Thus
+`|W|^16 <= |supportedHigherArrangements W|*N^5`, and density `alpha`
+of `W` gives density `alpha^16` of the higher family. Its projections
+lie in the supported additive quadruple and eight-column families,
+so the sparse-failure removal theorem applies directly.
+
+**Remaining work.** The original compatibility and eight-column failure
+bounds are still hypotheses and must be supplied by the preceding
+column construction with suitable parameters. The next steps also need
+sufficient agreement with many original columns, a fixed small family
+of frequency maps with usable common progression domains, and the
+subsequent structural argument. The finite averaging now constructs
+its dense good family, but does not supply those further properties
+or the missing deep variety theorem. No numbered entry or final
+Gowers-bound improvement is claimed closed. No upstream port or license
+scope is added.
+
+**Verification.** The production closure checks 355 modules. Individual
+axiom checks and final merged audit totals are recorded below.
