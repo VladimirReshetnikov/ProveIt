@@ -1476,6 +1476,14 @@ the elementary lemmas of its §2:
     there is a different grouping.
   Check this against [49]'s full text (the WebFetch summaries cover only
   its first 100k characters) before formalizing Corollary 20.
+  **Resolved (same night): the mixed cases need two Cauchy–Schwarz rounds.**
+  `one_new_each_energy` (`Proofs16PairEnergyCS`, kernel-checked) treats the
+  case where the first pair has its new point first and the second pair
+  has it second. Then X² ≤ E(S₁,S₁)·E(S₂,S₂). Regrouping
+  ((u,v),(u′,v′)) ↦ ((v,v′),(u,u′)) (`pairEnergy_regroup`) and symmetry
+  (`pairEnergy_comm`) turn both factors into pairEnergy(all, A′×A′), whose
+  square is ≤ N³·E(A′). So X² ≤ N³·E(A′), the same bound as the (b,d)
+  case. All four cases are covered.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
