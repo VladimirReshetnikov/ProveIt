@@ -8,6 +8,11 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
+\usepackage{etoolbox}
+\makeatletter
+% The contents now includes three-digit section numbers.
+\patchcmd{\l@section}{1.5em}{2em}{}{\PackageError{report}{Cannot widen section numbers}{}}
+\makeatother
 \hypersetup{pdftitle={Six attempts at quasi-polynomial unknot recognition: synthesis, cross-validation, and a faster exact recognizer}}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
@@ -708,6 +713,7 @@ No general quasi-polynomial recognition bound is proved.
 \input{adaptive_merger.tex}
 \input{persistent_replay.tex}
 \input{persistent_producer.tex}
+\input{power_pairs.tex}
 
 \section{Assessment and recommendations}
 

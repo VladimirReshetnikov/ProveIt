@@ -402,7 +402,13 @@ and positive coverage. The delivered prototype and original archive remain uncha
 Commit `b365341b1` adds `ProveIt_Unknot_Sparse_Incidence_Research.zip` and
 `unknot_power_conjugacy_20261008.zip`. Initial README/contract review and all
 94 delivered checksum entries pass; see
-`../synthesis/data/incoming-b365-initial-triage.json`. No tests or native
-integration of these two deliveries have run. The sparse observer overlaps
-the maintained implementation; the power-conjugacy proposal requires further
-mathematical review and source-authenticated donor discovery.
+`../synthesis/data/incoming-b365-initial-triage.json`. That is the historical
+initial review. The sparse observer still overlaps the maintained implementation.
+The power-conjugacy delivery's 24 tests have subsequently passed, and its
+plain-power minor argument now has a maintained compressed detector and
+independent source replay; see `../synthesis/power_pairs.tex` and
+`../synthesis/data/power-pair-*`. The native knot-specific rule uses an
+already source-established torsion-free premise to accept any nonzero minor.
+All 1,121 maintained tests pass. The broader conjugacy graph, compressed
+conjugator discovery and claimed graph-abstraction boundary remain outside
+this integration. Delivered braid-audit and timing records are not native runs.
