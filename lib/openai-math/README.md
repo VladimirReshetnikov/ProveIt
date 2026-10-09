@@ -248,3 +248,9 @@ oscillation of bilinear-variety conditions whose mixed phases are
 multilinear on the parent. Their production sources and transitive axiom
 checks pass; their combined facade audit is queued. These add no vendored
 upstream modules or changes to the provenance/license scope.
+
+The local Freiman variety cover now has uniform rank/radius controls. Its
+deep-agreement consequence preserves the selected mass when translated
+into the original graph, conditional on `MilicevicDeepVarietyStructure`.
+These original consumers pass production and transitive axiom checks and
+are included in the queued facade audit; they add no upstream modules.
