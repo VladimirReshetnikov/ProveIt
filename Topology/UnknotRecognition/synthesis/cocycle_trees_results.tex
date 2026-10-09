@@ -1,0 +1,68 @@
+\subsection{New source proofs and preserved controls}
+
+The 22 focused tree, seed and connectivity tests pass in 3.227 seconds.
+The full suite passes all 1,187 tests in 229.784 seconds. Tests establish
+that early successes avoid flow, raw successes avoid tree setup, optimized
+successes avoid later trials, and the late example appears after the
+optimization miss. They check exact option types, duplicate skipping,
+determinism, matching failures, shared-cap exhaustion and cancellation.
+Positive replay succeeds with tree discovery disabled and uses the
+unchanged independent verifier.
+
+All 84 source records are run with zero, four and 24 tree trials. The zero
+policy reproduces the preceding stage's 18 positive records, 65 completed
+restricted misses and one cap. Four trials produce 23 positives and 60
+completed misses; 24 trials produce 24 positives and 59 completed misses.
+Gordian remains capped in both policies. All eighteen old positive hashes
+are preserved, and all six new source witnesses replay independently.
+The following rows list the new successes; trial counts include duplicates.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrr}
+\toprule
+Source & $n$ & Trial & Disc pieces & Minimum pieces & Guards \\
+\midrule
+random-29 & 4 & 3 & 83 & 63 & 11,227 \\
+random-79 & 4 & 2 & 102 & 63 & 10,192 \\
+random-99 & 3 & 2 & 66 & 43 & 7,785 \\
+random-124 & 5 & 3 & 121 & 79 & 14,185 \\
+random-150 & 7 & 2 & 153 & 99 & 18,281 \\
+random-81 (24 trials) & 5 & 22 & 122 & 71 & 180,578 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every displayed disc has more pieces than the span optimizer's returned
+non-disc. For example, \code{random-29} changes from an 89-piece raw
+surface of Euler characteristic zero to an 83-piece disc in trial three;
+the checked minimum-piece solution has 63 pieces and Euler characteristic
+$-1$. This proves that a useful disc exists within the same potential
+family even though the selected optimum is not a disc. It does not prove
+that every tied minimum-piece solution is a non-disc.
+
+Fresh Regina controls check all 205 distinct generated candidates from
+the six new source examples and three further controls: trefoil,
+figure-eight and the genus-one unknot miss. Independent native inspection
+and Regina agree on connectedness, orientability, Euler characteristic
+and essential-disc count in every case. The new source certificates do
+not depend on Regina. The full audit takes 84.487 seconds while the
+test suite also runs, so that elapsed time is not a performance comparison.
+
+Nineteen ordinary corpus inputs give their expected verdicts with zero,
+four or 24 trials. All 57 calls finish before reaching the native stage.
+Thus the additional source coverage is a property of the optional native
+search, not a demonstrated expansion of the ordinary recognizer's solved
+corpus or a general running-time improvement.
+
+\input{cocycle_trees_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/trees.py}, with
+\code{audit} and \code{recognize} modes; the final timing run requests
+\code{--rounds 9}. The baseline is \code{48ef0ccef}. All 481 runtime,
+driver, fixture and prior-audit pins agree. The earlier exploratory scripts
+and full logs are retained in \path{data/tree-gauge-exploration.py} and
+\path{data/edge-weight-exploration.py}, with corresponding text outputs.
+Run those scripts from the \code{fast} directory with its Python package
+on \code{PYTHONPATH}. The incoming archives already have maintained review
+records, and the checked \code{openai/math} head remains \code{fd4aeeb2e}.
