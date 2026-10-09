@@ -34,7 +34,7 @@ def verify_normal_topology_spectrum(triangulation, coordinates, certificate, *,
     keys = {'schema', 'input_sha256', 'reduced_core', 'coordinate_divisor',
             'vertex_links', 'core_coordinates', 'query', 'summary'}
     if (type(certificate) is not dict or set(certificate) != keys
-            or certificate['schema'] != 'normal-topology-spectrum-v1'
+            or certificate['schema'] not in ('normal-topology-spectrum-v1','normal-topology-spectrum-v2')
             or type(certificate['reduced_core']) is not bool):
         return False
     try:
@@ -45,6 +45,7 @@ def verify_normal_topology_spectrum(triangulation, coordinates, certificate, *,
     if certificate['input_sha256'] != _fingerprint(triangulation, analysed, check):
         return False
     reduced = certificate['reduced_core']
+    derived = certificate['schema'] == 'normal-topology-spectrum-v2'
     core = [row.copy() for row in analysed['rows']]
     divisor, links = 1, []
     if reduced:
@@ -83,7 +84,7 @@ def verify_normal_topology_spectrum(triangulation, coordinates, certificate, *,
     link_disks, link_spheres = vertex_link_totals(prepared, links, check)
     proof = certificate['query']
     if reduced and not divisor:
-        if proof is not None:
+        if proof is not None or derived:
             return False
         core_rows = []
     else:
@@ -98,6 +99,28 @@ def verify_normal_topology_spectrum(triangulation, coordinates, certificate, *,
                  for interval in boundary['representative_intervals']]
         for scale, field in ((1, 'surface'), (2, 'double')):
             check()
+            if scale == 2 and derived:
+                from .normal_coorientation import _coorientation_graph
+                from .normal_surface_parity import _verify_parity
+                double = proof['double']
+                if (type(double) is not dict or set(double) !=
+                        {'schema','dimension','coorientation','histogram'}
+                        or double['schema'] != 'normal-topology-double-coorientation-v1'
+                        or type(double['dimension']) is not int or double['dimension'] != 2
+                        or type(double['coorientation']) is not dict
+                        or double['coorientation'].get('nonzero') is not False):
+                    return False
+                graph = _coorientation_graph(query, system['pairings'], check)
+                if not _verify_parity(graph, double['coorientation'], check):
+                    return False
+                expected_histogram = []
+                for row in proof['surface']['histogram']:
+                    check()
+                    expected_histogram.append(dict(weight=[encoded_integer(v) for v in row['weight']],
+                                                   orbits=2*encoded_integer(row['orbits'])))
+                if not certificate_equal(double['histogram'],expected_histogram):
+                    return False
+                continue
             system = topology_weight_system(prepared, query, marks, scale=scale, check=check)
             if not verify_weighted_orbit_certificate(system['size'], system['pairings'],
                     system['weights'], proof[field], dimension=2, check=check):
