@@ -8,10 +8,16 @@ with knot vertices cut at coordinate 8.  It accepts canonical numbering only.
 from .diagram import Diagram, DiagramError
 
 
-def _local_geometry():
+def _local_geometry(subdivision='pulling'):
     north, south = (12, 0, 0, 0), (0, 12, 0, 0)
     a, b, c = (4, 0, 8, 0), (0, 4, 8, 0), (0, 0, 8, 4)
     d, e, f = (4, 0, 0, 8), (0, 4, 0, 8), (0, 0, 4, 8)
+    if subdivision == 'pulling':
+        # Pull the old face opposite north from south, and cone those three
+        # triangles and the two cut triangles to north.
+        base = (b, c, f, e)
+        return [(north, south, left, right) for left, right in zip(base, base[1:])] + [
+            (north, a, b, c), (north, d, e, f)]
     polygons = ((south, b, c, f, e), (north, a, c, f, d),
                 (north, south, e, d), (north, south, b, a))
     centre = (3, 3, 3, 3)
@@ -29,6 +35,7 @@ def verify_diagram_exterior(diagram, triangulation, *, check=lambda: None):
 
     A true result certifies this canonical face pairing as a compact exterior
     of the supplied classical knot, under the Weeks construction theorem.
+    Both the current pulling and original centred subdivisions are accepted.
     It does not certify a disc, a solid torus, or arbitrary retriangulations.
     Malformed data return False; cancellation raised by ``check`` propagates.
     """
@@ -40,7 +47,7 @@ def verify_diagram_exterior(diagram, triangulation, *, check=lambda: None):
     pd = source.pd or ((0, 1, 1, 0),)
     if (type(triangulation) is not dict or set(triangulation) != {'tetrahedra'}
             or type(triangulation['tetrahedra']) is not list
-            or len(triangulation['tetrahedra']) != 80 * len(pd)):
+            or len(triangulation['tetrahedra']) not in (20 * len(pd), 80 * len(pd))):
         return False
     rows = triangulation['tetrahedra']
     for row in rows:
@@ -67,12 +74,21 @@ def verify_diagram_exterior(diagram, triangulation, *, check=lambda: None):
     for x, y in edges.values():
         check()
         mates[x], mates[y] = y, x
-    cells = _local_geometry()
-    interior, exterior = {}, {}
+    cells = _local_geometry('pulling' if len(rows) == 20*len(pd) else 'centred')
+    width = len(cells)
+    interior, exterior, sides, boundary = {}, {}, {}, set()
     for t, cell in enumerate(cells):
         for f in range(4):
             key = tuple(sorted(point for v, point in enumerate(cell) if v != f))
-            (interior if f else exterior).setdefault(key, []).append((t, f))
+            zero = [v for v in range(4) if all(point[v] == 0 for point in key)]
+            if zero:
+                side, = zero
+                sides[t, f] = side
+                exterior[key] = t, f
+            elif any(all(point[v] == 8 for point in key) for v in (2, 3)):
+                boundary.add((t, f))
+            else:
+                interior.setdefault(key, []).append((t, f))
 
     for c in range(4 * len(pd)):
         check()
@@ -87,29 +103,29 @@ def verify_diagram_exterior(diagram, triangulation, *, check=lambda: None):
         neighbours[3] = 4*d+(k-1) % 4
         for t, cell in enumerate(cells):
             for f in range(4):
-                record = rows[20*c+t][f]
-                if f == 0 and t >= 18:
+                record = rows[width*c+t][f]
+                if (t, f) in boundary:
                     if record is not None:
                         return False
                     continue
                 if record is None:
                     return False
                 points = [point for v, point in enumerate(cell) if v != f]
-                if f:
+                if (t, f) not in sides:
                     key = tuple(sorted(points))
                     (u, g), = (entry for entry in interior[key] if entry != (t, f))
                     target = c
                 else:
                     # All three face points have one zero coordinate: this
                     # determines which original tetrahedral face is crossed.
-                    side, = (v for v in range(4) if all(p[v] == 0 for p in points))
+                    side = sides[t, f]
                     target = neighbours[side]
                     points = [(p[0], p[1], p[3], p[2]) for p in points]
-                    ((u, g),) = exterior[tuple(sorted(points))]
+                    u, g = exterior[tuple(sorted(points))]
                 permutation = [g] * 4
                 for v, point in zip((v for v in range(4) if v != f), points):
                     permutation[v] = cells[u].index(point)
-                if (record['tetrahedron'] != 20*target+u
+                if (record['tetrahedron'] != width*target+u
                         or record['permutation'] != permutation):
                     return False
     check()

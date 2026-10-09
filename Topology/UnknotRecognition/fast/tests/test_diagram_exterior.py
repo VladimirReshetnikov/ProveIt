@@ -2,7 +2,6 @@
 from copy import deepcopy
 import importlib.util
 from itertools import permutations
-import random
 import unittest
 from unittest.mock import patch
 
@@ -30,7 +29,7 @@ class DiagramExteriorTests(unittest.TestCase):
                 [row[2:] + row[:2] for row in reversed(source.pd)]))
             for diagram in variants:
                 raw = diagram_exterior(diagram)
-                self.assertEqual(len(raw['tetrahedra']), 80*max(1, diagram.crossings))
+                self.assertEqual(len(raw['tetrahedra']), 20*max(1, diagram.crossings))
                 with patch('fastunknot.diagram_exterior.diagram_exterior', side_effect=AssertionError), \
                      patch('fastunknot.diagram_exterior._template', side_effect=AssertionError), \
                      patch('fastunknot.diagram_exterior._corner_triangulation', side_effect=AssertionError):
@@ -39,7 +38,12 @@ class DiagramExteriorTests(unittest.TestCase):
                 self.assertEqual(len(prepared['boundary_faces']), 8*max(1, diagram.crossings))
 
     def test_convex_template_volume_and_face_multiplicity(self):
-        cells = _local_geometry()
+        self.check_template('pulling', 5, 12, 4)
+        self.check_template('centred', 20, 20, 30)
+
+    def check_template(self, subdivision, size, outside, inside):
+        cells = _local_geometry(subdivision)
+        self.assertEqual(len(cells), size)
         faces, volume = {}, 0
         for cell in cells:
             matrix = [[p[v] - cell[0][v] for v in range(3)] for p in cell[1:]]
@@ -53,9 +57,19 @@ class DiagramExteriorTests(unittest.TestCase):
                 key = tuple(sorted(p for v, p in enumerate(cell) if v != f))
                 faces[key] = faces.get(key, 0) + 1
         self.assertEqual(volume, 1600)  # 12^3 * (1 - 2/3^3).
-        self.assertEqual(sum(count == 1 for count in faces.values()), 20)
-        self.assertEqual(sum(count == 2 for count in faces.values()), 30)
+        self.assertEqual(sum(count == 1 for count in faces.values()), outside)
+        self.assertEqual(sum(count == 2 for count in faces.values()), inside)
         self.assertTrue(all(count in (1, 2) for count in faces.values()))
+
+    def test_centred_compatibility_and_subdivision_contract(self):
+        for diagram in examples():
+            raw = diagram_exterior(diagram, subdivision='centred')
+            self.assertEqual(len(raw['tetrahedra']), 80*max(1, diagram.crossings))
+            self.assertTrue(verify_diagram_exterior(diagram, raw))
+            _prepare(raw, lambda: None)
+        for invalid in ('', None, True, [], 'other'):
+            with self.assertRaises(ValueError):
+                diagram_exterior(Diagram.from_pd([]), subdivision=invalid)
 
     def test_every_face_mutation_and_wrong_source_rejected(self):
         diagram = Diagram.from_braid(2, [1])
@@ -63,6 +77,13 @@ class DiagramExteriorTests(unittest.TestCase):
         for t, row in enumerate(raw['tetrahedra']):
             for f, record in enumerate(row):
                 bad = deepcopy(raw)
+                bad['tetrahedra'][t][f] = (dict(tetrahedron=t, permutation=[0, 1, 2, 3])
+                                           if record is None else None)
+                self.assertFalse(verify_diagram_exterior(diagram, bad))
+        legacy = diagram_exterior(diagram, subdivision='centred')
+        for t, row in enumerate(legacy['tetrahedra']):
+            for f, record in enumerate(row):
+                bad = deepcopy(legacy)
                 bad['tetrahedra'][t][f] = (dict(tetrahedron=t, permutation=[0, 1, 2, 3])
                                            if record is None else None)
                 self.assertFalse(verify_diagram_exterior(diagram, bad))
