@@ -1,0 +1,230 @@
+\section{Dynamic vertex links and optimal peeled sub-batches}
+\label{sec:peeling}
+
+\subsection{From a static prefix to repeated exact updates}
+
+The incoming geometric-transport report proves that thirteen corner
+records suffice to score one legal collapse after a shared preparation
+\cite{priorTransport}. The bound is exact in its intended role: a move
+deletes twelve corner records and inserts eight. If an old record
+survives at an affected global vertex, the least survivor must occur
+among its thirteen least old records. Otherwise all thirteen would have
+been deleted. Equal coordinate values are ordered by distinct corner
+identities, so ties do not invalidate this pigeonhole argument.
+
+Retaining only those thirteen records across repeated commits is
+incorrect. After deleting twelve records twice, the next true minimum
+can lie beyond every originally retained record. The new data structure
+keeps all live records in an ordered balanced tree and caches a short
+prefix at every node.
+
+\begin{theorem}[Dynamic corner-prefix maintenance]
+\label{thm:dynamic-prefix}
+Start with $N$ local corner records, each carrying a stable identity,
+a global vertex label, and a nonnegative triangle coordinate. Consider
+a sequence of $k$ independently justified local replacements, each
+deleting at most twelve old records and inserting at most eight new
+ones, preserving the global vertex classes and their link types.
+There is a deterministic data structure with the following bounds.
+\begin{enumerate}[label=(\roman*)]
+\item Construction uses $O(N\log(N+2))$ comparisons and $O(N)$ stored records.
+\item Every hypothetical singleton replacement has its exact affected
+vertex minima and peeled score computed in $O(1)$ integer operations
+after its local record lists are known.
+\item Every committed replacement updates the data structure in
+$O(\log(N+k+2))$ tree operations per touched record.
+\item Total maintenance, excluding geometric validation, candidate
+discovery, and literal emission of full vectors, uses
+$O((N+k)\log(N+k+2))$ tree operations and $O(N+k)$ peak stored records.
+\end{enumerate}
+The operation count is independent of the numeric surface weight.
+\end{theorem}
+
+\begin{proof}
+For each global vertex, order its records by the pair
+$(\text{triangle value},\text{stable corner identity})$. Build an AVL tree.
+At each node retain its height, subtree size, and first thirteen keys.
+The prefix is obtained from the left child's prefix, the node key, and
+the right child's prefix, then truncated to length thirteen. Since
+thirteen is fixed, recomputing it costs constant work.
+
+Insertion and deletion change only a root path and a bounded number of
+rotations per affected level. Ordinary AVL height bounds give
+$O(\log(N+k+2))$ operations, and each rotation refreshes only constantly
+many short prefixes. A hypothetical singleton removes at most twelve
+identities; scanning the cached prefix gives the smallest old survivor.
+Compare that value with the at most eight inserted values. There are
+at most twenty affected global vertices in the abstract edit model, and
+at most five in an actual bipyramid. The exact minima, corner counts,
+and the two identities in \eqref{eq:peel-identities} give its score.
+
+All committed records are updated in the complete tree, so no future
+query relies on an exhausted old prefix. There are $O(N+k)$ total
+record insertions and deletions; summing the path bounds proves the
+maintenance estimate. Stable identities are never recycled. The
+canonical tetrahedron permutation in a batch certificate maps every
+surviving record, and fresh identities label newly inserted corners.
+\end{proof}
+
+For a batch of $k$ hypothetical moves, the union can delete $12k$
+records, so a thirteen-record cache alone is insufficient. The
+implementation uses an in-order traversal at each affected vertex,
+stopping at the first record not in the deletion set. There are at
+most $12k$ deleted records to skip plus one survivor per affected
+vertex. This gives $O(k\log(N+k+2))$ tree work for collective scoring,
+without modifying the live state. A committed batch performs the same
+ordinary tree updates as its component moves.
+
+\subsection{Local minima under coherent collapse}
+
+Fix one formal $3$--$2$ region with gap $g$ from \eqref{eq:gap}.
+For a formal vertex, consider the minimum of its triangle coordinates
+over all corners belonging to this region. At a belt vertex, this
+regional minimum is unchanged. At either apex, it increases by exactly
+$g$. These are local identities, including coincident heights. One way
+to see the belt identity is to express a triangle coordinate at height
+$h$ as the distance from $h$ to the interval spanned by the other three
+heights. The relevant old and new intervals have the same union. For
+the apices, the formulas are explicit. With the belt heights
+$x\le y\le z$ and apex heights $L\le U$, the old and new regional
+minima at the lower apex are
+\[
+ a_L=(\min(x,U)-L)_+,\qquad
+ b_L=(x-L)_+ +(L-z)_+,
+\]
+and at the upper apex they are
+\[
+ a_U=(U-\max(z,L))_+,\qquad
+ b_U=(x-U)_+ +(U-z)_+.
+\]
+Subtracting gives $b_L-a_L=b_U-a_U=(x-U)_++(L-z)_+=g$.
+For the belt identity, the two old comparison intervals share the
+apex interval, while the two new intervals share the interval between
+the other belt heights; both unions are the hull of the same four
+other heights. Thus the distance description proves the identity also
+when intervals collapse or heights coincide.
+
+\begin{lemma}[Regional minima with global identifications]
+\label{lem:regional-minima}
+For a global vertex $v$ incident to region $i$, let $a_{vi}$ and
+$b_{vi}$ be its old and new regional minima, taking the minimum over
+all formal occurrences representing $v$. Then
+\[
+ 0\le b_{vi}-a_{vi}\le g_i.
+\]
+If $v$ is not a global image of either apex of the region, then
+$b_{vi}=a_{vi}$.
+\end{lemma}
+\begin{proof}
+Each formal regional minimum either stays fixed or increases by
+$g_i$. If finitely many numbers each increase by a value in $[0,g_i]$,
+their minimum also increases by a value in this interval. A vertex
+having only belt occurrences has no increasing formal term.
+\end{proof}
+
+Taking the additional minimum with unchanged exterior corners proves
+that every global $m_v$ is nondecreasing in a coherent downward epoch.
+It does not make the peeled Euler characteristic nondecreasing in
+general: an interior vertex has link Euler characteristic two, and
+the correction can exceed the raw gain. The sharper boundary-only
+case will follow from the selection theorem below.
+
+\subsection{The exact interaction formula}
+
+Fix a tetrahedron-disjoint ground set $E$ of currently legal moves.
+For a vertex $v$, let $o_v$ be its minimum at corners outside all
+regions in $E$, with value $+\infty$ when none exist. Put
+\begin{equation}\label{eq:gamma}
+ \gamma_v=\min\bigl(o_v,\min_{i\in E}b_{vi}\bigr),
+\end{equation}
+where absent incidences have value $+\infty$. Every global vertex has
+a corner after all replacements, so $\gamma_v$ is finite. For a
+selected subset $S\subseteq E$, disjointness and
+\cref{lem:regional-minima} give
+\begin{equation}\label{eq:minimum-subset}
+ m_v(S)=\min\bigl(o_v,\min_{i\notin S}a_{vi},\min_{i\in S}b_{vi}\bigr)
+       =\min\bigl(\gamma_v,\min_{i\notin S}a_{vi}\bigr).
+\end{equation}
+The second equality holds because adding $b_{vi}$ for an unselected
+region cannot lower a minimum that already contains $a_{vi}\le b_{vi}$.
+
+\begin{theorem}[Supermodular minima and submodular peeled gain]
+\label{thm:submodular}
+On any fixed tetrahedron-disjoint ground set $E$, $m_v(S)$ is monotone
+and supermodular for every global vertex. Consequently
+\begin{equation}\label{eq:peeled-objective}
+ F(S)=\sum_{i\in S}2g_i-
+       \sum_v\lambda_v\bigl(m_v(S)-m_v(\varnothing)\bigr)
+\end{equation}
+is submodular, and
+\[
+ F(S)\le\sum_{i\in S}F(\{i\}).
+\]
+The function $F$ need not be monotone when interior vertices are present.
+\end{theorem}
+\begin{proof}
+List, in increasing order, the lower endpoint, all distinct old
+regional minima between it and $\gamma_v$, and $\gamma_v$ itself:
+\[
+ d_0=m_v(\varnothing)<d_1<\cdots<d_q=\gamma_v.
+\]
+When the endpoints coincide use the empty sum. Put
+$D_j=\{i\in E:a_{vi}<d_j\}$. Then the exact finite decomposition is
+\[
+ m_v(S)=d_0+\sum_{j=1}^{q}(d_j-d_{j-1})
+                 \mathbf1[D_j\subseteq S].
+\]
+Indeed, the minimum reaches threshold $d_j$ precisely when every old
+regional value below that threshold has been removed. The indicator
+of $D_j\subseteq S$ is supermodular: if two sets both contain $D_j$
+then so do their intersection and union; if exactly one does, their
+union does; and if neither does the supermodular inequality is automatic.
+The displayed sum has nonnegative coefficients and includes the final
+jump to $\gamma_v$, so it proves supermodularity.
+Monotonicity is also immediate from \eqref{eq:minimum-subset}.
+
+The first term in \eqref{eq:peeled-objective} is modular and every
+$\lambda_v$ is positive. Subtracting the supermodular correction gives
+submodularity. Since $F(\varnothing)=0$, repeated application of its
+diminishing-returns inequality to singleton additions gives the last
+displayed bound.
+\end{proof}
+
+\subsection{A realized strict interaction}
+
+The retained fixture has 32 tetrahedra and one torus boundary component.
+Its construction starts with the barycentric subdivision of a
+one-tetrahedron solid torus. Attach an eight-tetrahedron ball along an
+embedded boundary triangle. The ball is the cone from a vertex $v$ over
+the boundary of a tetrahedron after subdividing two of its faces with
+new vertices $B_1,B_2$. The two degree-three edges $vB_1,vB_2$ have
+disjoint tetrahedron stars.
+
+Give $v$ height zero, $B_1,B_2$ height one, and all four original link
+vertices height minus one. Extend the potential constantly over the
+solid-torus part. These heights are an actual integral global vertex
+potential; the example uses the zero cohomology class and makes no
+claim to be a primitive meridian fibre. Its purpose is to test the
+universal scoring formula on valid ambient geometry.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+State & Raw $\chi$ & Vertex-link correction & Peeled $\chi$\\
+\midrule
+Before either collapse & 2 & 2 & 0\\
+First collapse only & 4 & 3 & 1\\
+Second collapse only & 4 & 3 & 1\\
+Both collapses & 6 & 6 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Either single move leaves a zero triangle coordinate at $v$ in the
+other region. Performing both removes all such corners, increasing
+$m_v$ by one; its sphere link contributes the extra correction two.
+Thus the two singleton gains sum to two whereas the batch gain is
+zero. The package includes the complete face pairings, heights,
+construction, and native independent replays.
+
+\input{matching_selection}

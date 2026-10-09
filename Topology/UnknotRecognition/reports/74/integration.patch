@@ -1,0 +1,2217 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py b/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
+index 5e41ffb490690b2a24ccab82a0304165adf72cb3..adda40c8192f26f01233f7175f4846f303bbf856 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
+@@ -304,8 +304,15 @@ def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
+     """
+     if phase not in ('quadrilateral', 'standard'):
+         raise ValueError('phase must be quadrilateral or standard')
+-    if method not in ('auto', 'arrangement', 'supports'):
+-        raise ValueError('method must be auto, arrangement, or supports')
++    if method not in ('auto', 'arrangement', 'supports', 'envelope'):
++        raise ValueError('method must be auto, arrangement, supports, or envelope')
++    if method == 'envelope':
++        if phase != 'standard':
++            raise ValueError('envelope is a complete standard-ray method')
++        from .sector_envelope import sector_envelope_rays
++        yield from sector_envelope_rays(kernel, check=check, max_bases=max_bases,
++                                        stats=stats)
++        return
+     if phase == 'quadrilateral' and method == 'supports':
+         raise ValueError('support enumeration is a standard-ray method')
+     if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
+@@ -372,7 +379,7 @@ def enumerate_sector(triangulation, allowed_types, *, phase='standard', method='
+     return rows, stats
+ 
+ 
+-def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
++def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral', method='auto',
+                        max_bases=None, max_orbit_cycles=None, check=lambda: None):
+     """Find a independently certified essential-disc component, if encountered.
+ 
+@@ -392,7 +399,7 @@ def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
+     stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
+     transcript = []
+     try:
+-        for rows in sector_rays(kernel, phase=phase, max_bases=max_bases,
++        for rows in sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
+                                 check=check, stats=stats):
+             analysed = _coordinates(kernel.prepared, rows, check)
+             chi = analysed['euler_characteristic']
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_envelope.py b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ae352e67d8e7ff781a3097751970b8ead3d79f9c
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope.py
+@@ -0,0 +1,241 @@
++"""Exact standard-ray enumeration when matching nullity is at most two.
++
++The normalized quadrilateral cone is empty, a point, or an interval.  On an
++interval, canonical triangle coordinates change linear formula only where a
++vertex's minimum corner potential changes.  Those actual lower-envelope
++breakpoints, together with the interval endpoints, are exactly the non-link
++standard rays.  This module forms neither pairwise potential hyperplanes nor
++supported-rank tests.  It does not decide the topology of an emitted surface.
++"""
++
++from fractions import Fraction
++
++from .normal_sector import SearchLimit, _primitive
++from .normal_surface_geometry import _coordinates
++
++
++def _dot(left, right, check):
++    check()
++    return sum(a * b for a, b in zip(left, right))
++
++
++def _unit_section(basis, check):
++    """Return q(s)=a+s*b and its closed nonnegative interval, or None.
++
++    The basis must consist of two independent rational rows.  Normalization
++    uses sum(q)=1, which meets every nonzero nonnegative ray exactly once.
++    A section with equal endpoints is retained: the feasible cone can have
++    smaller dimension than its ambient matching kernel.
++    """
++    totals = [sum(row) for row in basis]
++    selected = next((i for i, value in enumerate(totals) if value), None)
++    if selected is None:
++        return None
++    other = 1 - selected
++    a = tuple(Fraction(x, totals[selected]) for x in basis[selected])
++    b = tuple(y - totals[other] * x for x, y in zip(a, basis[other]))
++    lower, upper = None, None
++    for value, direction in zip(a, b):
++        check()
++        if direction > 0:
++            bound = -value / direction
++            lower = bound if lower is None else max(lower, bound)
++        elif direction < 0:
++            bound = -value / direction
++            upper = bound if upper is None else min(upper, bound)
++        elif value < 0:
++            return None
++    # sum(b)=0 and b!=0 force both signs, hence a bounded interval.
++    if lower is None or upper is None:
++        raise ArithmeticError('matching basis is not independent')
++    if lower > upper:
++        return None
++    return a, b, lower, upper
++
++
++def _lower_envelope(lines, check=lambda: None):
++    """Return an exact lower hull of affine lines (slope, intercept).
++
++    Each returned triple is (slope, intercept, start).  The first start is
++    None, denoting negative infinity; every subsequent start is rational and
++    strictly increasing.  Parallel lines retain their smallest intercept.
++    Coincident lines and lines attaining the minimum at a single point need
++    no separate piece.  The breakpoint itself remains represented.
++    """
++    intercepts = {}
++    for slope, intercept in lines:
++        check()
++        slope, intercept = Fraction(slope), Fraction(intercept)
++        if slope not in intercepts or intercept < intercepts[slope]:
++            intercepts[slope] = intercept
++    hull = []
++    for slope in sorted(intercepts, reverse=True):
++        check()
++        intercept = intercepts[slope]
++        start = None
++        while hull:
++            check()
++            old_slope, old_intercept, old_start = hull[-1]
++            start = (intercept - old_intercept) / (old_slope - slope)
++            if old_start is None or start > old_start:
++                break
++            hull.pop()
++        if not hull:
++            start = None
++        hull.append((slope, intercept, start))
++    return tuple(hull)
++
++
++def sector_envelope_plan(kernel, *, check=lambda: None, stats=None):
++    """Return an exact normalized section and its true minimum-fan breaks.
++
++    ``groups`` records a corner representative for every lower-envelope
++    piece with nonempty interior in the feasible interval.  Its breakpoint
++    list lies strictly inside that interval.  These small records can be
++    encoded for separate coverage verification; this function is a producer,
++    not an independent verifier.  Fraction values are deliberately preserved.
++    """
++    if len(kernel.basis) > 2:
++        raise ValueError('sector envelope requires matching nullity at most two')
++    if stats is None:
++        stats = {}
++    stats.update(envelope_groups=0, envelope_lines=0, envelope_hull_lines=0,
++                 envelope_breakpoints=0, output_bound=0, potential_projections=0)
++    dimension = len(kernel.basis)
++    stats['matching_dimension'] = dimension
++    stats['section_dimension'] = -1
++    result = dict(matching_dimension=dimension, section_dimension=-1,
++                  q_origin=None, q_direction=None, lower=None, upper=None,
++                  parameters=(), groups=(), projected_potentials={})
++    check()
++    if dimension == 0:
++        return result
++    if dimension == 1:
++        q = _primitive(kernel.basis[0])
++        if any(q) and all(x >= 0 for x in q):
++            stats['section_dimension'] = 0
++            stats['output_bound'] = 1
++            total = sum(q)
++            result.update(section_dimension=0,
++                q_origin=tuple(Fraction(x, total) for x in q),
++                q_direction=(Fraction(0),) * len(q), lower=Fraction(0),
++                upper=Fraction(0), parameters=(Fraction(0),))
++        return result
++    section = _unit_section(kernel.basis, check)
++    if section is None:
++        return result
++    a, b, lower, upper = section
++    result.update(q_origin=a, q_direction=b, lower=lower, upper=upper)
++    if lower == upper:
++        stats['section_dimension'] = 0
++        stats['output_bound'] = 1
++        result.update(section_dimension=0, parameters=(lower,))
++        return result
++    stats['section_dimension'] = 1
++    positions = {lower, upper}
++    bound = 2
++    groups = []
++    projected = {}
++    for group in kernel.groups:
++        check()
++        corners = {}
++        for corner in group:
++            line = (_dot(kernel.potentials[corner], b, check),
++                    _dot(kernel.potentials[corner], a, check))
++            projected[corner] = (line[1], line[0])
++            stats['potential_projections'] += 2
++            corners[line] = min(corner, corners.get(line, corner))
++        lines = list(corners)
++        hull = _lower_envelope(lines, check)
++        stats['envelope_groups'] += 1
++        stats['envelope_lines'] += len(group)
++        stats['envelope_hull_lines'] += len(hull)
++        bound += max(0, len(group) - 1)
++        active, breaks = [], []
++        for index, (slope, intercept, start) in enumerate(hull):
++            check()
++            end = hull[index + 1][2] if index + 1 < len(hull) else None
++            if ((end is None or lower < end)
++                    and (start is None or start < upper)):
++                active.append(corners[(slope, intercept)])
++                if start is not None and lower < start < upper:
++                    breaks.append(start)
++            if start is not None and lower < start < upper:
++                positions.add(start)
++        groups.append(dict(vertex=kernel.prepared['vertex_roots'][group[0]],
++                           corners=tuple(active), breakpoints=tuple(breaks)))
++    stats['envelope_breakpoints'] = len(positions) - 2
++    stats['output_bound'] = bound
++    result.update(section_dimension=1, parameters=tuple(sorted(positions)),
++                  groups=tuple(groups), projected_potentials=projected)
++    return result
++
++
++def _projected_lift(kernel, plan, position, q, check):
++    """Lift from already projected affine potentials in O(t+p+k) work."""
++    scale = sum(q)
++    values = {}
++    for corner, (intercept, slope) in plan['projected_potentials'].items():
++        check()
++        values[corner] = intercept + position * slope
++    for group in kernel.groups:
++        minimum = min(values[c] for c in group)
++        for corner in group:
++            value = scale * (values[corner] - minimum)
++            if value.denominator != 1 or value < 0:
++                raise ArithmeticError('projected lift is not nonnegative integral')
++            values[corner] = int(value)
++    rows = [[0] * 7 for _ in kernel.prepared['tetrahedra']]
++    for corner, group in enumerate(kernel.corner_class):
++        check()
++        rows[corner // 4][corner % 4] = values.get(group, 0)
++    for (tetrahedron, typ), count in zip(kernel.support, q):
++        rows[tetrahedron][4 + typ] = count
++    _coordinates(kernel.prepared, rows, check)
++    return rows
++
++
++def sector_envelope_rays(kernel, *, check=lambda: None, max_bases=None,
++                         stats=None):
++    """Yield exactly the primitive non-link standard rays for nullity <= 2.
++
++    ``max_bases`` counts candidate rays whose full lift has begun.  Unlike the
++    arrangement method, no nonextreme candidates or redundant bases are
++    attempted.  Exhaustion raises the existing SearchLimit before another
++    lift starts.  Callers must not infer absence from a partial iteration.
++
++    For p retained corner potentials, lower hull construction and all full
++    lifts use O(pk + p log p + R(t+p+k)) exact arithmetic operations, where
++    R <= 2 + sum_v (p_v - 1) <= 4k+2 is the number of rays.  Storage beyond
++    the supplied kernel and one emitted vector is O(p+k).  The normalized
++    affine potentials are projected once and reused by every full lift.
++    """
++    if len(kernel.basis) > 2:
++        raise ValueError('sector envelope requires matching nullity at most two')
++    if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
++        raise ValueError('max_bases must be a nonnegative integer or None')
++    if stats is None:
++        stats = {}
++    stats.update(method='envelope', bases_attempted=0, positive_directions=0,
++                 nonextreme_directions=0, emitted_rays=0, hyperplanes=0,
++                 envelope_groups=0, envelope_lines=0, envelope_hull_lines=0,
++                 envelope_breakpoints=0, output_bound=0, projected_lifts=0)
++    check()
++    plan = sector_envelope_plan(kernel, check=check, stats=stats)
++    a, b = plan['q_origin'], plan['q_direction']
++    for position in plan['parameters']:
++        check()
++        if max_bases is not None and stats['bases_attempted'] >= max_bases:
++            raise SearchLimit('candidate-basis allowance exhausted')
++        stats['bases_attempted'] += 1
++        q = _primitive(x + position * y for x, y in zip(a, b))
++        stats['positive_directions'] += 1
++        if plan['section_dimension'] == 1:
++            rows = _projected_lift(kernel, plan, position, q, check)
++            stats['projected_lifts'] += 1
++        else:
++            rows = kernel.lift(q, check)
++        if max(x for row in rows for x in row) > 4 ** len(kernel.support):
++            raise ArithmeticError('primitive extreme-ray height bound failed')
++        stats['emitted_rays'] += 1
++        yield rows
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_certificate.py b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_certificate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..83bbd49ab2e18e89e2a935272f10e3ac27277f2d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_certificate.py
+@@ -0,0 +1,66 @@
++"""Produce compact, independently replayable complete sector-ray lists."""
++
++from bisect import bisect_left
++from fractions import Fraction
++
++from .normal_sector import build_sector_kernel, _source_hash
++from .sector_envelope import sector_envelope_plan, sector_envelope_rays
++
++
++def _encode(value):
++    value = Fraction(value)
++    return [value.numerator, value.denominator]
++
++
++def certify_sector_enumeration(triangulation, allowed_types, *,
++                              max_rays=None, check=lambda: None):
++    """Return every non-link standard ray and a coverage certificate.
++
++    This API accepts only matching nullity at most two.  It certifies the
++    supplied triangulation and allowed sector; it does not identify a knot.
++    A ray cap yields INCONCLUSIVE with no partial completeness certificate.
++    """
++    if max_rays is not None and (type(max_rays) is not int or max_rays < 0):
++        raise ValueError('max_rays must be a nonnegative integer or None')
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    plan_stats = {}
++    plan = sector_envelope_plan(kernel, check=check, stats=plan_stats)
++    if max_rays is not None and len(plan['parameters']) > max_rays:
++        return dict(status='INCONCLUSIVE', reason='ray allowance exhausted',
++                    stats=dict(kernel.stats, **plan_stats))
++    ray_stats = {}
++    rays = list(sector_envelope_rays(kernel, check=check,
++                max_bases=max_rays, stats=ray_stats))
++    proof = dict(schema='normal-sector-envelope-v1',
++        source_sha256=_source_hash(triangulation),
++        allowed_types=[list(pair) for pair in kernel.support],
++        matching_dimension=plan['matching_dimension'],
++        section_dimension=plan['section_dimension'],
++        q_origin=None, q_direction=None, lower=None, upper=None,
++        envelopes=[], rays=rays)
++    if plan['section_dimension'] >= 0:
++        proof.update(q_origin=[_encode(x) for x in plan['q_origin']],
++            q_direction=[_encode(x) for x in plan['q_direction']],
++            lower=_encode(plan['lower']), upper=_encode(plan['upper']))
++    if plan['section_dimension'] == 1:
++        vertices = {}
++        for corner, vertex in enumerate(kernel.prepared['vertex_roots']):
++            vertices.setdefault(vertex, []).append(corner)
++        active_groups = {entry['vertex']: list(entry['corners'])
++                         for entry in plan['groups']}
++        direction = plan['q_direction']
++
++        def slope(corner):
++            potential = kernel.potentials[kernel.corner_class[corner]]
++            return sum(x*y for x, y in zip(potential, direction))
++
++        for vertex, corners in sorted(vertices.items()):
++            check()
++            active = active_groups.get(vertex, [corners[0]])
++            slopes = [-slope(corner) for corner in active]
++            brackets = [bisect_left(slopes, -slope(corner)) for corner in corners]
++            proof['envelopes'].append(dict(vertex=vertex, corners=active,
++                                            brackets=brackets))
++    return dict(status='COMPLETE', coordinates=rays, certificate=proof,
++                stats=dict(kernel.stats, **ray_stats),
++                trust='all non-link standard rays in this supplied sector only')
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_verify.py b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6f2a37db0a7c9d07ec3b8c3b032f72fcfe50c0ad
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sector_envelope_verify.py
+@@ -0,0 +1,293 @@
++"""Independent coverage replay for low-dimensional standard-sector rays.
++
++This module never imports the envelope producer, its hull routine, the sector
++kernel builder, or a ray enumerator.  It reconstructs an uncontracted triangle
++graph from native matching equations and uses the older independent rational
++eliminator only to certify its quadrilateral solution-space dimension.
++"""
++
++from fractions import Fraction
++from math import gcd, lcm
++
++from .integer_codec import encoded_integer, certificate_equal
++from .normal_surface_geometry import _prepare, _coordinates, NormalOrbitError
++from .normal_sector_verify import _allowed, _digest, _kernel
++
++
++def independent_sector_model(triangulation, allowed_types, *, check=lambda: None):
++    """Recover corner potentials from full matching rows, without contraction."""
++    prepared = _prepare(triangulation, check)
++    count = len(prepared['tetrahedra'])
++    support = _allowed([list(pair) for pair in allowed_types], count)
++    k = len(support)
++    selected = {7*t+4+q: j for j, (t, q) in enumerate(support)}
++    edges, pure = [], []
++    adjacency = [[] for _ in range(4*count)]
++    for row in prepared['matching']:
++        check()
++        triangles = [(4*(i//7)+i % 7, value) for i, value in row.items()
++                     if i % 7 < 4 and value]
++        label = [0]*k
++        for column, value in row.items():
++            if column in selected:
++                label[selected[column]] += value
++        if not triangles:
++            if any(label):
++                pure.append(tuple(label))
++            continue
++        if len(triangles) != 2 or sorted(v for _, v in triangles) != [-1, 1]:
++            raise ArithmeticError('unexpected native triangle matching row')
++        a = next(i for i, value in triangles if value == 1)
++        b = next(i for i, value in triangles if value == -1)
++        label = tuple(label)
++        # The source equation is t_a - t_b + label.q = 0.
++        edges.append((a, b, label))
++        adjacency[a].append((b, label))
++        adjacency[b].append((a, tuple(-x for x in label)))
++    potentials = [None]*(4*count)
++    for start in range(4*count):
++        check()
++        if potentials[start] is not None:
++            continue
++        potentials[start] = (0,)*k
++        queue = [start]
++        for a in queue:
++            check()
++            for b, label in adjacency[a]:
++                if potentials[b] is None:
++                    potentials[b] = tuple(x+y for x, y in zip(potentials[a], label))
++                    queue.append(b)
++    constraints = list(pure)
++    for a, b, label in edges:
++        check()
++        row = tuple(y-x-z for x, y, z in zip(potentials[a], potentials[b], label))
++        if any(row):
++            constraints.append(row)
++    constraints = sorted(set(constraints))
++    basis = _kernel(constraints, k, check)
++    groups = {}
++    for corner, vertex in enumerate(prepared['vertex_roots']):
++        groups.setdefault(vertex, []).append(corner)
++    return dict(prepared=prepared, support=support, potentials=potentials,
++                groups=groups, constraints=constraints, basis=basis)
++
++
++def _rational(value):
++    if type(value) is not list or len(value) != 2:
++        raise ValueError('rational must be a numerator-denominator pair')
++    numerator, denominator = map(encoded_integer, value)
++    if denominator <= 0 or gcd(numerator, denominator) != 1:
++        raise ValueError('noncanonical rational')
++    return Fraction(numerator, denominator)
++
++
++def _direction(values):
++    multiplier = 1
++    for x in values:
++        multiplier = lcm(multiplier, x.denominator)
++    integers = [int(x*multiplier) for x in values]
++    common = 0
++    for x in integers:
++        common = gcd(common, abs(x))
++    if not common:
++        raise ValueError('zero projective vector')
++    return tuple(x//common for x in integers)
++
++
++def _bounds(origin, direction):
++    lower, upper = None, None
++    for a, b in zip(origin, direction):
++        if b > 0:
++            candidate = -a/b
++            lower = candidate if lower is None else max(lower, candidate)
++        elif b < 0:
++            candidate = -a/b
++            upper = candidate if upper is None else min(upper, candidate)
++        elif a < 0:
++            return None
++    if lower is None or upper is None or lower > upper:
++        return None
++    return lower, upper
++
++
++def _section_empty(basis):
++    if not basis:
++        return True
++    if len(basis) == 1:
++        row = basis[0]
++        return any(x > 0 for x in row) and any(x < 0 for x in row)
++    sums = [sum(row) for row in basis]
++    pivot = next((i for i, value in enumerate(sums) if value), None)
++    if pivot is None:
++        return True
++    origin = [x/sums[pivot] for x in basis[pivot]]
++    direction = [x-sums[1-pivot]*a for x, a in zip(basis[1-pivot], origin)]
++    return _bounds(origin, direction) is None
++
++
++def _lift(model, q, check):
++    values = [sum(a*b for a, b in zip(row, q)) for row in model['potentials']]
++    for group in model['groups'].values():
++        minimum = min(values[i] for i in group)
++        for i in group:
++            values[i] -= minimum
++    rows = [[0]*7 for _ in model['prepared']['tetrahedra']]
++    for i, value in enumerate(values):
++        rows[i//4][i % 4] = value
++    for (t, typ), value in zip(model['support'], q):
++        rows[t][4+typ] = value
++    _coordinates(model['prepared'], rows, check)
++    return rows
++
++
++def _cover_group(lines, corners, active, lower, upper, hints, check, stats):
++    """Check a concave envelope and one slope-bracket test per source line."""
++    if (type(active) is not list or not active
++            or any(type(i) is not int or i not in corners for i in active)
++            or len(set(active)) != len(active)):
++        return None
++    pieces = [lines[i] for i in active]
++    switches = []
++    for (a, b), (c, d) in zip(pieces, pieces[1:]):
++        check()
++        if b <= d:
++            return None
++        switch = (c-a)/(b-d)
++        if not lower < switch < upper or switches and switch <= switches[-1]:
++            return None
++        switches.append(switch)
++    if type(hints) is not list or len(hints) != len(corners):
++        return None
++    slopes = [line[1] for line in pieces]
++    for corner, bracket in zip(corners, hints):
++        check()
++        if type(bracket) is not int or not 0 <= bracket <= len(active):
++            return None
++        a, slope = lines[corner]
++        # bracket 0 means the minimum difference occurs at the left endpoint;
++        # bracket r means the right endpoint; otherwise at switch[bracket-1].
++        if bracket == 0:
++            if slope < slopes[0]:
++                return None
++            position, piece = lower, pieces[0]
++        elif bracket == len(active):
++            if slope > slopes[-1]:
++                return None
++            position, piece = upper, pieces[-1]
++        else:
++            if not slopes[bracket-1] >= slope >= slopes[bracket]:
++                return None
++            position, piece = switches[bracket-1], pieces[bracket-1]
++        if a+slope*position < piece[0]+piece[1]*position:
++            return None
++        stats['dominance_tests'] += 1
++    return switches
++
++
++def verify_sector_envelope_certificate(triangulation, certificate, *,
++                                       check=lambda: None, stats=None):
++    """Certify all non-link standard rays without running a ray producer.
++
++    Source topology and matching validation are shared native primitives.
++    All nullity, section, envelope, primitive-coordinate, and coverage claims
++    are independently checked.  An empty list only certifies this sector.
++    """
++    check()
++    if stats is None:
++        stats = {}
++    stats.update(dominance_tests=0, rays_checked=0, envelope_pieces=0)
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'normal-sector-envelope-v1'
++            or certificate.get('source_sha256') != _digest(triangulation)):
++        return False
++    callback_failure = []
++
++    def validation_check():
++        try:
++            check()
++        except BaseException as exc:
++            callback_failure.append(exc)
++            raise
++
++    try:
++        prepared = _prepare(triangulation, validation_check)
++    except NormalOrbitError:
++        if callback_failure:
++            raise
++        return False
++    try:
++        support = _allowed(certificate.get('allowed_types'), len(prepared['tetrahedra']))
++    except ValueError:
++        return False
++    model = independent_sector_model(triangulation, support, check=check)
++    dimension = len(model['basis'])
++    if (dimension > 2 or type(certificate.get('matching_dimension')) is not int
++            or certificate['matching_dimension'] != dimension):
++        return False
++    section = certificate.get('section_dimension')
++    if type(section) is not int or section not in (-1, 0, 1):
++        return False
++    rays, envelopes = certificate.get('rays'), certificate.get('envelopes')
++    if type(rays) is not list or type(envelopes) is not list:
++        return False
++    if section == -1:
++        return (not rays and not envelopes
++                and all(certificate.get(name) is None for name in
++                        ('q_origin', 'q_direction', 'lower', 'upper'))
++                and _section_empty(model['basis']))
++    if dimension == 0:
++        return False
++    try:
++        origin = [_rational(x) for x in certificate['q_origin']]
++        direction = [_rational(x) for x in certificate['q_direction']]
++        lower, upper = _rational(certificate['lower']), _rational(certificate['upper'])
++    except (KeyError, TypeError, ValueError):
++        return False
++    k = len(support)
++    if (len(origin) != k or len(direction) != k or sum(origin) != 1
++            or sum(direction) != 0 or any(sum(a*b for a, b in zip(row, vector))
++            for row in model['constraints'] for vector in (origin, direction))):
++        return False
++    if dimension == 1:
++        if (section != 0 or any(direction) or lower != 0 or upper != 0
++                or any(x < 0 for x in origin)):
++            return False
++    else:
++        if not any(direction) or _bounds(origin, direction) != (lower, upper):
++            return False
++        if section != (0 if lower == upper else 1):
++            return False
++    positions = {lower, upper}
++    if section == 0:
++        if envelopes:
++            return False
++    else:
++        groups = model['groups']
++        if len(envelopes) != len(groups):
++            return False
++        lines = [(sum(x*y for x, y in zip(potential, origin)),
++                  sum(x*y for x, y in zip(potential, direction)))
++                 for potential in model['potentials']]
++        seen = set()
++        for record in envelopes:
++            check()
++            if type(record) is not dict:
++                return False
++            vertex = record.get('vertex')
++            if type(vertex) is not int or vertex not in groups or vertex in seen:
++                return False
++            seen.add(vertex)
++            switches = _cover_group(lines, groups[vertex], record.get('corners'),
++                lower, upper, record.get('brackets'), check, stats)
++            if switches is None:
++                return False
++            positions.update(switches)
++            stats['envelope_pieces'] += len(record['corners'])
++    expected = []
++    for position in sorted(positions):
++        check()
++        q = _direction([a+position*b for a, b in zip(origin, direction)])
++        rows = _lift(model, q, check)
++        expected.append(rows)
++        stats['rays_checked'] += 1
++    return certificate_equal(rays, expected)
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/README.md b/Topology/UnknotRecognition/fast/sector_envelope_research/README.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..9a645cb755433ea0fa31c3d5c8d57fede6670dd5
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/README.md
+@@ -0,0 +1,53 @@
++# Exact minimum envelopes for low-dimensional normal sectors
++
++These scripts reproduce the finite audit and controlled enumeration timings
++for `fastunknot.sector_envelope`. They are explicit research tools and do not
++change the ordinary recognizer's dispatch.
++
++Run from `Topology/UnknotRecognition/fast/`:
++
++```sh
++python -B -m unittest discover -s tests -p 'test_sector_envelope*.py' -v
++python -B -m sector_envelope_research.audit --fresh-regina --output OUTPUT/audit.json
++python -B -m sector_envelope_research.benchmark --output OUTPUT/benchmark.json
++```
++
++The audit's default input is `../reports/57/results/discovery_corpus.json`.
++Use `--corpus PATH` when running from a delivery containing a relocated copy.
++The Python standard library is sufficient except for `--fresh-regina`, which
++uses Regina to regenerate selected complete standard-surface enumerations.
++The retained run used Regina 7.4.
++
++The finite selection is declared in the audit source: every occupied support
++of a frozen standard or quadrilateral vertex surface, every allowed support
++of size at most two, and 64 deterministic full-sector draws per triangulation.
++On at most three tetrahedra it instead includes all compatible supports. The
++audit compares every selected sector of matching nullity at most two against
++the complete frozen standard-ray list, with forbidden coordinates set to
++zero. Larger-nullity sectors are counted and skipped explicitly.
++
++`fixtures.py` adds a single tetrahedral ball to the boundary of the existing
++Fibonacci layered solid-torus family. The base face pairings follow the
++incoming dual-certificates report's `fibonacci_fixture.py`. This cap preserves
++the solid torus and supplies a second independent allowed quadrilateral
++coordinate. Cap types 1 and 2 have a genuine interior minimum switch; cap type
++0 is a control without an interior switch. The audit saves a two-tetrahedron
++example whose interior standard ray is independently certified as an
++essential disc and is absent from the quadrilateral-ray list.
++
++`baseline_normal_sector.py` is the exact unchanged source from ProveIt commit
++`66098968e88bba797143ac1bf7ad0ac4c5f697df`, loaded under a private module name
++to keep its enumeration policy independent of the new explicit method. Its
++file hash and all timed source hashes appear in the benchmark record.
++
++Timings include both reused-kernel enumeration and a complete kernel build
++followed by enumeration. The default contains 13 paired cohorts, one warm-up
++and five alternating AB/BA rounds per scope, and duplicate A/A arms on one
++control. Large new-only capacity points are labeled separately. Every timed
++output is compared by an exact canonical ray hash. Fixture construction,
++output hashing and JSON serialization are outside the timed region. Run the
++benchmark after other CPU-intensive local work finishes.
++
++These are local sector-enumeration results. They do not supply a complete
++sector search, prove a logarithmic search parameter, or establish a general
++quasi-polynomial unknot recognizer.
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/__init__.py b/Topology/UnknotRecognition/fast/sector_envelope_research/__init__.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8cf616b7ce4928e0c6f0b39f4a127e7c95059f2d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/__init__.py
+@@ -0,0 +1 @@
++"""Reproducible audits of low-dimensional normal-sector minimum envelopes."""
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/audit.py b/Topology/UnknotRecognition/fast/sector_envelope_research/audit.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..887906d769d3b040ab094e3d461aa9d0a5ce2226
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/audit.py
+@@ -0,0 +1,181 @@
++"""Compare all eligible selected sectors against frozen complete Regina rays.
++
++For every one of the 48 frozen triangulations, select all supports occupied
++by a listed standard or Q ray, every support of size at most two, and 64
++fixed-seed full sectors.  On up to three tetrahedra, select every compatible
++support.  The audit exhausts this declared finite selection and compares each
++nullity-at-most-two query with the complete frozen standard-ray list filtered
++by its allowed coordinates.  This is not a complete audit of all sectors on
++the larger triangulations.  Optional fresh Regina runs rebuild selected full
++standard-ray lists directly from the exact saved face pairings.
++"""
++
++import argparse
++from collections import Counter
++from hashlib import sha256
++from itertools import combinations, product
++import json
++from pathlib import Path
++import platform
++import random
++import time
++
++from fastunknot.normal_sector import build_sector_kernel, sector_rays
++from fastunknot.normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++from fastunknot.sector_envelope import sector_envelope_rays, sector_envelope_plan
++from .fixtures import capped_fibonacci, ray_digest, to_regina, vector_key
++
++
++FAST = Path(__file__).resolve().parents[1]
++DEFAULT_CORPUS = FAST.parent / 'reports/57/results/discovery_corpus.json'
++
++
++def occupied(rows):
++    return tuple((i, q) for i, row in enumerate(rows) for q in range(3) if row[4 + q])
++
++
++def selected_supports(record):
++    count = len(record['triangulation']['tetrahedra'])
++    supports = {()}
++    for field in ('standard_vertices', 'quad_vertices'):
++        supports.update(occupied(surface['coordinates']) for surface in record[field])
++    if count <= 3:
++        supports.update(tuple((i, q) for i, q in enumerate(types) if q >= 0)
++                        for types in product((-1, 0, 1, 2), repeat=count))
++    else:
++        for size in (1, 2):
++            for indices in combinations(range(count), size):
++                supports.update(tuple(zip(indices, types))
++                                for types in product(range(3), repeat=size))
++        rng = random.Random('sector-envelope-v1:' + record['id'])
++        supports.update(tuple((i, rng.randrange(3)) for i in range(count))
++                        for _ in range(64))
++    return sorted(supports)
++
++
++def fresh_standard(raw):
++    import regina
++    triangulation = to_regina(raw)
++    surfaces = regina.NormalSurfaces(triangulation, regina.NormalCoords.Standard)
++    return {tuple(int(str(surface.triangles(i, vertex)))
++                  if coordinate < 4 else int(str(surface.quads(i, coordinate - 4)))
++                  for i in range(triangulation.size())
++                  for coordinate, vertex in ((j, j) for j in range(7)))
++            for surface in surfaces}
++
++
++def run(corpus_path, fresh):
++    data = corpus_path.read_bytes()
++    corpus = json.loads(data)
++    records = []
++    all_counts = Counter()
++    started = time.perf_counter()
++    for source in corpus['records']:
++        raw = source['triangulation']
++        original = [(set(occupied(surface['coordinates'])), surface['coordinates'])
++                    for surface in source['standard_vertices']]
++        counts = Counter()
++        cases = []
++        for support in selected_supports(source):
++            counts['selected'] += 1
++            kernel = build_sector_kernel(raw, support)
++            dimension = len(kernel.basis)
++            counts['nullity_' + str(dimension)] += 1
++            if dimension > 2:
++                continue
++            stats = {}
++            actual = list(sector_envelope_rays(kernel, stats=stats))
++            allowed = set(support)
++            expected = [rows for positive, rows in original if positive and positive <= allowed]
++            assert {vector_key(rows) for rows in actual} == {
++                vector_key(rows) for rows in expected}, (source['id'], support)
++            assert stats['bases_attempted'] == len(actual)
++            counts['audited'] += 1
++            counts['rays'] += len(actual)
++            counts['interior_rays'] += stats['envelope_breakpoints']
++            counts['empty_cones'] += not actual
++            cases.append(dict(allowed_types=support, matching_nullity=dimension,
++                              ray_count=len(actual), ray_sha256=ray_digest(actual), stats=stats))
++        if fresh and source['id'] in ('fibonacci_lst_03', 'cap_1_2_1', 'cap_3_5_1',
++                                      'interior_1_2', 'finite_trefoil',
++                                      'solid_torus_sum_rp3'):
++            regenerated = fresh_standard(raw)
++            assert regenerated == {vector_key(surface['coordinates'])
++                                   for surface in source['standard_vertices']}
++            counts['fresh_regina_full_enumerations'] += 1
++        all_counts.update(counts)
++        records.append(dict(id=source['id'], counts=dict(counts), cases=cases))
++        print(source['id'], dict(counts), flush=True)
++    family = []
++    family_fresh = 0
++    for n in (1, 2, 4, 8, 16):
++        for cap_type in (0, 1, 2):
++            source = capped_fibonacci(n, cap_type)
++            kernel = build_sector_kernel(source['triangulation'], source['allowed_types'])
++            stats = {}
++            rays = list(sector_envelope_rays(kernel, stats=stats))
++            assert len(kernel.basis) == 2
++            assert len(rays) == (2 if cap_type == 0 else 3)
++            if fresh and n <= 4:
++                allowed = set(source['allowed_types'])
++                full = fresh_standard(source['triangulation'])
++                filtered = set()
++                for flat in full:
++                    rows = [flat[7 * i:7 * i + 7] for i in range(n + 1)]
++                    used = set(occupied(rows))
++                    if used and used <= allowed:
++                        filtered.add(flat)
++                assert filtered == {vector_key(rows) for rows in rays}
++                family_fresh += 1
++            family.append(dict(base_tetrahedra=n, cap_type=cap_type,
++                               ray_sha256=ray_digest(rays), stats=stats,
++                               fresh_regina=bool(fresh and n <= 4)))
++    example = capped_fibonacci(1, 1)
++    kernel = build_sector_kernel(example['triangulation'], example['allowed_types'])
++    standard = list(sector_envelope_rays(kernel))
++    quad = list(sector_rays(kernel, phase='quadrilateral'))
++    extra = [rows for rows in standard if rows not in quad]
++    assert len(extra) == 1
++    disk = normal_compressing_disk_count(example['triangulation'], extra[0],
++                                       record_certificate=True)
++    assert disk['compressing_disk_components'] == 1
++    assert verify_normal_disk_count_certificate(example['triangulation'], extra[0],
++                                                disk['certificate'])
++    example.update(coordinates=extra[0], standard_rays=standard, quad_rays=quad,
++                   disk_certificate=disk['certificate'])
++    answer = dict(schema='sector-envelope-audit-v1', python=platform.python_version(),
++                  corpus_sha256=sha256(data).hexdigest(), input_triangulations=len(records),
++                  baseline_commit='66098968e88bba797143ac1bf7ad0ac4c5f697df',
++                  source_sha256={name: sha256((FAST / name).read_bytes()).hexdigest()
++                      for name in ('fastunknot/sector_envelope.py',
++                                   'sector_envelope_research/audit.py',
++                                   'sector_envelope_research/fixtures.py')},
++                  selection=__doc__, counts=dict(all_counts), records=records,
++                  capped_family=family, extra_disc_example=example,
++                  fresh_regina_full_enumerations=(
++                      all_counts['fresh_regina_full_enumerations'] + family_fresh),
++                  seconds=time.perf_counter() - started)
++    if fresh:
++        import regina
++        answer['regina_version'] = regina.versionString()
++    return answer
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--corpus', type=Path, default=DEFAULT_CORPUS)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--fresh-regina', action='store_true')
++    args = parser.parse_args()
++    answer = run(args.corpus, args.fresh_regina)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(answer, indent=2) + '\n')
++    example = args.output.with_name('extra_non_q_disc.json')
++    example.write_text(json.dumps(answer['extra_disc_example'], indent=2) + '\n')
++    print('COMPLETE', answer['counts'], 'seconds', answer['seconds'], flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/baseline_normal_sector.py b/Topology/UnknotRecognition/fast/sector_envelope_research/baseline_normal_sector.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5e41ffb490690b2a24ccab82a0304165adf72cb3
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/baseline_normal_sector.py
+@@ -0,0 +1,474 @@
++"""Exact quadrilateral-sector kernels and normal vertex-surface discovery.
++
++This is a supplied-triangulation search module, not a diagram recognizer.
++Every successful essential-disc query includes native independent replay.
++Pure vertex links are omitted.  Coordinates and linear algebra are exact.
++"""
++
++from dataclasses import dataclass
++from fractions import Fraction
++from hashlib import sha256
++from itertools import combinations, product
++from math import comb, gcd, lcm
++import json
++
++from .normal_surface_geometry import _prepare, _coordinates, _quad
++from .normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++
++
++class SearchLimit(RuntimeError):
++    """An explicitly configured search allowance was exhausted."""
++
++
++def _rref(rows, width, check=lambda: None):
++    a = [[Fraction(x) for x in row] for row in rows if any(row)]
++    pivots = []
++    r = 0
++    for col in range(width):
++        check()
++        pivot = next((i for i in range(r, len(a)) if a[i][col]), None)
++        if pivot is None:
++            continue
++        a[r], a[pivot] = a[pivot], a[r]
++        value = a[r][col]
++        a[r] = [x / value for x in a[r]]
++        for i in range(len(a)):
++            if i != r and a[i][col]:
++                value = a[i][col]
++                a[i] = [x - value*y for x, y in zip(a[i], a[r])]
++        pivots.append(col)
++        r += 1
++        if r == len(a):
++            break
++    return a[:r], pivots
++
++
++def _nullspace(rows, width, check=lambda: None):
++    reduced, pivots = _rref(rows, width, check)
++    result = []
++    for free in (i for i in range(width) if i not in pivots):
++        vector = [Fraction(0)] * width
++        vector[free] = Fraction(1)
++        for row, pivot in zip(reduced, pivots):
++            vector[pivot] = -row[free]
++        result.append(vector)
++    return result
++
++
++def _primitive(values):
++    values = [Fraction(x) for x in values]
++    denominator = lcm(*(x.denominator for x in values)) if values else 1
++    integers = [int(x*denominator) for x in values]
++    divisor = 0
++    for value in integers:
++        divisor = gcd(divisor, abs(value))
++    if not divisor:
++        return tuple(integers)
++    if next(x for x in integers if x) < 0:
++        divisor = -divisor
++    return tuple(x//divisor for x in integers)
++
++
++def _dot(left, right):
++    return sum(x*y for x, y in zip(left, right))
++
++
++def _source_hash(triangulation):
++    raw = json.dumps(triangulation, sort_keys=True, separators=(',', ':'))
++    return sha256(raw.encode('utf-8')).hexdigest()
++
++
++def _support(value, tetrahedra):
++    if not isinstance(value, (list, tuple)):
++        raise ValueError('allowed_types must be a list or tuple')
++    answer = []
++    for item in value:
++        if (not isinstance(item, (list, tuple)) or len(item) != 2
++                or any(type(x) is not int for x in item)):
++            raise ValueError('each allowed type must be an integer pair')
++        t, q = item
++        if not 0 <= t < tetrahedra or not 0 <= q < 3:
++            raise ValueError('allowed quadrilateral type out of range')
++        answer.append((t, q))
++    if len({t for t, _ in answer}) != len(answer):
++        raise ValueError('allow at most one quadrilateral type per tetrahedron')
++    return tuple(sorted(answer))
++
++
++@dataclass
++class SectorKernel:
++    triangulation: dict
++    prepared: dict
++    support: tuple
++    corner_class: tuple
++    classes: tuple
++    groups: tuple
++    matrix: tuple
++    potentials: dict
++    cycle_rows: tuple
++    basis: tuple
++    stats: dict
++
++    def lift(self, quadrilaterals, check=lambda: None):
++        """Canonical integral lift; one minimum zero per global vertex."""
++        q = tuple(quadrilaterals)
++        if (len(q) != len(self.support) or any(type(x) is not int or x < 0 for x in q)
++                or any(_dot(row, q) for row in self.cycle_rows)):
++            raise ValueError('quadrilateral vector is outside the sector cone')
++        values = {c: _dot(self.potentials[c], q) for c in self.classes}
++        for group in self.groups:
++            minimum = min(values[c] for c in group)
++            for c in group:
++                values[c] -= minimum
++        rows = [[0]*7 for _ in self.prepared['tetrahedra']]
++        for corner, c in enumerate(self.corner_class):
++            check()
++            rows[corner//4][corner % 4] = values.get(c, 0)
++        for (t, typ), count in zip(self.support, q):
++            rows[t][4+typ] = count
++        _coordinates(self.prepared, rows, check)
++        return rows
++
++    def kernel_vector(self, rows):
++        flat = [rows[c//4][c % 4] for c in self.classes]
++        return flat + [rows[t][4+q] for t, q in self.support]
++
++    def is_standard_ray(self, rows, check=lambda: None):
++        positive = [i for i, x in enumerate(self.kernel_vector(rows)) if x]
++        if not positive:
++            return False
++        restricted = [[row[i] for i in positive] for row in self.matrix]
++        return len(_nullspace(restricted, len(positive), check)) == 1
++
++
++def build_sector_kernel(triangulation, allowed_types, *, check=lambda: None):
++    """Contract all triangle matching edges with identically zero q-label.
++
++    For k allowed types, the retained cone has at most 8k triangle variables,
++    k quadrilateral variables, and 4k equations of Euclidean row norm <= 2.
++    Every dropped class is an independent pure vertex-link factor.
++    """
++    prepared = _prepare(triangulation, check)
++    count = len(prepared['tetrahedra'])
++    support = _support(allowed_types, count)
++    index = {item: j for j, item in enumerate(support)}
++    k = len(support)
++    parent = list(range(4*count))
++
++    def find(x):
++        while parent[x] != x:
++            parent[x] = parent[parent[x]]
++            x = parent[x]
++        return x
++
++    def union(a, b):
++        a, b = find(a), find(b)
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++
++    edges = []
++    for t, f, u, g, permutation in prepared['pairs']:
++        check()
++        for v in range(4):
++            if v == f:
++                continue
++            w = permutation[v]
++            a, b = 4*t+v, 4*u+w
++            label = [0]*k
++            for key, sign in (((t, _quad(f, v)), 1),
++                              ((u, _quad(g, w)), -1)):
++                if key in index:
++                    label[index[key]] += sign
++            edges.append((a, b, tuple(label)))
++            if not any(label):
++                union(a, b)
++    corner_class = tuple(find(i) for i in range(4*count))
++    vertex_groups = {}
++    for i, c in enumerate(corner_class):
++        vertex_groups.setdefault(prepared['vertex_roots'][i], set()).add(c)
++    groups = tuple(tuple(sorted(group)) for _, group in sorted(vertex_groups.items())
++                   if len(group) > 1)
++    classes = tuple(sorted(c for group in groups for c in group))
++    class_index = {c: i for i, c in enumerate(classes)}
++    adjacency = {c: [] for c in set(corner_class)}
++    active = []
++    matrix = []
++    for a, b, label in edges:
++        if not any(label):
++            continue
++        a, b = corner_class[a], corner_class[b]
++        active.append((a, b, label))
++        adjacency[a].append((b, label))
++        adjacency[b].append((a, tuple(-x for x in label)))
++        row = [0]*(len(classes)+k)
++        if a in class_index:
++            row[class_index[a]] -= 1
++        if b in class_index:
++            row[class_index[b]] += 1
++        for j, value in enumerate(label):
++            row[len(classes)+j] -= value
++        if any(row):
++            matrix.append(tuple(row))
++    potentials = {}
++    for root in sorted(adjacency):
++        if root in potentials:
++            continue
++        potentials[root] = (0,)*k
++        queue = [root]
++        for a in queue:
++            check()
++            for b, label in adjacency[a]:
++                if b not in potentials:
++                    potentials[b] = tuple(x+y for x, y in zip(potentials[a], label))
++                    queue.append(b)
++    cycle_set = set()
++    for a, b, label in active:
++        row = _primitive(x+y-z for x, y, z
++                         in zip(potentials[a], label, potentials[b]))
++        if any(row):
++            cycle_set.add(row)
++    cycle_rows = tuple(sorted(cycle_set))
++    basis = tuple(tuple(row) for row in _nullspace(cycle_rows, k, check))
++    stats = dict(tetrahedra=count, allowed_types=k, active_equations=len(active),
++                 triangle_classes=len(classes), kernel_variables=len(classes)+k,
++                 kernel_equations=len(matrix), matching_nullity=len(basis),
++                 matching_rank=k-len(basis),
++                 removed_link_factors=sum(len(g) == 1 for g in vertex_groups.values()))
++    if (len(active) > 4*k or len(classes) > 8*k
++            or any(sum(x*x for x in row) > 4 for row in matrix)):
++        raise ArithmeticError('support-kernel size or row-norm invariant failed')
++    return SectorKernel(triangulation, prepared, support, corner_class, classes,
++                        groups, tuple(matrix), potentials, cycle_rows, basis, stats)
++
++
++def _hyperplanes(kernel, phase, check):
++    k = len(kernel.support)
++    normals = [[int(i == j) for i in range(k)] for j in range(k)]
++    if phase == 'standard':
++        for group in kernel.groups:
++            for a, b in combinations(group, 2):
++                normals.append([x-y for x, y
++                                in zip(kernel.potentials[a], kernel.potentials[b])])
++    projected = set()
++    for row in normals:
++        check()
++        vector = _primitive(_dot(row, column) for column in kernel.basis)
++        if any(vector):
++            projected.add(vector)
++    return tuple(sorted(projected))
++
++
++def _support_rays(kernel, check, max_bases, stats):
++    """Enumerate exact positive supports of the small standard cone."""
++    p = len(kernel.classes)
++    width = p + len(kernel.support)
++    rank = len(_rref(kernel.matrix, width, check)[1])
++    for size in range(1, min(width, rank+1)+1):
++        for indices in combinations(range(width), size):
++            if indices[-1] < p:
++                continue
++            check()
++            if max_bases is not None and stats['bases_attempted'] >= max_bases:
++                raise SearchLimit('candidate-basis allowance exhausted')
++            stats['bases_attempted'] += 1
++            matrix = [[row[i] for i in indices] for row in kernel.matrix]
++            null = _nullspace(matrix, size, check)
++            if len(null) != 1:
++                continue
++            vector = _primitive(null[0])
++            if any(x <= 0 for x in vector):
++                continue
++            full = [0]*width
++            for i, value in zip(indices, vector):
++                full[i] = value
++            rows = kernel.lift(tuple(full[p:]), check)
++            if kernel.kernel_vector(rows) != full:
++                raise ArithmeticError('non-link extreme ray was not canonical')
++            if max(full) > 4**len(kernel.support):
++                raise ArithmeticError('primitive extreme-ray height bound failed')
++            stats['positive_directions'] += 1
++            stats['emitted_rays'] += 1
++            yield rows
++
++
++def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
++                max_bases=None, stats=None):
++    """Yield primitive non-link standard rays in a supplied quad sector.
++
++    'quadrilateral' yields only canonical lifts of Q-cone extreme rays.
++    'standard' enumerates the potential arrangement, then filters by exact
++    standard-cone extremality.  k=0 and nullity=0 yield no non-link ray.
++    max_bases limits attempted linear systems, not just successful rays.
++    """
++    if phase not in ('quadrilateral', 'standard'):
++        raise ValueError('phase must be quadrilateral or standard')
++    if method not in ('auto', 'arrangement', 'supports'):
++        raise ValueError('method must be auto, arrangement, or supports')
++    if phase == 'quadrilateral' and method == 'supports':
++        raise ValueError('support enumeration is a standard-ray method')
++    if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
++        raise ValueError('max_bases must be a nonnegative integer or None')
++    if stats is None:
++        stats = {}
++    stats.update(bases_attempted=0, positive_directions=0,
++                 nonextreme_directions=0, emitted_rays=0)
++    d = len(kernel.basis)
++    if d == 0:
++        stats['hyperplanes'] = 0
++        stats['method'] = 'empty'
++        return
++    planes = _hyperplanes(kernel, phase, check)
++    stats['hyperplanes'] = len(planes)
++    stats['method'] = 'arrangement'
++    if phase == 'standard':
++        p = len(kernel.classes)
++        width = p + len(kernel.support)
++        rank = len(_rref(kernel.matrix, width, check)[1])
++        support_work = sum(comb(width, s)-(comb(p, s) if s <= p else 0)
++                           for s in range(1, min(width, rank+1)+1))
++        arrangement_work = comb(len(planes), d-1)
++        stats.update(support_work_bound=support_work,
++                     arrangement_work_bound=arrangement_work)
++        if method == 'supports' or (method == 'auto' and support_work < arrangement_work):
++            stats['method'] = 'supports'
++            yield from _support_rays(kernel, check, max_bases, stats)
++            return
++    seen = set()
++    for indices in combinations(range(len(planes)), d-1):
++        check()
++        if max_bases is not None and stats['bases_attempted'] >= max_bases:
++            raise SearchLimit('candidate-basis allowance exhausted')
++        stats['bases_attempted'] += 1
++        nullspace = _nullspace([planes[i] for i in indices], d, check)
++        if len(nullspace) != 1:
++            continue
++        z = nullspace[0]
++        q = _primitive(sum(kernel.basis[j][i]*z[j] for j in range(d))
++                       for i in range(len(kernel.support)))
++        if q in seen or not any(q) or any(x < 0 for x in q):
++            continue
++        seen.add(q)
++        stats['positive_directions'] += 1
++        rows = kernel.lift(q, check)
++        if not kernel.is_standard_ray(rows, check):
++            stats['nonextreme_directions'] += 1
++            if phase == 'quadrilateral':
++                raise ArithmeticError('canonical Q-ray lift was not standard extreme')
++            continue
++        if max(x for row in rows for x in row) > 4**len(kernel.support):
++            raise ArithmeticError('primitive extreme-ray height bound failed')
++        stats['emitted_rays'] += 1
++        yield rows
++
++
++def enumerate_sector(triangulation, allowed_types, *, phase='standard', method='auto',
++                     max_bases=None, check=lambda: None):
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    stats = dict(kernel.stats)
++    rows = list(sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
++                            check=check, stats=stats))
++    return rows, stats
++
++
++def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
++                       max_bases=None, max_orbit_cycles=None, check=lambda: None):
++    """Find a independently certified essential-disc component, if encountered.
++
++    A complete Q phase also decides existence of a positive-Euler canonical
++    surface in the sector.  Positive Euler alone is never a disc verdict.
++    A complete standard phase excludes only vertex discs in this sector.
++    A cap returns INCONCLUSIVE without an absence claim or partial proof.
++    """
++    if phase not in ('quadrilateral', 'standard'):
++        raise ValueError('unknown search phase')
++    if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
++        raise ValueError('invalid basis allowance')
++    if max_orbit_cycles is not None and (
++            type(max_orbit_cycles) is not int or max_orbit_cycles < 0):
++        raise ValueError('invalid orbit allowance')
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
++    transcript = []
++    try:
++        for rows in sector_rays(kernel, phase=phase, max_bases=max_bases,
++                                check=check, stats=stats):
++            analysed = _coordinates(kernel.prepared, rows, check)
++            chi = analysed['euler_characteristic']
++            q = [rows[t][4+j] for t, j in kernel.support]
++            record = dict(quadrilaterals=q, euler_characteristic=chi)
++            transcript.append(record)
++            if chi <= 0:
++                continue
++            stats['positive_euler_rays'] += 1
++            stats['orbit_queries'] += 1
++            count = normal_compressing_disk_count(
++                triangulation, rows, max_cycles=max_orbit_cycles,
++                record_certificate=True, check=check)
++            if count['status'] != 'COMPLETE':
++                raise SearchLimit('normal-component query did not complete')
++            proof = count['certificate']
++            if not verify_normal_disk_count_certificate(
++                    triangulation, rows, proof, check=check):
++                raise ArithmeticError('independent native disc replay rejected')
++            record['disk_certificate'] = proof
++            if count['contains_compressing_disk']:
++                certificate = dict(schema='normal-sector-witness-v1',
++                    source_sha256=_source_hash(triangulation),
++                    allowed_types=[list(x) for x in kernel.support],
++                    coordinates=rows, disk_certificate=proof)
++                return dict(status='DISC_FOUND', coordinates=rows, certificate=certificate,
++                            stats=stats, trust='this supplied triangulation only')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    if not stats['positive_euler_rays']:
++        status = 'NO_POSITIVE_EULER'
++    elif phase == 'quadrilateral':
++        status = 'POSITIVE_EULER_ONLY'
++    else:
++        status = 'NO_VERTEX_DISC_IN_SECTOR'
++    certificate = dict(schema='normal-sector-exhaustion-v1',
++        source_sha256=_source_hash(triangulation),
++        allowed_types=[list(x) for x in kernel.support], phase=phase,
++        status=status, rays=transcript)
++    return dict(status=status, stats=stats, certificate=certificate,
++                trust='sector statement only; no knot-diagram correspondence asserted')
++
++
++def sparse_disc_search(triangulation, *, max_active, max_sectors=None,
++                       max_bases_per_sector=None, check=lambda: None):
++    """Search all exact allowed supports of size <= max_active.
++
++    Uses Q-ray screening and, when necessary, all standard rays.  Exhaustion
++    gives NO_VERTEX_DISC_UP_TO_SUPPORT, never an unqualified knot verdict.
++    The triangulation itself is not asserted to come from a knot diagram.
++    """
++    count = len(_prepare(triangulation, check)['tetrahedra'])
++    if type(max_active) is not int or not 0 <= max_active <= count:
++        raise ValueError('max_active must lie between zero and tetrahedron count')
++    if max_sectors is not None and (type(max_sectors) is not int or max_sectors < 0):
++        raise ValueError('invalid sector allowance')
++    if max_bases_per_sector is not None and (
++            type(max_bases_per_sector) is not int or max_bases_per_sector < 0):
++        raise ValueError('invalid basis allowance')
++    visited = 0
++    for size in range(1, max_active+1):
++        for tets in combinations(range(count), size):
++            for types in product(range(3), repeat=size):
++                check()
++                if max_sectors is not None and visited >= max_sectors:
++                    return dict(status='INCONCLUSIVE', reason='sector allowance exhausted',
++                                sectors_visited=visited)
++                visited += 1
++                support = list(zip(tets, types))
++                result = discover_in_sector(triangulation, support,
++                    phase='quadrilateral', max_bases=max_bases_per_sector, check=check)
++                if result['status'] == 'POSITIVE_EULER_ONLY':
++                    result = discover_in_sector(triangulation, support,
++                        phase='standard', max_bases=max_bases_per_sector, check=check)
++                if result['status'] in ('DISC_FOUND', 'INCONCLUSIVE'):
++                    return dict(result, sectors_visited=visited)
++    return dict(status='NO_VERTEX_DISC_UP_TO_SUPPORT', max_active=max_active,
++                sectors_visited=visited,
++                trust='restricted search exhaustion only, not a knot verdict')
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/benchmark.py b/Topology/UnknotRecognition/fast/sector_envelope_research/benchmark.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..5762677faec8d7ee85cfd707452ca22ddd62d12a
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/benchmark.py
+@@ -0,0 +1,155 @@
++"""Paired pinned-arrangement versus exact-envelope enumeration measurements.
++
++Fixture construction and output serialization/hashing are outside timed
++regions.  Reused-kernel and full-build calls are measured separately.  Each
++paired cohort retains one warm-up and five AB/BA rounds by default.  One
++eight-tetrahedron-base case includes duplicate A/A arms.  All outputs must
++agree exactly.  Timing is not a worst-case complexity proof.
++"""
++
++import argparse
++from hashlib import sha256
++import importlib.util
++import json
++from pathlib import Path
++import platform
++import random
++import statistics
++import sys
++import time
++
++from fastunknot.sector_envelope import sector_envelope_rays
++from .fixtures import capped_fibonacci, ray_digest
++
++
++FAST = Path(__file__).resolve().parents[1]
++BASELINE_COMMIT = '66098968e88bba797143ac1bf7ad0ac4c5f697df'
++BASELINE_FILE = Path(__file__).with_name('baseline_normal_sector.py')
++
++
++def load_baseline():
++    name = 'fastunknot._sector_envelope_pinned_baseline'
++    spec = importlib.util.spec_from_file_location(name, BASELINE_FILE)
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[name] = module
++    spec.loader.exec_module(module)
++    return module
++
++
++def source_hashes():
++    names = ['fastunknot/normal_sector.py', 'fastunknot/sector_envelope.py',
++             'sector_envelope_research/baseline_normal_sector.py',
++             'sector_envelope_research/fixtures.py', 'sector_envelope_research/benchmark.py']
++    return {name: sha256((FAST / name).read_bytes()).hexdigest() for name in names}
++
++
++def summarize(rounds, field):
++    old = [row['arms']['old'][field] for row in rounds]
++    new = [row['arms']['new'][field] for row in rounds]
++    ratios = [a / b for a, b in zip(old, new)]
++    return dict(old_median_ns=statistics.median(old),
++                new_median_ns=statistics.median(new),
++                paired_speedup_median=statistics.median(ratios),
++                paired_speedup_min=min(ratios), paired_speedup_max=max(ratios))
++
++
++def run(repeats, capacity):
++    if repeats < 1:
++        raise ValueError('repeats must be positive')
++    baseline = load_baseline()
++    pins = source_hashes()
++    rng = random.Random(202610092)
++    cases = [(n, typ) for n in (1, 4, 8, 16, 32) for typ in (1, 2)]
++    cases += [(n, 0) for n in (8, 16, 32)]
++    result = dict(schema='sector-envelope-benchmark-v1', python=platform.python_version(),
++                  platform=platform.platform(), timer='time.perf_counter_ns',
++                  baseline_commit=BASELINE_COMMIT, source_sha256=pins,
++                  repeats=repeats, description=__doc__, cases=[], capacity=[])
++    started = time.perf_counter()
++    for n, typ in cases:
++        fixture = capped_fibonacci(n, typ)
++        raw, allowed = fixture['triangulation'], fixture['allowed_types']
++        kernel_started = time.perf_counter_ns()
++        shared = baseline.build_sector_kernel(raw, allowed)
++        kernel_elapsed = time.perf_counter_ns() - kernel_started
++        case = dict(base_tetrahedra=n, tetrahedra=n + 1, cap_type=typ,
++                    kernel_stats=shared.stats, setup_kernel_ns=kernel_elapsed, scopes={})
++        reference = None
++
++        def measure(arm, scope):
++            nonlocal reference
++            stats = {}
++            before = time.perf_counter_ns()
++            kernel = baseline.build_sector_kernel(raw, allowed) if scope == 'full' else shared
++            after_build = time.perf_counter_ns()
++            if arm.startswith('old'):
++                rays = list(baseline.sector_rays(kernel, phase='standard',
++                                               method='arrangement', stats=stats))
++            else:
++                rays = list(sector_envelope_rays(kernel, stats=stats))
++            after = time.perf_counter_ns()
++            digest = ray_digest(rays)
++            if reference is None:
++                reference = digest
++            assert digest == reference, (n, typ, arm, scope)
++            return dict(total_ns=after - before, build_ns=after_build - before,
++                        enumeration_ns=after - after_build, ray_sha256=digest,
++                        ray_count=len(rays), stats=stats)
++
++        for scope in ('reused_kernel', 'full'):
++            order = ['old', 'new']
++            rng.shuffle(order)
++            warmup = dict(order=order.copy(), arms={})
++            for arm in order:
++                warmup['arms'][arm] = measure(arm, scope)
++            rounds = []
++            for index in range(repeats):
++                if index % 2:
++                    order = list(reversed(warmup['order']))
++                else:
++                    order = warmup['order'].copy()
++                if n == 8 and typ == 1:
++                    order += [arm + '_AA' for arm in reversed(order)]
++                row = dict(round=index, order=order.copy(), arms={})
++                for arm in order:
++                    row['arms'][arm] = measure(arm, scope)
++                rounds.append(row)
++                print('PAIR', n, typ, scope, index,
++                      round(row['arms']['old']['total_ns'] / 1e9, 6),
++                      round(row['arms']['new']['total_ns'] / 1e9, 6), flush=True)
++            case['scopes'][scope] = dict(warmup=warmup, rounds=rounds,
++                                         summary=summarize(rounds, 'total_ns'))
++        result['cases'].append(case)
++    for n in capacity:
++        fixture = capped_fibonacci(n, 1)
++        before = time.perf_counter_ns()
++        kernel = baseline.build_sector_kernel(fixture['triangulation'],
++                                             fixture['allowed_types'])
++        after_build = time.perf_counter_ns()
++        stats = {}
++        rays = list(sector_envelope_rays(kernel, stats=stats))
++        after = time.perf_counter_ns()
++        result['capacity'].append(dict(base_tetrahedra=n, tetrahedra=n + 1,
++            cap_type=1, total_ns=after - before, build_ns=after_build - before,
++            enumeration_ns=after - after_build, ray_sha256=ray_digest(rays),
++            ray_count=len(rays), stats=stats, scope='new only; no speedup comparison'))
++        print('CAPACITY', n, (after - before) / 1e9, flush=True)
++    assert pins == source_hashes(), 'timed source changed during benchmark'
++    result['seconds'] = time.perf_counter() - started
++    return result
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--repeats', type=int, default=5)
++    parser.add_argument('--capacity', type=int, nargs='*', default=[64, 128, 256])
++    args = parser.parse_args()
++    result = run(args.repeats, args.capacity)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2) + '\n')
++    print('COMPLETE', result['seconds'], flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/sector_envelope_research/fixtures.py b/Topology/UnknotRecognition/fast/sector_envelope_research/fixtures.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7660c17c17694e6ec83a8d886f27a1a7178500bb
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/sector_envelope_research/fixtures.py
+@@ -0,0 +1,59 @@
++"""Exact capped Fibonacci solid tori and retained source utilities.
++
++The base face pairings follow the fibonacci_fixture.py file distributed in
++the incoming 2026-10-09 dual-certificates report.  The added tetrahedron is a
++3-ball attached along a boundary triangle, so it preserves the solid torus.
++"""
++
++from hashlib import sha256
++import json
++
++
++def capped_fibonacci(base_tetrahedra, cap_type=1):
++    if type(base_tetrahedra) is not int or base_tetrahedra < 1:
++        raise ValueError('base_tetrahedra must be a positive integer')
++    if type(cap_type) is not int or cap_type not in (0, 1, 2):
++        raise ValueError('cap_type must be 0, 1, or 2')
++    n = base_tetrahedra
++    faces = [[None] * 4 for _ in range(n + 1)]
++
++    def join(source, face, target, permutation):
++        opposite = permutation[face]
++        inverse = [permutation.index(v) for v in range(4)]
++        faces[source][face] = dict(tetrahedron=target, permutation=permutation)
++        faces[target][opposite] = dict(tetrahedron=source, permutation=inverse)
++
++    for tetrahedron in range(n - 1):
++        join(tetrahedron, 0, tetrahedron + 1, [2, 1, 3, 0])
++        join(tetrahedron, 1, tetrahedron + 1, [0, 3, 1, 2])
++    join(n - 1, 0, n - 1, [1, 2, 3, 0])
++    join(0, 2, n, [0, 1, 2, 3])
++    return dict(triangulation=dict(tetrahedra=faces),
++                allowed_types=[(i, 2) for i in range(n)] + [(n, cap_type)],
++                base_tetrahedra=n, cap_type=cap_type)
++
++
++def vector_key(rows):
++    return tuple(value for row in rows for value in row)
++
++
++def ray_digest(rays):
++    canonical = sorted(vector_key(rows) for rows in rays)
++    wire = json.dumps(canonical, separators=(',', ':')).encode('ascii')
++    return sha256(wire).hexdigest()
++
++
++def to_regina(raw):
++    import regina
++    triangulation = regina.Triangulation3()
++    for _ in raw['tetrahedra']:
++        triangulation.newTetrahedron()
++    for i, faces in enumerate(raw['tetrahedra']):
++        for face, target in enumerate(faces):
++            if target is None:
++                continue
++            tetrahedron = triangulation.tetrahedron(i)
++            if tetrahedron.adjacentTetrahedron(face) is None:
++                tetrahedron.join(face, triangulation.tetrahedron(target['tetrahedron']),
++                                 regina.Perm4(*target['permutation']))
++    return triangulation
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sector_envelope.py b/Topology/UnknotRecognition/fast/tests/test_sector_envelope.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..25804faecdd40174683032f129ce691ad69b56ee
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sector_envelope.py
+@@ -0,0 +1,273 @@
++"""Exact lower-envelope checks and independent normal-sector comparisons."""
++
++from copy import deepcopy
++from fractions import Fraction
++from itertools import product
++from pathlib import Path
++import random
++import sys
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from fastunknot.normal_sector import (
++    SearchLimit, build_sector_kernel, sector_rays,
++)
++from fastunknot.normal_sector_verify import dense_sector_model, dense_reference_rays
++from fastunknot.normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++from fastunknot.sector_envelope import (
++    _lower_envelope, _unit_section, sector_envelope_plan, sector_envelope_rays,
++)
++
++
++def solid_torus():
++    return {'tetrahedra': [[
++        {'tetrahedron': 0, 'permutation': [1, 2, 3, 0]},
++        {'tetrahedron': 0, 'permutation': [3, 0, 1, 2]},
++        None, None,
++    ]]}
++
++
++def attach_ball(raw):
++    """Glue one tetrahedral ball to a boundary triangle, preserving manifold."""
++    result = deepcopy(raw)
++    tetrahedra = result['tetrahedra']
++    source, face = next((i, f) for i, faces in enumerate(tetrahedra)
++                        for f, gluing in enumerate(faces) if gluing is None)
++    target = len(tetrahedra)
++    tetrahedra.append([None] * 4)
++    tetrahedra[source][face] = dict(tetrahedron=target, permutation=[0, 1, 2, 3])
++    tetrahedra[target][face] = dict(tetrahedron=source, permutation=[0, 1, 2, 3])
++    return result
++
++
++def vectors(rows):
++    return {tuple(x for row in surface for x in row) for surface in rows}
++
++
++def hull_value(hull, point):
++    active = hull[0]
++    for piece in hull[1:]:
++        if piece[2] > point:
++            break
++        active = piece
++    return active[0] * point + active[1]
++
++
++class SectorEnvelopeAlgebraTests(unittest.TestCase):
++    def test_parallel_coincident_and_triple_ties(self):
++        lines = [(2, 0), (2, 1), (2, 0), (1, 1), (0, 2)]
++        self.assertEqual(_lower_envelope(lines),
++                         ((Fraction(2), Fraction(0), None),
++                          (Fraction(0), Fraction(2), Fraction(1))))
++        self.assertEqual(_lower_envelope([]), ())
++        self.assertEqual(_lower_envelope([(4, 2), (4, -3), (4, 5)]),
++                         ((Fraction(4), Fraction(-3), None),))
++
++    def test_random_hulls_against_every_pairwise_crossing(self):
++        rng = random.Random(610092)
++        checked = 0
++        for _ in range(120):
++            lines = [(Fraction(rng.randrange(-9, 10), rng.randrange(1, 6)),
++                      Fraction(rng.randrange(-12, 13), rng.randrange(1, 6)))
++                     for _ in range(rng.randrange(1, 17))]
++            hull = _lower_envelope(lines)
++            crossings = set()
++            for i, (m, c) in enumerate(lines):
++                for n, d in lines[i + 1:]:
++                    if m != n:
++                        crossings.add((d - c) / (m - n))
++            points = sorted(crossings)
++            if points:
++                points += [points[0] - 1, points[-1] + 1]
++                points += [(left + right) / 2 for left, right
++                           in zip(sorted(crossings), sorted(crossings)[1:])]
++            else:
++                points = [Fraction(-3), Fraction(0), Fraction(7)]
++            for point in points:
++                self.assertEqual(hull_value(hull, point),
++                                 min(m * point + c for m, c in lines))
++                checked += 1
++            self.assertTrue(all(hull[i - 1][0] > hull[i][0]
++                                for i in range(1, len(hull))))
++            self.assertTrue(all(hull[i - 1][2] < hull[i][2]
++                                for i in range(2, len(hull))))
++        self.assertGreater(checked, 5000)
++
++    def test_section_empty_point_interval_and_affine_normalization(self):
++        self.assertIsNone(_unit_section([(1, -1, 0), (0, 1, -1)], lambda: None))
++        self.assertIsNone(_unit_section([(1, -2, 0), (0, 1, -2)], lambda: None))
++        a, b, lower, upper = _unit_section([(1, 0, 0), (0, 1, -1)], lambda: None)
++        self.assertEqual(lower, upper)
++        self.assertEqual(tuple(x + lower * y for x, y in zip(a, b)), (1, 0, 0))
++        a, b, lower, upper = _unit_section([(2, 1, 0), (0, 1, 2)], lambda: None)
++        self.assertEqual(sum(a), 1)
++        self.assertEqual(sum(b), 0)
++        self.assertLess(lower, upper)
++        for point in (lower, upper, (lower + upper) / 2):
++            self.assertTrue(all(x + point * y >= 0 for x, y in zip(a, b)))
++
++    def test_degenerate_plan_does_not_form_any_hulls(self):
++        for basis, dimension in [([], -1), ([(1, -1)], -1),
++                                  ([(2, 3)], 0),
++                                  ([(1, 0, 0), (0, 1, -1)], 0)]:
++            fake = SimpleNamespace(basis=basis)
++            with patch('fastunknot.sector_envelope._lower_envelope',
++                       side_effect=AssertionError('unexpected hull')):
++                plan = sector_envelope_plan(fake)
++            self.assertEqual(plan['section_dimension'], dimension)
++
++    def test_union_of_multiple_vertex_minimum_changes(self):
++        fake = SimpleNamespace(
++            basis=((1, 0), (0, 1)), groups=((0, 1, 2), (3, 4)),
++            potentials={0: (0, 6), 1: (1, 3), 2: (3, 1),
++                        3: (0, 0), 4: (3, -1)},
++            prepared={'vertex_roots': [0, 0, 0, 3, 3]})
++        stats = {}
++        plan = sector_envelope_plan(fake, stats=stats)
++        self.assertEqual(plan['parameters'],
++                         (Fraction(0), Fraction(1, 4), Fraction(1, 2),
++                          Fraction(3, 4), Fraction(1)))
++        self.assertEqual(stats['output_bound'], 5)
++        self.assertEqual(plan['groups'][0]['corners'], (0, 1, 2))
++        self.assertEqual(plan['groups'][1]['corners'], (3, 4))
++
++    def test_endpoint_only_ties_do_not_add_pieces_or_rays(self):
++        fake = SimpleNamespace(basis=((1, 0), (0, 1)), groups=((0, 1, 2),),
++            potentials={0: (0, 1), 1: (0, 0), 2: (1, 0)},
++            prepared={'vertex_roots': [0, 0, 0]})
++        plan = sector_envelope_plan(fake)
++        self.assertEqual(plan['parameters'], (Fraction(0), Fraction(1)))
++        self.assertEqual(plan['groups'][0]['corners'], (1,))
++        self.assertEqual(plan['groups'][0]['breakpoints'], ())
++
++
++class SectorEnvelopeGeometryTests(unittest.TestCase):
++    def test_genuine_interior_ray_is_an_essential_disc_beyond_q_rays(self):
++        raw = attach_ball(solid_torus())
++        kernel = build_sector_kernel(raw, [(0, 2), (1, 1)])
++        plan = sector_envelope_plan(kernel)
++        self.assertEqual(plan['parameters'], (Fraction(0), Fraction(1, 2), Fraction(1)))
++        standard = list(sector_envelope_rays(kernel))
++        quad = list(sector_rays(kernel, phase='quadrilateral'))
++        extra = [surface for surface in standard if surface not in quad]
++        self.assertEqual(len(standard), 3)
++        self.assertEqual(extra, [
++            [[1, 1, 0, 0, 0, 0, 1], [0, 2, 0, 0, 0, 1, 0]],
++        ])
++        result = normal_compressing_disk_count(raw, extra[0], record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['compressing_disk_components'], 1)
++        self.assertTrue(verify_normal_disk_count_certificate(raw, extra[0],
++                                                            result['certificate']))
++
++    def test_all_small_ball_extension_sectors_against_dense_reference(self):
++        raw = solid_torus()
++        checks = 0
++        for count in (1, 2, 3):
++            for choices in product((-1, 0, 1, 2), repeat=count):
++                allowed = [(i, typ) for i, typ in enumerate(choices) if typ >= 0]
++                kernel = build_sector_kernel(raw, allowed)
++                if len(kernel.basis) > 2:
++                    continue
++                stats = {}
++                actual = vectors(sector_envelope_rays(kernel, stats=stats))
++                reference = dense_reference_rays(dense_sector_model(raw, allowed),
++                                                'standard')
++                expected = vectors(value[0] for value in reference.values())
++                with self.subTest(count=count, allowed=allowed):
++                    self.assertEqual(actual, expected)
++                    self.assertEqual(actual, vectors(sector_rays(
++                        kernel, phase='standard', method='arrangement')))
++                    self.assertEqual(stats['emitted_rays'], len(actual))
++                    self.assertEqual(stats['bases_attempted'], len(actual))
++                    self.assertLessEqual(len(actual), stats['output_bound'])
++                    self.assertLessEqual(stats['output_bound'], 4 * len(allowed) + 2)
++                checks += 1
++            raw = attach_ball(raw)
++        self.assertGreater(checks, 50)
++
++    def test_high_precision_projection_and_plan_piece_values(self):
++        kernel = build_sector_kernel(attach_ball(solid_torus()), [(0, 2), (1, 0)])
++        self.assertEqual(len(kernel.basis), 2)
++        # A rational basis change changes neither feasible rays nor surfaces.
++        original = vectors(sector_envelope_rays(kernel))
++        u, v = kernel.basis
++        denominator = 2 ** 257 + 7
++        kernel.basis = (tuple(x + Fraction(y, denominator) for x, y in zip(u, v)),
++                        tuple(x + Fraction(2 * y, denominator) for x, y in zip(u, v)))
++        plan = sector_envelope_plan(kernel)
++        self.assertEqual(original, vectors(sector_envelope_rays(kernel)))
++        self.assertEqual(plan['section_dimension'], 1)
++        for group, recorded in zip(kernel.groups, plan['groups']):
++            points = (plan['lower'],) + recorded['breakpoints'] + (plan['upper'],)
++            for corner, left, right in zip(recorded['corners'], points, points[1:]):
++                sample = (left + right) / 2
++                intercept, slope = plan['projected_potentials'][corner]
++                value = intercept + sample * slope
++                self.assertEqual(value, min(c + sample * m for i, (c, m)
++                    in plan['projected_potentials'].items() if i in group))
++
++    def test_projected_lifts_avoid_old_hyperplanes_rank_and_lift(self):
++        kernel = build_sector_kernel(attach_ball(solid_torus()), [(0, 2), (1, 0)])
++        with patch('fastunknot.normal_sector._hyperplanes',
++                   side_effect=AssertionError('quadratic hyperplane construction')):
++            with patch.object(kernel, 'is_standard_ray',
++                              side_effect=AssertionError('rank test')):
++                with patch.object(kernel, 'lift',
++                                  side_effect=AssertionError('repeated projection')):
++                    stats = {}
++                    rays = list(sector_envelope_rays(kernel, stats=stats))
++        self.assertEqual(len(rays), 2)
++        self.assertEqual(stats['projected_lifts'], 2)
++        self.assertEqual(stats['potential_projections'], 2 * len(kernel.classes))
++
++    def test_exact_cap_and_inconclusive_partial_iteration(self):
++        kernel = build_sector_kernel(attach_ball(solid_torus()), [(0, 2), (1, 0)])
++        rays = list(sector_envelope_rays(kernel))
++        self.assertEqual(len(rays), 2)
++        for limit in (0, 1):
++            stats = {}
++            seen = []
++            with self.assertRaises(SearchLimit):
++                for ray in sector_envelope_rays(kernel, max_bases=limit, stats=stats):
++                    seen.append(ray)
++            self.assertEqual(len(seen), limit)
++            self.assertEqual(stats['bases_attempted'], limit)
++            self.assertEqual(stats['emitted_rays'], limit)
++        self.assertEqual(vectors(sector_envelope_rays(kernel, max_bases=2)), vectors(rays))
++        for bad in (-1, True, 1.0):
++            with self.assertRaises(ValueError):
++                list(sector_envelope_rays(kernel, max_bases=bad))
++
++    def test_empty_cap_zero_and_higher_dimension_rejected(self):
++        empty = build_sector_kernel(solid_torus(), [])
++        self.assertEqual(list(sector_envelope_rays(empty, max_bases=0)), [])
++        fake = SimpleNamespace(basis=((), (), ()))
++        with self.assertRaises(ValueError):
++            list(sector_envelope_rays(fake))
++
++    def test_false_valued_callback_cancellation_propagates(self):
++        class Cancel:
++            def __init__(self):
++                self.calls = 0
++
++            def __bool__(self):
++                return False
++
++            def __call__(self):
++                self.calls += 1
++                if self.calls == 7:
++                    raise RuntimeError('cancel envelope')
++
++        kernel = build_sector_kernel(attach_ball(solid_torus()), [(0, 2), (1, 0)])
++        with self.assertRaisesRegex(RuntimeError, 'cancel envelope'):
++            list(sector_envelope_rays(kernel, check=Cancel()))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sector_envelope_certificate.py b/Topology/UnknotRecognition/fast/tests/test_sector_envelope_certificate.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..3b67c04d51047f0631ed45e0b83e0b696b7ada6a
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sector_envelope_certificate.py
+@@ -0,0 +1,315 @@
++"""Source-independent completeness proofs, malformed proofs, and cancellation."""
++
++from contextlib import ExitStack
++from copy import deepcopy
++from fractions import Fraction
++from itertools import product
++from pathlib import Path
++import sys
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from fastunknot.normal_sector import SearchLimit, build_sector_kernel
++from fastunknot.normal_sector_verify import dense_sector_model, dense_reference_rays
++from fastunknot.normal_surface_geometry import NormalOrbitError
++from fastunknot.sector_envelope_certificate import certify_sector_enumeration
++from fastunknot.sector_envelope_verify import (
++    _cover_group, independent_sector_model, verify_sector_envelope_certificate,
++)
++from normal_orbit_research.fixtures import layered_torus
++
++
++def attach_ball(raw):
++    result = deepcopy(raw)
++    tetrahedra = result['tetrahedra']
++    source, face = next((i, f) for i, faces in enumerate(tetrahedra)
++                        for f, gluing in enumerate(faces) if gluing is None)
++    target = len(tetrahedra)
++    tetrahedra.append([None] * 4)
++    tetrahedra[source][face] = dict(tetrahedron=target, permutation=[0, 1, 2, 3])
++    tetrahedra[target][face] = dict(tetrahedron=source, permutation=[0, 1, 2, 3])
++    return result
++
++
++def vector_set(surfaces):
++    return {tuple(x for row in surface for x in row) for surface in surfaces}
++
++
++def dot(left, right):
++    return sum(a * b for a, b in zip(left, right))
++
++
++class SectorEnvelopeCertificateTests(unittest.TestCase):
++    def setUp(self):
++        self.tri, _ = layered_torus(3)
++        self.allowed = [(0, 0), (1, 2), (2, 1)]
++        self.answer = certify_sector_enumeration(self.tri, self.allowed)
++        self.proof = self.answer['certificate']
++
++    def test_real_interior_breakpoint_round_trip(self):
++        stats = {}
++        self.assertEqual(self.answer['status'], 'COMPLETE')
++        self.assertEqual(self.proof['matching_dimension'], 2)
++        self.assertEqual(self.proof['section_dimension'], 1)
++        self.assertEqual(len(self.proof['rays']), 3)
++        self.assertTrue(verify_sector_envelope_certificate(
++            self.tri, self.proof, stats=stats))
++        self.assertEqual(stats['rays_checked'], 3)
++        self.assertEqual(stats['dominance_tests'], 12)
++        self.assertEqual(stats['envelope_pieces'], 2)
++        dense = dense_reference_rays(dense_sector_model(self.tri, self.allowed),
++                                    'standard')
++        self.assertEqual(vector_set(self.proof['rays']),
++                         vector_set(record[0] for record in dense.values()))
++
++    def test_small_real_sectors_and_independent_graph_model(self):
++        tri, _ = layered_torus(1)
++        checked = 0
++        dimensions = set()
++        sections = set()
++        for count in (1, 2, 3):
++            for choices in product((-1, 0, 1, 2), repeat=count):
++                allowed = [(i, typ) for i, typ in enumerate(choices) if typ >= 0]
++                sparse = build_sector_kernel(tri, allowed)
++                independent = independent_sector_model(tri, allowed)
++                dense = dense_sector_model(tri, allowed)
++                self.assertEqual(len(independent['basis']), len(dense['basis']))
++                self.assertEqual(len(independent['basis']), len(sparse.basis))
++                for vector in independent['basis']:
++                    self.assertTrue(all(dot(row, vector) == 0
++                                        for row in dense['constraints']))
++                for vector in dense['basis']:
++                    self.assertTrue(all(dot(row, vector) == 0
++                                        for row in independent['constraints']))
++                # Corner potentials may differ by a vertex-wide linear gauge.
++                for vector in independent['basis']:
++                    for group in independent['groups'].values():
++                        first = group[0]
++                        for corner in group:
++                            delta = [a - b for a, b in zip(
++                                independent['potentials'][corner],
++                                independent['potentials'][first])]
++                            reference = [a - b for a, b in zip(
++                                dense['potentials'][corner],
++                                dense['potentials'][first])]
++                            self.assertEqual(dot(delta, vector), dot(reference, vector))
++                if len(sparse.basis) > 2:
++                    continue
++                result = certify_sector_enumeration(tri, allowed)
++                with self.subTest(count=count, allowed=allowed):
++                    self.assertTrue(verify_sector_envelope_certificate(
++                        tri, result['certificate']))
++                    expected = dense_reference_rays(dense, 'standard')
++                    self.assertEqual(vector_set(result['coordinates']),
++                                     vector_set(row[0] for row in expected.values()))
++                checked += 1
++                dimensions.add(result['certificate']['matching_dimension'])
++                sections.add(result['certificate']['section_dimension'])
++            tri = attach_ball(tri)
++        self.assertGreaterEqual(checked, 50)
++        self.assertEqual(dimensions, {0, 1, 2})
++        self.assertEqual(sections, {-1, 0, 1})
++
++    def test_empty_and_point_proofs_reject_false_claims(self):
++        tri, _ = layered_torus(1)
++        empty = certify_sector_enumeration(tri, [])['certificate']
++        self.assertTrue(verify_sector_envelope_certificate(tri, empty))
++        self.assertEqual(empty['section_dimension'], -1)
++        point = certify_sector_enumeration(tri, [(0, 2)])['certificate']
++        self.assertEqual(point['section_dimension'], 0)
++        self.assertTrue(verify_sector_envelope_certificate(tri, point))
++        fake_empty = deepcopy(point)
++        fake_empty.update(section_dimension=-1, rays=[], envelopes=[],
++                          q_origin=None, q_direction=None, lower=None, upper=None)
++        self.assertFalse(verify_sector_envelope_certificate(tri, fake_empty))
++        wrong = deepcopy(empty)
++        wrong['rays'] = deepcopy(point['rays'])
++        self.assertFalse(verify_sector_envelope_certificate(tri, wrong))
++        wrong = deepcopy(point)
++        wrong['envelopes'] = [dict(vertex=0, corners=[0], brackets=[0])]
++        self.assertFalse(verify_sector_envelope_certificate(tri, wrong))
++
++    def test_missing_extra_reordered_and_corrupted_rays(self):
++        changes = []
++        for i in range(len(self.proof['rays'])):
++            bad = deepcopy(self.proof)
++            del bad['rays'][i]
++            changes.append(bad)
++        bad = deepcopy(self.proof)
++        bad['rays'].append(deepcopy(bad['rays'][0]))
++        changes.append(bad)
++        bad = deepcopy(self.proof)
++        bad['rays'].reverse()
++        changes.append(bad)
++        bad = deepcopy(self.proof)
++        bad['rays'][0][0][0] += 1
++        changes.append(bad)
++        bad = deepcopy(self.proof)
++        bad['rays'][0][0][0] = False
++        changes.append(bad)
++        for bad in changes:
++            with self.subTest(rays=bad['rays']):
++                self.assertFalse(verify_sector_envelope_certificate(self.tri, bad))
++
++    def test_false_source_dimension_and_interval(self):
++        mutations = [
++            ('schema', 'normal-sector-envelope-v999'),
++            ('source_sha256', '0' * 64),
++            ('matching_dimension', 1), ('matching_dimension', True),
++            ('section_dimension', 0), ('section_dimension', True),
++            ('lower', [1, 4]), ('upper', [1, 3]),
++            ('q_direction', [[0, 1]] * 3),
++            ('q_origin', [[0, 1]] * 3),
++            ('allowed_types', [[0, 0], [0, 1], [2, 1]]),
++            ('allowed_types', [[0, True], [1, 2], [2, 1]]),
++            ('allowed_types', [[2, 1], [1, 2], [0, 0]]),
++        ]
++        for key, value in mutations:
++            bad = deepcopy(self.proof)
++            bad[key] = value
++            with self.subTest(key=key, value=value):
++                self.assertFalse(verify_sector_envelope_certificate(self.tri, bad))
++
++    def test_bad_envelope_coverage_corner_and_bracket(self):
++        mutations = []
++        bad = deepcopy(self.proof)
++        bad['envelopes'].clear()
++        mutations.append(bad)
++        bad = deepcopy(self.proof)
++        bad['envelopes'].append(deepcopy(bad['envelopes'][0]))
++        mutations.append(bad)
++        for key, value in [('vertex', -1), ('vertex', True),
++                           ('corners', []), ('corners', [0, 0]),
++                           ('corners', [0, 12]), ('corners', [True, 2]),
++                           ('corners', [2, 0]), ('corners', [0]),
++                           ('brackets', []), ('brackets', [100] * 12),
++                           ('brackets', [False] * 12)]:
++            bad = deepcopy(self.proof)
++            bad['envelopes'][0][key] = value
++            mutations.append(bad)
++        # A valid-index but false slope bracket: line 0 has the first slope.
++        bad = deepcopy(self.proof)
++        bad['envelopes'][0]['brackets'][0] = 2
++        mutations.append(bad)
++        for index, bad in enumerate(mutations):
++            with self.subTest(mutation=index):
++                self.assertFalse(verify_sector_envelope_certificate(self.tri, bad))
++
++    def test_rationals_are_canonical_and_exact_hex_transport_is_accepted(self):
++        for value in ([2, 2], [1, 0], [-1, -1], [1.0, 1], [True, 1],
++                      ['1', 1], [1], {'numerator': 1, 'denominator': 1}):
++            bad = deepcopy(self.proof)
++            bad['q_origin'][0] = value
++            with self.subTest(value=value):
++                self.assertFalse(verify_sector_envelope_certificate(self.tri, bad))
++        good = deepcopy(self.proof)
++        for key in ('q_origin', 'q_direction'):
++            good[key] = [[hex(a), hex(b)] for a, b in good[key]]
++        for key in ('lower', 'upper'):
++            good[key] = [hex(x) for x in good[key]]
++        good['rays'] = [[[hex(x) for x in row] for row in surface]
++                        for surface in good['rays']]
++        self.assertTrue(verify_sector_envelope_certificate(self.tri, good))
++
++    def test_producer_disabled_replay(self):
++        blocked = [
++            'fastunknot.normal_sector.build_sector_kernel',
++            'fastunknot.normal_sector.sector_rays',
++            'fastunknot.normal_sector._nullspace',
++            'fastunknot.normal_sector._hyperplanes',
++            'fastunknot.normal_sector.SectorKernel.is_standard_ray',
++            'fastunknot.normal_sector.SectorKernel.lift',
++            'fastunknot.sector_envelope._lower_envelope',
++            'fastunknot.sector_envelope.sector_envelope_plan',
++            'fastunknot.sector_envelope.sector_envelope_rays',
++            'fastunknot.sector_envelope_certificate.certify_sector_enumeration',
++            'fastunknot.normal_sector_verify.dense_sector_model',
++            'fastunknot.normal_sector_verify.dense_reference_rays',
++        ]
++        with ExitStack() as stack:
++            for target in blocked:
++                stack.enter_context(patch(target, side_effect=AssertionError(target)))
++            self.assertTrue(verify_sector_envelope_certificate(self.tri, self.proof))
++
++    def test_complete_ray_cap_and_invalid_caps(self):
++        for cap in (0, 1, 2):
++            result = certify_sector_enumeration(self.tri, self.allowed, max_rays=cap)
++            self.assertEqual(result['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', result)
++        self.assertEqual(certify_sector_enumeration(
++            self.tri, self.allowed, max_rays=3)['status'], 'COMPLETE')
++        tri, _ = layered_torus(1)
++        self.assertEqual(certify_sector_enumeration(tri, [], max_rays=0)['status'],
++                         'COMPLETE')
++        for cap in (-1, True, 1.0):
++            with self.assertRaises(ValueError):
++                certify_sector_enumeration(self.tri, self.allowed, max_rays=cap)
++
++    def test_false_valued_callback_exceptions_preserve_identity(self):
++        class Cancel:
++            def __init__(self, exception, after):
++                self.exception = exception
++                self.after = after
++                self.calls = 0
++
++            def __bool__(self):
++                return False
++
++            def __call__(self):
++                self.calls += 1
++                if self.calls == self.after:
++                    raise self.exception
++
++        for kind in (ValueError, RuntimeError, NormalOrbitError, SearchLimit):
++            for after in (2, 7):
++                exception = kind('stop complete envelope replay')
++                with self.subTest(kind=kind, after=after):
++                    with self.assertRaises(kind) as raised:
++                        verify_sector_envelope_certificate(
++                            self.tri, self.proof, check=Cancel(exception, after))
++                    self.assertIs(raised.exception, exception)
++        exception = SearchLimit('user cancellation inside ray production')
++        from fastunknot import sector_envelope_certificate as maker
++        actual = maker.sector_envelope_rays
++        state = {'inside': False}
++
++        def wrapped(*args, **kwargs):
++            state['inside'] = True
++            yield from actual(*args, **kwargs)
++
++        class RayCancel:
++            def __bool__(self):
++                return False
++
++            def __call__(self):
++                if state['inside']:
++                    raise exception
++
++        with patch.object(maker, 'sector_envelope_rays', wrapped):
++            with self.assertRaises(SearchLimit) as raised:
++                certify_sector_enumeration(self.tri, self.allowed, check=RayCancel())
++        self.assertIs(raised.exception, exception)
++
++    def test_slope_bracket_certificate_rejects_hidden_undercut(self):
++        # Proposed E=min(s,-s) with switch 0; the hidden constant -1
++        # undercuts it at the switch despite being harmless at endpoints.
++        lines = [(Fraction(0), Fraction(1)),
++                 (Fraction(0), Fraction(-1)),
++                 (Fraction(-1), Fraction(0))]
++        stats = dict(dominance_tests=0)
++        self.assertIsNone(_cover_group(lines, [0, 1, 2], [0, 1],
++                          Fraction(-2), Fraction(2), [0, 1, 1],
++                          lambda: None, stats))
++        # Raising the hidden line to +1 makes the same bracket proof valid.
++        lines[2] = (Fraction(1), Fraction(0))
++        stats = dict(dominance_tests=0)
++        self.assertEqual(_cover_group(lines, [0, 1, 2], [0, 1],
++                         Fraction(-2), Fraction(2), [0, 1, 1],
++                         lambda: None, stats), [Fraction(0)])
++        self.assertEqual(stats['dominance_tests'], 3)
++
++
++if __name__ == '__main__':
++    unittest.main()

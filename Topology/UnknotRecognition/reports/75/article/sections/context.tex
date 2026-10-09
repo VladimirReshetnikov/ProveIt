@@ -1,0 +1,113 @@
+\section{What this continuation establishes}
+
+The principal improvement concerns discovery. Given a triangulation, a fixed
+integral cocycle, and a bound on the total number of expanding Pachner moves,
+the new search covers every permitted finite trace up to explicit marked
+combinatorial isomorphism. Its analysis removes an unnecessary $\log t$ factor
+from the exponent of naive move-string enumeration. More significantly, it
+allows a locality parameter to replace the full initial tetrahedron count in
+the exponential factor. The normal-surface LP improvement is independent and
+can be enabled without changing the mathematical branch policy.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Result & Proved guarantee & Remaining restriction\\
+\midrule
+Commitment encoding & At most $11^{3t+5U}$ encodings of bounded-upward trace classes & $U$ counts total upward moves\\
+Sleep-set exploration & One explored representative per commuting trace class & Precise local action identities are required\\
+Region search & $t^c2^{O(r+U)}\poly(t+U+B)$ with a polynomial complete endpoint predicate & A small region must contain the successful initial footprint\\
+LP witness screening & Same completed baseline certificate; fewer deletion LPs & Node LPs and the search tree can remain expensive\\
+Source-bound adapter & Every \status{UNKNOT} has independent geometric replay & A failed bounded search is inconclusive\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These statements concern operations that are implemented in the accompanying
+artifact. Their proofs do not assume that an observed success rate extends to
+all unknots. Nor does the reported single-exponential bound improve the best
+general exponential classification of unknot recognition. It improves a
+particular geometric search mechanism and supplies a sharper constructive
+condition under which that mechanism is quasi-polynomial.
+
+\subsection{Pinned repository and the incoming work}
+
+The source audit is pinned to the GitHub main revision
+\begin{center}\small\basecommit.\end{center}
+The relevant maintained directory is
+\path{Topology/UnknotRecognition}; the three incoming archives are in
+\path{docs/incoming}. Their Git object identities and SHA-256 digests are
+retained in the package provenance. Source files were obtained from this
+immutable revision, not from a moving working-tree comparison.
+
+The incoming dual-certificate report supplies exact positive-Euler LP
+propagation, dual replay, and primitive-ray certificates. Its search still
+restarts a rational LP for every unskipped deletion test. The geometric-transport
+report supplies formal Pachner moves, signed cocycle transport, local scores,
+and a diagram-bound disc verifier, but implements a single deterministic
+downward epoch. The support-sensitive report supplies more economical
+component and rank-one certificates. Its contributions are retained for
+reproduction but are not presented as new results here.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Incoming archive & Dependency relevant to this continuation\\
+\midrule
+\path{unknot_dual_certificates_20261009.zip} & Exact kernel LP, standard-coordinate propagation and independent proof checker\\
+\path{unknot_geometric_transport_20261009.zip} & Cochain transport, geometric score controls and diagram-bound terminal verification\\
+\path{unknot_support_sensitive_certificates_20261009.zip} & Support and component certificate infrastructure; reviewed separately from the new claims\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The public repository's current source and these incoming artifacts are
+unpublished project material \cite{ProveIt,DualIncoming,TransportIncoming,SupportIncoming}.
+The additive overlay avoids rewriting their existing production functions.
+The supplied integration script accepts an already present byte-identical
+dependency and refuses a conflicting file, so a later integration can be
+reviewed against the pinned baseline.
+
+\subsection{Relation to the published and announced algorithms}
+
+Lackenby's 109-page 2021 talk announces an $n^{O(\log n)}$ unknot-recognition
+algorithm and describes multi-surfaces and Cheeger-region reductions
+\cite{LackenbyTalk}. The July 2026 paper develops a hierarchy algorithm for
+incompressibility. Its Proposition 9.1 bounds hierarchy-loop work by
+$L(g+1)^L$; the refined length bound is linear in a decomposition complexity.
+The paper does not provide the complete quasi-polynomial implementation sought
+here \cite{Lackenby2026}. A separate compressed Oxford handout uses a different
+displayed exponent, so the artifact identifies the exact talk version it cites.
+
+Pachner-graph search and partial commutation of moves have substantial prior
+work. Burton studies simplification paths and explicitly rearranges certain
+consecutive moves, including overlapping composite cases
+\cite{BurtonPachner}. Burton and He prove an existence theorem for unimodal
+elementary-move sequences \cite{BurtonHeMoves}. Our proof uses a smaller
+independence relation---disjoint consumed tetrahedra---and obtains an explicit
+bound in the total upward count and initial region. No claim is made to have
+introduced commutation to triangulation algorithms or to dominate every
+existing Pachner-graph implementation.
+
+Sleep sets are a standard partial-order verification technique
+\cite{Godefroid}. The new argument specializes their required independence
+conditions to the repository's exact formal replacements and combines them
+with the incarnation count. The LP baseline belongs to the normal-surface
+branching tradition developed, for example, by Burton and Ozlen
+\cite{BurtonOzlen}. The abstract hardness result of Burton and He cautions
+against inferring an easy general normal-surface search from its linear
+relaxation \cite{BurtonHeHardness}.
+
+\subsection{What counts as evidence}
+
+There are three separate standards throughout this report. A mathematical
+theorem has an explicit model and proof. A correctness claim about the code
+has independent replay or comparison with an independent finite oracle.
+A performance claim has a declared workload, caps, raw timings and a paired
+comparison. These standards answer different questions. A short execution on
+the coherent obstruction does not prove a universal small-footprint theorem;
+a factorial operation-count separation does not guarantee that validation
+overhead is negligible; a completed LP proof does not authenticate a knot
+diagram unless source geometry is also included.

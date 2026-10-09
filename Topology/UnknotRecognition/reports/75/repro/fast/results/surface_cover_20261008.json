@@ -1,0 +1,1934 @@
+{
+  "scope": "Compressed cover topology versus sheet expansion; NOT knot recognition.\n\nSeven shuffled paired warm rounds. Input construction and result comparisons\nare outside timing; each classifier computes all topology from its input.\nMarked queries reuse one prepared index and are reported separately.\n",
+  "python": "3.13.14",
+  "rounds": 7,
+  "seed": 2026100824,
+  "gc": "enabled; collect before each batch",
+  "source_sha256": {
+    "fastunknot/surface_cover.py": "1dad2c24688b908a6a0677b63bae4958754488a52cbb8199fed8d945fa2eb0fb",
+    "fastunknot/integer_codec.py": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+    "tests/test_surface_cover.py": "042f1392b09e220e6feee87fc75e2466627eea38975f346ba029ae478564ed6e",
+    "cover_research/benchmark.py": "a9a79884ce849b253e527be70be2ddcb23aa4ffc857581e907b60989e91af715"
+  },
+  "topology": [
+    {
+      "name": "annulus",
+      "sheets": 16,
+      "families": 1,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 5.550030618906021e-05,
+            "compressed": 2.2350286599248648e-05,
+            "control": 2.3119035176932812e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 7.300078868865967e-05,
+            "compressed": 1.9419007003307343e-05,
+            "control": 2.1512765670195222e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 7.569976150989532e-05,
+            "compressed": 1.8634600564837456e-05,
+            "control": 2.0012754248455167e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 1.8365855794399977e-05,
+            "expanded": 0.00010650139302015305,
+            "control": 1.7947080777958035e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.039398532360792e-05,
+            "compressed": 1.792522380128503e-05,
+            "expanded": 0.00010030064731836319
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 4.880037158727646e-05,
+            "control": 1.8387712771072984e-05,
+            "compressed": 1.8740829546004534e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 1.9090890418738127e-05,
+            "expanded": 7.880106568336487e-05,
+            "control": 1.783459447324276e-05
+          }
+        }
+      ],
+      "compressed_seconds": 1.8740829546004534e-05,
+      "expanded_over_compressed": 4.062322733803961,
+      "control_over_compressed": 1.0343954684549774
+    },
+    {
+      "name": "mobius_reflection",
+      "sheets": 16,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.8694106731563807e-05,
+            "compressed": 3.055974957533181e-05,
+            "expanded": 0.00012910086661577225
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.8603477403521538e-05,
+            "compressed": 2.864407724700868e-05,
+            "expanded": 0.00011430121958255768
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.7269066777080297e-05,
+            "control": 2.7500325813889503e-05,
+            "expanded": 0.00011330097913742065
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.7078436687588692e-05,
+            "control": 2.716283779591322e-05,
+            "expanded": 0.00011470075696706772
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.609091461636126e-05,
+            "compressed": 2.812844468280673e-05,
+            "expanded": 0.00012250058352947235
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 7.690116763114929e-05,
+            "control": 2.7412839699536562e-05,
+            "compressed": 2.8181588277220726e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.876910730265081e-05,
+            "control": 2.8515991289168596e-05,
+            "expanded": 0.00011250097304582596
+          }
+        }
+      ],
+      "compressed_seconds": 2.8181588277220726e-05,
+      "expanded_over_compressed": 4.154926901739459,
+      "control_over_compressed": 0.9912018120402752
+    },
+    {
+      "name": "three_types",
+      "sheets": 16,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.00013490207493305206,
+            "control": 3.685354022309184e-05,
+            "compressed": 4.234426887705922e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 3.7941092159599066e-05,
+            "control": 3.755986108444631e-05,
+            "expanded": 0.0001327022910118103
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 3.606293466873467e-05,
+            "expanded": 0.00012890156358480453,
+            "compressed": 3.658171044662595e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 3.8919271901249886e-05,
+            "expanded": 0.0001230025663971901,
+            "compressed": 3.6159821320325136e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 3.7341087590903044e-05,
+            "compressed": 3.809732152149081e-05,
+            "expanded": 0.00014140084385871887
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 3.566607483662665e-05,
+            "expanded": 0.00012860260903835297,
+            "control": 3.579730400815606e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 3.770046168938279e-05,
+            "control": 3.8759870221838355e-05,
+            "expanded": 0.00013520196080207825
+          }
+        }
+      ],
+      "compressed_seconds": 3.770046168938279e-05,
+      "expanded_over_compressed": 3.523661469380351,
+      "control_over_compressed": 0.9899520268539158
+    },
+    {
+      "name": "annulus",
+      "sheets": 256,
+      "families": 1,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 1.8690858269110322e-05,
+            "expanded": 0.00029260385781526566,
+            "control": 1.934400643222034e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.0003394046798348427,
+            "control": 1.8578371964395046e-05,
+            "compressed": 1.9340834114700556e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 1.893145963549614e-05,
+            "expanded": 0.00031390413641929626,
+            "compressed": 1.8637743778526783e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.0753388525918126e-05,
+            "expanded": 0.00047110579907894135,
+            "control": 2.599094295874238e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.213462721556425e-05,
+            "control": 1.9978382624685764e-05,
+            "expanded": 0.0003115041181445122
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0002849036827683449,
+            "compressed": 2.1275249309837818e-05,
+            "control": 2.8631591703742743e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.0000268705189228e-05,
+            "control": 1.8781458493322134e-05,
+            "expanded": 0.00030940305441617966
+          }
+        }
+      ],
+      "compressed_seconds": 2.0000268705189228e-05,
+      "expanded_over_compressed": 15.65491822806452,
+      "control_over_compressed": 1.0157591959874326
+    },
+    {
+      "name": "mobius_reflection",
+      "sheets": 256,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0009072115644812584,
+            "compressed": 3.960050526075065e-05,
+            "control": 6.126638618297875e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 6.276951171457767e-05,
+            "expanded": 0.0014360174536705017,
+            "compressed": 4.489743150770664e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0007451092824339867,
+            "compressed": 2.932536881417036e-05,
+            "control": 2.967225736938417e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.8590962756425142e-05,
+            "expanded": 0.0007129088044166565,
+            "control": 2.6597233954817057e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.8165988624095917e-05,
+            "expanded": 0.0006886087357997894,
+            "control": 3.255347837693989e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.00131271593272686,
+            "control": 4.648804315365851e-05,
+            "compressed": 4.885686212219298e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 0.00010387002839706838,
+            "expanded": 0.0007649082690477371,
+            "compressed": 2.6865978725254536e-05
+          }
+        }
+      ],
+      "compressed_seconds": 2.932536881417036e-05,
+      "expanded_over_compressed": 25.408351627412138,
+      "control_over_compressed": 1.1557726168038884
+    },
+    {
+      "name": "three_types",
+      "sheets": 256,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 3.767234738916159e-05,
+            "expanded": 0.0006536077708005905,
+            "control": 3.640045179054141e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 3.848798223771155e-05,
+            "compressed": 3.8944213883951306e-05,
+            "expanded": 0.0006285076960921288
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 3.49410402122885e-05,
+            "expanded": 0.0006297072395682335,
+            "control": 3.587856190279126e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.0006539076566696167,
+            "control": 3.545044455677271e-05,
+            "compressed": 3.7197343772277236e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0006314078345894814,
+            "compressed": 3.538164310157299e-05,
+            "control": 3.783797728829086e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0008273106068372726,
+            "compressed": 3.8166093872860074e-05,
+            "control": 3.915364504791796e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 4.352553514763713e-05,
+            "expanded": 0.000725308433175087,
+            "control": 3.857232513837516e-05
+          }
+        }
+      ],
+      "compressed_seconds": 3.767234738916159e-05,
+      "expanded_over_compressed": 17.579418053957035,
+      "control_over_compressed": 0.988284995362873
+    },
+    {
+      "name": "annulus",
+      "sheets": 4096,
+      "families": 1,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.0049508605152368546,
+            "compressed": 1.9600236555561423e-05,
+            "control": 2.2587744751945138e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.080341801047325e-05,
+            "compressed": 1.9412749679759145e-05,
+            "expanded": 0.004655156284570694
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.475970541127026e-05,
+            "expanded": 0.004958960227668285,
+            "compressed": 2.5506538804620504e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 1.9225262803956866e-05,
+            "expanded": 0.0054796673357486725,
+            "control": 2.099713310599327e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 1.9712751964107156e-05,
+            "control": 1.925963442772627e-05,
+            "expanded": 0.00482195895165205
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.00477305892854929,
+            "compressed": 1.9459635950624943e-05,
+            "control": 2.233465784229338e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 1.8978345906361938e-05,
+            "expanded": 0.004854259081184864,
+            "compressed": 2.0269013475626707e-05
+          }
+        }
+      ],
+      "compressed_seconds": 1.9600236555561423e-05,
+      "expanded_over_compressed": 244.61115121987228,
+      "control_over_compressed": 1.0716368548327855
+    },
+    {
+      "name": "mobius_reflection",
+      "sheets": 4096,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.989100175909698e-05,
+            "expanded": 0.011833945289254189,
+            "control": 3.2075418857857585e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.8240960091352463e-05,
+            "expanded": 0.011640243232250214,
+            "compressed": 2.9759714379906654e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.9600370908156037e-05,
+            "expanded": 0.01176944375038147,
+            "control": 2.8278474928811193e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.8809707146137953e-05,
+            "control": 2.8753478545695543e-05,
+            "expanded": 0.011858845129609108
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.7844100259244442e-05,
+            "compressed": 2.9428512789309025e-05,
+            "expanded": 0.011658442206680775
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.845661947503686e-05,
+            "compressed": 2.977222902700305e-05,
+            "expanded": 0.01179114542901516
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.794721513055265e-05,
+            "expanded": 0.01184014417231083,
+            "control": 3.1537871109321713e-05
+          }
+        }
+      ],
+      "compressed_seconds": 2.9600370908156037e-05,
+      "expanded_over_compressed": 396.16144689840144,
+      "control_over_compressed": 0.9558108480633765
+    },
+    {
+      "name": "three_types",
+      "sheets": 4096,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.011935745365917683,
+            "compressed": 3.9734848542138934e-05,
+            "control": 4.394428106024861e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.012816456146538258,
+            "compressed": 3.994113649241626e-05,
+            "control": 4.044422530569136e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 4.2034866055473685e-05,
+            "expanded": 0.012186449952423573,
+            "compressed": 3.825672320090234e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 4.288487252779305e-05,
+            "expanded": 0.012068348005414009,
+            "compressed": 3.841295256279409e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 4.065988468937576e-05,
+            "compressed": 3.930050297640264e-05,
+            "expanded": 0.012634755112230778
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 3.880984149873257e-05,
+            "expanded": 0.012330051511526108,
+            "compressed": 3.8819212932139635e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.019052334129810333,
+            "compressed": 3.943176125176251e-05,
+            "control": 4.124111728742719e-05
+          }
+        }
+      ],
+      "compressed_seconds": 3.930050297640264e-05,
+      "expanded_over_compressed": 318.54400828914004,
+      "control_over_compressed": 1.0458857524550416
+    },
+    {
+      "name": "annulus",
+      "sheets": 65536,
+      "families": 1,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 2.1353422198444605e-05,
+            "control": 1.9800267182290554e-05,
+            "expanded": 0.08997980318963528
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 2.0600302377715707e-05,
+            "expanded": 0.09648708160966635,
+            "control": 2.188462531194091e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.0228384528309107e-05,
+            "expanded": 0.1020316518843174,
+            "compressed": 2.2809661459177732e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.16596235986799e-05,
+            "expanded": 0.11237187683582306,
+            "compressed": 2.0718987798318267e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.13601716700941324,
+            "control": 2.2203399566933513e-05,
+            "compressed": 2.0956533262506127e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 1.9518978660926223e-05,
+            "compressed": 2.0425242837518454e-05,
+            "expanded": 0.09440015628933907
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.09332294389605522,
+            "compressed": 2.083461731672287e-05,
+            "control": 2.2378371795639396e-05
+          }
+        }
+      ],
+      "compressed_seconds": 2.083461731672287e-05,
+      "expanded_over_compressed": 4621.739728642959,
+      "control_over_compressed": 1.045399698552744
+    },
+    {
+      "name": "mobius_reflection",
+      "sheets": 65536,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.2641142373904586,
+            "control": 2.9697257559746504e-05,
+            "compressed": 3.7762976717203856e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.25762155652046204,
+            "compressed": 2.8712849598377943e-05,
+            "control": 3.0365976272150874e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 2.9006623663008213e-05,
+            "compressed": 3.0059745768085122e-05,
+            "expanded": 0.2624305160716176
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.980974386446178e-05,
+            "expanded": 0.24056334886699915,
+            "compressed": 2.901599509641528e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.26006378699094057,
+            "compressed": 3.059412119910121e-05,
+            "control": 3.026594640687108e-05
+          }
+        },
+        {
+          "order": [
+            "expanded",
+            "control",
+            "compressed"
+          ],
+          "seconds": {
+            "expanded": 0.2379409158602357,
+            "control": 2.8253474738448858e-05,
+            "compressed": 3.0428491299971938e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 2.9212853405624628e-05,
+            "expanded": 0.24007464293390512,
+            "compressed": 2.9115995857864618e-05
+          }
+        }
+      ],
+      "compressed_seconds": 3.0059745768085122e-05,
+      "expanded_over_compressed": 8290.715106190482,
+      "control_over_compressed": 0.989273272793344
+    },
+    {
+      "name": "three_types",
+      "sheets": 65536,
+      "families": 3,
+      "repetitions": {
+        "compressed": 32,
+        "control": 32,
+        "expanded": 1
+      },
+      "samples": [
+        {
+          "order": [
+            "expanded",
+            "compressed",
+            "control"
+          ],
+          "seconds": {
+            "expanded": 0.28582500386983156,
+            "compressed": 4.2016152292490005e-05,
+            "control": 4.285993054509163e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "control",
+            "expanded"
+          ],
+          "seconds": {
+            "compressed": 4.0556740714237094e-05,
+            "control": 3.933487460017204e-05,
+            "expanded": 0.27108602412045
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 4.060988430865109e-05,
+            "compressed": 4.195989458821714e-05,
+            "expanded": 0.4091070154681802
+          }
+        },
+        {
+          "order": [
+            "control",
+            "compressed",
+            "expanded"
+          ],
+          "seconds": {
+            "control": 7.017588359303772e-05,
+            "compressed": 7.564781117253006e-05,
+            "expanded": 0.5296980943530798
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 7.644467405043542e-05,
+            "expanded": 0.5567392259836197,
+            "compressed": 7.428840035572648e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "expanded",
+            "compressed"
+          ],
+          "seconds": {
+            "control": 7.520406506955624e-05,
+            "expanded": 0.5637889131903648,
+            "compressed": 7.246961467899382e-05
+          }
+        },
+        {
+          "order": [
+            "compressed",
+            "expanded",
+            "control"
+          ],
+          "seconds": {
+            "compressed": 7.611655746586621e-05,
+            "expanded": 0.5307180089876056,
+            "control": 4.144114791415632e-05
+          }
+        }
+      ],
+      "compressed_seconds": 7.246961467899382e-05,
+      "expanded_over_compressed": 7002.1602230499,
+      "control_over_compressed": 0.9698726748612685
+    }
+  ],
+  "marked_queries": [
+    {
+      "sheet_exponent": 32,
+      "marks": 2,
+      "preparation_seconds": 7.540173828601837e-05,
+      "signature_json_bytes": 100,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 1.7518934328109026e-05,
+            "control": 1.0837626177817583e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 9.556300938129425e-06,
+            "query": 9.543902706354856e-06
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 1.0062649380415678e-05,
+            "query": 9.900133591145277e-06
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 9.843846783041954e-06,
+            "control": 1.036887988448143e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 9.637617040425539e-06,
+            "control": 9.675102774053812e-06
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 9.562645573168993e-06,
+            "query": 1.0687625035643578e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 9.512586984783411e-06,
+            "query": 9.775103535503149e-06
+          }
+        }
+      ],
+      "query_seconds": 9.843846783041954e-06,
+      "control_over_query": 1.0012990735714764
+    },
+    {
+      "sheet_exponent": 32,
+      "marks": 32,
+      "preparation_seconds": 7.540173828601837e-05,
+      "signature_json_bytes": 456,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 7.720093708485365e-05,
+            "query": 6.165698869153857e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 7.729465141892433e-05,
+            "control": 7.636967347934842e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 7.481960346922278e-05,
+            "query": 7.713842205703259e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 7.585721323266625e-05,
+            "query": 7.5863441452384e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 7.60259572416544e-05,
+            "control": 7.723842281848192e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 7.739465218037367e-05,
+            "query": 7.750722579658031e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 7.744471076875925e-05,
+            "control": 7.710093632340431e-05
+          }
+        }
+      ],
+      "query_seconds": 7.713842205703259e-05,
+      "control_over_query": 0.9985475726288785
+    },
+    {
+      "sheet_exponent": 32,
+      "marks": 512,
+      "preparation_seconds": 7.540173828601837e-05,
+      "signature_json_bytes": 6135,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0011856083292514086,
+            "control": 0.001188514579553157
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0011958334362134337,
+            "control": 0.0012099336017854512
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0011930146720260382,
+            "query": 0.0011887646396644413
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0011916083749383688,
+            "query": 0.0011797519982792437
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0005961072747595608,
+            "control": 0.0007814596756361425
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0012181899510324001,
+            "query": 0.0012089211377315223
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0011968896724283695,
+            "query": 0.0011873645707964897
+          }
+        }
+      ],
+      "query_seconds": 0.0011873645707964897,
+      "control_over_query": 1.00802205309654
+    },
+    {
+      "sheet_exponent": 1024,
+      "marks": 2,
+      "preparation_seconds": 0.0001990022137761116,
+      "signature_json_bytes": 698,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 4.244426963850856e-05,
+            "query": 1.5362631529569626e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 1.4043878763914108e-05,
+            "query": 1.4012737665325403e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 1.5825149603188038e-05,
+            "query": 1.3800105080008507e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 1.3943878002464771e-05,
+            "query": 1.3768963981419802e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 1.474394230172038e-05,
+            "control": 1.3668963219970465e-05
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 1.3943936210125685e-05,
+            "control": 1.4250166714191437e-05
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 1.3868848327547312e-05,
+            "query": 1.533766044303775e-05
+          }
+        }
+      ],
+      "query_seconds": 1.4012737665325403e-05,
+      "control_over_query": 1.012703499063619
+    },
+    {
+      "sheet_exponent": 1024,
+      "marks": 32,
+      "preparation_seconds": 0.0001990022137761116,
+      "signature_json_bytes": 5534,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.00019609619630500674,
+            "query": 0.00019435235299170017
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.00019082112703472376,
+            "query": 0.00019224605057388544
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.00019270862685516477,
+            "control": 0.0001949398429132998
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.00019087735563516617,
+            "query": 0.00019497115863487124
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0001964024268090725,
+            "query": 0.00019063364015892148
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0001899335766211152,
+            "control": 0.00019164616242051125
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0001904211239889264,
+            "control": 0.0001944773248396814
+          }
+        }
+      ],
+      "query_seconds": 0.00019224605057388544,
+      "control_over_query": 1.00901676170092
+    },
+    {
+      "sheet_exponent": 1024,
+      "marks": 512,
+      "preparation_seconds": 0.0001990022137761116,
+      "signature_json_bytes": 82897,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0030599875608459115,
+            "control": 0.0030724314274266362
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0030581812607124448,
+            "query": 0.00305920623941347
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0031425573397427797,
+            "query": 0.0031775077804923058
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0026354073197580874,
+            "query": 0.002739089773967862
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0030401372932828963,
+            "control": 0.003076550201512873
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.0030685814563184977,
+            "control": 0.003070568898692727
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.00310425681527704,
+            "query": 0.0030355248018167913
+          }
+        }
+      ],
+      "query_seconds": 0.00305920623941347,
+      "control_over_query": 1.0006476746348503
+    },
+    {
+      "sheet_exponent": 16384,
+      "marks": 2,
+      "preparation_seconds": 0.0011627143248915672,
+      "signature_json_bytes": 8286,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.00043747411109507084,
+            "control": 0.0004155175993219018
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.00041198631515726447,
+            "control": 0.0004069425049237907
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.000409273779951036,
+            "query": 0.0004099425859749317
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0004204801516607404,
+            "query": 0.0004209988983348012
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.00041642383439466357,
+            "control": 0.000422073935624212
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.00041201134445145726,
+            "control": 0.00040720502147451043
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.0004091925220564008,
+            "query": 0.00040964875370264053
+          }
+        }
+      ],
+      "query_seconds": 0.00041201134445145726,
+      "control_over_query": 0.9983685373347949
+    },
+    {
+      "sheet_exponent": 16384,
+      "marks": 32,
+      "preparation_seconds": 0.0011627143248915672,
+      "signature_json_bytes": 70055,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.01232056989101693,
+            "query": 0.011915658717043698
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.012346545234322548,
+            "query": 0.01244107767706737
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.012279300659429282,
+            "query": 0.012218518590088934
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.012330013734754175,
+            "control": 0.012324270035605878
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.012290019541978836,
+            "query": 0.012291894585359842
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.012784750608261675,
+            "control": 0.012182080768980086
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.012393102108035237,
+            "control": 0.012333870108705014
+          }
+        }
+      ],
+      "query_seconds": 0.012330013734754175,
+      "control_over_query": 0.99953416928222
+    },
+    {
+      "sheet_exponent": 16384,
+      "marks": 512,
+      "preparation_seconds": 0.0011627143248915672,
+      "signature_json_bytes": 1058344,
+      "repetitions": 16,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.16801431262865663,
+            "query": 0.14994863531319425
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.14870994572993368,
+            "query": 0.1484518744982779
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.14842098095687106,
+            "control": 0.14905552694108337
+          }
+        },
+        {
+          "order": [
+            "query",
+            "control"
+          ],
+          "seconds": {
+            "query": 0.1476882857386954,
+            "control": 0.14911645400570706
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.14766832429450005,
+            "query": 0.148669331043493
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.14936670270981267,
+            "query": 0.14854378066956997
+          }
+        },
+        {
+          "order": [
+            "control",
+            "query"
+          ],
+          "seconds": {
+            "control": 0.14917498285649344,
+            "query": 0.15065868309466168
+          }
+        }
+      ],
+      "query_seconds": 0.14854378066956997,
+      "control_over_query": 1.004275311887318
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,graphicx,enumitem,fancyhdr,etoolbox}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{muted}{HTML}{526477}
+\definecolor{papergray}{HTML}{F1F5F8}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\poly}{poly}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\status}[1]{\textsf{#1}}
+\newcommand{\Reach}{\mathcal R}
+\newcommand{\basecommit}{\texttt{66098968e88bba797143ac1bf7ad0ac4c5f697df}}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt research continuation}
+\fancyhead[R]{\small\color{muted}Pachner traces and exact LP witnesses}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+  backgroundcolor=\color{papergray},frame=single,rulecolor=\color{papergray},
+  columns=fullflexible,keepspaces=true,showstringspaces=false}
+\BeforeBeginEnvironment{lstlisting}{\par\noindent\begin{minipage}{\linewidth}}
+\AfterEndEnvironment{lstlisting}{\end{minipage}\par}
+\hypersetup{pdftitle={Single-Exponential Pachner Search and Exact Witness Reuse for Unknot Recognition},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1.2cm}
+{\color{teal}\large PROVEIT / TOPOLOGY / UNKNOT RECOGNITION\par}
+\vspace{0.6cm}
+{\color{navy}\Huge\bfseries Single-Exponential\par Pachner Search\par}
+\vspace{0.3cm}
+{\color{navy}\LARGE and Exact Witness Reuse\par for Unknot Recognition\par}
+\vspace{0.9cm}
+{\large A complete bounded search, a locality theorem,\par
+and independently checked algorithmic improvements\par}
+\vspace{0.8cm}
+Research report prepared for Vladimir Reshetnikov\par
+9 October 2026\par
+\vfill
+\noindent\textbf{Main result.} Bounded-upward geometric reachability can be searched in
+$2^{O(t+U)}\poly(t+U+B)$ time. When the consumed initial tetrahedra lie in an allowed
+region of size at most $r$ with at most $c$ connected components, the bound becomes
+$t^c2^{O(r+U)}\poly(t+U+B)$. These bounds include a polynomial complete
+endpoint predicate; a more expensive predicate must be charged separately.
+
+\medskip
+\noindent\textbf{Scope.} These are proved bounds for a precisely specified family of
+formal Pachner replacements and transported cocycles. The report does not establish
+a general quasi-polynomial unknot recognizer. The missing universal locality and
+coverage theorem is stated explicitly.
+
+\medskip
+\noindent\textbf{Source revision.}\par
+\small\basecommit\par
+\noindent Three incoming research archives are reviewed and preserved as dependencies.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+We replace unrestricted enumeration of local-move orderings by a complete
+search based on the eventual use of each tetrahedron. Every tetrahedron incarnation
+has eleven possible commitments: remain unused, be consumed at one of six edges
+by a $3$--$2$ move, or be consumed at one of four faces by a $2$--$3$ move.
+Consistently committed enabled moves have disjoint supports and commute. Any trace
+with at most $U$ upward moves is equivalent to a deterministic committed execution;
+at most $3t+5U$ incarnations are involved. Consequently bounded-upward marked
+reachability admits a single-exponential search. An exact sleep-set implementation
+inherits this bound while avoiding the large overhead of enumerating inert
+commitments. A reverse-search generator for regions in the degree-four initial
+dual graph sharpens the bound to $t^c2^{O(r+U)}$ when an allowed region has at most
+$r$ tetrahedra and $c$ components. This gives a constructive quasi-polynomial
+search class for $c=O(\log t)$ and $r+U=O(\log^2 t)$.
+
+Separately, exact positive witnesses screen redundant deletion queries in
+normal-surface LP propagation. Minimal support antichains preserve every completed
+certificate of the deterministic baseline. An explicit algebraic family reduces
+LP calls from $3s^2+2s+1$ to $2s+1$ and exact simplex pivots from
+$6s^3+3s^2+s$ to $3s^2+s$. The artifact contains additive code, independent
+replay, genuine triangulation controls, paired measurements, and a diagram-bound
+positive-certificate adapter. Exhaustion of a bounded coherent family is never
+reported as knottedness. The results improve concrete search and propagation
+operations, and identify the geometric statement still needed for a general
+quasi-polynomial recognition guarantee.
+\end{abstract}
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/context}
+\input{sections/model}
+\input{sections/commitments}
+\input{sections/regions}
+\input{sections/verification}
+\input{sections/witnesses}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/research}
+\input{sections/reproduction}
+\appendix
+\input{sections/pivot_appendix}
+\input{sections/ledger}
+\clearpage
+\begingroup\small\raggedright
+\setlength{\parskip}{0pt}
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}

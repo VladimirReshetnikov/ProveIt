@@ -1,0 +1,89 @@
+\subsection{Correctness evidence}
+
+The main regression run completed 1,334 tests successfully in 144.558 seconds
+on CPython 3.12.14. Three additional focused producer tests were subsequently
+added for multiple vertex groups, multiple genuine changes, and endpoint-only
+ties; the final focused run completed all 24 producer and certificate tests.
+Its result is recorded separately in the accompanying test log. This avoids attributing those later test additions to the earlier
+full-suite run.
+
+The host reports an AMD EPYC 9V74 processor under Linux on x86-64.
+\path{results/environment.json} records the runtime and dependency
+versions. The paired measurements use elapsed wall time; the processor's
+model name is not a claim of exclusive access to the host.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lr@{}}
+\toprule
+Check & Completed instances\\
+\midrule
+Full maintained regression suite & 1,334\\
+Final focused producer and certificate tests & 24\\
+Frozen finite triangulations represented & 48\\
+Declared selected sectors & 9,995\\
+Eligible sectors with matching nullity at most two & 9,344\\
+Higher-nullity sectors transparently outside the new branch & 651\\
+Emitted ray occurrences compared with the complete frozen oracle & 4,853\\
+Interior standard-ray occurrences in those comparisons & 804\\
+Empty feasible cones correctly returned & 6,276\\
+Fresh Regina complete standard enumerations & 15\\
+Independent graph-versus-dense model comparisons & 66\\
+Complete certificates in the separate source-model audit & 60\\
+Family sizes checked against the closed-form ray oracle & 9\\
+Integral family vectors with checked component topology & 97\\
+\bottomrule
+\end{tabular}
+\caption{Validation counts. Ray counts are occurrences over the selected
+queries, not counts of globally distinct surfaces. All stated comparisons
+agreed. The six model-only cases had higher nullity.}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Matching nullity & Queries & Empty section & Point section & Interval section\\
+\midrule
+0 & 5,357 & 5,357 & 0 & 0\\
+1 & 2,837 & 890 & 1,947 & 0\\
+2 & 1,150 & 29 & 140 & 981\\
+\bottomrule
+\end{tabular}
+\caption{Feasible-section stratification. In particular, nullity two does
+not guarantee a nondegenerate interval.}
+\end{table}
+
+The corpus selects supports occurring in recorded standard or quadrilateral
+rays, every support with at most two allowed types, and 64 fixed-seed full
+sectors for each triangulation. For triangulations with at most three
+tetrahedra, it selects every compatible support. The union is deduplicated
+before testing. Larger triangulations are not claimed to have had every one
+of their exponentially many sectors tested. The frozen corpus SHA-256 and
+source pins are retained in \texttt{results/audit.json}.
+
+The 15 fresh Regina runs comprise six original corpus fixtures and nine
+capped-family inputs with base sizes 1, 2, and 4 and each of the three cap
+types. Regina reports runtime version 7.4; its installed Python distribution
+is version 7.4.1.\cite{regina} The new producer and checker use no Regina
+calls. In the separate independent audit, 66 models across all 48 original
+triangulations were reconstructed both from the uncontracted graph and by
+dense standard matching elimination. Their nullspaces and all relative
+vertex potentials agreed; all 60 eligible complete certificates replayed.
+
+The affine hull tests use 120 fixed-seed rational line sets and compare
+against literal minima at every pairwise crossing and points in the intervening
+intervals, giving over 5,000 exact sample comparisons. They also cover
+a rational basis change with denominator $2^{257}+7$ (258 bits). These checks are paired with complete
+geometric ray-list comparisons, so a correct hull routine alone is not
+treated as evidence for an incorrect normal-surface reduction.
+
+The separate family oracle evaluates the closed coordinate formulas without
+calling the matching kernel or envelope routine. Its ray lists agree at
+base sizes $1,2,3,4,8,16,32,64,128$. At the first five sizes it also checks
+the old hyperplane and rejected-direction counts. For base sizes
+$1,2,4,8$, it checks 97 integral vectors with parameters on both sides of
+the hinge, including the hinge itself. The native compressed component
+census and its independent certificate replay give exactly $x+h$ components
+and $x$ essential discs in every case. These finite checks supplement the
+all-size proof; they do not substitute for it.

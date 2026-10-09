@@ -1,0 +1,143 @@
+\section{What these bounds do, and do not, imply asymptotically}
+\label{sec:complexity}
+
+\subsection{A complete collapse-only trajectory is a polynomial subroutine}
+
+Let $V(t,B)$ bound the cost of the maintained finite-manifold and cocycle
+preparations on $t$ tetrahedra with $B$-bit edge differences. Initial
+height rows are assumed gauged, for example by subtracting their first
+entry. If arbitrarily large common offsets are supplied, reading and
+normalising those integers is charged separately in their actual input
+bit length. We keep the preparation cost explicit. Let $\M(B)$ stand for a safe bound on the relevant exact
+integer arithmetic cost; additions and comparisons are cheaper than general
+multiplication. A complete current census has $O(t)$ candidates, because
+there are at most $6t$ local edge occurrences. Sorting for greedy packing
+costs $O(t\log(t+2))$ comparisons. The minima index and source-specific
+matching add polynomial work independent of expanded surface weight.
+
+\begin{proposition}[Cost and termination of the supplied local policy]
+\label{prop:collapse-trajectory}
+Start with a coherent cocycle on a valid triangulation with at most two
+interior vertices. At each round, form the complete legal $3$--$2$ census,
+choose a greedy maximal disjoint family, select its optimal peeled-Euler
+subbatch with the minimum-omission rule, and commit it if nonempty. Stop
+otherwise. Every committed round is nondecreasing in peeled Euler
+characteristic; there are at most $t_0$ rounds and at most $t_0$ individual
+collapses, where $t_0$ is the initial tetrahedron count. The maximum encoded
+edge-difference bit length does not increase.
+
+With polynomial $V$ and exact arithmetic, this is a polynomial subroutine
+in $(t_0,B_0)$. A deliberately loose explicit bound is
+\begin{equation}\label{eq:trajectory-cost}
+ O\!\left(t_0 V(t_0,B_0)+
+ t_0^2\log(t_0+2)\,\M(B_0+\log(t_0+2))\right),
+\end{equation}
+assuming a nondecreasing upper bound $V$. The lifetime maintenance work of
+the corner index alone is only
+$O(t_0\log(t_0+2))$ record operations.
+\end{proposition}
+\begin{proof}
+The empty subbatch is available and has gain zero, so an optimum cannot
+have negative gain. Every committed move reduces the number of tetrahedra
+by one. Thus at most $t_0$ moves can be committed, and each nonempty round
+contains at least one. The commuting theorem preserves the vertex types,
+so the small-cover selection remains applicable. Every edge after a
+$3$--$2$ move already occurred on the bipyramid boundary; its cocycle value
+is unchanged. This proves the bit statement.
+
+Charge each round its complete census, packing, reward computation,
+linear small-cover matching, final emission, and constant number of
+preparations. Bounding every current size by $t_0$ and the number of rounds
+by $t_0$ gives \eqref{eq:trajectory-cost}. There are initially $4t_0$ corner
+records; each collapse deletes twelve and inserts eight, so the total
+number of index edits is $O(t_0)$. The balanced-tree theorem supplies the
+last assertion.
+\end{proof}
+
+This proposition gives an honest finite local algorithm, including its
+stopping condition. It makes no claim that the terminal coherent vector
+contains a disc or that a stalled triangulation cannot be the unknot.
+Repeating an uncontrolled $2$--$3$ repair phase is outside its proof.
+Likewise, recording every endpoint of every round can still cost quadratic
+space in $t_0$; the per-batch encoding theorem does not automatically supply
+a linear-size transcript for an entire trajectory.
+
+\subsection{A density hypothesis would give logarithmically many rounds}
+
+\begin{corollary}[Conditional dense-census progress]
+\label{cor:dense-progress}
+Suppose a collapse-only trajectory as above has at least $\alpha t$
+eligible distinct central edges whenever its current size is $t\ge40/\alpha$,
+where $0<\alpha\le6$ is fixed. Then it reaches size below $40/\alpha$ in
+$O(\alpha^{-1}\log(t_0+2))$ committed rounds.
+\end{corollary}
+\begin{proof}
+The packed optimum retains at least
+\[
+ \lceil\alpha t/10\rceil-2\ge\alpha t/20
+ \qquad(t\ge40/\alpha).
+\]
+Thus the next size is at most $(1-\alpha/20)t$. Repeated multiplication
+proves the bound, using $-\log(1-\alpha/20)\ge\alpha/20$.
+\end{proof}
+
+The density assumption is not established for all diagram exteriors or
+after arbitrary moves. A legal census can be sparse or empty. The corollary
+is useful because it specifies an exact geometric statement that would
+turn the batch-retention theorem into a round bound, without conflating
+raw score, peeled score, and the number of removed tetrahedra.
+
+\subsection{The normal-search ledger}
+
+The active-face theorem isolates the factor
+$\mathcal A(T)2^{\rho_{\max}}$. It supplies no universal reduction of this
+factor. In fact, the unrestricted source lower bound rules out the proposal
+that $\rho_{\max}$ is automatically polylogarithmic in crossing number.
+The anchor count also needs separate attention. In a one-vertex finite
+triangulation it is $4t$; in a triangulation with many vertices it is the
+product of their corner degrees. The fact that there are only two
+\emph{interior} vertices in the pulling source does not make that anchor
+product small: the same source has $4n'$ boundary vertices. Confusing the
+two vertex counts would erase a genuine source of combinatorial cost.
+
+Complete-support certification, support minimisation of one admissible
+point, and proving a small active ambiguity rank are three different
+tasks. The first now has a compact interface. The second already has
+classical LP-based solutions \cite{BurtonOzlen}. The third fails at the
+unrestricted roots proved above. A promising parameter must therefore be
+defined after stronger certified restrictions, or the algorithm must be
+proved to reach an endpoint before traversing the large rank.
+
+\subsection{A sufficient quasipolynomial contract}
+
+For clarity, consider a future complete architecture with at most $R(n)$
+outer stages. At each stage suppose it covers all required geometric
+choices by a tree of depth $h(n)$, branching at most $(ct(n)+c)^d$ ways per
+node for fixed positive constants $c,d$, and each node performs at most $A(n)$ normal queries with active
+rank at most $\rho(n)$. Suppose all state sizes are bounded by $t(n)$ and
+all arithmetic inputs by $B(n)$ bits, with polynomial local producers and
+consumers. A sufficient upper bound is
+\begin{equation}\label{eq:qp-ledger}
+ R(n) A(n) 2^{\rho(n)}
+ (ct(n)+c)^{O(h(n))}\poly(t(n),B(n)).
+\end{equation}
+For example, if $t,B,R$ are polynomial in $n$,
+$\log A(n)=O((\log n)^a)$, $\rho(n)=O((\log n)^b)$, and
+$h(n)=O((\log n)^c)$ for fixed exponents, then
+\eqref{eq:qp-ledger} is
+\[
+ \exp\!\left(O((\log n)^{\max\{1,a,b,c+1\}})\right).
+\]
+This is an elementary composition bound, not a theorem that those
+hypotheses hold. It displays the obligations a genuine quasipolynomial
+proof must discharge.
+
+The present results improve the local polynomial factor and eliminate
+$2^{|E|}$ subbatch enumeration for a fixed disjoint family. They do not
+prove geometric witness coverage, the depth bound $h$, the restricted-rank
+bound $\rho$, or the anchor bound $A$. The explicit root obstruction also
+shows why replacing the last two obligations by an empirical observation
+would not suffice. Classical compressed component algorithms avoid
+dependence linear in expanded normal weight \cite{AHT}; they do not bound
+the number of global choices by themselves.
+

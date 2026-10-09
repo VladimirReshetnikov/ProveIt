@@ -1,0 +1,154 @@
+\section{Further research: statements worth proving next}
+\label{sec:research}
+
+The following questions are ordered by how directly a positive answer
+would improve the current algorithm. Each separates a mathematical target
+from an implementation experiment. Several may have negative answers;
+explicit counterfamilies would still prevent investment in an invalid
+complexity strategy.
+
+\subsection{Geometric progress and the correct search space}
+
+\paragraph{1. When must a useful collapse exist?}
+Characterise coherent primitive-meridian fibres for which a legal $3$--$2$
+move or nonempty optimum packed subbatch exists before an essential disc
+is exposed. A strong target is a density or amortised density theorem of
+the form in \cref{cor:dense-progress}. A weaker useful target is a bounded
+repair lemma: a stalled state admits at most $f(t)$ certified expansions
+followed by a batch that reduces a well-founded, explicitly encoded
+potential. Experiments should record empty censuses, small censuses,
+negative singleton scores, and stalls separately, because the matching
+theorem resolves only collective selection once candidates exist.
+
+\paragraph{2. Can the two-pole structure survive more powerful reductions?}
+The current fast selector survives vertex-preserving $2$--$3$ and $3$--$2$
+moves. Crushing, collapsing boundary cells, idealisation, and handle
+normalisation can alter the vertex links or the representation. Prove an
+interface theorem retaining a bounded set of interior reward vertices,
+or identify an equally small parameter in the new representation. A finite
+two-pole triangulation and an ideal triangulation have different local
+link contracts; transferring formulas between them requires a proof.
+
+\paragraph{3. Optimise the disjoint ground family, not only its subbatches.}
+The degree-nine argument gives a constant-factor cardinality packing, and
+the new matching theorem exactly solves selection inside that packing.
+It leaves the choice among overlapping regions unresolved. Determine
+whether conflict graphs arising from legal bipyramids have additional
+structure beyond bounded degree that permits an exact or suitably
+certified approximation algorithm for the final peeled objective.
+An arbitrary bounded-degree graph does not acquire easy maximum-weight
+independent-set optimisation merely from its degree bound. Small geometric
+instances should compare every packing, every subbatch, and greedy
+packing followed by matching to identify the actual lost opportunity.
+
+\paragraph{4. Is peeled Euler characteristic the right policy potential?}
+The shared-vertex counterexample proves a failure of additivity on a genuine
+solid torus, but its supplied cocycle is exact. Investigate the same
+interaction under primitive meridional cohomology and boundary constraints.
+More broadly, seek a potential that combines tetrahedron count, peeled
+Euler characteristic, essential-boundary information, and compressed
+component structure. Its monotonicity must survive globally identified
+vertices and sphere components. A scalar score that increases while
+losing the relevant disc component would not establish witness coverage.
+
+\paragraph{5. Bound the number of genuinely different geometric choices.}
+Commutation identifies all orders of one fixed set of disjoint moves.
+It does not identify different sets or repairs through overlapping sites.
+Develop a canonical transition certificate, a confluence theorem on a
+restricted class, or a partial-order reduction that preserves at least
+one successful witness path. The target is a bound on distinct relevant
+states, with a proof that the quotient preserves the topological endpoint,
+rather than a reduction in the number of syntactic transcripts alone.
+
+\subsection{Admissibility, support, and certificate-efficient LP}
+
+\paragraph{6. Remove the explicit root obstruction only with a sound quotient.}
+The local directions $w_a$ change all three quadrilaterals together and are
+invisible to face-arc matching. Can one quotient or eliminate those
+directions while preserving admissible positive-Euler existence, including
+the triangle anchors and Euler objective? Their compatibility effect is
+nonlinear, so simply deleting them from a rank computation is unsound.
+A useful answer would give a reconstruction theorem from a quotient
+solution and a polynomial certificate of every excluded alternative.
+Alternatively, prove that a natural strengthened relaxation still has a
+linear ambiguity family; that would rule out another tempting route.
+
+\paragraph{7. Relate active rank to mandatory propagation after restrictions.}
+The incoming Fibonacci result has zero mandatory guess budget, while the
+unrestricted active rank here is linear. These parameters measure different
+things. Define a parameter for a \emph{certified adaptive trajectory} after
+all currently forced types have been propagated, and ask whether it is
+polylogarithmic on a topologically meaningful class. The quantifiers matter:
+the existence of one easy witness is weaker than a complete negative
+decision procedure. Any bound must include the dual certificates and
+incompatible branches needed to prove absence.
+
+\paragraph{8. Produce the active-support certificate more cheaply.}
+The current homogeneous lift adds $O(N+m)$ auxiliary structure to an already
+degenerate LP and is slower in the retained audit. Investigate sparse
+relative-interior methods, a reused primal/dual basis, incremental forced
+zero aggregation, or a hybrid that invokes the full lift only after a
+measured trigger. Basis reuse itself has established normal-surface
+precedents \cite{BurtonTree}; novelty should be measured by the resulting
+certificate size or verified work reduction. Benchmark rational bit growth,
+pivots, matrix density, calls, producer time, and replay time together.
+
+\paragraph{9. Compress anchor coverage.}
+Find a polynomial or quasipolynomial certificate representing the complete
+union of vertex-anchor cones without listing every anchor tuple. Shared
+subproofs, symmetry, vertex-link quotient coordinates, or a proof-producing
+elimination rule may help. A checker must reconstruct why every canonical
+normal vector is covered; a cache containing only visited anchors is not a
+negative certificate. The two-pole source is a useful test because it has
+few interior vertices but linearly many boundary vertices.
+
+\subsection{Compressed topology and a global complexity theorem}
+
+\paragraph{10. Make hierarchy transitions preserve all required markings.}
+Relate the repository's compressed normal components and boundary moments
+to the boundary patterns and parallelity data needed by hierarchy methods.
+Specify what a transition certificate records, how it is independently
+verified, and how its encoded size changes. The 2026 hierarchy work offers
+concrete topological progress measures \cite{Lackenby2026}, but importing
+one of them requires a proved correspondence with this triangulation and
+cocycle implementation. Boundary curve normalisation must count every
+parameter required by its algorithm; the simplification parameter in the
+current fast-curve theorem cannot be suppressed \cite{LackenbyCurves}.
+
+\paragraph{11. Prove a bit-size invariant through repairs and regauging.}
+Collapse-only transport has a nonincreasing edge-difference bound. Global
+regauging, LP extraction, expansions, and hierarchy repairs need a joint
+bound on integer and rational sizes. Establish a potential measuring
+encoding length as well as topological complexity. An algorithm may take
+few combinatorial steps but still create excessively large coordinates;
+counting arithmetic operations alone would miss that growth.
+
+\paragraph{12. Export matching and transition optimality certificates.}
+The general matching backend currently supplies a checked attained value
+without exporting an Edmonds dual. Add a producer for a sparse dual,
+including the integer scaling for minimum omissions, and verify it through
+the existing independent interface. For the two-cover case, a small
+certificate of the per-pole best endpoint choices should suffice. This is
+primarily a trust-boundary improvement; move correctness already has an
+independent geometric consumer.
+
+\paragraph{13. Test whole-policy effects on source-bound hard families.}
+The retained timing work fixes the same moves or the same candidate queries
+on both sides. The next experiment should compare complete policies with
+identical source diagrams, endpoint checks, and resource accounting. Include
+hard unknots, nontrivial knots escaping early filters, repeated expansions,
+and low-density stalls. Report failed budgets and regressions, not only
+successful reductions. Separate time to find a witness, certificate size,
+and independent replay time. No finite corpus alone supplies a worst-case
+theorem, but it can identify which missing lemma would have practical value.
+
+\paragraph{14. Close the cost ledger with explicit quantifiers.}
+The eventual target is a theorem covering every input diagram and every
+state required by a complete search, with bounded transition depth,
+branching, anchors, and bit sizes as in \eqref{eq:qp-ledger}. A resource-limited
+research module that returns an inconclusive status is useful engineering;
+it is not a total quasipolynomial decision algorithm. The most productive
+next theorem would bound a presently uncontrolled factor on a nontrivial,
+source-defined class and provide the certificate that makes that bound
+usable by the implementation.
+
