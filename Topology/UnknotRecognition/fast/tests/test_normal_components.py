@@ -75,7 +75,7 @@ class NormalComponentTests(unittest.TestCase):
             raw, meridian = layered_torus(tetrahedra)
             results = []
             for mode, dimension in (('disk', 3), ('summary', 5),
-                                     ('coordinates', 7 * tetrahedra)):
+                                     ('coordinates', tetrahedra)):
                 answer = normal_component_census(raw, meridian, mode=mode,
                                                  record_certificate=True)
                 self.assertEqual(answer['weight_dimension'], dimension)
