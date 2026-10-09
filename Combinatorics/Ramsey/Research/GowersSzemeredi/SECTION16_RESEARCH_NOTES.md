@@ -5793,6 +5793,25 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
     into exact zero relations at radius `ρ/K^O(1)`. The losses stay
     `exp(-poly)` provided `K` and the spectrum rank are polynomial.
     This would replace J.108–J.110.
+  - **Progress (2026-10-09).**
+    - `Proofs16WeakTransitivityLadder` proves the engine of Claims 4.3
+      and 4.4 for any relation family `R i` on a finite vertex set `S`.
+      Suppose `R` is weakly transitive against `R 1` with constant `c`:
+      `c·|S|` common `z` with `R i x z ∧ R 1 z y` give `R (i+1) x y`.
+      Then at least `η·|S|^m` chains of `m` intermediate `R 1`-steps, with
+      `2^m·c ≤ η`, give `R (m+1) x y` (`rel_of_chainCount`). The proof
+      averages over the last vertex, losing a factor `2` per step.
+    - `Proofs16FourWalkLadder` combines it with J.102 into Claim 4.3,
+      four-walk form (`rel_four_on_four_walk_set`). If `R 1` is
+      symmetric with ordered-edge density `δ` and `c ≤ δ^5/2^17`, a set of
+      `3δn/8` vertices has `R 4 u v` for all its pairs.
+      `chainCount_three_eq` identifies the chain count with
+      `graphFourWalks`.
+    - Still needed for Theorem 4.1: the difference-graph construction
+      (one graph per popular difference `d`, using `|X−X| ≤ K|X|`); the
+      union graph `P` and property (20); Claim 4.4 (Cauchy–Schwarz over
+      difference sequences, then the ladder again); and the final
+      pruning to `A′`.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
