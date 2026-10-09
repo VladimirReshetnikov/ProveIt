@@ -8140,3 +8140,92 @@ open entries, with the documented statement-fidelity qualifications.
 The port-scope check remains at 4,134 upstream and 17 compatibility
 modules, excluding reciprocal-only dependencies. The merged remote
 changes affect only the independent topology development.
+
+
+### J.129. Global coherent anchors and a fixed small index set
+
+Eleven modules prove twenty-six named results connecting the even-column
+core to the coherent-anchor construction, then retaining many whole
+quadruples under one small index set. The global construction starts with
+the original dense Freiman bihomomorphism and retains its column witness
+system; the compatibility, eight-column failure, and arrangement-density
+assumptions from J.128 are now discharged through that core.
+
+**Absorb the common spectrum.** On the retained core `P`,
+`coreColumnSpectrum` is `Gamma union T(x)` and `coreColumnMap` is `L(x)`.
+Outside `P` they are the empty spectrum and zero map. These extensions
+have a global spectrum-cardinality bound and normalized local Freiman
+linearity at the core radius. The common spectrum is therefore present
+on every supported column domain used below.
+
+The length-four even-core identity, applied in order
+`[q0,q1,q3,q2]`, proves compatibility of the two matched column
+differences. The length-eight identity, applied in order
+`[v0,v1,v2,v3,v5,v4,v7,v6]`, proves the required four-difference
+quadruple relation on the common quarter-radius domain. Consequently
+both `incompatibleAnchorQuadruples` and `columnTupleFailures` are empty
+for the supported families on `P`.
+
+**Global construction.** `coherent_anchor_system_of_even_core` chooses
+joint-selection tolerance `beta^16/10` for a core of density `beta`.
+The J.128 error budget and anchor averaging give density `beta^16/4`
+of coherent distinct-shift quadruples once `16 <= beta^16*N`.
+`HasCoherentAnchorSystem` records the actual selected state, its map-count
+budget, both global anchor functions, the quadruple family, and the local
+linearity and coherence identities. Every realized arrangement remains
+supported on `P`.
+
+`global_coherent_column_anchors` supplies this system from
+`global_even_zero_column_core` at maximum half-length four. Its parameters
+are explicit functions of the original density `alpha`: core density
+`globalEvenColumnZeroDensity alpha 4`, spectrum rank bound equal to the
+core common rank plus the original column spectrum cap, core radius, and
+modulus threshold equal to the maximum of the existing core threshold
+and `ceil(16/beta^16)`. The original witness system, full-radius column
+linearity, witness density, and core identities are retained in the
+conclusion. No additional original-column failure oracle is assumed.
+
+**Retain whole quadruples with common indices.** For a set of at most
+`K` indices among `m`, `boundedIndexCode` sorts its elements and pads to
+length `K` with `none`. Equality of codes implies equality of the sets.
+A finite double count selects a nonempty subfamily with one common set,
+losing at most `(m+1)^K`. Empty index sets and `m < K` require no special
+exception. This counts bounded sets rather than all `2^m` subsets.
+
+`joint_anchor_common_indices` chooses exact pair-frequency index sets
+from the actual joint state. The union for a quadruple has size at most
+`8*jointSelectionRank d r`. It retains a subfamily of the original
+quadruples with one such common union `J`; the actual selected frequencies
+at all four shifts lie in the image of `J`. Thus it preserves quadruple
+relations, not merely the number of individually retained shifts.
+
+`HasCoherentAnchorSystem.common_indices` restricts the anchor maps to
+Bohr domains defined by this same index set. These domains are subsets
+of the prior selected domains, so local linearity, normalization, and
+all retained coherence identities persist. The loss is at most
+`(m+1)^(8*rank)`. The proved map-count budget further yields the positive,
+modulus-independent density
+`kappa/(rank/jointSelectionGain delta d r + 1)^(8*rank)`, implemented as
+`uniformAnchorIndexDensity` and used in `common_indices_uniform`.
+
+**Quantitative and structural limits.** The even-core density preserves
+its existing elimination formula, with test density
+`1/(4*refinementCells(r/2)^(g+d))` and round count
+`ceil(log(M+1)/testDensity)`. No bound establishing that the resulting
+composite parameters satisfy the polynomial deep-structure budget has
+been proved here. This global structural construction must not be
+reported as a final Gowers-bound improvement.
+
+The selected frequency maps are Freiman maps on their own translated
+progressions. Membership in an original selected pair-index set gives
+domain membership for that shift; membership in the larger common `J`
+does not give membership in every map's domain at every retained shift.
+The Bohr restriction above is valid because the maps have total value
+functions, but further progression-domain work is required before using
+joint Freiman linearity or algebraic regularity for that fixed family.
+Agreement with sufficiently many original columns and the remaining
+deep-structure argument are also still required. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Verification.** The production closure checks 400 modules. Individual
+axiom checks and the final merged audit are recorded below.
