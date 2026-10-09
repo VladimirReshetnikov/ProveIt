@@ -1,0 +1,53 @@
+\subsection{Native validation and paired measurements}
+
+The pinned baseline is \code{aeb891e7159a}. The driver
+\code{weighted\_research/compact\_coordinates.py} records 442 current source
+and fixture hashes, separately records every baseline package hash, and checks
+that the source hashes do not change during a run. The dense baseline is
+loaded in an isolated package namespace from Git; it includes the same
+adaptive interval-merger implementation. The only changed pre-existing
+runtime modules are the component geometry, producer and verifier; the
+compact producer decoder is a new module.
+
+The frozen Regina 7.4 corpus contains 1,275 vectors over 45 triangulations.
+All three census modes and the normalized disc-count query pass 5,100 oracle
+comparisons and independent certificate replays. The extra compact audit
+checks full-summary equality against the dense predecessor on every vector,
+replays all 1,275 dense certificates with the current verifier, and confirms
+that every unweighted orbit proof is unchanged. The source-support type
+bounds pass on every corpus entry, including 252 inputs with nonorientable
+components. These are finite audit checks accompanying the proof above.
+The audit takes 35.548 seconds, including the additional predecessor runs;
+it overlaps the test suite and is not a performance measurement.
+
+The maintained suite passes all 1,125 tests in 220.141 seconds. After tests,
+audit, commit and publication finished, the benchmark ran serially for
+267.924 seconds. It uses six supplied surfaces, four shuffled arms (dense,
+compact, and an A/A copy of each), five measured rounds and one retained
+warm-up round. All 120 measured calls and 24 warm-ups complete successfully.
+Every timed call includes fresh source validation, coordinate-weight
+construction, orbit discovery, certificate production and independent replay.
+Fixture creation, serialization and cross-arm equality checks are outside
+the timers. Both arms return identical full component summaries. Raw samples,
+source pins and deduplicated full certificates are retained in
+\code{data/compact-coordinates-benchmark.json}.
+
+\input{tables/compact_coordinates.tex}
+
+At 128 tetrahedra, dimension falls from 896 to 128, and the initial and peak
+piecewise-constant weight-run count falls from 385 to 257. The underlying
+133 orbit cycles and 21,008 replay events are unchanged. Median total time
+falls from 15.970 seconds to 2.744 seconds; the median within-round ratio is
+$5.851$, which need not equal the ratio of separate medians. Certificate
+size falls from 2,504,362 to 1,867,476 bytes in the recorded compact JSON
+encoding. This is a complete full-coordinate-query comparison, not a
+comparison of different output modes.
+
+The corresponding paired gains are $2.413$ at 16 tetrahedra and $4.548$ at
+64. Dense A/A ratios range from $0.986$ to $1.014$ and compact A/A ratios
+from $0.993$ to $1.042$. The one-tetrahedron $1.035$ ratio is small enough
+that it should not be promoted as a meaningful gain. A triangle-only source
+with two vertex-link types improves by $1.331$; an eight-tetrahedron meridian
+scaled by $2^{1024}$ and supplemented with $2^{1024}+1$ vertex links improves
+by $1.705$. These are six supplied-source cases, not a universal speedup
+claim or new automatic unknot-recognition coverage.

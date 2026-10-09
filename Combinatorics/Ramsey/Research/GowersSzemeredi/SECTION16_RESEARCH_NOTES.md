@@ -4447,3 +4447,38 @@ incoming prime pattern-annulus specialization is included. The source
 ledger remains equal to the tracked 115 companions and five open
 entries, and the selected port-scope check passes. Upstream port sources
 and Apache provenance/license files remain unchanged.
+
+
+
+### Milićević's Theorem 1.4, Step 1 (Proposition 5.1) in Z/N (2026-10-09)
+
+**Lane note (claude session).** With [49]'s bilinear Bogolyubov being
+integrated in J.91–J.94, I am starting on the upstream end of
+Milićević's own proof of Theorem 1.4 (arXiv:2601.01682). Sections 5–7
+pass from a Freiman bihomomorphism to row maps with bounded-image
+alternating sums, then to 16-tuples, then to a progression index set.
+The source was read from the arXiv PDF: Proposition 5.1 is on pp. 53–54,
+Proposition 6.1 on p. 55, and the overview of Steps 1–8 on pp. 11–13.
+
+`Proofs16MilicevicColumns` proves the column step of Proposition 5.1 in
+prime `ℤ/N`, with polynomial losses in place of Milićević's
+quasi-polynomial Theorem 2.26.
+- `pairKey_fst_injOn`: for a Freiman 2-homomorphism, a pair's key
+  `(a − c, f a − f c)` is determined by `a − c`.
+- `phiAdditiveCount_ge_of_freimanHom2`: `|A|⁴ ≤ N·phiAdditiveCount A f`,
+  by Cauchy–Schwarz over at most `N` key fibres.
+- `column_freiman_bohr`: suppose `|A| = αN` and `f` is a Freiman
+  2-homomorphism on `A`. Corollary 7.6 (via
+  `lineFreimanExtraction_eight` at energy density `α⁴`) gives `B ⊆ A`
+  with `|B| ≥ 2⁻¹⁸⁸²α⁴⁶⁵⁶N` on which `f` is a Freiman 8-homomorphism.
+  Lemma 7.8 at constant radius then gives a spectrum `K` with
+  `|K| ≤ 16β⁻²`, where `β = |B|/N`, and a Freiman-linear `ψ` on
+  `B(K; 1/(8π))` with `f x − f y = ψ(x − y)` whenever `x − y` lies in
+  that Bohr set.
+
+Applied to the columns `y ↦ φ(x, y)` of a Freiman bihomomorphism, this
+is Proposition 5.1 (i)–(ii). Part (iii), bounded images of
+`φ_{x₁} − φ_{x₂} + φ_{x₃} − φ_{x₄}` for many quadruples of columns,
+comes next. It needs the Cauchy–Schwarz chain of p. 54 and Lemma 2.42,
+which says that a Freiman-linear map vanishing on a dense part of a Bohr
+set has a small image. Standard axioms only; collision gate clean.
