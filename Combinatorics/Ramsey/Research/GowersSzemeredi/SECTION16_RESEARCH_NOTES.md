@@ -8421,3 +8421,46 @@ open entries, with the existing statement-fidelity qualifications. The
 selected dependency scope remains 4,134 upstream and 17 compatibility
 modules. The reviewed incoming changes concern only the independent
 topology development; no Gowers dependency or licensing scope is added.
+
+
+### J.132. Additive translation into one proper progression
+
+**Whole-quadruple averaging.** For an additive family `Q` and any finite
+set `P`, `exists_additive_translation_count` constructs an additive
+translation `t` such that
+
+`|Q| * |P|^4 <= N^4 * |{a in Q : all j, a j - t j in P}|`.
+
+The proof counts pairs of additive quadruples and uses their first three
+coordinate differences as the translation code. The fourth difference
+is forced by additivity. The energy lower bound for `P` then supplies
+the fourth-power density loss. Recentring is injective on configurations,
+so all original quadruple properties can be pulled back without loss.
+The new centred entries need not be distinct; distinctness is retained
+for their original translates.
+
+**Actual proper progression and affine frequencies.** Apply this averaging
+to the proper progression inside the common frequency Bohr set at quarter
+radius. Its rank is at most `ceil(64*eta^(-2))+1`, where `eta` is the
+previous row-eight density. `joint_rows_on_proper_progression` retains
+quadruple density `eta * bohrProgressionDensity(rank,1/(8*pi))^4` and
+expresses every original row frequency as `c j i + psi j i (b j)`.
+Each `psi j i` is normalized and Freiman of order two on the entire same
+proper progression. The argument uses translation averaging, not an
+assumption that an independently chosen vertex cluster preserves energy.
+
+**Coherence on the new Bohr domains.** The fixed constants have a union
+of size at most eight times the selection rank. One row adds at most two
+times that rank in varying frequencies. Taking half the original radius
+makes these actual Bohr domains subsets of the selected original domains.
+`HasCoherentAnchorSystemOn.progression_rows` therefore retains all local
+Freiman maps, their normalization, the four-map coherence identity,
+original distinctness, and membership in the supplied arrangement family.
+`HasCoherentProgressionRows` records this full quantitative conclusion.
+
+All nine modules check in a 439-module production closure; the eighteen
+new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is added. The
+four row families still need the later regularity/BSG argument and a final
+quantitative budget. This does not close a numbered catalogue entry or
+improve the final Gowers threshold.
