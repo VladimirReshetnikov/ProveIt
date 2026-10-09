@@ -1296,6 +1296,17 @@ The variety route splits this into three steps.
    `Proofs16VarietySliceProvider` builds `Section16SliceProvider` from it.
    My parallel `Proofs16VarietyPieceJoint`, which landed two minutes later,
    duplicated the padding and was removed; git history keeps it.
+
+   **Coordination note: the slice-extraction input.** The peer's
+   `Proofs16VarietySliceProvider` assumes each sampled final-coordinate
+   section lies in the variety-piece class. Covering two-dimensional
+   product relations by such pieces, after removing θN² base points, is
+   exactly the conclusion of `structure_side_of_milicevic`. Every covering
+   piece satisfies `IsVarietyPiece D c` with c = θ/2/m(γ,θ/2), and the
+   count is K ≤ m·exp(B). Restricting a piece to a sub-domain stays in the
+   class (`IsVarietyPiece.mono`, `Proofs16VarietyGreedyCover`). What remains
+   is wiring these into the dimension-three slices, the analogue of
+   `Proofs16PartJSlices` for the general provider.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
