@@ -3887,3 +3887,10 @@ audits. The source ledger matches its tracked version, with 115
 companions and five open statements, and the selected port-scope check
 passes. The merged typical-codegree, complex-profile, and split-profile
 results are covered by the same three-axiom audit.
+
+A concurrent main update added `Proofs16RelationAveraging`: the popular
+witness pigeonhole step and the collision-pair Cauchy--Schwarz estimate.
+After the rejected main push, those results were reviewed, merged, and
+audited. The combined audit now passes for 6,641 public Gowers theorems
+in 5,026 modules (5,024 in the facade, including 4,152 OAI modules),
+with the same three allowed axioms and unchanged numbered-statement status.
