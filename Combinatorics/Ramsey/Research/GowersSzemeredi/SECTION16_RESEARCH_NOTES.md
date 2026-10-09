@@ -5626,6 +5626,13 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      added frequencies, random characters or `ε` loss.
      `IsFreimanLinearOn.const_mul` and `IsFreimanLinearOn.finset_sum`
      are the closure lemmas.
+   - *Audit of the BSG route (kernel-checked).*
+     `globalColumnQuadrupleDensity_ge` (`Proofs16ColumnBSGGrowth`):
+     `γ ≥ 2^(-30121)·(α/2)^74500 / 13^(4d)`. So
+     `log(1/γ) ≤ 4d·log 13 + O(log(1/α))`, polynomial in `1/α`, since
+     `d ≤ 16/β² + 1`. Every BSG loss downstream is polynomial in `γ`
+     and `α`. Compare the triple-exponential guarantee of the
+     model-elimination core.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)

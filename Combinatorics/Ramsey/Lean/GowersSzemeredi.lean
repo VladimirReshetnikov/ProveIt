@@ -872,6 +872,7 @@ import GowersSzemeredi.Proofs16ColumnZeroLadder
 import GowersSzemeredi.Proofs16GlobalColumnBSG
 import GowersSzemeredi.Proofs16GlobalColumnWords
 import GowersSzemeredi.Proofs16StepFourPrime
+import GowersSzemeredi.Proofs16ColumnBSGGrowth
 import GowersSzemeredi.Proofs16AbstractBSGWordBounds
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
 import GowersSzemeredi.Proofs16VarietyPieceBudget
