@@ -5663,13 +5663,40 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   the consumers cannot use the `E`-form directly (the readout (R) is not
   elementary). So the contract's `{0}` is right, and the cost of reaching
   it here comes from this pipeline's route, not from the target.
-- *Constrain rather than delete.* The pipeline removes nonzero additive
-  models by shrinking the column set (J.109), paying `β/10` per test. The
-  variety form has another resource: the bilinear constraints `L` of
-  `bilinearBohrVariety Γ Ψ L ρ`. A nonzero model could plausibly be
-  absorbed as a further constraint on the domain, as Milićević's bilinear
-  Bogolyubov step does. Each model would then cost a rank increment, not
-  a density factor.
+- *Constrain rather than delete: Milićević's own mechanism.* His
+  Proposition 8.1 (arXiv:2601.01682, printed pp. 61–62) reaches the zero
+  relation without touching the index set.
+  - **Hypothesis.** Freiman-linear maps `φ_x : B_x → H` are indexed by a
+    proper coset progression `C`, with Bohr sets of codimension `≤ d` and
+    radius `ρ`. Every alternating `2k`-sum takes **at most `K` values** on
+    the intersection of its domains.
+  - **Construction.** Draw `m = O(log(kK/(εc)))` random characters
+    `χ_i` of `H` and set `U_x = {y ∈ B_x : χ_i(φ_x(y)) ∈ (-1/20k, 1/20k) ∀ i}`.
+  - **Why it works.** A nonzero value `h` attained on `∩ U_{x_i}` must
+    have every `χ_i(h)` small, which has probability at most `2^(-m)`.
+    So all but an `ε` fraction of the chosen tuples vanish identically
+    on `∩ U_{x_i}`.
+  - **Cost.** `U_x` contains a Bohr set of codimension
+    `(2d·log(kK/(εc)))^O(1)` and radius `(2kd·log(1/ε))^(-O(1))` (his
+    Lemma 2.37). `C` is unchanged ("C is not modified by this choice").
+    His Step 6 (§10, abstract Balog–Szemerédi–Gowers) then passes from
+    `1-ε` of the tuples to all of them.
+  - **Comparison.** Here the cost of `K` nonzero values is
+    `O(log K)` extra frequencies. The present pipeline pays a column
+    factor `(β/10)` per test and `log M/β` tests.
+  - **Precondition.** The *bounded image* is decisive. A nonzero
+    Freiman-linear model has a large image, and constraining
+    `χ_i(f(y))` to be small leaves `f(y)` in a Bohr set of `H`, which
+    still contains nonzero elements unless `m ≈ log N`. So Proposition 8.1
+    does not apply to J.109's models directly. Milićević gets the bounded
+    image beforehand: `#Im ≤ K` for the alternating sums (his Steps 1–3,
+    §§5–7: a variant of rank-`O(1)` respectedness, abstract BSG and robust
+    Bogolyubov–Ruzsa onto `C`).
+
+  So the most direct redesign is to aim the J.108 stage at bounded-image
+  alternating sums rather than at a packing of linear models. Then a
+  Proposition 8.1 analogue can kill the nonzero values at polylog
+  codimension cost.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
