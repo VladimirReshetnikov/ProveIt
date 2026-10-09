@@ -9814,3 +9814,86 @@ the facade closure), using only `propext`, `Classical.choice`, and
 regenerated catalogue is byte-identical: 115 companion proofs and five
 open statements; this count does not certify fidelity to every printed
 statement. The selected-port scope check passes.
+
+### J.144. Individual tuple classes and the prime-group sampling step
+
+The direct original-data construction now groups fixed alternating-value
+tuples into bounded classes and supplies the sample used by Claim 6.3's
+almost-all tuple argument. It preserves the original witness system and
+column maps throughout.
+
+`fixedRelationWordRepresentations` places the compatible words in a common
+fixed-length type, preserving cardinality, entries, alternating value and
+endpoint identity. `column_tuple_class_cover` reuses the existing maximal
+disjoint-family argument. It selects `J` with `|J|·delta ≤ 1`, assigns each
+tuple to a representative, and proves pairwise identities inside a class.
+The two kernel costs use only a fixed number of columns:
+
+```
+s = refinementKernelRadius (2*(k+1)*d) (3*(k+1)*d) rho rword,
+t = refinementKernelRadius (2*(k+1)*d) ((k+1)*d) rho s.
+```
+
+`global_column_tuple_classes` instantiates this from the original dense
+bihomomorphism, with the J.143 word density and endpoint radius. Each
+representative has its own spectrum of size at most `(k+1)*d`, normalized
+Freiman-linear map, and a class label. The number of representatives does
+not enter either kernel radius. No union of all model spectra is formed.
+
+**Finite sampling counts.** `linear_sample_preimage_card_le` recovers one
+sample coordinate from a nonzero linear combination, proving
+`# {e : Fin r → ZMod N | sum_i c_i e_i ∈ Z} ≤ |Z| N^(r-1)`.
+Union over the at most `3^r` nonzero ternary coefficient vectors gives
+`ternary_samples_meeting_card_le`. Boolean subsum collisions are a special
+case with `Z = {0}`, giving at most `3^r N^(r-1)` colliding samples.
+
+`sample_retention_sum_ge` counts retained indices through product domains.
+`sample_bad_indices_sum_le` counts sparse-kernel tuple events by signed
+subsums. `exists_sample_of_mean_bounds` combines the two estimates with a
+collision penalty in one finite weighted average. It produces a sample
+with many retained indices, few bad tuples and no Boolean collisions.
+
+`prime_group_sample_selection` and `bohr_sample_selection` give the
+explicit statement. If `|X| ≥ bN`, every sample domain has density at least
+`beta`, kernel sets have size at most `eta N`, and `|Q| ≤ N^m`, it suffices
+that
+
+```
+8·3^r·eta ≤ epsilon·b·beta^r,
+8·3^r ≤ b·beta^r·N.
+```
+
+Then the retained set has size at least `b·beta^r N/2`, the Boolean cube has
+`2^r` distinct points, and at most `epsilon N^m/2` original tuples hit a
+kernel by a nonzero signed coefficient vector. The retained density does
+not depend on `epsilon`. The Bohr specialization uses `beta = 1/q^d` and
+`1 ≤ tau q` with a common rank bound `d`.
+
+**Original-data sample.** `columnAnchorFibre_card_le` proves the exact
+ambient budget `N^k` for `(k+1)`-tuples with a fixed alternating value.
+`sparseColumnTuples` is the additive fibre whose local tuple zero level has
+at most `eta N` points. `global_column_tuple_sample_system` constructs all
+of this from the original dense bihomomorphism. Put
+
+```
+b = absBsgEps (globalColumnQuadrupleDensity alpha) 1,
+tau = globalColumnTupleClassRadius alpha k/(100r),
+q = ceil(1/tau),  beta = 1/q^d,
+eta = epsilon·b·beta^r/(8·3^r).
+```
+
+Its explicit modulus threshold covers the class construction, `N ≥ 7`,
+and `N ≥ 8·3^r/(b·beta^r)`. It is independent of `epsilon`, as is the
+retained density `b·beta^r/2`. The output retains original witnesses,
+individual model spectra, class labels and identities; the bad-tuple bound
+is measured on the original index set, before retention.
+
+For `k = 15`, this is the sampling step for additive 16-tuples. Remaining
+work in Proposition 6.1 is to choose representative tuples in classes that
+meet the retained set outside the bad family, separate their finite
+sample-value sets by a logarithmic number of characters, take a popular
+box of column values, and turn the resulting dense tuple zero levels into
+image bounds. The robust Bogolyubov–Ruzsa progression step and subsequent
+structure arguments remain open, as does the final printed numerical
+comparison. No numbered catalogue entry or final bound improvement is
+claimed here. No upstream code is ported at this checkpoint.
