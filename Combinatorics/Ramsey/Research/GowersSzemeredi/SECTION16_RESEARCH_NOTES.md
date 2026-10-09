@@ -1395,6 +1395,35 @@ the elementary lemmas of its §2:
   bilinear Bogolyubov argument (Theorem 1.6), the first substantial
   component.
 
+**Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
+2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
+2 Coset progressions and Freiman homomorphisms; 3 Variants of Freiman's
+theorem; 4 Bohr sets; 5 Quantitative fundamental theorem of lattices;
+6 Quasirandomness of bilinear Bohr varieties; 7 the argument;
+App. A robust Bogolyubov–Ruzsa; App. B quasirandom bipartite graphs.
+- Step 1, row Bogolyubov: a quasi-polynomial one-dimensional Bogolyubov.
+  **Available in the OAI port:** `exists_quartic_bogolyubov`
+  (`LocalizedSiftingAlmostPeriods.lean`), with rank ≤ 1 + C(p+1)⁴ and
+  radius ≥ e^(−C(p+1)) inside 2A − 2A at density e^(−p).
+- Step 2, the Freiman-linear maps L_i: a random selection f(y) ∈ U_y,
+  averaging, then Theorem 17 (quadruple-respecting map → Freiman
+  homomorphism on a proper coset progression, via BSG and
+  Plünnecke–Ruzsa), iterated up to exp(log^O(1)) times (Lemma 19,
+  Corollary 20). Theorem 17 is Theorem 2.26 of the U⁴ paper.
+- Step 3, columns: Bogolyubov on Y′, then the algebraic regularity lemma
+  (Theorem 4), bipartite quasirandomness (App. B), and the lattice theorems
+  (Theorems 5 and 6), which replace (U ∩ V)^⊥ = U^⊥ + V^⊥.
+- Difference-operator order: D_hor D_ver D_ver D_hor D_ver D_hor D_hor A.
+
+Scale: Theorem 1.6 alone is a substantial formalization project. It is
+only the first of Theorem 1.4's ingredients (§§5–13 of the U⁴ paper add
+abstract BSG, the extension theory, and §11's Freiman-bilinear step).
+Discharging `MilicevicDeepVarietyStructure` is therefore months of work,
+not a session. Per J.5, polynomial rather than quasi-polynomial bounds
+would still fit Theorem 16.2's budget, so a weaker-bound formalization
+(classical Bogolyubov, Gowers's Freiman lemma in `Proofs07BohrHom`) is
+a legitimate shortcut wherever it applies.
+
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
 Part J's `PolyBoundedControl` hypotheses exist only because of the factor
