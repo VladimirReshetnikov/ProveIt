@@ -1259,14 +1259,103 @@ The variety route splits this into three steps.
    - **Chain closed.** `structure_side_of_line_and_milicevic` gives the
      covering half of `StackableStructureAt 2` from exactly two hypotheses:
      `LineFreimanExtraction κ` (Theorem 2.26: Sanders, quasi-polynomial κ)
-     and `MilicevicDeepVarietyStructure D`. Both are published theorems, or
-     faithful consequences of them, and both are stated as Props. With
-     quasi-polynomial κ, the piece count is quasi-polynomial in 1/(γθ).
+     and `MilicevicDeepVarietyStructure D`. Both remain unproved hypotheses
+     here. The line input is intended to follow from the cited theorem;
+     the deep-agreement form is our reformulation, not a quoted statement,
+     and its precise derivation is still a separate obligation. With a
+     quasi-polynomial κ satisfying the line input, the piece count is
+     quasi-polynomial in 1/(γθ).
+   - **Theorem 2.26 removed (same night, `Proofs16LineExtractor`).**
+     Gowers's product property is stronger than energy: it holds on every
+     sub-domain, for every weight, and for p copies at once. A line
+     restriction therefore inherits the one-dimensional property, and the
+     corpus's own Lemma 16.3 step (`section16_product_restriction`) applies.
+     It gives an order-8 Freiman restriction on ≥ α(γ,β)N points, with the
+     **polynomial** α = 2⁻²⁰⁰⁰(γβ)¹⁰⁰⁰⁰. So:
+     - `lineExtractor_polynomial` is unconditional;
+     - `densePiece_polynomial`: `DenseBihomPiece` holds unconditionally, with
+       polynomial mass;
+     - `structure_side_of_milicevic`: **the covering half of
+       `StackableStructureAt 2` rests on `MilicevicDeepVarietyStructure`
+       alone**. That is our reformulation of Milićević's construction, not a
+       quoted theorem; see the caveat above. The piece count is m·exp(B(θ/(2m))) with polynomial m, so
+       it is quasi-polynomial in 1/(γθ) through Milićević's B.
+
+     The dense-piece proof was refactored onto an abstract `LineExtractor`
+     (line product property in, Freiman sub-line out). The energy route is
+     now the instance `lineExtractor_of_lineFreimanExtraction`, with the
+     same mass as before.
+
+   **Remaining for `StackableStructureAt 2`:** Milićević's theorem (a
+   hypothesis), and stackability of the variety class (step 3).
+
+   **Adapter to the joint cover: done by the peer.**
+   `Proofs16JointVarietyUniform` pads phases (`padFreimanPhases`,
+   `bilinearBohrVariety_pad`). `Proofs16VarietyPieceFamilyCover` covers any
+   finite family of `IsVarietyPiece` graphs with 9n maps.
+   `Proofs16VarietySliceProvider` builds `Section16SliceProvider` from it.
+   My parallel `Proofs16VarietyPieceJoint`, which landed two minutes later,
+   duplicated the padding and was removed; git history keeps it.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
    They should feed the polynomial lift's general `Section16SliceProvider`
    controls (J.2 heads-up), not `CubicStackableClass`.
+
+### J.5 Budget check: the variety route against `Theorem162At 3` (2026-10-08)
+
+**Targets.** `Theorem162At 3` asks for `MultiplyLinear γ r` with
+r = γ⁻²·multipleS(θ,γ,3) = γ⁻²(2/(θγ))^(2^512). That unfolds to
+`MultiplyLinearWith` with, at loss θ′:
+- count ≤ multipleQ(θ′/r, γ, 3)^r = (γθ′/r)^(−2^2048·r);
+- width exponent ≥ multipleC(θ′/r, γ, 3)^r = (γθ′/r)^(2^2048·r).
+
+So the count may be exp(Θ(r·log r)), and the exponent may be as small as
+exp(−Θ(r·log r)), with r polynomial in 1/(θγ) of degree 2^512.
+
+**What the structure side produces (J.4, all kernel-checked except the
+Milićević hypothesis).**
+- One-step mass. α(γ,β) = 2⁻²⁰⁰⁰(γβ)¹⁰⁰⁰⁰ is nested twice:
+  `densePieceMassGen` ≈ α(γ, α(γ,θ/2)θ/4)·α(γ,θ/2)θ/4 ≈ (γθ)^(10⁸+O(10⁴)),
+  up to 2^(−O(10⁷)) constants.
+- Family size m ≈ γ⁻²/mass, so polynomial in 1/(γθ) of degree ≈ 10⁸.
+- Pieces: K ≤ m·exp(B), with B = milicevicBound D (θ/(2m)) =
+  (2 + 2 log(2m/θ))^D ≈ (2·10⁸·log(1/(γθ)))^D.
+- Stacking n pieces (peer's joint cover): count 9n. The capped exponent is
+  ≥ 1/(1024p²(4C+18)(B+2)^17) per piece, and joint covers give
+  degree ≈ 17 in n·B (`Proofs16FreimanVarietyCapBound`).
+
+**Comparison.**
+- *Exponents:* 1/poly(n·B) is quasi-polynomial in 1/(γθ), far above the
+  allowed exp(−Θ(r log r)).
+- *Counts:* m·exp(B) = exp(O(log(1/(γθ)))^D). This sits below
+  exp(Θ(r log r)) for all γθ ∈ (0,1] **provided Milićević's unspecified
+  exponent D is not astronomically large**. Since
+  (log y)^D ≤ (D/e)^D·y, it suffices that
+  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). That holds for every D up to about
+  2^500, and the paper's O(1) is certainly far below that.
+- The lift's own losses come in on top: samples ≈ poly(1/σ), counts
+  C(samples, 2)·Pb², and the threshold. In the peer's polynomial lift they
+  are polynomial in the slice controls, so they do not change the
+  comparison's shape.
+
+**Caveat.** This is an order-of-magnitude comparison, not a formal
+inequality. The formal obstacle stays the interface: Part J's
+`CubicStackableClass` (degree-4 controls) and `PolyBoundedControl`
+(polynomial bounds) are stricter than the catalogue's own `Theorem162At 3`
+budget. A Part J restated with the polynomial lift's general slice
+controls, plus quasi-polynomial counts, is what the variety route can feed.
+
+**Which lift (checked same night).** It has to be the peer's polynomial
+lift, not Gowers's. Gowers's lift costs a factor 576^(−24n) in the exponent
+(J.3). With quasi-polynomial n = exp(L^D), where L = log(1/(γθ)), that
+factor is exp(−Θ(exp(L^D))). The budget allows exp(−Θ(r log r)) with
+log r ≈ 2^512·L. Once L^(D−1) > 2^512, exp(L^D) beats r, so Gowers's lift
+breaks the budget for extremely small γθ. Polynomial n is exactly what
+`PolyBoundedControl` encodes. The Part J chain (`Proofs16PartJ*`) is
+OAI-free and builds locally, but it is wired to Gowers's lift. The
+restatement on the polynomial lift imports OAI through
+`Proofs05SchmidtRecurrence`, so it belongs on the full-verification host.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
@@ -1925,3 +2014,73 @@ production check but is beyond this audited prefix. Provenance checks
 retain all 4,134 pinned hashes, notices for 976 adapted files, and the
 original license/copyright notices. The full density conclusion remains
 unverified.
+
+### One-piece reduction and 3,900-entry audit checkpoint
+
+`Proofs16BihomPieceReduction` now passes the full audit on this host. The
+combined audit checks 5,854 public Gowers theorems in 2,648 modules; the
+facade reaches 1,412 modules, including 667 OAI modules. The extraction
+step remains the explicit `DenseBihomPiece` hypothesis. The catalogue
+remains 114/6 with its existing source-fidelity caveats.
+
+The 3,900-entry port checkpoint passes over 3,916 build modules. Its
+separate 3,917-module audit checks 58,849 public OAI theorems and the listed
+compatibility declarations. Only the three approved axioms occur. This
+now includes both the relative-patch finite-set repair and the redundant
+CRT tactic repair. The full density conclusion remains unverified.
+
+### Shared partitions and covers for translated variety families
+
+The four `Proofs16JointVariety*` modules now construct a common partition
+for `n` translated varieties, each with `r` mixed phases. The linear stage
+uses the union of all horizontal frequencies and the union of all vertical
+frequencies. Let `s` be the sum of those two union cardinalities. On each
+linear-stage cell, the mixed phases of varieties whose deep translates
+miss the cell are replaced by zero; all remaining phases are multilinear
+there. One simultaneous partition therefore uses `n*r` mixed phases.
+The cell proof handles independent translations and different radii.
+
+For a common radius lower bound `delta>0`, set
+`D0=(p*(n*r+1)^8)*(p*(s+1)^8)`. The large-box profile has exponent
+`1/(2*D0)` and integer threshold
+`max(C*(s+n*r+1),ceil(16/delta))^(2*D0)`. Every cell is good for every
+translated variety. One multilinear map per member covers the union
+on each large cell. Its fibres have cardinality at most `n`, so the
+coarse small-box cover gives `9*n` maps, with the usual capped positive
+exponent. This is one common partition, without sequential exponent
+multiplication. The count and exponent are independent of the allowed
+loss. The statement also handles the empty family.
+
+All four production sources and all seven new transitive axiom checks
+pass. The full facade audit is queued. Uniform rank padding and the
+packaging as a general slice provider remain further steps; no missing
+extraction or deep-structure hypothesis is asserted. These consumers
+reuse the scoped recurrence and add no upstream modules.
+
+### Uniform variety-piece families supply the general slice provider
+
+`Proofs16JointVarietyUniform` zero-pads each member's mixed phases to a
+common upper rank, proves that both full and half-radius varieties are
+unchanged, and bounds the union of linear frequencies by the sum of the
+member ranks. Its cover therefore depends only on common rank bounds
+and a positive radius lower bound, with count `9*n` for a family of size
+`n`. The original ranks may differ.
+
+`Proofs16VarietyPieceFamilyCover` chooses the data stored by each
+`IsVarietyPiece D c` and uses `R=ceil(milicevicBound D c)`, linear rank
+bound `2*R`, and radius lower bound `exp(-milicevicBound D c)`. Arbitrary
+finite families of their graphs receive one simultaneous cover.
+`Proofs16VarietySliceProvider` then constructs `Section16SliceProvider`
+for every sampled family of final-coordinate sections, assuming each
+section belongs to this class. It proves `Section16SliceProviderRanges`
+as well: for positive sample size, the count is at least one and the
+exponent lies in `(0,1]`. This supplies the general provider used by the
+polynomial affine lift, without forcing its exponent into the older
+cubic class interface. Extraction of such slices is still separate.
+
+All seven joint-family/provider production modules and the incoming
+line-wise-to-bihomomorphism reduction pass the completed combined audit:
+5,892 public Gowers theorems, a 1,420-module facade (667 OAI), and 2,656
+combined modules. Only the three approved axioms occur. The catalogue
+remains 114/6 with its source-fidelity caveats. The earlier queued-audit
+notices for these modules are superseded by this checkpoint.

@@ -31,7 +31,13 @@ stated as a hypothesis.
 `δ₂ = γ⁸(κ(δ₁)θ/4)⁴`. With `bihomExtraction_of_densePiece` and
 `variety_structure_side`, the covering half of `StackableStructureAt 2` then
 rests on two inputs: `LineFreimanExtraction` and
-`MilicevicDeepVarietyStructure`. -/
+`MilicevicDeepVarietyStructure`.
+
+The proof is written for an abstract `LineExtractor`, which takes a line
+product property rather than raw energy (`densePiece_of_lineExtractor`). The
+energy-based input is one instance (`lineExtractor_of_lineFreimanExtraction`).
+`Proofs16LineExtractor` supplies an unconditional polynomial instance from
+Gowers's own Lemma 16.3 step. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -157,16 +163,81 @@ def densePieceDelta₂ (κ : Real → Real) (γ θ : Real) : Real :=
 def densePieceMass (κ : Real → Real) (γ θ : Real) : Real :=
   κ (densePieceDelta₂ κ γ θ) * κ (densePieceDelta₁ γ θ) * θ / 4
 
-/-- **The single extraction step from the line-wise Freiman input.** -/
-theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtraction κ) :
-    DenseBihomPiece (densePieceMass κ) := by
+/-- The one-dimensional product property of a line map `g` on `R`, for every
+sub-domain `E ⊆ R` and every nonnegative weight. With `p = 0` no line is
+involved, and `E` is arbitrary, as in Gowers's definition. -/
+def LineProductProperty {N : Nat} [NeZero N] (γ : Real) (R : Finset (ZMod N))
+    (g : ZMod N → ZMod N) : Prop :=
+  ∀ (p : Nat) (E : Finset (ZMod N)) (w : ZMod N → Real), (0 < p → E ⊆ R) → (∀ x, 0 ≤ w x) →
+    γ ^ (8 * p) * (N : Real)⁻¹ * (∑ x ∈ E, w x) ^ 4 ≤
+      weightedSimultaneousAdditiveEnergy E w (fun _ : Fin p => g)
+
+/-- **A line extractor**: a line map with the product property on a set of
+`≥ βN` points is Freiman-linear on `≥ κ'(γ,β)N` of them. -/
+def LineExtractor (κ' : Real → Real → Real) : Prop :=
+  (∀ γ β : Real, 0 < γ → γ ≤ 1 → 0 < β → 0 < κ' γ β) ∧
+  ∀ (N : Nat) [NeZero N] [Fact N.Prime] (γ : Real), 0 < γ → γ ≤ 1 →
+    ∀ (R : Finset (ZMod N)) (g : ZMod N → ZMod N) (β : Real), 0 < β →
+      β * N ≤ R.card → LineProductProperty γ R g →
+      ∃ E' ⊆ R, κ' γ β * N ≤ E'.card ∧ IsFreimanLinearOn E' g
+
+/-- Rows inherit the line product property. -/
+theorem lineProductProperty_row {N : Nat} [NeZero N] {B : Finset (Point N 2)}
+    {φ : Point N 2 → ZMod N} {γ : Real} (h : HasProductProperty B φ γ) (b : ZMod N)
+    (R : Finset (ZMod N)) (hR : ∀ a ∈ R, pairPoint (a, b) ∈ B) :
+    LineProductProperty γ R (fun a => φ (pairPoint (a, b))) := by
+  intro p E w hE hw
+  have hfun : (fun _ : Fin p => fun a => φ (pairPoint (a, b))) =
+      fun i => coordinateRestriction φ ((fun _ : Fin p => pairPoint ((0 : ZMod N), b)) i) 0 := by
+    funext i a
+    simp only [coordinateRestriction, replaceCoordinate_row]
+  rw [hfun]
+  exact h p 0 (fun _ => pairPoint ((0 : ZMod N), b)) E w hw fun i x hx => by
+    rw [replaceCoordinate_row]; exact hR x (hE (Fin.pos i) hx)
+
+/-- Columns inherit the line product property. -/
+theorem lineProductProperty_col {N : Nat} [NeZero N] {B : Finset (Point N 2)}
+    {φ : Point N 2 → ZMod N} {γ : Real} (h : HasProductProperty B φ γ) (a : ZMod N)
+    (R : Finset (ZMod N)) (hR : ∀ b ∈ R, pairPoint (a, b) ∈ B) :
+    LineProductProperty γ R (fun b => φ (pairPoint (a, b))) := by
+  intro p E w hE hw
+  have hfun : (fun _ : Fin p => fun b => φ (pairPoint (a, b))) =
+      fun i => coordinateRestriction φ ((fun _ : Fin p => pairPoint (a, (0 : ZMod N))) i) 1 := by
+    funext i b
+    simp only [coordinateRestriction, replaceCoordinate_col]
+  rw [hfun]
+  exact h p 1 (fun _ => pairPoint (a, (0 : ZMod N))) E w hw fun i x hx => by
+    rw [replaceCoordinate_col]; exact hR x (hE (Fin.pos i) hx)
+
+/-- The energy-based input gives a line extractor. -/
+theorem lineExtractor_of_lineFreimanExtraction {κ : Real → Real} (hκ : LineFreimanExtraction κ) :
+    LineExtractor (fun γ β => κ (γ ^ 8 * β ^ 4)) := by
+  obtain ⟨hpos, hline⟩ := hκ
+  refine ⟨fun γ β hg _ hb => hpos _ (by positivity), ?_⟩
+  intro N _ _ γ hg _ R g β hb hR hLP
+  have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hE := hLP 1 R (fun _ => 1) (fun _ => subset_rfl) fun _ => zero_le_one
+  simp only [Finset.sum_const, nsmul_eq_mul, mul_one, Nat.mul_one] at hE
+  apply hline N R g _ (by positivity)
+  refine le_trans ?_ hE
+  have h4 : (β * N) ^ 4 ≤ (R.card : Real) ^ 4 := pow_le_pow_left₀ (by positivity) hR 4
+  have : γ ^ 8 * (N : Real)⁻¹ * (β * N) ^ 4 = γ ^ 8 * β ^ 4 * (N : Real) ^ 3 := by
+    field_simp
+  rw [← this]
+  exact mul_le_mul_of_nonneg_left h4 (by positivity)
+
+/-- The mass of the single extraction step from a line extractor. -/
+def densePieceMassGen (κ' : Real → Real → Real) (γ θ : Real) : Real :=
+  κ' γ (κ' γ (θ / 2) * θ / 2 / 2) * (κ' γ (θ / 2) * θ / 2 / 2)
+
+/-- **The single extraction step from a line extractor.** -/
+theorem densePiece_of_lineExtractor {κ' : Real → Real → Real} (hκ : LineExtractor κ') :
+    DenseBihomPiece (densePieceMassGen κ') := by
   obtain ⟨hκpos, hline⟩ := hκ
-  intro γ θ hg _ ht _
-  have hδ₁ : 0 < densePieceDelta₁ γ θ := by unfold densePieceDelta₁; positivity
-  have hκ₁ := hκpos _ hδ₁
-  have hδ₂ : 0 < densePieceDelta₂ κ γ θ := by unfold densePieceDelta₂; positivity
-  have hκ₂ := hκpos _ hδ₂
-  refine ⟨by unfold densePieceMass; positivity, 0, fun N _ _ _ Delta _ hprod hproj => ?_⟩
+  intro γ θ hg hg1 ht _
+  have hκ₁ := hκpos γ (θ / 2) hg hg1 (by positivity)
+  have hκ₂ := hκpos γ (κ' γ (θ / 2) * θ / 2 / 2) hg hg1 (by positivity)
+  refine ⟨by unfold densePieceMassGen; positivity, 0, fun N _ _ _ Delta _ hprod hproj => ?_⟩
   have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   -- selection
   let φ : Point N 2 → ZMod N := fun x => if h : ∃ y, (x, y) ∈ Delta then h.choose else 0
@@ -195,27 +266,9 @@ theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtr
     (by rw [← card_eq_sum_rows, hSP]; exact hproj)
     (by
       intro b hb
-      have hE := line_energy_of_productProperty (hprod P φ hsel) (pairPoint ((0 : ZMod N), b)) 0
-        (Finset.univ.filter fun a => (a, b) ∈ S) (by
-          intro a ha
-          rw [replaceCoordinate_row]
-          exact (Finset.mem_filter.mp (Finset.mem_filter.mp ha).2).2)
-      have henergy : densePieceDelta₁ γ θ * (N : Real) ^ 3 ≤
-          weightedSimultaneousAdditiveEnergy (Finset.univ.filter fun a => (a, b) ∈ S) (fun _ => 1)
-            (fun _ : Fin 1 => fun a => ψ (a, b)) := by
-        have hfun : (fun a => ψ (a, b)) = coordinateRestriction φ (pairPoint ((0 : ZMod N), b)) 0 := by
-          funext a
-          simp only [ψ, coordinateRestriction, replaceCoordinate_row]
-        rw [hfun]
-        refine le_trans ?_ hE
-        have h4 : (θ / 2 * N) ^ 4 ≤ (((Finset.univ.filter fun a => (a, b) ∈ S).card : Real)) ^ 4 :=
-          pow_le_pow_left₀ (by positivity) hb 4
-        unfold densePieceDelta₁
-        have : γ ^ 8 * (N : Real)⁻¹ * (θ / 2 * N) ^ 4 = γ ^ 8 * (θ / 2) ^ 4 * (N : Real) ^ 3 := by
-          field_simp
-        rw [← this]
-        exact mul_le_mul_of_nonneg_left h4 (by positivity)
-      exact hline N _ _ _ hδ₁ henergy)
+      exact hline N γ hg hg1 _ _ (θ / 2) (by positivity) hb
+        (lineProductProperty_row (hprod P φ hsel) b _ fun a ha =>
+          (Finset.mem_filter.mp (Finset.mem_filter.mp ha).2).2))
   -- the surviving set after the row pass
   let A₁ : Finset (ZMod N × ZMod N) := Finset.univ.filter fun q => q.2 ∈ G ∧ q.1 ∈ Er q.2
   have hA₁S : A₁ ⊆ S := by
@@ -223,9 +276,9 @@ theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtr
     obtain ⟨hqG, hqE⟩ := (Finset.mem_filter.mp hq).2
     have h := (Finset.mem_filter.mp ((hEr q.2 hqG).1 hqE)).2
     simpa using h
-  have hA₁card : densePieceDelta₁ γ θ = densePieceDelta₁ γ θ ∧
-      κ (densePieceDelta₁ γ θ) * θ / 2 * (N : Real) ^ 2 ≤ A₁.card := by
-    refine ⟨rfl, ?_⟩
+  have hA₁card : True ∧
+      κ' γ (θ / 2) * θ / 2 * (N : Real) ^ 2 ≤ A₁.card := by
+    refine ⟨trivial, ?_⟩
     rw [card_eq_sum_rows]
     refine hErsum.trans (le_of_eq_of_le rfl ?_)
     calc ∑ b ∈ G, ((Er b).card : Real) ≤ ∑ b, ((Er b).card : Real) * (if b ∈ G then 1 else 0) := by
@@ -255,7 +308,7 @@ theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtr
               exact hb (Finset.mem_filter.mp ha).2.1
             rw [this, Finset.card_empty, Nat.cast_zero]
   -- column pass
-  let τ := κ (densePieceDelta₁ γ θ) * θ / 2
+  let τ := κ' γ (θ / 2) * θ / 2
   let P₁ : Finset (Point N 2) := A₁.image pairPoint
   have hsel₁ : ∀ x ∈ P₁, (x, φ x) ∈ Delta := by
     intro x hx
@@ -267,30 +320,9 @@ theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtr
     (by rw [← card_eq_sum_cols]; exact hA₁card.2)
     (by
       intro a ha
-      have hE := line_energy_of_productProperty (hprod P₁ φ hsel₁) (pairPoint (a, (0 : ZMod N))) 1
-        (Finset.univ.filter fun b => (a, b) ∈ A₁) (by
-          intro b hb
-          rw [replaceCoordinate_col]
-          exact Finset.mem_image_of_mem _ (Finset.mem_filter.mp hb).2)
-      have henergy : densePieceDelta₂ κ γ θ * (N : Real) ^ 3 ≤
-          weightedSimultaneousAdditiveEnergy (Finset.univ.filter fun b => (a, b) ∈ A₁) (fun _ => 1)
-            (fun _ : Fin 1 => fun b => ψ (a, b)) := by
-        have hfun : (fun b => ψ (a, b)) = coordinateRestriction φ (pairPoint (a, (0 : ZMod N))) 1 := by
-          funext b
-          simp only [ψ, coordinateRestriction, replaceCoordinate_col]
-        rw [hfun]
-        refine le_trans ?_ hE
-        have hτ2 : τ / 2 * N = κ (densePieceDelta₁ γ θ) * θ / 4 * N := by ring
-        have h4 : (κ (densePieceDelta₁ γ θ) * θ / 4 * N) ^ 4 ≤
-            (((Finset.univ.filter fun b => (a, b) ∈ A₁).card : Real)) ^ 4 :=
-          pow_le_pow_left₀ (by positivity) (hτ2 ▸ ha) 4
-        unfold densePieceDelta₂
-        have : γ ^ 8 * (N : Real)⁻¹ * (κ (densePieceDelta₁ γ θ) * θ / 4 * N) ^ 4 =
-            γ ^ 8 * (κ (densePieceDelta₁ γ θ) * θ / 4) ^ 4 * (N : Real) ^ 3 := by
-          field_simp
-        rw [← this]
-        exact mul_le_mul_of_nonneg_left h4 (by positivity)
-      exact hline N _ _ _ hδ₂ henergy)
+      exact hline N γ hg hg1 _ _ (τ / 2) (by positivity) ha
+        (lineProductProperty_col (hprod P₁ φ hsel₁) a _ fun b hb =>
+          Finset.mem_image_of_mem _ (Finset.mem_filter.mp hb).2))
   -- the final domain
   let A₂ : Finset (ZMod N × ZMod N) := Finset.univ.filter fun q => q.1 ∈ H ∧ q.2 ∈ Ec q.1
   have hA₂A₁ : A₂ ⊆ A₁ := by
@@ -334,15 +366,29 @@ theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtr
                 exact ha (Finset.mem_filter.mp hb).2.1
               rw [this, Finset.card_empty, Nat.cast_zero]
         _ = _ := rfl
-    have heq : densePieceMass κ γ θ * (N : Real) ^ 2 =
-        κ (densePieceDelta₂ κ γ θ) * τ / 2 * (N : Real) ^ 2 := by
-      unfold densePieceMass
+    have heq : densePieceMassGen κ' γ θ * (N : Real) ^ 2 =
+        κ' γ (τ / 2) * τ / 2 * (N : Real) ^ 2 := by
+      unfold densePieceMassGen
       ring
     rw [heq]
     exact hEcsum.trans hsum
   · -- inside the relation
     intro q hq
     exact hsel _ (Finset.mem_filter.mp (hA₁S (hA₂A₁ hq))).2
+
+
+/-- **The single extraction step from the line-wise Freiman input.** -/
+theorem densePiece_of_lineExtraction {κ : Real → Real} (hκ : LineFreimanExtraction κ) :
+    DenseBihomPiece (densePieceMass κ) := by
+  have h := densePiece_of_lineExtractor (lineExtractor_of_lineFreimanExtraction hκ)
+  have heq : densePieceMassGen (fun γ β => κ (γ ^ 8 * β ^ 4)) = densePieceMass κ := by
+    funext γ θ
+    unfold densePieceMassGen densePieceMass densePieceDelta₂ densePieceDelta₁
+    have e1 : κ (γ ^ 8 * (θ / 2) ^ 4) * θ / 2 / 2 = κ (γ ^ 8 * (θ / 2) ^ 4) * θ / 4 := by ring
+    rw [e1]
+    ring
+  rw [heq] at h
+  exact h
 
 /-- **The covering half of `StackableStructureAt 2` from two inputs:**
 the line-wise Freiman input (Theorem 2.26 of arXiv:2601.01682) and the
