@@ -6126,3 +6126,110 @@ modules (5,160 for the facade, including 4,152 OAI modules), using only
 `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
 identical at 115 companions and five open entries; the selected-port scope
 check passes. There are no new upstream ports or provenance changes.
+
+
+### J.111. Quantitative shifted agreement on the smaller column domain
+
+The agreement obligation left in J.110 is now proved for the constructed
+column domains. The original map is recovered after a common vertical
+shift and addition of its values on the selected source row. No separate
+witness-selection or agreement hypothesis remains in the global theorem.
+
+**Witness comparison.** `witness_agreement_slice` groups four-coordinate
+witnesses by their last three coordinates and the Dirichlet-cell signature
+of the first coordinate against the final spectrum `S`. With `Q` cells
+per frequency there are `N^3 * Q^|S|` labels. A largest label class projects
+injectively to a source slice `D`, giving
+
+```
+|W| <= N^3 * Q^|S| * |D|.
+```
+
+For `a,b` in that slice, cell closeness and `1 <= s*Q` imply
+`a-b in bohr S s`. If the original witness sums lie in `bohr T rho`,
+the final difference domain lies in it as well, and `L` is normalized
+Freiman-linear there, then
+
+```
+L(a-b) = f(a)-f(b).
+```
+
+Indeed, the two represented sums differ by `a-b`; apply Freiman linearity
+to the first sum plus zero and the second sum plus this difference. The
+three frozen source values cancel. `witness_agreement_slice_density`
+converts witness density `w`, spectral rank at most `R`, and the above
+count into `|D| >= (w/Q^R)*N`.
+
+The global chain now preserves linearity at the original radius
+`1/(4*pi)`, in addition to the smaller-radius identities. The original
+property was already available in `global_many_exact_column_quadruples`
+but had been dropped in `global_dense_column_relations`. It is retained
+through every subsequent global stage. This is necessary because the
+witness sums themselves need not lie in the final smaller domain.
+
+**A single shift.** `exists_common_slice_shift` starts with at least
+`delta*N` columns, each with a source slice of at least `lambda*N` points.
+There are at least `delta*lambda^2*N^3` ordered pairs in these slices.
+Averaging their second coordinates yields one common centre `t` and at
+least `delta*lambda^2*N^2` pairs `(x,a)` with both `a,t in D x`.
+Translate each such pair to `(x,a-t)`, preserving cardinality.
+
+Restrict the column set to those with `(x,t) in A` and define
+
+```
+Phi(x,y) = L(x,y) + phi(x,t).
+```
+
+`column_bihomomorphism_add_row` proves that `Phi` is still a Freiman
+bihomomorphism: the horizontal offset identity is the original map's
+identity along row `t`, and the vertical offsets cancel.
+`column_slices_shifted_agreement` then proves actual membership and values
+on the translated agreement set:
+
+```
+(x,y+t) in A,    Phi(x,y) = phi(x,y+t).
+```
+
+The generic theorem keeps the agreement radius and the bihomomorphism
+radius separate.
+
+**Global parameters.** Let `s`, `c`, `g`, and `d` be the zero-core
+parameters in J.110, and set
+
+```
+w = columnWitnessDensity (columnEightDensity alpha)
+Q = ceil(2/s)
+R = g+d
+lambda = w/Q^R
+agreementDensity = c*lambda^2.
+```
+
+Positivity of both new density parameters is proved.
+`global_column_shifted_agreement` starts from the original dense
+bihomomorphism and the same modulus threshold as J.110. It constructs a
+column set `V`, spectra of rank at most `R`, a common shift `t`, and an
+agreement set of cardinality at least `agreementDensity*N^2` inside the
+column domain at radius `s/2`. The adjusted map `Phi` is a Freiman
+bihomomorphism on the full radius-`s` column domain. This half-radius
+margin is explicit and does not require asserting that the original
+witness sums lie there.
+
+**Remaining work.** The frequency sets still vary arbitrarily with the
+column. Organizing them into the bilinear Bohr geometry required by the
+variety theorem, while retaining quantitative agreement, remains open.
+The final numerical budget also remains open. The new result does not
+prove `MilicevicDeepVarietyStructure` or close any of the five remaining
+numbered statements. The density loss here uses one frequency cell per
+column; summing pair counts across all cells could improve this local
+loss, but that refinement is not asserted as proved.
+
+
+**Verification.** The original-radius interface update passes a focused
+256-module build including the pair-representation consumer. The global
+agreement theorem passes a 257-module build, and all eight new named
+theorems pass individual axiom checks. The full audit checks 7,291 public
+Gowers theorems in 5,166 modules (5,164 for the facade, including 4,152 OAI
+modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger is unchanged at 115 companions and five open entries;
+the selected-port scope check passes. No upstream code or licensing
+changes were needed.
