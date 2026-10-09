@@ -1354,6 +1354,17 @@ inequality. The formal obstacle stays the interface: Part J's
 budget. A Part J restated with the polynomial lift's general slice
 controls, plus quasi-polynomial counts, is what the variety route can feed.
 
+**Which lift (checked same night).** It has to be the peer's polynomial
+lift, not Gowers's. Gowers's lift costs a factor 576^(−24n) in the exponent
+(J.3). With quasi-polynomial n = exp(L^D), where L = log(1/(γθ)), that
+factor is exp(−Θ(exp(L^D))). The budget allows exp(−Θ(r log r)) with
+log r ≈ 2^512·L. Once L^(D−1) > 2^512, exp(L^D) beats r, so Gowers's lift
+breaks the budget for extremely small γθ. Polynomial n is exactly what
+`PolyBoundedControl` encodes. The Part J chain (`Proofs16PartJ*`) is
+OAI-free and builds locally, but it is wired to Gowers's lift. The
+restatement on the polynomial lift imports OAI through
+`Proofs05SchmidtRecurrence`, so it belongs on the full-verification host.
+
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
 Part J's `PolyBoundedControl` hypotheses exist only because of the factor
