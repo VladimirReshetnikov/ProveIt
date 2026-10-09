@@ -1,7 +1,9 @@
-Provenance and license of the adapted Gowers polynomial partition proof
-=====================================================================
+Provenance and license of adapted Gowers proof consumers
+=======================================================
 
-This file applies to Proofs05MinimumPolynomialPartition.lean in this directory.
+This file applies to Proofs05MinimumPolynomialPartition.lean and
+Proofs16RobustDifferenceBohr.lean, and Proofs16RobustDifferenceProgression.lean
+in this directory.
 It does not change the license of unrelated files.
 
 Upstream project: openai/math, published by OpenAI
@@ -19,14 +21,25 @@ or copyright-year notice. OpenAI is identified as publisher; this record does
 not invent a copyright notice or claim ownership of upstream material.
 The pinned upstream tree contains no separate NOTICE file.
 
-The local adaptation strengthens the partition to give a lower bound on every
+Additional adapted source for Proofs16RobustDifferenceBohr.lean and
+Proofs16RobustDifferenceProgression.lean:
+lean/OAI/Combinatorics/Progressions/Estimates/LocalizedSiftingAlmostPeriods.lean
+Adapted calculations: the width/rank proof of exists_quartic_bogolyubov and
+the progression extraction in exists_quartic_bogolyubov_progression.
+Local changes: use error 1/4, retain a pointwise arbitrary difference-event
+estimate, and derive robust four-term counts from popular differences.
+The local adaptation is distributed under Apache-2.0 and carries a
+prominent source/modification notice. It consumes the already vendored
+module and does not expand the selected upstream import closure.
+
+The polynomial-partition adaptation strengthens the partition to give a lower bound on every
 cell length by using comparable residue progressions, applying degree reduction
 at twice the induction scale, and adjusting the degree-dependent exponent.
 It is also distributed under Apache-2.0. The complete upstream lean/LICENSE is
 reproduced below. See lib/openai-math/LICENSE.provenance and
 lib/openai-math/quantitative-port-manifest.json for the wider port's provenance,
 original source hashes, and dependency scope. Git history records modifications.
-The repository's MIT-0 license does not replace this license for the named file.
+The repository's MIT-0 license does not replace this license for the named files.
 
                                  Apache License
                            Version 2.0, January 2004
