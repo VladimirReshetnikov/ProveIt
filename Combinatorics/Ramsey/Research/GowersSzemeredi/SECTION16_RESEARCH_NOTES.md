@@ -1535,6 +1535,14 @@ the elementary lemmas of its §2:
 
   The seventh operator and the final containment fall in the part the
   fetch truncated.
+- **Theorem 27, Fourier half, done (`Proofs16BohrSpectrum`,
+  kernel-checked).** `bohr_fourier_annihilation`: for b ∈ B(K;ρ′),
+  |1̂_B(ξ)|·|1 − e(−bξ)| ≤ 2|K|(4ρ′N + 2), with B = B(K;ρ). It rests on
+  `fourier_translate`, then `bohr_escape_card_le` (escaping points lie in
+  the annulus), then `bohr_annulus_card_le`. A large coefficient at ξ
+  therefore forces e(bξ) ≈ 1 on the whole smaller Bohr set. What remains
+  of Theorem 27 is the duality: e(bξ) ≈ 1 on B(K;ρ′) implies
+  ξ ∈ ⟨K⟩_R. That is geometry of numbers.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
   intersections, needing lattices or duality), Theorem 31, Proposition 18,
   Theorem 33 (algebraic regularity), Corollary 16 (robust
