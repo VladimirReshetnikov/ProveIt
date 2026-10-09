@@ -1552,8 +1552,9 @@ the elementary lemmas of its §2:
   regularity holds at every radius in ℤ/N (`bohr_annulus_card_le`).
   Formalization on ℤ/N, discretely:
   - **brick 1 done** (`Proofs16DirichletBound`, kernel-checked):
-    `norm_one_sub_exponential_ge` (|1 − e(ξ)| ≥ 4|v|/N) and
-    `interval_exponential_sum_le` (interval sums ≤ N/(2|v|));
+    `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
+    the corpus's `four_centeredAbs_div_le_phase_norm`
+    (`Proofs05PhaseMetric`, |e(ξ) − 1| ≥ 4|ξ|/N);
   - next: the discrete trapezoid and its sandwich, its DFT via
     convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
     bound, and the expansion.
