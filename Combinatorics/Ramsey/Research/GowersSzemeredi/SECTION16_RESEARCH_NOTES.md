@@ -1212,10 +1212,35 @@ The variety route splits this into three steps.
      arXiv:2601.01682 states that its proof uses an abstract BSG theorem.
      See also Gowers–Milićević arXiv:2002.11667 and the F_p^n quasipolynomial
      U⁴ paper arXiv:2410.08966.
-   - **Not yet checked:** that any of these yields exactly the
-     relation-covering form above, with quasi-polynomial m(γ,θ), from
-     Gowers's product property in place of a U⁴ hypothesis. That is the
-     next reading task for step 1.
+   - **Checked (same night) against arXiv:2601.01682 §15**, the proof of
+     Theorem 15.1, pp. 103–104. The dense Freiman bihomomorphism there is
+     produced without abstract BSG:
+     - a single-valued φ on a dense A respects (c/2)^O(1) of the
+       horizontal quadruples in many rows;
+     - Theorem 2.26 (Sanders's bounds: many respected quadruples give
+       agreement with a Freiman homomorphism on a coset progression, on an
+       exp(−polylog) fraction) is applied row by row, giving a dense
+       horizontally Freiman piece A′;
+     - the same is repeated on columns. Domains only shrink and values are
+       unchanged, so the horizontal property survives.
+
+     For Gowers's product property, a single-valued selection of a
+     relation inherits the property (`RelationProductProperty.mono`, already
+     in `Proofs16GreedyRelations`). With p = 1 and θ ≡ 1 on a row of size
+     ≥ βN, it has energy ≥ γ⁸β⁴N³, the input Theorem 2.26 needs.
+   - **Reduction formalized (`Proofs16BihomPieceReduction`,
+     kernel-checked).** `DenseBihomPiece mass` is the single step: a
+     sub-relation with the product property and projection ≥ θN² contains
+     the graph of a Freiman bihomomorphism on ≥ mass(γ,θ)N² points.
+     `bihomExtraction_of_densePiece` derives `BihomExtraction` from it, with
+     m = ⌈γ⁻²/mass⌉ + 1. It uses the corpus's peeling
+     (`section16_greedy_relation_decomposition`) and pads short families with
+     empty pieces (`isEBihomomorphism_empty`).
+   - So step 1 is now exactly `DenseBihomPiece`. What remains in it is the
+     §15 row/column argument, with Theorem 2.26 as its quasi-polynomial
+     input, applied to a selection. Theorem 2.26 is Sanders-strength
+     Freiman–Bogolyubov, which the corpus does not contain at quasi-polynomial
+     strength.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
@@ -1860,3 +1885,22 @@ single-map greedy variety cover: 5,838 public Gowers theorems, 1,410 facade
 modules (667 OAI), and 2,646 combined modules. Only the three approved
 axioms occur. The catalogue remains at 114 companions and six open
 statements, with its existing source-fidelity caveats.
+
+### Family assembly and 3,800-entry audit checkpoint
+
+The combined Gowers audit now includes `greedy_variety_cover_family` and
+`variety_structure_side`: 5,849 public Gowers theorems, a 1,411-module
+facade (667 OAI modules), and 2,647 combined modules. Only the three
+approved axioms occur. The structure-side result retains both
+`BihomExtraction` and `MilicevicDeepVarietyStructure` as hypotheses.
+The numbered ledger reproduces exactly and remains 114/6 with its
+existing fidelity caveats.
+
+The first 3,800 pinned quantitative-port entries also pass: 3,816 build
+modules and 57,875 public OAI theorems in the separate 3,817-module axiom
+audit. This includes the explicit empty epoch-intersection compatibility
+repair. The later relative-patch finite-set repair passes its isolated
+production check but is beyond this audited prefix. Provenance checks
+retain all 4,134 pinned hashes, notices for 976 adapted files, and the
+original license/copyright notices. The full density conclusion remains
+unverified.
