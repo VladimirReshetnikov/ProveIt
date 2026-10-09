@@ -1,0 +1,53 @@
+\subsection{Serial complete-query measurements}
+
+The final experiments run serially after tests, audits, diagnostics and the
+runtime commit. Each has five shuffled paired rounds, old and new A/A
+controls, and one excluded warmup per arm and input. All 200 measured calls
+and forty warmups complete. Within each input, all old and new complete
+certificate hashes agree across repetitions. The tables separate individual
+arm medians from medians of paired ratios.
+
+The first endpoint counts the complete interval system, constructs its
+certificate, independently replays that certificate and computes its hash.
+The disjoint cases use the family proved above. The five-cycle cases retain
+the earlier merger stress family, once with small and once with 4096-bit
+endpoints. No represented integer point is expanded.
+
+\begin{center}
+\small
+\input{tables/orbit_support_orbits.tex}
+\end{center}
+
+All one hundred measured queries and twenty warmups finish; driver elapsed
+time is 42.799 seconds. The disjoint cases improve by $1.491$, $4.128$ and
+$15.334$. At $k=256$, old/new median times are 3.253678 and 0.211811 seconds,
+and merger calls are exactly 2,796,160 and 255, as the formulas predict.
+The five-cycle cases improve by $1.147$ and $1.296$. Old A/A ratios lie in
+$0.991$--$1.012$ and new A/A in $0.999$--$1.026$. These complete-query
+measurements include verifier cost; they are not isolated scheduler timings.
+
+The second endpoint is the current full recognizer, with earlier shortcuts
+disabled and the native stage enabled. Only the orbit producer is swapped
+between releases. Both arms have no local native work cap, while retaining
+the same twelve-second global deadline; every measured call completes below
+that deadline. The three stabilized circles return raw normal-disc proofs,
+the optimized-positive input needs its second candidate, and the trefoil
+continues to the exact Khovanov fallback. Common result bookkeeping includes
+fingerprinting the positive certificate.
+
+\begin{center}
+\small
+\input{tables/orbit_support_recognize.tex}
+\end{center}
+
+All one hundred measured recognitions and twenty warmups finish; driver
+elapsed time is 146.078 seconds. Paired gains range from $1.169$ to $2.108$,
+outside old A/A variation $0.995$--$1.004$ and new A/A variation
+$0.983$--$1.003$. The 32-crossing circle's median falls from 5.902774 to
+2.803070 seconds, including native positive replay. The five-crossing
+optimized success falls from 285.147 to 215.253 milliseconds. These are
+whole-recognition gains on the explicitly exercised native-stage workload.
+The 32-crossing source still exhausts the default two-million-guard allowance;
+its unlimited-local-budget timing is not a new default-budget success.
+No ordinary-portfolio gain or general recognition complexity bound is
+inferred from this selected workload.
