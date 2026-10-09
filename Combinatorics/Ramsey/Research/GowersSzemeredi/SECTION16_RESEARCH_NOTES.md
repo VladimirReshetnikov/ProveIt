@@ -10487,3 +10487,97 @@ check passes. The generated catalogue is byte-identical to the tracked
 Incoming Claim 9.4, common-value Freiman extraction, and subset-sum
 independence are included in the same audit. Independent report updates
 were merged before verification.
+
+### J.149. All-quadruple purification on a dense original-data core
+
+Continuation checkpoint 294, 2026-10-09. Eight original modules add
+28 named proofs. They remove J.148's exceptional-pair condition on a
+quantitatively dense vertex core and instantiate the construction from
+the original dense bihomomorphism.
+
+**Directed pruning.** `directedExceptionCore D E t` keeps vertices with
+both incoming and outgoing exceptional degrees at most `t`. Fibrewise
+counting bounds each total degree by `|E|`, even when the prescribed
+vertex domain `D` is smaller than the endpoints of `E`. The removal bound
+is `(t+1)*|D\\S| <= 2|E|`, with real mass form
+`|S| >= |D| - 2|E|/(t+1)`. No symmetry of the exceptional pairs is assumed.
+
+**Candidates away from the boundary.** Nested shrinking composes exactly:
+`(Q/m)/n = Q/(m*n)`, including zero factors. Apply J.148's bridge geometry
+to `Q/4`: for endpoints `a,c` in `Q/16`, every `y` in `Q/8` has
+`y,z=y+(c-a)` in `Q/4`. This restriction avoids assuming a uniform overlap
+for extreme boundary differences of the quarter progression.
+Set `t = floor(|Q/8|/8)`; the reserve `4t < |Q/8|` includes `t=0`.
+
+**The second bridge.** Each translated exceptional row has cardinality
+at most its original degree, since translation is injective. Thus four
+rows with degree at most `t` leave a common candidate `y`. For an additive
+quadruple `a-b=c-e`, the good relations on `(a,y,c,z)` and `(b,y,e,z)`
+subtract to the desired defect on `(a,b,c,e)`. The middle-coordinate
+permutations preserve the actual Bohr domain and defect. The second
+shared-image bridge removes its auxiliary spectra at another half radius.
+All quadruples on the vertex core therefore have endpoint image cap
+
+```
+M^2 * refinementKernelCap (4d) (2d) (rho/2) (rho/2),
+M = K^2 * refinementKernelCap (4d) (2d) rho rho,
+```
+
+at radius `rho/4`. There is no exceptional-pair premise in that conclusion.
+
+**Nonvacuity and mass.** Real quotient lower bounds account for both
+natural thresholds `b = floor(|Q|/4^(rank+1))` and `t`. If the parent has
+mass at least `delta*N`, the pruning loss is bounded by half the guaranteed
+sixteenth-progression mass whenever
+
+```
+eta <= delta^3 / (128 * 2048^rank).
+```
+
+`exists_dense_progression_all_quad_image_core` then gives a nonempty core
+in `Q/16`, of mass at least `delta*N/(2*32^rank)`, with every additive
+quadruple controlled on the endpoint-only domain above. Its inputs are the
+parent progression, original local frequency/Freiman data, and the selected
+quadruple failure bound `eta*N^3`; no structure hypothesis is added.
+
+**Original-data assembly.** For `p = globalColumnProgressionLogDensity alpha`,
+let `R = ceil(2 + C_B*(p+1)^4)` and
+`delta = exp(-C_P*(p+1)^8)`. Use the uniform accuracy
+`eta = delta^3/(128*2048^R)` in J.147's original representative selection.
+`global_progression_all_quad_image_core` preserves the original witness
+system, witness masses, column data, index-set density, uniform original
+four-representation counts, chosen representatives, and both map
+normalizations. It constructs the proper progression and nonempty core;
+normalized spectra use at most `8d` frequencies. All core quadruples have
+the explicit image cap at radius `1/(32*pi)`. The modulus threshold is the
+existing selected-map threshold at this chosen accuracy.
+
+The uniform core density `delta/(2*32^R)` satisfies the proved lower bound
+
+```
+exp(-(C_P + 94 + 31*C_B)*(p+1)^8).
+```
+
+This keeps the same degree-eight exponential density scale as the robust
+parent. The extra rank-dependent losses do not introduce another
+exponential level.
+
+This completes the all-quadruple part of the purification in Claim 7.4,
+on a smaller explicitly dense core. It does not yet prove compatibility
+for all additive eight-tuples, progression-indexed difference maps on a
+new proper progression, or the original eight-tuple source agreement.
+Those obligations and the final printed numerical comparison remain.
+The five numbered statements stay open. No upstream modules or licensing
+scope are added here.
+
+**Verification.** The original-data global core production closure compiles
+across 398 modules. All 28 new named proofs are included in the completed
+combined audit: 9,314 public Gowers theorems across 5,538 modules, with
+5,536 modules in the facade closure. Only `propext`, `Classical.choice`,
+and `Quot.sound` occur. The selected OAI audit closure remains 4,152
+modules, and its port scope check passes. The regenerated catalogue is
+byte-identical to the tracked 115-companion / five-open ledger, retaining
+the existing fidelity qualifications. The incoming Proposition 9.3
+iteration, uniform escape argument, and subset-sum invariant changes are
+included in the same full audit. Independent reports were merged before
+verification.
