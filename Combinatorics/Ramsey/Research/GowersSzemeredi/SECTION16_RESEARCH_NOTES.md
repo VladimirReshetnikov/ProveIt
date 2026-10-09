@@ -5416,8 +5416,14 @@ are numerical inputs to the remaining recurrence-constant comparison.
 The later `Proofs16VarietyShapeMatch` also passes the full audit, proving
 exact identities for the width exponent and graph count in the absorbed
 variety shape. This discharges the shape-matching step above.
-The full numerical absorption and the deep structural input remain
-undischarged, so this does not yet supply `Theorem162At 3`.
+The subsequently merged `Proofs16VarietyLossBound` also passes a full
+real-dependency audit. Its `variety_loss_le` proves positivity of the
+width coefficient and bounds both required logarithmic losses by
+`112*Lambda`, provided `Lambda >= 7` and each specified factor is bounded
+by `exp Lambda`. This reduces the remaining numerical comparison to
+those explicit factor bounds. The full numerical absorption and the deep
+structural input remain undischarged, so this does not yet supply
+`Theorem162At 3`.
 
 Until the remaining bound comparison is proved,
 `MilicevicDeepVarietyStructure D` (or its eventual, any-bound form) yields
@@ -7565,8 +7571,9 @@ change was necessary.
 
 **Verification.** The complete common-pair-family closure checks 305
 modules. All seventeen new named theorems pass individual axiom checks.
-The full audit checks 7,698 public Gowers theorems in 5,253 modules
-(5,251 facade modules, including 4,152 OAI modules), using only
+After integrating the incoming logarithmic-loss bound, the full audit
+checks 7,700 public Gowers theorems in 5,254 modules
+(5,252 facade modules, including 4,152 OAI modules), using only
 `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
 remains byte-for-byte unchanged at 115 companions and five open entries.
 The selected-port scope remains 4,134 upstream and 17 compatibility
