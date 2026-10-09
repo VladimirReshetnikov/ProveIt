@@ -3353,3 +3353,48 @@ intermediate extension is to choose the parameter cluster in a smaller
 neighborhood while retaining the maps on the original neighborhood,
 so that the required sums remain within their domains. The degree and
 codegree estimates alone do not prove the algebraic regularity input.
+
+
+### J.86. Separate domain radii and four-row completion
+
+`selected_common_bohr_cluster_radius` separates the radius sigma used
+for the parameter cluster from the radius rho used for the normalized
+map domains. `fixed_patterns_recentered_radius` propagates this distinction
+when 0<=sigma<=rho. Both preceding equal-radius theorems remain available
+as specializations. This ensures that choosing a smaller parameter set
+does not discard the maps' larger domains.
+
+`Proofs16QuarterPatternGeometry` takes sigma=rho/4 in the actual dense-row
+and global-density constructions. The centered set W now lies inside
+B(T;rho/4), while all active maps remain normalized order-two Freiman
+maps on B(T;rho). Its size is at least nu*|B(T;rho/8)|, with nu as in
+J.85. All frequency-rank bounds and the global-density input are retained.
+
+`Proofs16BohrFourTerm` proves the corresponding domain arithmetic. Four
+points of B(T;rho/4) have alternating sum in B(T;rho). The two pair sums
+lie in the half-radius neighborhood, so the Freiman identities can be
+applied with all arguments in B(T;rho). Hence a normalized map satisfies
+`psi(x1+x2-x3-x4)=psi(x1)+psi(x2)-psi(x3)-psi(x4)` for these inputs.
+The phase-error estimate accounts explicitly for all four signs.
+
+`Proofs16FourRowCompletion` proves the geometric implication needed for
+the later common-neighborhood argument. If y=x1+x2-x3-x4 with all xj in W,
+and d annihilates the variable frequencies at x1,x2,x3 and y to radius
+eta/4, it annihilates those at x4 to radius eta. Together with the constant
+frequency condition, all four points (d,a+xj) therefore lie in the target
+set. Two vertical differences cancel the anchor a and give (d,y).
+The triple-witness version sets x4=x1+x2-x3-y and retains its W-membership
+as an explicit hypothesis.
+
+`Proofs16GlobalFourRowCompletion.global_four_row_completion` combines
+this implication with the construction from global density. It yields
+(d,y) in `D_ver D_ver D_hor D_ver D_hor D_hor A` when an actual triple
+witness exists. This is a six-operator membership implication, not an
+unconditional variety-containment theorem. Producing witnesses with
+the required uniformity still needs the regularity and representation
+arguments; the final horizontal difference step also remains.
+
+There are thirteen new theorem declarations and two preserved wrappers.
+The 114-module source closure compiles. The proper-progression and
+algebraic-regularity inputs remain open, as do the five numbered entries
+in the source ledger. No existing paper-fidelity caveat is removed.
