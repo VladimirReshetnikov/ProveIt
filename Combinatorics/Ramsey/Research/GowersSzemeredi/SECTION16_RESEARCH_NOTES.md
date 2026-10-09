@@ -5407,11 +5407,15 @@ Lean traps met here:
 **Full dependency verification (2026-10-09).** The incoming fixed-constant
 chain, `ceilingFreeVarietyRelationDecompositionAt_explicit`, and the new
 count bounds now compile against the actual selected OAI dependency
-closure. The full merged audit checks 7,654 public Gowers theorems in
-5,242 modules and rejects all axioms except `propext`, `Classical.choice`,
+closure. The full merged audit checks 7,660 public Gowers theorems in
+5,243 modules and rejects all axioms except `propext`, `Classical.choice`,
 and `Quot.sound`; no stub or `sorry` is used in this verified closure.
 This supersedes the limited stub-based verification described above.
-The numerical upper bounds and the deep structural input remain
+The subsequent incoming `Proofs05WeylConstantBounds` also passes the full
+audit: in degrees one to three, the coefficient sums of the Weyl budget
+polynomials are below `2^192` and their degrees are below `256`. These
+are numerical inputs to the remaining recurrence-constant comparison.
+The full numerical absorption and the deep structural input remain
 undischarged, so this does not yet supply `Theorem162At 3`.
 
 Until the remaining bound comparison is proved,
@@ -7424,8 +7428,8 @@ here. No new upstream port or licensing change was necessary.
 **Verification.** The all-coordinate extraction closure checks 233
 modules. All fifteen new named theorems pass individual axiom checks.
 After merging the incoming explicit variety-decomposition chain, the
-full audit checks 7,654 public Gowers theorems in 5,242 modules
-(5,240 facade modules, including 4,152 OAI modules), using only
+full audit checks 7,660 public Gowers theorems in 5,243 modules
+(5,241 facade modules, including 4,152 OAI modules), using only
 `propext`, `Classical.choice`, and `Quot.sound`. The incoming assembly
 and count bounds compile with their actual dependencies. The numbered
 ledger remains byte-for-byte unchanged at 115 companions and five open
