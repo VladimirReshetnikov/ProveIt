@@ -1,0 +1,160 @@
+\section{Integration and reproducibility}
+\label{app:reproduction}
+
+\subsection{Archive contents and source identity}
+
+The archive is a self-contained research and integration bundle. Its
+\code{article/} directory contains this PDF, the complete modular \LaTeX{}
+source, bibliography, generated tables, and vector and raster figures.
+\code{integration.patch} applies the implementation and its new tests to
+the pinned repository. The matching \code{repo_overlay/} contains only
+new or changed files, so it can be reviewed without extracting an entire
+second repository over a working checkout.
+
+The runnable final snapshot is at
+\begin{lstlisting}
+snapshots/final/Topology/UnknotRecognition/fast/
+\end{lstlisting}
+It contains the complete Python package, maintained tests, and required
+fixtures. The neighboring \code{reports/} subdirectories contain historical
+reference implementations imported by those tests. The archive omits the
+unrelated large \code{fast/results/} collection and generated Python bytecode.
+It includes complete predecessor and eager-prototype Python package snapshots
+at \code{snapshots/baseline/} and \code{snapshots/eager/} for isolated comparison.
+The final snapshot has the exact source bytes used by the guarded records.
+
+The \code{experiments/} directory contains the independent worker harness,
+summary and figure generators, completed test ledger, exhaustive local
+review, and four principal records:
+\begin{center}
+\small
+\begin{tabular}{lp{0.57\linewidth}}
+\toprule
+Record & Evidence retained \\
+\midrule
+\code{audit-guarded.json} & Source cases, all legacy comparisons, independent
+replay outcomes, positive certificates, and bounded nondecisions. \\
+\code{stages-guarded.json} & Full completed-call timings and structural
+counters on the five stabilized-circle sizes. \\
+\code{benchmark-guarded.json} & Every round and A/A arm for all 19 ordinary
+whole-recognizer cases. \\
+\code{audit-eager.json} & The rejected partial-batch policy, including the
+Gordian work-limit regression. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The original ordinary-corpus record is retained byte-for-byte as
+\code{experiments/corpus.json}. Its SHA-256 is
+\begin{lstlisting}
+ed7ae3116c89a294e0bcf716cf027f4c80b6bcf48523e6a0bb0e4ecb97d7e89b
+\end{lstlisting}
+It comes from report 46's cyclic-overlap research overlay at the pinned
+commit. The harness reads its source diagrams and expected verdicts; it
+does not import that report's algorithms to obtain the new results.
+
+The manifest records the pinned commit, file hashes, snapshot roles, and
+verification results. Checksums identify source and evidence bytes; they
+are provenance aids, not a replacement for mathematical or source replay
+verification. The included verification script checks the manifest,
+snapshot-to-experiment identities, and the exact corpus and harness hashes.
+
+\subsection{Applying the implementation}
+
+From a clean ProveIt checkout at the pinned commit, inspect and apply the
+patch using the archive's absolute path:
+\begin{lstlisting}[language=bash]
+git apply --check /path/to/unknot_singleton_dag_20261009/integration.patch
+git apply /path/to/unknot_singleton_dag_20261009/integration.patch
+\end{lstlisting}
+The delivered patch changes five existing Python modules, adds the
+producer and independent verifier, adds two test modules, and documents
+the option in \code{SINGLETON_DAG.md}. The patch does not modify the Rust
+implementation. An integration onto a later commit requires a normal
+review of intervening changes; a successful application against the pinned
+base does not guarantee compatibility with arbitrary future revisions.
+
+For the research writeup, the \code{article/} and \code{experiments/}
+directories can be placed together in a dated research directory under
+\code{Topology/UnknotRecognition}. Their relative layout is used by the
+summary and figure generators. Preserve the root manifest and the complete
+archive when exact offline reproduction of the predecessor comparison is
+desired. Nothing in this bundle has been committed or pushed to the remote
+repository.
+
+\subsection{Replaying the tests and experiments}
+
+The core package and research harness require Python 3.10 or later and use
+the standard library. The recorded run used Python 3.12.14. The optional
+normal-surface tests require Regina; version 7.4.1 was installed for the
+complete no-skip test run. Figure regeneration uses Matplotlib. The
+\LaTeX{} build requires a standard distribution containing the packages
+listed in the document preamble, together with BibTeX.
+
+From the archive root, use the supplied scripts:
+\begin{lstlisting}[language=bash]
+python3 scripts/verify_bundle.py
+bash scripts/reproduce.sh tests
+bash scripts/reproduce.sh audit
+bash scripts/reproduce.sh stages
+bash scripts/reproduce.sh benchmark
+bash scripts/reproduce.sh eager
+make -C article
+\end{lstlisting}
+The test command deliberately runs with the final \code{fast/} directory
+as its working directory. Some maintained tests launch
+\code{python -m fastunknot} as a subprocess; merely changing the parent
+process's import path would not select the intended package for those calls.
+The suite's completion ledger must report 1,008 tests run, not merely a
+successful shell exit or a partially written test log.
+
+The experiment commands write fresh results beneath \code{reproduced/}
+and leave the original evidence untouched. They pass explicit predecessor,
+current, corpus, snapshot, and output paths to the frozen harness. The
+stage command uses the five published sizes and five measured rounds.
+The eager command selects the retained eager source and uses a separate
+snapshot directory. Run timing commands sequentially, without concurrent
+CPU-intensive work. Elapsed times will vary with the environment; the
+source identities, exact certificates, coverage, and structural mechanisms
+are the reproducible non-timing claims.
+
+The independent exhaustive review can also be run directly:
+\begin{lstlisting}[language=bash]
+python3 experiments/review_singleton_verifier.py \
+  snapshots/final/Topology/UnknotRecognition/fast
+\end{lstlisting}
+Its expected output reports 3,698 cases: 360 accepted and 3,338 rejected.
+The result includes the verifier's source hash and a check of the skipped
+partial-dispatch handoff.
+
+The original tables are regenerated from the supplied result records by
+\begin{lstlisting}[language=bash]
+python3 experiments/summarize_singleton_dag.py
+python3 experiments/plot_results.py
+\end{lstlisting}
+The former script intentionally reads the neighboring named evidence files.
+For a new experimental run, copy the summary script beside the fresh records
+and give it a separate \code{--article-generated} destination, rather than
+overwriting the published evidence or presenting new timings as the old run.
+
+\subsection{A seed-metadata qualification}
+
+The frozen audit record's top-level \code{seed} field contains the harness
+master constant 261009817. Within \code{audit()}, the actual random-braid
+generator uses the explicit constant 261008504. The timing generators use
+261009818 for the ordinary workload and 261009819 for the stage experiment.
+This distinction is visible in the preserved hashed harness; the complete
+PD arrays are also stored in the audit. We retain the original record and
+state the qualification here, instead of silently rewriting its metadata.
+The 81 source cases include repeated small diagrams and represent 75
+distinct raw PD arrays.
+
+\subsection{What would invalidate a performance comparison}
+
+Changing the source snapshot during a run, mixing package versions through
+absolute imports, excluding certificate replay from only one arm, dropping
+bounded nondecisions, or selecting only favorable input cases would change
+the meaning of the comparison. The harness and stored records make those
+choices inspectable. Future changes should publish their new hashes,
+completed verdicts, all sample orders, resource allowances, and the same
+stage-versus-whole-recognizer distinction before interpreting timing ratios.

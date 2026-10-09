@@ -1,0 +1,562 @@
+{
+  "seed": 261008912,
+  "rounds": 7,
+  "repeats": 10,
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "native_git_blobs": {
+    "integer_codec.py": "b88eafacb680e1312df0ecc93170a9f6f53eb639",
+    "interval_incidence.py": "3625772c7c20119df64d79a14f644a03e13f7f2f",
+    "interval_orbits.py": "e86050aadbcef6f17fdddff9cbd1abc0e7ca18e8",
+    "interval_orbit_verify.py": "0ccb56a0e8b5f1255384121d7417441314727720"
+  },
+  "cases": [
+    {
+      "name": "static-disjoint-10",
+      "size_bits": 260,
+      "r": 10,
+      "k": 0,
+      "M": 10,
+      "s": 11,
+      "dense_slots": 1024,
+      "output_sha256": "ac99026239fb8b8449fec8a9a352bd47373321d02b12f45813cc24c82ded80db",
+      "repeats": 10,
+      "orders_including_warmup": [
+        [
+          "dense",
+          "split_certified",
+          "linear",
+          "split",
+          "split_control"
+        ],
+        [
+          "split_certified",
+          "linear",
+          "split_control",
+          "dense",
+          "split"
+        ],
+        [
+          "linear",
+          "split_certified",
+          "split_control",
+          "split",
+          "dense"
+        ],
+        [
+          "split",
+          "split_certified",
+          "split_control",
+          "dense",
+          "linear"
+        ],
+        [
+          "linear",
+          "dense",
+          "split_control",
+          "split_certified",
+          "split"
+        ],
+        [
+          "split_certified",
+          "split_control",
+          "split",
+          "linear",
+          "dense"
+        ],
+        [
+          "linear",
+          "split_certified",
+          "split_control",
+          "split",
+          "dense"
+        ],
+        [
+          "dense",
+          "split",
+          "split_control",
+          "split_certified",
+          "linear"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          74.9013737,
+          76.7264162,
+          80.4142046,
+          75.54221770000001,
+          78.5486745,
+          79.2095727,
+          83.9391703
+        ],
+        "linear": [
+          1.5993456,
+          1.6321431,
+          1.7606178,
+          1.9521063,
+          1.733223,
+          1.6879088,
+          1.9803393
+        ],
+        "split": [
+          0.701589,
+          0.7322222,
+          0.7754844000000001,
+          0.7558176,
+          0.711571,
+          0.7273537,
+          0.7539127999999999
+        ],
+        "split_control": [
+          0.7286167,
+          0.7528121999999999,
+          0.7269202,
+          0.6969059,
+          0.7478756,
+          0.7458285,
+          0.7566028
+        ],
+        "split_certified": [
+          1.4809942,
+          1.4001795,
+          1.3210824,
+          1.3589152,
+          1.455711,
+          1.3766149,
+          1.3992319
+        ]
+      },
+      "medians_ms": {
+        "dense": 78.5486745,
+        "linear": 1.733223,
+        "split": 0.7322222,
+        "split_control": 0.7458285,
+        "split_certified": 1.3992319
+      },
+      "paired_dense_over_arm": {
+        "linear": 45.673856415628656,
+        "split": 106.75961809549464,
+        "split_control": 106.20346728503938,
+        "split_certified": 55.59008958027698
+      },
+      "stats": {
+        "dense": {
+          "orbit_queries": 1024,
+          "orbit_cycles": 5633,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 1024
+        },
+        "split_certified": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        },
+        "linear": {
+          "orbit_queries": 56,
+          "orbit_cycles": 183,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 56,
+          "deletion_trials": 100,
+          "residual_terms": 605,
+          "signatures": 11
+        },
+        "split": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        },
+        "split_control": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 26538,
+        "dense": 2498706
+      }
+    },
+    {
+      "name": "paired-blocks-8",
+      "size_bits": 259,
+      "r": 8,
+      "k": 2,
+      "M": 8,
+      "s": 9,
+      "dense_slots": 256,
+      "output_sha256": "73030e45d1784ce321516822690092207b949d9aff71e0c5d2b7fe630b767cd0",
+      "repeats": 10,
+      "orders_including_warmup": [
+        [
+          "split_control",
+          "split_certified",
+          "linear",
+          "split",
+          "dense"
+        ],
+        [
+          "split",
+          "split_certified",
+          "linear",
+          "split_control",
+          "dense"
+        ],
+        [
+          "linear",
+          "split_control",
+          "split_certified",
+          "split",
+          "dense"
+        ],
+        [
+          "split_control",
+          "linear",
+          "split",
+          "split_certified",
+          "dense"
+        ],
+        [
+          "split_certified",
+          "split_control",
+          "split",
+          "linear",
+          "dense"
+        ],
+        [
+          "linear",
+          "split_control",
+          "split",
+          "dense",
+          "split_certified"
+        ],
+        [
+          "split",
+          "dense",
+          "linear",
+          "split_certified",
+          "split_control"
+        ],
+        [
+          "split",
+          "split_control",
+          "dense",
+          "linear",
+          "split_certified"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          28.109823999999996,
+          27.5888311,
+          29.1117233,
+          25.1212789,
+          28.199701299999997,
+          25.913288,
+          37.2217335
+        ],
+        "linear": [
+          2.4680340000000003,
+          2.4430854,
+          2.5974309,
+          2.3826284,
+          2.2351330999999997,
+          3.0191301,
+          2.9723206
+        ],
+        "split": [
+          1.2301731,
+          1.4295065,
+          1.2109052,
+          1.2283244,
+          1.1617331,
+          1.2272148,
+          1.5058294
+        ],
+        "split_control": [
+          1.288518,
+          1.4170216,
+          1.2898351,
+          1.3043559999999998,
+          1.2286028,
+          1.4834818,
+          1.2731949
+        ],
+        "split_certified": [
+          2.3089072,
+          2.2305102000000003,
+          2.1996537,
+          2.7197471,
+          2.256944,
+          2.1406258,
+          2.1595894
+        ]
+      },
+      "medians_ms": {
+        "dense": 28.109823999999996,
+        "linear": 2.4680340000000003,
+        "split": 1.2283244,
+        "split_control": 1.2898351,
+        "split_certified": 2.2305102000000003
+      },
+      "paired_dense_over_arm": {
+        "linear": 11.292618383295155,
+        "split": 22.850299685467025,
+        "split_control": 21.815623840722438,
+        "split_certified": 12.368843280788402
+      },
+      "stats": {
+        "split_control": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "split_certified": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "linear": {
+          "orbit_queries": 37,
+          "orbit_cycles": 188,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 37,
+          "deletion_trials": 64,
+          "residual_terms": 324,
+          "signatures": 9
+        },
+        "split": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "dense": {
+          "orbit_queries": 256,
+          "orbit_cycles": 1664,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 256
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 35055,
+        "dense": 730590
+      }
+    },
+    {
+      "name": "all-signatures-6",
+      "size_bits": 7,
+      "r": 6,
+      "k": 0,
+      "M": 192,
+      "s": 64,
+      "dense_slots": 64,
+      "output_sha256": "b15c22ecd7fbc85216f74cc47aa36bd4249e8079214abf35520ef78e17109db5",
+      "repeats": 10,
+      "orders_including_warmup": [
+        [
+          "split",
+          "split_certified",
+          "split_control",
+          "dense",
+          "linear"
+        ],
+        [
+          "dense",
+          "split_control",
+          "split_certified",
+          "split",
+          "linear"
+        ],
+        [
+          "split_control",
+          "split",
+          "split_certified",
+          "linear",
+          "dense"
+        ],
+        [
+          "dense",
+          "split",
+          "split_control",
+          "split_certified",
+          "linear"
+        ],
+        [
+          "linear",
+          "split_control",
+          "split_certified",
+          "dense",
+          "split"
+        ],
+        [
+          "dense",
+          "linear",
+          "split_control",
+          "split",
+          "split_certified"
+        ],
+        [
+          "linear",
+          "split_control",
+          "split_certified",
+          "dense",
+          "split"
+        ],
+        [
+          "dense",
+          "split",
+          "split_certified",
+          "linear",
+          "split_control"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          17.3075976,
+          19.0080959,
+          18.8689511,
+          16.3469037,
+          17.0894185,
+          20.2834126,
+          17.2135554
+        ],
+        "linear": [
+          17.5804135,
+          18.308627100000002,
+          18.984073000000002,
+          22.7060848,
+          18.4806575,
+          20.678058200000002,
+          20.6850548
+        ],
+        "split": [
+          21.2319016,
+          18.294756200000002,
+          22.383000000000003,
+          20.010691700000002,
+          19.5360126,
+          21.7345269,
+          19.787081800000003
+        ],
+        "split_control": [
+          20.242715,
+          18.288324600000003,
+          20.346705399999998,
+          20.7977375,
+          18.850013,
+          23.1402568,
+          21.6163092
+        ],
+        "split_certified": [
+          30.2284226,
+          35.5067296,
+          30.3446893,
+          27.918735199999997,
+          29.611332299999997,
+          30.9277577,
+          31.614518500000003
+        ]
+      },
+      "medians_ms": {
+        "dense": 17.3075976,
+        "linear": 18.984073000000002,
+        "split": 20.010691700000002,
+        "split_control": 20.346705399999998,
+        "split_certified": 30.3446893
+      },
+      "paired_dense_over_arm": {
+        "linear": 0.980914765004385,
+        "split": 0.8699390629698613,
+        "split_control": 0.876542243040276,
+        "split_certified": 0.5771242687381548
+      },
+      "stats": {
+        "split": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        },
+        "split_certified": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        },
+        "split_control": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        },
+        "dense": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 64
+        },
+        "linear": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 378,
+          "residual_terms": 14112,
+          "signatures": 64
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 49505,
+        "dense": 42130
+      }
+    }
+  ],
+  "reason": "Longer batches to assess initial identical-arm variability; initial results retained"
+}

@@ -2966,3 +2966,41 @@ zero and size conditions, and its common row-difference Bohr sets lie in
 it does not yet prove the subsequent algebraic regularity or the remaining
 five numbered statements. The four modules contain eleven new theorem
 declarations, checked in a 63-module source closure.
+### Quarter-radius mixed Bogolyubov (2026-10-08)
+
+`Proofs16SpectrumPairSumset` sharpens `mixed_bogolyubov` and the
+Bohr-sum containment of `Proofs16BohrSumSpan` in two constants.
+- The radius is `1/4` instead of `1/(4*pi)`, matching [49]'s Theorem 27.
+  The improvement comes from the real part: on `B(S;1/4)` every
+  character in `S` has nonnegative real part (`re_exponential_nonneg`),
+  so the terms in `S` need no phase-error bound at all.
+- The threshold is `|A||B|/(2N^2)`, twice `tau`. The budget needed is
+  `eps^2*N^3*(|A|+|B|) < |A|^2*|B|^2` (`quarter_threshold_budget`). The
+  bounded-span cutoff `128(m+1)^2/eps^2` therefore shrinks by a factor
+  of four.
+
+Results:
+- `sumset_contains_bohr_of_spectrum_pair`: for any `S` that contains
+  every frequency at which both transforms are at least `eps*N`,
+  `B(S;1/4)` lies in `(A-A)+(B-B)` under the budget above.
+- `mixed_bogolyubov_quarter`: the instance where `S` is the common
+  large spectrum at threshold `|A||B|/(2N^2)`.
+- `bohr_sum_of_common_spectrum_quarter` and
+  `bohr_sum_contains_span_intersection_quarter`: the two
+  `Proofs16BohrSumSpan` containments at radius `1/4` and threshold
+  `2*bohrSumThreshold`. The finite-size conditions are the same as
+  before, with the threshold doubled.
+
+Supporting lemmas:
+- `norm_sq_fourier_indicator`: `|Ahat|^2` as a double character sum.
+- `sum_exponential_mul_eq_ite`: orthogonality, via
+  `AddChar.sum_mulShift`.
+- `sum_weight_exponential`: the weighted character sum counts
+  representations, with exact multiplicity `N`.
+- Parseval is the corpus's `indicator_fourier_energy`.
+
+An earlier draft carried an N-dependent cutoff variant of Theorem 27.
+It was dropped because the modulus-independent
+`Proofs16PolynomialSpectrumSpan` cutoff supersedes it. All nine theorems
+use only propext, Classical.choice, and Quot.sound. The collision gate
+passes. No numbered statement changes status.

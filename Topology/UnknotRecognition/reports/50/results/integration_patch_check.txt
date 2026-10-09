@@ -1,0 +1,42 @@
+$ git init -q
+
+
+exit=0
+$ git apply --check /mnt/data/unknot_sparse_incidence_20261008/integration.patch
+
+
+exit=0
+$ git apply /mnt/data/unknot_sparse_incidence_20261008/integration.patch
+
+
+exit=0
+$ /opt/pyvenv/bin/python -m unittest discover -s /tmp/sparse_incidence_patch_3pexc1dm/Topology/UnknotRecognition/fast/tests -v
+
+test_128_disjoint_ports (test_sparse_incidence.SparseTests.test_128_disjoint_ports) ... ok
+test_arbitrary_nonnegative_1000 (test_sparse_incidence.SparseTests.test_arbitrary_nonnegative_1000) ... ok
+test_bad_inputs (test_sparse_incidence.SparseTests.test_bad_inputs) ... ok
+test_callback_propagates (test_sparse_incidence.SparseTests.test_callback_propagates) ... ok
+test_certificate_mutations (test_sparse_incidence.SparseTests.test_certificate_mutations) ... ok
+test_empty_marks (test_sparse_incidence.SparseTests.test_empty_marks) ... ok
+test_empty_ports (test_sparse_incidence.SparseTests.test_empty_ports) ... ok
+test_empty_universe (test_sparse_incidence.SparseTests.test_empty_universe) ... ok
+test_huge_static (test_sparse_incidence.SparseTests.test_huge_static) ... ok
+test_independent_replay (test_sparse_incidence.SparseTests.test_independent_replay) ... ok
+test_known_signed_triangle (test_sparse_incidence.SparseTests.test_known_signed_triangle) ... ok
+test_overlapping_marks (test_sparse_incidence.SparseTests.test_overlapping_marks) ... ok
+test_query_limit (test_sparse_incidence.SparseTests.test_query_limit) ... ok
+test_random_500 (test_sparse_incidence.SparseTests.test_random_500) ... ok
+test_random_signed_300 (test_sparse_incidence.SparseTests.test_random_signed_300) ... ok
+test_reflection_midpoint (test_sparse_incidence.SparseTests.test_reflection_midpoint) ... ok
+test_shared_cycle_limit (test_sparse_incidence.SparseTests.test_shared_cycle_limit) ... ok
+test_signature_limit (test_sparse_incidence.SparseTests.test_signature_limit) ... ok
+test_signed_budget_and_mutation (test_sparse_incidence.SparseTests.test_signed_budget_and_mutation) ... ok
+test_signed_empty (test_sparse_incidence.SparseTests.test_signed_empty) ... ok
+test_singleton_and_identity (test_sparse_incidence.SparseTests.test_singleton_and_identity) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 1.281s
+
+OK
+
+exit=0

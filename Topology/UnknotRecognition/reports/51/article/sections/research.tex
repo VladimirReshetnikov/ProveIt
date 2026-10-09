@@ -1,0 +1,201 @@
+\section{Consequences for the quasi-polynomial programme}
+\label{sec:research}
+
+\subsection{What obstacle has been removed}
+
+The new bound removes dependency depth from the cost of one prescribed
+singleton system. A chain of a thousand definitions need not cause a
+thousand complete rewrites of the relator grammar. All definitions and
+their inverses can be composed together with a constant-factor bound on
+the grammar size. The preserved dependency structure also admits a short
+ordered witness whose validity can be checked without first constructing
+all substituted words separately.
+
+This improves the situation at a concrete point in the project. The old
+forest policy was already capable of sharing long powers, but mixed signs
+and additional dependencies excluded middle relations on a simple actual
+diagram family. The new operation exposes those relations immediately and
+avoids the resulting linear chain of scans and normalization handoffs.
+The certified group-stage measurements agree with that explanation.
+
+The eager-policy regression shows a different obstacle. A smaller
+description after an exact quotient need not be a better input to an
+existing heuristic. Search quality depends on which relations remain
+visible, which letters are repeated, and what subsequent transformations
+become cheap. Grammar size, the number of live generators, expanded length,
+and the cost of later search are different quantities. The final terminal
+guard avoids needing to predict the latter for this release.
+
+\subsection{A useful amortized planning bound}
+
+The delivered terminal probe can run at many search states without using
+the general batch at any of them. Its additional discovery cost is therefore
+worth accounting for separately.
+
+\begin{proposition}[Cached planning across a trace]
+\label{prop:amortized-planning}
+Suppose a search trace invokes the singleton planner $h$ times, retains
+$m$ relator slots, and never has more than $r_0$ live generators. Let $Q$
+be the number of distinct arena nodes whose immutable maximum-and-count
+summary is first encountered across these invocations. The planner's
+charged structural work is
+\[
+ O\!\left(Q+h\bigl(m+r_0\log(r_0+1)+1\bigr)\right),
+\]
+apart from the ordinary bit cost of keys and label comparisons.
+\end{proposition}
+
+\begin{proof}
+Each immutable node's summary is constructed once. Its binary children
+give only a bounded number of stack events, so all fresh metadata costs
+$O(Q)$. A root already in the cache stops its descent immediately.
+Current slots, candidate membership, and distinct-child selection cost
+$O(m+r_0)$ per invocation. The selected list has at most $r_0$ entries;
+the explicit sorting allowance costs $O(r_0\log(r_0+1))$.
+Summing over the invocations gives the bound.
+\end{proof}
+
+This result avoids an unnecessary factor $hM$ for repeatedly rescanning
+unchanged shared subgrammars. It does not bound $Q$ or $h$ for the complete
+recognizer. Whitehead moves, overlap operations, and normalization can
+create additional nodes and additional states; their costs remain part of
+the larger research problem. It also explains why an exact early probe can
+still add a modest measured overhead when it seldom fires.
+
+\subsection{What a general quasi-polynomial theorem still requires}
+
+For the algebraic route, a complete proof needs a quantitative exposure
+result: every unknot in the chosen input model must reach a useful terminal
+or another complete decision method after controlled preparation. Such a
+result would have to bound the number of states visited, the size of their
+shared representations, the work of normalization and relator discovery,
+and certificate replay. Efficient primitives establish none of these
+global existence and scheduling statements by themselves.
+
+The raw phase theorem in Section~\ref{alg:complexity} can be used once its
+hypotheses are actually supplied. In particular, $d=O((\log n)^2)$ pure
+singleton phases from polynomial-size data yield an
+$n^{O(\log n)}$ raw-contraction bound. With $d=O(\log n)$ they yield a
+polynomial raw-contraction bound. Interleaved normalization or unrelated
+moves require their own bounds; they cannot be placed inside the same
+constant-factor recurrence without proof. The delivered guarded search
+uses at most one singleton batch in a completed certificate, but may
+perform many preceding search steps.
+
+For the geometric route suggested by Lackenby's programme, the key
+obligations remain constructive surface selection, encoded cutting and
+attachment data, effective parallelity-bundle operations, controlled
+hierarchy depth, and the total bit cost of all intermediate objects
+\cite{Lackenby2026Hierarchy}. Agol--Hass--Thurston orbit counting is a
+foundational example of obtaining polynomial work in a compressed normal
+surface description without expanding its pieces \cite{AgolHassThurston2006}.
+Lackenby's fast curve algorithms offer related boundary-surface primitives
+\cite{Lackenby2026Curves}. These results are relevant tools, but they do
+not imply that the missing hierarchy can be selected within the target
+budget. This article does not identify its presentation DAG with a
+three-manifold hierarchy.
+
+\subsection{Further questions with concrete success criteria}
+
+\paragraph{1. Better orders with bounded discovery cost.}
+The fixed numeric order misses valid batches, even on relabelled stars.
+Can one compute a small deterministic portfolio of orders that exposes
+substantially more terminal batches on actual Wirtinger states? A useful
+result would combine a restricted structural theorem with complete-call
+measurements that charge every unsuccessful order. The NP-completeness
+result for unrestricted positive presentations rules out treating maximum
+batch selection as an automatically easy preprocessing problem. It does
+not rule out efficient algorithms for the planar source class or useful
+parameterized algorithms.
+
+\paragraph{2. A structural characterization of terminal exposure.}
+Which knot diagrams have a Wirtinger presentation admitting a singleton
+DAG to one surviving generator, before any further word transformation?
+Existence is invariant under a pure generator renaming, because the witness
+can be transported with its order; the numeric planner's success need not
+be invariant. How does exposure change under a different presentation
+construction or Reidemeister simplification? A characterization should
+distinguish existence of a witness from success of one chosen order. It should
+also specify whether the input is the raw four-letter presentation or
+the initially freely and cyclically reduced version.
+
+\paragraph{3. Quantitative exposure after controlled transformations.}
+Can a diagram class broader than descending or visibly stabilized unknots
+be shown to reach a terminal singleton system after polynomial or
+polylogarithmically many bounded transformations? The desired theorem
+must charge the construction of those transformations, not merely show
+that some sequence exists. This would be a direct route from the local
+result to a stronger restricted recognition theorem.
+
+\paragraph{4. Partial batches with a proved handoff guarantee.}
+The Gordian experiment supplies a concrete rejection test for future
+partial-batch policies. A replacement policy should retain the positive
+coverage and compare the whole checked stage with the guarded version.
+Mathematically, seek a potential that controls both representation size
+and the next search operation, or a reversible scheduling scheme that
+preserves the intact predecessor state with a proved total-cost bound.
+Simply choosing the largest available batch is not justified by the
+present experiments.
+
+\paragraph{5. Raw closure with persistent substitutions.}
+Can several raw singleton phases be represented with an additive
+description bound rather than the conservative constant-factor recurrence?
+The tempting proof by unioning original donor-pivot pairs is invalid:
+after eliminating $x$ using $xg$, the original slot $x$ exposes the newly
+introduced singleton $g$. A successful construction must track that
+provenance, empty images, and newly exposed occurrences. It should also
+bound the discovery cost of the closure itself.
+
+\paragraph{6. Memory reclamation consistent with source replay.}
+The current arena retains nodes that become unreachable. The theorem
+bounds new allocations relative to the reachable source, and explicitly
+adds pre-existing unreachable storage. Can old nodes be compacted with a
+verified remapping that preserves caches, certificate provenance, and
+the cost of subsequent comparisons? A useful implementation should report
+live nodes, allocated nodes, auxiliary metadata bits, and wall time
+separately.
+
+\paragraph{7. General primitive and proper-power donors.}
+The new operation is strongest when the donor itself has a literal
+singleton. Existing primitive-power certificates can infer additional
+definitions under source-established torsion-freeness. Can a larger
+mixed batch combine these two kinds of evidence while preserving linear
+context construction and independent replay? Non-unit rank-two primitive
+relations and cyclic dependency components require their own quotient
+analysis; they cannot simply be admitted as additional DAG edges.
+
+\paragraph{8. Endpoints with a small remaining rank.}
+Rank one has a particularly cheap and complete exponent criterion.
+For higher rank, identify restricted residual presentations admitting
+equally explicit complete checks, then allow a batch only when it reaches
+one of those checked endpoints. A theorem parameterized by the actual
+residual structure would be more informative than one parameterized only
+by the number of remaining generator names.
+
+\paragraph{9. Certificates as separate reusable mathematical objects.}
+The ordered witness describes a presentation equivalence independently of
+the search that found it. A Lean formalization of the quotient theorem,
+the ranked-summary checker, and the signed grammar evaluator would make
+that separation precise. It would still need an independent account of
+diagram-to-presentation reconstruction and the classical topological
+endpoint before becoming a formal unknot recognizer.
+
+\paragraph{10. Representative benchmarks and crossover prediction.}
+The actual source-family speedups are large, whereas the ordinary corpus
+shows overhead. A next benchmark should contain more diagrams that survive
+the early filters, preserve source and verdict provenance, and compare
+features under both generous and production resource allowances. Prediction
+of when to invoke the terminal probe should be assessed using withheld
+cases. Measurements should retain all nondecisions and A/A controls and
+should distinguish a faster group stage from a faster complete recognizer.
+
+\subsection{Recommended next research priority}
+
+The most direct next mathematical target is a restricted exposure theorem
+coupled to a small order portfolio. It would address a condition that the
+current implementation can already exploit and check. The most direct
+engineering target is a cheap, evidence-based invocation policy for the
+guarded terminal probe. Both can use the delivered corpus, the eager
+Gordian counterexample, and the independent checker as fixed evaluation
+tools. A general quasi-polynomial claim should wait for the corresponding
+global size and work bounds.

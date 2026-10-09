@@ -1,0 +1,65 @@
+stabilized-circle-16 {"medians": {"baseline_default": 0.006217093003215268, "baseline_forest_AA": 0.0036179059970891103, "baseline_default_AA": 0.0061806390003766865, "singleton": 0.0013521910004783422, "baseline_forest": 0.003551529000105802, "singleton_AA": 0.0014200199948390946}, "paired_ratios": {"versus_default": {"count": 5, "median": 4.203085569142259}, "versus_forest": {"count": 5, "median": 2.400977359977329}, "baseline_default_AA": {"count": 5, "median": 0.9979140523343666}, "baseline_forest_AA": {"count": 5, "median": 0.9816532002111957}, "singleton_AA": {"count": 5, "median": 0.9267320206522381}}}
+stabilized-circle-32 {"medians": {"baseline_forest": 0.007347977996687405, "baseline_forest_AA": 0.0070850509946467355, "baseline_default_AA": 0.015180620001046918, "singleton": 0.0028588489949470386, "singleton_AA": 0.002693815993552562, "baseline_default": 0.015764219002448954}, "paired_ratios": {"versus_default": {"count": 5, "median": 5.755269725586309}, "versus_forest": {"count": 5, "median": 2.5702574741355058}, "baseline_default_AA": {"count": 5, "median": 1.0384436868429476}, "baseline_forest_AA": {"count": 5, "median": 0.9476062213617713}, "singleton_AA": {"count": 5, "median": 1.1043820924836598}}}
+stabilized-circle-64 {"medians": {"singleton_AA": 0.005514374002814293, "baseline_forest": 0.018818295997334644, "baseline_forest_AA": 0.020174352001049556, "baseline_default": 0.06071178499405505, "singleton": 0.005372389001422562, "baseline_default_AA": 0.05860573399695568}, "paired_ratios": {"versus_default": {"count": 5, "median": 12.112123466176017}, "versus_forest": {"count": 5, "median": 3.813291211871726}, "baseline_default_AA": {"count": 5, "median": 1.0399179538434873}, "baseline_forest_AA": {"count": 5, "median": 0.9595916681298086}, "singleton_AA": {"count": 5, "median": 0.9542704514342564}}}
+stabilized-circle-128 {"medians": {"baseline_forest_AA": 0.06814722700073617, "singleton_AA": 0.01082598400535062, "baseline_default": 0.21911999500298407, "baseline_default_AA": 0.22519399799784878, "singleton": 0.010476975003257394, "baseline_forest": 0.06020327500300482}, "paired_ratios": {"versus_default": {"count": 5, "median": 21.205340249633235}, "versus_forest": {"count": 5, "median": 5.655870323555808}, "baseline_default_AA": {"count": 5, "median": 1.010268900414735}, "baseline_forest_AA": {"count": 5, "median": 0.9011315549214374}, "singleton_AA": {"count": 5, "median": 0.9999152960608867}}}
+stabilized-circle-256 {"medians": {"singleton_AA": 0.021343492000596598, "singleton": 0.023583369998959824, "baseline_default_AA": 0.8388886679967982, "baseline_forest": 0.244618092001474, "baseline_default": 0.8767262789988308, "baseline_forest_AA": 0.22332691100018565}, "paired_ratios": {"versus_default": {"count": 5, "median": 36.46829800141419}, "versus_forest": {"count": 5, "median": 9.44418663842615}, "baseline_default_AA": {"count": 5, "median": 1.018849363817917}, "baseline_forest_AA": {"count": 5, "median": 1.1032740379436041}, "singleton_AA": {"count": 5, "median": 1.04388218165006}}}
+{
+  "rounds": 5,
+  "arms": {
+    "baseline_default": [
+      "baseline",
+      {}
+    ],
+    "baseline_default_AA": [
+      "baseline",
+      {}
+    ],
+    "baseline_forest": [
+      "baseline",
+      {
+        "primitive_forest": true
+      }
+    ],
+    "baseline_forest_AA": [
+      "baseline",
+      {
+        "primitive_forest": true
+      }
+    ],
+    "singleton": [
+      "current",
+      {
+        "singleton_dag": true
+      }
+    ],
+    "singleton_AA": [
+      "current",
+      {
+        "singleton_dag": true
+      }
+    ]
+  },
+  "common_options": {
+    "seconds": null,
+    "max_work": 50000000,
+    "max_nodes": 1000000,
+    "compressed_search": true
+  },
+  "measured_calls": 150,
+  "warmup_calls": 30,
+  "completed_calls": 150,
+  "scope": "Actual stabilized-circle source diagrams through the checked group stage only: fresh PD validation, discovery and mandatory source replay. Earlier diagram simplification is bypassed. These are not hard unknots and the ratios are not whole-recognition speedups. Six shuffled arms compare the entire pinned baseline default and forest policies with current singleton mode, each with an A/A control. Workers isolate full packages. Incomplete outcomes are retained and excluded from completed medians and paired ratios.",
+  "mode": "stages",
+  "baseline_commit": "483b7397a1086206bc463222094315390c42550d",
+  "feature_key": "singleton_dag",
+  "seed": 261009819,
+  "seconds": 18.876484886997787,
+  "python": "3.12.14",
+  "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python_hash_seed": "0",
+  "script_sha256": "35498822870e765d0fd59c39ac304728da0241376ff4713bb6936856612a222c",
+  "source_hashes_unchanged": true,
+  "corpus_sha256": "ed7ae3116c89a294e0bcf716cf027f4c80b6bcf48523e6a0bb0e4ecb97d7e89b",
+  "timing_boundary": "Worker perf_counter encloses fn(Diagram.from_pd(pd), **options), and stops before result traversal or serialization. Imports and IPC are outside timers."
+}

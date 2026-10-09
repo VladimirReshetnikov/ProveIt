@@ -408,6 +408,7 @@ import GowersSzemeredi.Proofs16BohrSumRankCap
 import GowersSzemeredi.Proofs16BoundedSpanAlgebra
 import GowersSzemeredi.Proofs16DirectionalBohrSpan
 import GowersSzemeredi.Proofs16DenseRowAlphabets
+import GowersSzemeredi.Proofs16SpectrumPairSumset
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
