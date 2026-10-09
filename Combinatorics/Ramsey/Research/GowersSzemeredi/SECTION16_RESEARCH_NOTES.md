@@ -2555,3 +2555,23 @@ modules and the density headline are registered in the facade. A new
 combined audit, including the latest incoming Corollary 20 and Bohr
 spectrum results, is pending; this supersedes their registration-pending
 notes above, without claiming that the new full audit has completed.
+
+
+### Completed combined headline and sharper-family audit
+
+The new combined audit completes successfully: 6,125 public Gowers
+theorems, a 4,940-module facade closure (including 4,152 OAI modules),
+and 4,942 modules for the combined audit and import-compatibility check.
+Only propext, Classical.choice, and Quot.sound occur. The OAI count in
+the facade also includes the existing separately named Freiman extract;
+the selected upstream density closure itself remains 4,134 upstream and
+17 compatibility modules.
+
+The audit includes the exact Theorem 1.3 companion, all 23 inner-loss and
+sharper-extraction results, the updated variety-family definition, the
+actual relation decomposition, and incoming Corollary 20 and Bohr spectrum
+results. Their earlier pending-audit notices are superseded. The source
+ledger agrees with the checked environment: 115 companions and five open
+statements, with the existing source-fidelity caveats. The remaining open
+entries are Theorem 16.2, Corollary 16.11, Theorems 18.1 and 18.2, and
+Corollary 18.7; no completion claim is made for these.
