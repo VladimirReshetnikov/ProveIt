@@ -5677,7 +5677,7 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        separating `f` and `g`. It gives `g x − g x′ = ψ(x − x′)` whenever
        `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. So `g` shares the linear
        part `ψ`, which is Milićević's `φ₂ = ψ₁ + u`.
-       **Lemma 9.2 for one pair is assembled:** `lemma_9_2_pair`
+       **Lemma 9.2 for one pair is assembled:** `milicevic_lemma_9_2_pair`
        (`Proofs16Lemma92Pair`). Start from `cN²|Ω|` triples separating
        `f` and `g`. The result is a set `B` of values, of density
        `2^(-1882)·c^4656` in `V`, on which `f` is a Freiman
@@ -5704,7 +5704,7 @@ the decomposition with these named constants, but not `Theorem162At 3`.
             probability `(2R+1)^(−4d)`, is exactly
             `exists_good_selection` (`Proofs16SelectionAveraging`, four
             fixed points per requirement, `K = (2R+1)^d`).
-         3. Lemma 9.2 (`lemma_9_2_pair`, applied pairwise) gives a new
+         3. Lemma 9.2 (`milicevic_lemma_9_2_pair`, applied pairwise) gives a new
             Freiman `θ`, independent of the current indices on many
             pairs.
 
@@ -9980,3 +9980,30 @@ image bounds. The robust Bogolyubov–Ruzsa progression step and subsequent
 structure arguments remain open, as does the final printed numerical
 comparison. No numbered catalogue entry or final bound improvement is
 claimed here. No upstream code is ported at this checkpoint.
+
+**Simplification to check next (not yet formalized).** The present tuple
+classes give exact identities, rather than bounded-image differences.
+For the balanced 16-tuple consumer this should allow separation only of
+representative values at the `r` sampled points, instead of the entire
+Boolean cube. In each class meeting the retained additive-tuple fibre,
+choose any tuple in that fibre as the representative. Its value at each
+sample equals the value of every retained tuple in the same class, because
+all their corner indices satisfy the small sample-domain constraints.
+
+The separating set then has at most `|J|·r` values. Put columns into common
+Dirichlet cells for each character and sample. Balanced alternating sums
+cancel the common cell centres, and a constant cell count depending only
+on tuple length makes each tuple value too small in every chosen character
+to be separated. Exact class agreement and separation force that tuple
+value to be zero at every sample. Boolean injectivity ensures a sample is
+nonzero. Thus a tuple with sparse zero level lies in the previously counted
+bad family. Every other tuple has a dense zero level, from which the
+existing dense-level image theorem supplies the desired image bound on a
+half-radius Bohr domain. The cardinality, cell, and containment arguments
+still need Lean proofs; this paragraph records the proposed simplification.
+
+Catalogue hygiene: the incoming one-pair lemma from Milićević's Lemma 9.2
+is named `milicevic_lemma_9_2_pair`. Its former name matched the Gowers
+catalogue's related-theorem prefix for Lemma 9.2, even though it concerns
+a different paper. The explicit source prefix removes that erroneous
+association without changing its mathematical statement or proof.

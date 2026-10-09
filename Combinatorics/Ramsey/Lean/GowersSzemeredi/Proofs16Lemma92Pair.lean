@@ -6,7 +6,7 @@ bounds (arXiv:2601.01682, printed pp. 63–65).
 
 Let a family `Q` of `c N²|Ω|` triples `(x, a, ω)` separate `f` and `g`:
 `f(x + a) − g(x)` depends only on `(a, ω)`. Then
-`lemma_9_2_pair` gives a set `B` of values `x + a` with
+`milicevic_lemma_9_2_pair` gives a set `B` of values `x + a` with
 `|B| ≥ 2^(-1882)·c^4656·|V|` (`V` is the value set), and a map `ψ`, such
 that:
 * `f` is a Freiman 8-homomorphism on `B`
@@ -26,7 +26,7 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 /-- **Lemma 9.2 for one pair.** -/
-theorem lemma_9_2_pair {N : Nat} [NeZero N] [Fact N.Prime] {Ω : Type*} [Fintype Ω]
+theorem milicevic_lemma_9_2_pair {N : Nat} [NeZero N] [Fact N.Prime] {Ω : Type*} [Fintype Ω]
     [Nonempty Ω] (f g : ZMod N → ZMod N) (Q : Finset (ZMod N × ZMod N × Ω))
     (hsep : ∀ x x' a ω, (x, a, ω) ∈ Q → (x', a, ω) ∈ Q → f (x + a) - g x = f (x' + a) - g x')
     {c : Real} (hc : 0 < c)
