@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16VarietyBudgetedPiece
 import GowersSzemeredi.Proofs05WeylConstantBounds
+import GowersSzemeredi.Proofs16VarietyEventualThree
 
 /-! Theorem 16.2 and Corollary 16.11 in dimension three from deep variety structure.
 
@@ -13,6 +14,10 @@ definitions, each per-degree Schmidt constant is
 * `schmidt_base_formula_le` then gives `schmidtMonomialK j ≤ 2^1600`, and
   `schmidtMonomialP j = 15(d_j+1)+23 ≤ 3878`;
 * `explicit_constants_le_of` bounds the four constants by `2^1700`.
+
+The eventual forms (`theorem_16_2_at_three_of_eventually`, the corollary) take
+the deep structure as the corpus pipeline proves it: eventually in prime
+moduli, with a polynomial bound `Bnd c ≤ (4/c)^K`, `K ≤ 2^64`.
 
 The module unfolds the port's `schmidtRecurrenceBase`, so it is checked on the
 full-verification host. -/
@@ -65,5 +70,18 @@ theorem theorem_16_2_at_three_of_deep {D : Nat} (hD : D ≤ 2 ^ 64)
 theorem corollary_16_11_at_three_of_deep {D : Nat} (hD : D ≤ 2 ^ 64)
     (hM : MilicevicDeepVarietyStructure D) : Corollary1611At 3 :=
   corollary_16_11_at_three_of_deep_of_constants hD explicit_constants_le hM
+
+/-- **Theorem 16.2 in dimension three, from the eventual deep structure with a polynomial
+bound `Bnd c ≤ (4/c)^K`, `K ≤ 2^64`**: the form the corpus pipeline proves. -/
+theorem theorem_16_2_at_three_of_eventually {Bnd : Real → Real} {K : Nat} (hK : K ≤ 2 ^ 64)
+    (hBnd : ∀ c : Real, 0 < c → c ≤ 1 → Bnd c ≤ (4 / c) ^ K)
+    (hM : MilicevicDeepEventuallyPrime Bnd) : Theorem162At 3 :=
+  theorem_16_2_at_three_of_eventually_of_constants hK hBnd hM explicit_constants_le
+
+/-- **Corollary 16.11 in dimension three, from the eventual, polynomial-bound deep structure.** -/
+theorem corollary_16_11_at_three_of_eventually {Bnd : Real → Real} {K : Nat} (hK : K ≤ 2 ^ 64)
+    (hBnd : ∀ c : Real, 0 < c → c ≤ 1 → Bnd c ≤ (4 / c) ^ K)
+    (hM : MilicevicDeepEventuallyPrime Bnd) : Corollary1611At 3 :=
+  corollary_16_11_at_three_of_eventually_of_constants hK hBnd hM explicit_constants_le
 
 end LeanProofs.GowersSzemeredi
