@@ -4193,3 +4193,93 @@ OAI modules), or 5,048 modules including both audits, using only
 matches 115 companions and five open entries. The selected port-scope
 check passes; upstream sources and Apache provenance/license files are
 unchanged. The merged incoming work concerns topology only.
+
+### J.94. Adaptive accuracy and the robust row-filling budget
+
+The two quantitative gaps identified in J.93 are now resolved at the
+graph-construction interface: the approximating graph density has an
+explicit positive lower bound, and the graph error pays the robust
+row-filling scalar budget at the actual retained density. Applying the
+result to complete target rows and the proper progression remains a
+separate integration step; no numbered closure is claimed here.
+
+`Proofs16BoxDensityLower` applies the box-correlation estimate to constant
+test functions. If every degree is at least `beta*|X|` and the box error
+is at most `epsilon^4*|X|²*|Y|²`, then `delta ≥ beta-epsilon`. No positivity
+of the approximating density is assumed. `Proofs16TupleDensityLower`
+places a common smaller Bohr set in every degree, giving
+`delta ≥ Q^(-r)-epsilon` when `r` bounds the fixed and varying frequency
+counts and the smaller radius times `Q` is at least one.
+
+`Proofs16AdaptiveRelationBudget` and `Proofs16AdaptiveRelationIteration`
+replace the fixed cutoff and tolerance by arbitrary schedules `R(d)`
+and `theta(d)>0`. The scalar state `d` bounds domain rank, fixed-frequency
+count, and the density-loss exponent: the retained set has ambient
+density at least `alpha/Q^d`. Define the exact update
+
+```
+Phi(d) = d + denseRelationBudget(theta(d),R(d),Q,k,d).
+```
+
+At a failed bad-pair estimate, the new rank is at most the second term,
+and that term also pays for the loss in density. Strict relation growth
+still forces termination within the initial relation codimension. The
+final state is an actual iterate `D = Phi^[s](d)`, and the conclusion uses
+`theta(D)` and `R(D)`. Neither schedule needs to be monotone. The proof
+also retains the sharper frequency count `|F'| ≤ |F|+s*k` and row radius
+`eta/2^s`.
+
+For a graph-error schedule `e(d)`, `Proofs16AdaptiveGraphSchedule` sets
+`theta(d)=e(d)^4/6` and `R(d)=relationProfileCutoff(e(d)^4,H,m)`. A natural
+modulus threshold is the maximum of the rounded Fourier size thresholds
+at the finitely many states `Phi^[s](d)`, `0 ≤ s ≤ k`. The theorem
+`adaptiveGraphModulusBound_spec` supplies the required bound at any
+reachable state. This threshold is explicit and requires no fixed point
+or implicit feasibility assumption.
+
+`Proofs16AdaptiveDenseGraph.exists_adaptive_dense_graph` combines the
+adaptive relation theorem, Fourier cutoff, and density lower bound.
+Set `m=|F|+k²+2k`, take `2^k ≤ eta*H`, and put
+
+```
+beta = (4H)^(-m).
+```
+
+Any positive schedule satisfying `e(d) ≤ beta/2` yields a retained dense
+row configuration with `delta ≥ beta/2`, box error at most
+`e(D)^4*|B|²*|C|²`, and ambient row density at least `alpha/Q^D`. The graph
+and the error refer to the same final state `D`; the right graph class is
+the final quarter Bohr domain. Both full and quarter domain containment
+remain explicit.
+
+`Proofs16AdaptiveFillingError` chooses the schedule needed by robust row
+filling. Write `b=beta/2` and `a_d=alpha/Q^d`, and take
+
+```
+e(d) = min(b/2, (b³*(a_d⁴/4))² / (12*4^(m+1)*(4H)^m)).
+```
+
+This schedule is strictly positive and admissible for the adaptive graph
+theorem. The existing robust witness density obeys
+`robustRepresentationDensity(alpha',C) ≥ a_d⁴/4` whenever `alpha' ≥ a_d`.
+The new budget theorem therefore gives
+
+```
+4^(m+1) * (12*e(d)) * (4H)^m
+  ≤ (delta³ * robustRepresentationDensity(alpha',C))².
+```
+
+Finally, `Proofs16BudgetedDenseGraph.exists_budgeted_dense_graph` instantiates
+the adaptive graph construction with this schedule and proves the scalar
+inequality using the actual retained density `alpha'=|V|/N`. The graph
+estimate and the robust filling budget are both conclusions. This removes
+the dependence problem noted in J.93; it does not merely assume that a
+fixed error can satisfy its own density loss.
+
+Next, the tuple row geometry and graph must be connected to the existing
+pattern row-filling and proper-progression completion theorems, including
+restriction of the Freiman maps and the identification of frequency
+indices. The original paper's precise constants and the deep variety
+statement remain unresolved. All five numbered open entries, 115
+companions, and source-fidelity qualifications remain unchanged. No
+upstream source or selected port dependency was changed.
