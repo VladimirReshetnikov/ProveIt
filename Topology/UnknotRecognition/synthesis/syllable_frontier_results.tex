@@ -1,0 +1,63 @@
+The complete maintained suite passes 1,000 tests with Regina in 235.364
+seconds. The audit pins the entire preceding package at
+\texttt{1ea654445325}. All 240 mode results across eighty actual diagrams
+are identical, and every one of the 159 positive mode results passes both
+full source replayers. The exhaustive audit now explicitly compares the
+previous bounded evaluator as well as independent literal reduction and
+the new producer/replayer. Its 87,381 words preserve all 66,580 accepted
+and 20,801 declined probes. The audit takes 17.370 seconds.
+
+\input{tables/syllable_frontier_kernels.tex}
+
+The controlled follow-up repeats all twelve kernel/supplied-proof cases,
+using the preceding \emph{bounded} evaluator as its baseline. It keeps the
+same five measured rounds, four shuffled arms, one warm-up per arm and
+five-second/20-million-work limits. All 240 measurements and 48 warm-ups
+complete in a 21.578-second run. As above, the table reports paired median
+ratios, and source-replay includes fresh source reconstruction and the
+entire supplied proof but excludes discovering that proof.
+
+Conjugate ratios range from 1.911 to 2.171, with old/new A/A ranges
+0.979--1.008 and 0.971--1.021. At exponent $2^{4096}$ the old/new medians
+are 70.150/33.540 milliseconds, the paired ratio is 2.104, and work falls
+from 110,645 to 49,195. Summary nodes fall from 12,295 to five, while
+allocated grammar nodes remain 12,295 in both versions. The three exact
+uniform summaries explain the reduced traversal; creating the grammar
+and rebuilding the normalized power still contribute to the measured time.
+
+Complete supplied-proof replay ratios range from 1.133 to 1.244. At
+$b=4096$ the paired ratio is 1.243, with old/new controls 0.969/1.029.
+Work falls from 463,311 to 365,031, and summaries from 16,386 to seven,
+including four uniform shortcuts. Both versions still allocate 20,511
+nodes and perform the same three compressed equality calls in the whole
+proof. The source proof's earlier and later operations remain in the timer.
+
+Timing variation remains visible. At $b=64$, separate old/new medians are
+10.615/4.361 milliseconds, but the paired median ratio is only 1.221.
+At $b=1024$, the old A/A ratio is 0.912; the smallest supplied-proof case
+has new A/A 1.092. Raw orders and all measurements are retained. These
+observations are why the paired samples and exact counters, rather than
+ratios of independently aggregated medians or comparisons across separate
+runs, support the reported effect.
+
+Wide-cancellation fallbacks improve by paired ratios 1.297 and 1.289.
+At $b=1024$, completed summaries fall from 2,055 to five and work from
+21,577 to 16,442, while the 2,055 allocated nodes are unchanged. The five
+summaries do not mean five traversal steps: the algorithm descends through
+unfinished ancestors before reaching its rejection witness. Relative to
+the older \emph{unprobed general reducer} in the preceding experiment,
+which charged 15,393 work units on this same grammar, a probe still adds
+overhead. The change reduces that overhead; it does not eliminate it or
+justify multiplying timing ratios from different runs.
+
+\input{syllable_frontier_pipeline_results.tex}
+
+Run the reproduction driver from \path{../fast}. The file
+\path{primitive_power_research/syllable_frontier.py} supports the
+\texttt{audit}, \texttt{benchmark} and \texttt{kernels} commands and retains
+source hashes and baseline package hashes. The prior circle-stage timings
+all stopped at the unchanged short
+length gate, so that stage was not rerun as evidence for these deeper
+traversal shortcuts. No new unknot delivery was present during this check;
+the \texttt{openai/math} head remained
+\texttt{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}.
