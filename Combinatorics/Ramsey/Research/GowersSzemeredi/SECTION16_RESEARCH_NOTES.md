@@ -5818,8 +5818,17 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
         `0 < c′ ≤ δ^5/2^17`. Then a set of `3δ|X|/8` vertices `u` has
         `Q 4 (u+d) u (v+d) v` for all its pairs. That is Claim 4.3, via
         the subtype graph on `X` and `rel_four_on_four_walk_set`.
+    - `Proofs16AbstractBSGUnion` builds the union graph, assuming no
+      2-torsion.
+      - `exists_antipodal_free_subset` picks representatives `D′` with
+        `|D| ≤ 2|D′| + 1`.
+      - `diffUnion D′ T` is the union graph, symmetric and inside
+        `A × A`.
+      - `diffUnion_same_difference` is property (20): two pairs with the
+        same difference are `Q 4`-related, using (S2) for swapped pairs.
+      - `diffUnion_card_ge`: the graph has at least `∑_{d∈D′} |T d|`
+        edges.
     - Still needed for Theorem 4.1:
-      - the union graph `P` over the chosen differences and property (20);
       - Claim 4.4 (Cauchy–Schwarz over difference sequences, then the
         ladder again);
       - the final pruning to `A′`.
