@@ -5677,6 +5677,15 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        separating `f` and `g`. It gives `g x − g x′ = ψ(x − x′)` whenever
        `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. So `g` shares the linear
        part `ψ`, which is Milićević's `φ₂ = ψ₁ + u`.
+       **Lemma 9.2 for one pair is assembled:** `lemma_9_2_pair`
+       (`Proofs16Lemma92Pair`). Start from `cN²|Ω|` triples separating
+       `f` and `g`. The result is a set `B` of values, of density
+       `2^(-1882)·c^4656` in `V`, on which `f` is a Freiman
+       8-homomorphism. Its linear part `ψ` is a Freiman 2-homomorphism
+       on a Bohr set of spectrum `≤ 16α′^(−2)` and radius `α′/(32π)`,
+       with `α′ = |B|/N`, and `g` shares `ψ` on every fiber. Every bound
+       is polynomial in `c`. The eight-map version applies this pair by
+       pair, restricting the family to popular values each time.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
