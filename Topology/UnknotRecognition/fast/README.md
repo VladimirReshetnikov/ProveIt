@@ -2766,3 +2766,23 @@ quasi-polynomial unknot recognition. See [the theory and native measurements](..
 python -B weighted_research/compact_coordinates.py audit --output results/compact_coordinates_audit.json
 python -B weighted_research/compact_coordinates.py benchmark --output results/compact_coordinates_benchmark.json
 ```
+
+### Local vector arithmetic in weighted suffix folds
+
+Weighted orbit truncations now rebuild vectors only in the interval receiving
+the deleted suffix. Unchanged prefix and tail vectors are reused as immutable
+tuples. This preserves the complete canonical partition, statistics and
+certificates; the independent weighted checker is unchanged.
+
+For `R` runs, `S` suffix runs and `P` retained runs meeting the receiving
+interval, a fold takes `O(R)` traversal, `O(S log(S+1))` endpoint comparisons,
+and `O((S+P)*d)` vector-coordinate work. The previous reconstruction did dense
+vector arithmetic over the entire retained prefix. The native suffix operation
+also has the sharp bound `R_after <= R_before + 2`, yielding `R <= R_initial + 2*T`
+after `T` folds. The report's full-carrier `+3` bound applies to a different
+transfer operation. See [the proof and measured scope](../synthesis/suffix_folds.tex).
+
+```sh
+python -B weighted_research/suffix_folds.py audit --output results/suffix_fold_audit.json
+python -B weighted_research/suffix_folds.py benchmark --output results/suffix_fold_benchmark.json
+```
