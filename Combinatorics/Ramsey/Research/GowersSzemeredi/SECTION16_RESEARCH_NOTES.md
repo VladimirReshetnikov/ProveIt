@@ -1449,8 +1449,17 @@ the elementary lemmas of its §2:
   key (a − c, f a − f c); then `two_new_points_energy` gives
   pairEnergy(all, A′×A′)² ≤ N³·phiAdditiveCount(A′, f), via
   `pairEnergy_sq_le` (Cauchy–Schwarz), `pairEnergy_univ_le` (≤ N³), and
-  `pairEnergy_self_eq_phiAdditiveCount`. Next: restate Lemma 19 with
-  two new positions and insert this step.
+  `pairEnergy_self_eq_phiAdditiveCount`.
+- **[49] Lemma 19 in its original shape, done
+  (`Proofs16Lemma19TwoNew`, kernel-checked).** `lemma19_two_new_piece`:
+  witnesses q with q₀ − q₂ = q₁ − q₃ and matching value differences, all
+  values in U, new values (∈ W) only at q₁ and q₃, with
+  |T| ≥ δN³·256K⁴. Then a selection f is Freiman-linear on a set E′ of
+  size ≥ 2⁻¹⁸⁸²(δ²)¹¹⁶⁴N with f(y) ∈ W_y there. The chain is
+  selection averaging, then matched pairs-of-pairs, then
+  `two_new_points_energy`, then Corollary 7.6. It supersedes the
+  four-new-points `lemma19_selection_piece`, which stays as a true but
+  weaker statement.
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
   coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
