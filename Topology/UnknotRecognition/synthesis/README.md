@@ -981,3 +981,16 @@ factors of 1.16–1.42, including independent proof replay. A fresh off/on
 comparison still keeps shellings disabled by default. Evidence is retained
 in `data/vertex-link-census-*`; reproduce it with the `link_census` research
 driver. The general discovery-complexity goal is unchanged.
+
+[`coherent_obstruction.tex`](coherent_obstruction.tex) proves a limitation of
+the entire coherent-height family on arbitrary solid-torus triangulations.
+Six independently verified 2–3 moves yield an eight-tetrahedron, one-vertex
+solid torus. A rank-nine minor and primitive cochain prove that every primitive
+coherent vector is the same 41-piece genus-two surface. A separate 51-piece
+normal compressing-disc certificate demonstrates that the obstruction is to
+this representation. Independent topology replay, 20 relabellings, mutation
+tests and 240 Regina move comparisons support the construction. It does not
+prove failure on the canonical diagram exteriors or change the recognition
+schedule. Reproduce or replay with
+`../fast/normal_orbit_research/coherent_obstruction.py`; the retained proof,
+source hashes, audit and full-suite log are `data/coherent-obstruction-*`.

@@ -1,5 +1,20 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The explicit `pachner23.pachner_23(triangulation, tetrahedron, face)` API
+performs one canonical 2–3 move on a finite torus-boundary triangulation.
+Its result contains a fresh `triangulation`, a selected-face `certificate`,
+and work statistics; `pachner23_verify.verify_pachner_23` independently checks
+the old/new formal boundary maps. It is not part of the recognition schedule.
+The `coherent_family_verify.inspect_one_vertex_family` checker verifies an
+exact rank-minor certificate for all primitive coherent-height vectors on a
+one-vertex triangulation. A retained eight-tetrahedron solid torus has a
+unique such vector of genus two, although a separately certified 51-piece
+normal compressing disc exists. This is a candidate-family obstruction,
+not a negative knot certificate. See
+[`coherent_obstruction.tex`](../synthesis/coherent_obstruction.tex), and run
+`python -B -m normal_orbit_research.coherent_obstruction replay --record ../synthesis/data/coherent-obstruction-certificate.json`
+for producer-free proof replay without Regina.
+
 Orbit queries can now return independent local proofs with
 `count_orbits(..., record_certificate=True)`. Replay with
 `fastunknot.interval_orbit_verify.verify_orbit_certificate(size, pairs, proof)`.
