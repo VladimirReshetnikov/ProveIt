@@ -853,6 +853,7 @@ import GowersSzemeredi.Proofs16VarietyLossBound
 import GowersSzemeredi.Proofs16VarietyScaleBounds
 import GowersSzemeredi.Proofs16ExplicitConstantBounds
 import GowersSzemeredi.Proofs16VarietyBudgetedPiece
+import GowersSzemeredi.Proofs16VarietyTheoremThree
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
 import GowersSzemeredi.Proofs16VarietyPieceBudget
 import GowersSzemeredi.Proofs16KeyCollisionDensity
@@ -888,6 +889,14 @@ import GowersSzemeredi.Proofs16HigherPairEscapeComponent
 import GowersSzemeredi.Proofs16HigherPairRadiusBudget
 import GowersSzemeredi.Proofs16HigherPairRankIncrement
 import GowersSzemeredi.Proofs16SpanFiniteUnion
+import GowersSzemeredi.Proofs16JointFrequencySelection
+import GowersSzemeredi.Proofs16JointSelectionExtension
+import GowersSzemeredi.Proofs16JointSelectionIndices
+import GowersSzemeredi.Proofs16JointSelectionParameters
+import GowersSzemeredi.Proofs16JointSelectionState
+import GowersSzemeredi.Proofs16JointSelectionSteps
+import GowersSzemeredi.Proofs16JointSelectionTermination
+import GowersSzemeredi.Proofs16JointSelectionUniformControls
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
