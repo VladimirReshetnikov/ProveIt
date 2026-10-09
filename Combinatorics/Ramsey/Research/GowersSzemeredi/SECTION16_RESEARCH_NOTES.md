@@ -2666,3 +2666,11 @@ The three new theorem declarations compile in a 60-module source closure.
 They supply common parameters for the remaining bilinear argument; they
 do not discharge bounded-span duality, algebraic regularity, or the deep
 structure hypothesis. The combined audit is pending.
+
+The combined audit for the common-neighborhood extension has passed:
+6,169 public Gowers theorems, a 4,946-module facade (4,152 OAI modules),
+and a 4,948-module combined audit closure. Only propext, Classical.choice,
+and Quot.sound occur. This includes the incoming discrete trapezoid
+sandwich and supersedes the pending audit notice above. The source
+ledger matches the checked 115/5 catalogue, with its existing fidelity
+caveats. The port scope check still passes; no upstream modules were added.
