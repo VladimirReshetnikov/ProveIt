@@ -761,6 +761,7 @@ import GowersSzemeredi.Proofs16VarietyLossPower
 import GowersSzemeredi.Proofs16VarietyCeilingFreeDecomposition
 import GowersSzemeredi.Proofs16SharperLineExtractor
 import GowersSzemeredi.Proofs16SharperVarietyStructure
+import GowersSzemeredi.Proofs16DeepEventuallyPrime
 import GowersSzemeredi.Proofs16SharperVarietyParameters
 import GowersSzemeredi.Proofs01QuantitativeDensityHeadline
 /-!
