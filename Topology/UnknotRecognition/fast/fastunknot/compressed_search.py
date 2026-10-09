@@ -25,6 +25,7 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
     normalization_cache = {} if primitive_projection or elimination_batch else None
     elimination_cache = {} if elimination_batch else None
     projection_cache = {} if primitive_projection else None
+    batch_stalled = False
     while len(alive) > 1:
         if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
             from .primitive_power import primitive_power_terminal
@@ -35,10 +36,17 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
         if elimination_batch and len(alive) >= 3:
             from .elimination_batch import plan_batch, apply_batch
-            selected = plan_batch(arena, roots, alive, elimination_cache, ordered=True)
+            selected = [] if batch_stalled else plan_batch(arena, roots, alive, elimination_cache, ordered=True)
+            batch_stalled = False
             if len(selected) >= 2:
-                apply_batch(arena, roots, alive, selected)
-                moves.append(dict(kind='elimination_batch', entries=selected))
+                if len(alive)-len(selected)<=2:
+                    # This batch ends raw batch discovery, so retain its cheap
+                    # existing representation without a private circuit import.
+                    apply_batch(arena, roots, alive, selected)
+                    moves.append(dict(kind='elimination_batch', entries=selected))
+                else:
+                    from .persistent_elimination import produce_block
+                    batch_stalled = produce_block(arena, roots, alive, moves, selected)
                 raw = True
                 continue
 
