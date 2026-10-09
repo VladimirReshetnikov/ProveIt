@@ -8288,3 +8288,26 @@ entry or upstream port scope is changed.
 **Initial verification.** The production target through the agreement
 domain checks 408 modules. The final axiom and merged-closure verification
 is recorded below after the common-index agreement interface is added.
+
+**Common-index agreement interface.** `coreAnchorAgreementDensity` uses
+`Q = ceil(1/min(sigma,r/4))`, eliminating the auxiliary cell integer.
+It is positive for positive input density and radii. The theorem
+`popular_common_indices_agree` retains the joint state and map budget,
+common index set of size at most `8*jointSelectionRank (g+d) r`, and
+`uniformAnchorIndexDensity` of whole coherent quadruples. At each shift
+it also retains popularity and an actual agreement domain of density
+`coreAnchorAgreementDensity t (8*rank) g d r sigma`, with both column
+endpoints in the core and the evaluation point in the selected Bohr set.
+This domain and all equality assertions are constructed from the core;
+none is an additional input hypothesis.
+
+**Final verification.** The production closure checks 410 modules. All
+22 new named theorems pass individual axiom checks. The full audit checks
+8,070 public Gowers theorems in 5,327 combined modules (5,325 facade
+modules, including 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The regenerated numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries, subject
+to the existing statement-fidelity qualifications. Port scope remains
+4,134 upstream modules and 17 compatibility modules. No upstream code
+or license scope is added. The fetched `origin/main` was already an
+ancestor of the working branch.
