@@ -1,0 +1,2455 @@
+{
+  "scope": "Paired raw-maintenance benchmark on PREVERIFIED supplied schedules.\n\nIncludes state initialization, every update, and the exact rank-one endpoint.\nExcludes schedule discovery and independent replay (performed before timing).\nThe reference is a verbatim upstream updater on the standalone Arena, not the\ncomplete fastunknot pipeline. Eager export is a deliberate workload ablation.\n",
+  "status": "PASS",
+  "seed": 2026100802,
+  "measured_rounds_per_arm": 5,
+  "warmups_per_arm": 1,
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "cases": [
+    {
+      "family": "star",
+      "rank": 32,
+      "power_bit_parameter": 16,
+      "source_sha256": "87f4712f331038dc2934942f1870c42a9b8b2162475726b0c27ed7be640ad585",
+      "source_nodes": 82,
+      "rounds_in_schedule": 31,
+      "median_seconds": {
+        "anchored": 0.00035042699994392024,
+        "anchored_control": 0.0004542100000435312,
+        "chained": 0.0015749429999232234,
+        "chained_control": 0.00201774199990723,
+        "anchored_eager": 0.0019602840000061406
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 4.494354031439546,
+        "anchored_A_over_A": 0.771508773277417,
+        "chained_A_over_A": 0.7633195919280031,
+        "eager_over_lazy": 6.198671906927173
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.00035002800007077894,
+          "metrics": {
+            "persistent_source_nodes": 82,
+            "image_records": 32,
+            "max_export_nodes": 0,
+            "cooperative_work": 1073,
+            "max_exponent_bits": 17
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.00025961500000448723,
+          "metrics": {
+            "persistent_source_nodes": 82,
+            "image_records": 32,
+            "max_export_nodes": 0,
+            "cooperative_work": 1073,
+            "max_exponent_bits": 17
+          }
+        },
+        "chained": {
+          "seconds": 0.0017447579999725349,
+          "metrics": {
+            "allocated_grammar_nodes": 99,
+            "cooperative_work": 2153
+          }
+        },
+        "chained_control": {
+          "seconds": 0.0014979649999986577,
+          "metrics": {
+            "allocated_grammar_nodes": 99,
+            "cooperative_work": 2153
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.002665696000008211,
+          "metrics": {
+            "persistent_source_nodes": 82,
+            "image_records": 32,
+            "max_export_nodes": 97,
+            "cooperative_work": 1073,
+            "max_exponent_bits": 17
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "chained",
+            "anchored_eager",
+            "anchored_control",
+            "anchored",
+            "chained_control"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.0019346990000030928,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0019515440000077433,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 97,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00026837999996587314,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.0005628549999983079,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.002274944000077994,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "chained_control",
+            "anchored_control",
+            "anchored_eager",
+            "chained",
+            "anchored"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.002324839000038992,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0004542100000435312,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0021721819999811487,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 97,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.0015749429999232234,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "anchored": {
+              "seconds": 0.00035042699994392024,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "anchored_eager",
+            "chained_control",
+            "chained",
+            "anchored",
+            "anchored_control"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.0019602840000061406,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 97,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.0019624610000619214,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "chained": {
+              "seconds": 0.0014760950000436424,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "anchored": {
+              "seconds": 0.00037286400004177267,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0005564609999737513,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "anchored_eager",
+            "anchored",
+            "anchored_control",
+            "chained_control",
+            "chained"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.0018028879999292258,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 97,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.0002864740000632082,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0002534599999535203,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.00201774199990723,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "chained": {
+              "seconds": 0.0015401819999851796,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "anchored",
+            "anchored_control",
+            "chained_control",
+            "chained",
+            "anchored_eager"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.00028800500001580076,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0004724750000377753,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.0017859050000197385,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "chained": {
+              "seconds": 0.0016634959999919374,
+              "metrics": {
+                "allocated_grammar_nodes": 99,
+                "cooperative_work": 2153
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0023044819999995525,
+              "metrics": {
+                "persistent_source_nodes": 82,
+                "image_records": 32,
+                "max_export_nodes": 97,
+                "cooperative_work": 1073,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "star",
+      "rank": 64,
+      "power_bit_parameter": 16,
+      "source_sha256": "64c579c43e328c5ef9b1db8f46629b51bbc968df5bbc219f2bd77aece272fb2a",
+      "source_nodes": 146,
+      "rounds_in_schedule": 63,
+      "median_seconds": {
+        "anchored": 0.001077294999959122,
+        "anchored_control": 0.0010863350000818173,
+        "chained": 0.004839162000052966,
+        "chained_control": 0.00509132500008036,
+        "anchored_eager": 0.0064563320000843305
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 4.28039859109423,
+        "anchored_A_over_A": 1.0131313083805473,
+        "chained_A_over_A": 0.8513239677073073,
+        "eager_over_lazy": 5.866192985867532
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.0010860950000051162,
+          "metrics": {
+            "persistent_source_nodes": 146,
+            "image_records": 64,
+            "max_export_nodes": 0,
+            "cooperative_work": 4177,
+            "max_exponent_bits": 17
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.0008912110000665052,
+          "metrics": {
+            "persistent_source_nodes": 146,
+            "image_records": 64,
+            "max_export_nodes": 0,
+            "cooperative_work": 4177,
+            "max_exponent_bits": 17
+          }
+        },
+        "chained": {
+          "seconds": 0.0048070740000412115,
+          "metrics": {
+            "allocated_grammar_nodes": 163,
+            "cooperative_work": 6409
+          }
+        },
+        "chained_control": {
+          "seconds": 0.00651418500001455,
+          "metrics": {
+            "allocated_grammar_nodes": 163,
+            "cooperative_work": 6409
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.012560611000026256,
+          "metrics": {
+            "persistent_source_nodes": 146,
+            "image_records": 64,
+            "max_export_nodes": 161,
+            "cooperative_work": 4177,
+            "max_exponent_bits": 17
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "chained_control",
+            "anchored_eager",
+            "anchored_control",
+            "chained",
+            "anchored"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.010142036000047483,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.009601137999993625,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 161,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0013568059999897741,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.004936377000035463,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "anchored": {
+              "seconds": 0.0009675590000597367,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "anchored_control",
+            "anchored",
+            "chained",
+            "chained_control",
+            "anchored_eager"
+          ],
+          "arms": {
+            "anchored_control": {
+              "seconds": 0.0009183160000247881,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.001077294999959122,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.004611252000017885,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "chained_control": {
+              "seconds": 0.004956296000045768,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0058784520000472185,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 161,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "anchored",
+            "anchored_control",
+            "anchored_eager",
+            "chained",
+            "chained_control"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.0011005999999724736,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0010863350000818173,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0064563320000843305,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 161,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.004334366999955819,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "chained_control": {
+              "seconds": 0.00509132500008036,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "anchored",
+            "anchored_control",
+            "chained",
+            "anchored_eager",
+            "chained_control"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.0009381500000245069,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0009297400000605194,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.0048799959999996645,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.006286948000024495,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 161,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.004369171999996979,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "chained",
+            "chained_control",
+            "anchored_eager",
+            "anchored_control",
+            "anchored"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.004839162000052966,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "chained_control": {
+              "seconds": 0.005738428999961798,
+              "metrics": {
+                "allocated_grammar_nodes": 163,
+                "cooperative_work": 6409
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.006827720999922349,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 161,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0020255000000588552,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.0023576379999212804,
+              "metrics": {
+                "persistent_source_nodes": 146,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 4177,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "star",
+      "rank": 128,
+      "power_bit_parameter": 16,
+      "source_sha256": "42382c7602ffda0c252477d5e660b65110f5664f7fb5bf61c05d53a7ea1f7a6b",
+      "source_nodes": 274,
+      "rounds_in_schedule": 127,
+      "median_seconds": {
+        "anchored": 0.004236384000023463,
+        "anchored_control": 0.004454996000049505,
+        "chained": 0.021917195000014544,
+        "chained_control": 0.01566811499992582,
+        "anchored_eager": 0.0234895769999639
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 4.1156216504491425,
+        "anchored_A_over_A": 0.8196465271544077,
+        "chained_A_over_A": 1.1068358568531167,
+        "eager_over_lazy": 5.544723282835976
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.0037365089999639167,
+          "metrics": {
+            "persistent_source_nodes": 274,
+            "image_records": 128,
+            "max_export_nodes": 0,
+            "cooperative_work": 16529,
+            "max_exponent_bits": 17
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.003677154000001792,
+          "metrics": {
+            "persistent_source_nodes": 274,
+            "image_records": 128,
+            "max_export_nodes": 0,
+            "cooperative_work": 16529,
+            "max_exponent_bits": 17
+          }
+        },
+        "chained": {
+          "seconds": 0.01519072199994298,
+          "metrics": {
+            "allocated_grammar_nodes": 291,
+            "cooperative_work": 21065
+          }
+        },
+        "chained_control": {
+          "seconds": 0.014612222999971891,
+          "metrics": {
+            "allocated_grammar_nodes": 291,
+            "cooperative_work": 21065
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.02673014799995599,
+          "metrics": {
+            "persistent_source_nodes": 274,
+            "image_records": 128,
+            "max_export_nodes": 289,
+            "cooperative_work": 16529,
+            "max_exponent_bits": 17
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "chained_control",
+            "chained",
+            "anchored_control",
+            "anchored",
+            "anchored_eager"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.014261685000064972,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "chained": {
+              "seconds": 0.014199059000020497,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.006513887999972212,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.004236384000023463,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0234895769999639,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 289,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "chained_control",
+            "chained",
+            "anchored",
+            "anchored_control",
+            "anchored_eager"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.01357769800006281,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "chained": {
+              "seconds": 0.01502828299999237,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "anchored": {
+              "seconds": 0.003651521999927354,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.004454996000049505,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.022627309000085916,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 289,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "anchored_eager",
+            "chained_control",
+            "anchored_control",
+            "anchored",
+            "chained"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.03152748200000133,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 289,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.01566811499992582,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.003979104999984884,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.0037277449999919554,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.02498568700002579,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "anchored_control",
+            "anchored_eager",
+            "chained_control",
+            "chained",
+            "anchored"
+          ],
+          "arms": {
+            "anchored_control": {
+              "seconds": 0.003552584999965802,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.039387311000041336,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 289,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.01689011999997092,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "chained": {
+              "seconds": 0.02789196800006266,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "anchored": {
+              "seconds": 0.008183764000023075,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "chained_control",
+            "anchored_eager",
+            "anchored",
+            "anchored_control",
+            "chained"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.020787413000107335,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.02239546500004508,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 289,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.005090969000093537,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00729799800001274,
+              "metrics": {
+                "persistent_source_nodes": 274,
+                "image_records": 128,
+                "max_export_nodes": 0,
+                "cooperative_work": 16529,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.021917195000014544,
+              "metrics": {
+                "allocated_grammar_nodes": 291,
+                "cooperative_work": 21065
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "star",
+      "rank": 256,
+      "power_bit_parameter": 16,
+      "source_sha256": "fa0031f98f0bbb1c7c24bd2e6a5b26f502d16136a4393278ec682ffef15453d2",
+      "source_nodes": 530,
+      "rounds_in_schedule": 255,
+      "median_seconds": {
+        "anchored": 0.01492474700000912,
+        "anchored_control": 0.015522856999950818,
+        "chained": 0.051864944999920226,
+        "chained_control": 0.05499453499999163,
+        "anchored_eager": 0.09225853700002062
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 3.442116313827716,
+        "anchored_A_over_A": 0.978167274059665,
+        "chained_A_over_A": 0.9805925278957303,
+        "eager_over_lazy": 6.188159728422363
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.01678322800000842,
+          "metrics": {
+            "persistent_source_nodes": 530,
+            "image_records": 256,
+            "max_export_nodes": 0,
+            "cooperative_work": 65809,
+            "max_exponent_bits": 17
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.019829963999995925,
+          "metrics": {
+            "persistent_source_nodes": 530,
+            "image_records": 256,
+            "max_export_nodes": 0,
+            "cooperative_work": 65809,
+            "max_exponent_bits": 17
+          }
+        },
+        "chained": {
+          "seconds": 0.05198881600006189,
+          "metrics": {
+            "allocated_grammar_nodes": 547,
+            "cooperative_work": 74953
+          }
+        },
+        "chained_control": {
+          "seconds": 0.04759450000005927,
+          "metrics": {
+            "allocated_grammar_nodes": 547,
+            "cooperative_work": 74953
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.0884839870000178,
+          "metrics": {
+            "persistent_source_nodes": 530,
+            "image_records": 256,
+            "max_export_nodes": 545,
+            "cooperative_work": 65809,
+            "max_exponent_bits": 17
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "anchored_eager",
+            "anchored_control",
+            "anchored",
+            "chained",
+            "chained_control"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.09225853700002062,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 545,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.015522856999950818,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.014908880999996654,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.058783581000056984,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "chained_control": {
+              "seconds": 0.05550494700003128,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "anchored_control",
+            "chained_control",
+            "anchored",
+            "chained",
+            "anchored_eager"
+          ],
+          "arms": {
+            "anchored_control": {
+              "seconds": 0.01784494599996833,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.05554919799999425,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "anchored": {
+              "seconds": 0.01582671799997115,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.05329918199993244,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.09088286299993342,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 545,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "anchored_eager",
+            "chained",
+            "anchored",
+            "anchored_control",
+            "chained_control"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.09013207800001055,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 545,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.05137013699993531,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "anchored": {
+              "seconds": 0.016586365999955888,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.016714761999992334,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.05238683300001412,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "anchored",
+            "anchored_control",
+            "chained_control",
+            "anchored_eager",
+            "chained"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.014572111000006771,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.01489736099995298,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.05090603399992233,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.09455826999999317,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 545,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained": {
+              "seconds": 0.05015890100003162,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "anchored_control",
+            "chained_control",
+            "chained",
+            "anchored_eager",
+            "anchored"
+          ],
+          "arms": {
+            "anchored_control": {
+              "seconds": 0.014399722000007387,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "chained_control": {
+              "seconds": 0.05499453499999163,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "chained": {
+              "seconds": 0.051864944999920226,
+              "metrics": {
+                "allocated_grammar_nodes": 547,
+                "cooperative_work": 74953
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.0958819569999605,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 545,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            },
+            "anchored": {
+              "seconds": 0.01492474700000912,
+              "metrics": {
+                "persistent_source_nodes": 530,
+                "image_records": 256,
+                "max_export_nodes": 0,
+                "cooperative_work": 65809,
+                "max_exponent_bits": 17
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "chain",
+      "rank": 16,
+      "power_bit_parameter": 16,
+      "source_sha256": "2c9e8f066477e108add696c4f1a531a482cb74b94010cfb00ea0a43b36ee0a57",
+      "source_nodes": 291,
+      "rounds_in_schedule": 15,
+      "median_seconds": {
+        "anchored": 0.00019961999998940883,
+        "anchored_control": 0.00014986000007866096,
+        "chained": 0.004114321999963977,
+        "chained_control": 0.0043756820000453445,
+        "anchored_eager": 0.00966565199996694
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 22.4107353984248,
+        "anchored_A_over_A": 1.0068286972056406,
+        "chained_A_over_A": 0.9280983702516087,
+        "eager_over_lazy": 48.42025849353656
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.00022827500004041212,
+          "metrics": {
+            "persistent_source_nodes": 291,
+            "image_records": 16,
+            "max_export_nodes": 0,
+            "cooperative_work": 530,
+            "max_exponent_bits": 241
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.00018116900002951297,
+          "metrics": {
+            "persistent_source_nodes": 291,
+            "image_records": 16,
+            "max_export_nodes": 0,
+            "cooperative_work": 530,
+            "max_exponent_bits": 241
+          }
+        },
+        "chained": {
+          "seconds": 0.004813130999991699,
+          "metrics": {
+            "allocated_grammar_nodes": 786,
+            "cooperative_work": 4065
+          }
+        },
+        "chained_control": {
+          "seconds": 0.004832432999933189,
+          "metrics": {
+            "allocated_grammar_nodes": 786,
+            "cooperative_work": 4065
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.008493873000020358,
+          "metrics": {
+            "persistent_source_nodes": 291,
+            "image_records": 16,
+            "max_export_nodes": 501,
+            "cooperative_work": 530,
+            "max_exponent_bits": 241
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "chained",
+            "anchored_eager",
+            "anchored_control",
+            "chained_control",
+            "anchored"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.004178310000042984,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.009189111999944544,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 501,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00014219799993497872,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "chained_control": {
+              "seconds": 0.0045020119999890085,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored": {
+              "seconds": 0.0004940929999293076,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "chained",
+            "anchored_control",
+            "anchored_eager",
+            "anchored",
+            "chained_control"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.004473630999996203,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00027833100000407285,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.00966565199996694,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 501,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored": {
+              "seconds": 0.00019961999998940883,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "chained_control": {
+              "seconds": 0.0043756820000453445,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "chained",
+            "chained_control",
+            "anchored",
+            "anchored_eager",
+            "anchored_control"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.003985624000051757,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "chained_control": {
+              "seconds": 0.004090482999913547,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored": {
+              "seconds": 0.00015485599999465194,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.008668510999996215,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 501,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0002891020000106437,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "chained",
+            "anchored_control",
+            "chained_control",
+            "anchored",
+            "anchored_eager"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.0038430900000321344,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00014849100000446924,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "chained_control": {
+              "seconds": 0.004176544999950238,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored": {
+              "seconds": 0.00014950500008126255,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.009858341000040127,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 501,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "anchored",
+            "chained_control",
+            "anchored_eager",
+            "anchored_control",
+            "chained"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.00024896200000057433,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "chained_control": {
+              "seconds": 0.005467892999945434,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.010637424000037754,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 501,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00014986000007866096,
+              "metrics": {
+                "persistent_source_nodes": 291,
+                "image_records": 16,
+                "max_export_nodes": 0,
+                "cooperative_work": 530,
+                "max_exponent_bits": 241
+              }
+            },
+            "chained": {
+              "seconds": 0.004114321999963977,
+              "metrics": {
+                "allocated_grammar_nodes": 786,
+                "cooperative_work": 4065
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "chain",
+      "rank": 32,
+      "power_bit_parameter": 16,
+      "source_sha256": "47945b0b4dac46d65d9b9792401a2af48c8e0956fcc8cdece6022999b1510a7b",
+      "source_nodes": 595,
+      "rounds_in_schedule": 31,
+      "median_seconds": {
+        "anchored": 0.000390349000099377,
+        "anchored_control": 0.000403938999966158,
+        "chained": 0.016713474000084716,
+        "chained_control": 0.0172554550000541,
+        "anchored_eager": 0.06370814299998528
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 45.70081620413098,
+        "anchored_A_over_A": 0.9339757081752665,
+        "chained_A_over_A": 1.0073734015477789,
+        "eager_over_lazy": 153.1147408724654
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.0008301400000618742,
+          "metrics": {
+            "persistent_source_nodes": 595,
+            "image_records": 32,
+            "max_export_nodes": 0,
+            "cooperative_work": 1586,
+            "max_exponent_bits": 497
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.0003965070000049309,
+          "metrics": {
+            "persistent_source_nodes": 595,
+            "image_records": 32,
+            "max_export_nodes": 0,
+            "cooperative_work": 1586,
+            "max_exponent_bits": 497
+          }
+        },
+        "chained": {
+          "seconds": 0.019251525000072434,
+          "metrics": {
+            "allocated_grammar_nodes": 1634,
+            "cooperative_work": 17081
+          }
+        },
+        "chained_control": {
+          "seconds": 0.021399971000050755,
+          "metrics": {
+            "allocated_grammar_nodes": 1634,
+            "cooperative_work": 17081
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.061007404000065435,
+          "metrics": {
+            "persistent_source_nodes": 595,
+            "image_records": 32,
+            "max_export_nodes": 1029,
+            "cooperative_work": 1586,
+            "max_exponent_bits": 497
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "anchored_eager",
+            "chained_control",
+            "anchored_control",
+            "anchored",
+            "chained"
+          ],
+          "arms": {
+            "anchored_eager": {
+              "seconds": 0.06048903199996403,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 1029,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "chained_control": {
+              "seconds": 0.018862991999981205,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.000403938999966158,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored": {
+              "seconds": 0.0003724919999967824,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "chained": {
+              "seconds": 0.01962120500002129,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "chained_control",
+            "chained",
+            "anchored_control",
+            "anchored_eager",
+            "anchored"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.0172554550000541,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "chained": {
+              "seconds": 0.015227607000042553,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.00043447699999887845,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.07217270000001008,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 1029,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored": {
+              "seconds": 0.00047965999999632913,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "chained_control",
+            "anchored_eager",
+            "anchored_control",
+            "anchored",
+            "chained"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.016342662000056407,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.06370814299998528,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 1029,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0003915679999408894,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored": {
+              "seconds": 0.00036571500004356494,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "chained": {
+              "seconds": 0.016713474000084716,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "chained",
+            "chained_control",
+            "anchored",
+            "anchored_eager",
+            "anchored_control"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.015696299000069303,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "chained_control": {
+              "seconds": 0.0155814110000847,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "anchored": {
+              "seconds": 0.0004976569999826097,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.06585558700010097,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 1029,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0003863879999244091,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "chained_control",
+            "chained",
+            "anchored_control",
+            "anchored_eager",
+            "anchored"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.01932464499998332,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "chained": {
+              "seconds": 0.019015215999957036,
+              "metrics": {
+                "allocated_grammar_nodes": 1634,
+                "cooperative_work": 17081
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0004423049999786599,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.05976818600004208,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 1029,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            },
+            "anchored": {
+              "seconds": 0.000390349000099377,
+              "metrics": {
+                "persistent_source_nodes": 595,
+                "image_records": 32,
+                "max_export_nodes": 0,
+                "cooperative_work": 1586,
+                "max_exponent_bits": 497
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "family": "chain",
+      "rank": 64,
+      "power_bit_parameter": 16,
+      "source_sha256": "ef87c7c6f59966f2a426c74e354ce8873d9ce75a7db1891f4953977600e77be4",
+      "source_nodes": 1203,
+      "rounds_in_schedule": 63,
+      "median_seconds": {
+        "anchored": 0.001442952000047626,
+        "anchored_control": 0.0014179020000710807,
+        "chained": 0.0793725959999847,
+        "chained_control": 0.07941029599999183,
+        "anchored_eager": 0.49743672900001457
+      },
+      "paired_median_ratios": {
+        "chained_over_anchored": 53.22957984351157,
+        "anchored_A_over_A": 1.0412749728822368,
+        "chained_A_over_A": 0.9490123336279143,
+        "eager_over_lazy": 348.8229554050478
+      },
+      "warmups": {
+        "anchored": {
+          "seconds": 0.0014397499999176944,
+          "metrics": {
+            "persistent_source_nodes": 1203,
+            "image_records": 64,
+            "max_export_nodes": 0,
+            "cooperative_work": 5234,
+            "max_exponent_bits": 1009
+          }
+        },
+        "anchored_control": {
+          "seconds": 0.0014125180000519322,
+          "metrics": {
+            "persistent_source_nodes": 1203,
+            "image_records": 64,
+            "max_export_nodes": 0,
+            "cooperative_work": 5234,
+            "max_exponent_bits": 1009
+          }
+        },
+        "chained": {
+          "seconds": 0.07094337099999848,
+          "metrics": {
+            "allocated_grammar_nodes": 3330,
+            "cooperative_work": 69993
+          }
+        },
+        "chained_control": {
+          "seconds": 0.07139290600002823,
+          "metrics": {
+            "allocated_grammar_nodes": 3330,
+            "cooperative_work": 69993
+          }
+        },
+        "anchored_eager": {
+          "seconds": 0.47890378700003566,
+          "metrics": {
+            "persistent_source_nodes": 1203,
+            "image_records": 64,
+            "max_export_nodes": 2085,
+            "cooperative_work": 5234,
+            "max_exponent_bits": 1009
+          }
+        }
+      },
+      "samples": [
+        {
+          "round": 0,
+          "order": [
+            "anchored_control",
+            "chained_control",
+            "anchored_eager",
+            "chained",
+            "anchored"
+          ],
+          "arms": {
+            "anchored_control": {
+              "seconds": 0.0013883729999406569,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained_control": {
+              "seconds": 0.06925424799999291,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.4728556889999709,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 2085,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained": {
+              "seconds": 0.06390107900006115,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored": {
+              "seconds": 0.0016351429999303946,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            }
+          }
+        },
+        {
+          "round": 1,
+          "order": [
+            "anchored",
+            "chained",
+            "anchored_eager",
+            "anchored_control",
+            "chained_control"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.001442952000047626,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained": {
+              "seconds": 0.06522512799995184,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.49743672900001457,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 2085,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0013857550000011543,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained_control": {
+              "seconds": 0.06872948400007317,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            }
+          }
+        },
+        {
+          "round": 2,
+          "order": [
+            "chained_control",
+            "anchored_eager",
+            "anchored",
+            "anchored_control",
+            "chained"
+          ],
+          "arms": {
+            "chained_control": {
+              "seconds": 0.07941029599999183,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.6512286330000734,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 2085,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "anchored": {
+              "seconds": 0.001325547999954324,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0032664839999370088,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained": {
+              "seconds": 0.14321440599997004,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            }
+          }
+        },
+        {
+          "round": 3,
+          "order": [
+            "anchored",
+            "chained_control",
+            "anchored_eager",
+            "chained",
+            "anchored_control"
+          ],
+          "arms": {
+            "anchored": {
+              "seconds": 0.0014911370000163515,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained_control": {
+              "seconds": 0.24042689200007317,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.6716938790000313,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 2085,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained": {
+              "seconds": 0.0793725959999847,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0014179020000710807,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            }
+          }
+        },
+        {
+          "round": 4,
+          "order": [
+            "chained",
+            "anchored_control",
+            "chained_control",
+            "anchored",
+            "anchored_eager"
+          ],
+          "arms": {
+            "chained": {
+              "seconds": 0.10364065600003869,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored_control": {
+              "seconds": 0.0023378159999083437,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "chained_control": {
+              "seconds": 0.10024376300009408,
+              "metrics": {
+                "allocated_grammar_nodes": 3330,
+                "cooperative_work": 69993
+              }
+            },
+            "anchored": {
+              "seconds": 0.0013654640000595464,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 0,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            },
+            "anchored_eager": {
+              "seconds": 0.47630518799996935,
+              "metrics": {
+                "persistent_source_nodes": 1203,
+                "image_records": 64,
+                "max_export_nodes": 2085,
+                "cooperative_work": 5234,
+                "max_exponent_bits": 1009
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "total_seconds": 7.40542777099995
+}

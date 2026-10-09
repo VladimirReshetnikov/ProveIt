@@ -1,0 +1,118 @@
+\section{Reproduction and repository integration}
+\label{sec:reproduction}
+
+\subsection{Archive organization}
+
+The archive contains this PDF, the complete \LaTeX{} source and generated
+figures, a portable Python source snapshot, the additive integration patch,
+raw audit and benchmark JSON, the frozen external corpus, two explicit
+counterexamples, and a manifest of source identities and file hashes.
+The top-level \code{README.md} gives the short entry points;
+\code{INTEGRATION.md} describes the API contracts and the intended review.
+The baseline commit is recorded in full so the work can be compared with
+later changes to the repository.
+
+The runnable snapshot is under \code{code/fast}. It preserves the entire
+\code{fastunknot} package because the maintained package initializer imports
+the existing recognizer infrastructure. Copying only a few local modules
+would not preserve ordinary package imports. The snapshot includes only the
+selected regression files and the fixture dependencies they require; it does
+not carry unrelated historical benchmark directories. The original MIT-0
+license and the internal attribution files are retained.
+
+The new functionality consists of six modules: the weighted producer and
+independent verifier, the geometric weight construction, the component
+census and verifier, and the canonical disc-count wrapper. Two new test files
+and four audit or timing drivers accompany them. These additions do not
+modify the maintained recognizer's defaults. The integration patch is
+intended to be applied at the repository root after checking the pinned
+dependency identities; the full snapshot is for reproduction, not an
+instruction to overwrite a newer checkout.
+
+\subsection{Commands and optional dependencies}
+
+Python 3.10 or newer is required by the maintained package. The weighted and
+native finite-geometry code uses the standard library. Regina is needed for
+the external normal-surface audit and the Regina-specific test methods;
+those unit methods are reported as skipped if it is absent. Matplotlib is
+needed only to regenerate the figures. A \LaTeX{} installation with the
+packages named in the main source is needed only to rebuild the PDF.
+
+From the unpacked archive, use:
+\begin{quote}\small
+\begin{minipage}{\linewidth}
+\begin{verbatim}
+python3 reproduce.py tests
+python3 reproduce.py audit
+python3 reproduce.py regina
+python3 reproduce.py benchmark
+python3 reproduce.py figures
+python3 reproduce.py paper
+python3 reproduce.py verify-manifest
+\end{verbatim}
+\end{minipage}
+\end{quote}
+
+The benchmark command runs the recorded full experiment sizes, so it takes
+longer than the finite audits. The launcher uses the current Python
+interpreter and supplies the import paths explicitly. Recomputed results go
+to \code{reproduced/}, preserving the archived measurements in
+\code{results/}. The Regina command reads the frozen corpus instead of
+reenumerating vertex solutions, reducing sensitivity to enumeration order
+in another Regina release. The generator can also construct a new corpus
+when that is the intended experiment.
+
+Tables and plots are generated from raw results by
+\code{article/make_figures.py}; the corresponding CSV is included. A paper
+rebuild uses the archived figures and tables unless they are explicitly
+regenerated. The main \LaTeX{} file uses a self-contained bibliography, so
+BibTeX is unnecessary. The manifest check compares bytes; it does not claim
+that independently rerun timing JSON or PDF timestamps must match byte for
+byte.
+
+\subsection{Minimal native use}
+
+The following example runs entirely on the included finite fixture. Its
+expected count is two even though the total boundary class is zero.
+\begin{quote}\small
+\begin{minipage}{\linewidth}
+\begin{verbatim}
+from normal_orbit_research.fixtures import layered_torus
+from fastunknot.normal_surface_components import normal_component_census
+from fastunknot.normal_component_verify import (
+    verify_normal_component_certificate,
+)
+
+tri, meridian = layered_torus(4)
+vector = [[2 * value for value in row] for row in meridian]
+answer = normal_component_census(tri, vector,
+                                 record_certificate=True)
+assert answer['compressing_disk_components'] == 2
+assert verify_normal_component_certificate(
+    tri, vector, answer['certificate'])
+\end{verbatim}
+\end{minipage}
+\end{quote}
+
+The separate executable example also creates a large input with coordinate
+gcd one, verifies its canonical reduction, and saves both proof objects.
+This gives an integration reviewer an immediately inspectable positive case,
+an independent replay path, and explicit evidence of the source contract.
+
+\subsection{Acceptance criteria for the next integration}
+
+A reasonable first merge criterion is preservation of the old normal and
+interval APIs, successful replay of the saved corpus, rejection of the
+recorded source and histogram forgeries, and a caller-facing distinction
+between a complete query and an inconclusive work limit. A later recognizer
+integration should additionally specify the provenance witness and the
+candidate-generation contract before using a positive disc count as a knot
+decision. The benchmark scripts should remain usable as those later stages
+are introduced, with separate measurements for discovery, transport,
+reconstruction and verification.
+
+The concrete result available now is a compressed, checked operation that
+was missing from the native backend, together with a smaller exact input
+for its essential-disc count. The next mathematical milestone is a bound on
+the complete search or hierarchy that calls such operations, with every
+representation change and bit cost charged.

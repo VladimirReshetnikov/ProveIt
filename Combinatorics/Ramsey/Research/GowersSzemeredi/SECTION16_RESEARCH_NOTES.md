@@ -2933,3 +2933,86 @@ audit and import-compatibility check. All twelve new declarations also
 pass individual transitive axiom checks. Only propext, Classical.choice,
 and Quot.sound occur. The source ledger remains 115/5 with its existing
 fidelity caveats, and the selected upstream module scope is unchanged.
+
+
+### J.80. Dense-row alphabets and directional containment
+
+`Proofs16BohrSumRankCap` supplies one Bohr-sum cutoff for all pairs of
+spectra with a common rank cap. The Fourier threshold decreases with the
+rank cap and the polynomial cutoff increases with it. Consequently the
+same coefficient interval can be used for every row in the selection step.
+
+`Proofs16BoundedSpanAlgebra` proves bounded-span symmetry and the inclusion
+`Span_R(K union L) subset Span_R(K) - Span_R(L)`. Assigning the overlapping
+frequencies entirely to K avoids increasing R. These are actual finite
+spans with centered modular coefficients, including when R exceeds N/2.
+
+`Proofs16DirectionalBohrSpan` puts `U_y = Span_R(Gamma_y)`. If each Gamma_y
+has rank at most r, then every U_y contains zero and has cardinality at
+most `(2R+1)^r`. For four rows y+z,z,y+w,w in Y, the Bohr set of
+`(U_(y+z)-U_z) intersect (U_(y+w)-U_w)` at radius `1/(4*pi)` lies in row y
+of `D_hor D_ver A`, provided the rows of A contain `B(Gamma_y;rho)`.
+The uniform cutoff is
+`R = polynomialSpectrumCutoff (2r) (rho/2) (1/(4*M^(2r)*M^(2r)))`,
+where M is positive and `rho*M >= 2`. No lower bound on the prime modulus
+is needed.
+
+`Proofs16DenseRowAlphabets` discharges the row-Bohr premise for an original
+set A whose rows in Y have density at least delta>0. Row Bogolyubov gives
+`r=ceil(16*delta^(-2))` and `rho=1/(8*pi)`; empty spectra are assigned
+outside Y. The resulting alphabet family satisfies the selection theorem's
+zero and size conditions, and its common row-difference Bohr sets lie in
+`D_hor D_ver D_hor D_hor A`. This supplies the geometric input to selection;
+it does not yet prove the subsequent algebraic regularity or the remaining
+five numbered statements. The four modules contain eleven new theorem
+declarations, checked in a 63-module source closure.
+
+### Quarter-radius mixed Bogolyubov (2026-10-08)
+
+`Proofs16SpectrumPairSumset` sharpens `mixed_bogolyubov` and the
+Bohr-sum containment of `Proofs16BohrSumSpan` in two constants.
+- The radius is `1/4` instead of `1/(4*pi)`, matching [49]'s Theorem 27.
+  The improvement comes from the real part: on `B(S;1/4)` every
+  character in `S` has nonnegative real part (`re_exponential_nonneg`),
+  so the terms in `S` need no phase-error bound at all.
+- The threshold is `|A||B|/(2N^2)`, twice `tau`. The budget needed is
+  `eps^2*N^3*(|A|+|B|) < |A|^2*|B|^2` (`quarter_threshold_budget`). The
+  bounded-span cutoff `128(m+1)^2/eps^2` therefore shrinks by a factor
+  of four.
+
+Results:
+- `sumset_contains_bohr_of_spectrum_pair`: for any `S` that contains
+  every frequency at which both transforms are at least `eps*N`,
+  `B(S;1/4)` lies in `(A-A)+(B-B)` under the budget above.
+- `mixed_bogolyubov_quarter`: the instance where `S` is the common
+  large spectrum at threshold `|A||B|/(2N^2)`.
+- `bohr_sum_of_common_spectrum_quarter` and
+  `bohr_sum_contains_span_intersection_quarter`: the two
+  `Proofs16BohrSumSpan` containments at radius `1/4` and threshold
+  `2*bohrSumThreshold`. The finite-size conditions are the same as
+  before, with the threshold doubled.
+
+Supporting lemmas:
+- `norm_sq_fourier_indicator`: `|Ahat|^2` as a double character sum.
+- `sum_exponential_mul_eq_ite`: orthogonality, via
+  `AddChar.sum_mulShift`.
+- `sum_weight_exponential`: the weighted character sum counts
+  representations, with exact multiplicity `N`.
+- Parseval is the corpus's `indicator_fourier_energy`.
+
+An earlier draft carried an N-dependent cutoff variant of Theorem 27.
+It was dropped because the modulus-independent
+`Proofs16PolynomialSpectrumSpan` cutoff supersedes it. All nine theorems
+use only propext, Classical.choice, and Quot.sound. The collision gate
+passes. No numbered statement changes status.
+
+
+The combined audit after merging the quarter-radius proofs and the dense-row
+alphabet construction passes: 6,326 public Gowers theorems, a 4,967-module
+facade (4,152 OAI modules), and 4,969 modules including the audit and import
+compatibility check. All eleven new directional declarations also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. The source ledger remains 115/5 with the existing fidelity
+caveats; the selected upstream closure and provenance are unchanged.
+The quarter-radius improvement has not yet been propagated through the
+uniform rank-cap and directional-alphabet interfaces.

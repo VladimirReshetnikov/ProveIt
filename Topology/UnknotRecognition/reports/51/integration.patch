@@ -1,0 +1,1235 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -69,6 +69,7 @@
+         ("--group-compressed", None, False, None, "enable group certificates with exact compressed-word replay"),
+         ("--group-compressed-search", None, False, None, "enable compressed group search and replay; overlaps expand within a fixed cap"),
+         ("--group-primitive-forest", None, False, None, "enable checked acyclic unit-coordinate primitive forests"),
++        ("--group-singleton-dag", None, False, None, "enable checked simultaneous singleton Tietze eliminations"),
+         ("--group-primitive-projection", None, False, None, "enable compressed disjoint primitive-pair rounds with independent replay"),
+         ("--group-adaptive", None, False, None, "start group search explicitly and switch to compressed words before exceeding the letter allowance"),
+         ("--group-switch-letters", int, None, None, "enable adaptive group search with this earlier substitution-size threshold"),
+@@ -321,11 +322,12 @@
+                            use_rational=not args.no_rational,
+                            use_treewidth_two=args.treewidth_two, treewidth_two_seconds=args.treewidth_two_seconds,
+                            use_regina=args.regina, regina_seconds=args.regina_seconds,
+-                           use_group=args.group or args.group_primitive_forest or args.group_primitive_projection or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_adaptive or args.group_switch_letters is not None,
++                           use_group=args.group or args.group_singleton_dag or args.group_primitive_forest or args.group_primitive_projection or args.group_relators or args.group_compressed or args.group_compressed_search or args.group_adaptive or args.group_switch_letters is not None,
+                            group_seconds=args.group_seconds, group_compressed=args.group_compressed,
+                            group_compressed_search=args.group_compressed_search,
+                            group_primitive_projection=args.group_primitive_projection,
+                            group_primitive_forest=args.group_primitive_forest,
++                           group_singleton_dag=args.group_singleton_dag,
+                            group_adaptive=args.group_adaptive or args.group_switch_letters is not None,
+                            group_switch_letters=args.group_switch_letters,
+                            group_relators=args.group_relators, group_max_work=args.group_max_work,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_group.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_group.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_group.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_group.py
+@@ -16,6 +16,13 @@
+             if type(move) is not dict:
+                 return False
+             kind = move.get('kind')
++            if kind == 'singleton_dag':
++                if certificate['version'] < 8:
++                    return False
++                from .singleton_dag_verify import replay_compressed_singleton_dag
++                if not replay_compressed_singleton_dag(arena, roots, alive, move):
++                    return False
++                continue
+             if kind == 'primitive_forest':
+                 if certificate['version'] < 7:
+                     return False
+@@ -126,10 +133,10 @@
+             else:
+                 return False
+         arena.tick()
+-        if certificate['version'] in (6, 7) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
++        if certificate['version'] in (6, 7, 8) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+             from .primitive_projection_verify import verify_compressed_rank_one
+             return verify_compressed_rank_one(arena, roots, alive, certificate['terminal'])
+-        if certificate['version'] in (5, 6, 7):
++        if certificate['version'] in (5, 6, 7, 8):
+             from .primitive_power_verify import verify_compressed_terminal
+             return verify_compressed_terminal(arena, roots, alive, certificate['terminal'])
+         return alive == {certificate['remaining_generator']} and not any(roots)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_search.py
+@@ -10,7 +10,8 @@
+ 
+ 
+ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
+-            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True, primitive_forest=False):
++            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True,
++            primitive_forest=False, singleton_dag=False):
+     """Return algebraic success; an optional output dict enables the new terminal.
+ 
+     Without that dict, True retains the old rank-one, no-relator contract.
+@@ -19,11 +20,26 @@
+     source-reconstructing wrapper can turn this into a verdict.
+     """
+     primitive_projection = primitive_projection or primitive_forest
+-    if primitive_projection and primitive_terminal is None:
+-        raise ValueError('projection search requires an explicit terminal output')
++    if (primitive_projection or singleton_dag) and primitive_terminal is None:
++        raise ValueError('raw batch search requires an explicit terminal output')
+     raw = False
+     projection_cache = {} if primitive_projection else None
++    singleton_cache = {} if singleton_dag else None
+     while len(alive) > 1:
++        if singleton_dag:
++            from .singleton_dag import plan_singleton_dag, apply_singleton_dag
++            pivots = plan_singleton_dag(arena, roots, alive, singleton_cache)
++            # A partial raw quotient can worsen subsequent heuristic descent.
++            # Use the new batch only when it reaches the exact rank-one check;
++            # otherwise retain the intact state and the established move order.
++            if len(pivots) >= 2 and len(pivots) == len(alive) - 1:
++                apply_singleton_dag(arena, roots, alive, pivots)
++                moves.append(dict(kind='singleton_dag', pivots=pivots))
++                raw = True
++                continue
++            if len(pivots) >= 2:
++                arena.stats['singleton_dag_partial_skips'] = (
++                    arena.stats.get('singleton_dag_partial_skips', 0) + 1)
+         if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
+             from .primitive_power import primitive_power_terminal
+             evidence = primitive_power_terminal(arena, roots, alive)
+@@ -173,7 +189,8 @@
+ 
+ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
+                            max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
+-                           primitive_power=True, primitive_projection=False, primitive_forest=False):
++                           primitive_power=True, primitive_projection=False,
++                           primitive_forest=False, singleton_dag=False):
+     """Find a trace or None; resource exhaustion raises GroupLimit.
+ 
+     max_letters caps the initial presentation and optional overlap expansion.
+@@ -187,6 +204,10 @@
+     primitive_forest additionally batches overlapping unit-coordinate donors
+     with acyclic dependencies and emits version seven on activation. It implies
+     primitive_projection; both modes are optional.
++    singleton_dag checks arbitrary singleton Tietze batches with acyclic
++    dependencies and uses one only when it reaches rank one immediately.
++    It performs no reduction and emits version eight on use; partial batches
++    remain available through the internal algebra operation for research.
+     Disable both projection options to retain the version-five search; disabling
+     both primitive options retains the historical rank-one contract.
+     """
+@@ -194,6 +215,8 @@
+         raise ValueError('primitive_projection must be boolean')
+     if type(primitive_forest) is not bool:
+         raise ValueError('primitive_forest must be boolean')
++    if type(singleton_dag) is not bool:
++        raise ValueError('singleton_dag must be boolean')
+     primitive_projection = primitive_projection or primitive_forest
+     if type(primitive_power) is not bool:
+         raise ValueError('primitive_power must be boolean')
+@@ -208,17 +231,20 @@
+         arena.tick(max_work-budget.left)
+         roots = [arena.reduce(arena.from_word(word)) for word in words]
+         moves = []
+-        terminal = {} if primitive_power or primitive_projection else None
++        terminal = {} if primitive_power or primitive_projection or singleton_dag else None
+         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,
+                        primitive_terminal=terminal, primitive_projection=primitive_projection,
+-                       rank_two_terminal=primitive_power, primitive_forest=primitive_forest):
++                       rank_two_terminal=primitive_power, primitive_forest=primitive_forest,
++                       singleton_dag=singleton_dag):
+             return None
++        batched = any(move['kind'] == 'singleton_dag' for move in moves)
+         forested = any(move['kind'] == 'primitive_forest' for move in moves)
+         projected = forested or any(move['kind'] == 'primitive_projection' for move in moves)
+-        if projected and not terminal:
++        if (projected or batched) and not terminal:
+             terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
+         if terminal:
+-            return dict(version=7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
++            return dict(version=8 if batched else 7 if forested else 6 if projected else 5,
++                        method='wirtinger-cyclic-group', status='UNKNOT',
+                         input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
+         return dict(version=_certificate_version(moves),
+                     method='wirtinger-cyclic-group', status='UNKNOT',
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/group_certificate.py
+@@ -295,9 +295,9 @@
+     if type(certificate) is not dict or type(certificate.get('version')) is not int:
+         return False
+     version = certificate['version']
+-    final_field = 'terminal' if version in (5, 6, 7) else 'remaining_generator'
++    final_field = 'terminal' if version in (5, 6, 7, 8) else 'remaining_generator'
+     if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
+-            or version not in (1, 2, 3, 4, 5, 6, 7)
++            or version not in (1, 2, 3, 4, 5, 6, 7, 8)
+             or certificate['method'] != 'wirtinger-cyclic-group'
+             or certificate['status'] != 'UNKNOT'
+             or certificate['input_pd'] != [list(row) for row in diagram.pd]
+@@ -389,6 +389,13 @@
+         if type(move) is not dict:
+             return False
+         kind = move.get('kind')
++        if kind == 'singleton_dag':
++            if certificate['version'] < 8:
++                return False
++            from .singleton_dag_verify import replay_literal_singleton_dag
++            if not replay_literal_singleton_dag(words, alive, move, budget):
++                return False
++            continue
+         if kind == 'primitive_forest':
+             if certificate['version'] < 7:
+                 return False
+@@ -516,10 +523,10 @@
+             budget.size(expanded)
+             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
+     budget.tick()
+-    if certificate['version'] in (6, 7) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
++    if certificate['version'] in (6, 7, 8) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+         from .primitive_projection_verify import verify_literal_rank_one
+         return verify_literal_rank_one(words, alive, certificate['terminal'], budget)
+-    if certificate['version'] in (5, 6, 7):
++    if certificate['version'] in (5, 6, 7, 8):
+         from .primitive_power_verify import verify_literal_terminal
+         return verify_literal_terminal(words, alive, certificate['terminal'], budget)
+     return alive == {certificate['remaining_generator']} and not any(words)
+@@ -528,7 +535,8 @@
+ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
+                  relator_moves=False, compressed_verification=False,
+                  compressed_search=False, adaptive_search=False, switch_letters=None,
+-                 max_nodes=100000, check=lambda: None, primitive_projection=False, primitive_forest=False):
++                 max_nodes=100000, check=lambda: None, primitive_projection=False,
++                 primitive_forest=False, singleton_dag=False):
+     """Bounded search AND independent verification sharing one wall allowance.
+ 
+     primitive_projection opts into raw disjoint-pair rounds and implies
+@@ -546,8 +554,10 @@
+         raise ValueError('primitive_projection must be boolean')
+     if type(primitive_forest) is not bool:
+         raise ValueError('primitive_forest must be boolean')
++    if type(singleton_dag) is not bool:
++        raise ValueError('singleton_dag must be boolean')
+     primitive_projection = primitive_projection or primitive_forest
+-    compressed_search = compressed_search or primitive_projection
++    compressed_search = compressed_search or primitive_projection or singleton_dag
+     if type(adaptive_search) is not bool:
+         raise ValueError('adaptive_search must be boolean')
+     if compressed_search and adaptive_search:
+@@ -577,7 +587,8 @@
+             from .compressed_search import compressed_certificate
+             certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                 max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+-                primitive_projection=primitive_projection, primitive_forest=primitive_forest)
++                primitive_projection=primitive_projection, primitive_forest=primitive_forest,
++                singleton_dag=singleton_dag)
+         else:
+             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -381,6 +381,7 @@
+               group_relators: bool = False, group_max_work: int = 2000000,
+               group_compressed: bool = False, group_compressed_search: bool = False,
+               group_primitive_projection: bool = False, group_primitive_forest: bool = False,
++              group_singleton_dag: bool = False,
+               group_adaptive: bool = False, group_switch_letters: int | None = None,
+               use_two_meridian: bool = False, two_meridian_seconds: float | None = 0.05,
+               two_meridian_max_work: int | None = 2_000_000,
+@@ -445,7 +446,10 @@
+         raise ValueError("group_primitive_projection must be boolean")
+     if type(group_primitive_forest) is not bool:
+         raise ValueError("group_primitive_forest must be boolean")
+-    group_compressed_search = group_compressed_search or group_primitive_projection or group_primitive_forest
++    if type(group_singleton_dag) is not bool:
++        raise ValueError("group_singleton_dag must be boolean")
++    group_compressed_search = (group_compressed_search or group_primitive_projection
++                               or group_primitive_forest or group_singleton_dag)
+     if type(group_adaptive) is not bool:
+         raise ValueError("group_adaptive must be boolean")
+     if group_adaptive and group_compressed_search:
+@@ -718,6 +722,7 @@
+                                           compressed_search=group_compressed_search,
+                                           primitive_projection=group_primitive_projection,
+                                           primitive_forest=group_primitive_forest,
++                                          singleton_dag=group_singleton_dag,
+                                           adaptive_search=group_adaptive, switch_letters=group_switch_letters,
+                                           max_work=group_max_work) if use_group else None,
+                        window_options=None if window_radius is None else dict(
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/singleton_dag.py b/Topology/UnknotRecognition/fast/fastunknot/singleton_dag.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/singleton_dag.py
+@@ -0,0 +1,227 @@
++"""Raw simultaneous Tietze elimination along an acyclic dependency graph.
++
++The producer selects a donor only when its largest generator occurs once.
++Every other generator in its defining word is then smaller, so arbitrary
++overlap among donors is safe.  Application also supports internally checked
++acyclic schedules which do not respect that particular generator order.
++
++These are algebraic operations, not verdict APIs.  A source-bound certificate
++checker must reconstruct the presentation and independently replay the batch.
++"""
++
++
++def plan_singleton_dag(arena, roots, alive, cache=None):
++    """Select the first defining relator for each eligible maximum generator.
++
++    An immutable node summary contains its largest absolute generator label
++    and that generator's occurrence count, capped at two.  No word lengths,
++    expanded counts, support sets, or normalization are needed for selection.
++    The cache stores only word content; slots and live membership are fresh.
++    Pivots are returned in increasing generator order, explicitly witnessing
++    the dependency order required by the certificate format.
++    """
++    if cache is None:
++        cache = {}
++    summaries = cache.setdefault('singleton_maxima', {0: (0, 0)})
++    arena.stats['singleton_dag_attempts'] = arena.stats.get('singleton_dag_attempts', 0) + 1
++    selected, used = [], set()
++    for slot, root in enumerate(roots):
++        arena.tick()
++        pending = [(root, False)]
++        while pending:
++            arena.tick()
++            node, ready = pending.pop()
++            if node in summaries:
++                continue
++            rule = arena.rules[node]
++            if rule[0] == 't':
++                summary = abs(rule[1]), 1
++            elif not ready:
++                pending.extend(((node, True), (rule[2], False), (rule[1], False)))
++                continue
++            else:
++                left, right = summaries[rule[1]], summaries[rule[2]]
++                if left[0] > right[0]:
++                    summary = left
++                elif left[0] < right[0]:
++                    summary = right
++                else:
++                    summary = left[0], min(2, left[1] + right[1])
++            summaries[node] = summary
++            arena.stats['singleton_dag_metadata_nodes'] = (
++                arena.stats.get('singleton_dag_metadata_nodes', 0) + 1)
++        child, count = summaries[root]
++        if count == 1 and child in alive:
++            arena.stats['singleton_dag_candidate_slots'] = (
++                arena.stats.get('singleton_dag_candidate_slots', 0) + 1)
++            if child not in used:
++                selected.append(dict(relation=slot, generator=child))
++                used.add(child)
++    arena.tick(len(selected) * (len(selected).bit_length() + 1))
++    selected.sort(key=lambda pivot: pivot['generator'])
++    return selected
++
++
++def apply_singleton_dag(arena, roots, alive, selected):
++    """Apply an internally proved singleton schedule without free reduction.
++
++    Each donor has one occurrence of its chosen child, children and slots are
++    distinct, and a donor's other eliminated generators precede it in some
++    acyclic order.  This routine checks uniqueness and detects dependency
++    cycles, but is deliberately not the independent certificate verifier.
++
++    All donor checks and raw composition finish before roots or ``alive``
++    change.  Resource exhaustion may allocate arena nodes but does not commit
++    a partial presentation.  A nonempty batch may eliminate every generator
++    of an abstract trivial presentation; knot endpoints are checked outside.
++    """
++    if not selected:
++        return
++    original_nodes = len(arena.rules)
++    chosen, slots = {}, set()
++    for pivot in selected:
++        arena.tick()
++        slot, child = pivot['relation'], pivot['generator']
++        if (type(slot) is not int or not 0 <= slot < len(roots)
++                or type(child) is not int or child not in alive
++                or child in chosen or slot in slots):
++            raise ValueError('singleton schedule has an invalid child or donor slot')
++        chosen[child] = slot
++        slots.add(slot)
++
++    # A topologically ordered schedule needs just two small integers per
++    # reachable node: greatest pivot rank and its capped occurrence count.
++    # The producer supplies such an order.  General internal schedules given
++    # in another order use a mask fallback, with bits independent of labels.
++    reachable = arena._reachable([roots[slot] for slot in slots])
++    ranks = {child: index + 1 for index, child in enumerate(chosen)}
++    maxima = {0: (0, 0)}
++    for node in reachable:
++        arena.tick()
++        rule = arena.rules[node]
++        if rule[0] == 't':
++            maxima[node] = ranks.get(abs(rule[1]), 0), 1
++        else:
++            left, right = rule[1:]
++            a, b = maxima[left], maxima[right]
++            maxima[node] = a if a[0] > b[0] else b if a[0] < b[0] else (a[0], min(2, a[1] + b[1]))
++        arena.stats['singleton_dag_support_nodes'] = (
++            arena.stats.get('singleton_dag_support_nodes', 0) + 1)
++    arena.tick(len(chosen))
++    ordinary = all(maxima[roots[slot]][0] == ranks[child] for child, slot in chosen.items())
++    if ordinary:
++        def contains(node, child):
++            return maxima[node][0] == ranks[child]
++    else:
++        bits = {child: 1 << index for index, child in enumerate(chosen)}
++        present, repeated = {0: 0}, {0: 0}
++        for node in reachable:
++            arena.tick()
++            rule = arena.rules[node]
++            if rule[0] == 't':
++                present[node], repeated[node] = bits.get(abs(rule[1]), 0), 0
++            else:
++                left, right = rule[1:]
++                present[node] = present[left] | present[right]
++                repeated[node] = (repeated[left] | repeated[right]
++                                  | (present[left] & present[right]))
++            arena.stats['singleton_dag_general_mask_nodes'] = (
++                arena.stats.get('singleton_dag_general_mask_nodes', 0) + 1)
++
++        def contains(node, child):
++            return bool(present[node] & bits[child])
++    for child, slot in chosen.items():
++        arena.tick()
++        root = roots[slot]
++        singleton = (maxima[root][1] == 1 if ordinary else
++                     bool(present[root] & bits[child]) and not repeated[root] & bits[child])
++        if not singleton:
++            raise ValueError('singleton donor does not contain its child exactly once')
++
++    # If R = prefix * child^epsilon * suffix, then
++    # child = (suffix * prefix)^(-epsilon).  Inverse orientation remains a
++    # virtual sign; neither construction nor composition calls arena.inverse.
++    templates = {}
++    for child, slot in chosen.items():
++        arena.tick()
++        node, prefix, suffix = roots[slot], 0, 0
++        while arena.rules[node][0] == 'c':
++            arena.tick()
++            arena.stats['singleton_dag_path_steps'] = (
++                arena.stats.get('singleton_dag_path_steps', 0) + 1)
++            _, left, right = arena.rules[node]
++            if contains(left, child):
++                suffix = arena.concat(right, suffix)
++                node = left
++            else:
++                prefix = arena.concat(prefix, left)
++                node = right
++        sign = 1 if arena.rules[node][1] > 0 else -1
++        templates[child] = arena.concat(suffix, prefix), -sign
++
++    # An augmented signed grammar combines ordinary concatenation edges with
++    # a terminal-to-template edge for each eliminated generator.  Its graph is
++    # acyclic exactly when the selected generator dependencies are acyclic.
++    # Memoizing this graph composes all substitutions together; composing each
++    # child separately would revisit long shared defining words many times.
++    mapped = {(0, 1): 0, (0, -1): 0}
++    active = set()
++
++    def dependencies(node, sign):
++        rule = arena.rules[node]
++        if rule[0] == 'c':
++            left, right = rule[1:]
++            return ((left, 1), (right, 1)) if sign > 0 else ((right, -1), (left, -1))
++        letter = rule[1]
++        template = templates.get(abs(letter))
++        if template is None:
++            return ()
++        replacement, orientation = template
++        return ((replacement, orientation * sign * (1 if letter > 0 else -1)),)
++
++    def evaluate(root, orientation=1):
++        pending = [((root, orientation), False)]
++        while pending:
++            arena.tick()
++            key, ready = pending.pop()
++            if key in mapped:
++                continue
++            node, sign = key
++            rule = arena.rules[node]
++            children = dependencies(node, sign)
++            if ready:
++                mapped[key] = (arena.concat(mapped[children[0]], mapped[children[1]])
++                               if rule[0] == 'c' else mapped[children[0]])
++                active.remove(key)
++            elif not children:
++                mapped[key] = node if sign > 0 else arena.letter(-rule[1])
++            else:
++                if key in active:
++                    raise ValueError('singleton generator dependencies contain a cycle')
++                active.add(key)
++                pending.append((key, True))
++                pending.extend((child, False) for child in reversed(children))
++                continue
++            arena.stats['singleton_dag_evaluation_states'] = (
++                arena.stats.get('singleton_dag_evaluation_states', 0) + 1)
++        return mapped[root, orientation]
++
++    # Evaluate both images even if every occurrence is in a discarded donor.
++    # This validates the complete schedule and prevents an unused dependency
++    # cycle from slipping past the internal acyclicity guard.
++    for replacement, orientation in templates.values():
++        arena.tick()
++        evaluate(replacement, orientation)
++        evaluate(replacement, -orientation)
++    result = []
++    for slot, root in enumerate(roots):
++        arena.tick()
++        result.append(0 if slot in slots else evaluate(root))
++    roots[:] = result
++    alive.difference_update(chosen)
++    arena.stats['singleton_dag_rounds'] = arena.stats.get('singleton_dag_rounds', 0) + 1
++    arena.stats['singleton_dag_pivots'] = arena.stats.get('singleton_dag_pivots', 0) + len(chosen)
++    arena.stats['singleton_dag_max_batch'] = max(
++        arena.stats.get('singleton_dag_max_batch', 0), len(chosen))
++    arena.stats['singleton_dag_new_nodes'] = (
++        arena.stats.get('singleton_dag_new_nodes', 0) + len(arena.rules) - original_nodes)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/singleton_dag_verify.py b/Topology/UnknotRecognition/fast/fastunknot/singleton_dag_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/singleton_dag_verify.py
+@@ -0,0 +1,201 @@
++"""Independent raw replay of simultaneous singleton Tietze eliminations.
++
++The source wrapper reconstructs every Wirtinger relator. This module accepts
++only original slot/child claims, checks their literal singleton occurrences,
++and rejects cycles in the full signed substitution grammar. It never imports
++the producer, and it never trusts supplied replacement words or dependencies.
++"""
++
++
++def _pivots(move, alive, slots, tick):
++    tick()
++    if (type(move) is not dict or set(move) != {'kind', 'pivots'}
++            or move['kind'] != 'singleton_dag'):
++        return None
++    records = move['pivots']
++    if type(records) is not list or not records or len(records) > len(alive):
++        return None
++    children, donors, result = set(), set(), []
++    for record in records:
++        tick()
++        if type(record) is not dict or set(record) != {'relation', 'generator'}:
++            return None
++        slot, child = record['relation'], record['generator']
++        if (type(slot) is not int or not 0 <= slot < slots or slot in donors
++                or type(child) is not int or child not in alive or child in children):
++            return None
++        donors.add(slot)
++        children.add(child)
++        result.append((slot, child))
++    return result, children, donors
++
++
++def replay_compressed_singleton_dag(arena, roots, alive, move):
++    """Check and apply a raw DAG quotient, leaving inputs intact on rejection.
++
++    The pivot list supplies a topological order. Give survivors rank zero and
++    pivots increasing ranks; each donor must contain its own pivot exactly once
++    as its unique largest-rank letter. Constant-size summaries check this for
++    any correctly ordered DAG, independently of the numeric generator labels.
++    The signed grammar walk also checks all unreferenced donor definitions.
++    """
++    data = _pivots(move, alive, len(roots), arena.tick)
++    if data is None:
++        return False
++    records, children, donors = data
++    ranks = {child: index + 1 for index, (_, child) in enumerate(records)}
++    reachable = arena._reachable(roots)
++    maximum, count = {0: 0}, {0: 0}
++    for node in reachable:
++        arena.tick()
++        rule = arena.rules[node]
++        if rule[0] == 't':
++            label = abs(rule[1])
++            if label not in alive:
++                return False
++            maximum[node], count[node] = ranks.get(label, 0), 1
++        else:
++            left, right = rule[1:]
++            high = max(maximum[left], maximum[right])
++            maximum[node] = high
++            count[node] = min(2, (count[left] if maximum[left] == high else 0)
++                             + (count[right] if maximum[right] == high else 0))
++
++    definitions = {}
++    for slot, child in records:
++        arena.tick()
++        root = roots[slot]
++        rank = ranks[child]
++        if maximum[root] != rank or count[root] != 1:
++            return False
++        contains = lambda node: maximum[node] == rank
++        node, position = root, 0
++        while arena.rules[node][0] == 'c':
++            arena.tick()
++            left, right = arena.rules[node][1:]
++            if contains(left):
++                node = left
++            else:
++                position += arena.lengths[left]
++                node = right
++        epsilon = 1 if arena.rules[node][1] > 0 else -1
++        suffix = arena.slice(root, position + 1, arena.lengths[root])
++        prefix = arena.slice(root, 0, position)
++        definitions[child] = (arena.concat(suffix, prefix), -epsilon)
++
++    values = {(0, 1): 0, (0, -1): 0}
++    active = set()
++
++    def dependencies(key):
++        node, sign = key
++        rule = arena.rules[node]
++        if rule[0] == 't':
++            child = abs(rule[1])
++            if child not in definitions:
++                return ()
++            body, polarity = definitions[child]
++            return ((body, polarity * sign * (1 if rule[1] > 0 else -1)),)
++        left, right = rule[1:]
++        return ((left, 1), (right, 1)) if sign == 1 else ((right, -1), (left, -1))
++
++    # Include each definition, even if no surviving root mentions its child.
++    goals = list(definitions.values())
++    goals.extend((root, 1) for slot, root in enumerate(roots) if slot not in donors)
++    for goal in goals:
++        pending = [(goal, False)]
++        while pending:
++            arena.tick()
++            key, ready = pending.pop()
++            if key in values:
++                continue
++            if not ready:
++                if key in active:
++                    return False
++                active.add(key)
++                pending.append((key, True))
++                pending.extend((child, False) for child in reversed(dependencies(key)))
++                continue
++            needed = dependencies(key)
++            if not needed:
++                node, sign = key
++                values[key] = arena.letter(arena.rules[node][1] * sign)
++            elif len(needed) == 1:
++                values[key] = values[needed[0]]
++            else:
++                values[key] = arena.concat(values[needed[0]], values[needed[1]])
++            active.remove(key)
++    result = [0 if slot in donors else values[(root, 1)]
++              for slot, root in enumerate(roots)]
++    roots[:] = result
++    alive.difference_update(children)
++    arena.stats['singleton_dag_replays'] = arena.stats.get('singleton_dag_replays', 0) + 1
++    return True
++
++
++def replay_literal_singleton_dag(words, alive, move, budget):
++    """Independent explicit Tietze replay with allocation checks before growth."""
++    data = _pivots(move, alive, len(words), budget.tick)
++    if data is None:
++        return False
++    records, children, donors = data
++    bodies = {}
++    for word in words:
++        budget.tick(len(word) + 1)
++        if any(abs(value) not in alive for value in word):
++            return False
++    for slot, child in records:
++        word = words[slot]
++        budget.tick(len(word) + 1)
++        positions = [i for i, value in enumerate(word) if abs(value) == child]
++        if len(positions) != 1 or any(abs(value) not in alive for value in word):
++            return False
++        position = positions[0]
++        rest = word[position + 1:] + word[:position]
++        bodies[child] = ([-value for value in reversed(rest)]
++                         if word[position] > 0 else rest)
++    ranks = {child: index + 1 for index, (_, child) in enumerate(records)}
++    for child, word in bodies.items():
++        budget.tick(len(word) + 1)
++        if any(ranks.get(abs(value), 0) >= ranks[child] for value in word):
++            return False
++    parents = {child: {abs(value) for value in word} & children
++               for child, word in bodies.items()}
++    consumers = {child: [] for child in children}
++    remaining = {child: len(deps) for child, deps in parents.items()}
++    for child, deps in parents.items():
++        budget.tick(len(deps) + 1)
++        for parent in deps:
++            consumers[parent].append(child)
++    queue = [child for child in bodies if not remaining[child]]
++    for parent in queue:
++        budget.tick()
++        for child in consumers[parent]:
++            remaining[child] -= 1
++            if not remaining[child]:
++                queue.append(child)
++    if len(queue) != len(children):
++        return False
++
++    images, allocated = {}, 0
++
++    def expand_checked(word):
++        nonlocal allocated
++        budget.tick(len(word) + 1)
++        length = sum(len(images.get(value, (value,))) for value in word)
++        budget.size(allocated + length)
++        budget.tick(length)
++        allocated += length
++        return [letter for value in word for letter in images.get(value, (value,))]
++
++    for child in queue:
++        image = expand_checked(bodies[child])
++        budget.size(allocated + len(image))
++        budget.tick(len(image))
++        allocated += len(image)
++        images[child] = image
++        images[-child] = [-value for value in reversed(image)]
++    result = [([] if slot in donors else expand_checked(word))
++              for slot, word in enumerate(words)]
++    words[:] = result
++    alive.difference_update(children)
++    return True
+diff --git a/Topology/UnknotRecognition/fast/tests/test_singleton_dag.py b/Topology/UnknotRecognition/fast/tests/test_singleton_dag.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_singleton_dag.py
+@@ -0,0 +1,258 @@
++"""Raw singleton DAGs: noncommutative images, source families and rejection."""
++from collections import Counter
++from copy import deepcopy
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram
++from fastunknot.compressed_words import WordArena, CompressedLimit
++from fastunknot.group_certificate import _Budget, _presentation, GroupLimit
++from fastunknot.primitive_forest import plan_forest
++from fastunknot.primitive_projection_verify import verify_compressed_rank_one
++from fastunknot.singleton_dag import plan_singleton_dag, apply_singleton_dag
++from fastunknot.singleton_dag_verify import (
++    replay_compressed_singleton_dag, replay_literal_singleton_dag)
++
++
++def inverse(word):
++    return [-letter for letter in reversed(word)]
++
++
++def substitute(word, images):
++    result = []
++    for letter in word:
++        image = images.get(abs(letter), [abs(letter)])
++        result.extend(image if letter > 0 else inverse(image))
++    return result
++
++
++def conjugation_chain(rank):
++    """Abstract Z presentation whose unreduced image length grows as 2^rank."""
++    words = [[1, -2]]
++    words.extend([child, -(child - 1), -1, child - 1]
++                 for child in range(3, rank + 1))
++    words.append([rank, -1])
++    return words
++
++
++class SingletonDagTests(unittest.TestCase):
++    def test_cached_maximum_count_selection_and_current_slots(self):
++        rng = random.Random(261009101)
++        for _ in range(80):
++            labels = rng.sample(range(1, 100000), 7)
++            words = [[rng.choice(labels) * rng.choice((-1, 1))
++                      for _ in range(rng.randrange(20))] for _ in range(12)]
++            words.extend([words[0], words[-1], [], [labels[0]], [labels[0], -labels[0]]])
++            arena = WordArena()
++            roots = [arena.from_word(word) for word in words]
++            cache, expected, used = {}, [], set()
++            for slot, word in enumerate(words):
++                counts = Counter(map(abs, word))
++                if counts:
++                    child = max(counts)
++                    if counts[child] == 1 and child not in used:
++                        expected.append(dict(relation=slot, generator=child))
++                        used.add(child)
++            expected.sort(key=lambda pivot: pivot['generator'])
++            self.assertEqual(plan_singleton_dag(arena, roots, set(labels), cache), expected)
++            count = arena.stats['singleton_dag_metadata_nodes']
++            self.assertEqual(plan_singleton_dag(arena, roots, set(labels), cache), expected)
++            self.assertEqual(arena.stats['singleton_dag_metadata_nodes'], count)
++            if expected:
++                # Cached root content cannot cache an obsolete live set.
++                alive = set(labels) - {expected[0]['generator']}
++                after = plan_singleton_dag(arena, roots, alive, cache)
++                self.assertTrue(all(p['generator'] in alive for p in after))
++            # Reordering roots must reconstruct every original donor slot.
++            reordered = list(reversed(roots))
++            for pivot in plan_singleton_dag(arena, reordered, set(labels), cache):
++                child = pivot['generator']
++                word = words[len(words) - 1 - pivot['relation']]
++                self.assertEqual(sum(abs(x) == child for x in word), 1)
++                self.assertEqual(max(map(abs, word)), child)
++
++    def test_random_signed_nonnumeric_dags_and_every_retained_relator(self):
++        rng = random.Random(261009102)
++        general = False
++        for _ in range(100):
++            labels = rng.sample(range(1, 500), 7)
++            ordered_donors = []
++            images = {g: [g] for g in labels[:2]}
++            for index, child in enumerate(labels[2:], 2):
++                body = [rng.choice(labels[:index]) * rng.choice((-1, 1))
++                        for _ in range(rng.randrange(1, 7))]
++                position = rng.randrange(len(body) + 1)
++                signed = child * rng.choice((-1, 1))
++                word = body[:position] + [signed] + body[position:]
++                rest = word[position + 1:] + word[:position]
++                definition = inverse(rest) if signed > 0 else rest
++                images[child] = substitute(definition, images)
++                ordered_donors.append((word, child))
++            donors = ordered_donors[:]
++            rng.shuffle(donors)
++            words = [word for word, _ in donors]
++            words += [[rng.choice(labels) * rng.choice((-1, 1)) for _ in range(11)]
++                      for _ in range(4)]
++            pivots = [dict(relation=slot, generator=child)
++                      for slot, (_, child) in enumerate(donors)]
++            rng.shuffle(pivots)
++            expected = [[] for _ in donors] + [substitute(word, images) for word in words[len(donors):]]
++            ordered_pivots = sorted(pivots, key=lambda pivot: labels.index(pivot['generator']))
++            move = dict(kind='singleton_dag', pivots=ordered_pivots)
++            arena, other = WordArena(), WordArena()
++            roots = [arena.from_word(word) for word in words]
++            replayed = [other.from_word(word) for word in words]
++            alive, other_alive, literal_alive = set(labels), set(labels), set(labels)
++            literal = deepcopy(words)
++            apply_singleton_dag(arena, roots, alive, pivots)
++            self.assertTrue(replay_compressed_singleton_dag(other, replayed, other_alive, move))
++            self.assertTrue(replay_literal_singleton_dag(
++                literal, literal_alive, move, _Budget(lambda: None, 1000000, 10000000)))
++            self.assertEqual([list(arena.expand(root)) for root in roots], expected)
++            self.assertEqual([list(other.expand(root)) for root in replayed], expected)
++            self.assertEqual(literal, expected)
++            self.assertEqual(alive, set(labels[:2]))
++            self.assertEqual(alive, other_alive)
++            self.assertEqual(alive, literal_alive)
++            general |= bool(arena.stats.get('singleton_dag_general_mask_nodes'))
++        self.assertTrue(general)
++
++    def test_actual_stabilized_circles_contract_in_one_raw_batch(self):
++        for crossings in (4, 8, 32, 128):
++            diagram = Diagram.from_braid(crossings + 1, list(range(1, crossings + 1)))
++            alive, words = _presentation(diagram, _Budget(lambda: None, 100000, 1000000))
++            arena = WordArena()
++            roots = [arena.from_word(word) for word in words]
++            self.assertEqual(len(plan_forest(arena, roots, alive)), 2)
++            pivots = plan_singleton_dag(arena, roots, alive)
++            self.assertEqual(len(pivots), crossings - 1)
++            move = dict(kind='singleton_dag', pivots=pivots)
++            other = WordArena()
++            replayed = [other.from_word(word) for word in words]
++            other_alive = set(alive)
++            with patch.object(arena, 'reduce', side_effect=AssertionError), \
++                    patch.object(arena, 'cyclic_reduce', side_effect=AssertionError), \
++                    patch.object(arena, 'expand', side_effect=AssertionError), \
++                    patch.object(arena, 'equal', side_effect=AssertionError), \
++                    patch.object(arena, 'inverse', side_effect=AssertionError):
++                apply_singleton_dag(arena, roots, alive, pivots)
++                self.assertTrue(verify_compressed_rank_one(arena, roots, alive,
++                    dict(kind='rank_one_exponent_zero', generator=1)))
++            with patch.object(other, 'reduce', side_effect=AssertionError), \
++                    patch.object(other, 'cyclic_reduce', side_effect=AssertionError), \
++                    patch.object(other, 'expand', side_effect=AssertionError), \
++                    patch.object(other, 'equal', side_effect=AssertionError):
++                self.assertTrue(replay_compressed_singleton_dag(other, replayed, other_alive, move))
++                self.assertTrue(verify_compressed_rank_one(other, replayed, other_alive,
++                    dict(kind='rank_one_exponent_zero', generator=1)))
++            self.assertEqual(alive, {1})
++            self.assertEqual(len(roots), len(words))
++            self.assertEqual(arena.stats['singleton_dag_rounds'], 1)
++            self.assertEqual(arena.stats['singleton_dag_pivots'], crossings - 1)
++            self.assertNotIn('singleton_dag_general_mask_nodes', arena.stats)
++
++    def test_exponential_raw_nonnormalized_output_stays_small(self):
++        rank = 512
++        words = conjugation_chain(rank)
++        arena = WordArena(max_nodes=20000, max_work=1000000)
++        roots = [arena.from_word(word) for word in words]
++        alive = set(range(1, rank + 1))
++        initial = len(arena.rules)
++        pivots = plan_singleton_dag(arena, roots, alive)
++        self.assertEqual(len(pivots), rank - 1)
++        with patch.object(arena, 'reduce', side_effect=AssertionError), \
++                patch.object(arena, 'cyclic_reduce', side_effect=AssertionError), \
++                patch.object(arena, 'expand', side_effect=AssertionError), \
++                patch.object(arena, 'equal', side_effect=AssertionError), \
++                patch.object(arena, 'inverse', side_effect=AssertionError):
++            apply_singleton_dag(arena, roots, alive, pivots)
++            self.assertEqual(arena.lengths[roots[-1]], 1 << (rank - 1))
++            self.assertTrue(verify_compressed_rank_one(arena, roots, alive,
++                dict(kind='rank_one_exponent_zero', generator=1)))
++        self.assertEqual(alive, {1})
++        self.assertLess(len(arena.rules), 4 * initial)
++        self.assertLess(arena.stats['work'], 200 * rank)
++        self.assertEqual(len(roots), rank)
++
++    def test_singletons_hidden_in_large_shared_powers(self):
++        arena = WordArena(max_nodes=10000)
++        # A repeated subgrammar must count occurrences by multiplicity, not
++        # merely by the number of distinct terminal nodes in the grammar.
++        huge = arena.power(arena.from_word([7, -3, 7]), 1 << 256)
++        duplicate = arena.concat(huge, arena.letter(-7))
++        donor = arena.concat(huge, arena.letter(-11))
++        roots = [duplicate, donor, arena.from_word([11, -7])]
++        alive = {3, 7, 11}
++        selected = plan_singleton_dag(arena, roots, alive)
++        self.assertEqual(selected, [dict(relation=1, generator=11)])
++        with patch.object(arena, 'expand', side_effect=AssertionError), \
++                patch.object(arena, 'reduce', side_effect=AssertionError), \
++                patch.object(arena, 'equal', side_effect=AssertionError):
++            apply_singleton_dag(arena, roots, alive, selected)
++        self.assertEqual(alive, {3, 7})
++        self.assertEqual(roots[1], 0)
++        self.assertEqual(arena.lengths[roots[2]], 3 * (1 << 256) + 1)
++
++    def test_internal_preconditions_cycles_unary_definitions_and_atomic_roots(self):
++        cases = [
++            ([[1, -2], [2, -1]], [dict(relation=0, generator=1), dict(relation=1, generator=2)]),
++            ([[1, -2], [1, 3]], [dict(relation=0, generator=1), dict(relation=1, generator=1)]),
++            ([[1, -2]], [dict(relation=0, generator=1), dict(relation=0, generator=2)]),
++            ([[1, -2, 1]], [dict(relation=0, generator=1)]),
++            ([[1, -2]], [dict(relation=0, generator=3)]),
++        ]
++        for words, pivots in cases:
++            arena = WordArena()
++            roots = [arena.from_word(word) for word in words]
++            alive = {1, 2, 3}
++            before = roots[:]
++            with self.assertRaises(ValueError):
++                apply_singleton_dag(arena, roots, alive, pivots)
++            self.assertEqual(roots, before)
++            self.assertEqual(alive, {1, 2, 3})
++        arena = WordArena()
++        roots = [arena.from_word(word) for word in ([1], [-2], [3], [1, -2, 3])]
++        alive = {1, 2, 3}
++        selected = plan_singleton_dag(arena, roots, alive)
++        apply_singleton_dag(arena, roots, alive, selected)
++        self.assertEqual(alive, set())
++        self.assertEqual(roots, [0, 0, 0, 0])
++
++    def test_resource_caps_cancellation_and_independent_checker(self):
++        words = conjugation_chain(8)
++        arena = WordArena()
++        roots = [arena.from_word(word) for word in words]
++        alive = set(range(1, 9))
++        pivots = plan_singleton_dag(arena, roots, alive)
++        move = dict(kind='singleton_dag', pivots=pivots)
++        with patch('fastunknot.singleton_dag.plan_singleton_dag', side_effect=AssertionError), \
++                patch('fastunknot.singleton_dag.apply_singleton_dag', side_effect=AssertionError):
++            self.assertTrue(replay_compressed_singleton_dag(arena, roots, alive, move))
++            self.assertTrue(replay_literal_singleton_dag(deepcopy(words), set(range(1, 9)), move,
++                _Budget(lambda: None, 100000, 1000000)))
++        with self.assertRaises(GroupLimit):
++            replay_literal_singleton_dag(deepcopy(words), set(range(1, 9)), move,
++                _Budget(lambda: None, 100, 1000000))
++        arena = WordArena()
++        roots = [arena.from_word(word) for word in words]
++        alive = set(range(1, 9))
++        before = roots[:]
++        arena.left = 0
++        with self.assertRaises(CompressedLimit):
++            apply_singleton_dag(arena, roots, alive, pivots)
++        self.assertEqual(roots, before)
++        self.assertEqual(alive, set(range(1, 9)))
++        with self.assertRaises(CompressedLimit):
++            plan_singleton_dag(arena, roots, alive)
++
++        def cancel():
++            raise RuntimeError('external cancellation')
++
++        arena.check = cancel
++        with self.assertRaisesRegex(RuntimeError, 'external cancellation'):
++            apply_singleton_dag(arena, roots, alive, pivots)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_singleton_dag_verify.py b/Topology/UnknotRecognition/fast/tests/test_singleton_dag_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_singleton_dag_verify.py
+@@ -0,0 +1,175 @@
++"""Independent evidence, residual preservation, and source-bound v8 coverage."""
++from copy import deepcopy
++import unittest
++from unittest.mock import patch
++
++from fastunknot.compressed_search import compressed_certificate, _search
++from fastunknot.compressed_words import WordArena, CompressedLimit
++from fastunknot.diagram import Diagram
++from fastunknot.group_certificate import (
++    _Budget, GroupLimit, group_decide, verify_group_certificate,
++)
++from fastunknot.primitive_projection_verify import verify_compressed_rank_one
++from fastunknot.singleton_dag_verify import (
++    replay_compressed_singleton_dag, replay_literal_singleton_dag,
++)
++
++
++def move(*pivots):
++    return dict(kind='singleton_dag', pivots=[
++        dict(relation=slot, generator=child) for slot, child in pivots])
++
++
++def compressed_state(words):
++    arena = WordArena(max_work=5_000_000)
++    roots = [arena.from_word(word) for word in words]
++    alive = {abs(letter) for word in words for letter in word}
++    return arena, roots, alive
++
++
++class SingletonDAGVerifierTests(unittest.TestCase):
++    def check_both(self, words, evidence, expected=True):
++        arena, roots, alive = compressed_state(words)
++        original_roots, original_alive = roots[:], alive.copy()
++        literal, live = deepcopy(words), alive.copy()
++        self.assertEqual(replay_compressed_singleton_dag(
++            arena, roots, alive, evidence), expected)
++        self.assertEqual(replay_literal_singleton_dag(
++            literal, live, evidence, _Budget(lambda: None, 1_000_000, 5_000_000)),
++            expected)
++        if expected:
++            self.assertEqual([list(arena.expand(root)) for root in roots], literal)
++            self.assertEqual(alive, live)
++        else:
++            self.assertEqual(roots, original_roots)
++            self.assertEqual(alive, original_alive)
++            self.assertEqual(literal, words)
++            self.assertEqual(live, original_alive)
++        return arena, roots, alive
++
++    def test_arbitrary_labels_signs_and_noncommuting_dependencies(self):
++        words = [[9, -5, 8], [5, 9, 5, -2, -8], [2, 8, -2, -9],
++                 [2, 5, -9, -5, -2, 8]]
++        evidence = move((0, 5), (1, 2))
++        arena, roots, alive = self.check_both(words, evidence)
++        self.assertEqual(alive, {8, 9})
++        self.assertEqual(roots[:2], [0, 0])
++        self.assertTrue(roots[2])
++        # List order is a checked topological certificate, independent of labels.
++        self.check_both(words, move((1, 2), (0, 5)), expected=False)
++
++    def test_all_nondonor_relations_survive_and_can_obstruct_endpoint(self):
++        words = [[1, -2], [2, -3], [1, 1], [3, -3]]
++        arena, roots, alive = self.check_both(words, move((0, 2), (1, 3)))
++        self.assertEqual(len(roots), len(words))
++        self.assertFalse(verify_compressed_rank_one(
++            arena, roots, alive, dict(kind='rank_one_exponent_zero', generator=1)))
++        self.assertEqual(list(arena.expand(roots[2])), [1, 1])
++
++    def test_rejects_cycles_even_without_surviving_relators(self):
++        self.check_both([[1, -2], [2, -1]], move((0, 1), (1, 2)), False)
++        self.check_both([[1, 2], [2, 1]], move((0, 1), (1, 2)), False)
++        self.check_both([[3, -1], [1, -2], [2, -3]],
++                        move((0, 1), (1, 2), (2, 3)), False)
++
++    def test_rejects_schema_and_literal_singleton_forgeries(self):
++        words = [[1, -2], [2, -3], [2, 2, -2, 1], [1, 1]]
++        valid = move((0, 2), (1, 3))
++        bad = [move(), move((0, 2), (0, 1)), move((0, 2), (1, 2)),
++               move((2, 2)), move((4, 2)), move((0, 8)), move((True, 2)),
++               move((0, True)), dict(kind='singleton_dag', pivots='wrong')]
++        for field, value in [('extra', 1), ('kind', 'primitive_forest')]:
++            altered = deepcopy(valid)
++            altered[field] = value
++            bad.append(altered)
++        altered = deepcopy(valid)
++        altered['pivots'][0]['image'] = [1]
++        bad.append(altered)
++        for evidence in bad:
++            with self.subTest(evidence=evidence):
++                self.check_both(words, evidence, False)
++
++    def test_compressed_replay_uses_no_producer_or_normalization(self):
++        arena, roots, alive = compressed_state([[1, -2], [1, 2, -1, -3], [3, -1]])
++        with (patch('fastunknot.singleton_dag.plan_singleton_dag', side_effect=AssertionError),
++              patch('fastunknot.singleton_dag.apply_singleton_dag', side_effect=AssertionError),
++              patch.object(arena, 'reduce', side_effect=AssertionError),
++              patch.object(arena, 'cyclic_reduce', side_effect=AssertionError),
++              patch.object(arena, 'inverse', side_effect=AssertionError),
++              patch.object(arena, 'equal', side_effect=AssertionError),
++              patch.object(arena, 'expand', side_effect=AssertionError)):
++            self.assertTrue(replay_compressed_singleton_dag(
++                arena, roots, alive, move((0, 2), (1, 3))))
++            self.assertTrue(verify_compressed_rank_one(
++                arena, roots, alive, dict(kind='rank_one_exponent_zero', generator=1)))
++
++    def test_version_eight_is_source_bound_and_default_is_unchanged(self):
++        for strands in [5, 9, 17]:
++            diagram = Diagram.from_braid(strands, list(range(1, strands)))
++            old = compressed_certificate(diagram, primitive_forest=True)
++            self.assertEqual(old, compressed_certificate(
++                diagram, primitive_forest=True, singleton_dag=False))
++            certificate = compressed_certificate(diagram, singleton_dag=True)
++            self.assertEqual(certificate['version'], 8)
++            self.assertEqual(len(certificate['moves']), 1)
++            self.assertEqual(len(certificate['moves'][0]['pivots']), strands - 2)
++            for compressed in [False, True]:
++                self.assertTrue(verify_group_certificate(diagram, certificate,
++                                                        compressed=compressed))
++                self.assertTrue(verify_group_certificate(diagram, old, compressed=compressed))
++                for version in range(5, 8):
++                    altered = deepcopy(certificate)
++                    altered['version'] = version
++                    self.assertFalse(verify_group_certificate(diagram, altered,
++                                                             compressed=compressed))
++            other = Diagram.from_braid(2, [1, 1, 1])
++            altered = deepcopy(certificate)
++            altered['input_pd'] = [list(row) for row in other.pd]
++            self.assertFalse(verify_group_certificate(other, altered, compressed=True))
++
++    def test_resource_limits_and_caller_cancellation_propagate(self):
++        words = [[1] * 20 + [-2], [2] * 20 + [-3], [3, -3]]
++        evidence = move((0, 2), (1, 3))
++        with self.assertRaises(GroupLimit):
++            replay_literal_singleton_dag(deepcopy(words), {1, 2, 3}, evidence,
++                                         _Budget(lambda: None, 100, 5_000_000))
++        arena, roots, alive = compressed_state(words)
++        arena.left = 2
++        with self.assertRaises(CompressedLimit):
++            replay_compressed_singleton_dag(arena, roots, alive, evidence)
++        arena, roots, alive = compressed_state(words)
++        def cancel():
++            raise RuntimeError('caller cancellation')
++        arena.check = cancel
++        with self.assertRaisesRegex(RuntimeError, 'caller cancellation'):
++            replay_compressed_singleton_dag(arena, roots, alive, evidence)
++
++    def test_opt_in_public_group_api_and_argument_validation(self):
++        diagram = Diagram.from_braid(9, list(range(1, 9)))
++        result = group_decide(diagram, singleton_dag=True, seconds=None)
++        self.assertEqual(result['status'], 'UNKNOT')
++        self.assertEqual(result['certificate']['version'], 8)
++        self.assertEqual(result['verification_backend'], 'compressed-slp')
++        for function in [compressed_certificate, group_decide]:
++            with self.assertRaises(ValueError):
++                function(diagram, singleton_dag=1)
++
++    def test_terminal_guard_preserves_partial_state_and_legacy_moves(self):
++        words = [[1, -2], [1, 2, -1, -3], [4, 5, -4, 5]]
++        outputs = []
++        for enabled in [False, True]:
++            arena, roots, alive = compressed_state(words)
++            moves, terminal = [], {}
++            with patch('fastunknot.singleton_dag.apply_singleton_dag',
++                       side_effect=AssertionError('partial batch must be skipped')):
++                decision = _search(arena, roots, alive, moves,
++                                   primitive_terminal=terminal, singleton_dag=enabled)
++            outputs.append((decision, moves, terminal, alive,
++                            [list(arena.expand(root)) for root in roots]))
++            if enabled:
++                self.assertGreater(arena.stats['singleton_dag_partial_skips'], 0)
++        self.assertEqual(outputs[0], outputs[1])
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/SINGLETON_DAG.md b/Topology/UnknotRecognition/fast/SINGLETON_DAG.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/SINGLETON_DAG.md
+@@ -0,0 +1,92 @@
++# Optional simultaneous singleton elimination
++
++The Python group stage supports `singleton_dag=True`; the whole recognizer
++supports `use_group=True, group_singleton_dag=True`. The command-line option
++`--group-singleton-dag` enables the group stage automatically. The option is
++off by default.
++
++```python
++from fastunknot import Diagram
++from fastunknot.group_certificate import group_decide
++
++source = Diagram.from_braid(129, list(range(1, 129)))
++result = group_decide(source, singleton_dag=True, seconds=None)
++assert result["status"] == "UNKNOT"
++assert result["certificate"]["version"] == 8
++```
++
++## Operation and certificate
++
++If a donor is `U c^epsilon V` with one literal occurrence of either sign of
++`c`, it defines `c = (V U)^(-epsilon)`. A batch chooses distinct donor slots
++and distinct pivots. Dependencies between chosen pivots must be acyclic.
++Arbitrary other letters, repeated parent letters, and mixed signs are allowed.
++Every non-donor relator remains in its original slot after substitution.
++
++The producer uses shared raw word circuits. It does not normalize, expand,
++or repeatedly traverse already composed inverse images. A batch on `M`
++reachable nonempty source nodes has at most `4M` reachable output nodes,
++adds at most `5M` nonempty nodes to a persistent arena, and uses polynomial
++bit work. These are bounds on the local operation; dictionary behavior,
++length metadata, root slots, labels, and earlier unreachable allocations
++are accounted for separately in the article.
++
++Version-eight moves contain only an ordered donor/pivot list:
++
++```json
++{"kind":"singleton_dag","pivots":[
++  {"relation":0,"generator":2},
++  {"relation":1,"generator":3}
++]}
++```
++
++Earlier selected pivots must contain every chosen dependency of a later
++pivot. Survivors have rank zero. The independent checker reconstructs
++definitions from the intact current relators and checks maximum rank and
++capped occurrence counts. The compressed and literal replayers live in
++`singleton_dag_verify.py` and do not import producer helpers. The outer
++replayer reconstructs the source diagram's complete group presentation.
++Older supported certificate versions remain accepted under their existing
++interpretations.
++
++## Why dispatch is restricted
++
++The public search applies a batch only when it contains at least two pivots
++and removes exactly all but one live generator. It then checks the exponent
++of **every** retained relator at rank one. For other candidates, the same
++compressed backend continues from its unchanged presentation and move order.
++Planning still uses resources, so the option need not preserve every
++fixed-budget success or improve every running time.
++
++The general internal operation and checker support partial acyclic batches.
++An eager dispatcher caused the Gordian fixture to exhaust 20,000,000 work
++after a partial batch of 60 pivots. The terminal guard skips such partial
++candidates and later closes that input with a checked three-pivot batch.
++The eager source and its complete audit are retained in the dated research
++archive.
++
++## Verified scope
++
++The implementation adds 16 test methods to the pinned 992-test suite.
++The full run completed 1,008 tests with no failures, errors, or skips.
++The independent 81-case source audit (75 distinct PD arrays) contains 243
++exact legacy-mode comparisons and 54 positive certificates accepted by both
++source replayers. The guarded option gained or lost no positive in that audit.
++
++On closures of `sigma_1 ... sigma_n` on `n+1` strands, the checked group
++stage takes one batch instead of a linear number of primitive-forest batches.
++The pinned policy incurs quadratic slot-scanning work; the new route has
++linear grammar growth and `O(n log(n+1))` charged structural work. At 256
++crossings the measured paired median group-stage ratios were 36.47 versus
++default and 9.44 versus forest. Earlier diagram simplification was bypassed
++for that experiment; these are not complete-recognizer speedups.
++
++The ordinary 19-case whole-recognizer workload showed modest overhead:
++paired median default/singleton = 0.954856 and forest/singleton = 0.985518.
++Only Gordian used a guarded batch there. Keep the feature opt-in while
++improving order selection and eligibility discovery.
++
++The work does not establish general quasi-polynomial unknot recognition.
++The associated article supplies full quotient and size proofs, an
++NP-completeness result for maximum batch selection on arbitrary positive
++presentations, the measured limitations, and ten further research topics.

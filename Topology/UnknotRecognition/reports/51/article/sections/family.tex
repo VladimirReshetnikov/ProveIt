@@ -1,0 +1,153 @@
+\section{A strict improvement on an actual diagram family}
+\label{sec:family}
+
+\subsection{The source diagrams and their presentations}
+
+For $r\geq 2$, take the closure of the $(r+1)$-strand braid
+\[
+ B_r=\sigma_1\sigma_2\cdots\sigma_r.
+\]
+This is an unknot: repeatedly remove the last positive Markov stabilization,
+ending at the one-strand trivial braid. It has $r$ crossings in the supplied
+diagram. The repository constructs the diagram using
+\code{Diagram.from_braid(r+1, list(range(1,r+1)))}. Its diagram validation
+and presentation reconstruction are included in the experiments.
+
+With the baseline's arc labels and free and cyclic reduction of the initial short
+Wirtinger words, its presentation has $r$ live generators and the following
+$r$ retained slots:
+\begin{align}
+ R_1&=x_1x_2^{-1},\label{eq:chain-first}\\
+ R_i&=x_1x_i x_1^{-1}x_{i+1}^{-1},
+       &&2\leq i\leq r-1,\label{eq:chain-middle}\\
+ R_r&=x_r x_1^{-1}.\label{eq:chain-last}
+\end{align}
+The final slot is retained throughout the experiment. All three size
+parameters---crossing number, initial live rank, and slot count---are $r$.
+The number of braid strands is $r+1$; confusing it with the group rank gives
+off-by-one errors in the batch counts.
+
+\subsection{The new batch}
+
+Choose $x_{i+1}$ as the pivot of $R_i$, for $1\leq i<r$. Each is its donor's
+largest label and occurs once. The selected definitions are
+\begin{equation}
+ I_2=x_1,\qquad I_{i+1}=x_1 I_i x_1^{-1}\quad(2\leq i<r).
+ \label{eq:chain-images}
+\end{equation}
+Every dependency is earlier in the displayed order. The $r-1$ pivots
+therefore form one valid batch. For $i\geq2$, the exact raw spelling of the
+image is
+\begin{equation}
+ I_i=x_1^{i-1}x_1^{-(i-2)},\qquad
+ |I_i|=2i-3,\qquad \operatorname{exp}_{x_1}(I_i)=1.
+ \label{eq:chain-raw}
+\end{equation}
+These expressions are deliberately not freely reduced. The shared grammar
+stores each $I_i$ through the previous image, using a bounded number of
+concatenation nodes per step. Its size is $O(r)$ even if both orientations
+are prepared for reuse.
+
+The only unselected slot becomes $I_r x_1^{-1}$, whose exponent is zero.
+The exact one-generator check therefore finishes the certificate. For
+$r\geq3$, the delivered two-pivot threshold permits this one-batch route.
+The $r=2$ case can use the existing rank-two endpoint and is immaterial to
+the asymptotic separation.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[node distance=10mm and 11mm,>=Stealth,
+  every node/.style={font=\small}]
+\node[draw,rounded corners,fill=blue!5] (root) {$x_1$ survives};
+\node[draw,rounded corners,below left=of root] (a) {$I_2=x_1$};
+\node[draw,rounded corners,below right=of root] (b) {$I_3=x_1 I_2 x_1^{-1}$};
+\node[draw,rounded corners,below=of b] (c) {$I_4=x_1 I_3 x_1^{-1}$};
+\node[below=of c] (d) {same shared construction through $I_r$};
+\draw[->] (a)--(root);
+\draw[->] (b)--(a);
+\draw[->] (b)--(root);
+\draw[->] (c)--(b);
+\draw[->] (c.west) to[out=170,in=230] (root.west);
+\draw[->,dashed] (d)--(c);
+\end{tikzpicture}
+\caption{A definition depends on earlier images and the surviving generator.
+Arrows describe dependence, not a sequence of separate presentation rewrites.
+The entire system is evaluated in one shared traversal.}
+\label{fig:chain-sharing}
+\end{figure}
+
+\subsection{What the pinned forest policy must do}
+
+\begin{proposition}[Exact phase count for the pinned family policy]
+\label{prop:family-phases}
+On the presentation \eqref{eq:chain-first}--\eqref{eq:chain-last}, the pinned
+\code{primitive_forest=True} search with its rank-two endpoint enabled uses
+\[
+ \left\lfloor\frac{r-1}{2}\right\rfloor
+ \quad\text{forest batches},\qquad
+ \left\lfloor\frac{r-2}{2}\right\rfloor
+ \quad\text{normalization handoffs}.
+\]
+For $r\geq3$, the singleton batch uses one raw batch and no normalization
+handoff.
+\end{proposition}
+
+\begin{proof}
+Only the two end relations initially have coherent signs on two generators.
+Every middle relation contains both signs of $x_1$ and is excluded by the
+baseline's primitive candidate descriptor. Its forest selects the two end
+donors, eliminating $x_2$ and $x_r$ as $x_1$. The newly exposed end words
+are still mixed-sign raw words until the explicit normalization step.
+The complete normalization handoff reduces them to the end relations of
+the same chain with two fewer live generators. Interior words keep the
+same form, up to the surviving labels, while the original slot array
+retains its length $r$.
+
+This establishes an induction reducing live rank by two per forest batch.
+An even initial rank finishes after the last handoff at the old rank-two
+endpoint. An odd initial rank reaches three live generators, contracts
+both remaining children, and finishes with the raw rank-one exponent
+check without another handoff. The formulas follow, including the base
+case $r=2$. The new construction was established in
+\eqref{eq:chain-images}--\eqref{eq:chain-raw}.
+\end{proof}
+
+\begin{corollary}[A structural work separation]
+\label{cor:family-work}
+The pinned forest policy performs $\Omega(r^2)$ charged abstract work on
+this group-stage family. The delivered singleton route has $O(r)$ grammar
+nodes and $O(r\log(r+1))$ charged structural work, including the explicit
+charge for sorting its certificate pivots.
+\end{corollary}
+
+\begin{proof}
+The predecessor retains all $r$ slots and scans them in each of
+$\Theta(r)$ phases. Each scan is charged, giving the lower bound without
+making any assumption about the cost of its additional normalization work.
+The new source, context, and signed image grammars all have $O(r)$ nodes.
+Maximum-and-count summaries and endpoint exponents are computed once per
+relevant node or slot. The implementation additionally sorts the $r-1$
+pivots and charges $O(r\log(r+1))$ work for that operation.
+\end{proof}
+
+This is a statement about the supplied presentation and the pinned policy.
+It is not a lower bound for all ways to recognize these diagrams. In
+particular, earlier diagram simplification often removes their crossings
+quickly. Group-stage measurements deliberately invoke the checked group
+routine on the intact source so that this operation is actually exercised.
+Complete-recognition measurements keep the earlier stages enabled and are
+reported separately.
+
+\subsection{An exponential raw-word stress family}
+
+The implementation tests also use noncoherent recursive definitions whose
+unreduced images double in length at each level. The 512-generator case
+retains a raw word of length $2^{511}$ while using a small grammar.
+Expansion, inversion by a separate whole-image traversal, free reduction,
+cyclic reduction, and compressed equality are disabled during the batch in
+this test. This checks the resource mechanism that the proof requires.
+
+This second family is an abstract algebraic stress test. Its expanded length
+is an exact integer derived from the recurrence, not a number of letters
+actually allocated. It is not presented as a difficult knot corpus or a
+wall-time comparison against a program asked to allocate $2^{511}$ letters.

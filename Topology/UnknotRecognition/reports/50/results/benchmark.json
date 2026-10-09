@@ -1,0 +1,1437 @@
+{
+  "seed": 261008911,
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "native_git_blobs": {
+    "integer_codec.py": "b88eafacb680e1312df0ecc93170a9f6f53eb639",
+    "interval_incidence.py": "3625772c7c20119df64d79a14f644a03e13f7f2f",
+    "interval_orbits.py": "e86050aadbcef6f17fdddff9cbd1abc0e7ca18e8",
+    "interval_orbit_verify.py": "0ccb56a0e8b5f1255384121d7417441314727720"
+  },
+  "rounds": 5,
+  "repeats": 2,
+  "cases": [
+    {
+      "name": "static-disjoint-6",
+      "size_bits": 260,
+      "r": 6,
+      "k": 0,
+      "M": 6,
+      "s": 7,
+      "dense_slots": 64,
+      "output_sha256": "7aafe956a0f5f478c93bb415075d887341d117defb4cf8f33f2a2415c7705d26",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "dense",
+          "split_certified",
+          "split",
+          "linear",
+          "split_control"
+        ],
+        [
+          "split",
+          "linear",
+          "dense",
+          "split_control",
+          "split_certified"
+        ],
+        [
+          "split_control",
+          "linear",
+          "split_certified",
+          "split",
+          "dense"
+        ],
+        [
+          "split_control",
+          "dense",
+          "split",
+          "linear",
+          "split_certified"
+        ],
+        [
+          "linear",
+          "split_certified",
+          "dense",
+          "split",
+          "split_control"
+        ],
+        [
+          "split",
+          "split_control",
+          "linear",
+          "split_certified",
+          "dense"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          2.4505115,
+          2.0682855,
+          1.976713,
+          2.2942055,
+          2.0944
+        ],
+        "linear": [
+          0.628457,
+          0.6056375,
+          0.588897,
+          0.682443,
+          0.517159
+        ],
+        "split": [
+          0.3845845,
+          0.34521,
+          0.369797,
+          0.340538,
+          0.460684
+        ],
+        "split_control": [
+          0.383027,
+          0.351905,
+          0.3839385,
+          0.3149345,
+          0.3788005
+        ],
+        "split_certified": [
+          0.854868,
+          0.6621125,
+          0.657375,
+          0.8452985,
+          0.67049
+        ]
+      },
+      "medians_ms": {
+        "dense": 2.0944,
+        "linear": 0.6056375,
+        "split": 0.369797,
+        "split_control": 0.3788005,
+        "split_certified": 0.67049
+      },
+      "paired_dense_over_arm": {
+        "linear": 3.4150552104187732,
+        "split": 5.991383505692187,
+        "split_control": 5.877397308932808,
+        "split_certified": 3.0069792736261642
+      },
+      "stats": {
+        "dense": {
+          "orbit_queries": 64,
+          "orbit_cycles": 225,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 64
+        },
+        "split_certified": {
+          "orbit_queries": 14,
+          "orbit_cycles": 37,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 14,
+          "deletion_trials": 38,
+          "residual_terms": 150,
+          "signatures": 7
+        },
+        "split": {
+          "orbit_queries": 14,
+          "orbit_cycles": 37,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 14,
+          "deletion_trials": 38,
+          "residual_terms": 150,
+          "signatures": 7
+        },
+        "linear": {
+          "orbit_queries": 22,
+          "orbit_cycles": 63,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 22,
+          "deletion_trials": 36,
+          "residual_terms": 147,
+          "signatures": 7
+        },
+        "split_control": {
+          "orbit_queries": 14,
+          "orbit_cycles": 37,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 14,
+          "deletion_trials": 38,
+          "residual_terms": 150,
+          "signatures": 7
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 15099,
+        "dense": 96337
+      }
+    },
+    {
+      "name": "static-disjoint-8",
+      "size_bits": 260,
+      "r": 8,
+      "k": 0,
+      "M": 8,
+      "s": 9,
+      "dense_slots": 256,
+      "output_sha256": "5da760df56adb51a2bd70b5403fa74acd781ecc0193c910b7e4746c43574ebec",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "dense",
+          "split_control",
+          "split_certified",
+          "split",
+          "linear"
+        ],
+        [
+          "split_certified",
+          "dense",
+          "linear",
+          "split",
+          "split_control"
+        ],
+        [
+          "split",
+          "split_control",
+          "linear",
+          "dense",
+          "split_certified"
+        ],
+        [
+          "linear",
+          "dense",
+          "split_control",
+          "split",
+          "split_certified"
+        ],
+        [
+          "dense",
+          "linear",
+          "split",
+          "split_certified",
+          "split_control"
+        ],
+        [
+          "dense",
+          "split_certified",
+          "split_control",
+          "linear",
+          "split"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          29.597925,
+          12.6216375,
+          12.22146,
+          13.254453,
+          13.1527275
+        ],
+        "linear": [
+          1.0106225,
+          1.04246,
+          1.0028405,
+          0.9980135,
+          0.9478625
+        ],
+        "split": [
+          0.634661,
+          0.5439145,
+          0.5107845,
+          0.564956,
+          0.7770805
+        ],
+        "split_control": [
+          0.5075645,
+          0.7154125,
+          0.5436535,
+          0.578872,
+          0.55101
+        ],
+        "split_certified": [
+          8.8056945,
+          1.03909,
+          0.9788845,
+          1.0119245,
+          1.0453895
+        ]
+      },
+      "medians_ms": {
+        "dense": 13.1527275,
+        "linear": 1.0028405,
+        "split": 0.564956,
+        "split_control": 0.55101,
+        "split_certified": 1.03909
+      },
+      "paired_dense_over_arm": {
+        "linear": 13.28083537948134,
+        "split": 23.461035903680994,
+        "split_control": 22.897035959590372,
+        "split_certified": 12.485088894552932
+      },
+      "stats": {
+        "dense": {
+          "orbit_queries": 256,
+          "orbit_cycles": 1153,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 256
+        },
+        "split_control": {
+          "orbit_queries": 21,
+          "orbit_cycles": 59,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "split_certified": {
+          "orbit_queries": 21,
+          "orbit_cycles": 59,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "split": {
+          "orbit_queries": 21,
+          "orbit_cycles": 59,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "linear": {
+          "orbit_queries": 37,
+          "orbit_cycles": 115,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 37,
+          "deletion_trials": 64,
+          "residual_terms": 324,
+          "signatures": 9
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 20805,
+        "dense": 502773
+      }
+    },
+    {
+      "name": "static-disjoint-10",
+      "size_bits": 260,
+      "r": 10,
+      "k": 0,
+      "M": 10,
+      "s": 11,
+      "dense_slots": 1024,
+      "output_sha256": "ac99026239fb8b8449fec8a9a352bd47373321d02b12f45813cc24c82ded80db",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "linear",
+          "split_certified",
+          "split_control",
+          "split",
+          "dense"
+        ],
+        [
+          "split",
+          "linear",
+          "split_certified",
+          "split_control",
+          "dense"
+        ],
+        [
+          "split_certified",
+          "dense",
+          "split_control",
+          "split",
+          "linear"
+        ],
+        [
+          "split_certified",
+          "linear",
+          "split",
+          "dense",
+          "split_control"
+        ],
+        [
+          "split",
+          "dense",
+          "split_control",
+          "linear",
+          "split_certified"
+        ],
+        [
+          "split_certified",
+          "linear",
+          "split_control",
+          "split",
+          "dense"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          75.3732585,
+          77.225759,
+          73.5394455,
+          73.592185,
+          71.994193
+        ],
+        "linear": [
+          1.694773,
+          1.573941,
+          1.6307115,
+          1.6664905,
+          1.863417
+        ],
+        "split": [
+          0.768107,
+          0.6762235,
+          0.681326,
+          0.717386,
+          0.8328245
+        ],
+        "split_control": [
+          0.8228645,
+          0.7767,
+          0.7769405,
+          0.781332,
+          1.0928515
+        ],
+        "split_certified": [
+          1.661708,
+          1.477691,
+          1.3395225,
+          1.3421315,
+          1.352317
+        ]
+      },
+      "medians_ms": {
+        "dense": 73.592185,
+        "linear": 1.6664905,
+        "split": 0.717386,
+        "split_control": 0.781332,
+        "split_certified": 1.352317
+      },
+      "paired_dense_over_arm": {
+        "linear": 44.473955214061114,
+        "split": 102.58380425600723,
+        "split_control": 94.18811081588876,
+        "split_certified": 53.237660252736596
+      },
+      "stats": {
+        "linear": {
+          "orbit_queries": 56,
+          "orbit_cycles": 183,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 56,
+          "deletion_trials": 100,
+          "residual_terms": 605,
+          "signatures": 11
+        },
+        "split_certified": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        },
+        "split_control": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        },
+        "split": {
+          "orbit_queries": 26,
+          "orbit_cycles": 75,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 26,
+          "deletion_trials": 78,
+          "residual_terms": 472,
+          "signatures": 11
+        },
+        "dense": {
+          "orbit_queries": 1024,
+          "orbit_cycles": 5633,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 1024
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 26538,
+        "dense": 2498706
+      }
+    },
+    {
+      "name": "coincident-4",
+      "size_bits": 260,
+      "r": 4,
+      "k": 0,
+      "M": 4,
+      "s": 2,
+      "dense_slots": 16,
+      "output_sha256": "fd1d58c05beb8ed8b863f009b6c5eee56f65c20ae93bd44a4ef6c409b7d7dba9",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "split_certified",
+          "linear",
+          "dense",
+          "split_control",
+          "split"
+        ],
+        [
+          "split",
+          "split_control",
+          "split_certified",
+          "linear",
+          "dense"
+        ],
+        [
+          "split_certified",
+          "dense",
+          "split_control",
+          "linear",
+          "split"
+        ],
+        [
+          "linear",
+          "split_control",
+          "dense",
+          "split_certified",
+          "split"
+        ],
+        [
+          "linear",
+          "split_control",
+          "split",
+          "dense",
+          "split_certified"
+        ],
+        [
+          "dense",
+          "split_certified",
+          "split",
+          "split_control",
+          "linear"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          0.048628,
+          0.058258,
+          0.0452685,
+          0.0445925,
+          0.046415
+        ],
+        "linear": [
+          0.035774,
+          0.0287335,
+          0.0430695,
+          0.028578,
+          0.0267555
+        ],
+        "split": [
+          0.0364395,
+          0.0321435,
+          0.0367,
+          0.0389185,
+          0.0355835
+        ],
+        "split_control": [
+          0.0354685,
+          0.037136,
+          0.034993,
+          0.032048,
+          0.031838
+        ],
+        "split_certified": [
+          0.092219,
+          0.088388,
+          0.084167,
+          0.082389,
+          0.082224
+        ]
+      },
+      "medians_ms": {
+        "dense": 0.046415,
+        "linear": 0.0287335,
+        "split": 0.0364395,
+        "split_control": 0.034993,
+        "split_certified": 0.084167
+      },
+      "paired_dense_over_arm": {
+        "linear": 1.5603786129190287,
+        "split": 1.3043967007180295,
+        "split_control": 1.3914284822765852,
+        "split_certified": 0.5412433698673367
+      },
+      "stats": {
+        "split_certified": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 6,
+          "empty_union_queries": 0,
+          "subset_values": 8,
+          "deletion_trials": 7,
+          "residual_terms": 8,
+          "signatures": 2
+        },
+        "linear": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 4,
+          "empty_union_queries": 0,
+          "subset_values": 6,
+          "deletion_trials": 4,
+          "residual_terms": 5,
+          "signatures": 2
+        },
+        "dense": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 14,
+          "empty_unions": 0,
+          "histogram_slots": 16
+        },
+        "split_control": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 6,
+          "empty_union_queries": 0,
+          "subset_values": 8,
+          "deletion_trials": 7,
+          "residual_terms": 8,
+          "signatures": 2
+        },
+        "split": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 6,
+          "empty_union_queries": 0,
+          "subset_values": 8,
+          "deletion_trials": 7,
+          "residual_terms": 8,
+          "signatures": 2
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 2574,
+        "dense": 2338
+      }
+    },
+    {
+      "name": "coincident-10",
+      "size_bits": 260,
+      "r": 10,
+      "k": 0,
+      "M": 10,
+      "s": 2,
+      "dense_slots": 1024,
+      "output_sha256": "56acb78fc598ba95dd86a66b150164d5734c5c9b591ed7c13b74092daf083c64",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "dense",
+          "linear",
+          "split_certified",
+          "split_control",
+          "split"
+        ],
+        [
+          "split_control",
+          "dense",
+          "linear",
+          "split",
+          "split_certified"
+        ],
+        [
+          "dense",
+          "linear",
+          "split",
+          "split_certified",
+          "split_control"
+        ],
+        [
+          "split_control",
+          "linear",
+          "split",
+          "dense",
+          "split_certified"
+        ],
+        [
+          "linear",
+          "dense",
+          "split",
+          "split_certified",
+          "split_control"
+        ],
+        [
+          "split_control",
+          "split",
+          "dense",
+          "split_certified",
+          "linear"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          2.976298,
+          3.0345365,
+          3.0260985,
+          2.8656965,
+          3.0547715
+        ],
+        "linear": [
+          0.0687685,
+          0.0852085,
+          0.047732,
+          0.068869,
+          0.0589785
+        ],
+        "split": [
+          0.075504,
+          0.077076,
+          0.075584,
+          0.090316,
+          0.0687185
+        ],
+        "split_control": [
+          0.088974,
+          0.0768855,
+          0.0693245,
+          0.0798055,
+          0.071242
+        ],
+        "split_certified": [
+          0.155449,
+          0.157262,
+          0.185229,
+          0.175274,
+          0.18608
+        ]
+      },
+      "medians_ms": {
+        "dense": 3.0260985,
+        "linear": 0.0687685,
+        "split": 0.075584,
+        "split_control": 0.0768855,
+        "split_certified": 0.175274
+      },
+      "paired_dense_over_arm": {
+        "linear": 43.27996102866865,
+        "split": 39.419077134986225,
+        "split_control": 39.46825474244169,
+        "split_certified": 16.416441852966468
+      },
+      "stats": {
+        "dense": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 1022,
+          "empty_unions": 0,
+          "histogram_slots": 1024
+        },
+        "linear": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 10,
+          "empty_union_queries": 0,
+          "subset_values": 12,
+          "deletion_trials": 10,
+          "residual_terms": 11,
+          "signatures": 2
+        },
+        "split_certified": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 18,
+          "empty_union_queries": 0,
+          "subset_values": 20,
+          "deletion_trials": 19,
+          "residual_terms": 20,
+          "signatures": 2
+        },
+        "split_control": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 18,
+          "empty_union_queries": 0,
+          "subset_values": 20,
+          "deletion_trials": 19,
+          "residual_terms": 20,
+          "signatures": 2
+        },
+        "split": {
+          "orbit_queries": 2,
+          "orbit_cycles": 3,
+          "union_cache_hits": 18,
+          "empty_union_queries": 0,
+          "subset_values": 20,
+          "deletion_trials": 19,
+          "residual_terms": 20,
+          "signatures": 2
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 3606,
+        "dense": 7342
+      }
+    },
+    {
+      "name": "nested-10",
+      "size_bits": 260,
+      "r": 10,
+      "k": 0,
+      "M": 10,
+      "s": 11,
+      "dense_slots": 1024,
+      "output_sha256": "45de004ebd0155335cced531849df122d599504eb1b3abc039ea23f2de378776",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "linear",
+          "split_certified",
+          "dense",
+          "split",
+          "split_control"
+        ],
+        [
+          "split",
+          "dense",
+          "split_certified",
+          "linear",
+          "split_control"
+        ],
+        [
+          "split_certified",
+          "dense",
+          "linear",
+          "split",
+          "split_control"
+        ],
+        [
+          "split_certified",
+          "linear",
+          "dense",
+          "split",
+          "split_control"
+        ],
+        [
+          "linear",
+          "split_certified",
+          "dense",
+          "split_control",
+          "split"
+        ],
+        [
+          "split",
+          "linear",
+          "split_control",
+          "dense",
+          "split_certified"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          2.978787,
+          3.1424785,
+          2.929643,
+          2.945873,
+          3.07369
+        ],
+        "linear": [
+          0.3468325,
+          0.3528065,
+          0.353252,
+          0.3155555,
+          0.320648
+        ],
+        "split": [
+          0.4518355,
+          0.454705,
+          0.479923,
+          0.4642645,
+          0.4510195
+        ],
+        "split_control": [
+          0.467589,
+          0.450158,
+          0.450208,
+          0.486062,
+          0.438285
+        ],
+        "split_certified": [
+          0.870216,
+          0.816755,
+          0.855073,
+          0.8466755,
+          0.875048
+        ]
+      },
+      "medians_ms": {
+        "dense": 2.978787,
+        "linear": 0.3468325,
+        "split": 0.454705,
+        "split_control": 0.450208,
+        "split_certified": 0.855073
+      },
+      "paired_dense_over_arm": {
+        "linear": 8.90708787961673,
+        "split": 6.592636036787725,
+        "split_control": 6.507309954509916,
+        "split_certified": 3.479341258841197
+      },
+      "stats": {
+        "linear": {
+          "orbit_queries": 11,
+          "orbit_cycles": 21,
+          "union_cache_hits": 45,
+          "empty_union_queries": 0,
+          "subset_values": 56,
+          "deletion_trials": 100,
+          "residual_terms": 605,
+          "signatures": 11
+        },
+        "split_certified": {
+          "orbit_queries": 11,
+          "orbit_cycles": 21,
+          "union_cache_hits": 75,
+          "empty_union_queries": 0,
+          "subset_values": 86,
+          "deletion_trials": 138,
+          "residual_terms": 926,
+          "signatures": 11
+        },
+        "dense": {
+          "orbit_queries": 11,
+          "orbit_cycles": 21,
+          "union_cache_hits": 1013,
+          "empty_unions": 0,
+          "histogram_slots": 1024
+        },
+        "split": {
+          "orbit_queries": 11,
+          "orbit_cycles": 21,
+          "union_cache_hits": 75,
+          "empty_union_queries": 0,
+          "subset_values": 86,
+          "deletion_trials": 138,
+          "residual_terms": 926,
+          "signatures": 11
+        },
+        "split_control": {
+          "orbit_queries": 11,
+          "orbit_cycles": 21,
+          "union_cache_hits": 75,
+          "empty_union_queries": 0,
+          "subset_values": 86,
+          "deletion_trials": 138,
+          "residual_terms": 926,
+          "signatures": 11
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 10725,
+        "dense": 12896
+      }
+    },
+    {
+      "name": "paired-blocks-8",
+      "size_bits": 259,
+      "r": 8,
+      "k": 2,
+      "M": 8,
+      "s": 9,
+      "dense_slots": 256,
+      "output_sha256": "73030e45d1784ce321516822690092207b949d9aff71e0c5d2b7fe630b767cd0",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "linear",
+          "split",
+          "dense",
+          "split_certified",
+          "split_control"
+        ],
+        [
+          "linear",
+          "split_certified",
+          "split_control",
+          "dense",
+          "split"
+        ],
+        [
+          "dense",
+          "split_certified",
+          "split_control",
+          "linear",
+          "split"
+        ],
+        [
+          "split_control",
+          "linear",
+          "split",
+          "split_certified",
+          "dense"
+        ],
+        [
+          "split",
+          "linear",
+          "split_certified",
+          "split_control",
+          "dense"
+        ],
+        [
+          "split",
+          "linear",
+          "split_certified",
+          "split_control",
+          "dense"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          24.711279,
+          25.6386955,
+          24.667718,
+          24.96776,
+          25.005001
+        ],
+        "linear": [
+          2.169513,
+          2.1726225,
+          2.239318,
+          2.331592,
+          2.18072
+        ],
+        "split": [
+          1.384095,
+          1.3786015,
+          1.334876,
+          1.197955,
+          1.2471735
+        ],
+        "split_control": [
+          1.2849555,
+          1.3345005,
+          1.1819255,
+          1.445547,
+          1.218681
+        ],
+        "split_certified": [
+          2.211877,
+          2.303951,
+          2.1071745,
+          2.1135135,
+          2.102407
+        ]
+      },
+      "medians_ms": {
+        "dense": 24.96776,
+        "linear": 2.18072,
+        "split": 1.334876,
+        "split_control": 1.2849555,
+        "split_certified": 2.1135135
+      },
+      "paired_dense_over_arm": {
+        "linear": 11.390242418459813,
+        "split": 18.597611782665258,
+        "split_control": 19.231233299518934,
+        "split_certified": 11.706537830635288
+      },
+      "stats": {
+        "linear": {
+          "orbit_queries": 37,
+          "orbit_cycles": 188,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 37,
+          "deletion_trials": 64,
+          "residual_terms": 324,
+          "signatures": 9
+        },
+        "split": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "dense": {
+          "orbit_queries": 256,
+          "orbit_cycles": 1664,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 256
+        },
+        "split_certified": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        },
+        "split_control": {
+          "orbit_queries": 21,
+          "orbit_cycles": 100,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 35055,
+        "dense": 730590
+      }
+    },
+    {
+      "name": "all-signatures-6",
+      "size_bits": 7,
+      "r": 6,
+      "k": 0,
+      "M": 192,
+      "s": 64,
+      "dense_slots": 64,
+      "output_sha256": "b15c22ecd7fbc85216f74cc47aa36bd4249e8079214abf35520ef78e17109db5",
+      "repeats": 2,
+      "orders_including_warmup": [
+        [
+          "split_certified",
+          "split_control",
+          "linear",
+          "dense",
+          "split"
+        ],
+        [
+          "split_control",
+          "linear",
+          "split",
+          "split_certified",
+          "dense"
+        ],
+        [
+          "split",
+          "linear",
+          "split_control",
+          "split_certified",
+          "dense"
+        ],
+        [
+          "split_certified",
+          "linear",
+          "split_control",
+          "dense",
+          "split"
+        ],
+        [
+          "split_certified",
+          "dense",
+          "split",
+          "linear",
+          "split_control"
+        ],
+        [
+          "split",
+          "linear",
+          "dense",
+          "split_certified",
+          "split_control"
+        ]
+      ],
+      "samples_ms": {
+        "dense": [
+          15.7629795,
+          16.012586,
+          16.4169145,
+          16.1218,
+          16.227329
+        ],
+        "linear": [
+          17.2712115,
+          17.324156,
+          17.3263945,
+          17.663182,
+          17.0786165
+        ],
+        "split": [
+          17.9829285,
+          18.002533,
+          18.5523615,
+          17.989223,
+          18.797841
+        ],
+        "split_control": [
+          18.2918635,
+          18.2449785,
+          18.3326405,
+          18.2227195,
+          19.2269175
+        ],
+        "split_certified": [
+          27.0638175,
+          26.2372925,
+          26.7665845,
+          25.9836705,
+          27.0293105
+        ]
+      },
+      "medians_ms": {
+        "dense": 16.1218,
+        "linear": 17.324156,
+        "split": 18.002533,
+        "split_control": 18.2918635,
+        "split_certified": 26.7665845
+      },
+      "paired_dense_over_arm": {
+        "linear": 0.9242924157459677,
+        "split": 0.8848962165813771,
+        "split_control": 0.8776434568010042,
+        "split_certified": 0.6102987188941085
+      },
+      "stats": {
+        "split_certified": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        },
+        "split_control": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        },
+        "linear": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 378,
+          "residual_terms": 14112,
+          "signatures": 64
+        },
+        "dense": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_unions": 0,
+          "histogram_slots": 64
+        },
+        "split": {
+          "orbit_queries": 64,
+          "orbit_cycles": 599,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 64,
+          "deletion_trials": 605,
+          "residual_terms": 22104,
+          "signatures": 64
+        }
+      },
+      "certificate_bytes": {
+        "split_certified": 49505,
+        "dense": 42130
+      }
+    }
+  ],
+  "large_cases": [
+    {
+      "r": 32,
+      "size_bits": 501,
+      "s": 33,
+      "samples_ms": [
+        5.967359,
+        7.49479,
+        6.190305
+      ],
+      "median_ms": 6.190305,
+      "stats": {
+        "orbit_queries": 113,
+        "orbit_cycles": 350,
+        "union_cache_hits": 0,
+        "empty_union_queries": 0,
+        "subset_values": 113,
+        "deletion_trials": 352,
+        "residual_terms": 6336,
+        "signatures": 33
+      },
+      "certificate_bytes": 48881,
+      "dense_status": "NOT_RUN: explicit output has 2**r slots; no timing ratio"
+    },
+    {
+      "r": 128,
+      "size_bits": 501,
+      "s": 129,
+      "samples_ms": [
+        65.453225,
+        65.048506,
+        60.660185
+      ],
+      "median_ms": 65.048506,
+      "stats": {
+        "orbit_queries": 577,
+        "orbit_cycles": 1958,
+        "union_cache_hits": 0,
+        "empty_union_queries": 0,
+        "subset_values": 577,
+        "deletion_trials": 1920,
+        "residual_terms": 132096,
+        "signatures": 129
+      },
+      "certificate_bytes": 202530,
+      "dense_status": "NOT_RUN: explicit output has 2**r slots; no timing ratio"
+    },
+    {
+      "r": 256,
+      "size_bits": 501,
+      "s": 257,
+      "samples_ms": [
+        222.607059,
+        215.305917,
+        215.383404
+      ],
+      "median_ms": 215.383404,
+      "stats": {
+        "orbit_queries": 1281,
+        "orbit_cycles": 4450,
+        "union_cache_hits": 0,
+        "empty_union_queries": 0,
+        "subset_values": 1281,
+        "deletion_trials": 4352,
+        "residual_terms": 592128,
+        "signatures": 257
+      },
+      "certificate_bytes": 422028,
+      "dense_status": "NOT_RUN: explicit output has 2**r slots; no timing ratio"
+    }
+  ],
+  "signed_cases": [
+    {
+      "r": 8,
+      "s": 9,
+      "samples_ms": {
+        "support_reuse": [
+          272.619085,
+          271.711478,
+          286.218691,
+          278.917198,
+          276.152994
+        ],
+        "two_searches": [
+          394.675543,
+          402.137679,
+          389.379611,
+          454.1479,
+          397.635053
+        ]
+      },
+      "stats": {
+        "two_searches": {
+          "orbit_queries": 42,
+          "cover_orbit_queries": 21
+        },
+        "support_reuse": {
+          "orbit_queries": 31,
+          "orbit_cycles": 5975,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 21,
+          "deletion_trials": 56,
+          "residual_terms": 288,
+          "signatures": 9,
+          "cover_orbit_queries": 10
+        }
+      },
+      "median_ms": {
+        "support_reuse": 276.152994,
+        "two_searches": 397.635053
+      },
+      "paired_ratio": 1.4477179504875823
+    },
+    {
+      "r": 16,
+      "s": 17,
+      "samples_ms": {
+        "support_reuse": [
+          1173.516402,
+          1110.707208,
+          1112.826568,
+          1102.474303,
+          1109.240196
+        ],
+        "two_searches": [
+          1838.340193,
+          1813.532235,
+          1737.886249,
+          1772.247913,
+          1813.804932
+        ]
+      },
+      "stats": {
+        "support_reuse": {
+          "orbit_queries": 67,
+          "orbit_cycles": 14446,
+          "union_cache_hits": 0,
+          "empty_union_queries": 0,
+          "subset_values": 49,
+          "deletion_trials": 144,
+          "residual_terms": 1360,
+          "signatures": 17,
+          "cover_orbit_queries": 18
+        },
+        "two_searches": {
+          "orbit_queries": 98,
+          "cover_orbit_queries": 49
+        }
+      },
+      "median_ms": {
+        "support_reuse": 1110.707208,
+        "two_searches": 1813.532235
+      },
+      "paired_ratio": 1.6075185681674795
+    }
+  ],
+  "scope": "Interval subsystem only; no knot recognition dispatch"
+}

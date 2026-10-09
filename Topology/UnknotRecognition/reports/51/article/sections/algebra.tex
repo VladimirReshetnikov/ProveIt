@@ -1,0 +1,563 @@
+\section{An exact quotient operation for singleton dependency graphs}
+\label{alg:setting}
+
+The algebraic operation developed here removes many generators in one
+simultaneous substitution. Its donors may involve arbitrarily many other
+generators, with repeated letters and mixed signs. The compatibility
+condition is an acyclic dependency graph. We first prove the quotient
+statement for arbitrary presentations, and then bound the compressed
+construction in terms of its actual input grammar. The rank is part of
+the input throughout this section.
+
+Let $X$ be the finite set of live generators, with $r=|X|$. Write $F(X)$
+for the free group on $X$. A presentation has $m$ retained relator slots
+$R_1,\ldots,R_m$, including any empty slots left by earlier operations.
+The exact signed words in these slots are represented by roots of one
+binary straight-line program $\mathcal G$. Its rules are signed letters,
+binary concatenations, and a distinguished empty root. Let $M$ be the
+number of nonempty grammar nodes reachable from the current roots.
+The words are allowed to contain free cancellation. Their raw spellings,
+rather than their reduced lengths, determine the occurrence conditions below.
+
+\begin{definition}[A singleton DAG witness]
+\label{alg:def-witness}
+A witness chooses a set $C\subseteq X$ of $k$ distinct children and a
+distinct donor slot $j(c)$ for each $c\in C$. The raw donor word must have
+exactly one occurrence of either sign of $c$, giving a factorization
+\[
+ D_c:=R_{j(c)}=U_c c^{\epsilon_c}V_c,
+ \qquad \epsilon_c\in\{1,-1\}.
+\]
+Define the right-hand side
+\[
+ W_c=(V_cU_c)^{-\epsilon_c}.
+\]
+For each selected child $d$ occurring in $W_c$, put an arrow $c\to d$.
+The witness is valid when this graph on $C$ is acyclic. The surviving
+generators are $A=X\setminus C$.
+\end{definition}
+
+The support of $W_c$ includes every absolute generator label occurring
+in it. Signs and multiplicities affect the substituted word but not the
+dependency graph. A donor consisting of $c^{\epsilon_c}$ alone is
+permitted: its right-hand side is empty and it has no dependencies.
+Dependencies on surviving generators also impose no restriction.
+
+Choose a dependency order $c_1,\ldots,c_k$, so that an arrow
+$c_i\to c_j$ implies $j<i$. Define words over $A$ recursively by
+\[
+ I_a=a\quad(a\in A),\qquad
+ I_{c_i}=W_{c_i}\bigl[I_h/h:h\in X\bigr].
+\]
+Only already defined selected images are used in the second formula.
+Negative letters receive inverse words, including reversal of their order.
+These images define a homomorphism $\Phi:F(X)\to F(A)$.
+
+\begin{theorem}[Simultaneous singleton quotient]
+\label{alg:quotient}
+For every valid singleton DAG witness,
+\[
+ \langle X\mid R_1,\ldots,R_m\rangle
+ \cong
+ \left\langle A\;\middle|\;
+   \Phi(R_j),\ j\notin\{j(c):c\in C\}\right\rangle.
+\]
+Thus all retained roots can be mapped simultaneously, and exactly the
+selected donor slots can then be emptied. The assertion holds for every
+finitely presented group.
+\end{theorem}
+
+\begin{proof}
+The equation $U_c c^{\epsilon_c}V_c=1$ is equivalent to
+$c=(V_cU_c)^{-\epsilon_c}$; this also holds when either context is empty.
+Let $N$ be the normal closure of the selected donors in $F(X)$. Every
+donor is killed by $\Phi$, so $\Phi$ induces a homomorphism
+$\overline\Phi:F(X)/N\to F(A)$. Inclusion of the surviving generators
+induces a homomorphism $\iota:F(A)\to F(X)/N$.
+
+We show in dependency order that $c_i=I_{c_i}$ in $F(X)/N$. The donor
+equation gives $c_i=W_{c_i}$ there. Every selected letter in $W_{c_i}$
+has an earlier index, so the induction hypothesis replaces it by its
+image. This proves the assertion. The two homomorphisms are consequently
+inverse on every surviving and selected generator. They are therefore
+mutually inverse group homomorphisms. Finally quotient by the images
+of all unselected relators. Under this isomorphism those images are
+precisely the words $\Phi(R_j)$ stated in the theorem.
+\end{proof}
+
+The theorem justifies deletion of a donor even when its mapped raw word
+is a nonempty spelling of the identity. No equality query is required for
+that deletion. Every other original slot remains present; an unrelated
+relator can impose a substantial condition after substitution.
+
+\begin{remark}[Raw occurrences and source hypotheses]
+\label{alg:raw-scope}
+A signed exponent sum of $1$ or $-1$ does not establish the required
+singleton condition: a word may contain a generator twice positively
+and once negatively with noncommuting letters between the occurrences.
+Conversely, an actual singleton donor needs no torsion-free hypothesis.
+The ordinary, exponent-one case of a unit-coordinate power forest is
+a special case of this construction. A proper-power donor with several
+raw occurrences of its child is not automatically a singleton donor;
+the existing root-evidence route remains a separate capability.
+If a future extension infers $D_c=1$ from a checked proper-power donor
+$D_c^q=1$, $|q|>1$, that inference will require an additional justification,
+such as source-established torsion-freeness. It is separate from
+Theorem~\ref{alg:quotient}.
+\end{remark}
+
+Acyclicity is also substantive. The two donors $ab$ and $ab^{-1}$ allow
+the proposed choices $a$ and $b$ individually, but together create a
+dependency cycle. Their presentation is $\Z/2\Z$: the first donor gives
+$a=b^{-1}$ and the second gives $b^2=1$. Deleting both generators and
+both donors would instead give the trivial group. An individual
+singleton test therefore cannot replace the compatibility check.
+
+\section{Linear grammar growth through shared contexts}
+\label{alg:compression}
+
+Compressed substitution is a well-established method in algorithmic
+group theory; see Schleimer~\cite{Schleimer2008}. For fixed rank and a
+fixed finite family of endomorphisms, Kapovich's quantitative layered
+substitution statement constructs an SLP of size $O(M+t+1)$ for a
+specified length-$t$ composition, with constants depending on that rank
+and family~\cite[Proposition~3.2]{Kapovich2026}. Here the rank and the
+donor words vary with the input. The following argument controls the
+extraction and composition of these variable-sized definitions directly
+from their shared source grammar.
+
+\subsection{The disjointness of the selected occurrence paths}
+
+For a selected child $c$, follow its unique occurrence from the donor
+root through the binary grammar. At each concatenation, exactly one
+child word contains $c$. This gives a path $H_c$ ending at a signed
+terminal of $c$. The grammar can share that terminal and many other
+nodes with other words; the path is defined by the occurrence in this
+particular donor.
+
+\begin{lemma}[Disjoint hole paths]
+\label{alg:hole-paths}
+For distinct selected children $c,d$, the paths $H_c$ and $H_d$ have
+no grammar node in common. In particular,
+\[
+ \sum_{c\in C}|H_c|\le M.
+\]
+\end{lemma}
+
+\begin{proof}
+A node on $H_c$ expands to a word containing $c$. Since the donor
+contains $c$ only once, every concatenation on the path has only one
+child containing it, and a node containing $c$ cannot occur twice in
+the donor's unfolded derivation. The path is thus well defined even
+in a heavily shared grammar.
+
+Suppose a node belonged to both $H_c$ and $H_d$. Its expansion would
+contain both selected children. It occurs within $D_c$, so deleting
+the unique occurrence of $c$ from that donor leaves an occurrence of
+$d$. Hence $W_c$ contains $d$. The same reasoning within $D_d$ shows
+that $W_d$ contains $c$. This creates the two-cycle $c\to d\to c$,
+contradicting the witness condition. The paths are disjoint, and each
+is a subset of the $M$ reachable source nodes, proving the sum bound.
+\end{proof}
+
+The lemma does not say that whole donor grammars are disjoint. Large
+subwords over shared parents or survivors can occur in many donors.
+It controls precisely the paths on which cutting out the chosen
+occurrences requires new grammar structure. This distinction removes
+the otherwise unnecessary factor of $k$ from a bound obtained by
+charging a full grammar-height traversal independently to every donor.
+
+\begin{lemma}[All contexts from one source grammar]
+\label{alg:contexts}
+The words $V_cU_c$, for all selected children, can be represented using
+the source nodes and at most $M$ additional binary concatenation nodes.
+Their construction has $O(M+k)$ grammar events and uses no reduction,
+equality test, or expanded-word allocation.
+\end{lemma}
+
+\begin{proof}
+Descend $H_c$ while accumulating its prefix and suffix. When the path
+enters a right child, append the left sibling to the prefix. When it
+enters a left child, prepend the right sibling to the suffix. Siblings
+are reused by node reference. Their order is the order they have in
+the original word, so the final contexts are exactly $U_c$ and $V_c$.
+Each internal path node calls at most one context concatenation.
+One final concatenation joins the suffix to the prefix.
+
+There is one terminal node on each $H_c$. Thus the number of possible
+new context nodes, including the final joins, is at most
+\[
+ \sum_{c\in C}(|H_c|-1)+k
+ =\sum_{c\in C}|H_c|\le M.
+\]
+Empty contexts and interning can reduce this number.
+
+The independent implementation obtains the two contexts by the exact
+slices $[0,p)$ and $[p+1,|D_c|)$, where $p$ is the unique occurrence
+position. Both boundary traversals follow $H_c$. At a path node, only
+one of the two complementary slices can need a new concatenation:
+which one depends on which child contains the hole. Fully included
+sibling subwords are reused. The same bound therefore applies to this
+alternative construction.
+\end{proof}
+
+\subsection{Compiling both orientations of every needed word}
+
+Let $\mathcal H$ be the union of the source grammar and the context
+nodes from Lemma~\ref{alg:contexts}. It has at most $2M$ nodes. For
+each node $v$ use two virtual states $(v,+1)$ and $(v,-1)$, representing
+its final substituted word and the inverse of that word. If $v=uv'$,
+the positive state depends, in order, on $(u,+1),(v',+1)$; the negative
+state depends on $(v',-1),(u,-1)$. An unselected terminal produces
+itself or its inverse.
+
+A terminal $c^\delta$ with $c\in C$ is redirected to the context
+$V_cU_c$. In orientation $\sigma$, its context orientation is
+$-\epsilon_c\delta\sigma$. This one sign formula handles both donor
+signs, both occurrences of the generator in other words, and both
+virtual orientations. It also avoids constructing and traversing a
+separate inverse grammar for each already composed image.
+
+\begin{lemma}[Acyclic signed compilation]
+\label{alg:signed}
+The augmented virtual graph is acyclic. Evaluating each needed virtual
+state once produces the images $I_c^{\pm1}$ and all required mapped
+relators with at most $4M$ reachable nonempty output grammar nodes.
+\end{lemma}
+
+\begin{proof}
+Before terminal redirects, the graph follows source and context
+concatenations and is acyclic. A directed cycle introduced by the
+redirects must pass through selected terminals. Between two successive
+selected-terminal redirects, a path starts in a defining context for
+some child $c$ and reaches an occurrence of another selected child $d$.
+Such a segment witnesses the dependency $c\to d$. A virtual cycle
+would therefore give a directed closed walk, and hence a directed
+cycle, in the dependency graph. The stipulated acyclicity excludes it.
+
+Evaluate virtual states in a topological traversal. A terminal needs
+at most one letter node, a concatenation at most one concatenation
+node, and a redirect only an alias to its already evaluated state.
+The defining equations and the sign convention show inductively that
+these values are the desired substituted words. There are at most
+$2|\mathcal H|\le4M$ virtual states. Each output node is the value of
+one of these states, proving the node bound. States shared by several
+images or relators are evaluated only once.
+\end{proof}
+
+All definitions are included among the traversal goals, even if no
+unselected relator uses their children. This prevents a checker from
+ignoring an invalid but unused part of a proposed schedule. Only after
+the complete construction succeeds are the retained root array and
+the live-generator set replaced. A failed resource check can leave
+newly allocated arena nodes, while the represented presentation
+remains the original one.
+
+\begin{theorem}[Uniform size bound]
+\label{alg:linear-size}
+All node counts in this statement exclude the distinguished empty node.
+A valid singleton DAG batch on a shared reachable source grammar of
+$M$ nodes has a compressed output with at most $4M$ nonempty grammar
+nodes and the original $m$ root slots. A persistent arena can perform
+the construction by adding at most $5M$ nodes to its previous allocated
+count. In particular, when no unreachable nodes were previously
+allocated, its total allocated count is at most $6M$.
+\end{theorem}
+
+\begin{proof}
+At most $M$ context nodes are allocated, followed by at most $4M$
+nodes from signed compilation. The source nodes already existed.
+Lemma~\ref{alg:signed} bounds the reachable output independently of
+the source and temporary context nodes retained by the arena.
+Previously allocated unreachable nodes are unchanged and must be
+added to the total when applying an arena-wide memory cap.
+\end{proof}
+
+The constants are conservative; cached letters, empty contexts and
+interning often reuse nodes. The substantive property is their
+independence of dependency depth, rank, expanded donor lengths, and
+the number of occurrences of a parent in another child's definition.
+
+\section{An ordered certificate with small summaries}
+\label{alg:ordered}
+
+The version-eight move records an ordered list of pairs consisting of
+an original donor slot and a chosen child. No substituted words,
+occurrence positions, supports, or grammar node identifiers are trusted
+as certificate data. The order itself is a topological witness.
+
+Give every survivor rank zero and the $i$th chosen child rank $i$.
+For every source node $v$, compute $q(v)$, the largest selected rank
+in its expansion, and $t(v)$, its occurrence count capped at two.
+The empty root has summary $(0,0)$ and a terminal of rank $h$ has
+summary $(h,1)$. At a concatenation $v=uv'$, put
+\[
+ q(v)=\max\{q(u),q(v')\},
+\]
+\[
+ t(v)=\min\!\left\{2,
+ t(u)\mathbf 1_{q(u)=q(v)}+
+ t(v')\mathbf 1_{q(v')=q(v)}\right\}.
+\]
+Counts at rank zero need not distinguish the surviving generators:
+every selected donor must have a positive maximum rank.
+
+\begin{proposition}[Verification by ranked maxima]
+\label{alg:ranked-max}
+An ordered list with distinct children and distinct donor slots is a
+valid singleton DAG witness in the supplied order if and only if the
+donor of its $i$th child has summary $(i,1)$.
+Every valid singleton DAG admits an order satisfying these conditions.
+\end{proposition}
+
+\begin{proof}
+The recurrence computes the maximum rank and the capped multiplicity
+of that rank by induction over the source grammar. Only the $i$th
+selected child has rank $i$. Summary $(i,1)$ says that this child occurs
+exactly once and no later child occurs in its donor. Removing its
+occurrence leaves only survivors and earlier children, so every
+dependency is earlier. Conversely, those two occurrence conditions
+immediately imply summary $(i,1)$. Finally every finite acyclic graph
+has a dependency order, to which the equivalence applies.
+\end{proof}
+
+Each summary has constant cardinality and $O(\log(r+1))$ bits. The
+check avoids storing an $r$-bit support mask at every grammar node.
+The same maxima locate each unique occurrence: on its hole path,
+exactly one child has the donor's maximum rank. The contexts can
+therefore be independently sliced without an expanded occurrence scan.
+
+The checker first verifies the record types, live generator membership,
+slot ranges and distinctness conditions, and checks that source terminals
+use live labels. It then checks each donor's ranked maximum against the
+intact current roots before constructing that donor's contexts. No
+presentation mutation is committed until every donor and the full
+composition have passed. Boolean values are not accepted as integer
+identifiers. All other relator slots are mapped and retained. These
+checks connect the combinatorial witness to the
+exact quotient theorem; a source-bound public verdict must additionally
+reconstruct the diagram and replay the complete preceding proof prefix.
+
+The producer uses a simpler order already present in the input: numeric
+generator order. It caches, for each immutable node, its maximum
+absolute label and that label's count capped at two. The first current
+slot whose maximum occurs once supplies that maximum's donor. Chosen
+children are then sorted increasingly. All their dependencies are
+smaller, so the result is valid. Cached content summaries never cache
+slot positions or a previous live-generator set; those are reconstructed
+for each current presentation.
+
+This numeric policy is incomplete. Let an anchor $a$ have a larger
+numeric label than every leaf $c_i$, and take donors $a^q c_i$ with
+$q\ge2$. Their maxima repeat, so the producer finds no pivot. Selecting
+every $c_i$ is nevertheless a valid batch with a common surviving
+anchor. A suitable order places the anchor first and exposes all
+these donors. The general ordered checker accepts that witness.
+Thus a restriction in discovery does not become a restriction on the
+mathematical class of certificates it can verify.
+
+\section{Encoding, bit operations, and phase composition}
+\label{alg:complexity}
+
+Put $N=M+r+m$, and let $\ell$ bound the bit length of generator labels.
+After reindexing the reachable grammar, pointer fields require
+$O(\log(N+2))$ bits. The output grammar, live-generator description and
+retained root list consequently have canonical encoded length
+\[
+ O\!\left(N\bigl(\log(N+2)+\ell\bigr)\right).
+\]
+This bound describes the word representation itself. Cached arithmetic
+metadata in an implementation can be larger.
+
+In particular, a binary grammar with $Q$ nonempty nodes represents no
+word longer than $2^Q$. Induction in topological order proves this:
+a terminal has length one and each concatenation adds two lengths
+of earlier nodes. The output word-length integers therefore have
+$O(M+1)$ bits by Theorem~\ref{alg:linear-size}. The source, context and
+compiled nodes involved in this batch can therefore require $O(M^2)$
+bits of cached length metadata. Any metadata belonging to previously
+allocated unreachable nodes is additional unchanged storage. Construction
+operates on these integers; it does not pay for their represented
+word lengths. For a retained root list $\mathcal R$, define
+\[
+ B(\mathcal R)=\max\!\left\{1,
+   \left\lceil\log_2\!\left(1+
+     \max\bigl(\{\len(R):R\in\mathcal R\}\cup\{0\}\bigr)
+   \right)\right\rceil\right\}.
+\]
+Let $B_{\mathrm{in}}$ and $B_{\mathrm{out}}$ denote this quantity before
+and after the batch, respectively, using the exact raw word lengths.
+A separate elementary bound is
+\[
+ B_{\mathrm{out}}\le (k+1)B_{\mathrm{in}}+O(k+1),
+\]
+To see this, put $L=\max(1,\max_j\len(R_j))$ for the original roots.
+Every defining word has at most $L$ letters. Defining the images in
+dependency order multiplies the largest image length by at most $L$
+at each step, and mapping an original root introduces one further
+factor of at most $L$. The final root length is at most $L^{k+1}$.
+The direct grammar bound is frequently sharper and suffices for
+polynomial bit complexity.
+
+Ranked summary evaluation, context extraction and signed compilation
+have $O(N)$ grammar or slot events. Sorting the producer's $k$ selected
+labels adds $O(k\log(k+1))$ comparisons; the maintained work counter
+charges this sorting explicitly. Thus linear grammar growth does not
+mean exactly linear producer work. Graph indexing and the source
+postorder also have their ordinary implementation costs. A deterministic
+implementation can use comparison-based indexing, and a Python
+implementation uses its usual dictionary behavior.
+
+The verifier's rank summaries have $O(\log(r+1))$ bits; the producer's
+numeric-label maxima have $O(\ell)$ bits. Generator comparisons have
+$O(\ell)$-bit operands, and position or length additions have
+$O(M+1)$-bit operands. The number of these operations is polynomial
+in $N$. This gives a deterministic polynomial bit bound in the encoded
+input parameters, with an absolute degree independent of the rank
+and DAG depth. Under the straightforward arithmetic representation,
+the possible quadratic total cost of length additions is already a
+conservative polynomial allowance. The abstract work counter is a
+cooperative resource measure, rather than a claim to count those bit
+operations exactly.
+
+An internal application helper also accepts unsorted acyclic schedules
+through a general dependency-mask fallback. Its polynomial mask cost
+is separate from the public ordered-certificate route. Similarly,
+literal replay pays for actual expanded output and can exhaust its
+allocation allowance on a batch whose compressed construction is small.
+
+\begin{theorem}[Composition of raw singleton batches]
+\label{alg:phases}
+Suppose $d$ successive operations consist solely of valid singleton DAG
+contractions. If the initial encoded parameters, including any retained
+arena storage, are polynomially bounded by $N_0$, the total construction
+and ordered-verification cost
+has a bound
+\[
+ \operatorname{poly}(N_0)\,2^{O(d)}.
+\]
+The constants do not depend on the ranks or dependency depths of
+the individual batches.
+\end{theorem}
+
+\begin{proof}
+Each contraction multiplies the reachable grammar bound by at most an
+absolute constant, and a persistent arena obeys the conservative
+recurrence $A_{i+1}\le6A_i$ for its nonempty allocated node count. Rank never
+increases and the number of retained slots is fixed. Hence all grammar
+and metadata parameters after $i$ phases are bounded by a polynomial
+in $N_0$ times $6^{O(i)}$. Substitute this into the fixed polynomial
+per-phase bound and sum over $i\le d$. The resulting geometric bound
+has the stated form.
+\end{proof}
+
+From polynomial-size diagram data, $d=O(\log n)$ such phases would
+have polynomial total raw-contraction cost; a polylogarithmic bound
+on $d$ would give a quasipolynomial bound. The theorem does not bound
+the discovery of useful new donors, the normalization work between
+contractions, or the length of a search using other operations.
+It is a local composition statement. For example, a later raw
+singleton need not occur in its original slot: from slots $xg$ and
+$x$, eliminating $x$ using the first exposes $g$ in the second.
+Simply collecting the original slot--child pairs does not fuse that
+history into one initial witness.
+
+\section{The difficulty of choosing the largest batch}
+\label{alg:selection}
+
+Efficient verification of a supplied schedule leaves a separate
+optimization problem. The following elementary reduction identifies
+a concrete limit on exact unrestricted batch selection. Its source
+is the classical independent-set problem, equivalently the complement
+of vertex cover in the standard NP-completeness framework
+of Karp~\cite{Karp1972}.
+
+\begin{definition}[Singleton DAG selection]
+\label{alg:selection-problem}
+Given a finite list of explicit relator words and an integer $b$, ask
+whether there is a valid singleton DAG witness selecting at least
+$b$ distinct children. Both the donor assignment and a valid order
+may be chosen. The compressed variant supplies the words by an SLP.
+\end{definition}
+
+\begin{theorem}[Selection is NP-complete]
+\label{alg:selection-hardness}
+Singleton DAG selection is NP-complete. NP-hardness already holds for
+explicit positive words in which each relator has exactly one
+singleton generator. Thus it also holds when the candidate child of
+each donor is fixed in advance.
+\end{theorem}
+
+\begin{proof}
+A certificate consists of the chosen distinct slots and children in
+dependency order. Its size is polynomial in the input. Direct
+occurrence and order checks verify it for explicit words; the ranked
+summary verifier does so for compressed words. Both decision problems
+therefore belong to NP.
+
+For hardness, let $H=(V,E)$ be a finite simple undirected graph. Use
+one generator $x_v$ for each vertex and one relator
+\[
+ D_v=x_v\prod_{u\in N_H(v)}x_u^2
+ \qquad(v\in V),
+\]
+where each neighborhood is written in any fixed order. The total
+explicit length is $|V|+4|E|$. The generator $x_v$ occurs once in
+$D_v$, whereas every other generator present occurs twice. Thus
+$x_v$ is the only possible singleton child for that donor.
+
+A chosen set of donors corresponds to a vertex set $S\subseteq V$.
+For adjacent selected vertices $u,v$, donor $D_u$ contains $x_v$ and
+donor $D_v$ contains $x_u$. Their dependency graph contains the
+two-cycle $x_u\to x_v\to x_u$. Therefore every valid selected set
+is independent in $H$. Conversely, if $S$ is independent, none of
+its selected donors contains another selected child. All its other
+letters are survivors, so its dependency graph has no edges and is
+valid. The largest possible batch has size exactly $\alpha(H)$.
+Using the same threshold $b$ gives a polynomial reduction from
+independent set and proves the claim.
+\end{proof}
+
+The reduction concerns arbitrary current-word presentations. It does
+not establish hardness for Wirtinger presentations, for states known
+to arise from a validated knot, or for the numeric-order planner.
+Nor does it imply that finding a useful smaller batch is difficult
+on a particular geometric family. It explains why maximum-cardinality
+selection should be a distinct research objective rather than an
+unproved property of a greedy scan.
+
+\subsection{The recognition scope of a terminal batch}
+
+If a checked batch leaves one generator $a$ and every retained mapped
+relator has exponent sum zero at $a$, the resulting presentation is
+$\langle a\mid\varnothing\rangle\cong\Z$. At rank one, exponent
+sum completely determines a group word. At larger rank the same
+test is insufficient: a commutator has zero exponent vector and can
+still impose a nontrivial relation.
+
+For a source-established knot group, the standard cyclic-group
+characterization of the unknot supplies the final topological
+conclusion. The construction theorem makes this a polynomial
+positive route whenever the required source preparation and prefix
+replay also have polynomial bounds. It supplies no claim that every
+unknot reaches such a state efficiently.
+
+The final public search policy invokes the operation only when it
+finds at least two pivots and exactly $r-1$ selected children. Otherwise
+the current presentation and the legacy operation order remain
+unchanged. This terminal guard separates the valid general algebraic
+operator from a policy for applying partial batches during heuristic
+search. An algebraic quotient preserves the group while potentially
+changing later normalization costs and search choices.
+
+Relative to the same compressed search with its other options held
+fixed, the guard gives logical preservation of positive successes
+when resources are uncapped: it either reaches a checked rank-one
+terminal or continues through the old presentation states. This
+comparison does not identify the compressed search with the public
+API's default explicit backend; enabling the option also selects
+compressed search. Planning overhead still consumes real time and the shared
+work allowance, so the assertion is not fixed-budget performance
+dominance. The general all-DAG quotient and verifier remain useful
+for future policies whose exposure and downstream progress can be
+analyzed separately.

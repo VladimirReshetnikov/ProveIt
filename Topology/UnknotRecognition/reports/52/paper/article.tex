@@ -1,0 +1,1320 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{needspace}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt / Unknot Recognition}
+\fancyhead[R]{\small Certified sparse incidence}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.25em,topsep=0.35em}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,frame=single,rulecolor=\color{black!30},aboveskip=1em,belowskip=1em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\calO}{\mathcal O}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\UU}{[r]}
+\newcommand{\emptysetweight}{h(\varnothing)}
+\newcommand{\ms}{\mathrm{ms}}
+\title{\textbf{From Dense Port Tables to Polynomial Sparse Incidence}\\[0.5em]
+\large Certified orbit-query acceleration for compressed unknot hierarchies}
+\author{Research contribution prepared for Vladimir Reshetnikov's ProveIt project}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The maintained marked-component observer in ProveIt's unknot-recognition
+program uses exact interval-pairing orbit counts, canonical marked-union reuse,
+and a dense Boolean M\"obius transform. Its output has $2^r$ entries for $r$
+ports even when only a few component signatures occur. We replace that dense
+representation by an exact positive sparse-zeta reconstruction, using the
+existing unweighted Agol--Hass--Thurston (AHT) kernel without expanding a
+single interval point.
+
+For $s$ nonempty signatures, recovery requires $O(sr)$ oracle queries. Balanced
+block deletion sharpens this to
+$O(1+s+\sum_T |T|\log(1+r/|T|))$.
+An independent certificate checks each positive signature through its immediate
+proper subsets and a final mass identity, rather than re-running discovery or
+enumerating all subsets. Crucially, for interval-union ports, polynomial support
+size already follows from the classical weighted AHT theorem. Consequently the
+sparse observer and its certificates have polynomial bit complexity in the
+encoded input, with no logarithmic restriction on the number of ports. This is
+a certified unweighted-query realization of a consequence of existing weighted
+orbit theory, not a new general weighted-orbit complexity theorem.
+
+We also recover incidence classified by a supplied binary orientation character;
+the lifted histogram has exactly the same support, so its reconstruction needs
+no second support search. A standard-library implementation, two byte-identical
+pinned upstream kernels, independent literal-graph audits, adversarial tests,
+and paired measurements accompany the proofs. Several sparse families improve
+substantially; dense and small controls exhibit overhead. The result removes a
+specific exponential-format bottleneck. It neither constructs a complete
+unknot hierarchy nor proves a general quasi-polynomial unknot recognizer.
+\end{abstract}
+
+\vspace{0.5em}
+\textbf{Status.} Complete written proofs of the reduction, extraction,
+certificate, and binary-cover statements; a polynomial-complexity corollary
+explicitly dependent on classical AHT. Executable exact-arithmetic validation;
+no Lean formalization or first-in-literature priority claim. The delivered
+code is an additive research package, not a committed production change.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research objective and the inspected bottleneck}
+\label{sec:scope}
+
+\subsection{Why this is the next component to improve}
+The requested objective is to continue improving the exact recognizer in
+\code{Topology/UnknotRecognition}, aiming ultimately at quasi-polynomial
+asymptotic complexity. The inspected sources distinguish a complete recognition
+pipeline from local filters, compressed group operations, normal-surface
+observers, and hierarchy primitives. That distinction is essential: improving
+one exact primitive is useful, but does not establish a bound for a composition
+whose other stages or number of calls remain uncontrolled.
+
+The most recent maintained orbit work is a particularly suitable target.
+It supplies an unweighted AHT count kernel, local proof replay, and a marked
+incidence observer. The synthesis explains that repeated unions are cached,
+but that the histogram and its proof-index table still have $2^r$ slots
+\cite{upstream,orbitreport}. Thus the representation itself can be exponentially
+larger than its nonzero information. This paper changes the representation,
+the discovery algorithm, and the certificate contract together.
+
+The concrete outcome is a function taking a supplied compressed interval
+relation and marked interval unions and returning the \emph{complete sparse
+histogram} of the component signatures. The result includes multiplicity,
+including the multiplicity of the unmarked signature. It is not merely a
+sample of components or a list of signatures encountered before a resource
+limit.
+
+\subsection{Snapshot and reproducibility boundary}
+The inspected repository ref is
+\begin{center}
+\small\code{7518823550fbc8c217bc8be0113fe52002e77465}.
+\end{center}
+Two modules are delivered unchanged, with their Git blob identities checked
+before they are loaded:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Module & Git blob\\
+\midrule
+\code{interval_orbits.py} & \code{e86050aadbcef6f17fdddff9cbd1abc0e7ca18e8}\\
+\code{interval_orbit_verify.py} & \code{0ccb56a0e8b5f1255384121d7417441314727720}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The second module imports neither the orbit producer nor its scheduling
+helpers. Its proof checker is reused as a trusted local-relation layer; the
+new sparse certificate verifier does not call the sparse producer either.
+
+All delivered measurements use the pinned count module with its
+\code{periodic_rule='aht'} setting, retaining the classical sufficient merger
+criterion. The sharper Fine--Wilf implementation remains unchanged in the
+vendored file, but its acceleration is not needed for this paper's complexity
+argument or benchmark comparison. This choice avoids making the new argument
+depend on a separate analysis of a modified orbit scheduler.
+
+The dense comparison arm is a small research ablation: identical coning,
+canonical-union caching, the same pinned classical kernel, and dense M\"obius
+inversion. It is \emph{not} a byte-for-byte copy of the full maintained incidence
+module or recognition dispatch. No full upstream test suite, Regina integration,
+native normal-surface corpus, or whole-knot benchmark is claimed to have been
+run for this contribution.
+
+\subsection{The strongest result, and its attribution}
+The important point is stronger than a conditional statement for small $s$.
+AHT's weighted algorithm returns compressed blocks of equal orbit-weight
+vectors in polynomial time \cite[Section 6, Theorem 16]{aht}. Marking each port
+with one nonnegative coordinate shows that the number of distinct signatures
+is already polynomial in the interval-encoded input. The new unweighted-query
+reconstruction inherits that polynomial bound.
+
+Accordingly, the contribution is not that weighted orbit information has
+suddenly become polynomial-time computable. It is an explicit, independently
+certifiable route from the already maintained \emph{unweighted} engine to a
+sparse incidence interface, avoiding a second weighted-transfer implementation
+and avoiding the maintained dense output format. The output-sensitive oracle
+bound, the sparse local certificate, the support-reusing binary-cover extension,
+and the measured implementation are the repository-facing developments.
+
+\section{Exact input and output models}
+\label{sec:model}
+
+\begin{definition}[Interval relation]
+Let $X_N=\{0,\ldots,N-1\}$, where $N\geq0$ is binary encoded. An interval pairing
+is an isometry between two nonempty integer intervals of equal length. In the
+supplied representation it is a row $(a,b,c,d,\epsilon)$ with inclusive
+endpoints, $b-a=d-c$, and $\epsilon\in\{1,-1\}$. Its action is
+\[
+ x\longmapsto
+ \begin{cases}
+ x+c-a,&\epsilon=1,\\
+ a+d-x,&\epsilon=-1.
+ \end{cases}
+\]
+The relation $\sim$ is the equivalence relation generated by $k$ such pairings.
+Its equivalence classes are called orbits or components.
+\end{definition}
+
+Pairings and their inverses generate the same equivalence relation. The input
+normalizer places the domain interval no farther right than the range,
+retaining the order of the supplied pairing list. Identity pairings and
+repeated pairings are allowed. The empty universe requires an empty pairing
+list. No input contains one record per point unless the caller chooses such
+an expanded representation.
+
+\begin{definition}[Ports and signatures]
+A port $A_i\subseteq X_N$, $1\leq i\leq r$, is supplied as a finite union of
+half-open intervals $[u,v)$. Endpoints satisfy $0\leq u\leq v\leq N$.
+Within each port, overlap and adjacency are merged and empty intervals are
+removed. Ports may overlap, coincide, or be empty.
+For a component $O$, put
+\[
+ \sigma(O)=\{i\in[r]:O\cap A_i\neq\varnothing\},\qquad
+ h(T)=\#\{O:\sigma(O)=T\}.
+\]
+The total component count is $C=\sum_{T\subseteq[r]}h(T)$.
+\end{definition}
+
+Let $M$ be the number of marked intervals in the input, or any upper bound
+on the number after normalization. Let
+\[
+ B=\max\{1,\lceil\log_2(N+1)\rceil\},\qquad
+ s=\#\{T\neq\varnothing:h(T)>0\},\qquad
+ s_0=\#\{T:h(T)>0\}.
+\]
+Thus $s_0$ is either $s$ or $s+1$. The output is a sorted list of the $s_0$
+positive pairs $(T,h(T))$, with a support encoded as an $r$-bit mask. An absent
+entry means exactly zero. The empty output means $C=0$; it does not mean an
+unfinished computation.
+
+Counts satisfy $0\leq h(T)\leq C\leq N$, so every count uses $O(B)$ bits.
+The output needs $O(s_0(r+B))$ bits, apart from ordinary serialization
+conventions. A dense array instead has $2^r$ slots even for one positive
+signature. These are different output contracts, not interchangeable
+representations with an identical mandatory cost.
+
+\subsection{Three sizes that must not be conflated}
+The number of points $N$, the number of components $C$, and the number of
+signature types $s_0$ can differ by enormous factors. For a static universe
+with no pairings, $C=N$. If every point has the same nonempty signature, then
+$s_0=1$. Both $N$ and $C$ can equal $2^{16000}$ while the multiplicity is
+represented by one binary integer. A valid sparse algorithm must remove a
+whole signature's multiplicity in one step; an algorithm that removes one
+component at a time would lose the intended compressed complexity.
+
+\section{From marked unions to positive zeta queries}
+\label{sec:oracle}
+
+\subsection{Coning without expanding a marked interval}
+For a selected union $A\subseteq X_N$, define
+\[
+ H(A)=\#\{O:O\cap A\neq\varnothing\}.
+\]
+Suppose the canonical union is nonempty and consists of $m_A$ disjoint,
+nonadjacent half-open intervals. Choose its first point as an anchor. For an
+interval $[u,v)$ of length at least two, add the pairing
+\[
+ [u,v-2]\longrightarrow[u+1,v-1].
+\]
+This is one inclusive interval pairing, not $v-u-1$ separately stored edges.
+For every interval other than the first, add one singleton pairing between
+its first point and the anchor. At most $2m_A-1\leq 2M$ pairings are added.
+For a length-one first interval there is no internal translation.
+
+\begin{lemma}[Coning identity]
+\label{lem:cone}
+Let $C_A$ be the component count after the preceding relations are added to
+the original interval system. If $A\neq\varnothing$, then
+\[
+ H(A)=C-C_A+1.
+\]
+For the empty marked union, $H(\varnothing)=0$ without an additional query.
+\end{lemma}
+\begin{proof}
+The internal translation identifies consecutive points in each marked
+interval. The singleton anchor relations then identify all marked points.
+Every original component meeting $A$ therefore joins the same new component.
+No added relation touches an original component disjoint from $A$, so those
+components remain distinct and unchanged. Exactly $H(A)$ old components
+become one, giving $C_A=C-H(A)+1$.
+\end{proof}
+
+The argument applies to overlapping ports, disconnected original systems,
+static points, and orientation-reversing original pairings. Coning is used
+only to ask a question about the original relation; the resulting merged
+system is not substituted for that relation in later geometry.
+
+\subsection{The Boolean zeta function}
+For $S,U\subseteq[r]$, put
+\[
+ F(S)=H\!\left(\bigcup_{i\in S}A_i\right),\qquad
+ G(U)=C-F([r]\setminus U).
+\]
+
+\begin{lemma}[Positive downset representation]
+\label{lem:zeta}
+\[
+ G(U)=\sum_{T\subseteq U}h(T).
+\]
+In particular, $G([r])=C$, $G(\varnothing)=h(\varnothing)$, and $G$ is
+monotone under inclusion.
+\end{lemma}
+\begin{proof}
+A component is excluded from $F([r]\setminus U)$ precisely when it meets none
+of the ports outside $U$. This is equivalent to its signature being a subset
+of $U$. Counting those components proves the formula. Monotonicity follows
+because every summand is nonnegative.
+\end{proof}
+
+For a nonempty actual union of the excluded ports, Lemma~\ref{lem:cone} gives
+the useful direct formula
+\begin{equation}
+ \label{eq:direct}
+ G(U)=C_A-1.
+\end{equation}
+When that actual union is empty, $G(U)=C$. A nonempty mask can describe an
+empty union if all its selected ports are empty; testing the mask alone is
+therefore insufficient.
+
+\subsection{Caching keys that preserve the exact question}
+The oracle stores the baseline count once. It also stores completed $G(U)$
+values by mask and coned counts by the \emph{canonical actual union} of the
+excluded ports. Distinct masks with the same union produce exactly the same
+coning rows in the same order, so a count and its proof can safely be reused.
+Equality of two counts is never used as evidence that two unions are
+interchangeable.
+
+This retains the maintained observer's useful sharing mechanism. What changes
+is that only the masks needed by discovery or certification are constructed.
+A cache indexed by all $2^r$ masks in advance would reintroduce the bottleneck.
+
+\section{Positive sparse reconstruction}
+\label{sec:recovery}
+
+\subsection{Residuals and minimal positive supports}
+Let $\mathcal K$ be a set of signatures whose multiplicities have already
+been recovered exactly. Define
+\begin{equation}
+\label{eq:residual}
+ R_{\mathcal K}(U)=G(U)-\sum_{T\in\mathcal K,\,T\subseteq U}h(T).
+\end{equation}
+Under the stated invariant,
+\[
+ R_{\mathcal K}(U)=\sum_{T\notin\mathcal K,\,T\subseteq U}h(T).
+\]
+Thus the residual is again a nonnegative, monotone zeta function. In
+particular, a zero residual rules out every unrecovered signature in the
+queried downset; it is not merely a cancellation among positive and negative
+terms.
+
+\begin{lemma}[Minimal positive extraction]
+\label{lem:minimal}
+If $S$ is inclusion-minimal among sets with $R_{\mathcal K}(S)>0$, then
+$S\notin\mathcal K$, $h(S)>0$, and $R_{\mathcal K}(S)=h(S)$.
+\end{lemma}
+\begin{proof}
+Every unrecovered proper subset $T\subsetneq S$ lies inside some
+$S\setminus\{a\}$, $a\in S\setminus T$. Minimality says that the residual
+there is zero, so nonnegativity forces $h(T)=0$. The only remaining possible
+positive summand at $S$ is $h(S)$. Since the residual is positive, that summand
+exists and has not already been removed.
+\end{proof}
+
+The multiplicity is therefore recovered exactly in one subtraction. It may
+be exponential in $B$ as an ordinary integer magnitude, but its bit length is
+only $O(B)$.
+
+\subsection{Flat deletion algorithm}
+First obtain $C=G([r])$ and $h(\varnothing)=G(\varnothing)$. Retain the empty
+signature if its multiplicity is positive. While the sum of recovered
+multiplicities is smaller than $C$, start with $S=[r]$ and inspect the ports
+in a fixed order. Delete $a$ from $S$ whenever
+$R_{\mathcal K}(S\setminus\{a\})>0$. At the end, recover
+$h(S)=R_{\mathcal K}(S)$ and repeat.
+
+\begin{theorem}[Exact flat recovery]
+\label{thm:flat}
+For every nonnegative Boolean histogram, the preceding algorithm returns the
+complete sparse histogram after exactly $s$ nonempty-support extraction
+iterations. It needs at most $2+s(r+1)$ logical zeta requests, before caching,
+and does not require advance knowledge of $s$ or of the support sizes.
+\end{theorem}
+\begin{proof}
+At the start of each iteration, the residual at $[r]$ is positive because
+some total mass remains. Each successful deletion preserves that property.
+Suppose a deletion of $a$ failed at an intermediate set $S'$. The final set
+$S$ is contained in $S'$, so
+$S\setminus\{a\}\subseteq S'\setminus\{a\}$. Monotonicity keeps its
+residual zero. Hence every retained element fails a final single-element
+deletion, and every proper subset of $S$ is contained in one such deletion.
+The final $S$ is minimal positive. Lemma~\ref{lem:minimal} therefore recovers
+one exact new nonempty signature.
+
+The empty signature has already been removed, so this iteration cannot
+return it. An iteration subtracts the full positive mass of one previously
+unknown signature and never changes any other multiplicity. Exactly $s$
+iterations suffice. When the recovered mass is $C$, no missing positive
+entry can remain. The initial two requests, at most $r$ deletion tests, and
+one final weight request per iteration give the stated bound.
+\end{proof}
+
+The implementation computes the remaining total by an integer mass
+accumulator; it does not re-query the full set at each iteration. A mask cache
+can also eliminate repeated requests for the empty set or a final support.
+
+\subsection{Balanced block deletion}
+\label{sec:balanced}
+Deleting one port at a time wastes queries when an unknown signature is
+small. Partition the ordered $r$ ports into a balanced binary interval tree.
+At a current set $S$, visit a tree block $D$ and test
+$R_{\mathcal K}(S\setminus D)$. If positive, delete the entire block and do
+not visit its children. If zero and the block is not a leaf, recursively
+visit its two children in their fixed order. A failed leaf is retained.
+Start by visiting the root block; its empty-set query is normally already
+cached.
+
+\begin{theorem}[Support-sensitive query bound]
+\label{thm:balanced}
+Balanced block deletion returns a minimal positive support. If that support
+has size $d\geq1$, its number of block tests is at most
+\begin{equation}
+ \label{eq:blockbound}
+ b(r,d)=1+2\sum_{\ell=0}^{\lceil\log_2 r\rceil-1}\min(2^\ell,d)
+ =O\!\left(1+d\log\left(1+\frac rd\right)\right).
+\end{equation}
+Consequently the entire histogram is recovered using
+\begin{equation}
+ \label{eq:sparsequeries}
+ Q=O\!\left(1+s+\sum_{T\neq\varnothing:\,h(T)>0}
+ |T|\log\left(1+\frac r{|T|}\right)\right)
+\end{equation}
+zeta requests, and in particular $Q=O(1+sr)$.
+For $r=0$, only the baseline/empty count is needed.
+\end{theorem}
+\begin{proof}
+Every successful block deletion preserves positive residual. Every retained
+leaf has failed its deletion test, and the monotonicity argument from
+Theorem~\ref{thm:flat} keeps that failure valid as subsequent deletions shrink
+$S$. Thus the final set is minimal positive.
+
+Fix this final support $T$. Whenever a block $D$ fails at an intermediate
+set $S'$, all residual signatures contained in $S'$ meet $D$. The final $T$
+is one such signature, so $D\cap T\neq\varnothing$. At depth $\ell$, the
+tree blocks are disjoint. At most $\min(2^\ell,d)$ blocks at that depth can
+fail. Every visited block other than the root is a child of a failed
+nonleaf. There are therefore at most twice that many visits at the next
+depth. Summing gives~\eqref{eq:blockbound}; an unbalanced last level only
+reduces the count.
+
+To estimate the sum, levels with $2^\ell\leq d$ contribute $O(d)$ in total,
+and the remaining $O(1+\log(r/d))$ levels contribute $O(d)$ each. One additional
+request obtains the weight of the final support. Add the initial requests
+and sum over all extraction iterations to obtain~\eqref{eq:sparsequeries}.
+\end{proof}
+
+\begin{remark}[Order influences cost, not validity]
+The final minimal signature and the number of requests can depend on the
+port order. Every fixed order is correct, and the displayed bound does not
+assume a favorable ordering. Finding an order minimizing expensive coned
+queries is a separate optimization problem. A query count alone does not
+measure the differing cost of its underlying interval systems.
+\end{remark}
+
+\subsection{A useful information lower bound}
+\begin{proposition}[Single-signature lower bound]
+\label{prop:lower}
+Suppose an oracle has one unknown positive signature $T$ of known size $d$
+and known weight one, on $r$ ports. Any deterministic adaptive reconstruction
+algorithm using zeta queries needs at least
+$\lceil\log_2\binom rd\rceil$ queries in its worst case.
+\end{proposition}
+\begin{proof}
+Every query returns either zero or one, according as $T\not\subseteq U$ or
+$T\subseteq U$. A depth-$q$ binary decision tree has at most $2^q$ leaves,
+whereas the $\binom rd$ possible supports must be distinguished.
+\end{proof}
+
+For sparse ranks away from the degenerate dense endpoint, this gives the
+same familiar $d\log(r/d)$ information scale as balanced deletion. It is not
+an optimality claim for every $d$, for multiple weighted signatures, or for
+special interval geometry. For example, if $d=r$ is promised in advance,
+the support is already known; our general-purpose algorithm does not use
+that promise.
+
+Hidden weighted-hypergraph reconstruction is an established query-learning
+subject. Bshouty and Mazzawi obtain substantially more refined nonadaptive
+bounds for constant-rank weighted hypergraphs \cite{bshouty}. Here the
+requirements are different: arbitrary support sizes, simple exact adaptive
+queries, compatibility with compressed interval geometry, and an independent
+certificate for the complete returned histogram. No general query-optimality
+or priority claim is made.
+
+\section{Sparse certificates without dense forward sums}
+\label{sec:certificates}
+
+\subsection{The algebraic certificate criterion}
+Let proposed positive entries be $(T_1,w_1),\ldots,(T_t,w_t)$, with distinct
+nonempty masks and positive integer weights. A canonical certificate orders
+them first by cardinality, then by mask. Let $w_0\geq0$ be the proposed empty
+multiplicity, and define
+\[
+ K_j(U)=w_0+\sum_{i<j:\,T_i\subseteq U}w_i.
+\]
+The $w_0$ term occurs in every downset, including the empty downset.
+
+\begin{theorem}[Local sparse certificate]
+\label{thm:certificate}
+Assume $G$ is the zeta transform of a nonnegative histogram of total mass $C$.
+The proposed entries are exactly that histogram if the following equalities
+hold:
+\begin{align}
+ G(\varnothing)&=w_0,\label{eq:certempty}\\
+ G(T_j)&=K_j(T_j)+w_j &&(1\leq j\leq t),\label{eq:certweight}\\
+ G(T_j\setminus\{a\})&=K_j(T_j\setminus\{a\})
+ &&(a\in T_j,\ 1\leq j\leq t),\label{eq:certdelete}\\
+ C&=w_0+\sum_{j=1}^t w_j.\label{eq:certmass}
+\end{align}
+Including the baseline, at most
+$2+t+\sum_j|T_j|$ orbit-count queries are sufficient before sharing of
+coincident unions and empty-union shortcuts.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:certempty} proves the empty multiplicity. Inductively assume
+the earlier nonempty entries have also been proved correct. Subtracting those
+entries leaves an actual nonnegative residual histogram.
+Equation~\eqref{eq:certdelete} says that its zeta value vanishes on every
+immediate proper subset of $T_j$. Every proper subset is contained in one
+of these immediate subsets. Nonnegativity therefore forces every residual
+proper-subset weight to be zero. Equation~\eqref{eq:certweight} then proves
+that the actual residual weight at $T_j$ is precisely $w_j$.
+
+After all entries have been checked, every proposed multiplicity has been
+proved exact. The remaining mass is nonnegative, and
+\eqref{eq:certmass} says that it is zero. Hence there are no omitted positive
+signatures anywhere, not just inside the tested downsets. The query bound
+counts one baseline, one empty-set value, and the support and immediate
+proper-subset values for every nonempty entry.
+\end{proof}
+
+This certificate does not require the verifier to know which supports the
+producer tested, which block order it chose, or why it stopped searching.
+It verifies the answer, rather than the execution strategy. The final mass
+identity is indispensable: local correctness of several entries alone says
+nothing about signatures outside their downsets.
+
+\subsection{Why deletion witnesses cannot simply be discarded}
+Consider a proposed histogram with a single weight-one support $[r]$. Its
+total mass and full-set value agree with the histogram having support
+$[r]\setminus\{a\}$ for any fixed $a$, provided $r\geq2$. Among all subsets
+$U\subseteq[r]$, the corresponding zeta functions differ only at
+$U=[r]\setminus\{a\}$. Thus a general exact verifier for this claimed
+full-support histogram must distinguish each such alternative. It needs all
+$r$ immediate-deletion values in this oracle model. A final mass check plus
+one value per output row is not, in general, a sound replacement.
+
+\subsection{Binding algebraic values to supplied geometry}
+The delivered certificate has the schema \code{sparse-incidence-v1}. It
+contains the canonical input universe, ordered pairing rows, ordered normalized
+ports, a baseline local orbit proof, the sparse entries, and a list of coned
+union proofs. The producer first recovers the histogram, then obtains any
+additional values required by Theorem~\ref{thm:certificate}. Those additional
+calls use the \emph{same remaining} query and cycle allowances. It emits only
+proofs needed by the certificate, not proofs of discovery-only queries.
+
+The new verifier performs the following checks. It validates and compares
+the complete input binding, rejecting noncanonical certificate geometry and
+Boolean values masquerading as integer fields. It replays the baseline proof
+with the independent upstream local checker. For each requested zeta value,
+it reconstructs the actual excluded-port union with an independent endpoint
+sweep, rebuilds the coning rows, and replays the bound orbit proof. It then
+checks~\eqref{eq:certempty}--\eqref{eq:certmass}. Missing, duplicate, unused,
+or misbound union proofs are rejected. Repeated equal unions are checked
+once, but never equated merely because their claimed counts match.
+
+The verifier imports no reconstruction algorithm or orbit producer. It shares
+only public geometry normalization with the producer. In the tests, the orbit
+producer is deliberately disabled after proof construction and the completed
+sparse proof still verifies.
+
+\subsection{What the local orbit proofs establish}
+The reused upstream verifier recognizes identity deletion, static contraction,
+reflection trimming, periodic merger, transmission by a certified power of a
+partial inverse, and exposed suffix truncation \cite{orbitreport}. It checks
+those relations locally instead of insisting on the producer's preferred
+scheduling choices. A proof must finish with an empty universe and account
+for the claimed number of removed singleton orbits. An unfinished valid prefix
+is not an orbit-count certificate.
+
+The algebraic certificate theorem depends only on truthful query values, and
+the coning lemma binds those values to the original components. Thus the proof
+layers have separate obligations: local relation replay proves counts,
+coning proves marked-union interpretation, and nonnegative sparse algebra proves
+completeness of the histogram. None of these layers establishes that the
+supplied interval system is the correct knot-exterior model of a diagram.
+
+\section{Bit complexity and polynomial support}
+\label{sec:complexity}
+
+\subsection{Output-sensitive accounting}
+Let $P(K,B)$ bound a completed classical unweighted AHT call, including optional
+recording when needed, on $K$ pairings and $B$-bit endpoints. Let $V(K,B)$ and
+$L(K,B)$ bound independent replay time and serialized binary trace size for
+such produced proofs. These bounds are polynomial by classical AHT and the
+local trace construction; precise optimized exponents are not needed here.
+Logs in these bounds may be replaced by $\max(1,\log)$ to cover zero and
+unit-sized inputs.
+
+Every coned query has $K\leq k+2M$ pairings on the \emph{same} universe.
+No coning operation increases endpoint bit length. A straightforward sorted
+union costs $O(M\log(M+1)B)$ bit operations, with additional mask operations
+polynomial in $r$. The delivered residual calculation scans the list of
+previous positive entries. For each pair it performs an $r$-bit containment
+test and, when needed, a $B$-bit subtraction.
+
+\begin{theorem}[A conservative sparse bit bound]
+\label{thm:bits}
+With $Q$ as in~\eqref{eq:sparsequeries}, histogram discovery can be implemented
+in bit time
+\begin{equation}
+\label{eq:bitbound}
+ O\!\left(
+ Q\left[P(k+2M,B)+M\log(M+1)B+(s+1)(r+B)\right]
+ \right)
+ +\poly(k+M+r+B).
+\end{equation}
+The analogous certificate construction adds at most
+$Q_c=2+s+\sum_T|T|$ potential count queries and polynomial sparse bookkeeping.
+Verification replaces $P$ by $V$ for its at most $Q_c$ distinct proofs.
+No $2^r$ term is required in discovery, certificate output, or replay.
+\end{theorem}
+\begin{proof}
+Use Lemma~\ref{lem:cone} for every required marked-union value and charge each
+actual count by $P(k+2M,B)$. Building the corresponding union and coning rows
+has the stated sorting and linear-output cost. For a residual value, at most
+$s+1$ already recovered masks and counts are inspected. All residual values
+are between zero and $C$, so their integers have $O(B)$ bits. Add the input
+normalization, sparse output sorting, and initial allocations to the polynomial
+term. The certificate query bound is Theorem~\ref{thm:certificate}; its
+verifier uses only those masks and the supplied traces.
+\end{proof}
+
+The displayed estimate deliberately does not assume constant-time arithmetic
+on arbitrarily large Python integers. Dictionary lookups in the implementation
+use ordinary expected hash-table costs. A deterministic ordered dictionary
+would add polynomial comparison factors, without changing the polynomial
+conclusion. A still simpler list-based cache also suffices for that conclusion.
+
+Proof storage is bounded by
+\[
+ O\bigl(Q_cL(k+2M,B)+Q_cMB+s_0(r+B)\bigr)
+ +\poly(k+M+r+B).
+\]
+During a traced run the oracle can temporarily retain proofs of discovery
+queries that will not be emitted; this uses the analogous bound with $Q+Q_c$.
+The implementation does not promise a minimal-memory streaming certificate
+producer. That is an optimization opportunity, not an unaccounted exponential
+allocation.
+
+\subsection{Why the sparse support is polynomial for interval inputs}
+It would be incomplete to leave the geometry-independent parameter $s$
+entirely unexplained. For arbitrary positive Boolean functions it may be
+$2^r-1$. For the present interval-encoded inputs, classical weighted orbit
+theory gives a stronger conclusion.
+
+\begin{lemma}[Polynomial signature support from weighted AHT]
+\label{lem:polysupport}
+For $k$ interval pairings and $r$ interval-union ports with a total of $M$
+intervals, the number $s_0$ of positive component signatures is bounded by a
+polynomial in $k+M+r+B$.
+\end{lemma}
+\begin{proof}
+The case $N=0$ is immediate. For $N>0$ and $r>0$, assign to each point the nonnegative vector
+\[
+ w(x)=\bigl(\mathbf1_{A_1}(x),\ldots,\mathbf1_{A_r}(x)\bigr)\in\ZZ_{\geq0}^r.
+\]
+The vector is constant on a common partition with at most $2M+1$ nonempty
+cells, since changes can occur only at port endpoints. The partition and its
+vectors have a polynomial-size representation, for example by an endpoint
+sweep keeping an $r$-bit active-port mask. For a component $O$, its orbit-weight
+vector is
+\[
+ v(O)=\sum_{x\in O}w(x).
+\]
+Its positive coordinates are exactly $\sigma(O)$.
+
+Apply the weighted AHT theorem to this piecewise constant vector weight.
+Its compressed output is a list of interval blocks, each block representing
+many components sharing one orbit-weight vector \cite[Section 6]{aht}.
+The number of written blocks is polynomial in the input parameters. The weight
+dimension is $r$, the number of input cells is at most $2M+1$, and a safe
+numerical weight bound is $D=1+rN$, so $\log D=O(B+\log(r+1))$. A signature
+can occur only as the positive-coordinate support of one of the vectors on
+those output blocks. The number of distinct such supports is at most the
+number of blocks, and hence is polynomial. When $r=0$, there is at most the
+empty signature and the conclusion is immediate.
+\end{proof}
+
+The proof uses the \emph{compressed output format}, not an impossible explicit
+list of all $C$ components. A block may stand for $2^{16000}$ components. One
+must also use a coordinate per supplied port, not one coordinate per point.
+The theorem's polynomial dependence on weight dimension is precisely what
+permits polynomially many ports.
+
+\begin{theorem}[Polynomial sparse interval-incidence observer]
+\label{thm:polynomial}
+Given binary-encoded interval pairings and interval-union ports, the complete
+sparse signature histogram can be computed and furnished with independently
+replayable certificates in polynomial bit time in the encoded input size.
+There is no requirement that $r=O(\log n)$, $r=O((\log n)^2)$, or that component
+multiplicities be polynomially bounded as ordinary numbers.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:polysupport} gives polynomial $s_0$. The number of sparse
+requests in Theorem~\ref{thm:balanced} is at most $O(1+sr)$; the certificate
+request bound is of the same polynomial order. Classical unweighted AHT gives
+polynomial $P,V,L$ for the coned instances. Substitute these bounds into
+Theorem~\ref{thm:bits} and the certificate-storage estimate.
+\end{proof}
+
+This theorem is a consequence of established weighted AHT combined with the
+explicit unweighted-query reduction. It should not be advertised as a new
+general complexity theorem for weighted orbit extraction. Its practical
+advantage is that the executable path uses the already available unweighted
+proof engine. A direct weighted implementation may have better constants and
+would additionally return coordinate magnitudes, not just their supports.
+
+\subsection{Dense output remains an exponential requirement}
+If a caller insists on an array with an addressable slot for every subset,
+writing that array costs $\Omega(2^r)$ slots regardless of the preceding theorem.
+Even a zero universe with $r$ empty ports has a dense histogram of that length.
+Thus the theorem changes the output interface rather than claiming to fill an
+exponentially long object in polynomial time.
+
+The distinction also explains the dense benchmark control. Giving every one
+of the $2^r$ signatures a static point is possible, but the corresponding
+bit-pattern interval marks have exponentially many interval pieces. Such a
+family is not a counterexample to polynomiality in $k+M+r+B$.
+
+\section{Incidence refined by a binary orientation character}
+\label{sec:signed}
+
+\subsection{Order reversal and orientation parity are different inputs}
+Attach to each generating pairing an additional bit $p\in\{0,1\}$. This bit
+records the supplied character, not necessarily the sign of the interval
+isometry. The double cover has points $(x,e)$, $e\in\{0,1\}$, with relations
+\[
+ (x,e)\sim(g(x),e+p).
+\]
+It is encoded in two consecutive blocks of $N$ points, using $2k$ interval
+pairings. Each port is lifted to both sheets, so the number of marked interval
+pieces is at most $2M$. This encoding doubles the size numerically but adds
+only one endpoint bit.
+
+A base component is \emph{consistent} if every closed walk in its relation
+graph has total parity zero. If the supplied bits are the actual surface
+orientation character, consistency means orientability. Without that provenance,
+only the binary-label consistency statement is justified.
+
+\begin{lemma}[Lift support is unchanged]
+\label{lem:lift}
+Every connected component of the double cover projects surjectively onto one
+base component and has its exact port signature. A consistent base component
+has two lifted components; an inconsistent one has one. Consequently, if $b(T)$
+and $\ell(T)$ are the base and lifted histograms, respectively, then
+\[
+ \supp b=\supp\ell,\qquad
+ b(T)\leq\ell(T)\leq2b(T).
+\]
+\end{lemma}
+\begin{proof}
+Lift a path from a chosen base point to any other point in its component.
+Starting at a chosen sheet determines a lifted endpoint, proving surjectivity
+of each lifted component. Because a port is lifted on both sheets, a lifted
+component meets that port exactly when its base component does.
+
+If all closed walks have parity zero, assigning a sheet label by path parity
+is path-independent. The two possible initial labels give two disjoint
+components. If a closed walk has parity one, its lift joins the two sheets
+above one point, and path lifting then joins them above every point. The cover
+is connected over that base component. Summing by signature proves the bounds.
+\end{proof}
+
+\begin{theorem}[Typed sparse incidence and support reuse]
+\label{thm:typed}
+Let $o(T)$ and $u(T)$ count consistent and inconsistent base components of
+signature $T$. Then
+\[
+ o(T)=\ell(T)-b(T),\qquad u(T)=2b(T)-\ell(T).
+\]
+After the base sparse support has been recovered, the lifted histogram can be
+recovered with one baseline and at most $s_0$ additional zeta requests, before
+caching. No second balanced support search is necessary. Typed incidence has
+polynomial bit complexity for interval-union marks.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{lem:lift} gives $b=o+u$ and $\ell=2o+u$, whose solution is the stated
+formula. Order the known support by increasing cardinality. For a support $T$
+in that order, every positive proper-subset support is already known and
+processed. Since the lifted support equals the base support, its weight is
+\[
+ \ell(T)=G_{\mathrm{lift}}(T)-
+   \sum_{S\subsetneq T:\,b(S)>0}\ell(S).
+\]
+This triangular calculation uses one value per known support. The total lifted
+count supplies a final consistency check. For independent certification, the
+ordinary sparse certificate criterion is applied to both histograms; it may
+require additional deletion values, all under the shared budget. Polynomiality
+follows from Theorem~\ref{thm:polynomial} on the doubled encoding.
+\end{proof}
+
+The implementation's signed result contains rows $(T,o(T),u(T))$, preserving
+zeros in the last two fields when the other field is positive. Its proof
+contains separately replayable base and cover certificates. The independent
+signed verifier reconstructs the cover from the supplied signed pairings,
+checks both certificates, checks equality of supports, and recomputes the two
+nonnegative differences. A genuine character-changing input mutation cannot
+be hidden by retaining the old cover proof.
+
+\section{Counterexamples to overstrong conclusions}
+\label{sec:barriers}
+
+\subsection{Signed weights invalidate zero-based extraction}
+For the abstract signed histogram
+\[
+ h(\{1\})=1,\qquad h(\{2\})=-1,
+\]
+the total zeta value at $\{1,2\}$ is zero although the histogram is not zero.
+A total-mass stopping rule would fail. This is why the reconstruction theorem
+is about \emph{nonnegative component counts}; it must not be transferred
+unchanged to Euler-characteristic coefficients, signed polynomial coefficients,
+or arbitrary integer-weight cancellation data. In Section~\ref{sec:signed},
+subtraction is performed only after two genuine nonnegative histograms have
+been recovered and verified.
+
+\subsection{Equal incidence is not equal future attachment behavior}
+\begin{proposition}[Four-point attachment obstruction]
+\label{prop:attachment}
+There exist two interval relations with identical complete port-incidence
+histograms that acquire different component counts after the same new
+pointwise attachments.
+\end{proposition}
+\begin{proof}
+Take four points $a_1,a_2,b_1,b_2$ and ports
+$A=\{a_1,a_2\}$ and $B=\{b_1,b_2\}$. In the first relation $E$, identify
+$a_1\sim b_1$ and $a_2\sim b_2$. In the second relation $E'$, identify
+$a_1\sim b_2$ and $a_2\sim b_1$. Both histograms consist of the single row
+$h(\{A,B\})=2$. Add to each relation the same two attachments
+$a_1\sim b_1$ and $a_2\sim b_2$. The first relation still has two components;
+the second becomes connected. These are valid interval inputs by assigning
+the four consecutive coordinates $0,1,2,3$ and using singleton pairings.
+\end{proof}
+
+Thus a signature histogram is an exact observer, not a complete state for
+arbitrary future gluing. It loses the association between individually named
+points, as well as multiplicity at a port, cyclic order, slope, and boundary
+attachment maps. A hierarchy algorithm may use the histogram to answer the
+specific incidence question, but cannot replace the original boundary state
+by that histogram without a separate congruence theorem for its allowed
+attachments.
+
+\subsection{Polynomial local work does not bound hierarchy search}
+A complete recognition bound also needs an algorithm for producing the
+supplied interval relations from the input diagram, controlling the encoding
+of cut surfaces and marked boundaries, generating the necessary candidates,
+and stopping after a bounded number of stages. None of those facts follows
+from an incidence query theorem.
+
+Lackenby's 2026 hierarchy preprint supplies important geometric algorithms,
+but its Section 9 explicitly distinguishes counts of steps from fully
+specified running-time estimates and leaves parameters to be bounded there
+\cite{lackenby}. Treating that discussion as an already available complete
+quasi-polynomial implementation would skip precisely the cost obligations
+that the repository is trying to resolve.
+
+\section{A precise interface to a future quasi-polynomial hierarchy}
+\label{sec:hierarchy}
+
+\begin{proposition}[Composition accounting]
+\label{prop:composition}
+Suppose a proposed hierarchy procedure on an $n$-crossing input makes at most
+$H(n)$ sparse-incidence calls. Suppose every supplied incidence instance has
+encoded length at most $L(n)$, and that all other work, including candidate
+production, port extraction, certificate replay, and terminal tests, takes
+at most $W(n)$ bit operations. Then its total work is bounded by
+\[
+ W(n)+H(n)L(n)^{O(1)}.
+\]
+If $W,H,L$ are each at most $2^{(\log(n+2))^{O(1)}}$, the resulting bound is
+quasi-polynomial. This conclusion assumes correctness and completeness of the
+underlying hierarchy procedure; it does not supply them.
+\end{proposition}
+\begin{proof}
+Theorem~\ref{thm:polynomial} gives a fixed polynomial bound for each incidence
+call, including its chosen proof operations. Sum over the $H(n)$ calls and
+add the remaining work. Products and fixed powers of the displayed
+quasi-polynomial scales remain in that scale.
+\end{proof}
+
+The point is not the elementary summation. It is that the incidence observer
+no longer contributes an independent $2^{r(n)}$ factor. Polynomially many
+ports are permissible when their interval encodings are polynomially large.
+For the project's more specific target $n^{O(\log n)}=2^{O((\log n)^2)}$,
+one needs compatible $O((\log n)^2)$ exponents for the \emph{whole} expression,
+not merely membership in the broader quasi-polynomial class.
+
+Depth and number of calls are also different quantities. A search tree of
+depth $O(\log n)$ and branching factor $n^{O(1)}$ has quasi-polynomially many
+nodes, not necessarily polynomially many. If branching or encoded surface
+sizes grow faster, a logarithmic depth slogan does not repair the bound.
+The interval-incidence theorem removes one obstacle; it does not replace
+this global accounting.
+
+\section{Implementation contracts and resource behavior}
+\label{sec:implementation}
+
+\subsection{Module separation}
+The source package has a small mathematical core. \code{reconstruct.py}
+implements flat and balanced positive-zeta extraction independently of
+interval geometry. \code{geometry.py} validates and normalizes public input.
+\code{oracle.py} performs canonical union queries through the unchanged AHT
+kernel. \code{verify.py} checks sparse certificates without importing discovery.
+\code{signed.py} implements the binary cover, support reuse, and typed replay.
+\code{api.py} provides the ordinary sparse interface and the dense ablation.
+
+The kernel loader checks the exact Git blob hash of each vendored source file
+before importing it. The producer and verifier are loaded separately. This
+protects the claimed source identity and makes an accidental edited fixture
+visible; it is not a claim that source hashing proves the algorithm correct.
+
+\subsection{Completion, interruption, and mutable state}
+A successful query returns \code{status='COMPLETE'}, its full sparse histogram,
+and an optional certificate. A query interrupted by its support, total-query,
+or total-AHT-cycle allowance returns \code{INCONCLUSIVE} with no histogram,
+no total-count assertion, and no certificate. It may retain work statistics.
+There is no conversion from resource exhaustion to ``unknot'' or ``knotted.''
+
+The total cycle budget is shared among the baseline, all coned calls, and
+additional certification calls. The signed wrapper shares it between the base
+and the doubled system as well. The same is true for the total query allowance.
+AHT cycles are structural events, not a wall-clock or bit-operation meter.
+The optional callback provides cooperative cancellation, and its exceptions
+propagate rather than being mislabeled as a successful mathematical result.
+
+All core objects are constructed from normalized copies. The supplied input
+lists are not mutated. A complete sparse answer produced before a failed
+certificate stage is not exposed as a fully certified answer by the combined
+API; the combined operation returns inconclusive instead. A caller needing
+separate uncertified and certified products can use separate explicit calls
+with separate documented budgets, rather than silently resetting one budget.
+
+\subsection{Serialization and hostile-input scope}
+Endpoint integers and component counts may exceed Python's default limit for
+decimal-string conversion. The transport layer uses exact hexadecimal strings
+for sufficiently large integers, without modifying the interpreter's global
+limit. Boolean values are not accepted as mathematical integers. The proof
+format carries no floating-point quantity used in a correctness decision.
+
+Polynomial verification in the explicit proof length does not mean that any
+untrusted JSON file is cheap to parse or store. Callers should impose limits
+on serialized bytes, nesting, and wall time before accepting external
+certificates. The delivered verifier is a mathematical checker, not a sandbox
+for arbitrarily large hostile inputs.
+
+\section{Exact validation and controlled measurements}
+\label{sec:experiments}
+
+\subsection{Completed validation}
+The following checks were completed in this environment. The standard-library
+suite contains 33 test methods, including invalid input, resource-boundary,
+proof-mutation, and noninterference tests. Its exhaustive subtest checks all
+$3^8=6561$ histograms with eight possible supports on three ports and weights
+in $\{0,1,2\}$, using both flat and balanced extraction. Three hundred additional
+positive histograms exercise larger masks and multiplicities. Tests also check
+the explicit balanced-tree bound and the logarithmic-query behavior of a
+single hidden singleton on 1024 ports.
+
+A separate seeded audit generates 1000 interval systems with up to 50 points
+and up to ten ports. It computes components independently by literal union-find
+and compares every sparse entry. It also assigns random binary parities and
+checks the typed result against an independent graph traversal with parity
+labels. Every supplied base and cover certificate is replayed. The audit retains
+all inputs, expected sparse outputs, and statistics in
+\code{results/validation.json}. All 1000 ordinary comparisons and all 1000
+binary-character comparisons agree, with no failed proof replays.
+
+The ordinary certificates in that audit exercise every supported local AHT
+rule: deletion, contraction, trimming, merger, transmission, and truncation.
+The exact event counts are in the audit file. This is finite evidence about
+the implementation, not a replacement for the general proofs. The test log
+also includes a $2^{16000}$-point transport/replay example and a large parallel
+chain family without point expansion.
+
+Adversarial tests alter multiplicities, omit supports, duplicate entries,
+change port bindings, truncate local traces, delete or duplicate union proofs,
+insert an unused otherwise valid proof, and replace an integer with a Boolean.
+They check a specific case in which certificate construction needs one more
+orbit query than discovery: the shared allowance stops it rather than
+resetting. The four-point attachment obstruction is an executable regression.
+
+\subsection{Benchmark design}
+Nine supplied interval workloads are measured with five arms: cached dense
+inversion, an identical dense A/A control, flat sparse recovery, balanced sparse
+recovery, and balanced recovery with certificate production and independent
+replay included in its timing. Each arm starts with fresh oracle state. There
+is one warmup and seven measured rounds per workload, and arm order is shuffled
+with seed 261008491. Thus the principal experiment contains 45 warmup and 315
+measured calls. Result comparison is outside the timed region; replay is
+inside the timed region only for the explicitly labeled proof/replay arm.
+
+The implementation uses CPython; its full version and platform string are
+recorded in \code{results/benchmark.json}, along with source hashes, every
+sample, arm order, query count, and proof size. Timings are observations from
+this container, not machine-independent complexity claims. The table reports
+median milliseconds and the median of the paired dense/balanced ratios. A
+paired ratio need not equal the ratio of the two separately displayed medians.
+
+\begin{table}[htbp]
+\centering\small
+\input{timings.tex}
+\caption{Completed same-kernel component measurements. Times are milliseconds.
+``Ratio'' is paired dense time divided by balanced sparse time; values below
+one indicate a slowdown. No row is a whole-knot recognition benchmark.}
+\label{tab:timings}
+\end{table}
+
+The static workloads have universe size $2^{4000}$ and eight ports. The chain
+workloads link consecutive equal blocks by translations. Their base orbits are
+the common offsets within a block, so a block length of $2^{500}$ represents
+that many parallel components. The eight-block chains use six ports; the
+sixteen-block chain uses eight ports and block length $2^{128}$. Marks are
+explicit coordinate intervals with coincident, nested, or disjoint layouts.
+They are not asserted to have been extracted from a native knot-exterior
+attachment construction.
+
+\begin{table}[htbp]
+\centering\small
+\input{queries.tex}
+\caption{Actual orbit calls, including the baseline. Here $s_0$ includes a
+positive empty signature. Proof size is the JSON byte count divided by 1024;
+it is a transport measurement, not a claim of minimal binary encoding.}
+\label{tab:queries}
+\end{table}
+
+\subsection{Interpretation, including regressions}
+The disjoint sparse cases are the clearest demonstration of the mechanism.
+Dense inversion needs every distinct subset union, whereas balanced discovery
+asks a small selection of them. The eight-port disjoint examples reduce 256
+count calls to 21. The six-port disjoint chain reduces 64 to 14. These are exact
+call counts, independent of timing noise.
+
+Coincident and nested marks illustrate a different effect. Canonical-union
+caching already reduces the number of underlying count calls, so sparse
+recovery cannot improve those counts much or at all. It instead avoids dense
+mask enumeration and inversion. On the eight-block nested chain, the result
+is near a tie; certificate production and replay add visible cost. The
+all-signatures control has 32 positive rows and 32 count calls in either
+representation. Sparse bookkeeping adds overhead there. The small mixed
+case is also too small and noisy to justify a broad speed claim.
+
+The A/A samples are retained specifically to expose this scale of variation.
+No aggregate claim that the complete recognizer has accelerated is inferred
+from these tables. The observer is not called by ordinary knot dispatch in the
+inspected pipeline, and the dense baseline is a controlled ablation rather than
+a rerun of that pipeline.
+
+An exploratory classical-kernel benchmark containing a 32-block chain was
+stopped by this session's execution-time limit before a complete result file
+was produced. It contributes no numbers to the tables. The delivered benchmark
+uses the explicitly named 16-block case and completed all its rounds. This
+change concerns experimental tractability, not the theorem or the compressed
+input model.
+
+\subsection{Large-port scaling without a dense allocation}
+\begin{table}[htbp]
+\centering\small
+\input{scaling.tex}
+\caption{Completed balanced-only scaling runs, seven repetitions each. The
+``dense slots'' column is the output-format requirement, not a measured dense
+run or an extrapolated timing.}
+\label{tab:scaling}
+\end{table}
+
+For disjoint static ports, the universe has size $2^{500}$ and the ports
+partition it into equal blocks for the listed powers of two. The exact
+histogram has one singleton signature per port. For the one-active-port
+family, the universe has size $2^{16000}$, exactly one port is the entire
+universe, and the remaining ports are empty. The unique nonempty signature
+has multiplicity $2^{16000}$. In the 1024-port case, balanced discovery uses
+21 block tests and only two distinct underlying orbit counts after union
+reuse. No dense array with $2^{1024}$ entries was constructed or timed.
+
+\section{Integration plan and preservation of existing guarantees}
+\label{sec:integration}
+
+The package is designed as an additive research directory, for example
+\code{Topology/UnknotRecognition/research/sparse_incidence_20261008/}.
+It does not overwrite any maintained source and does not allocate a numbered
+report slot that might already have been used in a concurrent repository
+update. \code{INTEGRATION.md} gives the precise production-facing steps.
+
+A safe first integration is an explicit sparse observer API, separate from
+ordinary knot recognition. It should accept the same interval-pairing model,
+normalize ports once, and return a tagged sparse histogram. Existing callers
+expecting dense mask indexing must either remain on the dense interface or
+request a deliberate, separately capped expansion. Silent shape changes are
+not compatible with exact callers.
+
+The certificate schema should remain distinct from the existing dense
+incidence schema. A dense verifier's $2^r$ proof-index contract is not an
+appropriate compatibility layer for the new sparse result. The proof layer
+can reuse the maintained local orbit verifier after its exact version and
+encoding contract are checked. The included source-probe script reports blob
+matches and fails on mismatches rather than claiming to have validated an
+unseen future revision.
+
+Before promotion, run the full maintained tests and the native normal-arc
+adapter audits on the intended checkout, including geometric provenance tests.
+Measure sparse and dense observers on the same native inputs, retain A/A
+controls, and keep whole-recognition timings separate. Until such a production
+caller is introduced, the correct performance statement is a faster supplied
+incidence query, not a faster complete recognizer.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+
+\subsection{A weighted engine versus repeated unweighted queries}
+The polynomial support theorem comes from weighted AHT, while the executable
+method makes repeated unweighted calls. A directly certified vector-weight
+transfer engine could compute all port counts, component Euler data, and
+incidence in one pass. The concrete target is an independently replayable
+weighted-transfer contract with controlled integer growth and a paired
+comparison against the present reduction. The relevant question is not
+whether a polynomial algorithm exists---that is classical---but whether one
+can obtain a smaller practical proof and lower total cost within the
+maintained architecture.
+
+\subsection{Sharper support bounds tied to geometry}
+The weighted theorem supplies a polynomial upper bound without a small
+explicit exponent in this paper. Can normal-arc systems or actual hierarchy
+ports force a much smaller bound, such as a near-linear number of signature
+types in the number of pairing and marking intervals? A useful approach is to
+count how many different supports can be created by weighted transfer and
+static contraction, then test extremal examples generated by genuine surface
+encodings. No such near-linear claim is assumed here.
+
+\subsection{Residual-query data structures}
+The delivered code scans every previously recovered support when evaluating
+a residual. This gives a conservative $Q(s+1)(r+B)$ term. A dynamic sparse
+subset-sum structure, compressed trie, or rank-separated index could reduce
+that term on structured supports. The target must remain exact and should
+be benchmarked against the list scan, which is inexpensive for very small
+$s$. An index whose preprocessing enumerates the Boolean cube would defeat
+the purpose.
+
+\subsection{Cost-aware balanced trees and port equivalences}
+Balanced deletion minimizes neither total coned interval count nor total AHT
+cycles. Can one choose a binary partition tree using port overlap, repeated
+unions, or measured query cost, while retaining a provable approximation
+bound for an explicit cost model? Identical ports may be quotiented before
+search, and their bits restored afterward. Any more aggressive equivalence
+must prove equality of component-incidence behavior rather than merely
+similarity of coordinate ranges.
+
+\subsection{Certificate size and streaming replay}
+Discovery and independent verification ask overlapping but not identical
+sets of questions. Can a streaming producer retain just the proofs that will
+be needed by the final sparse certificate without a costly restart? Can a
+certificate verifier arrange the sparse equations to reduce repeated subset
+arithmetic, while preserving the immediate-deletion information lower bound?
+The implementation already rejects unused proof records, but it does not
+minimize temporary traced storage.
+
+\subsection{Finite covers beyond a binary character}
+For a fixed finite group of order $q$, a regular cover similarly preserves
+port signatures when every mark is lifted completely. A component lifts to
+between one and $q$ components. The support-known triangular reconstruction
+still applies. Determining detailed monodromy subgroup types would require
+additional data or multiple covers; the two-by-two linear formulas of
+Section~\ref{sec:signed} do not automatically generalize to identify them.
+A precise next target is a small fixed-group family with a proved separating
+set of covers and independently replayable subgroup-type counts.
+
+\subsection{Attachment-compatible refinements}
+Proposition~\ref{prop:attachment} shows that incidence alone is not a congruence
+for pointwise attachments. What additional compressed data make it a congruence
+for the \emph{particular} attachments occurring in a normal-surface hierarchy?
+Candidate data include boundary multiplicities, ordered interval maps,
+permutation actions on repeated sheets, and a finite set of slope labels.
+The goal is a closure theorem: two summaries declared equivalent must remain
+equivalent under every allowed continuation. This is more important than
+showing that an isolated histogram is small.
+
+\subsection{Certified port extraction and compressed cutting}
+The local polynomial theorem requires ports given by polynomially many
+binary intervals. A future geometric adapter must prove that this form is
+preserved by cutting, crushing, and provenance updates. A successful adapter
+should supply a certificate connecting every new marked interval to the
+original triangulation and to the chosen normal coordinates, including
+orientation characters. A compact normal-coordinate vector alone does not
+prove that an arbitrary proposed collection of attachment ports is correct.
+
+\subsection{Global potential and search accounting}
+The decisive missing result is a potential controlling the number of hierarchy
+states and the size of their complete encodings. A meaningful theorem would
+bound $H(n)$ and $L(n)$ in Proposition~\ref{prop:composition}, and account for
+candidate generation and terminal checks in $W(n)$. Geometric depth,
+branching, compressed word length, and numerical surface weight should have
+separate counters. The current contribution makes one of these costs
+polynomial; it does not allow the remaining counters to be omitted.
+
+\subsection{Native validation and formal proof boundaries}
+The next experimental step is a native normal-surface corpus with adversarial
+port arrangements, compared against both the maintained dense observer and
+an independent geometric component extractor at feasible sizes. Whole-knot
+measurements should begin only when a production caller actually uses the
+new query. A tractable formalization target is the positive residual invariant
+and Theorem~\ref{thm:certificate} over a finite Boolean lattice, separated from
+AHT and geometric provenance. That would make the sparse completeness argument
+machine-checkable without pretending to formalize an entire hierarchy at once.
+
+\section{Conclusion}
+The maintained dense marked-incidence observer admits an exact sparse
+replacement that reuses certified unweighted interval-orbit counting.
+Positive residuals locate minimal unknown signatures, whole multiplicities
+are recovered at once, balanced deletion makes discovery sensitive to support
+size, and local deletion equations plus total mass independently certify the
+complete result. A binary cover preserves support and permits a second
+histogram to be recovered without repeating support discovery.
+
+The asymptotic conclusion for supplied interval data is polynomial, not merely
+conditional on a logarithmic port bound. Its geometric support argument is an
+explicit corollary of classical weighted AHT, duly attributed. The observed
+speedups concern exactly this observer and are accompanied by dense and small
+controls showing overhead. For general unknot recognition, the remaining
+research burden is a certified attachment-compatible hierarchy with controlled
+candidate generation, encoded sizes, and total work. The delivered primitive
+removes a concrete exponential-format cost from that program without
+concealing those unresolved obligations.
+
+\appendix
+\section{Executable usage and artifact inventory}
+\label{sec:artifacts}
+From the extracted package root:
+\begin{lstlisting}
+export PYTHONPATH="$PWD/src${PYTHONPATH:+:$PYTHONPATH}"
+python -m unittest discover -s tests -v
+python experiments/validate.py
+python experiments/benchmark.py --rounds 7
+python experiments/make_tables.py
+python -m sparse_incidence analyze examples/mixed.json \
+    --output results/mixed.json --certificate
+python -m sparse_incidence verify examples/mixed.json results/mixed.json
+cd paper && sh build.sh
+\end{lstlisting}
+No network connection is required. Python 3.10 or later is the intended minimum;
+the actual tested version is recorded in the results. Rebuilding the article
+requires a LaTeX installation providing the packages in its preamble and BibTeX.
+The example commands analyze an interval relation, not a knot diagram.
+
+\begin{longtable}{@{}p{0.40\linewidth}p{0.55\linewidth}@{}}
+\toprule
+Path & Contents\\
+\midrule
+\endhead
+\code{paper/article.tex}, \code{article.pdf} & Complete article and compiled PDF.\\
+\code{paper/references.bib} & Primary literature and immutable repository references.\\
+\code{src/sparse_incidence/} & Sparse extraction, geometry, cached oracle, independent replay, signed cover, CLI.\\
+\code{vendor/} & Two unchanged upstream modules, separately pinned by Git blob and SHA-256.\\
+\code{tests/test_sparse.py} & 33 unit-test methods with exhaustive, seeded, and adversarial subcases.\\
+\code{experiments/} & Literal graph controls, seeded audit, fresh-state paired benchmark, table generation.\\
+\code{results/} & Completed test log, all audit inputs/results, raw timing samples, summary logs.\\
+\code{examples/} & Ordinary and huge-multiplicity inputs and independently replayed certificates.\\
+\code{integration/} & Local source-identity probe; no remote writes or automatic integration.\\
+\code{CLAIMS.md}, \code{INTEGRATION.md} & Scope ledger and production-review obligations.\\
+\code{PROVENANCE.json} & Repository ref, inspected sources, source hashes, runtime and scope.\\
+\code{SHA256SUMS} & Delivered-file integrity manifest, excluding itself.\\
+\bottomrule
+\end{longtable}
+
+\section{Worked sparse certificate on a mixed relation}
+The small mixed example has $N=10$, the translation $[0,4]\to[5,9]$, and
+ports
+\[
+ A_1=[0,2),\quad A_2=[6,9),\quad A_3=[0,1)\cup[9,10).
+\]
+The five components are $\{i,i+5\}$, $0\leq i<5$. Their signatures give
+\[
+ h(\{2\})=2,\quad h(\{3\})=1,\quad
+ h(\{1,2\})=1,\quad h(\{1,3\})=1,
+\]
+and all other entries vanish. In particular $h(\varnothing)=0$.
+A cardinality-ordered certificate first proves the two singleton entries.
+It then checks the weight at $\{1,2\}$ after subtracting the known singleton
+mass $2$, and checks both deletion values. The entry at $\{1,3\}$ is
+handled similarly after subtracting the singleton mass $1$. The final total
+$2+1+1+1=5$ rules out every missing signature, including $\{2,3\}$ and
+$\{1,2,3\}$, without a dense forward transform.
+
+The standalone proof file contains full local AHT witnesses for its actual
+coned unions. A reader can mutate the claimed row weights or bindings and
+replay the file using the CLI. The sparse verifier does not trust the
+\code{COMPLETE} label in a surrounding result; it verifies the certificate
+against the separately supplied input.
+
+\section{Claim ledger}
+\begin{longtable}{@{}p{0.42\linewidth}p{0.53\linewidth}@{}}
+\toprule
+Claim & Status\\
+\midrule
+\endhead
+Coned-union identity & Proved; existing maintained construction, reused and independently reconstructed in replay.\\
+Positive sparse extraction & Proved for every nonnegative Boolean histogram; implemented in two strategies.\\
+Support-sensitive balanced bound & Proved with an explicit binary-tree count; checked on exhaustive and seeded examples.\\
+Sparse local completeness certificate & Proved; independently implemented and adversarially tested.\\
+Polynomial interval-incidence complexity & Proved as a consequence of classical weighted and unweighted AHT plus the explicit sparse reduction. Not a new general weighted-orbit theorem.\\
+Binary-character refinement & Proved and implemented, including known-support cover recovery and shared budgets.\\
+Polynomial general unknot recognition & Not claimed.\\
+General quasi-polynomial unknot recognition & Not established by this contribution.\\
+Whole-knot practical acceleration & Not measured; no production recognition dispatch was changed.\\
+Native surface-adapter validation & Not run here; explicitly required before production promotion.\\
+Full upstream suite & Not run here. The 33-method delivered suite and 1000-case independent audits were run.\\
+Formal machine-checked proofs & Not provided; written proofs and executable exact checks only.\\
+Priority beyond the inspected repository & Not claimed; related weighted-orbit and hidden-hypergraph literature is acknowledged.\\
+\bottomrule
+\end{longtable}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,graphicx,xcolor}
+\usepackage{fancyhdr,hyperref,cleveref}
+\usepackage[most]{tcolorbox}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{paperblue}{HTML}{EFF5FA}
+\hypersetup{colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal,
+  pdftitle={Component Disc Certificates and Quadrilateral Core Reduction},
+  pdfauthor={ProveIt research continuation}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{navy}{ProveIt / Unknot recognition}}
+\fancyhead[R]{\small October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\D}{\mathcal D}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\baseline}{\texttt{7518823550fb}}
+\newtcolorbox{resultbox}{colback=paperblue,colframe=navy,boxrule=0.5pt,
+  arc=1pt,left=9pt,right=9pt,top=8pt,bottom=8pt}
+\title{\textcolor{navy}{Toward Quasi-Polynomial Unknot Recognition}\\[5pt]
+  \large Component Disc Certificates and Quadrilateral Core Reduction}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{9 October 2026\\\small Source snapshot and computations: 9 October 2026 UTC}
+\begin{document}
+\maketitle
+\begin{abstract}
+The maintained normal-surface backend computes aggregate component counts but
+does not decide whether a disconnected supplied surface contains a compressing
+disc. We implement and certify this missing operation without expanding binary
+normal coordinates. The main specialization uses only three additive orbit
+weights: Euler characteristic and two boundary-homology tests. A second
+reduction removes vertex-link components and divides by the content of the
+quadrilateral coordinates. We prove that the exact number of essential disc
+components scales linearly under this reduction, although the total number of
+surface components need not. The resulting orbit query depends on the bit size
+of the primitive quadrilateral data, independently of large additive triangle
+offsets. Independent arithmetic replay, explicit finite oracles, external
+Regina comparisons, and paired measurements accompany the implementation.
+A further proved two-weight variant uses certified ambient homology
+preprocessing; its implementation and timing are future work.
+The work is an algorithmic continuation of classical weighted
+Agol--Hass--Thurston counting and normal-surface Q-theory. It does not establish
+a general quasi-polynomial unknot recognizer: candidate generation, certified
+diagram-to-exterior provenance, and the accelerated hierarchy remain separate
+obligations.
+\end{abstract}
+\vspace{3pt}
+\begin{resultbox}
+\textbf{Scope of the proved result.}
+Given a validated finite triangulation with one torus boundary and an admissible
+binary normal vector, the delivered procedure counts its compressing-disc
+components in polynomial time in the encoded input. It can certify a positive
+count even when the surface is disconnected and its total boundary class is
+zero. A zero count concerns that vector alone.
+\end{resultbox}
+{\small\tableofcontents}
+\clearpage
+\input{sections/results}
+\input{sections/weighted}
+\input{sections/geometry}
+\input{sections/core}
+\input{sections/certificates}
+\input{sections/experiments}
+\input{sections/roadmap}
+\input{sections/reproduction}
+\input{references}
+\end{document}

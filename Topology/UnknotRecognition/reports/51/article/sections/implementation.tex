@@ -1,0 +1,167 @@
+\section{Implementation, evidence format, and conservative dispatch}
+\label{sec:implementation}
+
+\subsection{The implemented operation}
+
+The new producer is \code{fastunknot/singleton_dag.py}. Its planner stores
+one immutable pair per grammar node: the maximum absolute generator label
+and that label's occurrence count, capped at two. Concatenation retains the
+larger maximum, or adds the capped counts when the maxima agree. Each
+current root is inspected in its original slot; the first eligible donor
+for each child is chosen. The output is sorted by child label, making its
+dependency order explicit.
+
+The cache contains word content only. Relator slots and current live-label
+membership are checked afresh. This matters because roots can move between
+slots, normalization creates different roots, and a previously live
+generator can have been eliminated. Planning neither mutates the
+presentation nor allocates substituted images.
+
+Application builds the prefix and suffix surrounding each unique pivot.
+The inverse required by a positive pivot is represented by a virtual sign.
+A single iterative traversal then evaluates signed grammar states, with
+selected terminals redirecting to their definitions. An inverse
+concatenation reverses the order of its children. Each signed state is
+evaluated at most once. Both images of a definition are shared when needed;
+they are not independently expanded or repeatedly inverted.
+
+The helper also supports arbitrary internally supplied acyclic schedules.
+An ordered schedule uses rank maxima and capped counts, regardless of its
+numeric labels. An out-of-order internal schedule can use a generic
+presence/repetition mask fallback and a cycle check. That fallback has a
+larger polynomial metadata cost. The public certificate path always uses
+an ordered witness and needs no dense support masks.
+
+\subsection{Version-eight certificates}
+
+A batch move contains only its kind and an ordered pivot list:
+\begin{lstlisting}
+{
+  "kind": "singleton_dag",
+  "pivots": [
+    {"relation": 0, "generator": 2},
+    {"relation": 1, "generator": 3}
+  ]
+}
+\end{lstlisting}
+The order is part of the evidence. All selected generators in a donor's
+right-hand side must occur earlier in this list. Surviving generators have
+rank zero. The certificate gives no replacement word, inferred exponent,
+dependency list, source grammar node identifier, or claimed hash equality
+for the checker to trust.
+
+The complete group certificate still binds the input planar diagram,
+method, status, moves, and terminal evidence. A trace using this move has
+version eight. Both source replayers reject it if relabelled as an older
+format. Previously supported versions remain accepted through their
+existing interpretation.
+
+\subsection{Independent compressed and literal replay}
+
+The new checker module, \code{singleton_dag_verify.py}, imports no producer
+helper. It requires exact field sets, actual integers rather than boolean
+substitutes, valid original slots, live pivot labels, distinct slots, and
+distinct pivots. It independently assigns certificate ranks and verifies
+that each donor has its own pivot as a unique maximum-rank occurrence.
+This checks singleton status and dependency order in one pass.
+
+Its compressed implementation locates the pivot position, obtains the two
+source substrings, and builds its own signed substitution evaluation.
+Its context construction differs from the producer's direct sibling
+accumulation. The literal implementation instead extracts explicit words,
+builds and checks the dependencies, and substitutes definitions in
+topological order with allocation checks before growth. The latter is an
+independent oracle for bounded-size examples, not a polynomial method in
+compressed input size when the expanded output is enormous.
+
+Every definition is checked even when all its occurrences would lie in
+discarded donor slots. This prevents an unused cyclic system from escaping
+validation. Both replayers retain all non-donor slots. Rejection leaves
+the root array and live-generator set unchanged; a compressed arena may
+have allocated temporary nodes before rejection or resource exhaustion.
+No claim of rollback of internal cache allocation is needed for soundness.
+
+The outer checker independently reconstructs all source Wirtinger relations
+before reading the moves. It finishes a rank-one trace only after checking
+every retained root's exponent. Cyclicity is not inferred from one selected
+relation or from the number of remaining labels alone.
+
+\subsection{Why the delivered dispatcher is terminal-only}
+
+The first integration applied every discovered batch of at least two
+pivots. That policy was algebraically sound and worked on many actual
+diagrams. It also changed the residual spelling on the Gordian fixture
+enough to make the subsequent heuristic search hit a large work cap.
+The local node bound does not control the difficulty of later Whitehead
+or relator operations on that residual state.
+
+The delivered public option therefore applies a batch only if
+\begin{equation}
+ 2\leq |C|=|X|-1.
+ \label{eq:terminal-guard}
+\end{equation}
+If the guard fails, planning has not changed the relators, their slots,
+the live labels, or the established move order of the same compressed
+backend with the same other flags. Search continues from the
+intact state. If it succeeds, the batch leads directly to the existing
+exact rank-one exponent check. The general batch operation and its proof
+remain useful to research clients; the dispatcher makes a narrower choice
+about when to use it during heuristic search.
+
+This guard has a simple logical property. For a source knot presentation
+and an uncapped correct preceding trace, an exact elimination to rank one
+must have zero exponent in every retained relation: otherwise the resulting
+one-generator presentation would have finite abelianization, contradicting
+the knot group's abelianization $\Z$. The checker still verifies the
+exponents explicitly. The public option can thus finish at the guarded
+state without requiring any subsequent search heuristic to be effective.
+
+Planning consumes resources even when it skips a batch. Therefore the
+unchanged-state property does not imply identical completion under every
+finite work or time allowance. The feature stays opt-in, and the experiments
+record capped nondecisions and overhead. No universal wall-time dominance
+over the predecessor is claimed.
+
+\subsection{Public entry points and compatibility}
+
+The group-stage interfaces accept \code{singleton_dag=True}; this selects
+compressed search and independent compressed replay. The whole recognizer
+accepts \code{group_singleton_dag=True} together with \code{use_group=True}.
+The command line exposes \code{--group-singleton-dag}, which enables the
+group stage automatically. For example:
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram
+from fastunknot.group_certificate import group_decide
+
+d = Diagram.from_braid(129, list(range(1, 129)))
+result = group_decide(d, singleton_dag=True, seconds=None)
+assert result["status"] == "UNKNOT"
+assert result["certificate"]["version"] == 8
+\end{lstlisting}
+
+The option defaults to false. Existing projection and forest flags retain
+their original meaning. Source replay accepts old certificates, and an audit
+compares all three old modes against the entire pinned package. The Rust
+port is not changed in this package. The new Python implementation uses the
+standard library and requires the same Python language baseline as the
+maintained package.
+
+\subsection{Resource model}
+
+The same work, node, initial-letter, and caller-cancellation mechanisms as
+the surrounding compressed search remain in force. The new operation
+does not use expanded word length as a loop bound. Its counters separately
+report planner attempts, new immutable descriptors, candidate slots,
+unique-occurrence path steps, signed evaluation states, batch pivots,
+newly allocated nodes, and skipped partial batches.
+
+The existing \code{projection_normalizations} counter counts raw-to-normal
+handoffs in the common search loop. A terminal singleton batch causes none.
+In the retained eager prototype, handoffs after a partial singleton batch
+use that existing counter name; the result files preserve the original
+names rather than silently recategorizing them.
+
+Charged work is an implementation accounting measure. It includes explicit
+charges such as the pivot sort and is useful for diagnosing scaling, but
+it is neither a hardware instruction count nor a substitute for the
+separate bit-complexity proof and completed-call timings.

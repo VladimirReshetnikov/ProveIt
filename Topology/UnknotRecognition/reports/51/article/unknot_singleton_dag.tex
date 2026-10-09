@@ -1,0 +1,103 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx,booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+  urlcolor=MidnightBlue,pdftitle={Simultaneous Tietze Elimination with Shared Circuits},
+  pdfauthor={ProveIt research continuation}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: Unknot recognition}
+\fancyhead[R]{\small Shared singleton eliminations}
+\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\F}{\mathbb F}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\len}{len}
+\DeclareMathOperator{\bits}{bits}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\baselinecommit}{\texttt{483b7397a1086206bc463222094315390c42550d}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!18},
+  backgroundcolor=\color{black!2},showstringspaces=false,
+  xleftmargin=3pt,xrightmargin=3pt,aboveskip=10pt,belowskip=10pt}
+\title{\textbf{Simultaneous Tietze Elimination\protect\\with Shared Circuits}\\[5pt]
+  \large Linear grammar growth and a certified improvement\protect\\
+  to the unknot group stage}
+\author{Research continuation for the ProveIt repository}
+\date{9 October 2026 (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt recognizer compresses group words and can contract
+acyclic forests of two-generator primitive relations. We extend the raw
+algebraic operation to arbitrary singleton Tietze relations, including
+mixed-sign words with many dependencies. If the chosen dependencies are
+acyclic, all selected generators can be eliminated in one shared
+straight-line-program compilation. The principal bound is linear in the
+number of source grammar nodes, independently of dependency depth and
+expanded word length. Its proof uses vertex-disjoint unique-occurrence paths
+inside the source grammar. A topologically ordered list of donor slots and
+pivots is sufficient for independent checking with constant-size node
+summaries.
+
+For an explicit family of validated stabilized unknot diagrams, the pinned
+primitive-forest policy takes a linear number of raw batches and normalization
+handoffs, and incurs quadratic slot-scanning work. The new operation finishes
+in one batch with linear grammar growth and near-linear charged structural
+work. We implement source-bound version-eight certificates, independent
+compressed and literal replayers, a conservative terminal dispatch rule,
+and reproducible comparisons with the complete pinned predecessor.
+An eager partial-batch policy exposed a substantial Gordian regression;
+the delivered dispatch uses the operation when it can finish at the exact
+rank-one endpoint. All remaining relators are checked.
+
+The result is an exact algebraic improvement and a polynomial positive route
+on a specified input class. It does not establish a general quasi-polynomial
+unknot recognizer. The article distinguishes proved bounds, measured
+performance, policy limitations, and the remaining exposure and hierarchy
+obligations.
+\end{abstract}
+\newpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/context}
+\input{sections/algebra}
+\input{sections/family}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/research}
+\appendix
+\input{sections/reproduction}
+\begingroup
+\raggedright
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}
