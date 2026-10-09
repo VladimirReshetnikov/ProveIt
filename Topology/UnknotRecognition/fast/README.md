@@ -2836,3 +2836,70 @@ python -B compressed_word_research/anchored_producer.py kernels --output results
 python -B compressed_word_research/anchored_producer.py source --output results/anchored_producer_source.json
 python -B compressed_word_research/anchored_producer.py pipeline --output results/anchored_producer_pipeline.json
 ```
+
+### Plain-power component certificates
+
+Optional primitive-projection search now tries a connected power-component
+contradiction after its primitive and pair rules fail. A signed cycle with
+unequal exponent products, or a pure-power seed and its connected tree, proves
+that the component's generators are trivial in the source-established
+torsion-free knot group. Components contain at least three labels and retain
+at least one survivor. The version-ten witness stores labels and donor slots;
+it never asks the checker to trust rational potentials or exponent claims.
+
+The producer uses rational graph consistency. The independent checker recovers
+actual cyclic one/two-run words, strips tree leaves and compares signed cycle
+products. Literal replay remains separate. Complete binary cycles with product
+difference one now close where the earlier configured algebraic search stalls.
+Ordinary-diagram certificates and coverage are unchanged in the pinned audit;
+this is a local inference extension, not a general quasipolynomial recognizer.
+See [the proof, source integration and measurements](../synthesis/power_components.tex).
+
+```bash
+python -B compressed_word_research/power_components.py audit --output results/power_component_audit.json
+python -B compressed_word_research/power_components.py stages --output results/power_component_stages.json
+python -B compressed_word_research/power_components.py source --output results/power_component_source.json
+python -B compressed_word_research/power_components.py pipeline --output results/power_component_pipeline.json
+```
+
+### Source-checked compact knot exteriors
+
+`diagram_exterior.diagram_exterior` constructs the compact exterior of a
+validated classical knot directly from its PD. It uses the Weeks crossing
+cells and a compatible finite subdivision, with exactly `20*max(1,n)`
+tetrahedra and `8*max(1,n)` boundary triangles. The implementation needs no
+Regina installation. A separate coordinate-based checker binds every face
+pairing to the source diagram:
+
+```python
+from fastunknot import Diagram
+from fastunknot.diagram_exterior import diagram_exterior
+from fastunknot.diagram_exterior_verify import verify_diagram_exterior
+
+diagram = Diagram.from_braid(2, [1, 1, 1])
+triangulation = diagram_exterior(diagram)
+assert verify_diagram_exterior(diagram, triangulation)
+```
+
+This triangulation can be passed to the existing normal-surface APIs. An
+independently verified essential disc in this same triangulation proves the
+source knot unknotted. The constructor does not search for that disc, simplify
+the triangulation, or mark a meridian/longitude basis. The checker accepts
+only canonical numbering in either the current five-tetrahedron cell
+subdivision or the original twenty-tetrahedron cell subdivision. The latter
+remains available as `subdivision='centred'`; the default is `'pulling'`.
+Arbitrary supplied triangulations still need their own provenance evidence.
+The default recognition pipeline is unchanged.
+
+See [the construction proof and validation](../synthesis/diagram_exterior.tex).
+The optional Regina audit checks the unsimplified crossing triangulation up
+to isomorphism and independently validates the finite result. The benchmark
+measures fresh construction, independent source replay and native manifold
+validation together, comparing the initial centred implementation against
+the four-times-smaller pulling subdivision, with A/A controls for both.
+These are geometry costs, not recognition speedups.
+
+```bash
+python -B -m normal_orbit_research.exteriors audit --output results/diagram_exterior_audit.json
+python -B -m normal_orbit_research.exteriors benchmark --output results/diagram_exterior_benchmark.json
+```

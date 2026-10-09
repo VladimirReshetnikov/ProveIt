@@ -5232,13 +5232,13 @@ So, as far as counts and exponents go, a polynomial-bound deep structure
 fits the dimension-three budget with enormous room. This is an
 order-of-magnitude comparison, not a formal inequality. It also assumes
 that the remaining Milićević steps lose no more than polynomially in
-their inputs. *Correction (J.6 below):* the formal connection does not go
+their inputs. *Correction (J.5b below):* the formal connection does not go
 through Part J, whose `PolyBoundedControl` belongs to the cubic-stackable
 route. It goes from the variety chain's decomposition to
 `Section16BudgetedPieceAt 3`. That link is blocked by an unbounded constant
 that this order-of-magnitude count does not see.
 
-### J.6 The variety route's last link needs explicit partition constants (2026-10-09)
+### J.5b The variety route's last link needs explicit partition constants (2026-10-09)
 
 **Which theorem is missing.** The variety chain ends at
 `exists_ceiling_free_variety_relation_decomposition`, whose pieces are
@@ -5315,3 +5315,368 @@ explicit Schmidt-type recurrence gives that.
 Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
 eventual, any-bound form) yields the decomposition with the unknown
 constants as parameters, but not `Theorem162At 3`.
+
+### J.103. Exact additive richness from matched four-walks
+
+**Verified 2026-10-09.** Seven modules carry J.102's walk counts through
+the endpoint identity and counting arguments. The conclusion is uniform
+additive richness in every pair of subsets of one dense column set.
+
+`Proofs16FourStepIdentity` first proves the crossing symmetry for plain
+column-pair identities. `ColumnPairIdentity.four_step_shrink` then
+composes four identities through three intermediate pairs. The endpoint
+defect vanishes on the union of all ten column Bohr domains by
+telescoping. Its own domain uses only the four endpoint spectra;
+`freiman_zero_remove_frequencies` removes the six intermediate spectra
+in one step. For rank `d`, initial radius `rho`, and identity radius
+`0 < r <= rho`, the cost is
+
+```
+N > refinementKernelCap (4*d) (6*d) rho r,
+rnew = refinementKernelRadius (4*d) (6*d) rho r.
+```
+
+`Proofs16FourWalkDifferences` records the four consecutive differences
+of a walk. Equality of these sequences is equivalent to translation of
+all corresponding vertices. In particular, a start and a difference
+sequence determine the complete walk. `Proofs16MatchedFourWalkIdentity`
+uses edge coherence, crossing, and the four-step composition to prove
+that matched walks give an endpoint pair relation at `rnew`. Repeated
+vertices cause no problem for this algebraic argument.
+
+`Proofs16FourWalkCollisionCount` counts the walks from `U` to `V` and
+applies the existing weighted Cauchy--Schwarz theorem to their difference
+sequences. There are `N^4` possible sequences. If the walk family has
+size at least `mu*N^5`, it has at least `mu^2*N^6` ordered matching pairs.
+`Proofs16FourWalkProjection` projects these pairs to their endpoint
+quadruples. The endpoints and the first walk's internal triple determine
+the second walk, so each fibre has size at most `N^3`. Consequently,
+there are at least `mu^2*N^3` distinct endpoint quadruples.
+
+`Proofs16WalkAdditiveRichness` defines `mixedExactColumnQuadruples U V`:
+these are exact additive quadruples `q` with `q0,q2` in `U` and `q1,q3`
+in `V`. If `|U| >= beta1*N`, `|V| >= beta2*N`, and every endpoint pair
+has at least `eta*N^3` four-walks, it proves
+
+```
+# mixedExactColumnQuadruples(U,V,rnew)
+  >= (beta1*beta2*eta)^2 * N^3.
+```
+
+The radius and modulus costs do not depend on `beta1` or `beta2`.
+
+`Proofs16GlobalColumnRichness` assembles this directly from the original
+dense bihomomorphism. Put
+
+```
+d = columnSpectrumCap (columnEightDensity alpha)
+rho = globalColumnIdentityRadius alpha
+r = columnIdentityRadius d rho 1
+delta = globalColumnQuadrupleDensity alpha / 4
+eta = globalColumnWalkDensity alpha = delta^5 / 16384
+Nrich = max(globalColumnGraphModulusBound alpha,
+            refinementKernelCap (4*d) (6*d) rho r + 1).
+```
+
+For prime `N >= Nrich`, `global_column_additive_richness` constructs
+`X,T,L,W,B`, retaining the original witness system, column rank,
+normalization, and Freiman linearity. It proves `B subset X`,
+`|B| >= 3*delta*N/8`, positive `eta` and `rnew`, and the displayed mixed
+quadruple bound for every `U,V subset B` and every nonnegative pair of
+lower density bounds. No graph, walk, or relation hypotheses remain in
+this global theorem.
+
+**Limits and next step.** This is hereditary abundance of exact additive
+quadruples, not exactness of every additive quadruple on `B`. The next
+selection step must retain vertices participating in many exact
+quadruples, then build the compatible representations needed for the
+structured family. Bilinear organization, shifted agreement, and the
+final numerical structure budget remain open. The numbered companion
+count does not change.
+
+**Verification.** The global construction checks 213 modules. All 14 new
+named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+Apache provenance changes were needed.
+
+After merging the retirement of the redundant six-walk module, the
+combined audit checks 7,058 public Gowers theorems in 5,116 modules
+(5,114 for the facade, including 4,152 OAI modules). Only the three
+approved standard axioms occur. The source ledger remains identical
+at 115 companions and five open entries; selected-port scope passes.
+Companion counts do not certify fidelity to every printed statement.
+
+### J.104. Dense popular columns and exact triple representations
+
+**Verified 2026-10-09.** Four modules select a dense core of columns with
+many representations, while preserving the ambient hereditary richness
+needed to connect those representations in later steps.
+
+`Proofs16ColumnAnchorCounts` defines `exactColumnAnchor B T L r a` as
+the exact quadruples in `B` whose first coordinate is `a`. It proves
+monotonicity under restriction of the vertex set, identifies the mixed
+quadruples for `(C,C)` with all exact quadruples in `C`, and bounds their
+count by the sum of ambient anchor degrees over `C`.
+
+The density-form richness statement also gives the denominator-free
+inequality
+
+```
+eta^2 * |C|^4 <= N * #exactColumnQuadruples(C)
+```
+
+for every `C subset B`, by applying it at the actual density `|C|/N`.
+
+`Proofs16PopularColumnAnchors.popular_column_anchors_dense` assumes
+`|B| >= b*N`, with `b,eta > 0`, and sets
+
+```
+lambda = eta^2*b^3/16,
+P = {a in B : #exactColumnAnchor(B,a) >= lambda*N^2}.
+```
+
+It proves `|P| >= b*N/2`. Indeed, if the discarded set `C` had size at
+least `b*N/2`, its anchor upper bound and the hereditary lower bound
+would give `eta^2*|C|^3 <= lambda*N^3`, contradicting the choice of
+`lambda`. This uses the actual discarded-set cardinality and gives a
+cubic dependence on `b`; bounding its cardinality merely by `N` would
+give the weaker quartic threshold considered previously.
+
+`Proofs16ColumnTripleRepresentations` reindexes anchor quadruples as
+triples. A triple `(x,y,z)` corresponds to the quadruple `(a,y,x,z)`,
+so its exactness gives
+
+```
+a = x-y+z,
+L(a)(t) = L(x)(t)-L(y)(t)+L(z)(t)
+```
+
+on the intersection of the four relevant column Bohr sets. All four
+indices lie in `B`. The reindexing is a bijection, so the triple count
+is exactly the anchor degree; the same `lambda*N^2` lower bound holds.
+
+`Proofs16GlobalColumnAnchors.global_popular_column_representations`
+assembles this from the original dense bihomomorphism, at the unchanged
+threshold `globalColumnRichnessModulusBound alpha`. Its parameters are
+
+```
+b = globalColumnVertexDensity alpha
+  = 3*(globalColumnQuadrupleDensity alpha/4)/8,
+eta = globalColumnWalkDensity alpha,
+lambda = globalColumnAnchorDensity alpha = eta^2*b^3/16.
+```
+
+The theorem constructs `X,T,L,W,B,P`, with `P subset B subset X`,
+`|B| >= b*N`, `|P| >= b*N/2`, and at least `lambda*N^2` exact triples
+for every `a in P`. It retains the original witness system, column rank,
+local Freiman linearity, normalization, positive radius and density
+parameters, and the full mixed-quadruple richness statement for subsets
+of `B`. No new radius loss or modulus threshold occurs in this selection.
+
+**Remaining work.** The triple representations form the base case for
+compatible representations of several columns. They have not yet been
+glued recursively, and their abundance does not imply that every
+additive quadruple on `P` has the exact identity. Bilinear organization,
+shifted agreement, and the final numerical structure budget remain open.
+
+**Verification.** The global construction checks 217 modules. All ten
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+Apache provenance changes were needed.
+
+The combined audit checks 7,084 public Gowers theorems in 5,120 modules
+(5,118 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
+
+### J.105. Joining two popular column representations
+
+**Verified 2026-10-09.** Six modules give compatible six-entry
+representations for every pair of columns in the dense core from J.104.
+
+`Proofs16PopularEndpointFibres` proves a generic averaging lemma: a
+family of mass at least `mu*M*K`, with `M` possible endpoints and every
+endpoint fibre of size at most `K`, has at least `mu*M/2` endpoints
+whose fibres have size at least `mu*K/2`. A positive popular fibre
+belongs to the image of the family.
+
+`Proofs16TripleEndpointFibres` obtains the sharp elementary cap `N`
+for both endpoint fibres of a fixed-column triple family. Once either
+endpoint and the middle coordinate are fixed, the equation `a=x-y+z`
+determines the other endpoint. Thus a triple family of size at least
+`lambda*N^2` has at least `lambda*N/2` popular first endpoints and the
+same number of popular last endpoints, each with at least `lambda*N/2`
+representations. Both popular endpoint sets lie in `B`.
+
+`Proofs16FibreGluingCount` counts the choices from two specified fibres
+above each connecting quadruple. The total is exactly the sum of the
+products of the two fibre cardinalities; uniform lower bounds therefore
+multiply without a further selection loss.
+
+`Proofs16ColumnPairSplice` uses the following orientation. Let a triple
+`y` represent `a`, and a triple `z` represent `b`. For an exact quadruple
+`q`, require `y3=q2` and `z1=q1`. Its identity `q0+q1=q2+q3` says that
+replacing `(y3,z1)` by `(q0,q3)` translates both coordinates by the same
+amount. The output is
+
+```
+s = (y1,y2,q0,q3,z2,z3).
+```
+
+It satisfies `a-b = s0-s1+s2-s3+s4-s5`. The two old middle entries are
+recoverable as `a-s0+s1` and `b+s4-s5`. The output and the two anchors
+therefore recover both original triples and `q`, proving injectivity of
+the gluing map.
+
+`columnPairRepresentations` records the two recovered triple identities
+and the connecting exact quadruple. Its specification includes all six
+output vertices lying in `B` and the corresponding alternating map
+identity on the Bohr domains of the anchors, the six output vertices,
+and the two recovered middle entries. Those intermediate domain
+conditions are retained explicitly; they have not been discarded here.
+
+`Proofs16ColumnPairGluing.column_pair_representations_count` takes
+popular last endpoints for `a` and popular first endpoints for `b`.
+Hereditary richness supplies at least `eta^2*lambda^4*N^3/16` connecting
+quadruples, and each has at least `(lambda*N/2)^2` choices of triples.
+Injectivity then proves
+
+```
+# columnPairRepresentations(B,T,L,r,a,b)
+  >= eta^2*lambda^6*N^5/64.
+```
+
+`Proofs16GlobalColumnPairRepresentations` assembles this for every
+`a,b` in the same dense core `P`, directly from the original dense
+bihomomorphism. It defines
+
+```
+globalColumnPairDensity alpha
+  = (globalColumnWalkDensity alpha)^2
+    * (globalColumnAnchorDensity alpha)^6 / 64
+```
+
+and proves its positivity along with the uniform pair-representation
+count. Original witnesses, column rank, normalization, local linearity,
+single-column triples, and the full ambient hereditary richness remain
+in the conclusion. The size threshold and radius are unchanged.
+
+**Remaining work.** This is the two-column case of compatible tuple
+representations. The arbitrary-length induction, its density recurrence,
+and the subsequent bilinear organization and shifted agreement are still
+open. No final Gowers numerical bound is claimed from this step alone.
+
+**Verification.** The focused global construction checks 223 modules.
+All 13 new named theorems pass individual axiom checks with only
+`propext`, `Classical.choice`, and `Quot.sound`. No additional upstream
+modules or Apache provenance changes were needed.
+
+The combined audit checks 7,104 public Gowers theorems in 5,126 modules
+(5,124 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
+
+### J.106. Compatible representations of arbitrary anchor lists
+
+**Verified 2026-10-09.** The two-column construction now extends to every
+nonempty finite list of anchors. Seven modules formalize the word type,
+injective splice, recursive compatibility predicate, counting induction,
+closed density formula, and construction from the original bihomomorphism.
+
+`ColumnWord N k` is a recursively nested word of `k` triples, with exactly
+`3*k` entries and `N^(3*k)` possibilities. `columnWordEval f` evaluates the
+alternating sum of the entries after applying `f`: a triple contributes
+`f x-f y+f z`, followed by subtraction of the remaining word's value.
+`columnAnchorEval f` is the corresponding alternating sum of an anchor
+list. Repeated anchors and repeated word entries are allowed.
+
+`Proofs16ColumnWords.columnWord_first_fibre_card_le` proves that a
+fixed-value family of words with `k+1` triples has first-endpoint fibres
+of size at most `N^(3*k+1)`. Fixing the first entry and all entries except
+the middle entry of the first triple determines that middle entry.
+Projection onto the last entry of the first triple and the remaining
+`k` triples is therefore injective on the fibre. Averaging then gives
+at least `delta*N/2` popular first endpoints, each with at least
+`delta*N^(3*k+1)/2` representations, whenever the full family has at least
+`delta*N^(3*k+2)` words.
+
+`Proofs16ColumnWordSplice` prepends a triple representing `a` to a
+nonempty word representing `b`. If the exact connecting quadruple is
+`q`, the old triple's last entry is `q2` and the old word's first entry
+is `q1`. Replace them by `q0` and `q3`. The resulting word represents
+`a-b`. The output and the two represented values recover both replaced
+entries: the old triple's last entry is `a-y1+y2`; the old word's first
+entry is `b+z2-z3+value(tail)`. This gives a left inverse and proves
+injectivity of the splice at every length.
+
+`columnWordRepresentations B T L r as` records the recovered triple,
+recovered shorter word, and exact connecting quadruple recursively.
+`columnWordRepresentations_spec` proves that every output entry lies in
+`B`, that its value is `columnAnchorEval id as`, and that its map value
+is `columnAnchorEval (fun x => L x y) as` on the recursively specified
+`columnWordDomain`. That domain explicitly retains all recovered
+intermediate column conditions. The map identity is not yet asserted
+on only the anchor and output Bohr domains.
+
+`column_word_representations_step` keeps the two input densities separate.
+For a triple family of density `lambda` and a shorter word family of
+density `delta`, the two popular endpoint sets have densities at least
+`lambda/2` and `delta/2`. Hereditary richness supplies at least
+`eta^2*lambda^2*delta^2*N^3/16` connecting quadruples. Multiplying by the
+two fibre bounds and using splice injectivity gives
+
+```
+# representations(a :: b :: as)
+  >= (eta^2*lambda^3*delta^3/64) * N^(3*as.length+5).
+```
+
+There is no need to replace the input densities by their minimum. The
+verified uniform density for `k+1` triples is therefore the recurrence
+
+```
+delta_0 = lambda,
+delta_(k+1) = eta^2*lambda^3*delta_k^3/64.
+```
+
+`column_word_representations_count` proves this bound for every nonempty
+list in a core whose anchors have at least `lambda*N^2` triple
+representations. `columnWordDensity_formula` and
+`columnWordDensity_loss_exponent` give the explicit solution
+
+```
+delta_k = (eta^2*lambda^3/64)^((3^k-1)/2) * lambda^(3^k).
+```
+
+The exponents here are natural numbers; `(3^k-1)/2` is exactly the
+geometric sum `sum_{i<k} 3^i`. Positivity is proved for every `k` when
+`lambda` and `eta` are positive.
+
+`global_column_word_representations` constructs the same dense core
+`P` directly from the original dense bihomomorphism and proves all
+these counts with `lambda = globalColumnAnchorDensity alpha` and
+`eta = globalColumnWalkDensity alpha`. The original column witnesses,
+rank bounds, normalization, local linearity, triple counts, and full
+ambient hereditary richness remain in its conclusion. No additional
+modulus threshold or radius loss is introduced for these representation
+counts.
+
+**Remaining work.** The arbitrary-length counting induction is complete.
+The recursively retained intermediate domains still need to be removed
+with an explicit frequency/radius budget before using an identity on
+only the output and anchor domains. Subsequent bilinear organization,
+shifted agreement, and the final Gowers numerical structure budget
+remain open. The explicit density formula is an intermediate estimate,
+not a proof of the remaining numbered structure statements.
+
+**Verification.** The global construction checks 226 modules, and the
+closed-form module checks 225. All 14 new named theorems pass individual
+axiom checks using only `propext`, `Classical.choice`, and `Quot.sound`.
+No additional upstream modules or Apache provenance changes were needed.
+
+The combined audit checks 7,139 public Gowers theorems in 5,133 modules
+(5,131 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.

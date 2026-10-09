@@ -1,0 +1,30 @@
+\subsubsection{Measured effect of the pulling subdivision}
+
+The final benchmark runs serially after the suite, audit and publication of
+the runtime change. It compares the pinned first constructor and checker at
+\code{8354e8aab} against the final pulling implementation, using the same
+maintained manifold validator. Each timed call starts afresh, constructs the
+exterior, independently replays its source geometry and validates the finite
+manifold. Serialization for the stored output hash is outside the timer.
+Both variants perform the complete stated operation; they have different
+canonical subdivisions and therefore different expected output hashes.
+
+The four inputs are stabilized circles with $1,8,32,128$ crossings. There
+are five rounds and four interleaved arms: old, old repeat, new and new
+repeat, plus one warmup per arm and input. All eighty measured calls and
+sixteen warmups complete in a total driver elapsed time of 24.675 seconds.
+Hashes agree within each subdivision across every repeat. The table gives
+unpaired time medians and medians of paired ratios.
+
+\begin{center}
+\small
+\input{tables/diagram_exterior.tex}
+\end{center}
+
+The complete-call old/new ratios are $3.748$--$4.346$. Old A/A ratios are
+$0.996$--$1.032$ and new A/A ratios are $0.996$--$1.043$. At 128 crossings,
+the median falls from $1.217252$ seconds to $0.284316$ seconds; tetrahedra
+fall from 10,240 to 2,560. This is consistent with the exact factor-four
+reduction in geometry. It measures construction, source replay and manifold
+validation, not a normal-vector search, a simplified minimal exterior or
+whole recognition. It supplies no new general quasipolynomial theorem.
