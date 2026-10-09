@@ -8501,3 +8501,62 @@ qualifications. The selected upstream scope remains 4,134 modules plus
 17 compatibility modules, with no new port or license requirement. The
 reviewed incoming main changes affect only the independent topology report
 and its measurements.
+
+
+### J.133. One coherent family from the four progression rows
+
+**A shared domain makes pointwise row selection possible.** After J.132,
+every selected frequency extension is defined and Freiman on the entire
+same proper progression. We may therefore use the union of all four
+varying frequency lists at every point. Together with the fixed constants,
+this spectrum has size at most sixteen times `jointSelectionRank d r`.
+Its Bohr domain is contained in each of the four original affine row
+domains at that point. `exists_unified_freiman_family` enumerates the
+varying part by one fixed finite list of at most eight times that rank;
+every member is normalized and Freiman on the whole progression.
+
+**Discard collisions, then select one row per point.** An additive tuple
+with a repeated entry lies in one of four two-parameter families. Thus
+`additive_quadruples_repeated_card_le` bounds all such tuples by `4*N^2`,
+without a characteristic restriction. If the original tuple density is
+`eta` and `8 <= eta*N`, at least `eta*N^3/2` distinct tuples remain.
+Each distinct tuple consistently prescribes four values of a pointwise
+label function `color : ZMod N -> Fin 4`. Indexed selection averaging
+retains at least a `4^(-4)` proportion satisfying `color (b j) = j`.
+There is no loss from identifying requirements with the same support.
+
+`coherent_four_rows_to_single` chooses the local map at `u` from row
+`color u`. On the union-spectrum Bohr domain, it is normalized and Freiman.
+At least `(eta/512)*N^3` original centred tuples remain coherent for this
+single chosen family; their entries belong to a set of size at least
+`(eta/512)*N` in the same progression. This proves the row-unification
+step without an unproved Cauchy--Schwarz transfer of local identities.
+
+**Actual anchors and their agreement are retained.**
+`HasCoherentProgressionRows.single_system` gives the reusable
+`IsSingleCoherentProgression` witness. It retains a realizing popular
+original arrangement for every point, with original shift
+`t (color u) + u`. It also retains the original arrangement for every
+selected tuple. `IsSingleCoherentProgression.popular_agreement` proves
+that every selected point has dense agreement with original core-column
+differences inside its actual unified Bohr domain. The explicit density
+is `coreAnchorAgreementDensity popularity (16*selectionRank) g d r
+(selectionRadius/2)` and is positive for positive popularity and radius.
+The maps may use different translation labels; a later restriction to
+one label is still needed when a common source translation is required.
+
+**Global construction.** `global_single_coherent_progression` starts
+from the original dense bihomomorphism. The modulus bound is the maximum
+of the prior global anchor threshold and `ceil(8/eta)`, where `eta` is
+the previously proved coherent progression density. Its conclusion
+retains the column witness system, all even-core relations, and an actual
+single coherent progression system with pointwise core agreement.
+All geometric, frequency, and density objects are constructed rather
+than supplied as assumptions. The later regularity/BSG step and a final
+polynomial quantitative certificate remain open.
+
+All eight new modules check in the 449-module production closure. All
+22 new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is ported and no
+numbered catalogue entry is claimed closed. Full merged verification is
+recorded below.

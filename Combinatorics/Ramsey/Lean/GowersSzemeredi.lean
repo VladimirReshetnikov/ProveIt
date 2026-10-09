@@ -940,6 +940,7 @@ import GowersSzemeredi.Proofs16UniformAnchorIndexDensity
 import GowersSzemeredi.Proofs16PopularCommonIndexAgreement
 import GowersSzemeredi.Proofs16JointRowCommonBohr
 import GowersSzemeredi.Proofs16PopularAffineRowAgreement
+import GowersSzemeredi.Proofs16GlobalSingleProgression
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
