@@ -1,0 +1,121 @@
+\section{Contracting forced differences before Euler optimization}
+\label{sec:cocycle-quotient}
+
+The exact Euler optimizer of Section~\ref{sec:cocycle-euler} still routes
+flow through vertices whose relative potentials cannot change anywhere on
+the minimum-span face. The new implementation identifies these forced
+differences, solves a smaller problem and reconstructs a full certificate
+on the original indexed model. The independent arithmetic checker and all
+source-bound surface verifiers remain unchanged. If no vertices can be
+contracted, an adaptive branch retains the original full-network solver.
+
+\subsection{Which tight constraints force equality}
+
+Start with the verified feasible potential $p^0$. For a difference constraint
+$p_b-p_a\leq d_{ab}$, its slack is
+$r_{ab}=d_{ab}+p^0_a-p^0_b\geq0$. Put $q_v=p_v-p^0_v$, so the constraint becomes
+$q_b-q_a\leq r_{ab}$. On a directed zero-slack path, the shifted potential
+cannot increase. If two vertices are mutually reachable using such paths,
+their shifted potentials must be equal for \emph{every} feasible solution.
+Thus each strongly connected component of the zero-slack graph is one
+quotient variable. A one-way tight edge is insufficient: $q_b\leq q_a$
+still allows strict inequality. The implementation uses iterative Kosaraju
+traversals, avoiding recursion depth proportional to the graph size.
+
+For a component map $C$, write $p_v=p^0_v+q_{C(v)}$. An objective term becomes
+\[
+ w_e\left|c_e+p^0_b-p^0_a+q_{C(b)}-q_{C(a)}\right|.
+\]
+Internal terms are constants and need no flow optimization. Between two
+components, terms with the same oriented endpoints and shifted offset are
+combined by adding their weights; reversing an orientation also negates the
+offset. Among constraints with the same ordered component pair, only the
+smallest shifted bound is needed. Internal constraints are redundant because
+their shifted left side is zero and their bounds are nonnegative.
+
+These operations preserve the complete feasible set after the forced
+substitution and preserve the objective up to its explicitly retained
+constant terms. They do not choose one representative surface topology or
+restrict the face to sampled extrema. The zero quotient potential is already
+feasible, so the existing exact flow solver applies directly to the reduced
+network. The final potential is expanded and normalized only by an additive
+constant. Its objective is recomputed on the original edge list.
+
+\subsection{Lifting the dual without trusting the quotient}
+
+The returned certificate still has one flow per original objective edge and
+per original constraint. An internal objective edge receives the sign-saturating
+flow $w_e\operatorname{sign}(c_e+p^0_b-p^0_a)$. A zero-weight edge receives zero.
+For an aggregated intercomponent term, split its signed flow $F\in[-W_g,W_g]$
+across the original intervals $[-w_e,w_e]$: begin at all lower endpoints and
+distribute $F+W_g$ units in bulk, at most $2w_e$ to each member. Restore each
+member's original orientation. This uses one pass over the members and never
+iterates over flow units. Because all members have the same shifted affine
+expression, the split preserves complementary equality. Each quotient
+constraint flow is assigned to one original constraint attaining its minimum
+bound; the discarded parallel constraints receive zero.
+
+The lifted flow now balances on each component as a whole, but may not balance
+at its individual vertices. Two directed trees inside the zero-slack component
+repair this. A tree directed toward the root comes from the reverse traversal;
+a forward traversal supplies a tree directed away from it. In reverse order
+on the inward tree, send each positive vertex imbalance toward the root,
+allowing intervening negative imbalances to absorb flow. Every nonroot vertex
+then has nonpositive imbalance. In reverse order on the outward tree, send
+the remaining subtree demand from parent to child. Component balance ensures
+that the root also ends balanced.
+
+All added constraint flows are nonnegative and use original zero-slack arcs.
+Their constraints stay tight after the quotient potential is expanded, so
+they preserve complementary equality. Internal constant objective terms,
+aggregated terms and retained constraint flows therefore give a feasible dual
+on the original model with the same value as its expanded primal potential.
+The unchanged checker independently verifies every original flow bound,
+difference inequality, vertex balance equation and objective equality. It
+receives neither a component partition nor a compressed certificate whose
+interpretation would depend on the producer.
+
+\subsection{Operation bounds and an adaptive no-contraction branch}
+
+Let $n,e,m$ be the original counts of vertices, objective terms and constraints;
+let $k,e',m'$ be their quotient counts, and let $W'$ be the remaining objective
+weight sum. Construction, expansion and tree routing require
+$O(n+e+m)$ indexed graph operations, apart from dictionary operations used to
+combine rows. The reduced shortest-path phase costs
+\[
+ O\!\left(W'(k+e'+m')\log(k+1)\right)
+\]
+arithmetic and comparison operations. For the geometric model,
+$n+e+m=O(N)$ and $W'\leq W\leq12N$, retaining the previous worst-case polynomial
+bound. There is no universal asymptotic improvement when the quotient is as
+large as the original graph. If $k=n$, the implementation bypasses aggregation
+and lifting and calls the original solver; the additional cost is the linear
+zero-slack graph analysis. Python hash-collision accounting and binary integer
+costs remain subject to the conservative polynomial qualifications of the
+preceding section.
+
+Lifting is independent of the numerical magnitude of its flows. The reduced
+solver sends at most $W'$ units along simple paths with $O(k)$ arcs, so the sum
+of its final nonnegative constraint flows is $O(kW')$. Together with the bounded
+objective flows, the initial positive imbalance to repair is at most
+$O(W+kW')$. Each tree edge carries at most this amount per traversal. Thus
+all lifted flows have polynomial magnitude in the geometric input size and
+$O(\log(N+1))$ bits. Their sum need not be linear in $N$. The
+solver's auxiliary capacity $W+1$ is not a constraint on the original dual:
+lifted constraint flows need only be nonnegative.
+Heights and shifted costs remain binary encoded; no level, sheet or flow unit
+is expanded. Independent arithmetic replay remains linear in the original model size
+in this model; source and geometry checks are retained.
+
+A concrete family separates the costs. Take $n$ vertices in a directed cycle
+of zero-slack constraints and one unit-weight objective edge from vertex zero
+to every other vertex, each with shifted offset one. The old initialization
+creates $n-1$ separate unit supplies, so the full solver performs $n-1$
+augmentations. Each shortest-path call scans the source's $n-1$ arc entries,
+giving a quadratic scan lower bound for that implementation. The new quotient
+has one vertex, no variable objective terms and no augmentations; two tree
+passes lift its dual in linear graph work. The retained operation-count
+experiment measures this family directly, rather than inferring an
+asymptotic improvement from wall-clock ratios alone.
+
+\input{cocycle_quotient_results.tex}

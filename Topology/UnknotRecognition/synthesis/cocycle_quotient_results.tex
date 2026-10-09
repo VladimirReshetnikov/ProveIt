@@ -1,0 +1,52 @@
+\subsection{Preserved optima and a newly completed large source}
+
+The comparison loads the full flow implementation from revision
+\code{18e76fe87}. Its complete source hash is retained. Before comparing the
+new implementation, it exactly reproduces every source record, positive proof,
+arithmetic dual and Regina result in the preceding audit. All 83 previously
+completed sources preserve their Euler optimum, minimum piece count and
+independently checked connected-surface summary under contraction. Their
+selected potentials need not be the same: 58 source-certificate hashes change.
+Every resulting source surface and arithmetic dual is checked again.
+
+The new run completes 84 of 85 sources under the same shared two-million-guard
+allowance. Gordian remains capped during the unchanged span solver. Circle 33,
+previously capped in Euler optimization, now finishes the entire audited
+pipeline at 1,197,679 guards; its Euler stage takes 90,106 guards. Its face
+contracts from 130 variables to 64. This is a newly completed exact-face
+experiment, not a newly recognized knot: the default native search already
+has an earlier witness for this source.
+
+All completed sources have a nontrivial contraction. Selected reductions are
+14 to 4 variables for the trefoil, 22 to 2 for the original-disc fixture,
+30 to 5 for the tied-disc fixture, 46 to 8 for random case 19, 50 to 13 for
+random case 158, and 46 to 5 for Kinoshita--Terasaka. The corresponding Euler
+stage guard counts fall from 23,470 to 5,909; 58,288 to 9,579; 108,324 to 13,618;
+292,201 to 21,604; 428,401 to 25,311; and 322,516 to 21,253. Guard counts measure
+the deterministic allowance, not elapsed time or bit operations.
+
+The audit retains 74 distinct full arithmetic models and lifted duals and 14
+distinct positive source proofs, covering 19 positive source labels. Regina
+reconfirms all 75 small-source controls; their observed boundary counts also
+agree with the previous optima. Neither that agreement nor equality of Euler
+characteristic is used to assert equality of all possible surface topologies.
+The certified negative optimum for the three-crossing unknot remains $-1$.
+The restriction to the minimum-span face and the incomplete nature of general
+surface discovery are unchanged.
+
+The forced-cycle family gives the following measured arithmetic guard and arc
+scan counts. Every quotient has one vertex and no variable objective terms.
+\begin{center}
+\small
+\input{tables/cocycle_quotient_family.tex}
+\end{center}
+The new flow stage uses $19n-2$ measured guards at these sizes; the preceding argument
+establishes linear indexed graph work without depending on an empirical fit.
+Additional tests cover 240 random forced-group problems against the full
+solver, reversed and parallel objective terms, tight one-way constraints,
+malformed lifted duals, cancellation and the adaptive singleton bypass. A
+1,500-vertex cycle with 20,000-bit vertex offsets checks iterative traversal,
+large cancellation in the dual, binary JSON replay and a linear guard bound.
+The earlier 240 exhaustive-grid arithmetic controls remain active.
+
+\input{cocycle_quotient_measurements.tex}
