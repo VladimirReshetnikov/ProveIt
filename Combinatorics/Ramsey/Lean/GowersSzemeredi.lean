@@ -982,6 +982,10 @@ import GowersSzemeredi.Proofs16GlobalCoherentRichSystem
 import GowersSzemeredi.Proofs16GlobalCoherentWordSystem
 import GowersSzemeredi.Proofs16GlobalCoherentNestedSystem
 import GowersSzemeredi.Proofs16SpanBallSplit
+import GowersSzemeredi.Proofs16CommonValue
+import GowersSzemeredi.Proofs16CommonValueFreiman
+import GowersSzemeredi.Proofs16ClaimNineFour
+import GowersSzemeredi.Proofs16SubsetSumIndependence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
