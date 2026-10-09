@@ -10241,3 +10241,80 @@ with 115 companion proofs and five open statements. These counts do not
 certify fidelity to every printed statement. The selected-port scope check
 passes. Adaptation licensing and the useful consumer are recorded without
 expanding the upstream closure.
+
+### J.147. Selected progression maps and linear-cap auxiliary removal
+
+The first progression-indexed map selection is proved from the original
+bihomomorphism. The maps retain their four-term representatives in the
+original image-controlled index set, and their normalized common domains
+are stated explicitly. Repeated-index queries are counted separately.
+
+**Auxiliary constraints.** `freiman_image_remove_frequencies` proves a
+stronger bounded-image readout than the earlier zero-removal interface.
+If `f` is Freiman-linear on `B(T;rho)`, `|T| ≤ d`, `|U| ≤ e`, and its
+image on `B(T∪U;rho)` has at most `K > 0` values, then
+
+```
+#Im(f on B(T;rho/2)) ≤ K * refinementKernelCap d e rho rho.
+```
+
+A popular level of the restricted image has density at least
+`1/(K*ceil(1/rho)^(d+e))`; the existing dense-level theorem gives the
+half-radius estimate. There is no new frequency and no prime-target or
+modulus-size hypothesis. Dependence on `K` is linear. This estimate is
+available for the remaining bridge-domain cancellation arguments.
+
+**Independent selection.** `pinned_choice_count_product` counts exact
+coordinate fibres of finite choice boxes. `four_choice_fibre_count_product`
+and `four_choice_bad_count_product` prove the product law for four distinct
+queried progression indices. Choices at every other index cancel.
+`exists_independent_choice_few_bad_queries` then selects a valid global
+assignment with the finite averaged error bound.
+
+`flattenFourRepresentations` swaps adjacent pairs in the negative rows and
+injectively embeds four representation rows into one original additive
+16-tuple. Its index and map-value equations are proved. A bad original
+tuple determines all four rows and their represented indices, so
+`represented_bad_four_blocks_total_le` charges it at most once. Uniform
+representation density `kappa N^3` therefore gives at most
+`epsilon N^3/(2*kappa^4)` failed distinct-index queries.
+
+**Repeated indices.** `repeated_additive_quadruples_card_le` gives at most
+`6N^2` repeated-index additive queries. Each of the six coordinate pairs
+has at most `N^2` possibilities, proved by recovering the remaining
+coordinates. No independence is asserted for these queries.
+
+**Local maps and their domains.** Chosen four-tuples define the local
+maps. Subtracting the index-zero reference normalizes the index variable;
+local normalization in the other variable is inherited from the original
+maps. Each normalized map uses at most eight original spectra and remains
+Freiman-linear on its common original-radius domain.
+`normalized_quad_image_transfer` proves its half-radius defect image is
+bounded by the original 16-tuple image. Reference-map values cancel, while
+reference-map frequencies are retained in every normalized domain.
+
+`exists_selected_progression_maps` combines these results with failure
+bound
+
+```
+epsilon N^3/(2*kappa^4) + 6N^2.
+```
+
+`global_selected_progression_maps` uses the original-data robust
+progression, with `kappa = exp(-p)^4/8`. For a requested error `eta > 0`,
+choose original source error `epsilon = eta*kappa^4` and add the explicit
+modulus condition `N ≥ 12/eta`. The output retains original witnesses,
+local maps, robust representation counts, progression rank/mass bounds,
+and the selected representatives. The normalized maps have codimension
+at most `8d`, are Freiman-linear at radius `1/(4*pi)`, and their quadruple
+images at radius `1/(8*pi)` exceed the inherited cap on at most `eta N^3`
+additive queries. They vanish at both the vertical origin and index zero.
+The progression rank and mass bounds remain independent of `eta`.
+
+This proves the representative-selection/image-control part needed from
+Claim 7.2. Its stronger source-approximation conclusions and the subsequent
+purification/extension in Claims 7.3–7.5 remain open. Compatibility on every
+quadruple of a smaller progression, the eight-term source agreement, the
+remaining structure assembly and the final printed numerical comparison
+are not yet proved. The five numbered open entries remain. No upstream
+code is ported at this checkpoint.
