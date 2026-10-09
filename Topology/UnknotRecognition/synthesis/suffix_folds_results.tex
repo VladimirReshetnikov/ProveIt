@@ -1,0 +1,59 @@
+\subsection{Native audit and performance evidence}
+
+The driver \code{weighted\_research/suffix\_folds.py} compares against
+\code{e052c7ef07f3}, the compact-coordinate implementation from the previous
+section. It records 444 current source/fixture hashes and checks them before
+and after each run. The baseline package is loaded from Git in a separate
+namespace; only its weighted producer differs among pre-existing runtime
+modules. All independent checker files are byte-for-byte unchanged.
+
+All 1,128 maintained tests pass in 214.506 seconds. The weighted audit passes
+10,000 finite systems, split evenly between the classical and Fine--Wilf
+periodic rules, plus exact huge binary examples. The independent checker
+passes 2,500 literal cases, 366 mutation checks, producer-disabled replay,
+and a 20,002-bit endpoint case. The normal audit passes 5,100 comparisons
+and certificate replays on the 1,275-vector, 45-triangulation Regina corpus.
+Additional baseline comparisons give identical complete answers, including
+certificates and statistics, for 2,550 normal queries and 1,000 abstract
+systems. The successful audit takes 48.158 seconds while overlapping the
+suite, so its duration is not a performance measurement. The outer record's
+baseline and source hashes identify this run; a nested kernel record retains
+its historical baseline metadata.
+
+The first audit-driver attempt used dictionary pairings for the isolated old
+producer, whose public API requires its own \code{IntervalPairing} class.
+That harness error was corrected before the successful pinned audit; the
+initial log is retained separately. It was not a mathematical or runtime
+regression. The read-only check of \code{openai/math} found its head unchanged
+at \code{fd4aeeb2ee4f}; no new upstream mathematics was imported in this step.
+
+The complete-query benchmark runs serially after the audit, suite and first
+publication. It takes 108.073 seconds and retains all 160 measured calls and
+32 warm-ups. Eight supplied normal surfaces/modes use five shuffled rounds
+with an A/A copy of both engines. Every timed call includes fresh geometry,
+weight construction, orbit discovery, certificate production and independent
+verification. Input-fixture construction, serialization and equality checks
+are outside the timer. Full answers, including every certificate field and
+statistic, agree on every call.
+
+\input{tables/suffix_folds.tex}
+
+On the 128-tetrahedron full-coordinate query, median total time changes from
+2.774 to 2.463 seconds, with a within-round median ratio of $1.126$.
+Production medians are 1.497 and 1.225 seconds. Verification uses identical
+code and proof; variations in its measured time are not an algorithmic gain.
+At 64 tetrahedra the total paired ratio is $1.094$. Triangle-only queries
+are unchanged ($1.000$ after rounding), while the large binary-coordinate
+fixture gives $1.050$. Three-weight disk queries give only $1.019$ and
+$1.008$; these small differences should not be advertised as reliable gains.
+Old A/A ratios range from $0.988$ to $1.017$ and new A/A ratios from
+$0.981$ to $1.012$.
+
+This is an incremental comparison against the compact implementation, not
+against the earlier dense-coordinate version. Its gains should not be
+multiplied with ratios from another run to claim a measured combined speedup.
+The improvement is local to weight production, leaves automatic recognition
+coverage unchanged, and does not establish a general quasipolynomial bound.
+All samples and deduplicated complete certificates are retained in
+\code{data/suffix-fold-benchmark.json}; the table generator is
+\code{data/suffix\_fold\_tables.py}.

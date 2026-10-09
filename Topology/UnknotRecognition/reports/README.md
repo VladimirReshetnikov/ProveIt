@@ -422,4 +422,8 @@ separate producer and checker algorithms. The proof of `H <= v + 2*q` distinct
 component vectors, and `H <= v + q` for two-sided components, is included with
 its sharp one-tetrahedron example. All 1,125 maintained tests pass; 1,275
 Regina cases preserve the dense inventories, legacy replay and orbit proofs.
-The archive's separate full-carrier weighted-run bound remains under review.
+The archive's full-carrier weighted-run bound is now reviewed in
+`../synthesis/suffix_folds.tex`. The native deleted-suffix operation has a
+stronger sharp `+2` run bound. It retains its independent checker and now
+restricts dense vector arithmetic to the receiving interval; the delivery's
+shared producer/checker arithmetic is not adopted.
