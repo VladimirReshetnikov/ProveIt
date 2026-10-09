@@ -5,11 +5,26 @@ full sparse graph moment equivalent. Part III: dominant vertices. Part IV:
 larger tree walk lower bounds. Part V: a shifted Bell lower bound. Five
 successive studies of one sequence.**
 
-A report in five Parts, built from five manuscripts of one external research
-session (the session bundle of Reports 1–243, arrival commit `60f54ea06`),
-placed by `f79c9bef1` (batch 112) and written on 7 October 2026. No
-manuscript names an author, a tool or an addressee; every PDF author field is
-empty.
+**Part VI (added 9 October 2026): general mean degree `c`.** For the moments
+`m_k(c)` of `G(N, c/N)` (`m_k(1) = M_{2k}`), uniformly for `c` in any compact
+subset of `(0, ∞)`: all fixed collision orders,
+`m_k(c)/(2H_k(c)) = 1 + Σ_{j≤p} A_j(k,c) + O(log^{10p+6}k/k^{p+1})`,
+`H_k(c) = E(X+c)^k`, `X ~ Pois(c)` (`2B_{k+1}` at `c = 1`), with
+`log(m_k(c)/2H_k(c)) = c w²(w+2+2c)/(2k) + c w⁵/(6k²) + O(w⁴/k²)`,
+`w = W(k/c)`; a signed Poisson–Charlier law for the maximum-departure deficit
+with sharp total-variation constants `√(c/2π) w^{5/2}/k` (against `Pois(cw)`)
+and `φ(1) w²/k` (optimal over all Poisson means); and a growing-degree
+transition `m_k(c)/(2H_k(c)) = e^{c²w²/k}(1 + O(k^{−1/4} log^{13/4} k))` when
+`cw/√k` stays in a compact set. It answers Section 56's item `meandegree`, and
+`suborders` in part; not `growing`.
+
+A report in six Parts. Parts I–V were built from five manuscripts of one
+external research session (the session bundle of Reports 1–243, arrival
+commit `60f54ea06`), placed by `f79c9bef1` (batch 112) and written on
+7 October 2026; none names an author, a tool or an addressee, and every PDF
+author field is empty. Part VI is a manuscript of 8 October 2026, "Research
+manuscript prepared with OpenAI assistance for the ProveIt project" (title
+page and PDF author), written into the report on 9 October 2026.
 
 **The object.** `M_{2k}` (written `a_k` in Parts I–II) counts the closed walks
 `(v_0, …, v_{2k−1}, v_0)` whose traversed edges form a tree, up to relabelling
@@ -30,9 +45,12 @@ note.
 | *Dominant vertices in sparse graph moments* ("Report212") | 212 | `Report212-reproducibility.zip` (555,569 bytes, 36 files; 578 lines, 16 pp.) | `f79c9bef1` | Part III, Sections 28–38, Appendix A |
 | *Larger tree walk lower bounds for sparse graph moments* ("Report210") | 210 | `Report210-reproducibility.zip` (431,307 bytes, 9 files; 438 lines, 12 pp.) | `f79c9bef1` | Part IV, Sections 39–48 |
 | *A shifted Bell lower bound for sparse graph moments* ("Report209") | 209 | `Report209-reproducibility.zip` (415,540 bytes, 12 files; 440 lines, 13 pp.) | `f79c9bef1` | Part V, Sections 49–55 |
+| *Sparse graph moments: sharp corrections, optimal Poisson laws, and a growing-degree transition* (8 October 2026; batch 138, group OEIS, manuscript 04) | — | `sparse_graph_moments_research.zip` (2,095,612 bytes, 33 files in one wrapper directory; `article.tex` + 5 section files + `references.tex`, 3,006 lines, 40 pp.), arrival `b28d0850b` | `803f4d937` (23 files, prefix `06-meandeg-`) | Part VI, Sections 57–64 (Section 57 added by the write) |
 
-All five are dated 4 October 2026. None records a ProveIt commit, so no pin
-is recorded.
+Reports 209–214 are dated 4 October 2026 and record no ProveIt commit, so no
+pin is recorded for them. Part VI is pinned to ProveIt `9570aaede2`
+(7 October 2026, 21:31 PDT), where this report's `article.tex` is Parts I–V
+as merged and checked, and to `openai/math` `adc7f1241b42` (not checked).
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report, and its place in the
@@ -88,6 +106,39 @@ so the first relative correction is carried by `J_k` alone, at the
 coefficient `1/2` of Part III's scalar Theorem 35.1. It also quotes the OEIS
 entry (Remark 1.2) and classifies the inverses (Remark 11.4).
 
+**Part VI (general mean degree, 8 October 2026).** `m_k(c) = Σ c^{e(ω)}`
+over normalized closed tree walks (the moment of `G(N, c/N)`, graph-size limit
+first), `T_n(c) = E X^n`, `H_k(c) = E(X+c)^k`, `X ~ Pois(c)`, `w = W(k/c)`;
+`K` a compact subset of `(0, ∞)`.
+- **Theorem 60.4:** the weighted complement and rotation reduction,
+  uniformly on `K`; **Theorem 60.6:** for every fixed `p`,
+  `m_k(c)/(2H_k(c)) = 1 + Σ_{j≤p} A_j(k,c) + O_{K,p}(log^{10p+6}k/k^{p+1})`,
+  `A_j(k,c) ~ c^j w^{3j}/(2^j j! k^j)` (at `c = 1` Part I's Theorem 1.1);
+  **Corollary 60.7:** `A_1 = c w²(w+2+2c)/(2k) + O(w⁴/k²)`,
+  `m_k/(2H_k) = 1 + P_1 + (c²/8 + o(1)) w⁶/k²`, and
+  `log(m_k/2H_k) = P_1 + c w⁵/(6k²) + O(w⁴/k²)`.
+- **Theorem 61.1:** for the deficit `D_k = k − max_v d_ω(v)` of the
+  moment-weighted walk, a signed Poisson–Charlier expansion about
+  `Pois(cw)`; `TV(ν, Pois(cw)) ~ √(c/2π) w^{5/2}/k` and
+  `TV(ν, Pois(cw + cw³/k)) ~ φ(1) w²/k`; **Theorem 61.2:** the
+  latter is optimal over all Poisson means, with the profile
+  `F(t) = ½ E|(Z²−1)/2 − tZ|`; **Corollary 61.6:** a two-jump compound
+  Poisson law with error `o(w²/k)`.
+- **Theorem 62.1:** uniformly for `a ≤ cw/√k ≤ b`,
+  `m_k(c)/(2H_k(c)) = exp(c²w²/k)(1 + O(k^{−1/4} log^{13/4} k))`; `c_k =
+  β√k/log k` gives `e^{β²/4}`; the factor is the exact Catalan quotient
+  `Q(k,s) = Π_{j<s}(k+j)/(k−j)`; **Corollary 62.6:** simple off-hub edges
+  carry all but `O(k^{−1/4} log^{13/4} k)` of the weight.
+- Section 63: exact checks (recurrence to `k = 128` at `c = 1/2, 1, 2`,
+  brute force `k ≤ 7`, symbolic `d_h`, `P_h`), Table 9, two illustrative
+  figures; Section 64: twelve research questions.
+
+The write adds (9 October 2026), with proofs: at `c = 1`,
+`(M_{2k} − G_k)/(2B_{k+1}) = W³/(2k) + (1 + o(1))W²/k` (note after Remark
+46.1; the remark itself is not sharpened), and Part V's weighted lower bound
+equals `2(H_k(c) − cH_{k−1}(c)) − P_k(c)`, hence is asymptotic to
+`μ_{2k}(c)` for each fixed `c` (note at the end of Section 56).
+
 (Section, statement and equation numbers are those of the committed PDF.)
 
 ## Printed once: the repeated proofs
@@ -131,6 +182,15 @@ Parts IV and V, the Bell convolution proved in Parts II, IV and V).
   Hiesmayr–McKenzie (context only). Every source comparison is bounded; no
   Part claims priority or that a question is globally open. Nothing was
   submitted to the OEIS.
+- Part VI (collected in Section 57.4): limiting moments only, graph-size
+  limit first, nothing asserted "for a simultaneous limit of finite matrices
+  with `k = k_N`"; the growing-degree error "not claimed sharp"; no
+  uniformity for growing order; `D_k` is "not the degree of a typical vertex
+  of a finite graph"; Bauer–Golinelli the one external input; the `c = 1`
+  construction "not claimed anew", and "Merely improving a displayed
+  logarithmic exponent in that way is a corollary of the earlier method";
+  the source audit "cannot certify worldwide priority"; no peer review or
+  formalization; the figures plot labelled models, not the full walk law.
 
 ## Further questions, and the standing rule
 
@@ -150,6 +210,21 @@ further directions, Part IV's and Part V's statements that the equivalent
 does not follow from them, Part IV's leading-scale question and Part V's
 first question.
 
+**After Part VI** (dated note at the end of Section 56; the earlier notes
+are kept): `meandegree` **answered** for compact `c` (Theorem 60.6; its own
+complement Theorem 60.4); `suborders` **answered in part** (the whole scale
+`1/k`, at `c = 1` `W³/(2k) + 2W²/k`, and the `w⁶`, `w⁵` terms at `k^{−2}`;
+the lower suborders open); `growing` **not answered** — the intake's triage
+read Part VI's growing *mean degree* as item `growing`, which is a growing
+*collision order*; the transition is a new direction. `window`, `hubs`: not
+answered. Part VI's own twelve research questions (`sgm:md:q:*`: the
+critical first correction, a uniform passage from compact to growing `c`,
+beyond the critical window, vanishing `c`, sharper positive approximations,
+local laws at critical degree, joint hub statistics, several dominant
+vertices, finite-graph transfer, spectral tails, weighted edges and other
+offspring laws, effective bounds and formalization) stay open; no claim of
+Part VI was found wrong.
+
 ## The OEIS entry
 
 A094149 (revision #10, 13 July 2025; Alexey Spiridonov, 4 May 2004) lists 13
@@ -157,6 +232,7 @@ terms and records "Asymptotically between A_k (the k-th Bell number, A000110)
 and choose(2k, k)*A_k." Remark 1.2: the 13 terms were recomputed; the formula
 line is a correct pair of bounds (`B_k ≤ M_{2k} ≤ Cat_k B_k`), neither of
 which is sharp, by Part II. The entry has no conjecture, so none is settled.
+Read again at Part VI's write (9 October 2026): revision #10, unchanged.
 The quoted sentence is the middle one of the formula line. The full line is
 "See [link:1] for a complex recurrence relationship. Asymptotically between
 A_k (the k-th Bell number, A000110) and choose(2k, k)*A_k. (see [ref:1])."
@@ -189,6 +265,14 @@ checked with this report, see below). Neighbours by
 method: `a277364-bell-asymptotics`, `a088714-bell-scale-growth`. No Lean or
 Rocq development treats these sequences.
 
+Part VI: its account of Parts I–V (the `c = 1` dominant-vertex reduction and
+all fixed collision orders; general mean degree listed as a further
+question) is correct; it credits them as the "direct repository precursor".
+No other report treats `G(N, c/N)` moments for general `c`, so no reciprocal
+note is needed. Its proposal of a sibling report
+`a094149-weighted-moments-and-critical-transition/` was declined at
+placement (one report per A-number).
+
 ## Labels and numbering
 
 All labels carry the prefix `sgm:`: Part I `sgm:co:` (Report 214's 129
@@ -207,10 +291,20 @@ labels were prefixed before anything cited them.
 | III | Report 212 | `k + 27` (28–38), A | `(k + 27).j` | `(k + 155)` (156–194) | 4–5 |
 | IV | Report 210 | `k + 38` (39–48) | `(k + 38).j` | `(k + 194)` (195–227) | 6 |
 | V | Report 209 | `k + 48` (49–55) | `(k + 48).j` | `(k + 227)` (228–250) | 7–8 |
+| VI | manuscript of 8 October 2026 | `k + 57` (58–64; 57 the write's) | `(k + 57).j` | `(k + 57).j`, within sections | 9 |
 
 The equations not printed again keep their places in the count. Every
 printed delivered number was checked against the `.aux` files of separate
-builds of the five delivered sources (300 labels, 0 differences). Report 210
+builds of the five delivered sources (300 labels, 0 differences). Part VI
+(9 October 2026): its 158 labels carry `sgm:md:` and its 192 references (144
+`\eqref`, 48 `\ref`) were updated; from Part VI on equations are numbered
+within sections, as delivered (`\counterwithin`), so Parts I–V keep their
+consecutive numbers; its research questions are `(k + 57).j` too; its Table 1
+is Table 9 and its Figures 1–2 keep their numbers (Parts I–V have none). The
+write added 19 labels (`sgm:md:part`, `sgm:md:sec:front` and five
+subsections, twelve `sgm:md:q:*`). Against builds of the committed text, of
+the delivered manuscript (40 pp.) and of this one: all 324 earlier labels
+unchanged; all 158 Part VI labels at the stated shift; 501 labels in all. Report 210
 names its own Sections 1, 4 and 5–7 by number in its text; they are Sections
 39, 42 and 43–45 here (stated in its Part header).
 
@@ -226,6 +320,17 @@ different numbers), `R`, `S` (window versus Stirling numbers versus Part IV's
 front-matter table "Reading conventions" lists them with the tempting false
 readings.
 
+Part VI keeps its letters (table in Section 57.5). The dangerous ones: its
+`T_n(c)` is a Touchard polynomial (Part I's `T_k` is a transform sum); `H_k(c)
+= E(X+c)^k`; `D_k` the deficit (Parts I–III's two-hub count); `Q(k,s)` a
+Catalan quotient (Parts II–IV's `Q_k = B_{k+1}`); `P_1(k,c)` versus Bell
+polynomials `P_h`; `w = W(k/c)` (Parts III–IV write `r = W(k)`); `v_t` has two
+meanings within Part VI; its weighted `E^c_{t,q}`, `R_c`, `γ_h`, `d_h`, `P_h`,
+`G_j`, `A_j(k,c)` are Part I's at `c = 1`. Five macros differ in typography
+and are switched at Part VI's start: `\Poi` (Pois), `\Stir`, `\Part`
+(`𝒫[n]`), `\fall` (`x^{\underline h}` = Part I's `(x)_h`), `\rise`; its `\P`
+is `ℙ`.
+
 ## The write's additions
 
 The front matter (Guide with the chain, the duplication and numbering rules,
@@ -239,12 +344,23 @@ blocks (8, pointed to the printed copies). The preamble is the union of the
 five delivered preambles plus `xcolor`, `xurl` and `longtable`. Everything
 else is delivered text.
 
+Part VI's write (9 October 2026): Section 57 (provenance, merge, what it
+answers, checks, non-claims, notation), the Part header and source block,
+a note in the Guide and the Guide table's Part VI row, notes after Remark
+46.1 and at the end of Section 56, four notes inside Part VI (Sections 58.2,
+60.7, 63 and 64), labels on its twelve questions, eight bibliography entries
+marked [Part VI] and Part VI's details added to `bg`, `hdp`, `khor1`, `oeis`;
+`graphicx`, a `definition` style, a `question` environment and `\TV`,
+`\normone`, `\Var` added to the preamble; title, author, date, running head
+and PDF fields extended.
+
 ## Files
 
 ```text
 README.md                                            this guide (replaces Report 214's delivered README.txt)
 article.tex                                          the merged report (delivered Report214.tex, merged with Reports 213, 212, 210, 209)
-article.pdf                                          compiled report, 87 pages
+article.pdf                                          compiled report, 135 pages
+06-meandeg-source_audit.txt                          Part VI: bounded source and priority audit (delivered source_audit.txt)
 209-shifted-SOURCES.txt                              Part V: source ledger (delivered SOURCES.txt)
 210-walks-SOURCES.txt                                Part IV: source ledger
 212-hubs-CODE_README.md                              Part III: computation guide (delivered CODE_README.md)
@@ -255,6 +371,11 @@ article.pdf                                          compiled report, 87 pages
 214-orders-SOURCES.txt                               Part I: source ledger
 214-orders-SOURCE_FILES.txt                          Part I: delivered source inventory
 214-orders-code-README.md                            Part I: finite-check guide (delivered code/README.md)
+code/06-meandeg-Makefile                             Part VI: pdf/verify/clean targets (delivered Makefile)
+code/06-meandeg-build.sh                             Part VI: PDF build script (delivered build.sh)
+code/06-meandeg-numerical_diagnostics.py             Part VI: floating diagnostics, figures and the moment table
+code/06-meandeg-verify_exact.py                      Part VI: first-child recurrence (c = 1/2, 1, 2), brute force k <= 7
+code/06-meandeg-verify_symbolic.py                   Part VI: rows with indeterminate c, d_h, P_h, Catalan products
 code/209-shifted-reproduce.py                        Part V: data/PDF/ZIP driver (delivered reproduce.py)
 code/209-shifted-verify_lower_bound.py               Part V: exhaustive walk DFS (k <= 8), coefficient checks
 code/209-shifted-verify_recurrence.py                Part V: Bauer-Golinelli recurrence (k <= 16)
@@ -278,6 +399,19 @@ code/214-orders-code-reproduce.py                    Part I: finite harness (del
 code/214-orders-common.py                            Part I: shared routines (delivered code/)
 code/214-orders-finite_checks.py                     Part I: finite checks (delivered code/)
 code/214-orders-reproduce.py                         Part I: outer driver (delivered reproduce.py)
+data/06-meandeg-claim_ledger.json                    Part VI: claims, regimes, proof locations (delivered at the root)
+data/06-meandeg-collision_polynomials.tex            Part VI: generated P_2..P_4 (not input by the article)
+data/06-meandeg-critical_diagnostics.json            Part VI: 28 critical-window cases (Figure 2)
+data/06-meandeg-deficit_diagnostics.json             Part VI: 21 first-collision model cases (Figure 1)
+data/06-meandeg-exact_checks.json                    Part VI: counts of the exact checks
+data/06-meandeg-exact_rows.json                      Part VI: exact scaled rows and moments to k = 128 (2,888,373 bytes)
+data/06-meandeg-moment_diagnostics.json              Part VI: 12 finite-moment rows
+data/06-meandeg-moment_table.tex                     Part VI: Table 9, input by the article
+data/06-meandeg-numerical_summary.json               Part VI: scope and stability metadata
+data/06-meandeg-provenance.json                      Part VI: pins and environment (delivered at the root)
+data/06-meandeg-requirements.txt                     Part VI: requirements (delivered at the root)
+data/06-meandeg-symbolic_checks.json                 Part VI: symbolic-check output
+data/06-meandeg-verification_report.json             Part VI: build and review record (delivered at the root)
 data/209-shifted-exact_checks.json                   Part V: recorded verifier output
 data/209-shifted-recurrence_reference.json           Part V: recorded recurrence rows and checks
 data/209-shifted-requirements.txt                    Part V: requirements
@@ -325,10 +459,14 @@ data/214-orders-code-verification-reproduction.json  Part I: recorded reproducti
 data/214-orders-requirements.txt                     Part I: requirements
 data/214-orders-tables-rows.tex                      Part I: Table 1 as delivered (printed inline)
 data/214-orders-tables-table.tex                     Part I: Table 2 as delivered (printed inline)
+figures/06-meandeg-critical_transition.pdf           Part VI: Figure 2, included
+figures/06-meandeg-critical_transition.png           Part VI: its raster preview
+figures/06-meandeg-deficit_profiles.pdf              Part VI: Figure 1, included
+figures/06-meandeg-deficit_profiles.png              Part VI: its raster preview
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
-byte-identical to its delivery. Within-package equal pairs are kept as
+byte-identical to its delivery (106 files in the directory). Within-package equal pairs are kept as
 delivered records: each `tables/*.tex` of Reports 213 and 214 equals the
 corresponding `code/results/` file, and Report 214's `requirements.txt` equals
 Report 213's. Not shipped (retrievable from `60f54ea06`): the five delivered
@@ -336,6 +474,10 @@ PDFs; the texts and delivered READMEs of Reports 209, 210, 212 and 213 (the
 texts are Parts V, IV, III and II; Report 214's README.txt was staged and is
 replaced by this guide); and the three checksum manifests `MANIFEST.json` of
 Reports 212, 213 and 214 (35, 19 and 20 entries), verified at the write.
+Part VI, not shipped (retrievable from `b28d0850b`): `article.tex` (20,981 bytes),
+the five section files and `references.tex` (printed in the article), `article.pdf`
+(597,839 bytes, 40 pages), the delivery `README.md` (6,595 bytes; summarized in
+Section 57 and above) and `SHA256SUMS` (2,855 bytes).
 
 ```sh
 for R in 209 210 212 213 214; do
@@ -381,6 +523,22 @@ guards; no floating-point checks"; Report 209's verifiers passed. Report
 full one a C++17 compiler with GMP; they were not rerun by the write, which
 recomputed the rows independently for `k ≤ 128` instead (Part III's
 Section 34.1 note). The outer drivers and PDF/ZIP builders were not run.
+
+**Part VI** (standard library for the exact checks; SymPy, NumPy, SciPy,
+Matplotlib for the others), on a copy with the delivered names:
+
+```sh
+V=$(mktemp -d); mkdir -p "$V/code" "$V/data"
+for f in verify_exact verify_symbolic numerical_diagnostics; do cp "code/06-meandeg-$f.py" "$V/code/$f.py"; done
+cd "$V" && py -B code/verify_exact.py --order 128 --enumerate-through 7   # writes data/exact_rows.json, data/exact_checks.json
+py -B code/verify_symbolic.py && py -B code/numerical_diagnostics.py
+```
+
+At the write (9 October 2026) the shipped programs were not rerun: the
+intake's own recurrence (`k ≤ 48`) and the write's own integer-scaled
+recurrence (`k ≤ 128`, all three `c`) reproduce every scaled moment of
+`data/06-meandeg-exact_rows.json`, and the write's SymPy rows reproduce the
+symbolic polynomials and Table 9 (Section 57.3).
 
 ## Independent check of the write (7 October 2026)
 
@@ -431,17 +589,23 @@ Nothing else was found wrong. Rebuilt: 87 pages (86), label numbers unchanged.
 ## Build
 
 pdfLaTeX (amsmath, amssymb, amsthm, mathtools, booktabs, array, longtable,
-geometry, microtype, xcolor, hyperref, xurl, fancyhdr, lmodern). In a
-scratch copy:
+geometry, microtype, xcolor, hyperref, xurl, fancyhdr, lmodern, graphicx).
+Part VI inputs `data/06-meandeg-moment_table.tex` and the two
+`figures/06-meandeg-*.pdf`. In a scratch copy:
 
 ```sh
-B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+B=$(mktemp -d); cp article.tex "$B/"; mkdir "$B/data" "$B/figures"
+cp data/06-meandeg-moment_table.tex "$B/data/"; cp figures/06-meandeg-*.pdf "$B/figures/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026;
-rebuilt after the independent check, three passes): 87 pages (86 at the
-write); no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX pdfLaTeX (three passes) on
+9 October 2026, at Part VI's write: 135 pages; no errors or warnings, no
+undefined references or citations, no multiply defined labels, no duplicate
+PDF destinations, no overfull or underfull boxes; changed pages rendered and
+inspected. The delivered Part VI manuscript builds to 40 pages without
+warnings. At the first write (7 October 2026; rebuilt after the independent
+check, three passes): 87 pages (86 at the write); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered sources, built the same way, give 25, 20, 16,
 12 and 13 pages (Report 209's with one underfull box in its bibliography).
@@ -463,3 +627,11 @@ underfull boxes. The delivered sources, built the same way, give 25, 20, 16,
   Bhattacharya–Bhattacharya–Ganguly; Addario-Berry–Lugosi–Oliveira;
   Heydenreich–Müller–Terveer; Bordenave; Valigi et al.; two papers of
   Khorunzhiy; and the repository's transseries volume (added by the write).
+- Part VI: batch 138 of `docs/incoming`, group OEIS, manuscript 04 (arrival
+  `b28d0850b`), placed by `803f4d937` with the prefix `06-meandeg-` (Part
+  number as for `a373271`'s `03-fluct-`); written 9 October 2026, appended
+  after Section 56 as Sections 57–64. Sources it cites besides those above:
+  Khorunzhy–Shcherbina–Vengerovsky (2004), Khorunzhiy (2020/2022), Pittel
+  (1997), Arratia–Goldstein–Gordon (1990, listed only), Semerjian–Cugliandolo
+  (2002), Rodgers–Bray (1988), this report at `9570aaede2`, `openai/math` at
+  `adc7f1241b42`.

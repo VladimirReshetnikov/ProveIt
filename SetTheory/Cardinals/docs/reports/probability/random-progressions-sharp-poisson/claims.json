@@ -1,0 +1,165 @@
+{
+  "title": "Sharp Poisson asymptotics for random arithmetic progressions",
+  "date": "2026-10-07",
+  "status": "Unrefereed written proofs; no proof-assistant verification",
+  "literature_priority_certified": false,
+  "repositories_modified": false,
+  "external_new_repository_theorems_assumed": [],
+  "regression_tests_are_proof_dependencies": false,
+  "claims": [
+    {
+      "id": "exact_head_mean",
+      "tex_label": "lem:mean",
+      "statement": "Exact zero-event reduction and head mean",
+      "novelty_status": "inherited/reproved",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": []
+    },
+    {
+      "id": "conditional_control",
+      "tex_label": "lem:conditional",
+      "statement": "Conditional local-lemma and auxiliary-event estimates",
+      "novelty_status": "self-contained methodological lemma",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": []
+    },
+    {
+      "id": "local_sandwich",
+      "tex_label": "lem:sandwich",
+      "statement": "Exponentially damped first-order avoidance bound",
+      "novelty_status": "self-contained methodological lemma",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "conditional_control"
+      ]
+    },
+    {
+      "id": "local_second_order",
+      "tex_label": "prop:local",
+      "statement": "Second factorial cumulant with connected-triple remainder",
+      "novelty_status": "priority not assessed",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "conditional_control"
+      ]
+    },
+    {
+      "id": "pair_geometry",
+      "tex_label": "lem:pairs",
+      "statement": "Three-term pair bound and rational-ratio geometry",
+      "novelty_status": "inherited/reproved",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": []
+    },
+    {
+      "id": "triple_geometry",
+      "tex_label": "lem:triples",
+      "statement": "Connected-triple probability bound",
+      "novelty_status": "derived in manuscript",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "pair_geometry"
+      ]
+    },
+    {
+      "id": "entropy_degree",
+      "tex_label": "lem:degree",
+      "statement": "Uniform incidence-degree entropy profile",
+      "novelty_status": "derived in manuscript",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": []
+    },
+    {
+      "id": "entropy_integral",
+      "tex_label": "lem:H",
+      "statement": "H = 5/6 - pi^2/18",
+      "novelty_status": "elementary evaluation",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": []
+    },
+    {
+      "id": "covariance_coefficient",
+      "tex_label": "prop:variance",
+      "statement": "Leading coefficient of half the second factorial cumulant",
+      "novelty_status": "proposed research refinement",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "pair_geometry",
+        "entropy_degree",
+        "entropy_integral"
+      ]
+    },
+    {
+      "id": "band_expansion",
+      "tex_label": "lem:band",
+      "statement": "Weighted critical/logarithmic-band remainder",
+      "novelty_status": "proposed research refinement",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "exact_head_mean",
+        "local_second_order",
+        "pair_geometry",
+        "triple_geometry",
+        "covariance_coefficient"
+      ]
+    },
+    {
+      "id": "uniform_correction",
+      "tex_label": "thm:uniform",
+      "statement": "O(n^-1 log^(3/2)(n)) corrected uniform avoidance law",
+      "novelty_status": "proposed principal contribution",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "band_expansion",
+        "local_sandwich"
+      ]
+    },
+    {
+      "id": "critical_expansion",
+      "tex_label": "thm:critical",
+      "statement": "Explicit logarithmic correction with O(r^(3/2)/n) remainder",
+      "novelty_status": "proposed principal contribution",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "band_expansion"
+      ]
+    },
+    {
+      "id": "lattice_sharpness",
+      "tex_label": "thm:lattice",
+      "statement": "Sharp n^-1 log^2(n) error, lattice amplitude and extremal constants",
+      "novelty_status": "proposed principal contribution",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "uniform_correction",
+        "exact_head_mean"
+      ]
+    },
+    {
+      "id": "sparse_corollary",
+      "tex_label": "prop:sparse",
+      "statement": "Fixed-length sparse-density head approximation",
+      "novelty_status": "additional consequence, priority not claimed",
+      "written_proof": true,
+      "kernel_checked": false,
+      "depends_on": [
+        "exact_head_mean",
+        "local_sandwich",
+        "pair_geometry"
+      ]
+    }
+  ]
+}
