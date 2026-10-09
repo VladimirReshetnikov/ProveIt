@@ -5691,7 +5691,10 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          each pair `x, y`, a `{-1,0,1}`-independent index set `I_{x,y}`
          with `{θ_i(x−y)} ⊆ ⟨Γ_x ∪ Γ_y⟩_R`. Independence caps
          `|I_{x,y}| ≤ s₀ = (d + log 1/ρ)^O(1)`, since `2^s ≤ (2sR+1)^{2d}`.
-         This is a counting lemma, not yet in the corpus.
+         The counting lemma is now `independent_card_le`
+         (`Proofs16IndependenceCount`): `s` elements of
+         `spanBall Γ R` with distinct `{0,1}`-subset sums satisfy
+         `2^s ≤ (2sR+1)^|Γ|`.
        - **Claim 9.4.** Suppose the containment
          `B(θ_i(a) : i ∈ I; η) ⊆ (B_{x+a} ∩ B_x) + (B_{y+a} ∩ B_y)` fails for
          `ε|C|³` triples.
