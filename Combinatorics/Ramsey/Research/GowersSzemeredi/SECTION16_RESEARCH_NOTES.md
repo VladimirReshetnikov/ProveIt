@@ -5352,6 +5352,58 @@ dominated by `milicevicBound D` at a fixed density, and they give the
 padded slice-class cover from `MilicevicDeepEventuallyPrime Bnd` with `D`
 chosen per `(γ, θ)`.
 
+**Progress on the last link (2026-10-09, night).**
+1. *Constants threaded.* Every `∃`-constant layer of the variety route now
+   has a fixed-constant form: a predicate `…At C p` and a theorem
+   `…At_of`, with the old `exists_…` kept as an unchanged wrapper. This
+   covers 25 layers in 23 modules: B1–B8 on the variety side, L0–L9 on the
+   lift side, and T1–T7 at the top. `Proofs16ExplicitVarietyDecomposition`
+   chains them into `ceilingFreeVarietyRelationDecompositionAt_explicit`,
+   at
+   - `explicitLiftK = ⌈multiaffinePartitionK 3 8⌉`,
+     `explicitLiftP = 3·multiaffinePartitionP 3 8`;
+   - `explicitVarietyK = ⌈multiaffinePartitionK 2 4⌉`,
+     `explicitVarietyP = multiaffinePartitionP 2 4`.
+
+   *Verification.* All OAI enters through `Proofs05SchmidtRecurrence`.
+   The refactor was compiled against a stub of that module, with its one
+   OAI-backed proof replaced by `sorry`: 143 modules, no errors. The
+   assembly was compiled against a second stub of the explicit module. The
+   full check, including the OAI-backed steps, belongs to the
+   full-verification host.
+2. *Absorption* (checked locally). `Proofs16MonomialControlAbsorption`
+   and `Proofs16VarietyControlAbsorption` show the following. Controls of
+   the variety shape are `MultiplyLinear γ s` with `s = 18r/γ + 64 + L`,
+   for any `L` above `log W⁻¹` and `log(81·7⁴Q² + 27)`.
+3. *Budget* (checked locally). `Proofs16VarietyPieceBudget` gives
+   `s ≤ η·s(θ,γ,3)` whenever `L ≤ x^(64·2^256)`, `x = 2/(θγ)`. Here `η` is
+   the variety piece mass.
+4. *Counts* (checked locally). `Proofs16VarietyCountBounds` gives:
+   - the family size is at most `x^(2^24)`, via piece mass
+     `≥ (θγ/2)^14424120`;
+   - a count `⌈fam·e^mb⌉ + 1` costs `log(fam+3) + mb`;
+   - `milicevicBound D c ≤ (4/c)^D`.
+
+**Remaining**, all mechanical:
+- match `section16VarietyCeilingFreeExponent` and `…GraphBound` to the
+  absorbed shape (via `section16_variety_line_factor_power`);
+- bound `L` by `x^(64·2^256)`. The constants' logs are at most a few
+  thousand by the Weyl bounds (`A_j < 2^192`, degree `< 256`), and
+  `mb ≤ (4/c)^D`. With `c⁻¹ ≤ x^(2^156)` at the spectrum density, a
+  hypothesis such as `D ≤ 2^64` leaves vast room;
+- assemble `Section16BudgetedPieceAt 3`, hence `Theorem162At 3` and
+  `Corollary1611At 3`, from `MilicevicDeepVarietyStructure D`.
+
+Lean traps met here:
+- `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
+  to a literal (`2^(2^8)` folds; `2^510` does not). `Nat.pow` then panics,
+  even from an unrelated hypothesis in scope, so clear it or keep
+  exponents as variables.
+- `rfl` checks against `t^14424120` overflow recursion; rewrite forward
+  instead.
+- `linarith` treats `4·(M·r)·log X` and `18·(M·r)·log X` as unrelated
+  atoms.
+
 Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
 eventual, any-bound form) yields the decomposition with the unknown
 constants as parameters, but not `Theorem162At 3`.

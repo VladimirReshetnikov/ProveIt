@@ -66,10 +66,9 @@ theorem section16SimultaneousExponent_pos (k p q : Nat) (hp : 0 < p) :
   unfold section16SimultaneousExponent
   positivity
 
-/-- The new simultaneous recurrence expressed in the root-width notation
-of Lemma 16.1, including an integer threshold and all rounding losses. -/
-theorem exists_polynomial_section16_recurrence_profile (k : Nat) :
-    ∃ K p : Nat, 2 ≤ K ∧ 0 < p ∧
+/-- The statement of `exists_polynomial_section16_recurrence_profile` at
+fixed constants. -/
+def PolynomialSection16RecurrenceProfileAt (k : Nat) (K p : Nat) : Prop :=
       ∀ (N q m : Nat) [NeZero N] (P : Box N k), P.IsProper →
         ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
         section16SimultaneousThreshold k K p q ≤ m → m ≤ P.width →
@@ -78,12 +77,16 @@ theorem exists_polynomial_section16_recurrence_profile (k : Nat) :
           (∀ j, (m : Real) ^ section16SimultaneousExponent k p q ≤ (Q j).width) ∧
           ∀ i j x, x ∈ (Q j).carrier →
             (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
-              2 * (m : Real) ^ (-section16SimultaneousExponent k p q) * N := by
-  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_commonDiff_partition_two_bound k
+              2 * (m : Real) ^ (-section16SimultaneousExponent k p q) * N
+
+/-- The root-width recurrence profile; the partition constant enters as `⌈K⌉`. -/
+theorem polynomialSection16RecurrenceProfileAt_of (k : Nat) {K : Real} {p : Nat} (hK : 2 ≤ K)
+    (hp : 0 < p) (hpartition : CommonDiffPartitionTwoBoundAt k K p) :
+    PolynomialSection16RecurrenceProfileAt k (Nat.ceil K) p := by
+  unfold PolynomialSection16RecurrenceProfileAt
   let C := Nat.ceil K
   have hKC : K ≤ (C : Real) := Nat.le_ceil K
   have hC : 2 ≤ C := by exact_mod_cast hK.trans hKC
-  refine ⟨C, p, hC, hp, ?_⟩
   intro N q m _ P hP mu hmu hm hmP
   let E := p * (q + 1) ^ (2 * (2 ^ (k + 1)))
   have hE : 0 < E := Nat.mul_pos hp (by positivity)
@@ -108,5 +111,22 @@ theorem exists_polynomial_section16_recurrence_profile (k : Nat) :
     _ ≤ _ := by
       rw [div_eq_mul_inv]
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hinv (by norm_num)) (Nat.cast_nonneg N)
+
+/-- The new simultaneous recurrence expressed in the root-width notation
+of Lemma 16.1, including an integer threshold and all rounding losses. -/
+theorem exists_polynomial_section16_recurrence_profile (k : Nat) :
+    ∃ K p : Nat, 2 ≤ K ∧ 0 < p ∧
+      ∀ (N q m : Nat) [NeZero N] (P : Box N k), P.IsProper →
+        ∀ mu : Fin q → Point N k → ZMod N, (∀ i, IsMultilinear (mu i)) →
+        section16SimultaneousThreshold k K p q ≤ m → m ≤ P.width →
+        ∃ M : Nat, ∃ Q : Fin M → Box N k,
+          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+          (∀ j, (m : Real) ^ section16SimultaneousExponent k p q ≤ (Q j).width) ∧
+          ∀ i j x, x ∈ (Q j).carrier →
+            (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
+              2 * (m : Real) ^ (-section16SimultaneousExponent k p q) * N := by
+  obtain ⟨K, p, hK, hp, hpartition⟩ := exists_simultaneous_commonDiff_partition_two_bound k
+  exact ⟨Nat.ceil K, p, by exact_mod_cast hK.trans (Nat.le_ceil K), hp,
+    polynomialSection16RecurrenceProfileAt_of k hK hp hpartition⟩
 
 end LeanProofs.GowersSzemeredi

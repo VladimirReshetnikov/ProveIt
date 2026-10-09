@@ -116,6 +116,28 @@ theorem section16PolynomialJointVarietyExponent_le_one {C p : Nat}
   (section16JointVarietyCoverExponent_lower hC hp n D hc hc1).trans
     (section16JointVarietyCoverExponent_le_one C n D hp c)
 
+/-- The statement of `exists_polynomial_variety_piece_family_cover` at fixed constants. -/
+def PolynomialVarietyPieceFamilyCoverAt (C p : Nat) : Prop :=
+  ∀ (N n D : Nat) [NeZero N] [Fact N.Prime] (c : Real),
+    0 < c → c ≤ 1 →
+    ∀ (A : Fin n → Finset (ZMod N × ZMod N))
+      (phi : Fin n → ZMod N × ZMod N → ZMod N),
+    (∀ i, IsVarietyPiece D c (phi i) (A i)) →
+    ∀ G : Fin n → Finset (Point N 2 × ZMod N),
+      (∀ i, IsGraphOver (G i) (A i) (phi i)) →
+      MultiplyLinearWith (fun _ => 9 * n)
+        (fun _ => section16PolynomialJointVarietyExponent C p n D c)
+        (section16FinsetUnion G)
+
+/-- `exists_polynomial_variety_piece_family_cover` at the constants of its input. -/
+theorem polynomialVarietyPieceFamilyCoverAt_of {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hcover : VarietyPieceFamilyCoverAt C p) : PolynomialVarietyPieceFamilyCoverAt C p := by
+  unfold PolynomialVarietyPieceFamilyCoverAt
+  intro N n D _ _ c hc hc1 A phi hpiece G hG
+  exact (hcover N n D c A phi hpiece G hG).weaken (by intros; exact le_rfl)
+    (by intros; exact section16PolynomialJointVarietyExponent_pos C n D hp hc hc1)
+    (by intros; exact section16JointVarietyCoverExponent_lower hC hp n D hc hc1)
+
 /-- Actual joint covers with an explicit polynomial exponent. -/
 theorem exists_polynomial_variety_piece_family_cover :
   ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
@@ -130,11 +152,7 @@ theorem exists_polynomial_variety_piece_family_cover :
         (fun _ => section16PolynomialJointVarietyExponent C p n D c)
         (section16FinsetUnion G) := by
   obtain ⟨C, p, hC, hp, hcover⟩ := exists_variety_piece_family_cover
-  refine ⟨C, p, hC, hp, ?_⟩
-  intro N n D _ _ c hc hc1 A phi hpiece G hG
-  exact (hcover N n D c A phi hpiece G hG).weaken (by intros; exact le_rfl)
-    (by intros; exact section16PolynomialJointVarietyExponent_pos C n D hp hc hc1)
-    (by intros; exact section16JointVarietyCoverExponent_lower hC hp n D hc hc1)
+  exact ⟨C, p, hC, hp, polynomialVarietyPieceFamilyCoverAt_of hC hp hcover⟩
 
 /-- The polynomial controls satisfy every range condition required by
 the general affine lift, for all sampled families of structured slices. -/

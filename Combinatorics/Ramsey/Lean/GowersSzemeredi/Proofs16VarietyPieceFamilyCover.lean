@@ -19,20 +19,21 @@ theorem section16JointVarietyCoverExponent_pos (C n D : Nat) {p : Nat} (hp : 0 <
     0 < section16JointVarietyCoverExponent C p n D c :=
   section16CappedWidthExponent_pos (section16FreimanVarietyExponent_pos hp _ _)
 
-/-- The variety-piece class has uniform simultaneous all-box covers for
-every finite family, without an extraction or oscillation-partition premise. -/
-theorem exists_variety_piece_family_cover :
-  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+/-- The statement of `exists_variety_piece_family_cover` at fixed constants. -/
+def VarietyPieceFamilyCoverAt (C p : Nat) : Prop :=
   ∀ (N n D : Nat) [NeZero N] [Fact N.Prime] (c : Real)
     (A : Fin n → Finset (ZMod N × ZMod N)) (phi : Fin n → ZMod N × ZMod N → ZMod N),
     (∀ i, IsVarietyPiece D c (phi i) (A i)) →
     ∀ G : Fin n → Finset (Point N 2 × ZMod N),
       (∀ i, IsGraphOver (G i) (A i) (phi i)) →
       MultiplyLinearWith (fun _ => 9 * n)
-        (fun _ => section16JointVarietyCoverExponent C p n D c) (section16FinsetUnion G) := by
+        (fun _ => section16JointVarietyCoverExponent C p n D c) (section16FinsetUnion G)
+
+/-- `exists_variety_piece_family_cover` at the constants of its input. -/
+theorem varietyPieceFamilyCoverAt_of {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hcover : UniformJointFreimanVarietyCoverAt C p) : VarietyPieceFamilyCoverAt C p := by
   classical
-  obtain ⟨C, p, hC, hp, hcover⟩ := exists_uniform_joint_freiman_variety_cover
-  refine ⟨C, p, hC, hp, ?_⟩
+  unfold VarietyPieceFamilyCoverAt
   intro N n D _ _ c A phi hpiece G hG
   choose Gamma Psi r L rho a b Phi hGamma hPsi hr hrho hL hPhi hagree using hpiece
   let R := Nat.ceil (milicevicBound D c)
@@ -49,5 +50,19 @@ theorem exists_variety_piece_family_cover :
   obtain ⟨hzA, hzPhi⟩ := hG i z hz
   obtain ⟨hv, heq⟩ := hagree i _ hzA
   exact ⟨(mem_shiftPairs _ _ _ _).mpr hv, hzPhi.trans heq⟩
+
+/-- The variety-piece class has uniform simultaneous all-box covers for
+every finite family, without an extraction or oscillation-partition premise. -/
+theorem exists_variety_piece_family_cover :
+  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+  ∀ (N n D : Nat) [NeZero N] [Fact N.Prime] (c : Real)
+    (A : Fin n → Finset (ZMod N × ZMod N)) (phi : Fin n → ZMod N × ZMod N → ZMod N),
+    (∀ i, IsVarietyPiece D c (phi i) (A i)) →
+    ∀ G : Fin n → Finset (Point N 2 × ZMod N),
+      (∀ i, IsGraphOver (G i) (A i) (phi i)) →
+      MultiplyLinearWith (fun _ => 9 * n)
+        (fun _ => section16JointVarietyCoverExponent C p n D c) (section16FinsetUnion G) := by
+  obtain ⟨C, p, hC, hp, hcover⟩ := exists_uniform_joint_freiman_variety_cover
+  exact ⟨C, p, hC, hp, varietyPieceFamilyCoverAt_of hC hp hcover⟩
 
 end LeanProofs.GowersSzemeredi

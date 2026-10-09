@@ -8,10 +8,8 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- Final-coordinate slices covered by `Q` variety pieces yield the
-polynomial provider on every common-base good domain. -/
-theorem exists_variety_family_good_domain_slice_provider :
-  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+/-- The statement of `exists_variety_family_good_domain_slice_provider` at fixed constants. -/
+def VarietyFamilyGoodDomainSliceProviderAt (C p : Nat) : Prop :=
   ∀ (N D Q : Nat) [NeZero N] [Fact N.Prime] (c : Real),
     0 < Q → 0 < c → c ≤ 1 →
     ∀ (B : Finset (Point N 3)) (phi : Point N 3 → ZMod N),
@@ -23,10 +21,13 @@ theorem exists_variety_family_good_domain_slice_provider :
       (fun r _ => section16PolynomialJointVarietyExponent C p (r * Q) D c) ∧
     Section16SliceProviderRanges
       (fun r _ => 9 * (r * Q : Nat))
-      (fun r _ => section16PolynomialJointVarietyExponent C p (r * Q) D c) := by
+      (fun r _ => section16PolynomialJointVarietyExponent C p (r * Q) D c)
+
+/-- `exists_variety_family_good_domain_slice_provider` at the constants of its input. -/
+theorem varietyFamilyGoodDomainSliceProviderAt_of {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hcover : VarietyPieceClassCoverAt C p) : VarietyFamilyGoodDomainSliceProviderAt C p := by
   classical
-  obtain ⟨C, p, hC, hp, hcover⟩ := exists_variety_piece_class_cover
-  refine ⟨C, p, hC, hp, ?_⟩
+  unfold VarietyFamilyGoodDomainSliceProviderAt
   intro N D Q _ _ c hQ hc hc1 B phi hB H Y x0
   constructor
   · intro r sample
@@ -50,5 +51,24 @@ theorem exists_variety_family_good_domain_slice_provider :
     have hrQR : (1 : Real) ≤ (r * Q : Nat) := by exact_mod_cast hrQ
     exact ⟨by nlinarith, section16PolynomialJointVarietyExponent_pos C (r * Q) D hp hc hc1,
       section16PolynomialJointVarietyExponent_le_one hC hp (r * Q) D hc hc1⟩
+
+/-- Final-coordinate slices covered by `Q` variety pieces yield the
+polynomial provider on every common-base good domain. -/
+theorem exists_variety_family_good_domain_slice_provider :
+  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+  ∀ (N D Q : Nat) [NeZero N] [Fact N.Prime] (c : Real),
+    0 < Q → 0 < c → c ≤ 1 →
+    ∀ (B : Finset (Point N 3)) (phi : Point N 3 → ZMod N),
+    Section16FinalStackable Q (section16VarietyPieceClass N D c) B phi →
+    ∀ (H : Finset (Point N 2)) (Y : (a : Point N 2) → Finset (Section16CubeElement B a))
+      (x0 : Point N 2),
+    Section16SliceProvider (section16GoodDomain B H Y x0) (section16PhiOne phi x0)
+      (fun r _ => 9 * (r * Q : Nat))
+      (fun r _ => section16PolynomialJointVarietyExponent C p (r * Q) D c) ∧
+    Section16SliceProviderRanges
+      (fun r _ => 9 * (r * Q : Nat))
+      (fun r _ => section16PolynomialJointVarietyExponent C p (r * Q) D c) := by
+  obtain ⟨C, p, hC, hp, hcover⟩ := exists_variety_piece_class_cover
+  exact ⟨C, p, hC, hp, varietyFamilyGoodDomainSliceProviderAt_of hC hp hcover⟩
 
 end LeanProofs.GowersSzemeredi

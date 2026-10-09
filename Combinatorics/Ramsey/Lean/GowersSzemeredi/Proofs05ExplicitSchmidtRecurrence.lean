@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05SimultaneousMultiaffinePartition
+import GowersSzemeredi.Proofs16OscillationPartition
 
 /-! The Schmidt recurrence and the multilinear partition with named constants.
 
@@ -16,8 +17,9 @@ steps with these witnesses:
 * `uniformSchmidtK`, `uniformSchmidtP`:
   `uniform_modular_monomial_recurrence_explicit`;
 * `multiaffinePartitionK`, `multiaffinePartitionP`:
-  `simultaneous_multiaffine_partition_bound_explicit` and
-  `simultaneous_multilinear_partition_bound_explicit`.
+  `simultaneous_multiaffine_partition_bound_explicit`,
+  `multilinearPartitionBoundAt_explicit` and
+  `multilinearDiameterPartition_explicit` (the bilinear chain's input).
 
 The proofs follow the existential versions step by step. No numerical size
 of the constants is asserted here. The module imports the OAI port, so it is
@@ -223,31 +225,19 @@ theorem simultaneous_multiaffine_partition_bound_explicit (k : Nat) (hk : 0 < k)
     exact ih.step hk (two_le_multiaffinePartitionK k h) (multiaffinePartitionP_pos k h)
       (one_le_uniformSchmidtK k) (uniform_modular_monomial_recurrence_explicit k)
 
-/-- **The multilinear partition with named constants.** The constants are
+/-- **The multilinear partition with named constants**
 `multiaffinePartitionK k (2^k)` and `multiaffinePartitionP k (2^k)`. -/
-theorem simultaneous_multilinear_partition_bound_explicit (k : Nat) (hk : 0 < k) :
-    ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N k), P.IsProper →
-      ∀ mu : Fin q → Point N k → ZMod N, (∀ i, MultilinearOn P.carrier (mu i)) →
-      ∀ H : Nat, 0 < H → multiaffinePartitionK k (2 ^ k) * ((q : Real) + 1) ≤ H →
-        H ^ (multiaffinePartitionP k (2 ^ k) * (q + 1) ^ (2 * (2 ^ k))) ≤ P.width →
-        ∃ M : Nat, ∃ Q : Fin M → Box N k,
-          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-          (∀ j, (H : Real) ≤ (Q j).width) ∧
-          ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ k : Real) / H * N) := by
-  intro N _ q P hP mu hmu H hH hscale hsize
-  choose psi hpsi heq using hmu
-  choose c hc using (fun i => (isMultilinear_iff_multiaffineEval (psi i)).mp (hpsi i))
-  obtain ⟨M, Q, hQpart, hQproper, hQwidth, hQdiam⟩ :=
-    simultaneous_multiaffine_partition_bound_explicit k hk (2 ^ k) N q Finset.univ
-      (fun _ _ _ _ => Finset.mem_univ _) (by simp) c P hP H hH hscale hsize
-  refine ⟨M, Q, hQpart, hQproper, hQwidth, ?_⟩
-  intro i j
-  have himage : (Q j).carrier.image (mu i) =
-      (Q j).carrier.image (multiaffineEval Finset.univ (c i)) := by
-    apply Finset.image_congr
-    intro x hx
-    exact (heq i x (IsPartition.cell_subset hQpart j hx)).trans (hc i x)
-  rw [himage]
-  simpa only [Nat.cast_pow, Nat.cast_ofNat] using hQdiam i j
+theorem multilinearPartitionBoundAt_explicit (k : Nat) (hk : 0 < k) :
+    MultilinearPartitionBoundAt k (multiaffinePartitionK k (2 ^ k))
+      (multiaffinePartitionP k (2 ^ k)) :=
+  multilinearPartitionBoundAt_of (simultaneous_multiaffine_partition_bound_explicit k hk (2 ^ k))
+
+/-- **The dimension-two diameter partition with named constants**, the input of
+the bilinear variety chain (`Proofs16OscillationPartitionInst` supplies it with
+existential constants). -/
+theorem multilinearDiameterPartition_explicit :
+    MultilinearDiameterPartition (multiaffinePartitionK 2 (2 ^ 2))
+      (multiaffinePartitionP 2 (2 ^ 2)) :=
+  multilinearPartitionBoundAt_explicit 2 (by norm_num)
 
 end LeanProofs.GowersSzemeredi
