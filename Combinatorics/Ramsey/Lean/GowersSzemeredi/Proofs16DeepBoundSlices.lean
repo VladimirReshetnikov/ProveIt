@@ -18,11 +18,14 @@ namespace LeanProofs.GowersSzemeredi
 
 open Classical
 
-/-- **The padded slice-class cover from the prime, eventual contract.** -/
-theorem variety_structure_class_cover_of_eventually {Bnd : Real → Real}
-    (hM : MilicevicDeepEventuallyPrime Bnd)
-    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    ∃ D : Nat, ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+/-- **The padded slice-class cover from the prime, eventual contract, at any index
+`D` whose Milićević bound dominates `Bnd` at the extraction density.** -/
+theorem variety_structure_class_cover_of_eventually_at {Bnd : Real → Real}
+    (hM : MilicevicDeepEventuallyPrime Bnd) {D : Nat}
+    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
+    (hD : Bnd (section16VarietyExtractionDensity gamma theta) ≤
+      milicevicBound D (section16VarietyExtractionDensity gamma theta)) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
       ∀ Gamma : Finset (Point N 2 × ZMod N),
         (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real)^2 →
         RelationProductProperty gamma Gamma →
@@ -35,13 +38,11 @@ theorem variety_structure_class_cover_of_eventually {Bnd : Real → Real}
               section16FinsetUnion (fun i => partialGraph (E i).1 (E i).2) := by
   classical
   obtain ⟨hc, hc1⟩ := section16VarietyExtractionDensity_pos_le_one gamma ht ht1
-  obtain ⟨D, hD⟩ := exists_milicevicBound_ge hc hc1
-    (Bnd (section16VarietyExtractionDensity gamma theta))
   obtain ⟨N0, hcover⟩ := structure_side_of_milicevic_sharper_eventually hM gamma theta hg hg1 ht ht1
   have hbase := two_le_milicevic_base hc hc1
   have hB : 0 ≤ milicevicBound D (section16VarietyExtractionDensity gamma theta) :=
     pow_nonneg (by linarith) D
-  refine ⟨D, N0, ?_⟩
+  refine ⟨N0, ?_⟩
   intro N _ _ hN Gamma hsize hprod
   obtain ⟨J, hJ, K, G, f, hK, hpiece, hcov⟩ := hcover N hN Gamma hsize hprod
   have hKQ : K ≤ section16VarietyExtractionCount D gamma theta := by
@@ -79,5 +80,25 @@ theorem variety_structure_class_cover_of_eventually {Bnd : Real → Real}
       ⟨i, lt_of_lt_of_le i.isLt hKQ⟩
     refine Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, ?_⟩
     simpa only [E, j, dif_pos i.isLt] using hi
+
+/-- **The padded slice-class cover from the prime, eventual contract.** -/
+theorem variety_structure_class_cover_of_eventually {Bnd : Real → Real}
+    (hM : MilicevicDeepEventuallyPrime Bnd)
+    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    ∃ D : Nat, ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+      ∀ Gamma : Finset (Point N 2 × ZMod N),
+        (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real)^2 →
+        RelationProductProperty gamma Gamma →
+        ∃ J : Finset (Point N 2), (1 - theta) * (N : Real)^2 ≤ J.card ∧
+          ∃ E : Fin (section16VarietyExtractionCount D gamma theta) →
+            Finset (Point N 2) × (Point N 2 → ZMod N),
+            (∀ i, E i ∈ section16VarietyPieceClass N D
+              (section16VarietyExtractionDensity gamma theta)) ∧
+            restrictRelation Gamma J ⊆
+              section16FinsetUnion (fun i => partialGraph (E i).1 (E i).2) := by
+  obtain ⟨hc, hc1⟩ := section16VarietyExtractionDensity_pos_le_one gamma ht ht1
+  obtain ⟨D, hD⟩ := exists_milicevicBound_ge hc hc1
+    (Bnd (section16VarietyExtractionDensity gamma theta))
+  exact ⟨D, variety_structure_class_cover_of_eventually_at hM gamma theta hg hg1 ht ht1 hD⟩
 
 end LeanProofs.GowersSzemeredi

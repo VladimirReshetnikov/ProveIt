@@ -854,6 +854,9 @@ import GowersSzemeredi.Proofs16VarietyScaleBounds
 import GowersSzemeredi.Proofs16ExplicitConstantBounds
 import GowersSzemeredi.Proofs16VarietyBudgetedPiece
 import GowersSzemeredi.Proofs16VarietyTheoremThree
+import GowersSzemeredi.Proofs16VarietyTwoScale
+import GowersSzemeredi.Proofs16VarietyLocalPieces
+import GowersSzemeredi.Proofs16VarietyEventualThree
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
 import GowersSzemeredi.Proofs16VarietyPieceBudget
 import GowersSzemeredi.Proofs16KeyCollisionDensity
@@ -905,6 +908,13 @@ import GowersSzemeredi.Proofs16SelectedBohrGluing
 import GowersSzemeredi.Proofs16SelectedColumnExtensions
 import GowersSzemeredi.Proofs16ShiftAnchorArrangement
 import GowersSzemeredi.Proofs16ShiftAnchorMaps
+import GowersSzemeredi.Proofs16BalancedIncidenceSelection
+import GowersSzemeredi.Proofs16CoherentAnchorSelection
+import GowersSzemeredi.Proofs16CoordinateRestrictionCount
+import GowersSzemeredi.Proofs16DenseHigherAnchorSelection
+import GowersSzemeredi.Proofs16HigherAnchorAveraging
+import GowersSzemeredi.Proofs16HigherAnchorRestriction
+import GowersSzemeredi.Proofs16HigherShiftCollisionCount
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -5456,6 +5456,37 @@ The budget side is already written for this. `section16VarietyThreeLoss_le_of_bo
 uses `D` only through the two Milićević values. A polynomial `Bnd` gives
 `log Q ≈ Bnd(c) = poly(x)`, far inside `x^(2·2^256)`.
 
+**Resolved without the full `Bnd` refactor (2026-10-09).** Only two
+densities matter, so two Milićević indices suffice, chosen per density:
+`D` for the family at `c₁` and `D₂` for the spectrum at `c₂`. Each
+`Dᵢ` is the least index with `Bnd(cᵢ) ≤ milicevicBound Dᵢ cᵢ`, so it
+overshoots by at most one base factor:
+`milicevicBound Dᵢ cᵢ ≤ (4/cᵢ)·max(Bnd(cᵢ), 1)`
+(`exists_milicevicBound_between`).
+
+The modules:
+- `Proofs16VarietyTwoScale`: the controls with the two indices.
+  `section16PolynomialVarietyThreeExponent2`, with the old exponent as
+  its instance `D₂ = D`.
+- `Proofs16VarietyBudgetedPiece`: the budget with two indices.
+- `Proofs16VarietyLocalPieces`: the relation pieces from the two local
+  covers (`VarietyClassCoverAt`) instead of `MilicevicDeepVarietyStructure`.
+- `Proofs16DeepBoundSlices`: `variety_structure_class_cover_of_eventually_at`
+  gives the cover at any dominating index.
+- `Proofs16VarietyEventualThree`: assembles them.
+
+Result (`Proofs16VarietyTheoremThree`):
+
+```
+theorem_16_2_at_three_of_eventually {Bnd} {K} (hK : K ≤ 2^64)
+    (hBnd : ∀ c ∈ (0,1], Bnd c ≤ (4/c)^K)
+    (hM : MilicevicDeepEventuallyPrime Bnd) : Theorem162At 3
+```
+
+and the 16.11 corollary. So the dimension-three statements now follow
+from the deep structure in exactly the form the pipeline is expected to
+prove, at any polynomial degree `K ≤ 2^64`.
+
 Lean traps met here:
 - `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
   to a literal (`2^(2^8)` folds; `2^510` does not). `Nat.pow` then panics,
@@ -7932,3 +7963,93 @@ locations; its 115 companions and five open entries are unchanged.
 The port-scope check still reports 4,134 upstream and 17 compatibility
 modules, with reciprocal-only dependencies excluded. No upstream
 source or license scope was changed.
+
+
+### J.127. Quantitative selection of coherent global anchors
+
+Seven modules prove seventeen named results selecting one pair of global
+anchor functions from a dense family of higher arrangements. The final
+result `exists_dense_coherent_anchor_maps` produces at least
+`(kappa/2)*N^3` additive quadruples of distinct shifts when the good family
+has at least `kappa*N^11` members and `8 <= kappa*N`. Their actual selected
+anchor maps are normalized local Freiman maps and satisfy the additive
+quadruple identity on the intersection of their four selected Bohr domains.
+
+**Exact restriction counting.** An injective coordinate restriction has
+`|V|^(|I|-|J|)` extensions, by an explicit equivalence with functions on
+the complementary coordinates. For four distinct shifts and pair-valued
+anchors this gives the exact balancing identity
+`card(realizations)*N^8 = card(all global anchor functions)`.
+A finite incidence double count then selects a global function realizing
+at least the average number of arrangements. Each realized arrangement
+is reconstructed from its four shifts and the chosen anchors, so mapping
+to shift quadruples preserves cardinality. No independent sampling of
+repeated occurrences of the same shift is assumed.
+
+**Repeated shifts.** Among shifts `a,b,c,a+b-c`, every repetition belongs
+to one of four families: `a=b`, `a=c`, `b=c`, or `a=2*c-b`. Each family
+has at most `N^10` higher arrangements, using explicit ten-coordinate
+injective encodings. Thus at most `4*N^10` arrangements are removed.
+The hypothesis `8 <= kappa*N` makes this at most half the original
+mass. The four-family estimate improves the direct six-pair union bound
+and works for every nonzero modulus, without dividing by two.
+
+**Coherence.** `GoodHigherAnchorArrangement` records the four pair
+compatibilities, their selected-domain containments, the higher
+containment, and the two original column quadruple identities.
+`shift_anchor_maps_of_good_arrangement` transfers these to the actual
+shift-anchor maps by the previously checked gluing results. Quantitative
+anchor selection applies this to a dense family satisfying that predicate.
+
+**Remaining work.** The density of such a good family still has to be
+proved from popular shifts, compatible-pair degrees, sparse containment
+failures, and the original column identities. Further common-domain and
+structural steps are also required. This is not a proof of the missing
+deep variety theorem or a closure of a numbered catalogue entry.
+No additional upstream code or license scope is introduced.
+
+**Verification.** The production closure checks 344 modules. Individual
+axiom checks and the merged facade audit are recorded below after completion.
+
+
+**Final merged verification.** All seventeen new named theorems pass
+individual axiom checks. The complete merged audit checks 7,899 public
+Gowers theorems across 5,294 modules (5,292 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and
+`Quot.sound`. The catalogue remains at 115 companions and five open
+entries; regeneration changes only two source locations. These counts
+do not remove the documented statement-fidelity qualifications.
+The port-scope check still reports 4,134 upstream and 17 compatibility
+modules, excluding reciprocal-only dependencies.
+
+The merged two-scale variety refactor also passes against the actual
+OAI closure: family and spectrum controls now use separate indices
+`D` and `D₂`, including the width coefficient, logarithmic loss, and
+piece parameter. The generalized loss theorem accepts separate bounds
+at the two densities. The existing fixed-index dimension-three results
+are recovered at `D₂ = D`. This enables separate future choices at the
+two densities; it does not itself supply deep structure or discharge
+the remaining quantitative bridge.
+
+
+**Concurrent local-cover integration.** A fast-forward push race brought
+in `Proofs16VarietyLocalPieces`. It constructs the dimension-three relation
+pieces from two local `VarietyClassCoverAt` inputs and supplies
+`section16_budgeted_piece_three_of_local` when their two numerical values
+fit the budget. The new module and merged audit pass against the actual
+sources: 7,909 public Gowers theorems, 5,295 combined modules and 5,293
+facade modules. The axiom boundary and numbered ledger are unchanged.
+The two local cover inputs remain hypotheses; no deep-structure closure
+is asserted by this integration.
+
+
+**Eventual polynomial-bound bridge verified.** A second concurrent merge
+adds the least-index bound comparison and assembles the two local covers
+from `MilicevicDeepEventuallyPrime Bnd`. The dimension-three consequences
+now accept `Bnd c <= (4/c)^K` with `K <= 2^64`; the named numerical
+constants are discharged. This resolves the two-density budget mismatch
+in J.5b while retaining the deep-structure and polynomial-bound hypotheses.
+The actual merged closure passes: 7,920 public Gowers theorems in 5,296
+combined modules (5,294 facade modules), with the same three allowed
+axioms. The ledger adds four conditional consequences and updates source
+locations; its 115 companions and five open entries remain unchanged.
