@@ -55,9 +55,9 @@ The second closure (38 upstream modules, `FixedDensity/`) supplies
 Theorem 1.2 of the catalogue is derived in
 `GowersSzemeredi/Proofs01SzemerediFixedDensity.lean`.
 
-The only additional upstream target being ported is
-`OAI.Erdos3.manuscriptQuantitativeDensityTheorem`, to discharge the checked
-conditional bridge for Gowers Theorem 1.3. `Results/Conclusions.lean` now
+The additional upstream target is
+`OAI.Erdos3.manuscriptQuantitativeDensityTheorem`, which discharges the checked
+bridge for Gowers Theorem 1.3 in `Proofs01QuantitativeDensityHeadline.lean`. `Results/Conclusions.lean` now
 extracts this density conclusion directly; it omits the combined manuscript
 and reciprocal-sum conclusions. `Estimates/UniformRelativePatchSource.lean`
 retains the density-source construction and omits the separate logarithmic
@@ -65,27 +65,29 @@ and reciprocal corollaries. `DensityBoundFromInvariant` imports `Results.Basic`
 directly, allowing `Results.Reciprocal` and the empty `Results.Statements`
 wrapper to be removed entirely.
 
-The remaining module import closure contains 4,134 upstream modules,
-including 128 previously present (4,006 additional modules). **This density
-backport is in progress and is not yet verified.** Every staged upstream
+The selected module import closure contains 4,134 upstream modules,
+including 128 previously present (4,006 additional modules). **The complete
+selected density backport now compiles and passes its axiom audit.** Every upstream
 module is reachable from the density-only conclusion. This is an import-level
 check, not a claim that every declaration bundled in a shared module is
 needed. Further extracts should remove avoidable unrelated branches as they
 are identified; standalone upstream results without a Gowers consumer are
-outside the port's scope. The Gowers facade does not import this conclusion.
+outside the port's scope. The Gowers facade imports this conclusion through
+the exact Theorem 1.3 companion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the selected theorem, Gowers consumer, excluded modules, original source
 hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 4,000 manifest entries have compiled (4,016 modules including their
-compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
-imports this batch and the added compatibility modules. Its axiom scan
-checks 60,327 public OAI theorems and reports only `propext`,
-`Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
-also pass, with explicit rejection of any unapproved axiom. This checkpoint
-does not certify `Results.Conclusions`.
+All 4,134 manifest entries compile in a 4,151-module closure, including
+17 compatibility modules. `OAI.QuantitativePortAudit` checks 63,855 public
+OAI theorems and the listed compatibility declarations in a 4,152-module
+closure. Only `propext`, `Classical.choice`, and `Quot.sound` occur. The
+selected quantitative density theorem and the exact Gowers Theorem 1.3
+companion also pass their own transitive axiom checks. The combined Gowers
+facade audit with this new consumer is pending. The asymptotic constants
+do not supply Theorem 18.2's prescribed numerical threshold.
 
 The already audited `PolynomialCoordinatePartition` module also supplies
 `simultaneous_monomial_recurrence`. The Gowers consumer
@@ -269,7 +271,7 @@ equality of universal finite sets extensionally in the initial-rule
 construction; all 22 upstream theorem statements and bounds are unchanged.
 This module already carried a compatibility notice, now extended to
 record the proof repair, so the adapted-file count remains 976. The
-verified axiom checkpoint remains the first 4,000 manifest entries.
+verified axiom checkpoint now includes all 4,134 selected manifest entries.
 
 `RetainedPhysicalCRT` passes after removing a redundant `rfl` following
 `simp` in `affinePeriodResidueSample_integer`. All 42 theorem statements,

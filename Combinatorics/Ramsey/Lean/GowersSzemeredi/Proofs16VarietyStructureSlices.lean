@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16VarietyPieceClass
-import GowersSzemeredi.Proofs16LineExtractor
+import GowersSzemeredi.Proofs16SharperVarietyStructure
 
 /-! Uniform variety families on every final-coordinate slice, conditional
 only on the deep variety structure theorem. Padding fixes the piece count
@@ -10,7 +10,7 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
 def section16VarietyExtractionFamily (gamma theta : Real) : Nat :=
-  bihomFamilySize (densePieceMassGen fun g b => BaseCase.lemma163Alpha g b) gamma (theta / 2)
+  bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2)
 
 def section16VarietyExtractionDensity (gamma theta : Real) : Real :=
   theta / 2 / section16VarietyExtractionFamily gamma theta
@@ -48,7 +48,7 @@ theorem variety_structure_class_cover {D : Nat} (hM : MilicevicDeepVarietyStruct
             restrictRelation Gamma J ⊆
               section16FinsetUnion (fun i => partialGraph (E i).1 (E i).2) := by
   classical
-  obtain ⟨N0, hcover⟩ := structure_side_of_milicevic hM gamma theta hg hg1 ht ht1
+  obtain ⟨N0, hcover⟩ := structure_side_of_milicevic_sharper hM gamma theta hg hg1 ht ht1
   obtain ⟨hc, hc1⟩ := section16VarietyExtractionDensity_pos_le_one gamma ht ht1
   have hbase := two_le_milicevic_base hc hc1
   have hB : 0 ≤ milicevicBound D (section16VarietyExtractionDensity gamma theta) :=

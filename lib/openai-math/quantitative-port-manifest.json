@@ -12,7 +12,7 @@
     "Measurable": 56,
     "Matrix": 1
   },
-  "verification": "Backport in progress; quantitative conclusion is not yet compiled or imported by the Gowers facade.",
+  "verification": "The complete selected quantitative-density closure compiles on Lean 4.32.0. Its audit checks 63855 public OAI theorems and the listed compatibility declarations using only propext, Classical.choice, Quot.sound. The exact Gowers Theorem 1.3 companion is proved and individually axiom-checked; the combined Gowers facade audit is pending.",
   "modules": [
     {
       "module": "OAI.Combinatorics.Progressions.Model",
@@ -21117,23 +21117,6 @@
     "OAI.Combinatorics.Progressions.Polynomial.PrependPolynomialVariable",
     "OAI.Combinatorics.Progressions.Polynomial.RealGradedSymbolPolynomial"
   ],
-  "partial_verification": {
-    "manifest_prefix_length": 4000,
-    "last_upstream_module": "OAI.Combinatorics.Progressions.Nilpotent.NativeResetBracketGeometry",
-    "build_closure_modules": 4016,
-    "audit_module": "OAI.QuantitativePortAudit",
-    "audited_public_OAI_theorems": 60327,
-    "allowed_axioms": [
-      "propext",
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "toolchain": "leanprover/lean4:v4.32.0",
-    "date": "2026-10-08",
-    "scope": "Only this initial prefix and its dependencies; Results.Conclusions remains unverified.",
-    "audit_build_closure_modules": 4017,
-    "compatibility_axiom_check": "The audit rejects unapproved axioms in each explicitly listed compatibility declaration, in addition to public OAI theorems."
-  },
   "mathlib_import_renames": {
     "OAI.Combinatorics.Progressions.Linear.RealRationalMatrixPiNaturality": {
       "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
@@ -21544,7 +21527,9 @@
           "LeanProofs.GowersSzemeredi.exists_polynomial_variety_structured_piece",
           "LeanProofs.GowersSzemeredi.exists_polynomial_variety_product_graph_piece",
           "LeanProofs.GowersSzemeredi.exists_polynomial_variety_relation_piece",
-          "LeanProofs.GowersSzemeredi.exists_polynomial_variety_relation_decomposition"
+          "LeanProofs.GowersSzemeredi.exists_polynomial_variety_relation_decomposition",
+          "LeanProofs.GowersSzemeredi.MultiplyLinearWith.variety_three_ceiling_free",
+          "LeanProofs.GowersSzemeredi.exists_ceiling_free_variety_relation_decomposition"
         ]
       },
       {
@@ -21560,6 +21545,25 @@
           "LeanProofs.GowersSzemeredi.exists_minimum_polynomialOn_partition"
         ]
       }
-    ]
+    ],
+    "proved_gowers_companion": "LeanProofs.GowersSzemeredi.theorem_1_3_holds",
+    "proved_gowers_module": "GowersSzemeredi.Proofs01QuantitativeDensityHeadline"
+  },
+  "full_verification": {
+    "manifest_prefix_length": 4134,
+    "last_upstream_module": "OAI.Combinatorics.Progressions.Results.Conclusions",
+    "build_closure_modules": 4151,
+    "audit_module": "OAI.QuantitativePortAudit",
+    "audited_public_OAI_theorems": 63855,
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "toolchain": "leanprover/lean4:v4.32.0",
+    "date": "2026-10-08",
+    "scope": "All selected quantitative-density modules and their compatibility dependencies; includes the density-only Results.Conclusions. Reciprocal-only modules remain excluded.",
+    "audit_build_closure_modules": 4152,
+    "compatibility_axiom_check": "The audit rejects unapproved axioms in each explicitly listed compatibility declaration, in addition to public OAI theorems."
   }
 }

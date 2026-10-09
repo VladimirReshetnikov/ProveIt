@@ -2442,3 +2442,116 @@ using only propext, Classical.choice, and Quot.sound. The combined audit
 is queued. The source ledger
 retains its six open statements, with the existing fidelity caveats. No
 upstream modules are added by these consumers.
+
+
+### Ceiling-free inner-loss bounds for the variety lift
+
+`Proofs16VarietySampleBudget` proves that, for `0<sigma,theta,gamma<=1`,
+`r=section16Lemma9R(theta/2,gamma,2)` and
+`u=multipleC(sigma/(2*r),gamma,3)^r` satisfy `0<u<=1`, and the sample
+ceiling is at most `7/(sigma*u)`. Consequently the interpolation graph
+count is at most `81*(7/(sigma*u))^4*Q^2`. The joint slice exponent at
+that sample ceiling times `Q` is bounded below by
+
+```
+(sigma*u)^17 /
+  (1024*pv^2*(4*Cv+18)*(milicevicBound D c+2)^17*7^17*(Q+1)^17).
+```
+
+`Proofs16VarietyExplicitExponent` combines this with the exact line
+exponent `u*E/(8*p*(q+1)^16)` and the logarithmic cap estimate. For a
+fixed spectrum count `q` and exponent `E`, the actual common-base
+all-box exponent is at least the product of those two displayed factors,
+divided by `16+4*log(16/z)`, where
+`z=section16Zeta(theta/2,gamma,2)/(4*C*(q+1))`. Thus the lower bound
+contains the explicit factor `sigma^17*u^18`; neither a sample ceiling
+nor a rounded threshold remains. The spectrum losses are independent of
+`sigma` in the dimension-three construction above.
+
+Both production modules and all six transitive axiom checks pass, using
+only propext, Classical.choice, and Quot.sound. Facade registration and
+the combined audit remain pending while the earlier full audit runs.
+The constants `C,p,Cv,pv,D` remain explicit parameters. This does not
+prove deep structure, the printed Theorem 16.2 budget, or a new final
+Szemeredi threshold, and it adds no upstream modules.
+
+`Proofs16VarietyCeilingFreeCover` transfers these controls to actual
+multilinear covers, including their mass and partition guarantees on all
+boxes. Its positive width control and graph-count bound require no
+additional geometric premise. `Proofs16VarietyLossPower` separates the
+inner loss exactly: writing `b=2^2048*r`, the line factor is
+`(gamma/(2*r))^b*sigma^b`, and
+
+```
+u*(sigma*u)^17 = (gamma/(2*r))^(18*b)*sigma^(17+18*b).
+```
+
+Thus the power of the inner loss depends only on the outer densities.
+`Proofs16VarietyCeilingFreeDecomposition` applies these controls to every
+piece in the actual conditional relation decomposition, retaining the
+same family-count bound, large base domain, and union cover. The slice
+and spectrum counts can still involve ceilings in the outer parameters;
+only ceilings and thresholds involving the inner loss have been removed.
+All three further production modules and all six transitive axiom checks
+pass with the same three approved axioms. Their facade registration and
+combined audit also await the running audit. No catalogue claim or port
+scope is changed.
+
+
+### Sharper line-density extraction and smaller variety families
+
+`Proofs16SharperLineExtractor` retains the actual density `alpha=|R|/N`
+when applying Corollary 7.6. The line product property gives
+`gamma^8*alpha*(alpha*N)^3` respected quadruples. The resulting extraction
+mass is `2^-1882*gamma^9312*alpha^1165`, so a line of density at least
+`beta` supplies the uniform bound
+`2^-1882*gamma^9312*beta^1165`. Lean proves this dominates the previous
+`2^-2000*(gamma*beta)^10000` over the complete density range `(0,1]`.
+It also proves that the two-pass bihomomorphism mass increases and the
+required bihomomorphism family count does not increase.
+
+`Proofs16SharperVarietyStructure` constructs the variety structure side
+using this improved extraction. `Proofs16SharperVarietyParameters` proves
+that `milicevicBound D c` decreases with the density `c` on `(0,1]`, and
+that the padded count `ceil(m*exp(B(theta/(2*m))))+1` increases with the
+positive family size `m`. Thus the sharper extraction does not increase
+the full variety-family budget, for every deep-structure exponent `D`.
+
+All three new production modules and their eleven transitive axiom checks
+pass with only propext, Classical.choice, and Quot.sound. They await
+facade registration and integration into `section16VarietyExtractionFamily`
+after the running full audit. Deep structure and the printed numerical
+budget remain open, and no upstream modules are added.
+
+
+### Complete density port and exact Theorem 1.3
+
+The complete selected density closure now compiles: 4,134 pinned upstream
+modules and 17 compatibility modules. Its 4,152-module axiom audit checks
+63,855 public OAI theorems and the listed compatibility declarations, using
+only propext, Classical.choice, and Quot.sound. The original licenses,
+provenance, and modification notices are retained. The reciprocal-only
+branches remain excluded; no new upstream modules were added.
+
+`Proofs01QuantitativeDensityHeadline.theorem_1_3_holds` applies the checked
+finite-set bridge to `OAI.Erdos3.manuscriptQuantitativeDensityTheorem`.
+The exact companion and its upstream input pass their own transitive axiom
+checks. This closes the encoded Theorem 1.3 and changes the source ledger
+to 115 companions and five open statements. The existing statement-fidelity
+caveats still apply to that count. The port's existential asymptotic
+constants do not prove the fixed threshold in Theorem 18.2.
+
+The earlier full Gowers audit completed with 6,023 public theorems and a
+2,680-module combined closure, before the new headline and sharper-family
+integration. It validates the previously queued dimension-three variety
+construction and the incoming selection lemmas through `lemma19_two_new_piece`.
+The source ledger at that checkpoint was still 114/6.
+
+The sharper family is now used by `section16VarietyExtractionFamily`.
+An isolated rebuild of all six affected modules on the path to the actual
+ceiling-free relation decomposition passes, as do all 23 transitive axiom
+checks for the new inner-loss and sharper-extraction results. All eight
+modules and the density headline are registered in the facade. A new
+combined audit, including the latest incoming Corollary 20 and Bohr
+spectrum results, is pending; this supersedes their registration-pending
+notes above, without claiming that the new full audit has completed.
