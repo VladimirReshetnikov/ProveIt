@@ -2891,3 +2891,38 @@ also pass individual transitive axiom checks. Only propext,
 Classical.choice, and Quot.sound occur. The source ledger remains 115/5
 with its existing fidelity caveats, and the selected upstream scope is
 unchanged.
+
+
+### Removing finite-size assumptions and actual-density parameters
+
+`Proofs16UniformSpectrumSpan` removes the lower bound on N from the
+polynomial large-spectrum theorem. When N is below the former threshold,
+the same polynomial cutoff is at least N/2. Its coefficient interval then
+contains every residue. A nonzero defining frequency spans the prime
+field, so inclusion is immediate. If all defining frequencies are zero,
+the Bohr set is the full group and its nonzero Fourier coefficients
+vanish. This handles the remaining case without discarding endpoint errors
+in the large-modulus proof.
+
+`large_bohr_fourier_mem_uniform_boundedSpan` consequently holds for every
+prime modulus, with the same polynomial cutoff and `0<rho<1/2`,
+`0<epsilon<=1`. `bohr_sum_contains_span_intersection_uniform` removes
+both finite-size assumptions from the previous Bohr-sum theorem. The
+previous interfaces and proofs remain available.
+
+`Proofs16BohrSumUniformParameters` then removes actual Bohr cardinalities
+from the cutoff. The Dirichlet-cell lower bound gives
+`tau >= 1/(4*M^|K|*P^|L|)` when `rho*M >= 2` and `sigma*P >= 2`.
+The polynomial cutoff is antitone in the Fourier threshold, so this lower
+threshold supplies uniform larger spans. Choosing `M=ceil(2/rho)` and
+`P=ceil(2/sigma)` yields `bohr_sum_contains_radius_controlled_span`: for
+all prime moduli and `0<rho,sigma<1`, the Bohr set of the intersection of
+these two bounded spans, at radius `1/(4*pi)`, lies in
+`B(K;rho)+B(L;sigma)`. Its cutoffs depend only on the ranks and radii.
+There is no finite-size or actual-density hypothesis.
+
+The two new modules contain twelve theorem declarations and compile in
+a 57-module source closure. This strengthens the verified Bohr-sum input
+to the remaining bounded-span selection and algebraic-regularity argument;
+it does not close the five remaining numbered statements or their deep
+structure dependency.
