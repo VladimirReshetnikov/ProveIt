@@ -968,3 +968,16 @@ by default. The section reports the negative timing result and why bounded
 family coverage is distinct from general QP recognition. Reproduction lives
 in `../fast/normal_orbit_research/shellings.py`; full records and source pins
 are in `data/boundary-shellings-*`.
+
+
+[`vertex_link_census.tex`](vertex_link_census.tex) removes two redundant
+union-find structures from finite-manifold validation using the exact link
+identity `2 chi = 2 V - F - B`. It proves why a loop contributes two ends and
+why paired triangle sides need no extra equivalence computation. All 261
+geometry outputs, 252 native records and 47 positive proofs match the old
+implementation exactly; 12,000 generated face pairings agree with Regina.
+All 1,232 tests pass. Eleven complete native pipelines improve by paired
+factors of 1.16–1.42, including independent proof replay. A fresh off/on
+comparison still keeps shellings disabled by default. Evidence is retained
+in `data/vertex-link-census-*`; reproduce it with the `link_census` research
+driver. The general discovery-complexity goal is unchanged.

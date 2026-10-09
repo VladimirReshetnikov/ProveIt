@@ -1,0 +1,43 @@
+\subsection{Exact compatibility and independent manifold controls}
+
+The audit loads the geometry validator from revision \code{635465da5} and
+records its complete source hash. It compares every returned field, rejection
+message and callback count, not just the final recognition verdict. On each
+of the 84 source diagrams it compares the current pulling exterior, its
+shelling reduction and the legacy centred exterior. Nine layered solid tori,
+from one to 256 tetrahedra, bring the exact geometry comparison to 261 inputs.
+These include one-vertex triangulations with loop edges and canonical
+exteriors with interior vertices.
+
+All 252 published native-search records are reproduced exactly: 84 sources
+each with shellings off, shellings on, and shellings plus planar capping.
+The 47 distinct positive certificates are unchanged and replay successfully.
+This includes the previous work-cap outcomes and all stage summaries. Lower
+CPU cost does not change the deterministic work allowance, whose guard-count
+schedule is preserved. The 19 ordinary pipeline controls still finish through
+earlier recognizers, with no native attempt, and their verdicts and methods
+are unchanged.
+
+The audit also generates 12,000 reciprocal face pairings on one to eight
+tetrahedra, alternating unrestricted gluing permutations with orientation-
+compatible ones. The old and new validators agree on all prepared data or
+rejection messages and on every callback count. Regina independently checks
+the supported-manifold classification for all 12,000: connected, orientable,
+valid, finite, and with exactly one torus boundary. Both native implementations
+accept 684 cases. Among the rejections, 1,985 fail the vertex-link condition,
+2,897 are nonorientable, 4,877 are not face-connected, 378 have no finite
+boundary and 1,179 have a nontorus boundary. Seed, generator code, classification
+counts and a hash of the ordered generated records are retained for reproduction.
+
+New focused controls explicitly reconstruct local link triangles, directed
+ends and paired sides by graph traversal. Thirty relabelled fixtures compare
+that literal census with accepted geometry, including both canonical
+subdivisions and one-vertex layered solid tori. A fixed two-tetrahedron ideal
+figure-eight exterior has a torus vertex link and must still fail the finite
+vertex test. Cancellation and input immutability are also checked. All 42
+focused tests pass in 3.655 seconds, and all 1,232 maintained tests pass in
+216.855 seconds. The final source and random-pairing audit takes 55.020 seconds
+and partly overlaps the full suite; these elapsed values are validation costs,
+not performance comparisons. The audit and timing records pin 510 source files.
+
+\input{vertex_link_census_measurements.tex}
