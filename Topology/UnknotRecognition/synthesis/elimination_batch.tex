@@ -88,6 +88,10 @@ does not automatically extend to these normalized phases.
 
 \subsection{Version eight and independent replay}
 
+Section~\ref{sec:ordered-batch} subsequently adds an ordered-witness fast
+path with scalar summaries and virtual inverses. The graph-based replay
+described here remains the complete unordered fallback.
+
 A version-eight \texttt{elimination\_batch} move contains a nonempty
 \texttt{entries} list. Each entry has exactly its original relation slot
 and eliminated generator. The checker accepts no caller-provided word
@@ -95,7 +99,7 @@ images, occurrence summaries, dependency graph or topological order.
 It checks strict integer types, live membership, valid distinct slots,
 distinct generators and preservation of at least one live generator.
 
-Compressed replay independently derives every unique occurrence and its
+The initial compressed replay independently derives every unique occurrence and its
 donor support from the reconstructed words. It builds its own definitions
 and checks their dependency graph with a queue-based topological traversal.
 It then evaluates the linked word circuit with a second Kahn traversal,
