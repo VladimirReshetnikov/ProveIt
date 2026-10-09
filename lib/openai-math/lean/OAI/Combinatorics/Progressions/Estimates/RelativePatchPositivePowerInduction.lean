@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+In exists_initial_relative_absolute_rule, identify universal finite sets
+extensionally after congr on Lean 4.32. All theorem statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.RelativePatchWeightDescent
 import OAI.Combinatorics.Progressions.Geometry.RelativePatchFiniteCoordinateReduction
@@ -122,7 +123,9 @@ theorem exists_initial_relative_absolute_rule (n₀ : ℕ) [NeZero n₀]
     convert hscore using 1
     congr 1
     congr 1
-    exact Subsingleton.elim _ _
+    apply Finset.ext
+    intro u
+    simp
 
 end Erdos3
 

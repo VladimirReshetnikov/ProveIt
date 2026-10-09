@@ -262,3 +262,11 @@ bounds, and other proof text are unchanged; the production check uses
 verifies 4,134 pinned source hashes and modification notices for 976
 adapted files, retaining the upstream license and copyright notices. This
 repair is ahead of the completed 3,700-entry axiom checkpoint.
+
+`RelativePatchPositivePowerInduction` also passes its full production
+check with 3,540 current local dependencies. The Lean 4.32 repair proves
+equality of universal finite sets extensionally in the initial-rule
+construction; all 22 upstream theorem statements and bounds are unchanged.
+This module already carried a compatibility notice, now extended to
+record the proof repair, so the adapted-file count remains 976. The
+verified axiom checkpoint remains the first 3,700 manifest entries.
