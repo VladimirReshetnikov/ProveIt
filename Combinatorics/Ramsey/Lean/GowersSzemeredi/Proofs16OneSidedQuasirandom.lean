@@ -161,6 +161,97 @@ theorem boxSum_le_of_codegrees_right {G : X → Y → ℝ} {δ ε : ℝ}
   calc _ ≤ 3 * ε * (Fintype.card Y : ℝ) ^ 2 * (Fintype.card X : ℝ) ^ 2 := h
     _ = _ := by ring
 
+/-- Deviations of `[0,1]`-valued quantities are at most one. -/
+theorem abs_sub_le_card_of_mem_Icc {D t M : ℝ} (hD0 : 0 ≤ D) (hDM : D ≤ M) (ht0 : 0 ≤ t)
+    (htM : t ≤ M) : |D - t| ≤ M := by
+  rw [abs_le]; constructor <;> linarith
+
+/-- **Quasirandomness from typical degrees and codegrees.** If all but `η|Y|`
+second-class vertices have degree within `e|X|` of `δ|X|`, and all but
+`η|Y|²` pairs have codegree within `e|X|` of `δ²|X|`, then
+`boxSum (G − δ) ≤ 3(e + η)|X|²|Y|²`. -/
+theorem boxSum_le_of_typical_codegrees [DecidableEq Y] {G : X → Y → ℝ} {δ e η : ℝ}
+    (hG0 : ∀ x y, 0 ≤ G x y) (hG1 : ∀ x y, G x y ≤ 1) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1)
+    (he : 0 ≤ e) (Ybad : Finset Y) (hYbad : (Ybad.card : ℝ) ≤ η * Fintype.card Y)
+    (hdeg : ∀ y ∉ Ybad, |∑ x, G x y - δ * Fintype.card X| ≤ e * Fintype.card X)
+    (Pbad : Finset (Y × Y)) (hPbad : (Pbad.card : ℝ) ≤ η * (Fintype.card Y : ℝ) ^ 2)
+    (hcodeg : ∀ y y', (y, y') ∉ Pbad →
+      |∑ x, G x y * G x y' - δ ^ 2 * Fintype.card X| ≤ e * Fintype.card X) :
+    boxSum (fun x y => G x y - δ) ≤
+      3 * (e + η) * (Fintype.card X : ℝ) ^ 2 * (Fintype.card Y : ℝ) ^ 2 := by
+  obtain ⟨NX, hNX⟩ : ∃ NX : ℝ, NX = Fintype.card X := ⟨_, rfl⟩
+  obtain ⟨NY, hNY⟩ : ∃ NY : ℝ, NY = Fintype.card Y := ⟨_, rfl⟩
+  have hNX0 : 0 ≤ NX := by rw [hNX]; positivity
+  have hdeg_le : ∀ y, ∑ x, G x y ≤ NX := fun y => by
+    rw [hNX]
+    calc ∑ x, G x y ≤ ∑ _x : X, (1 : ℝ) := Finset.sum_le_sum fun x _ => hG1 x y
+      _ = _ := by simp
+  have hcodeg_le : ∀ y y', ∑ x, G x y * G x y' ≤ NX := fun y y' => by
+    rw [hNX]
+    calc ∑ x, G x y * G x y' ≤ ∑ _x : X, (1 : ℝ) := Finset.sum_le_sum fun x _ =>
+          mul_le_one₀ (hG1 x y) (hG0 x y') (hG1 x y')
+      _ = _ := by simp
+  have hδX : δ * NX ≤ NX := by nlinarith
+  have hδ2X : δ ^ 2 * NX ≤ NX := by nlinarith [pow_le_one₀ hδ0 hδ1 (n := 2)]
+  -- every deviation is at most `|X|`, and typical ones at most `e|X|`
+  have h19 : ∑ y, |∑ x, G x y - δ * Fintype.card X| ≤
+      (e + η) * Fintype.card Y * Fintype.card X := by
+    rw [← hNX, ← hNY]
+    have hsplit := (Finset.sum_filter_add_sum_filter_not Finset.univ (· ∈ Ybad)
+      (fun y => |∑ x, G x y - δ * NX|)).symm
+    rw [hsplit]
+    have hgood : ∑ y ∈ Finset.univ.filter (fun y => y ∉ Ybad), |∑ x, G x y - δ * NX| ≤
+        NY * (e * NX) := by
+      calc _ ≤ ∑ _y ∈ Finset.univ.filter (fun y => y ∉ Ybad), e * NX :=
+            Finset.sum_le_sum fun y hy => by
+              rw [hNX]; exact hdeg y (Finset.mem_filter.mp hy).2
+        _ ≤ ∑ _y : Y, e * NX := Finset.sum_le_sum_of_subset_of_nonneg
+            (Finset.filter_subset _ _) (fun _ _ _ => by positivity)
+        _ = _ := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hNY]
+    have hbad : ∑ y ∈ Finset.univ.filter (fun y => y ∈ Ybad), |∑ x, G x y - δ * NX| ≤
+        (η * NY) * NX := by
+      calc _ ≤ ∑ _y ∈ Finset.univ.filter (fun y => y ∈ Ybad), NX :=
+            Finset.sum_le_sum fun y _ => abs_sub_le_card_of_mem_Icc
+              (Finset.sum_nonneg fun x _ => hG0 x y) (hdeg_le y) (by positivity) hδX
+        _ = (Finset.univ.filter (fun y => y ∈ Ybad)).card * NX := by
+            rw [Finset.sum_const, nsmul_eq_mul]
+        _ ≤ (η * NY) * NX := by
+            apply mul_le_mul_of_nonneg_right _ hNX0
+            have : Finset.univ.filter (fun y => y ∈ Ybad) = Ybad := by ext; simp
+            rw [this, hNY]; exact hYbad
+    nlinarith
+  have h20 : ∑ y, ∑ y', |∑ x, G x y * G x y' - δ ^ 2 * Fintype.card X| ≤
+      (e + η) * (Fintype.card Y : ℝ) ^ 2 * Fintype.card X := by
+    rw [← hNX, ← hNY]
+    rw [← Fintype.sum_prod_type' (f := fun y y' => |∑ x, G x y * G x y' - δ ^ 2 * NX|)]
+    have hsplit := (Finset.sum_filter_add_sum_filter_not Finset.univ (· ∈ Pbad)
+      (fun p : Y × Y => |∑ x, G x p.1 * G x p.2 - δ ^ 2 * NX|)).symm
+    rw [hsplit]
+    have hgood : ∑ p ∈ Finset.univ.filter (fun p => p ∉ Pbad),
+        |∑ x, G x p.1 * G x p.2 - δ ^ 2 * NX| ≤ NY ^ 2 * (e * NX) := by
+      calc _ ≤ ∑ _p ∈ Finset.univ.filter (fun p : Y × Y => p ∉ Pbad), e * NX :=
+            Finset.sum_le_sum fun p hp => by
+              rw [hNX]; exact hcodeg p.1 p.2 (Finset.mem_filter.mp hp).2
+        _ ≤ ∑ _p : Y × Y, e * NX := Finset.sum_le_sum_of_subset_of_nonneg
+            (Finset.filter_subset _ _) (fun _ _ _ => by positivity)
+        _ = _ := by
+            rw [Finset.sum_const, Finset.card_univ, Fintype.card_prod, nsmul_eq_mul, hNY]
+            push_cast; ring
+    have hbad : ∑ p ∈ Finset.univ.filter (fun p => p ∈ Pbad),
+        |∑ x, G x p.1 * G x p.2 - δ ^ 2 * NX| ≤ (η * NY ^ 2) * NX := by
+      calc _ ≤ ∑ _p ∈ Finset.univ.filter (fun p : Y × Y => p ∈ Pbad), NX :=
+            Finset.sum_le_sum fun p _ => abs_sub_le_card_of_mem_Icc
+              (Finset.sum_nonneg fun x _ => mul_nonneg (hG0 x p.1) (hG0 x p.2))
+              (hcodeg_le p.1 p.2) (by positivity) hδ2X
+        _ = (Finset.univ.filter (fun p : Y × Y => p ∈ Pbad)).card * NX := by
+            rw [Finset.sum_const, nsmul_eq_mul]
+        _ ≤ (η * NY ^ 2) * NX := by
+            apply mul_le_mul_of_nonneg_right _ hNX0
+            have : Finset.univ.filter (fun p : Y × Y => p ∈ Pbad) = Pbad := by ext; simp
+            rw [this, hNY]; exact hPbad
+    nlinarith
+  exact boxSum_le_of_codegrees_right hG0 hG1 hδ0 hδ1 h19 h20
+
 /-- **Lemma 43 from degree and codegree control.** -/
 theorem common_neighbourhood_deviation_of_codegrees {I J : Type*} [Fintype I] [Fintype J]
     [DecidableEq I] [DecidableEq J] [DecidableEq Y] [Nonempty Y] {G : X → Y → ℝ} {δ ε : ℝ}
