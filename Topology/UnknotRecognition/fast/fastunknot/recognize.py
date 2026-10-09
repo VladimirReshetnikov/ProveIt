@@ -386,6 +386,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_regina: bool = False, regina_seconds: float | None = 2.0,
               use_normal_seed: bool = False, normal_seed_max_work: int | None = 2000000,
               normal_seed_optimize: bool = True, normal_seed_tree_trials: int = 4,
+              normal_seed_face_roots: int = 0,
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
@@ -436,6 +437,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("normal-seed switches must be boolean")
     if type(normal_seed_tree_trials) is not int or normal_seed_tree_trials < 0:
         raise ValueError("normal_seed_tree_trials must be a nonnegative integer")
+    if type(normal_seed_face_roots) is not int or normal_seed_face_roots < 0:
+        raise ValueError("normal_seed_face_roots must be a nonnegative integer")
     if normal_seed_max_work is not None and (type(normal_seed_max_work) is not int or normal_seed_max_work < 0):
         raise ValueError("normal_seed_max_work must be a nonnegative integer or None")
     if type(use_group) is not bool:
@@ -729,7 +732,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        normal_options=dict(seconds=regina_seconds) if use_regina else None,
                        normal_seed_options=dict(max_work=normal_seed_max_work,
-                           optimize=normal_seed_optimize, tree_trials=normal_seed_tree_trials) if use_normal_seed else None,
+                           optimize=normal_seed_optimize, tree_trials=normal_seed_tree_trials,
+                           face_roots=normal_seed_face_roots) if use_normal_seed else None,
                        two_meridian_options=dict(seconds=two_meridian_seconds,
                            max_work=two_meridian_max_work,
                            max_attempts=two_meridian_max_attempts) if use_two_meridian else None,

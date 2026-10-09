@@ -3062,3 +3062,27 @@ python -B -m normal_orbit_research.blocking audit --output results/cocycle_block
 python -B -m normal_orbit_research.blocking optimize --output results/cocycle_blocking_optimize.json
 python -B -m normal_orbit_research.blocking recognize --output results/cocycle_blocking_recognize.json
 ```
+
+After a failed span optimum and all requested tree gauges, the native seed
+stage can optionally try extrema of the **minimum-span face**. The
+optimal matching gives eight difference constraints per tetrahedron; two
+nonnegative shortest-path searches per root produce other exact optima.
+Roots in the same zero-weight strongly connected component are skipped.
+Every proposed disc still passes the unchanged source-bound verifier.
+Use `normal_seed_decide(..., face_roots=4)`,
+`recognize(..., normal_seed_face_roots=4)`, or `--normal-seed-face-roots 4`
+to request four roots. This defaults to zero because measured complete calls
+were slower, despite new native coverage. It is skipped when optimization is disabled.
+The shared work allowance covers all candidates and replay. An unsuccessful
+bounded search remains inconclusive; tied optima can have different topology.
+
+Reproduce the source/topology audit and complete recognition measurements:
+
+```sh
+python -B -m normal_orbit_research.face audit --output ../synthesis/data/cocycle-face-audit.json
+python -B -m normal_orbit_research.face recognize --output ../synthesis/data/cocycle-face-recognize.json
+```
+
+The audit requires optional Regina for independent topology controls.
+See the article's `cocycle_face.tex` section for the exact optimal-face
+characterization, complexity, coverage and unsuccessful-search overhead.

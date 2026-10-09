@@ -1,28 +1,33 @@
 """Bounded native search for a source-certified normal meridian candidate.
 
 Try the primitive integral cocycle, then a bounded prelude of alternative
-tree gauges, then optional span minimization and any requested later trees. Source-bound
-connectedness witnesses avoid orbit searches for these two restricted
-families. Failure of the tested seeds says nothing about knottedness.
+tree gauges, then optional span minimization and any requested later trees.
+Finally try bounded extrema in the certified minimum-span face. Source-bound
+connectedness witnesses avoid orbit searches for these restricted families.
+Failure of the tested seeds says nothing about knottedness.
 """
 from .diagram import Diagram
 from .diagram_exterior import diagram_exterior
 from .normal_cocycle import rank_one_cocycle_seed, _Budget, CocycleLimit
 from .cocycle_span import minimize_cocycle_span
 from .cocycle_trees import cocycle_tree_candidates
+from .cocycle_face import cocycle_face_candidates
 from .normal_cocycle_verify import inspect_cocycle_certificate
-from .normal_surface_geometry import NormalOrbitError
+from .normal_surface_geometry import NormalOrbitError, _prepare, _coordinates
 
 
 def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
-                       max_cycles=None, tree_trials=4, check=lambda: None):
+                       max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
     """Return UNKNOT with a native source certificate, or INCONCLUSIVE.
 
     The shared work allowance covers construction, cocycle extraction, all
-    tree trials, connectedness/Euler checks and span optimization. It is a deterministic
-    guard-count allowance, not a count of bit operations or a time limit.
+    tree and optimal-face trials, connectedness/Euler checks and span
+    optimization. It is a deterministic guard-count allowance, not a count
+    of bit operations or a time limit.
     max_cycles is retained and validated for compatibility; these certificates
     require no interval-orbit cycles, so even a zero cycle allowance suffices.
+    face_roots defaults to zero: optional face discovery adds coverage but
+    was slower than the existing complete fallback on measured cases.
     """
     if type(optimize) is not bool:
         raise ValueError('optimize must be bool')
@@ -30,6 +35,8 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if type(tree_trials) is not int or tree_trials < 0:
         raise ValueError('tree_trials must be a nonnegative integer')
+    if type(face_roots) is not int or face_roots < 0:
+        raise ValueError('face_roots must be a nonnegative integer')
     budget = _Budget(check, max_work)
     stats, stages = {}, []
     try:
@@ -46,18 +53,20 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
             if candidate is not None and candidate['euler_characteristic'] != 1:
                 # A miss emits no positive proof. The original class was
                 # independently checked at the raw stage; this construction
-                # changes only its tree gauge and validates normal matching.
+                # changes only its gauge and validates normal matching. A
+                # face candidate also replays the original span optimum.
                 answer = dict(components=1, orientable_components=1,
                               euler_characteristic=candidate['euler_characteristic'],
                               normal_pieces=candidate['normal_pieces'], compressing_discs=0,
-                              connectivity='zero-tree')
+                              connectivity='minimum-span' if span is not None else 'zero-tree')
             else:
                 answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
                 if answer is None:
                     raise ArithmeticError('source-bound cocycle connectivity replay failed')
             entry = dict(stage=stage, status='COMPLETE', **answer)
             if candidate is not None:
-                entry.update({k: candidate[k] for k in ('trial', 'root', 'randomized')})
+                keys = ('root_trial', 'root', 'direction') if stage == 'face' else ('trial', 'root', 'randomized')
+                entry.update({k: candidate[k] for k in keys})
             stages.append(entry)
             if answer['compressing_discs']:
                 budget.tick()
@@ -98,6 +107,20 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
             result = tree_attempt()
             if result is not None:
                 return result
+        if optimize and face_roots:
+            prepared = _prepare(raw, budget.tick)
+            face_stats = dict(candidates=0)
+            stats['face_search'] = face_stats
+            for candidate in cocycle_face_candidates(seed['vertices'], seed['heights'],
+                    optimized['certificate'], roots=face_roots, check=budget.tick):
+                face_stats['candidates'] += 1
+                analysed = _coordinates(prepared, candidate['coordinates'], budget.tick)
+                candidate.update(euler_characteristic=analysed['euler_characteristic'],
+                                 normal_pieces=analysed['normal_disks'])
+                result = evaluate('face', seed['heights'], candidate['coordinates'],
+                                  candidate['certificate'], candidate)
+                if result is not None:
+                    return result
         reason = 'the tested cocycle seeds contain no certified compressing disc'
     except (CocycleLimit, NormalOrbitError) as exc:
         reason = str(exc)

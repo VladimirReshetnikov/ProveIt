@@ -99,10 +99,12 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_minimum_pieces_does_not_mean_minimum_genus(self):
         diagram = Diagram.from_braid(2, [1, 1, -1])
-        result = normal_seed_decide(diagram, tree_trials=0)
+        result = normal_seed_decide(diagram, tree_trials=0, face_roots=4)
         self.assertEqual(result['status'], 'INCONCLUSIVE')
-        self.assertEqual([s['normal_pieces'] for s in result['stages']], [45, 43])
-        self.assertEqual([s['compressing_discs'] for s in result['stages']], [0, 0])
+        self.assertEqual([s['normal_pieces'] for s in result['stages'][:2]], [45, 43])
+        self.assertTrue(all(s['normal_pieces'] == 43 and s['stage'] == 'face'
+                            for s in result['stages'][2:]))
+        self.assertTrue(all(s['compressing_discs'] == 0 for s in result['stages']))
         self.assertEqual(recognize(diagram, **OPTIONS).status, 'UNKNOT')
         trefoil = normal_seed_decide(Diagram.from_braid(2, [1, 1, 1]))
         self.assertEqual(trefoil['status'], 'INCONCLUSIVE')
@@ -178,7 +180,7 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_command_line_flags(self):
         output = subprocess.check_output([sys.executable, '-B', '-m', 'fastunknot', 'recognize', '--help'], text=True)
-        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize', '--normal-seed-tree-trials'):
+        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize', '--normal-seed-tree-trials', '--normal-seed-face-roots'):
             self.assertIn(flag, output)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'curl.json'
