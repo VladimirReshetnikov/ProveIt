@@ -1691,3 +1691,7 @@ if os.path.exists('data/orbit-race-benchmark.json'):
 if os.path.exists('data/incoming-sectors-benchmark.json'):
     import runpy
     runpy.run_path('data/incoming_sectors_tables.py')
+
+if os.path.exists('data/topology-spectra-benchmark.json'):
+    import runpy
+    runpy.run_path('data/topology_spectra_tables.py')

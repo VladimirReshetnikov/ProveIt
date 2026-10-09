@@ -1,0 +1,230 @@
+\section{Component topology from two weights}
+\label{sec:topology-spectra-native}
+
+Report 58's observer is now integrated as
+\code{normal\_topology\_spectrum}, after fixing the trace-vocabulary defect
+of Section~\ref{sec:incoming-sectors}. It returns the joint distribution of
+Euler characteristic, boundary-circle count, orientability and genus or
+crosscap number, with binary multiplicities. The earlier coordinate census
+can obtain this information by first recovering every distinct component's
+full normal vector and then classifying it. The new interface requests only
+two additive weights and uses one boundary query and two surface queries.
+This removes the dimension $7t$ coordinate payload when a caller needs
+abstract component types.
+
+Polynomial encoded computation of supplied normal-surface topology is
+classical~\cite{aht-orbits}. The integration is a smaller observer with
+explicit compressed boundary markers, one-sided multiplicity restoration,
+and independent source-bound replay. The mathematical construction comes
+from report 58; the maintained adaptation adds the explicit monotone-trace
+contract and its regression tests. It leaves component coordinates,
+boundary slopes and essentiality to their existing observers. Those are
+different outputs, so the timing comparison below states its reference's
+extra work explicitly.
+
+\subsection{Least representatives from an order-preserving trace}
+
+For an interval relation on $[0,M)\cap\mathbb Z$, a least transversal
+contains precisely the minimum point of each orbit. An output interval
+$[a,b)$ encodes $b-a$ distinct orbit representatives, not one orbit.
+Even $2^{20{,}000}$ isolated points have the one-interval transversal
+$[0,2^{20{,}000})$.
+
+The forward compiler maintains an increasing injection from current points
+to surviving original labels. Its image is a list of original intervals.
+Identity deletion, pairing trimming, periodic merging and transmission
+change the generating relation but preserve its equivalence classes on
+the same point universe. A suffix truncation discards points equivalent
+to retained earlier points, so no unfinished orbit loses its least original
+label. A contraction deletes static intervals: each removed point is then
+the sole live point of its original orbit, and is emitted. At completion
+no live points remain, so the emitted union is exactly the least transversal.
+This proof depends on the increasing injection.
+
+The checker independently replays the original orbit proof and reconstructs
+the selected set backwards. Undoing a suffix truncation appends unselected
+points. Undoing a contraction inserts all its static gaps as selected and
+lifts earlier selected points over them. For half-open gaps $[a_i,b_i)$,
+write $\ell_i=b_i-a_i$ and $c_i=a_i-\sum_{j<i}\ell_j$. A surviving contracted
+point $q$ lifts to
+\[
+ \lambda(q)=q+\sum_{i:c_i\le q}\ell_i.
+\]
+Lift a selected interval $[u,v)$ to the hull
+$[\lambda(u),\lambda(v-1)+1)$ and include every inserted gap. The hull's
+extra points are only those inserted gaps and are already selected, so
+the union is exact. Prefix sums and binary searches avoid point expansion.
+
+If the trace has $E$ events and $G$ static-gap intervals, reverse insertion
+creates at most $G$ final representative intervals. Forward deletion leaves
+at most $1+G$ live original intervals and at most $1+2G$ raw emitted pieces.
+Each deleted gap can split at most one live interval; suffix deletion adds
+none. During emission, splitting at the $2g$ gap endpoints adds at most
+$2g$ pieces, and the live-list sizes telescope over successive contractions.
+These observations give the stated bounds.
+
+The list implementation takes
+$O(E(1+G)+G\log(G+1))$ endpoint operations for compilation; a conservative
+reverse-selector bound is $O((E+G)(G+1)\log(G+2))$, besides ordinary orbit
+replay. Endpoint bit lengths are bounded by $\log(M+1)$. Neither output
+multiplicity nor a long interval is expanded. These are polynomial local
+bounds, rather than an assertion that the list implementation is optimal.
+
+\subsection{The vocabulary guard and the reflection counterexample}
+
+A valid orbit-count proof need not satisfy the monotone-label invariant.
+On $[0,3)$ with relation $0\sim1$, the reflected count proof is valid, but
+ignoring reflection during reverse selection yields the false set
+$\{0,1\}$ in place of $\{0,2\}$. Equal cardinality is insufficient.
+
+The maintained reverse selector now explicitly accepts only contraction,
+suffix truncation, deletion, trimming, merging and transmission. Any other
+event, including global reflection, rejects the transversal certificate.
+The forward compiler likewise reports an unsupported monotone-trace request
+when a source-bound count proof contains reflection. Discovery explicitly
+requests the forward sweep, so a future default direction change cannot
+silently change its proof language.
+
+The guard is on the actual operations, not merely the version number.
+For example, a valid version-three count proof containing only supported
+monotone events still has the same selector theorem. Two cancelling global
+reflections remain outside this compiler's contract, even though the net
+map is the identity. This is an explicit language restriction, not a
+negative mathematical claim about the source relation. The ordinary forward
+AHT algorithm is complete for every supported interval input, so the observer
+remains complete on its supplied-vector domain.
+Monotone here describes the surviving point labels; reversed arc pairings
+and nonorientable surfaces remain fully supported.
+
+Tests replay the retained counterexample with the count checker, reject it
+with the corrected selector, and obtain the correct intervals through forward
+discovery. Another test places a cancelling reflection pair in a normal
+surface's boundary proof: count replay accepts the pair, but the outer topology
+checker rejects that unsupported selector language. Producer and checker
+continue to propagate caller cancellation, including \code{ValueError}
+from a false-valued callable. Independent verification never invokes the
+forward selector or discovery.
+
+\subsection{One boundary marker per actual boundary circle}
+
+Build the ordinary interval relation for the surface boundary and compute
+its least transversal. Include those boundary-edge points in the full
+normal-edge universe, respecting the separate block offsets. Each surface
+component then receives exactly one marker for each of its boundary circles.
+An additive marker weight therefore measures the actual count $b$, rather
+than the number of normal arcs or intersections with a boundary edge.
+
+For the other weight, use the existing normal-cell ownership convention:
+one per edge point, minus one per global normal arc including boundary arcs,
+plus one per owned
+normal disc. Its sum on a component is $\chi$. Thus the full-surface query
+has integer weight vector $(\chi,b)$, of dimension two independent of $t$.
+
+In the orientable ambient manifold, doubled normal coordinates form the
+orientation cover. Every original point $i$ has adjacent lifts $2i,2i+1$.
+Replacing each weight interval $[a,b)$ by $[2a,2b)$ with the same value
+lifts both observations. Each boundary circle has two separate lifts:
+its tangent line is orientable and its inward collar line is trivial, so
+the orientation character restricts trivially there. Consequently the same
+original boundary markers correctly count boundary circles of the double;
+no second boundary discovery is required.
+
+\subsection{Sparse inversion and complete type reconstruction}
+
+Let $H(v)$ be the base histogram and $K(v)$ the double histogram for
+$v=(\chi,b)\in\mathbb Z^2$. Split the base into orientable and nonorientable
+counts $O,A$. The geometric cover gives
+\[
+ H(v)=O(v)+A(v),\qquad K(v)=2O(v)+A(v/2),
+\]
+where a nonintegral half or an absent base key contributes zero. For $v\ne0$,
+process present base keys in increasing $|\chi|+b$ and set
+\[
+ A(v)=\frac{2H(v)+A(v/2)-K(v)}2,\qquad O(v)=H(v)-A(v).
+\]
+An integral nonzero half has smaller norm, so it is already known. Only
+present keys need processing. At zero the two equations instead give
+$A(0)=2H(0)-K(0)$ and $O(0)=K(0)-H(0)$; this distinguishes tori and Klein
+bottles with the same zero signature.
+
+Reject nonintegral or negative counts and counts exceeding $H(v)$. Then
+reconstruct the entire base and cover histograms, including keys present
+only in the cover. This proves existence as well as uniqueness of the
+computed split. For instance, three M\"obius bands and five annuli give
+$H(0,1)=3$, $H(0,2)=5$ and $K(0,2)=13$. The half-signature contribution
+is essential to recover zero nonorientable annuli.
+
+An orientable row has genus $(2-\chi-b)/2$, requiring a nonnegative even
+defect. A nonorientable row has $2-\chi-b\ge1$ crosscaps. The independent
+algebraic checker reconstructs the complete histograms from proposed rows;
+it does not run this inversion. It checks classification, canonical ordering,
+strict integral fields and full-support equality. Integral signatures are
+required: reducing coordinates modulo two before inversion destroys the
+unique-halving argument.
+
+For $s$ sparse keys with fixed dimension, the recurrence uses a linear
+number of integer operations after sorting. With a balanced comparison
+map and $\ell$-bit fields including temporary sums, the bound is
+$O(s\ell\log(s+1))$. The Python implementation uses dictionaries, whose
+integer keys can collide adversarially. Its conservative bound is
+$O(s^2\ell+s\ell\log(s+1))$. Both are polynomial, but the sharper map
+bound is not advertised as the deterministic worst-case cost of these
+Python dictionaries.
+
+\subsection{Peeling links and restoring one-sided multiples}
+
+The default observer uses the existing quadrilateral-content reduction.
+Peel the minimum triangle coefficient at each global vertex, recording
+that many vertex links. Matching triangle differences are quadrilateral
+differences. If all quadrilaterals vanish, the peeled core vanishes too.
+Otherwise the quadrilateral gcd $g$ divides every remaining triangle,
+since one triangle at each vertex is zero and differences propagate over
+the connected corner graph. Query the divided core.
+
+For a core orientable component, multiplying normal coordinates by $g$
+gives $g$ copies. For a nonorientable component it gives $\lfloor g/2\rfloor$
+copies of its connected orientation double and one original precisely when
+$g$ is odd. Double both $\chi$ and $b$ on the orientation-double row.
+Restore peeled boundary-vertex links as discs and interior-vertex links
+as spheres, and combine equal types. A separate checker applies these
+typewise equations without calling the restoration producer.
+
+The outer source-bound certificate binds the original labelled triangulation
+and coordinate vector, not just the quotient. Replay independently reconstructs
+the peel and divisibility, the boundary selector, both weighted histograms,
+the cover equations and the original summary. Euler totals must also equal
+the original geometry. Reducing core size does not remove input reading,
+fingerprinting, gcd, division or serialization costs on the original bits.
+The shared cycle allowance covers all three actual orbit discoveries;
+compilation and verification retain their cooperative checks. Incomplete
+discovery publishes no spectrum or completed certificate.
+
+\subsection{Validation, measurements and composition}
+
+The current-tree audit compares all 1,275 vectors in the maintained
+component corpus under both core settings and both merger thresholds:
+5,100 complete spectra and independent certificates agree with the frozen
+component-level oracle. It retains 56 representative full proofs. A fresh
+Regina audit checks 1,395 API results and certificates on 664 bounded vectors
+from 26 triangulation isomorphism classes, including genus, crosscap and
+boundary multiplicities. The explicit reflection counterexample is rejected
+by the maintained checker while its original count proof remains valid.
+\input{topology_spectra_results.tex}
+
+The runtime lives in the six new \code{fastunknot} observer modules and has
+an explicit \code{census}/\code{verify} command-line interface through
+\code{python -m fastunknot.normal\_topology}. The preserved report remains
+unchanged. The maintained driver
+\path{../fast/normal_orbit_research/spectra.py} has \code{audit} and
+\code{benchmark} modes with an output path and optional rounds. Fresh
+records, proofs, source pins, tests and publication checks are
+\path{data/topology-spectra-*}.
+
+If an outer algorithm makes $Q(n)$ queries of encoded size at most $S(n)$,
+this observer contributes $Q(n)\operatorname{poly}(S(n))$ time. Controlling
+both functions at quasipolynomial size would preserve that class for this
+stage. The integration does not prove those hypotheses. Abstract component
+types alone do not supply a useful vector, essential boundary slope,
+component coordinates, cutting instructions or attachment maps. The sector
+search and existing diagram-bound positive certificates remain relevant
+to those separate obligations.

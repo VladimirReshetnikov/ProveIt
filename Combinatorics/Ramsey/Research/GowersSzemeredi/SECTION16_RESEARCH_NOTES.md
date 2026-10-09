@@ -5633,6 +5633,89 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      - Still to build: Lemma 9.2 (eight maps from one 11-parameter identity
        family) and the independence-counting iteration of Proposition 9.3
        (Claim 9.4, sets `I_{x,y}` of size at most `s₀ = (d + log 1/ρ)^O(1)`).
+     - *Progress.* Lemma 9.2's double Cauchy–Schwarz step is done:
+       `respected_quadruples_of_separated` (`Proofs16SeparatedRespect`).
+       Suppose a family `Q` of `c|G|²|Ω|` triples `(x, a, ω)` has
+       `f(x+a) − g(x)` depending only on `(a, ω)`. Then `f` respects at
+       least `c⁴|G|⁴` additive quadruples
+       `f(x+a) − f(x′+a) = f(x+b) − f(x′+b)`, which is Corollary 7.6's
+       input.
+       `freiman_of_separated` (`Proofs16SeparatedFreiman`) finishes the
+       Theorem 2.26 step polynomially: such an `f` is a Freiman
+       8-homomorphism on a set of size `2^(-1882)·c^4656·N`.
+       `phiAdditiveCount_ge_of_respected` is the `N`-to-one transfer to
+       `phiAdditiveCount`.
+       `shift_agreement` (`Proofs16ShiftAgreement`) is the pairing step
+       `φ₂ = ψ₁ + u`. If `S` separates `f` and `g`, and `ψ` respects
+       additive quadruples on `B` and equals `f` there, then `g = ψ + u`
+       on the largest fiber, of size at least `|S′|/|G|`. In `ℤ/N` this
+       replaces Milićević's rank-and-kernel argument.
+     - *Assembling Lemma 9.2 for one pair (next).* Two gaps remain
+       between these pieces.
+       1. **Popular values.** Restrict to the triples whose value
+          `z = x + a` is popular (`z ∈ Z`), and apply Corollary 7.6 with
+          `B₀ = Z` instead of `univ`. This needs a variant of
+          `respected_quadruples_of_separated` that keeps all four sums
+          `x+a, x′+a, x+b, x′+b` in the value set. They do lie there,
+          since every pair it counts comes from two triples of the family.
+       2. **Domain of `ψ`.** `shift_agreement` needs `x` and `x + a` in the
+          set where `ψ` is a homomorphism. Corollary 7.6 gives `ψ = f`
+          only on a dense set of *values*. So first extend `ψ` to a Bohr
+          set with Lemma 7.8 (`Proofs07BohrHom`), the analogue of
+          Milićević's coset progression `C₁`, and then require `x` in it.
+
+       Each restriction keeps a polynomial fraction of the triples,
+       because popular values carry `(c/2)N|Ω|` triples each.
+       Gap 1 is closed. `respected_quadruples_of_separated_in` keeps all
+       four sums in the value set `V = {x + a}`.
+       `freiman_on_values_of_separated` applies Corollary 7.6 with
+       `B₀ = V`, giving `B ⊆ V` with `|B| ≥ 2^(-1882)·c^4656·|V|` on which
+       `f` is a Freiman 8-homomorphism.
+       Gap 2 is closed without extending `ψ` outside `A`.
+       `shared_linear_part` takes `f` locally affine on `A` with linear
+       part `ψ` on `K` (Lemma 7.8's `IsBHomomorphism`), and a family
+       separating `f` and `g`. It gives `g x − g x′ = ψ(x − x′)` whenever
+       `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. So `g` shares the linear
+       part `ψ`, which is Milićević's `φ₂ = ψ₁ + u`.
+       **Lemma 9.2 for one pair is assembled:** `lemma_9_2_pair`
+       (`Proofs16Lemma92Pair`). Start from `cN²|Ω|` triples separating
+       `f` and `g`. The result is a set `B` of values, of density
+       `2^(-1882)·c^4656` in `V`, on which `f` is a Freiman
+       8-homomorphism. Its linear part `ψ` is a Freiman 2-homomorphism
+       on a Bohr set of spectrum `≤ 16α′^(−2)` and radius `α′/(32π)`,
+       with `α′ = |B|/N`, and `g` shares `ψ` on every fiber. Every bound
+       is polynomial in `c`. The eight-map version applies this pair by
+       pair, restricting the family to popular values each time.
+     - *Plan for Proposition 9.3 (printed pp. 65–68).*
+       - **Iteration state.** Freiman homomorphisms `θ₁, …, θ_m` and, for
+         each pair `x, y`, a `{-1,0,1}`-independent index set `I_{x,y}`
+         with `{θ_i(x−y)} ⊆ ⟨Γ_x ∪ Γ_y⟩_R`. Independence caps
+         `|I_{x,y}| ≤ s₀ = (d + log 1/ρ)^O(1)`, since `2^s ≤ (2sR+1)^{2d}`.
+         The counting lemma is now `independent_card_le`
+         (`Proofs16IndependenceCount`): `s` elements of
+         `spanBall Γ R` with distinct `{0,1}`-subset sums satisfy
+         `2^s ≤ (2sR+1)^|Γ|`.
+       - **Claim 9.4.** Suppose the containment
+         `B(θ_i(a) : i ∈ I; η) ⊆ (B_{x+a} ∩ B_x) + (B_{y+a} ∩ B_y)` fails for
+         `ε|C|³` triples.
+         1. Theorem 2.12 (`bohr_sum_contains_span_intersection_quarter`)
+            puts the failing frequency into the span.
+         2. One linear combination per element, chosen with success
+            probability `(2R+1)^(−4d)`, is exactly
+            `exists_good_selection` (`Proofs16SelectionAveraging`, four
+            fixed points per requirement, `K = (2R+1)^d`).
+         3. Lemma 9.2 (`lemma_9_2_pair`, applied pairwise) gives a new
+            Freiman `θ`, independent of the current indices on many
+            pairs.
+
+         Claim 9.5 is the same for 12-tuples.
+       - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
+         of pairs, and the size is capped at `s₀`. So the iteration stops
+         after polynomially many rounds.
+       - **Final selection.** Choose one good pair `(x_a, y_a)` per `a`,
+         by averaging. Glue by Lemma 9.1 (`compatible_bohr_sum_quadruple`,
+         J.112). A random index set `J` of size `8s₀` makes `U_a` linear
+         in `a`, at loss `C(m, 8s₀)^(−1)`, again by averaging.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
