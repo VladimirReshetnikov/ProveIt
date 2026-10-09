@@ -38,7 +38,7 @@ def local_coordinates(heights):
     return row
 
 
-def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
+def _rank_one_cocycle_seed_details(triangulation, *, max_work=None, check=lambda: None):
     """Return primitive local heights and coordinates, or reject other ranks.
 
     Global edge orientation is recovered from the manifold validator's signed
@@ -120,10 +120,17 @@ def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
             row.append(0 if i is None else sign*integers[i])
         heights.append(row)
         coordinates.append(local_coordinates(row))
-    return dict(vertices=[p['vertex_roots'][4*t:4*t+4] for t in range(n)],
+    seed = dict(vertices=[p['vertex_roots'][4*t:4*t+4] for t in range(n)],
                 heights=heights, coordinates=coordinates,
                 stats=dict(work=budget.work, chords=len(chords), **kernel_stats,
                            height_bits=max(abs(x).bit_length() for row in heights for x in row)))
+
+    return seed, p
+
+
+def rank_one_cocycle_seed(triangulation, *, max_work=None, check=lambda: None):
+    """Return primitive local heights and coordinates, or reject other ranks."""
+    return _rank_one_cocycle_seed_details(triangulation, max_work=max_work, check=check)[0]
 
 
 def _rank_one_kernel(rows, dimension, budget):
@@ -205,3 +212,30 @@ def _rank_one_kernel(rows, dimension, budget):
         values[pivot] = -total
     return values, dict(pivots=len(basis), eliminations=eliminations,
                         nonunit_pivots=nonunit_pivots, peak_row=peak_row)
+
+
+def _height_summary(prepared, heights, *, potential=None, check=lambda: None):
+    """Linear discovery-only cell count for an internally coherent cocycle.
+
+    Edge intersections are absolute height differences; face arcs and local
+    normal discs are the corresponding height spans. This is a prefilter,
+    not matching, primitive-class, connectedness or source verification.
+    Every possible positive is independently checked from its full vector.
+    """
+    rows, weights, pieces = [], {}, 0
+    for t, hs in enumerate(heights):
+        check()
+        row = hs if potential is None else [h+potential[prepared['vertex_roots'][4*t+i]]
+                                            for i, h in enumerate(hs)]
+        rows.append(row)
+        pieces += max(row)-min(row)
+        for j, (a, b) in enumerate(_EDGES):
+            weights[prepared['edge_roots'][6*t+j]] = abs(row[a]-row[b])
+    arcs = 0
+    faces = prepared['boundary_faces']+[(t,f) for t,f,_,_,_ in prepared['pairs']]
+    for t,f in faces:
+        check()
+        hs = [rows[t][v] for v in range(4) if v != f]
+        arcs += max(hs)-min(hs)
+    return dict(euler_characteristic=sum(weights.values())-arcs+pieces,
+                normal_pieces=pieces)
