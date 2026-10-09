@@ -40,6 +40,7 @@ class WordArena:
         self.rules, self.lengths, self.first, self.last = [None], [0], [0], [0]
         self.uniform = [0]  # exact signed letter for a constant word; zero otherwise
         self._interned, self._inverse, self._reduced, self._equal_cache = {}, {0: 0}, {0: 0}, {}
+        self._letter_masks, self._letter_bits, self._letter_labels = {0: (0, 0)}, {}, []
         self.stats = dict(work=0, equality_calls=0, splits=0, compact_triples=0, peak_assertions=0,
                           probe_steps=0, probe_resolved=0, probe_fallbacks=0,
                           lcp_calls=0, lcp_probe_steps=0, lcp_probe_resolved=0, lcp_probe_fallbacks=0)
@@ -424,7 +425,35 @@ class WordArena:
     def substitute(self, roots, images):
         """Simultaneous letter substitution with shared free reduction."""
         mapped = {0: 0}
-        for current in self._reachable(roots):
+        # Singleton discovery may already have exact support for this state.
+        # Reuse it without adding a metadata pass to cold replay queries.
+        if all(root in self._letter_masks for root in roots):
+            changed = 0
+            for letter, image in images.items():
+                self.tick()
+                terminal = self._interned.get(('t', letter))
+                if terminal is not None and image != terminal:
+                    changed |= self._letter_bits.get(abs(letter), 0)
+            pending, needed = list(roots), set()
+            while pending:
+                self.tick();current = pending.pop()
+                if current in mapped or current in needed:
+                    continue
+                if not self._letter_masks[current][0] & changed:
+                    # Unchanged raw words may still contain cancellations.
+                    mapped[current] = self.reduce(current)
+                else:
+                    needed.add(current)
+                    rule = self.rules[current]
+                    if rule[0] == 'c':
+                        pending.extend(rule[1:])
+            nodes = sorted(needed)
+            self.stats['supported_substitutions'] = self.stats.get('supported_substitutions', 0)+1
+            self.stats['substitution_changed_nodes'] = self.stats.get('substitution_changed_nodes', 0)+len(nodes)
+            self.stats['substitution_frontiers'] = self.stats.get('substitution_frontiers', 0)+len(mapped)-1
+        else:
+            nodes = self._reachable(roots)
+        for current in nodes:
             rule = self.rules[current]
             if rule[0] == 't':
                 mapped[current] = self.reduce(images.get(rule[1], current))
@@ -458,31 +487,38 @@ class WordArena:
 
         Presence P and repetition R combine as P=P1|P2 and
         R=R1|R2|(P1&P2). Dense bit positions avoid dependence on letter labels.
+        Positions are appended as new labels appear; immutable node summaries
+        persist across calls, while each returned list retains numeric order.
         """
-        reachable = self._reachable(roots)
-        labels = sorted({abs(self.rules[node][1]) for node in reachable
-                         if self.rules[node][0] == 't'})
-        bits = {g: 1 << i for i, g in enumerate(labels)}
-        present, repeated = {0: 0}, {0: 0}
-        for node in reachable:
+        for root in roots:
             self.tick()
-            rule = self.rules[node]
-            if rule[0] == 't':
-                present[node], repeated[node] = bits[abs(rule[1])], 0
-            else:
-                _, a, b = rule
-                present[node] = present[a] | present[b]
-                repeated[node] = repeated[a] | repeated[b] | (present[a] & present[b])
+            if root in self._letter_masks:
+                continue
+            nodes = self._unresolved(root, self._letter_masks)
+            for node in nodes:
+                self.tick();rule = self.rules[node]
+                if rule[0] == 't':
+                    g = abs(rule[1])
+                    if g not in self._letter_bits:
+                        self._letter_bits[g] = 1 << len(self._letter_labels)
+                        self._letter_labels.append(g)
+                    self._letter_masks[node] = self._letter_bits[g], 0
+                else:
+                    p, a = self._letter_masks[rule[1]]
+                    q, b = self._letter_masks[rule[2]]
+                    self._letter_masks[node] = p | q, a | b | (p & q)
+            self.stats['letter_mask_nodes'] = self.stats.get('letter_mask_nodes', 0)+len(nodes)
         result = []
         for root in roots:
             self.tick()
-            mask, values = present[root] & ~repeated[root], []
+            present, repeated = self._letter_masks[root]
+            mask, values = present & ~repeated, []
             while mask:
                 self.tick()
                 bit = mask & -mask
-                values.append(labels[bit.bit_length()-1])
+                values.append(self._letter_labels[bit.bit_length()-1])
                 mask ^= bit
-            result.append(values)
+            result.append(sorted(values))
         return result
 
     def summarize(self, roots, *, whitehead=False):
