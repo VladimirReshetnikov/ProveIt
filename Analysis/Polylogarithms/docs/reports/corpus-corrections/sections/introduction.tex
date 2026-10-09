@@ -1,0 +1,179 @@
+\section{Scope, results, and relation to the existing drafts}
+\label{intro:section}
+
+This article continues the research programme in
+\path{Analysis/Polylogarithms/docs} of the ProveIt repository.
+The inspected snapshot is commit
+\texttt{3a6d80ed618d839915deb0d19ab687f45e81d995},
+dated 8 October 2026 UTC.  It contains eight articles and thirty-one
+reports, covering multiple polylogarithms, cyclotomic values, gamma and
+polygamma reductions, Herglotz functions, and generalized Stieltjes
+constants \cite{RepoSnapshot}.  The source inventory and exact Git blob
+identifiers are recorded in \path{PROVENANCE.json}.
+
+The strongest analytic development here concerns real zeros of the
+Stieltjes parameter derivatives.  The existing derivative-tower article
+\cite{DraftTower} expresses these functions through Hurwitz zeta jets.
+We reorganize that identity as a Laplace transform whose sign-changing
+polynomial is independent of the derivative order.  This makes a global
+zero bound and a complete large-order description possible.
+The strongest algebraic development is a proof of the unrestricted
+rational-grid rank formulas that were stated or conjectured from finite
+matrices in the two Stieltjes articles \cite{DraftTower,DraftLadder}.
+
+\subsection{The main analytic statements}
+
+Our normalization is
+\begin{equation}\label{intro:stieltjes}
+ \zeta(s,a)=\frac1{s-1}
+       +\sum_{n=0}^{\infty}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+ \qquad a>0,
+\end{equation}
+and $\gamma_n^{(k)}$ always means a derivative in $a$.
+For fixed Laurent index $n$, define
+\[
+ P_n(x)=n![z^n]\frac{e^{xz}}{\Gamma(1+z)}.
+\]
+The results of Sections~\ref{zero:section}--\ref{zero:asymptotic-section}
+are the following.
+
+\begin{enumerate}
+\item For every $k\geq1$, $\gamma_n^{(k)}$ has at most $n$ positive real
+zeros, counted with multiplicity.  This is a global statement on the
+whole half-line, not a count inside a numerically chosen window.
+\item The polynomial $P_n$ has $n$ distinct real roots.  For every fixed
+$n$, the zero bound is attained for all sufficiently large $k$; all
+zeros are simple and correspond bijectively to those roots.
+\item If $\rho$ is a root of $P_n$ and $t=e^\rho$, its associated zero is
+\begin{equation}\label{intro:zero-result}
+ a_{\rho,k}=(k+1)e^{-\rho}
+   +\frac{e^{-\rho}}2\left(\frac{P_n''(\rho)}{P_n'(\rho)}-1\right)
+   -\frac1{\exp(e^\rho)-1}+O_n(k^{-1}).
+\end{equation}
+We give an explicit $1/(k+1)$ correction, an $O_n(k^{-2})$ remainder
+after including it, and a recurrence for the full asymptotic expansion.
+\item At $n=1$ there is a unique positive zero for every $k\geq1$, with
+the global bracket
+\[
+ e^{H_{k-1}}<a_k<e^{H_{k-1}}+\tfrac12.
+\]
+It increases strictly with $k$.  More generally, once all $n$ simple
+zeros are present, successive derivative orders strictly interlace.
+\end{enumerate}
+
+The elementary mechanism is worth emphasizing.  A reciprocal-gamma
+Appell polynomial determines the sign changes of the Laplace kernel.
+Rolle's theorem bounds how many zeros its transform can have.  A gamma
+probability density then concentrates at $t=(k+1)/a$, yielding all
+nearby zeros and their expansions.  Combining the local concentration
+argument with the global count excludes zeros on unexamined scales.
+
+\subsection{The formal relation spaces}
+
+For the rational grids, one must first specify which values are unknown
+and which are prescribed on the right-hand sides.  Our endpoint symbol
+represents the value at $a=1$, not the singular limit at zero.
+We prove a weighted distribution theorem for arbitrary rational prime
+weights, including zero and resonant weights.  The resulting formal
+quotient has dimension $\varphi(q)$ before prescribing the endpoint and
+$\varphi(q)-1$ afterwards.  The proof identifies each character block
+with its primitive-conductor coordinate and does not divide by an
+Euler factor that might vanish.
+
+The same construction works over every commutative coefficient algebra
+over a characteristic-zero splitting field. Applied to
+$K[\eta]/(\eta^{N+1})$, it proves freeness of the entire finite jet
+presentation, with dimension $(N+1)(\varphi(q)-1)$ over $K$ after all
+endpoint layers are prescribed. Here $K$ contains the relevant character
+values and prime logarithms. This statement concerns the specified
+distribution rows alone; additional evaluated identities can reduce a
+larger arithmetic presentation.
+
+In particular, the positive Stieltjes derivative grids have formal
+residual dimension $\varphi(q)-1$.  For negative zeta jets, after
+including the specified reflection identities and endpoint, the
+dimension is
+\[
+ r_{q,k}=\begin{cases}
+ \varphi(q)/2-1,& k\ \text{odd},\\
+ \varphi(q)/2,& k\ \text{even},
+ \end{cases}\qquad(q\geq3).
+\]
+These statements hold for every positive $k$ and every denominator,
+not merely the finite ranges in the drafts.  They are dimensions of
+formal presentations.  Injectivity after evaluation as actual complex
+numbers is an additional arithmetic question.
+
+We also complete the derivative-tower article's description at trivial
+zeros with the exact identity
+\[
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\frac12\overline{\frac{L''(-k,\chi)}{L'(-k,\chi)}}
+ =\gamma+\log(2\pi/q)-H_k,
+ \qquad\chi(-1)=(-1)^k.
+\]
+The factor $1/2$ comes from cancelling the gamma pole against the
+simple $L$-zero before taking a logarithmic derivative.
+
+\subsection{Classical results, new proofs, and historical priority}
+
+Several central ingredients predate these drafts.  Coffey gives the
+general parameter-derivative formula and proves the unique maximum of
+$\gamma_1(a)$, the $n=k=1$ case of our zero discussion
+\cite{Coffey2009}.  Kubert's universal ordinary distribution gives the
+classical rank-$\varphi(q)$ context \cite{Kubert1979}.  The Gaussian
+all-even-weight reduction, including the draft's $S_5$ and $S_7$
+specializations, appears in Olaikhan's 2022 derivation
+\cite{gau-olaikhan-2022}.  Section~\ref{gau:section} gives a complete
+analytic reconstruction with an exact generating function and a
+convergent resummation, with that attribution retained.
+
+The present continuation establishes the real-zero and asymptotic
+theorems just stated, closes the two unrestricted formal-rank gaps by an
+explicit weighted proof, and supplies correction proofs and witnesses.
+The literature search was targeted to these statements and their
+ingredients; it was not an exhaustive priority review.  We therefore
+claim the proofs and their application to the repository, without
+asserting that every corollary is absent from all earlier literature.
+The mathematical arguments were checked in separate derivations during
+preparation.  This remains an unrefereed research draft, without a Lean
+formalization.
+
+\subsection{Audit policy and source scope}
+
+The audit concerns the retrieved \LaTeX{} and text sources.  All eight
+article sources were examined, together with the reports supporting the
+claims discussed below.  The remaining reports were inventoried for
+context; no assertion of exhaustive verification of every displayed
+formula in all thirty-nine documents is made.
+Section~\ref{audit:section} provides explicit locations, counterexamples,
+or replacement arguments.  The accompanying correction register
+distinguishes false formulas from missing hypotheses, incomplete proofs,
+and unproved numerical-independence claims.
+
+This distinction matters in this corpus.  An exact rational matrix rank
+proves something about that matrix.  It does not prove that every
+numerical relation has been included.  A negative integer-relation
+search does not establish transcendence or independence.  Nor does a
+positive dimension of an ambient motivic space identify the classes of
+specific named periods.  The corrected theorems keep these three issues
+separate while preserving the valid identities and computations.
+
+\subsection{Notation}
+
+We use $H_k=\sum_{j=1}^k j^{-1}$, $H_0=0$,
+$\beta(s)=\sum_{r\geq0}(-1)^r(2r+1)^{-s}$, and $\varphi$ for Euler's
+totient.  A prime on $L$ or $\zeta$ means differentiation in the complex
+variable $s$ unless a parameter derivative is explicitly indicated.
+For $\nu\geq2$, the Clausen convention is
+\[
+ \operatorname{Cl}_\nu(\theta)=
+ \begin{cases}
+  \Im\Li_\nu(e^{i\theta}),&\nu\ \text{even},\\
+  \Re\Li_\nu(e^{i\theta}),&\nu\ \text{odd}.
+ \end{cases}
+\]
+The Herglotz function in the audit is
+$F(x)=\sum_{m\geq1}(\psi(mx)-\log(mx))/m$, unrelated to
+$F_{n,k}$ except for the letter used in its source literature.
+Each section restates the hypotheses needed for its own formulas.

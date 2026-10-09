@@ -1,0 +1,214 @@
+\subsection{Absolute convergence at the boundary}
+\label{audit:poly:convergence}
+
+\paragraph{Source.}
+\texttt{multiple-polylogarithms-introduction.tex}, the theorem titled
+``Domain of absolute convergence'' (source lines 231--235).
+The condition printed there, $\Re s_j\geq1$, $|z_j|\leq1$, and
+$(s_1,z_1)\neq(1,1)$, does not imply absolute convergence.
+For example, $\Li_1(i)$ satisfies every stated hypothesis, while the
+absolute-value series is $\sum_{n\geq1}1/n$.
+
+\paragraph{Replacement.}
+For $\Re s_j\geq1$ and $|z_j|\leq1$, a sufficient condition for
+absolute convergence is
+\[
+ |z_1|<1\qquad\text{or}\qquad\Re s_1>1.
+\]
+Indeed, the absolute value of the inner nested sum is at most
+$H_{n_1-1}^{k-1}/(k-1)!$, so the full series is dominated by
+\[
+ \frac1{(k-1)!}\sum_{n\geq1}
+    \frac{|z_1|^n(1+\log n)^{k-1}}{n^{\Re s_1}}.
+\]
+Conditional convergence at boundary roots of unity is a separate issue.
+The usual positive-integer MZV admissibility condition $s_1\geq2$ remains
+correct. Also, the definition of $S_p$ in
+\texttt{gaussian-multiple-polylog-depth.tex} should start at $p\geq1$:
+its printed allowance $p=0$ gives terms $(-1)^nH_n$ that do not tend to
+zero. An Abel-regularized value would need its own explicit definition.
+
+\subsection{The order of the iterated-integral letters}
+\label{audit:poly:integral-order}
+
+\paragraph{Source.}
+\texttt{gaussian-eisenstein-double-polylogs.tex},
+\texttt{eq:G-def} and \texttt{eq:goncharov-dbl}; the same mismatch appears
+in \texttt{multiple-polylogarithms-introduction.tex}, lines 276--282.
+The displayed definition attaches the letter $a_i$ to $t_i$ on the simplex
+$0<t_1<\cdots<t_n<1$, but the subsequent polylogarithm dictionary uses the
+opposite convention. In particular, the displayed integral for
+$G(0,z^{-1};1)$ contains $\int_0^{t_2}dt_1/t_1$, which diverges, although
+$-\Li_2(z)$ is finite, for example at $z=1/2$.
+
+\paragraph{Replacement.}
+Keep the stated dictionary and define the leftmost letter to be outermost:
+\begin{align*}
+ G(a_1,\ldots,a_n;z)
+   &=\int_0^z\frac{G(a_2,\ldots,a_n;t)}{t-a_1}\,dt,\\
+ G(a_1,\ldots,a_n;1)
+   &=\int_{0<t_n<\cdots<t_1<1}
+            \prod_{j=1}^n\frac{dt_j}{t_j-a_j}.
+\end{align*}
+For convergent words this gives
+\[
+ \Li_n(z)=-G(0^{n-1},z^{-1};1),\qquad
+ \Li_{a,b}(u,v)=G(0^{a-1},u^{-1},0^{b-1},(uv)^{-1};1).
+\]
+Alternatively, one may retain the increasing-index simplex and reverse
+every letter word in the dictionary. The two choices must not be mixed.
+Endpoint regularization, when needed, should be stated separately.
+
+\subsection{An extra term in the modified polylogarithm}
+\label{audit:poly:modified}
+
+\paragraph{Source.}
+\path{ladders-as-bloch-elements__ce20ea60a460.tex},
+\texttt{eq:Pm}, and the reported complex-embedding value of $P_4$.
+The upper endpoint of the sum is printed as $m$. For $m\geq2$ the correct
+modified polylogarithm is
+\begin{equation}\label{audit:poly:correct-P}
+ P_m(z)=\operatorname{Re}_m\!\left(
+       \sum_{j=0}^{m-1}\frac{2^jB_j}{j!}
+          \log^j|z|\,\Li_{m-j}(z)\right),
+ \quad
+ \operatorname{Re}_m=
+ \begin{cases}\Re,&m\ \text{odd},\\\Im,&m\ \text{even}.
+ \end{cases}
+\end{equation}
+Here $B_1=-1/2$. This agrees with the standard $P_m$ definition in the
+PARI/GP documentation, \texttt{polylog} with flag $3$
+\cite{audit-pari-polylog}; its additional real multiple of
+$B_m\log^m|z|$ vanishes after $\operatorname{Re}_m$ for $m\geq2$.
+
+The printed expression adds, at even $m$, the generally nonzero term
+\begin{equation}\label{audit:poly:P-error}
+ \frac{2^mB_m}{m!}\log^m|z|\,
+             \Im\!\left(\frac{z}{1-z}\right).
+\end{equation}
+For example, at $m=2$, $z=i/2$, the excess is exactly
+$2\log^2(2)/15$. Verification only at odd weights or at $z=i$ cannot
+detect this error, because respectively $B_m=0$ or $\log|z|=0$.
+
+The error also affects a numerical conclusion. For the lower nonreal
+root of $z^3+z-1=0$,
+\[
+z_-=-0.34116390191400966\ldots-1.16154139999725194\ldots i,
+\]
+recomputation gives
+\begin{align*}
+ P_4(z_-)&=-0.916010467826680838722383200166\ldots,\\
+ P_4^{\mathrm{printed}}(z_-)&=-0.915999527027516872882916723105\ldots.
+\end{align*}
+The latter agrees with the report's $-0.91599\ldots$.
+Thus the definition and the complex-embedding computation both require
+correction; the odd-weight formulas are not affected by this particular
+endpoint error.
+
+\subsection{The asserted binomial dimensions are not dimensions of depth}
+\label{audit:poly:depth-dimensions}
+
+\paragraph{Source.}
+\texttt{gaussian-eisenstein-double-polylogs.tex},
+\texttt{thm:deligne}, \texttt{eq:binomial-dim}, and
+\texttt{cor:depth3}. The formula
+$\dim\operatorname{gr}^D_p(\text{weight }n)=\binom np$
+is false for the ordinary cyclotomic depth filtration used in the cited
+literature.
+
+A direct contradiction already occurs at $n=6$, $p=1$. All level-four
+weight-six single polylogarithms lie in the span of $\zeta(6)$ and
+$i\beta(6)$, since
+\[
+ \Li_6(-1)=-\frac{31}{32}\zeta(6),\qquad
+ \Li_6(\pm i)=-\frac{31}{2048}\zeta(6)\pm i\beta(6).
+\]
+The depth-one space therefore has dimension at most $2$, whereas the
+printed formula gives $6$. Likewise, the depth-zero component of positive
+weight is zero, not $\binom n0=1$.
+These contradictions use explicit identities and do not depend on
+unproved numerical-period independence.
+
+Glanois defines depth by the number of nonzero iterated-integral letters
+and explicitly warns that it is a filtration rather than a grading on
+$\mathcal H$ \cite[\S3.1]{audit-glanois-2016}.
+A Hilbert series in weight alone does not determine these filtered
+pieces. Moreover, even a correct positive dimension for an ambient
+motivic depth-three space would not imply that three particular
+$\Li_{a,b,c}(i,1,1)$ have nonzero independent images in it.
+An explicit computation of their classes is required.
+The period conjecture does not repair either of these logical gaps.
+
+\paragraph{Replacement.}
+Withdraw \texttt{eq:binomial-dim} and the stated proof of
+\texttt{cor:depth3}. Retain the verified shuffle relations as reductions
+modulo their displayed product terms. The minimal depth of the three
+specified numerical survivors remains undetermined by the arguments in
+that draft. A motivic claim should name the precise filtration and supply
+the relevant coaction or basis computation before making a corresponding
+conditional numerical claim.
+
+\subsection{Rank seven does not mean seven individual triples collapse}
+\label{audit:poly:shuffle-rank}
+
+\paragraph{Source.}
+\texttt{gaussian-eisenstein-double-polylogs.tex},
+\texttt{prop:7of10} and its preceding rank calculation.
+There are ten compositions $(a,b,c)$ of weight $6$ with positive entries.
+The draft obtains rank $7$ from shuffle products and concludes that seven
+of the ten triples are themselves products. The correct conclusion is
+that seven independent \emph{linear combinations} are products.
+
+We recomputed the $13$ formal shuffle-product rows exactly: the ten
+products of a single word and a double word, together with the three
+unordered triple products of single words. Their rational rank is indeed
+$7$. However, none of the ten individual coordinate vectors belongs to
+the row space of these products.
+This can be checked using the following three integer linear functionals,
+in lexicographic order of the compositions
+$(1,1,4),(1,2,3),\ldots,(4,1,1)$:
+\[
+ \begin{pmatrix}
+ -1&2&-2&1&0&0&-1&1&0&0\\
+ -3&6&-6&3&-1&4&-4&0&1&0\\
+ -6&12&-12&6&-3&12&-9&0&0&1
+ \end{pmatrix}.
+\]
+Each row annihilates every shuffle-product row, the three rows are
+independent, and each of the ten columns is nonzero.
+Thus every individual word is detected by at least one annihilating
+functional. The full matrix and exact checks are generated by
+\texttt{code/verify\_shuffle\_audit.py} and recorded in
+\texttt{data/gaussian\_shuffle\_audit.json}.
+
+\paragraph{Replacement.}
+The formal weight-six shuffle quotient modulo products is
+three-dimensional, and seven of its ten coordinate variables can be
+eliminated \emph{in terms of three survivors and products}.
+This formal calculation neither proves nor disproves additional
+relations after evaluation at $i$.
+
+The same distinction applies to \texttt{thm:gauss-5} and
+\texttt{thm:eis-1}: a corank computed from a specified relation matrix is
+an upper bound on the dimension of the corresponding numerical span,
+unless completeness of those relations is independently established.
+
+\subsection{Two further logical boundary corrections}
+\label{audit:poly:other}
+
+In \texttt{gaussian-multiple-polylog-depth.tex}, the discussion of the
+weight-four symmetric triple sum compares it to
+$\zeta(2,1,1)+\zeta(1,2,1)+\zeta(1,1,2)$ as though this were a convergent
+uncolored MZV combination. The last two defining sums diverge. In each,
+the inner sum is bounded below by a positive constant for all sufficiently
+large outer indices, and the outer exponent is $1$; comparison with the
+harmonic series proves divergence. The comparison should be removed,
+or replaced by an explicitly specified regularized identity.
+
+The same draft infers at least $50$ independent new directions from
+$50$ individual failures of membership in a fixed span. Even exact
+non-membership of each value would not justify that count: all $50$
+values could represent one common nonzero class in the quotient.
+Numerical failures of membership provide still less. The appropriate
+replacement is a list of tested candidate values with no claimed lower
+bound on the dimension of their joint span.

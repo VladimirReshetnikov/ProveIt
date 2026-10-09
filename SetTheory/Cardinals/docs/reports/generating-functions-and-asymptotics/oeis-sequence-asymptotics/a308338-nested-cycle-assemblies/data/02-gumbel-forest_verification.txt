@@ -1,0 +1,79 @@
+INDEPENDENT PATH-FOREST NUMERICAL VERIFICATION
+
+Model
+  p_1=1 and p_k=1/2 for k>=2; C(z)=z/(2(1-z))+z/2.
+  The saddle solves n=r/(2(1-r)^2)+r/2, with tau=-log(r).
+  L=log((1/2)/tau), x=tau*m-L, beta=exp(-x), s=L+x.
+
+Compared continuous curves
+  G(x)=exp(-exp(-x)).
+  G(h_n(x)), where
+  h_n(x)=x+tau/(4c)*(s^2-s-1-beta*(s+1)^2), c=1/2.
+
+Reproduction
+  From the project root run:
+    python code/forest_numerics.py --recurrence-check
+  Dependencies used: Python 3.12.14, NumPy 2.3.5, SciPy 1.17.0.
+  The generated table is data/forest_errors.csv.
+
+Method
+  The numerator is the Fourier integral of exp(C(z)-z^(m+1)/(2(1-z)))
+  on the saddle circle. The denominator is the integral of exp(C(z)).
+  Both integrands are centered at n and expressed algebraically to avoid
+  subtracting large nearly equal imaginary quantities. No asymptotic CDF
+  formula is used to evaluate the conditional probability.
+
+  Gaussian coordinates u=sqrt(B_2)*theta are integrated over [-40,40].
+  Computations are repeated using 512 and 1024 Gauss-Legendre nodes.
+  The maximal absolute difference between these quadratures over all
+  reported sizes and thresholds is 2.56e-15. An analytic bound using the
+  monotone Fourier damping bounds the omitted arc; the largest evaluated
+  bound is 1.26e-16. Bounds below the smallest positive normal floating-
+  point value are conservatively reported at that value, not as zero.
+  These are numerical evaluations of analytic bounds, not directed-
+  rounding interval certificates.
+
+  A distinct 60-decimal-digit coefficient recurrence checks the Fourier
+  computation at n=10000 and three thresholds near x=-1,0,1. The largest
+  absolute difference is 3.34e-16. The recurrence follows by multiplying
+  F_m'=C_m'F_m by (1-z)^2, and does not use Fourier quadrature.
+
+Threshold coverage and interpretation
+  The normalized interval [-3,8] is examined. All integer thresholds in
+  this interval are used at n=10000 and n=100000. Larger sizes use 6001
+  uniformly spaced normalized positions, rounded to integer thresholds,
+  plus fine meshes around the limiting extremal positions. The table
+  records the number of distinct thresholds actually evaluated.
+
+  Both the left endpoint and the right limit of every sampled CDF step
+  are compared with each continuous curve. The error columns are sampled
+  maxima on this interval, not certified global suprema. The mesh is
+  intended to check asymptotic predictions, not to replace their proofs.
+
+Results
+  kappa=((3+sqrt(5))/2)*((1+sqrt(5))/2)*exp(-(3+sqrt(5))/2)
+       =0.309004785987676.
+  The lattice-optimal smooth-approximation constant 1/(2e)
+       =0.183939720585721.
+
+  n         raw error/(delta*kappa)   calibrated error/(tau/(2e))
+  10^4             1.861831                    5.010529
+  10^5             1.569553                    3.800560
+  10^6             1.417043                    2.644926
+  10^7             1.328232                    1.774722
+  10^8             1.271558                    1.247681
+  10^9             1.232456                    1.037303
+  10^10            1.203718                    1.014012
+  10^11            1.181558                    1.006283
+  10^12            1.163850                    1.002911
+
+  Here delta=tau*L^2/(4c). At n=10^12 the sampled raw error is
+  2.30666223e-5, and the calibrated error is 1.30443656e-7.
+  The raw leading-constant convergence is slow because its next relative
+  term is of order 1/L. The finite-size calibrated ratios at modest n
+  are appreciably above one; the data should not be described as already
+  near the limiting constant there.
+
+Scope
+  This is an independent verification of the formulas in one member of
+  the weight class. It neither proves the theorem nor establishes novelty.

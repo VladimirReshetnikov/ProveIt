@@ -1,0 +1,464 @@
+\section{A polynomial kernel for the Stieltjes derivative tower}
+\label{zero:section}
+
+The rank calculation describes relations at rational arguments.  A different
+question is how the functions themselves change sign as the positive real
+argument varies.  Here the derivative order $k$ provides a concentration
+parameter.  We keep the Laurent index $n$ fixed and let $k$ grow; this is
+different from the frequently studied asymptotics of $\gamma_n(a)$ as
+$n\to\infty$.
+
+Define monic polynomials $P_n$ by
+\begin{equation}\label{zero:appell}
+ \frac{e^{xz}}{\Gamma(1+z)}
+   =\sum_{n=0}^{\infty}P_n(x)\frac{z^n}{n!}.
+\end{equation}
+The generating function is entire in $z$.  With $y=x+\gamma$, its first
+members are
+\begin{align*}
+ P_0(x)&=1, & P_1(x)&=y,\\
+ P_2(x)&=y^2-\zeta(2),&
+ P_3(x)&=y^3-3\zeta(2)y+2\zeta(3),\\
+ P_4(x)&=y^4-6\zeta(2)y^2+8\zeta(3)y
+                       +3\zeta(2)^2-6\zeta(4).
+\end{align*}
+They satisfy $P_n'=nP_{n-1}$ and the constructive recurrence
+\begin{equation}\label{zero:recurrence}
+ P_{n+1}(x)=(x+\gamma)P_n(x)
+       +\sum_{r=1}^{n}(-1)^r\frac{n!}{(n-r)!}\zeta(r+1)P_{n-r}(x).
+\end{equation}
+This follows by differentiating \eqref{zero:appell} in $z$ and using the
+Taylor series of $\log\Gamma(1+z)$ near zero.  These are the Appell
+polynomials associated with the reciprocal gamma function; the use of
+real-rooted Appell polynomials belongs to classical Laguerre--P\'olya
+theory.  We supply the needed real-root and multiplicity argument below,
+so no classification theorem is required.
+
+\begin{theorem}[Exact Laplace kernel]\label{zero:kernel}
+For $n\geq0$, $k\geq1$, and $a>0$, set
+$F_{n,k}(a)=(-1)^{n+k}\gamma_n^{(k)}(a)$.  Then
+\begin{equation}\label{zero:laplace}
+ F_{n,k}(a)=\int_0^\infty
+       \frac{t^k e^{-at}}{1-e^{-t}}P_n(\log t)\,dt.
+\end{equation}
+The integral and all its derivatives in $a$ converge locally uniformly
+on $a>0$, and $F_{n,k}'=-F_{n,k+1}$.
+\end{theorem}
+\begin{proof}
+Start from the classical Mellin integral for Hurwitz zeta
+\cite{DLMF25}.  Differentiating $k$ times in the parameter gives, initially
+for $\Re s>1$,
+\[
+ \partial_a^k\zeta(s,a)
+   =\frac{(-1)^k}{\Gamma(s)}
+      \int_0^\infty\frac{t^{s+k-1}e^{-at}}{1-e^{-t}}\,dt.
+\]
+For $k\geq1$ the right side is holomorphic in a neighborhood of $s=1$:
+near $t=0$ its integrand is $O(t^{k-1+\Re(s-1)})$, and infinity is
+controlled by $e^{-at}$.  The parameter derivative of the pole
+$1/(s-1)$ is zero.  Put $s=1+z$, insert \eqref{zero:appell}, and
+compare the coefficient of $z^n$ with
+$(-1)^n\gamma_n^{(k)}(a)/n!$.  The bounds just stated, with finitely
+many logarithmic powers or extra factors of $t$, justify every
+coefficient extraction and parameter differentiation.
+\end{proof}
+
+This representation is compatible with Coffey's derivative formulas
+\cite{Coffey2009} and the harmonic-number master identity in the draft.
+Its useful feature here is that $P_n$ is independent of $k$: the entire
+dependence on derivative order is the positive multiplier $t^k$.
+
+\subsection{Why all kernel roots are real and simple}
+
+\begin{lemma}\label{zero:root-preserver}
+Let $p$ be a monic real polynomial with only real roots, and let $c>0$.
+Then $p+cp'$ has only real roots.  A root of $p$ of multiplicity $m$
+has multiplicity $m-1$ in $p+cp'$ if $m>1$ and is absent if $m=1$.
+Every remaining root is simple.  Applying $n-1$ operators of the form
+$1+cD$ to any real-rooted degree-$n$ polynomial therefore gives a
+polynomial with $n$ distinct real roots.
+\end{lemma}
+\begin{proof}
+If the distinct roots are $r_1<\cdots<r_\ell$, with multiplicities
+$m_i$, then away from them
+\[
+ \frac{p'(x)}{p(x)}=\sum_{i=1}^{\ell}\frac{m_i}{x-r_i},
+ \qquad
+ \left(\frac{p'}p\right)'=-\sum_{i=1}^{\ell}
+                                  \frac{m_i}{(x-r_i)^2}<0.
+\]
+The equation $p'/p=-1/c$ has exactly one simple solution in each
+$(r_i,r_{i+1})$ and one in $(-\infty,r_1)$, and none in
+$(r_\ell,\infty)$.  At each old root the multiplicity decreases
+by one, as direct factorization shows.  This accounts for all $n$
+roots.  Iteration reduces the largest possible multiplicity to one.
+\end{proof}
+
+\begin{theorem}[Simple kernel roots]\label{zero:roots}
+For every $n\geq1$, $P_n$ has exactly $n$ distinct real roots.
+The roots of $P_{n-1}$ strictly interlace those of $P_n$.
+\end{theorem}
+\begin{proof}
+The Weierstrass product \cite{DLMF5} is
+\[
+ \frac1{\Gamma(1+z)}
+   =e^{\gamma z}\prod_{j=1}^{\infty}(1+z/j)e^{-z/j}.
+\]
+Its finite products converge uniformly on compact sets.  At degree $n$
+the corresponding Appell polynomial is
+\[
+ \prod_{j=1}^{M}(1+D/j)(x+\gamma-H_M)^n.
+\]
+Lemma~\ref{zero:root-preserver} makes it real-rooted, and convergence
+of coefficients shows that $P_n$ is real-rooted and monic.  This limit
+argument alone does not prove simplicity, since roots could coalesce.
+
+To exclude coalescence, factor the first $n-1$ linear factors out of
+the entire function, leaving
+\[
+ g_n(z)=e^{(\gamma-H_{n-1})z}
+             \prod_{j=n}^{\infty}(1+z/j)e^{-z/j}.
+\]
+Its degree-$n$ Appell polynomial $Q_n(x)=n![z^n]e^{xz}g_n(z)$ is
+again a coefficient limit of monic real-rooted polynomials.  Hence it
+is real-rooted.  But now the exact finite identity
+\[
+ P_n=\prod_{j=1}^{n-1}(1+D/j)Q_n
+\]
+and Lemma~\ref{zero:root-preserver} give simplicity after taking
+the limit.  The case $n=1$ is immediate.  Finally
+$P_n'=nP_{n-1}$ and Rolle's theorem give strict interlacing.
+\end{proof}
+
+\section{A global bound on positive real zeros}
+\label{zero:count-section}
+
+We use a short form of the variation-diminishing principle for Laplace
+transforms, proved here with Rolle's theorem.  A sign change means a
+change between strict positive and negative signs; isolated zeros
+without a sign change are not counted as sign changes.
+
+\begin{lemma}[Laplace sign-variation bound]\label{zero:variation}
+Let $f$ be a nonzero continuous real-valued function on $(0,\infty)$ with exactly
+$m$ sign changes and with
+$\int_0^\infty e^{-at}(1+t^r)|f(t)|\,dt<\infty$ for every $a>0$
+and nonnegative integer $r$.  Assume $f$ is nonzero on a
+set of positive measure.  Its Laplace transform
+$L_f(a)=\int_0^\infty e^{-at}f(t)\,dt$ has at most $m$ zeros on
+$(0,\infty)$, counted with analytic multiplicity.
+\end{lemma}
+\begin{proof}
+The integrability hypotheses give a real-analytic Laplace transform
+and justify differentiation under its integral.
+For $m=0$ the transform has a fixed strict sign.  For $m>0$ choose
+one sign-change point $t_0$.  Multiplication by $t_0-t$ removes
+that sign change and creates no new one, so
+$g(t)=(t_0-t)f(t)$ has $m-1$ sign changes.  Moreover,
+\[
+ \frac{d}{da}\bigl(e^{at_0}L_f(a)\bigr)=e^{at_0}L_g(a).
+\]
+If $L_f$ has $N$ zeros on a compact interval, counted with
+multiplicity, the derivative on the left has at least $N-1$ zeros
+there.  By induction $N-1\leq m-1$.  Applying this to any finite
+collection of zeros proves the result on the entire half-line.
+In particular, none of the transforms encountered in the induction
+can vanish identically.
+\end{proof}
+
+\begin{theorem}[Uniform zero-count bound]\label{zero:at-most}
+For every $n\geq0$ and every $k\geq1$, the real function
+$a\mapsto\gamma_n^{(k)}(a)$ has at most $n$ positive real zeros,
+counted with multiplicity.
+\end{theorem}
+\begin{proof}
+The kernel in \eqref{zero:laplace}, before the factor $e^{-at}$,
+is $t^kP_n(\log t)/(1-e^{-t})$.  Its positive factors do not change
+sign, and Theorem~\ref{zero:roots} gives exactly $n$ sign changes.
+All exponential moments exist by the estimates in the proof of
+Theorem~\ref{zero:kernel}.  Apply Lemma~\ref{zero:variation}.
+\end{proof}
+
+The bound is independent of $k$, although the zero locations move to
+infinity as $k$ increases.  We will prove that it is attained for
+every sufficiently large $k$ at each fixed $n$.  There is no claim
+here that it is attained at every small derivative order for $n>1$.
+
+For reference, elementary endpoint estimates are
+\begin{align}
+ F_{n,k}(a)&\sim \Gamma(k+1)a^{-k-1}\bigl(\log(1/a)\bigr)^n,
+                  &&a\downarrow0,\label{zero:left-end}\\
+ F_{n,k}(a)&\sim (-1)^n\Gamma(k)a^{-k}(\log a)^n,
+                  &&a\to\infty.\label{zero:right-end}
+\end{align}
+For \eqref{zero:left-end}, substitute $u=at$ and use
+$(1-e^{-u/a})^{-1}\to1$ away from zero; the small-$u$ part is
+controlled by $(1-e^{-v})^{-1}\leq1+1/v$.
+For \eqref{zero:right-end}, the same substitution uses
+$(1-e^{-u/a})^{-1}\sim a/u$ and the leading monic term of $P_n$.
+Dominated convergence after division by the displayed logarithmic
+power proves both statements; integrals of $u^{k-1}|\log u|^r e^{-u}$
+are finite.  The interpretations for $n=0$ are immediate.
+
+\section{Uniform expansions and the motion of every zero}
+\label{zero:asymptotic-section}
+
+Put $K=k+1$ and
+\[
+ h_n(t)=\frac{P_n(\log t)}{1-e^{-t}},\qquad
+ \mathcal H_{n,K}(t)=\frac{(K/t)^K}{\Gamma(K)}F_{n,K-1}(K/t).
+\]
+If $U_K$ has gamma density
+$K^K u^{K-1}e^{-Ku}/\Gamma(K)$ on $u>0$, then
+\begin{equation}\label{zero:expectation}
+ \mathcal H_{n,K}(t)=\mathbb E\,h_n(tU_K),
+ \qquad \mathbb E U_K=1.
+\end{equation}
+This is an exact identity.  It identifies the useful scale $a=K/t$
+and turns the asymptotic calculation into an expansion around $U_K=1$.
+
+\begin{theorem}[All-order local expansion]\label{zero:all-orders}
+Fix $n\geq0$, $M\geq0$, a compact interval $I\subset(0,\infty)$,
+and a nonnegative integer $r$.  Uniformly for $t\in I$, together with
+the first $r$ derivatives in $t$,
+\begin{equation}\label{zero:expansion}
+ \mathcal H_{n,K}(t)=\sum_{j=0}^{M}\frac{\mathcal D_jh_n(t)}{K^j}
+                         +O_{n,M,r,I}(K^{-M-1}).
+\end{equation}
+Here $\mathcal D_0h=h$, and for $j\geq1$ the finite formula is
+\begin{equation}\label{zero:D-general}
+ \mathcal D_jh(t)=
+ \sum_{\substack{m_2,m_3,\ldots\geq0\\
+                 \sum_{\ell\geq2}(\ell-1)m_\ell=j}}
+ \frac{t^R h^{(R)}(t)}{
+             \prod_{\ell\geq2}m_\ell!\,\ell^{m_\ell}},
+ \qquad R=\sum_{\ell\geq2}\ell m_\ell.
+\end{equation}
+In particular,
+\begin{align}
+ \mathcal D_1h&=\tfrac12t^2h'',\label{zero:D1}\\
+ \mathcal D_2h&=\tfrac13t^3h'''+\tfrac18t^4h^{(4)},\label{zero:D2}\\
+ \mathcal D_3h&=\tfrac14t^4h^{(4)}+\tfrac16t^5h^{(5)}
+                                      +\tfrac1{48}t^6h^{(6)}.
+\end{align}
+The constants in the remainder can be bounded using suprema of finitely
+many derivatives of $h_n$ on an enlarged compact interval and explicit
+gamma moments and tail bounds.  No uniformity in an increasing $n$
+is asserted.
+\end{theorem}
+\begin{proof}
+The cumulants of $U_K-1$ are zero in degree one and
+$(\ell-1)!K^{1-\ell}$ in degree $\ell\geq2$.  Expanding its moment
+generating function therefore gives the exact central-moment identity
+\begin{equation}\label{zero:moments}
+ \frac{\mathbb E(U_K-1)^R}{R!}
+ =\sum_{\substack{\sum_{\ell\geq2}\ell m_\ell=R}}
+       \prod_{\ell\geq2}
+       \frac{K^{-(\ell-1)m_\ell}}{m_\ell!\,\ell^{m_\ell}}.
+\end{equation}
+For $R=0$ the value is one, and for $R=1$ it is zero.
+When $R\geq2$, the smallest possible power of $K^{-1}$ is
+$\lceil R/2\rceil$.
+
+Expand $h_n(tu)$ about $u=1$ to degree $2M+1$, on
+$1/2\leq u\leq2$.  Its remainder is bounded uniformly by a constant
+times $|u-1|^{2M+2}$.  The expectation of this even power is
+$O(K^{-M-1})$ by \eqref{zero:moments}.  The coefficient of $K^{-j}$
+in the expected Taylor polynomial is precisely
+\eqref{zero:D-general}; terms with $j>M$ are $O(K^{-M-1})$.
+
+For completeness, the discarded tails are exponentially small, even
+though $h_n$ is unbounded at zero.  Chernoff's bound for the gamma
+moment generating function gives, for fixed $v\ne1$ on its relevant
+side of one,
+\[
+ \Pr(U_K\geq v)\ \text{or}\ \Pr(U_K\leq v)
+       \leq \exp\{-K(v-1-\log v)\}.
+\]
+For each fixed derivative order, $u^r h_n^{(r)}(tu)$ is bounded
+uniformly on $t\in I$ by $C(u^{-B}+u^B)$ for some fixed $B$.
+The gamma moments
+$\mathbb E U_K^v=K^{-v}\Gamma(K+v)/\Gamma(K)$ are uniformly bounded
+for fixed positive or negative $v$ once $K$ is sufficiently large.
+Cauchy--Schwarz therefore bounds the tail expectations by
+$Ce^{-cK}$.  The same reasoning replaces truncated central moments
+by their full values.  Finally differentiate
+\eqref{zero:expectation} in $t$, obtaining
+$\mathbb E[U_K^r h_n^{(r)}(tU_K)]$, and repeat the argument.
+This proves the stated $C^r$ uniformity and the expansion.
+\end{proof}
+
+\begin{theorem}[Saturation and asymptotic locations]\label{zero:locations}
+Fix $n\geq1$, and let $\rho$ run over the distinct real roots of $P_n$.
+For all sufficiently large $k$, $\gamma_n^{(k)}$ has exactly $n$
+positive real zeros, all simple.  One zero is associated with each
+$\rho$.  With $t_\rho=e^\rho$, it has the expansion
+\begin{equation}\label{zero:location-first}
+ a_{\rho,k}=\frac{k+1}{t_\rho}
+       +\frac{1}{2t_\rho}
+           \left(\frac{P_n''(\rho)}{P_n'(\rho)}-1\right)
+       -\frac1{e^{t_\rho}-1}+O_n(k^{-1}).
+\end{equation}
+Each zero has a full expansion in descending integer powers of $k+1$.
+In particular $a_{\rho,k}/k\to e^{-\rho}$.
+\end{theorem}
+\begin{proof}
+The zeros of $h_n$ are the simple points $t_\rho$.  By the uniform
+$C^1$ version of Theorem~\ref{zero:all-orders}, each has a disjoint
+neighborhood containing a unique simple zero $t_{\rho,K}$ of
+$\mathcal H_{n,K}$ for all sufficiently large $K$.  Thus there are
+at least $n$ positive zeros.  Theorem~\ref{zero:at-most} excludes
+every additional zero, including any outside the compact intervals
+used in this local argument.
+
+Write $t=t_\rho$, $h=h_n$, and
+$A(t)=t^2h''(t)/2$.  Expansion of the zero equation gives
+\[
+ t_{\rho,K}=t-\frac{A(t)}{K h'(t)}+O(K^{-2}),
+ \qquad
+ a_{\rho,k}=\frac K{t_{\rho,K}}
+              =\frac Kt+\frac{h''(t)}{2h'(t)}+O(K^{-1}).
+\]
+At a root of $P_n(\log t)$, direct differentiation gives
+\[
+ \frac{h''(t)}{h'(t)}
+  =\frac1t\left(\frac{P_n''(\rho)}{P_n'(\rho)}-1\right)
+                           -\frac2{e^t-1},
+\]
+which proves \eqref{zero:location-first}.  At every subsequent order
+the new coefficient of $t_{\rho,K}$ is multiplied by the same nonzero
+number $h'(t)$; the all-order expansion and a Taylor remainder therefore
+determine it recursively.  Applying the mean value theorem to the
+residual of a truncated zero expansion proves the stated remainder at
+each finite order.
+\end{proof}
+
+The distinction between local concentration and global zero counting is
+essential: concentration alone finds $n$ nearby zeros but cannot rule
+out additional zeros on scales escaping the chosen compact interval.
+The variation bound supplies precisely that missing global step.
+
+\paragraph{An explicit next correction.}
+Let $b_j=h_n^{(j)}(t_\rho)/h_n'(t_\rho)$ for $j=2,3,4$ and set
+\begin{equation}\label{zero:next-coefficient}
+ c_\rho=t_\rho\left(\frac{b_3}{3}-\frac{b_2^2}{4}\right)
+      +\frac{t_\rho^2}{8}
+                    \left(b_4-2b_2b_3+b_2^3\right).
+\end{equation}
+Then the more accurate formula is
+\begin{equation}\label{zero:location-second}
+ a_{\rho,k}=\frac{k+1}{t_\rho}+\frac{b_2}{2}
+                         +\frac{c_\rho}{k+1}+O_n(k^{-2}).
+\end{equation}
+Indeed, with $B=\mathcal D_2h$, the first two coefficients of
+$t_{\rho,K}=t+u_1/K+u_2/K^2+\cdots$ satisfy
+$u_1=-A/h'$ and
+$u_2=-(h''u_1^2/2+A'u_1+B)/h'$.  Expanding $K/t_{\rho,K}$
+and collecting terms gives \eqref{zero:next-coefficient}.
+
+\begin{corollary}[Persistence and interlacing after saturation]
+\label{zero:k-interlace}
+Fix $n\geq1$. If $\gamma_n^{(k)}$ has $n$ distinct positive
+zeros at some $k\geq1$, then the same is true at order $k+1$.
+Writing the zeros in increasing order, one has
+\[
+ a_{j,k}<a_{j,k+1}<a_{j+1,k}\quad(1\leq j<n),
+ \qquad a_{n,k}<a_{n,k+1}.
+\]
+In particular, these conclusions hold at every sufficiently large $k$.
+\end{corollary}
+\begin{proof}
+Rolle's theorem and $F_{n,k}'=-F_{n,k+1}$ give a zero between each
+consecutive pair of zeros of $F_{n,k}$.  Beyond its last zero,
+$F_{n,k}$ has a fixed nonzero sign and tends to zero by
+\eqref{zero:right-end}; it therefore has an interior extremum there.
+This gives $n$ distinct zeros of $F_{n,k+1}$.  Its zero bound
+excludes all others, including coincidences with a simple zero of
+$F_{n,k}$, and establishes the claimed ordering.
+\end{proof}
+
+\subsection{The first Laurent index: a global half-unit bracket}
+
+For $n=1$, the kernel has its sole sign change at $t_0=e^{-\gamma}$.
+Here the conclusions can be made global in the derivative order.
+Coffey already proved that $\gamma_1$ has a unique maximum at
+$a\approx1.39112$ \cite[Proposition 5]{Coffey2009}; this is the
+$k=1$ uniqueness case below.  The present statement extends the
+description to every positive derivative order and supplies the
+uniform bracket and moving-zero expansion.
+
+\begin{theorem}[Unique zero and an explicit bracket]\label{zero:first}
+For every integer $k\geq1$, $\gamma_1^{(k)}(a)$ has a unique positive
+zero $a_k$, which is simple.  With $H_0=0$,
+\begin{equation}\label{zero:half-unit}
+ e^{H_{k-1}}<a_k<e^{H_{k-1}}+\tfrac12.
+\end{equation}
+The zeros are strictly increasing in $k$.  Their asymptotic expansion
+starts with
+\begin{equation}\label{zero:first-asymptotic}
+ a_k=e^\gamma\left(k+\tfrac12\right)
+                     -\frac1{e^{e^{-\gamma}}-1}+O(k^{-1}).
+\end{equation}
+Formula~\eqref{zero:location-second} supplies the next coefficient
+and an $O(k^{-2})$ remainder.
+\end{theorem}
+\begin{proof}
+The endpoint signs in \eqref{zero:left-end}--\eqref{zero:right-end}
+and the bound of one zero prove existence, uniqueness, and simplicity.
+To obtain the bracket, normalize the positive density
+$t^k e^{-at}/(1-e^{-t})$.  The sign of $F_{1,k}(a)$ is the sign of
+$\mathbb E(\log T+\gamma)$ under this density.
+
+Relative to a gamma density of shape $k$ and rate $a$, the tilting
+factor is
+$r(t)=t/(1-e^{-t})$, which is strictly increasing: its derivative has
+numerator $1-e^{-t}(1+t)>0$.  A strictly increasing tilt strictly
+increases the expectation of the strictly increasing function
+$\log t$.  This elementary fact follows from
+\[
+ 2\operatorname{Cov}(u(X),v(X))
+   =\mathbb E[(u(X)-u(Y))(v(X)-v(Y))]>0
+\]
+for independent $X,Y$ with the same continuous distribution and
+strictly increasing $u,v$.  Consequently
+\[
+ \mathbb E\log T>\psi(k)-\log a
+                 =H_{k-1}-\gamma-\log a.
+\]
+At the zero this gives $a_k>e^{H_{k-1}}\geq1$.
+
+For $a>1/2$, compare instead with a gamma density of shape $k$
+and rate $a-1/2$.  The tilting factor is
+$s(t)=t/(2\sinh(t/2))$, which is strictly decreasing because
+$(t/2)\cosh(t/2)>\sinh(t/2)$.  The covariance inequality reverses:
+\[
+ \mathbb E\log T<\psi(k)-\log(a-1/2).
+\]
+Applying it at $a_k>1$ gives $a_k<e^{H_{k-1}}+1/2$.
+
+Finally, at a zero the signed kernel $f(t)$ in
+\eqref{zero:laplace} satisfies $\int e^{-a_kt}f(t)\,dt=0$ and
+$(t-t_0)f(t)>0$ except at $t_0$.  Thus
+\[
+ F_{1,k+1}(a_k)=\int_0^\infty (t-t_0)e^{-a_kt}f(t)\,dt>0.
+\]
+Since $F_{1,k+1}$ crosses from positive to negative at its unique
+zero, $a_{k+1}>a_k$.  The root of $P_1$ is $-\gamma$, so
+\eqref{zero:first-asymptotic} is Theorem~\ref{zero:locations}.
+\end{proof}
+
+The interval in \eqref{zero:half-unit} is an analytic certificate for
+bracketing a unique root, valid even at $k=1$.  Its width is uniformly
+$1/2$; no assertion that this is the best possible width is made.
+The accompanying computation uses this bracket rather than guessing
+an initial zero from a graph.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/stieltjes_profiles.pdf}
+\caption{Normalized derivative profiles
+$(1-e^{-e^x})\mathcal H_{n,K}(e^x)$ approach $P_n(x)$ as $K=k+1$
+increases.  The plots illustrate $n=1,2,3$.  Quadrature produces the
+curves; Theorems~\ref{zero:at-most} and \ref{zero:locations}, rather
+than the plots, prove the zero counts and asymptotic completeness.}
+\label{zero:profile-figure}
+\end{figure}

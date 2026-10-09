@@ -1,0 +1,26 @@
+# Run from the repository or extracted-bundle root.
+PYTHON ?= python
+PDFLATEX ?= pdflatex
+STIELTJES_ROOT := Analysis/Polylogarithms
+STIELTJES_NAME := stieltjes-zeros-distribution-duality
+STIELTJES_ARTICLES := $(STIELTJES_ROOT)/docs/articles
+STIELTJES_BUILD := .build/stieltjes-tower
+
+.PHONY: all pdf test test-quick clean
+all: pdf
+
+pdf:
+	mkdir -p "$(STIELTJES_BUILD)"
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory="$(STIELTJES_BUILD)" "$(STIELTJES_ARTICLES)/$(STIELTJES_NAME).tex"
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory="$(STIELTJES_BUILD)" "$(STIELTJES_ARTICLES)/$(STIELTJES_NAME).tex"
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory="$(STIELTJES_BUILD)" "$(STIELTJES_ARTICLES)/$(STIELTJES_NAME).tex"
+	cp "$(STIELTJES_BUILD)/$(STIELTJES_NAME).pdf" "$(STIELTJES_ARTICLES)/$(STIELTJES_NAME).pdf"
+
+test:
+	$(PYTHON) "$(STIELTJES_ROOT)/tests/stieltjes_tower/verify.py" --full
+
+test-quick:
+	$(PYTHON) "$(STIELTJES_ROOT)/tests/stieltjes_tower/verify.py"
+
+clean:
+	rm -rf "$(STIELTJES_BUILD)"

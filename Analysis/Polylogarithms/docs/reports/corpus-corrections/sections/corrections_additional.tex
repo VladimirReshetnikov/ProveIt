@@ -1,0 +1,50 @@
+\subsection{Clausen parity and other already identified source issues}
+\label{audit:additional}
+
+There is a direct convention mismatch in
+\path{gaussian-eisenstein-double-polylogs.tex}, equation
+\texttt{eq:eis-single}. With $\omega=e^{2\pi i/3}$, the identity
+\[
+ \Re\Li_n(\omega)=\tfrac12(3^{1-n}-1)\zeta(n),\qquad n>1,
+\]
+is correct, but the assertion
+$\Im\Li_n(\omega)=\operatorname{Cl}_n(2\pi/3)$ for every $n$
+conflicts with the parity convention used elsewhere in the corpus.
+Under the convention in Section~\ref{intro:section}, this is correct
+only for even $n$. At odd $n$, use the sine series
+$\sum_{m\geq1}\sin(2\pi m/3)/m^n$ explicitly. For example,
+\begin{equation}\label{audit:clausen-three}
+ \Im\Li_3(\omega)=\frac{2\pi^3}{81},
+ \qquad
+ \operatorname{Cl}_3(2\pi/3)=\Re\Li_3(\omega)
+                         =-\frac49\zeta(3).
+\end{equation}
+The first identity follows from the elementary Fourier series
+\[
+ \sum_{m\geq1}\frac{\sin(m\theta)}{m^3}
+ =\frac{\pi^2\theta}{6}-\frac{\pi\theta^2}{4}
+                         +\frac{\theta^3}{12},
+ \qquad 0\leq\theta\leq2\pi,
+\]
+and the second from distribution. The two values even have opposite
+signs. Numerical confirmation of a formula under an unstated
+alternative convention cannot resolve this notation conflict.
+
+The README already records a factor error in \path{report-1.tex}:
+the displayed $\pi^2/6$ term in its questioned dilogarithm identity
+must be $\pi^2/3$. This is an inherited correction, not a new finding
+of the present audit. It should be applied together with regeneration
+of the affected PDF. Likewise, the README's warnings about stale
+Herglotz cross-references and the Koblitz--Ogus attribution should be
+propagated to the source articles and their generated versions.
+
+Finally, \path{stieltjes-parameter-derivative-tower.tex},
+Section~\texttt{sec:atoms}, promotes unsuccessful integer-relation
+searches for six second-$s$-derivative values to assertions of their
+mutual independence. The reported searches support a list of
+unreduced candidates for the tested coefficient bounds and inventory.
+They do not prove the independence statement. The same qualification
+applies to the CM-point non-reducibility claims in
+\path{eisenstein-row-sums-cm-polygamma.tex} when their evidence is a
+finite search. Our formal rank theorems do not supply the missing
+arithmetic implication.

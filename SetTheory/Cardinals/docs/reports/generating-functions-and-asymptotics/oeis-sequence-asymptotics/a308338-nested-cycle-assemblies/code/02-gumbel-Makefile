@@ -1,0 +1,16 @@
+.PHONY: paper figures numerics all clean
+
+paper:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+figures:
+	python3 code/make_figures.py
+
+numerics:
+	python3 code/nested_numerics.py
+	python3 code/forest_numerics.py --recurrence-check
+
+all: numerics figures paper
+
+clean:
+	latexmk -c article.tex

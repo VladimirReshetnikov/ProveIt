@@ -1,0 +1,306 @@
+{
+  "method": "mpmath high-precision direct real quadrature compared with explicit closed forms",
+  "reference_integral": "integral from 0 to 1 of log(1+t^x)/(1+t) dt",
+  "quadrature_subdivision": [
+    "0",
+    "0.01",
+    "0.25",
+    "1"
+  ],
+  "reference_does_not_use": [
+    "Herglotz F values",
+    "RZ finite dilogarithm sum"
+  ],
+  "arithmetic_scope": "Floating-point numerical checks, not rigorous interval certificates; the mathematical identities are proved in the article.",
+  "working_precision_digits": 80,
+  "software": {
+    "Python": "3.12.14",
+    "mpmath": "1.3.0"
+  },
+  "case_count": 25,
+  "exceptional_case_count": 5,
+  "even_reciprocal_m_range": [
+    2,
+    40
+  ],
+  "even_reciprocal_m_step": 2,
+  "absolute_residual_test_threshold": "1.0e-72",
+  "maximum_absolute_residual": "2.0504574999583367671e-79",
+  "cases": [
+    {
+      "name": "J(1)",
+      "numerator": 1,
+      "denominator": 1,
+      "family": "exceptional",
+      "formula": "log(2)^2/2",
+      "direct_integral_value": "0.24022650695910071233355126316333248586527647579727279343343206681183269112991724",
+      "closed_form_value": "0.24022650695910071233355126316333248586527647579727279343343206681183269112991724",
+      "absolute_residual": "0.0",
+      "passed": true
+    },
+    {
+      "name": "J(2/3)",
+      "numerator": 2,
+      "denominator": 3,
+      "family": "exceptional",
+      "formula": "-pi^2/144+3*log(2)^2/4",
+      "direct_integral_value": "0.29180084098664163364730959613474767924712513447895925524449984066066539209474248",
+      "closed_form_value": "0.29180084098664163364730959613474767924712513447895925524449984066066539209474248",
+      "absolute_residual": "0.0",
+      "passed": true
+    },
+    {
+      "name": "J(2/5)",
+      "numerator": 2,
+      "denominator": 5,
+      "family": "exceptional",
+      "formula": "11*pi^2/240+3*log(2)^2/4-2*log(phi)^2",
+      "direct_integral_value": "0.34956698766752455353638292310959013580031323642918101889682415591491039992183247",
+      "closed_form_value": "0.34956698766752455353638292310959013580031323642918101889682415591491039992183247",
+      "absolute_residual": "1.0542197943230523224e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/3)",
+      "numerator": 1,
+      "denominator": 3,
+      "family": "exceptional",
+      "formula": "pi^2/9+log(2)^2/2-log(3)^2/2-Li_2(1/3)",
+      "direct_integral_value": "0.36716150780789719344319218133840355806661465436418253900452548635118474057590928",
+      "closed_form_value": "0.36716150780789719344319218133840355806661465436418253900452548635118474057590928",
+      "absolute_residual": "1.0542197943230523224e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/5)",
+      "numerator": 1,
+      "denominator": 5,
+      "family": "exceptional",
+      "formula": "7*pi^2/60+log(2)^2/2-log(5)^2/4-log(phi)^2-Li_2(1/5)/2",
+      "direct_integral_value": "0.40704104696075370276667750929881737583101098366332366362137155505940135792857714",
+      "closed_form_value": "0.40704104696075370276667750929881737583101098366332366362137155505940135792857714",
+      "absolute_residual": "2.1084395886461046449e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/2)",
+      "numerator": 1,
+      "denominator": 2,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.32573001183557866072582752741241939158500697554948620143366081207716727936535873",
+      "closed_form_value": "0.32573001183557866072582752741241939158500697554948620143366081207716727936535873",
+      "absolute_residual": "1.0542197943230523224e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/4)",
+      "numerator": 1,
+      "denominator": 4,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.39130558103802625328978209615375968944608079357231506026315291667300010607000095",
+      "closed_form_value": "0.39130558103802625328978209615375968944608079357231506026315291667300010607000095",
+      "absolute_residual": "5.2710989716152616122e-82",
+      "passed": true
+    },
+    {
+      "name": "J(1/6)",
+      "numerator": 1,
+      "denominator": 6,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.4180858330273926734639406452267147617557716334985602690658228035539409351840553",
+      "closed_form_value": "0.41808583302739267346394064522671476175577163349856026906582280355394093518405531",
+      "absolute_residual": "1.5813296914845784837e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/8)",
+      "numerator": 1,
+      "denominator": 8,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.43254169826788054136547476218768643503835238841872391237668497209059484775894962",
+      "closed_form_value": "0.43254169826788054136547476218768643503835238841872391237668497209059484775894963",
+      "absolute_residual": "1.0542197943230523224e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/10)",
+      "numerator": 1,
+      "denominator": 10,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.44157160568660369361705691668051697998181313056838874490479180834824370787036201",
+      "closed_form_value": "0.441571605686603693617056916680516979981813130568388744904791808348243707870362",
+      "absolute_residual": "1.2123527634715101708e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/12)",
+      "numerator": 1,
+      "denominator": 12,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.44774295310896303866261438553009037951264063656863822975684966157646001647394559",
+      "closed_form_value": "0.44774295310896303866261438553009037951264063656863822975684966157646001647394564",
+      "absolute_residual": "5.6927868893444825411e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/14)",
+      "numerator": 1,
+      "denominator": 14,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.45222598730936560759121100042902173448283113545056355895079511645182614788876827",
+      "closed_form_value": "0.45222598730936560759121100042902173448283113545056355895079511645182614788876828",
+      "absolute_residual": "1.1596417737553575547e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/16)",
+      "numerator": 1,
+      "denominator": 16,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.45562949227389690072861852585679814346565313776839326028794989916149376890073666",
+      "closed_form_value": "0.45562949227389690072861852585679814346565313776839326028794989916149376890073664",
+      "absolute_residual": "1.6340406812007310998e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/18)",
+      "numerator": 1,
+      "denominator": 18,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.45830119186782245273162558657286722920542861364402675377978957680071407317711409",
+      "closed_form_value": "0.45830119186782245273162558657286722920542861364402675377978957680071407317711414",
+      "absolute_residual": "4.743989074453735451e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/20)",
+      "numerator": 1,
+      "denominator": 20,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46045404662401496645993493659492526012349121576314231409527978704556853610338014",
+      "closed_form_value": "0.4604540466240149664599349365949252601234912157631423140952797870455685361033802",
+      "absolute_residual": "5.2710989716152616122e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/22)",
+      "numerator": 1,
+      "denominator": 22,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46222573765327618039198973571939420942238829453229818449171015414766237796262548",
+      "closed_form_value": "0.46222573765327618039198973571939420942238829453229818449171015414766237796262544",
+      "absolute_residual": "3.9533242287114462091e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/24)",
+      "numerator": 1,
+      "denominator": 24,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46370921365295969933817615239143083332211983534865121290981668836704151805279076",
+      "closed_form_value": "0.46370921365295969933817615239143083332211983534865121290981668836704151805279078",
+      "absolute_residual": "2.7409714652399360383e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/26)",
+      "numerator": 1,
+      "denominator": 26,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46496948583917892449545355145696826189410932272958506113892558161248440367211821",
+      "closed_form_value": "0.4649694858391789244954535514569682618941093227295850611389255816124844036721182",
+      "absolute_residual": "9.4879781489074709019e-81",
+      "passed": true
+    },
+    {
+      "name": "J(1/28)",
+      "numerator": 1,
+      "denominator": 28,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46605338714442309977178356929844470091794711821478847456911620656635416441810941",
+      "closed_form_value": "0.46605338714442309977178356929844470091794711821478847456911620656635416441810943",
+      "absolute_residual": "2.2138615680784098771e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/30)",
+      "numerator": 1,
+      "denominator": 30,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46699550886960033901625426340666625125650821243443509875884450072103565902526858",
+      "closed_form_value": "0.46699550886960033901625426340666625125650821243443509875884450072103565902526853",
+      "absolute_residual": "5.3765209510475668444e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/32)",
+      "numerator": 1,
+      "denominator": 32,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46782195405810824094979033660969015440536172423412574578829994878650530576163815",
+      "closed_form_value": "0.46782195405810824094979033660969015440536172423412574578829994878650530576163828",
+      "absolute_residual": "1.3125036439322001414e-79",
+      "passed": true
+    },
+    {
+      "name": "J(1/34)",
+      "numerator": 1,
+      "denominator": 34,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46855279001628645259035816935118126153320165087536283512898398546382477585545281",
+      "closed_form_value": "0.46855279001628645259035816935118126153320165087536283512898398546382477585545276",
+      "absolute_residual": "4.6385670950214302187e-80",
+      "passed": true
+    },
+    {
+      "name": "J(1/36)",
+      "numerator": 1,
+      "denominator": 36,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46920369713842764570070780028781788019592951202361282066213846649709585157318488",
+      "closed_form_value": "0.46920369713842764570070780028781788019592951202361282066213846649709585157318509",
+      "absolute_residual": "2.0504574999583367671e-79",
+      "passed": true
+    },
+    {
+      "name": "J(1/38)",
+      "numerator": 1,
+      "denominator": 38,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.46978710533184404058443174673384043610394551833612219969845749539593785715294908",
+      "closed_form_value": "0.46978710533184404058443174673384043610394551833612219969845749539593785715294923",
+      "absolute_residual": "1.5075343058819648211e-79",
+      "passed": true
+    },
+    {
+      "name": "J(1/40)",
+      "numerator": 1,
+      "denominator": 40,
+      "family": "even_reciprocal_family",
+      "formula": "pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2",
+      "direct_integral_value": "0.47031299463737539490395946774188018828847541725831813395823754153262965085108215",
+      "closed_form_value": "0.4703129946373753949039594677418801882884754172583181339582375415326296508510822",
+      "absolute_residual": "5.2710989716152616122e-80",
+      "passed": true
+    }
+  ]
+}

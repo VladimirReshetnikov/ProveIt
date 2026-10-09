@@ -1,0 +1,129 @@
+\section{Further research questions and proposed next steps}
+\label{sec:future}
+
+The exact measure separates several questions that were difficult to
+distinguish from the original recurrence. The following are concrete
+extensions, with their unresolved parts stated explicitly.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Complete the priority comparison.}
+Obtain the full Ford--Lau solution and inspect subsequent work on this
+specific recurrence, including citations of the original problem.
+Determine precisely which of the density formula, complete
+monotonicity, all-orders coefficients, and product correction have
+appeared before. This is the first step before describing the result
+as a first publication.
+
+\item \textbf{Optimal truncation of the inverse-logarithmic expansion.}
+The coefficient generator is an entire reciprocal-gamma expression,
+but the asymptotic coefficients also contain $(k+1)!$. Determine their
+large-order behavior, the optimal truncation index as a function of
+$\log n$, and the least attainable remainder for this single series.
+The exact $F_a$ integrals provide a reference against which a proposed
+optimal-truncation theorem can be tested. Fixed-order error estimates
+in this paper do not answer this question.
+
+\item \textbf{Uniformity when the algebraic order grows.}
+Theorem~\ref{thm:main-sectors} and its general version hold for each
+fixed truncation order. Quantify the dependence of the remainder
+constant on that order, and determine a range $R=R(n)\to\infty$.
+The singularities at distance $2\pi$ in the endpoint correction
+$P$ are natural inputs, but the logarithmic denominator must be
+controlled simultaneously.
+
+\item \textbf{Interval-certified product constants and errors.}
+Implement directed-rounding enclosures for $\rho$, $\gamma$, and
+the positive integral. Combine them with
+\eqref{eq:C-enclosure} or \eqref{eq:alternating-tail} to certify
+the infinite product $C_*$ to an arbitrary requested number of digits.
+An implementation should avoid subtraction of two exponentially large
+terms. The current scripts demonstrate numerical agreement; they do
+not provide these interval guarantees.
+
+\item \textbf{Growing finite-difference order.}
+The exact formula for $D_{n,r}$ remains valid for every $r$, whereas
+\eqref{eq:difference-asymptotic} assumes fixed $r$. When $r/n$ stays
+away from zero and infinity, its integral is controlled by an interior
+beta-distribution saddle. Derive a uniform theorem joining that
+interior regime to the logarithmic endpoint regime $r=o(n)$.
+Such a theorem would describe the full array of difference inequalities,
+not just each fixed column.
+
+\item \textbf{General logarithmic renewal kernels.}
+Suppose $a_{j+1}-a_j=\int_0^1t^{j-1}h(t)\,dt$ for a positive
+density $h$, and $1+a_1\ge\int_0^1h(t)/t\,dt$.
+Theorem~\ref{thm:general-kernel} gives an all-orders logarithmic
+expansion under explicit regularity assumptions, with a possible atom
+at zero. Determine minimal endpoint regularity for that conclusion,
+and characterize precisely which deformations preserve the special
+cancellation of Euler's constant in \eqref{eq:main-coeff}.
+If $h(1)>0$ and a suitable logarithmic endpoint limit exists, the
+same calculation predicts leading constant $1/h(1)$.
+
+\item \textbf{Stability under perturbing initial coefficients.}
+A finite change of the recurrence coefficients leaves their
+logarithmic tail unchanged but may create additional poles.
+Classify the perturbations for which the positive remainder measure
+survives, and those for which oscillating exponential corrections
+appear. The singularity at one should still determine a universal
+logarithmic component after all relevant poles are removed; that
+assertion requires a separate global zero analysis.
+
+\item \textbf{Arithmetic error propagation.}
+Insert the proved product correction into a fully audited
+totient-volume argument and track every competing approximation.
+Determine whether any arithmetic regime exposes the new
+$\rho^m/(m^2\log^2m)$ scale rather than hiding it under a larger
+sieve or boundary error. This paper proves the continuous-scale
+correction and leaves that arithmetic comparison open.
+
+\item \textbf{Lean formalization in stages.}
+Start with the convolution recurrence, the integral formula for its
+increments, and the algebraic relation between $G$ and $J$.
+Next formalize the positive bounded operator and its scalar spectral
+measure, including endpoint atoms. The exact moment inequalities
+then follow with little asymptotic machinery. A final stage can
+formalize the uniform Laplace estimates and coefficient extraction.
+No declaration in the supplied package is represented as a
+kernel-checked proof.
+\end{enumerate}
+
+\section{Integration and reproducibility record}
+\label{sec:integration}
+
+The package is self-contained for compilation and for the supplied
+numerical experiments. It contains the complete LaTeX source, a
+compiled PDF, vector figures and generated tables, Python programs,
+CSV/JSON data, a build file, and a claim-status ledger. No original
+repository manuscript or third-party PDF is redistributed.
+
+The inspected repository snapshots were
+\begin{center}\small
+\begin{tabular}{@{}lp{0.71\linewidth}@{}}
+\toprule
+Repository & Commit\\
+\midrule
+\texttt{openai/math}&\path{adc7f1241b42e322a6451854ab7e4b4c146bf78a}\\
+\texttt{ProveIt}&\path{6d78805163d6b5b92d27f8f41555254c49fe0963}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first snapshot supplies the recurrence and product-scale anchor;
+the second records the repository scope at the start of the study.
+Their full paths and the relevant source blob identifier appear in
+\texttt{provenance.json}. The inspection was targeted, and did not
+constitute a theorem-by-theorem audit of either repository.
+
+An appropriate proposed destination is
+\path{Analysis/RenewalTheory/Research/Ford_Renewal_Logarithmic_Remainder/}.
+This is an integration suggestion; no existing repository content has
+been changed or published by this package.
+
+The mathematical dependency is short: a positive operator gives the
+exact residual measure; elementary endpoint estimates give its sharp
+size and explicit bounds; a convergent polylogarithm identity gives
+the complete expansions; positive integral identities transport them
+to products and renewal accuracy. The numerical programs check each
+description against an independently computed representation. Their
+purpose is reproducibility and error detection, while the proofs above
+establish the infinite statements.

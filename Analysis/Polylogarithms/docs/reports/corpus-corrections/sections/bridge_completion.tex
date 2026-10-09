@@ -1,0 +1,115 @@
+\section{The exact bridge at a trivial zero}
+\label{bridge:section}
+
+The derivative-tower draft states the nonvanishing logarithmic bridge
+correctly, but describes its trivial-zero analogue only as a ratio of
+leading nonzero derivatives.  The precise coefficient matters: the
+second-to-first derivative ratio appears with a factor of $1/2$.
+The following statement supplies the omitted formula and proof.
+
+\begin{theorem}[Regularized harmonic-number bridge]\label{bridge:trivial}
+Let $\chi$ be a primitive Dirichlet character of conductor $q$, including
+the conductor-$1$ character, and let $k\geq1$.  If
+$\chi(-1)=(-1)^k$, then $L(s,\chi)$ has a simple zero at $s=-k$ and
+\begin{equation}\label{bridge:formula}
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\frac12\overline{\left(
+       \frac{L''(-k,\chi)}{L'(-k,\chi)}\right)}
+ =\gamma+\log\frac{2\pi}{q}-H_k.
+\end{equation}
+If instead $\chi(-1)=(-1)^{k+1}$, then $L(-k,\chi)\ne0$ and the
+corresponding identity is
+\begin{equation}\label{bridge:nontrivial}
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\overline{\left(
+       \frac{L'(-k,\chi)}{L(-k,\chi)}\right)}
+ =\gamma+\log\frac{2\pi}{q}-H_k.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $\chi(-1)=(-1)^\delta$, $\delta\in\{0,1\}$, and
+\[
+ \Lambda(s,\chi)=
+ \left(\frac q\pi\right)^{(s+\delta)/2}
+ \Gamma\left(\frac{s+\delta}{2}\right)L(s,\chi).
+\]
+The primitive functional equation \cite{DLMF25} implies, at real regular points,
+\begin{equation}\label{bridge:completed}
+ \frac{\Lambda'}{\Lambda}(s,\chi)
+ =-\overline{\left(
+       \frac{\Lambda'}{\Lambda}(1-s,\chi)\right)}.
+\end{equation}
+The positive value $L(k+1,\chi)$ is nonzero by its absolutely convergent
+Euler product.  The functional equation therefore makes
+$\Lambda(-k,\chi)$ finite and nonzero.  This also holds for the
+conductor-$1$ character: the completed Riemann zeta function is
+meromorphic, but neither $-k$ nor $k+1$ is one of its poles.
+
+Suppose first that $\delta\equiv k\pmod2$, and put
+$m=(k-\delta)/2\geq0$.  The gamma factor has a simple pole at $-k$,
+so $L(s,\chi)$ must have a simple zero there.  With
+$a=L'(-k,\chi)\ne0$ and $b=L''(-k,\chi)$, write $s=-k+u$ and expand:
+\[
+ L(-k+u,\chi)=a u+\tfrac12 b u^2+O(u^3),
+\]
+\[
+ \Gamma(-m+u/2)=\frac{(-1)^m}{m!}
+       \left(\frac2u+H_m-\gamma+O(u)\right).
+\]
+Taking the logarithmic derivative after cancellation gives
+\begin{equation}\label{bridge:regularized-log}
+ \frac{\Lambda'}{\Lambda}(-k,\chi)
+ =\frac12\log\frac q\pi
+  +\frac12(H_m-\gamma)+\frac{b}{2a}.
+\end{equation}
+At the positive point, ordinary differentiation gives
+\[
+ \frac{\Lambda'}{\Lambda}(k+1,\chi)
+ =\frac12\log\frac q\pi
+  +\frac12\psi\left(\frac{k+1+\delta}{2}\right)
+  +\frac{L'(k+1,\chi)}{L(k+1,\chi)}.
+\]
+Insert these two formulas in \eqref{bridge:completed}.  The elementary
+half-integer digamma identity \cite{DLMF5}
+\[
+ \psi\left(\frac{k+1+\delta}{2}\right)+H_m-\gamma
+ =2H_k-2\gamma-2\log2
+\]
+follows from $\psi(r+\tfrac12)=-\gamma-2\log2+2H_{2r}-H_r$,
+checking $\delta=0$ and $\delta=1$.  It proves
+\eqref{bridge:formula}, including the factor $1/2$.
+
+In the opposite parity the gamma factor is finite and nonzero at
+$-k$, hence $L(-k,\chi)\ne0$.  Applying
+\eqref{bridge:completed} directly gives the sum of the two logarithmic
+$L$-derivatives as
+\[
+ -\log\frac q\pi
+ -\frac12\psi\left(\frac{k+1+\delta}{2}\right)
+ -\frac12\psi\left(\frac{\delta-k}{2}\right).
+\]
+The second digamma argument is a half-integer.  Digamma reflection
+there has zero cotangent term, and duplication reduces the sum to
+$2H_k-2\gamma-2\log2$, proving
+\eqref{bridge:nontrivial}.
+\end{proof}
+
+For example, the trivial-zero cases $\zeta(-2)=0$ and $\beta(-1)=0$
+give respectively
+\[
+ \frac{\zeta'(3)}{\zeta(3)}
+ +\frac{\zeta''(-2)}{2\zeta'(-2)}
+ =\gamma+\log(2\pi)-\frac32,
+\]
+\[
+ \frac{\beta'(2)}{\beta(2)}
+ +\frac{\beta''(-1)}{2\beta'(-1)}
+ =\gamma+\log\frac\pi2-1.
+\]
+Thus the positive-side first derivative really corresponds to a
+negative-side second derivative at the trivial-zero parity.  It cannot
+in general be recovered from the negative first-jet value alone.
+The accompanying numerical check includes these two identities and
+complex primitive quartic characters modulo $5$, for which the
+conjugation in \eqref{bridge:formula} is essential.

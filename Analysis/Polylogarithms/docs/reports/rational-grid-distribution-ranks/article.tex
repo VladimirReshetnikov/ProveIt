@@ -1,0 +1,453 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx,microtype,xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{16324F}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.2em}
+\setlist{itemsep=0.25em,topsep=0.5em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Polylogarithms: exact structure and corrections}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Repart}{\operatorname{Re}}
+\newcommand{\Impart}{\operatorname{Im}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\fall}[2]{#1^{\underline{#2}}}
+\newcommand{\src}[1]{\texttt{\small #1}}
+\newcommand{\stirling}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\hypersetup{pdftitle={Exact Structure and Certified Computation in the Polylogarithm Drafts},
+pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\title{\color{ink}\textbf{Exact Structure and Certified Computation\\
+in the Polylogarithm Drafts}\\[0.6em]
+\large Mixed-point reductions, weighted distributions,\\
+and Stieltjes derivative asymptotics}
+\author{Research continuation for the ProveIt project\\
+\small Prepared for Vladimir Reshetnikov with OpenAI assistance}
+\date{October 8, 2026 (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the research in eight articles and associated reports in
+ProveIt's polylogarithm documentation, using a fixed source snapshot.
+The first result corrects a consequential structural claim: double
+polylogarithms at inverse arguments reduce at every weight to the
+already present one-direction doubles and single polylogarithms.
+Four constants advertised as new mixed-point depth-two directions are
+evaluated explicitly in depth-one terms. We also give a complete
+even-weight formula and meromorphic generating function for the
+alternating harmonic sums studied in the drafts.
+
+For rational Hurwitz-zeta grids, an explicit character normal form proves
+the all-denominator ranks suggested by the draft computations.
+It remains valid over arbitrary commuting prime weights and finite jet
+rings; resonance changes the adequacy of top-denominator coordinates,
+not the rank of the full distribution module. For high parameter
+derivatives of generalized Stieltjes constants, we prove a normally
+convergent spectral expansion, exact rational error certificates at
+parameter one, and a uniform reciprocal-gamma profile when the
+Stieltjes index grows logarithmically with the derivative order.
+Finally, we close the weight-two modular row-sum question with a
+summation-order proof, all derivative rows, and explicit exponential
+tail bounds.
+
+The paper distinguishes classical ingredients and their specializations
+from extensions proved here relative to the supplied corpus. It makes
+no claim to prove period independence or a new transcendence theorem.
+A source-specific correction register, reproducible computations, and
+a prioritized research agenda accompany the proofs.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Source snapshot.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/3a6d80ed618d839915deb0d19ab687f45e81d995}
+{\texttt{3a6d80ed618d839915deb0d19ab687f45e81d995}}.
+All source locators below refer to this commit. The original drafts
+are not silently rewritten.
+\clearpage
+\tableofcontents
+\clearpage
+\section{Scope, contributions, and standards of proof}\label{sec:scope}
+
+The source corpus connects cyclotomic multiple polylogarithms, rational
+gamma and polygamma values, Hurwitz-zeta derivatives, generalized Stieltjes
+constants, and modular lattice sums. Its strongest feature is the repeated
+use of exact transformations across these subjects. Its main vulnerability
+is the occasional promotion of a numerical search outcome to an
+arithmetic or dimensional theorem.
+
+An exact relation matrix determines the dimension of a \emph{formal
+quotient by the rows actually imposed}. It does not establish that the
+evaluated constants have that dimension. A failed integer-relation search
+does not establish independence, even when repeated at higher precision.
+Conversely, an explicit identity can disprove a proposed independence
+claim without settling a transcendence conjecture.
+
+The present continuation has five strands.
+\begin{enumerate}
+\item Section~\ref{sec:mixed} reduces
+\(\Li_{a,b}(\xi,\xi^{-1})\) at every weight to the existing
+\((\xi,1)\) family and evaluates the four named mixed-point survivors.
+\item Section~\ref{sec:euler} proves the complete even-weight evaluation
+of \(S_p=\sum_{n\ge0}(-1)^nH_n/(2n+1)^p\), and determines its even
+meromorphic generating function, whose first poles occur at \(\pm3\).
+\item Sections~\ref{sec:distribution}--\ref{sec:bridges} prove the
+all-denominator distribution ranks and give a single local identity for
+all positive/negative \(L\)-function derivative bridges.
+\item Section~\ref{sec:asymptotics} provides quantitative control of high
+parameter derivatives of Stieltjes constants: a spectral expansion,
+two uniform asymptotic terms, and exact rational enclosures.
+\item Section~\ref{sec:modular} treats weight-two modular row sums,
+where summation order matters, and gives derivative and tail formulas.
+\end{enumerate}
+
+\subsection{Relation to existing literature}
+
+These are extensions and repairs of the supplied research programme.
+The mixed parity reductions are special cases of Panzer's general parity
+theorem~\cite{Panzer}. The odd-index \(S_p\) evaluations specialize the
+Euler-sum theory of Xu and Wang~\cite{XuWang}; we supply an independent
+beta-integral proof in the repository's normalization. The rank principle
+belongs to the classical theory of universal
+distributions~\cite{Kubert,Ouyang}; our elementary normal form makes the
+Stieltjes applications and coordinate resonances explicit. The original
+all-order Stieltjes parameter-derivative identity is due to
+Coffey~\cite{Coffey}.
+
+The reciprocal-gamma factor in Section~\ref{sec:asymptotics} is related to
+classical first-kind Stirling-number and permutation-cycle asymptotics;
+see Kowalski and Nikeghbali~\cite{KowalskiNikeghbali}.
+The contribution here is its quantitative transfer to the parameter
+derivative tower, including a uniform second term and rational
+certificates. The weight-two anomaly and the differential algebra of
+Eisenstein series are classical~\cite{RomikScherer,Ramanujan}.
+We do not claim priority for these general mechanisms. We give complete
+proofs of the specific extensions and state precisely what they settle.
+
+\subsection{Notation and source coverage}
+
+Our convention is
+\[
+\Li_{a,b}(u,v)=\sum_{n>m\ge1}\frac{u^n v^m}{n^a m^b}.
+\]
+When comparing with an increasing-index convention, reverse both
+the weight list and the argument list. We distinguish
+\[
+\omega=e^{2\pi\ii/3},\qquad \tau_{\mathrm{hex}}=e^{\pi\ii/3}.
+\]
+The first is a cube root; the second is the hexagonal lattice parameter.
+We write
+\[
+\beta(s)=\sum_{n\ge0}\frac{(-1)^n}{(2n+1)^s},\qquad
+C_{2j}=\Impart\Li_{2j}(\omega)=\Cl_{2j}(2\pi/3),\qquad G=\beta(2).
+\]
+No irrationality assumption about \(G\) or the other even beta values
+is made.
+
+All eight article sources and the report inventory were inspected.
+Detailed proof auditing concentrates on the multiple-polylog, Stieltjes,
+gamma-relation, and modular-row strands used here.
+We do not claim an exhaustive independent audit of every formula in the
+Herglotz and other reports. Appendix~\ref{app:audit} identifies the
+affected sources and distinguishes existing README warnings from
+corrections established in this continuation.
+
+\section{Inverse-argument mixed doubles add no new directions}
+\label{sec:mixed}
+
+Put \(M_{a,b}(z)=\Li_{a,b}(z,z^{-1})\) and \(w=a+b\).
+We allow \(0<|z|<1\), and \(|z|=1,z\ne1\), with positive integers
+\(a,b\). Boundary sums use the stated outer-index order. They converge
+absolutely if \(a\ge2\). For \(a=1\), the inner colored harmonic sum
+equals its limit plus \(O(n^{-b})\); the outer sum is therefore a
+convergent oscillatory series plus an absolutely convergent remainder.
+
+\begin{theorem}[All-weight inverse-argument reduction]\label{thm:mixed}
+In this domain,
+\begin{align}
+M_{a,b}(z)
+={}&(-1)^{b+1}\sum_{j=1}^{a}
+ \binom{w-j-1}{b-1}\Li_{w-j,j}(z,1)
+ +(-1)^{b+1}\binom{w-1}{b}\Li_w(z)\notag\\
+&+\sum_{j=2}^{b}(-1)^{b-j}
+ \binom{w-j-1}{a-1}\zeta(j)\Li_{w-j}(z)\notag\\
+&+(-1)^b\sum_{j=2}^{a}
+ \binom{w-j-1}{b-1}\zeta(j)\Li_{w-j}(z).
+\label{eq:mixedgeneral}
+\end{align}
+Empty sums are zero. In particular, \(F_a=M_{a,1}\) satisfies
+\begin{equation}
+F_a(z)=a\Li_{a+1}(z)+\sum_{j=1}^{a}\Li_{a+1-j,j}(z,1)
+       -\sum_{j=2}^{a}\zeta(j)\Li_{a+1-j}(z).
+\label{eq:mixedb1}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Set \(h=n-m\). Principal parts at \(m=0,-h\) give
+\begin{align}
+\frac1{m^b(m+h)^a}
+={}&\sum_{j=1}^{b}
+ \frac{(-1)^{b-j}\binom{w-j-1}{a-1}}{h^{w-j}m^j}\notag\\
+&+(-1)^b\sum_{j=1}^{a}
+ \frac{\binom{w-j-1}{b-1}}{h^{w-j}(m+h)^j}.
+\label{eq:partialfraction}
+\end{align}
+Indeed, the difference has no poles and tends to zero at infinity.
+The \(j=1\) coefficients are opposite; their sum over \(m\) is finite
+because \(\sum_{m\ge1}(1/m-1/(m+h))=H_h\).
+For \(j\ge2\), the shifted sum is \(\zeta(j)-H_h^{(j)}\).
+Consequently
+\begin{align*}
+c_h:=\sum_{m\ge1}\frac1{m^b(m+h)^a}
+={}&(-1)^{b+1}\sum_{j=1}^{a}
+ \binom{w-j-1}{b-1}\frac{H_h^{(j)}}{h^{w-j}}\\
+&+\sum_{j=2}^{b}(-1)^{b-j}\binom{w-j-1}{a-1}
+   \frac{\zeta(j)}{h^{w-j}}
+ +(-1)^b\sum_{j=2}^{a}\binom{w-j-1}{b-1}
+   \frac{\zeta(j)}{h^{w-j}}.
+\end{align*}
+Multiply by \(z^h\), sum, and use
+\[
+\sum_{h\ge1}\frac{z^h H_h^{(j)}}{h^{w-j}}
+=\Li_{w-j,j}(z,1)+\Li_w(z),\qquad
+\sum_{j=1}^{a}\binom{w-j-1}{b-1}=\binom{w-1}{b}.
+\]
+For \(|z|<1\) these operations are absolute.
+
+To justify the boundary even when \(a=1\), let \(O_N\) be the original
+sum over \(n\le N\) and \(D_N=\sum_{h=1}^{N-1}z^h c_h\).
+Partial summation gives
+\[
+\left|\sum_{h=h_0}^{h_1}\frac{z^h}{(m+h)^a}\right|
+\le \frac{4}{|1-z|(m+h_0)^a}.
+\]
+Splitting the discrepancy at \(m=N\) now yields
+\[
+|D_N-O_N|
+\le\frac4{|1-z|}
+\left(N^{-a}H_N^{(b)}+\sum_{m>N}m^{-a-b}\right)\longrightarrow0.
+\]
+The coefficients \(c_h\) decrease to zero, the latter by dominated
+convergence with majorant \(m^{-a-b}\).
+Dirichlet's test proves convergence of \(\sum z^h c_h\).
+The one-direction doubles on the right also converge. This proves the
+identity in the original boundary convention.
+\end{proof}
+
+\begin{corollary}[The mixed quotient is zero]\label{cor:mixedzero}
+Let \(\mathcal A_w(z)\) be the \(\Q\)-span of
+\[
+\Li_{r,w-r}(z,1)\ (1\le r<w),\quad
+\Li_w(z),\quad \zeta(j)\Li_{w-j}(z)\ (2\le j<w).
+\]
+Every \(M_{a,b}(z)\) of weight \(w\) belongs to \(\mathcal A_w(z)\).
+Adding the mixed values contributes zero dimension modulo this space.
+\end{corollary}
+
+At \(z=\ii\), this is the Gaussian family already used in the report.
+At \(z=\omega^2\), the one-direction values are conjugates of its
+\((\omega,1)\) values, whose real and imaginary parts it includes.
+Thus the proposed additional mixed directions disappear at every
+weight. The result concerns inverse-color pairs, and does not assert
+that all colored double polylogarithms reduce to one direction.
+
+\subsection{An independent integral representation}
+
+\begin{proposition}\label{prop:mixedintegral}
+In the same domain,
+\begin{align}
+M_{a,b}(z)&=\frac{z}{(a-1)!}\int_0^1
+ \frac{(-\log t)^{a-1}\Li_b(t)}{1-zt}\,dt,
+\label{eq:mixedintegral}\\
+\Li_{a,b}(z,1)&=\frac{z}{(a-1)!}\int_0^1
+ \frac{(-\log t)^{a-1}\Li_b(zt)}{1-zt}\,dt.
+\label{eq:directionintegral}
+\end{align}
+\end{proposition}
+\begin{proof}
+Insert
+\(n^{-a}=(a-1)!^{-1}\int_0^1(-\log t)^{a-1}t^{n-1}\,dt\).
+The \(h=n-m\) geometric sum gives \(zt/(1-zt)\);
+the \(m\)-sum gives \(\Li_b(t)\) or \(\Li_b(zt)\).
+At a fixed boundary point \(z\ne1\), the denominator is bounded away
+from zero on \([0,1]\), and the possible logarithmic endpoint
+singularities are integrable. Dominated convergence and the preceding
+boundary argument complete the proof.
+\end{proof}
+
+These formulas supply independent numerical checks without the
+power-law acceleration problem at \(z_1z_2=1\). Quadrature itself is
+not a rigorous certificate unless its numerical error is enclosed.
+
+\subsection{The mixed parity component reduces to single values}
+
+Panzer's theorem predicts lower depth for the real component at odd
+weight and the imaginary component at even weight~\cite{Panzer}.
+Here is a direct proof for the mixed \(F_a\) family.
+
+\begin{theorem}[Mixed parity formulas]\label{thm:mixedparity}
+For \(|z|=1,z\ne1\) and \(m\ge1\),
+\begin{align}
+\Repart F_{2m}(z)
+={}&\frac{2m+1}{2}\Repart\Li_{2m+1}(z)
+ -\sum_{j=1}^{m}\zeta(2j)\Repart\Li_{2m+1-2j}(z)\notag\\
+&-\frac12\zeta(2m+1)
+ +\Repart\Li_{2m}(z)\Repart\Li_1(z).
+\label{eq:realparity}
+\end{align}
+For \(m\ge0\),
+\begin{align}
+\Impart F_{2m+1}(z)
+={}&(m+1)\Impart\Li_{2m+2}(z)
+ -\sum_{j=1}^{m}\zeta(2j)\Impart\Li_{2m+2-2j}(z)\notag\\
+&+\Impart\Li_{2m+1}(z)\Repart\Li_1(z).
+\label{eq:imagparity}
+\end{align}
+\end{theorem}
+\begin{proof}
+For \(a\ge2\), set
+\(\mathcal B_a(z)=-\Li_a(z)-(-1)^a\Li_a(z^{-1})\).
+The Fourier series
+\(-\mathcal B_a(z)=\sum_{n\ne0}z^n/n^a\) is absolutely summable,
+while \(\Li_1(z^{-1})=\sum_{\ell\ge1}z^{-\ell}/\ell\) belongs to
+\(L^2\) on the circle. Their product has positive \(h\)-th coefficient
+\(c_h=\sum_{\ell\ge1}[\ell(\ell+h)^a]^{-1}\), constant coefficient
+\(\zeta(a+1)\), and negative \(h\)-th coefficient
+\[
+q_{-h}=\sum_{\ell\ge1,\ \ell\ne h}\frac1{\ell(\ell-h)^a}.
+\]
+The difference \(q_{-h}-(-1)^a c_h\) is
+\begin{equation}
+\sum_{\ell\in\Z\setminus\{0,h\}}\frac1{\ell(\ell-h)^a}
+=(-1)^a\left[
+ 2\sum_{j=1}^{\lfloor a/2\rfloor}
+       \frac{\zeta(2j)}{h^{a+1-2j}}
+ -\frac{a+1}{h^{a+1}}\right].
+\label{eq:bilateralpartial}
+\end{equation}
+To check this absolutely convergent bilateral sum, use
+\[
+\frac1{\ell(\ell-h)^a}
+=\frac1{(-h)^a\ell}
+ -\sum_{r=1}^{a}\frac1{(-h)^{a+1-r}(\ell-h)^r}.
+\]
+Symmetric summation of the \(r=1\) terms gives respectively
+\(-1/h\) and \(1/h\). For \(r\ge2\), the shifted sum is
+\((1+(-1)^r)\zeta(r)-(-h)^{-r}\). Substitution gives
+\eqref{eq:bilateralpartial}.
+Comparing all Fourier coefficients now gives
+\begin{align}
+F_a(z)+(-1)^aF_a(z^{-1})
+={}&(-1)^a\left[(a+1)\Li_{a+1}(z^{-1})
+ -2\sum_{j=1}^{\lfloor a/2\rfloor}
+       \zeta(2j)\Li_{a+1-2j}(z^{-1})\right]\notag\\
+&-\zeta(a+1)-\Li_1(z^{-1})\mathcal B_a(z).
+\label{eq:mixedfourier}
+\end{align}
+The equality holds first in \(L^2\), then pointwise by continuity away
+from \(z=1\). Real parts for even \(a\), and imaginary parts for odd
+\(a\), give the claims. The remaining case \(a=1\) follows from
+\(F_1(z)=\Li_2(z)+\tfrac12\Li_1(z)^2\), itself a consequence of
+\eqref{eq:mixedb1} and the elementary shuffle identity.
+\end{proof}
+
+\subsection{Four explicit replacements for the claimed survivors}
+
+\begin{corollary}\label{cor:four}
+The four highlighted mixed-point constants satisfy
+\begin{align}
+\Repart\Li_{4,1}(\ii,-\ii)
+&=-\frac{587}{1024}\zeta(5)
+ +\frac3{32}\zeta(2)\zeta(3)
+ +\frac{135}{256}\zeta(4)\log2,
+\label{eq:gaussian4}\\
+\Impart\Li_{5,1}(\ii,-\ii)
+&=3\beta(6)-\zeta(2)\beta(4)-\zeta(4)G
+ -\frac{5\pi^5\log2}{3072},
+\label{eq:gaussian5}\\
+\Repart\Li_{4,1}(\omega^2,\omega)
+&=-\frac{281}{162}\zeta(5)
+ +\frac49\zeta(2)\zeta(3)
+ +\frac{20}{27}\zeta(4)\log3,
+\label{eq:eisenstein4}\\
+\Impart\Li_{5,1}(\omega^2,\omega)
+&=-3C_6+\zeta(2)C_4+\zeta(4)C_2
+ +\frac{\pi^5\log3}{729}.
+\label{eq:eisenstein5}
+\end{align}
+\end{corollary}
+\begin{proof}
+Use Theorem~\ref{thm:mixedparity} with \(m=2\), together with
+\[
+\Repart\Li_s(\ii)=-2^{-s}(1-2^{1-s})\zeta(s),\qquad
+\Repart\Li_s(\omega)=\frac{3^{1-s}-1}{2}\zeta(s)\quad(s>1),
+\]
+and
+\[
+\Repart\Li_1(\ii)=-\tfrac12\log2,\quad
+\Repart\Li_1(\omega)=-\tfrac12\log3,\quad
+\Impart\Li_5(\ii)=\frac{5\pi^5}{1536},\quad
+\Impart\Li_5(\omega)=\frac{2\pi^5}{729}.
+\]
+The real identities follow by residue-class splitting; the imaginary
+fifth-order values follow from the odd-beta and Bernoulli Fourier
+formulas, with \(B_5(1/3)=-5/243\).
+Conjugation changes the sign of imaginary parts at \(\omega^2\).
+\end{proof}
+
+The four values, in the displayed order, are approximately
+\[
+\begin{aligned}
+&-0.01342026735728779,\qquad && 0.03269424445221378,\\
+&-0.03903921845650667,\qquad &&-0.02533938136807792.
+\end{aligned}
+\]
+Their right sides already belong to the report's listed single-value
+bases. Its \src{thm:parallel} is therefore false in the printed
+convention. The evaluator scripts and value stores cited by that report
+were not imported into ProveIt, so their precise failure cannot be
+diagnosed from the available files. Replace the survivor claims by
+Theorem~\ref{thm:mixed} and Corollary~\ref{cor:four}, and recompute any
+dimension conclusions that depended on the proposed new directions.
+
+\input{sections/euler}
+\input{sections/distribution}
+\input{sections/bridges}
+\input{sections/asymptotics}
+\input{sections/modular}
+\input{sections/research}
+\input{sections/audit}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\input{references}
+\end{document}

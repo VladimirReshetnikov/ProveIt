@@ -1,0 +1,170 @@
+\section{The problem and the precise improvement}
+\label{sec:scope}
+
+The coefficients
+\begin{equation}\label{eq:definition-a}
+ a_j=(j+1)\log(j+1)-j\log j-1
+     =\int_j^{j+1}\log x\,dx\qquad(j\ge1)
+\end{equation}
+are positive and grow like $\log j$. Set
+\begin{equation}\label{eq:definition-g}
+ A(z)=\sum_{j\ge1}a_jz^j,\qquad
+ g_0=1,\qquad g_n=\sum_{j=1}^n a_jg_{n-j},\qquad
+ G(z)=\frac1{1-A(z)}.
+\end{equation}
+The radius of convergence of $A$ is one. On $[0,1)$ it increases
+strictly from zero to infinity. Thus there is a unique $\rho\in(0,1)$
+with $A(\rho)=1$. Throughout the paper,
+\begin{equation}\label{eq:normalization}
+ \gamma=\frac1{\rho A'(\rho)},\qquad
+ w_0=\rho^{-1},\qquad
+ E_n=\gamma\rho^{-n}-g_n\quad(n\ge1).
+\end{equation}
+Euler's constant is always $\gE$, to distinguish it from the residue
+amplitude $\gamma$. All logarithms are natural. Numerical values, given
+only for orientation, are
+\[
+ \rho=0.542598586098471021959384595779\ldots,
+ \qquad \gamma=0.323457534191380676574821548566\ldots.
+\]
+
+\subsection{Published baseline and repository connection}
+
+Ford's study of totients uses this recurrence in its simplex-volume
+estimates. Lemma~3.7 of the revised paper proves
+$|g_n-\gamma\rho^{-n}|\le5$; the following remark records that the
+errors for $n\ge1$ are negative, increasing, and summable
+\cite[Lemma~3.7 and Remark~1]{Ford}. Ford attributes the simplified
+recurrence argument to a solution with Lau \cite{FordLau}.
+The present paper starts from those established facts as a comparison;
+it proves the new estimates directly.
+
+The same recurrence is defined in the inspected \texttt{openai/math}
+totient manuscript, where a continuous counting scale contains
+\begin{equation}\label{eq:counting-scale}
+ \mathcal G_m(B)=\frac{B^m}{m!\prod_{j=1}^m g_j}.
+\end{equation}
+We use that definition and its motivation, without using the manuscript's
+claims about the arithmetic counting function \cite{OpenAIMath}.
+The study also fits the asymptotic-expansion and inversion program in
+\texttt{ProveIt} \cite{ProveIt}. Section~\ref{sec:products} gives a
+direct, proved consequence for \eqref{eq:counting-scale}.
+
+The priority review inspected Ford's full revised paper and the relevant
+repository source. The Ford--Lau item was identified bibliographically,
+but its full text was not accessible during preparation. Targeted
+searches did not locate the explicit remainder expansion proved here.
+This supports a precise claim of a refinement of the inspected published
+estimate; it does not establish worldwide first-publication priority.
+Spectral measures, Hausdorff moments, renewal generating functions, and
+polylogarithm expansions are classical tools.
+
+\subsection{Main conclusions at a glance}
+
+\begin{theorem}[Sharp remainder and all logarithmic orders]
+\label{thm:main-log}
+For every fixed integer $K\ge0$, as $n\to\infty$,
+\begin{equation}\label{eq:main-log}
+ E_n=\frac1{n^2}\left\{
+    \sum_{k=0}^K\frac{c_k}{(\log n)^{k+2}}
+      +O_K\bigl((\log n)^{-K-3}\bigr)\right\},
+\end{equation}
+where
+\begin{equation}\label{eq:main-coeff}
+ c_k=(k+1)![u^k]\,
+           \frac{(1+u)e^{\gE u}}{\Gamma(1-u)}.
+\end{equation}
+In particular,
+\begin{align}\label{eq:first-coefficients}
+ c_0&=1,&c_1&=2,&c_2&=-\frac{\pi^2}{2},\nonumber\\
+ c_3&=-2\pi^2-8\zeta(3),&
+ c_4&=\frac{\pi^4}{12}-40\zeta(3).
+\end{align}
+Moreover, $E_n>0$ for every $n\ge1$, and for every $n\ge4096$,
+\begin{equation}\label{eq:main-explicit}
+ \frac1{200n(n+1)\log^2n}\le E_n
+           \le\frac{10}{n(n+1)\log^2n}.
+\end{equation}
+\end{theorem}
+
+Thus the formerly bounded absolute error actually tends to zero, with
+an exact leading constant and an optimal power of $n$ and $\log n$.
+After just the first correction,
+\[
+ g_n=\gamma\rho^{-n}-\frac1{n^2\log^2n}
+                   +O\!\left(\frac1{n^2\log^3n}\right).
+\]
+The new $O$-term is itself sharp: its leading coefficient is $-2$.
+The more conservative constants in \eqref{eq:main-explicit} provide
+a statement valid from a specified finite index, independently of
+any numerical calculation of $\rho$.
+
+\begin{theorem}[Exact moment structure]
+\label{thm:main-moment}
+There is an explicit positive continuous function $\ell$ on $(0,1)$
+such that
+\begin{equation}\label{eq:main-moment}
+ E_n=\int_0^1 t^{n-1}\ell(t)\,dt\qquad(n\ge1).
+\end{equation}
+Consequently $(-1)^r\Delta^r E_n>0$ for all $n\ge1$, $r\ge0$,
+and every matrix $(E_{a+i+j})_{0\le i,j\le d}$ with $a\ge1$ is
+positive definite. The exact sum rules are
+\begin{equation}\label{eq:main-sums}
+ \sum_{n\ge1}E_n=1-\frac\gamma{1-\rho},\qquad
+ \sum_{n\ge1}nE_n=\frac{\gamma\rho}{(1-\rho)^2}.
+\end{equation}
+\end{theorem}
+
+The restriction $n\ge1$ matters: $g_0-\gamma=1-\gamma>0$ has the
+opposite sign. The proof explicitly checks both endpoints of the
+spectral measure and excludes an unaccounted singular component.
+
+\subsection{A second, finer expansion}
+
+A fixed truncation of \eqref{eq:main-log} has an error much larger
+than $n^{-3}$. To resolve powers of $1/n$ as well, define the ordinary
+convergent integrals
+\begin{equation}\label{eq:def-Fa}
+ F_a(L)=\int_0^\infty
+ \frac{y^{a-1}e^{-y}}{(L-\log y-\gE)^2+\pi^2}\,dy
+ \qquad(a>0,\ L\in\mathbb R),
+\end{equation}
+and put
+\begin{equation}\label{eq:p2p3}
+ p_2=\zeta'(-1)-\frac1{12},\qquad p_3=\zeta'(-2).
+\end{equation}
+Primes on $F_a$ mean differentiation in $L$.
+
+\begin{theorem}[Expansion retaining all logarithmic dependence]
+\label{thm:main-sectors}
+Writing $L=\log n$, one has
+\begin{align}\label{eq:main-sectors}
+ E_n={}&\frac{F_2(L)}{n^2}+\frac{F_3(L)}{2n^3}
+   +\frac1{n^4}\left\{\frac{F_4(L)}{12}-p_2F_4'(L)\right\}\nonumber\\
+ &-\frac1{n^5}\left(\frac{p_2}{2}+p_3\right)F_5'(L)
+   +O\!\left(\frac1{n^6\log^2n}\right).
+\end{align}
+More generally, an explicit recursion generates the coefficient of
+every power $n^{-r-2}$, with remainder
+$O_R(n^{-R-3}\log^{-2}n)$ after powers through $n^{-R-2}$.
+\end{theorem}
+
+In \eqref{eq:main-sectors}, the $F_a$ are retained as integrals.
+Replacing them by a fixed number of inverse-logarithmic terms would
+destroy the displayed precision. This distinction is essential when
+using the result as an asymptotic expansion in more than one scale.
+
+\subsection{What these theorems do and do not settle}
+
+The main theorem improves a precise analytic component of the totient
+method. It also supplies exact inequalities for the entire recurrence,
+not merely its tail. The product theorem below determines the first
+relative correction to \eqref{eq:counting-scale}; the inverse theorem
+quantifies convergence of the associated renewal process.
+
+These conclusions do not, by themselves, improve the error term in an
+asymptotic formula for the number of distinct totients. The arithmetic
+steps that connect a volume calculation to a count have separate errors.
+The present argument neither verifies nor requires the larger claims
+in the repository manuscript. This boundary keeps the strengthened
+estimate usable as an independently checkable lemma.

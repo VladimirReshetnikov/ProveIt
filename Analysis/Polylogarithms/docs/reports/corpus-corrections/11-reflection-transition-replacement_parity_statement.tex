@@ -1,0 +1,41 @@
+% Editorial insertion, not a standalone document.
+% Requires amsmath, amssymb, amsthm and an existing theorem environment.
+% Use after defining S_p, beta, and the Euler numbers as in the new article.
+\begin{theorem}[Uniform even-weight reduction]
+Let
+\[
+ S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad
+ \sec(\pi z/2)=\sum_{j\ge0}c_jz^{2j}.
+\]
+For every integer $m\ge0$,
+\[
+ S_{2m+1}=(2m+1)\beta(2m+2)
+ -\frac\pi2\left(c_m\log2+
+ \sum_{j=1}^m c_{m-j}(1-2^{-2j-1})\zeta(2j+1)\right).
+\]
+In particular, these values belong to
+$\mathbb Q[\pi,\log2,\zeta(3),\zeta(5),\ldots,\beta(2),\beta(4),\ldots]$.
+\end{theorem}
+\begin{proof}
+Put
+\[
+ F(z,u)=\frac12\int_0^1
+ t^{(1-z)/2-1}(1+t)^{-1-u}\,dt.
+\]
+Splitting the beta integral at one and inverting the second half gives
+\[
+ F(z,u)+F(-z-2u,u)
+ =\frac{\Gamma((1-z)/2)\Gamma((1+z)/2+u)}{2\Gamma(1+u)}.
+\]
+Here $[u]F(z,u)=\sum_{p\ge1}S_pz^{p-1}$ and
+$F(z,0)=\sum_{p\ge1}\beta(p)z^{p-1}$. Differentiate in $u$ and extract
+$z^{2m}$. The even part of $\psi((1+z)/2)+\gamma$ is
+$-2\log2-2\sum_{j\ge1}(1-2^{-2j-1})\zeta(2j+1)z^{2j}$,
+which gives the formula.
+\end{proof}
+\paragraph{Status of the converse.}
+The preceding theorem proves a reduction, not an irreducibility result.
+Non-membership of the complementary even-$p$ values in this specified algebra
+has not been proved by the numerical searches reported in the draft. Those
+searches should be described as evidence about the candidate bases and
+coefficient ranges used, not as unconditional depth lower bounds.

@@ -1,0 +1,56 @@
+% Proposed manual replacements, not a standalone TeX document.
+% Source: stieltjes-parameter-derivative-tower.tex
+% Blob: e4d53b7c921c72ff40c5393a9d3ac5cfb44ea6bb
+% See AUDIT.md before applying. Do not replace unrelated paragraphs.
+
+% C1: Replace the independence conclusion in sec:atoms, and retitle the section.
+\section{Unreduced second-derivative generators and numerical searches}
+The six second-order derivative constants are retained as formal generators
+in the chosen representation. The numerical searches described here found
+no relation in the tested bases at the stated precision. This is a report
+of search outcomes, not a proof of rational linear independence, algebraic
+independence, or irreducibility. A complete record should state the tested
+bases, precision, coefficient-search limits, and controls. No unrestricted
+independence conclusion is drawn from the negative searches.
+
+% C2: Replace thm:rank and its finite-verification paragraph unless a general
+% proof is added. This paragraph intentionally uses no new theorem environment.
+\paragraph{Computed rank and a conjectural general pattern.}
+Exact row reduction on the distribution matrices used in the computations
+was performed for $3\le q\le30$ and $k=1,2,3$. The reported residual dimension
+in that finite range is $\varphi(q)-1$. The same formula for arbitrary $q,k$
+is a conjectural extension unless a general proof is supplied. To make the
+claim precise, one must specify the formal coordinate module, the treatment
+of the inhomogeneous known terms, and the complete set of generating
+relations. Formal residual dimension must not be identified with arithmetic
+independence of the evaluated special constants.
+
+% C3: Add after rem:parity (or replace its unspecified variant sentence).
+For a primitive character $\chi$ and $k\ge1$ with $L(-k,\chi)=0$,
+the normalized first bridge is
+\[
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\overline{\left(\frac{L''(-k,\chi)}{2L'(-k,\chi)}\right)}
+ =\gamma+\log\frac{2\pi}{q}-H_k.
+\]
+The factor $1/2$ comes from regularizing the simple zero:
+$L(-k+z,\chi)/z=L'(-k,\chi)+\tfrac12L''(-k,\chi)z+O(z^2)$.
+For all higher jets, set
+$D(z)=L(-k+z,\overline\chi)/z^\nu$, where $\nu=1$ at a trivial zero
+and $\nu=0$ otherwise. Then
+\[
+ D^{(j)}(0)=\frac{j!}{(j+\nu)!}L^{(j+\nu)}(-k,\overline\chi).
+\]
+These factorial normalizations and the character conjugation must be kept
+when translating between derivative layers.
+
+% C4: Replacement abstract sentence / description before eq:k2duality.
+As a representative corollary, $\gamma_1''(1/4)$ is
+$-256\pi^3\psi^{(-3)}(1/4)$ plus the explicit combination of zeta jets,
+zeta values, Glaisher logarithms, and elementary terms displayed below.
+The identity eliminates the designated character-derivative atom; it does
+not by itself establish that the entire residual is elementary.
+
+% C4b: Replace the isolated description of beta'(-1) as elementary.
+The identity $\beta'(-1)=2\mathsf G/\pi$ is a reduction to Catalan's
+constant $\mathsf G$.

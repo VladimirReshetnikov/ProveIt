@@ -1,0 +1,377 @@
+\section{A complete proof of the rational-grid rank laws}
+\label{rank:section}
+
+The derivative-tower draft states an all-denominator rank law but supports it
+only by finite exact computations.  The antiderivative draft states the
+corresponding finite-range result carefully and leaves its extension to all
+denominators as a conjecture.  Both questions admit the same elementary
+character-theoretic solution.  The result concerns the rank of an explicitly
+specified \emph{formal presentation}; it does not establish linear
+independence of numerical zeta or Stieltjes values.
+
+The relevant classical context is the universal ordinary distribution.
+Kubert proved, in particular, that its level-$q$ module is free of rank
+$\varphi(q)$ and becomes the regular unit-group representation over
+$\mathbb Q$ \cite{Kubert1979}.  The proof below treats arbitrary rational
+prime weights, states the endpoint convention explicitly, and obtains the
+two rank formulas needed by the drafts.  We make no claim that the
+underlying universal-distribution principle is new.
+
+\subsection{The presentation, including the endpoint}
+
+Fix $q\geq1$ and set
+\[
+ X_q=\tfrac1q\mathbb Z/\mathbb Z,
+ \qquad V_q=\bigoplus_{x\in X_q}\mathbb Q e_x.
+\]
+When symbols are evaluated by a special function, use the representative
+$\langle x\rangle_+\in(0,1]$.  In particular $e_0$ represents its value at
+$1$, not its singular limit at $0$.  Choose a rational weight $w_p$ for each
+prime $p\mid q$ and put
+\[
+ w(d)=\prod_{p\mid d}w_p^{v_p(d)}\qquad(d\mid q),
+ \qquad w(1)=1.
+\]
+For every $d\mid q$ and $x\in X_{q/d}$ define a distribution row
+\begin{equation}\label{rank:row}
+ D_{d,x}=\sum_{\substack{y\in X_q\\dy=x}}e_y-w(d)e_x.
+\end{equation}
+There are exactly $d$ preimages in this sum.  Let $R_q(w)$ be the span of
+these rows and let $U_q(w)=V_q/R_q(w)$.  The numerical application uses
+$w_p=p^s$, with $s=k+1$ for positive parameter derivatives and $s=-k$ for
+negative zeta jets.  Thus all the coefficient matrices are rational.
+
+There are two distinct conventions worth recording.  The presentation
+$U_q(w)$ retains the endpoint as a free symbol.  If the endpoint is placed
+in a prescribed right-hand-side inventory, the homogeneous coefficient
+space is
+\begin{equation}\label{rank:endpoint}
+ U_q^0(w)=V_q/(R_q(w)+\mathbb Q e_0).
+\end{equation}
+This is equivalent to moving every occurrence of the endpoint to the
+right-hand side and using only the $q-1$ columns $e_{r/q}$,
+$1\leq r<q$.
+
+\begin{lemma}[Prime rows suffice]\label{rank:prime}
+The rows $D_{p,x}$, for $p\mid q$ prime and $x\in X_{q/p}$, generate
+$R_q(w)$.
+\end{lemma}
+\begin{proof}
+For $ab\mid q$ and $x\in X_{q/(ab)}$, partition the $ab$ preimages by
+their images under multiplication by $a$.  This gives the exact identity
+\[
+ D_{ab,x}=\sum_{\substack{y\in X_{q/a}\\by=x}}D_{a,y}
+             +w(a)D_{b,x}.
+\]
+The factorization $w(ab)=w(a)w(b)$ holds even when $a$ and $b$ are not
+coprime.  Repeated factorization proves the assertion, including all
+prime-power rows.
+\end{proof}
+
+\subsection{The weighted character theorem}
+
+Write $G_q=(\mathbb Z/q\mathbb Z)^\times$, acting by $u e_x=e_{ux}$.
+For $q=1$ this is the trivial group.  If $\chi$ is a character of $G_q$,
+write $f=f_\chi\mid q$ for its conductor and $\chi^*$ for its primitive
+character.  The principal character has conductor $1$ and
+$\chi^*(p)=1$.  For every $m$ with $f\mid m\mid q$, put
+\begin{equation}\label{rank:E}
+ E_{m,\chi}=
+ \sum_{a\in(\mathbb Z/m\mathbb Z)^\times}
+       \chi^*(a)e_{a/m}.
+\end{equation}
+At $m=1$ this is $e_0$.  These vectors are used after extending scalars to
+$\mathbb C$; they need not individually have rational coefficients.
+
+\begin{theorem}[Weighted distribution module]\label{rank:main}
+For every $q\geq1$ and every choice of rational weights $w_p$, the
+complexification of $U_q(w)$ has the basis
+\[
+ \bigl\{[E_{f_\chi,\chi}]:\chi\in\widehat G_q\bigr\}.
+\]
+The $\chi$-labelled basis vector has $G_q$-character $\chi^{-1}$.
+Consequently
+\begin{equation}\label{rank:dimensions}
+ \dim_{\mathbb Q} U_q(w)=\varphi(q),
+ \qquad
+ \dim_{\mathbb Q} U_q^0(w)=\varphi(q)-1.
+\end{equation}
+In particular the first dimension is independent of all prime weights.
+\end{theorem}
+
+\begin{proof}
+Decompose $V_q\otimes\mathbb C$ by the exact order $m\mid q$ of its
+symbols.  The summand of order $m$ is the regular representation of
+$G_m$, inflated to $G_q$.  The reduction map $G_q\to G_m$ is surjective
+by the Chinese remainder theorem.  Hence a character $\chi$ of $G_q$
+occurs in that summand if and only if $f_\chi\mid m$, and its
+$\chi^{-1}$-eigenline is spanned by $E_{m,\chi}$.  This identifies every
+character block before imposing relations.
+
+By Lemma~\ref{rank:prime}, it is enough to sum prime distribution rows
+against $\chi^*(a)$ over symbols of each exact order $m$.  Suppose
+$pm\mid q$ and $f\mid m$.  If $p\mid m$, all $p$ lifts of a unit
+$a/m$ have exact denominator $pm$.  Each unit modulo $pm$ occurs once,
+with its correct character coefficient.  The resulting row is
+\begin{equation}\label{rank:edge-ramified}
+ E_{pm,\chi}-w_p E_{m,\chi}.
+\end{equation}
+If $p\nmid m$, exactly one lift has denominator $m$: writing that lift
+as $b/m$, one has $pb\equiv a\pmod m$.  Its coefficient is
+$\chi^*(a)=\chi^*(p)\chi^*(b)$.  The other lifts run through the units
+modulo $pm$.  In this case the row is
+\begin{equation}\label{rank:edge-unramified}
+ E_{pm,\chi}-(w_p-\chi^*(p))E_{m,\chi}.
+\end{equation}
+The source space for rows of exact order $m$ has no $\chi$-component
+when $f\nmid m$.  Since the distribution map is $G_q$-equivariant,
+there are no further rows in the $\chi$-block.  This also explains why
+a newly appearing primitive character is not removed when its conductor
+is first reached.
+
+For $f\mid m\mid q$ define
+\begin{equation}\label{rank:A}
+ A_{m,\chi}=
+ \prod_{p\mid f}w_p^{v_p(m)-v_p(f)}
+ \prod_{\substack{p\mid m\\p\nmid f}}
+       (w_p-\chi^*(p))w_p^{v_p(m)-1}.
+\end{equation}
+Empty products and zeroth powers have value $1$, so $A_{f,\chi}=1$,
+also if some weight is zero.  Multiplying the edge coefficients along
+any divisor chain from $f$ to $m$ gives exactly $A_{m,\chi}$:
+different prime steps commute.  Thus every class in this block satisfies
+\begin{equation}\label{rank:transport}
+ [E_{m,\chi}]=A_{m,\chi}[E_{f,\chi}],
+\end{equation}
+and the block has dimension at most one.
+
+For the opposite inequality, define on the block the linear functional
+$E_{m,\chi}\mapsto A_{m,\chi}$.  Formula~\eqref{rank:A} shows directly
+that it vanishes on every edge row
+\eqref{rank:edge-ramified}--\eqref{rank:edge-unramified}; its value on
+$E_{f,\chi}$ is $1$.  The block therefore has dimension exactly one.
+Summing over all $\varphi(q)$ characters proves the first formula in
+\eqref{rank:dimensions}.  Rank does not change under the scalar extension
+$\mathbb Q\subset\mathbb C$.  Finally $e_0=E_{1,\chi_0}$ is the nonzero
+generator of the principal block, so adjoining $e_0$ to the relation
+space removes exactly that block and proves the second formula.
+\end{proof}
+
+\begin{remark}[Resonance affects a choice of basis, not the rank]
+\label{rank:resonance}
+For $w_p=p^s$ with real $s\ne0$, every factor in
+\eqref{rank:A} is nonzero, since $|\chi^*(p)|=1$ when $p\nmid f$.
+For nonrational real weights the same proof is read over $\mathbb R$
+instead of $\mathbb Q$, followed by extension to $\mathbb C$.
+The classes of the $\varphi(q)$ unit symbols $e_{a/q}$ then form a basis
+of $U_q(w)$: their Fourier coordinates are the nonzero multiples
+$E_{q,\chi}=A_{q,\chi}E_{f,\chi}$.  At resonant weights this particular
+basis can fail.  For example, if $w_p=1$ and $q=p$ is prime,
+$E_{p,\chi_0}=0$ whereas $e_0$ still spans the principal block.
+The conductor basis in Theorem~\ref{rank:main} remains valid, so there
+is no exceptional rank.  No division by $w_p-\chi^*(p)$ occurs in the
+proof.
+\end{remark}
+
+\subsection{The full finite-jet module is free}
+
+The same argument controls all jet layers at once.  This gives more than
+adding the dimensions of successive layers: it proves a free presentation
+before the nilpotent jet parameter is specialized.
+
+\begin{theorem}[Freeness over a coefficient algebra]\label{rank:algebra}
+Let $K$ be a field of characteristic zero containing the values of all
+characters of $G_q$, and let $A$ be any commutative $K$-algebra with
+identity.  Define $V_q(A)$ and its distribution rows as in
+\eqref{rank:row}, now with arbitrary weights $w_p\in A$ and with
+$A$-linear spans.  Then
+\[
+ V_q(A)/R_q(w;A)\simeq A^{\varphi(q)},\qquad
+ V_q(A)/(R_q(w;A)+Ae_0)\simeq A^{\varphi(q)-1}.
+\]
+The conductor vectors $E_{f_\chi,\chi}$ give the first basis; omitting
+the principal vector gives the second.  These statements remain valid
+when $A$ has zero divisors or nilpotents and when edge coefficients vanish.
+\end{theorem}
+\begin{proof}
+The Fourier changes of basis over each $G_m$ and the character
+projections divide only by $|G_m|$, which is invertible in $K$ and
+therefore in $A$.  The decomposition into character blocks thus works
+over $A$ exactly as it does over $\mathbb C$.
+Within a block, the edge equations
+\eqref{rank:edge-ramified}--\eqref{rank:edge-unramified} express every
+generator as $A_{m,\chi}$ times the conductor generator.  They give a
+surjection $A\to U_\chi$, $1\mapsto[E_{f_\chi,\chi}]$.
+The map $E_{m,\chi}\mapsto A_{m,\chi}$ descends to $U_\chi\to A$
+and is its inverse, since it sends the conductor generator to $1$.
+Hence each block is free of rank one, without any use of division by
+a weight or an Euler factor.  Removing the principal block gives the
+endpoint assertion.
+\end{proof}
+
+\begin{corollary}[Finite Hurwitz and Stieltjes jets]\label{rank:full-jets}
+Fix an integer $s\ne1$ and $N\geq0$, and let $K\subseteq\mathbb C$
+contain all character values modulo $q$ and all $\log p$, $p\mid q$.
+For $0\leq j\leq N$ use the formal symbols
+$Z_j(x)=\zeta^{(j)}(s,\langle x\rangle_+)/j!$; the equality here
+specifies their intended evaluation, not an arithmetic-independence
+assumption.  Impose every coefficient of Hurwitz distribution through
+order $N$, and prescribe all $N+1$ endpoint symbols $Z_j(0)$.
+The resulting formal $K$-vector space has dimension
+\begin{equation}\label{rank:full-jet-dimension}
+ (N+1)(\varphi(q)-1).
+\end{equation}
+Before prescribing the endpoint its dimension is $(N+1)\varphi(q)$.
+For fixed $k\geq1$, the same result holds for the complete finite
+Stieltjes-derivative array
+$\{\gamma_j^{(k)}(r/q):0\leq j\leq N,\ 1\leq r<q\}$,
+with all its coefficient distribution rows and all endpoint layers
+prescribed.
+\end{corollary}
+\begin{proof}
+Use the truncated polynomial algebra $A=K[\eta]/(\eta^{N+1})$ and
+the weights
+\[
+ w_p=p^s\sum_{\ell=0}^N\frac{(\log p)^\ell}{\ell!}\eta^\ell.
+\]
+They give $w(d)=d^s\exp(\eta\log d)$ in this algebra.  The coefficient
+row at order $j$ is
+\begin{equation}\label{rank:coefficient-jet-row}
+ \sum_{dy=x}Z_j(y)
+ -d^s\sum_{\ell=0}^j
+       \frac{(\log d)^\ell}{\ell!}Z_{j-\ell}(x).
+\end{equation}
+Identify $Z_j(x)$ with $\eta^{N-j}e_x$ in the underlying $K$-vector
+space of $V_q(A)$.  This reversed grading is necessary: multiplication
+by $\eta$ lowers jet order.  Under this identification,
+\eqref{rank:coefficient-jet-row} is exactly $\eta^{N-j}D_{d,x}$,
+and prescribing all endpoint layers is exactly quotienting by $Ae_0$.
+Theorem~\ref{rank:algebra} proves freeness over $A$; multiplying its
+rank by $\dim_K A=N+1$ proves \eqref{rank:full-jet-dimension}.
+
+Finally the coefficient identity
+\[
+ \sum_{j=0}^N\frac{(-1)^j}{j!}\gamma_j^{(k)}(a)\eta^j
+ =(-1)^k(1+\eta)_k
+       \sum_{j=0}^N\frac{\zeta^{(j)}(k+1,a)}{j!}\eta^j
+       \pmod{\eta^{N+1}}
+\]
+is an invertible triangular change of jet coordinates: its scalar
+factor has nonzero constant coefficient $(-1)^k k!$.  It preserves
+the coefficient distribution presentation, with weights
+$d^{k+1}\exp(\eta\log d)$, and proves the Stieltjes assertion.
+\end{proof}
+
+In particular, passing from an individual highest layer to the entire
+finite array introduces no additional formal rank obstruction.  The
+freeness result concerns these displayed relations over the specified
+coefficient field; it still gives no numerical-independence theorem.
+
+\subsection{Reflection and the negative-jet conjecture}
+
+For $\epsilon\in\{1,-1\}$, let $S_q^\epsilon$ be generated by
+$e_x+\epsilon e_{-x}$ for $x\in X_q$.  On the $\chi$-block, reflection
+$x\mapsto-x$ acts by $\chi(-1)$, so these rows remove exactly the
+characters satisfying $\chi(-1)=\epsilon$.
+
+\begin{corollary}[Distribution and reflection rank]\label{rank:reflection}
+For every $q\geq3$, every rational choice of weights, and
+$\epsilon\in\{1,-1\}$,
+\begin{equation}\label{rank:reflection-dimension}
+ \dim_{\mathbb Q}
+ \frac{V_q}{R_q(w)+S_q^\epsilon+\mathbb Q e_0}
+ =\frac{\varphi(q)}2-\frac{1-\epsilon}{2}.
+\end{equation}
+For $q=1,2$ this dimension is $0$ for either sign.
+\end{corollary}
+\begin{proof}
+The surviving characters have parity $-\epsilon$.  For $q\geq3$,
+$-1$ is a nonidentity element of order two in $G_q$, so half of its
+characters have each parity.  The principal character survives the
+reflection quotient exactly when $\epsilon=-1$, and is then removed
+by $e_0$.  For $q=1,2$, $G_q$ has only the principal character, which
+the endpoint relation removes in either case.
+\end{proof}
+
+Here is the precise application to the drafts.  Put
+$J_k(x)=\zeta'(-k,\langle x\rangle_+)$ for $k\geq1$.  Differentiating
+Hurwitz multiplication gives
+\begin{equation}\label{rank:jet-distribution}
+ \sum_{j=0}^{d-1}\zeta'\left(-k,\frac{a+j}{d}\right)
+ -d^{-k}\zeta'(-k,a)
+ =d^{-k}\log d\,\zeta(-k,a).
+\end{equation}
+The reflection row used in the antiderivative draft has left-hand side
+$J_k(x)+(-1)^kJ_k(-x)$.  More explicitly, for $0<x<1$ and
+$C_\nu(x)+iS_\nu(x)=\operatorname{Li}_{\nu}(e^{2\pi i x})$, its known
+right-hand side is
+\begin{equation}\label{rank:jet-reflection}
+ J_k(x)+(-1)^kJ_k(-x)
+ =\begin{cases}
+  \displaystyle\frac{(-1)^{k/2}k!}{(2\pi)^k}C_{k+1}(x),&k\text{ even},\\[6pt]
+  \displaystyle\frac{(-1)^{(k-1)/2}k!}{(2\pi)^k}S_{k+1}(x),&k\text{ odd}.
+ \end{cases}
+\end{equation}
+Indeed, differentiate the standard Hurwitz Fourier formula at $s=-k$;
+the corresponding cosine or sine factor has a simple zero, so its
+derivative is the sole surviving factor.  The endpoint value
+$J_k(0)=\zeta'(-k)$ is placed in the inventory separately.
+
+Take as the inventory the endpoint $\zeta'(-k)$, all Bernoulli-value
+terms $d^{-k}\log d\,\zeta(-k,a)$ in
+\eqref{rank:jet-distribution}, and all right-hand sides of
+\eqref{rank:jet-reflection}.  Then
+Corollary~\ref{rank:reflection}, with $s=-k$ and $\epsilon=(-1)^k$,
+proves for \emph{all} $q\geq3$ and $k\geq1$ that the formal residual
+dimension is
+\begin{equation}\label{rank:negative-result}
+ r_{q,k}=\begin{cases}
+  \varphi(q)/2-1,&k\text{ odd},\\
+  \varphi(q)/2,&k\text{ even}.
+ \end{cases}
+\end{equation}
+This proves the unrestricted version of the antiderivative draft's
+Proposition \texttt{prop:jetrank}, formerly checked only for
+$3\leq q\leq30$ and $1\leq k\leq4$.  Equivalently, the remaining
+complex character lines are indexed by primitive characters of
+conductors $f\mid q$, $f>1$, with $\chi(-1)=(-1)^{k+1}$.
+
+For the positive parameter tower, let the inventory contain
+$\gamma_n^{(k)}(1)$ and every lower-$s$-derivative-layer term occurring
+in the differentiated multiplication identity.  At a fixed highest
+layer its homogeneous coefficient is $d^{k+1}$, independent of $n$.
+In particular the $n=1$ row is
+\[
+ \sum_{j=0}^{d-1}\gamma_1^{(k)}\left(\frac{a+j}{d}\right)
+ -d^{k+1}\gamma_1^{(k)}(a)
+ =d^{k+1}\log d\,\psi^{(k)}(a).
+\]
+Theorem~\ref{rank:main} therefore proves the formal residual dimension
+$\varphi(q)-1$ for every $q\geq1$ and $k\geq1$.  For $n>1$ this is
+an associated-layer statement: lower derivatives are prescribed data,
+not additional unknown columns.
+
+\paragraph{What the theorem does and does not certify.}
+The background inventory is part of the statement.  Several of its
+terms, including rational-argument polygamma and Clausen values, are
+not known to be elementary.  One may define an evaluation map from the
+formal quotient to the span of actual constants modulo the inventory;
+the theorem determines the dimension of its source.  Its image can
+have smaller dimension, and proving injectivity would be a separate
+arithmetic-independence problem.  Consequently ``one surviving formal
+character line'' cannot be replaced by ``one numerically independent
+new constant.''  The same caution applies to unsuccessful PSLQ searches.
+
+\paragraph{Exact reproducibility.}
+The accompanying \texttt{code/verify\_ranks.py} forms the actual
+$q$-column rational matrices, including prime and all-divisor rows,
+endpoint rows, and both reflection signs.  It checks their ranks by
+exact fraction elimination and records its parameters and results in
+\texttt{data/rank\_checks.json}.  It also checks the resonant weight
+$s=0$ and a non-power weight system.  These computations are regression
+checks on the presentation and its boundary conventions; the proof for
+unbounded $q$ and $k$ is Theorem~\ref{rank:main}.
+The companion \texttt{code/verify\_jet\_ranks.py} checks the expanded
+finite-jet coefficient matrices with rational exponential-weight
+parameters and with nilpotent weights; its output is
+\texttt{data/jet\_rank\_checks.json}.

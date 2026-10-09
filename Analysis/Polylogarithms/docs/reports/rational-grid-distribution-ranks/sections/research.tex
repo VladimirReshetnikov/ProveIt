@@ -1,0 +1,269 @@
+\section{Reproducibility, certification, and integration}
+\label{sec:reproducibility}
+
+\subsection{What the computations establish}
+
+The proofs above establish the theorems; the computations independently
+check normalization, signs, low-order specializations, and implementation.
+They are deliberately recorded in three distinct categories.
+\begin{enumerate}
+\item \textbf{Exact algebra.} Partial-fraction identities are checked
+as rational polynomial identities. Distribution and reflection matrices
+are reduced over exact rational arithmetic. The modular differential
+polynomials retain rational coefficients.
+\item \textbf{Analytically certified enclosures.} The intervals in
+Corollary~\ref{cor:rational} have exact rational endpoints. Their validity
+comes from the proved spectral-tail bound, not a comparison of decimal
+approximations.
+\item \textbf{Independent high-precision checks.} Complex quadrature,
+Hurwitz-zeta evaluation, and polygamma evaluation test the formulas by
+different representations. These use ordinary arbitrary-precision
+floating-point arithmetic, without outward rounding. They provide
+strong implementation checks but are not interval certificates.
+\end{enumerate}
+
+The shipped default runs have the following scope.
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.27\textwidth}p{0.64\textwidth}}
+\toprule
+Artifact & Recorded verification\\
+\midrule
+Mixed doubles and Euler sums &
+64 exact partial-fraction checks; 18 mixed integral comparisons;
+the four explicit reductions; five Euler values; six generator checks;
+three pole-residue checks. Working precision: 80 decimal digits.\\
+\addlinespace
+Distributions and bridges &
+1,734 exact matrix checks through \(q=60\), including anchored and
+reflected quotients and all-divisor/prime-row agreement.
+72 analytic checks of normalized bridges through derivative order five,
+at 65 decimal digits.\\
+\addlinespace
+Parameter asymptotics &
+78 rational enclosures, including 72 strictly positive sign certificates;
+72 independent exact coefficient comparisons; 36 numerical
+spectral-tail checks at 75 decimal digits; the profile figure.\\
+\addlinespace
+Modular rows &
+Four independent single-row comparisons, ten CM jet comparisons through
+order four, and four explicit tail checks at 90 decimal digits;
+exact differential polynomials through order five.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The maximum equality residual in the mixed/Euler run was
+approximately \(1.71\times10^{-80}\), against the declared tolerance
+\(10^{-60}\). Pole residues use their own finite-difference error
+criterion and are not included in that equality statistic.
+The source manifest verifies all 40 retrieved text files against their
+Git blob identifiers and records additional SHA-256 hashes.
+This is provenance for the reviewed snapshot, not a claim that every
+statement in all 31 reports has been checked.
+
+\subsection{A certificate format that survives integration}
+
+The exact objects should remain separate from their numerical
+evaluations. For a linear relation, store the convention and ordered
+symbol list, the integer or rational coefficient vector, the source
+law identifiers, and the exact combination of law rows that produces
+the vector. An integer-relation search may propose that vector, but
+does not supply its law certificate.
+
+For a finite-dimensional quotient, store the relation system and an
+exact normal-form map in addition to the rank. A rank number without
+the rows and their interpretation is not enough to reconstruct the
+claim. The character basis in Section~\ref{sec:distribution} provides
+a particularly compact symbolic normal form across infinitely many
+denominators. Its general proof is stronger than a larger finite table.
+
+For numerical values, store the representation, parameters, precision,
+truncation, and the actual error statement. Where a proved analytic
+majorant is evaluated in ordinary floating point, label the result
+accordingly; an outward-rounded evaluation is an additional step.
+For the rational intervals, retain numerator and denominator rather
+than only a decimal rendering.
+
+The package is self-contained at the source level: the master
+\src{article.tex} includes the section files, the bibliography is
+included, the figure source and data are present, and a build command
+is supplied in \src{README.txt}. The Python scripts use
+\src{mpmath}, \src{sympy}, \src{numpy}, and \src{matplotlib}.
+No absent upstream value store is needed to reproduce these results.
+The proposed corrections are supplied as a separate register so that
+maintainers can review and apply them to the original articles.
+The original corpus is neither duplicated nor silently modified.
+
+\section{Further research: precise questions and proposed routes}
+\label{sec:questions}
+
+The corrections change which problems are worth pursuing. In
+particular, the inverse-argument mixed family no longer supplies the
+proposed new directions. A productive continuation should use exact
+relations to remove those directions before allocating numerical
+effort to the genuinely unresolved quotient.
+
+\subsection{Immediate structural projects}
+
+\paragraph{1. A convention-safe cyclotomic reduction engine.}
+Can the partial-fraction map of Theorem~\ref{thm:mixed} be combined
+with shuffle, stuffle, distribution, conjugation, and the proven
+parity theorem into a single exact reducer at fixed weight and level?
+Start with levels three, four, and six, retain an explicit ordered
+alphabet, and distinguish products from the linear depth filtration.
+Every emitted relation should carry a rational certificate.
+The first target is a reproducible spanning set and formal corank
+through a stated weight, not an arithmetic dimension theorem.
+The four false survivors make useful regression examples.
+
+\paragraph{2. The remaining parity of alternating harmonic sums.}
+For
+\[
+S_{2m}=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^{2m}},
+\]
+what is the smallest natural motivic or formal level-four space that
+contains the family? The beta-integral argument evaluates the other
+parity but does not prove nonmembership here. A concrete next step is
+to compute a depth-graded coaction or an exact formal quotient for the
+first few weights, identify the image of \(S_{2m}\), and distinguish
+the resulting motivic statement from any period-independence
+assumption. Xu and Wang's wider Euler-sum framework is a natural
+starting point~\cite{XuWang}.
+
+\paragraph{3. Higher-depth inverse-color reductions.}
+The substitution \(n=m+h\) works especially well because the inverse
+arguments leave a single phase \(z^h\). For triples such as
+\(\Li_{a,b,c}(z,z^{-1},1)\), which phase patterns lead to a similar
+gap-variable reduction, and which genuinely retain two interacting
+gaps? A first target is an exact partial-fraction identity at depth
+three with a complete boundary-convergence proof. Merely increasing
+the depth-two search basis cannot establish that a triple lies in it.
+
+\paragraph{4. Integral weighted distributions.}
+The character proof works over a \(\C\)-algebra, where averaging over
+\((\Z/q\Z)^\times\) and diagonalizing characters are available.
+What is the corresponding integral module over
+\(\Z[t_p:p\mid q]\), and which torsion appears after reflection,
+anchoring, or specialization? The distinction matters if a future
+certificate system is to use integral normal forms without inverting
+group orders. Smith normal forms for prime powers and two-prime
+denominators would supply useful conjectures; an induction or a
+distribution resolution is needed for the general theorem.
+The connection to universal distributions should be retained
+\cite{Kubert,Ouyang}.
+
+\subsection{Asymptotic and analytic projects}
+
+\paragraph{5. Beyond the logarithmic index range.}
+Theorem~\ref{thm:profile} is uniform for \(n\le C\log(k/a)\).
+What happens when \(n/\log k\to\infty\)? The exact coefficient
+representation suggests a saddle-point equation for
+\[
+e^{-z\log a}\prod_{j=1}^{k}(1+z/j),
+\]
+but the appropriate saddle may move far enough that fixed-disk
+gamma-ratio estimates no longer apply. The competing \(m\ge1\)
+spectral terms also need uniform control.
+A concrete first extension is a proved range
+\(n=o((\log k)^2)\), with an error estimate that explicitly describes
+where the two-term profile ceases to be useful. That range is a
+research target here, not an established theorem.
+
+\paragraph{6. Moving Hurwitz parameter and spectral competition.}
+The present compact-\(a\) hypothesis gives
+\((a/(a+1))^k\) as an exponentially small ratio.
+For \(a=a(k)\) comparable with \(k\), this ratio need not tend to zero.
+Can one derive a profile involving several spectral terms, or an
+integral limit of them? The separate regimes
+\(a=o(k)\), \(a\asymp k\), and \(a\gg k\) should be analyzed using
+the exact expansion before proposing a single universal formula.
+This would connect the parameter tower with large-parameter
+Hurwitz-zeta asymptotics.
+
+\paragraph{7. Fully effective asymptotic constants and optimal bounds.}
+Lemma~\ref{lem:coefficient} has explicit constants, while
+Theorem~\ref{thm:profile} packages the fixed-disk bounds into \(O\)-terms.
+An effective version could expose a computable \(k_0(a_0,a_1,C)\)
+for the sign theorem. A separate optimization problem is to minimize
+\eqref{eq:spectral-tail} over \(R\) and the truncation \(M\), or to
+compare the integer-radius rational certificate with a rational
+upper approximation to the optimal real radius.
+The success criterion is a rigorously narrower interval at a known
+computational cost, not simply more printed digits.
+
+\paragraph{8. Resonant jet coordinates and numerical conditioning.}
+The full distribution module is free even where top-denominator
+coordinates vanish. How should a symbolic or numerical algorithm
+choose conductor-level coordinates so that the conversion remains
+well-conditioned near a resonance? The vanishing-order formula in
+Section~\ref{sec:distribution} provides a local answer, including the
+number of lost jet coefficients. A useful next deliverable is a
+canonical basis-selection algorithm with explicit transition matrices,
+followed by a study of conditioning at large denominators.
+No extra numerical constants should be inferred from a coordinate
+singularity.
+
+\paragraph{9. Global continuation of normalized derivative bridges.}
+Section~\ref{sec:bridges} gives a local germ after removing a simple
+trivial zero. How far can each germ be continued before an actual
+zero of the \(L\)-function or a known elementary factor becomes an
+obstruction? One can formulate zero-sensitive domains for the
+logarithmic jets, derive Bell-polynomial formulas for raw derivatives,
+and build exact symbolic identities for higher orders.
+For imprimitive characters, Euler-factor zeros should be removed
+explicitly and compared with the distribution resonances.
+The root-number cancellation in the local identity should not be
+misread as a global zero-free theorem.
+
+\subsection{Arithmetic and modular questions}
+
+\paragraph{10. The unresolved arithmetic content of gamma quotients.}
+The formal gamma quotient has a proved rank, and every law-derived
+identity has an exact certificate. Which additional arithmetic
+relations could remain beyond that system? This is the point at
+which Rohrlich-type conjectures enter. A useful project would separate
+three outputs: unconditional law certificates, conditional
+completeness statements with the exact conjecture written out, and
+finite bounded-height exclusions using certified numerical inputs.
+The Koblitz--Ogus sufficient criterion must not be promoted to the
+missing converse; see the careful distinction in
+Anderson--Brownawell--Papanikolas~\cite{ABP}.
+
+\paragraph{11. Isolated imaginary polygamma values at CM points.}
+The modular row theorems evaluate weighted aggregates. They do not
+individually evaluate \(\Impart\psi^{(1)}(\ii)\).
+Does this isolated quantity belong to a natural Eichler-integral,
+iterated-integral, or regulator framework with a provable modular
+transformation law? The immediate target is the transformation law
+itself, including its nonholomorphic or boundary terms if necessary.
+A Lambert-series resemblance alone is not sufficient evidence.
+Once such a law is established, it may suggest period classes and
+meaningful relations among different CM arguments.
+
+\paragraph{12. Beyond the square and hexagonal lattices.}
+At other imaginary-quadratic parameters, the same Ramanujan
+recurrence computes all row derivatives from \(E_2,E_4,E_6\).
+Can the algebraic CM data and periods be certified exactly, with
+minimal polynomials, isolating regions, and compatible period
+normalizations? A useful first target is several class-number-two
+discriminants. A polynomial relation supplies an upper bound on
+degree; exact degree additionally requires irreducibility and
+identification of the intended root. This would replace the draft's
+PSLQ degree guesses by checkable algebraic evidence.
+
+\subsection{A sensible order of attack}
+
+The first, fourth, seventh, and eighth projects have the clearest
+near-term certification goals. They strengthen the mathematical
+infrastructure without depending on a period conjecture. The second,
+third, and ninth concern deeper structural reductions, where formal
+or motivic calculations can establish substantial results before
+arithmetic independence is addressed. The remaining asymptotic and CM
+projects require new analytic input.
+
+The central methodological requirement is to keep three maps visible:
+from exact functional identities to a formal quotient, from that
+quotient to actual special values, and from those values to numerical
+approximations. A proof about one map should not silently become a
+claim about another.
