@@ -9531,3 +9531,12 @@ shows the current global input chain cannot meet the final polynomial
 contract merely through improvements downstream. The generic nested
 construction can be reused with a replacement input chain. Neither a
 numbered catalogue entry nor a tighter final Gowers threshold is claimed.
+
+Verification after merging the incoming growth-obstruction and abstract BSG
+modules: all 27 new named nested-construction proofs pass individual axiom
+checks. The full combined audit checks 8,702 public Gowers theorems across
+5,457 modules (5,455 in the facade closure), using only `propext`,
+`Classical.choice`, and `Quot.sound`. The selected OAI audit closure remains
+4,152 modules. The generated catalogue is byte-identical: 115 companion
+proofs and five open statements; this count does not certify fidelity to
+every printed statement. The selected-port scope check passes.
