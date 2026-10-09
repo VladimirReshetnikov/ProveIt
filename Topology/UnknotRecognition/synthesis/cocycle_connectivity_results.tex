@@ -1,0 +1,56 @@
+\subsection{Source, adversarial and external controls}
+
+The 22 focused connectivity, seed and span tests pass in 2.165 seconds;
+the full suite passes all 1,181 tests in 211.483 seconds. Tests disable
+cocycle discovery, flow discovery, exterior construction and both orbit
+production and replay while checking serialized positive witnesses. They
+also exercise exact schema types, modified height transitions, disconnected
+Euler-one surfaces, false optima, divisibility hidden by coboundaries and
+cancellation at the first, middle and final guards. Historical component
+witnesses, including valid zero-count proofs that must not certify an
+unknot, remain covered.
+
+The audit repeats all 84 source queries with the existing two-million-guard
+allowance. It obtains 18 positive records, 65 completed restricted misses
+and one cap, compared with 17 positives, 64 completed misses and three
+caps before this change. The eighteen records contain thirteen distinct
+positive witnesses; the named optimized example also occurs as
+\code{random-54}, and repeated curls are retained rather than counted
+as new constructions. All positives replay independently. The seventeen
+previous positives have exactly the same normal vectors, and their
+historical proofs are accepted by both old and new verifiers.
+
+The newly successful input is the 32-crossing stabilized circle: its raw
+8,385-piece surface now certifies in 53,673 guards. The 8- and 16-crossing
+circles use 13,305 and 26,761 guards, compared with 199,317 and 782,613.
+The previously capped \code{survivor-00} completes both candidates in
+1,295,668 guards, but both remain non-discs. Gordian's raw surface now
+finishes with Euler characteristic $-125$; its span optimization still
+exhausts the shared allowance. There is no inferred negative verdict and
+no newly successful default portfolio case.
+
+Fresh external Regina controls compare both surfaces on every source of at
+most twelve crossings: 148 controls from 74 source records. Each agrees
+with the new inspector on connectedness, orientability, Euler characteristic
+and essential-disc count. These controls supplement, rather than replace,
+the independently checked source certificates and the proof of the
+connectivity criterion. The final audit takes 36.108 seconds while the
+full suite also runs; this elapsed time is not a performance comparison.
+
+On the nineteen ordinary corpus inputs, the previous enabled stage, the
+new disabled stage and the new enabled stage give identical expected
+verdicts. Every run completes before attempting this stage. The substantial
+native-stage gains below therefore do not demonstrate a gain for those
+ordinary portfolio calls.
+
+\input{cocycle_connectivity_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/connectivity.py}, with
+\code{audit}, \code{replay} and \code{recognize} modes. The baseline is
+commit \code{6212f6f69}; its seed producer and source-proof checker are
+loaded from the committed source while all unchanged dependencies remain
+fixed. All 478 runtime, driver, fixture and prior-audit pins agree across
+the experiments. The incoming archive inventory and the checked
+\code{openai/math} head \code{fd4aeeb2e} are unchanged. This integration
+uses the existing report~31 theorem and supplies its previously missing
+independent source-bound hypothesis checks.
