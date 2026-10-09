@@ -5828,10 +5828,22 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
         same difference are `Q 4`-related, using (S2) for swapped pairs.
       - `diffUnion_card_ge`: the graph has at least `∑_{d∈D′} |T d|`
         edges.
-    - Still needed for Theorem 4.1:
-      - Claim 4.4 (Cauchy–Schwarz over difference sequences, then the
-        ladder again);
-      - the final pruning to `A′`.
+    - `Proofs16AbstractBSGClaim44` proves Claim 4.4 in four-walk form
+      (`claim_4_4`).
+      - **Hypotheses.** A graph `P ⊆ A × A` has property (20) for `Q 4`,
+        and `Q` has symmetry (S3) and weak transitivity. Any two
+        vertices of `B` are joined by `η|X|^3` four-walks.
+      - **Conclusion.** For `B₁, B₂ ⊆ B` of densities `ε₁, ε₂` and
+        `|X−X| ≤ K|X|`, at least `(κ/2)|X|^3` additive quadruples of
+        `B₁² × B₂²` lie in `Q 16`, where `κ = (ε₁ε₂η)²/K⁴` and
+        `16c′ ≤ κ`.
+      - **Proof.** Walk count (`walkTuples_card`); fiber Cauchy–Schwarz
+        over difference sequences (`collisions_ge`); collision geometry,
+        where equal differences force a common shift `e`; each
+        quadruple's fiber injects into its `shiftRel`-chains; averaging;
+        then the ladder at levels `4i`.
+    - Still needed for Theorem 4.1: the final pruning to `A′` (elements
+      in many `Q 16` quadruples) and the bridging statement.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
