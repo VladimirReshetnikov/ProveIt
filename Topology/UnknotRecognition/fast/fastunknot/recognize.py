@@ -380,6 +380,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_group: bool = False, group_seconds: float | None = 0.05,
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
+              group_primitive_projection: bool = False,
               group_adaptive: bool = False, group_switch_letters: int | None = None,
               use_two_meridian: bool = False, two_meridian_seconds: float | None = 0.05,
               two_meridian_max_work: int | None = 2_000_000,
@@ -440,6 +441,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("group_compressed must be boolean")
     if type(group_compressed_search) is not bool:
         raise ValueError("group_compressed_search must be boolean")
+    if type(group_primitive_projection) is not bool:
+        raise ValueError("group_primitive_projection must be boolean")
+    group_compressed_search = group_compressed_search or group_primitive_projection
     if type(group_adaptive) is not bool:
         raise ValueError("group_adaptive must be boolean")
     if group_adaptive and group_compressed_search:
@@ -710,6 +714,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        group_options=dict(seconds=group_seconds, relator_moves=group_relators,
                                           compressed_verification=group_compressed,
                                           compressed_search=group_compressed_search,
+                                          primitive_projection=group_primitive_projection,
                                           adaptive_search=group_adaptive, switch_letters=group_switch_letters,
                                           max_work=group_max_work) if use_group else None,
                        window_options=None if window_radius is None else dict(

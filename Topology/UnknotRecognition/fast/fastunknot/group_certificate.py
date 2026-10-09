@@ -5,6 +5,8 @@ infinite cyclic group is the unknot (Loop Theorem). Legacy traces reduce
 the full presentation to one generator and no relations. Version five instead
 checks a primitive-power relator at rank two after full prefix replay; knot
 group torsion-freeness and abelianization then imply infinite cyclicity.
+Version six also replays complete disjoint primitive-pair projections and
+checks raw one-generator exponent endpoints without discarding relator slots.
 Stalling is inconclusive, including after Whitehead minimization. Explicit
 relator expansion has no polynomial bound in the input crossing number.
 """
@@ -272,6 +274,8 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     Wirtinger relation. Legacy terminal freeness is checked explicitly; version
     five independently verifies a primitive-power relation at rank two and
     uses the reconstructed knot-group provenance to conclude cyclicity.
+    Version six also checks simultaneous primitive-pair projections, explicit
+    normalization handoffs and raw one-generator zero-exponent endpoints.
 
     With compressed=True, reconstruct the same initial presentation but
     replay it as exact straight-line-program words. max_letters then bounds
@@ -289,13 +293,14 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     if type(certificate) is not dict or type(certificate.get('version')) is not int:
         return False
     version = certificate['version']
-    final_field = 'terminal' if version == 5 else 'remaining_generator'
+    final_field = 'terminal' if version in (5, 6) else 'remaining_generator'
     if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
-            or version not in (1, 2, 3, 4, 5)
+            or version not in (1, 2, 3, 4, 5, 6)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
-            or (version != 5 and type(certificate['remaining_generator']) is not int)
+            or (version < 5 and type(certificate['remaining_generator']) is not int)
+            or (version >= 5 and type(certificate['terminal']) is not dict)
             or type(certificate['moves']) is not list):
         return False
     budget.tick(len(certificate['moves']))
@@ -382,6 +387,18 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
         if type(move) is not dict:
             return False
         kind = move.get('kind')
+        if kind == 'primitive_projection':
+            if certificate['version'] < 6:
+                return False
+            from .primitive_projection_verify import replay_literal_projection
+            if not replay_literal_projection(words, alive, move, budget):
+                return False
+            continue
+        if kind == 'normalize_relators':
+            if certificate['version'] < 6 or set(move) != {'kind'}:
+                return False
+            words = [normalize(word) for word in words]
+            continue
         if kind == 'eliminate':
             if set(move) != {'kind', 'relation', 'generator'}:
                 return False
@@ -490,7 +507,10 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             budget.size(expanded)
             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
-    if certificate['version'] == 5:
+    if certificate['version'] == 6 and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+        from .primitive_projection_verify import verify_literal_rank_one
+        return verify_literal_rank_one(words, alive, certificate['terminal'], budget)
+    if certificate['version'] in (5, 6):
         from .primitive_power_verify import verify_literal_terminal
         return verify_literal_terminal(words, alive, certificate['terminal'], budget)
     return alive == {certificate['remaining_generator']} and not any(words)
@@ -499,14 +519,21 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                  relator_moves=False, compressed_verification=False,
                  compressed_search=False, adaptive_search=False, switch_letters=None,
-                 max_nodes=100000, check=lambda: None):
-    """Bounded search AND independent verification sharing one wall allowance."""
+                 max_nodes=100000, check=lambda: None, primitive_projection=False):
+    """Bounded search AND independent verification sharing one wall allowance.
+
+    primitive_projection opts into raw disjoint-pair rounds and implies
+    compressed search/replay. Defaults retain the earlier search policy.
+    """
     from math import isfinite
     start = monotonic()
     if type(compressed_verification) is not bool:
         raise ValueError('compressed_verification must be boolean')
     if type(compressed_search) is not bool:
         raise ValueError('compressed_search must be boolean')
+    if type(primitive_projection) is not bool:
+        raise ValueError('primitive_projection must be boolean')
+    compressed_search = compressed_search or primitive_projection
     if type(adaptive_search) is not bool:
         raise ValueError('adaptive_search must be boolean')
     if compressed_search and adaptive_search:
@@ -535,7 +562,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
         if compressed_search:
             from .compressed_search import compressed_certificate
             certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
-                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats)
+                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
+                primitive_projection=primitive_projection)
         else:
             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
