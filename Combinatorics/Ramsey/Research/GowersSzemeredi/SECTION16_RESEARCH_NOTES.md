@@ -6971,3 +6971,209 @@ facade modules, including 4,152 OAI modules), using only `propext`,
 unchanged at 115 companions and five open entries. The selected-port
 scope remains 4,134 upstream and 17 compatibility modules, excluding
 reciprocal-only dependencies.
+
+### J.119. Dense pair escape and the independent-family rank budget
+
+The progression result of J.118 now gives the pair-enlargement ingredient
+for the frequency-selection iteration. This follows the role of
+[Claim 9.4 in the auxiliary inverse-theorem source](https://arxiv.org/html/2601.01682v1#S9):
+one common map supplies a new independent frequency on many column
+pairs. The present explicit parameters come from J.115–J.118; no claim
+is made that they match that source's quasipolynomial estimates.
+
+**From quadruples to pairs.** If an additive quadruple's first pair and
+third coordinate are known, its fourth coordinate is determined. Thus
+`additive_quadruples_pair_card_le` proves `Q.card <= E.card*N` whenever
+all first pairs lie in `E`. Its real-density consequence turns
+`delta*N^3` quadruples into at least `delta*N^2` pairs, including when
+coordinates repeat. The new paired projection therefore preserves the
+normalized retained density from J.118.
+
+**Keep the translation and constant term.** Define
+`translatedFreimanDomain S a = {a+x : x in S}`. Membership is equivalent
+to `x-a in S`, and cardinality is unchanged. If `psi` is order-two
+Freiman on `S`, then `theta(x)=c+psi(x-a)` is order-two Freiman on this
+translated domain. These facts allow the selected map to be used at the
+actual column difference, without silently dropping either `a` or `c`.
+
+**Ambient span accounting.** Increasing a generator set preserves its
+bounded span at the same cutoff. A difference of elements in the spans
+of `K` and `L`, at respective cutoffs `R` and `S`, belongs to the span
+of `K union L` at cutoff `R+S`. In particular, the selected column-map
+values give cutoff `2*bohrExtensionCutoff (2*d) r` for their difference.
+This factor of two is retained explicitly; overlapping generator sets
+do not justify claiming the original cutoff for an arbitrary difference.
+
+**A common map escaping on many pairs.**
+`failed_containments_dense_pair_escape` takes the actual failure family
+and a selected-frequency set `F(p)` for each column pair. The only
+connection needed is `F(q0,q1)` contained in the quadruple's selected set
+`D(q)`. It returns a proper progression `P`, a translation `a`, one
+Freiman map `theta` on `a+P`, and a set `E` of first pairs from the original
+family. With `epsilon = escapingFreimanDensity delta d r`,
+
+```
+E.card >= commonDifferenceProgressionRetention epsilon*N^2.
+```
+
+For every `p in E`, its difference lies in `a+P`, and `theta(p1-p2)`
+belongs to the union of its column spans at the doubled cutoff while
+lying outside the unit span of `F(p)`. The progression rank and size
+bounds from J.118 are preserved.
+
+**Exact growth and a finite budget.** `extendIndependentFamily` inserts
+the new value at each chosen index and leaves the other sets unchanged.
+Theorems prove that this preserves dissociation and ambient bounded-span
+membership, contains every old selected set, and increases each selected
+cardinality by exactly one. For `E` contained in an index set `Omega`,
+
+```
+sum_Omega card(F') = sum_Omega card(F)+E.card.
+```
+
+If each ambient generator set has size at most `k`, the total cardinality
+is at most `Omega.card*spanGeneratorBound k R`. Consequently, any
+sequence whose successive total increases are at least
+`eta*Omega.card` satisfies `n*eta <= spanGeneratorBound k R` after `n`
+steps. The proof requires only the invariant at the final state and the
+proved increment inequalities for the preceding steps.
+
+**Actual failed-containment increment.**
+`failed_pair_containments_increase_rank` specializes the quadruple's
+selected set to the union of its two pair selections. Assuming these
+pair selections are dissociated and lie in their ambient doubled-cutoff
+spans, it produces the common progression map and dense pair set above.
+Updating those pairs preserves the invariants and gives the exact total
+increment. The resulting total satisfies
+
+```
+sum_p card(F'(p))
+  <= N^2*spanGeneratorBound (2*d) (2*bohrExtensionCutoff (2*d) r).
+```
+
+**Remaining work.** These are an actual improvement step and a proved
+bound on sequences of improvements. A complete selection procedure that
+records its maps and domains and terminates with few failed containments
+has not yet been constructed. The more complicated arrangement
+improvement corresponding to Claim 9.5 is also still missing. Global
+coherence, the final bilinear variety structure, and its remaining
+quantitative inputs stay open. No numbered source entry is closed here.
+The existing selected port suffices; no license or provenance changes
+were needed.
+
+**Verification.** The actual dense-pair rank-increment closure checks
+282 modules. All fourteen new named theorems pass individual axiom
+checks. The full audit checks 7,502 public Gowers theorems in 5,222
+modules (5,220 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
+
+### J.120. Complete selection for quadruple pair containments
+
+The actual pair-enlargement step from J.119 now terminates with a finite
+list of controlled Freiman maps and few failed quadruple containments.
+The result records the maps and their domains throughout the argument;
+it does not replace them by arbitrary pointwise frequency sets.
+
+**Fixed iteration parameters.** For fixed column rank `d` and radius
+`r`, define
+
+```
+R = pairSelectionCutoff d r = 2*bohrExtensionCutoff (2*d) r,
+s0 = pairSelectionRank d r = spanGeneratorBound (2*d) R,
+sigma = pairSelectionRadius d r = 1/(8*pi*(s0+1)),
+eta = pairSelectionGain delta d r
+    = commonDifferenceProgressionRetention (escapingFreimanDensity delta d r).
+```
+
+The radius is positive, and `eta > 0` when `delta > 0`. Every dissociated
+pair selection in its ambient cutoff-`R` span has cardinality at most
+`s0`. Therefore the union of the selections from the two pairs of any
+quadruple satisfies the radius hypothesis
+`selected.card*sigma <= 1/(4*pi)`. This is a uniform hypothesis for every
+stage of the iteration, including an empty selection.
+
+**Recorded state and invariant.** `PairFrequencyMap` stores an actual
+proper centered progression, its translation, and its map. Its
+`Controlled` predicate retains the rank and density bounds from J.118
+and the order-two Freiman property on the translated progression.
+`PairSelectionState` stores a list of these maps and a selected frequency
+set for each column pair. Its validity predicate asserts:
+
+- every listed map is controlled at the fixed extraction density;
+- every pair selection is dissociated and lies in its prescribed
+  bounded column-union span;
+- every selected frequency is the value of a listed map at that pair's
+  difference, with the difference in that map's domain;
+- the list length times `eta*N^2` is at most the total selected-frequency
+  cardinality.
+
+The empty state is valid. The total rank bound gives
+`maps.length*eta <= s0` for every valid state.
+
+**A genuine improvement preserves the state.** Define the failure
+family by filtering the prescribed additive quadruples for which
+
+```
+B(F(q0,q1) union F(q2,q3);sigma)
+  is not contained in
+bohrQuarterSum (T(q0) union T(q1)) (T(q2) union T(q3)) r.
+```
+
+If there are at least `delta*N^3` failures, `PairSelectionState.improve`
+applies the actual failure theorem from J.119. It prepends the resulting
+controlled map, adds its values on the improved pair set, and proves all
+four validity properties again. Old frequency sets are contained in the
+new ones. The exact cardinality increment and the improved pair density
+supply the required growth inequality for the longer list.
+
+**Termination.** `exists_pair_frequency_selection` proves existence of
+a valid state with fewer than `delta*N^3` failures. If none existed,
+repeated improvements would give valid states of every finite list
+length. Choosing a length greater than `s0/eta` contradicts the rank
+budget. The result retains `maps.length*eta <= s0`, and a companion gives
+`maps.length <= floor(s0/eta)`. These bounds are independent of the
+modulus. This is a classical existence proof, not an executable search
+implementation.
+
+**Actual map indices.** For each pair, select one list index for each
+frequency using the validity witnesses. Distinct frequencies force
+distinct selected indices. `PairSelectionState.pair_indices` and
+`index_family` therefore return exact image identities, equal index and
+frequency cardinalities, and domain membership for every selected
+index.
+
+The exported theorem `pair_frequency_selection` gives a natural number
+`m`, maps `g : Fin m -> PairFrequencyMap N`, and pair-specific index sets
+`I(p)`, with
+
+```
+m*eta <= s0,
+I(p).card <= s0,
+card {g_i(p1-p2) : i in I(p)} = I(p).card.
+```
+
+Every selected value has the required domain membership, the resulting
+frequency set is dissociated and contained in its ambient bounded span,
+and fewer than `delta*N^3` of the prescribed additive quadruples fail
+the containment. All map rank, size, properness, and Freiman assertions
+remain available through `Controlled`.
+
+**Remaining work.** This completes the quadruple-containment selection
+iteration. It does not provide the higher-arrangement improvement or the
+simultaneous selection needed for the corresponding twelve-tuple
+containments. The later anchor choices, coherent gluing, and final
+bilinear variety structure remain open, as do the remaining numerical
+hypotheses. No numbered catalogue entry or final source-theorem bound is
+claimed here. No new port or licensing change was necessary.
+
+**Verification.** The complete quadruple-selection closure checks 288
+modules. All twelve new named theorems pass individual axiom checks.
+The full audit checks 7,526 public Gowers theorems in 5,228 modules
+(5,226 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
