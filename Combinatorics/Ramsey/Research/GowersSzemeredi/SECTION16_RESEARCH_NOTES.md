@@ -5565,10 +5565,67 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      doubling `K`; `c|X|^3` good pairs of pairs.
    - **Conclusion.** A dense `B′` whose elements each lie in
      `θ|X|²` additive `Q 16`-quadruples.
-   - **Use.** For column maps, take `Q i` = "alternating sum has at most
-     `K^i` values on the common domain at radius `ρ/2^i`".
-4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
-   Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
+   - **Use for column maps (instantiated, kernel-checked).**
+     `column_bsg_core` (`Proofs16ColumnZeroLadder`) takes exact zero
+     relations: `Q (n+1)` says the alternating sum
+     `L a₁ − L a₂ − L a₃ + L a₄` vanishes on the four-column domain at
+     radius `ρ_n`. Here `ρ_{n+1} = refinementKernelRadius (4D) (2D) ρ₀ ρ_n`.
+     - Weak transitivity holds with a *single* bridge: add the two
+       relations, then remove the bridge's frequencies. So `c′` is free,
+       and the only modulus condition is
+       `refinementKernelCap (4D) (2D) ρ₀ ρ₁₄ < N`.
+     - The remaining input is `c|X|³` level-1 zero quadruples, which is
+       J.98-type data.
+     - The output is a dense `B′` whose elements each lie in `θ|X|²`
+       additive quadruples, all zero relations at level 16.
+     - **From the original data (kernel-checked).** `global_column_bsg`
+       (`Proofs16GlobalColumnBSG`) starts from a dense
+       `E`-bihomomorphism, with `N ≥ globalColumnBSGModulusBound α`. It
+       takes J.98's column system and exact identities: J.98 supplies
+       `γN³` of them with `γ = globalColumnQuadrupleDensity α`, and
+       `exact_quadruples_le_diffGoodCount` turns them into level-1 zero
+       quadruples. With doubling `K = 2/α` (from `|X| ≥ αN/2`) it
+       returns a dense `B′` of columns, each in `θ|X|²` additive
+       level-16 zero relations.
+       - No model packing or elimination is used.
+       - `γ` is `exp(-poly(1/α))` (witness density `13^(-d)`), and every
+         BSG loss is polynomial in `γ` and `α`. The radii are
+         `ρ_16 ≈ ρ₁^((6d)^16)`, still `exp(-poly)`.
+       - This is the first stage of a replacement for J.108–J.110 that
+         stays in the `exp(-poly)` regime. It does not yet give "all
+         quadruples respected".
+       - **With the J.142 bridging (kernel-checked).**
+         `global_column_word_system` (`Proofs16GlobalColumnWords`)
+         instantiates `abstract_bsg_word_system` with this ladder.
+         Doubling over all of `ℤ/N` uses `K = 1`, and weak transitivity
+         at threshold `c′N` follows from `c′|X|`. The result: for a
+         dense bihomomorphism and every `k`, there are dense
+         `B′ ⊆ B ⊆ X` with threshold richness. Every anchor list of
+         length at most `k + 1` in `B′` has
+         `δ_k(γ) N^(3j+2)` compatible word representations, all exact
+         level-16 zero relations of the column maps. Still to come:
+         Proposition 6.1 analogues, Step 3 (robust Bogolyubov–Ruzsa)
+         and Steps 4–6.
+4. *Not done.* Proposition 6.1, robust Bogolyubov–Ruzsa (Step 3) and
+   Steps 4–6. The bridging statement is done: J.142 for the abstract
+   engine, and `global_column_word_system` for the original data. The
+   details follow below.
+5. *Proposed lanes (2026-10-09).*
+   - The peer, owner of J.142, continues with the Proposition 6.1
+     analogue for the exact ladder and with Step 3.
+   - This session takes Step 4 in `ℤ/N`. With bounded images on a
+     progression-indexed system, `freiman_small_image_zero` gives the
+     Bohr-respected (zero) relation directly, with no random characters.
+   - Also this session: the quantitative audit of each new global stage
+     against `theorem_16_2_at_three_of_eventually`.
+   - Either side may claim a lane differently by recording it here.
+   - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
+     (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
+     Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
+     vanishes on `B(⋃ T_j; ρ/K)`. This holds for every such tuple, with no
+     added frequencies, random characters or `ε` loss.
+     `IsFreimanLinearOn.const_mul` and `IsFreimanLinearOn.finset_sum`
+     are the closure lemmas.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)

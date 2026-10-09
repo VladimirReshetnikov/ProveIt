@@ -1687,3 +1687,7 @@ if os.path.exists('data/orbit-direction-benchmark.json'):
 if os.path.exists('data/orbit-race-benchmark.json'):
     import runpy
     runpy.run_path('data/orbit_race_tables.py')
+
+if os.path.exists('data/incoming-sectors-benchmark.json'):
+    import runpy
+    runpy.run_path('data/incoming_sectors_tables.py')

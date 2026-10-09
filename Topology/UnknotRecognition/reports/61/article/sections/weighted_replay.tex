@@ -1,0 +1,377 @@
+\section{Compressed additive orbit weights}
+\label{sec:weighted-replay}
+
+Orbit counts alone do not describe the individual components of an interval
+equivalence relation.  The weighted extension of Agol--Hass--Thurston supplies
+the required additional information in compressed form
+\cite{AHT2006}.  This section gives a precise implementation contract and
+correctness argument for that classical extension.  The contribution here is
+its integration with independently checked local-reduction traces, including
+signed vector weights and explicit control of representation size.  We do not
+claim a new orbit-counting theorem.
+
+\subsection{The weighted output and its representation}
+\label{sec:weighted-contract}
+
+All intervals in this section are half-open integer intervals: $[r,s)$ denotes
+the points $r,r+1,\ldots,s-1$.  Let $n_0\geq 0$, and let a finite list of
+interval isometries generate an equivalence relation on $[0,n_0)$.  Write
+$\mathcal C$ for its set of orbits.  The input weight function
+$w_0:[0,n_0)\to\mathbb Z^d$, where $d\geq1$, is specified by an ordered
+partition into constant runs.  Endpoints and vector entries are binary
+integers.  Adjacent runs with equal vectors are coalesced; runs of zero weight
+are retained when needed to describe the full domain.
+
+\begin{definition}[Orbit-weight profile]
+\label{def:weighted-profile}
+For $C\in\mathcal C$, put
+\[
+ W(C)=\sum_{x\in C}w_0(x).
+\]
+The compressed profile consists of the pairs $(\mu_v,v)$ for which
+\[
+ \mu_v=\#\{C\in\mathcal C:W(C)=v\}>0,
+ \qquad v\in\mathbb Z^d.
+\]
+Each distinct vector occurs once, with its multiplicity written in binary.
+\end{definition}
+
+Thus components having the same vector remain distinct through their
+multiplicity.  A single output record may describe exponentially many
+components.  Zero vectors are legitimate, including those produced by
+cancellation of positive and negative input weights.  The output does not
+select a point or provide a geometric embedding for every component.  For
+$n_0=0$, it is the empty profile; the otherwise undetermined vector dimension
+can be supplied separately.
+
+The elementary consistency identities are
+\begin{equation}
+\label{eq:weighted-accounting}
+ \sum_v\mu_v=\#\mathcal C,
+ \qquad
+ \sum_v\mu_v v=\sum_{x=0}^{n_0-1}w_0(x).
+\end{equation}
+The implementation checks both.  They are useful error detectors, but equal
+total mass and orbit count would not by themselves prove the profile correct.
+The stronger invariant below supplies that proof.
+
+A simple example shows why multiplicities belong in the contract.  Suppose
+one translation, with $1\leq p<n_0$, identifies $x$ with $x+p$ wherever both
+points lie in
+$[0,n_0)$, and the initial weight is the constant vector $v$.  Write
+$n_0=qp+r$, with $0\leq r<p$.  The residue classes give the records
+\[
+ (p-r,qv),\qquad (r,(q+1)v),
+\]
+omitting a record of zero multiplicity and combining equal vectors if
+necessary.  Thus even an enormous number $p$ of components has at most two
+profile records.  If $v=0$, the single record is $(p,0)$; cancellation or a
+zero payload never licenses dropping the underlying components.
+
+\subsection{A disjoint-bag invariant}
+\label{sec:weighted-invariant}
+
+At an intermediate stage let the current universe be $[0,N)$.  Conceptually
+associate to every current point $x$ a bag $B_x$ of original points.  These
+bags are pairwise disjoint, and its current vector is
+\[
+ w(x)=\sum_{y\in B_x}w_0(y).
+\]
+Empty bags are permitted.  Bags are a proof device and are never stored or
+expanded.  For each surviving orbit, the union of its bags is exactly one
+original orbit that has not yet been emitted.  Original orbits already emitted
+are disjoint from these unions.  Initially, $B_x=\{x\}$.
+
+Identity deletion, reflection trimming, valid periodic merging, and
+transmission preserve the equivalence relation on the current point set.
+Consequently, they leave all bags and weights unchanged.  This observation
+also applies to a valid sharper periodic merger: once its local
+partition-preservation statement has been checked, the weight proof needs no
+additional assumption about its discovery rule.
+
+The only operations that change weights are the transfer preceding a
+truncation and the emission of static points during contraction.  The crucial
+transfer rule is the classical one: transfer the \emph{entire carrier range},
+even when the subsequent truncation removes only a proper suffix of that
+range \cite{AHT2006}.
+
+\subsection{Full-range transfer in half-open coordinates}
+\label{sec:weighted-transfer}
+
+Suppose the carrier maps $[a,b)$ isometrically to $[c,N)$, with $a<c$ and
+$b-a=N-c$.  The local trace proposes deleting $[L,N)$, where
+$c\leq L<N$, after checking that this suffix meets no other pairing.  For
+an order-reversing carrier, trimming has made its domain and range disjoint.
+
+First consider disjoint domain and range, so $b\leq c$.  Move each range bag
+to its inverse image and clear every bag on $[c,N)$.  For an
+order-preserving carrier, put $p=c-a$; the inverse image of a source band
+$[r,s)\subseteq[c,N)$ is $[r-p,s-p)$.  For a reflection, whose point map is
+$x\mapsto a+N-1-x$, it is
+\begin{equation}
+\label{eq:weighted-reflection}
+ [a+N-s,a+N-r).
+\end{equation}
+Add the source vector on this image interval.  Because domain and range are
+disjoint, these additions do not conflict with clearing the range.
+
+For an overlapping positive translation, $b>c$ and $p=c-a>0$.  Every point
+$y\in[c,N)$ has a unique representative
+\begin{equation}
+\label{eq:weighted-residue}
+ \rho(y)=a+((y-a)\bmod p)\in[a,c)
+\end{equation}
+obtained by repeated partial inverses of the carrier.  These inverses are
+defined throughout the descent: intermediate points stay in the range until
+the first fundamental block $[a,c)$ is reached.  Transfer the bag at $y$
+directly to $\rho(y)$, then clear the entire range.  The algorithm computes
+this transfer by division rather than by iterating inverse powers.
+
+Precisely, let a constant source band $[r,s)\subseteq[c,N)$ carry vector $v$.
+Define
+\[
+ q,h=\operatorname{divmod}(s-r,p),\qquad
+ u=a+((r-a)\bmod p),\qquad
+ t=\min(h,c-u).
+\]
+Its contribution on the fundamental block is
+\begin{equation}
+\label{eq:weighted-fold}
+ qv\,\mathbf1_{[a,c)}
+ +v\,\mathbf1_{[u,u+t)}
+ +v\,\mathbf1_{[a,a+h-t)}.
+\end{equation}
+Empty residual intervals contribute zero.  Indeed, the first $qp$ points
+contain exactly $q$ representatives of every residue, and the remaining $h$
+points occupy a consecutive cyclic residue interval beginning at $u$.  The
+last two terms split that interval at the end of the block.  Formula
+\eqref{eq:weighted-fold} uses at most three interval contributions,
+independently of the sizes of $q$ and $p$.
+
+\begin{proposition}[Correctness of weighted transfer and emission]
+\label{prop:weighted-correctness}
+For a valid complete local-reduction trace, the preceding transfers, followed
+by static-gap emission, produce the profile in
+\cref{def:weighted-profile}.
+\end{proposition}
+
+\begin{proof}
+An inverse isometry or the map $\rho$ moves each source bag exactly once to
+a point in the same current orbit.  Destination bags are replaced by their
+disjoint unions with incoming bags.  No original point is duplicated or
+discarded.  Clearing the full carrier range therefore leaves every point of
+the deleted suffix with an empty bag.  The independently verified unweighted
+truncation supplies a bijection between the old and surviving orbits, so the
+disjoint-bag invariant is preserved.  Retained points of $[c,L)$ may have empty
+bags; the invariant concerns their whole orbit, which still contains the
+original mass.
+
+A static gap contains points incident to no current pairing.  Each is an
+isolated current orbit, and its bag therefore contains one entire original
+orbit.  Intersect the gap with the current constant runs.  An intersection of
+length $\ell$ and vector $v$ emits $(\ell,v)$, without visiting its points.
+Remove the gap and apply the same increasing coordinate compression to
+surviving pairings and runs.  When the validated trace reaches the empty
+universe, every original orbit has been emitted exactly once.  Grouping
+records with equal vectors gives the claimed profile.
+\end{proof}
+
+The implementation performs the interval additions through endpoint
+differences.  A contribution $v\mathbf1_{[r,s)}$ places $+v$ at endpoint $r$
+and $-v$ at endpoint $s$.  Contributions sharing an endpoint are added
+coordinatewise.  Sorting the distinct endpoints and taking prefix sums gives
+the constant value between consecutive endpoints.  Neighboring output bands
+with equal values are immediately coalesced, including zero-valued bands.
+The old weight below $c$ is included in the same sweep, whereas old range
+weights are used only as transfer sources.  This simultaneous construction
+avoids accidentally transferring a value that was just added during the
+current operation.  In particular, periodic folding is a push-forward of
+the old weights, not repeated in-place accumulation along a carrier chain.
+
+\subsection{The additive bound on weight breakpoints}
+\label{sec:weighted-breakpoints}
+
+It is insufficient merely to note that each source run produces at most three
+contributions: such a statement alone would permit a multiplicative increase
+at every step.  The polynomial bound depends on the disappearance and
+relocation of old breakpoints, as in AHT Lemma~15 \cite{AHT2006}.
+
+\begin{lemma}[Whole-range breakpoint bound]
+\label{lem:weighted-bands}
+One full-range transfer increases the number of maximal constant runs by at
+most four.  Truncation and contraction do not increase it.  Consequently,
+after $s$ transfers, the number of active runs is at most $m+4s$, where $m$
+is the initial number.
+\end{lemma}
+
+\begin{proof}
+For $N>0$, write
+\[
+ D(w)=\{j:1\leq j<N,\ w(j)\ne w(j-1)\}.
+\]
+The run count is $1+|D(w)|$.  Split old discontinuities into those strictly
+below $c$ and those strictly above $c$, leaving a possible discontinuity at
+$c$ aside.  Discontinuities below $c$ remain potential discontinuities of the
+unchanged old weight.  All those strictly inside the range disappear there,
+since that entire range becomes zero.
+
+In the disjoint case, a range discontinuity at $j$ has at most one image:
+$j-p$ for a translation or $a+N-j$ for a reflection.  Away from these images,
+inherited discontinuities below $c$, and the endpoints $a,b,c$, both the old
+weight and the added weight are locally constant.  Thus there are at most
+four exceptional boundary locations in addition to inherited or relocated
+old discontinuities.
+
+For completeness, the modular case can be checked directly by finite
+differences.  Extend the range weight by zero to all integers, writing
+$z(j)=w(j)$ on $[c,N)$ and $z(j)=0$ otherwise.  The incoming periodic weight is
+\[
+ H(x)=\sum_{\ell\in\mathbb Z}z(x+\ell p),\qquad a\leq x<c.
+\]
+Each sum is finite.  For an interior block position,
+\[
+ H(x)-H(x-1)
+ =\sum_{\ell\in\mathbb Z}
+   \bigl(z(x+\ell p)-z(x-1+\ell p)\bigr).
+\]
+The nonzero differences of $z$ occur only at old interior range
+discontinuities and at $c,N$.  Each interior discontinuity has only one
+residue image in $[a,c)$; the boundary $c$ maps to $a$.  Apart from inherited
+and relocated old discontinuities, possible new boundaries are contained in
+$\{a,c,\rho(N)\}$, using the same residue formula at the boundary $N$.
+Again there are at most four.  Vector addition or signed
+cancellation can remove discontinuities but cannot create any outside this
+set.  Counting old discontinuities only once proves the asserted bound.
+
+Restricting to a shorter prefix cannot create a new run.  For contraction,
+delete the gap pieces from the ordered sequence of runs and concatenate the
+surviving pieces.  Pieces of any one old run become adjacent if separated only
+by deleted points, and equal neighboring values can be coalesced.  The number
+of runs therefore cannot increase.  Induction gives $m+4s$.
+\end{proof}
+
+This argument explains why transferring only $[L,N)$ is an inadequate
+implementation shortcut for the stated complexity proof.  When $L>c$,
+breakpoints in the remaining range could survive while translated or residue
+images of other breakpoints are added.  The one-for-one relocation count
+would no longer apply.  Such a shortcut may conserve total weight, but that
+fact does not establish a polynomial bound on its representation.  The
+implementation instead performs full-range transfer and checks the
+at-most-four increase before deleting the zero suffix.
+
+\subsection{Trace length, integer size, and computational cost}
+\label{sec:weighted-complexity}
+
+Let $P$ be the number of operations in a supplied complete trace, $k$ the
+initial number of pairings, and
+\[
+ B=\max_{x,j}|w_0(x)_j|,\qquad M=m+4P,
+\]
+with $B=0$ for the empty input.
+The number of pairings never increases.  By
+\cref{lem:weighted-bands}, at most $M$ weight runs are active.  One transfer
+creates $O(M)$ interval contributions and combines them through a sorted
+endpoint-difference sweep.  There is no loop over an interval length, a
+periodic quotient, or a component multiplicity.
+
+There are at most $2k+1$ static gaps.  Overlaying them with the run partition
+during a contraction produces $O(M+k)$ emission records.  Hence
+$R=P(M+2k+1)$ is a conservative bound on their total number before grouping.
+Including the elementary independent trace checker, coordinate updates, and
+sorting equal profiles, a coarse arithmetic-operation bound under ordinary
+expected dictionary-operation costs is
+\begin{equation}
+\label{eq:weighted-arithmetic-cost}
+ O\!\left(
+ dm+k+P\bigl((k+1)^2+dM\log(M+1)\bigr)
+       +dR\log(R+1)
+ \right).
+\end{equation}
+The implementation uses Python dictionaries for endpoint events and a
+counter for profile grouping.  Arbitrary large integers can have colliding
+hashes, so the displayed bound is not a deterministic worst-case bound for
+those containers.  With elementary quadratic bounds for their assembly and
+grouping, a deterministic bound for a nonempty completed trace is
+\[
+ O\!\left(dm+k+P(k+1)^2+dR^2\right).
+\]
+Indeed $R=P(M+2k+1)$ with $P\geq1$ dominates both the per-transfer event-map
+work and final grouping; the empty trace is trivial.  Both bounds are
+polynomial.  No optimized exponent for weighted AHT is asserted.  Their
+purpose is to make the dependence on compressed input and explicit trace
+length transparent without assuming adversarial hashing is free.
+
+Signed coordinates also have controlled bit length.  From the disjoint-bag
+invariant, for every current point and coordinate,
+\begin{equation}
+\label{eq:weighted-bit-bound}
+ |w(x)_j|
+ \leq\sum_{y\in B_x}|w_0(y)_j|
+ \leq\sum_{y<n_0}|w_0(y)_j|
+ \leq n_0B.
+\end{equation}
+The same absolute-mass argument bounds endpoint-difference intermediates up
+to an absolute constant factor.  Their bit lengths are therefore
+$O(\log(n_0+1)+\log(B+1))$.  Endpoints, valid transmission powers, quotients,
+and multiplicities have $O(\log(n_0+1))$ bits.  Substituting standard integer
+arithmetic costs into \eqref{eq:weighted-arithmetic-cost} gives polynomial bit
+complexity in $P,k,m,d,\log(n_0+1),\log(B+1)$.
+
+More explicitly, disjointness gives the stronger coordinatewise bound
+\[
+ \sum_{x<N}|w(x)_j|
+ \leq \sum_{y<n_0}|w_0(y)_j|.
+\]
+For a source band of length $\ell$, the whole-period coefficient in
+\eqref{eq:weighted-fold} is at most $\ell$, and there are at most two residual
+contributions.  The total absolute coefficients used to assemble endpoint
+events are therefore at most a fixed constant times the source's absolute
+mass.  Including retained old bands preserves such a constant-factor bound.
+This justifies the intermediate-size assertion even before cancelling
+endpoint contributions have been combined; signed cancellation is never
+needed to keep the arithmetic representation polynomial.
+
+The distinction between trace checking and trace discovery matters.  The
+classical AHT scheduling analysis supplies a polynomial bound on $P$ in
+$k$ and $\log(n_0+1)$, yielding the weighted polynomial-time conclusion of
+AHT Theorem~16 \cite{AHT2006}.  For another scheduler, weighted replay inherits
+whatever trace-length bound has been established for that scheduler.  Valid
+local reductions alone do not prove that an arbitrary strategy finds a short
+trace.  Conversely, once a short valid trace is available, its weighted
+evaluation does not depend on how it was discovered.
+
+\subsection{Certificate binding and interruption semantics}
+\label{sec:weighted-certificates}
+
+The replay entry point first invokes the independent unweighted checker.
+This binds the trace to the supplied universe and normalized ordered pairing
+list, and checks every local operation and the terminal orbit count.  The
+weighted replay then follows those validated operations without rerunning
+the producer's scheduler.  It accepts both supported trace versions, whose
+different periodic-merger conditions are checked by that verifier.
+
+The optional returned certificate is this unweighted trace.  It does not
+itself bind a new weight function: the same trace can correctly be reused for
+many different weights.  A reproducible weighted assertion must therefore
+supply the interval system, full run partition, dimension, claimed profile,
+and trace together.  A consumer reconstructs or validates the weights and
+replays them before comparing the claimed profile.  Geometric conclusions
+require a separate justification that these input weights measure the desired
+geometric quantities.
+
+The public wrapper can produce a trace or reuse an existing one.  Its
+\texttt{max\_cycles} parameter bounds producer cycles, not bit operations or
+elapsed time.  An exhausted producer returns an incomplete result with no
+orbit count, profile, or certificate.  A reused trace has no asserted producer
+cycle count; its evaluation is controlled through the cooperative
+\texttt{check} callback instead.  The callback is used throughout production,
+validation, and replay, and its exceptions propagate.  Weight or trace
+rejections use the dedicated \texttt{WeightedOrbitError} exception, allowing
+a caller to distinguish invalid evidence from cancellation, including a
+callback that raises an ordinary \texttt{ValueError}.
+
+These interfaces support exact component statistics while preserving the
+logical distinction between a completed proof, rejected evidence, and an
+interrupted computation.  They supply a polynomial component-analysis layer;
+the search or hierarchy needed to obtain a complete unknot-recognition bound
+remains a separate mathematical obligation.

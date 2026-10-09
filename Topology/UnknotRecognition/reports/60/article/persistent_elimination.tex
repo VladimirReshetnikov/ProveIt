@@ -1,0 +1,337 @@
+\section{Polynomial representation of raw singleton blocks}
+\label{sec:persistent-elimination}
+
+The existing word arena reconstructs substituted concatenations after every
+acyclic elimination batch. Its one-batch polynomial bound does not, by
+itself, give a polynomial bound for an arbitrary number of batches. We now
+give a different representation with a bound for an entire sequence of raw
+singleton eliminations. The representation has a tested reference
+implementation, but it is not integrated into the knot-group producer or
+the independent source-replay checker.
+
+SLPs and their use in group presentations are established: for example,
+Theorem 4.10 of Ennes and Maria's \emph{Compressed data structures for
+Heegaard splittings} (arXiv:2507.11406v2) converts compressed relators to
+a short ordinary presentation by introducing SLP nonterminals as Tietze
+generators~\cite{ennesmaria2025}. The contribution here is an explicit representation, size
+recurrence and prototype for the cumulative cost of a complete raw
+singleton-elimination block. No claim of literature-wide priority is
+needed for this refinement.
+
+\subsection{Signed circuits and mutable generator bindings}
+
+Fix a finite generator alphabet $X$ of size $r_0$. A signed handle $v$
+references a circuit vertex; $-v$ represents the formal inverse word of
+$v$. Vertex zero represents the empty word. There is one terminal vertex
+for each positive generator, and immutable concatenation vertices
+$c(u,v)$. Consequently
+\[
+ \operatorname{val}(-c(u,v))
+ =\operatorname{val}(-v)\operatorname{val}(-u).
+\]
+Inversion requires no additional circuit vertices. Initially the circuit
+is a binary SLP. Later, a terminal for an eliminated generator receives
+one binding to a signed handle. An unbound terminal denotes its live
+generator, while a bound terminal denotes the current value of its target.
+All dependencies, including bindings, must form a directed acyclic graph.
+Concatenation vertices retain their original children for the whole block;
+only previously unbound generator terminals can acquire bindings.
+
+The represented words are raw words. In particular, the adjacent letters
+$x x^{-1}$ contribute two occurrences of $x$, even though their product
+is trivial in the free group. This restriction makes a zero occurrence
+count equivalent to the absence of a path to the corresponding live
+terminal. It is essential to the proof below.
+
+The current presentation retains the original list of relator slots.
+Eliminating a generator clears exactly its chosen donor slot. Every other
+root remains a reference to its existing circuit, so a new generator
+binding applies the substitution to all retained relators simultaneously.
+Historical donor vertices can remain allocated. Their continued presence
+does not affect the presentation and is included in all size bounds.
+
+\subsection{Position-free extraction of a singleton context}
+
+Let $x$ be live and let a donor root represent
+\[
+   W=Lx^\varepsilon R,\qquad \varepsilon\in\{1,-1\},
+\]
+with exactly one occurrence of $x$ or $x^{-1}$. For this one generator,
+compute counts in the three-element set $\{0,1,2\}$, where $2$ means
+at least two. Counts add with saturation at concatenations, pass through
+bindings, and are unchanged by orientation. A topological pass therefore
+recognizes the singleton condition exactly. Counts need no expanded-length
+integers, substring coordinates or word-equality oracle.
+
+Starting at the donor root, follow its unique path to the live terminal
+$x$. At a negative concatenation, reverse the order of the children and
+negate their handles. At a binding, follow the bound handle with the
+appropriate sign. At each concatenation on the path, exactly one child
+contains $x$ and the other contains none. Save this other child as a
+signed sibling handle. Siblings before the path form $L$ in descent order;
+siblings after the path form $R$ in reverse descent order. This yields an
+ordered list of existing signed handles for $RL$.
+
+Combine the list by balanced pairwise concatenation. If there are $q$
+nonzero handles, at most $\max(0,q-1)$ new concatenation vertices are
+needed, and every path through the new concatenations has length at most
+$\lceil\log_2\max(1,q)\rceil$. The balancing is by the number of sibling
+handles, not by the expanded lengths of their values. Interning repeated
+concatenations is optional and can only reduce allocation.
+
+Install the binding
+\begin{equation}\label{eq:persistent-binding}
+ x\longmapsto
+ \begin{cases}
+   (RL)^{-1},&\varepsilon=1,\\
+   RL,&\varepsilon=-1.
+ \end{cases}
+\end{equation}
+This is the familiar exact solution of $Lx^\varepsilon R=1$.
+
+\paragraph{Lemma (acyclicity and simultaneous substitution).}
+The binding in \eqref{eq:persistent-binding} preserves acyclicity and
+applies exactly the corresponding singleton Tietze elimination to all
+retained roots.
+
+\begin{proof}
+Before the binding is installed, every saved sibling has occurrence count
+zero for $x$. Hence its old dependency graph has no path to the live
+terminal $x$. The new image consists only of these siblings and new
+concatenations. It consequently has no path to $x$. Any newly created
+directed cycle would have to use the new edge out of $x$ and then return
+from the image to $x$, which is impossible.
+
+Let $\phi$ evaluate the old binding graph as raw words in the live
+alphabet, and let $\sigma$ replace $x$ by the raw word specified in
+\eqref{eq:persistent-binding}. Evaluation of the enlarged acyclic graph
+is $\sigma\circ\phi$: this follows directly by induction over its
+dependency order, with the only changed terminal being $x$. In
+particular, bindings of earlier eliminated generators update their values
+automatically. Deleting the donor equation and eliminating $x$ is an
+elementary Tietze transformation, so the presented group is preserved.
+\end{proof}
+
+The no-path argument remains valid even when a later image references an
+earlier eliminated terminal. If that earlier terminal could lead back to
+the current generator, its occurrence count in the proposed image would
+be positive and it could not be a saved sibling. No fixed elimination
+order on original generator labels is required.
+
+\subsection{The global size theorem}
+
+Write $S_0$ for the initial number of nonzero vertices and $D_0$ for the
+largest number of concatenation vertices on a dependency path in the
+initial SLP. Suppose that exactly $k\le r_0$ distinct live generators are
+eliminated, with no intervening free reductions, new generators, or other
+word transformations. Donors may be chosen adaptively, but each must
+satisfy the raw singleton condition at the time it is used.
+
+After $i$ eliminations let $D_i$ be the largest number of concatenation
+vertices on a path when all generator bindings are ignored, and let
+$H_i$ be the longest full dependency path, counting concatenations and
+binding edges. At most $i$ bindings lie on any full path: a directed
+acyclic path cannot visit a terminal twice. Such a path splits into at
+most $i+1$ binding-free segments. Therefore
+\begin{equation}\label{eq:persistent-height}
+ H_i\le(i+1)D_i+i < (i+1)(D_i+1)=:A_i.
+\end{equation}
+The singleton descent encounters at most $H_i$ concatenations, so its
+sibling count $q_i$ is at most $A_i$. Balanced construction gives the
+recurrence
+\begin{equation}\label{eq:persistent-recurrence}
+ D_{i+1}\le D_i+
+       \left\lceil\log_2\max(2,A_i)\right\rceil.
+\end{equation}
+
+\paragraph{Theorem (complete raw singleton blocks have polynomial size).}
+For every $0\le i\le k$,
+\begin{equation}\label{eq:persistent-D}
+ D_i\le D_0+6i\log_2(D_0+i+2).
+\end{equation}
+In particular, putting $T=D_0+k+2$, the number $S_k$ of allocated
+nonzero vertices satisfies the explicit bound
+\begin{align}\label{eq:persistent-S}
+ S_k\le S_*:={}&S_0+\frac{k(k+1)}2(D_0+1)\notag\\
+ &\quad+2k(k-1)(k+1)\log_2 T.
+\end{align}
+The bit length $B_k$ of every represented raw length, including historical
+roots and image vertices, satisfies
+\begin{equation}\label{eq:persistent-B}
+ B_k\le(k+1)\bigl(D_0+6k\log_2 T+1\bigr).
+\end{equation}
+Thus
+\[
+ S_k=O\bigl(S_0+k^2(D_0+1)+k^3\log(D_0+k+2)\bigr),
+\]
+and a whole block has polynomial encoded complexity in the initial
+grammar size and rank, even if it uses a linear number of serial phases.
+
+\begin{proof}
+Set $T_i=D_0+i+2\ge2$. The claim for $D_0$ is immediate. Suppose that
+\eqref{eq:persistent-D} holds at $i$. Since $i+1\le T_i$,
+$D_0+1\le T_i$, and $i\le T_i$, we obtain
+\[
+ A_i\le T_i^2(1+6\log_2 T_i)\le T_i^5.
+\]
+For the final inequality it suffices to observe that
+$\log_2 t\le t-1$ for $t\ge2$, and
+$6t-5\le t^3$ on the same range. The latter follows because
+$t^3-6t+5$ is positive at $t=2$ and has positive derivative thereafter.
+As $T_i^5\ge2$, it follows that
+\[
+ \left\lceil\log_2\max(2,A_i)\right\rceil
+ \le5\log_2 T_i+1\le6\log_2 T_i.
+\]
+Substitution into \eqref{eq:persistent-recurrence} yields
+\[
+ D_{i+1}\le D_0+6(i+1)\log_2 T_i
+          \le D_0+6(i+1)\log_2 T_{i+1},
+\]
+completing the induction with the stated constant.
+
+At step $i$, no generator vertex is added and at most $q_i\le A_i$
+concatenation vertices are allocated. Sum
+\[
+ A_i\le(i+1)(D_0+1)+6i(i+1)\log_2 T
+\]
+over $i=0,\ldots,k-1$. The identities
+\[
+ \sum_{i=0}^{k-1}(i+1)=\frac{k(k+1)}2,\qquad
+ \sum_{i=0}^{k-1}i(i+1)=\frac{k(k-1)(k+1)}3
+\]
+give \eqref{eq:persistent-S}.
+
+Unfolding a binary/unary acyclic circuit of height $H_i$ gives a tree
+with at most $2^{H_i}$ terminal leaves. Inversion does not change length,
+and bindings are unary. Hence every represented length has bit length
+at most $H_i+1$. Combine this observation with
+\eqref{eq:persistent-height} and \eqref{eq:persistent-D} to obtain
+\eqref{eq:persistent-B}. Empty values have bit length zero and satisfy
+the same bound.
+\end{proof}
+
+\subsection{Running time and ordinary SLP export}
+
+For a supplied sequence of donor slots and live generator labels, the
+reference algorithm performs a topological pass and a capped occurrence
+pass over all historical vertices at each step. The graph has at most
+two outgoing edges per vertex. Context extraction and balanced assembly
+take $O(q_i)$ further operations. The whole block therefore uses
+$O(kS_*)$ graph operations beyond initial input handling. If $M$ is the
+original number of relator slots, reading the input and exporting its roots
+add $O(S_0+M)$ operations; the total, including final export, is
+$O(S_0+M+kS_*)$. Working storage is $O(S_*+M)$, including the fixed
+relator-root list and the $k$ binding entries. The exported root list uses
+$O(M\log(S_*+r_0+2))$ bits. Input labels may be
+renumbered densely once; node identifiers use
+$O(\log(S_*+r_0+2))$ bits.
+
+This count requires neither large-integer lengths nor exact string
+equality. A deterministic implementation can omit interning and use dense
+arrays for all generator and vertex metadata. If interning is desired,
+balanced comparison dictionaries give a conservative
+$O(kS_*\log^2(S_*+r_0+2))$ bit-operation accounting in the usual
+bit-cost random-access model. The Python prototype uses hash dictionaries;
+its measured timings do not constitute that deterministic machine bound.
+
+Adaptive donor discovery remains polynomial within this raw-only model:
+one may compute the same saturated counts for each live generator and
+scan every retained root, adding a factor at most $r_0$ to the graph
+passes plus the root-scanning cost. This observation gives no guarantee
+that another singleton donor exists, that a chosen order reaches rank
+one, or that searching over many alternative orders is cheap.
+
+The representation is not a permanent barrier to existing word kernels.
+At an explicit end-of-block boundary, topologically evaluate each vertex
+in both orientations. A bound generator becomes an alias to its image;
+an unbound generator becomes its positive and negative terminal letters;
+a concatenation becomes two ordinary concatenations with opposite child
+orders and signs. This exports a standard binary SLP containing at most
+$2S_k$ nonzero vertices, with all references in allocation order and no
+bindings. The export is linear in circuit size. It is implemented by
+\texttt{export\_slp} in the prototype and checked against a separate
+literal reconstruction on the finite tests.
+
+A single existing polynomial compressed free-reduction operation
+\cite{schleimer2008} can
+therefore be charged after the export. The theorem does not cover a
+repeated alternation of normalizations and other presentation moves.
+Nor does it automatically include torsion-dependent primitive-power
+quotients whose donor generator is not a raw singleton. Those operations
+require their own growth analysis.
+
+\subsection{A controlled family with exponentially long raw contexts}
+
+Let the generators be $a,b,x_0,\ldots,x_k,z$, and take
+\[
+ r_0=x_0^{-1}a x_1 b,\qquad
+ r_i=x_0^{-1}x_{i+1}\ (1\le i<k),\qquad
+ r_k=x_0^{-1}z.
+\]
+Eliminate $x_i$ from the current value of $r_i$, successively for
+$i=0,\ldots,k-1$, and retain $r_k$. After the first elimination,
+$x_0=A_1x_1B_1$ with $A_1=a$, $B_1=b$. If after step $j$ it is
+$A_jx_jB_j$, the next donor gives
+$x_j=A_j^{-1}x_{j+1}B_j^{-1}$, so
+\[
+ A_{j+1}=A_jA_j^{-1},\qquad B_{j+1}=B_j^{-1}B_j.
+\]
+These are raw words, so $|A_j|=|B_j|=2^{j-1}$ and the retained relator
+has length $2^k+2$. All selected pivots remain singletons. This artificial
+presentation family stresses retained contexts and repeated substitutions;
+it is not a family of difficult knot diagrams. Free reduction would
+remove its deliberately retained cancellation padding.
+
+The benchmark compares the new circuit with the pinned repository's
+\texttt{apply\_batch} called with the very same one-entry donor sequence.
+Both arms start from the same explicit source relators, clear the same
+slots, retain raw words, and disable their expansion method. An identical
+eager control measures scheduling variability. There is one excluded
+warm-up per size and arm, followed by five randomized A/A/B rounds.
+Timing includes source construction and all eliminations; final diagnostic
+measurements are excluded. Both arms use caps of two million vertices
+and one billion implementation work units, and every run completes.
+
+\begin{center}
+\begin{tabular}{r|rrr|rr}
+ $k$ & Eager (s) & Control (s) & Persistent (s)
+     & Eager vertices & Persistent vertices\\\hline
+ 8   & 0.000879 & 0.000869 & 0.000363 & 238 & 83\\
+ 16  & 0.005813 & 0.005988 & 0.001871 & 914 & 279\\
+ 32  & 0.043468 & 0.045512 & 0.010994 & 3610 & 839\\
+ 64  & 0.341194 & 0.348591 & 0.067422 & 14378 & 2534\\
+ 128 & 2.853190 & 3.013364 & 0.395421 & 57418 & 6890
+\end{tabular}
+\end{center}
+The final row gives a measured median speedup of about $7.22$ relative
+to the eager arm. Its retained word has length $2^{128}+2$. The new
+representation has 128 extra binding entries in addition to its 6,890
+vertices, and uses signed handles instead of separate inverse subgraphs;
+vertex counts are consequently structural counts, not byte measurements.
+Both sides retain historical vertices. Work counters have different
+charging conventions and should not be interpreted as portable CPU
+instruction counts.
+
+The six test methods include 600 deterministic random presentation traces
+checked against independently implemented literal substitution, explicit
+negative handles and empty images, repeated-child rejection, forward
+bindings, interruption before a binding is published, and the 128-step
+capacity example with expansion disabled. The tests check the syntactic
+height recurrence and the $2S_k$ export bound as well. These are tests of
+word representation and Tietze semantics; no new knot verdict is produced.
+
+\subsection{Consequences and next questions}
+
+The size theorem removes a logarithmic-phase hypothesis from this
+restricted raw singleton-elimination component, provided the persistent
+representation is used. It does not establish a quasi-polynomial
+unknot-recognition algorithm. The implementation work needed before
+production use is concrete: add a source-derived replay path; preserve
+all presentation-slot and cancellation semantics; implement a compatible
+raw donor planner; export exactly at normalization boundaries; and measure
+complete discovery and replay on real diagrams. Algebraically, the next
+questions are whether the cubic logarithmic size term can be improved,
+whether suitable normalization steps preserve a comparable amortized
+bound, and which topologically meaningful diagram classes admit enough
+raw singleton eliminations to reach a checked terminal presentation.

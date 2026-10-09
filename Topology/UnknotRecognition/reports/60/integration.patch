@@ -1,0 +1,1433 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/weighted_orbits.py b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbits.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbits.py
+@@ -0,0 +1,455 @@
++"""Weighted AHT orbit sums over the maintained, independently checked trace.
++
++This implements the classical Agol--Hass--Thurston weight extension.  It
++does not introduce another orbit scheduler.  Only full-range weight folding
++before truncation and output of static points extend the six existing rules.
++
++Input weight intervals are half-open and additive.  Their vectors may have
++negative entries.  All arithmetic uses binary integers; no represented point
++or orbit is expanded.  Output groups orbits by their exact weight vector.
++The optional certificate is independently replayable without orbit search;
++its weight arithmetic is shared with production and is cross-checked by the
++literal graph oracle in the tests.  It is not a knot certificate.
++"""
++
++from dataclasses import dataclass
++from math import gcd
++
++from fastunknot.interval_orbits import IntervalPairing, count_orbits
++from fastunknot.interval_orbit_verify import (
++    _integer as _decoded_integer,
++    _public_pairings,
++    _transmitted_row,
++    verify_orbit_certificate,
++)
++
++
++def _nat(value, name):
++    if type(value) is not int or value < 0:
++        raise ValueError(f'{name} must be a nonnegative integer')
++    return value
++
++
++@dataclass(frozen=True, slots=True)
++class WeightInterval:
++    start: int
++    stop: int
++    value: tuple[int, ...]
++
++    def __post_init__(self):
++        _nat(self.start, 'start')
++        _nat(self.stop, 'stop')
++        if self.stop <= self.start:
++            raise ValueError('weight intervals must be nonempty and half-open')
++        if (type(self.value) is not tuple
++                or any(type(x) is not int for x in self.value)):
++            raise ValueError('a weight value must be an integer tuple')
++
++
++@dataclass(frozen=True, slots=True)
++class WeightedOrbitClass:
++    value: tuple[int, ...]
++    multiplicity: int
++
++
++@dataclass(frozen=True, slots=True)
++class WeightedOrbitResult:
++    complete: bool
++    orbits: int | None
++    classes: tuple[WeightedOrbitClass, ...] | None
++    aggregate: tuple[int, ...] | None
++    cycles: int
++    stats: dict
++    certificate: dict | None = None
++    reason: str | None = None
++
++
++class _CapacityReached(Exception):
++    pass
++
++
++def _add_value(first, second):
++    return tuple(a + b for a, b in zip(first, second))
++
++
++def _scale(value, multiplier):
++    return tuple(multiplier * v for v in value)
++
++
++def _canonical(size, contributions, dimension, check):
++    """Sweep additive half-open weighted intervals into a complete partition."""
++    zero = (0,) * dimension
++    events = {0: zero, size: zero}
++    for lo, hi, value in contributions:
++        check()
++        if lo == hi or not any(value):
++            continue
++        events[lo] = _add_value(events.get(lo, zero), value)
++        events[hi] = _add_value(events.get(hi, zero), _scale(value, -1))
++    result, value, previous = [], zero, 0
++    for point in sorted(events):
++        check()
++        if point > previous:
++            if result and result[-1][2] == value:
++                result[-1] = (result[-1][0], point, value)
++            else:
++                result.append((previous, point, value))
++        value = _add_value(value, events[point])
++        previous = point
++    if value != zero or previous != size:
++        raise ArithmeticError('weight partition endpoints do not balance')
++    return result
++
++
++def _input_weights(size, weights, dimension, check):
++    _nat(size, 'size')
++    if type(dimension) is not int or dimension < 0:
++        raise ValueError('dimension must be a nonnegative integer')
++    contributions = []
++    for weight in weights:
++        check()
++        if not isinstance(weight, WeightInterval):
++            raise ValueError('weights must contain WeightInterval values')
++        if weight.stop > size or len(weight.value) != dimension:
++            raise ValueError('weight interval outside universe or wrong dimension')
++        contributions.append((weight.start, weight.stop, weight.value))
++    return _canonical(size, contributions, dimension, check)
++
++
++def _aggregate(blocks, dimension):
++    result = [0] * dimension
++    for lo, hi, value in blocks:
++        for j, coordinate in enumerate(value):
++            result[j] += (hi - lo) * coordinate
++    return tuple(result)
++
++
++def _fold(blocks, carrier, size, new_size, dimension, check):
++    """Push the ENTIRE carrier range to [a,c), then remove a zero suffix.
++
++    For a positive carrier, rho(x)=a+(x-a) mod(c-a).  A block of
++    length qp+r gives q copies everywhere on [a,c) and one on its
++    cyclic residual interval.  A trimmed reflection uses one inverse.
++    Folding only the actually deleted suffix is deliberately not used:
++    full-range folding is what gives the additive breakpoint bound.
++    """
++    a, b, c, d, sign = carrier
++    contributions = []
++    for lo, hi, value in blocks:
++        check()
++        if lo < c:
++            contributions.append((lo, min(hi, c), value))
++        lo = max(lo, c)
++        if lo >= hi:
++            continue
++        if sign == -1:
++            if b >= c:
++                raise ArithmeticError('weight folding needs a trimmed reflection')
++            contributions.append((a + d - hi + 1, a + d - lo + 1, value))
++            continue
++        period = c - a
++        if period <= 0:
++            raise ArithmeticError('weight folding needs a positive translation')
++        quotient, remainder = divmod(hi - lo, period)
++        if quotient:
++            contributions.append((a, c, _scale(value, quotient)))
++        if remainder:
++            first = a + (lo - a) % period
++            stop = first + remainder
++            contributions.append((first, min(stop, c), value))
++            if stop > c:
++                contributions.append((a, a + stop - c, value))
++    return _canonical(new_size, contributions, dimension, check)
++
++
++def _contract_weights(blocks, gaps, size, dimension, emitted, check):
++    """Emit each removed static point with its final weight and close gaps."""
++    contributions = []
++    # Each disjoint kept/gap interval is intersected by a linear merge scan.
++    cells, cursor, removed = [], 0, 0
++    for lo, hi in gaps:
++        check()
++        if cursor < lo:
++            cells.append((cursor, lo, False, removed))
++        cells.append((lo, hi + 1, True, removed))
++        removed += hi - lo + 1
++        cursor = hi + 1
++    if cursor < size:
++        cells.append((cursor, size, False, removed))
++    i = j = 0
++    while i < len(blocks) and j < len(cells):
++        check()
++        a, b, value = blocks[i]
++        c, d, static, shift = cells[j]
++        lo, hi = max(a, c), min(b, d)
++        if lo < hi:
++            if static:
++                emitted[value] = emitted.get(value, 0) + hi - lo
++            else:
++                contributions.append((lo - shift, hi - shift, value))
++        if b <= d:
++            i += 1
++        if d <= b:
++            j += 1
++    return _canonical(size - removed, contributions, dimension, check)
++
++
++def _replay_weights(size, pairings, initial, dimension, trace, check, limits):
++    """Transport weights along an already independently validated trace."""
++    current = _public_pairings(size, pairings)
++    blocks, emitted = initial, {}
++    stats = {'initial_weight_blocks': len(initial),
++             'peak_weight_blocks': len(initial), 'weight_transfers': 0,
++             'max_transfer_block_growth': 0, 'replayed_events': 0,
++             'output_records': 0,
++             'peak_weight_bits': max((abs(x).bit_length() for _, _, v in initial
++                                      for x in v), default=0)}
++
++    def capacity():
++        stats['peak_weight_blocks'] = max(stats['peak_weight_blocks'], len(blocks))
++        stats['output_records'] = len(emitted)
++        stats['peak_weight_bits'] = max(
++            stats['peak_weight_bits'],
++            max((abs(x).bit_length() for _, _, v in blocks for x in v), default=0))
++        if limits[0] is not None and len(blocks) > limits[0]:
++            raise _CapacityReached('weight_block_limit')
++        if limits[1] is not None and len(emitted) > limits[1]:
++            raise _CapacityReached('output_record_limit')
++
++    try:
++        capacity()
++        for event in trace['operations']:
++            check()
++            if limits[2] is not None and stats['replayed_events'] >= limits[2]:
++                raise _CapacityReached('replay_event_limit')
++            op = event['op']
++            if op == 'delete':
++                del current[_decoded_integer(event['index'])]
++            elif op == 'trim':
++                i = _decoded_integer(event['index'])
++                a, b, c, d, sign = current[i]
++                current[i] = [a, (a + d - 1) // 2, (a + d) // 2 + 1, d, -1]
++            elif op == 'merge':
++                i, j = sorted((_decoded_integer(event['left']),
++                               _decoded_integer(event['right'])))
++                a, b, c, d, _ = current[i]
++                aa, bb, cc, dd, _ = current[j]
++                period = gcd(c - a, cc - aa)
++                lo, hi = min(a, aa), max(d, dd)
++                current[i] = [lo, hi - period, lo + period, hi, 1]
++                del current[j]
++            elif op == 'transmit':
++                i = _decoded_integer(event['transmitter'])
++                j = _decoded_integer(event['target'])
++                current[j] = _transmitted_row(current[i], current[j],
++                    event['source_power'], event['target_power'], size)
++            elif op == 'contract':
++                gaps = [[_decoded_integer(lo), _decoded_integer(hi)]
++                        for lo, hi in event['gaps']]
++                blocks = _contract_weights(blocks, gaps, size, dimension,
++                                            emitted, check)
++                def shifted(point):
++                    return point - sum(hi - lo + 1 for lo, hi in gaps if hi < point)
++                current = [[shifted(a), shifted(b), shifted(c), shifted(d), sign]
++                           for a, b, c, d, sign in current]
++                size -= sum(hi - lo + 1 for lo, hi in gaps)
++            elif op == 'truncate':
++                i = _decoded_integer(event['index'])
++                new_size = _decoded_integer(event['new_size'])
++                carrier = current[i]
++                old_count = len(blocks)
++                blocks = _fold(blocks, carrier, size, new_size, dimension, check)
++                stats['weight_transfers'] += 1
++                growth = len(blocks) - old_count
++                stats['max_transfer_block_growth'] = max(
++                    stats['max_transfer_block_growth'], growth)
++                if growth > 3:
++                    raise ArithmeticError('rightmost-carrier three-run bound failed')
++                a, b, c, d, sign = carrier
++                if new_size == c:
++                    del current[i]
++                elif sign == 1:
++                    current[i] = [a, b - (size - new_size), c, new_size - 1, sign]
++                else:
++                    current[i] = [a + size - new_size, b, c, new_size - 1, sign]
++                size = new_size
++            else:
++                raise ArithmeticError('unexpected independently validated operation')
++            stats['replayed_events'] += 1
++            capacity()
++    except _CapacityReached as error:
++        return None, stats, str(error)
++    if size or current or blocks:
++        raise ArithmeticError('weighted trace did not terminate')
++    result = tuple(WeightedOrbitClass(value, count)
++                   for value, count in sorted(emitted.items()))
++    return result, stats, None
++
++
++def weighted_orbit_counts(size, pairings, weights, *, dimension,
++                          max_cycles=None, periodic_rule='fine_wilf', check=None,
++                          max_weight_blocks=None, max_output_records=None,
++                          max_operations=None,
++                          record_certificate=False):
++    """Return exact orbit-weight vectors with compressed multiplicities.
++
++    max_cycles belongs to the unchanged orbit scheduler.  The other optional
++    limits cap canonical current weight blocks, distinct output records, and
++    replayed events.  They are cooperative resource limits, not memory or
++    elapsed-time guarantees.  Exhaustion returns no counts, sums, or proof.
++    check() exceptions propagate during validation, search and replay.
++    """
++    checkpoint = check if check is not None else lambda: None
++    checkpoint()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be boolean')
++    for limit, label in ((max_weight_blocks, 'max_weight_blocks'),
++                         (max_output_records, 'max_output_records'),
++                         (max_operations, 'max_operations')):
++        if limit is not None:
++            _nat(limit, label)
++    initial = _input_weights(size, weights, dimension, checkpoint)
++    pairings = list(pairings)
++    orbit = count_orbits(size, pairings, max_cycles=max_cycles,
++                         periodic_rule=periodic_rule, check=checkpoint,
++                         record_certificate=True)
++    if not orbit.complete:
++        return WeightedOrbitResult(False, None, None, None, orbit.cycles,
++                                   {'orbit': orbit.stats}, reason='cycle_limit')
++    trace = orbit.certificate
++    if not verify_orbit_certificate(size, pairings, trace, check=checkpoint):
++        raise ArithmeticError('the orbit producer emitted an invalid trace')
++    result, stats, reason = _replay_weights(size, pairings, initial, dimension,
++        trace, checkpoint, (max_weight_blocks, max_output_records, max_operations))
++    stats['orbit'] = orbit.stats
++    if result is None:
++        return WeightedOrbitResult(False, None, None, None, orbit.cycles, stats,
++                                   reason=reason)
++    if sum(row.multiplicity for row in result) != orbit.orbits:
++        raise ArithmeticError('orbit multiplicities do not match the checked count')
++    aggregate = tuple(sum(row.multiplicity * row.value[j] for row in result)
++                      for j in range(dimension))
++    if aggregate != _aggregate(initial, dimension):
++        raise ArithmeticError('weighted transport did not conserve total weight')
++    certificate = None
++    if record_certificate:
++        certificate = {'version': 1, 'dimension': dimension,
++                       'weights': [[lo, hi, list(value)] for lo, hi, value in initial],
++                       'classes': [[list(row.value), row.multiplicity] for row in result],
++                       'orbit_certificate': trace}
++    return WeightedOrbitResult(True, orbit.orbits, result, aggregate,
++                               orbit.cycles, stats, certificate)
++
++
++def replay_weighted_orbits(size, pairings, weights, orbit_certificate, *,
++                           dimension, check=None, max_weight_blocks=None,
++                           max_output_records=None, max_operations=None):
++    """Derive component weights from a supplied unweighted orbit trace.
++
++    No orbit scheduler is called. Invalid traces return an incomplete result
++    with reason 'invalid_orbit_certificate'. Cooperative capacity exhaustion
++    also returns no mathematical output. cycles is zero: a local proof does
++    not authenticate or prescribe the scheduler's cycles.
++    """
++    checkpoint = check if check is not None else lambda: None
++    checkpoint()
++    for limit, label in ((max_weight_blocks, 'max_weight_blocks'),
++                         (max_output_records, 'max_output_records'),
++                         (max_operations, 'max_operations')):
++        if limit is not None:
++            _nat(limit, label)
++    initial = _input_weights(size, weights, dimension, checkpoint)
++    pairings = list(pairings)
++    if (max_operations is not None and type(orbit_certificate) is dict
++            and type(orbit_certificate.get('operations')) is list
++            and len(orbit_certificate['operations']) > max_operations):
++        return WeightedOrbitResult(False, None, None, None, 0, {},
++                                   reason='replay_event_limit')
++    if not verify_orbit_certificate(size, pairings, orbit_certificate,
++                                     check=checkpoint):
++        return WeightedOrbitResult(False, None, None, None, 0, {},
++                                   reason='invalid_orbit_certificate')
++    result, stats, reason = _replay_weights(size, pairings, initial, dimension,
++        orbit_certificate, checkpoint,
++        (max_weight_blocks, max_output_records, max_operations))
++    if result is None:
++        return WeightedOrbitResult(False, None, None, None, 0, stats, reason=reason)
++    aggregate = tuple(sum(row.multiplicity * row.value[j] for row in result)
++                      for j in range(dimension))
++    orbits = sum(row.multiplicity for row in result)
++    if (aggregate != _aggregate(initial, dimension)
++            or orbits != _decoded_integer(orbit_certificate['orbit_count'])):
++        raise ArithmeticError('weighted replay conservation failed')
++    return WeightedOrbitResult(True, orbits, result, aggregate, 0, stats)
++
++
++def verify_weighted_orbit_certificate(size, pairings, weights, certificate, *,
++                                      dimension, check=None,
++                                      max_weight_blocks=None,
++                                      max_output_records=None,
++                                      max_operations=None):
++    """Check a weight result using local replay, without invoking orbit search.
++
++    The orbit trace, normalized additive input weights, and output classes
++    must all bind exactly to the caller's input.  Malformed/over-limit data
++    returns False.  User cancellation exceptions are not swallowed.
++    """
++    checkpoint = check if check is not None else lambda: None
++    checkpoint()
++    for limit, label in ((max_weight_blocks, 'max_weight_blocks'),
++                         (max_output_records, 'max_output_records'),
++                         (max_operations, 'max_operations')):
++        if limit is not None:
++            _nat(limit, label)
++    initial = _input_weights(size, weights, dimension, checkpoint)
++    pairings = list(pairings)
++    # Restrict exception handling to schema decoding. Callback exceptions
++    # propagate even if their class happens to derive from ValueError.
++    try:
++        if (type(certificate) is not dict or set(certificate) != {
++                'version', 'dimension', 'weights', 'classes', 'orbit_certificate'}
++                or _decoded_integer(certificate['version']) != 1
++                or _decoded_integer(certificate['dimension']) != dimension
++                or type(certificate['weights']) is not list
++                or type(certificate['classes']) is not list):
++            return False
++    except (ValueError, TypeError, KeyError):
++        return False
++    bound_weights = []
++    for row in certificate['weights']:
++        checkpoint()
++        try:
++            if (type(row) is not list or len(row) != 3 or type(row[2]) is not list
++                    or len(row[2]) != dimension):
++                return False
++            lo, hi = _decoded_integer(row[0]), _decoded_integer(row[1])
++            value = tuple(_decoded_integer(x) for x in row[2])
++            bound_weights.append((lo, hi, value))
++        except (ValueError, TypeError, KeyError):
++            return False
++    claimed = []
++    for row in certificate['classes']:
++        checkpoint()
++        try:
++            if (type(row) is not list or len(row) != 2 or type(row[0]) is not list
++                    or len(row[0]) != dimension):
++                return False
++            value = tuple(_decoded_integer(x) for x in row[0])
++            count = _decoded_integer(row[1])
++            if len(value) != dimension or count <= 0:
++                return False
++            claimed.append(WeightedOrbitClass(value, count))
++        except (ValueError, TypeError, KeyError):
++            return False
++    if bound_weights != initial:
++        return False
++    trace = certificate['orbit_certificate']
++    if (max_operations is not None and type(trace) is dict
++            and type(trace.get('operations')) is list
++            and len(trace['operations']) > max_operations):
++        return False
++    if not verify_orbit_certificate(size, pairings, trace, check=checkpoint):
++        return False
++    result, _, _ = _replay_weights(size, pairings, initial, dimension, trace,
++        checkpoint, (max_weight_blocks, max_output_records, max_operations))
++    return result is not None and result == tuple(claimed)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sparse_port_incidence.py b/Topology/UnknotRecognition/fast/fastunknot/sparse_port_incidence.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sparse_port_incidence.py
+@@ -0,0 +1,151 @@
++"""Sparse exact port-incidence inventories from one weighted AHT trace.
++
++This is a polynomial-size alternative to the existing dense Boolean-lattice
++interface. It records how many components have each occurring port mask;
++an absent mask means zero. It does not encode boundary order or attachments.
++"""
++
++from .integer_codec import encoded_integer
++from .interval_incidence import _prepare, _InvalidIncidence
++from .weighted_orbits import (
++    WeightInterval, weighted_orbit_counts, verify_weighted_orbit_certificate,
++)
++
++
++def _ports_and_weights(size, ports, max_ports, check):
++    if max_ports is None:
++        if not isinstance(ports, (list, tuple)):
++            raise ValueError('ports must be an explicit list or tuple')
++        max_ports = len(ports)
++    size, ports = _prepare(size, ports, max_ports, check)
++    dimension = len(ports)
++    weights = []
++    for index, intervals in enumerate(ports):
++        check()
++        basis = tuple(int(j == index) for j in range(dimension))
++        for lo, hi in intervals:
++            check()
++            weights.append(WeightInterval(lo, hi, basis))
++    return size, ports, weights
++
++
++def _histogram(classes, check):
++    counts = {}
++    for item in classes:
++        check()
++        if any(value < 0 for value in item.value):
++            raise ArithmeticError('indicator weights cannot become negative')
++        mask = sum(1 << index for index, value in enumerate(item.value) if value)
++        counts[mask] = counts.get(mask, 0) + item.multiplicity
++    return [{'mask': mask, 'orbits': counts[mask]} for mask in sorted(counts)]
++
++
++def sparse_port_incidence(size, pairings, ports, *, max_ports=None,
++                          max_cycles=None, max_weight_blocks=None,
++                          max_output_records=None, max_operations=None,
++                          record_certificate=False,
++                          check=None):
++    """Count every occurring port signature, without allocating 2**r slots.
++
++    Port intervals are half-open. Overlaps within a port are merged before
++    assigning indicator weights, while overlaps across ports retain each bit.
++    With resource caps disabled, complexity is polynomial in the encoded
++    pairing system, interval count, port count and endpoint bit lengths.
++    No geometry or knot-diagram provenance is inferred from these inputs.
++    """
++    poll = check if check is not None else lambda: None
++    poll()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be boolean')
++    size, normalized, weights = _ports_and_weights(size, ports, max_ports, poll)
++    pairs = list(pairings)
++    answer = weighted_orbit_counts(
++        size, pairs, weights, dimension=len(normalized), max_cycles=max_cycles,
++        max_weight_blocks=max_weight_blocks, max_output_records=max_output_records,
++        max_operations=max_operations,
++        check=poll, record_certificate=record_certificate)
++    stats = dict(answer.stats, orbit_queries=1, orbit_cycles=answer.cycles)
++    if not answer.complete:
++        return dict(status='INCONCLUSIVE', reason=answer.reason, stats=stats)
++    histogram = _histogram(answer.classes, poll)
++    result = dict(status='COMPLETE', orbit_count=answer.orbits,
++                  histogram=histogram, port_count=len(normalized), stats=stats)
++    result['stats'].update(weight_profiles=len(answer.classes),
++                           signature_records=len(histogram))
++    if record_certificate:
++        result['certificate'] = dict(
++            schema='sparse-port-incidence-v1',
++            ports=[[[lo, hi] for lo, hi in port] for port in normalized],
++            orbit_count=answer.orbits, histogram=histogram,
++            weighted=answer.certificate)
++    poll()
++    return result
++
++
++class _MalformedPortCertificate(ValueError):
++    pass
++
++
++def _integer(value):
++    try:
++        return encoded_integer(value)
++    except ValueError as exc:
++        raise _MalformedPortCertificate('invalid certificate integer') from exc
++
++
++def verify_sparse_port_certificate(size, pairings, ports, certificate, *,
++                                   max_ports=None, max_operations=None, check=None):
++    """Reconstruct indicator weights and check the supplied weighted proof.
++
++    The verifier never calls the orbit producer. Malformed certificates return
++    False; malformed source inputs and callback exceptions propagate.
++    """
++    poll = check if check is not None else lambda: None
++    poll()
++    size, normalized, weights = _ports_and_weights(size, ports, max_ports, poll)
++    fields = {'schema', 'ports', 'orbit_count', 'histogram', 'weighted'}
++    if (type(certificate) is not dict or set(certificate) != fields
++            or certificate['schema'] != 'sparse-port-incidence-v1'):
++        return False
++    try:
++        _, supplied, _ = _ports_and_weights(size, certificate['ports'], len(normalized),
++                                            poll)
++    except _InvalidIncidence:
++        return False
++    if supplied != normalized:
++        return False
++    if not verify_weighted_orbit_certificate(
++            size, list(pairings), weights, certificate['weighted'],
++            dimension=len(normalized), max_operations=max_operations, check=poll):
++        return False
++    # The weighted certificate's inventory has just been independently replayed.
++    # Decode its public records and perform only a linear aggregation by mask.
++    weighted = certificate['weighted']
++    try:
++        count = _integer(certificate['orbit_count'])
++        claimed = certificate['histogram']
++        if type(claimed) is not list:
++            return False
++        parsed = []
++        for item in claimed:
++            poll()
++            if type(item) is not dict or set(item) != {'mask', 'orbits'}:
++                return False
++            mask, multiplicity = (_integer(item[name]) for name in ('mask', 'orbits'))
++            if not 0 <= mask < (1 << len(normalized)) or multiplicity < 1:
++                return False
++            parsed.append({'mask': mask, 'orbits': multiplicity})
++        classes = weighted['classes']
++        counts = {}
++        for item in classes:
++            poll()
++            value = tuple(_integer(x) for x in item[0])
++            multiplicity = _integer(item[1])
++            if len(value) != len(normalized) or any(x < 0 for x in value):
++                return False
++            mask = sum(1 << j for j, x in enumerate(value) if x)
++            counts[mask] = counts.get(mask, 0) + multiplicity
++        expected = [{'mask': mask, 'orbits': counts[mask]} for mask in sorted(counts)]
++        return parsed == expected and count == sum(counts.values())
++    except _MalformedPortCertificate:
++        return False
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_components.py b/Topology/UnknotRecognition/fast/fastunknot/normal_components.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_components.py
+@@ -0,0 +1,224 @@
++"""Exact connected-component vectors of a supplied binary normal surface.
++
++One local-edge anchor per normal disc type turns weighted interval orbits
++into normal coordinates of actual connected components. Equal vectors are
++coalesced with binary multiplicities. This implements the construction in
++Agol--Hass--Thurston, Section 6, using the maintained native geometry.
++
++The supplied finite compact orientable manifold has one torus boundary.
++There is no implicit correspondence to a knot diagram and no vector search.
++"""
++
++from .integer_codec import encoded_integer
++from .normal_surface_geometry import (
++    _prepare, _coordinates, _arc_system, _edge, _quad, _EDGES,
++    _boundary_graph, _fingerprint,
++)
++from .normal_surface_parity import _parity_certificate, _verify_parity
++from .weighted_orbits import (
++    WeightInterval, weighted_orbit_counts, verify_weighted_orbit_certificate,
++)
++
++
++def normal_disc_weights(prepared, analysed, check=lambda: None):
++    """Build additive half-open basis-weight intervals in global edge order.
++
++    Each disc receives exactly one anchor, even when multiple local edges
++    identify globally. Global edge orientations come from the parity union-find.
++    """
++    dimension = 7 * len(analysed['rows'])
++    offsets, total = {}, 0
++    for root in sorted(analysed['weights']):
++        check()
++        offsets[root] = total
++        total += analysed['weights'][root]
++    result = []
++    for t, row in enumerate(analysed['rows']):
++        check()
++        for kind, count in enumerate(row):
++            check()
++            if not count:
++                continue
++            if kind < 4:
++                other = 1 if kind == 0 else 0
++                a, b = sorted((kind, other))
++            else:
++                a, b = next(edge for edge in _EDGES if _quad(*edge) != kind - 4)
++            local = _edge(t, a, b)
++            root = prepared['edge_roots'][local]
++            weight = analysed['weights'][root]
++            if kind == a:
++                lo, hi = 0, count
++            elif kind == b:
++                lo, hi = weight - count, weight
++            else:
++                lo, hi = row[a], row[a] + count
++            if prepared['edge_orientations'][local]:
++                lo, hi = weight - hi, weight - lo
++            if not 0 <= lo < hi <= weight:
++                raise ArithmeticError('disc anchor is outside its edge block')
++            basis = tuple(int(index == 7 * t + kind) for index in range(dimension))
++            result.append(WeightInterval(offsets[root] + lo, offsets[root] + hi, basis))
++    return total, result
++
++
++def _component_data(prepared, value, multiplicity, check):
++    rows = [list(value[i:i + 7]) for i in range(0, len(value), 7)]
++    analysed = _coordinates(prepared, rows, check)
++    if analysed['normal_disks'] == 0 or multiplicity < 1:
++        raise ArithmeticError('a component inventory contains an empty component')
++    chi, boundary = analysed['euler_characteristic'], analysed['boundary_arcs']
++    # Weighted extraction proves connectedness. A connected compact surface
++    # with chi=1 and nonempty boundary is a disc by surface classification.
++    disk = chi == 1 and boundary > 0
++    return dict(coordinates=rows, multiplicity=multiplicity,
++                euler_characteristic=chi, normal_disks=analysed['normal_disks'],
++                boundary_normal_arcs=boundary, disk=disk), analysed
++
++
++def normal_component_inventory(triangulation, coordinates, *, max_cycles=None,
++                               max_operations=None, max_weight_blocks=None,
++                               max_output_records=None, record_certificate=False,
++                               check=lambda: None):
++    """Extract all distinct component vectors and detect compressing discs.
++
++    COMPLETE certifies the inventory of this supplied vector only. A false
++    has_compressing_disk says nothing about other normal surfaces or the knot.
++    One weighted orbit query suffices; classification of disc components uses
++    linear Euler data and finite boundary parity, with no extra orbit searches.
++    """
++    check()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be boolean')
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    size, pairings = _arc_system(prepared, analysed, check=check)
++    anchored_size, weights = normal_disc_weights(prepared, analysed, check)
++    if size != anchored_size:
++        raise ArithmeticError('anchor and normal-arc universes differ')
++    dimension = 7 * len(analysed['rows'])
++    answer = weighted_orbit_counts(
++        size, pairings, weights, dimension=dimension, max_cycles=max_cycles,
++        max_operations=max_operations, max_weight_blocks=max_weight_blocks,
++        max_output_records=max_output_records, record_certificate=record_certificate,
++        check=check)
++    stats = dict(answer.stats, anchor_intervals=len(weights), dimension=dimension,
++                 orbit_queries=1, orbit_cycles=answer.cycles)
++    if not answer.complete:
++        return dict(status='INCONCLUSIVE', reason=answer.reason, stats=stats)
++    flat = tuple(value for row in analysed['rows'] for value in row)
++    if answer.aggregate != flat:
++        raise ArithmeticError('component coordinates do not conserve the source vector')
++    profiles, parity_proofs = [], []
++    for item in answer.classes:
++        check()
++        profile, component = _component_data(prepared, item.value, item.multiplicity, check)
++        parity = (_parity_certificate(_boundary_graph(prepared, component, check), check)
++                  if profile['disk'] else None)
++        profile['compressing_disk'] = bool(parity and parity['nonzero'])
++        profiles.append(profile)
++        parity_proofs.append(parity)
++    disks = sum(p['multiplicity'] for p in profiles if p['compressing_disk'])
++    result = dict(
++        status='COMPLETE', components=answer.orbits, distinct_vectors=len(profiles),
++        profiles=profiles, normal_disks=analysed['normal_disks'],
++        euler_characteristic=analysed['euler_characteristic'],
++        compressing_disk_components=disks, has_compressing_disk=disks > 0,
++        stats=stats,
++        trust='native components of the supplied finite triangulation and vector; '
++              'no correspondence with an input knot is asserted')
++    if disks:
++        result['compressing_disk_witness'] = next(
++            p['coordinates'] for p in profiles if p['compressing_disk'])
++    if record_certificate:
++        result['certificate'] = dict(
++            schema='normal-component-inventory-v1',
++            input_sha256=_fingerprint(triangulation, analysed, check),
++            weighted=answer.certificate, profiles=profiles,
++            boundary_homology=parity_proofs)
++    check()
++    return result
++
++
++class _MalformedInventory(ValueError):
++    pass
++
++
++def _integer(value):
++    try:
++        return encoded_integer(value)
++    except ValueError as exc:
++        raise _MalformedInventory('invalid certificate integer') from exc
++
++
++def verify_normal_component_certificate(triangulation, coordinates, certificate, *,
++                                         max_operations=None, max_weight_blocks=None,
++                                         max_output_records=None, check=lambda: None):
++    """Verify source-bound component coordinates without orbit discovery.
++
++    Geometry reconstruction is shared with the producer. Weighted transport is
++    replayed over the independently checked unweighted trace; it is not a second
++    separately implemented weighted algorithm. Boundary parity is independently
++    checked by the existing finite cohomology verifier. Callback errors propagate.
++    """
++    check()
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    fields = {'schema', 'input_sha256', 'weighted', 'profiles', 'boundary_homology'}
++    if (type(certificate) is not dict or set(certificate) != fields
++            or certificate['schema'] != 'normal-component-inventory-v1'
++            or certificate['input_sha256'] != _fingerprint(triangulation, analysed, check)):
++        return False
++    size, pairings = _arc_system(prepared, analysed, check=check)
++    _, weights = normal_disc_weights(prepared, analysed, check)
++    dimension = 7 * len(analysed['rows'])
++    if not verify_weighted_orbit_certificate(
++            size, pairings, weights, certificate['weighted'], dimension=dimension,
++            max_operations=max_operations, max_weight_blocks=max_weight_blocks,
++            max_output_records=max_output_records, check=check):
++        return False
++    profiles, parities = certificate['profiles'], certificate['boundary_homology']
++    if type(profiles) is not list or type(parities) is not list:
++        return False
++    classes = certificate['weighted']['classes']
++    if len(profiles) != len(classes) or len(parities) != len(classes):
++        return False
++    aggregate = [0] * dimension
++    try:
++        for item, claimed, parity in zip(classes, profiles, parities):
++            check()
++            value = tuple(_integer(x) for x in item[0])
++            multiplicity = _integer(item[1])
++            expected, component = _component_data(prepared, value, multiplicity, check)
++            if expected['disk']:
++                if not _verify_parity(_boundary_graph(prepared, component, check), parity, check):
++                    return False
++                expected['compressing_disk'] = parity['nonzero']
++            else:
++                if parity is not None:
++                    return False
++                expected['compressing_disk'] = False
++            if type(claimed) is not dict or set(claimed) != set(expected):
++                return False
++            if (type(claimed['coordinates']) is not list
++                    or len(claimed['coordinates']) != len(analysed['rows'])):
++                return False
++            rows = []
++            for row in claimed['coordinates']:
++                if type(row) is not list or len(row) != 7:
++                    return False
++                rows.append([_integer(x) for x in row])
++            decoded = {'coordinates': rows}
++            for key in ('multiplicity', 'euler_characteristic', 'normal_disks',
++                        'boundary_normal_arcs'):
++                decoded[key] = _integer(claimed[key])
++            for key in ('disk', 'compressing_disk'):
++                if type(claimed[key]) is not bool:
++                    return False
++                decoded[key] = claimed[key]
++            if decoded != expected:
++                return False
++            aggregate = [a + multiplicity * b for a, b in zip(aggregate, value)]
++    except _MalformedInventory:
++        return False
++    return tuple(aggregate) == tuple(x for row in analysed['rows'] for x in row)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_weighted_orbits.py b/Topology/UnknotRecognition/fast/tests/test_weighted_orbits.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_weighted_orbits.py
+@@ -0,0 +1,331 @@
++"""Independent graph comparisons, arithmetic inflation, and replay attacks."""
++
++from collections import Counter
++from copy import deepcopy
++from itertools import combinations_with_replacement, product
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.interval_orbits import IntervalPairing, count_orbits
++try:
++    import fastunknot.weighted_orbits as weighted
++except ImportError:
++    import weighted_orbits as weighted
++
++WeightInterval = weighted.WeightInterval
++
++
++def literal(size, pairs, marks, dimension):
++    parent = list(range(size))
++    def find(x):
++        while parent[x] != x:
++            parent[x] = parent[parent[x]]
++            x = parent[x]
++        return x
++    for p in pairs:
++        for x in range(p.a, p.b + 1):
++            y = p.a + p.d - x if p.reverse else x + p.c - p.a
++            parent[find(x)] = find(y)
++    sums = {}
++    for x in range(size):
++        value = [0] * dimension
++        for mark in marks:
++            if mark.start <= x < mark.stop:
++                value = [a + b for a, b in zip(value, mark.value)]
++        component = sums.setdefault(find(x), [0] * dimension)
++        for j, z in enumerate(value):
++            component[j] += z
++    return Counter(tuple(value) for value in sums.values())
++
++
++def histogram(result):
++    return Counter({row.value: row.multiplicity for row in result.classes})
++
++
++def random_system(rng, n, maximum=8):
++    result = []
++    for _ in range(rng.randrange(maximum + 1)):
++        width = rng.randint(1, n)
++        a = rng.randint(0, n - width)
++        c = rng.randint(0, n - width)
++        result.append(IntervalPairing(a, a + width - 1, c, c + width - 1,
++                                      bool(rng.getrandbits(1))))
++    return result
++
++
++def random_marks(rng, n, dimension=3, maximum=8):
++    result = []
++    for _ in range(rng.randrange(maximum + 1)):
++        a = rng.randrange(n)
++        b = rng.randint(a + 1, n)
++        value = tuple(rng.randint(-4, 4) for _ in range(dimension))
++        result.append(WeightInterval(a, b, value))
++    return result
++
++
++class WeightedOrbitTests(unittest.TestCase):
++    def assert_literal(self, n, pairs, marks, dimension, **kwargs):
++        result = weighted.weighted_orbit_counts(n, pairs, marks,
++                                                dimension=dimension, **kwargs)
++        self.assertTrue(result.complete)
++        self.assertEqual(histogram(result), literal(n, pairs, marks, dimension))
++        self.assertEqual(sum(row.multiplicity for row in result.classes), result.orbits)
++        if result.certificate is not None:
++            self.assertTrue(weighted.verify_weighted_orbit_certificate(
++                n, pairs, marks, result.certificate, dimension=dimension))
++        return result
++
++    def test_exhaustive_two_pairings_binary_point_weights(self):
++        # Every pair of canonical interval isometries on n<=4, and every
++        # 0/1-valued weight function; include the zero- and one-pair cases.
++        for n in range(1, 5):
++            pairs = []
++            for width in range(1, n + 1):
++                for a in range(n - width + 1):
++                    for c in range(a, n - width + 1):
++                        for reverse in (False, True):
++                            pairs.append(IntervalPairing(a, a + width - 1,
++                                                         c, c + width - 1, reverse))
++            systems = [()] + [(p,) for p in pairs]
++            systems.extend(combinations_with_replacement(pairs, 2))
++            for point_weights in product((0, 1), repeat=n):
++                marks = [WeightInterval(i, i + 1, (v,))
++                         for i, v in enumerate(point_weights) if v]
++                for system in systems:
++                    self.assert_literal(n, system, marks, 1)
++
++    def test_random_signed_vector_weights(self):
++        rng = random.Random(2610097301)
++        for case in range(2500):
++            n = rng.randint(1, 45)
++            pairs = random_system(rng, n)
++            marks = random_marks(rng, n)
++            self.assert_literal(n, pairs, marks, 3,
++                                record_certificate=(case % 17 == 0))
++            if case < 150:
++                self.assert_literal(n, pairs, marks, 3, periodic_rule='aht')
++
++    def test_full_range_folding_against_literal_push(self):
++        rng = random.Random(2610097302)
++        for _ in range(5000):
++            n = rng.randint(2, 80)
++            c = rng.randint(1, n - 1)
++            a = rng.randrange(c)
++            b = a + n - c - 1
++            reverse = bool(rng.getrandbits(1)) and b < c
++            p = [a, b, c, n - 1, -1 if reverse else 1]
++            values = [tuple(rng.randint(-5, 5) for _ in range(2)) for _ in range(n)]
++            # Occasionally use longer equal runs to make any breakpoint
++            # growth visible; the oracle still iterates individual points.
++            if rng.getrandbits(1):
++                cuts = sorted(set([0, n] + [rng.randrange(n) for _ in range(5)]))
++                for start, stop in zip(cuts, cuts[1:]):
++                    values[start:stop] = [values[start]] * (stop - start)
++            blocks = weighted._canonical(n,
++                [(i, i + 1, value) for i, value in enumerate(values)], 2, lambda: None)
++            new_size = rng.randint(c, n - 1)
++            result = weighted._fold(blocks, p, n, new_size, 2, lambda: None)
++            expected = [list(values[i]) if i < c else [0, 0]
++                        for i in range(new_size)]
++            for x in range(c, n):
++                y = a + n - 1 - x if reverse else a + (x - a) % (c - a)
++                for j in range(2):
++                    expected[y][j] += values[x][j]
++            actual = [value for lo, hi, value in result for _ in range(lo, hi)]
++            self.assertEqual(actual, list(map(tuple, expected)))
++            self.assertLessEqual(len(result) - len(blocks), 3)
++
++    def test_three_run_growth_bound_is_sharp_in_complete_trace(self):
++        pairs = [IntervalPairing(1, 2, 5, 6), IntervalPairing(3, 4, 4, 5),
++                 IntervalPairing(0, 0, 3, 3)]
++        marks = [WeightInterval(0, 7, (1,))]
++        result = self.assert_literal(7, pairs, marks, 1, record_certificate=True)
++        self.assertEqual(result.stats['initial_weight_blocks'], 1)
++        self.assertEqual(result.stats['peak_weight_blocks'], 4)
++        self.assertEqual(result.stats['max_transfer_block_growth'], 3)
++        self.assertEqual(result.certificate['orbit_certificate']['operations'][0],
++                         {'op': 'truncate', 'index': 0, 'new_size': 6})
++        folded = weighted._fold([(0, 7, (1,))], [1, 2, 5, 6, 1],
++                                 7, 6, 1, lambda: None)
++        self.assertEqual(folded, [(0, 1, (1,)), (1, 3, (2,)),
++                                  (3, 5, (1,)), (5, 6, (0,))])
++
++    def test_enormous_period_and_enormous_orbits(self):
++        period = 2 ** 4096 + 17
++        quotient = 2 ** 8192 + 9
++        remainder = 2 ** 1024 + 3
++        n = quotient * period + remainder
++        pairs = [IntervalPairing(0, n - period - 1, period, n - 1)]
++        marks = [WeightInterval(0, n, (2, -3, 0))]
++        result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=3,
++                                                record_certificate=True)
++        self.assertTrue(result.complete)
++        expected = Counter({(2 * quotient, -3 * quotient, 0): period - remainder,
++                            (2 * (quotient + 1), -3 * (quotient + 1), 0): remainder})
++        self.assertEqual(histogram(result), expected)
++        self.assertEqual(result.stats['weight_transfers'], 1)
++        self.assertTrue(weighted.verify_weighted_orbit_certificate(
++            n, pairs, marks, result.certificate, dimension=3))
++
++    def test_enormous_reflection_and_parity(self):
++        for n in (2 ** 9000, 2 ** 9000 + 1):
++            pairs = [IntervalPairing(0, n - 1, 0, n - 1, True)]
++            marks = [WeightInterval(0, n, (1,))]
++            result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=1)
++            expected = Counter({(2,): n // 2})
++            if n % 2:
++                expected[(1,)] = 1
++            self.assertEqual(histogram(result), expected)
++
++    def test_enormous_mark_boundaries_against_residue_counts(self):
++        n, period = 2 ** 12000 + 35, 7
++        pairs = [IntervalPairing(0, n - period - 1, period, n - 1)]
++        marks = [WeightInterval(0, n, (1, 0, 0)),
++                 WeightInterval(2 ** 9000 + 6, n - 9, (-2, 3, 0)),
++                 WeightInterval(n // 3, n // 2 + 6, (0, -5, 17))]
++        expected = Counter()
++        for residue in range(period):
++            value = [0, 0, 0]
++            for mark in marks:
++                count = ((mark.stop - 1 - residue) // period
++                         - (mark.start - 1 - residue) // period)
++                for j, coordinate in enumerate(mark.value):
++                    value[j] += count * coordinate
++            expected[tuple(value)] += 1
++        result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=3)
++        self.assertEqual(histogram(result), expected)
++
++    def test_replay_has_no_orbit_search_dependency(self):
++        n = 27
++        pairs = [IntervalPairing(0, 21, 5, 26),
++                 IntervalPairing(0, 19, 7, 26, True)]
++        marks = [WeightInterval(2, 21, (1, 4)), WeightInterval(9, 25, (-3, 2))]
++        result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=2,
++                                                record_certificate=True)
++        trace = result.certificate['orbit_certificate']
++        with patch.object(weighted, 'count_orbits', side_effect=AssertionError('search')):
++            self.assertTrue(weighted.verify_weighted_orbit_certificate(
++                n, pairs, marks, result.certificate, dimension=2))
++            replay = weighted.replay_weighted_orbits(n, pairs, marks, trace, dimension=2)
++        self.assertTrue(replay.complete)
++        self.assertEqual(replay.classes, result.classes)
++        self.assertEqual(replay.cycles, 0)
++
++    def test_certificate_mutations_and_source_binding(self):
++        n = 12
++        pairs = [IntervalPairing(0, 3, 4, 7), IntervalPairing(4, 7, 8, 11)]
++        marks = [WeightInterval(0, 4, (1, 0)), WeightInterval(2, 11, (0, -1))]
++        result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=2,
++                                                record_certificate=True)
++        good = result.certificate
++        mutations = []
++        bad = deepcopy(good); bad['classes'][0][0][0] += 1; mutations.append(bad)
++        bad = deepcopy(good); bad['classes'][0][1] += 1; mutations.append(bad)
++        bad = deepcopy(good); bad['classes'][0][1] = True; mutations.append(bad)
++        bad = deepcopy(good); bad['dimension'] = True; mutations.append(bad)
++        bad = deepcopy(good); bad['weights'][0][2][0] += 1; mutations.append(bad)
++        bad = deepcopy(good); bad['weights'][0][0] = True; mutations.append(bad)
++        bad = deepcopy(good); bad['unexpected'] = 0; mutations.append(bad)
++        bad = deepcopy(good); bad['orbit_certificate']['operations'].pop(); mutations.append(bad)
++        bad = deepcopy(good); bad['orbit_certificate']['version'] = 1; mutations.append(bad)
++        bad = deepcopy(good); bad['orbit_certificate']['pairings'][0][4] = -1; mutations.append(bad)
++        for bad in mutations:
++            self.assertFalse(weighted.verify_weighted_orbit_certificate(
++                n, pairs, marks, bad, dimension=2))
++        other_marks = marks + [WeightInterval(11, 12, (1, 0))]
++        self.assertFalse(weighted.verify_weighted_orbit_certificate(
++            n, pairs, other_marks, good, dimension=2))
++        self.assertFalse(weighted.verify_weighted_orbit_certificate(
++            n, list(reversed(pairs)), marks, good, dimension=2))
++        self.assertEqual(good, result.certificate)
++
++    def test_hexadecimal_serialization(self):
++        from fastunknot.integer_codec import json_safe
++        n = 2 ** 18000 + 9
++        pairs = [IntervalPairing(0, n - 8, 7, n - 1)]
++        marks = [WeightInterval(0, n, (1, -2))]
++        result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=2,
++                                                record_certificate=True)
++        self.assertTrue(weighted.verify_weighted_orbit_certificate(
++            n, pairs, marks, json_safe(result.certificate), dimension=2))
++
++    def test_zero_universe_and_zero_weights(self):
++        result = weighted.weighted_orbit_counts(0, [], [], dimension=4,
++                                                record_certificate=True)
++        self.assertEqual(result.classes, ())
++        self.assertEqual(result.aggregate, (0, 0, 0, 0))
++        self.assertTrue(weighted.verify_weighted_orbit_certificate(
++            0, [], [], result.certificate, dimension=4))
++        n = 2 ** 8000
++        result = weighted.weighted_orbit_counts(n, [], [], dimension=2)
++        self.assertEqual(histogram(result), {(0, 0): n})
++
++    def test_zero_dimensional_weight_vectors(self):
++        for n, pairs in ((0, []), (17, []),
++                         (17, [IntervalPairing(0, 11, 5, 16)])):
++            marks = [WeightInterval(0, n, ())] if n else []
++            result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=0,
++                                                    record_certificate=True)
++            self.assertTrue(result.complete)
++            self.assertEqual(result.aggregate, ())
++            self.assertEqual(result.orbits, count_orbits(n, pairs).orbits)
++            expected = () if not n else (weighted.WeightedOrbitClass((), result.orbits),)
++            self.assertEqual(result.classes, expected)
++            self.assertTrue(weighted.verify_weighted_orbit_certificate(
++                n, pairs, marks, result.certificate, dimension=0))
++
++    def test_limits_fail_closed(self):
++        n = 10
++        pairs = [IntervalPairing(0, 6, 3, 9)]
++        marks = [WeightInterval(0, 5, (1,)), WeightInterval(2, 9, (-2,))]
++        for limits in ({'max_cycles': 0}, {'max_operations': 0},
++                       {'max_weight_blocks': 1}, {'max_output_records': 1}):
++            result = weighted.weighted_orbit_counts(n, pairs, marks, dimension=1,
++                                                    record_certificate=True, **limits)
++            self.assertFalse(result.complete)
++            self.assertIsNone(result.classes)
++            self.assertIsNone(result.aggregate)
++            self.assertIsNone(result.orbits)
++            self.assertIsNone(result.certificate)
++        complete = weighted.weighted_orbit_counts(n, pairs, marks, dimension=1,
++                                                  record_certificate=True)
++        self.assertFalse(weighted.verify_weighted_orbit_certificate(
++            n, pairs, marks, complete.certificate, dimension=1, max_operations=0))
++        exact = weighted.weighted_orbit_counts(n, pairs, marks, dimension=1,
++             max_cycles=complete.cycles,
++             max_operations=complete.stats['replayed_events'],
++             max_weight_blocks=complete.stats['peak_weight_blocks'],
++             max_output_records=len(complete.classes))
++        self.assertTrue(exact.complete)
++
++    def test_strict_validation_and_cancellation(self):
++        for args in ((True, 3, (1,)), (0, True, (1,)), (0, 0, (1,)),
++                     (0, 1, (True,)), (0, 1, [1])):
++            with self.assertRaises(ValueError):
++                WeightInterval(*args)
++        for args in ((1, [], [], -1), (True, [], [], 1),
++                     (1, [], [WeightInterval(0, 2, (1,))], 1),
++                     (2, [], [WeightInterval(0, 1, (1, 2))], 1)):
++            n, pairs, marks, dimension = args
++            with self.assertRaises(ValueError):
++                weighted.weighted_orbit_counts(n, pairs, marks, dimension=dimension)
++        for limit in (True, -1, '2'):
++            with self.assertRaises(ValueError):
++                weighted.weighted_orbit_counts(1, [], [], dimension=1,
++                                                max_operations=limit)
++        class Cancel(ValueError):
++            pass
++        def abort():
++            raise Cancel('cancelled')
++        with self.assertRaises(Cancel):
++            weighted.weighted_orbit_counts(1, [], [], dimension=1, check=abort)
++        result = weighted.weighted_orbit_counts(1, [], [], dimension=1,
++                                                record_certificate=True)
++        with self.assertRaises(Cancel):
++            weighted.verify_weighted_orbit_certificate(
++                1, [], [], result.certificate, dimension=1, check=abort)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sparse_port_incidence.py b/Topology/UnknotRecognition/fast/tests/test_sparse_port_incidence.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sparse_port_incidence.py
+@@ -0,0 +1,87 @@
++"""Compare sparse weighted signatures with dense and literal component oracles."""
++from copy import deepcopy
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.interval_orbits import IntervalPairing
++from fastunknot.interval_incidence import analyze_port_incidence
++from fastunknot.sparse_port_incidence import sparse_port_incidence, verify_sparse_port_certificate
++
++
++class SparsePortTests(unittest.TestCase):
++    def test_random_dense_equivalence(self):
++        rng = random.Random(261009102)
++        for _ in range(250):
++            size = rng.randrange(1, 31)
++            pairs = []
++            for _ in range(rng.randrange(7)):
++                width = rng.randrange(1, size + 1)
++                a, c = (rng.randrange(size - width + 1) for _ in range(2))
++                pairs.append(IntervalPairing(a, a + width - 1, c, c + width - 1,
++                                             bool(rng.randrange(2))))
++            ports = []
++            for _ in range(rng.randrange(6)):
++                port = [sorted((rng.randrange(size + 1), rng.randrange(size + 1)))
++                        for _ in range(rng.randrange(4))]
++                ports.append(port)
++            dense = analyze_port_incidence(size, pairs, ports)
++            answer = sparse_port_incidence(size, pairs, ports, record_certificate=True)
++            expected = [{'mask': mask, 'orbits': count}
++                        for mask, count in enumerate(dense['histogram']) if count]
++            self.assertEqual(answer['histogram'], expected)
++            self.assertTrue(verify_sparse_port_certificate(size, pairs, ports,
++                                                          answer['certificate']))
++
++    def test_many_ports_and_huge_universe(self):
++        scale, count = 2 ** 5000, 256
++        ports = [[(j * scale, (j + 1) * scale)] for j in range(count)]
++        answer = sparse_port_incidence(count * scale, [], ports, record_certificate=True)
++        self.assertEqual(len(answer['histogram']), count)
++        self.assertEqual(answer['histogram'],
++                         [{'mask': 1 << j, 'orbits': scale} for j in range(count)])
++        self.assertEqual(answer['stats']['orbit_queries'], 1)
++        self.assertTrue(verify_sparse_port_certificate(count * scale, [], ports,
++                                                      answer['certificate']))
++
++    def test_no_ports_empty_ports_and_unmarked_components(self):
++        for size in (0, 1, 10 ** 50):
++            for ports in ([], [[]], [[], []]):
++                answer = sparse_port_incidence(size, [], ports, record_certificate=True)
++                self.assertEqual(answer['histogram'],
++                                 [{'mask': 0, 'orbits': size}] if size else [])
++                self.assertTrue(verify_sparse_port_certificate(size, [], ports,
++                                                              answer['certificate']))
++
++    def test_proof_replay_without_search_and_mutations(self):
++        ports = [[(0, 4)], [(2, 7)]]
++        answer = sparse_port_incidence(10, [], ports, record_certificate=True)
++        proof = answer['certificate']
++        with patch('fastunknot.weighted_orbits.count_orbits', side_effect=AssertionError):
++            self.assertTrue(verify_sparse_port_certificate(10, [], ports, proof))
++        for key, value in [('mask', 7), ('orbits', True), ('orbits', 500)]:
++            bad = deepcopy(proof)
++            bad['histogram'][0][key] = value
++            self.assertFalse(verify_sparse_port_certificate(10, [], ports, bad))
++        self.assertFalse(verify_sparse_port_certificate(11, [], ports, proof))
++        self.assertFalse(verify_sparse_port_certificate(10, [], [[(0, 5)], [(2, 7)]], proof))
++
++    def test_limits_and_callback_exceptions(self):
++        ports = [[(0, 3)], [(5, 8)]]
++        for kwargs in ({'max_cycles': 0}, {'max_weight_blocks': 0},
++                       {'max_operations': 0}, {'max_output_records': 0}):
++            answer = sparse_port_incidence(10, [], ports, **kwargs)
++            self.assertEqual(answer['status'], 'INCONCLUSIVE')
++            self.assertNotIn('histogram', answer)
++        proof = sparse_port_incidence(10, [], ports, record_certificate=True)['certificate']
++        class Cancel(ValueError):
++            pass
++        for stop in (1, 10, 30):
++            calls = [0]
++            def check():
++                calls[0] += 1
++                if calls[0] == stop:
++                    raise Cancel('test cancellation')
++            with self.assertRaises(Cancel):
++                verify_sparse_port_certificate(10, [], ports, proof, check=check)
++
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_components.py b/Topology/UnknotRecognition/fast/tests/test_normal_components.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_components.py
+@@ -0,0 +1,155 @@
++"""Independent geometry checks for connected-component coordinate extraction."""
++from copy import deepcopy
++from collections import Counter
++import importlib.util
++import random
++import unittest
++
++from fastunknot.normal_components import (
++    normal_component_inventory, verify_normal_component_certificate,
++)
++from fastunknot.normal_surface_orbits import normal_surface_topology
++from fastunknot.integer_codec import json_safe
++from normal_orbit_research.fixtures import (
++    layered_torus, interior_vertex_torus, boundary_cap,
++    regina_triangulation, regina_surface, export_surface,
++)
++from test_normal_surface_orbits import relabel
++
++
++def vector(rows):
++    return tuple(x for row in rows for x in row)
++
++
++def profiles(answer):
++    return {vector(p['coordinates']): p['multiplicity'] for p in answer['profiles']}
++
++
++class NormalComponentInventoryTests(unittest.TestCase):
++    def test_disconnected_meridians_are_extracted(self):
++        for t in (1, 3, 8, 16):
++            tri, meridian = layered_torus(t)
++            for scale in (1, 7, 2 ** 1024):
++                coords = [[scale * x for x in row] for row in meridian]
++                result = normal_component_inventory(tri, coords, record_certificate=True)
++                self.assertEqual(profiles(result), {vector(meridian): scale})
++                self.assertEqual(result['compressing_disk_components'], scale)
++                self.assertTrue(verify_normal_component_certificate(tri, coords,
++                                                                   result['certificate']))
++                if scale != 1:
++                    self.assertFalse(normal_surface_topology(tri, coords)['compressing_disk'])
++
++    def test_one_sided_surface_and_double_are_distinct_profiles(self):
++        tri, _ = layered_torus(1)
++        unit = [[0, 0, 0, 0, 0, 1, 0]]
++        doubled = [[0, 0, 0, 0, 0, 2, 0]]
++        for scale in (1, 2, 3, 8, 2 ** 2048 + 1):
++            coords = [[scale * x for x in unit[0]]]
++            result = normal_component_inventory(tri, coords, record_certificate=True)
++            expected = {}
++            if scale % 2:
++                expected[vector(unit)] = 1
++            if scale // 2:
++                expected[vector(doubled)] = scale // 2
++            self.assertEqual(profiles(result), expected)
++            self.assertFalse(result['has_compressing_disk'])
++            self.assertTrue(verify_normal_component_certificate(tri, coords,
++                                                               json_safe(result['certificate'])))
++
++    def test_primitive_total_with_huge_mixed_multiplicities(self):
++        tri, meridian = layered_torus(3)
++        link = [[1, 1, 1, 1, 0, 0, 0] for _ in meridian]
++        k, ell = 2 ** 1000, 2 ** 1000 + 1
++        coords = [[k * x + ell * y for x, y in zip(a, b)]
++                  for a, b in zip(meridian, link)]
++        result = normal_component_inventory(tri, coords, record_certificate=True)
++        self.assertEqual(profiles(result), {vector(meridian): k, vector(link): ell})
++        self.assertEqual(result['compressing_disk_components'], k)
++        self.assertTrue(verify_normal_component_certificate(tri, coords, result['certificate']))
++
++    def test_empty_surface_and_resource_caps(self):
++        tri, meridian = layered_torus(3)
++        zero = [[0] * 7 for _ in meridian]
++        result = normal_component_inventory(tri, zero, record_certificate=True)
++        self.assertEqual(result['profiles'], [])
++        self.assertEqual(result['components'], 0)
++        self.assertFalse(result['has_compressing_disk'])
++        self.assertTrue(verify_normal_component_certificate(tri, zero, result['certificate']))
++        for cap in ({'max_cycles': 0}, {'max_operations': 0},
++                    {'max_weight_blocks': 0}, {'max_output_records': 0}):
++            answer = normal_component_inventory(tri, meridian, **cap, record_certificate=True)
++            self.assertEqual(answer['status'], 'INCONCLUSIVE')
++            self.assertNotIn('profiles', answer)
++            self.assertNotIn('certificate', answer)
++
++    def test_forged_inventory_and_source_are_rejected(self):
++        tri, meridian = layered_torus(2)
++        coords = [[3 * x for x in row] for row in meridian]
++        proof = normal_component_inventory(tri, coords, record_certificate=True)['certificate']
++        bads = []
++        for key, value in [('multiplicity', 4), ('euler_characteristic', 0),
++                           ('disk', False), ('compressing_disk', False),
++                           ('normal_disks', True)]:
++            bad = deepcopy(proof)
++            bad['profiles'][0][key] = value
++            bads.append(bad)
++        bad = deepcopy(proof)
++        bad['profiles'][0]['coordinates'][0][0] += 1
++        bads.append(bad)
++        bad = deepcopy(proof)
++        bad['weighted']['classes'][0][1] += 1
++        bads.append(bad)
++        bad = deepcopy(proof)
++        bad['boundary_homology'][0] = {'nonzero': False, 'vertex_values': []}
++        bads.append(bad)
++        for bad in bads:
++            self.assertFalse(verify_normal_component_certificate(tri, coords, bad))
++        foreign = [[4 * x for x in row] for row in meridian]
++        self.assertFalse(verify_normal_component_certificate(tri, foreign, proof))
++
++    def test_cancellation_is_not_a_negative_claim(self):
++        tri, coords = layered_torus(2)
++        proof = normal_component_inventory(tri, coords, record_certificate=True)['certificate']
++        class Cancel(ValueError):
++            pass
++        for function in (lambda check: normal_component_inventory(tri, coords, check=check),
++                         lambda check: verify_normal_component_certificate(
++                             tri, coords, proof, check=check)):
++            for stop in (1, 30, 100, 250):
++                count = [0]
++                def check():
++                    count[0] += 1
++                    if count[0] == stop:
++                        raise Cancel('test cancellation')
++                with self.assertRaises(Cancel):
++                    function(check)
++
++    @unittest.skipUnless(importlib.util.find_spec('regina'), 'optional Regina oracle')
++    def test_regina_components_and_relabelled_anchors(self):
++        rng = random.Random(261009101)
++        cases = []
++        for count in (1, 2, 4):
++            tri, meridian = layered_torus(count)
++            cases.append((tri, meridian))
++            cases.append(boundary_cap(tri, meridian))
++        tri, basis = interior_vertex_torus()
++        for _ in range(18):
++            coeff = [rng.randrange(4) for _ in range(3)]
++            coords = [[sum(coeff[j] * basis[name][t][kind]
++                           for j, name in enumerate(('sphere', 'boundary_disk', 'mobius')))
++                       for kind in range(7)] for t in range(4)]
++            cases.append((tri, coords))
++        checks = 0
++        for tri, coords in cases:
++            for _ in range(3):
++                raw, changed = relabel(tri, coords, rng)
++                rt = regina_triangulation(raw)
++                surface = regina_surface(rt, changed)
++                oracle = Counter(vector(export_surface(component)) for component in surface.components())
++                result = normal_component_inventory(raw, changed, record_certificate=True)
++                self.assertEqual(profiles(result), dict(oracle))
++                self.assertTrue(verify_normal_component_certificate(raw, changed,
++                                                                   result['certificate']))
++                checks += 1
++        self.assertEqual(checks, 72)
++

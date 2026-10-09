@@ -1,0 +1,386 @@
+\section{Five-coordinate normal-surface component certificates}
+\label{nc:section}
+
+Weighted orbit counting gives information about individual connected
+components without expanding them.  We use this classical capability to
+answer a specific question that the previous aggregate topology interface
+could not answer: does a supplied, possibly disconnected normal surface
+contain a compressing disk?  The contribution here is an explicit
+constant-dimensional weight construction and its implementation contract.
+Polynomial component analysis itself is already supplied by the weighted
+Agol--Hass--Thurston algorithm \cite{AHT2006}.
+
+\subsection{The validated input and its orbit system}
+\label{nc:input}
+
+Let $\mathcal T$ be a finite tetrahedral triangulation with $t$ tetrahedra
+of a compact, connected, orientable $3$-manifold $M$, where $\partial M$
+is one torus.  Face identifications within a tetrahedron and identifications
+among its vertices or edges are permitted.  In particular, an edge may
+have equal endpoints.  The input checks reciprocal face identifications,
+edge orientations and links, finite vertex links, ambient orientability,
+connectedness, and boundary topology.  Ideal or singular vertices are
+outside this interface.  These checks establish neither irreducibility
+nor that $M$ is the exterior of a specified knot diagram.
+
+A nonnegative integral vector $x$ supplies seven normal coordinates per
+tetrahedron: four triangle counts $T_0,T_1,T_2,T_3$ and three
+quadrilateral counts $Q_0,Q_1,Q_2$.  The matching equations hold, and
+at most one quadrilateral count in each tetrahedron is positive.  Thus
+$x$ specifies a compact properly embedded normal surface $S$, possibly
+empty, disconnected, or nonorientable.  Every integer is encoded in
+binary, with signed hexadecimal transport available for large values.
+
+Write $w_e=|S\cap e|$ for a global edge $e$.  If a local edge joins
+vertices $a,b$, and $q(a,b)$ is the quadrilateral type avoiding this
+edge, then its intersection count is
+\[
+ T_a+T_b+Q_0+Q_1+Q_2-Q_{q(a,b)}.
+\]
+The matching and gluing checks make this independent of the local
+representative.  Choose an ordering and an orientation of the global
+edges, and concatenate the $w_e$ intersection points into
+\[
+ X=\{0,\ldots,N-1\},\qquad N=\sum_e w_e.
+\]
+The points on $e$ occupy a consecutive block $I_e$.  Orientations are
+transported through face gluings; they cannot be recovered just by
+comparing global vertex labels, since those labels may coincide.
+
+Each geometric triangular face is used once: select one representative
+of an interior face pair and retain every boundary face.  Each of its
+three normal-arc types gives an interval isometry between endpoint
+blocks.  For the corner $v$ of a face opposite $f$, the number of arcs
+is $T_v+Q_{q(f,v)}$.  Its endpoints occupy equally sized intervals
+nearest $v$ on the two incident edges.  Depending on the transported
+orientations, the isometry preserves or reverses order.  There are at
+most $12t$ nonempty pairing families.  We retain their geometric
+multiplicity, even when different families define identical relations.
+
+\begin{lemma}\label{nc:orbit-components}
+The orbits of these interval pairings are in bijection with the
+connected components of $S$.
+\end{lemma}
+\begin{proof}
+The normal cells give $S$ a finite cell structure.  Its vertices are
+$X$, and its edges are the geometric normal arcs just described.
+The pairing relation is exactly connectivity in this $1$-skeleton.
+Each normal polygon has connected boundary in the $1$-skeleton, so
+attaching it cannot join different graph components.  Conversely,
+every polygon is incident to a vertex, and a path through polygons
+can be replaced, for the purpose of connecting vertices, by paths
+along their boundaries.  Thus the graph and surface components agree.
+The argument permits loops, parallel edges, and repeated vertices on
+a polygon boundary.
+\end{proof}
+
+\subsection{Two fixed cycles on the boundary torus}
+\label{nc:boundary-basis}
+
+Let $K$ denote the induced triangulation of $\partial M$, interpreted
+as a cell structure with all edge occurrences retained.  Over
+$\mathbb F_2$, put
+\[
+ Z_1=\ker\partial_1,\qquad B_1=\operatorname{im}\partial_2.
+\]
+Since $K$ is a torus, $\dim(Z_1/B_1)=2$.  The following elementary
+construction fixes two graph cycles $\gamma_0,\gamma_1$ representing
+a basis of this quotient.  It depends on $\mathcal T$, not on $x$.
+
+Order the boundary edges and represent a chain by a bit vector.
+Insert the boundary of every boundary triangle into a binary linear
+basis.  Each occurrence of an edge is added by exclusive-or; two
+occurrences therefore cancel.  This initially spans $B_1$.  Next
+choose a spanning tree of the boundary graph.  If $P_u$ is the tree
+path from its root to $u$, the fundamental cycle associated with a
+non-tree edge $e=uv$ is
+\[
+ \gamma_e=P_u+e+P_v.
+\]
+For a loop, this is just $e$.  Parallel edges remain distinct.
+Insert these fundamental cycles into the same linear basis, retaining
+the original cycle whenever the insertion increases its rank.  Exactly
+two are retained.  Indeed, the fundamental cycles span $Z_1$, and
+the previously inserted triangle boundaries span $B_1$.  One may
+use a spanning forest in the implementation without changing this
+argument; the validated boundary graph is connected.
+
+For a component $C$ of $S$, define the nonnegative integer
+\[
+ I_i(C)=\sum_{e\text{ in }\gamma_i}|C\cap e|,
+ \qquad i=0,1,
+\]
+where an edge is in $\gamma_i$ precisely when its bit coefficient
+is one.  These are integer intersection counts whose parities give
+the mod-two pairings.  The cycles need not be simple or disjoint.
+Keeping actual graph cycles, rather than just reduced quotient
+vectors, makes their intersection weights directly available.
+
+This basis choice does not introduce a topological dependence on
+vertex or edge labels.  A different valid basis acts on the pair
+of parities by an invertible matrix over $\mathbb F_2$, so their
+simultaneous vanishing is unchanged.  The integer counts themselves
+are relative to the chosen cycles and need not be invariant under
+relabeling.  The implementation uses deterministic choices so that
+its checker reconstructs the same field from the same input.  No
+orientation of the cycles is needed, and no simplicity test for
+them is part of the construction.
+
+\subsection{A cellular weight field with five coordinates}
+\label{nc:weights}
+
+For a component $C$, let $F(C)$ be its number of normal polygon
+pieces and let $B(C)=|C\cap K^{(1)}|$ be its number of vertices on
+the ambient boundary.  Thus $B(C)$ is not the number of boundary
+circles.  We construct a piecewise constant function
+\[
+ \lambda:X\longrightarrow\mathbb Z^5
+\]
+whose orbit sum is
+\begin{equation}\label{nc:profile-vector}
+ \bigl(\chi(C),F(C),B(C),I_0(C),I_1(C)\bigr).
+\end{equation}
+Individual Euler weights may be negative; signed additive weights
+are essential to this construction.
+
+Initially assign $(1,0,0,0,0)$ to every point.  For every original
+geometric normal-arc family, subtract $(1,0,0,0,0)$ on its chosen
+endpoint interval.  Using the domain interval after the pairing
+object orders its two endpoint intervals is harmless: either
+endpoint belongs to the same surface component.  This operation
+must precede identity deletion, duplicate removal, or any orbit
+simplification.  A loop still contributes one surface edge, and
+two geometric arcs still contribute two edges even if their
+connectivity relations agree.
+
+For each normal polygon choose one corner, and add
+$(1,1,0,0,0)$ there.  Entire parallel families are handled as
+intervals.  A triangle at local vertex $v$ may use any incident edge
+directed from $v$ towards another vertex: its chosen corners occupy
+the initial interval of length $T_v$.  A quadrilateral family of
+type $q$ may use any local edge $a<b$ with $q(a,b)\ne q$.
+Measured from $a$, its corners occupy
+\[
+ [T_a,T_a+Q_q).
+\]
+They lie between the triangle stacks at the two endpoints.  There
+is no other quadrilateral stack because the quadrilateral condition
+has already been checked.
+
+More generally, a local run $[r,r+h)$ measured from $a$ towards
+$b$ becomes the same run in the global edge block when those
+orientations agree, and becomes
+\[
+ [w_e-r-h,w_e-r)
+\]
+when they disagree.  Add the block's global offset in either case.
+This prescription applies even when several local edges represent
+one global edge.  The selected local corner is counted once for
+its polygon, irrespective of other corners mapping to the same
+global vertex.
+
+Finally, on each boundary edge block $I_e$, add
+\[
+ (0,0,1,\mathbf 1_{e\in\gamma_0},\mathbf 1_{e\in\gamma_1}).
+\]
+An endpoint-event sweep adds these constant intervals and coalesces
+adjacent equal vectors.  It retains zero-valued runs when necessary
+to partition the entire universe.
+
+\begin{lemma}\label{nc:cellular-weights}
+For every orbit $O_C$ corresponding to a component $C$, the sum
+$\sum_{p\in O_C}\lambda(p)$ equals
+\eqref{nc:profile-vector}.
+\end{lemma}
+\begin{proof}
+Every surface vertex receives one initial Euler contribution.
+Every geometric surface edge contributes minus one at exactly one
+of its endpoints, and every normal polygon contributes plus one
+at exactly one corner.  All these incident points belong to the
+same component as the cell being counted.  The first coordinate
+therefore sums to $V(C)-E(C)+F(C)=\chi(C)$.  Polygon contributions
+also give the second coordinate.  The remaining coordinates are
+the indicators of boundary edge points and of membership in the
+two selected cycle supports.  Their sums have exactly the stated
+interpretations.
+\end{proof}
+
+The global sums of the first two coordinates can be checked
+against the independently available total Euler characteristic
+and total number of normal pieces.  These checks are useful
+invariants, but componentwise correctness rests on the cellular
+allocation in the lemma, not merely on agreement of global totals.
+
+The allocation also avoids fractional local Euler weights.  One
+could distribute a polygon's contribution among all its corners
+or divide vertex contributions among incident tetrahedra, but
+such formulas require extra incidence denominators.  Assigning
+each cell to one incident vertex keeps every weight integral.
+The individual values are not intended as intrinsic curvature:
+changing a chosen endpoint or polygon corner changes the field
+while preserving its sum on every component.  Hence repeated
+incidences and large edge degrees affect neither the proof nor
+the fixed number of coordinates.
+
+\subsection{The disk and compressing-disk predicates}
+\label{nc:disk-predicate}
+
+Weighted AHT produces a compressed multiset
+\[
+ \{(m_j,z_j)\}_j,
+ \qquad m_j\geq1,\quad z_j\in\mathbb Z^5,
+\]
+where $m_j$ orbits have feature vector $z_j$.  Equal vectors may
+come from different components with different embeddings.  No
+identification of those embeddings is needed for the following
+predicates.
+
+\begin{theorem}\label{nc:disk-criterion}
+Suppose a component has profile $(c,f,b,u,v)$.  It is a disk if
+and only if $c=1$ and $b>0$.  It is a compressing disk for
+$\partial M$ if and only if, additionally,
+\[
+ (u\bmod2,v\bmod2)\ne(0,0).
+\]
+Consequently, summing the multiplicities of precisely these
+profile groups counts the disk components and compressing-disk
+components of the supplied surface.
+\end{theorem}
+\begin{proof}
+A nonempty boundary of a normal surface component contains
+normal arcs and hence intersects the boundary $1$-skeleton.
+Thus $b>0$ is equivalent to nonempty boundary.  For an orientable
+connected compact surface of genus $g$ with $r>0$ boundary
+components, Euler characteristic one gives $2g+r=1$, hence
+$g=0,r=1$.  For a nonorientable surface with $k\geq1$ crosscaps,
+the same equation gives $k+r=1$, impossible when $r>0$.
+The disk characterization follows.  Requiring boundary prevents
+a closed projective plane from being classified as a disk.
+
+Now let $C$ be such a disk.  Its boundary is a simple closed
+curve on the torus.  Define a mod-two cochain on boundary edges by
+$\alpha(e)=|C\cap e|\bmod2$.  Every boundary triangle has an even
+number of arc endpoints, counted with occurrences, so $\alpha$
+is a cocycle.  Its class is Poincar\'e dual to
+$[\partial C]\in H_1(\partial M;\mathbb F_2)$.
+Since $\gamma_0,\gamma_1$ form a homology basis, this class is
+nonzero exactly when the two evaluations are not both zero.
+These evaluations are $u\bmod2$ and $v\bmod2$.
+
+An essential simple closed curve on a torus represents a
+primitive nonzero class in integral homology, whose reduction
+modulo two is nonzero.  An inessential simple closed curve bounds
+a disk on the torus and has zero class.  Therefore the parity
+test is equivalent to essentiality of $\partial C$, precisely
+the definition of a compressing disk.  No irreducibility
+assumption on $M$ is required.
+\end{proof}
+
+For arbitrary components with several boundary circles, their
+mod-two classes can cancel.  The theorem therefore applies the
+essentiality interpretation only after the disk test.  In
+particular, it does not classify every boundary circle using
+the aggregate pair of parities.
+
+The distinction from an aggregate test is substantive even for
+disks alone.  Consider two disjoint parallel meridian disks in a
+solid torus together with an additional boundary-parallel disk.
+The union is disconnected, has Euler characteristic three, and
+has zero total boundary class modulo two.  Those aggregate data
+do not identify a compressing disk.  Component weights retain
+the two nonzero individual boundary classes, although their sum
+vanishes, and the theorem counts both meridian disks.  Grouping
+the two equal profiles into one record of multiplicity two
+preserves exactly the information this predicate needs.  This
+example explains why weighted orbit data add a capability that
+cannot be recovered just from total Euler characteristic and
+total boundary homology.
+
+\begin{corollary}\label{nc:three-coordinates}
+The three coordinates $(\chi(C),I_0(C),I_1(C))$ suffice for the
+compressing-disk predicate.
+\end{corollary}
+\begin{proof}
+A nonzero intersection parity implies $B(C)>0$.  Hence
+$\chi(C)=1$ together with that parity already implies the full
+criterion of Theorem~\ref{nc:disk-criterion}.
+\end{proof}
+
+The implementation retains five coordinates because they also
+count inessential disk components and provide normal-piece and
+boundary-size diagnostics.  No orientation-double query is
+needed for these disk predicates.
+
+\subsection{Binary complexity and certificate verification}
+\label{nc:complexity}
+
+\begin{lemma}\label{nc:linear-runs}
+The initial field has $O(t)$ constant runs, independently of the
+normal coordinates' magnitudes.  Each initial weight has
+$\ell^1$ norm $O(t)$.
+\end{lemma}
+\begin{proof}
+There is one initial interval, at most $12t$ arc-family
+intervals, at most $5t$ positive polygon-family intervals, and
+at most $6t$ boundary-edge intervals.  Each contributes at most
+two endpoints.  For nonempty $X$, their common refinement thus
+has at most $46t+1$ runs; cancellation or coincident endpoints
+can only reduce this number.  Each interval contributes a
+fixed vector of bounded norm, giving the second bound.
+\end{proof}
+
+All interval endpoints require $O(\log(N+1))$ bits.  The boundary
+basis uses $O(t)$-bit vectors and ordinary binary elimination,
+so its construction is polynomial in $t$.  Lemma~\ref{nc:linear-runs}
+puts the weighted query within the polynomial bounds of the
+classical AHT extension \cite{AHT2006}.  In particular, full-carrier
+weight transfer increases the number of constant runs by at
+most four per transfer; the algorithm does not allocate an
+object for every represented point or every component.
+
+The empty vector is handled separately by the same interface:
+there are no orbit points, no weight runs, and no component
+groups.  Its disk counts are zero.  For a nonempty vector,
+$\log(N+1)$ is bounded by a constant multiple of the largest
+coordinate bit length plus $\log(t+1)$, so this complexity
+parameter is controlled by the actual input encoding.  A large
+geometric number of normal pieces is therefore not itself an
+obstruction to a short profile computation.
+
+For signed weights, each accumulated value is a sum over
+disjoint original points.  Its absolute norm is therefore at
+most $N$ times the largest initial norm, giving
+$O(\log(N+1)+\log(t+1))$ bits.  Together with the polynomial
+number of orbit operations and weight breakpoints, this gives
+a polynomial-time query in the encoded triangulation and
+normal vector.  This is an application of the established
+weighted component theorem, not a new general complexity
+theorem for normal surfaces or unknot recognition.
+
+The certificate checker reconstructs the validated geometry,
+the two boundary cycles, and the five-coordinate field from
+the supplied source input.  It checks the input fingerprint,
+validates the local relations of the unweighted orbit trace,
+and replays the additive transfers before comparing the
+claimed profile multiset.  The fingerprint provides an identity
+check; the mathematical conclusion comes from reconstruction
+and replay.  The producer's search scheduler is not rerun.
+Geometry and weight construction are shared with the producer,
+so this is not a claim of a wholly independent geometric
+implementation.
+
+Verification is polynomial in the encoded input and supplied
+trace length.  Exhausting a producer's cycle allowance gives
+an inconclusive result, with no component verdict.  The
+allowance does not bound all replay work or elapsed time;
+cancellation is a separate cooperative callback whose
+exceptions must propagate through validation.
+
+Finally, a feature profile does not supply a component's full
+normal coordinates or an explicitly embedded disk.  Recovering
+such an object requires further coordinate weights or another
+reconstruction mechanism.  A negative profile answer only
+says that this particular $S$ has no compressing-disk component.
+The existence search over normal surfaces, the relation to a
+knot diagram, compressed three-dimensional cutting, and a
+short global hierarchy remain separate obligations.

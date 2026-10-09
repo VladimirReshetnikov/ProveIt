@@ -1,0 +1,81 @@
+\section{Reproduction and repository integration}
+\label{app:reproduction}
+
+The archive is a self-contained research continuation, with the following
+layout relative to its top-level directory:
+\begin{center}
+\begin{tabular}{p{0.28\textwidth}p{0.63\textwidth}}
+\toprule
+Path & Contents \\
+\midrule
+\path{article/} & This PDF, its main \TeX{} source, sections, bibliography,
+generated tables, vector figures, and build instructions. \\
+\path{code/fast/} & Runnable maintained source snapshot with the new modules,
+tests, and dependency-free demonstration. \\
+\path{code/reports/} & Minimal pinned archived oracle dependencies needed by
+the complete maintained test suite. \\
+\path{reference/} & Exact pinned historical interval producer used for
+paired baseline measurements. \\
+\path{experiments/} & Timing driver, independent component audit and frozen
+trefoil fixture, and table/figure generator. \\
+\path{results/} & Final raw measurements, finite-audit records, test log,
+weighted-test summary, and concise demonstration output. \\
+\path{integration.patch} & Changes to production code, tests, demonstration,
+and the maintained README, with paths relative to the ProveIt repository. \\
+\path{PROVENANCE.json} & Source pin, file identities, environment information,
+and evidence-to-command mapping. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The runtime source and demonstration require Python 3.10 or later; the
+recorded environment uses 3.12.14.  The complete independent surface audit
+requires Regina; the project already specifies its optional Regina range
+in \path{code/fast/pyproject.toml}.  Plot regeneration requires Matplotlib.
+PDF compilation uses a standard \LaTeX{} installation with pdf\LaTeX{},
+Bib\TeX{}, Latin Modern, \code{microtype}, \code{cleveref}, and the packages
+listed in the main source.  No external file download is required to read
+the article, run the demonstration, or compare the supplied interval code.
+
+From the archive root, the convenience driver exposes the independent jobs:
+\begin{verbatim}
+python reproduce.py demo
+python reproduce.py tests
+python reproduce.py audit
+python reproduce.py benchmark
+python reproduce.py figures
+python reproduce.py article
+\end{verbatim}
+Regenerated outputs are written under \path{rerun/}, leaving the recorded
+evidence intact.  Timings should be collected without concurrent heavy
+jobs.  Repeated runs may change elapsed times while leaving operation
+counts, component predicates, and certificate checks identical.
+
+The benchmark command compares the delivered source to
+\path{reference/interval_orbits.py}; it does not fetch a moving branch.
+The independent normal audit reads the adjacent frozen trefoil fixture and
+enumerates only the explicitly described finite families.  The weighted
+test suite writes its small diagnostic JSON into the research folder, which
+the convenience driver copies into the rerun results.  The driver reports
+subprocess failure instead of silently continuing to a successful summary.
+
+Before integrating code into another checkout, run
+\begin{verbatim}
+git apply --check /path/to/integration.patch
+git apply /path/to/integration.patch
+\end{verbatim}
+from the ProveIt root.  The patch targets the pinned commit; later
+concurrent changes may require ordinary review and conflict resolution.
+The archive's source snapshot is useful for reproduction, but replacing
+the whole current \path{fast/} directory with it would discard later work.
+For the manuscript, copy \path{article/} as a complete subdirectory, for
+example under
+\path{Topology/UnknotRecognition/synthesis/component_certificates_20261009/}.
+Its relative section, table, figure, and bibliography paths then remain valid.
+
+The new production sources follow the maintained MIT No Attribution license.
+Existing source and archived oracle license notices are retained.  The
+bundle references third-party papers bibliographically; it does not
+redistribute their downloaded PDFs.  The recorded raw results are evidence
+for this continuation, while the proofs and source comments state the
+generality and limits of each claim.

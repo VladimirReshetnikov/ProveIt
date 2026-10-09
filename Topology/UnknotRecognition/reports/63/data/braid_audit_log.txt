@@ -1,0 +1,214 @@
+{
+  "seconds": 19.3817099580001,
+  "cases": 3227,
+  "cohorts": {
+    "circle": {
+      "cases": 1,
+      "unknots": 1,
+      "positive_probe": 1,
+      "nonpower_positive": 0,
+      "multiround_positive": 0,
+      "resource_limits": 0,
+      "positive_beyond_power_only": 0,
+      "different_remaining_set": 0
+    },
+    "two-strand-exhaustive": {
+      "cases": 170,
+      "unknots": 98,
+      "positive_probe": 98,
+      "nonpower_positive": 0,
+      "multiround_positive": 0,
+      "resource_limits": 0,
+      "positive_beyond_power_only": 0,
+      "different_remaining_set": 0
+    },
+    "three-strand-exhaustive": {
+      "cases": 2856,
+      "unknots": 1712,
+      "positive_probe": 1258,
+      "nonpower_positive": 0,
+      "multiround_positive": 351,
+      "resource_limits": 0,
+      "positive_beyond_power_only": 0,
+      "different_remaining_set": 0
+    },
+    "seeded-four-five": {
+      "cases": 200,
+      "unknots": 132,
+      "positive_probe": 71,
+      "nonpower_positive": 0,
+      "multiround_positive": 52,
+      "resource_limits": 0,
+      "positive_beyond_power_only": 0,
+      "different_remaining_set": 0
+    }
+  },
+  "examples": {
+    "missed_unknot": {
+      "source": {
+        "id": 174,
+        "cohort": "three-strand-exhaustive",
+        "strands": 3,
+        "braid": [
+          -1,
+          2
+        ],
+        "rank": 1,
+        "cube_generators": 9,
+        "probe": "INCONCLUSIVE",
+        "rounds": 0,
+        "killed": 0,
+        "witness_lengths": [],
+        "witness_modes": [],
+        "nonpower_witnesses": 0,
+        "power_only_remaining": [
+          1,
+          2,
+          3
+        ],
+        "power_only_rounds": 0,
+        "counts": [
+          {
+            "letters": 16,
+            "vertices": 3,
+            "edges": 2,
+            "modular_edges": 4,
+            "rational_edges": 4,
+            "sign_edges": 4
+          }
+        ]
+      },
+      "result": {
+        "status": "INCONCLUSIVE",
+        "counts": [
+          {
+            "letters": 16,
+            "vertices": 3,
+            "edges": 2,
+            "modular_edges": 4,
+            "rational_edges": 4,
+            "sign_edges": 4
+          }
+        ],
+        "remaining_generators": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "multiround_positive": {
+      "source": {
+        "id": 177,
+        "cohort": "three-strand-exhaustive",
+        "strands": 3,
+        "braid": [
+          2,
+          -1
+        ],
+        "rank": 1,
+        "cube_generators": 9,
+        "probe": "UNKNOT",
+        "rounds": 2,
+        "killed": 2,
+        "witness_lengths": [
+          1,
+          1
+        ],
+        "witness_modes": [
+          "modulus",
+          "modulus"
+        ],
+        "nonpower_witnesses": 0,
+        "power_only_remaining": [
+          3
+        ],
+        "power_only_rounds": 2,
+        "counts": [
+          {
+            "letters": 14,
+            "vertices": 3,
+            "edges": 1,
+            "modular_edges": 1,
+            "rational_edges": 0,
+            "sign_edges": 0
+          },
+          {
+            "letters": 2,
+            "vertices": 2,
+            "edges": 1,
+            "modular_edges": 1,
+            "rational_edges": 0,
+            "sign_edges": 0
+          },
+          {
+            "letters": 0,
+            "vertices": 1,
+            "edges": 0,
+            "modular_edges": 0,
+            "rational_edges": 0,
+            "sign_edges": 0
+          }
+        ]
+      },
+      "certificate": {
+        "version": 1,
+        "basis": "right-differences",
+        "rounds": [
+          {
+            "donors": [
+              {
+                "kind": "power",
+                "slot": 2
+              }
+            ],
+            "graph": {
+              "killed": [
+                2
+              ],
+              "witnesses": [
+                {
+                  "mode": "modulus",
+                  "walk": [
+                    [
+                      0,
+                      -1
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "donors": [
+              {
+                "kind": "power",
+                "slot": 0
+              }
+            ],
+            "graph": {
+              "killed": [
+                1
+              ],
+              "witnesses": [
+                {
+                  "mode": "modulus",
+                  "walk": [
+                    [
+                      0,
+                      -1
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "terminal": {
+          "kind": "rank-one",
+          "generator": 3
+        }
+      }
+    }
+  }
+}
