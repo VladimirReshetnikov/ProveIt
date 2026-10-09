@@ -5650,6 +5650,22 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        additive quadruples on `B` and equals `f` there, then `g = ψ + u`
        on the largest fiber, of size at least `|S′|/|G|`. In `ℤ/N` this
        replaces Milićević's rank-and-kernel argument.
+     - *Assembling Lemma 9.2 for one pair (next).* Two gaps remain
+       between these pieces.
+       1. **Popular values.** Restrict to the triples whose value
+          `z = x + a` is popular (`z ∈ Z`), and apply Corollary 7.6 with
+          `B₀ = Z` instead of `univ`. This needs a variant of
+          `respected_quadruples_of_separated` that keeps all four sums
+          `x+a, x′+a, x+b, x′+b` in the value set. They do lie there,
+          since every pair it counts comes from two triples of the family.
+       2. **Domain of `ψ`.** `shift_agreement` needs `x` and `x + a` in the
+          set where `ψ` is a homomorphism. Corollary 7.6 gives `ψ = f`
+          only on a dense set of *values*. So first extend `ψ` to a Bohr
+          set with Lemma 7.8 (`Proofs07BohrHom`), the analogue of
+          Milićević's coset progression `C₁`, and then require `x` in it.
+
+       Each restriction keeps a polynomial fraction of the triples,
+       because popular values carry `(c/2)N|Ω|` triples each.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
