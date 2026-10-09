@@ -4925,32 +4925,48 @@ files were changed and no new upstream modules were ported.
 
 
 
-### The deep contract is only needed in prime moduli, eventually (2026-10-09)
+### The deep contract: any bound, prime moduli, eventually (2026-10-09)
 
-`MilicevicDeepVarietyStructure D` quantifies over every modulus `N` and
-every density. Everything that consumes it needs much less. The greedy
-cover applies it at one density, and the structure side concludes only
-for prime `N ≥ N₀`. Meanwhile the formalization of Milićević's proof
-(J.91–J.97) produces prime, large-modulus statements, with thresholds such
-as `sharedWitnessImageCap … < N`. `Proofs16DeepEventuallyPrime` closes
-the interface gap.
-- `DeepStructureAt D N c` is the contract's conclusion at one modulus
-  and one density.
-- `MilicevicDeepEventuallyPrime D`: for every `c > 0` there is a
-  threshold `N₁(c)` such that `DeepStructureAt D N c` holds for every
+`MilicevicDeepVarietyStructure D` asks for more than its consumers use,
+in two ways.
+- **Moduli.** It quantifies over every modulus. The greedy cover applies
+  it at one density, and the structure side concludes only for prime
+  `N ≥ N₀`. The formalization of Milićević's proof (J.91–J.99) produces
+  prime, large-modulus statements.
+- **Bound.** It fixes the quasi-polynomial
+  `milicevicBound D c = (2 + 2 log c⁻¹)^D`. The corpus pipeline loses
+  `13^d` with `d = poly(1/c)` (`columnWitnessDensity`), which is a
+  polynomial bound `poly(1/c)`, and no fixed `D` dominates it. By J.5,
+  `Theorem162At 3` allows counts up to `exp(Θ(r log r))`, with `r`
+  polynomial of degree `2⁵¹²` in `1/(γθ)`. So polynomial bounds of modest
+  degree still fit that budget, and the quasi-polynomial form is not what
+  the dimension-three target needs.
+
+`Proofs16DeepEventuallyPrime` makes the chain parametric in both:
+- `IsVarietyPieceB Bnd c φ G`, a variety piece with bound `Bnd c`.
+  `IsVarietyPiece D` is the case `Bnd = milicevicBound D`,
+  definitionally.
+- `DeepStructureAt Bnd N c`, the contract's conclusion at one modulus and
+  one density.
+- `MilicevicDeepEventuallyPrime Bnd`: for each `c > 0`, there is a
+  threshold `N₁(c)` such that `DeepStructureAt Bnd N c` holds for every
   prime `N ≥ N₁(c)`. The all-moduli contract implies it
   (`MilicevicDeepVarietyStructure.eventuallyPrime`).
-- `exists_variety_piece_at`, `greedy_variety_cover_at`, and
-  `greedy_variety_cover_family_at` use only `DeepStructureAt` at the
-  density they apply.
+- `exists_variety_piece_at`, `greedy_variety_cover_at` and
+  `greedy_variety_cover_family_at` are the greedy cover at the single
+  density they use.
 - `variety_structure_side_eventually`,
-  `structure_side_of_milicevic_eventually`, and
-  `structure_side_of_milicevic_sharper_eventually` derive the structure
-  side from the eventual prime contract. The threshold becomes
-  `max N₀ N₁`, with `N₁` taken at the single density `θ/2/m(γ, θ/2)`.
+  `structure_side_of_milicevic_eventually` and
+  `structure_side_of_milicevic_sharper_eventually` are the structure side
+  for any bound. Its threshold is `max N₀ N₁`, with `N₁` taken at the
+  single density `θ/2/m(γ, θ/2)`.
+- `structure_side_of_milicevic_of_eventually` is the original
+  `IsVarietyPiece D` statement from the weaker hypothesis.
 
-So a proof of Milićević's theorem in prime `ℤ/N` above an explicit,
-density-dependent threshold now suffices for the structure side and
-everything downstream. The original theorems and statements are
-unchanged; the new chain duplicates their proofs with the weakened
-hypothesis. Standard axioms; collision gate clean.
+So a proof of Milićević's structure in prime `ℤ/N`, above an explicit
+density-dependent threshold, with a polynomial bound, now yields the
+structure side. Whether the polynomial degree then fits the full
+dimension-three budget is the remaining numerical check. That check
+concerns the peer's polynomial lift and `PolyBoundedControl`, not the
+interface. The original theorems are unchanged. Standard axioms;
+collision gate clean.

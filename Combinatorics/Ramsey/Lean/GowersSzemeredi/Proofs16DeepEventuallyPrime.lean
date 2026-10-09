@@ -1,29 +1,41 @@
 import GowersSzemeredi.Proofs16LineExtractor
 import GowersSzemeredi.Proofs16SharperVarietyStructure
 
-/-! The structure side from Milićević's theorem in prime moduli only.
+/-! The structure side from a deep structure theorem with any bound, in prime
+moduli only.
 
-`MilicevicDeepVarietyStructure D` quantifies over every modulus `N`. The
-structure side consumes it only in prime moduli above a threshold, and
-only at one density at a time. `structure_side_of_milicevic` already
-concludes `∃ N₀, ∀ N prime, N₀ ≤ N → …`, and the greedy cover applies the
-hypothesis at a single density `θ`. The concurrent formalization of
-Milićević's proof ([49], J.91–J.97) produces exactly such prime,
-large-modulus statements.
+`MilicevicDeepVarietyStructure D` fixes three things that its consumers do
+not need:
+* **Every modulus.** The structure side concludes only for prime
+  `N ≥ N₀`, and the greedy cover applies the hypothesis at one density
+  `θ`. The concurrent formalization of Milićević's proof ([49], J.91–J.99)
+  produces exactly such prime, large-modulus statements.
+* **The quasi-polynomial bound** `milicevicBound D c = (2 + 2 log c⁻¹)^D`.
+  The pipeline in this corpus loses `13^d` with `d = poly(1/c)`, which is
+  a polynomial bound `B(c) = poly(1/c)` that no fixed `D` dominates. Yet
+  `Theorem162At 3` allows counts up to `exp(Θ(r log r))`, with `r`
+  polynomial in `1/(γθ)` of degree `2⁵¹²` (J.5). So polynomial bounds of
+  modest degree still fit the budget.
 
-* `DeepStructureAt D N c`: the conclusion of the deep structure contract
-  for one modulus and one density.
-* `MilicevicDeepEventuallyPrime D`: for every density `c > 0`, the deep
-  structure holds in every prime modulus above some threshold `N₁(c)`.
-  It is implied by the all-moduli contract
+This module makes the chain parametric in a bound function
+`Bnd : ℝ → ℝ` and in the moduli.
+* `IsVarietyPieceB Bnd c φ G`: a variety piece with bound `Bnd c`.
+  `IsVarietyPiece D` is the case `Bnd = milicevicBound D`.
+* `DeepStructureAt Bnd N c`: the deep structure conclusion at one modulus
+  and one density.
+* `MilicevicDeepEventuallyPrime Bnd`: for every density `c > 0`, the deep
+  structure holds in every prime modulus above some threshold `N₁(c)`. It
+  is implied by the all-moduli contract
   (`MilicevicDeepVarietyStructure.eventuallyPrime`).
 * `exists_variety_piece_at`, `greedy_variety_cover_at` and
-  `greedy_variety_cover_family_at` need the contract only at the one
+  `greedy_variety_cover_family_at` need the hypothesis only at the one
   density they use.
 * `variety_structure_side_eventually`, `structure_side_of_milicevic_eventually`
   and `structure_side_of_milicevic_sharper_eventually` are the structure
-  side from the prime, eventual contract. The modulus threshold becomes
-  `max N₀ N₁` at the single density `θ/2/m(γ, θ/2)`.
+  side from the eventual prime contract, for any bound. The modulus
+  threshold becomes `max N₀ N₁` at the single density `θ/2/m(γ, θ/2)`.
+* `structure_side_of_milicevic_of_eventually` is the original statement,
+  with `IsVarietyPiece D`, from the weaker hypothesis.
 
 The proofs are those of `Proofs16VarietyGreedyCover`,
 `Proofs16VarietyStructureSide`, `Proofs16LineExtractor` and
@@ -36,42 +48,54 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 open BaseCase
 
+/-- A variety piece of `φ` with bound `Bnd c`. -/
+def IsVarietyPieceB {N : Nat} [NeZero N] (Bnd : Real → Real) (c : Real)
+    (φ : ZMod N × ZMod N → ZMod N) (G : Finset (ZMod N × ZMod N)) : Prop :=
+  ∃ (Γ Ψ : Finset (ZMod N)) (r : Nat) (L : Fin r → ZMod N → ZMod N) (ρ : Real)
+    (s t : ZMod N) (Φ : ZMod N × ZMod N → ZMod N),
+    (Γ.card : Real) ≤ Bnd c ∧ (Ψ.card : Real) ≤ Bnd c ∧
+    (r : Real) ≤ Bnd c ∧ Real.exp (-Bnd c) ≤ ρ ∧
+    (∀ i, IsFreimanLinearOn (bohr Ψ ρ) (L i)) ∧
+    IsEBihomomorphism (bilinearBohrVariety Γ Ψ L ρ) Φ {0} ∧
+    ∀ q ∈ G, (q.1 - s, q.2 - t) ∈ bilinearBohrVariety Γ Ψ L (ρ / 2) ∧
+      φ q = Φ (q.1 - s, q.2 - t)
+
 /-- The deep structure conclusion at one modulus and one density. -/
-def DeepStructureAt (D : Nat) (N : Nat) [NeZero N] (c : Real) : Prop :=
+def DeepStructureAt (Bnd : Real → Real) (N : Nat) [NeZero N] (c : Real) : Prop :=
   ∀ (A : Finset (ZMod N × ZMod N)) (φ : ZMod N × ZMod N → ZMod N),
     c * (N : Real) ^ 2 ≤ A.card → IsEBihomomorphism A φ {0} →
     ∃ (Γ Ψ : Finset (ZMod N)) (r : Nat) (L : Fin r → ZMod N → ZMod N) (ρ : Real)
       (s t : ZMod N) (Φ : ZMod N × ZMod N → ZMod N),
-      (Γ.card : Real) ≤ milicevicBound D c ∧ (Ψ.card : Real) ≤ milicevicBound D c ∧
-      (r : Real) ≤ milicevicBound D c ∧ Real.exp (-milicevicBound D c) ≤ ρ ∧
+      (Γ.card : Real) ≤ Bnd c ∧ (Ψ.card : Real) ≤ Bnd c ∧
+      (r : Real) ≤ Bnd c ∧ Real.exp (-Bnd c) ≤ ρ ∧
       (∀ i, IsFreimanLinearOn (bohr Ψ ρ) (L i)) ∧
       IsEBihomomorphism (bilinearBohrVariety Γ Ψ L ρ) Φ {0} ∧
-      Real.exp (-milicevicBound D c) * (N : Real) ^ 2 ≤
+      Real.exp (-Bnd c) * (N : Real) ^ 2 ≤
         ((varietyAgreement Γ Ψ L (ρ / 2) A φ Φ s t).card : Real)
 
-/-- The deep structure contract for each density, eventually in prime
-moduli. -/
-def MilicevicDeepEventuallyPrime (D : Nat) : Prop :=
+/-- The deep structure contract with bound `Bnd`, for each density,
+eventually in prime moduli. -/
+def MilicevicDeepEventuallyPrime (Bnd : Real → Real) : Prop :=
   ∀ c : Real, 0 < c → ∃ N₁ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₁ ≤ N →
-    DeepStructureAt D N c
+    DeepStructureAt Bnd N c
 
 theorem MilicevicDeepVarietyStructure.at {D : Nat} (h : MilicevicDeepVarietyStructure D)
-    {N : Nat} [NeZero N] {c : Real} (hc : 0 < c) : DeepStructureAt D N c :=
+    {N : Nat} [NeZero N] {c : Real} (hc : 0 < c) : DeepStructureAt (milicevicBound D) N c :=
   fun A φ hA hφ => h N A φ c hc hA hφ
 
 /-- The all-moduli contract implies the prime, eventual one. -/
 theorem MilicevicDeepVarietyStructure.eventuallyPrime {D : Nat}
-    (h : MilicevicDeepVarietyStructure D) : MilicevicDeepEventuallyPrime D :=
+    (h : MilicevicDeepVarietyStructure D) : MilicevicDeepEventuallyPrime (milicevicBound D) :=
   fun _ hc => ⟨0, fun _ _ _ _ => h.at hc⟩
 
 /-- **One greedy step.** A domain of size at least `θN²` contains a variety
 piece with at least `exp(−B(θ)) N²` points. -/
-theorem exists_variety_piece_at {D : Nat}
-    {N : Nat} [NeZero N] {θ : Real} (hM : DeepStructureAt D N θ) {φ : ZMod N × ZMod N → ZMod N}
+theorem exists_variety_piece_at {Bnd : Real → Real}
+    {N : Nat} [NeZero N] {θ : Real} (hM : DeepStructureAt Bnd N θ) {φ : ZMod N × ZMod N → ZMod N}
     {A : Finset (ZMod N × ZMod N)} (hA : IsEBihomomorphism A φ {0})
     (hsize : θ * (N : Real) ^ 2 ≤ A.card) :
-    ∃ G : Finset (ZMod N × ZMod N), G ⊆ A ∧ IsVarietyPiece D θ φ G ∧
-      Real.exp (-milicevicBound D θ) * (N : Real) ^ 2 ≤ G.card := by
+    ∃ G : Finset (ZMod N × ZMod N), G ⊆ A ∧ IsVarietyPieceB Bnd θ φ G ∧
+      Real.exp (-Bnd θ) * (N : Real) ^ 2 ≤ G.card := by
   obtain ⟨Γ, Ψ, r, L, ρ, s, t, Φ, hΓ, hΨ, hr, hρ, hL, hΦ, hagree⟩ := hM A φ hsize hA
   let G := (varietyAgreement Γ Ψ L (ρ / 2) A φ Φ s t).image fun p => (p.1 + s, p.2 + t)
   have hinj : Function.Injective fun p : ZMod N × ZMod N => (p.1 + s, p.2 + t) := by
@@ -91,14 +115,14 @@ theorem exists_variety_piece_at {D : Nat}
     exact hagree
 
 /-- **Greedy covering by variety pieces.** -/
-theorem greedy_variety_cover_at {D : Nat}
-    {N : Nat} [NeZero N] {θ : Real} (hM : DeepStructureAt D N θ) (hθ : 0 < θ) {φ : ZMod N × ZMod N → ZMod N}
+theorem greedy_variety_cover_at {Bnd : Real → Real}
+    {N : Nat} [NeZero N] {θ : Real} (hM : DeepStructureAt Bnd N θ) (hθ : 0 < θ) {φ : ZMod N × ZMod N → ZMod N}
     {A₀ : Finset (ZMod N × ZMod N)} (hA₀ : IsEBihomomorphism A₀ φ {0}) :
     ∃ (n : Nat) (G : Fin n → Finset (ZMod N × ZMod N)),
-      (n : Real) ≤ Real.exp (milicevicBound D θ) ∧
+      (n : Real) ≤ Real.exp (Bnd θ) ∧
       ((A₀ \ Finset.univ.biUnion G).card : Real) < θ * (N : Real) ^ 2 ∧
-      ∀ i, G i ⊆ A₀ ∧ IsVarietyPiece D θ φ (G i) := by
-  set δ := Real.exp (-milicevicBound D θ) with hδ
+      ∀ i, G i ⊆ A₀ ∧ IsVarietyPieceB Bnd θ φ (G i) := by
+  set δ := Real.exp (-Bnd θ) with hδ
   have hδpos : 0 < δ := Real.exp_pos _
   have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hN2 : (0 : Real) < (N : Real) ^ 2 := by positivity
@@ -107,7 +131,7 @@ theorem greedy_variety_cover_at {D : Nat}
       ∃ (n : Nat) (G : Fin n → Finset (ZMod N × ZMod N)),
         (n : Real) * (δ * (N : Real) ^ 2) ≤ A.card ∧
         ((A \ Finset.univ.biUnion G).card : Real) < θ * (N : Real) ^ 2 ∧
-        ∀ i, G i ⊆ A ∧ IsVarietyPiece D θ φ (G i) := by
+        ∀ i, G i ⊆ A ∧ IsVarietyPieceB Bnd θ φ (G i) := by
     intro m
     induction m with
     | zero =>
@@ -166,25 +190,25 @@ theorem greedy_variety_cover_at {D : Nat}
     rw [← mul_assoc] at h
     have := (mul_le_iff_le_one_left hN2).mp h
     exact this
-  have hexp : Real.exp (milicevicBound D θ) * δ = 1 := by
+  have hexp : Real.exp (Bnd θ) * δ = 1 := by
     rw [hδ, ← Real.exp_add, add_neg_cancel, Real.exp_zero]
-  have hEpos : 0 < Real.exp (milicevicBound D θ) := Real.exp_pos _
+  have hEpos : 0 < Real.exp (Bnd θ) := Real.exp_pos _
   nlinarith
 
 /-- **Greedy covering of several bihomomorphisms.** Given Freiman
 bihomomorphisms `φ_j` on domains `A_j` (`j < n`), at most `n·exp(B(θ/n))`
 variety pieces, each inside the domain of its owner `j`, cover every
 `A_j` outside a common exceptional set `U` with `|U| < θN²`. -/
-theorem greedy_variety_cover_family_at {D : Nat}
+theorem greedy_variety_cover_family_at {Bnd : Real → Real}
     {N : Nat} [NeZero N] {θ : Real} (hθ : 0 < θ) {n : Nat} (hn : 0 < n)
-    (hM : DeepStructureAt D N (θ / n))
+    (hM : DeepStructureAt Bnd N (θ / n))
     (φ : Fin n → ZMod N × ZMod N → ZMod N) (A : Fin n → Finset (ZMod N × ZMod N))
     (hA : ∀ j, IsEBihomomorphism (A j) (φ j) {0}) :
     ∃ (K : Nat) (piece : Fin K → Finset (ZMod N × ZMod N)) (owner : Fin K → Fin n)
       (U : Finset (ZMod N × ZMod N)),
-      (K : Real) ≤ n * Real.exp (milicevicBound D (θ / n)) ∧
+      (K : Real) ≤ n * Real.exp (Bnd (θ / n)) ∧
       (U.card : Real) < θ * (N : Real) ^ 2 ∧
-      (∀ k, piece k ⊆ A (owner k) ∧ IsVarietyPiece D (θ / n) (φ (owner k)) (piece k)) ∧
+      (∀ k, piece k ⊆ A (owner k) ∧ IsVarietyPieceB Bnd (θ / n) (φ (owner k)) (piece k)) ∧
       ∀ j, ∀ x ∈ A j, x ∉ U → ∃ k, owner k = j ∧ x ∈ piece k := by
   have hnR : (0 : Real) < n := by exact_mod_cast hn
   have hθn : 0 < θ / n := div_pos hθ hnR
@@ -193,9 +217,9 @@ theorem greedy_variety_cover_family_at {D : Nat}
   refine ⟨∑ j, m j, fun k => G (e.symm k).1 (e.symm k).2, fun k => (e.symm k).1,
     Finset.univ.biUnion (fun j => A j \ Finset.univ.biUnion (G j)), ?_, ?_, ?_, ?_⟩
   · push_cast
-    calc (∑ j, (m j : Real)) ≤ ∑ _j : Fin n, Real.exp (milicevicBound D (θ / n)) :=
+    calc (∑ j, (m j : Real)) ≤ ∑ _j : Fin n, Real.exp (Bnd (θ / n)) :=
           Finset.sum_le_sum fun j _ => hm j
-      _ = n * Real.exp (milicevicBound D (θ / n)) := by
+      _ = n * Real.exp (Bnd (θ / n)) := by
           rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
   · calc ((Finset.univ.biUnion (fun j => A j \ Finset.univ.biUnion (G j))).card : Real)
         ≤ ∑ j, ((A j \ Finset.univ.biUnion (G j)).card : Real) := by
@@ -220,7 +244,7 @@ theorem greedy_variety_cover_family_at {D : Nat}
       exact hi
 
 /-- **The covering clause of `StackableStructureAt 2`, by variety pieces.** -/
-theorem variety_structure_side_eventually {D : Nat} (hM : MilicevicDeepEventuallyPrime D)
+theorem variety_structure_side_eventually {Bnd : Real → Real} (hM : MilicevicDeepEventuallyPrime Bnd)
     {m : Real → Real → Nat} (hX : BihomExtraction m)
     (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
@@ -231,8 +255,8 @@ theorem variety_structure_side_eventually {D : Nat} (hM : MilicevicDeepEventuall
           ∃ (K : Nat) (G : Fin K → Finset (ZMod N × ZMod N))
             (f : Fin K → ZMod N × ZMod N → ZMod N),
             (K : Real) ≤ m gamma (theta / 2) *
-              Real.exp (milicevicBound D (theta / 2 / m gamma (theta / 2))) ∧
-            (∀ k, IsVarietyPiece D (theta / 2 / m gamma (theta / 2)) (f k) (G k)) ∧
+              Real.exp (Bnd (theta / 2 / m gamma (theta / 2))) ∧
+            (∀ k, IsVarietyPieceB Bnd (theta / 2 / m gamma (theta / 2)) (f k) (G k)) ∧
             restrictRelation Gamma J ⊆ section16FinsetUnion
               (fun k => partialGraph ((G k).image pairPoint) (fun x => f k (x 0, x 1))) := by
   have ht2 : 0 < theta / 2 := by positivity
@@ -270,7 +294,52 @@ theorem variety_structure_side_eventually {D : Nat} (hM : MilicevicDeepEventuall
 
 /-- **The covering half of `StackableStructureAt 2` from Milićević's
 structure theorem alone.** -/
-theorem structure_side_of_milicevic_eventually {D : Nat} (hM : MilicevicDeepEventuallyPrime D)
+theorem structure_side_of_milicevic_eventually {Bnd : Real → Real} (hM : MilicevicDeepEventuallyPrime Bnd)
+    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+      ∀ Gamma : Finset (Point N 2 × ZMod N),
+        (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 →
+        RelationProductProperty gamma Gamma →
+        ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
+          ∃ (K : Nat) (G : Fin K → Finset (ZMod N × ZMod N))
+            (f : Fin K → ZMod N × ZMod N → ZMod N),
+            (K : Real) ≤
+              bihomFamilySize (densePieceMassGen fun γ β => lemma163Alpha γ β) gamma (theta / 2) *
+              Real.exp (Bnd (theta / 2 /
+                bihomFamilySize (densePieceMassGen fun γ β => lemma163Alpha γ β) gamma (theta / 2))) ∧
+            (∀ k, IsVarietyPieceB Bnd (theta / 2 /
+              bihomFamilySize (densePieceMassGen fun γ β => lemma163Alpha γ β) gamma (theta / 2))
+              (f k) (G k)) ∧
+            restrictRelation Gamma J ⊆ section16FinsetUnion
+              (fun k => partialGraph ((G k).image pairPoint) (fun x => f k (x 0, x 1))) :=
+  variety_structure_side_eventually hM (bihomExtraction_of_densePiece densePiece_polynomial)
+    gamma theta hg hg1 ht ht1
+
+theorem structure_side_of_milicevic_sharper_eventually {Bnd : Real → Real}
+    (hM : MilicevicDeepEventuallyPrime Bnd)
+    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+      ∀ Gamma : Finset (Point N 2 × ZMod N),
+        (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 →
+        RelationProductProperty gamma Gamma →
+        ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
+          ∃ (K : Nat) (G : Fin K → Finset (ZMod N × ZMod N))
+            (f : Fin K → ZMod N × ZMod N → ZMod N),
+            (K : Real) ≤
+              bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2) *
+              Real.exp (Bnd (theta / 2 /
+                bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2))) ∧
+            (∀ k, IsVarietyPieceB Bnd (theta / 2 /
+              bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2))
+              (f k) (G k)) ∧
+            restrictRelation Gamma J ⊆ section16FinsetUnion
+              (fun k => partialGraph ((G k).image pairPoint) (fun x => f k (x 0, x 1))) :=
+  variety_structure_side_eventually hM (bihomExtraction_of_densePiece densePiece_sharper)
+    gamma theta hg hg1 ht ht1
+
+/-- **The original statement from the prime, eventual contract.** -/
+theorem structure_side_of_milicevic_of_eventually {D : Nat}
+    (hM : MilicevicDeepEventuallyPrime (milicevicBound D))
     (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
       ∀ Gamma : Finset (Point N 2 × ZMod N),
@@ -288,29 +357,6 @@ theorem structure_side_of_milicevic_eventually {D : Nat} (hM : MilicevicDeepEven
               (f k) (G k)) ∧
             restrictRelation Gamma J ⊆ section16FinsetUnion
               (fun k => partialGraph ((G k).image pairPoint) (fun x => f k (x 0, x 1))) :=
-  variety_structure_side_eventually hM (bihomExtraction_of_densePiece densePiece_polynomial)
-    gamma theta hg hg1 ht ht1
-
-theorem structure_side_of_milicevic_sharper_eventually {D : Nat}
-    (hM : MilicevicDeepEventuallyPrime D)
-    (gamma theta : Real) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
-      ∀ Gamma : Finset (Point N 2 × ZMod N),
-        (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 →
-        RelationProductProperty gamma Gamma →
-        ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
-          ∃ (K : Nat) (G : Fin K → Finset (ZMod N × ZMod N))
-            (f : Fin K → ZMod N × ZMod N → ZMod N),
-            (K : Real) ≤
-              bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2) *
-              Real.exp (milicevicBound D (theta / 2 /
-                bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2))) ∧
-            (∀ k, IsVarietyPiece D (theta / 2 /
-              bihomFamilySize (densePieceMassGen section16SharperLineMass) gamma (theta / 2))
-              (f k) (G k)) ∧
-            restrictRelation Gamma J ⊆ section16FinsetUnion
-              (fun k => partialGraph ((G k).image pairPoint) (fun x => f k (x 0, x 1))) :=
-  variety_structure_side_eventually hM (bihomExtraction_of_densePiece densePiece_sharper)
-    gamma theta hg hg1 ht ht1
+  structure_side_of_milicevic_eventually hM gamma theta hg hg1 ht ht1
 
 end LeanProofs.GowersSzemeredi
