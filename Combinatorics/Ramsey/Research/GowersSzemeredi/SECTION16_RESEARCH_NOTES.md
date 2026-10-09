@@ -3537,6 +3537,65 @@ to be done; discovering this input is not itself a proof of the missing
 progression step. It requires no expansion of the upstream port scope.
 
 
+### J.88. Actual proper progression geometry from global density
+
+`Proofs16ProperBohrProgression` connects the two Bohr conventions.
+The OAI character equals our exponential at the product of frequency and
+argument. Jordan's inequality puts the upstream chord-radius Bohr set
+of radius rho inside our centered-phase Bohr set of radius rho/4.
+The already-ported `OAI.Erdos3.BohrProgression` progression theorem then
+gives a proper centered progression Q with rank at most |T|+1 inside
+B(T;rho/4), and
+`|Q| >= exp(-((|T|+1)*w + 10*(|T|+1)^2))*N`
+whenever w>=0 and exp(-w)<=rho. Taking the chord radius min(1,rho)
+removes any upper-bound requirement on rho. The proved explicit choice
+`w=log(1+rho^(-1))` works for every positive rho. Zero membership and
+negation invariance of the progression carrier are also proved.
+
+`Proofs16ProgressionParameterDensity` averages a dense set V on translates
+of Q. It produces t and a nonempty W subset Q with t+W subset V,
+`|W|>=nu*|Q|`, and the corresponding explicit ambient density bound.
+Four-term combinations of Q's points belong to B(T;rho). The proof uses
+Q's containment in the quarter-radius Bohr set; it does not assume that
+a dilation of a proper progression is itself proper.
+
+`Proofs16CommonProgressionDomain` retains the common normalized Freiman
+extensions on the full Bohr domain while choosing that progression.
+Original-domain agreement gives affine formulas on the dense translated
+part of Q. The translate's center need not belong to any selected domain:
+one point of the dense part supplies the reference value, and normalized
+Freiman differences supply the correction.
+
+`Proofs16AffinePatternGeometry` keeps at most 4ell constant frequencies
+and 2ell varying ones in those affine formulas. The usual half-radius
+triangle bound preserves the original directional containment.
+`Proofs16FixedPatternProgression` applies this simultaneously to the
+two varying fixed-pattern families and retains the density and rank
+bounds. All four-term progression combinations lie in the map domains.
+
+`Proofs16GlobalProgressionGeometry.global_proper_progression_geometry`
+starts from global alpha-density of A, with the same epsilon and N
+hypotheses as J.87. It produces an actual proper symmetric progression,
+a nonempty subset W of relative density at least
+`nu=(beta^4-epsilon)/(m+1)^(4ell)`, normalized maps on a domain containing
+the progression's four-term combinations, and constant/varying Bohr
+constraints at radius `1/(32*max(1,ell))` implying
+`(d,t+x) in D_hor D_ver D_hor D_hor A` for x in W.
+The common spectrum has rank at most `2ell*16*kappa^(-2)`, and the
+progression rank is at most one more than that spectrum's actual rank.
+This supplies the proper common parameter geometry previously missing
+from the constructed fixed-pattern route, with the explicit bounds above.
+
+The six modules contain fourteen new theorem declarations and compile
+in a 129-module closure. The OAI progression result and its dependencies
+were already part of the selected, licensed density port; no additional
+upstream files or modifications are introduced. This does not prove
+algebraic regularity, robust representation counts, or the final
+structural theorem. It also does not certify the paper's prescribed
+numerical or asymptotic bounds. Five numbered entries remain open, and
+all existing source-fidelity caveats remain in force.
+
+
 ### Algebraic regularity in prime Z/N: Lemmas 8 and 30 become easy (2026-10-09)
 
 Prime `ℤ/N` with Bohr-set domains removes two of the heavier ingredients
@@ -3569,6 +3628,23 @@ for Theorem 33 in this setting:
   `λ·L(y₁−y₂) = 0`;
 - the iteration bookkeeping, at most `r` steps, each multiplying the
   domain rank by a polynomial factor.
+
+
+The merged audit passes: 6,537 public Gowers theorems, a 5,008-module
+facade (4,152 OAI modules), and 5,010 modules including both audits.
+All fourteen new progression declarations also pass individual transitive
+axiom checks. Only propext, Classical.choice, and Quot.sound occur.
+The source ledger and selected port scope pass, preserving 115 companions,
+five open statements, and all existing fidelity caveats. The incoming
+dense-kernel and relation-subspace results are included in this audit.
+The upstream progression code was reused without changes; its existing
+Apache license and provenance records remain applicable and unchanged.
+
+After the main push encountered a concurrent update, the box-sum
+transposition and right-sided codegree lemmas were merged and the combined
+audit rerun. It passes for 6,540 public Gowers theorems in the same
+5,010-module closure, with the same three-axiom boundary. No numbered
+statement status or selected upstream port scope changed.
 
 
 ### Proposition 23 and Claim 34 with a radius per frequency (2026-10-09)
