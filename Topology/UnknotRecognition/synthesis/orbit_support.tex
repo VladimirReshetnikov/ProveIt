@@ -1,0 +1,97 @@
+\section{Output-sensitive support scans inside the adaptive orbit kernel}
+\label{sec:orbit-support}
+
+The native cocycle stage makes remaining component-query costs visible.
+A diagnostic profile of the 16-crossing stabilized circle finds 154,215
+disjoint-support tests among 154,363 calls to the periodic merger. Such
+tests cannot succeed. The previous adaptive scheduler avoids repeated
+cubic scans by switching to a quadratic candidate queue, but still tests
+every pair on a no-merger pass. The new scheduler adds an interval-specific
+support scan while retaining that queue as its dense-case fallback.
+
+\subsection{Pruning failures without changing the proof trace}
+
+A periodic pairing has support $[a,d]$ and positive period $p=c-a$.
+Both maintained merger rules require positive support overlap: the sharp
+rule requires at least $p+q-\gcd(p,q)\ge1$ points, and the classical rule
+requires at least $p+q$. Therefore deleting disjoint pairs from a candidate
+scan cannot remove a successful merger under either rule.
+
+As before, find the first two periodic rows lazily and try that pair before
+building any index. Immediate first-pair merger families retain linear
+eligibility work and construct no support index. After a failure, collect
+all periodic rows and sort them by support start, with original row index
+as a tie-breaker. Sweep from left to right, retaining earlier rows in an
+active set and a heap ordered by support end. Remove a row only when its
+end is strictly less than the next start: supports meeting at one integer
+point must remain eligible.
+
+Each active row overlaps the new row, and every overlapping pair appears
+exactly once, when its later sweep endpoint is visited. Store its two
+original indices in increasing order and sort the candidate list
+lexicographically. Resume the merger scan in that order, skipping the
+already failed first pair. Until a merger succeeds, row values and list
+indices are fixed. Omitted pairs all fail, so the first success is exactly
+the old greedy success. Its replacement, survivor position and trace event
+are unchanged. Induction after each restart proves identical closure output
+and successful events. The resulting complete AHT certificates and cycle
+allowances are preserved; scheduling diagnostics and work-guard counts may
+change. The independent replay checkers are unchanged.
+
+For $k$ input rows, give the closure allowance $A=\binom{k}{2}$. Charge
+each initial first-pair test and \emph{every enumerated overlap}, including
+ones later discarded because an earlier candidate merges. If another charge
+would exceed $A$, abandon that unfinished index and use the existing
+generation-checked queue on the current rows. No merger from a partial index
+has been applied. The fallback therefore starts from precisely the same
+greedy state and cannot change a verdict or trace. Charging index construction,
+rather than only attempted mergers, prevents repeated dense index builds
+from escaping the allowance.
+
+A no-merger support pass with $E$ overlaps costs
+$O(k\log(k+1)+E\log(k+1))$ scalar operations and $O(k+E)$ storage.
+For disjoint supports $E=0$, it makes one merger call and takes
+$O(k\log(k+1))$ operations rather than testing $\binom{k}{2}$ pairs.
+There are at most $k$ support builds before closure terminates, and their
+total charged overlap count is at most $A$. With the fallback, the
+conservative bound remains $O(k^2\log(k+1))$ scheduler operations,
+$A+\max(k-1,0)^2$ merger calls and $O(k^2)$ memory. Binary endpoint
+comparisons and the exact gcd merger have their ordinary bit costs. This
+is a bound for one closure; it does not count all AHT cycles or prove a
+general quasi-polynomial unknot recognizer.
+
+There is also an explicit family on which this changes the cost of the
+whole orbit computation. On $[0,2k)$ take the $k$ unit pairings
+$[2i,2i]\leftrightarrow[2i+1,2i+1]$. Each cycle truncates the rightmost
+pair and the next contraction emits its remaining singleton. The algorithm
+has $k+1$ cycles, including the final empty-pairing contraction. The previous
+no-merger scans make
+\[
+ \sum_{j=1}^k\binom{j}{2}=\binom{k+1}{3}
+\]
+merger calls; the support scheduler makes exactly $k-1$. Remaining coverage,
+transmission and independent replay scans give a conservative
+$O(k^2\log(k+1))$ scalar-operation bound for the new complete query and
+replay, compared with the old cubic merger work. The proof trace is identical.
+This is a restricted interval-system theorem, not a claim that arbitrary
+normal-surface systems have disjoint supports.
+
+\subsection{One static-gap scan and an identity contraction}
+
+The original producer separately scanned domains and ranges to record
+certificate gaps, then repeated the sort and coverage scan to perform the
+contraction. It also rebuilt every immutable pairing even when there was
+no static gap. The new routine obtains occupied blocks and their complement
+in one sorted scan and returns the same gap list for the trace event.
+
+If the complement is empty, the order-preserving contraction is the identity,
+so it reuses the immutable pairing rows. Otherwise a prefix map on occupied
+blocks gives every endpoint's new rank and reconstructs the pairings. All
+gaps contain only singleton orbits; their total size is added to the orbit
+count. This is the same mathematical reduction and the same certificate
+event as before, with fewer sorts and allocations. Input rows are immutable
+and the caller already owns its working list; no caller-supplied pairing
+is mutated. Cooperative cancellation covers both the coverage scan and
+the nontrivial endpoint map.
+
+\input{orbit_support_results.tex}

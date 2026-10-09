@@ -495,3 +495,12 @@ Complete preparation improves 1.34–2.22× on the measured larger inputs, while
 the smallest case adds about 3% overhead and full-recognition calls show no
 broad gain. See `../synthesis/cocycle_sparse.tex`; the conservative dense
 cohomology bound remains cubic.
+
+The native AHT component path now prunes disjoint periodic supports with an
+overlap sweep and a bounded queue fallback, preserving complete proof traces.
+Static-gap contraction uses one coverage scan and reuses rows when unchanged.
+All 600 audited interval traces and 17 source certificates are preserved;
+the maintained suite passes 1,171 tests. Complete recognition improves
+1.17–2.11× on five inputs deliberately routed through the native stage.
+See `../synthesis/orbit_support.tex` for the per-closure bound, explicit
+disjoint-system improvement, remaining default-budget caps and measurement scope.

@@ -25,6 +25,8 @@ class ClosureResult:
     stale_pops: int
     queue_switches: int = 0
     queue_runs: int = 0
+    overlap_candidates: int = 0
+    support_scans: int = 0
 
 
 def periodic_closure(pairings, *, merge, check=lambda: None, operations=None):
@@ -120,6 +122,100 @@ def periodic_closure(pairings, *, merge, check=lambda: None, operations=None):
         result.append(row)
     return ClosureResult(result, pair_tests, mergers, peak_queue, stale_pops,
                          queue_runs=1)
+
+
+def support_closure(pairings, *, merge, check=lambda: None, operations=None):
+    """Greedy closure specialized to periodic interval supports.
+
+    Disjoint supports cannot pass either maintained periodic merger rule.
+    After the first candidate fails, a sweep lists only overlapping supports,
+    in original lexicographic pair order. Charge every enumerated overlap
+    against the original all-pairs allowance, then fall back to the existing
+    quadratic queue. Dense/repeated index builds cannot create cubic work.
+    The generic hybrid_closure remains available for non-geometric mergers.
+    """
+    check()
+    pairs = list(pairings)
+    allowance = len(pairs)*(len(pairs)-1)//2
+    spent = tests = mergers = overlaps = scans = 0
+
+    def finish(queued=None):
+        if queued is None:
+            return ClosureResult(pairs, tests, mergers, 0, 0,
+                                 overlap_candidates=overlaps, support_scans=scans)
+        return ClosureResult(queued.pairings, tests+queued.pair_tests,
+            mergers+queued.mergers, queued.peak_queue, queued.stale_pops,
+            1, queued.queue_runs, overlaps, scans)
+
+    def fallback():
+        return finish(periodic_closure(pairs, merge=merge, check=check,
+                                       operations=operations))
+
+    def combine(left, right, replacement):
+        nonlocal mergers
+        if operations is not None:
+            operations.append({'op': 'merge', 'left': left, 'right': right})
+        pairs[left] = replacement
+        del pairs[right]
+        mergers += 1
+
+    while True:
+        eligible = []
+        remaining = enumerate(pairs)
+        for index, row in remaining:
+            check()
+            if row.periodic:
+                eligible.append(index)
+                if len(eligible) == 2:
+                    break
+        if len(eligible) < 2:
+            return finish()
+        if spent == allowance:
+            return fallback()
+        check()
+        left, right = eligible
+        tests += 1
+        spent += 1
+        replacement = merge(pairs[left], pairs[right])
+        if replacement is not None:
+            combine(left, right, replacement)
+            continue
+        first = left, right
+        for index, row in remaining:
+            check()
+            if row.periodic:
+                eligible.append(index)
+        scans += 1
+        active, ends, candidates = set(), [], []
+        for index in sorted(eligible, key=lambda i: (pairs[i].a, i)):
+            check()
+            row = pairs[index]
+            while ends and ends[0][0] < row.a:
+                check()
+                _, expired = heappop(ends)
+                active.remove(expired)
+            for other in active:
+                check()
+                if spent == allowance:
+                    return fallback()
+                spent += 1
+                overlaps += 1
+                candidates.append((min(index, other), max(index, other)))
+            active.add(index)
+            heappush(ends, (row.d, index))
+        found = False
+        for left, right in sorted(candidates):
+            check()
+            if (left, right) == first:
+                continue
+            tests += 1
+            replacement = merge(pairs[left], pairs[right])
+            if replacement is not None:
+                combine(left, right, replacement)
+                found = True
+                break
+        if not found:
+            return finish()
 
 
 def hybrid_closure(pairings, *, merge, check=lambda: None, operations=None):

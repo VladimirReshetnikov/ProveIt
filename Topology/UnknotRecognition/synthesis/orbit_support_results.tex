@@ -1,0 +1,51 @@
+\subsection{Source preservation, bounded queries and independent checks}
+
+Five new focused tests pass in 0.158 seconds and all 1,171 maintained tests
+pass in 210.854 seconds. The new controls compare 400 random closures under
+both merger rules with the literal restart scheduler, including exact trace
+order and the per-closure candidate bound. They compare 250 contractions
+with explicit finite order maps, retain one-point support intersections,
+exercise the dense fallback and cancellation, and use $2^{20000}$-scaled
+endpoints without expanding their represented points. Existing integration
+tests retain exact weighted and normal-component certificates, both merger
+rules, false-valued callbacks and all relevant cycle allowances.
+
+The pinned audit performs 600 complete orbit comparisons on 300 additional
+random systems under both rules. Counts, cycles and entire certificates
+match the published baseline, and every result replays independently.
+Small random systems do not exhibit the main support-sparsity effect:
+their total merger calls only fall from 2,625 to 2,618. The maintained
+finite-graph tests separately compare answers with literal connectivity.
+
+The source audit reruns all 84 previous diagrams with the same shared
+two-million-guard allowance. Seventeen positive results replay independently
+and match the earlier source-certificate hashes. Sixty-three cases finish
+the restricted candidate queries without a disc and four remain capped,
+compared with sixty-two completed misses and five caps previously.
+The newly finished case is \code{survivor-01}: it uses 1,812,276 guards and
+finds no disc in either the 331-piece raw surface or the 257-piece optimized
+surface. Its final source status remains inconclusive. No recognition
+coverage increase is claimed.
+
+An independently reproducible diagnostic wraps the merger to classify every
+call on the raw 16-crossing stabilized circle. Disjoint calls fall from
+154,215 to 467, and overlapping calls remain exactly 148. Both complete
+source proofs have the same hash. The shared guarded work falls from
+1,126,713 to 988,196, a much smaller ratio than merger-call counts because
+the rest of discovery, transport and positive replay still runs. The
+diagnostic and source audit overlap regression tests, so their elapsed
+times are not used as performance comparisons.
+
+\input{orbit_support_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/supports.py}.
+
+Its modes are \code{audit}, \code{orbits} and \code{recognize}. The call-category
+diagnostic is \path{data/orbit_support_profile.py}. All 473 runtime, driver,
+fixture and prior-audit pins are checked across the final experiments.
+The baseline is commit \code{7b0746a27}, before either the support scheduler
+or contraction change. The external \code{openai/math} head is unchanged
+at \code{fd4aeeb2e}, and no new unknot
+delivery arrived during this integration. The generic restart, hybrid and
+queue schedulers remain available for comparisons; the specialized support
+scheduler is the default inside the maintained orbit producer.
