@@ -8858,4 +8858,13 @@ This is the weak-transitivity input for the next combinatorial extraction,
 not the abstract Balog--Szemeredi--Gowers conclusion itself. Mixed-level
 composition, the dense relation catalogue, robust graph extraction and the
 subsequent local structure remain to be assembled. No numbered entry or
-final Gowers bound is claimed closed. Full verification follows.
+final Gowers bound is claimed closed.
+
+All fourteen new modules compile in a 508-module production closure. All
+twenty new named proofs pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. The full audit checks 8,342 public
+Gowers theorems with the same axiom boundary, in 5,397 combined modules;
+the facade has 5,395 modules, including 4,152 OAI modules. The generated
+ledger is byte-identical to the tracked 115-companion / five-open catalogue,
+and port scope passes with the unchanged 4,134 upstream and 17 compatibility
+modules. No upstream source or licensing scope is added.
