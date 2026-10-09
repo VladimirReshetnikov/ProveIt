@@ -604,3 +604,18 @@ on later tree positives and 1.89–2.00x on continuing misses, with about two
 percent overhead on immediate positives. The article retains both timing
 runs, A/A variation, all 496 source pins, and the unchanged coverage and
 optional-stage defaults. No general recognition-complexity bound follows.
+
+The next theoretical integration exactly maximizes Euler characteristic on
+an entire certified minimum-span face when all edge face-incidence counts
+are at least two. A nonnegative weighted absolute-difference objective and
+matching-defined constraints give an integral flow dual with O(N² log N)
+indexed arithmetic operations and polynomial binary cost. A separate checker
+certifies feasibility, balance and exact primal–dual equality. Existing
+positive surface verifiers and the default recognition schedule are unchanged.
+The 85-source audit completes 83 cases, improves ten selected Euler values,
+replays 73 distinct arithmetic duals and 13 positive proofs, and agrees with
+Regina on 75 small-source controls. All 1,219 tests pass. Timings against all
+root extrema are mixed; this remains an explicit optimization API. The
+three-crossing unknot control has a certified negative optimum on its
+minimum-span face, demonstrating why this restricted completeness does not
+establish general unknot recognition or a general quasipolynomial bound.
