@@ -1,0 +1,59 @@
+\subsection{Validation, timings and integration scope}
+
+All 14 focused tests pass in 1.753 seconds; the full maintained suite passes
+all 1,219 tests in 254.202 seconds. The final source audit takes 19.307
+seconds. The audit and full suite partly overlap, so those elapsed times
+are correctness-run observations rather than performance comparisons. The
+final audit and both timing runs pin the same 501 source files. Existing
+source-bound disc, annulus, planar, span and weighted-orbit verifiers remain
+byte-identical to the baseline revision \code{3c0817c50}.
+
+The performance endpoint starts from a diagram and includes finite exterior
+construction, primitive cocycle extraction, minimum-span optimization, the
+selected search and independent source-bound replay of its selected surface.
+The old arm searches all distinct root extrema, using the number of global
+vertices as its root allowance, and retains the highest Euler value found.
+The new arm solves the whole face and checks its arithmetic dual. This is a
+complete \emph{candidate-construction} pipeline, not complete knot
+recognition. Earlier native successes are deliberately not allowed to skip
+the experiment, and no exact knot-recognition fallback is timed here.
+
+The first five-round run contains 120 measured calls and 24 warm-ups and
+takes 24.281 seconds. Variation in the original-disc and Kinoshita--Terasaka
+cases motivates the retained nine-round repeat: 216 measured calls and 24
+warm-ups in 40.195 seconds. Each round randomizes roots, roots A/A, exact and
+exact A/A calls. No tests, audits, builds or commits overlap either timing
+run. Every measured call completes, and all per-arm Euler values, piece
+counts, operation counts and certificate hashes are stable within and
+between both runs. Primary-arm median times and median paired ratios from
+the final run follow; paired ratios need not equal quotients of the displayed
+medians.
+
+\begin{center}
+\small
+\input{tables/cocycle_euler_benchmark.tex}
+\end{center}
+
+Random case 158 improves by paired factors 1.272 and 1.283 in the two runs;
+random case 19 improves by 1.054 and 1.062. The original-disc case is slower,
+with ratios 0.677 and 0.690, and Kinoshita--Terasaka is slower with ratios
+0.835 and 0.825. Those final ratios correspond to about 45 and 21 percent
+additional time. The tied-disc case is near parity. The trefoil's small
+apparent improvement is not evidence of a reliable gain: its final roots
+A/A ratio is 0.940. Absolute Kinoshita--Terasaka times also vary substantially
+between runs. The data support mixed costs, not a uniform speedup.
+
+The new callable \code{maximize\_cocycle\_face\_euler} API is consequently
+available for explicit candidate construction and research; it is not added
+to the default native schedule. All existing candidate and portfolio defaults
+remain unchanged. Its theoretical gain is an exact optimum over a face described by $8N$
+inequalities, together with concrete certified limitations of that face. It supplies neither all normal-surface candidates
+nor a complete planar-capping search, a hierarchy algorithm, or a general
+subexponential or quasipolynomial recognition bound.
+
+Reproduce with \code{normal\_orbit\_research.euler} in \code{audit} mode or
+\code{benchmark --rounds 9} mode. The indexed models and arithmetic duals
+are retained in the audit JSON for direct independent replay. The incoming
+unknot archive inventory and the checked \code{openai/math} head
+\code{fd4aeeb2e} remain unchanged. The new reduction is derived from the
+maintained height-cell identity and matching-face description above.

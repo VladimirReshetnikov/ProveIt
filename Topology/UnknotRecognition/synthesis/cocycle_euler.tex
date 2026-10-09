@@ -1,0 +1,147 @@
+\section{Exact Euler optimization on a minimum-span face}
+\label{sec:cocycle-euler}
+
+The bounded root searches of Section~\ref{sec:cocycle-face} can find surfaces
+with different topology at the same minimum piece count, but do not optimize
+topology over the whole face. The height cell formula in
+Section~\ref{sec:cocycle-reuse} leads to a stronger algorithm: when each global
+edge has at least two face incidences, maximizing Euler characteristic on a
+certified minimum-span face is an exact, integral, polynomial-size network
+optimization. The implementation returns the surface in the existing span
+certificate format and a separate arithmetic primal--dual certificate of its
+Euler optimum. This solves a restricted optimization problem; the minimum-span
+face need not contain a disc or annulus even when the knot is trivial.
+
+\subsection{From cell counts to a nonnegative edge objective}
+
+Orient each global edge $e=(a,b)$ and write its coherent cocycle value after an
+integral vertex potential as $x_e(p)=c_e+p_b-p_a$. Let $d_e$ count its incidences with
+global triangular faces, with multiplicity: an interior face is included
+once, a boundary face once, and each of its three local edges contributes an
+incidence even if some are globally identified. For three real numbers, the
+span is half the sum of their three absolute pairwise differences. Therefore
+the normal cell counts give
+\[
+  2\chi(S_p)=2D(p)-\sum_e(d_e-2)|x_e(p)|,
+  \qquad D(p)=\sum_t\operatorname{span}(h_t+p).
+\]
+This identity also explains why minimizing the piece count alone does not
+maximize Euler characteristic: the edge contribution can vary among tied
+minima. It follows from counting cells of the actual coherent level surface,
+not from dropping normal matching or quadrilateral conditions.
+
+Fix a previously certified minimum $D_*$. On its entire optimal face,
+maximizing $\chi$ is equivalent to minimizing
+\[
+  F(p)=\sum_e w_e|c_e+p_b-p_a|,\qquad w_e=d_e-2.
+\]
+The nonnegativity hypothesis $d_e\geq2$ matters. It is checked for every edge;
+unsupported negative weights cause rejection, rather than silently changing
+the objective. No universal lower-degree claim about arbitrary finite
+triangulations is used. The sum $W=\sum_e w_e$ is at most $12N$ for $N$
+tetrahedra, because there are at most $4N$ global faces and three incidences
+per face. Thus weights here have total magnitude linear in the triangulation
+size, independently of the cocycle heights.
+
+The span matching supplies the exact face constraints. If its selected low
+and high corners in tetrahedron $t$ are $\ell_t,u_t$, impose, for every corner
+$i$,
+\[
+ p_{v_{\ell_t}}-p_{v_i}\leq h_{t,i}-h_{t,\ell_t},\qquad
+ p_{v_i}-p_{v_{u_t}}\leq h_{t,u_t}-h_{t,i}.
+\]
+These are the same $8N$ difference inequalities used for bounded root
+extrema. Writing $z_{t,i}=h_{t,i}+p_{v_i}$, the matching dual gives
+\[
+ D(p)-D_*=\sum_t\bigl[(\max_i z_{t,i}-z_{t,u_t})
+                         +(z_{t,\ell_t}-\min_i z_{t,i})\bigr].
+\]
+The two extremal gaps per tetrahedron are nonnegative and vanish exactly
+when all its displayed inequalities hold. Consequently these inequalities
+describe all real and integral potentials attaining $D_*$,
+including ties and changes in local normal-disc types. There is no additional
+restriction to the root extrema already sampled by the earlier algorithm.
+
+\subsection{An independent lower bound and an exact integral solver}
+
+For each objective edge choose a signed flow $f_e\in[-w_e,w_e]$. For each
+constraint $p_v-p_u\leq b_{uv}$ choose a nonnegative flow $\lambda_{uv}$ on
+$u\to v$. Require the combined flow to balance at every vertex. Then
+\[
+\begin{split}
+ F(p)&\geq\sum_e f_e(c_e+p_b-p_a)\\
+     &=\sum_e f_ec_e-\sum_{uv}\lambda_{uv}(p_v-p_u)\\
+     &\geq\sum_e f_ec_e-\sum_{uv}\lambda_{uv}b_{uv}.
+\end{split}
+\]
+The checker validates the primal difference inequalities, both kinds of
+flow bounds, vertex balance and equality of this lower bound with $F(p)$.
+Equality certifies a global optimum over real potentials, hence also over
+integer potentials. This proof needs no trust in the flow solver or in a
+floating-point optimization result. The arithmetic checker makes no claim
+about triangulation provenance, connectedness or knottedness.
+
+The solver constructs an integral equality witness using a minimum-cost
+circulation dual. An objective edge has cost $-c_e$, signed capacity interval
+$[-w_e,w_e]$, and stored flow $g_e=f_e+w_e\in[0,2w_e]$. A constraint arc has
+cost $b_{uv}$ and capacity $W+1$. Start from the supplied feasible span
+potential $p^0$. Set $f_e=w_e$ where $x_e(p^0)>0$, $f_e=-w_e$ where it is
+negative, and $f_e=0$ where it vanishes; start all constraint flows at zero.
+Every usable residual arc then has nonnegative reduced cost with vertex
+potential $p^0$.
+
+This initial flow need not balance. Its total positive imbalance is at most
+$W$. A super-source supplies vertices with excess incoming flow and a
+super-sink receives the deficits. Their initial potentials are respectively
+the maximum and minimum $p^0$ on the relevant vertices, preserving
+nonnegative residual costs. Reduced-cost Dijkstra searches and capped
+potential updates route the imbalance. Each augmentation sends the full
+integral bottleneck, at least one unit. Feasibility is guaranteed by the
+balanced signed zero flow: undoing the initial signed edge flow alone gives
+a feasible repair within the original capacity intervals.
+
+At most $W$ units are sent in total, so no constraint arc of capacity $W+1$
+ever saturates. Its surviving forward residual inequality is exactly the
+required primal difference constraint for the final potential. For $w_e>0$, the residual forward and reverse inequalities imply the
+appropriate sign of $x_e$: an interior signed flow forces $x_e=0$, while
+an endpoint flow can have the corresponding nonzero sign. A positive
+constraint flow also leaves its reverse residual arc and forces the
+constraint to be tight. These complementary equalities produce equality in
+the checker's lower bound. All capacities, distances and potentials remain
+integral; no separate rounding step or integrality assumption is needed.
+
+\subsection{Cost, binary encoding and verification boundaries}
+
+There are $O(N)$ nodes and arcs and at most $W\leq12N$ shortest-path
+augmentations. The indexed graph computation uses $O(N^2\log(N+1))$
+arithmetic and comparison operations and $O(N)$ integer storage entries.
+Neither the number of height levels nor the number of normal pieces is
+expanded. The private generic weighted-difference solver has an augmentation
+bound in the \emph{magnitude} of its weight sum; the polynomial assertion here
+uses the proved linear bound on the geometric weights, not a claim of strong
+polynomiality for arbitrary binary capacities.
+
+A conservative bit bound is sufficient. Let $B$ bound the input cost and
+initial-potential bit lengths, $m=O(N)$ be the number of network nodes,
+$C$ bound original absolute arc costs, and $P$ the largest current absolute
+potential. A shortest simple residual path has reduced length at most
+$(m-1)(C+2P)$. The capped update therefore gives
+$P'\leq P+(m-1)(C+2P)$. Iterating at most $12N$ times bounds all arithmetic
+lengths by $B+O(N\log(N+1))$ bits. Flows have $O(\log(N+1))$ bits. Together
+with polynomial-time integer arithmetic, geometry validation and conservative
+Python-container accounting, this establishes a bit-polynomial bound for
+the complete restricted stage. The tighter indexed operation count is not
+presented as a literal Python bit-operation count.
+
+The public optimizer validates the triangulation, signed global coherence
+and supplied span certificate before constructing this model. It checks its
+new primal--dual equality, replays the returned span certificate, and compares
+the optimum edge objective with an independent normal-coordinate Euler count.
+The surface still uses \code{normal-cocycle-span-v1}. An unknot claim must
+pass the existing independent source-bound disc or annulus verifier; those
+verifiers do not import the new optimizer. A negative Euler optimum is a
+certificate about this face alone, not a knot certificate. Even maximizing
+Euler here does not maximize the number or essentiality of boundary circles
+needed by the separate planar-capping search.
+
+\input{cocycle_euler_results.tex}

@@ -3173,3 +3173,24 @@ python -B -m normal_orbit_research.reuse audit --output ../synthesis/data/cocycl
 python -B -m normal_orbit_research.reuse survey --output ../synthesis/data/cocycle-reuse-survey.json
 python -B -m normal_orbit_research.reuse recognize --rounds 9 --output ../synthesis/data/cocycle-reuse-recognize.json
 ```
+
+The callable `fastunknot.cocycle_euler.maximize_cocycle_face_euler` stage now
+maximizes Euler characteristic over the **entire certified minimum-span face**,
+provided every global edge has at least two face incidences. It accepts a finite
+triangulation, coherent integral tetrahedral heights and a verified span
+certificate, and returns an optimal surface in the existing span format plus
+an independently checkable arithmetic flow dual. The new network uses
+O(N² log N) indexed arithmetic operations and polynomial binary arithmetic;
+its capacities depend on face incidence counts, not height magnitudes.
+
+This is a restricted optimization API, not a new recognition verdict. Its
+negative optimum does not establish knottedness: the unknot given by the
+2-strand braid `[1, 1, -1]` has maximum Euler characteristic -1 on this face.
+Positive surfaces still need the existing source-bound disc or annulus check.
+The native portfolio keeps its current candidate schedule and defaults; the
+new optimizer is available for explicit research and candidate construction.
+Reproduce the source/Regina/dual audit with
+`python -B -m normal_orbit_research.euler audit --output OUTPUT.json`, and the
+comparison against all root extrema with the same driver in `benchmark` mode
+and `--rounds 9`. These timings measure the full candidate-construction and
+surface-replay pipeline, not complete knot recognition.
