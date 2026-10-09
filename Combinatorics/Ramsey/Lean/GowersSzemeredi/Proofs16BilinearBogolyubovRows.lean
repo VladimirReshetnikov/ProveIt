@@ -62,4 +62,26 @@ theorem row_bogolyubov {N : Nat} [NeZero N] (A : Finset (ZMod N × ZMod N)) (y :
   obtain ⟨a, ha, e, he, b, hb, c, hc, rfl⟩ := hB d hd
   exact mem_horDiff_horDiff ha he hb hc
 
+/-- Vertical differences of two points in the same column. -/
+theorem mem_verDiff {N : Nat} [NeZero N] {A : Finset (ZMod N × ZMod N)} {d y₁ y₂ : ZMod N}
+    (h₁ : (d, y₁) ∈ A) (h₂ : (d, y₂) ∈ A) : (d, y₁ - y₂) ∈ verDiff A := by
+  unfold verDiff
+  exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, y₁, y₂, h₁, h₂, rfl⟩
+
+/-- **Step 2 of [49] Theorem 35.** The fibre of `D_ver D_hor D_hor A` over `y`
+contains `B(K_{y+z}; 1/(8π)) ∩ B(K_z; 1/(8π))` for every pair of nonempty
+rows `y + z`, `z`, with `K` the row spectra of `row_bogolyubov`. -/
+theorem verDiff_rowBohr_intersection {N : Nat} [NeZero N] (A : Finset (ZMod N × ZMod N))
+    (y z : ZMod N) (h₁ : (rowOf A (y + z)).Nonempty) (h₂ : (rowOf A z).Nonempty) :
+    ∃ K₁ K₂ : Finset (ZMod N),
+      (K₁.card : Real) ≤ 16 * (((rowOf A (y + z)).card : Real) / N) ^ (-(2 : Real)) ∧
+      (K₂.card : Real) ≤ 16 * (((rowOf A z).card : Real) / N) ^ (-(2 : Real)) ∧
+      ∀ d ∈ bohr K₁ (1 / (8 * Real.pi)), d ∈ bohr K₂ (1 / (8 * Real.pi)) →
+        (d, y) ∈ verDiff (horDiff (horDiff A)) := by
+  obtain ⟨K₁, hK₁, hB₁⟩ := row_bogolyubov A (y + z) h₁
+  obtain ⟨K₂, hK₂, hB₂⟩ := row_bogolyubov A z h₂
+  refine ⟨K₁, K₂, hK₁, hK₂, fun d hd₁ hd₂ => ?_⟩
+  have := mem_verDiff (hB₁ d hd₁) (hB₂ d hd₂)
+  simpa using this
+
 end LeanProofs.GowersSzemeredi
