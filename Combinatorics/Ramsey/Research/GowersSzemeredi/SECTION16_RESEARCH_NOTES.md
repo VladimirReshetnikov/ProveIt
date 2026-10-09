@@ -8920,3 +8920,12 @@ loss. Matching walks to obtain rich cross-subset relations, the subsequent
 local structure, and a comparison with the printed final Gowers budget
 remain open. This checkpoint does not close a numbered catalogue entry
 or assert a tighter final Szemeredi threshold.
+
+All ten modules compile in a 518-module production closure. All twenty
+named proofs pass individual axiom checks, and the full audit checks
+8,387 public Gowers theorems with only `propext`, `Classical.choice`, and
+`Quot.sound`. The combined audit has 5,407 modules; the facade has 5,405,
+including the unchanged 4,152 OAI modules. The generated ledger is
+byte-identical to the tracked 115-companion / five-open catalogue. Port
+scope remains 4,134 upstream modules and 17 compatibility modules, with
+no change to the retained licenses or provenance notices.
