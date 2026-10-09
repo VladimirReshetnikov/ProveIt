@@ -9104,3 +9104,12 @@ coherent route, including endpoint-only identities. The subsequent local
 structure and comparison with the printed Gowers budget remain open.
 No numbered catalogue entry or improved final Szemeredi threshold is
 claimed closed by this checkpoint.
+
+All fifteen modules compile in a 540-module production closure. All
+thirty-five named proofs pass individual axiom checks. The full audit
+checks 8,531 public Gowers theorems with only `propext`, `Classical.choice`,
+and `Quot.sound`, in 5,436 combined modules. The facade has 5,434 modules,
+including the unchanged 4,152 OAI modules. The generated ledger remains
+byte-identical at 115 companions and five open statements. Port scope
+passes with the unchanged 4,134 upstream and 17 compatibility modules;
+no license or provenance scope is added.
