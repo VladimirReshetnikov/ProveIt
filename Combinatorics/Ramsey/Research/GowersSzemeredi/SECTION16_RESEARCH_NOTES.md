@@ -10118,3 +10118,26 @@ its arbitrary bounded-image input interface. Next is the robust
 Bogolyubov–Ruzsa progression extraction (Step 3), followed by the remaining
 structure assembly and comparison with the final numerical budget. The
 five numbered open entries remain. No upstream code is ported here.
+
+Verification after merging the incoming Claim 9.4 selection, core and
+escape proofs: all 16 new named proofs pass individual axiom checks.
+The full production budget closure compiles across 282 modules. The
+combined audit checks 9,055 public Gowers theorems across 5,502 modules
+(5,500 in the facade closure), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
+The generated catalogue is byte-identical: 115 companion proofs and five
+open statements; these counts do not certify fidelity to every printed
+statement. The selected-port scope check passes.
+
+Step 3 lead: the selected port already contains
+`OAI.Erdos3.CyclicCrootSisask.exists_quartic_bogolyubov_progression`
+in `Estimates/LocalizedSiftingAlmostPeriods`. From density `exp(-p)` it
+gives a proper centered progression in `2A-2A`, rank at most
+`2+C(p+1)^4` and mass at least `exp(-C'(p+1)^8)N`. This is not yet the
+robust representation-count input. Its pointwise almost-periodicity
+engine can instead be applied to the popular-difference set, whose
+difference multiplicities are at least `exp(-2p)N/2`. A proof that the
+resulting Bohr set has uniformly many representations is still needed,
+as is the progression-indexed transfer of the almost-all image data.
+This lead requires no new upstream port; the relevant code is already
+in the licensed selected closure.
