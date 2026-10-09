@@ -576,3 +576,19 @@ early annuli, 1.48× over face search and 1.35× on a late-tree case; the new
 seven-crossing proof plus replay is about 16% slower than the old fallback.
 See `../synthesis/cocycle_annulus.tex` for the proof, boundary controls,
 certificate semantics and measurement limits.
+
+The subsequent optional planar-capping integration broadens the sufficient
+surface criterion beyond nonnegative Euler characteristic. A connected
+orientable planar surface with exactly one essential boundary circle gives
+a compressing disc after its inessential circles are capped. Two compressed
+boundary weights certify the required counts, with independent source,
+basis and weighted-trace replay. The four-tree source policy improves from
+24 to 25 positives and the 24-tree policy from 27 to 30. All 1,798 surveyed
+surfaces and five selected witnesses agree with Regina and expanded boundary
+controls; all 1,210 tests pass. Reusing geometry validated within each call
+reduces redundant preparation. Final full-call timings show a 1.12x gain on
+the earlier seven-boundary witness, near parity on the earlier raw witness,
+and costs on added positives and misses, so planar discovery remains opt-in.
+The synthesis article records the elementary proof, binary-size query,
+initial source snapshots, final 493-file pins and both timing runs. This
+extends certificate coverage without establishing a general recognition bound.
