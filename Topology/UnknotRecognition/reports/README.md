@@ -457,3 +457,15 @@ rule. See `../synthesis/power_components.tex` for the torsion-free proof, exact
 graph-abstraction completeness statement, binary product-difference-one family,
 1,142 maintained tests and 654 source replays. Ordinary coverage is unchanged;
 conjugated-power graphs and automatic exposure remain separate open tasks.
+
+The canonical diagram-to-exterior gap identified in the normal-surface reports
+is now addressed by a native Weeks crossing-cell construction followed by a
+finite convex subdivision. A separate integer-coordinate checker verifies
+every face against the source PD. Pulling from a retained pole reduces the
+result from `80*max(1,n)` to `20*max(1,n)` tetrahedra; the old subdivision
+remains available and independently replayable. The result is accepted by
+the maintained compact-manifold validator. This supplies
+provenance for that canonical geometry; it does not authenticate arbitrary
+supplied or simplified triangulations. See `../synthesis/diagram_exterior.tex`.
+Normal-vector discovery and verified simplification remain open integration
+tasks, and the default recognizer retains its existing behavior.
