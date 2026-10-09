@@ -986,6 +986,7 @@ import GowersSzemeredi.Proofs16CommonValue
 import GowersSzemeredi.Proofs16CommonValueFreiman
 import GowersSzemeredi.Proofs16ClaimNineFour
 import GowersSzemeredi.Proofs16SubsetSumIndependence
+import GowersSzemeredi.Proofs16ProgressionImagePurification
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

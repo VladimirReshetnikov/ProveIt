@@ -10370,3 +10370,89 @@ is byte-identical, with 115 companion proofs and five open statements.
 These counts do not certify fidelity to every printed statement. The
 selected-port scope check passes; no upstream code or licensing scope is
 added at this checkpoint.
+
+### J.148. Quantitative progression bridges and the good-pair image profile
+
+Continuation checkpoint 293, 2026-10-09. Six original modules add 23 named
+proofs for the first purification step after J.147's selected maps.
+
+**Progression geometry.** `centered_progression_mem_iff` expresses the
+existing OAI centered progression through bounded signed coordinates.
+Resizing preserves its generators and rank. Smaller radii give subsets
+and inherit properness. Integer shrinking by `m > 0` has cardinality loss
+at most `(2*m)^rank`; every `m`-fold sum from the shrinking belongs to the
+parent. No primality or positive-modulus hypothesis is needed for these
+coordinate statements.
+
+For `x,y` in the quarter shrinking, every `u` in the half shrinking
+satisfies `u,u+(x-y)` in the parent. Thus `progressionBridgeSet C (x-y)`
+has at least `|C|/4^rank` points, uniformly in the chosen pair. This proves
+an explicit version of the geometric abundance needed in Claim 7.3.
+
+**Domains survive cancellation.** `column_quad_image_bridge` combines
+relations on `(a,b,v,u)` and `(c,e,v,u)` by subtracting their defects.
+It first keeps the spectra of all six indices. The combined image has
+size at most `K*J`. Removing the two auxiliary spectra by J.147's
+linear-cap theorem gives an endpoint-only relation at half radius with
+cap
+
+```
+K*J*refinementKernelCap (4*d) (2*d) rho rho.
+```
+
+The endpoint defect is proved Freiman-linear on its actual endpoint Bohr
+set. Bridge values cancel, but their frequencies are removed only through
+that proved range estimate. No vanishing premise or cap-dependent radius
+shrink is introduced.
+
+**Failure counting and good pairs.** `columnPairImageFailures` records
+bridges whose quadruple image exceeds `K`. Each pair/bridge exception maps
+injectively to an additive query of the exact type counted by
+`progressionMapImageFailures`. Summing all pair fibres therefore costs no
+additional exception mass. Pairs with more than `b` failed bridges satisfy
+
+```
+(b+1)*number_of_bad_pairs <= number_of_failed_quadruples.
+```
+
+Two pairs of a quarter-progression additive quadruple admit a common good
+bridge whenever `4^rank` times their summed failure counts is below the
+parent cardinality. `progression_good_pairs_image_relation` then gives the
+endpoint half-radius image bound.
+
+**Profile from the selected maps.** Set
+`b = |C| / 4^(rank+1)` using natural division. The proved reserve
+`4^rank*(2*b) < |C|` includes the small-cardinality case `b=0`.
+`progression_image_purification_profile` starts with at most `eta*N^3`
+failed additive queries and constructs an exceptional pair set `E` with
+
+```
+|E| <= eta*N^3/(b+1).
+```
+
+Every additive quadruple in the quarter shrinking whose two pairs avoid
+`E` has image cap `K^2*refinementKernelCap (4*d) (2*d) rho rho` on its
+endpoint domain at radius `rho/2`. Its only inputs are the proper
+progression, local frequency/Freiman data, positive radius/cap, and the
+selected-query exception bound. All of those are supplied by J.147's
+original-data construction, after restricting local Freiman domains to
+the query radius.
+
+This is the good-pair stage of Claim 7.3. Selecting a dense vertex set
+with few exceptional incident pairs, removing the pair exception
+condition via a second bridge selection, completing eight-term relations,
+and the original eight-tuple source agreement remain to be proved. The
+five numbered statements stay open, and the final printed numerical
+comparison is still required. No upstream code or licensing scope is
+added here.
+
+**Verification.** The production profile compiles in a 389-module closure.
+The completed combined audit checks 9,244 public Gowers theorems in 5,528
+modules, with 5,526 modules in the facade closure. All 23 new named proofs
+are included; only `propext`, `Classical.choice`, and `Quot.sound` occur.
+The selected OAI audit closure remains 4,152 modules, and the port scope
+check passes. The generated catalogue is byte-identical to the tracked
+115-companion / five-open ledger, with the existing fidelity qualifications.
+Incoming Claim 9.4, common-value Freiman extraction, and subset-sum
+independence are included in the same audit. Independent report updates
+were merged before verification.

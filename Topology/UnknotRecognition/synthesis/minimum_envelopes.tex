@@ -1,0 +1,249 @@
+\section{Adaptive standard-ray enumeration from minimum envelopes}
+\label{sec:minimum-envelopes-native}
+
+Report 74 replaces a particular over-refinement in the native sector
+enumerator. The older standard phase formed every pairwise equality of
+triangle potentials, lifted the resulting nonnegative directions, and checked
+their full standard extremality. A crossing between two potentials above
+the minimum can create a spurious direction. At quadrilateral matching
+nullity at most two, the new method enumerates only changes of the actual
+minimum and the feasible section endpoints. These are exactly the standard
+rays, so their rank rejection stage disappears.
+
+Three delivered production modules and their independent tests are now
+integrated unchanged. The native adaptation additionally selects this method
+automatically at nullity one or two and threads an explicit method option
+through supplied-sector discovery. Higher nullity retains the complete
+arrangement/support choice; the quadrilateral phase retains its old behavior.
+This is a structural adaptive choice with a completeness proof, rather than
+a heuristic that drops difficult candidates.
+
+\subsection{Canonical lifting is linear on the right faces}
+
+For a compatible allowed quadrilateral sector with $k\le t$ types, let
+$C=\{q\ge0:Aq=0\}$ be its quadrilateral matching cone. The triangle graph
+gives linear corner potentials $\ell_c(q)$, grouped by global vertex $v$.
+Triangle coordinates have the form $\alpha_v+\ell_c(q)$. Their canonical
+lift is
+\[
+ \Psi(q)_c=\ell_c(q)-m_v(q),\qquad
+ m_v(q)=\min_{c\in G_v}\ell_c(q).
+\]
+Every standard sector vector is uniquely $\Psi(q)+\sum_v\beta_v L_v$,
+$\beta_v\ge0$, with $L_v$ its vertex-link vector. A non-link extreme ray
+must have all $\beta_v=0$, since a nonzero link summand has zero quadrilateral
+projection and cannot be proportional to the whole vector.
+
+Choose a minimum anchor $b_v$ in each group and define
+\[
+ F_b=\{q\in C:\ell_c(q)\ge\ell_{b_v}(q)\text{ for all }c\in G_v\}.
+\]
+On $F_b$ the lift is linear. Projection and lifting are inverse maps between
+$F_b$ and the full standard coordinate face obtained by setting all selected
+triangle anchors to zero. This is a face because every standard coordinate
+is nonnegative. Extreme rays of a face are extreme rays of the whole cone.
+Conversely every non-link standard extreme ray is canonical and belongs to
+one such anchored face. Therefore its projected direction is a ray of the
+\emph{minimum} subdivision, not an arbitrary pairwise-potential arrangement.
+
+This face correspondence holds in every dimension. Within an anchor cell,
+nonnegative summands of a lifted vector must keep every zero anchor zero;
+global nonadditivity of $\Psi$ creates no extremality gap. In higher dimension
+the minimum subdivision is the common lower normal fan of the potential
+coefficient polytopes, equivalently that of their Minkowski sum, intersected
+with $C$. This description does not bound arbitrary-dimensional fan size.
+Canonical conversion itself is classical; the manuscript retains its
+attribution to normal-surface conversion work.
+
+\subsection{Complete nullity-two enumeration and its output bound}
+
+Let $d=\dim_{\mathbb Q}\ker A\le2$. Normalize by $\sum q_i=1$, which meets
+every nonzero nonnegative ray exactly once. The section is empty, a point,
+or a bounded interval. For a nondegenerate interval choose exact rational
+$u,w$ with $Au=Aw=0$, $\sum u_i=1$, $\sum w_i=0$, $w\ne0$, and write
+$q(s)=u+sw$. Every coordinate inequality gives an exact lower/upper bound
+or a constant feasibility test, producing $[L,U]$.
+
+For each vertex group put $h_v(s)=\min_c\ell_c(u+sw)$. This is the lower
+envelope of affine lines. The complete ray list consists of primitive
+canonical lifts at $L,U$ and every genuine interior slope change of any
+$h_v$. Between those parameters the same anchor realizes each minimum,
+so there is a single linear minimum cell and no interior extreme direction.
+At a genuine change the section is a vertex of an anchored face. An interior
+zero of a nonnegative affine coordinate must be an identically zero
+coordinate, so no additional quadrilateral event is missing. Parallel or
+coincident lines and endpoint-only ties create no extra ray.
+
+Dimension zero gives no non-link ray; dimension one is empty or a point.
+A two-dimensional matching space may still have an empty or singleton
+nonnegative section. All these cases are implemented explicitly. The raw
+linear nullity is not confused with feasible cone dimension.
+
+\begin{proposition}[Linear ray inventory]
+For a nondegenerate section, let $p$ be retained triangle classes, $g$ their
+vertex groups and $a\le4k$ the nonzero-labelled triangle-graph edges. Then
+\[
+ R\le p-g+2\le a-k+4\le3k+4.
+\]
+\end{proposition}
+\begin{proof}
+A line is minimal on an interval, since each comparison with another line
+defines an interval. Concavity makes successive distinct envelope slopes
+strictly decrease. A group with $p_v$ classes therefore has at most $p_v-1$
+genuine changes; unioning changes and adding endpoints gives $p-g+2$.
+After zero-label contraction, cycle consistency has rank at most
+$a-p+g$. Its matching nullity two gives rank $k-2$, so
+$k-2\le a-p+g$ and $p-g+2\le a-k+4$. Each allowed quad labels at most
+four face-matching edges, hence $a\le4k$.
+\end{proof}
+
+The constant three is an upper bound, not a claimed sharp geometric example.
+The local $p-g+2$ bound is often tighter. An abstract affine-potential family
+can attain the corresponding envelope count, but that does not realize every
+such potential system as a knot exterior.
+
+The hull implementation sorts slopes, keeps the smallest intercept at equal
+slope, and pops a previous line when the next intersection is not later than
+its start. Exact fractions retain all genuine ties. Projected potential
+intercepts/slopes are computed once and reused across all lifts. With
+$p=O(k)$ and $R=O(k)$ the post-kernel arithmetic cost is
+\[
+ O(pk+p\log(p+1)+R(t+p+k))=O(tk),\qquad1\le k\le t.
+\]
+Kernel construction, source preparation and full coordinate validation are
+charged separately. Coefficient sizes give polynomial bit time; this is not
+a quadratic bit-time bound. The growing family has exponentially many
+pieces but polynomially encoded output, so numeric piece counts cannot be
+treated as input lengths.
+
+\subsection{Independent certificates of complete coverage}
+
+The new \code{normal-sector-envelope-v1} binds the exact triangulation,
+allowed types, matching and section dimensions, rational section vectors,
+endpoints, active-envelope corner records and the complete primitive ray list.
+Rationals use reduced numerator/positive-denominator pairs. The coverage
+checker imports neither the producer, its hull routine nor its contracted
+kernel builder. It reconstructs an uncontracted corner graph from the actual
+matching rows, derives its own potentials and independently checks nullity.
+
+Supplied section vectors are checked against every matching equation and
+normalization; the coordinate bounds certify the entire nonnegative section.
+For an envelope, active slopes must strictly decrease and successive
+intersections must occur in order within the section. Each active line comes
+from an actual source corner. An omitted source line $f$ dominates the
+proposed concave envelope $h$ exactly when the convex function $f-h$ is
+nonnegative at its minimum. A supplied slope bracket identifies that minimum
+at a breakpoint or endpoint, giving one exact dominance comparison per
+corner rather than testing all corners at all candidate parameters.
+
+These checks certify the entire minimum subdivision and then every lifted
+ray, with no missing or duplicate output. A positive disc certificate is
+still a separate native topology/essentiality proof. Coverage of this
+supplied sector does not authenticate a diagram exterior or prove that no
+other sector contains a useful disc.
+
+Automatic standard enumeration now dispatches to envelopes for $d=1,2$;
+empty $d=0$ auto results retain their previous empty schedule. Explicit
+\code{method='envelope'} accepts only the standard phase with $d\le2$.
+Explicit arrangement/supports remain available; higher-dimensional auto
+selection still uses the old predicted-work comparison. The quadrilateral
+phase does not silently become a standard phase.
+
+The envelope's \code{max\_bases} counts begun actual output lifts, not
+spurious linear systems. A partial iterator raises \code{SearchLimit} and
+establishes no absence claim. The complete-coverage producer prechecks
+\code{max\_rays} against the true planned output and returns inconclusive
+without a partial certificate. Supplied-sector discovery exposes the method
+selector and preserves independently checked positive/exhaustion protocols.
+Its standard exhaustion says only that no vertex disc was found in that
+sector. Caller cancellation remains cooperative throughout planning and
+verification.
+
+\subsection{All-size capped family and its component classification}
+
+The supplied fixture attaches one tetrahedral ball to face two of a Fibonacci
+layered solid torus, allowing the meridional quad in each original tetrahedron
+and type one in the cap. Put $F_0=0$, $F_1=F_2=1$,
+$a=F_{n+1}$, $b=F_{n+2}$, and for integers $x,y\ge0$ let
+$h=\max(0,y-ax)$. Its canonical vector has original rows
+\[
+ (F_{n-i+1}x+h,F_{n-i+1}x+h,h,h;0,0,F_{n-i}x),\quad0\le i<n,
+\]
+and cap row
+\[
+ (ax+h-y,bx+h,0,h;0,y,0).
+\]
+The terminal face gluing forces the last meridional quad to be $x$,
+the penultimate one to be $x$ when it exists, and the remaining quads
+to satisfy $q_i=q_{i+1}+q_{i+2}$. Triangle matching makes the two lower
+triangle entries a common value $\alpha$ and the two upper entries
+$F_{n-i+1}x+\alpha$. The cap equations give triangle entries
+$ax+\alpha-y,bx+\alpha,\beta_1,\alpha$. Nonnegativity is exactly
+$x,y\ge0$, $\alpha\ge h$ and $\beta_1\ge0$. Subtracting the old
+vertex-link minimum $\beta_0=\alpha-h$ gives the displayed canonical form. There
+are only two minimum cells, separated by $y=ax$, so the non-link standard
+ray parameters are $(1,0),(1,a),(0,1)$. The middle ray is absent from the
+two quadrilateral endpoints, although one endpoint also supplies an
+essential disc. This demonstrates stronger complete enumeration, not a
+claim that Q screening fails all useful recognition tests.
+
+The README asserts a component formula; its delivered family script checks
+finitely many parameters. The following geometric argument records the
+uniform classification explicitly instead of treating those tests as proof.
+
+\begin{proposition}[Every integral vector in the capped sector]
+The canonical vector above consists of $x+h$ discs, exactly $x$ of which
+have essential boundary. Adding nonnegative vertex-link multiplicities
+$\beta_0,\beta_1$ gives $x+h+\beta_0+\beta_1$ disc components and the same
+essential count $x$. These parameters describe all integral vectors of this
+fixed sector for every $n\ge1$.
+\end{proposition}
+\begin{proof}
+Restriction to the original torus is $xD_n+hL$, where $D_n$ is the primitive
+meridian of Section~\ref{sec:unit-ray-native} and $L$ its boundary vertex
+link. It is a disjoint union of $x$ meridian discs and $h$ inessential discs.
+Each normal piece in a tetrahedron meets a given face in at most one arc.
+The only type missing that face is its opposite triangle, here cap type two,
+whose coordinate is zero. Thus every cap piece attaches along exactly one
+disjoint boundary interval to one old component. The incidence graph for
+each old component is a star with disc leaves: gluing preserves its disc
+type and cannot merge two old components or create a separate one.
+
+The cap is the fixture's boundary retriangulation. Its new outer three-face
+disk maps to the old attaching triangle by a boundary-fixing subdivision
+homeomorphism. Each added disc's outer boundary arc maps to a path homotopic
+relative endpoints to its attaching arc. Hence the resulting boundary circles
+retain their old peripheral classes, preserving the $x$ essential circles.
+This argument takes place away from identified boundary vertices and respects
+the formal face gluings.
+
+The two source vertices are boundary vertices. Their added vertex links are
+inessential disc components. Canonical decomposition separates these links
+from every standard vector. The terminal meridional quad has coefficient
+$F_1x=x$ and the cap quad has coefficient $y$, so integrality forces integer
+$x,y$; their canonical triangle values and link minima are then integral.
+Matching and nonnegativity give exactly the displayed parameters and their
+nonnegative link additions.
+\end{proof}
+
+Consequently primitivity alone does not imply connectedness: $x=2,y=1$
+has coordinate gcd one but two essential discs. The supported-ray theorem
+requires its additional nullity-one hypothesis. On this family the previous
+arrangement method admits $n+2$ positive directions and rejects $n-1$;
+the envelope method emits exactly three. Controls with cap type zero have
+two rays and are retained separately.
+
+\subsection{Native validation and isolated timings}
+
+\input{minimum_envelopes_results.tex}
+
+The global obligation remains selection of a complete, sufficiently small
+family of useful sectors, with their source and transition costs. Matching
+nullity of an allowed quad sector is different from full-coordinate nullity
+on the positive support of a discovered standard ray. The latter being one
+does not prove that the former is at most two. Report 74 also proves that
+checked Farkas zero-coordinate implications can restrict a cone to an
+equivalent smaller face, but supplies no universal reduction to this
+low-dimensional class. This native local improvement and the preserved
+cycle/region theorems therefore advance specific operations while leaving
+general QP recognition unproved.
