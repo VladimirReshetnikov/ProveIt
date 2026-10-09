@@ -5429,10 +5429,38 @@ exponent `D ≤ 2^64`. The steps, in order:
 
 *What is still open* for 16.2 and 16.11 in dimension three is only
 `MilicevicDeepVarietyStructure D` for some `D ≤ 2^64`, which is the
-peer's lane. Its eventual-prime form `MilicevicDeepEventuallyPrime Bnd`
-for a polynomial `Bnd` would need the same budget with `D` chosen per
-`(γ, θ)` (`Proofs16DeepBoundDomination`). There the `D ≤ 2^64`
-condition becomes a growth condition on `Bnd`. That is not yet done.
+peer's lane.
+
+**Caveat: the `D`-form is not what the pipeline delivers (2026-10-09).**
+By the J.5-revisited estimate, the corpus pipeline proves the deep
+structure with a polynomial bound `Bnd(c) ≤ A·c^(-p)`. That is the form
+`MilicevicDeepEventuallyPrime Bnd`, with piece data and agreement at
+scale `exp(-Bnd(c))`. No fixed `D` has `(1/c)^p ≤ (2 + 2·log c⁻¹)^D` as
+`c → 0`, so the pipeline cannot supply `MilicevicDeepVarietyStructure D`.
+
+The domination trick of `Proofs16DeepBoundDomination` does not repair
+this. The chain uses one `D` at two densities: `c₁` for the variety
+pieces at `(γ, θ/4)`, and `c₂ ≪ c₁` for the spectrum pieces. A `D` large
+enough at `c₂` overshoots at `c₁` by a factor `log base(c₂)/log base(c₁)`.
+This factor grows like `log log x`, so `log mb` exceeds any budget
+`K·log x` once `θγ` is small enough.
+
+The fix is to state the chain for a bound function, `D ↦ Bnd`. Every
+`D`-dependence of the chain goes through `milicevicBound D c`: 26
+modules, 129 occurrences, 17 uses of `two_le_milicevic_base`. That
+includes `section16VarietyExtractionCount`,
+`section16PolynomialJointVarietyExponent` and
+`IsVarietyPiece`/`section16VarietyPieceClass`.
+
+The plan:
+- define `…B Bnd` versions;
+- make the `D`-versions the instances `Bnd := milicevicBound D`, which
+  keeps every current statement definitionally;
+- replace `two_le_milicevic_base` by a hypothesis `0 ≤ Bnd c`.
+
+The budget side is already written for this. `section16VarietyThreeLoss_le_of_bounds`
+uses `D` only through the two Milićević values. A polynomial `Bnd` gives
+`log Q ≈ Bnd(c) = poly(x)`, far inside `x^(2·2^256)`.
 
 Lean traps met here:
 - `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
