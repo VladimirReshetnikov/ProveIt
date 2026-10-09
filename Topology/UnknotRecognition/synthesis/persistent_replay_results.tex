@@ -1,0 +1,152 @@
+\subsection{Native correctness and source binding}
+
+All 1,112 maintained tests pass with Regina in 210.025 seconds. Seven new
+tests cover random multibatch agreement with literal substitution, negative
+handles, forward bindings, empty images, repeated child edges, invalid late
+batches, shared node/work allowances and false-valued cancellation callbacks.
+Large binary powers are replayed with expansion, equality, reduction, inversion,
+slicing and ordinary substitution helpers disabled. A 128-step fixture checks
+the historical depth/size recurrence and final raw length $2^{128}+2$.
+Actual diagram certificates split into consecutive singleton batches pass both
+source verifiers, and explicit normalization boundaries create separate blocks.
+
+The final independent audit takes 9.257 seconds and freezes 431 Python and
+corpus hashes. It retains 400 previous single-batch DAG fixtures with 1,600
+compressed and 800 literal replays. Another 400 random raw blocks contribute
+800 old/new compressed comparisons and 1,151 literal batch steps. All agree
+as literal words on every retained slot and on the surviving generator set;
+135 of the new random blocks exercise legacy dependency-order recovery.
+
+On 79 validated diagrams, both default and optional-batch producer certificates
+are identical to baseline \texttt{63c262ac3c22}; there are no gained or lost
+positive outcomes. All 920 original source-bound replay checks pass. Splitting
+48 distinct actual source certificates into single-entry batches yields
+another 192 old/current literal/compressed checks, all passing; all 48 exercise
+the new path, with 49 persistent blocks in total. These split certificates
+are valid alternative witnesses for the same sources. The maintained producer
+does not generally choose that serial encoding.
+
+\subsection{Complete supplied-block measurements}
+
+The pinned kernel run takes 350.994 seconds and retains 240 measured calls
+and 48 warm-ups. Four shuffled arms provide old/new and separate A/A pairs;
+each fixture has five measured rounds. Timers include fresh binary grammar
+construction and complete checked replay. All calls complete. Exact output
+lengths are checked outside the timers; retained structural hashes describe
+the resulting grammars and are not word-equality proofs when associations
+differ. Small literal comparisons and the source-bound audit provide separate
+semantic evidence. Table entries are median milliseconds and median paired
+old/new ratios, which need not equal ratios of the separate medians.
+
+\input{tables/persistent_replay_kernels.tex}
+
+The context family is the delivery's explicit artificial presentation. With
+$a=1$, $b=2$, $x_i=i+3$ and $z=k+4$, its relators are
+\[
+ r_0=x_0^{-1}a x_1b,\qquad
+ r_i=x_0^{-1}x_{i+1}\ (1\le i<k),\qquad
+ r_k=x_0^{-1}z.
+\]
+Eliminate $x_i$ from slot $i$ for $i=0,\ldots,k-1$. The retained raw word
+has length $2^k+2$. Its padding includes cancelling contexts that an intervening
+free reduction would remove; this is not a hard-knot construction.
+At $k=128$, complete fresh construction/replay takes 12,125.140 ms under the
+old checker and 713.619 ms persistently, with paired ratio 16.988. Replay work
+falls from 17,679,028 to 1,366,305. The old checker adds 57,155 ordinary arena
+nodes; the new checker adds 12,031 at export and retains 6,890 private nodes
+during replay. Its peak combined node count is 19,184, including the 263-node
+source arena. The maximum binding-free depth is 855 and the final length has
+129 bits. Both engines perform the same 128 raw singleton transformations.
+
+The tower families use $2^{128}$-power contexts and 128 pivots arranged into
+32 batches of four. Ordered replay takes 6,597.190 versus 1,095.113 ms,
+with paired ratio 6.156 and work 9,094,171 versus 1,888,530. Ordinary nodes
+added are nearly equal, 33,437 versus 33,406: avoiding repeated intermediate
+traversals is the main saving here. The private graph has 17,026 nodes and
+the peak combined count is 67,587, more than the old final ordinary count
+50,592. The largest output length needs 16,514 bits. Reversing each batch's
+entry order exercises legacy order recovery 32 times; its paired ratio is
+3.446 and work falls from 10,971,306 to 2,978,866. These examples show both
+the benefit and the additional transient storage of persistent replay.
+
+Two shallow independent batches provide a conversion control. At 128 pivots,
+the recorded paired ratio is 1.109, but charged replay work rises from 4,605
+to 5,057 and the peak combined node count is 781, versus 394 old ordinary
+nodes. At 32 pivots the new-arm A/A ratio is 0.822, so its small timing gain
+is especially noisy. Across all kernel fixtures the median A/A ranges are
+0.951--1.010 historically and 0.822--1.012 persistently. The result is a
+whole-block representation improvement with favorable large-fixture timings,
+not a promise of fewer operations or less memory on every input.
+
+\subsection{Supplied source proofs and unchanged discovery}
+
+The separate source benchmark retains 80 measured calls and 16 warm-ups in
+23.549 seconds. Each old/new pair verifies the identical version-eight proof
+for a stabilized circle diagram, split into consecutive single-entry batches.
+Every timed call performs fresh diagram validation and the verifier's complete
+independent presentation reconstruction and replay. Producing and splitting
+the supplied certificate, serialization and the separate literal cross-check
+are outside the timers. All calls complete. These are genuine source-bound
+proofs, but their serial encoding is supplied to the verifier rather than
+chosen by the current discovery algorithm.
+
+\input{tables/persistent_replay_source.tex}
+
+At 256 crossings, the unchanged 23,189-byte proof has 255 consecutive raw
+batches. Complete verification takes 1,064.499 versus 449.934 ms, with paired
+ratio 2.345. The replay arena's work counter falls from 1,637,855 to 894,796;
+these counters exclude the preceding independent presentation reconstruction,
+which is included in the timed calls. Final ordinary nodes fall from 2,800
+to 1,785, while 1,273 private circuit nodes make the new combined peak 3,058.
+Thus the time saving does not imply a smaller peak node count. Across the
+four fixtures the paired ratios range from 1.573 to 2.345; median A/A ranges
+are 0.996--1.069 historically and 0.958--1.000 persistently.
+
+The ordinary group-stage benchmark separately runs fresh source validation,
+optional-batch search and mandatory replay. All 120 measured calls and 24
+warm-ups finish in 2.436 seconds. Its producer emits a single batch on these
+circle fixtures, so the persistent block path does not activate. Paired
+ratios range from 0.988 to 1.006; historical A/A ratios range from 0.986 to
+1.035 and new A/A ratios from 0.992 to 1.026. This gives no useful discovery
+speedup and confirms why the supplied split-proof result must be labelled
+separately.
+
+\input{tables/persistent_replay_stages.tex}
+
+The whole-recognition comparison uses the same optional group portfolio in
+both engines on nineteen native diagrams. All 380 measured calls and 76
+warm-ups complete in 39.931 seconds, retaining the same certificates across
+arms. One successful proof, \texttt{survivor-10}, has consecutive batches of
+seven and two generators before normalization. Its paired ratio is 1.047,
+with old/new medians 5.097 and 4.906 ms; its old/new A/A ratios are 1.007
+and 1.002. This is a modest observed gain on an activating native input.
+Separate deterministic source replay reduces arena work from 1,904 to 1,783
+and final ordinary nodes from 165 to 123. The new block has 57 private nodes
+and peaks at 154 combined nodes before the later normalization. These counters
+exclude source reconstruction and are retained with an additional literal
+check in \path{data/persistent-replay-activation.json}.
+The Gordian trial still exhausts its producer allowance and
+uses the unchanged discovery fallback; its final proof cannot benefit from
+the new block checker. Its paired ratio is 1.001, with separate medians
+1,254.964 and 1,273.125 ms. Across the corpus ratios range from 0.979 to
+1.047, with old A/A medians 0.987--1.026 and new A/A 0.981--1.015. This
+establishes no broad whole-recognition improvement.
+
+\input{tables/persistent_replay_pipeline.tex}
+
+In total the four new benchmark modes retain 820 measured calls and 164
+warm-ups, all complete. Kernel, supplied-source, group-discovery and full
+recognition scopes are kept separate. None of the runs overlaps tests,
+article builds or another benchmark. The driver
+\path{../fast/compressed_word_research/persistent_replay.py} provides
+\texttt{audit}, \texttt{kernels}, \texttt{stages} and \texttt{pipeline};
+\path{data/persistent_replay_source.py} runs the supplied-source comparison.
+The former freezes 431 source hashes and the latter additionally freezes
+its own script, for 432. The baseline package is isolated from commit
+\texttt{63c262ac3c22}; only its compressed group-replay dispatcher differs
+among existing runtime modules, plus the new persistent checker. All raw
+records, proof objects and reproduction metadata are retained under
+\path{data/persistent-replay-*}.
+The three deterministic activation checks are reproduced by
+\path{data/persistent_replay_activation.py}; its 433 hashes additionally bind
+the script and the selected pipeline record.
