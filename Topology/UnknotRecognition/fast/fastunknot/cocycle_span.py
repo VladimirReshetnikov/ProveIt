@@ -67,13 +67,15 @@ def minimize_cocycle_span(vertices, heights, *, max_work=None, check=lambda: Non
         budget.tick()
         distance, previous = [None]*len(graph), [None]*len(graph)
         distance[source] = 0
-        heap = [(0, source)]
+        heap = [(0, source, source)]
         while heap:
             budget.tick()
-            value, u = heappop(heap)
+            value, priority, u = heappop(heap)
             pops += 1
             if distance[u] != value:
                 continue
+            if u == sink:
+                break
             for i, (v, reverse, capacity, cost) in enumerate(graph[u]):
                 budget.tick()
                 if not capacity:
@@ -86,7 +88,9 @@ def minimize_cocycle_span(vertices, heights, *, max_work=None, check=lambda: Non
                 if distance[v] is None or candidate < distance[v]:
                     distance[v] = candidate
                     previous[v] = u, i
-                    heappush(heap, (candidate, v))
+                    # The capped update needs no distances beyond the sink.
+                    # Settle it first among ties, including zero-cost regions.
+                    heappush(heap, (candidate, -1 if v == sink else v, v))
         if distance[sink] is None:
             raise ArithmeticError('unit transshipment unexpectedly infeasible')
         limit = distance[sink]
