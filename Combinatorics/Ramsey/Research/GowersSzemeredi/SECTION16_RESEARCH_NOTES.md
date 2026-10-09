@@ -1343,8 +1343,9 @@ Milićević hypothesis).**
   exp(Θ(r log r)) for all γθ ∈ (0,1] **provided Milićević's unspecified
   exponent D is not astronomically large**. Since
   (log y)^D ≤ (D/e)^D·y, it suffices that
-  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). That holds for every D up to about
-  2^500, and the paper's O(1) is certainly far below that.
+  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). An explicit upper bound on D, and explicit comparisons for the
+  recurrence constants C and p, are still needed to turn this heuristic
+  into the printed numerical budget; O(1) alone provides no such bound.
 - The lift's own losses come in on top: samples ≈ poly(1/σ), counts
   C(samples, 2)·Pb², and the threshold. In the peer's polynomial lift they
   are polynomial in the slice controls, so they do not change the
@@ -1372,7 +1373,8 @@ restatement on the polynomial lift imports OAI through
 
 The variety route now rests on `MilicevicDeepVarietyStructure` alone. That
 hypothesis is a reformulation of arXiv:2601.01682's construction (J.2), so
-formalizing the paper is the only way to discharge it. The work starts with
+the following dependency map describes one route to discharging it.
+The work starts with
 the elementary lemmas of its §2:
 - **Lemma 2.5, done (`Proofs16BohrDenseDifference`, kernel-checked).**
   `bohr_dense_sub_cover`: if 4^(k+1)·|B(Γ;ρ) ∖ A| ≤ |B(Γ;ρ)| with k = |Γ|,
@@ -1383,9 +1385,63 @@ the elementary lemmas of its §2:
   `bohr_card_le_four_pow`), regular radii (`bohr_exists_regular_step`), and
   Freiman-linearity in coordinates, equation (9)
   (`freiman_linear_gap_affine`).
-- Next leaves: Lemma 2.7 (radius functions with small boundary), then the
-  bilinear Bogolyubov argument (Theorem 1.6, §11 of the overview). The
-  latter is the first substantial component.
+- **Lemmas 2.7/2.8, done in ℤ/N form (`Proofs16BohrAnnulus`,
+  kernel-checked).** Milićević perturbs radii only because of characters
+  with a small image. In ℤ/N with N prime, every nonzero frequency is a
+  bijection, and the zero frequency never leaves the band around 0. So no
+  perturbation is needed. `bohr_annulus_card_le` proves
+  |B(K;ρ+η) ∖ B(K;ρ−η)| ≤ |K|·(4ηN + 2) for 0 ≤ ρ − η, and
+  `band_card_le` counts residues with centered value in (a, b].
+  Weak regularity therefore holds at every radius, with ε = |K|(4η + 2/N).
+- **Lemma 2.6, done deterministically (`Proofs16SeparatingFrequencies`,
+  kernel-checked).** In ℤ/N with N ≥ 7 prime and d ≠ 0, at most
+  2⌊N/5⌋ + 1 ≤ N/2 frequencies leave γd within N/5 of zero
+  (`small_multiples_card_le`). Double counting gives one frequency that
+  separates half of any set of nonzero differences
+  (`exists_halving_frequency`). Hence |D| < 2^m differences are separated
+  by m frequencies (`separating_frequencies`). For D = (S − S) ∖ {0} that
+  is 2⌈log₂|S|⌉ frequencies, matching the paper's O(log k).
+- **Bilinear Bogolyubov, step 1 (row Bogolyubov), done with polynomial
+  bounds (`Proofs16BilinearBogolyubovRows`, kernel-checked).**
+  - `bogolyubov_classical` is a new public wrapper appended to
+    `Proofs07BohrHom`, extracted from Gowers's Lemma 7.8 proof: density α
+    gives a spectrum K with |K| ≤ 16α⁻² and B(K; 1/(8π)) ⊆ 2A − 2A.
+  - `horDiff`/`verDiff`/`rowOf` define the directional difference sets.
+  - `row_bogolyubov`: every nonempty row of D_hor D_hor A contains such a
+    Bohr set.
+
+  This is OAI-free. The quasi-polynomial alternative is the port's
+  `exists_quartic_bogolyubov`.
+- Next: step 2, the Freiman-linear maps L_i from random selection plus a
+  Freiman inverse theorem, i.e. [49] Lemma 19 and Corollary 20.
+
+**Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
+2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
+2 Coset progressions and Freiman homomorphisms; 3 Variants of Freiman's
+theorem; 4 Bohr sets; 5 Quantitative fundamental theorem of lattices;
+6 Quasirandomness of bilinear Bohr varieties; 7 the argument;
+App. A robust Bogolyubov–Ruzsa; App. B quasirandom bipartite graphs.
+- Step 1, row Bogolyubov: a quasi-polynomial one-dimensional Bogolyubov.
+  **Available in the OAI port:** `exists_quartic_bogolyubov`
+  (`LocalizedSiftingAlmostPeriods.lean`), with rank ≤ 1 + C(p+1)⁴ and
+  radius ≥ e^(−C(p+1)) inside 2A − 2A at density e^(−p).
+- Step 2, the Freiman-linear maps L_i: a random selection f(y) ∈ U_y,
+  averaging, then Theorem 17 (quadruple-respecting map → Freiman
+  homomorphism on a proper coset progression, via BSG and
+  Plünnecke–Ruzsa), iterated up to exp(log^O(1)) times (Lemma 19,
+  Corollary 20). Theorem 17 is Theorem 2.26 of the U⁴ paper.
+- Step 3, columns: Bogolyubov on Y′, then the algebraic regularity lemma
+  (Theorem 4), bipartite quasirandomness (App. B), and the lattice theorems
+  (Theorems 5 and 6), which replace (U ∩ V)^⊥ = U^⊥ + V^⊥.
+- Difference-operator order: D_hor D_ver D_ver D_hor D_ver D_hor D_hor A.
+
+Scale: Theorem 1.6 alone is a substantial formalization project. It is
+only the first of Theorem 1.4's ingredients (§§5–13 of the U⁴ paper add
+abstract BSG, the extension theory, and §11's Freiman-bilinear step).
+Discharging `MilicevicDeepVarietyStructure` requires these remaining
+structure arguments. A weaker-bound route using classical Bogolyubov or
+Gowers's Freiman lemma in `Proofs07BohrHom` may be useful, but fitting its
+constants into Theorem 16.2's printed budget requires a separate proof.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
@@ -2114,3 +2170,50 @@ line-wise-to-bihomomorphism reduction pass the completed combined audit:
 combined modules. Only the three approved axioms occur. The catalogue
 remains 114/6 with its source-fidelity caveats. The earlier queued-audit
 notices for these modules are superseded by this checkpoint.
+
+
+### Polynomial line extraction and the 4,000-entry port checkpoint
+
+The full Gowers checker now includes the unconditional polynomial
+`LineExtractor`, its dense-bihomomorphism consequence, and the resulting
+structure-side reduction with only the deep-structure hypothesis.
+The audit checks 5,902 public Gowers theorems in a 1,421-module facade
+(667 OAI modules) and a 2,657-module combined closure. It permits only
+`propext`, `Classical.choice`, and `Quot.sound`; the catalogue remains
+114 companions and six open statements, with the existing fidelity caveats.
+
+The first 4,000 pinned port entries compile in a 4,016-module closure.
+Their separate 4,017-module axiom audit checks 60,327 public OAI theorems
+and the listed compatibility declarations with the same three axioms.
+This includes the finite local heartbeat repair in
+`PreparedFiniteNestedSourceLatePowerBudget`. The full quantitative density
+conclusion remains unverified and outside the Gowers facade.
+
+
+### Explicit polynomial variety controls and the dimension-three lift
+
+`Proofs16JointVarietyCapBound` bounds the common capped exponent below by
+`1/(1024*p^2*(4*C+18)*(n+1)^17*(B+2)^17)`, where
+`B=milicevicBound D c` and `0<c<=1`. It also retains a sharper bound in
+terms of the rounded rank `ceil(B)`. Both handle the empty family.
+The rational lower control transfers to actual family covers and to the
+general slice provider, with count `9*n` and all required range checks.
+The exponential radius threshold contributes only its logarithm.
+
+`Proofs16VarietyUniformLiftControls` proves that this exponent decreases
+with the sample count and that the interpolation candidate budget is at
+most `81*R^4`, for the uniform sample ceiling `R`.
+`Proofs16PolynomialVarietyPowerCover` then supplies actual
+three-dimensional multilinear covers. For line coefficient `z`, line
+exponent `e`, and the polynomial variety exponent `a` at sample ceiling
+`R`, every `b<e*a/2` gives width at least `m^b` above
+`section16RoundedExponentThreshold z e a b`. The covered good domain
+has mass at least `1-rho` of the input box.
+
+All three production sources and all ten transitive axiom checks pass,
+using only propext, Classical.choice, and Quot.sound. Their combined
+facade audit is queued. Spectrum structure, induced
+selection, the remainder cover, and variety-piece membership of every
+relevant slice remain premises. This does not close a numbered catalogue
+statement or establish a new final Szemeredi threshold. These original
+consumers add no upstream modules or license-scope changes.

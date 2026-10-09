@@ -951,4 +951,19 @@ theorem lemma_7_8_constant_radius {G : Type*} [AddCommGroup G]
   exact lemma78_representation_of_fourCorrelation_ne_zero A d
     (lemma78_constant_correlation_nonzero A alpha hα hcard d hd)
 
+/-- **Classical Bogolyubov lemma**, extracted from the proof of Lemma 7.8.
+For `A ⊆ ℤ/N` of density `α`, the large spectrum `K` has at most `16α⁻²`
+elements, and every element of `B(K; 1/(8π))` lies in `2A − 2A`. This is the
+polynomial-codimension input for the bilinear Bogolyubov argument (research
+notes J.6). -/
+theorem bogolyubov_classical {N : Nat} [NeZero N] (A : Finset (ZMod N)) (alpha : Real)
+    (hα : 0 < alpha) (hcard : (A.card : Real) = alpha * N) :
+    ((section7Spectrum A alpha).card : Real) ≤ 16 * alpha ^ (-(2 : Real)) ∧
+      ∀ d ∈ bohr (section7Spectrum A alpha) (1 / (8 * Real.pi)),
+        ∃ a ∈ A, ∃ e ∈ A, ∃ b ∈ A, ∃ c ∈ A, d = a + e - b - c := by
+  refine ⟨lemma78_spectrum_card_bound A alpha hα hcard, fun d hd => ?_⟩
+  obtain ⟨R⟩ := lemma78_representation_of_fourCorrelation_ne_zero A d
+    (lemma78_constant_correlation_nonzero A alpha hα hcard d hd)
+  exact ⟨R.a, R.ha, R.e, R.he, R.b, R.hb, R.c, R.hc, R.relation.symm⟩
+
 end LeanProofs.GowersSzemeredi
