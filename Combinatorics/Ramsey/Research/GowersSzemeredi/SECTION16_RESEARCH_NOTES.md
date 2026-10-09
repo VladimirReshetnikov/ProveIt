@@ -4105,3 +4105,91 @@ facade (4,152 OAI modules), or 5,042 modules including both audits. The
 source ledger matches the tracked 115 companions and five open entries;
 the selected port-scope check also passes. The Apache provenance/license
 files and the selected upstream source closure remain unchanged.
+
+### J.93. Explicit graph cutoff and dense quasirandom domain
+
+The truncation and base-size hypotheses left by J.92 are now discharged
+for the actual tuple Bohr graph. This supplies a graph with any prescribed
+box error while retaining dense row geometry. It does not yet ensure that
+the error meets the seven-operator budget relative to the resulting
+parameter density and representation counts.
+
+`Proofs16SparseRelationProfile` derives all combinatorial hypotheses of
+the prime split-profile estimate from a bound on bounded bad pairs.
+The exceptional vertices and pairs are pulled back to the parameter
+subtype; injectivity bounds their cardinalities. The existing bad-vertex
+product argument bounds the exceptional vertex fraction by the pair
+fraction. If this fraction is less than one, a typical reference vertex
+exists. Normalization `L_j(0)=0` then supplies the single and paired
+splitting identities. No exceptional sets or reference vertex remain
+as additional inputs.
+
+`Proofs16PrimeProfileBudget` takes `c = floor(tau*N)`. For `0 < tau < 1/2`,
+the centered smoothing interval has at least `tau*N` points. If
+`tau*N ≥ 1`, the band error satisfies
+
+```
+2*m*tau ≤ m*(4*c+2)/N ≤ 6*m*tau.
+```
+
+If `m*tau ≤ 1/2` and `R+1 ≥ tau^(-2)`, the product truncation error is at
+most `2*m*tau`, hence at most the band error. If the base set has density
+at least `beta` and `120*m*tau ≤ beta`, the required size condition holds
+and the box-error coefficient is at most
+`3*(480*m*tau/beta + theta)`. These bounds include the integer endpoints.
+
+`Proofs16ScaledRelationProfile` combines these facts.
+`Proofs16TupleBohrQuasirandom` sets the trapezoid radii to
+`floor(rho*N)+c` and `floor(nu*N)+c`, so the inner graph uses the exact
+prescribed real radii `rho` and `nu`. If the total frequency count is at
+most `m`, `Q > 0`, and `rho*Q ≥ 1`, the base Bohr set has density at least
+`Q^(-m)`. This bound does not involve the rank of the parameter domain.
+The transport lemma `boxSum_finset_congr` handles equality of finite
+vertex sets without treating their subtype instances as definitional.
+
+For `0 < epsilon ≤ 1`, `Proofs16ExplicitGraphCutoff` chooses
+
+```
+tau = epsilon / (2880*(m+1)*Q^m)
+R   = ceil(tau^(-2)).
+```
+
+When `N ≥ tau^(-1)`, the two graph radii are below `1/4`, and the bad-pair
+fraction at cutoff `R` is at most `epsilon/6`, the actual graph satisfies
+`boxSum(G-delta) ≤ epsilon*|B|²*|C|²` for some `delta` in `[0,1]`.
+No analytic cutoff, annulus, or base-size hypothesis remains. Both the
+cutoff and modulus threshold depend only on the prescribed accuracy,
+cell count, and frequency cap.
+
+`Proofs16DenseQuasirandomDomain.exists_dense_quasirandom_domain` combines
+this with the stateful dense relation iteration. If there are `k` maps,
+use the uniform frequency cap `m = |F|+k²+2k`, error threshold
+`theta = epsilon/6`, and the explicit cutoff above. The fixed-frequency
+cell count `H` is chosen with `2^k ≤ eta*H`; the domain cell count `Q`
+satisfies `4 ≤ sigma*Q`. For initial relation codimension `n`, the final
+row radius is `rho = eta/2^n`, and the graph uses fixed radius `rho` and
+variable radius `rho/4`. The theorem produces a refined spectrum, a
+nonempty dense parameter set, enlarged fixed frequencies, recentered
+row geometry, and the actual box estimate simultaneously. The rank and
+density losses remain the explicit recurrence from J.92, now evaluated
+at the chosen cutoff and bad-pair threshold.
+
+What remains: the graph density has so far only been exposed as a value
+in `[0,1]`. A quantitative positive lower bound is needed for row filling.
+More substantially, the required box error depends on the retained row
+density and robust representation counts, which themselves deteriorate
+through relation refinement. Choosing a fixed error before the iteration
+does not by itself resolve that dependence. A state-dependent error
+budget or the corresponding argument from the source must close it.
+All five numbered open entries and source-fidelity caveats remain in
+force; these results do not establish the deep variety theorem or its
+printed numerical constants.
+
+Validation: the focused final check covers 146 modules. All 11 newly
+named theorems pass individual transitive axiom checks. The full audit
+passes for 6,725 public Gowers theorems in a 5,046-module facade (4,152
+OAI modules), or 5,048 modules including both audits, using only
+`propext`, `Classical.choice`, and `Quot.sound`. The source ledger still
+matches 115 companions and five open entries. The selected port-scope
+check passes; upstream sources and Apache provenance/license files are
+unchanged. The merged incoming work concerns topology only.
