@@ -1555,7 +1555,12 @@ the elementary lemmas of its §2:
     `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
     the corpus's `four_centeredAbs_div_le_phase_norm`
     (`Proofs05PhaseMetric`, |e(ξ) − 1| ≥ 4|ξ|/N);
-  - next: the discrete trapezoid and its sandwich, its DFT via
+  - **brick A done** (`Proofs16Trapezoid`, kernel-checked): with
+    I_a = `centeredBall N a`, the trapezoid g = |{s ∈ I_a : |t−s| ≤ c}|/|I_c|
+    is 1 for |t| + c ≤ a, 0 for |t| > a + c, and lies in [0,1]. So
+    Π_{γ∈K} g(γx) equals 1 on B(K;(a−c)/N), vanishes off B(K;(a+c)/N),
+    and lies in [0,1] (`trapezoid_product_sandwich`);
+  - next: the trapezoid's DFT via
     convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
     bound, and the expansion.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
