@@ -8311,3 +8311,44 @@ to the existing statement-fidelity qualifications. Port scope remains
 4,134 upstream modules and 17 compatibility modules. No upstream code
 or license scope is added. The fetched `origin/main` was already an
 ancestor of the working branch.
+
+## J.131 Exact row indices and progression rectification (2026-10-09)
+
+**Resolve domain membership position by position.** A common union of
+frequency indices does not put every map's progression domain around
+every retained shift. The new construction fixes the exact index set
+separately at each of the four positions. `exists_common_bounded_index_pattern`
+codes `ell` sets of size at most `K` using `(m+1)^(K*ell)` possibilities.
+For the four anchor positions, `K = 2*jointSelectionRank d r`, so the
+loss remains `(m+1)^(8*rank)`, exactly the exponent used by the common-union
+construction. Empty sets and fewer available indices than the size cap
+are allowed.
+
+`joint_anchor_row_indices` retains a subfamily of the original quadruples
+and four sets `J j`. Their images equal the original selected frequencies,
+and every map in `J j` has the actual shift `a j` in its domain. Thus
+`HasCoherentAnchorSystemOn.row_indices_uniform` preserves the original
+Bohr domains without shrinking them. It also preserves the arbitrary
+arrangement family, additive distinct quadruples, normalized local maps,
+coherence, the joint map-count budget, and the same positive uniform
+density.
+
+**Dense domains for the frequency maps.** Fixing one coordinate of an
+additive quadruple leaves at most two free coordinates. The explicit
+injection proves `|R| ≤ |anchorRowSupport R j|*N^2` at every position,
+so quadruple density `kappa` gives row-support density at least `kappa`.
+`joint_row_frequency_domains` proves every selected map is Freiman of
+order two on the entire row support, with genuine membership in its
+translated progression domain at every point. The final interface
+`popular_coherent_anchor_rows` retains this together with popularity and
+core-column agreement. Each row uses at most `2*rank` frequencies, so
+its agreement-domain bound is now `2*rank+g+4*d`.
+
+These are four possibly different dense supports. They have not been
+identified with one common progression. That subsequent structural step
+and the final polynomial budget remain required; no numbered catalogue
+entry is closed by this interface alone.
+
+**Initial verification.** The six new modules through the row interface
+check in a 417-module production closure. All eight named theorems pass
+individual axiom checks with only the three permitted axioms.
