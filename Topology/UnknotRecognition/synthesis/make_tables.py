@@ -1699,3 +1699,7 @@ if os.path.exists('data/topology-spectra-benchmark.json'):
 if os.path.exists('data/unit-ray-benchmark.json'):
     import runpy
     runpy.run_path('data/unit_ray_tables.py')
+
+if os.path.exists('data/weighted-coorientation-benchmark.json'):
+    import runpy
+    runpy.run_path('data/weighted_coorientation_tables.py')

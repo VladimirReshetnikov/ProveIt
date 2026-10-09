@@ -1093,3 +1093,18 @@ supplied-sector gains are 1.07–1.30x. No whole-recognizer gain or general QP b
 is asserted. Data and source pins are `data/unit-ray-*`; reproduction is in
 `../fast/normal_orbit_research/unit_rays.py`, with generated tables and publication
 review scripts in `data/`.
+
+[weighted_coorientation.tex](weighted_coorientation.tex) proves a general
+weight-preserving interval-cover trivialization and integrates it with the
+two-weight topology spectrum. An independently checked block colouring derives
+the full normal-double histogram without its second weighted discovery; misses
+and the disabled option preserve the complete previous result. It records the
+strict source-bound v2 protocol, v1 replay, binary costs and shared cycle allowance.
+All 1,322 tests and 5,100 corpus comparisons pass; 1,088 configurations use the
+derivation. Fresh Regina checks match 664 vectors and verify 1,395 certificates.
+Complete production/replay/serialization gains are 1.87–2.26x on layered inputs
+and 1.76–2.10x against the earlier primitive coordinate reference. A longer
+fallback control accompanies the noisy initial record. Data and source hashes
+are `data/weighted-coorientation-*`, with the maintained `coorientation_spectra`
+driver and publication/table/repeat scripts under `data/`. No full-recognizer
+speedup or general complexity theorem is inferred.
