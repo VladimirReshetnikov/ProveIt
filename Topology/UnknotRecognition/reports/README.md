@@ -447,3 +447,13 @@ rank-two terminal boundaries are preserved. See
 cost, unchanged complete certificate traces, independent replay and measurements
 that include automatic discovery. This supersedes the producer-pending status
 of the earlier checker-only integration, without resolving general source resets.
+
+The power-conjugacy report's **plain-power graph** is now adapted to the native
+compressed producer and both independent source replayers. Version-ten witnesses
+contain a spanning tree plus one signed-cycle contradiction or pure-power seed.
+The producer uses rational potentials; the checker peels leaves and compares
+cycle products. Components of three or more labels extend the older pair-minor
+rule. See `../synthesis/power_components.tex` for the torsion-free proof, exact
+graph-abstraction completeness statement, binary product-difference-one family,
+1,142 maintained tests and 654 source replays. Ordinary coverage is unchanged;
+conjugated-power graphs and automatic exposure remain separate open tasks.

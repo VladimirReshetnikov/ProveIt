@@ -1,0 +1,175 @@
+\section{Source-checked annihilation of plain-power components}
+\label{sec:power-components}
+
+The power-conjugacy delivery in commit \code{b365341b1} contains a graph
+extension of the pair-minor idea integrated in Section~\ref{sec:power-pairs}.
+We now implement its plain-power component inference. The maintained producer
+can detect a contradiction around a cycle involving three or more generators,
+even when every adjacent pair is individually consistent. A new independent
+checker authenticates the words, removes tree leaves and multiplies around
+the remaining cycle. The stronger conjugated-power proposal remains outside
+this implementation.
+
+\subsection{What the graph proves in a torsion-free group}
+
+An authenticated mixed donor has cyclic spelling $x_u^a x_v^b$, with
+$u\ne v$ and $ab\ne0$. It supplies the group equality $x_u^a=x_v^{-b}$.
+A pure donor $x_u^a$ with $a\ne0$ supplies $x_u^a=1$. These are actual word
+shapes, not merely exponent rows obtained by abelianizing arbitrary relators.
+Conjugating a whole cyclic spelling does not change its normal closure.
+
+Consider an oriented cycle written as
+\[
+ x_0^{a_0}=x_1^{b_0},\quad x_1^{a_1}=x_2^{b_1},\quad\ldots,\quad
+ x_{k-1}^{a_{k-1}}=x_0^{b_{k-1}}.
+\]
+Taking integer powers successively gives
+\[
+ x_0^{A}=x_0^{B},\qquad
+ A=\prod_{i=0}^{k-1}a_i,\quad B=\prod_{i=0}^{k-1}b_i.
+\]
+Every substitution uses powers of one group element at a time; no
+commutativity or unique-root property between different elements is assumed.
+If $A\ne B$, then $x_0^{A-B}=1$. In the source-established torsion-free knot
+group, $x_0=1$, and each adjacent power equality makes the next generator
+trivial. Triviality propagates through every attached tree in the same way.
+A pure-power donor supplies an alternative starting vertex. Thus a pure seed
+or an inconsistent signed cycle kills its entire connected component.
+
+Signs matter. Plain equalities can give $A=-B\ne0$, which forces torsion and
+therefore triviality. A cycle of \emph{conjugated} power equalities need only
+make $x^A$ conjugate to $x^B$; the same signed conclusion would be invalid.
+The native rule does not discard conjugator labels or invoke knot-group
+balancedness. Its only group-specific premise is the already reconstructed
+classical knot group's torsion-freeness, preserved by the checked move prefix.
+
+There is also an exact completeness statement for this restricted graph
+abstraction. In a component without pure seeds, assign a nonzero rational
+potential $h_u$ to one vertex and propagate $a h_u+b h_v=0$ along a spanning
+tree. If every remaining edge agrees, multiplying by a common denominator
+produces nonzero integers $H_u$. The assignment $x_u=t^{H_u}$ in the infinite
+cyclic group realizes every graph row with every generator nontrivial. Hence
+no such generator is forced trivial by those rows alone in the class of
+torsion-free groups. An inconsistent edge closes an annihilating cycle as
+above. Other relators of the full presentation may impose further constraints;
+this graph completeness statement does not make the recognizer complete.
+
+\subsection{Producer discovery and a different independent proof}
+
+The existing power-pair producer's immutable capped run summaries are factored
+into a shared producer-only row extractor. It retains the same raw cyclic
+one- or two-run language, including a run split across the cyclic cut. Current
+slot numbers and live labels are reconstructed on every call. Pair selection
+keeps its existing order and priority; its certificates are unchanged.
+
+After the primitive and pair rules fail, the component detector is eligible
+only with at least four live generators, at least three extracted rows and
+at least two mixed rows. These are necessary conditions for the supported
+component of at least three labels while leaving one survivor, including a
+component killed by a pure seed. The checks avoid graph setup when the source
+cannot provide a supported witness; they do not suspend a possible cycle
+based on elapsed time or a heuristic score.
+
+The producer traverses each connected component, assigning reduced rational
+potentials along its spanning tree. A non-tree row that disagrees supplies a
+cycle witness; a pure row supplies a seed witness. The emitted component
+contains sorted live labels and sorted source-slot indices for the spanning
+tree plus one witness. There are exactly as many selected rows as labels.
+The potential values themselves are neither used as group substitutions nor
+serialized as trusted certificate data. Distinct selected components have
+disjoint labels, and at least one live label is retained.
+
+Version ten adds \code{power\_component\_delete}. The independent compressed
+checker reconstructs first and last signed letters, signed counts and capped
+transition counts directly from the ordinary word grammar. At most two cyclic
+signed-letter transitions and distinct absolute labels authenticate the
+permitted power-word shape. The literal checker counts those transitions
+separately in explicit words. Neither imports the producer's run summaries,
+graph planner, rational potentials or substitution routine.
+
+For each proposed component, the checker validates strict field types,
+positive distinct live labels, distinct in-range source slots, and equal
+numbers of rows and labels. It constructs the authenticated multigraph,
+treating a pure row as a loop, and verifies connectivity. Repeatedly deleting
+degree-one vertices leaves its unique cycle. A remaining pure loop is a valid
+seed. Otherwise the checker walks the remaining cycle and multiplies the
+signed coefficients on its two sides; the products must differ. Parallel
+edges are allowed and form a two-edge cycle inside a larger claimed component.
+This leaf-and-product computation is independent of the producer's rational
+consistency computation.
+
+Only after every component passes does each replayer substitute the empty
+word for all its labels in every relator, retaining every slot. Roots or words
+and the live-label set publish atomically after substitution succeeds. A node
+or work limit, cancellation, malformed later witness or balanced cycle cannot
+publish a partial accepted move. Historical speculative arena nodes may remain
+charged on an interrupted export. Version-nine certificates reject the new
+inference, and older moves keep their existing requirements.
+
+\subsection{Binary complexity of discovery, proof and deletion}
+
+Let $S$ be the reachable source grammar size, $m$ its relator slots, $r$ its
+live labels and $B$ its largest raw-length bit size. Every extracted exponent
+has at most $B$ bits. A reduced rational tree potential is a product of at most
+$r-1$ edge ratios, so its numerator and denominator have $O(rB)$ bits. Fractions
+are a producer data structure, not unit-cost real numbers or group roots.
+There are $O(m+r)$ graph visits and rational comparisons, plus sorting and
+exact gcd/arithmetic costs. The independent cycle products also have $O(rB)$
+bits and use at most $r$ factors. No factorization or prime sieve is needed.
+
+A component proof stores $r'$ labels and $r'$ source-slot indices for a
+component of size $r'$. Across one disjoint batch, its structural size is
+$O(r(\log(G+1)+\log(m+1)))$ bits, where $G$ is the largest live label.
+It contains no expanded donor word or claimed large determinant. The checker
+visits source descendants with shared memoization, authenticates their word
+shape, and checks a linear-sized graph. Its encoded bit cost is polynomial
+in the actual source and proof sizes.
+
+Deletion only maps an old terminal to itself or zero and an old concatenation
+to at most one new concatenation. For a deletion-only epoch starting at
+$S_0,N_0,B_0$, reachable size and raw-length bit size cannot increase:
+\[
+ S_i\le S_0,\qquad B_i\le B_0,\qquad N_d\le N_0+dS_0.
+\]
+Component-only rounds satisfy $d\le\lfloor(r-1)/3\rfloor$; when interleaved
+with the older pair deletions, $d\le\lfloor(r-1)/2\rfloor$ remains valid.
+This accounts for historical allocation without assuming garbage collection.
+It proves polynomial complete discovery, certificate production and checking
+within this restricted epoch. Normalization, exposure and other changes of
+generators end the bound; their number and encoded growth remain uncontrolled
+for general unknot recognition.
+
+\subsection{A cycle family beyond all adjacent-pair minors}
+
+Choose $n\ge3$, $b\ge n-1$, and
+\[
+ P=1+2^b,\qquad Q=\frac{P^n-1}{2^{n-1}}.
+\]
+The quotient is integral because $2^{n-1}$ divides $P-1$. Consider
+\[
+ \left\langle t,x_1,\ldots,x_n\ \middle|\
+ x_i^P=x_{i+1}^2\ (1\le i<n),\quad x_n^P=x_1^Q
+ \right\rangle.
+\]
+The two cycle products differ by exactly one:
+$P^n-2^{n-1}Q=1$. Rotating the cycle gives $x_i=1$ for every $i$ even
+without torsion-freeness, so the whole presentation is unconditionally
+infinite cyclic on $t$. This is a valid algebraic capacity family, not an
+arbitrary torsion presentation treated as a knot group.
+
+Every edge has coprime exponents greater than one: $P$ is odd and
+$\gcd(P,Q)=1$. A positive two-run word with coprime counts $a,b>1$ has
+prefix-height width $ab>a+b-1$, so it fails the maintained primitive criterion.
+There are no singleton donors or unit primitive coordinates. Each adjacent
+pair has only one relation and there is no pure seed, so the older pair-minor
+rule has no witness. The graph rule closes the entire cycle in one move.
+This strictly enlarges the supported local inference class. It is not a lower
+bound against every possible search strategy or a hard family of diagrams.
+
+All exponents have $O(nb)$ bits and the ordinary binary word grammar has
+$O(nb)$ nodes. The new complete operation is polynomial in this encoding
+although literal expansion has exponential length. The predecessor's configured
+algebraic search stalls on the measured fixtures; its failure time is not a
+valid baseline for a speedup ratio.
+
+\input{power_components_results.tex}
