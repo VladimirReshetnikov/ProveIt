@@ -20,6 +20,13 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             if type(move) is not dict:
                 return False
             kind = move.get('kind')
+            if kind == 'power_pair_delete':
+                if certificate['version'] < 9:
+                    return False
+                from .power_pair_verify import replay_compressed_power_pairs
+                if not replay_compressed_power_pairs(arena,roots,alive,move):
+                    return False
+                continue
             if kind == 'elimination_batch':
                 if certificate['version'] < 8:
                     return False
@@ -152,10 +159,10 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             else:
                 return False
         arena.tick()
-        if certificate['version'] in (6, 7, 8) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+        if certificate['version'] in (6, 7, 8, 9) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
             from .primitive_projection_verify import verify_compressed_rank_one
             return verify_compressed_rank_one(arena, roots, alive, certificate['terminal'])
-        if certificate['version'] in (5, 6, 7, 8):
+        if certificate['version'] in (5, 6, 7, 8, 9):
             from .primitive_power_verify import verify_compressed_terminal
             return verify_compressed_terminal(arena, roots, alive, certificate['terminal'])
         return alive == {certificate['remaining_generator']} and not any(roots)
