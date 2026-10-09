@@ -1568,7 +1568,13 @@ the elementary lemmas of its §2:
     `fourier_centeredBall_le` (|Î_a(ξ)| ≤ N/(2|ξ|)), `fourier_trapezoid`
     (ĝ = Î_a·Î_c/|I_c|), and `fourier_trapezoid_le`
     (|ĝ(ξ)| ≤ (N/(2|ξ|))²/|I_c|);
-  - next (was: the trapezoid's DFT via
+  - **bricks C, D done** (`Proofs16TrapezoidTruncation`,
+    kernel-checked): `fourier_inversion`, `inv_sq_tail_le`
+    (Σ_{M<m≤U} 1/m² ≤ 1/M), `centeredAbs_fibre_card_le` (≤ 2 residues
+    per centered value), and `residue_inv_sq_tail_le`
+    (Σ_{|ξ|>M} 1/|ξ|² ≤ 2/M);
+  - next: the telescoping product bound and the expansion (bricks E, F).
+    Earlier plan (was: the trapezoid's DFT via
     convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
     bound, and the expansion.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
