@@ -2747,3 +2747,17 @@ theorem is claimed without that input.
 The three new modules contain eight theorem declarations and compile
 in a 44-module closure. The numbered catalogue and upstream port scope
 are unchanged.
+
+The combined bounded-span audit passes: 6,216 public Gowers theorems,
+a 4,950-module facade (4,152 OAI modules), and 4,952 modules including the
+audit and import-compatibility check. All eight new theorems also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. The source ledger remains 115/5 with the existing
+fidelity caveats, and the selected upstream module scope is unchanged.
+
+For the remaining scalar truncation error, Mathlib already supplies
+`sum_Ioc_inv_sq_le_sub` and `sum_Ioo_inv_sq_le` in `Analysis/PSeries`.
+Combining the centered-frequency multiplicity bound of two with these
+finite inverse-square tail bounds and `fourier_trapezoid_le` is the next
+concrete analytic step. The product error must then be controlled before
+applying the new large-coefficient bridge.
