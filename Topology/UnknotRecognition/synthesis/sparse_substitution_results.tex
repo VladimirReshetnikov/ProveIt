@@ -1,0 +1,53 @@
+\paragraph{Repeated word queries.}
+Twelve kernel cases use four shuffled old/current and A/A arms, five measured
+rounds and one warm-up. All 240 measurements and 48 warm-ups complete in
+118.781 seconds. Timings include fresh arena construction, initial reduction
+and every singleton query. Ratios are medians of paired old/new times.
+
+\input{tables/sparse_substitution_kernels.tex}
+
+The singleton chain appends alternating $a,b$ letters and queries each prefix.
+At length 2,048 the old/new medians are 2,497.807/11.843 ms, with paired ratio
+212.355. Work falls from 6,302,722 to 18,434; both arenas contain 2,049 nodes.
+Only 2,049 node summaries are built across all the new queries. This isolates
+the removed quadratic metadata traversal on a growing immutable prefix.
+
+The tail cases start with $(ab)^{2^s}$ followed by a letter $c$, and alternate
+$c\mapsto d$ and $d\mapsto c$ for 128 substitutions while also retaining the
+unchanged prefix as a root. Warm cases query singletons before each update;
+cold cases never populate support metadata. At $s=4096$, the warm old/new
+medians are 1,608.502/20.817 ms, with paired ratio 79.392. Work falls from
+3,702,287 to 42,910, with 4,103 nodes in both arms. Only two affected nodes
+are compiled per substitution, and represented length has 4,098 bits.
+The power word is never expanded.
+
+At the same size the cold arms each perform exactly 2,127,631 work units and
+have 4,103 nodes. Their paired ratio is 1.010, compared with current A/A
+1.138, so no cold-path speedup is supported. Across all kernel cases, old
+A/A ratios span 0.886--1.072 and current A/A 0.970--1.138. The large warm
+and growing-prefix gains are structurally explained by the counters;
+small timing differences lie within substantial control variability.
+
+\paragraph{Complete source-bound recognition.}
+Nineteen fresh diagrams use old/current defaults and old/current adaptive
+batch hosts, each with an A/A copy, five measured rounds and one warm-up.
+The timed calls include diagram construction, discovery and mandatory source
+replay. All 760 measurements and 152 warm-ups complete in 114.683 seconds.
+
+\input{tables/sparse_substitution_pipeline.tex}
+
+Default paired ratios span 0.731--2.305 and adaptive-host ratios
+0.647--1.379. The corresponding A/A ranges are 0.799--1.341 for old default,
+0.616--1.046 for current default, 0.736--1.321 for old host and
+0.739--1.560 for current host. These controls show a noisy shared-machine
+run; neither its largest apparent gains nor its regressions should be read
+as stable implementation factors.
+
+On Gordian the default medians are 1,652.607/1,495.833 ms and the paired ratio
+is 1.172. The host medians are 2,533.473/1,289.029 ms with paired ratio 1.330.
+Paired medians need not equal ratios of marginal medians; the disparate A/A
+marginal timings are another reason not to infer precision from these figures.
+The unchanged audited certificate and deterministic default-work reduction
+of 364,792 units (31.6 percent) provide firmer evidence of saved computation.
+We retain the complete sample order, controls and outcomes, and make no uniform
+end-to-end timing claim from this run.

@@ -1,0 +1,294 @@
+\section{Stronger local bounds from reports 49--53}
+\label{sec:incoming-2c7f}
+
+The five deliveries in \texttt{2c7f4fd68bfd} are now reports 49--53.
+They address three different costs: algebraic substitution, sparse component
+observations, and componentwise normal-disc detection. This review strengthens
+the analysis of the existing algebraic implementation. The new sparse and
+weighted interfaces remain delivered research implementations pending native
+integration. Their tests and audit reruns below are separate from the earlier
+placement-only intake. No delivered benchmark ratio is treated as a measurement
+of the current recognizer.
+
+\subsection{A fixed source bounds an entire monomial epoch}
+
+Report 49 supplies a stronger invariant than the successive length estimates
+in Sections~\ref{sec:primitive-projections} and~\ref{sec:primitive-forests}.
+Freeze a presentation with $r$ generators, $m$ original relator slots, a shared
+source grammar of $S_0$ reachable nodes, and maximum raw relator length
+$L\ge1$. Write $B=\lceil\log_2(L+1)\rceil$. During the epoch permit only
+verified disjoint primitive-pair projections and acyclic unit-coordinate
+forests. Retain every unselected original slot, and perform no normalization,
+Whitehead move, overlap move or change of source coordinates inside the epoch.
+Proper-power donors retain the existing source-established torsion-free
+hypothesis; the lattice calculation does not justify their nonabelian deletion.
+
+Every cumulative substitution has the form
+\[
+ x_i\longmapsto z_{\pi(i)}^{k_i},\qquad k_i\ne0.
+\]
+Its matrix $K\in\mathbb Z^{r\times s}$ has one nonzero entry per row and
+nonempty disjoint column supports $I_z$. Each column is primitive: initially
+it is a coordinate vector, and merging two primitive disjoint columns
+multiplies them by coprime coefficients $|v|$ and $-u\operatorname{sign}(v)$.
+The gcd of the merged column is therefore one.
+
+Let $A$ be the original exponent-sum matrix and $A_J$ its rows selected as
+donors so far. After $q$ individual contractions, $s=r-q$, $A_JK=0$, and
+$\operatorname{rank}_{\mathbb Q}A_J=q$. Indeed, the next selected row $a$
+has nonzero current image $aK_{\rm old}$, whereas all previously selected
+rows annihilate $K_{\rm old}$. The new row is independent of the previous
+ones. Disjoint batches linearize immediately. Unit-coordinate forests
+linearize from leaves toward their surviving roots, so an earlier eliminated
+leaf cannot alter a still-needed donor.
+
+Dimension and disjoint supports now give
+\[
+ \ker_{\mathbb Q}A_J=\operatorname{im}_{\mathbb Q}K,
+ \qquad
+ \ker_{\mathbb Z}A_J=\operatorname{im}_{\mathbb Z}K.
+\]
+For the second equality, write an integral vector as $Kc$ with rational
+$c$. A Bezout combination within each primitive column expresses its
+coefficient $c_z$ as an integer combination of the vector's integral entries.
+Thus all coefficients are integral. Restricting to $I_z$ leaves a
+one-dimensional kernel spanned by that primitive column.
+
+If $t=|I_z|\ge2$, choose $t-1$ independent rows of the restricted matrix.
+The signed maximal minors form a nonzero integral kernel vector. Dividing
+its common content gives the primitive vector $(k_i)_{i\in I_z}$, up to sign.
+Since every source matrix entry has magnitude at most $L$, Hadamard's bound
+proves
+\[
+ |k_i|\le(t-1)^{(t-1)/2}L^{t-1};
+ \qquad t=1\ \Longrightarrow\ |k_i|=1.
+\]
+All cumulative exponents consequently use
+$O(r(B+\log(r+1)))$ bits throughout the entire epoch. This bound is
+independent of the number of raw phases.
+
+\paragraph{Reachable size and historical allocation.}
+Set $\Lambda=8(r+1)(B+\lceil\log_2(r+1)\rceil+2)$, a convenient common
+bit bound. A raw projection maps each old reachable concatenation to at most
+one new concatenation. If $P_j$ counts the powering gates introduced in phase
+$j$, the reachable and historical counts obey different recurrences:
+\[
+ S_{j+1}\le S_j+O(P_j),\qquad
+ N_{j+1}-N_j\le S_j+O(P_j).
+\]
+There are at most $r-1$ contractions. Each current donor is an image of an
+original slot, of length at most $L\max_i|k_i|$, so its local exponents also
+have $O(\Lambda)$ bits. The existing forest updater shares parent power
+circuits and charges each edge's exponent rather than re-encoding a full
+path product. Thus $\sum_jP_j=O(r\Lambda)$, and for $d$ phases,
+\[
+ S_j=O(S_0+r\Lambda),\qquad
+ N_d=N_0+O(dS_0+(d+1)r\Lambda)
+     =N_0+O(rS_0+r^2\Lambda).
+\]
+Every surviving root remains an image of its fixed source word; length
+metadata is bounded by $B+O(\Lambda)$. The existing planners, exact primitive
+checks and raw updates therefore have polynomial total encoded cost on this
+restricted epoch. The previous exponential recurrences were valid but loose
+upper bounds. A short-depth assumption is unnecessary here.
+
+The supplied source checker matches the current \path{primitive_projection.py}
+Git blob and the complete \texttt{apply\_projection} syntax tree. Forest
+applicability follows from the leaf-first linearization and the maintained
+shared-power update above; the report's standalone lazy implementation only
+implements disjoint pairs. Its maintenance-only timing claims do not measure
+native discovery or mandatory source replay. Eagerly exporting its lazy state
+after every round was slower in the delivered experiment, so adopting a lazy
+state requires preserving that interface through planning and verification.
+
+\paragraph{The meridional special case.}
+If an integral character $h$ of the frozen source satisfies $Ah=0$, then
+$h=Kc$. On a block where $h$ is nonzero, primitive columns imply
+\[
+ k_i=\varepsilon_z h_i/\gcd_{j\in I_z}|h_j|,
+ \qquad \varepsilon_z\in\{1,-1\}.
+\]
+Every entry of $h$ on that block is nonzero. In particular, with consistently
+oriented Wirtinger meridians $h_i=1$, all cumulative exponents have magnitude
+one. Huge-power abstract presentations test a broader supplied-presentation
+interface; they do not show such growth in this initial meridional epoch.
+Changes of coordinates can create zero character values or large values,
+and require their own complexity accounting.
+
+\subsection{Acyclic singleton batches have linear grammar growth}
+
+Report 51 improves the general, nonmonomial batch bound. Let $M$ count the
+nonempty source nodes reachable from all current roots. A selected donor
+$U_c c^{\epsilon_c}V_c$ contains its chosen child once in the raw spelling.
+Follow the unique path $H_c$ to that occurrence in the shared binary grammar.
+If $H_c$ and $H_d$ shared a node, its word would contain both $c$ and $d$.
+Deleting either selected occurrence would leave the other, giving dependencies
+$c\to d$ and $d\to c$. Acyclicity excludes this. Hence
+\[
+ H_c\cap H_d=\varnothing\ (c\ne d),\qquad \sum_c|H_c|\le M.
+\]
+Whole donor grammars can still overlap substantially; only the hole paths
+are disjoint.
+
+Both complementary substring cuts follow that path. At each internal path
+node at most one cut needs a new concatenation; completely included siblings
+are reused. Including the final rotation $V_cU_c$, all donor contexts require
+at most $M$ new nodes. The source and contexts together have at most $2M$
+nodes. In the report's compiler, each has two virtual orientations, and
+selected terminals redirect to the corresponding signed context. A cycle in
+this graph would imply a cycle among selected definitions. Topological
+compilation of at most $4M$ states gives at most $4M$ output nodes, at most
+$5M$ new persistent nodes including contexts, and at most $6M$ total nodes
+when the initial arena contains only the reachable source.
+
+Our current producer and independent checker materialize inverses before
+compilation. Their globally memoized inverse operation introduces at most
+$2M$ inverse nodes for the source-context union. The resulting union has at
+most $4M$ nodes; compiling each once gives the conservative native bounds
+\[
+ M_{\rm out}\le4M,\qquad N_{\rm after}-N_{\rm before}\le7M.
+\]
+Historical unreachable nodes are included in $N_{\rm before}$, not silently
+charged to $M$. These constants do not assert that the delivered virtual-state
+compiler is already installed. Occurrence/support discovery may still scan a
+whole donor grammar per selected child, so linear output size does not imply
+linear running time for the current batch. It does give polynomial bit cost
+in the actual reachable source: a binary terminal grammar with at most $4M$
+nodes has $O(M)$-bit lengths and $O(M^2)$ total length metadata.
+
+For an epoch consisting solely of these singleton batches, $d$ phases give
+$M_d\le4^dM_0$ and historical growth $O(M_0 4^d)$. Thus their earlier
+$2^{O(d\log(r_0+1))}$ composition estimate can be sharpened to
+$\operatorname{poly}(M_0,r_0,m)2^{O(d)}$. A logarithmic number of phases gives
+polynomial cost; $O(\log^2 n)$ phases with polynomial initial encoded size give
+quasipolynomial cost. No such general diagram-to-endpoint phase bound is
+proved. The polynomial monomial theorem above is stronger on its narrower
+class and does not extend to arbitrary word-valued singleton definitions.
+
+The report also supplies an ordered witness whose per-node summary is only
+the maximum selected rank and its multiplicity capped at two. Donor $i$ has
+summary $(i,1)$ exactly when its child is unique and all selected dependencies
+are earlier. This can reduce checker support storage, but the current checker
+accepts arbitrary entry order and derives its own dependency order. Changing
+that contract requires compatibility work. The report's rank-one-completion
+guard avoids eager partial-batch regressions on its older baseline; our
+recovery-aware bounded adaptive trial is a different policy and is retained.
+
+\subsection{Sparse incidence removes an exponential output interface}
+
+Reports 50 and 52 are separate implementations of the same positive sparse
+reconstruction idea. With $r$ interval-union ports, let $h(T)$ count components
+meeting exactly the port set $T$. Marked-union orbit queries give the zeta
+oracle
+\[
+ G(U)=\sum_{T\subseteq U}h(T).
+\]
+Subtract already recovered atoms. The residual is nonnegative and monotone.
+Starting at the full port set, delete a port whenever the residual stays
+positive. At termination every proper subset has zero residual, so the
+remaining residual is exactly one new atom's positive weight. Repeating until
+all total mass is recovered uses $O(1+sr)$ queries for $s$ nonempty atoms.
+Balanced block deletion improves this to
+\[
+ O\!\left(1+s+\sum_{T\ne\varnothing:h(T)>0}
+ |T|\log\left(1+\frac r{|T|}\right)\right).
+\]
+Every failed block intersects the ultimately recovered support; counting
+failed blocks at each tree depth proves the bound.
+
+Polynomial support for interval-union ports follows from the classical
+weighted AHT theorem, rather than being a new sparsity hypothesis. Assign
+one indicator coordinate per port; signs of the resulting nonnegative orbit
+weights give the incidence signature. AHT returns polynomially many constant
+weight blocks in the encoded interval input, hence polynomially many distinct
+signatures~\cite[Theorem 16]{aht-orbits}. The sparse unweighted-query route
+inherits this bound. It replaces a mandatory $2^r$ output array with positive
+\texttt{[mask,count]} entries; preserving the old dense return type would lose
+the advantage.
+
+Independent certificates check atom weights, immediate-subset zero witnesses
+and total mass. On a binary orientation cover, each base component lifts to
+one or two components with the same port signature. Support discovery can
+therefore be reused, with signed consistency counts derived from the base
+and cover multiplicities. This local observation does not retain attachment
+maps, cyclic orders or slopes needed by arbitrary future hierarchy moves.
+The reports include a small counterexample to treating incidence equality as
+a complete equivalence for future attachments.
+
+\subsection{Weighted components and a smaller normal-disc query}
+
+Report 53 develops weighted local-rule replay and a componentwise normal
+surface census. On a validated connected orientable compact triangulation
+with exactly one torus boundary, assign integral cell weights: $+1$ per
+surface vertex, $-1$ per arc and $+1$ per polygon, each charged to a point
+in its own component. Their orbit sum is its Euler characteristic. Two
+additional intersection weights evaluate the component's boundary class
+against an independently checked basis of the torus's mod-two homology.
+A connected component is a compressing disc exactly when
+\[
+ \chi=1\quad\hbox{and}\quad (h_1,h_2)\ne(0,0).
+\]
+Nonzero boundary class excludes closed components, and surface classification
+then makes Euler characteristic one equivalent to being a disc. An embedded
+essential circle on a torus has primitive integral slope and nonzero mod-two
+class. The predicate must be applied componentwise: totals can cancel across
+two genuine discs, or combine nondisc components into misleading statistics.
+Higher-genus boundary requires a different essentiality test.
+
+For an admissible standard vector $x$, subtract at each global vertex the
+minimum incident triangle coordinate times its vertex-link vector. Call the
+remainder $Y$. These removed links can be realized disjointly and contribute
+no compressing discs. If $g$ is the gcd of the quadrilateral coordinates,
+face matching propagates divisibility by $g$ from a zero triangle around
+each connected vertex-corner graph. Thus $P=Y/g$ is integral and admissible.
+If all quadrilaterals vanish, $Y=0$. Otherwise, with $t$ tetrahedra,
+\[
+ \max_iP_i\le(4t-1)\frac{Q_{\max}}g,
+ \qquad D(x)=gD(P),
+\]
+where $D$ counts compressing-disc components. Two-sided discs scale as
+parallel copies. One-sided components can produce orientation doubles,
+but in an orientable ambient manifold these cannot create disc components.
+Full component counts consequently need not scale by $g$, while $D$ does.
+
+The expensive three-weight orbit query sees only the primitive quadrilateral
+scale, even if the original vector has enormous additive vertex-link
+multiplicity and full coordinate gcd one. Reading, validating and binding the
+original input still costs its original bit size. A positive count becomes an
+unknot witness only with checked provenance tying this triangulation to the
+input knot exterior; zero rejects only this supplied vector. The delivered
+two-weight ambient-homology refinement is a proposal, not executed code.
+
+\subsection{Reproduced evidence and integration boundary}
+
+Before execution, all five original archive integrity checks passed. Their
+selected suites pass 38, 21, 16, 33 and 103 tests respectively: 211 in total.
+Report 49's audit exercises 600 signed trees, source-row/cofactor invariants,
+exact raw-update comparisons, 32,664 signed primitive profiles and the
+64,513-bit cumulative-exponent fixture. The copied updater is source-identical
+to our native operation. Report 51's 54 saved positive certificates pass
+108 literal/compressed source replays using its pinned final snapshot.
+A separate maintained-engine audit checks 400 random singleton DAGs through
+both our producer and checker, including exact literal results, disjoint hole
+paths and the $4M/7M$ size bounds.
+
+Report 50 reproduces 512 exhaustive native dense/sparse comparisons and
+independent replays, huge integer transport and producer-disabled signed
+checking. Its deliberately gapped larger queries remain censored under the
+five-second driver allowance, and receive no speedup ratios. Report 52's
+1,000-case audit checks both ordinary graphs and binary covers against
+literal components. Report 53 reproduces the abstract weighted and mutation
+audits and the frozen Regina corpus: 1,275 normal vectors on 45 triangulations,
+5,100 component comparisons and 5,100 certificate replays. These local tests
+provide evidence for the proposed interfaces; the sparse and weighted additions
+have not yet run as part of the maintained recognizer.
+
+The logs and JSON records are \path{data/incoming-2c7f-*}; the native grammar
+check is \path{../fast/compressed_word_research/incoming_bounds.py}.
+The delivered files remain unchanged after placement. Checksum-only files
+omitted by intake are recoverable from the original commit's ZIPs; integrity
+was checked on fresh original extractions before rerunning any generator.
+The next integration tasks are the additive sparse incidence API and weighted
+component replay, followed by source-bound exterior construction and controlled
+candidate discovery. Polynomial local epochs and observations reduce specific
+costs; they leave the general quasipolynomial recognition goal open.
