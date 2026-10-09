@@ -7979,3 +7979,23 @@ No additional upstream code or license scope is introduced.
 
 **Verification.** The production closure checks 344 modules. Individual
 axiom checks and the merged facade audit are recorded below after completion.
+
+
+**Final merged verification.** All seventeen new named theorems pass
+individual axiom checks. The complete merged audit checks 7,899 public
+Gowers theorems across 5,294 modules (5,292 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and
+`Quot.sound`. The catalogue remains at 115 companions and five open
+entries; regeneration changes only two source locations. These counts
+do not remove the documented statement-fidelity qualifications.
+The port-scope check still reports 4,134 upstream and 17 compatibility
+modules, excluding reciprocal-only dependencies.
+
+The merged two-scale variety refactor also passes against the actual
+OAI closure: family and spectrum controls now use separate indices
+`D` and `D₂`, including the width coefficient, logarithmic loss, and
+piece parameter. The generalized loss theorem accepts separate bounds
+at the two densities. The existing fixed-index dimension-three results
+are recovered at `D₂ = D`. This enables separate future choices at the
+two densities; it does not itself supply deep structure or discharge
+the remaining quantitative bridge.
