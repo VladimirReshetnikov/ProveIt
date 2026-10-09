@@ -1484,6 +1484,13 @@ the elementary lemmas of its §2:
   (`pairEnergy_comm`) turn both factors into pairEnergy(all, A′×A′), whose
   square is ≤ N³·E(A′). So X² ≤ N³·E(A′), the same bound as the (b,d)
   case. All four cases are covered.
+  `lemma19_mixed_piece` (`Proofs16Lemma19TwoNew`, kernel-checked) is
+  Lemma 19 for the mixed cases: key relation q₀ − q₁ = q₂ − q₃, with new
+  points at q₀ and q₃. Cases (b,d) and (a,c) regroup to
+  `lemma19_two_new_piece`, and cases (a,d) and (b,c) to
+  `lemma19_mixed_piece`. Every case of [49]'s Lemma 19 is now proved in
+  ℤ/N with polynomial bounds. Next: Corollary 20, which iterates these
+  from the zero map and pigeonholes failing triples into the four cases.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
