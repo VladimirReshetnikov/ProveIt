@@ -9,7 +9,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs,array,microtype}
 \usepackage[hidelinks]{hyperref}
-\hypersetup{pdftitle={Report 167 Asymptotics of assemblies of nested cycles},pdfauthor={},pdfsubject={Fixed order marked saddle expansion for A308338 and A392471}}
+\hypersetup{pdftitle={Report 167 Asymptotics of assemblies of nested cycles},pdfauthor={Part I: Report 167; Part II: research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Fixed order marked saddle expansion for A308338 and A392471; Part II (added 9 October 2026): sharp Gumbel errors and optimal continuous calibration for the largest outer component}}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
 \setlength{\emergencystretch}{3em}
@@ -34,9 +34,37 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
-\title{Asymptotics of assemblies of nested cycles\\\large Exact counts and fixed order marked saddle expansions}
-\author{Report 167}
-\date{3 October 2026}
+% Added by the ProveIt write of Part II (9 October 2026): packages, macros and
+% the definition style of Part II (sharp Gumbel errors for the largest outer
+% component), and the Part II source blocks.
+\usepackage{graphicx,longtable}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}\theoremstyle{plain}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\norminf}[1]{\left\lVert #1\right\rVert_\infty}
+\newcommand{\DK}{d_{\mathrm K}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\fracpart}[1]{\left\{#1\right\}}
+\newcommand{\ph}{\varphi}
+\newcommand{\cA}{\mathcal A}
+\newcommand{\cC}{\mathcal C}
+\newcommand{\cE}{\mathcal E}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+% Part II's shipped table file carries unprefixed labels; this wrapper gives
+% them the prefix ncy:gb: at input, leaving the shipped file unchanged
+% (amsmath restores \label from \ltx@label inside floats, so both are set).
+\makeatletter
+\newcommand{\inputprefixed}[1]{\begingroup\let\ncylabel\label
+ \renewcommand{\label}[1]{\ncylabel{ncy:gb:##1}}\let\ltx@label\label
+ \input{#1}\endgroup}
+\makeatother
+\title{Asymptotics of assemblies of nested cycles\\\large Exact counts and fixed order marked saddle expansions\\[6pt]\normalsize Part II: sharp Gumbel errors and optimal continuous calibration\\for the largest outer component}
+\author{Part I: Report 167\\[2pt]Part II: research manuscript prepared for Vladimir Reshetnikov}
+\date{Part I: 3 October 2026\quad Part II: 8 October 2026\quad merged: 9 October 2026}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -103,6 +131,41 @@ the transseries volume), notes on the OEIS entries as of 6~October~2026, and one
 (Section~\ref{ncy:sec:questions}). Nothing was submitted to the OEIS or sent to
 any author.
 \end{writenote}
+\begin{writenote}[Part~II, added 9 October 2026 (second write)]
+Since its second write the report has two Parts. Part~I
+(Sections~\ref{ncy:sec:exact}--\ref{ncy:sec:questions}) is Report~167 as
+written and independently checked; the abstract and the status note above
+describe it alone, and nothing of it changed except the \verb|\part| line,
+this note and dated notes at the end of Section~\ref{ncy:sec:provenance} and
+of Section~\ref{ncy:sec:questions}. Part~II
+(Sections~\ref{ncy:gb:sec:front}--\ref{ncy:gb:sec:future} and
+Appendices~\ref{ncy:gb:app:ledger}--\ref{ncy:gb:app:provenance}, labels
+\file{ncy:gb:}) is the manuscript \emph{Sharp Gumbel Errors and Optimal
+Continuous Calibration for Random Assemblies} (8~October 2026, ``Research
+manuscript prepared for Vladimir Reshetnikov''). It studies a statistic
+Part~I does not treat, the size $M_n$ of the \emph{largest outer component}
+(a nested cycle of maximal size, not the longest single cycle), for every
+assembly with weights $p_k=c+O(1/k)$ and in particular for the nested-cycle
+assemblies of A308338. With $\tau$ the exact size saddle and
+$L=\log(c/\tau)$ it proves the sharp ordinary Gumbel error
+$\DK(F_n,G)\sim\kappa\tau L^2/(4c)$, $\kappa=(2+\sqrt5)e^{-(3+\sqrt5)/2}$
+(Proposition~\ref{ncy:gb:prop:kappa}), that no affine normalization removes
+this order (Theorem~\ref{ncy:gb:thm:affine}), an explicit increasing
+calibration with error $\tau/(2e)+O(\tau/L)$, where $\tau/(2e)$ is optimal
+among all continuous distribution functions
+(Theorems~\ref{ncy:gb:thm:atom} and~\ref{ncy:gb:thm:optimal}), a lattice
+law with error $O(\tau/L)$ and an exponential-integral refinement with error
+$O(\tau^{3/2}L^3)$ (Theorems~\ref{ncy:gb:thm:lattice}
+and~\ref{ncy:gb:thm:e1}); for nested cycles the raw error is
+$(e^{\gamma/2}\kappa/16)\log^2n/\sqrt n$
+(Corollary~\ref{ncy:gb:cor:nested}). Its only analytic input for nested
+cycles is Part~I's credited component estimate~\eqref{ncy:eq:prior}. It
+answers none of Part~I's questions. Section~\ref{ncy:gb:sec:front} records
+its provenance, its relation to Part~I, the checks, its non-claims and its
+letters, which are not Part~I's (in Part~II $L=\log(c/\tau)$, $a_k$ are
+Poisson means and $B_j$ tilted size moments; in Part~I $L=\log n$, $a_n$ is
+A308338 and $B_m$ is A007838).
+\end{writenote}
 \newpage
 \tableofcontents
 \medskip
@@ -116,6 +179,9 @@ diagnostics. Section~\ref{ncy:sec:sources} records source coverage and
 limits. The report is self-contained after the explicitly credited
 component coefficient estimate~\eqref{ncy:eq:prior}.
 \newpage
+
+\part{Asymptotics of assemblies of nested cycles: exact counts and fixed order marked saddle expansions}\label{ncy:part:one}
+
 
 \section{Exact objects and established input}\label{ncy:sec:exact}
 A labeled cycle on an $m$-element set has $(m-1)!$ possible cyclic
@@ -346,6 +412,21 @@ $T(n,k)$, $t$ & A392471 (with $T(n,0)$); $z=e^{-t}$ & \\
 \end{tabular}
 \endgroup
 \end{minipage}
+\begin{writenote}[Part~II and the scope of this Part, 9 October 2026]
+Part~I treats the counts $a_n$, the triangle $T(n,k)$, the number $K_n$ of
+components and the inverse $N(y)$; it says nothing about the sizes of the
+components, and in particular nothing about the largest one. Part~II
+(Section~\ref{ncy:gb:sec:front}) treats that statistic, the size $M_n$ of the
+largest outer component, with the same model and the same credited
+estimate~\eqref{ncy:eq:prior}, which there takes the form of its refined
+weight hypothesis~\eqref{ncy:gb:eq:refined-hyp} with $c=a_*=e^{-\gamma}$. It
+read Part~I at the blob \file{07022425b718}, which is Part~I's
+\file{article.tex} before this write, and uses Part~I for the model, its
+counts and its credits only, not as a premise of any proof. The relation to
+the repository stated above is unchanged by Part~II: no other report
+treats largest components of these assemblies, and none needs a reciprocal
+note.
+\end{writenote}
 
 \section{The marked coefficient theorem}\label{ncy:sec:main}
 Fix a sufficiently small open complex disc about $u=1$. Choose
@@ -1387,8 +1468,2268 @@ is corrected, with a dated note keeping the first wording, and the last
 sentence of Remark~\ref{ncy:rem:eg}(c) is strengthened, also with a dated
 note.
 \end{writenote}
+\begin{writenote}[Part~II and these questions, 9 October 2026]
+Part~II (Section~\ref{ncy:gb:sec:front}) answers none of
+Questions~\ref{ncy:q:effective}--\ref{ncy:q:eg}: its statistic is the largest
+outer component, not $K_n$, and it does not reprove or sharpen any statement
+of Part~I. Two of its own questions (Section~\ref{ncy:gb:sec:future}) are the
+analogues of questions here for that statistic and are recorded beside them:
+its Question~\ref{ncy:gb:q:periodic} asks at which order the periodic
+root-of-unity terms of the component expansion enter the largest-component
+law, as Question~\ref{ncy:q:periodic} asks for the outer coefficients; its
+Question~\ref{ncy:gb:q:effective} asks for effective constants in its
+estimates, as Question~\ref{ncy:q:effective} does for the count equivalent
+and the inverse. Neither is answered.
+\end{writenote}
 
-\begin{thebibliography}{9}
+\clearpage
+\part{Sharp Gumbel errors and optimal continuous calibration for the largest outer component}\label{ncy:gb:part}
+\partsource{A research manuscript of 8~October 2026, archive
+\file{sharp_gumbel_assemblies.zip}, delivered as
+\file{sharp_gumbel_assemblies/article.tex} with two section files and a
+generated table file (27~pages). Delivered title block ``Sharp Gumbel Errors
+and Optimal Continuous Calibration for Random Assemblies / Largest components
+of nested-cycle partitions and other assemblies with asymptotically constant
+weights / Research manuscript prepared for Vladimir Reshetnikov / 8 October
+2026''. Printed as delivered after Section~\ref{ncy:gb:sec:front}, which the
+write added, with \textbf{[write]} notes; the manuscript's Section~$k$ is
+Section~$k+12$ here, its statements and equations ($k.m$) are ($k{+}12.m$),
+and its Appendices~A and~B, Tables~1 and~2 and Figures~1 and~2 keep their
+letters and numbers. Its labels carry the prefix \file{ncy:gb:}. It uses
+Part~I for the model, its counts and its credits, not as a premise of any
+proof.}
+\begin{partabstract}
+For random assemblies with nonnegative component weights
+\(p_k=c+O(k^{-1})\), \(c>0\), we prove a uniform second-order law for
+the largest component. If \(\tau\) is the exact size saddle,
+\(L=\log(c/\tau)\), and \(G(x)=\exp(-e^{-x})\), the ordinary Gumbel
+approximation has error
+\[
+ \DK(F_n,G)\sim
+ \frac{(2+\sqrt5)e^{-(3+\sqrt5)/2}}{16\sqrt c}
+ \frac{\log^2 n}{\sqrt n}.
+\]
+No affine normalization removes this order. An explicit increasing
+nonlinear calibration attains error
+\(\tau/(2e)+O(\tau/L)\); we prove that \(\tau/(2e)\) is the smallest
+possible leading error among all continuous distribution functions.
+Retaining the lattice phase improves the error to \(O(\tau/L)\).
+Under \(p_k=c+a_*/k+O(\log k/k^2)\), an exponential-integral correction
+reduces it to \(O(\tau^{3/2}L^3)\). The proof compares the conditioned
+and unconditioned Fourier integrals before approximation, preserving
+a cancellation needed below the lattice scale. We apply the results
+to nested-cycle partitions, counted by OEIS A308338, and to labelled
+forests of paths. The package includes exact integer checks and
+independent numerical coefficient-ratio calculations.
+
+\smallskip\noindent
+\textbf{Research status.}
+The quantitative refinements have complete conventional proofs in this
+manuscript and were independently checked during preparation. The
+first-order Gumbel laws and the component coefficient asymptotics are
+credited to prior work. The literature comparison supports these as
+proposed new refinements; it does not establish worldwide priority.
+The manuscript is unrefereed and is not a Lean or Rocq formalization.
+\end{partabstract}
+
+\section{Provenance, scope and notation of Part~II}\label{ncy:gb:sec:front}
+
+[Added 9~October 2026.] Part~II was added in a second write of this report,
+after Part~I had been written (\file{399df8a49}) and independently checked
+(\file{25df8755d}). It is the manuscript \emph{Sharp Gumbel Errors and
+Optimal Continuous Calibration for Random Assemblies}, which takes the model
+of Part~I and asks a question Part~I does not ask: how far the law of the
+largest outer component is from its Gumbel limit, and how much of that error
+any normalization can remove. Everything of the manuscript is printed in this
+Part except its title page (recorded in the source block above), its table of
+contents and its reference list (merged into this report's bibliography): its
+abstract and status paragraph above, its eleven sections as
+Sections~\ref{ncy:gb:sec:intro}--\ref{ncy:gb:sec:future}, and its two
+appendices, in the manuscript's order. Its letters are kept
+(Section~\ref{ncy:gb:sec:notation}). This section and the notes marked
+[write] are the write's; all other text of
+Sections~\ref{ncy:gb:sec:intro}--\ref{ncy:gb:sec:future} and of the
+appendices is the manuscript's.
+
+\subsection{The manuscript}\label{ncy:gb:sec:provenance}
+
+The archive \file{sharp_gumbel_assemblies.zip} ($987{,}801$ bytes; 24 files
+in one wrapper directory \file{sharp_gumbel_assemblies/},
+$1{,}308{,}260$ bytes unpacked) arrived in commit \file{b28d0850b}
+(8~October 2026, 08:39~PDT). Its 18 supporting files were placed in this
+directory by commit \file{803f4d937} (9~October 2026), which also retired the
+archive, with the prefix \file{02-gumbel-}, the Part number; all 18 are
+byte-identical to the delivery (confirmed at the write). The programs are
+\file{code/02-gumbel-*.py} with the delivered \file{Makefile} as
+\file{code/02-gumbel-Makefile}; the data, the generated table file
+\file{data/02-gumbel-numerical_tables.tex}, \file{requirements.txt} and the
+delivered checksum list \file{MANIFEST.sha256} are under \file{data/}; the two
+figures (PDF, included here, and PNG previews) under \file{figures/}; the
+delivered \file{PROVENANCE.txt} and \file{VERIFICATION.txt} are
+\file{02-gumbel-PROVENANCE.txt} and \file{02-gumbel-VERIFICATION.txt} at the
+top of the directory. Not shipped, and retrievable from the arrival commit:
+the manuscript sources (\file{article.tex}, \file{sections_fourier.tex},
+\file{sections_optimal.tex}, \file{references.bib}), its PDF and the delivery
+\file{README.txt}.
+
+The manuscript is \file{article.tex} (1{,}168 lines), which inputs
+\file{sections_fourier.tex} (356 lines, its Section~3),
+\file{sections_optimal.tex} (402 lines, its Sections~6 and~7) and the
+generated \file{numerical_tables.tex}, with a BibTeX file of eight entries; a
+build of the delivered text reproduces its 27-page PDF, with no warnings.
+Its title page and PDF author field read ``Research manuscript prepared for
+Vladimir Reshetnikov''; its README calls it ``an AI-assisted, unrefereed
+manuscript'', and its \file{PROVENANCE.txt} says it ``was prepared in an
+AI-assisted mathematical research session''; a source comment at the head of
+\file{sections_fourier.tex} names an agent, \texttt{proveit\_scout}, as the
+author of that section. Its pins (its Appendix~\ref{ncy:gb:app:provenance},
+\file{02-gumbel-PROVENANCE.txt} and the bibliography entry
+\cite{ProveItNested}) are the blob \file{07022425b718} of Part~I's
+\file{article.tex}, retrieved at ProveIt commit \file{2bac1ea07b98}
+(7~October 2026, 21:26~PDT), which is Part~I's text before this write, and
+commit \file{adc7f1241b42} of the \texttt{openai/math} repository, which is
+outside this repository and was not checked.
+
+\emph{How the manuscript was merged.} Its 94 labels carry the prefix
+\file{ncy:gb:} (92 in its text, 2 in the shipped table file, which is input
+unchanged through a local wrapper that adds the prefix), and its 102
+references to them (69 \verb|\eqref|, 33 \verb|\ref|) were updated. Its two
+section files are printed at the places where its driver inputs them; the
+table file and the two figures are input under their prefixed names. Its
+citation keys are entries of the merged bibliography, marked [Part~II],
+except two: \file{oeis308338}, which Part~I cites too and which is printed
+once with Part~II's note added, and \file{FFGPP}, which is Part~I's
+\file{hybrid} (its two citations re-keyed, its note added); its key
+\file{ProveItNested} is this report at the pin, that is, Part~I. Its macros
+(\verb|\E|, \verb|\Pbb|, \verb|\R|, \verb|\Z|, \verb|\norminf|, \verb|\DK|,
+\verb|\cC|, \verb|\cE|, \verb|\ph|, and the unused \verb|\N|, \verb|\ee|,
+\verb|\fracpart|, \verb|\cA|), its \texttt{definition} style and the packages
+\texttt{graphicx} and \texttt{longtable} were added to the preamble; its
+\verb|\dd| is Part~I's. Its title page, colours, running heads and table of
+contents are not printed. No other text was changed. The write labelled the
+eleven items of Section~\ref{ncy:gb:sec:future}. The numbering, against a
+build of the delivered text: its Sections~1--11 are
+Sections~\ref{ncy:gb:sec:intro}--\ref{ncy:gb:sec:future} here, its
+Theorem~2.2 is Theorem~\ref{ncy:gb:thm:main}, Theorem~3.4 is
+Theorem~\ref{ncy:gb:thm:tailmoment}, Theorem~4.2 is
+Theorem~\ref{ncy:gb:thm:lattice}, Proposition~5.1 is
+Proposition~\ref{ncy:gb:prop:kappa}, Theorem~5.2 is
+Theorem~\ref{ncy:gb:thm:affine}, Theorems~6.1 and~7.1 are
+Theorems~\ref{ncy:gb:thm:atom} and~\ref{ncy:gb:thm:optimal}, Theorem~8.1 is
+Theorem~\ref{ncy:gb:thm:e1}, Corollary~9.1 is
+Corollary~\ref{ncy:gb:cor:nested}; every statement, subsection and equation
+$k.m$ is $(k{+}12).m$; Appendices~A and~B, Tables~1 and~2 and Figures~1
+and~2 are unchanged (all 94 labels compared). The manuscript cites nothing of
+Part~I by number.
+
+\emph{What the manuscript says about the repository.} Its account of
+Part~I (that it ``develops marked enumeration asymptotics and fluctuations
+of the \emph{number} of components'', and, in its README, that it
+``primarily studies enumeration and component-count fluctuations'') is
+correct. Its proposal to file the package as a separate report
+\file{a308338-sharp-largest-components/} was declined at placement: the
+collection keeps one report per A-number, and the manuscript treats the same
+model and sequence, so it is this report's Part~II. Its remark on a Potts
+reconstruction coefficient in \texttt{openai/math}
+(Subsection~\ref{ncy:gb:sec:intro}.3) is context, not a premise, and was not
+checked.
+
+\subsection{What Part~II answers in Part~I}\label{ncy:gb:sec:answers}
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\renewcommand{\theHtable}{ncygb.answers}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.67\textwidth}@{}}
+\toprule
+Part~I & After Part~II\\
+\midrule
+\endhead
+Questions~\ref{ncy:q:effective}--\ref{ncy:q:eg} & \textbf{None answered.} Part~II treats the largest outer component $M_n$, a statistic Part~I does not treat (Section~\ref{ncy:sec:provenance}); it does not reprove or sharpen a statement of Part~I.\\
+Question~\ref{ncy:q:periodic} (periodic terms in the outer coefficients) & Its analogue for $M_n$ is Part~II's Question~\ref{ncy:gb:q:periodic}; both open.\\
+Question~\ref{ncy:q:effective} (effective constants) & Its analogue for Part~II's estimates is Part~II's Question~\ref{ncy:gb:q:effective}; both open.\\
+The component estimate~\eqref{ncy:eq:prior} & Part~II's only analytic input for nested cycles, quoted as~\eqref{ncy:gb:eq:known-p} from the same source; with $c=a_*=e^{-\gamma}$ it is Part~II's refined hypothesis~\eqref{ncy:gb:eq:refined-hyp}.\\
+The counts $a_n$ (Section~\ref{ncy:sec:computation}) & Part~II's $A_n$ (equation~\eqref{ncy:gb:eq:nested-egf}); its displayed $A_0,\dots,A_{10}$ and its 22 checked terms agree with Part~I's data and with A308338.\\
+The limit $e^{-\gamma/2}$ of~\eqref{ncy:eq:meanlimit} & The same number is $\sqrt c$ in~\eqref{ncy:gb:eq:cycle-constants}, where it enters the scale $\tau\sim\sqrt{c/n}$ of the largest component, not the mean of $K_n$.\\
+The contour of Section~\ref{ncy:sec:circle} & Not reused. Part~II's $\tau$ is the exact saddle of the size equation~\eqref{ncy:gb:eq:saddle}; Part~I's contour radius at $u=1$ is $\Re s=\sqrt{c/n}$, which is the leading term $\tau_0$ of $\tau$ (Proposition~\ref{ncy:gb:prop:explicit-saddle}).\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+Dated notes at the end of Section~\ref{ncy:sec:provenance} and of
+Section~\ref{ncy:sec:questions} say the same.
+
+\emph{What Part~II proves again}: nothing of Part~I; it rechecks the first 22
+counts. \emph{What is new to the report}: everything else. Before the
+placement no file of the repository cited Panagiotou and Ramzews or
+Bousquet-M\'elou and Weller, or treated the largest component of an
+expansive assembly.
+
+\subsection{What the write read and checked}\label{ncy:gb:sec:checks}
+
+\emph{At placement} (the intake dossier, 9~October 2026; own code): the
+constant $\kappa$ as the larger of the two stationary values; the corollary
+constants $e^{\gamma/2}\kappa/16$, $e^{-\gamma/2}/(2e)$, $2e^{-\gamma/2}/e$;
+the six exact rational distribution values at $n=50$ by an integer
+recurrence, equal to the recorded fractions; A308338 $a(0..16)$; and the raw,
+smooth and lattice columns of \file{data/02-gumbel-nested_errors.csv} at
+$n=1000$ and $10^4$ by a per-cutoff tilted coefficient recurrence (no
+Fourier quadrature), equal to every printed digit at $n=10^4$ and within
+$3\cdot10^{-10}$ at $n=1000$, inside the delivery's own
+recurrence-versus-Fourier difference. It observed that the data do not yet
+exhibit the asymptotic constants (note at the end of
+Section~\ref{ncy:gb:sec:computation}); no claim was found wrong.
+
+\emph{At the write} (9~October 2026; Python~3.14.4, NumPy, SciPy, SymPy~1.14.0,
+mpmath~1.3.0; own code, kept with the intake records and not shipped). Every
+proof of Sections~\ref{ncy:gb:sec:fourier}--\ref{ncy:gb:sec:application} was
+read line by line, with no error found. Rechecked by hand or with SymPy in
+particular: the tail polynomials $R_1,R_2,R_3$ of
+Lemma~\ref{ncy:gb:lem:tails} and the exact geometric
+tail~\eqref{ncy:gb:eq:exact-geometric-tail} with its expansion; the
+algebra~\eqref{ncy:gb:eq:poly-algebra}, including the skewness term; the
+skewness sign $-3b\alpha=-B_3S_1/(2V^2)$; the extraction of the $L^2$
+profile~\eqref{ncy:gb:eq:leading-profile}; both stationary values of $|H|$
+and their ratio $(2+\sqrt5)^2e^{-\sqrt5}=1.9178\ldots$; the second-difference
+bound~\eqref{ncy:gb:eq:Estar-bound} ($1/G'(-\log2)=e^2/2$, $2/G'(0)=2e$,
+$1/G'(\log2)=2\sqrt e$, second difference $-1/2$); that
+$G'(x)\,(h_\tau(x)-x)$ is exactly the smooth polynomial part of $U_n$; the
+derivative~\eqref{ncy:gb:eq:full-calibration-derivative} and its four
+regions (the minima at $a=1/4$ are $0.566$, $0.8125$ and positive, above the
+stated bounds $0.133$, $0.6875$ and $1+(1-a)(2t+1)/4$); the $E_1$ profile and
+$\norminf{G'}=1/e$ in Theorem~\ref{ncy:gb:thm:e1}; the saddle
+algebra of Proposition~\ref{ncy:gb:prop:explicit-saddle}; and every decimal
+constant of the manuscript at 40 digits (one is rounded: note after the
+proof of Proposition~\ref{ncy:gb:prop:kappa}). Numerically (floating point,
+not certified), by a third route that is neither the delivery's Fourier
+quadrature nor the intake's per-cutoff recurrence: the whole distribution of
+$M_n$ for $n=10^3$, $10^4$, $10^5$, from the incremental product
+$\prod_{k\le m}\exp(a_kz^k)\bmod z^{n+1}$ in which every term is positive; it
+reproduces all four error columns of \file{data/02-gumbel-nested_errors.csv}
+and hence all twelve entries of Table~\ref{ncy:gb:tab:nested-errors}, the
+largest atom against $\tau/e$, the integer quantiles of
+Corollary~\ref{ncy:gb:cor:central-quantiles}, the explicit saddle, and an
+uncertified value of $E_*$ (notes at the end of
+Sections~\ref{ncy:gb:sec:computation} and~\ref{ncy:gb:sec:future}).
+It reran the two shipped numerical programs on a copy
+(\file{nested_numerics.py}, and \file{forest_numerics.py} with
+\texttt{--recurrence-check}; NumPy~2.4.4, SciPy~1.17.1, 15 and 23 seconds):
+the six exact fractions are reproduced exactly, and every error column of the
+three CSV files agrees with the shipped one to relative $2\times10^{-8}$ or
+better; only the columns that record floating noise of order $10^{-15}$
+(quadrature differences, the saddle residual) differ.
+\emph{Not read by the write}: Panagiotou--Ramzews, Bousquet-M\'elou--Weller
+(both versions), Mossel--Sly--Sohn and the \texttt{openai/math} repository;
+the manuscript's accounts of them are reported, not confirmed. Part~I's
+reading of the hybrid paper~\cite{hybrid} is the only reading of it in this
+report.
+
+\subsection{What is not claimed}\label{ncy:gb:sec:nonclaims}
+
+From the manuscript: the first-order Gumbel limits and the component
+coefficient asymptotics are prior work (Panagiotou--Ramzews, Theorem~1.2;
+Bousquet-M\'elou--Weller, Proposition~9; the hybrid paper), and the
+quantitative refinements are ``proposed new contributions''; its directed
+literature audit ``does not establish worldwide priority'', and ``a broader
+specialist review remains appropriate''; the manuscript is unrefereed,
+AI-assisted, checked by agent derivations and audits that ``are not human
+peer review'', and not a Lean or Rocq formalization; the computations check
+finite arithmetic and numerical coefficient ratios, and the proofs do not
+depend on them; no directed-rounding interval arithmetic and no certified
+numerical supremum (the largest path-forest errors are sampled maxima, and
+node agreement does not bound the omitted Fourier arc); the $O$-constants are
+not effective and no finite threshold is supplied, and ``moderate sizes can
+be far from a leading equivalent''; the refined result needs the refined
+hypothesis~\eqref{ncy:gb:eq:refined-hyp}; $U_n$ need not be a distribution
+function; the $E_1$ hierarchy is a comparison of fixed scales, not a
+convergent series; no numerical value of $E_*$ is used; the Potts
+coefficient met during the research selection is already in
+Mossel--Sly--Sohn and is not presented as new; no remote repository was
+changed. The write adds: its checks are floating evaluations (positive terms
+only, not interval arithmetic) and hand or SymPy computations; its value of
+$E_*$ is uncertified; nothing was submitted anywhere.
+
+\subsection{Reading conventions}\label{ncy:gb:sec:notation}
+
+Part~II keeps its letters. Where they clash with Part~I, read them as follows
+(the write's own text in Part~II uses Part~II's letters).
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{ncygb.notation}% no PDF destination clash
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.0in}>{\raggedright\arraybackslash}p{2.2in}@{}}
+\toprule
+Symbol & Part II & Part I\\
+\midrule
+\endhead
+$p_k$, $c$, $a_*$ & assembly weights with $p_k\to c$; for nested cycles Part~I's $p_m$ and $c=e^{-\gamma}$; $a_*$ the $1/k$ coefficient, $=c$ for nested cycles & $p_m=B_m/m!$, $c=e^{-\gamma}$\\
+$a_k$, $A_n$ & Poisson means $p_ke^{-\tau k}$; $A_n$ the nested-cycle counts, Part~I's $a_n$; $A_n^{(\le m)}$ & $a_n$ (A308338)\\
+$B_j$, $B_k^{\rm comp}$, $V$ & tilted size moments $\sum k^ja_k$, $B_1(\tau)=n$, $V=B_2$; $B_k^{\rm comp}=k!p_k$ is Part~I's $B_m$ & $B_m$ (A007838); the constants $B$, $B_3$; $v=cu$\\
+$\tau$, $L$ & the exact size saddle~\eqref{ncy:gb:eq:saddle}; $L=\log(c/\tau)\sim\frac12\log n$ & no $\tau$; $s=\sqrt{v/n}$; $L=\log n$ or $\log y$\\
+$M_n$ & the largest outer component & $M_J$, $M_1(L)$; Riedel's $M$; the write's $M_\varrho(n)$\\
+$G$, $H$, $h_\tau$ & the Gumbel distribution function; $H=G'(1-e^{-x})$; the calibration~\eqref{ncy:gb:eq:hfull} & $G_J$ of Section~\ref{ncy:sec:inverse}; $H_{j,k}$, $H_j$; the window $h$\\
+$J_n$, $U_n$, $\widetilde U_n$ & calibrated, lattice and refined approximations & $J$ a fixed order; $U_j$ in~\eqref{ncy:eq:localP}\\
+$R_j(q)$ & tail polynomials of Lemma~\ref{ncy:gb:lem:tails} & $R_j(L;u)$ the correction polynomials of Theorem~\ref{ncy:thm:main}\\
+$Q_n(m)$, $Q_n(p)$, $Q_m$ & the tail-moment approximation (Theorem~\ref{ncy:gb:thm:tailmoment}); the integer quantile (Corollary~\ref{ncy:gb:cor:central-quantiles}); $S_1(m)+ma_m$ & $Q(X)$, $Q_j$; Riedel's $Q$\\
+$q$, $\beta$, $\theta_n$ & $q=L+x$; $\beta=e^{-x}$; the fractional part; $\theta$ also a Fourier variable & $q=(J+1)/2$, $q=Q(\ell_c)$; $\beta=c/2-3/4$\\
+$\delta$, $\kappa$ & $\delta=\tau L^2/(4c)$; $\kappa=(2+\sqrt5)e^{-(3+\sqrt5)/2}$ & $\delta=n^{-1/4}$; the loss constants $\kappa$, $\kappa'$\\
+$E_*$, $E_1$, $\cE_n$ & the affine minimax constant; the exponential integral; a remainder & $E_{n,J}$; the constant $E$ of~\eqref{ncy:eq:QZ}; $\EE$\\
+$T$, $T_m$, $S_j(m)$, $Z_k$ & Poisson totals and tails; Poisson variables; $Z_n$ a normalizer & $T(n,k)$ (A392471); $Z(X)$\\
+$N$, $N_k$ & $\lfloor1/\tau\rfloor$; multiplicities & $N(y)$; Riedel's $N$\\
+$C$, $C(z)$, $d$ & generic constants, $|p_k-c|\le C/k$; the path-forest series & $C(u)$, $C$ (the amplitude)\\
+$u$, $s$, $\lambda$, $\alpha$, $\ell$ & a standardized Fourier variable or a probability; $s=\tau m$; $\lambda=S_0(m)$; $\alpha=S_1/\sqrt V$ or an affine slope; an index & $u$ the marking variable; $s$ the saddle; $\lambda=\sqrt{vn}$; $\alpha=c/2-1/4$; $\ell=\log s$\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable takes no number
+\endgroup
+
+\section{The question and the contribution}\label{ncy:gb:sec:intro}
+
+A limiting distribution is often much less accurate than its elegant
+formula suggests. This is particularly visible for the largest component
+of a random assembly. At a first approximation, rare large components
+behave like independent Poisson events, producing a Gumbel law. The
+assembly, however, is sampled with its \emph{total size fixed}. Removing
+large components changes both the mean and the variance of that total.
+Although these changes are small on the central-limit scale, their
+effect on the extreme-value distribution is larger than the spacing of
+the integer lattice by a factor of order \(\log^2 n\).
+
+This manuscript identifies that effect, calculates its exact profile,
+and removes it. The final continuous approximation is as accurate, to
+first order, as any continuous approximation can be. We then retain the
+integer lattice and resolve a further, model-dependent correction.
+
+The concrete motivating sequence is
+\begin{equation}\label{ncy:gb:eq:nested-egf}
+ A_n=n![z^n]\exp\bigl(P(z)-1\bigr),
+ \qquad P(z)=\prod_{k\ge1}\left(1+\frac{z^k}{k}\right).
+\end{equation}
+These are the nested-cycle partitions of OEIS A308338
+\cite{oeis308338}. The existing ProveIt report on this sequence develops
+marked enumeration asymptotics and fluctuations of the \emph{number}
+of components \cite{ProveItNested}. Here the random variable is the
+\emph{size of the largest} outer component. The distinction matters:
+a largest outer component contains a permutation with distinct cycle
+lengths; it is not just the longest individual cycle.
+
+\subsection{What is already known}
+
+The exponential formula and conditioned independent-Poisson
+representation of assemblies are standard. Panagiotou and Ramzews
+prove Gumbel convergence for largest clusters in a much broader class
+of expansive assemblies and multisets \cite[Theorem~1.2]{PR}.
+Bousquet-M\'elou and Weller previously obtained a Gumbel law for the
+largest path in a random labelled forest of paths
+\cite[Proposition~9 in the conference version]{BMWconf,BMW}.
+Thus a first-order Gumbel limit for our examples is established
+background, not a new theorem of this manuscript.
+
+For the component series \(P\) in \eqref{ncy:gb:eq:nested-egf}, Flajolet,
+Fusy, Gourdon, Panario, and Pouyanne record the estimate
+\begin{equation}\label{ncy:gb:eq:known-p}
+ [z^k]P(z)=e^{-\gamma}
+ +\frac{e^{-\gamma}}{k}
+ +O\left(\frac{\log k}{k^2}\right),
+\end{equation}
+and develop fuller expansions, including periodic terms
+\cite[Section~3, equation~(22), and Proposition~1]{hybrid}.
+Their estimate is the only non-elementary coefficient input needed
+for the nested-cycle application. The general probability theorem
+below is proved from its explicitly stated weight hypothesis.
+
+\subsection{The quantitative change}
+
+Write \(M_n\) for the largest component. The main normalization is
+\(Y_n=\tau M_n-L\), where the exact saddle \(\tau\) and \(L\) are
+defined in Section~\ref{ncy:gb:sec:model}. In all statements below,
+\(\tau\sim\sqrt{c/n}\) and \(L\sim\frac12\log n\).
+The error is uniform in the CDF argument.
+
+\begin{center}
+\begin{tabular}{p{0.36\linewidth}p{0.54\linewidth}}
+\toprule
+Approximation & Error proved here\\
+\midrule
+Ordinary Gumbel \(G\) &
+\(\displaystyle
+ \frac{\kappa}{4c}\tau L^2+O(\tau L)\), with explicit \(\kappa>0\)\\[0.5em]
+Best affine normalization &
+\(\displaystyle E_*\frac{\tau L^2}{4c}(1+o(1))\), with \(E_*>0\)\\[0.5em]
+Explicit continuous calibration &
+\(\displaystyle \frac{\tau}{2e}+O(\tau/L)\), with optimal leading constant\\[0.5em]
+Universal lattice approximation &
+\(O(\tau/L)\); a sharp equivalent is obtained when \(a_*\ne0\)\\[0.5em]
+Lattice and component correction &
+\(O(\tau^{3/2}L^3)\) under the refined weight hypothesis\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The constants in the unqualified \(O\)-notation may depend on the
+fixed weight sequence. They do not depend on \(x\) or \(n\).
+The results are asymptotic estimates, not numerical error certificates
+valid from a stated finite threshold.
+
+\subsection{Relation to the two repositories}
+
+The research selection included the four-state Potts reconstruction
+manuscripts in \texttt{openai/math} \cite{OpenAIMath}. A candidate
+critical cubic coefficient was checked against Mossel--Sly--Sohn
+\cite[Proposition~4.12, equations~(105)--(106)]{MSS} and found to be
+already present there. The present problem was selected from the
+ProveIt sequence program because its error profile and optimal
+calibration provide a sharper, independently provable target.
+The probability results below do not depend on a Potts reconstruction
+claim or on an unverified formal certificate.
+\begin{writenote}[The repositories at the pins, 9 October 2026]
+The ProveIt source of this subsection is Part~I as written and independently
+checked: the pinned blob \file{07022425b718} is Part~I's \file{article.tex}
+before this write, and the description of Part~I in this section is correct.
+The \texttt{openai/math} snapshot and Mossel--Sly--Sohn were not read by the
+write; the remark on the Potts coefficient is reported, not confirmed, and it
+is no premise of any proof in this Part.
+\end{writenote}
+
+\section{The assembly model and the formulas}\label{ncy:gb:sec:model}
+
+\begin{definition}[Weight hypothesis]\label{ncy:gb:def:weights}
+Throughout Sections~\ref{ncy:gb:sec:model}--\ref{ncy:gb:sec:affine} and the continuous
+calibration results, the weights satisfy
+\begin{equation}\label{ncy:gb:eq:weight-hyp}
+ p_k\ge0,\qquad p_k=c+O(k^{-1}),\qquad c>0.
+\end{equation}
+Equivalently, after increasing a constant to cover finitely many
+indices, there is \(C<\infty\) such that
+\(|p_k-c|\le C/k\) for every \(k\ge1\).
+\end{definition}
+
+For \(n\ge1\), give each vector
+\[
+ (N_1,\ldots,N_n)\in\Z_{\ge0}^n,\qquad \sum_{k=1}^n kN_k=n,
+\]
+probability
+\begin{equation}\label{ncy:gb:eq:assembly-law}
+ \frac{1}{Z_n}\prod_{k=1}^n\frac{p_k^{N_k}}{N_k!},
+ \qquad
+ Z_n=[z^n]\exp\left(\sum_{k\ge1}p_kz^k\right).
+\end{equation}
+The law exists for every sufficiently large \(n\), since \(p_n>0\)
+eventually. Set
+\[
+ M_n=\max\{k:N_k>0\}.
+\]
+If \(k!p_k\) is the number of available labelled components of size
+\(k\), \eqref{ncy:gb:eq:assembly-law} is precisely the component spectrum of
+a uniformly selected labelled assembly.
+
+There is a unique \(\tau=\tau_n>0\) solving
+\begin{equation}\label{ncy:gb:eq:saddle}
+ B_1(\tau):=\sum_{k\ge1}kp_ke^{-\tau k}=n.
+\end{equation}
+The left side is continuous, strictly decreasing from infinity to
+zero. Define
+\begin{equation}\label{ncy:gb:eq:main-notation}
+ L=\log(c/\tau),\quad Y_n=\tau M_n-L,\quad
+ F_n(x)=\Pbb(Y_n\le x),\quad G(x)=e^{-e^{-x}},
+ \quad \delta=\frac{\tau L^2}{4c}.
+\end{equation}
+Only sufficiently large \(n\), for which \(L>0\), will be used.
+For each real \(x\), abbreviate
+\begin{equation}\label{ncy:gb:eq:local-notation}
+ \beta=e^{-x},\qquad q=L+x,\qquad
+ m=\left\lfloor\frac q\tau\right\rfloor,\qquad
+ \theta_n(x)=\frac q\tau-\left\lfloor\frac q\tau\right\rfloor.
+\end{equation}
+Thus the fractional part is exactly zero at the lattice points
+\(x=\tau m-L\).
+
+The continuous correction is
+\begin{equation}\label{ncy:gb:eq:hfull}
+ h_\tau(x)=x+\frac{\tau}{4c}
+ \left[q^2-q-1-\beta(q+1)^2\right],
+ \qquad J_n(x)=G(h_\tau(x)).
+\end{equation}
+The lattice approximation is
+\begin{align}
+ U_n(x)={}&G(x)
+ +\frac{\tau G(x)}{4c}
+ \left[(\beta-\beta^2)q^2-(\beta+2\beta^2)q-\beta-\beta^2\right]
+ \notag\\
+ &+\tau\left(\frac12-\theta_n(x)\right)G'(x).
+ \label{ncy:gb:eq:Un}
+\end{align}
+An approximation such as \(U_n\) need not itself be a monotone CDF.
+Its uniform absolute error is the asserted property.
+In contrast, \(J_n\) is a continuous CDF for all sufficiently large
+\(n\), as proved below.
+
+\begin{theorem}[Main quantitative conclusions]\label{ncy:gb:thm:main}
+Under \eqref{ncy:gb:eq:weight-hyp}, the following hold.
+\begin{enumerate}
+\item Uniformly on \(\R\),
+\begin{equation}\label{ncy:gb:eq:main-leading}
+ F_n(x)=G(x)+\delta G(x)e^{-x}(1-e^{-x})+O(\tau L).
+\end{equation}
+Consequently
+\[
+ \DK(F_n,G)=\kappa\delta+O(\tau L),
+ \qquad
+ \kappa=(2+\sqrt5)e^{-(3+\sqrt5)/2}.
+\]
+Every affine normalization still has an error of order at least
+\(\delta\), in the precise sense of Theorem~\ref{ncy:gb:thm:affine}.
+
+\item Uniformly on \(\R\),
+\begin{equation}\label{ncy:gb:eq:main-lattice}
+ F_n(x)=J_n(x)+
+ \tau\left(\frac12-\theta_n(x)\right)G'(x)+O(\tau/L).
+\end{equation}
+In particular
+\[
+ \DK(F_n,J_n)=\frac{\tau}{2e}+O(\tau/L).
+\]
+This leading constant is optimal among all continuous CDFs.
+
+\item \(\norminf{F_n-U_n}=O(\tau/L)\).
+If, more precisely,
+\begin{equation}\label{ncy:gb:eq:refined-hyp}
+ p_k=c+\frac{a_*}{k}+O\left(\frac{\log(k+1)}{k^2}\right),
+\end{equation}
+then, with
+\(E_1(v)=\int_v^\infty e^{-u}u^{-1}\dd u\),
+\begin{equation}\label{ncy:gb:eq:main-e1}
+ F_n(x)=U_n(x)
+ -a_*G(x)E_1(\max\{1,L+x\})
+ +O(\tau^{3/2}L^3)
+\end{equation}
+uniformly on \(\R\).
+For \(a_*\ne0\),
+\[
+ \norminf{F_n-U_n}\sim\frac{|a_*|}{ce}\frac{\tau}{L}.
+\]
+\end{enumerate}
+\end{theorem}
+
+Theorem~\ref{ncy:gb:thm:tailmoment} proves the common Fourier estimate.
+Section~\ref{ncy:gb:sec:lattice} derives the universal lattice law.
+Section~\ref{ncy:gb:sec:affine} treats the ordinary and affine-normalized
+errors. The optimal continuous and atom results follow in
+Section~\ref{ncy:gb:sec:optimal}. Section~\ref{ncy:gb:sec:refinement} proves
+\eqref{ncy:gb:eq:main-e1}. These proofs also explain why the successive
+error scales differ.
+
+\subsection{An exact probability representation}
+
+Let independent \(Z_k\) have Poisson means
+\[
+ a_k=p_ke^{-\tau k},\qquad
+ T=\sum_{k\ge1}kZ_k,\qquad T_m=\sum_{1\le k\le m}kZ_k.
+\]
+Their total number is almost surely finite, since
+\(\sum_k a_k<\infty\). Conditional on \(T=n\), the exponential factor
+\(\prod e^{-\tau kN_k}=e^{-\tau n}\) is constant, and the law of
+\((Z_k)\) is \eqref{ncy:gb:eq:assembly-law}. Define
+\begin{equation}\label{ncy:gb:eq:moments}
+ B_j=\sum_{k\ge1}k^ja_k,\qquad V=B_2,\qquad
+ S_j(m)=\sum_{k>m,\ k\ge1}k^ja_k.
+\end{equation}
+At the saddle, \(B_1=n\). Independence gives the exact identity
+\begin{equation}\label{ncy:gb:eq:conditioning}
+ \Pbb(M_n\le m)
+ =e^{-S_0(m)}\frac{\Pbb(T_m=n)}{\Pbb(T=n)}.
+\end{equation}
+The factor \(e^{-S_0(m)}\) is the independent rare-component
+approximation. The ratio is the correction for conditioning on size.
+
+% ---- delivered sections_fourier.tex ----
+% Authored by proveit_scout; core proof uses the paired Fourier difference.
+\section{A uniform Fourier estimate for removing the upper tail}
+\label{ncy:gb:sec:fourier}
+
+This section proves the estimate from which the extreme-value expansions
+follow.  Its assumptions concern only the component weights:
+\[
+ p_k\geq0,\qquad p_k=c+O(k^{-1}),\qquad c>0.
+\]
+All constants below may depend on this fixed sequence.  For each sufficiently
+large integer $n$, let $\tau>0$ be the solution of
+\[
+ B_1(\tau)=n,\qquad
+ a_k=p_ke^{-\tau k},\qquad
+ B_j=\sum_{k\geq1}k^j a_k,\qquad V=B_2,
+ \qquad L=\log(c/\tau).
+\]
+We suppress the dependence on $n$ and $\tau$.  Let $Z_k$ be independent
+Poisson random variables with means $a_k$, and write
+\[
+ T=\sum_{k\geq1}kZ_k,\qquad
+ T_m=\sum_{1\leq k\leq m}kZ_k,
+ \qquad S_j(m)=\sum_{k>m}k^j a_k.
+\]
+These sums are finite almost surely.  Conditional on $T=n$, the vector
+$(Z_k)$ has precisely the assembly distribution: its weight is proportional
+to $\prod_k p_k^{Z_k}/Z_k!$, since the factor $e^{-\tau n}$ is constant
+under the conditioning.  In this section $M_n$ denotes its largest occupied
+component size, and
+\[
+ F_n(x)=\Pbb\{\tau M_n-L\leq x\}.
+\]
+The proof uses Fourier inversion on the real circle; no continuation
+through the circle of convergence is required.
+
+\begin{lemma}[Cumulants and the saddle]
+\label{ncy:gb:lem:cumulants}
+The saddle exists and is unique.  For each fixed integer $j\geq1$,
+\[
+ B_j=c\,j!\,\tau^{-j-1}+O(\tau^{-j}),
+ \qquad
+ B_0=\frac c\tau+O\bigl(\log(1/\tau)\bigr).
+\]
+In particular,
+\[
+ V=2c\tau^{-3}(1+O(\tau)),\qquad
+ B_3=6c\tau^{-4}(1+O(\tau)),\qquad
+ \tau=\sqrt{c/n}+O(n^{-1}).
+\]
+\end{lemma}
+
+\begin{proof}
+The weights are bounded and are at least $c/2$ eventually.  Thus $B_1$ is
+continuous and strictly decreasing from infinity to zero as $\tau$ runs
+from zero to infinity; its derivative is $-B_2<0$.  The fixed-order
+geometric-sum estimates give
+\[
+ \sum_{k\geq1}k^je^{-\tau k}
+ =j!\tau^{-j-1}+O(\tau^{-j})\qquad(j\geq1).
+\]
+Multiplying the error $p_k-c=O(k^{-1})$ by $k^je^{-\tau k}$ adds at most
+$O(\tau^{-j})$.  At order zero the perturbation is bounded by a constant
+times $\sum e^{-\tau k}/k=O(\log(1/\tau))$.  The final assertion follows
+by substituting $B_1=n$ into $n=c\tau^{-2}+O(\tau^{-1})$ and solving for
+$\tau$.  Since $p_n>0$ eventually, $\Pbb(T=n)>0$ for every sufficiently
+large $n$, so the conditional laws used here are well defined.
+\end{proof}
+
+\begin{lemma}[A common block controls the whole circle]
+\label{ncy:gb:lem:fourierblock}
+Put $N=\lfloor1/\tau\rfloor$.  There are positive constants $d,C$ such
+that, for all sufficiently small $\tau$, all $m\geq N$, and
+$|\theta|\leq\pi$, both characteristic functions satisfy
+\[
+ \bigl|\E e^{i\theta T}\bigr|,
+ \ \bigl|\E e^{i\theta T_m}\bigr|
+ \leq
+ \exp\!\left[-d\min\{\tau^{-3}\theta^2,\tau^{-1}\}\right].
+\]
+Consequently,
+\[
+ \sup_{j\in\Z}\Pbb(T=j)\leq C\tau^{3/2},\qquad
+ \sup_{j\in\Z}\Pbb(T_m=j)\leq C\tau^{3/2}\quad(m\geq N).
+\]
+For either variable, the part of its Fourier integral where
+$|\theta|\sqrt V>L$ is smaller than every fixed power of $\tau$.
+\end{lemma}
+
+\begin{proof}
+Choose $k_0$ such that $p_k\geq c/2$ for $k\geq k_0$.  On the common
+block $k_0\leq k\leq N$, we have $a_k\geq c/(2e)$.  We claim that
+\[
+ \sum_{k=k_0}^N(1-\cos k\theta)
+ \geq d_0\min\{N^3\theta^2,N\}
+ \qquad(|\theta|\leq\pi)
+\]
+for a fixed $d_0>0$ and all sufficiently large $N$.  If
+$|\theta|\leq1/N$, use $1-\cos u\geq C_0u^2$ for $|u|\leq1$ and sum
+$k^2$.  If $1/N\leq|\theta|\leq A/N$, where $A$ is a fixed large
+constant, the same argument restricted to
+$k\leq\lfloor1/|\theta|\rfloor$ gives a lower bound
+$C_1/|\theta|\geq C_1N/A$.  The lower endpoint $k_0$ only changes the
+constant when $N$ is sufficiently large.  Finally,
+\[
+ \left|\sum_{k=k_0}^N e^{ik\theta}\right|
+ \leq\frac{2}{|1-e^{i\theta}|}
+ \leq\frac{\pi}{|\theta|}.
+\]
+For $|\theta|\geq A/N$, choose, for example, $A=8\pi$ and subtract
+this bound from the number of summands.  This proves the claim.
+
+The modulus of a Poisson characteristic function is
+$\exp[-\sum a_k(1-\cos k\theta)]$.  Keeping only the common block proves
+the asserted bounds for both $T$ and $T_m$.  Fourier inversion then gives
+the bounds on point probabilities.  Since $V\asymp\tau^{-3}$, the
+integral outside $|\theta|\sqrt V\leq L$ is at most
+\[
+ C\tau^{3/2}e^{-d_1L^2}+C e^{-d_1/\tau}
+\]
+for a possibly smaller $d_1>0$.  As $L=\log(1/\tau)+O(1)$, this is
+smaller than every fixed power of $\tau$.
+\end{proof}
+
+\begin{lemma}[The central point probability]
+\label{ncy:gb:lem:localmass}
+At the saddle,
+\[
+ \Pbb(T=n)=\frac{1}{\sqrt{2\pi V}}(1+O(\tau)).
+\]
+There is also the following shifted version.  If $m\geq N$ and integers
+$\ell$ satisfy
+\[
+ S_2(m)=o(V),\qquad S_1(m)+\ell=o(\sqrt V),
+\]
+then
+\[
+ \Pbb(T_m=n+\ell)\sim\frac1{\sqrt{2\pi V}}.
+\]
+\end{lemma}
+
+\begin{proof}
+The centered characteristic function of $T$ is
+\[
+ \psi(\theta)
+ =\exp\!\left\{\sum_{k\geq1}a_k
+       (e^{ik\theta}-1-ik\theta)\right\}.
+\]
+Put $u=\theta\sqrt V$ and $b=B_3/(6V^{3/2})=O(\sqrt\tau)$.  On
+$|u|\leq L$, Taylor's theorem and Lemma~\ref{ncy:gb:lem:cumulants} give
+\begin{equation}
+ \psi(u/\sqrt V)
+ =e^{-u^2/2}\left[1-ibu^3
+       +O\bigl(\tau(u^4+u^6)\bigr)\right].
+ \label{ncy:gb:eq:fourier-full}
+\end{equation}
+Indeed the logarithmic remainder is bounded by
+$B_4u^4/(24V^2)=O(\tau u^4)$, and
+$\sqrt\tau L^3+\tau L^4\to0$, so the exponential Taylor remainder has a
+uniformly bounded factor.  The cubic term integrates to zero.  Integrating
+the remaining error against the Gaussian costs $O(\tau)$; extending the
+core to the real line and discarding the rest of the original circle is
+justified by Lemma~\ref{ncy:gb:lem:fourierblock}.  This proves the first formula,
+including the lower bound $\Pbb(T=n)\geq C^{-1}\tau^{3/2}$.
+
+For the shifted assertion, the variance of $T_m$ is $V-S_2(m)$, and the
+target $n+\ell$ is displaced from its mean by $S_1(m)+\ell$.  On every
+fixed standardized interval its Fourier integrand therefore converges to
+$e^{-u^2/2}$.  The cubic remainder tends to zero because the third
+cumulant of $T_m$ is at most $B_3$.  The common-block bound supplies an
+integrable Gaussian majorant on the expanding inner arc and a negligible
+outer arc.  Dominated convergence proves the formula.
+\end{proof}
+
+\begin{theorem}[Uniform approximation by tail moments]
+\label{ncy:gb:thm:tailmoment}
+For $m\in\Z_{\geq0}$, define
+\[
+ Q_n(m)=e^{-S_0(m)}
+ \left[1+\frac{S_2(m)-S_1(m)^2}{2V}
+              -\frac{B_3S_1(m)}{2V^2}\right].
+\]
+Then
+\[
+ \sup_{m\in\Z_{\geq0}}
+ \bigl|\Pbb(M_n\leq m)-Q_n(m)\bigr|
+ =O(\tau^{3/2}L^3)=o(\tau).
+\]
+The formula $Q_n$ is an approximation evaluated at the integer cutoff;
+no assertion that it is a distribution function for every finite $n$ is
+needed.
+\end{theorem}
+
+\begin{proof}
+Write $\lambda=S_0(m)$.  Independence gives the exact identity
+\begin{equation}
+ \Pbb(M_n\leq m)
+ =e^{-\lambda}\frac{\Pbb(T_m=n)}{\Pbb(T=n)}.
+ \label{ncy:gb:eq:fourier-conditioning}
+\end{equation}
+We first treat a growing central range and then control both complementary
+tails.
+
+For a real $x$, put
+\[
+ m=\left\lfloor\frac{L+x}{\tau}\right\rfloor,
+ \qquad \beta=e^{-x},\qquad s=\tau m.
+\]
+Consider the range
+\begin{equation}
+ \tau^2\leq\beta\leq16L.
+ \label{ncy:gb:eq:fourier-window}
+\end{equation}
+Here $L/2\leq s\leq4L$ eventually, and hence $m\geq N$.  Exponential
+tail sums and $p_k=c+O(k^{-1})$ imply
+\begin{equation}
+ \lambda=\beta(1+O(\tau)),\qquad
+ S_j(m)\leq C\beta\tau^{-j}L^j\quad(1\leq j\leq3).
+ \label{ncy:gb:eq:fourier-tailbounds}
+\end{equation}
+For completeness, the constant-weight tail at order zero is
+$ce^{-\tau(m+1)}/(1-e^{-\tau})=\beta(1+O(\tau))$.  The relative
+perturbation from $p_k-c$ is $O(1/m)=O(\tau/L)$.  Higher moments follow
+by comparing $\sum_{k>m}k^je^{-\tau k}$ with
+$\tau^{-j-1}\int_s^\infty u^je^{-u}\dd u$; the latter is
+$\tau^{-j-1}e^{-s}$ times a fixed polynomial of degree $j$.  These
+arguments are uniform throughout \eqref{ncy:gb:eq:fourier-window}.
+
+The useful cancellation comes from taking the difference of the two
+Fourier integrals before estimating them.  Define
+\[
+ D_m(u)=-\sum_{k>m}a_k(e^{iku/\sqrt V}-1),\qquad
+ \alpha=\frac{S_1(m)}{\sqrt V},\qquad
+ \eta=\frac{S_2(m)}V.
+\]
+On $|u|\leq L$,
+\[
+ D_m(u)=-i\alpha u+\tfrac12\eta u^2+R_3(u),
+ \qquad
+ |R_3(u)|\leq\frac{S_3(m)}{6V^{3/2}}|u|^3.
+\]
+The bounds above give
+\[
+ |\alpha|\leq C\beta\sqrt\tau L,\qquad
+ \eta\leq C\beta\tau L^2,\qquad
+ \frac{S_3(m)}{V^{3/2}}\leq C\beta\tau^{3/2}L^3.
+\]
+In particular $\sup_{|u|\leq L}|D_m(u)|\to0$ uniformly in the growing
+range.  A second-order expansion thus gives
+\begin{equation}
+ e^{D_m(u)}-1
+ =-i\alpha u+\frac{\eta-\alpha^2}{2}u^2+R_m(u),
+ \label{ncy:gb:eq:fourier-tailperturb}
+\end{equation}
+where
+\[
+ |R_m(u)|\leq C\tau^{3/2}L^3
+ (\beta+\beta^2+\beta^3)(|u|^3+|u|^6).
+\]
+The terms responsible for this bound are $S_3/V^{3/2}$,
+$|\alpha|\eta$, and $|\alpha|^3$.  The term $\eta^2$ is smaller,
+because $\sqrt\tau L\to0$.  All exponential remainder factors are
+uniformly bounded.
+
+Exactly,
+\[
+ \Pbb(T_m=n)-\Pbb(T=n)
+ =\frac1{2\pi\sqrt V}
+ \int_{-\pi\sqrt V}^{\pi\sqrt V}
+ \psi(u/\sqrt V)(e^{D_m(u)}-1)\dd u.
+\]
+On the core, multiply \eqref{ncy:gb:eq:fourier-tailperturb} by
+\eqref{ncy:gb:eq:fourier-full}.  The linear and cubic terms are odd and integrate
+to zero.  The quadratic term contributes $(\eta-\alpha^2)/2$.  The
+cubic--linear product is
+\[
+ (-ibu^3)(-i\alpha u)=-b\alpha u^4,
+\]
+so its Gaussian integral contributes
+\[
+ -3b\alpha=-\frac{B_3S_1(m)}{2V^2}.
+\]
+This determines the negative sign of the skewness term.  Every remaining
+product has Gaussian integral at most
+\[
+ C\tau^{3/2}\left[1+L^3(\beta+\beta^2+\beta^3)\right].
+\]
+In particular the $O(\tau(u^4+u^6))$ error in the full characteristic
+function is multiplied by $e^{D_m}-1$, whose leading coefficient is
+$O(\beta\sqrt\tau L)$; there is no uncancelled $O(\tau)$ constant
+error.  This is why separate estimates of the two probabilities would
+lose the stated precision.
+
+Outside the core one must bound the original characteristic functions:
+\[
+ |\psi(e^{D_m}-1)|\leq|\psi e^{D_m}|+|\psi|.
+\]
+The two terms are the moduli of the characteristic functions of $T_m$
+and $T$, respectively.  Lemma~\ref{ncy:gb:lem:fourierblock} therefore makes
+their integrals negligible uniformly; no separate bound on $e^{D_m}$
+outside the core is used.  We have proved
+\begin{align*}
+ \sqrt{2\pi V}\,[\Pbb(T_m=n)-\Pbb(T=n)]
+ ={}&\frac{S_2(m)-S_1(m)^2}{2V}
+       -\frac{B_3S_1(m)}{2V^2}\\
+ &+O\!\left(\tau^{3/2}
+       [1+L^3(\beta+\beta^2+\beta^3)]\right).
+\end{align*}
+Divide by Lemma~\ref{ncy:gb:lem:localmass} and use
+\eqref{ncy:gb:eq:fourier-conditioning}.  Multiplication by $e^{-\lambda}$
+bounds every fixed power of $\beta$, by
+\eqref{ncy:gb:eq:fourier-tailbounds}.  The extra product from division by
+$1+O(\tau)$ is
+$O(\tau^2L^2(\beta+\beta^2))$ before exponential weighting, and is
+absorbed into $O(\tau^{3/2}L^3)$.  This proves the theorem in the
+central range.
+
+It remains to check that this range did not exclude a larger error.
+Every integer cutoff can be represented by $x=\tau m-L$, so the
+following two bounds complete the supremum over all $m$.
+
+If $\beta<\tau^2$, the Poisson identity
+\[
+ \E[Z_k\mid T=n]
+ =a_k\frac{\Pbb(T=n-k)}{\Pbb(T=n)}
+ \leq C a_k
+\]
+follows from Lemmas~\ref{ncy:gb:lem:fourierblock} and
+\ref{ncy:gb:lem:localmass}; probabilities at negative integers are zero.
+Consequently $\Pbb(M_n>m)\leq C S_0(m)\leq C\beta=O(\tau^2)$.
+Here $s\geq3L+O(1)$, and bounded weights give
+\[
+ S_j(m)\leq C\beta\tau^{-j}(1+s)^j\quad(j=0,1,2).
+\]
+The three moment corrections in $Q_n$ are bounded by constants times
+$\tau\beta(1+s)^2$, $\tau\beta^2(1+s)^2$, and
+$\tau\beta(1+s)$.  Since $\beta=(c/\tau)e^{-s}$, their maxima on this
+tail are $O(\tau^3L^2)$.  Thus $Q_n(m)=1+O(\tau^2)$, which is more
+accurate than required.
+
+If $\beta>16L$, put
+\[
+ m_0=\left\lfloor\frac{L-\log(16L)}{\tau}\right\rfloor.
+\]
+Eventually $m_0\geq N$, $m\leq m_0$, and
+$S_0(m_0)\geq8L$.  Conditioning and the point-probability bounds give
+\[
+ \Pbb(M_n\leq m)\leq\Pbb(M_n\leq m_0)
+ \leq C e^{-S_0(m_0)}=O(\tau^8).
+\]
+For $Q_n$, use $S_j(m)\leq B_j$ and Lemma~\ref{ncy:gb:lem:cumulants} to bound
+the absolute value of its bracket by $C\tau^{-1}$.  Hence
+$|Q_n(m)|\leq C\tau^{-1}e^{-8L}=O(\tau^7)$, including cutoffs below
+$N$.  Both errors are negligible.  The central estimate and the two tails
+prove the asserted uniform bound.  Finally
+$\tau^{3/2}L^3=o(\tau)$ because $\sqrt\tau L^3\to0$.
+\end{proof}
+% ---- end of sections_fourier.tex ----
+
+\section{The universal lattice expansion}\label{ncy:gb:sec:lattice}
+
+We now extract the explicit formulas from the tail-moment estimate.
+The argument keeps the fractional part of the cutoff. At precision
+\(o(\tau)\), replacing an integer cutoff by a real one without this
+term changes the answer.
+
+\begin{lemma}[Geometric tail moments]\label{ncy:gb:lem:tails}
+In the growing central range
+\begin{equation}\label{ncy:gb:eq:central-range}
+ \tau^2\le\beta=e^{-x}\le16L,
+\end{equation}
+one has \(q=L+x\asymp L\) and, for \(j=1,2,3\),
+\begin{equation}\label{ncy:gb:eq:tail-polys}
+ S_j(m)=\beta\tau^{-j}R_j(q)
+ +O\left(\tau\beta\tau^{-j}(1+q)^j\right),
+\end{equation}
+where
+\[
+ R_1(q)=q+1,\quad R_2(q)=q^2+2q+2,\quad
+ R_3(q)=q^3+3q^2+6q+6.
+\]
+In addition,
+\begin{equation}\label{ncy:gb:eq:S0-lattice}
+ S_0(m)=\beta+
+ \tau\beta\left(\theta_n(x)-\frac12\right)
+ +O\left(\frac{\tau\beta}{L}+\tau^2\beta\right).
+\end{equation}
+All estimates are uniform in \eqref{ncy:gb:eq:central-range}.
+\end{lemma}
+
+\begin{proof}
+For small \(\tau\), \eqref{ncy:gb:eq:central-range} gives
+\(L-\log(16L)\le q\le L+2\log(1/\tau)\), so \(L/2\le q\le4L\).
+The constant-weight tail is an elementary exponential sum. Comparing it
+with the integral gives
+\[
+ c\sum_{k>m}k^je^{-\tau k}
+ =c\tau^{-j-1}\Gamma(j+1,\tau m)
+ +O\left(e^{-\tau m}(1+m)^j\right).
+\]
+For an integer \(j\ge0\),
+\(\Gamma(j+1,s)=e^{-s}j!\sum_{\ell=0}^j s^\ell/\ell!\).
+The identity \(\tau m=q-\tau\theta_n(x)\), together with
+\(ce^{-q}/\tau=\beta\), gives \eqref{ncy:gb:eq:tail-polys}.
+The perturbation \(|p_k-c|\le C/k\) contributes at most the
+corresponding tail with one lower power of \(k\); its relative
+size here is \(O(\tau/L)\), which is within the displayed error.
+
+For \(S_0\) the constant-weight sum is exact:
+\begin{equation}\label{ncy:gb:eq:exact-geometric-tail}
+ c\sum_{k>m}e^{-\tau k}
+ =\beta\,\frac{\tau}{e^\tau-1}\,e^{\tau\theta_n(x)}.
+\end{equation}
+Since \(0\le\theta_n(x)<1\),
+\[
+ \frac{\tau}{e^\tau-1}e^{\tau\theta_n(x)}
+ =1+\tau\left(\theta_n(x)-\frac12\right)+O(\tau^2)
+\]
+uniformly. The weight perturbation is at most
+\(C\sum_{k>m}e^{-\tau k}/k=O(e^{-q}/q)=O(\tau\beta/L)\).
+This proves \eqref{ncy:gb:eq:S0-lattice}.
+\end{proof}
+
+\begin{theorem}[Uniform lattice law]\label{ncy:gb:thm:lattice}
+Under \eqref{ncy:gb:eq:weight-hyp}, the approximation \(U_n\) in
+\eqref{ncy:gb:eq:Un} satisfies
+\begin{equation}\label{ncy:gb:eq:lattice-bound}
+ \norminf{F_n-U_n}=O(\tau/L).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{ncy:gb:thm:tailmoment} and Lemma~\ref{ncy:gb:lem:tails}.
+Lemma~\ref{ncy:gb:lem:cumulants} gives
+\(V=2c\tau^{-3}(1+O(\tau))\) and
+\(B_3=6c\tau^{-4}(1+O(\tau))\).
+Consequently, in \eqref{ncy:gb:eq:central-range},
+\begin{align}
+ \frac{S_2-S_1^2}{2V}
+ -\frac{B_3S_1}{2V^2}
+ ={}&\frac{\tau}{4c}
+ \left[\beta(q^2+2q+2)-\beta^2(q+1)^2
+       -3\beta(q+1)\right]+\cE_n(x)\notag\\
+ ={}&\frac{\tau}{4c}
+ \left[(\beta-\beta^2)q^2-(\beta+2\beta^2)q-\beta-\beta^2\right]
+ +\cE_n(x),
+ \label{ncy:gb:eq:poly-algebra}
+\end{align}
+where
+\(e^{-\beta/2}|\cE_n(x)|=O(\tau^2L^2)\).
+The coefficient \(-3\beta(q+1)\) comes from the skewness term.
+Omitting it would leave an error of order \(\tau L\).
+
+Exponentiating \eqref{ncy:gb:eq:S0-lattice} yields
+\[
+ e^{-S_0}
+ =G(x)+\tau\left(\frac12-\theta_n(x)\right)G(x)\beta
+ +O(\tau/L)
+\]
+uniformly in the central range. To see the uniformity directly,
+the perturbation of \(S_0\) is \(o(1)\) there, and the remainders are
+bounded by fixed multiples of
+\[
+ e^{-\beta/2}
+ \left(\frac{\tau\beta}{L}+\tau^2\beta+\tau^2\beta^2\right).
+\]
+Each polynomial in \(\beta\) times \(e^{-\beta/2}\) is bounded.
+Products with \eqref{ncy:gb:eq:poly-algebra} cost
+\(O(\tau^2L^2)\). The Fourier remainder is
+\(O(\tau^{3/2}L^3)\). Both are \(o(\tau/L)\).
+This proves \eqref{ncy:gb:eq:lattice-bound} on the central range.
+
+For completeness, the extension is uniform on the entire real line.
+If \(\beta<\tau^2\), the Poisson single-component identity and
+the local concentration bounds in Section~\ref{ncy:gb:sec:fourier} give
+\[
+ 1-F_n(x)\le C\sum_{k>m}a_k\le C\beta.
+\]
+The upper tails of \(G\) and the displayed corrections in \(U_n\)
+are \(O(\tau^2)\) in this range. If \(\beta>16L\), use the cutoff
+at \(\beta=16L\). Formula~\eqref{ncy:gb:eq:conditioning} and the common
+local upper and lower bounds give probability \(O(e^{-8L})\)
+there. Monotonicity transfers that bound farther left. Every
+explicit term of \(U_n\) is bounded by a polynomial in
+\(L,\beta,|\log\beta|\) times \(e^{-\beta}\), hence is also
+negligible on this tail. This includes negative integer cutoffs.
+\end{proof}
+
+\section{The sharp ordinary error and the affine obstruction}
+\label{ncy:gb:sec:affine}
+
+Define
+\[
+ H(x)=G'(x)(1-e^{-x})=G(x)e^{-x}(1-e^{-x}).
+\]
+Since \(q=L-\log\beta\), extracting the \(L^2\) term from
+\eqref{ncy:gb:eq:Un} gives
+\begin{equation}\label{ncy:gb:eq:leading-profile}
+ F_n(x)=G(x)+\delta H(x)+O(\tau L)
+\end{equation}
+uniformly. Indeed, for every fixed nonnegative integer \(r\) and
+positive integer \(j\),
+\[
+ \sup_{\beta>0}e^{-\beta}\beta^j|\log\beta|^r<\infty.
+\]
+All remaining polynomial terms are therefore \(O(\tau L)\);
+the fractional-part term is \(O(\tau)\).
+
+\begin{proposition}[Exact leading Kolmogorov constant]\label{ncy:gb:prop:kappa}
+Let
+\[
+ \beta_+=\frac{3+\sqrt5}{2},\qquad
+ \kappa=(2+\sqrt5)e^{-\beta_+}=0.309004785987676\ldots.
+\]
+Then
+\begin{equation}\label{ncy:gb:eq:sharp-ordinary}
+ \DK(F_n,G)=\kappa\delta+O(\tau L)
+ \sim \frac{\kappa}{16\sqrt c}\frac{\log^2 n}{\sqrt n}.
+\end{equation}
+The same leading equivalent holds for the elementary normalization
+\(\sqrt{c/n}\,M_n-\frac12\log(cn)\).
+\end{proposition}
+
+\begin{proof}
+The triangle inequality in the supremum norm applied to
+\eqref{ncy:gb:eq:leading-profile} gives
+\(\DK(F_n,G)=\delta\norminf H+O(\tau L)\).
+For \(\beta>0\),
+\(|H|=e^{-\beta}\beta|1-\beta|\).
+Its two interior stationary points are
+\(\beta_\pm=(3\pm\sqrt5)/2\). Their values are
+\((\sqrt5-2)e^{-\beta_-}\) and
+\((2+\sqrt5)e^{-\beta_+}\), respectively, and the latter is larger.
+For example their ratio is
+\((2+\sqrt5)^2e^{-\sqrt5}>1\);
+this follows from \(\sqrt5<9/4\), \(e<3\), and
+\(3^{9/4}<16<(2+\sqrt5)^2\).
+The boundary values are zero. Hence \(\norminf H=\kappa\).
+
+The cumulant estimate gives
+\(\tau=\tau_0+O(\tau_0^2)\), \(\tau_0=\sqrt{c/n}\).
+If \(L_0=\log(c/\tau_0)\), then
+\[
+ \tau M_n-L
+ =a(\tau_0M_n-L_0)+b,\qquad
+ a=\tau/\tau_0=1+O(\tau_0),\quad
+ b=(a-1)L_0+\log a=O(\tau_0L_0).
+\]
+The functions \(G',xG',H',xH'\) are bounded, so this change of
+normalization changes \eqref{ncy:gb:eq:leading-profile} by
+\(O(\tau_0L_0)\). Finally
+\(\delta\sim\log^2 n/(16\sqrt{cn})\).
+\end{proof}
+\begin{writenote}[A rounded constant, 9 October 2026]
+The decimal printed for $\kappa$ above, $0.309004785987676\ldots$, is rounded
+in its last place: $\kappa=0.3090047859876757102\ldots$ (the write's 40-digit
+evaluation), so its truncation to the printed length is
+$0.309004785987675\ldots$. The other stationary value is
+$(\sqrt5-2)e^{-\beta_-}=0.161120703062022\ldots$. Nothing in this Part depends
+on the last digit.
+\end{writenote}
+
+The error profile changes sign at \(x=0\). Its ratio to \(G'\)
+is \(1-e^{-x}\), which is nonlinear. That observation is the
+obstruction to eliminating the leading error by shifting and scaling.
+
+\begin{theorem}[Best affine normalization]\label{ncy:gb:thm:affine}
+Define the finite positive constant
+\begin{equation}\label{ncy:gb:eq:Estar}
+ E_*=\inf_{\alpha,b\in\R}
+ \sup_{x\in\R}G'(x)\left|1-e^{-x}-\alpha x-b\right|.
+\end{equation}
+Then
+\begin{equation}\label{ncy:gb:eq:affine-minimax}
+ \inf_{a>0,\ b\in\R}
+ \DK\bigl(\mathcal L(aY_n+b),G\bigr)
+ =E_*\delta+o(\delta).
+\end{equation}
+Here \(\DK(\mathcal L(X),G)\) denotes the distance between the CDF
+of \(X\) and \(G\). In particular no sequences of centers and
+positive scales yield \(o(\log^2 n/\sqrt n)\) error.
+A concrete bound is
+\begin{equation}\label{ncy:gb:eq:Estar-bound}
+ \frac{1}{2(e^2/2+2e+2\sqrt e)}
+ \le E_*\le\kappa.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For fixed \(\alpha,b\), set \(a_n=1+\delta\alpha\) and
+\(b_n=\delta b\). Uniform Taylor expansion of
+\eqref{ncy:gb:eq:leading-profile} at \((x-b_n)/a_n\) gives
+\[
+ F_n((x-b_n)/a_n)-G(x)
+ =\delta\{H(x)-(\alpha x+b)G'(x)\}+o(\delta).
+\]
+Uniformity follows from bounded weighted first and second
+derivatives of \(G\) and \(H\). Taking the infimum yields the
+upper bound in \eqref{ncy:gb:eq:affine-minimax}.
+
+For the reverse inequality, take any near-minimizing affine
+parameters. The identity choice already has error \(O(\delta)\).
+Thus
+\[
+ \norminf{G((\,\cdot-b_n)/a_n)-G}=O(\delta).
+\]
+Evaluating at \(x=0,1\), strict monotonicity of \(G\) first gives
+\(b_n\to0\), \(a_n\to1\), and then the local positive lower bound
+on \(G'\) gives \(b_n=O(\delta)\), \(a_n-1=O(\delta)\).
+Every subsequence has a further subsequence on which
+\((a_n-1)/\delta\) and \(b_n/\delta\) converge. Divide the
+pointwise expansion by \(\delta\) along that subsequence and take
+a supremum to obtain at least \(E_*\). This proves the lower bound.
+
+For positivity and the explicit estimate, put \(r=\log2\) and
+\(f(x)=1-e^{-x}\). Its second difference at \(-r,0,r\) is
+\[
+ f(-r)-2f(0)+f(r)=-\frac12.
+\]
+An affine function has zero second difference. If the weighted
+uniform error is \(E\), the triangle inequality gives
+\[
+ \frac12\le E\left(\frac1{G'(-r)}
+                     +\frac2{G'(0)}+\frac1{G'(r)}\right)
+ =E(e^2/2+2e+2\sqrt e).
+\]
+This proves the lower bound. Choosing the zero affine function
+gives \(E_*\le\norminf H=\kappa\).
+The objective in \eqref{ncy:gb:eq:Estar} is coercive in its two
+parameters, as is already seen by evaluating at \(0\) and \(1\);
+thus the infimum is attained. No numerical solution of this
+auxiliary minimax problem is used.
+\end{proof}
+
+% ---- delivered sections_optimal.tex ----
+\section{Largest atoms and the obstruction to continuous approximation}
+\label{ncy:gb:sec:atoms}
+
+The lattice spacing of $Y_n=\tau M_n-L$ is $\tau$.  To determine the
+accuracy attainable by a continuous approximation, we need its largest
+atom.  An $O(\tau)$ approximation to the distribution function cannot be
+differenced to obtain this information.  Instead, we condition directly
+on the number of components of one specified size.
+
+\begin{theorem}[Largest atom and continuous approximation]
+\label{ncy:gb:thm:atom}
+Under the standing assumptions,
+\begin{equation}
+\label{ncy:gb:eq:largest-atom}
+ \max_{1\le m\le n}\Pbb(M_n=m)
+   =\frac{\tau}{e}+O(\tau^2L^2).
+\end{equation}
+Let $\mathcal C$ be the set of continuous distribution functions on
+$\R$.  Then
+\begin{equation}
+\label{ncy:gb:eq:continuous-minimax}
+ \inf_{J\in\mathcal C}\|F_n-J\|_\infty
+ =\frac12\max_m\Pbb(M_n=m)
+ =\frac{\tau}{2e}+O(\tau^2L^2).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $a_k=p_ke^{-\tau k}$ for the Poisson means.  For an integer $m$,
+put
+\[
+ \beta_m=\frac c\tau e^{-\tau m},\qquad
+ R_m=\sum_{k<m}kZ_k,\qquad
+ Q_m=S_1(m)+ma_m,\qquad
+ W_m=V-S_2(m)-m^2a_m.
+\]
+Thus $\E R_m=n-Q_m$ and $\operatorname{Var}(R_m)=W_m$.
+Independence, followed by conditioning on $Z_m$, gives the exact identity
+\begin{equation}
+\label{ncy:gb:eq:atom-decomposition}
+ \Pbb(M_n=m)
+ =e^{-S_0(m)-a_m}
+   \sum_{\ell\ge1}\frac{a_m^\ell}{\ell!}
+     \frac{\Pbb(R_m=n-\ell m)}{\Pbb(T=n)}.
+\end{equation}
+Probabilities on the right are under the independent Poisson law;
+a negative target for $R_m$ has probability zero.
+
+Fix a sufficiently large constant $B$, for example $B=16$, and first
+consider the integer window
+\begin{equation}
+\label{ncy:gb:eq:atom-window}
+ \tau^2\le\beta_m\le BL.
+\end{equation}
+Here $\tau m\asymp L$, uniformly, and $m-1$ eventually exceeds
+$\lfloor1/\tau\rfloor$.  The uniform concentration estimate of
+Lemma~\ref{ncy:gb:lem:fourierblock} and the full-law local lower bound of
+Lemma~\ref{ncy:gb:lem:localmass} imply
+\begin{equation}
+\label{ncy:gb:eq:atom-ratio-bound}
+ \sup_{\ell\ge1}
+ \frac{\Pbb(R_m=n-\ell m)}{\Pbb(T=n)}\le C.
+\end{equation}
+The tail estimates give, uniformly in this window,
+\begin{equation}
+\label{ncy:gb:eq:atom-tail-estimates}
+ \begin{split}
+ a_m&=\tau\beta_m\bigl(1+O(\tau/L)\bigr),\qquad
+ S_0(m)=\beta_m\bigl(1+O(\tau)\bigr),\\
+ Q_m&=O\bigl(\beta_mL/\tau\bigr),\qquad
+ \frac{V-W_m}{V}=O(\tau\beta_mL^2).
+ \end{split}
+\end{equation}
+In particular, $a_m=o(1)$ and $W_m/V\to1$ uniformly.
+
+The terms $\ell\ge2$ in \eqref{ncy:gb:eq:atom-decomposition} are bounded,
+using \eqref{ncy:gb:eq:atom-ratio-bound}, by
+\[
+ C e^{-S_0(m)}e^{-a_m}(e^{a_m}-1-a_m)
+ \le C e^{-S_0(m)}a_m^2
+ \le C\tau^2\beta_m^2e^{-\beta_m}
+ =O(\tau^2).
+\]
+The constant-factor comparison between $e^{-S_0(m)}$ and
+$e^{-\beta_m}$ is uniform because $\tau\beta_m=O(\tau L)=o(1)$.
+
+We record the quantitative local estimate needed for the term $\ell=1$.
+Put $C_{3,m}=\sum_{k<m}k^3a_k$ and
+$\phi(u)=(2\pi)^{-1/2}e^{-u^2/2}$.  Uniformly over integers $j$ and
+truncations in \eqref{ncy:gb:eq:atom-window},
+\begin{equation}
+\label{ncy:gb:eq:atom-local-edgeworth}
+ \begin{split}
+ \Pbb(R_m=j)
+ &=\frac{\phi(u)}{\sqrt{W_m}}
+   \left[1+\frac{C_{3,m}}{6W_m^{3/2}}(u^3-3u)\right]
+   +O\left(\frac{\tau}{\sqrt{W_m}}\right),\\
+ u&=\frac{j-\E R_m}{\sqrt{W_m}}.
+ \end{split}
+\end{equation}
+To justify the uniform remainder, apply the characteristic-function
+expansion used in Lemma~\ref{ncy:gb:lem:localmass} to $R_m$, with its own
+variance.  For $|t|\le L$, it reads
+\[
+ \E\exp\left(\frac{it(R_m-\E R_m)}{\sqrt{W_m}}\right)
+ =e^{-t^2/2}\left[
+    1-\frac{iC_{3,m}t^3}{6W_m^{3/2}}
+        +O\bigl(\tau(t^4+t^6)\bigr)\right].
+\]
+Here $W_m\asymp\tau^{-3}$, the standardized third cumulant is
+$O(\sqrt\tau)$, and the fourth-order logarithmic remainder is
+$O(\tau t^4)$, all uniformly in $m$.
+The common Fourier block from Lemma~\ref{ncy:gb:lem:fourierblock} bounds
+the omitted arc by a quantity smaller than every fixed power of
+$\tau$.  Fourier inversion of the cubic term gives
+$(u^3-3u)\phi(u)$; the absolute integral of the remaining Gaussian
+error is $O(\tau)$.  The external phase has modulus one for every
+$j$, which proves the stated uniformity in the target integer.
+
+For $j=n-m$, the standardized displacement in this estimate is
+\[
+ u_m=\frac{Q_m-m}{\sqrt{W_m}}
+     =O\bigl(\sqrt\tau L(1+\beta_m)\bigr)=o(1)
+\]
+uniformly in \eqref{ncy:gb:eq:atom-window}.  The variance factor
+differs from one by $O(\tau\beta_mL^2)$; the Gaussian factor differs
+from one by $O(u_m^2)$; and the first Edgeworth term is
+$O(\sqrt\tau\,|u_m|)$, since its Hermite polynomial is
+$u^3-3u$.  The normalized local remainder is $O(\tau)$.
+The full-law denominator has normalized value $1+O(\tau)$.
+Consequently,
+\begin{equation}
+\label{ncy:gb:eq:single-occupancy-ratio}
+ \frac{\Pbb(R_m=n-m)}{\Pbb(T=n)}
+  =1+O\bigl(\tau L^2(1+\beta_m)^2\bigr).
+\end{equation}
+Inserting \eqref{ncy:gb:eq:atom-tail-estimates} and
+\eqref{ncy:gb:eq:single-occupancy-ratio} into
+\eqref{ncy:gb:eq:atom-decomposition} yields
+\begin{equation}
+\label{ncy:gb:eq:local-largest-component-mass}
+ \Pbb(M_n=m)
+  =\tau\beta_me^{-\beta_m}+O(\tau^2L^2),
+\end{equation}
+uniformly in the window.  Indeed, every error involving $\beta_m$
+is multiplied by an exponentially decreasing factor, and
+$\sup_{\beta>0}e^{-\beta}\beta(1+\beta)^2<\infty$.
+
+The omitted atoms cannot change the maximum at this precision.  If
+$\beta_m<\tau^2$, the same uniform local upper bound in
+\eqref{ncy:gb:eq:atom-decomposition} gives
+$\Pbb(M_n=m)\le C a_m=O(\tau^3)$.
+For the other tail, let
+\[
+ m_- =\left\lceil\frac{L-\log(BL)}\tau\right\rceil.
+\]
+The exact conditioning identity for $\Pbb(M_n\le m_-)$, together
+with Lemmas~\ref{ncy:gb:lem:fourierblock} and~\ref{ncy:gb:lem:localmass}, gives
+\[
+ \Pbb(M_n\le m_-)\le C e^{-S_0(m_-)}
+   \le C e^{-BL/2}=O(\tau^{B/2}).
+\]
+Every $m$ with $\beta_m>BL$ lies below this threshold.
+
+The function $\beta e^{-\beta}$ has maximum $1/e$, at $\beta=1$.
+At $m=\lfloor L/\tau\rfloor$, we have
+$\beta_m=e^{O(\tau)}$ and
+$\beta_me^{-\beta_m}=e^{-1}+O(\tau^2)$.
+Equation~\eqref{ncy:gb:eq:local-largest-component-mass} now proves
+\eqref{ncy:gb:eq:largest-atom}.
+
+For completeness, the first equality in
+\eqref{ncy:gb:eq:continuous-minimax} is an elementary fact about any finitely
+supported distribution.  A jump of size $w$ forces a continuous
+approximant to have error at least $w/2$: its value at the jump must
+be within the claimed error of both one-sided limits.
+Conversely, list the support as $y_1<\cdots<y_r$, with masses $w_i$
+and cumulative sums $s_i$.  Assign a continuous interpolant the values
+\[
+ J(y_i)=\frac{s_{i-1}+s_i}{2},\qquad s_0=0,
+\]
+and interpolate linearly between consecutive support points.
+Connect monotonically to zero before $y_1$ and to one after $y_r$.
+On $(y_i,y_{i+1})$, the original distribution function equals $s_i$,
+whereas the interpolant ranges from $s_i-w_i/2$ to
+$s_i+w_{i+1}/2$.  Its error is therefore at most
+$\tfrac12\max_iw_i$, everywhere.  This proves the equality and
+completes the theorem.
+\end{proof}
+
+An increasing bijection preserves every atom size.  Thus the lower bound
+in \eqref{ncy:gb:eq:continuous-minimax} also applies after any such
+normalization of the largest component.  The comparison class here is
+the class of continuous distribution functions.  A formula retaining
+the lattice phase, such as Theorem~\ref{ncy:gb:thm:lattice}, can have a smaller
+remainder because it records the jumps explicitly.
+
+\section{An explicit optimal continuous calibration}
+\label{ncy:gb:sec:optimal-calibration}
+\label{ncy:gb:sec:optimal}
+
+Retaining the constant terms in the smooth correction produces a
+continuous approximation with the best possible leading error
+constant.  Define
+\begin{equation}
+\label{ncy:gb:eq:full-calibration}
+ \begin{split}
+ q&=L+x,\qquad \beta=e^{-x},\\
+ h_\tau(x)
+  &=x+\frac{\tau}{4c}
+       \left[q^2-q-1-\beta(q+1)^2\right],\qquad
+ J_n(x)=G\bigl(h_\tau(x)\bigr).
+ \end{split}
+\end{equation}
+
+\begin{theorem}[Asymptotically optimal smooth calibration]
+\label{ncy:gb:thm:optimal}
+For $\tau/c\le1/4$, the map $h_\tau$ is an increasing bijection of
+$\R$, and $J_n$ is a continuous distribution function.
+Uniformly for $x\in\R$,
+\begin{equation}
+\label{ncy:gb:eq:calibrated-lattice-expansion}
+ F_n(x)=J_n(x)
+   +\tau\left(\frac12-
+       \left\{\frac{L+x}{\tau}\right\}\right)G'(x)
+   +O(\tau/L).
+\end{equation}
+Consequently,
+\begin{equation}
+\label{ncy:gb:eq:optimal-calibration-distance}
+ \|F_n-J_n\|_\infty
+  =\frac{\tau}{2e}+O(\tau/L).
+\end{equation}
+Equivalently,
+\[
+ \sup_{z\in\R}
+ \left|\Pbb\bigl(h_\tau(Y_n)\le z\bigr)-G(z)\right|
+ =\frac{\tau}{2e}+O(\tau/L).
+\]
+Together with \eqref{ncy:gb:eq:continuous-minimax}, this shows that the
+explicit calibration attains the smallest possible leading constant
+among continuous approximations.
+\end{theorem}
+
+\begin{proof}
+First we check monotonicity globally.  Put $a=\tau/c$ and use
+$e^{-x}=(c/\tau)e^{-q}$.  Direct differentiation gives
+\begin{equation}
+\label{ncy:gb:eq:full-calibration-derivative}
+ (h_\tau)'(x)
+  =1+\frac a4(2q-1)+\frac14e^{-q}(q^2-1).
+\end{equation}
+For $q\ge1$, both additional terms are nonnegative.
+For $-1\le q\le1$, the right side is at least
+$1-3a/4-e/4>0$ when $a\le1/4$.
+For $-2\le q\le-1$, it is at least $1-5a/4>0$.
+Finally, for $q\le-2$, put $t=-q\ge2$.  The inequality
+$e^t(t^2-1)\ge2t+1$ follows by evaluating the difference at two
+and differentiating it on $[2,\infty)$.  Thus
+\eqref{ncy:gb:eq:full-calibration-derivative} is at least
+$1+(1-a)(2t+1)/4>0$ in this last region as well.
+The limits of $h_\tau(x)$ at $-\infty$ and $+\infty$ are
+$-\infty$ and $+\infty$, respectively.  This proves the first claim.
+
+Theorem~\ref{ncy:gb:thm:lattice} gives the uniform lattice expansion with
+smooth correction $G'(x)(h_\tau(x)-x)$.
+On the central window $\tau^2\le\beta\le16L$, we have
+$q\asymp L$ and
+\[
+ |h_\tau(x)-x|\le C\tau L^2(1+\beta)=o(1).
+\]
+Taylor's theorem and the exponential decrease of the Gumbel derivatives
+give, uniformly on this window,
+\[
+ G\bigl(h_\tau(x)\bigr)
+ =G(x)+G'(x)\bigl(h_\tau(x)-x\bigr)+O(\tau^2L^4).
+\]
+For example, the second-order remainder is bounded by a constant times
+$\tau^2L^4e^{-\beta/2}\beta(1+\beta)^3$, whose supremum is finite.
+
+Here are explicit controls for the complementary tails.  At the right
+endpoint $x_+=-2\log\tau$, the correction
+$h_\tau(x_+)-x_+$ is eventually positive, and
+$1-G(x_+)\le\tau^2$.  Monotonicity therefore gives
+$1-J_n(x)\le\tau^2$ for $x\ge x_+$.
+On that interval,
+\[
+ \bigl|G'(x)(h_\tau(x)-x)\bigr|
+  \le C\tau e^{-x}\bigl(1+(L+x)^2\bigr)
+  \le C\tau^3L^2.
+\]
+The last inequality follows by differentiating the exponentially
+weighted polynomial, which is decreasing there.  Thus the Taylor
+replacement costs $O(\tau^2)$ on the right tail.
+
+At the left endpoint $x_-=-\log(16L)$, the correction is
+$O(\tau L^3)=o(1)$.  Hence
+$J_n(x_-)\le e^{-8L}$ for sufficiently small $\tau$,
+and monotonicity extends this bound to $x\le x_-$.
+On the same interval $G(x)\le e^{-16L}$, while
+\[
+ \bigl|G'(x)(h_\tau(x)-x)\bigr|
+ \le C\tau e^{-\beta}\beta(1+\beta)
+                   \bigl(1+(L-\log\beta)^2\bigr)
+ \le C\tau(1+L^2)e^{-8L}.
+\]
+The polynomial and logarithmic factors in the middle expression are
+absorbed by half of its exponential factor.  This proves the required
+replacement on the left tail as well.  Since
+$\tau^2L^4=o(\tau/L)$,
+Theorem~\ref{ncy:gb:thm:lattice} proves
+\eqref{ncy:gb:eq:calibrated-lattice-expansion}.
+
+The fractional part belongs to $[0,1)$ and
+$\max_xG'(x)=1/e$, so the displayed expansion gives the upper bound
+in \eqref{ncy:gb:eq:optimal-calibration-distance}.
+At
+\[
+ x_\tau=\tau\lfloor L/\tau\rfloor-L,
+\]
+the fractional part is zero, $x_\tau=O(\tau)$, and
+$G'(x_\tau)=e^{-1}+O(\tau^2)$.
+Substitution gives the matching lower bound.
+Finally, the bijection $z=h_\tau(x)$ identifies the supremum
+distance for the transformed variable with $\|F_n-J_n\|_\infty$.
+\end{proof}
+
+\subsection{Uniform central quantiles}
+
+The calibration also locates integer quantiles within a bounded number
+of component-size units.  This is finer than the leading Gumbel
+normalization: the correction to the largest size is generally of
+order $L^2$.
+
+\begin{corollary}[Quantiles with bounded integer error]
+\label{ncy:gb:cor:central-quantiles}
+Fix $0<\eta<1/2$.  For $p\in[\eta,1-\eta]$, let
+\[
+ Q_n(p)=\min\{m\in\Z:\Pbb(M_n\le m)\ge p\},\qquad
+ x_p=-\log(-\log p),\qquad \beta_p=-\log p.
+\]
+Uniformly over this interval of probabilities,
+\begin{equation}
+\label{ncy:gb:eq:central-quantile-expansion}
+ \begin{split}
+ Q_n(p)={}&\frac{L+x_p}{\tau}\\
+ &-\frac{(L+x_p)^2-(L+x_p)-1
+              -\beta_p(L+x_p+1)^2}{4c}
+   +O_\eta(1).
+ \end{split}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Let $y_p=(h_\tau)^{-1}(x_p)$, so $J_n(y_p)=p$.
+The numbers $x_p$ lie in a fixed compact interval, uniformly in $p$.
+On a slightly larger interval,
+\[
+ h_\tau(x)-x=O_\eta(\tau L^2),\qquad
+ (h_\tau)'(x)=1+O_\eta(\tau L^2).
+\]
+In particular, $h_\tau(x_p-1)<x_p<h_\tau(x_p+1)$ for all
+sufficiently large $n$, uniformly in $p$.
+Monotonicity places all $y_p$ in the larger interval, and the derivative
+bound then gives $y_p-x_p=O_\eta(\tau L^2)$.
+Applying the mean value theorem to $h_\tau(x)-x$ yields
+\begin{equation}
+\label{ncy:gb:eq:inverse-calibration-quantile}
+ y_p=x_p-\frac{\tau}{4c}
+  \left[(L+x_p)^2-(L+x_p)-1
+                  -\beta_p(L+x_p+1)^2\right]
+  +O_\eta(\tau^2L^4).
+\end{equation}
+
+Theorem~\ref{ncy:gb:thm:optimal} gives
+$\|F_n-J_n\|_\infty\le C\tau$.
+On the compact interval just used, $J_n'$ is bounded below by
+a positive constant depending only on $\eta$ for all sufficiently
+large $n$.  Put $u_p=\tau Q_n(p)-L$.
+The defining inequalities for the integer quantile are
+\[
+ F_n(u_p)\ge p,\qquad F_n(u_p-\tau)<p.
+\]
+Consequently,
+\[
+ J_n(u_p)\ge p-C\tau,\qquad
+ J_n(u_p-\tau)<p+C\tau.
+\]
+For large $n$, both $p-C\tau$ and $p+C\tau$ lie in
+$[\eta/2,1-\eta/2]$.  Their $J_n$-quantiles remain in a fixed compact
+interval on which the same derivative lower bound applies.  Inverting
+the two inequalities therefore yields
+\[
+ J_n^{-1}(p-C\tau)\le u_p
+ <\tau+J_n^{-1}(p+C\tau),
+\]
+and consequently $u_p=y_p+O_\eta(\tau)$, uniformly in $p$.
+Divide \eqref{ncy:gb:eq:inverse-calibration-quantile} by $\tau$ and use
+$\tau L^4\to0$.  This proves
+\eqref{ncy:gb:eq:central-quantile-expansion}, including its bounded integer
+error.
+\end{proof}
+% ---- end of sections_optimal.tex ----
+
+\section{Beyond the lattice scale: the component correction}
+\label{ncy:gb:sec:refinement}
+
+The universal lattice formula has error \(O(\tau/L)\).
+This scale records the first departure of \(p_k\) from the limiting
+constant \(c\). The stronger hypothesis \eqref{ncy:gb:eq:refined-hyp}
+allows that departure to be calculated explicitly.
+
+\begin{theorem}[Exponential-integral refinement]\label{ncy:gb:thm:e1}
+Assume \eqref{ncy:gb:eq:refined-hyp}. Define
+\[
+ \widetilde U_n(x)
+ =U_n(x)-a_*G(x)E_1(\max\{1,L+x\}).
+\]
+Then
+\begin{equation}\label{ncy:gb:eq:e1-error}
+ \norminf{F_n-\widetilde U_n}=O(\tau^{3/2}L^3).
+\end{equation}
+Moreover, uniformly on \(\R\),
+\begin{equation}\label{ncy:gb:eq:sharp-component-profile}
+ F_n(x)-U_n(x)
+ =-\frac{a_*}{c}\frac{\tau}{L}G'(x)
+ +O\left(\frac{\tau}{L^2}+\tau^{3/2}L^3\right).
+\end{equation}
+Thus, if \(a_*\ne0\),
+\begin{equation}\label{ncy:gb:eq:sharp-lattice-error}
+ \norminf{F_n-U_n}\sim\frac{|a_*|}{ce}\frac{\tau}{L}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Work first in \eqref{ncy:gb:eq:central-range}. Monotone sum--integral
+comparison gives
+\begin{equation}\label{ncy:gb:eq:harmonic-tail}
+ \sum_{k>m}\frac{e^{-\tau k}}k
+ =E_1(q)+O\left(\frac{\tau^2\beta}{L}\right).
+\end{equation}
+Indeed, the discrepancy at the lower endpoint \(\tau m\) is
+\(O(e^{-\tau m}/m)\), and moving that endpoint to \(q\) costs
+\(O(\tau e^{-q}/q)\). Both have the displayed size because
+\(q\asymp L\) and \(e^{-q}=\tau\beta/c\).
+
+The residual weight term is bounded by
+\begin{align*}
+ \sum_{k>m}\frac{\log(k+1)}{k^2}e^{-\tau k}
+ &\le C\tau\int_{\tau m}^\infty
+ \frac{e^{-u}\log(1+u/\tau)}{u^2}\dd u
+ +O\left(\frac{e^{-\tau m}\log(m+1)}{m^2}\right)\\
+ &=O(\tau^2\beta/L).
+\end{align*}
+Here \(\log(1+q/\tau)=O(L)\) on the central range.
+Together with \eqref{ncy:gb:eq:exact-geometric-tail}, this proves
+\begin{equation}\label{ncy:gb:eq:S0-refined}
+ S_0=\beta+\tau\beta(\theta_n(x)-1/2)
+       +a_*E_1(q)+O(\tau^2\beta).
+\end{equation}
+Exponentiate this identity in the tail-moment formula.
+The linear contributions are the lattice term in \(U_n\) and
+\(-a_*G(x)E_1(q)\). Quadratic products in the exponential are
+\(O(\tau^2)\) after multiplication by \(e^{-\beta/2}\).
+The replacements of \(S_1,S_2,B_2,B_3\) by
+\eqref{ncy:gb:eq:poly-algebra}, and their products with
+\eqref{ncy:gb:eq:S0-refined}, cost \(O(\tau^2L^2)\).
+All these errors are within
+\(O(\tau^{3/2}L^3)\), the error of
+Theorem~\ref{ncy:gb:thm:tailmoment}. This proves
+\eqref{ncy:gb:eq:e1-error} centrally.
+
+On the right tail \(\beta<\tau^2\), both the true upper tail
+and \(1-U_n\) are \(O(\tau^2)\), and
+\(G E_1(q)=O(\tau\beta/q)\). On the left tail
+\(\beta>16L\), the probability and all explicit polynomial
+corrections are negligible, as in Theorem~\ref{ncy:gb:thm:lattice}.
+The cutoff at \(1\) bounds the additional \(E_1\) factor in the
+remote region where \(q\) is not positive. This proves
+\eqref{ncy:gb:eq:e1-error} globally. The cutoff is a convention to
+define the approximation there; it has no effect at the claimed
+error scale.
+
+Integration by parts gives
+\[
+ E_1(q)=\frac{e^{-q}}q+O(e^{-q}/q^2).
+\]
+On the central range \(q=L-\log\beta\ge L/2\), so
+\[
+ \left|\frac1q-\frac1L\right|
+ \le \frac{2|\log\beta|}{L^2}.
+\]
+Boundedness of \(G\beta|\log\beta|\) therefore yields
+\[
+ G(x)E_1(q)=\frac{\tau}{cL}G'(x)+O(\tau/L^2).
+\]
+The same statement holds on the remote tails by exponential
+decay and the cutoff convention. Combining it with
+\eqref{ncy:gb:eq:e1-error} proves
+\eqref{ncy:gb:eq:sharp-component-profile}. Since
+\(\norminf{G'}=1/e\) and
+\(\tau^{3/2}L^3=o(\tau/L)\), the sharp equivalent follows.
+\end{proof}
+
+\subsection{Why the exponential integral is useful}
+
+Repeated integration by parts gives, for each fixed \(r\ge1\),
+\[
+ E_1(q)=\frac{e^{-q}}q
+ \left(\sum_{j=0}^{r-1}\frac{(-1)^j j!}{q^j}
+       +O_r(q^{-r})\right),\qquad q\to\infty.
+\]
+Consequently the single \(E_1\) term retains an entire hierarchy
+of inverse-logarithmic corrections of sizes
+\(\tau/L,\tau/L^2,\ldots\).
+For every fixed \(r\),
+\(\tau^{3/2}L^3=o(\tau/L^r)\).
+This assertion is a comparison of fixed error scales; it does
+not assert convergence of the factorial asymptotic series or
+uniformity in a truncation order growing with \(n\).
+
+\section{Nested-cycle partitions and explicit normalizations}
+\label{ncy:gb:sec:application}
+
+\subsection{The combinatorial meaning}
+
+A permutation whose cycle lengths are distinct has component
+EGF
+\[
+ P(z)=\prod_{k\ge1}(1+z^k/k).
+\]
+For each cycle length \(k\), either no cycle is selected or one
+labelled cycle is selected; a cycle has EGF \(z^k/k\).
+A nonempty such permutation is an outer component. Taking a
+labelled set of those outer components gives
+\(\exp(P(z)-1)\), exactly \eqref{ncy:gb:eq:nested-egf}.
+Thus
+\[
+ p_k=[z^k]P(z),\qquad k!p_k\in\Z_{\ge0},
+\]
+and \eqref{ncy:gb:eq:assembly-law} is the spectrum of a uniform
+nested-cycle partition of an \(n\)-element label set.
+
+The initial total counts are
+\[
+ 1,\ 1,\ 2,\ 9,\ 44,\ 270,\ 2064,\ 17682,\ 171296,\ 1867968,
+ \ 22470840,\ldots,
+\]
+in agreement with A308338 \cite{oeis308338}.
+By the credited estimate \eqref{ncy:gb:eq:known-p},
+\begin{equation}\label{ncy:gb:eq:cycle-constants}
+ c=a_*=e^{-\gamma}=0.561459483566885\ldots,\qquad
+ \sqrt c=e^{-\gamma/2}=0.749306001288449\ldots.
+\end{equation}
+All preceding theorems therefore apply.
+
+\begin{corollary}[Sharp scales for nested-cycle maxima]\label{ncy:gb:cor:nested}
+For a uniform nested-cycle partition of size \(n\), let \(M_n\)
+be its largest outer component. Then
+\begin{align}
+ \DK(F_n,G)
+ &\sim \frac{e^{\gamma/2}\kappa}{16}
+       \frac{\log^2n}{\sqrt n},\label{ncy:gb:eq:nested-raw}\\
+ \DK(F_n,J_n)
+ &\sim \frac{e^{-\gamma/2}}{2e}\,n^{-1/2},\label{ncy:gb:eq:nested-smooth}\\
+ \norminf{F_n-U_n}
+ &\sim \frac{2e^{-\gamma/2}}{e}\,
+       \frac1{\sqrt n\log n},\label{ncy:gb:eq:nested-lattice}\\
+ \norminf{F_n-\widetilde U_n}
+ &=O(n^{-3/4}\log^3n).\label{ncy:gb:eq:nested-e1}
+\end{align}
+The constant in \eqref{ncy:gb:eq:nested-smooth} is asymptotically
+optimal among continuous CDF approximations.
+\end{corollary}
+\begin{writenote}[The corollary from the theorems, 9 October 2026]
+With $c=a_*$ from~\eqref{ncy:gb:eq:cycle-constants},
+$\tau\sim\sqrt{c/n}$ and $L\sim\frac12\log n$, the four lines follow from
+Proposition~\ref{ncy:gb:prop:kappa} ($\kappa\delta\sim\kappa\log^2n/(16\sqrt{cn})$),
+Theorem~\ref{ncy:gb:thm:optimal} ($\tau/(2e)$), Theorem~\ref{ncy:gb:thm:e1}
+($|a_*|\tau/(ceL)=\tau/(eL)$) and~\eqref{ncy:gb:eq:e1-error}; the write
+rederived each. The constants are
+$e^{\gamma/2}\kappa/16=0.0257742485593614\ldots$,
+$e^{-\gamma/2}/(2e)=0.1378271365102013\ldots$ and
+$2e^{-\gamma/2}/e=0.5513085460408053\ldots$ (truncations; the manuscript prints
+none of them). The refined hypothesis~\eqref{ncy:gb:eq:refined-hyp} with
+$a_*=c$ is exactly Part~I's credited estimate~\eqref{ncy:eq:prior}, so this
+corollary rests on the same external input as Part~I and on nothing else.
+\end{writenote}
+
+The largest component has scale \(\sqrt n\log n\), with
+fluctuations of order \(\sqrt n\). The first continuous
+correction generally changes a fixed central quantile by order
+\(\log^2n\) in the original integer size. Although this is
+smaller than the fluctuation scale, it is much larger than one
+integer unit.
+
+\subsection{A two-term explicit saddle}
+
+The exact saddle is simple to compute, but an elementary
+normalization is useful for closed formulas.
+
+\begin{proposition}[Explicit saddle to the needed precision]
+\label{ncy:gb:prop:explicit-saddle}
+Under \eqref{ncy:gb:eq:refined-hyp}, if \(\tau_0=\sqrt{c/n}\), then
+\begin{equation}\label{ncy:gb:eq:saddle-expansion}
+ \tau=\tau_0+\frac{a_*}{2c}\tau_0^2
+       +O(\tau_0^3\log^2(1/\tau_0)).
+\end{equation}
+For nested cycles this is
+\begin{equation}\label{ncy:gb:eq:explicit-cycle-saddle}
+ \widehat\tau_n=\sqrt{\frac cn}+\frac{c}{2n},
+ \qquad
+ \tau-\widehat\tau_n=O(n^{-3/2}\log^2n).
+\end{equation}
+Using \(\widehat\tau_n\) in place of \(\tau\), and
+\(\widehat L_n=\log(c/\widehat\tau_n)\) in place of \(L\),
+preserves the sharp continuous conclusion
+\eqref{ncy:gb:eq:nested-smooth}, with remainder \(O(\widehat\tau_n/\widehat L_n)\).
+\end{proposition}
+
+\begin{proof}
+Summing the refined weight hypothesis gives
+\[
+ B_1(t)=\frac{c}{t^2}+\frac{a_*}{t}
+        +O(\log^2(1/t)).
+\]
+Indeed, the residual sum is bounded by a constant times
+\(\sum_{k\ge1}\log(k+1)e^{-tk}/k=O(\log^2(1/t))\).
+Substitute \(t=\tau_0+(a_*/(2c))\tau_0^2\);
+the terms of order \(\tau_0^{-1}\) cancel.
+The derivative \(-B_2(t)\asymp-\tau_0^{-3}\) near the root,
+so the mean value theorem gives \eqref{ncy:gb:eq:saddle-expansion}.
+
+The relative error in \(\tau\) is \(O(\tau_0^2L_0^2)\).
+The induced affine change in the normalized coordinate, on the
+relevant central range, is \(O(\tau_0^2L_0^3)\).
+The explicit smooth function \(G\circ h\) has bounded weighted
+derivatives there, and its dependence on \(\tau,L\) costs the
+same or less. The two tails are handled by monotonicity and
+exponential decay, as before. Since
+\(\tau_0^2L_0^3=o(\tau_0/L_0)\), the asserted precision is
+preserved.
+\end{proof}
+
+\begin{remark}[The phase must remain exact]\label{ncy:gb:rem:phase}
+The preceding replacement is justified for continuous
+approximations. A fractional part is discontinuous. Even a tiny
+error in the saddle can cross an integer cutoff, changing a
+lattice approximation by order \(\tau\).
+Therefore \eqref{ncy:gb:eq:Un}, \eqref{ncy:gb:eq:e1-error}, and the exact
+tail-moment approximation are stated with the exact saddle and
+the exact cutoff. One can alternatively implement the
+tail-moment approximation directly at a specified integer \(m\),
+which avoids evaluating a fractional part numerically.
+\end{remark}
+
+\subsection{A second concrete model: forests of paths}
+
+For labelled forests whose connected components are paths,
+there is one singleton structure and \(k!/2\) labelled paths on
+\(k\ge2\) vertices. Thus
+\[
+ p_1=1,\qquad p_k=\frac12\quad(k\ge2),\qquad
+ C(z):=\sum_{k\ge1}p_kz^k
+ =\frac{z}{2(1-z)}+\frac z2.
+\]
+This is \eqref{ncy:gb:eq:weight-hyp} with \(c=1/2\), and
+\eqref{ncy:gb:eq:refined-hyp} with \(a_*=0\). A first-order maximum
+law is already known \cite{BMWconf,BMW}.
+The universal lattice approximation here has the improved
+remainder \(O(\tau^{3/2}L^3)\), because the \(1/k\) coefficient
+vanishes. The rational component series also permits numerical
+checks at very large \(n\) without enumerating the objects.
+
+\section{Reproducible calculations and their scope}\label{ncy:gb:sec:computation}
+
+The proofs establish the asymptotic statements. The computations
+serve two additional purposes: checking the combinatorial model
+against exact integers, and checking the signs and sizes of the
+probability corrections against independent coefficient calculations.
+
+\subsection{Exact integer and rational checks}
+
+Write \(B_k^{\rm comp}=k!p_k\), an integer for nested cycles.
+The exponential formula gives the recurrence
+\begin{equation}\label{ncy:gb:eq:count-recurrence}
+ A_0=1,\qquad
+ A_n=\sum_{k=1}^n\binom{n-1}{k-1}B_k^{\rm comp}A_{n-k}.
+\end{equation}
+Restricting the sum to \(k\le m\) gives \(A_n^{(\le m)}\), and
+\[
+ \Pbb(M_n\le m)=A_n^{(\le m)}/A_n
+\]
+exactly. The supplied code computes \(p_k\) from the finite
+product through the needed degree using rational arithmetic,
+then uses \eqref{ncy:gb:eq:count-recurrence} with integers.
+
+The first 22 total counts were checked against the displayed
+OEIS data. Six exact rational CDF values at \(n=50\) were compared
+with a full-circle Fourier calculation; the maximum numerical
+difference was \(1.83\times10^{-14}\).
+The fractions themselves are retained in
+\texttt{data/verification.json}.
+
+\subsection{Numerical Fourier calculations}
+
+For larger \(n\), the code evaluates the coefficient ratio
+\eqref{ncy:gb:eq:conditioning} on a saddle circle. Nested-cycle
+coefficients are computed by multiplying
+\(1+z^k/k\) through a finite degree, and the exponentially small
+weighted tail is cut off. A second implementation uses the
+rational path-forest generating function
+\[
+ C_m(z)=C(z)-\frac{z^{m+1}}{2(1-z)}\qquad(m\ge1).
+\]
+It calculates the same coefficient ratio directly without
+nested-cycle coefficients.
+
+Comparisons with continuous CDFs include \emph{both ends} of
+each examined lattice step. Looking only at the value just after
+a jump can understate the continuous Kolmogorov distance.
+For nested cycles every integer threshold in the displayed
+central window is examined. The larger path-forest cases use a
+dense normalized grid and additional points near the limiting
+extrema; their recorded errors are sampled maxima.
+
+\inputprefixed{data/02-gumbel-numerical_tables.tex}% delivered numerical_tables.tex, shipped unchanged
+
+The asymptotic regime is approached slowly in the uncorrected
+formula. The explicit error profile explains this rather than
+hiding it: the next term is smaller than the leading error by
+only a factor of order \(1/\log n\).
+The continuous calibration is substantially more accurate in
+the experiments, but at moderate \(n\) its error need not yet be
+close to its limiting constant \(\tau/(2e)\).
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{figures/02-gumbel-error_profiles.pdf}
+ \caption{Numerical error profiles for nested-cycle assemblies at \(n=10^5\).
+ The data use actual saddle-circle coefficient ratios.
+ The curves show the signed discrepancy at lattice points;
+ endpoint checks used for continuous error tables are separate.
+ Numerical quadrature supports the asymptotic results but is not
+ the logical basis of their proofs.}
+ \label{ncy:gb:fig:profiles}
+\end{figure}
+
+\begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{figures/02-gumbel-forest_convergence.pdf}
+ \caption{Path-forest calculations over increasing size.
+ The normalized corrected error approaches the sharp constant
+ more quickly than the raw error approaches its own leading
+ equivalent. Larger-size entries are sampled maxima, not
+ interval-certified global suprema.}
+ \label{ncy:gb:fig:forest}
+\end{figure}
+
+The path-forest implementation was also checked against a
+separate 60-digit sparse coefficient recurrence at \(n=10^4\).
+At three cutoffs the maximum difference was
+\(3.34\times10^{-16}\).
+Changing 512 to 1024 Gauss--Legendre nodes changed the checked
+values by at most \(2.56\times10^{-15}\).
+These numerical checks use floating point and high precision;
+they do not use directed-rounding interval arithmetic.
+For nested cycles at \(n=1000\), comparing the finite central
+Fourier integration with a separate probability recurrence
+gave maximum discrepancy \(1.85\times10^{-9}\) at six checked
+cutoffs, well below the precision reported in the tables.
+
+\subsection{How to reproduce the package}
+
+From the package directory:
+\begin{verbatim}
+python3 -m pip install -r requirements.txt
+python3 code/nested_numerics.py
+python3 code/forest_numerics.py --recurrence-check
+python3 code/make_figures.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The package includes all TeX inputs, the compiled PDF, data,
+verification notes, and a manifest with file hashes.
+A standard TeX installation with the packages in the preamble
+is sufficient. No network access is needed to compile the paper
+once the Python and TeX dependencies are installed.
+\begin{writenote}[The package here, two printed differences, and the write's reproduction, 9 October 2026]
+\emph{Files.} ``The supplied code'' is \file{code/02-gumbel-nested_numerics.py},
+\file{code/02-gumbel-forest_numerics.py} and
+\file{code/02-gumbel-make_figures.py}; \file{data/verification.json} and the
+other data files named in this section are \file{data/02-gumbel-*}; the
+compiled PDF and the \TeX\ inputs other than the table file are not shipped.
+The commands above run only on a copy with the delivered names (the README
+gives the recipe).
+
+\emph{Two printed differences.} The text's maximum differences
+$1.83\times10^{-14}$ (exact against Fourier at $n=50$) and
+$1.85\times10^{-9}$ (recurrence against Fourier at $n=1000$) are recorded in
+\file{data/02-gumbel-verification.json} and
+\file{02-gumbel-VERIFICATION.txt} as $1.824029208924438\times10^{-14}$ and
+$1.844130930914959\times10^{-9}$. The printed values are neither the
+roundings ($1.82$, $1.84$) nor the truncations of the recorded ones; they are
+true as upper bounds, and nothing depends on them.
+
+\emph{The asymptotic constants are not yet visible.} At $n=10^3$, $10^4$,
+$10^5$ the ratios of the errors of Table~\ref{ncy:gb:tab:nested-errors} to
+their proved leading equivalents are $2.52$, $1.87$, $1.57$ for the raw error
+against $\kappa\delta$, $5.54$, $4.69$, $3.58$ for the calibrated error against
+$\tau/(2e)$, and $5.69$, $5.92$, $5.19$ for the lattice error against
+$\tau/(eL)$. The raw ratio decreases toward~$1$ as the relative $O(1/L)$
+remainder allows; the other two are still far from~$1$, as the text says
+(``need not yet be close''). These finite values neither contradict the
+theorems nor confirm their constants. In the path-forest model ($a_*=0$) the
+calibrated ratio reaches $1.0029$ at $n=10^{12}$
+(Table~\ref{ncy:gb:tab:forest-errors}).
+
+\emph{The write's reproduction} (floating point, not certified). The whole
+distribution of $M_n$ was computed for $n=10^3$, $10^4$, $10^5$ by a third
+method, the incremental product $f_m=f_{m-1}\exp(a_mz^m)\bmod z^{n+1}$ with
+$\Pbb(M_n\le m)=f_m[n]/f_n[n]$, in which every term is positive. It gives all
+four error columns of \file{data/02-gumbel-nested_errors.csv}, and hence the
+twelve entries of Table~\ref{ncy:gb:tab:nested-errors}, to within
+$3.0\times10^{-10}$, $6.6\times10^{-15}$ and $3.1\times10^{-14}$ at the three
+sizes; at $n=1000$ it agrees with the intake's per-cutoff recurrence to every
+printed digit, so the $3\times10^{-10}$ there is the delivery's quadrature,
+inside its own $1.84\times10^{-9}$. On the same data: the largest atom is
+$0.0107510$, $0.00304167$, $0.000911150$ (at $m=135$, $576$, $2305$, against
+$L/\tau=131.9$, $573.7$, $2304.5$), against $\tau/e=0.00880258$,
+$0.00276594$, $0.000872683$, so $(\max_m\Pbb(M_n=m)-\tau/e)/(\tau^2L^2)$ is
+$0.342$, $0.262$, $0.229$, bounded as Theorem~\ref{ncy:gb:thm:atom} states;
+for $p=0.1,0.25,0.5,0.75,0.9$ the integer quantile $Q_n(p)$ minus the
+right side of~\eqref{ncy:gb:eq:central-quantile-expansion} without its $O(1)$
+lies in $[-0.69,1.59]$, $[-0.15,1.09]$, $[-0.30,0.61]$, while the correction
+term itself reaches $26$ at $n=10^5$; and the exact saddle minus
+$\widehat\tau_n$ of~\eqref{ncy:gb:eq:explicit-cycle-saddle} is
+$-4.80\times10^{-5}$, $-2.52\times10^{-6}$, $-1.21\times10^{-7}$,
+$-5.47\times10^{-9}$ at $n=10^3,\dots,10^6$, that is $-0.032$ to $-0.029$
+times $n^{-3/2}\log^2n$.
+The shipped programs, rerun on a copy at the write, reproduce the three CSV
+files to relative $2\times10^{-8}$ and the six exact fractions exactly
+(Section~\ref{ncy:gb:sec:checks}).
+\end{writenote}
+
+\section{Further research questions}\label{ncy:gb:sec:future}
+
+The present estimates settle a quantitative problem for a
+specific, broad weight class. They also isolate several
+well-defined next steps.
+
+\begin{enumerate}
+\item\label{ncy:gb:q:nextconst} \textbf{A second correction to the optimal continuous constant.}
+Determine the next term in
+\(\DK(F_n,G\circ h_\tau)\). The sawtooth and the location of the
+largest atom interact at a smaller scale, so the correction may
+depend on a phase subsequence. For nested cycles the
+\(1/k\) component term already gives a systematic contribution
+of order \(\tau/L\).
+
+\item\label{ncy:gb:q:calibration} \textbf{An optimal nonlinear calibration beyond first order.}
+The explicit \(h_\tau\) attains the continuous minimax constant
+to first order. Can another explicit smooth transformation
+track half the largest jump through a full expansion? The
+abstract midpoint interpolant attains the exact minimax error,
+but uses the unknown finite distribution.
+
+\item\label{ncy:gb:q:affine} \textbf{Determine the affine minimax constant \(E_*\).}
+Theorem~\ref{ncy:gb:thm:affine} reduces this question to a
+two-dimensional weighted uniform approximation problem.
+A certified equioscillation calculation could identify the
+optimal center and scale corrections and provide a rigorous
+numerical value of \(E_*\).
+
+\item\label{ncy:gb:q:remainder} \textbf{Improve the discrete remainder.}
+The \(O(\tau^{3/2}L^3)\) bound is sufficient to separate the
+lattice and component scales. It is not claimed optimal.
+Retaining further terms in the paired integral may yield
+\(O(\tau^2L^r)\) with an explicit polynomial, or a systematic
+fixed-order expansion. Remainders must still be controlled
+uniformly on both extreme tails.
+
+\item\label{ncy:gb:q:several} \textbf{Several largest components.}
+Develop a joint point-process expansion for the largest
+\(r\) components, with fixed \(r\), and identify the
+conditioning-induced dependence among their limiting
+Poisson points. The one-cutoff tail moments suggest a
+finite-dimensional covariance correction.
+
+\item\label{ncy:gb:q:expansive} \textbf{Broader expansive weights.}
+For \(p_k\sim c k^{\alpha-1}\), \(\alpha>0\), the first-order
+Gumbel law is known \cite{PR}. Determine the analogue of the
+signed error profile, the best affine rate, and the
+continuous minimax calibration for \(\alpha\ne1\).
+Slowly varying factors may compete with conditioning at
+different scales.
+
+\item\label{ncy:gb:q:arithmetic} \textbf{Arithmetic support restrictions.}
+The present assumption forces eventual positivity at every
+integer size and hence gives a particularly direct Fourier
+bound. If weights are supported on one or several residue
+classes, identify the correct lattice span, admissible sizes,
+and phase terms. The atom obstruction should change with
+the span.
+
+\item\label{ncy:gb:q:effective} \textbf{Effective finite constants.}
+Replace the asymptotic \(O\)-constants by explicit expressions
+in \(c\), a bound for \(k|p_k-c|\), and an onset of positivity.
+Combined with interval evaluation of the saddle and Fourier
+integrals, this would give finite-\(n\) certified probability
+bounds.
+
+\item\label{ncy:gb:q:periodic} \textbf{Root-of-unity component oscillations.}
+The fuller expansion of \(p_k\) for distinct-cycle-length
+permutations contains periodic terms \cite{hybrid}.
+At what order do those oscillations enter the largest-component
+law, and how do they interact with the outer cutoff phase?
+
+\item\label{ncy:gb:q:quantiles} \textbf{Moment and quantile refinements.}
+The proved central quantile formula has bounded error in
+integer size. Extend this to moving probabilities \(u=u_n\),
+and derive comparably precise mean and variance expansions
+for \(M_n\), with integrable error bounds rather than just a
+uniform CDF estimate.
+
+\item\label{ncy:gb:q:formal} \textbf{Formalization.}
+A useful first formal target is the analytic transfer from
+the tail-moment estimate to the explicit profiles and minimax
+constants. The longer probabilistic target is the common
+Fourier concentration bound and the paired-integral
+remainder. Exact count computations should be connected to
+their combinatorial semantics by a proved checker.
+\end{enumerate}
+\begin{writenote}[Further questions of Part~II, 9 October 2026]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the manuscript that is not proved in full is stated as an open
+question; these eleven items are the manuscript's own, as delivered, and the
+write labelled them. No claim of the manuscript was found wrong; one printed
+constant is rounded in its last digit (note after
+Proposition~\ref{ncy:gb:prop:kappa}) and two printed numerical differences
+exceed the recorded ones (note at the end of
+Section~\ref{ncy:gb:sec:computation}). \emph{Question~\ref{ncy:gb:q:affine}}:
+the write's uncertified minimax computation (weighted error on a grid of
+$x\in[-4,25]$, Nelder--Mead) gives $E_*\approx0.1024413800$ at slope
+$\alpha\approx1.0000000$ and shift $b\approx-0.2784645$, with equal weighted
+errors of alternating signs at $x\approx-1.265$, $0$ and $2.164$; fixing
+$\alpha=1$ gives the same value to $7\times10^{-10}$. It lies between the
+bounds $0.0402\ldots$ and $\kappa=0.3090\ldots$
+of~\eqref{ncy:gb:eq:Estar-bound}, so the best affine normalization would
+lower the leading constant by a factor of about~$3.02$ but not its order. A
+certified value, and whether $\alpha=1$ exactly, stay open.
+\emph{Question~\ref{ncy:gb:q:periodic}} is the analogue for $M_n$ of Part~I's
+Question~\ref{ncy:q:periodic}, and \emph{Question~\ref{ncy:gb:q:effective}}
+that of Part~I's Question~\ref{ncy:q:effective}; none of the three is
+answered.
+\end{writenote}
+
+\appendix
+\section{Error scales and notation}\label{ncy:gb:app:ledger}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning\\
+\midrule
+\(p_k\) & Assembly component weight\\
+\(c\) & Positive limit of \(p_k\)\\
+\(a_*\) & Coefficient of \(1/k\) under the refined hypothesis\\
+\(\tau\) & Exact solution of \(B_1(\tau)=n\)\\
+\(L\) & \(\log(c/\tau)\)\\
+\(a_k\) & Poisson mean \(p_ke^{-\tau k}\)\\
+\(B_j,\ V\) & Full size cumulants; \(V=B_2\)\\
+\(S_j(m)\) & Cumulant tail above integer cutoff \(m\)\\
+\(Y_n,\ F_n\) & Normalized maximum and its CDF\\
+\(\beta,\ q,\ \theta_n(x)\) & \(e^{-x},L+x,\{(L+x)/\tau\}\)\\
+\(G,\ J_n,\ U_n\) & Gumbel, calibrated, and lattice approximations\\
+\(\widetilde U_n\) & Lattice approximation with the \(E_1\) term\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The scale comparisons used repeatedly are, for any fixed
+nonnegative integer \(r\),
+\[
+ \tau L^r\longrightarrow0,\qquad
+ \tau^{1/2}L^r\longrightarrow0.
+\]
+In particular,
+\[
+ \tau^{3/2}L^3=o(\tau/L^r),\qquad
+ \tau^2L^4=o(\tau/L).
+\]
+These are asymptotic statements with fixed \(r\). They provide
+no uniform assertion when \(r\) grows with \(n\).
+
+The common integration window is
+\(|u|\le L\), with \(u=\sqrt V\,\vartheta\).
+The common extreme-value window is
+\(\tau^2\le e^{-x}\le16L\).
+Keeping these two variables separate avoids conflating the
+Fourier scale with the extreme-value location.
+
+\section{Provenance and proof boundaries}\label{ncy:gb:app:provenance}
+
+The ProveIt source used for the sequence background is
+\path{a308338-nested-cycle-assemblies/article.tex}, in the
+research-report directory recorded in \texttt{PROVENANCE.txt}.
+The inspected source identifiers are:
+\begin{center}
+\small
+\begin{tabular}{ll}
+ProveIt source blob & \texttt{07022425b718ab5fe3bd332a551baec7cd512379}\\
+\texttt{openai/math} commit & \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}
+\end{tabular}
+\end{center}
+Exact source URLs and the repository snapshot information are
+provided in the package.
+
+The proof dependencies are:
+\begin{itemize}
+\item The general results use the explicitly stated weight
+hypothesis, elementary Poisson identities, Fourier inversion,
+Taylor's theorem, and elementary sum estimates. Their
+probability estimates are proved here.
+\item The nested-cycle application uses the published
+coefficient estimate \eqref{ncy:gb:eq:known-p}. The refined generating
+function asymptotics of the previous ProveIt manuscript are
+not needed as a probabilistic black box.
+\item The first-order Gumbel limits of prior authors establish
+context and priority. The quantitative bounds here are
+derived directly and do not assume an unquoted rate from
+those sources.
+\item The code checks finite arithmetic and numerically
+evaluates distributions. It does not prove the infinite
+asymptotic estimates. No machine-checked formalization is
+claimed.
+\end{itemize}
+
+The literature search was directed at expansive assemblies,
+largest-component Gumbel laws, path forests, and quantitative
+convergence or second-order corrections. The inspected
+sources did not supply the explicit profile, affine
+obstruction, or asymptotically minimax continuous calibration
+proved here. A broader specialist review remains appropriate
+before making a publication-level claim of priority.
+\begin{writenote}[The provenance files here, 9 October 2026]
+\file{PROVENANCE.txt} is \file{02-gumbel-PROVENANCE.txt} in this directory;
+the blob above is Part~I's \file{article.tex} as it stood before this write
+(Section~\ref{ncy:gb:sec:provenance}). The proof dependencies listed above
+agree with the write's reading: no statement of Part~I other than the quoted
+estimate~\eqref{ncy:eq:prior} enters a proof of this Part.
+\end{writenote}
+
+\begin{thebibliography}{99}
 \bibitem{oeis7838}
 The OEIS Foundation, \emph{A007838}, permutations with distinct cycle
 lengths. \url{https://oeis.org/A007838}. Entry inspected 3 October 2026.
@@ -1396,6 +3737,9 @@ lengths. \url{https://oeis.org/A007838}. Entry inspected 3 October 2026.
 \bibitem{oeis308338}
 I. Gutkovskiy, \emph{A308338}, OEIS entry dated 20 May 2019.
 \url{https://oeis.org/A308338}. Entry inspected 3 October 2026.
+[Part~II: cited as ``Gutkovskiy, Ilya and OEIS contributors, A308338: Expansion of e.g.f.
+$\exp(-1+\prod_{k\geq1}(1+x^k/k))$'', entry created 20 May 2019, accessed 8 October 2026; no
+revision named. Read again at the write (9 October 2026): revision \#21 of 5 October 2026, as at Part~I's write.]
 
 \bibitem{oeis392471}
 M. Riedel, \emph{A392471}, triangle counting nested-cycle assemblies
@@ -1420,6 +3764,9 @@ Combinatorial Asymptotics}, Electronic Journal of Combinatorics
 Section 3 and Proposition 1 of the 15 June 2006 version were inspected.
 The Greene--Knuth attribution is indirect through that work; the book
 itself was not inspected.
+[Part~II, key \texttt{FFGPP}: cited with DOI 10.37236/1129 for Section~3, equation~(22) and
+Proposition~1; its \file{02-gumbel-PROVENANCE.txt} records the published version (13 November 2006),
+an author-hosted PDF and the arXiv preprint as inspected.]
 
 \bibitem{eg2008}
 M. M. Erlihson and B. L. Granovsky,
@@ -1440,5 +3787,37 @@ Random Structures \& Algorithms \textbf{25} (2004), 227--245.
 Cited here solely through the explicit historical attribution in
 \cite[Corollary 4.5 and reference 12]{eg2008}; this paper was not
 inspected directly.
+
+\bibitem{ProveItNested}
+[Part~II] Report 167, \emph{Asymptotics of assemblies of nested cycles: Exact counts and fixed
+order marked saddle expansions}, research report in the ProveIt repository, 2026; dated 3 October
+2026, with repository annotations of 6 October 2026. Inspected Git blob
+\texttt{07022425b718ab5fe3bd332a551baec7cd512379} at commit \texttt{2bac1ea07b98}, that is,
+Part~I of this report before its second write.
+
+\bibitem{PR}
+[Part~II] K. Panagiotou and L. Ramzews, \emph{Cluster Statistics in Expansive Combinatorial
+Structures}, arXiv:2208.00925v1 (1 August 2022). \url{https://arxiv.org/abs/2208.00925v1}.
+
+\bibitem{BMWconf}
+[Part~II] M. Bousquet-M\'elou and K. Weller, \emph{Asymptotic properties of some minor-closed
+classes of graphs} (conference version), 25th International Conference on Formal Power Series and
+Algebraic Combinatorics (FPSAC 2013), Discrete Mathematics \& Theoretical Computer Science
+Proceedings AS (2013), 599--610. \url{https://doi.org/10.46298/dmtcs.2327}. See Proposition~9.
+
+\bibitem{BMW}
+[Part~II] M. Bousquet-M\'elou and K. Weller, \emph{Asymptotic Properties of Some Minor-Closed
+Classes of Graphs}, Combinatorics, Probability and Computing \textbf{23}(5) (2014), 749--795.
+\url{https://doi.org/10.1017/S0963548314000303}; arXiv:1303.3836.
+
+\bibitem{OpenAIMath}
+[Part~II] OpenAI, \emph{openai/math: Mathematics manuscript collection}, GitHub repository,
+snapshot consulted 8 October 2026 at commit \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\url{https://github.com/openai/math}. Not checked by the write.
+
+\bibitem{MSS}
+[Part~II] E. Mossel, A. Sly and Y. Sohn, \emph{Exact Phase Transitions for Stochastic Block Models
+and Reconstruction on Trees}, arXiv:2212.03362v2 (22 February 2025; first posted 6 December 2022).
+\url{https://arxiv.org/abs/2212.03362v2}.
 \end{thebibliography}
 \end{document}
