@@ -1241,6 +1241,27 @@ The variety route splits this into three steps.
      input, applied to a selection. Theorem 2.26 is Sanders-strength
      Freiman–Bogolyubov, which the corpus does not contain at quasi-polynomial
      strength.
+   - **§15 argument formalized (`Proofs16DenseBihomPiece`,
+     kernel-checked).** `densePiece_of_lineExtraction` proves
+     `DenseBihomPiece` from `LineFreimanExtraction κ`. That hypothesis is the
+     single-line consequence of Theorem 2.26: respected-quadruple energy
+     ≥ δN³ on a line set E gives E′ ⊆ E with |E′| ≥ κ(δ)N on which the map is
+     Freiman-linear (the agreement set with the Freiman homomorphism on Q).
+     The proof:
+     - selection of one value per projected point;
+     - line energy ≥ γ⁸|E|⁴/N from the product property
+       (`line_energy_of_productProperty`, p = 1, unit weights);
+     - a generic dense pass (`dense_section_pass`);
+     - a row pass, then a column pass on the survivors. The product property
+       is hereditary to sub-domains, so column energy survives.
+
+     The mass is κ(δ₂)κ(δ₁)θ/4, with δ₁ = γ⁸(θ/2)⁴ and δ₂ = γ⁸(κ(δ₁)θ/4)⁴.
+   - **Chain closed.** `structure_side_of_line_and_milicevic` gives the
+     covering half of `StackableStructureAt 2` from exactly two hypotheses:
+     `LineFreimanExtraction κ` (Theorem 2.26: Sanders, quasi-polynomial κ)
+     and `MilicevicDeepVarietyStructure D`. Both are published theorems, or
+     faithful consequences of them, and both are stated as Props. With
+     quasi-polynomial κ, the piece count is quasi-polynomial in 1/(γθ).
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
