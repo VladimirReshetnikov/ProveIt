@@ -1,0 +1,52 @@
+\subsection{Source controls, compatibility and complete-operation costs}
+
+The final native audit uses the nineteen-case maintained corpus, the empty
+circle and the valid one-component closures retained from 240 seeded random
+braids. These give 84 source diagrams. Each is tested in its original form,
+as a mirror, and after reversing the crossing list and rotating each PD row
+by two slots: 252 diagram variants, with at most 141 crossings.
+
+Every mixed crossing triangulation is isomorphic to Regina's unsimplified
+diagram complement and has vertex-link Euler characteristics $2,2,0$.
+For each variant, both finite subdivisions pass the native manifold validator
+and Regina's finite orientable one-torus-boundary checks: 504 comparisons.
+The current source checker accepts both outputs, and the original checker
+accepts the retained centred output: 756 successful source replays. All 252
+centred outputs exactly equal the first published constructor at commit
+\code{8354e8aab}. The external engine is Regina 7.4, distribution 7.4.1.
+Neither engine's manifold checks alone would establish knot provenance.
+
+The focused tests disable the producer during independent replay, check
+nondegeneracy and exact volume for both local subdivisions, reject all 400
+single-face mutations of the two one-crossing outputs, and reject a
+reciprocal but incorrect gluing. They also reject a trefoil exterior offered
+for a three-crossing unknot source, malformed schemas and unchecked invalid
+PDs. Cancellation propagates without input mutation. A source-bound boundary
+vertex-link disc correctly has zero essential-disc count; changing that
+certificate's count to one is rejected. Seven small external solid-torus
+controls cover the empty circle, curls of both signs, a reducible
+three-crossing unknot, a trefoil, a figure-eight and a stabilized circle.
+The original implementation passed 1,149 maintained tests. The final version
+adds the retained-subdivision contract test and passes all 1,150 maintained
+tests in 216.795 seconds. Its eight focused tests pass in 1.353 seconds.
+The final geometry audit took 56.440 seconds while the suite also ran;
+that elapsed time is not used as a performance comparison.
+
+There is no newly discovered normal meridian in this integration. Two
+exploratory external calls to \code{nonTrivialSphereOrDisc()}, one on the
+80-tetrahedron circle and one on the 20-tetrahedron circle, each reached its
+20-second process cap without returning a surface. These are incomplete
+searches, not negative results or a speed comparison. The existing supplied
+normal-vector algorithms can now be applied to source-authenticated geometry,
+but obtaining useful vectors efficiently remains an independent obligation.
+
+\input{diagram_exterior_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/exteriors.py}, with
+\code{audit} and \code{benchmark} modes. The driver pins all 457 Python and
+fixture sources before and after each run, and separately pins the two
+baseline modules loaded from Git. Final records have the
+\code{diagram-exterior-} prefix in \path{data/}; the first implementation's
+audit, suite and A/A timing records retain the
+\code{diagram-exterior-centred-} prefix. The coordinate and gluing proofs are
+in the maintained article, not delegated to the optional external controls.
