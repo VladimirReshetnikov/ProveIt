@@ -9739,3 +9739,85 @@ and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
 The regenerated catalogue is byte-identical, with 115 companion proofs
 and five open statements. Companion counts do not certify fidelity to
 every printed statement. The selected-port scope check passes.
+
+### J.143. Word image bounds and direct global endpoint identities
+
+Compatible words now carry bounded-image information and exact endpoint
+identities, with their own parameter certificates. The ten new modules
+are recorded separately from the unchanged numbered catalogue.
+
+`relation_word_defect_image_card_le_of_relation` proves that a word of
+`ell` triples has at most `M^(2*ell-1)` defect values on its recursive
+common domain if each permitted quadruple defect has at most `M` values.
+The proof multiplies two relation image bounds at each splice, keeping
+the induction's word image bound separate. It reuses the existing
+alternating defect and list spectrum definitions.
+
+When the varying frequencies are Freiman-linear on the index set,
+`coherent_relation_word_domain` recovers every auxiliary column domain
+from the anchors and output entries at radius `r/9^ell`. Hence the image
+bound holds on the endpoint Bohr set. In a prime cyclic target,
+`coherent_relation_word_exact` then gives exact identities at radius
+`r/(9^ell*M^(2*ell-1))`, with no new frequencies. The uniform radius for
+all words of length at most `k+1` is
+
+```
+boundedImageWordRadius r M k = r/(9^(k+1)*M^(2*k+1)).
+```
+
+The endpoint spectrum has at most `4*(k+1)*(base rank+varying rank)`
+frequencies. `abstract_bsg_bounded_image_words` retains the same actual
+BSG word families and maps throughout the density, rank and identity
+conclusions. `bounded_image_quad_word_system` instantiates the relation
+levels with image bounds `E^i`, automatically proving all three symmetries
+and doubling one. Its weak-transitivity and Freiman frequency-structure
+inputs remain explicit; symmetry does not establish those inputs.
+
+**Direct original-data construction after the incoming merge.**
+The incoming `global_column_word_system` applies J.142's BSG engine to
+J.98's column data through the direct zero-relation ladder. Its stronger
+version `global_column_word_witness_system` now retains the original
+`IsColumnWitnessSystem A phi X T L W`, the witness mass bounds and all
+local-map data. The previous theorem remains a corollary.
+
+`relation_word_exact_representation` transfers arbitrary-relation words
+with exact local-map identities to the existing exact column words.
+Thus `relation_word_identity_remove_aux` reuses the already proved kernel
+removal theorem. It requires no Freiman structure for varying frequencies.
+
+`global_column_word_endpoint_system` starts from the original dense
+bihomomorphism and an explicit modulus threshold. It returns the original
+witness-linked maps, dense sets `B′ ⊆ B ⊆ X`, threshold richness, every
+bounded-length compatible word family and its endpoint identity. Put
+
+```
+d = columnSpectrumCap (columnEightDensity alpha),
+r16 = zeroLadderRadius d (1/(4*pi)) (globalColumnIdentityRadius alpha) 15,
+rout = refinementKernelRadius (4*(k+1)*d) (2*k*d) (1/(4*pi)) r16.
+```
+
+The new modulus threshold is the maximum of the existing global BSG
+threshold and the corresponding endpoint kernel cap plus one. The radius
+is positive. Rank monotonicity proves this single threshold and radius
+work for every shorter word. Kernel costs are paid for a fixed number of
+columns per word, independently of the total number of words or models.
+No global model packing or elimination appears in this construction.
+
+The original-data theorem supplies a concrete input for the
+Proposition 6.1/Claim 6.2 route. It does not establish the almost-all
+additive 16-tuple image conclusion, robust Bogolyubov–Ruzsa progression
+extraction, the later common-extension and structure steps, or the final
+printed numerical comparison. The five numbered open entries remain.
+No upstream code is ported at this checkpoint.
+
+Verification after merging the direct column BSG application, its word
+construction, prime-target Step 4 and the BSG growth certificates:
+all 31 new named proofs pass individual axiom checks. The complete global
+endpoint production closure compiles across 245 modules; the generic
+bounded-image integration closure has 475 modules. The full combined
+audit checks 8,918 public Gowers theorems across 5,477 modules (5,475 in
+the facade closure), using only `propext`, `Classical.choice`, and
+`Quot.sound`. The selected OAI audit closure remains 4,152 modules. The
+regenerated catalogue is byte-identical: 115 companion proofs and five
+open statements; this count does not certify fidelity to every printed
+statement. The selected-port scope check passes.
