@@ -1,0 +1,131 @@
+\section{Adaptive blocking flows for cocycle-span minimization}
+\label{sec:cocycle-blocking}
+
+The span network has one supply unit per tetrahedron. The previous solver
+runs Dijkstra once per unit, even when many units can travel at the same
+reduced cost. The maintained optimizer now routes batches through
+zero-reduced-cost residual arcs, using shortest-path searches when the
+current zero-cost graph is exhausted or batching has been unproductive.
+Its final primal--dual certificate and independent verifier are unchanged.
+This improves a polynomial local primitive; it does not complete the
+normal-surface search or establish a general quasipolynomial recognizer.
+
+\subsection{Routing a batch while retaining dual feasibility}
+
+Recall the $O(T)$-node, $O(T)$-arc transshipment network of
+Section~\ref{sec:cocycle-seeds}. Each lower node receives at most one
+unit from the source, each upper node sends at most one unit to the sink,
+and every internal forward arc has capacity $T+1$. An acyclic shortest-path
+initialization supplies integral potentials $\pi$ with nonnegative
+reduced costs
+\[
+ r(u,v)=c(u,v)+\pi(u)-\pi(v)
+\]
+on every usable residual arc.
+
+An augmentation entirely along arcs with $r=0$ needs no change of
+potential. Every newly opened reverse arc also has reduced cost zero;
+every other usable arc retains its previous nonnegative reduced cost.
+Feasibility of the potentials is therefore preserved after any number of
+such augmentations. A path has unit bottleneck because its first source
+arc has capacity one. The numerical size of a height does not determine
+the number of flow units.
+
+The producer first assigns breadth-first levels in the usable zero-cost
+graph. Once the sink level is known, it finishes the preceding layer and
+does not expand deeper vertices. It then traverses only arcs advancing
+one level. A current-arc pointer at each node skips exhausted or unusable
+choices. Traversal uses explicit node and edge stacks, so a long residual
+path does not depend on the interpreter's recursion limit.
+
+When a path reaches the sink, the producer sends one unit and restarts
+at the source. A failed branch advances its parent's pointer. The
+resulting block leaves no source-to-sink path in the current level graph,
+unless all required flow has already been sent. Newly opened reverse arcs
+go to a lower level and cannot revive an earlier discarded choice in the
+same block. Further zero-cost paths, if any, are found by another
+breadth-first level construction. This argument allows zero-cost cycles,
+parallel arcs and disconnected abstract incidence components.
+
+If no zero-cost path remains, reduced-cost Dijkstra finds the next path.
+Let $\Delta$ be the sink distance. The existing update
+\[
+ \pi(v)\gets\pi(v)+\min(d(v),\Delta)
+\]
+uses increment $\Delta$ for unreachable or unsettled nodes. It preserves
+nonnegative residual costs, including on arcs entering the reached set
+from outside, and makes the chosen augmenting path tight. The producer
+sends one unit along that path, then may try batching again.
+
+After $T$ units have been sent, every original internal forward arc is
+still residual: its capacity exceeds the total flow. Every used arc also
+has its reverse residual, so dual feasibility forces equality on it.
+Extracting vertex potentials and a corner matching therefore gives the
+same primal--dual optimality argument as before. The existing independent
+checker reconstructs coordinates, verifies matching balance and requires
+equality of the primal span and dual reward. It neither imports the
+blocking-flow helper nor trusts its counters.
+
+\subsection{A bounded handoff for small batches}
+
+Batch construction itself costs a graph scan. When marginal costs are
+distinct, repeating that scan before every Dijkstra search adds work
+without routing more flow. The scheduler therefore counts an attempted
+block as poor when it sends fewer than two units. Two consecutive poor
+attempts disable batching; a block of at least two units resets that count.
+The solver then uses ordinary shortest-path augmentations.
+
+A later Dijkstra augmentation with sink distance zero is fresh evidence
+that units are again moving at the same reduced-cost level. It reenables
+batching with a reset poor-attempt counter. This restart affects only
+which valid augmenting paths are tried. Both modes maintain the same
+residual feasibility and final certificate obligations. Every iteration
+of the outer loop sends at least one unit, including an iteration whose
+zero-cost search fails, because that failure is followed by Dijkstra.
+
+The separated-cost control has $T$ independent vertex labels, one for
+each row, with heights $(0,0,0,i)$ in row $i$. All local spans are fixed,
+and successive marginal costs are distinct. The implementation attempts
+only two zero-cost searches, sends one unit in its first block and then
+finishes with $T-1$ Dijkstra searches. The unbounded prototype instead
+performed a failed zero-cost scan at almost every remaining unit; this
+control motivated the handoff before integration.
+
+\subsection{Worst-case accounting and an improved equal-cost family}
+
+Write $N,E=O(T)$ for the network size. One breadth-first level construction
+uses $O(N+E)$ graph work. Within its block, current-arc pointers advance
+at most once per arc. A successful path can traverse at most $N-1$ arcs;
+if a block sends $q$ units, a conservative cost is
+$O(N+E+qN)$. Across the whole solve there are at most $T$ attempted
+blocks and at most $T$ routed units. Thus all blocking work is
+$O(T^2)$ arithmetic and incidence work. At most $T$ Dijkstra searches
+remain, preserving the conservative bound
+\[
+ O(T^2\log(T+1))
+\]
+for arithmetic operations. Arrays, queues, current-arc pointers and
+explicit stacks take $O(T)$ records. The handoff changes neither bound.
+
+Zero-cost augmentations do not change potentials. The previous bound
+$O(B+\log(T+1))$ on arithmetic bit length for $B$-bit heights therefore
+still applies to both modes. A conservative addition/comparison bit bound
+remains
+\[
+ O\!\left(T^2\log(T+1)(B+\log(T+1))\right),
+\]
+apart from label indexing and input/output. The original certificate
+size and separate cohomology-preprocessing bounds are unchanged.
+
+There is a direct improvement on an explicit family. Give every row
+vertices $(0,1,2,3)$ and heights $(0,0,0,0)$. The zero-cost level graph
+has source, lower, vertex, upper and sink layers. One blocking phase sends
+all $T$ units along paths of length four, with $O(T)$ scans and no
+Dijkstra search. The old solver performs $T$ searches, each scanning the
+$T$ source arcs, so its residual search work is $\Omega(T^2)$ even on
+this zero-height family. The change is from quadratic to linear residual
+search work on that family, not a linear bound for arbitrary span inputs
+or complete unknot recognition. Complete-call measurements below include
+certificate creation and independent verification as well.
+
+\input{cocycle_blocking_results.tex}

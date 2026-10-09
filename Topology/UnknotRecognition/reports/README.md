@@ -529,3 +529,26 @@ All 1,181 tests pass. Complete recognition improves 1.46–8.70× on six
 deliberately routed native-stage inputs; independent replay improves
 1.94–2.98× on four positives. Ordinary corpus calls still finish before
 attempting this stage, so those gains do not imply a default-portfolio gain.
+
+The checked zero-tree construction now supports **alternative tree gauges**
+without another cohomology solve. A four-trial deterministic prelude precedes
+span optimization; extra requested trials follow an optimization miss. The
+same independent certificate checker accepts every new positive. On the
+84-source corpus, positive records rise from 18 to 23 with the default four
+trials, or 24 with 24 trials, preserving all earlier positive hashes. All
+1,187 tests pass and 205 fresh Regina controls agree. A parallel investigation
+of minimum edge-intersection weight found no new discs in 58 old-stage misses
+and was retained as research rather than added to the recognizer. See
+`../synthesis/cocycle_trees.tex` for the construction, exact limitations and
+complete-call performance, including unsuccessful-search overhead.
+
+The maintained report-31 span optimizer now uses **adaptive blocking flows**
+on its zero-reduced-cost residual graph, handing off to Dijkstra after two
+poor blocks and restarting on later zero-distance evidence. Its independent
+optimality checker is unchanged. All 500 abstract optima and 82 comparable
+source vectors are preserved; the two formerly capped standalone source
+optimizations now complete. The full shared-budget Gordian stage still caps.
+All 1,192 tests pass and 76 fresh Regina controls agree. See
+`../synthesis/cocycle_blocking.tex` for the residual invariant, worst-case
+accounting, an equal-cost family with linear residual search, and measured
+source gains alongside adverse arbitrary-input controls.

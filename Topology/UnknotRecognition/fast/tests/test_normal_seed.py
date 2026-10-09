@@ -99,7 +99,7 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_minimum_pieces_does_not_mean_minimum_genus(self):
         diagram = Diagram.from_braid(2, [1, 1, -1])
-        result = normal_seed_decide(diagram)
+        result = normal_seed_decide(diagram, tree_trials=0)
         self.assertEqual(result['status'], 'INCONCLUSIVE')
         self.assertEqual([s['normal_pieces'] for s in result['stages']], [45, 43])
         self.assertEqual([s['compressing_discs'] for s in result['stages']], [0, 0])
@@ -110,12 +110,12 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_optimization_finds_a_disc_after_the_raw_seed_fails(self):
         diagram = Diagram.from_braid(4, [-1, 2, 1, -2, 3])
-        result = normal_seed_decide(diagram)
+        result = normal_seed_decide(diagram, tree_trials=0)
         self.assertEqual(result['status'], 'UNKNOT')
         self.assertEqual([s['compressing_discs'] for s in result['stages']], [0, 1])
         self.assertEqual([s['normal_pieces'] for s in result['stages']], [194, 84])
         self.assertTrue(verify_normal_seed_certificate(diagram, result['certificate']))
-        self.assertEqual(normal_seed_decide(diagram, optimize=False)['status'], 'INCONCLUSIVE')
+        self.assertEqual(normal_seed_decide(diagram, optimize=False, tree_trials=0)['status'], 'INCONCLUSIVE')
 
     def test_certificate_source_geometry_coordinates_and_zero_count_are_checked(self):
         diagram = Diagram.from_braid(2, [1])
@@ -178,7 +178,7 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_command_line_flags(self):
         output = subprocess.check_output([sys.executable, '-B', '-m', 'fastunknot', 'recognize', '--help'], text=True)
-        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize'):
+        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize', '--normal-seed-tree-trials'):
             self.assertIn(flag, output)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'curl.json'

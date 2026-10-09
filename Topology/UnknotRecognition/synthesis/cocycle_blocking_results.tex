@@ -1,0 +1,80 @@
+\subsection{Arithmetic, topology and source audits}
+
+The 27 focused blocking, span, seed and tree tests pass in 2.593 seconds.
+The full suite passes all 1,192 tests in 212.108 seconds. New tests cover
+linear scan growth on the equal-cost family, bounded handoff on distinct
+marginal costs, restarting after zero-distance evidence, a 2,500-node
+zero-cost path with cycles, cooperative caps and cancellation. Multiplying
+a nonzero instance by $2^{20000}$ preserves all search counters and scales
+the objective exactly. Its hexadecimal JSON certificate replays with both
+flow producer entry points disabled.
+
+Five hundred random arithmetic problems agree with the old optimizer on
+both optimum value and the entire coordinate vector. In 495 cases the
+entire certificate is also identical; five use another valid witness.
+This observed coordinate agreement is not assumed in the
+correctness proof. Each old and new certificate passes the unchanged
+independent checker. Aggregate Dijkstra searches fall from 7,928 to 7,398,
+but total guard work rises from 3,333,719 to 3,765,178. Small arbitrary
+inputs therefore provide an adverse control, not evidence of a uniform
+speedup. The complete-call benchmark includes a separate batch of such
+problems.
+
+The initial audit completed its checks but failed while serializing the
+20,000-bit objective with ordinary decimal JSON. The driver now uses the
+existing exact hexadecimal transport; the interpreter's conversion limit
+is unchanged. The final audit is repeated after that fix and takes
+51.768 seconds. Its elapsed time mixes correctness checks and is not a
+paired performance comparison. The initial failure log is retained.
+
+All 84 source inputs are also optimized directly with a two-million-guard
+allowance. Both optimizers finish on 82 cases, preserving every objective
+and coordinate vector. Six complete source span witnesses are byte-identical;
+the others can use different valid matchings. The new optimizer also
+finishes the two previously capped standalone queries:
+\begin{itemize}
+\item Gordian, with 2,820 tetrahedra, uses six Dijkstra searches and routes
+      2,814 units in blocks. It reduces 3,513 pieces to 2,315 in 1,929,649
+      guards. An independent source-bound inspection and Regina agree
+      that its surface is connected, orientable and has $\chi=-65$,
+      with no essential disc.
+\item The 32-crossing circle uses 18 Dijkstra searches for 640 units,
+      reducing 8,385 pieces to 4,235 in 1,019,747 guards. Independent
+      inspection and Regina identify a disc. Its raw surface already
+      supplied a native proof before this change.
+\end{itemize}
+These two larger topology checks supplement 74 fresh optimized-surface
+Regina controls on sources of at most twelve crossings. All 76 comparisons
+agree on connectedness, orientability, Euler characteristic and disc count.
+
+Complete source-stage queries preserve the four-tree policy's 23 positives,
+60 completed restricted misses and one cap, and the 24-tree policy's 24
+positives, 59 misses and one cap. Gordian still caps because source
+construction, cohomology, tree trials and replay share its two-million-guard
+allowance with optimization. Its newly completed standalone query is not
+a newly completed full stage. The selected optimized positive and its
+duplicate \code{random-54} now have a different valid corner matching,
+giving one distinct changed positive proof. Other positive hashes are
+preserved, and every returned source proof replays independently.
+
+The default-stage guards for \code{survivor-00}, \code{survivor-01} and
+\code{survivor-02} fall from 1,310,623, 1,124,340 and 1,234,216 to
+251,349, 208,359 and 172,493 respectively. These remain restricted misses.
+The optimized five-crossing positive falls from 144,578 to 54,318 guards,
+and the optional late-tree positive falls from 180,578 to 72,527. Guard
+counts are cooperative work indicators, not bit-operation counts.
+
+On nineteen ordinary corpus inputs, old and new enabled-stage policies
+return the same expected verdicts without reaching this native stage.
+The optimization improvements therefore do not establish an ordinary
+default-portfolio speedup or new source coverage.
+
+\input{cocycle_blocking_measurements.tex}
+
+Reproduction uses \path{../fast/normal_orbit_research/blocking.py}, with
+\code{audit}, \code{optimize} and \code{recognize} modes. The baseline
+is \code{4fa723b79}; all 483 runtime, driver, fixture and prior-audit
+source pins agree. The two large topology checks use
+\path{data/blocking_capped_sources.py}, run from \code{fast} with
+\code{PYTHONPATH=.} and optional Regina. The incoming archive inventory
+and the checked \code{openai/math} head \code{fd4aeeb2e} remain unchanged.

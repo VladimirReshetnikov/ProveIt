@@ -6720,3 +6720,602 @@ modules (5,194 facade modules, including 4,152 OAI modules), with only
 `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
 identical at 115 companions and five open entries; the selected-port
 scope check still passes with 4,134 upstream and 17 compatibility modules.
+
+### J.116. One common Freiman map on translated column differences
+
+The four coordinate maps from J.115 now yield a single difference map
+on a dense retained family, with an explicit cubic retention bound.
+The six new modules are `Proofs16MixedGraphOverlap`,
+`Proofs16FreimanTranslateCover`, `Proofs16CommonGraphCover`,
+`Proofs16FourfoldGraphMap`, `Proofs16CommonDifferenceRetention`, and
+`Proofs16EscapingDifferenceMap`.
+
+**Dense overlap without discarding the configurations.** Suppose `Q`
+contains at least `delta*N^3` mixed configurations, with coordinates zero
+and one in `A` and `B`. Fixing coordinates two and three leaves a fibre
+whose projection to coordinate one has at least `delta*N` elements.
+The additive index equation makes this projection injective. Thus there
+are `a,c,S`, with `S` contained in `B`, such that `s+a` belongs to `A`
+and `f0(s+a)=f1(s)+c` for every `s` in `S`. This overlap is auxiliary:
+the subsequent covering still applies to every original configuration.
+
+**A graph cover with reciprocal-density cost.** For a Freiman map `f`
+on `A` and a subset `S` of density at least `mu`, the graph sum
+`{(x+s,f(x)+f(s)) : x in A, s in S}` has at most `N` elements.
+Indeed, its first-coordinate projection is injective by the Freiman
+identity. Applying the existing disjoint-family packing theorem yields
+anchors `J` in `A` with `J.card*mu <= 1`. Each `x` has witnesses
+`j in J`, `u,v in S` satisfying both `x=j+u-v` and
+`f(x)=f(j)+f(u)-f(v)`.
+
+Apply this to the shifted overlap in `A` and the original overlap in
+`B`. The two anchor sets satisfy `J.card*K.card*delta^2 <= 1`.
+Every mixed difference is represented as
+
+```
+x-y = (j-k)+(u-v)-(w-z)
+f0(x)-f1(y) = (f0(j)-f1(k))+(f1(u)-f1(v))-(f1(w)-f1(z)),
+```
+
+with all four representation points in the same set `S`.
+
+**The common map and retained mass.** `fourfoldGraphDomain S` is
+`2S-2S`, represented as `(u-v)-(w-z)`. An order-eight Freiman map on `S`
+induces a map `theta` on this entire difference set. Its values are
+independent of representation, and it preserves additive quadruples.
+The proof converts each relation between four represented differences
+into an equality of sums of eight original points, counting repetitions.
+
+`mixed_configurations_common_difference_map` chooses one of the at most
+`delta^-2` anchor pairs. It returns `S`, `theta`, constants `a,c`, and
+`R` contained in the original `Q`, with
+
+```
+S.card >= delta*N,
+R.card >= delta^3*N^3,
+f0(q0)-f1(q1) = c+theta(q0-q1-a)       (q in R).
+```
+
+Every argument `q0-q1-a` lies in `fourfoldGraphDomain S`. The theorem
+also retains agreement with every four-term representation. No primality
+assumption is needed for these covering and retention arguments.
+
+**Application to actual failed containments.** Set
+`epsilon = escapingFreimanDensity delta d r` from J.115.
+`failed_containments_common_difference_map` produces a set `S` of density
+at least `epsilon` and at least `epsilon^3*N^3` original configurations.
+On each retained configuration the common value
+`c+theta(q0-q1-a)` equals both selected pair differences and remains
+outside its prescribed unit span. The four selected maps still take
+values in their original column bounded spans; `f1` remains order-eight
+Freiman on `S`. Thus the common map is obtained from the actual
+containment failures, rather than assumed as an extra structural input.
+
+**Incoming numerical progress and remaining work.** The merge from
+`origin/main` also adds `Proofs16VarietyPieceBudget`. Its theorem
+`variety_piece_budget` proves that the variety piece parameter fits the
+dimension-three budget provided the logarithmic loss `L` is at most
+`(2/(theta*gamma))^(64*2^256)`. That hypothesis and the missing variety
+structure must still be supplied. Our common difference map lives on
+`2S-2S`; the required Bohr/progression localization, retention through
+that localization, higher-arrangement selection, and independent-family
+iteration remain open. This checkpoint closes no numbered paper entry
+and claims no new final bound for the full source theorem. It adds no
+upstream port and changes no licensing material.
+
+**Verification.** The new failed-containment common-map closure checks
+265 modules. All ten new named theorems and the four incoming budget
+theorems pass individual axiom checks. The complete merged audit checks
+7,453 public Gowers theorems in 5,203 modules (5,201 facade modules,
+including 4,152 OAI modules), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The numbered ledger is byte-for-byte unchanged at
+115 companions and five open entries. The selected-port scope remains
+4,134 upstream and 17 compatibility modules; reciprocal-only modules
+remain excluded.
+
+### J.117. Common difference maps on controlled Bohr neighborhoods
+
+The common map from J.116 now has a full Bohr domain, and a quantitatively
+dense family of original configurations has its translated differences
+in the half-radius neighborhood. The escape from the prescribed unit
+span is preserved on every retained configuration.
+
+**Separate the two density costs.** The new
+`common_graph_cover_retained_fibre` accepts an already chosen overlap
+`S` of density `mu` and an original configuration family of density
+`delta`. The graph cover uses at most `mu^-2` anchor pairs, so a single
+pair retains at least `mu^2*delta*N^3` configurations. The supplied map
+need only agree with every four-term representation on `S`; its larger
+domain and Freiman properties are retained by the caller. The earlier
+cubic retention theorem is now a consequence with `mu=delta`, avoiding
+a duplicate pigeonhole proof.
+
+**Small clusters preserve fourfold values.** If all pairwise differences
+in `C` lie in `B(Gamma;rho/4)`, their differences lie in
+`B(Gamma;rho/2)`. For a map on `E` that extends to `B(Gamma;rho)`, with
+`C` contained in `E`, the normalized extension satisfies
+
+```
+psi((u-v)-(w-z)) = (f(u)-f(v))-(f(w)-f(z))
+```
+
+for all four points in `C`. The proof uses the order-two Freiman identity
+on the full neighborhood, its value at zero, and its agreement on pair
+differences. Both neighborhood membership and value agreement are proved
+in `Proofs16FourfoldBohrExtension`.
+
+**Uniform parameters.** For an input density `kappa > 0`, define
+
+```
+rho(kappa) = commonDifferenceRadius kappa = kappa/(32*pi),
+r(kappa)   = commonDifferenceRank kappa = ceil(16*kappa^(-2)),
+M(kappa)   = commonDifferenceCells kappa = ceil(8/rho(kappa)),
+mu(kappa)  = commonDifferenceClusterDensity kappa
+           = kappa/M(kappa)^r(kappa),
+beta(kappa) = commonDifferenceBohrDensity kappa
+            = mu(kappa)^2*kappa.
+```
+
+Positivity of the radius, cell count, cluster density, and final retained
+density is proved. The rank ceiling also proves that `mu(kappa)` is a
+valid lower bound for the density computed with any spectrum of rank at
+most `16*kappa^(-2)`.
+
+`dense_freiman_fourfold_bohr_cluster` starts with an order-eight Freiman
+map on a set of density at least `kappa`. The existing dense extension
+theorem gives a spectrum of rank at most `16*kappa^(-2)` and radius
+`rho(kappa)`. Averaging produces a cluster whose pairwise differences
+lie in the quarter-radius Bohr set. The existing Bohr cardinality lower
+bound, with `M(kappa)` cells per frequency, gives this cluster ambient
+density at least `mu(kappa)`. Its fourfold graph values therefore agree
+with a normalized Freiman map on the full Bohr set, and its fourfold
+indices lie in the half-radius set.
+
+**Mixed configurations and actual failures.**
+`mixed_configurations_common_bohr_map` extracts the dense overlap from
+J.116, localizes it to the cluster above, and applies the generalized
+retention theorem. From `delta*N^3` configurations it returns a subfamily
+of size at least `beta(delta)*N^3`, a spectrum of rank at most
+`16*delta^(-2)`, and a normalized order-two Freiman map `psi` on
+`B(Gamma;rho(delta))`. There are constants `a,c` such that every retained
+configuration satisfies
+
+```
+q0-q1-a in B(Gamma;rho(delta)/2),
+f0(q0)-f1(q1) = c+psi(q0-q1-a).
+```
+
+No primality assumption is needed for this mixed-map localization.
+`failed_containments_common_bohr_map` applies it to the coordinate maps
+from the actual containment failures of J.115. With
+`epsilon = escapingFreimanDensity delta d r`, its retained density is
+`beta(epsilon)`. The common value equals both selected pair differences,
+stays outside each configuration's selected unit span, and the selected
+maps still belong to their original bounded column spans.
+
+**Remaining work.** This closes the common Bohr-map step, not the proper
+progression or global iteration steps. A proper progression inside a
+Bohr set is already available through `exists_proper_progression_in_bohr`,
+but a dense retained family with differences in a suitable translated
+progression must still be constructed. Higher arrangements, the global
+independent-family iteration, the final bilinear variety structure, and
+its remaining quantitative inputs are also still open. No numbered
+source entry or final source-theorem bound is claimed by this checkpoint.
+No upstream code was ported and no license or provenance file changed.
+
+**Verification.** The new failed-containment Bohr-map application and
+previous difference-map application check together in 271 modules. All
+eleven new named theorems and the refactored common-difference theorem
+pass individual axiom checks. The full audit checks 7,470 public Gowers
+theorems in 5,209 modules (5,207 facade modules, including 4,152 OAI
+modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger is byte-for-byte unchanged at 115 companions and
+five open entries. The scope check still reports 4,134 upstream and
+17 compatibility modules, excluding reciprocal-only dependencies.
+
+### J.118. Common escaping maps on a proper progression
+
+The common Bohr map from J.117 can now be recentered on one proper
+centered progression while retaining a quantitatively dense family of
+original configurations. The proof averages configurations with their
+full multiplicities; projecting to a set of difference values would not
+justify the same retained-mass bound.
+
+**Indexed translation averaging.** For any finite index family `Q`, any
+map `x` into `ZMod N`, and any test set `P`,
+
+```
+sum_t card {q in Q : x(q)-t in P} = Q.card*P.card.
+```
+
+`indexed_translate_filter_sum` proves this exact identity over the reals
+by interchanging the sums and using the bijection `t -> x(q)-t` for each
+fixed configuration. Consequently, if `Q.card >= mass >= 0` and
+`P.card >= eta*N`, some translate retains at least `eta*mass` indices.
+No injectivity of `x` is assumed.
+
+**Recentering the Freiman values.** Suppose all `x(q)` lie in
+`B(Gamma;rho/2)`, the test set also lies in that half-radius neighborhood,
+and `psi` is a normalized order-two Freiman map on `B(Gamma;rho)`.
+Positive retained mass supplies one retained index `q0`; then
+`t=x(q0)-(x(q0)-t)` lies in the full Bohr neighborhood. For each retained
+index, all four arguments `x(q),0,t,x(q)-t` lie in the full domain, so
+its Freiman identity gives
+
+```
+psi(x(q)) = psi(t)+psi(x(q)-t).
+```
+
+`bohr_freiman_translate_retention` proves this with the original index
+subfamily and its mass bound. No value of `psi` outside its proved
+Freiman domain is used in this recentering argument.
+
+**Uniform progression parameters.** Define
+
+```
+bohrProgressionDensity(r,rho)
+  = exp(-((r+1)*log(1+rho^(-1))+10*(r+1)^2)).
+```
+
+For any spectrum of cardinality at most `r` and `rho > 0`,
+`exists_uniform_proper_progression_in_bohr` returns a proper centered
+progression of rank at most `r+1`, contained in `B(Gamma;rho/4)`, with
+cardinality at least `bohrProgressionDensity(r,rho)*N`. This is the
+existing proper Bohr progression theorem, combined with its proved
+logarithmic width choice and monotonicity in the rank bound. The density
+is positive. The progression itself is proper; no properness assertion
+is made about a dilation of it.
+
+Combining this progression with indexed translation retention gives
+`bohr_freiman_progression_retention`. It preserves the original
+normalized map on the full Bohr neighborhood, returns the actual
+progression and recentering translation, and retains at least the
+progression-density fraction of the configuration mass.
+
+**Common mixed and escaping values.** With the J.117 parameters, set
+
+```
+eta(kappa) = commonDifferenceProgressionDensity kappa
+           = bohrProgressionDensity(r(kappa),rho(kappa)),
+xi(kappa)  = commonDifferenceProgressionRetention kappa
+           = eta(kappa)*beta(kappa).
+```
+
+Both positivity statements are proved. The theorem
+`mixed_configurations_common_progression_map` starts from `delta*N^3`
+mixed configurations, the first coordinate's Freiman map and the second
+coordinate's order-eight map. It obtains a proper centered progression
+`P` with rank at most `r(delta)+1` and size at least `eta(delta)*N`, a
+subfamily of at least `xi(delta)*N^3` original configurations, and
+constants `a,c` such that every retained configuration satisfies
+
+```
+q0-q1-a in P.carrier,
+f0(q0)-f1(q1) = c+psi(q0-q1-a).
+```
+
+The spectrum bound `16*delta^(-2)`, the full-domain order-two Freiman
+property, and normalization at zero are retained. The progression lies
+in the quarter-radius neighborhood. This theorem requires no primality
+assumption.
+
+`failed_containments_common_progression_map` applies it to actual failed
+Bohr containments. For `epsilon = escapingFreimanDensity delta d r`, the
+retained mass is at least `xi(epsilon)*N^3`. On every retained
+configuration, the common progression value equals both selected pair
+differences and remains outside the prescribed selected unit span.
+All four maps keep their original bounded column-span membership.
+
+**Remaining structural work.** The difference-map progression
+localization is now proved for the four-coordinate configuration case.
+Higher arrangements, coherent maps across the needed relation families,
+and the global independent-family iteration remain open. The final
+bilinear variety structure and remaining quantitative hypotheses have
+not been supplied. No numbered catalogue entry is closed here, and no
+new final source-theorem bound is claimed. The existing selected port is
+sufficient; provenance and licensing material are unchanged.
+
+**Verification.** The escaping-progression application checks 274
+modules. All ten new named theorems pass individual axiom checks. The
+full audit checks 7,483 public Gowers theorems in 5,215 modules (5,213
+facade modules, including 4,152 OAI modules), using only `propext`,
+`Classical.choice`, and `Quot.sound`. The numbered ledger is byte-for-byte
+unchanged at 115 companions and five open entries. The selected-port
+scope remains 4,134 upstream and 17 compatibility modules, excluding
+reciprocal-only dependencies.
+
+### J.119. Dense pair escape and the independent-family rank budget
+
+The progression result of J.118 now gives the pair-enlargement ingredient
+for the frequency-selection iteration. This follows the role of
+[Claim 9.4 in the auxiliary inverse-theorem source](https://arxiv.org/html/2601.01682v1#S9):
+one common map supplies a new independent frequency on many column
+pairs. The present explicit parameters come from J.115–J.118; no claim
+is made that they match that source's quasipolynomial estimates.
+
+**From quadruples to pairs.** If an additive quadruple's first pair and
+third coordinate are known, its fourth coordinate is determined. Thus
+`additive_quadruples_pair_card_le` proves `Q.card <= E.card*N` whenever
+all first pairs lie in `E`. Its real-density consequence turns
+`delta*N^3` quadruples into at least `delta*N^2` pairs, including when
+coordinates repeat. The new paired projection therefore preserves the
+normalized retained density from J.118.
+
+**Keep the translation and constant term.** Define
+`translatedFreimanDomain S a = {a+x : x in S}`. Membership is equivalent
+to `x-a in S`, and cardinality is unchanged. If `psi` is order-two
+Freiman on `S`, then `theta(x)=c+psi(x-a)` is order-two Freiman on this
+translated domain. These facts allow the selected map to be used at the
+actual column difference, without silently dropping either `a` or `c`.
+
+**Ambient span accounting.** Increasing a generator set preserves its
+bounded span at the same cutoff. A difference of elements in the spans
+of `K` and `L`, at respective cutoffs `R` and `S`, belongs to the span
+of `K union L` at cutoff `R+S`. In particular, the selected column-map
+values give cutoff `2*bohrExtensionCutoff (2*d) r` for their difference.
+This factor of two is retained explicitly; overlapping generator sets
+do not justify claiming the original cutoff for an arbitrary difference.
+
+**A common map escaping on many pairs.**
+`failed_containments_dense_pair_escape` takes the actual failure family
+and a selected-frequency set `F(p)` for each column pair. The only
+connection needed is `F(q0,q1)` contained in the quadruple's selected set
+`D(q)`. It returns a proper progression `P`, a translation `a`, one
+Freiman map `theta` on `a+P`, and a set `E` of first pairs from the original
+family. With `epsilon = escapingFreimanDensity delta d r`,
+
+```
+E.card >= commonDifferenceProgressionRetention epsilon*N^2.
+```
+
+For every `p in E`, its difference lies in `a+P`, and `theta(p1-p2)`
+belongs to the union of its column spans at the doubled cutoff while
+lying outside the unit span of `F(p)`. The progression rank and size
+bounds from J.118 are preserved.
+
+**Exact growth and a finite budget.** `extendIndependentFamily` inserts
+the new value at each chosen index and leaves the other sets unchanged.
+Theorems prove that this preserves dissociation and ambient bounded-span
+membership, contains every old selected set, and increases each selected
+cardinality by exactly one. For `E` contained in an index set `Omega`,
+
+```
+sum_Omega card(F') = sum_Omega card(F)+E.card.
+```
+
+If each ambient generator set has size at most `k`, the total cardinality
+is at most `Omega.card*spanGeneratorBound k R`. Consequently, any
+sequence whose successive total increases are at least
+`eta*Omega.card` satisfies `n*eta <= spanGeneratorBound k R` after `n`
+steps. The proof requires only the invariant at the final state and the
+proved increment inequalities for the preceding steps.
+
+**Actual failed-containment increment.**
+`failed_pair_containments_increase_rank` specializes the quadruple's
+selected set to the union of its two pair selections. Assuming these
+pair selections are dissociated and lie in their ambient doubled-cutoff
+spans, it produces the common progression map and dense pair set above.
+Updating those pairs preserves the invariants and gives the exact total
+increment. The resulting total satisfies
+
+```
+sum_p card(F'(p))
+  <= N^2*spanGeneratorBound (2*d) (2*bohrExtensionCutoff (2*d) r).
+```
+
+**Remaining work.** These are an actual improvement step and a proved
+bound on sequences of improvements. A complete selection procedure that
+records its maps and domains and terminates with few failed containments
+has not yet been constructed. The more complicated arrangement
+improvement corresponding to Claim 9.5 is also still missing. Global
+coherence, the final bilinear variety structure, and its remaining
+quantitative inputs stay open. No numbered source entry is closed here.
+The existing selected port suffices; no license or provenance changes
+were needed.
+
+**Verification.** The actual dense-pair rank-increment closure checks
+282 modules. All fourteen new named theorems pass individual axiom
+checks. The full audit checks 7,502 public Gowers theorems in 5,222
+modules (5,220 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
+
+### J.120. Complete selection for quadruple pair containments
+
+The actual pair-enlargement step from J.119 now terminates with a finite
+list of controlled Freiman maps and few failed quadruple containments.
+The result records the maps and their domains throughout the argument;
+it does not replace them by arbitrary pointwise frequency sets.
+
+**Fixed iteration parameters.** For fixed column rank `d` and radius
+`r`, define
+
+```
+R = pairSelectionCutoff d r = 2*bohrExtensionCutoff (2*d) r,
+s0 = pairSelectionRank d r = spanGeneratorBound (2*d) R,
+sigma = pairSelectionRadius d r = 1/(8*pi*(s0+1)),
+eta = pairSelectionGain delta d r
+    = commonDifferenceProgressionRetention (escapingFreimanDensity delta d r).
+```
+
+The radius is positive, and `eta > 0` when `delta > 0`. Every dissociated
+pair selection in its ambient cutoff-`R` span has cardinality at most
+`s0`. Therefore the union of the selections from the two pairs of any
+quadruple satisfies the radius hypothesis
+`selected.card*sigma <= 1/(4*pi)`. This is a uniform hypothesis for every
+stage of the iteration, including an empty selection.
+
+**Recorded state and invariant.** `PairFrequencyMap` stores an actual
+proper centered progression, its translation, and its map. Its
+`Controlled` predicate retains the rank and density bounds from J.118
+and the order-two Freiman property on the translated progression.
+`PairSelectionState` stores a list of these maps and a selected frequency
+set for each column pair. Its validity predicate asserts:
+
+- every listed map is controlled at the fixed extraction density;
+- every pair selection is dissociated and lies in its prescribed
+  bounded column-union span;
+- every selected frequency is the value of a listed map at that pair's
+  difference, with the difference in that map's domain;
+- the list length times `eta*N^2` is at most the total selected-frequency
+  cardinality.
+
+The empty state is valid. The total rank bound gives
+`maps.length*eta <= s0` for every valid state.
+
+**A genuine improvement preserves the state.** Define the failure
+family by filtering the prescribed additive quadruples for which
+
+```
+B(F(q0,q1) union F(q2,q3);sigma)
+  is not contained in
+bohrQuarterSum (T(q0) union T(q1)) (T(q2) union T(q3)) r.
+```
+
+If there are at least `delta*N^3` failures, `PairSelectionState.improve`
+applies the actual failure theorem from J.119. It prepends the resulting
+controlled map, adds its values on the improved pair set, and proves all
+four validity properties again. Old frequency sets are contained in the
+new ones. The exact cardinality increment and the improved pair density
+supply the required growth inequality for the longer list.
+
+**Termination.** `exists_pair_frequency_selection` proves existence of
+a valid state with fewer than `delta*N^3` failures. If none existed,
+repeated improvements would give valid states of every finite list
+length. Choosing a length greater than `s0/eta` contradicts the rank
+budget. The result retains `maps.length*eta <= s0`, and a companion gives
+`maps.length <= floor(s0/eta)`. These bounds are independent of the
+modulus. This is a classical existence proof, not an executable search
+implementation.
+
+**Actual map indices.** For each pair, select one list index for each
+frequency using the validity witnesses. Distinct frequencies force
+distinct selected indices. `PairSelectionState.pair_indices` and
+`index_family` therefore return exact image identities, equal index and
+frequency cardinalities, and domain membership for every selected
+index.
+
+The exported theorem `pair_frequency_selection` gives a natural number
+`m`, maps `g : Fin m -> PairFrequencyMap N`, and pair-specific index sets
+`I(p)`, with
+
+```
+m*eta <= s0,
+I(p).card <= s0,
+card {g_i(p1-p2) : i in I(p)} = I(p).card.
+```
+
+Every selected value has the required domain membership, the resulting
+frequency set is dissociated and contained in its ambient bounded span,
+and fewer than `delta*N^3` of the prescribed additive quadruples fail
+the containment. All map rank, size, properness, and Freiman assertions
+remain available through `Controlled`.
+
+**Remaining work.** This completes the quadruple-containment selection
+iteration. It does not provide the higher-arrangement improvement or the
+simultaneous selection needed for the corresponding twelve-tuple
+containments. The later anchor choices, coherent gluing, and final
+bilinear variety structure remain open, as do the remaining numerical
+hypotheses. No numbered catalogue entry or final source-theorem bound is
+claimed here. No new port or licensing change was necessary.
+
+**Verification.** The complete quadruple-selection closure checks 288
+modules. All twelve new named theorems pass individual axiom checks.
+The full audit checks 7,526 public Gowers theorems in 5,228 modules
+(5,226 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
+
+
+### J.121. Higher-arrangement extraction with controlled multiplicity
+
+The first-coordinate extraction for the sixteen-map arrangement is now
+proved. The argument first treats a general indexed offset equation and
+then specializes it to the eleven free parameters of the larger
+arrangement. It retains actual configurations rather than only their
+endpoint image.
+
+**Indexed collisions.** Let `Q` be a subset of `I x ZMod N`, let
+`a,v : I -> ZMod N`, and suppose every offset fibre `a^{-1}(z)` has
+cardinality at most the positive integer `M`. Assume
+
+```
+f(x+a(i)) - g(x) = v(i)  for every (i,x) in Q,
+card Q >= delta*M*N^2.
+```
+
+Cauchy--Schwarz gives `card Q^2 <= card W * card I`, where `W` is the
+family of pairs in `Q` with equal parameter `i`. The offset-fibre bound
+also gives `card I <= M*N`. Project a collision to
+
+```
+(x+a(i), x, y+a(i), y).
+```
+
+The projection's multiplicity is at most `M`: its image fixes `x`, `y`,
+and `a(i)`, leaving at most `M` choices of `i`. Consequently its image
+has at least `delta^2*N^3` distinct mixed quadruples. Their endpoint
+and value relations agree with the already proved mixed-quadruple
+extraction theorem. This establishes `offset_equation_freiman_piece`
+without dropping the multiplicity factor.
+
+**Retaining the original family.** Use popular endpoints `x+a(i)` at
+threshold `delta*M*N/2`. At least `delta*M*N^2/2` original configurations
+survive this restriction. Applying the collision argument to that family
+gives an order-eight Freiman set `E` with
+
+```
+card E >= 2^(-1882) * (((delta/2)^2)^4)^1164 * N.
+```
+
+Retaining all original configurations whose endpoint belongs to `E`
+therefore gives a family `R` with
+
+```
+card R >= H(delta)*M*N^2,
+H(delta) = delta/2 * (2^(-1882) * (((delta/2)^2)^4)^1164).
+```
+
+The formal definition is `offsetFreimanRetention`; it is positive for
+positive `delta`. The theorem also records `R subset Q`, the endpoint
+membership for every member of `R`, and `E subset` the original endpoint
+image. The normalized density loss is independent of `M` and `N`.
+
+**Sixteen endpoints and eleven free parameters.** Write the parameter
+as `((a,z),x)` with `z : Fin 9 -> ZMod N`. Set the four shifts to
+`a`, `z0`, `z1`, and `a+z0-z1`, so their required additive relation is
+identically satisfied. The four left base points are `x,z2,z3,z4` and
+the four right base points are `z5,z6,z7,z8`. Each base point and its
+shifted copy supply two endpoints. `HigherArrangementEquation` equates
+the sum of the four left map differences to the sum of the four right
+map differences.
+
+Separating the first base point `x` writes this equation as
+`f0(x+a)-f1(x)=v(a,z)`. The offset fibres have exactly `N^9` parameters,
+and the full parameter space has exactly `N^11` elements. Thus
+`higher_arrangements_retain_first_freiman_piece` takes a family of at
+least `delta*N^11` solutions and retains at least `H(delta)*N^11`
+original solutions whose first endpoint lies in an order-eight Freiman
+set for `f0`, with the explicit size bound above.
+
+**Remaining work.** This extracts only the first coordinate. Transport
+to the other fifteen endpoints and successive extraction on the same
+retained family remain to be proved. Common pair-map alignment, the
+higher-arrangement improvement, simultaneous selection, anchor coherence,
+and the final bilinear variety structure are also still open. The
+quadruple selection in J.120 does not by itself supply these conclusions.
+No numbered catalogue entry or final source-theorem bound is claimed
+here. No new upstream port or licensing change was necessary.
+
+**Verification.** The first-coordinate extraction closure checks 227
+modules. All twelve new named theorems pass individual axiom checks.
+The full audit checks 7,545 public Gowers theorems in 5,234 modules
+(5,232 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
