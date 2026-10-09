@@ -5043,3 +5043,196 @@ dimension-three budget is the remaining numerical check. That check
 concerns the peer's polynomial lift and `PolyBoundedControl`, not the
 interface. The original theorems are unchanged. Standard axioms;
 collision gate clean.
+
+### J.101. Symmetric loopless graph of coherent column pairs
+
+**Verified 2026-10-09.** J.100 gives a dense pair family, but it does not
+make that family symmetric. Reflecting the entire family could join
+unrelated selected stars in opposite difference fibres. The new
+orientation step resolves this before applying graph extraction.
+
+`Proofs16OrientedPairs.exists_oriented_pair_subset` partitions the pairs
+according to whether `val(a-b) <= val(-(a-b))` and chooses the larger
+part. It retains at least half the original cardinality. If two selected
+pairs have opposite differences, those differences must equal their own
+negatives. `prime_self_opposite_zero` proves that such a difference is
+zero when the prime modulus exceeds two.
+
+`Proofs16SymmetricColumnPairs` reflects the selected part and proves
+coherence for the resulting union. Pairs with the same orientation use
+the previous coherence theorem; reversing both pairs negates both map
+differences. Mixed orientations meet only at zero index difference,
+where both pairs are diagonal and both map differences vanish. The
+union is symmetric, stays inside `X × X`, and has at least half the
+original pair count. No radius shrink is needed for this step.
+
+`Proofs16ColumnGraph` removes diagonal pairs, proving that at most `N`
+ordered pairs are lost. Its global theorem starts from the original
+`A,phi,alpha` assumptions. Put
+
+```
+theta = globalColumnQuadrupleDensity alpha
+Ngraph = max(globalColumnCompositionModulusBound alpha 2,
+             ceil(4/theta) + 3).
+```
+
+For prime `N >= Ngraph`, `global_coherent_column_graph` constructs
+`X,T,L,W,E`, retaining the original witness system, the dense index set,
+uniform rank bounds, normalized maps, and local Freiman linearity.
+Its ordered edge set satisfies
+
+```
+(theta/4)*N^2 <= |E|,
+E subset X × X,
+(a,b) in E implies a != b and (b,a) in E.
+```
+
+Every two edges with equal differences have equal column-map differences
+on their four endpoint Bohr domains, at J.100's positive radius
+`columnIdentityRadius d rho 1`. The threshold ensures that the diagonal
+loss is at most `(theta/4)*N^2`.
+
+This supplies a graph for the vertex-set extraction stage, corresponding
+to the second graph in the abstract BSG argument of
+[Milićević, Theorem 4.1](https://arxiv.org/pdf/2601.01682). It does not yet
+prove that a dense vertex set has all required additive identities.
+The path-counting step, bilinear organization, and shifted agreement
+remain open. The newly merged bound-parametric eventual-prime interface
+is still conditional; no deep structure theorem is claimed here.
+
+**Verification.** The focused construction checks 148 modules. All seven
+new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+changes to Apache provenance were needed.
+
+After merging the generalized eventual-prime interface, the full audit
+checks 7,012 public Gowers theorems in 5,102 modules (5,100 for the facade,
+including 4,152 OAI modules), with the same approved axiom boundary.
+The numbered catalogue remains 115 companions and five open statements;
+this does not certify fidelity to every printed statement.
+
+### J.102. Dense column vertices joined by many four-walks
+
+**Verified 2026-10-09.** Seven modules now carry out the graph extraction
+from J.101. The graph argument is valid for any finite nonempty vertex
+type and any symmetric relation; the global application uses the
+symmetric loopless column graph.
+
+`Proofs16GraphCodegrees` counts marked pairs in neighbourhoods by their
+common neighbours. For `n` vertices, threshold `tau >= 0`, and ordered
+pairs with codegree below `tau`, it proves
+
+```
+sum_x (# deficient ordered pairs in N(x)^2) <= tau*n^2.
+```
+
+`Proofs16GraphNeighbourSelection` sets `tau = delta^2*n/64`, assuming
+ordered-edge density at least `delta > 0`. It maximizes the score
+`delta*n*degree(x) - 32*bad(x)`. The resulting neighbourhood `S` satisfies
+`|S| >= delta*n/2` and contains at most `|S|^2/16` deficient ordered
+pairs. This follows from the total degree lower bound and the preceding
+double count, without assuming regularity of degrees.
+
+`Proofs16GraphPruning` deletes vertices with more than `|S|/4` marked
+neighbours. Its generic finite-set lemma retains at least `3|S|/4`
+vertices. `Proofs16GraphCommonCodegrees` then proves that every pair of
+retained vertices has at least `|S|/2 >= delta*n/4` vertices with codegree
+at least `tau` to both endpoints.
+
+`Proofs16GraphFourWalks` defines four-walks as triples `(a,z,b)` giving
+edges `u-a-z-b-v`. Repeated vertices are allowed. It proves the exact
+counting identity
+
+```
+# four-walks(u,v) = sum_z codegree(u,z)*codegree(v,z).
+```
+
+Consequently, `exists_dense_four_walk_set` gives a vertex set `B` with
+
+```
+|B| >= 3*delta*n/8,
+# four-walks(u,v) >= delta^5*n^3/16384   for every u,v in B.
+```
+
+`Proofs16GraphEdgeExtraction` converts an explicit finite edge set to
+this interface and proves that `B` lies in its prescribed vertex
+carrier. The latter follows from positivity of the walk count: every
+selected vertex occurs in an edge of the original graph.
+
+`Proofs16ColumnFourWalkSet.global_column_four_walk_set` applies the
+result directly to the construction from `A,phi,alpha`, under the same
+prime-modulus threshold `globalColumnGraphModulusBound alpha`. It takes
+`delta = globalColumnQuadrupleDensity alpha/4`, retains `X,T,L,W,E`,
+the original witness system, rank and normalization bounds, local
+Freiman linearity, and all coherent equal-difference edge identities.
+It supplies `B subset X` with the displayed cardinality and walk bounds.
+There is no additional size threshold for this graph extraction.
+
+**Next step and limits.** The walk count does not yet prove all additive
+identities on `B`. The next step is to count pairs of walks with the
+same edge-difference sequence and transport the edge identities to their
+endpoints, producing additive richness inside dense subsets. This is
+analogous to the change-of-variables stage of
+[Milićević, Claim 4.4](https://arxiv.org/pdf/2601.01682), with four-walks
+here. The present theorem makes no claim about simple paths with all
+vertices distinct. Bilinear organization, shifted agreement, and the
+final quantitative structure budget remain open.
+
+**Verification.** The global construction checks 155 modules. All 11
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream code or
+changes to Apache provenance were required.
+
+
+### Robustly connected pieces of dense graphs (2026-10-09): duplicate retired
+
+`Proofs16RobustWalks` proved Milićević's Lemma 4.2 for walks of length
+six (`robust_walks`, `robust_walks_explicit`: `|X| ≥ cn/3` and order
+`c⁸n⁵` walks between every pair, by dependent random choice). It was
+written in the same hour as J.102's `exists_dense_four_walk_set`, which
+gives walks of length four with `δ⁵N³/16384` walks between every pair
+of a set of size `3δN/8`. That is stronger and is already wired into the
+column-graph chain, so the six-walk module was removed. Git history
+keeps it.
+
+Integration note: J.102 independently supplies four-walk extraction and
+its global column application. Both walk lengths are retained; the
+remaining additive-richness and identity-extension stages are shared.
+
+After merging the independent six-walk lemma, the combined audit checks
+7,050 public Gowers theorems in 5,110 modules (5,108 for the facade,
+including 4,152 OAI modules), using only the three approved standard
+axioms. The source ledger is unchanged at 115 companions and five open
+entries, and the selected-port scope check passes. The companion count
+does not establish fidelity to every printed statement.
+
+
+### J.5 revisited with the pipeline's actual losses (2026-10-09, order-of-magnitude)
+
+J.5 compared the structure side against `Theorem162At 3` assuming
+Milićević's quasi-polynomial bound. The corpus pipeline instead loses
+polynomially, through these parameters:
+- Column core density `κ = 2⁻¹⁸⁸²(α⁴)¹¹⁶⁴` (Corollary 7.6 at energy
+  `α⁴`).
+- Column spectrum cap `d ≈ 16κ⁻² ≈ 2³⁷⁶⁸α⁻⁹³¹²`.
+- Witness density `13^{-d}`. This is the dominant loss, `exp(−poly(1/α))`.
+
+If the remaining steps (graph extraction, bilinear organization,
+shifted agreement) stay of the same type, the deep structure holds with
+some `Bnd(c) ≤ A·c^{-p}`, where `A = 2^{O(10⁴)}` and `p = O(10⁵)`. The
+structure side evaluates it at `c = θ/(2m)`, with `m` polynomial of
+degree about `10⁸` in `1/(γθ)` (J.4). So the piece count is
+`exp(Bnd) = exp(poly(1/(γθ)))`, of degree about `10¹³`.
+`Theorem162At 3` allows counts `exp(Θ(r log r))`, with
+`r ≥ (2/(θγ))^{2⁵¹²}`. That is degree `2⁵¹²`, and `r ≥ 2^{2⁵¹²}` absorbs
+any constant `A ≤ 2^{2⁵⁰⁰}`. Width exponents `1/poly(n·Bnd)` sit far
+above the allowed `exp(−Θ(r log r))`.
+
+So, as far as counts and exponents go, a polynomial-bound deep structure
+fits the dimension-three budget with enormous room. This is an
+order-of-magnitude comparison, not a formal inequality. The formal
+connection still needs the Part J restatement on the polynomial lift,
+with `IsVarietyPieceB` bounds in place of `milicevicBound`
+(`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
+already names. It also assumes that the remaining Milićević steps lose
+no more than polynomially in their inputs.
