@@ -282,13 +282,16 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
         raise ValueError('stats must be a dictionary or None')
     budget = _Budget(check, max_letters, max_work)
     budget.tick()
-    if (type(certificate) is not dict or set(certificate) != {
-            'version', 'method', 'status', 'input_pd', 'moves', 'remaining_generator'}
-            or type(certificate['version']) is not int or certificate['version'] not in (1, 2, 3, 4)
+    if type(certificate) is not dict or type(certificate.get('version')) is not int:
+        return False
+    version = certificate['version']
+    final_field = 'terminal' if version == 5 else 'remaining_generator'
+    if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
+            or version not in (1, 2, 3, 4, 5)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
-            or type(certificate['remaining_generator']) is not int
+            or (version != 5 and type(certificate['remaining_generator']) is not int)
             or type(certificate['moves']) is not list):
         return False
     budget.tick(len(certificate['moves']))
@@ -483,6 +486,9 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             budget.size(expanded)
             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
+    if certificate['version'] == 5:
+        from .primitive_power_verify import verify_literal_terminal
+        return verify_literal_terminal(words, alive, certificate['terminal'], budget)
     return alive == {certificate['remaining_generator']} and not any(words)
 
 
