@@ -5722,9 +5722,16 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          `ε(2R+1)^(−4d)N³`, and Lemma 9.2 for `(ψ₀, ψ₁)` with `ω = y`.
          The result is a Freiman 2-homomorphism `θ` on a Bohr set with
          `ψ₁ x − ψ₁ x′ = θ(x − x′)` on the event fibers. The escaping
-         frequency is `ψ₀(x+a) − ψ₁(x) = ξ₀ − ξ₁` on `E`. Still to do:
-         the escape bookkeeping (Theorem 2.12 produces the decompositions,
-         and θ's values grow the index sets) and the iteration.
+         frequency is `ψ₀(x+a) − ψ₁(x) = ξ₀ − ξ₁` on `E`.
+         Step 1 is done: `escape_frequency`
+         (`Proofs16ClaimNineFourEscape`). Suppose some `d` with
+         `|θ_i·d| ≤ ηN` and `sη ≤ 1/4` is not in `B(K;ρ) + B(L;σ)`. Then a
+         frequency of `⟨K⟩ ∩ ⟨L⟩` escapes the `{-1,0,1}`-span of the
+         `θ_i`, by the corpus's quarter-radius Theorem 27. With
+         `K = Γ_{x+a} ∪ Γ_x` and `L = Γ_{y+a} ∪ Γ_y`, it splits as
+         `ξ₀ − ξ₁ = ξ₂ − ξ₃`. Still to do: the per-triple splitting into
+         span balls, θ's values growing the index sets, and the
+         iteration.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.
