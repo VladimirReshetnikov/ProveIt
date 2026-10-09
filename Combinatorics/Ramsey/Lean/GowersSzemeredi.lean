@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs16GlobalColumnAgreement
 import GowersSzemeredi.Proofs16ZeroColumnsBihomomorphism
 import GowersSzemeredi.Definitions
 import GowersSzemeredi.Sections01_03
@@ -831,6 +832,7 @@ import GowersSzemeredi.Proofs01QuantitativeDensityHeadline
 import GowersSzemeredi.Proofs16DeepBoundDomination
 import GowersSzemeredi.Proofs16DeepBoundSlices
 import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
+import GowersSzemeredi.Proofs16MonomialControlAbsorption
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

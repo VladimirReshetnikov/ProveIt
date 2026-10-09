@@ -35,6 +35,7 @@ theorem global_column_additive_richness {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (B : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
@@ -51,13 +52,13 @@ theorem global_column_additive_richness {N : Nat} [NeZero N] [Fact N.Prime]
       (6*columnSpectrumCap (columnEightDensity alpha)) (globalColumnIdentityRadius alpha)
       (columnIdentityRadius (columnSpectrumCap (columnEightDensity alpha)) (globalColumnIdentityRadius alpha) 1) < N :=
     Nat.lt_of_succ_le ((le_max_right _ _).trans hN)
-  obtain ⟨X,T,L,W,E,B,hsys,hW,hT,hL,hzero,hd,hr,hEX,hloop,hsym,hcoh,hBX,hB,hwalk⟩ :=
+  obtain ⟨X,T,L,W,E,B,hsys,hLfull,hW,hT,hL,hzero,hd,hr,hEX,hloop,hsym,hcoh,hBX,hB,hwalk⟩ :=
     global_column_four_walk_set A phi ha ha1 hA hphi hNgraph
   have hrho := globalColumnIdentityRadius_pos ha ha1
   have heta : 0 < globalColumnWalkDensity alpha := by
     unfold globalColumnWalkDensity
     positivity
-  refine ⟨X,T,L,W,B,hsys,hW,hT,hL,hzero,hBX,hB,heta,
+  refine ⟨X,T,L,W,B,hsys,hLfull,hW,hT,hL,hzero,hBX,hB,heta,
     refinementKernelRadius_pos _ _ hrho hr, ?_⟩
   intro U V hUB hVB beta1 beta2 hb1 hb2 hU hV
   apply mixed_exact_quadruples_of_many_walks X U V T L E hrho hr
