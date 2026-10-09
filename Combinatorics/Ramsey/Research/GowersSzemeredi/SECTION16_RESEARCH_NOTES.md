@@ -7436,3 +7436,138 @@ and count bounds compile with their actual dependencies. The numbered
 ledger remains byte-for-byte unchanged at 115 companions and five open
 entries. The selected-port scope remains 4,134 upstream and 17
 compatibility modules, with reciprocal-only dependencies excluded.
+
+
+### J.123. Eight progression maps on one higher-arrangement family
+
+The sixteen-coordinate Freiman extraction from J.122 now feeds a
+simultaneous representation of all eight pair differences by maps on
+translated proper progressions. Every restriction preserves a quantified
+portion of the original eleven-parameter family. The resulting eight
+maps also satisfy the original arrangement equation on that family.
+
+**Cover retention for indexed configurations.**
+`indexed_common_graph_cover_retained_fibre` extends the earlier
+quadruple-specific cover argument to any finite indexed family `Q`,
+with endpoint maps `x,y`. Suppose a translated overlap of the two graphs
+has density at least `mu`, and suppose `Q` has mass at least `mass > 0`.
+The Freiman graph-cover argument supplies anchor sets `J,K` with
+`card J * card K * mu^2 <= 1`. Assign each original configuration an
+anchor pair and retain a large fibre of that assignment. At least
+`mu^2*mass` original configurations survive. Their paired differences
+all have one translated fourfold graph representation. In particular,
+repeated endpoint pairs in `Q` are counted with their original index
+multiplicity throughout this argument.
+
+**A dense overlap from an offset equation.** For the indexed equation
+
+```
+f(x+a(i)) - g(x) = v(i),
+card Q >= delta*M*N^2,
+card {i : a(i)=z} <= M,
+```
+
+J.121 supplies at least `delta^2*N^3` mixed collision quadruples. The
+existing graph-overlap theorem therefore gives a set `S subset B` with
+`card S >= delta^2*N` on which a translate of `f` agrees with `g` up to
+a constant. The original family `Q` remains available. This is proved
+as `offset_equation_dense_overlap`, including both endpoint-domain
+hypotheses.
+
+**A common difference map and its proper progression.** Write
+
+```
+kappa = delta^2,
+mu(kappa) = commonDifferenceClusterDensity kappa,
+eta(kappa) = commonDifferenceProgressionDensity kappa.
+```
+
+Assume `f` is Freiman of order two on its endpoint set and `g` is
+Freiman of order eight on its endpoint set. Localize the dense overlap
+to a Bohr cluster and apply the indexed cover retention there. This
+retains at least `mu(kappa)^2*delta*M*N^2` configurations whose offsets
+are represented by one translated normalized Freiman map on a full Bohr
+neighborhood. The offsets lie in its half-radius part, so the earlier
+indexed progression localization applies.
+
+`offset_equation_common_progression_map` consequently returns a proper
+centered progression `P`, a translation `b`, an additive constant `c`,
+and a normalized map `psi`, with
+
+```
+rank P <= commonDifferenceRank (delta^2) + 1,
+card P >= eta(delta^2)*N,
+f(x+a(i))-g(x) = c+psi(a(i)-b)
+```
+
+on a retained original family of size at least `G(delta)*M*N^2`, where
+
+```
+G(delta) = eta(delta^2)*mu(delta^2)^2*delta
+         = offsetDifferenceProgressionRetention delta.
+```
+
+`G(delta)` is positive when `delta` is positive and is independent of
+`M,N`. The packaged theorem `offset_equation_pair_frequency_map` returns
+an actual `PairFrequencyMap` controlled at `delta^2`; its map is
+`theta(t)=c+psi(t-b)` on the translated progression. The translation and
+additive constant are both retained. Properness is asserted for `P`,
+without an unproved properness claim for its dilates.
+
+**All eight pairs.** Specialize to the higher-arrangement parameters
+with `M=N^9`. The first pair's offset is the first shift, and its residual
+is already provided by the arrangement equation. Even-coordinate
+symmetries then move any of the eight pairs into this position while
+preserving the order of its two endpoints and the exact cardinality of
+the configuration family.
+
+The definitions `higherArrangementPairLeft`, `higherArrangementPairRight`,
+and `higherArrangementPairDifference` record this indexing. Additional
+lemmas prove that the first four shifts are additive and that the right
+four shifts equal the corresponding left shifts.
+
+For iteration, define
+
+```
+b_0 = epsilon,
+b_(n+1) = G(b_n).
+```
+
+`higher_arrangements_retain_pair_maps` treats any finite subset of pair
+positions. Every stage only restricts the previously retained family,
+so earlier map identities and domain memberships remain valid. A map
+selected at stage `n` is controlled at `b_n^2`; this stage is recorded
+explicitly instead of assuming an unproved monotonicity of the control
+functions. After eight stages, every selected map has such a control
+with `n < 8`, and at least `b_8*N^11` original configurations remain.
+
+**Combined theorem.** `higher_arrangements_common_pair_family` first
+uses all sixteen coordinate extractions, with
+`epsilon = higherArrangementDensity delta 16`, and then performs all
+eight pair alignments. It returns the sixteen Freiman sets, the eight
+controlled progression maps, and one subfamily `R subset Q` of size at
+least `higherArrangementPairDensity epsilon 8 * N^11`. Each coordinate
+set retains its density bound `epsilon*N`; every tuple in `R` has all
+sixteen endpoints in these sets and all eight shifts in their respective
+map domains. Each map value equals the original endpoint-map difference.
+The theorem also records `HigherArrangementPairMapEquation`: the sum of
+the four left map values equals the sum of the four right map values.
+
+**Remaining work.** This is an eight-map difference representation on
+one common family. It is not yet the higher-arrangement frequency-escape
+or enlargement theorem. Those steps must preserve repeated-generator
+multiplicities when passing from a sum of frequencies to an escaping
+component. Simultaneous selection, coherent anchor choices, and the
+final bilinear variety structure remain open, as do the unresolved
+numerical absorption estimates. No numbered catalogue entry or final
+source-theorem bound is claimed here. No new upstream port or licensing
+change was necessary.
+
+**Verification.** The complete common-pair-family closure checks 305
+modules. All seventeen new named theorems pass individual axiom checks.
+The full audit checks 7,698 public Gowers theorems in 5,253 modules
+(5,251 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
+remains byte-for-byte unchanged at 115 companions and five open entries.
+The selected-port scope remains 4,134 upstream and 17 compatibility
+modules, with reciprocal-only dependencies excluded.
