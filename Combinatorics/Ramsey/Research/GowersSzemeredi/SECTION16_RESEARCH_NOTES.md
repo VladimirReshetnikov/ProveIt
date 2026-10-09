@@ -3516,3 +3516,22 @@ uses `|δᵢ| ≤ 1`, which is not evident from the definition
 statement therefore keeps `‖W_Λ‖` explicit. Bounding it, for instance
 via `|B(γ ⊔ ℓ)| ≤ |B(γ)|` and a lower bound on `|B(γ)|`, is left to the
 point of use. Three declarations, standard axioms only.
+
+
+The merged audit passes for 6,502 public Gowers theorems, a 5,001-module
+facade (4,152 OAI modules), and 5,003 modules including both audits.
+All eleven new declarations also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger and selected port scope pass, with 115 companions and five open
+statements and all existing fidelity caveats retained. The incoming
+relation-weight factorization is included; its norm factor remains
+explicit. No upstream dependency or provenance changes were made.
+
+A relevant next input already exists in the selected upstream closure:
+`OAI.Combinatorics.Progressions.Fourier.QuarticBohrProgression` provides
+`Erdos3.BohrProgression.exists_large_proper_progression_all`. It constructs
+a proper centered progression in a cyclic Bohr set with rank at most one
+more than its frequency rank and an explicit exponential size bound.
+Bridging its Bohr convention and controlling progression dilations remain
+to be done; discovering this input is not itself a proof of the missing
+progression step. It requires no expansion of the upstream port scope.
