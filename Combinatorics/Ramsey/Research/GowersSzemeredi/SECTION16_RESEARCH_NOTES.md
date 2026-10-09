@@ -1128,6 +1128,18 @@ Possible repairs:
   Then q is quasi-polynomial, and `PolyBoundedControl` has to weaken
   accordingly (J.3);
 - (iii) a stacking argument that does not partition jointly.
+
+**Correction (same night): repair (i) already exists at the lift level.**
+The peer's polynomial lift `Proofs16PolynomialMultilinearCover`, unlike
+the cubic packaging above, quantifies over **arbitrary** slice controls
+`Section16SliceProvider B₁ φ₁ Pb Es`. It evaluates them only at
+r = `samples` = ⌈6·max(1, q_Γ)/σ⌉. The count becomes
+max(Pb, C(samples,2)·Pb²), and the width exponent is
+`Es samples σ`. A degree-16 stacking exponent is therefore admissible as
+it stands. Only Part J's packaging, `CubicStackableClass` with
+`cubicBaseExponent`, is rigid. So the dimension-two slice provider for
+varieties should target `Section16SliceProvider` with its own (Pb, Es),
+not `CubicStackableClass`.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
