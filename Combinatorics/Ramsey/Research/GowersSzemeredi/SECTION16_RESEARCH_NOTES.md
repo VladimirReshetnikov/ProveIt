@@ -4814,3 +4814,22 @@ OAI modules), or 5,089 modules with both audit consumers. Only `propext`,
 `Classical.choice`, and `Quot.sound` occur. The source ledger matches
 the tracked 115 companions and five open entries; the selected-port
 scope check passes. Upstream source bytes and license files are unchanged.
+
+**Proposition 5.1 (ii)–(iii) per column and per quadruple.**
+- `Proofs16RepresentedMap`: the public induced map `repMap` of a
+  Freiman 8-homomorphism. `repMap (a+e−b−c) = f a + f e − f b − f c` for
+  every representation, and the map is Freiman-linear on represented
+  points.
+- `Proofs16ColumnRepSystem.column_rep_system` covers one column. Take
+  `S = commonLargeSpectrum B B (√β³/4)`. Then `|S| ≤ 16/β²`, `repMap` is
+  Freiman-linear on `B(S;1/(4π))`, and every point there has at least
+  `β⁴N³/4` representing four-tuples (the peer's robust self-correlation
+  count). `column_witness_card_ge` turns this into a witness density.
+- `Proofs16MilicevicQuadrupleImage` (`alternating_repMap_vanishes`, an
+  image bound for one column quadruple via Lemma 2.42) was retired in the
+  same session. J.98's `Proofs16SharedWitnessZeros` and
+  `Proofs16SharedWitnessKernel`, written concurrently on top of
+  `Proofs16CommonWitnesses` and `Proofs16RepresentedMap`, prove the same
+  vanishing for abstract column-witness systems over `IsEBihomomorphism`.
+  With the prime small-image rigidity they then go further, to exact
+  column identities, and `many_exact_column_quadruples` does the count.
