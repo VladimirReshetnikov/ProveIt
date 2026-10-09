@@ -58,8 +58,13 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 from .primitive_forest import plan_forest, apply_forest
                 edges = plan_forest(arena, roots, alive, projection_cache, _prepared=prepared)
                 if len(edges) >= 2:
-                    apply_forest(arena, roots, alive, edges)
-                    moves.append(dict(kind='primitive_forest', edges=edges))
+                    move = dict(kind='primitive_forest', edges=edges)
+                    if len(alive)-len(edges)>2:
+                        from .anchored_projection import produce_block
+                        produce_block(arena, roots, alive, moves, move, forest=True, elimination=elimination_batch)
+                    else:
+                        apply_forest(arena, roots, alive, edges)
+                        moves.append(move)
                     raw = True
                     continue
             elif primitive_forest:
@@ -68,8 +73,13 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 arena.stats['forest_candidate_skips'] = arena.stats.get('forest_candidate_skips',0)+1
             selected = plan_projection(arena, roots, alive, projection_cache, _prepared=prepared)
             if selected:
-                apply_projection(arena, roots, alive, selected)
-                moves.append(dict(kind='primitive_projection', pairs=selected))
+                move = dict(kind='primitive_projection', pairs=selected)
+                if len(alive)-len(selected)>2:
+                    from .anchored_projection import produce_block
+                    produce_block(arena, roots, alive, moves, move, forest=primitive_forest, elimination=elimination_batch)
+                else:
+                    apply_projection(arena, roots, alive, selected)
+                    moves.append(move)
                 raw = True
                 continue
             # Every mixed cyclic two-run donor is already a coherent pair
