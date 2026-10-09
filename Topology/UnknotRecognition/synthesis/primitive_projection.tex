@@ -1,0 +1,277 @@
+\section{Independently replayed disjoint primitive-pair projections}
+\label{sec:primitive-projections}
+
+The version-five terminal of Section~\ref{sec:primitive-power-terminal}
+uses a primitive-power relation only after the whole presentation reaches
+rank two. Report 45 also proposes contracting disjoint generator pairs
+inside a larger presentation, while retaining raw word circuits between
+rounds. We now implement that operation, including an independent checker
+for every complete round. This closes the report's whole-round replay gap.
+It does not supply the missing short-depth producer for arbitrary diagrams.
+The new search policy is explicitly optional: ordinary-corpus measurements
+below show overhead rather than a practical speedup.
+
+\subsection{The quotient map and the invariant preserved by a round}
+
+Let a source-reconstructed knot-group presentation have free generators
+$X$, and let one current relation be $w^d$, where $w$ is primitive in the
+free factor $F(a,b)$, $d>0$, and its exponent vector $(u,v)$ has both
+coordinates nonzero. Knot-group torsion-freeness implies that adjoining
+$w=1$ preserves the presented group. Because $w$ belongs to a free basis
+of $F(a,b)$, the quotient by its normal closure is infinite cyclic.
+The primitive character
+\[
+ a\longmapsto t^v,\qquad b\longmapsto t^{-u}
+\]
+is surjective and kills $w$. It therefore realizes that cyclic quotient:
+$\gcd(|u|,|v|)=1$, and a surjection between two infinite cyclic groups is
+an isomorphism. The remaining free generators are unaffected. Substituting
+this character into \emph{every} relator gives a presentation of the same
+knot group, with one fewer generator.
+
+The implementation orders $a<b$, reuses the name $a$ for $t$, and orients
+the character so that the image of the old $a$ is positive:
+\[
+ a\longmapsto a^{|v|},\qquad
+ b\longmapsto a^{-u\,\operatorname{sign}(v)}.
+\]
+Here the $a$ on the right is the new quotient generator; the substitution
+is simultaneous, so this image is not recursively substituted into itself.
+Negative letters receive inverse images. The new generator need not be a
+meridian, and no later step assumes that it is one.
+
+For pairwise disjoint pairs, these operations act on different free
+factors. The checker validates all donor witnesses against the
+\emph{pre-round} presentation, constructs all images, and performs one
+simultaneous substitution across all relator roots. It then deletes the
+second generator of each pair. A chosen donor becomes a word in its own
+new cyclic generator with exponent
+$du|v|-dv\,u\operatorname{sign}(v)=0$, so that donor's original slot can
+be replaced by the empty word. All other slots are retained, including
+empty, repeated and unreduced roots. No claim that other relators are
+redundant is needed or accepted.
+
+Each round thus preserves the original knot group. Torsion-freeness remains
+available in subsequent rounds because the group remains isomorphic to the
+source knot group. For exponent-one donors the local step needs no
+torsion-freeness hypothesis, but proper-power donors do. The public verdict
+path obtains this hypothesis from a validated classical knot diagram and
+complete prefix replay; an arbitrary presentation plus a caller-supplied
+flag cannot authorize it.
+
+\subsection{Raw circuits, cached eligibility and the normalization boundary}
+
+The producer scans relator slots in their original order and greedily
+chooses disjoint eligible pairs. Eligibility requires exactly two live
+generators, one sign per generator, and the minimum-width primitive-power
+witness established in the preceding section. Sign coherence implies free
+and cyclic reduction without performing normalization. Pure single-generator
+powers are excluded from a pair round. A root outside this sufficient raw
+class is skipped; its reduced representative might still be eligible.
+The greedy choice is deterministic but is not asserted to minimize depth.
+
+Occurrence summaries are cached by immutable arena node identifier. A
+terminal contributes one signed occurrence, and a concatenation adds its
+children's counts. A support with more than two distinct generators is
+stored as an ineligible marker: later concatenation cannot remove letters
+from a raw circuit. The traversal stops at cached nodes, so each allocated
+node's capped support summary is constructed at most once over the search.
+Positive and negative arithmetic classification results are also cached by
+root. The selected relation slot is attached to a fresh witness copy; it is
+not cached with the immutable word, since repeated roots may occupy
+different slots. Normalization or substitution creates other roots and
+therefore cannot invalidate these word-content summaries.
+
+A round builds binary power circuits for the images, then maps each
+reachable original node once using raw concatenation. It does not call
+compressed substitution helpers that automatically reduce words. Inverse
+letters and zero-exponent circuits may remain physically present after
+substitution. On reaching one live generator, an independent postorder
+sum verifies that every retained root uses that generator and has exponent
+zero. A word in one generator with zero exponent is the identity; the
+resulting presentation is exactly infinite cyclic. No expansion,
+equality query or cancellation search is required at this endpoint.
+The existing rank-two primitive-power terminal may also close a raw state,
+because its selected donor is checked for sign coherence independently.
+
+When the next projection round cannot be found and more than one generator
+remains, the producer records an explicit \texttt{normalize\_relators}
+move, cyclically reduces all roots, and retries. If no pair becomes eligible,
+the earlier singleton, Whitehead and overlap search resumes on the normalized
+state. This is an adaptive transition between representations, with an
+explicit proof boundary. The cost of that normalization and subsequent
+search is separate from the normalization-free round bound below.
+Even simple stabilized-circle inputs can alternate projections and
+normalizations under the present slot-order policy; a balanced schedule
+on an abstract family is not evidence that this policy discovers one on
+all diagram presentations.
+
+\subsection{Version six and independent bounded replay}
+
+Version six retains the source PD, method, status, complete move prefix and
+terminal record. A \texttt{primitive\_projection} move contains exactly
+its kind and a nonempty list of primitive-power witnesses. Each witness
+identifies its original donor slot, ordered pair, primitive signed vector,
+positive exponent and width. Pairs must be disjoint subsets of the current
+live generators, donor slots must be distinct, and both coordinates must
+be nonzero. Every witness uses the strict arithmetic checks of version five,
+including bounds on claimed integers before expensive arithmetic.
+The checker accepts no extra root-dropping or torsion-freeness fields.
+
+Literal replay constructs the images and substitutes into each literal
+word; compressed replay independently constructs signed image circuits
+and uses a fresh postorder mapping of each original root. Neither invokes
+the producer's planner, application routine, cache or rank-one query.
+All witnesses are checked before any state mutation. The final
+\texttt{rank\_one\_exponent\_zero} record names exactly the one live
+generator, and both replay routes check every retained relator. A version-six
+proof can instead use the previous rank-two terminal after its checked
+prefix. Versions one through five retain their prior meaning.
+
+The literal checker computes the entire projected letter count and checks
+its letter and work allowances \emph{before} constructing repeated lists.
+The compressed checker constructs binary powers under the existing node
+and work budgets. Both propagate caller cancellation. Cached summaries and
+other Python allocations are auxiliary memory, so a grammar-node cap is
+not a hard process-memory bound. Work counters are cooperative structural
+allowances, not a claim that a Python big-integer operation has unit bit cost.
+
+Both \texttt{compressed\_certificate} and \texttt{group\_decide}
+accept \texttt{primitive\_projection=True}. The \texttt{recognize} API
+accepts \texttt{use\_group=True} together with
+\texttt{group\_primitive\_projection=True}.
+The CLI flag is \texttt{--group-primitive-projection}. At the group host it
+implies compressed search and mandatory compressed replay; combining it
+with the older explicit-to-compressed adaptive-search flag is rejected.
+It defaults to false. Disabling projections reproduces the previous
+version-five producer exactly in the source audit. Disabling both primitive
+options retains the earlier rank-one search contract.
+
+\subsection{A bound for consecutive raw rounds, and its limitations}
+
+Let $r_0$ be the initial rank, $m$ the number of retained relator slots,
+$M_j$ all allocated grammar nodes after round $j$, and $B_j$ the largest
+bit length of any allocated word length, including image intermediates.
+Use $B_j\ge1$ and let $d$ count consecutive raw projection rounds with no
+intervening normalization or legacy search. Every image exponent is at
+most a donor's word length. Thus substituting images increases a word's
+length by at most a factor of the previous maximum length. Binary power
+construction introduces at most $O(r_0(B_j+1))$ image nodes, and mapping the
+old reachable circuit introduces at most one node per old node. Hence
+\[
+ B_{j+1}\le 2B_j+O(1),\qquad
+ M_{j+1}\le 2M_j+O(r_0(B_j+1)).
+\]
+Consequently $B_j\le O((B_0+1)2^j)$ and
+$M_j\le 2^j O(M_0+r_0(B_0+1)(j+1))$. Counts and profile heights have
+$O(B_j)$ bits; generator and node identifiers have their usual encoding
+costs. There are at most $r_0-1$ pair contractions in the full run.
+
+The maintained implementation uses a sorted reachable-node pass for raw
+application and for some arithmetic queries. It may classify several
+candidate roots separately, so its bound should not be confused with one
+shared linear profile scan over all donors. Nevertheless, scanning all
+$m$ roots, independently classifying each eligible candidate and replaying
+all chosen witnesses is polynomial in $M_j,B_j,m,r_0$ and identifier bit
+sizes. Ordinary quadratic integer multiplication/gcd bounds suffice;
+expected dictionary access is the same implementation-model qualification
+as in the preceding section. Composing any fixed such polynomial over $d$
+rounds yields
+\[
+ \operatorname{poly}(M_0,B_0,m,r_0,\text{identifier sizes})\,2^{O(d)}.
+\]
+The independent raw replay and rank-one endpoint have the same form of
+bound. This statement does not count a general normalization as a raw
+round or give an unproved polynomial bound to the existing heuristic search.
+
+If a controlled producer on encoded input size $g$ supplied a polynomial-size
+initial presentation, reached an accepted endpoint in $O((\log g)^2)$ raw
+rounds, and had quasipolynomial preprocessing cost, this part of recognition
+would be quasipolynomial. None of the short-depth, endpoint or preprocessing
+hypotheses is established for all diagrams. Rank merely decreases by at
+least one per round, which permits $d$ linear in $r_0$. Success of a
+greedy batch on a finite family is not a general subexponential algorithm.
+
+\subsection{Source audits, capacity checks and complete-call measurements}
+
+The maintained suite passes 981 tests in 229.282 seconds with Regina.
+Seven new test methods cover 120 random simultaneous-substitution comparisons,
+independent literal and compressed replay, cached failed queries and changing
+root slots, strict schemas and numerical forgeries, source rebinding,
+all-relator endpoint checks, actual-diagram proof prefixes, API/CLI behavior,
+cancellation and exhaustion. An initial prototype enabled projections by
+default and broke the old \texttt{primitive\_power=False} behavior; the
+retained exploratory failure log records this. The final implementation
+keeps projections optional and passes the unchanged earlier terminal tests.
+
+The pinned baseline is \texttt{e2cf6faa562b}. The research driver loads its
+entire Python package into a separate namespace, including the previous
+recognizer and diagram class. The 79-diagram audit consists of the earlier
+nineteen-case corpus, 55 valid single-component braids from the fixed
+240-attempt sample, and five stabilized circles. Current default certificates
+and nondecisions equal the pinned baseline exactly. Enabling projections
+produces 34 version-six certificates containing 158 pair contractions;
+every positive passes both complete source-reconstructing replay paths.
+There are no newly solved inputs, lost positives or proper-power donors in
+that diagram sample. The audit takes 4.695 seconds including baseline setup.
+
+Separate actual five-braid sources have verified powered Whitehead prefixes
+with exponents $2^4$, $2^{128}$ and $2^{1024}$. They test compressed source
+replay and the explicit normalization handoff. Separately, abstract balanced
+presentations use both $(a^{2^b}b)^2$ and $(a^{2^b}b)^3$ for each tree edge.
+The coprime powers imply the edge word is trivial, and leaf-to-root
+elimination proves these presentations are $\mathbb Z$ without assuming
+torsion-freeness. They are algebraic capacity fixtures, not diagram inputs.
+Query and independent replay complete with reduction, cyclic reduction,
+expansion and equality disabled. At rank 256 and $b=32$, eight rounds
+contract 255 pairs; allocated nodes grow from 5,118 to 18,235, all 510
+relator slots survive, and 255 remaining roots are nonempty raw circuits
+with zero exponent. This tests the intended representation contract rather
+than practical difficulty of an unknot diagram.
+
+\input{tables/primitive_projection.tex}
+
+The complete-call benchmark uses nineteen fresh validated diagrams, five
+measured rounds and one warm-up per arm. Six shuffled arms compare the
+pinned baseline, current default and enabled projections, with separate
+A/A controls for all three. The timed call includes diagram validation,
+recognition, source reconstruction and mandatory independent proof replay.
+All 570 measured calls complete, with 114 additional warm-ups; the run
+takes 71.320 seconds. Table ratios are medians of paired old/projection
+times, so values below one mean a slower projection call. They need not
+equal the ratio of the two separately reported time medians. Production, fixture and driver source hashes are frozen
+before and after execution. The baseline package is pinned independently;
+no adapter that bypasses a new option check is inserted into the timer.
+
+On the ordinary survivor and mirror unknots, paired ratios range from
+0.924 to 0.953. Survivor 06 uses one projection and one normalization;
+its search work rises from 8,670 to 9,197, nodes from 162 to 166, and
+certificate bytes from 848 to 989. Gordian uses two projection rounds,
+three pairs and two normalization handoffs. Its search work rises from
+1,215,145 to 1,265,669, nodes from 9,025 to 9,084, and proof bytes from
+9,663 to 10,020. Its paired ratio is 1.002 despite separate time medians
+of 1,989.772 and 1,584.861 milliseconds: substantial within-run variation
+makes the ratio of these medians misleading. The baseline/current-default
+paired ratio on this same input is 1.071 despite equivalent search work,
+further limiting an attribution to projections.
+
+Across all nineteen inputs, old A/A ratios range from 0.991 to 1.024,
+current-default A/A from 0.980 to 1.018, and projection A/A from 0.985 to
+1.017. Current default versus the pinned baseline ranges from 0.983 to
+1.071, with the upper endpoint occurring on Gordian. No extra timing run
+is used to replace these retained observations or turn them into a positive
+speedup claim.
+
+Projection metadata and unsuccessful eligibility scans can cost more than
+the work saved by an occasional contraction. These timings justify the
+opt-in default and give no whole-pipeline speedup claim for this corpus.
+The useful advance is a complete, independently replayed raw-round
+implementation on which a better schedule can now be tested. The next
+asymptotic obligation remains a controlled schedule reaching a decisive
+endpoint, including the cost of discovering and exposing its donors.
+
+From \path{../fast}, run \path{primitive_power_research/projections.py}
+in \texttt{audit} or \texttt{benchmark} mode. Complete records are
+\path{../fast/results/primitive_projection_audit_20261008.json} and
+\path{../fast/results/primitive_projection_pipeline_20261008.json}.
+The source test log is \path{data/primitive-projection-full-tests.txt}.
