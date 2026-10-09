@@ -5596,8 +5596,21 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   `global_column_difference_extensions` (J.112) works at exactly this
   rank and radius. The even-length variant
   (`Proofs16GlobalEvenZeroCoreParameters`) has the same shape: rank
-  `⌈2k·d/δ⌉` and per-round factor `β/(5k)`. The later generic stages
-  (J.116–J.127) are not yet instantiated on the global chain.
+  `⌈2k·d/δ⌉` and per-round factor `β/(5k)`.
+- **The current mainline inherits it (kernel-checked).**
+  `global_coherent_column_anchors` (J.129) starts from the even core at
+  length four. `Proofs16CoherentAnchorGrowth` proves that
+  `globalEvenColumnZeroDensity alpha k` (every `k ≥ 1`),
+  `globalCoherentAnchorDensity` and `globalCoherentAnchorTolerance` are at
+  most `exp(-2^(13^d)/2)`, and that `globalCoherentAnchorRank ≥ 13^d`.
+  `globalCoherentAnchorDensity_lt_polynomial_contract` is the
+  contract comparison for the anchor density. J.129 itself notes that no
+  polynomial bound on these composite parameters is asserted. These
+  results show that none is available.
+  The shared steps are generic in `Proofs16ZeroCoreGrowth`:
+  - `thirteen_pow_le_rank_ceil` covers any rank `⌈m·d/δ_k⌉` with `m ≥ 1`;
+  - `elimination_density_le` covers any per-round divisor `m ≥ 1`;
+  - `lt_polynomial_contract_of_le_triple_exp` does the final comparison.
 - Later stages that start from this agreement set can only lose more,
   so the present chain cannot supply the polynomial contract however the
   bilinear organization is finished. Nor can it supply Milićević's
