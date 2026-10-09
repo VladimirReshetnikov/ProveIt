@@ -1,0 +1,70 @@
+\subsection{Regression checks and the scheduling decision}
+
+All 23 focused tests pass in 3.292 seconds. After the geometry-reuse
+refactoring, all 1,210 maintained tests pass in 220.299 seconds. The final
+source audit takes 75.389 seconds and the boundary survey takes 57.621
+seconds. These are correctness runs, partly overlapping the full test
+suite; their elapsed times are not performance comparisons. The final
+audit, survey and benchmark each pin 493 source files.
+
+The initial source and survey records, before geometry reuse, are retained.
+All surveyed boundary records and all five selected certificates are
+identical after refactoring. Verdicts under both source policies are
+unchanged, and the off-arm records still exactly reproduce the preceding
+annulus audit. The initial timing implementation is preserved as
+hash-verified source snapshots, together with the earlier audit driver's
+fixture map. This distinguishes the tested revisions from the final
+implementation rather than assigning historical measurements its source
+hashes.
+
+Both timing runs start from source PDs and include complete recognition,
+any exact fallback, independent replay of the returned native certificate,
+and certificate hashing. Earlier recognition shortcuts are disabled to
+reach the native stage; the seed has no local work cap, and the global
+deadline remains twelve seconds. Each case has a warm-up round and five
+measured rounds, randomizing off, off A/A, on and on A/A order. Tree trials
+are four except for the three new extended positives, which request 24;
+face discovery remains disabled. No tests, audits, builds or commits
+overlap either timing run.
+
+All 440 measured calls and 88 warm-ups across the initial and revised
+implementations complete. Per-implementation verdicts and certificate
+hashes agree across both runs. Native work is stable within each revision;
+the intentional reductions after geometry reuse are recorded rather than
+claimed unchanged. The initial run takes 28.735 seconds and the final run
+22.443 seconds. The table reports the final revision only: primary-arm
+median times and medians of paired ratios, which need not equal the ratio
+of the displayed medians.
+
+\begin{center}
+\small\input{tables/cocycle_planar_recognize.tex}
+\end{center}
+
+The earlier seven-boundary witness improves the complete endpoint by a
+paired factor of $1.121$: approximately 89 milliseconds becomes 79.
+The earlier raw planar witness is near parity at 89 milliseconds.
+The new four-tree positive is modestly slower, with a 0.916 off/on ratio
+and noticeable off-arm A/A variation. The three new extended positives
+are materially slower: their off/on ratios are 0.631, 0.530 and 0.669.
+The existing optimized-annulus positive also slows because earlier
+unsuccessful candidates now receive boundary queries; its ratio is 0.794.
+The trefoil and genus-one continuing misses have ratios 0.912 and 0.831.
+Raw disc and raw annulus controls bypass boundary discovery and show no
+algorithmic speedup.
+
+These data support an optional stronger certificate search, not a new
+universal default. Geometry reuse removes much of the initial overhead,
+but the extra queries and larger certificates can still cost more than
+the preceding exact fallback. The maintained default therefore remains
+\code{planar=False}. The whole native stage remains optional in the
+ordinary portfolio, whose nineteen measured inputs never reach it.
+
+Reproduction uses \path{../fast/normal_orbit_research/planar.py}.
+Its modes are \code{audit}, \code{survey} and
+\code{recognize --rounds 5}. Regina and expanded boundary enumeration
+appear only in the audit controls. The incoming research inventory and
+checked \code{openai/math} head \code{fd4aeeb2e} are unchanged. The new
+capping proof uses elementary surface and torus topology and does not
+require a zero-surgery theorem. No complete genus-zero search, explicit
+normal capped-disc extraction, hierarchy cutting, or general
+subexponential or quasipolynomial recognition bound is established here.

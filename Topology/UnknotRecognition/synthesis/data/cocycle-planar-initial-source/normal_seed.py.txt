@@ -20,7 +20,7 @@ from .normal_surface_geometry import NormalOrbitError, _prepare, _coordinates
 
 def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
-    """Return UNKNOT with a source-bound disc or capping proof, or INCONCLUSIVE.
+    """Return UNKNOT with a source-bound disc/annulus proof, or INCONCLUSIVE.
 
     The shared work allowance covers construction, cocycle extraction, all
     tree and optimal-face trials, connectedness/Euler checks and span
@@ -47,7 +47,6 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
     budget = _Budget(check, max_work)
     stats, stages = {}, []
     boundary_cycles = 0
-    planar_geometry = planar_basis = None
     try:
         budget.tick()
         source = Diagram.from_pd(diagram.pd)
@@ -55,12 +54,11 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
         seed = rank_one_cocycle_seed(raw, check=budget.tick)
         stats['cocycle'] = seed['stats']
         def evaluate(stage, heights, coordinates, span=None, candidate=None):
-            nonlocal boundary_cycles, planar_geometry, planar_basis
+            nonlocal boundary_cycles
             budget.tick()
             certificate = dict(schema='diagram-cocycle-disc-v1', input_pd=[list(row) for row in source.pd],
                                triangulation=raw, heights=heights, coordinates=coordinates,
                                span_certificate=span)
-            analysed = None
             positive_euler = (0, 1) if annulus else (1,)
             if candidate is not None and candidate['euler_characteristic'] not in positive_euler:
                 # A miss emits no positive proof. The original class was
@@ -72,14 +70,7 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                               normal_pieces=candidate['normal_pieces'], compressing_discs=0,
                               connectivity='minimum-span' if span is not None else 'zero-tree')
             else:
-                if planar:
-                    from .normal_cocycle_verify import _inspect_cocycle_details
-                    details = _inspect_cocycle_details(source, certificate, check=budget.tick)
-                    answer = None if details is None else details[0]
-                    if details is not None:
-                        planar_geometry, analysed = details[1:]
-                else:
-                    answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
+                answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
                 if answer is None:
                     raise ArithmeticError('source-bound cocycle connectivity replay failed')
             entry = dict(stage=stage, status='COMPLETE', **answer)
@@ -99,16 +90,10 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                 return dict(status='UNKNOT', method='native-normal-cocycle', certificate=certificate,
                             stats=stats, stages=stages, work=budget.work)
             if planar:
-                from .normal_planar import _planar_cap_candidate
-                from .normal_component_geometry import boundary_homology_basis
+                from .normal_planar import planar_cap_candidate
                 from .normal_planar_verify import inspect_planar_certificate
                 remaining = None if max_cycles is None else max_cycles-boundary_cycles
-                if planar_basis is None:
-                    planar_basis = boundary_homology_basis(planar_geometry, budget.tick)
-                if analysed is None:
-                    analysed = _coordinates(planar_geometry, coordinates, budget.tick)
-                query = _planar_cap_candidate(certificate, planar_geometry, analysed,
-                    basis=planar_basis, max_cycles=remaining, check=budget.tick)
+                query = planar_cap_candidate(certificate, max_cycles=remaining, check=budget.tick)
                 boundary_cycles += query['stats']['orbit_cycles']
                 entry['planar_query'] = {k: v for k, v in query.items() if k != 'certificate'}
                 stats['boundary_cycles'] = boundary_cycles

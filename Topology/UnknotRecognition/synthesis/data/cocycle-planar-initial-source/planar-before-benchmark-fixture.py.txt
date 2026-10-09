@@ -1,0 +1,147 @@
+"""Compressed planar capping: source coverage, boundary census audit and timings."""
+import argparse
+from hashlib import sha256
+import json
+from pathlib import Path
+import platform
+import time
+from fastunknot import Diagram, recognize
+from fastunknot.diagram_exterior import diagram_exterior
+from fastunknot.normal_cocycle import rank_one_cocycle_seed
+from fastunknot.cocycle_trees import cocycle_tree_candidates
+from fastunknot.cocycle_span import minimize_cocycle_span
+from fastunknot.normal_seed import normal_seed_decide
+from fastunknot.normal_seed_verify import verify_normal_seed_certificate
+from fastunknot.normal_planar import planar_cap_candidate
+from fastunknot.normal_planar_verify import inspect_planar_certificate
+from fastunknot.normal_boundary_geometry import boundary_weight_system
+from fastunknot.normal_component_geometry import boundary_homology_basis,valid_boundary_basis
+from fastunknot.normal_surface_geometry import _prepare,_coordinates
+from fastunknot.weighted_orbits import weighted_orbit_histogram
+from fastunknot.weighted_orbit_verify import verify_weighted_orbit_certificate
+from normal_orbit_research import seeds
+from normal_orbit_research.annulus import boundary_control
+from normal_orbit_research.fixtures import regina_triangulation,regina_surface
+from primitive_power_research import forests
+ROOT=Path(__file__).resolve().parents[1]
+PREVIOUS=ROOT.parent/'synthesis/data/cocycle-annulus-audit.json'
+BASELINE='369e0c0ae04bd6e8c2693efc1b3c23f7e0b5caf8'
+
+
+def pins():
+    result=seeds.sources();result[str(PREVIOUS.relative_to(ROOT.parent))]=sha256(PREVIOUS.read_bytes()).hexdigest();return result
+
+
+def audit():
+    records,proofs=[],{}
+    for entry in json.loads(PREVIOUS.read_text())['source_cases']:
+        source=entry['source'];d=Diagram.from_pd(source['pd']);results={}
+        for label,trials in [('default',4),('extended',24)]:
+            arms={}
+            for enabled in (False,True):
+                r=normal_seed_decide(d,tree_trials=trials,planar=enabled)
+                if r['status']=='UNKNOT':
+                    assert source['expected']=='UNKNOT'
+                    proof=r.pop('certificate');assert verify_normal_seed_certificate(d,proof)
+                    key=seeds.digest(proof);r.update(certificate_sha256=key,schema=proof['schema'])
+                    if proof['schema']=='diagram-cocycle-planar-v1':proofs[key]=proof
+                arms['on' if enabled else 'off']=r
+                if not enabled:assert r==entry['results'][label]['on']
+            results[label]=arms
+        records.append(dict(source=source,results=results))
+        print(source['name'],[(k,v['on']['status'],v['on']['work']) for k,v in results.items()],flush=True)
+    controls=[]
+    for key,proof in proofs.items():
+        s=regina_surface(regina_triangulation(proof['triangulation']),proof['coordinates'])
+        summary=inspect_planar_certificate(Diagram.from_pd(proof['input_pd']),proof)
+        assert s.isConnected() and s.isOrientable() and s.eulerChar()+s.countBoundaries()==2
+        b=boundary_control(proof['triangulation'],proof['coordinates'])
+        assert sum(any(x) for x in b['curve_parities'])==1
+        assert len(b['curve_parities'])==summary['boundary_components']
+        controls.append(dict(certificate_sha256=key,summary=summary,**b))
+    ordinary=[]
+    for source in forests.corpus():
+        arms=[]
+        for enabled in (False,True):
+            r=recognize(Diagram.from_pd(source['pd']),**seeds.COMMON,use_normal_seed=True,normal_seed_planar=enabled)
+            assert r.status==source['expected']
+            arms.append(dict(enabled=enabled,status=r.status,method=r.method,native_attempts=len(list(seeds.native_stages(r.evidence)))))
+        ordinary.append(dict(name=source['name'],answers=arms))
+    return dict(source_cases=records,planar_proofs=proofs,positive_controls=controls,ordinary_pipeline=ordinary)
+
+
+def survey():
+    records=[]
+    for entry in json.loads(PREVIOUS.read_text())['source_cases']:
+        source=entry['source']
+        if len(source['pd'])>12:continue
+        d=Diagram.from_pd(source['pd']);raw=diagram_exterior(d);seed=rank_one_cocycle_seed(raw)
+        tri=regina_triangulation(raw);prepared=_prepare(raw,lambda:None);basis=boundary_homology_basis(prepared)
+        assert valid_boundary_basis(prepared,basis)
+        choices=[('raw',seed['heights'],seed['coordinates'],None)]
+        trees=[c for c in cocycle_tree_candidates(raw,seed['heights'],trials=24) if not c['duplicate']]
+        choices += [(f"tree-{c['trial']}",c['heights'],c['coordinates'],None) for c in trees if c['trial']<=4]
+        optimum=minimize_cocycle_span(seed['vertices'],seed['heights'])['certificate']
+        choices += [('optimized',seed['heights'],optimum['coordinates'],optimum)]
+        choices += [(f"tree-{c['trial']}",c['heights'],c['coordinates'],None) for c in trees if c['trial']>4]
+        rows=[]
+        for stage,heights,coords,span in choices:
+            s=regina_surface(tri,coords);assert s.isConnected() and s.isOrientable()
+            chi=int(str(s.eulerChar()));boundaries=s.countBoundaries();assert (2-chi-boundaries)%2==0
+            analysed=_coordinates(prepared,coords,lambda:None)
+            size,pairs,weights=boundary_weight_system(prepared,analysed,basis)
+            q=weighted_orbit_histogram(size,pairs,weights,dimension=2,record_certificate=True)
+            assert q['status']=='COMPLETE' and q['orbit_count']==boundaries
+            assert verify_weighted_orbit_certificate(size,pairs,weights,q['certificate'],dimension=2)
+            # Every fixture is small: expand all boundary pairings independently.
+            b=boundary_control(raw,coords)
+            histogram={}
+            for r in q['histogram']:
+                parity=tuple(x&1 for x in r['weight']);histogram[parity]=histogram.get(parity,0)+r['orbits']
+            expanded={}
+            for parity in b['curve_parities']:
+                parity=tuple(parity);expanded[parity]=expanded.get(parity,0)+1
+            assert histogram==expanded
+            essential=sum(count for parity,count in histogram.items() if any(parity));genus=(2-chi-boundaries)//2
+            accepted=genus==0 and essential==1
+            row=dict(stage=stage,euler=chi,boundaries=boundaries,genus=genus,essential_boundaries=essential,
+                     expanded_boundary_points=b['expanded_boundary_points'],orbit_cycles=q['stats']['orbit_cycles'],accepted=accepted)
+            if accepted:
+                assert source['expected']=='UNKNOT'
+                proof=dict(schema='diagram-cocycle-planar-v1',input_pd=[list(r) for r in d.pd],triangulation=raw,
+                    heights=heights,coordinates=coords,span_certificate=span,boundary_homology_basis=basis,boundary_orbits=q['certificate'])
+                assert verify_normal_seed_certificate(d,proof)
+                row['certificate_sha256']=seeds.digest(proof)
+            rows.append(row)
+        records.append(dict(source=source,candidates=rows))
+        print('survey',source['name'],len(rows),sum(r['accepted'] for r in rows),flush=True)
+    return dict(source_cases=records)
+
+
+def benchmark(rounds):
+    entries={e['source']['name']:e['source'] for e in json.loads(PREVIOUS.read_text())['source_cases']}
+    choices=[('circle-9',4),('random-29',4),('optimized-positive',4),('random-1',4),('random-150',4),
+             ('random-142',4),('random-25',24),('random-162',24),('random-176',24),('trefoil',4),('genus-one-miss',4)]
+    cases=[(name,(entries[name],trials)) for name,trials in choices]
+    def run(case,off):
+        source,trials=case;d=Diagram.from_pd(source['pd'])
+        r=recognize(d,**seeds.FORCED,normal_seed_tree_trials=trials,normal_seed_planar=not off)
+        native=r.evidence.get('normal_seed',{});proof=native.get('certificate')
+        if proof is not None:assert verify_normal_seed_certificate(d,proof)
+        complete=r.status in ('UNKNOT','KNOTTED')
+        if complete:assert r.status==source['expected']
+        return dict(completed=complete,status=r.status,method=r.method,native_status=native.get('status'),native_work=native.get('work'),
+                    schema=proof['schema'] if proof else None,certificate_sha256=seeds.digest(proof) if proof else None)
+    return seeds.rounds(cases,run,rounds)
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('mode',choices=('audit','survey','recognize'))
+    parser.add_argument('--rounds',type=int,default=5);parser.add_argument('--output',type=Path,required=True);args=parser.parse_args()
+    if args.rounds<1:parser.error('rounds must be positive')
+    before=pins();start=time.perf_counter();result=benchmark(args.rounds) if args.mode=='recognize' else globals()[args.mode]()
+    assert pins()==before
+    result.update(mode=args.mode,source_sha256=before,baseline_commit=BASELINE,elapsed_seconds=time.perf_counter()-start,python=platform.python_version())
+    args.output.write_text(json.dumps(seeds.json_safe(result),indent=2)+'\n');print('complete',args.mode,result['elapsed_seconds'],flush=True)
+
+if __name__=='__main__':main()
