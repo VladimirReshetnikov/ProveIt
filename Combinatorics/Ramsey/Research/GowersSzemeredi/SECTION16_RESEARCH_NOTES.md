@@ -2971,3 +2971,45 @@ It was dropped because the modulus-independent
 `Proofs16PolynomialSpectrumSpan` cutoff supersedes it. All nine theorems
 use only propext, Classical.choice, and Quot.sound. The collision gate
 passes. No numbered statement changes status.
+
+
+### Quasirandom bipartite graphs: [49] Appendix B (2026-10-09)
+
+`Proofs16BipartiteQuasirandom` formalizes Lemmas 41 and 43 of [49]
+(Lemma 42 is a special case), read from the published PDF (Discrete
+Analysis 2024:20, pp. 37-40). Everything works for arbitrary finite
+vertex classes `X`, `Y` and arbitrary finite index types `I` (the
+`k` vertices) and `J` (the `m` coordinates). Nothing is specific to ℤ/N.
+
+- `boxSum f = Σ_{x₀,x₁} (Σ_y f(x₀,y) f(x₁,y))²` is the unnormalized
+  fourth power of the box norm. [49]'s `‖G−δ‖□ ≤ ε` is
+  `boxSum (G−δ) ≤ ε⁴|X|²|Y|²`, so no fourth roots appear.
+- Lemma 41, `box_correlation_pow_four_le`:
+  `(Σ f u v)⁴ ≤ (Σu²)²(Σv²)²·boxSum f`, by Cauchy–Schwarz over `y` and
+  then over pairs `(x₀,x₁)`.
+- Lemma 41, `abs_box_correlation_le`: the bounded form, giving
+  correlation at most `ε|X||Y|` when `|u|, |v| ≤ 1`.
+- `box_swap_bound`: one edge of a product pattern. The variables are
+  split with `Equiv.funSplitAt`. Factors that do not involve both
+  `x i₀` and `w j₀` are then functions of one variable, so Lemma 41
+  applies.
+- `bipartite_counting`: the telescoping of [49]'s "repeat 2km−1 times",
+  done as induction over the set of edges kept from `G` (`edgeSum`). For
+  weights `0 ≤ W ≤ 1`, `Σ_{x,w} W(w) Π G(x i, w j)` is within
+  `|I||J|ε|X^I||Y^J|` of `δ^{|I||J|}|X^I|Σ_w W(w)`.
+- Lemma 43, `common_neighbourhood_second_moment`:
+  `Σ_x (C(x) − δ^{km}|M|)² ≤ 4kmε|X^k||Y^m|²`, exactly [49]'s bound.
+  Here `C(x)` is the number of `m`-tuples of `M` inside the common
+  neighbourhood of `x`. The square is a count over `J ⊕ J`
+  (`commonCount_sq`), and both the first and second moments come from
+  `bipartite_counting`.
+- Lemma 43, `common_neighbourhood_deviation_card`: Markov. At most
+  `4kmεη⁻²|X^k|` tuples deviate by `η|Y^m|`, stated as
+  `#·η² ≤ 4kmε|X^k|`. It needs `η ≥ 0`: for negative `η` the filter is
+  everything, and the statement would be false.
+
+All 18 theorems and 3 definitions use only the standard axioms. The
+collision gate passes. Lemma 44 (one-sided quasirandomness implies
+`3ε^{1/8}`-quasirandomness) is not yet formalized. No numbered statement
+changes status. This supplies the quasirandomness input of [49]'s
+Claim 38 (step 4 of Theorem 35).

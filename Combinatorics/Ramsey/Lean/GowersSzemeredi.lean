@@ -405,6 +405,7 @@ import GowersSzemeredi.Proofs16BohrSumSpan
 import GowersSzemeredi.Proofs16UniformSpectrumSpan
 import GowersSzemeredi.Proofs16BohrSumUniformParameters
 import GowersSzemeredi.Proofs16SpectrumPairSumset
+import GowersSzemeredi.Proofs16BipartiteQuasirandom
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
