@@ -8773,7 +8773,13 @@ witness at `source u`, and proves a fresh agreement density
 It does not infer a density bound merely by restricting an old agreement set.
 
 All ten new modules compile in a 496-module production closure, comprising
-nineteen new named proofs. Full axiom and facade verification follows.
+nineteen new named proofs. All nineteen pass individual axiom checks using
+only `propext`, `Classical.choice`, and `Quot.sound`. The completed merged
+facade audit checks 8,299 public Gowers theorems with the same axiom boundary:
+5,381 facade modules, including 4,152 OAI modules, and 5,383 combined audit
+modules. The ledger is byte-identical to the tracked 115-companion / five-open
+catalogue. Port scope remains 4,134 upstream and 17 compatibility modules;
+no upstream source or licensing scope changes.
 Graph extraction/weak transitivity, subsequent local linear structure,
 original bihomomorphism transfer and the final quantitative certificate
 remain outstanding. The current graph estimate is for the specified final
