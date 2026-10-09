@@ -1,0 +1,47 @@
+\subsection{Prepared canonical rank and selection}
+
+The additional lookup experiment uses the sharp family of disjoint paired
+blocks.  A supplied deterministic right-to-left trace is independently
+verified before any query is timed.  The canonical minimum intervals and
+every queried answer are checked against the direct block formulas, including
+the conversion between emission ordinal and increasing-minimum rank.  Both
+selection arms request the same original representatives on the same prepared
+index; their numerical ordinal arguments differ because the orders differ.
+
+Each measured call contains $512$ lookups, batched three times.  There are
+seven shuffled measured rounds, one excluded warmup, and identical controls
+for canonical rank and canonical selection.  Index construction is reported
+separately and excluded from every lookup timer.  The original trace-ordinal
+selection method reverses contractions; the canonical method searches the
+compact minimum-interval union.
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+\hline
+Minimum intervals & Endpoint bits & Emission (ms) & Canonical (ms)
+ & Paired ratio & Rank (ms)\\
+\hline
+1 & 130 & 0.218 & 0.123 & 1.756 & 0.154\\
+16 & 134 & 0.794 & 0.138 & 5.922 & 0.168\\
+128 & 4105 & 7.600 & 0.327 & 23.791 & 0.348\\
+512 & 4107 & 29.732 & 0.365 & 81.511 & 0.408\\
+\hline
+\end{tabular}
+\end{center}
+
+All times concern a complete $512$-query call.  Preparation took respectively
+$0.101$, $0.863$, $37.003$ and $557.962$ milliseconds in separately recorded
+single observations.  Thus the submillisecond prepared lookup times do not
+describe construction of the index.  Identical canonical-selection control
+ratios range from $1.007$ to $1.034$, and rank-control ratios from $0.977$ to
+$1.026$.  The final case has $512(2^{4096}+3)$ components while storing just
+$512$ minimum intervals.  The bit-complexity conclusion is logarithmic in
+the number of stored intervals, with binary-integer and output costs charged;
+the finite timings are not a constant-time claim.
+
+Full inputs, queried canonical ranks and corresponding emission ordinals,
+analytic expected minima, source hashes, certificate hashes and all raw
+samples are retained in \path{results/orbit_rank_select.json}.  The standalone
+driver is \path{orbit_index_research/rank_select.py}.  This experiment measures
+prepared representative lookups, separately from the preceding complete
+membership-batch benchmark and from all unknot-recognition work.

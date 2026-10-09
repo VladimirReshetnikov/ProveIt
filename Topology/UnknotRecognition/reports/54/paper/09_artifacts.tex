@@ -1,0 +1,86 @@
+\section{Artifact map and reproduction}
+\label{sec:artifacts}
+
+The package is additive. It can be placed under a new research directory
+without overwriting maintained modules. The suggested location is
+\path{Topology/UnknotRecognition/research/compiled_port_quotients/}.
+The root README gives the exact commands and integration caveats.
+
+\begin{longtable}{@{}p{0.37\linewidth}p{0.58\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\path{compiled_ports/profiles.py} & Immutable census and exact atom-constant observations.\\
+\path{compiled_ports/packing.py} & Mixed-radix and binary-field codecs with capacity checks.\\
+\path{compiled_ports/quotients.py} & Lazy multiplicity activation and incremental quotient counts/censuses.\\
+\path{compiled_ports/programs.py} & Grammar validation, summaries, prefixes, first thresholds, and all change points.\\
+\path{compiled_ports/verify.py} & Independent graph quotient and grammar/plateau replay.\\
+\path{compiled_ports/reference.py} & Bounded literal point oracles, used only for finite tests.\\
+\path{compiled_ports/native.py} & Adapter to maintained weighted AHT and source-bound native verification.\\
+\path{tests/test_core.py} & Executed deterministic, exhaustive, randomized and adversarial tests.\\
+\path{experiments/audit.py} & Re-runs the suite and records counters, runtime and source hashes.\\
+\path{experiments/benchmark.py} & Seeded controlled algebra-kernel timing experiment.\\
+\path{experiments/make_tables.py} & Generates the paper tables from retained JSON data.\\
+\path{integration/native_gate.py} & Explicit gate to run against the target native checkout.\\
+\path{integration/source_audit.json} & Pinned inspected source paths and Git blob hashes.\\
+\path{results/native_gate_status.json} & Explicit record that native execution was not performed here.\\
+\path{examples/} & Reproducible large delayed and sharp-height program examples.\\
+\path{paper/main.tex}, \path{paper/main.pdf} & Complete article source and compiled output.\\
+\bottomrule
+\end{longtable}
+
+From the package root:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+python experiments/audit.py
+python experiments/benchmark.py
+python experiments/make_tables.py
+python examples/demo.py
+sh paper/build.sh
+\end{lstlisting}
+The first five commands use only Python's standard library. The build
+requires a standard LaTeX installation with the packages listed in
+\path{paper/main.tex}. Benchmark medians will naturally vary with the host;
+the exact results and trial counts must not.
+
+For the native gate, supply the maintained \texttt{fast} directory:
+\begin{lstlisting}
+python integration/native_gate.py \
+  --fast-root /path/to/ProveIt/Topology/UnknotRecognition/fast
+\end{lstlisting}
+A missing native module is a gate error, not a fallback to the literal
+oracle. The full maintained suite should then be run from that checkout.
+The gate writes a separate result file, leaving the delivered historical
+\texttt{NOT\_RUN} status as a record of this article's execution scope.
+
+\section{Minimal usage example}
+
+The following example is deliberately an abstract census. Its mass equations
+are valid, but no source-bound knot or normal-surface claim is implied.
+\begin{lstlisting}[language=Python]
+from compiled_ports import Profiles, ConeProgram
+from compiled_ports.verify import verify_threshold
+
+q = 1 << 256
+profiles = Profiles.from_histogram((q,) * 8, {(1,) * 8: q})
+nodes = [
+    {"op": "cone", "atoms": []},
+    {"op": "power", "child": 0, "exponent": 1 << 4096},
+    {"op": "cone", "atoms": [3]},
+    {"op": "concat", "left": 1, "right": 2},
+    {"op": "power", "child": 3, "exponent": 1 << 4096},
+]
+program = ConeProgram(8, nodes)
+answer = program.first_at_most(profiles, 1)
+assert answer["index"] == (1 << 4096) + 1
+assert answer["trials"] == 2
+assert verify_threshold(profiles, nodes, program.root, 1,
+                        answer["index"])
+\end{lstlisting}
+
+To obtain a trusted table from an actual native relation, use
+\texttt{compile\_profiles(..., record\_certificate=True)} and then
+\texttt{verify\_native\_certificate} against the original pairings and cuts.
+Only the returned authenticated table should enter a source-bound downstream
+claim. That path is supplied but awaits the native gate described above.

@@ -3354,3 +3354,37 @@ The policy remains optional: restarts and callback accounting can exceed
 the gains from choosing a better order. Reproduce with
 `python -B -m normal_orbit_research.race audit --output OUTPUT.json` or
 `benchmark --rounds 5` in the same driver.
+
+`normal_sector.discover_in_sector(triangulation, allowed_types)` now discovers
+normal vertex candidates in a supplied compatible quadrilateral sector.
+Each allowed type is `(tetrahedron_index, type_index)` with type 0, 1 or 2;
+at most one type may be allowed in each tetrahedron. The default Q-ray phase
+is complete for positive canonical Euler characteristic. Request
+`phase='standard'` to enumerate every non-link standard vertex ray. Positive
+Euler values still undergo the existing essential-disc check.
+
+The triangle-equality contraction gives at most 9k variables and 4k equations
+for k allowed types. Standard enumeration chooses the smaller of exact
+positive-support enumeration and a potential arrangement in the quadrilateral
+matching nullspace. `enumerate_sector` exposes both methods for comparison.
+`normal_sector_verify` independently reconstructs the dense matching model
+and checks witnesses or restricted exhaustion. Negative replay repeats a search;
+it is not claimed polynomial in the length of a short negative transcript.
+
+Results distinguish `DISC_FOUND`, `NO_POSITIVE_EULER`, `POSITIVE_EULER_ONLY`,
+`NO_VERTEX_DISC_IN_SECTOR` and `INCONCLUSIVE`. None is an unqualified knot
+verdict. `sparse_disc_search` searches every sector up to a supplied support
+cap; its exhaustion remains support-qualified. `max_bases` counts attempted
+linear systems, and `max_orbit_cycles` applies per positive candidate.
+Cancellation callbacks can provide a shared limit. A diagram consumer must
+authenticate the supplied triangulation as its knot exterior before using
+a positive witness for recognition.
+
+All 1,269 maintained tests pass. The current-tree oracle comparison covers
+1,718 sectors in both phases; independent producer-disabled replay covers
+962 certificates. Article section 126 proves the support kernel, height bound,
+adaptive search counts and the dense layered-meridian obstruction. The incoming
+batch also supplies native-tested observer ideas; a reflection-vocabulary
+counterexample is retained before promoting the delivered transversal checker.
+Reproduce complete supplied-sector discovery timings with
+`python -B -m normal_orbit_research.sectors --rounds 5 --output OUTPUT.json`.

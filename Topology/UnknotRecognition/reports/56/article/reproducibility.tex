@@ -1,0 +1,167 @@
+\section{Archive layout and reproducibility}
+\label{app:reproducibility}
+
+The archive is a reviewable continuation against the pinned source,
+not a remote repository update. It contains the complete article and
+its figures, the modified \texttt{fast} source tree, an executable
+baseline snapshot for comparisons, the required reference modules,
+raw experimental evidence, and an integration patch. The existing
+project license is retained with the source.
+
+\subsection{File map}
+
+\begin{description}[style=nextline,leftmargin=0pt,labelsep=0pt,labelwidth=0pt]
+\item[\path{article/}]
+  The main source \path{compiled_certificates.tex}, all included
+  sections, the rendered PDF, generated tables, figure PDFs and PNGs,
+  and \path{generate_artifacts.py}. No network access is required to
+  rebuild the manuscript from the included sources.
+\item[\path{fast/fastunknot/}]
+  The full current runtime snapshot. The new modules are
+  \path{raw_saturation.py} and \path{orbit_index.py}. Four existing
+  files gain the optional group hook: \path{compressed_search.py},
+  \path{group_certificate.py}, \path{recognize.py}, and
+  \path{__main__.py}.
+\item[\path{fast/tests/}]
+  The maintained suite, including the three new test files
+  \path{test_raw_saturation.py},
+  \path{test_raw_saturation_integration.py}, and
+  \path{test_orbit_index.py}.
+\item[\path{fast/raw_saturation_research/}]
+  The independent matrix/signed-word audit, four-mode benchmark,
+  summary generator, and frozen initial-candidate snapshot. The
+  initial snapshot explains the failed-probe optimization; its
+  measurements are explicitly separated from the final candidate.
+\item[\path{fast/orbit_index_research/}]
+  The graph audit, complete membership benchmark, prepared rank/select
+  benchmark, API documentation, and mathematical research notes.
+\item[\path{fast/results/}]
+  Exact inputs, raw timing samples, all outcomes, checked source hashes,
+  logs, per-arm journals, and generated summaries. Only the completed
+  final records supply headline values.
+\item[\path{baseline/fast/} and \path{baseline/reports/}]
+  The pinned runtime/test snapshot and its required reference modules.
+  These support the paired group comparisons and the baseline suite
+  without downloading the upstream repository.
+\item[\path{reports/}]
+  The exact reference Python modules from reports 24, 26, 28, and 45
+  needed by existing tests. They are included because the maintained
+  suite imports them from outside \texttt{fast}.
+\item[\path{provenance/}]
+  The Git-blob source manifest, archive-content hashes, environment
+  record, baseline/final suite logs, and patch verification results.
+\item[\path{integration.patch}]
+  A source patch against the pinned repository paths, adding the two
+  runtime modules, the optional hook, tests, and research drivers.
+  The article and bulky experimental evidence are separately organized
+  for repository placement.
+\end{description}
+
+The source manifest records the retrieval audit, including read-only
+synthesis sources used during research. Those synthesis sources are not
+all duplicated in the delivery. The archive-content manifest separately
+identifies the files actually packaged. Baseline source bytes were checked
+against their Git blob identifiers; current experimental source hashes
+were checked before and after the measurements. The group source-hash
+set excludes the unrelated orbit module, whose own evidence carries
+complete separate hashes.
+
+\subsection{Rebuilding and running the checks}
+
+The runtime declares Python 3.10 or later and no mandatory package
+dependencies. The recorded environment is Python 3.12.14, Regina 7.4.1,
+NumPy 2.3.5, and Matplotlib 3.10.8. The full historical suite has tests
+for optional native normal-surface functionality, so reproducing every
+recorded test requires the supplied environment or the documented
+Regina extra. The new saturation and orbit-index tests themselves use
+the Python implementation and independent finite oracles.
+
+From the archive's top directory, the principal commands are:
+\begin{verbatim}
+cd fast
+python3 -B -m unittest discover -s tests -q
+python3 -B raw_saturation_research/audit_epoch.py
+python3 -B raw_saturation_research/benchmark.py \
+  --mode audit --candidate-label final-preindex-guard \
+  --output results/raw_saturation_audit.json
+python3 -B raw_saturation_research/benchmark.py \
+  --mode kernels --candidate-label final-preindex-guard \
+  --output results/raw_saturation_kernels.json
+python3 -B raw_saturation_research/benchmark.py \
+  --mode stage --candidate-label final-preindex-guard \
+  --output results/raw_saturation_stage.json
+python3 -B raw_saturation_research/benchmark.py \
+  --mode pipeline --candidate-label final-preindex-guard \
+  --output results/raw_saturation_pipeline.json
+python3 -B raw_saturation_research/summarize.py
+python3 -B orbit_index_research/audit.py
+python3 -B orbit_index_research/benchmark.py --rounds 7
+python3 -B orbit_index_research/rank_select.py --rounds 7
+\end{verbatim}
+The group benchmark's default baseline location is
+\path{../baseline/fast}. A separate checkout can be supplied with
+\texttt{--baseline}. These commands replace the correspondingly named
+result files; preserve the delivered records in another directory before
+an independent replication. Run timing experiments without simultaneous
+CPU-intensive tests. Random call order and controls reduce some timer
+effects but do not turn a shared machine into an isolated laboratory.
+
+From the archive's top directory, regenerate the numerical artifacts and PDF:
+\begin{verbatim}
+cd article
+python3 generate_artifacts.py --results ../fast/results
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  compiled_certificates.tex
+\end{verbatim}
+Two or more ordinary \texttt{pdflatex} passes can replace
+\texttt{latexmk}. The preamble uses common TeX Live packages, with no
+shell-escape requirement or external bibliography processor. The provided
+PDF was rendered to page images and inspected for clipping, table
+overflow, unresolved references, and figure readability.
+
+\subsection{Review and integration order}
+
+First review the mathematical theorem statements together with their
+counterexamples. Next review the two runtime modules and the four small
+option-plumbing changes. Apply the source patch to a clean checkout of
+the pinned commit, or reconcile it manually with a newer upstream
+revision; test commands should run from the \texttt{fast} directory.
+The patch does not assign a new report number or overwrite the existing
+synthesis manuscript. The standalone article can be moved to the
+maintainer's chosen research location with all its included files.
+
+The raw producer requires no certificate-verifier change. Its final
+source proofs were checked by the old and current replayers. The orbit
+index's documented factory independently verifies the entire supplied
+trace, but its query arithmetic is an additional trusted implementation.
+Its immutability contract concerns factory-created objects; manually
+constructing private Python dataclass fields is outside that interface.
+These are distinct trust boundaries and should remain distinct during
+integration.
+
+No general quasi-polynomial flag is enabled. The existing recognizer's
+worst-case statement remains appropriate. The finite audit supplies no
+claim that all possible mutants, diagrams, or interval systems have been
+tested. The proofs establish the local statements; the recorded evidence
+checks their implementation and the observed performance on specified
+inputs.
+
+\section{Complete group benchmark tables}
+\label{app:full-tables}
+
+In the following tables, U denotes \texttt{UNKNOT}, K denotes
+\texttt{KNOTTED}, I denotes a positive-only group-stage
+\texttt{INCONCLUSIVE}, and ? denotes full-pipeline \texttt{UNKNOWN}.
+Times are milliseconds. A dash in a completion-time or ratio column
+indicates an unavailable completed comparison; it is not zero. Observed
+elapsed-time columns are populated only for unresolved arms.
+Exact observed times and the reason for each unfinished call are retained
+in the JSON and per-arm journals. All conclusive paired statuses agree.
+
+\subsection{Group stage: reconstruction, search, and independent replay}
+
+\input{tables/raw_stage_full}
+
+\subsection{Full recognizer with ordinary filters and fixed allowances}
+
+\input{tables/raw_pipeline_full}

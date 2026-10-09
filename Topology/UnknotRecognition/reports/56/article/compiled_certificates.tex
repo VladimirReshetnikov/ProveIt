@@ -1,0 +1,102 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage[breaklinks]{hyperref}
+\definecolor{ink}{HTML}{18354D}
+\definecolor{accent}{HTML}{126A7A}
+\definecolor{wash}{HTML}{EFF5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+  pdftitle={Saturating Raw Tietze Eliminations and Indexing Certified Interval Orbits},
+  pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\per}{per}
+\newcommand{\QPoly}{\operatorname{QP}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Compiled certificates for unknot recognition}
+\fancyhead[R]{\small Research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{ink}\bfseries Saturating Raw Tietze Eliminations\\[3pt]
+  and Indexing Certified Interval Orbits}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+  \small ProveIt / Topology / UnknotRecognition}
+\date{9 October 2026 (UTC)\\
+  \small Source baseline: \texttt{fdeb5b1a20b84b93cb150e0232031837bb7d30cb}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop two exact improvements to the maintained unknot-recognition
+project. First, we prove that every completed epoch of raw singleton
+Tietze eliminations can be flattened into one acyclic batch of definitions
+from its original relator slots. A nonnegative occurrence matrix and a
+unique-perfect-matching argument account for the required reassignment of
+donors. Consequently, reduction to a prescribed survivor alphabet is
+equivalent to a source Horn-closure query. After source metadata preparation,
+one query uses $O(r+m+I)$ structural operations, and exhaustive rank-one
+discovery uses $O(r(r+m+I))$, where $r$ is the generator count, $m$ the
+number of source relator slots, and $I$ their total distinct-support
+incidence. The resulting batch has polynomial grammar size independently
+of the number of raw phases it replaces. An optional production hook uses
+the existing independent certificate verifier.
+
+Second, we compile a checked Agol--Hass--Thurston orbit trace into reusable
+point-to-component queries. The component key is the least original point
+of the orbit, so it is independent of the valid reduction trace. Binary
+arithmetic replaces repeated orbit searches; component representatives
+remain compressed even when their number is enormous. In fact, the entire
+set of minimum representatives is a union of at most $g$ ordinary intervals,
+where $g$ is the trace's static-gap count, giving canonical rank and selection
+in $O(B\log(g+2))$ bit operations after preparation, where $B$ bounds
+coordinate and counter bit lengths. We give complete
+proofs, adversarial examples, source-bound tests, and paired measurements
+with controls. The results improve precisely defined algebraic and
+geometric operations. They do not bound normalization between raw epochs,
+normal-surface discovery, or hierarchy search, and therefore do not
+establish general quasi-polynomial unknot recognition.
+\end{abstract}
+
+\begin{center}
+\fcolorbox{accent}{wash}{\parbox{0.92\linewidth}{\small
+\textbf{Scope of the result.} The new completeness theorem concerns
+\emph{all orders of raw singleton elimination from a fixed presentation}.
+The new geometric interface concerns \emph{many queries on one certified
+interval relation}. The general recognition pipeline retains its previous
+worst-case guarantee. Successful knot certificates are independently
+replayed; exhaustion of either local query class is inconclusive about knot type.}}
+\end{center}
+\tableofcontents
+\newpage
+
+\input{background}
+\input{raw_epoch}
+\input{integration}
+\input{orbit_index}
+\input{experiments}
+\input{research_agenda}
+\appendix
+\input{reproducibility}
+\input{bibliography}
+\end{document}

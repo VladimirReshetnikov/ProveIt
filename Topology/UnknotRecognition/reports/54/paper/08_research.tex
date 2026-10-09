@@ -1,0 +1,137 @@
+\section{Further research questions and proposed next experiments}
+\label{sec:research}
+
+The most useful follow-up is not to enlarge the benchmark exponents. It is
+to prove that a concrete geometric consumer uses the fixed-source interface
+and that the number of recompilations is controlled. The following questions
+separate those obligations from local engineering work.
+
+\subsection{A native source-to-observer contract}
+
+For one maintained normal-surface consumer, identify the exact source points,
+atom cuts, orbit relation, and ownership charges. Prove that every point
+belongs to the surface component represented by its orbit and that every
+requested weight is constant on the chosen atoms. Then compare a compiled
+profile query against the existing direct weighted query, including source
+validation and independent replay. The success criterion is an actual
+source-bound equality theorem and measured reuse benefit, not agreement
+only on a table constructed directly by the benchmark.
+
+\subsection{Which geometric operations are genuine full-port cones?}
+
+Find a hierarchy subroutine whose aggregate connectivity question really
+identifies all points in specified port unions. Coning is already a useful
+auxiliary counting operation, but actual cutting and gluing can preserve
+pointwise correspondence instead. A precise lemma should state the consumer
+observation being computed, prove that the coned relation has exactly that
+meaning, and list all geometric information discarded. A single verified
+consumer is more valuable than a general assertion that ``attachments are
+unions''.
+
+\subsection{A refinement budget}
+
+Let a phase introduce new port endpoints. Can those endpoints be charged
+to a bounded combinatorial resource, so that the total number of distinct
+atoms and the number of recompilations remain polynomial or
+quasi-polynomial? The local height proof immediately gives an effective
+step budget after the last refinement; it gives no such bound beforehand.
+A useful theorem would bound
+$\sum_i m_i$ or a sharper persistent-refinement measure across all phases,
+not merely the largest $m_i$ encountered.
+
+\subsection{A richer interface for pointwise attachments}
+
+The four-point obstruction identifies missing correlations between point
+positions inside atoms. What is the weakest efficiently maintainable
+augmentation that resolves it for interval isometries? Candidates include
+ordered occurrence maps, compressed permutations, or a profile table
+augmented with a finite transport action. A proposed augmentation should be
+tested first on the four-point pair and then on its large repeated analogues.
+Its description length and composition cost must be bounded independently
+of expanded multiplicities.
+
+\subsection{Program languages with changing labels}
+
+The present power rule is sound only for repeated identical cone actions.
+A natural extension is a grammar node that applies a fixed permutation of
+atom names between copies. For a supplied finite permutation, one can ask
+whether its orbit decomposition allows the join of all conjugated cone
+summaries to be computed by binary powering. The challenge is to preserve
+exact prefix positions and first-event guarantees when the action is no
+longer idempotent after one copy. This is a finite algebra question with a
+clear transition from the current theorem, not an assumed property of
+geometric monodromy.
+
+\subsection{Packing versus direct vector replay}
+
+Measure both source compilation modes and direct vector weights on actual
+native orbit traces. Vary the number of atoms, endpoint bits, support
+density, and capacity imbalance. Include workloads with no reuse, several
+low-dimensional queries, and many correlated queries. A possible adaptive
+policy would use measured arithmetic work to choose between direct replay,
+trace reuse, and full profile compilation, but it should never substitute
+a heuristic hash for the exact packing proof. Negative results are useful:
+large packed integers can be the wrong representation on some traces.
+
+\subsection{Sparse profile storage and selected observations}
+
+The current reference stores every coordinate in every profile row. Can a
+sparse row representation reduce $sm$ work while preserving cheap equality,
+source validation, and quotient aggregation? Conversely, can a requested
+family of observations be compiled into a smaller exact sufficient statistic
+than the full atom profile? \Cref{thm:observational} rules out lossless
+compression for \emph{all} observations beyond equivalence-preserving
+encoding, but a restricted observation family may have a much coarser
+complete quotient. Its closure under the chosen cone action must be proved,
+not presumed from marginal counts.
+
+\subsection{Orientation and additional geometric charges}
+
+A fixed signed cover can be compiled separately, but an attachment can
+introduce new parity constraints. Determine an explicit attachment contract
+under which cover profiles can be updated without reconstructing the signed
+relation. Likewise, for Euler or boundary data after a topological move,
+identify the added and removed cell charges and prove their ownership.
+The current old-point quotient sum is not a substitute for this topological
+calculation.
+
+\subsection{Formalization and adversarial replay}
+
+The finite proofs here are suitable for formalization: mixed-radix decoding,
+color-preserving orbit equivalence, the quotient graph theorem, the potential
+$2a-b$, and the prefix/plateau certificate lemmas. A useful formal target
+would isolate an abstract finite equivalence-relation interface from the
+encoded AHT layer. On the software side, further fuzzing should target huge
+serialized inputs, aliases between result wrappers and certificates, and
+cancellation during native proof construction. Resource exhaustion must
+remain inconclusive, not become a false topology verdict.
+
+\subsection{The global amortization problem}
+
+Finally, establish a replacement for the unbounded terms in
+\eqref{eq:global-ledger}. One promising shape is a decomposition into
+quasi-polynomially many source-stable phases, each with a succinct operation
+grammar and a certified interpretation. The necessary theorem must jointly
+bound phase count, atom refinement, new geometric descriptions and normal
+vector search. The present $2m-1$ bound would then remove one repeated local
+cost automatically. Until those structural bounds are available, it should
+be used as a proved component of the programme rather than a label for the
+whole recognizer.
+
+\section{Conclusion}
+
+A source-atom profile census is more than a collection of marginal counts:
+it is the exact invariant of an equivalence relation under arbitrary
+atom-preserving point permutations. That makes it a complete reusable
+observer for additive atom-constant weights and full-port cones. The
+multiplicity-aware graph action preserves compressed size, and the active
+subpartition potential limits a fixed-atom phase to $2m-1$ effective
+component changes. This finite-height structure supports exact traversal of
+binary-repeated programs without traversing their expanded instructions.
+
+The resulting improvement is a rigorous local acceleration with executable
+reference code, independent replay, and a sharp structural bound. The
+article also identifies where the abstraction fails and what must be proved
+before it can accelerate a complete unknot-recognition hierarchy. This
+combination---an exact improvement and an explicit boundary of validity---is
+the intended contribution to the repository.

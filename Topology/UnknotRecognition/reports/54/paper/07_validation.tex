@@ -1,0 +1,141 @@
+\section{Executed validation and controlled measurements}
+\label{sec:validation}
+
+\subsection{Evidence scope}
+
+All experiments in this section were executed on CPython 3.13.5 on Linux.
+The scripts, seeds, source SHA-256 hashes, raw samples, and console logs are
+included. The final deterministic audit passes 25 unittest methods with
+zero failures and zero errors. A test method may contain thousands of
+individual checks; the method count must not be confused with the number
+of fixtures.
+
+The core evidence uses three computational routes: the incremental
+multiplicity-aware implementation; an independent graph implementation over
+types and atoms; and, on bounded inputs, a literal pointwise equivalence
+oracle. Packing tests use a separately named literal weighted backend with
+the same API shape as the native producer. This tests the adapter's scalar
+compilation mathematics, but is not execution of weighted AHT.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}l r X@{}}
+\toprule
+Family & Cases & Comparison or property checked\\
+\midrule
+Finite one-cone exhaustive audit & 9,338 & Every set partition on $1$--$5$ points,
+every consecutive atom partition, and every atom subset; literal, incremental
+and graph answers agree.\\
+Random packing sources & 500 & Both scalar modes agree with literal joint profiles.\\
+Random sequential sources & 700 & Ten successive cones each: 7,000 complete
+census comparisons, plus support-edge and activation bounds.\\
+Random grammar sources & 400 & Every expanded prefix and every count threshold
+in each bounded fixture; independent event-history replay.\\
+Sharp-height families & 16 & $m=1,\ldots,16$ attains exactly $2m-1$ events,
+including huge intervening plateaux.\\
+\bottomrule
+\end{tabularx}
+\caption{Core validation inventory. Counts describe actual executed finite
+loops or explicit families, not estimates of unrun native coverage.}
+\label{tab:validation}
+\end{table}
+
+Additional tests cover a $2^{16000}$ population on 64 atoms, packing fields
+with 16,000-bit capacities, a delayed threshold at $2^{16000}+1$, a
+2,500-node dependency chain, empty universes, zero powers, duplicate atom
+names, malformed grammar references, invalid Boolean integers, exact
+hexadecimal transport, clone isolation, and transactional input validation.
+They also exercise the four-point partial-attachment obstruction, signed
+observations, modified certificate claims, and checker execution with the
+producer functions disabled.
+
+The exhaustive count can be independently checked combinatorially. For $n$
+points there are $\operatorname{Bell}(n)$ set partitions and
+$\binom{n-1}{m-1}$ consecutive partitions into $m$ atoms, each with $2^m$
+cone subsets. Thus the number of cases is
+\[
+ \sum_{n=1}^{5}\operatorname{Bell}(n)
+ \sum_{m=1}^{n}\binom{n-1}{m-1}2^m
+ =\sum_{n=1}^{5}2\operatorname{Bell}(n)3^{n-1}=9338.
+\]
+The audit script also obtains this counter directly by executing the test.
+
+Finite tests cannot prove the asymptotic claims. Their role is to check
+that the implementation matches the independently proved formulas,
+particularly where inactive multiplicities or virtual roots make an
+apparently routine union-find implementation easy to get wrong.
+
+\subsection{First-threshold experiment}
+
+The fixture has eight atoms and one profile type $(1,\ldots,1)$ of
+multiplicity $2^{256}$. The five-node grammar is the delayed-threshold
+family from \cref{sec:programs}. We compare direct descent with an exact
+prefix-bisection implementation using the same compiled table and producer
+prefix evaluator. Each query creates a fresh quotient state. Grammar
+construction is outside the timed region for both arms.
+
+\input{threshold_table}
+
+The benchmark uses one warmup per arm and seven measured rounds in a
+seeded shuffled order. There is a third, identical descent-control arm.
+For the short descent queries, each timed batch contains 1,000 fresh calls.
+Bisection uses $\max(1,1024/b)$ calls per batch. Reported sample times are
+total batch times divided by the exact call count. Answer assertions and
+independent source-relative certificate checks are outside these timings.
+
+At $b=4096$, direct descent uses two state trials and about $0.0105$ ms per
+query; prefix bisection uses 8,194 evaluations and about $49.98$ ms. The
+large timing contrast is expected from this intentionally repetitive
+algebraic family. It is not a measured speedup over the maintained unknot
+recognizer, and it does not measure initial AHT compilation. The more
+portable finding is the exact evaluation count: the direct method depends
+on the grammar rather than the bit length of its expanded endpoint search
+range.
+
+An initial unbatched run showed noticeable variability between identical
+microsecond-scale descent arms. Its raw data are retained as
+\path{results/benchmarks_initial_unbatched.json}; they were not silently
+replaced. The displayed table uses the batched follow-up in
+\path{results/benchmarks.json}. Batched identical-control medians are close,
+though residual measurement noise remains. No cross-machine significance
+or confidence interval is inferred from these seven rounds.
+
+\subsection{Complete history experiment}
+
+For the sharp family, start with $m$ atoms containing two isolated points
+each. Apply all singleton-atom cones, then $m-1$ connecting cones. Insert
+$2^{2048}$ empty instructions before and after effective operations and
+repeat the whole block $2^{4096}$ times. The correct number of reported
+events remains $2m-1$, since all later copies are redundant.
+
+\input{history_table}
+
+The $m=16$ case returns all 31 effective event positions using 126 state
+trials, with median time about $1.60$ ms. Its expanded length has more than
+6,000 bits. Independent plateau checking accepts the complete list, while
+omitting either endpoint event is rejected. This validates an event-history
+operation rather than merely a final-count shortcut.
+
+Again, the fixture is an explicit algebraic stress family with known
+expectations. It is not represented as a knot corpus. Large binary powers
+are essential for testing the intended compression, but their successful
+handling says nothing about whether a natural knot hierarchy presents the
+same fixed-atom program structure.
+
+\subsection{Native integration gate and promotion criteria}
+
+\path{integration/native_gate.py} is an additive gate for a real ProveIt
+checkout. It is designed to compare packed and direct-vector native
+histograms with literal expectations on 200 random small interval systems,
+check source-bound native certificates in both packing modes, reject source
+mutations, and test a genuinely compressed eight-atom parallel system with
+multiplicity $2^{1024}$. These are specified future gate checks, not counted
+as completed experiments in this article.
+
+The saved status is \texttt{NOT\_RUN}. The missing runnable checkout means
+that there is no native timing table, no verified maintained-suite count,
+and no measured whole-knot improvement in this delivery. Before promotion,
+the gate should pass at the target commit, followed by the maintained test
+suite and paired native query benchmarks. A production integration should
+remain opt-in until compilation overhead, cache reuse, and source-refinement
+frequency have been measured together.

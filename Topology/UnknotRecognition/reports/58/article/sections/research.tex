@@ -1,0 +1,182 @@
+\section{Further research questions and proposed next steps}
+\label{sec:research}
+
+The following questions are ordered roughly from local implementation work
+to the remaining global topology barriers. Each has a concrete success
+criterion. They are proposed tasks, not consequences of the current proofs.
+
+\subsection{Make least-transversal replay closer to linear in trace size}
+
+Can a persistent ordered interval sequence replace the current repeated
+live-list scans and reverse unions, with an
+$O((E+G)\log(G+2))$ structural bound? The least-representative theorem and
+$G$-interval output bound already provide the necessary compact output.
+The missing work is a data structure supporting rank splits, gap insertion,
+prefix truncation, and coalescing with explicit binary costs and a simple
+checker. A successful implementation should show both a proof of the
+improved structural bound and a crossover measurement against the small
+list implementation; asymptotically better trees may lose on short traces.
+
+\subsection{Compile reusable weighted observers}
+
+The same normal-arc relation can receive Euler, boundary, coordinate, or
+other additive weights. The current weighted kernel replays a validated
+orbit trace for each query. Can that trace be compiled into a compact
+operator that transports new interval weights without repeating unrelated
+arithmetic or source reconstruction? The operator must retain the
+contraction/folding structure and avoid a dense matrix over the expanded
+point universe. A useful milestone is a source-bound transport circuit
+with a polynomial construction bound and a query bound in its explicit
+size, measured on sequences of distinct observers of the same surface.
+
+\subsection{Add essential-disc information without losing correlations}
+
+On a torus boundary, the maintained two integral boundary-intersection
+weights distinguish a compressing disc from a vertex-link disc. Combining
+them with $(\chi,b)$ yields a four-coordinate integer observer. The
+cover inversion extends verbatim to $\Z^4$, after which boundary fields
+can be reduced modulo two. Can a verified four-weight type census replace
+separate topology and essentiality calls efficiently? The test must retain
+the correlation of boundary class with a particular disc type; combining
+unlabelled totals afterward is unsound. Any attempt to use torsion weights
+during inversion should supply new preimage-sum equations and prove their
+uniqueness or describe the remaining ambiguity.
+
+\subsection{Retain the representative-to-type association}
+
+The present histogram forgets which least representative carries which
+type. Weighted contraction events and the live-source interval map could
+instead emit a piecewise-constant signature function on the transversal.
+Can that association be retained with a polynomial number of intervals,
+and then used to request the normal coordinates of one selected component?
+This would connect an inexpensive topology census to a concrete surface
+needed for cutting. The required output is a selected vector with a
+source-bound component witness, not an arbitrary vector having the same
+Euler characteristic and genus.
+
+\subsection{Extend the geometry validator beyond one torus boundary}
+
+The two-weight construction itself does not need a boundary homology basis.
+Its next natural domain is compact orientable manifolds with several
+boundary components of arbitrary genus, as arise after cutting in a
+hierarchy. The immediate goal is an independently audited validator for
+that domain, with normal boundary-arc inclusion and the same source-bound
+certificates. This generalization would not by itself recognize
+compressing discs: on a higher-genus boundary, an essential separating
+curve has zero homology class. A correct essentiality stage needs compressed
+complement topology or a suitable normal-curve algorithm, rather than an
+unchanged torus parity test. The fast curve algorithms of Lackenby provide
+relevant primitives and quantitative models \cite{lackenby-curves}.
+
+\subsection{Extract boundary slope or attachment data in compressed form}
+
+Knowing that a component has $b$ boundary circles is weaker than knowing
+their slopes and how they meet a boundary pattern. On a torus, can one
+compute a compressed distribution of oriented primitive slopes, associated
+with component representatives, without listing parallel circles? For
+general boundary patterns, the corresponding target is ordered attachment
+data with a controlled encoding. Both queries require more structure than
+the scalar marker count. A successful interface should state exactly what
+gluing operations it supports and certify the association to the original
+surface.
+
+\subsection{Find larger geometric cores than a single common factor}
+
+The current core removes all vertex links and one global quadrilateral
+content. Many surfaces contain several large parallel families with
+different multiplicities and total coordinate gcd one. Can these be
+decomposed into a bounded number of independently certified interval-bundle
+families plus a small residual? A coordinate sum alone is not enough:
+normal addition can change connectivity, so each independently scaled
+family needs a geometric disjointness or bundle-monodromy certificate.
+The repository's earlier dihedral-cover methods offer a restricted
+starting point. A promising theorem would bound the residual encoded
+complexity by the number of genuinely interacting families.
+
+\subsection{Complete certified diagram-to-exterior provenance}
+
+The normal-surface validator certifies a triangulated manifold and a vector
+in it. To use a disc certificate for a knot diagram, a separate construction
+must establish that this is its exterior, with the correct boundary data.
+The next milestone is a reproducible diagram-to-triangulation producer and
+a small combinatorial provenance checker whose moves preserve the specified
+complement. Practical topology systems can assist construction, but an
+unverified call returning an isomorphism signature is not the missing
+proof. The certificate should survive subsequent triangulation simplification.
+
+\subsection{Discover useful surfaces with a controlled search parameter}
+
+The central unresolved search question remains: which normal vectors should
+be supplied? Could bounded frontier width, a small family of quadrilateral
+supports, or a compressed hierarchy invariant guarantee a useful disc or
+multi-surface among only quasi-polynomially many candidates? A useful
+restricted theorem must specify the input class, give an effective
+candidate procedure, and charge arithmetic in coordinate bits. Merely
+assuming logarithmic width after seeing successful examples would not
+establish a general bound. The present census can certify the topology
+of proposed candidates, making it suitable for testing such search rules.
+
+\subsection{Implement a compressed cut with provenance}
+
+An important next geometric operation is cutting along a selected normal
+surface while retaining a polynomial description of the resulting cells,
+boundary pieces, and attachment maps. The topology spectrum can decide
+which component types are present, but it does not specify this cut.
+A defensible first target is a restricted interval-bundle or layered
+normal family where the attachment map has an explicit small grammar.
+The implementation should produce a source-bound gluing certificate and
+a theorem bounding the size of every intermediate representation. This
+would advance the hierarchy programme more directly than another
+uncorrelated numerical invariant.
+
+\subsection{Control hierarchy depth, resets, and total encoded volume}
+
+Once local cuts and surface discovery are available, the remaining task
+is an amortized global argument. Can one define an explicit potential
+whose decrease or controlled growth bounds the number of compressions,
+discarded later surfaces, and hierarchy restarts? The potential must also
+control encoded attachment data, not just Euler characteristic or the
+number of handles. A concrete outcome would specify the parameters of
+Lackenby's accelerated multi-surface/Cheeger-region programme well enough
+to prove a product bound on all local operations. Distinguish a bound
+$2^{O((\log n)^3)}$ from the stronger
+$2^{O((\log n)^2)}$ goal when reporting progress.
+
+\subsection{Formalize the finite combinatorial certificates first}
+
+The least-transversal invariant, reverse gap formula, and finite-support
+cover inversion are suitable initial Lean formalization targets. Their
+objects are finite relations, interval maps, and integer histograms;
+they can be stated without formalizing all of three-manifold topology.
+A staged project could first verify the algebraic equations and the
+selector compiler, then connect them to formal normal-arc and orientation
+cover constructions. The delivered Python tests and certificates are
+valuable evidence but are not machine-checked mathematical proofs.
+
+\subsection{Measure an integrated geometric workload}
+
+The present timings concern supplied-vector topology, not elapsed time to
+recognize a knot from a diagram. Once a discovery stage actually invokes
+these observers, measure the number of calls, the amount of core reduction,
+and the total fraction of runtime they consume on a held-out corpus.
+An optional observer portfolio could choose direct versus reduced versus
+coordinate-rich queries from measured structural features. Any policy
+should preserve exact certificates and publish its negative cases. The
+success criterion is a faster complete workload with the same mathematical
+decision, rather than a faster isolated function that rarely occurs.
+
+\Needspace{10\baselineskip}
+\section{Concluding assessment}
+
+The implemented result is a complete compressed topology spectrum for a
+supplied normal surface, with a constant-dimensional observer and an
+orientation-aware numerical core. It includes a certified least-transversal
+primitive, actual boundary-circle counts, sparse cover inversion, and
+independent original-source replay. These operations remove identifiable
+representation and repeated-arithmetic costs and give useful building
+blocks for later geometric processing.
+
+Surface discovery, compressed cutting with attachment data, and global
+hierarchy accounting remain the decisive next steps toward quasi-polynomial
+recognition. The coordinate route remains available when an embedded
+component is required.
