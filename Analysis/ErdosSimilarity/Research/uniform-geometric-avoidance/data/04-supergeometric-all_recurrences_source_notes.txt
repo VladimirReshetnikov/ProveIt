@@ -1,0 +1,52 @@
+COMPACT ALL-RECURRENCE EXTENSION: SOURCE AND AUDIT NOTES
+Prepared 8 October 2026.
+
+Primary background source:
+Stefan Gerhold, The Shape of the Value Sets of Linear Recurrence
+Sequences, Journal of Integer Sequences 12 (2009), Article 09.3.6.
+Published 27 April 2009.
+https://cs.uwaterloo.ca/journals/JIS/VOL12/Gerhold/gerhold5.pdf
+https://arxiv.org/abs/0903.4043
+
+The published primary article and its arXiv counterpart were inspected.
+
+What is used:
+The bounded/unit-modulus portion of Gerhold's argument: after a stable
+remainder tends to zero, a finite sum of unit-root exponentials can be
+split into finitely many residue classes whose closures are continuous
+real torus images, hence compact intervals. See PDF pages 2-3, equations
+(2)-(4), and the final Kronecker remark on PDF page 4.
+
+The extension proves this independently. It isolates individual active
+roots by shift operators, uses a Q-basis of their arguments followed by
+one denominator q, and gives the elementary Fourier-average proof of
+the required density. No closed-subgroup or compact Lie group theorem
+is invoked. The classical structural lemma is not claimed novel.
+
+Source interpretation:
+Gerhold's published proof, PDF page 2, states that when the dominant
+root modulus differs from one, or the dominant polynomial degree is
+positive, |a_n| tends to zero or infinity. As stated this inference is
+not valid for general oscillatory recurrences: e.g. a_n=n(1+(-1)^n)
+has zeros on every odd index and diverges on even indices. We neither
+quote nor rely on that inference or on the general unbounded closure
+theorem. Our all-recurrence avoidance proof reduces unbounded patterns
+directly by compactness; only bounded recurrence structure is needed.
+This observation does not establish that the whole published theorem
+is false, and no such claim is made.
+
+Scope checks:
+- The stronger theorem applies to compact K=F intersect [0,1].
+- It is false for the nonempty 1-periodic F itself: x+Z lies in F.
+- Infinite range is necessary for universal avoidance; finite patterns
+  occur at sufficiently small scales in any positive-measure set.
+- Infinite range of a bounded sequence persists after finite truncation.
+- At least one residue subsequence then has infinite range.
+- Arithmetic subsequences satisfy a constant-coefficient recurrence by
+  applying Cayley-Hamilton to T^q.
+- Subtracting the limit adjoins at most the root 1 to an annihilator.
+- The previous null-recurrence theorem excludes infinitely many
+  distinct points, not just infinitely many repeated occurrences.
+
+
+Integration: the extension is included in Section 5 of the delivered article.

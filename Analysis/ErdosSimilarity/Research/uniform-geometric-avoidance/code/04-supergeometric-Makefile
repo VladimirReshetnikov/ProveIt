@@ -1,0 +1,14 @@
+PYTHON ?= python3
+TEX = supergeometric_and_recurrence_avoidance
+
+.PHONY: all check clean
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(TEX).tex
+
+check:
+	$(PYTHON) code/verify_routing.py --json verification/routing.json
+	$(PYTHON) code/verify_recurrences.py --json verification/recurrences.json
+	$(PYTHON) code/verify_budget_and_examples.py --json verification/budget_and_examples.json
+
+clean:
+	latexmk -c $(TEX).tex
