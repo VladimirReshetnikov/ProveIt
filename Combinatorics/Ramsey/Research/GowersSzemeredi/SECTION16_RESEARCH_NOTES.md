@@ -2926,3 +2926,10 @@ a 57-module source closure. This strengthens the verified Bohr-sum input
 to the remaining bounded-span selection and algebraic-regularity argument;
 it does not close the five remaining numbered statements or their deep
 structure dependency.
+
+The combined uniform Bohr-sum audit passes: 6,301 public Gowers theorems,
+a 4,962-module facade (4,152 OAI modules), and 4,964 modules including the
+audit and import-compatibility check. All twelve new declarations also
+pass individual transitive axiom checks. Only propext, Classical.choice,
+and Quot.sound occur. The source ledger remains 115/5 with its existing
+fidelity caveats, and the selected upstream module scope is unchanged.
