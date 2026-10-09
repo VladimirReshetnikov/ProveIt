@@ -1,0 +1,260 @@
+\section{A concrete route toward quasi-polynomial recognition}\label{sec:research}
+
+The locality theorem separates a search-theoretic cost that is now controlled
+from geometric obligations that are not. This section states those obligations
+as questions with testable intermediate targets. A change in a parameter or
+source class should be reflected in the theorem statement, rather than hidden
+inside an empirical success rate.
+
+\subsection{The sufficient coverage theorem we would need}
+
+Here is one precise form of a future global result. It allows a controlled
+list of sources, rather than assuming that a single height seed works on
+every diagram.
+
+\begin{proposition}[Conditional recognition consequence]\label{prop:conditional}
+Suppose there is an algorithm that, from an $n$-crossing knot diagram,
+constructs at most $n^{O(\log n)}$ authenticated exterior triangulations with
+specified integral cocycles and region budgets. Assume its construction
+cost is $n^{O(\log n)}$, all source sizes and marking bit lengths are
+polynomial in $n$, every region budget satisfies
+$c=O(\log n)$ and $r+U=O(\log^2 n)$, and a complete component-disc predicate
+has polynomial bit complexity on each resulting endpoint. Finally assume
+the following uniform coverage property: every unknot diagram has a
+compressing-disc endpoint in at least one of the resulting region families.
+Then exhaustive region search gives an $n^{O(\log n)}$ unknot-recognition
+algorithm.
+\end{proposition}
+\begin{proof}
+Theorem~\ref{thm:local} bounds each search by $n^{O(\log n)}$; multiplying
+by the number of sources preserves this bound. Source authentication and
+component-disc replay make every positive verdict sound. The uniform
+coverage property guarantees a positive endpoint on every unknot. Therefore,
+after all the finite searches finish without one, the diagram is knotted.
+The stated predicate cost ensures that this exhaustion is an algorithm,
+not a search with unresolved endpoint queries.
+\end{proof}
+
+The proposition identifies exactly how a positive coverage theorem would
+also justify negative decisions by exhaustion. No separate short negative
+certificate is required for that logical consequence. The current artifact
+does not establish uniform coverage and therefore does not take that final
+negative step. A few short successful traces, or a coverage theorem only for
+an already recognized subfamily of unknots, would be insufficient.
+
+An alternative program can work through a certified hierarchy. In that case
+one must bound the number, size and marking cost of all subsequent search
+sources, as in \eqref{eq:outer-sum}, and prove the outer hierarchy complete.
+A local simplification that can restart without a global decreasing measure
+does not yet supply that bound.
+
+\subsection{Priority 1: geometric locality and an honest obstruction search}
+
+\paragraph{1. Which source families admit a logarithmic or squared-logarithmic region?}
+Fix a concrete diagram-to-exterior construction, its shelling policy and
+its cocycle normalization. Ask whether every solid torus in this source
+family admits a disc endpoint with $r+U=O(\log^2 t)$, first with one connected
+allowed region and then with $O(\log t)$ components. The theorem should
+specify whether the cocycle is fixed, optimized by vertex potentials, or
+selected from a bounded list. Changing that choice changes the coverage
+problem.
+
+A useful initial milestone is a proof for one explicit infinite family of
+unknot diagrams that survives the existing shortcut stages and creates
+nontrivial interior move choices. Merely testing a family whose initial
+coherent seed is already a disc would establish little about geometric
+search. The cancelled-braid empty-region miss and the eight-tetrahedron
+obstruction are starting controls with different failure mechanisms.
+
+\paragraph{2. Can the required region or upward budget be proved large?}
+For increasing triangulated solid tori, compute the minimum allowed-region
+size and minimum total upward count separately. Certified lower bounds
+require complete exhaustion of the smaller family, with no capped endpoint
+queries. Such computations can refute an overly strong conjecture on a
+finite example, while a family construction could rule out a proposed
+uniform logarithmic theorem. Useful adversarial sources include long layered
+regions, separated interacting defects, and relabelled copies that expose
+heuristics based on arbitrary row order.
+
+The target is not to optimize a single scalar $r+U$ before understanding
+both terms. A small permitted spatial region may still need many expansion
+events, and a trace with few upward events can consume a large initial
+region. The current count makes their different geometric meanings visible.
+
+\paragraph{3. Can hierarchy structure produce the needed regions?}
+Relate the initial consumption footprint to the product regions,
+multi-surfaces and controlled decompositions in the hierarchy program
+\cite{LackenbyTalk,Lackenby2026}. A useful lemma would take one precisely
+specified reduction object, produce a legal marked trace, and bound its
+consumed original cells, number of components and total expansions. The
+proof must include the representation of the surface and its marking after
+cutting. An existence theorem for a topological simplification without this
+translation leaves the algorithmic parameters unbounded.
+
+The successful reduction object may be much smaller than the normal surface
+it encodes. Binary multiplicity is therefore compatible with a small region
+theorem; enumerating all normal sheets to locate that region is not.
+Conversely, the height-growth lemma alone controls arithmetic and gives
+no spatial localization. These two estimates should be proved separately
+and combined only at the final cost accounting.
+
+\paragraph{4. Can small excess height be converted to a small total budget?}
+Pachner-graph experiments often constrain maximum excess tetrahedron count
+\cite{BurtonPachner}, whereas the theorem here constrains total upward
+events. A conversion theorem would need to remove redundant excursions or
+bound essential returns. Commuting disjoint moves removes order redundancy
+but does not eliminate a sequence of dependent expansion--collapse cycles.
+An exact state-based loop-removal argument may help with shortest traces;
+its state count and marking dependence must be included. A bound on upward
+bursts has the same issue and should not be substituted for $U$.
+
+\subsection{Priority 2: stronger complete geometric search}
+
+\paragraph{5. Can separators replace total active-region size?}
+The commitment bound charges every freely assigned incarnation. In a long
+trace whose interactions have a small separator, a dynamic program might
+reuse completed subregions instead. A promising parameter is the width of
+the dependency graph of events, with edges whenever one event consumes a
+cell created or constrained by another. The first theorem needed is a
+bounded interface description: which boundary face maps, local cocycle
+values, surviving identities and surface data suffice to compose partial
+traces? Without that description, invoking treewidth only renames the
+state-explosion problem.
+
+A concrete target is a family with $r=\Theta(t)$ but logarithmic interface
+width, together with a finite compatibility relation and a proved state
+count polynomial in the marking bit length. This would extend the useful
+class beyond small initial footprints.
+
+\paragraph{6. Which additional local relations safely reduce trace classes?}
+The present sleep relation uses disjoint supports. Burton's overlapping
+composite relations suggest larger reductions \cite{BurtonPachner}. Each
+candidate needs a marked relative-boundary proof and an event-identity rule
+that remains stable under other reductions. Test completeness against the
+naive oracle before evaluating speed. A raw triangulation transposition table
+must include remaining resources and continuation restrictions, or supply a
+dominance proof. Equal unmarked endpoints alone do not justify dropping
+one search state.
+
+Region enumeration itself offers a modest immediate target: share exact
+endpoint-predicate results across allowed regions while retaining separate
+continuations. The proof should distinguish the terminal surface property,
+which can be reused, from the permissions to consume original cells,
+which differ. This avoids repeatedly checking the source endpoint and other
+common states without changing the searched union.
+
+\paragraph{7. Can the framework include the other Pachner moves?}
+For unmarked formal star replacements, a tentative alphabet would have
+six edge ports, four face ports, four vertex ports, one whole-cell port
+and idle, for sixteen symbols. If $u_{23},u_{14}$ count expansions and
+$d_{32},d_{41}$ count contractions, set $E=u_{23}+3u_{14}$. The tetrahedron
+balance gives
+\[
+ d_{32}+3d_{41}\le t+E.
+\]
+The birth count then obeys
+\[
+ t+3u_{23}+4u_{14}+2d_{32}+d_{41}\le3t+5E.
+\]
+This accounting suggests an analogous constant-alphabet theorem, but the
+formal-star legality, commutation and marking rules must be proved before
+asserting it for an implementation. In particular, a $1$--$4$ move introduces
+an interior vertex whose cocycle height needs a canonical choice or an
+explicitly bounded search. The current artifact does not implement that
+extension.
+
+\paragraph{8. Can positive traces be made smaller without weakening replay?}
+The explicit-snapshot certificate is polynomial for one bounded trace, but
+repeats unchanged surrounding tetrahedra at every move. A persistent face-map
+representation or a shared-prefix certificate DAG could remove that
+duplication. The independent verifier should accept a stream of local changes,
+check the same relative-boundary facts, and bound its memory. Storing all
+endpoints of an exponential search is a different problem: a compact proof
+of one success does not compress the whole search tree.
+
+\subsection{Priority 3: exact LP discovery and normal-surface structure}
+
+\paragraph{9. Can a genuine triangulation realize a superconstant screening gain?}
+The algebraic separation has unit coefficients and sparse equations, but
+normal matching matrices also encode very specific face and disc-type
+incidences. Construct a family of actual compact triangulations for which
+the ordered baseline makes asymptotically more deletion calls than local
+witness screening. A weaker useful first target is a rigorous lower bound
+on the number of redundant baseline tests in a layered or glued family,
+with a matching positive point and independently checked topology. The
+finite solid-torus timings do not establish such an asymptotic family.
+
+\paragraph{10. What geometric hypotheses bound the support antichain?}
+Proposition~\ref{prop:exponential-antichain} rules out a small-antichain
+argument from sparsity and unit coefficients alone. Possible additional
+hypotheses include a controlled decomposition of the triangulation, a
+bounded number of quad types interacting with the boundary, or a restricted
+rank-one cone. The desired theorem should bound the number of useful
+minimal supports or provide a small subcollection covering all deletion
+queries encountered by a specified branch policy. Bounding all supports
+may be stronger than the algorithm needs.
+
+\paragraph{11. Can first-node LPs be accelerated with exact dual lifting?}
+The capped figure-eight controls make this a direct implementation priority.
+An equality-row basis can reduce a redundant matrix before simplex. A
+certificate of the row transformation allows a dual of the reduced problem
+to be lifted to the original equations. Fraction-free elimination and sparse
+factorization are natural candidates, but their exact coefficient growth,
+per-mask rank changes and reconstruction cost need measurements and proofs.
+
+Such an optimization can preserve mathematical soundness while changing
+the exact serialized multiplier and hence falls outside the byte-preserving
+mode proved here. It should have its own compatibility contract. More
+ambitiously, a polynomial-bit-complexity LP method can replace the pivot
+engine while retaining exact independently checked primal or dual outputs;
+one must count its recovery and verification work, not merely invoke a
+real-arithmetic LP bound. Warm starts are another practical direction,
+but need careful basis validation after coordinates are deleted.
+
+\paragraph{12. How should positive and negative evidence interact?}
+Positive supports safely answer any further zero restriction containing
+them. A negative dual has the opposite issue when columns are restored:
+its inequality must be checked on every newly allowed column. A two-sided
+cache could reuse both forms of evidence with full matrix checks. Its
+branch policy and final proof may change, so compare it against the present
+byte-preserving producer rather than silently weakening that guarantee.
+Useful quantities include exact validation cost, cache hit location, and
+the number of current-node LPs avoided.
+
+\paragraph{13. Can propagation backdoors be bounded after geometric preprocessing?}
+The incoming dual-certificate work isolates quadrilateral propagation
+backdoors. The locality search may expose triangulations with smaller
+backdoors even when it does not directly find a disc. A joint theorem
+would bound both the cost of reaching such a triangulation and the number
+of unresolved choices afterwards. The endpoint predicate would then be
+algebraic complexity reduction rather than immediate disc discovery. It
+must remain source-bound, and the outer choice of endpoints must not
+reintroduce an uncontrolled number of LP searches.
+
+\subsection{Priority 4: evaluation that can disprove the proposed story}
+
+\paragraph{14. What does a matched source-level cohort show?}
+Create a frozen cohort stratified by original diagram crossings, exterior
+tetrahedron count, known shortcut success and initial coherent-disc status.
+Every arm should receive identical face pairings and marking choices.
+Compare time to a verified positive or negative result, the proportion
+remaining inconclusive under explicit caps, total upward moves, region size,
+endpoint-query time, LP pivots and certificate size. Independent relabellings
+and matched constructor versions are essential controls for order-sensitive
+heuristics. The present fifteen LP cases and six geometric control sizes
+are useful mechanism tests, not such a representative recognition study.
+
+\paragraph{15. Which empirical claims survive fixed-resource reproduction?}
+Repeat paired timing in an isolated environment, report all censored runs,
+and retain the raw per-pair observations. Separate source construction,
+search, terminal verification and later independent replay when their cost
+matters. A speedup that disappears after including required verification is
+not an end-to-end gain. A future benchmark should also include the unfavorable
+small cases and node-LP bottlenecks already observed here.
+
+The highest-value next result is a geometric theorem bounding the parameters
+in Proposition~\ref{prop:conditional}, or a rigorous obstruction showing
+that a proposed bound fails. The next implementation result is exact
+current-node LP acceleration with a checked reconstruction map. Both have
+clear acceptance criteria and address limitations that the present proofs
+and experiments identify directly.

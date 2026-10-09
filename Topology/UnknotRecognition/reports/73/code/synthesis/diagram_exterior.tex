@@ -1,0 +1,185 @@
+\section{A native, source-checked compact knot exterior}
+\label{sec:diagram-exterior}
+
+The normal-surface routines of Sections~\ref{sec:weighted-components} and
+\ref{sec:compact-coordinates} accept a supplied compact manifold. Their
+manifold checks alone do not establish that it is the exterior of the input
+knot. We now supply that missing construction for one canonical, deliberately
+unsimplified triangulation. The native producer starts from the validated PD,
+uses four crossing cells per crossing, and replaces each by five finite
+tetrahedra. A separate checker recovers the same gluing specification from
+the PD and integer barycentric coordinates. Neither routine imports Regina.
+Section~\ref{sec:cocycle-seeds} subsequently adds a restricted native
+cocycle candidate family. Complete normal-vector search and verified
+simplification remain further tasks.
+
+\subsection{Crossing cells and the source theorem}
+
+Let $n$ be the number of crossings and put $N=\max(1,n)$. The zero-crossing
+circle is represented by the positive Reidemeister-I curl with PD
+$(0,1,1,0)$. Otherwise use the original normalized PD. Its four slots are
+counterclockwise, slots $0,2$ belong to the under-strand, and slots $1,3$
+belong to the over-strand. The existing validator checks the spherical
+rotation system and the single knot component; the bare \code{Diagram}
+constructor is not accepted as evidence that those conditions hold.
+
+At crossing $c$, put a tetrahedral cell $C_{c,j}$ in the corner from slot $j$
+to slot $j+1$, with subscripts modulo four. Its vertices are the north pole
+$0$, the south pole $1$, and the two ends $2,3$ of that corner on the knot.
+Only $2,3$ are ideal vertices. Write $\tau=(2\ 3)$, fixing $0,1$, for the
+vertex permutation on each face gluing. The complete specification is:
+\begin{enumerate}
+\item Across slot $j$, glue $C_{c,j-1}$ to $C_{c,j}$ on face
+  $1-(j\bmod2)$ by $\tau$. Thus an under-slot joins faces opposite the
+  south pole, and an over-slot joins faces opposite the north pole.
+\item If an edge pairs slots $(c,j)$ and $(d,k)$, glue face $3$ of
+  $C_{c,j}$ to face $2$ of $C_{d,k-1}$ by $\tau$, and face $3$ of
+  $C_{d,k}$ to face $2$ of $C_{c,j-1}$ by $\tau$.
+\end{enumerate}
+All faces occur exactly once. Loops and repeated encounters with a crossing
+are allowed: this is a generalized triangulation, not an assertion that all
+vertices of its quotient are distinct.
+
+The topological construction is the Weeks crossing-cell decomposition,
+documented in the SnapPea kernel.\footnote{Primary source: Jeff Weeks's
+description of the triangulation algorithm in
+\href{https://github.com/regina-normal/regina/blob/e3a5c7c0e0581706d9e5531b750160b322489950/engine/snappea/kernel/link_complement.cpp}{\texttt{link\_complement.cpp}},
+especially the cell decomposition and bigon-collapse sections. The separate
+\href{https://github.com/regina-normal/regina/blob/e3a5c7c0e0581706d9e5531b750160b322489950/engine/link/complement.cpp}{Regina implementation}
+is an external comparison, not a runtime dependency or copied implementation.}
+Here is why its essential hypothesis holds. Thicken the knot near the
+equatorial sphere and retain the two polar points. The crossing and
+between-crossing meridional cuts partition its exterior into four cells per
+crossing. Their two bigon faces collapse along successive under- or over-pass
+segments; their other four faces become the displayed tetrahedral faces.
+A closed cycle of such bigons would invalidate this collapse. A nonempty
+one-component diagram encounters both the under- and over-pass of every
+crossing, so no component consists entirely of either kind. The inserted
+curl handles the empty case. The polar vertices have sphere links and the
+knot vertex has a torus link. The resulting mixed ideal triangulation is
+the knot exterior with its torus boundary collapsed to an ideal vertex.
+No removal or simplification of the finite poles is required.
+
+The native corner formula uses neither crossing signs nor a chosen strand
+orientation. Its correspondence is for the unoriented PL exterior; it does
+not supply a marked meridian--longitude basis. The local face prescription,
+the bigon-collapse theorem, and the planar source validation are the
+mathematical basis of the provenance claim. Agreement with an external
+program is additional evidence, not a replacement for that basis.
+
+\subsection{The first compatible finite subdivision}
+
+Give one mixed cell barycentric coordinates
+\[
+ (x_0,x_1,x_2,x_3),\qquad x_i\ge0,\qquad\sum_i x_i=12.
+\]
+Retain $x_2\le8$ and $x_3\le8$. These disjoint truncations remove only the
+knot vertices. The remaining convex polyhedron has the original poles and
+the six directed-edge cut points $E_{vw}$, where $v\in\{2,3\}$, $w\ne v$,
+and the two nonzero coordinates of $E_{vw}$ are $x_v=8,x_w=4$.
+Its original faces opposite $0,1$ are pentagons and those opposite $2,3$
+are quadrilaterals. There are also two triangular truncation faces.
+
+Fan each original face from its interior point $F_f$, whose coordinate $f$
+is zero and whose other coordinates are four. Leave each truncation triangle
+whole. Cone all boundary triangles to $(3,3,3,3)$. This produces
+\[
+ 5+5+4+4+1+1=20
+\]
+tetrahedra. Convexity and the face fans prove that their interiors are
+disjoint and cover the truncated cell. As an arithmetic control, the sum of
+their absolute determinants is
+$12^3(1-2/3^3)=1600$; none is degenerate. Volume agreement is a test, not
+the only justification of the subdivision.
+
+The old face maps permute barycentric coordinates by $\tau$, so they carry
+cut points to cut points and face centres to face centres. The two
+subdivisions therefore agree on every paired face. The new truncation
+triangles are precisely the finite boundary. Keeping the finite poles fills
+their spherical links; no extra spherical boundary components are created.
+
+\subsection{Pulling from a retained pole: four times fewer tetrahedra}
+
+The first implementation unnecessarily inserts a centre in every old face
+and every crossing cell. Those centres make an arbitrary face permutation
+easy to accommodate, but every actual gluing fixes both poles. This extra
+structure permits a smaller compatible subdivision.
+
+Write $P_0,P_1$ for the poles. Pull the polyhedron from $P_0$: triangulate
+the facets not containing $P_0$ and cone them to $P_0$. The facets in question
+are the pentagon opposite $0$ and the two truncation triangles. Fan the
+pentagon from $P_1$. The complete tetrahedron list becomes
+\[
+\begin{split}
+ &(P_0,P_1,E_{21},E_{23}),\quad (P_0,P_1,E_{23},E_{32}),\\
+ &(P_0,P_1,E_{32},E_{31}),\quad (P_0,E_{20},E_{21},E_{23}),\\
+ &(P_0,E_{30},E_{31},E_{32}).
+\end{split}
+\]
+Convexity proves coverage: a ray from $P_0$ through an interior point exits
+through exactly one facet not containing $P_0$. Distinct facet triangles
+give disjoint tetrahedral interiors. On each old face, the induced
+triangulation is the fan from its smallest numbered finite pole. The map
+$\tau$ fixes both poles, so these fans agree across every gluing, including
+the identifications between old faces $2$ and $3$. The two cut faces remain
+single triangles. There are now five nondegenerate tetrahedra, twelve
+external triangles and four internal face pairs per crossing cell. Their
+absolute determinant sum is again $1600$.
+
+\begin{proposition}
+For every validated classical one-component PD, the maintained constructor
+returns a compact triangulation of its unoriented knot exterior with exactly
+$20N$ tetrahedra and $8N$ boundary triangles. The original centred variant
+uses $80N$ tetrahedra with the same boundary count. The only boundary component
+is a torus. Its output format is accepted by the native normal-surface geometry
+validator.
+\end{proposition}
+\begin{proof}
+Apply the crossing-cell theorem and the pulling subdivision to its $4N$
+cells. Truncating the unique ideal knot vertex recovers a regular compact
+exterior. Each cell contributes five tetrahedra and two boundary triangles.
+The previous centred construction instead contributes twenty tetrahedra
+per cell. All other faces are paired by the local subdivisions or original
+face identifications.
+\end{proof}
+
+The default API now selects \code{pulling}; \code{subdivision='centred'}
+retains the original output byte for byte. The independent checker accepts
+both, distinguishing them by the tetrahedron count relative to the validated
+source. No arbitrary retriangulation is accepted. Standard normal-coordinate
+vectors for the default output have $140N$ entries rather than $560N$.
+This is a factor-four reduction in explicit geometry and coordinate dimension,
+not an asymptotic improvement to a complete recognition algorithm.
+
+\subsection{Independent replay and its scope}
+
+The producer labels points symbolically as poles and directed-edge cut points,
+with centres only in the legacy variant. It pairs equal local facets and
+transports symbolic labels across old faces. The checker does not import that module.
+It uses a separately specified list of integer-coordinate polygons, derives
+the old face from the coordinate that vanishes on all three facet points,
+and recovers the neighbouring corner directly from PD parity and edge mates.
+It checks every target tetrahedron and every vertex permutation. Its strict
+schema rejects booleans masquerading as indices, partial pairings and extra
+fields. Cancellation callbacks propagate, including false-valued callables.
+
+The checker accepts canonical numbering only. An isomorphic retriangulation
+requires additional evidence; even a valid one-torus-boundary manifold cannot
+be substituted for the source exterior. Both paths revalidate the source PD.
+Once this geometry check succeeds, an independently accepted compressing-disc
+certificate in the very same triangulation proves that the source knot is
+unknotted: a knot exterior in $S^3$ is irreducible, and a compression of its
+torus boundary makes it a solid torus. The construction does not itself
+produce such a disc. In particular, a boundary vertex-linking disc has
+inessential boundary and supplies no positive unknot certificate.
+
+After the normalized PD and its edge mates are available, construction and
+replay perform $O(N)$ fixed-size local combinatorial operations. The explicit
+output occupies $O(N\log(N+1))$ bits because its face records contain global
+tetrahedron indices. Source validation is polynomial preprocessing; this is
+not a claim of linear bit complexity for arbitrary input labels or of cheap
+normal-surface search on the resulting triangulation. The explicit geometry
+is still substantially larger than typical simplified external-engine
+triangulations. The API is optional and no default recognition path changes.
+
+\input{diagram_exterior_results.tex}

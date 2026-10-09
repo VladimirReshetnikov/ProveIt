@@ -1,0 +1,143 @@
+\section{Bit complexity and the verification boundary}\label{sec:verification}
+
+\subsection{Binary cocycle values stay controlled}
+
+\begin{lemma}[Height growth under a bounded number of expansions]\label{lem:bits}
+Let $D_0$ be the maximum absolute source edge value. After any trace with
+$u$ upward events, every signed edge value has absolute value at most
+$2^uD_0$. A normalized tetrahedral height row and every local coherent
+normal coordinate have bit length at most $B+u+O(1)$ when $D_0<2^B$.
+\end{lemma}
+\begin{proof}
+A downward replacement removes its central edge and creates no new global
+edge. Surviving edge values are unchanged. For an upward replacement, the
+new diagonal joins the formal apices $a,b$. Choose any belt vertex $v$.
+Its value is
+\[
+ h_b-h_a=(h_b-h_v)+(h_v-h_a),
+\]
+the sum of two old signed edge values. Its magnitude is at most twice the
+previous maximum. All other values persist. Induction proves the bound.
+Each normalized local height is an edge difference from the first corner.
+The coherent normal coordinates are gaps between ordered local heights,
+and each gap is bounded by the local span, itself an edge difference.
+\end{proof}
+
+This bound charges arithmetic to the number of expansions, not to the
+potentially enormous number of normal discs. Multiplying the initial heights
+by a large integer changes the arithmetic bit size without requiring expanded
+normal sheets. The tests include a 2,048-bit marking control.
+
+\subsection{Move and identity costs}
+
+There are at most $6(t+U)$ local edge occurrences and $2(t+U)$ paired faces.
+Grouping edge occurrences and checking the fixed formal patterns enumerates
+the possible events using polynomial work. Each accepted transition uses
+the existing replacement producer and its independent relative-boundary
+checker, followed by independent cochain transport replay. The implementations
+may rebuild global incidence data; they are not claimed to perform every
+move in constant time.
+
+An output incarnation has a structural name consisting of its event's
+consumed identities and local ports, its event kind, and its output slot.
+Repeatedly printing a fully expanded ancestry expression could be very large.
+The code instead interns these expressions as a directed acyclic graph with
+exact tuple equality. A path creates only $O(t+r+U)$ name nodes. Integer IDs
+are handles into the shared table; a cryptographic digest is not used as a
+proof that two names are equal. For the mathematical encoding argument one
+may fix any total order on the exact names. Within an execution, existing
+interned IDs never change.
+
+If every intermediate triangulation and height list is stored in a positive
+certificate, there are at most $r+2U$ moves and each list has at most $t+U$
+rows. A conservative bit-size bound is therefore
+\begin{equation}\label{eq:trace-proof-size}
+ O\!\left((r+2U+1)(t+U)
+     (B+U+\log(t+U+1))\right),
+\end{equation}
+plus the terminal component certificate. The geometric-trace portion is
+polynomial in the parameters of one trace; the terminal component
+certificate is an additional term. The artifact uses explicit snapshots for review;
+it makes no unsupported claim that all certificates of an exhaustive search
+fit in one small proof. Storing every endpoint is optional.
+
+\subsection{Independent endpoint replay}
+
+The new endpoint certificate records the total upward allowance, the allowed
+initial region, the ordered geometric transition certificates, and the final
+normal coordinates. The verifier starts from the independently supplied
+source triangulation and source heights. It replays each formal replacement
+and cocycle transport using the existing checkers, tracks which original
+tetrahedra survive, counts upward events, and reconstructs the final local
+coordinates. It does not invoke commitment search, sleep sets, event generation,
+the cocycle seed solver, or a move producer.
+
+The initial-region claim is checked by tracking original incarnations through
+the canonical survivor order in every recorded transition. A trace that
+consumes a protected original tetrahedron is rejected even if its final
+triangulation and surface would otherwise be valid. A false upward budget
+is likewise rejected. The search's optimization bookkeeping is not trusted
+as a substitute for these checks.
+
+\subsection{Disc components and diagram provenance}
+
+For a supplied endpoint surface, the existing compressed normal-component
+kernel determines whether it contains an essential compressing disc, retaining
+a replayable certificate. Binary-coordinate component computations build on
+the interval-orbit approach of Agol--Hass--Thurston \cite{AHT} and the project's
+later checked implementation. The local search theorem can use any polynomial
+endpoint predicate; if a selected implementation has a different proved
+complexity, that cost must be charged separately.
+
+No inference is made from total Euler characteristic alone. A disconnected
+surface can contain spheres that raise its total Euler characteristic while
+leaving its other components unsuitable. Likewise, preserving a cohomology
+class does not mean preserving the topology of its coherent fibre. The
+component predicate is the relevant final test.
+
+The new \code{pachner\_seed\_decide} adapter authenticates an original knot
+diagram using the maintained diagram-to-exterior certificate. It optionally
+replays boundary shellings, constructs the starting integral cocycle, runs
+the bounded search, and converts a successful endpoint into the unchanged
+\code{diagram-transport-disc-v1} format. The existing independent
+\code{verify\_transport\_disk\_certificate} checks the entire chain. A
+verified compressing disc in the authenticated knot exterior establishes
+the positive unknot conclusion through the established geometric criterion.
+
+The statuses have the following meanings:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Status & Exact meaning\\
+\midrule
+\status{DISC\_FOUND} & A source-bound endpoint contains a verified compressing-disc component\\
+\status{ENDPOINT\_SELECTED} & The caller selected an endpoint; no extra topological claim is implied\\
+\status{COMPLETE\_BOUNDED\_FAMILY} & The declared single-region or unrestricted finite family was exhausted\\
+\status{COMPLETE\_BOUNDED\_REGIONS} & Every permitted initial region and its finite family was exhausted\\
+\status{INCONCLUSIVE} & A required search or component query was capped, or the diagram adapter found no verified disc\\
+\status{UNKNOT} & The diagram adapter's complete source-to-disc certificate independently replayed\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The complete-family statuses are search results, not independently supplied
+negative unknot certificates. In particular, the diagram adapter maps bounded
+family exhaustion to \status{INCONCLUSIVE}. A caller can then invoke the
+maintained complete recognizer under its own remaining budget.
+
+\subsection{Resource limits and observational guarantees}
+
+The node allowance counts popped search frames. Commitment assignment frames
+and geometric trace frames are different quantities, so their node caps are
+not equal units of geometric coverage. The work allowance is a cooperative
+guard counter shared by preparation, moves, queries and positive replay;
+it is not a bit-operation counter. Disc-query caps apply at individual
+endpoints, and any incomplete required disc query prevents a final claim
+of exhausted disc search.
+
+Callbacks receive private certificate copies. Mutation cannot alter the
+search state. Caller exceptions are shielded through internal cap and
+malformed-certificate handlers and are re-raised with their original
+identity. These details matter for faithful integration into an existing
+recognition budget.

@@ -1,0 +1,245 @@
+\section{Exact pivot counts for the algebraic screening family}
+\label{sec:pivot-appendix}
+
+The oracle-call separation in Theorem~\ref{thm:lp-family} can be strengthened
+for the exact simplex implementation supplied with the repository. This
+appendix proves the pivot counts, including the entering and leaving choices;
+it does not infer them from the experimental table. The statement concerns
+the algebraic family~\eqref{eq:lp-family}, with its specified ordering and
+solver. No realization by three-manifold triangulations is asserted.
+
+\begin{theorem}[Exact pivot separation]\label{thm:lp-pivots}
+For the $s$-block algebraic family of Theorem~\ref{thm:lp-family}, run the
+specified all-slack Bland solver without a pivot cutoff, or with an allowance
+sufficient for both complete propagation runs. The total numbers of simplex
+pivots are
+\begin{equation}\label{eq:lp-pivot-counts}
+ P_{\rm base}(s)=6s^3+3s^2+s,
+ \qquad
+ P_{\rm screened}(s)=3s^2+s.
+\end{equation}
+Every positive current-node or irrelevant-coordinate deletion query uses
+exactly $2s$ pivots. Deleting the mandatory type-zero coordinate of block
+$j$, where $0\le j<s$, uses exactly $2j$ pivots. Global cache capacity zero
+suffices for the screened formula.
+\end{theorem}
+
+We first establish a tableau lemma that includes all the restrictions
+arising during these propagation runs.
+
+\subsection{Ordered chain systems and the exact initial tableau}
+
+Let $m\ge1$. Consider disjoint groups $G_0,\ldots,G_{m-1}$ of nonnegative
+original variables, none containing a distinguished variable $z$. A group
+may contain several variables with identical columns, or it may be empty.
+Write
+\[
+ X_i=\sum_{x\in G_i}x.
+\]
+Let $\mathcal Y$ contain all other original variables, whose matching
+columns and objective coefficients are zero, and put
+$Y=\sum_{y\in\mathcal Y}y$. The matching equations, in this exact order,
+and the objective are
+\begin{equation}\label{eq:pivot-chain}
+ X_i-z=0\quad(0\le i<m),\qquad \text{objective }z.
+\end{equation}
+The normalization used by the solver is
+\begin{equation}\label{eq:pivot-normalization}
+ z+\sum_{i=0}^{m-1}X_i+Y\le1.
+\end{equation}
+
+The implementation forms the inequalities $Cx\le0$, followed by
+$-Cx\le0$, followed by~\eqref{eq:pivot-normalization}. It adds one
+nonnegative slack to each row and starts with the all-slack feasible basis.
+Denote the slacks of the $C$ rows by $a_0,\ldots,a_{m-1}$, those of the
+$-C$ rows by $b_0,\ldots,b_{m-1}$, and the normalization slack by $\sigma$.
+Thus the initial tableau equations are
+\begin{align}
+ a_i+X_i-z&=0 &&(0\le i<m),\label{eq:pivot-initial-plus}\\
+ b_i-X_i+z&=0 &&(0\le i<m),\label{eq:pivot-initial-minus}\\
+ \sigma+z+\sum_{i=0}^{m-1}X_i+Y&=1.\label{eq:pivot-initial-sum}
+\end{align}
+Every original variable precedes every slack in the variable order.
+Slack indices then follow the displayed row order: all $a_i$, all $b_i$,
+then $\sigma$. Removing an original column preserves the relative order
+of the remaining original variables and of all the slacks.
+
+The entering rule chooses the least-index variable with strictly positive
+reduced objective coefficient. The leaving rule minimizes the usual
+nonnegative ratio and, among equal ratios, chooses the least-index current
+basic variable. Zero reduced coefficients are never selected. The solver
+returns immediately once the objective is positive, or when no positive
+reduced coefficient remains.
+
+\begin{lemma}[Exact chain pivot path]\label{lem:pivot-chain}
+Assume $z$ is present. If every $G_i$ is nonempty, the solver for
+\eqref{eq:pivot-chain} returns a positive point after exactly $m+1$ pivots.
+If $h$ is the first index for which $G_h$ is empty, it returns a nonpositive
+certificate after exactly $h+1$ pivots. These assertions are independent
+of the number of irrelevant variables and of the number of available
+duplicate columns in each nonempty group.
+\end{lemma}
+\begin{proof}
+Initially $z$ is the only variable with positive reduced coefficient.
+Its coefficients are $-1$ in the $C$ rows, $+1$ in the $-C$ rows, and
+$+1$ in the normalization row. All $-C$ rows have ratio zero, whereas
+the normalization row has ratio one. The leaving variable is therefore
+$b_0$, by the specified slack ordering and Bland tie rule. The pivot
+coefficient is one, the objective remains zero, and the resulting
+dictionary expresses
+\[
+ z=X_0-b_0.
+\]
+
+Here is the full inductive invariant. After $h+1$ pivots, suppose that
+$G_0,\ldots,G_{h-1}$ were nonempty. Let $x_i$ be the least-index available
+member of $G_i$ that entered for $i<h$, and put $Y_i=X_i-x_i$.
+The basic original variables are $z,x_0,\ldots,x_{h-1}$. All $a_i$, all
+$b_j$ with $j>h$, and $\sigma$ are also basic. The nonbasic slacks are
+$b_0,\ldots,b_h$. The tableau equations are exactly
+\begin{align}
+ z-X_h+b_h&=0,\label{eq:pivot-invariant-z}\\
+ x_i+Y_i-X_h+b_h-b_i&=0 &&(i<h),\label{eq:pivot-invariant-old}\\
+ a_i+b_i&=0 &&(i\le h),\label{eq:pivot-invariant-completed}\\
+ a_j+X_j-X_h+b_h&=0 &&(j>h),\label{eq:pivot-invariant-plus}\\
+ b_j-X_j+X_h-b_h&=0 &&(j>h),\label{eq:pivot-invariant-minus}\\
+ \sigma+(h+2)X_h-(h+1)b_h
+       +\sum_{i<h}b_i+\sum_{j>h}X_j+Y&=1.
+       \label{eq:pivot-invariant-normalization}
+\end{align}
+The current objective value is zero, and its reduced expression is
+\begin{equation}\label{eq:pivot-reduced}
+ z=X_h-b_h.
+\end{equation}
+All tableau right-hand sides except that of the normalization row are
+zero. Direct elimination in~\eqref{eq:pivot-initial-plus}--
+\eqref{eq:pivot-initial-sum} proves the invariant for $h=0$.
+
+If $G_h$ is empty, equation~\eqref{eq:pivot-reduced} has no positive
+reduced coefficient: $b_h$ has coefficient $-1$, and all other nonbasic
+variables have coefficient zero. The solver therefore stops after
+$h+1$ pivots with its nonpositive certificate.
+
+Suppose instead that $G_h$ is nonempty. Precisely its variables have
+positive reduced coefficient, each equal to one. Bland consequently
+selects $x_h=\min G_h$. Its coefficient is $-1$ in the $z$ row and in
+each earlier $x_i$ row, zero in the $a_i$ rows with $i\le h$, $-1$ in
+the later $a_j$ rows, $+1$ in the later $b_j$ rows, and $h+2$ in the
+normalization row. Thus the only eligible leaving rows are the later
+$b_j$ rows, with ratio zero, and normalization, with ratio $1/(h+2)$.
+
+If $h<m-1$, a zero-ratio row exists. The remaining basic variables
+$b_j$, $j>h$, retain their original indices, so Bland chooses $b_{h+1}$.
+This is a unit pivot in a row with zero right-hand side. Substitution
+using
+\[
+ X_h=X_{h+1}-b_{h+1}+b_h
+\]
+gives every invariant equation with $h$ replaced by $h+1$; the new basic
+variable $x_h$ supplies the additional instance of
+\eqref{eq:pivot-invariant-old}. The normalization coefficients become
+$h+3$ and $-(h+2)$, as required. The objective is still zero. This
+establishes the induction, including both Bland choices.
+
+If $h=m-1$, there is no later $b_j$ row. The only eligible leaving row
+is normalization, with pivot coefficient $m+1$. This final pivot sets
+$x_{m-1}=1/(m+1)$ and makes the objective $1/(m+1)>0$.
+The implementation returns immediately. The initial $z$ pivot and the
+$m$ entering-group pivots give exactly $m+1$ pivots.
+
+Throughout the zero-objective stages, irrelevant variables have zero
+reduced coefficient by~\eqref{eq:pivot-reduced}, so none enters.
+If a group has several available twins, all have the same positive
+coefficient when that group is current and Bland selects its least member.
+Afterwards its other twins have reduced coefficient zero. If an earlier
+twin was already forbidden before the LP call, the least remaining
+member is selected instead. These observations prove the asserted
+independence from irrelevant columns and available multiplicities.
+\end{proof}
+
+\begin{lemma}[Deletion of the objective variable]\label{lem:pivot-zero-objective}
+If the column $z$ is deleted from the restricted query, the solver returns
+its nonpositive certificate with zero pivots.
+\end{lemma}
+\begin{proof}
+All remaining original objective coefficients are zero, as are the initial
+slack coefficients. The all-slack objective value is zero and there is no
+entering variable. The stopping test precedes any pivot.
+\end{proof}
+
+\subsection{The actual block ordering and previous propagations}
+
+For the family~\eqref{eq:lp-family}, put $m=2s-1$. The exact matching-row
+order used by the model builder is
+\begin{align*}
+ (Cx)_0&=q_{0,1}+p_0-z,\\
+ (Cx)_{2j-1}&=q_{j,0}-z &&(1\le j<s),\\
+ (Cx)_{2j}&=q_{j,1}+p_j-z &&(1\le j<s).
+\end{align*}
+Equivalently, the chain groups before propagation are
+\begin{align*}
+ G_0&=\{q_{0,1},p_0\},\\
+ G_{2j-1}&=\{q_{j,0}\} &&(1\le j<s),\\
+ G_{2j}&=\{q_{j,1},p_j\} &&(1\le j<s).
+\end{align*}
+For completeness, let $n_s=7(2s+\lceil s/4\rceil)$ and index the original
+columns $v_0,\ldots,v_{n_s-1}$ in increasing order. In each seven-coordinate
+block, the four triangle coordinates precede the three quadrilateral
+coordinates. With zero-based indices, the distinguished columns are
+\begin{align*}
+ q_{j,0}&=v_{7(s+j)+4},&
+ q_{j,1}&=v_{7(s+j)+5} &&(0\le j<s),\\
+ p_j&=v_{14s+7\lfloor j/4\rfloor+(j\bmod4)}
+ &&&&(0\le j<s).
+\end{align*}
+Thus $z=v_{7s+4}$, and every $q_{j,1}$ precedes its auxiliary triangle
+twin $p_j$. These are the block and column conventions of
+Section~\ref{sec:witness}. All remaining variables are irrelevant
+variables of the chain lemma. The synthetic model has no triangle-anchor
+restrictions.
+
+At propagation stage $j$, each earlier block $\ell<j$ has been forced to
+quadrilateral type zero. Its variable $q_{\ell,1}$ has therefore been
+removed, while $p_\ell$ remains available. Its group $G_{2\ell}$ becomes
+the nonempty singleton $\{p_\ell\}$. All other row groups remain nonempty.
+Lemma~\ref{lem:pivot-chain} consequently gives exactly
+$m+1=2s$ pivots for every current-node LP.
+
+Deleting a tested irrelevant prefix coordinate removes only one member of
+$\mathcal Y$. It neither changes the objective nor empties a row group,
+so every such deletion query also takes exactly $2s$ pivots. Although the
+number of restricted original columns changes, the relative slack order
+used in the leaving-variable proof does not.
+
+Deleting the mandatory coordinate $q_{j,0}$ has two different cases.
+For $j=0$, this is deletion of $z$, so
+Lemma~\ref{lem:pivot-zero-objective} gives zero pivots. For $j>0$, it
+empties $G_{2j-1}$ and leaves all earlier groups nonempty. The first empty
+row is thus $h=2j-1$, and Lemma~\ref{lem:pivot-chain} gives
+$h+1=2j$ pivots.
+
+\subsection{Summing the exact costs}
+
+\begin{proof}[Proof of Theorem~\ref{thm:lp-pivots}]
+Theorem~\ref{thm:lp-family} establishes that both runs make $s+1$
+current-node queries and $s$ mandatory deletion queries. The former
+each cost $2s$ pivots, and the latter cost $0,2,\ldots,2(s-1)$.
+The baseline additionally makes $3s^2$ positive irrelevant-prefix
+deletion queries, each costing $2s$ pivots. Hence
+\begin{align*}
+ P_{\rm base}(s)
+   &=(s+1)(2s)+(3s^2)(2s)+\sum_{j=0}^{s-1}2j
+     =6s^3+3s^2+s,\\
+ P_{\rm screened}(s)
+   &=(s+1)(2s)+\sum_{j=0}^{s-1}2j
+     =3s^2+s.
+\end{align*}
+Screening these particular deletions needs only the current-node witness,
+so a zero-capacity persistent cache gives the same result.
+\end{proof}
+
+The difference is exactly $6s^3$ pivots. The proof concerns the specified
+matrix family, column and row orders, strict entering rule, and stopping
+tests. It establishes neither a polynomial pivot bound for arbitrary
+Bland-simplex inputs nor a universal wall-clock factor. It also leaves
+the separate geometric realizability question unchanged.

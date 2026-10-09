@@ -1,0 +1,370 @@
+{
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "repetitions": 3,
+  "order_seed": 314159,
+  "grammar_seed": 271828,
+  "timing_scope": "complete abstract search; grammar construction and independent mesh replay excluded",
+  "cases": [
+    {
+      "name": "narrow-control",
+      "width": 2,
+      "layers_before_cap": 2,
+      "q": 4,
+      "resets": true,
+      "source_sha256": "ec52f96467d8398ce0d5cf20fbc4b2439b77dd5b54cfbb02b7d6bb913a09fb25",
+      "samples_seconds": {
+        "exact": [
+          0.000394997,
+          0.000385433,
+          0.000446003
+        ],
+        "basis": [
+          0.000662776,
+          0.00092098,
+          0.000620623
+        ],
+        "exact_control": [
+          0.000492973,
+          0.000395658,
+          0.000422138
+        ]
+      },
+      "median_seconds": {
+        "exact": 0.000394997,
+        "basis": 0.000662776,
+        "exact_control": 0.000422138
+      },
+      "speedup_exact_over_basis": 0.5959736019409273,
+      "aa_ratio": 0.935705859221392,
+      "stats": {
+        "exact_control": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 37,
+          "peak_exact_table": 12,
+          "peak_retained": 12
+        },
+        "basis": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 36,
+          "peak_exact_table": 12,
+          "peak_retained": 11
+        },
+        "exact": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 37,
+          "peak_exact_table": 12,
+          "peak_retained": 12
+        }
+      },
+      "order": [
+        [
+          "exact_control",
+          "basis",
+          "exact"
+        ],
+        [
+          "exact_control",
+          "exact",
+          "basis"
+        ],
+        [
+          "exact_control",
+          "basis",
+          "exact"
+        ]
+      ]
+    },
+    {
+      "name": "width-3",
+      "width": 3,
+      "layers_before_cap": 6,
+      "q": 4,
+      "resets": true,
+      "source_sha256": "dd0efbe5136b064e577539543e4b866a7359e86aeb029df4ef5eacb59a2c6c24",
+      "samples_seconds": {
+        "exact": [
+          0.026376266,
+          0.028538842,
+          0.027358797
+        ],
+        "basis": [
+          0.010029916,
+          0.010838399,
+          0.010561496
+        ],
+        "exact_control": [
+          0.026216908,
+          0.028206608,
+          0.027843037
+        ]
+      },
+      "median_seconds": {
+        "exact": 0.027358797,
+        "basis": 0.010561496,
+        "exact_control": 0.027843037
+      },
+      "speedup_exact_over_basis": 2.590428193127186,
+      "aa_ratio": 0.9826082190674817,
+      "stats": {
+        "exact": {
+          "cost": 2,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 4358,
+          "peak_exact_table": 164,
+          "peak_retained": 164
+        },
+        "basis": {
+          "cost": 2,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 1359,
+          "peak_exact_table": 95,
+          "peak_retained": 36
+        },
+        "exact_control": {
+          "cost": 2,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 4358,
+          "peak_exact_table": 164,
+          "peak_retained": 164
+        }
+      },
+      "order": [
+        [
+          "exact",
+          "basis",
+          "exact_control"
+        ],
+        [
+          "basis",
+          "exact",
+          "exact_control"
+        ],
+        [
+          "basis",
+          "exact_control",
+          "exact"
+        ]
+      ]
+    },
+    {
+      "name": "width-4",
+      "width": 4,
+      "layers_before_cap": 6,
+      "q": 4,
+      "resets": true,
+      "source_sha256": "4004d891252cd1186512a84484a75332f52f0115102c9232868c23bf9a004e6e",
+      "samples_seconds": {
+        "exact": [
+          0.290249439,
+          0.28890542,
+          0.277213943
+        ],
+        "basis": [
+          0.045668697,
+          0.047163129,
+          0.047145984
+        ],
+        "exact_control": [
+          0.288935584,
+          0.280148527,
+          0.274141814
+        ]
+      },
+      "median_seconds": {
+        "exact": 0.28890542,
+        "basis": 0.047145984,
+        "exact_control": 0.280148527
+      },
+      "speedup_exact_over_basis": 6.127890341624856,
+      "aa_ratio": 1.031258036919823,
+      "stats": {
+        "basis": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 5666,
+          "peak_exact_table": 464,
+          "peak_retained": 108
+        },
+        "exact_control": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 38302,
+          "peak_exact_table": 1244,
+          "peak_retained": 1244
+        },
+        "exact": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 38302,
+          "peak_exact_table": 1244,
+          "peak_retained": 1244
+        }
+      },
+      "order": [
+        [
+          "basis",
+          "exact_control",
+          "exact"
+        ],
+        [
+          "exact_control",
+          "basis",
+          "exact"
+        ],
+        [
+          "basis",
+          "exact_control",
+          "exact"
+        ]
+      ]
+    },
+    {
+      "name": "width-5",
+      "width": 5,
+      "layers_before_cap": 6,
+      "q": 4,
+      "resets": true,
+      "source_sha256": "48ce8ed431d5dcdad22543b079ad6a75d147ae5d03c448ab0a7736d5987a845f",
+      "samples_seconds": {
+        "exact": [
+          2.867992971,
+          2.805753926,
+          2.736462391
+        ],
+        "basis": [
+          0.209804076,
+          0.211497563,
+          0.211742643
+        ],
+        "exact_control": [
+          2.695323267,
+          2.770988575,
+          2.702527954
+        ]
+      },
+      "median_seconds": {
+        "exact": 2.805753926,
+        "basis": 0.211497563,
+        "exact_control": 2.702527954
+      },
+      "speedup_exact_over_basis": 13.26612886787731,
+      "aa_ratio": 1.0381960792846623,
+      "stats": {
+        "exact": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 286112,
+          "peak_exact_table": 10232,
+          "peak_retained": 10232
+        },
+        "basis": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 22564,
+          "peak_exact_table": 2082,
+          "peak_retained": 324
+        },
+        "exact_control": {
+          "cost": 0,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 286112,
+          "peak_exact_table": 10232,
+          "peak_retained": 10232
+        }
+      },
+      "order": [
+        [
+          "exact",
+          "basis",
+          "exact_control"
+        ],
+        [
+          "exact",
+          "exact_control",
+          "basis"
+        ],
+        [
+          "exact",
+          "exact_control",
+          "basis"
+        ]
+      ]
+    },
+    {
+      "name": "no-reset-control",
+      "width": 4,
+      "layers_before_cap": 6,
+      "q": 1,
+      "resets": false,
+      "source_sha256": "b0cef1b4805566a1ebdeb184fae87dbb13ceeec24adaff9cc98f39c319d7ae4c",
+      "samples_seconds": {
+        "exact": [
+          0.004579677,
+          0.004256478,
+          0.004151632
+        ],
+        "basis": [
+          0.00543849,
+          0.005692206,
+          0.005464037
+        ],
+        "exact_control": [
+          0.0046087,
+          0.004157311,
+          0.004799683
+        ]
+      },
+      "median_seconds": {
+        "exact": 0.004256478,
+        "basis": 0.005464037,
+        "exact_control": 0.0046087
+      },
+      "speedup_exact_over_basis": 0.7789987512895685,
+      "aa_ratio": 0.9235745437976002,
+      "stats": {
+        "exact": {
+          "cost": 3,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 659,
+          "peak_exact_table": 22,
+          "peak_retained": 22
+        },
+        "basis": {
+          "cost": 3,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 637,
+          "peak_exact_table": 22,
+          "peak_retained": 21
+        },
+        "exact_control": {
+          "cost": 3,
+          "status": "FOUND_ABSTRACT_ROOTED_DISC",
+          "transitions": 659,
+          "peak_exact_table": 22,
+          "peak_retained": 22
+        }
+      },
+      "order": [
+        [
+          "exact",
+          "basis",
+          "exact_control"
+        ],
+        [
+          "basis",
+          "exact_control",
+          "exact"
+        ],
+        [
+          "exact_control",
+          "basis",
+          "exact"
+        ]
+      ]
+    }
+  ]
+}

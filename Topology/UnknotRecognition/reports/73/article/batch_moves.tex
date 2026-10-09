@@ -1,0 +1,194 @@
+\section{Commuting Pachner reductions and one combined certificate}
+\label{sec:batches}
+
+\subsection{The exact formal-region contract}
+
+A legal $3$--$2$ site is an interior edge whose three local occurrences
+belong to three distinct tetrahedra. Label its endpoints $A,B$ and the
+three belt vertices $C,D,E$. The old tetrahedra have formal vertex sets
+\[
+ ABCD,\qquad ABDE,\qquad ABEC.
+\]
+Their three internal faces have the consistent shared formal labels.
+The replacement consists of
+\[
+ ACDE,\qquad BCDE,
+\]
+glued along $CDE$. Both fillings are balls with the same six labelled
+boundary facets. The contract retains the complete permutation at every
+boundary gluing. It permits global identifications of formal boundary
+vertices, edges, and facets; it does not identify any extra local
+occurrence with the central edge.
+
+The distinct-tetrahedron and formal-label conditions matter. An arbitrary
+degree-three entry in a poorly checked edge census is not enough. The
+producer reconstructs the local labels, and the independent consumer
+checks the old and new region interiors and all external attachment
+permutations. This is the same local topological contract used by the
+maintained individual-move checker.
+
+\begin{theorem}[Simultaneous relative-boundary replacement]
+\label{thm:commuting}
+Let $E$ be a collection of legal $3$--$2$ regions in a finite triangulation
+$T$, with pairwise disjoint sets of tetrahedra. Replace every region in
+$E$ by its two-tetrahedron filling and transfer its six boundary-facet
+gluings. Then:
+\begin{enumerate}[label=(\roman*)]
+\item the result is homeomorphic to $T$ relative to the unchanged
+external boundary;
+\item every order of performing the individual replacements is legal
+and produces the same labelled quotient after the explicitly determined
+permutation of tetrahedron indices;
+\item a supplied integral cocycle has the same transported signed edge
+values and coherent normal coordinates in every such order;
+\item the raw Euler changes and raw normal-piece changes add over the
+regions.
+\end{enumerate}
+Regions may share global vertices, global boundary edges, or facets
+paired between different regions.
+\end{theorem}
+
+\begin{proof}
+Before taking the quotient, partition the tetrahedra into unchanged
+tetrahedra and the formal bipyramids. A ball filling of a bipyramid
+comes with its boundary triangulation and vertex labels. The two
+fillings are related by a homeomorphism fixing that boundary. Take the
+identity on all unchanged tetrahedra and this boundary-fixing
+homeomorphism on each region. They agree on every identification
+between pieces, including identifications between two selected regions.
+They therefore descend to a homeomorphism of the quotient.
+
+Replacing one filling leaves every other region's three tetrahedra and
+internal-face labels intact. Only its already specified external
+attachments are transferred. Its central edge still has exactly its
+three old occurrences: no boundary edge can become that central edge
+under a boundary-fixing replacement. Thus the remaining sites stay legal.
+The final quotient consists of the same pieces and the same attachment
+maps, independently of order. Ordering surviving input tetrahedra first
+and then each region's two outputs gives an explicit common indexing.
+
+On a simply connected formal bipyramid, a closed integral edge cochain
+is the difference of five integral vertex heights, unique up to one
+additive constant. Coherent transport restricts these same heights to
+the new tetrahedra. Its values on all boundary edges are unchanged,
+so simultaneous transports agree on paired facets. Each region's
+height differences are unaffected by other replacements. Applying the
+local coordinate formula therefore gives the same final rows in every
+order. Finally, the local cell-count difference of a replacement is
+supported within its formal region and relative boundary; adding these
+differences, or telescoping through any valid order, proves additivity
+of the two raw changes.
+\end{proof}
+
+\subsection{The bounded conflict graph}
+
+\begin{definition}
+The collapse conflict graph has one vertex for each distinct legal
+degree-three central \emph{global edge}. Two vertices are adjacent when
+their regions share a tetrahedron. Candidates are deduplicated by the
+global central edge, not by its three local occurrences.
+\end{definition}
+
+\begin{theorem}[Nine-neighbour bound]
+\label{thm:nine}
+The collapse conflict graph has maximum degree at most nine. If $M$
+distinct legal candidates are currently available, every greedy maximal
+set of pairwise tetrahedron-disjoint regions has size at least
+$\lceil M/10\rceil$.
+\end{theorem}
+\begin{proof}
+A formal three-tetrahedron bipyramid has ten edge types: its central
+edge $AB$, the three belt edges, and the six apex--belt edges. A candidate
+sharing one of its tetrahedra has its central edge represented by one
+of these ten local types. Distinct candidates with the same global edge
+have already been identified. The central type accounts for the original
+candidate, leaving at most nine others. Global identifications among
+boundary edges can only reduce this number. The old central edge cannot
+be identified with an additional boundary-edge occurrence, because its
+degree is exactly three and those three occurrences are already present.
+
+In greedy maximal selection, each chosen vertex accounts for itself and
+at most nine unchosen neighbours. The closed neighbourhoods of the
+chosen vertices cover all $M$ vertices, so $M\le10|E|$.
+\end{proof}
+
+This is a statement about the current candidate set. New moves can
+appear after a batch, and old moves that conflict with a selected region
+can disappear. It does not identify the downward closure of the
+triangulation, nor does it prove that a particular greedy policy reaches
+an essential-disc witness.
+
+\subsection{Five-height raw scores}
+
+Write the belt heights in increasing order as $x\le y\le z$, and the
+apex heights as $L\le U$. Define
+\begin{align}
+ g&=\max(0,L-z)+\max(0,x-U),\label{eq:gap}\\
+ D&=\max(U,y)-\min(L,y)
+   +\max(0,\min(U,x)-L)
+   +\max(0,U-\max(L,z)).\label{eq:pieces}
+\end{align}
+The incoming transport theorem gives, in the $3$--$2$ direction,
+\begin{equation}\label{eq:raw-local}
+ \Delta\chi_{\rm raw}=2g,\qquad \Delta P_{\rm raw}=-D,
+ \qquad g,D\ge0.
+\end{equation}
+For completeness, these formulas can be verified by writing the piece
+count in a tetrahedron as its height range. The old sum of the three
+ranges minus the new sum of two ranges is $D$. For Euler characteristic,
+the disappearing edge contributes $-|U-L|$ in the collapse difference;
+the three old internal-face ranges are replaced by the belt-face range,
+and the piece-count change completes the alternating cell sum. Sorting
+the three belt heights and clipping to $[L,U]$ gives $2g$.
+
+By \cref{thm:commuting}, a batch $S$ has raw gain
+$\sum_{i\in S}2g_i$ and raw piece saving $\sum_{i\in S}D_i$.
+Each local computation uses a constant number of integer comparisons
+and additions, independently of the number of represented surface
+layers. The independent batch consumer does not rely on this gap
+formula: it recomputes the global normal cell counts at the two ends.
+
+\subsection{Encoding and validation cost}
+
+Let $k=|S|$. The combined output has $t-k$ tetrahedra. The certificate
+records $k$ regions, each with three source tetrahedron indices and
+constant-size local labels. When transporting a cocycle it also records
+the five heights of each region and the final height and coordinate
+rows. There are no intermediate full triangulations.
+
+\begin{proposition}[Combined certificate size and construction work]
+\label{prop:batch-cost}
+For input height-bit bound $B$, the combined geometric and cocycle
+certificate has $O((t+k)(B+\log(t+2)))$ bits. Aside from finite-manifold
+validation and integer arithmetic cost, construction and relative-boundary
+replay use $O(t+k)$ indexed layout operations. The shipped producer
+performs three full manifold preparations for one batch: one for source
+discovery and two in its independent source/target consumer. This count
+is independent of $k$.
+\end{proposition}
+\begin{proof}
+At most $3k$ old tetrahedra and $6k$ exposed old boundary facets need
+region records. Scan source tetrahedra once to assign new indices to
+survivors and to order regions by their least old index. Append two new
+tetrahedra per region. Every unchanged face and every region port is
+processed a bounded number of times. A face joining two regions is
+handled by composing its original permutation with the two old-to-new
+facet maps, so it does not require a search through other regions.
+
+Each new tetrahedron uses four of the old region's five heights. Its
+edge differences are boundary-edge differences that already existed
+before collapse, so their bit length does not increase. The number
+and bit length of all stored rows give the stated encoding bound.
+The consumer reconstructs old and new ports once, validates the two
+finite manifolds once each, and compares their attachment signatures.
+The implementation's own source preparation adds the third call.
+\end{proof}
+
+A literal sequential transcript can instead contain
+$\Theta(\sum_{j=1}^{k}(t-j)(B+\log t))$ bits because each step repeats the
+whole current triangulation and normal vector. On families with
+$k=\Theta(t)$ this is quadratic in $t$ before counting bit lengths.
+This comparison concerns the existing full-state transcript interface;
+a separately designed persistent sequential transcript could also avoid
+that duplication. The combined certificate gives a direct implementation
+of the smaller interface now.

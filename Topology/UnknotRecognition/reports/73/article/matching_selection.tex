@@ -1,0 +1,355 @@
+\subsection{Exact selection by weighted matching}
+\label{sec:matching-selection}
+
+Submodularity alone does not provide an exact polynomial maximisation
+algorithm. Here a stronger property of coherent collapse does: each
+move can improve a regional minimum only at its two apices, and the
+reward at either global apex is bounded by that move's raw Euler gain.
+This reduces the entire interaction between disjoint regions to an
+ordinary weighted matching problem.
+
+Continue with the fixed tetrahedron-disjoint family $E$ and notation
+of \eqref{eq:gamma}--\eqref{eq:peeled-objective}. Put $k=|E|$,
+$r_i=2g_i$, and define
+\begin{equation}\label{eq:omission-rewards}
+ c_{vi}=\lambda_v(\gamma_v-a_{vi})_+,
+ \qquad (\gamma_v-\infty)_+:=0.
+\end{equation}
+An omitted move preserves its old regional minimum; $c_{vi}$ measures
+the resulting saving in the vertex-link correction, relative to
+performing all moves. Savings from several omitted moves at the same
+vertex combine by their maximum.
+
+\begin{lemma}[Two endpoints and a cost bound]
+\label{lem:omission-reward-bound}
+For each move $i$, at most two distinct global vertices have
+$c_{vi}>0$, and every reward satisfies $0\le c_{vi}\le r_i$.
+If $v$ is a boundary vertex, the sharper bound $c_{vi}\le g_i$ holds.
+For $R=E\setminus S$, the exact gain satisfies
+\begin{equation}\label{eq:complement-objective}
+ \begin{split}
+ F(E\setminus R)&=F(E)+H(R),\\
+ H(R)&=\sum_v\max\bigl(\{c_{vi}:i\in R\}\cup\{0\}\bigr)
+             -\sum_{i\in R}r_i.
+ \end{split}
+\end{equation}
+\end{lemma}
+\begin{proof}
+By definition $\gamma_v\le b_{vi}$ at every incidence. Thus
+\cref{lem:regional-minima} gives
+\[
+ c_{vi}\le\lambda_v(b_{vi}-a_{vi})\le\lambda_v g_i
+          \le 2g_i=r_i.
+\]
+A positive reward requires $b_{vi}>a_{vi}$, so $v$ must be a global
+image of an apex. There are at most two such images, including when
+formal vertices are identified. At a boundary vertex $\lambda_v=1$.
+
+Equation~\eqref{eq:minimum-subset} implies
+\[
+ \lambda_v\bigl(\gamma_v-m_v(E\setminus R)\bigr)
+    =\max\bigl(\{c_{vi}:i\in R\}\cup\{0\}\bigr).
+\]
+Subtracting the raw gains of omitted moves in
+\eqref{eq:peeled-objective} proves \eqref{eq:complement-objective}.
+\end{proof}
+
+Form a weighted multigraph on the global vertices. A move $i$ with
+two distinct positive-reward endpoints $u,v$ supplies an edge of weight
+\begin{equation}\label{eq:matching-weight}
+ w_i=c_{ui}+c_{vi}-r_i.
+\end{equation}
+Discard edges of weight at most zero. Discard moves with fewer than
+two distinct positive-reward endpoints. In particular, two formal
+apices representing the same global vertex do not supply two
+collectable rewards: their image is one endpoint, and its reward
+occurs once in \eqref{eq:complement-objective}. Among parallel edges
+retain the largest weight; ties may use the least move index. Denote
+the resulting simple weighted graph by $G_E$.
+
+\begin{theorem}[Optimal peeled subbatch by matching]
+\label{thm:optimal-peeled-matching}
+Let $E$ be a fixed tetrahedron-disjoint family of certified coherent
+$3$--$2$ moves in a finite compact $3$-manifold triangulation whose
+vertex links are spheres or discs. Then
+\begin{equation}\label{eq:optimal-subset-matching}
+ \max_{S\subseteq E}F(S)
+   =F(E)+\max_{\text{matchings }M\subseteq G_E}\sum_{i\in M}w_i.
+\end{equation}
+An optimal matching gives an optimal subbatch by omitting its moves
+and retaining every other move of $E$. Among equal optimum peeled
+scores, a maximum-weight matching of minimum cardinality gives a
+subbatch retaining the largest possible number of moves.
+
+Consequently an exact optimum over all $2^k$ subbatches is computable
+in polynomial bit complexity. For integral weights the secondary
+cardinality rule is obtained by maximising
+\begin{equation}\label{eq:matching-tie-weight}
+ \widetilde w_i=(k+1)w_i-1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Choose a subset $R\subseteq E$ maximising $H(R)$ and, among these,
+having smallest cardinality. For a selected move $i\in R$, let
+$U_i$ be the set of vertices at which $i$ is the unique positive
+maximiser of the selected rewards. Removing $i$ loses no reward
+outside $U_i$, and loses at most $c_{vi}$ at $v\in U_i$. It also
+saves its cost $r_i$.
+
+If $|U_i|\le1$, the total lost reward is at most $r_i$ by
+\cref{lem:omission-reward-bound}. Removing $i$ would therefore not
+decrease $H$, contradicting the choice of $R$ with smallest
+cardinality. Each move in $R$ must consequently uniquely maximise
+the rewards at two distinct vertices. A move has at most two
+positive-reward endpoints, so these are precisely its endpoints.
+Two moves of $R$ cannot share an endpoint: they cannot both be its
+unique maximiser. Therefore $R$ is a matching and
+\[
+ H(R)=\sum_{i\in R}(c_{ui}+c_{vi}-r_i)=\sum_{i\in R}w_i.
+\]
+Every one of its weights is strictly positive, since deleting a
+nonpositive edge cannot decrease $H$ and reduces cardinality.
+
+Conversely, for any matching the endpoint rewards are collected
+independently, and its value of $H$ is exactly the sum of its edge
+weights. Replacing a parallel edge by one of greater weight never
+hurts feasibility or cardinality. Thus the preceding reductions to
+$G_E$ preserve the optimum and a smallest-cardinality optimum.
+Equation~\eqref{eq:complement-objective} proves
+\eqref{eq:optimal-subset-matching}.
+
+Classical maximum-weight matching is polynomial
+\cite{Edmonds1965}. For the tie rule, a difference of one in integer
+total weight becomes a difference of $k+1$ after scaling; any two
+matching cardinalities differ by at most $k$. Maximising the
+transformed total therefore first maximises the original total,
+then minimises the number of edges. This adds only $O(\log(k+1))$
+bits to the edge weights.
+\end{proof}
+
+The cardinality rule needs the actual transformation
+\eqref{eq:matching-tie-weight}. Deleting zero-weight edges alone is
+insufficient: two positive edges of weight one can tie a single
+edge of weight two. The smaller matching gives the same best Euler
+score while performing one more Pachner reduction.
+
+The theorem concerns the fixed family $E$. It does not solve the
+additional packing problem of choosing an optimal disjoint family
+from all overlapping candidates. Also, attaining the largest peeled
+Euler value is a local policy objective; it does not authenticate
+an essential disc or prove that the resulting fibre has a desired
+connected component.
+
+\subsection{Interior vertices bound the number of omissions}
+\label{sec:interior-omission-bound}
+
+Let $p_E^+$ be the number of interior global vertices incident to
+at least one positive reward $c_{vi}$. It is at most the total
+number $p$ of interior global vertices of the triangulation.
+
+\begin{corollary}[At most one omission per relevant interior vertex]
+\label{cor:interior-omission-bound}
+There exists an optimal subbatch retaining at least
+\[
+ |E|-p_E^+\ge |E|-p
+\]
+moves. The minimum-omission rule in
+\cref{thm:optimal-peeled-matching} satisfies this bound. With no
+interior vertices, executing all moves in $E$ is optimal. With
+one relevant interior vertex, at most one move need be omitted.
+\end{corollary}
+\begin{proof}
+If both endpoints of an edge are boundary vertices, then
+$c_{ui}+c_{vi}\le g_i+g_i=r_i$, so its weight is not positive.
+Every edge of $G_E$ therefore touches an interior vertex with
+positive reward. Edges of a matching have disjoint endpoint sets,
+so such a matching has at most $p_E^+$ edges. Apply
+\cref{thm:optimal-peeled-matching}.
+\end{proof}
+
+When all vertices are boundary vertices, there is also a sequential
+statement: every legal coherent $3$--$2$ move has nonnegative peeled
+Euler gain. Its raw gain is $2g_i$, and the total increase of the
+vertex-link correction is at most $g_i+g_i$. This remains valid
+when the two apices represent one global vertex. Thus any sequence
+of such moves is nondecreasing in peeled Euler characteristic.
+
+For $M$ distinct eligible degree-three central edges, the
+degree-nine conflict bound supplies a greedy tetrahedron-disjoint
+family $E$ with $|E|\ge\lceil M/10\rceil$. Optimal selection within
+that family retains at least
+\begin{equation}\label{eq:packed-retention}
+ \max\{0,\lceil M/10\rceil-p\}
+\end{equation}
+moves. Its total peeled gain is nonnegative, because the empty
+subbatch is among the choices. A bound on the number of retained
+moves and a bound on the score are distinct conclusions; neither
+requires summing singleton peeled gains.
+
+\begin{corollary}[The maintained two-pole pulling source]
+\label{cor:two-pole-source}
+Assume the validated one-component PD is converted to the canonical
+compact exterior by the maintained \texttt{pulling} subdivision,
+with its source-construction contract accepted. That triangulation
+has exactly two interior global vertices. This count remains two
+under the certified vertex-preserving $2$--$3$ and $3$--$2$
+replacements considered here. For every fixed disjoint coherent
+$3$--$2$ family $E$ along such a trajectory, an optimal subbatch
+retains at least $|E|-2$ moves. Starting with $M$ candidates and
+the greedy packing therefore retains at least
+\[
+ \max\{0,\lceil M/10\rceil-2\}.
+\]
+In particular, $M\ge21$ guarantees at least one retained move
+at an optimum of the packed family's peeled objective.
+\end{corollary}
+\begin{proof}
+The source construction retains the north and south poles of
+the crossing-cell decomposition, each with a sphere link. Its
+pulling subdivision introduces only the six directed-edge cut
+points per cell, all on the truncation boundary. It introduces
+no face centres or cell centres. The gluing maps preserve the
+two pole labels and the cut-point locus; the source theorem
+identifies exactly two global poles and a single compact torus
+boundary \cite{ProveItSource}. Consequently these poles are the
+only interior vertices. Certified relative-boundary moves preserve
+the global vertex classes and their link types. Apply
+\cref{cor:interior-omission-bound} and
+\eqref{eq:packed-retention}.
+\end{proof}
+
+This corollary is specific to the maintained pulling source and
+its preserved vertex classes. The legacy centred subdivision
+inserts additional interior vertices and does not have the same
+constant bound. Arbitrary simplification routines would also
+need their own proof of the vertex-count property.
+
+\subsection{Linear selection for the two-pole source}
+\label{sec:two-pole-linear-selection}
+
+The constant omission bound has an algorithmic consequence stronger
+than applying a general blossom algorithm. Every positive edge of
+$G_E$ meets an interior vertex. Thus the two poles form a vertex
+cover of the positive reward graph: every edge touches this set.
+
+\begin{theorem}[Matching with an at-most-two-vertex cover]
+\label{thm:two-pole-linear-matching}
+Suppose an explicit positive-weight graph is supplied together with
+a vertex cover $C$ of size at most two. A maximum-weight matching
+of minimum cardinality can be found using a linear number of edge
+inspections, integer comparisons and arithmetic operations. For
+the two-pole pulling source, this gives an $O(k)$ matching-selection
+step once its reward graph has been materialized, with no external
+matching backend.
+\end{theorem}
+\begin{proof}
+First check that $C$ has at most two distinct vertices and meets
+every edge. Apply the transformed weights
+\eqref{eq:matching-tie-weight}. A matching has at most two edges,
+because each of its edges meets $C$ and matching edges cannot
+share a cover vertex.
+
+If $|C|\le1$, the best matching is empty or consists of a single
+largest-weight edge. Suppose $C=\{u,v\}$. A two-edge matching must
+consist of $ux$ and $vy$, where $x,y\notin C$ and $x\ne y$.
+An edge $uv$ can only occur in a singleton matching. During one
+scan retain the best singleton edge, the two best edges from
+$u$ to distinct vertices outside $C$, and the analogous two
+edges from $v$. Parallel edges have already been compressed;
+equivalently one may maintain the best edge per retained outside
+endpoint during the scan. Keeping two entries at each pole
+requires constant work per edge.
+
+For any admissible pair $ux,vy$, at most one of the two retained
+outside endpoints at $u$ equals $y$. Hence either $ux$ is already
+retained or it can be replaced by a retained edge of no smaller
+transformed weight whose outside endpoint differs from $y$.
+After this replacement, apply the same argument at $v$, holding
+the chosen $u$ edge fixed. Thus an optimum two-edge matching is
+among the at most four combinations of the retained lists.
+Compare these valid combinations against the best singleton
+and the empty matching. This is constant further work after
+the scan. Maximising the transformed sum gives precisely the
+required primary and secondary objectives.
+\end{proof}
+
+The supplied cover is an algorithmic precondition that the
+implementation checks against every positive edge. It is not
+accepted as an unchecked claim about the triangulation. The
+geometric wrapper obtains its candidate cover from the actual
+interior vertex classes and uses this path only when at most
+two relevant classes occur. Repeated endpoints, loops, parallel
+edges, zero gaps and equal-weight ties are handled by the
+preceding reward reduction and the same exact tie transform.
+
+The linear bound counts operations on the already formed graph.
+It is not a linear bit bound independent of coordinate size,
+nor a bound for geometric preparation or collective minimum
+extraction. Each transformed weight has the original coefficient
+bit length plus $O(\log(k+1))$ bits. The implementation's graph
+assembly uses ordinary dictionaries; the theorem's graph-scan
+bound does not assert a worst-case constant bound for arbitrary
+Python hash-table operations.
+
+\subsection{Algorithmic trust and independently checkable optimality}
+\label{sec:matching-certificates}
+
+The implementation forms the reward graph using exact integers.
+With a validated cover of size at most two it uses
+\cref{thm:two-pole-linear-matching}, entirely in the standard
+library. If the graph has no positive edges, the empty omission
+set is optimal without an external matching backend. For other
+inputs the general solver uses the optional NetworkX
+maximum-weight-matching routine.
+Its documented bound is $O(q^3)$ arithmetic operations for $q$
+graph vertices, with integer-only computations when the weights
+are integers \cite{NetworkX}. This is separate from the nearly
+linear corner-tree maintenance bound. Integer bit lengths, graph
+construction, and geometry validation must also be counted.
+
+The returned omission set has its feasibility and attained
+objective recomputed directly from
+\eqref{eq:complement-objective}. This establishes its value;
+maximum-weight optimality of the general result still relies
+on the matching backend. The two-cover path instead uses the
+explicit constant-size candidate comparison just proved. The
+independent geometric replay
+certifies the selected moves and their exact cocycle transport,
+regardless of whether the policy found the best subset.
+
+An optional, independent optimality checker accepts a classical
+Edmonds dual witness \cite{Edmonds1965}. For each vertex take a
+nonnegative rational price $y_v$, and for finitely many odd
+vertex sets $B$ with $|B|\ge3$ take nonnegative rational prices
+$z_B$. Check every edge $uv$ of $G_E$ against
+\begin{equation}\label{eq:matching-dual-feasible}
+ y_u+y_v+\sum_{B\supseteq\{u,v\}}z_B\ge w_{uv}.
+\end{equation}
+Then check that the proposed matching weight equals
+\begin{equation}\label{eq:matching-dual-value}
+ \sum_v y_v+\sum_B\frac{|B|-1}{2}\,z_B.
+\end{equation}
+These checks prove optimality by weak duality: a matching uses
+each vertex at most once and contains at most $(|B|-1)/2$ edges
+inside an odd set $B$. Summing
+\eqref{eq:matching-dual-feasible} over any matching bounds its
+weight by \eqref{eq:matching-dual-value}. Equality for the
+proposed matching proves it is maximum. The verifier needs no
+assumption that the listed odd sets are laminar and runs in
+time polynomial in the explicit certificate length.
+
+The serialized certificate uses one positive integer denominator
+and nonnegative integer numerators, so these checks are exact.
+The current NetworkX path does not export such a witness; the
+checker is available for independently supplied certificates.
+It certifies the primary score optimum, not the secondary
+minimum-omission tie rule. Small instances are additionally
+cross-checked by an explicitly bounded exhaustive reference
+solver; this testing method is not the polynomial algorithm.
+
+The resulting theorem removes an exponential enumeration of
+subbatches from this particular coherent policy problem. It
+does not bound the number of hierarchy stages, guarantee
+discovery of useful coherent regions, or establish the complete
+recognizer's sought quasipolynomial running time.

@@ -1,0 +1,3 @@
+# Final input-bit clarification
+
+The final mathematical review confirmed the enlarged definition of B: it bounds both supplied height entries and edge differences. Reading and normalizing 4t entries takes O(t poly(B)) bit operations. The existing edge-growth induction and B+U+O(1) normalized coordinate bound are unchanged. Face-pairing input costs O(t log(t+1)) bits and an explicit allowed region costs O(r log(t+1)); these are absorbed by the stated polynomial factors under effective caps r <= t and c <= r. Endpoint-predicate work and the terminal component-certificate size remain separately charged. No code change was needed.
