@@ -6668,3 +6668,95 @@ modules (5,194 facade modules, including 4,152 OAI modules), with only
 `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
 identical at 115 companions and five open entries; the selected-port
 scope check still passes with 4,134 upstream and 17 compatibility modules.
+
+### J.116. One common Freiman map on translated column differences
+
+The four coordinate maps from J.115 now yield a single difference map
+on a dense retained family, with an explicit cubic retention bound.
+The six new modules are `Proofs16MixedGraphOverlap`,
+`Proofs16FreimanTranslateCover`, `Proofs16CommonGraphCover`,
+`Proofs16FourfoldGraphMap`, `Proofs16CommonDifferenceRetention`, and
+`Proofs16EscapingDifferenceMap`.
+
+**Dense overlap without discarding the configurations.** Suppose `Q`
+contains at least `delta*N^3` mixed configurations, with coordinates zero
+and one in `A` and `B`. Fixing coordinates two and three leaves a fibre
+whose projection to coordinate one has at least `delta*N` elements.
+The additive index equation makes this projection injective. Thus there
+are `a,c,S`, with `S` contained in `B`, such that `s+a` belongs to `A`
+and `f0(s+a)=f1(s)+c` for every `s` in `S`. This overlap is auxiliary:
+the subsequent covering still applies to every original configuration.
+
+**A graph cover with reciprocal-density cost.** For a Freiman map `f`
+on `A` and a subset `S` of density at least `mu`, the graph sum
+`{(x+s,f(x)+f(s)) : x in A, s in S}` has at most `N` elements.
+Indeed, its first-coordinate projection is injective by the Freiman
+identity. Applying the existing disjoint-family packing theorem yields
+anchors `J` in `A` with `J.card*mu <= 1`. Each `x` has witnesses
+`j in J`, `u,v in S` satisfying both `x=j+u-v` and
+`f(x)=f(j)+f(u)-f(v)`.
+
+Apply this to the shifted overlap in `A` and the original overlap in
+`B`. The two anchor sets satisfy `J.card*K.card*delta^2 <= 1`.
+Every mixed difference is represented as
+
+```
+x-y = (j-k)+(u-v)-(w-z)
+f0(x)-f1(y) = (f0(j)-f1(k))+(f1(u)-f1(v))-(f1(w)-f1(z)),
+```
+
+with all four representation points in the same set `S`.
+
+**The common map and retained mass.** `fourfoldGraphDomain S` is
+`2S-2S`, represented as `(u-v)-(w-z)`. An order-eight Freiman map on `S`
+induces a map `theta` on this entire difference set. Its values are
+independent of representation, and it preserves additive quadruples.
+The proof converts each relation between four represented differences
+into an equality of sums of eight original points, counting repetitions.
+
+`mixed_configurations_common_difference_map` chooses one of the at most
+`delta^-2` anchor pairs. It returns `S`, `theta`, constants `a,c`, and
+`R` contained in the original `Q`, with
+
+```
+S.card >= delta*N,
+R.card >= delta^3*N^3,
+f0(q0)-f1(q1) = c+theta(q0-q1-a)       (q in R).
+```
+
+Every argument `q0-q1-a` lies in `fourfoldGraphDomain S`. The theorem
+also retains agreement with every four-term representation. No primality
+assumption is needed for these covering and retention arguments.
+
+**Application to actual failed containments.** Set
+`epsilon = escapingFreimanDensity delta d r` from J.115.
+`failed_containments_common_difference_map` produces a set `S` of density
+at least `epsilon` and at least `epsilon^3*N^3` original configurations.
+On each retained configuration the common value
+`c+theta(q0-q1-a)` equals both selected pair differences and remains
+outside its prescribed unit span. The four selected maps still take
+values in their original column bounded spans; `f1` remains order-eight
+Freiman on `S`. Thus the common map is obtained from the actual
+containment failures, rather than assumed as an extra structural input.
+
+**Incoming numerical progress and remaining work.** The merge from
+`origin/main` also adds `Proofs16VarietyPieceBudget`. Its theorem
+`variety_piece_budget` proves that the variety piece parameter fits the
+dimension-three budget provided the logarithmic loss `L` is at most
+`(2/(theta*gamma))^(64*2^256)`. That hypothesis and the missing variety
+structure must still be supplied. Our common difference map lives on
+`2S-2S`; the required Bohr/progression localization, retention through
+that localization, higher-arrangement selection, and independent-family
+iteration remain open. This checkpoint closes no numbered paper entry
+and claims no new final bound for the full source theorem. It adds no
+upstream port and changes no licensing material.
+
+**Verification.** The new failed-containment common-map closure checks
+265 modules. All ten new named theorems and the four incoming budget
+theorems pass individual axiom checks. The complete merged audit checks
+7,453 public Gowers theorems in 5,203 modules (5,201 facade modules,
+including 4,152 OAI modules), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The numbered ledger is byte-for-byte unchanged at
+115 companions and five open entries. The selected-port scope remains
+4,134 upstream and 17 compatibility modules; reciprocal-only modules
+remain excluded.
