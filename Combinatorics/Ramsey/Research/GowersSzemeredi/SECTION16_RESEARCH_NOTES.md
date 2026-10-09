@@ -3463,3 +3463,37 @@ uses `|δᵢ| ≤ 1`, which is not evident from the definition
 statement therefore keeps `‖W_Λ‖` explicit. Bounding it, for instance
 via `|B(γ ⊔ ℓ)| ≤ |B(γ)|` and a lower bound on `|B(γ)|`, is left to the
 point of use. Three declarations, standard axioms only.
+
+
+### Algebraic regularity in prime Z/N: Lemmas 8 and 30 become easy (2026-10-09)
+
+Prime `ℤ/N` with Bohr-set domains removes two of the heavier ingredients
+of [49] Theorem 33 (`Proofs16FreimanKernelBohr`).
+- **Lemma 8 → Bogolyubov.** Let `f` be Freiman-linear on `B(Ψ;σ)`
+  (`IsFreimanLinearOn`, which also covers linear combinations
+  `Σ wⱼLⱼ`) and constant on `F ⊆ B(Ψ;σ/4)`, where `|F| = αN`. Then
+  `f(x) = f(0)` on all of `B(Spec_α F; 1/(8π))`, and that Bohr set lies
+  in `B(Ψ;σ)`. The spectrum has size at most `16α⁻²`
+  (`freiman_const_on_bohr_of_dense`). The proof uses three quadruples:
+  `b + (a−b) = a + 0`, `c + (e−c) = e + 0` and
+  `(a−b) + (e−c) = x + 0`. So the Freiman subgroup step needs no
+  coset-progression machinery. The next domain is the Bohr set with
+  `Ψ ∪ Spec` adjoined.
+- **Lemma 30 → linear algebra.** With coefficients in the field `ℤ/N`,
+  the relations of the maps on a domain form a subspace
+  (`relationSubmodule`, relative to the values at `0`). It only grows as
+  the domain shrinks (`relationSubmodule_anti`). A strictly increasing
+  chain of subspaces of `(ℤ/N)^κ` has at most `|κ|` steps
+  (`strict_chain_length_le`). This replaces [49]'s
+  `O(r²(log r + log K))` lattice-determinant bound by `r`.
+
+Six declarations, all within the standard axioms; the linear-combination
+lemma needs only propext and Quot.sound. Collision gate clean. Remaining
+for Theorem 33 in this setting:
+- the pigeonhole choice of a regular radius ((10)–(12));
+- the averaging step, where failure of (i)/(ii) yields one relation
+  holding for many pairs;
+- the Cauchy–Schwarz passage to triples, and Freiman subtraction to get
+  `λ·L(y₁−y₂) = 0`;
+- the iteration bookkeeping, at most `r` steps, each multiplying the
+  domain rank by a polynomial factor.
