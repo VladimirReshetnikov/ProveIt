@@ -2883,3 +2883,11 @@ actual Bohr-sum containment result under its stated numerical conditions;
 the bounded-span selection, algebraic regularity, quasirandomness, and
 final structure composition remain unfinished. No numbered catalogue
 statement is marked closed by this step.
+
+The combined mixed Bohr-sum audit passes: 6,283 public Gowers theorems,
+a 4,960-module facade (4,152 OAI modules), and 4,962 modules including the
+audit and import-compatibility check. All seventeen new declarations
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream scope is
+unchanged.
