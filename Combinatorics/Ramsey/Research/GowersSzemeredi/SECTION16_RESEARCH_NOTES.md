@@ -2422,3 +2422,29 @@ All three further production modules and all six transitive axiom checks
 pass with the same three approved axioms. Their facade registration and
 combined audit also await the running audit. No catalogue claim or port
 scope is changed.
+
+
+### Sharper line-density extraction and smaller variety families
+
+`Proofs16SharperLineExtractor` retains the actual density `alpha=|R|/N`
+when applying Corollary 7.6. The line product property gives
+`gamma^8*alpha*(alpha*N)^3` respected quadruples. The resulting extraction
+mass is `2^-1882*gamma^9312*alpha^1165`, so a line of density at least
+`beta` supplies the uniform bound
+`2^-1882*gamma^9312*beta^1165`. Lean proves this dominates the previous
+`2^-2000*(gamma*beta)^10000` over the complete density range `(0,1]`.
+It also proves that the two-pass bihomomorphism mass increases and the
+required bihomomorphism family count does not increase.
+
+`Proofs16SharperVarietyStructure` constructs the variety structure side
+using this improved extraction. `Proofs16SharperVarietyParameters` proves
+that `milicevicBound D c` decreases with the density `c` on `(0,1]`, and
+that the padded count `ceil(m*exp(B(theta/(2*m))))+1` increases with the
+positive family size `m`. Thus the sharper extraction does not increase
+the full variety-family budget, for every deep-structure exponent `D`.
+
+All three new production modules and their eleven transitive axiom checks
+pass with only propext, Classical.choice, and Quot.sound. They await
+facade registration and integration into `section16VarietyExtractionFamily`
+after the running full audit. Deep structure and the printed numerical
+budget remain open, and no upstream modules are added.
