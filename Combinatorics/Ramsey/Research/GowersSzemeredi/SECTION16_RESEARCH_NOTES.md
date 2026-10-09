@@ -5783,10 +5783,41 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          it, which is what `Θ(a) ∉ S(x, a)` supplies.
          `card_le_of_subsetSumInjective` is the cap
          `2^|V| ≤ (2|V|R+1)^|Γ|` for `V ⊆ ⟨Γ⟩_R`.
-         Still to do: the round structure (Claim 9.4 adds `Θ` to
-         `I_{x+a,x}` on its pairs; the potential `∑|I_{x,a}|` rises by
-         `δN²` per round and is capped at `s₀N²`), Claim 9.5, and the final
-         selection.
+         **The iteration terminates (kernel-checked):**
+         `milicevic_prop_9_3_iteration` (`Proofs16PropNineThreeIteration`).
+         - *State* (`PropNineThreeInvariant`). Maps `θ_i`, `i < m`, are
+           Freiman 8-homomorphisms on domains `D_i`. For each pair
+           `(x, a)` there is an index set `I_{x,a} ⊆ [m]` with `a ∈ D_i`,
+           `θ_i(a) ∈ ⟨Γ_{x+a} ∪ Γ_x⟩_{2R}`, `i ↦ θ_i(a)` injective, and
+           `{-1,0,1}`-independent values.
+         - *Uniform radius.* `R = propNineThreeRadius (2d) M ρ`, with
+           `2 ≤ ρM`. `escape_frequency_uniform` uses the rank-capped
+           quarter-radius Theorem 27
+           (`bohr_sum_contains_rank_cap_span_quarter`) in place of the
+           set-dependent one, so one `R` serves every triple and no
+           modulus condition appears.
+         - *One round* (`milicevic_prop_9_3_round`). From `εN³` bad
+           triples (`propNineThreeBad`: (24) fails at some `d`), escape,
+           then `escape_split`, then `claim_9_4` with forbidden set
+           `⟨θ_i(a) : i ∈ I_{x,a}⟩_1`. That set lies inside the bounded
+           span over `I_{x,a} ∪ I_{y,a}`, by
+           `spanBall_subset_boundedFrequencySpan`. The new `θ_m = Θ` is
+           appended on `claimNineFourDensity ε R d · N²` pairs.
+         - *Termination.* `propNineThree_index_card_le` caps every
+           `|I_{x,a}| ≤ s₀` for any `s₀` with
+           `2^s ≤ (4sR+1)^{2d} ⇒ s ≤ s₀`. `exists_good_of_potential` then
+           reaches a state with fewer than `εN³` bad triples and
+           `⌈δN²⌉·m ≤ N²s₀`, so `m ≤ s₀/δ`. The hypothesis
+           `2s₀η ≤ 1/4` is the triangle-inequality condition of the
+           escape step.
+
+         Still to do: Claim 9.5 (the 12-tuple version, the same pattern
+         with four escapes), and the final selection of pairs `(x_a, y_a)`
+         with gluing by Lemma 9.1 (`compatible_bohr_sum_quadruple`) and
+         the random index set `J`. Quantitatively, `s₀ = O(d log(dR))`, and
+         `δ` is polynomial in `ε` and `(2R+1)^(−d)`. With
+         `R = (ρ^(−1))^O(d)`, this makes `m ≤ s₀/δ = exp(O(d² log 1/ρ))`
+         rounds: exp-poly in `d` and `log 1/ρ`, as in the paper.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.

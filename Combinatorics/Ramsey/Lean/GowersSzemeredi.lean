@@ -984,6 +984,8 @@ import GowersSzemeredi.Proofs16CommonValue
 import GowersSzemeredi.Proofs16CommonValueFreiman
 import GowersSzemeredi.Proofs16ClaimNineFour
 import GowersSzemeredi.Proofs16SubsetSumIndependence
+import GowersSzemeredi.Proofs16IterationTools
+import GowersSzemeredi.Proofs16PropNineThreeIteration
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
