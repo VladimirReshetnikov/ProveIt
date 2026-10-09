@@ -6971,3 +6971,101 @@ facade modules, including 4,152 OAI modules), using only `propext`,
 unchanged at 115 companions and five open entries. The selected-port
 scope remains 4,134 upstream and 17 compatibility modules, excluding
 reciprocal-only dependencies.
+
+### J.119. Dense pair escape and the independent-family rank budget
+
+The progression result of J.118 now gives the pair-enlargement ingredient
+for the frequency-selection iteration. This follows the role of
+[Claim 9.4 in the auxiliary inverse-theorem source](https://arxiv.org/html/2601.01682v1#S9):
+one common map supplies a new independent frequency on many column
+pairs. The present explicit parameters come from J.115–J.118; no claim
+is made that they match that source's quasipolynomial estimates.
+
+**From quadruples to pairs.** If an additive quadruple's first pair and
+third coordinate are known, its fourth coordinate is determined. Thus
+`additive_quadruples_pair_card_le` proves `Q.card <= E.card*N` whenever
+all first pairs lie in `E`. Its real-density consequence turns
+`delta*N^3` quadruples into at least `delta*N^2` pairs, including when
+coordinates repeat. The new paired projection therefore preserves the
+normalized retained density from J.118.
+
+**Keep the translation and constant term.** Define
+`translatedFreimanDomain S a = {a+x : x in S}`. Membership is equivalent
+to `x-a in S`, and cardinality is unchanged. If `psi` is order-two
+Freiman on `S`, then `theta(x)=c+psi(x-a)` is order-two Freiman on this
+translated domain. These facts allow the selected map to be used at the
+actual column difference, without silently dropping either `a` or `c`.
+
+**Ambient span accounting.** Increasing a generator set preserves its
+bounded span at the same cutoff. A difference of elements in the spans
+of `K` and `L`, at respective cutoffs `R` and `S`, belongs to the span
+of `K union L` at cutoff `R+S`. In particular, the selected column-map
+values give cutoff `2*bohrExtensionCutoff (2*d) r` for their difference.
+This factor of two is retained explicitly; overlapping generator sets
+do not justify claiming the original cutoff for an arbitrary difference.
+
+**A common map escaping on many pairs.**
+`failed_containments_dense_pair_escape` takes the actual failure family
+and a selected-frequency set `F(p)` for each column pair. The only
+connection needed is `F(q0,q1)` contained in the quadruple's selected set
+`D(q)`. It returns a proper progression `P`, a translation `a`, one
+Freiman map `theta` on `a+P`, and a set `E` of first pairs from the original
+family. With `epsilon = escapingFreimanDensity delta d r`,
+
+```
+E.card >= commonDifferenceProgressionRetention epsilon*N^2.
+```
+
+For every `p in E`, its difference lies in `a+P`, and `theta(p1-p2)`
+belongs to the union of its column spans at the doubled cutoff while
+lying outside the unit span of `F(p)`. The progression rank and size
+bounds from J.118 are preserved.
+
+**Exact growth and a finite budget.** `extendIndependentFamily` inserts
+the new value at each chosen index and leaves the other sets unchanged.
+Theorems prove that this preserves dissociation and ambient bounded-span
+membership, contains every old selected set, and increases each selected
+cardinality by exactly one. For `E` contained in an index set `Omega`,
+
+```
+sum_Omega card(F') = sum_Omega card(F)+E.card.
+```
+
+If each ambient generator set has size at most `k`, the total cardinality
+is at most `Omega.card*spanGeneratorBound k R`. Consequently, any
+sequence whose successive total increases are at least
+`eta*Omega.card` satisfies `n*eta <= spanGeneratorBound k R` after `n`
+steps. The proof requires only the invariant at the final state and the
+proved increment inequalities for the preceding steps.
+
+**Actual failed-containment increment.**
+`failed_pair_containments_increase_rank` specializes the quadruple's
+selected set to the union of its two pair selections. Assuming these
+pair selections are dissociated and lie in their ambient doubled-cutoff
+spans, it produces the common progression map and dense pair set above.
+Updating those pairs preserves the invariants and gives the exact total
+increment. The resulting total satisfies
+
+```
+sum_p card(F'(p))
+  <= N^2*spanGeneratorBound (2*d) (2*bohrExtensionCutoff (2*d) r).
+```
+
+**Remaining work.** These are an actual improvement step and a proved
+bound on sequences of improvements. A complete selection procedure that
+records its maps and domains and terminates with few failed containments
+has not yet been constructed. The more complicated arrangement
+improvement corresponding to Claim 9.5 is also still missing. Global
+coherence, the final bilinear variety structure, and its remaining
+quantitative inputs stay open. No numbered source entry is closed here.
+The existing selected port suffices; no license or provenance changes
+were needed.
+
+**Verification.** The actual dense-pair rank-increment closure checks
+282 modules. All fourteen new named theorems pass individual axiom
+checks. The full audit checks 7,502 public Gowers theorems in 5,222
+modules (5,220 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries. The
+selected-port scope remains 4,134 upstream and 17 compatibility modules,
+with reciprocal-only dependencies excluded.
