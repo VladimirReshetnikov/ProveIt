@@ -86,7 +86,7 @@ OAI theorems and the listed compatibility declarations in a 4,152-module
 closure. Only `propext`, `Classical.choice`, and `Quot.sound` occur. The
 selected quantitative density theorem and the exact Gowers Theorem 1.3
 companion also pass their own transitive axiom checks. The combined Gowers
-audit checks 9,055 public Gowers theorems in a 5,502-module closure with
+audit checks 9,089 public Gowers theorems in a 5,508-module closure with
 the same axiom boundary. The asymptotic constants
 do not supply Theorem 18.2's prescribed numerical threshold.
 
@@ -321,3 +321,12 @@ structure. Spectrum, slice, selection, and remainder inputs are constructed
 inside this route. The five production modules pass; the combined audit
 is queued. The printed Theorem 16.2 budget is not yet established, and no
 additional upstream modules are imported for these consumers.
+
+The robust-difference consumers
+`GowersSzemeredi.Proofs16RobustDifferenceBohr` and
+`GowersSzemeredi.Proofs16RobustDifferenceProgression` reuse the selected
+Croot–Sisask and proper-progression engines to retain uniform four-term
+representation counts. Their adapted width/rank and progression calculations
+are covered by the adjacent `LICENSE.openai-math`; the source notices,
+`LICENSE.provenance` and consumer manifest record the pinned upstream source
+and modifications. They add no upstream module to the selected closure.

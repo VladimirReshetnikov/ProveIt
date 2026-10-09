@@ -10230,3 +10230,14 @@ proof obligations, not consequences of the robust geometric theorem.
 The subsequent structure assembly and final printed numerical comparison
 also remain open. No numbered catalogue entry or final bound improvement
 is claimed at this checkpoint.
+
+Verification after merging the incoming span-ball split: all 14 new named
+proofs pass individual axiom checks. The complete original-data production
+closure compiles across 374 modules. The combined audit checks 9,089 public
+Gowers theorems across 5,508 modules (5,506 in the facade closure), using
+only `propext`, `Classical.choice`, and `Quot.sound`. The selected OAI audit
+closure remains 4,152 modules. The generated catalogue is byte-identical,
+with 115 companion proofs and five open statements. These counts do not
+certify fidelity to every printed statement. The selected-port scope check
+passes. Adaptation licensing and the useful consumer are recorded without
+expanding the upstream closure.
