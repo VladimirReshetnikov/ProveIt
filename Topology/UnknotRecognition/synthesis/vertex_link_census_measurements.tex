@@ -1,0 +1,63 @@
+\subsection{Complete recognition and proof-replay measurements}
+
+The isolated comparison replaces only the geometry validator, loading the
+old implementation before timing. Both arms use the same selection wrapper.
+Each timed call runs complete recognition with earlier shortcuts disabled,
+the native stage enabled, a twelve-second allowance and a 20,000-object
+fallback allowance, followed by an independent replay and hash of any native
+proof. Native misses continue through the reduced-Khovanov fallback. Cases
+marked ``plain'' disable shellings; cases marked ``shell'' enable them. The
+old/new comparison within each row keeps that choice fixed.
+
+Five randomized rounds of old, old A/A, new and new A/A calls cover eleven
+pipelines after one warm-up round each: 220 measured calls and 44 warm-ups
+in 15.901 seconds. A new-arm A/A ratio of 1.053 on the trefoil motivates a
+nine-round repeat. It completes 396 measured calls and 44 warm-ups in
+29.043 seconds. All 616 measured calls and 88 warm-ups complete correctly.
+Within each case, verdict, method, native work count and certificate hash
+are identical across all four arms and every round. No tests, audits, builds
+or commits overlap either timing run.
+\begin{center}
+\small
+\input{tables/vertex_link_census_recognize.tex}
+\end{center}
+All eleven final paired old/new medians favor the new census, from 1.158 to
+1.425. Final A/A medians range from 0.986 to 1.020. Plain raw witnesses improve
+by factors of 1.313 and 1.338; the plain optimized-disc fixture improves by
+1.158. Shelling pipelines improve by 1.238--1.425 on the positive fixtures,
+and the trefoil's complete negative pipeline improves by 1.164. The benefit
+comes from repeated geometry construction and verification, while unchanged
+source authentication, cocycle extraction and optimization limit the total
+gain. Guard counts stay unchanged because guards do not count every union or
+array operation.
+
+Absolute timing can drift between cases. In particular, the plain circle
+row was measured during a slower interval than the shelling-circle row.
+These rows must not be used as an off/on comparison. A separate randomized
+experiment measures that choice under the new census, using the preceding
+shelling driver unchanged. Its 200 measured calls and 40 warm-ups all finish
+correctly in 10.602 seconds, with A/A medians from 0.989 to 1.048. Nine of ten
+pipelines still favor shellings off, with paired off/on ratios from 0.577 to
+0.857. The original optimized-disc fixture now favors shellings by a factor
+of 1.245, but this one favorable case does not justify a general default.
+All four added native corpus positives still take longer with shellings than
+with their earlier Khovanov fallback in this full-verification experiment.
+The shelling option therefore remains disabled by default.
+
+The incidence census is enabled for all finite-manifold geometry preparation;
+there is no new recognition option or certificate schema. Its public
+validation contract is unchanged, and the ordinary pipeline corpus reaches
+no native stage, so these measurements do not establish a default-portfolio
+speedup on that corpus. They establish a reduction in geometry work and
+measured gains in complete native pipelines, including the independent proof
+cost that defeated the previous simplification experiment.
+
+Implementation revision \code{16e918cc7} follows a fresh merge check against
+main. Reproduce the validation with the driver
+\code{normal\_orbit\_research.link\_census} in \code{audit} mode, and the
+paired timing comparison in \code{recognize --rounds 9} mode. The separate
+shelling-choice run uses \code{normal\_orbit\_research.shellings} in
+\code{recognize --rounds 5} mode. All measured source proofs and discovery
+families are unchanged. In particular, this optimization does not supply the
+missing general subexponential or quasipolynomial discovery bound. The incoming
+unknot inventory and \code{openai/math} revision \code{fd4aeeb2e} remain unchanged.
