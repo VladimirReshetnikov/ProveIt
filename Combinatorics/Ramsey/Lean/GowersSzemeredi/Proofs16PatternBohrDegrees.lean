@@ -8,7 +8,7 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open Classical
 
-theorem mixedBohr_sumElim {N : Nat} [NeZero N] {ι κ : Type*} [Fintype ι] [Fintype κ]
+theorem mixedBohr_sumElim_radii {N : Nat} [NeZero N] {ι κ : Type*} [Fintype ι] [Fintype κ]
     (gamma : ι → ZMod N) (ell : κ → ZMod N) (a : ι → Nat) (b : κ → Nat) :
     mixedBohr (Sum.elim gamma ell) (Sum.elim a b) = mixedBohr gamma a ∩ mixedBohr ell b := by
   ext x
@@ -71,7 +71,7 @@ theorem patternDegreeBohr_eq_inter {N m : Nat} [NeZero N] (F : Finset (ZMod N))
     {eta : Real} (heta : 0 ≤ eta) (t : ZMod N) :
     patternDegreeBohr F psi J eta t = bohr F eta ∩ bohr (varyingPatternFrequencies psi J t) (eta / 4) := by
   unfold patternDegreeBohr
-  rw [mixedBohr_sumElim, mixedBohr_floor_tuple _ heta,
+  rw [mixedBohr_sumElim_radii, mixedBohr_floor_tuple _ heta,
     mixedBohr_floor_tuple _ (by positivity), patternFixedTuple_image, patternVaryingTuple_image]
 
 theorem patternCodegreeBohr_eq_inter {N m : Nat} [NeZero N] (F : Finset (ZMod N))
@@ -81,7 +81,7 @@ theorem patternCodegreeBohr_eq_inter {N m : Nat} [NeZero N] (F : Finset (ZMod N)
       (bohr (varyingPatternFrequencies psi J t) (eta / 4) ∩
         bohr (varyingPatternFrequencies psi J u) (eta / 4)) := by
   unfold patternCodegreeBohr
-  rw [mixedBohr_sumElim, mixedBohr_sumElim, mixedBohr_floor_tuple _ heta,
+  rw [mixedBohr_sumElim_radii, mixedBohr_sumElim_radii, mixedBohr_floor_tuple _ heta,
     mixedBohr_floor_tuple _ (by positivity), mixedBohr_floor_tuple _ (by positivity),
     patternFixedTuple_image, patternVaryingTuple_image, patternVaryingTuple_image]
 
