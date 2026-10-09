@@ -8975,7 +8975,11 @@ quadruple density `kappa`, J.138 supplies a set `A` of density at least
 `lambda = (3*kappa^2/64)^5/16384 = c*kappa^10`, where
 `c = 3^5/(64^5*16384)`.
 `HasCoherentRichSet` records the resulting exact mixed-quadruple lower
-bound for every two subsets of `A` above its specified threshold.
+bound for every two subsets of `A` above its specified threshold. It
+retains the full factor `(beta1*beta2*lambda)^2/2` for any two supplied
+density lower bounds `beta1,beta2 >= beta`. This dependence is needed
+for the later tuple recursion; replacing it by the bound at the minimum
+threshold would lose the quantitative input to that recursion.
 
 The global construction uses a freely chosen natural parameter `p` and
 subset threshold `beta = kappa^(p+2)/512`. Since `0 < kappa <= 1`,

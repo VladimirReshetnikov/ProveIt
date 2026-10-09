@@ -21,6 +21,8 @@ theorem HasCoherentRichSet.self_richness {N ell p : Nat} [NeZero N]
     (Nat.cast_nonneg N : (0 : Real) ≤ N)
   have hthreshold : coherentRichSubsetDensity kappa p*N ≤ (A.card : Real) := by
     nlinarith [mul_nonneg (sq_nonneg kappa) (Nat.cast_nonneg N : (0 : Real) ≤ N)]
-  exact ⟨A,hAX,hA,hthreshold,hrich A A (Finset.Subset.refl A) (Finset.Subset.refl A) hthreshold hthreshold⟩
+  refine ⟨A,hAX,hA,hthreshold,?_⟩
+  simpa only [pow_two] using hrich A A (Finset.Subset.refl A) (Finset.Subset.refl A)
+    (coherentRichSubsetDensity kappa p) (coherentRichSubsetDensity kappa p) le_rfl le_rfl hthreshold hthreshold
 
 end LeanProofs.GowersSzemeredi
