@@ -2843,3 +2843,51 @@ also pass individual transitive axiom checks. Only propext,
 Classical.choice, and Quot.sound occur. The source ledger remains 115/5
 with its existing fidelity caveats, and the selected upstream module
 scope is unchanged.
+
+
+### Mixed Bogolyubov and Bohr-sum containment
+
+`Proofs16MixedCorrelation` develops the mixed fourfold correlation of
+`A` and `B`. Its Fourier weights are `|Ahat(r)|^2*|Bhat(r)|^2`, which are
+nonnegative. Fourier inversion gives the total-weight formula at zero,
+the zero-frequency lower bound `|A|^2*|B|^2/N`, and the weighted phase
+bound for displacement. A nonzero mixed correlation yields an actual
+representation in `(A-A)+(B-B)`.
+
+`Proofs16MixedSpectrum` bounds the Fourier mass outside the intersection
+of large spectra at threshold `tau*N` by
+`tau^2*N^3*(|A|+|B|) <= 2*tau^2*N^4`. This follows from Parseval and
+the fact that at least one factor is small outside that intersection.
+
+`mixed_bogolyubov` uses `tau=|A||B|/(4*N^2)` for nonempty sets. A point
+in the Bohr set of the common large spectrum at radius `1/(4*pi)` has
+phase error at most `1/2` there. The exceptional Fourier mass is small
+enough to keep the mixed correlation nonzero, so the point lies in
+`(A-A)+(B-B)`. This part works for every nonzero modulus.
+
+`Proofs16BohrSumSpan` applies this to the half-radius sets
+`A=B(K;rho/2)` and `B=B(L;sigma/2)`. Their differences lie in the original
+Bohr sets. In prime modulus, with `0<rho,sigma<1` and
+`N >= 8*(|K|+1)/tau`, `N >= 8*(|L|+1)/tau`, the polynomial large-spectrum
+theorem puts the common spectrum in the intersection of the two bounded
+frequency spans. The Bohr set of this intersection, at radius `1/(4*pi)`,
+is therefore contained in `B(K;rho)+B(L;sigma)`. The two coefficient
+cutoffs are `polynomialSpectrumCutoff |K| (rho/2) tau` and its L/sigma
+counterpart. The threshold uses the actual half-radius cardinalities;
+the finite-size conditions remain explicit.
+
+The four new modules contain seventeen theorem declarations and compile
+in a 54-module closure. All declarations pass individual transitive axiom
+checks using only propext, Classical.choice, and Quot.sound. This is an
+actual Bohr-sum containment result under its stated numerical conditions;
+the bounded-span selection, algebraic regularity, quasirandomness, and
+final structure composition remain unfinished. No numbered catalogue
+statement is marked closed by this step.
+
+The combined mixed Bohr-sum audit passes: 6,283 public Gowers theorems,
+a 4,960-module facade (4,152 OAI modules), and 4,962 modules including the
+audit and import-compatibility check. All seventeen new declarations
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream scope is
+unchanged.
