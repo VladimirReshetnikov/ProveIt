@@ -1,0 +1,68 @@
+\subsection{Validation and the decision to keep this optional}
+
+The 32 focused tests pass in 3.991 seconds. They include forty small
+arithmetic instances checked on exhaustive potential grids, malformed
+optimality witnesses, disconnected incidence components, 20,000-bit scaled
+heights, cancellation, strict option types and exact positive-proof budget
+boundaries. The final maintained suite passes all 1,197 tests in
+232.354 seconds. An earlier full run before changing the default allowance
+also passed; the final run covers the disabled-by-default policy.
+
+The source audit independently inspects every distinct root-extremal
+surface on the 74 inputs with at most twelve crossings, together with each
+original optimum. All 787 surfaces agree with Regina on connectedness,
+orientability, Euler characteristic and compressing-disc status. There are
+713 alternatives, and 21 of the 74 sources exhibit different Euler
+characteristics among their tied optima. Full witnesses for the two named
+counterexamples and the new positive are retained. On nineteen ordinary
+portfolio inputs, both zero-root and four-root settings return the expected
+verdicts without reaching the native stage.
+
+The first audit reached the final ordinary-corpus loop but failed because
+its driver used an incorrect corpus-helper attribute. The helper reference
+was corrected and the failure log retained. The final pinned audit takes
+103.135 seconds, overlapping correctness tests; this is not a performance
+comparison. Its 485 runtime, driver, fixture and prior-audit hashes agree
+with the final benchmark. The independent span and source-verifier modules
+are byte-identical to the previous baseline \code{a8658ec40}.
+
+Two serial five-round experiments compare the complete recognizer with
+face search explicitly off or set to four roots. Each case has one warm-up
+round and then five measured rounds, each randomly ordering off, off A/A,
+on and on A/A calls. No tests, audits, builds or commits overlap the timed
+runs. Earlier shortcuts are disabled so that the native stage is reached;
+both arms have no local seed cap and retain the twelve-second global
+recognition deadline. All requested tree trials remain the same in both
+arms, including 24 for the late-tree control. A returned native proof is
+additionally replayed and hashed inside the timed endpoint.
+
+The first experiment motivated the zero default. The second repeats the
+comparison with the final source pins. All 280 measured calls and 56
+warm-ups across the two experiments finish; per-implementation verdicts
+and proof hashes are stable across both runs. The final run alone has
+140 measured calls and 28 warm-ups and takes 15.003 seconds. Its primary-arm
+median times and median paired ratios are shown below; a median paired
+ratio need not equal the ratio of median times.
+
+\begin{center}
+\small\input{tables/cocycle_face_recognize.tex}
+\end{center}
+
+The new seven-crossing native positive takes about 206 milliseconds with
+face search versus 120 milliseconds when the existing exact fallback
+finishes the call. Its paired ratio corresponds to about 72 percent
+additional time. The two continuing misses cost about 50 and 57 percent
+more. Earlier positive branches avoid the new search; their small timing
+differences provide no evidence of algorithmic gains and are accompanied
+by visible A/A variation. In particular, the late-tree off-arm A/A ratio
+is 1.065. The experiment therefore supports optional discovery and stronger
+coverage evidence, not a faster default recognizer. The maintained default
+continues to request zero face roots.
+
+Reproduction uses \path{../fast/normal_orbit_research/face.py} with
+\code{audit} or \code{recognize}; the audit requires optional Regina.
+The existing incoming archive inventory is unchanged. The checked
+\code{openai/math} head remains \code{fd4aeeb2e}, and the arXiv record for
+Lackenby's hierarchy paper~\cite{lackenby2026} still lists its July 2026 first version. The
+new optimal-face argument is a local extension of report 31's matching
+duality, not a resolution of the general recognition-complexity gap.

@@ -552,3 +552,14 @@ All 1,192 tests pass and 76 fresh Regina controls agree. See
 `../synthesis/cocycle_blocking.tex` for the residual invariant, worst-case
 accounting, an equal-cost family with linear residual search, and measured
 source gains alongside adverse arbitrary-input controls.
+
+Report 31's matching dual now also gives an **exact optimal-face description**:
+eight difference constraints per tetrahedron characterize all tied optima.
+The optional native face search obtains two extrema per selected root by
+nonnegative shortest paths and reuses the independent span/source verifiers.
+Four roots add one seven-crossing native proof, but complete recognition is
+slower on the measured new positive and misses, so the option defaults to
+zero. All 1,197 tests pass and 787 Regina surface controls agree. The retained
+same-matching examples include discs and annuli at the same piece minimum;
+tie-breaking does not preserve topology. See `../synthesis/cocycle_face.tex`
+for the proof, bounded-search limits, source coverage and adverse timings.
