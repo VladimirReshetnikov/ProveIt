@@ -39,10 +39,8 @@ theorem section16PolynomialVarietyLiftExponent_pos {p Cv pv D Q : Nat}
     (section16UniformSampleCount (rho / 4) theta gamma 2 * Q) D hpv hc hc1
   exact div_pos (mul_pos he ha) (by norm_num)
 
-/-- Supply the spectrum, selection, identity, and remainder inputs from
-common-base geometry and extend the polynomial variety-family lift to every box. -/
-theorem exists_polynomial_variety_common_base_cover :
-  ∃ C p Cv pv : Nat, 2 ≤ C ∧ 0 < p ∧ 2 ≤ Cv ∧ 0 < pv ∧
+/-- The statement of `exists_polynomial_variety_common_base_cover` at fixed constants. -/
+def PolynomialVarietyCommonBaseCoverAt (C p Cv pv : Nat) : Prop :=
   ∀ (N : Nat) [NeZero N] [Fact N.Prime],
     ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     ∀ (Qb Eb : Real → Real),
@@ -59,9 +57,12 @@ theorem exists_polynomial_variety_common_base_cover :
           (section16PolynomialVarietyLiftExponent p Cv pv D Q c theta gamma Qb Eb rho)
           (section16PolynomialVarietyLiftThreshold C p Cv pv D Q c theta gamma Qb Eb rho))
         (partialGraph (section16GoodDomain B (data.H ∩ data.J) data.Y data.x0)
-          (section16PhiOne phi data.x0)) := by
-  obtain ⟨C, p, Cv, pv, hC, hp, hCv, hpv, hcover⟩ := exists_polynomial_variety_family_power_cover
-  refine ⟨C, p, Cv, pv, hC, hp, hCv, hpv, ?_⟩
+          (section16PhiOne phi data.x0))
+
+/-- `exists_polynomial_variety_common_base_cover` at the constants of its input. -/
+theorem polynomialVarietyCommonBaseCoverAt_of {C p Cv pv : Nat} (hC : 2 ≤ C) (hp : 0 < p) (hCv : 2 ≤ Cv) (hpv : 0 < pv)
+    (hcover : PolynomialVarietyFamilyPowerCoverAt C p Cv pv) : PolynomialVarietyCommonBaseCoverAt C p Cv pv := by
+  unfold PolynomialVarietyCommonBaseCoverAt
   intro N _ _ theta gamma ht ht1 hg hg1 Qb Eb hQE B phi data h D Q c hQpieces hc hc1 hfamily
   have hpos (rho : Real) (hrho : 0 < rho) (hrho1 : rho ≤ 1) :
       0 < section16PolynomialVarietyLiftExponent p Cv pv D Q c theta gamma Qb Eb rho :=
@@ -100,5 +101,29 @@ theorem exists_polynomial_variety_common_base_cover :
       (fun rho => section16PolynomialVarietyLiftExponent p Cv pv D Q c theta gamma Qb Eb rho)
       (fun rho => section16PolynomialVarietyLiftThreshold C p Cv pv D Q c theta gamma Qb Eb rho)
       hpos hlargeCover
+
+/-- Supply the spectrum, selection, identity, and remainder inputs from
+common-base geometry and extend the polynomial variety-family lift to every box. -/
+theorem exists_polynomial_variety_common_base_cover :
+  ∃ C p Cv pv : Nat, 2 ≤ C ∧ 0 < p ∧ 2 ≤ Cv ∧ 0 < pv ∧
+  ∀ (N : Nat) [NeZero N] [Fact N.Prime],
+    ∀ (theta gamma : Real), 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    ∀ (Qb Eb : Real → Real),
+      (∀ s, 0 < s → s ≤ 1 → 0 ≤ Qb s ∧ 0 < Eb s ∧ Eb s ≤ 1) →
+    ∀ (B : Finset (Point N 3)) (phi : Point N 3 → ZMod N)
+      (data : Section16CommonBaseDataWith theta gamma Qb Eb B phi),
+    Section16StructuredPair theta gamma B phi →
+    ∀ (D Q : Nat) (c : Real), 0 < Q → 0 < c → c ≤ 1 →
+      Section16FinalStackable Q (section16VarietyPieceClass N D c) B phi →
+      MultiplyLinearWith
+        (fun rho => max (section16VarietyLiftGraphBound Q theta gamma rho)
+          ((3 ^ 3 : Nat) : Real))
+        (fun rho => section16CappedWidthExponent
+          (section16PolynomialVarietyLiftExponent p Cv pv D Q c theta gamma Qb Eb rho)
+          (section16PolynomialVarietyLiftThreshold C p Cv pv D Q c theta gamma Qb Eb rho))
+        (partialGraph (section16GoodDomain B (data.H ∩ data.J) data.Y data.x0)
+          (section16PhiOne phi data.x0)) := by
+  obtain ⟨C, p, Cv, pv, hC, hp, hCv, hpv, hcover⟩ := exists_polynomial_variety_family_power_cover
+  exact ⟨C, p, Cv, pv, hC, hp, hCv, hpv, polynomialVarietyCommonBaseCoverAt_of hC hp hCv hpv hcover⟩
 
 end LeanProofs.GowersSzemeredi

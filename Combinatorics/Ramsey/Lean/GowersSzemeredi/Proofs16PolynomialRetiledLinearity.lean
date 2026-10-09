@@ -78,14 +78,16 @@ def Section16RetiledLinearityBound (k q : Nat) (epsilon : Real) (threshold : Nat
       (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
       ∀ j x, x ∈ (T j).carrier → x ∈ G → LinearOn ((J j).carrier ∩ A x) (f x)
 
-/-- The new simultaneous recurrence supplies the retiled linearity bound
-with reciprocal-polynomial dependence on the number of covering phases. -/
-theorem exists_polynomial_retiled_linearity_profile (k : Nat) :
-    ∃ K p : Nat, 2 ≤ K ∧ 0 < p ∧ ∀ q : Nat,
+/-- The statement of `exists_polynomial_retiled_linearity_profile` at fixed constants. -/
+def PolynomialRetiledLinearityProfileAt (k : Nat) (K p : Nat) : Prop :=
+  ∀ q : Nat,
       Section16RetiledLinearityBound k q (section16SimultaneousExponent k p q)
-        (section16SimultaneousThreshold k K p q) := by
-  obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
-  refine ⟨K, p, hK, hp, ?_⟩
+        (section16SimultaneousThreshold k K p q)
+
+/-- `exists_polynomial_retiled_linearity_profile` at the constants of its input. -/
+theorem polynomialRetiledLinearityProfileAt_of (k : Nat) {K p : Nat} (hK : 2 ≤ K) (hp : 0 < p)
+    (hrec : PolynomialSection16RecurrenceProfileAt k K p) : PolynomialRetiledLinearityProfileAt k K p := by
+  unfold PolynomialRetiledLinearityProfileAt
   intro q N m _ P B I i u hP hI hBstep hIstep hsub hshort hL mu hmu hm hmP
     F G A f zeta hz hzHalf hcover hlinear hlarge
   have hm0 : 0 < m := (pow_pos (Nat.mul_pos (by omega : 0 < K) (by omega)) _).trans_le hm
@@ -94,6 +96,15 @@ theorem exists_polynomial_retiled_linearity_profile (k : Nat) :
     mu _ zeta (Real.rpow_pos_of_pos hmR _) hz hzHalf _ F G A f hcover hlinear hlarge
   simpa only [Real.rpow_neg hmR.le, div_eq_mul_inv] using
     hrec N q m P hP mu hmu hm hmP
+
+/-- The new simultaneous recurrence supplies the retiled linearity bound
+with reciprocal-polynomial dependence on the number of covering phases. -/
+theorem exists_polynomial_retiled_linearity_profile (k : Nat) :
+    ∃ K p : Nat, 2 ≤ K ∧ 0 < p ∧ ∀ q : Nat,
+      Section16RetiledLinearityBound k q (section16SimultaneousExponent k p q)
+        (section16SimultaneousThreshold k K p q) := by
+  obtain ⟨K, p, hK, hp, hrec⟩ := exists_polynomial_section16_recurrence_profile k
+  exact ⟨K, p, hK, hp, polynomialRetiledLinearityProfileAt_of k hK hp hrec⟩
 
 /-- Raising the input threshold preserves a retiled linearity bound. -/
 theorem Section16RetiledLinearityBound.mono_threshold {k q t₁ t₂ : Nat} {epsilon : Real}

@@ -26,9 +26,8 @@ theorem section16PolynomialLinearityWidth_le_cell_width {m n k C p q : Nat}
   rw [mul_div_assoc, Real.rpow_mul (Nat.cast_nonneg m)]
   exact Real.rpow_le_rpow (by positivity) hcell (div_nonneg ha (by positivity))
 
-/-- Lemma 16.9 with a polynomial spectrum-count width at every input scale. -/
-theorem exists_all_scale_polynomial_lemma_16_9 (k : Nat) :
-  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+/-- The statement of `exists_all_scale_polynomial_lemma_16_9` at fixed constants. -/
+def AllScalePolynomialLemma169At (k : Nat) (C p : Nat) : Prop :=
   ∀ (N m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
     ∀ (theta gamma sigma : Real),
     0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
@@ -58,9 +57,12 @@ theorem exists_all_scale_polynomial_lemma_16_9 (k : Nat) :
         Section16LineCover P B1 (section16PhiOne phi x0) sigma
           (section16PolynomialLinearityWidth m k C p (Nat.floor (Qb (sigma / 2)))
             (((multipleC (sigma / (2 * r)) gamma (k + 1)) ^ r) * Eb (sigma / 2)) zeta)
-          qGamma := by
-  obtain ⟨C, p, hC, hp, hlemma6⟩ := exists_all_scale_polynomial_lemma_16_6 k
-  refine ⟨C, p, hC, hp, ?_⟩
+          qGamma
+
+/-- `exists_all_scale_polynomial_lemma_16_9` at the constants of its input. -/
+theorem allScalePolynomialLemma169At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hlemma6 : AllScalePolynomialLemma166At k C p) : AllScalePolynomialLemma169At k C p := by
+  unfold AllScalePolynomialLemma169At
   intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb hQ ha ha1
     B phi H Jbase H1 Y phiPrime x0
   dsimp only
@@ -157,5 +159,41 @@ theorem exists_all_scale_polynomial_lemma_16_9 (k : Nat) :
     change _ = lines j b h i x
     dsimp only [lines]
     rw [hid, hphi, hi]
+
+/-- Lemma 16.9 with a polynomial spectrum-count width at every input scale. -/
+theorem exists_all_scale_polynomial_lemma_16_9 (k : Nat) :
+  ∃ C p : Nat, 2 ≤ C ∧ 0 < p ∧
+  ∀ (N m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma sigma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    0 < sigma → sigma ≤ 1 →
+    ∀ (Qb Eb : Real → Real), 0 ≤ Qb (sigma / 2) → 0 < Eb (sigma / 2) →
+      Eb (sigma / 2) ≤ 1 →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H Jbase H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k),
+    let theta1 := section16ThetaOne theta gamma k
+    let delta := section16Delta theta1
+    let zeta := section16Zeta theta gamma k
+    let r := section16Lemma9R theta gamma k
+    let B1 := section16GoodDomain B H1 Y x0
+    H1 = H ∩ Jbase →
+    MultiplyLinearWith Qb Eb
+      (restrictRelation (section16SpectrumRelation B delta) Jbase) →
+    Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime →
+    Section16PhiOneIdentity B1 phi x0 phiPrime →
+    MultiplyLinearFunction gamma r B1 (section16PhiRemainder phi x0) →
+    ∀ P : Box N (k + 1), P.IsProper → m ≤ P.width →
+      ∃ qGamma : Nat,
+        (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
+        Section16LineCover P B1 (section16PhiOne phi x0) sigma
+          (section16PolynomialLinearityWidth m k C p (Nat.floor (Qb (sigma / 2)))
+            (((multipleC (sigma / (2 * r)) gamma (k + 1)) ^ r) * Eb (sigma / 2)) zeta)
+          qGamma := by
+  obtain ⟨C, p, hC, hp, hlemma6⟩ := exists_all_scale_polynomial_lemma_16_6 k
+  exact ⟨C, p, hC, hp, allScalePolynomialLemma169At_of k hC hp hlemma6⟩
 
 end LeanProofs.GowersSzemeredi
