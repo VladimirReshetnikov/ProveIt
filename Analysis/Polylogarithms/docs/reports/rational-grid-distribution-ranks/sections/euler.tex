@@ -1,0 +1,408 @@
+\section{Alternating harmonic sums: complete even-weight evaluation}
+\label{sec:euler}
+
+The Gaussian depth draft studies
+\begin{equation}
+S_p=\sum_{n=0}^{\infty}\frac{(-1)^nH_n}{(2n+1)^p},
+\qquad H_0=0,\qquad H_n=\sum_{k=1}^{n}\frac1k.
+\label{eq:euler-definition}
+\end{equation}
+For ordinary convergence the correct index range is \(p\ge1\).
+At \(p=0\), the summands do not tend to zero. An Abel value at that
+index would be a separate definition, not the sum in
+\eqref{eq:euler-definition}.
+
+The odd-index evaluations below are a specialization of the existing
+Euler-sum literature. We prove them independently because the integral
+argument explains exactly which symmetry supplies the evaluation and
+leads to a useful global generating function. Neither the evaluation
+nor the symmetry supplies a nonmembership theorem for the even indices.
+
+\subsection{Convergence and the Mellin representation}
+
+\begin{lemma}\label{lem:euler-mellin}
+For every integer \(p\ge1\), the series \eqref{eq:euler-definition}
+converges and satisfies \(|S_p|\le3^{-p}\). It converges absolutely
+precisely when \(p>1\). With
+\[
+Q(x)=\frac{\log(1+x^2)}{1+x^2},
+\]
+one has
+\begin{equation}
+S_p=-\frac1{(p-1)!}\int_0^1(-\log x)^{p-1}Q(x)\,dx.
+\label{eq:euler-mellin}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For \(n\ge1\),
+\[
+\frac{H_{n+1}}{H_n}
+=1+\frac1{(n+1)H_n}
+\le1+\frac1{n+1}
+<\frac{2n+3}{2n+1}.
+\]
+Thus \(H_n/(2n+1)^p\) decreases to zero for every \(p\ge1\).
+The alternating-series theorem gives convergence and the bound by
+the first nonzero term, \(3^{-p}\). The estimate
+\(H_n\le1+\log n\) proves absolute convergence for \(p>1\);
+for \(p=1\), even the lower bound \(H_n\ge1\) proves divergence
+of the absolute series.
+
+To justify the endpoint \(p=1\) together with the other indices, take
+\(0\le r<1\). The harmonic-number generating identity gives
+\[
+\sum_{n\ge0}(-r)^nH_nx^{2n}
+=-\frac{\log(1+rx^2)}{1+rx^2},\qquad 0\le x\le1.
+\]
+The series is uniformly absolutely convergent in \(x\), and
+\[
+\int_0^1x^{2n}(-\log x)^{p-1}\,dx
+=\frac{(p-1)!}{(2n+1)^p}.
+\]
+Termwise integration therefore proves the regularized version of
+\eqref{eq:euler-mellin}. Since
+\[
+0\le \frac{\log(1+rx^2)}{1+rx^2}\le x^2,
+\]
+dominated convergence gives the stated integral as \(r\uparrow1\).
+Abel's theorem identifies the series limit with the already established
+ordinary sum. In particular, no unproved interchange of a conditionally
+convergent boundary series is required.
+\end{proof}
+
+\subsection{Evaluation at every odd index}
+
+\begin{theorem}[All odd-index harmonic sums]\label{thm:euler-odd}
+For every integer \(m\ge0\),
+\begin{equation}
+\boxed{\displaystyle
+S_{2m+1}=(2m+1)\beta(2m+2)-2\beta(2m+1)\log2
+-\sum_{j=1}^{m}(2-2^{-2j})
+ \beta(2m-2j+1)\zeta(2j+1).}
+\label{eq:euler-odd}
+\end{equation}
+The sum is empty for \(m=0\).
+\end{theorem}
+
+\begin{proof}
+We first relate a half-line logarithmic moment to a full-line moment.
+Put
+\[
+J_m=\int_0^1\log^{2m}x\,Q(x)\,dx,
+\qquad
+L_m=\int_0^{\infty}\log^{2m}x\,Q(x)\,dx.
+\]
+All these integrals converge: \(Q(x)=O(x^2)\) at zero and
+\(Q(x)=O(x^{-2}\log x)\) at infinity.
+Substitution \(x=1/u\) in the part over \((1,\infty)\) uses the
+exact identity
+\[
+\frac{Q(1/u)}{u^2}
+=Q(u)-\frac{2\log u}{1+u^2}.
+\]
+Consequently,
+\begin{align}
+L_m
+&=2J_m-2\int_0^1\frac{\log^{2m+1}u}{1+u^2}\,du\notag\\
+&=-2(2m)!S_{2m+1}+2(2m+1)!\beta(2m+2).
+\label{eq:euler-inversion}
+\end{align}
+Here the first term follows from Lemma~\ref{lem:euler-mellin}; the
+second follows by expanding \((1+u^2)^{-1}\). That integration is
+absolutely summable, since the integrated terms have size
+\((2m+1)!/(2n+1)^{2m+2}\).
+
+It remains to evaluate \(L_m\). Define the full Mellin transform
+\[
+F(a)=\int_0^{\infty}x^{a-1}Q(x)\,dx.
+\]
+The integral in fact converges for \(-2<\Repart a<2\). On the
+smaller strip \(0<\Repart a<2\), the beta integral gives
+\begin{equation}
+F(a)=\frac{\pi}{2\sin(\pi a/2)}
+       \bigl[\psi(1)-\psi(1-a/2)\bigr],
+\label{eq:euler-full-mellin}
+\end{equation}
+where \(\psi=\Gamma'/\Gamma\). Indeed, for
+\(\Repart b>\Repart a/2>0\),
+\[
+\int_0^{\infty}x^{a-1}(1+x^2)^{-b}\,dx
+=\frac{\Gamma(a/2)\Gamma(b-a/2)}{2\Gamma(b)}.
+\]
+Differentiate with respect to \(b\), negate the result, and set
+\(b=1\). Differentiation under the integral is valid uniformly on
+compact subsets of this parameter region, because the additional
+factor \(\log(1+x^2)\) preserves the integrable bounds at zero
+and infinity. Euler's reflection formula then yields
+\eqref{eq:euler-full-mellin}. The same bounds with further powers
+of \(\log x\) justify differentiation in \(a\), so
+\begin{equation}
+F^{(2m)}(1)=L_m.
+\label{eq:euler-moments}
+\end{equation}
+
+The digamma duplication formula and the convergent polygamma series
+give
+\[
+\psi(1)-\psi(1/2)=2\log2,
+\qquad
+\psi^{(k)}(1/2)
+=(-1)^{k+1}k!(2^{k+1}-1)\zeta(k+1),\quad k\ge1.
+\]
+For clarity, the second identity follows by separating the odd terms
+in \(\psi^{(k)}(z)=(-1)^{k+1}k!\sum_{n\ge0}(n+z)^{-k-1}\).
+Expanding \eqref{eq:euler-full-mellin} at \(a=1\), its even part
+is therefore
+\begin{equation}
+\frac{F(1+t)+F(1-t)}2
+=\pi\sec\!\left(\frac{\pi t}{2}\right)
+ \left[\log2+\sum_{j\ge1}
+ (1-2^{-2j-1})\zeta(2j+1)t^{2j}\right],
+\qquad |t|<1.
+\label{eq:euler-even-mellin}
+\end{equation}
+
+The needed coefficients of the secant can be obtained without any
+assumption about special values. Another beta integral and the same
+inversion give
+\[
+\frac{\pi}{2}\sec\!\left(\frac{\pi t}{2}\right)
+=\int_0^1\frac{x^t+x^{-t}}{1+x^2}\,dx
+=2\sum_{r\ge0}\beta(2r+1)t^{2r},\qquad |t|<1.
+\]
+To justify the last equality, expand the numerator in powers of \(t\)
+under an integrable bound \(x^{-|t|}\). The logarithmic moments
+with \(r\ge1\) may be integrated termwise absolutely; for \(r=0\)
+the identity is \(\arctan1=\beta(1)=\pi/4\).
+Taking the coefficient of \(t^{2m}\) in
+\eqref{eq:euler-even-mellin} now yields
+\[
+\frac{L_m}{(2m)!}
+=4\beta(2m+1)\log2
+ +4\sum_{j=1}^{m}(1-2^{-2j-1})
+       \beta(2m-2j+1)\zeta(2j+1).
+\]
+Substituting this into \eqref{eq:euler-inversion} and dividing by
+\(2(2m)!\) proves \eqref{eq:euler-odd}.
+\end{proof}
+
+\paragraph{Literature identification and normalization.}
+In Xu and Wang's notation for linear Euler \(R\)-sums,
+\[
+R_{1,q}^{1,-1}
+=\sum_{n\ge1}\frac{(-1)^{n-1}H_{n-1}}{(n-1/2)^q}
+=2^qS_q.
+\]
+For odd \(q\ge3\), equation~(20) on printed page~994 of
+\cite{XuWang} specializes to \eqref{eq:euler-odd}.
+The conversion uses their conventions
+\[
+\widetilde t(k;-1)=-2^k\beta(k),\qquad
+\widetilde t(k;1)=(2^k-1)\zeta(k)\quad(k\ge2),
+\qquad \widetilde t(1;1)=2\log2.
+\]
+The \(m=0\) case follows directly from the proof above. Thus the
+theorem is an explicit, independently proved specialization of known
+results, not a claim of a globally new evaluation theorem.
+
+For example,
+\begin{align*}
+S_1&=G-\frac\pi2\log2,\\
+S_3&=3\beta(4)-\frac{\pi^3}{16}\log2
+                      -\frac{7\pi}{16}\zeta(3),\\
+S_9&=9\beta(10)-\frac{1385\pi^9}{20643840}\log2
+       -\frac{427\pi^7}{737280}\zeta(3)
+       -\frac{155\pi^5}{24576}\zeta(5)\\
+   &\hspace{1.7em}-\frac{127\pi^3}{2048}\zeta(7)
+       -\frac{511\pi}{1024}\zeta(9).
+\end{align*}
+Every odd beta value is a rational multiple of the corresponding odd
+power of \(\pi\), as also follows by comparing the secant coefficients
+above. Hence \eqref{eq:euler-odd} is homogeneous of weight \(2m+2\)
+in the single-value generators used in the draft. In particular, it
+proves the positive, even-weight half of the proposed alternation
+pattern at all weights.
+
+\subsection{A meromorphic generating function and its exact singularities}
+
+\begin{theorem}[Even generator]\label{thm:euler-generator}
+The power series
+\[
+E(t)=\sum_{m\ge0}S_{2m+1}t^{2m}
+\]
+has radius of convergence exactly \(3\). It extends to an even
+meromorphic function on \(\C\), with the closed form
+\begin{equation}
+\boxed{\displaystyle
+E(t)=\frac{\psi_1((1+t)/4)-\psi_1((3+t)/4)}{16}
+ +\frac{\pi\,[\psi((1+t)/2)-\psi(1)]}
+        {4\cos(\pi t/2)},}
+\label{eq:euler-generator}
+\end{equation}
+where \(\psi_1=\psi'\), and apparent singularities are interpreted
+by meromorphic continuation. Its only poles are simple and occur at
+\(t=\pm(2n+1)\), \(n\ge1\), with
+\begin{equation}
+\Res_{t=2n+1}E(t)=\frac{(-1)^{n+1}H_n}{2},\qquad
+\Res_{t=-(2n+1)}E(t)=\frac{(-1)^nH_n}{2}.
+\label{eq:euler-residues}
+\end{equation}
+In particular, the apparent singularities at \(t=\pm1\) are
+removable, and
+\begin{equation}
+E(1)=E(-1)=-\frac{\pi^2}{48}.
+\label{eq:euler-removable}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:euler-mellin} and the bound \(|S_p|\le3^{-p}\)
+first define \(E\) on \(|t|<3\). Summing the even exponential
+series under the Mellin integral gives
+\begin{equation}
+E(t)=-\frac12\int_0^1(x^t+x^{-t})Q(x)\,dx.
+\label{eq:euler-generator-integral}
+\end{equation}
+For \(|t|<3\), absolute values of the summed integrand are bounded
+by \(Q(x)\cosh(|t|\log x)\), which is integrable at zero since
+\(Q(x)=O(x^2)\). The right-hand side of
+\eqref{eq:euler-generator-integral} is holomorphic on the larger
+vertical strip \(|\Repart t|<3\): on each compact subset, the same
+argument applies with a fixed exponent strictly smaller than \(3\),
+and all parameter derivatives add only powers of \(|\log x|\).
+It also proves evenness there.
+
+To evaluate the integral, let
+\[
+J(t)=\int_0^1x^tQ(x)\,dx,
+\qquad
+K(t)=\int_0^1\frac{x^t\log x}{1+x^2}\,dx.
+\]
+For \(|\Repart t|<1\), splitting the full Mellin integral at one
+and inverting the second part gives
+\[
+F(1-t)=J(-t)+J(t)-2K(t).
+\]
+In this strip, expansion of \((1+x^2)^{-1}\) and absolute
+summability after integration give
+\begin{align*}
+K(t)
+&=-\sum_{n\ge0}\frac{(-1)^n}{(2n+1+t)^2}\\
+&=-\frac1{16}
+ \bigl[\psi_1((1+t)/4)-\psi_1((3+t)/4)\bigr].
+\end{align*}
+Since \(E(t)=-F(1-t)/2-K(t)\), substitution of
+\eqref{eq:euler-full-mellin} proves
+\eqref{eq:euler-generator} in \(|\Repart t|<1\).
+
+The exact global singularity statement should not be inferred merely
+from the individual terms of that formula, because they have cancelling
+poles. Instead, retain the conditionally convergent coefficient
+\(S_1\) separately and sum all the absolutely convergent higher
+coefficients. For \(|t|<3\), this gives
+\begin{equation}
+E(t)=S_1+\sum_{n\ge1}
+ \frac{(-1)^nH_n t^2}
+ {(2n+1)((2n+1)^2-t^2)}.
+\label{eq:euler-generator-partial-fractions}
+\end{equation}
+The interchange is valid because
+\[
+\sum_{n\ge1}\frac{H_n}{2n+1}
+ \sum_{m\ge1}\left(\frac{|t|}{2n+1}\right)^{2m}
+=\sum_{n\ge1}
+ \frac{H_n|t|^2}{(2n+1)((2n+1)^2-|t|^2)}<\infty.
+\]
+For any compact set avoiding the displayed poles in
+\eqref{eq:euler-generator-partial-fractions}, the summands for
+sufficiently large \(n\) are uniformly
+\(O((1+\log n)/n^3)\). Thus the series converges normally there
+and defines a meromorphic function on \(\C\). At a point
+\(2n+1\) or \(-(2n+1)\), precisely one summand is singular;
+its elementary residue is \eqref{eq:euler-residues}. These
+residues are nonzero, and there are no further poles. The right-hand
+side of \eqref{eq:euler-generator} is also meromorphic on \(\C\)
+and agrees on an open strip, so the meromorphic identity theorem
+proves that the two representations agree everywhere. In particular,
+all additional apparent poles in the polygamma expression cancel.
+The nearest actual poles to zero are \(3\) and \(-3\), proving
+that the Taylor radius is exactly \(3\).
+
+Finally, \eqref{eq:euler-generator-integral} can be evaluated directly
+at \(t=1\), inside its holomorphy strip:
+\[
+E(1)=-\frac12\int_0^1\frac{\log(1+x^2)}{x}\,dx
+     =\frac14\Li_2(-1)=-\frac{\pi^2}{48}.
+\]
+Evenness gives the same value at \(-1\), proving
+\eqref{eq:euler-removable} without a delicate cancellation of
+separate Laurent expansions.
+\end{proof}
+
+\subsection{The full generator and the unresolved parity direction}
+
+The symmetry can be stated more precisely by keeping all indices.
+
+\begin{proposition}\label{prop:euler-full-generator}
+The full generating function
+\[
+A(t)=\sum_{p\ge1}S_pt^{p-1}
+\]
+has Taylor radius \(3\), integral representation
+\begin{equation}
+A(t)=-\int_0^1x^{-t}Q(x)\,dx,\qquad \Repart t<3,
+\label{eq:euler-full-generator-integral}
+\end{equation}
+and global meromorphic representation
+\begin{equation}
+A(t)=S_1+\sum_{n\ge1}
+ \frac{(-1)^nH_n t}{(2n+1)(2n+1-t)}.
+\label{eq:euler-full-generator-poles}
+\end{equation}
+Its only poles are simple, at \(t=2n+1\), \(n\ge1\), with
+residue \((-1)^{n+1}H_n\). Moreover,
+\begin{equation}
+\frac{A(t)+A(-t)}2=E(t),\qquad
+\frac{A(t)-A(-t)}2=\sum_{m\ge1}S_{2m}t^{2m-1}
+\quad (|t|<3).
+\label{eq:euler-parity-generators}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For \(|t|<3\), insert \eqref{eq:euler-mellin} and sum the
+exponential series \(\sum_{p\ge1}t^{p-1}(-\log x)^{p-1}/(p-1)!
+=x^{-t}\). The absolute sum is bounded by \(x^{-|t|}Q(x)\),
+which is integrable. The resulting integral is holomorphic for
+\(\Repart t<3\), by the same compact-set bounds as above.
+Separating \(p=1\) and summing the geometric series for \(p\ge2\)
+gives \eqref{eq:euler-full-generator-poles}; the needed absolute
+bound is
+\[
+\sum_{n\ge1}\frac{H_n|t|}{(2n+1)(2n+1-|t|)}<\infty,
+\qquad |t|<3.
+\]
+On a compact set avoiding positive odd integers at least three,
+the resulting rational summands are uniformly
+\(O((1+\log n)/n^2)\). Normal convergence gives the stated global
+continuation. The single summand singular at \(t=2n+1\) has residue
+\((-1)^{n+1}H_n\), and that residue is nonzero. This proves both
+the complete pole list and the exact radius. Taking even and odd
+parts of the Taylor series proves \eqref{eq:euler-parity-generators}.
+\end{proof}
+
+The inversion \(x\mapsto1/x\) determines the even part of \(A\)
+through the full Mellin transform. It leaves the odd part as a
+different analytic quantity. The absence of the same reduction for
+that part is not a proof that its coefficients lie outside the algebra
+generated by single polylogarithmic values. In particular, no result
+here proves nonmembership for \(S_{2m}\), which have odd total
+weight. Such a claim requires an additional arithmetic or motivic
+argument for the specified constants and specified algebra. The
+presence of an even beta value likewise supplies no independence
+certificate: even the irrationality of \(G=\beta(2)\) is not known.
+The correction to the draft is therefore precise: replace the proposed
+two-sided alternation theorem by \eqref{eq:euler-odd} and its proved
+even-weight membership statement, and retain the opposite direction
+as a research question.

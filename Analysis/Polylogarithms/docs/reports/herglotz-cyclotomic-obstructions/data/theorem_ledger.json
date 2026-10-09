@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "manuscript": "herglotz_research.tex",
+  "title": "Cyclotomic Obstructions and Optimal Truncation for the Herglotz--Zagier Function",
+  "date_utc": "2026-10-08",
+  "source_repository_commit": "c78c7c3dc2fc742a1af9492e47d578b3fb4e01e7",
+  "scope": "Targeted continuation of the Herglotz--Zagier thread in Analysis/Polylogarithms/docs; not a complete audit of every source formula.",
+  "status_conventions": {
+    "proved_in_article": "A mathematical proof is supplied in the manuscript, with the stated classical inputs.",
+    "known_input": "Prior literature or standard mathematics used by the continuation, not claimed as a new result.",
+    "supporting_computation": "Finite exact verification, symbolic computation, numerical evidence, or rational certificates; does not replace the general proof.",
+    "open": "Not established by this package.",
+    "formal": "In the rational pre-Bloch/five-term calculus, with logarithmic products and pi^2 permitted in analytic realizations. Negative formal results are not numerical transcendence assertions."
+  },
+  "results": [
+    {
+      "id": "all_conductor_kernel",
+      "status": "proved_in_article",
+      "article_label": "thm:kernel",
+      "statement": "For q>=3 and G_q=(Z/qZ)^*/{+/-1}, every rational relation among beta_q(a) has coefficients c_a=c_(a^-1), and all such coefficient vectors are relations.",
+      "consequences": [
+        "rank(span beta_q)=(|G_q|-|G_q[2]|)/2",
+        "beta_q(a)=0 if and only if a^2 is congruent to +1 or -1 modulo q"
+      ],
+      "proof_inputs": ["primitive_even_character_Gauss_log_formula", "Dirichlet_L1_nonvanishing", "finite_abelian_regular_representation"],
+      "support": ["code/verify_cyclotomic.py", "data/cyclotomic_checks.json", "data/rank_table.csv"],
+      "limits": "The proof is an algebraic exterior-symbol theorem; no period-injectivity or transcendence assumption is used."
+    },
+    {
+      "id": "rank_CRT_and_zero_conductors",
+      "status": "proved_in_article",
+      "article_labels": ["cor:rank-CRT", "cor:zero-conductors"],
+      "statement": "For q>2 the rank is (phi(q)-r_plus(q)-r_minus(q))/4. The complete list of conductors with identically zero beta is {1,2,3,4,5,6,8,10,12,24}.",
+      "support": ["code/verify_cyclotomic.py", "data/rank_table.csv"],
+      "limits": "The zero-conductor list alone is not a denominator-only reduction criterion for F(p/q)."
+    },
+    {
+      "id": "normalized_norm_separation",
+      "status": "proved_in_article",
+      "statement": "For coprime p,q, beta_q(p)-beta_p(q) lies in the rational exterior square if and only if both beta symbols vanish.",
+      "proof_inputs": ["normalized_multiplicative_field_norm", "linear_disjointness_of_coprime_cyclotomic_fields"],
+      "limits": "The proof applies the exterior square of the normalized norm on the multiplicative vector space, not the average Galois action on its exterior square."
+    },
+    {
+      "id": "formal_F_reduction",
+      "status": "proved_in_article",
+      "article_label": "thm:reduction",
+      "statement": "For reduced positive p/q, formal rational-dilogarithm reduction holds if and only if p^2==+/-1 mod q and q^2==+/-1 mod p, with independently chosen signs. Formal pure-logarithm reduction holds if and only if min(p,q)=1.",
+      "proof_inputs": ["RZ_finite_symbol_and_boundary", "all_conductor_kernel", "normalized_norm_separation", "rational_Bloch_descent", "K2_Q_torsion", "B_Q_rationally_zero"],
+      "limits": "The successful cases yield numerical identities. The unsuccessful cases exclude five-term certificates, not every conceivable numerical relation."
+    },
+    {
+      "id": "recurrence_parametrization",
+      "status": "proved_in_article",
+      "article_label": "thm:recurrences",
+      "statement": "Up to reciprocal interchange, all admissible coprime pairs occur as adjacent terms in the three recurrence families described in the article: the minus recurrence with parameter K>=2, the plus recurrence with parameter K>=1, and consecutive odd-index Fibonacci numbers.",
+      "proof_method": "Vieta descent preserving coprimality and swapping the two square signs; invariant integer recurrence parameters.",
+      "support": ["code/verify_recurrences.py", "data/recurrence_checks.json", "data/recurrence_pairs.csv"],
+      "limits": "Families can overlap at small pairs; the finite enumeration is supplementary to the proof of completeness."
+    },
+    {
+      "id": "constructive_rational_core",
+      "status": "proved_in_article",
+      "article_label": "thm:core",
+      "statement": "Every successful formal reduction has a constructible rational dilogarithm core with arguments in (0,1), an exact exterior boundary certificate, and O(log max(p,q)) terms after the consecutive-pair shortcut.",
+      "support": ["code/dilogarithm_cores.py", "data/dilogarithm_cores.json"],
+      "limits": "The algorithm does not compute the remaining logarithmic products. Optional trial factorization used in diagnostic prime-coordinate checks is not assigned a polynomial bit-complexity bound."
+    },
+    {
+      "id": "formal_J_classification",
+      "status": "proved_in_article",
+      "article_label": "thm:J-class",
+      "statement": "For q>=2, J(2/q) is formally pure-logarithmic exactly for q in {2,3,5} or 4|q. It is formally reducible to rational dilogarithms exactly for q in {2,3,5,6,10} or 4|q.",
+      "support": ["code/verify_cyclotomic.py", "data/cyclotomic_checks.json"],
+      "limits": "All positive cases have explicit analytic evaluations. Necessity is in the formal calculus. The q=1 value is separately elementary."
+    },
+    {
+      "id": "explicit_J_evaluations",
+      "status": "proved_in_article",
+      "statement": "Explicit formulas cover all positive formal J cases, including J(1/3), J(1/5), and the infinite even-m family J(1/m)=pi^2(m^2-2)/(48m)+S(m)-S(m/2)/2-S(2m)/2.",
+      "support": ["code/verify_J_evaluations.py", "data/J_evaluation_checks.json"],
+      "limits": "The direct-integral verification is high-precision floating point, not a rigorous quadrature enclosure."
+    },
+    {
+      "id": "sharp_truncation_expansion",
+      "status": "proved_in_article",
+      "statement": "For a=2*pi*x and bounded delta=N-pi*x, the positive truncation error has leading factor x^(-1/2)*exp(-2*pi*x), explicit rational-polynomial corrections C_j(delta), and a uniform expansion on each fixed bounded delta interval.",
+      "first_correction": "C_1(delta)=2*delta^2+delta-5/12",
+      "proof_inputs": ["RZ_Binet_Lambert_representation", "positive_gamma_mixture", "gamma_moments_and_shifted_Stirling_expansion"],
+      "support": ["code/truncation_coefficients.py", "code/verify_truncation.py", "data/truncation_checks.json"],
+      "limits": "The real uniformity regime is specified in the article; no unrestricted complex-sector version is asserted."
+    },
+    {
+      "id": "unique_cutoff_transitions_and_optimum",
+      "status": "proved_in_article",
+      "statement": "Consecutive truncation errors have unique positive crossovers, yielding an exact description of the optimal integer cutoff. The first correction to the minimum depends periodically on dist(pi*x-1/4,Z).",
+      "support": ["code/verify_truncation.py", "data/truncation_checks.json"],
+      "limits": "A nearest-integer leading approximation does not replace the exact transition sequence close to a crossover."
+    },
+    {
+      "id": "arithmetic_transition_displacement",
+      "status": "proved_in_article",
+      "article_label": "thm:arithmetic-shift",
+      "statement": "Relative to the exactly defined one-frequency transition, the full transition with K=2N+2 has leading arithmetic displacement -(9/10)*K*2^(-K), with the further error terms given in the article.",
+      "support": ["code/verify_truncation.py", "data/truncation_checks.json"],
+      "limits": "An exactly defined reference is essential: an algebraically truncated reference would obscure this exponentially smaller displacement."
+    },
+    {
+      "id": "positive_measure_enclosures",
+      "status": "proved_in_article",
+      "statement": "Positive-measure moment inequalities bound the truncation remainder and give rigorous rational enclosures when the moments are enclosed by exact Euler--Maclaurin bounds.",
+      "moment_formula": "mu_k=abs(B_(2k+2))*zeta(2k+3)/(2k+2)",
+      "support": ["code/certified_intervals.py", "data/rational_intervals.json"],
+      "limits": "The supplied interval examples concern F(2), F(4), F(8), and F(16). They are distinct from the floating-point transition checks."
+    },
+    {
+      "id": "inspected_preprint_counterexample",
+      "status": "proved_in_article",
+      "statement": "At q=7,n=2, the untwisted finite-field three-term expression printed in the inspected preprint has exact defect 3*beta_7(2), which is nonzero.",
+      "support": ["code/verify_cyclotomic.py", "data/cyclotomic_checks.json"],
+      "source_scope": "Radchenko--Zagier arXiv:2012.15805v1, Section 7.2, page 16 of the inspected 18-page preprint.",
+      "limits": "No automatic assertion is made about the separate uninspected journal text or the distinct rational-variable cocycle."
+    }
+  ],
+  "known_inputs": [
+    {
+      "id": "RZ_finite_symbol_and_boundary",
+      "status": "known_input",
+      "statement": "The finite cyclotomic dilogarithm representation of F(p/q)-F(1), its Galois invariance, and its beta boundary formula originate in Radchenko--Zagier. The boundary is also checked directly in the continuation.",
+      "source": "https://arxiv.org/abs/2012.15805"
+    },
+    {
+      "id": "RZ_functional_equations_and_examples",
+      "status": "known_input",
+      "statement": "F inversion and three-term relations, the relation between J and F, reciprocal-integer evaluations, and several worked rational evaluations are prior inputs.",
+      "source": "https://people.mpim-bonn.mpg.de/zagier/files/preprints/HerglotzFunction.pdf"
+    },
+    {
+      "id": "RZ_Binet_Lambert_representation",
+      "status": "known_input",
+      "statement": "The Binet--Lambert positive integral representation is prior work. The new analytic contribution is its sharp truncation analysis and the explicit effective consequences.",
+      "source": "https://arxiv.org/abs/2012.15805"
+    },
+    {
+      "id": "primitive_even_character_Gauss_log_formula",
+      "status": "known_input",
+      "statement": "The Fourier coefficient of the primitive cyclotomic logarithm profile is a nonzero Gauss sum times L(1,conjugate chi), up to its stated normalization."
+    },
+    {
+      "id": "Dirichlet_L1_nonvanishing",
+      "status": "known_input",
+      "statement": "A nonprincipal Dirichlet L-function has nonzero value at 1. This classical theorem, not a numerical determinant estimate, supplies the Gram-matrix nonvanishing."
+    },
+    {
+      "id": "rational_Bloch_descent",
+      "status": "known_input",
+      "statement": "Rational Galois descent for Bloch groups, the vanishing B(Q) tensor Q=0, and torsion of K2^M(Q) are standard algebraic inputs already used in RZ Section 7.2."
+    },
+    {
+      "id": "higher_rational_derivative_reduction",
+      "status": "known_input",
+      "statement": "The reduction of all rational derivatives to cyclotomic polylogarithms of bounded weight is already stated immediately after RZ Proposition 4; this package does not claim it as new.",
+      "source": "https://arxiv.org/abs/2012.15805"
+    }
+  ],
+  "supporting_computations": [
+    {
+      "id": "exact_cyclotomic_checks",
+      "status": "supporting_computation",
+      "arithmetic": "Integer matrices and rational Gaussian elimination",
+      "range": "Detailed q<=200, Gaussian elimination 3<=q<=80, rank table and formal J checks q<=1000",
+      "file": "data/cyclotomic_checks.json"
+    },
+    {
+      "id": "exact_recurrence_checks",
+      "status": "supporting_computation",
+      "arithmetic": "Integers and fractions.Fraction",
+      "result": "1076 admissible coprime pairs through 500 agree with the three recurrence families, with exact rational boundary checks.",
+      "file": "data/recurrence_checks.json"
+    },
+    {
+      "id": "exact_core_checks",
+      "status": "supporting_computation",
+      "arithmetic": "Exact rational prime-exterior coordinates",
+      "result": "2106 admissible pairs through 1000 checked in both orientations, giving 4212 exact boundary checks; 18 selected examples are also included.",
+      "file": "data/dilogarithm_cores.json"
+    },
+    {
+      "id": "independent_J_quadrature",
+      "status": "supporting_computation",
+      "arithmetic": "mpmath floating point at 80 decimal digits",
+      "result": "25 direct-integral comparisons; maximum absolute residual approximately 2.05046e-79.",
+      "file": "data/J_evaluation_checks.json"
+    },
+    {
+      "id": "rational_interval_certificates",
+      "status": "supporting_computation",
+      "arithmetic": "Exact rational endpoints with proved absolute remainder bounds and outward decimal rounding",
+      "result": "Certified enclosures for F(2), F(4), F(8), F(16)",
+      "file": "data/rational_intervals.json"
+    },
+    {
+      "id": "sharp_asymptotic_numerics",
+      "status": "supporting_computation",
+      "arithmetic": "High-precision floating point, with analytic bounds for omitted Dirichlet terms",
+      "result": "The supplied data use the full 90-digit grid; these root approximations are not exact interval endpoints.",
+      "file": "data/truncation_checks.json"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "numerical_period_relations",
+      "status": "open",
+      "question": "Can a numerical reduction exist when the corresponding formal exterior obstruction is nonzero? The package supplies no period-injectivity or transcendence theorem."
+    },
+    {
+      "id": "full_logarithmic_remainder_algorithm",
+      "status": "open",
+      "question": "Construct a practical, branch-controlled algorithm for the complete logarithmic remainder accompanying every successful rational core."
+    },
+    {
+      "id": "further_arithmetic_asymptotic_sectors",
+      "status": "open",
+      "question": "Develop additional exponentially small arithmetic sectors and their interactions beyond the explicitly proved transition displacement."
+    },
+    {
+      "id": "complex_sector_extension",
+      "status": "open",
+      "question": "Extend the real optimal-truncation analysis to suitably specified complex sectors and Stokes transitions."
+    },
+    {
+      "id": "proof_assistant_formalization",
+      "status": "open",
+      "question": "Formalize the exact group, norm, recurrence, and interval-certificate arguments in a proof assistant."
+    },
+    {
+      "id": "regulator_families",
+      "status": "open",
+      "question": "Supply the missing class-group, class-number, and unit-index arguments before promoting the fitted Stark/regulator tables in the earlier drafts to unconditional general formulas."
+    }
+  ],
+  "claims_not_made": [
+    "Worldwide priority for every derived result",
+    "External peer review",
+    "Proof-assistant formal verification",
+    "Numerical transcendence or independence from failed integer-relation searches",
+    "A complete audit of every document in the source directory",
+    "A proof of the general abelian Stark conjecture",
+    "Polynomial bit complexity of optional trial factorization"
+  ]
+}

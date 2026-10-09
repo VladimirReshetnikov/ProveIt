@@ -1,0 +1,1357 @@
+\chapter{Zeta jets, Stieltjes antiderivatives and negative polygamma}
+\label{ch:07-integration}
+
+The gamma function is the first spectral derivative of Hurwitz zeta at zero.
+Further derivatives give a natural language for integrating Stieltjes
+functions. Integration in the Hurwitz parameter moves the spectral argument
+downward, creating the negative-order polygamma ladder. This chapter develops
+that common mechanism before tabulating its moments and rational values.
+
+\section{Below the digamma: \texorpdfstring{$\psi^{(-2)}$}{psi(-2)} at rationals}
+\label{integral:sec:psim2}
+
+One integration below the digamma sits $\psi^{(-2)}(z)=\int_0^z\log\Gamma(t)\,dt$.
+Integrating Kummer's Fourier series of $\log\Gamma$ \cite{integral:Kummer} predicts that at rational points this
+grid lands in $\{\text{Clausen values}\}/\pi\,\oplus\,\zeta'(-1)\,\oplus\,\text{logs}$:
+the weight-$2$ Clausen world enters through the negative-order polygamma ladder, with the
+Glaisher-layer constant $\zeta'(-1)$ as the genuinely new atom. PSLQ confirms
+\dps{$100$-digit canaries; residuals $\le10^{-60}$}:
+
+\begin{result}[log-gamma integrals in the Clausen lattice]\label{integral:res:loggamma}
+\begin{align*}
+\int_0^{1/4}\log\Gamma(t)\,dt
+&=\frac{3}{32}+\frac{\log2}{8}+\frac{\log\pi}{8}
++\frac{\Catalan}{4\pi}-\frac{9}{8}\,\zeta'(-1),\\[4pt]
+\int_0^{1/3}\log\Gamma(t)\,dt
+&=\frac{1}{9}+\frac{\log2}{6}-\frac{\log3}{72}+\frac{\log\pi}{6}
++\frac{\Cl_2(2\pi/3)}{4\pi}-\frac{4}{3}\,\zeta'(-1),\\[4pt]
+\int_0^{1/6}\log\Gamma(t)\,dt
+&=\frac{5}{72}+\frac{7\log2}{72}+\frac{\log3}{144}+\frac{\log\pi}{12}
++\frac{\Cl_2(\pi/3)}{4\pi}-\frac{5}{6}\,\zeta'(-1).
+\end{align*}
+\end{result}
+
+The structural punchline: the quarter-point integral carries Catalan
+($\Cl_2(\pi/2)=\Catalan$) and the third-point integral carries
+$\Cl_2(2\pi/3)=\tfrac23\,\Cl_2(\pi/3)$, two-thirds of Gieseking's constant --- the
+``level-3 Catalan'' that had surfaced independently in the
+repository's Eisenstein-ladder work --- now arriving from a completely different direction.
+
+\begin{negative}[recorded on purpose]\label{integral:neg:psim2}
+(i) The half-point probe $\int_0^{1/2}\log\Gamma$ initially found no relation --- because
+$\log\Gamma(1/2)=\tfrac12\log\pi$ made the PSLQ basis $\mathbb{Q}$-dependent, and PSLQ
+returned that degeneracy instead of the target. Basis atoms must be
+$\mathbb{Q}$-independent. (ii) A $\psi^{(-3)}(1/4)$ probe via Cauchy's repeated-integration
+kernel produced only a large-coefficient candidate (heights $\sim10^6$) with a weak canary
+($10^{-46}$ at $100$ dps) --- \emph{rejected} as a PSLQ false positive. The weight-$3$
+level needs a properly prepared basis (presumably $\zeta'(-2)$-equivalents plus
+Barnes-$G$-layer logarithms).
+\end{negative}
+
+\section{Binet's second formula and Malmsten's integrals: the Lambert-kernel face}
+\label{integral:sec:binet}
+
+Binet's second formula
+\[
+\log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
++2\int_0^\infty\frac{\arctan(t/z)}{e^{2\pi t}-1}\,dt
+\]
+is the integrated Abel--Plana formula with the \emph{Lambert kernel} $1/(e^{2\pi t}-1)$ ---
+the same kernel whose moment sums are the Eisenstein $q$-series of the companion CM
+article. Malmsten/Vardi log-log integrals $\int_0^1\ln\ln(1/x)\,R(x)\,dx$ are the
+\emph{Mellin avatars} of Kummer's Fourier series: expanding the rational kernel $R$ in a
+geometric series produces $L'(\chi,1)$-type sums, and Kummer's formula converts
+odd-character $L'(1)$ into $\log\Gamma$ at rationals.
+
+\begin{result}\label{integral:res:binet}
+Binet's formula replays exactly at $z=1,\tfrac12,\tfrac14$ \dps{residuals $\le10^{-52}$},
+turning every $\Gamma$-store atom into a closed-form arctan--Lambert integral; e.g.
+\[
+\int_0^\infty\frac{\arctan(4t)}{e^{2\pi t}-1}\,dt
+=\frac{1}{2}\Bigl[\log\Gamma\bigl(\tfrac14\bigr)-\tfrac12\log2+\tfrac14
+-\tfrac12\log(2\pi)\Bigr].
+\]
+\end{result}
+
+\begin{result}[Vardi's integral \cite{integral:Vardi}, re-derived blind]\label{integral:res:vardi}
+PSLQ over $\{\pi\gamma,\ \pi\log2,\ \pi\log\pi,\ \pi\log\Gamma(1/4)\}$, with the $\gamma$
+atom \emph{declined} (coefficient $0$) \dps{canary exact at $80$ dps}:
+\[
+\int_0^1\frac{\ln\ln(1/x)}{1+x^2}\,dx=\frac{\pi}{4}\,
+\ln\!\Bigl(\frac{4\pi^3}{\Gamma(1/4)^4}\Bigr).
+\]
+The $q=3$ Malmsten variant \dps{canary $3.4\times10^{-81}$; $\gamma$ declined again}:
+\[
+\int_0^1\frac{\ln\ln(1/x)}{1+x+x^2}\,dx
+=\frac{\pi}{6\sqrt3}\,\ln\!\Bigl(\frac{2^8\pi^8}{3^3\,\Gamma(1/3)^{12}}\Bigr).
+\]
+\end{result}
+
+Both integrals carry exactly the harvested-$\Gamma$-store atoms: the log-log family is a
+systematic \emph{integral-representation generator} for the identity stores --- every odd
+Dirichlet character (each denominator $q$) yields one such evaluation through Kummer's
+formula, with the $\Gamma$-lattice reducer supplying the closed form mechanically.
+
+\section{The log-gamma moment ladder}\label{integral:sec:moments}
+
+\begin{result}[Hurwitz ladder; classical (Whittaker--Watson \cite{integral:WhittakerWatson})]\label{integral:res:hurwitzladder}
+\[
+\log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
++\frac12\sum_{n\ge2}\frac{n-1}{n(n+1)}\,\zeta(n,z+1)
+.
+\]
+Since $\zeta(n,z+1)$ is $\psi^{(n-1)}(z+1)$ up to factorials, this is a
+$\mathbb{Q}$-linear ladder between $\log\Gamma$ and the \emph{entire polygamma tower at
+the same point} --- a candidate certificate law binding the $\Gamma$ and trigamma stores
+into one linear system.
+\end{result}
+
+\begin{result}[second moment; classical (Espinosa--Moll \cite{integral:EspinosaMoll})]\label{integral:res:em}
+With $L=\log(2\pi)$,
+\[
+\int_0^1\bigl[\log\Gamma(x)\bigr]^2dx
+=\frac{\gamma^2}{12}+\frac{\pi^2}{48}+\frac{\gamma L}{6}+\frac{L^2}{3}
+-(\gamma+L)\frac{\zeta'(2)}{\pi^2}+\frac{\zeta''(2)}{2\pi^2}
+.
+\]
+The quadratic-moment layer adds $\zeta''(2)$ to the atom inventory.
+\end{result}
+
+\begin{negative}[the cubic moment stays open]\label{integral:neg:cubic}
+\[
+\int_0^1\bigl[\log\Gamma(x)\bigr]^3dx
+=5.7403888072294742800195716881024614629610130074549\ldots
+\]
+($50$ digits, tanh-sinh quadrature cross-calibrated by the second moment). PSLQ over the
+natural weight-mixed basket ($\gamma^3,\dots,L^3$, $\pi^2\gamma$, $\pi^2L$,
+$\zeta(3)$, $(\gamma{+}L)\zeta'(2)/\pi^2$, $(\gamma{+}L)\zeta''(2)/\pi^2$,
+$\zeta'''(2)/\pi^2$, $\zeta'(2)^2/\pi^4$, $\zeta'(3)$, $\gamma\zeta'(2)/\pi^2$) returns
+only uniform-height junk at $60$ dps --- consistent with Espinosa--Moll and Bailey et al.
+The Kummer-cube resonance $k_1\pm k_2\pm k_3=0$ suggests a depth-two candidate
+(Tornheim--Witten-derivative flavour); finding the right \emph{named} atom is the open
+problem, not search depth.
+\end{negative}
+
+\section{The Stieltjes layer}\label{integral:sec:stieltjes}
+
+Differentiating $L(s,\chi)=q^{-s}\sum_k\chi(k)\,\zeta(s,k/q)$ at $s=1$ gives the exact
+ladder
+\[
+L'(\chi,1)=-\ln q\;L(1,\chi)-\frac1q\sum_k\chi(k)\,\gamma_1\!\Bigl(\frac{k}{q}\Bigr),
+\]
+so every Malmsten log-log integral is a statement about \emph{first generalized Stieltjes
+constants} $\gamma_1(k/q)$ --- Blagouchine's program, equivalent to Deninger's
+$\zeta''(0,a)$ layer via the functional equation.
+
+\begin{result}[even-character Malmsten integral]\label{integral:res:evenchi}
+\dps{verified to $10^{-51}$; even character mod 5; $\varphi$ the golden ratio}
+\[
+\int_0^1\ln\ln\frac1x\cdot\frac{(1-x)(1-x^2)}{1-x^5}\,dx
+=-(\gamma+\ln5)\,\frac{2\ln\varphi}{\sqrt5}
+-\frac{\gamma_1(\tfrac15)-\gamma_1(\tfrac25)-\gamma_1(\tfrac35)+\gamma_1(\tfrac45)}{5}.
+\]
+\end{result}
+
+\begin{result}[the parity dichotomy]\label{integral:res:parity}
+The dichotomy is empirically sharp. The \emph{odd} $\gamma_1$-combination reduces exactly
+as differentiated-Kummer predicts \dps{verified blind}:
+\[
+\gamma_1\!\bigl(\tfrac13\bigr)-\gamma_1\!\bigl(\tfrac23\bigr)
+=-\frac{\pi}{\sqrt3}\Bigl(\gamma+4\ln2-\tfrac12\ln3+4\ln\pi-6\ln\Gamma\bigl(\tfrac13\bigr)\Bigr),
+\]
+which is \emph{Malmsten's 1846 reflection identity} \cite{integral:Malmsten} (long misattributed
+to Almkvist--Meurman). The even combination did not reduce in the tested standard basket
+\dps{PSLQ junk at coefficient height $10^8$ --- honest negative}; pushing Blagouchine's
+rational-arguments theorem \cite{integral:BlagouchineJNT} through it collapses everything except a $\zeta''$-block
+\dps{derived and verified to $10^{-50}$}:
+\[
+\gamma_1\!\bigl(\tfrac15\bigr)-\gamma_1\!\bigl(\tfrac25\bigr)
+-\gamma_1\!\bigl(\tfrac35\bigr)+\gamma_1\!\bigl(\tfrac45\bigr)
+=\sqrt5\,\Bigl[\zeta''\bigl(0,\tfrac15\bigr)-\zeta''\bigl(0,\tfrac25\bigr)
+-\zeta''\bigl(0,\tfrac35\bigr)+\zeta''\bigl(0,\tfrac45\bigr)\Bigr]
+-2\sqrt5\,\ln\varphi\,\bigl(\gamma+\ln10\pi\bigr).
+\]
+\end{result}
+
+The canonical atom for the even layer is thus the even-character $\zeta''(0,l/q)$
+combination (Deninger's layer \cite{integral:Deninger}); Malmsten integrals, even $\gamma_1$-combinations, and even
+$L'(\chi,1)$ are all elementary-equivalent to it. Two practical records: Blagouchine's
+particular value $\gamma_1(1/4)$ was re-verified exactly against \texttt{mpmath}'s
+generalized Stieltjes constants, and the reduction coefficients live in
+$\mathbb{Q}(\sqrt q)$ --- rational-coefficient PSLQ baskets \emph{miss} the relation, so a
+$\sqrt q$-weighted basket or direct derivation is required.
+\section{The common Hurwitz-jet calculus}\label{stieltjes:sec:intro}
+
+The generalized Stieltjes constants $\gamma_n(x)$ are defined by the Laurent
+expansion of the Hurwitz zeta function at its pole,
+\begin{equation}\label{stieltjes:eq:laurent}
+\zeta(s,x)=\frac{1}{s-1}+\sum_{n\ge0}\frac{(-1)^n}{n!}\,\gamma_n(x)\,(s-1)^n ,
+\end{equation}
+so that $\gamma_0(x)=-\psi(x)$ and $\gamma_n(1)=\gamma_n$ are the classical
+Stieltjes constants, $\gamma_0=\gamma$. Although universally called
+\emph{constants}, the $\gamma_n(x)$ are real-analytic functions of the
+argument on $(0,\infty)$, and it is this function-theoretic point of view we
+adopt. Following Blagouchine \cite{stieltjes:BlagouchineRJ,stieltjes:BlagouchineJNT} we write
+\[
+\Gamma_{\!n}(p)\;:=\;\int_1^p\gamma_n(x)\,dx ,
+\qquad\text{so that }\ \Gamma_{\!n}(1)=0 ,
+\]
+for the antiderivative normalized at $1$. (The notation is Blagouchine's; the
+clash with the Euler $\Gamma$-function is resolved by the subscript, and
+indeed $\Gamma_{\!0}(p)=-\ln\Gamma(p)$, as Theorem~\ref{stieltjes:thm:ladder} makes
+plain.) Throughout, $\zeta^{(k)}(s_0,a):=\partial_s^k\zeta(s,a)\big|_{s=s_0}$
+and $\zeta^{(k)}(s_0):=\zeta^{(k)}(s_0,1)$ denote derivative jets with respect
+to the \emph{order}; $\Lambda_q:=\gamma+\ln(2\pi q)$; $H_n=\sum_{i\le n}1/i$ and
+$H_n^{(2)}=\sum_{i\le n}1/i^2$ are harmonic numbers; $\Glaisher$ is the
+Glaisher--Kinkelin constant, $\ln\Glaisher=\tfrac1{12}-\zeta'(-1)$; and
+\[
+S_j\Bigl(\frac pq\Bigr):=\sum_{k=1}^{q-1}\sin\frac{2\pi kp}{q}\,
+\zeta^{(j)}\Bigl(0,\frac kq\Bigr),
+\qquad
+S_0\Bigl(\frac pq\Bigr)=\tfrac12\cot\frac{\pi p}{q},
+\quad
+S_1\Bigl(\frac pq\Bigr)=\sum_{k=1}^{q-1}\sin\frac{2\pi kp}{q}\,\ln\Gamma\Bigl(\frac kq\Bigr)
+\]
+(the closed forms for $S_0,S_1$ use $\zeta(0,a)=\tfrac12-a$,
+$\zeta'(0,a)=\ln\Gamma(a)-\tfrac12\lntwopi$, and
+$\sum_k\sin(2\pi kp/q)=0$).
+
+The starting observation is elementary but organizing: differentiating
+\eqref{stieltjes:eq:laurent} in $x$ against $\partial_x\zeta(s,x)=-s\,\zeta(s+1,x)$
+identifies every derivative and antiderivative of every $\gamma_n$ with a
+derivative jet of the Hurwitz zeta function at an \emph{integer} value of
+$s$. Antiderivatives live at $s=0$; the functions themselves at $s=1$; their
+$x$-derivatives at $s=2$ \cite{stieltjes:Coffey} — a single ladder.
+
+The preceding gamma-integral examples are the first rung of this
+calculus. We now prove the integration identity, build its spectral jets,
+and use reflection and distribution to compute rational arguments.
+All source residuals in this chapter are historical; locally rerun checks
+are recorded separately in the verification directory.
+
+\section{Underived Stieltjes grids and character coordinates}
+Expanding the Hurwitz distribution identity at $s=1$ gives
+\begin{align*}
+\sum_{j=0}^{d-1}\gamma_1((x+j)/d)
+&=d\gamma_1(x)+d\log d\,\psi(x)-\frac d2\log^2d,\\
+\sum_{j=0}^{d-1}\gamma_2((x+j)/d)
+&=d\left[\gamma_2(x)-2\log d\,\gamma_1(x)
+-\log^2d\,\psi(x)+\frac13\log^3d\right].
+\end{align*}
+For a nonprincipal character,
+\[
+L'(1,\chi)=-\log q\,L(1,\chi)
+-\frac1q\sum_{p=1}^{q}\chi(p)\gamma_1(p/q).
+\]
+For a real quadratic character $\chi_D$,
+$\zeta_{\mathbb Q(\sqrt D)}(s)=\zeta(s)L(s,\chi_D)$ shows
+$L'(1,\chi_D)/L(1,\chi_D)=\gamma_{\mathbb Q(\sqrt D)}-\gamma$,
+where the first term is the field's Euler--Kronecker constant.
+The source's exact finite matrices for $3\le q\le30$ left
+$\varphi(q)/2-1$ coordinates after distribution and first-constant
+reflection. Their negative searches constrain the selected baskets,
+without proving independence of Euler--Kronecker constants.
+The reflection formulas below retain the conductor factor
+$\gamma+\log(2\pi q)$: the earlier printed $q=5$ specialization without
+$\log5$ was corrected in the source reports.
+
+\section{The ladder}\label{stieltjes:sec:ladder}
+
+\begin{theorem}[antiderivative ladder]\label{stieltjes:thm:ladder}
+For $n\ge0$ and $p>0$,
+\begin{equation}\label{stieltjes:eq:chain}
+\frac{d}{dp}\,\zeta^{(n+1)}(0,p)=(-1)^{n+1}(n+1)\,\gamma_n(p),
+\end{equation}
+and consequently
+\begin{equation}\label{stieltjes:eq:antideriv}
+\Gamma_{\!n}(p)=\frac{(-1)^{n+1}}{n+1}\Bigl[\zeta^{(n+1)}(0,p)-\zeta^{(n+1)}(0)\Bigr].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Differentiating $\partial_x\zeta(s,x)=-s\,\zeta(s+1,x)$ is legitimate
+termwise for $\operatorname{Re}s>1$ and extends by analytic continuation.
+Expand both sides around $s=0$: on the right,
+$-s\,\zeta(s+1,x)=-s\bigl[\tfrac1s+\sum_k\tfrac{(-1)^k}{k!}\gamma_k(x)s^k\bigr]
+=-1-\sum_k\tfrac{(-1)^k}{k!}\gamma_k(x)s^{k+1}$,
+whose $s^{n+1}$-coefficient is $(-1)^{n+1}\gamma_n(x)/n!$. On the left the
+$s^{n+1}$-coefficient is $\partial_x\zeta^{(n+1)}(0,x)/(n+1)!$. Equating gives
+\eqref{stieltjes:eq:chain}; integrating from $1$ to $p$ gives \eqref{stieltjes:eq:antideriv}.
+\end{proof}
+
+The differential form \eqref{stieltjes:eq:chain} is Lemma~2 of
+Chakraborty--Kanemitsu--Kuzumaki \cite{stieltjes:CKK} (for $n=1$ it is Deninger's
+$R'$-law \cite{stieltjes:Deninger}); the integrated form \eqref{stieltjes:eq:antideriv} is
+eq.~(2.16) of Connon \cite{stieltjes:Connon}. For $n=0$,
+$\zeta'(0,p)=\ln\Gamma(p)-\tfrac12\lntwopi$ recovers
+$\Gamma_{\!0}(p)=-\ln\Gamma(p)$.
+
+\begin{theorem}[interpolation of power sums of logarithms]\label{stieltjes:thm:interp}
+For $k\ge1$ and integer $N\ge0$,
+\[
+\Gamma_{\!k-1}(N+1)\;=\;-\frac1k\sum_{j=1}^{N}\ln^k j .
+\]
+\end{theorem}
+
+\begin{proof}
+From $\zeta(s,N+1)=\zeta(s)-\sum_{j=1}^N j^{-s}$,
+$\zeta^{(k)}(0,N+1)=\zeta^{(k)}(0)-\sum_j(-\ln j)^k
+=\zeta^{(k)}(0)-(-1)^k\sum_j\ln^k j$. Insert into \eqref{stieltjes:eq:antideriv} with
+$n=k-1$.
+\end{proof}
+
+Thus $\Gamma_{\!k-1}$ is an analytic interpolant of the power sums
+$\sum\ln^k j$ (up to the factor $-1/k$), exactly as $\ln\Gamma$ interpolates
+$\ln N!$: the heuristic ``differentiate $1^r+\dots+N^r=\zeta(-r)-\zeta(-r,N+1)$
+$k$ times at $r=0$'' becomes precise through
+Theorem~\ref{stieltjes:thm:ladder}.
+
+\begin{corollary}[unit translates]\label{stieltjes:cor:translates}
+For $k\ge0$ and integer $n\ge1$,
+\[
+\int_n^{n+1}\gamma_k(x)\,dx=-\frac{\ln^{k+1}n}{k+1};
+\qquad\text{in particular }\ \int_1^2\gamma_k(x)\,dx=0 .
+\]
+\end{corollary}
+
+\noindent
+(The case $n=1$ is eqs.~(2.18)--(2.19) of \cite{stieltjes:Connon}.)
+
+\section{Zeta jets and the conversion dictionary}\label{stieltjes:sec:jets}
+
+Making \eqref{stieltjes:eq:antideriv} explicit requires the constants
+$\zeta^{(k)}(0)$ and, for the moment evaluations of
+Section~\ref{stieltjes:sec:moments}, the jets at negative integers. All of them follow
+mechanically from the functional equation
+$\zeta(s)=2^s\pi^{s-1}\sin(\pi s/2)\,\Gamma(1-s)\,\zeta(1-s)$
+by expanding $\Gamma(1-s)=\exp\bigl(\gamma s+\sum_{k\ge2}\zeta(k)s^k/k\bigr)$
+and the Laurent series of $\zeta(1-s)$ at the pole.
+
+\begin{proposition}[jets at $0$]\label{stieltjes:prop:jets0}
+With $L:=\lntwopi$,
+\begin{align*}
+\zeta'(0)&=-\tfrac{L}{2},\\
+\zeta''(0)&=\tfrac{\gamma^2}{2}+\gamma_1-\tfrac{\pi^2}{24}-\tfrac{L^2}{2},\\
+\zeta'''(0)&=\gamma^3+3\gamma\gamma_1+\tfrac32\gamma_2-\zeta(3)
++\tfrac32\gamma^2L+3\gamma_1L-\tfrac{\pi^2}{8}L-\tfrac{L^3}{2},\\
+\zeta^{(4)}(0)&=\tfrac32\gamma^4+4\gamma^3L+6\gamma^2\gamma_1+3\gamma^2L^2
++\tfrac{\pi^2}{4}\gamma^2+12\gamma\gamma_1L+6\gamma\gamma_2
++6\gamma_1L^2+\tfrac{\pi^2}{2}\gamma_1\\
+&\quad+6\gamma_2L+2\gamma_3
+-\tfrac{L^4}{2}-\tfrac{\pi^2}{4}L^2-4\zeta(3)L-\tfrac{19\pi^4}{480}.
+\end{align*}
+\end{proposition}
+
+\begin{proposition}[fifth jet at $0$]\label{stieltjes:prop:jets0def}
+With $L:=\lntwopi$,
+\begin{align*}
+\zeta^{(5)}(0)
+&=2\gamma^5+\tfrac{15}{2}\,\gamma^4L
++\gamma^3\Bigl(10L^2+\tfrac{5\pi^2}{6}\Bigr)
++\gamma^2\Bigl(5L^3+\tfrac{5\pi^2}{4}\,L+10\,\zeta(3)\Bigr)\\
+&\quad+\gamma\gamma_1\Bigl(30L^2+\tfrac{5\pi^2}{2}\Bigr)
++\gamma_1\Bigl(10\gamma^3+30\gamma^2L+10L^3+\tfrac{5\pi^2}{2}\,L+20\,\zeta(3)\Bigr)\\
+&\quad+\gamma_2\Bigl(15\gamma^2+30\gamma L+15L^2+\tfrac{5\pi^2}{4}\Bigr)
++\gamma_3\,(10\gamma+10L)+\tfrac52\,\gamma_4\\
+&\quad-\zeta(3)\Bigl(10L^2+\tfrac{5\pi^2}{6}\Bigr)-12\,\zeta(5)
+-\tfrac{L^5}{2}-\tfrac{5\pi^2}{12}\,L^3-\tfrac{19\pi^4}{96}\,L .
+\end{align*}
+\end{proposition}
+
+The values $\zeta''(0)$ and $\zeta'''(0)$ are classical (Ramanujan
+\cite{stieltjes:Berndt}; Apostol \cite{stieltjes:Apostol85}; Choudhury \cite{stieltjes:Choudhury}).
+Apostol's Theorem~3 \cite{stieltjes:Apostol85} in fact gives a closed form of
+$\zeta^{(n)}(0)$ at every order, in terms of the Laurent coefficients of
+$\Gamma(s)\zeta(s)$ at $s=1$, and prints the example $n=4$ in that
+vocabulary; we have not located the fully expanded forms above — nor any
+explicit form of $\zeta^{(5)}(0)$ — in print. The pattern continues to
+every order by the same expansion, which packages into the following
+closed recurrence.
+
+\begin{remark}[explicit recurrence for the jets at $0$]\label{stieltjes:rem:jetrec}
+In $\zeta(s)=\chi(s)\,\zeta(1-s)$ with
+$\chi(s)=2^s\pi^{s-1}\sin(\pi s/2)\,\Gamma(1-s)$,
+the simple zero of $\chi$ at $s=0$ cancels the pole of $\zeta(1-s)$; factor
+it out as $\chi(s)=\tfrac{s}{2}\,e^{g(s)}$ with
+$g(s):=\ln\bigl(2\chi(s)/s\bigr)
+=\ln\bigl[(2\pi)^s\,\tfrac{\sin(\pi s/2)}{\pi s/2}\,\Gamma(1-s)\bigr]$,
+analytic on $|s|<1$ and real on $(-1,1)$ (the bracket is positive there),
+$g(0)=0$. From $\ln\Gamma(1-s)=\gamma s+\sum_{k\ge2}\zeta(k)s^k/k$ and
+$\ln\bigl[\sin(\pi s/2)\big/(\pi s/2)\bigr]=-\sum_{m\ge1}\zeta(2m)(s/2)^{2m}/m$,
+\[
+g(s)=(\gamma+L)\,s+\sum_{k\ge2}c_k s^k,\qquad
+c_k=\frac{\zeta(k)}{k}\cdot\begin{cases}1,&k\ \text{odd},\\
+1-2^{1-k},&k\ \text{even},\end{cases}
+\]
+so $c_2=\tfrac{\pi^2}{24}$, $c_3=\tfrac{\zeta(3)}{3}$,
+$c_4=\tfrac{7\pi^4}{2880}$, $c_5=\tfrac{\zeta(5)}{5}$. Since
+$s\,\zeta(1-s)=-1+\sum_{m\ge1}\gamma_{m-1}\,s^m/(m-1)!$ is entire, the
+Leibniz rule gives
+\[
+\zeta^{(n)}(0)=\frac12\sum_{k=0}^{n}\binom{n}{k}\,
+B_k\bigl(1!\,c_1,2!\,c_2,\dots,k!\,c_k\bigr)\,h_{n-k},
+\qquad h_0=-1,\quad h_m=m\,\gamma_{m-1}\ (m\ge1),
+\]
+where $c_1=\gamma+L$ and $B_k$ is the complete Bell polynomial,
+$B_k\bigl(g'(0),\dots,g^{(k)}(0)\bigr)=\bigl(e^{g}\bigr)^{(k)}(0)$: $B_0=1$,
+$B_1=c_1$, $B_2=c_1^2+2c_2$, $B_3=c_1^3+6c_1c_2+6c_3$. The cases $n=0,1$
+recover $\zeta(0)=-\tfrac12$ and $\zeta'(0)=-\tfrac{L}{2}$; $n=2,\dots,5$
+reproduce the two propositions verbatim.
+\end{remark}
+
+\begin{proposition}[jets at $-1$ and $-2$]\label{stieltjes:prop:jetsneg}
+Expanding the functional equation around $s=-1$ (where $\zeta(2-\varepsilon)$
+is regular) and $s=-2$ (a trivial zero) gives, with $L=\lntwopi$:
+\begin{align}
+\zeta(-1)&=-\tfrac1{12},\qquad
+\zeta'(-1)=\frac{\zeta'(2)}{2\pi^2}+\frac{1-\gamma-L}{12},\label{stieltjes:eq:zpm1}\\
+\zeta''(-1)&=-\frac{\zeta''(2)}{2\pi^2}+\frac{\zeta'(2)}{\pi^2}(\gamma+L-1)
+-\frac{(\gamma+L)^2}{12}+\frac{\gamma+L}{6}+\frac{\pi^2}{144},\label{stieltjes:eq:zppm1}\\
+\zeta(-2)&=0,\qquad
+\zeta'(-2)=-\frac{\zeta(3)}{4\pi^2},\qquad
+\zeta''(-2)=\frac{\zeta(3)}{4\pi^2}\,(3-2\gamma-2L)+\frac{\zeta'(3)}{2\pi^2}.
+\label{stieltjes:eq:zm2}
+\end{align}
+\end{proposition}
+
+\begin{remark}[Glaisher spelling]\label{stieltjes:rem:glaisher}
+Since $\ln\Glaisher=\tfrac1{12}-\zeta'(-1)$, eq.~\eqref{stieltjes:eq:zpm1} is
+equivalent to
+\[
+\zeta'(2)=\zeta(2)\bigl(\gamma+\lntwo+\lnpi-12\ln\Glaisher\bigr),
+\]
+the form returned by Mathematica's
+\texttt{FunctionExpand[Zeta$'$[2]]}. Either spelling may be used in all the
+moment formulas below; we keep $\zeta'(2),\zeta''(2),\zeta'(3)$ as the
+canonical second-layer constants.
+\end{remark}
+
+\section{Reflection formulas}\label{stieltjes:sec:reflection}
+
+Hurwitz's formula (see, e.g., \cite[Ch.~12]{ApostolBook}), for $0<p/q<1$,
+\[
+\zeta\Bigl(1-s,\frac pq\Bigr)
+=\frac{2\,\Gamma(s)}{(2\pi q)^{s}}
+\sum_{k=1}^{q}\Bigl[\cos\Bigl(\frac{\pi s}{2}-\frac{2\pi kp}{q}\Bigr)\Bigr]
+\zeta\Bigl(s,\frac kq\Bigr),
+\]
+expanded around $s=0$, expresses every $\gamma_n(p/q)$ through the jets
+$\zeta^{(j)}(0,k/q)$, $j\le n+1$. Taking the part odd under
+$p\mapsto q-p$ isolates the sine sums $S_j$ and yields reflection formulas.
+Write
+$E(s):=\exp\bigl(-\Lambda_qs+\sum_{k\ge2}(-1)^k\zeta(k)s^k/k\bigr)=\sum_i e_is^i$
+for the prefactor expansion
+($2\Gamma(s)(2\pi q)^{-s}=\tfrac2s\,E(s)$).
+
+\begin{theorem}[reflection, general mechanism]\label{stieltjes:thm:reflgen}
+For $n\ge1$ and $0<p<q$,
+\[
+\gamma_n\Bigl(\frac pq\Bigr)-\gamma_n\Bigl(1-\frac pq\Bigr)
+\;=\;4\,n!\!\!\sum_{i+2l+1+j\,=\,n+1}\!\! e_i\,
+\frac{(-1)^l(\pi/2)^{2l+1}}{(2l+1)!}\,\frac{S_j(p/q)}{j!}\,.
+\]
+Explicitly, with $\Lambda=\Lambda_q=\gamma+\ln 2\pi q$ (the letter
+distinguishes it from the Glaisher constant $\Glaisher$):
+\begin{align}
+\gamma_2\Bigl(\tfrac pq\Bigr)-\gamma_2\Bigl(1-\tfrac pq\Bigr)
+&=2\pi S_2-4\pi \Lambda\,S_1+\Bigl(2\Lambda^2+\tfrac{\pi^2}{6}\Bigr)\pi S_0,
+\label{stieltjes:eq:refl2}\\
+\gamma_3\Bigl(\tfrac pq\Bigr)-\gamma_3\Bigl(1-\tfrac pq\Bigr)
+&=2\pi S_3-6\pi \Lambda\,S_2+\Bigl(6\Lambda^2+\tfrac{\pi^2}{2}\Bigr)\pi S_1
+-\Bigl(2\Lambda^3+\tfrac{\pi^2}{2}\Lambda+4\zeta(3)\Bigr)\pi S_0,
+\label{stieltjes:eq:refl3}\\
+\gamma_4\Bigl(\tfrac pq\Bigr)-\gamma_4\Bigl(1-\tfrac pq\Bigr)
+&=2\pi S_4-8\pi \Lambda\,S_3+\bigl(12\Lambda^2+\pi^2\bigr)\pi S_2
+-\bigl(8\Lambda^3+2\pi^2\Lambda+16\zeta(3)\bigr)\pi S_1\notag\\
+&\qquad
++\Bigl(2\Lambda^4+\pi^2\Lambda^2+16\Lambda\,\zeta(3)+\tfrac{19\pi^4}{120}\Bigr)\pi S_0 .
+\label{stieltjes:eq:refl4}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Split the cosine, $\cos(\pi s/2-\theta)=\cos(\pi s/2)\cos\theta
++\sin(\pi s/2)\sin\theta$. Under $p\mapsto q-p$ the cosine sums are even and
+the sine sums odd, so the odd part of $\zeta(1-s,p/q)$ equals
+$\tfrac2s\,E(s)\sin(\pi s/2)\sum_j S_j\,s^j/j!$. By \eqref{stieltjes:eq:laurent},
+$\zeta(1-s,p/q)=-\tfrac1s+\sum_n\gamma_n(p/q)\,s^n/n!$, whose odd part has
+$s^n$-coefficient $\tfrac1{2\,n!}\bigl[\gamma_n(p/q)-\gamma_n(1-p/q)\bigr]$.
+Matching coefficients of $s^{n}$ (i.e.\ $s^{n+1}$ of
+$E\cdot\sin\cdot\sum S_js^j/j!$) gives the general formula; instantiating
+$e_0=1$, $e_1=-\Lambda$, $e_2=\tfrac{\Lambda^2}2+\tfrac{\pi^2}{12}$,
+$e_3=-\tfrac{\Lambda^3}6-\tfrac{\pi^2}{12}\Lambda-\tfrac{\zeta(3)}3$,
+$e_4=\tfrac{\Lambda^4}{24}+\tfrac{\pi^2}{24}\Lambda^2+\tfrac{\zeta(3)}3\Lambda
++\tfrac{\pi^4}{288}+\tfrac{\pi^4}{360}$ yields
+\eqref{stieltjes:eq:refl2}--\eqref{stieltjes:eq:refl4}.
+\end{proof}
+
+Formula \eqref{stieltjes:eq:refl2} is eq.~(89) of Blagouchine \cite{stieltjes:BlagouchineJNT},
+where a footnote records that it also appears in unpublished work of
+D.~Connon; \eqref{stieltjes:eq:refl3} and \eqref{stieltjes:eq:refl4} appear to be new. The same
+expansion, one order down, recovers Malmsten's reflection formula for
+$\gamma_1$ \cite{stieltjes:BlagouchineJNT}; an elementary alternative proof of that
+$n=1$ case, via Kummer's Fourier expansion of $\ln\Gamma$ rather than
+Hurwitz's functional equation, is given by Kouba \cite{stieltjes:Kouba}. For $q=3$
+and $q=4$ the sums collapse
+($S_j(\tfrac13)=\tfrac{\sqrt3}{2}\bigl[\zeta^{(j)}(0,\tfrac13)-\zeta^{(j)}(0,\tfrac23)\bigr]$,
+$S_j(\tfrac14)=\zeta^{(j)}(0,\tfrac14)-\zeta^{(j)}(0,\tfrac34)$), so
+\eqref{stieltjes:eq:refl2}--\eqref{stieltjes:eq:refl4} can be \emph{inverted} to express the odd
+jet differences through the Stieltjes differences
+$\gamma_n(p)-\gamma_n(1-p)$ — the key to Section~\ref{stieltjes:sec:values}.
+
+\section{Moments}\label{stieltjes:sec:moments}
+
+\begin{theorem}[Hurwitz transform and variants]\label{stieltjes:thm:transform}
+For $m\ge1$ and $\operatorname{Re}s<1$,
+\begin{equation}\label{stieltjes:eq:transform}
+\int_0^1 x^m\,\zeta(s,x)\,dx
+=-\sum_{j=1}^{m}\frac{m!}{(m-j+1)!}\,
+\frac{\zeta(s-j)}{(s-1)(s-2)\cdots(s-j)} ,
+\end{equation}
+and $\int_0^1\zeta(s,x)\,dx=0$. The same recursion with boundary terms
+$\zeta(\sigma,\tfrac12)=(2^\sigma-1)\zeta(\sigma)$ and
+$\zeta(\sigma,2)=\zeta(\sigma)-1$ gives the analogous closed forms for
+$\int_{1/2}^1$ and $\int_1^2$.
+\end{theorem}
+
+\begin{proof}
+Since $\zeta(s,x)=-\partial_x\zeta(s-1,x)/(s-1)$, integration by parts gives
+$I_m(s)=-\zeta(s-1)/(s-1)+\tfrac{m}{s-1}I_{m-1}(s-1)$ with $I_0\equiv0$
+(the boundary term at $x=0$ vanishes for $\operatorname{Re}s<m+1$ since
+$\zeta(\sigma,x)=x^{-\sigma}+O(1)$); unrolling yields \eqref{stieltjes:eq:transform},
+which then extends meromorphically in $s$.
+\end{proof}
+
+For the unit interval, \eqref{stieltjes:eq:transform} is Theorem~3.7 of
+Espinosa--Moll \cite{stieltjes:EspinosaMoll1}. Expanding \eqref{stieltjes:eq:transform} at
+$s=1+t$ against
+$\int_0^1x^m\zeta(1+t,x)\,dx=\tfrac{1}{(m+1)t}+M_0-M_1t+\tfrac{M_2}{2}t^2-\cdots$,
+where $M_k=\int_0^1x^m\gamma_k(x)\,dx$, reads off every Stieltjes moment.
+The expansion
+$1/[(t-1)\cdots(t-j+1)]=\tfrac{(-1)^{j-1}}{(j-1)!}\bigl(1+H_{j-1}t
++\tfrac{H_{j-1}^2+H_{j-1}^{(2)}}{2}t^2+\cdots\bigr)$
+gives the coefficients in closed form:
+
+\begin{theorem}[general first moment]\label{stieltjes:thm:moment}
+For every integer $m\ge1$,
+\[
+\int_0^1 x^m\,\gamma_1(x)\,dx
+=\sum_{j=1}^{m}(-1)^{j-1}\binom{m}{j-1}
+\biggl[\frac{\zeta''(1-j)}{2}+H_{j-1}\,\zeta'(1-j)
++\frac{H_{j-1}^2+H_{j-1}^{(2)}}{2}\,\zeta(1-j)\biggr].
+\]
+The $\gamma_n$-moment carries the analogous formula with the order-$(n+1)$
+jet leading and complete homogeneous symmetric functions of
+$1,\tfrac12,\dots,\tfrac1{j-1}$ as coefficients.
+\end{theorem}
+
+Combining Theorems \ref{stieltjes:thm:transform} and \ref{stieltjes:thm:moment} with the
+dictionary of Proposition~\ref{stieltjes:prop:jetsneg} produces the following table.
+Items \eqref{stieltjes:eq:mom-half}--\eqref{stieltjes:eq:mom-halfx} are restated from the
+corpus that motivated this work; the remaining evaluations appear to be
+new.
+\begin{align}
+\int_{1/2}^{1}\gamma_1(x)\,dx
+&=\frac{\gamma_1}{2}+\frac{\gamma^2}{4}-\frac{\pi^2}{48}
++\frac{\ln^2 2}{2}-\frac{\ln^2\pi}{4},
+\label{stieltjes:eq:mom-half}\\
+\int_{1}^{2}x\,\gamma_1(x)\,dx
+&=1+\frac{\gamma_1}{2}+\frac{\gamma^2}{4}-\frac{\pi^2}{48}
+-\frac{\ln^2 2\pi}{4},
+\label{stieltjes:eq:mom-12x}\\
+\int_{0}^{1}x^2\,\gamma_1(x)\,dx
+&=\frac{\gamma_1}{2}+\frac{\gamma^2}{3}-\frac{\pi^2}{36}
+-\frac{\ln^2 2\pi}{6}+\frac{\gamma}{6}\ln 2\pi
+-\frac{\zeta'(2)}{\pi^2}\,(\gamma+\ln 2\pi)+\frac{\zeta''(2)}{2\pi^2},
+\label{stieltjes:eq:mom-sq}\\
+\int_{1/2}^{1}x\,\gamma_1(x)\,dx
+&=\frac{\gamma_1}{2}+\frac{5\gamma^2}{16}-\frac{5\pi^2}{192}
++\frac{\ln^2 2}{8}-\frac{\ln 2\,\ln\pi}{6}-\frac{3\ln^2\pi}{16}
++\gamma\Bigl(\frac{\ln 2}{12}+\frac{\ln\pi}{8}\Bigr)\notag\\
+&\qquad
+-\frac{\zeta'(2)}{4\pi^2}\,(3\gamma+2\ln 2+3\ln\pi)
++\frac{3\,\zeta''(2)}{8\pi^2},
+\label{stieltjes:eq:mom-halfx}\\[2pt]
+\int_{0}^{1}x\,\gamma_1(x)\,dx
+&=\frac{\zeta''(0)}{2}
+=\frac{\gamma^2}{4}+\frac{\gamma_1}{2}-\frac{\pi^2}{48}-\frac{\ln^2 2\pi}{4},
+\label{stieltjes:eq:mom-x}\\
+\int_{0}^{1}x^3\,\gamma_1(x)\,dx
+&=\frac{3\gamma^2}{8}+\frac{\gamma_1}{2}-\frac{\pi^2}{32}
++\frac{\gamma\ln2\pi}{4}-\frac{\ln^2 2\pi}{8}
+-\frac{3\,\bigl(\zeta(3)+2\zeta'(2)\bigr)}{4\pi^2}\,(\gamma+\ln2\pi)\notag\\
+&\qquad+\frac{3\,\bigl(\zeta'(3)+\zeta''(2)\bigr)}{4\pi^2},
+\label{stieltjes:eq:mom-x3}\\
+\int_{1}^{2}x^2\,\gamma_1(x)\,dx
+&=\frac94+\frac{3\gamma_1}{2}+\frac{5\gamma^2}{6}-\frac{5\pi^2}{72}
++\frac{\gamma\ln2\pi}{6}-\frac{2\ln^2 2\pi}{3}
+-\frac{\zeta'(2)}{\pi^2}(\gamma+\ln2\pi)+\frac{\zeta''(2)}{2\pi^2},
+\label{stieltjes:eq:mom-12x2}\\[2pt]
+\int_{0}^{1}x\,\gamma_2(x)\,dx
+&=-\frac{\zeta'''(0)}{3}
+=\frac{\zeta(3)}{3}-\frac{\gamma^3}{3}-\gamma\gamma_1-\frac{\gamma_2}{2}
+-\frac{\gamma^2}{2}\ln2\pi-\gamma_1\ln2\pi
++\frac{\pi^2}{24}\ln2\pi+\frac{\ln^3 2\pi}{6},
+\label{stieltjes:eq:mom-g2}\\
+\int_{1}^{2}x\,\gamma_2(x)\,dx
+&=\int_{0}^{1}x\,\gamma_2(x)\,dx-2,
+\qquad
+\int_{1/2}^{1}\gamma_2(x)\,dx=-\Gamma_{\!2}\bigl(\tfrac12\bigr) .
+\label{stieltjes:eq:mom-g2b}
+\end{align}
+At $m=3$ the constants $\zeta(3)$ and $\zeta'(3)$ enter through
+\eqref{stieltjes:eq:zm2}, and each further unit of $m$ opens one more column of jets
+at the next negative integer; the second moment of $\gamma_1$ over
+$[1/2,1]$ and the higher $\gamma_2$-moments are equally mechanical but
+bulkier, and we omit them.
+
+\section{Explicit values of \texorpdfstring{$\Gamma_{\!n}$}{Gamma\_n}}
+\label{stieltjes:sec:values}
+
+\subsection{The first antiderivative}
+
+\begin{theorem}[$\Gamma_{\!1}$ in closed form]\label{stieltjes:thm:G1law}
+For all $p>0$,
+\[
+\Gamma_{\!1}(p)=c+\tfrac12\,\zeta''(0,p),
+\qquad
+c:=-\tfrac12\zeta''(0)
+=\frac{\pi^2}{48}+\frac{\ln^2 2\pi}{4}-\frac{\gamma^2}{4}-\frac{\gamma_1}{2}.
+\]
+Moreover $\int_0^1\Gamma_{\!1}(x)\,dx=c$, equivalently
+\eqref{stieltjes:eq:mom-x} (since $\int_0^1\zeta''(0,x)\,dx=0$
+\cite{stieltjes:Deninger,stieltjes:Coffey}).
+\end{theorem}
+
+\begin{theorem}[half-integral and even-sum values]\label{stieltjes:thm:G1half}
+\begin{align*}
+\Gamma_{\!1}\bigl(\tfrac12\bigr)
+&=\frac{\pi^2}{48}-\frac{\gamma^2}{4}-\frac{\gamma_1}{2}
+-\frac{\ln^2 2}{4}-\frac{\ln 2\,\ln 2\pi}{2}+\frac{\ln^2 2\pi}{4},\\
+\Gamma_{\!1}\bigl(\tfrac13\bigr)+\Gamma_{\!1}\bigl(\tfrac23\bigr)
+&=2c-\frac{\ln^2 3}{4}-\frac{\ln 3\,\ln 2\pi}{2},\qquad
+\Gamma_{\!1}\bigl(\tfrac14\bigr)+\Gamma_{\!1}\bigl(\tfrac34\bigr)
+=2c-\frac{3\ln^2 2}{4}-\frac{\ln 2\,\ln 2\pi}{2},\\
+\Gamma_{\!1}\bigl(\tfrac16\bigr)+\Gamma_{\!1}\bigl(\tfrac56\bigr)
+&=2c-\frac{\ln 2\,\ln 3}{2}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+$\zeta(s,\tfrac12)=(2^s-1)\zeta(s)$ gives
+$\zeta''(0,\tfrac12)=-\tfrac12\ln^22-\ln2\,\lntwopi$; the multiplication
+identities $\zeta(s,\tfrac13)+\zeta(s,\tfrac23)=(3^s-1)\zeta(s)$,
+$\zeta(s,\tfrac14)+\zeta(s,\tfrac34)=(4^s-2^s)\zeta(s)$,
+$\zeta(s,\tfrac16)+\zeta(s,\tfrac56)=(6^s-3^s-2^s+1)\zeta(s)$, twice
+differentiated at $s=0$, give the even sums (for $q=6$ the
+$\zeta''(0)$-coefficient $\ln^26-\ln^23-\ln^22=2\ln2\ln3$ and the
+$\zeta'(0)$-coefficient $\ln6-\ln3-\ln2=0$ produce the strikingly short
+third identity). Apply Theorem~\ref{stieltjes:thm:G1law}.
+\end{proof}
+
+\begin{theorem}[third and quarter values]\label{stieltjes:thm:G1thirds}
+\begin{align*}
+\Gamma_{\!1}\bigl(\tfrac13\bigr)
+&=\frac{\pi^{2}}{72}-\frac{\ln ^{2}2\pi}{3}+\frac{\ln ^{2}3}{24}
+-\frac{2}{3}\,\ln 3\,\ln 2 \pi
+-\frac{\gamma}{12}\,\bigl(4 \gamma+8 \ln 2 \pi-\ln 3\bigr)
++\bigl(\gamma+\ln 6 \pi\bigr) \ln \Gamma\bigl(\tfrac{1}{3}\bigr)\\
+&\quad-\frac{\gamma_{1}}{2}
++\frac{\sqrt{3}}{12 \pi}\,\Bigl(\gamma_{2}\bigl(\tfrac{1}{3}\bigr)-\gamma_{2}\bigl(\tfrac{2}{3}\bigr)\Bigr),\\
+\Gamma_{\!1}\bigl(\tfrac14\bigr)
+&=\frac{\pi^{2}}{96}-\frac{3}{8} \ln ^{2}\pi-\frac{9}{4}\,\ln 2\,\ln 2 \pi
+-\frac{\gamma}{8}\,\bigl(3 \gamma+8 \ln 2+6 \ln \pi\bigr)
++\bigl(\gamma+\ln 8 \pi\bigr) \ln \Gamma\bigl(\tfrac{1}{4}\bigr)\\
+&\quad-\frac{\gamma_{1}}{2}
++\frac{1}{8 \pi}\,\Bigl(\gamma_{2}\bigl(\tfrac{1}{4}\bigr)-\gamma_{2}\bigl(\tfrac{3}{4}\bigr)\Bigr),
+\end{align*}
+and $\Gamma_{\!1}(\tfrac23)$, $\Gamma_{\!1}(\tfrac34)$ follow from
+Theorem~\ref{stieltjes:thm:G1half}. Furthermore, with the abbreviation
+$D_j:=\zeta^{(j)}(0,\tfrac13)-\zeta^{(j)}(0,\tfrac23)$,
+\[
+\Gamma_{\!1}\bigl(\tfrac16\bigr)-\Gamma_{\!1}\bigl(\tfrac56\bigr)
+=\frac{\ln2\,\ln18}{6}
++\ln2\,\Bigl(2\ln\Gamma\bigl(\tfrac13\bigr)+\frac{\ln3}{6}-\ln2-\ln\pi\Bigr)
++D_2 ,
+\]
+which together with the even sum of Theorem~\ref{stieltjes:thm:G1half} gives
+$\Gamma_{\!1}(\tfrac16)$ and $\Gamma_{\!1}(\tfrac56)$ explicitly — in the
+\emph{same} obstruction atom $\gamma_2(\tfrac13)-\gamma_2(\tfrac23)$, since
+inverting \eqref{stieltjes:eq:refl2} at $q=3$ expresses
+$D_2=\tfrac{2}{\sqrt3}S_2(\tfrac13)$ through it.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{stieltjes:thm:G1law} everything reduces to the single jets
+$\zeta''(0,p)$ at $p=\tfrac13,\tfrac14,\tfrac16$. Their even parts are in
+Theorem~\ref{stieltjes:thm:G1half}; their odd parts are the inversions of
+\eqref{stieltjes:eq:refl2} at $q=3,4$:
+\[
+S_2=\frac{1}{2\pi}\Bigl[\gamma_2\bigl(\tfrac pq\bigr)-\gamma_2\bigl(1-\tfrac pq\bigr)
++4\pi \Lambda\,S_1-\Bigl(2\Lambda^2+\tfrac{\pi^2}{6}\Bigr)\pi S_0\Bigr],
+\]
+with $S_1(\tfrac13)=\tfrac{\sqrt3}{2}\bigl(2\ln\Gamma(\tfrac13)-\ln\tfrac{2\pi}{\sqrt3}\bigr)$,
+$S_0(\tfrac13)=\tfrac{1}{2\sqrt3}$,
+$S_1(\tfrac14)=2\ln\Gamma(\tfrac14)-\ln(\pi\sqrt2\,)$,
+$S_0(\tfrac14)=\tfrac12$.
+For $q=6$, the Dirichlet character $\chi_{-3}$ gives
+$\zeta(s,\tfrac16)-\zeta(s,\tfrac56)=(6^s+3^s)\,L(s,\chi_{-3})$ while
+$\zeta(s,\tfrac13)-\zeta(s,\tfrac23)=3^s\,L(s,\chi_{-3})$; eliminating the
+jets of $L(s,\chi_{-3})$ at $s=0$
+($L(0,\chi_{-3})=\tfrac13$,
+$L'(0,\chi_{-3})=2\ln\Gamma(\tfrac13)+\tfrac{\ln3}{6}-\ln2-\ln\pi$)
+yields the displayed transport identity.
+\end{proof}
+
+\subsection{The second and third antiderivatives}
+
+\begin{theorem}[$\Gamma_{\!2}$ values]\label{stieltjes:thm:G2}
+\begin{align*}
+\Gamma_{\!2}\bigl(\tfrac12\bigr)
+&=\frac{\gamma_{2}}{2}+\frac{\gamma^{3}}{3}-\frac{\zeta(3)}{3}+\ln ^{3}2
+-\frac{\ln ^{3}\pi}{6}
++\frac{\ln \pi}{24}\,\bigl(12 \gamma^{2}-\pi^{2}+24 \ln ^{2}2\bigr)
++(\gamma+\ln \pi)\,\gamma_{1},
+\end{align*}
+and at the third and quarter points, with
+$Z_3(\tfrac1q):=\zeta'''(0,\tfrac1q)+\zeta'''(0,1-\tfrac1q)$ and
+$D_3(\tfrac1q):=\zeta'''(0,\tfrac1q)-\zeta'''(0,1-\tfrac1q)$,
+\[
+\Gamma_{\!2}\bigl(\tfrac1q\bigr)
+=-\frac13\Bigl[\frac{Z_3+D_3}{2}-\zeta'''(0)\Bigr],
+\qquad q\in\{3,4\},
+\]
+where the even parts are elementary,
+\[
+Z_3\bigl(\tfrac13\bigr)=-\tfrac{\ln^33}{2}-\tfrac{3\ln^23\,\ln2\pi}{2}+3\ln3\,\zeta''(0),
+\qquad
+Z_3\bigl(\tfrac14\bigr)=\partial_s^3\bigl[(4^s-2^s)\zeta(s)\bigr]_{s=0},
+\]
+and the odd parts are the inversions of \eqref{stieltjes:eq:refl3}:
+$D_3=\frac{2}{\sqrt3}S_3$ at $q=3$, $D_3=S_3$ at $q=4$, with
+\[
+S_3=\frac{1}{2\pi}\Bigl[\gamma_3\bigl(\tfrac1q\bigr)-\gamma_3\bigl(1-\tfrac1q\bigr)
++6\pi \Lambda\,S_2-\Bigl(6\Lambda^2+\tfrac{\pi^2}{2}\Bigr)\pi S_1
++\Bigl(2\Lambda^3+\tfrac{\pi^2}{2}\Lambda+4\zeta(3)\Bigr)\pi S_0\Bigr]
+\]
+and $S_2$ as in the proof of Theorem~\ref{stieltjes:thm:G1thirds}. Thus
+$\Gamma_{\!2}(\tfrac13)$ and $\Gamma_{\!2}(\tfrac14)$ are explicit in the
+constants
+$\bigl\{\gamma,\gamma_1,\gamma_2,\zeta(3),\ln2,\ln3,\ln\pi,
+\ln\Gamma(\tfrac1q),\,
+\gamma_2(\tfrac1q)-\gamma_2(1-\tfrac1q),\,
+\gamma_3(\tfrac1q)-\gamma_3(1-\tfrac1q)\bigr\}$,
+the two Stieltjes differences being the only non-classical ingredients.
+\end{theorem}
+
+\begin{proof}
+$\Gamma_{\!2}(p)=-\tfrac13[\zeta'''(0,p)-\zeta'''(0)]$ by
+Theorem~\ref{stieltjes:thm:ladder}. At $p=\tfrac12$ use
+$\zeta'''(0,\tfrac12)=\partial_s^3[(2^s-1)\zeta(s)]_{s=0}
+=\ln^32\,\zeta(0)+3\ln^22\,\zeta'(0)+3\ln2\,\zeta''(0)$ and
+Proposition~\ref{stieltjes:prop:jets0}; at $p=\tfrac13,\tfrac14$ split into even and
+odd parts as displayed.
+\end{proof}
+
+\begin{corollary}[$\Gamma_{\!2}$ even sums]\label{stieltjes:cor:G2even}
+With $L=\ln2\pi$,
+\begin{align*}
+\Gamma_{\!2}\bigl(\tfrac13\bigr)+\Gamma_{\!2}\bigl(\tfrac23\bigr)
+&=\tfrac23\,\zeta'''(0)-\ln3\,\zeta''(0)+\tfrac{L}{2}\ln^23+\tfrac{\ln^33}{6},\\
+\Gamma_{\!2}\bigl(\tfrac14\bigr)+\Gamma_{\!2}\bigl(\tfrac34\bigr)
+&=\tfrac23\,\zeta'''(0)-\ln2\,\zeta''(0)+\tfrac{3L}{2}\ln^22+\tfrac{7\ln^32}{6},\\
+\Gamma_{\!2}\bigl(\tfrac16\bigr)+\Gamma_{\!2}\bigl(\tfrac56\bigr)
+&=\tfrac23\,\zeta'''(0)+L\,\ln2\,\ln3+\tfrac{\ln2\,\ln3\,\ln6}{2},
+\end{align*}
+so that $\Gamma_{\!2}(\tfrac23)$, $\Gamma_{\!2}(\tfrac34)$ follow from
+Theorem~\ref{stieltjes:thm:G2}; as in Theorem~\ref{stieltjes:thm:G1half}, the $\zeta''(0)$-term
+vanishes at $q=6$ because $\ln6-\ln3-\ln2=0$. (Generally, with the
+inclusion--exclusion combination
+$\zeta(s,\tfrac1q)+\zeta(s,1-\tfrac1q)=\bigl(\sum_ic_im_i^s\bigr)\zeta(s)$,
+the even sum equals $\tfrac23\zeta'''(0)+\tfrac16\sum_ic_i\ln^3m_i
++\tfrac{L}{2}\sum_ic_i\ln^2m_i-\zeta''(0)\sum_ic_i\ln m_i$.)
+\end{corollary}
+
+\begin{theorem}[$\Gamma_{\!3}$ values]\label{stieltjes:thm:G3}
+\begin{align*}
+\Gamma_{\!3}\bigl(\tfrac12\bigr)
+&=-\frac{7\ln^4 2}{4}+\frac{\ln^4\pi}{8}-\frac{3\gamma^4}{8}
+-\frac{\gamma_3}{2}+\frac{19\pi^4}{1920}
++\gamma_1\Bigl(3\ln^2 2-\frac{3\gamma^2}{2}-\frac{3\ln^2\pi}{2}-\frac{\pi^2}{8}\Bigr)\\
+&\quad-\frac{3\gamma_2}{2}(\gamma+\ln\pi)
++\zeta(3)\ln\pi
++\gamma^2\Bigl(\frac{3\ln^2 2}{2}-\frac{3\ln^2\pi}{4}-\frac{\pi^2}{16}\Bigr)
+-\gamma^3\ln\pi-3\gamma\gamma_1\ln\pi\\
+&\quad-3\ln\pi\,\ln^3 2-\frac{3\ln^2 2\,\ln^2\pi}{2}
+-\frac{\pi^2\ln^2 2}{8}+\frac{\pi^2\ln^2\pi}{16},
+\end{align*}
+and $\Gamma_{\!3}(\tfrac13)$, $\Gamma_{\!3}(\tfrac14)$ are given by
+$\Gamma_{\!3}(\tfrac1q)=\tfrac14[\zeta^{(4)}(0,\tfrac1q)-\zeta^{(4)}(0)]$ with
+the even part $\partial_s^4[(q\text{-orbit})\,\zeta(s)]_{s=0}$ as in
+Theorem~\ref{stieltjes:thm:G2} and the odd part inverted from \eqref{stieltjes:eq:refl4}; the
+resulting expressions are explicit in the same vocabulary augmented by
+$\gamma_4(\tfrac1q)-\gamma_4(1-\tfrac1q)$.
+\end{theorem}
+
+\subsection{The fourth antiderivative at \texorpdfstring{$1/2$}{1/2}}
+
+\begin{theorem}[$\Gamma_{\!4}(1/2)$]\label{stieltjes:thm:G4}
+\begin{align*}
+\Gamma_{\!4}\bigl(\tfrac12\bigr)
+&=\frac{\gamma_4}{2}+3\ln^5 2-\frac{12\,\zeta(5)}{5}-\frac{\ln^5\pi}{10}
++\frac{2\gamma^5}{5}+\frac{3\gamma^4\ln\pi}{2}\\
+&\quad+\gamma_1\Bigl(2\gamma^3-12\ln^3 2+2\ln^3\pi+4\zeta(3)
++\frac{\pi^2\ln\pi}{2}-12\ln\pi\,\ln^2 2+6\gamma^2\ln\pi\Bigr)\\
+&\quad+\gamma\gamma_1\Bigl(\frac{\pi^2}{2}-12\ln^2 2+6\ln^2\pi\Bigr)
++\gamma_2\Bigl(3\gamma^2-6\ln^2 2+3\ln^2\pi+\frac{\pi^2}{4}+6\gamma\ln\pi\Bigr)\\
+&\quad+2\gamma_3\,(\gamma+\ln\pi)
++\zeta(3)\Bigl(4\ln^2 2-2\ln^2\pi-\frac{\pi^2}{6}\Bigr)\\
+&\quad+\gamma^2\Bigl(\ln^3\pi-6\ln^3 2+2\zeta(3)-6\ln\pi\,\ln^2 2
++\frac{\pi^2\ln\pi}{4}\Bigr)
++\gamma^3\Bigl(2\ln^2\pi-4\ln^2 2+\frac{\pi^2}{6}\Bigr)\\
+&\quad+\frac{\pi^2\ln^3 2}{2}+2\ln^2 2\,\ln^3\pi+6\ln^3 2\,\ln^2\pi
++7\ln\pi\,\ln^4 2\\
+&\quad-\frac{19\pi^4\ln\pi}{480}-\frac{\pi^2\ln^3\pi}{12}
++\frac{\pi^2\ln\pi\,\ln^2 2}{2}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+$\Gamma_{\!4}(\tfrac12)=-\tfrac15[\zeta^{(5)}(0,\tfrac12)-\zeta^{(5)}(0)]$, with
+\[
+\zeta^{(5)}\bigl(0,\tfrac12\bigr)=\partial_s^5\bigl[(2^s-1)\zeta(s)\bigr]_{s=0}
+=\sum_{k=0}^{4}\binom5k\,\ln^{5-k}2\;\zeta^{(k)}(0)
+\]
+(the $k=5$ term carries the factor $2^0-1=0$) and
+Proposition~\ref{stieltjes:prop:jets0def}.
+\end{proof}
+
+The pattern of Theorems \ref{stieltjes:thm:G2}--\ref{stieltjes:thm:G4} is general: each rung
+$\Gamma_{\!n}$ adds the next Stieltjes constant $\gamma_n$ and the functional-equation zeta terms,
+and one degree to the logarithmic monomials at $p=\tfrac12$; at
+$p=\tfrac13,\tfrac14$ it adds the single new obstruction atom
+$\gamma_{n+1}(p)-\gamma_{n+1}(1-p)$, delivered by the order-$(n+1)$
+reflection formula of Theorem~\ref{stieltjes:thm:reflgen}. At denominators such as $5,8,12$ the even character decomposition introduces additional coordinates (the multiplication identities no
+longer close over the principal character), and the values
+$\Gamma_{\!n}(p/q)$ additionally involve the even-character combinations of
+$\zeta^{(n+1)}(0,\cdot)$ — the obstruction layer studied, at $n=1$, in
+\cite{stieltjes:BlagouchineJNT}.
+
+\section{The negative-order polygamma floor}\label{stieltjes:sec:negapoly}
+
+The ladder of Section~\ref{stieltjes:sec:ladder} integrates the coefficient functions of the Laurent expansion at $s=1$ in their argument. The same Hurwitz-jet calculus has a second, equally
+natural direction, and this section — a second main act rather than an
+appendix — follows it downward. Integrating in the \emph{argument} at the
+$s$-jet floor produces the polygamma functions of negative integer order
+("negapolygamma", a term Adamchik \cite{stieltjes:Adamchik98} credits to Gosper):
+for real $z>0$,
+\[
+\psi^{(-1)}(z)=\ln\Gamma(z),\qquad
+\psi^{(-n)}(z)=\int_0^z\psi^{(-(n-1))}(t)\,dt
+=\frac{1}{(n-2)!}\int_0^z(z-t)^{n-2}\ln\Gamma(t)\,dt ,
+\]
+which is precisely Mathematica's \texttt{PolyGamma[-n,\,z]} (all
+identities below are stated on $0<z<1$, where the rational arguments
+live, and extend to $z>0$ by the same formulas wherever both sides are
+defined). Everything built for the Stieltjes side transfers wholesale:
+the ladder identity has a one-line analogue, the reflection mechanism of
+Section~\ref{stieltjes:sec:reflection} reappears at the jet floor with bare Clausen
+values in place of the sine sums $S_j$, the obstruction constants again
+organize along Dirichlet characters — and the bridge identities for those
+constants close a circle the Stieltjes side leaves open. The tools:
+a one-line ladder, reflection and multiplication laws, bridge identities,
+and explicit rational-argument values.
+
+\subsection{The ladder}
+
+\begin{theorem}\label{stieltjes:thm:negladder}
+For $n\ge2$ and $z>0$,
+\[
+\psi^{(-n)}(z)=\frac{\zeta'(1-n,z)-\zeta'(1-n)}{(n-1)!}+Q_n(z),
+\]
+where $Q_n$ is an explicit polynomial with coefficients in
+$\mathbb{Q}\bigl[\ln 2\pi,\,\zeta'(-1),\dots,\zeta'(2-n)\bigr]$:
+\begin{align*}
+Q_2(z)&=\tfrac{z}{2}\ln2\pi+\tfrac{z(1-z)}{2},\\
+Q_3(z)&=\tfrac{z^2}{4}\ln2\pi-\tfrac{z^3}{4}+\tfrac{3z^2}{8}-\tfrac{z}{24}
+-z\,\zeta'(-1),\\
+Q_4(z)&=\tfrac{z^3}{12}\ln2\pi-\tfrac{11z^4}{144}+\tfrac{11z^3}{72}
+-\tfrac{5z^2}{144}-\tfrac{z^2}{2}\zeta'(-1)-\tfrac{z}{2}\zeta'(-2),
+\end{align*}
+and in general $Q_n$ has leading term $-H_{n-1}z^n/n!$ and
+$\ln2\pi$-coefficient $z^{n-1}/(2\,(n-1)!)$.
+\end{theorem}
+
+\begin{proof}
+$\int_0^z\zeta(s,t)\,dt=-[\zeta(s-1,z)-\zeta(s-1)]/(s-1)$ for
+$\operatorname{Re}s<1$; differentiating at $s=-k$,
+\[
+\int_0^z\zeta'(-k,t)\,dt
+=\frac{\zeta'(-k-1,z)-\zeta'(-k-1)}{k+1}
++\frac{\zeta(-k-1,z)-\zeta(-k-1)}{(k+1)^2},
+\]
+with $\zeta(-m,z)=-B_{m+1}(z)/(m+1)$. Iterate from
+$\psi^{(-1)}=\zeta'(0,z)+\tfrac12\ln2\pi$: each step shifts the single
+$\zeta'$-atom by one and deposits Bernoulli and constant terms into the
+polynomial.
+\end{proof}
+
+An equivalent expansion is Adamchik's Proposition~2 \cite{stieltjes:Adamchik98}; the
+spelling above isolates the one $z$-dependent transcendental.
+
+\subsection{Reflection}
+
+\begin{theorem}[reflection at the jet floor]\label{stieltjes:thm:negrefl}
+For every integer $k\ge0$ and $0<z<1$,
+\[
+\zeta'(-k,z)+(-1)^k\,\zeta'(-k,1-z)
+=(-1)^{\lfloor k/2\rfloor}\,\frac{k!}{(2\pi)^k}\,
+\operatorname{Cl}_{k+1}(2\pi z),
+\]
+where $\operatorname{Cl}_{2m}(\theta)=\operatorname{Im}\operatorname{Li}_{2m}(e^{i\theta})$,
+$\operatorname{Cl}_{2m+1}(\theta)=\operatorname{Re}\operatorname{Li}_{2m+1}(e^{i\theta})$.
+\end{theorem}
+
+\begin{proof}
+In Hurwitz's formula, written as
+$\zeta(1-s,z)=\tfrac{2\Gamma(s)}{(2\pi)^s}
+[\cos(\tfrac{\pi s}{2})C_s(z)+\sin(\tfrac{\pi s}{2})S_s(z)]$ with
+$C_s,S_s$ the cosine/sine Dirichlet series, the combination even (odd)
+under $z\mapsto1-z$ keeps only the $C$ ($S$) term. At the integer
+$s=k+1$, exactly one of $\cos\tfrac{\pi s}{2}$, $\sin\tfrac{\pi s}{2}$
+vanishes, and it is the one attached to the parity-matching combination;
+differentiating in $s$ there, the product rule retains only the term in
+which $d/ds$ falls on the vanishing trigonometric factor, so a single
+\emph{bare} Clausen value survives and no derivative of the Dirichlet
+series enters. Collecting constants gives the display.
+\end{proof}
+
+For $k\ge1$ this is the real part of Adamchik's Proposition~1
+\cite{stieltjes:Adamchik98}, stated there for every positive integer order with the
+Bernoulli term as the imaginary part (equivalently Miller--Adamchik
+\cite{stieltjes:MillerAdamchik}, eq.~(21)); the bare-Clausen real spelling, the
+$k=0$ inclusion, and the mechanism note are the reformulation here. $k=0$
+is Kummer-flavoured ($\operatorname{Cl}_1(2\pi z)=-\ln(2\sin\pi z)$). The
+parity-\emph{opposite} combination does not close: it produces the series
+$\sum\ln n\,\{\cos|\sin\}(2\pi nz)/n^{k+1}$ — the generalized-Glaisher
+atoms of \S\ref{stieltjes:sec:negbridges}.
+
+Propagating Theorem~\ref{stieltjes:thm:negrefl} through the ladder yields reflection
+formulas at the $\psi^{(-n)}$-level — a relation which Espinosa and Moll
+\cite{stieltjes:EspinosaMoll04} record as not known to them ("\emph{We have been
+unable to find a generalization of the other well-known functional
+relation for the polygamma function}"):
+
+\begin{theorem}[negapolygamma reflection]\label{stieltjes:thm:psirefl}
+\begin{align*}
+\psi^{(-2)}(z)-\psi^{(-2)}(1-z)
+&=\frac{\operatorname{Cl}_2(2\pi z)}{2\pi}
++\Bigl(z-\tfrac12\Bigr)\ln2\pi,\\
+\psi^{(-3)}(z)+\psi^{(-3)}(1-z)
+&=-\frac{\operatorname{Cl}_3(2\pi z)}{4\pi^2}
++\Bigl(\tfrac{z^2}{2}-\tfrac{z}{2}+\tfrac14\Bigr)\ln2\pi
+-\zeta'(-1)-\zeta'(-2)+\tfrac1{12},\\
+\psi^{(-4)}(z)-\psi^{(-4)}(1-z)
+&=-\frac{\operatorname{Cl}_4(2\pi z)}{8\pi^3}
++\Bigl(\tfrac{z^3}{6}-\tfrac{z^2}{4}+\tfrac{z}{4}-\tfrac1{12}\Bigr)\ln2\pi\\
+&\qquad+\Bigl(\tfrac12-z\Bigr)\bigl(\zeta'(-1)+\zeta'(-2)\bigr)
++\tfrac{z}{12}-\tfrac1{24},\\
+\psi^{(-5)}(z)+\psi^{(-5)}(1-z)
+&=\frac{\operatorname{Cl}_5(2\pi z)}{16\pi^4}
++\Bigl(\tfrac{z^4}{24}-\tfrac{z^3}{12}+\tfrac{z^2}{8}-\tfrac{z}{12}
++\tfrac1{48}\Bigr)\ln2\pi\\
+&\qquad+\Bigl(\tfrac{z-z^2}{2}\Bigr)\bigl(\zeta'(-1)+\zeta'(-2)\bigr)\\
+&\qquad-\tfrac{\zeta'(-1)}{6}-\tfrac{\zeta'(-2)}{4}-\tfrac{\zeta'(-3)}{6}
+-\tfrac{\zeta'(-4)}{12}
++\tfrac{z^2-z}{24}+\tfrac{49}{4320}.
+\end{align*}
+\end{theorem}
+
+\subsection{Multiplication}
+
+Differentiating the Hurwitz distribution relation at $s=-k$ gives, for all
+$k\ge0$, $m\ge2$,
+\begin{equation}\label{stieltjes:eq:negmult}
+\sum_{j=0}^{m-1}\zeta'\Bigl(-k,\,z+\frac jm\Bigr)
+=m^{-k}\Bigl[\zeta'(-k,mz)-\ln m\,\frac{B_{k+1}(mz)}{k+1}\Bigr]
+\end{equation}
+($k=0$ is Gauss's multiplication theorem for $\ln\Gamma$), and through the
+ladder,
+\[
+\sum_{j=0}^{m-1}\psi^{(-n)}\Bigl(z+\frac jm\Bigr)
+=m^{1-n}\Bigl[\psi^{(-n)}(mz)-\ln m\,\frac{B_n(mz)}{n!}\Bigr]
++\rho_{n,m}(z)
+\]
+with elementary $\rho_{n,m}$; for $n=2$,
+\[
+\rho_{2,m}(z)=\frac{(m-1)(2z+1)}4\ln2\pi+\frac{m^2-1}{12m}
+-\frac{m^2-1}{m}\,\zeta'(-1),
+\]
+so only the \emph{rational} part of the remainder is $(m^2-1)/(12m)$. The
+$\psi$-level law is, in the "balanced" convention of their negapolygamma
+\cite{stieltjes:EspinosaMoll2}, Theorem~3.2 of Espinosa--Moll \cite{stieltjes:EspinosaMoll04};
+the form above is its transcription to the Wolfram convention.
+
+\subsection{Bridges}\label{stieltjes:sec:negbridges}
+
+At rational arguments the layers $\zeta'(-k,p/q)$ decompose along
+Dirichlet characters, and two laws organize the resulting constants.
+
+\begin{proposition}[trivial-zero bridges]\label{stieltjes:prop:tzbridge}
+Let $\chi$ be primitive or principal, $k\ge1$.
+If $\chi(-1)=(-1)^{k}$ (so that $L(-k,\chi)=0$, since
+$B_{k+1}(\chi)\ne0$ exactly when $\chi(-1)=(-1)^{k+1}$), then $L'(-k,\chi)$
+is an elementary multiple of $L(k+1,\bar\chi)$. For the principal character and
+$\chi_{-4}$:
+\[
+\zeta'(-2k)=\frac{(-1)^k(2k)!}{2(2\pi)^{2k}}\,\zeta(2k+1),
+\qquad
+\beta'(1-2k)=(-1)^{k+1}(2k-1)!\,\frac{2^{2k-1}}{\pi^{2k-1}}\,\beta(2k),
+\]
+so in particular $\beta'(-1)=2G/\pi$ ($G$ Catalan's constant) and
+$\beta'(-3)=-48\,\beta(4)/\pi^3$.
+\end{proposition}
+
+\begin{theorem}[harmonic-number bridge]\label{stieltjes:thm:hbridge}
+Let $\chi$ be a primitive character mod $q$ with $\chi(-1)=(-1)^{k+1}$ (so
+that $L(-k,\chi)\ne0$; for $\chi$ principal read $\zeta$ and require $k$
+odd). Then
+\[
+\frac{L'(k+1,\chi)}{L(k+1,\chi)}
++\overline{\biggl(\frac{L'(-k,\chi)}{L(-k,\chi)}\biggr)}
+=\gamma+\ln\frac{2\pi}{q}-H_k .
+\]
+For real $\chi$ the conjugation bar is invisible; for complex $\chi$ it is
+essential — equivalently, the bridge pairs $\chi$ at $s=k+1$ with
+$\bar\chi$ at $s=-k$, and the un-conjugated sum has the purely imaginary
+defect $2i\operatorname{Im}[L'(-k,\chi)/L(-k,\chi)]$.
+\end{theorem}
+
+\begin{proof}
+Write the completed function
+$\Lambda(s)=(q/\pi)^{(s+\delta)/2}\,\Gamma\bigl(\tfrac{s+\delta}{2}\bigr)
+L(s,\chi)$ with $\delta=(1-\chi(-1))/2$, so
+$\Lambda(s)=\varepsilon\overline{\Lambda}(1-\bar s)$, whose logarithmic
+derivative at real $s$ gives
+$\Lambda'/\Lambda(s)=-\overline{\Lambda'/\Lambda(1-s)}$; at $s=k+1$,
+\[
+\frac{L'(k+1,\chi)}{L(k+1,\chi)}
++\overline{\biggl(\frac{L'(-k,\chi)}{L(-k,\chi)}\biggr)}
+=-\ln\frac q\pi-\frac12\,
+\psi\Bigl(\frac{k+1+\delta}2\Bigr)-\frac12\,\psi\Bigl(\frac{\delta-k}2\Bigr).
+\]
+Since $\chi(-1)=(-1)^{k+1}$ means $\delta\equiv k+1\pmod 2$, the argument
+$(\delta-k)/2$ is a (possibly negative) half-integer, where
+$\cot\pi x=0$; the reflection formula thus gives
+$\psi\bigl(\tfrac{\delta-k}2\bigr)=\psi\bigl(\tfrac{k+2-\delta}2\bigr)$,
+and $\bigl\{\tfrac{k+1+\delta}2,\tfrac{k+2-\delta}2\bigr\}$ is a
+duplication pair $\{x,x+\tfrac12\}$ with $2x=k+1$. Hence the two digammas
+sum to $2\psi(k+1)-2\ln2=2(H_k-\gamma)-2\ln2$, and the display follows.
+\end{proof}
+
+Consequently, at each level $-k$ every character direction of the grid
+$\{\zeta'(-k,j/q)\}$ either reduces (trivial-zero bridge: to the
+$\zeta(k+1)$/Catalan-family values) or carries exactly one new constant
+(the parity-opposite $L'$), the harmonic-number bridge converting freely
+between its $s=k+1$ and $s=-k$ spellings. Exact rational row-reduction of
+the full known-relation lattice (all reflection rows and all-divisor
+multiplication rows) makes this quantitative:
+
+\begin{proposition}[jet-grid residual dimension]\label{stieltjes:prop:jetrank}
+For every $3\le q\le30$ and $1\le k\le4$, the residual dimension of the
+grid $\{\zeta'(-k,j/q):1\le j\le q-1\}$ modulo the lattice generated by
+the reflection and multiplication rows equals
+\[
+r_{q,k}=\#\{\chi \text{ primitive of conductor } f\mid q,\ f>1,\
+\chi(-1)=(-1)^{k+1}\}
+=\begin{cases}\varphi(q)/2-1,& k\text{ odd},\\
+\varphi(q)/2,& k\text{ even},\end{cases}
+\]
+with no exceptions.
+\end{proposition}
+
+The epistemic status deserves precision. For each fixed $(q,k)$ in the
+stated range this \emph{is} a theorem: the relation lattice is a finite,
+explicitly known matrix over $\mathbb{Q}$, and the rank computation is
+exact rational row reduction (no floating point; the script and its $112$-cell output belong to the historical Smithereens snapshot and were not imported here). The
+character-count \emph{law}, as a statement for all $q$, is at present a
+verified conjecture, with the expected mechanism visible in the
+computation: decomposing the grid along Dirichlet characters, the
+reflection rows annihilate exactly the $(-1)^k$-parity eigenspace (whose
+$L$-jets are the Clausen material already on the reflection right-hand
+side), the divisor multiplication rows pin the imprimitive and principal
+directions (the constant $\zeta'(-k)$ belongs to the right-hand-side
+inventory: a generalized Glaisher constant $\ln\Glaisher_k$ for $k$ odd,
+a multiple of $\zeta(k+1)$ for $k$ even), and the surviving directions
+are precisely the parity-opposite primitive characters of
+Theorem~\ref{stieltjes:thm:hbridge}. For $k$ odd the count coincides with the
+residual law of the $\gamma_1$-grids — the two lattices see the same
+even-character obstruction space.
+
+\subsection{Rational values}\label{stieltjes:sec:negvalues}
+
+\begin{theorem}[the half-argument tower]\label{stieltjes:thm:neghalf}
+For every $n\ge2$,
+\[
+\psi^{(-n)}\bigl(\tfrac12\bigr)
+=\frac{(2^{1-n}-2)\,\zeta'(1-n)-2^{1-n}\ln2\cdot B_n/n}{(n-1)!}
++Q_n\bigl(\tfrac12\bigr);
+\]
+in lowest cases
+\[
+\psi^{(-2)}\bigl(\tfrac12\bigr)
+=\frac32\ln\Glaisher+\frac{5\ln2}{24}+\frac{\ln\pi}{4}
+\quad\text{(classical)},\qquad
+\psi^{(-3)}\bigl(\tfrac12\bigr)
+=\frac{7\,\zeta(3)}{32\pi^2}+\frac{\ln\Glaisher}{2}+\frac{\ln2\pi}{16}.
+\]
+\end{theorem}
+
+\begin{theorem}[third- and quarter-argument values at $n=3,4$]
+\label{stieltjes:thm:negthirds}
+\begin{align*}
+\psi^{(-3)}\bigl(\tfrac14\bigr)
+&=\frac{35\,\zeta(3)}{256\pi^2}+\frac{\beta'(3)}{4\pi^3}
++\frac{\ln\Glaisher}{4}+\frac{\ln2\pi}{128}-\frac{\gamma}{128},\\
+\psi^{(-3)}\bigl(\tfrac13\bigr)
+&=\frac{13\,\zeta(3)}{72\pi^2}+\frac{\sqrt3\,L'(3,\chi_{-3})}{8\pi^3}
++\frac{\ln\Glaisher}{3}+\frac{7\ln2\pi}{324}-\frac{\gamma}{162},
+\end{align*}
+via the exact spellings
+$\beta'(-2)=\tfrac14\bigl(3-2\gamma-2\ln\tfrac\pi2\bigr)+16\beta'(3)/\pi^3$
+and
+$L'(-2,\chi_{-3})=\tfrac29\bigl(\ln\tfrac3{2\pi}+\tfrac32-\gamma\bigr)
++\tfrac{9\sqrt3}{2\pi^3}L'(3,\chi_{-3})$;
+and at the next level the parity alternates, so that
+$\psi^{(-4)}(\tfrac14)$ is explicit with \emph{no} new constant:
+\[
+\psi^{(-4)}\bigl(\tfrac14\bigr)
+=\frac{\zeta'(-3,\tfrac14)-\zeta'(-3)}{6}+Q_4\bigl(\tfrac14\bigr),
+\qquad
+\zeta'\bigl(-3,\tfrac14\bigr)
+=\frac{Z+D}{2}
+\]
+with the even part
+$Z=(4^{-3}-2^{-3})\zeta'(-3)+(4^{-3}\ln4-2^{-3}\ln2)\zeta(-3)$ and the odd
+part $D=-48\,\beta(4)/(64\pi^3)$ from Proposition~\ref{stieltjes:prop:tzbridge}.
+\end{theorem}
+
+\begin{remark}
+$\psi^{(-3)}(\tfrac12)$ appears in Adamchik \cite{stieltjes:Adamchik98}; the
+flattened quarter- and third-values appear to be new — notably,
+Mathematica's \texttt{FunctionExpand} reduces
+\texttt{PolyGamma[-3,\,1/2]} fully but leaves the jet
+$\zeta'(-2,\tfrac14)$ unevaluated inside \texttt{PolyGamma[-3,\,1/4]}: the
+atom $\beta'(3)$ is exactly what is missing. The same atom resolves a
+naive integer-relation search over $\{\zeta(3)/\pi^2,
+\ln\Glaisher,\text{logs}\}$, which must fail for this value.
+\end{remark}
+
+\begin{corollary}[reflection and transport companions]
+\label{stieltjes:cor:psi3companions}
+With the same atoms as Theorem~\ref{stieltjes:thm:negthirds},
+\begin{align*}
+\psi^{(-3)}\bigl(\tfrac23\bigr)
+&=\frac{13\,\zeta(3)}{72\pi^2}-\frac{\sqrt3\,L'(3,\chi_{-3})}{8\pi^3}
++\frac{2\ln\Glaisher}{3}+\frac{19\ln2\pi}{162}+\frac{\gamma}{162},\\
+\psi^{(-3)}\bigl(\tfrac34\bigr)
+&=\frac{35\,\zeta(3)}{256\pi^2}-\frac{\beta'(3)}{4\pi^3}
++\frac{3\ln\Glaisher}{4}+\frac{19\ln2\pi}{128}+\frac{\gamma}{128},\\
+\psi^{(-3)}\bigl(\tfrac16\bigr)
+&=\frac{\zeta(3)}{12\pi^2}+\frac{5\sqrt3\,L'(3,\chi_{-3})}{32\pi^3}
++\frac{\ln\Glaisher}{6}-\frac{\ln2\pi}{1296}-\frac{\ln2}{648}
+-\frac{5\gamma}{648},\\
+\psi^{(-3)}\bigl(\tfrac56\bigr)
+&=\frac{\zeta(3)}{12\pi^2}-\frac{5\sqrt3\,L'(3,\chi_{-3})}{32\pi^3}
++\frac{5\ln\Glaisher}{6}+\frac{235\ln2\pi}{1296}+\frac{\ln2}{648}
++\frac{5\gamma}{648}.
+\end{align*}
+\end{corollary}
+
+\begin{proof}
+The first two from Theorem~\ref{stieltjes:thm:psirefl} with
+$\operatorname{Cl}_3(2\pi/3)=-\tfrac49\zeta(3)$ and
+$\operatorname{Cl}_3(\pi/2)=-\tfrac3{32}\zeta(3)$; the sixths from the
+transport $\zeta(s,\tfrac16)-\zeta(s,\tfrac56)=(6^s+3^s)\,L(s,\chi_{-3})$
+differentiated at $s=-2$, the even part being
+$\zeta'(-2,\tfrac16)+\zeta'(-2,\tfrac56)=\tfrac23\zeta'(-2)$ by
+inclusion--exclusion. The entire sixth family thus rides on the one atom
+$L'(3,\chi_{-3})$.
+\end{proof}
+
+\subsection{Denominators 5, 8, 12: quadratic and quartic atoms}
+\label{stieltjes:sec:negq5812}
+
+The denominators $5$, $8$, $12$ are the first where
+Proposition~\ref{stieltjes:prop:jetrank} forces genuinely new constants beyond the
+$\chi_{-3}$/$\chi_{-4}$ families: at $k=1$ each grid carries one new atom
+(the even real quadratic direction), and at $k=2$, $q=5$ the residual
+space is two-dimensional (a conjugate quartic pair).
+
+\begin{theorem}[the $k=1$ grids]\label{stieltjes:thm:negq5812}
+Write $Z_1=\zeta'(-1)$ and let $\chi_q$ be the even real quadratic
+primitive character mod $q\in\{5,8,12\}$ (Legendre mod $5$; Kronecker
+$(8|\cdot)$, $(12|\cdot)$), with the exact values
+$L(-1,\chi_5)=-\tfrac25$, $L(-1,\chi_8)=-1$, $L(-1,\chi_{12})=-2$. Then
+for $\gcd(p,q)=1$,
+\begin{align*}
+\zeta'\bigl(-1,\tfrac p5\bigr)
+&=-\frac{Z_1}{5}+\frac{\operatorname{Cl}_2(2\pi p/5)}{4\pi}
++\chi_5(p)\Bigl[\frac{L'(-1,\chi_5)}{20}-\frac{\ln5}{50}\Bigr]
+-\frac{\ln5}{240},\\
+\zeta'\bigl(-1,\tfrac p8\bigr)
+&=-\frac{Z_1}{32}+\frac{\operatorname{Cl}_2(\pi p/4)}{4\pi}
++\chi_8(p)\Bigl[\frac{L'(-1,\chi_8)}{32}-\frac{3\ln2}{32}\Bigr]
++\frac{\ln2}{384},\\
+\zeta'\bigl(-1,\tfrac p{12}\bigr)
+&=\frac{Z_1}{24}+\frac{\operatorname{Cl}_2(\pi p/6)}{4\pi}
++\chi_{12}(p)\Bigl[\frac{L'(-1,\chi_{12})}{48}-\frac{\ln2}{12}
+-\frac{\ln3}{24}\Bigr]
++\frac{\ln3}{576},
+\end{align*}
+whence $\psi^{(-2)}(p/q)=\zeta'(-1,p/q)-Z_1+Q_2(p/q)$ through the ladder;
+for instance
+\[
+\psi^{(-2)}\bigl(\tfrac15\bigr)
+=-\frac{6Z_1}{5}+\frac{\operatorname{Cl}_2(2\pi/5)}{4\pi}
++\frac{L'(-1,\chi_5)}{20}-\frac{29\ln5}{1200}+\frac{\ln2\pi}{10}
++\frac2{25}.
+\]
+\end{theorem}
+
+\begin{proof}
+On each grid the two reflection rows
+(Theorem~\ref{stieltjes:thm:negrefl}), the multiplication rows
+\eqref{stieltjes:eq:negmult} for every divisor (non-coprime entries
+reduced through the sub-grids $q\in\{2,3,4,6\}$), and the character row
+$\sum_p\chi_q(p)\,\zeta'(-1,\tfrac pq)
+=\tfrac1q\bigl[L'(-1,\chi_q)+\ln q\,L(-1,\chi_q)\bigr]$ form a system of
+full rank $\varphi(q)=4$; solving it and reducing the composite-argument
+Clausen values
+($\operatorname{Cl}_2(\tfrac{3\pi}4)=\operatorname{Cl}_2(\tfrac\pi4)-\tfrac G2$,
+$\operatorname{Cl}_2(\tfrac\pi6)=\tfrac23G+\tfrac38\operatorname{Cl}_2(\tfrac{2\pi}3)$)
+gives the display. For the composite $q$ the known rows are one short of
+independent — the single dependency is itself a Clausen duplication law in
+disguise (at $q=8$: $\mathrm{refl}(\tfrac18)-\mathrm{refl}(\tfrac38)
+=m_2(\tfrac18)-m_2(\tfrac38)$ is equivalent to
+$\operatorname{Cl}_2(\tfrac{3\pi}4)=\operatorname{Cl}_2(\tfrac\pi4)-\tfrac G2$)
+— and the quadratic character row supplies the missing dimension, exactly
+as Proposition~\ref{stieltjes:prop:jetrank} predicts ($r_{q,1}=1$ for
+$q\in\{5,8,12\}$).
+\end{proof}
+
+\begin{theorem}[the quartic floor: $k=2$, $q=5$]\label{stieltjes:thm:negq5k2}
+Let $\chi$ be the odd quartic character mod $5$ with $\chi(2)=i$, for
+which $L(-2,\chi)=-\tfrac{4+2i}5$ exactly, and write
+$L'(-2,\chi)=R+iI$. Then
+\begin{align*}
+\zeta'\bigl(-2,\tfrac15\bigr),\ \zeta'\bigl(-2,\tfrac45\bigr)
+&=-\frac{\operatorname{Cl}_3(2\pi/5)}{4\pi^2}
+\pm\Bigl[\frac R{50}-\frac{2\ln5}{125}\Bigr],\\
+\zeta'\bigl(-2,\tfrac25\bigr),\ \zeta'\bigl(-2,\tfrac35\bigr)
+&=-\frac{\operatorname{Cl}_3(4\pi/5)}{4\pi^2}
+\pm\Bigl[\frac I{50}-\frac{\ln5}{125}\Bigr],
+\end{align*}
+and, flattening through the ladder with
+$\operatorname{Cl}_3(\tfrac{2\pi}5),\operatorname{Cl}_3(\tfrac{4\pi}5)
+=-\tfrac6{25}\zeta(3)\pm\tfrac{\sqrt5}4L(3,\chi_5)$,
+\begin{align*}
+\psi^{(-3)}\bigl(\tfrac15\bigr)
+&=\frac{31\,\zeta(3)}{200\pi^2}-\frac{\sqrt5\,L(3,\chi_5)}{32\pi^2}
++\frac R{100}-\frac{\ln5}{125}+\frac{\ln2\pi}{100}+\frac7{1500}
+-\frac{Z_1}5,\\
+\psi^{(-3)}\bigl(\tfrac25\bigr)
+&=\frac{31\,\zeta(3)}{200\pi^2}+\frac{\sqrt5\,L(3,\chi_5)}{32\pi^2}
++\frac I{100}-\frac{\ln5}{250}+\frac{\ln2\pi}{25}+\frac{41}{1500}
+-\frac{2Z_1}5,\\
+\psi^{(-3)}\bigl(\tfrac35\bigr)
+&=\frac{31\,\zeta(3)}{200\pi^2}+\frac{\sqrt5\,L(3,\chi_5)}{32\pi^2}
+-\frac I{100}+\frac{\ln5}{250}+\frac{9\ln2\pi}{100}+\frac7{125}
+-\frac{3Z_1}5,\\
+\psi^{(-3)}\bigl(\tfrac45\bigr)
+&=\frac{31\,\zeta(3)}{200\pi^2}-\frac{\sqrt5\,L(3,\chi_5)}{32\pi^2}
+-\frac R{100}+\frac{\ln5}{125}+\frac{4\ln2\pi}{25}+\frac{59}{750}
+-\frac{4Z_1}5.
+\end{align*}
+\end{theorem}
+
+\begin{remark}
+The remaining derivative coordinates in these formulas are the quartic pair $\{R,I\}$,
+matching $r_{5,2}=\varphi(5)/2=2$ of Proposition~\ref{stieltjes:prop:jetrank}; the
+multiplication row $\sum_p\zeta'(-2,\tfrac p5)=\tfrac6{25}\zeta(3)/\pi^2$
+is \emph{dependent} on the reflections — it is the Clausen multiplication
+law $\operatorname{Cl}_3(\tfrac{2\pi}5)
++\operatorname{Cl}_3(\tfrac{4\pi}5)=-\tfrac{12}{25}\zeta(3)$ in disguise.
+Through the conjugated harmonic-number bridge
+(Theorem~\ref{stieltjes:thm:hbridge} with $k=2$, $H_2=\tfrac32$) the pair $\{R,I\}$
+is interchangeable with $\{\operatorname{Re},\operatorname{Im}\}$ of
+$L'(3,\chi)$.
+\end{remark}
+
+\section*{Appendix: fully expanded values at the third and quarter points}
+
+The reduction recipes of Theorems~\ref{stieltjes:thm:G2} and~\ref{stieltjes:thm:G3}, carried out
+to the end, give the following flattened closed forms. The $\Gamma_{\!2}$
+values live in the atom set announced in Theorem~\ref{stieltjes:thm:G2}; the
+$\Gamma_{\!3}$ values pick up, exactly as Theorem~\ref{stieltjes:thm:G3} predicts, the
+three further atoms $\gamma_3$, $\pi^4$ and
+$\gamma_{4}(\tfrac1q)-\gamma_{4}(1-\tfrac1q)$. The combinations
+$\gamma+\ln 6\pi$ and $\gamma+\ln 8\pi$ are the constants $\Lambda_3$, $\Lambda_4$ of
+Theorem~\ref{stieltjes:thm:reflgen}. Each display has been verified at $90$-digit
+working precision (residuals below $10^{-88}$) against
+$\Gamma_{\!n}(p)=\frac{(-1)^{n+1}}{n+1}\bigl[\zeta^{(n+1)}(0,p)-\zeta^{(n+1)}(0)\bigr]$
+evaluated from Hurwitz-zeta derivative jets.
+
+\begin{align*}
+\Gamma_{\!2}\bigl(\tfrac13\bigr) &= \frac{1}{2}\,\gamma_{2}+\gamma\,\gamma_{1}+\gamma_{1}\,\ln 2\pi-\frac{1}{2}\,\gamma_{1}\,\ln 3 \\
+ &\quad +\frac{4}{9}\,\gamma^{3}+\frac{4}{3}\,\gamma^{2}\,\ln 2\pi-\frac{1}{6}\,\gamma^{2}\,\ln 3+\frac{4}{3}\,\gamma\,\ln^{2} 2\pi \\
+ &\quad +\frac{7}{6}\,\gamma\,\ln 2\pi\,\ln 3-\frac{1}{6}\,\gamma\,\ln^{2} 3-\frac{4}{9}\,\zeta(3)-\frac{\pi^{2}}{12}\,\ln 2\pi \\
+ &\quad +\frac{\pi^{2}}{24}\,\ln 3+\frac{4}{9}\,\ln^{3} 2\pi+\frac{4}{3}\,\ln^{2} 2\pi\,\ln 3+\frac{7}{12}\,\ln 2\pi\,\ln^{2} 3 \\
+ &\quad -\frac{1}{18}\,\ln^{3} 3 \\
+ &\quad -\Bigl(\bigl(\gamma+\ln 6\pi\bigr)^{2}-\frac{\pi^{2}}{12}\Bigr)\ln\Gamma\bigl(\tfrac13\bigr) \\
+ &\quad -\frac{\sqrt{3}}{6\pi}\,\bigl(\gamma+\ln 6\pi\bigr)\,\bigl(\gamma_{2}(\tfrac13)-\gamma_{2}(\tfrac23)\bigr) \\
+ &\quad -\frac{\sqrt{3}}{18\pi}\,\bigl(\gamma_{3}(\tfrac13)-\gamma_{3}(\tfrac23)\bigr)
+\end{align*}
+
+\begin{align*}
+\Gamma_{\!2}\bigl(\tfrac14\bigr) &= \frac{1}{2}\,\gamma_{2}+\gamma\,\gamma_{1}+\frac{1}{2}\,\gamma_{1}\,\ln 2+\gamma_{1}\,\ln \pi \\
+ &\quad +\frac{1}{2}\,\gamma^{3}+2\,\gamma^{2}\,\ln 2+\frac{3}{2}\,\gamma^{2}\,\ln \pi+6\,\gamma\,\ln^{2} 2 \\
+ &\quad +\frac{13}{2}\,\gamma\,\ln 2\,\ln \pi+\frac{3}{2}\,\gamma\,\ln^{2} \pi-\frac{1}{2}\,\zeta(3)-\frac{\pi^{2}}{24}\,\ln 2 \\
+ &\quad -\frac{\pi^{2}}{12}\,\ln \pi+\frac{49}{6}\,\ln^{3} 2+\frac{45}{4}\,\ln^{2} 2\,\ln \pi+\frac{9}{2}\,\ln 2\,\ln^{2} \pi \\
+ &\quad +\frac{1}{2}\,\ln^{3} \pi \\
+ &\quad -\Bigl(\bigl(\gamma+\ln 8\pi\bigr)^{2}-\frac{\pi^{2}}{12}\Bigr)\ln\Gamma\bigl(\tfrac14\bigr) \\
+ &\quad -\frac{1}{4\pi}\,\bigl(\gamma+\ln 8\pi\bigr)\,\bigl(\gamma_{2}(\tfrac14)-\gamma_{2}(\tfrac34)\bigr) \\
+ &\quad -\frac{1}{12\pi}\,\bigl(\gamma_{3}(\tfrac14)-\gamma_{3}(\tfrac34)\bigr)
+\end{align*}
+
+\begin{align*}
+\Gamma_{\!3}\bigl(\tfrac13\bigr) &= -\frac{1}{2}\,\gamma_{3}-\frac{3}{2}\,\gamma\,\gamma_{2}-\frac{3}{2}\,\gamma_{2}\,\ln 2\pi+\frac{3}{4}\,\gamma_{2}\,\ln 3 \\
+ &\quad -\frac{3}{2}\,\gamma^{2}\,\gamma_{1}-3\,\gamma\,\gamma_{1}\,\ln 2\pi+\frac{3}{2}\,\gamma\,\gamma_{1}\,\ln 3-\frac{3}{2}\,\gamma_{1}\,\ln^{2} 2\pi \\
+ &\quad +\frac{3}{2}\,\gamma_{1}\,\ln 2\pi\,\ln 3+\frac{3}{4}\,\gamma_{1}\,\ln^{2} 3-\frac{\pi^{2}}{8}\,\gamma_{1}-\frac{1}{2}\,\gamma^{4} \\
+ &\quad -2\,\gamma^{3}\,\ln 2\pi+\frac{1}{4}\,\gamma^{3}\,\ln 3-3\,\gamma^{2}\,\ln^{2} 2\pi-\frac{3}{2}\,\gamma^{2}\,\ln 2\pi\,\ln 3 \\
+ &\quad +\frac{3}{8}\,\gamma^{2}\,\ln^{2} 3-\frac{\pi^{2}}{24}\,\gamma^{2}-2\,\gamma\,\ln^{3} 2\pi-\frac{15}{4}\,\gamma\,\ln^{2} 2\pi\,\ln 3 \\
+ &\quad -\frac{3}{2}\,\gamma\,\ln 2\pi\,\ln^{2} 3+\frac{1}{4}\,\gamma\,\ln^{3} 3+\frac{\pi^{2}}{6}\,\gamma\,\ln 2\pi-\frac{\pi^{2}}{48}\,\gamma\,\ln 3 \\
+ &\quad +\frac{5\pi^{2}}{24}\,\ln^{2} 2\pi+\frac{\pi^{2}}{24}\,\ln 2\pi\,\ln 3-\frac{7\pi^{2}}{96}\,\ln^{2} 3+\frac{\pi^{4}}{120} \\
+ &\quad -\frac{1}{2}\,\ln^{4} 2\pi-2\,\ln^{3} 2\pi\,\ln 3-\frac{15}{8}\,\ln^{2} 2\pi\,\ln^{2} 3-\frac{1}{2}\,\ln 2\pi\,\ln^{3} 3 \\
+ &\quad +\frac{1}{16}\,\ln^{4} 3 \\
+ &\quad +\Bigl(\bigl(\gamma+\ln 6\pi\bigr)^{3}-\frac{\pi^{2}}{4}\,\bigl(\gamma+\ln 6\pi\bigr)+2\,\zeta(3)\Bigr)\ln\Gamma\bigl(\tfrac13\bigr) \\
+ &\quad +\frac{\sqrt{3}}{48\pi}\Bigl(12\,\bigl(\gamma+\ln 6\pi\bigr)^{2}-\pi^{2}\Bigr)\bigl(\gamma_{2}(\tfrac13)-\gamma_{2}(\tfrac23)\bigr) \\
+ &\quad +\frac{\sqrt{3}}{6\pi}\,\bigl(\gamma+\ln 6\pi\bigr)\,\bigl(\gamma_{3}(\tfrac13)-\gamma_{3}(\tfrac23)\bigr) \\
+ &\quad +\frac{\sqrt{3}}{24\pi}\,\bigl(\gamma_{4}(\tfrac13)-\gamma_{4}(\tfrac23)\bigr)
+\end{align*}
+
+\begin{align*}
+\Gamma_{\!3}\bigl(\tfrac14\bigr) &= -\frac{1}{2}\,\gamma_{3}-\frac{3}{2}\,\gamma\,\gamma_{2}-\frac{3}{4}\,\gamma_{2}\,\ln 2-\frac{3}{2}\,\gamma_{2}\,\ln \pi \\
+ &\quad -\frac{3}{2}\,\gamma^{2}\,\gamma_{1}-\frac{3}{2}\,\gamma\,\gamma_{1}\,\ln 2-3\,\gamma\,\gamma_{1}\,\ln \pi+\frac{9}{4}\,\gamma_{1}\,\ln^{2} 2 \\
+ &\quad -\frac{3}{2}\,\gamma_{1}\,\ln 2\,\ln \pi-\frac{3}{2}\,\gamma_{1}\,\ln^{2} \pi-\frac{\pi^{2}}{8}\,\gamma_{1}-\frac{9}{16}\,\gamma^{4} \\
+ &\quad -3\,\gamma^{3}\,\ln 2-\frac{9}{4}\,\gamma^{3}\,\ln \pi-\frac{45}{4}\,\gamma^{2}\,\ln^{2} 2-\frac{51}{4}\,\gamma^{2}\,\ln 2\,\ln \pi \\
+ &\quad -\frac{27}{8}\,\gamma^{2}\,\ln^{2} \pi-\frac{\pi^{2}}{32}\,\gamma^{2}-27\,\gamma\,\ln^{3} 2-\frac{153}{4}\,\gamma\,\ln^{2} 2\,\ln \pi \\
+ &\quad -\frac{33}{2}\,\gamma\,\ln 2\,\ln^{2} \pi-\frac{9}{4}\,\gamma\,\ln^{3} \pi+\frac{\pi^{2}}{4}\,\gamma\,\ln 2+\frac{3\pi^{2}}{16}\,\gamma\,\ln \pi \\
+ &\quad +\frac{3\pi^{2}}{8}\,\ln^{2} 2+\frac{11\pi^{2}}{16}\,\ln 2\,\ln \pi+\frac{7\pi^{2}}{32}\,\ln^{2} \pi+\frac{29\pi^{4}}{3840} \\
+ &\quad -\frac{207}{8}\,\ln^{4} 2-\frac{179}{4}\,\ln^{3} 2\,\ln \pi-27\,\ln^{2} 2\,\ln^{2} \pi-\frac{27}{4}\,\ln 2\,\ln^{3} \pi \\
+ &\quad -\frac{9}{16}\,\ln^{4} \pi \\
+ &\quad +\Bigl(\bigl(\gamma+\ln 8\pi\bigr)^{3}-\frac{\pi^{2}}{4}\,\bigl(\gamma+\ln 8\pi\bigr)+2\,\zeta(3)\Bigr)\ln\Gamma\bigl(\tfrac14\bigr) \\
+ &\quad +\frac{1}{32\pi}\Bigl(12\,\bigl(\gamma+\ln 8\pi\bigr)^{2}-\pi^{2}\Bigr)\bigl(\gamma_{2}(\tfrac14)-\gamma_{2}(\tfrac34)\bigr) \\
+ &\quad +\frac{1}{4\pi}\,\bigl(\gamma+\ln 8\pi\bigr)\,\bigl(\gamma_{3}(\tfrac14)-\gamma_{3}(\tfrac34)\bigr) \\
+ &\quad +\frac{1}{16\pi}\,\bigl(\gamma_{4}(\tfrac14)-\gamma_{4}(\tfrac34)\bigr)
+\end{align*}

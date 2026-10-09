@@ -1,0 +1,675 @@
+\section{Introduction and scope}
+\label{sec:projection-optimization}
+
+For an $n$-dimensional convex body $K$, write
+\[
+ R_n(K)=\frac{|\Pi K|}{|K|^{n-1}},
+ \qquad
+ s_d=\frac{(d+1)d^d}{d!}.
+\]
+The projection body is defined by
+$h_{\Pi K}(u)=|\operatorname{proj}_{u^\perp}K|_{n-1}$ for unit $u$.
+We consider the class of invertible affine images of Cartesian products
+of nondegenerate simplices. The factor dimensions can vary, and their
+number is unrestricted. The results in this section optimize over that
+class; they do not determine the maximum over all convex bodies.
+
+The source manuscript \cite{OpenAIProjection} proves the two identities
+\begin{equation}\label{eq:proj-inputs}
+ R_d(T_d)=s_d,
+ \qquad
+ R_{r+s}(A\times B)=R_r(A)R_s(B),
+\end{equation}
+where $T_d$ is any nondegenerate $d$-simplex. Section~\ref{sec:proj-geometry} rederives them for completeness. The source uses repeated
+ten-dimensional blocks to obtain an exponential improvement over a
+single simplex. We optimize that construction exactly, identify its
+unique optimal exponential block size, and give a sharp isolation gap
+between optimal and nonoptimal products. The product counterexample
+itself is not new: the source explicitly cites the earlier
+counterexamples of Feng, Hu, Liu, and Xu \cite{FengReverse} to the
+unrestricted simplex-maximum conjecture of Brannen~\cite{Brannen1996}.
+
+Let
+\begin{equation}\label{eq:proj-Pn}
+ P_n=\max\left\{\prod_{i=1}^k s_{d_i}:
+  k\ge1,\ d_i\ge1,\ \sum_{i=1}^k d_i=n\right\}.
+\end{equation}
+In dimension one the natural convention is $\Pi I=[-1,1]$ and $s_1=2$.
+The facet proof of \eqref{eq:proj-inputs} extends to an interval factor
+by assigning volume one to a point. Alternatively, interval factors can
+be omitted throughout: whenever $n\ge2$, merging a dimension-one factor
+with another factor strictly increases the objective, as follows from
+the ratio formula below. Thus both conventions give the same $P_n$ for
+$n\ge2$.
+
+\section{Exact optimization}
+
+Define
+\begin{equation}\label{eq:proj-constants}
+ \rho=s_{13}^{1/13},\quad L=\log\rho,\quad
+ \alpha=12L-\log s_{12},\quad
+ \beta=14L-\log s_{14}.
+\end{equation}
+The constants $\alpha$ and $\beta$ are positive. Numerically,
+\[
+ \rho\simeq2.80996473256,\qquad
+ \alpha\simeq0.001448531660,\qquad
+ \beta\simeq0.000775423091.
+\]
+The decimals are descriptive; all inequalities used in the proof have
+exact rational certificates.
+
+\begin{theorem}[Exact eventual optimizer]\label{thm:proj-optimum}
+Write $n\equiv r\pmod {13}$, with $0\le r\le12$.
+For every $n\ge100$,
+\begin{equation}\label{eq:proj-exact}
+ P_n=
+ \begin{cases}
+ s_{13}^{(n-14r)/13}s_{14}^{r},&0\le r\le8,\\[2mm]
+ s_{12}^{13-r}s_{13}^{(n-12(13-r))/13},&9\le r\le12.
+ \end{cases}
+\end{equation}
+Every maximizing factorization has exactly the indicated dimensions,
+up to ordering. Consequently the maximizing bodies in the stated class
+are uniquely specified up to invertible affine maps.
+
+The first formula is valid as soon as $n\ge14r$; the second is valid as
+soon as $n\ge12(13-r)$. The uniform threshold $100$ is the smallest
+threshold for which these residue formulas hold in every dimension.
+Moreover,
+\begin{equation}\label{eq:proj-rate}
+ \sup_{d\ge1}s_d^{1/d}=s_{13}^{1/13}=\rho,
+\end{equation}
+and equality in \eqref{eq:proj-rate} occurs only at $d=13$.
+\end{theorem}
+
+For all dimensions, not merely those beyond the periodic threshold, a
+two-candidate formula suffices. Given $1\le k\le n$, put
+\[
+ a=\lfloor n/k\rfloor,\qquad b=n-ka,
+ \qquad B(n,k)=s_a^{k-b}s_{a+1}^{b}.
+\]
+
+\begin{theorem}[Two candidates in every dimension]\label{thm:proj-two}
+For every positive integer $n$,
+\[
+ P_n=\max\{B(n,k):
+ k\in\{\max(1,\lfloor n/13\rfloor),\lceil n/13\rceil\}\}.
+\]
+Repeated candidates are counted once. In particular, computing the
+optimal value requires comparing only two explicit rational numbers.
+For $n\le19$ the simplex is optimal; the first strict product
+improvement occurs at $n=20$, with dimensions $(10,10)$.
+\end{theorem}
+
+\section{Geometric reduction}\label{sec:proj-geometry}
+
+We prove the geometric identities used in the optimization. They are
+classical or explicitly proved in the source manuscript
+\cite{OpenAIProjection}; the proofs here are included to make the
+present argument independent of any unverified geometric assertion.
+For a compact convex set $C$, its support function is
+$h_C(u)=\max_{x\in C}\langle u,x\rangle$. Support functions determine
+compact convex sets, and Minkowski addition adds their support
+functions.
+
+\begin{lemma}[Facet formula]\label{lem:proj-facets}
+Let $K\subset\R^n$ be a full-dimensional polytope. For each facet $F$,
+write $a_F$ for its $(n-1)$-volume and $\nu_F$ for its outward unit
+normal. Then
+\[
+ h_{\Pi K}(u)=\frac12\sum_F a_F|\langle\nu_F,u\rangle|,
+ \qquad
+ \Pi K=\sum_F[-a_F\nu_F/2,a_F\nu_F/2].
+\]
+For $n=1$ a facet is an endpoint and has volume one.
+\end{lemma}
+
+\begin{proof}
+Take a unit vector $u$ and project onto $u^\perp$. The absolute
+Jacobian of projection from the hyperplane of $F$ is
+$|\langle\nu_F,u\rangle|$. Apart from the projections of lower
+dimensional faces and projection-boundary points, which have measure
+zero, a line parallel to $u$ through a point of the shadow enters and
+leaves $K$ through exactly two facet interiors. Summing projected facet
+areas therefore counts the shadow twice. This proves the first
+identity for unit $u$; homogeneity proves it for arbitrary $u$.
+The support function of $[-v/2,v/2]$ is
+$|\langle v,u\rangle|/2$, proving the second identity. In dimension
+one the two endpoints give $h_{\Pi K}(u)=|u|$, as required.
+\end{proof}
+
+\begin{proposition}[Products and affine maps]\label{prop:proj-product}
+Let $A\subset\R^r$ and $B\subset\R^s$ be full-dimensional polytopes,
+with $r,s\ge1$. Then
+\[
+ \Pi(A\times B)=(|B|\Pi A)\times(|A|\Pi B),
+ \qquad R_{r+s}(A\times B)=R_r(A)R_s(B).
+\]
+For every invertible linear map $U$ in dimension $n$,
+\[
+ \Pi(UK)=|\det U|U^{-t}\Pi K,
+ \qquad R_n(UK)=R_n(K).
+\]
+Translations also preserve $R_n$.
+\end{proposition}
+
+\begin{proof}
+A facet of $A\times B$ is either $F\times B$, with $F$ a facet of
+$A$, or $A\times G$, with $G$ a facet of $B$. Indeed, an exposed face
+is a product of exposed faces, and codimensions add. Their area-normal
+vectors are respectively $(|B|a_F\nu_F,0)$ and
+$(0,|A|a_G\nu_G)$. The facet formula gives
+\[
+ h_{\Pi(A\times B)}(u,v)
+       =|B|h_{\Pi A}(u)+|A|h_{\Pi B}(v),
+\]
+the support function of the stated Cartesian product. Taking its
+volume and dividing by $(|A||B|)^{r+s-1}$ proves multiplicativity.
+
+Under $U$, a facet's area-normal vector $a_F\nu_F$ becomes
+$|\det U|U^{-t}(a_F\nu_F)$. One way to see the area factor is to map
+a prism of unit height over $F$: its volume multiplies by
+$|\det U|$, while its height over the image facet becomes
+$1/\|U^{-t}\nu_F\|$. Applying the facet formula to the transformed
+segments proves the covariance identity. The determinant of the
+linear map $|\det U|U^{-t}$ has absolute value
+$|\det U|^{n-1}$, exactly the scale factor of $|UK|^{n-1}$.
+Projection volumes are translation invariant.
+\end{proof}
+
+\begin{proposition}[Simplex value]\label{prop:proj-simplex}
+For every positive integer $d$, any nondegenerate $d$-simplex satisfies
+$R_d(T_d)=s_d$.
+\end{proposition}
+
+\begin{proof}
+By affine invariance it suffices to use
+$T_d=\operatorname{conv}(0,e_1,\ldots,e_d)$, of volume $1/d!$.
+For $d\ge2$ its coordinate facets have area-normal vectors
+$-e_i/(d-1)!$, and the opposite facet has vector
+$w/(d-1)!$, where $w=e_1+\cdots+e_d$. The latter identity follows
+either by its height and volume or by projecting that facet onto a
+coordinate hyperplane. The facet formula shows that $\Pi T_d$ is a
+translate of
+\[
+ \frac{[0,1]^d+[0,w]}{(d-1)!}.
+\]
+Let $Q=[0,1]^d$. Each fiber of $Q$ parallel to $w$ is an interval;
+adding the segment $[0,w]$ extends its length by $\|w\|$ and leaves
+the base projection unchanged. Fubini gives
+\[
+ |Q+[0,w]|=|Q|+\|w\|\,|\operatorname{proj}_{w^\perp}Q|_{d-1}
+         =1+h_{\Pi Q}(w)=d+1.
+\]
+The last equality follows directly from the $2d$ unit-area facets of
+the cube. Thus
+\[
+ R_d(T_d)=\frac{(d+1)(d!)^{d-1}}{((d-1)!)^d}
+          =\frac{(d+1)d^d}{d!}=s_d.
+\]
+For $d=1$, $R_1(I)=2=s_1$ by the stated convention.
+\end{proof}
+
+Every simplex in a fixed dimension is an invertible affine image of
+the standard one. Applying its affine map independently in each
+factor, followed by a final ambient affine map, proves that the
+geometric maximization over our class is precisely the finite
+optimization \eqref{eq:proj-Pn}.
+
+\section{Concavity and exact comparisons}
+
+\begin{lemma}[Ratio monotonicity]\label{lem:proj-concavity}
+The sequence $f_d=\log s_d$ is concave for $d\ge1$.
+Its consecutive slopes satisfy
+\[
+ q_d:=\frac{s_{d+1}}{s_d}
+   =\frac{d+2}{d+1}\left(1+\frac1d\right)^d,
+ \qquad q_1=q_2=3>q_3>q_4>\cdots.
+\]
+\end{lemma}
+
+\begin{proof}
+Only monotonicity needs proof. For real $x\ge3$, let
+\[
+ h(x)=\log\frac{x+2}{x+1}
+          +x\log\left(1+\frac1x\right).
+\]
+Direct differentiation gives
+\[
+ h'(x)=\log\left(1+\frac1x\right)
+                   +\frac1{x+2}-\frac2{x+1},
+ \qquad
+ h''(x)=\frac{x^2-x-4}{x(x+1)^2(x+2)^2}>0.
+\]
+Since $h'(x)\to0$ as $x\to\infty$, strict increase of $h'$ implies
+$h'(x)<0$ throughout $[3,\infty)$. Therefore $q_d$ strictly decreases
+for integer $d\ge3$. Finally $q_1=q_2=3$ and $q_3=80/27<3$.
+\end{proof}
+
+The following comparisons are all between explicit positive rational
+numbers:
+\begin{align}
+ Q_-&=\frac{s_{13}^{12}}{s_{12}^{13}}>1,
+ &Q_+&=\frac{s_{13}^{14}}{s_{14}^{13}}>1,
+ \label{eq:proj-peak-checks}\\
+ G&=\frac{s_{14}^{8}}{s_{13}^{4}s_{12}^{5}}>1,
+ &H&=\frac{s_{13}^{6}s_{12}^{4}}{s_{14}^{9}}>1.
+ \label{eq:proj-branch-checks}
+\end{align}
+For a compact exact certificate, the ratios lie strictly between the
+following rational endpoints. Every displayed integer is divided by
+$10^6$.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Ratio & Lower numerator & Upper numerator\\
+\midrule
+$Q_-$ & 1019009 & 1019010\\
+$Q_+$ & 1010131 & 1010132\\
+$G$   & 1001039 & 1001040\\
+$H$   & 1001185 & 1001186\\
+$s_{12}^2/(s_{11}s_{13})$ & 1002550 & 1002551\\
+$s_{14}^2/(s_{13}s_{15})$ & 1001959 & 1001960\\
+$s_{13}^2/(s_{12}s_{14})$ & 1002226 & 1002227\\
+\bottomrule
+\end{tabular}
+\end{center}
+These statements can be checked by integer multiplication alone. For
+example, the four main ratios have the prime-power forms
+\begin{align*}
+ Q_-&=\frac{5^2 7^{13}11\,13^{131}}{2^{290}3^{151}},
+ &Q_+&=\frac{13^{181}}{2^{165}3^{18}5^{15}7^{156}11},\\
+ G&=\frac{5^{10}7^{101}11}{2^{10}3^{47}13^{61}},
+ &H&=\frac{3^{34}13^{85}}{2^{25}5^{11}7^{112}11}.
+\end{align*}
+The accompanying standard-library Python verifier stores each numerator
+and denominator and both positive cross-multiplication differences. No
+floating-point decision occurs in these certificates.
+
+\begin{lemma}[The unique rate maximum]\label{lem:proj-peak}
+The sequence $f_d/d$ strictly increases up to $d=13$ and strictly
+decreases thereafter. Its piecewise-linear interpolation in the
+numerator has the same property: if $f(x)$ is linear on each
+$[d,d+1]$ and equals $f_d$ at integers, then $f(x)/x$ strictly increases
+on $[1,13]$ and strictly decreases on $[13,\infty)$.
+\end{lemma}
+
+\begin{proof}
+Set $a_d=d\log q_d-f_d$. Then
+\[
+ \frac{f_{d+1}}{d+1}-\frac{f_d}{d}
+    =\frac{a_d}{d(d+1)},\qquad
+ a_{d+1}-a_d=(d+1)(\log q_{d+1}-\log q_d)\le0.
+\]
+The two exact comparisons \eqref{eq:proj-peak-checks} say precisely that
+$a_{12}>0$ and $a_{13}<0$. Monotonicity therefore gives the asserted
+signs in all dimensions. On $(d,d+1)$, direct differentiation gives
+$(f(x)/x)'=a_d/x^2$, proving the interpolated statement as well.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:proj-two}]
+For fixed $k$, concavity gives
+\[
+ \sum_{i=1}^k f_{d_i}\le k f(n/k),
+\]
+and the balanced dimensions $a$ and $a+1$ attain equality. Thus the
+maximum at that factor count is $B(n,k)$.
+Since $k f(n/k)=n[f(n/k)/(n/k)]$, Lemma~\ref{lem:proj-peak} shows
+that this expression increases with $k$ up to the real value $n/13$
+and decreases thereafter. Only its two adjacent admissible integers
+can maximize it. For $n<13$, the expression decreases throughout the
+admissible factor counts, so $k=1$ is optimal. For $13\le n\le19$, the
+remaining comparisons are the seven explicit rational comparisons
+between one simplex and two balanced simplices. They give strict
+preference to one simplex; at $n=20$ the two ten-dimensional factors
+win, with the exact ratio established in \cite{OpenAIProjection}.
+For completeness, the table below gives rational enclosures for the
+two-factor value divided by the simplex value. All endpoints are
+divided by $10^6$; the lower inequality is weak and the upper inequality
+is strict.
+\begin{center}
+\begin{tabular}{crrr}
+\toprule
+$n$ & Factor dimensions & Lower numerator & Upper numerator\\
+\midrule
+13 & $(6,7)$ & 870778 & 870779\\
+14 & $(7,7)$ & 893750 & 893751\\
+15 & $(7,8)$ & 913688 & 913689\\
+16 & $(8,8)$ & 935695 & 935696\\
+17 & $(8,9)$ & 955049 & 955050\\
+18 & $(9,9)$ & 976160 & 976161\\
+19 & $(9,10)$ & 994936 & 994937\\
+20 & $(10,10)$ & 1015230 & 1015231\\
+\bottomrule
+\end{tabular}
+\end{center}
+The verifier supplies the exact numerator and denominator for each
+entry. At $n=14$ the lower endpoint is exact: the ratio is $143/160$.
+\end{proof}
+
+\begin{corollary}[Prescribed factor and facet counts]
+\label{cor:proj-facets-budget}
+Among simplex products of total dimension $n$ with exactly $k$ factors,
+the maximum is $B(n,k)$. Such a product has exactly $n+k$ facets.
+Consequently, for each $F$ with $n+1\le F\le2n$, the maximum among
+these products with exactly $F$ facets is $B(n,F-n)$.
+\end{corollary}
+
+\begin{proof}
+The fixed-factor claim is the concavity argument in the preceding
+proof. A $d_i$-simplex has $d_i+1$ facets, and the facet classification
+in Proposition~\ref{prop:proj-product} shows that the counts add under
+Cartesian products. Their sum is $\sum_i(d_i+1)=n+k$.
+\end{proof}
+
+\section{The residue argument}
+
+For $d\ge1$, define the nonnegative rate deficit
+\[
+ \delta_d=dL-f_d.
+\]
+In particular $\delta_{13}=0$, $\delta_{12}=\alpha$, and
+$\delta_{14}=\beta$.
+
+\begin{lemma}[Linear lower bounds for the deficits]
+\label{lem:proj-deficit}
+For positive integer $d$,
+\[
+ \delta_d\ge
+ \begin{cases}
+ (13-d)\alpha,&d\le12,\\
+ 0,&d=13,\\
+ (d-13)\beta,&d\ge14.
+ \end{cases}
+\]
+Equality is possible only at $d\in\{12,13,14\}$.
+\end{lemma}
+
+\begin{proof}
+For $d\le12$, decreasing consecutive slopes give
+\[
+ f_{13}-f_d=\sum_{j=d}^{12}\log q_j
+                  \ge(13-d)\log q_{12}.
+\]
+Since $f_{13}=13L$ and $\log q_{12}-L=\alpha$, this is the
+first bound. It is strict if $d\le11$, because the sum then includes
+a slope strictly greater than $\log q_{12}$. The argument for
+$d\ge14$ uses
+$f_d-f_{13}\le(d-13)\log q_{13}$ and
+$L-\log q_{13}=\beta$, with strict inequality at $d\ge15$.
+\end{proof}
+
+For any factorization of $n$, put
+\[
+ A=\sum_i(d_i-13)_+,
+ \qquad B=\sum_i(13-d_i)_+.
+\]
+If there are $k$ factors, then $n=13k+A-B$. Thus
+$A-B\equiv r\pmod {13}$. Lemma~\ref{lem:proj-deficit} yields
+\begin{equation}\label{eq:proj-residue-bound}
+ nL-\sum_i f_{d_i}\ge A\beta+B\alpha
+       \ge D_r:=\min\{r\beta,(13-r)\alpha\},
+\end{equation}
+where $D_0=0$. To prove the second inequality, remove
+$\min(A,B)$ from both $A$ and $B$, which preserves the residue and
+weakly lowers the positive cost. The remaining nonzero integer is
+either congruent to $r$ or to $-r$ modulo $13$. Its least possible
+positive value is therefore $r$ or $13-r$, respectively; an extra
+multiple of $13$ only increases the cost.
+
+The exact comparisons \eqref{eq:proj-branch-checks} are equivalent to
+\[
+ 8\beta<5\alpha,\qquad 4\alpha<9\beta.
+\]
+They place the unique crossing between $r=8$ and $r=9$. Hence
+\begin{equation}\label{eq:proj-Dr}
+ D_r=\begin{cases}
+ r\beta,&0\le r\le8,\\
+ (13-r)\alpha,&9\le r\le12.
+ \end{cases}
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{thm:proj-optimum}]
+The rate assertion follows from Lemma~\ref{lem:proj-peak}.
+Equation~\eqref{eq:proj-residue-bound} bounds every product by
+$\rho^n e^{-D_r}$. If $r\le8$ and $n\ge14r$, the product of $r$
+fourteen-dimensional simplices and $(n-14r)/13$ thirteen-dimensional
+simplices attains that bound. If $r\ge9$ and
+$n\ge12(13-r)$, the product with $13-r$ twelve-dimensional factors
+and $(n-12(13-r))/13$ thirteen-dimensional factors attains it.
+This proves the claimed formulas and their individual thresholds.
+
+All equality conditions are strict away from the displayed choices.
+The first inequality in \eqref{eq:proj-residue-bound} forces every
+dimension to belong to $\{12,13,14\}$. Cancellation is strict when
+$A,B>0$, so twelve- and fourteen-dimensional factors cannot coexist.
+Additional multiples of $13$ in $A$ or $B$ are strictly more expensive.
+Finally the two residue branches never tie. This proves uniqueness of
+the dimension multiset.
+
+For $1\le r\le8$, the last nonnegative dimension in that residue class
+which fails $n\ge14r$ is $14r-13$; its largest value is $99$, at
+$r=8$. The residue $r=0$ has no excluded positive dimension. For
+$r\ge9$, the largest excluded dimension is at most $35$.
+Thus every $n\ge100$ satisfies the relevant threshold. At $n=99$,
+equality in the bound would require eight fourteen-dimensional
+factors, whose total dimension already exceeds $99$. Strictness of
+the equality conditions proves failure of the periodic formula there,
+so the uniform threshold cannot be lowered.
+\end{proof}
+
+\section{Isolation and stability}
+
+\begin{theorem}[Sharp isolation of the maximizing products]
+\label{thm:proj-gap}
+Let $n\ge100$. If a product of simplices $K$ of total dimension $n$
+has a dimension multiset different from the maximizing multiset in
+Theorem~\ref{thm:proj-optimum}, then
+\[
+ R_n(K)\le\frac{P_n}{G},\qquad
+ G=\frac{s_{14}^{8}}{s_{13}^{4}s_{12}^{5}}
+      \simeq1.00103981380358.
+\]
+No larger dimension-independent factor can replace $G$. For every
+$n\equiv8\pmod {13}$ with $n\ge112$, equality is attained by
+\[
+ T_{12}^{\,5}\times T_{13}^{\,(n-60)/13}.
+\]
+\end{theorem}
+
+\begin{proof}
+Write $g=\log G=5\alpha-8\beta$ and
+$h=\log H=9\beta-4\alpha$. The exact certificate table gives
+\begin{equation}\label{eq:proj-gap-comparisons}
+ \min\left\{h,\ \log\frac{s_{12}^2}{s_{11}s_{13}},\
+ \log\frac{s_{14}^2}{s_{13}s_{15}},\ \alpha+\beta,
+ \ 13\alpha,\ 13\beta\right\}>g>0.
+\end{equation}
+For a dimension $d\le11$, the remainder beyond the first bound in
+Lemma~\ref{lem:proj-deficit} is
+\[
+ \delta_d-(13-d)\alpha
+ =\sum_{j=d}^{12}(\log q_j-\log q_{12})
+ \ge\log q_{11}-\log q_{12}
+ =\log\frac{s_{12}^2}{s_{11}s_{13}}>g.
+\]
+For $d\ge15$, the analogous remainder is at least
+$\log q_{13}-\log q_{14}
+=\log(s_{14}^2/(s_{13}s_{15}))>g$.
+Consequently any factor outside $\{12,13,14\}$ already produces a
+loss strictly greater than $g$ beyond the universal residue bound.
+
+It remains to consider products using only those three dimensions.
+Their deficit is exactly $A\beta+B\alpha$. If both $A$ and $B$ are
+positive, cancelling one from each reduces the cost by
+$\alpha+\beta>g$, while the remaining cost is at least $D_r$.
+If only one is positive but exceeds the least representative of its
+residue, the extra cost is at least $13\alpha$ or $13\beta$, also
+greater than $g$. The only remaining nonoptimal possibility is the
+other residue branch. The difference between the two branch costs is
+\[
+ |r\beta-(13-r)\alpha|
+      =|r(\alpha+\beta)-13\alpha|.
+\]
+As a function of integral $r$, its minimum occurs at one of the two
+integers adjacent to the crossing, namely $8$ and $9$. The values
+there are $g$ and $h$, respectively, and $h>g$. Thus every nonoptimal
+product loses at least $g$ in logarithmic value. Exponentiating proves
+the inequality.
+
+For $r=8$, the optimal branch uses eight fourteen-dimensional factors.
+The other branch uses five twelve-dimensional factors, giving the
+displayed product whenever $n\ge112$. Its logarithmic deficit exceeds
+the optimum by exactly $5\alpha-8\beta=g$. This proves sharpness.
+\end{proof}
+
+\begin{corollary}[Bounded exceptions in near maximizers]
+\label{cor:proj-stability}
+For $n\ge100$ and a simplex product with factor dimensions $d_i$,
+put $\varepsilon=\log(P_n/R_n(K))\ge0$. Then
+\[
+ \sum_i|d_i-13|\le
+ \frac{\varepsilon+D_r}{\min\{\alpha,\beta\}}.
+\]
+In particular, within any fixed multiplicative factor of the maximum,
+the number of factors of dimension different from $13$ is bounded
+independently of the total dimension.
+\end{corollary}
+
+\begin{proof}
+The left side is $A+B$ and
+$\varepsilon+D_r=\sum_i\delta_{d_i}
+\ge A\beta+B\alpha
+\ge\min\{\alpha,\beta\}(A+B)$.
+\end{proof}
+
+\section{Periodicity and asymptotics}
+
+The preceding theorem implies the exact recurrence
+\begin{equation}\label{eq:proj-rec}
+ P_{n+13}=s_{13}P_n\qquad(n\ge100),
+\end{equation}
+and hence a rational ordinary generating function:
+\[
+ \sum_{n\ge1}P_n z^n
+ =\sum_{n=1}^{99}P_nz^n
+   +\frac{\sum_{n=100}^{112}P_nz^n}{1-s_{13}z^{13}}.
+\]
+Here the coefficients are rational optimal values; no counting
+interpretation is asserted.
+
+For $n\ge100$ with residue $r$, the excess over the simplex has the
+exact expression
+\begin{equation}\label{eq:proj-asymp-exact}
+ \frac{P_n}{s_n}
+ =e^{-D_r}\rho^n\frac{n!}{(n+1)n^n}.
+\end{equation}
+Stirling's expansion therefore gives, uniformly over the thirteen
+residues,
+\begin{equation}\label{eq:proj-asymp}
+ \frac{P_n}{s_n}
+ =e^{-D_r}\sqrt{\frac{2\pi}{n}}
+       \left(\frac\rho e\right)^n
+ \left(1-\frac{11}{12n}+\frac{265}{288n^2}
+              -\frac{47839}{51840n^3}+O(n^{-4})\right).
+\end{equation}
+In particular the optimal exponential improvement within this entire
+product class is
+$\rho/e\simeq1.03372825553$; the subexponential prefactor is an
+explicit period-$13$ constant times $n^{-1/2}$.
+Stirling's formula also gives $s_d^{1/d}\to e$. The strict decrease
+of these rates after dimension $13$ therefore proves $\rho>e$
+without relying on the displayed decimal approximation.
+
+More generally, for each fixed positive integer $J$, the standard
+logarithmic Stirling expansion \cite{DLMFStirling} yields
+\begin{align*}
+ \log\frac{P_n}{s_n}
+ ={}&n(\log\rho-1)-\frac12\log n
+       +\frac12\log(2\pi)-D_r-\log(1+1/n)\\
+ &+\sum_{j=1}^{J}
+   \frac{B_{2j}}{2j(2j-1)n^{2j-1}}
+   +O(n^{-2J-1}).
+\end{align*}
+This determines every algebraic correction explicitly. The finite
+periodic term is exact, and the only asymptotic input is Stirling's
+classical expansion.
+
+\section{Validation and further questions}
+
+The geometric identities in \eqref{eq:proj-inputs}, the dimension-twenty
+counterexample, and the existence of an exponential excess are source
+results. The contribution here is the optimization of the product
+class: the unique block size $13$, the all-dimensional two-candidate
+formula, the exact eventual residue classes and sharp threshold, the
+sharp isolation factor, and the periodic asymptotic prefactor.
+A targeted search did not locate these specific optimization statements;
+that search is evidence of a plausible new refinement rather than a
+proof of priority. None of the arguments assumes the source collection's
+more ambitious claims about arbitrary convex bodies.
+
+The exact arithmetic artifact verifies seven rational interval
+certificates and independently computes $P_n$ for $1\le n\le300$ by
+the recurrence
+\[
+ P_0=1,\qquad P_n=\max_{1\le d\le n}s_dP_{n-d}.
+\]
+Every dimension agrees with the two-candidate theorem, and every
+attainable residue formula agrees as well. These finite computations
+check constants and implementations; the proofs above establish the
+claims for all dimensions.
+
+A separate implementation retains the two largest distinct rational
+values at every dimension and tracks their dimension multisets. It
+checks all dimensions through $260$, finds a unique maximizing multiset
+in each, and verifies the isolation bound from dimension $100$ onward.
+Within that range its minimum observed ratio equals $G$ exactly, at
+$n=112,125,138,151,164,177,190,203,216,229,242,255$.
+For example, it recovers
+\[
+ \operatorname{Opt}(99)=(12,12,12,12,12,13,13,13)
+\]
+and the runner-up at dimension $112$ with dimensions
+$(12,12,12,12,12,13,13,13,13)$.
+Both programs use rational arithmetic for all decisions; decimals in
+their reports are only displays. The full comparison outputs and
+source-provenance record accompany the manuscript.
+
+Several research directions follow directly.
+\begin{enumerate}
+ \item Can one exhibit a convex body $K$ in some dimension $d$ with
+ $R_d(K)^{1/d}>\rho$? Such a body would improve the best exponential
+ rate supplied by simplex products, through the same product identity.
+ \item Does the supremum of $R_d(K)^{1/d}$ over all dimensions and all
+ convex bodies occur at a finite dimension? The present theorem
+ answers this restricted to simplex factors.
+ \item How does the optimum change with a prescribed vertex budget
+ or simultaneous vertex and facet budgets? The vertex count is
+ $\prod_i(d_i+1)$, while Corollary~\ref{cor:proj-facets-budget} solves
+ the facet-count constraint alone. The combined problem imposes an
+ additional nonlinear restriction on the dimension partition.
+ \item Can the deficit method be extended to factors drawn from
+ several geometrically distinct families? A unique best rate would
+ suggest eventual periodic corrections governed by a finite
+ optimization over dimension residues, but concavity may fail.
+ \item Does a geometric perturbation of an optimal product improve
+ its normalized projection-body volume while preserving its
+ combinatorial type? The sharp gap above concerns changes of factor
+ dimensions, and imposes no obstruction to such perturbations.
+ \item What are the exact second- and third-largest product values
+ in every sufficiently large dimension? The sharp uniform gap locates
+ one infinite family of runner-up products, but a full residue-by-residue
+ classification of further values would describe the local discrete
+ optimization landscape more precisely.
+ \item For centrally symmetric factor families, is there an analogous
+ unique optimal block size and finite residue rule? The relevant
+ factor values must first be established or bounded, and they need
+ not satisfy the concavity exploited here.
+ \item Can the complete argument be formalized, including the facet
+ formula and affine covariance, so that the arithmetic certificates
+ and the geometric reduction are checked in one proof system?
+ The present artifact verifies the finite arithmetic and supplies
+ ordinary mathematical proofs of the claims in all dimensions;
+ it does not contain a Lean formalization.
+\end{enumerate}

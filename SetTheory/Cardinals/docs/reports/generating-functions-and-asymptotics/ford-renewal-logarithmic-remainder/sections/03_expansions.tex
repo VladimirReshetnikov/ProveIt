@@ -1,0 +1,292 @@
+\section{Complete expansions in two asymptotic scales}
+\label{sec:expansions}
+
+The positive measure resolves global singularities and signs. We now analyze
+its endpoint with enough precision to recover every inverse-logarithmic
+coefficient and every fixed algebraic order. The first expansion keeps only
+powers of $1/\log n$; the second retains these logarithmic effects inside
+convergent integral functions before expanding in $1/n$.
+
+We use $J$, $h$, and $\ell$ from
+Section~\ref{sec:spectral-notes}. The boundary value is
+$J_+(t)=R(t)+i\pi h(t)$. All truncation indices and all parameters
+$a>0$ below are fixed while $n$ or $L$ tends to infinity.
+
+\subsection{The exact analytic endpoint correction}
+
+The stronger identity is
+\begin{equation}\label{exp:exactP}
+ \frac{J(e^{-s}+i0)}{h(e^{-s})}
+ =\log s+\gE+P(s)+i\pi,\qquad 0<s<2\pi,
+\end{equation}
+where the real-analytic function $P$ has the convergent expansion
+\begin{equation}\label{exp:P}
+ P(s)=\frac{s^2}{4\sinh^2(s/2)}-1
+       +\sum_{k=0}^{\infty}\zeta'(-1-k)\frac{s^{k+2}}{k!}.
+\end{equation}
+The assertion for the whole interval $(0,2\pi)$ means continuation of the
+convergent Taylor expression there. Its local use near zero is all that is
+needed below. In particular,
+\[
+ P(s)=p_2s^2+p_3s^3+p_4s^4+O(s^5),
+ \quad
+ p_2=\zeta'(-1)-\frac1{12},\quad
+ p_3=\zeta'(-2),\quad
+ p_4=\frac12\zeta'(-3)+\frac1{240}.
+\]
+
+Here is a derivation fixing the signs. Define
+\[
+ \mathcal B(z)=\sum_{m\geq1}m\log m\,z^m
+             =-\left.\partial_\nu\operatorname{Li}_\nu(z)\right|_{\nu=-1}.
+\]
+The coefficients of $A(z)=\sum_{j\geq1}a_jz^j$ give
+\[
+ A(z)=(z^{-1}-1)\mathcal B(z)-\frac z{1-z},
+ \qquad
+ (1-z)(1-A(z))=1-\frac{(1-z)^2}{z}\mathcal B(z).
+\]
+Differentiate the classical convergent polylogarithm expansion \cite[25.12.12]{DLMF}
+\[
+ \operatorname{Li}_\nu(e^{-u})
+ =\Gamma(1-\nu)u^{\nu-1}
+  +\sum_{k\geq0}\zeta(\nu-k)\frac{(-u)^k}{k!},\qquad |u|<2\pi,
+\]
+at $\nu=-1$, using the principal logarithm away from the negative real axis.
+It gives
+\[
+ \mathcal B(e^{-u})
+ =\frac{1-\gE-\log u}{u^2}
+  -\sum_{k\geq0}\zeta'(-1-k)\frac{(-u)^k}{k!}.
+\]
+For $w=e^u$ one has
+$J(w)=w(1-w^{-1})(1-A(w^{-1}))$.
+Substitute the last display and then let $u\to-s+i0$.
+Since $\log(-s+i0)=\log s+i\pi$ and
+\[
+ h(e^{-s})=e^{-s}\frac{4\sinh^2(s/2)}{s^2},
+\]
+the result is \eqref{exp:exactP}--\eqref{exp:P}.
+The lower boundary has $-i\pi$. The positive sign on the upper boundary also
+agrees with the direct Sokhotski--Plemelj formula for $J$.
+
+\subsection{A Laplace form and the correct scale of the first correction}
+
+Let $L=\log n$ and, for $a>0$, define
+\begin{equation}\label{exp:Fa}
+ F_a(L)=\int_0^\infty
+     \frac{y^{a-1}e^{-y}}
+      {(L-\log y-\gE)^2+\pi^2}\,dy.
+\end{equation}
+These functions are positive, finite, and differentiable to every order on
+the real axis. The denominator is bounded below by $\pi^2$.
+In \eqref{eq:spec-exact-remainder} the change of variables $t=e^{-s}$ is especially useful:
+\[
+ E_n=\int_0^\infty e^{-ns}\ell(e^{-s})\,ds.
+\]
+For sufficiently small positive $s$, \eqref{exp:exactP} yields the exact
+local density expression
+\begin{equation}\label{exp:laplacedensity}
+ \ell(e^{-s})
+ =\frac{s^2}{1-e^{-s}}
+     \frac1{(\log s+\gE+P(s))^2+\pi^2}.
+\end{equation}
+The part of the original moment integral with $t\leq e^{-\delta}$ is
+$O(e^{-(n-1)\delta})$, since $\ell$ is integrable. Thus only a fixed
+neighbourhood of $s=0$ enters any of the algebraic orders below.
+
+The expansion $P(s)=O(s^2)$ in \eqref{exp:exactP} gives
+\[
+ \ell(e^{-s})
+ =\frac{s+s^2/2}{(\log s+\gE)^2+\pi^2}
+  +O\left(\frac{s^3}{(\log s+\gE)^2+\pi^2}\right).
+\]
+Consequently
+\begin{equation}\label{exp:twosectors}
+ E_n=\frac{F_2(L)}{n^2}+\frac{F_3(L)}{2n^3}
+           +O\left(\frac1{n^4L^2}\right).
+\end{equation}
+In particular the first relative correction in powers of $1/n$ is positive.
+
+For comparison, the direct $t$-variable model satisfies the weaker but useful
+bound
+\[
+ E_n=\int_0^1\frac{t^{n-1}(1-t)}
+       {(\log(1-t)+\gE)^2+\pi^2}\,dt
+         +O\left(\frac1{n^3\log^2n}\right).
+\]
+Its error has a genuine $n^{-3}\log^{-2}n$ contribution; changing to the
+Laplace variable incorporates the corresponding first correction cleanly.
+
+\subsection{Every fixed algebraic order, retaining the logarithmic dependence}
+
+Put
+\[
+ f(V)=\frac1{V^2+\pi^2},\qquad b(s)=\frac{s}{1-e^{-s}},
+ \qquad
+ b(s)f(V+P(s))=\sum_{r\geq0}Q_r(V)s^r.
+\]
+The last identity defines $Q_r$ by Taylor expansion in $s$ while $V$ is held
+fixed. Each $Q_r$ is a finite linear combination of derivatives of $f$, with
+constants obtained from the Bernoulli coefficients of $b$ and the Taylor
+coefficients of $P$. Explicitly,
+\begin{align*}
+ Q_0&=f,&Q_1&=\tfrac12f,\\
+ Q_2&=\tfrac1{12}f+p_2f',&
+ Q_3&=(p_2/2+p_3)f',\\
+ Q_4&=-\tfrac1{720}f+(p_2/12+p_3/2+p_4)f'
+                    +\tfrac12p_2^2 f''.
+\end{align*}
+Define the coefficient functions
+\[
+ \Psi_r(L)=\int_0^\infty
+   y^{r+1}e^{-y}Q_r(\log y-L+\gE)\,dy.
+\]
+Then, for every fixed integer $R\geq0$,
+\begin{equation}\label{exp:powerexpansion}
+ E_n=\sum_{r=0}^{R}\frac{\Psi_r(\log n)}{n^{r+2}}
+       +O_R\left(\frac1{n^{R+3}\log^2n}\right).
+\end{equation}
+
+Here is a uniform remainder proof. Choose a small fixed circle
+$|\xi|=r_0<2\pi$ on which $b$ and $P$ are analytic, and let
+$M=\sup_{|\xi|\leq r_0}|P(\xi)|$.
+For real $|V|>2(M+\pi+1)$, the function
+$b(\xi)f(V+P(\xi))$ is analytic in that disk and is bounded by $C/V^2$.
+Cauchy's estimate for its Taylor remainder, for $0<s<r_0/2$, gives
+\[
+ b(s)f(V+P(s))-\sum_{r=0}^{R}Q_r(V)s^r
+       =O_R(s^{R+1}/V^2).
+\]
+Choose $\delta$ small enough that this applies to
+$V=\log s+\gE$ for $0<s<\delta$.
+Multiplication by $s$ in \eqref{exp:laplacedensity} makes the local density
+error $O_R(s^{R+2}/\log^2s)$.
+For each fixed $m\geq0$,
+\[
+ \int_0^\delta e^{-ns}\frac{s^m}{1+\log^2s}\,ds
+       =O_m(n^{-m-1}\log^{-2}n).
+\]
+Indeed, on $s\leq n^{-1/2}$ the denominator is at least a constant times
+$\log^2n$, and the remaining part is exponentially small in $\sqrt n$.
+This proves the remainder in \eqref{exp:powerexpansion}.
+Finally, every $Q_r$ is bounded on the real axis and decays as $O_r(V^{-2})$,
+so extending the coefficient integrals from $y<n\delta$ to $y<\infty$
+adds only exponentially small errors.
+
+With the convention that a prime on $F_a$ means differentiation in $L$,
+the first four power sectors are therefore
+\begin{align}\label{exp:fourpowers}
+ E_n={}&\frac{F_2(L)}{n^2}+\frac{F_3(L)}{2n^3}
+ +\frac1{n^4}\left\{\frac{F_4(L)}{12}-p_2F_4'(L)\right\}\notag\\
+ &\quad-\frac{p_2/2+p_3}{n^5}F_5'(L)
+       +O\left(\frac1{n^6L^2}\right).
+\end{align}
+The minus signs in the derivative terms are forced by
+$V=\log y-L+\gE$; $f$ is even but $f'$ is odd.
+The $n^{-6}$ coefficient, if wanted, is
+\[
+ -\frac{F_6}{720}-(p_2/12+p_3/2+p_4)F_6'
+                       +\frac{p_2^2}{2}F_6''.
+\]
+It can be included with an $O(n^{-7}L^{-2})$ remainder by taking $R=4$.
+
+\paragraph{Essential scope distinction.}
+In \eqref{exp:powerexpansion}, the functions $\Psi_r$ (or the $F_a$ in
+\eqref{exp:fourpowers}) remain intact. Truncating the inverse-logarithmic
+expansion of the leading sector at any fixed order produces an error larger
+than every later fixed power of $1/n$. A finite rectangular double sum does
+not inherit the remainder in \eqref{exp:powerexpansion}.
+
+\subsection{Every fixed inverse-logarithmic order}
+
+For $k\geq0$ put
+\[
+ q_k(U)=\frac{(U+i\pi)^{k+1}-(U-i\pi)^{k+1}}{2i\pi}
+       =\sum_{j=0}^{\lfloor k/2\rfloor}
+          (-1)^j\binom{k+1}{2j+1}\pi^{2j}U^{k-2j}.
+\]
+For every fixed $a>0$ and $K\geq0$,
+\begin{equation}\label{exp:logexpansion}
+ F_a(L)=\Gamma(a)\sum_{k=0}^{K}\frac{c_{a,k}}{L^{k+2}}
+                +O_{a,K}(L^{-K-3}),\qquad L\to\infty,
+\end{equation}
+where
+\[
+ c_{a,k}=\frac1{\Gamma(a)}\int_0^\infty
+       y^{a-1}e^{-y}q_k(\log y+\gE)\,dy.
+\]
+To prove the remainder, split the integral into
+$y<e^{-L/2}$, $e^{-L/2}\leq y\leq e^{L/2}$, and $y>e^{L/2}$.
+The outer parts, including the tails of the proposed coefficients, are
+smaller than every fixed inverse power of $L$.
+On the middle part expand
+\[
+ \frac1{(L-U)^2+\pi^2}
+ =\frac1{2i\pi}\left\{\frac1{L-U-i\pi}-\frac1{L-U+i\pi}\right\}.
+\]
+For sufficiently large $L$, $|U\pm i\pi|\leq3L/4$ there.
+The finite geometric expansion through the required order has a remainder
+bounded by $C_K L^{-K-3}(1+|U|^{K+2})$.
+All logarithmic moments against $y^{a-1}e^{-y}$ are finite, proving
+\eqref{exp:logexpansion}.
+
+The coefficient generating function has a particularly simple form:
+\begin{equation}\label{exp:coeffgen}
+ \sum_{k\geq0}\frac{c_{a,k}}{(k+1)!}z^k
+ =\frac{\Gamma(a+z)}{\Gamma(a)}e^{\gE z}
+          \frac{\sin\pi z}{\pi z}.
+\end{equation}
+This follows first for small $z$ by integrating
+$\sum q_k(U)z^k/(k+1)!=e^{Uz}\sin(\pi z)/(\pi z)$.
+For a positive integer $a$ the reflection formula rewrites it as
+\[
+ \sum_{k\geq0}\frac{c_{a,k}}{(k+1)!}z^k
+ =\left\{\prod_{j=1}^{a-1}(1+z/j)\right\}
+                       \frac{e^{\gE z}}{\Gamma(1-z)}.
+\]
+The right-hand side is entire. This is a coefficient-generation statement;
+it does not assert convergence of the asymptotic inverse-log series.
+
+For the leading sector, $a=2$, let $c_k=c_{2,k}$. Then
+\begin{equation}\label{exp:maincoeffgen}
+ \sum_{k\geq0}\frac{c_k}{(k+1)!}z^k
+ =(1+z)\frac{e^{\gE z}}{\Gamma(1-z)}
+ =(1+z)\exp\left\{-\sum_{m\geq2}\frac{\zeta(m)}m z^m\right\}.
+\end{equation}
+The displayed exponential identity holds in $|z|<1$; the preceding gamma
+quotient gives its entire continuation. The first five coefficients are
+\[
+ c_0=1,\quad c_1=2,\quad c_2=-\frac{\pi^2}{2},\quad
+ c_3=-2\pi^2-8\zeta(3),\quad
+ c_4=\frac{\pi^4}{12}-40\zeta(3).
+\]
+For a recursive implementation set $b_0=1$, $b_1=0$ and
+\[
+ b_k=-\frac1k\sum_{m=2}^{k}\zeta(m)b_{k-m}\quad(k\geq2),
+ \qquad c_k=(k+1)!(b_k+b_{k-1}),
+\]
+where $b_{-1}=0$. Thus, for every fixed $K$,
+\begin{equation}\label{exp:mainresult}
+ g_n=\gamma\rho^{-n}
+ -\frac1{n^2}\sum_{k=0}^{K}\frac{c_k}{\log^{k+2}n}
+ +O_K\left(\frac1{n^2\log^{K+3}n}\right).
+\end{equation}
+In particular,
+\[
+ g_n-\gamma\rho^{-n}
+ =-\frac1{n^2\log^2n}
+ \left\{1+\frac2{\log n}-\frac{\pi^2}{2\log^2n}
+       -\frac{2\pi^2+8\zeta(3)}{\log^3n}
+       +O(\log^{-4}n)\right\}.
+\]
+For the $n^{-3}$ sector in \eqref{exp:twosectors}, the normalized first
+coefficients are
+\[
+ \frac12F_3(L)=\frac1{L^2}
+ \left\{1+\frac3L+\frac{3-\pi^2/2}{L^2}
+              -\frac{3\pi^2+8\zeta(3)}{L^3}+O(L^{-4})\right\}.
+\]
+Their generating function is
+$(1+z)(1+z/2)e^{\gE z}/\Gamma(1-z)$.
+

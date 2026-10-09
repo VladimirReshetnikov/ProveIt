@@ -1,0 +1,313 @@
+\appendix
+\section{Source-specific corrections and proof-status revisions}
+\label{app:audit}
+
+This appendix gives the principal proposed changes. The accompanying
+\src{CORRECTIONS.txt} contains a fuller register, including exact
+source line ranges and smaller notation repairs. All locators refer
+to the commit on the title page. A false identity, an unproved claim,
+and a correct statement with an incomplete proof are different
+findings; they are identified separately below.
+
+\subsection{The inverse-color mixed report}
+
+\noindent\textbf{Source:}
+\path{reports/eisenstein-gaussian-mixed-cuberoot-doubles__abd2e7116aa9.tex}.
+
+The abstract, the table at source lines 170--184, and especially
+\src{thm:parallel} at lines 219--226 claim two new constants in
+each mixed tower. This is an \textbf{established error} relative to
+the stated base family. Corollary~\ref{cor:four} gives explicit
+single-data reductions of all four named candidates, and
+Theorem~\ref{thm:mixed} eliminates any additional inverse-color
+directions at every positive integral weight.
+
+Replace the theorem by the all-weight quotient statement in
+Section~\ref{sec:mixed}; update the abstract, table interpretation,
+and any later dimension counts that use those directions.
+The report's general numerical-evidence caveat does not repair a
+false displayed theorem.
+The claimed infinite asymptotic tail at lines 104--109 also needs a
+finite truncation with a proved remainder, and the requested-digit
+guarantee for Wynn acceleration at lines 111--118 needs an actual
+error theorem. These are separate from the exact mixed reduction.
+The missing upstream evaluator prevents a specific diagnosis of the
+original search failure.
+
+\subsection{Foundational multiple-polylogarithm conventions}
+
+\noindent\textbf{Source:}
+\path{articles/multiple-polylogarithms-introduction.tex}.
+
+\paragraph{Convergence (lines 231--235).}
+The stated absolute-convergence theorem is false already for
+\(\Li_1(\ii)=\sum_{n\ge1}\ii^n/n\): the original series converges,
+but its series of absolute values diverges.
+A safe replacement in the stated positive-index setting is:
+for \(|z_j|\le1\) and \(\Repart s_j\ge1\), absolute convergence
+holds if \(\Repart s_1>1\) or \(|z_1|<1\).
+More generally, strict inequalities
+\(|z_1\cdots z_j|<1\) for every prefix give an interior domain of
+absolute convergence. Boundary convergence and permissible
+rearrangements should be stated separately. For positive integral
+multiple-zeta indices, ordinary convergence is equivalent to
+\(s_1\ge2\).
+
+\paragraph{Iterated-integral orientation (lines 278--287).}
+Use a consistent outermost-first recursion
+\[
+G(a_1,\ldots,a_w;z)=\int_0^z\frac{dt}{t-a_1}
+                         G(a_2,\ldots,a_w;t),\qquad G(;z)=1.
+\]
+Its simplex is \(0<t_w<\cdots<t_1<1\), with \(a_j\) attached to
+\(t_j\), and differentiation strips the \emph{first} letter.
+The corresponding dictionary is
+\begin{align*}
+\Li_{s_1,\ldots,s_d}(z_1,\ldots,z_d)
+=(-1)^dG(&0^{s_1-1},z_1^{-1},
+          0^{s_2-1},(z_1z_2)^{-1},\ldots,\\
+         &0^{s_d-1},(z_1\cdots z_d)^{-1};1).
+\end{align*}
+The arguments are inverse prefix products. The printed suffix
+products are incompatible with this convention.
+The same simplex reversal is needed in
+\path{articles/gaussian-eisenstein-double-polylogs.tex},
+\src{eq:G-def}--\src{eq:goncharov-dbl}, lines 141--146:
+the printed orientation would make its proposed \(G(0,z^{-1};1)\)
+representation diverge at the inner integration endpoint.
+
+\paragraph{HPL recursion and signs (lines 491--555).}
+A leading zero does not generally cause divergence:
+\(H(0,1;z)=\Li_2(z)\) is a direct counterexample.
+Use the recursion whenever its tail makes the integral convergent,
+and define all-zero words separately by \(\log^w(z)/w!\).
+With the source's convention
+\(\zeta(\overline{s})=\sum_{n\ge1}(-1)^n/n^s\),
+\[
+H(0,-1;1)=-\Li_2(-1)=-\zeta(\overline2)=\frac{\pi^2}{12}.
+\]
+The sign in its identification with the barred zeta value must change.
+
+\paragraph{Alphabet closure (lines 559--579).}
+The full alphabet \(\{0,1,-1,\infty\}\) is not preserved by
+every listed substitution. The weight-one counterexamples
+\[
+H(-1;1-z)=\log(2-z),\qquad
+H(-1;z^2)=\log(1+z^2)
+\]
+introduce the singularities \(2\) and \(\pm\ii\), respectively.
+The transformations \(-z\), \(1/z\), and
+\((1-z)/(1+z)\) do preserve the singular set, with branches tracked.
+Reflection \(1-z\) preserves the smaller \(\{0,1\}\) alphabet.
+An algorithm acting on the full class must allow the necessary
+enlarged alphabet.
+
+\paragraph{Shuffle versus stuffle (lines 759--763).}
+The correct identities are
+\[
+\Li_1(z)^2=2\Li_{1,1}(z,1)
+          =2\Li_{1,1}(z,z)+\Li_2(z^2).
+\]
+The displayed formula with \(2\Li_{1,1}(z,z)\) alone is false:
+that double starts at order \(z^3\), while the square starts at
+order \(z^2\). The neighboring word example for
+\(\zeta(2)\zeta(3)\) should shuffle the words \(01\) and \(001\),
+of total weight five, rather than the printed weight-eight pair.
+
+\paragraph{Unsupported numerical dimensions.}
+The weight-five multiple-zeta table, lines 471--478, supplies
+spanning reductions but not the rational independence of its two
+generators. Replace the actual dimension assertion by an upper bound
+or a stated conjectural value. Related sign and kernel repairs are
+listed in the correction register; they do not invalidate every
+low-weight identity in the introduction.
+
+\subsection{Depth, parity, and proposed arithmetic bases}
+
+\noindent\textbf{Sources:}
+\path{articles/gaussian-multiple-polylog-depth.tex} and
+\path{articles/gaussian-eisenstein-double-polylogs.tex}.
+
+The definition of \(S_p\) in the first article, lines 128--132,
+must require \(p\ge1\) for the ordinary series. At \(p=0\), its
+terms fail to tend to zero.
+Replace the \emph{precisely when} content of \src{thm:alternation},
+lines 185--192, by the proved positive inclusion for every
+\(S_{2m+1}\). Section~\ref{sec:euler} supplies its exact formula.
+The source's \(S_5\) and \(S_7\) identities survive this change.
+Its even-index nonmembership assertion is unproved; this was
+already recognized in the intake README.
+
+The uncolored analogy at line 351 includes
+\(\zeta(1,2,1)\) and \(\zeta(1,1,2)\), which diverge as ordinary
+positive-term multiple-zeta series. A regularized statement needs
+an explicit regularization and a derivation.
+Statements describing even beta values as new transcendental numbers
+or a Champernowne canary as jointly algebraically independent are
+not established by the supplied arguments.
+
+In the second article, the dimension interpretations around
+\src{thm:gauss-5} and \src{thm:eis-1} are \textbf{unsupported
+arithmetic lower bounds}, not identities disproved here.
+Replace them by the demonstrated spanning claims, or by an exact
+formal corank if the complete matrix and certificate are supplied.
+Products of depth-one and depth-two values lie in \(D^3\) in general:
+\[
+D^aD^b\subseteq D^{a+b}.
+\]
+The algebra generated by all depth-at-most-two values is a different
+object from the linear filtration step \(D^2\).
+
+The binomial depth-dimension formula near \src{thm:deligne},
+lines 345--352, does not follow from free-Lie generation alone.
+Word length in chosen Lie generators is not automatically MPL depth.
+Even a positive ambient motivic dimension does not identify the
+images of the three selected periods as nonzero or independent.
+Adding a period conjecture cannot supply these missing motivic
+calculations. Retain the proved reductions and reopen the specific
+depth-three classification.
+
+\subsection{Gamma laws, formal ranks, and complexity}
+
+\noindent\textbf{Source:}
+\path{articles/gamma-lattice-and-certificates.tex}.
+
+The arithmetic completeness attributed to Koblitz--Ogus in
+\src{law:ko}, lines 133--137, is not an available theorem of that
+scope. The sufficient algebraicity criterion and the conjectural
+converse must be distinguished; the intake README already flags
+this issue. A primary discussion of the distinction is
+\cite[\S1.4.2]{ABP}.
+
+The unconditional replacement is:
+\emph{The exact reducer is sound and complete for membership in the
+rational span of the encoded reflection and multiplication rows.
+Its free columns form a basis of that formal quotient.
+Completeness for all multiplicative relations among actual gamma
+values is not asserted.}
+Section~\ref{sec:distribution} gives the formal anchored reflected
+rank \(\varphi(N)/2\) for \(N\ge3\); at \(N=120\), this is 16.
+The explicit identities accompanied by valid law certificates remain
+valid.
+
+The raw all-divisor row construction, lines 105--121, emits
+\[
+\left\lfloor\frac{N-1}{2}\right\rfloor
+ +\sum_{\substack{d\mid N\\d\ge2}}\frac Nd
+=\left\lfloor\frac{N-1}{2}\right\rfloor+\sigma_1(N)-N.
+\]
+This is not uniformly \(O(N)\), since \(\sigma_1(N)/N\) is
+unbounded. State the exact count or a valid general upper bound;
+row dependency does not retroactively change the raw output count.
+
+\subsection{Stieltjes ranks and the complex-character correction}
+
+\noindent\textbf{Sources:}
+\path{articles/stieltjes-parameter-derivative-tower.tex},
+\path{articles/stieltjes-antiderivative-ladder.tex}, and
+\path{reports/stieltjes-derivative-relations__41afbe98f668.md}.
+
+The derivative article's \src{thm:rank}, lines 195--212, states
+an all-\(q,k\) conclusion with finite evidence.
+The antiderivative article's \src{prop:jetrank}, lines 946--975,
+more carefully states its finite range and conjectures the extension.
+The missing all-denominator proof is now supplied in
+Section~\ref{sec:distribution}. Replace the finite-experiment
+justification by that proof, retaining the formal-quotient
+qualification. The derivative article's gap was already an
+intake warning.
+
+The supporting report, section 4, lines 146 and 148, omits complex
+conjugation. Put \(c_q=\gamma+\log(2\pi/q)-1\). The corrected
+odd-character identity is
+\[
+\frac{L'(2,\chi)}{L(2,\chi)}
++\frac12\overline{\frac{L''(-1,\chi)}{L'(-1,\chi)}}=c_q.
+\]
+For an even primitive character the corrected second logarithmic
+identity is
+\[
+(\log L)''(2,\chi)
+-\overline{(\log L)''(-1,\chi)}=1+\frac{\pi^2}{12}.
+\]
+These are \textbf{established formula errors} for complex
+characters, not merely stylistic omissions.
+For the odd quartic character modulo five with \(\chi(2)=\ii\),
+the uncorrected first formula has a discrepancy approximately
+\(-0.1438652751124278\,\ii\).
+For the even cubic character modulo seven with
+\(\chi(3)=\omega\), the uncorrected second formula has discrepancy
+\(-0.0339162597722613\,\ii\).
+Section~\ref{sec:bridges} proves the corrected identities at every
+order. The corresponding first-level bridges in the two main
+Stieltjes articles already have the correct conjugation and should
+not be altered on this account.
+
+The claim of mutually independent second-derivative atoms in the
+derivative article, lines 303--315, is not established by the PSLQ
+experiments. Describe the retained constants as formal generators
+unless an arithmetic lower-bound proof is supplied.
+The antiderivative article should call its Hurwitz-zeta construction
+\emph{a canonical analytic interpolant}, rather than claim uniqueness
+from integer data: adding \(c\sin(2\pi z)\) preserves both integer
+values and a unit-shift recurrence. Its other small corrections are
+listed separately in the register.
+
+\subsection{Polygamma parity and CM evidence}
+
+\noindent\textbf{Sources:}
+\path{articles/polylog-polygamma-bridge.tex} and
+\path{articles/eisenstein-row-sums-cm-polygamma.tex}.
+
+The Clausen component of the rational grid in the first article,
+lines 149--151, has reflection parity \((-1)^{n+1}\) at
+polylogarithm weight \(n\). It is not always the odd component.
+Thus \(\Cl_2\) is represented by a trigamma difference, while
+\(\Cl_3\) uses a tetragamma sum. The displayed laws already have
+the correct alternating behavior; the prose needs repair.
+The claimed exact converse classification of new Clausen atoms is
+not established by the numerical searches. Its positive reductions
+and exact \(L\)-function bridges remain useful.
+
+In the CM article, \src{neg:sums} and \src{res:genus} use failed
+searches to suggest irrationality or exact algebraic degree.
+These are numerical observations. Even an exact quartic equation
+only establishes degree at most four until irreducibility and root
+identification are supplied.
+The weight-two question is resolved in Section~\ref{sec:modular}.
+The isolated imaginary trigamma value remains separate from the
+modular aggregate identities.
+
+The source's Hurwitz recurrence and its weight-twelve coefficients
+are correct in the unnormalized convention:
+\[
+G_{12}=\frac{18G_4^3+25G_6^2}{143}.
+\]
+They should not be replaced by normalized Eisenstein coefficients
+without carrying the zeta factors.
+
+\subsection{A replacement rule for numerical claims}
+
+Where the only evidence is a finite integer-relation search, use
+the statement:
+\emph{No relation was found for the specified basis, precision, and
+search parameters. The listed constants are retained as formal
+generators in this reduction scheme; arithmetic independence is not
+established.}
+
+A successful search proposes an identity until an exact proof or
+certificate is supplied. A failed search is not automatically a
+rigorous bounded-height exclusion either: that needs certified input
+enclosures and a certified exclusion argument. A zero canary
+coefficient does not prevent a false relation among the other
+entries. These distinctions preserve the value of numerical
+exploration while preventing unsupported theorem statements.
+
+The older correction
+\[
+6\Li_2(1/3)-\Li_2(1/9)=\frac{\pi^2}{3}-\log^2 3
+\]
+to \path{reports/report-1.tex} was already recorded in the
+repository README. It is not a new finding of this continuation.
+Other pre-existing README caveats remain in force.
+The present review does not certify every statement left unchanged.

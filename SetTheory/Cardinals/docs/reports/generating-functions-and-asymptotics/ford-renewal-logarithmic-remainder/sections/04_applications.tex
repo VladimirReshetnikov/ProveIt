@@ -1,0 +1,310 @@
+\section{Products and the continuous totient counting scale}
+\label{sec:products}
+
+The recurrence enters \eqref{eq:counting-scale} multiplicatively, so
+an additive estimate should be transported through the product with
+its sign and its first correction intact. Define
+\begin{equation}\label{eq:product-definitions}
+ \delta_n=\frac{\rho^n E_n}{\gamma},\qquad
+ P_m=\prod_{j=1}^m\frac{g_j}{\gamma\rho^{-j}}
+     =\prod_{j=1}^m(1-\delta_j).
+\end{equation}
+Positivity of $g_j$ and the exact moment representation give
+$0<\delta_j<1$. Moreover,
+\begin{equation}\label{eq:delta-geometric}
+ 0<\delta_{j+1}<\rho\delta_j,
+\end{equation}
+because $E_{j+1}<E_j$. Hence $P_m$ decreases to a strictly positive
+constant
+\begin{equation}\label{eq:product-constant}
+ C_*:=\prod_{j=1}^\infty(1-\delta_j)\in(0,1).
+\end{equation}
+Strict positivity follows from convergence of $\sum\delta_j$ and the
+fact that none of the individual factors vanishes.
+
+\begin{theorem}[Sharp product tail]
+\label{thm:product}
+For every fixed $K\ge0$, set $n=m+1$ and $L=\log n$. Then
+\begin{equation}\label{eq:product-asymptotic}
+ \log\frac{P_m}{C_*}
+ =\frac{\rho^n}{\gamma(1-\rho)n^2}
+    \left\{\sum_{k=0}^K\frac{c_k}{L^{k+2}}
+                     +O_K(L^{-K-3})\right\}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:product-leading}
+ P_m=C_*\left[1+
+   \frac{\rho^{m+1}}{\gamma(1-\rho)(m+1)^2\log^2(m+1)}
+       \left(1+\frac2{\log(m+1)}+O(\log^{-2}(m+1))\right)
+        \right].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+ T_m=\sum_{j=m+1}^\infty\delta_j,\qquad
+ R_m=\sum_{j=m+1}^\infty[-\log(1-\delta_j)-\delta_j].
+\]
+Then $\log(P_m/C_*)=T_m+R_m$. The elementary power series for
+$-\log(1-x)$ and \eqref{eq:delta-geometric} give
+\begin{equation}\label{eq:log-remainder-bound}
+ 0\le R_m\le
+ \frac{\delta_n^2}{2(1-\delta_n)(1-\rho^2)},\qquad n=m+1.
+\end{equation}
+Tonelli's theorem applied to the positive moment representation gives
+the exact identity
+\begin{equation}\label{eq:product-tail-integral}
+ T_m=\frac{\rho^n}{\gamma}
+       \int_0^1\frac{t^{n-1}\ell(t)}{1-\rho t}\,dt.
+\end{equation}
+Put $\beta=\rho/(1-\rho)$ and
+\begin{equation}\label{eq:D-def}
+ D_{n,r}=(-1)^r\Delta^r E_n
+        =\int_0^1t^{n-1}(1-t)^r\ell(t)\,dt.
+\end{equation}
+Since $(1-\rho t)^{-1}=(1-\rho)^{-1}
+[1-\beta(1-t)/(1+\beta(1-t))]$,
+\begin{equation}\label{eq:tail-first-sandwich}
+ \frac{\rho^n}{\gamma(1-\rho)}(E_n-\beta D_{n,1})
+ \le T_m\le\frac{\rho^n E_n}{\gamma(1-\rho)}.
+\end{equation}
+The same endpoint argument that gives the main theorem yields
+$D_{n,1}=O(n^{-3}\log^{-2}n)$; a proof with all coefficients is
+given in Section~\ref{sec:additional-consequences}. Thus replacing
+$(1-\rho t)^{-1}$ by $(1-\rho)^{-1}$ costs an extra factor $1/n$.
+For every fixed $K$, this error and \eqref{eq:log-remainder-bound}
+are absorbed by the last term of \eqref{eq:product-asymptotic}.
+Exponentiating proves \eqref{eq:product-leading}.
+\end{proof}
+
+\subsection{Finite, computable two-sided bounds for the product constant}
+
+The integral proof gives more than an asymptotic notation. For $n=m+1$,
+let
+\begin{align}\label{eq:product-finite-bounds}
+ U_m&=\frac{\delta_n}{1-\rho}
+       +\frac{\delta_n^2}{2(1-\delta_n)(1-\rho^2)},\nonumber\\
+ L_m&=\max\left\{\delta_n,
+   \frac{\rho^n}{\gamma(1-\rho)}(E_n-\beta D_{n,1})\right\}.
+\end{align}
+Every $m\ge0$ satisfies
+\begin{equation}\label{eq:C-enclosure}
+ \boxed{\qquad P_m e^{-U_m}\le C_*\le P_m e^{-L_m}.\qquad}
+\end{equation}
+The additional lower bound $T_m\ge\delta_n$ used here follows directly
+from its defining positive sum. These formulas involve just finitely
+many recurrence terms and the two scalar constants $\rho,\gamma$.
+They become certified numerical enclosures when those inputs are
+enclosed by outward-rounded interval arithmetic. The supplied
+high-precision computations are diagnostics, and are not described
+as interval certificates.
+
+There is a systematic refinement. The exact finite geometric identity
+gives, for every $r\ge1$,
+\begin{align}\label{eq:alternating-tail}
+ T_m={}&\frac{\rho^n}{\gamma(1-\rho)}
+       \sum_{j=0}^{r-1}(-\beta)^jD_{n,j}
+       +\mathcal R_{m,r},\nonumber\\
+ 0<&(-1)^r\mathcal R_{m,r}
+       \le\frac{\rho^n\beta^r}{\gamma(1-\rho)}D_{n,r}.
+\end{align}
+No convergence of an infinite geometric series with ratio $\beta$ is
+being used: $\beta>1$ is allowed. The signed remainder is the exact
+integral with factor $(1+\beta(1-t))^{-1}$. For each fixed $r$,
+$D_{n,r}=O_r(n^{-r-2}\log^{-2}n)$, so successive bounds resolve
+successive powers of $1/n$.
+
+\subsection{Effect on the counting scale}
+
+From the definition of $P_m$ one obtains the exact algebraic identity
+\begin{equation}\label{eq:counting-scale-product}
+ \mathcal G_m(B)
+ =\frac{B^m\rho^{m(m+1)/2}}{m!\gamma^m C_*}
+       \exp\left(-\log\frac{P_m}{C_*}\right).
+\end{equation}
+It follows that the approximation obtained by replacing $P_m$ with
+$C_*$ is an upper approximation. Its relative correction has the
+sharp size
+\begin{equation}\label{eq:counting-correction}
+ \frac{\rho^{m+1}}{
+   \gamma(1-\rho)(m+1)^2\log^2(m+1)}.
+\end{equation}
+This improves the product-tail estimate $O(\rho^m)$ obtainable from
+a bounded absolute recurrence error by the factor
+$m^{-2}\log^{-2}m$, and determines its leading constant and sign.
+It is a statement about the scale \eqref{eq:counting-scale}. It does
+not identify or eliminate independent arithmetic errors in a totient
+counting argument.
+
+\section{A renewal process and inversion of its convergence rate}
+\label{sec:renewal-inversion}
+
+Define a probability distribution on the positive integers by
+\begin{equation}\label{eq:renewal-law}
+ p_j=a_j\rho^j\quad(j\ge1).
+\end{equation}
+Its total mass is $A(\rho)=1$ and its mean is
+$\sum jp_j=1/\gamma$. For independent positive integer-valued
+increments with this law, let $u_n$ be the probability that a renewal
+occurs at time $n$, with $u_0=1$. Splitting according to the first
+increment gives
+$u_n=\sum_{j=1}^n p_ju_{n-j}$, so
+\begin{equation}\label{eq:renewal-u}
+ u_n=\rho^n g_n,\qquad
+ \gamma-u_n=\rho^n E_n\quad(n\ge1).
+\end{equation}
+Thus the renewal probabilities increase strictly to $\gamma$ from
+time one onward, and
+\begin{equation}\label{eq:renewal-sharp}
+ \gamma-u_n=
+ \frac{\rho^n}{n^2\log^2n}
+ \left(1+\frac2{\log n}-\frac{\pi^2}{2\log^2n}
+                         +O(\log^{-3}n)\right).
+\end{equation}
+The exponential rate is exactly $\rho$:
+$\lim(\gamma-u_n)^{1/n}=\rho$. No bound $O(r^n)$ with $r<\rho$
+can hold. The extra polynomial and logarithmic factors describe the
+behavior at this exact exponential rate.
+
+The moment formula also extends the error to real indices:
+\begin{equation}\label{eq:continuous-error}
+ E(x)=\int_0^1t^{x-1}\ell(t)\,dt,
+ \qquad \delta(x)=\frac{\rho^xE(x)}\gamma\qquad(x\ge1).
+\end{equation}
+It is continuous for $x\ge1$, smooth for $x>1$, and strictly decreasing
+to zero. All the asymptotic proofs above remain valid for real
+$x\to\infty$.
+
+\begin{theorem}[Inverse error law]
+\label{thm:inverse}
+Let $0<\varepsilon<\delta(1)$, and let $x_\varepsilon$ be the
+unique real solution of $\delta(x_\varepsilon)=\varepsilon$.
+Write
+\[
+ a=\log(1/\rho),\qquad
+ B=\log(1/\varepsilon),\qquad T=\log B,\qquad c=\log a.
+\]
+Then as $\varepsilon\downarrow0$,
+\begin{align}\label{eq:inverse-expansion}
+ ax_\varepsilon={}&B-2T-2\log T+2c-\log\gamma
+             +\frac{2c+2}{T}\nonumber\\
+ &+\frac{c^2+2c-\pi^2/2-2}{T^2}+O(T^{-3}).
+\end{align}
+The least positive integer index with relative renewal error at most
+$\varepsilon$ is exactly $\lceil x_\varepsilon\rceil$.
+\end{theorem}
+
+\begin{proof}
+The logarithm of \eqref{eq:main-log}, including its first three
+coefficients, gives
+\begin{equation}\label{eq:inverse-equation}
+ B=ax+2\log x+2\log\log x+\log\gamma
+       -\frac2{\log x}
+       +\frac{\pi^2/2+2}{\log^2x}
+       +O(\log^{-3}x).
+\end{equation}
+Its first-order balance implies $x\sim B/a$. Substituting the
+right side of \eqref{eq:inverse-expansion}, divided by $a$, gives
+\[
+ \log x=T-c+O(T/B),\qquad
+ \log\log x=\log T-\frac cT-\frac{c^2}{2T^2}
+                 +O(T^{-3}+B^{-1}).
+\]
+Matching the coefficients of $1/T$ and $1/T^2$ in
+\eqref{eq:inverse-equation} gives $2c+2$ and
+$c^2+2c-\pi^2/2-2$, respectively. The discarded error $T/B$ is
+$O(T^{-3})$. Finally the exact function
+$-\log\delta(x)$ has derivative
+\[
+ a-\frac{E'(x)}{E(x)}\ge a>0,
+\]
+because $E'(x)=\int t^{x-1}\log t\,\ell(t)\,dt<0$.
+Therefore a residual $O(T^{-3})$ in the logarithmic equation changes
+its solution by at most $O(T^{-3})$. Strict monotonicity proves the
+statement about the least integer index.
+\end{proof}
+
+The last sentence uses the exact real solution. Rounding a truncated
+asymptotic approximation requires an enclosure if that approximation
+is close to an integer. At the purely asymptotic level the integer
+index has an unavoidable $O(1)$ rounding uncertainty.
+
+\section{Finite differences and tails of the spectral remainder}
+\label{sec:additional-consequences}
+
+The moment structure permits several extensions without a new complex
+contour argument. They also verify that the product estimates above
+use a quantitatively controlled error.
+
+\begin{proposition}[Every fixed finite-difference order]
+\label{prop:difference-asymptotic}
+For fixed integers $r,K\ge0$,
+\begin{equation}\label{eq:difference-asymptotic}
+ D_{n,r}=\frac1{n^{r+2}}\left\{
+   \sum_{k=0}^K\frac{d_{r,k}}{(\log n)^{k+2}}
+             +O_{r,K}((\log n)^{-K-3})\right\},
+\end{equation}
+where
+\begin{equation}\label{eq:difference-coefficients}
+ d_{r,k}=(k+1)![u^k]\,
+       \frac{e^{\gE u}\prod_{j=1}^{r+1}(j+u)}{\Gamma(1-u)}.
+\end{equation}
+If $H_s=\sum_{j=1}^s j^{-1}$ and
+$H_s^{(2)}=\sum_{j=1}^s j^{-2}$, the first terms are
+\begin{align}\label{eq:difference-first}
+ d_{r,0}&=(r+1)!,\nonumber\\
+ d_{r,1}&=2(r+1)!H_{r+1},\nonumber\\
+ d_{r,2}&=3(r+1)!\left(H_{r+1}^2-H_{r+1}^{(2)}-\zeta(2)\right).
+\end{align}
+\end{proposition}
+
+\begin{proof}
+In \eqref{eq:D-def}, put $t=e^{-s}$. The local integrand is the
+one for $E_n$ multiplied by $(1-e^{-s})^r=s^r(1+O_r(s))$.
+The leading logarithmic sector is consequently $n^{-r-2}
+F_{r+2}(\log n)$, while the discarded powers of $s$ cost an extra
+factor $1/n$. The all-orders inverse-logarithm proof applies with
+$y^{r+1}e^{-y}$ in place of $ye^{-y}$. The reflection identity for
+$\Gamma$ simplifies the coefficient generator to
+\eqref{eq:difference-coefficients}. Expanding its logarithm through
+degree two gives \eqref{eq:difference-first}.
+\end{proof}
+
+Two tails deserve separate attention. They follow from exact summation
+under the positive integral:
+\begin{align}\label{eq:tail-integrals}
+ \sum_{j>N}E_j&=\int_0^1\frac{t^N\ell(t)}{1-t}\,dt,\nonumber\\
+ \sum_{j>N}jE_j&=\int_0^1
+  \left(\frac{(N+1)t^N}{1-t}+\frac{t^{N+1}}{(1-t)^2}\right)
+                    \ell(t)\,dt.
+\end{align}
+In particular,
+\begin{align}\label{eq:tails-leading}
+ \sum_{j>N}E_j
+ &=\frac1{N\log^2N}
+    \left(1-\frac{\pi^2}{2\log^2N}+O(\log^{-3}N)\right),\nonumber\\
+ \sum_{j>N}jE_j
+ &=\frac1{\log N}+\frac1{\log^2N}
+           -\frac{\pi^2}{6\log^3N}+O(\log^{-4}N).
+\end{align}
+For the first formula the coefficient of $1/\log N$ inside the
+parentheses vanishes: the generator is
+$e^{\gE u}/\Gamma(1-u)$, without the factor $1+u$.
+Alternatively, integrate the expansion of $E_x$ and bound the
+sum--integral difference by the first term, using monotonicity.
+For the second formula, termwise integration of
+$x^{-1}(\log x)^{-2}$ and its corrections gives the displayed
+constants. To justify the sum--integral error in the weighted case,
+put $f(x)=xE(x)$. The moment formula gives $E'(x)\le0$, and
+integration by parts, using $xE(x)\to0$, yields
+\[
+ \int_N^\infty|f'(x)|\,dx
+ \le NE(N)+2\int_N^\infty E(x)\,dx
+ =O(N^{-1}\log^{-2}N).
+\]
+Comparing $f(j)$ with its integral over $[j-1,j]$ bounds the
+sum--integral error by this total variation. This does not require
+differentiating an asymptotic error term.
+Thus the weighted sum rule \eqref{eq:main-sums} converges only
+logarithmically, even though $g_n$ itself grows exponentially.

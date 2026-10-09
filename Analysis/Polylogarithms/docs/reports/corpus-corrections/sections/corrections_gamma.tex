@@ -1,0 +1,401 @@
+\subsection{Log-gamma integrals: the missing even-character contribution}
+\label{corr:loggamma}
+
+The abstract and Section~5 of
+\path{polylog-polygamma-bridge.tex} suggest that
+$\psi^{(-2)}(a)=\int_0^a\log\Gamma(t)\,dt$ at every rational $a$ reduces
+to weight-two Clausen values, $\zeta'(-1)$, and logarithms.  The three
+displayed examples, at denominators $3,4,6$, are correct.  Their
+extrapolation to all denominators omits an even-character contribution.
+The same extrapolation occurs in Section~1 of
+\path{loggamma-integrals-clausen-bridge__c5013328db83.md}.
+Here is an explicit correction at denominator $5$.
+
+\begin{proposition}[An exact denominator-five correction]
+\label{corr:loggamma-five}
+Let $\chi_5$ be the quadratic character modulo $5$, with values
+$(1,-1,-1,1)$ on residues $1,2,3,4$.  Then
+\begin{align}
+ \int_0^{1/5}\log\Gamma(t)\,dt
+ ={}&\frac{2}{25}+\frac{\log(2\pi)}{10}
+       +\frac{\operatorname{Cl}_2(2\pi/5)}{4\pi}
+       -\frac65\zeta'(-1) \notag\\
+    &+\frac1{20}L'(-1,\chi_5)-\frac{29}{1200}\log5.
+ \label{corr:loggamma-five-formula}
+\end{align}
+More generally, for $a>0$,
+\begin{equation}\label{corr:loggamma-general}
+ \int_0^a\log\Gamma(t)\,dt
+ =\zeta'(-1,a)-\zeta'(-1)
+       +\frac{a-a^2}{2}+\frac a2\log(2\pi).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Differentiate $\partial_a\zeta(s,a)=-s\zeta(s+1,a)$ with respect to
+$s$ at $s=-1$.  Lerch's identity and $\zeta(0,a)=\tfrac12-a$ give
+\[
+ \partial_a\zeta'(-1,a)
+ =\zeta'(0,a)-\zeta(0,a)
+ =\log\Gamma(a)-\tfrac12\log(2\pi)-\tfrac12+a.
+\]
+The shift identity for Hurwitz zeta shows that
+$\zeta'(-1,a)\to\zeta'(-1)$ as $a\downarrow0$, since the additional
+term is $-a\log a$.  Integration proves
+\eqref{corr:loggamma-general}.  These are classical Hurwitz-zeta
+identities \cite{DLMF25}; the integrated theory is also developed by
+Espinosa and Moll \cite{EspinosaMoll2002b}.
+
+Put $Z_r=\zeta'(-1,r/5)$ and $Z=\zeta'(-1)$.  The Fourier reflection
+formula at this weight is
+\begin{equation}\label{corr:zeta-minus-one-reflection}
+ \zeta'(-1,a)-\zeta'(-1,1-a)
+       =\frac{\operatorname{Cl}_2(2\pi a)}{2\pi},
+       \qquad 0<a<1.
+\end{equation}
+For completeness, subtract the two Hurwitz Fourier expansions
+\[
+ \zeta(1-s,a)-\zeta(1-s,1-a)
+ =\frac{4\Gamma(s)}{(2\pi)^s}\sin\frac{\pi s}{2}
+       \sum_{m\geq1}\frac{\sin(2\pi ma)}{m^s}
+\]
+and differentiate at $s=2$.  Absolute local convergence of the
+series and its logarithmic derivative justifies the differentiation;
+the zero of the sine factor leaves precisely
+\eqref{corr:zeta-minus-one-reflection}.
+
+Differentiating distribution and the character decomposition at $s=-1$
+gives
+\begin{align*}
+ Z_1+Z_2+Z_3+Z_4&=-\frac45 Z-\frac{\log5}{60},\\
+ Z_1-Z_2-Z_3+Z_4
+   &=\frac15\bigl(L'(-1,\chi_5)+\log5\,L(-1,\chi_5)\bigr).
+\end{align*}
+Here $L(-1,\chi_5)=-2/5$, obtained directly from
+$\zeta(-1,a)=-B_2(a)/2$.  Combining these equations with
+$Z_1-Z_4=\operatorname{Cl}_2(2\pi/5)/(2\pi)$ yields
+\[
+ Z_1=-\frac15 Z+\frac1{20}L'(-1,\chi_5)
+       -\frac{29}{1200}\log5
+       +\frac{\operatorname{Cl}_2(2\pi/5)}{4\pi}.
+\]
+Insert this into \eqref{corr:loggamma-general} at $a=1/5$.
+\end{proof}
+
+The correction concerns the scope of the available reduction laws.
+It does not prove that $L'(-1,\chi_5)$ is transcendental or independent
+of the other constants in \eqref{corr:loggamma-five-formula}.  A precise
+replacement for the earlier assertion is: the odd reflection component
+is Clausen-explicit, while the even component requires the appropriate
+Dirichlet-$L$ derivatives unless further relations have been proved.
+The later \path{stieltjes-antiderivative-ladder.tex} already gives the
+general Hurwitz-jet description; the earlier bridge discussion should
+be brought into agreement with it.
+
+\subsection{Two Herglotz classification statements have exact counterexamples}
+\label{corr:herglotz}
+
+In this subsection $F$ denotes the Herglotz--Zagier function, and
+$J$ its integral companion:
+\[
+ F(x)=\sum_{m\geq1}\frac{\psi(mx)-\log(mx)}{m},\qquad
+ J(x)=\int_0^1\frac{\log(1+t^x)}{1+t}\,dt,\qquad x>0.
+\]
+Their classical relation is
+\begin{equation}\label{corr:J-F}
+ J(x)=F(2x)-2F(x)+F(x/2)+\frac{\pi^2}{12x}.
+\end{equation}
+See Radchenko and Zagier \cite{RadchenkoZagier2023} for these functions,
+the functional equations, and the finite dilogarithm representation.
+They are unrelated to the function $F_{n,k}$ in
+Section~\ref{zero:section}.
+
+The proposition labelled \texttt{prop:collapse} in
+\path{herglotz-arithmetic-study__467d9018ec87.tex} asserts a criterion
+involving $\operatorname{rad}(q)\mid30$ for reducing $F(p/q)-F(1)$
+to rational-argument dilogarithms, logarithms, and $\pi^2$.
+Its necessity fails already at $p/q=1/7$.  Indeed, the report's own
+proved formula \texttt{thm:F1q} is
+\begin{equation}\label{corr:F-unit-fraction}
+ F(1/q)-F(1)
+ =-\frac{(q-1)(3q-2)}{24q}\pi^2-\frac12 S(q),
+ \qquad
+ S(q)=\sum_{r=1}^{q-1}\log^2\left(2\sin\frac{\pi r}{q}\right).
+\end{equation}
+In particular,
+\begin{equation}\label{corr:F-seventh}
+ F(1/7)-F(1)
+   =-\frac{19}{28}\pi^2
+      -\sum_{r=1}^{3}\log^2\left(2\sin\frac{\pi r}{7}\right).
+\end{equation}
+This contains no dilogarithm at all, although $7\nmid30$.
+
+To check the mechanism independently, specialize the finite
+root-of-unity dilogarithm formula to numerator $1$:
+\[
+ F(1/q)-F(1)=
+ \sum_{\substack{\beta^q=1\\\beta\ne1}}
+   \left[\operatorname{Li}_2\left(\frac{\beta}{\beta-1}\right)
+          -\frac{\pi^2}{6}\right].
+\]
+If $\beta=e^{2\pi i r/q}$, the transformed argument has real part
+$1/2$, modulus $(2\sin(\pi r/q))^{-1}$, and argument
+$\pi(r/q-1/2)$.  Euler reflection, paired with conjugation, evaluates
+its real dilogarithm component.  Summing the squared arguments and
+treating $\beta=-1$ separately when $q$ is even gives
+\eqref{corr:F-unit-fraction}.
+
+Nor does restricting to numerators greater than $1$ repair the criterion.
+The same laws give
+\begin{align}
+ F(6/7)-F(1)={}&-\frac8{63}\pi^2+\operatorname{Li}_2(6/7)
+       +\frac12\log^2(7/6)\notag\\
+       &-\frac12S(7)+\frac12S(6).
+ \label{corr:F-six-sevenths}
+\end{align}
+For a direct derivation, apply the three-term functional equation to
+$x=1/6$ and the inversion formula to $x=7/6$:
+\begin{align*}
+ F(x)-F(x+1)-F\left(\frac{x}{x+1}\right)
+   &=-F(1)+\operatorname{Li}_2\left(\frac1{x+1}\right),\\
+ F(x)+F(1/x)-2F(1)
+   &=\frac12\log^2x-\frac{\pi^2(x-1)^2}{6x}.
+\end{align*}
+Eliminate $F(7/6)$ and use \eqref{corr:F-unit-fraction} for $q=6,7$.
+Thus the appropriate correction is to remove the asserted
+classification and retain the proved families and individually
+established reductions.  These counterexamples do not determine a
+replacement classification for all numerators and denominators.
+
+The proposition labelled \texttt{prop:J} in the same report asserts
+that $J(2/q)$ has the specified elementary form only for $q=3,5$.
+The allowed elementary inventory in its examples includes $\pi^2$.
+With that convention, $q=4$ is another exact counterexample:
+\begin{equation}\label{corr:J-half}
+ \boxed{\displaystyle J(1/2)=\frac{\pi^2}{48}
+                                  +\frac14\log^22.}
+\end{equation}
+Indeed, \eqref{corr:F-unit-fraction} gives
+\[
+ F(1/2)-F(1)=-\frac{\pi^2}{12}-\frac12\log^22,
+ \qquad
+ F(1/4)-F(1)=-\frac{5\pi^2}{16}-\frac34\log^22.
+\]
+Their substitution in \eqref{corr:J-F} proves \eqref{corr:J-half}.
+It also disproves the following sentence in that proposition, which
+claims that $J(1/q)$ always retains dilogarithms.  Adding an odd-$q$
+restriction would avoid this particular example, but would not prove
+the remaining necessity claim.
+
+\subsection{The even-denominator term in the Herglotz derivative formula}
+\label{corr:herglotz-derivative}
+
+The same report's \texttt{thm:deriv} defines
+\[
+ W(q)=\sum_{r=1}^{q-1}
+       \cot\frac{2\pi r}{q}\,
+       \operatorname{Cl}_2\left(\frac{2\pi r}{q}\right).
+\]
+For even $q$ the displayed summand at $r=q/2$ is undefined as written:
+$\cot\pi$ is singular and $\operatorname{Cl}_2(\pi)=0$.
+Define instead
+\begin{equation}\label{corr:W-definition}
+ W_*(q)=\sum_{\substack{1\leq r<q\\2r\ne q}}
+       \cot\frac{2\pi r}{q}\,
+       \operatorname{Cl}_2\left(\frac{2\pi r}{q}\right).
+\end{equation}
+The corrected formula, retaining the report's separate correction, is
+\begin{equation}\label{corr:F-derivative}
+ \frac2qF'(2/q)-(1+\log2)
+    =\frac{q^2-4}{24q}\pi^2+W_*(q)
+                                  -\mathbf1_{2\mid q}\log2.
+\end{equation}
+Equivalently, extend the product continuously at angle $\pi$ and
+include it in the sum, while removing the separate $-\log2$ term.
+These conventions must not be combined.
+
+The continuous value follows from
+$\operatorname{Cl}_2'(\theta)=-\log(2\sin(\theta/2))$ near $\pi$:
+\[
+ \operatorname{Cl}_2(\pi+u)=-u\log2+O(u^3),\qquad
+ \cot(\pi+u)=u^{-1}+O(u),
+\]
+so the product tends to $-\log2$.  This explains exactly the finite
+term required in \eqref{corr:F-derivative}.
+At $q=4$ both remaining nonzero-angle cotangents vanish, so
+$W_*(4)=0$ and
+\begin{equation}\label{corr:F-derivative-half}
+ F'(1/2)=2+\frac{\pi^2}{4}.
+\end{equation}
+Consequently the accompanying statement that this derivative family
+never reduces to elementary form is also too broad.
+
+\subsection{Cubic subfields, class fields, and the regulator coefficient}
+\label{corr:stark-fields}
+
+The report
+\path{herglotz-stark-regulators__6096eccfa2a0.tex}, in its discussion of
+$\mathbb Q(\sqrt{257})$ and in the subsequent table, uses the same
+symbol $H_0$ both for a cubic field over $\mathbb Q$ and for a cyclic
+cubic class-field extension of a quadratic field.  These have different
+absolute degrees.  A degree-three field over $\mathbb Q$ cannot
+contain a quadratic field, by the tower law.
+
+In the intended $S_3$ situation the notation should distinguish
+\[
+ [H:K]=3,\quad[K:\mathbb Q]=2,\quad[H:\mathbb Q]=6,
+ \qquad [H_0:\mathbb Q]=3.
+\]
+Here $H/K$ is the cyclic cubic Hilbert or ring class field extension,
+and $H_0$ is a non-Galois cubic subfield of its normal closure $H$.
+The polynomial displayed for $H_0$ specifies the latter field, not
+$H/K$.  This is the standard class-field/cubic-subfield correspondence
+\cite{MilneCFT}; it is compatible with the framework of
+\cite{RadchenkoZagier2023}.
+
+There is a related omitted factor in the general explanation of the
+leading $L$-coefficient.  Let $\chi$ be either nontrivial character of
+$\operatorname{Gal}(H/K)\simeq C_3$.  The two conjugate induced
+characters are the standard two-dimensional representation of $S_3$.
+Artin formalism therefore gives
+\begin{equation}\label{corr:artin-cubic}
+ L_K(s,\chi)=\frac{\zeta_{H_0}(s)}{\zeta(s)}.
+\end{equation}
+One can see the representation identity directly: the permutation
+representation on the three embeddings of $H_0$ is the direct sum
+of the trivial representation and that standard representation.
+If $H_0$ is totally real, the analytic class number formula at zero
+then gives \cite{MilneCFT}
+\[
+ \zeta_{H_0}(s)=-\frac{h(H_0)\operatorname{Reg}(H_0)}{2}s^2+O(s^3),
+ \qquad \zeta(0)=-\frac12,
+\]
+and hence
+\begin{equation}\label{corr:leading-cubic-L}
+ L_K^*(0,\chi):=\lim_{s\to0}s^{-2}L_K(s,\chi)
+            =h(H_0)\operatorname{Reg}(H_0).
+\end{equation}
+Thus the assertion $L_K^*(0,\chi)=\operatorname{Reg}(H_0)$ needs
+$h(H_0)=1$.  The printed general explanation omits that hypothesis.
+For the five cubics actually displayed, however, it can be supplied
+by a short exact argument.  This repairs the stated leading-coefficient
+formula for these fields while distinguishing it from the general
+identity \eqref{corr:leading-cubic-L}.  Neither this argument nor the
+identity proves the report's separate fitted Herglotz evaluations.
+The leading-coefficient identity follows from Artin formalism and the
+analytic class number formula; it does not need a new appeal to a
+conjectural Stark statement.
+
+\begin{proposition}[Class-number certificates for the five cubic fields]
+\label{corr:cubic-class-numbers}
+Each of the five totally real cubic fields in
+Table~\ref{corr:classnumber-table} has class number one.  In the table,
+$\alpha$ denotes a root of the polynomial in its row, $d_H$ is the
+field discriminant, and $B=\lfloor 2\sqrt{d_H}/9\rfloor$ is the
+integer Minkowski bound.  The final column lists a generator of a
+principal ideal of norm $p$ for each indicated rational prime $p$;
+the field norm of the generator may be $-p$.
+\end{proposition}
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{c|r|r|l}
+ Polynomial for $\alpha$ & $d_H$ & $B$ & $p:\ \text{generator}$\\\hline
+ $X^3-X^2-3X+1$ & $148$ & $2$ & $2:\alpha-1$\\
+ $X^3-X^2-5X-1$ & $404$ & $4$ &
+       $2:\alpha+1;\quad3:\alpha^2-2\alpha-2$\\
+ $X^3-X^2-7X-3$ & $788$ & $6$ &
+       $2:\alpha+1;\quad3:\alpha;\quad5:\alpha^2-2\alpha-4$\\
+ $X^3-X^2-4X+3$ & $257$ & $3$ & $3:\alpha$\\
+ $X^3-X^2-11X-7$ & $2708$ & $11$ &
+       $2:\alpha+1;\quad3:\alpha+2;\quad7:\alpha$\\
+ & & & $5:-\alpha^2+2\alpha+10;\quad11:2\alpha^2-4\alpha-17$
+\end{tabular}
+\caption{Exact generators used in the class-number-one proof.}
+\label{corr:classnumber-table}
+\end{table}
+
+\begin{proof}
+The rational-root test proves irreducibility of each polynomial $f$.
+Their polynomial discriminants are, in the displayed order,
+$148,404,788,257,2708$, all positive.  Thus all five fields are
+totally real.  At discriminant $257$, squarefreeness immediately gives
+$\mathcal O_{H_0}=\mathbb Z[\alpha]$.  In each other row only $2$
+could divide the index.  In all four cases
+$\overline f=(X+1)^3$ modulo $2$, while
+\[
+ \left.\frac{f(X)-(X+1)^3}{2}\right|_{X=1}
+                  \in\{-5,-7,-9,-13\}.
+\]
+These values are odd.  Dedekind's index criterion therefore excludes
+$2$ from the index.  Equivalently, each shifted polynomial $f(X+1)$
+is Eisenstein at $2$, so its root generates the local ring of integers
+\cite[Proposition~7.55 and Remark~7.56]{MilneANT}.  This proves
+maximality and the asserted field discriminants.  The use of Dedekind factorization below is consequently
+valid also at $2$.
+
+Minkowski's theorem gives an integral ideal in every ideal class
+with norm at most $2\sqrt{d_H}/9$ for a totally real cubic field
+\cite{MilneANT}.  It suffices to prove principalness for every prime
+ideal whose norm is at most $B$.  In the four even-discriminant rows,
+$2$ is totally ramified; the displayed norm-$2$ element generates its
+unique prime ideal.  At discriminant $257$, the polynomial is
+irreducible modulo $2$, so the prime above $2$ has norm $8>B$.
+
+For each relevant odd rational prime $p\leq B$, direct factorization
+of $f$ modulo $p$ has type $1+2$.  There is therefore exactly one
+prime ideal of norm $p$.  The corresponding element in the table
+has norm $\pm p$, so this degree-one prime is principal.  Its
+degree-two partner is principal as well, since their product is
+$(p)$.  This last observation covers in particular the prime of
+norm $9$ in the field of discriminant $2708$.  The table accounts
+for all rational primes $p\leq B$, hence for all prime ideals within
+the Minkowski bound.  Every ideal class is therefore trivial.
+
+All finite calculations in this proof---discriminants, index tests,
+modular splitting types, and generator norms---are reproduced with
+integer arithmetic by \path{code/verify_cubic_class_numbers.py}.
+\end{proof}
+
+\subsection{Gamma relations and the scope of exact certificates}
+\label{corr:gamma-certificates}
+
+The intake README already identifies a major attribution correction
+in \path{gamma-lattice-and-certificates.tex}.  Its \texttt{law:ko}
+and corresponding abstract claim identify completeness of all
+multiplicative relations among rational gamma values with a theorem
+of Koblitz--Ogus.  The sufficient algebraicity criterion is a theorem;
+the assertion that every algebraic gamma monomial follows from the
+standard relations is Rohrlich's conjecture.  The distinction is
+explicit, for example, in the gamma-value discussion of
+Rivoal and Roques \cite{RivoalRoques2014}.
+
+The exact reductions already obtained from reflection and Gauss
+multiplication remain valid.  Their row reduction gives completeness
+within the stated formal relation space.  Describing the remaining
+numerical gamma values as irreducible among all possible algebraic
+monomial relations requires the conjecture.  Accordingly,
+\texttt{law:ko} should become a conjecture or a conditional statement,
+and the same qualification must be propagated to the abstract,
+introduction, and basis claims.  A negative integer-relation search
+cannot supply the missing converse.
+
+There is a separate issue in the certificate model.  The article
+explains that its principal-branch functional-equation instances
+are screened by a numerical branch-domain guard.  Exact cancellation
+of all special-function atoms verifies the algebraic replay, but
+proves the target identity only when the instantiated functional
+identities and their branch conditions are valid.  A finite-precision
+small-residual check is not a proof of those conditions.  A complete
+certificate should therefore include an exact proof of each relevant
+branch condition, or explicitly list that condition as an assumption.
+For algebraic substitution points, exact real-algebraic sign tests
+and a specified argument sector can often provide this missing part.
+Single-valued Bloch--Wigner identities offer another route for claims
+that can be expressed entirely in that language.
+
+This qualification does not assert an error in any particular
+certified value.  The checker and identity stores themselves were
+not included in the inspected directory, so their actual soundness
+cannot be audited from these reports alone.  It specifies the proof
+obligation left by the model described in the article.

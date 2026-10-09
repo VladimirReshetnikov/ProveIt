@@ -1,0 +1,79 @@
+{
+  "verification_type": "integrated package rerun; proofs are in the article",
+  "results": [
+    {
+      "command": [
+        "python",
+        "code/verify_cyclotomic.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.44,
+      "stdout": "{\"status\": \"passed\", \"detailed_moduli\": 200, \"rank_table_rows\": 1000, \"output\": \"PACKAGE/data\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "code/verify_recurrences.py",
+        "--bound",
+        "500"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.511,
+      "stdout": "{\n  \"bound\": 500,\n  \"search_region\": \"1 <= p <= q <= bound, gcd(p,q)=1\",\n  \"matching_pair_count\": 1076,\n  \"missing_count\": 0,\n  \"extra_count\": 0,\n  \"rational_core_boundaries_verified\": 1076,\n  \"selected_certificate_family_counts\": {\n    \"plus_recurrence\": 45,\n    \"minus_recurrence\": 1027,\n    \"odd_fibonacci\": 4\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "code/dilogarithm_cores.py",
+        "--verify-bound",
+        "1000"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.38,
+      "stdout": "{\n  \"example_count\": 18,\n  \"constructed_core_count\": 15,\n  \"formal_obstruction_count\": 3,\n  \"exhaustive_check\": {\n    \"bound\": 1000,\n    \"admissible_pairs\": 2106,\n    \"rational_boundaries_verified_in_both_orientations\": 4212,\n    \"max_core_term_count\": 13,\n    \"max_term_count_examples\": [\n      [\n        610,\n        987\n      ]\n    ]\n  }\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "code/certified_intervals.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.346,
+      "stdout": "x=2, N=6, certified width <= 4.18751510340E-7\nx=4, N=12, certified width <= 4.88272699850E-13\nx=8, N=25, certified width <= 2.15471915709E-24\nx=16, N=50, certified width <= 1.10232929493E-46\nWrote rational_intervals.json\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "code/verify_J_evaluations.py",
+        "--digits",
+        "80",
+        "--max-even-m",
+        "40"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.835,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"case_count\": 25,\n  \"working_precision_digits\": 80,\n  \"maximum_absolute_residual\": \"2.0504574999583367671e-79\",\n  \"output\": \"PACKAGE/data/J_evaluation_checks.json\",\n  \"elapsed_seconds\": 1.753\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "code/verify_truncation.py",
+        "--quick",
+        "--digits",
+        "55",
+        "--output",
+        "SCRATCH/final_quick_truncation.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 5.441,
+      "stdout": "N=5: shift ratio=0.9956985582980914461771887\nN=20: shift ratio=0.9965018431818376985845682\nN=40: shift ratio=0.9982492546691521815461616\nWrote final_quick_truncation.json; elapsed 5.3s\n",
+      "stderr": "",
+      "output_file_in_package": "data/truncation_quick_checks.json"
+    }
+  ]
+}

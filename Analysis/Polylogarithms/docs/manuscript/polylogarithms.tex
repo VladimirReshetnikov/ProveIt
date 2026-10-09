@@ -1,0 +1,138 @@
+\documentclass[11pt,oneside,openany]{book}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,enumitem,xcolor,microtype,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{bookmark}
+\emergencystretch=3em
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{chapter}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{law}[theorem]{Law}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{result}[theorem]{Result}
+\newtheorem{finding}[theorem]{Finding}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{negative}[theorem]{Search observation}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Ti}{Ti}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\depth}{depth}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\reg}{reg}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\arctanh}{arctanh}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\half}{\tfrac12}
+\newcommand{\rr}{\rho}
+\newcommand{\gr}{\operatorname{gr}}
+\newcommand{\shuffle}{\mathbin{\rotatebox[origin=c]{180}{\ensuremath{\amalg}}}}
+\newcommand{\stuffle}{\mathbin{\ast}}
+\newcommand{\Catalan}{G}
+\newcommand{\Cat}{G}
+\newcommand{\Glaisher}{\mathsf{A}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\h}[1]{H_{#1}}
+\newcommand{\zd}[2]{\zeta^{(#1)}(#2)}
+\newcommand{\Ld}[2]{L^{(#1)}(#2)}
+\newcommand{\chim}[1]{\chi_{-#1}}
+\newcommand{\lntwo}{\ln 2}
+\newcommand{\lnpi}{\ln\pi}
+\newcommand{\lntwopi}{\ln(2\pi)}
+\newcommand{\lp}{\ln\phi}
+\newcommand{\chitwo}{\chi_2}
+\newcommand{\dS}{\delta_{\mathrm S}}
+\newcommand{\up}{u_p}
+\newcommand{\uq}{u_q}
+\newcommand{\vp}{v_p}
+\newcommand{\vq}{v_q}
+\newcommand{\Jcal}{\mathcal{J}}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\rhoB}{\varrho}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\dps}[1]{\textsf{\footnotesize[historical experiment: #1]}}
+\title{Polylogarithms and their Arithmetic Bridges\\[6pt]
+\large Special Values, Zeta Jets, Lattices and Experimental Discovery}
+\author{Vladimir Reshetnikov}
+\date{Consolidated manuscript, October 2026}
+\hypersetup{pdftitle={Polylogarithms and their Arithmetic Bridges},pdfauthor={Vladimir Reshetnikov}}
+\begin{document}
+\pagestyle{plain}
+\frontmatter
+\maketitle
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+The purpose of this manuscript is to develop a common mathematical language
+for special values that first appear in rather different guises: nested sums,
+arctangent integrals, gamma products, lattice row sums and coefficients of
+Hurwitz zeta. Its central movement is from experimental discovery to exact
+structure. A well-chosen computation can suggest a transformation, reveal an
+unexpected character component or expose a missing generator. A proof then
+explains the phenomenon and determines its range of validity.
+
+The material originates in thirty-nine articles, reports and literature
+surveys from the PolyLog programme in the Smithereens repository. The present
+text merges overlapping treatments, uses later corrected formulas, and
+revises claims whose original wording exceeded the evidence. It is organized
+by mathematical dependency rather than by the order of research sessions.
+The source inventory and editorial ledger accompany the manuscript.
+
+There are three distinct meanings of ``exact'' in this work. An analytic
+identity may have a proof in ordinary mathematics. A row combination or a
+shuffle calculation may be checked by finite exact arithmetic, relative to
+its stated law vocabulary. A numerical identity may instead have a very
+small independently recomputed residual. These are valuable and different
+forms of evidence. In particular, an unsuccessful integer-relation search
+proves neither independence nor minimal depth, and a zero canary coefficient
+does not prove that a proposed relation is exact. No result in this project
+has yet been formalized in a proof assistant.
+
+The chapter order follows this distinction. Nested sums and iterated
+integrals establish the algebra; cyclotomic Fourier transforms organize its
+arithmetic coordinates; algebraic-argument transformations and depth
+experiments identify candidate special values. Gamma certificates and CM
+lattices connect these values to periods. Hurwitz-zeta jets unify integration
+and differentiation, and the Herglotz function carries these bridges into
+real-quadratic arithmetic. The final chapter returns to experimental design
+and the proof problems that this progression leaves open.
+
+Historical residuals, performance measurements and search counts refer to
+the source snapshots, whose scripts and identity stores were not all imported
+into ProveIt. Fresh checks in the accompanying verification directory are
+labeled separately. Attribution is retained for classical identities and
+published theorems; an experimental rediscovery is not a claim of priority.
+The original drafts were prepared with agentic assistance from Anthropic
+Claude, with an external OpenAI review of the Stieltjes integration article;
+the present consolidation and additional audit were assisted by OpenAI Codex.
+
+\tableofcontents
+\mainmatter
+\input{chapters/01-foundations}
+\input{chapters/02-cyclotomic}
+\input{chapters/03-algebraic}
+\input{chapters/04-depth}
+\input{chapters/05-gamma}
+\input{chapters/06-cm}
+\input{chapters/07-integration}
+\input{chapters/08-differentiation}
+\input{chapters/09-herglotz}
+\input{chapters/10-discovery}
+\appendix
+\input{chapters/11-literature}
+\backmatter
+\input{references}
+\end{document}

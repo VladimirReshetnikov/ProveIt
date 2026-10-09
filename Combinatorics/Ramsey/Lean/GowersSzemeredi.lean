@@ -874,6 +874,7 @@ import GowersSzemeredi.Proofs16GlobalColumnWords
 import GowersSzemeredi.Proofs16GlobalColumnWordEndpoints
 import GowersSzemeredi.Proofs16GlobalColumnTupleSampling
 import GowersSzemeredi.Proofs16AlmostAllTupleBudgets
+import GowersSzemeredi.Proofs16GlobalRobustProgressionInput
 import GowersSzemeredi.Proofs16StepFourPrime
 import GowersSzemeredi.Proofs16ColumnBSGGrowth
 import GowersSzemeredi.Proofs16SeparatedRespect
@@ -978,6 +979,7 @@ import GowersSzemeredi.Proofs16GlobalCoherentRobustSystem
 import GowersSzemeredi.Proofs16GlobalCoherentRichSystem
 import GowersSzemeredi.Proofs16GlobalCoherentWordSystem
 import GowersSzemeredi.Proofs16GlobalCoherentNestedSystem
+import GowersSzemeredi.Proofs16SpanBallSplit
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

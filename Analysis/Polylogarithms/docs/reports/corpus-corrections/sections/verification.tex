@@ -1,0 +1,135 @@
+\section{Computational verification and reproducible artifacts}
+\label{verification:section}
+
+The package separates exact finite certificates from numerical
+diagnostics. Its proofs apply to unbounded derivative orders and
+denominators. The programs verify finite presentations, constants,
+signs, conventions, and selected asymptotic predictions; none uses
+unsuccessful integer-relation searches as a proof of independence.
+All reported runs completed successfully.
+
+\subsection{Exact arithmetic checks}
+
+\begin{itemize}
+\item \path{code/verify_ranks.py} checks $486$ exact rational
+presentations. The $54$ denominators are $1,\ldots,48$ and
+$60,64,72,90,105,120$. The power weights use
+$s=-4,-2,-1,0,1,2,3,5$; a ninth weight system includes zero and
+non-power values. The checks compare prime and all-divisor row
+spans, endpoint conventions, both reflection signs, and the
+nonresonant unit-symbol basis.
+\item \path{code/verify_jet_ranks.py} checks $160$ expanded finite-jet
+presentations, including nilpotent weights. Exact fraction elimination
+confirms the dimensions before and after all endpoint layers are
+prescribed. The rational specializations test the algebraic theorem;
+they do not approximate logarithms as rational numbers and then claim
+to compute an arithmetic rank.
+\item \path{code/verify_shuffle_audit.py} constructs the $13$ by $10$
+shuffle-product matrix, verifies its rank $7$, and verifies the three
+integer annihilators in Section~\ref{audit:poly:shuffle-rank}. It checks
+that every individual coordinate is outside that row space.
+\item \path{code/verify_cubic_class_numbers.py} uses only integer
+arithmetic to check all finite premises of
+Proposition~\ref{corr:cubic-class-numbers}: irreducibility,
+discriminants, maximality tests, splitting types, and generator norms.
+The deduction of class number one uses the stated Dedekind and
+Minkowski theorems.
+\end{itemize}
+
+The JSON files in \path{data/} retain the exact parameters, rational
+matrix information, and witnesses. In particular, the class-number
+calculation includes degree-two prime ideals within the Minkowski
+bound; checking only rational primes with degree-one generators
+without accounting for their partners would leave a gap.
+
+\subsection{Independent numerical representations}
+
+The Stieltjes script uses $85$ decimal digits. It compares the
+Laplace kernel with scaled Hurwitz-jet evaluation in $8$ cases,
+computes $40$ moving zeros for $n=1,2,3,4$ and
+$k=8,32,128,512$, and verifies the global first-index bracket at
+$k=1,2,4,8,16,32,64,128$. The largest kernel discrepancy, divided
+by the larger of $1$ and the comparison magnitude, was less than
+$1.7\cdot10^{-86}$. This is a residual at the selected working
+precision, not a certified bound on the error in every printed digit.
+
+There is a practical numerical issue at large $k$. The raw value of
+$\zeta(k+1,a)$ can be extremely small on the moving-zero scale
+$a\asymp k$. An absolute-accuracy zeta routine may therefore return
+an adequate unscaled answer that loses many relative digits when
+multiplied by $a^{k+1}$. The supplied program avoids that loss by
+scaling \emph{inside} Euler--Maclaurin summation. It evaluates
+\[
+ \frac{a^{k+1}}{k!}F_{n,k}(a)
+ =n![z^n]\left\{
+     \frac{(1+z)_k}{k!}\,a^{k+1}\zeta(k+1+z,a)
+                  \right\}
+\]
+with truncated power series in $z$ and terms of the form
+$\exp(-(k+1)\log(1+m/a))$. This avoids finite differencing in the
+jet variable. Each computed root is checked again after adding
+$31$ terms to the finite Euler--Maclaurin sum. The stopping rule is
+numerical, and explicit interval tail enclosures remain a proposed
+extension.
+
+For $n=1$, Table~\ref{verification:zeros} illustrates the improvement
+from the explicit $1/(k+1)$ coefficient in
+Section~\ref{zero:asymptotic-section}. Let $A_k$ denote the
+leading term plus constant offset, and put $K=k+1$.
+Here the next coefficient is
+$c=0.0288707254210824205588\ldots$.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r r r}
+\toprule
+$k$ & computed $a_k$ & $|a_k-A_k|$ & $|a_k-A_k-c/K|$\\
+\midrule
+$32$ & $56.558158770512722$ & $9.2190\cdot10^{-4}$ & $4.7031\cdot10^{-5}$\\
+$128$ & $227.540415772647917$ & $2.2678\cdot10^{-4}$ & $2.9726\cdot10^{-6}$\\
+$512$ & $911.472053968737555$ & $5.6465\cdot10^{-5}$ & $1.8632\cdot10^{-7}$\\
+\bottomrule
+\end{tabular}
+\caption{Numerical zero locations and errors of two proved asymptotic
+approximations. The displayed digits are rounded diagnostics.}
+\label{verification:zeros}
+\end{table}
+
+The bridge script checks $12$ cases at $100$ decimal digits, including
+nonreal primitive characters. The largest absolute residual was
+less than $2.9\cdot10^{-101}$. Deliberately omitting the factor
+$1/2$ or the required conjugation produces detectable errors, so
+these checks test precisely the delicate parts of the formula.
+
+The Gaussian script checks $p=1,3,5,7,9$ in three ways: accelerated
+series summation, quadrature, and the finite reduction.
+At $90$ digits, their largest pairwise discrepancy was less than
+$4\cdot10^{-91}$. It also checks five real or complex generating
+function arguments and the resummation at $z=1$.
+The correction scripts supply $11$ checks at $70$ digits for the
+log-gamma and Herglotz identities, and $7$ checks at $80$ digits
+for the modified-polylogarithm and root-of-unity witnesses.
+The latter reproduce both the corrected and printed values of the
+complex-embedding $P_4$ example.
+
+\subsection{Build and integration}
+
+The principal deliverables are
+\path{polylogarithms_research.tex} and
+\path{polylogarithms_research.pdf}. The main \LaTeX{} file is
+assembled from the editable fragments in \path{sections/}; it
+contains the full text and bibliography and depends only on the
+included figure and ordinary \LaTeX{} packages.
+\path{BUILD.sh} rebuilds it using \texttt{pdflatex}.
+\path{code/run_checks.py} reruns the verification programs.
+The exact Python package versions are recorded in
+\path{requirements.txt} and \path{ENVIRONMENT.json}.
+
+The correction register records proposed changes to existing files;
+the package does not silently replace those source drafts.
+\path{PROVENANCE.json} fixes the inspected repository state, and
+\path{SHA256SUMS} records checksums of the delivered artifacts.
+The figures and data are reproducible from the included programs.
+This makes each proof, correction, and finite witness independently
+reviewable during repository integration.

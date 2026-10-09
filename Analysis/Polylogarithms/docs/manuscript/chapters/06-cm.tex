@@ -1,0 +1,384 @@
+\chapter{Polygamma row sums at complex multiplication points}
+\label{ch:06-cm}
+
+Rational gamma grids account for periods that reappear in modular forms.
+At imaginary quadratic arguments the polygamma series becomes a row of a
+lattice Eisenstein sum. Symmetry isolates elementary components; modular
+periods and class-field coordinates account for the non-elementary ones.
+Individual values and full row sums require different evidence.
+
+\section{Lattice normalization and row sums}
+For even $w\ge4$ and $\Im\tau>0$, define the absolutely convergent
+\[
+G_w(\tau)=\sum_{(m,n)\in\mathbb Z^2\setminus\{(0,0)\}}
+\frac1{(m+n\tau)^w}=2\zeta(w)E_w(\tau).
+\]
+Pair positive and negative $n$, and use the defining polygamma series:
+\begin{equation}\label{cm:eq:rowsum}
+G_w(\tau)=2\zeta(w)+\frac2{(w-1)!}
+\sum_{n\ge1}\left[\psi^{(w-1)}(n\tau)+\psi^{(w-1)}(1-n\tau)\right].
+\end{equation}
+The hexagonal point in this chapter is $\rho=e^{i\pi/3}$.
+The modular invariant $\mathfrak g_2=E_4/\eta^8$ below is unrelated to the
+second Stieltjes constant. Algebraic fits and historical numerical
+residuals are labeled as such; class polynomials are formed from normalized
+modular functions, rather than untreated modular-form values.
+
+\section{The elementary layer: reflection composed with conjugation}\label{cm:sec:elementary}
+
+Before any CM input, one family of components is fixed by symmetry alone. The Schwarz
+reflection $\psi^{(m)}(\bar z)=\overline{\psi^{(m)}(z)}$ turns the reflection law into a
+statement about a single real component, leaving the other component untouched.
+
+\begin{result}[vertical-line trigamma law]\label{cm:res:line}
+On the line $\operatorname{Re}z=\tfrac12$ the reflection law alone evaluates the real part of
+the trigamma function at every height: for all real $t$,
+\[
+\operatorname{Re}\psi^{(1)}\!\Bigl(\tfrac12+it\Bigr)=\frac{\pi^2}{2\cosh^2(\pi t)} .
+\]
+In particular $\operatorname{Re}\psi^{(1)}\!\bigl(\tfrac{1+i}{2}\bigr)=\pi^2/(2\cosh^2(\pi/2))$
+\dps{residual $0$ at $50$ dps}. Off the symmetric line, combining reflection, conjugation and
+the recurrence gives e.g.
+\[
+\operatorname{Re}\psi^{(1)}(i)=-\frac12-\frac{\pi^2}{2\sinh^2\pi}
+\qquad\text{\dps{residual $0$ at $50$ dps}.}
+\]
+The proof of the first identity is one line: on $\operatorname{Re}z=\tfrac12$ one has
+$1-z=\bar z$, so the reflection law
+$\psi^{(1)}(z)+\psi^{(1)}(1-z)=\pi^2/\sin^2(\pi z)$ reads
+$2\operatorname{Re}\psi^{(1)}(z)=\pi^2/\sin^2(\pi z)$ there.
+\end{result}
+
+The imaginary parts on this line stay opaque --- they are odd-row lattice data in the sense of
+Section~\ref{cm:sec:opaque}.
+
+\subsection{The FoxTrot identity demystified}
+
+MathWorld's \emph{Digamma Function} page \cite{cm:MathWorldDigamma} calls the following
+identity ``surprising''; it arises from the FoxTrot series $\sum(-1)^{n-1}n^2/(n^3+1)$,
+whose partial fractions hit the roots of $n^2-n+1$:
+\begin{equation}\label{cm:eq:foxtrot}
+-\psi\bigl(\tfrac{\omega}{2}\bigr)-\psi\bigl(-\tfrac{\omega^2}{2}\bigr)
++\psi\bigl(\tfrac{1+\omega}{2}\bigr)+\psi\bigl(\tfrac{1-\omega^2}{2}\bigr)
+=2\pi\,\sech\Bigl(\tfrac{\sqrt3\,\pi}{2}\Bigr),\qquad \omega=e^{i\pi/3}.
+\end{equation}
+
+\begin{law}[line law for digamma differences]\label{cm:law:lineline}
+For every shift $c\in(0,1)$, on the line $\operatorname{Re}z=(1-c)/2$,
+\[
+\operatorname{Re}\bigl[\psi(z+c)-\psi(z)\bigr]=\pi\,\operatorname{Re}\cot(\pi\bar z).
+\]
+\dps{verified for $c=\tfrac12,\tfrac13,\tfrac23$ at generic heights $t$}
+\end{law}
+
+The mechanism is the same one-liner: on that line the shift satisfies $z+c=1-\bar z$, so
+reflection composed with conjugation eliminates the digamma values, leaving an elementary
+$\sinh/\cos$ closed form. The FoxTrot identity \eqref{cm:eq:foxtrot} is the instance
+$c=\tfrac12$, $z=\tfrac14+i\tfrac{\sqrt3}{4}$: its four arguments pair into
+$2\operatorname{Re}[\psi(z+\tfrac12)-\psi(z)]$, and on $\operatorname{Re}z=\tfrac14$ one has
+$\pi\operatorname{Re}\cot(\pi\bar z)=\pi\sech(2\pi t)$. The identity is thus the point
+$t=\sqrt3/4$ on a line of identities, itself one member of a two-parameter family --- no
+complex multiplication required.
+
+Differentiating in $t$ ladders the law up the polygamma tower
+\dps{weights $2,3$ verified at $10^{-50}$}:
+\begin{align*}
+\operatorname{Im}\bigl[\psi^{(1)}(\tfrac34+it)-\psi^{(1)}(\tfrac14+it)\bigr]
+&=2\pi^2\sech(2\pi t)\tanh(2\pi t),\\
+\operatorname{Re}\bigl[\psi^{(2)}(\tfrac34+it)-\psi^{(2)}(\tfrac14+it)\bigr]
+&=8\pi^3\sech^3(2\pi t)-4\pi^3\sech(2\pi t).
+\end{align*}
+At each weight the alternating component ($\operatorname{Re}$ at odd weight,
+$\operatorname{Im}$ at even weight) stays opaque, exactly as in
+Section~\ref{cm:sec:opaque}.
+
+\section{Maximal symmetry: vanishing identities and \texorpdfstring{$\Gamma$}{Gamma}-periods}
+\label{cm:sec:maximal}
+
+At the two CM points with extra symmetry --- $\tau=i$ (square lattice, $j=1728$) and
+$\tau=\rho=e^{i\pi/3}$ (hexagonal lattice, $j=0$) --- classical theory pins every $G_{2k}$
+exactly. The square lattice admits no weight-$6$ form ($i\cdot(\mathbb{Z}+\mathbb{Z}i)
+=\mathbb{Z}+\mathbb{Z}i$ forces $G_6(i)=i^{-6}G_6(i)=-G_6(i)$), and the hexagonal lattice no
+weight-$4$ form; $G_4(i)$ and $G_6(\rho)$ are the lemniscatic and equianharmonic period
+powers --- monomials in $\Gamma(1/4)$, resp.\ $\Gamma(1/3)$, by Chowla--Selberg \cite{cm:ChowlaSelberg}.
+
+\subsection{Vanishing identities}
+
+\begin{result}[the CM gems]\label{cm:res:vanishing}
+\[
+\sum_{n\ge 1}\Bigl[\psi^{(5)}(ni)+\psi^{(5)}(1-ni)\Bigr]=-120\,\zeta(6)
+\qquad\text{\dps{residual $1.7\times10^{-49}$}},
+\]
+\[
+\sum_{n\ge 1}\Bigl[\psi^{(3)}(n\rho)+\psi^{(3)}(1-n\rho)\Bigr]=-6\,\zeta(4),
+\qquad \rho=e^{i\pi/3}
+\qquad\text{\dps{residual $6.8\times10^{-50}$}}.
+\]
+\end{result}
+
+Each individual bracket is a transcendental-looking complex number (elementary in
+$\coth/\operatorname{csch}$ of $\pi n\sqrt3/2$ and the like after the bilateral cotangent
+expansion, but nobody would guess the totals); the sums collapse to rational multiples of
+$\zeta(6)$, $\zeta(4)$ \emph{because lattice rotation multiplies the corresponding value by a nontrivial root of unity}. Via
+\eqref{cm:eq:rowsum} these are exactly the statements $G_6(i)=0$ and $G_4(\rho)=0$.
+
+\subsection{Chowla--Selberg made polygamma-visible}
+
+\begin{result}[period identities]\label{cm:res:periods}
+\[
+2\zeta(4)+\frac13\sum_{n\ge 1}\Bigl[\psi^{(3)}(ni)+\psi^{(3)}(1-ni)\Bigr]
+=\frac{\Gamma(1/4)^8}{960\,\pi^2}
+\qquad\text{\dps{residual $2.1\times10^{-50}$}},
+\]
+\[
+2\zeta(6)+\frac1{60}\sum_{n\ge 1}\Bigl[\psi^{(5)}(n\rho)+\psi^{(5)}(1-n\rho)\Bigr]
+=\frac{\Gamma(1/3)^{18}}{8960\,\pi^6}
+\qquad\text{\dps{residual $2.0\times10^{-60}$}}.
+\]
+\end{result}
+
+Polygamma values at purely imaginary (resp.\ hexagonal) points, summed over the integer
+multiples of the point, know the lemniscate constant and its equianharmonic sibling. The
+atoms $\Gamma(1/4)^2/\pi$ and $\Gamma(1/3)$ are precisely the CM-period currency of the
+repository's hypergeometric reducer (\texttt{cmPeriodReduce} in \texttt{src/Hypergeometric}),
+so these identities tie the polygamma world directly to that corpus.
+
+\subsection{The complete low-weight table}
+
+The symmetry argument and the classical Hurwitz recursion \cite{cm:Hurwitz}
+\[
+(2n+1)(2n-1)(n-3)\,G_{2n}=3\sum_{m=2}^{n-2}(2m-1)(2n-2m-1)\,G_{2m}G_{2n-2m}
+\]
+extend both subsections through weight~$12$ with no new constants
+\dps{all entries verified, residuals $10^{-60}$--$10^{-263}$}:
+
+\begin{center}
+\begin{tabular}{c l l}
+\toprule
+weight $2k$ & square lattice $\tau=i$ & hexagonal lattice $\tau=\rho$\\
+\midrule
+$4$ & $\Gamma(1/4)^8/(960\pi^2)$ & $\mathbf{0}$\\
+$6$ & $\mathbf{0}$ & $\Gamma(1/3)^{18}/(8960\pi^6)$\\
+$8$ & $\tfrac37 G_4(i)^2=3\,\Gamma(1/4)^{16}/(7\cdot 960^2\pi^4)$ & $\mathbf{0}$\\
+$10$ & $\mathbf{0}$ & $\mathbf{0}$\\
+$12$ & $\tfrac{1}{143}\bigl(18\,G_4(i)^3+25\,G_6(i)^2\bigr)$ type
+     & $\tfrac{25}{143}G_6(\rho)^2\propto\Gamma(1/3)^{36}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every bold zero is a vanishing identity
+$\sum_{n\ge1}[\psi^{(w-1)}(n\tau)+\psi^{(w-1)}(1-n\tau)]=-(w-1)!\,\zeta(w)$, and every
+non-zero entry is a $\psi^{(w-1)}$-sum evaluation. The pattern is exhaustive: $G_{2k}(i)=0$
+iff $2k\not\equiv 0\pmod 4$, $G_{2k}(\rho)=0$ iff $2k\not\equiv 0\pmod 6$, and all non-zero
+values are $\mathbb{Q}$-monomials in the two period powers --- so the \emph{entire} Eisenstein
+tower over both lattices is polygamma-explicit.
+
+\section{Beyond maximal symmetry: \texorpdfstring{$2i$ and $i\sqrt2$}{2i and i sqrt(2)}}
+\label{cm:sec:nextpoints}
+
+The same row-sum at the next two CM points, with closed forms found by PSLQ
+\dps{$120$-dps canaries}:
+
+\begin{result}\label{cm:res:2i}
+\begin{gather*}
+G_4(2i)=\frac{11}{15360}\,\frac{\Gamma(1/4)^8}{\pi^2}
+\quad\text{\dps{canary $0$ at $120$ dps}},\\
+G_4(i\sqrt2)=\frac{\Gamma(1/8)^4\,\Gamma(3/8)^4}{4608\,\pi^2}
+\quad\text{\dps{canary $3.9\times10^{-121}$}}.
+\end{gather*}
+The weight-6 row at the same points \dps{$160$-dps canaries}:
+\[
+G_6(2i)=\frac{\Gamma(1/4)^{12}}{2^{14}\cdot 5\cdot\pi^3},\qquad
+G_6(i\sqrt2)=\frac{\Gamma(1/8)^6\,\Gamma(3/8)^6}{2^{12}\cdot 3^3\cdot 5\cdot\pi^3}.
+\]
+\end{result}
+
+The first value confirms the isogeny picture: $2i$ sits over the same field $\mathbb{Q}(i)$,
+so only the rational factor changes ($G_4(i)/G_4(2i)=16/11$). The second imports a genuinely
+\emph{new period}: discriminant $-8$, field $\mathbb{Q}(\sqrt{-2})$ --- the polygamma sum
+$\sum_n[\psi^{(3)}(ni\sqrt2)+\psi^{(3)}(1-ni\sqrt2)]$ evaluates in $\Gamma(1/8)\Gamma(3/8)$.
+The fundamental unit $1+\sqrt2$ was offered in the PSLQ basis and declined (exponent $0$).
+Together with Section~\ref{cm:sec:maximal} this makes three distinct Chowla--Selberg periods
+polygamma-visible.
+
+\section{Class number 2: discriminants \texorpdfstring{$-20$ and $-15$}{-20 and -15}}
+\label{cm:sec:h2}
+
+At $\mathbb{Q}(\sqrt{-5})$ (class number $2$) a monomial-only logarithmic basket can miss the value: the algebraic factor in $G_4/\Omega^4$ lives in the Hilbert class field and is not a
+monomial. The structure that works is the Hecke/Damerell pair \cite{cm:Damerell} over the two reduced forms
+$x^2+5y^2$ ($\tau_1=i\sqrt5$) and $2x^2+2xy+3y^2$ ($\tau_2=(-1+i\sqrt5)/2$).
+
+\begin{result}[disc $-20$]\label{cm:res:d20}
+\[
+\frac{G_4(\tau_1)}{G_4(\tau_2)}=\frac{29+12\sqrt5}{44}=\frac{(3+2\sqrt5)^2}{44}
+\quad\text{\dps{canary $0$ at $160$ dps}},
+\]
+\[
+G_4(\tau_1)\,G_4(\tau_2)
+=\frac{11\,\varphi^4\,\Gamma(3/20)^8\,\Gamma(7/20)^8}{2^{14}\cdot3^4\cdot5^4\cdot\pi^4}
+\quad\text{\dps{canary $5.3\times10^{-160}$}},
+\]
+where $\varphi$ is the golden ratio. The ratio is algebraic of degree $2$ with norm
+$N(29+12\sqrt5)=121=11^2$; the class product is a period monomial carrying the prime $11$
+and a golden unit.
+\end{result}
+
+\begin{result}[disc $-15$]\label{cm:res:d15}
+With $\tau_1=(1+i\sqrt{15})/2$ for $x^2+xy+4y^2$ and the conjugate pair
+$\tau_{2,3}=(\pm1+i\sqrt{15})/4$ representing $2x^2+xy+2y^2$, write
+$\widehat G_4=\tfrac12\bigl[G_4(\tau_2)+G_4(\tau_3)\bigr]
+=\operatorname{Re}G_4(\tau_2)$ for the class-pair average. Then
+\dps{$160$-dps canaries}:
+\[
+\frac{G_4(\tau_1)}{\widehat G_4}=\frac{2\,(4+\sqrt5)^2}{77},\qquad
+G_4(\tau_1)\,\widehat G_4
+=\frac{77\,\bigl(\Gamma(\tfrac1{15})\Gamma(\tfrac2{15})\Gamma(\tfrac4{15})
+\Gamma(\tfrac8{15})\bigr)^4}{2^{13}\cdot3^6\cdot5^5\cdot\pi^4}.
+\]
+Unlike disc $-20$, the non-principal value here is genuinely complex (the form
+$(2,1,2)$ has $|\tau_2|=1$, where conjugation acts nontrivially on $G_4$); the
+class-pair average is the Galois-natural object.
+\end{result}
+
+The $\Gamma$-block in Result~\ref{cm:res:d15} is exactly the set of residues
+$\{1,2,4,8\}$ with $\chi_{-15}=+1$; the golden unit is declined by PSLQ (exponent $0$); and
+the prime content $77=7\cdot11$ of the product matches the ratio's denominator
+($N(4+\sqrt5)=11$). The heuristic that emerges, used at every later discriminant:
+\emph{run the ratio first; its norm names the primes the class-product basis needs.}
+
+\section{Class number 3: discriminant \texorpdfstring{$-23$}{-23}}\label{cm:sec:h3}
+
+$\mathbb{Q}(\sqrt{-23})$ has $h=3$, with Hilbert class field generated over $\mathbb Q(\sqrt{-23})$ by a root of $x^3-x-1$. The three reduced forms give $\tau_1=(1+i\sqrt{23})/2$ and
+$\tau_{2,3}=(\pm1+i\sqrt{23})/4$; $G_4(\tau_1)$ is real and $G_4(\tau_{2,3})$ form a
+conjugate pair.
+
+\begin{result}[disc $-23$ class product]\label{cm:res:d23}
+\dps{canary $1.4\times10^{-160}$}
+\[
+G_4(\tau_1)\,G_4(\tau_2)\,G_4(\tau_3)
+=\frac{11\cdot17\;P^4}{2^{24}\cdot3^6\cdot23^5\cdot\pi^{16}},\qquad
+P=\!\!\prod_{\substack{k\bmod 23\\ (\frac{k}{23})=+1}}\!\!\Gamma\!\Bigl(\frac{k}{23}\Bigr)
+\quad\text{(11 factors)}.
+\]
+\end{result}
+
+\begin{result}[the $\mathfrak{g}_2$ class polynomial from row-sums]\label{cm:res:d23poly}
+With $\mathfrak{g}_2=E_4/\eta^8$ phase-corrected by the canonical cube root (the $q^{1/3}$
+ambiguity of $\eta^8$ at these points), the three values $\mathfrak{g}_2(\tau_i)$ computed from the
+polygamma row-sums are exactly the roots of the classical class polynomial
+\[
+x^3+155x^2+650x+23375=0
+\qquad\text{\dps{coefficients integer to $10^{-80}$}},
+\]
+whose constant term $23375=5^3\cdot11\cdot17$ forecast the primes $11$, $17$ in the class
+product --- the norm heuristic of Section~\ref{cm:sec:h2}, one degree up.
+\end{result}
+
+\begin{negative}[weight-4 sums are not Galois-clean]\label{cm:neg:sums}
+The dimensionless symmetric functions $e_1^3/e_3$ and $e_2^3/e_3^2$ of the raw $G_4$ values
+were not recognized as rational in the source search (height $10^{30}$, $300$ digits). Unlike the value
+\emph{product} (a norm) and the weight-$0$ $\mathfrak{g}_2$ invariants, sums of weight-$4$ CM
+values across ideal classes are not Galois-stable --- the period correction under
+$\operatorname{Gal}(H/K)$ is nontrivial at weight $4$. Class polynomials must be formed from
+$\mathfrak{g}_2=E_4/\eta^8$ (or $j$), not from the $G_4$ values themselves.
+\end{negative}
+
+\section{Class number 4: discriminant \texorpdfstring{$-39$}{-39} and genus structure}
+\label{cm:sec:h4}
+
+The four reduced forms of discriminant $-39$, namely $(1,1,10)$, $(2,\pm1,5)$, $(3,3,4)$,
+give $\tau\in\{(1+i\sqrt{39})/2,\ (\pm1+i\sqrt{39})/4,\ (3+i\sqrt{39})/6\}$.
+
+\begin{result}[disc $-39$ class product]\label{cm:res:d39}
+\dps{$160$-dps canary}
+\[
+\prod_{i=1}^{4}G_4(\tau_i)
+=\frac{17\cdot23\cdot29\;P^4}{2^{28}\cdot3^{9}\cdot5^{4}\cdot13^{8}\cdot\pi^{16}},\qquad
+P=\!\!\prod_{\substack{k\bmod 39\\ \chi_{-39}(k)=+1}}\!\!\Gamma\!\Bigl(\frac{k}{39}\Bigr)
+\quad\text{(12 factors)}.
+\]
+\end{result}
+
+A wrinkle relative to Section~\ref{cm:sec:h3}: $\mathfrak{g}_2$ is \emph{not} a class invariant here
+($3\mid 39$, the classical obstruction \cite{cm:Cox}; observed directly --- no cube-root phase choice makes
+the $\mathfrak{g}_2$-sums rational). But $j$ always is, and the row-sum values deliver the Hilbert
+class polynomial outright.
+
+\begin{result}[Hilbert class polynomial of disc $-39$]\label{cm:res:H39}
+\[
+H_{-39}(x)=x^4+331531596\,x^3-429878960946\,x^2+109873509788637459\,x
++20919104368024767633
+\]
+\dps{$e_1,\dots,e_3$ PSLQ-exact integers; $e_4$ integral to $10^{-137}$}.
+\end{result}
+
+Worth dwelling on: a quartic with $20$-digit integer coefficients recovered from sums of
+polygamma values at quadratic-irrational complex points. The polygamma row-sum is a
+perfectly serviceable special-function front door to the classical CM tower.
+
+\begin{result}[genus structure inside the quartet]\label{cm:res:genus}
+The class group is $\mathbb{Z}/4$, with the ambiguous form $(3,3,4)$ as the order-$2$ class.
+The raw cross-class ratio $v_1/v_4$ is a quartic candidate; no degree-two polynomial was found up to height $10^{12}$, but the genus-wise ratio --- principal genus $\{1,A^2\}$
+over $\{A,A^3\}$ --- is exactly quadratic, in the real part of the genus field
+$\mathbb{Q}(\sqrt{-3},\sqrt{13})$ as genus theory demands
+\dps{$160$-dps canary; $\sqrt3$, $\sqrt{39}$ declined by PSLQ}:
+\[
+\frac{G_4(\tau_1)\,G_4(\tau_4)}{G_4(\tau_2)\,G_4(\tau_3)}
+=\frac{103299+4440\sqrt{13}}{181424},\qquad
+N=\Bigl(\frac{9}{16}\Bigr)^{\!2},\qquad 181424=16\cdot17\cdot23\cdot29 .
+\]
+The denominator reuses the class-product primes $17$, $23$, $29$.
+\end{result}
+
+\section{Class number 5: discriminant \texorpdfstring{$-47$}{-47}}\label{cm:sec:h5}
+
+The five reduced forms $(1,1,12)$, $(2,\pm1,6)$, $(3,\pm1,4)$ give the quintet
+$\tau\in\{(1+i\sqrt{47})/2,\ (\pm1+i\sqrt{47})/4,\ (\pm1+i\sqrt{47})/6\}$.
+
+\begin{result}[disc $-47$ class product]\label{cm:res:d47}
+\dps{$200$-dps canary}
+\[
+\prod_{i=1}^{5}G_4(\tau_i)
+=\frac{11^2\cdot23\cdot29\;P^4}{2^{52}\cdot3^{6}\cdot47^{9}\cdot\pi^{36}},\qquad
+P=\!\!\prod_{\substack{k\bmod 47\\ (\frac{k}{47})=+1}}\!\!\Gamma\!\Bigl(\frac{k}{47}\Bigr)
+\quad\text{(23 factors)}.
+\]
+\end{result}
+
+\begin{result}[Hilbert class polynomial of disc $-47$]\label{cm:res:H47}
+The row-sum $j$-values deliver the quintic Hilbert class polynomial
+\dps{all symmetric functions integral to $10^{-129}$ or better}:
+\begin{align*}
+H_{-47}(x)=x^5&+2257834125\,x^4-9987963828125\,x^3+5115161850595703125\,x^2\\
+&-14982472850828613281250\,x+16042929600623870849609375 .
+\end{align*}
+\end{result}
+
+The CM tower is now polygamma-explicit through class number $5$ with one uniform recipe:
+\emph{row-sum $\to$ class-product log-PSLQ (norm-forecast primes) $\to$
+$j$-symmetric-function integrality.}
+
+\section{The opaque components}\label{cm:sec:opaque}
+
+The components \emph{not} fixed by reflection-conjugation or by the even-row mechanism ---
+$\operatorname{Im}\psi^{(1)}(i)$, $\operatorname{Re}\psi(i)$ beyond $\gamma$,
+$\operatorname{Im}\psi^{(1)}\bigl(\tfrac{1+i}{2}\bigr)$ --- are \emph{odd-row} lattice data:
+for example
+\[
+\operatorname{Im}\psi^{(1)}(i)=-2\sum_{k\ge1}\frac{k}{(k^2+1)^2}
+\]
+is an odd-power analogue of the $\coth$ family, which the bilateral (even) cotangent
+expansion cannot reach. These are Eichler-integral/quasi-modular territory --- the
+$E_2$-flavoured layer; compare $\sum_{k\ge1}k/(e^{2\pi k}-1)=\tfrac1{24}-\tfrac1{8\pi}$,
+which is $E_2(i)=3/\pi$ in Lambert-series clothing.
+
+\begin{negative}\label{cm:neg:opaque}
+A PSLQ basket for these constants against products drawn from
+\[
+\{1,\ \pi,\ \coth\pi,\ \pi^2/\sinh^2\pi,\ \pi\coth\pi,\ \dots\}
+\]
+found nothing at small coefficient heights --- consistent with genuinely new constants.
+Recorded as an honest negative; the Lambert-series face ($\sum\sigma_5(n)q^n$ at
+$q=e^{-2\pi}$ and $q=-e^{-\pi\sqrt3}$) is the natural next probe surface.
+\end{negative}

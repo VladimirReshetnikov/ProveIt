@@ -1,0 +1,875 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Alternating harmonic polylogarithms}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\Q}{\mathbb Q}\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\coeff}[2]{[#1]#2}
+\newcommand{\calA}{\mathcal A}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\src}[1]{\nolinkurl{#1}}
+\hypersetup{pdftitle={Reflection, certified evaluation, and a depth--exponent transition for alternating harmonic polylogarithms},pdfauthor={Research continuation prepared for Vladimir Reshetnikov with OpenAI assistance}}
+\title{Reflection, certified evaluation, and a depth--exponent transition for alternating harmonic polylogarithms}
+\author{Research continuation prepared for Vladimir Reshetnikov\\\small with OpenAI assistance}
+\date{October 7, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the Gaussian and rational-grid polylogarithm program in the ProveIt drafts. For the elementary harmonic sums
+$e_r(n)=[u^r]\prod_{j=1}^n(1+u/j)$, we study
+$T_{p,r}(a)=\sum_{n\ge0}(-1)^n e_r(n)/(n+a)^p$ and
+$S_{p,r}=2^{-p}T_{p,r}(1/2)$. A two-variable incomplete-beta integral gives an exact reflection identity and a triangular reduction at every harmonic index. Its first-index specialization proves a uniform formula for all $S_{2m+1,1}$, recovering the draft's weight-six and weight-eight identities without integer-relation searches. A complete-monotonicity argument proves signed, first-omitted-term bounds for every finite truncation, even before the summands become decreasing. These bounds yield exact rational enclosures and fixed-index exponential asymptotics.
+
+The main asymptotic development is a joint large-index theorem. If $r\to\infty$, $L=p/r=\log r+c$, and $\lambda=e^{-c}/2$, then, uniformly for $a$ and $c$ in compact sets,
+\[
+(-1)^r r!(r+a)^pT_{p,r}(a)=e^{-\lambda}
+\left[1+\frac{(\lambda^2/2-(a+1/2)\lambda)L+5\lambda^2/6-2\lambda}{r}
++O\!\left(\frac{(\log r)^2}{r^2}\right)\right].
+\]
+We give an all-orders polynomial compiler, a complementary fixed-$p$ endpoint expansion, and a geometrically convergent evaluator with a completely explicit Cauchy tail bound. The package includes eight exact rational interval certificates and independent numerical diagnostics. A targeted audit separates proven reductions from unproved depth lower bounds, identifies an iterated-integral ordering error, and supplies precise correction proposals. The proofs are mathematical proofs, not formal proof-assistant certificates; priority over the existing Euler-sum literature is not asserted.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, contributions, and relation to prior work}
+\label{sec:scope}
+
+The motivating directory is \src{Analysis/Polylogarithms/docs} in the ProveIt repository. The inspected branch reference was
+\begin{center}\small\src{c78c7c3dc2fc742a1af9492e47d578b3fb4e01e7}.\end{center}
+The mathematical audit concentrates on \emph{Depth filtration of Gaussian multiple polylogarithms} \cite{repoGaussian} and \emph{Multiple polylogarithms at Gaussian and Eisenstein arguments} \cite{repoDouble}. We also checked the master identity and sampled the rank discussion in the Stieltjes parameter-derivative draft \cite{repoStieltjes}. This is not a line-by-line certification of every article or report in the directory. Source blob hashes and the audit boundary are recorded in the accompanying provenance manifest.
+
+The Gaussian draft studies
+\begin{equation}\label{eq:oldsum}
+ S_p=\sum_{n\ge0}\frac{(-1)^nH_n}{(2n+1)^p},\qquad H_0=0,
+\end{equation}
+and displays striking reductions for $p=5,7$. Our first objective is to replace experimental evidence for these reductions by an all-$p$ proof. Our second is to extend the family in a way that makes both the depth parameter and asymptotic error controllable. Elementary, rather than complete, harmonic symmetric functions are the natural extension because their generating function is a single power of $1+t$.
+
+Several ingredients are classical. Beta and incomplete-beta identities are standard \cite{DLMFbeta,DLMFincbeta}. Euler sums with odd denominators and alternating twists have a substantial literature; Xu and Wang \cite{XuWang} give explicit linear and quadratic evaluations and parity results. General depth reduction for suitable inversion combinations of multiple polylogarithms is established by Panzer \cite{Panzer}; Umezawa \cite{Umezawa} supplies an explicit general formula. We do not present the mere existence of a parity reduction as a new general theorem.
+
+What is developed here is a self-contained, normalization-specific chain connecting an exact reflection compiler, signed truncation certificates, and uniform two-parameter asymptotics. The joint transition and its all-orders coefficient construction are the principal asymptotic results of this manuscript. Their proofs do not assume period conjectures, algebraic independence, or the completeness of double-shuffle relations. Whether particular formulas have appeared in equivalent normalizations elsewhere remains a bibliographic question; no claim of first discovery is needed for their validity or repository utility.
+
+\paragraph{Terminology.}
+The index $r$ below measures the number of harmonic factors in an elementary symmetric function. For integer $p$, the displayed multiple-polylogarithm representation has nesting length $r+1$ and weight $p+r$. Neither number is automatically the \emph{minimal} depth of the resulting complex number. A reduction to products of depth-one values is a membership statement in an explicitly defined algebra, not a proof of a depth lower bound.
+
+\section{Targeted audit and proposed corrections}
+\label{sec:audit}
+
+\subsection{Numerical non-detection is not an unconditional depth lower bound}
+The theorem labeled \src{thm:alternation} in \cite{repoGaussian} asserts an ``if and only if'': $S_p$ belongs to its specified depth-one algebra precisely at even weight, and is genuinely depth two at odd weight. The accompanying discussion relies on high-precision PSLQ/LLL searches for the negative direction. Such searches do not prove the asserted non-membership in the full algebra. A finite-height search excludes, at most, a specified set of bounded relations, and even that conclusion requires validated errors and a suitable exhaustive or certified exclusion argument. Ordinary floating-point failure to find a relation is weaker still.
+
+The positive part has a clean repair: Theorem~\ref{thm:odd} below proves $S_{2m+1}\in\calA$ for every $m\ge0$, where
+\[
+ \calA=\Q[\pi,\log2,\zeta(3),\zeta(5),\ldots,
+                    \beta(2),\beta(4),\ldots].
+\]
+The converse should be labeled conjectural unless a genuine lower-bound proof is supplied. The depth-one algebra must also be kept fixed: adjoining the draft's off-axis values $\Im\Li_n((1+\ii)/2)$ changes the membership question. One should not silently move between these two alphabets.
+
+\subsection{The canary is a diagnostic, not a certificate}
+The discussion following \src{eq:S5}--\src{eq:S7} calls a Champernowne canary algebraically independent of the search atoms and treats its zero coefficient as a certificate of exact equality. Neither assertion follows from the computation. Transcendence of one number alone would not imply its algebraic independence from a collection of other transcendental numbers. Moreover, for any fixed working precision one may perturb an exact relation by a nonzero amount far below the numerical error while leaving a separate canary coefficient zero. Thus the canary cannot certify exactness.
+
+A defensible replacement is: ``The canary is an empirical guard against some spurious relations. The displayed identities require symbolic proofs or independently justified exact certificates.'' PSLQ itself has rigorous norm-bound theory \cite{PSLQ}; the issue is the absence of the hypotheses and validated computation needed to turn a particular numerical run into the much stronger claim made in the draft.
+
+Similarly, the fact that a beta value is available in an expression does not establish its independence from other values. The analytic reflection identity below explains the successful reductions without assuming that the even beta values are new independent generators.
+
+\subsection{An actual iterated-integral ordering error}
+Equation \src{eq:G-def} of \cite{repoDouble} defines
+\begin{equation}\label{eq:badG}
+ G(a_1,\ldots,a_n;1)=
+ \int_{0<t_1<\cdots<t_n<1}\prod_{j=1}^n\frac{\dd t_j}{t_j-a_j},
+\end{equation}
+but immediately uses the standard word identity
+$\Li_n(z)=-G(0^{n-1},z^{-1};1)$. These conventions are incompatible. For example, the right side of \eqref{eq:badG} with word $(0,2)$ has the divergent inner integral $\int_0^{t_2}\dd t_1/t_1$, whereas $\Li_2(1/2)$ is finite.
+
+Preserving the draft's word-to-polylogarithm formulas requires the correction
+\begin{equation}\label{eq:goodG}
+ G(a_1,\ldots,a_n;1)=
+ \int_{0<t_n<\cdots<t_1<1}\prod_{j=1}^n\frac{\dd t_j}{t_j-a_j},
+\end{equation}
+with the usual endpoint convergence or regularization provisions. Equivalently, keep the increasing simplex and reverse every word. The package contains a hash-guarded script for the first, localized correction. This identifies a typeset convention error; it does not establish that the separate computational implementation used the wrong order.
+
+\subsection{Motivic dimensions do not certify the depth of selected periods}
+The abstract and depth-three discussion of \cite{repoDouble} infer that particular surviving triples are genuinely depth three from a positive ambient motivic dimension. Three logically separate steps are missing. A weight Hilbert series must be refined by the \emph{actual} depth filtration, rather than an unidentified word-length grading. The selected combinations must be shown to have nonzero classes in the relevant filtered quotient. Finally, a motivic nonzero class does not by itself prove the same non-reducibility for its numerical period.
+
+Glanois explicitly distinguishes a motivic basis from the generating family obtained after applying the period map \cite{Glanois}. An ambient dimension is not a substitute for an element-specific calculation. The safe numerical conclusion is an upper bound from proven reductions; any lower-bound statement should identify the exact motivic theorem, quotient, element, and period-map assumption being used.
+
+\subsection{Convergence and the zero-exponent endpoint}
+The Gaussian draft's preliminary convergence description should require control of every prefix product $|z_1\cdots z_j|$, not only the final product. A sufficient open series domain is
+$|z_1\cdots z_j|<1$ for every $1\le j\le d$; boundary points need a separate argument. For example, $\Li_{1,1}(2,1/4)$ diverges despite $|2\cdot(1/4)|<1$: its inner sum tends to $\log(4/3)>0$, while its outer summand grows like $2^m/m$.
+
+The ordinary series \eqref{eq:oldsum} is not defined at $p=0$: its terms do not tend to zero. Its Abel-regularized value is $-\log2/2$, but this must be labeled as a regularization, not ordinary convergence. The convergent family in this paper uses real $p>0$.
+
+\subsection{A separate proof gap in the sampled Stieltjes rank discussion}
+The harmonic-number master identity in \cite{repoStieltjes} follows correctly by expanding $(1+\varepsilon)_k\zeta(k+1+\varepsilon,a)$. Its rank theorem is explicitly about relations \emph{generated by distribution rows}, not the full space of numerical period relations. That qualifier should be retained. However, the accompanying finite computations ($k=1,2,3$ and $3\le q\le30$) are not a proof of the stated assertion for all $k,q$. A general row-space argument or an explicit restriction to the verified range is needed. We identify this as a proof gap, not a disproof of the rank formula, and do not use it later.
+
+\section{The harmonic-index family and its integral representation}
+\label{sec:family}
+
+\begin{definition}
+For integers $n,r\ge0$, put
+\begin{equation}\label{eq:e}
+ e_r(n)=[u^r]\prod_{j=1}^n\left(1+\frac uj\right),
+ \qquad e_0(n)=1.
+\end{equation}
+Thus $e_r(n)=0$ for $n<r$, $e_1(n)=H_n$, and
+$e_2(n)=(H_n^2-H_n^{(2)})/2$. For real $a,p>0$, define
+\begin{equation}\label{eq:T}
+ T_{p,r}(a)=\sum_{n\ge0}\frac{(-1)^n e_r(n)}{(n+a)^p},
+ \qquad S_{p,r}=2^{-p}T_{p,r}(1/2).
+\end{equation}
+The original $S_p$ is $S_{p,1}$, while $S_{p,0}=\beta(p)$.
+\end{definition}
+
+\begin{lemma}[Convergence]\label{lem:conv}
+For fixed $r\ge0$ and $a,p>0$, the series \eqref{eq:T} converges. It converges absolutely for $p>1$.
+\end{lemma}
+\begin{proof}
+The bound $e_r(n)\le H_n^r/r!$ proves absolute convergence for $p>1$ and convergence of the summand magnitude to zero for every $p>0$. For eventual monotonicity, when $r\ge1$ and $n\ge r$, counting each $r$-element subset in $r$ ways gives
+\[
+ r e_r(n)=\sum_{|A|=r-1}\left(\prod_{j\in A}\frac1j\right)
+              \left(H_n-\sum_{j\in A}\frac1j\right)
+ \ge (H_n-H_{r-1})e_{r-1}(n).
+\]
+Together with $e_r(n+1)=e_r(n)+e_{r-1}(n)/(n+1)$, this shows that the logarithm of the ratio of consecutive magnitudes is at most
+\[
+ \frac{r}{(n+1)(H_n-H_{r-1})}
+ -p\log\left(1+\frac1{n+a}\right)<0
+\]
+for sufficiently large $n$. The alternating-series test applies. The case $r=0$ is immediate.
+\end{proof}
+
+\begin{proposition}[Mellin integral]\label{prop:integral}
+For the same parameters,
+\begin{equation}\label{eq:mellin}
+ T_{p,r}(a)=\frac{(-1)^r}{r!\Gamma(p)}
+ \int_0^1 t^{a-1}(-\log t)^{p-1}
+             \frac{\log^r(1+t)}{1+t}\dd t.
+\end{equation}
+In particular, $(-1)^r T_{p,r}(a)>0$.
+\end{proposition}
+\begin{proof}
+The binomial theorem and \eqref{eq:e} give, for $|t|<1$,
+\begin{equation}\label{eq:hgen}
+ \sum_{n\ge0}(-1)^ne_r(n)t^n
+  =[u^r](1+t)^{-1-u}
+  =\frac{(-1)^r\log^r(1+t)}{r!(1+t)}.
+\end{equation}
+Insert an Abel factor $\rho^n$ with $0<\rho<1$, integrate termwise using
+$\int_0^1 t^{n+a-1}(-\log t)^{p-1}\dd t=\Gamma(p)/(n+a)^p$, and let $\rho\uparrow1$. Dominated convergence applies on the integral side, and Lemma~\ref{lem:conv} identifies the Abel limit with the ordinary sum. The integrand in \eqref{eq:mellin} is strictly positive almost everywhere after removing the sign.
+\end{proof}
+
+\subsection{Exact cyclotomic realizations}
+For integer $p\ge1$, the series connects directly to the repository's Gaussian multiple polylogarithms:
+\begin{equation}\label{eq:gaussianMPL}
+ S_{p,r}=\sum_{\epsilon_1,\ldots,\epsilon_r\in\{1,-1\}}
+ \Im\Li_{p,\underbrace{1,\ldots,1}_{r}}
+               (\ii,\epsilon_1,\ldots,\epsilon_r).
+\end{equation}
+Indeed, write the outer index as $m_0=2n+1$ and the inner indices as $m_j=2k_j$. The $2^r$ from $1/k_j=2/m_j$ cancels the factors $1/2$ in the even-index filters. Finally,
+$\Im(\ii^{m_0})$ is exactly $(-1)^n$ for odd $m_0$ and zero for even $m_0$. This proves \eqref{eq:gaussianMPL}, first with an Abel factor and then by convergence. For $r=1$, both second arguments $1$ and $-1$ occur; $S_p$ is not simply one of the draft's $g_{a,b}$.
+
+More generally, let $a=m/q$ with $0<m<q$ and $\xi=e^{\pi\ii/q}$. Residue-class filters give
+\begin{align}\label{eq:rationalMPL}
+ T_{p,r}(m/q)
+ &=q^{p-1}\sum_{h=0}^{q-1}\sum_{b_1,\ldots,b_r=0}^{q-1}
+   \xi^{-(2h+1)m} \\
+ &\hspace{12mm}\cdot\Li_{p,1,\ldots,1}
+ (\xi^{2h+1},\xi^{2b_1},\ldots,\xi^{2b_r}).\notag
+\end{align}
+To check the normalization, the denominator rescaling contributes $q^{p+r}$, while the $r+1$ residue filters contribute $q^{-r-1}$. Thus rational parameters lead to level $2q$ values. This is a representation of nesting length at most $r+1$, not a minimal-depth assertion.
+
+\section{An all-index reflection identity}
+\label{sec:reflection}
+
+Define, initially for $\Re(a-z)>0$,
+\begin{equation}\label{eq:Phi}
+ \Phi_a(z,u)=\int_0^1 t^{a-z-1}(1+t)^{-1-u}\dd t.
+\end{equation}
+Near $(z,u)=(0,0)$, coefficient extraction in \eqref{eq:mellin} yields
+\begin{equation}\label{eq:PhiTaylor}
+ \Phi_a(z,u)=\sum_{p\ge1}\sum_{r\ge0}T_{p,r}(a)z^{p-1}u^r.
+\end{equation}
+There are no factorials in this ordinary Taylor series. This convention matters for every coefficient below.
+
+\begin{theorem}[Reflection]\label{thm:reflection}
+If $0<a<1$, then as analytic germs at the origin,
+\begin{equation}\label{eq:reflection}
+ \boxed{\quad
+ \Phi_a(z,u)+\Phi_{1-a}(-z-u,u)
+ =\frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+ \quad}
+\end{equation}
+More generally the identity holds whenever
+$\Re(a-z)>0$ and $\Re(1-a+z+u)>0$.
+\end{theorem}
+\begin{proof}
+The beta integral evaluates
+\[
+ \int_0^\infty t^{a-z-1}(1+t)^{-1-u}\dd t
+ =\frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+\]
+The part over $(0,1)$ is \eqref{eq:Phi}. In the part over $(1,\infty)$, substitute $t=1/x$. The transformed integrand is
+$x^{-a+z+u}(1+x)^{-1-u}$, which is exactly the second term of \eqref{eq:reflection}. The stated inequalities justify both integrals.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:C}
+ C_{p,r}(a)=[z^{p-1}u^r]
+ \frac{\Gamma(a-z)\Gamma(1-a+z+u)}{\Gamma(1+u)}.
+\end{equation}
+
+\begin{corollary}[Finite triangular reduction]\label{cor:triangular}
+For integers $p\ge1,r\ge0$ and $0<a<1$,
+\begin{align}\label{eq:triangular}
+ T_{p,r}(a)+(-1)^{p-1}T_{p,r}(1-a)
+ &=C_{p,r}(a)\\
+ &\quad-\sum_{j=1}^r(-1)^{p-1+j}
+   \binom{p-1+j}{j}T_{p+j,r-j}(1-a).\notag
+\end{align}
+Every sum on the right has smaller harmonic index.
+\end{corollary}
+\begin{proof}
+The coefficient of $z^{p-1}u^r$ in
+$\Phi_{1-a}(-z-u,u)$ is
+\[
+ \sum_{j=0}^r(-1)^{p-1+j}\binom{p-1+j}{j}
+                       T_{p+j,r-j}(1-a).
+\]
+Separate $j=0$ in Theorem~\ref{thm:reflection}.
+\end{proof}
+
+\subsection{A finite compiler for the gamma coefficient}
+Put $R_a(z,u)$ equal to the gamma quotient in \eqref{eq:C}, and write
+$R_a=(\pi/\sin\pi a)\exp(\sum_{d\ge1}\ell_d)$, with $\ell_d$ homogeneous of total degree $d$. Then
+\begin{equation}\label{eq:loggammaCoeff}
+ \ell_d(z,u)=\frac{\psi^{(d-1)}(a)(-z)^d
+       +\psi^{(d-1)}(1-a)(z+u)^d
+       -\psi^{(d-1)}(1)u^d}{d!}.
+\end{equation}
+Here $\psi^{(0)}=\psi$. If $E_n$ is the homogeneous degree-$n$ part of the exponential, then
+\begin{equation}\label{eq:expRec}
+ E_0=1,\qquad E_n=\frac1n\sum_{d=1}^n d\ell_d E_{n-d}.
+\end{equation}
+Only degrees through $p+r-1$ are needed for $C_{p,r}$. These recurrences are a finite identity certificate, not a relation search.
+
+For rational $a$, the coefficients reduce to ordinary cyclotomic values and their products. For derivatives of positive order, use
+$\psi^{(k)}(a)=(-1)^{k+1}k!\zeta(k+1,a)$. For $s\ge2$,
+\[
+ \zeta(s,m/q)=q^{s-1}\sum_{h=0}^{q-1}
+ e^{-2\pi\ii hm/q}\Li_s(e^{2\pi\ii h/q}).
+\]
+The Euler constants cancel in the linear part of \eqref{eq:loggammaCoeff}; the remaining rational digamma combinations are expressible in logarithms and trigonometric constants. Thus \eqref{eq:triangular} reduces the reflection combination to lower-index sums and products of depth-one values. It does not prove that the complementary combination is irreducible.
+
+\subsection{The self-reflecting Gaussian case}
+Set
+\[
+ F(z,u)=\tfrac12\Phi_{1/2}(z/2,u)
+       =\sum_{p\ge1,r\ge0}S_{p,r}z^{p-1}u^r.
+\]
+Then
+\begin{equation}\label{eq:Freflection}
+ F(z,u)+F(-z-2u,u)=K(z,u),\qquad
+ K(z,u)=\frac{\Gamma((1-z)/2)\Gamma((1+z)/2+u)}{2\Gamma(1+u)}.
+\end{equation}
+For odd $p$,
+\begin{equation}\label{eq:GaussianTriangle}
+ 2S_{p,r}=[z^{p-1}u^r]K
+   -\sum_{j=1}^r(-1)^j2^j\binom{p-1+j}{j}S_{p+j,r-j}.
+\end{equation}
+For example,
+\[
+ S_{p,2}=pS_{p+1,1}-p(p+1)\beta(p+2)
+               +\tfrac12[z^{p-1}u^2]K\qquad(p\text{ odd}).
+\]
+At even $p$, the coefficient of $S_{p,r}$ cancels. The identity then supplies relations among lower-index quantities rather than an unsupported converse to the odd-$p$ reduction.
+
+\section{A uniform proof of the even-weight Gaussian evaluations}
+\label{sec:odd}
+
+Let $c_j$ be defined by
+\begin{equation}\label{eq:sec}
+ \sec\left(\frac{\pi z}{2}\right)=\sum_{j\ge0}c_jz^{2j},
+ \qquad c_j=\frac{(-1)^j E_{2j}\pi^{2j}}{2^{2j}(2j)!},
+\end{equation}
+where the Euler numbers are normalized by $E_0=1,E_2=-1,E_4=5$.
+
+\begin{theorem}[All odd outer exponents]\label{thm:odd}
+For every integer $m\ge0$,
+\begin{equation}\label{eq:oddformula}
+ \boxed{\quad
+ S_{2m+1,1}=(2m+1)\beta(2m+2)
+ -\frac\pi2\left(c_m\log2+
+ \sum_{j=1}^m c_{m-j}(1-2^{-2j-1})\zeta(2j+1)\right).
+ \quad}
+\end{equation}
+In particular all these values belong to $\calA$ from Section~\ref{sec:audit}.
+\end{theorem}
+\begin{proof}
+Write $F_r(z)=[u^r]F(z,u)$. Differentiating \eqref{eq:Freflection} at $u=0$ gives
+\[
+ F_1(z)+F_1(-z)=K_u(z,0)+2F_0'(-z).
+\]
+Now
+\[
+ K_u(z,0)=\frac{\pi}{2\cos(\pi z/2)}
+                  \left(\psi\left(\frac{1+z}{2}\right)+\gamma\right),
+ \qquad F_0(z)=\sum_{p\ge1}\beta(p)z^{p-1}.
+\]
+The even Taylor part of the digamma factor is
+\[
+ -2\log2-2\sum_{j\ge1}(1-2^{-2j-1})\zeta(2j+1)z^{2j}.
+\]
+The coefficient of $z^{2m}$ in $F_0'(-z)$ is
+$(2m+1)\beta(2m+2)$. Extract $z^{2m}$ and divide by two.
+\end{proof}
+
+The first cases are
+\begin{align*}
+ S_{1,1}&=G-\tfrac\pi2\log2,\\
+ S_{3,1}&=3\beta(4)-\tfrac7{16}\pi\zeta(3)-\tfrac1{16}\pi^3\log2,\\
+ S_{5,1}&=5\beta(6)-\tfrac7{128}\pi^3\zeta(3)-\tfrac{31}{64}\pi\zeta(5)
+                          -\tfrac5{768}\pi^5\log2,\\
+ S_{7,1}&=7\beta(8)-\tfrac{35}{6144}\pi^5\zeta(3)
+           -\tfrac{31}{512}\pi^3\zeta(5)-\tfrac{127}{256}\pi\zeta(7)
+           -\tfrac{61}{92160}\pi^7\log2.
+\end{align*}
+The last two are exactly the two highlighted identities of \cite{repoGaussian}. The same theorem gives, for instance,
+\begin{align*}
+ S_{9,1}={}&9\beta(10)-\frac{277\pi^9\log2}{4128768}
+ -\frac{427\pi^7\zeta(3)}{737280}-\frac{155\pi^5\zeta(5)}{24576}\\
+ &-\frac{127\pi^3\zeta(7)}{2048}-\frac{511\pi\zeta(9)}{1024}.
+\end{align*}
+These are consequences of a single analytic identity, rather than extrapolations from a finite parity table.
+
+\section{Complete monotonicity and globally enveloping truncations}
+\label{sec:envelopes}
+
+Define
+\begin{equation}\label{eq:h}
+ h_r(t)=\frac1{1+t}\left(\frac{\log(1+t)}t\right)^r,
+ \qquad h_r(0)=1.
+\end{equation}
+The elementary representation
+\begin{equation}\label{eq:mixture}
+ h_r(t)=\int_{[0,1]^r}\frac1{1+t}\prod_{j=1}^r\frac1{1+x_jt}
+                  \dd x_1\cdots\dd x_r
+\end{equation}
+is the source of the signed bounds.
+
+\begin{lemma}\label{lem:CM}
+For $t\ge0$, $h_r$ is completely monotone: $(-1)^k h_r^{(k)}(t)\ge0$ for all $k\ge0$. Moreover,
+\begin{equation}\label{eq:hTaylor}
+ h_r(t)=r!\sum_{j\ge0}(-1)^j e_r(r+j)t^j\quad (|t|<1).
+\end{equation}
+For every integer $M\ge0$ and $0\le t\le1$,
+\begin{equation}\label{eq:pointEnvelope}
+ 0\le(-1)^M\left(h_r(t)-r!\sum_{j=0}^{M-1}(-1)^je_r(r+j)t^j\right)
+       \le r!e_r(r+M)t^M.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every factor in \eqref{eq:mixture} has derivatives of alternating sign, and products preserve this property by Leibniz's rule. Integration preserves it as well. Formula \eqref{eq:hTaylor} follows from \eqref{eq:hgen} after removing the zero of order $r$ at $t=0$. Taylor's integral remainder has sign $(-1)^M$. Its magnitude is at most $|h_r^{(M)}(0)|t^M/M!$ because complete monotonicity makes $|h_r^{(M)}(t)|$ nonincreasing. This is \eqref{eq:pointEnvelope}; $M=0$ means $0\le h_r(t)\le1$.
+\end{proof}
+
+\begin{theorem}[First-omitted-term certificate]\label{thm:envelope}
+For every real $p,a>0$, integer $r\ge0$, and integer $M\ge0$,
+\begin{align}\label{eq:Tenvelope}
+0\le(-1)^{r+M}\left(
+ T_{p,r}(a)-\sum_{n=r}^{r+M-1}\frac{(-1)^ne_r(n)}{(n+a)^p}
+ \right)
+ \le \frac{e_r(r+M)}{(r+M+a)^p}.
+\end{align}
+In the Gaussian normalization, replace every $(n+a)^p$ by $(2n+1)^p$.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{eq:pointEnvelope} by
+$t^{a+r-1}(-\log t)^{p-1}/(r!\Gamma(p))$ and integrate. Equation \eqref{eq:mellin} gives the middle term, and each monomial integrates explicitly.
+\end{proof}
+
+\begin{remark}
+The certificate holds even when the first few summand magnitudes increase. Its proof is not an application of the alternating-series remainder theorem at an unjustified starting index. For example $r$ may be large and $p$ small; the positivity of the integral, rather than early term monotonicity, controls the error.
+\end{remark}
+
+Since $e_r(r)=1/r!$ and $e_r(r+1)=(r+2)/(2r!)$, we obtain
+\begin{equation}\label{eq:relative}
+0\le 1-(-1)^rr!(r+a)^pT_{p,r}(a)
+ \le\frac{r+2}{2}\left(\frac{r+a}{r+a+1}\right)^p.
+\end{equation}
+The lower expression furnished by this bound may be negative for small $p$; positivity from Proposition~\ref{prop:integral} remains available. For fixed $r,a$ and $p\to\infty$,
+\begin{equation}\label{eq:fixedr}
+T_{p,r}(a)=\frac{(-1)^r}{r!(r+a)^p}
+ +\frac{(-1)^{r+1}(r+2)}{2r!(r+a+1)^p}
+ +R_{p,r},\quad
+ |R_{p,r}|\le\frac{e_r(r+2)}{(r+a+2)^p}.
+\end{equation}
+More generally, every finite number of exponential terms has its own signed explicit remainder. The first-omitted-term constant is asymptotically sharp for fixed $r,a,M$, by applying the bound once more to the remainder.
+
+\subsection{An exact symmetric-function certificate}
+Expanding \eqref{eq:mixture} at zero gives
+\begin{equation}\label{eq:composition}
+ r!e_r(r+j)=
+ \sum_{k_0+\cdots+k_r=j}\prod_{i=1}^r\frac1{k_i+1}.
+\end{equation}
+Equivalently, it is the integral of the complete homogeneous polynomial
+$h_j(1,x_1,\ldots,x_r)$ over $[0,1]^r$. This identity is checked using exact rational arithmetic by two different recurrences in the supplied code. In particular, for fixed $j$,
+\begin{equation}\label{eq:coefficientAsymp}
+ r!e_r(r+j)=\frac{r^j}{2^j j!}+O_j(r^{j-1}).
+\end{equation}
+The leading contribution comes from $j$ distinct variables among $x_1,\ldots,x_r$; repeated variables and use of the distinguished entry $1$ contribute $O_j(r^{j-1})$.
+
+\subsection{Pole stripping and exact Taylor radius}
+Let $F_{a,r}(z)=[u^r]\Phi_a(z,u)$. The integral representation shows that it extends holomorphically to $\Re z<a+r$, because the numerator vanishes to order $r$ at the origin. Subtracting finitely many terms of \eqref{eq:hgen} then continues it meromorphically to the entire $z$-plane, with precisely the simple poles
+\begin{equation}\label{eq:poles}
+ z=a+n\quad(n\ge r),\qquad
+ \Res_{z=a+n}F_{a,r}(z)=(-1)^{n+1}e_r(n).
+\end{equation}
+For clarity, subtract through degree $N$ inside the integral. The remainder is $O(t^{N+1})$ at zero and is holomorphic for $\Re z<a+N+1$; the subtracted terms are $(-1)^ne_r(n)/(a+n-z)$. Every residue in \eqref{eq:poles} is nonzero. Therefore the Taylor series
+$F_{a,r}(z)=\sum_{p\ge1}T_{p,r}(a)z^{p-1}$ has exact radius $a+r$. This explains the first exponential scale in \eqref{eq:fixedr}.
+
+\section{The joint depth--exponent transition}
+\label{sec:transition}
+
+For $r\ge1$, set
+\begin{equation}\label{eq:normalized}
+ \mathcal R_{p,r}(a)=(-1)^r r!(r+a)^pT_{p,r}(a),
+ \qquad L=p/r,\quad c=L-\log r,\quad\lambda=\tfrac12e^{-c}.
+\end{equation}
+At $a=1/2$, this is $(-1)^r r!(2r+1)^pS_{p,r}$. By the strictly positive integral and $0<h_r(t)<1$ for $t>0$, we have $0<\mathcal R_{p,r}(a)<1$.
+
+\begin{proposition}[Gamma expectation]\label{prop:gammaLaw}
+If $Y$ has gamma distribution with shape $p$ and rate $r+a$, then
+\begin{equation}\label{eq:gammaLaw}
+ \mathcal R_{p,r}(a)=\E h_r(e^{-Y}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Set $t=e^{-y}$ in \eqref{eq:mellin} and factor $e^{-ry}$ out of $\log^r(1+e^{-y})$. Multiplying by the normalization in \eqref{eq:normalized} leaves precisely the gamma density
+$(r+a)^p y^{p-1}e^{-(r+a)y}/\Gamma(p)$.
+\end{proof}
+
+\begin{theorem}[Uniform transition and first correction]\label{thm:transition}
+Let $a$ range over a fixed compact subset of $(0,\infty)$ and let $c$ range over a fixed compact subset of $\mathbb R$. Put $p=r(\log r+c)$ and $L=\log r+c$. As the integer $r\to\infty$,
+\begin{align}\label{eq:transition}
+ \mathcal R_{p,r}(a)
+ =e^{-\lambda}\left[1+\frac1r
+ \left\{\left(\frac{\lambda^2}{2}-(a+\tfrac12)\lambda\right)L
+                  +\frac{5\lambda^2}{6}-2\lambda\right\}\right]
+ +O\!\left(\frac{L^2}{r^2}\right),
+ \qquad \lambda=\tfrac12e^{-c}.
+\end{align}
+The implied constant is uniform on those compact sets. In particular,
+\begin{equation}\label{eq:profile}
+ \mathcal R_{p,r}(a)\longrightarrow\exp(-e^{-c}/2).
+\end{equation}
+For integer $p$, use $c=p/r-\log r$ in the expansion; rounding $r(\log r+c_0)$ to an integer preserves the limit with $c_0$.
+\end{theorem}
+
+We prove a uniform kernel lemma first. It is also the basis of the all-orders result.
+
+\begin{lemma}[Uniform kernel expansion]\label{lem:kernel}
+Write
+\begin{equation}\label{eq:b}
+ \log\left(\frac{\log(1+t)}t\right)=\sum_{m\ge1}b_mt^m,
+ \qquad b_1=-\tfrac12,\quad b_2=\tfrac5{24}.
+\end{equation}
+Define polynomials $Q_j(v)$ by
+\begin{equation}\label{eq:Qgen}
+ \sum_{j\ge0}Q_j(v)\varepsilon^j
+ =\exp\left(\sum_{k\ge1}\varepsilon^k
+ \left(2^{k+1}b_{k+1}v^{k+1}+\frac{(-1)^k2^kv^k}{k}\right)\right).
+\end{equation}
+For each fixed $J\ge0$,
+\begin{equation}\label{eq:kernelExpansion}
+ \sup_{0\le t\le1}\left|
+ h_r(t)-e^{-rt/2}\sum_{j=0}^J\frac{Q_j(rt/2)}{r^j}\right|
+ \le C_J r^{-J-1}.
+\end{equation}
+In particular $Q_0=1$ and $Q_1(v)=5v^2/6-2v$.
+\end{lemma}
+\begin{proof}
+Put $v=rt/2$. Expanding $r\log(\log(1+t)/t)-\log(1+t)$ at zero gives $-v$ plus the exponent in \eqref{eq:Qgen} with $\varepsilon=1/r$. Fix a sufficiently small $\delta>0$. On $0\le t\le\delta$, Taylor remainders are bounded by $r^{-J-1}$ times a fixed polynomial in $v$, after expansion through the required order. The perturbation of $-v$ is bounded by a small fixed multiple of $v$ (enlarge the threshold for $r$ if needed). Taylor's remainder for the exponential is consequently dominated by $r^{-J-1}P_J(v)e^{-\eta v}$ for some $\eta>0$. Its supremum is finite.
+
+On $\delta\le t\le1$, the ratio $\log(1+t)/t$ is bounded above by a number strictly less than one. Hence $h_r(t)$ decays exponentially in $r$, while every term of the proposed approximation is a polynomial in $r$ times $e^{-r\delta/2}$. Both are $O_J(r^{-J-1})$. Combining the two ranges proves the claim. All constants here depend only on $J$ and the chosen fixed $\delta$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:transition}]
+Let $\Delta=Y-L$. Its mean and centered gamma moments give, uniformly in the stated parameter sets,
+\begin{align}\label{eq:deltaMoments}
+ \E\Delta&=-\frac{aL}{r}+O(L/r^2),&
+ \E\Delta^2&=\frac Lr+O(L^2/r^2),\\
+ \E\Delta^3&=O(L^2/r^2),&
+ \E\Delta^4&=O(L^2/r^2).\notag
+\end{align}
+For example $\E Y=rL/(r+a)$, $\operatorname{Var}Y=rL/(r+a)^2$, and the centered third and fourth moments are $2rL/(r+a)^3$ and $3(rL)^2/(r+a)^4+6rL/(r+a)^4$. These formulas imply \eqref{eq:deltaMoments} by translation.
+
+Define $v=\lambda e^{-\Delta}$,
+$f(\Delta)=e^{-\lambda e^{-\Delta}}$, and
+$g(\Delta)=e^{-v}(5v^2/6-2v)$. All derivatives of $f$ and $g$ of fixed order are bounded on the real line: each is a polynomial in $v\ge0$ times $e^{-v}$. Lemma~\ref{lem:kernel} with $J=1$ gives
+\[
+ \mathcal R_{p,r}(a)=\E f(\Delta)+r^{-1}\E g(\Delta)+O(r^{-2}).
+\]
+Taylor-expand $f$ through degree three, retaining the fourth-order remainder. Since
+$f'(0)=\lambda e^{-\lambda}$ and
+$f''(0)=(\lambda^2-\lambda)e^{-\lambda}$, \eqref{eq:deltaMoments} yields
+\[
+ \E f(\Delta)=e^{-\lambda}
+ \left[1+\frac Lr\left(\frac{\lambda^2}{2}-(a+\tfrac12)\lambda\right)\right]
+ +O(L^2/r^2).
+\]
+A second-order Taylor bound gives
+$\E g(\Delta)=e^{-\lambda}(5\lambda^2/6-2\lambda)+O(L/r)$.
+Substitute the two estimates. Since $L\asymp\log r$, this is exactly \eqref{eq:transition}.
+\end{proof}
+
+\subsection{A second proof of the limiting profile}
+Theorem~\ref{thm:envelope} and \eqref{eq:coefficientAsymp} provide a useful independent explanation. For fixed $j$ and $p=r(\log r+c)$,
+\[
+ r!e_r(r+j)\left(\frac{r+a}{r+a+j}\right)^p
+ \longrightarrow\frac{\lambda^j}{j!}.
+\]
+Every even and odd truncation bounds $\mathcal R_{p,r}(a)$ from opposite sides. Taking $r\to\infty$ for a fixed truncation and then increasing the truncation squeezes the limit between the alternating Taylor bounds for $e^{-\lambda}$. This argument does not interchange an uncontrolled infinite sum with a limit. It also gives compact-$c$ uniform convergence by making the finite exponential remainder uniformly small.
+
+\subsection{The threshold outside the compact transition window}
+For fixed $a>0$ (also uniformly on compact $a$-sets), if
+$p/r-\log r\to+\infty$, then \eqref{eq:relative} implies
+$\mathcal R_{p,r}(a)\to1$. One may split into $p/r\le2\log r$ and $p/r>2\log r$ to verify the exponential estimate without assuming $p/r^2$ is small.
+
+If $p/r-\log r\to-\infty$, with $p>0$, then eventually $L\le\log r$, and $Y-L\to0$ in probability because its variance and mean shift tend to zero. Thus $re^{-Y}\to\infty$ in probability. The elementary inequality
+$\log(1+t)/t\le1-t/6$ on $0\le t\le1$ gives
+$h_r(t)\le e^{-rt/6}$. Bounded convergence in probability in \eqref{eq:gammaLaw} now gives $\mathcal R_{p,r}(a)\to0$. Therefore $p\sim r\log r$ is the actual threshold for first-pole dominance.
+
+\subsection{All-orders transition polynomials}
+\label{sec:allorders}
+Define the operator on polynomials in $v$
+\begin{equation}\label{eq:Dop}
+ \calD P(v)=vP(v)-vP'(v),
+\end{equation}
+and the polynomials
+\begin{equation}\label{eq:dj}
+ d_j(t;a)=\frac{(-1)^j}{j+1}
+              \bigl(a^{j+1}-(a-t)^{j+1}\bigr)\quad(j\ge1).
+\end{equation}
+The operator convention follows from
+$\partial_\Delta(e^{-v}P(v))=e^{-v}\calD P(v)$ for $v=\lambda e^{-\Delta}$.
+
+\begin{theorem}[All-orders compiler]\label{thm:allorders}
+For every fixed $J\ge0$, in the parameter range of Theorem~\ref{thm:transition},
+\begin{equation}\label{eq:allorders}
+ \mathcal R_{p,r}(a)=e^{-\lambda}
+ \sum_{j=0}^J\frac{P_j(L,\lambda;a)}{r^j}
+ +O_{J}\left(\frac{L^{J+1}}{r^{J+1}}\right),
+\end{equation}
+uniformly on compact $a,c$-sets. The $P_j$ have rational coefficients and degree at most $j$ in $L$. They are determined by the finite formal prescription
+\begin{equation}\label{eq:Pcompiler}
+ \sum_{j\ge0}P_j(L,v;a)\varepsilon^j
+ =\exp\left(L\sum_{k\ge1}\varepsilon^k d_k(\calD;a)\right)
+       \left(\sum_{k\ge0}\varepsilon^kQ_k(v)\right).
+\end{equation}
+In particular
+\begin{equation}\label{eq:P1}
+ P_1=\left(\frac{v^2}{2}-(a+\tfrac12)v\right)L+\frac56v^2-2v.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The exact moment-generating function of $\Delta$ is
+\[
+ \log\E e^{t\Delta}
+ =-Lt+rL\{\log(1+a/r)-\log(1+(a-t)/r)\}
+ =L\sum_{j\ge1}r^{-j}d_j(t;a).
+\]
+Consequently expectation, formally through any fixed order in $r^{-1}$, is the differential operator
+$\exp(L\sum r^{-j}d_j(\partial_\Delta;a))$ evaluated at $\Delta=0$. Conjugation by $e^{-v}$ turns $\partial_\Delta$ into \eqref{eq:Dop}, proving the coefficient rule.
+
+For the error justification, apply Lemma~\ref{lem:kernel} through order $J$. For the term containing $r^{-k}Q_k$, Taylor-expand $e^{-v}Q_k(v)$ as a function of $\Delta$ through degree $2(J-k)+1$. Its fixed-order derivatives are bounded, and the gamma moments imply
+$\E|\Delta|^{2s}=O_s((L/r)^s)$ for each fixed $s$, since $L\asymp\log r$. The Taylor remainder therefore contributes
+$O(r^{-J-1}L^{J-k+1})$. The finitely many retained moments are explicit rational functions of $r+a$ with polynomial dependence on $rL$; expanding them through order $J$ yields the stated formal operator and an error $O_J(L^{J+1}/r^{J+1})$. This also controls the uniform kernel error. Finally, each factor in the operator exponent carries one $L$ and at least one power of $\varepsilon$, so the coefficient of $\varepsilon^j$ has degree at most $j$ in $L$.
+\end{proof}
+
+For reproducibility, write $P_2=A_2L^2+B_2L+C_2$, where
+\begin{align*}
+ A_2={}&\frac{v^4}{8}-\left(\frac a2+\frac34\right)v^3
+ +\left(\frac{a^2}{2}+\frac{3a}{2}+\frac78\right)v^2
+ -\left(\frac{a^2}{2}+\frac a2+\frac18\right)v,\\
+ B_2={}&\frac{5v^4}{12}-\left(\frac{5a}{6}+\frac{11}{4}\right)v^3
+ +\left(\frac{8a}{3}+\frac{11}{3}\right)v^2
+ +\left(a^2-a-\frac23\right)v,\\
+ C_2={}&\frac{25v^4}{72}-\frac83v^3+4v^2.
+\end{align*}
+The supplementary symbolic script produces $P_0,\ldots,P_4$ from \eqref{eq:Pcompiler}; it does not fit them to numerical data.
+
+\subsection{The complementary fixed-exponent regime}
+\label{sec:fixedp}
+The transition theorem is not uniform down to fixed $p$. A separate endpoint expansion describes that regime.
+
+\begin{theorem}[Fixed $p$, growing harmonic index]\label{thm:fixedp}
+Let $b=\log2$. For $p,a$ in compact subsets of $(0,\infty)$ and $r\to\infty$,
+\begin{align}\label{eq:fixedp}
+ T_{p,r}(a)=\frac{(-1)^r2^{p-1}b^{r+p}}{r!r^p}
+ \left[1+\frac{(1-2a)bp+(b-1)p(p+1)/2}{r}+O(r^{-2})\right].
+\end{align}
+Thus
+\begin{equation}\label{eq:fixedpS}
+ S_{p,r}=\frac{(-1)^r b^{r+p}}{2r!r^p}
+ \left[1+\frac{(b-1)p(p+1)}{2r}+O_p(r^{-2})\right].
+\end{equation}
+\end{theorem}
+\begin{proof}
+In the $y=-\log t$ form of \eqref{eq:mellin}, the factor
+$\log^r(1+e^{-y})$ localizes the integral near $y=0$. Its logarithm expands as
+\[
+ \log\left(\frac{\log(1+e^{-y})}{b}\right)
+ =-\frac{y}{2b}+\frac{b-1}{8b^2}y^2+O(y^3),
+\]
+while
+$e^{-ay}/(1+e^{-y})=\tfrac12(1+(1/2-a)y+O(y^2))$.
+Set $y=2bv/r$. The integrand becomes $v^{p-1}e^{-v}$ times
+\[
+ 1+\frac{(1-2a)bv+(b-1)v^2/2}{r}+O\!\left(r^{-2}P(v)\right)
+\]
+in a fixed small-$y$ interval, with an integrable exponential majorant after the usual smaller-interval split. The complementary $y$-interval is exponentially small relative to $b^r r^{-p}$: the logarithmic ratio is uniformly below one there, and its large-$y$ decay supplies integrability. Integrating the displayed terms uses
+$\Gamma(p+1)/\Gamma(p)=p$ and $\Gamma(p+2)/\Gamma(p)=p(p+1)$. Uniform Taylor bounds on compact $a,p$-sets give the stated remainder. Finally divide by $2^p$ at $a=1/2$.
+\end{proof}
+
+\section{Geometric evaluation with explicit error bounds}
+\label{sec:certification}
+
+The signed partial-sum bounds are exact but may converge slowly at small $p$. An incomplete-beta expansion supplies geometric convergence. In \eqref{eq:Phi}, put $y=t/(1+t)$; then
+\begin{equation}\label{eq:incomplete}
+ \Phi_a(z,u)=\int_0^{1/2}y^{a-z-1}(1-y)^{u-a+z}\dd y
+ =2^{-a+z}\sum_{n\ge0}
+ \frac{(a-z-u)_n}{n!\,2^n(n+a-z)}.
+\end{equation}
+This is the usual binomial expansion of the incomplete-beta integral, with all variables and normalizations displayed.
+
+\begin{theorem}[Explicit Cauchy tail bound]\label{thm:cauchy}
+Let $p\ge1$ and $r\ge0$ be integers, and let $a>0$. Choose $0<\rho<a$, $\sigma>0$, and let $A=a+\rho+\sigma$. For an integer $N\ge1$, put
+\[
+ q_N=\frac12\max\left(1,\frac{N+A}{N+1}\right),
+ \qquad
+ B_N=2^{-a+\rho}\frac{(A)_N}{N!2^N(N+a-\rho)}.
+\]
+If $q_N<1$, the error after retaining $0\le n<N$ in \eqref{eq:incomplete} has modulus at most $B_N/(1-q_N)$ on $|z|\le\rho,|u|\le\sigma$. Consequently the error in $T_{p,r}(a)$ is at most
+\begin{equation}\label{eq:generalCauchy}
+ \rho^{-(p-1)}\sigma^{-r}\frac{B_N}{1-q_N}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For every factor of the rising factorial,
+$|a-z-u+j|\le A+j$. Also
+$|n+a-z|\ge n+a-\rho$ and
+$|2^{-a+z}|\le2^{-a+\rho}$. The resulting positive majorant term has ratio
+\[
+ \frac{n+A}{2(n+1)}\frac{n+a-\rho}{n+1+a-\rho}\le q_N
+ \qquad(n\ge N).
+\]
+Sum the geometric majorant. The bivariate Cauchy coefficient estimate gives \eqref{eq:generalCauchy}.
+\end{proof}
+
+\begin{corollary}[A rational Gaussian error bound]\label{cor:rationalBound}
+For $a=1/2$ take $\rho=\sigma=1/4$. Let $S_{p,r}^{[N]}$ be the coefficient approximation from \eqref{eq:incomplete}, divided by $2^p$. Then
+\begin{equation}\label{eq:rationalBound}
+ \boxed{\qquad
+ |S_{p,r}-S_{p,r}^{[N]}|
+ \le\frac{2^{p+2r-1-N}}{N+1/4}.
+ \qquad}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Here $A=1$, $(A)_N/N!=1$, $q_N=1/2$, and $2^{-1/4}<1$. Insert these values into \eqref{eq:generalCauchy} and multiply by $2^{-p}$.
+\end{proof}
+
+\subsection{How the supplied exact certificates are constructed}
+For rational $a=1/2$, the finite approximation has the form
+\begin{equation}\label{eq:finitepoly}
+ S_{p,r}^{[N]}=2^{-p-1/2}\sum_{\ell=0}^{p-1}c_\ell(\log2)^\ell,
+ \qquad c_\ell\in\Q.
+\end{equation}
+The coefficients are computed exactly. Maintain the truncated bivariate polynomial
+$P_n(z,u)=(1/2-z-u)_n/n!$ using
+\[
+ P_{n+1}=\frac{n+1/2-z-u}{n+1}P_n.
+\]
+Multiply by the truncated geometric expansion of $(n+1/2-z)^{-1}$, accumulate the $2^{-n}$ terms, and finally multiply by the Taylor polynomial of $e^{z\log2}$. All operations up to \eqref{eq:finitepoly} are rational.
+
+The code then encloses $\log2$ using
+\[
+ \log2=2\sum_{k=0}^{K-1}\frac1{(2k+1)3^{2k+1}}+\eta_K,
+ \qquad0<\eta_K\le\frac9{4(2K+1)3^{2K+1}},
+\]
+and encloses $2^{-1/2}$ by an integer square-root computation on a dyadic scale. Rational interval Horner evaluation controls the error in \eqref{eq:finitepoly}, and the rational bound \eqref{eq:rationalBound} controls the infinite tail. Thus the resulting interval endpoints are exact fractions. They do not depend on trusting a floating-point quadrature result or a special-function library.
+
+These certificates establish enclosures for individual constants. Overlap of two intervals would not, by itself, prove an identity between the constants; the analytic proofs in earlier sections perform that task. Conversely, disjoint validated intervals can rigorously disprove a proposed equality. A finite-height exclusion program would require a further certified enumeration or lattice argument, which is not included here.
+
+\section{Computational results and reproducibility}
+\label{sec:computations}
+
+The accompanying Python program uses exact \src{Fraction} arithmetic for symmetric-function identities and interval certificates, and \src{mpmath} at 65 decimal digits for independent numerical diagnostics. The retained run contains 63 exact coefficient identities, 40 exact interval-intersection checks, eight exact certified intervals, nine checks of \eqref{eq:oddformula}, 36 checks of \eqref{eq:triangular} at $a=1/3,1/2,2/3$, and 12 transition diagnostics. The 156 exact or numerical consistency checks passed, and the 12 transition diagnostics were recorded. A supplementary run checks six second-order transition cases at $a=1/3,2$ and nine fixed-exponent cases, including $p=3/4$; all show the predicted improvement at the sampled points. Seven fast regression tests cover the exact-arithmetic primitives and the guarded correction transform. The number of checks is not a substitute for the universal proofs.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrll}
+\toprule
+$p$&$r$&Value (displayed approximately)&Certified interval width\\
+\midrule
+1&1&$-0.1728274509745820501957409342$&$<2.90\cdot10^{-56}$\\
+3&1&$-0.0285741706362435909990842951$&$<1.16\cdot10^{-55}$\\
+5&1&$-0.0037188123599888054227642418$&$<4.64\cdot10^{-55}$\\
+7&1&$-0.0004399267353237755470913921$&$<1.86\cdot10^{-54}$\\
+2&2&$\phantom{-}0.0092596536591600191577739799$&$<2.32\cdot10^{-55}$\\
+3&2&$\phantom{-}0.0022653669153309527016614914$&$<4.64\cdot10^{-55}$\\
+4&3&$-0.0000337260390764312050651891$&$<3.71\cdot10^{-54}$\\
+5&4&$\phantom{-}0.0000002944082073403626809474$&$<2.97\cdot10^{-53}$\\
+\bottomrule
+\end{tabular}
+\caption{Certificates for $S_{p,r}$ using $N=180$. Exact rational endpoints, not rounded table entries, are stored in \src{results/certified_intervals.json}.}
+\end{table}
+
+For the transition, $c=0$ means $p=r\log r$ and the limiting value is $e^{-1/2}$. The following table compares the limit alone with the explicit first-correction approximation in \eqref{eq:transition} at $a=1/2$.
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$r$&Numerical $\mathcal R_{p,r}(1/2)$&Error of limit&Error after correction\\
+\midrule
+40&0.574786036308835889&$3.1745\cdot10^{-2}$&$1.2355\cdot10^{-3}$\\
+160&0.596426283904897806&$1.0105\cdot10^{-2}$&$1.1134\cdot10^{-4}$\\
+640&0.603493510625858395&$3.0372\cdot10^{-3}$&$9.4518\cdot10^{-6}$\\
+2560&0.605646613319162887&$8.8405\cdot10^{-4}$&$7.7229\cdot10^{-7}$\\
+\bottomrule
+\end{tabular}
+\caption{Non-interval numerical diagnostics, evaluated from the gamma expectation. The asymptotic error order is proved in Theorem~\ref{thm:transition}, not inferred from the table.}
+\end{table}
+
+The gamma-expectation evaluator is important numerically: it works directly with a number between zero and one rather than first computing $T_{p,r}(a)$, which may be extraordinarily small. Likewise, the exact coefficient evaluator avoids inferring equality from cancellation between large depth-one terms. For example, $S_{p,1}$ has scale $3^{-p}$, although the separate terms in its odd-$p$ closed form are much larger.
+
+\paragraph{Reproduction.}
+From the package root run
+\begin{verbatim}
+python code/polylog_research.py --full
+python code/transition_polynomials.py
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  reflection_envelopes_depth_transition.tex
+\end{verbatim}
+The main verification requires \src{mpmath}; the polynomial compiler also requires \src{sympy}. Version information is retained separately. No Wolfram kernel or Lean proof checker was used. The PDF was compiled from the supplied source and checked by rendering; the original repository was not modified.
+
+\section{Further research questions and integration priorities}
+\label{sec:future}
+
+\paragraph{1. Resolve the complementary reflection sector in a fixed algebra.}
+At $a=1/2$, the present identity evaluates the odd outer exponents at harmonic index one. For even outer exponents it does not prove non-membership in $\calA$. A useful next step is to construct explicit motivic lifts and compute their classes in a specified quotient, while stating separately what is known for numerical periods. The off-axis alphabet and the root-of-unity alphabet should be investigated as distinct problems.
+
+\paragraph{2. Extend the transition expansion beyond compact $c$-windows.}
+Theorem~\ref{thm:allorders} is uniform for bounded $c$, and the two extreme limits are proved separately. Determine optimal growing ranges $c=c(r)$ for each truncation order, with explicit dependence of the remainder on $\lambda=e^{-c}/2$. This would connect the fixed-$p$ endpoint regime, the transition, and first-pole dominance by one uniform scheme.
+
+\paragraph{3. Establish effective constants and bit-complexity bounds.}
+The Cauchy bound is fully explicit, whereas the all-orders transition theorem currently has uniform but unspecified constants. Derivative majorants in Lemma~\ref{lem:kernel} can make them effective. For the exact evaluator, analyze coefficient-height growth and rational-arithmetic cost rather than counting terms alone; optimize the Cauchy radii jointly with the requested coefficient indices.
+
+\paragraph{4. Extend the positivity argument to other harmonic numerators.}
+The key factorization \eqref{eq:mixture} is special to elementary harmonic symmetric functions. Investigate which complete, mixed, or colored harmonic numerators admit comparable positive integral representations, and which consequently enjoy a first-omitted-term certificate before term monotonicity begins. Counterexamples would be as informative as extensions.
+
+\paragraph{5. Build a filtered, auditable cyclotomic reduction database.}
+Every reduction should carry a normalized series or word definition, branch data, the exact algebra being used, and a symbolic certificate. Distinguish a quotient by supplied relations from a proven basis of motivic periods and from a basis of numerical periods. The order correction \eqref{eq:goodG} should be checked at the interface between every iterated-integral and nested-series implementation.
+
+\paragraph{6. Formalize the proof-bearing core.}
+A tractable sequence is the finite symmetric-function identity \eqref{eq:composition}, the rational coefficient recurrence, the real complete-monotonicity envelope, and finally the beta reflection. The exact rational certificates already isolate a small computational core. Formalizing them would not automatically formalize the analytic theorems, but it would provide a concrete starting point with clear dependencies.
+
+\paragraph{Integration recommendation.}
+Add this manuscript and its reproducibility package as a new research article. Correct the localized integral-order typo using the guarded script, and revise the unsupported lower-bound language explicitly rather than silently overwriting the historical record. Keep the numerical discoveries and their provenance, but distinguish them from the proven formulas and from conjectural irreducibility.
+
+\appendix
+\section{A precise claim ledger}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.62\textwidth}}
+\toprule
+Claim&Status in this package\\\midrule\endhead
+Reflection and triangular identities&Proved analytically, including domains and coefficient conventions.\\
+All odd-$p$ Gaussian evaluations&Proved for every $m\ge0$; draft examples recovered exactly.\\
+Signed truncation bounds&Proved for all real $a,p>0$ and all integer $r,M\ge0$.\\
+Joint transition and all orders&Proved with uniform remainder on compact $a,c$-sets.\\
+Fixed-$p$ endpoint expansion&Proved uniformly on compact positive $a,p$-sets.\\
+Eight numerical enclosures&Exact rational endpoints, including an analytic tail bound.\\
+Other numerical diagnostics&Corroboration only; not interval-certified.\\
+Odd-weight irreducibility&Not established here; numerical failure is not a proof.\\
+Selected triples have minimal depth three&Not established by the cited ambient-dimension argument.\\
+A complete audit of every draft&Not performed; reviewed files and sampled sections are identified.\\
+Formal proof-assistant verification&Not performed.\\
+Global novelty or priority&Not asserted; related parity and Euler-sum literature is cited.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{99}
+\bibitem{repoGaussian}
+V. Reshetnikov, \emph{Depth filtration of Gaussian multiple polylogarithms: a parity alternation, computed with Wolfram 15}, ProveIt draft, June 19, 2026.
+\src{Analysis/Polylogarithms/docs/articles/gaussian-multiple-polylog-depth.tex}.
+Blob \src{7bab317504cef68496e002c7b6ffa12325081b12}.
+
+\bibitem{repoDouble}
+V. Reshetnikov, \emph{Multiple polylogarithms at Gaussian and Eisenstein arguments: closed forms, double-shuffle dimensions, and the onset of depth three}, ProveIt draft, June 20, 2026.
+\src{Analysis/Polylogarithms/docs/articles/gaussian-eisenstein-double-polylogs.tex}.
+Blob \src{8aee642511b3f1ad791c245c34ad032d3fe4be83}.
+
+\bibitem{repoStieltjes}
+V. Reshetnikov, \emph{The parameter-derivative tower of the generalized Stieltjes constants: a uniform harmonic-number theorem}, ProveIt draft, June 2026.
+\src{Analysis/Polylogarithms/docs/articles/stieltjes-parameter-derivative-tower.tex}.
+Blob \src{e4d53b7c921c72ff40c5393a9d3ac5cfb44ea6bb}.
+
+\bibitem{DLMFbeta}
+NIST Digital Library of Mathematical Functions, \S5.12, \emph{Beta function}.
+\url{https://dlmf.nist.gov/5.12}. Accessed October 7, 2026.
+
+\bibitem{DLMFincbeta}
+NIST Digital Library of Mathematical Functions, \S8.17, \emph{Incomplete beta functions}.
+\url{https://dlmf.nist.gov/8.17}. Accessed October 7, 2026.
+
+\bibitem{XuWang}
+C. Xu and W. Wang, \emph{Dirichlet type extensions of Euler sums},
+Comptes Rendus Math\'ematique \textbf{361} (2023), 979--1010.
+\url{https://doi.org/10.5802/crmath.453}; arXiv:2009.11704.
+
+\bibitem{Panzer}
+E. Panzer, \emph{The parity theorem for multiple polylogarithms},
+Journal of Number Theory \textbf{172} (2017), 93--113.
+
+\bibitem{Umezawa}
+R. Umezawa, \emph{An explicit parity theorem for multiple polylogarithms},
+arXiv:2508.02040 (2025), version 1.
+\url{https://arxiv.org/html/2508.02040v1}.
+
+\bibitem{Glanois}
+C. Glanois, \emph{Motivic unipotent fundamental groupoid of
+$\mathbb G_m\setminus\mu_N$ for $N=2,3,4,6,8$ and Galois descents},
+arXiv:1411.4947 (2014).
+\url{https://arxiv.org/abs/1411.4947}.
+
+\bibitem{PSLQ}
+H. R. P. Ferguson, D. H. Bailey, and S. Arno,
+\emph{Analysis of PSLQ, an integer relation finding algorithm},
+Mathematics of Computation \textbf{68} (1999), 351--369.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,113 @@
+\section{Further research questions}
+\label{questions:section}
+
+The following questions follow directly from proved results or identified
+gaps.  They are not presented as solved by the computations in this package.
+
+\subsection{Zero geometry and asymptotic analysis}
+
+\paragraph{1. The first derivative order at which all zeros appear.}
+Let $k_0(n)$ be the least $k\geq1$ for which $\gamma_n^{(k)}$ has
+$n$ distinct positive zeros.  Our proof shows that $k_0(n)$ exists,
+and interlacing shows that saturation persists at every later order.
+Determine $k_0(n)$, or obtain an explicit upper bound.
+Is $k_0(n)=1$ for every $n$?  This is a concrete question, not a
+consequence of our large-$k$ argument.  A useful first project is a
+rigorously enclosed zero table for moderate $n$ and all smaller $k$.
+
+\paragraph{2. An effective saturation theorem.}
+Turn the proof into a displayed bound $k\geq K(n)$ by bounding the root
+separation of $P_n$, the derivatives of $h_n$ near its zeros, and the
+gamma concentration remainder.  This would replace a fixed-$n$
+existence result by an algorithm with a proved termination bound.
+The finite-factor proof of simple roots is qualitative; quantitative
+root separation is the main missing input.
+
+\paragraph{3. Joint growth of Laurent index and derivative order.}
+The remainder constants currently depend on $n$ without control.
+Find a range $n=n(k)\to\infty$ in which the zero count is saturated and
+the expansions remain uniform.  This requires a quantitative theory
+of the reciprocal-gamma Appell roots, not only fixed-degree
+hyperbolicity.  Compare the resulting root distribution with known
+asymptotic theory of Jensen and Appell polynomials.
+
+\paragraph{4. Optimal bounds for the first-index root.}
+The width-$1/2$ bracket is global and elementary.  Determine the best
+constant $C$ for $a_k<e^{H_{k-1}}+C$, or prove sharper two-sided
+bounds involving one or two elementary functions of $k$.
+The expansion suggests precise limiting offsets, but monotonicity of
+those offsets still needs proof.
+
+\paragraph{5. Certified computation of all moving zeros.}
+Implement the kernel and the scaled Euler--Maclaurin scheme with ball
+arithmetic and explicit tail enclosures.  Combine signs at endpoints
+with the proved zero bound to certify completeness.  This would give
+an auditable bridge from the analytic theorem to large tables,
+including coefficients of high-order zero expansions.
+
+\paragraph{6. Interlacing in the Laurent index.}
+The polynomial roots interlace in $n$, and the transformed zeros
+eventually inherit the corresponding leading-order ordering.
+Determine whether an exact interlacing law holds for
+$\gamma_n^{(k)}$ and $\gamma_{n+1}^{(k)}$ at a fixed $k$, and identify
+any necessary threshold or counterexample.  Positivity of the kernel
+alone does not settle this comparison between different polynomials.
+
+\paragraph{7. Complex zeros and other asymptotic scales.}
+Extend the concentration analysis to complex $a$ in sectors.
+The real sign-variation bound has no direct complex analogue, so a
+complex zero-completeness result requires a separate argument, for
+example an argument-principle estimate or a uniform saddle analysis.
+Potential transitions near poles of $1/(1-e^{-t})$ should be treated
+explicitly rather than inferred from the real theorem.
+
+\subsection{Relations, depth, and exact certificates}
+
+\paragraph{8. Arithmetic injectivity of the formal quotient.}
+Specify manageable coefficient fields and background inventories for
+which the evaluation map from a weighted distribution quotient is
+injective, or has a computable kernel.  The formal rank is now known;
+the arithmetic obstruction has consequently been isolated precisely.
+Unsuccessful PSLQ searches can suggest test cases but cannot settle
+this injectivity problem.
+
+\paragraph{9. Integral presentations and torsion.}
+The character proof works over characteristic zero after scalar
+extension.  Determine the Smith normal form of the corresponding
+integral matrices for positive integer weights, and study denominators
+and torsion for negative weights after clearing denominators.
+Rational dimension and integral freeness are different questions;
+the arbitrary-weight theorem here does not assert the latter.
+
+\paragraph{10. The odd-total-weight Gaussian ladder.}
+For $S_{2m}$, compute explicit motivic or coaction classes in a precisely
+specified level-four algebra.  The even-weight upper reductions are
+proved, but the proposed lower-depth obstruction in the complementary
+parity still needs such a calculation.  Start with a small named family
+and produce a checkable nonvanishing certificate before asserting a
+general alternation theorem.
+
+\paragraph{11. The three-dimensional shuffle quotient at weight six.}
+Determine what happens to its three surviving formal directions after
+specialization to Gaussian or Eisenstein arguments.  Additional
+functional equations, distribution identities, or motivic relations
+may lower the dimension.  The exact annihilator witnesses in the
+package provide a reproducible starting point, not a proof that the
+specialized periods are independent.
+
+\paragraph{12. Complete correction and certificate migration.}
+Recompute the modified-polylogarithm complex-embedding tables with the
+correct summation endpoint; reconcile Clausen parity conventions;
+replace numerical branch guards by exact domain certificates; and
+extend the five class-number certificates proved here to the other
+fields in subsequent Herglotz investigations. Proving the fitted
+Herglotz regulator evaluations remains a separate task even in those
+five class-number-one fields. These are well-specified projects
+that would make the existing experimental corpus substantially easier
+to trust and reuse.
+
+\paragraph{13. Formalization of the elementary core.}
+Formalize prime-row factorization, conductor transport, the polynomial
+root-preserving lemma, and the Rolle induction for Laplace transforms
+in Lean. These reusable elementary results provide manageable foundations
+for a later formal treatment of the analytic tower.
