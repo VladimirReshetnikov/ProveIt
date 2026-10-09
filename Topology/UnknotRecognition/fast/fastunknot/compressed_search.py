@@ -91,13 +91,24 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
             # Every mixed cyclic two-run donor is already a coherent pair
             # candidate. An empty snapshot proves this detector cannot act.
             if len(alive)>=3 and prepared[0]:
-                from .power_pair import plan_power_pairs, apply_power_pairs
-                pairs=plan_power_pairs(arena,roots,alive,power_pair_cache)
+                from .power_pair import power_rows, plan_power_pairs, apply_power_pairs
+                rows=power_rows(arena,roots,alive,power_pair_cache)
+                pairs=plan_power_pairs(arena,roots,alive,power_pair_cache,_prepared=rows)
                 if pairs:
                     apply_power_pairs(arena,roots,alive,pairs)
                     moves.append(dict(kind='power_pair_delete',pairs=pairs))
                     raw=True
                     continue
+                # A component of at least three labels needs at least three
+                # donor rows and two mixed rows, even with a pure-power seed.
+                if len(alive)>=4 and len(rows)>=3 and sum(len(row)==2 for _,row in rows)>=2:
+                    from .power_component import plan_power_components, apply_power_components
+                    components=plan_power_components(arena,alive,rows)
+                    if components:
+                        apply_power_components(arena,roots,alive,components)
+                        moves.append(dict(kind='power_component_delete',components=components))
+                        raw=True
+                        continue
         if raw:
             # The old positional moves operate on cyclically reduced roots.
             # Record this boundary explicitly so both replayers use that state.
@@ -275,14 +286,15 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
                        primitive_terminal=terminal, primitive_projection=primitive_projection,
                        rank_two_terminal=primitive_power, primitive_forest=primitive_forest, elimination_batch=elimination_batch):
             return None
-        annihilated = any(move['kind'] == 'power_pair_delete' for move in moves)
+        componented = any(move['kind'] == 'power_component_delete' for move in moves)
+        annihilated = componented or any(move['kind'] == 'power_pair_delete' for move in moves)
         batched = any(move['kind'] == 'elimination_batch' for move in moves)
         forested = any(move['kind'] == 'primitive_forest' for move in moves)
         projected = annihilated or batched or forested or any(move['kind'] == 'primitive_projection' for move in moves)
         if projected and not terminal:
             terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
         if terminal:
-            return dict(version=9 if annihilated else 8 if batched else 7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
+            return dict(version=10 if componented else 9 if annihilated else 8 if batched else 7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
                         input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
         return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',

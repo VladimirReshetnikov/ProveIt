@@ -296,9 +296,9 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     if type(certificate) is not dict or type(certificate.get('version')) is not int:
         return False
     version = certificate['version']
-    final_field = 'terminal' if version in (5, 6, 7, 8, 9) else 'remaining_generator'
+    final_field = 'terminal' if version in (5, 6, 7, 8, 9, 10) else 'remaining_generator'
     if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
-            or version not in (1, 2, 3, 4, 5, 6, 7, 8, 9)
+            or version not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -390,6 +390,13 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
         if type(move) is not dict:
             return False
         kind = move.get('kind')
+        if kind == 'power_component_delete':
+            if certificate['version'] < 10:
+                return False
+            from .power_component_verify import replay_literal_power_components
+            if not replay_literal_power_components(words,alive,move,budget):
+                return False
+            continue
         if kind == 'power_pair_delete':
             if certificate['version'] < 9:
                 return False
@@ -531,10 +538,10 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             budget.size(expanded)
             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
-    if certificate['version'] in (6, 7, 8, 9) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+    if certificate['version'] in (6, 7, 8, 9, 10) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
         from .primitive_projection_verify import verify_literal_rank_one
         return verify_literal_rank_one(words, alive, certificate['terminal'], budget)
-    if certificate['version'] in (5, 6, 7, 8, 9):
+    if certificate['version'] in (5, 6, 7, 8, 9, 10):
         from .primitive_power_verify import verify_literal_terminal
         return verify_literal_terminal(words, alive, certificate['terminal'], budget)
     return alive == {certificate['remaining_generator']} and not any(words)
