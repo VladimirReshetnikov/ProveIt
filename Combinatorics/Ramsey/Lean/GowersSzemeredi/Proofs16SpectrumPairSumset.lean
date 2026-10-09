@@ -1,28 +1,38 @@
-import GowersSzemeredi.Proofs16BohrSpectrumBudget
+import GowersSzemeredi.Proofs16BohrSumSpan
 import GowersSzemeredi.Proofs05PhaseMetric
 
-/-! Sums of two difference sets contain a Bohr set on the common large
-spectrum: the Fourier core of [49]'s Theorem 27, in `ℤ/N`.
+/-! A quarter-radius mixed Bogolyubov theorem: a sharper form of
+`mixed_bogolyubov` and of the Bohr-sum containment of [49]'s Theorem 27.
 
-Write `Â = fourier (indicator A)`. The weight `w(ξ) = |Â(ξ)|²|Â′(ξ)|²` is
-the transform of the four-fold convolution, so
-`Σ_ξ w(ξ) e(ξx) = N·#{(a,b,a′,b′) : a − b + a′ − b′ = x}`. If `S` contains
-every frequency at which both transforms are at least `εN`, then for
-`x ∈ B(S; 1/4)` every character in `S` has nonnegative real part at `x`. The
-frequencies outside `S` contribute at most `(εN)²·N(|A|+|A′|)` by
-Parseval. Hence `x ∈ (A − A) + (A′ − A′)` once
-`ε²N³(|A|+|A′|) < |A|²|A′|²`.
+`mixed_bogolyubov` (`Proofs16MixedBogolyubov`) controls `(A − A) + (B − B)`
+by the Bohr set of the common large spectrum at radius `1/(4π)`, with
+coefficient threshold `τ = |A||B|/(4N²)`. Bounding the phase error by `1/2`
+costs the factor `π` in the radius. Using instead that every character has
+nonnegative real part on the quarter ball gives
+
+* radius `1/4`, the radius in [49]'s Theorem 27 (`π` times larger); and
+* threshold `2τ = |A||B|/(2N²)` (twice larger), so fewer frequencies are
+  large and the bounded-span cutoff `128(m+1)²/ε²` shrinks by a factor of
+  four.
+
+Write `w(ξ) = |Â(ξ)|²|B̂(ξ)|²` (`mixedFourierWeight`). Then
+`Σ_ξ w(ξ) e(ξx)` is `N` times the number of representations of `x` in
+`(A − A) + (B − B)` (`sum_weight_exponential`). On `B(S; 1/4)` the terms
+with `ξ ∈ S` have nonnegative real part (`re_exponential_nonneg`). The
+terms off `S` have total weight at most `(εN)²·N(|A|+|B|)` by Parseval
+(`indicator_fourier_energy`). The zero term `|A|²|B|²` wins once
+`ε²N³(|A|+|B|) < |A|²|B|²`.
 
 * `norm_sq_fourier_indicator`: `|Â(ξ)|² = Σ_{a,b∈A} e((b−a)ξ)`.
-* `sum_norm_sq_fourier_indicator`: Parseval, `Σ_ξ |Â(ξ)|² = N|A|`.
-* `re_exponential_nonneg`: `Re e(y) ≥ 0` when `|y| ≤ N/4`.
-* `sumset_contains_bohr_of_spectrum_pair`: the containment, for arbitrary
-  sets and an arbitrary covering set `S`.
-* `bohr_sumset_contains_span_intersection`: with the explicit bounded-span
-  cutoff of `Proofs16BohrSpectrumBudget`, the sum of differences of two
-  Bohr sets contains the Bohr set of the intersection of the two bounded
-  spans at radius `1/4`. This is [49] Theorem 27 in `ℤ/N` with polynomial
-  bounds; the condition `ε²N³(|B|+|B′|) < |B|²|B′|²` is kept explicit. -/
+* `sum_exponential_mul_eq_ite`: character orthogonality.
+* `sumset_contains_bohr_of_spectrum_pair`: the containment for an
+  arbitrary covering set `S` and threshold `ε`.
+* `mixed_bogolyubov_quarter`: the common large spectrum at threshold
+  `|A||B|/(2N²)`, radius `1/4`.
+* `bohr_sum_of_common_spectrum_quarter` and
+  `bohr_sum_contains_span_intersection_quarter`: the Bohr-sum
+  containments of `Proofs16BohrSumSpan` at radius `1/4` and threshold
+  `2·bohrSumThreshold`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -52,26 +62,6 @@ theorem sum_exponential_mul_eq_ite {N : Nat} [NeZero N] (y : ZMod N) :
     Finset.sum_congr rfl fun ξ _ => by unfold exponential; rw [mul_comm]
   rw [hc, h]
   split_ifs <;> simp
-
-/-- **Parseval for indicators.** -/
-theorem sum_norm_sq_fourier_indicator {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
-    ∑ ξ : ZMod N, ‖fourier (indicator A) ξ‖ ^ 2 = N * A.card := by
-  have h : ((∑ ξ : ZMod N, ‖fourier (indicator A) ξ‖ ^ 2 : Real) : Complex) =
-      ((N * A.card : Real) : Complex) := by
-    push_cast
-    simp_rw [norm_sq_fourier_indicator]
-    calc ∑ ξ : ZMod N, ∑ a ∈ A, ∑ b ∈ A, exponential ((b - a) * ξ)
-        = ∑ a ∈ A, ∑ b ∈ A, ∑ ξ : ZMod N, exponential ((b - a) * ξ) := by
-          rw [Finset.sum_comm]
-          exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
-      _ = ∑ a ∈ A, ∑ b ∈ A, if b = a then (N : Complex) else 0 := by
-          simp_rw [sum_exponential_mul_eq_ite, sub_eq_zero]
-      _ = ∑ _a ∈ A, (N : Complex) := by
-          apply Finset.sum_congr rfl
-          intro a ha
-          rw [Finset.sum_ite_eq', if_pos ha]
-      _ = N * A.card := by rw [Finset.sum_const, nsmul_eq_mul]; ring
-  exact_mod_cast h
 
 /-- **A character is in the right half-plane on the quarter ball.** -/
 theorem re_exponential_nonneg {N : Nat} [NeZero N] {y : ZMod N}
@@ -217,8 +207,8 @@ theorem sumset_contains_bohr_of_spectrum_pair {N : Nat} [NeZero N]
             Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
               (fun ξ _ _ => by positivity)
         _ = _ := by
-            rw [Finset.sum_add_distrib, sum_norm_sq_fourier_indicator,
-              sum_norm_sq_fourier_indicator]
+            rw [Finset.sum_add_distrib, indicator_fourier_energy,
+              indicator_fourier_energy]
     rw [Finset.sum_neg_distrib, ← Finset.mul_sum] at hsum
     have hmul := mul_le_mul_of_nonneg_left hall (sq_nonneg (epsilon * N))
     linarith
@@ -233,31 +223,103 @@ theorem sumset_contains_bohr_of_spectrum_pair {N : Nat} [NeZero N]
       epsilon ^ 2 * (N : Real) ^ 3 * (A.card + A'.card) := by ring
   linarith
 
-/-- **[49] Theorem 27 in `ℤ/N`.** The differences of two Bohr sets sum to the
-Bohr set of the intersection of their bounded spans at radius `1/4`. -/
-theorem bohr_sumset_contains_span_intersection {N : Nat} [NeZero N] [Fact N.Prime]
-    (K K' : Finset (ZMod N)) {a c a' c' : Nat} (hca : c ≤ a) (hca' : c' ≤ a')
-    (ha : 2 * a < N) (hc : 2 * c < N) (ha' : 2 * a' < N) (hc' : 2 * c' < N)
-    {epsilon : Real} (heps : 0 < epsilon) (heps1 : epsilon ≤ 1)
-    (hband : K.card * (4 * (c : Real) + 2) ≤ epsilon / 2 * N)
-    (hband' : K'.card * (4 * (c' : Real) + 2) ≤ epsilon / 2 * N)
-    (hbudget : epsilon ^ 2 * (N : Real) ^ 3 *
-        ((bohr K ((a : Real) / N)).card + (bohr K' ((a' : Real) / N)).card) <
-      ((bohr K ((a : Real) / N)).card : Real) ^ 2 *
-        ((bohr K' ((a' : Real) / N)).card : Real) ^ 2)
-    {x : ZMod N}
-    (hx : x ∈ bohr
-      (boundedFrequencySpan (fun gamma : K => (gamma : ZMod N))
-          ⌈8 * (K.card + 1 : Real) * N / (epsilon * (centeredBall N c).card)⌉₊ ∩
-        boundedFrequencySpan (fun gamma : K' => (gamma : ZMod N))
-          ⌈8 * (K'.card + 1 : Real) * N / (epsilon * (centeredBall N c').card)⌉₊) (1 / 4)) :
-    ∃ y ∈ bohr K ((a : Real) / N), ∃ z ∈ bohr K ((a : Real) / N),
-      ∃ y' ∈ bohr K' ((a' : Real) / N), ∃ z' ∈ bohr K' ((a' : Real) / N),
-        x = y - z + (y' - z') :=
-  sumset_contains_bohr_of_spectrum_pair _ _ _
-    (fun _ h h' => Finset.mem_inter.mpr
-      ⟨large_bohr_fourier_mem_explicit_boundedSpan K hca ha hc heps heps1 hband h,
-        large_bohr_fourier_mem_explicit_boundedSpan K' hca' ha' hc' heps heps1 hband' h'⟩)
-    hbudget hx
+/-- The quarter-radius budget holds at threshold `|A||B|/(2N²)`. -/
+theorem quarter_threshold_budget {N : Nat} [NeZero N] (A B : Finset (ZMod N))
+    (hA : A.Nonempty) (hB : B.Nonempty) :
+    ((A.card : Real) * B.card / (2 * (N : Real) ^ 2)) ^ 2 * (N : Real) ^ 3 *
+        (A.card + B.card) < (A.card : Real) ^ 2 * (B.card : Real) ^ 2 := by
+  have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hAc : (0 : Real) < A.card := by exact_mod_cast Finset.card_pos.mpr hA
+  have hBc : (0 : Real) < B.card := by exact_mod_cast Finset.card_pos.mpr hB
+  have hAN : (A.card : Real) ≤ N := by
+    exact_mod_cast (show A.card ≤ N by simpa using Finset.card_le_univ A)
+  have hBN : (B.card : Real) ≤ N := by
+    exact_mod_cast (show B.card ≤ N by simpa using Finset.card_le_univ B)
+  have heq : ((A.card : Real) * B.card / (2 * (N : Real) ^ 2)) ^ 2 * (N : Real) ^ 3 *
+      (A.card + B.card) =
+      (A.card : Real) ^ 2 * (B.card : Real) ^ 2 * ((A.card + B.card) / (4 * N)) := by
+    field_simp
+    ring
+  rw [heq]
+  have hfrac : ((A.card : Real) + B.card) / (4 * N) < 1 := by
+    rw [div_lt_one (by positivity)]
+    linarith
+  have hpos : (0 : Real) < (A.card : Real) ^ 2 * (B.card : Real) ^ 2 := by positivity
+  nlinarith
+
+/-- **Mixed Bogolyubov at radius `1/4`.** -/
+theorem mixed_bogolyubov_quarter {N : Nat} [NeZero N]
+    (A B : Finset (ZMod N)) (hA : A.Nonempty) (hB : B.Nonempty) (d : ZMod N)
+    (hd : d ∈ bohr (commonLargeSpectrum A B ((A.card : Real) * B.card / (2 * (N : Real) ^ 2)))
+      (1 / 4)) :
+    ∃ a₁ ∈ A, ∃ a₂ ∈ A, ∃ b₁ ∈ B, ∃ b₂ ∈ B, d = (a₁ - a₂) + (b₁ - b₂) :=
+  sumset_contains_bohr_of_spectrum_pair A B _
+    (fun _ h h' => Finset.mem_filter.mpr ⟨Finset.mem_univ _, h, h'⟩)
+    (quarter_threshold_budget A B hA hB) hd
+
+/-- The common large spectrum of the half-radius sets, at twice the
+threshold and radius `1/4`, controls their sum. -/
+theorem bohr_sum_of_common_spectrum_quarter {N : Nat} [NeZero N]
+    (K L : Finset (ZMod N)) {rho sigma : Real} (hrho : 0 ≤ rho) (hsigma : 0 ≤ sigma)
+    (d : ZMod N)
+    (hd : d ∈ bohr (commonLargeSpectrum (bohr K (rho / 2)) (bohr L (sigma / 2))
+      (2 * bohrSumThreshold K L rho sigma)) (1 / 4)) :
+    ∃ x ∈ bohr K rho, ∃ y ∈ bohr L sigma, d = x + y := by
+  have hthr : 2 * bohrSumThreshold K L rho sigma =
+      ((bohr K (rho / 2)).card : Real) * (bohr L (sigma / 2)).card / (2 * (N : Real) ^ 2) := by
+    unfold bohrSumThreshold
+    ring
+  rw [hthr] at hd
+  obtain ⟨a₁, ha₁, a₂, ha₂, b₁, hb₁, b₂, hb₂, hd'⟩ :=
+    mixed_bogolyubov_quarter (bohr K (rho / 2)) (bohr L (sigma / 2))
+      ⟨0, zero_mem_bohr K (show 0 ≤ rho / 2 by positivity)⟩
+      ⟨0, zero_mem_bohr L (show 0 ≤ sigma / 2 by positivity)⟩ d hd
+  refine ⟨a₁ - a₂, ?_, b₁ - b₂, ?_, hd'⟩
+  · simpa only [sub_eq_add_neg] using bohr_add_half ha₁ (neg_mem_bohr ha₂)
+  · simpa only [sub_eq_add_neg] using bohr_add_half hb₁ (neg_mem_bohr hb₂)
+
+/-- **[49] Theorem 27 in `ℤ/N`, at radius `1/4`.** The Bohr set of the
+intersection of the two bounded frequency spans, at radius `1/4`, lies in
+`B(K;ρ) + B(L;σ)`. Compared with `bohr_sum_contains_span_intersection` the
+radius is `π` times larger and the threshold twice larger. -/
+theorem bohr_sum_contains_span_intersection_quarter {N : Nat} [NeZero N] [Fact N.Prime]
+    (K L : Finset (ZMod N)) {rho sigma : Real}
+    (hrho : 0 < rho) (hrho1 : rho < 1) (hsigma : 0 < sigma) (hsigma1 : sigma < 1)
+    (hNK : 8 * (K.card + 1 : Real) / (2 * bohrSumThreshold K L rho sigma) ≤ (N : Real))
+    (hNL : 8 * (L.card + 1 : Real) / (2 * bohrSumThreshold K L rho sigma) ≤ (N : Real))
+    (d : ZMod N)
+    (hd : d ∈ bohr
+      (boundedFrequencySpan (fun k : K => (k : ZMod N))
+        (polynomialSpectrumCutoff K.card (rho / 2) (2 * bohrSumThreshold K L rho sigma)) ∩
+       boundedFrequencySpan (fun l : L => (l : ZMod N))
+        (polynomialSpectrumCutoff L.card (sigma / 2) (2 * bohrSumThreshold K L rho sigma)))
+      (1 / 4)) :
+    ∃ x ∈ bohr K rho, ∃ y ∈ bohr L sigma, d = x + y := by
+  have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hcard (T : Finset (ZMod N)) {r : Real} (hr : 0 ≤ r) :
+      0 < ((bohr T r).card : Real) ∧ ((bohr T r).card : Real) ≤ N := by
+    constructor
+    · exact_mod_cast Finset.card_pos.mpr ⟨0, zero_mem_bohr T hr⟩
+    · exact_mod_cast (show (bohr T r).card ≤ N by simpa using Finset.card_le_univ (bohr T r))
+  obtain ⟨hA, hAN⟩ := hcard K (show 0 ≤ rho / 2 by positivity)
+  obtain ⟨hB, hBN⟩ := hcard L (show 0 ≤ sigma / 2 by positivity)
+  have htau : 0 < 2 * bohrSumThreshold K L rho sigma := by
+    unfold bohrSumThreshold; positivity
+  have htau1 : 2 * bohrSumThreshold K L rho sigma ≤ 1 := by
+    unfold bohrSumThreshold
+    rw [show 2 * (((bohr K (rho / 2)).card : Real) * (bohr L (sigma / 2)).card /
+        (4 * (N : Real) ^ 2)) = ((bohr K (rho / 2)).card : Real) * (bohr L (sigma / 2)).card /
+        (2 * (N : Real) ^ 2) by ring]
+    rw [div_le_one (by positivity)]
+    have hmul := mul_le_mul hAN hBN hB.le hNR.le
+    nlinarith [sq_nonneg (N : Real)]
+  apply bohr_sum_of_common_spectrum_quarter K L hrho.le hsigma.le d
+  refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun r hr => ?_⟩
+  have hlarge := (Finset.mem_filter.mp hr).2
+  have hK := large_bohr_fourier_mem_polynomial_boundedSpan K (half_pos hrho)
+    (by linarith : rho / 2 < 1 / 2) htau htau1 hNK hlarge.1
+  have hL := large_bohr_fourier_mem_polynomial_boundedSpan L (half_pos hsigma)
+    (by linarith : sigma / 2 < 1 / 2) htau htau1 hNL hlarge.2
+  exact (Finset.mem_filter.mp hd).2 r (Finset.mem_inter.mpr ⟨hK, hL⟩)
 
 end LeanProofs.GowersSzemeredi

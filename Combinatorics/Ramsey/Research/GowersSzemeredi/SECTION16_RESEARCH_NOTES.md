@@ -2809,40 +2809,125 @@ results are included. The source ledger remains 115/5 with its existing
 fidelity caveats, and the selected upstream module scope is unchanged.
 
 
-### Bohr-sum containment: [49] Theorem 27 in Z/N (2026-10-08)
+### Polynomial large-spectrum cutoff independent of the modulus
 
-`Proofs16SpectrumPairSumset` proves the Fourier core of [49]'s Theorem 27
-for arbitrary sets, then specializes it with the explicit bounded-span
-cutoff of `Proofs16BohrSpectrumBudget`.
+`Proofs16PolynomialSpectrumSpan` removes the modulus from the coefficient
+cutoff. For `k=|K|+1`, `0<rho<1/2`, `0<epsilon<=1`, and
+`N >= 8*k/epsilon`, every Fourier coefficient of the Bohr indicator
+`B(K;rho)` with magnitude at least `epsilon*N` belongs to the bounded
+span with cutoff
 
-- `norm_sq_fourier_indicator`: `|Â(ξ)|² = Σ_{a,b∈A} e((b−a)ξ)`.
-- `sum_exponential_mul_eq_ite`: character orthogonality, from Mathlib's
-  `AddChar.sum_mulShift` with the primitive standard character.
-- `sum_norm_sq_fourier_indicator`: Parseval for indicators,
-  `Σ_ξ |Â(ξ)|² = N|A|`.
-- `re_exponential_nonneg`: `Re e(y) ≥ 0` when the centered value of `y`
-  is at most `N/4`.
-- `sum_weight_exponential`: `Σ_ξ |Â|²|Â′|² e(ξx)` is `N` times the number
-  of solutions of `(b−a)+(b′−a′)+x = 0` in `A²×A′²`.
-- `sumset_contains_bohr_of_spectrum_pair`: let `S` contain every
-  frequency at which both `|Â|` and `|Â′|` are at least `εN`. If
-  `ε²N³(|A|+|A′|) < |A|²|A′|²`, then every `x ∈ B(S; 1/4)` is
-  `a − b + (a′ − b′)` with `a,b ∈ A` and `a′,b′ ∈ A′`. The zero frequency
-  is handled by adjoining it to `S`, which leaves `B(S; 1/4)` unchanged.
-  Frequencies outside `S` contribute at most `(εN)²·N(|A|+|A′|)` by
-  Parseval, and frequencies in `S` have nonnegative real part.
-- `bohr_sumset_contains_span_intersection`: for Bohr sets
-  `B = B(K; a/N)` and `B′ = B(K′; a′/N)` in prime modulus, under the
-  boundary-band conditions of the explicit cutoff, the set
-  `(B − B) + (B′ − B′)` contains `B(⟨K⟩_R ∩ ⟨K′⟩_{R′}; 1/4)`. The
-  budget `ε²N³(|B|+|B′|) < |B|²|B′|²` stays an explicit hypothesis.
-  Since Bohr sets are symmetric and `B − B ⊆ B(K; 2a/N)`, this is [49]'s
-  containment of a span-intersection Bohr set in a sum of two Bohr sets,
-  with polynomial cutoffs `R`, `R′`.
+`ceil(max(8*k/(epsilon*rho), 128*k^2/epsilon^2))`.
 
-All seven theorems use only the standard axioms. The collision gate
-passes. No numbered statement or deep hypothesis changes status. Still
-open in step 3: Theorem 31 (bounded spans and the Hosseini–Lovett
-averaging), Proposition 18, algebraic regularity (Theorem 33), robust
-Bogolyubov–Ruzsa (Corollary 16), quasirandomness, and the final
-composition.
+The proof chooses `sigma=min(rho,epsilon/(16*k))`,
+`a=floor(rho*N)` and `c=floor(sigma*N)`. The original Bohr set equals
+the one at grid radius `a/N`. Its boundary-band error satisfies the
+previous budget, including endpoints. A non-wrapping centered interval
+has at least `c+1` points, so `|I_c| >= sigma*N` even when `c=0`.
+This cancels the modulus from the explicit cutoff. Monotonicity of the
+bounded frequency span then gives the displayed common cutoff. Using
+the maximum, rather than the sum of its two terms, avoids an unnecessary
+additional loss. The finite-size hypothesis is still required.
+
+The four new theorem declarations compile in a 50-module source closure.
+This completes the quantitative large-spectrum inclusion needed in the
+Fourier route to bounded-span duality. Bohr-sum containment, the subsequent
+bounded-span selection, algebraic regularity, quasirandomness and the
+final difference-set composition remain separate work; no numbered
+statement is closed by this result.
+
+The combined polynomial-cutoff audit passes: 6,254 public Gowers
+theorems, a 4,956-module facade (4,152 OAI modules), and 4,958 modules
+including the audit and import-compatibility check. All four new theorems
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream module
+scope is unchanged.
+
+
+### Mixed Bogolyubov and Bohr-sum containment
+
+`Proofs16MixedCorrelation` develops the mixed fourfold correlation of
+`A` and `B`. Its Fourier weights are `|Ahat(r)|^2*|Bhat(r)|^2`, which are
+nonnegative. Fourier inversion gives the total-weight formula at zero,
+the zero-frequency lower bound `|A|^2*|B|^2/N`, and the weighted phase
+bound for displacement. A nonzero mixed correlation yields an actual
+representation in `(A-A)+(B-B)`.
+
+`Proofs16MixedSpectrum` bounds the Fourier mass outside the intersection
+of large spectra at threshold `tau*N` by
+`tau^2*N^3*(|A|+|B|) <= 2*tau^2*N^4`. This follows from Parseval and
+the fact that at least one factor is small outside that intersection.
+
+`mixed_bogolyubov` uses `tau=|A||B|/(4*N^2)` for nonempty sets. A point
+in the Bohr set of the common large spectrum at radius `1/(4*pi)` has
+phase error at most `1/2` there. The exceptional Fourier mass is small
+enough to keep the mixed correlation nonzero, so the point lies in
+`(A-A)+(B-B)`. This part works for every nonzero modulus.
+
+`Proofs16BohrSumSpan` applies this to the half-radius sets
+`A=B(K;rho/2)` and `B=B(L;sigma/2)`. Their differences lie in the original
+Bohr sets. In prime modulus, with `0<rho,sigma<1` and
+`N >= 8*(|K|+1)/tau`, `N >= 8*(|L|+1)/tau`, the polynomial large-spectrum
+theorem puts the common spectrum in the intersection of the two bounded
+frequency spans. The Bohr set of this intersection, at radius `1/(4*pi)`,
+is therefore contained in `B(K;rho)+B(L;sigma)`. The two coefficient
+cutoffs are `polynomialSpectrumCutoff |K| (rho/2) tau` and its L/sigma
+counterpart. The threshold uses the actual half-radius cardinalities;
+the finite-size conditions remain explicit.
+
+The four new modules contain seventeen theorem declarations and compile
+in a 54-module closure. All declarations pass individual transitive axiom
+checks using only propext, Classical.choice, and Quot.sound. This is an
+actual Bohr-sum containment result under its stated numerical conditions;
+the bounded-span selection, algebraic regularity, quasirandomness, and
+final structure composition remain unfinished. No numbered catalogue
+statement is marked closed by this step.
+
+The combined mixed Bohr-sum audit passes: 6,283 public Gowers theorems,
+a 4,960-module facade (4,152 OAI modules), and 4,962 modules including the
+audit and import-compatibility check. All seventeen new declarations
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats, and the selected upstream scope is
+unchanged.
+
+
+### Quarter-radius mixed Bogolyubov (2026-10-08)
+
+`Proofs16SpectrumPairSumset` sharpens `mixed_bogolyubov` and the
+Bohr-sum containment of `Proofs16BohrSumSpan` in two constants.
+- The radius is `1/4` instead of `1/(4*pi)`, matching [49]'s Theorem 27.
+  The improvement comes from the real part: on `B(S;1/4)` every
+  character in `S` has nonnegative real part (`re_exponential_nonneg`),
+  so the terms in `S` need no phase-error bound at all.
+- The threshold is `|A||B|/(2N^2)`, twice `tau`. The budget needed is
+  `eps^2*N^3*(|A|+|B|) < |A|^2*|B|^2` (`quarter_threshold_budget`). The
+  bounded-span cutoff `128(m+1)^2/eps^2` therefore shrinks by a factor
+  of four.
+
+Results:
+- `sumset_contains_bohr_of_spectrum_pair`: for any `S` that contains
+  every frequency at which both transforms are at least `eps*N`,
+  `B(S;1/4)` lies in `(A-A)+(B-B)` under the budget above.
+- `mixed_bogolyubov_quarter`: the instance where `S` is the common
+  large spectrum at threshold `|A||B|/(2N^2)`.
+- `bohr_sum_of_common_spectrum_quarter` and
+  `bohr_sum_contains_span_intersection_quarter`: the two
+  `Proofs16BohrSumSpan` containments at radius `1/4` and threshold
+  `2*bohrSumThreshold`. The finite-size conditions are the same as
+  before, with the threshold doubled.
+
+Supporting lemmas:
+- `norm_sq_fourier_indicator`: `|Ahat|^2` as a double character sum.
+- `sum_exponential_mul_eq_ite`: orthogonality, via
+  `AddChar.sum_mulShift`.
+- `sum_weight_exponential`: the weighted character sum counts
+  representations, with exact multiplicity `N`.
+- Parseval is the corpus's `indicator_fourier_energy`.
+
+An earlier draft carried an N-dependent cutoff variant of Theorem 27.
+It was dropped because the modulus-independent
+`Proofs16PolynomialSpectrumSpan` cutoff supersedes it. All nine theorems
+use only propext, Classical.choice, and Quot.sound. The collision gate
+passes. No numbered statement changes status.

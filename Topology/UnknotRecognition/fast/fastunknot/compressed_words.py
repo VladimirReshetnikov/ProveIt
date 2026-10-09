@@ -121,11 +121,32 @@ class WordArena:
         # New nodes reference only earlier ids, giving a topological order.
         return sorted(seen)
 
+    def _unresolved(self, node, known):
+        """Topological source nodes needed above an exact cached frontier.
+
+        A cached result suffices even if its source descendants are uncached
+        (for example, a substring already certified freely reduced). Discovery
+        does not publish partial results, so interrupted calls remain safe.
+        """
+        seen, pending = set(), [node]
+        while pending:
+            self.tick()
+            current = pending.pop()
+            if current in known or current in seen:
+                continue
+            seen.add(current)
+            rule = self.rules[current]
+            if rule[0] == 'c':
+                pending.extend(rule[1:])
+        self.stats['word_frontier_queries'] = self.stats.get('word_frontier_queries', 0)+1
+        self.stats['word_frontier_nodes'] = self.stats.get('word_frontier_nodes', 0)+len(seen)
+        return sorted(seen)
+
     def inverse(self, node):
         if node in self._inverse:
             self.tick()
             return self._inverse[node]
-        for current in self._reachable([node]):
+        for current in self._unresolved(node, self._inverse):
             if current in self._inverse:
                 continue
             rule = self.rules[current]
@@ -386,7 +407,7 @@ class WordArena:
         if node in self._reduced:
             self.tick()
             return self._reduced[node]
-        for current in self._reachable([node]):
+        for current in self._unresolved(node, self._reduced):
             if current not in self._reduced:
                 _, a, b = self.rules[current]
                 self._reduced[current] = self._multiply_reduced(self._reduced[a], self._reduced[b])
