@@ -1422,9 +1422,17 @@ the elementary lemmas of its §2:
   `LineFreimanExtraction` with κ(δ) = 2⁻¹⁸⁸²δ¹¹⁶⁴. The identity
   `energy_eq_phiAdditiveCount` matches the two energy notions. So the
   energy route `densePiece_energy_unconditional` is unconditional too.
-- Next: step 2 proper ([49] Lemma 19 and Corollary 20): random selection
-  f(y) ∈ U_y, averaging, then Corollary 7.6 + Lemma 7.8 in place of
-  Theorem 17.
+- **Selection averaging, done (`Proofs16SelectionAveraging`,
+  kernel-checked).** `exists_good_selection`: if every requirement fixes
+  at most 4 points to allowed values, some selection f ∈ Π U_y meets
+  ≥ |T|/K⁴ of them. The proof double counts over `Fintype.piFinset U`.
+  The selections meeting one requirement form the product with the fixed
+  coordinates replaced by singletons (`card_meeting`), so they number
+  ≥ K^(−4)·Π|U_y| (`card_all_le_mul_meeting`). This replaces [49]'s
+  random choice.
+- Next: assemble [49] Lemma 19 in ℤ/N, as selection averaging, then
+  respected quadruples of f on A′, then Corollary 7.6 (and Lemma 7.8 for
+  the Bohr extension).
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
