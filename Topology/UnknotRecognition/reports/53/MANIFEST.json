@@ -1,0 +1,1154 @@
+{
+  "schema": "proveit-weighted-normal-components-bundle-v1",
+  "title": "Toward Quasi-Polynomial Unknot Recognition: Component Disc Certificates and Quadrilateral Core Reduction",
+  "article_date": "2026-10-09",
+  "assembled_at_utc": "2026-10-09T02:52:06.366548+00:00",
+  "baseline": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "7518823550fbc8c217bc8be0113fe52002e77465",
+    "subdirectory": "Topology/UnknotRecognition/fast",
+    "immutable_url": "https://github.com/VladimirReshetnikov/ProveIt/tree/7518823550fbc8c217bc8be0113fe52002e77465/Topology/UnknotRecognition",
+    "all_included_baseline_sources_byte_identical": true
+  },
+  "scope": {
+    "implemented": [
+      "Three-weight component disc census and source-bound replay",
+      "Full component coordinate and summary modes",
+      "Vertex-link removal, quadrilateral gcd reduction, exact essential-disc count rescaling"
+    ],
+    "proved_but_unimplemented": [
+      "Two-weight refinement with certified ambient mod-2 homology preprocessing"
+    ],
+    "not_established": [
+      "Complete general quasi-polynomial unknot recognition",
+      "Certified knot-diagram-to-exterior bridge",
+      "Complete candidate producer with a quasi-polynomial global budget"
+    ]
+  },
+  "validation": {
+    "selected_regression_methods": {
+      "passed": 103,
+      "failed": 0,
+      "skipped": 0,
+      "report": "results/regression_verification.json"
+    },
+    "abstract_kernel": {
+      "cases": 10000,
+      "status": "PASS",
+      "report": "results/kernel_audit.json"
+    },
+    "independent_checker": {
+      "literal_cases": 2500,
+      "deliberate_mutations": 366,
+      "status": "PASS",
+      "report": "results/weighted_checker_audit_20261009.json"
+    },
+    "external_regina": {
+      "normal_vectors": 1275,
+      "triangulations": 45,
+      "output_comparisons": 5100,
+      "certificate_replays": 5100,
+      "status": "PASS",
+      "report": "results/normal_audit_20261009.json"
+    },
+    "portable_frozen_corpus_replay": {
+      "status": "PASS",
+      "report": "results/frozen_corpus_replay.json"
+    },
+    "integration_patch": {
+      "git_apply_check_against_pinned_baseline": "PASS",
+      "file_count": 12,
+      "only_additions": true
+    },
+    "pdf": {
+      "pages": 30,
+      "status": "PASS",
+      "report": "results/pdf_validation.json"
+    }
+  },
+  "source_inventory": [
+    {
+      "bundle_path": "code/fast/LICENSE",
+      "repository_path": "Topology/UnknotRecognition/fast/LICENSE",
+      "status": "unchanged_baseline",
+      "size_bytes": 923,
+      "sha256": "460d4fb6f45fd89278ba881d4b70e8bd1b7df223ee907e758342c2f9989f789d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1281,
+      "sha256": "0ea0ed9e89a1461c674371b96d71d411dc7c7e1d300a3cd41e2bbc5354a8bf73"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/__main__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/__main__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 29910,
+      "sha256": "9c77a51e4fe2a49b12f56b2bf93a9c3e46d48d8e9f190c11da9b09d438d55648"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/_regina_worker.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/_regina_worker.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1904,
+      "sha256": "cdf1badec61718e60fcace3bddec4d0b4d56dbeeaadb3406946d4f38ae617a33"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/adaptive_jones.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/adaptive_jones.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6430,
+      "sha256": "dda8d6b8804c76f41f3c83a8263f3a1fe71f7f0e55f38c59af3cc305d1a0bf46"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/adaptive_potts.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/adaptive_potts.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6045,
+      "sha256": "e74d0248140ec35ae3c9dd239af572a6eed5d59dfbaeaf55d04335e7139b00e8"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/alexander.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/alexander.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5926,
+      "sha256": "7b1f35cd4981cd43d698aa893fee571dc236ebf1ebea7231adc5b0f3a299cd75"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/algebra.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/algebra.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 13378,
+      "sha256": "f51f807dbf1b8b35d76f6153c36d0747dfb0ff1d550bf5760327dec493f403ab"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/barcode_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/barcode_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17712,
+      "sha256": "c2d7df5069ef6ae4c67cb3dc1821771d03e8d6e5d9b1aa4160e6cb18cfe64a0b"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/boundary_connectivity.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/boundary_connectivity.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4143,
+      "sha256": "2b275ee8c0bc94512636e773fe7d7e0eba40daaa3f63adab307670bf5633c8b7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/braid.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/braid.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9657,
+      "sha256": "f72df0b0e8ad07e3a5b17fb965b21a0325cc501ec82b3601e85a143ffb9b9c5c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/braid_descent.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/braid_descent.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7263,
+      "sha256": "66cd2d4a716b4a4f220ab3f441f65f176a3cde3178062d4018902f6e8ea4d600"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/braid_profile.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/braid_profile.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 12212,
+      "sha256": "63f73079d38a3e9576a5f5dd6c3fa2aa878c7ffe73483d9c95a561e5b95bcb27"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/braid_reduction.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/braid_reduction.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5892,
+      "sha256": "d44e06bd95aa806ab687119241aa0b999504b7a525f1e08b69851134ccf9a5f3"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/causal_r3.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/causal_r3.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5166,
+      "sha256": "a798b44fc259928348364c4aac909d3bd53adaf13379565e176149b87bcea980"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/closure_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/closure_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 12536,
+      "sha256": "53970894a8e613f442ef063ac4db50c4e83578ecbf35893ed7450eded9abd32f"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/component_algebra.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/component_algebra.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3966,
+      "sha256": "fe27a301879a9f1e75130aace92a2c3d003135f74bab665a130c6ddf00c99935"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/component_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/component_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 11325,
+      "sha256": "9357fcfaadc2e41adde0d03cf38ca77f6957bde64fe8fae3c3c6c45b974ca5c1"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10019,
+      "sha256": "13b97915ddee16bdbb2997cd2ce69fa76a79aaac9c6cef2be36e4c8ea025ba20"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/__main__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/__main__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2796,
+      "sha256": "d26b41be714b2946d9cda367118d2c370a476417ea0855a807b7854e778413ee"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/cube.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/cube.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6887,
+      "sha256": "fed1c84193d0e39633ec54a7a5533508968d0ff971235ec77db0d15e83654d60"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/cube_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/cube_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3297,
+      "sha256": "092977310582b5a738cb0343e593999531e1d0d171132c6a89828ea466e3e736"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/engine.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/engine.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6774,
+      "sha256": "276e921cb0d79bc76fb95136cb370f75807dd3d08315a09dea8fd7ef20012b6c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/exceptional.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/exceptional.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4080,
+      "sha256": "a44465ee6ca7173b503776bb4cdab2b16bc6a3375a2f528686be6c4c98f80bd8"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/forest.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/forest.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17831,
+      "sha256": "67d8eeeb5454e3b70c85bfc12bca983b40ebf1d4e142983c594f77ed851fcdd0"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/grammar.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/grammar.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4787,
+      "sha256": "2aa24abdc0e593db5f1bfc596e56ce9e6834adfcd9eb0973abfcf4f24d2d8e06"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_braid/verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_braid/verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 8536,
+      "sha256": "41ba5f946879f09c25e01eeb7744cf119436b89587905ec35e5bc6dbf679bc22"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_endpoint.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_endpoint.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9940,
+      "sha256": "c5285fa316378e283fa4b0af224bea00b035cc3dffb7d9108def422dc905ee3c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_group.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_group.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7682,
+      "sha256": "4ed13e9aff29e686b607d4c9d94afc14b2695d2165be0279f5d425b4dc73dad5"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_lcs.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_lcs.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 20382,
+      "sha256": "9e65ececbeeab6b55fbe764d470468fc0c666cd2a0bf68ff86075d399bf63fbf"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_match.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_match.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9630,
+      "sha256": "00d397bae99d74976205b97e8d6f371a08a07de9f50c80443719637dbbf0f1f7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_overlap.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_overlap.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7490,
+      "sha256": "0eb571d013649b42b8b52e90bcc533c05acb6206364d07897a44aefeca85862c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_search.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_search.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 14128,
+      "sha256": "a9636ed8e476a18fab6cc8ed784e57bf4bb18d740446821be1f2fcb32eb26796"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/compressed_words.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/compressed_words.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 22018,
+      "sha256": "e8f7f897d66fbd3b5a236946a6784e1f7746176cc56ab9a195f7396b3f4eca1c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/corner_split.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/corner_split.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3738,
+      "sha256": "672678111de1c3e0682bc9665c07ceb4e58e6dc8ff9a3402e7b8b815d7346cb7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/corridor.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/corridor.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 16673,
+      "sha256": "f05e325504f4567b0c6a705ea674964bdbc98376e3fb81db2379a6c2dc2ac3a9"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/LICENSE",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/LICENSE",
+      "status": "unchanged_baseline",
+      "size_bytes": 886,
+      "sha256": "46ea7d567ddb549ed1d694d33730bfe8ef9a37f3d9252f559fba81ec7c990d3f"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 358,
+      "sha256": "dfe2bcda2fe93853b2c6abca5a4e0f757c94259ff174cf1b07923e3963567c4d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/kernel.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/kernel.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6417,
+      "sha256": "43daa9cb32196433678eb172659df2e7d4871a05120bcbd86a15e6fcc023b2bc"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/normalform.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/normalform.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6305,
+      "sha256": "afb461e5964f622852affd9425a50d2c6aca8a2765195480823a474a1a13fc25"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/oracles.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/oracles.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2703,
+      "sha256": "f5bebe42a12035cc0ad8758a4366177eea67651f4fedffbda018d2cc0219603e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/portfolio.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/portfolio.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3938,
+      "sha256": "27ae5b10832445a592229f6b6c12d23df9f5ea02f7b1994c952ba5470582afc4"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/radius.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/radius.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7374,
+      "sha256": "61b6d68b796e8057f9957e7fecde524a6b3fe37cf815f7270c0e767aeb9e668b"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6288,
+      "sha256": "b681fcfecc62ac4fb9da49cb932a7715d396c609ff3445588140f7f432271428"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_garside/verify_radius.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_garside/verify_radius.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2974,
+      "sha256": "4cbc5c66ae307c2d94c3065ad23b2d5a2a8a2548873b118ba7d3bac69ee2e947"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/cyclic_overlap_index.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/cyclic_overlap_index.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 13326,
+      "sha256": "f7cbed157c733a24cc650c33452a2b903759283392a14960d51cdbb496f39df3"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/diagram.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/diagram.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 18264,
+      "sha256": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/disk_frontier.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/disk_frontier.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7638,
+      "sha256": "8e7c7d1a3e4a868c73274310374d0d37e00c134592b4f28aa177d0fd8614d64e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/disk_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/disk_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3700,
+      "sha256": "4bea2a72e245ce67e0aec55f9c07c83194b9326a8521c7dea367608317528eb7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/euler_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/euler_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 16494,
+      "sha256": "a17102f9f2e8d7d802e82d87cb576ee8af796fd0301eaa2bb8cacdec0c3b310b"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/factor.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/factor.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4194,
+      "sha256": "1b885f14da7b7aeaa21b86360a47d10a565f31a375d52afd1ea44fba10e89420"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/faithful_jones.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/faithful_jones.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5813,
+      "sha256": "c042f81cfc45dd7c5a9dd788050ca3bf557fa1dd58bff0a9364bb082b3309b0a"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/filters.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/filters.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9511,
+      "sha256": "405792a1bbb29aab3bec8fa2527359c1280075963d6880883572be290dd89beb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/frobenius/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/frobenius/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 233,
+      "sha256": "6caffa946768f3c9d3b4f58434013100ccb02519f623c4afa0d921f7835c3bc7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/frobenius/kernel.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/frobenius/kernel.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7892,
+      "sha256": "c50a5e383f8e99e800d07c503b45443edda491deead08709977f6002da21c059"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/frobenius/subset.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/frobenius/subset.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9284,
+      "sha256": "155f2ef3e4d18871606490597a65ee92fb9d8729383d2a72d91261101613b885"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/garside_probe.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/garside_probe.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2696,
+      "sha256": "cd6ddc1222a975fed2a43daab2b629fe2e43b8a0567f82b0f3cdf7685f05fd30"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/geometry.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/geometry.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5267,
+      "sha256": "430216440879ab7f8bbc403a3408fa66a1e793a0173c2b81ed97d74186cc2812"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/graded.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/graded.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10727,
+      "sha256": "5c91bf40849f3c64c9bb10a5744769c56abd8f00c4f91bdb8b5163960cf350fb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/graded_transfer.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/graded_transfer.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 19519,
+      "sha256": "0b62fa67c2ead25a1311b9e0eb684ec50c37a9eaf1b15dcd28edd2fcfbbf6ca6"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/group_certificate.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/group_certificate.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 28022,
+      "sha256": "469c5bc86d246ad6cd739056460861490450c0bebf60afe19a2a77e85ca4c40d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/integer_codec.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/integer_codec.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3358,
+      "sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/integer_determinant.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/integer_determinant.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1012,
+      "sha256": "44319b20e2046a53472cb8a23736193bb4a1c7d35c7f6e08d7fdde5a67419a1e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/interlace.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/interlace.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 8603,
+      "sha256": "b98703923282099c0de7dfdfa20c107f3558128c74a14cd2ce2d8455589abed9"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/interval_incidence.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/interval_incidence.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10152,
+      "sha256": "185ab1dabb947ac0d5bcedd6c0557f965d2d318ba388e873708296d344dd7cbb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/interval_orbit_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/interval_orbit_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 12612,
+      "sha256": "b2f90d09077154b0d3e6bdd975cec45c06306aa3f49ff9b4e155aa31c9b74c74"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/interval_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 19041,
+      "sha256": "1d8b70ce02336872e8d2709bb4d1d156a230dfce5f46eab4e119d677156ec562"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/jones_filter.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/jones_filter.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2436,
+      "sha256": "121d9a681720ddb24e1739896fece90c6fbcaa100aed5a15bee811f628dea570"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/minimal_window.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/minimal_window.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6233,
+      "sha256": "5bdacd3f6070f035ba8e4492747ba28ae399e803f8f16a712e2c74ebe5ae496d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/nice_order.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/nice_order.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3928,
+      "sha256": "eab14477436fc714a4070cc14b1fd18c54b1ecf79890d46fb54d47b4df320852"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_component_geometry.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_component_geometry.py",
+      "status": "new_research_addition",
+      "size_bytes": 9399,
+      "sha256": "ded2647d158452b17e229478bbaf52e8b87f96387902ffe201ea4fc09f8e957f"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_component_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_component_verify.py",
+      "status": "new_research_addition",
+      "size_bytes": 3907,
+      "sha256": "30cf90a7c58f60ba6d24ae798830eae2e430703184e7cffcc4a8d5ff8745402f"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_disk_kernel.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_disk_kernel.py",
+      "status": "new_research_addition",
+      "size_bytes": 7112,
+      "sha256": "e24adddb23ec8aa2b28adff5de926413495627337e8df19701cf80f1d9f50c76"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6260,
+      "sha256": "3c318e2d98921ef0c971d6671626d13c390268acc1945af8732193f6d8fd6b5b"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface_components.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface_components.py",
+      "status": "new_research_addition",
+      "size_bytes": 6294,
+      "sha256": "731c418f6f95f50632478373317b5860bdd89c19fb1343368bbe931a8260d3ba"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface_geometry.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface_geometry.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 19266,
+      "sha256": "1fafaad739b731b4bffd4613d260c05361960feb80e3c1c15f36309888449d87"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface_orbits.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 13279,
+      "sha256": "4d3b29f85bec18a160ab7d142df796523581c07a3d4a16dc2ac9aef4f8c2ddd8"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface_parity.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface_parity.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3207,
+      "sha256": "129a95e8d730ee76e47bf56f22c0bfccaf12eb4f32b9c93242256a3c6aaccf9e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/normal_surface_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10965,
+      "sha256": "db67a5fdfe48c826950509bc520a2c87b9c1a905f5aa00445b52c644ec509986"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ordering.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ordering.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7908,
+      "sha256": "18f62b2c86d0ba26843bd466374a6a32eaa38e0c8ca909fd8750d88808d39d57"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/planar.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/planar.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 20203,
+      "sha256": "6999579f252ffd25e217eda4f64b5e940af2b2356ec433cd5cdbd042d0d62253"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/potts.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/potts.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 11912,
+      "sha256": "4bdf4eafd5866609b3ac17809e5e249e1420df19eb2d7ae92205e449e2cdd1c9"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/potts_exact.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/potts_exact.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10050,
+      "sha256": "76e1e4cb67aa664b63cd91d6008c1b26e9df7d7ebcd7b9fac178e0591648ba34"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/potts_factorized.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/potts_factorized.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 13106,
+      "sha256": "219533bd566dd5480219dcc07fd23c306d2ae886fe84e5768a148ec111869a12"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/potts_factorized_exact.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/potts_factorized_exact.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 11754,
+      "sha256": "7da7b4b8a6cd78c40af6e76bcf3f680ba818bd2b6d8dbe05ed87cbf25912b897"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primary_split.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primary_split.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9102,
+      "sha256": "95bfa9d6a33f8b63d0893319e08e0f59d2a17d376ae6bde2f30f85b83d7da1df"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_forest.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_forest.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4085,
+      "sha256": "996f6b2c91c13f253c54fee00caf0463b282f3d412d13ee7056ce518266c93a6"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_forest_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_forest_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4169,
+      "sha256": "aa949a04b0cbd4bb541fc3bd2deda60d2dd77232ccde2387860cb05e9099ce7a"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_power.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_power.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3247,
+      "sha256": "a4497a988328be1d3712226b8d4c35d4ba8c577e33ed8ed4dc4386906942d5f8"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_power_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_power_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3796,
+      "sha256": "f118f40e536fae2a7d13ec87fb812de15cfb8d8337a9ac056765573167a3efdb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_projection.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_projection.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6215,
+      "sha256": "66da279ff4dbd6987c39fdfb6df204746744e14388db167ce65d681ccabc6b0a"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/primitive_projection_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/primitive_projection_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5436,
+      "sha256": "e0e2108ae2737008fccbac3c90265a50613272260b1f6e84a7a59bb4d1bd59cb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/radical_transfer.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/radical_transfer.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17624,
+      "sha256": "a97900b59f35084c6d56dd1829d9f9363cae18b030c566fa4f81ebf10ef09845"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/README.md",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/README.md",
+      "status": "unchanged_baseline",
+      "size_bytes": 1048,
+      "sha256": "310b59c61bcb047b27f4192f013c56e478cc790458bbf7bad82c126b21bbf11c"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 292,
+      "sha256": "e9d6a62c7d8b5fde80451d5a26a8a09e583dc1b82bccbeb656fa320631ad8f38"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/common.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/common.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1364,
+      "sha256": "60f18c7418378ffc816d95294a5207ce56cee9ff7b3a03bce9fa54b3c9c60f81"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/kernel.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/kernel.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10062,
+      "sha256": "de5ff7689a152f6b2118dd4777e9bef38482569c4b26bb782fac94448de0626e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/orderedmap.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/orderedmap.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3055,
+      "sha256": "b5c004fa2071858b347238f4ce6734cfd5b3d1a837e92de4489ca4e5648f3d44"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/search_group.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/search_group.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1792,
+      "sha256": "2e80ddd29dbfd8a046daa753ceafd89dc0b983d2a93831ec2a2068811f84d1ec"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/ranktwo/verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/ranktwo/verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 7470,
+      "sha256": "76ebc1a8c26f6e079878af5b9d03b2c0bb8c1d3f32a13d7be8abba9cc997b431"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/rational.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/rational.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17243,
+      "sha256": "e9b15b050258d2682297e4a8adcd5e7dacd2de5d0ff3d65d76393f38da0f755b"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/recognize.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/recognize.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 47495,
+      "sha256": "f5a54d4bf2876e3a9511a964f8b8084d0748738a6790c77c69e72a867772856e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/recovered_grading.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/recovered_grading.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 1822,
+      "sha256": "3b6cbd631925f4b1fecf0b582307de68b3967c4d85dea502c24143418c6aa96d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/relator_overlap.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/relator_overlap.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6202,
+      "sha256": "ee4ed634ac344934cc38d0e98c332f1368dcac56b871ebcc1987197542ed3724"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/residue.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/residue.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5912,
+      "sha256": "76f6a751bf82bc2a24d264631e08ee2031ce9b49f71aec887f1f9d3f644b4e09"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/scalar_components.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/scalar_components.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6247,
+      "sha256": "603ddc5848d439a85f8c611addcbfcb25d368f1cb04521bd7e71b42788d798e0"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/scalar_split.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/scalar_split.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 29476,
+      "sha256": "528070b445d1e0271a22783a11b1e40b74d5f4dee77f0f993b46d60d24c6dc39"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 25510,
+      "sha256": "c7577b33bd2e3924bf15d2456ed194c8f393026e96c13c98d86eb842f97feaeb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/scan_fast.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/scan_fast.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 16043,
+      "sha256": "a1a315b2cd777e758b4377dc3233a53c8fd79e85f0721db565a50541dc3f0cda"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/scan_reference.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/scan_reference.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17940,
+      "sha256": "b79897060c7774dd2f3e08c63147b5ee74cf50c0262a50d0452430d9b52686b6"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/seifert.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/seifert.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10232,
+      "sha256": "1a9c9be5ee8af84001587e1988ace007d1a1016847a6d53ece9f1433af166df1"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/separator_order.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/separator_order.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 16744,
+      "sha256": "735f27a58a2e24b047e031400a103ff81b0a1818fa70aea5c03b671a1782d3f9"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/separator_potts.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/separator_potts.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 2014,
+      "sha256": "423b6c725101c478581b7ef37d2e9463faffd41ef1b702b1f8002cd16261bfff"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/shadow_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/shadow_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 15141,
+      "sha256": "bd426dc243b65b3c91d005d456fa04df2e7239a036363cc8a26b3ddd4a893772"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/simplify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/simplify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 26228,
+      "sha256": "2530f49b2ee21b35480f70182d3970996492c740778636b15bcbf2d23084dd26"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/sparse.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/sparse.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6112,
+      "sha256": "58a4d7c80edea9cf9d2a140982b1b5f98750e7e699a358f8d23ff4ebe0094a7e"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/spin_jones.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/spin_jones.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 20890,
+      "sha256": "d2acb02e5b8e8765af57be6d3b52c69e8992e7c5f6714369bbb817f4e7f40f08"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/surface_cover.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/surface_cover.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 23425,
+      "sha256": "1dad2c24688b908a6a0677b63bae4958754488a52cbb8199fed8d945fa2eb0fb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/tait_blocks.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/tait_blocks.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4048,
+      "sha256": "e08ee4410d39372994579e07b292fc381c6aa506866dda3629603f60c8f37bcf"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/tangle_obstruction.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/tangle_obstruction.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 14360,
+      "sha256": "5c87e8e40e5703ca51cfd6fce429306e04150c6139df7165cdf5fbc2fd318fdf"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/terminal_determinant.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/terminal_determinant.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6245,
+      "sha256": "04cf547f2ee781823eb5e637cf0a071c22edef4e4741e4cd3770a8313e23cbd7"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/treewidth_two.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/treewidth_two.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 8272,
+      "sha256": "7c1cfa9e689bd9460c49e023ae38185e8133d40abd076accdfd84be7a0d9defc"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/__init__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/__init__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 295,
+      "sha256": "aa379026276f1a6edcf7fedef36327a9f78c99717647258db26f0b4f608724c4"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/__main__.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/__main__.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3029,
+      "sha256": "b73965111ec4f7def66d200638be3062014b3a7c25ab6ea11c25ca7842644bda"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/continuation.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/continuation.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10195,
+      "sha256": "057c1dbf5154df6f0ce92616a75ea1dbf3c1f9122266db9208328888efa19130"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/core.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/core.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17144,
+      "sha256": "903fb8e3fb05bc827a20fbed97376808089ce24f386d6f47cedc5989140ac9fb"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/preflight.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/preflight.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 6736,
+      "sha256": "afe61baa4bfdafe47ef01d90c75d4c5a902b75926bd02a9e73f78edf422355ee"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/reference.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/reference.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5182,
+      "sha256": "c21fa0485b51cded3ccc4ad76b7a4b4cdbd18269920849e20113c531e13a0503"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/streaming.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/streaming.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 24819,
+      "sha256": "55bb59d384d87513c69f1c0c4cada6b60e7c6de506ae3b666807c2a9e02a7122"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist/tail.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist/tail.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9595,
+      "sha256": "d3a7ab9c2b7aab3333d12f2c2dee5f345f923f8c7a91f4e5661c075174563454"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/twist_adapter.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/twist_adapter.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 4066,
+      "sha256": "a4497e173dfd397b945227aceea16f7ea1077369c247e143808653677401b246"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/two_meridian.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/two_meridian.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 17746,
+      "sha256": "158c2afbe923ea6155b44cba0f7bc3eaa87d64078b4e4352a8834ffec82b8c0d"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/weighted_orbit_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py",
+      "status": "new_research_addition",
+      "size_bytes": 14103,
+      "sha256": "2e52bfba1753922c6fdfff05cf07e048bd2639117c6f341c9a366854859abe18"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/weighted_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/weighted_orbits.py",
+      "status": "new_research_addition",
+      "size_bytes": 12769,
+      "sha256": "c4e7ff4c706cd3b18a5210952071a684ed39c6fdedd2f03c321d1a396fdb09e2"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/whitehead_power.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/whitehead_power.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3315,
+      "sha256": "dade6fd4d146d3ab77d78d8db70a418b6909a5597f329aa1b065af7b8c2bf1c2"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/window_bounds.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/window_bounds.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 3547,
+      "sha256": "57654e7af9042dc99e510ba97a199017675e48cfbbce493d389a201b65ddb8db"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/window_filter.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/window_filter.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5040,
+      "sha256": "3dbb73eac08b7385f5de080f38efda2bcd71d7d1cd93c1ae2b191b86ef4d8112"
+    },
+    {
+      "bundle_path": "code/fast/fastunknot/window_scan.py",
+      "repository_path": "Topology/UnknotRecognition/fast/fastunknot/window_scan.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 16713,
+      "sha256": "dd8959a7cd7ccc3780a7ea85a8c7f5591aa0243aa5943ed69fa481eb8bde32fc"
+    },
+    {
+      "bundle_path": "code/fast/normal_orbit_research/data/projective_plane_torus.json",
+      "repository_path": "Topology/UnknotRecognition/fast/normal_orbit_research/data/projective_plane_torus.json",
+      "status": "unchanged_baseline",
+      "size_bytes": 6864,
+      "sha256": "fbe82755cd6a54634b33f1754defe26e8fcb24049203e09e7a4bc7ebee0d38e2"
+    },
+    {
+      "bundle_path": "code/fast/normal_orbit_research/fixtures.py",
+      "repository_path": "Topology/UnknotRecognition/fast/normal_orbit_research/fixtures.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 5844,
+      "sha256": "f732a07d9e788c796d7e34b363f8139380a50841587d7bfad71f0017c864ddf4"
+    },
+    {
+      "bundle_path": "code/fast/pyproject.toml",
+      "repository_path": "Topology/UnknotRecognition/fast/pyproject.toml",
+      "status": "unchanged_baseline",
+      "size_bytes": 506,
+      "sha256": "2a8af032fa85d7bbfc831e47e691ff257857b4d63ce8c28ef06270aaddb73831"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_interval_incidence.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_interval_incidence.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 8513,
+      "sha256": "5707b5584f6b7a11b44083eff0c10f95f0bd9346091947c409442029761de626"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_interval_orbit_verify.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_interval_orbit_verify.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 12333,
+      "sha256": "573906082ba612db469e7dcae012f07746065bd739c70f6e2b89eb6834469585"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_interval_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_interval_orbits.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 11589,
+      "sha256": "e9c55c3e1e16a036e4e30e0024cb6cc12ed0761b6000b6754f1f2620ded97dd1"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_normal_boundary.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_normal_boundary.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 11321,
+      "sha256": "1af0364130413714413f380a520be080ee3ebef0d7dea71bcd444fceb4c4e605"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_normal_components.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_normal_components.py",
+      "status": "new_research_addition",
+      "size_bytes": 21793,
+      "sha256": "86245915a24e98ece2f8bff1a4a6cc1e2336fa5ef302e941b0ac88c5a49be389"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_normal_multiplicity.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_normal_multiplicity.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9238,
+      "sha256": "cfa90ac482b1ab791238f96bc9f1f14d401c63fe661ed0f02ba4b739de48543e"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_normal_surface_certificate.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_normal_surface_certificate.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 10336,
+      "sha256": "b6d416e7ea7e0e4b75ed45d036dacb286f891df447500c9e1b0745ffaaeae33c"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_normal_surface_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_normal_surface_orbits.py",
+      "status": "unchanged_baseline",
+      "size_bytes": 9527,
+      "sha256": "d3a5d5be4ba28a569f0ad5afcf8d2ca93fb0849cdd9a85b02d4e8b6d4651dbc7"
+    },
+    {
+      "bundle_path": "code/fast/tests/test_weighted_orbits.py",
+      "repository_path": "Topology/UnknotRecognition/fast/tests/test_weighted_orbits.py",
+      "status": "new_research_addition",
+      "size_bytes": 9702,
+      "sha256": "185a597444a49b7f224c3abee1b05d64a45dd8bdb3e180089ebc8e6cbd09d677"
+    },
+    {
+      "bundle_path": "code/fast/weighted_research/checker_audit.py",
+      "repository_path": "Topology/UnknotRecognition/fast/weighted_research/checker_audit.py",
+      "status": "new_research_addition",
+      "size_bytes": 7647,
+      "sha256": "6fa12a98645f8babe3449085c0bf7f75cc5adce22c65da278ad81e666fcb48d0"
+    },
+    {
+      "bundle_path": "code/fast/weighted_research/kernel_audit.py",
+      "repository_path": "Topology/UnknotRecognition/fast/weighted_research/kernel_audit.py",
+      "status": "new_research_addition",
+      "size_bytes": 14317,
+      "sha256": "97e125e4cf28ab9d77c43f8c80dfa2194ab2ddbeed081e4a7357ba8b16cd8d6a"
+    },
+    {
+      "bundle_path": "code/fast/weighted_research/normal_audit.py",
+      "repository_path": "Topology/UnknotRecognition/fast/weighted_research/normal_audit.py",
+      "status": "new_research_addition",
+      "size_bytes": 26191,
+      "sha256": "23d78379e4515215be0b3f8dc37f42ae364ee0d2b5ff51cf80c629cc8b07d911"
+    },
+    {
+      "bundle_path": "code/fast/weighted_research/normal_benchmark.py",
+      "repository_path": "Topology/UnknotRecognition/fast/weighted_research/normal_benchmark.py",
+      "status": "new_research_addition",
+      "size_bytes": 6331,
+      "sha256": "e68521abec57b34002ee088181cece5e554f2b1ccae6ecb2adbaf7c017e0bcf5"
+    }
+  ],
+  "payload_integrity": {
+    "algorithm": "SHA-256",
+    "file": "MANIFEST.sha256",
+    "scope": "All archive files except MANIFEST.sha256 itself; temporary reproduced outputs and Python caches excluded."
+  }
+}

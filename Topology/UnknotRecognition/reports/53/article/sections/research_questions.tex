@@ -1,0 +1,198 @@
+\section{A prioritized research agenda}
+\label{sec:research-questions}
+
+The next objective is to turn the proved query $x\mapsto\D(x)$ into a
+complete recognition procedure with an explicit global complexity bound.
+The questions below separate near-term implementation work from structural
+estimates that remain to be proved. Throughout, $n$ denotes the crossing
+number of the supplied diagram, not the minimum crossing number of its knot.
+Each proposed advance should identify its input, its checked output, and the
+quantity that decreases or pays for its cost.
+
+\subsection{First priority: certify the diagram-to-exterior construction}
+
+Can the fast diagram pipeline produce a finite triangulation together with
+efficiently checkable evidence that it represents the exterior of exactly
+the input knot? A useful certificate should describe the local crossing and
+arc blocks, their face identifications, and a peripheral marking. Subsequent
+simplification should carry a sequence of verified local transformations or
+another explicit homeomorphism certificate. The construction must have a
+proved polynomial bound on tetrahedra and certificate length in the diagram
+encoding.
+
+This bridge makes a positive disc query relevant to the original recognition
+problem. The immediate experiment is to attach provenance to existing
+diagram-derived fixtures and compare the resulting finite triangulations
+with an independent topology implementation. Such comparisons guide
+development; the mathematical obligation is a proof for every accepted
+construction. Mutation tests should change an arc attachment, a peripheral
+label, or a simplification step and require the checker to detect the broken
+correspondence.
+
+\subsection{First priority: a complete constrained disc producer}
+
+What search procedure supplies the normal vectors, and how many must it
+inspect? The delivered count eliminates a candidate with $\D(x)=0$; it gives
+no exhaustion certificate for the remaining admissible vectors. Develop a
+producer with a clearly specified finite search space, exact feasibility
+bounds, and independently justified pruning rules. Record search nodes,
+candidate bit lengths, and time spent in feasibility, lifting, and component
+queries separately.
+
+An essential disc can already be found on a Q-vertex ray under the hypotheses
+of Suh's theorem; proving that existence again is not the research question
+\cite{Suh2010}. The difficult question is whether a complete search can avoid
+exponentially many relevant branches on every input. The established
+branch-and-bound framework provides a practical comparison
+\cite{BurtonOzlen2014}. A proposed pruning rule needs a proof that some
+essential-disc witness survives whenever one exists, including when an
+intermediate candidate is disconnected or has nonorientable components.
+
+\subsection{First priority: canonicalize before expensive search operations}
+
+Can candidate generation operate directly on primitive quadrilateral data,
+constructing the canonical standard lift only when required? Canonical
+lifting and vertex-link ambiguity are established Q-theory
+\cite{Tollefson1998,Burton2009}. The opportunity is to use them earlier in the
+implemented search, so that large common multiplicities and independent
+vertex-link offsets never enter its costly orbit queries.
+
+For every proposed Q-coordinate input, construct or certify its integral
+lift and check the full admissibility conditions. Evaluate whether branching
+bounds can use the coordinate estimate of
+Theorem~\ref{thm:primitive-q-core}. The first experiment should compare
+search-node and arithmetic counts before and after canonicalization on the
+same candidate stream. The identity $\D(x)=g\D(P)$ supports reuse of an
+essential-disc count. A request for the original component histogram still
+requires its original surface data: vertex-link deletion changes that
+histogram, and scaling a one-sided component changes its sheet decomposition.
+
+\subsection{Near-term refinement: certify and benchmark the two-weight mode}
+
+The proposition in \cref{sec:two-weight-refinement} already proves that one
+ambient-certified boundary probe suffices for all supplied surfaces in a
+fixed supported manifold. Implement its finite binary preprocessing and its
+linear-size cocycle witness, then compare two and three weights on identical
+candidate streams. The open performance question is the break-even point
+between additional ambient preprocessing and the saved transport coordinate.
+Cache only source-verified preprocessing data, and include cold and amortized
+costs separately. The existing three-weight implementation remains the
+reference until the new mode passes the frozen external corpus and the
+source-mutation checks. This is an implementation and cost question, not a
+conjecture about whether the two-weight criterion is true.
+
+\subsection{Second priority: batch related candidates and reuse checked traces}
+
+How much computation can be shared across candidates in one triangulation?
+The canonical core gives an exact starting point: candidates
+$x_j=\sum_v\ell_{jv}L_v+g_jP$ share the answer $\D(P)$, with their counts
+recovered by multiplication. Cache the validated triangulation, canonical
+cores, and their certificates using explicit source identifiers. Charge the
+cost of reading each candidate and checking its reduction even on cache hits.
+
+A broader question is whether an interval-orbit trace can be reused over a
+region of coordinate space. Equal quadrilateral support alone does not fix
+endpoint order or scheduler decisions. A reusable trace would need certified
+inequalities and congruences defining where every step remains valid, including
+periodic cases. The completed replay artifacts provide a test harness for
+this experiment \cite{AHT2006}. Measure reuse per distinct core and per
+verified trace region, and retain the total candidate count in the global
+cost accounting.
+
+\subsection{Second priority: connect selected components to compressed cutting}
+
+Can a positive three-weight query return enough additional information to
+cut along one certified essential disc efficiently? Recover a selected
+component's normal vector, using coordinate weights or a targeted orbit
+query, and supply the gluing and boundary data needed by the next stage.
+This tests a concrete transition from a component predicate to a geometric
+operation. A histogram with positive disc multiplicity establishes existence,
+but does not by itself specify the cut triangulation.
+
+Compressed cutting must preserve the hypotheses of the routine being used.
+Lackenby's hierarchy framework imposes explicit irreducibility and essential
+boundary-pattern conditions \cite{Lackenby2026}. Determine how each condition
+is established initially and propagated through subsequent cuts, and include
+the relevant boundary-pattern evidence in each transition certificate.
+Efficient algorithms for curves and normalization offer useful subroutines
+\cite{LackenbyCurves2026}; the surrounding three-dimensional invariants still
+require proof. Begin with cuts whose outputs have small independent finite
+oracles before enlarging the binary weights.
+
+\subsection{Structural priority: prove an amortized hierarchy budget}
+
+Which structural invariant can limit the aggregate search in an accelerated
+hierarchy? For a proposed encoding with counters ranging from zero to $g_i$,
+a useful \emph{target}, not a theorem established here, is
+\[
+                 \sum_i\log_2(g_i+1)=O(\log^2 n).
+\]
+These $g_i$ are hierarchy counter bounds, unrelated to the quadrilateral gcd
+of a single input. If all other state choices are charged within the same
+budget, the product of the counter ranges is
+$2^{O(\log^2 n)}=n^{O(\log n)}$.
+
+The proposed bound must control all reachable states relevant to the
+algorithm, including branching and counter resets. A bound along one chosen
+successful path is insufficient for an exhaustive search. Seek an invariant
+that pays for each split, new boundary pattern, and increase in a counter's
+range. The explicit hierarchy machinery in \cite{Lackenby2026} supplies a
+precise setting in which to formulate this obligation. Failure to obtain the
+target should produce an explicit obstruction family or a weaker proved
+budget, rather than an empirical asymptotic claim.
+
+\subsection{Structural priority: anisotropic bounds and a graph of states}
+
+Can individual counter bounds replace a uniform worst-case cap? If an
+encoding has $m$ counters, retain $\prod_{i=1}^{m}(g_i+1)$ instead of replacing
+it immediately by $(1+\max_i g_i)^m$. This mixed-radix accounting can expose
+instances with many small choices and only a few large ones. Identify a
+topological reason for that anisotropy and test whether it persists after
+cutting and simplification.
+
+Can histories reaching the same certified state be merged into a directed
+acyclic graph? State equivalence must preserve the manifold, boundary
+pattern, peripheral information, and remaining search obligations. Prove
+acyclicity using a well-founded rank, or account explicitly for cycles.
+Canonical labels and hashes may locate possible matches, but each merge
+needs a verified equivalence. Initial measurements should count distinct
+states, transitions, and equivalence-checking cost. A small state graph is
+useful only when constructing and recognizing its states is also affordable.
+
+\subsection{Quantitative priority: an explicit deterministic bit bound}
+
+What exponent does the composed algorithm actually satisfy? Derive separate
+bounds for triangulation construction, candidate production, integer gcds,
+interval operations, weight-run growth, component recovery, cutting, and
+certificate checking. Track maximum operand bit lengths and the cost
+$M(b)$ of multiplying $b$-bit integers. The weighted AHT theorem gives a
+polynomial local foundation \cite{AHT2006}; composition still requires bounds
+on the number and size of its invocations.
+
+Publish a deterministic bound with fixed constants, distinguishing
+$2^{O((\log n)^2)}$ from $2^{O((\log n)^3)}$ and stating which exponent is
+actually proved. Include output and certificate lengths, memory, and input
+reading. The completed operation counters and paired kernel measurements
+can identify costly terms and check predictions. Their role is to guide
+which inequalities need improvement; the final worst-case bound must follow
+from the algorithm and its invariants.
+
+\subsection{Continuous priority: stronger adversarial evidence}
+
+Extend the delivered 1,275-vector, 45-triangulation Regina corpus and its
+isolated counterexamples. Preserve both essential-disc cancellation and the
+orientable sphere-plus-punctured-torus false positive as mandatory cases.
+Add large vertex valence, additional boundary vertices, long layered
+triangulations, coprime large quadrilateral coordinates, and inputs designed
+to increase interval subdivisions. Exercise one-sided scaling and certificate
+mutations at every new interface.
+
+Keep a capped corpus with fully expanded independent components and a
+separate collection of large binary instances whose answers follow from
+proved constructions. For each family, report the parameter varied, the
+expected component semantics, the source triangulation, and reproducible
+seeds. When recognition stages are connected, add difficult diagram families
+and measure every stage on the same instances. This prevents a local speedup
+from hiding a newly dominant producer or source-validation cost, while
+maintaining the exact distinction between a component of a supplied surface
+and a conclusion about the original knot.

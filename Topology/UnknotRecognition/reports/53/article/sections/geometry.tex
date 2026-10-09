@@ -1,0 +1,174 @@
+\section{Cell weights and three-statistic disc detection}\label{sec:geometry}
+
+\subsection{Validated finite geometry}
+
+The existing validator checks reciprocal face pairings, face-connectedness,
+ambient orientability, absence of reversed edge identifications, spherical
+or disc vertex links, and a single finite boundary torus. Ideal vertices and
+other boundary topologies are rejected. Normal coordinates are checked for
+nonnegativity, face matching, and the quadrilateral constraints. These checks
+are retained before any new component query.
+
+The proof requires no irreducibility hypothesis on the supplied manifold.
+Irreducibility becomes relevant to other recognition and hierarchy operations,
+not to the classification of its embedded surface components. In particular,
+the implementation must correctly reject a closed projective-plane component
+as a disc even though its Euler characteristic is one.
+
+For every global triangulation edge $e$, let $w_e$ be its normal intersection
+number. A block of $w_e$ consecutive integers represents those intersection
+points, ordered using a consistent orientation of that edge. Concatenate
+these blocks to obtain a universe of size
+\[
+                        N=\sum_e w_e.
+\]
+Each normal arc in a face pairs its two endpoint positions. Consecutive arcs
+of a fixed type give one interval isometry. Count a glued face once and each
+boundary face once. The number of pairings is at most $12t$. The graph formed
+by these vertices and arc edges is the one-skeleton of the normal surface's
+polygonal cellulation. Its connected components are exactly those of the
+surface. Identifications within one tetrahedron, loop arcs, and multiple
+edges cause no problem for either connectivity or the Euler formula.
+
+\subsection{Integral ownership of Euler characteristic}
+
+One can distribute fractional Euler weights over polygon corners. We instead
+use an integral ownership rule, which avoids denominators entirely.
+Give every edge-intersection point an initial Euler weight $+1$. For every
+normal arc, charge $-1$ to one of its endpoints. For every normal polygon,
+charge $+1$ to one selected corner. The selected corner belongs to the same
+surface component as the entire polygon; likewise the endpoint of an arc.
+Therefore, for every component $C$,
+\[
+             \sum_{p\in C} w_\chi(p)=V(C)-E(C)+F(C)=\chi(C).
+\]
+This is true even when several selected local corners become the same global
+intersection point: their additive contributions must then accumulate there.
+
+All ownership data is described by $O(t)$ intervals. The negative arc charge
+is assigned on the canonical source interval of each maintained pairing.
+For a triangle type at vertex $v$, choose a fixed incident local edge and use
+the triangle points nearest $v$. For an active quadrilateral type, choose the
+lexicographically first local edge that it crosses. Along an edge from local
+vertex $a$ to local vertex $b$, the points appear as triangles at $a$, then
+quadrilaterals, then triangles at $b$. If their relevant counts are $T_a,Q$,
+the selected quadrilateral corners occupy
+\[
+                            [T_a,T_a+Q).
+\]
+Reflect this interval if the local edge direction disagrees with the global
+orientation. No stack is expanded.
+
+\begin{lemma}[Cell-weight identity]\label{lem:cell-weight}
+The constructed piecewise-constant integer weight has component sums
+$\chi(C)$, and has an $O(t)$-interval additive description. A second weight
+obtained by retaining just the polygon credits sums to the number of normal
+polygons in $C$.
+\end{lemma}
+\begin{proof}
+Every cell receives exactly one charge of its appropriate sign and each
+charge lies in its own connected component. A tetrahedron has at most five
+nonempty polygon types, and a face has at most three arc types. The listed
+charges are constant on each type's consecutive set of corners or endpoints.
+\end{proof}
+
+The full-coordinate reference replaces each polygon credit by the corresponding
+standard basis vector of $\Z^{7t}$. A component's orbit sum is then its actual
+normal coordinate vector. This is the classical component-recovery route
+\cite{AHT2006}; the new disc query avoids its growing vector dimension.
+
+\subsection{A small, certified homology basis of the boundary}
+
+Let $G$ be the primal one-skeleton of the boundary triangulation. Self-loops
+and multiple edges are permitted. Select a spanning tree $T$ of $G$. In the
+dual graph select a spanning tree $T^*$ using edges whose primal edges are
+outside $T$. Exactly two primal edges are in neither tree, since the boundary
+is a torus and
+\[
+ |E|-(|V|-1)-(|F|-1)=2.
+\]
+For each leftover edge, append the unique path in $T$ connecting its endpoints.
+These two fundamental cycles, $c_1,c_2$, form a basis of
+$H_1(\partial\mathcal T;\F_2)$.
+
+For completeness, the tree-cotree fact can be seen by contracting the primal
+tree and removing edges dual to a dual spanning tree. These operations
+preserve the surface and reduce its cellular description to one vertex,
+one face, and two edges. Over $\F_2$, the boundary of that face is zero,
+and the two surviving cycles freely generate the two-dimensional first
+homology. Reversing the contractions gives exactly the chosen fundamental
+cycles. The dual graph outside the primal tree is connected: a separating
+dual cut would correspond to a nonempty primal cycle contained in the tree.
+
+The certificate checker does not rely on the spanning-tree algorithm's output
+being correct. It independently checks that each proposed cycle has even
+incidence at every vertex, constructs the boundary vectors of all triangles,
+and performs binary Gaussian elimination. The two proposed cycles must each
+increase the rank modulo the face-boundary span. Since the validator has
+already established a torus, two independent classes are a basis. Repeated
+edges of a triangular face cancel modulo two in this check.
+
+\subsection{Boundary intersection weights}
+
+For each $j\in\{1,2\}$, give every intersection point on a boundary edge in
+$c_j$ a homology weight $+1$ in coordinate $j$; give every other point weight
+zero. If $z_e(C)$ counts the boundary points of component $C$ on edge $e$, then
+its orbit sum is
+\[
+                    \eta_j(C)=\sum_{e\in c_j} z_e(C).
+\]
+The code retains this as an exact integer and reduces it modulo two when
+interpreting the result. Equivalently, one could carry an $\F_2$ coordinate
+throughout the weighted algorithm; the present implementation uses one
+uniform integer-vector engine for all query modes.
+
+The parity vector $z_e(C)\bmod2$ is the cellular cocycle Poincare-dual to
+$\partial C$: every boundary triangle meets the normal boundary curve in
+arcs and therefore has even total endpoint incidence. Evaluating that cocycle
+on the two basis cycles yields
+\[
+    h(C)=(\eta_1(C),\eta_2(C))\bmod2,
+    \qquad
+    h(C)=0\ \Longleftrightarrow\ [\partial C]=0
+       \text{ in }H_1(\partial\mathcal T;\F_2).
+\]
+The equivalence uses the nondegenerate homology-cohomology pairing over the
+field $\F_2$. It applies to the total boundary of each component, rather than
+to one arbitrarily selected boundary circle.
+
+\input{sections/geometry_proof_fragment}
+\input{sections/two_weight_refinement}
+
+\subsection{Component histograms and witness extraction}
+
+In disc mode the weighted output is initially a histogram of exact integer
+triples. The result interpreter reduces its last two entries modulo two and
+merges identical triples, adding their binary multiplicities. This last
+aggregation is safe because the predicate depends only on those three
+displayed values. It is unnecessary to distinguish normally nonisotopic
+components that have the same disc-test signature.
+
+Summary mode adds the number of polygons and the number of boundary
+intersection points. The latter equals the number of boundary normal arcs
+componentwise, since every boundary circle has an equally sized vertex and
+edge set in its induced cellulation. These two counts are diagnostic data;
+they do not determine the number of boundary circles or the full genus.
+
+When an actual disc vector is required, the full-coordinate mode recovers a
+histogram of connected-component coordinate vectors. One may select any
+record with the certified disc predicate. The coordinate vector is explicit
+in $7t$ binary entries, while a large number of identical copies is retained
+as a multiplicity. The existing unweighted trace can be checked and reused,
+so extraction does not require another search for an orbit-reduction order.
+This separates a cheap decision query from a more informative extraction
+query without conflating their costs.
+
+\subsection{Why the geometric restriction matters}
+
+The boundary-torus assumption is substantive. On a boundary surface of genus
+at least two, an essential separating simple closed curve has zero mod-two
+homology. Such a curve could bound a compressing disc and would escape the
+three-weight test. A higher-genus extension therefore needs compressed
+curve-essentiality information, not just more copies of a homology basis.
+The supplied validator rejects these inputs, so the implementation does not
+silently apply the torus theorem outside its hypotheses.

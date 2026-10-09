@@ -1,0 +1,83 @@
+\subsection{Three additive weights characterize compressing discs exactly}
+\label{sec:three-weight-criterion}
+
+Let $C$ be a connected component of the supplied proper normal surface.
+The cell-incidence weight gives $\chi(C)$. Let $\gamma_1,\gamma_2$ be the
+checked homology basis of the boundary torus described above, and define
+\[
+ h_i(C)=\sum_{e\in\gamma_i}|C\cap e|\pmod2,
+ \qquad i=1,2.
+\]
+The raw orbit calculation retains the corresponding integer sums; parity is
+taken only when interpreting the resulting component signature. In
+particular, signed Euler arithmetic and binary homology arithmetic are not
+silently identified.
+
+\begin{lemma}
+\label{lem:boundary-character-completeness}
+The pair $(h_1(C),h_2(C))$ vanishes exactly when the mod-two boundary class of
+$C$ vanishes in the ambient torus.
+\end{lemma}
+\begin{proof}
+On every boundary triangle, a normal arc contributes two endpoints.
+Consequently the parity of edge intersections is a cellular $1$-cocycle,
+including in generalized triangulations where repeated face edges must be
+combined modulo two. This cocycle represents the Poincar\'e dual of the
+boundary multicurve. Evaluation on a homology basis determines its cohomology
+class, since evaluation gives the nondegenerate pairing between
+$H^1(T^2;\F_2)$ and $H_1(T^2;\F_2)$. Both spaces have dimension two. Thus
+the two values vanish precisely for the zero boundary class.
+\end{proof}
+
+\begin{theorem}[Exact three-weight disc criterion]
+\label{thm:three-weight-disc}
+A connected component $C$ is a compressing disc for the ambient boundary
+torus if and only if
+\[
+ \chi(C)=1,
+ \qquad (h_1(C),h_2(C))\ne(0,0).
+\]
+\end{theorem}
+\begin{proof}
+A compressing disc has Euler characteristic one. Its boundary is an embedded
+essential circle on the torus. Such a circle represents a primitive integral
+slope, so its reduction modulo two is nonzero. The lemma proves necessity.
+
+Conversely, the nonzero boundary class implies that $C$ has boundary. The
+classification of connected compact surfaces now leaves only a disc. Indeed,
+an orientable surface of genus $a$ with $b\ge1$ boundary circles has
+$\chi=2-2a-b$; equality to one forces $a=0,b=1$. A nonorientable surface with
+$k\ge1$ crosscaps and $b\ge1$ boundary circles has
+$\chi=2-k-b\le0$. The resulting disc has nonzero boundary class, and hence
+its simple boundary circle is essential on the torus.
+\end{proof}
+
+The boundary condition in this argument is necessary. A closed projective
+plane also has Euler characteristic one; its two boundary evaluations are
+zero, so it is correctly excluded. Such closed one-sided surfaces occur in
+the supported general torus-boundary manifold fixtures, even though those
+fixtures need not be knot exteriors. No assumption of irreducibility is
+smuggled into the local component test.
+
+Two binary linear probes are also the minimum needed to recognize the zero
+element of the full torus boundary-class space by linear evaluation alone.
+A single linear functional on the two-dimensional space has a nonzero
+kernel. The two-probe statement concerns this unrestricted homology interface;
+it does not prove a lower bound for a specially restricted collection of
+normal surfaces in one fixed manifold, nor for nonlinear preprocessing.
+Together with the Euler coordinate, it explains the natural three-weight
+implementation and its reduction from $7t$-dimensional coordinate extraction.
+
+The torus hypothesis cannot be dropped from the equivalence. On a boundary
+surface of genus at least two, an essential separating simple circle can have
+zero mod-two homology. The same predicate would then give only a sufficient
+test for certain compressing discs, and could miss others. The native input
+validator's one-torus-boundary contract is therefore part of the theorem,
+not merely a convenience for constructing a small basis.
+
+Finally, the test must be applied to individual component weights. Two
+parallel meridians have zero total boundary class but contribute two
+compressing discs. Conversely, an inessential vertex-link disc together with
+a M\"obius band can have total Euler characteristic one and nonzero total
+boundary class while contributing no compressing disc. A weighted orbit
+histogram resolves both ambiguities without listing the components one by one.

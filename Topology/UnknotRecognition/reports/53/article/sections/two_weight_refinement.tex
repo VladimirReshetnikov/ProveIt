@@ -1,0 +1,86 @@
+\subsection{A proved two-weight refinement using ambient homology}
+\label{sec:two-weight-refinement}
+
+The three-weight implementation uses only the boundary torus when choosing
+its homology probes. The ambient manifold supplies additional information:
+boundaries of proper surfaces occupy a one-dimensional subspace of the
+torus homology. Exploiting that restriction gives the following proved
+refinement. It is \emph{not implemented or benchmarked in this delivery};
+the reported disc-query improvements use the implemented three-weight mode
+and the stated comparison arms.
+
+\begin{samepage}
+\begin{proposition}[One ambient-certified boundary probe]
+\label{prop:two-weight-disc}
+Let $M$ be a compact connected orientable three-manifold with exactly one
+torus boundary, and let $i:\partial M\hookrightarrow M$. There exists a
+boundary cycle $\gamma$ with $i_*[\gamma]\ne0$ in $H_1(M;\F_2)$. For any
+such cycle and every connected proper normal-surface component $C$,
+\[
+ C\text{ is a compressing disc}
+ \quad\Longleftrightarrow\quad
+ \chi(C)=1\ \text{ and }\ |\partial C\cap\gamma|\equiv1\pmod2.
+\]
+The intersection count can be computed by the same additive edge-point
+weights as before. Thus two integer weights suffice after the indicated
+ambient preprocessing.
+\end{proposition}
+\end{samepage}
+\begin{proof}
+All homology groups in this proof have coefficients in $\F_2$. Write
+$b_j=\dim H_j(M)$. Poincar\'e--Lefschetz duality gives
+$\chi(M,\partial M)=-\chi(M)$; combined with the Euler characteristic of
+the pair, this gives $2\chi(M)=\chi(\partial M)=0$. Since $M$ is connected
+with nonempty boundary, $b_0=1,b_3=0$, and hence $b_1-b_2=1$
+\cite{Hatcher2002}.
+
+In the long exact sequence of the pair, $H_0(\partial M)\to H_0(M)$ is an
+isomorphism. Consequently $H_1(M)\to H_1(M,\partial M)$ is surjective.
+Duality identifies the dimension of the latter group with $b_2$. Exactness
+therefore gives $\dim\operatorname{im}i_*=b_1-b_2=1$. The kernel
+\[
+ L=\ker\bigl(H_1(\partial M)\longrightarrow H_1(M)\bigr)
+\]
+is a line in the two-dimensional torus homology. Every compact surface,
+including a nonorientable one, has a relative fundamental class over
+$\F_2$. Pushing that class into $(M,\partial M)$ shows that
+$[\partial C]\in L$.
+
+The torus intersection pairing is nondegenerate and alternating. A line
+$L$ consequently has orthogonal complement $L$ itself. Since
+$i_*[\gamma]\ne0$, the class $[\gamma]$ is outside $L$ and pairs to one
+with its unique nonzero element. Odd intersection with $\gamma$ is therefore
+equivalent to $[\partial C]\ne0$. The surface-classification and primitive
+torus-slope argument already proved then gives the disc criterion. This
+argument imposes neither irreducibility nor a torsion-free integral homology
+assumption.
+\end{proof}
+
+There is a concrete finite preprocessing algorithm. Embed the two verified
+boundary basis cycles into the ambient global edge-chain space over $\F_2$.
+Form the span of boundaries of all ambient triangular face classes, counting
+paired faces once and combining repeated edges modulo two. At least one
+boundary basis cycle lies outside this span, because the boundary inclusion
+has rank one. Choose such a cycle as $\gamma$. It is already a cycle, so
+being outside the face-boundary span is exactly the required nonzero ambient
+homology condition.
+
+The preprocessing can carry a particularly small certificate: an ambient
+cellular $1$-cocycle $u$ satisfying
+\[
+ u(\partial f)=0\quad\text{for every triangular face }f,
+ \qquad u(\gamma)=1.
+\]
+These identities prove that $\gamma$ is not a boundary. A producer can find
+$u$ by Gaussian elimination in $O(t^3)$ elementary operations over $\F_2$;
+replay checks $O(t)$ constant-size face equations and the cycle evaluation,
+without repeating elimination. The cycle and cocycle depend only on the
+triangulation and can be reused across its candidate surfaces.
+
+Both signatures have constant dimension. This refinement saves one
+transported integer coordinate while adding ambient preprocessing; its practical benefit remains to be measured. It
+does not contradict the earlier observation about two linear probes on the
+\emph{unrestricted} torus class space. The new probe uses a certified
+geometric restriction to the line $L$. With several boundary components the
+rank argument above changes, so this particular one-probe conclusion must
+not be transferred to that setting without a new analysis.

@@ -1,0 +1,119 @@
+\section{Certificates, implementation, and the trust boundary}
+\label{sec:certificates}
+
+\subsection{A layered certificate contract}
+
+The implementation separates three assertions that require different evidence.
+First, a finite pairing system has a particular weighted orbit histogram.
+Second, that pairing system and those weights actually encode the supplied
+normal surface. Third, an optional canonical reduction preserves the requested
+essential-disc count. A correct assertion at one level does not substitute for
+the assertions above it.
+
+The schema \code{weighted-interval-orbits-v1} contains the universe size,
+weight dimension, canonical source weight runs, an unweighted orbit proof,
+and the claimed histogram. The checker receives the caller's pairing and
+weight inputs separately. It reconstructs their canonical forms, checks the
+unweighted local moves against the actual pairings, and independently
+transports the weights. A valid unweighted orbit count alone cannot certify
+the weighted answer: different partitions can have the same number of orbits
+and different component statistics.
+
+The schema \code{normal-component-census-v1} adds the original-source
+fingerprint, query mode, boundary homology basis, and interpreted component
+summary. Its verifier revalidates the triangulation and coordinates, checks
+the proposed basis by binary elimination, rebuilds the orbit source, and
+checks the weighted proof. It then reconstructs the displayed component
+predicate and multiplicity sums independently of the producer's result
+interpreter. Total Euler characteristic provides an additional consistency
+check, but does not replace componentwise verification.
+
+The outer schema \code{normal-disc-count-v1} records the vertex-link
+multiplicities, quadrilateral divisor, explicit core coordinates, core
+certificate, and final count. Its verifier reconstructs the minimum-triangle
+subtraction and gcd calculation without calling the producer's reduction
+helper. A nonzero divisor requires a disc-mode certificate for the actual
+reconstructed core. A zero divisor requires a zero residual vector and no
+core certificate. The final multiplicative count is checked exactly.
+
+Fingerprints make stale evidence and accidental source substitution easy to
+detect. They are not the entire justification for the result: the replay
+starts from reconstructed geometry and exact source-dependent pairing and
+weight data. Neither a matching hash nor agreement on the final component
+count permits omitting the local checks.
+
+\subsection{What independence means here}
+
+The producer discovers an orbit-reduction order and implements translation
+transport by quotient/remainder range additions. The checker validates that
+order and uses the separate residue-anchor and discrete-derivative method of
+\cref{sec:weighted-orbits}. It never invokes orbit discovery or the weighted
+producer's transport routines. An audit disables the producer entry points
+before replay to test that separation directly.
+
+There is nevertheless a shared geometric foundation: the existing finite
+triangulation validator, normal-coordinate validation, integer decoding, and
+the cell-weight construction. The full-coordinate mode also shares the
+routine that derives a signature from a recovered component vector. The
+Regina audit is therefore important: it compares actual expanded connected
+normal surfaces, constructed by a different implementation, with all three
+query modes. Agreement is strong finite evidence about those shared routines;
+it is not a proof assistant verification of the source code. The mathematical
+proofs establish the algorithmic claims, while executable replay and oracles
+test the delivered realization of those claims.
+
+The new modules are deliberately additive. They use the maintained
+\code{interval_orbits} scheduler and its existing independent local-rule
+checker, retaining the repository's classical and Fine--Wilf merger choices.
+The existing recognizer does not automatically call the new census, and no
+legacy result is relabeled as a stronger decision. This makes integration
+reviewable: a caller must explicitly request the additional operation and
+interpret its stated source contract.
+
+\subsection{Completion, cancellation, and resource limits}
+
+A finite orbit allowance is a work limit, not a mathematical negative result.
+If discovery exhausts \code{max_cycles}, the new query returns
+\code{INCONCLUSIVE}; it does not return the partially accumulated histogram as
+a complete component census. Cancellation callbacks are passed through input
+validation, interval construction, discovery and replay, and their exceptions
+propagate. A caller that supplies an already completed orbit proof cannot
+simultaneously ask that an orbit-search cycle cap constrain its replay.
+
+Encoded integers remain exact Python integers. The existing integer codec
+also accepts its explicit hexadecimal representation for certificates and
+inputs too large for convenient decimal conversion. The large-coordinate
+experiments retain such values in binary-sized representations; they do not
+change the meaning of a coordinate or replace it by a floating-point estimate.
+
+Certificate validation is polynomial in the explicitly supplied source and
+proof lengths. A deployment that reads arbitrary external JSON must impose
+its own byte and nesting limits before decoding; a replay routine cannot
+make reading an arbitrarily oversized document free. Those input-container
+limits are separate from an orbit-cycle cap and from the mathematical bit
+complexity of a well-formed certificate.
+
+\subsection{Using a positive answer in a recognizer}
+
+For a source-bound knot exterior, a positive essential-disc count can be used
+as a positive unknot witness. If a later operation needs the actual surface,
+request \code{mode='coordinates'} and select a certified compressing-disc
+record. Its multiplicity is information about parallel copies, while its
+coordinate vector describes one connected component. The three-weight result
+alone need not identify that vector.
+
+For a canonical count query, the simplest extraction strategy is to run the
+coordinate census on the explicit primitive core. An essential disc in the
+core is embedded in the same triangulated manifold and is already a sufficient
+positive witness. Multiplying it back is unnecessary for the existence
+question. The package does not yet implement a selected-component extraction
+certificate that avoids the full $7t$ histogram; that is a concrete subsequent
+optimization.
+
+At the outer boundary, a validated compact manifold with torus boundary is
+not by itself evidence that it is the complement of a particular knot
+diagram. A future integration must retain or replay that correspondence.
+The positive implication is then topological and exact; the absence of a
+disc in one candidate remains only a candidate rejection. This is the
+contract under which the new operation can safely become part of a complete
+recognizer.
