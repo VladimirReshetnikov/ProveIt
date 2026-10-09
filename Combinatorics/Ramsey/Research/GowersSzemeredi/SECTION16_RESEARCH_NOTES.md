@@ -5205,3 +5205,34 @@ including 4,152 OAI modules), using only the three approved standard
 axioms. The source ledger is unchanged at 115 companions and five open
 entries, and the selected-port scope check passes. The companion count
 does not establish fidelity to every printed statement.
+
+
+### J.5 revisited with the pipeline's actual losses (2026-10-09, order-of-magnitude)
+
+J.5 compared the structure side against `Theorem162At 3` assuming
+Milićević's quasi-polynomial bound. The corpus pipeline instead loses
+polynomially, through these parameters:
+- Column core density `κ = 2⁻¹⁸⁸²(α⁴)¹¹⁶⁴` (Corollary 7.6 at energy
+  `α⁴`).
+- Column spectrum cap `d ≈ 16κ⁻² ≈ 2³⁷⁶⁸α⁻⁹³¹²`.
+- Witness density `13^{-d}`. This is the dominant loss, `exp(−poly(1/α))`.
+
+If the remaining steps (graph extraction, bilinear organization,
+shifted agreement) stay of the same type, the deep structure holds with
+some `Bnd(c) ≤ A·c^{-p}`, where `A = 2^{O(10⁴)}` and `p = O(10⁵)`. The
+structure side evaluates it at `c = θ/(2m)`, with `m` polynomial of
+degree about `10⁸` in `1/(γθ)` (J.4). So the piece count is
+`exp(Bnd) = exp(poly(1/(γθ)))`, of degree about `10¹³`.
+`Theorem162At 3` allows counts `exp(Θ(r log r))`, with
+`r ≥ (2/(θγ))^{2⁵¹²}`. That is degree `2⁵¹²`, and `r ≥ 2^{2⁵¹²}` absorbs
+any constant `A ≤ 2^{2⁵⁰⁰}`. Width exponents `1/poly(n·Bnd)` sit far
+above the allowed `exp(−Θ(r log r))`.
+
+So, as far as counts and exponents go, a polynomial-bound deep structure
+fits the dimension-three budget with enormous room. This is an
+order-of-magnitude comparison, not a formal inequality. The formal
+connection still needs the Part J restatement on the polynomial lift,
+with `IsVarietyPieceB` bounds in place of `milicevicBound`
+(`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
+already names. It also assumes that the remaining Milićević steps lose
+no more than polynomially in their inputs.
