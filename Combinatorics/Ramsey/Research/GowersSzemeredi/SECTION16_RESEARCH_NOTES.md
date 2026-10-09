@@ -4600,3 +4600,102 @@ On a shared witness `(z₁,…,z₄)` the alternating sum
 `Σ(−1)ⁱφ_{xᵢ}(z₁+z₂−z₃−z₄)` vanishes by row-Freiman-linearity of the
 bihomomorphism. With `freiman_image_card_mul_le` this bounds its image.
 That assembly is the next step. Standard axioms; gate clean.
+
+
+### J.97. Prime-target small-image rigidity without new frequencies
+
+The previous checkpoint constructs the seven-operator geometric domain;
+it does not yet control the values of an original bihomomorphism on it.
+The next argument addresses bounded-image relations among column maps.
+It gives a prime-cyclic simplification of the transition from small
+images to exact identities, relevant to the structure route discussed
+in [Milićević, Sections 6–8](https://arxiv.org/pdf/2601.01682).
+The following radius bounds are proved directly here; they are not
+claimed to be the bounds printed in that paper.
+
+**Small image implies constancy after a radius shrink.** Let `f` satisfy
+the Freiman quadruple identity on `bohr T rho`, where `rho >= 0`, and
+suppose its image has at most `K` elements in the prime cyclic target
+`ZMod N`, with `K < N`. Then
+
+```
+y in bohr T (rho / K)  ==>  f y = f 0.
+```
+
+The image bound itself forces `K > 0`, because the original domain
+contains zero. For such a `y`, all multiples `j*y`, `0 <= j <= K`, lie
+in the original Bohr set. Freiman linearity gives
+
+```
+f(j*y) = j * (f(y) - f(0)) + f(0).
+```
+
+If `f(y) != f(0)`, prime-field cancellation makes these `K+1` values
+distinct, contradicting the image cap. This is
+`Proofs16PrimeSmallRange.freiman_small_image_constant`; its normalized
+version concludes `f y = 0`. The auxiliary multiple and affine-formula
+lemmas are public. No additional frequencies are introduced.
+
+**Families and column identities.** `Proofs16SmallImageRelations` applies
+the argument to linear combinations of maps with different Bohr domains,
+using the union of their frequencies for the common domain. Every
+bounded-image combination becomes constant on the radius-`rho/K`
+intersection. Normalized maps give exact zero relations. For maps on a
+single common domain, an arbitrary collection of coefficient vectors
+with image bound `K` lies in the relation submodule after this one
+shrink; there is no dependence on the number of relations.
+
+`Proofs16PrimeColumnIdentities` specializes to the defect
+
+```
+L(q 0)(y) + L(q 1)(y) - L(q 2)(y) - L(q 3)(y).
+```
+
+A bounded-image defect vanishes on the smaller common domain. In
+particular, if every additive quadruple of indices in `X` has image
+size at most `K`, the map `(x,y) |-> L x y` is an actual Freiman
+bihomomorphism on
+
+```
+{(x,y) : x in X and y in bohr (T x) (rho/K)}.
+```
+
+Horizontal identities follow from the new rigidity result; vertical
+identities follow by restricting the original column maps. This theorem
+is conditional on the stated image bounds for all additive quadruples;
+it does not assert that the required index family has already been
+extracted from an arbitrary input bihomomorphism.
+
+**A quantitative dense-level consequence.** Suppose `Z` lies in
+`bohr T rho`, `f` is constant on `Z`, and `#Z >= alpha*N`, with `alpha > 0`.
+Set `d = #T`. For a positive integer `M` with `1 <= (rho/4)*M`, the
+existing dense-level packing bound and Bohr cardinality lower bound give
+
+```
+#f(bohr T (rho/2)) <= M^d / alpha.
+```
+
+For `rho > 0`, `Proofs16DenseLevelKernelRadius` discharges the cell
+condition with `M = ceil(4/rho)` and sets `K = ceil(M^d/alpha)`. If the
+prime modulus satisfies `K < N`, the resulting positive-radius Bohr set
+at `rho/(2K)` lies in the original domain and satisfies `f y = f 0`
+throughout. The frequency set is exactly `T`. Thus this route eliminates
+the added spectrum frequencies in the existing dense-level kernel
+construction, at the cost of an explicit radius shrink and a modulus
+threshold. It does not claim a simultaneous improvement of every bound.
+
+**Remaining scope.** The field cancellation and `K < N` are substantive
+hypotheses. This does not establish the all-modulus, quasipolynomial
+`MilicevicDeepVarietyStructure` contract, nor the dense shifted agreement
+with the original map. The five numbered open statements remain open.
+No additional `openai/math` code is ported by this checkpoint.
+
+**Verification.** The focused column-family and dense-level closures pass
+in 42 and 43 modules. All 14 new named theorems pass individual axiom
+checks. The full merged facade audit checks 6,882 public Gowers theorems
+in 5,078 modules (4,152 OAI modules), or 5,080 modules with both audit
+consumers. Only `propext`, `Classical.choice`, and `Quot.sound` occur.
+The incoming public represented-map construction is included. The source
+ledger matches the tracked 115 companions and five open entries, and
+the selected-port scope check passes. Upstream source bytes and Apache
+provenance/license files are unchanged.
