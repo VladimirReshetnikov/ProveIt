@@ -1,0 +1,36 @@
+The layered meridian family illustrates the saved work. The table counts
+all surface, double and boundary events; the finite sign witness replaces
+only the double trace.
+\input{tables/coorientation_counts.tex}
+
+The isolated timing experiment uses five randomized rounds, with old and
+new implementations and a same-implementation control for each. All 240
+measured calls and 48 warm-up calls finish. Each timed call includes topology
+production, independent replay and complete proof serialization and hashing.
+Input construction is outside the timer. The old arm uses the old checker;
+all arms return the same topology and each arm's proof is deterministic.
+The binary-scale case multiplies a 64-tetrahedron meridian by $2^{2048}+1$.
+The empty, M\"obius, linking, mixture and genus-two cases also request
+boundary classification.
+\input{tables/coorientation_timings.tex}
+
+A factor above one favors the new implementation; factors are medians of
+paired ratios rather than ratios of medians. Layered examples gain up to
+$1.967\times$, and the genus-two coherent example gains $1.323\times$.
+Several small cases regress, including the empty surface even though its
+double is derived: the extra graph/proof overhead exceeds the saved query.
+Same-implementation control medians range from 0.959 to 1.030, so small
+differences should not be interpreted as stable gains.
+
+A second isolated experiment times the entire 1,275-vector corpus as one
+batch, with default multiplicity reduction and no boundary classification.
+Five rounds give 20 measured batches (25,500 surface calls) and four warm-up
+batches (5,100 calls). Each includes all producers, independent replays
+and proof serialization/hashing. The aggregate topology digest agrees
+across all arms. The new arm derives 239 doubles, reduces recorded events
+from 190,570 to 182,925 and serialized proof bytes from 13,330,351 to
+12,861,213. Its paired speed factor is 1.003, with old and new control
+factors 0.992 and 0.996: effectively neutral at this measurement resolution.
+The default therefore trades small miss costs for substantial savings on
+some expensive supplied surfaces; it is not presented as a measured
+whole-corpus speedup. The explicit off switch preserves the old schedule.

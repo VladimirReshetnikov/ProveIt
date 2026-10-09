@@ -1675,3 +1675,7 @@ for persistent_mode in ('kernels','source','stages','pipeline'):
 if os.path.exists('data/coherent-escape-benchmark.json'):
     import runpy
     runpy.run_path('data/coherent_escape_tables.py')
+
+if os.path.exists('data/coorientation-benchmark.json'):
+    import runpy
+    runpy.run_path('data/coorientation_tables.py')

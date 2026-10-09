@@ -1,0 +1,159 @@
+\section{Finite coorientations eliminate a redundant orbit query}
+\label{sec:normal-coorientation}
+
+The normal-surface topology API previously counted the orbits of a supplied
+surface, its doubled coordinates, and its boundary separately. Doubling
+detects orientability, but its orbit computation can repeat much of the
+first query's work. On the 256-tetrahedron layered meridian, the surface and
+double each take 261 cycles and record 82,960 local events. The boundary
+adds 259 cycles and 518 events. A diagnostic profile identifies transmission,
+contraction and support closure in these queries and their independent
+replay as the main costs. The profile includes instrumentation overhead;
+the timings below come from separate isolated measurements.
+
+The implementation now first tries a sufficient finite coorientation
+certificate. When it succeeds, the double has exactly twice the already
+verified number of surface components. This removes a complete orbit query
+and its local trace. Failure retains the previous query and proof format.
+The test is enabled by default in \code{normal\_surface\_topology};
+\code{coorientation=False} restores the old schedule. This API analyzes
+supplied normal coordinates. The current diagram-recognition stages use
+other specialized surface APIs, so these measurements do not assert a
+speedup of complete knot recognition.
+
+\subsection{A finite sufficient trivialization}
+
+Let $Q$ be the normal vector used by the orbit queries. If multiplicity
+reduction is enabled, the input is $gQ$, where $g$ is the coordinate gcd;
+otherwise $Q$ is the full input. Order the global edges as in the normal
+interval construction and let $w_e$ be their intersection weights. The
+orbit universe is partitioned into nonempty blocks
+\[
+ B_e=[s_e,s_e+w_e)\cap\mathbb Z,\qquad
+ s_e=\sum_{e'<e}w_{e'}.
+\]
+Each original normal-arc pairing has its domain in one block $B_u$ and
+its range in one block $B_v$. Associate to this pairing the bit
+$\delta=0$ for an order-preserving map and $\delta=1$ for a reversing map.
+Solve the finite graph equations
+\[
+ \epsilon_u\mathbin\oplus\epsilon_v=\delta.
+\]
+A parity traversal either supplies one bit per incident block or finds an
+inconsistent cycle. The latter is only a failed sufficient test. It does
+not prove the surface nonorientable, since a valid coorientation might
+vary within a block.
+
+To prove the positive case, write each point of the doubled universe
+uniquely as $2i+r$, where $r\in\{0,1\}$. Doubling an interval pairing
+$f$ sends it by
+\[
+ \widetilde f(2i+r)=2f(i)+(r\mathbin\oplus\delta).
+\]
+This follows directly from the doubled endpoints: an interval $[a,b]$
+becomes $[2a,2b+1]$. On block $B_e$, give this point the corrected label
+$r\mathbin\oplus\epsilon_e$. The equations imply that every doubled
+pairing preserves this label. For each label, projection to $i$ is a
+bijection and conjugates every generating pairing to its base pairing.
+Thus each label carries exactly the original orbit relation, proving
+\[
+ C(2Q)=2C(Q).
+\]
+Blocks with no incident pairing can be given bit zero: their isolated
+points have two isolated lifts. The equality also holds for the empty
+universe. Since the validated ambient manifold is orientable and this
+double is the normal orientation cover, every component of $Q$ is
+orientable.
+
+The proof must use the original arc pairings, including reversals on
+single-point intervals. Such a reversal is the identity on its base
+point but interchanges the two lifted points. Removing its reversal bit
+would lose the monodromy and could give an incorrect orientability result.
+The graph is therefore reconstructed from the original normal geometry,
+independently of simplifications made during the first orbit query.
+
+Coarse-test failure occurs on both one-sided and two-sided surfaces.
+The one-tetrahedron M\"obius band fails; twice that band is an orientable
+annulus but can still fail, including when its primitive quotient is used.
+The one-vertex linking disc also fails on this example. All use the old
+double query. When the test succeeds on a quotient $Q$, the existing
+multiplicity-lifting identities recover the topology of $gQ$. No new
+rule replaces those identities, including the even-multiplicity handling
+of one-sided components on the fallback path.
+
+\subsection{An independently checked derived count}
+
+Successful proofs use outer schema \code{normal-surface-topology-v4}.
+It retains the source fingerprint, the actual surface and boundary orbit
+proofs, boundary homology, claimed topology and coordinate divisor, and
+adds an explicit Boolean boundary-classification flag. The double entry
+has schema \code{normal-double-coorientation-v1}, the finite parity
+certificate, the claimed doubled count and an empty operations list.
+The coordinate divisor is explicit even when it equals one.
+
+The checker reconstructs the manifold, admissible coordinates, quotient
+and original arc system. It independently verifies the surface count,
+reconstructs the finite graph, checks all supplied bits and graph equations,
+and requires the double's count to equal twice that verified count. It
+does not invoke the parity search or any orbit producer. Missing or
+duplicate labels, values other than integer bits, inconsistent equations, extra fields,
+nonempty derived traces and incorrect counts are rejected. A simultaneous
+bit reversal is a valid alternative certificate. Existing versions one
+through three remain accepted.
+
+Boundary classification continues to use its existing component identities
+and, when needed, cone queries. Both producer and checker still construct
+the doubled arc system, which those optional queries may need. Only its
+redundant orbit count is skipped. Failed finite tests produce exactly the
+old complete result, including its certificate and statistics. Successful
+queries report zero double cycles and a derived-coorientation statistic.
+Cycle allowances count actual orbit cycles; replay-operation allowances
+count recorded local events. Neither allowance purports to bound all
+geometry or graph work. Cancellation callbacks remain active in that work.
+
+For $N$ tetrahedra there are $O(N)$ edge blocks and original arc pairings.
+The current helper sorts edge roots, computes binary offsets, and locates
+each pairing's four endpoints by binary search. It requires
+$O(N\log N)$ integer operations and comparisons, followed by a linear
+parity traversal. If the endpoint bit length is bounded by $B$, a safe
+elementary bit bound is $O(N\log N(B+\log N))$. Storage is $O(N)$ integers;
+the color witness has $O(N\log N)$ bits. No sheet multiplicity is expanded.
+These bounds describe the additional test, not the remaining orbit
+queries or discovery of a useful normal vector.
+
+\subsection{Validation, costs and scope}
+
+The frozen comparison is revision \code{7d9a6f608}, loading its producer
+and independent checker separately. The maintained corpus supplies 1,275
+normal vectors on 45 triangulations, including compatible mixtures,
+parallel surfaces, empty vectors, one-sided components and relabelled
+examples. For each vector the audit tests both multiplicity settings and
+both boundary-classification settings: 5,100 configurations. Disabling
+the shortcut reproduces all old records exactly. Enabling it derives 956
+double counts, corresponding to 239 input vectors, and leaves all 4,144
+fallback records identical. Every topology result agrees with the old
+result. The audit replays each old proof with both checkers and each new
+proof with the new checker, for 15,300 comparisons. Live Regina checks
+component counts, orientability, boundary counts and Euler characteristic
+on all 1,275 vectors; the frozen component-level records also check the
+finer boundary classification.
+
+Focused tests verify the pointwise doubled-map conjugacy, relabellings,
+empty inputs, binary multiplicities exceeding 20,000 bits, exact cycle
+and replay-event limits, cancellation and proof mutations. Replay is also
+run with both orbit search and parity search disabled. All 46 focused
+tests and all 1,250 maintained tests pass. The audit retains 84 representative
+full proofs, source hashes and deterministic operation counts.
+\input{coorientation_results.tex}
+
+The native research driver is
+\path{../fast/normal_orbit_research/coorientation.py}, with \code{audit}
+and \code{benchmark} modes, a required \code{--output} path and optional
+\code{--rounds}. The separate batch driver is
+\path{data/coorientation_corpus_benchmark.py}. Records and validation logs
+are \path{data/coorientation-*}. These results justify the finite shortcut
+as a way to remove demonstrably redundant work when a small certificate
+exists. They do not establish a general speedup on the corpus. The base
+orbit search, candidate discovery and authentication back to a knot diagram
+remain separate obligations. General quasipolynomial or subexponential
+recognition is not proved by this change.

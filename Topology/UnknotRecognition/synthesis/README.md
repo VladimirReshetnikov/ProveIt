@@ -1007,3 +1007,17 @@ beyond the extended search in the tested corpus and remains experimental.
 Separate arithmetic, supplied-triangulation and complete-recognition timings
 are retained in `data/coherent-escape-*`, with source pins and reproduction
 in `../fast/normal_orbit_research/coherent_escape.py`.
+
+[`coorientation.tex`](coorientation.tex) derives the orientation-double orbit
+count from a finite parity certificate when a coorientation is constant on
+each global-edge block. It proves the pointwise conjugacy, including reversal
+on singleton intervals, and explains why failure must fall back to the old
+query. A strict version-four proof supports independent replay, multiplicity
+lifting and boundary classification. All 1,250 tests pass; 5,100 configurations
+agree with the old implementation and 1,275 surfaces agree with Regina.
+Large layered examples gain up to 1.967x including replay and serialization;
+the entire corpus batch is neutral at 1.003x and several small cases regress.
+This improves the supplied-surface API without asserting a diagram-recognition
+speedup or a general complexity theorem. Reproduction and source pins are in
+`../fast/normal_orbit_research/coorientation.py`, the separate corpus timing
+driver and `data/coorientation-*`.
