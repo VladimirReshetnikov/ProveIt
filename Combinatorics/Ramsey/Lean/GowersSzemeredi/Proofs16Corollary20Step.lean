@@ -20,7 +20,10 @@ makes witness values consistent.
 * each case maps its triples injectively to quadruples, with the triple
   recovered from the quadruple;
 * (b,d) and (a,c) use `lemma19_two_new_piece`; (a,d) and (b,c) use
-  `lemma19_mixed_piece`. -/
+  `lemma19_mixed_piece`.
+
+The `_eight` variants preserve order-eight Freiman structure from the
+extraction. The original order-two interfaces remain consequences. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -117,6 +120,26 @@ theorem corollary20_scaling {ε : Real} {K : Nat} (hK1 : 1 ≤ K) :
   ring
 
 /-- A case handled by `lemma19_two_new_piece`. -/
+theorem case_two_new_eight [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
+    {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N) {ε : Real} (hε : 0 < ε)
+    (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
+    (hadd : ∀ q ∈ T, q 0 - q 2 = q 1 - q 3 ∧ val q 0 - val q 2 = val q 1 - val q 3)
+    (hU : ∀ q ∈ T, ∀ i, val q i ∈ U (q i))
+    (hW : ∀ q ∈ T, val q 1 ∈ newValues U E L (q 1) ∧ val q 3 ∈ newValues U E L (q 3))
+    (hcons : ∀ q ∈ T, ∀ i j, q i = q j → val q i = val q j)
+    (hT : ε / 4 * (N : Real) ^ 3 ≤ T.card) :
+    ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
+      (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
+      corollary20Kappa ε K * N ≤ E'.card ∧ FreimanHom 8 E' f := by
+  have hδ : 0 < ε / (1024 * K ^ 4) := by
+    have : (1 : Real) ≤ K := by exact_mod_cast hK1
+    positivity
+  obtain ⟨f, _, E', hE'W, hcard, hF⟩ := lemma19_two_new_piece_eight U (newValues U E L) hne hK1 hK T val
+    hadd hU hW hcons hδ (by rw [corollary20_scaling hK1]; exact hT)
+  exact ⟨f, E', fun x hx => Finset.mem_filter.mp (hE'W x hx), hcard, hF⟩
+
+/-- Retain the original quadruple-respecting interface. -/
 theorem case_two_new [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
     {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N) {ε : Real} (hε : 0 < ε)
@@ -129,14 +152,30 @@ theorem case_two_new [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ 
     ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
       (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
       corollary20Kappa ε K * N ≤ E'.card ∧ IsFreimanLinearOn E' f := by
+  obtain ⟨f, S, hnew, hcard, hF⟩ := case_two_new_eight U hne hK1 hK E L hε T val hadd hU hW hcons hT
+  exact ⟨f, S, hnew, hcard, hF.isFreimanLinearOn (by decide)⟩
+
+/-- A case handled by `lemma19_mixed_piece`. -/
+theorem case_mixed_eight [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
+    {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N) {ε : Real} (hε : 0 < ε)
+    (T : Finset (Fin 4 → ZMod N)) (val : (Fin 4 → ZMod N) → Fin 4 → ZMod N)
+    (hadd : ∀ q ∈ T, q 0 - q 1 = q 2 - q 3 ∧ val q 0 - val q 1 = val q 2 - val q 3)
+    (hU : ∀ q ∈ T, ∀ i, val q i ∈ U (q i))
+    (hW : ∀ q ∈ T, val q 0 ∈ newValues U E L (q 0) ∧ val q 3 ∈ newValues U E L (q 3))
+    (hcons : ∀ q ∈ T, ∀ i j, q i = q j → val q i = val q j)
+    (hT : ε / 4 * (N : Real) ^ 3 ≤ T.card) :
+    ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
+      (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
+      corollary20Kappa ε K * N ≤ E'.card ∧ FreimanHom 8 E' f := by
   have hδ : 0 < ε / (1024 * K ^ 4) := by
     have : (1 : Real) ≤ K := by exact_mod_cast hK1
     positivity
-  obtain ⟨f, _, E', hE'W, hcard, hF⟩ := lemma19_two_new_piece U (newValues U E L) hne hK1 hK T val
+  obtain ⟨f, _, E', hE'W, hcard, hF⟩ := lemma19_mixed_piece_eight U (newValues U E L) hne hK1 hK T val
     hadd hU hW hcons hδ (by rw [corollary20_scaling hK1]; exact hT)
   exact ⟨f, E', fun x hx => Finset.mem_filter.mp (hE'W x hx), hcard, hF⟩
 
-/-- A case handled by `lemma19_mixed_piece`. -/
+/-- Retain the original quadruple-respecting interface. -/
 theorem case_mixed [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ x, (U x).Nonempty)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
     {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N) {ε : Real} (hε : 0 < ε)
@@ -149,22 +188,18 @@ theorem case_mixed [Fact N.Prime] (U : ZMod N → Finset (ZMod N)) (hne : ∀ x,
     ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
       (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
       corollary20Kappa ε K * N ≤ E'.card ∧ IsFreimanLinearOn E' f := by
-  have hδ : 0 < ε / (1024 * K ^ 4) := by
-    have : (1 : Real) ≤ K := by exact_mod_cast hK1
-    positivity
-  obtain ⟨f, _, E', hE'W, hcard, hF⟩ := lemma19_mixed_piece U (newValues U E L) hne hK1 hK T val
-    hadd hU hW hcons hδ (by rw [corollary20_scaling hK1]; exact hT)
-  exact ⟨f, E', fun x hx => Finset.mem_filter.mp (hE'W x hx), hcard, hF⟩
+  obtain ⟨f, S, hnew, hcard, hF⟩ := case_mixed_eight U hne hK1 hK E L hε T val hadd hU hW hcons hT
+  exact ⟨f, S, hnew, hcard, hF.isFreimanLinearOn (by decide)⟩
 
 /-- **One step of [49] Corollary 20.** -/
-theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
+theorem corollary20_step_eight [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
     (h0 : ∀ x, (0 : ZMod N) ∈ U x) {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
     {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
     {ε : Real} (hε : 0 < ε)
     (hbad : ε * (N : Real) ^ 3 ≤ ((Finset.univ.filter (IsBadTriple U E L)).card : Real)) :
     ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
       (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
-      corollary20Kappa ε K * N ≤ E'.card ∧ IsFreimanLinearOn E' f := by
+      corollary20Kappa ε K * N ≤ E'.card ∧ FreimanHom 8 E' f := by
   have hne : ∀ x, (U x).Nonempty := fun x => ⟨0, h0 x⟩
   set bad := Finset.univ.filter (IsBadTriple U E L) with hbaddef
   let wit : ZMod N × ZMod N × ZMod N → Fin 4 → ZMod N := fun t =>
@@ -225,7 +260,7 @@ theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
     linarith
   rcases hq with h1 | h2 | h3 | h4
   · -- case (b, d): `lemma19_two_new_piece` on `(y+z, z, y+w, w)`
-    refine case_two_new U hne hK1 hK E L hε (B₁.image enc₁) (fun q => wit (dec₁ q)) ?_ ?_ ?_ ?_
+    refine case_two_new_eight U hne hK1 hK E L hε (B₁.image enc₁) (fun q => wit (dec₁ q)) ?_ ?_ ?_ ?_
       (by rw [hcardimg B₁ enc₁ dec₁ hdec₁]; exact h1)
     · intro q hq'
       obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hq'
@@ -249,7 +284,7 @@ theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
       obtain ⟨d1, d2, d3, d4, d5, d6⟩ := distinct_points (hdist t (Finset.mem_filter.mp ht).1)
       exact quad_injective d1 d2 d3 d4 d5 d6
   · -- case (a, c): `lemma19_two_new_piece` on `(z, y+z, w, y+w)`
-    refine case_two_new U hne hK1 hK E L hε (B₂.image enc₂)
+    refine case_two_new_eight U hne hK1 hK E L hε (B₂.image enc₂)
       (fun q => ![wit (dec₂ q) 1, wit (dec₂ q) 0, wit (dec₂ q) 3, wit (dec₂ q) 2]) ?_ ?_ ?_ ?_
       (by rw [hcardimg B₂ enc₂ dec₂ hdec₂]; exact h2)
     · intro q hq'
@@ -274,7 +309,7 @@ theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
       obtain ⟨d1, d2, d3, d4, d5, d6⟩ := distinct_points (hdist t (Finset.mem_filter.mp ht).1)
       exact quad_injective (Ne.symm d1) d5 d4 d3 d2 (Ne.symm d6)
   · -- case (a, d): `lemma19_mixed_piece` on `(y+z, z, y+w, w)`
-    refine case_mixed U hne hK1 hK E L hε (B₃.image enc₁) (fun q => wit (dec₁ q)) ?_ ?_ ?_ ?_
+    refine case_mixed_eight U hne hK1 hK E L hε (B₃.image enc₁) (fun q => wit (dec₁ q)) ?_ ?_ ?_ ?_
       (by rw [hcardimg B₃ enc₁ dec₁ hdec₁]; exact h3)
     · intro q hq'
       obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hq'
@@ -298,7 +333,7 @@ theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
       obtain ⟨d1, d2, d3, d4, d5, d6⟩ := distinct_points (hdist t (Finset.mem_filter.mp ht).1)
       exact quad_injective d1 d2 d3 d4 d5 d6
   · -- case (b, c): `lemma19_mixed_piece` on `(y+w, w, y+z, z)`
-    refine case_mixed U hne hK1 hK E L hε (B₄.image enc₄)
+    refine case_mixed_eight U hne hK1 hK E L hε (B₄.image enc₄)
       (fun q => ![wit (dec₄ q) 2, wit (dec₄ q) 3, wit (dec₄ q) 0, wit (dec₄ q) 1]) ?_ ?_ ?_ ?_
       (by rw [hcardimg B₄ enc₄ dec₄ hdec₄]; exact h4)
     · intro q hq'
@@ -322,5 +357,17 @@ theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
       obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hq'
       obtain ⟨d1, d2, d3, d4, d5, d6⟩ := distinct_points (hdist t (Finset.mem_filter.mp ht).1)
       exact quad_injective d6 (Ne.symm d2) (Ne.symm d4) (Ne.symm d3) (Ne.symm d5) d1
+
+/-- Retain the original quadruple-respecting interface. -/
+theorem corollary20_step [Fact N.Prime] (U : ZMod N → Finset (ZMod N))
+    (h0 : ∀ x, (0 : ZMod N) ∈ U x) {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K)
+    {m : Nat} (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
+    {ε : Real} (hε : 0 < ε)
+    (hbad : ε * (N : Real) ^ 3 ≤ ((Finset.univ.filter (IsBadTriple U E L)).card : Real)) :
+    ∃ (f : ZMod N → ZMod N) (E' : Finset (ZMod N)),
+      (∀ x ∈ E', f x ∈ U x ∧ f x ∉ covSet U E L x) ∧
+      corollary20Kappa ε K * N ≤ E'.card ∧ IsFreimanLinearOn E' f := by
+  obtain ⟨f, S, hnew, hcard, hF⟩ := corollary20_step_eight U h0 hK1 hK E L hε hbad
+  exact ⟨f, S, hnew, hcard, hF.isFreimanLinearOn (by decide)⟩
 
 end LeanProofs.GowersSzemeredi
