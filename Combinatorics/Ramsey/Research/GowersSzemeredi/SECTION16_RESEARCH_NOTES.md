@@ -4954,3 +4954,69 @@ density-dependent threshold now suffices for the structure side and
 everything downstream. The original theorems and statements are
 unchanged; the new chain duplicates their proofs with the weakened
 hypothesis. Standard axioms; collision gate clean.
+
+### J.100. Dense coherent column pairs without another density loss
+
+**Verified 2026-10-09.** `Proofs16FibreStars` proves a finite selection
+lemma for arbitrary finite fibre and vertex types. For each fibre choose
+a vertex with maximum relation degree. Summing the degree bounds shows
+that the total edge count is at most the vertex-type cardinality times
+the total number of chosen leaves. No symmetry or transitivity is
+assumed in this counting lemma.
+
+`Proofs16DifferenceStars` applies this to ordered pairs in `ZMod N`.
+The parametrization `(d,a) -> (d+a,a)` identifies a difference fibre
+with `ZMod N`. Explicit bijections prove that relations respecting
+equal differences are counted by triples `(d,a,b)`, while selected
+leaves are counted by `(d,b)`. Thus `exists_difference_stars` constructs
+`P` with
+
+```
+|R| <= N * |P|,
+for every p in P there is z with R(z,p),
+for p,q in P with equal differences, there is z with R(z,p) and R(z,q).
+```
+
+The second property transfers endpoint membership, and the third is
+exactly the common-centre hypothesis needed for J.99's composition.
+
+`Proofs16CoherentColumnPairs.global_coherent_column_pairs` starts with
+only the original density and bihomomorphism assumptions. For prime
+`N >= globalColumnCompositionModulusBound alpha 2`, it constructs
+`X,T,L,W,P`, retaining the original-map witness system, density of `X`,
+column rank bounds, normalized maps, and their local Freiman linearity.
+Writing `theta = globalColumnQuadrupleDensity alpha`,
+`rho = globalColumnIdentityRadius alpha`, and
+`d = columnSpectrumCap (columnEightDensity alpha)`, it proves
+
+```
+theta*N^2 <= |P|,       P subset X × X,
+0 < theta,             0 < columnIdentityRadius d rho 1,
+```
+
+and every two pairs in `P` with equal index difference have identical
+column-map differences on their four endpoint Bohr domains at the last
+radius. The common centre is removed using the prime-target frequency
+removal theorem. There is no additional power of `theta` lost in this
+selection.
+
+**Remaining gap.** A dense family of coherent pairs is not a dense set
+of columns on which all additive quadruples agree. Graph extraction and
+bilinear organization are still required. In particular, this proof
+does not assert that `P` is symmetric or that `P` contains a product of
+dense index sets. The eventual-prime interface merged above is also
+conditional: neither its quasipolynomial rank/radius bounds nor its
+shifted agreement conclusion has been supplied by this construction.
+The original all-moduli contract is unchanged and remains open.
+
+**Verification.** The focused construction checks 145 modules. All five
+new named theorems and all eight named theorems of the incoming
+`Proofs16DeepEventuallyPrime` module pass individual axiom checks with
+only `propext`, `Classical.choice`, and `Quot.sound`. No upstream code,
+selected-port scope, or Apache provenance files were changed.
+
+The combined audit checks 6,995 public Gowers theorems in 5,099 modules
+(5,097 for the facade, including 4,152 OAI modules), with the same axiom
+boundary. The source ledger is identical to the tracked 115 companions
+and five open entries; the selected-port scope check passes. Companion
+counts do not establish fidelity to every printed statement.
