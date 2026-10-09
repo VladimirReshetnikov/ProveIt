@@ -5498,3 +5498,106 @@ The combined audit checks 7,104 public Gowers theorems in 5,126 modules
 approved axioms. The source ledger is identical at 115 companions and
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement.
+
+### J.106. Compatible representations of arbitrary anchor lists
+
+**Verified 2026-10-09.** The two-column construction now extends to every
+nonempty finite list of anchors. Seven modules formalize the word type,
+injective splice, recursive compatibility predicate, counting induction,
+closed density formula, and construction from the original bihomomorphism.
+
+`ColumnWord N k` is a recursively nested word of `k` triples, with exactly
+`3*k` entries and `N^(3*k)` possibilities. `columnWordEval f` evaluates the
+alternating sum of the entries after applying `f`: a triple contributes
+`f x-f y+f z`, followed by subtraction of the remaining word's value.
+`columnAnchorEval f` is the corresponding alternating sum of an anchor
+list. Repeated anchors and repeated word entries are allowed.
+
+`Proofs16ColumnWords.columnWord_first_fibre_card_le` proves that a
+fixed-value family of words with `k+1` triples has first-endpoint fibres
+of size at most `N^(3*k+1)`. Fixing the first entry and all entries except
+the middle entry of the first triple determines that middle entry.
+Projection onto the last entry of the first triple and the remaining
+`k` triples is therefore injective on the fibre. Averaging then gives
+at least `delta*N/2` popular first endpoints, each with at least
+`delta*N^(3*k+1)/2` representations, whenever the full family has at least
+`delta*N^(3*k+2)` words.
+
+`Proofs16ColumnWordSplice` prepends a triple representing `a` to a
+nonempty word representing `b`. If the exact connecting quadruple is
+`q`, the old triple's last entry is `q2` and the old word's first entry
+is `q1`. Replace them by `q0` and `q3`. The resulting word represents
+`a-b`. The output and the two represented values recover both replaced
+entries: the old triple's last entry is `a-y1+y2`; the old word's first
+entry is `b+z2-z3+value(tail)`. This gives a left inverse and proves
+injectivity of the splice at every length.
+
+`columnWordRepresentations B T L r as` records the recovered triple,
+recovered shorter word, and exact connecting quadruple recursively.
+`columnWordRepresentations_spec` proves that every output entry lies in
+`B`, that its value is `columnAnchorEval id as`, and that its map value
+is `columnAnchorEval (fun x => L x y) as` on the recursively specified
+`columnWordDomain`. That domain explicitly retains all recovered
+intermediate column conditions. The map identity is not yet asserted
+on only the anchor and output Bohr domains.
+
+`column_word_representations_step` keeps the two input densities separate.
+For a triple family of density `lambda` and a shorter word family of
+density `delta`, the two popular endpoint sets have densities at least
+`lambda/2` and `delta/2`. Hereditary richness supplies at least
+`eta^2*lambda^2*delta^2*N^3/16` connecting quadruples. Multiplying by the
+two fibre bounds and using splice injectivity gives
+
+```
+# representations(a :: b :: as)
+  >= (eta^2*lambda^3*delta^3/64) * N^(3*as.length+5).
+```
+
+There is no need to replace the input densities by their minimum. The
+verified uniform density for `k+1` triples is therefore the recurrence
+
+```
+delta_0 = lambda,
+delta_(k+1) = eta^2*lambda^3*delta_k^3/64.
+```
+
+`column_word_representations_count` proves this bound for every nonempty
+list in a core whose anchors have at least `lambda*N^2` triple
+representations. `columnWordDensity_formula` and
+`columnWordDensity_loss_exponent` give the explicit solution
+
+```
+delta_k = (eta^2*lambda^3/64)^((3^k-1)/2) * lambda^(3^k).
+```
+
+The exponents here are natural numbers; `(3^k-1)/2` is exactly the
+geometric sum `sum_{i<k} 3^i`. Positivity is proved for every `k` when
+`lambda` and `eta` are positive.
+
+`global_column_word_representations` constructs the same dense core
+`P` directly from the original dense bihomomorphism and proves all
+these counts with `lambda = globalColumnAnchorDensity alpha` and
+`eta = globalColumnWalkDensity alpha`. The original column witnesses,
+rank bounds, normalization, local linearity, triple counts, and full
+ambient hereditary richness remain in its conclusion. No additional
+modulus threshold or radius loss is introduced for these representation
+counts.
+
+**Remaining work.** The arbitrary-length counting induction is complete.
+The recursively retained intermediate domains still need to be removed
+with an explicit frequency/radius budget before using an identity on
+only the output and anchor domains. Subsequent bilinear organization,
+shifted agreement, and the final Gowers numerical structure budget
+remain open. The explicit density formula is an intermediate estimate,
+not a proof of the remaining numbered structure statements.
+
+**Verification.** The global construction checks 226 modules, and the
+closed-form module checks 225. All 14 new named theorems pass individual
+axiom checks using only `propext`, `Classical.choice`, and `Quot.sound`.
+No additional upstream modules or Apache provenance changes were needed.
+
+The combined audit checks 7,139 public Gowers theorems in 5,133 modules
+(5,131 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
