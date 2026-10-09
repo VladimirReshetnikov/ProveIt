@@ -4438,3 +4438,12 @@ Its duplicate collision-based regularity-step modules were subsequently
 retired upstream in favor of the stronger direct-fibre step already used
 by this adaptive construction. The merged facade retains the annulus
 specialization and does not import the retired modules.
+
+Validation: all 14 newly named theorems pass individual transitive axiom
+checks. The full merged audit passes for 6,782 public Gowers theorems in
+a 5,062-module facade (4,152 OAI modules), or 5,064 modules including both
+audits. Only `propext`, `Classical.choice`, and `Quot.sound` occur. The
+incoming prime pattern-annulus specialization is included. The source
+ledger remains equal to the tracked 115 companions and five open
+entries, and the selected port-scope check passes. Upstream port sources
+and Apache provenance/license files remain unchanged.
