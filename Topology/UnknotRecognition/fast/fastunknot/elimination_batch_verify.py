@@ -38,7 +38,12 @@ def _order(dependencies, tick):
 def replay_compressed_batch(arena, roots, alive, move):
     parsed=_entries(move,len(roots),alive,arena.tick)
     if parsed is None:return False
-    children,slots=parsed;dependencies={};images={}
+    children,slots=parsed
+    from .elimination_ordered_verify import replay_ordered_batch
+    ordered=replay_ordered_batch(arena,roots,alive,move['entries'],children,slots)
+    if ordered is not None:return ordered
+    arena.stats['elimination_ordered_fallbacks']=arena.stats.get('elimination_ordered_fallbacks',0)+1
+    dependencies={};images={}
     # Derive occurrence counts and support together without the producer's
     # singleton masks. No state roots or live labels change during validation.
     for entry in move['entries']:

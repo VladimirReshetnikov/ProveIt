@@ -35,7 +35,7 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
         if elimination_batch and len(alive) >= 3:
             from .elimination_batch import plan_batch, apply_batch
-            selected = plan_batch(arena, roots, alive, elimination_cache)
+            selected = plan_batch(arena, roots, alive, elimination_cache, ordered=True)
             if len(selected) >= 2:
                 apply_batch(arena, roots, alive, selected)
                 moves.append(dict(kind='elimination_batch', entries=selected))

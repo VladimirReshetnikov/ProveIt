@@ -2560,3 +2560,36 @@ python -B weighted_research/native.py benchmark --output results/weighted_compon
 ```
 
 The audit uses the optional Regina oracle; the runtime APIs do not require it.
+
+### Ordered replay of singleton-elimination batches
+
+New version-eight `elimination_batch` certificates list selected donors in
+an independently checked dependency order. Selection and the raw Tietze
+operation are unchanged. The checker assigns increasing ranks to selected
+generators, and rank zero to survivors. One pass over the shared source grammar
+records each node's largest rank and its occurrence count capped at two. A
+donor is valid in this order when its own generator is its unique largest-rank
+letter. This avoids a separate occurrence/support scan for every donor.
+
+The checker then compiles signed references to the defining contexts. It does
+not eagerly materialize inverse words or normalize the source. Every donor,
+including definitions unused by surviving relators, is checked. On an ordered
+valid batch with `M` reachable source nodes, the checker adds at most `5*M`
+nodes and leaves at most `4*M` reachable output nodes. These are grammar-size
+bounds; sorting, integer lengths, source reconstruction and batch discovery
+have their own costs.
+
+The certificate schema is unchanged. Unordered legacy entries use the existing
+complete dependency checker after the rank attempt. Their meaning is preserved,
+although this additional charged scan can exhaust a finite work allowance.
+Literal verification remains independent and accepts either order. Cancellation
+and resource exhaustion leave relator roots and live generators unpublished.
+The optional portfolio and its discovery fallback retain their existing policy.
+See [the theory and measurements](../synthesis/ordered_batch.tex).
+
+```sh
+python -B compressed_word_research/ordered_batch.py audit --output results/ordered_batch_audit.json
+python -B compressed_word_research/ordered_batch.py kernels --output results/ordered_batch_kernels.json
+python -B compressed_word_research/ordered_batch.py stages --output results/ordered_batch_stages.json
+python -B compressed_word_research/ordered_batch.py pipeline --output results/ordered_batch_pipeline.json
+```
