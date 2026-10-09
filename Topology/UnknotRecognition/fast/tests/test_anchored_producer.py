@@ -6,7 +6,7 @@ from unittest.mock import patch
 from fastunknot import Diagram
 from fastunknot.anchored_projection import _SourceSearch, produce_block
 from fastunknot.compressed_words import WordArena, CompressedLimit
-from fastunknot.compressed_search import compressed_certificate
+from fastunknot.compressed_search import compressed_certificate, _search
 from fastunknot.primitive_projection import projection_candidates, plan_projection, apply_projection
 from fastunknot.primitive_forest import plan_forest, apply_forest
 from fastunknot.elimination_batch import plan_batch
@@ -81,6 +81,20 @@ class AnchoredProducerTests(unittest.TestCase):
         a,roots,alive=balanced(4,64);first=first_move(a,roots,alive,False);before=roots[:];a.check=Cancel();moves=[]
         with self.assertRaisesRegex(RuntimeError,'cancel producer'):produce_block(a,roots,alive,moves,first)
         self.assertEqual(roots,before);self.assertFalse(moves)
+
+    def test_dispatch_uses_direct_unit_images_and_anchors_binary_growth(self):
+        for bits in (0,64):
+            a,roots,alive=balanced(5,bits);moves=[];terminal={}
+            if bits==0:
+                with patch('fastunknot.anchored_projection._SourceSearch',side_effect=AssertionError):
+                    self.assertTrue(_search(a,roots,alive,moves,primitive_projection=True,
+                                           primitive_terminal=terminal,rank_two_terminal=False))
+                self.assertNotIn('anchored_search_blocks',a.stats)
+            else:
+                self.assertTrue(_search(a,roots,alive,moves,primitive_projection=True,
+                                       primitive_terminal=terminal,rank_two_terminal=False))
+                self.assertGreater(a.stats['anchored_search_rounds'],1)
+            self.assertEqual(terminal['kind'],'rank_one_exponent_zero')
 
     def test_full_sources_and_independent_checkers(self):
         for n in (9,17,33):
