@@ -4348,3 +4348,93 @@ the question by working only on centered pieces.
   step with a better loss: one popular fibre keeps `θ`, where the
   collision route gives `θ²`. J.91–J.94 then build the full adaptive
   iteration.
+
+### J.95. Filled target rows and uniform global initialization
+
+`Proofs16TuplePatternBridge` connects additive-quadruple linearity to
+Mathlib's order-two Freiman homomorphism property. An arbitrary finite
+tuple is reindexed by `Fin (card kappa)`, with all four pattern index sets
+chosen as the full index set. The varying frequency sets and graph
+indicators are proved equal to the original tuple versions. In particular,
+no inactive maps are assumed to be Freiman on an unsupported domain.
+
+`Proofs16TupleRowCompletion` transfers robust row filling and proper
+progression completion through this bridge. Its graph estimate and
+scalar budget are the same as the established pattern interfaces.
+`Proofs16AdaptiveSevenOperator.exists_adaptive_seven_operator_progression`
+then supplies those hypotheses from the adaptive construction of J.94.
+It produces a proper symmetric progression containing zero, with every
+target row satisfying
+
+```
+y in P, d in B(F' union {L_j(y)}; rho/8)
+  ==> (d,y) in horDiff(verDiff(verDiff(A))).
+```
+
+Thus the final three directional operations are completed from the dense
+tuple geometry. Applying this to the four-operation set supplied by the
+global initialization gives the intended seven-operation expression.
+There is no graph, witness-count, or scalar-filling-budget assumption
+left in this completion theorem.
+
+If `D` is the exact adaptive state and the retained ambient density is
+at least `alpha/Q^D`, the extracted spectrum `U` has
+`|U| ≤ 16/(alpha/Q^D)^2`. The progression has rank at most `|U|+1`, is
+proper, symmetric, and lies in the final full Bohr domain. Its size is
+at least
+
+```
+exp(-((|U|+1)*log(1+pi) + 10*(|U|+1)^2))*N.
+```
+
+The final domain still lies inside the initial one, and all varying maps
+remain the original maps restricted to it. The affine offsets are
+tracked in the enlarged fixed-frequency set and row origin.
+
+`Proofs16UniformCompletionThreshold` takes finite maxima over bounded
+frequency counts and initial states. It discharges the adaptive modulus
+threshold from caps on the initial fixed frequencies, domain frequencies,
+and number of maps. `Proofs16UniformCompletionState` similarly bounds all
+reachable exact states, and converts this into a uniform spectrum-rank
+bound. These constructions do not assume monotonicity of the adaptive
+accuracy schedule.
+
+`Proofs16UniformGeometryDensity` supplies a positive lower bound for the
+ambient mass of the initial parameter set using upper bounds for its
+tuple count and domain rank. The bound is antitone in those caps. It also
+checks that `corollary20Kappa` is at most one on the parameter range used
+by the global construction.
+
+`Proofs16GlobalUniformTupleGeometry.global_uniform_tuple_geometry` now
+turns global density into initial data with uniform caps. In the notation
+of J.89--J.94, set
+
+```
+M = ceil(K/kappa)
+t = ceil(2*ell * 16*kappa^(-2))
+width = log(1+sigma^(-1))
+a0 = ((beta^4-epsilon)/(M+1)^(4*ell))
+     * exp(-((t+1)*width + 10*(t+1)^2)).
+```
+
+The theorem proves `a0>0`, `0<sigma≤1/(8*pi)`, and `0<eta<1/4`, and
+extracts a tuple with at most `2*ell` maps, a domain with at most `t`
+frequencies, at most `4*ell` fixed frequencies, and a nonempty parameter
+set of ambient density at least `a0`. Every retained map is normalized
+and Freiman-linear on the common full domain. Its actual row geometry
+lies in `horDiff(verDiff(horDiff(horDiff(A))))`. Only the selected indices
+`J(0) union J(2)` are reindexed into the output tuple.
+
+The next composition is now numerical and explicit: choose cell counts
+from these uniform radii, impose the finite uniform completion threshold,
+and apply adaptive completion to this four-operation geometry. The
+uniform state cap will give final progression rank and size bounds that
+depend only on the original density parameters. That global composition
+and comparison with the precise printed theorem remain to be proved;
+none of the five numbered open entries is closed by this checkpoint.
+
+Incoming `main` contributes the prime pattern-annulus specialization.
+Its duplicate collision-based regularity-step modules were subsequently
+retired upstream in favor of the stronger direct-fibre step already used
+by this adaptive construction. The merged facade retains the annulus
+specialization and does not import the retired modules.
