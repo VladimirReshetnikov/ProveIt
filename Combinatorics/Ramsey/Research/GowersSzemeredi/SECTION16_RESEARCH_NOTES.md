@@ -2015,6 +2015,23 @@ Route: `quartic_function_inverse_explicit`, then
 - **Quasi-polynomial** c(α) = exp(−C·log^A(1/α)) fits whenever A ≲ 3400,
   with moderate C.
 
+*Scope (added 2026-10-09).* Both bullets compare at the single density
+δ = 1/2, which is all Corollary 18.7 needs. Theorem 18.2 at length six
+must hold for every δ ≤ 1/2, with α = `intervalUniformityParameter δ 6`
+= (δ⁶/(512·216))^32, so log(1/α) = 192·log(1/δ) + 32·log(110592).
+- The route's log₂log₂ threshold is about 1/c(α). The allowed one,
+  `szemerediThreshold δ 6`, has log₂log₂ = δ^(−M) = exp(M·log(1/δ)).
+- **Polynomial** c = α^D needs D·log(1/α) ≲ M·log(1/δ). The ratio
+  log(1/α)/log(1/δ) is largest at δ = 1/2, where it is about 728. So the
+  half-density bound D ≲ M/728 already covers every δ.
+- **Quasi-polynomial** c gives 1/c = exp(C·(192·log(1/δ))^A). For A > 1
+  this exceeds exp(M·log(1/δ)) once log(1/δ)^(A−1) ≳ M/(C·192^A), so it
+  fails for small δ.
+
+So Theorem 18.2 at length six needs a dense trilinear piece of density
+*polynomial* in α. Quasi-polynomial densities suffice only for the
+half-density corollary.
+
 **Correction (same day).** An earlier version of this paragraph proposed
 Milićević's 2026 theorem as that input. It is not. That theorem
 (arXiv:2601.01682) is a quasi-polynomial **U⁴** inverse theorem, built on a
@@ -5237,6 +5254,9 @@ through Part J, whose `PolyBoundedControl` belongs to the cubic-stackable
 route. It goes from the variety chain's decomposition to
 `Section16BudgetedPieceAt 3`. That link is blocked by an unbounded constant
 that this order-of-magnitude count does not see.
+*Second correction (J.5c below):* the assumption that the remaining steps
+lose only polynomially fails for the model-elimination stage. Its
+guaranteed agreement density is triple-exponentially small.
 
 ### J.5b The variety route's last link needs explicit partition constants (2026-10-09)
 
@@ -5523,6 +5543,80 @@ structural input remain undischarged, so this does not yet supply
 Until the remaining bound comparison is proved,
 `MilicevicDeepVarietyStructure D` (or its eventual, any-bound form) yields
 the decomposition with these named constants, but not `Theorem162At 3`.
+
+### J.5c The zero-core chain loses triple-exponentially (2026-10-09, kernel-checked)
+
+J.5 revisited assumed that the remaining pipeline steps "lose no more
+than polynomially". The model-elimination stage built since (J.109–J.111)
+does not. `Proofs16ZeroCoreGrowth` bounds the density that
+`global_column_shifted_agreement` guarantees, from the definitions alone.
+Write `d = columnSpectrumCap (columnEightDensity alpha)`, about
+`2^13080·alpha^(-9312)` (J.5 revisited dropped the `alpha/2` halving).
+
+1. **The word density is exponentially small.** Every density in the
+   anchor/walk/word chain is at most the witness density
+   `columnWitnessDensity ≤ 13^(-d)` (`globalColumnWordDensity_le_witness`,
+   `columnWitnessDensity_le`).
+2. **That density becomes a rank.** `globalColumnModelRank = ⌈4d/δ⌉`
+   divides by the word density `δ`, so the rank is at least `13^d`
+   (`thirteen_pow_le_globalColumnModelRank`). The guaranteed rank bound
+   for the final column spectra, `g + d`, is therefore already
+   exponential in `1/alpha`, beyond every polynomial `Bnd`.
+3. **The rank becomes an exponent.** The test density is
+   `1/(4·⌈2/r⌉^(g+d)) ≤ 2^(-g)` (`modelTestDensity_le_inv_two_pow`; every
+   cell count is at least two because `r ≤ 1/(4π)`).
+4. **The test density becomes a round count.** Elimination runs
+   `⌈log(M+1)/β⌉ ≥ 2^g/2` rounds, and each costs a factor `β/10 ≤ e^(-1)`.
+   So the zero-core density is at most `exp(-2^g/2)`
+   (`globalColumnZeroDensity_le`).
+
+Hence `globalColumnAgreementDensity alpha ≤ exp(-2^(13^d)/2)`
+(`globalColumnAgreementDensity_le_triple_exp`): triple-exponentially small
+in a polynomial of `1/alpha`. In particular, for `alpha ≤ 1/2` and every
+`K ≤ 2^64`,
+
+```
+globalColumnAgreementDensity alpha < exp(-(4/alpha)^K)
+```
+
+(`globalColumnAgreementDensity_lt_polynomial_contract`). The right side is
+the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
+`Bnd alpha ≤ (4/alpha)^K`, the hypothesis of
+`theorem_16_2_at_three_of_eventually`.
+
+**What this does and does not show.**
+- These are upper bounds on the *guaranteed* density, not on the actual
+  agreement set. The shortfall is not a matter of constants: the
+  structure side needs `log(1/density)` polynomial in `1/alpha`, and here
+  it is at least `2^(13^d)`.
+- The same rank also enters the zero-core radius:
+  `globalColumnZeroRadius ≤ (ρ/2)/(⌈4/ρ⌉^g·…)`, which is doubly
+  exponentially small. The contract's `exp(-Bnd c) ≤ ρ` therefore fails
+  too. This is read off the definition and is not formalized.
+  `global_column_difference_extensions` (J.112) works at exactly this
+  rank and radius. The even-length variant
+  (`Proofs16GlobalEvenZeroCoreParameters`) has the same shape: rank
+  `⌈2k·d/δ⌉` and per-round factor `β/(5k)`. The later generic stages
+  (J.116–J.127) are not yet instantiated on the global chain.
+- Later stages that start from this agreement set can only lose more,
+  so the present chain cannot supply the polynomial contract however the
+  bilinear organization is finished. Nor can it supply Milićević's
+  quasi-polynomial form.
+- It does not show that no route can. Both blow-ups are artefacts of
+  two parameter choices, and either repair would remove one exponential:
+  - The rank `⌈4d/δ⌉` charges `d` frequencies to each of `1/δ` models.
+    A spectrum of rank `poly(1/alpha)` needs `δ ≥ poly(alpha)`, or models
+    that share frequencies.
+  - The elimination cost `(β/10)^(log M/β)` is exponential in `1/β`.
+    A density-increment that loses only `β^O(1)` per *model*, or a
+    `β` that is polynomial in the rank, would bring it back to
+    `exp(-poly)`.
+- With both repaired, the stage would lose `exp(-poly(1/alpha))`, which
+  is the polynomial-`Bnd` regime J.5 revisited assumed.
+
+This is the audit the J.5 revisited estimate called for. It does not
+change any proved statement; it shows that the order-of-magnitude
+`Bnd(c) ≤ A·c^(-p)` there is not what the current parameters deliver.
 
 ### J.103. Exact additive richness from matched four-walks
 
