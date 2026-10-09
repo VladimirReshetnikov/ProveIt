@@ -129,6 +129,38 @@ theorem boxSum_le_of_codegrees {G : X → Y → ℝ} {δ ε : ℝ}
           (mul_le_mul_of_nonneg_left hδB hNYNX)
     _ = 3 * ε * NX ^ 2 * NY ^ 2 := by ring
 
+/-- The box norm as a sum over pairs of pairs. -/
+theorem boxSum_eq_pairs (f : X → Y → ℝ) :
+    boxSum f = ∑ p : X × X, ∑ q : Y × Y,
+      f p.1 q.1 * f p.2 q.1 * (f p.1 q.2 * f p.2 q.2) := by
+  unfold boxSum
+  rw [Fintype.sum_prod_type]
+  apply Finset.sum_congr rfl; intro x₀ _
+  apply Finset.sum_congr rfl; intro x₁ _
+  rw [sq, Finset.sum_mul_sum, Fintype.sum_prod_type]
+
+/-- The box norm is symmetric in the two vertex classes. -/
+theorem boxSum_transpose (f : X → Y → ℝ) : boxSum (fun y x => f x y) = boxSum f := by
+  rw [boxSum_eq_pairs, boxSum_eq_pairs, Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro p _
+  apply Finset.sum_congr rfl; intro q _
+  ring
+
+/-- **Lemma 44 from the other side.** Degree and codegree control over the
+second vertex class bounds the same box norm. -/
+theorem boxSum_le_of_codegrees_right {G : X → Y → ℝ} {δ ε : ℝ}
+    (hG0 : ∀ x y, 0 ≤ G x y) (hG1 : ∀ x y, G x y ≤ 1) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1)
+    (h19 : ∑ y, |∑ x, G x y - δ * Fintype.card X| ≤ ε * Fintype.card Y * Fintype.card X)
+    (h20 : ∑ y, ∑ y', |∑ x, G x y * G x y' - δ ^ 2 * Fintype.card X| ≤
+      ε * (Fintype.card Y : ℝ) ^ 2 * Fintype.card X) :
+    boxSum (fun x y => G x y - δ) ≤
+      3 * ε * (Fintype.card X : ℝ) ^ 2 * (Fintype.card Y : ℝ) ^ 2 := by
+  have h := boxSum_le_of_codegrees (G := fun y x => G x y) (fun y x => hG0 x y)
+    (fun y x => hG1 x y) hδ0 hδ1 h19 h20
+  rw [← boxSum_transpose]
+  calc _ ≤ 3 * ε * (Fintype.card Y : ℝ) ^ 2 * (Fintype.card X : ℝ) ^ 2 := h
+    _ = _ := by ring
+
 /-- **Lemma 43 from degree and codegree control.** -/
 theorem common_neighbourhood_deviation_of_codegrees {I J : Type*} [Fintype I] [Fintype J]
     [DecidableEq I] [DecidableEq J] [DecidableEq Y] [Nonempty Y] {G : X → Y → ℝ} {δ ε : ℝ}
