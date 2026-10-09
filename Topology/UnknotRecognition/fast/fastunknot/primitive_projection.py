@@ -67,7 +67,7 @@ def projection_candidates(arena, roots, alive, cache=None):
     return candidates,powers
 
 
-def plan_projection(arena, roots, alive, cache=None, *, _prepared=None):
+def plan_projection(arena, roots, alive, cache=None, *, _prepared=None, _power=None):
     """Select disjoint coherent donors from a current structural snapshot."""
     candidates,powers = projection_candidates(arena,roots,alive,cache) if _prepared is None else _prepared
     selected,used = [],set()
@@ -81,7 +81,7 @@ def plan_projection(arena, roots, alive, cache=None, *, _prepared=None):
                             primitive_vector=list(vector),exponent=1,width=sum(abs(x) for x in vector)-1)
         else:
             if root not in powers:
-                powers[root] = primitive_power_terminal(arena,[root],set(pair))
+                powers[root] = (_power or primitive_power_terminal)(arena,[root],set(pair))
             if powers[root] is None:continue
             evidence = dict(powers[root],relation=slot)
         selected.append(evidence);used.update(pair)
