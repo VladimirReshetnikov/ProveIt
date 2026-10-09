@@ -4925,32 +4925,121 @@ files were changed and no new upstream modules were ported.
 
 
 
-### The deep contract is only needed in prime moduli, eventually (2026-10-09)
+### The deep contract: any bound, prime moduli, eventually (2026-10-09)
 
-`MilicevicDeepVarietyStructure D` quantifies over every modulus `N` and
-every density. Everything that consumes it needs much less. The greedy
-cover applies it at one density, and the structure side concludes only
-for prime `N ≥ N₀`. Meanwhile the formalization of Milićević's proof
-(J.91–J.97) produces prime, large-modulus statements, with thresholds such
-as `sharedWitnessImageCap … < N`. `Proofs16DeepEventuallyPrime` closes
-the interface gap.
-- `DeepStructureAt D N c` is the contract's conclusion at one modulus
-  and one density.
-- `MilicevicDeepEventuallyPrime D`: for every `c > 0` there is a
-  threshold `N₁(c)` such that `DeepStructureAt D N c` holds for every
+`MilicevicDeepVarietyStructure D` asks for more than its consumers use,
+in two ways.
+- **Moduli.** It quantifies over every modulus. The greedy cover applies
+  it at one density, and the structure side concludes only for prime
+  `N ≥ N₀`. The formalization of Milićević's proof (J.91–J.99) produces
+  prime, large-modulus statements.
+- **Bound.** It fixes the quasi-polynomial
+  `milicevicBound D c = (2 + 2 log c⁻¹)^D`. The corpus pipeline loses
+  `13^d` with `d = poly(1/c)` (`columnWitnessDensity`), which is a
+  polynomial bound `poly(1/c)`, and no fixed `D` dominates it. By J.5,
+  `Theorem162At 3` allows counts up to `exp(Θ(r log r))`, with `r`
+  polynomial of degree `2⁵¹²` in `1/(γθ)`. So polynomial bounds of modest
+  degree still fit that budget, and the quasi-polynomial form is not what
+  the dimension-three target needs.
+
+`Proofs16DeepEventuallyPrime` makes the chain parametric in both:
+- `IsVarietyPieceB Bnd c φ G`, a variety piece with bound `Bnd c`.
+  `IsVarietyPiece D` is the case `Bnd = milicevicBound D`,
+  definitionally.
+- `DeepStructureAt Bnd N c`, the contract's conclusion at one modulus and
+  one density.
+- `MilicevicDeepEventuallyPrime Bnd`: for each `c > 0`, there is a
+  threshold `N₁(c)` such that `DeepStructureAt Bnd N c` holds for every
   prime `N ≥ N₁(c)`. The all-moduli contract implies it
   (`MilicevicDeepVarietyStructure.eventuallyPrime`).
-- `exists_variety_piece_at`, `greedy_variety_cover_at`, and
-  `greedy_variety_cover_family_at` use only `DeepStructureAt` at the
-  density they apply.
+- `exists_variety_piece_at`, `greedy_variety_cover_at` and
+  `greedy_variety_cover_family_at` are the greedy cover at the single
+  density they use.
 - `variety_structure_side_eventually`,
-  `structure_side_of_milicevic_eventually`, and
-  `structure_side_of_milicevic_sharper_eventually` derive the structure
-  side from the eventual prime contract. The threshold becomes
-  `max N₀ N₁`, with `N₁` taken at the single density `θ/2/m(γ, θ/2)`.
+  `structure_side_of_milicevic_eventually` and
+  `structure_side_of_milicevic_sharper_eventually` are the structure side
+  for any bound. Its threshold is `max N₀ N₁`, with `N₁` taken at the
+  single density `θ/2/m(γ, θ/2)`.
+- `structure_side_of_milicevic_of_eventually` is the original
+  `IsVarietyPiece D` statement from the weaker hypothesis.
 
 So a proof of Milićević's theorem in prime `ℤ/N` above an explicit,
 density-dependent threshold now suffices for the structure side and
 everything downstream. The original theorems and statements are
 unchanged; the new chain duplicates their proofs with the weakened
 hypothesis. Standard axioms; collision gate clean.
+
+### J.100. Dense coherent column pairs without another density loss
+
+**Verified 2026-10-09.** `Proofs16FibreStars` proves a finite selection
+lemma for arbitrary finite fibre and vertex types. For each fibre choose
+a vertex with maximum relation degree. Summing the degree bounds shows
+that the total edge count is at most the vertex-type cardinality times
+the total number of chosen leaves. No symmetry or transitivity is
+assumed in this counting lemma.
+
+`Proofs16DifferenceStars` applies this to ordered pairs in `ZMod N`.
+The parametrization `(d,a) -> (d+a,a)` identifies a difference fibre
+with `ZMod N`. Explicit bijections prove that relations respecting
+equal differences are counted by triples `(d,a,b)`, while selected
+leaves are counted by `(d,b)`. Thus `exists_difference_stars` constructs
+`P` with
+
+```
+|R| <= N * |P|,
+for every p in P there is z with R(z,p),
+for p,q in P with equal differences, there is z with R(z,p) and R(z,q).
+```
+
+The second property transfers endpoint membership, and the third is
+exactly the common-centre hypothesis needed for J.99's composition.
+
+`Proofs16CoherentColumnPairs.global_coherent_column_pairs` starts with
+only the original density and bihomomorphism assumptions. For prime
+`N >= globalColumnCompositionModulusBound alpha 2`, it constructs
+`X,T,L,W,P`, retaining the original-map witness system, density of `X`,
+column rank bounds, normalized maps, and their local Freiman linearity.
+Writing `theta = globalColumnQuadrupleDensity alpha`,
+`rho = globalColumnIdentityRadius alpha`, and
+`d = columnSpectrumCap (columnEightDensity alpha)`, it proves
+
+```
+theta*N^2 <= |P|,       P subset X × X,
+0 < theta,             0 < columnIdentityRadius d rho 1,
+```
+
+and every two pairs in `P` with equal index difference have identical
+column-map differences on their four endpoint Bohr domains at the last
+radius. The common centre is removed using the prime-target frequency
+removal theorem. There is no additional power of `theta` lost in this
+selection.
+
+**Remaining gap.** A dense family of coherent pairs is not a dense set
+of columns on which all additive quadruples agree. Graph extraction and
+bilinear organization are still required. In particular, this proof
+does not assert that `P` is symmetric or that `P` contains a product of
+dense index sets. The eventual-prime interface merged above is also
+conditional: neither its quasipolynomial rank/radius bounds nor its
+shifted agreement conclusion has been supplied by this construction.
+The original all-moduli contract is unchanged and remains open.
+
+**Verification.** The focused construction checks 145 modules. All five
+new named theorems and all eight named theorems of the incoming
+`Proofs16DeepEventuallyPrime` module pass individual axiom checks with
+only `propext`, `Classical.choice`, and `Quot.sound`. No upstream code,
+selected-port scope, or Apache provenance files were changed.
+
+The combined audit checks 6,995 public Gowers theorems in 5,099 modules
+(5,097 for the facade, including 4,152 OAI modules), with the same axiom
+boundary. The source ledger is identical to the tracked 115 companions
+and five open entries; the selected-port scope check passes. Companion
+counts do not establish fidelity to every printed statement.
+
+
+So a proof of Milićević's structure in prime `ℤ/N`, above an explicit
+density-dependent threshold, with a polynomial bound, now yields the
+structure side. Whether the polynomial degree then fits the full
+dimension-three budget is the remaining numerical check. That check
+concerns the peer's polynomial lift and `PolyBoundedControl`, not the
+interface. The original theorems are unchanged. Standard axioms;
+collision gate clean.
