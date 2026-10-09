@@ -1,0 +1,73 @@
+All 1,322 maintained test methods pass in 223.502 seconds; the focused
+39-method run passes in 1.582 seconds. The audit covers 1,275 supplied
+vectors under two periodic rules and two reduction modes, or 5,100
+configurations. Every full spectrum and source summary agrees with the
+frozen \code{ea366dc9b} producer and checker and with the independent
+component oracle. All 5,100 disabled-option results reproduce the baseline
+exactly. Derivation succeeds on 1,088 configurations and saves precisely
+the old double-query cycle count; the other 4,012 return the complete old
+result. These counts include scaled and relabelled repeats, not 1,088
+distinct knot types. The audit retains 80 paired current/legacy examples
+and 557 source hashes.
+
+A separate fresh Regina audit rechecks 664 bounded vectors across 26
+triangulation isomorphism classes. All 1,395 produced certificates replay
+and match the freshly computed component types. The controls include
+orientable genus nine, ten crosscaps and fifteen boundary circles on one
+component. Runtime sources remain unchanged during each audit.
+
+The isolated five-round benchmark has 300 measured calls and 60 warmups,
+all complete, with interleaved old/old and new/new arms. Timings include
+production, independent replay and serialization/hash of the full proof.
+The native reference is the frozen producer \emph{and} checker. Each pair
+returns the same spectrum hash, and proof bytes are deterministic within
+each arm. The following ratios are paired medians.
+
+\begin{samepage}
+\noindent\textbf{Full native topology observer.}
+\input{tables/weighted_coorientation_native.tex}
+\end{samepage}
+
+The layered-256 call improves from about 3.868 to 1.704 seconds, a paired
+2.26-fold gain. Its certificate drops from 14,211,485 to 7,139,727 bytes.
+The smaller layered gains are 1.87--2.19-fold; the binary-scale case gains
+2.00-fold. Pure links and empty reduced inputs keep the identical old
+proof and are near parity.
+
+\begin{samepage}
+\noindent\textbf{Earlier coordinate-census comparison.}
+\input{tables/weighted_coorientation_coordinates.tex}
+\end{samepage}
+
+The coordinate reference obtains full component normal vectors, then checks
+their topology with the existing scalar observer; it computes finer
+embedding data than requested here. This extra work is stated explicitly.
+The new topology observer is 1.76--2.10-fold faster on these three primitive
+layered controls, resolving the 5--9 percent regressions recorded for the
+previous three-query integration. These are supplied-vector calls, not
+whole knot-recognition measurements.
+
+The original binary-mixture ratio 0.861 comes with a poor old/old control
+of 0.775. The original records are retained. A justified isolated repeat
+uses fifteen rounds on that case and two other fallback controls, or 180
+measured calls and 12 warmups, all complete. Paired old/new medians are
+0.985 for the M\"obius band, 0.993 for the small mixture and 0.994 for
+the binary mixture. Repeat A/A medians range from 0.993 to 1.006. The
+repeat indicates small extra finite-test costs rather than establishing
+a fourteen-percent binary-input regression. It does not erase the initial
+noisy measurement or assert zero miss overhead.
+
+\begin{sloppypar}
+Raw evidence is in \code{data/weighted-coorientation-*}. From \code{fast/},
+run \code{python -B -m} with module
+\code{normal\_orbit\_research.}\allowbreak\code{coorientation\_spectra}
+with mode \code{audit} or \code{benchmark --rounds 5} and a required
+\code{--output} path. The fresh oracle command is
+\code{python -B -m} with module \code{topology\_research.regina\_audit}
+and mode \code{audit}, with the
+retained \code{topology\_research/data/regina\_corpus.json}, an output
+path and \code{--recheck-oracle}, in the Regina environment.
+\code{data/weighted\_coorientation\_fallback.py} reproduces the longer
+isolated control. The table and publication-review scripts retain
+completion, source stability, independent replay and document checks.
+\end{sloppypar}

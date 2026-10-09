@@ -666,3 +666,14 @@ gluing, exact ranks, finite-group formula, propagation obstruction, transport
 counterexample, endpoint recovery and normal component-type bound independently
 of runtime promotion. Original archive provenance and all preserved-file hashes
 are in `../synthesis/data/incoming-fe88-placement.json`.
+
+The later native topology integration derives a complete weighted normal-double
+histogram from the finite coorientation already used for scalar counts. The
+[weighted cover theorem](../synthesis/weighted_coorientation.tex) proves that
+both point weights pull back unchanged and gives strict source-bound v2 replay;
+v1 and unsuccessful-gate results remain supported. All 1,322 tests, 5,100 corpus
+configurations and 1,395 fresh Regina certificate checks pass. Complete layered
+observer calls improve 1.87–2.26x, including a fresh 1.76–2.10x gain over the
+primitive coordinate reference. This is an implementation refinement of the
+report 58 observer and established coorientation theory, with no new diagram
+coverage or general QP claim.
