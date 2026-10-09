@@ -5644,6 +5644,29 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   would lose `exp(-poly(1/alpha))`. That is the polynomial-`Bnd` regime
   J.5 revisited assumed. No such elimination scheme is proposed here.
 
+**Leads for the redesign** (heuristic, not proved)
+- *E = {0} is not the expensive part in Milićević's proof.* J.2 records
+  that his Freiman bihomomorphism on a bilinear Bohr variety, the form
+  `DeepStructureAt` asks for, is an intermediate object of his §§5–11,
+  with quasi-polynomial bounds. Only his final step extends it to the
+  `E`-bihomomorphism (`SetRankLE E r`) of Theorem 1.4. J.2 also shows that
+  the consumers cannot use the `E`-form directly (the readout (R) is not
+  elementary). So the contract's `{0}` is right, and the cost of reaching
+  it here comes from this pipeline's route, not from the target.
+- *Constrain rather than delete.* The pipeline removes nonzero additive
+  models by shrinking the column set (J.109), paying `β/10` per test. The
+  variety form has another resource: the bilinear constraints `L` of
+  `bilinearBohrVariety Γ Ψ L ρ`. A nonzero model could plausibly be
+  absorbed as a further constraint on the domain, as Milićević's bilinear
+  Bogolyubov step does. Each model would then cost a rank increment, not
+  a density factor.
+- *Small additive rank.* Otherwise, a model family spanned by `R` basic
+  maps might be eliminated with one test per generator, at column cost
+  `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
+  polynomial.
+
+None of these is established. They are recorded as the most direct leads.
+
 This is the audit the J.5 revisited estimate called for. It does not
 change any proved statement; it shows that the order-of-magnitude
 `Bnd(c) ≤ A·c^(-p)` there is not what the current parameters deliver.
