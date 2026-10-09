@@ -8717,3 +8717,40 @@ the same three axioms. The facade closure has 5,371 modules, including
 4,152 OAI modules. The generated ledger is byte-identical to the tracked
 115-companion / five-open ledger, and the port scope check passes for the
 unchanged 4,134 upstream and 17 compatibility modules.
+
+## J.136. Adaptive coherent regularity at the retained density
+
+The prescribed-error construction in J.135 did not control its error relative
+to the density lost during refinement. The new adaptive construction uses an
+exact state `(d, kappa)`, recording both a rank bound and coherent-quadruple
+density. At a failed regularity test the next rank is the coherent relation
+budget at the current error/cutoff, and the next density is exactly
+`kappa * coherentIterationLoss nextRank rho`. Error and cutoff may depend
+on both coordinates; neither schedule is required to be monotone.
+
+`coherent_adaptive_relation_iteration` stops after at most the remaining
+relation-space dimension. It preserves the same varying frequency family,
+source witnesses for original points and quadruples, and at most `4^s`
+source offsets after `s` steps. Fixed frequencies grow by at most `4*s*ell`.
+The conclusion uses the exact stopping state and vertical radius `sigma/2^s`.
+A finite supremum of collision thresholds over the possible states supplies
+a modulus bound independent of the ambient modulus.
+
+`exists_coherent_adaptive_dense_graph` adds the Fourier smoothing thresholds
+and constructs a graph on that same refined domain. For
+`m = |B| + 4*ell^2 + 2*ell`, its density is at least
+`1/(2*(4*H)^m)`. Its box error is the fourth power of an accuracy schedule
+evaluated at the exact final state. All coherence and source data remain.
+
+`exists_coherent_density_controlled_graph` specializes to
+`min(1/(2*(4*H)^m), kappa^power/scale)`, for arbitrary natural `power` and
+positive `scale`. Consequently its normalized box error is at most
+`(retainedDensity^power/scale)^4`. This resolves the circular error choice
+without assuming a favorable relation between a fixed input error and the
+density subsequently lost. The finite adaptive modulus bound is explicit;
+no favorable growth rate for it or final Gowers threshold is claimed.
+
+The five new modules compile in a 490-module production closure. The
+remaining structural steps still include graph extraction, transporting
+original column agreement on the final domains, and the final quantitative
+certificate. Full axiom and facade verification follows.
