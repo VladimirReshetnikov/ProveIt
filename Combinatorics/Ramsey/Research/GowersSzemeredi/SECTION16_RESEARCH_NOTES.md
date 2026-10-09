@@ -3261,3 +3261,13 @@ collision gate passes. Lemma 44 (one-sided quasirandomness implies
 `3ε^{1/8}`-quasirandomness) is not yet formalized. No numbered statement
 changes status. This supplies the quasirandomness input of [49]'s
 Claim 38 (step 4 of Theorem 35).
+
+
+The combined audit after merging the fixed-pattern and quasirandomness
+work passes: 6,422 public Gowers theorems, a 4,984-module facade
+(4,152 OAI modules), and 4,986 modules including both audits. The fifteen
+new fixed-pattern declarations also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger remains 115 companions and five open statements, with all prior
+fidelity caveats retained. No additional upstream modules were ported,
+and the selected dependency closure and Apache provenance are unchanged.
