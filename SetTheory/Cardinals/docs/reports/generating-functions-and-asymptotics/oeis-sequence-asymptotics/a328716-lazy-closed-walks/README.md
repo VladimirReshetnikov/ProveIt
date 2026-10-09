@@ -303,6 +303,9 @@ open, is kept):
   `m²/D = O(1)`), **and for the laws in the sparse critical range**
   `m²/D = O(1)` (Theorem 18.2). Open: the laws of zero steps and occupied axes
   for `N/D → ∞` with `D → ∞`, and for `N/D → 0` with `N²/D → ∞`.
+  (Precision added by the independent check of 9 October 2026: the laws at
+  fixed `D`, `N → ∞`, are not treated by either Part either; Remark 9.2 and
+  Theorem 19.1(i) concern the counts only.)
 - **Question 3: advanced only in the sparse critical range** (a discrete joint
   law, not Gaussian); the compact-range local theorem and joint Edgeworth
   expansion stay open.
@@ -430,7 +433,11 @@ The check is recorded at the end of Section 12.
     `c = (1, 1/7, 5)`, `λ = 1/3`): errors `1.2·10^{−3}`–`8.1·10^{−3}` against
     `12/B` from 4.1 to 0.76;
   - Part I's Theorem 9.1 against Part II's leading term at `N = D = 40, 41,
-    100, 101` (relative differences `−1.86·10^{−3}` to `−1.86·10^{−4}`);
+    100, 101` (relative differences `−1.86·10^{−3}` to `−1.86·10^{−4}`;
+    **corrected by the independent check**: these use Part I's
+    Stirling-expanded leading term `C_ε(dn)^n` of (15); with `N!` exact, as in
+    (43), they are `−3.94·10^{−3}`, `−2.39·10^{−3}`, `−1.59·10^{−3}`,
+    `−1.01·10^{−3}`);
   - the three shipped programs rerun on a copy in the delivered layout:
     `verify_lyons.py` and `verify_endpoints.py` pass; `reproduce.py` (Python
     3.13.5 under `uv`, mpmath 1.3.0, matplotlib, 85 s) passes, its
@@ -445,6 +452,51 @@ The check is recorded at the end of Section 12.
     repository at the pin `136e70702`. Not read: the journal versions, the
     erratum, Bender, Pitman, Dolgopyat–Hafouta, the DLMF, the `math`
     repository.
+
+## Independent check of the Part II write (9 October 2026)
+
+An adversarial check made by the intake after the second write
+(`3257a20bd`), with its own code; recorded at the end of Section 21.
+
+- **The counterexample, checked hardest**: the closed walks of length 26 in
+  `ℤ^16` counted by a fourth route (a dynamic programme over the sorted vector
+  of absolute coordinates; no multinomial sum, power series or recurrence in
+  the dimension) and a fifth (binomial convolution in the dimension by
+  doubling): both `23,062,502,564,288,544,059,408,295,833,600`. `C_{13,16}`,
+  `A`, `p = A/2^{118}`, the reduction to `A·4329^8 > 2^{143}·53^8`, the printed
+  integer, the `4001/4000` comparison, Machin's bound and every printed
+  decimal (truncations) confirmed; the ratio interval at 60 digits lies in
+  `[1.00055938338287171766560, 1.00055938338287171766561]`.
+- **The finite scan** redone with own counts: identical violation runs for
+  `d ≤ 40`, `n ≤ 200`; none for `d ≤ 15` to `n = 500`; only `n = 13` at
+  `d = 16`; no undecided comparison.
+- **The sources**: both papers fetched again (byte-identical to the write's
+  copies); the readings of Ball–Sterbenz (1.3), Proposition 1, Remark 1 and
+  Felker–Lyons p. 4 are exact. The 2012 erratum was read: it corrects the
+  bcc formula (2.4) and says the upper bounds for `h_3^bcc`, `h_4^bcc` are not
+  correct. **Precision** (end of Section 21): Felker–Lyons's bcc lower bounds
+  also use (2.3), in dimension 1, where it is proved.
+- **Part I's questions**: the re-scoping re-derived against the hypotheses
+  of Corollary 16.3, Theorem 18.2 and Theorem 19.1(i). **Precision** (end of
+  Section 12): the laws at fixed `D` are not treated either.
+- **Correction** (end of Section 9): the four comparisons `−1.86·10^{−3}`, …
+  use Part I's Stirling-expanded leading term `C_ε(dn)^n`; with `N!` exact, as
+  in Theorem 9.1's display (43), they are `−3.94·10^{−3}`, `−2.39·10^{−3}`,
+  `−1.59·10^{−3}`, `−1.01·10^{−3}`; against the exact `a_n`,
+  `a_n/L_n − 1 = −3.60·10^{−3}, −3.61·10^{−3}, −1.44·10^{−3}, −1.44·10^{−3}`.
+  The `O(1/D)` agreement stands.
+- **Numerics** (own code): `E_1`, `E_2` from (16.4); the anisotropic envelope
+  example (after `E_1 + E_2` at most `2.21·10^{−5}`); Table 4 (16 entries) and
+  the further sparse cases from `exp(D log F)` in exact rationals; `m E U`;
+  exact `R/G` at `D = 100`; all 24 entries and the limits of Table 3; with
+  SymPy (19.6), (19.8), the prefactor, both totals, `A(x)`, `B(x)` and the
+  fixed-`D` coefficients as polynomials in `D`; three-point Richardson
+  (`N = 400, 800, 1600`): `0.0019531250`, `0.1015625003`, `0.4238281467`.
+- **Provenance and numbering** confirmed (archive, staged bytes, pin, ledger
+  now 115/5, reports 65 and 69, Felker/Sterbenz absent before placement; 76 +
+  76 labels as stated, 161 in all).
+- Apart from the correction and the two precisions, **no defect was found in
+  the write**, and no claim of Part II was found wrong.
 
 ## Relation to the repository
 
@@ -489,7 +541,7 @@ the same Edgeworth computation.
 **Part II's review of the repository** (Section 14, pinned at `136e70702`):
 the lattice-walk row is correct; the Gowers–Szemerédi row's ledger count
 (113 exact companions, 7 open) was true at the pin and is 114/6 since
-`456b6e3ad`; the Boolean row refers to reports 65 and 69 of
+`456b6e3ad` (115/5 at the independent check of 9 October 2026); the Boolean row refers to reports 65 and 69 of
 `Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/`;
 the `math` rows were not checked. Before the placement no file of the
 repository mentioned Felker or Sterbenz. No neighbouring report shares a
@@ -731,6 +783,9 @@ delivered text builds to 31 pages, with six underfull boxes in its survey
 table, which the write set ragged right. The
 delivered byte-identity claims (fixed source date, suppressed PDF metadata)
 apply to `Report179.tex` under the delivering toolchain, not to this build.
+Rebuilt the same way on 9 October 2026 after the independent check of the
+Part II write: 61 pages, with none of the above diagnostics; all 161 label
+numbers unchanged.
 
 ## From the delivery README
 

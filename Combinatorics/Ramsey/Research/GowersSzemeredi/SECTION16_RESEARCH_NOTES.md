@@ -5606,8 +5606,9 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          level-16 zero relations of the column maps. Still to come:
          Proposition 6.1 analogues, Step 3 (robust Bogolyubov–Ruzsa)
          and Steps 4–6.
-4. *Not done.* Proposition 6.1, robust Bogolyubov–Ruzsa (Step 3) and
-   Steps 4–6. The bridging statement is done: J.142 for the abstract
+4. *Not done.* Robust Bogolyubov–Ruzsa (Step 3) and the remaining
+   structure assembly. The original-data prime-cyclic almost-all image
+   stage needed from Proposition 6.1 is proved in J.145. The bridging statement is done: J.142 for the abstract
    engine, and `global_column_word_system` for the original data. The
    details follow below.
 5. *Proposed lanes (2026-10-09).*
@@ -10041,3 +10042,102 @@ The selected OAI audit closure remains 4,152 modules. The regenerated
 catalogue is byte-identical to the prior verified inventory, with 115
 companion proofs and five open statements. These counts do not certify
 fidelity to every printed statement. The selected-port scope check passes.
+
+### J.145. Almost-all 16-tuple image bounds from one sample
+
+The original-data prime-cyclic almost-all image stage is proved.
+`global_column_almost_all_tuple_images` starts with the original dense
+bihomomorphism and J.144's explicit modulus threshold, using `k = 15`
+and **one** sampled point. It returns original witness-linked column maps
+on a dense index set `U` and bounds their images on half-radius common
+Bohr domains for all but `epsilon N^15/2` additive 16-tuples in `U`.
+The retained density and modulus threshold are independent of `epsilon`.
+
+The simplification recorded after J.144 is now formalized. Exact class
+identities bound the number of tuple values at the common sample point by
+`|J|`, without collecting the model spectra into one common spectrum.
+`finite_class_value_image_card_le` and `column_tuple_value_image_card_le`
+prove this finite compression directly; no choice of new model tuples is
+needed.
+
+`exists_tuple_zero_value_cell` separates the nonzero tuple values using
+at most `clog 2 (M+1)` characters when their number is at most `M`. A popular
+joint Dirichlet cell has mass at least `|V|/40^m`. The existing
+`same_cell_even_not_separates` theorem, with eight pairs, proves that every
+balanced 16-tuple value from this cell is too small in every chosen
+character to be separated. Since a nonzero additive-tuple value belongs
+to the separating set, its value at the sample must be zero. The constant
+cell count is **40**, rather than the conservative 160 suggested earlier.
+
+A Boolean-injective sample of length one is nonzero. The unit ternary
+coefficient gives its single sampled point as a signed subsum. Thus every
+additive tuple in `U` whose zero level is sparse belongs to the bad family
+already bounded by J.144. For every other tuple, its zero level has density
+at least `eta`. `column_tuple_image_card_le_of_dense_zero` applies the
+existing dense-level image theorem to its normalized Freiman tuple map.
+Its spectrum has at most `16d` frequencies. No new frequency-structure
+hypothesis, model packing, or elimination is introduced.
+
+Put
+
+```
+d = columnSpectrumCap (columnEightDensity alpha),
+M = ceil(1/globalColumnTupleRepresentationDensity alpha 15),
+m = clog 2 (M+1),
+a = globalColumnTupleSampleDensity alpha 15 1 / 40^m,
+eta = globalColumnSparseKernelDensity alpha 15 1 epsilon,
+K = ceil((denseLevelCells (1/(4*pi)))^(16d)/eta).
+```
+
+The theorem gives `|U| ≥ aN`, with `a > 0`, and at most
+`epsilon N^15/2` additive tuples have more than `K` values on the common
+domain of radius `1/(8*pi)`. It also retains the nonzero common sample
+and the exact zero identity there for every additive tuple in `U`.
+All data remain linked to the original bihomomorphism through
+`IsColumnWitnessSystem` and the original witness mass bounds.
+
+`Proofs16AlmostAllTupleBudgets` proves that the character budget obeys
+
+```
+m ≤ 1 + log(M+1)/log 2,
+```
+
+and, for `0 < epsilon ≤ 1`, that the image cap satisfies
+
+```
+K(alpha,epsilon) ≤ (K(alpha,1)+1)/epsilon.
+```
+
+The latter is a reciprocal-linear exceptional-fraction bound. These are
+intermediate certificates; they are not a proof of the final printed
+Gowers threshold or an improvement of the final progression bound.
+
+This closes the original-data prime-cyclic analogue needed from
+Proposition 6.1. It does not assert the full arbitrary-group version or
+its arbitrary bounded-image input interface. Next is the robust
+Bogolyubov–Ruzsa progression extraction (Step 3), followed by the remaining
+structure assembly and comparison with the final numerical budget. The
+five numbered open entries remain. No upstream code is ported here.
+
+Verification after merging the incoming Claim 9.4 selection, core and
+escape proofs: all 16 new named proofs pass individual axiom checks.
+The full production budget closure compiles across 282 modules. The
+combined audit checks 9,055 public Gowers theorems across 5,502 modules
+(5,500 in the facade closure), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
+The generated catalogue is byte-identical: 115 companion proofs and five
+open statements; these counts do not certify fidelity to every printed
+statement. The selected-port scope check passes.
+
+Step 3 lead: the selected port already contains
+`OAI.Erdos3.CyclicCrootSisask.exists_quartic_bogolyubov_progression`
+in `Estimates/LocalizedSiftingAlmostPeriods`. From density `exp(-p)` it
+gives a proper centered progression in `2A-2A`, rank at most
+`2+C(p+1)^4` and mass at least `exp(-C'(p+1)^8)N`. This is not yet the
+robust representation-count input. Its pointwise almost-periodicity
+engine can instead be applied to the popular-difference set, whose
+difference multiplicities are at least `exp(-2p)N/2`. A proof that the
+resulting Bohr set has uniformly many representations is still needed,
+as is the progression-indexed transfer of the almost-all image data.
+This lead requires no new upstream port; the relevant code is already
+in the licensed selected closure.
