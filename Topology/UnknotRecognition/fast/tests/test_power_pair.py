@@ -59,6 +59,9 @@ class PowerPairTests(unittest.TestCase):
             self.assertEqual([arena.expand(r) for r in rr],expected);self.assertEqual(alive,aa);self.assertEqual(alive,ll)
 
     def test_large_binary_family_closes_after_projection_stalls(self):
+        absent=WordArena();absent_roots=[absent.from_word(w) for w in ([2,2],[3,3])]
+        with patch('fastunknot.power_pair.plan_power_pairs',side_effect=AssertionError):
+            self.assertFalse(_search(absent,absent_roots,{1,2,3},[],primitive_projection=True,primitive_terminal={}))
         arena,roots,alive=family(8,1024)
         self.assertEqual(plan_projection(arena,roots,alive),[])
         original=roots[:];old_alive=set(alive);moves=[];terminal={}

@@ -72,7 +72,9 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 moves.append(dict(kind='primitive_projection', pairs=selected))
                 raw = True
                 continue
-            if len(alive)>=3:
+            # Every mixed cyclic two-run donor is already a coherent pair
+            # candidate. An empty snapshot proves this detector cannot act.
+            if len(alive)>=3 and prepared[0]:
                 from .power_pair import plan_power_pairs, apply_power_pairs
                 pairs=plan_power_pairs(arena,roots,alive,power_pair_cache)
                 if pairs:
