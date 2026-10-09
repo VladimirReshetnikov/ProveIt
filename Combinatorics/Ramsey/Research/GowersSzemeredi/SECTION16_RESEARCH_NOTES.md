@@ -3116,3 +3116,51 @@ also pass individual transitive axiom checks. Only propext,
 Classical.choice, and Quot.sound occur. The source ledger remains 115/5
 with its existing fidelity caveats; upstream module scope and licenses
 are unchanged.
+
+
+### J.83. Small generators by dissociation, with unit coefficients
+
+The next selection step requires a small set of actual row generators.
+Reference [49], Section 7, uses its Theorem 31 before averaging over four
+index patterns (Claim 36): https://arxiv.org/html/2109.03093#S7.
+The following independent counting proof supplies this input on Z/N.
+
+For any B inside `Span_R(K)`, `boundedSpan_small_generators` produces
+`D subset B` such that `B subset Span_1(D)` and
+`|D| <= ceil(16*|K|^2 + 4*|K|*log(2R+1))`.
+This includes empty B, rank zero, zero cutoff, and every nonzero modulus;
+primality is unnecessary. In particular the new generators are values
+of the original set and every coefficient has centered size at most one.
+
+`Proofs16SpanSumCounting` proves the counting estimate. If D is
+additively dissociated, all of its subset sums are distinct. Adding at
+most |D| points of `Span_R(K)` places those sums in `Span_(|D|R)(K)`.
+Thus `2^|D| <= (2|D|R+1)^|K|`. `Proofs16SmallSpanGenerators` solves this
+inequality explicitly: take logarithms, use `log 2 >= 1/2` and
+`log d <= 2 sqrt(d)`, and absorb the square-root term using
+`(sqrt(d)/2-2k)^2 >= 0`. This yields `d <= 16k^2+4k log(2R+1)`.
+Mathlib's `Finset.exists_subset_addSpan_card_le_of_forall_addDissociated`
+then supplies a maximal dissociated generating subset. The proof uses
+Mathlib through imports; no new upstream files are ported.
+
+`Proofs16BoundedSpanPhase` proves the matching phase bound: Bohr control
+at radius rho on k generators controls their R-bounded span at radius
+k*R*rho. The proof uses submultiplicativity and subadditivity of the
+centered modular absolute value, including cutoffs above N/2.
+
+`Proofs16SmallCoverIndices` applies this to the covered values of the
+actual bounded-span row alphabets. It chooses at most
+`ell=spanGeneratorBound r R` indices at each row. Every chosen index is
+active: the row is in the selected piece and its map value is in the
+row alphabet. These values span all covered values with unit coefficients.
+The index lift discards zero before choosing indices, so zero costs no
+index and requires no domain-membership assertion.
+`covered_values_small_bohr` gives Bohr control of all covered values at
+radius 1/16 from the chosen values at radius `1/(16*max(1,ell))`.
+This replaces a dependence on all m selected maps by the explicit small
+rank ell, without a large coefficient factor in the radius.
+
+The four modules contain fourteen theorem declarations and compile in a
+95-module closure. The subsequent averaging over four index patterns and
+the final structure theorem are not yet proved. No numbered statement
+changes status, and the existing paper-fidelity caveats remain in force.
