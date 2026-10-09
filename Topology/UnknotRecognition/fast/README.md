@@ -3112,3 +3112,36 @@ boundaries to check the individual boundary-circle homology classes; that
 control is absent from recognition and certificate replay. The earlier tree,
 blocking-flow and optimal-face research drivers explicitly disable annulus
 recognition to retain their original comparison criteria.
+
+### Optional planar boundary caps
+
+`normal_seed_decide(..., planar=True)` additionally checks whether a connected
+coherent candidate is planar and has exactly one essential boundary circle.
+Capping its inessential circles in a boundary collar produces a compressing
+disc. This can recognize negative-Euler candidates: for example, the existing
+five-crossing optimized-positive fixture has a planar seven-boundary surface
+at tree trial 2, before span minimization.
+
+The new `diagram-cocycle-planar-v1` certificate carries a torus homology basis
+and a two-weight boundary orbit trace. Independent replay checks source
+geometry, primitive class and connectedness through the existing cocycle
+acceptance rules, then independently validates the basis and replays the weighted
+trace. Boundary circles and their multiplicities remain compressed. The
+stored surface can have zero disc components; its witness is `planar-cap`.
+No normal-coordinate vector for the capped disc is extracted.
+
+Use `recognize(..., use_normal_seed=True, normal_seed_planar=True)` or
+`python -B -m fastunknot recognize INPUT.json --normal-seed --normal-seed-planar` to request it.
+The new query defaults off. It adds boundary work to unsuccessful candidates,
+so additional native coverage need not improve complete recognition time.
+The seed API's `max_cycles` is shared across all boundary discoveries;
+`max_work` includes discovery and independent positive replay. Existing disc
+and annulus proofs need no boundary orbit query.
+
+Reproduction from this directory (Regina is needed only for the audits):
+
+```sh
+python -B -m normal_orbit_research.planar audit --output ../synthesis/data/cocycle-planar-audit.json
+python -B -m normal_orbit_research.planar survey --output ../synthesis/data/cocycle-planar-survey.json
+python -B -m normal_orbit_research.planar recognize --rounds 5 --output ../synthesis/data/cocycle-planar-recognize.json
+```

@@ -7578,3 +7578,100 @@ checks 7,700 public Gowers theorems in 5,254 modules
 remains byte-for-byte unchanged at 115 companions and five open entries.
 The selected-port scope remains 4,134 upstream and 17 compatibility
 modules, with reciprocal-only dependencies excluded.
+
+
+### J.124 Actual higher-containment escape and independent-family growth
+
+The higher-arrangement step now starts from failed Bohr containments,
+rather than assuming escaping frequency maps as input. Twelve original
+modules prove twenty-seven named theorems; no upstream port is added.
+
+**Multiplicity in the escape argument.** Put
+`R = bohrExtensionCutoff (8*d) r`. A failed containment for the selected
+frequency union `D` gives a common frequency in the bounded spans of the
+eight left and eight right column spectra. Under
+`D.card * 4 * sigma <= 1/(4*pi)`, that frequency is outside the
+coefficient-four span of `D`. Decomposing each eight-column union gives
+four signed pair differences on each side with equal sums. The cutoff
+of each individual column remains `R`. A finite-union sum lemma pays
+for repeated generators: four summands in individual unit spans belong
+to the coefficient-four span of their union, not necessarily its unit
+span. Consequently at least one of the four left components escapes its
+own selected unit span.
+
+**Selection from actual failures.** Sixteen independently colored maps
+retain at least the fraction `(2*R+1)^(-16*d)` of the original failed
+arrangements, including arrangements with repeated endpoints. Applying
+J.122 and J.123 to this family produces all eight controlled pair maps
+on one retained family, preserving both the frequency equation and the
+escaping left sum. Define
+
+```
+a = delta / (2*R+1)^(16*d),
+b = higherArrangementDensity a 16,
+h = higherArrangementPairDensity b 8.
+```
+
+Each selected map is controlled at
+`(higherArrangementPairDensity b n)^2` for some `n < 8`. Pigeonholing the
+four escaping left positions costs a factor of four. The new projection
+lemma bounds the number of arrangement parameters over fixed pair
+endpoints by `N^9`. Thus `higher_failed_containments_dense_pair_escape`
+returns one actual controlled map and a pair set `E` of size at least
+`(h/4)*N^2`, on every element of which its value lies outside the old
+selected unit span. Its value belongs to the ambient pair span with
+cutoff `2*R`; the doubling accommodates overlapping endpoint spectra.
+
+**Rank increment and uniform radius.** For any ambient cutoff
+`C >= 2*R`, `higher_failed_pair_containments_increase_rank` adjoins this
+map value on `E`, preserves the old selected sets, dissociation, and
+ambient membership, and increases the total selected cardinality by
+exactly `E.card`. The total stays at most
+`N^2 * spanGeneratorBound (2*d) C`. Allowing an arbitrary larger `C`
+is necessary for combining this step with the quadruple increment.
+
+Set `s = spanGeneratorBound (2*d) C` and
+`sigma = 1/(128*pi*(s+1))`. Every independent selected pair set has at
+most `s` frequencies, and the union for a higher arrangement has at
+most `8*s`. The positive radius therefore pays the coefficient-four
+phase budget uniformly throughout any valid growth process.
+
+**Remaining work.** The simultaneous quadruple/higher selection process
+still needs to be constructed using a shared ambient cutoff and radius.
+Coherent anchors, gluing, and the resulting deep bilinear variety
+structure remain open. The numerical variety route also still needs
+its final instantiated bounds. This checkpoint does not discharge a
+numbered catalogue entry or assert an improved final source bound.
+
+**Verification.** The full higher-radius closure checks 317 modules.
+All twenty-seven new named theorems pass individual axiom checks using
+only `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
+is byte-for-byte unchanged at 115 companions and five open entries.
+The port-scope check still reports 4,134 upstream and 17 compatibility
+modules, with reciprocal-only dependencies excluded. The initial combined audit checks 7,748 public Gowers theorems in 5,266
+modules (5,264 facade modules and 4,152 OAI modules), with the same axiom
+boundary. The final synchronized results are recorded below.
+
+
+**Incoming numerical bounds.** The merged `Proofs16VarietyScaleBounds`
+proves the variety and spectrum family/density scale bounds in
+`x = 2/(theta*gamma)`. `Proofs16ExplicitConstantBounds` bounds the named
+recurrence/partition constants by `2^1700`, conditional on its explicit
+per-degree Schmidt bounds. These two modules compile against the real
+selected dependencies; the synchronized audit checks 7,777 public
+Gowers theorems in 5,268 modules with the usual three-axiom boundary.
+These estimates do not by themselves instantiate the final source
+threshold or supply the missing deep variety structure.
+
+
+**Final merged verification.** The incoming named relation-piece theorem
+and `MultiplyLinearWith.variety_three_multiplyLinear` also compile
+against the real selected dependencies. The latter converts the actual
+piece controls under positivity of the width coefficient to parameter
+`18*r/gamma + 64 + L`, where `L` is the maximum of the two logarithmic
+losses. The final threshold comparison remains open. After both merges,
+the complete audit checks 7,788 public Gowers theorems in 5,269 modules
+(5,267 facade modules, including 4,152 OAI modules). Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The ledger and port-scope
+checks pass unchanged. Consumer audit counts were updated; no source
+port, adaptation notice, or license scope was changed.
