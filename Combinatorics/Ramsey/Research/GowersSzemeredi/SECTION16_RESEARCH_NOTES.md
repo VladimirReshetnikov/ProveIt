@@ -1515,9 +1515,33 @@ the elementary lemmas of its §2:
 - Remaining for Theorem 1.6: step 3, the columns. It needs Bogolyubov on
   the good index set, [49]'s algebraic regularity (Theorem 4), bipartite
   quasirandomness (App. B), and the lattice theorems (Theorems 5 and 6).
-  Then comes the composition into the seven-fold difference set. That last
-  part of [49] has not been read yet, since the WebFetch summaries stop at
-  100k characters.
+  Then comes the composition into the seven-fold difference set.
+- **[49] Section 7 (Theorem 35), read from offset 100k.** The proof:
+  1. Row Bogolyubov on dense rows Y¹ gives A¹ = D_hor D_hor A, whose rows
+     contain B(Γ_y, ρ). **Done:** `row_bogolyubov`.
+  2. A² = D_ver A¹ has fibre ⊇ ∪_z B(Γ_{y+z}) ∩ B(Γ_z). **Done:**
+     `verDiff_rowBohr_intersection`, with `mem_verDiff`.
+  3. A³ = D_hor A². By Theorem 27, a sum of Bohr sets contains
+     B(⟨Γ⟩_R ∩ ⟨Γ′⟩_R; 1/4); this is lattice theory. Corollary 20 is then
+     applied with U_y = ⟨Γ_y⟩_R, giving the L_i. Theorem 31 (bounded spans)
+     and the Hosseini–Lovett averaging over index sets J₁…J₄ avoid
+     exponential counts (Claim 36). Proposition 18 (density in a coset
+     progression) and re-centering make the maps Freiman-linear on
+     2C − 2C (Claim 37).
+  4. A⁴ = D_ver D_ver A³. This uses algebraic regularity (Theorem 33,
+     stated in the fetch) to partition C into pieces with quasirandom
+     fibres, robust Bogolyubov (Corollary 16) on Y′, and quasirandomness
+     (Claim 38).
+
+  The seventh operator and the final containment fall in the part the
+  fetch truncated.
+- **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
+  intersections, needing lattices or duality), Theorem 31, Proposition 18,
+  Theorem 33 (algebraic regularity), Corollary 16 (robust
+  Bogolyubov–Ruzsa), and bipartite quasirandomness. Each is a substantial
+  formalization. In ℤ/N with polynomial bounds some may simplify: in a
+  prime field a span ⟨Γ⟩_R is a generalized arithmetic progression, and
+  Bohr sets are close to the dual of a lattice.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
