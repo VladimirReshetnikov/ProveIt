@@ -94,6 +94,28 @@ def minimize_cocycle_span(vertices, heights, *, max_work=None, check=lambda: Non
     labels = sorted({v for row in vertices for v in row})
     index = {v: i for i, v in enumerate(labels)}
     n, k = len(h), len(labels)
+    if k == 1:
+        # Every corner receives the same potential, so no span can change.
+        # Pair each tetrahedron's minimum corner with its own maximum corner:
+        # the shared vertex cancels its potential and attains weak duality.
+        coordinates, matching = [], []
+        for t, hs in enumerate(h):
+            budget.tick()
+            coordinates.append(local_coordinates(hs))
+            matching.append([t, hs.index(min(hs)), t, hs.index(max(hs))])
+        count = sum(sum(row) for row in coordinates)
+        certificate = dict(schema='normal-cocycle-span-v1', vertex_ids=labels,
+                           potential=[0], matching=matching, coordinates=coordinates, disc_count=count)
+        from .cocycle_span_verify import verify_cocycle_span
+        if not verify_cocycle_span(vertices, h, certificate, check=budget.tick):
+            raise ArithmeticError('one-vertex cocycle-span primal/dual replay failed')
+        return dict(coordinates=coordinates, certificate=certificate,
+                    stats=dict(work=budget.work, augmentations=0, relaxations=0,
+                               heap_pops=0, network_nodes=0, network_arcs=0,
+                               initial_disc_count=count, disc_count=count,
+                               zero_searches=0, blocking_phases=0, blocking_scans=0,
+                               blocking_path_steps=0, blocking_units=0, dijkstra_searches=0,
+                               blocking_fallbacks=0, blocking_restarts=0))
     source, sink = 2*n+k, 2*n+k+1
     graph = [[] for _ in range(sink+1)]
     references = []

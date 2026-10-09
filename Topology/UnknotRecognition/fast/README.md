@@ -1,5 +1,39 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+`cocycle_span.minimize_cocycle_span` now handles a single global vertex with
+a direct primal/dual certificate: every potential is a uniform height shift,
+so the optimum is the original sum of spans. This takes linear arithmetic
+work, including independent replay, without allocating the flow network.
+The proof schema and multiple-vertex solver are unchanged. The API still
+makes no topology or unknot claim by itself.
+
+`pachner32.pachner_32(triangulation, tetrahedron, [vertex_a, vertex_b])`
+performs one 3–2 move about an interior edge in three distinct tetrahedra;
+`pachner32_verify.verify_pachner_32(before, after, certificate)` independently
+checks the replacement. One such move escapes the retained genus-two
+coherent-family obstruction and produces a 36-piece coherent normal disc.
+Greedy simplification found no additional labels beyond the existing extended
+search on the tested diagram corpus, so it has not entered the recognition
+schedule. Theory, limits and measurements are in
+[`coherent_escape.tex`](../synthesis/coherent_escape.tex). Reproduce with
+`python -B -m normal_orbit_research.coherent_escape audit --output FILE`
+or `benchmark --rounds 5 --output FILE`; audit mode requires Regina.
+
+The explicit `pachner23.pachner_23(triangulation, tetrahedron, face)` API
+performs one canonical 2–3 move on a finite torus-boundary triangulation.
+Its result contains a fresh `triangulation`, a selected-face `certificate`,
+and work statistics; `pachner23_verify.verify_pachner_23` independently checks
+the old/new formal boundary maps. It is not part of the recognition schedule.
+The `coherent_family_verify.inspect_one_vertex_family` checker verifies an
+exact rank-minor certificate for all primitive coherent-height vectors on a
+one-vertex triangulation. A retained eight-tetrahedron solid torus has a
+unique such vector of genus two, although a separately certified 51-piece
+normal compressing disc exists. This is a candidate-family obstruction,
+not a negative knot certificate. See
+[`coherent_obstruction.tex`](../synthesis/coherent_obstruction.tex), and run
+`python -B -m normal_orbit_research.coherent_obstruction replay --record ../synthesis/data/coherent-obstruction-certificate.json`
+for producer-free proof replay without Regina.
+
 Orbit queries can now return independent local proofs with
 `count_orbits(..., record_certificate=True)`. Replay with
 `fastunknot.interval_orbit_verify.verify_orbit_certificate(size, pairs, proof)`.
@@ -3209,3 +3243,114 @@ Reproduce the source comparison and cycle-family counts using
 `python -B -m normal_orbit_research.quotient audit --output OUTPUT.json`, and
 candidate-pipeline timings with `benchmark --rounds 5` in the same driver.
 The native recognition schedule and its default options remain unchanged.
+
+
+The optional `--normal-seed-shellings` switch simplifies the finite exterior
+before native cocycle discovery. In Python, pass `normal_seed_shellings=True`
+to `recognize` or `shellings=True` to `normal_seed_decide`. This switch requires
+the native stage to be enabled (`--normal-seed` / `use_normal_seed=True`).
+Each move removes an embedded boundary tetrahedron only when its intersection
+with the boundary is exactly a nonempty proper union of facets. Extra boundary
+vertices or edges invalidate the move. The outer `diagram-shelling-witness-v1`
+proof stores the canonical source, stable removal indices and a disc, annulus
+or planar witness on the reduced exterior. Independent replay verifies the
+whole source-to-surface chain without importing the simplifier or Regina.
+
+Shellings default to off: fewer tetrahedra can change bounded candidate
+coverage and need not reduce complete recognition time. Misses still use the
+existing fallback. This does not establish a general subexponential or
+quasipolynomial algorithm. After initial geometry preparation, shelling
+selection uses O(N log N) indexed comparisons and O(N) storage; its independent
+trace replay adds O(N) indexed graph work. The trace has O(N log N) bits.
+Reproduce the topology/source audit with
+`python -B -m normal_orbit_research.shellings audit --output OUTPUT.json`, and
+complete forced-recognition timings with `recognize --rounds 5` in that driver.
+
+
+Finite-manifold validation now computes vertex-link Euler characteristics
+from an incidence census. Signed global edges already determine the two
+oriented ends of every edge, including loops at a single vertex. For each
+vertex link, count triangle corners F, edge ends V and boundary sides B;
+then `2*chi = 2*V - F - B`. Reciprocal faces, edge reversal, edge links,
+orientability, connectedness and the single torus boundary are still checked.
+Ideal or singular vertices receive the same rejection as before.
+
+This removes two redundant union-find structures and the per-link sets. For
+N tetrahedra, P paired faces and b unpaired faces, union-find nodes fall from
+34N+b to 10N+b; paired-face unions fall from 15P to 6P. The new link census
+uses O(N) indexed operations and storage after the existing global geometry
+has been obtained. Geometry output, certificate hashes, guard counts and
+recognition settings are unchanged. Reproduce the comparison with
+`python -B -m normal_orbit_research.link_census audit --output OUTPUT.json`,
+and full recognition plus proof-replay timings using `recognize --rounds 5`
+in the same driver. General subexponential/QP recognition remains open.
+
+The supplied-coordinate `normal_surface_topology` API now tries a finite
+coorientation proof before counting orbits of doubled coordinates. One bit
+per incident global-edge block must change exactly across reversing normal
+arc pairings. A valid assignment trivializes the orientation cover, so its
+component count is twice the already verified base count. Success produces
+`normal-surface-topology-v4`, with a strictly checked finite double proof;
+the independent checker accepts the previous formats too. Failure is
+inconclusive and preserves the old double query and complete result exactly.
+Pass `coorientation=False` to restore the old query schedule.
+
+The finite test adds O(N log N) integer comparisons/operations for N tetrahedra
+and never expands sheet multiplicities. Existing multiplicity lifting and
+optional boundary classification still apply. On the 256-tetrahedron layered
+example, recorded events fall from 166,438 to 83,478 and producer plus checker
+plus proof serialization improves by 1.967x. The complete 1,275-vector batch
+is effectively neutral (1.003x); small inputs can regress. These are supplied
+normal-surface API timings, not complete knot-recognition timings. Reproduce
+the 5,100-configuration audit and isolated timings with
+`python -B -m normal_orbit_research.coorientation audit --output OUTPUT.json`
+and `benchmark --rounds 5` in the same driver. The separate corpus timing
+driver is `../synthesis/data/coorientation_corpus_benchmark.py`. The proof,
+limits and negative timing results are explained in article section 123.
+
+Both `count_orbits` and `normal_surface_topology` also accept
+`sweep_direction='forward'` (the unchanged default), `'reverse'`, or `'wide'`.
+The reverse mode reflects the whole interval universe before AHT reduction.
+Its proof binds the original input and records one independently checked
+reflection event. Interval proof versions 3 and 4 retain the Fine–Wilf and
+classical AHT merger thresholds respectively; old versions remain accepted.
+No integer point is expanded, and reflection adds O(k) integer operations
+for k pairings. Normal-surface multiplicity and boundary proofs still apply.
+
+The optional wide mode compares initial terminal carrier widths and reflects
+only when the left end is wider. On a 256-tetrahedron layered meridian, the
+base trace falls from 82,960 to 2,311 events. This heuristic can lose: the
+full 1,275-vector corpus grows from 182,925 to 189,742 events, and a concrete
+surface uses fewer cycles but more events. Forward therefore remains the
+default. This initial choice has no guarantee relative to the better sweep
+and is not a progress-based adaptive race. Reproduce the compatibility audit
+and isolated producer/replay/serialization timings with
+`python -B -m normal_orbit_research.direction audit --output OUTPUT.json`
+or `benchmark --rounds 5` in that driver. Article section 124 proves the
+reflection rule and records the ordering counterexample and timing results.
+
+The additional `sweep_direction='race'` mode now tries both directions with
+geometrically increasing cooperative-checkpoint allowances. Width chooses
+the first attempt only. A failed attempt is discarded, and the successful
+answer retains exactly the corresponding fixed-direction certificate.
+Independent checkers and the forward default are unchanged.
+
+For k pairings on an M-point universe, the initial allowance is
+`L = 8*(k+1)*(M.bit_length()+1)`. If W is the smaller complete checkpoint
+count of the two fixed directions, unlimited attempt work is at most
+`12*max(L,W)`, plus k+1 startup checkpoints. This is a checkpoint guarantee;
+it is not a constant-factor wall-clock or elementary-bit-operation bound.
+All begun cycles, including interrupted attempts, consume `max_cycles`.
+The returned `cycles` and `race_*` statistics include scheduling work;
+ordinary structural statistics describe the winning or last incomplete run.
+Incomplete structural counters can lag an interrupted helper; use the race
+checkpoint and cycle counters for exact interruption accounting.
+No incomplete trace becomes a certificate, and caller cancellation propagates.
+
+Article section 125 proves the bound and reports the restart costs. The
+audit preserves all 5,100 default surface records, checks 5,100 race results,
+and validates 1,210 literal interval systems and checkpoint inequalities.
+The policy remains optional: restarts and callback accounting can exceed
+the gains from choosing a better order. Reproduce with
+`python -B -m normal_orbit_research.race audit --output OUTPUT.json` or
+`benchmark --rounds 5` in the same driver.

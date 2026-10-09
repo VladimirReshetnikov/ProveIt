@@ -1,0 +1,206 @@
+\section{An obstruction to the entire coherent-height family}
+\label{sec:coherent-obstruction}
+
+The tree, minimum-span and Euler-optimization searches vary representatives
+of a primitive integral cocycle. Their failure on an input previously left
+two possibilities: the search had missed a useful representative, or the
+entire coherent-height family was unsuitable. An explicit solid-torus
+triangulation now separates these possibilities. It has eight tetrahedra and
+one global vertex. Every primitive integral coherent-height surface on it
+has the same normal coordinates, describing a connected orientable surface
+of genus two with one boundary component. A separate admissible vector is
+a compressing disc. Thus even exhaustive gauge optimization cannot make
+this restricted family complete on arbitrary solid-torus triangulations.
+
+This is a limitation of the candidate representation, not a negative knot
+certificate. In particular, it does not establish failure on the canonical
+diagram exteriors used by the maintained recognizer. Those exteriors have
+additional structure and vertices. It also does not rule out a method that
+changes triangulations, compresses surfaces, or searches other normal vectors.
+The general quasipolynomial recognition question is unchanged.
+
+\subsection{Certifying a change of triangulation}
+
+The new local operation \code{pachner\_23} replaces two distinct tetrahedra
+joined along a chosen face by three tetrahedra. Number the three corners of
+the shared face $0,1,2$, in ascending local order on the first tetrahedron;
+call its opposite apex $3$ and the second apex $4$. These are \emph{formal}
+labels, not global vertex classes. The new tetrahedra, with the displayed
+local orders, are
+\[
+ (3,4,0,1),\qquad (3,4,1,2),\qquad (3,4,2,0).
+\]
+Pair their repeated triangular facets by the identity on formal labels.
+The remaining six facets are exactly the boundary facets of the old
+bipyramid. Transfer every old boundary gluing, including gluings between
+these six facets, through their formal labels. Surviving old tetrahedra
+retain their order and are renumbered densely; the three new ones follow.
+
+Both fillings are balls with the same labelled boundary. A PL
+homeomorphism relative to that boundary descends through its prescribed
+identifications to the ambient triangulation. The five formal vertices need
+not be five different global vertices: all coincide in the obstruction
+below. The selected old tetrahedra must be distinct, and their common face
+must be paired. This is the usual bipyramid description of a $2$--$3$
+Pachner move; Regina documents the more general attaching-face construction
+\cite{regina-pachner}.
+
+The independent checker imports no replacement producer. It validates both
+finite manifolds, checks the unchanged outside gluings, and constructs a
+signature of the six formal boundary facets in each filling. A signature
+records a free boundary face, a pairing to another formal boundary face, or
+an attachment to a stable outside tetrahedron, together with the full
+three-vertex map. It separately verifies the interior face pairings.
+Equality of the signatures proves the relative-boundary replacement.
+A valid output manifold of the right size is not by itself sufficient.
+
+For a supplied triangulation of $N$ tetrahedra, face rewriting and signature
+comparison use $O(N)$ indexed operations and storage, in addition to finite
+manifold preparation. The certificate records only the chosen tetrahedron
+and face, but this experiment retains every intermediate triangulation.
+A $K$-move record therefore uses
+$O((KN+K^2)\log(N+K))$ bits for these snapshots. No compressed move-sequence
+bound or bound on finding a useful sequence is asserted. The operation is
+an explicit geometry API and is not added to the default recognition search.
+
+\subsection{A reproducible eight-tetrahedron example}
+
+Start with the standard two-tetrahedron layered solid torus returned by
+\code{layered\_torus(2)}. The certificate includes its complete face pairing;
+replay requires exact equality with this fixed root. Apply the following
+six moves, using zero-based tetrahedron and opposite-face indices in each
+successive canonical output:
+\[
+ (1,2),\ (0,1),\ (2,2),\ (3,1),\ (3,2),\ (6,0).
+\]
+Every relative-boundary replacement is checked independently. The final
+triangulation has one vertex and ten edges. Regina independently recognizes
+it as a solid torus, with isomorphism signature
+\code{iHvrQAkbgfeffhhasssvcaj}. The native argument uses the fixed layered
+solid-torus root and the six checked moves; no topology-engine verdict is
+an input to the move checker.
+
+The following table gives local heights $h$, their coherent normal vector
+$x$, and an independently discovered normal disc vector $d$. Each normal
+row lists the four triangle coordinates followed by the three quadrilateral
+coordinates in the maintained convention. The complete face pairing is in
+\path{data/coherent-obstruction-certificate.json}.
+\begin{center}
+\small
+\begin{tabular}{rlll}
+\toprule
+$t$ & $h_t$ & $x_t$ & $d_t$\\
+\midrule
+0 & $(0,-6,-4,-2)$ & $(2,2,0,0,0,0,2)$ & $(2,2,0,0,0,0,2)$\\
+1 & $(0,-2,2,-4)$ & $(0,0,2,2,0,2,0)$ & $(0,0,2,2,0,2,0)$\\
+2 & $(0,-2,-3,2)$ & $(0,0,1,2,0,0,2)$ & $(0,2,3,2,0,0,0)$\\
+3 & $(0,-3,-1,2)$ & $(0,2,0,2,0,0,1)$ & $(2,2,0,0,0,0,3)$\\
+4 & $(0,-3,-2,-5)$ & $(2,0,0,2,0,1,0)$ & $(0,0,2,2,0,3,0)$\\
+5 & $(0,1,-3,-4)$ & $(0,1,0,1,3,0,0)$ & $(0,1,2,3,1,0,0)$\\
+6 & $(0,1,-4,-2)$ & $(0,1,2,0,2,0,0)$ & $(0,1,2,0,2,0,0)$\\
+7 & $(0,1,-2,-3)$ & $(0,1,0,1,2,0,0)$ & $(0,1,2,3,0,0,0)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The native interval-orbit certificate proves that $x$ has one component,
+is orientable, has one boundary component, and has
+\[
+ |x|_1=41,\qquad \chi(x)=-3,\qquad
+ g(x)=\frac{2-1-(-3)}2=2.
+\]
+The separate weighted normal-disc certificate proves that $d$ contains
+exactly one compressing-disc component; its total piece count is $51$.
+Regina also checks that this supplied $d$ is itself a compressing disc.
+These are valid normal coordinates, but the following rank argument excludes
+them from the coherent family, regardless of the chosen heights.
+
+\subsection{An exact certificate for all primitive coherent vectors}
+
+Let $E$ be the global edge set, with the representative orientations
+reconstructed by the geometry validator. Build the integral face matrix
+$A$ with one row per global triangular face. For ascending local face
+corners $a,b,c$, the equation is
+\[
+ c_{ab}+c_{bc}-c_{ac}=0,
+\]
+with signs changed as required by the chosen global edge orientations.
+Repeated occurrences of an edge contribute to the same matrix entry.
+The space of integral cocycles is $\ker(A)\cap\mathbb Z^E$.
+
+The checker first verifies that every local height difference agrees with
+one signed global cochain $c$, that $Ac=0$, and that
+$\gcd\{c_e:e\in E\}=1$. It then verifies a nonzero minor of size $E-1$.
+For this example $E=10$ and the supplied $9\times9$ minor has determinant
+$1$. Thus $\operatorname{rank} A\ge9$, while the nonzero kernel vector gives
+$\operatorname{rank} A\le9$. The rational kernel is exactly $\mathbb Q c$.
+If $q c$ is integral, Bezout's identity for the coordinates of $c$ makes
+$q$ integral. Hence
+\[
+ \ker(A)\cap\mathbb Z^{10}=\mathbb Zc.
+\]
+This avoids trusting the cocycle producer's elimination or a supplied
+homology rank. The certificate checker independently reconstructs $A$ and
+evaluates the selected minor by fraction-free elimination.
+
+There is only one global vertex, so every vertex coboundary is zero.
+Consequently the only primitive integral cocycles are $c$ and $-c$;
+there is no nontrivial vertex gauge to optimize. Heights realizing either
+cochain differ from the displayed heights only by a constant on each
+tetrahedron and possibly a common sign. Constants leave the normal level
+gaps unchanged, and negation reverses their order without changing the
+normal coordinates. Equivalently, their six local edge weights are
+$|c_e|$, which uniquely determine an admissible local normal vector.
+The checker verifies these weights against the supplied $x$.
+
+It follows that \emph{every primitive coherent-height surface on this
+triangulation is normally isotopic to $x$}. None is a disc, an annulus, or a
+planar surface suitable for the current boundary-capping witness. Allowing
+nonprimitive integral cocycles does not help here: $kc$ gives the coordinate
+vector $|k|x$, represented by $|k|$ disjoint parallel copies of the two-sided
+surface $x$, and zero gives the empty vector. This conclusion concerns the
+coherent construction, not arbitrary embedded normal surfaces.
+
+\subsection{Verification cost, scope and retained evidence}
+
+There are $O(N)$ global edges and faces. The current family checker builds
+a dense $O(N^2)$ matrix and evaluates its minor in $O(N^3)$ integer
+arithmetic operations. Each original row has absolute sum at most three;
+Hadamard's inequality bounds the bit lengths of its minors by $O(N)$.
+Together with reading and checking the supplied binary heights and normal
+coordinates, this gives polynomial bit complexity in the encoded input.
+This is a certificate for a restricted family on one supplied triangulation,
+not a certificate of knottedness and not a candidate-discovery algorithm.
+Its return value makes that scope explicit.
+
+The retained research driver reproduces the complete example without Regina,
+including the six moves, rank minor, topology proof and disc-count proof.
+Its replay mode uses the independent checkers and no search. An optional
+Regina audit confirms both final surfaces and checks 240 additional randomly
+selected $2$--$3$ moves, arranged as twelve length-20 paths starting from
+layered solid tori of sizes two, three and eight and a canonical one-crossing
+diagram exterior. Every native output is isomorphic to Regina's independent
+replacement. The seed and all selected moves and isomorphism signatures are
+retained, along with hashes of the native source files.
+
+Focused tests check twenty random relabellings of the entire family,
+certificate mutations, malformed and same-tetrahedron move sites,
+nonprimitive cochains, extra global vertices, sign changes and independent
+tetrahedron offsets of more than 20,000 bits. They also check producer-free
+replay, exact work limits, cancellation and input immutability.
+\input{coherent_obstruction_results.tex}
+
+To reproduce the proof from \path{../fast}, run
+\begin{verbatim}
+python -B -m normal_orbit_research.coherent_obstruction reproduce \
+  --record ../synthesis/data/coherent-obstruction-certificate.json
+python -B -m normal_orbit_research.coherent_obstruction replay \
+  --record ../synthesis/data/coherent-obstruction-certificate.json
+\end{verbatim}
+Use mode \code{audit} with the same record and an \code{--output} path for
+the optional Regina cross-check. The evidence files are
+\path{data/coherent-obstruction-*}. No whole-recognizer speedup is claimed:
+the maintained candidate schedule and default settings are unchanged.
+The practical consequence is to direct completeness work toward changes of
+triangulation, surface compression or a broader normal-vector family, rather
+than assuming that a better potential optimizer alone will suffice.

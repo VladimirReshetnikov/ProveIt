@@ -1,0 +1,138 @@
+\section{Certified boundary shellings before surface discovery}
+\label{sec:boundary-shellings}
+
+Optimizing a cocycle on one fixed triangulation does not search all useful
+normal surfaces of the knot exterior. The new optional branch changes that
+triangulation first: it removes a sequence of embedded boundary tetrahedra,
+then runs the existing raw, tree-gauge and minimum-span candidate schedule.
+Every removal preserves the exterior, and every positive answer carries both
+the removal trace and its connected surface witness. This changes the family
+of surfaces reached by a bounded search. It does not establish completeness
+of that family or a general subexponential recognition bound.
+
+\subsection{A deliberately restricted elementary move}
+
+Let $M$ be the verified finite triangulated knot exterior, and let $T$ be a
+tetrahedron whose four local vertices belong to four distinct global vertex
+classes. This makes the closed tetrahedron embedded: identification of two
+of its local edges or faces would identify their endpoint sets, and no such
+sets coincide. Require that $T$ have $b\in\{1,2,3\}$ boundary facets and that
+its entire intersection with $\partial M$ be exactly their union. In
+particular, lower-dimensional boundary intersections must also be checked.
+With one boundary facet opposite vertex $f$, vertex $f$ must be interior.
+With two boundary facets opposite vertices $f_0,f_1$, the edge $f_0f_1$ must
+be interior. With three boundary facets, all vertices and edges already lie
+in their union, so there is no additional lower-dimensional condition.
+
+The union of the boundary facets is an embedded disc in $\partial T$; the
+complementary union is another embedded disc. Removing the open tetrahedron
+and the boundary faces that have no remaining incidence replaces one of these
+discs by the other. A collar of the attachment disc identifies this operation
+with removing a boundary ball. It therefore preserves the PL homeomorphism
+type of $M$. This is the embedded special case of the standard boundary
+shelling move. Regina's documented move also checks lower-dimensional
+boundary membership and face identifications; its admissible family is
+broader than our four-distinct-vertices restriction
+\cite{regina-boundary-shelling}.
+
+Counting boundary facets alone is unsafe. After the first legal shelling of
+the one-crossing-circle exterior, tetrahedron 3 of the densely renumbered remainder has four distinct
+global vertices and just one boundary facet, opposite local vertex zero.
+That vertex nevertheless lies on another boundary face of the exterior.
+Deleting this tetrahedron fails our replay check. The retained regression
+constructs the induced face pairing after this forbidden removal and checks
+that the verifier rejects the trace, rather than relying on a producer's
+eligibility flag. Generalized tetrahedra with repeated global vertices are
+also excluded, even when a more general shelling test might permit them.
+
+\subsection{Stable indices and bounded incidence updates}
+
+The trace names tetrahedra by their original indices. Removed rows become
+tombstones; surviving neighbors have only the appropriate reciprocal face
+record changed to a boundary face. Dense reindexing is performed once at the
+end, preserving the original order of survivors. A trace has fewer than $N$
+entries for an initial $N$-tetrahedron torus-boundary manifold, and each entry
+needs $O(\log(N+1))$ bits. There is no sequence of repeatedly copied full
+triangulations in the certificate.
+
+Initial global vertex and edge labels can be retained during these moves.
+For a surviving vertex, the move deletes a boundary triangle or a boundary
+disc from its link, or opens a spherical link into a disc. For a surviving
+edge it removes an endpoint interval from its interval link, or opens a
+circle link into an interval. The surviving links stay connected. Classes
+therefore neither split nor merge; some disappear entirely. This justifies
+using the initial labels to maintain counts of incident boundary triangles.
+Both producer and checker update all contributions of one move before using
+the new boundary status.
+
+A surviving interior class can become boundary, but a boundary class cannot
+become interior under this monotone deletion process; it can only disappear.
+Consequently, the boolean boundary status of each original vertex or edge
+changes at most twice. The producer keeps original incidence lists and
+reconsiders their tetrahedra only when that status changes. It also rechecks
+the at most four neighbors whose face records change. Across the whole
+sequence these lists contain $O(N)$ entries and produce $O(N)$ affected
+visits, including visits to tombstones. A heap selects the eligible tetrahedron
+with the most boundary facets, breaking ties by stable index; version numbers
+discard obsolete heap entries. Sorting affected indices and maintaining the
+heap cost $O(N\log(N+1))$ indexed comparison operations and $O(N)$ storage,
+after the initial geometry preparation. Counts, indices and versions have
+$O(\log(N+1))$ bits. These are bounds on the added shelling stage, not a new
+bound on all geometry validation or the later cocycle solver. Python hashing
+retains the conservative collision-cost qualifications used earlier.
+
+The independent replay needs no heap or incidence-to-tetrahedron schedule.
+It tests the one-vertex or one-edge obstruction directly, exposes actual
+neighbor faces, and compares every final face record against the prescribed
+stable renumbering. Its additional work after initial preparation is linear
+in $N$ in the indexed graph model. The producer instead tests equality of
+boundary subcomplexes and updates counts in the removed tetrahedron's local
+labels. These separate implementations are compared against Regina's legal
+move checker and final triangulation signatures in the retained audit.
+
+\subsection{Authenticating the simplified exterior and its surface}
+
+The new outer schema \code{diagram-shelling-witness-v1} stores the canonical
+source triangulation, stable removal indices and an inner surface certificate.
+The inner certificate uses the existing disc, annulus-cap or planar-cap
+format on the reduced triangulation. Its source PD still names the supplied
+original diagram. Verification first independently reconstructs the canonical
+source relation, then replays all shellings and checks the exact final face
+pairing. Only after this authenticated homeomorphism chain does the surface
+checker accept the reduced exterior as its source.
+
+The connectedness, primitivity, matching, Euler and boundary-capping checks
+are the same as before. A private checker helper accepts an internally chosen
+source predicate; public legacy checkers always select the canonical-exterior
+predicate. The shelling checker supplies the canonical-plus-replay predicate.
+No public checker accepts a caller's assertion that a triangulation is already
+authenticated, or accepts a producer's cached geometric analysis. Stripping
+the outer shelling proof from these new examples makes the old source check
+fail, as it should. A proof for a different knot also fails source binding.
+
+An essential disc on the reduced exterior transports to an essential disc
+on the original exterior through the verified homeomorphism. The same holds
+for the disc obtained by annulus or planar boundary capping. No meridian or
+longitude coordinate transport is required for this recognition conclusion:
+essentialness of a boundary curve is a topological property. The certificate
+need not expand the transported disc into a normal vector on the original
+triangulation. Its explicit triangulation and trace overhead is
+$O(N\log(N+1))$ bits in addition to the inner binary surface proof.
+
+The API switches and CLI flag are:
+\begin{center}
+\small
+\begin{tabular}{ll}
+Native search & \code{shellings=True} \\
+Recognizer & \code{normal\_seed\_shellings=True} \\
+CLI & \code{--normal-seed-shellings}
+\end{tabular}
+\end{center}
+This branch shares the existing work allowance and cancellation callback.
+It defaults to false. A bounded miss continues through the existing
+recognition fallback and never certifies knottedness. Simplifying the
+triangulation need not preserve which surfaces the original bounded candidate
+schedule reaches; any deployment decision must measure that tradeoff as well
+as tetrahedron counts.
+
+\input{boundary_shellings_results.tex}

@@ -1,0 +1,51 @@
+The normal-surface audit exercises 2,972 restarts across its 5,100
+configurations. In the default-multiplicity, unclassified corpus batch,
+3,586 actual orbit queries use 4,264 attempts, including 678 restarts.
+The race performs 4,724,655 attempt checkpoints and 65,555 startup checkpoints.
+Its winning traces use 31,729 cycles, but its total begun-cycle count is
+41,464 after including abandoned attempts. Forward uses 31,554 cycles.
+This is why the public allowance must count the attempted work rather than
+only the eventual certificate's search.
+
+The race's returned corpus proofs contain 189,333 events and 13,289,274
+serialized bytes. That is slightly smaller than the width-only result in
+the previous section, but remains larger than forward's 182,925 events and
+12,861,213 bytes. Competitive checkpoint scheduling is neither a proof-size
+optimizer nor a guarantee that the first completed result is faster in
+wall-clock time. The retained star and switching fixtures show the scale
+of restart overhead directly:
+\input{tables/orbit_race_counts.tex}
+
+The isolated benchmark uses five randomized rounds, with a separate control
+for each implementation. The first comparison uses frozen forward search
+as its reference. Each timed surface call includes topology production,
+independent replay, proof serialization and hashing; input construction
+is outside the timer. Both arms retain coorientation and default multiplicity
+reduction, and omit optional boundary classification.
+\input{tables/orbit_race_forward.tex}
+
+The second comparison uses frozen width-selected search as its reference.
+It isolates the extra cost of checkpoint accounting and restarts beyond
+the same initial ordering preference. The final two rows time interval
+production, independent interval replay and proof serialization directly;
+they are scheduling stress cases, not normal-surface or knot pipelines.
+\input{tables/orbit_race_wide.tex}
+
+All 280 measured calls and 56 warm-ups finish with matching topology or
+orbit-count digests. Proof and count records are stable within each arm.
+Across the normal-surface cases there are 51,200 measured and 10,240 warm-up
+surface analyses, counting every surface within the batch calls;
+the interval rows add 40 measured and eight warm-up kernel calls.
+Factors greater than one favor the race, and are medians of paired ratios.
+Against forward, layered-256 improves by $2.630\times$, but the corpus
+factor is $0.703$, about 42 percent slower. Against the width-only policy,
+the corresponding factors are $0.762$ and $0.716$: the race is about
+31 and 40 percent slower. The figure-eight counterexample is over twice
+as slow as forward, and the two interval stress cases are over four times
+as slow as their width-selected references. Control medians range from
+$0.973$ to $1.036$, much smaller variation than these major regressions.
+The comparison includes the scheduler's callback overhead and all abandoned
+searches, while serializing only the winning proof. The optional policy
+does not replace forward as the default. Avoiding repeated work through
+resumable searches is a separate implementation candidate; these measurements
+do not establish its performance.

@@ -158,7 +158,7 @@ def _verify(size, pairings, certificate, check):
     if size < 0 or not isinstance(certificate, dict):
         raise _InvalidCertificate("Invalid universe or certificate")
     version = _integer(certificate.get("version"))
-    if version not in (1, 2):
+    if version not in (1, 2, 3, 4):
         raise _InvalidCertificate("Unsupported certificate version")
     if _integer(certificate.get("size")) != size:
         raise _InvalidCertificate("Certificate universe differs from input")
@@ -187,7 +187,17 @@ def _verify(size, pairings, certificate, check):
             raise _InvalidCertificate("Invalid event")
         operation = event.get("op")
 
-        if operation == "delete":
+        if operation == "reflect":
+            if version not in (3, 4) or set(event) != {'op'}:
+                raise _InvalidCertificate("Invalid global reflection event")
+            reflected = []
+            for a, b, c, d, sign in current:
+                if check is not None:
+                    check()
+                reflected.append([size-1-d, size-1-c, size-1-b, size-1-a, sign])
+            current = reflected
+
+        elif operation == "delete":
             i = _index(event.get("index"), current)
             a, b, c, d, sign = current[i]
             if a != c or (sign != 1 and a != b):
@@ -239,7 +249,7 @@ def _verify(size, pairings, certificate, check):
                     and 0 < u <= bb - aa + 1):
                 raise _InvalidCertificate("Merger operands are not periodic")
             period = gcd(t, u)
-            threshold = t + u - (period if version == 2 else 0)
+            threshold = t + u - (period if version in (2, 3) else 0)
             if min(d, dd) - max(a, aa) + 1 < threshold:
                 raise _InvalidCertificate("Periodic overlap is insufficient")
             lo, hi = min(a, aa), max(d, dd)

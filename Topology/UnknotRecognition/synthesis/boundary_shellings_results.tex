@@ -1,0 +1,59 @@
+\subsection{Source coverage and independent topology controls}
+
+The retained audit covers the same 84 source diagrams as the geometry-reuse
+experiment. Every default-off result exactly reproduces its preceding record,
+including work count, stage summaries and certificate hash. With shellings
+enabled and the ordinary four-tree candidate budget, the number of native
+positives increases from 24 to 28. All 24 previous positives survive in this
+corpus. The four added source labels are random cases 1, 25, 81 and 176; their
+new witnesses are primitive connected annuli that can be capped. Cases 25 and
+176 share their diagram, so source-label counts do not count distinct knots
+or distinct certificates. Earlier optional extended-tree or planar searches
+already recognized these examples; the gain here is within the four-tree,
+planar-off schedule.
+
+Case 1 shrinks from 80 to 40 tetrahedra using 40 shellings. Cases 25 and 176
+shrink from 60 to 54, and case 81 from 100 to 94. Their total native work
+counts change from 32,902 to 8,030; 26,620 to 7,043; 44,320 to 12,059; and
+26,620 to 7,043 respectively. The old counts describe completed candidate
+misses; the new counts include the successful source-bound proof. On the
+original optimized-disc fixture, only six tetrahedra are removed, from 100
+to 94, but a tree witness now preempts optimization and lowers native work
+from 52,090 to 13,239. Small geometric changes can therefore matter more to
+the candidate family than their tetrahedron reduction suggests.
+
+Gordian loses just six of 2,820 tetrahedra. Nevertheless the new candidate
+schedule completes its restricted miss at 1,859,545 guards, with optimized
+Euler characteristic $-64$, instead of hitting the two-million-guard cap in
+the old schedule. This is not a recognition of Gordian. Enabling planar
+queries on the reduced triangulation still exhausts that allowance. Across
+the corpus, enabling planar queries gives the same 28 positive source labels,
+although some have earlier or different proofs. There is no claim that these
+settings dominate one another on arbitrary inputs.
+
+Regina accepts all 1,061 individual removals and agrees with every final
+triangulation signature. All 84 reduced inputs remain connected orientable
+valid manifolds with one torus boundary component. On the 74 sources with at
+most 12 crossings, the audit constructs all 353 scheduled raw, distinct tree
+and optimized candidates, even when the native recognizer would stop early.
+Every candidate is connected and orientable in Regina, and its Euler value
+agrees with the native coordinate calculation. Another 80 positive-result
+surface checks across the three audit arms give 433 Regina surface controls
+in total. Every tested Euler-one surface is independently a compressing disc.
+The saved corpus contains 47 distinct positive proofs, of which 28 use the
+shelling envelope; all are independently replayed. The shelling-on,
+planar-off arm uses 22 distinct proofs for its 28 positive source labels.
+
+The six new test methods exercise all three shelling types and every prefix
+of the one-crossing-circle reduction; source immutability; repeated-vertex
+exclusion; the stray-boundary obstruction; malformed traces and face records;
+all three inner surface schemas; producer-free replay; wrong-source rejection;
+20,000-bit harmless height offsets; exact work limits; cancellation; and the
+recognizer's opt-in path. All 29 focused tests pass in 3.863 seconds, and all
+1,229 maintained tests pass in 229.572 seconds. The source audit takes 77.295
+seconds and partly overlaps the full suite; these times are validation costs,
+not isolated performance measurements. Audit and timing datasets each pin
+508 source files. On the 19 ordinary pipeline controls, both settings finish
+through earlier recognizers, with zero native-stage attempts in all 38 runs.
+
+\input{boundary_shellings_measurements.tex}

@@ -8348,3 +8348,875 @@ qualifications. The selected dependency scope remains 4,134 upstream
 and 17 compatibility modules, excluding reciprocal-only dependencies.
 The fetched and merged remote delta changes only the independent
 topology development; no upstream source or license scope is added.
+
+## J.130 Popular shifts and dense agreement of coherent anchors (2026-10-09)
+
+**Popularity before selection.** `columnShiftBases P a` consists of bases
+`z` with both `z` and `z+a` in the exact core. For a fixed shift, a
+supported anchor quadruple is determined by its two bases. Consequently
+`unpopular_anchor_quadruples_card_le` bounds the number of quadruples
+whose shift has fewer than `t*N` bases by `t^2*N^3`. This inequality even
+holds for negative thresholds (the exceptional family is then empty).
+The higher-arrangement projection bounds remove at most `4*t^2*N^11`
+arrangements. Choosing `t = beta^8/4` leaves at least three quarters of
+the original `beta^16*N^11` mass. Joint selection at tolerance
+`beta^16/20` spends another quarter; anchor averaging therefore retains
+the previous `beta^16*N^3/4` quadruple-density guarantee. Every retained
+shift now has at least `beta^8*N/4` supported bases. The modulus condition
+`16 ≤ beta^16*N` is unchanged.
+
+**Preserve the actual family.** `HasCoherentAnchorSystemOn` records
+membership in an arbitrary input arrangement family. The earlier
+`HasCoherentAnchorSystem` is its supported-family specialization.
+Both common-index restriction theorems now have generic versions that
+preserve this membership, with the original statements retained as
+wrappers. Thus popularity survives common-index selection. The global
+popular-anchor theorem obtains all input core data from the original
+dense bihomomorphism; it introduces no new compatibility assumption.
+
+**Agreement and rank.** Compatibility on the exact even core and the
+quarter-domain extension formula prove `core_shift_anchor_agrees`:
+the anchor map equals `L(z+a)-L(z)` on the common quarter-radius Bohr
+set, for every supported base `z`. Intersecting with any selected Bohr
+domain `B(D;sigma)` retains that equality. The explicit domain of pairs
+`(z,w)` uses radius `min(sigma,r/4)` and at most `k+g+4*d` frequencies
+when `|D| ≤ k`, `|Gamma| ≤ g`, and each column spectrum has size at most
+`d`. The common spectrum is counted once, improving the direct union
+bound `k+4*(g+d)`. For every positive integer `Q` satisfying
+`1 ≤ min(sigma,r/4)*Q`, its cardinality obeys
+`t*N^2 ≤ Q^(k+g+4*d)*|domain|`.
+
+This establishes dense agreement with the local column models. It does
+not yet discharge the final deep-structure statement, the separate
+progression-domain requirement for the frequency maps, or the polynomial
+budget for the composite even-core parameters. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Initial verification.** The production target through the agreement
+domain checks 408 modules. The final axiom and merged-closure verification
+is recorded below after the common-index agreement interface is added.
+
+**Common-index agreement interface.** `coreAnchorAgreementDensity` uses
+`Q = ceil(1/min(sigma,r/4))`, eliminating the auxiliary cell integer.
+It is positive for positive input density and radii. The theorem
+`popular_common_indices_agree` retains the joint state and map budget,
+common index set of size at most `8*jointSelectionRank (g+d) r`, and
+`uniformAnchorIndexDensity` of whole coherent quadruples. At each shift
+it also retains popularity and an actual agreement domain of density
+`coreAnchorAgreementDensity t (8*rank) g d r sigma`, with both column
+endpoints in the core and the evaluation point in the selected Bohr set.
+This domain and all equality assertions are constructed from the core;
+none is an additional input hypothesis.
+
+**Final verification.** The production closure checks 410 modules. All
+22 new named theorems pass individual axiom checks. The full audit checks
+8,070 public Gowers theorems in 5,327 combined modules (5,325 facade
+modules, including 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The regenerated numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries, subject
+to the existing statement-fidelity qualifications. Port scope remains
+4,134 upstream modules and 17 compatibility modules. No upstream code
+or license scope is added. The fetched `origin/main` was already an
+ancestor of the working branch.
+
+## J.131 Exact row indices and progression rectification (2026-10-09)
+
+**Resolve domain membership position by position.** A common union of
+frequency indices does not put every map's progression domain around
+every retained shift. The new construction fixes the exact index set
+separately at each of the four positions. `exists_common_bounded_index_pattern`
+codes `ell` sets of size at most `K` using `(m+1)^(K*ell)` possibilities.
+For the four anchor positions, `K = 2*jointSelectionRank d r`, so the
+loss remains `(m+1)^(8*rank)`, exactly the exponent used by the common-union
+construction. Empty sets and fewer available indices than the size cap
+are allowed.
+
+`joint_anchor_row_indices` retains a subfamily of the original quadruples
+and four sets `J j`. Their images equal the original selected frequencies,
+and every map in `J j` has the actual shift `a j` in its domain. Thus
+`HasCoherentAnchorSystemOn.row_indices_uniform` preserves the original
+Bohr domains without shrinking them. It also preserves the arbitrary
+arrangement family, additive distinct quadruples, normalized local maps,
+coherence, the joint map-count budget, and the same positive uniform
+density.
+
+**Dense domains for the frequency maps.** Fixing one coordinate of an
+additive quadruple leaves at most two free coordinates. The explicit
+injection proves `|R| ≤ |anchorRowSupport R j|*N^2` at every position,
+so quadruple density `kappa` gives row-support density at least `kappa`.
+`joint_row_frequency_domains` proves every selected map is Freiman of
+order two on the entire row support, with genuine membership in its
+translated progression domain at every point. The final interface
+`popular_coherent_anchor_rows` retains this together with popularity and
+core-column agreement. Each row uses at most `2*rank` frequencies, so
+its agreement-domain bound is now `2*rank+g+4*d`.
+
+These are four possibly different dense supports. They have not been
+identified with one common progression. That subsequent structural step
+and the final polynomial budget remain required; no numbered catalogue
+entry is closed by this interface alone.
+
+**Initial verification.** The six new modules through the row interface
+check in a 417-module production closure. All eight named theorems pass
+individual axiom checks with only the three permitted axioms.
+
+**Rectify the actual progression domains.** For a centered progression
+coordinate of radius `r_i`, use cells of integer width `floor(r_i/8)+1`.
+There are at most sixteen labels per coordinate. Two parameters with the
+same label differ in that coordinate by at most `floor(r_i/8)`. Thus the
+difference between sums of eight matched parameters has absolute value
+at most `r_i`. Properness of the original progression makes any vanishing
+ambient eight-term relation an exact relation in every integer coordinate.
+`progression_cell_relation_lifts` proves this, including radius-zero and
+rank-zero cases.
+
+`translated_progression_coordinate_affine` applies the existing coordinate
+affinity theorem to an order-two Freiman map on a translated progression.
+The lifted coordinate relations then imply order-eight preservation on
+every cell. The finite-sum-to-multiset bridge explicitly retains repeated
+elements. `PairFrequencyMap.eightCover` covers the actual translated
+map domain by at most `16^progression.rank` cells, each supporting the
+original map as a Freiman homomorphism of order eight. The cells depend
+on the progression alone. No new upstream module is ported.
+
+**Retain whole quadruples through all covers.** `exists_dense_cover_pattern`
+selects one cell from each finite cover and retains a subfamily of the
+input configurations, with loss at most `M^|I|` for `|I|` covers of size
+at most `M`. Apply it only to the actual row-index pairs `(j,i)` with
+`i ∈ J j`. There are at most `8*jointSelectionRank d r` such pairs,
+and every selected progression has rank at most `jointMapRank delta d r`.
+Consequently `joint_rows_eight_density` retains quadruple density
+
+`rowEightDensity delta kappa d r = kappa / 16^(8*rank*mapRank)`.
+
+Each resulting row support has at least that density, and every selected
+frequency map is order eight on the entire corresponding row support.
+The retained family is a subset of the input family, preserving all
+previous coherence, popularity, and column-agreement assertions.
+
+**One Bohr difference domain for all four rows.** The spectrum in the
+constant-radius Bogolyubov--Freiman theorem depends only on its dense
+input set, not on the map. `dense_eight_shared_bohr_spectrum` makes this
+uniformity explicit: all order-eight maps on a set of density at least
+`eta` use one spectrum of size at most `16*eta^(-2)` and radius
+`1/(8*pi)`. Taking the union of the four row spectra costs at most
+`64*eta^(-2)`, independent of the number of selected frequency maps.
+`four_row_common_frequency_bohr` provides normalized Freiman difference
+extensions for all these maps on this same Bohr set, with agreement for
+every pair of original row points whose difference lies in it.
+
+The final `joint_rows_common_bohr` connects this result to the actual
+joint selection state and retains the refined quadruple family. This
+replaces the missing domain-membership inference by a proved finite
+refinement and genuine common difference extensions. Further clustering
+and translation are still needed to express the original row frequencies
+affinely on a common progression, and the later regularity/BSG and final
+quantitative steps remain open. The positive density and spectrum bounds
+here are explicit; they are not yet a certificate for the final Gowers
+threshold.
+
+**Production verification.** All sixteen new modules check in a
+428-module production closure. The full facade, individual axiom checks,
+merged state, and unchanged catalogue are verified below.
+
+**Final verification.** All 28 new named theorems pass individual axiom
+checks. The complete merged audit checks 8,129 public Gowers theorems in
+5,343 combined modules (5,341 facade modules, including 4,152 OAI modules),
+with only `propext`, `Classical.choice`, and `Quot.sound`. The regenerated
+numbered ledger is byte-for-byte unchanged at 115 companions and five
+open entries, with the existing statement-fidelity qualifications. The
+selected dependency scope remains 4,134 upstream and 17 compatibility
+modules. The reviewed incoming changes concern only the independent
+topology development; no Gowers dependency or licensing scope is added.
+
+
+### J.132. Additive translation into one proper progression
+
+**Whole-quadruple averaging.** For an additive family `Q` and any finite
+set `P`, `exists_additive_translation_count` constructs an additive
+translation `t` such that
+
+`|Q| * |P|^4 <= N^4 * |{a in Q : all j, a j - t j in P}|`.
+
+The proof counts pairs of additive quadruples and uses their first three
+coordinate differences as the translation code. The fourth difference
+is forced by additivity. The energy lower bound for `P` then supplies
+the fourth-power density loss. Recentring is injective on configurations,
+so all original quadruple properties can be pulled back without loss.
+The new centred entries need not be distinct; distinctness is retained
+for their original translates.
+
+**Actual proper progression and affine frequencies.** Apply this averaging
+to the proper progression inside the common frequency Bohr set at quarter
+radius. Its rank is at most `ceil(64*eta^(-2))+1`, where `eta` is the
+previous row-eight density. `joint_rows_on_proper_progression` retains
+quadruple density `eta * bohrProgressionDensity(rank,1/(8*pi))^4` and
+expresses every original row frequency as `c j i + psi j i (b j)`.
+Each `psi j i` is normalized and Freiman of order two on the entire same
+proper progression. The argument uses translation averaging, not an
+assumption that an independently chosen vertex cluster preserves energy.
+
+**Coherence on the new Bohr domains.** The fixed constants have a union
+of size at most eight times the selection rank. One row adds at most two
+times that rank in varying frequencies. Taking half the original radius
+makes these actual Bohr domains subsets of the selected original domains.
+`HasCoherentAnchorSystemOn.progression_rows` therefore retains all local
+Freiman maps, their normalization, the four-map coherence identity,
+original distinctness, and membership in the supplied arrangement family.
+`HasCoherentProgressionRows` records this full quantitative conclusion.
+
+All nine modules check in a 439-module production closure; the eighteen
+new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is added. The
+four row families still need the later regularity/BSG argument and a final
+quantitative budget. This does not close a numbered catalogue entry or
+improve the final Gowers threshold.
+
+
+**Global input and dense column agreement.**
+`global_popular_coherent_progression_rows` derives the progression-row
+conclusion from the original dense bihomomorphism, retaining the original
+column witness system, its witness density and spectrum bounds, and the
+even-core relations. The modulus assumption is the already explicit
+`globalCoherentAnchorModulusBound`; no additional geometric assumption is
+introduced.
+
+`popular_affine_row_agreement` applies the core agreement construction
+inside the new affine Bohr domains. A bound of `K` selected frequencies
+per row costs at most `5*K` frequencies, including the fixed constants.
+For the actual selected rows, this gives agreement density
+
+`affineRowAgreementDensity t g d r = coreAnchorAgreementDensity t (10*selectionRank) g d r (selectionRadius/2)`.
+
+It is positive whenever the popularity density and core radius are
+positive. Every agreement point has both endpoints in the original core,
+lies in the new affine row Bohr domain, and equates the anchor map with
+the difference of the original column maps. Applied to each member of
+the retained family, the translated tuple is additive because both the
+translation and centred tuple are additive. These two additional modules
+check in the 441-module production closure. All 22 new named theorems
+pass individual axiom checks. The full merged facade audit follows.
+
+
+**Final merged verification.** The full audit checks 8,165 public Gowers
+theorems in 5,354 combined modules (5,352 facade modules, including 4,152
+OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+All 22 new named theorems also pass their individual axiom checks. The
+regenerated numbered ledger is byte-for-byte unchanged at 115 companions
+and five open entries, retaining the documented statement-fidelity
+qualifications. The selected upstream scope remains 4,134 modules plus
+17 compatibility modules, with no new port or license requirement. The
+reviewed incoming main changes affect only the independent topology report
+and its measurements.
+
+
+### J.133. One coherent family from the four progression rows
+
+**A shared domain makes pointwise row selection possible.** After J.132,
+every selected frequency extension is defined and Freiman on the entire
+same proper progression. We may therefore use the union of all four
+varying frequency lists at every point. Together with the fixed constants,
+this spectrum has size at most sixteen times `jointSelectionRank d r`.
+Its Bohr domain is contained in each of the four original affine row
+domains at that point. `exists_unified_freiman_family` enumerates the
+varying part by one fixed finite list of at most eight times that rank;
+every member is normalized and Freiman on the whole progression.
+
+**Discard collisions, then select one row per point.** An additive tuple
+with a repeated entry lies in one of four two-parameter families. Thus
+`additive_quadruples_repeated_card_le` bounds all such tuples by `4*N^2`,
+without a characteristic restriction. If the original tuple density is
+`eta` and `8 <= eta*N`, at least `eta*N^3/2` distinct tuples remain.
+Each distinct tuple consistently prescribes four values of a pointwise
+label function `color : ZMod N -> Fin 4`. Indexed selection averaging
+retains at least a `4^(-4)` proportion satisfying `color (b j) = j`.
+There is no loss from identifying requirements with the same support.
+
+`coherent_four_rows_to_single` chooses the local map at `u` from row
+`color u`. On the union-spectrum Bohr domain, it is normalized and Freiman.
+At least `(eta/512)*N^3` original centred tuples remain coherent for this
+single chosen family; their entries belong to a set of size at least
+`(eta/512)*N` in the same progression. This proves the row-unification
+step without an unproved Cauchy--Schwarz transfer of local identities.
+
+**Actual anchors and their agreement are retained.**
+`HasCoherentProgressionRows.single_system` gives the reusable
+`IsSingleCoherentProgression` witness. It retains a realizing popular
+original arrangement for every point, with original shift
+`t (color u) + u`. It also retains the original arrangement for every
+selected tuple. `IsSingleCoherentProgression.popular_agreement` proves
+that every selected point has dense agreement with original core-column
+differences inside its actual unified Bohr domain. The explicit density
+is `coreAnchorAgreementDensity popularity (16*selectionRank) g d r
+(selectionRadius/2)` and is positive for positive popularity and radius.
+The maps may use different translation labels; a later restriction to
+one label is still needed when a common source translation is required.
+
+**Global construction.** `global_single_coherent_progression` starts
+from the original dense bihomomorphism. The modulus bound is the maximum
+of the prior global anchor threshold and `ceil(8/eta)`, where `eta` is
+the previously proved coherent progression density. Its conclusion
+retains the column witness system, all even-core relations, and an actual
+single coherent progression system with pointwise core agreement.
+All geometric, frequency, and density objects are constructed rather
+than supplied as assumptions. The later regularity/BSG step and a final
+polynomial quantitative certificate remain open.
+
+All eight new modules check in the 449-module production closure. All
+22 new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is ported and no
+numbered catalogue entry is claimed closed. Full merged verification is
+recorded below.
+
+
+**Final verification.** The complete audit checks 8,207 public Gowers
+theorems in 5,362 combined modules (5,360 facade modules, including 4,152
+OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+All 22 new named theorems also pass individual axiom checks. The regenerated
+numbered ledger remains byte-for-byte unchanged: 115 companion proofs and
+five open entries, with the existing statement-fidelity qualifications.
+The selected port scope is unchanged at 4,134 upstream and 17 compatibility
+modules. The branch is synchronized with main before the audit; no incoming
+changes alter the verification closure.
+
+
+### J.134. Relation-rank refinement preserving coherent quadruples
+
+**Retain the full frequency domain.** The progression-row and single-family
+conclusions now retain the spectrum already constructed in the proof:
+its size is bounded by `rowCommonBohrRank`, the proper progression lies
+in its quarter Bohr set, and every varying frequency map is normalized
+and Freiman on the full Bohr set of radius `1/(8*pi)`. The global theorem
+and the same-witness column-agreement theorem retain this stronger data.
+No new assumption or density loss is introduced by this strengthening.
+
+**Translations preserve the varying list.** For a normalized Freiman map
+on `B(Gamma,rho)`, a centre in `B(Gamma,rho/2)` and a point in
+`B(Gamma,rho/4)` satisfy `theta(t+u)=theta(t)+theta(u)`.
+`translatedFrequencyBase` adds all four centre values of each map to the
+fixed spectrum, costing at most `4*ell` frequencies. On the new vertical
+domain at half radius, the old translated domain constraints hold. All
+`ell` varying maps remain unchanged.
+
+**Localize whole coherent configurations.**
+`coherent_translation_localization` refines a coherent family of quadruple
+density `kappa` into any target set of ambient density at least `p` inside
+the same quarter Bohr set. Additive translation averaging first retains
+`kappa*p^4`; collision removal and pointwise row selection then retain
+`kappa*p^4/512`, provided `8 <= kappa*p^4*N`. The translation centres lie
+in the half Bohr set: this follows from an actual surviving configuration,
+not an assumption on the averaging output. The new single family retains
+local Freiman linearity, normalization, dense coherent quadruples, and
+actual translated witnesses in the original family.
+
+`HasCoherentTranslationRefinement` packages these witnesses for iteration.
+For a refined spectrum of size at most `d`, the quarter Bohr density is
+bounded below by `quarterBohrDensity d rho = refinementCells(rho/4)^(-d)`.
+`coherent_bohr_refinement` therefore provides a quantified refinement for
+any enlarged spectrum, with the same varying maps and their Freiman
+identities on the new full Bohr domain.
+
+**Strict rank increase with coherence retained.**
+`coherent_relation_rank_step` combines this result with the existing
+bounded-bad-pair rank theorem. If the bad-pair estimate at error `epsilon`
+and cutoff `R` fails, set
+
+`D = relationRankStep epsilon ((2*R+1)^(|B|+2*ell)) cells |Gamma|`.
+
+The constructed new spectrum contains `Gamma`, has size at most `D`, and
+strictly enlarges the relation submodule of the unchanged varying family.
+At the same time it yields a coherent translation refinement of density
+`kappa*(quarterBohrDensity D rho)^4/512`. Thus the rank potential and the
+coherent quadruple family can now be advanced in the same step. This
+addresses the defect that retaining an arbitrary dense vertex subset
+need not retain a dense coherent quadruple family. A uniform terminating
+iteration, the subsequent BSG argument, and the final quantitative budget
+are still required.
+
+The four new modules check in a 461-module production closure. Eight new
+named theorems and eight affected existing/global theorems pass individual
+axiom checks with only `propext`, `Classical.choice`, and `Quot.sound`.
+No upstream code is added and no numbered catalogue entry is closed.
+
+
+**Final merged verification.** The complete audit checks 8,221 public
+Gowers theorems in 5,366 combined modules (5,364 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+The eight new named theorems and eight affected existing/global proofs
+also pass individual axiom checks. The numbered ledger is byte-for-byte
+unchanged at 115 companions and five open entries, retaining all existing
+statement-fidelity qualifications. The port scope remains 4,134 upstream
+and 17 compatibility modules. Reviewed incoming changes concern only the
+independent topology obstruction certificates, code, tests, and report;
+they add no Gowers dependency or licensing scope.
+
+
+### J.135. Terminating coherent regularity and an actual quasirandom graph
+
+**One common budget for the iteration.**
+`coherentRelationBudget epsilon R cells ell d` bounds the next domain rank
+and the enlarged fixed-frequency set, including the `4*ell` possible new
+centre frequencies. For a chosen final rank bound `D`, use the uniform
+loss `q = coherentIterationLoss D rho = quarterBohrDensity(D,rho)^4/512`.
+This loss is positive and at most one. A sufficient modulus condition is
+`8 <= kappa*q^n*N`, which pays every collision-removal step of a refinement
+lasting at most `n` rounds.
+
+**Termination while retaining configurations.**
+`coherent_relation_iteration_budget` uses strong induction on the remaining
+relation codimension. Each failed bad-pair estimate strictly increases the
+relation-submodule dimension of the same `ell` varying maps, so at most
+`ell` refinements occur. Early stopping simply restricts the final vertical
+radius to the promised `sigma/2^n`. The theorem retains vertex and coherent
+quadruple densities at least `kappa*q^n`, domain rank at most `D`, and at
+most `|B|+4*n*ell` fixed frequencies. Local Freiman linearity and zero
+normalization hold on the actual final Bohr domains.
+
+`CoherentFrequencyFamily` records the configuration hypotheses and makes
+radius restriction explicit. Every refinement carries a source map into
+the previous vertex set and maps every retained quadruple into a previous
+quadruple. These maps compose through the induction; original point and
+whole-configuration witnesses are therefore retained, not just their
+cardinalities.
+
+**Keep the number of source translations bounded.**
+`sourceTranslationOffsets` records the values `source u-u`. One row-label
+refinement has at most four such offsets, and composition multiplies their
+counts. The terminating result has at most `4^n` offsets. This preserves
+the option of a later common-translation restriction with an explicit
+finite loss, once all relevant quadruples are known to be respected.
+No claim is made that an arbitrary such restriction preserves the current
+coherent-quadruple count.
+
+**Uniform sparse-relation and quasirandom conclusions.**
+`exists_coherent_sparse_relation_domain` takes `n=ell` and defines
+`D = coherentRegularityRank = coherentRelationBudget^[ell] d`, retained
+density `coherentRegularityDensity = kappa*q^ell`, and modulus bound
+`ceil(8/retainedDensity)`. It constructs a domain on which the requested
+bounded bad-pair estimate holds, retaining all the source and coherence
+information above.
+
+`exists_coherent_quasirandom_domain` uses the existing explicit Fourier
+cutoff with frequency bound `|B|+4*ell^2+2*ell`. For any prescribed positive
+box error at most one, with explicit cell and modulus conditions, it
+constructs the actual Bohr graph and proves the box-error estimate on the
+same refined domain that carries the coherent family. Its vertical fixed
+radius is `tau = sigma/2^ell`, and its varying phase radius is `tau/4`.
+The hypotheses include the explicit analytic smoothing bound and coherent
+regularity modulus bound; neither a quasirandomness oracle nor a
+coherent-subset oracle is assumed.
+
+`IsSingleCoherentProgression.regularity_input` verifies that the previously
+constructed global anchor family supplies the exact full Bohr-domain,
+frequency, and coherent-density input. The needed upper bound on its
+vertical radius is also proved. Applying a globally uniform numerical
+threshold, obtaining the later BSG conclusion, transferring all source
+agreement, and certifying the final Gowers budget remain outstanding.
+In particular, prescribed box error here is not yet a certificate that it
+is small enough relative to every subsequent retained-density requirement.
+
+All seven modules check in a 484-module production closure. All nineteen
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is added and no
+numbered catalogue entry is claimed closed. The completed full audit checks
+8,255 public Gowers theorems in a 5,373-module combined closure, with only
+the same three axioms. The facade closure has 5,371 modules, including
+4,152 OAI modules. The generated ledger is byte-identical to the tracked
+115-companion / five-open ledger, and the port scope check passes for the
+unchanged 4,134 upstream and 17 compatibility modules.
+
+## J.136. Adaptive coherent regularity at the retained density
+
+The prescribed-error construction in J.135 did not control its error relative
+to the density lost during refinement. The new adaptive construction uses an
+exact state `(d, kappa)`, recording both a rank bound and coherent-quadruple
+density. At a failed regularity test the next rank is the coherent relation
+budget at the current error/cutoff, and the next density is exactly
+`kappa * coherentIterationLoss nextRank rho`. Error and cutoff may depend
+on both coordinates; neither schedule is required to be monotone.
+
+`coherent_adaptive_relation_iteration` stops after at most the remaining
+relation-space dimension. It preserves the same varying frequency family,
+source witnesses for original points and quadruples, and at most `4^s`
+source offsets after `s` steps. Fixed frequencies grow by at most `4*s*ell`.
+The conclusion uses the exact stopping state and vertical radius `sigma/2^s`.
+A finite supremum of collision thresholds over the possible states supplies
+a modulus bound independent of the ambient modulus.
+
+`exists_coherent_adaptive_dense_graph` adds the Fourier smoothing thresholds
+and constructs a graph on that same refined domain. For
+`m = |B| + 4*ell^2 + 2*ell`, its density is at least
+`1/(2*(4*H)^m)`. Its box error is the fourth power of an accuracy schedule
+evaluated at the exact final state. All coherence and source data remain.
+
+`exists_coherent_density_controlled_graph` specializes to
+`min(1/(2*(4*H)^m), kappa^power/scale)`, for arbitrary natural `power` and
+positive `scale`. Consequently its normalized box error is at most
+`(retainedDensity^power/scale)^4`. This resolves the circular error choice
+without assuming a favorable relation between a fixed input error and the
+density subsequently lost. The finite adaptive modulus bound is explicit;
+no favorable growth rate for it or final Gowers threshold is claimed.
+
+**Uniform original-input application and agreement.** The finite supremum
+`coherentUniformGraphModulusBound` covers both fixed-frequency cardinality
+and varying-family length up to their common bound. For the actual anchor
+family the cell count is `ceil(32*pi)` and
+`H = ceil(2^(8*jointSelectionRank)/(jointSelectionRadius/2))`; all required
+inequalities and positivity conditions are proved. The initial rank is the
+maximum of the common Bohr rank and `8*jointSelectionRank`.
+
+`IsSingleCoherentProgression.density_controlled_graph` constructs the graph
+under this uniform bound. `global_coherent_density_controlled_graph` starts
+from the original dense bihomomorphism and an explicit threshold depending
+only on its density, the chosen power, and scale. It retains the original
+column witness system, popular anchor witnesses and the graph of that same
+family. There is no regularity or graph-existence oracle in its hypotheses.
+
+`IsSingleCoherentProgression.refined_popular_agreement` transfers actual
+agreement with the original columns to every final domain
+`B' union image(theta_i(u))`. It uses the original popular-arrangement
+witness at `source u`, and proves a fresh agreement density
+`coreAnchorAgreementDensity popularity (fixedBound+ell) g d r tau`.
+It does not infer a density bound merely by restricting an old agreement set.
+
+All ten new modules compile in a 496-module production closure, comprising
+nineteen new named proofs. All nineteen pass individual axiom checks using
+only `propext`, `Classical.choice`, and `Quot.sound`. The completed merged
+facade audit checks 8,299 public Gowers theorems with the same axiom boundary:
+5,381 facade modules, including 4,152 OAI modules, and 5,383 combined audit
+modules. The ledger is byte-identical to the tracked 115-companion / five-open
+catalogue. Port scope remains 4,134 upstream and 17 compatibility modules;
+no upstream source or licensing scope changes.
+Graph extraction/weak transitivity, subsequent local linear structure,
+original bihomomorphism transfer and the final quantitative certificate
+remain outstanding. The current graph estimate is for the specified final
+radii; no estimates at further shrunk radii are silently assumed. A finite
+profile of radii can use the same sparse-relation certificate provided its
+cell parameter covers the smallest radius, but this extension remains to
+be formalized. No numbered entry is claimed closed.
+
+## J.137. Uniform radius profiles and coherent weak transitivity
+
+**One domain, all admissible radii.** `DenseBohrGraphProfiles` records
+positive-density box estimates for every pair `0 < nu <= eta < 1/4` with
+`1 <= nu*H`. The graph uses fixed frequencies at radius `eta` and varying
+frequencies at radius `nu`. Its density is at least `1/(2*H^m)`.
+`denseBohrGraphProfiles_of_sparse_relations` proves the entire profile from
+one bounded-relation certificate and one smoothing threshold.
+`exists_coherent_adaptive_profiles` constructs that certificate on the same
+refined domain as the retained coherent quadruples, with the exact adaptive
+state and all original source witnesses. No second refinement is needed
+when a smaller admissible radius is chosen.
+
+**Sharper coverage bound.** `box_empty_rectangle_card` and its finite-set
+version apply directly to a real-valued graph function that is zero on a
+rectangle. They prove `delta*|U|*|Z| <= epsilon*|B|*|C|` from a box bound
+`epsilon^4*|B|^2*|C|^2`. In the Boolean case this improves the previous
+variance-based missing-witness estimate: the density loss is linear in
+`delta*bridgeDensity`, instead of quadratic. Passing the actual graph
+function also avoids an expensive Lean definitional comparison between
+different decision procedures for the edge predicate.
+
+`quasirandom_freiman_zero` combines this estimate with
+`freiman_nonzero_card_half` and the Bohr cardinality lower bound. If a
+normalized Freiman map vanishes on all neighborhoods indexed by a set of
+at least `kappa*N` bridges, then it vanishes on the half-radius Bohr set,
+provided `2*M^|T|*epsilon < delta*kappa` and `(r/2)*M >= 1`.
+The profile specialization uses `M=2*H` and the sufficient inequality
+`4*(2*H)^|T|*epsilon < H^(-m)*kappa`.
+This step works for every nonzero modulus; it does not use prime-target
+frequency removal or its much smaller output radius.
+
+**Actual bridge composition.** `freiman_frequency_bohr_complete` proves
+that three frequency domains at radius `r/3` contain the fourth domain at
+radius `r` whenever the four frequency values satisfy the Freiman identity.
+`coherent_pair_weak_transitivity` applies this to bridges `(z+a,z)` between
+`(x+a,x)` and `(y+a,y)`. The two bridge identities make the endpoint defect
+vanish on the appropriate graph neighborhoods. The coverage theorem then
+proves the direct endpoint identity at radius `r/6`.
+All domains, endpoint memberships, bridge counts, and error conditions are
+explicit. The varying maps must be Freiman-linear on the common parameter
+domain, precisely as supplied by coherent regularity.
+
+**Finite chains with a concrete accuracy schedule.** The cell count
+`coherentRadiusProfileCells sigma ell depth =
+ceil(3*2^ell*6^depth/sigma)` pays for the one-third radii at every level
+`i <= depth`, after every possible regularity stopping time `s <= ell`.
+For `beta=H^(-m)`, `coherentBridgeAccuracy H m k eta` is
+`min(beta/2, beta*eta/(8*(2*H)^k))`. It is positive and satisfies the strict
+coverage inequality for bridge density `eta`.
+
+`exists_coherent_bridge_system` chooses
+`eta = retainedDensity^power/scale` at the exact stopping state and
+`k=4*(|B|+4*ell^2+ell)`. It constructs the original-witness-preserving
+coherent refinement, all admissible graph profiles, and a
+`CoherentBridgeSystem` along `tau/6^i`. The latter proves direct identities
+from sufficiently many same-level bridges with one further factor-six
+shrink. Here `power` and `depth` are arbitrary natural numbers and `scale`
+is any positive real number.
+
+The single-family and global wrappers choose all numerical parameters and
+use finite suprema over bounded frequency cardinalities. The global
+threshold depends only on the original density, chain depth, power, and
+scale. It retains the original column witnesses and popular anchor
+arrangements, so the actual-domain agreement theorem of J.136 still applies.
+
+This is the weak-transitivity input for the next combinatorial extraction,
+not the abstract Balog--Szemeredi--Gowers conclusion itself. Mixed-level
+composition, the dense relation catalogue, robust graph extraction and the
+subsequent local structure remain to be assembled. No numbered entry or
+final Gowers bound is claimed closed.
+
+All fourteen new modules compile in a 508-module production closure. All
+twenty new named proofs pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. The full audit checks 8,342 public
+Gowers theorems with the same axiom boundary, in 5,397 combined modules;
+the facade has 5,395 modules, including 4,152 OAI modules. The generated
+ledger is byte-identical to the tracked 115-companion / five-open catalogue,
+and port scope passes with the unchanged 4,134 upstream and 17 compatibility
+modules. No upstream source or licensing scope is added.
+
+
+### J.138. Dense coherent pairs and robust graphs with two radius losses
+
+The coherent bridge system from J.137 now supplies the first combinatorial
+extraction, with all witnesses retained through the global construction.
+The ten new modules add twenty named proofs and require no new upstream port.
+
+`CoherentRelationLevel` uses radius `sigma/6^(i-1)` at level `i`.
+Monotonicity, symmetry, simultaneous endpoint swapping, crossing, and
+mixed-level bridge composition are proved from the existing pair relation
+and the constructed bridge system. Encoding a coherent quadruple as
+`((a0,a2),(a3,a1))` injects its mass into level-one pair relations. Summing
+over their common difference gives exactly the sum of difference-graph
+edge counts.
+
+For quadruple mass at least `kappa*N^3`, the density obeys `kappa <= 1`.
+At least `kappa*N/2` differences have graph density at least `kappa/2`.
+For each such difference, common-codegree extraction gives a set of at
+least `3*kappa*N/16` vertices. Two applications of weak transitivity make
+all pairs in that set related at level three, hence radius `sigma/36`.
+The sufficient bridge threshold is `eta <= kappa^2/256`, with `eta > 0`;
+only bridge indices zero and one are needed. This directly exploits the
+existing common-codegree lemma, avoiding a longer path-compression step.
+
+Encoding a vertex and its difference as `(u+a,u)` is injective. The union
+of the selected sets therefore has at least `3*kappa^2*N^2/32` pairs,
+and every two pairs with the same difference have the level-three identity.
+For odd prime modulus, the proved orientation-and-symmetrization lemma
+retains at least half this mass while preserving those identities. It is
+not sufficient merely to union an arbitrary pair family with its reversal.
+
+`HasCoherentRobustGraph` records a symmetric graph `E` of density at least
+`delta = 3*kappa^2/64`, whose equal-difference edges have coherent identities
+at radius `sigma/36`. It also records a subset `A` of density at least
+`9*kappa^2/512`, such that every two vertices of `A` have at least
+`delta^5*N^3/16384` four-edge walks in `E`.
+
+The single-family and popular-anchor wrappers retain the exact refined
+frequency system, source map, original coherent progression and original
+popular witnesses. `global_coherent_robust_system` constructs them from
+the original dense bihomomorphism. Its modulus threshold is
+`max (globalCoherentBridgeModulusBound alpha 1 2 256) 3`.
+The density in the graph estimates is the positive density at the actual
+regularity stopping state. No arbitrary restriction to a source-offset
+fiber is made; the previous agreement-transfer theorem remains applicable.
+
+This establishes the first extraction with an explicit constant radius
+loss. Matching walks to obtain rich cross-subset relations, the subsequent
+local structure, and a comparison with the printed final Gowers budget
+remain open. This checkpoint does not close a numbered catalogue entry
+or assert a tighter final Szemeredi threshold.
+
+All ten modules compile in a 518-module production closure. All twenty
+named proofs pass individual axiom checks, and the full audit checks
+8,387 public Gowers theorems with only `propext`, `Classical.choice`, and
+`Quot.sound`. The combined audit has 5,407 modules; the facade has 5,405,
+including the unchanged 4,152 OAI modules. The generated ledger is
+byte-identical to the tracked 115-companion / five-open catalogue. Port
+scope remains 4,134 upstream modules and 17 compatibility modules, with
+no change to the retained licenses or provenance notices.
+
+
+### J.139. Coherent mixed-subset richness via balanced walk compression
+
+The fourteen new modules assemble the second graph-extraction step while
+retaining the original column and anchor witnesses. They add twenty-seven
+named proofs and no upstream ports.
+
+**Two-level compression.** `graph_four_walks_le_of_small_common` counts
+four-walks by their middle vertex. If codegree at least `t` in `G` implies
+an edge of `H`, and the endpoints have at most `t` common neighbors in
+`H`, their four-walk count in `G` is at most `2*t*n^2`.
+For middle vertices outside the common `H` neighborhood, one `G` codegree
+is below `t` and the other is at most `n`; inside it, both are at most `n`.
+This proves the bound directly, including graphs with loops.
+
+`CoherentBridgeSystem.four_walks` applies two successive common-neighbor
+implications. More than `2*eta*N^3` four-walks at relation level `i+1`
+force the endpoint relation at level `i+3`, provided `i+1 <= depth`.
+Consequently four-walks of level-three relations give level five, at
+radius `sigma/1296`. This balanced argument avoids sequentially composing
+all four edges and does not use the old frequency-removal kernel radius.
+
+**Matched walks and popular endpoint fibres.** Two walks with equal edge
+steps are translates. Crossing the coherent edge identities gives a
+four-walk in their common-difference relation. The three-coordinate key
+`(u,u',v')` determines the endpoints; inside each key fibre the second
+internal triple determines both walks. Thus every fibre has size at most
+`N^3`, and injects into the corresponding coherent-relation four-walk set.
+
+A walk family of mass `mu*N^5` has at least `mu^2*N^6` matched pairs by
+Cauchy--Schwarz over the `N^4` possible edge-step sequences. At least
+`mu^2*N^3/2` endpoint keys have fibre size at least `mu^2*N^3/2`.
+When `4*eta < mu^2`, every such fibre passes the compression threshold.
+The key maps injectively to the mixed endpoint quadruple
+`(u,v',u',v'+u-u')`. Therefore endpoint sets of densities `beta1,beta2`,
+with four-walk density `lambda`, have at least
+`(beta1*beta2*lambda)^2*N^3/2` exact mixed quadruples at level five.
+All endpoint memberships and the additive identity are checked.
+
+**A nonvacuous density-dependent threshold.** For retained coherent
+quadruple density `kappa`, J.138 supplies a set `A` of density at least
+`9*kappa^2/512` and walk density
+`lambda = (3*kappa^2/64)^5/16384 = c*kappa^10`, where
+`c = 3^5/(64^5*16384)`.
+`HasCoherentRichSet` records the resulting exact mixed-quadruple lower
+bound for every two subsets of `A` above its specified threshold. It
+retains the full factor `(beta1*beta2*lambda)^2/2` for any two supplied
+density lower bounds `beta1,beta2 >= beta`. This dependence is needed
+for the later tuple recursion; replacing it by the bound at the minimum
+threshold would lose the quantitative input to that recursion.
+
+The global construction uses a freely chosen natural parameter `p` and
+subset threshold `beta = kappa^(p+2)/512`. Since `0 < kappa <= 1`,
+`beta <= kappa^2/512`; the set `A` itself meets the threshold. The explicit
+`HasCoherentRichSet.self_richness` theorem records this fact and the
+resulting actual quadruple count. A threshold chosen independently of the
+retained density would not establish this nonvacuity.
+
+Choose the constant
+`S = coherentRichPowerScale = 256 + 8*512^4/c^2`
+and bridge accuracy `eta = kappa^(28+4*p)/S`. The proved estimates are
+`eta <= kappa^2/256` and `4*eta < (beta^2*lambda)^2`.
+They hold at the exact regularity stopping state, so neither is an
+unproved error-budget hypothesis in the global result. Bridge depth three
+suffices for both extraction stages. The earlier general accuracy lemmas
+also remain available for independently specified positive thresholds.
+
+`global_coherent_rich_system` takes only the original dense
+bihomomorphism, `p`, and the explicit density-dependent modulus bound
+`max (globalCoherentBridgeModulusBound alpha 3 (28+4*p) S) 3`.
+Its single-family and popular-anchor packages retain the actual refined
+frequency system and source map, original coherent progression, original
+popular witnesses, and all-radius graph profiles. The radius loss is
+constant `1296`, independent of `p`; the accuracy requirement carries
+the increasing density exponent.
+
+The recursive higher-tuple construction, subsequent local structure and
+comparison with the printed final Gowers budget still remain. This
+checkpoint does not close a numbered catalogue entry and does not claim
+an improved final Szemeredi threshold.
+
+All fourteen modules compile in a 529-module production closure. The
+final interface passes all twenty-seven individual axiom checks and the
+full audit of 8,442 public Gowers theorems, using only `propext`,
+`Classical.choice`, and `Quot.sound`. The combined audit has 5,421 modules;
+the facade has 5,419, including the unchanged 4,152 OAI modules. The
+115-companion / five-open ledger is byte-identical, and port scope still
+contains 4,134 upstream and 17 compatibility modules. No upstream source,
+license scope, or provenance notice is changed.
+
+
+### J.140. Compatible words and endpoint identities at controlled radii
+
+Fifteen new modules extend J.139 to dense compatible representations of
+every bounded-length list of anchors. They add thirty-five named proofs,
+reuse the existing injective tuple splice, and add no upstream ports.
+
+**Threshold-aware anchor and word counts.** `ThresholdColumnRichness`
+retains the actual two subset densities and the factor one-half in J.139.
+`popular_column_anchors_dense_above` shows that the anchor pruning argument
+only needs richness for subsets of size at least half the guaranteed
+ambient density. For ambient density `b` and walk density `eta`, this
+retains at least `b*N/2` anchors, each with at least
+`lambda*N^2` triple representations, where `lambda = eta^2*b^3/32`.
+The subset cutoff must be at most `b/2`.
+
+`threshold_column_word_representations_step` glues a triple family of
+density `lambda` to a word family of density `delta`. It applies richness
+only at the two popular endpoint densities `lambda/2` and `delta/2`.
+With both above the cutoff, the output density is
+`eta^2*lambda^3*delta^3/128`. The splice is injective, so no multiplicity
+loss is hidden in this estimate. Keeping the two input densities separate
+preserves a cubic recurrence.
+
+Define `delta_0=lambda` and
+`delta_(n+1)=(eta^2*lambda^3/128)*delta_n^3`.
+The schedule is positive and decreasing when `0 < lambda,eta <= 1`, and
+its exact formula is
+`delta_n=(eta^2*lambda^3/128)^((3^n-1)/2)*lambda^(3^n)`.
+The proved sum-of-powers version uses the same geometric exponent.
+For words of at most `K+1` triples, choose the subset cutoff `delta_K/2`.
+It is below every needed intermediate density divided by two.
+
+**Parameters at the actual regularity state.** For retained density
+`kappa`, set `b=9*kappa^2/512` and `eta=c*kappa^10`, with the same
+`c=3^5/(64^5*16384)` as J.139. Then
+`lambda=a*kappa^26`, where `a=c^2*(9/512)^3/32`.
+`coherentWordDensity kappa n` is exactly `C_n*kappa^E_n`, with
+`C_0=a`, `C_(n+1)=c^2*a^3*C_n^3/128`, and
+`E_n=75*3^n-49`. Both the coefficient identity and exponent formula are
+proved. The coefficients are positive; fixed losses are retained rather
+than assumed absorbable by increasing a power of `kappa` near one.
+
+For a positive monomial cutoff `q*kappa^e`, the bridge accuracy
+`kappa^(20+4*e) / coherentRichBridgeScale q` satisfies both graph extraction
+and mixed-subset error inequalities. Instantiate `q=C_K/2`, `e=E_K`.
+This yields explicit `coherentWordBridgePower K` and
+`coherentWordBridgeScale K`, known before the regularity stopping time.
+`CoherentBridgeSystem.word_family` constructs the rich set and dense
+anchor set at that stopping state. Every list of `n+1` anchors, `n <= K`,
+has at least `coherentWordDensity kappa n * N^(3*n+2)` compatible word
+representations. The anchor set has density at least `9*kappa^2/1024`.
+
+**Recovering auxiliary domains without frequency removal.** Compatibility
+alone initially gives identities on a recursive domain involving two
+auxiliary indices per splice. `coherent_word_domain` recovers those domains
+from the anchors and output entries when each varying frequency is
+Freiman-linear on the ambient index set. The first auxiliary index follows
+from its triple's additive relation with radius cost three; the second
+follows from the gluing quadruple with another cost three. Induction thus
+uses a factor nine per word level.
+
+`CoherentWordEndpointIdentities` consequently gives `ColumnWordIdentity`
+using only anchor and output domains at radius
+`coherentWordEndpointRadius sigma m = sigma/(1296*9^m)` for a word of
+`m` triples. The radius is positive for positive `sigma`. There is no
+additional prime-modulus threshold or frequency-cardinality term in this
+identity theorem. The existing large-cost frequency-removal proof is not
+used to obtain it.
+
+The single-family and popular-anchor wrappers retain the same refined
+source map, original progression and popular witnesses, graph profiles,
+word families, and endpoint identities. Freiman-linearity on the refined
+index set follows from the actual refinement certificate. The global
+`global_coherent_word_system` constructs all of these from the original
+dense bihomomorphism under the explicit bound
+`max (globalCoherentBridgeModulusBound alpha 3
+  (coherentWordBridgePower K) (coherentWordBridgeScale K)) 3`.
+
+This completes the bounded compatible-word counting step along the new
+coherent route, including endpoint-only identities. The subsequent local
+structure and comparison with the printed Gowers budget remain open.
+No numbered catalogue entry or improved final Szemeredi threshold is
+claimed closed by this checkpoint.
+
+All fifteen modules compile in a 540-module production closure. All
+thirty-five named proofs pass individual axiom checks. The full audit
+checks 8,531 public Gowers theorems with only `propext`, `Classical.choice`,
+and `Quot.sound`, in 5,436 combined modules. The facade has 5,434 modules,
+including the unchanged 4,152 OAI modules. The generated ledger remains
+byte-identical at 115 companions and five open statements. Port scope
+passes with the unchanged 4,134 upstream and 17 compatibility modules;
+no license or provenance scope is added.

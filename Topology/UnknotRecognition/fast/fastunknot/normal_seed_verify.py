@@ -7,6 +7,9 @@ from .integer_codec import certificate_equal, encoded_integer
 
 def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
     check()
+    if type(certificate) is dict and certificate.get('schema') == 'diagram-shelling-witness-v1':
+        from .normal_shelling_verify import verify_shelling_certificate
+        return verify_shelling_certificate(diagram, certificate, check=check)
     if type(certificate) is dict and certificate.get('schema') == 'diagram-cocycle-planar-v1':
         from .normal_planar_verify import inspect_planar_certificate
         return inspect_planar_certificate(diagram, certificate, check=check) is not None

@@ -1670,3 +1670,20 @@ for persistent_mode in ('kernels','source','stages','pipeline'):
     heading += ' & old ms & new ms & old/new & old A/A & new A/A'
     open(f'tables/persistent_replay_{persistent_mode}.tex','w').write('\\begin{center}\\small\n'+table(
         heading,'@{}l'+('r'* (6 if persistent_mode=='kernels' else 5))+'@{}',rows)+'\\end{center}\n')
+
+# Keep the scope-separated coherent-analysis tables tied to their raw records.
+if os.path.exists('data/coherent-escape-benchmark.json'):
+    import runpy
+    runpy.run_path('data/coherent_escape_tables.py')
+
+if os.path.exists('data/coorientation-benchmark.json'):
+    import runpy
+    runpy.run_path('data/coorientation_tables.py')
+
+if os.path.exists('data/orbit-direction-benchmark.json'):
+    import runpy
+    runpy.run_path('data/orbit_direction_tables.py')
+
+if os.path.exists('data/orbit-race-benchmark.json'):
+    import runpy
+    runpy.run_path('data/orbit_race_tables.py')

@@ -1,0 +1,120 @@
+\section{Validating vertex links by an incidence census}
+\label{sec:vertex-link-census}
+
+The shelling measurements expose a cost shared by discovery and independent
+verification: repeatedly reconstructing and validating finite manifold
+geometry. The previous validator built four union--find structures, for
+vertices, signed edges, directed edges and vertex-link edges. The latter two
+can be removed without dropping a validation condition. Signed edge classes
+already determine all vertex-link vertices, while triangle-side incidence
+determines the number of vertex-link edges. The new census retains the
+existing source checks, rejection rules, matching equations and normal-surface
+proof formats. It also applies to supplied triangulations whose source is not
+a knot diagram; no provenance assumption is used to bypass manifold checks.
+
+\subsection{Oriented ends and the two ends of a loop}
+
+A local tetrahedron corner contributes a triangle to the link of its vertex.
+A vertex of that triangle corresponds to a directed edge leaving the corner.
+Under a face gluing, these directed edge occurrences are identified exactly
+when they represent the same end of the same global edge. The signed edge
+union already records whether each local ascending edge agrees with its
+chosen representative. Its consistency check rejects an edge identified with
+its own reverse. Therefore every global edge has precisely two distinct
+oriented-end classes, each attached to its corresponding global vertex.
+
+This remains true for a loop edge whose two endpoints have the same global
+vertex. The ends are different vertices of that vertex's link, even though
+they contribute to the same link. Counting a loop once would undercount its
+link vertices and invalidate the Euler test. The implementation increments
+the endpoint census twice for every global edge, including when the endpoint
+labels coincide. Reversing a representative's orientation only exchanges its
+two endpoints, so their incidence counts are independent of that choice.
+The existing endpoint map, which is also returned for later normal geometry,
+is reused for this computation.
+
+Equivalently, a local directed edge can be labelled by its signed global edge
+representative and one orientation bit. Reconstructing all such labels with
+a second union--find computes an equivalence relation already contained in
+the signed edge structure. The implementation needs only their counts at
+each vertex, so it does not even materialize the doubled collection of ends.
+
+\subsection{Counting link edges without reconstructing them}
+
+For a global vertex $v$, let $F_v$ be its number of tetrahedral corners, let
+$V_v$ be the number of incident global edge ends, and let $B_v$ count unpaired
+triangle-side occurrences in its link. Every link triangle has three sides.
+An internal link edge pairs exactly two side occurrences, and a boundary
+link edge has exactly one. Hence, if $I_v$ and $E_v$ denote its numbers of
+internal and total edges,
+\[
+ 3F_v=2I_v+B_v,\qquad E_v=I_v+B_v=\frac{3F_v+B_v}{2}.
+\]
+It follows that
+\[
+ 2\chi(\operatorname{Lk}v)=2V_v-F_v-B_v.
+\]
+Reciprocity and the prohibition on pairing a face with itself are checked
+before this identity is used. A link side is paired across its one containing
+tetrahedral face, so there is no chain that merges three or more side
+occurrences into one link edge. Pairing different sides of one link triangle
+is allowed and still contributes two occurrences, as the identity requires.
+Boundary counts use local incidences with multiplicity: a boundary triangle
+whose vertices become identified can contribute more than once to one $B_v$.
+
+All earlier manifold prerequisites remain active. Face-connectedness and
+orientability are checked. The signed edge union rejects reversal, and each
+global edge link must have zero or two unpaired endpoints; its incidence
+graph is connected by construction and has degree at most two. These checks
+make vertex links connected surfaces. The finite-vertex test then requires
+$2V_v-F_v-B_v=4$ when $B_v=0$, and $2V_v-F_v-B_v=2$ otherwise. These are the
+same sphere and disc Euler conditions as before, evaluated by a different
+cell census. The final boundary checks still require exactly one torus.
+An ideal torus vertex has link Euler characteristic zero and is still rejected.
+Thus the optimization does not accept ideal or singular vertices by assuming
+that an authenticated source has already made them harmless.
+
+\subsection{Operation counts, storage and preserved outputs}
+
+Three arrays indexed by the original vertex roots accumulate $F_v$, $B_v$
+and $V_v$. They have $4N$ entries each for $N$ tetrahedra. The first counts
+local corners, the second counts corners of unpaired faces, and the third
+counts the two endpoints of every global edge. Once the existing global
+classes and endpoint map have been obtained, this census requires $O(N)$
+indexed integer operations and $O(N)$ words. Every counter has
+$O(\log(N+1))$ bits. No normal sheet or integer height is inspected or expanded.
+The earlier approach performed additional union--find work on both directed
+edges and triangle sides, followed by per-link sets of representatives.
+
+Let $P$ be the number of paired tetrahedral face pairs, and let $b$ be the
+number of unpaired faces. Before the unchanged boundary-component union,
+the old validator allocates $34N$ union--find nodes, while the new validator
+allocates $10N$. Including the boundary-component structure gives $34N+b$
+and $10N+b$ nodes. Every paired face formerly induced 15 unions: three on
+vertices, three on link sides, three on signed edges and six on directed
+edges. It now induces six. If $e_\partial$ is the number of global boundary
+edges, the complete union counts are therefore $15P+e_\partial$ and
+$6P+e_\partial$. The measured family below checks these exact counts:
+\begin{center}
+\small
+\input{tables/vertex_link_census_family.tex}
+\end{center}
+Each union--find node has parent, size and parity entries. Removing the two
+structures eliminates $72N$ list entries, while the three new census arrays
+add $12N$. This describes those named structures, not the peak memory of the
+entire Python process. The old per-link dictionaries and sets also disappear;
+the endpoint map was already required by the returned geometry. Caching each
+signed edge's root and parity together avoids finding it again at export.
+
+The complete validator still has the same near-linear indexed union--find
+bound and linear-size combinatorial output. The usual dictionary and set
+collision qualifications still apply to its remaining maps. The improvement
+removes redundant equivalence computations and makes the additional link
+census linear; it does not change the worst-case complexity class of general
+unknot recognition. Vertex labels, signed edge labels, matching equations,
+boundary incidence, endpoint representatives and all other returned fields
+are preserved exactly. Existing guard callbacks stay at the same locations,
+so work budgets and certificate-selection behavior remain unchanged even
+when actual execution becomes faster.
+
+\input{vertex_link_census_results.tex}

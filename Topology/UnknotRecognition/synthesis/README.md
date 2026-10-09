@@ -954,3 +954,94 @@ representation, arbitrary normalization alternations and general discovery
 remain separate work. Evidence is in `data/persistent-replay-*`, with native
 reproduction in `../fast/compressed_word_research/persistent_replay.py` and
 supplied-source timings in `data/persistent_replay_source.py`.
+
+
+[`boundary_shellings.tex`](boundary_shellings.tex) adds certified simplification
+of the finite exterior before cocycle discovery. It proves the embedded move,
+explains the lower-dimensional boundary obstruction, bounds stable-index
+selection and replay, and authenticates all reduced-exterior witnesses back
+to the supplied diagram. The 84-source audit increases default-budget native
+positives from 24 to 28 with no corpus losses; Regina checks 1,061 moves and
+433 surfaces. All 1,229 tests pass. Complete recognition plus proof-replay
+measurements regress on nine of ten selected cases, so the option stays off
+by default. The section reports the negative timing result and why bounded
+family coverage is distinct from general QP recognition. Reproduction lives
+in `../fast/normal_orbit_research/shellings.py`; full records and source pins
+are in `data/boundary-shellings-*`.
+
+
+[`vertex_link_census.tex`](vertex_link_census.tex) removes two redundant
+union-find structures from finite-manifold validation using the exact link
+identity `2 chi = 2 V - F - B`. It proves why a loop contributes two ends and
+why paired triangle sides need no extra equivalence computation. All 261
+geometry outputs, 252 native records and 47 positive proofs match the old
+implementation exactly; 12,000 generated face pairings agree with Regina.
+All 1,232 tests pass. Eleven complete native pipelines improve by paired
+factors of 1.16–1.42, including independent proof replay. A fresh off/on
+comparison still keeps shellings disabled by default. Evidence is retained
+in `data/vertex-link-census-*`; reproduce it with the `link_census` research
+driver. The general discovery-complexity goal is unchanged.
+
+[`coherent_obstruction.tex`](coherent_obstruction.tex) proves a limitation of
+the entire coherent-height family on arbitrary solid-torus triangulations.
+Six independently verified 2–3 moves yield an eight-tetrahedron, one-vertex
+solid torus. A rank-nine minor and primitive cochain prove that every primitive
+coherent vector is the same 41-piece genus-two surface. A separate 51-piece
+normal compressing-disc certificate demonstrates that the obstruction is to
+this representation. Independent topology replay, 20 relabellings, mutation
+tests and 240 Regina move comparisons support the construction. It does not
+prove failure on the canonical diagram exteriors or change the recognition
+schedule. Reproduce or replay with
+`../fast/normal_orbit_research/coherent_obstruction.py`; the retained proof,
+source hashes, audit and full-suite log are `data/coherent-obstruction-*`.
+
+[`coherent_escape.tex`](coherent_escape.tex) gives an independently checked
+3–2 move that escapes the genus-two example and yields a 36-piece normal disc.
+It also proves and implements a direct linear arithmetic span certificate
+when every corner has the same global vertex: no potential can change the
+answer. The existing checker and multiple-vertex solver are preserved.
+All 1,245 tests pass; 400 mixed Pachner moves agree with Regina, 600 arithmetic
+queries agree with the old solver, and all 252 native source records and 47
+positive proofs are unchanged. Greedy 3–2 simplification adds no source labels
+beyond the extended search in the tested corpus and remains experimental.
+Separate arithmetic, supplied-triangulation and complete-recognition timings
+are retained in `data/coherent-escape-*`, with source pins and reproduction
+in `../fast/normal_orbit_research/coherent_escape.py`.
+
+[`coorientation.tex`](coorientation.tex) derives the orientation-double orbit
+count from a finite parity certificate when a coorientation is constant on
+each global-edge block. It proves the pointwise conjugacy, including reversal
+on singleton intervals, and explains why failure must fall back to the old
+query. A strict version-four proof supports independent replay, multiplicity
+lifting and boundary classification. All 1,250 tests pass; 5,100 configurations
+agree with the old implementation and 1,275 surfaces agree with Regina.
+Large layered examples gain up to 1.967x including replay and serialization;
+the entire corpus batch is neutral at 1.003x and several small cases regress.
+This improves the supplied-surface API without asserting a diagram-recognition
+speedup or a general complexity theorem. Reproduction and source pins are in
+`../fast/normal_orbit_research/coorientation.py`, the separate corpus timing
+driver and `data/coorientation-*`.
+
+[`orbit_direction.tex`](orbit_direction.tex) adds a checked reflection of the
+interval universe and explicit forward, reverse and wider-end sweep options.
+It explains the unchanged reversal character, new interval-proof versions,
+binary cost and the distinction between initial ordering and adaptive search.
+All 5,100 default records remain identical; 10,200 alternate normal-surface
+queries and 4,000 literal interval comparisons agree. The layered-256 base
+trace shrinks from 82,960 to 2,311 events, but the wider-end rule increases
+aggregate corpus events and can use fewer cycles while doing more work.
+Forward remains the default. The article reports complete-call paired timings
+and retains the counterexample certificates. Reproduction and source pins
+are in `../fast/normal_orbit_research/direction.py` and `data/orbit-direction-*`.
+
+[`orbit_race.tex`](orbit_race.tex) adds an optional bidirectional restart race
+with a proved checkpoint-work bound. It charges interrupted attempts to the
+same cycle budget, discards their partial traces and returns the fixed-direction
+winner's ordinary certificate. The article distinguishes the bound from
+wall-clock competitiveness and explains why the existing polynomial bit bound
+is preserved. All 5,100 default records are unchanged; 5,100 race surface
+results and 1,210 literal interval comparisons pass independent validation.
+A 72-point graph exercises a switch after five exhausted attempts. Complete
+paired timings include callback and restart costs, and keep forward as the
+default. The driver is `../fast/normal_orbit_research/race.py`; full evidence,
+source pins and reproduction records are retained in `data/orbit-race-*`.

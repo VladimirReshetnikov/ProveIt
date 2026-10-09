@@ -11,7 +11,7 @@ from .normal_boundary_geometry import boundary_weight_system
 from .weighted_orbit_verify import verify_weighted_orbit_certificate
 
 
-def inspect_planar_certificate(diagram, certificate, *, check=lambda: None):
+def _inspect_planar_surface(diagram, certificate, cocycle_details, *, check=lambda: None):
     check()
     fields = {'schema', 'input_pd', 'triangulation', 'heights', 'coordinates',
               'span_certificate', 'boundary_homology_basis', 'boundary_orbits'}
@@ -21,7 +21,7 @@ def inspect_planar_certificate(diagram, certificate, *, check=lambda: None):
     surface = {k: v for k, v in certificate.items()
                if k not in ('boundary_homology_basis', 'boundary_orbits')}
     surface['schema'] = 'diagram-cocycle-disc-v1'
-    details = _inspect_cocycle_details(diagram, surface, check=check)
+    details = cocycle_details(diagram, surface, check=check)
     if details is None:
         return None
     summary, prepared, analysed = details
@@ -44,3 +44,7 @@ def inspect_planar_certificate(diagram, certificate, *, check=lambda: None):
     check()
     return dict(summary, boundary_components=boundary, essential_boundary_components=essential,
                 genus=0, unknot_witness='planar-cap')
+
+
+def inspect_planar_certificate(diagram, certificate, *, check=lambda: None):
+    return _inspect_planar_surface(diagram, certificate, _inspect_cocycle_details, check=check)

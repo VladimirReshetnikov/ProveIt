@@ -18,7 +18,7 @@ from .normal_cocycle_verify import inspect_cocycle_certificate
 from .normal_surface_geometry import NormalOrbitError, _coordinates
 
 
-def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, max_work=2000000,
+def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, shellings=False, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
     """Return UNKNOT with a source-bound disc or capping proof, or INCONCLUSIVE.
 
@@ -29,6 +29,9 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
     Disc and annulus certificates require no interval-orbit cycles. Optional
     planar queries share max_cycles across all candidate boundary censuses.
     Their independent positive replay also shares the work allowance.
+    shellings optionally removes embedded boundary tetrahedra before searching;
+    its trace is replayed from the canonical source for every positive proof.
+    It defaults to False and need not preserve the original candidate coverage.
     face_roots defaults to zero: optional face discovery adds coverage but
     was slower than the existing complete fallback on measured cases.
     """
@@ -36,6 +39,8 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
         raise ValueError('optimize must be bool')
     if type(annulus) is not bool:
         raise ValueError('annulus must be bool')
+    if type(shellings) is not bool:
+        raise ValueError('shellings must be bool')
     if type(planar) is not bool:
         raise ValueError('planar must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
@@ -52,6 +57,17 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
         budget.tick()
         source = Diagram.from_pd(diagram.pd)
         raw = diagram_exterior(source, check=budget.tick)
+        if shellings:
+            from .boundary_shellings import shell_boundary
+            from .normal_shelling_verify import inspect_shelling_cocycle, inspect_shelling_planar
+            original = raw
+            reduction = shell_boundary(raw, check=budget.tick)
+            raw = reduction['triangulation']
+            stats['shellings'] = reduction['stats']
+        def wrap(surface):
+            if not shellings:return surface
+            return dict(schema='diagram-shelling-witness-v1', source_triangulation=original,
+                        shellings=reduction['moves'], surface_certificate=surface)
         seed, prepared = _rank_one_cocycle_seed_details(raw, check=budget.tick)
         stats['cocycle'] = seed['stats']
         def evaluate(stage, heights, coordinates, span=None, candidate=None):
@@ -75,7 +91,8 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                           compressing_discs=0,
                           connectivity='minimum-span' if span is not None else 'zero-tree')
             if euler == 1 or (annulus and euler == 0):
-                answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
+                answer = (inspect_shelling_cocycle(source, wrap(certificate), check=budget.tick) if shellings
+                          else inspect_cocycle_certificate(source, certificate, check=budget.tick))
                 if answer is None:
                     raise ArithmeticError('source-bound cocycle connectivity replay failed')
             entry = dict(stage=stage, status='COMPLETE', **answer)
@@ -92,7 +109,7 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                 entry['unknot_witness'] = 'annulus-cap'
             if answer['compressing_discs'] or capped_annulus:
                 budget.tick()
-                return dict(status='UNKNOT', method='native-normal-cocycle', certificate=certificate,
+                return dict(status='UNKNOT', method='native-normal-cocycle', certificate=wrap(certificate),
                             stats=stats, stages=stages, work=budget.work)
             if planar:
                 from .normal_planar import _planar_cap_candidate
@@ -110,12 +127,13 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                 stats['boundary_cycles'] = boundary_cycles
                 if 'certificate' in query:
                     proof = query['certificate']
-                    summary = inspect_planar_certificate(source, proof, check=budget.tick)
+                    summary = (inspect_shelling_planar(source, wrap(proof), check=budget.tick) if shellings
+                               else inspect_planar_certificate(source, proof, check=budget.tick))
                     if summary is None:
                         raise ArithmeticError('source-bound planar capping replay failed')
                     entry.update(summary)
                     budget.tick()
-                    return dict(status='UNKNOT', method='native-normal-cocycle', certificate=proof,
+                    return dict(status='UNKNOT', method='native-normal-cocycle', certificate=wrap(proof),
                                 stats=stats, stages=stages, work=budget.work)
             return None
 
