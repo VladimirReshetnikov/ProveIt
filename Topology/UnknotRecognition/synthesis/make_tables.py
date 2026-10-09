@@ -1653,3 +1653,20 @@ for merger_mode in ('intervals','normal'):
              'Query & old ms & new ms & old/new & old A/A & new A/A')
     open(f'tables/adaptive_merger_{merger_mode}.tex','w').write('\\begin{center}\\small\n'+table(
         heading,'@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+
+for persistent_mode in ('kernels','source','stages','pipeline'):
+    data=load(f'data/persistent-replay-{persistent_mode}.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        s,m,q=r['source'],r['medians'],r['paired_ratios']
+        cells=([esc(s['kind']),str(s['size'])] if persistent_mode=='kernels' else
+               [str(s['crossings'])] if persistent_mode in ('stages','source') else [esc(s['name'])])
+        cells += ['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','current')]
+        cells += ['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('current','old_AA','current_AA')]
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Family & pivots' if persistent_mode=='kernels' else 'Crossings' if persistent_mode in ('stages','source') else 'Input')
+    heading += ' & old ms & new ms & old/new & old A/A & new A/A'
+    open(f'tables/persistent_replay_{persistent_mode}.tex','w').write('\\begin{center}\\small\n'+table(
+        heading,'@{}l'+('r'* (6 if persistent_mode=='kernels' else 5))+'@{}',rows)+'\\end{center}\n')

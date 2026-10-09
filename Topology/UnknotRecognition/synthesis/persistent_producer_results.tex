@@ -1,0 +1,90 @@
+\subsection{Native validation and measured limits}
+
+The comparison pins the preceding maintained producer and persistent checker
+at commit \texttt{4360509f450e} (the full hash is in each data file). Only the
+existing producer selector and compressed-search dispatcher differ among
+preexisting runtime modules; the new private producer is additive. Every
+preexisting verifier, including the complete compressed and literal source
+checkers, is byte-identical. The driver freezes 434 Python/corpus source
+hashes before each run and checks them again afterward.
+
+All 1,116 maintained tests pass with Regina available, in 222.967 seconds.
+The four new methods compare 350 random greedy presentations with ordinary
+updates and literal batch replay; exercise a sixteen-generator binary-power
+chain with $2^{128}$ repetitions; test summary-cache invalidation, cancellation,
+work/node exhaustion and atomic publication; and check both the terminal
+fast path and an actual two-batch source certificate. The binary-capacity test
+disables expansion, equality, reduction and inverse helpers during export
+and independent replay. It is a supplied transformation schedule, not evidence
+that greedy discovery chooses that schedule on a knot diagram.
+
+The separate pinned audit checks 84 diagrams, including the maintained corpus,
+random braid closures and stabilized circles. All default and optional-batch
+certificates match the predecessor, with no gained or lost positives. There
+are 840 original-source literal/compressed replays across the two packages,
+and 24 searches activate persistent production. Activation includes searches
+that later stall; it does not imply a newly accepted proof. The driver also
+retains the 400 abstract DAG cases, 1,600 compressed replays and 800 literal
+replays used to check the unchanged batch interface. The audit takes 8.040
+seconds; its source hashes and complete evidence are retained separately
+from timings.
+
+\paragraph{Measurement protocol.}
+All timings run serially after tests and audit completion. Four arms comprise
+the predecessor, the current producer and an identical A/A control of each.
+Each case has one excluded warmup and five measured rounds in shuffled order.
+Every timed call constructs and validates a fresh source diagram and includes
+the host's mandatory independent replay. The three experiments total 520
+measured calls and 104 warmups, all complete. Ratios below are medians of
+within-round old/new ratios; values above one favor the current producer.
+They are not ratios of displayed median times. These small, single-environment
+measurements do not establish a broad recognition speedup.
+
+\paragraph{An activating source-bound group call.}
+The actual \texttt{survivor-10} source discovers two batches of seven and two
+generators, then normalizes and reaches the existing terminal. Its unchanged
+726-byte certificate is replayed inside the timed group call and additionally
+checked by the literal verifier outside timing. One private producer block
+uses 57 nodes, 22 context siblings, maximum concatenation depth three and a
+combined private/ordinary peak of 158 nodes. Final ordinary producer nodes
+fall from 177 to 127, while total charged search work, including source
+recovery, is essentially unchanged: 5,464 versus 5,467. The timing likewise
+shows no material gain:
+\input{tables/persistent_producer_source.tex}
+
+The private-node peak concerns the raw block; final ordinary-node counts also
+include subsequent terminal/normalization work. They are not interchangeable
+memory measurements, and neither includes Python container and integer bytes.
+
+\paragraph{Terminal fast-path controls.}
+Stabilized-circle group calls finish in one batch and therefore avoid the
+private import. Their paired ratios range from 0.981 to 1.012; the current
+A/A controls range from 0.993 to 1.014. This is an overhead control, not a
+performance demonstration of persistent production:
+\input{tables/persistent_producer_stages.tex}
+
+\paragraph{Complete native recognition.}
+The nineteen-diagram corpus runs the same optional batch portfolio in both
+engines, including the bounded speculative trial and complete fallback.
+All 380 measured calls and 76 warmups complete. Ratios span 0.944--1.026,
+with several small regressions. Old A/A ratios span 0.957--1.020 and new A/A
+ratios span 0.982--1.015. There is no broad ordinary-workload gain:
+\input{tables/persistent_producer_pipeline.tex}
+
+For \texttt{survivor-10}, the complete pipeline ratio is 0.984, despite the
+smaller producer grammar. Gordian's trial still exhausts 89,905 charged units,
+comprising 39,904 recovery units and the 50,000 post-recovery allowance plus
+the failing charge. Both trials perform two batches eliminating 127 generators
+and then fall back. Persistent production reduces ordinary trial nodes from
+2,788 to 2,122, with 735 private nodes and a raw-block combined peak of 1,982.
+The final accepted fallback certificate is unchanged; the paired whole-call
+ratio 1.011 is not evidence that the trial now solves Gordian.
+
+The implementation is \path{../fast/fastunknot/persistent_elimination.py};
+reproduction is \path{../fast/compressed_word_research/persistent_producer.py}.
+Complete JSON, logs and table generation are retained as
+\path{data/persistent-producer-*} and \path{data/persistent_producer_tables.py}.
+The earlier checker kernel ratios concern supplied replay schedules and are
+not reused as producer speedups. The established improvement here is the
+whole-block discovery bound and reduced intermediate grammar allocation on
+the activating sources, with explicit ordinary-workload overhead retained.

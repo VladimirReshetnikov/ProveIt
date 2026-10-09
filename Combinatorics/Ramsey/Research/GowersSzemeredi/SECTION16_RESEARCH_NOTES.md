@@ -3930,6 +3930,371 @@ representation density on the chosen piece. `proper_progression_pattern_completi
 currently takes `C = Q.carrier`; a piece-relative witness count would
 be needed if the piece is a proper subset.
 
+### J.91. Quantitative strict-relation iteration on Bohr domains
+
+The algebraic regularity refinement is now constructed, including a
+modulus-independent rank recurrence and a termination proof. The result
+controls the bounded bad relations on a nested Bohr domain. Transporting
+the selected dense parameter set through this construction remains a
+separate task; this is not a claim that the complete structural theorem
+or its printed bounds have been proved.
+
+`Proofs16StrictRelationKernel` applies the dense constant-fibre kernel
+lemma to a coefficient vector `w` that is not a relation on the current
+full domain `B(Gamma;sigma)`. On the new Bohr domain the combination equals
+its value at zero, so `w` becomes a relation. Restriction preserves the
+previous relations, giving a strict inclusion of relation subspaces.
+The individual maps need not be normalized for this refinement.
+
+`Proofs16PopularRelationFiber` fixes one coordinate of a popular matching
+equation. If a fraction `theta` of `C × C` satisfies a two-sided relation,
+some constant fibre has at least `theta*|C|` points. In
+`Proofs16PopularKernelStep`, that fibre yields a kernel Bohr set with rank
+at most
+
+```
+16 * (theta * |C| / N)^(-2).
+```
+
+Either coefficient vector may be the nonrelation: swapping the two
+coordinates preserves the exact pair count. This direct fibre argument
+retains `theta`, instead of first replacing it by `theta²` through the
+collision-pair Cauchy--Schwarz estimate. The inverse-square rank loss is
+therefore in the original matching density.
+
+`Proofs16BadRelationKernel` first selects a popular witness from a finite
+cover of bad pairs. `Proofs16BoundedBadRelations` specializes it to bounded
+fixed, left, and right coefficient vectors. For fixed-frequency index
+set `iota`, map index set `kappa`, and cutoff `R`, the witness count is at
+most
+
+```
+M = (2R+1)^(|iota|+2|kappa|).
+```
+
+This bound holds even when the coefficient radius wraps around the cyclic
+group. Too many bounded bad pairs then give a strict refinement with
+spectrum rank at most `16*((theta/M)*|C|/N)^(-2)`.
+
+`Proofs16NestedRelationKernel` adjoins the old frequencies and uses radius
+`min(sigma,1/(8*pi))`. Both the full and quarter domains are contained in
+their old counterparts. Full-domain containment alone would not imply
+quarter-domain containment; retaining the old frequencies establishes the
+needed stronger property. The strict relation increase survives this
+additional restriction.
+
+`Proofs16BadRelationSplitting` connects the stopping criterion to the
+quasirandomness interfaces. For maps normalized at zero, every pair
+outside `boundedBadRelationPairs` satisfies the exact bounded splitting
+identity with `boundedRelationClass` of the full domain. The analogous
+single-vertex identity holds outside `boundedBadRelationVertices`. Every
+bad vertex makes all its pairs bad, using zero coefficients on the other
+side, so a bad-pair fraction at most `theta` also bounds the bad-vertex
+fraction by `theta`.
+
+The quantitative iteration fixes `0 < sigma ≤ 1/(8*pi)` and a natural
+cell count `Q > 0` with `4 ≤ sigma*Q`. The quarter Bohr domain of a rank-`d`
+frequency set has density at least `Q^(-d)`. Define
+
+```
+Phi(d) = d + ceil(16*((theta/M)/Q^d)^(-2)).
+```
+
+`Proofs16RelationRankBudget` proves that `Phi` is monotone, `d ≤ Phi(d)`,
+and every failed bad-pair bound has a refinement of rank at most `Phi(d)`.
+There is no dependence on the ambient modulus in this recurrence.
+
+`Proofs16BohrRelationIteration.exists_sparse_bad_relation_domain` proves
+termination with an explicit bound. If the initial relation subspace has
+dimension `s`, the final spectrum has rank at most
+`Phi^[|kappa|-s](|Gamma|)`, contains the original frequencies, preserves
+full and quarter containment, and has strictly fewer than
+`theta*|B(S;sigma/4)|²` bad pairs. Every unsuccessful step strictly increases
+the relation dimension, so the initial relation codimension bounds the
+number of recurrence steps.
+
+The incoming `Proofs16PrimeBandSplit` supplies mixed-Bohr annulus bounds
+in prime cyclic groups and discharges the weak-regularity hypotheses of
+the generic split-profile theorem. Its explicit truncation and size
+budgets still need to be made compatible with the final construction.
+Density retention for the selected parameter set, affine recentering,
+and the paper's prescribed quantitative constants remain unresolved.
+All five numbered open entries and the recorded source-fidelity caveats
+remain unchanged.
+
+The increment/splitting source check covers 55 modules, and the iteration
+check covers 57. All 22 new declarations pass individual transitive axiom
+checks with only `propext`, `Classical.choice`, and `Quot.sound`. No upstream
+source, selected port scope, license, or provenance record was changed.
+
+The full merged audit passes for 6,689 public Gowers theorems in a
+5,034-module facade (4,152 OAI modules), or 5,036 modules including both
+audits. The incoming prime mixed-Bohr band estimates are included. The
+source ledger matches the tracked 115 companions and five open entries,
+and the selected port-scope check passes. All audited declarations remain
+within the same three-axiom boundary.
+
+### J.92. Dense row retention through the relation iteration
+
+The density-retention and affine-recentering gap recorded in J.91 is now
+resolved by six modules. This does not close the remaining truncation,
+size, and prescribed-constant compatibility obligations.
+
+`Proofs16DenseAffineCluster` proves that any nonempty translated cluster
+inside a common Freiman domain has simultaneous affine formulas
+`L_j(t+x) = c_j + L_j(x)`. Choose one anchor `b` and use the Freiman
+quadruple `(t+x,b,t+b,x)`. Neither the translation `t` itself nor zero
+needs to lie in the cluster; the maps need not be normalized for this
+step. Averaging translates retains ambient density on an arbitrary
+nonempty test set inside the domain.
+
+`Proofs16AffineTupleRows` tracks actual rows of the ambient set, not just
+abstract graph statistics. Adding the offsets `c_j` to the fixed
+frequencies and halving the phase radius preserves the row inclusion
+after recentering. The number of added fixed frequencies is at most
+`k = |kappa|`; the variable maps themselves remain unchanged.
+
+`Proofs16DenseBohrRefinement` retains relative density `alpha` on a
+refined quarter Bohr domain. If `4 ≤ sigma*Q`, its ambient density is at
+least `alpha/Q^|S|`. `Proofs16DenseRelationStep` combines this with the
+strict relation increase and quantitative rank bound of J.91, retaining
+a nonempty set of actual rows at every failed bad-pair estimate.
+
+The fixed frequencies change during this process, so the fixed-tuple
+iteration of J.91 does not by itself establish the desired conclusion.
+`Proofs16DenseRelationBudget` supplies a common budget for the Bohr rank
+and the current number of fixed frequencies:
+
+```
+M(d)   = (2R+1)^(d+2k)
+Psi(d) = d + ceil(16*((theta/M(d))/Q^d)^(-2)) + k.
+```
+
+This monotone recurrence is independent of the ambient modulus. In
+`Proofs16DenseRelationIteration`, let `n` be the initial relation
+codimension, `d = max(|Gamma|,|F|)`, and `D = Psi^[n](d)`. The theorem
+`exists_dense_sparse_relation_domain` produces a refined spectrum `S`,
+fixed frequencies `F'`, recentered row origin, and nonempty parameter
+set `V` with all of the following proved simultaneously:
+
+- `Gamma ⊆ S`, `|S| ≤ D`, and both full and quarter domain containment;
+- `F ⊆ F'` and `|F'| ≤ |F| + n*k`;
+- `V` lies in the refined quarter domain and has ambient density at least
+  `alpha/Q^(n*D)`;
+- the actual row geometry holds at phase radius `eta/2^n`;
+- fewer than `theta*|B(S;sigma/4)|²` bounded bad pairs remain, computed
+  using the final enlarged fixed-frequency set `F'`.
+
+The induction permits early termination and restricts the phase radius
+to the stated uniform bound. Each unsuccessful step strictly raises the
+relation dimension, which bounds the number of steps by `n ≤ k`.
+The varying maps are only restricted to smaller domains, so any initial
+normalization at zero is preserved for subsequent splitting lemmas.
+
+This is a quantitative existence result for dense row geometry with few
+bad relations, not yet the final quasirandom graph or seven-operator
+completion. The Fourier cutoff and size budgets still have to be made
+compatible with these losses. The five numbered open entries, 115
+companions, and all source-fidelity qualifications remain unchanged.
+No upstream source or selected port dependency was added or modified.
+
+Validation: all 15 newly named theorems pass individual transitive axiom
+checks with only `propext`, `Classical.choice`, and `Quot.sound`. The full
+consumer audit passes for 6,710 public Gowers theorems in a 5,040-module
+facade (4,152 OAI modules), or 5,042 modules including both audits. The
+source ledger matches the tracked 115 companions and five open entries;
+the selected port-scope check also passes. The Apache provenance/license
+files and the selected upstream source closure remain unchanged.
+
+### J.93. Explicit graph cutoff and dense quasirandom domain
+
+The truncation and base-size hypotheses left by J.92 are now discharged
+for the actual tuple Bohr graph. This supplies a graph with any prescribed
+box error while retaining dense row geometry. It does not yet ensure that
+the error meets the seven-operator budget relative to the resulting
+parameter density and representation counts.
+
+`Proofs16SparseRelationProfile` derives all combinatorial hypotheses of
+the prime split-profile estimate from a bound on bounded bad pairs.
+The exceptional vertices and pairs are pulled back to the parameter
+subtype; injectivity bounds their cardinalities. The existing bad-vertex
+product argument bounds the exceptional vertex fraction by the pair
+fraction. If this fraction is less than one, a typical reference vertex
+exists. Normalization `L_j(0)=0` then supplies the single and paired
+splitting identities. No exceptional sets or reference vertex remain
+as additional inputs.
+
+`Proofs16PrimeProfileBudget` takes `c = floor(tau*N)`. For `0 < tau < 1/2`,
+the centered smoothing interval has at least `tau*N` points. If
+`tau*N ≥ 1`, the band error satisfies
+
+```
+2*m*tau ≤ m*(4*c+2)/N ≤ 6*m*tau.
+```
+
+If `m*tau ≤ 1/2` and `R+1 ≥ tau^(-2)`, the product truncation error is at
+most `2*m*tau`, hence at most the band error. If the base set has density
+at least `beta` and `120*m*tau ≤ beta`, the required size condition holds
+and the box-error coefficient is at most
+`3*(480*m*tau/beta + theta)`. These bounds include the integer endpoints.
+
+`Proofs16ScaledRelationProfile` combines these facts.
+`Proofs16TupleBohrQuasirandom` sets the trapezoid radii to
+`floor(rho*N)+c` and `floor(nu*N)+c`, so the inner graph uses the exact
+prescribed real radii `rho` and `nu`. If the total frequency count is at
+most `m`, `Q > 0`, and `rho*Q ≥ 1`, the base Bohr set has density at least
+`Q^(-m)`. This bound does not involve the rank of the parameter domain.
+The transport lemma `boxSum_finset_congr` handles equality of finite
+vertex sets without treating their subtype instances as definitional.
+
+For `0 < epsilon ≤ 1`, `Proofs16ExplicitGraphCutoff` chooses
+
+```
+tau = epsilon / (2880*(m+1)*Q^m)
+R   = ceil(tau^(-2)).
+```
+
+When `N ≥ tau^(-1)`, the two graph radii are below `1/4`, and the bad-pair
+fraction at cutoff `R` is at most `epsilon/6`, the actual graph satisfies
+`boxSum(G-delta) ≤ epsilon*|B|²*|C|²` for some `delta` in `[0,1]`.
+No analytic cutoff, annulus, or base-size hypothesis remains. Both the
+cutoff and modulus threshold depend only on the prescribed accuracy,
+cell count, and frequency cap.
+
+`Proofs16DenseQuasirandomDomain.exists_dense_quasirandom_domain` combines
+this with the stateful dense relation iteration. If there are `k` maps,
+use the uniform frequency cap `m = |F|+k²+2k`, error threshold
+`theta = epsilon/6`, and the explicit cutoff above. The fixed-frequency
+cell count `H` is chosen with `2^k ≤ eta*H`; the domain cell count `Q`
+satisfies `4 ≤ sigma*Q`. For initial relation codimension `n`, the final
+row radius is `rho = eta/2^n`, and the graph uses fixed radius `rho` and
+variable radius `rho/4`. The theorem produces a refined spectrum, a
+nonempty dense parameter set, enlarged fixed frequencies, recentered
+row geometry, and the actual box estimate simultaneously. The rank and
+density losses remain the explicit recurrence from J.92, now evaluated
+at the chosen cutoff and bad-pair threshold.
+
+What remains: the graph density has so far only been exposed as a value
+in `[0,1]`. A quantitative positive lower bound is needed for row filling.
+More substantially, the required box error depends on the retained row
+density and robust representation counts, which themselves deteriorate
+through relation refinement. Choosing a fixed error before the iteration
+does not by itself resolve that dependence. A state-dependent error
+budget or the corresponding argument from the source must close it.
+All five numbered open entries and source-fidelity caveats remain in
+force; these results do not establish the deep variety theorem or its
+printed numerical constants.
+
+Validation: the focused final check covers 146 modules. All 11 newly
+named theorems pass individual transitive axiom checks. The full audit
+passes for 6,725 public Gowers theorems in a 5,046-module facade (4,152
+OAI modules), or 5,048 modules including both audits, using only
+`propext`, `Classical.choice`, and `Quot.sound`. The source ledger still
+matches 115 companions and five open entries. The selected port-scope
+check passes; upstream sources and Apache provenance/license files are
+unchanged. The merged incoming work concerns topology only.
+
+### J.94. Adaptive accuracy and the robust row-filling budget
+
+The two quantitative gaps identified in J.93 are now resolved at the
+graph-construction interface: the approximating graph density has an
+explicit positive lower bound, and the graph error pays the robust
+row-filling scalar budget at the actual retained density. Applying the
+result to complete target rows and the proper progression remains a
+separate integration step; no numbered closure is claimed here.
+
+`Proofs16BoxDensityLower` applies the box-correlation estimate to constant
+test functions. If every degree is at least `beta*|X|` and the box error
+is at most `epsilon^4*|X|²*|Y|²`, then `delta ≥ beta-epsilon`. No positivity
+of the approximating density is assumed. `Proofs16TupleDensityLower`
+places a common smaller Bohr set in every degree, giving
+`delta ≥ Q^(-r)-epsilon` when `r` bounds the fixed and varying frequency
+counts and the smaller radius times `Q` is at least one.
+
+`Proofs16AdaptiveRelationBudget` and `Proofs16AdaptiveRelationIteration`
+replace the fixed cutoff and tolerance by arbitrary schedules `R(d)`
+and `theta(d)>0`. The scalar state `d` bounds domain rank, fixed-frequency
+count, and the density-loss exponent: the retained set has ambient
+density at least `alpha/Q^d`. Define the exact update
+
+```
+Phi(d) = d + denseRelationBudget(theta(d),R(d),Q,k,d).
+```
+
+At a failed bad-pair estimate, the new rank is at most the second term,
+and that term also pays for the loss in density. Strict relation growth
+still forces termination within the initial relation codimension. The
+final state is an actual iterate `D = Phi^[s](d)`, and the conclusion uses
+`theta(D)` and `R(D)`. Neither schedule needs to be monotone. The proof
+also retains the sharper frequency count `|F'| ≤ |F|+s*k` and row radius
+`eta/2^s`.
+
+For a graph-error schedule `e(d)`, `Proofs16AdaptiveGraphSchedule` sets
+`theta(d)=e(d)^4/6` and `R(d)=relationProfileCutoff(e(d)^4,H,m)`. A natural
+modulus threshold is the maximum of the rounded Fourier size thresholds
+at the finitely many states `Phi^[s](d)`, `0 ≤ s ≤ k`. The theorem
+`adaptiveGraphModulusBound_spec` supplies the required bound at any
+reachable state. This threshold is explicit and requires no fixed point
+or implicit feasibility assumption.
+
+`Proofs16AdaptiveDenseGraph.exists_adaptive_dense_graph` combines the
+adaptive relation theorem, Fourier cutoff, and density lower bound.
+Set `m=|F|+k²+2k`, take `2^k ≤ eta*H`, and put
+
+```
+beta = (4H)^(-m).
+```
+
+Any positive schedule satisfying `e(d) ≤ beta/2` yields a retained dense
+row configuration with `delta ≥ beta/2`, box error at most
+`e(D)^4*|B|²*|C|²`, and ambient row density at least `alpha/Q^D`. The graph
+and the error refer to the same final state `D`; the right graph class is
+the final quarter Bohr domain. Both full and quarter domain containment
+remain explicit.
+
+`Proofs16AdaptiveFillingError` chooses the schedule needed by robust row
+filling. Write `b=beta/2` and `a_d=alpha/Q^d`, and take
+
+```
+e(d) = min(b/2, (b³*(a_d⁴/4))² / (12*4^(m+1)*(4H)^m)).
+```
+
+This schedule is strictly positive and admissible for the adaptive graph
+theorem. The existing robust witness density obeys
+`robustRepresentationDensity(alpha',C) ≥ a_d⁴/4` whenever `alpha' ≥ a_d`.
+The new budget theorem therefore gives
+
+```
+4^(m+1) * (12*e(d)) * (4H)^m
+  ≤ (delta³ * robustRepresentationDensity(alpha',C))².
+```
+
+Finally, `Proofs16BudgetedDenseGraph.exists_budgeted_dense_graph` instantiates
+the adaptive graph construction with this schedule and proves the scalar
+inequality using the actual retained density `alpha'=|V|/N`. The graph
+estimate and the robust filling budget are both conclusions. This removes
+the dependence problem noted in J.93; it does not merely assume that a
+fixed error can satisfy its own density loss.
+
+Next, the tuple row geometry and graph must be connected to the existing
+pattern row-filling and proper-progression completion theorems, including
+restriction of the Freiman maps and the identification of frequency
+indices. The original paper's precise constants and the deep variety
+statement remain unresolved. All five numbered open entries, 115
+companions, and source-fidelity qualifications remain unchanged. No
+upstream source or selected port dependency was changed.
+
+Validation: the final focused build covers 167 modules. All 12 newly
+named theorems pass individual transitive axiom checks. The full audit
+passes for 6,748 public Gowers theorems in a 5,054-module facade (4,152
+OAI modules), or 5,056 modules including both audits. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The source ledger matches
+the unchanged 115 companions and five open entries, and the selected
+port-scope check passes. Apache provenance/license files and upstream
+sources are unchanged. Subsequent merged main changes concern topology
+only and do not alter the audited Gowers dependency closure.
+
+
 
 ### Theorem 33 on translated pieces: constants must be absorbed (2026-10-09, design)
 

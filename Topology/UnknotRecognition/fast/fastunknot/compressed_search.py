@@ -25,6 +25,8 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
     normalization_cache = {} if primitive_projection or elimination_batch else None
     elimination_cache = {} if elimination_batch else None
     projection_cache = {} if primitive_projection else None
+    power_pair_cache = {} if primitive_projection else None
+    batch_stalled = False
     while len(alive) > 1:
         if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
             from .primitive_power import primitive_power_terminal
@@ -35,10 +37,17 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
         if elimination_batch and len(alive) >= 3:
             from .elimination_batch import plan_batch, apply_batch
-            selected = plan_batch(arena, roots, alive, elimination_cache, ordered=True)
+            selected = [] if batch_stalled else plan_batch(arena, roots, alive, elimination_cache, ordered=True)
+            batch_stalled = False
             if len(selected) >= 2:
-                apply_batch(arena, roots, alive, selected)
-                moves.append(dict(kind='elimination_batch', entries=selected))
+                if len(alive)-len(selected)<=2:
+                    # This batch ends raw batch discovery, so retain its cheap
+                    # existing representation without a private circuit import.
+                    apply_batch(arena, roots, alive, selected)
+                    moves.append(dict(kind='elimination_batch', entries=selected))
+                else:
+                    from .persistent_elimination import produce_block
+                    batch_stalled = produce_block(arena, roots, alive, moves, selected)
                 raw = True
                 continue
 
@@ -63,6 +72,16 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 moves.append(dict(kind='primitive_projection', pairs=selected))
                 raw = True
                 continue
+            # Every mixed cyclic two-run donor is already a coherent pair
+            # candidate. An empty snapshot proves this detector cannot act.
+            if len(alive)>=3 and prepared[0]:
+                from .power_pair import plan_power_pairs, apply_power_pairs
+                pairs=plan_power_pairs(arena,roots,alive,power_pair_cache)
+                if pairs:
+                    apply_power_pairs(arena,roots,alive,pairs)
+                    moves.append(dict(kind='power_pair_delete',pairs=pairs))
+                    raw=True
+                    continue
         if raw:
             # The old positional moves operate on cyclically reduced roots.
             # Record this boundary explicitly so both replayers use that state.
@@ -240,13 +259,14 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
                        primitive_terminal=terminal, primitive_projection=primitive_projection,
                        rank_two_terminal=primitive_power, primitive_forest=primitive_forest, elimination_batch=elimination_batch):
             return None
+        annihilated = any(move['kind'] == 'power_pair_delete' for move in moves)
         batched = any(move['kind'] == 'elimination_batch' for move in moves)
         forested = any(move['kind'] == 'primitive_forest' for move in moves)
-        projected = batched or forested or any(move['kind'] == 'primitive_projection' for move in moves)
+        projected = annihilated or batched or forested or any(move['kind'] == 'primitive_projection' for move in moves)
         if projected and not terminal:
             terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
         if terminal:
-            return dict(version=8 if batched else 7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
+            return dict(version=9 if annihilated else 8 if batched else 7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
                         input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
         return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',

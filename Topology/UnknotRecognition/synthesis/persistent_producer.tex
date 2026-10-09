@@ -1,0 +1,108 @@
+\section{Polynomial discovery within a persistent raw singleton block}
+\label{sec:persistent-producer}
+
+Section~\ref{sec:persistent-replay} establishes polynomial replay of a supplied
+raw block. The maintained producer now uses a separately implemented persistent
+circuit while discovering successive batches. It keeps the existing greedy
+donor policy, computes its exact scores on the changing raw words, and exports
+only when that block ends. This closes the representation gap for raw batch
+discovery. It does not prove that such a block reaches an unknot endpoint or
+that a bounded number of subsequent normalization and exposure stages suffice.
+
+\subsection{Exact summaries under changing bindings}
+
+The private producer circuit has immutable signed concatenations and one binding
+per eliminated generator, as in the preceding section. It imports the ordinary
+arena's reachable source once. Its evaluator uses iterative depth-first
+dependency traversal, independently of the checker's Kahn implementation.
+After every batch it discards its private summary cache. A summary is reused
+only while the bindings and relator roots remain unchanged. The ordinary arena
+never receives mutable bindings, so its historical caches remain valid.
+
+For every node compute raw length $\ell$, presence mask $P$, and repetition
+mask $R$. An unbound terminal has length one, its own presence bit, and zero
+repetition mask. A bound terminal inherits its target's summary, including
+the all-zero summary for an empty image. Inversion preserves all three values.
+For a concatenation with children $u,v$,
+\[
+ \ell=\ell_u+\ell_v,\qquad P=P_u\mathbin\lor P_v,\qquad
+ R=R_u\mathbin\lor R_v\mathbin\lor(P_u\mathbin\land P_v).
+\]
+Thus $P\mathbin\land\neg R$ gives exactly the raw singleton generators.
+This calculation performs no cancellation: opposite signed occurrences both
+count toward repetition.
+
+Global absolute generator counts are obtained in one reverse dependency pass.
+Assign weight one to each nonempty retained root, summing repeated roots.
+At a concatenation add its accumulated weight to \emph{both} children; when
+the children agree, add twice. At a bound terminal pass that weight to its
+target. At an unbound terminal add it to that generator's count. The number
+propagated to a node is exactly its occurrence multiplicity in the unfolding
+of the retained roots. This proves the resulting counts equal the ordinary
+producer's counts without a separate graph traversal per generator.
+
+For singleton generator $g$ in slot $j$, let $c_g$ be its global count and
+$\ell_j$ the donor's raw length. The candidate key remains
+\[
+                 ((\ell_j-2)c_g,\ell_j,j,g).
+\]
+The existing greedy selector receives the same keys and supports. It still
+requires distinct slots and generators, rejects dependency cycles using its
+incremental reachability masks, leaves at least one generator, and emits the
+same stable topological ordering. Selection is shared between the two producer
+representations; no producer helper is shared with the verifier. Induction on
+batches proves identical selected entries whenever both representations run
+the same uninterrupted raw block to completion without exhausting resources.
+Different exported associations can affect later heuristics and finite budgets;
+the equivalence assertion is confined to this raw block.
+
+\subsection{Whole-block discovery cost and boundaries}
+
+The producer constructs each donor's signed context by unique-path descent
+and balanced sibling assembly. It fixes every context against the pre-batch
+state, then installs the acyclic batch's bindings together. It uses the same
+size and height argument as Section~\ref{sec:persistent-replay}: with $k$
+eliminations, its private historical size is at most $S_*$, its binding-free
+depth is at most $D_0+6k\log_2(D_0+k+2)$, and its raw lengths need at most
+$B_*$ bits as defined there.
+
+Let $r$ be the initial live rank and $m$ the retained slot count. Root occurrence
+weights and global counts need $O(B_*+\log(m+1))$ bits: each of the $m$ root
+unfoldings has binary branching and height bounded by the same historical
+height, even if some leaves eventually bind to empty words. Candidate scores
+therefore have polynomial bit length. Each planning pass uses $O(S_*+mr)$
+summary and candidate operations before sorting at most $mr$ candidates.
+Presence and reachability masks have $r$ bits. For the selector, each successful
+reachability update adds a bit; a node's mask can grow at most $r$ times and
+each update propagates through at most $r$ predecessor edges. Rejected
+candidates, sorting, set operations, integer arithmetic and identifier encoding
+add polynomial costs. There are at most $k$ successful batches and one final
+unsuccessful planning pass. This proves polynomial encoded cost for discovery
+and execution of the \emph{entire raw block}, including donor selection.
+It is stronger than a bound conditional on logarithmically many batches.
+
+The host still selects the first batch in the ordinary arena. If that batch
+already leaves at most two generators, the existing direct update remains a
+fast path. Otherwise the private circuit processes successive batches until
+the rank drops below three or fewer than two donors are selected. A stalled
+plan is recorded so the host does not repeat that unchanged plan immediately.
+Primitive projections, normalization, relator moves and terminal checks remain
+explicit boundaries outside this private block.
+
+Final export traverses reachable absolute nodes in dependency order and
+compiles both orientations. Bound terminals become aliases, and each oriented
+concatenation becomes at most one ordinary node. Consequently at most $2S_*$
+ordinary nodes are added and the combined historical node count is bounded by
+$N_0+3S_*$. Public relator roots, live generators and the accumulated move list
+are published only after a complete export. Resource exhaustion may leave
+ordinary historical allocations and statistics, but no partial public block.
+Private nodes and ordinary history share the existing node allowance; all
+passes use the same cooperative work and cancellation mechanism. Integer and
+container storage require the bit accounting above, not just the node count.
+
+This applies automatically within the existing optional batch search. The
+bounded speculative trial, source recovery, independent replay, complete
+fallback, certificate schema and default mode are unchanged. There is no
+claim that a smaller work counter is a uniform wall-time improvement.
+
+\input{persistent_producer_results.tex}

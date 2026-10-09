@@ -374,8 +374,8 @@ the maintained package; see `../synthesis/sparse_incidence.tex`. Report 53's
 weighted component census and quadrilateral disc-count core are also integrated;
 see `../synthesis/weighted_components.tex` and its native audit/timing records.
 Report 51's ordered singleton checker is adapted to the native schema with
-legacy compatibility; see `../synthesis/ordered_batch.tex`. Lazy source state
-remains pending native integration. Report 52 remains an independent reference
+legacy compatibility; see `../synthesis/ordered_batch.tex`. Report 49's lazy
+monomial source state remains pending native integration. Report 52 remains an independent reference
 implementation.
 
 Three further archives arrived in commit `92efcbaed`. Their initial integrity
@@ -388,10 +388,27 @@ is not applied over the newer native census and independent verifier. The
 other two deliveries remain under review, particularly persistent raw
 singleton blocks and component-support bounds. Original archives are retained.
 
+The persistent signed-circuit idea in
+`ProveIt_UnknotRecognition_Research_2026-10-09.zip` is now adapted to the
+maintained independent version-eight checker. Consecutive raw batches share
+one circuit and export once; all 1,112 maintained tests pass. See
+`../synthesis/persistent_replay.tex` for the whole-block polynomial bound,
+source-bound compatibility audit and native measurements. Its subsequent
+producer integration is now in `../synthesis/persistent_producer.tex`: exact
+greedy discovery shares a private raw circuit across batches and exports once.
+All 1,116 maintained tests pass; the 84-diagram audit preserves certificates
+and positive coverage. The delivered prototype and original archive remain unchanged.
+
 Commit `b365341b1` adds `ProveIt_Unknot_Sparse_Incidence_Research.zip` and
 `unknot_power_conjugacy_20261008.zip`. Initial README/contract review and all
 94 delivered checksum entries pass; see
-`../synthesis/data/incoming-b365-initial-triage.json`. No tests or native
-integration of these two deliveries have run. The sparse observer overlaps
-the maintained implementation; the power-conjugacy proposal requires further
-mathematical review and source-authenticated donor discovery.
+`../synthesis/data/incoming-b365-initial-triage.json`. That is the historical
+initial review. The sparse observer still overlaps the maintained implementation.
+The power-conjugacy delivery's 24 tests have subsequently passed, and its
+plain-power minor argument now has a maintained compressed detector and
+independent source replay; see `../synthesis/power_pairs.tex` and
+`../synthesis/data/power-pair-*`. The native knot-specific rule uses an
+already source-established torsion-free premise to accept any nonzero minor.
+All 1,121 maintained tests pass. The broader conjugacy graph, compressed
+conjugator discovery and claimed graph-abstraction boundary remain outside
+this integration. Delivered braid-audit and timing records are not native runs.

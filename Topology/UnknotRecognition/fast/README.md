@@ -2661,7 +2661,7 @@ Finite-budget outcomes can therefore differ from the old replay path.
 Balanced context assembly bounds the entire raw block polynomially in its
 initial grammar and generator count, even when the expanded words grow
 exponentially. This replaces the per-batch growth accounting for replay.
-The producer still uses its existing representation and search policy;
+The producer integration below extends this bound to raw batch discovery;
 normalization boundaries and general knot discovery remain separate
 complexity obligations. Certificates and literal verification are unchanged.
 See [the proof and measurements](../synthesis/persistent_replay.tex).
@@ -2671,4 +2671,72 @@ python -B compressed_word_research/persistent_replay.py audit --output results/p
 python -B compressed_word_research/persistent_replay.py kernels --output results/persistent_replay_kernels.json
 python -B compressed_word_research/persistent_replay.py stages --output results/persistent_replay_stages.json
 python -B compressed_word_research/persistent_replay.py pipeline --output results/persistent_replay_pipeline.json
+```
+
+### Persistent greedy batch discovery
+
+The optional `elimination_batch` search now retains a private signed circuit
+across consecutive raw batches. It recomputes exact lengths, presence and
+repetition masks after bindings change, and obtains global occurrence counts
+with one reverse dependency pass. The existing greedy scores, cycle checks
+and ordered donor selection are preserved. A first batch that immediately
+reaches rank one or two keeps the direct fast path.
+
+The private block exports once when batch discovery stalls or reaches rank
+below three. Normalization, projections and other moves use the ordinary arena.
+Roots, live generators and moves are published together after successful export;
+private nodes share the ordinary resource allowance. The independent checker,
+certificate format, bounded trial and fallback policy are unchanged.
+
+Balanced contexts give polynomial encoded cost for the entire raw block,
+including its donor discovery. This does not bound the number or cost of later
+normalization/exposure phases. See [the theory and native evidence](../synthesis/persistent_producer.tex).
+The pinned comparison passes 1,116 maintained tests and an 84-diagram audit,
+with identical certificates and no gained or lost positives. Previous replay
+benchmark ratios are not producer speedups. The drivers preserve old packages,
+source hashes, complete samples, A/A controls and incomplete outcomes:
+
+```sh
+python -B compressed_word_research/persistent_producer.py audit --output results/persistent_producer_audit.json
+python -B compressed_word_research/persistent_producer.py source --output results/persistent_producer_source.json
+python -B compressed_word_research/persistent_producer.py stages --output results/persistent_producer_stages.json
+python -B compressed_word_research/persistent_producer.py pipeline --output results/persistent_producer_pipeline.json
+```
+
+### Plain power relations after primitive reductions stall
+
+Optional `primitive_projection` and `primitive_forest` searches now try pairs
+of raw cyclic power relators after their existing primitive donors fail.
+Relations `x^a y^b` and `x^c y^d` with `a*d-b*c != 0` force both generators
+to have finite order. In the independently source-verified knot group,
+torsion-freeness therefore permits deleting both everywhere. Every relator
+slot is retained. This internal rule is not valid for arbitrary groups with
+torsion and is not a knot verdict by itself.
+
+The producer recognizes the exact cyclic two-run spelling using bounded run
+summaries on the word circuit; a pure-power row may supplement a mixed row.
+It selects disjoint pairs and retains at least one generator. Version-nine
+`power_pair_delete` evidence contains only generator labels and two source
+slot indices per pair. Separate compressed and literal checkers authenticate
+the word shape, recompute the nonzero determinant, and perform their own
+substitutions. They do not call producer helpers or trust exponent claims.
+Version-eight and earlier certificates cannot use this new move.
+
+An empty coherent-pair snapshot from the existing primitive planner proves
+there is no mixed donor for this detector. Search skips its preparation in
+that case. This exact eligibility guard removes redundant scans while
+preserving the supported discovery class.
+
+A deletion-only epoch has polynomial encoded cost: reachable grammar size
+and raw lengths never grow. General exposure and normalization remain outside
+that bound. The operation closes supplied binary-power families where existing
+primitive forests find no donor. The 88-diagram audit found no automatic new
+proofs or coverage gain; a deliberately exposed complete PD certificate passes
+both independent verifiers. All 1,121 maintained tests pass.
+
+See [the proof, scope and measurements](../synthesis/power_pairs.tex).
+
+```sh
+python -B compressed_word_research/power_pairs.py audit --output results/power_pairs_audit.json
+python -B compressed_word_research/power_pairs.py benchmark --output results/power_pairs_benchmark.json
 ```

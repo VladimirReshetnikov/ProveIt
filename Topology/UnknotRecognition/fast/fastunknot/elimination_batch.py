@@ -32,6 +32,11 @@ def plan_batch(arena, roots, alive, cache=None, *, ordered=False):
             arena.tick();bit=single&-single;g=labels[bit.bit_length()-1];single^=bit
             if g in alive and support<=alive:
                 length=arena.lengths[root];candidates.append(((length-2)*counts[g],length,slot,g))
+    return _select_batch(arena, candidates, supports, alive, bits, ordered=ordered)
+
+
+def _select_batch(arena, candidates, supports, alive, bits, *, ordered):
+    """Shared producer selection policy after exact source summaries."""
     graph={};reach={};incoming={};slots=set();selected=[]
     for _,_,slot,g in sorted(candidates):
         arena.tick()
