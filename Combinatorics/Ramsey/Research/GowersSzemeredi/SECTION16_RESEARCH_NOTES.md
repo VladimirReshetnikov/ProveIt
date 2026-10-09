@@ -3071,3 +3071,39 @@ after clearing redundant package caches, the artifact was rebuilt and the
 import check passed. The source ledger remains 115/5 and the selected
 upstream module scope is unchanged. No ported sources or license notices
 were changed.
+
+
+### J.82. A common neighborhood and dense recentering
+
+`Proofs16DenseRowCommonBohr.dense_row_common_bohr` puts the actual maps
+selected from the original set on a common Bohr neighborhood. With K and
+kappa from J.81, its rank is at most `((K-1)/kappa)*16*kappa^(-2)` and its
+radius is `kappa/(32*pi)`. All normalized difference maps vanish at zero,
+are Freiman of order two there, and are additive whenever both arguments
+and their sum stay in the neighborhood. The earlier directional containment,
+4m rank bound for selected triple spectra, and exceptional-triple count
+are retained for the same maps and pieces.
+
+`Proofs16BohrRecentering` proves an exact translation-average identity:
+for finite E,B in Z/N, the sum over t of `|{x in B : t+x in E}|` is
+`|E|*|B|`. Hence a set of density at least kappa retains at least
+`kappa*|B|` points in some translate of B. Taking B to be the half-radius
+common Bohr set and choosing one retained point as center gives a cluster
+C inside E with all pairwise differences in the full-radius neighborhood.
+Its size is at least kappa times the half-radius Bohr cardinality. For
+any positive integer M with `rho*M >= 2`, the verified Dirichlet bound
+also gives ambient density at least `kappa/M^|Gamma|` for that cluster.
+
+`IsBHomomorphism.dense_recenter` writes a Bohr-extended map on this cluster
+as `f(x)=f(a)+psi(x-a)`, with psi normalized and locally additive.
+`Proofs16DenseRowRecentered.dense_row_common_bohr_recentered` does this for
+every selected piece while preserving the very same common maps psi,
+the original maps L, and their directional containment. It does not
+replace L outside the retained cluster or assert that the entire Bohr
+translate lies inside E. No additional rank or radius loss is introduced.
+
+The three modules contain seven theorem declarations, checked in a
+97-module source closure. This establishes the common-neighborhood and
+cluster recentering input. The simultaneous choice of index patterns,
+algebraic regularity, quasirandomness and subsequent directional steps
+remain to be proved; no numbered statement changes status.
