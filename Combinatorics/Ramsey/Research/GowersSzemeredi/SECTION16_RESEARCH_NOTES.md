@@ -8129,3 +8129,14 @@ scope is added.
 
 **Verification.** The production closure checks 355 modules. Individual
 axiom checks and final merged audit totals are recorded below.
+
+
+**Final verification.** All thirty-three new named results pass individual
+axiom checks. The merged full audit passes 7,974 public Gowers theorems
+in 5,307 combined modules (5,305 facade modules, including 4,152 OAI
+modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+The regenerated source ledger is unchanged: 115 companions and five
+open entries, with the documented statement-fidelity qualifications.
+The port-scope check remains at 4,134 upstream and 17 compatibility
+modules, excluding reciprocal-only dependencies. The merged remote
+changes affect only the independent topology development.
