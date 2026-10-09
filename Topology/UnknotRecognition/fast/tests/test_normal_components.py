@@ -241,10 +241,19 @@ class NormalComponentTests(unittest.TestCase):
         class Cancelled(Exception):
             pass
 
-        for threshold in (1, 150, 600):
-            for operation in (lambda check: normal_component_census(raw, meridian, check=check),
-                              lambda check: verify_normal_component_certificate(
-                                  raw, meridian, proof, check=check)):
+        for operation in (lambda check: normal_component_census(raw, meridian, check=check),
+                          lambda check: verify_normal_component_certificate(
+                              raw, meridian, proof, check=check)):
+            total = 0
+
+            def count():
+                nonlocal total
+                total += 1
+
+            operation(count)
+            # Entry, middle and final guards must all propagate cancellation.
+            # Faster valid implementations need not reach an old fixed count.
+            for threshold in (1, max(1, total//2), total):
                 calls = 0
 
                 def check():
