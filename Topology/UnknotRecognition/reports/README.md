@@ -1,5 +1,10 @@
 # reports
 
+Meaningful knot-theoretic results must be preserved in a manuscript here or in
+the synthesis, even when they do not improve recognition performance. Retain
+their proofs, hypotheses, counterexamples and attribution; distinguish reviewed
+theorems from unverified claims and conditional algorithmic conclusions.
+
 The six original archives and their extracted contents. Each ZIP had a single
 wrapper directory, which was removed; the numbering follows the archives'
 modification times.
@@ -69,12 +74,12 @@ modification times.
 | `61/` | `unknot_component_certificates_20261009.zip` | generation-checked merger scheduler and cellular disc observer | quadratic merger tests per closure and essential-disc component counts | local compressed kernel, with source geometry required | older archive from `92efcbaed` preserved; current adaptive merger and weighted-disc machinery already implement these roles; delivered overlay not applied over newer runtime |
 | `62/` | `ProveIt_Unknot_Sparse_Incidence_Research.zip` | sparse incidence code, tests and adapter | at most r*s subset queries, zero witnesses and signature-resolved parity counts | arbitrary gluing is not determined by incidence | older archive from `b365341b1` preserved; current sparse unsigned/signed APIs already available from report 50 integration |
 | `63/` | `unknot_power_conjugacy_20261008.zip` | power-conjugacy certificates, exact saturation and plain-power minor witnesses | balancedness-based component trivialization and gcd-of-minors sufficient rule | conjugator/source restrictions and raw exposed-donor discovery | older archive from `b365341b1` preserved; existing power-component/power-pair sections and producers cover the maintained implementation; broader saturation interface remains research |
-| `64/` | `ProveIt_Disc_Completion_Bases_2026-10-09.zip` | exterior-feature representative reducer and independent certificates | sharp 2^(r−1) disc-completion family and binomial grade dimensions | labelled disjoint boundary intervals; native geometric assembly not implemented | full manuscript and evidence preserved; mathematical review and scratch validation pending |
-| `65/` | `ProveIt_Disk_Completion_Kernels_2026-10-09.zip` | disk-completion reducer and typed assembly grammar | exact completion rank and Euler-defect gluing identity | supplied finite geometric grammar; general complete bounded-width producer absent | full manuscript and evidence preserved; mathematical review and scratch validation pending |
-| `66/` | `ProveIt_Signed_Continuation_Bases_20261009.zip` | signed bases and finite triangulated patch selection | exact binary rank, finite-group formula, Euler-optimal signed continuation | supplied patches, seams and boundary anchor; native embedding/essentiality adapter absent | full manuscript and evidence preserved; mathematical review and scratch validation pending |
-| `67/` | `unknot_dual_certificates_20261009.zip` | Farkas sector duals, primitive-ray and mandatory-type proofs | exact anchor objectives, certified propagation and all-size Fibonacci backdoor-zero family | polynomial bounds assume a polynomial LP policy; delivered Bland simplex has no such bound | full manuscript and evidence preserved; native integration review pending |
-| `68/` | `unknot_geometric_transport_20261009.zip` | cocycle transport, collapse scoring and ordered boundary interfaces | exact Pachner changes, endpoint moment recovery and a disconnected primitive-fibre example | peeled scoring refinement unimplemented; no added corpus recognition coverage | full manuscript and evidence preserved, including theorems independent of speedups; native integration review pending |
-| `69/` | `unknot_support_sensitive_certificates_20261009.zip` | support projections and unit-pivot ray certificates | decoder optimality, component-type bound and exact Fibonacci unit propagation | general projection interface has measured regressions; global discovery remains open | full manuscript and evidence preserved; unit-pivot native path selected for first validation |
+| `64/` | `ProveIt_Disc_Completion_Bases_2026-10-09.zip` | exterior-feature representative reducer and independent certificates | sharp 2^(r−1) disc-completion family and binomial grade dimensions | labelled disjoint boundary intervals; native geometric assembly not implemented | mathematical review in synthesis completion_theorems.tex; 18 fresh tests and all standalone audits pass; full proofs preserved without native assembly promotion |
+| `65/` | `ProveIt_Disk_Completion_Kernels_2026-10-09.zip` | disk-completion reducer and typed assembly grammar | exact completion rank and Euler-defect gluing identity | supplied finite geometric grammar; general complete bounded-width producer absent | mathematical review in synthesis completion_theorems.tex; 36 fresh tests, 813,297 entries and 200 grammar comparisons pass; full finite-grammar theorem preserved |
+| `66/` | `ProveIt_Signed_Continuation_Bases_20261009.zip` | signed bases and finite triangulated patch selection | exact binary rank, finite-group formula, Euler-optimal signed continuation | supplied patches, seams and boundary anchor; native embedding/essentiality adapter absent | mathematical review in synthesis completion_theorems.tex; 55 fresh tests, 68,581 signed entries and 297 complete patch assignments pass; group determinant and all-characteristic ranks preserved |
+| `67/` | `unknot_dual_certificates_20261009.zip` | Farkas sector duals, primitive-ray and mandatory-type proofs | exact anchor objectives, certified propagation and all-size Fibonacci backdoor-zero family | polynomial bounds assume a polynomial LP policy; delivered Bland simplex has no such bound | anchor/Farkas and propagation proofs reviewed and preserved, including unused-tetrahedron obstruction and policy-dependent deciding sets; larger LP overlay not promoted |
+| `68/` | `unknot_geometric_transport_20261009.zip` | cocycle transport, collapse scoring and ordered boundary interfaces | exact Pachner changes, endpoint moment recovery and a disconnected primitive-fibre example | peeled scoring refinement unimplemented; no added corpus recognition coverage | mathematical results preserved in synthesis completion_theorems.tex; fresh source-bound splitting replay and 3,125 height checks pass; transport overlay not promoted |
+| `69/` | `unknot_support_sensitive_certificates_20261009.zip` | support projections and unit-pivot ray certificates | decoder optimality, component-type bound and exact Fibonacci unit propagation | general projection interface has measured regressions; global discovery remains open | full projection and component-type theorems preserved; native unit-ray disc gate integrated, all 1,317 tests and 2,550 corpus comparisons pass; layered-256 query improves 31.39x |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -648,3 +653,16 @@ improve by 1.13–1.67x; a forced-cycle family drops from n-1 augmentations to
 zero with linear lifting work. The article distinguishes this restricted
 optimization gain from the still-open general recognition bound and keeps
 the default native candidate schedule unchanged.
+
+Reports 64–69 are preserved for their mathematics as well as their implementation
+ideas. Their complete master manuscripts are [disc completion bases](64/article.tex),
+[disk completion kernels](65/article.tex), [signed continuations](66/paper/main.tex),
+[dual certificates](67/article/unknot_dual_certificates.tex),
+[geometric transport](68/article/unknot_geometric_transport.tex), and
+[support-sensitive certificates](69/article/article.tex). Each directory also retains
+the supplied PDF, appendices and experimental evidence. The synthesis review in
+[completion_theorems.tex](../synthesis/completion_theorems.tex) records the surface
+gluing, exact ranks, finite-group formula, propagation obstruction, transport
+counterexample, endpoint recovery and normal component-type bound independently
+of runtime promotion. Original archive provenance and all preserved-file hashes
+are in `../synthesis/data/incoming-fe88-placement.json`.
