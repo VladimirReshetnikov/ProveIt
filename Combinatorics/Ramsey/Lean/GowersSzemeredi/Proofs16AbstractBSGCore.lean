@@ -212,7 +212,7 @@ theorem abstract_bsg_core {G : Type*} [AddCommGroup G] [Fintype G]
     (hS2 : ∀ a₁ a₂ a₃ a₄, Q 4 a₁ a₂ a₃ a₄ → Q 4 a₂ a₁ a₄ a₃)
     (hS3 : ∀ i a₁ a₂ a₃ a₄, Q i a₁ a₂ a₃ a₄ → Q i a₁ a₃ a₂ a₄)
     {c c' K θ : Real} (hc0 : 0 < c) (hc'0 : 0 < c')
-    (hWT : ∀ i j a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
         Q i a₁ a₂ p.1 p.2 ∧ Q j p.1 p.2 a₃ a₄).card : Real) → Q (i + j) a₁ a₂ a₃ a₄)
     (hK : 0 < K) (hdoub : ((X - X).card : Real) ≤ K * X.card)
     (hgood : c * (X.card : Real) ^ 3 ≤ ∑ d ∈ X - X, (diffGoodCount A (Q 1) d : Real))

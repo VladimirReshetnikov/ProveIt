@@ -43,7 +43,7 @@ theorem threshold_relation_richness_of_walks {N : Nat} [NeZero N]
     (h20 : ∀ p ∈ P, ∀ q ∈ P, p.1-p.2 = q.1-q.2 → Q 4 p.1 p.2 q.1 q.2)
     (hS3 : ∀ i a b c d, Q i a b c d → Q i a c b d)
     {c' K eta beta : Real} (hc' : 0 < c') (hK : 0 < K) (he : 0 ≤ eta) (hb : 0 ≤ beta)
-    (hWT : ∀ i j a b c d, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a b c d, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
       Q i a b p.1 p.2 ∧ Q j p.1 p.2 c d).card : Real) → Q (i+j) a b c d)
     (hdoub : ((X-X).card : Real) ≤ K * X.card)
     (hwalk : ∀ u ∈ B, ∀ v ∈ B, eta * (X.card : Real)^3 ≤ (walkSet P X u v).card)
@@ -119,7 +119,7 @@ theorem abstract_bsg_word_system {N : Nat} [NeZero N] [Fact N.Prime]
     (hS2 : ∀ a b c d, Q 4 a b c d → Q 4 b a d c)
     (hS3 : ∀ i a b c d, Q i a b c d → Q i a c b d)
     {c c' K : Real} (hc : 0 < c) (hc' : 0 < c') (hK : 0 < K)
-    (hWT : ∀ i j a b d e, c' * N ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a b d e, c' * N ≤ (((A ×ˢ A).filter fun p =>
       Q i a b p.1 p.2 ∧ Q j p.1 p.2 d e).card : Real) → Q (i+j) a b d e)
     (hdoub : (((Finset.univ : Finset (ZMod N)) - Finset.univ).card : Real) ≤ K*N)
     (hgood : c*(N : Real)^3 ≤ ∑ d ∈
