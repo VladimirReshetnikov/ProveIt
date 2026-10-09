@@ -5182,3 +5182,42 @@ final quantitative structure budget remain open.
 new named theorems pass individual axiom checks using only `propext`,
 `Classical.choice`, and `Quot.sound`. No additional upstream code or
 changes to Apache provenance were required.
+
+
+### Robustly connected pieces of dense graphs: Milićević's Lemma 4.2 (2026-10-09)
+
+J.100 leaves the graph extraction open: it has a dense family of
+coherent column pairs, and needs a dense set of columns. Milićević's
+abstract Balog–Szemerédi–Gowers theorem (Theorem 4.1) does that
+extraction. Its graph engine is Lemma 4.2 (p. 48, after Gowers and [50,
+Lemma 6]): a graph with `cn²` edges has a vertex set `X` with
+`|X| ≥ 2⁻⁵cn` such that every two vertices of `X` are joined by
+`2⁻³⁵c⁹n⁵` walks of length six.
+
+`Proofs16RobustWalks.robust_walks` proves it for a symmetric relation on
+any finite type. The bounds are `|X| ≥ cn/3` and
+`walkCount6 G u v ≥ (9/64)(c²/32)³c²n⁵` for all `u, v ∈ X`, which is
+order `c⁸` (the source has `c⁹`). Here `walkCount6 G u v` is
+`Σ_{z,z′} codeg(u,z)·codeg(z,z′)·codeg(z′,v)`: walks of length six split
+at their second and fourth vertices.
+
+The proof:
+1. `sum_deg_sq_eq_sum_codeg`: `Σ_w deg(w)² = Σ_{u,v} codeg(u,v)` (by
+   symmetry), which is at least `c²n³` by Cauchy–Schwarz.
+2. `sum_badPairs_le`: pairs inside a neighbourhood with codegree below
+   `εn`, summed over the centre, number at most `εn³`.
+3. `exists_good_neighbourhood` is dependent random choice with
+   `ε = c²/32` and multiplier 16. It gives a neighbourhood `S` with
+   `|S|² ≥ c²n²/2` containing at most `|S|²/16` bad pairs.
+4. Cleanup removes the vertices with more than `|S|/8` bad partners;
+   this keeps half of `S`.
+5. For `u, v` in the cleaned set, at least `3|S|/8` middle vertices `z`
+   and `3|S|/4` vertices `z′` have all three codegrees at least `εn`.
+
+Standard axioms; collision gate clean. This is a leaf for the J.100
+graph extraction. It does not itself extract a dense set of coherent
+columns.
+
+Integration note: J.102 independently supplies four-walk extraction and
+its global column application. Both walk lengths are retained; the
+remaining additive-richness and identity-extension stages are shared.
