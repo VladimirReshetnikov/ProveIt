@@ -5619,6 +5619,20 @@ the decomposition with these named constants, but not `Theorem162At 3`.
    - Also this session: the quantitative audit of each new global stage
      against `theorem_16_2_at_three_of_eventually`.
    - Either side may claim a lane differently by recording it here.
+   - *Step 5 claimed by this session (2026-10-09).* This is Milićević
+     §9, Proposition 9.3: the domains `B_x` become `B(Θ₁(x), …, Θ_r(x); ρ)`
+     with Freiman-linear `Θ_i`. Inputs, by their place in the corpus:
+     - Theorem 2.12 (= [49] Theorem 27, Bohr sums contain span Bohr sets):
+       `bohr_sum_contains_span_intersection_quarter`
+       (`Proofs16SpectrumPairSumset`), polynomial.
+     - Lemma 9.1 (gluing compatible maps): `compatible_bohr_sum_quadruple`
+       (J.112).
+     - Theorem 2.26 (approximate homomorphisms are Freiman homomorphisms on
+       large progressions): the polynomial ℤ/N substitute is Corollary 7.6
+       plus Lemma 7.8, as in J.6.
+     - Still to build: Lemma 9.2 (eight maps from one 11-parameter identity
+       family) and the independence-counting iteration of Proposition 9.3
+       (Claim 9.4, sets `I_{x,y}` of size at most `s₀ = (d + log 1/ρ)^O(1)`).
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
@@ -5626,6 +5640,18 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      added frequencies, random characters or `ε` loss.
      `IsFreimanLinearOn.const_mul` and `IsFreimanLinearOn.finset_sum`
      are the closure lemmas.
+   - *Audit of the BSG route (kernel-checked).*
+     `globalColumnQuadrupleDensity_ge` (`Proofs16ColumnBSGGrowth`):
+     `γ ≥ 2^(-30121)·(α/2)^74500 / 13^(4d)`. So
+     `log(1/γ) ≤ 4d·log 13 + O(log(1/α))`, polynomial in `1/α`, since
+     `d ≤ 16/β² + 1`. Every BSG loss downstream is polynomial in `γ`
+     and `α`. Compare the triple-exponential guarantee of the
+     model-elimination core.
+     The radii stay in the same regime. `zeroLadderRadius_ge` gives
+     `ρ_n ≥ u^((16D+1)^n)` for `u = min(1/2, ρ₀/5, ρ₁)`, from
+     `refinementKernelRadius_ge`:
+     `refinementKernelRadius d e ρ r ≥ (ρ/2)(ρ/5)^d (r/2)^(d+e)`. So
+     `log(1/ρ₁₆) ≤ (16D+1)^16 · log(1/u)`, a fixed power of `D`.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)

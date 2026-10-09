@@ -3388,3 +3388,39 @@ batch also supplies native-tested observer ideas; a reflection-vocabulary
 counterexample is retained before promoting the delivered transversal checker.
 Reproduce complete supplied-sector discovery timings with
 `python -B -m normal_orbit_research.sectors --rounds 5 --output OUTPUT.json`.
+
+`normal_topology.normal_topology_spectrum(triangulation, coordinates)` now
+returns the complete abstract component-type spectrum of a supplied normal
+surface, using two additive weights: Euler characteristic and actual boundary
+circle count. Rows contain `chi`, `boundary_components`, `orientable`, binary
+`multiplicity`, and either `genus` or `crosscaps`. A boundary orbit transversal
+provides one marker per circle; weighted base and orientation-double histograms
+then recover the orientability split. The zero signature has its own equation
+to distinguish tori and Klein bottles. No component population is expanded.
+
+The default `reduce_core=True` peels vertex links and divides quadrilateral
+content before orbit discovery, then restores the original types with the
+correct one-sided scaling rule. Set `reduce_core=False` for the direct observer.
+All three discoveries share `max_cycles`; callback checks cover compilation
+and verification. Incomplete runs return no spectrum or certificate.
+`normal_topology_verify.verify_normal_topology_spectrum` reconstructs the
+original source, checks the decomposition and weighted proofs, and verifies
+typewise covering and restoration equations independently of their producers.
+The CLI is `python -m fastunknot.normal_topology census INPUT --certificate`
+and `python -m fastunknot.normal_topology verify INPUT CERTIFICATE`.
+
+The least-representative compiler explicitly supports monotone universe
+reductions. It rejects global reflection events, even when the corresponding
+orbit-count proof is valid; its discovery path explicitly selects forward.
+This fixes the delivered checker’s false-transversal counterexample. Supported
+events are checked individually rather than inferred from a version tag.
+
+All 1,312 maintained tests pass; 5,100 full spectra match the maintained
+component oracle and 1,395 fresh Regina certificate checks pass. The measured
+coordinate-census comparison is mixed: large mixtures and peeled links improve,
+while primitive layered examples regress by about 5–9%. The coordinate reference
+also returns embedding data. Abstract type alone does not establish boundary
+essentiality, diagram provenance or attachment maps. Article section 127 proves
+the observer and its trace contract and records the full timing tradeoffs.
+Reproduce with `python -B -m normal_orbit_research.spectra audit --output OUTPUT`
+or `benchmark --rounds 5` in the same driver.
