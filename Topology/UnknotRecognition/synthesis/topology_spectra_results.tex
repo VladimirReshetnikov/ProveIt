@@ -1,0 +1,43 @@
+All 43 focused tests and all 1,312 maintained tests pass. Focused checks cover
+source and spectrum mutations, cover-only keys, zero signatures, binary
+multiplicities, coordinate reduction, callback propagation, exact cycle caps,
+producer-disabled replay and the newly rejected reflection language.
+
+The isolated benchmark has five randomized rounds, with a separate control
+for each arm. All 300 measured calls and 60 warm-ups complete. The first
+comparison uses the existing coordinate census followed by connected topology
+classification as its reference. It computes the same final abstract spectrum,
+while additionally producing component normal coordinates. Both arms include
+independent proof replay and complete certificate serialization and hashing;
+input construction is outside the timer. All spectra agree, and proof records
+are deterministic within each arm.
+\input{tables/topology_spectra_coordinates.tex}
+
+This comparison is mixed. Vertex links, the ordinary mixture and the binary
+mixture improve by factors 6.412, 5.153 and 5.650 respectively. The binary
+mixture's proof shrinks from 170,120 to 11,530 bytes. The primitive layered
+examples regress by about 5--9 percent despite the smaller weight dimension.
+Their connected-coordinate reference benefits from the existing single-orbit
+shortcut and the finite coorientation-derived double count. The new observer
+still discovers its full weighted double. Dimension reduction alone does
+not establish a universal speedup; eliminating that redundant double when
+a finite coorientation certificate exists is a further integration candidate.
+
+The binary-scaled layered case multiplies the 32-tetrahedron meridian by
+$2^{2048}+1$. The binary mixture uses independently large sphere, vertex-disc
+and one-sided populations, including a coefficient exceeding $2^{4096}$.
+Its spectrum is restored without expanding those populations.
+
+The second comparison isolates the existing coordinate-core reduction,
+using the new direct two-weight observer as the reference and the reduced
+two-weight observer as the new arm. Both return the same original spectrum.
+\input{tables/topology_spectra_core.tex}
+
+Reduction improves the scaled layered case by 1.618 and the binary mixture
+by 5.616. The binary mixture's direct proof has 370,470 bytes, compared with
+11,530 after reduction. In the pure-link case it removes all expensive
+orbit queries; on an even M\"obius multiple the change is much smaller.
+Across both comparisons, control medians range from 0.958 to 1.028. Factors
+are medians of paired ratios, not ratios of the displayed timing medians.
+These are supplied-normal-vector API measurements, rather than complete
+knot-recognition timings or a complexity fit.
