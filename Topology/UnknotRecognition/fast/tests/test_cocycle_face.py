@@ -62,22 +62,22 @@ class CocycleFaceTests(unittest.TestCase):
 
     def test_new_disc_after_four_root_trials_and_exact_caps(self):
         diagram = Diagram.from_pd(NEW_DISC)
-        self.assertEqual(normal_seed_decide(diagram,face_roots=0)['status'],'INCONCLUSIVE')
-        self.assertEqual(normal_seed_decide(diagram,face_roots=3)['status'],'INCONCLUSIVE')
-        self.assertEqual(normal_seed_decide(diagram)['status'],'INCONCLUSIVE')
-        result = normal_seed_decide(diagram,face_roots=4)
+        self.assertEqual(normal_seed_decide(diagram,annulus=False,face_roots=0)['status'],'INCONCLUSIVE')
+        self.assertEqual(normal_seed_decide(diagram,annulus=False,face_roots=3)['status'],'INCONCLUSIVE')
+        self.assertEqual(normal_seed_decide(diagram,annulus=False)['status'],'INCONCLUSIVE')
+        result = normal_seed_decide(diagram,annulus=False,face_roots=4)
         self.assertEqual(result['status'],'UNKNOT')
         self.assertEqual(result['stages'][-1]['stage'],'face')
         self.assertEqual(result['stages'][-1]['root_trial'],4)
         self.assertEqual(result['stats']['face_search']['candidates'],6)
-        self.assertEqual(normal_seed_decide(diagram,max_work=result['work'],face_roots=4)['certificate'],result['certificate'])
-        short = normal_seed_decide(diagram,max_work=result['work']-1,face_roots=4)
+        self.assertEqual(normal_seed_decide(diagram,annulus=False,max_work=result['work'],face_roots=4)['certificate'],result['certificate'])
+        short = normal_seed_decide(diagram,annulus=False,max_work=result['work']-1,face_roots=4)
         self.assertEqual(short['status'],'INCONCLUSIVE')
         self.assertNotIn('certificate',short)
         with patch('fastunknot.cocycle_face.cocycle_face_candidates',side_effect=AssertionError), \
              patch('fastunknot.cocycle_span.minimize_cocycle_span',side_effect=AssertionError):
             self.assertTrue(verify_normal_seed_certificate(diagram,json.loads(json.dumps(result['certificate']))))
-        answer = recognize(diagram,**OPTIONS,normal_seed_face_roots=4)
+        answer = recognize(diagram,**OPTIONS,normal_seed_face_roots=4,normal_seed_annulus=False)
         self.assertEqual(answer.method,'native-normal-cocycle')
 
     def test_equal_minimum_can_be_disc_or_annulus_and_early_success_skips_face(self):
@@ -95,7 +95,7 @@ class CocycleFaceTests(unittest.TestCase):
             chis.add(summary['euler_characteristic'])
         self.assertEqual(chis,{0,1})
         with patch('fastunknot.normal_seed.cocycle_face_candidates',side_effect=AssertionError):
-            self.assertEqual(normal_seed_decide(diagram,face_roots=4)['status'],'UNKNOT')
+            self.assertEqual(normal_seed_decide(diagram,annulus=False,face_roots=4)['status'],'UNKNOT')
             self.assertEqual(normal_seed_decide(Diagram.from_pd([]),face_roots=4)['status'],'UNKNOT')
             self.assertEqual(normal_seed_decide(Diagram.from_pd(NEW_DISC),optimize=False,face_roots=4)['status'],'INCONCLUSIVE')
 

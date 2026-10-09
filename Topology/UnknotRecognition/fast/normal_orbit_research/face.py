@@ -41,8 +41,8 @@ def audit():
     for entry in entries:
         source = entry['source']; diagram = Diagram.from_pd(source['pd']); outcomes = {}
         for policy, trials in [('default',4),('extended',24)]:
-            old = normal_seed_decide(diagram,tree_trials=trials,face_roots=0)
-            new = normal_seed_decide(diagram,tree_trials=trials,face_roots=4)
+            old = normal_seed_decide(diagram,tree_trials=trials,face_roots=0,annulus=False)
+            new = normal_seed_decide(diagram,tree_trials=trials,face_roots=4,annulus=False)
             prior = entry['results'][policy]
             assert old['status']==prior['status'] and old['work']==prior['work']
             if old['status']=='UNKNOT':
@@ -83,7 +83,7 @@ def audit():
     for source in forests.corpus():
         answers=[]
         for roots in (0,4):
-            answer=recognize(Diagram.from_pd(source['pd']),**seeds.COMMON,use_normal_seed=True,normal_seed_face_roots=roots)
+            answer=recognize(Diagram.from_pd(source['pd']),**seeds.COMMON,use_normal_seed=True,normal_seed_face_roots=roots,normal_seed_annulus=False)
             assert answer.status==source['expected']
             attempts=len(list(seeds.native_stages(answer.evidence)))
             answers.append(dict(roots=roots,status=answer.status,method=answer.method,native_attempts=attempts))
@@ -99,7 +99,7 @@ def benchmark(rounds):
     cases.append(('genus-one-miss',(dict(pd=Diagram.from_braid(2,[1,1,-1]).pd,expected='UNKNOT'),4)))
     def run(case,off):
         source,trials=case;diagram=Diagram.from_pd(source['pd'])
-        result=recognize(diagram,**seeds.FORCED,normal_seed_tree_trials=trials,normal_seed_face_roots=0 if off else 4)
+        result=recognize(diagram,**seeds.FORCED,normal_seed_tree_trials=trials,normal_seed_face_roots=0 if off else 4,normal_seed_annulus=False)
         native=result.evidence.get('normal_seed',{});certificate=native.get('certificate')
         if certificate is not None: assert verify_normal_seed_certificate(diagram,certificate)
         complete=result.status in ('UNKNOT','KNOTTED')
