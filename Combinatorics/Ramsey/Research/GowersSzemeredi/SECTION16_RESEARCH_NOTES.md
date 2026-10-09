@@ -5312,6 +5312,46 @@ So option 1 in degree 3 is the real requirement. The counts `exp(Bnd)`
 force a width exponent polynomial in the number of forms, and only an
 explicit Schmidt-type recurrence gives that.
 
+**Option 1 is cheaper than it looked.** The upstream constants are not
+opaque, only packaged. `weylBudget_polynomial_bound` takes
+`A = (weylBudgetPolynomial j).eval 1` and `d = natDegree + 1` of an explicit
+`Polynomial ℕ`. Every later constant is a closed formula:
+- `A·3^d` (`polynomial_weyl_inverse_power_bound`);
+- `schmidtRecurrenceBase C e` and `schmidtRecurrenceExponent e = 15(e+1)+23`;
+- the corpus's `1 + Σ` uniformization;
+- the `max`/product recursion of
+  `exists_simultaneous_multiaffine_partition_bound`.
+
+Each `∃` step's proof is generic in its hypothesis. So the constants can be
+named by restating the steps with fixed witnesses; nothing is re-proved.
+
+`Proofs05ExplicitSchmidtRecurrence` does this up to the partition theorem:
+- `schmidtWeylA/D/C` and `polynomial_weyl_inverse_power_interval_explicit`;
+- `schmidtMonomialK/P` and `simultaneous_modular_monomial_recurrence_explicit`;
+- `uniformSchmidtK/P` and `uniform_modular_monomial_recurrence_explicit`;
+- `multiaffinePartitionK/P` and
+  `simultaneous_multilinear_partition_bound_explicit k`.
+
+It imports the OAI port, so it is checked on the full-verification host.
+Two steps remain:
+1. *Thread the named constants up both chains.* Restate
+   `Proofs16OscillationPartitionInst` as
+   `MultilinearDiameterPartition (multiaffinePartitionK 2 4)
+   (multiaffinePartitionP 2 4)`. Restate
+   `exists_simultaneous_commonDiff_partition_bound 2` and the polynomial
+   Lemma 16.6/16.9 wrappers similarly.
+2. *Bound the numbers.* For example, `degree(weylBudgetPolynomial j)`
+   satisfies `deg_{j+1} = 4 + 6·deg_j`, so `deg = 1, 10, 64` for
+   `j = 0, 1, 2`. Then check `s ≤ η·s(θ,γ,3)` with these bounds. Given
+   the `2^{2^{512}}` room, crude bounds such as `A_j ≤ 2^{2^{20}}` should
+   suffice.
+
+The same session added `Proofs16DeepBoundDomination` (checked locally) and
+`Proofs16DeepBoundSlices` (host). They show that any bound function is
+dominated by `milicevicBound D` at a fixed density, and they give the
+padded slice-class cover from `MilicevicDeepEventuallyPrime Bnd` with `D`
+chosen per `(γ, θ)`.
+
 Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
 eventual, any-bound form) yields the decomposition with the unknown
 constants as parameters, but not `Theorem162At 3`.

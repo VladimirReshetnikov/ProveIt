@@ -819,6 +819,9 @@ import GowersSzemeredi.Proofs16SharperVarietyStructure
 import GowersSzemeredi.Proofs16DeepEventuallyPrime
 import GowersSzemeredi.Proofs16SharperVarietyParameters
 import GowersSzemeredi.Proofs01QuantitativeDensityHeadline
+import GowersSzemeredi.Proofs16DeepBoundDomination
+import GowersSzemeredi.Proofs16DeepBoundSlices
+import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
