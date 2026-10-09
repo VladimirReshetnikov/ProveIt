@@ -3257,10 +3257,27 @@ vertex classes `X`, `Y` and arbitrary finite index types `I` (the
   everything, and the statement would be false.
 
 All 18 theorems and 3 definitions use only the standard axioms. The
-collision gate passes. Lemma 44 (one-sided quasirandomness implies
-`3ε^{1/8}`-quasirandomness) is not yet formalized. No numbered statement
-changes status. This supplies the quasirandomness input of [49]'s
-Claim 38 (step 4 of Theorem 35).
+collision gate passes. No numbered statement changes status. This
+supplies the quasirandomness input of [49]'s Claim 38 (step 4 of
+Theorem 35).
+
+**Lemma 44, sharpened (`Proofs16OneSidedQuasirandom`).** [49] Lemma 44
+assumes degree control (19) and codegree control (20) at level `ε`. It
+concludes `3ε^{1/8}`-quasirandomness via Markov on good pairs and the
+box-norm triangle inequality. A direct argument does better. With
+`f = G − δ`, the row correlation is
+`c(x,x′) = (codeg − δ²|Y|) − δ(deg x − δ|Y|) − δ(deg x′ − δ|Y|)`
+(`codegree_correlation_eq`), and `|c| ≤ |Y|` because `|f| ≤ 1`. Then
+`c² ≤ |Y|·|c|`, and summing over pairs gives
+`boxSum (G − δ) ≤ 3ε|X|²|Y|²` (`boxSum_le_of_codegrees`). So
+`‖G − δ‖□ ≤ (3ε)^{1/4}`, with respect to the given `δ`; neither Markov
+nor the triangle inequality is needed.
+- `total_mass_sub_le_of_degrees` is the density part, `|δ′ − δ| ≤ ε`.
+- `common_neighbourhood_deviation_of_codegrees` chains this into
+  Lemma 43. Degree and codegree control alone bound the number of
+  atypical `I`-tuples by `4|I||J|(3ε)^{1/4}η⁻²|X^I|`.
+
+Four theorems, standard axioms only, collision gate clean.
 
 
 The combined audit after merging the fixed-pattern and quasirandomness
@@ -3271,3 +3288,68 @@ checks. Only propext, Classical.choice, and Quot.sound occur. The source
 ledger remains 115 companions and five open statements, with all prior
 fidelity caveats retained. No additional upstream modules were ported,
 and the selected dependency closure and Apache provenance are unchanged.
+
+
+### J.85. Simultaneous pattern recentering from global density
+
+`Proofs16SelectedCommonBohr` takes a common spectrum over only a chosen
+set I of maps. If each individual spectrum has rank at most Q, the common
+rank is at most |I|Q. A single dense cluster of a parameter set V works
+for every chosen map: its pairwise differences lie in the common Bohr
+neighborhood, and each normalized difference map remains order-two
+Freiman, vanishes at zero, and is locally additive there. Agreement with
+the original maps is retained for all eligible original-domain pairs.
+
+`Proofs16PatternRecentering.fixed_patterns_recentered` applies this to
+I=J(0) union J(2), the two varying index sets from J.84. On a common
+cluster C with anchor a, both L_i(y+z) and L_i(y+w) split as their values
+at the corresponding anchor plus psi_i(y-a). The centered set W=C-a
+contains zero and lies in B(T;rho). If V has density nu, then
+`|W| >= nu * |B(T;rho/2)|`. The common rank is at most 2ell*Q.
+The original pattern's Bohr condition follows from the separate
+half-radius conditions on at most 4ell constant frequencies and at most
+2ell varying frequencies. No claim that a translate of the whole
+neighborhood lies inside an original selected domain is used.
+
+`Proofs16DenseRowPatternRecentering` combines this with the actual dense
+row construction. Here Q=16*kappa^(-2), rho=kappa/(32*pi), and
+`nu=(beta^4-epsilon)/(m+1)^(4ell)`, with epsilon<beta^4. For t in W,
+annihilating the constant and varying frequencies at radius
+`1/(32*max(1,ell))` puts (d,a+t) in `D_hor D_ver D_hor D_hor A`.
+The small active family, rather than all m maps, determines the common
+rank. The individual map domains are handled by their actual membership
+conditions on V and by the common difference neighborhood.
+
+`Proofs16DenseRowExtraction` proves the exact first-moment row bound:
+if |A|>=alpha*N^2 and theta<1, rows of density at least theta have
+density at least `(alpha-theta)/(1-theta)`. At theta=alpha/2 this gives
+`beta=alpha/(2-alpha)`, improving the usual alpha/2 row-set bound.
+`Proofs16GlobalPatternGeometry.global_recentered_patterns` consequently
+starts only from global density, 0<alpha<=1, and N>=8/epsilon, where
+0<epsilon<(alpha/(2-alpha))^4. No dense-row set or independent row-density
+hypothesis remains in this theorem.
+
+The five modules contain ten theorem declarations and compile in a
+110-module closure. This proves the common normalized Bohr geometry and
+its quantitative density inputs. It does not establish the later proper
+progression construction, algebraic regularity, or the final bilinear
+structure theorem. Five numbered catalogue entries remain open, and all
+existing paper-fidelity caveats remain applicable.
+
+
+The merged audit passes: 6,452 public Gowers theorems in a 4,990-module
+facade (4,152 OAI modules), and 4,992 modules including both audits.
+All ten declarations from J.85 also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger remains 115 companions and five open statements. The incoming
+one-sided quasirandomness estimates are included in this audit. No
+upstream dependency or provenance changes are needed.
+
+For the next structural step, [reference 49, Theorem 33 and Claim 37]
+(https://arxiv.org/html/2109.03093) use a proper progression and maps
+defined on its fourfold enlargement. The current theorem supplies a
+common Bohr domain, but does not yet provide that progression. A useful
+intermediate extension is to choose the parameter cluster in a smaller
+neighborhood while retaining the maps on the original neighborhood,
+so that the required sums remain within their domains. The degree and
+codegree estimates alone do not prove the algebraic regularity input.
