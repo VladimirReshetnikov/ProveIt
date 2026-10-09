@@ -13,10 +13,10 @@ def commonIndexAnchorFrequencies {N : Nat} [NeZero N] (s : PairSelectionState N)
     (J : Finset (Fin s.maps.length)) (a : ZMod N) : Finset (ZMod N) :=
   J.image (fun i => (s.maps.get i).toFun a)
 
-theorem HasCoherentAnchorSystem.common_indices {N d : Nat} [NeZero N]
-    {P : Finset (ZMod N)} {T : ZMod N → Finset (ZMod N)}
+theorem HasCoherentAnchorSystemOn.common_indices {N d : Nat} [NeZero N]
+    {H : Finset (HigherArrangementParameter N)} {T : ZMod N → Finset (ZMod N)}
     {L : ZMod N → ZMod N → ZMod N} {delta kappa r : Real}
-    (h : HasCoherentAnchorSystem P T L delta kappa d r) (hk : 0 < kappa)
+    (h : HasCoherentAnchorSystemOn H T L delta kappa d r) (hk : 0 < kappa)
     (hT : ∀ x, (T x).card ≤ d) :
     ∃ (s : PairSelectionState N) (J : Finset (Fin s.maps.length))
       (x y : ZMod N → ZMod N) (R : Finset (Fin 4 → ZMod N)),
@@ -25,7 +25,7 @@ theorem HasCoherentAnchorSystem.common_indices {N d : Nat} [NeZero N]
       J.card ≤ 8*jointSelectionRank d r ∧
       (kappa/((s.maps.length+1 : Nat) : Real)^(8*jointSelectionRank d r))*(N : Real)^3 ≤ R.card ∧
       ∀ a ∈ R, a 0+a 1 = a 2+a 3 ∧ Function.Injective a ∧
-        shiftAnchorArrangement x y a ∈ supportedHigherArrangements P ∧
+        shiftAnchorArrangement x y a ∈ H ∧
         (∀ j : Fin 4, IsFreimanLinearOn
           (bohr (commonIndexAnchorFrequencies s J (a j)) (jointSelectionRadius d r))
           (shiftAnchorMap T L r x y (a j)) ∧ shiftAnchorMap T L r x y (a j) 0 = 0) ∧
@@ -60,5 +60,27 @@ theorem HasCoherentAnchorSystem.common_indices {N d : Nat} [NeZero N]
   refine ⟨hadd,hinj,hmem,fun j => ⟨(hlocal j).1.mono (hdom j),(hlocal j).2⟩,?_⟩
   intro z hz
   exact hrelation z (fun j => hdom j (hz j))
+
+theorem HasCoherentAnchorSystem.common_indices {N d : Nat} [NeZero N]
+    {P : Finset (ZMod N)} {T : ZMod N → Finset (ZMod N)}
+    {L : ZMod N → ZMod N → ZMod N} {delta kappa r : Real}
+    (h : HasCoherentAnchorSystem P T L delta kappa d r) (hk : 0 < kappa)
+    (hT : ∀ x, (T x).card ≤ d) :
+    ∃ (s : PairSelectionState N) (J : Finset (Fin s.maps.length))
+      (x y : ZMod N → ZMod N) (R : Finset (Fin 4 → ZMod N)),
+      s.JointValid T delta d r ∧
+      (s.maps.length : Real)*jointSelectionGain delta d r ≤ jointSelectionRank d r ∧
+      J.card ≤ 8*jointSelectionRank d r ∧
+      (kappa/((s.maps.length+1 : Nat) : Real)^(8*jointSelectionRank d r))*(N : Real)^3 ≤ R.card ∧
+      ∀ a ∈ R, a 0+a 1 = a 2+a 3 ∧ Function.Injective a ∧
+        shiftAnchorArrangement x y a ∈ supportedHigherArrangements P ∧
+        (∀ j : Fin 4, IsFreimanLinearOn
+          (bohr (commonIndexAnchorFrequencies s J (a j)) (jointSelectionRadius d r))
+          (shiftAnchorMap T L r x y (a j)) ∧ shiftAnchorMap T L r x y (a j) 0 = 0) ∧
+        (∀ z, (∀ j : Fin 4, z ∈ bohr (commonIndexAnchorFrequencies s J (a j))
+            (jointSelectionRadius d r)) →
+          shiftAnchorMap T L r x y (a 0) z+shiftAnchorMap T L r x y (a 1) z =
+            shiftAnchorMap T L r x y (a 2) z+shiftAnchorMap T L r x y (a 3) z) := by
+  exact HasCoherentAnchorSystemOn.common_indices h hk hT
 
 end LeanProofs.GowersSzemeredi

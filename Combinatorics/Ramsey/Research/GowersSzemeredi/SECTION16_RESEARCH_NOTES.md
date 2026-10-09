@@ -8241,3 +8241,50 @@ qualifications. The selected dependency scope remains 4,134 upstream
 and 17 compatibility modules, excluding reciprocal-only dependencies.
 The fetched and merged remote delta changes only the independent
 topology development; no upstream source or license scope is added.
+
+## J.130 Popular shifts and dense agreement of coherent anchors (2026-10-09)
+
+**Popularity before selection.** `columnShiftBases P a` consists of bases
+`z` with both `z` and `z+a` in the exact core. For a fixed shift, a
+supported anchor quadruple is determined by its two bases. Consequently
+`unpopular_anchor_quadruples_card_le` bounds the number of quadruples
+whose shift has fewer than `t*N` bases by `t^2*N^3`. This inequality even
+holds for negative thresholds (the exceptional family is then empty).
+The higher-arrangement projection bounds remove at most `4*t^2*N^11`
+arrangements. Choosing `t = beta^8/4` leaves at least three quarters of
+the original `beta^16*N^11` mass. Joint selection at tolerance
+`beta^16/20` spends another quarter; anchor averaging therefore retains
+the previous `beta^16*N^3/4` quadruple-density guarantee. Every retained
+shift now has at least `beta^8*N/4` supported bases. The modulus condition
+`16 ≤ beta^16*N` is unchanged.
+
+**Preserve the actual family.** `HasCoherentAnchorSystemOn` records
+membership in an arbitrary input arrangement family. The earlier
+`HasCoherentAnchorSystem` is its supported-family specialization.
+Both common-index restriction theorems now have generic versions that
+preserve this membership, with the original statements retained as
+wrappers. Thus popularity survives common-index selection. The global
+popular-anchor theorem obtains all input core data from the original
+dense bihomomorphism; it introduces no new compatibility assumption.
+
+**Agreement and rank.** Compatibility on the exact even core and the
+quarter-domain extension formula prove `core_shift_anchor_agrees`:
+the anchor map equals `L(z+a)-L(z)` on the common quarter-radius Bohr
+set, for every supported base `z`. Intersecting with any selected Bohr
+domain `B(D;sigma)` retains that equality. The explicit domain of pairs
+`(z,w)` uses radius `min(sigma,r/4)` and at most `k+g+4*d` frequencies
+when `|D| ≤ k`, `|Gamma| ≤ g`, and each column spectrum has size at most
+`d`. The common spectrum is counted once, improving the direct union
+bound `k+4*(g+d)`. For every positive integer `Q` satisfying
+`1 ≤ min(sigma,r/4)*Q`, its cardinality obeys
+`t*N^2 ≤ Q^(k+g+4*d)*|domain|`.
+
+This establishes dense agreement with the local column models. It does
+not yet discharge the final deep-structure statement, the separate
+progression-domain requirement for the frequency maps, or the polynomial
+budget for the composite even-core parameters. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Initial verification.** The production target through the agreement
+domain checks 408 modules. The final axiom and merged-closure verification
+is recorded below after the common-index agreement interface is added.

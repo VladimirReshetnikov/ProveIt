@@ -28,6 +28,31 @@ theorem uniformAnchorIndexDensity_le {delta kappa r : Real} {d m : Nat}
   have hp := pow_le_pow_left₀ (show 0 ≤ ((m+1 : Nat) : Real) by positivity) hb (8*jointSelectionRank d r)
   exact div_le_div_of_nonneg_left hk (by positivity) hp
 
+theorem HasCoherentAnchorSystemOn.common_indices_uniform {N d : Nat} [NeZero N]
+    {H : Finset (HigherArrangementParameter N)} {T : ZMod N → Finset (ZMod N)}
+    {L : ZMod N → ZMod N → ZMod N} {delta kappa r : Real}
+    (h : HasCoherentAnchorSystemOn H T L delta kappa d r) (hk : 0 < kappa) (hd : 0 < delta)
+    (hT : ∀ x, (T x).card ≤ d) :
+    ∃ (s : PairSelectionState N) (J : Finset (Fin s.maps.length))
+      (x y : ZMod N → ZMod N) (R : Finset (Fin 4 → ZMod N)),
+      s.JointValid T delta d r ∧
+      (s.maps.length : Real)*jointSelectionGain delta d r ≤ jointSelectionRank d r ∧
+      J.card ≤ 8*jointSelectionRank d r ∧
+      uniformAnchorIndexDensity delta kappa d r*(N : Real)^3 ≤ R.card ∧
+      ∀ a ∈ R, a 0+a 1 = a 2+a 3 ∧ Function.Injective a ∧
+        shiftAnchorArrangement x y a ∈ H ∧
+        (∀ j : Fin 4, IsFreimanLinearOn
+          (bohr (commonIndexAnchorFrequencies s J (a j)) (jointSelectionRadius d r))
+          (shiftAnchorMap T L r x y (a j)) ∧ shiftAnchorMap T L r x y (a j) 0 = 0) ∧
+        (∀ z, (∀ j : Fin 4, z ∈ bohr (commonIndexAnchorFrequencies s J (a j))
+            (jointSelectionRadius d r)) →
+          shiftAnchorMap T L r x y (a 0) z+shiftAnchorMap T L r x y (a 1) z =
+            shiftAnchorMap T L r x y (a 2) z+shiftAnchorMap T L r x y (a 3) z) := by
+  obtain ⟨s,J,x,y,R,hs,hbudget,hJ,hmass,hproperties⟩ := h.common_indices hk hT
+  refine ⟨s,J,x,y,R,hs,hbudget,hJ,?_,hproperties⟩
+  exact (mul_le_mul_of_nonneg_right (uniformAnchorIndexDensity_le hd hk.le hbudget)
+    (show 0 ≤ (N : Real)^3 by positivity)).trans hmass
+
 theorem HasCoherentAnchorSystem.common_indices_uniform {N d : Nat} [NeZero N]
     {P : Finset (ZMod N)} {T : ZMod N → Finset (ZMod N)}
     {L : ZMod N → ZMod N → ZMod N} {delta kappa r : Real}
@@ -48,9 +73,6 @@ theorem HasCoherentAnchorSystem.common_indices_uniform {N d : Nat} [NeZero N]
             (jointSelectionRadius d r)) →
           shiftAnchorMap T L r x y (a 0) z+shiftAnchorMap T L r x y (a 1) z =
             shiftAnchorMap T L r x y (a 2) z+shiftAnchorMap T L r x y (a 3) z) := by
-  obtain ⟨s,J,x,y,R,hs,hbudget,hJ,hmass,hproperties⟩ := h.common_indices hk hT
-  refine ⟨s,J,x,y,R,hs,hbudget,hJ,?_,hproperties⟩
-  exact (mul_le_mul_of_nonneg_right (uniformAnchorIndexDensity_le hd hk.le hbudget)
-    (show 0 ≤ (N : Real)^3 by positivity)).trans hmass
+  exact HasCoherentAnchorSystemOn.common_indices_uniform h hk hd hT
 
 end LeanProofs.GowersSzemeredi
