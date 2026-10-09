@@ -61,7 +61,7 @@ def _primitive_cochain(prepared, heights, zero_tree, check):
     return values if common == 1 else None
 
 
-def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
+def inspect_cocycle_certificate(diagram, certificate, *, check=lambda: None):
     """Return certified connected-surface data, or None for an invalid proof.
 
     A valid certificate with Euler characteristic other than one describes
@@ -115,19 +115,8 @@ def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
                 or not certificate_equal(span['coordinates'], analysed['rows'])):
             return None
     check()
-    summary = dict(components=1, orientable_components=1,
+    return dict(components=1, orientable_components=1,
                 euler_characteristic=analysed['euler_characteristic'],
                 normal_pieces=analysed['normal_disks'],
                 compressing_discs=int(analysed['euler_characteristic'] == 1),
                 connectivity='zero-tree' if span is None else 'minimum-span')
-    return summary, prepared, analysed
-
-
-def inspect_cocycle_certificate(diagram, certificate, *, check=lambda: None):
-    """Return the independently checked connected-surface summary, or None.
-
-    The internal detailed result lets another independent checker reuse this
-    call's freshly reconstructed geometry. No caller-supplied cache is trusted.
-    """
-    result = _inspect_cocycle_details(diagram, certificate, check=check)
-    return None if result is None else result[0]

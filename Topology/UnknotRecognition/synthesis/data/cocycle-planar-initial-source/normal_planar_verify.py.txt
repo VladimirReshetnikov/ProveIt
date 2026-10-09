@@ -1,0 +1,48 @@
+"""Independent source and boundary replay for planar capping witnesses.
+
+No cocycle, flow, orbit or weight-transport discovery is imported. A planar
+surface with exactly one essential boundary circle becomes a compressing
+disc after its inessential boundary circles are capped in a collar.
+"""
+from .integer_codec import encoded_integer
+from .normal_cocycle_verify import inspect_cocycle_certificate
+from .normal_surface_geometry import _prepare, _coordinates
+from .normal_component_geometry import valid_boundary_basis
+from .normal_boundary_geometry import boundary_weight_system
+from .weighted_orbit_verify import verify_weighted_orbit_certificate
+
+
+def inspect_planar_certificate(diagram, certificate, *, check=lambda: None):
+    check()
+    fields = {'schema', 'input_pd', 'triangulation', 'heights', 'coordinates',
+              'span_certificate', 'boundary_homology_basis', 'boundary_orbits'}
+    if (type(certificate) is not dict or set(certificate) != fields
+            or certificate['schema'] != 'diagram-cocycle-planar-v1'):
+        return None
+    surface = {k: v for k, v in certificate.items()
+               if k not in ('boundary_homology_basis', 'boundary_orbits')}
+    surface['schema'] = 'diagram-cocycle-disc-v1'
+    summary = inspect_cocycle_certificate(diagram, surface, check=check)
+    if summary is None:
+        return None
+    prepared = _prepare(certificate['triangulation'], check)
+    analysed = _coordinates(prepared, certificate['coordinates'], check)
+    basis = certificate['boundary_homology_basis']
+    if not valid_boundary_basis(prepared, basis, check):
+        return None
+    size, pairs, weights = boundary_weight_system(prepared, analysed, basis, check)
+    proof = certificate['boundary_orbits']
+    if not verify_weighted_orbit_certificate(size, pairs, weights, proof, dimension=2, check=check):
+        return None
+    boundary = essential = 0
+    for row in proof['histogram']:
+        check()
+        count = encoded_integer(row['orbits'])
+        boundary += count
+        if any(encoded_integer(x) & 1 for x in row['weight']):
+            essential += count
+    if boundary+summary['euler_characteristic'] != 2 or essential != 1:
+        return None
+    check()
+    return dict(summary, boundary_components=boundary, essential_boundary_components=essential,
+                genus=0, unknot_witness='planar-cap')
