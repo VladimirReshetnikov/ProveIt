@@ -45,7 +45,8 @@ theorem MultiplyLinearWith.variety_three_ceiling_free {N C p Cv pv Cs ps D : Nat
   · intro rho _ _
     rfl
   · intro rho _ _
-    dsimp only [section16VarietyThreePieceExponent, section16PolynomialVarietyThreeExponent]
+    dsimp only [section16VarietyThreePieceExponent, section16PolynomialVarietyThreeExponent,
+      section16PolynomialVarietyThreeExponent2]
     simp only [Nat.cast_mul, Nat.cast_ofNat]
 
 /-- The statement of `exists_ceiling_free_variety_relation_decomposition` at fixed constants. -/

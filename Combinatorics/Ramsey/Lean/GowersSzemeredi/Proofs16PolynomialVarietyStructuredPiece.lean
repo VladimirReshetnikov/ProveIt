@@ -10,14 +10,20 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-def section16PolynomialVarietyThreeExponent (C p Cv pv Cs ps D Q : Nat)
+/-- The lift exponent with separate indices: `D` for the variety family and
+`D₂` for the spectrum. -/
+def section16PolynomialVarietyThreeExponent2 (C p Cv pv Cs ps D D₂ Q : Nat)
     (c theta gamma rho : Real) : Real :=
-  let Qb : Real → Real := fun _ => 9 * section16VarietySpectrumCount D theta gamma
+  let Qb : Real → Real := fun _ => 9 * section16VarietySpectrumCount D₂ theta gamma
   let Eb := fun _ : Real => section16PolynomialJointVarietyExponent Cs ps
-    (section16VarietySpectrumCount D theta gamma) D (section16VarietySpectrumDensity theta gamma)
+    (section16VarietySpectrumCount D₂ theta gamma) D₂ (section16VarietySpectrumDensity theta gamma)
   section16CappedWidthExponent
     (section16PolynomialVarietyLiftExponent p Cv pv D Q c theta gamma Qb Eb rho)
     (section16PolynomialVarietyLiftThreshold C p Cv pv D Q c theta gamma Qb Eb rho)
+
+def section16PolynomialVarietyThreeExponent (C p Cv pv Cs ps D Q : Nat)
+    (c theta gamma rho : Real) : Real :=
+  section16PolynomialVarietyThreeExponent2 C p Cv pv Cs ps D D Q c theta gamma rho
 
 /-- The statement of `exists_polynomial_variety_structured_piece` at fixed
 constants. -/
