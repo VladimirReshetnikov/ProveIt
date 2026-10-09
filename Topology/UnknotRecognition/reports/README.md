@@ -563,3 +563,16 @@ zero. All 1,197 tests pass and 787 Regina surface controls agree. The retained
 same-matching examples include discs and annuli at the same piece minimum;
 tie-breaking does not preserve topology. See `../synthesis/cocycle_face.tex`
 for the proof, bounded-search limits, source coverage and adverse timings.
+
+The connectedness/class certificate now also supports **primitive annulus
+caps**: in a knot exterior, a primitive connected orientable Euler-zero
+surface has exactly one essential boundary circle, and capping the other
+gives a compressing disc. A new annulus schema preserves the stored surface's
+zero disc count and leaves the surface/span inspectors unchanged. Default
+four-tree native coverage becomes 24 positives; the optional 24-tree policy
+reaches 27. All 1,204 tests pass and 796 Regina comparisons agree, including
+two rejected trefoil adversaries. Complete calls improve 1.57–1.64× on three
+early annuli, 1.48× over face search and 1.35× on a late-tree case; the new
+seven-crossing proof plus replay is about 16% slower than the old fallback.
+See `../synthesis/cocycle_annulus.tex` for the proof, boundary controls,
+certificate semantics and measurement limits.
