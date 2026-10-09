@@ -1265,6 +1265,29 @@ The variety route splits this into three steps.
      and its precise derivation is still a separate obligation. With a
      quasi-polynomial κ satisfying the line input, the piece count is
      quasi-polynomial in 1/(γθ).
+   - **Theorem 2.26 removed (same night, `Proofs16LineExtractor`).**
+     Gowers's product property is stronger than energy: it holds on every
+     sub-domain, for every weight, and for p copies at once. A line
+     restriction therefore inherits the one-dimensional property, and the
+     corpus's own Lemma 16.3 step (`section16_product_restriction`) applies.
+     It gives an order-8 Freiman restriction on ≥ α(γ,β)N points, with the
+     **polynomial** α = 2⁻²⁰⁰⁰(γβ)¹⁰⁰⁰⁰. So:
+     - `lineExtractor_polynomial` is unconditional;
+     - `densePiece_polynomial`: `DenseBihomPiece` holds unconditionally, with
+       polynomial mass;
+     - `structure_side_of_milicevic`: **the covering half of
+       `StackableStructureAt 2` rests on `MilicevicDeepVarietyStructure`
+       alone**. That is our reformulation of Milićević's construction, not a
+       quoted theorem; see the caveat above. The piece count is m·exp(B(θ/(2m))) with polynomial m, so
+       it is quasi-polynomial in 1/(γθ) through Milićević's B.
+
+     The dense-piece proof was refactored onto an abstract `LineExtractor`
+     (line product property in, Freiman sub-line out). The energy route is
+     now the instance `lineExtractor_of_lineFreimanExtraction`, with the
+     same mass as before.
+
+   **Remaining for `StackableStructureAt 2`:** Milićević's theorem (a
+   hypothesis), and stackability of the variety class (step 3).
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
