@@ -3209,7 +3209,24 @@ vertex classes `X`, `Y` and arbitrary finite index types `I` (the
   everything, and the statement would be false.
 
 All 18 theorems and 3 definitions use only the standard axioms. The
-collision gate passes. Lemma 44 (one-sided quasirandomness implies
-`3ε^{1/8}`-quasirandomness) is not yet formalized. No numbered statement
-changes status. This supplies the quasirandomness input of [49]'s
-Claim 38 (step 4 of Theorem 35).
+collision gate passes. No numbered statement changes status. This
+supplies the quasirandomness input of [49]'s Claim 38 (step 4 of
+Theorem 35).
+
+**Lemma 44, sharpened (`Proofs16OneSidedQuasirandom`).** [49] Lemma 44
+assumes degree control (19) and codegree control (20) at level `ε`. It
+concludes `3ε^{1/8}`-quasirandomness via Markov on good pairs and the
+box-norm triangle inequality. A direct argument does better. With
+`f = G − δ`, the row correlation is
+`c(x,x′) = (codeg − δ²|Y|) − δ(deg x − δ|Y|) − δ(deg x′ − δ|Y|)`
+(`codegree_correlation_eq`), and `|c| ≤ |Y|` because `|f| ≤ 1`. Then
+`c² ≤ |Y|·|c|`, and summing over pairs gives
+`boxSum (G − δ) ≤ 3ε|X|²|Y|²` (`boxSum_le_of_codegrees`). So
+`‖G − δ‖□ ≤ (3ε)^{1/4}`, with respect to the given `δ`; neither Markov
+nor the triangle inequality is needed.
+- `total_mass_sub_le_of_degrees` is the density part, `|δ′ − δ| ≤ ε`.
+- `common_neighbourhood_deviation_of_codegrees` chains this into
+  Lemma 43. Degree and codegree control alone bound the number of
+  atypical `I`-tuples by `4|I||J|(3ε)^{1/4}η⁻²|X^I|`.
+
+Four theorems, standard axioms only, collision gate clean.

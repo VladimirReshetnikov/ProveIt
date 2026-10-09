@@ -421,6 +421,7 @@ import GowersSzemeredi.Proofs16SmallSpanGenerators
 import GowersSzemeredi.Proofs16BoundedSpanPhase
 import GowersSzemeredi.Proofs16SmallCoverIndices
 import GowersSzemeredi.Proofs16BipartiteQuasirandom
+import GowersSzemeredi.Proofs16OneSidedQuasirandom
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
