@@ -4097,3 +4097,11 @@ completion. The Fourier cutoff and size budgets still have to be made
 compatible with these losses. The five numbered open entries, 115
 companions, and all source-fidelity qualifications remain unchanged.
 No upstream source or selected port dependency was added or modified.
+
+Validation: all 15 newly named theorems pass individual transitive axiom
+checks with only `propext`, `Classical.choice`, and `Quot.sound`. The full
+consumer audit passes for 6,710 public Gowers theorems in a 5,040-module
+facade (4,152 OAI modules), or 5,042 modules including both audits. The
+source ledger matches the tracked 115 companions and five open entries;
+the selected port-scope check also passes. The Apache provenance/license
+files and the selected upstream source closure remain unchanged.
