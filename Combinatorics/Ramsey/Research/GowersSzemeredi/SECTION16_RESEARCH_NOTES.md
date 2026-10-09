@@ -5766,6 +5766,33 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   elimination instead, which is where the triple exponential enters. A
   polynomial-loss abstract BSG for "respected" quadruple families is the
   natural replacement to formalize next.
+
+  **The abstract BSG, and what the corpus already has for it.**
+  Milićević's Theorem 4.1 (printed p. 47) has the following shape.
+  - **Hypotheses.** Take `X` with `|X−X| ≤ K|X|` and `A ⊆ X`, and
+    quadruple families `Q_1, …, Q_36` in `A` with:
+    - *largeness:* `|Q_1| ≥ c|X|^3`;
+    - *symmetry:* closure under `(a₃,a₄,a₁,a₂)`, `(a₂,a₁,a₄,a₃)` and
+      `(a₁,a₃,a₂,a₄)`;
+    - *weak transitivity:* if `(a₁,a₂,b,b′) ∈ Q_i` and
+      `(b,b′,a₃,a₄) ∈ Q_j` for at least `c′|X|` pairs, then
+      `(a₁,a₂,a₃,a₄) ∈ Q_{i+j}`.
+  - **Conclusion.** A subset `A′` of size `(c/2K)^O(1)|X|` in which every
+    `ℓ`-tuple has `(c/2K)^O(1)|X|^(3ℓ−1)` bridging representations through
+    `Q_36`, for `ℓ ≤ k`. All losses are polynomial.
+  - **Application.** Proposition 6.1 takes `Q_i` to be the quadruples
+    whose alternating sum has image at most `K^i` on the common domain.
+    Each transitivity step multiplies the image bound and intersects the
+    domains.
+  - **Corpus.** The robust-connectivity input (his Lemma 4.2, many short
+    paths between any two vertices of a dense set) exists here as
+    `exists_dense_four_walk_set` (J.102), with polynomial bounds.
+  - **Plan.** Prove Theorem 4.1 for ℤ/N from J.102. Apply it with `Q_i` =
+    "alternating sum has at most `K^i` values on the radius-`ρ/2^i`
+    common domain". Then `freiman_small_image_zero` turns the conclusion
+    into exact zero relations at radius `ρ/K^O(1)`. The losses stay
+    `exp(-poly)` provided `K` and the spectrum rank are polynomial.
+    This would replace J.108–J.110.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
