@@ -39,6 +39,12 @@ declaration exists for any statement of this report.
   2.12, 2.13, Corollaries 2.3, 2.6, Propositions 2.11, 2.14, 2.15 (Section
   2); Theorems 3.1 and 3.4 (Section 3); Theorem 4.1, Corollary 4.2,
   Proposition 4.3, Lemma 4.4 (Section 4); and Propositions 7.1 and 7.2.
+  (Precision added by the independent check of 9 October 2026: this list
+  also contains results Theorem 1.1 does not use (Theorem 2.5, Corollary 2.6,
+  Propositions 2.14, 2.15, 7.1, 7.2, Theorem 3.4), and it omits Lemmas 3.2
+  and 3.3, which are proved and which Theorem 3.1 uses. Theorem 1.1 uses
+  Lemmas 2.1, 2.7–2.9, 3.2, 3.3, 4.4, Theorems 2.2, 2.12, 2.13, 3.1, 4.1,
+  Corollaries 2.3, 4.2 and Propositions 2.11, 4.3.)
 - **What is conditional — not a proved result of this report.** Theorem 5.4
   (binary nondeterministic complementation: every `s`-state 2NFA for
   `{0,1}* \ B_h` has `s ≥ ½·2^⌊(h−2)/127⌋ − 1`; for `n ≥ 14`,
@@ -47,6 +53,11 @@ declaration exists for any statement of this report.
   nondeterministic complementation, stated but **not proved here and not
   checked by the write**. Lemma 5.2 and Proposition 5.3 (the transfer) are
   proved here; Lemma 5.2 normalizes the companion's construction.
+  (Precision added by the independent check: Lemma 5.2 is the companion's
+  Lemma `auto:representation` for the binary alphabet, in the same machine
+  model, proved there in its Section 5; the proof here is an outline of that
+  construction. Proposition 5.3 and the arithmetic of Theorem 5.4 are this
+  report's own.)
 - **What rests on computation.** Nothing in the proofs; the shipped audits
   and the write's own code are finite diagnostics.
 - **What is prior.** The cap-component classification of Brauer idempotents
@@ -188,6 +199,49 @@ conditional and stays in Section 5, marked so.
 - **Not read**: the OpenAI liveness manuscript, its Lean summary, TheoremDB
   R816 and the cited literature; the manuscript's accounts of them are
   reported, not confirmed.
+
+## Independent check of the write (9 October 2026)
+
+An adversarial check made by the intake after the write (`d89be4d77`), with
+its own code; recorded at the end of Section 7.
+
+- **The headline bound, checked hardest**: the chain Theorem 2.12 (base
+  `2 ≤ h ≤ 10`, step `h ≥ 11` with `(5/2)F(h−9) = F(h)`), Theorem 2.13,
+  Theorem 3.1 (`J ≤ 4s + 1` for `a = 2`), Lemma 4.4 and the proof in
+  Section 4.4 re-derived; the floor identities `/54` and `/762` checked for
+  `14 ≤ n < 10⁶`.
+- **Theorem 3.1 rebuilt from the text** (read but not rebuilt at the write
+  and at intake): sink normalization, candidate set, asymmetric attachment
+  with fresh leaves, the two test edges, two lanes per edge, rotation joins,
+  contraction. On 400 random binary 2DFAs (`1 ≤ s ≤ 4`) and all 127 words of
+  length `≤ 6`, the test-port predicate agrees with direct execution in all
+  50,800 comparisons, and `k ≤ 8s + 2`; a deliberately broken attachment rule
+  gives 1,482 mismatches, so the test discriminates.
+- **Compiler and decoder**: path counts of Theorem 4.1 and Corollary 4.2 and
+  the canonical membership (34) recomputed by own simulation, no mismatch.
+- **`D(h)`**: recomputed with exact rational ceilings; equal to all 255 CSV
+  rows in every column (each recorded arm sum a maximizer), `2D ≥ ⌈F⌉`
+  throughout, the five table rows equal.
+- **Theorem 5.4's status**: never presented as proved (article, README,
+  ledger). The premise, compared word for word with the companion's source at
+  `adc7f1241`, is in its Section 2 (`diagrams.tex`), on the same monoid.
+  **Precision** (end of Section 5 and above): Lemma 5.2 is the companion's
+  Lemma `auto:representation` for `{0,1}`, in the same model.
+- **Precision** (status note and above): the proved-results list omits Lemmas
+  3.2 and 3.3 and includes results Theorem 1.1 does not use.
+- **Labels**: with `btc:` removed every delivered line is unchanged (317
+  lines inserted); 91 labels, 53 `\ref`, 32 `\eqref`, all prefixed; delivered
+  numbers unchanged (aux of a build of the delivered text); the ledger's 20
+  numbers are the delivered ones; the built bbl equals the delivered one.
+- **Other numbers** (own code): Brauer counts for `m ≤ 7`; the exhaustive
+  counts 1,706, 1,898, 826, 4,280; the budget and relative budget on 90,000
+  random word prefixes (no violation); Proposition 7.2; rates, `(5, 5)`, the
+  case counts. **Provenance** (archive, 32 files, 29 placed files
+  byte-identical, not-shipped sizes, 31 checksums, author lines, pin,
+  neighbour blobs, no earlier repository file on two-way automata or Brauer
+  monoids) confirmed.
+- Apart from the two precisions, **no defect was found in the write**, and no
+  claim of the source was found wrong.
 
 ## Relation to the repository
 
@@ -347,7 +401,10 @@ The committed PDF was built this way with MiKTeX on 7 October 2026: 37
 pages; no errors or warnings (LaTeX or BibTeX), no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes. The delivered text also builds without any (31
-pages), and its `article.bbl` equals the one built here.
+pages), and its `article.bbl` equals the one built here. Rebuilt the same way
+(pdfLaTeX, BibTeX, pdfLaTeX twice) on 9 October 2026 after the independent
+check: 37 pages, with none of the above diagnostics; all delivered label
+numbers unchanged.
 
 ## From the delivery README
 

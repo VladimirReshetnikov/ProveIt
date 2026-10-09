@@ -267,3 +267,64 @@ only through its separate accepting state), and
 Proposition~\ref{btc:research:union-obstruction} was confirmed by the write's
 own diagram multiplication ($a,b$ idempotent of rank two, $ab=b$, $ba=a$).
 \end{writenote}
+\begin{writenote}[Independent check of the write, 9 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{d89be4d77}) re-derived the statements marked [write] with its own code.
+\emph{The headline bound}, checked the hardest: the chain
+Theorem~\ref{btc:alg:rank} (base $2\le h\le10$, step $h\ge11=p+q+1$ with
+$(5/2)F(h-9)=F(h)$), Theorem~\ref{btc:alg:divisor},
+Theorem~\ref{btc:mach:representation} ($J\le4s+1$ for $a=2$),
+Lemma~\ref{btc:comp:quotient} and the proof in
+Section~\ref{btc:comp:main-proof} was re-derived, with the floor identities
+$\lfloor(\lfloor(n-2)/6\rfloor-2)/9\rfloor=\lfloor(n-14)/54\rfloor$ and the
+analogue for $127$ and $762$ checked for $14\le n<10^6$. The sparse-slot
+representation, read but not rebuilt at the write and at intake, was rebuilt
+by the check from the text of Section~\ref{btc:mach:section} alone (sink
+normalization, candidate set, asymmetric attachment with fresh leaves, the
+two test edges, two lanes per edge, rotation joins, contraction): on 400
+random binary 2DFAs with $1\le s\le4$ states and all $127$ binary words of
+length at most $6$, the test-port predicate agreed with direct execution in
+all $50{,}800$ comparisons (both test ports matched whenever one was), and
+always $k\le8s+2$; a deliberately broken attachment rule produced $1{,}482$
+mismatches in a smaller run, so the comparison discriminates. The compiler
+path counts of Theorem~\ref{btc:comp:register} and
+Corollary~\ref{btc:comp:products} (every relation for $h\le3$ and every
+ordered pair for $h\le2$; random relations and pairs for $h=3,4$) and the
+binary decoder's
+membership \eqref{btc:comp:canonical-membership} on $4{,}500$ canonical
+concatenations were recomputed by an own simulation, with no mismatch.
+\emph{The recurrence}: $D(h)$ recomputed with exact rational ceilings for
+$h\le256$ equals every one of the 255 rows of
+\file{certificates/finite\_bounds.csv} in all columns (source states, the
+old bound $2^{\lfloor(h-2)/31\rfloor}$, $\lceil F(h)\rceil$, $D$, $2D$, the
+state bound $\max\{1,\lceil(D-1)/4\rceil\}$), each recorded arm sum is a
+maximizer, $2D(h)\ge\lceil F(h)\rceil$ throughout, and the five table rows
+of Section~\ref{btc:verify:section} agree. \emph{Status of
+Theorem~\ref{btc:complement:binary}}: nowhere in the article, the README or
+the ledger is it presented as proved (the ledger: ``Proved transfer
+conditional on named external premise''); the premise was compared word for
+word with the companion's source and located in its Section~2 (precision at
+the end of Section~\ref{btc:complement:section}). \emph{Labels}: with
+\file{btc:} removed, every delivered line of the eight source files is
+unchanged (317 lines inserted by the write); 91 delivered labels, 53
+\verb|\ref| and 32 \verb|\eqref| references, all prefixed; one label added;
+every delivered number unchanged against a build of the delivered text, and
+the ledger's 20 numbers equal the delivered ones; the built bibliography
+equals the delivered \file{article.bbl}. \emph{Other numbers}: own Brauer
+multiplication for $m\le7$ (diagram, idempotent and support-equality counts
+of the first table of Section~\ref{btc:verify:section}, no support-bound
+violation); the shipped exhaustive counts $1{,}706$, $1{,}898$, $826$ and
+$4{,}280$; the budget and the relative budget on $90{,}000$ random word
+prefixes in idempotent powers of random diagrams, $3\le m\le10$, with no
+violation; Proposition~\ref{btc:research:union-obstruction}; the rates (both
+truncations), the optimum $(5,5)$ over $p,q\le300$, $312/343$, $5^7>2^{16}$,
+$12(4^h+2)+2=12\cdot4^h+26$, and the case counts of
+Section~\ref{btc:verify:section}. \emph{Provenance}: archive size, SHA-256, 32
+files, 2{,}214 lines and 96{,}365 bytes, the 29 placed files byte-identical
+(and unchanged since, except the files the write edited), the sizes of the
+files not shipped and the 31 checksums, the author lines, the pin, the three
+neighbour README blobs, and the absence of earlier repository files on
+two-way automata or Brauer monoids confirmed. Apart from the two precisions
+(the status note's list, and Lemma~\ref{btc:complement:representation}), no
+defect was found in the write, and no claim of the source was found wrong.
+\end{writenote}

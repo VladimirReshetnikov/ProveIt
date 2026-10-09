@@ -1069,3 +1069,27 @@ and 1,395 fresh Regina certificate checks. Complete-call timings improve large
 mixtures and vertex links but regress on primitive layered inputs; the coordinate
 reference also computes finer embedding data. Records and source pins are
 `data/topology-spectra-*`, with reproduction in the `spectra` research driver.
+
+[completion_theorems.tex](completion_theorems.tex) preserves the mathematical
+content of the six new reports 64–69 independently of performance decisions.
+It records the gluing/defect identity, sharp exterior and cut-stratum ranks,
+signed and finite-group compatibility, the mandatory-only propagation
+obstruction, exact transport changes and disconnected primitive fibre,
+endpoint moments, optimal support projections and the bound H ≤ 2d−a on distinct
+coordinate types. Full original manuscripts, PDFs and proof appendices remain
+in the report directories. Fresh standalone validation of reports 64–66,
+transport replay, and all preserved-file hashes are in `data/incoming-fe88-*`;
+`data/incoming_fe88_transport_math.py` reproduces the source-bound counterexample
+and 3,125 height identities. The broader overlays remain research interfaces.
+
+[unit_ray.tex](unit_ray.tex) integrates report 69's linear unit-pivot rank
+certificate into the native disc-count API after its existing canonical reduction.
+It proves connectedness, exact essential-disc counts and the all-size Fibonacci
+witness family, while retaining legacy replay and the complete fallback.
+All 1,317 maintained tests and 2,550 corpus comparisons pass; 1,878 configurations
+skip orbit discovery. The isolated complete-call benchmark retains 220 measured
+calls and 44 warmups: the layered-256 count query improves 31.39x, whereas full
+supplied-sector gains are 1.07–1.30x. No whole-recognizer gain or general QP bound
+is asserted. Data and source pins are `data/unit-ray-*`; reproduction is in
+`../fast/normal_orbit_research/unit_rays.py`, with generated tables and publication
+review scripts in `data/`.

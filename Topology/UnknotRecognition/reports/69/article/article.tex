@@ -1,0 +1,835 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx,xcolor,microtype}
+\usepackage{enumitem,listings,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{cleveref}
+\definecolor{ink}{RGB}{24,43,65}
+\definecolor{muted}{RGB}{72,88,102}
+\definecolor{light}{RGB}{242,246,249}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{muted}{Support-sensitive unknot certificates}}
+\fancyhead[R]{\small\textcolor{muted}{ProveIt research continuation}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\F}{\mathbb F}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\nnz}{\operatorname{nnz}}
+\newcommand{\calK}{\mathcal K}
+\newcommand{\calT}{\mathcal T}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{light},frame=single,
+ rulecolor=\color{light},breaklines=true,columns=fullflexible,keepspaces=true,
+ showstringspaces=false,xleftmargin=5pt,xrightmargin=5pt,aboveskip=10pt,belowskip=10pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Support-Sensitive Certificates for Unknot Recognition},
+ pdfauthor={ProveIt research continuation, prepared with ChatGPT},
+ pdfsubject={Exact coordinate transport, support nullity, ray peeling, and a quasi-polynomial research agenda}}
+
+\title{\textcolor{ink}{Support-Sensitive Certificates\\for Unknot Recognition}\\[6pt]
+ \large Optimal coordinate transport, component profiles,\\and linear unit-pivot ray certificates}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+ \small ProveIt project; mathematical development and implementation with ChatGPT}
+\date{9 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop exact, independently checkable improvements to the normal-surface
+analysis stage of ProveIt's unknot recognizer.  For a supplied admissible normal
+vector $x$, let $d$ be the nullity of the matching equations after all zero
+coordinates of $x$ have been fixed.  We compile a decoder from exactly $d$
+selected coordinates, minimize its allocated binary-slot cost by a weighted
+matroid basis calculation, and transport the selected data as one scalar.
+A fibre invariant proves that scalar packing preserves every canonical weight
+run of the corresponding vector calculation.  We sharpen the bound on distinct
+full component-coordinate types to $H(x)\le 2d-a$, where $a$ counts supported
+vertex links, and to $H(x)\le d$ when all components are two-sided.
+
+A second path partitions the source by actual face-arc incidences and counts
+essential discs on rank-one blocks without an interval-orbit computation.
+An integral unit-pivot peeling certificate proves rank one and recovers the
+primitive generator from a single coordinate.  For the entire layered
+Fibonacci meridian family it has exactly $3t-1$ steps in $t$ tetrahedra,
+despite exponentially many represented normal pieces.  The deliverable
+contains additive Python implementations, independently written checkers,
+adversarial tests, a reproducible corpus audit, paired benchmarks, and a
+diagram-bound positive-certificate interface.
+
+These are local supplied-surface results.  Compressed component extraction and
+primitive vertex-surface connectedness are classical antecedents, explicitly
+credited here.  We do not prove a quasi-polynomial bound for unrestricted unknot
+recognition.  We identify the remaining selection, hierarchy, marking, and
+representation bounds needed for such a theorem and formulate concrete next
+research targets.
+\end{abstract}
+
+\vspace{4pt}
+\noindent\textbf{Reproducibility baseline.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3a90fb34146c915328ab8eac6250cc2514f74ed0/Topology/UnknotRecognition}{ProveIt},
+commit \code{3a90fb34146c915328ab8eac6250cc2514f74ed0}.
+All performance statements refer to the accompanying executable experiment,
+not to an unspecified later revision.
+
+\clearpage
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The problem addressed and the contribution boundary}
+\label{sec:scope}
+
+The long-term goal is a deterministic unknot recognizer whose running time,
+on a diagram with $n$ crossings, is $2^{(\log n)^{O(1)}}$.  A useful continuation
+must improve a concrete part of the algorithm while keeping the distinction
+between a local polynomial routine and the global search explicit.  A normal
+surface can contain exponentially many elementary discs and yet have a short
+binary coordinate vector.  Operating on those coordinates is indispensable,
+but does not by itself determine which surface recognition should examine.
+
+This article concentrates on two questions that the maintained implementation
+already exposes as precise computational interfaces:
+\begin{enumerate}
+\item Given a normal vector, what are the distinct complete coordinate vectors
+of its connected components, with binary multiplicities?
+\item How many of its components are discs with essential boundary on the
+boundary torus?
+\end{enumerate}
+The first question needs more information than the second.  Our implementation
+uses a compiled coordinate observer for the first, and a rank-one algebraic
+shortcut with an exact fallback for the second.  An additional wrapper binds
+a positive answer to the canonical exterior of a particular classical knot
+diagram.  It accepts supplied normal coordinates; it does not search for them.
+
+\subsection{What the pinned repository and incoming work already contain}
+
+The audit covered the maintained Python implementation and synthesis sources,
+and the relevant incoming archives at the pinned commit.  The maintained
+coordinate census already transports positive quadrilateral coordinates and
+one positive minimum triangle anchor per supported vertex link.  Its dimension
+is essentially $q+a$, where $q$ counts positive quadrilateral types.  Its
+decoder is sparse and integral.  Replacing it with generic linear algebra is
+therefore a tradeoff, not an automatic improvement.
+
+The maintained code also contains exact three-weight essential-disc detection,
+an independent orbit replay checker, primitive-core disc counting, a canonical
+diagram-to-exterior construction and independent local verification, and
+minimum-span cocycle optimization with a forced-difference quotient.  Earlier
+synthesis establishes component-type bounds using quadrilateral coordinates.
+The incoming support-kernel package already develops small supported systems,
+primitive-ray certificates, low-nullity ray enumeration, and dense Fibonacci
+examples.  We do not claim these as new discoveries.  The accompanying
+provenance manifest names the inspected files and incoming archive hashes.
+
+The additions here are a cost-optimal observer on the \emph{actual positive
+standard-coordinate support}, a scalar realization with an exact live-state
+invariant, the $2d-a$ inventory refinement, safe geometric support blocks, and
+an executable unit-pivot specialization that proves and exploits the integral
+ray structure without Gaussian elimination.  Their composition with existing
+source correspondence is also implemented and tested.
+
+\subsection{Classical and current external context}
+
+Agol--Hass--Thurston already give compressed component coordinates for a
+supplied normal surface in time polynomial in triangulation size and logarithmic
+normal weight \cite[Theorem~16, Corollary~17]{AHT06}.  Our observer and packing
+refine that local calculation.  Hass--Lagarias--Pippenger use active-constraint
+rank and primitivity to certify vertex-surface connectedness without tracing
+all pieces \cite[Lemma~5.3, Sections~6 and~8]{HLP99}.  Our ray path specializes
+that established principle.  Weighted-basis optimization is the matroid greedy
+theorem \cite{Edmonds71}; the contribution is the exact objective and certified
+application to this implementation.
+
+Lackenby's inspected 2021 Oxford handout announces
+$2^{O((\log n)^3)}=n^{O((\log n)^2)}$ \cite[pp.~7, 25]{Lackenby21Slides}.
+The July 2026 preprint gives new hierarchy and certification results.
+Its step-visit bound is $L(g+1)^L$, but individual step costs are not all
+specified; it does not assert a quasi-polynomial total bound
+\cite[Sections~9--10]{Lackenby26}.  We use this distinction to formulate a
+precise global accounting target in \cref{sec:global}, rather than infer a
+complexity theorem from a local benchmark.
+
+\section{Input model, support, and what a certificate means}
+\label{sec:model}
+
+Let $\calT$ be a finite triangulation with $t$ tetrahedra, given by face
+pairings.  For disc queries we require the maintained validator's contract:
+a connected compact orientable $3$-manifold, one torus boundary component,
+and spherical or disc vertex links.  The linear and component-profile
+arguments need the usual normal-coordinate uniqueness and connected vertex
+links; they do not need a knot-diagram origin.  The source-bound interface
+adds that origin separately.
+
+Let $x\in\Z_{\ge0}^{7t}$ satisfy the matching equations and quadrilateral
+constraints.  Write $F(x)$ for its normal realization, unique up to normal
+isotopy \cite[Theorem~5.1]{HLP99}.  Each connected component has a nonzero vector $y$ with
+$0\le y\le x$.  Set
+\begin{equation}
+ S=\{i:x_i>0\},\quad s=|S|,\quad
+ A=A_S,\quad r=\rank_{\Q} A,\quad d=s-r,\quad
+ \calK_S=\ker_{\Q} A.                         \label{eq:support}
+\end{equation}
+Here $A_S$ restricts the full matching matrix to the columns in $S$.
+There are at most $6t$ rows and at most $5t$ supported columns.  Every original
+row has the form $T+Q-T'-Q'=0$.  After coincident terms cancel, its nonzero
+coefficients are $\pm1$ and its Euclidean norm is at most $2$.
+
+Since $x$ is positive on $S$, the nonnegative cone in $\calK_S\otimes\R$
+has relative dimension $d$.  Indeed a small neighbourhood of $x$ within this
+space stays positive.  Thus $d$ is the actual dimension of the supported
+solution face, not merely a dimension of a larger quadrilateral sector.
+For $x=0$ we use $S=\varnothing$ and $s=r=d=0$.
+
+Let $B=\max_{i\in S}\bits(x_i)$, with $B=0$ for the empty source, and let
+$W=\sum_i x_i$.  Binary input length is bounded above by
+$O(t\log(t+1)+sB)$ bits, with actual coordinate length
+$\sum_{i\in S}\bits(x_i)$;
+$\log(W+1)=O(B+\log(t+1))$.  Unit-cost arithmetic on a $B$-bit integer is
+not a bit-complexity model.  We state structural operation counts separately
+from costs of reading, adding, multiplying, or decoding these integers.
+
+\begin{definition}[Component profile]
+The full component profile is the finite map sending each distinct complete
+$7t$-coordinate vector $y$ of a connected component to its multiplicity in
+$F(x)$.  Its support size is $H(x)$.  Equal homeomorphism types with different
+normal coordinates are distinct entries.
+\end{definition}
+
+A certificate in this work is an exact finite object checked against the
+original triangulation and source coordinates.  Producers can be complicated
+or heuristic.  Acceptance depends on a separately implemented replay of
+algebraic identities and the maintained finite geometry and orbit contracts.
+This is an independently checked implementation, not a proof-assistant
+formalization or a claim that the entire Python runtime is formally verified.
+
+\section{An optimal coordinate observer on the source support}
+\label{sec:observer}
+
+\subsection{Dimension and minimum binary-slot cost}
+
+For $i\in S$ put $b_i=\bits(x_i)=\lceil\log_2(x_i+1)\rceil$.
+A retained coordinate needs a slot of this width to hold every value in
+$[0,x_i]\cap\Z$.  For $J\subseteq S$, let $\pi_J$ be coordinate restriction.
+
+\begin{theorem}[Minimum-cost support projection]
+\label{thm:optimal}
+The map $\pi_J$ is injective on $\calK_S$ if and only if the columns of $A$
+indexed by $S\setminus J$ are independent.  In particular, an injective
+coordinate projection of minimum total cost $\sum_{j\in J}b_j$ retains exactly
+$d$ coordinates.  A minimum is obtained by greedily taking independent pivot
+columns in nonincreasing order of $b_i$ and retaining their complement.
+\end{theorem}
+
+\begin{proof}
+A nonzero vector in $\ker A$ with zero restriction to $J$ is exactly a nonzero
+linear dependence among the complementary columns.  This proves the first
+claim.  All costs are positive, so a cost-minimizing complement extends to a
+column basis; otherwise removing another retained coordinate decreases cost.
+Its size is $r$, and the retained size is $d$.
+
+Minimizing the retained sum is equivalent to maximizing the pivot sum, because
+their sum is the fixed total $\sum_{i\in S}b_i$.  Column independence forms a
+representable matroid.  For completeness, take a maximum-weight basis
+containing the current greedy prefix.  If the next accepted greedy column is
+absent, the fundamental circuit obtained by adding it contains a basis column
+outside the prefix that may be exchanged out.  Such a column has no greater
+weight: an earlier rejected column was already spanned by an earlier prefix.
+The exchange preserves maximum weight and extends the greedy prefix.  Induct
+until the greedy basis is installed.  Its complement gives the desired
+minimum.  Ties are broken by coordinate index for reproducibility.
+\end{proof}
+
+\begin{corollary}[Comparison with the maintained observer]
+\label{cor:oldobserver}
+Let $q$ count positive quadrilateral types and let $a$ count supported vertex
+links.  Then $d\le q+a$, and the new minimum slot budget is no greater than
+that of the maintained positive-quadrilateral/vertex-anchor observer.
+\end{corollary}
+\begin{proof}
+Retain all positive quadrilaterals and one triangle coordinate for each fully
+supported vertex link.  A kernel vector vanishing on these coordinates has
+zero quadrilaterals.  Triangle matching then makes its triangle heights
+constant around each connected vertex link.  That constant is zero either
+because an unsupported triangle was fixed to zero or because its retained
+anchor is zero.  Thus the retained projection is injective.  Apply
+\cref{thm:optimal} to this feasible coordinate set.
+\end{proof}
+
+The optimality domain matters.  This minimizes allocated binary slots among
+coordinate projections admitting a linear decoder on the whole supported
+matching space.  It does not optimize arbitrary finite encodings, decoder
+sparsity, or total runtime.  A single huge integer can encode a finite box.
+Nor is $d$ necessarily the dimension of the finite set of components appearing
+in this one source.  For genuine mixed-radix bases $x_j+1$, minimizing their
+product instead uses greedy weights $\log(x_i+1)$, equivalently the order of
+$x_i$.  The shipped implementation optimizes binary slots.
+
+\subsection{Exact decoder and independent rank evidence}
+
+Let $P=S\setminus J$ be the pivot basis.  Choose $r$ original rows $R$ for which
+$M=A[R,P]$ is nonsingular, put $C=A[R,J]$, and let $\Delta=\det M\ne0$.
+The rational decoder is
+\begin{equation}
+ T[J,:]=I_d,\qquad T[P,:]=-M^{-1}C,\qquad
+ D=|\Delta|,\qquad N=DT.                       \label{eq:decoder}
+\end{equation}
+It sends retained values $w$ to $Nw/D$.  We need not ask a checker to trust
+the elimination that produced $N$.
+
+\begin{theorem}[Certified support decoder]
+\label{thm:decoder}
+Suppose a certificate supplies complementary sets $J,P$, rows $R$, an integer
+$D>0$, an integer matrix $N$, and evidence that $A[R,P]$ is nonsingular.  If
+\[
+ |J|=d,\quad |P|=|R|=s-d,\quad
+ N[J,:]=D I_d,\quad AN=0,
+\]
+then $\dim\ker A=d$ and every $y\in\ker A$ equals $N y_J/D$.
+For standard normal matching matrices a certificate of this form exists with
+\[
+ 1\le D\le2^r,\qquad |N_{ij}|\le2^r.
+\]
+\end{theorem}
+
+\begin{proof}
+The identity rows make the $d$ columns of $N$ independent; $AN=0$ puts them in
+the kernel.  Hence nullity is at least $d$.  The nonsingular $(s-d)$-minor gives
+rank at least $s-d$, so equality holds in both bounds.  If $y$ is in the
+kernel, $y-Ny_J/D$ is also in the kernel and vanishes on $J$.  The pivot minor
+forces its remaining coordinates to vanish.
+
+For existence use \cref{eq:decoder}.  Cramer's rule expresses each entry of
+$N$ as a signed $r$-minor, with at most one pivot column replaced by a retained
+column.  Every row of each such minor has norm at most $2$.  Hadamard's
+inequality bounds its determinant by $2^r$.  The identity rows obey the same
+bound.  When $r=0$, take $D=1$, $N=I_s$, and the empty minor.
+\end{proof}
+
+The rank evidence consists of a modulus $m\ge2$ and the claimed minor.  The
+checker performs its own modular elimination and only inverts pivots whose
+greatest common divisor with $m$ is $1$.  Successful elimination makes the
+determinant a unit modulo $m$, and thus a nonzero integer.  Primality is not a
+soundness assumption.  In particular, merely testing that a pivot is nonzero
+modulo a composite modulus would be insufficient.
+
+The producer chooses a small prime not dividing $D$.  Here is a self-contained
+polynomial value bound.  For $r\ge1$ put $M_0=16(r+1)^2$.  If every prime at
+most $M_0$ divided $D\le2^r$, there would be at most $r$ such primes, and
+$\operatorname{lcm}(1,\ldots,M_0)\le M_0^r$.  The central binomial coefficient
+$\binom{M_0}{M_0/2}$ divides this least common multiple: for each prime its
+valuation is a sum of terms
+$\lfloor M_0/p^k\rfloor-2\lfloor(M_0/2)/p^k\rfloor\in\{0,1\}$.
+But that coefficient is at least $2^{M_0}/(M_0+1)\ge2^{M_0/2}$, whereas
+$M_0/2>r\log_2 M_0$.  This is a contradiction.  Some prime at most $M_0$
+therefore avoids $D$, and trial generation and divisibility testing are
+polynomial.  For $r=0$, $D=1$ and modulus two suffices.  A bound merely on
+the bit length of the final modulus would not establish this search bound.
+
+The certificate stores $O(sd(r+1)+t\log(t+1))$ bits, including the dense
+decoder and indices.  Sparse fraction-free elimination is performed separately
+on algebraic column blocks.  With $m_A\le6t$ original matching rows, a
+conservative dense estimate is $O(m_A s r)$ arithmetic operations on
+polynomial-size minors.  Schoolbook
+integer arithmetic gives a polynomial bound, for example $O(t^5)$ for the
+elimination part; source input and output decoding are additional.  This
+coarse upper bound is deliberately not a prediction of measured time.
+
+For a recovered component, the checker computes $Nw$, checks every exact
+division by $D$, and verifies $0\le y_i\le x_i$.  The numerators have
+$O(B+r+\log(d+1))$ bits.  Arbitrary integer weights need not decode integrally:
+the divisibility test is essential.  Reusing a valid decoder on another source
+with the same positive support preserves correctness, but its original
+minimum-cost claim need not survive changed coordinate magnitudes.
+
+\begin{corollary}[Near-optimal reuse under uniform scaling]
+\label{cor:scaling}
+If a $d$-coordinate projection is minimum-slot for $x$, its slot cost for
+$mx$, with integer $m\ge1$, exceeds the new optimum by at most $d$ bits.
+\end{corollary}
+\begin{proof}
+For every positive coordinate,
+$\bits(mx_i)=\bits(x_i)+\bits(m)-1+\varepsilon_i$ with
+$\varepsilon_i\in\{0,1\}$.  Compare the old optimal set $J$ with a new optimal
+set $J'$.  Both have $d$ coordinates, so the common term
+$d(\bits(m)-1)$ cancels.  Old optimality gives
+$\sum_J\bits(x_i)-\sum_{J'}\bits(x_i)\le0$, and the difference of the two
+epsilon sums is at most $d$.  The claimed bound follows.
+\end{proof}
+
+\section{One scalar weight, with an invariant throughout transport}
+\label{sec:packing}
+
+Order $J=(j_1,\ldots,j_d)$ and set
+\begin{equation}
+ \sigma_1=0,\quad \sigma_k=\sum_{\ell<k}b_{j_\ell},\quad
+ L=\sum_{k=1}^d b_{j_k},\quad
+ E(y)=\sum_{k=1}^d y_{j_k}2^{\sigma_k}.       \label{eq:packing}
+\end{equation}
+For every integer $0\le y\le x$, the digits of $E(y)$ recover $y_J$ without
+carries.  Furthermore $K=E(x)<2^L$.  Assign weight $2^{\sigma_k}$ to one
+designated corner of each normal disc of type $j_k$, and zero otherwise.
+The weight of a component is exactly $E(y)$.
+
+This construction is an additive linear weight before it is a digit encoding.
+That distinction permits use of the maintained weighted interval algorithm.
+It also lets us prove more than final-output correctness.
+
+\begin{theorem}[Packing preserves live weight runs]
+\label{thm:packing}
+Run vector-valued and packed scalar-valued weighted transport with the same
+retained coordinates and the same interval-orbit trace.  At every stage each
+live representative carries the sum of original weights over a fibre of
+original points.  Distinct live fibres and emitted completed orbits are
+disjoint.  Every live retained vector is consequently in $[0,x_J]$, its scalar
+is in $[0,K]$, and the two representations have exactly the same canonical
+constant-weight run partition.
+\end{theorem}
+
+\begin{proof}
+Initially each fibre is a singleton.  Changes to the pairing description
+preserve fibres.  When a truncation or fold removes points, the weight of a
+removed fibre is transferred to its retained image.  The operation unions
+disjoint fibres; translation and reflection formulas calculate these unions
+without enumerating the points.  Completed static orbits are emitted and
+removed.  Induction gives a partition of the original contributions into
+live and emitted fibres.
+
+There are exactly $x_{j_k}$ original unit contributions of coordinate $j_k$.
+No fibre can contain more than all of them.  Hence each live vector lies in
+the box where binary packing is injective.  Additivity gives the scalar as
+$E$ of that vector and conserves total mass $K$.  Two adjacent live vectors
+are equal if and only if their scalar encodings are equal.  Canonical merging
+therefore creates precisely the same run boundaries in both representations.
+\end{proof}
+
+The code's signed difference arrays are an implementation device; they are
+not live component vectors.  A conservative bound on their temporary values
+is a polynomial in the number of runs and endpoint counts times $K$.  With
+$R$ runs and initial interval size $N_0$, their bit length is
+$O(L+\log(R+1)+\log(N_0+1))$.  Compressed weighted-orbit analysis remains
+polynomial in the encoded input parameters \cite{AHT06}.
+
+This theorem isolates two effects.  Switching from the old $q+a$ observer to
+the support observer can change run counts.  Switching from the new $d$-vector
+observer to its packed scalar cannot change them.  Any runtime difference in
+the second comparison comes from arithmetic representation and allocation,
+not a different combinatorial orbit problem.
+
+Packing does not prove a factor-$d$ bit-operation improvement: an addition
+on an $L$-bit integer can cost as much as the relevant collection of shorter
+additions.  It can nevertheless reduce Python tuple creation, per-coordinate
+loops, and hashing overhead.  Basis construction, exact decoding, and proof
+replay must be included when assessing a complete query.  The old sparse
+decoder can be preferable when $d$ is not much smaller than $q+a$.
+
+\section{A sharper bound on the number of component types}
+\label{sec:profiles}
+
+For a quotient vertex $v$, let $\ell_v$ be its connected vertex-link vector.
+Let $a$ count the vertices for which $\supp(\ell_v)\subseteq S$.  These are
+exactly the vertex-link types occurring in $F(x)$: their common minimum
+triangle height can be realized by small disjoint links, while a missing
+required triangle forbids the type.  They are two-sided.  Every connected
+triangle-only normal surface is a vertex link under the vertex-link hypotheses.
+
+\begin{lemma}[Independence of disjoint two-sided types]
+\label{lem:independence}
+Distinct full normal-coordinate vectors of mutually disjoint connected
+two-sided normal surfaces are linearly independent over $\Q$.
+\end{lemma}
+
+\begin{proof}
+An alleged rational dependence can be cleared to an integer one.  Nonzero
+normal vectors have nonnegative entries, so a nontrivial dependence has
+coefficients of both signs.  Rearranging gives equality of two positive
+integer combinations of distinct vectors.  Because the surfaces are
+two-sided and mutually disjoint, each combination is realized by a disjoint
+union of the indicated numbers of parallel copies.  Equal admissible normal
+vectors determine normally isotopic surfaces, and that isotopy gives equal
+multisets of connected full-coordinate types.  The two disjoint collections
+of types in the dependence cannot have equal multisets.  This is a contradiction.
+\end{proof}
+
+\begin{theorem}[Support-nullity profile bound]
+\label{thm:profile}
+For every supplied normal vector in the stated manifold setting,
+\begin{equation}
+ H(x)\le 2d-a.                                \label{eq:profile}
+\end{equation}
+If all its components are two-sided, then $H(x)\le d$.
+\end{theorem}
+
+\begin{proof}
+The two-sided assertion follows immediately from \cref{lem:independence},
+since every component vector belongs to the $d$-dimensional supported space.
+
+For the general assertion retain the $a$ link types separately.  For each
+nonlink type choose one actual component of $F(x)$.  A two-sided representative
+stays as it is.  Replace a one-sided representative by the boundary of a small
+normal interval neighbourhood, with vertical boundary in the ambient boundary.
+Its connected two-sided horizontal frontier has vector twice the original
+vector.  Neighbourhoods can be chosen disjoint from all
+other selected representatives and from the vertex links.  Coalesce equal
+resulting vectors, and let $h$ be their number.
+
+Each resulting nonlink vector $z$ has at most two original preimages: the
+two-sided type $z$ and the one-sided type $z/2$.  It cannot become a link type,
+because its positive quadrilateral coordinates survive doubling.  Thus
+$H(x)-a\le2h$.  The $h$ distinct resulting types together with the $a$ links
+are independent by \cref{lem:independence}, so $h+a\le d$.  Combining gives
+$H(x)\le a+2(d-a)=2d-a$.  The empty source satisfies the statement by convention.
+\end{proof}
+
+This refines the proof mechanism already used in the repository's
+\code{synthesis/compact_coordinates.tex}; it replaces a quadrilateral-count
+dimension estimate by the exact supported nullity.  The factor two is needed.
+In the one-tetrahedron solid-torus fixture, the primitive one-sided M\"obius
+band has vector $M=(0,0,0,0;0,1,0)$.  Its source $3M$ has the central M\"obius
+band and its connected double as two coordinate types, with $d=1$ and $a=0$.
+Adding the disjoint vertex link $\ell=(1,1,1,1;0,0,0)$ gives
+$(d,a,H)=(2,1,3)$.  These specific configurations are checked in the supplied
+finite fixtures; primitivity of an arbitrary M\"obius band does not imply
+support nullity one.
+
+The bound concerns unmarked coordinate inventories.  It does not bound the
+number of ways marked boundary arcs, parallelity data, or future hierarchy
+attachments can distinguish otherwise identical components.  Using it as
+a bound on global branch count requires a further theorem about those markings.
+
+\section{Geometric blocks and exact essential-disc counts}
+\label{sec:rays}
+
+\subsection{A conservative partition from original face incidences}
+
+Build a graph whose vertices are positive normal-disc types.  For every
+original face-arc equation, connect all its positive participating types
+before like terms are collected or cancelled.  Let $S_1,\ldots,S_b$ be the
+connected blocks, and let $x^{(j)}$ be $x$ restricted to $S_j$ and zero elsewhere.
+
+\begin{theorem}[Geometric support blocks]
+\label{thm:blocks}
+Each $x^{(j)}$ is an admissible matching vector, and
+\[
+ F(x)=\bigsqcup_{j=1}^{b}F(x^{(j)})
+\]
+up to normal isotopy.  The corresponding supported matching spaces form a
+direct sum, so $d=\sum_j d_j$.
+\end{theorem}
+
+\begin{proof}
+All positive occurrences of a single original matching equation belong to
+one graph block.  Restricting to any block therefore either keeps that whole
+equation on the source or sets both sides to zero.  Matching and quadrilateral
+constraints follow.
+
+An actual connection of normal discs across a face pairs arcs appearing in
+one original face equation.  Their types lie in the same block.  Following
+a connected component never leaves its block.  Within a tetrahedron the
+normal discs themselves are disjoint, and the block restriction keeps exactly
+the selected subcollection.  This proves the asserted disjoint union.  Finally,
+no collected matching equation has supported variables in different blocks,
+which proves the direct sum for the linear spaces.
+\end{proof}
+
+Algebraic column blocks are sufficient for matrix elimination.  The geometric
+proof here deliberately uses the more conservative original occurrences.
+For example, $u+v=u+w$ simplifies to $v=w$, but interpreting how the cancelled
+type $u$ attaches is a geometric question about the original arc intervals.
+This algebraic pattern alone is not a counterexample to a finer decomposition.
+The producer uses a union--find traversal of raw occurrences; the independent
+checker uses its own graph traversal.  Their soundness follows directly from
+\cref{thm:blocks}, without a separate geometric cancellation argument.
+
+\subsection{The rank-one shortcut, with the one-sided case included}
+
+\begin{lemma}[Primitive ray is connected]
+\label{lem:primitive}
+If $x\ne0$ and $\dim\calK_S=1$, write $x=mv$, where
+$m=\gcd\{x_i:i\in S\}$ and $v$ is primitive.  Then $F(v)$ is connected.
+\end{lemma}
+
+\begin{proof}
+Every component vector of $v$ belongs to $\Q v$ and is a positive rational
+multiple of $v$.  Primitivity supplies integers $c_i$ with $\sum c_i v_i=1$.
+If $\lambda v$ is integral, then $\lambda=\sum c_i(\lambda v_i)$ is integral.
+The component multiples are therefore positive integers summing to one.
+There is exactly one component.
+\end{proof}
+
+This elementary proof is included to make the specialization self-contained;
+the vertex-surface principle is classical \cite{HLP99}.  It does not say that
+$F(mv)$ has $m$ components for all primitive rays.  If $F(v)$ is one-sided,
+$F(2v)$ is its connected two-sided frontier.  The disc count has a more useful
+homogeneity property than the total component count.
+
+Let $D(x)$ denote the number of disc components of $F(x)$ whose boundary is
+essential in the boundary torus.  The maintained boundary basis gives two
+mod-two intersection coordinates for the total boundary class.
+
+\begin{theorem}[Complete disc count on a supported ray]
+\label{thm:raydisc}
+Under the hypotheses of \cref{lem:primitive},
+\begin{equation}
+ D(x)=
+ \begin{cases}
+ m,&\chi(v)=1\ \text{and}\ [\partial v]\ne0
+       \text{ in }H_1(\partial\calT;\F_2),\\
+ 0,&\text{otherwise}.
+ \end{cases}                                  \label{eq:raydisc}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+If $y$ is a disc component of $x$, then $y=kv$ for a positive integer $k$ by
+the same primitivity argument.  Euler characteristic gives $1=k\chi(v)$,
+so $k=1$ and $\chi(v)=1$.  Essential boundary gives the nonzero mod-two class:
+an essential simple closed curve on a torus has primitive slope and therefore
+cannot have both slope coordinates even.
+
+Conversely, $F(v)$ is connected.  A compact connected surface with Euler
+characteristic one and nonempty boundary is a disc; the closed alternative
+with Euler characteristic one is a projective plane, excluded here by the
+nonzero boundary class.  The boundary of this disc is essential because its
+class is nonzero.  A disc is two-sided in the orientable ambient manifold,
+so $F(mv)$ is $m$ parallel copies.  These observations prove both cases.
+\end{proof}
+
+Apply the theorem independently to every geometric block with $d_j=1$.
+For blocks of larger nullity call the maintained complete disc-count kernel.
+The total is exact by \cref{thm:blocks}.  A shared orbit-cycle allowance is
+charged only to these fallback calls.  If it is exhausted, the result is
+\code{INCONCLUSIVE}; a partial count is never a negative recognition verdict.
+With allowance zero, any number of algebraically certified ray blocks can
+still be handled.
+
+\section{Unit-pivot peeling: an integral ray certificate}
+\label{sec:peeling}
+
+The general decoder can spend more work certifying a simple ray than is
+needed to classify it.  Normal matching equations have at most four entries,
+all units after collection.  Their sparse implication structure provides a
+stronger sufficient certificate.
+
+\begin{definition}[Unit-peeling transcript]
+A transcript consists of a seed $j\in S$ and an ordering
+$i_1,\ldots,i_{s-1}$ of $S\setminus\{j\}$.  For each $h$ it records an original
+matching row whose coefficient at $i_h$ is $+1$ or $-1$ and whose other
+nonzero supported coordinates are all in $\{j,i_1,\ldots,i_{h-1}\}$.
+\end{definition}
+
+\begin{theorem}[Integral unit-exposed ray]
+\label{thm:peeling}
+Let $A$ be an integer matrix and let $x>0$ be an integral vector in $\ker A$.
+If a complete unit-peeling transcript exists from seed $j$, then
+\begin{equation}
+ \ker_{\Q}A=\Q p,\qquad
+ \ker_{\Z}A=\Z p,\qquad
+ p=x/x_j,\quad p_j=1,\qquad \gcd(x_i)=x_j.     \label{eq:unitray}
+\end{equation}
+The primitive generator can be reconstructed by setting $p_j=1$ and evaluating
+the recorded rows with integer linear combinations.  For normal matching rows
+these require only additions and sign changes.
+\end{theorem}
+
+\begin{proof}
+Restrict the recorded rows to the nonseed columns in transcript order.  The
+result is triangular with diagonal entries $\pm1$.  Thus $\rank A\ge s-1$.
+The nonzero vector $x$ gives $\rank A\le s-1$, proving equality.
+
+At each recorded row the new coordinate is an integer linear combination of
+already determined coordinates, because its pivot is a unit.  Inductively
+every coordinate of a kernel vector is an integer multiple of the seed when
+that seed is integral.  Applying the recurrence with seed one gives a vector
+$p$ and applying it to $x$ gives $x=x_jp$.  Hence $p$ is positive and integral;
+it is in the full kernel because it is $x/x_j$.  Its seed is one, making it
+primitive.  Any rational kernel vector is a rational multiple of $p$, and its
+integer seed is exactly that multiple if the vector is integral.  This proves
+the integer-kernel and gcd statements as well as the reconstruction procedure.
+\end{proof}
+
+This certificate proves more than rank one.  The selected nonseed minor is
+unimodular, so no denominator, generic modular rank replay, or Euclidean gcd
+scan is needed on this branch.  Both producer and checker enforce unit pivots
+explicitly; an equation such as $3u=2v$ cannot be used as a unit-pivot step.
+
+\subsection{Discovery, replay, and cost}
+
+The producer chooses a seed minimizing $(\bits(x_j),j)$.  For every matching
+row it maintains the count and exclusive-or of as-yet-unprocessed supported
+variables, together with a per-column incidence list.  Process known columns
+in a queue.  Removing an incidence updates the row's count and exclusive-or;
+when one unknown remains and its coefficient is a unit, expose it and append
+the row index and variable index to the transcript.  Each column and incidence
+is processed once.  Building the supported restriction in the implementation
+scans the original coordinate and matching arrays in $O(t)$ structural work;
+the queue then uses $O(s+\nnz(A))$ work.  Their total is $O(t)$ for normal
+matching matrices, after finite manifold preparation.
+
+The checker does not rerun this discovery algorithm.  Starting with the
+certificate's seed, it inspects the stated original row at each step and
+checks that the sole unknown is exactly the stated variable with a unit
+coefficient.  It verifies complete support coverage and the source matching
+equations.  Since normal rows have at most four entries, successful evidence
+contains $s-1$ indexed steps and occupies $O(t\log(t+1))$ bits.  Source geometry
+and coordinates remain part of the input, outside this small rank witness.
+
+Primitive recurrence evaluation uses a constant number of additions per
+step.  For a valid positive source the resulting coefficients are at most
+the source coordinates, so $O(tB)$ bit operations suffice with ordinary
+addition, after finite geometry has been prepared.  Checking source matching
+also uses $O(tB)$ arithmetic.  Including sums of normal-cell contributions
+gives $O(t(B+\log(t+1)))$ numerical bit work on one successful block.
+The implementation retains exact source
+binding and finite geometry checks.  These costs cannot be omitted from a
+public-API benchmark merely because the rank transcript is short.
+
+If exposure stalls, it establishes no rank lower bound beyond the successful
+steps.  A nullity-one matrix can have no row with a single unknown after one
+seed is fixed.  Our method therefore falls back to the general certified
+compiler; it does not classify stalled inputs as non-rays.  Seed choice here
+is a deterministic sufficient heuristic, not an optimal stopping-set theorem.
+
+\section{An all-family theorem for dense Fibonacci meridians}
+\label{sec:fibonacci}
+
+Consider the repository fixture \code{layered_torus(t)} for $t\ge1$.  It
+builds a layered solid torus and its meridian normal vector.  Number tetrahedra
+from $0$ to $t-1$, and write the three positive coordinates in tetrahedron $i$
+as $a_i=T_{i,0}$, $b_i=T_{i,1}$, and $c_i=Q_{i,2}$.  With $F_1=F_2=1$,
+the source has
+\begin{equation}
+ a_i=b_i=F_{t-i+1},\qquad c_i=F_{t-i}.          \label{eq:fibonacci}
+\end{equation}
+All $t$ quadrilateral positions are occupied.  The face-pairing permutations
+in the fixture give the following supported matching equations for $i<t-1$:
+\begin{align}
+ b_i&=b_{i+1}+c_{i+1}, & c_i&=a_{i+1},\\
+ a_i&=a_{i+1}+c_{i+1}, & c_i&=b_{i+1},         \label{eq:fibrows}
+\end{align}
+and at the terminal tetrahedron $a_{t-1}=b_{t-1}=c_{t-1}$.  These are equations
+from the actual gluing data, rather than an inferred recurrence fitted to
+timings.
+
+\begin{theorem}[Linear ray evidence for every layered Fibonacci source]
+\label{thm:fibonacci}
+For every $t\ge1$ and integer $m\ge1$, the normal vector $m x^{(t)}$ from
+\cref{eq:fibonacci} admits the implementation's single-seed unit-peeling
+certificate with exactly $3t-1$ discovery steps.  Its seed coordinate is $m$,
+its supported matching nullity is one, and it has exactly $m$ essential-disc
+components.  No interval-orbit trace or Gaussian elimination is required to
+certify this disc count.
+\end{theorem}
+
+\begin{proof}
+For $t=1$ the minimum-bit/index seed is $a_0$, and the terminal equations expose
+the other two variables.  For $t\ge2$ the first coordinate of minimum bit
+length is $c_{t-2}=m$.  The equations $c_{t-2}=a_{t-1}=b_{t-1}$ expose two
+terminal variables, and the terminal equation exposes $c_{t-1}$.  Once a
+terminal triple is known, \cref{eq:fibrows} exposes the previous triple using
+unit pivots.  Induction reaches every positive coordinate.  Exactly one seed
+and $3t-1$ newly exposed variables occur.  The minimum choice is unchanged by
+common scaling: the next larger Fibonacci value is at least twice the
+minimum, so has strictly greater bit length after scaling.
+
+\Cref{thm:peeling} gives nullity one and primitive divisor $m$.  To establish
+the topology for all $t$, use the actual normal-cell counts.  At height
+$h=t-i$, the weights on local edges $(01,02,03,12,13,23)$ are
+\[
+ (F_{h+3},F_{h+2},F_{h+1},F_{h+1},F_{h+2},F_h).
+\]
+At $t=1$ the three global edge weights are $F_2,F_3,F_4$.
+Adding an outer layer keeps the
+old edge classes and adds the next Fibonacci weight, as follows directly
+from \cref{eq:fibrows} and the paired faces.  Thus the global edge weights
+are $F_2,\ldots,F_{t+3}$ and their sum, the number $V$ of normal-surface
+vertices, is $F_{t+5}-2$.
+
+The number of normal discs is $F_{t+5}-5$.  Counting three sides for each
+triangle and four for each quadrilateral gives total local side count
+$6F_{t+3}+4F_{t+2}-16$.  The two boundary faces contribute
+$2F_{t+3}$ unpaired normal arcs.  Consequently the number of surface edges is
+\[
+ E=\frac{6F_{t+3}+4F_{t+2}-16+2F_{t+3}}2
+   =2F_{t+5}-8,
+\]
+and $\chi=V-E+(F_{t+5}-5)=1$.
+
+The boundary torus has one vertex and three edges, with weights
+$F_{t+1},F_{t+2},F_{t+3}$.  Their parities define the cocycle dual to the
+normal boundary.  Adjacent Fibonacci numbers are coprime, so these parities
+are not all zero.  On this one-vertex triangulation every vertex coboundary
+is zero, hence the cocycle is nonzero in cohomology.  Duality gives
+$[\partial x^{(t)}]\ne0$.  Now \cref{thm:raydisc} gives exactly $m$ essential
+discs, with no assumption about the fixture's descriptive name.
+\end{proof}
+
+The number of elementary pieces in the primitive source is
+\[
+ \sum_{i=0}^{t-1}(a_i+b_i+c_i)=F_{t+5}-5.
+\]
+It is exponential in $t$, whereas the rank evidence has $3t-1$ steps.  The
+binary source itself has $\Theta(t^2+t\log(m+1))$ bits, so the theorem is
+not a linear-bit-time claim for reading the entire input.  The certificate's
+indexed structural part has $O(t\log(t+1))$ bits, in addition to the encoded
+source and multiplicity.  A dense one-dimensional decoder contains
+$\Theta(t^2)$ coefficient bits on this family; unit exposure avoids that
+representation as well as the generic elimination producing it.
+
+The experiment records the maintained orbit algorithm's actual cycle and
+transmission counts for comparison.  These observed counts are not promoted
+to a theorem about that implementation's schedule for all $t$.  The exact
+$3t-1$ count above is independently derived for the complete family.
+
+\input{implementation.tex}
+\input{experiments.tex}
+\input{research.tex}
+\input{appendices.tex}
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{HLP99} J. Hass, J. C. Lagarias, and N. Pippenger.
+ The computational complexity of knot and link problems.
+ \emph{Journal of the ACM} 46 (1999), 185--211.
+ \url{https://arxiv.org/abs/math/9807016}.
+\bibitem{AHT06} I. Agol, J. Hass, and W. P. Thurston.
+ The computational complexity of knot genus and spanning area.
+ \emph{Transactions of the American Mathematical Society} 358 (2006), 3821--3850.
+ \url{https://arxiv.org/abs/math/0205057}.
+\bibitem{Edmonds71} J. Edmonds. Matroids and the greedy algorithm.
+ \emph{Mathematical Programming} 1 (1971), 127--136.
+ \url{https://doi.org/10.1007/BF01584082}.
+\bibitem{Lackenby21Slides} M. Lackenby.
+ \emph{Unknot recognition in quasi-polynomial time}. Oxford handout, March 2021.
+ \url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk-oxford-compressed.pdf}.
+\bibitem{Lackenby26} M. Lackenby.
+ \emph{Incompressible surfaces, hierarchies and unknot recognition}.
+ arXiv:2607.23350v1, 25 July 2026.
+ \url{https://arxiv.org/abs/2607.23350v1}.
+\bibitem{ProveIt} V. Reshetnikov, ProveIt repository and incoming research.
+ Snapshot \code{3a90fb34146c915328ab8eac6250cc2514f74ed0}, inspected 9 October 2026.
+ \url{https://github.com/VladimirReshetnikov/ProveIt}.
+ The delivered provenance manifest identifies exact source blobs and archives.
+\end{thebibliography}
+\end{document}

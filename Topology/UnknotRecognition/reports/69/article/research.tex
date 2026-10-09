@@ -1,0 +1,212 @@
+\section{What remains between these results and quasi-polynomial recognition}
+\label{sec:global}
+
+The new local bounds are useful because they reduce the information transported
+and sometimes avoid transport entirely.  They do not show how many source
+supports recognition must try.  Even if every tested candidate is cheap,
+exponentially many candidates would remain an exponential recognizer.
+
+The following elementary accounting proposition states the required global
+interface precisely.  It is a conditional composition statement, not a
+verified property of the present recognizer.
+
+\begin{proposition}[Conditional hierarchy accounting]
+\label{prop:accounting}
+Suppose a complete recognition procedure on an $n$-crossing input visits at
+most $L(n)(g(n)+1)^{L(n)}$ hierarchy stages, where $L(n)\ge1$ and $g(n)\ge0$.
+Charge all preprocessing, terminal work, failed attempts, and proof assembly
+to these stages.  Suppose the total charged work at each
+visited stage, including candidate selection, compressed updates, intermediate
+representation, and independent checking, is at most $P(n)$.  Then its total
+time is at most
+\[
+ L(n)(g(n)+1)^{L(n)}P(n).
+\]
+In particular, if $L(n)=O((\log n)^2)$, $g(n)=n^{O(1)}$, and
+$P(n)=2^{O((\log n)^3)}$, the complete procedure takes
+$2^{O((\log n)^3)}$ time.  The same conclusion holds with polynomial $P$.
+\end{proposition}
+
+\begin{proof}
+Multiply the number of visits by the cost of a visit.  Its logarithm is at
+most $\log L+L\log(g+1)+\log P$, which has the claimed order under the stated
+hypotheses.  Work hidden in candidate selection or in an expanding intermediate
+object must be included in $P$ for the implication to apply.
+\end{proof}
+
+The shape of the visit bound occurs in Lackenby's hierarchy analysis
+\cite[Proposition~9.1]{Lackenby26}; verifying the stronger parameter hypotheses
+for an implemented compressed recognizer is a separate research task.  Four
+specific distinctions prevent an incorrect use of \cref{prop:accounting} here.
+
+\begin{enumerate}
+\item \textbf{A supplied vector versus a useful vector.}  Support nullity and
+peeling are measured after the support has been supplied.  They do not identify
+a meridian support among all admissible choices.
+\item \textbf{A type inventory versus marked continuations.}  The bound
+$H\le2d-a$ counts unmarked coordinate types.  A hierarchy can distinguish
+boundary attachments, parallelity regions, and provenance not present in that
+inventory.
+\item \textbf{Small output versus cheap construction.}  A short rank witness
+can still require expensive discovery on an arbitrary support; a compressed
+cut can have short invariants but expensive attaching maps.
+\item \textbf{A local budget versus a global budget.}  Restarting a successful
+local procedure at every branch does not control the sum of its work.  A
+monotone potential or a complete stage-count theorem is required.
+\end{enumerate}
+
+The diagram-exterior correspondence is already checked for the canonical
+input construction.  The remaining source problem is maintaining comparable
+provenance through the retriangulations and compressed cuts of a future
+hierarchy.  Treating the input correspondence itself as wholly missing would
+misdescribe the current repository.
+
+\section{Further research questions and proposed theorem targets}
+\label{sec:agenda}
+
+The following programme separates near-term algorithmic work from the global
+theorems that would change the asymptotic recognition result.  Each item names
+an observable object or a falsifiable target.  Successful experiments may
+motivate a theorem but do not replace one.
+
+\subsection{Priority A: extend the provable local savings}
+
+\paragraph{1. Multi-seed unit elimination with a controlled residual.}
+When a one-seed closure stalls, introduce a new seed and express later exposed
+coordinates as integral forms in the seeds.  The unsolved original rows then
+give a residual system.  Can a seed-selection rule bound the number and width
+of these forms by a structural parameter that stays small under relevant
+layering and cutting operations?  A plausible target is a certified reduction
+to $k$ residual variables in polynomial time with controlled coefficient bits.
+One must not equate the number of greedy seeds with $d$: sparse exposure
+closure is weaker than linear span closure.
+
+\paragraph{2. Characterize and minimize single-seed stopping sets.}
+View the supported matching rows as a bounded-arity incidence hypergraph.
+Which connected normal supports admit a complete unit-peeling order?  Can
+obstructions be characterized by a small core, and can that core be computed
+without large integer elimination?  Seek families with $d=1$ but growing
+unavoidable core size to delimit the shortcut's applicability.  Reordering
+rows alone cannot solve every stopping-set obstruction.
+
+\paragraph{3. Optimize a measured cost, beyond the slot sum.}
+The present matroid theorem optimizes $L$, but exact decoder density and
+coefficient height also cost time.  Can one choose an observer with a rigorous
+bicriteria bound on slot budget and decoder sparsity?  A target could compare
+to the best basis under $L+\lambda\nnz(N)$, or prove an approximation guarantee
+under a sparse normal-matching structure.  The simple greedy proof does not
+apply automatically to this nonadditive objective.
+
+\paragraph{4. Make general rank compilation reusable under support edits.}
+Hierarchies and candidate families often differ by a few zero coordinates.
+Can a certified rank/decoder update handle a deletion or insertion of $k$
+columns at cost polynomial in $k$ and the affected algebraic blocks, rather
+than recompiling globally?  The verifier should check a small update against
+the old certified matrix while preserving exact source support binding.
+
+\paragraph{5. Prove a practical adaptive observer policy.}
+Develop a preflight estimate comparing the old sparse $q+a$ decoder, the new
+$d$ observer, and the ray gate.  A useful target is an overhead guarantee:
+the dispatcher takes at most a small certified budget before reverting to the
+baseline, and total time is bounded by that budget plus the selected complete
+query.  The negative benchmark cases in this package provide a test set for
+such a policy.  Prediction accuracy alone is not an asymptotic guarantee.
+
+\subsection{Priority B: retain geometry and markings under compression}
+
+\paragraph{6. A marked refinement of $H\le2d-a$.}
+Specify exactly which markings a hierarchy needs on a component: boundary
+arcs, attachment intervals, orientation data, and maps to the original
+exterior.  Does a finite invariant of controlled bit length determine the
+allowed next cuts?  Seek a bound on distinct marked states in terms of $d$
+and marking complexity.  A counterexample with fixed $d$ and unbounded
+necessary markings would be equally valuable.  Coordinate equality alone
+is insufficient for this purpose.
+
+\paragraph{7. Source-bound compressed cutting and gluing certificates.}
+Realize existing compressed-cut mathematics as an executable source-bound
+operation with an independent checker.  Lackenby's Theorem~14.4 already gives
+polynomial cutting and parallelity-bundle attachment data for orientable
+normal surfaces in uniform-type handle structures, in handle count and
+logarithmic extended weight \cite{Lackenby26}.  The new target is a checked
+representation in this architecture that carries the required source maps
+through those operations.  The canonical input exterior checker is an
+existing base case; later cuts require their own maps and verified hypotheses.
+
+\paragraph{8. Stable local handle types and support complexity.}
+Identify the precise class of handle structures produced by an implemented
+hierarchy and prove that its operations preserve a uniform local incidence
+bound.  Then determine how supported nullity, peeling cores, and marking size
+change under those operations.  A theorem about arbitrary triangulations
+cannot silently supply a bound for an expanding hierarchy representation.
+
+\paragraph{9. Product-region removal with a charging argument.}
+Can raw-support blocks, ray certificates, and two-sided profile types identify
+parallelity/product regions that can be removed while charging every removal
+to a decreasing potential?  The target is a global bound on cumulative
+representation size and total local work, not just termination of each
+individual removal.
+
+\subsection{Priority C: close the global selection and hierarchy bounds}
+
+\paragraph{10. Find a useful support without exhaustive support enumeration.}
+Determine whether a meridian or hierarchy surface can always be found within
+a quasi-polynomially bounded family of supports, after allowed checked
+geometric preprocessing.  Possible parameters include a bounded exposure
+core, support nullity, and normal boundary data.  The dense Fibonacci family
+shows that few occupied quadrilateral positions are not necessary for easy
+certification.  A low-nullity promise alone is not a discovery algorithm.
+
+\paragraph{11. Quantify the limits of coherent cocycle candidates.}
+The maintained minimum-span and Euler-optimal coherent cocycle family is not
+a complete meridian family on arbitrary solid-torus triangulations, as proved
+in \code{synthesis/coherent_obstruction.tex}.  That obstruction does not
+establish failure on canonical diagram exteriors.  Formulate a controlled
+enlargement that repairs identified obstructions and prove its candidate count
+and bit-height bounds.  Re-running
+the same optimizer with a new tie-breaker does not address a structural
+incompleteness theorem.
+
+\paragraph{12. Prove a polylogarithmic hierarchy potential.}
+Seek a nonnegative potential on the complete marked state whose decrease
+bounds the relevant hierarchy length by $O((\log n)^2)$, or by another
+polylogarithmic function sufficient for \cref{prop:accounting}.  It must charge
+all reset and branching operations.  A linear bound in a complexity parameter
+that may itself grow polynomially in $n$ does not yield this conclusion.
+
+\paragraph{13. A complete bit-complexity ledger.}
+For every stage, bound the number of candidates, dimensions, coordinate
+heights, decoder/certificate sizes, boundary maps, and repeated local calls.
+Then compose the bounds without reinitializing the accounting at each branch.
+The deliverable's source hashes and separated generation/replay timings are
+small-scale infrastructure for this ledger; the missing proof is global.
+For negative verdicts, seek shared certificates that exclude whole families
+of failed support branches after unit substitutions.  A linear dual witness
+can settle an individual convex cone, but a disjunction of quadrilateral
+sectors requires evidence covering every alternative.  A certificate DAG
+with shared substitution prefixes is a concrete target; a single failed
+candidate is not a complete rejection argument.
+
+\subsection{Priority D: falsification and validation}
+
+\paragraph{14. Adversarial geometric families for overhead and core growth.}
+Build genuine torus-boundary triangulations with large $d$, many supported
+links, persistent exposure cores, and one-sided components.  Compare exact
+costs before choosing a default policy.  Abstract sparse matrices test algebra
+but cannot substitute for realizable normal-matching geometries when the
+claim is geometric.
+
+\paragraph{15. Formalize the smallest trusted lemmas first.}
+The triangular unit-pivot lattice theorem and integer decoder identities are
+compact candidates for a proof assistant or a very small extracted checker.
+Next formalize raw-incidence block separation and the primitive ray disc
+criterion.  Keep a traceability map from each formal statement to the concrete
+certificate fields and finite manifold hypotheses.  This would strengthen
+the independent Python checks without claiming that the present package is
+already formally verified.
+
+The immediate implementation order suggested by the evidence is an adaptive
+local policy, multi-seed residual compilation, and a source-bound compressed
+cut interface.  The highest-value mathematical target remains a selection
+or hierarchy theorem controlling the complete marked state; local arithmetic
+savings alone cannot supply it.

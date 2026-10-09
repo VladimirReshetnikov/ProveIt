@@ -1,0 +1,180 @@
+\subsection{Archive layout and integration}
+
+The archive contains a complete source snapshot needed by the supplied
+tests, an additive patch against the audited commit, the article sources
+and rendered PDF, raw measurements, certificate-bearing audit records,
+compact source cases, reproduction scripts, and provenance notes. The
+\path{fast/} snapshot preserves the pinned files and adds the new modules.
+Its sibling \path{reports/} directory contains only historical oracle
+dependencies required by the existing tests.
+
+The patch uses paths rooted at \path{Topology/UnknotRecognition/fast/}.
+It adds the feature modules, tests, and research drivers. It does not alter
+the production recognition schedule. The new article and the retained
+data are separate reviewable artifacts; the repository's intake process
+can place them under its next report number.
+
+From a checkout at the pinned revision, inspect and check the patch:
+\begin{lstlisting}
+git apply --stat /path/to/integration.patch
+git apply --check /path/to/integration.patch
+\end{lstlisting}
+The package build verifies that the patch applies to the pinned source
+and reproduces its included added files. A later repository revision
+should be checked independently for path conflicts before applying it.
+
+\subsection{Python setup and tests}
+
+The new native algorithms use the Python standard library. The maintained
+project supports Python 3.10 or later. This research environment uses
+Python 3.12.14; use Python 3.12 for the pinned optional package set.
+Regina is optional for most native tests but required to
+repeat the advertised independent Regina comparisons. The archive gives
+the exact optional package versions in \path{requirements-research.txt};
+it does not bundle third-party binary distributions.
+
+A reproducible environment can be prepared at the extracted archive root:
+\begin{lstlisting}
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-research.txt
+python reproduce/run_checks.py --full
+\end{lstlisting}
+Without the optional dependencies, native feature checks can be run with:
+\begin{lstlisting}
+python reproduce/run_checks.py
+\end{lstlisting}
+The latter command uses standard-library test discovery and verifies
+retained native proofs. Its output identifies optional comparisons
+that were skipped. For the explicit repository regression:
+\begin{lstlisting}
+cd fast
+python -m unittest discover -s tests -v
+\end{lstlisting}
+
+\subsection{Minimal source-bound example}
+
+From the supplied \path{fast/} directory:
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram
+from fastunknot.normal_transport import transport_seed_decide
+from fastunknot.normal_transport_verify import (
+    verify_transport_disk_certificate,
+)
+
+diagram = Diagram.from_braid(2, [1])
+answer = transport_seed_decide(
+    diagram, strategy="score", max_work=2_000_000
+)
+assert answer["status"] == "UNKNOT"
+assert verify_transport_disk_certificate(
+    diagram, answer["certificate"]
+)
+\end{lstlisting}
+
+The function accepts optional boundary shellings and initial minimum-span
+optimization. It performs no subsequent cohomology solve after a move.
+A failed or resource-limited search returns \code{INCONCLUSIVE}. The
+certificate schema is \code{diagram-transport-disc-v1}; it includes the
+source PD, canonical exterior, optional shelling transcript, initial
+heights, every triangulation and cochain-transport proof, final coordinates,
+and a positive essential-disc component certificate.
+
+No rank-one or primitivity claim about the initial heights is needed by
+the positive consumer: the independently established essential disc in
+the verified exterior is sufficient. The producer uses a primitive class
+to make its search useful. This separation keeps the consumer's
+mathematical responsibilities smaller.
+
+\subsection{Low-level geometric and boundary APIs}
+
+\begin{lstlisting}[language=Python]
+from fastunknot.cocycle_transport import (
+    bipyramid_cocycle_score,
+    cocycle_collapse_candidates,
+    descend_cocycle,
+)
+score = bipyramid_cocycle_score([0, -1, 1, 3, 4])
+assert score["euler_loss"] == 4
+assert score["normal_disc_increase"] == 5
+\end{lstlisting}
+
+The five-height input order is belt first, then apices. A transport proof
+uses schema \path{pachner-cocycle-transport-v1}. The mathematical formulas
+are valid for arbitrary integral heights; the native geometry wrapper
+has the compact orientable one-torus-boundary contract stated in
+Section~\ref{sec:cochains}.
+
+\begin{lstlisting}[language=Python]
+from normal_orbit_research.fixtures import layered_torus
+from fastunknot.marked_boundary import normal_marked_boundary_order
+from fastunknot.marked_boundary_verify import (
+    verify_normal_marked_boundary_certificate,
+)
+
+triangulation, coordinates = layered_torus(8)
+marks = [0]
+answer = normal_marked_boundary_order(
+    triangulation, coordinates, marks,
+    weight_encoding="moments", record_certificate=True
+)
+assert answer["status"] == "COMPLETE"
+assert verify_normal_marked_boundary_certificate(
+    triangulation, coordinates, marks, answer["certificate"]
+)
+\end{lstlisting}
+
+The lower-level \code{marked_boundary_order(size, pairings, marks, ...)}
+accepts a validated raw degree-two multigraph encoding. The reference
+\code{weight_encoding="one_hot"} is retained. The default moment mode
+changes the query encoding, not the returned cyclic solution.
+An optional \code{start_half_edge} fixes the direction of one marked
+component. Unmarked circles remain present in the output histogram.
+
+\subsection{Recreate audits and benchmarks}
+
+From \path{fast/}, the following commands write new records into
+\path{../reproduced/}; they preserve the supplied measurements:
+\begin{lstlisting}
+python -m transport_research.audit local \
+  --output ../reproduced/cocycle-local.json
+python -m transport_research.audit corpus \
+  --corpus ../reproduce/cocycle-source-cases.json \
+  --output ../reproduced/cocycle-corpus.json
+python -m transport_research.audit benchmark \
+  --sizes 16 32 64 128 256 --rounds 5 \
+  --output ../reproduced/cocycle-benchmark.json
+python -m transport_research.splitting \
+  --output ../reproduced/cocycle-splitting.json
+python -m marked_boundary_research.matched_final \
+  --output ../reproduced/marked-boundary-paired.json
+\end{lstlisting}
+The local transport audit uses Regina unless \code{--no-regina} is
+specified. The final paired boundary driver records individual samples
+and exact equality checks. The broader native-boundary experiment can
+also be repeated with:
+\begin{lstlisting}
+python -m marked_boundary_research.benchmark \
+  --output ../reproduced/marked-boundary.json
+\end{lstlisting}
+Timing benchmarks should run sequentially with other heavy jobs paused.
+Exact numerical outputs, counts, and accepted certificates are
+reproducibility targets; machine-dependent elapsed times are not expected
+to match bit for bit.
+
+\subsection{Build the article}
+
+The included table and figure sources reproduce the paper's displays from
+the retained JSON measurements. The already generated figures permit a
+PDF rebuild without Python plotting packages. From \path{article/}:
+\begin{lstlisting}
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  unknot_geometric_transport.tex
+\end{lstlisting}
+Rebuilding the tables and plots first uses:
+\begin{lstlisting}
+python reproduce/build_tables.py
+\end{lstlisting}
+from the archive root; the plotting dependency is listed separately in the
+research environment file. The final PDF was rendered to page images and
+visually inspected for broken equations, table overflow, and pagination.

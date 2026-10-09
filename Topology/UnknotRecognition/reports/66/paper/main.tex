@@ -1,0 +1,747 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,fancyhdr,xcolor}
+\usepackage{graphicx,xurl,needspace}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Signed Continuation Bases and Euler-Optimal Disk Completion},
+ pdfauthor={ProveIt research contribution; prepared with ChatGPT},
+ pdfsubject={Signed gain-partition ranks, representative bases, and finite surface-patch disk selection},
+ pdfkeywords={unknot recognition, representative sets, signed partitions, Euler characteristic, surface gluing}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Signed continuation bases}
+\fancyhead[R]{\small ProveIt research contribution}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\U}{[r]}
+\newcommand{\SP}{\mathcal P_r^{\pm}}
+\newcommand{\PG}{\mathcal P_r(G)}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\cost}{\operatorname{cost}}
+\newcommand{\Opt}{\operatorname{opt}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\bad}{\bot}
+\newcommand{\pin}{\texttt{3a90fb34146c915328ab8eac6250cc2514f74ed0}}
+\title{\vspace{-1em}\textbf{Signed Continuation Bases\\and Euler-Optimal Disk Completion}\\[0.65em]
+\large Exact finite-interface acceleration toward\\quasi-polynomial unknot recognition}
+\author{Research contribution prepared for the ProveIt project\\
+\small Mathematical development and reference software prepared with ChatGPT}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The recent ProveIt port reports preserve complete component censuses or physical quotient states. For an optimization query, preserving every state is unnecessary. We develop a decision-specific continuation interface for connectivity, orientation consistency, and additive Euler characteristic. The binary compatibility matrix of signed partitions on $r$ live ports has rank exactly $2^{r-1}$. Consequently a minimum-cost basis retains at most $2^{r-1}$ original candidates and preserves the optimum under every compatible signed completion, with no dependence on the numerical range of the costs. We prove a finite-group extension: an integer zeta factorization gives the determinant and the rank in every field characteristic, including a full-rank characteristic-zero obstruction for this particular bilinear interface.
+
+For compact surface fragments glued along disjoint boundary arcs and circles, signed compatibility detects connected orientable completion and Euler characteristic is additive with a known seam correction. Weighting a fragment by minus its Euler characteristic therefore preserves disk existence when nonempty boundary is certified. We turn this statement into a complete algorithm for an explicit finite surface-patch selection problem. Given an anchored site order of frontier width $b$, it runs in $\poly(N,B,b)2^{3b}$ bit time using elementary elimination. Whole-site transitions are performed symbolically, so intermediate port sets do not incur a separate exponential factor. A conditional composition theorem states precisely what would be needed to obtain $n^{O(\log n)}$ recognition from a source-complete patch producer.
+
+The package contains 55 passing test methods, 68,581 exhaustive signed compatibility comparisons, 6,400 independently checked randomized optimum queries, 442 triangulated seam gluings, and exhaustive mesh replay of all 297 assignments in a small patch system. Paired tests show gains on repeated interface queries and finite patch selection, but slower single static queries. These are local geometric and algebraic results, not a general quasi-polynomial unknot recognizer. The underlying rank-based weighted-basis method is classical; the signed interface, exact characteristic analysis, geometric contracts, and executable patch continuation are the contributions developed here.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Repository baseline.} \pin.\\
+\textbf{Delivery status.} Self-contained proofs and executed reference code; no maintained production module changed; native recognizer integration not executed.
+\thispagestyle{empty}\clearpage
+\normalsize
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research position and the actual target}
+\label{sec:position}
+
+\subsection{Continue the current repository, not an obsolete gap}
+We review \path{Topology/UnknotRecognition} at commit
+\begin{center}\pin\end{center} Its maintained development is substantially newer than parts of its overview README. In particular, the inspected synthesis now includes native weighted normal-component queries, a source-checked canonical compact exterior constructed from a validated knot diagram, and a restricted primitive-cocycle candidate family \cite{repo,native}. The present article does not claim that diagram-to-exterior provenance is wholly absent.
+
+Two different limitations remain relevant. Counting compressing disks in a supplied normal vector is not the same task as discovering a complete, efficiently searchable collection of vectors. Likewise, minimizing the number of pieces in the cocycle-dual family is not genus minimization. The inspected cocycle chapter explicitly retains an unknot example whose optimized seed still has genus one \cite{native}. These observations motivate a different local objective: maximize Euler characteristic among candidates that admit a specified connected completion.
+
+The recent incoming reports provide exact sparse incidence, guarded whole-port identifications, and compiled component profiles. One of them proves a Bell-number bound for physically distinct continuation states; another gives a sharp finite-height bound for a fixed family of full-port cones \cite{ports,compiled}. They preserve substantially more information than a single best-completion query requires. Our question is not whether their exact state bounds are wrong. It is whether an optimizer can safely retain fewer \emph{candidates} while leaving source geometry and attachment information intact. The answer is affirmative under the contracts below.
+
+\subsection{What is classical, and what is established here}
+The use of a minimum-weight basis of a connectivity matrix to retain representative partial solutions is classical. Bodlaender, Cygan, Kratsch, and Nederlof developed the rank-based method and its closure under useful dynamic-programming operations \cite{bckn}. We use that method explicitly; neither Gaussian elimination nor weighted representative families is claimed as a new general technique.
+
+The mathematical development here supplies a signed compatibility matrix that retains orientation conflicts without increasing the binary cut dimension, an exact finite-group determinant and characteristic-dependent rank formula, and a surface-level interpretation that preserves Euler-optimal disk completion. The determinant proof is an application of classical incidence-algebra factorization, in the setting of gain partitions related to Dowling's constructions \cite{dowling,lindstrom}. No claim of priority over all literature on gain partitions or join matrices is made. Every specific identity needed for the implementation is proved in this article.
+
+The principal algorithmic result is not merely an instruction to assume a small dynamic program. We specify a finite input problem consisting of actual triangulated surface patches and fixed seam maps, give its complete transfer algorithm, prove the frontier-dependent bound, and implement it with an independent global mesh oracle. The unresolved step toward general unknot recognition is a source-complete and quantitatively controlled production of such choices from knot exteriors.
+
+\subsection{Main results in operational form}
+For a nonempty interface of $r$ ports, the signed cut dimension is
+\begin{equation}\label{eq:dimension}
+ d_r=2^{r-1}.
+\end{equation}
+A family of $m$ candidates with integer costs can be reduced to at most $d_r$ original witnesses while preserving every minimum-cost connected, orientation-consistent completion. An elementary implementation uses
+\begin{equation}\label{eq:local-summary}
+ O\!\left(m d_r^2+m\poly(r)d_r+m\log(m+1)B\right)
+\end{equation}
+bit operations up to polynomial address- and label-management factors; $B$ bounds the numerical cost bits. The bound is deliberately conservative and does not invoke fast matrix multiplication. We use an exact-integer RAM with bit-cost arithmetic and logarithmic-cost addressing, not unit-cost arithmetic on unbounded integers. All address and label lengths are included in the polynomial factors of the global bounds.
+
+For the explicit anchored patch problem, let $N$ be its total encoded input size and let $b$ be one plus the largest number of seam pairs crossing a cut of the supplied site order. The complete optimizer has a bound
+\begin{equation}\label{eq:patch-summary}
+ \poly(N,B,b)\,2^{3b}.
+\end{equation}
+This is an unconditional statement about that finite input problem, not about every knot diagram. If a complete knot-exterior patch producer has quasi-polynomial total encoded cost, controlled auxiliary geometry states, and $b=O(\log^2 n)$, the composition has the desired $n^{O(\log n)}$ scale. None of those source-completeness or width hypotheses is inferred merely from a small port census.
+
+\subsection{Relationship to the hierarchy programme}
+Lackenby's 2026 paper provides an algorithmic hierarchy framework relevant to unknot recognition. Its Section 9 distinguishes iteration counts from the precision needed to estimate the running time of individual steps \cite{lackenby}. The present result can serve as a finite-interface optimizer inside a suitable geometric construction. It does not replace the hierarchy construction, prove a bound on its seam width, or give a new end-to-end complexity theorem for all knots.
+
+\section{Signed ports and the exact binary compatibility rank}
+\label{sec:signed}
+
+\subsection{Definitions and conventions}
+Throughout, $r\ge1$ and $[r]=\{0,\ldots,r-1\}$. The distinguished port $0$ fixes a global gauge. All vector spaces in this section are over $\F_2$.
+
+\begin{definition}[Signed partition]
+A signed partition $s=(\pi,\epsilon)$ consists of a set partition $\pi$ of $[r]$ and labels $\epsilon_i\in\F_2$, modulo independently adding the same bit to all labels in any one block. It represents the constraints
+\begin{equation}\label{eq:constraints}
+ x_i+x_j=\epsilon_i+\epsilon_j\qquad(i,j\text{ in the same block of }\pi).
+\end{equation}
+Write $k(s)$ for its number of blocks. A canonical encoding numbers blocks by first appearance and sets the first label in each block to zero. The set of signed partitions is $\SP$.
+\end{definition}
+A port is one homogeneous interface item in this definition. A marked integer interval containing points from many different surface components is not automatically one signed port. That distinction will matter in \cref{sec:integration}.
+
+The union of the constraints of $s$ and $t$ may be inconsistent. When consistent it determines a signed partition $s\vee t$ whose underlying blocks are the connected components of the union of the two block relations. Otherwise write $s\vee t=\bad$. Define
+\begin{equation}\label{eq:kernel}
+ K_r(s,t)=
+ \begin{cases}
+ 1,&s\vee t\ne\bad\text{ and }k(s\vee t)=1,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Thus a contradictory parity cycle is rejected even if the underlying unsigned relation is connected.
+
+\begin{definition}[Anchored cut row]
+Let $X_r=\{x\in\F_2^r:x_0=0\}$. For $s\in\SP$, define $v_s\in\F_2^{X_r}$ by
+\[
+ v_s(x)=1\quad\Longleftrightarrow\quad x\text{ satisfies all constraints of }s.
+\]
+The matrix $C_r$ has these rows, indexed by $s$; it has $d_r=|X_r|$ columns.
+\end{definition}
+
+\begin{theorem}[Exact signed cut factorization]\label{thm:binary-rank}
+Over $\F_2$,
+\begin{equation}\label{eq:cut-factor}
+ K_r=C_r C_r^{\mathsf T},\qquad \rank K_r=2^{r-1}.
+\end{equation}
+Both the factor dimension and the rank are exact.
+\end{theorem}
+\begin{proof}
+The integer inner product of the two indicator rows counts anchored assignments satisfying both systems. If their union is inconsistent, the count is zero. Otherwise, if the union has $c$ blocks, its unanchored solution set has $2^c$ assignments: choose one gauge bit on each block and propagate within it. Anchoring $x_0=0$ fixes exactly one block gauge. The number of common assignments is therefore $2^{c-1}$. Modulo two, this is one exactly when $c=1$. This proves the factorization and the upper rank bound.
+
+For the lower bound, take the one-block signed partition associated with each $x\in X_r$. Its anchored solution set is the singleton $\{x\}$. The rows of $C_r$ indexed by these states are all standard unit vectors. The corresponding principal submatrix of $K_r$ is the identity of order $2^{r-1}$. Hence the upper bound is attained.
+\end{proof}
+
+\begin{example}[The complete two-port calculation]\label{ex:twoports}
+There are three states: the discrete state $D$, equality $E$, and opposition $O$. With columns $x_1=0,1$,
+\[
+ C_2=\begin{pmatrix}1&1\\1&0\\0&1\end{pmatrix},\qquad
+ K_2=\begin{pmatrix}0&1&1\\1&1&0\\1&0&1\end{pmatrix}.
+\]
+The rank of $K_2$ is two over $\F_2$ but three over $\Q$, where its determinant is $-2$. The equality and opposition states have the same unsigned partition, but their mutual completion is inconsistent. This is the smallest reason that unsigned connectivity alone cannot answer every orientation-sensitive query.
+\end{example}
+
+\subsection{State count versus query dimension}
+Let $S(r,k)$ be a Stirling number of the second kind. For a fixed ordinary partition with $k$ blocks, there are $2^{r-k}$ choices of signed labels modulo block gauges. Therefore
+\begin{equation}\label{eq:signed-count}
+ |\SP|=\sum_{k=1}^r S(r,k)2^{r-k}.
+\end{equation}
+The first eight state counts are 1, 3, 11, 49, 257, 1539, 10299, and 75905. The corresponding cut dimensions are only 1, 2, 4, 8, 16, 32, 64, and 128.
+
+The exact rank theorem does not identify all those states with one another. Distinct states remain physically distinct and can have different completion behavior. It says their \emph{rows} have a low-dimensional linear representation, and that this representation is sufficient to retain a best witness. Nor is it a universal lower bound on arbitrary compressed encodings or nonlinear algorithms: the lower bound concerns representations that factor this particular compatibility matrix through a vector space.
+
+\section{Finite groups, determinants, and field choice}
+\label{sec:groups}
+The preceding rank is a special case of a more informative integer factorization. This section is self-contained; it also explains why the choice of field matters.
+
+\subsection{Gain partitions without a zero block}
+Let $G$ be a finite group of order $q\ge1$, written multiplicatively with identity $e$. A $G$-partition on $[r]$ is an ordinary partition with labels $\alpha_i\in G$, modulo simultaneous \emph{left} multiplication on each block. Its constraints are
+\begin{equation}\label{eq:group-constraints}
+ x_j=x_i\alpha_i^{-1}\alpha_j
+ \qquad(i,j\text{ in the same block}).
+\end{equation}
+This convention works for noncommutative groups. There is no zero block and no allowance for inconsistent blocks. The finite poset $\PG$ is ordered by extension of consistent constraints. We distinguish this full-support poset from the entire Dowling lattice \cite{dowling}.
+
+Let $s\le t$ mean that $t$ extends $s$. Define the square upper zeta matrix $Z$ by $Z_{st}=1$ if $s\le t$, and zero otherwise, using a linear extension of the poset order. It is unitriangular. Define $K_G(s,t)$ to be one exactly when the union of the two constraint systems is consistent and its underlying relation is connected. The state count is
+\begin{equation}\label{eq:group-count}
+ D_r(q)=\sum_{k=1}^r S(r,k)q^{r-k}.
+\end{equation}
+
+\begin{theorem}[Integer factorization and exact ranks]\label{thm:group-rank}
+For a state $s$ with $k(s)$ blocks, put
+\[
+ g(s)=(-q)^{k(s)-1}(k(s)-1)!.
+\]
+Then the following identity holds over the integers:
+\begin{equation}\label{eq:zeta-factor}
+ K_G=Z\diag(g(s):s\in\PG)Z^{\mathsf T}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:determinant}
+ \det K_G=\prod_{k=1}^r\left((-q)^{k-1}(k-1)!\right)^{S(r,k)q^{r-k}}.
+\end{equation}
+Its rank over any field is determined solely by its characteristic. In characteristic zero it is $D_r(q)$. In characteristic $p>0$ it is
+\begin{equation}\label{eq:rank-p}
+ \rank K_G=
+ \begin{cases}
+ q^{r-1},&p\mid q,\\[2pt]
+ \displaystyle\sum_{k=1}^{\min(r,p)}S(r,k)q^{r-k},&p\nmid q.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $f(s)$ be one for one-block states and zero for all other states. Denote the M\"obius function of the finite poset by $\mu$. Define
+\[
+ g_0(s)=\sum_{t\ge s}\mu(s,t)f(t).
+\]
+Finite M\"obius inversion gives $f(s)=\sum_{t\ge s}g_0(t)$.
+
+Fix $s$ with $k$ blocks. It has $q^{k-1}$ one-block extensions: assign a relative group gauge to each of its blocks, with the first gauge fixed. For any such extension $t$, the interval $[s,t]$ is isomorphic to the ordinary partition lattice on those $k$ blocks. Indeed, after the final relative gauges have been fixed by $t$, an intermediate state is determined uniquely by which blocks of $s$ it merges. No additional gain choices remain. Thus
+\[
+ \mu(s,t)=(-1)^{k-1}(k-1)!,
+\]
+and consequently $g_0(s)=q^{k-1}(-1)^{k-1}(k-1)!=g(s)$.
+
+For completeness, the partition-lattice value follows from its defining M\"obius recurrence. If $\mu_j=(-1)^{j-1}(j-1)!$, then the sum over partitions of a $k$-set of the product of these values on blocks is zero for $k>1$, and one for $k=1$. One way to see the cancellation is to group permutations by cycle partition: the product counts permutations with that cycle partition, weighted by $(-1)^{k-\text{number of cycles}}$, their permutation sign. The total sign of all permutations of $k>1$ elements is zero, by multiplication by a transposition. This supplies the recurrence and its initial value.
+
+If $s$ and $t$ have inconsistent union, they have no common consistent upper bound. The $(s,t)$ entry of the right-hand side of \eqref{eq:zeta-factor} is then zero. If their union is consistent, let $u$ be the signed constraint state it generates. The common upper bounds of $s,t$ are precisely the upper bounds of $u$. Their contribution is $\sum_{z\ge u}g(z)=f(u)$, which is $K_G(s,t)$. This proves the integer identity. It is the usual zeta--diagonal mechanism for join-type matrices \cite{lindstrom}, with the explicit diagonal computed here.
+
+Since $Z$ is unitriangular over every field, left and right multiplication by $Z$ and $Z^{\mathsf T}$ do not change rank. Over characteristic zero every diagonal entry is nonzero. If $p\mid q$, exactly the one-block entries survive. If $p\nmid q$, the entry for $k$ blocks survives exactly when $(k-1)!$ is nonzero modulo $p$, equivalently $k\le p$. Counting the states with each number of blocks gives \eqref{eq:rank-p}. Taking determinants and using $\det Z=1$ gives \eqref{eq:determinant}.
+\end{proof}
+
+\begin{corollary}[Optimal modular dimension for nontrivial gains]\label{cor:field-choice}
+Suppose $q\ge2$ and $r\ge2$. Every bilinear vector-space factorization of $K_G$ needs at least $q^{r-1}$ coordinates. That minimum is attained in every characteristic dividing $q$ and in no other characteristic.
+\end{corollary}
+\begin{proof}
+The one-block states again give an identity submatrix of order $q^{r-1}$. If $p\mid q$, \cref{thm:group-rank} attains this bound. If $p\nmid q$, its two-block summand is strictly positive because $p\ge2$ and $r\ge2$. In characteristic zero all states contribute. These ranks exceed the one-block count.
+\end{proof}
+There is also a direct factorization in characteristic dividing $q$: use indicator rows of satisfying assignments anchored at $x_0=e$. A consistent union with $c$ blocks has $q^{c-1}$ such assignments. Reducing this count modulo $p\mid q$ gives exactly the connected compatibility indicator. The binary orientation kernel is therefore not paying an extra exponential factor for orientation relative to the usual unsigned binary cut space.
+
+\begin{corollary}[A precise characteristic-zero limitation]\label{cor:count-barrier}
+For fixed $q$, the characteristic-zero rank is $D_r(q)=2^{\Theta(r\log r)}$. In particular, an exact rational bilinear representation of the compatibility kernel cannot have dimension $2^{O(r)}$ uniformly in $r$.
+\end{corollary}
+\begin{proof}
+The upper bound follows from $D_r(q)\le q^r B_r\le q^r r^r$, where $B_r$ is the ordinary Bell number. For even $r$, partitions into pairs alone number
+\[
+ \frac{r!}{2^{r/2}(r/2)!}=2^{\frac12r\log_2 r-O(r)}.
+\]
+They are a subset of the ordinary partitions and hence of the gain partitions obtained by taking every label to be $e$. Odd $r$ follows by adjoining a singleton. Apply the full-rank conclusion of \cref{thm:group-rank}.
+\end{proof}
+This is not a lower bound for every counting algorithm. Determinantal formulas, different state semantics, restricted geometric completion sets, and nonlinear representations are not excluded. It does explain why an optimizer that keeps one best representative should not be advertised as an exact multiplicity counter.
+
+\section{Cost-dominating representative bases and replay}
+\label{sec:bases}
+
+\subsection{The objective and the retained witnesses}
+A candidate $a$ consists of a signed partition $s_a$, an integer cost $c_a$, an identifier for an original witness, and a geometry key. All candidates in one reduction have the same width and the same key. The key means that the admissible completion operations and their geometric side conditions are shared; it is not inferred from the partition.
+
+For a family $\mathcal A$ and a signed completion $t$, define
+\[
+ \Opt(\mathcal A,t)=\min\{c_a:a\in\mathcal A,\ K_r(s_a,t)=1\},
+\]
+with the minimum of an empty set equal to $+\infty$. A subfamily $\mathcal R\subseteq\mathcal A$ represents $\mathcal A$ when these optima agree for every $t$.
+
+\begin{theorem}[Weighted signed continuation basis]\label{thm:weighted}
+Sort $\mathcal A$ by nondecreasing cost, breaking ties deterministically. Retain a candidate exactly when its row $v_{s_a}$ is independent of the previously retained rows. The resulting original-witness subfamily $\mathcal R$ has at most $d_r$ members and represents $\mathcal A$.
+
+More strongly, every input row has an identity
+\begin{equation}\label{eq:dominating-span}
+ v_{s_a}=\sum_{u\in I_a}v_{s_u},\qquad
+ I_a\subseteq\mathcal R,\quad c_u\le c_a\text{ for all }u\in I_a.
+\end{equation}
+\end{theorem}
+\begin{proof}
+An accepted row represents itself. A rejected row is in the span of rows accepted earlier, and every earlier accepted cost is no larger. These accepted rows are never subsequently removed, so \eqref{eq:dominating-span} holds in the final family. At most $d_r$ independent rows can be accepted.
+
+Fix a completion $t$ and a feasible input candidate $a$. Take the inner product of \eqref{eq:dominating-span} with $v_t$. By \cref{thm:binary-rank}, the left-hand side is one. Thus an odd number, and in particular at least one, of the terms on the right is one. One retained candidate is feasible and costs at most $c_a$. This proves $\Opt(\mathcal R,t)\le\Opt(\mathcal A,t)$. The opposite inequality follows because $\mathcal R$ is a subfamily. If there is no feasible input candidate, there can be no feasible retained candidate.
+\end{proof}
+
+\begin{corollary}[Sharp universal representative size]\label{cor:sharp-size}
+For every $r\ge1$, some candidate family requires all $2^{r-1}$ of its members in any subfamily preserving every signed completion optimum.
+\end{corollary}
+\begin{proof}
+Take one candidate of equal cost for each one-block signed state. Its compatible one-block completion is unique among this family, by the identity submatrix in \cref{thm:binary-rank}. Deleting that candidate changes the corresponding optimum from finite to infinite.
+\end{proof}
+This sharpness concerns all signed completion queries. It does not assert the same lower bound after restricting the completion family to a particular ambient disk problem.
+
+The rows may be added for a proof, but the corresponding surfaces are not added as geometric objects. The algorithm keeps a subset of the supplied witnesses. This avoids an unjustified inference that a formal sum of fragments is itself an admissible embedded fragment.
+
+\subsection{Filtered spans make the invariant explicit}
+For a threshold $z\in\Z$, let
+\[
+ L_z(\mathcal A)=\operatorname{span}\{v_{s_a}:a\in\mathcal A,\ c_a\le z\}.
+\]
+A cost-dominating subfamily has $L_z(\mathcal R)=L_z(\mathcal A)$ for every $z$. Conversely, these span equalities imply the existence of a representation of each input row using retained rows of no greater cost. This formulation is useful when proving closure under operations rather than just checking one terminal query.
+
+Neither the theorem nor its implementation creates one state per integer cost. An input cost of magnitude $2^{20000}$ is handled by its binary encoding, not by iterating over that range. Integer additions during composition must still be charged their actual bit lengths.
+
+\subsection{A replayable certificate}
+The algebraic certificate consists of the selected input indices and, for each input row, a binary mask encoding $I_a$ in \eqref{eq:dominating-span}. A verifier reconstructs the input rows, checks the selected indices, checks every row identity, and checks every cost inequality. Independence of the selected rows is also checked in the delivered verifier, although domination and the cardinality bound suffice for the representation assertion.
+
+The certificate has $O(md_r+m\log(m+1))$ bits in its row masks and indices, apart from the input costs and labels. It refers to the exact input family passed to replay. It does not authenticate an arbitrary witness identifier as a normal surface, prove an Euler weight, or certify that two geometry keys are interchangeable. Those assertions belong to separate source and geometry layers.
+
+The implementation's independent replay enumerates satisfying assignments and uses finite-set symmetric difference. It does not call the packed row builder or the producer's parity union routine. Tests disable those producer entry points during replay and mutate masks, indices, costs, widths, and keys.
+
+\subsection{Why tempting shortcuts fail}
+Identical signed rows with different original witnesses cannot be merged when the caller asks for their exact multiplicity: two feasible witnesses and one retained witness have different counts, even modulo two. Likewise, retaining a cheapest witness does not preserve the entire spectrum of attainable costs. The two one-port candidates of costs $0$ and $2$ reduce to the first, losing the assertion that cost exactly $2$ is attainable. The disk theorem below succeeds because diskhood is an \emph{extremal} Euler condition within a geometrically certified class, not because all Euler values are preserved.
+
+\section{Operations that preserve the invariant}
+\label{sec:operations}
+It is not enough for a small family to answer today's queries. It must remain sufficient after the allowed continuations. We give explicit linear or bilinear descriptions so that rejected candidates cannot become indispensable later.
+
+\begin{lemma}[Linear and bilinear transport]\label{lem:transport}
+Suppose $\mathcal R\subseteq\mathcal A$ has the cost-dominating property \eqref{eq:dominating-span}. Applying a fixed linear map to all rows and adding the same cost increment preserves that property; zero images may be discarded. If two families have the property, applying a fixed bilinear map to pairs of rows and adding the two costs plus a fixed increment also preserves it.
+\end{lemma}
+\begin{proof}
+Apply the linear map to every identity. Each surviving term has the same added cost, so the inequalities remain valid. For a bilinear map $B$, expand both identities:
+\[
+ B(v_a,v_b)=\sum_{u\in I_a}\sum_{v\in I_b}B(v_u,v_v).
+\]
+Every term costs at most $c_a+c_b$ before the common increment. Vanishing or mutually cancelling terms can be removed. This proves the claim. A union of output alternatives also preserves domination because the proof applies separately to each input alternative.
+\end{proof}
+
+\subsection{Constraint insertion, relabeling, and introduction}
+Adding a specified signed edge constraint $x_i+x_j=\delta$ multiplies a cut row coordinatewise by the indicator of that constraint. The result is the row of the consistent joined state or the zero row if the system becomes inconsistent. This is a linear diagonal map.
+
+Permuting port labels or changing the chosen local port frames permutes the anchored assignment coordinates. When port zero changes, first apply the relabeling and then subtract the new anchor bit from every coordinate. Thus relabeling and gauge change are invertible linear maps.
+
+Introducing a new isolated port duplicates each old assignment into its two possible new spins. Its output row has two identical copies of the old row. This operation is linear. Cost shifts and disjoint unions of alternative families are immediate cases of \cref{lem:transport}.
+
+\subsection{Forgetting a port requires a no-orphan condition}
+\begin{proposition}[Guarded projection]\label{prop:forget}
+Let $j\ne0$. Sum the cut row over the two possible values of $x_j$, keeping all other spins fixed. Over $\F_2$, the result is the row of the restricted signed partition if the block containing $j$ has another retained port. It is zero if $j$ is a singleton block.
+\end{proposition}
+\begin{proof}
+If the block has another port, a satisfying assignment on the remaining ports determines $x_j$ uniquely. The fiber has size one. If the block is the singleton $\{j\}$, a satisfying assignment on the other ports has two extensions, whose sum is zero. Inconsistent assignments have no extensions. These are all cases.
+\end{proof}
+One may forget a set of ports successively. If a component loses its final live port, the last projection kills its row. This matches the geometric contract that a closed-off component cannot later connect to the anchored target. Before forgetting the anchor, relabel a retained port as the new anchor. In the patch algorithm we never forget the permanent boundary anchor at all.
+
+Without the guard, restricting the discrete two-port state to its first port falsely reports a connected one-port state after losing an entire component. The correct XOR projection returns zero. Resource limits and missing interface data must not be interpreted as equivalent to this mathematically justified zero.
+
+\subsection{Union on a shared interface and disjoint union}
+For two states on the same interface,
+\[
+ v_{s\vee t}=v_s\odot v_t,
+\]
+where $\odot$ is coordinatewise product and $v_{\bad}=0$. The operation is bilinear. Hence pairwise union of constraints preserves cost-dominating subfamilies.
+
+For disjoint port sets $A,B$, anchor in $A$. For an assignment $x$ on their union, normalize the $B$ spins by subtracting the spin of its first port, denoting the normalized restrictions by $x_A$ and $\bar x_B$. Then
+\begin{equation}\label{eq:disjoint-map}
+ v_{s\sqcup t}(x)=v_s(x_A)v_t(\bar x_B).
+\end{equation}
+This is a bilinear map between the two input row spaces and the larger output row space. The formula correctly leaves the relative gauge of the two disjoint pieces free.
+
+\subsection{Symbolic blocks avoid unnecessary intermediate vectors}
+A sequence consisting of disjoint union with one fixed patch, a fixed list of signed edge constraints, and guarded projection is linear in the original row. It may be evaluated \emph{symbolically} by parity union and partition restriction, without writing the large intermediate cut row. Only the final row needs to be materialized.
+
+This observation is central to the complete patch solver. The proof of linearity can use a conceptually large vector space without requiring the implementation to allocate it. To use that saving, however, the whole symbolic block must have a polynomial-size description, a polynomial-time action on one signed state, and a proved no-orphan rule. An arbitrary black-box topological operation does not acquire such a contract by being called a block.
+
+\subsection{Filters not covered by these proofs}
+An arbitrary test on a candidate's hidden geometry need not commute with reduction. For example, a dropped witness can be the only one that passes a later unmodeled normal quadrilateral condition. Such information must either be included in the geometry key before reduction or shown to induce a representative-preserving operation.
+
+The same caution applies to boundary cyclic order, prescribed embedding data, and pointwise attachment maps. The signed partition is a connectivity-and-frame summary, not a complete encoding of any of them. The four-point pointwise-gluing obstruction in the earlier port work remains valid \cite{ports,compiled}; a linear basis does not repair a missing source relation.
+
+\section{Surface gluing and Euler-optimal disk completion}
+\label{sec:surfaces}
+
+\subsection{A geometric seam contract}
+Consider compact orientable surface fragments whose boundaries contain $r$ labeled, pairwise disjoint collared seams. Each seam is either a closed interval or a circle; distinct seams do not even share endpoints. Every connected component of a fragment meets at least one seam. Each seam has a chosen parameterization and local direction. A common geometry key specifies the seam types, attachment maps, any ambient restrictions, and all other side conditions that must be shared by interchangeable candidates.
+
+For a fragment $S$, its port partition records which seams lie in the same component. Choose an orientation on each component and compare the induced boundary orientation along each seam with its chosen direction. The resulting bits define a signed partition $s(S)$. Reversing a component orientation flips exactly one block gauge, so the signed state is well defined.
+
+Let $T$ be a completion with the same seam set and specified maps. Changing the directions of the completion's seams absorbs the per-seam map reversals. Denote the resulting state by $t(T)$. In this convention a uniform reversal of the orientation on every component of $T$ has no effect on its signed state.
+
+\begin{theorem}[Connectivity, orientation, and Euler transport]\label{thm:surface-gluing}
+Suppose the seam maps identify $S$ and $T$ to a compact surface $F$, and every component of both fragments meets a seam. Let $a$ be the number of interval seams. Then
+\begin{align}
+ F\text{ is connected and orientable}
+ &\quad\Longleftrightarrow\quad K_r(s(S),t(T))=1,\label{eq:surface-compat}\\
+ \chi(F)&=\chi(S)+\chi(T)-a.\label{eq:euler-glue}
+\end{align}
+\end{theorem}
+\begin{proof}
+The bipartite incidence graph with vertices the components of $S$ and $T$ and edges the matched seams describes which components are joined. Since every component meets a seam, it is connected precisely when the join of the two port partitions has one block.
+
+To orient the glued surface, choose an orientation on each component of each fragment. Across a glued seam the induced boundary orientations must oppose after transport by the specified map. These conditions are parity equations on the choices of component orientations. In the completion convention above, their elimination gives exactly the union of the two signed port constraint systems. A solution gives orientations agreeing across all collars and hence an orientation of $F$. Conversely an orientation of $F$ restricts to such a solution. This proves \eqref{eq:surface-compat}.
+
+Subdivide so that all seams and maps are cellular. The copies of $S$ and $T$ meet in the disjoint seam union. Finite cell counting gives inclusion--exclusion for Euler characteristic. An interval contributes one and a circle contributes zero. Thus the intersection has Euler characteristic $a$, proving \eqref{eq:euler-glue}. This count includes the seam endpoints; treating each boundary point as a boundary component would be incorrect.
+\end{proof}
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Euler-optimal disk completion]\label{thm:disk-completion}
+Let $\mathcal S$ be a finite family of fragments satisfying one geometric seam contract, and assign cost $c(S)=-\chi(S)$. Reduce their signed rows by \cref{thm:weighted}, retaining a subfamily $\mathcal R$ of at most $2^{r-1}$ original fragments. For every legal completion $T$:
+\begin{enumerate}
+\item the maximum Euler characteristic of a connected orientable completion is the same using $\mathcal S$ or $\mathcal R$;
+\item if every connected orientable completion under consideration has nonempty boundary, then some $S\in\mathcal S$ completes to a disk if and only if some $R\in\mathcal R$ does.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For fixed $T$, the terms $\chi(T)-a$ in \eqref{eq:euler-glue} are constant. By \eqref{eq:surface-compat}, minimizing $-\chi(S)$ among signed-compatible states is precisely maximizing $\chi(F)$ among connected orientable completions. The first conclusion is therefore \cref{thm:weighted}.
+
+A connected compact orientable surface with genus $g$ and $b_{\partial}\ge1$ boundary components has $\chi=2-2g-b_{\partial}\le1$, with equality exactly for $g=0$, $b_{\partial}=1$, namely a disk. If the full family contains a disk completion, the preserved maximum is at least one; the geometric upper bound makes it exactly one. A retained maximizing witness is a disk. The reverse implication is immediate because the retained family is a subfamily.
+\end{proof}
+
+Nonempty boundary is a real hypothesis: gluing two disks around their complete boundary circles gives a sphere of Euler characteristic two. Merely maximizing Euler characteristic in a class permitting closed components does not select a disk. Connectedness is also essential; aggregate Euler characteristic one can be shared by a disconnected surface containing no disk of the required kind.
+
+\subsection{What orientation adds, and what a pure disk query can omit}
+\begin{proposition}[Unsigned specialization for disk existence]\label{prop:unsigned-disk}
+Under a seam contract in which every connected completion is a compact surface with nonempty boundary, one may use an unsigned connectivity representative basis with cost $-\chi$ to preserve disk existence, even without testing orientation during the optimization.
+\end{proposition}
+\begin{proof}
+A connected nonorientable compact surface of nonorientable genus $h\ge1$ and $b_{\partial}\ge1$ boundary components has $\chi=2-h-b_{\partial}\le0$. Thus among all connected compact surfaces with nonempty boundary, orientable or not, Euler characteristic is at most one and equality characterizes a disk. Apply the same extremal argument to the classical unsigned connectivity basis \cite{bckn}.
+\end{proof}
+This qualification is important for attribution and implementation. Signed states are not necessary for the bare disk predicate under these strong surface hypotheses. They preserve the richer orientation-sensitive optimum, support future orientable-genus queries, and detect invalid orientation continuations at no additional binary cut dimension. If the number of boundary components is fixed by the geometry key, maximizing Euler characteristic among orientable completions also minimizes genus. Without that boundary-count condition it need not do so.
+
+\subsection{Essential boundary and finite additive charges}
+Disk existence alone is not a compressing-disk certificate. The boundary must be essential in the specified ambient boundary, and the surface must be properly embedded in the intended manifold. These assertions do not follow from the signed compatibility matrix.
+
+\begin{proposition}[Finite charge refinement]\label{prop:charges}
+Let each candidate carry a charge in a finite abelian group $A$, with a source-proved addition rule under composition. Reduce separately within every charge and geometry key. At most $|A|2^{r-1}$ candidates per geometry key suffice to preserve the optimum for every completion with every prescribed final charge condition.
+\end{proposition}
+\begin{proof}
+For a fixed completion charge and fixed local correction, each input charge determines one final charge. Within that input charge class, \cref{thm:weighted} preserves the optimum. Taking the minimum over precisely the classes satisfying the final condition proves the assertion. Group addition also makes charge labels compatible with the composition operations.
+\end{proof}
+For example, on a torus an embedded essential circle has primitive integral slope, hence nonzero class in $H_1(T^2;\F_2)\cong\F_2^2$. A disk boundary is one embedded circle, so testing this nonzero class distinguishes essential from inessential disk boundary. With independently owned boundary charges, four classes suffice. The native weighted-component work already uses this principle for supplied normal surfaces \cite{native}. Our proposition does not itself construct the charge ownership for a new cutting or gluing operation.
+
+\subsection{Geometry cannot be replaced by a signed row}
+Two triangulated disks with three separated arc seams can be glued in different cyclic orders to obtain orientable surfaces of Euler characteristic $-1$ with either one or three boundary components. The input signed states agree. Similarly, a disk and a punctured torus can each have one marked interval seam and therefore the same one-port state, despite different Euler characteristics. The delivered mesh tests construct these examples explicitly. They show why cyclic geometry and additive Euler weights must be supplied, not reconstructed from the partition.
+
+\section{A complete finite surface-patch disk algorithm}
+\label{sec:patch}
+This section supplies a concrete input problem to which the preceding lemmas apply without an unimplemented dynamic-programming assumption.
+
+\subsection{Input: patches, pairings, and one permanent anchor}
+\begin{definition}[Anchored finite patch system]\label{def:patch}
+An anchored patch system consists of the following finite data.
+\begin{enumerate}
+\item Sites $v=1,\ldots,n$, each with a nonempty finite list $\mathcal S_v$ of compact orientable triangulated surfaces. Every option is nonempty, every component meets a marked seam, and options at one site have the same labeled seam types and subdivisions.
+\item A pairing of all seam ports except one distinguished anchor. Paired ports lie at distinct sites. Each pair has a specified parameter-preserving or parameter-reversing cellular map. Within every option, seams are pairwise disjoint collared intervals or circles, including disjoint endpoints.
+\item A site order beginning with the anchor site. The anchor is never glued.
+\end{enumerate}
+The objective is to choose one option at every site so that the surface obtained by all prescribed seam gluings is a disk.
+\end{definition}
+After choosing starting points on circle seams, any rotation included in a fixed cellular pairing may be absorbed into the seam parameterization. The reference implementation takes the resulting order-preserving or order-reversing maps explicitly.
+
+All assembled objects in this model are compact surfaces. This follows locally from gluing two boundary collars: an interior seam point has a disk neighborhood, a remaining boundary point has a half-disk neighborhood, and an interval endpoint has the usual smoothed corner neighborhood. Pairwise disjointness prevents more than one seam gluing at any boundary point. The unglued anchor remains part of the boundary and certifies that the component containing it has nonempty boundary.
+
+This is an abstract surface assembly problem. If the options are also certified embedded in disjoint pieces of a three-manifold with the prescribed seam maps, assembly preserves that additional embedding information. Such a three-dimensional source certificate is not part of the delivered benchmark input.
+
+\subsection{The frontier and the exact state invariant}
+After processing the first $i$ sites, retain the anchor and the processed ends of seam pairs with an unprocessed end. Let this live set be $U_i$, of size $r_i$. Put $r_0=1$ for the harmless initial bound convention and define
+\begin{equation}\label{eq:frontier-width}
+ b=\max(1,r_1,\ldots,r_n)
+   =1+\max_i\#\{\text{paired seams crossing the }i\text{th site cut}\}.
+\end{equation}
+Each partial assembled surface gives a signed partition of $U_i$ and a cost equal to minus its Euler characteristic. Discard a partial state if a component no longer meets $U_i$. That component can never acquire another attachment, because every future gluing touches only currently live seam ports. It cannot be part of a connected final surface containing the anchor.
+
+We retain a cost-dominating basis at each checkpoint $U_i$. The retained candidates are real partial choices, not arbitrary row combinations. The invariant is that their filtered cut spans agree with those of \emph{all} choices on the processed sites that satisfy the no-orphan condition and orientation constraints.
+
+\subsection{One whole-site transition}
+To process site $v$, take a current retained state and one option $S\in\mathcal S_v$.
+\begin{enumerate}
+\item Form their disjoint signed union, temporarily retaining all seams of the new option. Subtract $\chi(S)$ from the cost.
+\item For each seam pair completed at this step, impose a signed edge relation. In the explicit boundary-direction convention, a parameter-preserving gluing requires opposite boundary directions and hence relation $x_a+x_b=1$; a reversing gluing requires $x_a+x_b=0$.
+\item Add one to the cost for each completed interval seam and zero for each completed circle seam. This is precisely the Euler correction.
+\item Forget both ends of every completed seam pair. Reject an inconsistent parity system or a component that loses its last live port.
+\item Take the union over options, keep the cheapest witness of each identical signed state, and reduce by the weighted basis theorem.
+\end{enumerate}
+The edge relations at one site can be inserted in one parity-union pass. The reference implementation does so, rather than rebuilding the union structure separately for every completed seam.
+
+\begin{theorem}[Complete anchored patch selection]\label{thm:patch-algorithm}
+The whole-site algorithm returns the exact minimum of minus Euler characteristic among all connected orientable assemblies of the supplied patch system. It reports a disk exactly when a disk assembly exists. A positive output can retain only the chosen option indices, with independent reconstruction of the assembled mesh.
+\end{theorem}
+\begin{proof}
+Proceed by induction over the site order. At the first site every option is generated, and weighted reduction gives the required filtered-span invariant. Assume it at the previous checkpoint. For one fixed new option, disjoint union is linear in the previous row, signed constraint insertion is linear, and guarded projection is linear. Their composition is linear, with a cost increment depending only on the new option and the fixed seam types. By \cref{lem:transport}, performing that whole transition on the previous retained family dominates its performance on all previous choices. Union over the new options preserves domination. Deduplication by cheapest identical row and another weighted reduction preserve it again.
+
+A component losing every live port cannot connect to the permanent anchor in any future step, so its removal from the candidate family loses no connected final assembly. Inconsistent orientation equations cannot become consistent after adding further equations; a disk assembly in particular cannot contain such an inconsistent partial restriction. Thus the generated exhaustive comparison family remains complete for the final objective.
+
+At the last checkpoint, the only live port is the anchor. Every surviving state has one block, and every surviving assembly is connected and orientable with nonempty boundary. Its cost has been initialized with $-\chi$ for each chosen patch and incremented once per interval gluing, so by repeated cell inclusion--exclusion it is exactly minus the final Euler characteristic. The invariant and the one-port terminal query give the exact minimum. It is $-1$ exactly when a disk exists by surface classification. If no states survive, there is no connected orientable assembly and therefore no disk assembly. The saved option indices identify original patches and prescribed maps; reconstructing their quotient verifies a positive witness.
+\end{proof}
+
+The word ``complete'' in this theorem refers to every choice in the finite input lists. It does not assert that those lists include the restrictions of every normal disk in a knot exterior.
+
+\subsection{Bit complexity and the saved temporary-width factor}
+Let $A=\sum_v|\mathcal S_v|$, and let $N$ include the full encoded triangulated inputs, labels, seam maps, option lists, and the order. Let $B$ bound the bit length of the accumulated costs. For explicit triangulated patches, Euler characteristic is bounded by the number of supplied cells, so one can take $B=O(\log(N+1))$ after ordinary cell counting. We retain $B$ explicitly to accommodate independently certified binary weights in future compressed variants.
+
+\begin{theorem}[Frontier-dependent cost]\label{thm:patch-cost}
+The elementary implementation of \cref{thm:patch-algorithm} uses
+\begin{equation}\label{eq:patch-cost}
+ \poly(N,B,b)\,2^{3b}
+\end{equation}
+bit time, and retains at most $2^{r_i-1}$ candidates at checkpoint $i$. No factor exponential in the temporary union of old and new ports is needed. Positive mesh replay is polynomial in the explicit selected mesh size.
+\end{theorem}
+\begin{proof}
+Before processing a site, there are at most $d_{r_{i-1}}$ retained candidates; for the initial site use one empty predecessor. Combining with its $A_v$ options generates at most $m_i=A_v d_{r_{i-1}}$ candidates. The local disjoint partition, all parity constraints, and the restriction can be evaluated symbolically in polynomial time in the temporary port count and label bits. No cut vector of that temporary width is materialized.
+
+After the restriction, build only the output cut rows of width $r_i$. Ordinary binary elimination with at most $d_{r_i}$ pivots costs $O(m_i d_{r_i}^2)$ bit operations, plus row construction, sorting by $B$-bit costs, and polynomial symbolic work. Hence its exponential part is at most
+\[
+ A_v d_{r_{i-1}}d_{r_i}^2\le A_v 2^{3(b-1)}.
+\]
+Summing over sites uses $\sum_v A_v=A\le N$ and yields \eqref{eq:patch-cost}. Deduplication can be implemented by deterministic sorting; dictionary use in the reference code changes no exponential conclusion even under a conservative polynomial collision bound. The numerical additions and comparisons involve at most $B$ bits by hypothesis.
+
+The two retained family sizes and all proof masks are bounded by the corresponding materialized row dimensions. Optional witness provenance may be stored as a directed acyclic graph of local choices; the reference implementation stores a polynomial-length option tuple per retained state. Both fit within polynomial factors times the stated exponential bound.
+
+For the geometric witness, choose the specified meshes, subdivide once barycentrically, and identify corresponding seam vertices. The subdivision ensures a genuine simplicial quotient in the supported mesh representation, avoiding duplicate-face artifacts from coarse triangle gluings. Its number of cells is a constant multiple of the selected input size. Cell counting, orientation propagation, vertex-link checking, and boundary tracing are polynomial in that size.
+\end{proof}
+
+The temporary port count can be as large as roughly $3b$ in a whole-site step. Applying a generic ``reduce after every primitive'' bound at that temporary width would be unnecessarily pessimistic. The theorem avoids this factor by proving and implementing the entire local transition as a symbolic map. This improvement should not be transferred to an unrelated scanner whose intermediate operations lack that symbolic contract.
+
+\subsection{A useful unconditional restricted complexity statement}
+An explicitly supplied patch system of size polynomial in a parameter $n$ and frontier width $b=O(\log^2 n)$ is decidable in $n^{O(\log n)}$ time. This follows directly from \cref{thm:patch-cost}; it is not conditional on a new topological theorem. Its relevance to a knot diagram is conditional on supplying a complete source-faithful reduction from that diagram to such a patch system. Keeping these two logical levels separate is essential.
+
+\section{Composition toward an unknot recognizer}
+\label{sec:composition}
+
+\subsection{A conditional theorem with all costs visible}
+\begin{theorem}[Source-complete composition criterion]\label{thm:composition}
+Suppose an algorithm on an $n$-crossing knot diagram constructs one or more anchored patch systems, possibly with auxiliary geometry and finite-charge keys, with the following guarantees:
+\begin{enumerate}
+\item every assembled positive witness is a properly embedded disk with essential boundary in a source-certified exterior of the input knot;
+\item at least one produced system has a disk assembly if and only if the knot is an unknot;
+\item source construction, all option and key production, all seam-map certification, and any witness conversion or replay have total bit cost $n^{O(\log n)}$;
+\item the sum of encoded system sizes and auxiliary transition counts is $n^{O(\log n)}$, all numerical bit lengths are $n^{O(\log n)}$, and every materialized frontier has width $O(\log^2 n)$;
+\item the number of required geometry/charge key combinations and key transitions is $n^{O(\log n)}$, and each key has the uniform continuation contract used in reduction.
+\end{enumerate}
+Then using the signed continuation bases for those systems yields an $n^{O(\log n)}$ unknot recognizer.
+\end{theorem}
+\begin{proof}
+Within a key and a fixed local geometric alternative, the preceding proofs preserve every needed optimum. Reducing within each key and taking the permitted finite unions and combinations preserves completeness and soundness. The per-system cost is polynomial in its encoded size, numerical bit bounds and key transition count, times $2^{O(b)}$. With $b=O(\log^2 n)$, this last factor is $n^{O(\log n)}$. Products and sums of the stipulated quasi-polynomial quantities remain of that scale. The first two assumptions identify the computed disk predicate with unknot recognition; the third includes the otherwise hidden source and replay costs.
+\end{proof}
+
+The criterion is a reduction theorem, not evidence that its hypotheses hold. The inspected native exterior construction supplies part of the provenance interface, and the weighted component routines supply useful candidate checks. Neither provides the patch-completeness and frontier-width theorem assumed above \cite{native}. The restricted cocycle family remains explicitly incomplete.
+
+\subsection{Why the bound is a genuine local improvement}
+A continuation method that retains all signed physical partitions can require $D_b(2)=2^{\Theta(b\log b)}$ connectivity states. The representative basis replaces that factor by $2^{O(b)}$ for the declared optimum query. At $b=\Theta(\log^2 n)$, these scales are respectively
+\[
+ n^{\Theta(\log n\log\log n)}\quad\text{and}\quad n^{O(\log n)}.
+\]
+Both may be called quasi-polynomial in the broader usage of that word, but only the second has the targeted exponent in this programme. This comparison concerns the connectivity portion of a valid state model. If an independent geometry key already has $2^{\Theta(b\log b)}$ possibilities, the total algorithm can still retain that larger factor.
+
+Nor does representative selection eliminate the cost of initially listing candidates. The finite patch algorithm avoids exhaustive global listing by generating transitions only from already reduced families. A call that first materializes every possible full normal surface and only then reduces its signatures has not acquired the patch algorithm's end-to-end bound.
+
+\section{Implementation, source binding, and limits}
+\label{sec:integration}
+
+\subsection{What the package executes}
+The production-independent code is standard-library Python. The principal modules are:
+\begin{center}\small
+\begin{tabular}{p{0.31\linewidth}p{0.62\linewidth}}
+\toprule
+Module & Executed responsibility\\
+\midrule
+\path{core.py} & Canonical signed partitions, parity union, packed cut rows, weighted reduction, and algebraic certificates.\\
+\path{verify.py} & Independent finite-set row replay and graph-based compatibility.\\
+\path{transitions.py} & Bucketed reduction, bilinear joins, and a finite signed-constraint workload.\\
+\path{surfaces.py} & Simplicial surface checks, orientations, Euler weights, seams, gluing, and barycentric subdivision.\\
+\path{patchwork.py} & Complete anchored patch selection and separate global mesh reconstruction of a chosen witness.\\
+\path{codec.py} & Strict candidate/certificate transport with hexadecimal numerical fields.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The packed row builder enumerates only satisfying anchored assignments by flipping free block gauges in Gray order. This improves construction work on sparse rows while preserving the explicit $d_r$-bit representation. Elementary elimination tracks each pivot's expression in the retained original rows, allowing replay without trusting the producer's pivot decisions.
+
+\subsection{Three distinct assertions}
+There are three verification layers, and the package does not conflate them.
+
+\paragraph{Algebraic selection.} The input family and its costs are given. A basis certificate proves that a subset preserves all signed completion optima for those exact rows and weights. It says nothing about ambient embeddings.
+
+\paragraph{Abstract surface geometry.} The mesh module validates the supported finite simplicial surfaces, checks seam incidence, reconstructs global gluings, and computes connectedness, orientability, Euler characteristic and boundary components. It does not read a triangulated three-manifold or certify proper embedding in a knot exterior.
+
+\paragraph{Knot-source semantics.} A native adapter would have to bind every option, seam, Euler charge and essential-boundary condition to the source-certified exterior and prove that its option-generation process is complete for the desired search. This layer was not implemented or executed in this delivery. No maintained ProveIt test-suite pass is claimed.
+
+The routine \path{verify_witness} reconstructs the mesh of the selected options and checks its stated geometric values. It does \emph{not} certify optimality or the absence of a disk from a non-disk witness. Negative answers of the complete finite solver depend on replay of its complete input program and the correctness theorem, not on inspection of one failed candidate.
+
+\subsection{An adapter from earlier port work needs a type conversion proof}
+A whole marked interval can meet many old components. It cannot be represented by one block label and one frame bit until homogeneity is established or it is split into genuine seams. The earlier guarded-attachment and component-profile reports provide information useful for such a check \cite{ports,compiled}, but they do not imply that the required refinement has small size.
+
+A future adapter must establish that each declared seam belongs to exactly one component, that its orientation frame is defined and transported correctly, that every live component is represented, and that the local attachment map is the one used by the geometry. Source-owned Euler and boundary charges must be recomputed or transported under a proved rule. These checks are stronger than a total component count or a histogram mass equation.
+
+\subsection{Resource semantics and serialization}
+The core rejects Boolean values where exact integer labels or costs are required, refuses reduction across different widths or geometry keys, and exposes explicit dimension and candidate limits. Exceeding a limit raises an exception. It never becomes a negative topological answer. The patch solver likewise checks its per-transition candidate budget during generation.
+
+Large signed costs and certificate masks use hexadecimal transport. The code does not alter the interpreter's process-global decimal-conversion limits. The independent finite replay is intentionally slower than the packed producer and has its own dimension allowance. This is a correctness reference, not a claim of a fully hardened service protocol or a verified resource monitor for all surrounding geometry work.
+
+\section{Executed validation and measurements}
+\label{sec:validation}
+The retained records were produced on CPython 3.13.5 in the supplied Linux environment. They report only runs actually completed here. All numerical tables are generated from retained JSON by \path{experiments/make_tables.py}; rebuilding the PDF does not rerun timing experiments.
+
+\subsection{Validation scope}
+The test suite has \textbf{55 methods}, all passing. The broader audit additionally records:
+\begin{itemize}
+\item all 68,581 ordered compatibility pairs for signed widths $1$ through $5$, comparing the cut inner product with an independently constructed parity graph;
+\item 320 randomized weighted families containing 16,438 input candidates, with independent basis replay and 6,400 completion-optimum comparisons;
+\item 442 gluings of triangulated disk fragments with seam permutations and reversals, checking Euler characteristic and orientation against the algebraic prediction;
+\item all 297 option assignments of a $2\times2$ patch system, independently assembled and inspected as global meshes, plus larger paired full-state/basis patch tests.
+\end{itemize}
+The suite also checks finite-group factorization separately, transformations of cut rows, guarded forgetting, true surface examples involving an annulus and two-hole planar surface, punctured-torus alternatives, certificate mutation, resource failures, and geometry replay with algebra producer methods disabled. These are tests and finite audits, not formal verification of the general theorems.
+
+\subsection{Independent group-rank audit}
+The finite-group audit constructs gain states directly, computes common satisfying assignments and unsigned connectedness independently, and checks every entry of the integer zeta factorization. It verifies determinants by fraction-free elimination and ranks modulo $2,3,5,7$. The noncommutative $S_3$ example uses a multiplication table of permutations, not a cyclic group of the same order.
+\begin{table}[ht]
+\centering\small\input{tables/ranks.tex}
+\caption{Exact audited ranks. The rational ranks are certified by nonzero integer determinants and the proved factorization. The four cases check 8,491 factorization entries in total.}
+\label{tab:ranks}
+\end{table}
+The observed differences between characteristics agree with \cref{thm:group-rank}. The runtime package supports binary gains; the general-group code is an independent bounded audit rather than a general production group-valued optimizer.
+
+\subsection{Repeated static interface queries}
+The static benchmark supplies every signed partition at widths $5$ through $8$, with cost $-k(s)$. Each route performs its own row preprocessing. The full route scans all candidates in nondecreasing cost order; the basis route performs weighted reduction, then scans retained candidates. Both query loops use packed cut inner products. There are 1,024 queries per batch, alternating the discrete completion with a seeded random completion. Input-family and query generation are excluded from both timings.
+
+\begin{table}[ht]
+\centering\small\input{tables/sizes.tex}
+\caption{Static batches: exact state and row-probe counts. These counts do not depend on machine timing.}
+\label{tab:sizes}
+\end{table}
+\begin{table}[ht]
+\centering\scriptsize\input{tables/timings.tex}
+\caption{Median milliseconds over three paired repetitions. ``Batch gain'' is full/basis total time including each route's preprocessing. ``One-query gain'' also includes preprocessing; values below one mean reduction is slower. Ratios are computed from median complete-route times, not by adding medians of separate subintervals.}
+\label{tab:timings}
+\end{table}
+The large repeated-query gains are not free preprocessing. At width eight, basis construction took approximately 437 ms versus 208 ms for full-route preprocessing. It paid off over the measured repeated batch, but one static query was about twice as slow with reduction. This is a reason to keep a reuse threshold or a caller-controlled mode rather than making static reduction an unconditional default.
+
+\subsection{A transition workload that never lists all global states first}
+A second experiment offers skip, equality, or opposition at each edge of a complete graph on $r$ ports, with fixed seeded integer costs. The baseline deduplicates exact states and keeps the cheapest witness of each; the new route additionally reduces after each edge. Both solve the same finite signed-constraint optimization, and terminal optima are cross-checked.
+\begin{table}[ht]
+\centering\small\input{tables/dynamic.tex}
+\caption{Complete signed-constraint workloads, medians of three repetitions. This is a finite algebraic benchmark, not an unknot recognizer. Generated-candidate counts include alternatives before exact-state deduplication.}
+\label{tab:dynamic}
+\end{table}
+This experiment demonstrates the algorithmic distinction between reducing one already enormous final list and preventing its generation through representative-preserving transitions.
+
+\subsection{Complete triangulated patch selection}
+The geometric benchmark uses grid-shaped site graphs. Each site's options realize every signed partition on its incident ports by a union of triangulated disks; the root has an extra unglued anchor. Every input option and seam is an actual finite mesh. Fixed seam pairings specify the entire abstract assembly problem. The largest example has 24 sites, 468 patch options, and 7,830 input triangles across those options. The resulting combinatorial choice space is not enumerated by either dynamic program.
+
+Input mesh generation is excluded. Both timed solver routes include validation of every input mesh and seam schema, exact Euler and orientation setup, all transitions, deduplication, and terminal optimization. The basis route additionally performs representative reduction. Independent global mesh replay of the selected witness is measured separately, not hidden in the solver times.
+\begin{table}[ht]
+\centering\small\input{tables/patchwork.tex}
+\caption{Complete finite disk-selection workloads. Times are median milliseconds over three paired repetitions. All returned disk witnesses were reconstructed and checked independently as global meshes.}
+\label{tab:patchwork}
+\end{table}
+The $3\times8$ system reduced the peak retained family from 257 to 16 states and generated 6,491 candidates instead of 73,552. Its solver time decreased from about 1.343 seconds to 0.170 seconds, a factor of 7.90. Independent mesh replay took about 81 ms on that case; this cost would be added to either route when a checked positive witness is required. Across the four cases the solver gains were approximately $2.11$ to $8.17$.
+
+The materialized frontier width was five on the three-row grids, although a temporary old-plus-new port set could have nine members. The implementation never built a width-nine cut vector for that whole-site transition. This is the concrete instance of \cref{thm:patch-cost}'s fused-transition bound.
+
+These meshes are not claimed to be normal patches in actual knot exteriors. Accordingly the timings establish a local geometric performance improvement, not a measured speedup of \path{fastunknot recognize}. The source-production and three-dimensional embedding costs needed for that latter claim have not been measured here.
+
+\section{Further research questions and concrete next tests}
+\label{sec:future}
+
+\subsection{A source-complete normal-patch producer}
+Construct patch options from the maintained canonical knot exteriors and prove a completeness statement: every relevant compressing disk has a representative whose restrictions occur among the options. The first useful milestone is a restricted family with independently checkable embeddings, owned seams, and a finite option bound, not a universal claim based on a few successful seeds. The existing primitive-cocycle family offers input examples and certified surfaces, but its known miss must remain in the test corpus.
+
+\subsection{Homogeneous seams from compressed normal data}
+Can weighted AHT or compiled component profiles identify enough homogeneous seams without expanding binary normal multiplicities? A precise target is a bound on the number of required seam refinements, including orientation-frame transport. A negative result would be equally useful: an explicit family where a succinct interval description necessarily expands to many geometric seams would identify a limit of this interface.
+
+\subsection{Bound the auxiliary geometry keys}
+The signed rank theorem does not compress cyclic attachment order or normal compatibility data. Find a restricted ambient decomposition in which those data admit only $2^{O(b)}$ keys, or prove representative-preserving transformations on the richer interface. A convincing test should include the three-seam example with one versus three final boundary components, because a key that merges those configurations without accounting for the query can be unsound.
+
+\subsection{Frontier width in source-faithful constructions}
+The natural next structural target is $b=O(\log^2 n)$ for a sufficiently expressive complete patch construction on a significant class of knot diagrams. An ordering of the diagram graph alone is not such a theorem: normal intersections can create additional seams, and multiplicities may be large. Record actual certified geometric frontier sizes on growing families, distinguish materialized checkpoints from temporary symbolic port sets, and seek either a decomposition theorem or a counterfamily.
+
+\subsection{Essential-boundary charge ownership}
+Implement the finite-charge refinement using the native torus boundary basis. The necessary theorem must assign every boundary contribution exactly once under cutting and regluing, including sign or parity transport and any local corrections. Tests should include parallel disks whose total mod-two boundary class cancels, and mixtures of inessential disks with nondisk components. An aggregate class is not a substitute for the candidate-level charge used by \cref{prop:charges}.
+
+\subsection{Smaller completion matrices for geometric subclasses}
+The identity submatrix establishing rank $2^{r-1}$ uses all one-block signed states and all corresponding abstract completions. A particular embedded patch interface may realize far fewer. Determine the rank of its \emph{actual} completion matrix, with source geometry fixed, and test whether smaller representative bases result. This avoids treating the universal rank as an obstruction to all further optimization.
+
+\subsection{Adaptive preprocessing and online bases}
+The one-query slowdown is a measured reason to study an adaptive policy. Possible policies include delaying full reduction until a candidate threshold is exceeded, caching rows across repeated queries, and reusing a cost-ordered echelon structure when alternatives arrive monotonically in cost. Correctness requires the same filtered-span invariant; arbitrary pivot eviction is not justified. Paired benchmarks must include setup, changes of costs or geometry keys, and workloads that never reach the reuse threshold.
+
+\subsection{Beyond binary orientation}
+The finite-group rank theorem identifies optimal characteristics for consistent connected gain completion. Investigate whether the repository's finite-cover or monodromy routines admit this interface after their geometric data have been separated. When the group order is part of the input, $q^{r-1}$ is not automatically small; its encoded cost must be stated rather than absorbed into a constant. The noncommutative audit is a proof check, not evidence of an implemented arbitrary-cover algorithm.
+
+\subsection{Counting without a false basis shortcut}
+The full characteristic-zero rank is a limitation on one exact bilinear representation, not a general impossibility result. A worthwhile separate project is to identify counting objectives for which a determinant formula, a restricted completion set, or another invariant yields a smaller state space. Any claimed counter must distinguish exact multiplicity, parity of multiplicity, existence, and minimum cost. The duplicate-witness negative control should be mandatory.
+
+\subsection{Independent full-program certification and formalization}
+The delivered algebraic replay and global mesh replay have different strengths. A next implementation should certify an entire patch dynamic program, including option completeness relative to its source and negative answers, rather than certifying only a retained subset or one positive witness. Formalization can begin with the finite cut factorization, the gain-poset diagonal, cost-dominating spans, and the no-orphan projection. These statements have clean finite interfaces and should be kept separate from the much larger ambient topology formalization.
+
+\subsection{Native integration with an end-to-end experiment}
+After a source-faithful producer exists, add the new solver as an opt-in stage, with source-bound positive replay and the existing exact fallback. Compare complete recognition calls on both positive and negative inputs; preserve difficult unknot misses and single-query overhead cases. A speed claim should include exterior construction, option production, geometry checks, reduction, witness conversion, and fallback work. This delivery provides the local kernel and finite geometry benchmark needed for that experiment, not its result.
+
+\section{Conclusion}
+The relevant distinction is between preserving all physical continuation states and preserving a best original witness under every permitted completion. Signed connectivity admits an exact $2^{r-1}$-dimensional binary interface. Cost-dominating bases in that interface are stable under proved linear and bilinear operations, including symbolic whole-site transitions. Euler characteristic then supplies an extremal disk objective under a precise nonempty-boundary seam contract.
+
+The concrete outcome is a complete, tested algorithm for finite anchored surface-patch disk selection with $\poly(N,B,b)2^{3b}$ bit complexity, together with an exact finite-group rank formula and independent replay tools. The global unknot target now has a sharply stated remaining obligation: produce source-complete patch choices, essential-boundary data and controlled geometry states at sufficiently small materialized frontier width. The local theorem is available without assuming that this obligation has already been met.
+
+\appendix
+\section{Reproduction and artifact map}
+\label{app:artifacts}
+From the package root, with Python 3.10 or newer:
+\begin{verbatim}
+python reproduce.py test
+python reproduce.py audit --out results/new-audit.json
+python reproduce.py benchmark --out results/new-benchmark.json
+python reproduce.py patches --out results/new-patches.json
+python reproduce.py example
+python reproduce.py pdf
+\end{verbatim}
+The first command does not rewrite recorded audit data. The PDF command regenerates tables from the retained records, compiles three times, and does not rerun benchmarks. The Python runtime has no third-party dependencies. The article needs a standard LaTeX installation with the packages in its preamble.
+
+\begin{longtable}{p{0.36\linewidth}p{0.57\linewidth}}
+\toprule
+Path & Role\\
+\midrule\endhead
+\path{paper/main.tex}, \path{paper/main.pdf} & Self-contained article and compiled output.\\
+\path{paper/references.tex} & Bibliographic references, including pinned repository sources and prior incoming reports.\\
+\path{src/signed_continuations/} & Additive reference package; no upstream runtime files overwritten.\\
+\path{tests/} & Deterministic, randomized, mutation, transformation and geometric tests.\\
+\path{experiments/audit.py} & Full finite audit, independent optimum checks and rank audit.\\
+\path{experiments/group_rank.py} & Independent finite-group matrices, determinants and modular ranks.\\
+\path{experiments/benchmark.py} & Static query and signed-constraint paired experiments.\\
+\path{experiments/patch_benchmark.py} & Complete triangulated patch selection and separate global mesh replay.\\
+\path{experiments/make_tables.py} & LaTeX table generation from retained JSON, without timing reruns.\\
+\path{results/} & Actual executed results, logs, negative controls and explicit native status.\\
+\path{examples/certificate.json} & Original candidate family and replayable algebraic certificate.\\
+\path{integration/PROVENANCE.json} & Repository pin, inspected paths and source roles; not a full repository audit.\\
+\path{integration/INTEGRATION.md} & Source contracts, proposed opt-in integration and acceptance gates.\\
+\path{CLAIMS.md} & Scope and status of proved, tested, conditional and unimplemented claims.\\
+\bottomrule
+\end{longtable}
+The source paths are relative to the delivered package, not instructions to place new code in the maintained \path{fast/} tree. Intake should use the repository's next report directory and retain the package as an additive research report. This archive does not prescribe or apply an upstream patch.
+
+\section{Audit of what the source review supports}
+The review used the GitHub connector for the current repository and the user's file library for accessible copies of earlier manuscript archives. The compiled-port archive's computed Git blob agrees with the incoming repository entry, linking that local copy to the inspected delivery. The source audit records the exact known blob identifiers alongside their roles. It is not a claim to have cloned the whole repository, inspected every report, or run the maintained recognizer.
+
+The relevant current source chapters are \path{synthesis/weighted_components.tex}, \path{synthesis/diagram_exterior.tex}, and \path{synthesis/cocycle_seeds.tex}. Their statements about maintained algorithms are cited as source observations, not revalidated here. The canonical exterior provenance now present in those files is acknowledged throughout this article. The delivered mesh module deliberately uses a narrower, ordinary simplicial-surface contract than the native generalized three-dimensional triangulation code.
+
+\section{A compact theorem-dependency ledger}
+\begin{center}\small
+\begin{tabular}{p{0.30\linewidth}p{0.62\linewidth}}
+\toprule
+Conclusion & Required ingredients\\
+\midrule
+Binary signed rank & Count anchored solutions; exhibit one-block identity submatrix.\\
+Finite-group rank & Gain constraints; finite M\"obius inversion; partition-lattice intervals.\\
+Representative optimum & Signed factorization; nondecreasing-cost row selection.\\
+Continuation closure & Cost-dominating spans; explicit linear/bilinear maps; no-orphan projection.\\
+Disk preservation & Actual surface gluing; correct Euler charge; connectedness; certified nonempty boundary.\\
+Finite patch completeness & Every input option generated locally; fixed seams; permanent anchor; no hidden filters.\\
+Frontier bit bound & Symbolic whole-site maps; at most $2^{r_i-1}$ retained rows; all costs and input sizes charged.\\
+Unknot recognition & Additional source-faithful embedding, essential boundary, complete production and width/key bounds. These are not proved here.\\
+\bottomrule
+\end{tabular}
+\end{center}
+No theorem in the first six rows assumes the last row. Conversely, none of those local conclusions alone supplies it.
+
+\clearpage
+\phantomsection\addcontentsline{toc}{section}{References}
+\input{references.tex}
+\end{document}

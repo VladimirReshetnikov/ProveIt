@@ -1,0 +1,349 @@
+\section{Dense meridians with no quadrilateral type guesses}
+\label{sec:fibonacci}
+
+The support obstruction in the previous continuation does not obstruct
+mandatory-type propagation.  We prove this for the entire Fibonacci layered
+solid-torus family, starting with all three quadrilateral types available in
+every tetrahedron.  The proof supplies exact identities that certify the
+propagation; it does not extrapolate from a finite collection of LP runs.
+Throughout this section, $\beta_{\mathrm{LP}}$ refers to exhaustive
+\emph{mandatory-type} propagation, without an additional rule that explicitly
+deletes every coordinate forced to zero by the relaxed cone.
+
+\subsection{The labelled triangulations and their full relaxation}
+
+For $t\ge1$, number the tetrahedra $0,\ldots,t-1$ and their local vertices
+$0,1,2,3$.  A permutation below lists the images of these four vertices;
+in particular, it determines the target face of a gluing.  For each
+$0\le i<t-1$, make the identifications
+\begin{equation}
+\begin{aligned}
+ (i,\text{face }0)&\longrightarrow
+       (i+1,\text{face }2),&\qquad &(2,1,3,0),\\
+ (i,\text{face }1)&\longrightarrow
+       (i+1,\text{face }3),& &(0,3,1,2).
+\end{aligned}
+\label{eq:fib-face-gluings}
+\end{equation}
+In the final tetrahedron, glue face $0$ to face $1$ using
+$(1,2,3,0)$.  Include the inverse face maps, and leave faces $2,3$ of
+tetrahedron zero unpaired.  Denote the resulting triangulation by $B_t$.
+This is the same explicit family as the previous package's
+\texttt{fibonacci\_fixture.py}: it is a one-vertex triangulation of a solid
+torus, obtained by repeated standard layerings on the one-tetrahedron solid
+torus~\cite{priorKernel}.  Its two unpaired faces form the boundary torus.
+The face maps, rather than an isomorphism signature or a numerical size
+parameter, specify the family for arbitrary $t$.
+
+Put $\ell=t-1$.  Write the four triangle coordinates in tetrahedron $i$ as
+$(A_i,B_i,C_i,D_i)$, and its quadrilateral coordinates, in the implementation's
+type order $0,1,2$, as $(U_i,V_i,W_i)$.  At this point all these variables are
+merely nonnegative real numbers.  We impose the standard matching equations
+but allow incompatible quadrilateral types to coexist.  The Euler functional
+$\chi$ on this relaxation means the usual linear extension of the normal
+surface Euler characteristic; a relaxed vector need not yet represent an
+embedded surface.
+
+\begin{lemma}[Full relaxed matching equations]
+\label{lem:fib-relaxed}
+Every relaxed matching vector on $B_t$ has
+\[
+ A_i=B_i=X_i,\qquad C_i=D_i=Y_i.
+\]
+In these variables, its matching equations are exactly
+\begin{equation}
+\begin{aligned}
+ X_i+U_i&=X_{i+1}+W_{i+1},\\
+ Y_i+V_i&=Y_{i+1}+U_{i+1},\\
+ Y_i+W_i&=X_{i+1}+V_{i+1}
+       &&(0\le i<\ell),\\
+ X_\ell+U_\ell&=Y_\ell+W_\ell.
+\end{aligned}
+\label{eq:fib-relaxed}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The six face-corner equations between tetrahedra $i$ and $i+1$ are
+\[
+\begin{array}{rcl@{\qquad}rcl}
+ B_i+U_i&=&B_{i+1}+W_{i+1},&
+ A_i+U_i&=&A_{i+1}+W_{i+1},\\
+ C_i+V_i&=&D_{i+1}+U_{i+1},&
+ D_i+V_i&=&C_{i+1}+U_{i+1},\\
+ D_i+W_i&=&A_{i+1}+V_{i+1},&
+ C_i+W_i&=&B_{i+1}+V_{i+1}.
+\end{array}
+\]
+The final self-gluing gives
+\[
+ B_\ell+U_\ell=C_\ell+W_\ell,\qquad
+ C_\ell=D_\ell,\qquad
+ A_\ell+U_\ell=D_\ell+W_\ell.
+\]
+Consequently $A_\ell=B_\ell$ and $C_\ell=D_\ell$.  Subtracting the two
+equations in each of the first two rows of the array propagates these
+equalities backwards through all tetrahedra.  The remaining equations reduce
+to \eqref{eq:fib-relaxed}.  Conversely, the displayed pair equalities and
+\eqref{eq:fib-relaxed} imply every original face-corner equation.  Thus this
+is an exact description of the full relaxation, with no quadrilateral type
+already selected.
+\end{proof}
+
+\subsection{Euler identities that certify mandatory types}
+
+\begin{lemma}[Euler functional]
+\label{lem:fib-euler}
+On the entire relaxed matching cone,
+\begin{equation}
+ \chi=X_\ell-\sum_{j=0}^{\ell-1}U_j.
+ \label{eq:fib-euler}
+\end{equation}
+An empty sum is zero, so this also covers $t=1$.
+\end{lemma}
+
+\begin{proof}
+First consider the final self-glued tetrahedron by itself.  Three global
+edge representatives are $01,02,03$.  With $S=U+V+W$, their total normal
+intersection weight is $4X+2Y+2S$.  The paired face $0$ and the two boundary
+faces $2,3$ have total arc count $5X+4Y+3S$.  The normal-disc count is
+$2X+2Y+S$.  The alternating sum of normal vertices, edges and faces is
+therefore $X$.
+
+Next add an outer tetrahedron $i$ along its faces $0,1$.  The old global
+edge classes persist, and the only new edge is $01$, which belongs to
+neither attaching face.  The common attaching edge $23$ maps to the already
+identified inner edges $03$ and $12$; hence the attachment does not merge
+two previously distinct old edge classes.  The new edge contributes
+$2X_i+V_i+W_i$ normal vertices.  The two old boundary faces become paired
+faces and continue to be counted once, with their arc counts unchanged by
+matching.  The two newly exposed faces $2,3$ each contribute
+$2X_i+Y_i+U_i+V_i+W_i$ normal edges.  Finally, the new tetrahedron contributes
+$2X_i+2Y_i+U_i+V_i+W_i$ normal discs.  Its net Euler contribution is
+\[
+\begin{aligned}
+ &(2X_i+V_i+W_i)
+ -2(2X_i+Y_i+U_i+V_i+W_i)\\
+ &\hspace{35mm}+(2X_i+2Y_i+U_i+V_i+W_i)=-U_i.
+\end{aligned}
+\]
+Induction proves \eqref{eq:fib-euler}.  All these are linear cell-count
+identities, so they remain valid for the relaxation.  The argument does
+not assume that the two boundary triangles being attached form an embedded
+disc: their additional edge identifications have been accounted for in the
+global edge count.
+\end{proof}
+
+Telescoping the first equation of \eqref{eq:fib-relaxed} now yields
+\begin{equation}
+ X_i=\chi+\sum_{j<i}U_j+\sum_{j>i}W_j\ge\chi
+ \qquad(0\le i\le\ell).
+ \label{eq:fib-X-dual}
+\end{equation}
+For $i<\ell$, the third matching equation gives the second identity
+\begin{equation}
+ \chi=Y_i+W_i-V_{i+1}
+       -\sum_{j\le i}U_j-\sum_{j\ge i+2}W_j
+ \le Y_i+W_i.
+ \label{eq:fib-Y-dual}
+\end{equation}
+At the last tetrahedron its counterpart is
+\begin{equation}
+ \chi=Y_\ell+W_\ell-\sum_{j=0}^{\ell}U_j
+ \le Y_\ell+W_\ell.
+ \label{eq:fib-last-dual}
+\end{equation}
+These identities are symbolic Farkas certificates.  Each is obtained by a
+linear combination of matching equalities and the Euler identity, with the
+remaining terms explicitly nonnegative.  They therefore justify exact
+infeasibility tests for every $t$, independently of floating-point LP output.
+
+\begin{theorem}[Zero propagation backdoor]
+\label{thm:fib-zero-backdoor}
+For every $t\ge1$,
+\[
+ \beta_{\mathrm{LP}}(B_t)=0.
+\]
+More explicitly, for every choice of a zero triangle anchor at the unique
+global vertex, exhaustive mandatory-type propagation on the full three-type
+relaxation either proves that positive Euler characteristic is impossible
+or reduces the allowed quadrilateral types to type $2$ in every tetrahedron.
+No quadrilateral type need be guessed.
+\end{theorem}
+
+\begin{proof}
+Every original triangle anchor is, by Lemma~\ref{lem:fib-relaxed}, an
+equation $X_i=0$ or $Y_i=0$.  If $X_i=0$, equation
+\eqref{eq:fib-X-dual} proves $\chi\le0$, so the positive-Euler branch is
+infeasible immediately.
+
+Suppose instead that the anchor is $Y_i=0$.  Equations
+\eqref{eq:fib-Y-dual} and \eqref{eq:fib-last-dual} show that every relaxed
+point with $\chi>0$ has $W_i\ge\chi>0$.  Thus $W_i$ is mandatory.
+Equivalently, adding $W_i=0$ makes the positive-Euler LP infeasible, with
+the displayed identity supplying its dual justification.  An admissible
+surface must consequently have $U_i=V_i=0$.
+
+These two type deletions force neighbouring triangle values to vanish.
+Indeed, whenever the indicated neighbours exist, the middle matching
+equation of \eqref{eq:fib-relaxed} gives
+\[
+ Y_{i-1}+V_{i-1}=Y_i+U_i=0,
+ \qquad
+ Y_{i+1}+U_{i+1}=Y_i+V_i=0.
+\]
+Nonnegativity implies $Y_{i-1}=Y_{i+1}=0$.  At either newly reached
+tetrahedron, the same Euler inequalities make its $W$ coordinate mandatory,
+and its $U,V$ coordinates are discarded.  Inducting along the chain reaches
+every tetrahedron after at most $t$ propagation rounds.
+
+The resulting allowed mask contains only $W_i$ at each tetrahedron.  This
+argument uses only the mandatory-type rule.  The neighbouring triangle
+zeros need not be installed as additional implementation rules: they are
+already consequences of the matching equations and previous type deletions,
+and every subsequent LP test enforces those equations.  Hence a fair scan
+of the available mandatory-type tests detects the same implications.
+All anchors have been covered, so the empty set is a uniform strong
+backdoor, proving the asserted value of $\beta_{\mathrm{LP}}$.
+\end{proof}
+
+The proof also specifies a particularly simple order for a generic search.
+In the original coordinate order, the first two anchors are $A_0=0$ and
+$B_0=0$; both are rejected by \eqref{eq:fib-X-dual}.  The next anchor is
+$C_0=Y_0=0$.  Starting there, the mandatory implications can be taken in
+the order $W_0,W_1,\ldots,W_\ell$.  At each step the current matching
+equations imply the next zero triangle, and the next mandatory-type test
+has an infeasibility proof from \eqref{eq:fib-Y-dual} or
+\eqref{eq:fib-last-dual}.  The search is not supplied the Fibonacci
+coordinates or the final type sequence; these are deductions from its
+unrestricted input equations.
+
+A straightforward implementation that scans all remaining quadrilateral
+coordinates after every successful implication makes at most $O(t^2)$
+LP calls on this positive anchor.  There are at most $t$ successful type
+choices and at most $3t$ tests per scan.  The preceding two rejected
+anchors add only two feasibility calls.  With a polynomial-time rational
+LP oracle this is a polynomial bit-time discovery procedure on the
+family.  This statement concerns the algorithmic oracle bound; it does
+not give a polynomial worst-case pivot bound for a particular simplex
+implementation.  An implementation may also terminate earlier when its
+current relaxed basic solution already satisfies the quadrilateral
+constraints, without computing the whole closure.
+
+\subsection{The reconstructed essential disc}
+
+After a positive branch has propagated, all $Y_i,U_i,V_i$ vanish.  The
+remaining equations are
+\[
+ X_i=X_{i+1}+W_{i+1},\qquad W_i=X_{i+1}\quad(i<\ell),
+ \qquad X_\ell=W_\ell.
+\]
+Write $F_0=0$, $F_1=F_2=1$ and $F_{m+2}=F_{m+1}+F_m$.  Setting
+$u=W_\ell$ and solving backwards gives
+\begin{equation}
+ X_i=F_{t-i+1}u,\qquad W_i=F_{t-i}u,\qquad u\ge0.
+ \label{eq:fib-recovered-ray}
+\end{equation}
+The surviving compatible cone is therefore one-dimensional.  Every
+canonical admissible positive-Euler vector belongs to it, since it has
+some zero triangle anchor and every positive anchored branch forces the
+same vanishings.  Its primitive integral vector is obtained with $u=1$,
+since its final $W$ coordinate is
+itself $u$.  In the seven-coordinate convention it is
+\begin{equation}
+ x_i=(F_{t-i+1},F_{t-i+1},0,0;0,0,F_{t-i}),
+ \qquad 0\le i<t.
+ \label{eq:fib-standard-vector}
+\end{equation}
+
+\begin{proposition}[The recovered ray is an essential disc]
+\label{prop:fib-essential-disc}
+The vector in \eqref{eq:fib-standard-vector} represents a connected normal
+disc whose boundary is essential on $\partial B_t$.
+\end{proposition}
+
+\begin{proof}
+It spans a ray of a one-dimensional coordinate face of the standard
+matching cone, so it is standard extreme.  Its primitive integral vector
+is connected: a decomposition into component vectors would express it as
+a sum of positive integer multiples of itself.  Here integrality of the
+multiples follows from a B\'ezout combination of its primitive coordinates,
+and two positive integers cannot sum to one.  This argument does not assume
+that a normal surface is two-sided or orientable.
+
+Equation~\eqref{eq:fib-euler} gives $\chi=1$.  The exposed faces have
+nonzero normal arcs, so the surface has boundary.  Classification of compact
+connected surfaces therefore makes it a disc.  Its three boundary-edge
+intersection weights, in some order, are
+\[
+ F_{t+1},\qquad F_{t+2},\qquad F_{t+3}.
+\]
+For example, at the outer tetrahedron the weights on $03$, $02$ and $01$
+are respectively $X_0$, $X_0+W_0$ and $2X_0+W_0$, giving these numbers.
+Consecutive Fibonacci numbers are coprime, so these weights are not all
+even.  Every boundary edge is a closed one-cycle on the one-vertex torus.
+An odd intersection with one of them proves that the disc boundary has
+nonzero class in $H_1(\partial B_t;\mathbb F_2)$.  Its single embedded
+boundary circle is thus essential.
+\end{proof}
+
+\subsection{Separation from support and coordinate size}
+
+The vector just recovered occupies all $t$ tetrahedra, and its largest
+coordinate grows exponentially with $t$.  The argument gives more than
+one dense example.
+
+\begin{corollary}[Exact support separation]\label{cor:fib-exact-support}
+Every essential standard vertex disc in $B_t$ has quadrilateral support
+exactly $t$.  In particular, the minimum such support is $t$, while
+$\beta_{\mathrm{LP}}(B_t)=\delta_{\mathrm{LP}}^{\Pi}(B_t)=0$ for every
+policy satisfying the deciding-set hypotheses.
+\end{corollary}
+\begin{proof}
+An essential standard vertex disc has a nonzero quadrilateral vector.
+It is canonical: a positive vertex-link summand in its standard
+coordinates would decompose its extreme ray into nonproportional
+nonnegative matching vectors.  Its Euler characteristic is positive,
+so the all-anchor propagation argument puts it on
+\eqref{eq:fib-recovered-ray}.  Every $W_i$ on that ray is positive.
+The equality for $\beta_{\mathrm{LP}}$ was proved above, and the equality
+for $\delta_{\mathrm{LP}}^{\Pi}$ follows from
+\eqref{eq:deciding-comparison}.
+\end{proof}
+
+The previous support theorem supplied an independent quantitative
+obstruction: \emph{every} essential standard vertex disc in $B_t$ has
+quadrilateral support $a$ satisfying
+\begin{equation}
+ a\ge\frac{\log_2 F_{t+3}-\log_2 3}{2}.
+ \label{eq:fib-support-separation}
+\end{equation}
+The argument uses the boundary meridional intersection number $F_{t+3}$
+and the primitive support-height bound: a disc with support $a$ intersects
+any one boundary edge at most $3\cdot4^a$~\cite{priorKernel}.  Every
+essential disc in a solid torus has meridional boundary slope, so displaying
+one large disc is not the sole basis for the lower bound.  Equation
+\eqref{eq:fib-support-separation} excludes all sparse standard vertex
+meridians in these triangulations.
+
+The new exact support statement strengthens that earlier
+$\Omega(t)$ estimate for this particular family.  The propagation parameter measures
+choices among incompatible types; it permits long chains of forced,
+nonzero coordinates.  It also permits large integers: the total number of
+normal discs in \eqref{eq:fib-standard-vector} is $F_{t+5}-5$, although
+each individual coordinate has only $O(t)$ binary digits.  Neither the LP
+search nor the ray certificate needs to enumerate those normal discs.
+Indeed the complete, uncompressed list of the $7t$ integer coordinates
+has $\Theta(t^2)$ binary size: summing the bit lengths of the successive
+Fibonacci entries already gives that order.  Once the one-dimensional
+cone is known, its coordinates can be reconstructed by $O(t)$ integer
+additions with growing $O(t)$-bit operands.  Large geometric multiplicity
+and a polynomially sized exact witness coexist here, as required for the
+bit-complexity interpretation of the propagation result.
+
+This is an unconditional parameter separation for a specified family,
+not a universal bound on $\beta_{\mathrm{LP}}$.  Layered solid tori already
+admit specialized direct constructions; we do not claim that they were
+previously difficult to recognize.  Their role here is to show rigorously
+that the generic mandatory-type mechanism can recover a dense meridian
+from the full relaxation, without receiving the correct sector in advance.

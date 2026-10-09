@@ -1,0 +1,85 @@
+\section{Exact setting, encoding and the inherited kernel}\label{sec:setting}
+
+\subsection{Input and topological trust boundary}
+
+Let $T$ be a finite generalized triangulation with $t$ tetrahedra. Faces may be identified within a tetrahedron, and distinct local edges or corners may represent the same global cell. The implemented validators require a connected compact orientable three-manifold with exactly one boundary component, a torus. They check the face pairing data, edge links, vertex links, orientability and boundary topology. Interior vertex links are spheres and boundary vertex links are discs. Ideal triangulations with unfilled cusps are outside this API's domain.
+
+The input encoding lists face pairings and permutations, so its combinatorial length is $O(t\log t)$. Normal coordinates and rational certificates are encoded in binary; an operation on an integer with exponentially large value is not a unit-cost operation. We write $L$ for a bound on coordinate bit length when analysing a supplied surface. The ray certificate uses a source-coordinate fingerprint including exact values. Sector and propagation certificates hash the source triangulation and replay their explicit coordinates or duals. These digests bind a proof to its input. Correctness comes from replaying the mathematical conditions, not from treating a digest as a topological proof.
+
+A validated torus-boundary triangulation is not automatically known to be a knot exterior in $S^3$. The statement ``this surface contains an essential disc'' concerns the supplied manifold. To infer unknottedness of a particular diagram requires a separate checked correspondence from that diagram to this exterior. The maintained project contains exterior and transformation interfaces, but the new modules intentionally expose surface-level predicates. A negative result for one sector cannot be promoted to a statement about all surfaces, and a positive Euler value cannot be promoted to a disc verdict.
+
+\subsection{Standard coordinates and canonical surfaces}
+
+Write a standard normal vector as
+\[
+ x=(a_{iv},q_{ij})\in\R_{\ge0}^{7t},\qquad
+ 0\le i<t,\quad 0\le v<4,\quad 0\le j<3.
+\]
+There are four triangle types and three quadrilateral types in each tetrahedron. Let $M_0x=0$ be the integer matching equations. For each paired face and each of its three corners, the number of arcs cutting off that corner must agree on both sides. These equations remain meaningful even if several quadrilateral types are temporarily allowed in one tetrahedron. Such a point is a relaxation point, not yet an embedded normal surface. Admissibility additionally requires at most one positive quadrilateral type in each tetrahedron.
+
+An integral admissible matching vector represents a normal surface. Its Euler characteristic is a linear function on the matching space. We use a particularly transparent integer extension: count one normal vertex at one chosen local representative of each global ambient edge, one normal edge at one representative of each global ambient face, and one normal face for each normal disc. Matching makes these counts independent of the chosen representative on the solution space. Before contraction, triangle coefficients lie in $[-2,4]$ and quadrilateral coefficients in $[-3,5]$. Each coefficient consists of one disc contribution, at most three or four subtracted face contributions, and at most three or four selected edge contributions.
+
+For a global vertex $v$, let $L_v$ denote its vertex-link vector. Subtracting the minimum triangle coordinate around $v$ removes a maximal nonnegative multiple of $L_v$. This operation at all vertices gives the \emph{canonical} representative of a fixed quadrilateral vector. Equivalently, a nonnegative matching vector is canonical exactly when at least one triangle coordinate at every global vertex is zero. Here canonicality means removal of vertex-link components; it does not mean a canonical triangulation or a canonical knot diagram.
+
+\subsection{A supplied compatible sector}
+
+A compatible sector is a list
+\[
+ S\subseteq\{(i,j):0\le i<t,\ 0\le j<3\}
+\]
+containing at most one pair for each $i$. Put $k=|S|$. Every quadrilateral coordinate outside $S$ is fixed to zero; a type listed in $S$ is \emph{allowed}, not required to be positive. In particular, the zero-quadrilateral face is included in every full singleton-type assignment. This convention is what makes three branches per tetrahedron sufficient.
+
+The incoming support-kernel construction \cite{priorKernel} treats each matching equation as a difference between two triangle coordinates plus an integer linear form in the allowed quadrilaterals. Equations with zero quadrilateral label identify their triangle endpoints. Contracting those equalities and discarding isolated vertex-link factors produces a matrix
+\begin{equation}\label{eq:small-kernel}
+ C_S=\{z\ge0:Mz=0\},\qquad
+ M\in\Z^{m\times N},\qquad m\le4k,\quad N\le9k.
+\end{equation}
+Each retained row has a nonzero quadrilateral label. A quadrilateral meets four faces, so the total number of its nonzero arc incidences is at most four; summing gives $m\le4k$. Nonzero-labelled loops remain as consistency rows. Identifications and coefficient cancellations cannot increase the incidence bound. The triangle block is a graph incidence matrix with rows and columns transposed, hence is totally unimodular. Each quadrilateral column has $\ell_1$ norm at most four.
+
+The retained triangle classes are grouped by global vertex. Let $G_v$ have size $p_v\ge2$, and let $\nu$ be the number of these active groups. An inactive singleton group is an independent link direction; its value is zero in a canonical representative. These removed factors are not silently counted as possible positive-Euler witnesses.
+
+\begin{lemma}[Sharper count of anchor classes]\label{lem:anchor-count}
+The active groups satisfy
+\[
+ \sum_v(p_v-1)\le4k.
+\]
+Consequently, with the empty product interpreted as one,
+\begin{equation}\label{eq:anchor-count}
+ P:=\prod_v p_v\le
+ \begin{cases}(1+4k/\nu)^\nu,&\nu>0,\\1,&\nu=0,
+ \end{cases}
+ \qquad P\le2^{4k}.
+\end{equation}
+For a one-global-vertex triangulation, $P\le4k+1$.
+\end{lemma}
+\begin{proof}
+The original triangle graph at a global vertex is connected: it is the face-adjacency graph of its connected vertex link. Contraction preserves connectivity. A connected graph on $p_v$ retained classes has at least $p_v-1$ edges; loops do not help connect distinct classes. These edges are among the at most $4k$ retained matching rows. Sum over vertices. The arithmetic--geometric mean inequality applied to the $p_v$ proves the first estimate. The elementary inequality $p\le2^{p-1}$ for integers $p\ge2$ proves the second. With at most one active group, its size is at most $4k+1$.
+\end{proof}
+
+\subsection{Potentials and the full quadrilateral consistency matrix}
+
+Choose a spanning tree in each retained triangle graph. Integrating the quadrilateral labels along the tree expresses a triangle class $c$ at vertex $v$ as
+\[
+ a_c=\alpha_v+\ell_c(q),
+\]
+where $q\in\R^k$ is the allowed quadrilateral vector and $\ell_c$ is an integer linear form. The remaining matching equations give the cycle-consistency system $Rq=0$. Define
+\begin{equation}\label{eq:Q}
+ Q_S=\{q\in\R^k:q\ge0,\ Rq=0\}.
+\end{equation}
+This $R$ includes the entire finite triangle-graph consistency condition. It must not be replaced without proof by a different ideal or spun-normal Q-matching system.
+
+The canonical lift is
+\begin{equation}\label{eq:canonical-lift}
+ \F(q)_c=\ell_c(q)-\min_{d\in G_v}\ell_d(q),\qquad
+ \F(q)_{ij}=q_{ij}.
+\end{equation}
+Coordinates at removed singleton groups are zero. Integer $q$ has integer potentials and therefore an integer lift. All freedom in a nonnegative lift of $q$ is addition of nonnegative vertex links. This is the finite canonical-extension picture from Q-theory, specialized to the exact contracted coordinates \cite{Tollefson,BurtonQ}.
+
+\begin{lemma}[Primitivity and extremality under lifting]\label{lem:lift-extreme}
+For nonzero integral $q\in Q_S$, $\gcd(\F(q))=\gcd(q)$. If $q$ spans an extreme ray of $Q_S$, then $\F(q)$ spans an extreme ray of the standard normal cone with all off-sector quadrilaterals zero, and hence of the full nonnegative standard matching cone.
+\end{lemma}
+\begin{proof}
+The quadrilaterals are a subvector of the lift, so the gcd of the lift divides the gcd of $q$. Conversely, any common divisor of $q$ divides all integral potentials and their minima, and therefore all lifted triangle entries. For extremality, suppose $\F(q)=u+w$ with $u,w$ nonnegative matching vectors. Their quadrilateral projections are nonnegative vectors in $Q_S$ adding to $q$; extremality gives $\pi(u)=\alpha q$ and $\pi(w)=(1-\alpha)q$ for $0\le\alpha\le1$. Positive homogeneity gives $\F(\alpha q)=\alpha\F(q)$. The remaining parts of $u$ and $w$ are nonnegative vertex-link combinations. A zero canonical triangle at each vertex forces all these link coefficients to vanish. Thus $u,w$ lie on the same ray. Finally, setting coordinates to zero is passage to a face of a nonnegative cone, and an extreme ray of a face is an extreme ray of the original cone.
+\end{proof}
+
+The matching nullity $d=\dim\ker R$ remains useful for choosing an enumeration algorithm when all rays are actually needed. The new existence test below makes no small-$d$ assumption. Removing that assumption from a query is different from bounding the number of rays or the number of compatible sectors.

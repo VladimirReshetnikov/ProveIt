@@ -48,15 +48,20 @@ def canonical_disk_core(prepared, analysed, check=lambda: None):
 
 def normal_compressing_disk_count(triangulation, coordinates, *, max_cycles=None,
                                   periodic_rule='fine_wilf', check=lambda: None,
-                                  record_certificate=False):
+                                  record_certificate=False, unit_ray=True):
     """Count compressing-disc components after canonical coordinate reduction.
 
     The result deliberately contains no claimed total component count.  That
     quantity is not homogeneous for a surface with one-sided components.
     Use normal_component_census for a full unreduced component histogram.
+    A checked unit-pivot support witness can certify that the primitive core
+    is connected and decide its essential-disc count without orbit discovery.
+    Disable unit_ray to reproduce the original query schedule and proof format.
     """
     if type(record_certificate) is not bool:
         raise ValueError('record_certificate must be bool')
+    if type(unit_ray) is not bool:
+        raise ValueError('unit_ray must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if periodic_rule not in ('fine_wilf', 'aht'):
@@ -68,7 +73,33 @@ def normal_compressing_disk_count(triangulation, coordinates, *, max_cycles=None
     metadata = dict(coordinate_divisor=divisor, vertex_links=links,
                     input_coordinate_bits=analysed['maximum_coordinate_bits'],
                     core_coordinate_bits=max(value.bit_length() for row in core for value in row))
-    if divisor:
+    ray_proof = None
+    if divisor and unit_ray:
+        from .normal_support_peeling import peel_support_ray
+        from .normal_support_peeling_verify import verify_support_ray
+        from .normal_component_geometry import boundary_homology_basis
+        core_data = _coordinates(prepared, core, check)
+        support_proof = peel_support_ray(prepared, core_data, check)
+        if support_proof is not None:
+            if not verify_support_ray(prepared, core_data, support_proof, check):
+                raise ArithmeticError('unit-pivot ray proof failed independent replay')
+            seed = support_proof['seed']
+            if core[seed//7][seed % 7] != 1:
+                raise ArithmeticError('unit seed in a canonical primitive core must be one')
+            basis = boundary_homology_basis(prepared, check)
+            parity = []
+            for cycle in basis:
+                check()
+                parity.append(sum(core_data['weights'][edge] for edge in cycle) & 1)
+            core_count = int(core_data['euler_characteristic'] == 1 and any(parity))
+            ray_proof = dict(schema='normal-unit-ray-disc-v1', support_certificate=support_proof,
+                boundary_homology_basis=basis, euler_characteristic=core_data['euler_characteristic'],
+                boundary_homology_mod2=parity, compressing_disk_components=core_count)
+    if ray_proof is not None:
+        count, core_proof = divisor*ray_proof['compressing_disk_components'], ray_proof
+        stats = dict(orbit_cycles=0, maximum_weight_runs=0, replay_events=0,
+                     unit_ray=True, ray_steps=len(ray_proof['support_certificate']['steps']))
+    elif divisor:
         result = normal_component_census(triangulation, core, max_cycles=max_cycles,
             periodic_rule=periodic_rule, check=check, record_certificate=record_certificate)
         if result['status'] != 'COMPLETE':
@@ -85,7 +116,7 @@ def normal_compressing_disk_count(triangulation, coordinates, *, max_cycles=None
                   trust='disc components of this supplied normal vector only; '
                         'no knot-diagram correspondence asserted')
     if record_certificate:
-        answer['certificate'] = dict(schema='normal-disc-count-v1',
+        answer['certificate'] = dict(schema='normal-disc-count-v2' if ray_proof is not None else 'normal-disc-count-v1',
             input_sha256=_fingerprint(triangulation, analysed, check),
             coordinate_divisor=divisor, vertex_links=links,
             core_coordinates=core, core_certificate=core_proof,
@@ -99,7 +130,11 @@ def verify_normal_disk_count_certificate(triangulation, coordinates, certificate
     """Reconstruct the reduction and check the core proof independently."""
     check()
     if (type(certificate) is not dict
-            or certificate.get('schema') != 'normal-disc-count-v1'):
+            or certificate.get('schema') not in ('normal-disc-count-v1','normal-disc-count-v2')):
+        return False
+    ray = certificate['schema'] == 'normal-disc-count-v2'
+    if ray and set(certificate) != {'schema','input_sha256','coordinate_divisor','vertex_links',
+                                  'core_coordinates','core_certificate','compressing_disk_components'}:
         return False
     try:
         prepared = _prepare(triangulation, check)
@@ -139,7 +174,34 @@ def verify_normal_disk_count_certificate(triangulation, coordinates, certificate
             or not certificate_equal(certificate.get('core_coordinates'), core)):
         return False
     core_proof = certificate.get('core_certificate')
-    if divisor:
+    if ray:
+        from .normal_support_peeling_verify import verify_support_ray
+        from .normal_component_geometry import boundary_homology_basis
+        if (not divisor or type(core_proof) is not dict
+                or set(core_proof) != {'schema','support_certificate','boundary_homology_basis',
+                    'euler_characteristic','boundary_homology_mod2','compressing_disk_components'}
+                or core_proof['schema'] != 'normal-unit-ray-disc-v1'):
+            return False
+        core_data = _coordinates(prepared, core, check)
+        support = core_proof['support_certificate']
+        if not verify_support_ray(prepared, core_data, support, check):
+            return False
+        seed = encoded_integer(support['seed'])
+        if core[seed//7][seed % 7] != 1:
+            return False
+        basis = boundary_homology_basis(prepared, check)
+        parity = []
+        for cycle in basis:
+            check()
+            parity.append(sum(core_data['weights'][edge] for edge in cycle) & 1)
+        core_count = int(core_data['euler_characteristic'] == 1 and any(parity))
+        if (not certificate_equal(core_proof['boundary_homology_basis'],basis)
+                or not certificate_equal(core_proof['boundary_homology_mod2'],parity)
+                or not certificate_equal(core_proof['euler_characteristic'],core_data['euler_characteristic'])
+                or not certificate_equal(core_proof['compressing_disk_components'],core_count)):
+            return False
+        expected = divisor*core_count
+    elif divisor:
         if (not verify_normal_component_certificate(triangulation, core, core_proof, check=check)
                 or core_proof.get('mode') != 'disk'):
             return False

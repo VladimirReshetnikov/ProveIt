@@ -1,0 +1,28 @@
+{
+  "schema": "proveit-reconstruction-validation-v1",
+  "status": "PASS",
+  "method": "Fresh source assembly through the delivered reproduce.py, after verifying every delivered source hash.",
+  "reproducer_sha256": "6acac5f9fef9eb2b8f0cc5fc5596494f57a3b133ab00686e0c7c11286a9f846c",
+  "tests": {
+    "passed": 146,
+    "failed": 0,
+    "skipped": 0,
+    "optional_regina_used": true,
+    "regina_version": "7.4"
+  },
+  "replay": {
+    "benchmark_certificates": 57,
+    "additional_sample_certificates": 20,
+    "rejected": 0,
+    "skipped": 0,
+    "cohorts_covered": 27,
+    "original_timing_samples_represented": 652,
+    "scope": "Independent proof and content replay; does not reproduce timing measurements."
+  },
+  "commands": [
+    "python3 reproduce.py --task tests --regina-path REGINA_DIRECTORY --work-dir NEW_TEST_DIRECTORY",
+    "python3 reproduce.py --task replay --work-dir NEW_REPLAY_DIRECTORY"
+  ],
+  "patch_validation": "patch_validation.json",
+  "reference_snapshot": "Source subset; not the full historical repository suite."
+}

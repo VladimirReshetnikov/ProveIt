@@ -1,0 +1,62 @@
+\section{Reproducing and reviewing the delivery}\label{sec:reproduce}
+
+\subsection{Package contents and source provenance}
+
+The archive contains this PDF, the complete modular \LaTeX{} source, generated tables and publication figures, a frozen \code{fast/} runtime with the new modules and tests, minimal unchanged report/synthesis test references, exact oracle and certificate JSON, raw measurement observations, test logs, reproduction scripts, and an additive \code{integration.patch}. A top-level README states the query contracts and integration scope.
+
+The maintained source is pinned to \baseline. The earlier sector modules and arbitrary-size Fibonacci constructor are identified as unchanged incoming dependencies. The new files are listed separately in \code{PROVENANCE.json}. Contextual source hashes in provenance and experiment records bind results to their code and inputs; there is no checksum-only manifest. The snapshot's MIT No Attribution license is retained, and external reference files keep their original notices.
+
+The archive's \code{fast/} directory excludes unrelated historical benchmark result dumps and Python caches. Small original reference files needed by the maintained tests are included at their expected sibling paths under \code{reports/} and \code{synthesis/}. These are executable test dependencies, not imported full reports. The new Fibonacci fixture is also available at \code{fast/fibonacci_fixture.py}, so the added test can be integrated with the maintained test command without relying on a separate report's scripts directory.
+
+\subsection{Standard-library certificate replay}
+
+From the extracted archive root, run:
+\begin{lstlisting}[language=bash]
+python3 scripts/replay_certificates.py
+\end{lstlisting}
+The verifier-only driver inventories every saved non-null certificate field and rejects unhandled proof objects. It replays 14,773 certificates: 7,314 ordinary sector proofs, 7,314 envelope-strategy proofs, 117 standalone ray proofs, 14 propagation case proofs, 12 nested disc proofs and two redundant negative-tree controls. It imports no LP producer, enumerator or Regina module. Incomplete records and Boolean-only historical observations are reported separately and do not inflate that count.
+
+The default output is \code{results/reproduced/certificate_replay.json}. Frozen inputs are protected against accidental overwrite. The new replay record can be compared with the delivered record by counts and accepted claims; diagnostic elapsed time is not expected to reproduce byte-for-byte.
+
+\subsection{Tests and full audits}
+
+The focused tests can be run without external numerical packages:
+\begin{lstlisting}[language=bash]
+PYTHONPATH=fast:scripts python3 -m unittest discover \
+  -s fast/tests -p 'test_normal_euler.py' -v
+PYTHONPATH=fast:scripts python3 -m unittest discover \
+  -s fast/tests -p 'test_normal_ray.py' -v
+PYTHONPATH=fast:scripts python3 -m unittest discover \
+  -s fast/tests -p 'test_normal_propagation.py' -v
+\end{lstlisting}
+The full maintained-plus-new discovery uses \code{-s fast/tests -v}. Some maintained or optional checks use Regina; the recorded complete run enabled the 7.4.1 wheel. Its exact environment, restored reference assets and unique-ID reconciliation appear in the delivered test records.
+
+To repeat the frozen-oracle audits rather than only replay proofs:
+\begin{lstlisting}[language=bash]
+python3 scripts/audit_normal_ray.py \
+  --output results/reproduced/ray_audit.json
+python3 scripts/audit_sector_euler.py \
+  --output results/reproduced/sector_euler_audit.json
+\end{lstlisting}
+These commands use the supplied complete ray lists and do not regenerate Regina's triangulations. The sector audit reruns the old enumerator and both new LP strategies, so it does more work than certificate replay. Its output should reproduce decisions, coverage and exact counters under the same source; one-shot timings are incidental.
+
+The saved propagation audit includes literal finite triangulations, every selected option and result, and the bounded figure-eight case. The focused propagation tests reconstruct its principal controls. The package also supplies a reproduction script for its saved case requests, preserving the exact fixture labels and options. Do not compare a newly simplified or isomorphism-signature relabelled trefoil against the literal audit's pivot count without recording that input change.
+
+\subsection{Benchmarks and document build}
+
+For controlled measurements, stop other local CPU-heavy work first and run:
+\begin{lstlisting}[language=bash]
+python3 scripts/benchmark_dual_continuation.py --repeats 5 \
+  --output results/reproduced/controlled_benchmarks.json
+\end{lstlisting}
+This uses predeclared structural selection and randomized A/A/B ordering. The golden tables use the delivered \code{results/controlled_benchmarks.json}; copying a newly produced measurement into that role is an intentional new experiment, not a silent reproduction step. The figure/table script requires Matplotlib and reads those frozen golden measurements:
+\begin{lstlisting}[language=bash]
+python3 scripts/make_tables_and_figures.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  -cd article/unknot_dual_certificates.tex
+\end{lstlisting}
+The figures are included in PDF, SVG and PNG formats. The article compiles with ordinary pdf\LaTeX{}, Latin Modern and standard mathematical packages; no proprietary fonts, shell escape or external bibliography service are required. The delivered PDF was rendered and inspected after compilation.
+
+\subsection{Patch review}
+
+The patch is an additive proposal relative to the pinned repository. It imports the two earlier sector modules and Fibonacci fixture, then adds the seven new producer/verifier modules and three focused test files. It does not change the recognizer's default dispatch or claim to integrate crushing. A maintainer can inspect or check the patch independently of placing this report. The original delivery is intended for the repository's numbered report collection; deployment and default-policy decisions belong to the subsequent integration step.
