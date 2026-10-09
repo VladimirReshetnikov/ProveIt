@@ -5933,3 +5933,106 @@ modules (5,146 for the facade, including 4,152 OAI modules), with the
 same three approved axioms. The source ledger remains identical at 115
 companions and five open entries, and the selected-port scope check
 passes. These counts do not certify fidelity to every printed statement.
+
+### J.109. Quantitative elimination of active additive models
+
+**Verified 2026-10-09.** Eight modules prove a refinement argument for
+local model families. The evaluation tests include the individual column
+Bohr conditions, so no evaluation outside a column's domain is used.
+
+`freiman_nonzero_card_half` starts with a normalized Freiman-linear map
+`f` on `B(T;r)` and a point `z` in `B(T;r/2)` with `f(z) != 0`. For each
+`x` in the half-radius domain, at least one of `f(x)` and `f(x+z)` is
+nonzero. Both points belong to the full domain. Covering the half-domain
+by the nonzero set and one translate of it proves
+
+```
+|B(T;r/2)| <= 2 * |{y in B(T;r) : f(y) != 0}|.
+```
+
+Now let `Gamma` have rank at most `g`, an extra spectrum `U` have rank
+at most `d`, and `f` be normalized and Freiman-linear on `B(Gamma;rho)`.
+Suppose `0 < r <= rho`, the prime modulus exceeds
+`refinementKernelCap g d rho (r/2)`, and `f` is nonzero somewhere on
+`B(Gamma; refinementKernelRadius g d rho (r/2))`. The contrapositive of
+frequency removal gives a nonzero point even on
+`B(Gamma union U;r/2)`. The translation bound and the Bohr lower bound
+then give, with `Q = ceil(1/(r/2))`,
+
+```
+N <= 2*Q^(g+d) * |{y in B(Gamma union U;r) : f(y) != 0}|.
+```
+
+`localSeparatingTests` records pairs `(y,gamma)` with `y` in the
+specified domain and `N < 5*centeredAbs(gamma*f(y))`. For prime `N >= 7`,
+at least half of the characters separate each nonzero value. Thus the
+number of separating tests in the constrained domain is at least
+`beta*N^2`, where
+
+```
+beta = modelTestDensity g d r = 1/(4*Q^(g+d)).
+```
+
+Both `0 < beta` and `beta <= 1/4` are proved. The estimate is uniform in
+the extra spectrum `U` and hence applies to every individual column
+spectrum of rank at most `d`.
+
+`dual_test_selection` double-counts pairs of columns and models against
+tests. If each column-model pair has at least a `beta` fraction of valid
+detecting tests, some test simultaneously retains at least `beta` of
+the columns and detects at least `beta` of the models. The proof averages
+the product of the two counts, then bounds each count by the full size
+of its respective set. `exists_model_test` applies this with
+`U = T x`; its chosen evaluation belongs to the common domain and to
+every retained column's domain.
+
+`exists_model_test_cell` partitions those retained columns by the ten
+Dirichlet cells of `gamma*L x y`. It keeps at least `beta/10` of the
+original columns. Four values from one cell cannot have an alternating
+sum separated by `gamma`: pair the first two and last two entries and
+use the two strict cell-difference bounds. Therefore no detected model
+can equal a four-term map value from the retained core.
+
+`ColumnQuadModelAlternatives` records the invariant for iteration. Every
+additive quadruple either has zero map defect at a target radius `s`,
+or agrees with one of the active models at the testing radius `r`.
+These two radii are kept distinct. The refinement step retains at least
+`beta/10` of the column mass and at most `1-beta` of the active model
+count, and preserves this invariant. A detected model is excluded by
+evaluating the asserted model relation at the selected valid test.
+
+`column_model_elimination_iterate` proves that after `t` rounds the core
+has at least `(beta/10)^t*|A|` columns and at most `(1-beta)^t*|I|` active
+models remain. An empty active set requires no further refinement.
+`modelEliminationRounds_kills` proves that
+
+```
+t = ceil(log(|I|+1)/beta)
+```
+
+makes the survivor bound strictly smaller than one, using
+`1-beta <= exp(-beta)`. The count is an integer, so all active models are
+gone. `column_model_elimination_zero_core` produces a nonempty subcore
+of the stated density on which every additive quadruple has zero map
+defect on its target common and individual Bohr domains.
+
+**Remaining work.** The elimination theorem takes the model alternatives
+and nonvanishing of the active models as explicit inputs. The global
+construction from J.108 still needs to be instantiated at four anchors,
+with active models separated from those already zero on the smaller
+common domain. Its modulus threshold and retained density must then be
+made uniform in the original density. Subsequent bilinear organization,
+shifted agreement, and the printed numerical budget remain open. The
+logarithmic dependence on the number of models does not by itself bound
+the dependence on `beta`, whose exponent includes the common rank.
+
+**Verification.** The focused elimination theorem checks 55 modules.
+All 16 new named theorems pass individual axiom checks using only
+`propext`, `Classical.choice`, and `Quot.sound`. No additional upstream
+modules or Apache provenance changes were needed.
+
+The combined audit checks 7,253 public Gowers theorems in 5,156 modules
+(5,154 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
