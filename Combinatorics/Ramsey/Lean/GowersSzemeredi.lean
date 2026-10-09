@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs16ZeroColumnsBihomomorphism
 import GowersSzemeredi.Definitions
 import GowersSzemeredi.Sections01_03
 import GowersSzemeredi.Section04
