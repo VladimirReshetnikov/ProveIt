@@ -9640,3 +9640,12 @@ and structural arguments. The generic compatible-word theorem alone
 cannot replace the globally instantiated zero-core chain. The five
 numbered open entries and the final quantitative bounds remain open.
 No upstream code is ported at this checkpoint.
+
+Verification: the final production closure compiles across 238 modules.
+All 23 new named proofs pass individual axiom checks. The full combined
+facade audit checks 8,804 public Gowers theorems across 5,462 modules
+(5,460 in the facade closure), using only `propext`, `Classical.choice`,
+and `Quot.sound`. The selected OAI audit closure remains 4,152 modules.
+The regenerated catalogue is byte-identical, with 115 companion proofs
+and five open statements. Companion counts do not certify fidelity to
+every printed statement. The selected-port scope check passes.
