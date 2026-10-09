@@ -1408,3 +1408,17 @@ if pp:
     open('tables/primitive_power.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & old ms & new ms & ratio & old A/A & new A/A',
         '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+pj = load('../fast/results/primitive_projection_pipeline_20261008.json')
+if pj:
+    rows=[]
+    selected={'survivor-00','survivor-06','survivor-08','mirror-03','gordian','trefoil','conway'}
+    for r in pj['cases']:
+        if r['source']['name'] not in selected: continue
+        m=r['medians'];q=r['paired_ratios']
+        cells=[esc(r['source']['name'])]+['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','projection')]
+        cells += ['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('projection','old_AA','projection_AA')]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/primitive_projection.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & old ms & projection ms & ratio & old A/A & proj. A/A',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')

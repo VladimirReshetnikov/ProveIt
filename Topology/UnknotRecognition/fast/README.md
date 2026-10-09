@@ -2211,3 +2211,38 @@ python -B primitive_power_research/native.py benchmark --output results/primitiv
 The timing driver loads the actual old group host, search and replay modules at
 `cd77d1bee8fa`, includes full recognition and proof replay, and retains A/A controls,
 exact certificates, work and node counts, raw samples and source hashes.
+
+
+### Optional raw primitive-pair projections
+
+`--group-primitive-projection` enables report 45's disjoint higher-rank
+primitive-pair contractions. Each complete round substitutes quotient images
+into every relator, retains original slots, and has independent literal and
+compressed replay. Version-six certificates also support raw one-generator
+zero-exponent endpoints. An explicit normalization move marks the handoff
+back to legacy search when raw projection stalls.
+
+Library options are `compressed_certificate(..., primitive_projection=True)`,
+`group_decide(..., primitive_projection=True)`, and
+`recognize(..., use_group=True, group_primitive_projection=True)`. The group
+host enables compressed search and mandatory proof replay. The earlier
+`group_adaptive` option is mutually exclusive with this mode. Defaults retain
+the previous version-five policy.
+
+The 981-test suite passes. A pinned 79-diagram audit finds 34 projected
+certificates with 158 pair contractions, all passing both source replayers,
+with no gained or lost positives. Raw balanced algebraic fixtures contract
+255 pairs in eight rounds with normalization and expansion disabled; these
+fixtures are not knot diagrams. A general short-depth producer is still
+missing, so no general subexponential or quasipolynomial bound follows.
+
+All 570 whole-recognition benchmark calls completed. Projection mode is about
+5–8% slower on ordinary corpus unknots; Gordian has no reliable gain. It
+therefore remains opt-in. See
+[`primitive_projection.tex`](../synthesis/primitive_projection.tex) for the
+quotient proof, raw-round bound, noisy controls, and full measurement scope.
+
+```sh
+python -B primitive_power_research/projections.py audit --output results/primitive_projection_audit_20261008.json
+python -B primitive_power_research/projections.py benchmark --output results/primitive_projection_pipeline_20261008.json
+```
