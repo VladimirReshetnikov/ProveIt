@@ -1,0 +1,120 @@
+\subsection{Exact reachability and a trial allowance after recovery}
+\label{sec:elimination-reach}
+
+Two costs limited the first batch implementation: repeated graph traversal
+while planning, and an adaptive trial that could exhaust its entire allowance
+before rebuilding a moderately large source presentation. The follow-up
+preserves the greedy witness order and independent checker, but caches exact
+reachability within each planning state and separates the continuation
+allowance from presentation recovery. This changes resource use and some
+finite-budget outcomes, not the certified Tietze operation.
+
+\paragraph{Incremental cycle checks.}
+At a planning state, a vertex has outgoing edges exactly when its definition
+has already been selected. Let $R(v)$ be the set of vertices reachable from
+$v$ by a nonempty directed path. Store these sets as dense integer masks and
+store reverse adjacency for the selected edges. Both structures are fresh
+for each planning state; only the earlier immutable word summaries persist
+across states.
+
+Suppose the next candidate defines $g$ using the dependency set $P$.
+The generator $g$ has no previous outgoing edges. Form
+\[
+ D=\bigcup_{p\in P}\bigl(\{p\}\cup R(p)\bigr).
+\]
+Adding the candidate creates a directed cycle if and only if $g\in D$.
+Reject it in that case. Otherwise set $R(g)=D$, add the reverse edges,
+and propagate $D$ backwards through the old ancestors of $g$. An ancestor
+already containing all of $D$ needs no further propagation.
+
+For completeness, every new path must use one of the new edges from $g$.
+Acyclicity prevents it from revisiting $g$, so its prefix is an old path to
+$g$ and its suffix ends in $D$. Thus only old ancestors gain reachable
+vertices, and all their new vertices belong to $D$. Conversely, every old
+ancestor reaches all of $D$ after the update. If an ancestor $v$ already
+contains $D$, each old ancestor of $v$ already contains it too, which
+justifies pruning that propagation branch. Induction on accepted candidates
+therefore maintains exact reachability. Since scoring, tie-breaking and
+slot checks are unchanged, completed unconstrained runs select exactly the
+same greedy batch as the earlier fresh depth-first tests.
+
+Let $r$ be the number of mask positions, $k$ the accepted definitions and
+$E$ their total dependency edges. If $\sum\delta$ counts dependency entries
+examined in candidate queries, the query masks take $O(\sum\delta)$ mask
+operations. During one accepted update each ancestor changes at most once;
+reverse edges are then visited at most once for each changed endpoint.
+Across the state, $O(kE)$ propagation visits are a conservative bound.
+Allowing $O(r)$ bit cost per dense operation gives
+\[
+ O\bigl((\sum\delta+kE)r\bigr)
+\]
+for this reachability work, in addition to the unchanged candidate discovery,
+sorting and word summaries. The closure requires $O(r^2)$ bits and reverse
+adjacency $O(E\log(r+1))$ bits, apart from container overhead. In a favorable
+ordered chain each newly defined vertex has no old ancestors, so propagation
+vanishes and the number of graph traversal steps becomes linear. The masks
+can still contain $r$ bits; this is not a linear bit-time claim. Neither an
+arena-node cap nor a cooperative-work counter alone bounds total process
+memory or bit operations.
+
+\paragraph{Recovery-aware adaptive accounting.}
+The initial source pass reconstructs, charges and reduces the presentation
+before batch planning starts. Its existing conservative accounting includes
+block charges for short literal reductions. The old 50,000-work cap can
+therefore fail before any search on the 256-crossing circle. The follow-up
+does not change these accounting units or the reconstruction algorithm.
+
+For total producer allowance $W$, the host now gives the trial a total
+allowance $Q=\lfloor W/4\rfloor$. After successful source reconstruction and
+initial root reduction have consumed $R$ work units, the additional search
+allowance becomes
+\[
+ S=\min(50000,Q-R).
+\]
+The total cap remains in force. A marker records $R$ only after all recovery
+work has been charged to the arena. On subsequent local exhaustion the host
+deducts the observed trial cost before restarting the established policy
+from the original source. If recovery fails before this marker exists,
+it conservatively reserves the whole $Q$, or the reported cost if larger.
+Aggregate work charges may cross a nominal limit; that reported excess is
+also deducted. Both attempts retain one wall deadline, external cancellation
+propagates, and mandatory independent replay keeps its existing separate
+allowance. Thus the second search receives only the remaining producer work.
+
+The lower-level producer accepts an optional
+\texttt{post\_recovery\_work} argument. Its default is \texttt{None}, preserving
+the direct caller's full search allowance. The host supplies 50,000. All
+public batch flags remain optional and false by default. Increasing the
+trial's total cap can spend more work before fallback, so this policy is
+not uniformly faster or uniformly stronger under finite limits.
+
+\paragraph{Validation and scope.}
+Twelve focused tests pass in 0.693 seconds; the maintained suite passes
+1,012 tests with Regina in 215.420 seconds. New tests exercise late ancestor
+updates, rejected cycles, changed root order and live sets, both work caps,
+strict argument types, and recovery-failure versus search-failure accounting.
+Seven hundred test comparisons and 2,250 audit comparisons agree with an
+independent literal greedy planner; the audit also compares the pinned old
+planner on every state.
+
+The baseline is the complete package at \texttt{47e87a72c23d}. The eighty
+source diagrams retain all 240 results in the three earlier modes, and
+all eighty direct-batch outcomes, including positive certificate hashes,
+agree with the pinned producer.
+Every positive audit certificate passes both literal and compressed source
+replay. Application, presentation recovery and verifier functions are checked
+for identical source, as are the word arena and independent compressed
+replay modules. The audit takes 19.573 seconds. Separate 128-, 256- and
+512-crossing source trials now finish without fallback at two million total
+producer work units; these additional cases are not folded into the common
+eighty-diagram coverage claim.
+
+\input{elimination_reach_results.tex}
+
+Reproduce the evidence using \path{primitive_power_research/elimination_reach.py}
+in \path{../fast}, with \texttt{audit}, \texttt{benchmark} and \texttt{stages}
+modes. Each run records 140 current source hashes before and after execution,
+the pinned baseline, complete certificates, work counters, shuffled orders,
+A/A controls and all incomplete outcomes. The optimization retains the
+conditional raw-phase theorem above; neither the global depth bound nor
+a general quasipolynomial recognizer follows from these measurements.

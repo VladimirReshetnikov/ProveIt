@@ -1,0 +1,68 @@
+\paragraph{Complete recognition.}
+The controlled follow-up uses nineteen fresh source inputs, eight arms
+(old and current defaults and batch portfolios, each with an A/A copy),
+one warm-up and five shuffled measured rounds. All 760 measured calls and
+152 warm-ups complete; the run takes 84.716 seconds. Timing includes the
+entire recognition call and mandatory source replay. Ratios are medians
+of paired old/new times, not quotients of the marginal time medians.
+
+\input{tables/elimination_reach_pipeline.tex}
+
+The default old/current ratios range from 0.980 to 1.023. Old/new portfolio
+ratios range from 0.941 to 1.018, so this sample establishes no broad
+whole-input improvement. The four A/A ranges are respectively
+0.987--1.016, 0.987--1.031, 0.986--1.016 and 0.967--1.038.
+Against the current default, the new optional portfolio still ranges from
+0.259 on survivor-03 to 3.830 on mirror-03. Those large gains and regressions
+come from the alternative elimination schedule, already present in the
+baseline, and should not be attributed to this reachability optimization.
+
+Gordian exposes the price of the larger trial. Recovery costs 39,904 work
+units, after which the new search spends its continuation allowance and
+falls back. Its trial charge is 89,905 rather than 50,001; total producer
+work increases from 1,265,146 to 1,305,050. The fallback proof remains the
+same 9,663-byte version-five certificate and its own search still uses
+9,025 nodes. Whole-call medians are 1,509.908 ms for the old portfolio and
+1,623.636 ms for the new one, with a paired ratio of 0.941 and a new-portfolio
+A/A ratio of 1.038. The extra speculative work is real even though noise
+affects its timing estimate. Optional status and the existing default are
+retained.
+
+
+\paragraph{Checked group stages on larger circles.}
+A separate run bypasses earlier simplification and compares the old and new
+direct producers and portfolios, each with an A/A copy. Every successful
+call includes source reconstruction, production and mandatory compressed
+replay. Seven circle diagrams, one warm-up and five shuffled measured rounds
+give 280 measured calls and 56 warm-ups in 45.563 seconds. Of these,
+270 measurements and 54 warm-ups complete. All ten incomplete measurements
+and both incomplete warm-ups are the old portfolio at 512 crossings, where
+fallback hits the unchanged 100,000-node cap. They remain in the evidence;
+no old/new completion-time ratio is reported for that portfolio case.
+
+\input{tables/elimination_reach_stages.tex}
+
+At 256 crossings the direct checked call improves from 74.892 to 49.422 ms,
+with paired ratio 1.515. Producer work drops from 157,823 to 94,320 while
+both use 2,544 nodes and the same 12,775-byte certificate. At 512 crossings
+the direct ratio is 2.326, work drops from 446,591 to 188,528, and both use
+5,104 nodes and the same 25,879-byte certificate. The producer removes
+255 or 511 generators in one batch. The reduction is entirely in planning:
+these chains require no propagation through old ancestors.
+
+The revised host recovers the direct batch gains previously forfeited by
+its trial budget. At 128 crossings its paired ratio against the old host
+is 15.998; at 256 it is 30.105. At 256 crossings, recovery consumes 72,677
+units and subsequent search 21,643, within the new continuation allowance.
+At 512 crossings, recovery consumes 145,125 units and search 43,403;
+the new host completes in a median 97.486 ms without fallback. The old
+host returns no verdict at its node limit, so this last result demonstrates
+a finite-budget coverage difference, not a measured speedup factor.
+
+The stage A/A ranges are 0.979--1.019 for old direct, 0.830--1.023 for
+new direct, 0.986--1.031 for completed old portfolios and 0.975--1.030 for
+new portfolios. In particular the 128-crossing new-direct control is 0.830,
+so its smaller direct timing gain should be treated cautiously. These
+controlled stages show where the mechanism helps, while the complete-call
+corpus above records the cost and absence of a broad improvement. Neither
+set establishes an asymptotic bound for general knot recognition.

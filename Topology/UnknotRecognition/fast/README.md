@@ -2379,15 +2379,19 @@ batches of distinct singleton donors with acyclic dependencies. Their images
 can be arbitrary words. One linked-circuit pass performs the simultaneous
 substitution without expansion or repeated normalization. Independent compressed
 replay uses Kahn evaluation; literal replay preflights all expanded images.
-All 1,008 maintained tests pass, including random DAG word oracles, deep
+All 1,012 maintained tests pass, including random DAG word oracles, deep
 nonmonomial images, strict forgery checks and complete source replay.
 
 Use `group_decide(..., elimination_batch=True)`,
 `recognize(..., use_group=True, group_elimination_batch=True)`, or
 `--group-elimination-batch` for the adaptive host. It gives the new schedule
-`min(max_work//4, 50000)` producer work units, then restarts the established
-compressed policy from the original source on nondecision. Charged or reserved
-trial work is deducted from the fallback allowance; the wall deadline is shared.
+`max_work//4` total producer work units, with at most 50,000 additional work
+units after presentation recovery. The total trial cap still applies. On
+nondecision it restarts the established compressed policy from the original
+source. Observed trial work is deducted from the fallback allowance; recovery
+failure before complete accounting reserves the full trial quota. The wall
+deadline is shared. Direct producers can opt into the extra continuation cap
+with `post_recovery_work`; its default is `None`.
 The option implies compressed search/replay, defaults to false, and is mutually
 exclusive with the older explicit-to-compressed `group_adaptive` option.
 
@@ -2404,4 +2408,22 @@ short-depth discovery and quasipolynomial recognition remain unproved.
 python -B primitive_power_research/elimination.py audit --output results/elimination_batch_audit_20261008.json
 python -B primitive_power_research/elimination.py benchmark --output results/elimination_batch_pipeline_20261008.json
 python -B primitive_power_research/elimination.py stages --output results/elimination_batch_stages_20261008.json
+```
+
+The follow-up [`reachability analysis`](../synthesis/elimination_reach.tex)
+maintains exact dependency reachability within each planning state, preserving
+unconstrained greedy witnesses while avoiding repeated DFS scans. It retains
+dense mask costs and a quadratic-bit storage bound; this is not a global
+complexity improvement. The audit compares 2,250 planner states with both the
+prior planner and an independent literal oracle. All 80 direct outcomes, including positive
+certificate hashes, match the prior producer, and larger source trials complete at 128,
+256 and 512 crossings without fallback. The recovery-aware trial can cost
+more on unsuccessful candidates such as Gordian. Updated whole-input and
+checked-stage measurements, including incomplete old outcomes, are separate
+from the initial measurements above.
+
+```sh
+python -B primitive_power_research/elimination_reach.py audit --output results/elimination_reach_audit_20261008.json
+python -B primitive_power_research/elimination_reach.py benchmark --output results/elimination_reach_pipeline_20261008.json
+python -B primitive_power_research/elimination_reach.py stages --output results/elimination_reach_stages_20261008.json
 ```
