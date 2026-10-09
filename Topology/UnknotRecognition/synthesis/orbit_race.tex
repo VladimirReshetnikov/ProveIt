@@ -1,0 +1,156 @@
+\section{A bounded restart race between certified interval sweeps}
+\label{sec:orbit-race}
+
+The width selector of Section~\ref{sec:orbit-direction} chooses an order
+without observing the ensuing search. Its counterexample shows that
+fewer cycles need not mean less work. The new optional
+\code{sweep\_direction='race'} instead interrupts attempts at a measured
+checkpoint allowance, tries the other direction and increases the allowance
+geometrically. This gives a precise bound for the scheduling policy.
+The unit of this bound is a cooperative checkpoint, not an elementary
+bit operation or elapsed time. That distinction is essential because some
+uninterrupted blocks sort or scan a whole collection.
+
+The race is available in both \code{count\_orbits} and
+\code{normal\_surface\_topology}. Forward remains the default; the
+previous forward, reverse and width-selected paths retain their complete
+records exactly. The race is a new search policy using the existing proof
+formats and unchanged independent checkers.
+
+\subsection{The restart policy and its exact accounting}
+
+Retain a validated list of the $k$ input pairings on a universe of size
+$M$, and let $b=\operatorname{bit\_length}(M)$. Set the initial allowance to
+\[
+ L=8(k+1)(b+1).
+\]
+The earlier width selector chooses which direction is tried first. At
+round $r=0,1,\ldots$, both directions, in that fixed order, receive allowance
+$L2^r$. Each attempt starts again from the original immutable pairings.
+On every checkpoint the caller's cancellation callback runs first; then
+the scheduler increments the attempt and total work counters. The attempt
+is interrupted if its counter exceeds the allowance. Consequently, an
+exhausted attempt costs exactly one more checkpoint than its allowance.
+A completed attempt immediately returns its answer and ordinary certificate.
+
+The interruption uses a fresh local exception class, so unrelated caller
+exceptions propagate. Failed attempt frames and their partial certificates
+are discarded. No intermediate orbit count is promoted to a result. The
+winning certificate is exactly the one the corresponding fixed direction
+would have emitted in an unlimited run. Thus independent verification
+does not need to trust the direction selector, restart decisions, abandoned
+states or scheduling counters.
+
+The existing \code{max\_cycles} allowance is shared across every attempt.
+A private hook records each begun AHT cycle, including one interrupted
+halfway through. Each new attempt receives only the remaining cycle
+allowance. If it is spent, the race returns incomplete with neither a
+count nor a certificate. In a normal-surface query, the same accounting
+continues across all surface, double, boundary and optional cone queries.
+An empty universe can still finish under a zero-cycle allowance.
+
+Public \code{cycles} reports all begun cycles. Ordinary structural statistics
+describe the winning attempt, or the last attempt on an incomplete return.
+An interrupted helper can leave those partial structural counters behind
+its actual work; they are not used for the scheduling bound.
+Additional \code{race\_*} counters separately report attempts, restarts,
+work exhaustions, initial and final allowances, directional work and cycles,
+winning work and cycles, and startup work. A final exhaustion at the cycle
+cap is a work exhaustion even though it causes no further restart. Proof
+event allowances count only the returned certificate, which contains no
+abandoned prefixes. These different counters are intentionally not interchangeable.
+
+\subsection{A competitive checkpoint bound}
+
+Fix the input, merger scheduler, merger threshold and certificate-recording
+setting. Let $W_0,W_1$ be the complete checkpoint counts of the two unlimited
+fixed-direction runs, excluding the initial width-selection scan, and put
+$W=\min(W_0,W_1)$. Assume no external cancellation or cycle cap stops the
+computation. Let $B=L2^r$ be the least allowance at least $W$.
+No preceding round can finish either direction, and some direction must
+finish at allowance $B$. The preceding rounds spend at most
+\[
+ 2\sum_{j=0}^{r-1}(L2^j+1)=2(B-L)+2r
+\]
+checkpoints. The final round spends at most $2B+1$: one exhausted attempt
+and one completed attempt, or a single completed attempt. Therefore the
+total attempt work $A$ satisfies
+\[
+ A\leq4B-2L+2r+1\leq12\max(L,W).
+\]
+The last inequality is deliberately coarse. For $r=0$ the first bound is
+$2L+1$; for $r>0$, use $B<2W$ and $2r+1\leq2B$.
+The initial selection contributes exactly $k+1$ additional checkpoints on
+valid input. Thus the policy is competitive in its instrumented work unit,
+up to the explicitly chosen input-dependent initial allowance. It is not
+a bound of $12W$ when $W<L$.
+
+The allowance formula is a scheduling choice, not a theorem that an AHT
+run should finish in $O(kb)$ checkpoints. Its purpose is to let short runs
+finish without paying for a second direction while retaining a geometric
+restart bound when that initial allowance is exceeded. The proof does not
+rely on the width selector being correct: it only changes which attempt
+is tried first at each scale.
+
+This does not prove constant-factor competitiveness in wall-clock time.
+Checkpoint spacing is not uniform: input validation, sorting, heap
+construction, identity filtering and some list operations can perform
+multiple elementary operations between checkpoints. Big-integer division
+and gcd also have operand-dependent cost. Each such block still has a
+polynomial bound in the original pairing count and input bit length, and
+the ordinary AHT run has a polynomial checkpoint count. Combining those
+bounds with the displayed inequality preserves polynomial bit complexity.
+The restart policy runs one search state at a time and retains only the
+winning trace. None of these statements establishes a sharper general
+bit-complexity bound for AHT or a bound for discovering a useful normal surface.
+
+\subsection{Validation and performance consequences}
+
+The frozen baseline is revision \code{cb26c81af}. Its interval producer,
+interval checker, normal wrapper and outer checker are loaded separately,
+with the old dependencies explicitly reconnected as in the preceding
+section. The default compatibility audit covers all 1,275 maintained
+surfaces, both coordinate-multiplicity settings and both boundary-classification
+settings: 5,100 entire default records agree. All 5,100 race results have
+the same topology, agree with the frozen component-level oracle and pass
+independent replay. The coorientation shortcut and the geometric source
+bindings remain unchanged.
+
+The interval audit includes 500 random interval systems, 100 random
+point-pair graphs, four star graphs and a fixed switching example. Both
+merger thresholds give 1,210 literal component comparisons and checkpoint
+bound checks. The three existing fixed-direction policies reproduce all
+3,630 old complete records exactly. For every race, the audit checks the
+actual caller checkpoint total, the sharper displayed bound and equality
+of the winning certificate with its corresponding fixed-direction proof.
+
+The switching example is a 72-point graph with 195 singleton pairings.
+It deliberately exercises scheduling; ordinary graph union--find is a
+more appropriate solver for such an expanded small graph. The race first
+tries forward, exhausts five attempts and completes in reverse on attempt
+six. The final allowance is 50,176 checkpoints and the successful run uses
+50,174. It returns the same reverse certificate, after 175,619 total
+attempt checkpoints and 196 startup checkpoints. Its 211 begun cycles
+include 68 in the successful attempt. This supplies a concrete check of
+switching and accounting, without presenting the synthetic graph as a
+knot-recognition gain.
+
+Focused tests check exact cycle caps including interrupted attempts,
+caller cancellation, all three merger schedulers, integers exceeding
+20,000 bits, empty universes, normal-surface composition and producer-free
+replay. They also isolate the scheduler with deterministic checkpoint
+streams so that second-direction completion and interrupted prefixes do
+not depend solely on a particular geometric fixture.
+All 16 focused tests and all 1,261 maintained tests pass.
+\input{orbit_race_results.tex}
+
+The driver is \path{../fast/normal_orbit_research/race.py}, with
+\code{audit} and \code{benchmark} modes, a required \code{--output} path,
+and optional \code{--rounds}. Source pins, full switching certificates,
+validation logs and timing records are retained as \path{data/orbit-race-*}.
+The result adds a rigorously accounted adaptive search option. Promotion
+to a default requires a favorable practical tradeoff, and a stronger
+running-time guarantee would require finer accounting or resumable
+implementations with bounded work between suspension points. The general
+quasipolynomial recognition goal remains a separate open obligation for
+this implementation.

@@ -1033,3 +1033,15 @@ aggregate corpus events and can use fewer cycles while doing more work.
 Forward remains the default. The article reports complete-call paired timings
 and retains the counterexample certificates. Reproduction and source pins
 are in `../fast/normal_orbit_research/direction.py` and `data/orbit-direction-*`.
+
+[`orbit_race.tex`](orbit_race.tex) adds an optional bidirectional restart race
+with a proved checkpoint-work bound. It charges interrupted attempts to the
+same cycle budget, discards their partial traces and returns the fixed-direction
+winner's ordinary certificate. The article distinguishes the bound from
+wall-clock competitiveness and explains why the existing polynomial bit bound
+is preserved. All 5,100 default records are unchanged; 5,100 race surface
+results and 1,210 literal interval comparisons pass independent validation.
+A 72-point graph exercises a switch after five exhausted attempts. Complete
+paired timings include callback and restart costs, and keep forward as the
+default. The driver is `../fast/normal_orbit_research/race.py`; full evidence,
+source pins and reproduction records are retained in `data/orbit-race-*`.
