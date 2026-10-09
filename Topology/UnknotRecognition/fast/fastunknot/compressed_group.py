@@ -12,7 +12,10 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
     roots = [arena.reduce(arena.from_word(word)) for word in words]
     normalization_cache = {}
     try:
-        for move in certificate['moves']:
+        skip_until = 0
+        for index, move in enumerate(certificate['moves']):
+            if index < skip_until:
+                continue
             arena.tick()
             if type(move) is not dict:
                 return False
@@ -20,6 +23,19 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             if kind == 'elimination_batch':
                 if certificate['version'] < 8:
                     return False
+                end = index+1
+                while end < len(certificate['moves']):
+                    arena.tick()
+                    following = certificate['moves'][end]
+                    if type(following) is not dict or following.get('kind') != kind:
+                        break
+                    end += 1
+                if end-index >= 2:
+                    from .persistent_elimination_verify import replay_compressed_block
+                    if not replay_compressed_block(arena, roots, alive, certificate['moves'][index:end]):
+                        return False
+                    skip_until = end
+                    continue
                 from .elimination_batch_verify import replay_compressed_batch
                 if not replay_compressed_batch(arena, roots, alive, move):
                     return False

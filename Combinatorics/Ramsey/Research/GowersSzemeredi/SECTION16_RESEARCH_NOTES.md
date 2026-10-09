@@ -3760,3 +3760,42 @@ audits. It includes the incoming per-frequency-radius Bohr relation and
 factorization results. The source ledger matches its tracked version
 (115 companions, five open statements), and the selected port-scope
 check passes. The full audit retains the same three-axiom boundary.
+
+
+### Split relations make the bilinear Bohr variety quasirandom (2026-10-09)
+
+`Proofs16SplitProfile.split_profile_quasirandom` composes Claim 34 with
+Appendix B. It is the general form of the box-quasirandomness hypothesis
+left open in `global_seven_operator_completion`. The graph has
+`x ∈ X = B(γ; a−c)` (mixed radii), `y ∈ Y`, and an edge when
+`x ∈ B(ℓ(y); b−c)`. Suppose that:
+- for all but `η|Y|` vertices, the bounded relations of `γ ⊔ ℓ(y)` split
+  with a fixed `Λ`;
+- for all but `η|Y|²` pairs, those of `γ ⊔ ℓ(y) ⊔ ℓ(y′)` split with
+  `Λ × Λ`;
+- the corresponding mixed Bohr sets satisfy the weak-regularity band
+  condition at error `εN`;
+- one truncation budget holds;
+- `20εN ≤ |X|`.
+
+Then for some real `δ ∈ [0,1]`,
+`boxSum (G − δ) ≤ 3(80εN/|X| + η)|X|²|Y|²`.
+
+Ingredients:
+- `mixedBohr_sumElim`: degrees and codegrees are mixed Bohr sets of
+  concatenated tuples.
+- `latticeWeightMixed_sumElim_prod`: the pair weight is `W·W`.
+- One typical vertex bounds `‖W‖ ≤ 2`, so [49]'s tacit `|δᵢ| ≤ 1` is
+  replaced by a proved bound.
+- `boxSum_le_of_complex_profile` (`Proofs16ComplexProfileQuasirandom`)
+  reads `δ` off a typical vertex and absorbs the complex weight.
+- `boxSum_le_of_typical_codegrees` turns typical-vertex estimates into
+  averaged ones.
+
+Standard axioms throughout; collision gate clean. What remains to feed
+the completion is the Theorem 33 iteration, which produces a domain where
+relations split for most `y`. Its two simplified steps are
+`freiman_const_on_bohr_of_dense` and `strict_chain_length_le`. Also
+needed is the identification of the pattern graph (`patternEdge` on
+`bohr F (θ/2)`) with this graph, via `bohr_floor_radius` and an
+enumeration of `F`.
