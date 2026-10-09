@@ -1045,3 +1045,16 @@ A 72-point graph exercises a switch after five exhausted attempts. Complete
 paired timings include callback and restart costs, and keep forward as the
 default. The driver is `../fast/normal_orbit_research/race.py`; full evidence,
 source pins and reproduction records are retained in `data/orbit-race-*`.
+
+[`incoming_sectors.tex`](incoming_sectors.tex) processes new reports 54–58 and
+five older uncatalogued deliveries as reports 59–63. It integrates the complete supplied-sector
+ray search and independent dense replay from report 57, proving the 9k-variable
+kernel, support height bound, Q screening and adaptive support/nullity strategy.
+All 1,269 tests pass; 1,718 sectors match the frozen Regina ray sets in both
+phases, with 962 producer-disabled certificate replays. Native gates exercise
+the other deliveries on the current tree. A three-point counterexample exposes
+reflection incompatibility in the delivered transversal checker, preventing
+unsafe promotion. The section reports complete-call timings and explains why
+linear-support Fibonacci meridians leave the general QP sector-selection goal
+unresolved. Fresh records and reproduction are `data/incoming-sectors-*` and
+`../fast/normal_orbit_research/sectors.py`.
