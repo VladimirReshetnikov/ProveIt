@@ -32,17 +32,27 @@ def plan_batch(arena, roots, alive, cache=None):
             arena.tick();bit=single&-single;g=labels[bit.bit_length()-1];single^=bit
             if g in alive and support<=alive:
                 length=arena.lengths[root];candidates.append(((length-2)*counts[g],length,slot,g))
-    graph={};slots=set();selected=[]
+    graph={};reach={};incoming={};slots=set();selected=[]
     for _,_,slot,g in sorted(candidates):
         arena.tick()
         if g in graph or slot in slots or len(graph)>=len(alive)-1:continue
-        deps=supports[slot]-{g};pending=list(deps);seen=set();cycle=False
+        deps=supports[slot]-{g};descendants=0
+        for parent in deps:
+            arena.tick();descendants |= bits[parent] | reach.get(parent,0)
+        arena.stats['elimination_cycle_queries']=arena.stats.get('elimination_cycle_queries',0)+1
+        if descendants & bits[g]:continue
+        # g previously had no outgoing definition. Every new old-vertex path
+        # therefore passes through g. Update only its existing ancestors.
+        reach[g]=descendants;pending=list(incoming.get(g,()))
+        for parent in deps:
+            arena.tick();incoming.setdefault(parent,[]).append(g)
         while pending:
-            arena.tick();v=pending.pop()
-            if v==g:cycle=True;break
-            if v in seen:continue
-            seen.add(v);pending.extend(graph.get(v,()))
-        if cycle:continue
+            arena.tick();ancestor=pending.pop()
+            arena.stats['elimination_reach_visits']=arena.stats.get('elimination_reach_visits',0)+1
+            if descendants & ~reach[ancestor]:
+                reach[ancestor] |= descendants
+                arena.stats['elimination_reach_updates']=arena.stats.get('elimination_reach_updates',0)+1
+                pending.extend(incoming.get(ancestor,()))
         graph[g]=deps;slots.add(slot);selected.append(dict(relation=slot,generator=g))
     arena.stats['elimination_batch_attempts']=arena.stats.get('elimination_batch_attempts',0)+1
     return selected

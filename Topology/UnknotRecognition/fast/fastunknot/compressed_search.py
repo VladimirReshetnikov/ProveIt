@@ -187,7 +187,8 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
 def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
                            max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
-                           primitive_power=True, primitive_projection=False, primitive_forest=False, elimination_batch=False):
+                           primitive_power=True, primitive_projection=False, primitive_forest=False, elimination_batch=False,
+                           post_recovery_work=None):
     """Find a trace or None; resource exhaustion raises GroupLimit.
 
     max_letters caps the initial presentation and optional overlap expansion.
@@ -203,11 +204,15 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
     primitive_projection; both modes are optional.
     elimination_batch separately enables acyclic singleton definitions with
     arbitrary word images and emits version eight on activation.
+    post_recovery_work optionally limits producer work after rebuilding the
+    source presentation; max_work still caps recovery and search together.
     Disable both projection options to retain the version-five search; disabling
     both primitive options retains the historical rank-one contract.
     """
     if type(elimination_batch) is not bool:
         raise ValueError('elimination_batch must be boolean')
+    if post_recovery_work is not None and (type(post_recovery_work) is not int or post_recovery_work < 0):
+        raise ValueError('post_recovery_work must be a nonnegative integer or None')
     if type(primitive_projection) is not bool:
         raise ValueError('primitive_projection must be boolean')
     if type(primitive_forest) is not bool:
@@ -225,6 +230,10 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         alive, words = _presentation(diagram, budget)
         arena.tick(max_work-budget.left)
         roots = [arena.reduce(arena.from_word(word)) for word in words]
+        if post_recovery_work is not None:
+            arena.stats['recovery_work'] = arena.stats['work']
+            arena.left = min(arena.left, post_recovery_work)
+            arena.stats['post_recovery_limit'] = arena.left
         moves = []
         terminal = {} if primitive_power or primitive_projection or elimination_batch else None
         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,

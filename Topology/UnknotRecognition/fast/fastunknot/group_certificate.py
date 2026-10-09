@@ -543,8 +543,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
     compressed search/replay. primitive_forest additionally permits acyclic
     unit-coordinate batches and implies projections. Defaults retain the earlier
     search policy. elimination_batch tries general acyclic singleton batches
-    with at most min(max_work//4, 50000) producer work, then restarts the prior
-    compressed policy from the original source on nondecision. Both attempts
+    with at most max_work//4 total producer work and a 50000-work cap after
+    source recovery, then restarts the prior compressed policy on nondecision. Both attempts
     share the producer work allowance and the existing wall deadline.
     """
     from math import isfinite
@@ -594,26 +594,28 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                 # source for the maintained policy when this attempt does not close.
                 if type(max_work) is not int or max_work<0:
                     raise ValueError('max_work must be a nonnegative integer')
-                probe_stats={};probe_limit=min(max_work//4,50000);reason=None
+                probe_stats={};probe_limit=max_work//4;reason=None
                 try:
                     certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
                         max_work=probe_limit, max_nodes=max_nodes, relator_moves=relator_moves, stats=probe_stats,
-                        primitive_projection=primitive_projection, primitive_forest=primitive_forest, elimination_batch=True)
+                        primitive_projection=primitive_projection, primitive_forest=primitive_forest, elimination_batch=True,
+                        post_recovery_work=50000)
                 except GroupLimit as exc:
                     tick();certificate=None;reason=str(exc)
-                # A failure during initial presentation recovery may precede
-                # arena accounting. Reserve the entire probe quota on failure.
-                probe_work=max(probe_stats.get('work',0),probe_limit if reason else 0)
+                # Recovery failure can precede arena accounting. Once the
+                # recovery marker exists, all producer work is accounted for.
+                reserve=probe_limit if reason and 'recovery_work' not in probe_stats else 0
+                probe_work=max(probe_stats.get('work',0),reserve)
                 if certificate is None:
                     search_stats['elimination_fallback']=True
-                    search_stats['elimination_probe']=dict(limit=probe_limit,charged_work=probe_work,reason=reason,stats=probe_stats)
+                    search_stats['elimination_probe']=dict(limit=probe_limit,search_limit=50000,charged_work=probe_work,reason=reason,stats=probe_stats)
                     try:
                         certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
                             max_work=max(0,max_work-probe_work), max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
                             primitive_projection=primitive_projection, primitive_forest=primitive_forest)
                     finally:search_stats['work']=search_stats.get('work',0)+probe_work
                 else:search_stats.update(probe_stats)
-                search_stats['elimination_probe']=dict(limit=probe_limit,charged_work=probe_work,reason=reason,stats=probe_stats)
+                search_stats['elimination_probe']=dict(limit=probe_limit,search_limit=50000,charged_work=probe_work,reason=reason,stats=probe_stats)
             else:
                 certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
                     max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
