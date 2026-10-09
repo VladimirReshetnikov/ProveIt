@@ -312,4 +312,42 @@ theorem robust_walks [Nonempty V] (G : V → V → Prop) [DecidableRel G]
         exact mul_le_mul_of_nonneg_right hAcard (by positivity)
     _ ≤ _ := hwalk
 
+/-- The explicit walks of length six from `u` to `v`, as tuples of their
+five inner vertices `(a, z, b, y, e)`. -/
+def walks6 (G : V → V → Prop) [DecidableRel G] (u v : V) : Finset (V × V × V × V × V) :=
+  univ.filter fun q => G u q.1 ∧ G q.1 q.2.1 ∧ G q.2.1 q.2.2.1 ∧ G q.2.2.1 q.2.2.2.1 ∧
+    G q.2.2.2.1 q.2.2.2.2 ∧ G q.2.2.2.2 v
+
+/-- **The walk count is the number of explicit walks.** -/
+theorem card_walks6 (G : V → V → Prop) [DecidableRel G] (u v : V) :
+    (walks6 G u v).card = walkCount6 G u v := by
+  -- regroup the five inner vertices as the split points `(z, y)` and the rest
+  let e : (V × V) × (V × V × V) ≃ V × V × V × V × V :=
+    { toFun := fun p => (p.2.2.2, p.1.1, p.2.2.1, p.1.2, p.2.1)
+      invFun := fun q => ((q.2.1, q.2.2.2.1), (q.2.2.2.2, q.2.2.1, q.1))
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl }
+  unfold walks6 walkCount6 codeg
+  rw [Finset.card_filter, ← Equiv.sum_comp e]
+  simp only [Fintype.sum_prod_type, Finset.card_filter, Finset.sum_mul, Finset.mul_sum]
+  apply Finset.sum_congr rfl; intro z _
+  apply Finset.sum_congr rfl; intro y _
+  apply Finset.sum_congr rfl; intro a _
+  apply Finset.sum_congr rfl; intro bb _
+  apply Finset.sum_congr rfl; intro ee _
+  simp only [e, Equiv.coe_fn_mk]
+  by_cases h1 : G u ee <;> by_cases h2 : G ee z <;> by_cases h3 : G z bb <;>
+    by_cases h4 : G bb y <;> by_cases h5 : G y a <;> by_cases h6 : G a v <;>
+    simp [h1, h2, h3, h4, h5, h6]
+
+/-- **Robust connectivity with explicit walks.** -/
+theorem robust_walks_explicit [Nonempty V] (G : V → V → Prop) [DecidableRel G]
+    (hsymm : ∀ u v, G u v → G v u) {c : Real} (hc : 0 < c)
+    (hedges : c * (Fintype.card V : Real) ^ 2 ≤ ∑ w, ((nbhd G w).card : Real)) :
+    ∃ X : Finset V, c * Fintype.card V / 3 ≤ X.card ∧
+      ∀ u ∈ X, ∀ v ∈ X, (9 / 64) * (c ^ 2 / 32) ^ 3 * c ^ 2 * (Fintype.card V : Real) ^ 5 ≤
+        (walks6 G u v).card := by
+  obtain ⟨X, hX, hwalk⟩ := robust_walks G hsymm hc hedges
+  exact ⟨X, hX, fun u hu v hv => by rw [card_walks6]; exact hwalk u hu v hv⟩
+
 end LeanProofs.GowersSzemeredi
