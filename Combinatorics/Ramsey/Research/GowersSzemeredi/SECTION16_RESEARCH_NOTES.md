@@ -5612,6 +5612,16 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   contract comparison for the anchor density. J.129 itself notes that no
   polynomial bound on these composite parameters is asserted. These
   results show that none is available.
+  `global_single_coherent_progression`, which the later global modules
+  (`GlobalCoherentBridge`, `…WordSystem`, `…RichSystem`, `…RobustSystem`,
+  `…Graph`) import, is stated entirely in these parameters:
+  - `z = globalEvenColumnZeroDensity alpha 4`, together with `z^8/4`,
+    `globalPopularAnchorTolerance = z^16/20` and the anchor density;
+  - the even rank and the even radius.
+
+  `global_single_progression_parameters_le` (`Proofs16SingleProgressionGrowth`)
+  bundles their bounds: each density is at most `exp(-2^(13^d)/2)`, the
+  rank is at least `13^d`, and the radius forces `B ≥ 13^d/2`.
   The shared steps are generic in `Proofs16ZeroCoreGrowth`:
   - `thirteen_pow_le_rank_ceil` covers any rank `⌈m·d/δ_k⌉` with `m ≥ 1`;
   - `elimination_density_le` covers any per-round divisor `m ≥ 1`;
