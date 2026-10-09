@@ -2799,3 +2799,11 @@ includes the Bohr-sum containment and bounded-span selection argument,
 algebraic regularity, quasirandomness, and the final difference-set
 composition. No numbered statement or deep hypothesis is marked closed
 by this analytic milestone.
+
+The combined explicit-cutoff audit passes: 6,241 public Gowers theorems,
+a 4,955-module facade (4,152 OAI modules), and 4,957 modules including the
+audit and import-compatibility check. All ten new theorems also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. Incoming Fourier inversion and positive-cutoff tail
+results are included. The source ledger remains 115/5 with its existing
+fidelity caveats, and the selected upstream module scope is unchanged.
