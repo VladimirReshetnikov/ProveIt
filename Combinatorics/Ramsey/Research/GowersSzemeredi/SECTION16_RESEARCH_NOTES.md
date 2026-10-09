@@ -3799,3 +3799,37 @@ relations split for most `y`. Its two simplified steps are
 needed is the identification of the pattern graph (`patternEdge` on
 `bohr F (θ/2)`) with this graph, via `bohr_floor_radius` and an
 enumeration of `F`.
+
+
+### No radius selection in prime Z/N; the remaining lane (2026-10-09)
+
+`Proofs16PrimeBandSplit`.
+- `mixedBohr_band_le`: in prime `ℤ/N`,
+  `|B(γ; a+c)| ≤ |B(γ; a−c)| + |ι|(4c+2)` for `c ≤ aᵢ`, at every radius.
+  So [49]'s choice of a regular radius ρᵢ per piece ((10)–(12)) is not
+  needed.
+- `split_profile_quasirandom_prime`: the quasirandomness bridge with all
+  band hypotheses discharged at `ε = m(4c+2)/N`, where
+  `m = |ι ⊕ (κ ⊕ κ)|`. The remaining hypotheses are:
+  - relation splitting for all but `η|Y|` vertices and all but `η|Y|²`
+    pairs;
+  - the truncation budget;
+  - `20m(4c+2) ≤ |B(γ; a−c)|`.
+
+  The conclusion is
+  `boxSum (G − δ) ≤ 3(80m(4c+2)/|X| + η)|X|²|Y|²` for a real
+  `δ ∈ [0,1]`.
+
+`Proofs16RelationAveraging` holds the counting steps of the iteration:
+`exists_popular_witness` (pigeonhole onto one relation) and
+`collision_pairs_ge` (Cauchy–Schwarz from `f(y) = h(y′)` to
+`f(y₁) = f(y₂)`).
+
+**Lane note (claude session).** I am continuing with the Theorem 33
+iteration itself. It produces, inside the graph class `C`, a sub-piece
+on which the relations of `F ∪ V(y)` split for typical `y` and pairs.
+Its parts are `freiman_const_on_bohr_of_dense`, `strict_chain_length_le`
+and the two counting steps above. One input remains open: the
+representation density on the chosen piece. `proper_progression_pattern_completion`
+currently takes `C = Q.carrier`; a piece-relative witness count would
+be needed if the piece is a proper subset.
