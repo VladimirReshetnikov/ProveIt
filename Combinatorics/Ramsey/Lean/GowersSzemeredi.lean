@@ -947,6 +947,7 @@ import GowersSzemeredi.Proofs16GlobalCoherentGraph
 import GowersSzemeredi.Proofs16GlobalCoherentBridge
 import GowersSzemeredi.Proofs16GlobalCoherentRobustSystem
 import GowersSzemeredi.Proofs16GlobalCoherentRichSystem
+import GowersSzemeredi.Proofs16GlobalCoherentWordSystem
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
