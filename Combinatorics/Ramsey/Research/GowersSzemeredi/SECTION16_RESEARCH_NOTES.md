@@ -5410,3 +5410,91 @@ The combined audit checks 7,084 public Gowers theorems in 5,120 modules
 approved axioms. The source ledger is identical at 115 companions and
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement.
+
+### J.105. Joining two popular column representations
+
+**Verified 2026-10-09.** Six modules give compatible six-entry
+representations for every pair of columns in the dense core from J.104.
+
+`Proofs16PopularEndpointFibres` proves a generic averaging lemma: a
+family of mass at least `mu*M*K`, with `M` possible endpoints and every
+endpoint fibre of size at most `K`, has at least `mu*M/2` endpoints
+whose fibres have size at least `mu*K/2`. A positive popular fibre
+belongs to the image of the family.
+
+`Proofs16TripleEndpointFibres` obtains the sharp elementary cap `N`
+for both endpoint fibres of a fixed-column triple family. Once either
+endpoint and the middle coordinate are fixed, the equation `a=x-y+z`
+determines the other endpoint. Thus a triple family of size at least
+`lambda*N^2` has at least `lambda*N/2` popular first endpoints and the
+same number of popular last endpoints, each with at least `lambda*N/2`
+representations. Both popular endpoint sets lie in `B`.
+
+`Proofs16FibreGluingCount` counts the choices from two specified fibres
+above each connecting quadruple. The total is exactly the sum of the
+products of the two fibre cardinalities; uniform lower bounds therefore
+multiply without a further selection loss.
+
+`Proofs16ColumnPairSplice` uses the following orientation. Let a triple
+`y` represent `a`, and a triple `z` represent `b`. For an exact quadruple
+`q`, require `y3=q2` and `z1=q1`. Its identity `q0+q1=q2+q3` says that
+replacing `(y3,z1)` by `(q0,q3)` translates both coordinates by the same
+amount. The output is
+
+```
+s = (y1,y2,q0,q3,z2,z3).
+```
+
+It satisfies `a-b = s0-s1+s2-s3+s4-s5`. The two old middle entries are
+recoverable as `a-s0+s1` and `b+s4-s5`. The output and the two anchors
+therefore recover both original triples and `q`, proving injectivity of
+the gluing map.
+
+`columnPairRepresentations` records the two recovered triple identities
+and the connecting exact quadruple. Its specification includes all six
+output vertices lying in `B` and the corresponding alternating map
+identity on the Bohr domains of the anchors, the six output vertices,
+and the two recovered middle entries. Those intermediate domain
+conditions are retained explicitly; they have not been discarded here.
+
+`Proofs16ColumnPairGluing.column_pair_representations_count` takes
+popular last endpoints for `a` and popular first endpoints for `b`.
+Hereditary richness supplies at least `eta^2*lambda^4*N^3/16` connecting
+quadruples, and each has at least `(lambda*N/2)^2` choices of triples.
+Injectivity then proves
+
+```
+# columnPairRepresentations(B,T,L,r,a,b)
+  >= eta^2*lambda^6*N^5/64.
+```
+
+`Proofs16GlobalColumnPairRepresentations` assembles this for every
+`a,b` in the same dense core `P`, directly from the original dense
+bihomomorphism. It defines
+
+```
+globalColumnPairDensity alpha
+  = (globalColumnWalkDensity alpha)^2
+    * (globalColumnAnchorDensity alpha)^6 / 64
+```
+
+and proves its positivity along with the uniform pair-representation
+count. Original witnesses, column rank, normalization, local linearity,
+single-column triples, and the full ambient hereditary richness remain
+in the conclusion. The size threshold and radius are unchanged.
+
+**Remaining work.** This is the two-column case of compatible tuple
+representations. The arbitrary-length induction, its density recurrence,
+and the subsequent bilinear organization and shifted agreement are still
+open. No final Gowers numerical bound is claimed from this step alone.
+
+**Verification.** The focused global construction checks 223 modules.
+All 13 new named theorems pass individual axiom checks with only
+`propext`, `Classical.choice`, and `Quot.sound`. No additional upstream
+modules or Apache provenance changes were needed.
+
+The combined audit checks 7,104 public Gowers theorems in 5,126 modules
+(5,124 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
