@@ -144,7 +144,7 @@ compilation of at most $4M$ states gives at most $4M$ output nodes, at most
 $5M$ new persistent nodes including contexts, and at most $6M$ total nodes
 when the initial arena contains only the reachable source.
 
-Our current producer and independent checker materialize inverses before
+At this review checkpoint our producer and independent checker materialized inverses before
 compilation. Their globally memoized inverse operation introduces at most
 $2M$ inverse nodes for the source-context union. The resulting union has at
 most $4M$ nodes; compiling each once gives the conservative native bounds
@@ -153,7 +153,9 @@ most $4M$ nodes; compiling each once gives the conservative native bounds
 \]
 Historical unreachable nodes are included in $N_{\rm before}$, not silently
 charged to $M$. These constants do not assert that the delivered virtual-state
-compiler is already installed. Occurrence/support discovery may still scan a
+compiler was already installed. Section~\ref{sec:ordered-batch} subsequently
+installs its virtual-state checker, with the sharper $5M$ allocation bound.
+Occurrence/support discovery may still scan a
 whole donor grammar per selected child, so linear output size does not imply
 linear running time for the current batch. It does give polynomial bit cost
 in the actual reachable source: a binary terminal grammar with at most $4M$
@@ -171,9 +173,9 @@ class and does not extend to arbitrary word-valued singleton definitions.
 The report also supplies an ordered witness whose per-node summary is only
 the maximum selected rank and its multiplicity capped at two. Donor $i$ has
 summary $(i,1)$ exactly when its child is unique and all selected dependencies
-are earlier. This can reduce checker support storage, but the current checker
-accepts arbitrary entry order and derives its own dependency order. Changing
-that contract requires compatibility work. The report's rank-one-completion
+are earlier. Section~\ref{sec:ordered-batch} subsequently adapts this checker
+to the maintained schema, preserving arbitrary entry order through the
+existing graph-checking fallback. The report's rank-one-completion
 guard avoids eager partial-batch regressions on its older baseline; our
 recovery-aware bounded adaptive trial is a different policy and is retained.
 
