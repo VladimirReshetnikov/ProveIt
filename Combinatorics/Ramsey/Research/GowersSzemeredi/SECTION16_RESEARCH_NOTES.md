@@ -4712,14 +4712,11 @@ provenance/license files are unchanged.
   Freiman-linear on `B(S;1/(4π))`, and every point there has at least
   `β⁴N³/4` representing four-tuples (the peer's robust self-correlation
   count). `column_witness_card_ge` turns this into a witness density.
-- `Proofs16MilicevicQuadrupleImage.alternating_image_bound` covers one
-  additive column quadruple `x₀ + x₁ = x₂ + x₃`. With `θN⁴` common
-  witnesses in the four Bohr sets, the combination
-  `ψ₀ + ψ₁ − ψ₂ − ψ₃` satisfies
-  `#Im · θN · |B(Γ;1/(16π))| ≤ N²` on `B(Γ;1/(8π))`, where `Γ = ⋃ Sᵢ`.
-  The combination vanishes on common witnesses
-  (`alternating_repMap_vanishes`, from the four row identities).
-
-What remains for the full Proposition 5.1 is assembly: choosing column
-data for every dense column (`column_freiman_bohr`), and counting
-quadruples with `many_quadruples_common_witnesses`.
+- `Proofs16MilicevicQuadrupleImage` (`alternating_repMap_vanishes`, an
+  image bound for one column quadruple via Lemma 2.42) was retired in the
+  same session. J.97's `Proofs16SharedWitnessZeros` and
+  `Proofs16SharedWitnessKernel`, written concurrently on top of
+  `Proofs16CommonWitnesses` and `Proofs16RepresentedMap`, prove the same
+  vanishing for abstract column-witness systems over `IsEBihomomorphism`.
+  With the prime small-image rigidity they then go further, to exact
+  column identities, and `many_exact_column_quadruples` does the count.
