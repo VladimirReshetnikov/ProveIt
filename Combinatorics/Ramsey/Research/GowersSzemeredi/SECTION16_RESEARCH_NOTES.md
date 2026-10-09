@@ -4341,21 +4341,10 @@ the question by working only on centered pieces.
   `|F ⊕ (I ⊕ I)|·(4c+2) ≤ εN`, in prime `ℤ/N`. The step is
   `mixedBohr_shift_band_le`, which applies `mixedBohr_band_le_budget` at
   the centre `a + c`.
-- `Proofs16RegularityStep.regularity_step_vertex` covers bad vertices.
-  Each carries a witness `(μ, v)` with `μ ∉ relationSubmodule C ψ` and
-  `μ·ψ(t) = v`. A popular witness then gives `F′ ⊆ Bad`, with
-  `|Bad| ≤ |R||F′|`, on which `μ·ψ ≡ v`. It also gives
-  `μ ∈ relationSubmodule (C ∩ B(Spec F′; 1/(8π))) ψ`, where
-  `|Spec| ≤ 16(|F′|/N)⁻²`.
-- `Proofs16RegularityStepPairs.regularity_step_pairs` is the same for
-  `θ|C|²` bad pairs with witnesses `(μ, μ′, v)`. The steps are a popular
-  witness, `collision_pairs_ge`, and a dense level set of size
-  `(θ/|R|)²|C|` (`exists_dense_collision_level_set`), then Bogolyubov
-  (`relation_of_matching`). The case `μ′ ∉ Λ` is handled by swapping
-  the pair.
-
-Each failed splitting therefore strictly enlarges the relation subspace
-on a Bohr-cut class. With `strict_chain_length_le` that bounds the
-number of steps by `|κ|`. Still missing: the iteration driver itself,
-the re-centering of translated pieces (previous section), and the
-density of the final class relative to the representation set.
+- `Proofs16RegularityStep` and `Proofs16RegularityStepPairs` (one
+  iteration step, vertices and pairs, via `collision_pairs_ge`) were
+  retired in the same session. J.91's `Proofs16PopularKernelStep` and
+  `Proofs16StrictRelationKernel`, written concurrently, prove the same
+  step with a better loss: one popular fibre keeps `θ`, where the
+  collision route gives `θ²`. J.91–J.94 then build the full adaptive
+  iteration.
