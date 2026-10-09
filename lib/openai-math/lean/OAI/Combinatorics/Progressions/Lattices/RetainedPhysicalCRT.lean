@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Remove the redundant trailing rfl after simp in affinePeriodResidueSample_integer
+on Lean 4.32. All theorem statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Algebra.Group.Units.Equiv
 import Mathlib.Data.ZMod.QuotientRing
@@ -526,7 +527,6 @@ theorem affinePeriodResidueSample_integer (D : ℕ) (a t : J → ℤ)
   funext i k
   simp [primeCoordinateObservation, smoothAffineSample, affinePeriodResidueSample,
     affineSampleAlphabetEquiv, residueColumnMap]
-  rfl
 
 omit [Fintype I] [∀ i, NeZero (q i)] in
 theorem affinePeriodResidueSample_depends (D : ℕ) (a : J → ℤ)

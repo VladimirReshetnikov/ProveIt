@@ -9,8 +9,22 @@ from .group_certificate import _Budget, _presentation, _whitehead_cut, _image, _
 from .whitehead_power import power_profile, powered_images
 
 
-def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000):
+def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
+            primitive_terminal=None):
+    """Return algebraic success; an optional output dict enables the new terminal.
+
+    Without that dict, True retains the old rank-one, no-relator contract.
+    With it, nonempty terminal evidence instead records an intact rank-two
+    state. Only a source-reconstructing wrapper can turn this into a verdict.
+    """
     while len(alive) > 1:
+        if primitive_terminal is not None and len(alive) == 2:
+            from .primitive_power import primitive_power_terminal
+            evidence = primitive_power_terminal(arena, roots, alive)
+            if evidence is not None:
+                primitive_terminal.update(evidence)
+                return True
+
         counts, _ = arena.summarize(roots)
         candidates = []
         for i, local in enumerate(arena.singletons(roots)):
@@ -116,13 +130,19 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
 
 def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
-                           max_work=2000000, max_nodes=100000, relator_moves=False, stats=None):
+                           max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
+                           primitive_power=True):
     """Find a trace or None; resource exhaustion raises GroupLimit.
 
     max_letters caps the initial presentation and optional overlap expansion.
     All elimination and Whitehead operations instead obey max_nodes/max_work.
     The initial PD is always reconstructed; no caller-supplied state is trusted.
+    primitive_power tries report 45's arithmetic rank-two terminal before
+    general shortening and emits version five only on a verified local hit.
+    Disable it to retain the historical search and terminal contract.
     """
+    if type(primitive_power) is not bool:
+        raise ValueError('primitive_power must be boolean')
     if type(relator_moves) is not bool:
         raise ValueError('relator_moves must be boolean')
     if stats is not None and type(stats) is not dict:
@@ -134,8 +154,13 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         arena.tick(max_work-budget.left)
         roots = [arena.reduce(arena.from_word(word)) for word in words]
         moves = []
-        if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters):
+        terminal = {} if primitive_power else None
+        if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,
+                       primitive_terminal=terminal):
             return None
+        if terminal:
+            return dict(version=5, method='wirtinger-cyclic-group', status='UNKNOT',
+                        input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
         return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',
                     input_pd=[list(row) for row in diagram.pd], moves=moves,

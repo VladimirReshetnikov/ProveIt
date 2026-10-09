@@ -107,6 +107,9 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             else:
                 return False
         arena.tick()
+        if certificate['version'] == 5:
+            from .primitive_power_verify import verify_compressed_terminal
+            return verify_compressed_terminal(arena, roots, alive, certificate['terminal'])
         return alive == {certificate['remaining_generator']} and not any(roots)
     finally:
         if stats is not None:

@@ -270,3 +270,10 @@ construction; all 22 upstream theorem statements and bounds are unchanged.
 This module already carried a compatibility notice, now extended to
 record the proof repair, so the adapted-file count remains 976. The
 verified axiom checkpoint remains the first 3,800 manifest entries.
+
+`RetainedPhysicalCRT` passes after removing a redundant `rfl` following
+`simp` in `affinePeriodResidueSample_integer`. All 42 theorem statements,
+bounds, and other upstream proof text are unchanged; the full production
+check uses 1,828 current local dependency modules. This repair is beyond
+the completed 3,800-entry axiom checkpoint and retains the existing
+license and updated modification notice.
