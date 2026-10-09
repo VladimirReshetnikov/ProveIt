@@ -5686,6 +5686,33 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        with `α′ = |B|/N`, and `g` shares `ψ` on every fiber. Every bound
        is polynomial in `c`. The eight-map version applies this pair by
        pair, restricting the family to popular values each time.
+     - *Plan for Proposition 9.3 (printed pp. 65–68).*
+       - **Iteration state.** Freiman homomorphisms `θ₁, …, θ_m` and, for
+         each pair `x, y`, a `{-1,0,1}`-independent index set `I_{x,y}`
+         with `{θ_i(x−y)} ⊆ ⟨Γ_x ∪ Γ_y⟩_R`. Independence caps
+         `|I_{x,y}| ≤ s₀ = (d + log 1/ρ)^O(1)`, since `2^s ≤ (2sR+1)^{2d}`.
+         This is a counting lemma, not yet in the corpus.
+       - **Claim 9.4.** Suppose the containment
+         `B(θ_i(a) : i ∈ I; η) ⊆ (B_{x+a} ∩ B_x) + (B_{y+a} ∩ B_y)` fails for
+         `ε|C|³` triples.
+         1. Theorem 2.12 (`bohr_sum_contains_span_intersection_quarter`)
+            puts the failing frequency into the span.
+         2. One linear combination per element, chosen with success
+            probability `(2R+1)^(−4d)`, is exactly
+            `exists_good_selection` (`Proofs16SelectionAveraging`, four
+            fixed points per requirement, `K = (2R+1)^d`).
+         3. Lemma 9.2 (`lemma_9_2_pair`, applied pairwise) gives a new
+            Freiman `θ`, independent of the current indices on many
+            pairs.
+
+         Claim 9.5 is the same for 12-tuples.
+       - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
+         of pairs, and the size is capped at `s₀`. So the iteration stops
+         after polynomially many rounds.
+       - **Final selection.** Choose one good pair `(x_a, y_a)` per `a`,
+         by averaging. Glue by Lemma 9.1 (`compatible_bohr_sum_quadruple`,
+         J.112). A random index set `J` of size `8s₀` makes `U_a` linear
+         in `a`, at loss `C(m, 8s₀)^(−1)`, again by averaging.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
