@@ -1,0 +1,76 @@
+\subsection{Skipping uniform subtrees and stopping at a rejection witness}
+\label{sec:syllable-frontier}
+
+The preceding measurements exposed two costs of the first implementation.
+It descended through every binary-power node even when the arena already
+knew that the entire subtree repeated one signed letter. It also completed
+unrelated branches after one unsupported intermediate had made the bounded
+probe certain to decline. Neither cost is needed to establish the probe's
+exact sufficient condition. Both the producer and the separately implemented
+replayer now avoid them.
+
+Every arena node already has exact raw-word uniformity metadata. A terminal
+has its signed letter. A nonempty concatenation is uniform precisely when
+both children have the same nonzero uniform signed letter. The empty word
+is handled separately. This metadata is maintained by the unchanged arena
+when a node is created, and reconstructed from source operations in proof
+replay; no certificate supplies or overrides it.
+
+If a node has uniform signed letter $x$ and expanded length $L$, its run
+summary is exactly $(|x|,\operatorname{sign}(x)L)$. Moreover, every descendant
+is uniform in that same signed letter. Skipping those descendants therefore
+cannot conceal an unsupported intermediate. This is a raw-word assertion:
+a word that merely \emph{freely reduces} to a power does not receive the
+shortcut unless the maintained raw metadata proves it. All other nodes
+retain the independent stack-fold or boundary-deque calculation.
+
+For rejection, define eligibility recursively: terminals are eligible,
+and a concatenation is eligible exactly when both children are eligible
+and their freely reduced concatenation has at most $q$ runs. An ineligible
+descendant makes every ancestor ineligible under this definition, even if
+later cancellation would produce a small final word. The first such witness
+therefore suffices to stop the current probe. Its queried root is cached
+as unsupported at the current run limit, while unvisited siblings receive
+no cache entry. Encountering a previously cached unsupported descendant
+uses the same rule. A subsequent query with a different run limit uses
+its separate cache and re-evaluates the sufficient condition.
+
+Consequently both shortcuts preserve the previous accepted/declined domain
+exactly. They do not enlarge it or treat a rejection as a negative equality
+test. All-or-none preflight before word allocation, anchored cyclic trimming,
+compact output construction and complete source replay remain unchanged.
+The normalization proof schema and search policy also remain unchanged;
+finite allowances can still change which calls finish because less work
+is charged or elapsed.
+
+For one probe, let $F$ count nodes actually encountered before cached or
+uniform summaries stop descent, or before the first rejection stops the
+whole query. With fixed out-degree, repeated cached-root hits contribute
+only the root-slot scan. A conservative summary cost is
+$O(m+FqB)$, with the same identifier and dictionary qualifications as above.
+On canonical circuits containing at most $q$ uniform powers per root,
+$F=O(mq)$: exponent-circuit depth disappears from the summary traversal.
+Constructing and storing the source grammar still has its original cost,
+and rebuilding binary powers still has polynomial cost in exponent bit
+length. Thus this is a query improvement, not a constant-time claim for
+creating or recognizing an exponentially expanded word.
+
+On unsupported inputs, an early stop can leave unfinished ancestor frames
+uncached. Different later roots can revisit those frames; no new global
+``visit every node once'' claim is made for rejection paths. The earlier
+per-phase encoded bounds remain valid. In particular, the normalized
+monomial class and its conditional depth-dependent bounds are preserved,
+without supplying the missing global short-depth producer.
+
+Two new tests guard the actual access pattern. A conjugate with exponent
+$2^{4096}$ forbids access to the descendants of its three uniform powers;
+both evaluators compute exactly five summaries and three uniform shortcuts.
+A second test forbids access to an unrelated 1,024-bit-exponent sibling
+after a five-run left descendant has already failed the four-run limit.
+It checks repeat queries, an ancestor of the cached rejected root, unchanged
+word-node allocation, absence of fabricated sibling entries, and successful
+re-evaluation under a larger run limit. The earlier six normalization tests
+continue to exercise exact words, arbitrary parses, source independence,
+fallback and resource guards.
+
+\input{syllable_frontier_results.tex}

@@ -867,3 +867,16 @@ and 240 kernel/replay measurements: conjugate kernels improve, full supplied
 proof replay and unsupported-word fallback regress, and no overall recognition
 speedup is established. The modes remain optional. A global short-depth
 producer and a general quasipolynomial bound are still missing.
+
+[`syllable_frontier.tex`](syllable_frontier.tex) refines bounded normalization
+with exact uniform-subtree summaries and rejection at the first unsupported
+descendant. It proves preservation of the probe domain and conditional
+phase bounds, and distinguishes skipped summaries from total traversal work.
+All 1,000 tests pass. Controlled ratios versus the first bounded evaluator
+are 1.91–2.17x for conjugates, 1.13–1.24x for complete supplied-proof replay,
+and about 1.29x for unsupported fallback. The article retains A/A variation,
+full recognition measurements and the remaining fallback overhead relative
+to an unprobed general reducer. The global discovery bound remains open.
+The complete-recognition follow-up finishes all 760 measurements without
+establishing a broad whole-input gain; Gordian retains its proof and saves
+only 60 work units out of about 1.27 million.

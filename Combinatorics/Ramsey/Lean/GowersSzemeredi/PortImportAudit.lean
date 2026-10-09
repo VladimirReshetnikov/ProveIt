@@ -1,11 +1,11 @@
 import GowersSzemeredi.Audit
 import OAI.Combinatorics.Progressions.Lattices.NativeProperAffineRecovery
 
-/-! Check that the small Gowers import closure coexists with the full upstream
+/-! Check that the Gowers import closure coexists with the full upstream
 affine-recovery module. The extracted lemmas retain the original propositions;
 their distinct namespace prevents duplicate declarations when the density port
-and Gowers facade are imported together. This does not certify the uncompiled
-remainder of the quantitative-density proof. -/
+and Gowers facade are imported together. The quantitative-density conclusion
+is checked by `OAI.QuantitativePortAudit` and used by Theorem 1.3. -/
 set_option autoImplicit false
 
 open OAI.Erdos3.FreimanModel

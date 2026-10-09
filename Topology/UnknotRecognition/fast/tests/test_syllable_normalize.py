@@ -29,6 +29,45 @@ def raw_map(arena,roots,images):
 
 
 class SyllableNormalizeTests(unittest.TestCase):
+    def test_uniform_metadata_skips_power_descendants_with_exact_signs(self):
+        for fn in (bounded_cyclic_roots,replay_cyclic_roots):
+            a=WordArena();n=1<<4096
+            pos=a.power(a.letter(1),n);neg=a.power(a.letter(-1),n)
+            middle=a.power(a.letter(-2),n+3)
+            prefix=a.concat(pos,middle);root=a.concat(prefix,neg)
+            allowed={pos,neg,middle,prefix,root};rules=a.rules
+            class GuardedRules(list):
+                def __getitem__(self,node):
+                    if node not in allowed:raise AssertionError('uniform descendant visited')
+                    return super().__getitem__(node)
+            a.rules=GuardedRules(rules)
+            with patch.object(a,'cyclic_reduce',side_effect=AssertionError),patch.object(a,'equal',side_effect=AssertionError):
+                answer=fn(a,[root])
+            self.assertEqual(a.lengths[answer[0]],n+3);self.assertEqual(a.uniform[answer[0]],-2)
+            self.assertEqual(a.stats['run_normalization_nodes'],5)
+            self.assertEqual(a.stats['run_normalization_uniform_hits'],3)
+
+    def test_rejection_witness_skips_siblings_and_is_cached_per_cap(self):
+        for fn in (bounded_cyclic_roots,replay_cyclic_roots):
+            a=WordArena();bad=a.from_word([1,2,1,2,1])
+            hidden=a.power(a.from_word([3,4]),1<<1024);root=a.concat(bad,hidden)
+            cache={};rules=a.rules;allowed=set(a._reachable([bad]))|{root}
+            class GuardedRules(list):
+                def __getitem__(self,node):
+                    if node not in allowed:raise AssertionError('irrelevant sibling visited')
+                    return super().__getitem__(node)
+            a.rules=GuardedRules(rules);before=len(a.rules)
+            self.assertIsNone(fn(a,[root],cache=cache,min_length=0))
+            self.assertEqual(len(a.rules),before)
+            self.assertNotIn(hidden,cache[4]);self.assertIsNone(cache[4][root])
+            a.rules=rules
+            parent=a.concat(root,hidden);before=len(a.rules)
+            self.assertIsNone(fn(a,[parent],cache=cache,min_length=0))
+            self.assertEqual(len(a.rules),before);self.assertNotIn(hidden,cache[4])
+            self.assertIsNone(fn(a,[bad],cache=cache,min_length=0))
+            answer=fn(a,[bad],cache=cache,min_length=0,max_runs=5)
+            self.assertEqual(a.expand(answer[0]),[1,2,1,2,1])
+
     def test_exhaustive_short_words_match_literal_and_general_reduction(self):
         for n in range(7):
             for word in itertools.product((1,-1,2,-2),repeat=n):

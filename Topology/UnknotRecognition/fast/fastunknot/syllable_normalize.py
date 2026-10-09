@@ -46,10 +46,18 @@ def bounded_cyclic_roots(arena, roots, *, cache=None, max_runs=4, min_length=64)
         pending=[(root,False)]
         while pending:
             arena.tick();node,ready=pending.pop()
-            if node in summaries:continue
+            if node in summaries:
+                if summaries[node] is None:
+                    summaries[root]=None
+                    arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
+                    return None
+                continue
             rule=arena.rules[node]
-            if rule[0]=='t':
-                x=rule[1];summaries[node]=((abs(x),1 if x>0 else -1),)
+            if arena.uniform[node]:
+                # Exact raw-word metadata proves every descendant has one run.
+                x=arena.uniform[node]
+                summaries[node]=((abs(x),arena.lengths[node] if x>0 else -arena.lengths[node]),)
+                arena.stats['run_normalization_uniform_hits']=arena.stats.get('run_normalization_uniform_hits',0)+1
             elif not ready:
                 pending.extend(((node,True),(rule[2],False),(rule[1],False)));continue
             else:
@@ -59,9 +67,12 @@ def bounded_cyclic_roots(arena, roots, *, cache=None, max_runs=4, min_length=64)
                     arena.tick(len(a)+len(b));word=_join(a,b)
                     summaries[node]=word if len(word)<=max_runs else None
             arena.stats['run_normalization_nodes']=arena.stats.get('run_normalization_nodes',0)+1
-        if summaries[root] is None:
-            arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
-            return None
+            if summaries[node] is None:
+                # One unsupported descendant forces this root to fall back;
+                # do not visit unrelated pending siblings or build output words.
+                summaries[root]=None
+                arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
+                return None
     result=[]
     for root in roots:
         arena.tick()

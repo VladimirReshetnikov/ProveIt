@@ -608,6 +608,15 @@ import GowersSzemeredi.Proofs16SlabCommonBaseWitness
 import GowersSzemeredi.Proofs16ContextualLiftCounterexample
 import GowersSzemeredi.Proofs16BudgetedLiftInduction
 import GowersSzemeredi.Proofs01QuantitativeDensityBridge
+import GowersSzemeredi.Proofs16VarietySampleBudget
+import GowersSzemeredi.Proofs16VarietyExplicitExponent
+import GowersSzemeredi.Proofs16VarietyCeilingFreeCover
+import GowersSzemeredi.Proofs16VarietyLossPower
+import GowersSzemeredi.Proofs16VarietyCeilingFreeDecomposition
+import GowersSzemeredi.Proofs16SharperLineExtractor
+import GowersSzemeredi.Proofs16SharperVarietyStructure
+import GowersSzemeredi.Proofs16SharperVarietyParameters
+import GowersSzemeredi.Proofs01QuantitativeDensityHeadline
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

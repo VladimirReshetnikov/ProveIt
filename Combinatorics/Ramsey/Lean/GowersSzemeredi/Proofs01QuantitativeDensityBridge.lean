@@ -2,8 +2,9 @@ import GowersSzemeredi.Sections01_03
 import OAI.Combinatorics.Progressions.Model
 
 /-! Transfer the upstream quantitative density statement to the exact
-Gowers headline. The upstream theorem is an explicit premise until its
-full proof has been backported and audited in this workspace. -/
+Gowers headline. This bridge keeps the upstream theorem as an explicit premise.
+`Proofs01QuantitativeDensityHeadline` supplies its checked port to obtain
+the unconditional headline. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi

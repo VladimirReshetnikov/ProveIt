@@ -20,6 +20,9 @@ unsupported marker. Terminals have one run. To concatenate two supported
 children, it folds the right list into a stack containing the left list:
 equal adjacent generator labels cause exponent addition, and zero sums
 are removed. The result is stored only if it has at most $q$ runs.
+The later optimization in Section~\ref{sec:syllable-frontier} skips
+subtrees certified uniform by the arena and stops at the first unsupported
+descendant. It preserves exactly this sufficient domain.
 
 The proof of exactness is induction on the grammar. Each child is freely
 reduced; only its concatenation boundary can create cancellation. Repeated
@@ -170,3 +173,5 @@ execution. Raw shuffled samples, controls, counters, complete certificates
 and incomplete outcomes are retained. The supplied-prefix timings measure
 verification of a given proof; they do not measure discovering that proof
 or recognizing a difficult knot from scratch.
+
+\input{syllable_frontier.tex}

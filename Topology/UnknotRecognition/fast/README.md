@@ -2345,3 +2345,29 @@ python -B primitive_power_research/syllables.py benchmark --output results/sylla
 python -B primitive_power_research/syllables.py stages --output results/syllable_normalization_stages_20261008.json
 python -B primitive_power_research/syllables.py kernels --output results/syllable_normalization_kernels_20261008.json
 ```
+
+The follow-up skips entire raw-uniform subtrees using exact arena metadata
+and stops as soon as an unsupported descendant forces fallback. Producer
+and independent replay preserve the previous probe domain. Guarded tests
+verify that neither uniform descendants nor irrelevant siblings are read.
+All 1,000 maintained tests pass; all 240 actual-diagram mode results and
+87,381 previous/current bounded-probe decisions agree.
+
+Against the first bounded evaluator, conjugate kernels improve by paired
+ratios 1.91–2.17x, complete supplied-proof replay by 1.13–1.24x, and unsupported
+fallbacks by about 1.29x. Source reconstruction and all proof operations are
+included in the replay timings, but proof discovery is not. Fallback still
+adds work versus calling the general reducer without a probe. See
+[`syllable_frontier.tex`](../synthesis/syllable_frontier.tex) for the proof,
+controls and whole-recognition follow-up. General quasipolynomial recognition
+remains open; projection and forest modes remain optional.
+
+```sh
+python -B primitive_power_research/syllable_frontier.py audit --output results/syllable_frontier_audit_20261008.json
+python -B primitive_power_research/syllable_frontier.py kernels --output results/syllable_frontier_kernels_20261008.json
+python -B primitive_power_research/syllable_frontier.py benchmark --output results/syllable_frontier_pipeline_20261008.json
+```
+
+All 760 complete-recognition measurements also finish, but they do not
+establish a broad whole-input speedup: Gordian saves only 60 charged work
+units out of about 1.27 million and retains the same certificate.
