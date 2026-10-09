@@ -44,8 +44,8 @@ is conditional on Part I and its certificate.
 
 ```
 article.tex        the merged report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 30 pages (title, abstract and contents 1–2,
-                   Guide 2–7, Part I 8–19, Part II 20–30)
+article.pdf        the compiled report, 31 pages (title, abstract and contents 1–2,
+                   Guide 2–7, Part I 8–20, Part II 21–31)
 README.md          this guide
 inverse-section.tex  source 53's \input file, as delivered; printed inline as
                    Section 7 of article.tex and no longer \input (its labels are unprefixed)
@@ -164,7 +164,9 @@ specialization "equation (32)", which it still is).
   uniformly for λ in a compact subset of (0,∞) and bounded δ, with amplitude
   `D(λ) = √(2π) λ^{−1/(3λ)} I(1/λ)`, `D(1) = 2C`; `I` is real analytic and
   strictly positive on (0,∞) (an exact quadratic composition inequality plus
-  the single certified seed `I(1) > 1.64`); the floor-depth phase
+  the single certified seed `I(1) > 1.64`; since 9 October 2026 positivity
+  also follows, without the seed, from `a290354`'s identity below); the
+  floor-depth phase
   `e^{−{λn}/λ}`, the shift ratio `e^{r/λ}`, eventual monotonicity of
   `H(n,⌊λn⌋)`, the first correction, and smooth inverses with the warning
   against holding δ_n constant.
@@ -172,7 +174,10 @@ specialization "equation (32)", which it still is).
   method or the displayed coefficients (Prellberg's FPSAC 2002 slides and
   Mishna's 2005 summary already state the pre-sum bivariate formula; both
   sources say so, and the report prints both statements verbatim). The digits
-  `C ≈ 2.86540798` are exploratory and not certified. The certificate relies
+  `C ≈ 2.86540798` are exploratory and not certified; the value forced by
+  `a290354`'s amplitude identity (below) and its exploratory density is
+  `2.8654079726…`, also uncertified, and all three shipped runs lie above
+  it (dated note, Section 6). The certificate relies
   on the outward-rounded operations of `mpmath.iv` (tested with mpmath 1.3.0
   and Python 3.12.14), not on a verified arithmetic kernel. The expansions are
   finite-order Poincaré expansions, not transseries; no sharp remainder
@@ -223,6 +228,16 @@ and the shared amplitude question; and after the last paragraph of Section
 17.2, on `a005121-strict-partition-chains`. Neither adds a label or changes a
 statement (see "Relation to the repository").
 
+Three reciprocal notes of 9 October 2026 (batch 138), set the same way
+under `[write, 9 October 2026, batch 138]`, record Part IV of
+`a290354-iterated-euler-diagonals` (`03c28e4c8`): after the batch-106 quote
+at the end of Section 8, the identity `I(β) = β·2^{β/3}·h(β)` and the
+endpoint amplitude; at the end of Section 6 ("Runtime assumptions and
+exploratory values"), the exploratory runs against the forced `I(1)`; and
+after the batch-106 quote in Section 17.2, Lengyel's constant. None adds a
+label or changes a statement or number; every label keeps its number (aux
+files compared), and labelled pages from Section 7 on move by one.
+
 ## Relation to the repository
 
 - **Takeuchi numbers.**
@@ -260,7 +275,19 @@ statement (see "Relation to the repository").
   still be needed. Its Remark 37.2 derives, conditionally on both,
   `H(n,m)/(n! m^{n−1} 2^{1−n}) → e^{−1/(3λ)}` for `m/(n log n) → λ`.
   Recorded there as a shared further question (Section 37, item 9) and here
-  in a dated note at the end of Section 8.
+  in a dated note at the end of Section 8. **Since 9 October 2026 (batch
+  138)** that report's Part IV (Theorem 39.1) proves the relation for every
+  `β > 0` by limits of positive coefficient measures, under four unrefereed
+  inputs: its own Part I (Fatou coordinate, positive measure) and, from
+  here, the absolute transfer (40) and the holomorphy part of Proposition
+  13.1 (not the seed). So `h` is holomorphic on `ℜz > 0`, `I > 0` follows
+  without the seed, and its Corollary 42.2 gives the endpoint amplitude
+  `log(I(β)/(2β)) = −(β/3)log β + ((1−γ)/3)β + Σ_{2≤j≤N} c_j β^j + O(β^{N+1})`.
+  The uniform transfer toward `λ → ∞` is still missing (its Question 1), so
+  its Remark 37.2 stays conditional. The forced `I(1) = 2^{1/3}h(1) =
+  2.2862647817…` lies `2.9·10⁻⁹` to `1.6·10⁻⁸` below this report's three
+  exploratory runs (both sides uncertified). Dated notes at the end of
+  Sections 6 and 8.
 - **Strict partition chains** (dated note, 6 October 2026, batch 106).
   `a005121-strict-partition-chains` (same directory, bundle Report 223): the
   depth sum `Z_n = Σ_m 2^{−m−1} H(n,m)` (A005121, Lengyel's numbers) of Part
@@ -273,7 +300,12 @@ statement (see "Relation to the repository").
   `P_1` here (a fit including it agrees with `C` to about `10⁻⁵`); not
   proved. If proved, it would give `I(log 2) ≈ 1.6577006`, an uncertified
   amplitude value away from `λ = 1`. Dated note after the last paragraph of
-  Section 17.2.
+  Section 17.2. **Since 9 October 2026 (batch 138)** `a290354`'s Part IV
+  (Theorem 39.2, (39.12)) proves `C = L^{L/3−1} I(L)/2` under the same four
+  inputs, with a rational majorant `H(n,m) ≤ n!(m/2)^{n−1}` for the depths
+  outside the central window; so `I(log 2) = 2C L^{1−L/3}`, with `C` known
+  only numerically. The summation of every correction `P_j` stays open (its
+  Question 2). Second dated note in Section 17.2.
 - **Formal status.** No Lean or Rocq development in ProveIt concerns these
   sequences, and no statement of this report is formalized.
 
@@ -338,11 +370,14 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX with the packages loaded in the preamble (geometry, lmodern,
 microtype, amsmath, amsthm, mathtools, booktabs, longtable, array, enumitem,
-hyperref). The committed build has 30 pages, no errors, no undefined or
+hyperref). The committed build has 31 pages (30 before the batch-138
+notes), no errors, no undefined or
 multiply defined references, and no overfull boxes (rebuilt after the
 batch-106 reciprocal notes of 6 October 2026: still 30 pages, every label
 with its number, and the same six underfull lines as a build of the
-previous text). Do not run
+previous text; rebuilt after the batch-138 reciprocal notes of 9 October
+2026: 31 pages, every label with its number, the same six underfull lines,
+no new warning). Do not run
 `code/53-iterated-bell-build.sh`: it builds the delivered `iterated-bell.tex`
 and writes `.build/` and a PDF beside itself.
 

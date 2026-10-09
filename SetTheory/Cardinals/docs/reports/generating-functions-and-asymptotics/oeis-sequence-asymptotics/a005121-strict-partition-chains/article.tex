@@ -210,7 +210,15 @@ answers none of its questions, and the methods differ (here a Stirling-kernel
 recurrence with a first-difference contraction; there parabolic iteration of
 $e^z-1$ and a fixed Fatou-coordinate contour). The source's own
 Question~6 (Section~\ref{spc:sec:questions}) asks for the comparison; it is
-Question~\ref{spc:q:depth} below, with a numerical observation. The source's
+Question~\ref{spc:q:depth} below, with a numerical observation.
+\textup{[Dated note, 9~October 2026, batch~138: Part~IV of
+\file{a290354-iterated-euler-diagonals} now proves the heuristic of
+Question~\ref{spc:q:depth}, and answers Question~\ref{spc:q:disk} in part,
+under four unrefereed inputs, two of them from
+\file{a139383-iterated-bell-diagonals}; it uses this report only for the
+agreement of the marked amplitude near $q=1$ and for the cumulant constants,
+and nothing proved here depends on it. See the notes in those two items.]}
+The source's
 bibliography credits that report to ``V. Reshetnikov''; the report has no
 author line (its title block reads ``A merged research report built from two
 manuscripts''), so it is cited here by repository path
@@ -1155,6 +1163,26 @@ in the OEIS entry (Remark~\ref{spc:rem:oeis}).
  explicit contraction bound~\eqref{spc:eq:diskcontract}; the further shrink
  avoids zeros of $C(q)$, whose location is unknown. Missing: the contraction
  and the zero set of $C(q)$ on larger domains.
+
+ \textup{[write, 9~October 2026, batch~138]} \emph{In part.} Part~IV of
+ \file{a290354-iterated-euler-diagonals} (its Corollary~39.3,
+ \file{ied:par:cor:marked}) proves, under the four inputs named in
+ Question~\ref{spc:q:depth},
+ $Z_n(q)\sim C(q)(n!)^2[2L(q)]^{-n}n^{-1-L(q)/3}$ for every real $q>0$,
+ uniformly on compact positive $q$-intervals, with
+ $C(q)=[2L(q)]^{L(q)/3}h(L(q))/(q+1)$ ($L(q)$ as here, $h$ as in that
+ question). This $C(q)$ is positive on $q>0$, extends holomorphically to
+ $\Re q>0$, and near $q=1$ is the $C(q)$ of Theorem~\ref{spc:thm:marked}, by
+ the identity theorem. So the leading equivalent holds on the whole positive
+ axis, and the analytic amplitude continues beyond the disk $|q-1|\le1/16$.
+ Not given: the contraction or a fixed-order expansion beyond the disk, which
+ that report asks for on neighbourhoods of positive compact intervals (its
+ Section~48, Question~4, \file{ied:par:q:positive}); the zero set of $C(q)$
+ on $\Re q>0$ (its Question~3, \file{ied:par:q:zeros}); and uniform complex
+ asymptotics of $Z_n(q)$, which continuation of the amplitude alone does not
+ give. Its Corollary~45.1 (\file{ied:par:cor:K}) expresses $K_1$ and $K_2$
+ through $h(L)$, $h'(L)$ and $h''(L)$; no certified values follow (its
+ Question~5).
 \item\label{spc:q:distribution} \textbf{Distributional refinements} (source,
  item~4). A local limit theorem, a rate in the central limit theorem,
  Edgeworth terms or large deviations for $H_n$ are not proved; the cumulant
@@ -1227,6 +1255,59 @@ in the OEIS entry (Remark~\ref{spc:rem:oeis}).
  proved, the identity would express $C$ by that report's contour functional,
  which bears on Question~\ref{spc:q:analytic}. Conversely, nothing here gives
  a pointwise depth equivalent from the aggregate, as that report says.
+
+ \textup{[write, 9~October 2026, batch~138]} \emph{The leading heuristic is
+ now a theorem, under four unrefereed inputs.} Part~IV of
+ \file{a290354-iterated-euler-diagonals} (its Theorems~39.1 and~39.2,
+ Corollary~39.3 and equation~(39.12); labels \file{ied:par:thm:identity},
+ \file{ied:par:thm:aggregate}, \file{ied:par:cor:marked},
+ \file{ied:par:eq:Lengyel}) proves, uniformly for the rate $\ell$ of the
+ geometric depth weight in compact subsets of $(0,\infty)$ (that report
+ writes $L$ for it),
+ \[
+  \sum_{m\ge0}e^{-\ell m}H(n,m)\sim(n!)^2(2\ell)^{-n}n^{-1-\ell/3}
+  \,\ell^{\ell/3-1}I(\ell).
+ \]
+ The depths outside the central window $|m-n/\ell|\le\sqrt n(\log n)^2$ are
+ bounded by the rational composition majorant $H(n,m)\le n!(m/2)^{n-1}$ (its
+ Lemma~43.1, from $(e^z-1)^{\circ m}\preceq z/(1-mz/2)$ coefficientwise).
+ Through the exact mixture $z_n=\sum_m2^{-m-1}H(n,m)$ (its Lemma~44.1 at
+ $q=1$) this gives
+ \[
+  C=\frac{L^{L/3-1}I(L)}2=\frac12(2L)^{L/3}h(L),\qquad L=\log2,
+ \]
+ the heuristic above, where $h$ is the density of that report's positive
+ Laplace measure (not the $h(u)$ of Section~\ref{spc:sec:inverse}) and
+ $I(\ell)=\ell\,2^{\ell/3}h(\ell)$ (its Theorem~39.1). The four inputs are
+ Part~I of that report (the normalized Fatou coordinate
+ \file{ied:lead:lem:fatou}, \file{ied:lead:eq:fatou} and the positive measure
+ \file{ied:lead:prop:measure}) and, from
+ \file{a139383-iterated-bell-diagonals}, the absolute transfer
+ \file{ibd:pd:eq:absolute}, whose Part~II rests on its Part~I's interval
+ certificate of common entry, and the holomorphy part of
+ \file{ibd:pd:prop:positive}; all are unrefereed and unformalized, and no
+ numerical value enters the proofs. Nothing proved in this report depends on
+ them. Of what is missing above, the bounds outside compact slopes and the
+ leading summation are now supplied; the summation of every correction, which
+ would explain why the polynomials in $\log n$ of \file{ibd:pd:eq:P1} leave
+ the logarithm-free $c_j(L)$ of~\eqref{spc:eq:expansion}, stays open (that
+ report's Section~48, Question~2, \file{ied:par:q:summation}), and $I(L)$ is
+ still not certified (its Question~5). With that report's exploratory density
+ value $h(\log2)=2.03764226105\ldots$ (inverse Laplace, not interval
+ certified) the right side is $1.0986858055251874\ldots$, within
+ $4\cdot10^{-16}$ of the value $1.09868580552518701$ fitted from exact $z_n$
+ (independent check, note after this list), and $I(L)=1.6577006128\ldots$.
+ For the first correction, $\sum_m2^{-Lm}H(n,m)=2z_n$ exactly and the main
+ term above is $2Cf_n$ at $\ell=L$, so under the same inputs
+ Theorem~\ref{spc:thm:main} makes the ratio of the aggregate to its main term
+ $1+L/(6n)+O(n^{-2})$ there, and Theorem~\ref{spc:thm:marked} gives
+ $1+c_1(L(q))/n+O(n^{-2})$ at $\ell=L(q)$ for real $q$ near $1$. Beyond the
+ disk, the write of Part~IV observed (uncertified) at $\ell=1$, that is
+ $q=1/(e-1)$, $|q-1|>0.41$, that $n$ times the ratio minus one is $0.16669$ at
+ $n=320$; this note's recomputation from the exact recurrence gives
+ $0.1666941$, against $c_1(1)+c_2(1)/320=0.1666946$ from the polynomials
+ of~\eqref{spc:eq:cs}. That is consistent with~\eqref{spc:eq:markedintro}
+ holding with the same polynomials outside the disk, which is not proved.
 \item\label{spc:q:inverse} \textbf{An evaluated inverse} (Section~\ref{spc:sec:inverse},
  after Theorem~\ref{spc:thm:threshold}: ``The constants $A_M,Y_M$ have not
  been numerically evaluated or certified''). Theorem~\ref{spc:thm:threshold}
