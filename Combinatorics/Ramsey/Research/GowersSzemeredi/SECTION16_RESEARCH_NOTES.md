@@ -1310,6 +1310,50 @@ The variety route splits this into three steps.
    They should feed the polynomial lift's general `Section16SliceProvider`
    controls (J.2 heads-up), not `CubicStackableClass`.
 
+### J.5 Budget check: the variety route against `Theorem162At 3` (2026-10-08)
+
+**Targets.** `Theorem162At 3` asks for `MultiplyLinear γ r` with
+r = γ⁻²·multipleS(θ,γ,3) = γ⁻²(2/(θγ))^(2^512). That unfolds to
+`MultiplyLinearWith` with, at loss θ′:
+- count ≤ multipleQ(θ′/r, γ, 3)^r = (γθ′/r)^(−2^2048·r);
+- width exponent ≥ multipleC(θ′/r, γ, 3)^r = (γθ′/r)^(2^2048·r).
+
+So the count may be exp(Θ(r·log r)), and the exponent may be as small as
+exp(−Θ(r·log r)), with r polynomial in 1/(θγ) of degree 2^512.
+
+**What the structure side produces (J.4, all kernel-checked except the
+Milićević hypothesis).**
+- One-step mass. α(γ,β) = 2⁻²⁰⁰⁰(γβ)¹⁰⁰⁰⁰ is nested twice:
+  `densePieceMassGen` ≈ α(γ, α(γ,θ/2)θ/4)·α(γ,θ/2)θ/4 ≈ (γθ)^(10⁸+O(10⁴)),
+  up to 2^(−O(10⁷)) constants.
+- Family size m ≈ γ⁻²/mass, so polynomial in 1/(γθ) of degree ≈ 10⁸.
+- Pieces: K ≤ m·exp(B), with B = milicevicBound D (θ/(2m)) =
+  (2 + 2 log(2m/θ))^D ≈ (2·10⁸·log(1/(γθ)))^D.
+- Stacking n pieces (peer's joint cover): count 9n. The capped exponent is
+  ≥ 1/(1024p²(4C+18)(B+2)^17) per piece, and joint covers give
+  degree ≈ 17 in n·B (`Proofs16FreimanVarietyCapBound`).
+
+**Comparison.**
+- *Exponents:* 1/poly(n·B) is quasi-polynomial in 1/(γθ), far above the
+  allowed exp(−Θ(r log r)).
+- *Counts:* m·exp(B) = exp(O(log(1/(γθ)))^D). This sits below
+  exp(Θ(r log r)) for all γθ ∈ (0,1] **provided Milićević's unspecified
+  exponent D is not astronomically large**. Since
+  (log y)^D ≤ (D/e)^D·y, it suffices that
+  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). That holds for every D up to about
+  2^500, and the paper's O(1) is certainly far below that.
+- The lift's own losses come in on top: samples ≈ poly(1/σ), counts
+  C(samples, 2)·Pb², and the threshold. In the peer's polynomial lift they
+  are polynomial in the slice controls, so they do not change the
+  comparison's shape.
+
+**Caveat.** This is an order-of-magnitude comparison, not a formal
+inequality. The formal obstacle stays the interface: Part J's
+`CubicStackableClass` (degree-4 controls) and `PolyBoundedControl`
+(polynomial bounds) are stricter than the catalogue's own `Theorem162At 3`
+budget. A Part J restated with the polynomial lift's general slice
+controls, plus quasi-polynomial counts, is what the variety route can feed.
+
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
 Part J's `PolyBoundedControl` hypotheses exist only because of the factor
