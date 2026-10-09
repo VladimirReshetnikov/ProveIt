@@ -1021,3 +1021,15 @@ This improves the supplied-surface API without asserting a diagram-recognition
 speedup or a general complexity theorem. Reproduction and source pins are in
 `../fast/normal_orbit_research/coorientation.py`, the separate corpus timing
 driver and `data/coorientation-*`.
+
+[`orbit_direction.tex`](orbit_direction.tex) adds a checked reflection of the
+interval universe and explicit forward, reverse and wider-end sweep options.
+It explains the unchanged reversal character, new interval-proof versions,
+binary cost and the distinction between initial ordering and adaptive search.
+All 5,100 default records remain identical; 10,200 alternate normal-surface
+queries and 4,000 literal interval comparisons agree. The layered-256 base
+trace shrinks from 82,960 to 2,311 events, but the wider-end rule increases
+aggregate corpus events and can use fewer cycles while doing more work.
+Forward remains the default. The article reports complete-call paired timings
+and retains the counterexample certificates. Reproduction and source pins
+are in `../fast/normal_orbit_research/direction.py` and `data/orbit-direction-*`.

@@ -91,7 +91,8 @@ def _classify_boundary(prepared, analysed, queries, systems, query, check, *,
 def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
                             periodic_rule='fine_wilf', check=lambda: None,
                             record_certificate=False, reduce_multiplicity=True,
-                            classify_boundary=False, coorientation=True):
+                            classify_boundary=False, coorientation=True,
+                            sweep_direction='forward'):
     """Count components, orientations, boundary curves and total Euler value.
 
     The normal surface with doubled coordinates is the horizontal boundary of its
@@ -118,6 +119,9 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
     trivial orientation double. Success derives its orbit count from the
     surface query and emits version four when recording proofs; failure uses
     the original double query. Disable it for the original query schedule.
+    sweep_direction is passed to each actual orbit query, including optional
+    boundary cones. 'wide' chooses the wider terminal carrier; it is a
+    scheduling heuristic, not a surface-topology assertion.
     """
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
@@ -129,6 +133,8 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
         raise ValueError('classify_boundary must be bool')
     if type(coorientation) is not bool:
         raise ValueError('coorientation must be bool')
+    if sweep_direction not in ('forward', 'reverse', 'wide'):
+        raise ValueError("sweep_direction must be 'forward', 'reverse' or 'wide'")
     prepared = _prepare(triangulation, check)
     analysed = _coordinates(prepared, coordinates, check)
     divisor, orbit_data = (_primitive_coordinates(analysed, check)
@@ -157,7 +163,8 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
         remaining = None if max_cycles is None else max_cycles - used
         result = count_orbits(size, pairings, max_cycles=remaining,
                               periodic_rule=periodic_rule, check=check,
-                              record_certificate=record_certificate)
+                              record_certificate=record_certificate,
+                              sweep_direction=sweep_direction)
         used += result.cycles
         queries[label] = dict(complete=result.complete, orbits=result.orbits,
                               points=size, pairings=len(pairings), cycles=result.cycles,
@@ -187,7 +194,8 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
             remaining = None if max_cycles is None else max_cycles - used
             answer = count_orbits(size, pairings, max_cycles=remaining,
                                   periodic_rule=periodic_rule, check=check,
-                                  record_certificate=record_certificate)
+                                  record_certificate=record_certificate,
+                                  sweep_direction=sweep_direction)
             used += answer.cycles
             queries[label] = dict(complete=answer.complete, orbits=answer.orbits,
                                   points=size, pairings=len(pairings), cycles=answer.cycles,

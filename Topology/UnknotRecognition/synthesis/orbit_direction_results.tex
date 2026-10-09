@@ -1,0 +1,55 @@
+The layered meridian base query shows the effect of changing order. The
+wider-end option selects the reversed direction on these inputs; event
+counts include its extra reflection event.
+\input{tables/orbit_direction_counts.tex}
+
+For $N=256$, transmissions fall from 81,930 to 1,028 and serialized base
+proof bytes from 7,072,861 to 367,462. The base query still performs 259
+cycles, compared with 261 before. Thus the large trace reduction comes
+primarily from doing less work per cycle. The displayed samples do not
+by themselves prove a linear family bound, and the implementation retains
+full-list scans within each cycle. A smaller trace is not a proof of
+linear running time.
+
+The wider-end rule has a concrete contrary example in the corpus entry
+\path{finite_figureEight_relabel_1:6}. On this supplied surface, it
+reduces total cycles from 45 to 41 but increases total local events from
+421 to 621 and proof bytes from 28,581 to 42,682. Both full certificates
+are retained and independently replayed. This is an ordering counterexample,
+not a failed topology computation or a knot verdict. It also shows why an
+adaptive policy cannot infer lower proof-production work merely from
+fewer AHT cycles.
+
+On the 1,275-vector corpus with default multiplicity reduction and no
+boundary classification, the wider-end rule shortens 160 event traces,
+lengthens 359 and leaves 756 unchanged. Aggregate events increase from
+182,925 to 189,742, while bytes increase from 12,861,213 to 13,315,621.
+Always reversing is worse on this metric: 199,448 events and 13,921,942
+bytes. These are exact deterministic counts, independent of timing noise.
+
+The isolated timing comparison uses five randomized rounds, with a separate
+same-implementation control for each arm. Every timed call includes full
+normal-surface topology production, independent replay, proof serialization
+and hashing; input construction is outside the timer. The old arm uses the
+frozen forward producer and checker, while the new arm explicitly requests
+the wider-end rule. Both arms retain the preceding coorientation shortcut.
+All timed calls use default multiplicity reduction and omit the optional
+boundary classification, which is tested separately in the audit.
+All measured calls finish and their topology digests agree. Per-arm proof
+digests, counts and sizes are stable across all measured and warm-up calls.
+There are 240 measured calls and 48 warm-ups; counting the surfaces inside
+the batch calls gives 25,720 measured and 5,144 warm-up surface analyses.
+\input{tables/orbit_direction_timings.tex}
+
+The final row times all 1,275 surfaces in one batch. A paired factor greater
+than one favors the wider-end rule. It is the median of paired ratios,
+not the ratio of the two timing medians. The layered-256 gain is
+$3.369\times$, while the figure-eight counterexample has factor $0.851$
+(about 17 percent slower). The entire batch has factor $0.971$, about
+3 percent slower, with control factors $0.990$ and $1.000$. Across all cases,
+control medians range from $0.934$ to $1.041$; the widest variation is on
+the tiny empty-surface case. These measurements include the
+selector overhead and the larger proofs on its misses. They support making
+the alternative available on suitable supplied surfaces, but do not support
+changing the general default. The explicit \code{forward} choice continues
+to reproduce the old behavior exactly.

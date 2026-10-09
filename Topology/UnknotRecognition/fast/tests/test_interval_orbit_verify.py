@@ -99,7 +99,7 @@ class TestIntervalOrbitVerifier(unittest.TestCase):
         size = 21
         pairs = [pairing(0, 17, 3, 20), pairing(1, 16, 4, 19, -1)]
         cert = self.verify(size, pairs)
-        for key, replacement in (("version", 3), ("size", size + 1),
+        for key, replacement in (("version", 5), ("size", size + 1),
                                  ("orbit_count", cert["orbit_count"] + 1),
                                  ("orbit_count", True), ("pairings", [])):
             damaged = copy.deepcopy(cert)
