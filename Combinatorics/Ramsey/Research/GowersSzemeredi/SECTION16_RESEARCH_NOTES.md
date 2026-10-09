@@ -3388,3 +3388,20 @@ Eight declarations, standard axioms only, collision gate clean. No
 numbered statement changes status. Next in this lane: Claim 34 (Bohr
 sizes are determined by the relation lattice), then the iteration of
 Theorem 33.
+
+**Claim 34's algebraic core (`Proofs16BohrSizeFactorization`).** Suppose
+every bounded relation `Σνᵢγᵢ + Σμⱼℓⱼ = 0` splits as "`Σνᵢγᵢ = 0` and
+`μ ∈ Λ`", and conversely. Then
+`relationWeight (γ ⊔ ℓ) = relationWeight γ · W_Λ`, where
+`W_Λ = Σ_{μ∈Λ} Π c_{μⱼ}` (`relationWeight_sumElim_of_split`). With
+Proposition 23 on both Bohr sets,
+`‖|B(γ ⊔ ℓ)| − W_Λ·|B(γ)|‖ ≤ 2εN + ‖W_Λ‖·2εN`
+(`bohr_card_factor_of_split`). This is Claim 34 (i), and (ii) is the
+case `κ ⊕ κ`.
+
+[49] writes this with a real `δᵢ` and error `2η/5`. That tacitly
+uses `|δᵢ| ≤ 1`, which is not evident from the definition
+`δᵢ = Σ_{λ∈Λ} Π c_λ` with complex `c` in the unit disc. The formal
+statement therefore keeps `‖W_Λ‖` explicit. Bounding it, for instance
+via `|B(γ ⊔ ℓ)| ≤ |B(γ)|` and a lower bound on `|B(γ)|`, is left to the
+point of use. Three declarations, standard axioms only.
