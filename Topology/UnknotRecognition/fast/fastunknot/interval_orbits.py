@@ -27,7 +27,7 @@ References:
 from dataclasses import dataclass
 from math import gcd
 from typing import Iterable
-from .interval_merger import hybrid_closure, periodic_closure, restart_closure
+from .interval_merger import support_closure, periodic_closure, restart_closure
 
 
 def _integer(value, label, minimum=0):
@@ -123,28 +123,45 @@ def _trim(pair):
                            centre_twice // 2 + 1, pair.d, True)
 
 
-def _contract(n, pairs):
-    """Remove all uncovered intervals in one order-preserving coordinate map."""
+def _contract(n, pairs, check=lambda: None):
+    """Find static gaps and apply their order-preserving coordinate map once.
+
+    A covered universe is an identity map: reuse its immutable pairing rows.
+    The same gap list supplies the producer's optional certificate event.
+    """
     intervals = sorted((lo, hi) for p in pairs
                        for lo, hi in ((p.a, p.b), (p.c, p.d)))
-    occupied = []
+    occupied, gaps, end = [], [], 0
     for lo, hi in intervals:
-        if occupied and lo <= occupied[-1][1] + 1:
+        check()
+        if lo > end:
+            gaps.append([end, lo-1])
+        end = max(end, hi+1)
+        if occupied and lo <= occupied[-1][1]+1:
             occupied[-1] = (occupied[-1][0], max(hi, occupied[-1][1]))
         else:
             occupied.append((lo, hi))
+    if end < n:
+        gaps.append([end, n-1])
+    if not gaps:
+        return n, pairs, 0, gaps
     endpoints = sorted({v for p in pairs for v in (p.a, p.b, p.c, p.d)})
     new_endpoints = {}
     cursor = block = 0
     for lo, hi in occupied:
+        check()
         while cursor < len(endpoints) and endpoints[cursor] <= hi:
+            check()
             old = endpoints[cursor]
-            new_endpoints[old] = block + old - lo
+            new_endpoints[old] = block+old-lo
             cursor += 1
-        block += hi - lo + 1
-    mapped = [IntervalPairing(*(new_endpoints[v] for v in (p.a, p.b, p.c, p.d)),
-                              p.reverse) for p in pairs]
-    return block, mapped, n - block
+        block += hi-lo+1
+    mapped = []
+    for p in pairs:
+        check()
+        mapped.append(IntervalPairing(*(new_endpoints[v] for v in (p.a, p.b, p.c, p.d)),
+                                      p.reverse))
+    return block, mapped, n-block, gaps
 
 
 def periodic_merge(first, second, *, periodic_rule='fine_wilf'):
@@ -214,8 +231,9 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     when serializing binary integers beyond Python's decimal conversion limit.
     Incomplete runs never return a certificate or a partial orbit count.
     The adaptive merger scheduler preserves the legacy greedy merge sequence,
-    but switches from indexed scans to a generation-checked candidate queue
-    when a closure exceeds its original all-pairs allowance.  It needs O(k^2)
+    skips disjoint periodic supports, and switches to a generation-checked
+    candidate queue when overlap enumeration spends the original all-pairs
+    allowance. It needs O(k^2)
     candidate tests per closure and O(k^2) worst-case queue memory.  'legacy'
     and 'queue' select controlled ablations.  All modes emit identical complete
     certificates and cycles; pair_tests and scheduler diagnostics can differ.
@@ -224,7 +242,7 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     checkpoint()
     if type(record_certificate) is not bool:
         raise ValueError('record_certificate must be bool')
-    schedulers = {'adaptive': hybrid_closure, 'legacy': restart_closure,
+    schedulers = {'adaptive': support_closure, 'legacy': restart_closure,
                   'queue': periodic_closure}
     if not isinstance(merger_scheduler, str) or merger_scheduler not in schedulers:
         raise ValueError("merger_scheduler must be 'adaptive', 'legacy' or 'queue'")
@@ -239,7 +257,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
              'trims': 0, 'mergers': 0, 'pair_tests': 0, 'transmissions': 0,
              'truncations': 0, 'truncated_points': 0,
              'merger_queue_runs': 0, 'merger_queue_switches': 0,
-             'merger_peak_queue': 0, 'merger_stale_pops': 0}
+             'merger_peak_queue': 0, 'merger_stale_pops': 0,
+             'merger_overlap_candidates': 0, 'merger_support_scans': 0}
     total = cycles = 0
     while n:
         checkpoint()
@@ -261,20 +280,9 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
             stats['contractions'] += 1
             n = 0
             break
-        if operations is not None:
-            # Record the original gaps; replay computes them independently.
-            gaps, end = [], 0
-            for lo, hi in sorted((lo, hi) for p in pairs
-                                 for lo, hi in ((p.a, p.b), (p.c, p.d))):
-                checkpoint()
-                if lo > end:
-                    gaps.append([end, lo - 1])
-                end = max(end, hi + 1)
-            if end < n:
-                gaps.append([end, n - 1])
-            if gaps:
-                operations.append({'op': 'contract', 'gaps': gaps})
-        n, pairs, removed = _contract(n, pairs)
+        n, pairs, removed, gaps = _contract(n, pairs, checkpoint)
+        if operations is not None and gaps:
+            operations.append({'op': 'contract', 'gaps': gaps})
         total += removed
         if removed:
             stats['static_points'] += removed
@@ -296,6 +304,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         stats['merger_queue_switches'] += merged.queue_switches
         stats['merger_peak_queue'] = max(stats['merger_peak_queue'], merged.peak_queue)
         stats['merger_stale_pops'] += merged.stale_pops
+        stats['merger_overlap_candidates'] += merged.overlap_candidates
+        stats['merger_support_scans'] += merged.support_scans
         index = max(range(len(pairs)),
                     key=lambda i: (pairs[i].d, -pairs[i].c, -pairs[i].a,
                                    int(pairs[i].reverse)))
