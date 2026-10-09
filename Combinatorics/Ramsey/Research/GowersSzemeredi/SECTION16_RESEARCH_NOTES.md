@@ -1422,9 +1422,48 @@ the elementary lemmas of its §2:
   `LineFreimanExtraction` with κ(δ) = 2⁻¹⁸⁸²δ¹¹⁶⁴. The identity
   `energy_eq_phiAdditiveCount` matches the two energy notions. So the
   energy route `densePiece_energy_unconditional` is unconditional too.
-- Next: step 2 proper ([49] Lemma 19 and Corollary 20): random selection
-  f(y) ∈ U_y, averaging, then Corollary 7.6 + Lemma 7.8 in place of
-  Theorem 17.
+- **Selection averaging, done (`Proofs16SelectionAveraging`,
+  kernel-checked).** `exists_good_selection`: if every requirement fixes
+  at most 4 points to allowed values, some selection f ∈ Π U_y meets
+  ≥ |T|/K⁴ of them. The proof double counts over `Fintype.piFinset U`.
+  The selections meeting one requirement form the product with the fixed
+  coordinates replaced by singletons (`card_meeting`), so they number
+  ≥ K^(−4)·Π|U_y| (`card_all_le_mul_meeting`). This replaces [49]'s
+  random choice.
+- **[49] Lemma 19 in ℤ/N, done with polynomial bounds
+  (`Proofs16Lemma19Selection`, kernel-checked).**
+  `lemma19_selection_piece`: prescribed additive values on |T| quadruples,
+  with |T| ≥ δN³·256K⁴, each in the "new" sets W(q i) ⊆ U(q i) with
+  |U| ≤ K. Then some selection f(y) ∈ U_y is Freiman-linear on a set E′
+  of size ≥ 2⁻¹⁸⁸²δ¹¹⁶⁴N, on which f(y) ∈ W_y. Each quadruple becomes a
+  requirement on its image (`quadRequirement`), with at most 256
+  preimages per requirement. After that come `exists_good_selection` and
+  `lineFreimanExtraction_holds`. This replaces [49]'s random choice and
+  Theorem 17 (Sanders).
+- **Correction to the Lemma 19 shape (same night).** In [49]'s proof the
+  witnesses force only **two** of a quadruple's four points into
+  A′ = {f(y) ∈ U_y ∖ ℒ_y(y)}. Quadruples entirely inside A′ come from
+  Cauchy–Schwarz. `lemma19_selection_piece` assumes all four points are
+  new, which is stronger than [49] provides. The Cauchy–Schwarz step is now
+  formalized (`Proofs16PairEnergyCS`, kernel-checked). Group pairs by the
+  key (a − c, f a − f c); then `two_new_points_energy` gives
+  pairEnergy(all, A′×A′)² ≤ N³·phiAdditiveCount(A′, f), via
+  `pairEnergy_sq_le` (Cauchy–Schwarz), `pairEnergy_univ_le` (≤ N³), and
+  `pairEnergy_self_eq_phiAdditiveCount`.
+- **[49] Lemma 19 in its original shape, done
+  (`Proofs16Lemma19TwoNew`, kernel-checked).** `lemma19_two_new_piece`:
+  witnesses q with q₀ − q₂ = q₁ − q₃ and matching value differences, all
+  values in U, new values (∈ W) only at q₁ and q₃, with
+  |T| ≥ δN³·256K⁴. Then a selection f is Freiman-linear on a set E′ of
+  size ≥ 2⁻¹⁸⁸²(δ²)¹¹⁶⁴N with f(y) ∈ W_y there. The chain is
+  selection averaging, then matched pairs-of-pairs, then
+  `two_new_points_energy`, then Corollary 7.6. It supersedes the
+  four-new-points `lemma19_selection_piece`, which stays as a true but
+  weaker statement.
+- Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
+  extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
+  coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
+  Lemma 7.8 are the natural domains.
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
@@ -2228,3 +2267,46 @@ selection, the remainder cover, and variety-piece membership of every
 relevant slice remain premises. This does not close a numbered catalogue
 statement or establish a new final Szemeredi threshold. These original
 consumers add no upstream modules or license-scope changes.
+
+
+### From deep variety structure to the actual slice provider
+
+`Proofs16VarietyPieceClass` expresses the variety-piece class on `Point N 2`,
+proves that the empty partial function belongs to it, and supplies joint
+polynomial covers for arbitrary subrelations of finite unions of class
+members. `Proofs16VarietyFamilySlices` then constructs the provider on
+every common-base good domain whenever each original final-coordinate
+slice is covered by `Q` class members. For `r` samples the count is
+`9*(r*Q)` and the exponent is the polynomial variety control at `r*Q`.
+The empty sample is included; positive `Q` gives all range conditions.
+
+`Proofs16VarietyStructureSlices` pads the family from
+`structure_side_of_milicevic` to the uniform count
+`Q=ceil(m*exp(B(c)))+1`, where `m` is the polynomial bihomomorphism family
+size at `(gamma,theta/2)` and `c=theta/(2*m)`. The padding uses empty
+members. Applying the existing slice-restriction argument keeps a subset
+`A` with `|A| >= |B|-theta*N^3`, on which every slice has such a cover.
+
+`Proofs16VarietyRestrictionProvider` combines these results. Under
+`MilicevicDeepVarietyStructure D` and the original product property,
+the restricted set supplies the polynomial provider on every common-base
+good domain. Structured slices are now a conclusion of this conditional
+reduction, rather than a further hypothesis. Deep structure itself and
+the subsequent printed numerical budget remain unproved.
+
+All four production sources and their nine transitive axiom checks pass;
+only propext, Classical.choice, and Quot.sound occur. The combined facade
+audit is queued. No numbered catalogue claim is advanced, and these
+consumers add no upstream modules.
+
+
+`Proofs16VarietyFamilyLiftControls` and
+`Proofs16PolynomialVarietyFamilyPowerCover` carry the slice-family count
+through the actual three-dimensional cover. With `Q` pieces per slice
+and uniform sample ceiling `R`, the interpolation count is at most
+`81*R^4*Q^2`, and the uniform exponent is the polynomial variety control
+at `R*Q`. Thus any `b<e*a/2` gives cell width `m^b` above the explicit
+rounded threshold, retaining mass `1-rho`. These two production sources
+and their three transitive axiom checks pass with only the three approved
+axioms. The combined audit is queued. The spectral, selection, and
+remainder inputs remain explicit.
