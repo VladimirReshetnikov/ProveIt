@@ -1,0 +1,73 @@
+\input{tables/elimination_batch_pipeline.tex}
+
+The complete-recognition experiment uses nineteen actual diagrams with
+six shuffled arms: prior default, current default and optional portfolio,
+each with an A/A control. Five measured rounds and one warm-up per arm
+give 570 measurements and 114 warm-ups; all complete. The run takes
+61.994 seconds. Displayed ratios are medians of paired old/new times,
+not ratios of the displayed separate medians. Values above one favor
+the new mode.
+
+Current-default ratios range from 0.983 to 1.043; old/current default
+A/A ranges are 0.934--1.053 and 0.988--1.029. The new optional portfolio
+has a much wider range, 0.261--3.844, while its A/A controls span
+0.983--1.024. These are real tradeoffs in search order, not a uniform
+speed improvement. Mirror 03 improves from 23.779 to 6.198 milliseconds,
+with paired ratio 3.844. It drops from 19 moves, 615 nodes and 25,431
+work units to two moves, 212 nodes and 6,352 work units; its proof shrinks
+from 1,491 to 774 bytes.
+
+The corresponding survivor 03 moves in the opposite direction. Its
+10.952/42.003-millisecond medians give paired ratio 0.261. One batch
+eliminates ten generators, but subsequent search grows the complete proof
+from 12 to 18 moves, nodes from 267 to 1,145, and work from 11,980 to
+36,797. Proof bytes rise from 970 to 1,709. Survivor 01 and survivor 04
+also regress, with ratios 0.490 and 0.313. A successful bounded trial
+can still be slower than the untried baseline, and the work quota is not
+a theorem of competitive elapsed time.
+
+Gordian takes fallback and retains exactly the old 140-move, 9,663-byte
+certificate and 9,025-node successful search. The failed trial is charged
+50,001 work units, raising total producer work from 1,215,145 to
+1,265,146. Complete-call medians are 1,476.434/1,490.813 milliseconds
+with paired ratio 0.991. The guard prevents the direct batch schedule's
+loss of this positive, but adds work; no broader coverage claim follows.
+
+\input{tables/elimination_batch_stages.tex}
+
+The separate checked group-stage experiment uses six actual stabilized
+circles from eight through 256 crossings. Eight shuffled arms compare
+prior default, prior primitive forest, direct batch search and the capped
+portfolio, each with an A/A control. All 240 measured calls and 48 warm-ups
+complete in 53.353 seconds. Every timing includes a fresh validated PD,
+certificate production and mandatory full source replay. Earlier diagram
+simplification is deliberately bypassed; these circles are not difficult
+whole-recognition instances.
+
+Direct batching uses one move on every circle. At 128 crossings, it
+eliminates 127 generators in one batch, replacing 126 earlier moves.
+Old/forest/direct medians are 351.086/110.656/30.048 milliseconds;
+paired direct ratios are 11.684 against the prior default and 3.665
+against the primitive forest. Producer work falls from 493,856 to 62,591
+and nodes from 24,891 to 1,264. The direct proof has 6,247 bytes versus
+8,640 for the old default and 24,286 for the forest.
+
+At 256 crossings the corresponding medians are
+1,422.297/390.203/74.867 milliseconds, with paired direct ratios
+19.228 and 5.178. Direct work is 157,823 versus 1,905,056, and nodes
+are 2,544 versus 98,939. The 255-generator batch retains a 12,775-byte
+proof, compared with 17,600 bytes for 254 old moves. Across the stages,
+old, forest, direct and portfolio A/A ranges are respectively
+0.989--1.017, 0.990--1.012, 0.991--1.043 and 0.993--1.012.
+
+The conservative host cap sacrifices those larger-stage gains. The
+128- and 256-crossing direct producers require more than 50,000 work
+units, so the portfolio abandons them and repeats the prior policy.
+At 128 crossings its paired ratio is 0.971 and work is 543,857.
+At 256 crossings its ratio is 1.001 despite increased work of 1,955,056;
+timing variation does not remove that charged overhead. At 64 crossings
+the direct producer fits the cap, and the portfolio has paired ratio
+7.275 over the old stage. Both the successful smaller trials and the
+lost larger opportunities are retained. The cap is an engineering policy,
+not a scale-independent characterization of when batching is advantageous.
+All new recognition options remain disabled by default.
