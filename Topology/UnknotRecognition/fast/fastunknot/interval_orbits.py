@@ -212,11 +212,34 @@ def _transmit(pair, carrier):
     return IntervalPairing(a, b, c, d, reverse)
 
 
+def _wide_end_is_left(pairs, check):
+    """Compare the initial terminal carrier widths after identity/trim rules.
+
+    A global reflection swaps the terminal ends. This is only a scheduling
+    heuristic; it does not assert that the wider end has a shorter reduction.
+    Equal scores retain the historical direction.
+    """
+    left = right = None
+    for pair in pairs:
+        check()
+        if pair.identity:
+            continue
+        width = ((pair.a + pair.d - 1)//2 - pair.a + 1
+                 if pair.reverse and pair.b >= pair.c else pair.width)
+        lkey, rkey = (-pair.a, width), (pair.d, width)
+        if left is None or lkey > left:
+            left = lkey
+        if right is None or rkey > right:
+            right = rkey
+    return left is not None and left[1] > right[1]
+
+
 def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                  max_cycles: int | None = None,
                  periodic_rule: str = 'fine_wilf', check=None,
                  record_certificate: bool = False,
-                 merger_scheduler: str = 'adaptive') -> OrbitResult:
+                 merger_scheduler: str = 'adaptive',
+                 sweep_direction: str = 'forward') -> OrbitResult:
     """Count components of an interval equivalence relation, without expansion.
 
     On budget exhaustion, ``complete`` is false and ``orbits`` is None.
@@ -237,6 +260,12 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     candidate tests per closure and O(k^2) worst-case queue memory.  'legacy'
     and 'queue' select controlled ablations.  All modes emit identical complete
     certificates and cycles; pair_tests and scheduler diagnostics can differ.
+    sweep_direction='reverse' first reflects the whole universe; 'wide'
+    chooses its wider initial terminal carrier, retaining forward on a tie.
+    This heuristic changes scheduling, not the relation being counted.
+    A reflected proof uses version 3 (Fine--Wilf) or 4 (classical AHT), with
+    one independently checkable initial reflect event. 'forward' preserves
+    the historical result and proof formats exactly.
     """
     checkpoint = check if check is not None else lambda: None
     checkpoint()
@@ -248,10 +277,23 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         raise ValueError("merger_scheduler must be 'adaptive', 'legacy' or 'queue'")
     closure = schedulers[merger_scheduler]
     pairs = _validate(n, pairings, max_cycles, periodic_rule)
+    if sweep_direction not in ('forward', 'reverse', 'wide'):
+        raise ValueError("sweep_direction must be 'forward', 'reverse' or 'wide'")
     initial_n, initial_k = n, len(pairs)
     initial_rows = [[p.a, p.b, p.c, p.d, -1 if p.reverse else 1]
                     for p in pairs] if record_certificate else None
     operations = [] if record_certificate else None
+    reflected = (sweep_direction == 'reverse' or
+                 (sweep_direction == 'wide' and _wide_end_is_left(pairs, checkpoint)))
+    if reflected:
+        reflected_pairs = []
+        for pair in pairs:
+            checkpoint()
+            reflected_pairs.append(IntervalPairing(n-1-pair.d, n-1-pair.c,
+                n-1-pair.b, n-1-pair.a, pair.reverse))
+        pairs = reflected_pairs
+        if operations is not None:
+            operations.append({'op': 'reflect'})
     stats = {'initial_pairings': initial_k, 'input_bits': n.bit_length(),
              'identity_deletions': 0, 'static_points': 0, 'contractions': 0,
              'trims': 0, 'mergers': 0, 'pair_tests': 0, 'transmissions': 0,
@@ -259,6 +301,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
              'merger_queue_runs': 0, 'merger_queue_switches': 0,
              'merger_peak_queue': 0, 'merger_stale_pops': 0,
              'merger_overlap_candidates': 0, 'merger_support_scans': 0}
+    if reflected:
+        stats['reflections'] = 1
     total = cycles = 0
     while n:
         checkpoint()
@@ -350,7 +394,9 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         stats['truncated_points'] += removed
     if stats['static_points'] + stats['truncated_points'] != initial_n:
         raise AssertionError('interval accounting failed')
-    certificate = (dict(version=2 if periodic_rule == 'fine_wilf' else 1,
+    version = ((3 if periodic_rule == 'fine_wilf' else 4) if reflected
+               else (2 if periodic_rule == 'fine_wilf' else 1))
+    certificate = (dict(version=version,
                         size=initial_n, pairings=initial_rows, orbit_count=total,
                         operations=operations) if record_certificate else None)
     return OrbitResult(True, total, cycles, stats, certificate)

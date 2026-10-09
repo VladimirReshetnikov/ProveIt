@@ -3307,3 +3307,24 @@ the 5,100-configuration audit and isolated timings with
 and `benchmark --rounds 5` in the same driver. The separate corpus timing
 driver is `../synthesis/data/coorientation_corpus_benchmark.py`. The proof,
 limits and negative timing results are explained in article section 123.
+
+Both `count_orbits` and `normal_surface_topology` also accept
+`sweep_direction='forward'` (the unchanged default), `'reverse'`, or `'wide'`.
+The reverse mode reflects the whole interval universe before AHT reduction.
+Its proof binds the original input and records one independently checked
+reflection event. Interval proof versions 3 and 4 retain the Fine–Wilf and
+classical AHT merger thresholds respectively; old versions remain accepted.
+No integer point is expanded, and reflection adds O(k) integer operations
+for k pairings. Normal-surface multiplicity and boundary proofs still apply.
+
+The optional wide mode compares initial terminal carrier widths and reflects
+only when the left end is wider. On a 256-tetrahedron layered meridian, the
+base trace falls from 82,960 to 2,311 events. This heuristic can lose: the
+full 1,275-vector corpus grows from 182,925 to 189,742 events, and a concrete
+surface uses fewer cycles but more events. Forward therefore remains the
+default. This initial choice has no guarantee relative to the better sweep
+and is not a progress-based adaptive race. Reproduce the compatibility audit
+and isolated producer/replay/serialization timings with
+`python -B -m normal_orbit_research.direction audit --output OUTPUT.json`
+or `benchmark --rounds 5` in that driver. Article section 124 proves the
+reflection rule and records the ordering counterexample and timing results.
