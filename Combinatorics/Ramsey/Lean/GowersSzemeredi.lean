@@ -397,6 +397,7 @@ import GowersSzemeredi.Proofs16FourierTail
 import GowersSzemeredi.Proofs16UniformTruncation
 import GowersSzemeredi.Proofs16ProductApproximation
 import GowersSzemeredi.Proofs16BohrSpectrumBudget
+import GowersSzemeredi.Proofs16PolynomialSpectrumSpan
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
