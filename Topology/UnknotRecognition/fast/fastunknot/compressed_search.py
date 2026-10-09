@@ -22,6 +22,7 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
     if primitive_projection and primitive_terminal is None:
         raise ValueError('projection search requires an explicit terminal output')
     raw = False
+    normalization_cache = {} if primitive_projection else None
     projection_cache = {} if primitive_projection else None
     while len(alive) > 1:
         if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
@@ -55,7 +56,9 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
         if raw:
             # The old positional moves operate on cyclically reduced roots.
             # Record this boundary explicitly so both replayers use that state.
-            roots[:] = [arena.cyclic_reduce(x) for x in roots]
+            from .syllable_normalize import bounded_cyclic_roots
+            normalized = bounded_cyclic_roots(arena, roots, cache=normalization_cache)
+            roots[:] = normalized if normalized is not None else [arena.cyclic_reduce(x) for x in roots]
             moves.append(dict(kind='normalize_relators'))
             arena.stats['projection_normalizations'] = arena.stats.get('projection_normalizations',0)+1
             raw = False
