@@ -1,0 +1,53 @@
+\subsection{Complete recognition gains and unsuccessful-search costs}
+
+The benchmark compares the published raw-then-span stage with the new
+four-trial default, except for the explicitly labeled 24-trial case. Each
+timed endpoint parses the input PD, runs the complete recognizer and exact
+fallback when needed, independently replays any returned native proof,
+and hashes and counts its serialized certificate. Earlier shortcuts are
+disabled to make the native stage reachable. Both arms use no local seed
+cap and retain a twelve-second global deadline. The native stage's
+ordinary disabled default is not being changed by this benchmark.
+
+Runs are serial, without overlapping tests, audits, builds or commits.
+Every round randomly orders old, old A/A, new and new A/A calls. The initial
+five-round experiment completes all 160 measured and 32 warm-up calls in
+16.851 seconds, but its unchanged raw-success control has a new-arm A/A
+ratio of 1.237 and an old/new ratio of 0.863. That variation warrants a
+repeat before interpreting the control. The full initial record remains
+in \path{data/cocycle-trees-initial-recognize.json}.
+
+The final nine-round experiment completes all 288 measured and 32 warm-up
+calls in 28.078 seconds. The table gives median primary-arm times and
+median paired ratios; these ratios need not equal ratios of median times.
+All verdicts and each implementation's proof hashes agree across repeated
+calls and both experiments. Existing positive proofs remain byte-identical
+across implementations. Newly successful native calls intentionally replace
+the old inconclusive stage followed by an exact fallback.
+
+\begin{center}
+\small\input{tables/cocycle_trees_recognize.tex}
+\end{center}
+
+The three early successes improve complete recognition by
+$1.35$--$1.64\times$. They are \code{random-99}, \code{random-29} and
+\code{random-124} from the preceding table. The unchanged raw-success
+control is near parity: its 1.026 paired ratio is comparable to its 1.025
+old-arm A/A ratio. There is no measured algorithmic gain to claim for
+that branch.
+
+The unsuccessful prelude has a visible cost. The previous optimized
+positive is about eight percent slower by the paired ratio, while the
+genus-one miss and trefoil cost about 15 and 14 percent more respectively.
+Both misses still use the exact Khovanov fallback and return their expected
+\code{UNKNOT} and \code{KNOTTED} verdicts. The optional 24-trial example
+produces a new native disc proof, but its full call is about 60 percent
+slower than the old stage plus fallback. The initial run also shows this
+cost, with a paired ratio of 0.540. This is additional native proof
+coverage, not a speedup for that example; the longer search is therefore
+an explicit option rather than the default allowance.
+
+These measurements support a bounded cheap prelude with a documented
+tradeoff. They do not establish a uniform speedup, a solved-corpus gain for
+the ordinary portfolio, or a global complexity improvement. The zero-trial
+option retains the earlier candidate schedule when its cost is preferable.

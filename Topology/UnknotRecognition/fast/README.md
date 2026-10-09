@@ -2934,7 +2934,8 @@ Enable the bounded portfolio stage with `recognize(..., use_normal_seed=True)`
 or CLI `--normal-seed`. It follows filters and an enabled group search, then
 falls back to the established exact path when needed. The default is disabled.
 `--normal-seed-max-work` controls the shared guard-count allowance, including
-positive replay; `--normal-seed-no-optimize` tests only the first surface.
+positive replay; `--normal-seed-no-optimize` skips span optimization. Set
+`--normal-seed-tree-trials 0` as well to test only the first surface.
 The API also accepts a cancellation callback. The legacy `max_cycles` argument
 is still validated, but this restricted stage now needs zero orbit cycles.
 
@@ -3018,4 +3019,27 @@ See [the connectivity proof and measurements](../synthesis/cocycle_connectivity.
 python -B -m normal_orbit_research.connectivity audit --output results/cocycle_connectivity_audit.json
 python -B -m normal_orbit_research.connectivity replay --output results/cocycle_connectivity_replay.json
 python -B -m normal_orbit_research.connectivity recognize --output results/cocycle_connectivity_recognize.json
+```
+
+After an unsuccessful raw cocycle, the native stage now tries up to four
+alternative BFS tree gauges before span optimization. It integrates the
+existing signed cocycle along each tree, preserving its primitive class;
+cohomology elimination runs once. Duplicate normalized potentials are skipped.
+A tree success avoids the flow solve. Requested trials after the fourth run
+only after an optimization miss, with reproducible shuffled adjacency orders.
+Every positive retains the unchanged independent source-bound checker and
+`diagram-cocycle-disc-v1` format.
+
+Use `tree_trials` on `normal_seed_decide`, `normal_seed_tree_trials` on
+`recognize`, or CLI `--normal-seed-tree-trials`; the default is four and zero
+restores raw-then-span search. A larger allowance such as 24 expands this
+bounded search and shares the same work cap and deadline. On 84 source records,
+native positives rise from 18 to 23 by default, or 24 with 24 trials. All
+previous positive hashes are preserved. This is additional restricted search
+coverage, not completeness or an improvement to the general complexity bound.
+See [the tree-gauge proof, audit and costs](../synthesis/cocycle_trees.tex).
+
+```bash
+python -B -m normal_orbit_research.trees audit --output results/cocycle_trees_audit.json
+python -B -m normal_orbit_research.trees recognize --output results/cocycle_trees_recognize.json
 ```

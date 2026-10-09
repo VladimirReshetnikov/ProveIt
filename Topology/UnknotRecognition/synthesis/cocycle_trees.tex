@@ -1,0 +1,142 @@
+\section{A bounded search through alternative spanning-tree gauges}
+\label{sec:cocycle-trees}
+
+Section~\ref{sec:cocycle-connectivity} makes raw tree-gauged surfaces cheap
+to certify. The remaining obstacle is discovery: a primitive surface and
+its minimum-piece representative can both miss a disc. We now reuse one
+cohomology solution to construct a bounded family of alternative tree
+gauges. Five previously unsuccessful source records acquire native disc
+proofs within the first three deterministic trials. An optional longer
+search finds a sixth. The family remains incomplete.
+
+\subsection{Changing the tree without solving cohomology again}
+
+Fix an integral cocycle $c$ on the validated finite exterior. For a rooted
+spanning tree $A$, define $p_A(v)$ by summing signed values of $c$ along
+the unique tree path from the root to $v$. On every oriented tree edge
+$u\to v$,
+\[
+ p_A(v)-p_A(u)=c(u,v).
+\]
+Consequently
+\[
+ c_A=c-\delta p_A
+\]
+vanishes on the tree and represents the same integral cohomology class.
+If $h_{t,i}$ are the original local heights, the new heights are simply
+$h_{t,i}-p_A(v_{t,i})$. Adding a common constant is immaterial. A different
+tree can change the normal surface and its Euler characteristic, while
+preserving the primitive class.
+
+The independent raw certificate from the preceding section applies
+unchanged: the zero-valued edges contain a spanning tree, so no nonempty
+component union represents zero. Rank-one primitivity implies connectedness
+and orientability. Euler characteristic one therefore supplies an essential
+disc. The verifier reconstructs the signed cocycle, checks primitivity and
+the connected zero-edge graph itself; it need not trust or reconstruct the
+producer's choice of tree.
+
+There is no need to repeat rational cohomology elimination. One verified
+primitive cocycle supplies every gauge by path integration. Nor does each
+tree introduce a different span-optimization problem: varying a subsequent
+vertex potential still ranges over the same set
+$\{c+\delta f\}$. The scheduler performs at most one span solve, on the
+original heights. Alternative unoptimized representatives can be valuable
+even when that common minimum-piece surface is not a disc.
+
+\subsection{Deterministic discovery and bounded later exploration}
+
+The producer recovers global oriented edge endpoints and values from every
+local height difference, checks consistency, and builds the one-skeleton
+adjacency lists. Loops cannot belong to a spanning tree and are omitted
+from those lists; their cocycle values still enter the surface. Parallel
+edges are retained. Roots are ordered by decreasing nonloop degree, with
+global vertex label breaking ties. A breadth-first traversal chooses a
+tree by the fixed adjacency order.
+
+At most four such trials form the default prelude. Their root is the trial
+index modulo the number of vertices. For explicitly requested trials after
+the fourth, a private generator with seed 261009471 shuffles each adjacency
+list before breadth-first traversal. This changes the candidate trees,
+does not alter global random state, and supplies reproducible experiments
+in the recorded Python environment. No probabilistic completeness claim
+depends on these choices.
+
+Normalize every integrated potential at the smallest global vertex.
+Equality of the resulting tuples proves equality of the gauged cocycles,
+so the producer skips duplicates, including the original zero potential.
+The duplicate still consumes its trial allowance and construction work.
+Each distinct candidate reconstructs binary normal coordinates and checks
+normal matching before computing Euler characteristic. A positive always
+passes the full independent source-bound verifier. A negative trial emits
+no negative knot certificate; its connectedness follows from the previously
+checked primitive source class and the tree construction.
+
+With $V,E=O(T)$ vertices and edges, graph setup and root ordering use
+$O(T\log(T+1))$ comparison work after manifold validation. Each of the
+first four deterministic trials uses $O(T)$ arithmetic and incidence work.
+If the original heights have $B$ bits, a tree path has at most $V-1$ edges,
+so potentials and new heights have $O(B+\log(T+1))$ bits. Binary coordinate
+construction and the Euler calculation do not expand normal pieces.
+Storing the graph and one candidate takes $O(T)$ records; retaining exact
+duplicate signatures for $R$ requested trials takes $O(RV)$ integers.
+The optional shuffled trials add the permutation-generation cost of
+Python's random shuffle; the $O(T)$ traversal bound is conditional on those
+adjacency orders already being chosen. No worst-case bound for the
+optional random generator is being used to support a recognition theorem.
+
+\subsection{Switching between search methods}
+
+The optional native stage now follows this bounded schedule:
+\begin{enumerate}
+\item Check the initial primitive cocycle. A success ends the stage
+      before constructing the tree-search graph.
+\item Try up to four requested tree gauges, skipping duplicate potentials
+      and stopping immediately on a verified disc.
+\item If enabled, minimize the original span and check its surface.
+\item On another miss, try any remaining requested tree gauges.
+\end{enumerate}
+All steps share the existing cooperative work allowance and the enclosing
+deadline. A cap or unsuccessful search returns \code{INCONCLUSIVE} to the
+exact fallback. Thus cheap early successes avoid flow search, and a
+successful flow avoids every optional later tree. The schedule uses the
+outcome of completed attempts; it does not infer that a small piece count
+or improved Euler characteristic predicts future success.
+
+The API options are \code{tree\_trials} for \code{normal\_seed\_decide}
+and \code{normal\_seed\_tree\_trials} for \code{recognize}; the CLI uses
+\code{--normal-seed-tree-trials}. The default is four. Zero restores the
+previous raw-then-span search. \code{--normal-seed-no-optimize} now skips
+the span solve; set the tree allowance to zero as well to request only
+the original surface. The stage as a whole remains disabled by default.
+Boolean, negative and noninteger trial allowances are rejected even when
+the stage is disabled.
+
+\subsection{Exploratory alternatives and their limits}
+
+Before integration, a standalone experiment tried up to 24 tree gauges on
+53 previously unsuccessful raw candidates selected from the existing
+source corpus. It found six discs; five appeared in deterministic trials
+two or three, and one in shuffled trial 22. These observations motivated
+the short default prelude and optional later search. The maintained audit
+below repeats all 84 source records, checks old-proof preservation and
+validates the new surfaces independently. Euler changes in the exploratory
+log are not treated as genus changes: boundary-component counts can vary.
+
+A second experiment minimized the sum of absolute global-edge cocycle
+values. Each term $|c(e)+f(v)-f(u)|$ can be represented as a two-height
+span, embedded in the existing four-corner arithmetic API by repeating
+both endpoints. This objective also strictly decreases on deletion of a
+nonempty zero-class component union, since every normal piece meets edges.
+Its rank-one primitive optima therefore have the same connectedness
+argument. But the 58 tested old-stage misses of at most twelve crossings
+produced no Euler-one surface under the two-million-guard optimization
+allowance; all calls completed. The experiment is retained, without adding
+another optimization stage or source-proof format to the recognizer.
+
+Neither alternative searches every normal surface. In particular, the
+three-crossing unknot $(1,1,-1)$ remains a miss under the default policy.
+There is still no certified complete search with a general subexponential
+or quasipolynomial running-time bound.
+
+\input{cocycle_trees_results.tex}
