@@ -1197,6 +1197,25 @@ The variety route splits this into three steps.
    `section16FinsetUnion`/`partialGraph` form. If m(γ,θ) is
    quasi-polynomial, so is K. What `StackableStructureAt 2` additionally
    asks is that the class be stackable (step 3).
+   **Plausibility audit of `BihomExtraction` (2026-10-08).**
+   - Its shape matches the proved dimension-one extraction: all of Γ over J
+     is covered, not just a dense part.
+   - Covering every value is consistent: on J, Markov bounds the
+     multiplicity by γ⁻²/θ, and the product property applies to *every*
+     partial function inside Γ, which rules out unstructured "junk" values
+     on large sets.
+   - Domains that are too sparse for Milićević's theorem go into the
+     exceptional set (`greedy_variety_cover_family`).
+   - Literature status, from a search only: the passage from additive
+     energy to a Freiman bihomomorphism on a dense set is the bilinear
+     Balog–Szemerédi–Gowers stage of the U⁴ inverse pipelines. Milićević's
+     arXiv:2601.01682 states that its proof uses an abstract BSG theorem.
+     See also Gowers–Milićević arXiv:2002.11667 and the F_p^n quasipolynomial
+     U⁴ paper arXiv:2410.08966.
+   - **Not yet checked:** that any of these yields exactly the
+     relation-covering form above, with quasi-polynomial m(γ,θ), from
+     Gowers's product property in place of a U⁴ hypothesis. That is the
+     next reading task for step 1.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
