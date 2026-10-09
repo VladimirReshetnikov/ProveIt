@@ -5111,6 +5111,77 @@ including 4,152 OAI modules), with the same approved axiom boundary.
 The numbered catalogue remains 115 companions and five open statements;
 this does not certify fidelity to every printed statement.
 
+### J.102. Dense column vertices joined by many four-walks
+
+**Verified 2026-10-09.** Seven modules now carry out the graph extraction
+from J.101. The graph argument is valid for any finite nonempty vertex
+type and any symmetric relation; the global application uses the
+symmetric loopless column graph.
+
+`Proofs16GraphCodegrees` counts marked pairs in neighbourhoods by their
+common neighbours. For `n` vertices, threshold `tau >= 0`, and ordered
+pairs with codegree below `tau`, it proves
+
+```
+sum_x (# deficient ordered pairs in N(x)^2) <= tau*n^2.
+```
+
+`Proofs16GraphNeighbourSelection` sets `tau = delta^2*n/64`, assuming
+ordered-edge density at least `delta > 0`. It maximizes the score
+`delta*n*degree(x) - 32*bad(x)`. The resulting neighbourhood `S` satisfies
+`|S| >= delta*n/2` and contains at most `|S|^2/16` deficient ordered
+pairs. This follows from the total degree lower bound and the preceding
+double count, without assuming regularity of degrees.
+
+`Proofs16GraphPruning` deletes vertices with more than `|S|/4` marked
+neighbours. Its generic finite-set lemma retains at least `3|S|/4`
+vertices. `Proofs16GraphCommonCodegrees` then proves that every pair of
+retained vertices has at least `|S|/2 >= delta*n/4` vertices with codegree
+at least `tau` to both endpoints.
+
+`Proofs16GraphFourWalks` defines four-walks as triples `(a,z,b)` giving
+edges `u-a-z-b-v`. Repeated vertices are allowed. It proves the exact
+counting identity
+
+```
+# four-walks(u,v) = sum_z codegree(u,z)*codegree(v,z).
+```
+
+Consequently, `exists_dense_four_walk_set` gives a vertex set `B` with
+
+```
+|B| >= 3*delta*n/8,
+# four-walks(u,v) >= delta^5*n^3/16384   for every u,v in B.
+```
+
+`Proofs16GraphEdgeExtraction` converts an explicit finite edge set to
+this interface and proves that `B` lies in its prescribed vertex
+carrier. The latter follows from positivity of the walk count: every
+selected vertex occurs in an edge of the original graph.
+
+`Proofs16ColumnFourWalkSet.global_column_four_walk_set` applies the
+result directly to the construction from `A,phi,alpha`, under the same
+prime-modulus threshold `globalColumnGraphModulusBound alpha`. It takes
+`delta = globalColumnQuadrupleDensity alpha/4`, retains `X,T,L,W,E`,
+the original witness system, rank and normalization bounds, local
+Freiman linearity, and all coherent equal-difference edge identities.
+It supplies `B subset X` with the displayed cardinality and walk bounds.
+There is no additional size threshold for this graph extraction.
+
+**Next step and limits.** The walk count does not yet prove all additive
+identities on `B`. The next step is to count pairs of walks with the
+same edge-difference sequence and transport the edge identities to their
+endpoints, producing additive richness inside dense subsets. This is
+analogous to the change-of-variables stage of
+[Milićević, Claim 4.4](https://arxiv.org/pdf/2601.01682), with four-walks
+here. The present theorem makes no claim about simple paths with all
+vertices distinct. Bilinear organization, shifted agreement, and the
+final quantitative structure budget remain open.
+
+**Verification.** The global construction checks 155 modules. All 11
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream code or
+changes to Apache provenance were required.
 
 
 ### Robustly connected pieces of dense graphs: Milićević's Lemma 4.2 (2026-10-09)
@@ -5146,3 +5217,14 @@ The proof:
 Standard axioms; collision gate clean. This is a leaf for the J.100
 graph extraction. It does not itself extract a dense set of coherent
 columns.
+
+Integration note: J.102 independently supplies four-walk extraction and
+its global column application. Both walk lengths are retained; the
+remaining additive-richness and identity-extension stages are shared.
+
+After merging the independent six-walk lemma, the combined audit checks
+7,050 public Gowers theorems in 5,110 modules (5,108 for the facade,
+including 4,152 OAI modules), using only the three approved standard
+axioms. The source ledger is unchanged at 115 companions and five open
+entries, and the selected-port scope check passes. The companion count
+does not establish fidelity to every printed statement.
