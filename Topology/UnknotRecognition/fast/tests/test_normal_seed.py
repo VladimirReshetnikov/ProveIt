@@ -130,7 +130,12 @@ class NormalSeedTests(unittest.TestCase):
         self.assertFalse(verify_normal_seed_certificate(diagram, bad))
         raw = proof['triangulation']; zeros = [[0]*7 for _ in raw['tetrahedra']]
         valid_zero = normal_compressing_disk_count(raw, zeros, record_certificate=True)
-        bad = dict(proof, coordinates=zeros, disc_certificate=valid_zero['certificate'])
+        legacy = dict(schema='diagram-normal-disc-v1', input_pd=proof['input_pd'],
+                      triangulation=raw, coordinates=proof['coordinates'],
+                      disc_certificate=normal_compressing_disk_count(
+                          raw, proof['coordinates'], record_certificate=True)['certificate'])
+        self.assertTrue(verify_normal_seed_certificate(diagram, legacy))
+        bad = dict(legacy, coordinates=zeros, disc_certificate=valid_zero['certificate'])
         self.assertFalse(verify_normal_seed_certificate(diagram, bad))
         valid_zero['certificate']['compressing_disk_components'] = True
         self.assertFalse(verify_normal_seed_certificate(diagram, bad))
@@ -143,7 +148,8 @@ class NormalSeedTests(unittest.TestCase):
             self.assertEqual(result['status'], 'INCONCLUSIVE')
             self.assertNotIn('certificate', result)
         self.assertEqual(normal_seed_decide(diagram, max_work=full['work'])['status'], 'UNKNOT')
-        self.assertEqual(normal_seed_decide(diagram, max_cycles=0)['status'], 'INCONCLUSIVE')
+        # Connectedness is now checked without interval-orbit cycles.
+        self.assertEqual(normal_seed_decide(diagram, max_cycles=0)['status'], 'UNKNOT')
         raw = diagram_exterior(diagram)
         with self.assertRaises(CocycleLimit): rank_one_cocycle_seed(raw, max_work=0)
         class Stop:
