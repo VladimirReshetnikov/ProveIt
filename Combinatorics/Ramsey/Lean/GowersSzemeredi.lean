@@ -391,6 +391,7 @@ import GowersSzemeredi.Proofs16Corollary20CommonBohr
 import GowersSzemeredi.Proofs16BohrSpectrum
 import GowersSzemeredi.Proofs16DirichletBound
 import GowersSzemeredi.Proofs16Trapezoid
+import GowersSzemeredi.Proofs16TrapezoidFourier
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
