@@ -10,20 +10,42 @@ from .whitehead_power import power_profile, powered_images
 
 
 def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
-            primitive_terminal=None):
+            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True):
     """Return algebraic success; an optional output dict enables the new terminal.
 
     Without that dict, True retains the old rank-one, no-relator contract.
-    With it, nonempty terminal evidence instead records an intact rank-two
-    state. Only a source-reconstructing wrapper can turn this into a verdict.
+    With it, evidence may instead record an intact rank-two state or a raw
+    one-generator zero-exponent endpoint after disjoint projections. Only a
+    source-reconstructing wrapper can turn this into a verdict.
     """
+    if primitive_projection and primitive_terminal is None:
+        raise ValueError('projection search requires an explicit terminal output')
+    raw = False
+    projection_cache = {} if primitive_projection else None
     while len(alive) > 1:
-        if primitive_terminal is not None and len(alive) == 2:
+        if rank_two_terminal and primitive_terminal is not None and len(alive) == 2:
             from .primitive_power import primitive_power_terminal
             evidence = primitive_power_terminal(arena, roots, alive)
             if evidence is not None:
                 primitive_terminal.update(evidence)
                 return True
+
+        if primitive_projection:
+            from .primitive_projection import plan_projection, apply_projection
+            selected = plan_projection(arena, roots, alive, projection_cache)
+            if selected:
+                apply_projection(arena, roots, alive, selected)
+                moves.append(dict(kind='primitive_projection', pairs=selected))
+                raw = True
+                continue
+        if raw:
+            # The old positional moves operate on cyclically reduced roots.
+            # Record this boundary explicitly so both replayers use that state.
+            roots[:] = [arena.cyclic_reduce(x) for x in roots]
+            moves.append(dict(kind='normalize_relators'))
+            arena.stats['projection_normalizations'] = arena.stats.get('projection_normalizations',0)+1
+            raw = False
+            continue
 
         counts, _ = arena.summarize(roots)
         candidates = []
@@ -126,12 +148,18 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
             arena.stats['max_power_bits'] = max(arena.stats.get('max_power_bits', 0), exponent.bit_length())
         moves.append(move)
     arena.tick()
+    if raw:
+        from .primitive_projection import rank_one_zero
+        if rank_one_zero(arena, roots, alive):
+            primitive_terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
+            return True
+        return False
     return len(alive) == 1 and not any(roots)
 
 
 def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
                            max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
-                           primitive_power=True):
+                           primitive_power=True, primitive_projection=False):
     """Find a trace or None; resource exhaustion raises GroupLimit.
 
     max_letters caps the initial presentation and optional overlap expansion.
@@ -140,8 +168,13 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
     primitive_power tries report 45's arithmetic rank-two terminal before
     general elimination/shortening and emits version five on a local hit;
     independent source-bound replay is still required before trusting it.
-    Disable it to retain the historical search and terminal contract.
+    Disjoint primitive projections run on raw circuits with an explicit
+    normalization handoff. Version six replays each full projection round.
+    Disable primitive_projection to retain the version-five search; disabling
+    both primitive options retains the historical rank-one contract.
     """
+    if type(primitive_projection) is not bool:
+        raise ValueError('primitive_projection must be boolean')
     if type(primitive_power) is not bool:
         raise ValueError('primitive_power must be boolean')
     if type(relator_moves) is not bool:
@@ -155,12 +188,16 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         arena.tick(max_work-budget.left)
         roots = [arena.reduce(arena.from_word(word)) for word in words]
         moves = []
-        terminal = {} if primitive_power else None
+        terminal = {} if primitive_power or primitive_projection else None
         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,
-                       primitive_terminal=terminal):
+                       primitive_terminal=terminal, primitive_projection=primitive_projection,
+                       rank_two_terminal=primitive_power):
             return None
+        projected = any(move['kind'] == 'primitive_projection' for move in moves)
+        if projected and not terminal:
+            terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
         if terminal:
-            return dict(version=5, method='wirtinger-cyclic-group', status='UNKNOT',
+            return dict(version=6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
                         input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
         return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',

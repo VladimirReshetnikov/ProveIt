@@ -16,6 +16,18 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             if type(move) is not dict:
                 return False
             kind = move.get('kind')
+            if kind == 'primitive_projection':
+                if certificate['version'] < 6:
+                    return False
+                from .primitive_projection_verify import replay_compressed_projection
+                if not replay_compressed_projection(arena, roots, alive, move):
+                    return False
+                continue
+            if kind == 'normalize_relators':
+                if certificate['version'] < 6 or set(move) != {'kind'}:
+                    return False
+                roots = [arena.cyclic_reduce(x) for x in roots]
+                continue
             if kind == 'eliminate':
                 if set(move) != {'kind', 'relation', 'generator'}:
                     return False
@@ -107,7 +119,10 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             else:
                 return False
         arena.tick()
-        if certificate['version'] == 5:
+        if certificate['version'] == 6 and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+            from .primitive_projection_verify import verify_compressed_rank_one
+            return verify_compressed_rank_one(arena, roots, alive, certificate['terminal'])
+        if certificate['version'] in (5, 6):
             from .primitive_power_verify import verify_compressed_terminal
             return verify_compressed_terminal(arena, roots, alive, certificate['terminal'])
         return alive == {certificate['remaining_generator']} and not any(roots)
