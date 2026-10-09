@@ -954,3 +954,17 @@ representation, arbitrary normalization alternations and general discovery
 remain separate work. Evidence is in `data/persistent-replay-*`, with native
 reproduction in `../fast/compressed_word_research/persistent_replay.py` and
 supplied-source timings in `data/persistent_replay_source.py`.
+
+
+[`boundary_shellings.tex`](boundary_shellings.tex) adds certified simplification
+of the finite exterior before cocycle discovery. It proves the embedded move,
+explains the lower-dimensional boundary obstruction, bounds stable-index
+selection and replay, and authenticates all reduced-exterior witnesses back
+to the supplied diagram. The 84-source audit increases default-budget native
+positives from 24 to 28 with no corpus losses; Regina checks 1,061 moves and
+433 surfaces. All 1,229 tests pass. Complete recognition plus proof-replay
+measurements regress on nine of ten selected cases, so the option stays off
+by default. The section reports the negative timing result and why bounded
+family coverage is distinct from general QP recognition. Reproduction lives
+in `../fast/normal_orbit_research/shellings.py`; full records and source pins
+are in `data/boundary-shellings-*`.

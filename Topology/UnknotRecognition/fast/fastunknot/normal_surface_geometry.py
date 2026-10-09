@@ -20,16 +20,10 @@ class NormalOrbitError(ValueError):
 
 _EDGES = tuple(combinations(range(4), 2))
 _EDGE_INDEX = {edge: i for i, edge in enumerate(_EDGES)}
-_DIRECTED = tuple((a, b) for a in range(4) for b in range(4) if a != b)
-_DIRECTED_INDEX = {edge: i for i, edge in enumerate(_DIRECTED)}
 
 
 def _edge(t, a, b):
     return 6 * t + _EDGE_INDEX[tuple(sorted((a, b)))]
-
-
-def _directed(t, a, b):
-    return 12 * t + _DIRECTED_INDEX[a, b]
 
 
 def _quad(a, b):
@@ -140,16 +134,12 @@ def _prepare(triangulation, check):
 
     vertices = _UnionFind(4 * n)
     edges = _UnionFind(6 * n)
-    directed_edges = _UnionFind(12 * n)
-    link_edges = _UnionFind(12 * n)
     matching = []
     for t, f, u, g, permutation in pairs:
         check()
         face_vertices = [v for v in range(4) if v != f]
         for v in face_vertices:
             vertices.join(4 * t + v, 4 * u + permutation[v])
-            link_edges.join(_directed(t, v, f),
-                            _directed(u, permutation[v], g))
             row = {}
             for index, value in ((7 * t + v, 1),
                                  (7 * t + 4 + _quad(f, v), 1),
@@ -160,16 +150,19 @@ def _prepare(triangulation, check):
         for a, b in combinations(face_vertices, 2):
             edges.join(_edge(t, a, b), _edge(u, permutation[a], permutation[b]),
                        int(permutation[a] > permutation[b]))
-            directed_edges.join(_directed(t, a, b),
-                                _directed(u, permutation[a], permutation[b]))
-            directed_edges.join(_directed(t, b, a),
-                                _directed(u, permutation[b], permutation[a]))
 
     vertex_roots = [vertices.find(i)[0] for i in range(4 * n)]
-    edge_roots = [edges.find(i)[0] for i in range(6 * n)]
+    edge_roots, edge_orientations = [], []
+    for i in range(6 * n):
+        root, parity = edges.find(i)
+        edge_roots.append(root)
+        edge_orientations.append(parity)
+    link_faces, link_boundary, link_vertices = ([0]*(4*n) for _ in range(3))
     boundary_incidence = {}
     for boundary_id, (t, f) in enumerate(boundary_faces):
         check()
+        for v in range(4):
+            if v != f:link_boundary[vertex_roots[4*t+v]] += 1
         for a, b in combinations((v for v in range(4) if v != f), 2):
             root = edge_roots[_edge(t, a, b)]
             boundary_incidence.setdefault(root, []).append(boundary_id)
@@ -182,23 +175,28 @@ def _prepare(triangulation, check):
     # identifications have already been excluded.  These checks also ensure
     # that all vertex links are surfaces.  Their Euler characteristics now
     # distinguish finite manifold vertices from singular or ideal vertices.
-    vertex_links = {}
+    # A global edge has two distinct oriented ends, even for a loop at
+    # one global vertex: reversal was excluded by the signed edge union.
+    # These ends are exactly the vertices of the vertex links. Each link
+    # triangle has three sides, with internal sides paired and boundary
+    # sides unpaired. Hence 2*chi(link) = 2*V - F - B. No separate union of
+    # directed edges or triangle sides is needed to compute this census.
+    endpoints = {}
     for t in range(n):
         check()
         for v in range(4):
-            root = vertex_roots[4 * t + v]
-            record = vertex_links.setdefault(root, {'faces': 0, 'edges': set(),
-                                                     'vertices': set(), 'boundary': 0})
-            record['faces'] += 1
-            for w in range(4):
-                if w == v:
-                    continue
-                record['vertices'].add(directed_edges.find(_directed(t, v, w))[0])
-                record['edges'].add(link_edges.find(_directed(t, v, w))[0])
-                record['boundary'] += int(tetrahedra[t][w] is None)
-    for record in vertex_links.values():
-        chi = len(record['vertices']) - len(record['edges']) + record['faces']
-        if chi != (1 if record['boundary'] else 2):
+            link_faces[vertex_roots[4*t+v]] += 1
+        for j, (a, b) in enumerate(_EDGES):
+            endpoints[edge_roots[6*t+j]] = (vertex_roots[4*t+a], vertex_roots[4*t+b])
+    for a, b in endpoints.values():
+        link_vertices[a] += 1
+        link_vertices[b] += 1
+    vertex_count = 0
+    for root, faces in enumerate(link_faces):
+        if not faces:continue
+        vertex_count += 1
+        boundary = link_boundary[root]
+        if 2*link_vertices[root]-faces-boundary != (2 if boundary else 4):
             raise NormalOrbitError('a vertex link is not a sphere or a disc')
 
     if not boundary_faces:
@@ -213,17 +211,11 @@ def _prepare(triangulation, check):
     boundary_chi = len(boundary_vertices) - len(boundary_incidence) + len(boundary_faces)
     if boundary_chi != 0:
         raise NormalOrbitError('the boundary component is not a torus')
-    endpoints = {}
-    for t in range(n):
-        for a, b in _EDGES:
-            endpoints[edge_roots[_edge(t, a, b)]] = (
-                vertex_roots[4 * t + a], vertex_roots[4 * t + b])
     return dict(tetrahedra=tetrahedra, pairs=pairs, boundary_faces=boundary_faces,
                 vertex_roots=vertex_roots, edge_roots=edge_roots,
                 boundary_incidence=boundary_incidence, endpoints=endpoints,
-                matching=matching, vertices=len(vertex_links),
-                edges=len(set(edge_roots)),
-                edge_orientations=[edges.find(i)[1] for i in range(6 * n)])
+                matching=matching, vertices=vertex_count,
+                edges=len(endpoints), edge_orientations=edge_orientations)
 
 
 def _coordinates(prepared, coordinates, check):

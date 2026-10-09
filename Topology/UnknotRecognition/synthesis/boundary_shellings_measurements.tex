@@ -1,0 +1,58 @@
+\subsection{More native witnesses do not imply faster recognition}
+
+The isolated benchmark runs complete recognition with the native branch
+forced, earlier shortcuts disabled, a twelve-second allowance and a
+20,000-object fallback allowance. Each timed call includes an additional
+independent replay and hash of any returned native proof. An inconclusive
+native attempt continues into reduced Khovanov recognition. Shellings-off
+and shellings-on each have an A/A control; the four arms run in randomized
+order after one warm-up round per case. No tests, audits, builds or commits
+overlap either timing run. All per-arm result signatures, work counts and
+proof hashes are stable within each run.
+
+The first five-round experiment has 200 measured calls and 40 warm-ups and
+takes 13.736 seconds. A/A ratios near 1.09 on one case justify a nine-round
+repeat, which has 360 measured calls and 40 warm-ups and takes 25.931 seconds.
+All 560 measured calls and 80 warm-ups complete with the expected verdict.
+The final primary-arm medians and median paired ratios are:
+\begin{center}
+\small
+\input{tables/boundary_shellings_recognize.tex}
+\end{center}
+A ratio greater than one favors shellings. Nine of the ten selected
+pipelines are slower with shellings, with paired off/on ratios from 0.566
+to 0.800. The original optimized-disc fixture is near parity at 1.028;
+its lower native guard count does not translate into a substantial total
+speedup because the new source proof also authenticates and replays the
+simplification. Final A/A medians range from 0.983 to 1.046. Absolute timings
+also drift across cases: the identical diagrams labelled 25 and 176 are timed
+separately and have different millisecond medians, but similar paired ratios.
+These measurements support the default decision, not a universal timing law.
+
+All four added corpus positives switch from the reduced-Khovanov fallback to
+a native annulus proof, yet take longer in this measured full-verification
+pipeline. The additional three-crossing unknot given by the two-strand braid
+$[1,1,-1]$ also gets a native annulus witness after six shellings: tree trial two
+produces a connected 58-piece surface with two boundary circles. Its full
+proof is retained separately, and Regina confirms the surface summary. The
+new total pipeline is slower. Earlier negative results for raw and minimum-span surfaces on
+that example therefore remain restricted-family statements. The trefoil
+continues through the fallback and is correctly recognized as knotted.
+The easy circle and raw-annulus controls incur source-replay overhead on a
+path that already succeeded before simplification.
+
+Shellings remain an explicit research and proof-construction option. Their
+independently replayable triangulation changes broaden the native family and
+can improve bounded-search completion, but the measured corpus does not
+justify enabling them by default. Future work can examine proof-checking
+costs and progress-based selection between triangulations while retaining
+independent source authentication. Neither a short shelling trace nor a
+polynomial shelling algorithm bounds how many triangulations or normal
+surface families general unknot recognition would need to explore.
+The general subexponential and quasipolynomial goals remain open here.
+
+The reproduction driver is \code{normal\_orbit\_research.shellings}.
+Select \code{audit} mode, or run \code{recognize --rounds 9} for timings. The implementation is
+revision \code{1eb57f251}, published after merging concurrent main-branch
+research in \code{77347b0b5}. The incoming unknot inventory and
+\code{openai/math} head \code{fd4aeeb2e} were rechecked and are unchanged.
