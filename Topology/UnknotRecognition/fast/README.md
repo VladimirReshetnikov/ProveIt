@@ -1,5 +1,24 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+`cocycle_span.minimize_cocycle_span` now handles a single global vertex with
+a direct primal/dual certificate: every potential is a uniform height shift,
+so the optimum is the original sum of spans. This takes linear arithmetic
+work, including independent replay, without allocating the flow network.
+The proof schema and multiple-vertex solver are unchanged. The API still
+makes no topology or unknot claim by itself.
+
+`pachner32.pachner_32(triangulation, tetrahedron, [vertex_a, vertex_b])`
+performs one 3–2 move about an interior edge in three distinct tetrahedra;
+`pachner32_verify.verify_pachner_32(before, after, certificate)` independently
+checks the replacement. One such move escapes the retained genus-two
+coherent-family obstruction and produces a 36-piece coherent normal disc.
+Greedy simplification found no additional labels beyond the existing extended
+search on the tested diagram corpus, so it has not entered the recognition
+schedule. Theory, limits and measurements are in
+[`coherent_escape.tex`](../synthesis/coherent_escape.tex). Reproduce with
+`python -B -m normal_orbit_research.coherent_escape audit --output FILE`
+or `benchmark --rounds 5 --output FILE`; audit mode requires Regina.
+
 The explicit `pachner23.pachner_23(triangulation, tetrahedron, face)` API
 performs one canonical 2–3 move on a finite torus-boundary triangulation.
 Its result contains a fresh `triangulation`, a selected-face `certificate`,

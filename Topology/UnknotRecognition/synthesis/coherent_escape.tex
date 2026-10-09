@@ -1,0 +1,171 @@
+\section{Escaping a coherent family and eliminating vacuous optimization}
+\label{sec:coherent-escape}
+
+Section~\ref{sec:coherent-obstruction} rules out completeness of the integral
+coherent-height family on arbitrary solid-torus triangulations. It does not
+make this obstruction invariant under retriangulation. In fact, a single
+checked $3$--$2$ move on that example changes the primitive coherent surface
+from genus two to a disc. This motivates testing changes of triangulation,
+while also identifying an avoidable cost: on a one-vertex triangulation,
+optimizing vertex potentials cannot change any height span. The maintained
+span solver now detects this case and constructs a linear arithmetic
+optimality certificate without a flow network.
+
+These are two separate improvements with different roles. The $3$--$2$
+operation extends the explicit, independently checked geometry API. Its
+greedy search remains an experiment. The one-vertex branch is an automatic
+optimization of an existing arithmetic API and preserves its proof schema.
+Neither result supplies a general discovery bound.
+
+\subsection{An independently verified 3--2 replacement}
+
+The input site is a tetrahedron and two distinct local vertices specifying
+an edge. The producer reconstructs its signed global edge class and requires
+exactly three local occurrences in three different tetrahedra. All faces
+containing this edge must be paired within the selected region. Give the
+edge endpoints formal labels $3,4$ and the other two corners of the selected
+tetrahedron labels $0,1$. Propagating the labels through the interior faces
+assigns the third belt label $2$ and must give exactly the three formal
+tetrahedral vertex sets
+\[
+ \{3,4,0,1\},\quad \{3,4,1,2\},\quad \{3,4,2,0\}.
+\]
+The consistency test includes all interior face maps, not merely edge degree.
+Replace this filling by tetrahedra $(0,1,2,3)$ and $(0,1,2,4)$ joined across
+their common $(0,1,2)$ face, and transfer the six formal boundary gluings.
+As in the $2$--$3$ direction, globally identified vertices and pairings among
+formal boundary facets are permitted. An inverse relative-boundary PL
+homeomorphism gives the topology proof.
+
+The certificate lists the three original tetrahedra and their four formal
+labels. The independent checker reconstructs both finite manifolds, validates
+the three distinct indices and formal sets, checks the unchanged exterior,
+and compares the six boundary signatures. Interior faces are checked
+separately. It reuses only the independent boundary-signature routine from
+the $2$--$3$ checker; no move producer is imported. A reordered valid output
+that does not follow the certificate's prescribed labels is rejected.
+
+After manifold preparation, site discovery, face rewriting and replay take
+$O(N)$ indexed operations for $N$ tetrahedra. The explicit API performs only
+one supplied move. A simple repeated scan for an eligible $3$--$2$ edge
+terminates after fewer than $N$ successful moves because the tetrahedron
+count strictly decreases. Rebuilding native geometry on every pass gives
+$O(N^2\alpha(N))$ union--find and indexed work under the existing word-cost
+model, excluding the research driver's additional Regina isomorphism audits.
+This is a bound for finding
+a local minimum in tetrahedron count, not for finding a disc or for reaching
+a globally smallest triangulation. A plateau may require temporary increases.
+
+\subsection{The explicit escape and the coverage experiment}
+
+On the eight-tetrahedron obstruction, select tetrahedron $5$ and its local
+edge $\{0,1\}$. The new triangulation has seven tetrahedra and one global
+vertex. Its primitive coherent surface has $36$ normal pieces and is a
+compressing disc. The retained record includes the entire before/after
+triangulations, the independently checked replacement and the independent
+normal-disc-count certificate. Together with the previous six-move record
+it has a fixed solid-torus source. This does not claim correspondence with
+a supplied planar diagram.
+
+For broader move validation, four length-100 paths start from layered solid
+tori with two and eight tetrahedra and canonical one-crossing and trefoil
+exteriors. At each step, Regina selects an eligible upward or downward
+site; the native producer performs the supplied move, the independent native
+checker replays it, and the result is compared with Regina's separate
+replacement up to triangulation isomorphism. All $400$ comparisons pass:
+$210$ are $2$--$3$ moves and $190$ are $3$--$2$ moves. Additional tests cover
+reversed local edge order, relabelled one-vertex inputs, malformed certificates,
+forged boundary maps, resource limits, cancellation and immutable inputs.
+
+The discovery experiment uses the $82$ maintained source diagrams with at
+most sixteen crossings. It repeatedly chooses the first eligible edge in
+local incidence order, and then evaluates the raw cocycle and up to four
+alternative tree gauges. One arm begins at the canonical pulling exterior;
+the other first performs the existing boundary shellings. Every successful
+$3$--$2$ replacement is independently replayed and compared with Regina.
+The arms perform $144$ and $73$ moves respectively, and yield nonnegative-Euler
+coherent candidates on $20$ and $26$ source labels. Regina checks connectivity,
+orientability and Euler characteristic of these supplied candidates, and
+checks compressibility when the candidate is a disc.
+
+Neither arm adds a source label beyond the earlier extended-tree and planar
+capping search. This experiment does not run the minimum-span stage and is
+not a complete-recognition timing comparison. In particular, its candidate
+counts must not be compared as though they were full default-pipeline success
+counts. The negative coverage result does not justify adding this greedy
+simplifier to the recognition schedule; the explicit move API remains useful
+for testing more selective geometric strategies.
+
+\subsection{A direct dual certificate when there is one vertex}
+
+The arithmetic objective is
+\[
+ D(p)=\sum_{t=1}^N\left(\max_i(h_{t,i}+p_{v_{t,i}})
+                         -\min_i(h_{t,i}+p_{v_{t,i}})\right).
+\]
+If all global vertex labels agree, every local corner receives the same
+potential $p$. Therefore
+\[
+ D(p)=D(0)=\sum_t\bigl(\max_i h_{t,i}-\min_i h_{t,i}\bigr)
+ \quad\text{for every real or integral }p.
+\]
+Choose a minimum corner $i_t$ and maximum corner $j_t$ in each tetrahedron.
+The existing certificate format permits the matching entries
+$(t,i_t,t,j_t)$. Each tetrahedron is used exactly once on each side and the
+matched corners share their global vertex, so all potential terms cancel.
+The matching's dual value is exactly $D(0)$. The unchanged weak-duality
+checker proves optimality, independently reconstructing the normal vector
+from its six local edge weights. This includes tied extrema and constant
+height rows, where the two corners may coincide.
+
+The new branch returns potential zero, these diagonal matching entries and
+the unchanged local normal coordinates. It still invokes the independent
+checker before returning. It allocates no flow network, performs no
+augmentations or shortest-path searches, and keeps the previous schema and
+statistics fields. Matching certificates need not be identical to those
+chosen by the generic solver. The coordinate vector and optimal objective
+are identical. Multiple-vertex inputs continue through the previous solver.
+The branch establishes no primitivity, connectedness, genus or knot verdict;
+those require their existing geometric and source checks.
+
+There are $O(N)$ integer arithmetic operations and $O(N)$ stored integers,
+including the internal proof replay. If input integers have at most $B$ bits,
+the work is $O(N(B+\log N))$ in the elementary bit-cost model. No integer
+height or normal-sheet multiplicity is expanded. The implemented deterministic
+guard count is exactly $5N+3$.
+
+This improves an actual quadratic case of the old implementation. Take one
+global vertex and rows $(0,0,0,t)$ for $t=0,\ldots,N-1$. The previous flow
+solver performs $N-1$ shortest-path searches after its initial unit, with a
+full $2N+3$-node potential update on each search. These updates alone take
+$\Omega(N^2)$ indexed operations, even though the answer is independent of
+the potential. The direct primal/dual construction removes that cost rather
+than merely changing the blocking-flow schedule.
+
+\subsection{Compatibility, measurements and remaining scope}
+
+The arithmetic audit compares the old solver at revision \code{a6cadc5d6}
+with the new one on $300$ random one-vertex instances and $300$ random
+multiple-vertex instances. In the former, coordinates agree and both
+certificates pass the unchanged checker; in the latter, the entire result,
+including all work statistics and certificates, agrees exactly. Binary
+tests use scaled heights and independent tetrahedron offsets exceeding
+$20{,}000$ bits without increasing the guard count.
+
+The current native source pipeline also reproduces all $252$ saved records
+on the $84$-diagram corpus: shellings off, on, and on with planar capping.
+All $47$ distinct positive proofs are identical and replay successfully.
+Thus the new arithmetic branch changes no candidate, verdict, deterministic
+work cap or proof in this maintained diagram workload. That compatibility
+is not evidence of a recognition speedup on these diagrams.
+\input{coherent_escape_results.tex}
+
+The retained driver is
+\path{../fast/normal_orbit_research/coherent_escape.py}, with \code{audit} and
+\code{benchmark} modes and a required \code{--output} path. Benchmark mode
+accepts \code{--rounds}. Records, source pins, build and validation logs are
+\path{data/coherent-escape-*}. The incoming inventory and \code{openai/math}
+HEAD remain unchanged, the latter at revision \code{fd4aeeb2ee4f}.
+The remaining discovery problem is to find useful retriangulations or broader
+surface candidates under a general complexity bound. A local escape and a
+linear arithmetic special case do not settle it.
