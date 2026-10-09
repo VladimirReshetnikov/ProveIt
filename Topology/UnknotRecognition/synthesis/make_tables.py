@@ -1547,3 +1547,24 @@ for reach_mode in ('pipeline','stages'):
     heading=('Input & default ms & old port. ms & new port. ms & old/new & default/new' if reach_mode=='pipeline' else
         'Crossings & direct old/new ms & ratio & portfolio old/new ms & ratio')
     open(f'tables/elimination_reach_{reach_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (5 if reach_mode=='pipeline' else 4))+'@{}',rows)+'\\end{center}\n')
+
+
+for word_mode in ('pipeline','kernels'):
+    data=load(f'../fast/results/word_cache_frontier_{word_mode}_20261008.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        if word_mode=='pipeline':
+            cells=[esc(r['source']['name'])]
+            for old,new,key in (('old','current','current'),('old_portfolio','portfolio','portfolio')):
+                cells.append('/'.join('--' if m[a] is None else f'{1000*m[a]:.3f}' for a in (old,new)))
+                cells.append('--' if q[key]['median'] is None else f"{q[key]['median']:.3f}")
+        else:
+            cells=[esc(r['kind']),str(r['size'])]+['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','current')]
+            cells+=['--' if q['current']['median'] is None else f"{q['current']['median']:.3f}"]
+            cells+=['/'.join('--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('old_AA','current_AA'))]
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Input & default old/new ms & ratio & portfolio old/new ms & ratio' if word_mode=='pipeline' else
+        'Family & size & old ms & new ms & ratio & old/new A/A')
+    open(f'tables/word_cache_frontier_{word_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (4 if word_mode=='pipeline' else 5))+'@{}',rows)+'\\end{center}\n')

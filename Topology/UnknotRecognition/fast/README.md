@@ -2379,7 +2379,7 @@ batches of distinct singleton donors with acyclic dependencies. Their images
 can be arbitrary words. One linked-circuit pass performs the simultaneous
 substitution without expansion or repeated normalization. Independent compressed
 replay uses Kahn evaluation; literal replay preflights all expanded images.
-All 1,012 maintained tests pass, including random DAG word oracles, deep
+All 1,018 maintained tests pass, including random DAG word oracles, deep
 nonmonomial images, strict forgery checks and complete source replay.
 
 Use `group_decide(..., elimination_batch=True)`,
@@ -2426,4 +2426,34 @@ from the initial measurements above.
 python -B primitive_power_research/elimination_reach.py audit --output results/elimination_reach_audit_20261008.json
 python -B primitive_power_research/elimination_reach.py benchmark --output results/elimination_reach_pipeline_20261008.json
 python -B primitive_power_research/elimination_reach.py stages --output results/elimination_reach_stages_20261008.json
+```
+
+
+### Exact word-cache frontiers
+
+Inverse and free-reduction queries now stop source traversal at exact cached
+results. This also handles certified reduced substrings whose intermediate
+source concatenations have no individual cache entries. Discovery publishes
+no partial results, and all existing work/node limits and cancellation apply.
+No option or certificate format changes. The existing independent move
+checkers use the updated shared word engine.
+
+Across completed queries, each newly collected source node enters its cache
+once. Traversal costs `O(q + U log(U+1))` identifier operations over `q` calls
+and `U` newly visited nodes, separately for each cache. This excludes algebraic
+operations, failed attempts, integer bit costs, and overall grammar growth.
+See the [theory and measurements](../synthesis/word_cache_frontier.tex).
+
+All 1,018 tests pass. Exhaustive short-word validation checks 21,845 words
+against literal and prior-engine oracles. All 400 outcomes across five modes
+on 80 diagrams match the prior package; every positive passes old/current
+literal and compressed replay. Gordian retains its proof and 9,025 producer
+nodes while default producer work drops from 1,215,145 to 1,154,597. Separate
+kernel, supplied-proof and whole-recognition measurements retain A/A controls
+and all incomplete outcomes; a kernel gain is not a proof-discovery bound.
+
+```sh
+python -B compressed_word_research/frontier.py audit --output results/word_cache_frontier_audit_20261008.json
+python -B compressed_word_research/frontier.py kernels --output results/word_cache_frontier_kernels_20261008.json
+python -B compressed_word_research/frontier.py benchmark --output results/word_cache_frontier_pipeline_20261008.json
 ```

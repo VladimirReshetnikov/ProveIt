@@ -1,0 +1,70 @@
+\paragraph{Word kernels and supplied-proof replay.}
+The controlled kernel run has fifteen cases, four shuffled arms (old/current
+and their A/A copies), five measured rounds and one warm-up. All 300 measured
+calls and 60 warm-ups complete in 58.503 seconds. Timings for word queries
+include construction of a fresh arena and its initial word. Bounded literal
+assertions are performed after the timed call. Source-proof timings instead
+include fresh diagram validation and full independent reconstruction/replay
+of a fixed supplied proof; proof construction is outside that timing.
+All ratios below are medians of paired old/new times.
+
+\input{tables/word_cache_frontier_kernels.tex}
+
+A chain begins with $ab$, then appends alternating $a,b$ letters and queries
+the extended root after each append. The table's size is its number of
+extensions. At 2,048 extensions inverse evaluation improves from
+1,438.629 to 12.118 ms, a paired ratio of 118.719; reduction improves from
+1,444.585 to 10.489 ms, a ratio of 137.726. Inverse work drops from
+4,212,748 to 16,396, with 4,102 nodes in both arms; reduction work drops
+from 4,212,746 to 16,394, with 2,051 nodes in both. The new inverse traversal
+collects 2,051 nodes across 2,049 queries, and reduction collects 2,049 across
+2,049 queries. These are intentionally simple exact-word kernels that expose
+the repeated traversal, not difficult knot inputs.
+
+A power case starts at $(ab)^{2^s}$, performs its first query, then makes
+128 alternating single-letter extensions and queries. The table's size is
+$s$, not the expanded word length. At $s=4096$ the output length has
+4,098 bits. Inversion improves 20.775-fold with work 1,094,798 to 29,710;
+reduction improves 24.883-fold with work 1,094,796 to 29,708. Respective
+node counts remain 8,454 and 4,227. No expanded power word is allocated.
+Across all kernel and supplied-proof cases, old A/A ratios range from
+0.973 to 1.016 and current A/A ratios from 0.986 to 1.041.
+
+The supplied source proof has a powered Whitehead prefix with exponent
+$2^s$, followed by a checked projection suffix. Full replay ratios are only
+1.016, 1.014 and 1.005 for $s=64,256,1024$, comparable with control variation.
+At $s=1024$, work falls from 91,623 to 89,567, while both runs still use
+5,151 nodes and three equality calls. The kernel gains therefore do not
+translate into a comparable gain for these complete supplied proofs.
+
+
+\paragraph{Complete recognition.}
+A second run measures nineteen fresh source inputs with old/current defaults
+and old/current adaptive batch hosts, each with an A/A control. It includes
+PD construction, the complete recognition pipeline and mandatory source
+replay. All 760 measurements and 152 warm-ups complete in 81.088 seconds.
+
+\input{tables/word_cache_frontier_pipeline.tex}
+
+Default old/current paired ratios range from 0.970 to 1.067; portfolio ratios
+range from 0.987 to 1.095. Several group-search inputs show modest gains.
+For example survivor-02 improves 1.067-fold in default mode and 1.095-fold
+with the portfolio; its corresponding current A/A ratios are 1.000 and
+0.995. Survivor-03's portfolio ratio is 1.093, but its 38.139 ms current
+portfolio median remains much slower than its 10.680 ms default median.
+The word-engine optimization does not remove schedule-dependent regressions.
+
+Gordian default medians are 1,462.026 ms old and 1,431.768 ms current, with
+paired ratio 1.050. Portfolio medians are 1,498.568 and 1,448.005 ms, with
+paired ratio 1.037. All four arms return the same 9,663-byte certificate.
+The paired ratios need not equal quotients of the marginal medians.
+The default old A/A ratio on Gordian is 0.973, so timing precision remains
+limited even though its 60,548 saved producer work units are deterministic.
+
+Across the full corpus, the four A/A ranges are 0.936--1.014 for old default,
+0.973--1.039 for current default, 0.939--1.015 for old portfolio and
+0.969--1.019 for current portfolio. Small regressions and noisy controls are
+retained. These measurements support modest practical savings on several
+search inputs, alongside the much larger deliberately isolated traversal
+gains. They do not establish a uniform end-to-end factor or change the
+unproved global discovery and grammar-growth requirements.
