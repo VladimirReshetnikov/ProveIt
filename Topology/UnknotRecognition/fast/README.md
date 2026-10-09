@@ -3231,3 +3231,22 @@ trace replay adds O(N) indexed graph work. The trace has O(N log N) bits.
 Reproduce the topology/source audit with
 `python -B -m normal_orbit_research.shellings audit --output OUTPUT.json`, and
 complete forced-recognition timings with `recognize --rounds 5` in that driver.
+
+
+Finite-manifold validation now computes vertex-link Euler characteristics
+from an incidence census. Signed global edges already determine the two
+oriented ends of every edge, including loops at a single vertex. For each
+vertex link, count triangle corners F, edge ends V and boundary sides B;
+then `2*chi = 2*V - F - B`. Reciprocal faces, edge reversal, edge links,
+orientability, connectedness and the single torus boundary are still checked.
+Ideal or singular vertices receive the same rejection as before.
+
+This removes two redundant union-find structures and the per-link sets. For
+N tetrahedra, P paired faces and b unpaired faces, union-find nodes fall from
+34N+b to 10N+b; paired-face unions fall from 15P to 6P. The new link census
+uses O(N) indexed operations and storage after the existing global geometry
+has been obtained. Geometry output, certificate hashes, guard counts and
+recognition settings are unchanged. Reproduce the comparison with
+`python -B -m normal_orbit_research.link_census audit --output OUTPUT.json`,
+and full recognition plus proof-replay timings using `recognize --rounds 5`
+in the same driver. General subexponential/QP recognition remains open.
