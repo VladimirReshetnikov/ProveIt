@@ -78,7 +78,7 @@ theorem centered_progression_resize_proper {N : Nat} (Q : CenteredProgression N)
   omega
 
 /-- Centered progressions are symmetric, including when they are not proper. -/
-theorem centered_progression_neg_mem {N : Nat} (Q : CenteredProgression N)
+theorem cyclic_centered_progression_neg_mem {N : Nat} (Q : CenteredProgression N)
     {x : ZMod N} (hx : x ∈ Q.carrier) : -x ∈ Q.carrier := by
   obtain ⟨z, hz, he⟩ := (centered_progression_mem_iff Q x).mp hx
   refine (centered_progression_mem_iff Q (-x)).mpr ⟨fun i => -z i, ?_, ?_⟩
