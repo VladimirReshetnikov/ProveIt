@@ -5230,9 +5230,88 @@ above the allowed `exp(−Θ(r log r))`.
 
 So, as far as counts and exponents go, a polynomial-bound deep structure
 fits the dimension-three budget with enormous room. This is an
-order-of-magnitude comparison, not a formal inequality. The formal
-connection still needs the Part J restatement on the polynomial lift,
-with `IsVarietyPieceB` bounds in place of `milicevicBound`
-(`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
-already names. It also assumes that the remaining Milićević steps lose
-no more than polynomially in their inputs.
+order-of-magnitude comparison, not a formal inequality. It also assumes
+that the remaining Milićević steps lose no more than polynomially in
+their inputs. *Correction (J.6 below):* the formal connection does not go
+through Part J, whose `PolyBoundedControl` belongs to the cubic-stackable
+route. It goes from the variety chain's decomposition to
+`Section16BudgetedPieceAt 3`. That link is blocked by an unbounded constant
+that this order-of-magnitude count does not see.
+
+### J.6 The variety route's last link needs explicit partition constants (2026-10-09)
+
+**Which theorem is missing.** The variety chain ends at
+`exists_ceiling_free_variety_relation_decomposition`, whose pieces are
+`MultiplyLinearWith` with the graph bound and exponent of
+`Proofs16VarietyCeilingFreeDecomposition`. Nothing consumes it yet. Its
+target is `Section16BudgetedPieceAt 3`, which
+`theorem_16_2_of_budgeted_piece` turns into `Theorem162At 3`. That is the
+same glue `theorem_16_2_at_two` uses. For each `(γ, θ)` it asks for a
+mass `η` and a parameter `1 ≤ s ≤ η·s(θ,γ,3)`, with pieces
+`MultiplyLinear γ s`. Part J and its `PolyBoundedControl` are not on this
+path. They serve the cubic-stackable route, whose
+`cubicBaseExponent q σ = 2⁻²⁷σ³/q⁴` is explicit.
+
+**What blocks it.** The chain's exponents carry six constants. All of
+them come from bare `∃ K p` statements, which originate in
+`OAI.Erdos3.simultaneous_monomial_recurrence` (via
+`exists_uniform_modular_monomial_recurrence k` and
+`exists_simultaneous_multilinear_partition_bound k`). There are two
+sources:
+- *The bilinear variety partition* (`k = 2`, monomial degrees 1–2). This is
+  `MultilinearDiameterPartition`, instantiated only in
+  `Proofs16OscillationPartitionInst`. It supplies the variety constants
+  `Cv, pv` (slice provider) and `Cs, ps` (spectrum restriction). For
+  example, the deep cover exponent is
+  `1/(1024·p²·(4C+18)·(milicevicBound D c + 2)^17)`.
+- *The polynomial lift to dimension three* (`k = 3`, degrees 1–3). This
+  runs through `exists_all_scale_polynomial_multilinear_cover 2`, the
+  polynomial Lemmas 16.6/16.9 and
+  `exists_simultaneous_commonDiff_partition_bound 2`, which calls
+  `exists_simultaneous_multilinear_partition_bound 3`. It supplies the
+  decomposition's `C, p`.
+
+`MultiplyLinear γ s` needs the width exponent `E ≥ c(s⁻¹ρ,γ,3)^s`, that is
+`s·2^{2^{11}}·log(s/(γρ)) ≥ log(1/E)`. Here `log(1/E) ≥ log(4C+18)`. So `s`
+must grow with `log C`. Since `C` is an arbitrary witness with no upper
+bound, `s ≤ η·s(θ,γ,3)` cannot be derived at `γ = θ = 1`, where the
+right-hand side is the fixed number `η(1,1)·2^{2^{512}}`. The budget's
+size does not matter: any opaque constant in the exponent blocks the
+comparison. This holds for every bound function. It is independent of `D`,
+of `Proofs16DeepBoundDomination`, and of whether deep structure is proved.
+
+Dimension two avoids it. Its cubic route (`Proofs16DimensionTwo`) uses only
+explicit partitions, and its family count `section16BaseFamilyBound` is
+polynomial. So the exponential-in-count width of the explicit Lemma 16.1
+is affordable there.
+
+**Ways out, in order of cost.**
+1. *Explicit simultaneous recurrences in degrees ≤ 3*: explicit `K, p` for
+   `simultaneous_monomial_recurrence j`, `j ≤ 2`. Candidates are Lau's
+   fully explicit bound (arXiv:2407.01611; see J.3) or an explicit
+   re-proof of the OAI theorem. Every exponent in the chain stays
+   unchanged, and both sources are cleared at once. This is the only
+   option that clears the lift.
+2. *Gowers's own Lemma 16.1, for the bilinear source only*:
+   `lemma_16_1_holds` is proved with explicit constants. Its width
+   exponent `K^(−2^(k+1)·q)` is exponential in the number `q` of forms.
+   For the variety partition, `q` is the rank `R`, polynomial in `Bnd`, and
+   `exp(−O(R))` fits the budget by the J.5-revisited count. For the lift it
+   does not. There `q ≈ r·Q` counts slice graphs, `Q ≈ exp(Bnd)`, and a
+   width `exp(−exp(poly))` is far below the allowed `exp(−Θ(r log r))`.
+   This is the same reason Part J needs `PolyBoundedControl` (J.3). Using
+   Lemma 16.1 on the bilinear side would also mean restating
+   `section16FreimanVarietyExponent` and the exponents above it, which are
+   written for the shape `p(q+1)^8`.
+3. *Bypass the Freiman-variety cover*: show that variety pieces form a
+   `CubicStackableClass` and use Part J. This needs polynomial counts,
+   which variety pieces do not have (`exp(Bnd)`), unless J.3's explicit
+   recurrence is proved first. That brings back option 1.
+
+So option 1 in degree 3 is the real requirement. The counts `exp(Bnd)`
+force a width exponent polynomial in the number of forms, and only an
+explicit Schmidt-type recurrence gives that.
+
+Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
+eventual, any-bound form) yields the decomposition with the unknown
+constants as parameters, but not `Theorem162At 3`.
