@@ -941,3 +941,16 @@ without a heap. The article records memory costs, complete normal-query
 timings, A/A controls and regressions. Reproduce the evidence with
 `../fast/merger_research/native.py` (`audit`, `intervals`, `normal`);
 records are in `data/adaptive-merger-*`. General QP recognition remains open.
+
+[`persistent_replay.tex`](persistent_replay.tex) adapts the subsequent signed
+circuit proposal to the independent source verifier. Consecutive raw singleton
+batches share immutable signed concatenations and one binding per eliminated
+generator, then export once. The article proves a polynomial size and bit
+bound for the entire raw block, with legacy-order recovery, explicit move
+boundaries and shared resource limits. All 1,112 tests pass; the audit preserves
+producer certificates on 79 diagrams and checks 400 new random blocks plus
+48 split source certificates against the old and literal replayers. Producer
+representation, arbitrary normalization alternations and general discovery
+remain separate work. Evidence is in `data/persistent-replay-*`, with native
+reproduction in `../fast/compressed_word_research/persistent_replay.py` and
+supplied-source timings in `data/persistent_replay_source.py`.

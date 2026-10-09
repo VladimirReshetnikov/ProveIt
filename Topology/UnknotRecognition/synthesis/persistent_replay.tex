@@ -1,0 +1,187 @@
+\section{Polynomial replay of an entire raw singleton block}
+\label{sec:persistent-replay}
+
+The persistent-elimination prototype in
+\path{ProveIt_UnknotRecognition_Research_2026-10-09.zip}, delivered in
+commit \texttt{92efcbaed}, gives a stronger representation bound than the
+per-batch estimate of Section~\ref{sec:ordered-batch}. A sequence of raw
+singleton eliminations can retain all historical word contexts in one
+signed circuit, with one binding per eliminated generator. Balanced context
+assembly makes the \emph{whole block} polynomial in its initial encoded
+parameters. This removes a depth hypothesis for that block; it does not
+bound unrestricted normalization, relator exposure or complete knot search.
+
+The native integration applies this representation to independent replay of
+consecutive version-eight \texttt{elimination\_batch} moves. It changes neither
+the certificate schema nor producer selection. The new checker reconstructs
+all contexts from the already independently recovered presentation, imports
+no producer routines, and exports once at the next different move or terminal.
+The separately implemented literal verifier is unchanged. The producer still
+uses its existing immutable arena and needs a later representation integration
+before the whole-block bound applies to its search.
+
+\subsection{Bindings and raw word semantics}
+
+A positive handle refers to a terminal $g$ or an immutable concatenation
+$(u,v)$ of signed handles; a negative handle denotes the formal inverse.
+Thus inversion reverses child order and changes both signs without allocating
+an inverse grammar. A live terminal $g$ may receive exactly one signed binding
+$g\mapsto w$. Every old occurrence then follows that binding, including
+occurrences in older images. Concatenations themselves never change.
+
+For a donor $U g^\epsilon V$, where $g$ has exactly one raw occurrence,
+the relation gives
+\[
+                  g=(VU)^{-\epsilon}.
+\]
+The checker descends the unique occurrence path through concatenations and
+bindings. Negative handles reverse the two children and their signs.
+Siblings before the occurrence are collected in traversal order; siblings
+after it are collected in reverse nesting order. Reversing the latter list
+and appending the former gives exactly $VU$. Pairwise balanced assembly
+creates the image with no expanded-word positions, slicing, free reduction
+or equality test. Empty images are allowed. In particular, a cancelling pair
+in a raw donor remains two occurrences rather than disappearing.
+
+Every off-path sibling is $g$-free in the current binding graph. Installing
+the new binding therefore cannot create a directed cycle. Subsequent
+eliminations act on all old occurrences through their new terminal bindings,
+so induction gives exactly the ordinary raw Tietze substitutions in every
+retained relator. Only the donor's original slot becomes zero; all other slots
+are retained. This argument requires the raw-word condition: a reduction
+oracle that hid occurrences by cancellation would invalidate the path test.
+
+\subsection{Independent batch validation and legacy witnesses}
+
+Allocation order ceases to be a dependency order once terminal bindings can
+point forward. Each batch therefore starts with Kahn's algorithm over all
+historical circuit nodes. A repeated child contributes two incidence edges;
+both edges are removed when that child is processed. Failure to obtain every
+node rejects the circuit.
+
+Assign ranks $1,\ldots,b$ to the batch's selected generators in their claimed
+dependency order and rank zero to survivors. In dependency order, compute
+the maximum rank in each current word and its multiplicity capped at two.
+Bound terminals inherit their target's summary; negative handles have the
+same summary as their positive counterparts. A donor is valid when its
+selected generator is its unique largest-rank letter. This simultaneously
+proves the singleton condition and that all its selected dependencies have
+strictly smaller rank. Unbound terminals must belong to the current live set.
+
+If the supplied order fails, the legacy path computes a selected-generator
+support bitset for every node, derives the donor dependency graph, and runs
+Kahn's algorithm on that graph. It then repeats the rank check in the recovered
+order. A cyclic graph, missing pivot, repeated pivot, invalid source slot,
+reused donor or eliminated generator rejects the witness. Thus unordered
+legacy evidence remains supported without exporting the intermediate grammar.
+The bitsets add a polynomial factor in the number of selected generators;
+they are not treated as constant-size machine words.
+
+All donor contexts in one batch are derived against the same pre-batch state.
+Their bindings are installed together only after validation and construction
+succeed. The strict rank inequalities prove the resulting binding graph
+acyclic. Equivalently, install the bindings in increasing dependency rank:
+each right-hand side can refer only to already installed selected definitions.
+This has the same raw word values as the old simultaneous substitution.
+Unused definitions are checked as well as those reached by surviving relators.
+
+The public roots and live set remain unchanged while the entire block is
+processed privately. The final export walks signed dependencies and emits
+ordinary immutable arena terminals and concatenations. Each signed state is
+compiled at most once; a binding becomes an alias. With $S$ circuit nodes,
+at most $2S$ ordinary nodes are added, often fewer because only retained roots
+are exported and interning can reuse old nodes. No mutable binding is inserted
+into the ordinary arena, so its cached inverses, reductions and metadata remain
+valid. A malformed later batch rejects the whole private block. Cancellation
+or export exhaustion can leave historical arena allocations, but publish no
+new relator roots or live-generator set.
+If the ordinary arena initially retains $N_0$ historical nodes, the combined
+node count during replay and export is at most $N_0+3S$, excluding ancillary
+arrays, bitsets and integer storage.
+
+\subsection{Whole-block size and bit bounds}
+
+Let $S_0$ be the initial number of nonempty signed-circuit nodes, $D_0$ the
+maximum concatenation depth with bindings ignored, and $k$ the number of
+distinct generators eliminated in the block. No move in this block creates
+a generator, so $k$ is at most the initial live rank minus one. Let $D_i$
+be the historical maximum binding-free depth after $i$ eliminations and
+$H_i$ the maximum full dependency height.
+
+Every dependency path contains at most $i$ binding edges. Between successive
+binding edges it follows at most $D_i$ immutable concatenations. Therefore
+\[
+        H_i\le(i+1)D_i+i < (i+1)(D_i+1)=A_i.
+\]
+A singleton context contributes at most $H_i$ siblings. Balanced assembly of
+$q$ siblings adds at most $\max(q-1,0)$ nodes and at most
+$\lceil\log_2\max(1,q)\rceil$ concatenation levels above their roots. Hence
+\[
+ D_{i+1}\le D_i+\lceil\log_2\max(2,A_i)\rceil.
+\]
+For simultaneous batches, first fix all sibling lists in the pre-batch graph,
+then conceptually construct and install images in dependency order. Those
+lists are no longer than the later historical height, and their original
+concatenation depths are no larger than the later $D_i$. Thus the same
+one-generator recurrence upper-bounds the implemented batch construction.
+
+Put $T_i=D_0+i+2\ge2$. Induction yields
+\[
+                 D_i\le D_0+6i\log_2 T_i.
+\]
+Indeed, this hypothesis implies
+$A_i\le T_i^2(1+6\log_2 T_i)\le T_i^5$:
+$\log_2 t\le t-1$ and $6t-5\le t^3$ for $t\ge2$.
+Consequently $\lceil\log_2\max(2,A_i)\rceil\le6\log_2T_i$,
+which gives the next induction step because $T_{i+1}\ge T_i$.
+Summing the bounds on newly created contexts gives the explicit conservative
+historical-size estimate
+\[
+ S_k\le S_0+\frac{k(k+1)}2(D_0+1)
+       +2k(k-1)(k+1)\log_2(D_0+k+2)=S_*.
+\]
+Only $k$ additional binding entries are needed. Initial import has at most
+the reachable ordinary source size; signed terminals and interning can reduce it.
+
+A binary circuit of full height $H$ unfolds to at most $2^H$ letters.
+Thus all exact length integers computed during export need at most
+\[
+ B_*=(k+1)\bigl(D_0+6k\log_2(D_0+k+2)+1\bigr)
+\]
+bits. Rank summaries themselves need only $O(\log(k+1))$-bit ranks and
+counts in $\{0,1,2\}$. There are at most $k$ batches; their topological and
+rank passes cost $O(kS_*)$ graph operations. Context traversal and balanced
+assembly are bounded by the same historical-height accounting. Unordered
+legacy batches add selected-support bit operations and dependency-graph work,
+still polynomial in $S_0,D_0,k$. Source import, sorting, generator identifiers,
+interning, the retained relator-slot list and $B_*$-bit export arithmetic must
+also be charged. These observations prove polynomial encoded replay for the
+whole raw block, rather than composing a separate constant-factor grammar
+bound once per batch.
+
+The native node allowance charges private circuit nodes and all historical
+ordinary arena nodes together, including nodes produced during export.
+All graph scans, context steps and export work use the caller's existing
+cooperative budget. This is not a hard byte-memory or wall-clock bound;
+Python containers, integers and temporary arrays have additional costs.
+The different charged operations can change finite-budget outcomes.
+
+\input{persistent_replay_results.tex}
+
+\subsection{Remaining integration and global obligations}
+
+The new module is \path{../fast/fastunknot/persistent_elimination_verify.py};
+the existing compressed source verifier groups consecutive batches and calls
+it. An isolated batch keeps the preceding ordered checker. Any different
+move ends the group before its own semantics are replayed. No normalization
+is silently inserted or removed, and all existing certificate versions remain
+subject to their original source and terminal contracts.
+
+This is a real strengthening of replay for an entire raw block. It is not
+yet a persistent producer or an exhaustive compressed donor-discovery theorem.
+The existing producer may still materialize intermediate grammars. Arbitrary
+alternations with normalization, Whitehead moves and new exposures have not
+received a comparable global bound. Nor does a supplied block guarantee an
+unknot terminal. Integrating a compatible persistent planner and controlling
+those remaining operations are subsequent steps toward the original general
+quasipolynomial goal, which remains open.

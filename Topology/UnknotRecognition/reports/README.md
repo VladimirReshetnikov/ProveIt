@@ -388,6 +388,14 @@ is not applied over the newer native census and independent verifier. The
 other two deliveries remain under review, particularly persistent raw
 singleton blocks and component-support bounds. Original archives are retained.
 
+The persistent signed-circuit idea in
+`ProveIt_UnknotRecognition_Research_2026-10-09.zip` is now adapted to the
+maintained independent version-eight checker. Consecutive raw batches share
+one circuit and export once; all 1,112 maintained tests pass. See
+`../synthesis/persistent_replay.tex` for the whole-block polynomial bound,
+source-bound compatibility audit, native measurements, and remaining producer
+integration. The delivered prototype and original archive remain unchanged.
+
 Commit `b365341b1` adds `ProveIt_Unknot_Sparse_Incidence_Research.zip` and
 `unknot_power_conjugacy_20261008.zip`. Initial README/contract review and all
 94 delivered checksum entries pass; see
