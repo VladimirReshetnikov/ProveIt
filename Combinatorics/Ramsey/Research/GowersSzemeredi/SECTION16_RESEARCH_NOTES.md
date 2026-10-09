@@ -4293,3 +4293,58 @@ the unchanged 115 companions and five open entries, and the selected
 port-scope check passes. Apache provenance/license files and upstream
 sources are unchanged. Subsequent merged main changes concern topology
 only and do not alter the audited Gowers dependency closure.
+
+
+
+### Theorem 33 on translated pieces: constants must be absorbed (2026-10-09, design)
+
+[49]'s proof of Theorem 33 partitions `C` into pieces
+`Sᵢ = C ∩ (xᵢ + Q′_s)`, translates of a shrunk progression. The lattice
+`Λ_s` is constructed so that `λ·L(y) = 0` for `y ∈ Q_s` and `λ ∈ Λ_s`.
+On a translated piece, Freiman-linearity gives
+`λ·L(y) = λ·L(xᵢ) + λ·L(y − xᵢ) = λ·L(xᵢ)` for `y ∈ Sᵢ`. That is a
+constant `c_λ`, in general nonzero.
+
+Claim 34's evaluation
+`Σ 1(Σνγ + Σaⱼ Lⱼ(y) = 0) Π c = δ₀δᵢ` uses both directions of the
+splitting. The converse direction (ν ∈ M and λ ∈ Λ_s imply that the
+relation holds at `y`) needs `c_λ = 0`. With constants the weight
+becomes `Σ_{λ∈Λ} w_λ·V(−c_λ)`, where `V(s)` weights the solutions of
+`ν·γ = s`. Degrees on the piece are still approximately constant. The
+codegree weight `Σ w_λ w_{λ′} V(−c_λ − c_{λ′})` is not in general the
+square, so quasirandomness can fail.
+
+The formal factorization (`relationWeightMixed_sumElim_of_split`)
+assumes the two-sided splitting and so cannot be applied blindly to
+translated pieces.
+
+**Resolution in this corpus's architecture.** Re-center each piece:
+- write `L(xᵢ + q) = L(xᵢ) + ψ(q)`;
+- move the constant frequencies `L(xᵢ)` into the fixed set `Γ`, as
+  `fixed_patterns_recentered` (J.85) already does for the pattern
+  frequencies.
+
+The normalized maps `ψ` vanish at `0`. On the centered piece, `λ ∈ Λ`
+gives `λ·ψ ≡ 0`, and the two-sided splitting is the right hypothesis.
+Each re-centering adds at most `|κ|` fixed frequencies. The relation
+chain has at most `|κ|` strict steps (`strict_chain_length_le`). So the
+fixed set grows by at most `|κ|²` frequencies over the whole iteration.
+
+Whether [49]'s proof needs this repair, or handles the constants in a
+step this reading missed, is not settled here. The formal route avoids
+the question by working only on centered pieces.
+
+**Annuli discharged; one iteration step (2026-10-09).**
+- `Proofs16PatternPrimeAnnuli.pattern_boxSum_of_relation_splitting_prime`
+  is J.90's `pattern_boxSum_of_relation_splitting` with its three
+  annulus hypotheses replaced by one budget,
+  `|F ⊕ (I ⊕ I)|·(4c+2) ≤ εN`, in prime `ℤ/N`. The step is
+  `mixedBohr_shift_band_le`, which applies `mixedBohr_band_le_budget` at
+  the centre `a + c`.
+- `Proofs16RegularityStep` and `Proofs16RegularityStepPairs` (one
+  iteration step, vertices and pairs, via `collision_pairs_ge`) were
+  retired in the same session. J.91's `Proofs16PopularKernelStep` and
+  `Proofs16StrictRelationKernel`, written concurrently, prove the same
+  step with a better loss: one popular fibre keeps `θ`, where the
+  collision route gives `θ²`. J.91–J.94 then build the full adaptive
+  iteration.
