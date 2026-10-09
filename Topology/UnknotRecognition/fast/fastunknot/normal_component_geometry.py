@@ -172,14 +172,14 @@ def disk_corner_intervals(prepared, analysed, offsets, check=lambda: None):
     return answer
 
 
-def component_weight_system(prepared, analysed, *, mode='disk', basis=None,
+def component_weight_system(prepared, analysed, *, mode='disk', basis=None, coordinate_indices=None,
                             check=lambda: None):
     """Build the maintained arc relation and query-specific additive weights.
 
     disk: (Euler characteristic, two integral boundary intersection counts).
     summary: the above, plus normal disk count and boundary point count.
-    coordinates: all 7t normal coordinates; used as the full-vector reference.
-    The last mode also permits extraction of actual component normal vectors.
+    coordinates: selected coordinates, or all 7t when coordinate_indices is None.
+    The dense default preserves the original certificate weight system.
     """
     if mode not in ('disk', 'summary', 'coordinates'):
         raise ValueError('mode must be disk, summary, or coordinates')
@@ -191,6 +191,10 @@ def component_weight_system(prepared, analysed, *, mode='disk', basis=None,
         raise ArithmeticError('edge universe sizes disagree')
     corners = disk_corner_intervals(prepared, analysed, offsets, check)
     dimension = 7*len(analysed['rows']) if mode == 'coordinates' else (3 if mode == 'disk' else 5)
+    positions = None
+    if mode == 'coordinates' and coordinate_indices is not None:
+        positions = {index: position for position, index in enumerate(coordinate_indices)}
+        dimension = max(1, len(positions))  # Empty source: one unused zero weight.
     weights = []
 
     def add(lo, hi, entries):
@@ -204,7 +208,10 @@ def component_weight_system(prepared, analysed, *, mode='disk', basis=None,
     if mode == 'coordinates':
         for index, lo, hi in corners:
             check()
-            add(lo, hi, [(index, 1)])
+            if positions is None:
+                add(lo, hi, [(index, 1)])
+            elif index in positions:
+                add(lo, hi, [(positions[index], 1)])
     else:
         # One unit per vertex, one debit per face arc, one credit per disk.
         add(0, size, [(0, 1)])

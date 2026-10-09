@@ -9,6 +9,7 @@ a separate obligation.
 
 from .normal_surface_geometry import _prepare, _coordinates, _fingerprint
 from .normal_component_geometry import component_weight_system, full_vector_signature
+from .normal_coordinate_basis import coordinate_basis, coordinate_decoder
 from .weighted_orbits import (
     weighted_orbit_histogram, weighted_histogram_from_orbit_certificate,
 )
@@ -64,6 +65,8 @@ def normal_component_census(triangulation, coordinates, *, mode='disk',
     ``mode='disk'`` uses three integer weights per representative.  ``summary``
     adds disk and boundary point counts.  ``coordinates`` returns a histogram
     of full 7t-coordinate component vectors, useful when a disc must be cut out.
+    It transports only positive quadrilaterals and positive vertex anchors,
+    recovering the remaining triangles from matching equations.
     Histogram multiplicities stay binary; no component list is expanded.
 
     A supplied ``orbit_certificate`` is checked and reused; ``max_cycles``
@@ -83,7 +86,11 @@ def normal_component_census(triangulation, coordinates, *, mode='disk',
     check()
     prepared = _prepare(triangulation, check)
     analysed = _coordinates(prepared, coordinates, check)
-    system = component_weight_system(prepared, analysed, mode=mode, check=check)
+    selected = None
+    if mode == 'coordinates':
+        selected, anchors = coordinate_basis(prepared, analysed, check)
+    system = component_weight_system(prepared, analysed, mode=mode,
+                                     coordinate_indices=selected, check=check)
     if orbit_certificate is None:
         result = weighted_orbit_histogram(system['size'], system['pairings'],
             system['weights'], dimension=system['dimension'], max_cycles=max_cycles,
@@ -95,7 +102,12 @@ def normal_component_census(triangulation, coordinates, *, mode='disk',
     if result['status'] != 'COMPLETE':
         return dict(status='INCONCLUSIVE', reason='orbit-cycle allowance exhausted',
                     mode=mode, stats=result['stats'])
-    summary = _component_summary(prepared, result['histogram'], mode, system['basis'], check)
+    histogram = result['histogram']
+    if mode == 'coordinates':
+        decode = coordinate_decoder(prepared, analysed, selected, anchors, check)
+        histogram = [dict(weight=decode(row['weight']), orbits=row['orbits'])
+                     for row in histogram]
+    summary = _component_summary(prepared, histogram, mode, system['basis'], check)
     if summary['components'] != result['orbit_count']:
         raise ArithmeticError('component multiplicities disagree with orbit count')
     if sum(row['euler_characteristic']*row['multiplicity']
@@ -111,7 +123,8 @@ def normal_component_census(triangulation, coordinates, *, mode='disk',
                   trust='components of the supplied normal surface in the validated '
                         'torus-boundary manifold; no knot-diagram correspondence asserted')
     if record_certificate:
-        answer['certificate'] = dict(schema='normal-component-census-v1',
+        schema = 'normal-component-census-v2' if mode == 'coordinates' else 'normal-component-census-v1'
+        answer['certificate'] = dict(schema=schema,
             input_sha256=_fingerprint(triangulation, analysed, check), mode=mode,
             boundary_homology_basis=system['basis'], weighted_orbits=result['certificate'],
             summary=summary)
