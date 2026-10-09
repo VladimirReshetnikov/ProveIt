@@ -61,7 +61,7 @@ def _primitive_cochain(prepared, heights, zero_tree, check):
     return values if common == 1 else None
 
 
-def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
+def _inspect_cocycle_source(diagram, certificate, source_check, *, check=lambda: None):
     """Return certified connected-surface data, or None for an invalid proof.
 
     A valid certificate with Euler characteristic other than one describes
@@ -79,7 +79,7 @@ def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
     if not certificate_equal(certificate['input_pd'], [list(row) for row in source.pd]):
         return None
     raw = certificate['triangulation']
-    if not verify_diagram_exterior(source, raw, check=check):
+    if not source_check(source, raw, check=check):
         return None
     try:
         prepared = _prepare(raw, check)
@@ -121,6 +121,10 @@ def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
                 compressing_discs=int(analysed['euler_characteristic'] == 1),
                 connectivity='zero-tree' if span is None else 'minimum-span')
     return summary, prepared, analysed
+
+
+def _inspect_cocycle_details(diagram, certificate, *, check=lambda: None):
+    return _inspect_cocycle_source(diagram, certificate, verify_diagram_exterior, check=check)
 
 
 def inspect_cocycle_certificate(diagram, certificate, *, check=lambda: None):

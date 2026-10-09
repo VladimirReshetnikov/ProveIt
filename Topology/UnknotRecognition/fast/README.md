@@ -3209,3 +3209,25 @@ Reproduce the source comparison and cycle-family counts using
 `python -B -m normal_orbit_research.quotient audit --output OUTPUT.json`, and
 candidate-pipeline timings with `benchmark --rounds 5` in the same driver.
 The native recognition schedule and its default options remain unchanged.
+
+
+The optional `--normal-seed-shellings` switch simplifies the finite exterior
+before native cocycle discovery. In Python, pass `normal_seed_shellings=True`
+to `recognize` or `shellings=True` to `normal_seed_decide`. This switch requires
+the native stage to be enabled (`--normal-seed` / `use_normal_seed=True`).
+Each move removes an embedded boundary tetrahedron only when its intersection
+with the boundary is exactly a nonempty proper union of facets. Extra boundary
+vertices or edges invalidate the move. The outer `diagram-shelling-witness-v1`
+proof stores the canonical source, stable removal indices and a disc, annulus
+or planar witness on the reduced exterior. Independent replay verifies the
+whole source-to-surface chain without importing the simplifier or Regina.
+
+Shellings default to off: fewer tetrahedra can change bounded candidate
+coverage and need not reduce complete recognition time. Misses still use the
+existing fallback. This does not establish a general subexponential or
+quasipolynomial algorithm. After initial geometry preparation, shelling
+selection uses O(N log N) indexed comparisons and O(N) storage; its independent
+trace replay adds O(N) indexed graph work. The trace has O(N log N) bits.
+Reproduce the topology/source audit with
+`python -B -m normal_orbit_research.shellings audit --output OUTPUT.json`, and
+complete forced-recognition timings with `recognize --rounds 5` in that driver.
