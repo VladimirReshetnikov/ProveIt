@@ -1,0 +1,35 @@
+{
+  "source_commit": "b365341b1939c69a26b31bb5d05a097d4572692c",
+  "archives": [
+    {
+      "archive": "docs/incoming/ProveIt_Unknot_Sparse_Incidence_Research.zip",
+      "archive_sha256": "01d62f0c5015393c22e608a187e35d00f51bd113636c01325d9681b030d69ef2",
+      "files": 41,
+      "zip_crc_pass": true,
+      "sha256_entries_checked": 40
+    },
+    {
+      "archive": "docs/incoming/unknot_power_conjugacy_20261008.zip",
+      "archive_sha256": "fdb77c2a53aa7c9f4d03a0d484ac75da4400fe458e25d62e4f18fa9bb324a38b",
+      "files": 55,
+      "zip_crc_pass": true,
+      "sha256_entries_checked": 54
+    }
+  ],
+  "status": "Initial README and contract review, CRC and all delivered SHA-256 entries checked. No tests, full mathematical review, or native integration of these two archives has run.",
+  "findings": [
+    {
+      "archive": "ProveIt_Unknot_Sparse_Incidence_Research.zip",
+      "assessment": "Overlaps the maintained sparse-incidence implementation and independent checker. Delivered rs query bound is weaker than the existing balanced support-sensitive strategy. Read its breakpoint accounting and gluing obstruction before adopting any additional theory; do not overwrite newer native modules."
+    },
+    {
+      "archive": "unknot_power_conjugacy_20261008.zip",
+      "assessment": "Potential new certified power-conjugacy saturation and binary power-minor rule. Requires verified knot-group provenance for balancedness; unconditional two-generator minor criterion is a separate claim to review. Delivery reports no added coverage over pure-power deletion in its small braid corpus, and its source frontend is capped literal construction. No native speedup or general QP bound is established."
+    }
+  ],
+  "next_actions": [
+    "Verify the power-minor sufficiency and necessity proof, certificate structure and native source binding before any production change.",
+    "Review graph balancedness and conjugator hypotheses against primary sources; reproduce delivered focused tests after active benchmarks finish.",
+    "Compare sparse inventory/breakpoint bounds with the already integrated implementation rather than applying the overlay."
+  ]
+}

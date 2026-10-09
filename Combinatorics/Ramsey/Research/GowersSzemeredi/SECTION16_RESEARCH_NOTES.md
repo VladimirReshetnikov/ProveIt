@@ -3681,3 +3681,82 @@ Remaining to feed the completion:
 - the relation-splitting hypothesis for most `t`. This is the Theorem 33
   iteration, with `freiman_const_on_bohr_of_dense` and
   `strict_chain_length_le` as its two simplified steps.
+
+### J.89. Robust witnesses on a proper target progression
+
+The representation-count input of J.87 is now constructed from the dense
+parameter set. The new modules are `Proofs16RobustCorrelation`,
+`Proofs16CorrelationWitnessCount`, `Proofs16RobustPatternRepresentations`,
+`Proofs16RobustRowFilling`, and `Proofs16GlobalRobustCompletion`.
+
+For `|W| = αN`, put `τ₀ = sqrt(α³)/4` and
+`S = commonLargeSpectrum W W τ₀`. Parseval gives `|S| ≤ 16/α²`.
+The mixed Fourier mass outside `S` is at most `α⁴N⁴/8`. For
+`y ∈ B(S; 1/(4π))`, the phase error on `S` is at most `1/2`.
+The zero-frequency contribution and the triangle inequality therefore give
+
+```
+‖mixedDifferenceCorrelation W W y‖ ≥ α⁴ N³ / 4.
+```
+
+This is converted to an exact count, without using nonzero correlation
+merely as an existence witness. The correlation coordinates `(t,x,z)`
+are in bijection with the triples `(x,z-(t-y),z)`. Their fourth point is
+`x-t`. For every containing class `W ⊆ C`, this identifies the correlation
+norm with `|(patternRepresentationTriples W C y)|`.
+
+The stronger class-relative witness density is retained:
+
+```
+robustRepresentationDensity α C = α⁴ N³ / (4 |C|³).
+```
+
+It is positive when `α > 0` and `C` is nonempty, and at least `α⁴/4`.
+Compared with replacing `|C|` by `N`, this retains a factor `(N/|C|)³`
+in the witness density and a factor `(N/|C|)⁶` in the squared row-filling
+error budget. The coarse bound is also proved as a separate interface.
+These are classical ambient-density estimates; they do not assert the
+quasipolynomial bounds of the deeper structural argument.
+
+If `W ⊆ B(T; ρ/4)`, every point of the representation Bohr set lies in
+`B(T; ρ)`, by its actual four-point representation. The already-ported
+proper-progression theorem supplies a symmetric proper target progression
+`P`, containing zero, of rank at most `|S|+1`, with
+
+```
+|P| ≥ exp(-((|S|+1) log(1+π) + 10(|S|+1)²)) N.
+```
+
+All its points remain in the original map domain and have the quantitative
+witness count above. `proper_progression_pattern_completion` combines
+this construction with the row-filling theorem. It needs no assumed
+representation count. It still requires the pattern graph's quasirandom
+box-sum bound and the explicit numerical budget involving its density.
+
+`global_robust_seven_operator_completion` composes this with J.88, starting
+from the actual global density of `A`. It constructs the initial proper
+progression `Q`, its dense subset `W`, the normalized maps, and the proper
+target progression `P`. It retains both relative and ambient lower bounds
+on `|W|` and sets `σ=|W|/N`, with the graph class `C=Q.carrier`. Given the
+remaining graph estimate and its displayed budget, every `y ∈ P` has the
+specified Bohr row contained in
+
+```
+horDiff (verDiff (verDiff (horDiff (verDiff (horDiff (horDiff A)))))).
+```
+
+The construction does not prove the remaining algebraic regularity
+iteration or recover the paper's prescribed quantitative constants.
+All five numbered open statements and the source-fidelity caveats remain.
+No upstream source was added or changed; the existing Apache provenance
+and copyright records cover the reused progression theorem.
+
+The 140-module source closure and all fifteen individual transitive axiom
+checks pass, using only `propext`, `Classical.choice`, and `Quot.sound`.
+
+The merged full audit passes for 6,566 public Gowers theorems in a
+5,013-module facade (4,152 OAI modules), or 5,015 modules including both
+audits. It includes the incoming per-frequency-radius Bohr relation and
+factorization results. The source ledger matches its tracked version
+(115 companions, five open statements), and the selected port-scope
+check passes. The full audit retains the same three-axiom boundary.

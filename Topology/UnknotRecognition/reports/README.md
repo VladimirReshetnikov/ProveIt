@@ -377,3 +377,21 @@ Report 51's ordered singleton checker is adapted to the native schema with
 legacy compatibility; see `../synthesis/ordered_batch.tex`. Lazy source state
 remains pending native integration. Report 52 remains an independent reference
 implementation.
+
+Three further archives arrived in commit `92efcbaed`. Their initial integrity
+checks and standalone persistent-circuit tests are recorded in
+`../synthesis/data/incoming-92ef-*`. The adaptive periodic-merger scheduler
+from `unknot_component_certificates_20261009.zip` is now integrated into the
+maintained AHT producer with unchanged complete certificates; see
+`../synthesis/adaptive_merger.tex`. Its alternative weighted/profile overlay
+is not applied over the newer native census and independent verifier. The
+other two deliveries remain under review, particularly persistent raw
+singleton blocks and component-support bounds. Original archives are retained.
+
+Commit `b365341b1` adds `ProveIt_Unknot_Sparse_Incidence_Research.zip` and
+`unknot_power_conjugacy_20261008.zip`. Initial README/contract review and all
+94 delivered checksum entries pass; see
+`../synthesis/data/incoming-b365-initial-triage.json`. No tests or native
+integration of these two deliveries have run. The sparse observer overlaps
+the maintained implementation; the power-conjugacy proposal requires further
+mathematical review and source-authenticated donor discovery.
