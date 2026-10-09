@@ -8929,3 +8929,80 @@ including the unchanged 4,152 OAI modules. The generated ledger is
 byte-identical to the tracked 115-companion / five-open catalogue. Port
 scope remains 4,134 upstream modules and 17 compatibility modules, with
 no change to the retained licenses or provenance notices.
+
+
+### J.139. Coherent mixed-subset richness via balanced walk compression
+
+The fourteen new modules assemble the second graph-extraction step while
+retaining the original column and anchor witnesses. They add twenty-seven
+named proofs and no upstream ports.
+
+**Two-level compression.** `graph_four_walks_le_of_small_common` counts
+four-walks by their middle vertex. If codegree at least `t` in `G` implies
+an edge of `H`, and the endpoints have at most `t` common neighbors in
+`H`, their four-walk count in `G` is at most `2*t*n^2`.
+For middle vertices outside the common `H` neighborhood, one `G` codegree
+is below `t` and the other is at most `n`; inside it, both are at most `n`.
+This proves the bound directly, including graphs with loops.
+
+`CoherentBridgeSystem.four_walks` applies two successive common-neighbor
+implications. More than `2*eta*N^3` four-walks at relation level `i+1`
+force the endpoint relation at level `i+3`, provided `i+1 <= depth`.
+Consequently four-walks of level-three relations give level five, at
+radius `sigma/1296`. This balanced argument avoids sequentially composing
+all four edges and does not use the old frequency-removal kernel radius.
+
+**Matched walks and popular endpoint fibres.** Two walks with equal edge
+steps are translates. Crossing the coherent edge identities gives a
+four-walk in their common-difference relation. The three-coordinate key
+`(u,u',v')` determines the endpoints; inside each key fibre the second
+internal triple determines both walks. Thus every fibre has size at most
+`N^3`, and injects into the corresponding coherent-relation four-walk set.
+
+A walk family of mass `mu*N^5` has at least `mu^2*N^6` matched pairs by
+Cauchy--Schwarz over the `N^4` possible edge-step sequences. At least
+`mu^2*N^3/2` endpoint keys have fibre size at least `mu^2*N^3/2`.
+When `4*eta < mu^2`, every such fibre passes the compression threshold.
+The key maps injectively to the mixed endpoint quadruple
+`(u,v',u',v'+u-u')`. Therefore endpoint sets of densities `beta1,beta2`,
+with four-walk density `lambda`, have at least
+`(beta1*beta2*lambda)^2*N^3/2` exact mixed quadruples at level five.
+All endpoint memberships and the additive identity are checked.
+
+**A nonvacuous density-dependent threshold.** For retained coherent
+quadruple density `kappa`, J.138 supplies a set `A` of density at least
+`9*kappa^2/512` and walk density
+`lambda = (3*kappa^2/64)^5/16384 = c*kappa^10`, where
+`c = 3^5/(64^5*16384)`.
+`HasCoherentRichSet` records the resulting exact mixed-quadruple lower
+bound for every two subsets of `A` above its specified threshold.
+
+The global construction uses a freely chosen natural parameter `p` and
+subset threshold `beta = kappa^(p+2)/512`. Since `0 < kappa <= 1`,
+`beta <= kappa^2/512`; the set `A` itself meets the threshold. The explicit
+`HasCoherentRichSet.self_richness` theorem records this fact and the
+resulting actual quadruple count. A threshold chosen independently of the
+retained density would not establish this nonvacuity.
+
+Choose the constant
+`S = coherentRichPowerScale = 256 + 8*512^4/c^2`
+and bridge accuracy `eta = kappa^(28+4*p)/S`. The proved estimates are
+`eta <= kappa^2/256` and `4*eta < (beta^2*lambda)^2`.
+They hold at the exact regularity stopping state, so neither is an
+unproved error-budget hypothesis in the global result. Bridge depth three
+suffices for both extraction stages. The earlier general accuracy lemmas
+also remain available for independently specified positive thresholds.
+
+`global_coherent_rich_system` takes only the original dense
+bihomomorphism, `p`, and the explicit density-dependent modulus bound
+`max (globalCoherentBridgeModulusBound alpha 3 (28+4*p) S) 3`.
+Its single-family and popular-anchor packages retain the actual refined
+frequency system and source map, original coherent progression, original
+popular witnesses, and all-radius graph profiles. The radius loss is
+constant `1296`, independent of `p`; the accuracy requirement carries
+the increasing density exponent.
+
+The recursive higher-tuple construction, subsequent local structure and
+comparison with the printed final Gowers budget still remain. This
+checkpoint does not close a numbered catalogue entry and does not claim
+an improved final Szemeredi threshold.
