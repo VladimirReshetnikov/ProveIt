@@ -5633,6 +5633,11 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      `d ≤ 16/β² + 1`. Every BSG loss downstream is polynomial in `γ`
      and `α`. Compare the triple-exponential guarantee of the
      model-elimination core.
+     The radii stay in the same regime. `zeroLadderRadius_ge` gives
+     `ρ_n ≥ u^((16D+1)^n)` for `u = min(1/2, ρ₀/5, ρ₁)`, from
+     `refinementKernelRadius_ge`:
+     `refinementKernelRadius d e ρ r ≥ (ρ/2)(ρ/5)^d (r/2)^(d+e)`. So
+     `log(1/ρ₁₆) ≤ (16D+1)^16 · log(1/u)`, a fixed power of `D`.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)
