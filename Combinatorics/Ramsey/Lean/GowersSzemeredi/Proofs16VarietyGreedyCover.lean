@@ -54,6 +54,14 @@ def IsVarietyPiece {N : Nat} [NeZero N] (D : Nat) (c : Real) (φ : ZMod N × ZMo
     ∀ q ∈ G, (q.1 - s, q.2 - t) ∈ bilinearBohrVariety Γ Ψ L (ρ / 2) ∧
       φ q = Φ (q.1 - s, q.2 - t)
 
+/-- Sub-pieces of a variety piece are variety pieces, with the same data.
+Restricting a piece to a sub-domain, as slices do, stays in the class. -/
+theorem IsVarietyPiece.mono {N : Nat} [NeZero N] {D : Nat} {c : Real}
+    {φ : ZMod N × ZMod N → ZMod N} {G G' : Finset (ZMod N × ZMod N)}
+    (h : IsVarietyPiece D c φ G) (hsub : G' ⊆ G) : IsVarietyPiece D c φ G' := by
+  obtain ⟨Γ, Ψ, r, L, ρ, s, t, Φ, hΓ, hΨ, hr, hρ, hL, hΦ, hG⟩ := h
+  exact ⟨Γ, Ψ, r, L, ρ, s, t, Φ, hΓ, hΨ, hr, hρ, hL, hΦ, fun q hq => hG q (hsub hq)⟩
+
 /-- **One greedy step.** A domain of size at least `θN²` contains a variety
 piece with at least `exp(−B(θ)) N²` points. -/
 theorem exists_variety_piece {D : Nat} (hM : MilicevicDeepVarietyStructure D)

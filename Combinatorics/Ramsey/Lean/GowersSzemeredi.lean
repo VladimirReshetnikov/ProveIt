@@ -359,6 +359,7 @@ import GowersSzemeredi.Proofs16VarietyStructureSide
 import GowersSzemeredi.Proofs16BihomPieceReduction
 import GowersSzemeredi.Proofs16DenseBihomPiece
 import GowersSzemeredi.Proofs16LineExtractor
+import GowersSzemeredi.Proofs16BohrDenseDifference
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments

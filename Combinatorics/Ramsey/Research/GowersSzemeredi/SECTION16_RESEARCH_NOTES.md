@@ -1296,6 +1296,17 @@ The variety route splits this into three steps.
    `Proofs16VarietySliceProvider` builds `Section16SliceProvider` from it.
    My parallel `Proofs16VarietyPieceJoint`, which landed two minutes later,
    duplicated the padding and was removed; git history keeps it.
+
+   **Coordination note: the slice-extraction input.** The peer's
+   `Proofs16VarietySliceProvider` assumes each sampled final-coordinate
+   section lies in the variety-piece class. Covering two-dimensional
+   product relations by such pieces, after removing θN² base points, is
+   exactly the conclusion of `structure_side_of_milicevic`. Every covering
+   piece satisfies `IsVarietyPiece D c` with c = θ/2/m(γ,θ/2), and the
+   count is K ≤ m·exp(B). Restricting a piece to a sub-domain stays in the
+   class (`IsVarietyPiece.mono`, `Proofs16VarietyGreedyCover`). What remains
+   is wiring these into the dimension-three slices, the analogue of
+   `Proofs16PartJSlices` for the general provider.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
@@ -1356,6 +1367,25 @@ breaks the budget for extremely small γθ. Polynomial n is exactly what
 OAI-free and builds locally, but it is wired to Gowers's lift. The
 restatement on the polynomial lift imports OAI through
 `Proofs05SchmidtRecurrence`, so it belongs on the full-verification host.
+
+### J.6 Formalizing Milićević's pipeline from the leaves (2026-10-08)
+
+The variety route now rests on `MilicevicDeepVarietyStructure` alone. That
+hypothesis is a reformulation of arXiv:2601.01682's construction (J.2), so
+formalizing the paper is the only way to discharge it. The work starts with
+the elementary lemmas of its §2:
+- **Lemma 2.5, done (`Proofs16BohrDenseDifference`, kernel-checked).**
+  `bohr_dense_sub_cover`: if 4^(k+1)·|B(Γ;ρ) ∖ A| ≤ |B(Γ;ρ)| with k = |Γ|,
+  then every d ∈ B(Γ;ρ/2) is a difference of two elements of A. The proof
+  counts with `bohr_card_le_four_pow`. Helpers: `bohr_add_half`,
+  `zero_mem_bohr`.
+- Already in the corpus: Lemma 2.4-type bounds (`bohr_card_lower`,
+  `bohr_card_le_four_pow`), regular radii (`bohr_exists_regular_step`), and
+  Freiman-linearity in coordinates, equation (9)
+  (`freiman_linear_gap_affine`).
+- Next leaves: Lemma 2.7 (radius functions with small boundary), then the
+  bilinear Bogolyubov argument (Theorem 1.6, §11 of the overview). The
+  latter is the first substantial component.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
