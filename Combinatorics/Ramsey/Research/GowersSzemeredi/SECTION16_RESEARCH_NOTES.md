@@ -5842,8 +5842,13 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
         where equal differences force a common shift `e`; each
         quadruple's fiber injects into its `shiftRel`-chains; averaging;
         then the ladder at levels `4i`.
-    - Still needed for Theorem 4.1: the final pruning to `A′` (elements
-      in many `Q 16` quadruples) and the bridging statement.
+    - `Proofs16AbstractBSGPruning` proves the pruning step
+      (`rich_pruning`). Take `θ < κ/2` with `κ = (ε²η)²/K⁴`. Then fewer
+      than `ε|X|` elements of `B` lie in fewer than `θ|X|²` additive
+      `Q 16`-quadruples (`richCount`). Otherwise Claim 4.4 on those
+      poor elements gives more quadruples than they carry.
+    - Still needed for Theorem 4.1: the bridging statement
+      (`|Z_ℓ(a)| ≥ (c/2K)^O(1)|X|^(3ℓ−1)`).
     - **Correction to the plan above (same day).** Theorem 4.1 does not
       conclude that *all* additive quadruples of `A′` are respected. It
       gives many bridging representations for every tuple of `A′`.
