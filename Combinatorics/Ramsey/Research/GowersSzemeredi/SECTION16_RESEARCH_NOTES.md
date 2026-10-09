@@ -1563,9 +1563,18 @@ the elementary lemmas of its §2:
     is 1 for |t| + c ≤ a, 0 for |t| > a + c, and lies in [0,1]. So
     Π_{γ∈K} g(γx) equals 1 on B(K;(a−c)/N), vanishes off B(K;(a+c)/N),
     and lies in [0,1] (`trapezoid_product_sandwich`);
-  - next: the trapezoid's DFT via
-    convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
-    bound, and the expansion.
+  - **brick B done** (`Proofs16TrapezoidFourier`, kernel-checked):
+    `centeredBall_eq_image` (the ball is a progression when 2a < N),
+    `fourier_centeredBall_le` (|Î_a(ξ)| ≤ N/(2|ξ|)), `fourier_trapezoid`
+    (ĝ = Î_a·Î_c/|I_c|), and `fourier_trapezoid_le`
+    (|ĝ(ξ)| ≤ (N/(2|ξ|))²/|I_c|);
+  - **bricks C, D done** (`Proofs16TrapezoidTruncation`,
+    kernel-checked): `fourier_inversion`, `inv_sq_tail_le`
+    (Σ_{M<m≤U} 1/m² ≤ 1/M), `centeredAbs_fibre_card_le` (≤ 2 residues
+    per centered value), and `residue_inv_sq_tail_le`
+    (Σ_{|ξ|>M} 1/|ξ|² ≤ 2/M);
+  - next: the telescoping product bound and the expansion into bounded
+    spans (bricks E, F).
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
   intersections, needing lattices or duality), Theorem 31, Proposition 18,
   Theorem 33 (algebraic regularity), Corollary 16 (robust
@@ -2674,3 +2683,81 @@ and Quot.sound occur. This includes the incoming discrete trapezoid
 sandwich and supersedes the pending audit notice above. The source
 ledger matches the checked 115/5 catalogue, with its existing fidelity
 caveats. The port scope check still passes; no upstream modules were added.
+
+
+### Sharper selection count from the initial covered values
+
+`corollary20_dense_eight_budget` retains the lower potential bound after
+the iteration terminates: the covered potential is at least
+`N + m*kappa*N` and at most `K*N`. Thus `m*kappa <= K-1`, improving the
+previous `m <= floor(K/kappa)+1` conclusion. The initial `N` comes from
+the zero value covered at every point. The termination argument and all
+density and Freiman invariants remain valid.
+
+`corollary20_bohr_pieces_budget` and
+`corollary20_bohr_all_triples_budget` carry this improvement to the Bohr
+extensions. `corollary20_common_bohr_budget` consequently reduces the
+common spectrum bound from `(K/kappa+1)*16*kappa^-2` to
+`((K-1)/kappa)*16*kappa^-2`. The radius, normalized locally additive
+difference maps, and exceptional-triple estimate are retained. At `K=1`
+the new budget forces the family and its common spectrum to be empty.
+The original four theorem interfaces are wrappers around these stronger
+results. This is a local quantitative improvement in the Section 16
+selection argument; the deep structure hypothesis and the five open
+numbered statements remain unresolved.
+
+The combined audit for the tighter selection budget passes: 6,199 public
+Gowers theorems, a 4,947-module facade (4,152 OAI modules), and 4,949 modules
+including the audit and import-compatibility check. Only propext,
+Classical.choice, and Quot.sound occur. All eight new and retained
+selection interfaces also pass individual transitive axiom checks. The
+audit includes the incoming trapezoid Fourier estimates. The source ledger
+remains 115/5 with its existing fidelity caveats, and the selected upstream
+module scope is unchanged.
+
+
+### Bounded Fourier support and the trapezoid L1 bridge
+
+`Proofs16BoundedFrequencySpan` defines the bounded frequency span using
+centered coefficients of size at most `R`. Its cardinality is at most
+`(2*R+1)^m` for `m` frequencies, including the case where the coefficient
+interval wraps around the modulus. A product of finite character sums
+expands over these coefficient choices, and its Fourier transform
+vanishes outside the span. Consequently an L1 approximation error below
+`epsilon*N` forces every Fourier coefficient of size at least
+`epsilon*N` into that span. These results work for any finite index type.
+
+`Proofs16TrapezoidL1` proves the actual error bound for the previously
+constructed trapezoid product. A [0,1]-valued sandwich has L1 error at
+most the cardinality of its boundary band. For the Bohr indicator at
+radius `a/N` and the trapezoid with integer smoothing width `c <= a`,
+the error is at most `|K|*(4*c+2)` in prime modulus. The finite endpoint
+term `2*|K|` is retained.
+
+`large_bohr_fourier_mem_boundedFrequencySpan` combines the two modules.
+If the bounded character product approximates the trapezoid product
+uniformly within `delta` and
+`|K|*(4*c+2) + delta*N < epsilon*N`, then every Bohr Fourier coefficient
+of size at least `epsilon*N` lies in the bounded span. The uniform
+approximation remains an explicit hypothesis: deriving it from the
+inverse-square Fourier decay and controlling the product error is the
+remaining analytic step. No bounded-span duality or deep structure
+theorem is claimed without that input.
+
+The three new modules contain eight theorem declarations and compile
+in a 44-module closure. The numbered catalogue and upstream port scope
+are unchanged.
+
+The combined bounded-span audit passes: 6,216 public Gowers theorems,
+a 4,950-module facade (4,152 OAI modules), and 4,952 modules including the
+audit and import-compatibility check. All eight new theorems also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. The source ledger remains 115/5 with the existing
+fidelity caveats, and the selected upstream module scope is unchanged.
+
+For the remaining scalar truncation error, Mathlib already supplies
+`sum_Ioc_inv_sq_le_sub` and `sum_Ioo_inv_sq_le` in `Analysis/PSeries`.
+Combining the centered-frequency multiplicity bound of two with these
+finite inverse-square tail bounds and `fourier_trapezoid_le` is the next
+concrete analytic step. The product error must then be controlled before
+applying the new large-coefficient bridge.

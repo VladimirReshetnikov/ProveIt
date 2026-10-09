@@ -67,6 +67,30 @@ theorem badWitnessTriple_card_le {N : Nat} [NeZero N]
 
 /-- For sufficiently large N the Bohr-extended selection covers all but
 εN³ triples, including triples with repeated evaluation points. -/
+theorem corollary20_bohr_all_triples_budget {N : Nat} [NeZero N] [Fact N.Prime]
+    (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real}
+    (hε : 0 < ε) (hN : 8 / ε ≤ (N : Real)) :
+    ∃ (m : Nat) (E : Fin m → Finset (ZMod N)) (L : Fin m → ZMod N → ZMod N)
+      (S : Fin m → Finset (ZMod N)),
+      (m : Real) * corollary20Kappa (ε / 2) K ≤ K - 1 ∧
+      (∀ i, FreimanHom 8 (E i) (L i) ∧ corollary20Kappa (ε / 2) K * N ≤ (E i).card ∧
+        (∀ x ∈ E i, L i x ∈ U x) ∧
+        ((S i).card : Real) ≤ 16 * (corollary20Kappa (ε / 2) K)^(-(2 : Real)) ∧
+        IsBHomomorphism (E i) (bohr (S i) (corollary20Kappa (ε / 2) K / (32 * Real.pi))) (L i)) ∧
+      ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) < ε * (N : Real)^3 := by
+  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_pieces_budget U h0 hK1 hK (half_pos hε)
+  refine ⟨m, E, L, S, hm, hE, ?_⟩
+  have hcount : ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) ≤
+      (Finset.univ.filter (IsBadTriple U E L)).card + 4 * (N : Real)^2 := by
+    exact_mod_cast badWitnessTriple_card_le U E L
+  have hlarge : (8 : Real) ≤ N * ε := (div_le_iff₀ hε).mp hN
+  have herr : 4 * (N : Real)^2 ≤ ε / 2 * (N : Real)^3 := by
+    have h := mul_le_mul_of_nonneg_right hlarge (sq_nonneg (N : Real))
+    nlinarith only [h]
+  linarith
+
+/-- Retain the original count interface as a consequence of the sharper budget. -/
 theorem corollary20_bohr_all_triples {N : Nat} [NeZero N] [Fact N.Prime]
     (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real}
@@ -79,15 +103,15 @@ theorem corollary20_bohr_all_triples {N : Nat} [NeZero N] [Fact N.Prime]
         ((S i).card : Real) ≤ 16 * (corollary20Kappa (ε / 2) K)^(-(2 : Real)) ∧
         IsBHomomorphism (E i) (bohr (S i) (corollary20Kappa (ε / 2) K / (32 * Real.pi))) (L i)) ∧
       ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) < ε * (N : Real)^3 := by
-  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_pieces U h0 hK1 hK (half_pos hε)
-  refine ⟨m, E, L, S, hm, hE, ?_⟩
-  have hcount : ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) ≤
-      (Finset.univ.filter (IsBadTriple U E L)).card + 4 * (N : Real)^2 := by
-    exact_mod_cast badWitnessTriple_card_le U E L
-  have hlarge : (8 : Real) ≤ N * ε := (div_le_iff₀ hε).mp hN
-  have herr : 4 * (N : Real)^2 ≤ ε / 2 * (N : Real)^3 := by
-    have h := mul_le_mul_of_nonneg_right hlarge (sq_nonneg (N : Real))
-    nlinarith only [h]
-  linarith
+  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_all_triples_budget U h0 hK1 hK hε hN
+  have hk : 0 < corollary20Kappa (ε / 2) K := by
+    unfold corollary20Kappa
+    have : (1 : Real) ≤ K := by exact_mod_cast hK1
+    positivity
+  have hmR : (m : Real) ≤ (K : Real) / corollary20Kappa (ε / 2) K :=
+    (le_div_iff₀ hk).mpr (by linarith)
+  have hmNat : m ≤ ⌊(K : Real) / corollary20Kappa (ε / 2) K⌋₊ :=
+    (Nat.le_floor_iff (by positivity)).mpr hmR
+  exact ⟨m, E, L, S, by omega, hE, hbad⟩
 
 end LeanProofs.GowersSzemeredi

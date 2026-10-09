@@ -47,7 +47,54 @@ theorem IsBHomomorphism.normalized_extension {N : Nat} {A B : Finset (ZMod N)}
   simpa only [hz, add_zero] using heq.symm
 
 /-- All-triples selection with one common Bohr neighborhood and explicit
-normalized difference maps. The rank bound contains no floor or ceiling. -/
+normalized difference maps. The initial covered zero values reduce the
+rank bound to ((K-1)/kappa)*16*kappa^-2, without a floor or ceiling. -/
+theorem corollary20_common_bohr_budget {N : Nat} [NeZero N] [Fact N.Prime]
+    (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
+    {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real}
+    (hε : 0 < ε) (hN : 8 / ε ≤ (N : Real)) :
+    ∃ (m : Nat) (E : Fin m → Finset (ZMod N)) (L psi : Fin m → ZMod N → ZMod N)
+      (T : Finset (ZMod N)),
+      (m : Real) * corollary20Kappa (ε / 2) K ≤ K - 1 ∧
+      (T.card : Real) ≤ (((K : Real) - 1) / corollary20Kappa (ε / 2) K) *
+        (16 * (corollary20Kappa (ε / 2) K)^(-(2 : Real))) ∧
+      (∀ i, FreimanHom 8 (E i) (L i) ∧ corollary20Kappa (ε / 2) K * N ≤ (E i).card ∧
+        (∀ x ∈ E i, L i x ∈ U x) ∧
+        FreimanHom 2 (bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi))) (psi i) ∧
+        psi i 0 = 0 ∧
+        (∀ x ∈ bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi)),
+          ∀ y ∈ bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi)),
+          x + y ∈ bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi)) →
+          psi i (x + y) = psi i x + psi i y) ∧
+        (∀ x ∈ E i, ∀ y ∈ E i,
+          x - y ∈ bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi)) →
+          L i x - L i y = psi i (x - y))) ∧
+      ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) < ε * (N : Real)^3 := by
+  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_all_triples_budget U h0 hK1 hK hε hN
+  let κ := corollary20Kappa (ε / 2) K
+  have hk : 0 < κ := by
+    dsimp [κ, corollary20Kappa]
+    have : (1 : Real) ≤ K := by exact_mod_cast hK1
+    positivity
+  have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  obtain ⟨T, hT, hB⟩ := common_bohr_extensions E L S
+    (fun i => (hE i).2.2.2.1) (fun i => (hE i).2.2.2.2)
+  have hzero : (0 : ZMod N) ∈ bohr T (κ / (32 * Real.pi)) := by
+    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun t ht => ?_⟩
+    simp only [mul_zero, centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
+    positivity
+  have hnonempty (i : Fin m) : (E i).Nonempty := by
+    apply Finset.card_pos.mp
+    have hpos := (mul_pos hk hNR).trans_le (hE i).2.1
+    exact_mod_cast hpos
+  choose psi hpsi hz hadd hagree using fun i =>
+    (hB i).normalized_extension (hnonempty i) hzero
+  refine ⟨m, E, L, psi, T, hm, ?_, fun i =>
+    ⟨(hE i).1, (hE i).2.1, (hE i).2.2.1, hpsi i, hz i, hadd i, hagree i⟩, hbad⟩
+  have hmR : (m : Real) ≤ ((K : Real) - 1) / κ := (le_div_iff₀ hk).mpr hm
+  exact hT.trans (mul_le_mul_of_nonneg_right hmR (by positivity))
+
+/-- The former common-neighborhood bound follows from the tighter budget. -/
 theorem corollary20_common_bohr {N : Nat} [NeZero N] [Fact N.Prime]
     (U : ZMod N → Finset (ZMod N)) (h0 : ∀ x, (0 : ZMod N) ∈ U x)
     {K : Nat} (hK1 : 1 ≤ K) (hK : ∀ x, (U x).card ≤ K) {ε : Real}
@@ -69,31 +116,21 @@ theorem corollary20_common_bohr {N : Nat} [NeZero N] [Fact N.Prime]
           x - y ∈ bohr T (corollary20Kappa (ε / 2) K / (32 * Real.pi)) →
           L i x - L i y = psi i (x - y))) ∧
       ((Finset.univ.filter fun t => ∃ v, BadWitness U E L t v).card : Real) < ε * (N : Real)^3 := by
-  obtain ⟨m, E, L, S, hm, hE, hbad⟩ := corollary20_bohr_all_triples U h0 hK1 hK hε hN
-  let κ := corollary20Kappa (ε / 2) K
-  have hk : 0 < κ := by
-    dsimp [κ, corollary20Kappa]
+  obtain ⟨m, E, L, psi, T, hm, hT, hE, hbad⟩ :=
+    corollary20_common_bohr_budget U h0 hK1 hK hε hN
+  have hk : 0 < corollary20Kappa (ε / 2) K := by
+    unfold corollary20Kappa
     have : (1 : Real) ≤ K := by exact_mod_cast hK1
     positivity
-  have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  obtain ⟨T, hT, hB⟩ := common_bohr_extensions E L S
-    (fun i => (hE i).2.2.2.1) (fun i => (hE i).2.2.2.2)
-  have hzero : (0 : ZMod N) ∈ bohr T (κ / (32 * Real.pi)) := by
-    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, fun t ht => ?_⟩
-    simp only [mul_zero, centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
-    positivity
-  have hnonempty (i : Fin m) : (E i).Nonempty := by
-    apply Finset.card_pos.mp
-    have hpos := (mul_pos hk hNR).trans_le (hE i).2.1
-    exact_mod_cast hpos
-  choose psi hpsi hz hadd hagree using fun i =>
-    (hB i).normalized_extension (hnonempty i) hzero
-  refine ⟨m, E, L, psi, T, hm, ?_, fun i =>
-    ⟨(hE i).1, (hE i).2.1, (hE i).2.2.1, hpsi i, hz i, hadd i, hagree i⟩, hbad⟩
-  have hmR : (m : Real) ≤ (K : Real) / κ + 1 := by
-    have hm' : (m : Real) ≤ (⌊(K : Real) / κ⌋₊ : Real) + 1 := by exact_mod_cast hm
-    have hf := Nat.floor_le (show (0 : Real) ≤ (K : Real) / κ by positivity)
-    linarith
-  exact hT.trans (mul_le_mul_of_nonneg_right hmR (by positivity))
+  have hmR : (m : Real) ≤ (K : Real) / corollary20Kappa (ε / 2) K :=
+    (le_div_iff₀ hk).mpr (by linarith)
+  have hmNat : m ≤ ⌊(K : Real) / corollary20Kappa (ε / 2) K⌋₊ :=
+    (Nat.le_floor_iff (by positivity)).mpr hmR
+  refine ⟨m, E, L, psi, T, by omega, hT.trans ?_, hE, hbad⟩
+  apply mul_le_mul_of_nonneg_right _ (by positivity)
+  have hd : ((K : Real) - 1) / corollary20Kappa (ε / 2) K ≤
+      (K : Real) / corollary20Kappa (ε / 2) K :=
+    div_le_div_of_nonneg_right (by linarith) hk.le
+  linarith
 
 end LeanProofs.GowersSzemeredi
