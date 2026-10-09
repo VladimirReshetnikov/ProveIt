@@ -3800,6 +3800,102 @@ needed is the identification of the pattern graph (`patternEdge` on
 `bohr F (θ/2)`) with this graph, via `bohr_floor_radius` and an
 enumeration of `F`.
 
+### J.90. Actual pattern degrees and the relation-density bridge
+
+The pattern graph now has exact degree and codegree identities at its
+actual real radii. `Proofs16PatternBohrDegrees` defines the fixed tuple
+on `F` and the varying tuple on `J 0 ∪ J 2`. The degree is the mixed Bohr
+set on their concatenation, with integer radii `floor(eta*N)` and
+`floor(eta*N/4)`. The codegree uses two varying blocks and preserves
+repeated frequencies. Rounding is exact because centered norms are
+integers. The identities count vertices of the actual subtype graph.
+
+`Proofs16PatternBohrQuasirandom` applies typical degree/codegree averaging:
+if the exceptional vertex and pair fractions are at most `chi`, and the
+typical absolute errors are at most `e*|B(F;eta)|`, then
+
+```
+boxSum (patternGraph - delta) ≤ 3(e+chi) |B(F;eta)|² |C|².
+```
+
+The budget form accepts `3(e+chi) ≤ epsilonGraph⁴` and supplies precisely
+the box-sum inequality consumed by the J.89 row-filling construction.
+
+The relation factor is no longer left with an uncontrolled complex norm.
+`Proofs16RelationWeightDensity` proves that a mixed relation weight is
+within the Fourier truncation error of a real `delta ∈ [0,1]`: use the
+normalized average of the product of trapezoids. No annulus regularity
+is required for this density fact. Setting the fixed coefficients to zero
+in a splitting identity identifies the common lattice weight with the
+varying tuple's relation weight. One splitting tuple therefore supplies
+a common approximate density for the whole relation class.
+
+`Proofs16PairedRelationDensity` proves exact product factorization of
+lattice weights. If the single weight is within `zeta` of `delta`, the
+paired weight is within `zeta*(2+zeta)` of `delta²`. Thus single and paired
+estimates use the same real density, rather than unrelated approximations.
+
+`Proofs16BohrDensityFactorization` converts the complex factor estimate
+into the real error
+
+```
+|B_full - delta*B_base| ≤ (4+2*zeta)*epsilon*N + zeta*B_base.
+```
+
+The last term retains the base Bohr cardinality. `Proofs16BohrDensityAtRadii`
+shifts the smoothing radii by `c`, expressing the conclusion directly at
+the desired inner radii and the annulus at the radii enlarged by `2c`.
+It supplies both the single and paired versions.
+
+`Proofs16PatternRelationsQuasirandom.pattern_boxSum_of_relation_splitting`
+composes these estimates with the exact pattern counts. Its hypotheses
+are the typical splitting identities, the single and paired annulus
+bounds, explicit truncation budgets, and the numerical conversion to
+relative degree error. Its conclusion is the actual pattern graph's box
+bound. This is the algebraic-to-graph implication, not a proof that those
+splitting identities and regular annuli exist on a suitable domain.
+
+`Proofs16PatternDensityLower` also removes a possible degeneracy of the
+approximate density. If the union of the fixed and varying frequencies
+has rank at most `r` and `4 ≤ eta*Q`, every pattern degree satisfies
+
+```
+N ≤ Q^r * degree(t).
+```
+
+A single typical degree with error `e*|B(F;eta)|` then gives
+`delta ≥ Q^(-r)-e`. In particular `e < Q^(-r)` supplies the strict positive
+density required by row filling.
+
+The incoming `Proofs16ComplexProfileQuasirandom` and `Proofs16SplitProfile`
+provide a complementary generic route using a typical vertex's actual
+degree as the density. They are retained. The new direct-radius
+intersection identity is named `mixedBohr_sumElim_radii`, while the
+incoming `mixedBohr_sumElim` takes an additional radius subtraction.
+Their public names and assumptions are distinct.
+
+All 25 new declarations pass individual transitive axiom checks, using
+only `propext`, `Classical.choice`, and `Quot.sound`; the final source
+check covers 145 modules. No ported code was added or modified. The
+algebraic regularity existence/iteration, its prescribed quantitative
+budgets, all five numbered open statements, and the previously recorded
+source-fidelity limitations remain unresolved.
+
+The full merged audit passes for 6,630 public Gowers theorems in the
+5,023-module facade (4,152 OAI modules), or 5,025 modules including both
+audits. The source ledger matches its tracked version, with 115
+companions and five open statements, and the selected port-scope check
+passes. The merged typical-codegree, complex-profile, and split-profile
+results are covered by the same three-axiom audit.
+
+A concurrent main update added `Proofs16RelationAveraging`: the popular
+witness pigeonhole step and the collision-pair Cauchy--Schwarz estimate.
+After the rejected main push, those results were reviewed, merged, and
+audited. The combined audit now passes for 6,641 public Gowers theorems
+in 5,026 modules (5,024 in the facade, including 4,152 OAI modules),
+with the same three allowed axioms and unchanged numbered-statement status.
+
+
 
 ### No radius selection in prime Z/N; the remaining lane (2026-10-09)
 
