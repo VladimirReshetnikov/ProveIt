@@ -1,0 +1,124 @@
+\section{Source-anchored discovery with the maintained search priorities}
+\label{sec:anchored-producer}
+
+The representation from Section~\ref{sec:anchored-replay} now also supports
+native producer discovery. Previously, even consecutive raw primitive moves
+rebuilt ordinary words after each round. The new producer keeps the original
+roots and a monomial image table through candidate discovery, primitive-width
+queries and subsequent contractions, then exports once. Its arithmetic is
+separate from the independent checker. No checker file, certificate schema
+or source prerequisite changes.
+
+\subsection{Recomputing eligibility on the fixed source}
+
+The producer evaluates signed occurrence counts on the surviving source
+roots under the current image table. A terminal mapped to $z^k$ contributes
+$|k|$ positive or negative occurrences according to both the original sign
+and the sign of $k$. Concatenation adds counts. Each node retains at most two
+current labels; a larger support is represented by an ineligible marker.
+A current root is a candidate precisely when it has two labels and neither
+label occurs with both signs. Slot order remains unchanged.
+
+Crucially, these summaries are recomputed after each image update. A source
+node with three original labels can become a valid two-label word after two
+labels acquire the same image. Permanently caching its original ineligibility
+would lose such donors. The old producer's immutable-node cache was valid
+because substitution created new ordinary roots; source anchoring changes
+that cache key.
+
+The maintained projection and forest planners consume this current candidate
+snapshot. Their only new internal parameter is a primitive-power callback.
+It evaluates the source word's exact prefix-height extrema under the current
+signed images, with no intermediate ordinary powering circuits. A coherent
+word with an occurrence count of one retains the existing immediate primitive
+case. Other candidates use the same gcd-normalized exponent vector and width
+criterion as before. Forest component merging, child selection, disjoint-pair
+selection, donor-slot order and the shared within-round power cache are
+unchanged. Hence the producer discovers the same greedy move, not merely
+some algebraically equivalent contraction.
+
+The new producer composes disjoint images directly. For a forest it resolves
+parent chains with memoized cumulative powers. This differs from the checker's
+independent forest validation and breadth-first reconstruction. Producer
+planning proves internal eligibility; only full source-bound replay can turn
+the resulting trace into an unknot verdict.
+
+\subsection{Preserving higher-priority operations}
+
+The ordinary producer still discovers the first move of an epoch. If that
+move leaves at most two generators, its existing direct updater is retained.
+The same direct route is retained when every primitive-vector coordinate in
+the move has absolute value one. Such a move only relabels signed terminals:
+it creates no nontrivial binary powering circuit. Complete source timings
+showed that importing these ordinary cases into lazy discovery added overhead.
+
+Otherwise the lazy block starts from the pre-move ordinary roots and consumes
+the already discovered move. Thus entry requires a nonunit monomial image
+and room for further raw discovery. This is an adaptive implementation choice
+between two exact producers; it does not suspend any donor search, change
+its order, or introduce a new mathematical hypothesis. A block already entered
+continues through unit moves as well. The ordinary unit path remains covered
+by the earlier polynomial raw-epoch theorem. It repeats discovery until no primitive move
+is available, rank reaches two, or a higher-priority singleton batch becomes
+available. Returning at rank two preserves the caller's existing primitive
+terminal test, including the option that disables that test.
+
+When singleton batches are enabled, their priority is evaluated exactly on
+the lazy state. Every source node carries raw length, a presence bitmask and
+a repeated-label bitmask. At a terminal with image $z^k$, the repeated bit is
+set exactly when $|k|>1$. At concatenation, repeated labels are the union of
+both children's repeated sets and their support intersection. A reverse pass
+propagates root multiplicities through source edges, including duplicate
+children, and accumulates each label's exact global occurrence count weighted
+by $|k|$. These summaries recover the maintained score
+$(\ell-2)\,\mathrm{count}(g)$, length, slot and generator tie-breaks.
+The existing acyclic singleton selection routine decides whether at least
+two donors take precedence. If so, the block exports and returns to that
+ordinary search branch; it does not silently execute a projection first.
+
+A stall also exports before power-pair deletion, normalization, overlap moves
+or Whitehead search. The caller may repeat a boundary eligibility query on
+the exported state; this conservative handoff preserves the existing control
+flow. Ordinary source reconstruction and final endpoint tests remain outside
+the private image-table interface. Roots, live labels and emitted moves are
+published only after all discovery and export work succeeds. Limits and
+cancellation cannot publish a partial trace. As with the checker, speculative
+ordinary export nodes may remain allocated on failure and stay charged.
+
+\subsection{Encoded cost and the remaining global problem}
+
+Use $r,m,S_0,B,\Lambda$ from Section~\ref{sec:anchored-replay}. The fixed-source
+saturated-kernel theorem again bounds cumulative exponents by
+$\Lambda=O(r(B+\log(r+1)))$. Each successful primitive round removes a
+label, so a block has at most $r-1$ successful rounds and one final unsuccessful
+query. Signed counts, lengths and height extrema have $O(B+\Lambda)$ bits.
+No ordinary nodes are allocated by discovery or image composition; final
+export gives
+\[
+ N_{\rm final}\le N_0+O(S_0+r\Lambda).
+\]
+
+Unlike supplied-certificate verification, discovery can test unsuccessful
+donors. The number of successful contractions alone does not bound these
+queries. A simple safe bound allows $m$ candidate roots in each of $O(r)$
+rounds, each visiting at most $S_0$ source nodes. The implementation obtains
+topological order by sorting reachable ordinary node handles, so one may
+bound this portion by
+\[
+ O\!\left(r(m+1)(S_0+1)\log(S_0+2)+rm+r^2+r\Lambda\right)
+\]
+node, comparison and arithmetic operations, with integer bit costs separate.
+This is deliberately a whole-block polynomial bound rather than a claim
+that every failed profile is charged to a removed generator.
+
+With singleton priority enabled, its source summary passes remain polynomial
+in the same parameters. Each round supplies at most $mr$ singleton candidates
+to the existing finite acyclic selector, with bitmasks of at most $r$ bits;
+its sorting and reachability work must also be counted. There are at most
+$r$ such calls in a block. These observations establish polynomial encoded
+maintenance and discovery within this restricted source model. They neither
+bound the number of nonmonomial source changes nor establish that these moves
+find an unknot proof for every diagram. The general quasipolynomial objective
+therefore remains open.
+
+\input{anchored_producer_results.tex}

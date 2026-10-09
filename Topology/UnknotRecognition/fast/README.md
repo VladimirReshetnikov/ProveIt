@@ -2811,3 +2811,28 @@ python -B compressed_word_research/anchored_replay.py kernels --output results/a
 python -B compressed_word_research/anchored_replay.py source --output results/anchored_replay_source.json
 python -B compressed_word_research/anchored_replay.py pipeline --output results/anchored_replay_pipeline.json
 ```
+
+### Source-anchored primitive discovery
+
+Optional projection and forest search now retain a monomial source table across
+raw discovery rounds when a discovered move introduces nonunit powers and
+leaves more than two generators. Unit-image entry moves retain the faster
+cached ordinary implementation. Signed two-label eligibility is recomputed under the
+current images; the existing greedy planners use source height profiles for
+primitive-power queries. One export replaces repeated ordinary substitutions.
+The producer returns to the existing search at rank two, before a higher-priority
+singleton batch, and at a primitive stall. All independent checker files remain
+unchanged. The full source audit preserves certificates in six option combinations,
+including combined singleton/forest search.
+
+The encoded bound is polynomial within a fixed monomial source block. It counts
+failed donor queries as well as successful moves and ends at normalization or
+other nonmonomial source changes. See
+[the theory and complete-call evidence](../synthesis/anchored_producer.tex).
+
+```bash
+python -B compressed_word_research/anchored_producer.py audit --output results/anchored_producer_audit.json
+python -B compressed_word_research/anchored_producer.py kernels --output results/anchored_producer_kernels.json
+python -B compressed_word_research/anchored_producer.py source --output results/anchored_producer_source.json
+python -B compressed_word_research/anchored_producer.py pipeline --output results/anchored_producer_pipeline.json
+```
