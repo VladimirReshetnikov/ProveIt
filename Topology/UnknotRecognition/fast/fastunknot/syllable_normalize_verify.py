@@ -19,10 +19,19 @@ def replay_cyclic_roots(arena, roots, *, cache=None, max_runs=4, min_length=64):
         stack=[(root,0)]
         while stack:
             arena.tick();node,phase=stack.pop()
-            if node in memo:continue
+            if node in memo:
+                if memo[node] is None:
+                    memo[root]=None
+                    arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
+                    return None
+                continue
             rule=arena.rules[node]
-            if rule[0]=='t':
-                x=rule[1];memo[node]=((abs(x),1 if x>0 else -1),)
+            letter=arena.uniform[node]
+            if letter:
+                # The source-built arena certifies a single signed raw letter.
+                exponent=arena.lengths[node]
+                memo[node]=((abs(letter),exponent if letter>0 else -exponent),)
+                arena.stats['run_normalization_uniform_hits']=arena.stats.get('run_normalization_uniform_hits',0)+1
             elif phase==0:stack.extend(((node,1),(rule[2],0),(rule[1],0)));continue
             else:
                 prefix,suffix=memo[rule[1]],memo[rule[2]]
@@ -37,9 +46,11 @@ def replay_cyclic_roots(arena, roots, *, cache=None, max_runs=4, min_length=64):
                     word=tuple(left)+tuple(right)
                     memo[node]=word if len(word)<=max_runs else None
             arena.stats['run_normalization_nodes']=arena.stats.get('run_normalization_nodes',0)+1
-        if memo[root] is None:
-            arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
-            return None
+            if memo[node] is None:
+                # Cache the query's rejection without evaluating its other branch.
+                memo[root]=None
+                arena.stats['run_normalization_misses']=arena.stats.get('run_normalization_misses',0)+1
+                return None
     answers=[]
     for root in roots:
         arena.tick()
