@@ -8411,3 +8411,13 @@ threshold.
 **Production verification.** All sixteen new modules check in a
 428-module production closure. The full facade, individual axiom checks,
 merged state, and unchanged catalogue are verified below.
+
+**Final verification.** All 28 new named theorems pass individual axiom
+checks. The complete merged audit checks 8,129 public Gowers theorems in
+5,343 combined modules (5,341 facade modules, including 4,152 OAI modules),
+with only `propext`, `Classical.choice`, and `Quot.sound`. The regenerated
+numbered ledger is byte-for-byte unchanged at 115 companions and five
+open entries, with the existing statement-fidelity qualifications. The
+selected dependency scope remains 4,134 upstream and 17 compatibility
+modules. The reviewed incoming changes concern only the independent
+topology development; no Gowers dependency or licensing scope is added.
