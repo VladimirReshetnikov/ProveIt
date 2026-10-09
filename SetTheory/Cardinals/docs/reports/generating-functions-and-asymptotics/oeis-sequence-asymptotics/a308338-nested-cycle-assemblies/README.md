@@ -1,4 +1,4 @@
-# Assemblies of Nested Cycles (OEIS A308338, A392471, A007838)
+# Assemblies of Nested Cycles (OEIS A308338, A392471, A007838); Part II: Sharp Gumbel Errors and Optimal Continuous Calibration for the Largest Outer Component
 
 **`a_n ~ C n! n^{c/2−3/4} e^{2√(cn)}` with `c = e^{−γ}` and an explicit `C`;
 a complex-uniform expansion to every fixed order in `n^{−1/2}` with
@@ -8,22 +8,42 @@ from the write, Riedel's conjecture `E[X] ~ N√n` proved with
 `N = e^{−γ/2}`, and a corrected covariance display of Erlihson and
 Granovsky**
 
-A research article ("Report 167" of a session bundle), built from one
-manuscript dated 3 October 2026. Its author line reads "Report 167" and its
-PDF author field is empty: it names no person, tool or addressee. The package
-carries no "prepared for private review" line, no e-mail address and no
-personal data (the word "private" occurs only in the delivered README's
-"private fresh format", a TeX format file).
+**Part II (added 9 October 2026): for the size `M_n` of the largest outer
+component (a nested cycle of maximal size, not the longest single cycle),
+and for every assembly with weights `p_k = c + O(1/k)`: with `τ` the exact
+size saddle and `L = log(c/τ)`, the ordinary Gumbel error is
+`d_K(F_n, G) ~ κ τL²/(4c)`, `κ = (2+√5)e^{−(3+√5)/2}`; no affine
+normalization removes this order; an explicit increasing calibration
+`G∘h_τ` has error `τ/(2e) + O(τ/L)`, and `τ/(2e)` (half the largest atom) is
+optimal among all continuous distribution functions; a lattice law with error
+`O(τ/L)` and an exponential-integral refinement with error `O(τ^{3/2}L³)`;
+integer quantiles with bounded error. For nested cycles the raw error is
+`(e^{γ/2}κ/16) log²n/√n`. It answers none of Part I's questions.**
+
+Two Parts. Part I is a research article ("Report 167" of a session bundle),
+built from one manuscript dated 3 October 2026. Its author line reads
+"Report 167" and its PDF author field is empty: it names no person, tool or
+addressee. The package carries no "prepared for private review" line, no
+e-mail address and no personal data (the word "private" occurs only in the
+delivered README's "private fresh format", a TeX format file). Part II is a
+research manuscript dated 8 October 2026, "Research manuscript prepared for
+Vladimir Reshetnikov" (title page and PDF author); its README calls it "an
+AI-assisted, unrefereed manuscript", and a source comment names an agent,
+`proveit_scout`, as the author of its Fourier section.
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 | Report 167 (batch 108) | `Nested_Cycle_Assemblies_Asymptotics_and_Inverses_Source.zip` (21 files at the archive root and in `companion/` and `data/`, 938,156 bytes, SHA-256 `ef59faff…eaebc0b63`), arrival commit `60f54ea06`; main file `Report167.tex` (908 lines, 15 pp.) | none: the package names no ProveIt commit and cites nothing in the repository | `602e5bd0f` (batch 108) | the whole report |
+| 01 | Report 167 (batch 108) | `Nested_Cycle_Assemblies_Asymptotics_and_Inverses_Source.zip` (21 files at the archive root and in `companion/` and `data/`, 938,156 bytes, SHA-256 `ef59faff…eaebc0b63`), arrival commit `60f54ea06`; main file `Report167.tex` (908 lines, 15 pp.) | none: the package names no ProveIt commit and cites nothing in the repository | `602e5bd0f` (batch 108) | Part I (Sections 1–11) |
+| 02 | *Sharp Gumbel Errors and Optimal Continuous Calibration for Random Assemblies* (batch 138, group OEIS, manuscript 03) | `sharp_gumbel_assemblies.zip` (24 files in one wrapper directory, 987,801 bytes), arrival commit `b28d0850b`; main file `article.tex` + 2 section files + a generated table file (1,926 lines, 27 pp.) | blob `07022425b718` of Part I's `article.tex` at ProveIt `2bac1ea07b98` (7 October 2026, 21:26 PDT; Part I before this write) and `adc7f1241b42` of `openai/math` (not checked) | `803f4d937` (18 files, prefix `02-gumbel-`) | Part II (Sections 12–23 and Appendices A–B; Section 12 added by the write) |
 
-**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
-declaration exists for any statement of this report, and nothing in the
-repository formalizes these assemblies. No proof uses a computation.
+**Status:** Part I is AI-assisted, as is Part II (its README). Both Parts
+are unrefereed and not formalized: no Lean or Rocq declaration exists for any
+statement of this report, and nothing in the repository formalizes these
+assemblies. No proof uses a computation.
 
 ## Trust boundaries
+
+Part I:
 
 - **What rests on an external theorem.** Every analytic statement rests on
   the component estimate `p_m = B_m/m! = c + c/m + O(log m/m²)` (`(1.4)`,
@@ -44,7 +64,31 @@ repository formalizes these assemblies. No proof uses a computation.
   (optionally, with SymPy) the finite symbolic identities behind `R_1`, `R_2`,
   `B`, `B_3`, `m_0`, `v_0`, `M_1`, `V_1`. It proves nothing asymptotic.
 
-## What it proves
+Part II:
+
+- **What is proved by hand.** Every theorem of Sections 14–21 from the
+  stated weight hypothesis `p_k ≥ 0`, `p_k = c + O(1/k)`: conditioned Poisson
+  identities, Fourier inversion on the circle with a common block of
+  positive weights bounding the whole circle (Lemma 15.2), a paired Fourier
+  difference that keeps a cancellation the separate estimates would lose
+  (Theorem 15.4), Taylor estimates and elementary sums. The `E_1` refinement
+  (Theorem 20.1) and the explicit saddle (Proposition 21.2) need the refined
+  hypothesis `p_k = c + a_*/k + O(log(k+1)/k²)`.
+- **What rests on an external theorem.** For nested cycles only: Part I's
+  credited component estimate `(1.4)` (`ncy:eq:prior`, Greene–Knuth through
+  Flajolet–Fusy–Gourdon–Panario–Pouyanne), quoted as `(13.2)`; it is the
+  refined hypothesis with `c = a_* = e^{−γ}`. No statement of Part I enters a
+  proof.
+- **What is prior.** The first-order Gumbel laws (Panagiotou–Ramzews,
+  arXiv:2208.00925, Theorem 1.2, for expansive assemblies; Bousquet-Mélou–
+  Weller, FPSAC 2013, Proposition 9, for forests of paths) and the
+  component asymptotics.
+- **What is diagnostic.** Tables 1–2, both figures and every decimal:
+  floating point, no interval arithmetic; the large path-forest errors are
+  sampled maxima. The nested-cycle errors are still far from their proved
+  constants at `n ≤ 10⁵` (below).
+
+## What Part I proves
 
 `P(z) = Π_{m≥1}(1 + z^m/m)` is the EGF of permutations with distinct cycle
 lengths (A007838, `B_m`); a nested cycle is such a set of cycles in its
@@ -97,6 +141,55 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   checked, relation to the repository, collected non-claims, reading
   conventions; a note on the package at the end of Section 9; a note and
   Question 6 in Section 11.
+
+## What Part II proves
+
+Weights `p_k ≥ 0`, `p_k = c + O(1/k)`, `c > 0`; the law of the component
+spectrum is `Z_n^{−1} Π p_k^{N_k}/N_k!`, and `M_n = max{k : N_k > 0}`. `τ`
+solves `B_1(τ) = Σ k p_k e^{−τk} = n` (`τ ~ √(c/n)`), `L = log(c/τ)`
+(`~ ½ log n`), `Y_n = τM_n − L`, `F_n` its distribution function,
+`G(x) = exp(−e^{−x})`, `δ = τL²/(4c)`, `β = e^{−x}`, `q = L + x`. Part II's
+Section `k` is the manuscript's Section `k − 12`; statement and equation
+numbers below are those of this report.
+
+- **Theorem 14.2 (`ncy:gb:thm:main`)**, summarizing:
+  `F_n = G + δ G e^{−x}(1 − e^{−x}) + O(τL)` uniformly;
+  `F_n = J_n + τ(½ − θ_n(x))G'(x) + O(τ/L)` with `J_n = G∘h_τ`,
+  `h_τ(x) = x + (τ/(4c))[q² − q − 1 − β(q+1)²]`; `‖F_n − U_n‖ = O(τ/L)`.
+- **Theorem 15.4 (`ncy:gb:thm:tailmoment`)**: `P(M_n ≤ m)` equals
+  `e^{−S_0(m)}[1 + (S_2 − S_1²)/(2V) − B_3S_1/(2V²)] + O(τ^{3/2}L³)`
+  uniformly in `m`, from the exact identity
+  `P(M_n ≤ m) = e^{−S_0(m)} P(T_m = n)/P(T = n)` (`(14.13)`).
+- **Theorem 16.2 (`ncy:gb:thm:lattice`)**: the lattice law `U_n` with error
+  `O(τ/L)`.
+- **Proposition 17.1 (`ncy:gb:prop:kappa`)**: `d_K(F_n, G) = κδ + O(τL)`,
+  `κ = (2+√5)e^{−(3+√5)/2} = 0.309004785987675…`;
+  **Theorem 17.2 (`ncy:gb:thm:affine`)**: the best affine normalization has
+  error `E_*δ(1 + o(1))`, `1/(2(e²/2 + 2e + 2√e)) ≤ E_* ≤ κ`.
+- **Theorem 18.1 (`ncy:gb:thm:atom`)**: the largest atom is `τ/e + O(τ²L²)`,
+  and the best continuous approximation has error exactly half of it.
+- **Theorem 19.1 (`ncy:gb:thm:optimal`)**: `h_τ` is an increasing bijection
+  for `τ/c ≤ 1/4`, and `‖F_n − J_n‖ = τ/(2e) + O(τ/L)`, the optimal leading
+  constant; **Corollary 19.2**: integer quantiles with `O(1)` error.
+- **Theorem 20.1 (`ncy:gb:thm:e1`)**: under the refined hypothesis,
+  `F_n = U_n − a_* G(x) E_1(max{1, L+x}) + O(τ^{3/2}L³)`, and
+  `‖F_n − U_n‖ ~ |a_*|τ/(ceL)` when `a_* ≠ 0`.
+- **Corollary 21.1 (`ncy:gb:cor:nested`)**, nested cycles (`c = a_* = e^{−γ}`):
+  raw error `~ (e^{γ/2}κ/16) log²n/√n`, calibrated `~ (e^{−γ/2}/(2e)) n^{−1/2}`
+  (optimal), lattice `~ (2e^{−γ/2}/e)/(√n log n)`, refined
+  `O(n^{−3/4} log³n)`; **Proposition 21.2**: `τ = √(c/n) + c/(2n) + O(n^{−3/2} log²n)`.
+- Path forests (`c = 1/2`, `a_* = 0`) as a second model; Section 22: exact
+  checks at `n = 50`, Fourier computations for `n = 10³…10⁵` (nested) and
+  `10⁴…10¹²` (forests), Tables 1–2, Figures 1–2.
+
+Added by the write (9 October 2026), marked `[write]`: Section 12
+(`ncy:gb:sec:front`: provenance, how it was merged, what Part II answers in
+Part I, what was checked, collected non-claims, reading conventions); the
+editorial note after Part I's status note; notes at the end of Sections 1.1,
+11 and 13, after Proposition 17.1 (a rounded constant) and Corollary 21.1
+(the constants, the input), at the end of Sections 22 (the package, two
+printed differences, the write's reproduction) and 23 (`E_*`, the questions),
+and in Appendix B; labels on the eleven questions of Section 23.
 
 ## Riedel's conjecture, proved
 
@@ -200,10 +293,37 @@ paper (Question 6). Nothing was sent to the authors.
   recurrences"; the PDF is titled "a conjecture".
 - **A007838** (#74, unchanged) states (1.4) and cites Greene–Knuth.
 - The three b-files agree with `data/exact_data_100.json` for `n ≤ 100`.
+- At Part II's write (9 October 2026) A308338 was read again: revision #21,
+  unchanged; Part II's 22 checked terms are its data. Part II names no
+  revision.
+
+## Part II: records of the write
+
+- **A rounded constant.** Proposition 17.1 prints `κ = 0.309004785987676…`;
+  `κ = 0.3090047859876757102…`, so the truncation is `0.309004785987675…`
+  (dated note; nothing depends on the digit).
+- **Two printed differences.** Section 22 prints maximum differences
+  `1.83×10⁻¹⁴` (exact against Fourier, `n = 50`) and `1.85×10⁻⁹`
+  (recurrence against Fourier, `n = 1000`); the delivered record has
+  `1.824029208924438e-14` and `1.844130930914959e-9`. Neither rounding nor
+  truncation; true as upper bounds (dated note).
+- **The constants are not visible in the numerics.** At `n = 10³, 10⁴, 10⁵`
+  the nested-cycle errors over their proved equivalents are `2.52, 1.87,
+  1.57` (raw / `κδ`), `5.54, 4.69, 3.58` (calibrated / `τ/(2e)`) and
+  `5.69, 5.92, 5.19` (lattice / `τ/(eL)`). The manuscript says the
+  calibrated error "need not yet be close" to its constant; the tables
+  neither contradict nor confirm the constants. Only the path-forest model
+  (`a_* = 0`) gets close: calibrated ratio `1.0029` at `n = 10¹²`.
+- **`E_*`** (Question 23.3; uncertified, the write's): `E_* ≈ 0.1024413800`
+  at slope `α ≈ 1.0000000`, shift `b ≈ −0.2784645`, with three-point
+  equioscillation at `x ≈ −1.265, 0, 2.164`; about `κ/3.02`. Whether `α = 1`
+  exactly is open.
+- **Stale or wrong statements:** none found. The proposal of a separate
+  report `a308338-sharp-largest-components/` was declined at placement.
 
 ## What is not claimed
 
-From the source, kept in the article (collected in Section 1.1):
+Part I, from the source, kept in the article (collected in Section 1.1):
 
 - Every fixed order only: no convergence, optimal truncation, Stokes
   phenomenon or complete beyond-all-orders description; constants not
@@ -225,6 +345,22 @@ are floating evaluations and an inference, not a statement of Riedel's; the
 correction in Remark 10.1 rests on the conditioning computation, not on a
 re-audit of the whole paper.
 
+Part II, from the manuscript (collected in Section 12.4): the first-order
+Gumbel laws and the component asymptotics are prior; the quantitative
+refinements are "proposed new contributions", and the directed literature
+audit "does not establish worldwide priority"; unrefereed, AI-assisted,
+checked by agent derivations and audits that "are not human peer review",
+not formalized; computations check finite arithmetic and coefficient ratios
+and prove nothing asymptotic; no interval arithmetic, sampled maxima for the
+largest path-forest sizes, node agreement does not bound the omitted arc;
+no effective constant or finite threshold ("moderate sizes can be far from a
+leading equivalent"); the refined result needs the refined hypothesis; `U_n`
+need not be a distribution function; the `E_1` hierarchy is no convergent
+series; no numerical value of `E_*` is used; the Potts coefficient met during
+the selection is already in Mossel–Sly–Sohn. The write adds: its checks are
+floating (positive terms only) or symbolic; its `E_*` is uncertified;
+nothing was submitted anywhere.
+
 ## Further questions
 
 Section 11 of the article (`ncy:sec:questions`) states every unproved claim
@@ -245,6 +381,19 @@ outside literature.
 6. **Erlihson–Granovsky** (`ncy:q:eg`, the write's): does their proof, with
    (5.62) and (5.69) corrected, give the corrected displays, and does
    anything else depend on the missing factor?
+
+**Part II answers none of these** (dated note at the end of Section 11): it
+treats a statistic Part I does not. Its own eleven questions (Section 23,
+labels `ncy:gb:q:*`, the manuscript's, as delivered) stay open: the next
+term of the calibrated error (`nextconst`); an optimal calibration beyond
+first order (`calibration`); the value of `E_*` (`affine`; the write's
+uncertified `0.10244`); a better discrete remainder (`remainder`); joint laws
+of several largest components (`several`); weights `p_k ~ c k^{α−1}`,
+`α ≠ 1` (`expansive`); arithmetic supports (`arithmetic`); effective finite
+constants (`effective`, the analogue of Question 1); root-of-unity component
+oscillations in the largest-component law (`periodic`, the analogue of
+Question 3); moving quantiles and moments of `M_n` (`quantiles`);
+formalization (`formal`).
 
 ## Checks made at intake
 
@@ -290,6 +439,39 @@ mathematical error was found. Corrected, with a dated note keeping the first
 wording: the A308338 revision attribution (#18–#20 by Heinz, #21 the server);
 strengthened, also with a dated note: the last sentence of Remark 10.1(c).
 
+**Part II.** At placement (batch-138 dossier, 9 October 2026; own code):
+`κ` as the larger stationary value; the three corollary constants; the six
+exact rational distribution values at `n = 50` (integer recurrence, equal to
+the recorded fractions); A308338 `a(0..16)`; the raw, smooth and lattice
+columns of `data/02-gumbel-nested_errors.csv` at `n = 10³, 10⁴` by a
+per-cutoff tilted recurrence (every printed digit at `10⁴`, within
+`3·10⁻¹⁰` at `10³`). At the write (9 October 2026; Python 3.14.4, NumPy
+2.4.4, SciPy 1.17.1, SymPy 1.14.0, mpmath 1.3.0; own code, not shipped):
+
+- every proof of Sections 14–21 read line by line, no error found; by hand or
+  SymPy: `R_1, R_2, R_3`, the exact geometric tail, the algebra (16.6) with
+  the skewness term, the sign `−3bα = −B_3S_1/(2V²)`, the `L²` profile, both
+  stationary values of `|H|` and their ratio `1.9178…`, the bound (17.5),
+  `G'(x)(h_τ(x) − x)` = the smooth part of `U_n`, the derivative (19.4) and
+  its four regions, the `E_1` profile, the saddle algebra of Proposition
+  21.2, every decimal constant at 40 digits;
+- a third numerical route (neither the delivery's Fourier quadrature nor the
+  intake's recurrence): the whole law of `M_n` at `n = 10³, 10⁴, 10⁵` from
+  the incremental product `Π_{k≤m} exp(a_k z^k) mod z^{n+1}` with positive
+  terms only; all four error columns of `nested_errors.csv` (all twelve
+  entries of Table 1) to `3.0·10⁻¹⁰`, `6.6·10⁻¹⁵`, `3.1·10⁻¹⁴`; largest atom
+  over `τ/e` with `(atom − τ/e)/(τ²L²) = 0.342, 0.262, 0.229`; integer
+  quantiles within `[−0.69, 1.59]` of the formula of Corollary 19.2; the
+  exact saddle minus `√(c/n) + c/(2n)` at `n = 10³…10⁶` equal to `−0.032…
+  −0.029` times `n^{−3/2} log² n`; `E_*` by numerical minimax;
+- the shipped `nested_numerics.py` and `forest_numerics.py
+  --recurrence-check` rerun on a copy (15 s and 23 s): the six fractions
+  exactly, every error column of the three CSV files to relative
+  `2·10⁻⁸`; only the noise columns (quadrature differences `~10⁻¹⁵`, saddle
+  residual) differ;
+- A308338 read again (#21). Not read: Panagiotou–Ramzews, Bousquet-Mélou–
+  Weller, Mossel–Sly–Sohn, `openai/math`.
+
 ## Relation to the repository
 
 **Formal status.** No statement of this report is formalized, and no Lean or
@@ -313,6 +495,15 @@ reciprocal note.
 **Stale claims.** Before batch 108 no file of the repository named these
 sequences or Riedel's note; the source made no claim about the repository.
 
+**Part II.** Its account of Part I (marked enumeration asymptotics and
+component-count fluctuations) is correct; it read Part I at the blob
+`07022425b718`, Part I's text before this write. Before its placement no
+file of the repository cited Panagiotou–Ramzews or Bousquet-Mélou–Weller or
+treated the largest component of an expansive assembly; no neighbouring
+report shares a result, and no reciprocal note is needed. Part II's own
+proposal of a sibling report `a308338-sharp-largest-components/` was
+declined (one report per A-number).
+
 ## Notation
 
 A table at the end of Section 1.1 fixes the letters the manuscript reuses,
@@ -325,6 +516,16 @@ against `C_0`, `C_{j,k,m}` and their `C`; `u` against their scaled size `u`;
 the volume's and their `δ`; `p`, `q` of Section 8; `N(y)`, `M_J`, `M_1`
 against Riedel's `N`, `M` and the write's `M_ϱ(n)`. No symbol was renamed.
 
+Part II keeps its letters; a table in Section 12.5 reads them against Part
+I's. The dangerous ones: Part II's `a_k` are Poisson means (Part I's `a_n` is
+A308338, Part II's `A_n`); `B_j` are tilted size moments (Part I's `B_m` is
+A007838, Part II's `B_k^comp`); `L = log(c/τ) ~ ½ log n` (Part I: `log n` or
+`log y`); `R_j(q)` are tail polynomials (Part I's `R_j(L;u)` correction
+polynomials); `Q_n(m)`, `Q_n(p)`, `Q_m` (three objects); `M_n` the largest
+component (Part I's `M_J`, `M_1`); `G` the Gumbel law (Part I's `G_J`);
+`δ = τL²/(4c)`; `κ` the Gumbel constant; `T`, `T_m` Poisson totals (Part I's
+`T(n,k)`); `β = e^{−x}`, `q = L + x`. No symbol was renamed.
+
 ## Labels
 
 Every label carries the prefix `ncy:` (none existed in the repository). The
@@ -333,15 +534,29 @@ were prefixed before anything cited them, and the 60 references to them
 updated. The write added 10: `ncy:sec:provenance`, `ncy:rem:riedel`,
 `ncy:rem:transseries`, `ncy:rem:eg`, and the questions `ncy:q:effective`,
 `ncy:q:local`, `ncy:q:periodic`, `ncy:q:calculator`, `ncy:q:bell`,
-`ncy:q:eg`. The report has 72 labels; builds of the delivered text and of
+`ncy:q:eg`. Part I has 72 labels; builds of the delivered text and of
 this one give all 62 delivered labels the same numbers (aux files compared).
+
+Part II's 94 delivered labels (92 in the text, 2 in the shipped table file,
+prefixed at input by a wrapper) carry `ncy:gb:`; 102 references (69
+`\eqref`, 33 `\ref`) were updated; the two `FFGPP` citations were re-keyed to
+Part I's `hybrid`. The write added 19: `ncy:part:one`, `ncy:gb:part`,
+`ncy:gb:sec:front` and its five subsections (`provenance`, `answers`,
+`checks`, `nonclaims`, `notation`), and the eleven questions
+`ncy:gb:q:{nextconst, calibration, affine, remainder, several, expansive,
+arithmetic, effective, periodic, quantiles, formal}`. Against builds of the
+committed text, of the delivered manuscript and of this one: all 72 Part I
+labels unchanged; every Part II label is the delivered number with its
+section shifted by 12 (Theorem 2.2 → 14.2, Theorem 3.4 → 15.4, Proposition
+5.1 → 17.1, Theorem 7.1 → 19.1, Corollary 9.1 → 21.1); Appendices A–B,
+Tables 1–2 and Figures 1–2 unchanged. 185 labels in all.
 
 ## Files
 
 ```text
 README.md                             this guide (replaces the delivery README)
-article.tex                           the report (delivered Report167.tex; labels prefixed, [write] additions)
-article.pdf                           compiled report, 22 pages
+article.tex                           the report: Part I (delivered Report167.tex) and Part II (delivered article.tex with its section files); labels prefixed, [write] additions
+article.pdf                           compiled report, 56 pages
 companion-README.md                   the companion's README (delivered companion/README.md)
 companion-PROVENANCE.md               fixture and source provenance (delivered companion/PROVENANCE.md)
 code/companion-exact_nested.py        exact integer/rational computations (delivered companion/exact_nested.py)
@@ -359,10 +574,28 @@ data/full_verification.json           verify.py output (delivered data/)
 data/exact_data_100.json              verify.py --include-data output, all counts to n = 100 (delivered data/)
 data/tests.normal.json                regression output (delivered data/)
 data/symbolic.normal.json             symbolic-check output (delivered data/)
+02-gumbel-PROVENANCE.txt              Part II: sources, pins, review boundary (delivered PROVENANCE.txt)
+02-gumbel-VERIFICATION.txt            Part II: verification record and its scope (delivered VERIFICATION.txt)
+code/02-gumbel-Makefile               Part II: build/numerics targets (delivered Makefile)
+code/02-gumbel-nested_numerics.py     Part II: exact counts, n = 50 fractions, nested Fourier CDFs (delivered code/)
+code/02-gumbel-forest_numerics.py     Part II: path-forest Fourier CDFs, 60-digit recurrence check (delivered code/)
+code/02-gumbel-make_figures.py        Part II: figures and the table file from the CSVs (delivered code/)
+data/02-gumbel-nested_errors.csv      Part II: nested errors, n = 10^3, 10^4, 10^5 (delivered data/)
+data/02-gumbel-nested_profile.csv     Part II: lattice-point profiles at n = 10^5, 2,596 rows (delivered data/)
+data/02-gumbel-forest_errors.csv      Part II: path-forest runs, n = 10^4 … 10^12 (delivered data/)
+data/02-gumbel-forest_verification.txt  Part II: quadrature and recurrence log (delivered data/)
+data/02-gumbel-verification.json      Part II: exact fractions and check results (delivered data/)
+data/02-gumbel-numerical_tables.tex   Part II: Tables 1-2, input by the article (delivered numerical_tables.tex)
+data/02-gumbel-requirements.txt       Part II: NumPy, SciPy, Matplotlib versions (delivered requirements.txt)
+data/02-gumbel-MANIFEST.sha256        Part II: the delivered checksum list (delivered MANIFEST.sha256; not used)
+figures/02-gumbel-error_profiles.pdf  Part II: Figure 1, included (delivered figures/)
+figures/02-gumbel-error_profiles.png  Part II: its raster preview
+figures/02-gumbel-forest_convergence.pdf  Part II: Figure 2, included (delivered figures/)
+figures/02-gumbel-forest_convergence.png  Part II: its raster preview
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
-byte-identical to the delivery.
+byte-identical to the delivery (38 files in the directory).
 
 **Not shipped**, recoverable from the arrival commit (next section):
 `Report167.pdf` (the delivered 15-page PDF, 406,435 bytes); `SHA256SUMS`
@@ -382,6 +615,22 @@ delivered source and PDF and of the `data/…` files under delivered names. Sect
 of the article refers to "the package README" for commands. The release
 tools require POSIX.
 
+**Part II, not shipped** (recoverable from `b28d0850b`): the manuscript
+`article.tex` (43,680 bytes), `sections_fourier.tex` (12,317),
+`sections_optimal.tex` (14,029) and `references.bib` (4,711), printed in the
+article; its `article.pdf` (27 pages, 498,069 bytes); its `README.txt`
+(7,656 bytes; summarized here: purpose, the five principal results, status
+"AI-assisted, unrefereed", contents, build and reproduction commands, an
+integration proposal as a separate report, theorem labels, the eleven
+directions). **Part II delivered text that names its layout:** the
+programs write `data/*.csv`, `data/verification.json`, `figures/*` and
+`numerical_tables.tex` at the package root under the delivered names
+(`make_figures.py` reads `data/nested_errors.csv` etc.); the Makefile
+compiles `article.tex` with `latexmk` and BibTeX; `MANIFEST.sha256` lists
+the delivered names; Section 22 and Appendix B name `data/verification.json`
+and `PROVENANCE.txt`. Run the programs on a copy with the delivered names
+(next sections).
+
 ## Retrieving the delivered package
 
 ```sh
@@ -389,6 +638,13 @@ T=$(mktemp -d)
 git -C /path/to/ProveIt show 60f54ea06:docs/incoming/Nested_Cycle_Assemblies_Asymptotics_and_Inverses_Source.zip > "$T/a.zip"
 sha256sum "$T/a.zip"   # ef59faff7aba2b7dc9070b282abdf011f7c088dbe7e18f45a02b7d4eaebc0b63, 938,156 bytes
 mkdir "$T/pkg" && cd "$T/pkg" && unzip -q ../a.zip     # files at the archive root, plus companion/ and data/
+```
+
+Part II:
+
+```sh
+git -C /path/to/ProveIt show b28d0850b:docs/incoming/sharp_gumbel_assemblies.zip > "$T/g.zip"   # 987,801 bytes
+mkdir "$T/gb" && cd "$T/gb" && unzip -q ../g.zip    # one wrapper directory sharp_gumbel_assemblies/
 ```
 
 ## Rerun the checks (on a scratch copy)
@@ -429,20 +685,43 @@ python3 -B companion/test_exact_nested.py > t.out  # compare with $R/data/tests.
 Use `py` where `python3` is not on the path. Route A took about 25 s on the
 intake's loaded laptop.
 
+**Part II, from the shipped files** (NumPy, SciPy, Matplotlib; tested at the
+write with Python 3.14.4, NumPy 2.4.4, SciPy 1.17.1):
+
+```sh
+G=$(mktemp -d); mkdir "$G/code" "$G/data"; cd "$G"
+for f in nested_numerics forest_numerics make_figures; do cp "$R/code/02-gumbel-$f.py" "code/$f.py"; done
+python3 -I code/nested_numerics.py --out data                      # ~15 s; compare data/*.csv, verification.json with $R/data/02-gumbel-*
+python3 -I code/forest_numerics.py --recurrence-check --output data/forest_errors.csv   # ~23 s
+python3 -I code/make_figures.py                                    # needs Matplotlib; writes figures/ and numerical_tables.tex
+```
+
+The error columns agree with the shipped files to relative `2·10⁻⁸`; the
+noise columns (quadrature differences of order `10⁻¹⁵`) differ from run to
+run.
+
 ## Build the PDF
 
 pdfLaTeX (fontenc, lmodern, amsmath, amssymb, amsthm, mathtools, geometry,
-booktabs, array, microtype, hyperref); the bibliography is embedded.
+booktabs, array, microtype, hyperref, graphicx, longtable); the bibliography
+is embedded. Part II inputs `data/02-gumbel-numerical_tables.tex` and the two
+`figures/02-gumbel-*.pdf`, so build from a copy of the directory:
 
 ```sh
-B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+B=$(mktemp -d); cp article.tex "$B/"; mkdir "$B/data" "$B/figures"
+cp data/02-gumbel-numerical_tables.tex "$B/data/"; cp figures/02-gumbel-*.pdf "$B/figures/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026, after
-the independent check (also 22 pages at the write): 22 pages; no errors or warnings, no undefined references or citations, no
-multiply defined labels, no duplicate PDF destinations, no overfull or
-underfull boxes. The delivered source builds the same way to 15 pages, also
+The committed PDF was built this way with MiKTeX (pdfLaTeX, three passes)
+on 9 October 2026, at Part II's write: 56 pages (Part I alone: 22); no
+errors or warnings, no undefined references or citations, no multiply
+defined labels, no duplicate PDF destinations, no overfull or underfull
+boxes; changed pages rendered and inspected. The delivered Part II
+manuscript builds to 27 pages, also without warnings. Part I's build at its
+write and check (6 October 2026): 22 pages; no errors or warnings, no
+undefined references or citations, no multiply defined labels, no duplicate
+PDF destinations, no overfull or underfull boxes. The delivered source builds the same way to 15 pages, also
 without warnings. The article keeps the delivered preamble lines that
 suppress PDF dates and trailer identifiers; the delivered byte-identity
 claims apply to `Report167.tex` under the delivering toolchain (pdfTeX
@@ -469,7 +748,8 @@ Repository contents are MIT-0. The article and the frozen data quote OEIS
 terms of A007838, A308338 and A392471; OEIS content is published by The OEIS
 Foundation Inc. under CC BY-SA 4.0 (https://oeis.org/LICENSE), and those
 terms remain under that licence. No third-party PDF is shipped. Nothing was
-submitted to the OEIS.
+submitted to the OEIS. Part II's files carry no licence of their own and
+fall under the repository's MIT-0.
 
 ## Provenance
 
@@ -487,3 +767,11 @@ submitted to the OEIS.
   placement `602e5bd0f`, written 6 October 2026. Single source, so no merge
   choices. The delivered `Report167.tex` is shipped as `article.tex`; the
   delivered programs and data as listed above.
+- Part II: batch 138 of `docs/incoming`, group OEIS, manuscript 03;
+  arrival `b28d0850b` (8 October 2026), placement `803f4d937` (9 October
+  2026, 18 files with prefix `02-gumbel-`), written 9 October 2026 as Part II
+  (Sections 12–23, Appendices A–B). Sources cited by the manuscript: OEIS
+  A308338; Part I; Panagiotou–Ramzews (arXiv:2208.00925v1);
+  Bousquet-Mélou–Weller (FPSAC 2013; CPC 23 (2014) 749–795);
+  Flajolet–Fusy–Gourdon–Panario–Pouyanne (Part I's `hybrid`);
+  Mossel–Sly–Sohn (arXiv:2212.03362v2); `openai/math` at `adc7f1241b42`.
