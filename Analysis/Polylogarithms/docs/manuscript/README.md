@@ -40,6 +40,7 @@ individual residuals. They are separate from historical Smithereens search
 receipts quoted in the text. The historical tools and stores were not all
 imported; their absence is documented rather than presented as a replay.
 
-The source audit and page-layout review are still in progress at this
-checkpoint. The final validation report will identify the converged PDF,
-visual review and publication revision.
+The [validation report](VALIDATION.md) records the completed source audit,
+31 native Wolfram checks, 67 independent mpmath checks, converged 100-page
+PDF and visual review. It pins the artifact by SHA-256 and distinguishes
+these checks from unproved numerical identities and historical receipts.

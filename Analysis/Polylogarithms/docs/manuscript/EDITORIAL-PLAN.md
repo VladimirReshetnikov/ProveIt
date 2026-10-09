@@ -1,5 +1,9 @@
 # A unified manuscript of special values and experimental discovery
 
+Completed: see [the manuscript](polylogarithms.pdf),
+[the source ledger](EDITORIAL-LEDGER.md) and [validation](VALIDATION.md).
+The plan below records the organizing decisions made before consolidation.
+
 The canonical deliverable will be `polylogarithms.tex` and its rebuilt PDF.
 Its organizing question is how exact transformations expose the arithmetic
 structure of special values, and how computation suggests the next theorem.

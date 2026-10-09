@@ -8,7 +8,7 @@ text='\n'.join(p.read_text(encoding='utf-8') for p in files)
 labels=re.findall(r'\\label\{([^}]+)\}',text)
 refs=re.findall(r'\\(?:eqref|ref|autoref)\{([^}]+)\}',text)
 bibkeys=re.findall(r'\\bibitem\{([^}]+)\}',text)
-cites=[k.strip() for group in re.findall(r'\\cite\{([^}]+)\}',text) for k in group.split(',')]
+cites=[k.strip() for group in re.findall(r'\\cite(?:\[[^]]*\])*\{([^}]+)\}',text) for k in group.split(',')]
 inventory=json.loads((B/'source-inventory.json').read_text(encoding='utf-8'))
 changed=[row['path'] for row in inventory if hashlib.sha256((B.parent/row['path']).read_bytes()).hexdigest()!=row['sha256']]
 ledger=(B/'EDITORIAL-LEDGER.md').read_text(encoding='utf-8')

@@ -79,7 +79,9 @@ distinguished from fresh verification.
 13. Cubic subfields, their degree-six normal closures and the quadratic class
     field extensions are distinct fields. Signed unit-log determinants must
     not be replaced by absolute values without changing coefficients.
-14. The trivial-zero L-function bridge uses L''(-k)/(2 L'(-k)); conductor-one
+14. Distinguish the odd-weight sine series from the usual cosine Clausen
+    convention, and retain the 2/3 factor relating Cl2(2pi/3) to Gieseking.
+15. The trivial-zero L-function bridge uses L''(-k)/(2 L'(-k)); conductor-one
     principal functions require their meromorphic completed equation.
 
 ## Evidence boundary

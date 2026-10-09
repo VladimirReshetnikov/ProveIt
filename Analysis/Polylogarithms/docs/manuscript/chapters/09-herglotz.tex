@@ -16,7 +16,7 @@ J(x)=\int_0^1\frac{\log(1+t^x)}{1+t}\,dt.
 \]
 The series is locally uniformly convergent on the positive line and extends
 analytically to the cut plane $\mathbb C\setminus(-\infty,0]$.
-Radchenko--Zagier relate the two functions by
+Radchenko--Zagier~\cite{RadchenkoZagier} relate the two functions by
 
 \begin{equation}\label{herg:eq:Jint}
   J(x)=\int_0^1\frac{\log(1+t^{x})}{1+t}\,dt,\qquad J(x)=F(2x)-2F(x)+F(x/2)+\frac{\pi^2}{12x},
@@ -147,6 +147,21 @@ For all $n\ge2$, with $S(q)=\sum_{k=1}^{q-1}\log^2(2\sin\tfrac{\pi k}q)$,
 the single dilogarithm $\Li_2(n/(n+1))$ appearing with coefficient exactly $+1$ (the source paper's
 ``bilinear-log'' Example~2, made explicit). The $\pi^2$ coefficient equals $-\tfrac18-\tfrac1{12n(n+1)}$.
 \end{theorem}
+\begin{proof}
+The two functional equations of $F$ are
+\begin{align*}
+F(x)-F(x+1)-F(x/(x+1))&=-F(1)+\Li_2(1/(x+1)),\\
+F(x)+F(1/x)-2F(1)&=\tfrac12\log^2x-\frac{\pi^2}{6x}(x-1)^2.
+\end{align*}
+The second equation and Theorem~\ref{herg:thm:F1q} give
+\[
+F(n)-F(1)=-\frac{(n-1)(n-2)}{24n}\pi^2
++\frac12\log^2 n+\frac12 S(n).
+\]
+Subtract the cases $n$ and $n+1$ in the first equation, and apply Euler
+reflection to $\Li_2(1/(n+1))$. Collecting the logarithms and rational
+$\pi^2$ coefficients yields the displayed formula.
+\end{proof}
 \begin{theorem}[Reciprocity]\label{herg:thm:p2}
 For all odd $p\ge3$,
 \[
@@ -155,6 +170,9 @@ For all odd $p\ge3$,
 The $\Li_2(-\cot^2\frac{\pi k}{p})$ terms of $F(p/2)$ are exactly minus those of $F(2/p)$ and cancel in the
 sum; combined with Theorem~\ref{herg:thm:F2q} this yields $F(p/2)$ in closed form.
 \end{theorem}
+\begin{proof}
+Substitute $x=p/2$ into the second functional equation above.
+\end{proof}
 
 \subsection{The derivative law}
 \begin{theorem}[Radchenko--Zagier Proposition 4, $P=2$]\label{herg:thm:deriv}
