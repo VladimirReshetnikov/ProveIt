@@ -5847,6 +5847,21 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
       than `ε|X|` elements of `B` lie in fewer than `θ|X|²` additive
       `Q 16`-quadruples (`richCount`). Otherwise Claim 4.4 on those
       poor elements gives more quadruples than they carry.
+    - `Proofs16AbstractBSGCore` assembles all of this into
+      `abstract_bsg_core`, stated for a finite abelian group without
+      2-torsion.
+      - **Hypotheses.** Symmetries (S1) for `Q 1`, (S2) for `Q 4`, (S3)
+        for all levels; weak transitivity with constant `c′`; doubling
+        `|X−X| ≤ K|X|`; `c|X|^3` good pairs of pairs; and `c|X| ≥ 4`.
+      - **Conclusion.** Sets `B′ ⊆ B ⊆ A` with `|B′| ≥ ε|X|`, in which
+        every element lies in at least `θ|X|²` additive
+        `Q 16`-quadruples with the rest in `B`.
+      - **Constants.** `δ = c/2K`, `δ₂ = 3cδ/64`, `η = δ₂⁵/2^14`,
+        `ε = 3δ₂/16`, `κ = (ε²η)²/K⁴` (`absBsgDelta`, …,
+        `absBsgKappa`), with `θ < κ/2`. All are polynomial in `c/K`.
+      - `exists_dense_rich_walk_set` and `walkSet_card_eq_fourWalks`
+        connect J.102's four-walk set on the subtype of `X` to
+        `walkSet`.
     - Still needed for Theorem 4.1: the bridging statement
       (`|Z_ℓ(a)| ≥ (c/2K)^O(1)|X|^(3ℓ−1)`).
     - **Correction to the plan above (same day).** Theorem 4.1 does not
