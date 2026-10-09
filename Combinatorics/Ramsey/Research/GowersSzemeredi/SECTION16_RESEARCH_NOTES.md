@@ -1789,3 +1789,16 @@ to the original graph are injective, so no agreement mass is lost. Here
 bounds. The deep structure statement remains an explicit hypothesis.
 Both production sources and all eight new transitive axiom checks pass;
 the combined facade audit is queued. No new upstream module is added.
+
+### Completed combined audit (2026-10-08)
+
+The combined facade and port-import audit now includes all the graph-piece,
+variety-partition, uniform-control, and conditional deep-agreement results
+above. It checks 5,827 public Gowers theorems over a combined 2,644-module
+closure, using only `propext`, `Classical.choice`, and `Quot.sound`. The
+facade alone reaches 1,408 modules, including 667 OAI modules. The numbered
+catalogue remains 114 companions and six open statements, with the same
+source-fidelity caveats. The separate 3,700-entry quantitative port audit
+checks 56,621 public OAI theorems; the full density conclusion is still
+unverified. The earlier queued-audit notices above are superseded by this
+checkpoint.
