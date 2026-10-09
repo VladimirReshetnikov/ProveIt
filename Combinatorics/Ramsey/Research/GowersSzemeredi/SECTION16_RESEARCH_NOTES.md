@@ -1180,6 +1180,42 @@ The variety route splits this into three steps.
    owned by j. So if step 1 covers a relation Γ over J by the graphs of φ_j
    on A_j, then Γ over J ∖ U is covered by the pieces' graphs. That is the
    covering half of `StackableStructureAt 2`.
+   **Assembled (`Proofs16VarietyStructureSide`, kernel-checked).** Step 1
+   is now the precise Prop `BihomExtraction m`, quantified exactly as
+   `StackableStructureAt`. Fix γ and θ in (0, 1]. For prime N ≥ N₀, every
+   relation Γ ⊆ Z_N² × Z_N with |Γ| ≤ γ⁻²N² and the product property has
+   two properties after removing θN² base points:
+   - its restriction is covered by the graphs of m(γ,θ) Freiman
+     bihomomorphisms on their domains;
+   - each value z.2 is the value of some φ_j.
+
+   `variety_structure_side` proves the covering clause of
+   `StackableStructureAt 2` from `BihomExtraction m` and
+   `MilicevicDeepVarietyStructure D`. After removing θN² base points, Γ is
+   covered by K ≤ m·exp(B(θ/(2m))) variety pieces with m = m(γ, θ/2). Each
+   piece is read as a partial function on `Point N 2` (via `pairPoint`), in
+   `section16FinsetUnion`/`partialGraph` form. If m(γ,θ) is
+   quasi-polynomial, so is K. What `StackableStructureAt 2` additionally
+   asks is that the class be stackable (step 3).
+   **Plausibility audit of `BihomExtraction` (2026-10-08).**
+   - Its shape matches the proved dimension-one extraction: all of Γ over J
+     is covered, not just a dense part.
+   - Covering every value is consistent: on J, Markov bounds the
+     multiplicity by γ⁻²/θ, and the product property applies to *every*
+     partial function inside Γ, which rules out unstructured "junk" values
+     on large sets.
+   - Domains that are too sparse for Milićević's theorem go into the
+     exceptional set (`greedy_variety_cover_family`).
+   - Literature status, from a search only: the passage from additive
+     energy to a Freiman bihomomorphism on a dense set is the bilinear
+     Balog–Szemerédi–Gowers stage of the U⁴ inverse pipelines. Milićević's
+     arXiv:2601.01682 states that its proof uses an abstract BSG theorem.
+     See also Gowers–Milićević arXiv:2002.11667 and the F_p^n quasipolynomial
+     U⁴ paper arXiv:2410.08966.
+   - **Not yet checked:** that any of these yields exactly the
+     relation-covering form above, with quasi-polynomial m(γ,θ), from
+     Gowers's product property in place of a U⁴ hypothesis. That is the
+     next reading task for step 1.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
@@ -1802,3 +1838,25 @@ source-fidelity caveats. The separate 3,700-entry quantitative port audit
 checks 56,621 public OAI theorems; the full density conclusion is still
 unverified. The earlier queued-audit notices above are superseded by this
 checkpoint.
+
+### Explicit inverse-polynomial variety exponent
+
+`Proofs16FreimanVarietyCapBound` removes the opaque threshold from the
+conditional cover's numerical controls. For `B=milicevicBound D c` and
+`0<c<=1`, its all-box exponent is at least
+
+`1 / (1024*p^2*(4*C+18)*(B+2)^17)`.
+
+The proof bounds the logarithm of the integer radius threshold before
+capping, so the `exp(-B)` radius costs a factor linear in `B`. The two
+phase counts contribute degree sixteen. Ceiling rounding is included,
+and the resulting graph-cover theorem keeps all `exp(-B)*N^2` agreement
+mass and the nine-map count. Constants `C>=2,p>0` remain existential.
+The deep structure assertion is still a hypothesis; this is not a new
+unconditional density or all-dimension structure theorem.
+
+The full combined audit now checks these three results and the incoming
+single-map greedy variety cover: 5,838 public Gowers theorems, 1,410 facade
+modules (667 OAI), and 2,646 combined modules. Only the three approved
+axioms occur. The catalogue remains at 114 companions and six open
+statements, with its existing source-fidelity caveats.

@@ -238,7 +238,7 @@ files, with the Apache license and recorded copyright notices preserved.
 4.32. All seven public theorem statements and numerical bounds are
 unchanged; 3,346 current local dependency modules support the isolated
 check. The 3,700-entry prefix build and its axiom audit now pass. The latest provenance
-check records 975 adapted files with modification notices. The Gowers
+check records 976 adapted files with modification notices. The Gowers
 facade now includes the polynomial multilinear extraction, cubic pure-power
 cover, and eventual strict line-exponent comparison; its full audit passes.
 
@@ -254,3 +254,19 @@ deep-agreement consequence preserves the selected mass when translated
 into the original graph, conditional on `MilicevicDeepVarietyStructure`.
 These original consumers pass production and transitive axiom checks and
 pass the completed facade audit; they add no upstream modules.
+
+`PhysicalEpochComparison` passes with an explicit empty-index infimum proof
+in `epochRecordIntersection_eq_iInf`. All upstream theorem statements,
+bounds, and other proof text are unchanged; the production check uses
+1,696 current local dependency modules. The latest provenance check
+verifies 4,134 pinned source hashes and modification notices for 976
+adapted files, retaining the upstream license and copyright notices. This
+repair is ahead of the completed 3,700-entry axiom checkpoint.
+
+`RelativePatchPositivePowerInduction` also passes its full production
+check with 3,540 current local dependencies. The Lean 4.32 repair proves
+equality of universal finite sets extensionally in the initial-rule
+construction; all 22 upstream theorem statements and bounds are unchanged.
+This module already carried a compatibility notice, now extended to
+record the proof repair, so the adapted-file count remains 976. The
+verified axiom checkpoint remains the first 3,700 manifest entries.
