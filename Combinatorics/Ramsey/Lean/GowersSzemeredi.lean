@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16GlobalColumnExtensions
 import GowersSzemeredi.Proofs16GlobalEvenZeroColumnCore
 import GowersSzemeredi.Proofs16EscapingFrequencySelection
+import GowersSzemeredi.Proofs16EscapingFreimanFamily
 import GowersSzemeredi.Proofs16FrequencyIndependence
 import GowersSzemeredi.Proofs16IndexedFreimanSelection
 import GowersSzemeredi.Proofs16ColumnDifferenceExtension
@@ -840,6 +841,7 @@ import GowersSzemeredi.Proofs16DeepBoundSlices
 import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
 import GowersSzemeredi.Proofs16MonomialControlAbsorption
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
+import GowersSzemeredi.Proofs16VarietyPieceBudget
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

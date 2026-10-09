@@ -6552,3 +6552,119 @@ axiom checks. The combined audit checks 7,389 public Gowers theorems in
 only `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
 is identical at 115 companions and five open entries. The selected-port
 scope check passes with 4,134 upstream and 17 compatibility modules.
+
+
+## J.115. Freiman extraction retaining mixed frequency configurations
+
+The four frequency maps selected in J.114 can now be made Freiman on
+four dense coordinate domains, while an explicitly dense subfamily of
+the original escaping configurations remains. This supplies the
+coordinate-extraction part of the structural argument; the four maps
+have not yet been identified with one common difference-index map.
+
+**Mixed energy.** `keyMatchingCount` counts pairs from two finite families
+whose keys, computed by possibly different functions, agree. Its finite
+fibre-sum formula and Cauchy--Schwarz inequality give the generic counting
+step. For column maps, the mixed key of `(x,y)` is
+`(x-y,f(x)-g(y))`. `mixedColumnEnergy A B C D f g h l` counts equal keys
+between `A × B` and `C × D`.
+
+Regrouping a self-comparison of the mixed keys of `f,g` gives a comparison
+of the ordinary difference keys of `f` on `A × A` and `g` on `B × B`.
+Two Cauchy--Schwarz steps therefore prove
+
+```
+mixedColumnEnergy A B C D f g h l ^ 4
+  <= phiAdditiveCount A f * phiAdditiveCount B g
+       * phiAdditiveCount C h * phiAdditiveCount D l.
+```
+
+The unrestricted energy of each of the last three maps is at most `N^3`.
+Consequently, any family of at least `delta*N^3` mixed additive quadruples
+with first coordinate in `A` forces at least `delta^4*N^3` respected
+quadruples of `f` on `A`. `mixed_quadruples_freiman_piece` applies the
+existing order-eight Corollary 7.6 extractor, giving a subset of `A` of
+size at least `2^(-1882)*(delta^4)^1164*N` where `f` is Freiman of order
+eight. The other three maps need not agree with `f`.
+
+**Retaining the original configurations.** A Freiman piece in an arbitrary
+coordinate projection need not support many original configurations.
+Before extraction, retain only first-coordinate fibres containing at
+least `delta*N^2/2` configurations. The new generic
+`popular_fibre_retained_mass` shows that this discards at most
+`delta*N^3/2` configurations. It requires no upper bound on fibre size.
+`fibre_filter_mass_lower` then controls the mass retained by every subset
+of popular endpoints.
+
+Define the explicit positive retention function
+
+```
+H(delta) = delta/2 * (2^(-1882) * ((delta/2)^4)^1164).
+```
+
+`mixed_configurations_retain_freiman_piece` yields a coordinate set `E`
+and a subfamily `R` of the original family, all of whose first coordinates
+lie in `E`, with `FreimanHom 8 E (f 0)` and `R.card >= H(delta)*N^3`.
+The proof retains the original configurations by filtering, so any extra
+property of those configurations, including escape from a selected
+frequency span, is preserved.
+
+**Every coordinate.** The four permutations
+
+```
+[0,1,2,3], [1,0,3,2], [2,3,0,1], [3,2,1,0]
+```
+
+preserve the equation `x0-x1 = x2-x3` and move the chosen coordinate to
+position zero. Reindexing and its inverse preserve cardinality and the
+original subfamily relation. `mixed_configurations_retain_coordinate`
+therefore gives the same retention bound for any coordinate.
+
+Set `mixedConfigurationDensity delta 0 = delta` and recursively apply
+`H` for each additional extraction. An induction over a finite set of
+coordinates restricts configurations while retaining all previously
+proved Freiman properties. `mixed_configurations_freiman_family` treats
+all four coordinates: it returns four sets `E_i` and a subfamily `R`,
+with each `f_i` Freiman of order eight on `E_i`, every `q_i` in `E_i`,
+and `R.card >= mixedConfigurationDensity delta 4*N^3`.
+
+Each coordinate set also has density at least
+`mixedConfigurationDensity delta 4`. Indeed, three coordinates determine
+an additive quadruple, so a family whose chosen coordinate lies in `E`
+has size at most `E.card*N^2`. Both this exact finite bound and its real
+density consequence are proved in `Proofs16MixedCoordinateDensity`.
+
+**Application to failed Bohr containments.** For
+`R = bohrExtensionCutoff (2*d) r`, define
+
+```
+escapingFreimanDensity delta d r
+  = mixedConfigurationDensity (delta/(2*R+1)^(4*d)) 4.
+```
+
+`failed_containments_freiman_family` starts from at least `delta*N^3`
+additive index quadruples, bounded column spectra, and the actual
+selected-frequency containment failures of J.114. It obtains four maps
+taking values in their column bounded spans, four dense order-eight
+Freiman coordinate domains, and a subfamily of density at least
+`escapingFreimanDensity delta d r`. Every retained configuration still
+has equal map differences outside its prescribed selected unit span.
+The same density lower-bounds all four coordinate domains. Positivity of
+the recursive density and of this applied density is proved.
+
+**Remaining structural work.** The four maps live on distinct dense
+coordinate sets. A common map indexed by column differences, suitable
+Bohr/progression extensions, higher-arrangement selection, and the global
+independent-family iteration remain to be constructed. The final
+bilinear-variety structure and numerical budget are still open. No
+numbered source statement is closed by this checkpoint, and no new
+upstream port or license change was needed.
+
+
+**Verification.** The complete failed-containment Freiman-family closure
+checks 251 modules. All 23 new named theorems pass individual axiom
+checks. The full audit checks 7,431 public Gowers theorems in 5,196
+modules (5,194 facade modules, including 4,152 OAI modules), with only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+identical at 115 companions and five open entries; the selected-port
+scope check still passes with 4,134 upstream and 17 compatibility modules.
