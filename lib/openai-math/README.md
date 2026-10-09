@@ -238,7 +238,7 @@ files, with the Apache license and recorded copyright notices preserved.
 4.32. All seven public theorem statements and numerical bounds are
 unchanged; 3,346 current local dependency modules support the isolated
 check. The 3,900-entry prefix build and its axiom audit now pass. The latest provenance
-check records 976 adapted files with modification notices. The Gowers
+check records 977 adapted files with modification notices. The Gowers
 facade now includes the polynomial multilinear extraction, cubic pure-power
 cover, and eventual strict line-exponent comparison; its full audit passes.
 
@@ -281,5 +281,18 @@ license and updated modification notice.
 The joint translated-variety consumers use the same scoped recurrence
 for common partitions and union covers. They give `9*n` maps and a capped
 exponent polynomial in the total phase counts. Their production and
-transitive axiom checks pass; the combined facade audit is queued. No
+transitive axiom checks pass, as does the combined facade audit. No
 upstream module or license scope is added.
+
+`PreparedFiniteNestedSourceLatePowerBudget` passes with a finite local
+400,000-heartbeat budget for `exists_preparedEmptyLayerLocalSchedule_budget`.
+All upstream statements and proof bodies are unchanged. The production
+check uses 3,577 current local dependency modules. Provenance verification
+now records 977 adapted files with modification notices, all 4,134 pinned
+source hashes, and the unchanged license and retained copyright notices.
+This check is ahead of the completed 3,900-entry axiom checkpoint.
+
+Uniform rank padding extends these common covers to the variety-piece
+class. The resulting general slice provider, including its required
+control ranges, passes the full Gowers audit. All these original consumers
+reuse the existing recurrence port and add no upstream module.
