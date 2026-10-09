@@ -1149,6 +1149,36 @@ dimension-three budget (H.5).
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
 
+### J.4 The structure side (S) in dimension two (2026-10-08)
+
+Part J's `StackableStructureAt 2 Q q` asks that, after removing θ of the
+base, every product relation be covered by Q members of a stackable class.
+The variety route splits this into three steps.
+
+1. **Extraction (open).** From a relation with the product property,
+   extract Freiman bihomomorphisms on dense sets. In dimension one this is
+   `section16_extract_uniform_base_family`, which yields Freiman
+   8-homomorphisms. In dimension two the analogue is a bilinear
+   Balog–Szemerédi–Gowers step. It is the first stage of the U⁴ inverse
+   theory, and Milićević's papers carry quasi-polynomial versions. It is
+   not formalized here.
+2. **Greedy covering (proved, `Proofs16VarietyGreedyCover`).**
+   `greedy_variety_cover`: from `MilicevicDeepVarietyStructure D` and a
+   Freiman bihomomorphism φ on A₀, cover A₀ up to fewer than θN² points by
+   at most exp(B(θ)) **variety pieces**. Here B(θ) =
+   `milicevicBound D θ`. A piece is a set G with variety data within
+   Milićević's bounds at density θ, and a Freiman bihomomorphism Φ on V(ρ),
+   such that q − (s,t) ∈ V(ρ/2) and φ q = Φ(q − (s,t)) for every q ∈ G.
+   The recursion stays inside A₀ (`IsEBihomomorphism.mono`), and each step
+   removes at least exp(−B(θ))N² points (`exists_variety_piece`). The count
+   exp(B(θ)) is quasi-polynomial in 1/θ. Axioms: propext, Classical.choice,
+   Quot.sound.
+3. **Stacking (open; the peer's lane).** One piece is multiply linear with
+   count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
+   once need a joint partition, with inverse exponent of degree 16 in n.
+   They should feed the polynomial lift's general `Section16SliceProvider`
+   controls (J.2 heads-up), not `CubicStackableClass`.
+
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
 Part J's `PolyBoundedControl` hypotheses exist only because of the factor
