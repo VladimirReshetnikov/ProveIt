@@ -1343,8 +1343,9 @@ Milićević hypothesis).**
   exp(Θ(r log r)) for all γθ ∈ (0,1] **provided Milićević's unspecified
   exponent D is not astronomically large**. Since
   (log y)^D ≤ (D/e)^D·y, it suffices that
-  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). That holds for every D up to about
-  2^500, and the paper's O(1) is certainly far below that.
+  (D/e)^D·(2·10⁸)^D ≲ 2^(2^512). An explicit upper bound on D, and explicit comparisons for the
+  recurrence constants C and p, are still needed to turn this heuristic
+  into the printed numerical budget; O(1) alone provides no such bound.
 - The lift's own losses come in on top: samples ≈ poly(1/σ), counts
   C(samples, 2)·Pb², and the threshold. In the peer's polynomial lift they
   are polynomial in the slice controls, so they do not change the
@@ -1372,7 +1373,8 @@ restatement on the polynomial lift imports OAI through
 
 The variety route now rests on `MilicevicDeepVarietyStructure` alone. That
 hypothesis is a reformulation of arXiv:2601.01682's construction (J.2), so
-formalizing the paper is the only way to discharge it. The work starts with
+the following dependency map describes one route to discharging it.
+The work starts with
 the elementary lemmas of its §2:
 - **Lemma 2.5, done (`Proofs16BohrDenseDifference`, kernel-checked).**
   `bohr_dense_sub_cover`: if 4^(k+1)·|B(Γ;ρ) ∖ A| ≤ |B(Γ;ρ)| with k = |Γ|,
@@ -1447,11 +1449,10 @@ App. A robust Bogolyubov–Ruzsa; App. B quasirandom bipartite graphs.
 Scale: Theorem 1.6 alone is a substantial formalization project. It is
 only the first of Theorem 1.4's ingredients (§§5–13 of the U⁴ paper add
 abstract BSG, the extension theory, and §11's Freiman-bilinear step).
-Discharging `MilicevicDeepVarietyStructure` is therefore months of work,
-not a session. Per J.5, polynomial rather than quasi-polynomial bounds
-would still fit Theorem 16.2's budget, so a weaker-bound formalization
-(classical Bogolyubov, Gowers's Freiman lemma in `Proofs07BohrHom`) is
-a legitimate shortcut wherever it applies.
+Discharging `MilicevicDeepVarietyStructure` requires these remaining
+structure arguments. A weaker-bound route using classical Bogolyubov or
+Gowers's Freiman lemma in `Proofs07BohrHom` may be useful, but fitting its
+constants into Theorem 16.2's printed budget requires a separate proof.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
@@ -2198,3 +2199,32 @@ and the listed compatibility declarations with the same three axioms.
 This includes the finite local heartbeat repair in
 `PreparedFiniteNestedSourceLatePowerBudget`. The full quantitative density
 conclusion remains unverified and outside the Gowers facade.
+
+
+### Explicit polynomial variety controls and the dimension-three lift
+
+`Proofs16JointVarietyCapBound` bounds the common capped exponent below by
+`1/(1024*p^2*(4*C+18)*(n+1)^17*(B+2)^17)`, where
+`B=milicevicBound D c` and `0<c<=1`. It also retains a sharper bound in
+terms of the rounded rank `ceil(B)`. Both handle the empty family.
+The rational lower control transfers to actual family covers and to the
+general slice provider, with count `9*n` and all required range checks.
+The exponential radius threshold contributes only its logarithm.
+
+`Proofs16VarietyUniformLiftControls` proves that this exponent decreases
+with the sample count and that the interpolation candidate budget is at
+most `81*R^4`, for the uniform sample ceiling `R`.
+`Proofs16PolynomialVarietyPowerCover` then supplies actual
+three-dimensional multilinear covers. For line coefficient `z`, line
+exponent `e`, and the polynomial variety exponent `a` at sample ceiling
+`R`, every `b<e*a/2` gives width at least `m^b` above
+`section16RoundedExponentThreshold z e a b`. The covered good domain
+has mass at least `1-rho` of the input box.
+
+All three production sources and all ten transitive axiom checks pass,
+using only propext, Classical.choice, and Quot.sound. Their combined
+facade audit is queued. Spectrum structure, induced
+selection, the remainder cover, and variety-piece membership of every
+relevant slice remain premises. This does not close a numbered catalogue
+statement or establish a new final Szemeredi threshold. These original
+consumers add no upstream modules or license-scope changes.

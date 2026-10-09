@@ -14,9 +14,9 @@ The first two operators act within rows. `D_hor D_hor A` has row
 `(A_y − A_y) − (A_y − A_y) = 2A_y − 2A_y` (`mem_horDiff_horDiff`). So every
 row of density `α_y > 0` contains a Bohr set `B(K_y; 1/(8π))` with
 `|K_y| ≤ 16α_y⁻²`, by the classical Bogolyubov lemma `bogolyubov_classical`
-(`row_bogolyubov`). The codimension is polynomial rather than Sanders's
-quasi-polynomial, and research notes J.5 show that polynomial bounds still
-fit the Theorem 16.2 budget. -/
+(`row_bogolyubov`). The codimension here is polynomial in the reciprocal row density.
+Research notes J.5 discuss a possible budget comparison; fitting the
+remaining structure bounds into Theorem 16.2 is not yet proved. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi

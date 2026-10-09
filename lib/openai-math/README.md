@@ -296,3 +296,11 @@ Uniform rank padding extends these common covers to the variety-piece
 class. The resulting general slice provider, including its required
 control ranges, passes the full Gowers audit. All these original consumers
 reuse the existing recurrence port and add no upstream module.
+
+The joint variety exponent now has explicit degree-seventeen polynomial
+lower controls in the sample count and structure budget. These supply a
+three-dimensional power-width cover with a quartic candidate bound,
+conditional on actual variety structure of the slices and the existing
+spectrum/selection/remainder inputs. All three new production modules
+and ten transitive axiom checks pass; the combined facade audit is queued.
+They reuse the same recurrence and add no upstream dependencies.
