@@ -25,14 +25,14 @@ DATA=ROOT.parent/'synthesis/data'
 BASELINE='3310e1e84b37f848b5c9911a3725c5881286a0fd'
 
 
-def baseline():
+def baseline(revision=BASELINE):
     modules={};hashes={}
     for name in ('interval_orbits','interval_orbit_verify','normal_surface_orbits','normal_surface_verify'):
         path='Topology/UnknotRecognition/fast/fastunknot/'+name+'.py'
-        source=subprocess.check_output(['git','show',BASELINE+':'+path],cwd=ROOT)
+        source=subprocess.check_output(['git','show',revision+':'+path],cwd=ROOT)
         module=ModuleType('_direction_old_'+name);module.__package__='fastunknot'
         sys.modules[module.__name__]=module
-        exec(compile(source,BASELINE+':'+path,'exec'),module.__dict__)
+        exec(compile(source,revision+':'+path,'exec'),module.__dict__)
         modules[name]=module;hashes[name]=sha256(source).hexdigest()
     # Both use the identical immutable public pairing class. The old search
     # and old replay bodies are frozen independently of current implementations.

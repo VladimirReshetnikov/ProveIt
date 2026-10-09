@@ -122,6 +122,9 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
     sweep_direction is passed to each actual orbit query, including optional
     boundary cones. 'wide' chooses the wider terminal carrier; it is a
     scheduling heuristic, not a surface-topology assertion.
+    'race' tries both directions with geometrically increasing checkpoint
+    allowances. All begun cycles, including abandoned attempts, share the
+    caller's max_cycles allowance. Only completed winning proofs are emitted.
     """
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
@@ -133,8 +136,8 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
         raise ValueError('classify_boundary must be bool')
     if type(coorientation) is not bool:
         raise ValueError('coorientation must be bool')
-    if sweep_direction not in ('forward', 'reverse', 'wide'):
-        raise ValueError("sweep_direction must be 'forward', 'reverse' or 'wide'")
+    if sweep_direction not in ('forward', 'reverse', 'wide', 'race'):
+        raise ValueError("sweep_direction must be 'forward', 'reverse', 'wide' or 'race'")
     prepared = _prepare(triangulation, check)
     analysed = _coordinates(prepared, coordinates, check)
     divisor, orbit_data = (_primitive_coordinates(analysed, check)

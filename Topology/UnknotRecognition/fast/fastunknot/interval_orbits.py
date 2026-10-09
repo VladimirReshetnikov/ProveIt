@@ -234,12 +234,12 @@ def _wide_end_is_left(pairs, check):
     return left is not None and left[1] > right[1]
 
 
-def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
+def _count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                  max_cycles: int | None = None,
                  periodic_rule: str = 'fine_wilf', check=None,
                  record_certificate: bool = False,
                  merger_scheduler: str = 'adaptive',
-                 sweep_direction: str = 'forward') -> OrbitResult:
+                 sweep_direction: str = 'forward', _cycle_started=None) -> OrbitResult:
     """Count components of an interval equivalence relation, without expansion.
 
     On budget exhaustion, ``complete`` is false and ``orbits`` is None.
@@ -309,6 +309,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         if max_cycles is not None and cycles >= max_cycles:
             return OrbitResult(False, None, cycles, stats)
         cycles += 1
+        if _cycle_started is not None:
+            _cycle_started(stats)
         if operations is not None:
             operations.extend({'op': 'delete', 'index': i}
                               for i in range(len(pairs) - 1, -1, -1)
@@ -400,6 +402,33 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                         size=initial_n, pairings=initial_rows, orbit_count=total,
                         operations=operations) if record_certificate else None)
     return OrbitResult(True, total, cycles, stats, certificate)
+
+
+def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
+                 max_cycles: int | None = None,
+                 periodic_rule: str = 'fine_wilf', check=None,
+                 record_certificate: bool = False,
+                 merger_scheduler: str = 'adaptive',
+                 sweep_direction: str = 'forward') -> OrbitResult:
+    """Count interval orbits; optionally race two directions by bounded restarts.
+
+    forward/reverse/wide retain their existing schedules and proof formats.
+    race starts with the wider-end preference and geometrically increases a
+    shared per-attempt checkpoint allowance, trying both directions at each
+    scale. max_cycles counts begun cycles across every attempt. A successful
+    result contains only the winning ordinary certificate. Structural stats
+    describe the winning (or last incomplete) attempt; race_* fields count
+    all scheduling work. The proven overhead is in cooperative checkpoints,
+    not elapsed time or elementary bit operations. Defaults are unchanged.
+    """
+    if sweep_direction == 'race':
+        from .interval_race import race_orbits
+        return race_orbits(n, pairings, max_cycles=max_cycles,
+            periodic_rule=periodic_rule, check=check,
+            record_certificate=record_certificate, merger_scheduler=merger_scheduler)
+    return _count_orbits(n, pairings, max_cycles=max_cycles,
+        periodic_rule=periodic_rule, check=check, record_certificate=record_certificate,
+        merger_scheduler=merger_scheduler, sweep_direction=sweep_direction)
 
 
 @dataclass(frozen=True, slots=True)

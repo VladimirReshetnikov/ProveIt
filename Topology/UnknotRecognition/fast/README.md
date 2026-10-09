@@ -3328,3 +3328,29 @@ and isolated producer/replay/serialization timings with
 `python -B -m normal_orbit_research.direction audit --output OUTPUT.json`
 or `benchmark --rounds 5` in that driver. Article section 124 proves the
 reflection rule and records the ordering counterexample and timing results.
+
+The additional `sweep_direction='race'` mode now tries both directions with
+geometrically increasing cooperative-checkpoint allowances. Width chooses
+the first attempt only. A failed attempt is discarded, and the successful
+answer retains exactly the corresponding fixed-direction certificate.
+Independent checkers and the forward default are unchanged.
+
+For k pairings on an M-point universe, the initial allowance is
+`L = 8*(k+1)*(M.bit_length()+1)`. If W is the smaller complete checkpoint
+count of the two fixed directions, unlimited attempt work is at most
+`12*max(L,W)`, plus k+1 startup checkpoints. This is a checkpoint guarantee;
+it is not a constant-factor wall-clock or elementary-bit-operation bound.
+All begun cycles, including interrupted attempts, consume `max_cycles`.
+The returned `cycles` and `race_*` statistics include scheduling work;
+ordinary structural statistics describe the winning or last incomplete run.
+Incomplete structural counters can lag an interrupted helper; use the race
+checkpoint and cycle counters for exact interruption accounting.
+No incomplete trace becomes a certificate, and caller cancellation propagates.
+
+Article section 125 proves the bound and reports the restart costs. The
+audit preserves all 5,100 default surface records, checks 5,100 race results,
+and validates 1,210 literal interval systems and checkpoint inequalities.
+The policy remains optional: restarts and callback accounting can exceed
+the gains from choosing a better order. Reproduce with
+`python -B -m normal_orbit_research.race audit --output OUTPUT.json` or
+`benchmark --rounds 5` in the same driver.
