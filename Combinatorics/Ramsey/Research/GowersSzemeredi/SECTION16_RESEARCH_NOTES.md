@@ -9010,3 +9010,12 @@ The recursive higher-tuple construction, subsequent local structure and
 comparison with the printed final Gowers budget still remain. This
 checkpoint does not close a numbered catalogue entry and does not claim
 an improved final Szemeredi threshold.
+
+All fourteen modules compile in a 529-module production closure. The
+final interface passes all twenty-seven individual axiom checks and the
+full audit of 8,442 public Gowers theorems, using only `propext`,
+`Classical.choice`, and `Quot.sound`. The combined audit has 5,421 modules;
+the facade has 5,419, including the unchanged 4,152 OAI modules. The
+115-companion / five-open ledger is byte-identical, and port scope still
+contains 4,134 upstream and 17 compatibility modules. No upstream source,
+license scope, or provenance notice is changed.
