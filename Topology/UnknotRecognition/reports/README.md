@@ -541,3 +541,14 @@ of minimum edge-intersection weight found no new discs in 58 old-stage misses
 and was retained as research rather than added to the recognizer. See
 `../synthesis/cocycle_trees.tex` for the construction, exact limitations and
 complete-call performance, including unsuccessful-search overhead.
+
+The maintained report-31 span optimizer now uses **adaptive blocking flows**
+on its zero-reduced-cost residual graph, handing off to Dijkstra after two
+poor blocks and restarting on later zero-distance evidence. Its independent
+optimality checker is unchanged. All 500 abstract optima and 82 comparable
+source vectors are preserved; the two formerly capped standalone source
+optimizations now complete. The full shared-budget Gordian stage still caps.
+All 1,192 tests pass and 76 fresh Regina controls agree. See
+`../synthesis/cocycle_blocking.tex` for the residual invariant, worst-case
+accounting, an equal-cost family with linear residual search, and measured
+source gains alongside adverse arbitrary-input controls.
