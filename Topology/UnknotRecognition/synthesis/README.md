@@ -1058,3 +1058,14 @@ unsafe promotion. The section reports complete-call timings and explains why
 linear-support Fibonacci meridians leave the general QP sector-selection goal
 unresolved. Fresh records and reproduction are `data/incoming-sectors-*` and
 `../fast/normal_orbit_research/sectors.py`.
+
+[`topology_spectra.tex`](topology_spectra.tex) integrates report 58's two-weight
+component observer with the monotone-event guard required by the intake finding.
+It proves compressed least boundary representatives, marker inclusion, sparse
+cover inversion including the zero signature, and complete core restoration.
+The corrected checker rejects the retained reflection counterexample; discovery
+explicitly uses forward. All 1,312 tests pass, with 5,100 type-spectrum comparisons
+and 1,395 fresh Regina certificate checks. Complete-call timings improve large
+mixtures and vertex links but regress on primitive layered inputs; the coordinate
+reference also computes finer embedding data. Records and source pins are
+`data/topology-spectra-*`, with reproduction in the `spectra` research driver.
