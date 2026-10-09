@@ -277,3 +277,9 @@ bounds, and other upstream proof text are unchanged; the full production
 check uses 1,828 current local dependency modules. This repair is included in
 the completed 3,900-entry axiom checkpoint and retains the existing
 license and updated modification notice.
+
+The joint translated-variety consumers use the same scoped recurrence
+for common partitions and union covers. They give `9*n` maps and a capped
+exponent polynomial in the total phase counts. Their production and
+transitive axiom checks pass; the combined facade audit is queued. No
+upstream module or license scope is added.

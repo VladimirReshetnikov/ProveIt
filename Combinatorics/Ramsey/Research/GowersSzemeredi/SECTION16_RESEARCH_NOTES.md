@@ -1918,3 +1918,31 @@ separate 3,917-module audit checks 58,849 public OAI theorems and the listed
 compatibility declarations. Only the three approved axioms occur. This
 now includes both the relative-patch finite-set repair and the redundant
 CRT tactic repair. The full density conclusion remains unverified.
+
+### Shared partitions and covers for translated variety families
+
+The four `Proofs16JointVariety*` modules now construct a common partition
+for `n` translated varieties, each with `r` mixed phases. The linear stage
+uses the union of all horizontal frequencies and the union of all vertical
+frequencies. Let `s` be the sum of those two union cardinalities. On each
+linear-stage cell, the mixed phases of varieties whose deep translates
+miss the cell are replaced by zero; all remaining phases are multilinear
+there. One simultaneous partition therefore uses `n*r` mixed phases.
+The cell proof handles independent translations and different radii.
+
+For a common radius lower bound `delta>0`, set
+`D0=(p*(n*r+1)^8)*(p*(s+1)^8)`. The large-box profile has exponent
+`1/(2*D0)` and integer threshold
+`max(C*(s+n*r+1),ceil(16/delta))^(2*D0)`. Every cell is good for every
+translated variety. One multilinear map per member covers the union
+on each large cell. Its fibres have cardinality at most `n`, so the
+coarse small-box cover gives `9*n` maps, with the usual capped positive
+exponent. This is one common partition, without sequential exponent
+multiplication. The count and exponent are independent of the allowed
+loss. The statement also handles the empty family.
+
+All four production sources and all seven new transitive axiom checks
+pass. The full facade audit is queued. Uniform rank padding and the
+packaging as a general slice provider remain further steps; no missing
+extraction or deep-structure hypothesis is asserted. These consumers
+reuse the scoped recurrence and add no upstream modules.
