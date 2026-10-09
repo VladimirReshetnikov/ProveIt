@@ -4702,6 +4702,119 @@ the selected-port scope check passes. Upstream source bytes and Apache
 provenance/license files are unchanged.
 
 
+### J.98. Global density gives many exact column identities
+
+The small-image rigidity argument of J.97 now composes all the way from
+a dense Freiman bihomomorphism. The final theorem
+`global_many_exact_column_quadruples` assumes only `0 < alpha <= 1`,
+`#A >= alpha*N^2`, `IsEBihomomorphism A phi {0}`, and an explicit
+lower bound on the prime modulus depending on `alpha`. It constructs
+the column family and witness system, rather than assuming them.
+
+**Shared witnesses preserve map values.**
+`Proofs16WitnessProjection` proves that a represented four-sum and the
+first three entries determine the fourth entry. Consequently,
+
+```
+#W <= #(W.image fourSum) * N^3.
+```
+
+Thus `theta*N^4` witnesses give at least `theta*N` represented points.
+`Proofs16SharedWitnessZeros` defines `IsColumnWitnessSystem`, retaining
+membership of every witness point in the original `A` and the exact
+identity between each column-map value and the four original values of
+`phi`. For an additive index quadruple, a shared witness makes the
+column defect vanish by horizontal Freiman linearity of `phi`. Projecting
+all shared witnesses produces a dense zero set inside the intersection
+of the four original column domains. This is a value identity, not
+merely a containment statement about the difference set.
+
+**Uniform kernel radius and quadruple count.** If each column spectrum
+has rank at most `d` and the original radius is `rho`, the common spectrum
+of any four columns has rank at most `4*d`. Define
+
+```
+M = ceil(4/rho)
+K = ceil(M^(4*d)/theta)
+r = rho/(2*K).
+```
+
+For primes `N > K`, `Proofs16SharedWitnessKernel` applies J.97 to the
+projected zero set. Every additive quadruple sharing `theta*N^4`
+witnesses satisfies its exact column identity at the same radius `r`.
+No new frequencies are introduced.
+
+`Proofs16ManyExactColumnQuadruples` combines this with the common-witness
+double count. If `#X >= b*N` and each column has at least `c*N^4`
+witnesses, choose `theta = c^4*b^4/2`. At least `theta*N^3` additive
+quadruples of indices in `X` then satisfy the exact identity throughout
+the intersection of their radius-`r` domains. The count is of distinct
+index quadruples; witness multiplicities have been eliminated.
+
+**Constructing the input family from global density.**
+`Proofs16DenseColumnEightFamily` first transposes the dense-row averaging
+lemma to columns. It obtains at least `alpha/(2-alpha)*N` indices whose
+columns have density at least `alpha/2`. Apply the already proved
+Freiman-eight extraction to each column of the original bihomomorphism.
+The resulting subsets `B x` lie in the original columns and have density
+at least
+
+```
+beta = 2^(-1882) * ((alpha/2)^4)^1164.
+```
+
+`Proofs16UniformColumnRepSystem` builds each normalized column map as
+`repMap (B x) (phi(x, ·))`, using the robust representation spectrum.
+The uniform rank and witness-density parameters are
+
+```
+d = ceil(16/beta^2)
+c = beta^4/(4*13^d).
+```
+
+The maps are Freiman-linear on their Bohr domains of radius `1/(4*pi)`,
+take zero to zero, and each has at least `c*N^4` witnesses. Rank and
+witness-density bounds depend on the lower density `beta`, rather than
+the individual column cardinalities. `Proofs16GlobalColumnWitnessSystem`
+assembles these maps and witnesses into an `IsColumnWitnessSystem` for
+the original `A` and `phi`, preserving their value equations.
+
+Finally, `Proofs16GlobalExactColumnQuadruples` sets
+
+```
+b = alpha/(2-alpha)
+theta = c^4*b^4/2
+rho = 1/(4*pi)
+K = sharedWitnessImageCap d rho theta
+N0 = K+1
+r = sharedWitnessKernelRadius d rho theta.
+```
+
+For prime `N >= N0`, the constructed family has at least `theta*N^3`
+exact additive column quadruples at the strictly positive radius `r`.
+Both `theta` and `r` are proved positive. The conclusion also retains
+the dense index set, rank bounds, full-domain Freiman linearity,
+normalization, witness counts, and the original-map witness system.
+There is no column-extraction, witness-system, image-bound, or
+zero-set-density hypothesis in this global theorem.
+
+**Limits.** This gives many exact additive index quadruples; it does not
+yet give a dense structured family where every additive quadruple is
+exact. That strengthening, the bilinear-variety organization, and the
+final shifted agreement remain open. The all-modulus and
+quasipolynomial requirements of the deep structure contract are also
+unproved. None of the five open numbered companions is closed here.
+The construction reuses the selected upstream closure without any new
+ports or changes to Apache provenance.
+
+**Verification.** The focused global construction checks 136 modules.
+All 21 new named theorems pass individual axiom checks. The combined
+facade audit checks 6,935 public Gowers theorems in 5,087 modules (4,152
+OAI modules), or 5,089 modules with both audit consumers. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The source ledger matches
+the tracked 115 companions and five open entries; the selected-port
+scope check passes. Upstream source bytes and license files are unchanged.
+
 **Proposition 5.1 (ii)–(iii) per column and per quadruple.**
 - `Proofs16RepresentedMap`: the public induced map `repMap` of a
   Freiman 8-homomorphism. `repMap (a+e−b−c) = f a + f e − f b − f c` for
@@ -4714,7 +4827,7 @@ provenance/license files are unchanged.
   count). `column_witness_card_ge` turns this into a witness density.
 - `Proofs16MilicevicQuadrupleImage` (`alternating_repMap_vanishes`, an
   image bound for one column quadruple via Lemma 2.42) was retired in the
-  same session. J.97's `Proofs16SharedWitnessZeros` and
+  same session. J.98's `Proofs16SharedWitnessZeros` and
   `Proofs16SharedWitnessKernel`, written concurrently on top of
   `Proofs16CommonWitnesses` and `Proofs16RepresentedMap`, prove the same
   vanishing for abstract column-witness systems over `IsEBihomomorphism`.
@@ -4722,35 +4835,12 @@ provenance/license files are unchanged.
   column identities, and `many_exact_column_quadruples` does the count.
 
 
-### Proposition 5.1 assembled: from a Freiman bihomomorphism to exact column quadruples (2026-10-09)
+### Proposition 5.1 assembled (2026-10-09): duplicate retired
 
-`Proofs16BihomWitnessSystem` connects the column modules
-(`Proofs16MilicevicColumns`, `Proofs16ColumnRepSystem`) to J.97's
-witness-system interface.
-- `column_freimanHom2`: every column of an `IsEBihomomorphism A φ {0}` is
-  a Freiman 2-homomorphism.
-- `exists_column_core`, `columnCore`, `columnCore_spec`: every column with
-  at least `αN` points has a Freiman 8-homomorphism core of size
-  `≥ κN`, where `κ = 2⁻¹⁸⁸²(α⁴)¹¹⁶⁴`.
-- `bihom_column_witness_system`: on the dense columns, the cores give a
-  system with `T x = columnSpectrum`, `L x = repMap` and
-  `W x = columnWitnesses`, satisfying `IsColumnWitnessSystem` at
-  `ρ = 1/(4π)`. Moreover `|T x| ≤ 16/κ²`, `L x` is Freiman-linear on
-  `B(T x; ρ)` with `L x 0 = 0`, and `κ⁴N⁴/4 ≤ 13^{|T x|}·|W x|`.
-- `denseColumns_card_ge`: `|A| ≥ δN²` gives at least `(δ/2)N` columns
-  with `(δ/2)N` points each.
-- `bihom_many_exact_column_quadruples`: let `φ` be a Freiman
-  bihomomorphism of density `δ`, in prime `ℤ/N` above the explicit
-  threshold `sharedWitnessImageCap d ρ θ < N`. It has at least `θN³`
-  additive quadruples of dense columns whose maps satisfy
-  `L x₀ + L x₁ = L x₂ + L x₃` exactly on `B(T; sharedWitnessKernelRadius)`.
-  The parameters are `α = δ/2`, `d = ⌊16/κ²⌋`,
-  `c = κ⁴/(4·13^d)` and `θ = c⁴α⁴/2`.
-
-This is Milićević's Proposition 5.1 (Step 1 of Theorem 1.4) with (iii)
-strengthened from bounded image to exact identities, by J.97's prime
-small-image rigidity. All bounds are explicit. They are polynomial in
-`δ` except through `13^d`, the Bohr density at the column spectrum's
-size, which is exponential in `δ^{-O(1)}`. Step 2 (Section 6, abstract
-Balog–Szemerédi–Gowers onto a set where almost all column quadruples
-are exact) is next. Standard axioms; collision gate clean.
+`Proofs16BihomWitnessSystem` assembled Proposition 5.1 from
+`Proofs16MilicevicColumns` and `Proofs16ColumnRepSystem`
+(`bihom_many_exact_column_quadruples`, with `(δ/2)N` dense columns). It
+landed in the same hour as `Proofs16GlobalExactColumnQuadruples`
+(`global_many_exact_column_quadruples`), which proves the same statement
+with the slightly better column count `α/(2−α)·N`. The duplicate was
+removed before merging; git history keeps it.
