@@ -7675,3 +7675,78 @@ the complete audit checks 7,788 public Gowers theorems in 5,269 modules
 `Classical.choice`, and `Quot.sound` occur. The ledger and port-scope
 checks pass unchanged. Consumer audit counts were updated; no source
 port, adaptation notice, or license scope was changed.
+
+
+### J.125 Simultaneous quadruple and higher-arrangement selection
+
+The two concrete enlargement routes now terminate in one selection
+state. Eight original modules prove sixteen named theorems. The result
+records actual progression maps, selected finite indices, exact
+frequency values and domain membership; it does not assume an abstract
+improvement oracle.
+
+**Shared parameters.** Put
+
+```
+C = max (pairSelectionCutoff d r) (2*bohrExtensionCutoff (8*d) r),
+s = spanGeneratorBound (2*d) C,
+sigma = higherPairSelectionRadius d C,
+eta = min (pairSelectionGain delta d r) (higherEscapeDensity delta d r/4).
+```
+
+Both `sigma` and, for positive `delta`, `eta` are positive. The maximum
+cutoff accommodates both actual escape theorems without requiring a
+monotonicity lemma for `bohrExtensionCutoff`. The higher radius pays
+both the eight-set, coefficient-four higher-arrangement budget and the
+two-set quadruple budget throughout the iteration.
+
+**One state and two steps.** `PairSelectionState.JointValid` requires
+dissociated selected sets in the common ambient span, representation
+of every selected frequency by a recorded map at its actual pair
+difference, and total frequency cardinality at least
+`maps.length * eta * N^2`. Each recorded map satisfies either the
+quadruple control or one of the eight higher extraction-stage controls.
+`extend_joint` preserves these invariants when given a concrete map
+escaping on at least `eta*N^2` pairs. The two improvement theorems supply
+exactly this input from their respective failed-containment families.
+They prepend one map and retain all old selected frequencies.
+
+**Termination with both error bounds.** The rank budget implies
+`maps.length * eta <= s`. If there were no state with both failure sets
+small, every valid state would admit at least one of the two genuine
+improvements. Induction would then give valid states of arbitrarily
+large length, contradicting this positive-gain budget. Thus
+`exists_joint_frequency_selection` returns a state with fewer than
+`delta*N^3` quadruple failures and fewer than `delta*N^11`
+higher-arrangement failures at the same radius. Its count variant
+bounds the length by `floor(s/eta)`.
+
+`joint_frequency_selection` exposes this as a finite family
+`g : Fin m -> PairFrequencyMap N` and actual index sets `I(x,y)`.
+Every index set has at most `s` elements; its image of map values has
+exactly the same cardinality and is dissociated in the common ambient
+span. All selected indices satisfy the map-domain requirement. The
+same frequency family meets both containment error bounds, and
+`m*eta <= s`. The quadruple input family must be additive; the higher
+parameterization already enforces its additive shift relation.
+
+**Uniform map bounds.** `jointControlParameter` lists the nine possible
+controls: one quadruple control and eight higher-stage controls.
+`jointMapRank` is the finite maximum of their progression rank bounds;
+`jointMapDensity` is the finite minimum of their positive progression
+densities. The latter is positive. Every `JointControlled` map has a
+proper progression of rank at most `jointMapRank`, cardinality at least
+`jointMapDensity*N`, and is Freiman of order two on its translated
+domain. This does not assume monotonicity of the control functions.
+
+**Remaining work.** This completes the simultaneous selection step.
+Popular shifts, coherent good anchors and Bohr gluing are still needed
+before the selected family yields the required bilinear variety
+structure. The deep structure hypothesis is still open, so no
+numbered catalogue entry or final bound is discharged here. All eight
+modules are original consumers of existing dependencies; no port or
+license scope is added.
+
+**Verification.** The complete uniform-control closure checks 329
+modules. The sixteen named theorems are checked individually for their
+axioms. Final combined audit and synchronization results follow below.
