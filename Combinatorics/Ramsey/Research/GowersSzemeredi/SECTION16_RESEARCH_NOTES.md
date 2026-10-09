@@ -4844,3 +4844,113 @@ landed in the same hour as `Proofs16GlobalExactColumnQuadruples`
 (`global_many_exact_column_quadruples`), which proves the same statement
 with the slightly better column count `α/(2−α)·N`. The duplicate was
 removed before merging; git history keeps it.
+
+### J.99. Removing intermediate frequencies and composing column relations
+
+**Verified 2026-10-09.** Six modules extend J.98 from many exact
+quadruples to a dense relation system with a finite quantitative
+composition hierarchy. This addresses the changing domains of the
+partially defined column maps.
+
+`Proofs16RefinementKernel` proves `freiman_zero_remove_frequencies`.
+Let `|T| <= d`, `|U| <= e`, `0 < r <= rho`, and let `f` be normalized
+Freiman-linear on `B(T;rho)`. Put
+
+```
+P = ceil(4/rho), Q = ceil(1/r)
+K = P^d * Q^(d+e).
+```
+
+If `f` vanishes on `B(T union U;r)` and the prime modulus satisfies
+`N > K`, then it vanishes on `B(T;(rho/2)/K)`. The proof combines the
+Bohr cardinality lower bound, the dense-level image bound, and prime
+small-image rigidity. No frequency from `U` remains in the conclusion.
+
+`Proofs16ColumnPairComposition` encodes a relation between `(a,b)` and
+`(c,d)` as equality of `L(a)-L(b)` and `L(c)-L(d)` on the four endpoint
+Bohr domains. Two such identities through an intermediate pair compose
+at `refinementKernelRadius (4*d) (2*d) rho r`. Only the four endpoint
+frequency sets occur in the result; the two intermediate sets are
+removed by the preceding theorem.
+
+`Proofs16ColumnIdentityLevels` defines a positive decreasing schedule
+`r[0]=rho` and
+
+```
+r[j+1] = min(r[j], refinementKernelRadius (4*d) (2*d) rho r[j])
+N0(n) = 1 + max_{j<n} refinementKernelCap (4*d) (2*d) rho r[j].
+```
+
+The finite maximum is implemented by `Finset.sup`, including `n=0`.
+For `N >= N0(n)`, paths of at most `n` identities compose on the
+corresponding endpoint radius. `Proofs16ColumnRelationSystem` also
+requires equal index differences and proves the three symmetries:
+interchanging the pairs, reversing both pairs, and exchanging the
+middle entries. Positive levels `i,j` compose to level `i+j` when
+`i+j <= n`. A single intermediate pair suffices.
+
+This is a stronger qualitative transitivity condition than the
+many-bridge hypothesis of the abstract BSG argument in
+[Milićević, Theorem 4.1](https://arxiv.org/pdf/2601.01682), but it comes
+with the explicit prime-modulus threshold and radius costs above.
+No quasipolynomial estimate follows here.
+
+`Proofs16ColumnRelationCounting` identifies the pair relations with
+J.98's exact quadruples using `(p,q) -> (p.1,q.2,p.2,q.1)` and proves
+equality of their cardinalities. `Proofs16GlobalColumnRelations` takes
+the maximum of J.98's threshold and the composition threshold. Its
+`global_dense_column_relations` then constructs the dense level-one
+relations and all the stated compositions directly from `A`, `phi`,
+and their original density/bihomomorphism assumptions. The witnesses,
+normalization, column rank, and witness counts are retained. There is
+no assumed relation density or transitivity hypothesis.
+
+**Limits and next step.** This does not yet extract a dense set of
+indices on which every additive quadruple satisfies the local identity.
+The dense graph extraction, bilinear organization, and shifted agreement
+remain open, as do the all-modulus and quasipolynomial parts of the deep
+structure contract. One possible next step is to select a maximal-degree
+star in each difference fibre: single-bridge composition would make its
+leaves coherent. Establishing a dense index set still requires a further
+argument; naive symmetrization may combine unrelated stars.
+
+**Verification.** All 23 new named theorems pass individual axiom checks.
+The global construction checks 142 modules. The combined audit checks
+6,969 public Gowers theorems in 5,095 modules (5,093 for the facade,
+including the unchanged 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The numbered catalogue remains
+115 companions and five open entries; this count does not certify
+fidelity to every printed statement. No upstream code or provenance
+files were changed and no new upstream modules were ported.
+
+
+
+### The deep contract is only needed in prime moduli, eventually (2026-10-09)
+
+`MilicevicDeepVarietyStructure D` quantifies over every modulus `N` and
+every density. Everything that consumes it needs much less. The greedy
+cover applies it at one density, and the structure side concludes only
+for prime `N ≥ N₀`. Meanwhile the formalization of Milićević's proof
+(J.91–J.97) produces prime, large-modulus statements, with thresholds such
+as `sharedWitnessImageCap … < N`. `Proofs16DeepEventuallyPrime` closes
+the interface gap.
+- `DeepStructureAt D N c` is the contract's conclusion at one modulus
+  and one density.
+- `MilicevicDeepEventuallyPrime D`: for every `c > 0` there is a
+  threshold `N₁(c)` such that `DeepStructureAt D N c` holds for every
+  prime `N ≥ N₁(c)`. The all-moduli contract implies it
+  (`MilicevicDeepVarietyStructure.eventuallyPrime`).
+- `exists_variety_piece_at`, `greedy_variety_cover_at`, and
+  `greedy_variety_cover_family_at` use only `DeepStructureAt` at the
+  density they apply.
+- `variety_structure_side_eventually`,
+  `structure_side_of_milicevic_eventually`, and
+  `structure_side_of_milicevic_sharper_eventually` derive the structure
+  side from the eventual prime contract. The threshold becomes
+  `max N₀ N₁`, with `N₁` taken at the single density `θ/2/m(γ, θ/2)`.
+
+So a proof of Milićević's theorem in prime `ℤ/N` above an explicit,
+density-dependent threshold now suffices for the structure side and
+everything downstream. The original theorems and statements are
+unchanged; the new chain duplicates their proofs with the weakened
+hypothesis. Standard axioms; collision gate clean.

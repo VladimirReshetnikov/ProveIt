@@ -530,6 +530,8 @@ import GowersSzemeredi.Proofs16RefinementKernel
 import GowersSzemeredi.Proofs16ColumnPairComposition
 import GowersSzemeredi.Proofs16ColumnIdentityLevels
 import GowersSzemeredi.Proofs16ColumnRelationSystem
+import GowersSzemeredi.Proofs16ColumnRelationCounting
+import GowersSzemeredi.Proofs16GlobalColumnRelations
 import GowersSzemeredi.Proofs16CommonWitnesses
 import GowersSzemeredi.Proofs16RepresentedMap
 import GowersSzemeredi.Proofs16ColumnRepSystem
@@ -765,6 +767,7 @@ import GowersSzemeredi.Proofs16VarietyLossPower
 import GowersSzemeredi.Proofs16VarietyCeilingFreeDecomposition
 import GowersSzemeredi.Proofs16SharperLineExtractor
 import GowersSzemeredi.Proofs16SharperVarietyStructure
+import GowersSzemeredi.Proofs16DeepEventuallyPrime
 import GowersSzemeredi.Proofs16SharperVarietyParameters
 import GowersSzemeredi.Proofs01QuantitativeDensityHeadline
 /-!
