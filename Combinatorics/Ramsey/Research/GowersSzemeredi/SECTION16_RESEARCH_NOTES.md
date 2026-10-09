@@ -5821,3 +5821,115 @@ public Gowers theorems in 5,138 modules (5,136 for the facade, including
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement. No upstream
 modules or Apache provenance changed.
+
+### J.108. Bounded local models on a common Bohr domain
+
+**Verified 2026-10-09.** Seven modules use J.107's word identities to
+construct a bounded family of normalized Freiman-linear models in every
+fixed alternating-value fibre of the dense core.
+
+`dense_family_packing` is a finite packing lemma. Suppose the families
+`F i` lie in a common finite universe of size at most `M`, each has
+size at least `delta*M`, and `delta,M > 0`. A subfamily of maximum
+cardinality among the pairwise disjoint subfamilies has an index set
+`J` with `|J|*delta <= 1`. Every original family intersects a selected
+family: otherwise it could be added to the packing. The proof counts
+the disjoint union directly. It requires no probability estimate or
+rounding loss.
+
+`columnWordValueFibre_card_le` proves that words of `k+1` triples with
+one fixed alternating value occupy at most `N^(3*k+2)` possibilities.
+Forget the first entry. The remaining two entries of the first triple
+and the tail determine that entry from the prescribed value, so this
+projection is injective. Thus the representation density in J.106 is a
+density within a single value fibre, with no extra factor of `N` lost
+when packing families.
+
+`ColumnListIdentity` compares the alternating map sums of two finite
+anchor lists on their own Bohr domains. A `ColumnWordIdentity` gives
+such a comparison with the flattened word. If two anchor families
+share a represented word, their map sums therefore agree after adding
+that word's domain constraints. `columnListIdentity_trans_shrink`
+removes the shared word spectra in one application of
+`freiman_zero_remove_frequencies`. For two anchor lists of `k+1` terms,
+the endpoint and auxiliary rank bounds are respectively
+
+```
+D = 2*(k+1)*d,    E = 3*(k+1)*d.
+```
+
+The comparison holds at `refinementKernelRadius D E rho r` when
+`N > refinementKernelCap D E rho r`, with no shared-word spectrum
+remaining in the conclusion.
+
+`column_model_packing` combines these facts. Families of density
+`delta` in one fixed-value fibre yield at most `1/delta` representative
+anchor lists, and each original anchor list has a local map identity
+with one representative. In particular, a nonempty fibre always has a
+selected model; empty fibres are allowed and require no model.
+
+`Proofs16FixedColumnWordFamilies` supplies a common finite word type
+for the application. A `ColumnAnchorTuple N k` is a first anchor and a
+`Fin k` tuple of remaining anchors. Its associated list has length
+`k+1`. A length equivalence transports the list's representation family
+into `ColumnWord N (k+1)`. The equivalence preserves cardinalities,
+entries, alternating values, and all proved map identities. This makes
+the packing argument apply to actual representation families without
+adding a new representation hypothesis.
+
+`columnModelSpectrum` is the union of the selected models' anchor
+spectra. If each anchor list has length at most `m`, it has rank at most
+`|J|*m*d`. All selected alternating map sums are normalized and
+Freiman-linear on this common Bohr domain at the original linearity
+radius. Membership in the common Bohr set supplies every selected
+model's own column constraints.
+
+`global_column_models` applies the construction directly to the
+original dense bihomomorphism. It keeps the original witnesses, local
+linearity and rank bounds, normalization, dense core, and fixed-length
+representation counts. For every value `c`, it constructs a set `J` of
+anchor tuples in the `c` fibre and a common spectrum `Gamma` with
+
+```
+|J|*delta <= 1,
+|Gamma| <= |J|*(k+1)*d,
+|Gamma|*delta <= (k+1)*d,
+```
+
+where `delta = globalColumnWordDensity alpha k`. Each tuple in the
+fibre agrees with a selected normalized Freiman-linear model on the
+intersection of its own column domains and the common Bohr domain.
+The identity comparing the two anchor lists is retained as well.
+
+The new radius and modulus bound are explicit:
+
+```
+s = refinementKernelRadius (2*(k+1)*d) (3*(k+1)*d)
+      (globalColumnIdentityRadius alpha)
+      (globalColumnWordIdentityRadius alpha k),
+N0 = max(globalColumnWordIdentityModulusBound alpha k,
+         corresponding refinementKernelCap + 1).
+```
+
+Both the dense core and these parameters are uniform in `c`. Setting
+`c = 0` gives a bounded family of local models for additive anchor
+relations.
+
+**Remaining work.** The selected models need not be zero. A further
+core-refinement argument must eliminate nonzero additive models before
+claiming all additive map identities on the core. Bilinear organization,
+shifted agreement, and the final numerical budget are still open.
+Neither the packing bound nor a common domain alone proves these steps.
+
+**Verification.** The focused global construction checks 238 modules.
+All 15 new named theorems pass individual axiom checks using only
+`propext`, `Classical.choice`, and `Quot.sound`. No upstream modules or
+Apache provenance changed. The incoming named recurrence constants and
+arbitrary-bound slice interfaces are included in the combined audit
+recorded below; their deep structure inputs remain hypotheses.
+
+The merged combined audit checks 7,223 public Gowers theorems in 5,148
+modules (5,146 for the facade, including 4,152 OAI modules), with the
+same three approved axioms. The source ledger remains identical at 115
+companions and five open entries, and the selected-port scope check
+passes. These counts do not certify fidelity to every printed statement.
