@@ -2935,7 +2935,8 @@ or CLI `--normal-seed`. It follows filters and an enabled group search, then
 falls back to the established exact path when needed. The default is disabled.
 `--normal-seed-max-work` controls the shared guard-count allowance, including
 positive replay; `--normal-seed-no-optimize` tests only the first surface.
-The API also accepts a cancellation callback and a component-orbit cap.
+The API also accepts a cancellation callback. The legacy `max_cycles` argument
+is still validated, but this restricted stage now needs zero orbit cycles.
 
 The span optimizer and its arithmetic checker are separately available as
 `cocycle_span.minimize_cocycle_span` and
@@ -2958,7 +2959,7 @@ column incidence avoids visiting rows that cannot change. Reverse elimination
 order reconstructs the kernel, and a fixed primitive sign preserves the
 previous implementation's exact heights and normal coordinates. This reduces
 observed fill and rational work; its conservative dense bound remains cubic.
-The independent source-disc verifier is unchanged.
+This scheduling change preserved the independent source-disc verifier.
 
 ```bash
 python -B -m normal_orbit_research.cocycle_sparse audit --output results/cocycle_sparse_audit.json
@@ -2993,4 +2994,28 @@ matching the total weight alone cannot certify their histogram.
 python -B -m normal_orbit_research.single_orbit audit --output results/single_orbit_audit.json
 python -B -m normal_orbit_research.single_orbit weighted --output results/single_orbit_weighted.json
 python -B -m normal_orbit_research.single_orbit recognize --output results/single_orbit_recognize.json
+```
+
+The cocycle seed stage now certifies connectedness directly, using report 31's
+zero-class deletion argument. Its separate checker authenticates the knot
+exterior, reconstructs signed global edge values and checks integral
+primitivity after its own spanning-tree gauge. Raw proofs require a connected
+zero-edge graph; optimized proofs require an independently checked minimum-span
+witness. These hypotheses prove a connected orientable surface, so Euler
+characteristic one certifies an essential disc without an interval-orbit trace.
+An arbitrary primitive surface with Euler characteristic one is insufficient:
+a retained trefoil counterexample has three components and no essential disc.
+
+New `diagram-cocycle-disc-v1` certificates contain heights and an optional span
+witness. `verify_normal_seed_certificate` also retains support for previous
+`diagram-normal-disc-v1` component proofs. The independent
+`normal_cocycle_verify.inspect_cocycle_certificate` returns checked connected
+surface data or `None`; a valid non-disc remains an inconclusive candidate.
+The candidate vectors, optional-stage default and exact fallback are unchanged.
+See [the connectivity proof and measurements](../synthesis/cocycle_connectivity.tex).
+
+```bash
+python -B -m normal_orbit_research.connectivity audit --output results/cocycle_connectivity_audit.json
+python -B -m normal_orbit_research.connectivity replay --output results/cocycle_connectivity_replay.json
+python -B -m normal_orbit_research.connectivity recognize --output results/cocycle_connectivity_recognize.json
 ```

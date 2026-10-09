@@ -1,0 +1,55 @@
+\subsection{Smaller witnesses and complete-call measurements}
+
+The final measurements run serially, without tests, audits, builds or commits
+overlapping them. Each case has one warm-up round and five measured rounds.
+Each round randomly orders old, old A/A, new and new A/A calls. The tables
+give each primary arm's median elapsed time and the median of paired ratios;
+the latter need not equal a ratio of the two medians. All 200 measured and
+40 warm-up calls complete. Baseline and new certificate hashes are stable
+within their own implementations; their coordinate hashes agree across
+implementations. Different source-proof schemas intentionally produce
+different complete certificate hashes.
+
+The first experiment times source-bound independent verification of a
+precomputed positive certificate, together with source parsing, certificate
+hashing and serialized-byte counting. Producing the certificates is outside
+the timed sample. It includes all geometry and cohomology checks needed by
+each respective verifier, with no discovery cache passed into replay.
+The mode's total elapsed time, including preparation, is 11.136 seconds.
+
+\begin{center}
+\small\input{tables/cocycle_connectivity_replay.tex}
+\end{center}
+
+Complete replay improves $1.94$--$2.98\times$ on these four cases. The
+canonical compact JSON witnesses for the 8-, 16- and 32-crossing circles
+shrink from 112,472, 237,105 and 491,293 bytes to 30,077, 60,649 and
+121,929 bytes. The optimized positive shrinks from 51,195 to 21,671
+bytes, including its height data and dual matching. These sizes include
+the common source triangulation and PD; they are not sizes of an isolated
+connectivity subcertificate.
+
+The second experiment starts with a source PD and runs the complete
+recognizer, including source construction, cohomology discovery, an optional
+span search, the stage's internal checks, the exact fallback when required,
+and an additional independent replay of any returned native proof. It also
+hashes and counts the serialized certificate. Earlier shortcuts are
+deliberately disabled so that every case reaches the native stage. Both
+arms have no local seed work cap and retain a twelve-second global deadline.
+All calls complete before that deadline; the mode takes 53.089 seconds.
+
+\begin{center}
+\small\input{tables/cocycle_connectivity_recognize.tex}
+\end{center}
+
+The four native positives improve $2.05$--$8.70\times$. The 32-crossing
+circle's median falls from 2.345 seconds to 0.269 seconds. The genus-one
+unknot miss and trefoil still use the exact Khovanov fallback, returning
+\code{UNKNOT} and \code{KNOTTED} respectively; their complete calls
+improve about $1.46\times$ by making the preceding unsuccessful stage
+cheaper. The new-arm A/A ratio on the smallest circle is 0.921, indicating
+more variation there than on the other cases; its paired old/new gain is
+still about four. These selected-workload gains establish neither ordinary
+default-portfolio acceleration nor a general complexity theorem. The
+default-budget source audit above separately establishes the newly
+completed 32-crossing positive.

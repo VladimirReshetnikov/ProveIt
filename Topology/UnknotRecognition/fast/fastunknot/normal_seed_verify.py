@@ -7,6 +7,10 @@ from .integer_codec import certificate_equal, encoded_integer
 
 def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
     check()
+    if type(certificate) is dict and certificate.get('schema') == 'diagram-cocycle-disc-v1':
+        from .normal_cocycle_verify import inspect_cocycle_certificate
+        summary = inspect_cocycle_certificate(diagram, certificate, check=check)
+        return summary is not None and summary['compressing_discs'] == 1
     if (type(certificate) is not dict
             or set(certificate) != {'schema', 'input_pd', 'triangulation', 'coordinates', 'disc_certificate'}
             or certificate['schema'] != 'diagram-normal-disc-v1'):

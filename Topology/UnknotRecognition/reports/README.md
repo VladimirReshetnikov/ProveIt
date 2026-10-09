@@ -513,3 +513,19 @@ certificates and 17 source proofs are preserved, and 1,175 tests pass.
 Complete native-stage recognition improves 1.08–1.35× on the measured five
 inputs. See `../synthesis/single_orbit_weights.tex` for the conditional linear
 mass bound, multi-orbit counterexample, compatibility checks and timings.
+
+Report 31's **connectedness theorem** now also removes orbit searches from
+the restricted cocycle stage. A separate source-bound verifier checks the
+primitive integral class after an independent tree gauge and either a zero
+spanning tree or the minimum-span witness. It then uses Euler characteristic
+to identify the connected orientable disc. Both new witnesses and historical
+component certificates replay independently. All 148 fresh Regina controls
+agree; the 84-source default-budget audit now has 18 positives, 65 completed
+restricted misses and one cap. The 32-crossing stabilized circle newly fits
+the budget, while Gordian still caps during optimization. See
+`../synthesis/cocycle_connectivity.tex` for the full proof, a primitive
+Euler-one trefoil counterexample to omitting connectedness, and timings.
+All 1,181 tests pass. Complete recognition improves 1.46–8.70× on six
+deliberately routed native-stage inputs; independent replay improves
+1.94–2.98× on four positives. Ordinary corpus calls still finish before
+attempting this stage, so those gains do not imply a default-portfolio gain.
