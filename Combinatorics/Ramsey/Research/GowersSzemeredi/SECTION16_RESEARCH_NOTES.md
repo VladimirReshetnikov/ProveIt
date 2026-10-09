@@ -5593,8 +5593,19 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          `ρ_16 ≈ ρ₁^((6d)^16)`, still `exp(-poly)`.
        - This is the first stage of a replacement for J.108–J.110 that
          stays in the `exp(-poly)` regime. It does not yet give "all
-         quadruples respected"; the bridging (J.142) and the later
-         steps remain.
+         quadruples respected".
+       - **With the J.142 bridging (kernel-checked).**
+         `global_column_word_system` (`Proofs16GlobalColumnWords`)
+         instantiates `abstract_bsg_word_system` with this ladder.
+         Doubling over all of `ℤ/N` uses `K = 1`, and weak transitivity
+         at threshold `c′N` follows from `c′|X|`. The result: for a
+         dense bihomomorphism and every `k`, there are dense
+         `B′ ⊆ B ⊆ X` with threshold richness. Every anchor list of
+         length at most `k + 1` in `B′` has
+         `δ_k(γ) N^(3j+2)` compatible word representations, all exact
+         level-16 zero relations of the column maps. Still to come:
+         Proposition 6.1 analogues, Step 3 (robust Bogolyubov–Ruzsa)
+         and Steps 4–6.
 4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
    Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
 
