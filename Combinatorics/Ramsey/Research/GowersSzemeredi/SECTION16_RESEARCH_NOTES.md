@@ -5384,13 +5384,55 @@ chosen per `(γ, θ)`.
    - a count `⌈fam·e^mb⌉ + 1` costs `log(fam+3) + mb`;
    - `milicevicBound D c ≤ (4/c)^D`.
 
-**Remaining**, all mechanical:
-- bound `L` by `x^(64·2^256)`. The constants' logs are at most a few
-  thousand by the Weyl bounds (`A_j < 2^192`, degree `< 256`), and
-  `mb ≤ (4/c)^D`. With `c⁻¹ ≤ x^(2^156)` at the spectrum density, a
-  hypothesis such as `D ≤ 2^64` leaves vast room;
-- assemble `Section16BudgetedPieceAt 3`, hence `Theorem162At 3` and
-  `Corollary1611At 3`, from `MilicevicDeepVarietyStructure D`.
+**The link is closed (2026-10-09).** In `Proofs16VarietyTheoremThree`:
+
+```
+theorem_16_2_at_three_of_deep {D} (hD : D ≤ 2^64)
+    (hM : MilicevicDeepVarietyStructure D) : Theorem162At 3
+corollary_16_11_at_three_of_deep … : Corollary1611At 3
+```
+
+So in dimension three, Theorem 16.2 and Corollary 16.11 reduce, through
+the variety route, to Milićević's deep structure theorem alone, for any
+exponent `D ≤ 2^64`. The steps, in order:
+1. *Shape* (`Proofs16VarietyShapeMatch`). The ceiling-free controls
+   equal the absorbed shape, via `section16_variety_line_factor_power`.
+2. *Absorption.* `Proofs16VarietyBudgetedPiece`'s
+   `variety_three_multiplyLinear` makes every relation piece at the named
+   constants `MultiplyLinear γ s`, with `s = 18r/γ + 64 + L`.
+3. *Loss* (`section16VarietyThreeLoss_le`). `L ≤ 112·Λ` by
+   `variety_loss_le`, where `Λ = 7 + 8·2^1700 + (F₁+3+m₁) + (F₂+6+m₂) + Lg`.
+   Every summand is at most `X = x^(2·2^256)` by the scale bounds
+   (`Proofs16VarietyScaleBounds`, `Proofs16VarietyCountBounds`), and
+   `D ≤ 2^64` keeps `m₂ ≤ x^(2^158·D)` below `X`. So
+   `112Λ ≤ x^(64·2^256)`.
+4. *Budget* (`variety_piece_budget`). `s ≤ η·s(θ,γ,3)`, where `η` is the
+   variety piece mass. Then `section16_budgeted_piece_three_of_deep…`
+   and `theorem_16_2_of_budgeted_piece` finish.
+5. *Constants* (`Proofs16ExplicitConstantBounds`, `Proofs05WeylConstantBounds`,
+   and the host part of `Proofs16VarietyTheoremThree`). The four named
+   constants are at most `2^1700`.
+
+*Verification status.*
+- Checked locally: the OAI-free modules, i.e. absorption, piece budget,
+  loss bound, scale bounds, count bounds and the Weyl bounds.
+- Checked against stubs: the modules downstream of
+  `Proofs05SchmidtRecurrence`, i.e. the refactored chain, the explicit
+  decomposition, shape matching, the budgeted piece and the constant
+  bookkeeping. The stubs replace only the OAI-backed recurrence proof,
+  and the explicit constants enter the assembly only through their
+  numeric bounds.
+- Host only: the unfolding of the port's `schmidtRecurrenceBase` in
+  `Proofs16VarietyTheoremThree`. Its proof script was checked against
+  verbatim copies of the definitions.
+- The full kernel check belongs to the full-verification host.
+
+*What is still open* for 16.2 and 16.11 in dimension three is only
+`MilicevicDeepVarietyStructure D` for some `D ≤ 2^64`, which is the
+peer's lane. Its eventual-prime form `MilicevicDeepEventuallyPrime Bnd`
+for a polynomial `Bnd` would need the same budget with `D` chosen per
+`(γ, θ)` (`Proofs16DeepBoundDomination`). There the `D ≤ 2^64`
+condition becomes a growth condition on `Bnd`. That is not yet done.
 
 Lean traps met here:
 - `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
