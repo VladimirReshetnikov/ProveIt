@@ -5404,9 +5404,19 @@ Lean traps met here:
 - `linarith` treats `4·(M·r)·log X` and `18·(M·r)·log X` as unrelated
   atoms.
 
-Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
-eventual, any-bound form) yields the decomposition with the unknown
-constants as parameters, but not `Theorem162At 3`.
+**Full dependency verification (2026-10-09).** The incoming fixed-constant
+chain, `ceilingFreeVarietyRelationDecompositionAt_explicit`, and the new
+count bounds now compile against the actual selected OAI dependency
+closure. The full merged audit checks 7,654 public Gowers theorems in
+5,242 modules and rejects all axioms except `propext`, `Classical.choice`,
+and `Quot.sound`; no stub or `sorry` is used in this verified closure.
+This supersedes the limited stub-based verification described above.
+The numerical upper bounds and the deep structural input remain
+undischarged, so this does not yet supply `Theorem162At 3`.
+
+Until the remaining bound comparison is proved,
+`MilicevicDeepVarietyStructure D` (or its eventual, any-bound form) yields
+the decomposition with these named constants, but not `Theorem162At 3`.
 
 ### J.103. Exact additive richness from matched four-walks
 
@@ -7410,3 +7420,14 @@ must retain the multiplicities of repeated generators. The quadruple
 containment theorem alone does not establish the higher containments.
 No numbered catalogue entry or final source-theorem bound is claimed
 here. No new upstream port or licensing change was necessary.
+
+**Verification.** The all-coordinate extraction closure checks 233
+modules. All fifteen new named theorems pass individual axiom checks.
+After merging the incoming explicit variety-decomposition chain, the
+full audit checks 7,654 public Gowers theorems in 5,242 modules
+(5,240 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The incoming assembly
+and count bounds compile with their actual dependencies. The numbered
+ledger remains byte-for-byte unchanged at 115 companions and five open
+entries. The selected-port scope remains 4,134 upstream and 17
+compatibility modules, with reciprocal-only dependencies excluded.
