@@ -1,0 +1,43 @@
+\subsection{Preserved source witnesses and observed arithmetic savings}
+
+An independent dense rational elimination test checks 240 small integer
+matrices with varied support, rank and coefficients, including a binary
+scaling case. It compares nullity decisions and rank-one kernels against
+full reduced row echelon form. Existing geometry tests include relabeled
+layered solid tori, a higher-rank rejection, and a rank-one manifold with
+homological torsion that still requires exact nonunit pivots. They also
+retain source-proof mutations, cancellation, shared-budget endpoints and
+the genus-one unknot miss.
+All sixteen focused tests pass in 3.372 seconds; all 1,166 maintained tests
+pass in 237.520 seconds. The source audit runs concurrently with the latter
+and takes 60.221 seconds; neither elapsed time is a performance comparison.
+
+The pinned source audit compares the published solver at commit
+\code{7a13523cc} with the new implementation on all 84 earlier diagrams.
+Every vertex label, local height and normal coordinate is identical.
+All seventeen positive source queries replay independently, and their
+certificate hashes match the prior stored proofs. Sixty-two queries finish
+without a disc in the tested family, and the same five reach the shared
+two-million-guard limit. This scheduling change does not add source coverage.
+The previous Regina comparisons apply to these identical vectors; they are
+not counted as new external runs.
+
+Across the 84 preparations, elimination updates fall from 2,286,028 to
+286,748 and nonunit pivots from 861 to zero. The largest active support is
+ten. For Gordian, updates fall from 1,124,538 to 72,167 and preprocessing
+guards from 1,564,758 to 208,461. Nevertheless its subsequent raw component
+query still exhausts the shared allowance. The 32-crossing stabilized
+circle also remains capped during its raw query. These observations locate
+remaining costs; they do not turn zero nonunit pivots in this corpus into
+a theorem for arbitrary triangulations.
+
+\input{cocycle_sparse_measurements.tex}
+
+The reproducible driver is
+\path{../fast/normal_orbit_research/cocycle_sparse.py}, with \code{audit},
+\code{prepare} and \code{recognize} modes. Audit and measurements retain
+470 matching source and fixture hashes, including the prior full source
+certificate audit. The two archives still in the incoming directory are covered
+by their earlier integration records. The checked \code{openai/math} head
+remains \code{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}; this change uses
+exact sparse elimination, not a new external complexity claim.

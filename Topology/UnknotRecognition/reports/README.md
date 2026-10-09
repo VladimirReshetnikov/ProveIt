@@ -36,7 +36,7 @@ modification times.
 | `28/` | `unknot_classical_closure_research_20261007.zip` | closure-rank compression and reset driver (`28/src/closure_reset/`) | scalar/total-linear first jet, pure block bounds, geometric single-survivor resets | conditional `poly(n) 2^O(g)` bound in actual reset gap | 29 delivered tests and 160-diagram audit pass against current production; optional closure backend integrated, 567 tests pass; one source pin mismatches its stated revision; expanded 624-scan discovery finds no nonsingleton block |
 | `29/` | `unknot_modular_boundary_2026-10-08.zip` | optional finite-field backend and patches (`29/patches/`) | modular marked-continuation Euler observer, checked suffix boundary responses reused across completed matchings | — | not run |
 | `30/` | `unknot_recognition_research_20261008.zip` | `fastunknot` continuation (`30/fast/`, `integration.patch`) | exact binary boundary tensors, three compression kernels with compressed transport | — | not run |
-| `31/` | `unknot_certified_primitives_20261008.zip` | certified primitives with integration material (`31/integration/`) | certified primitives with implementation contracts and independent audits | — | not run |
+| `31/` | `unknot_certified_primitives_20261008.zip` | certified primitives with integration material (`31/integration/`) | exact cocycle-span transshipment and source-normal candidates; other delivered primitives retain their separate integration records | polynomial span optimization, not genus minimization | cocycle portion integrated with native primitive discovery, Dijkstra flow and independent source-disc replay; 507 hashes and 15 delivered cocycle tests pass |
 | `32/` | `unknot_graded_torus_20261008.zip` | graded scanner (`32/src/`, `32/integration/`) | local cancellation bound by absolute homological-quantum bidegree occupancy, four-strand torus-block scanning | — | not run |
 | `33/` | `proveit_unknot_causal_kernels_2026-10-08.zip` | causal-kernel code (`33/src/`) | deterministic `poly(N,k)·2^O(k)` decision whether at most `k` RIII moves expose a crossing-decreasing RI or RII | — | not run |
 | `34/` | `ProveIt_Unknot_Braid_Kernel_2026-10-08.zip` | `braidkernel` package (`34/braidkernel/`, `34/integration/`) | certified braid kernels and linear Markov descent | — | not run |
@@ -467,5 +467,31 @@ remains available and independently replayable. The result is accepted by
 the maintained compact-manifold validator. This supplies
 provenance for that canonical geometry; it does not authenticate arbitrary
 supplied or simplified triangulations. See `../synthesis/diagram_exterior.tex`.
-Normal-vector discovery and verified simplification remain open integration
-tasks, and the default recognizer retains its existing behavior.
+Complete normal-vector search and verified simplification remain open
+integration tasks. The restricted candidate family below is now available;
+the default recognition policy retains its existing behavior.
+
+Report 31's **cocycle-span optimization** now operates on the native canonical
+exterior. Exact tree-gauged cohomology yields a primitive integral cocycle;
+half-integral local-height levels supply binary normal coordinates. The
+native optimizer replaces repeated Bellman--Ford passes with reduced-cost
+Dijkstra augmentations, stopping at the settled sink. A separate primal/dual
+checker reconstructs coordinates from edge weights and proves the exact
+minimum piece count. This does not minimize genus: the three-crossing unknot
+`[1, 1, -1]` remains a recorded miss after optimization.
+
+The optional `--normal-seed` stage tests the raw surface before optimizing,
+shares its allowance with every positive replay, and falls back to the
+existing exact recognizer on failure. Its native witness binds the exact
+stage-input PD to the compact exterior and an independently checked essential
+disc. See `../synthesis/cocycle_seeds.tex` for the local complexity theorem,
+connectedness argument, actual five-crossing optimized success, source audit,
+Regina controls and complete-operation timings. The delivery remains unchanged.
+
+Primitive discovery now schedules sparse equations by support size and live
+column incidence, retaining exact rational pivots and the previous primitive
+sign. All 84 source seeds and 17 positive certificate hashes are preserved.
+Complete preparation improves 1.34–2.22× on the measured larger inputs, while
+the smallest case adds about 3% overhead and full-recognition calls show no
+broad gain. See `../synthesis/cocycle_sparse.tex`; the conservative dense
+cohomology bound remains cubic.

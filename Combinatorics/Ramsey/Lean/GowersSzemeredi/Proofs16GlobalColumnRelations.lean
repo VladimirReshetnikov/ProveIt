@@ -37,6 +37,7 @@ theorem global_dense_column_relations {N n : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N)),
       (alpha / (2 - alpha)) * N ≤ X.card ∧
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
       (∀ x ∈ X, L x 0 = 0) ∧
@@ -53,7 +54,7 @@ theorem global_dense_column_relations {N n : Nat} [NeZero N] [Fact N.Prime]
     global_many_exact_column_quadruples A phi ha ha1 hA hphi hN0
   have hL' : ∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (globalColumnIdentityRadius alpha)) (L x) :=
     fun x hx => (hL x hx).mono (bohr_mono_radius _ (globalColumnIdentityRadius_le ha ha1))
-  refine ⟨X, T, L, W, hX, hsys, hT, hL', hzero, hW, hrho, htheta, ?_, ?_⟩
+  refine ⟨X, T, L, W, hX, hsys, hL, hT, hL', hzero, hW, hrho, htheta, ?_, ?_⟩
   · rw [columnRelationPairs_card_eq]
     exact hmany
   · intro i j p q z hi hj hij hpq hqz

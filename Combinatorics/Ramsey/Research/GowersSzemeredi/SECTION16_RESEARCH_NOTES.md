@@ -5821,3 +5821,415 @@ public Gowers theorems in 5,138 modules (5,136 for the facade, including
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement. No upstream
 modules or Apache provenance changed.
+
+### J.108. Bounded local models on a common Bohr domain
+
+**Verified 2026-10-09.** Seven modules use J.107's word identities to
+construct a bounded family of normalized Freiman-linear models in every
+fixed alternating-value fibre of the dense core.
+
+`dense_family_packing` is a finite packing lemma. Suppose the families
+`F i` lie in a common finite universe of size at most `M`, each has
+size at least `delta*M`, and `delta,M > 0`. A subfamily of maximum
+cardinality among the pairwise disjoint subfamilies has an index set
+`J` with `|J|*delta <= 1`. Every original family intersects a selected
+family: otherwise it could be added to the packing. The proof counts
+the disjoint union directly. It requires no probability estimate or
+rounding loss.
+
+`columnWordValueFibre_card_le` proves that words of `k+1` triples with
+one fixed alternating value occupy at most `N^(3*k+2)` possibilities.
+Forget the first entry. The remaining two entries of the first triple
+and the tail determine that entry from the prescribed value, so this
+projection is injective. Thus the representation density in J.106 is a
+density within a single value fibre, with no extra factor of `N` lost
+when packing families.
+
+`ColumnListIdentity` compares the alternating map sums of two finite
+anchor lists on their own Bohr domains. A `ColumnWordIdentity` gives
+such a comparison with the flattened word. If two anchor families
+share a represented word, their map sums therefore agree after adding
+that word's domain constraints. `columnListIdentity_trans_shrink`
+removes the shared word spectra in one application of
+`freiman_zero_remove_frequencies`. For two anchor lists of `k+1` terms,
+the endpoint and auxiliary rank bounds are respectively
+
+```
+D = 2*(k+1)*d,    E = 3*(k+1)*d.
+```
+
+The comparison holds at `refinementKernelRadius D E rho r` when
+`N > refinementKernelCap D E rho r`, with no shared-word spectrum
+remaining in the conclusion.
+
+`column_model_packing` combines these facts. Families of density
+`delta` in one fixed-value fibre yield at most `1/delta` representative
+anchor lists, and each original anchor list has a local map identity
+with one representative. In particular, a nonempty fibre always has a
+selected model; empty fibres are allowed and require no model.
+
+`Proofs16FixedColumnWordFamilies` supplies a common finite word type
+for the application. A `ColumnAnchorTuple N k` is a first anchor and a
+`Fin k` tuple of remaining anchors. Its associated list has length
+`k+1`. A length equivalence transports the list's representation family
+into `ColumnWord N (k+1)`. The equivalence preserves cardinalities,
+entries, alternating values, and all proved map identities. This makes
+the packing argument apply to actual representation families without
+adding a new representation hypothesis.
+
+`columnModelSpectrum` is the union of the selected models' anchor
+spectra. If each anchor list has length at most `m`, it has rank at most
+`|J|*m*d`. All selected alternating map sums are normalized and
+Freiman-linear on this common Bohr domain at the original linearity
+radius. Membership in the common Bohr set supplies every selected
+model's own column constraints.
+
+`global_column_models` applies the construction directly to the
+original dense bihomomorphism. It keeps the original witnesses, local
+linearity and rank bounds, normalization, dense core, and fixed-length
+representation counts. For every value `c`, it constructs a set `J` of
+anchor tuples in the `c` fibre and a common spectrum `Gamma` with
+
+```
+|J|*delta <= 1,
+|Gamma| <= |J|*(k+1)*d,
+|Gamma|*delta <= (k+1)*d,
+```
+
+where `delta = globalColumnWordDensity alpha k`. Each tuple in the
+fibre agrees with a selected normalized Freiman-linear model on the
+intersection of its own column domains and the common Bohr domain.
+The identity comparing the two anchor lists is retained as well.
+
+The new radius and modulus bound are explicit:
+
+```
+s = refinementKernelRadius (2*(k+1)*d) (3*(k+1)*d)
+      (globalColumnIdentityRadius alpha)
+      (globalColumnWordIdentityRadius alpha k),
+N0 = max(globalColumnWordIdentityModulusBound alpha k,
+         corresponding refinementKernelCap + 1).
+```
+
+Both the dense core and these parameters are uniform in `c`. Setting
+`c = 0` gives a bounded family of local models for additive anchor
+relations.
+
+**Remaining work.** The selected models need not be zero. A further
+core-refinement argument must eliminate nonzero additive models before
+claiming all additive map identities on the core. Bilinear organization,
+shifted agreement, and the final numerical budget are still open.
+Neither the packing bound nor a common domain alone proves these steps.
+
+**Verification.** The focused global construction checks 238 modules.
+All 15 new named theorems pass individual axiom checks using only
+`propext`, `Classical.choice`, and `Quot.sound`. No upstream modules or
+Apache provenance changed. The incoming named recurrence constants and
+arbitrary-bound slice interfaces are included in the combined audit
+recorded below; their deep structure inputs remain hypotheses.
+
+The merged combined audit checks 7,223 public Gowers theorems in 5,148
+modules (5,146 for the facade, including 4,152 OAI modules), with the
+same three approved axioms. The source ledger remains identical at 115
+companions and five open entries, and the selected-port scope check
+passes. These counts do not certify fidelity to every printed statement.
+
+### J.109. Quantitative elimination of active additive models
+
+**Verified 2026-10-09.** Eight modules prove a refinement argument for
+local model families. The evaluation tests include the individual column
+Bohr conditions, so no evaluation outside a column's domain is used.
+
+`freiman_nonzero_card_half` starts with a normalized Freiman-linear map
+`f` on `B(T;r)` and a point `z` in `B(T;r/2)` with `f(z) != 0`. For each
+`x` in the half-radius domain, at least one of `f(x)` and `f(x+z)` is
+nonzero. Both points belong to the full domain. Covering the half-domain
+by the nonzero set and one translate of it proves
+
+```
+|B(T;r/2)| <= 2 * |{y in B(T;r) : f(y) != 0}|.
+```
+
+Now let `Gamma` have rank at most `g`, an extra spectrum `U` have rank
+at most `d`, and `f` be normalized and Freiman-linear on `B(Gamma;rho)`.
+Suppose `0 < r <= rho`, the prime modulus exceeds
+`refinementKernelCap g d rho (r/2)`, and `f` is nonzero somewhere on
+`B(Gamma; refinementKernelRadius g d rho (r/2))`. The contrapositive of
+frequency removal gives a nonzero point even on
+`B(Gamma union U;r/2)`. The translation bound and the Bohr lower bound
+then give, with `Q = ceil(1/(r/2))`,
+
+```
+N <= 2*Q^(g+d) * |{y in B(Gamma union U;r) : f(y) != 0}|.
+```
+
+`localSeparatingTests` records pairs `(y,gamma)` with `y` in the
+specified domain and `N < 5*centeredAbs(gamma*f(y))`. For prime `N >= 7`,
+at least half of the characters separate each nonzero value. Thus the
+number of separating tests in the constrained domain is at least
+`beta*N^2`, where
+
+```
+beta = modelTestDensity g d r = 1/(4*Q^(g+d)).
+```
+
+Both `0 < beta` and `beta <= 1/4` are proved. The estimate is uniform in
+the extra spectrum `U` and hence applies to every individual column
+spectrum of rank at most `d`.
+
+`dual_test_selection` double-counts pairs of columns and models against
+tests. If each column-model pair has at least a `beta` fraction of valid
+detecting tests, some test simultaneously retains at least `beta` of
+the columns and detects at least `beta` of the models. The proof averages
+the product of the two counts, then bounds each count by the full size
+of its respective set. `exists_model_test` applies this with
+`U = T x`; its chosen evaluation belongs to the common domain and to
+every retained column's domain.
+
+`exists_model_test_cell` partitions those retained columns by the ten
+Dirichlet cells of `gamma*L x y`. It keeps at least `beta/10` of the
+original columns. Four values from one cell cannot have an alternating
+sum separated by `gamma`: pair the first two and last two entries and
+use the two strict cell-difference bounds. Therefore no detected model
+can equal a four-term map value from the retained core.
+
+`ColumnQuadModelAlternatives` records the invariant for iteration. Every
+additive quadruple either has zero map defect at a target radius `s`,
+or agrees with one of the active models at the testing radius `r`.
+These two radii are kept distinct. The refinement step retains at least
+`beta/10` of the column mass and at most `1-beta` of the active model
+count, and preserves this invariant. A detected model is excluded by
+evaluating the asserted model relation at the selected valid test.
+
+`column_model_elimination_iterate` proves that after `t` rounds the core
+has at least `(beta/10)^t*|A|` columns and at most `(1-beta)^t*|I|` active
+models remain. An empty active set requires no further refinement.
+`modelEliminationRounds_kills` proves that
+
+```
+t = ceil(log(|I|+1)/beta)
+```
+
+makes the survivor bound strictly smaller than one, using
+`1-beta <= exp(-beta)`. The count is an integer, so all active models are
+gone. `column_model_elimination_zero_core` produces a nonempty subcore
+of the stated density on which every additive quadruple has zero map
+defect on its target common and individual Bohr domains.
+
+**Remaining work.** The elimination theorem takes the model alternatives
+and nonvanishing of the active models as explicit inputs. The global
+construction from J.108 still needs to be instantiated at four anchors,
+with active models separated from those already zero on the smaller
+common domain. Its modulus threshold and retained density must then be
+made uniform in the original density. Subsequent bilinear organization,
+shifted agreement, and the printed numerical budget remain open. The
+logarithmic dependence on the number of models does not by itself bound
+the dependence on `beta`, whose exponent includes the common rank.
+
+**Verification.** The focused elimination theorem checks 55 modules.
+All 16 new named theorems pass individual axiom checks using only
+`propext`, `Classical.choice`, and `Quot.sound`. No additional upstream
+modules or Apache provenance changes were needed.
+
+The combined audit checks 7,253 public Gowers theorems in 5,156 modules
+(5,154 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
+
+
+### J.110. Global zero-relation core and a column-domain bihomomorphism
+
+The model-elimination inputs in J.109 are now discharged from the original
+bihomomorphism. The four-anchor model construction in J.108 is instantiated
+at alternating value zero. Write
+
+```
+d = columnSpectrumCap (columnEightDensity alpha)
+delta = globalColumnWordDensity alpha 3
+g = ceil(4*d/delta)
+M = ceil(1/delta)
+rho = globalColumnIdentityRadius alpha
+r = globalColumnModelRadius alpha 3
+u = refinementKernelRadius g d rho (r/2)
+s = min r u
+beta = modelTestDensity g d r
+t = ceil(log(M+1)/beta)
+c = (beta/10)^t * globalColumnVertexDensity alpha / 2
+```
+
+`columnQuadAnchor` encodes an additive quadruple as the list
+`[q 0,q 1,q 2,q 3]`. Its alternating map value is exactly
+`columnQuadValue L q y`. `column_models_initialize` keeps only those models
+which are nonzero somewhere on `bohr Gamma u`. Every discarded model is
+zero there, and hence gives a zero relation at radius `s`. Every active
+model still supplies the comparison at testing radius `r` required for
+elimination. This uses both parts of `s = min r u`.
+
+`modelEliminationRounds_mono` and `column_model_cover_zero_core` replace
+the actual active model count by the uniform cap `M`. The power comparison
+has the correct direction because `0 < beta/10 <= 1`.
+`global_zero_column_core` constructs a nonempty core of at least `c*N`
+columns, a common spectrum of rank at most `g`, and zero alternating map
+values for every additive quadruple on the common and individual radius-`s`
+Bohr neighborhoods. The modulus threshold is the maximum of the previous
+four-anchor threshold, `refinementKernelCap g d rho (r/2)+1`, and `7`.
+All parameters depend only on `alpha`; positivity of the final radius and
+core density is proved.
+
+`zero_columns_bihomomorphism` enlarges each column spectrum from `T x` to
+`Gamma union T x`. Horizontal Freiman identities follow by reordering
+`[a,b,c,d]` to `[a,c,b,d]` in the alternating relation. Vertical identities
+follow from the original column linearity and `s <= rho`.
+`global_column_core_bihomomorphism` applies this to the constructed core,
+with each enlarged spectrum having rank at most `g+d`.
+`columnBohrDomain_card` expresses the full domain cardinality as the sum
+of its column cardinalities. Applying the Bohr lower bound column by
+column gives the additional global guarantee
+
+```
+c*N^2 <= ceil(1/s)^(g+d) * |columnBohrDomain P (Gamma union T) s|.
+```
+
+Thus the constructed two-dimensional domain has a positive density
+bound depending only on `alpha`, as well as a dense set of columns.
+
+The global statements from coherent pairs onward now retain the original
+witness lower bound
+
+```
+columnWitnessDensity (columnEightDensity alpha) * N^4 <= |W x|
+```
+
+for every original column `x` in `X`. This bound was already proved at
+the global relation stage but had been dropped by subsequent interfaces.
+Carrying it through is necessary for a later quantitative agreement
+argument with the original map. The original witness system remains on
+the original spectra at radius `1/(4*pi)`; this does not assert that its
+witness sums lie in the smaller final domain.
+
+**Remaining work.** A column-domain bihomomorphism is now constructed.
+Bilinear organization of its varying spectra, quantitative shifted
+agreement with the original map, and the final numerical budget remain
+open. In particular, the witness count alone does not prove agreement
+on the smaller final domain. The common rank enters the exponent defining
+`beta`; no polynomial dependence on `1/alpha` or fit to the printed
+Gowers bound is asserted. The five numbered open statements and prior
+source-fidelity caveats remain unchanged.
+
+
+**Verification.** The strengthened witness chain and its pair-representation
+consumer pass a 255-module focused build. The final dense-domain construction
+passes a 253-module build. All 16 new named theorems pass individual axiom
+checks. The combined audit checks 7,282 public Gowers theorems in 5,162
+modules (5,160 for the facade, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger is
+identical at 115 companions and five open entries; the selected-port scope
+check passes. There are no new upstream ports or provenance changes.
+
+
+### J.111. Quantitative shifted agreement on the smaller column domain
+
+The agreement obligation left in J.110 is now proved for the constructed
+column domains. The original map is recovered after a common vertical
+shift and addition of its values on the selected source row. No separate
+witness-selection or agreement hypothesis remains in the global theorem.
+
+**Witness comparison.** `witness_agreement_slice` groups four-coordinate
+witnesses by their last three coordinates and the Dirichlet-cell signature
+of the first coordinate against the final spectrum `S`. With `Q` cells
+per frequency there are `N^3 * Q^|S|` labels. A largest label class projects
+injectively to a source slice `D`, giving
+
+```
+|W| <= N^3 * Q^|S| * |D|.
+```
+
+For `a,b` in that slice, cell closeness and `1 <= s*Q` imply
+`a-b in bohr S s`. If the original witness sums lie in `bohr T rho`,
+the final difference domain lies in it as well, and `L` is normalized
+Freiman-linear there, then
+
+```
+L(a-b) = f(a)-f(b).
+```
+
+Indeed, the two represented sums differ by `a-b`; apply Freiman linearity
+to the first sum plus zero and the second sum plus this difference. The
+three frozen source values cancel. `witness_agreement_slice_density`
+converts witness density `w`, spectral rank at most `R`, and the above
+count into `|D| >= (w/Q^R)*N`.
+
+The global chain now preserves linearity at the original radius
+`1/(4*pi)`, in addition to the smaller-radius identities. The original
+property was already available in `global_many_exact_column_quadruples`
+but had been dropped in `global_dense_column_relations`. It is retained
+through every subsequent global stage. This is necessary because the
+witness sums themselves need not lie in the final smaller domain.
+
+**A single shift.** `exists_common_slice_shift` starts with at least
+`delta*N` columns, each with a source slice of at least `lambda*N` points.
+There are at least `delta*lambda^2*N^3` ordered pairs in these slices.
+Averaging their second coordinates yields one common centre `t` and at
+least `delta*lambda^2*N^2` pairs `(x,a)` with both `a,t in D x`.
+Translate each such pair to `(x,a-t)`, preserving cardinality.
+
+Restrict the column set to those with `(x,t) in A` and define
+
+```
+Phi(x,y) = L(x,y) + phi(x,t).
+```
+
+`column_bihomomorphism_add_row` proves that `Phi` is still a Freiman
+bihomomorphism: the horizontal offset identity is the original map's
+identity along row `t`, and the vertical offsets cancel.
+`column_slices_shifted_agreement` then proves actual membership and values
+on the translated agreement set:
+
+```
+(x,y+t) in A,    Phi(x,y) = phi(x,y+t).
+```
+
+The generic theorem keeps the agreement radius and the bihomomorphism
+radius separate.
+
+**Global parameters.** Let `s`, `c`, `g`, and `d` be the zero-core
+parameters in J.110, and set
+
+```
+w = columnWitnessDensity (columnEightDensity alpha)
+Q = ceil(2/s)
+R = g+d
+lambda = w/Q^R
+agreementDensity = c*lambda^2.
+```
+
+Positivity of both new density parameters is proved.
+`global_column_shifted_agreement` starts from the original dense
+bihomomorphism and the same modulus threshold as J.110. It constructs a
+column set `V`, spectra of rank at most `R`, a common shift `t`, and an
+agreement set of cardinality at least `agreementDensity*N^2` inside the
+column domain at radius `s/2`. The adjusted map `Phi` is a Freiman
+bihomomorphism on the full radius-`s` column domain. This half-radius
+margin is explicit and does not require asserting that the original
+witness sums lie there.
+
+**Remaining work.** The frequency sets still vary arbitrarily with the
+column. Organizing them into the bilinear Bohr geometry required by the
+variety theorem, while retaining quantitative agreement, remains open.
+The final numerical budget also remains open. The new result does not
+prove `MilicevicDeepVarietyStructure` or close any of the five remaining
+numbered statements. The density loss here uses one frequency cell per
+column; summing pair counts across all cells could improve this local
+loss, but that refinement is not asserted as proved.
+
+
+**Verification.** The original-radius interface update passes a focused
+256-module build including the pair-representation consumer. The global
+agreement theorem passes a 257-module build, and all eight new named
+theorems pass individual axiom checks. The full audit checks 7,291 public
+Gowers theorems in 5,166 modules (5,164 for the facade, including 4,152 OAI
+modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger is unchanged at 115 companions and five open entries;
+the selected-port scope check passes. No upstream code or licensing
+changes were needed.

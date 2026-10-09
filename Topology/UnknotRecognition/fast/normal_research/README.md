@@ -43,6 +43,8 @@ built-in recognition takes about one and two milliseconds respectively.
 The native worker resets Regina's random engine to its default seed. This
 makes the measured simplification sequence reproducible on this build and
 platform, not across all library versions and machines. Evidence explicitly
-trusts the external exact engine; we have not built a normal-surface proof
-checker. The article describes both the topological decision criterion and
-the resource/trust boundary. No general subexponential bound is claimed.
+trusts the external exact engine; this wrapper does not export a native
+normal-surface proof. The separate `--normal-seed` stage now constructs
+source-bound cocycle candidates and independently checks positive disc
+certificates; see the main implementation README. The article describes
+both trust boundaries. No general subexponential bound is claimed.
