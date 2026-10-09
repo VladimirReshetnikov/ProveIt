@@ -5709,6 +5709,13 @@ the decomposition with these named constants, but not `Theorem162At 3`.
             pairs.
 
          Claim 9.5 is the same for 12-tuples.
+         Step 2 is done: `claim_9_4_selection`
+         (`Proofs16ClaimNineFourSelection`) chooses `ψ : Fin 4 → G → G`
+         with `ψ i z ∈ spanBall (Γ z) R` that realize a prescribed
+         decomposition at `(x + a, x, y + a, y)` for a
+         `(2R+1)^(−4d)` fraction of the triples. The four independent
+         maps make the fixed points distinct.
+         `exists_good_selection_indexed` counts over an index family.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.
