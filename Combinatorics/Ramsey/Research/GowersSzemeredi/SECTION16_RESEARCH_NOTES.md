@@ -5565,8 +5565,19 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      doubling `K`; `c|X|^3` good pairs of pairs.
    - **Conclusion.** A dense `B′` whose elements each lie in
      `θ|X|²` additive `Q 16`-quadruples.
-   - **Use.** For column maps, take `Q i` = "alternating sum has at most
-     `K^i` values on the common domain at radius `ρ/2^i`".
+   - **Use for column maps (instantiated, kernel-checked).**
+     `column_bsg_core` (`Proofs16ColumnZeroLadder`) takes exact zero
+     relations: `Q (n+1)` says the alternating sum
+     `L a₁ − L a₂ − L a₃ + L a₄` vanishes on the four-column domain at
+     radius `ρ_n`. Here `ρ_{n+1} = refinementKernelRadius (4D) (2D) ρ₀ ρ_n`.
+     - Weak transitivity holds with a *single* bridge: add the two
+       relations, then remove the bridge's frequencies. So `c′` is free,
+       and the only modulus condition is
+       `refinementKernelCap (4D) (2D) ρ₀ ρ₁₄ < N`.
+     - The remaining input is `c|X|³` level-1 zero quadruples, which is
+       J.98-type data.
+     - The output is a dense `B′` whose elements each lie in `θ|X|²`
+       additive quadruples, all zero relations at level 16.
 4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
    Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
 
