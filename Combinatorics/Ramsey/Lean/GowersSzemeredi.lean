@@ -942,6 +942,7 @@ import GowersSzemeredi.Proofs16JointRowCommonBohr
 import GowersSzemeredi.Proofs16PopularAffineRowAgreement
 import GowersSzemeredi.Proofs16GlobalSingleProgression
 import GowersSzemeredi.Proofs16CoherentRelationRankStep
+import GowersSzemeredi.Proofs16SingleFamilyRegularityInput
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

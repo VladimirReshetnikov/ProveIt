@@ -8642,3 +8642,78 @@ statement-fidelity qualifications. The port scope remains 4,134 upstream
 and 17 compatibility modules. Reviewed incoming changes concern only the
 independent topology obstruction certificates, code, tests, and report;
 they add no Gowers dependency or licensing scope.
+
+
+### J.135. Terminating coherent regularity and an actual quasirandom graph
+
+**One common budget for the iteration.**
+`coherentRelationBudget epsilon R cells ell d` bounds the next domain rank
+and the enlarged fixed-frequency set, including the `4*ell` possible new
+centre frequencies. For a chosen final rank bound `D`, use the uniform
+loss `q = coherentIterationLoss D rho = quarterBohrDensity(D,rho)^4/512`.
+This loss is positive and at most one. A sufficient modulus condition is
+`8 <= kappa*q^n*N`, which pays every collision-removal step of a refinement
+lasting at most `n` rounds.
+
+**Termination while retaining configurations.**
+`coherent_relation_iteration_budget` uses strong induction on the remaining
+relation codimension. Each failed bad-pair estimate strictly increases the
+relation-submodule dimension of the same `ell` varying maps, so at most
+`ell` refinements occur. Early stopping simply restricts the final vertical
+radius to the promised `sigma/2^n`. The theorem retains vertex and coherent
+quadruple densities at least `kappa*q^n`, domain rank at most `D`, and at
+most `|B|+4*n*ell` fixed frequencies. Local Freiman linearity and zero
+normalization hold on the actual final Bohr domains.
+
+`CoherentFrequencyFamily` records the configuration hypotheses and makes
+radius restriction explicit. Every refinement carries a source map into
+the previous vertex set and maps every retained quadruple into a previous
+quadruple. These maps compose through the induction; original point and
+whole-configuration witnesses are therefore retained, not just their
+cardinalities.
+
+**Keep the number of source translations bounded.**
+`sourceTranslationOffsets` records the values `source u-u`. One row-label
+refinement has at most four such offsets, and composition multiplies their
+counts. The terminating result has at most `4^n` offsets. This preserves
+the option of a later common-translation restriction with an explicit
+finite loss, once all relevant quadruples are known to be respected.
+No claim is made that an arbitrary such restriction preserves the current
+coherent-quadruple count.
+
+**Uniform sparse-relation and quasirandom conclusions.**
+`exists_coherent_sparse_relation_domain` takes `n=ell` and defines
+`D = coherentRegularityRank = coherentRelationBudget^[ell] d`, retained
+density `coherentRegularityDensity = kappa*q^ell`, and modulus bound
+`ceil(8/retainedDensity)`. It constructs a domain on which the requested
+bounded bad-pair estimate holds, retaining all the source and coherence
+information above.
+
+`exists_coherent_quasirandom_domain` uses the existing explicit Fourier
+cutoff with frequency bound `|B|+4*ell^2+2*ell`. For any prescribed positive
+box error at most one, with explicit cell and modulus conditions, it
+constructs the actual Bohr graph and proves the box-error estimate on the
+same refined domain that carries the coherent family. Its vertical fixed
+radius is `tau = sigma/2^ell`, and its varying phase radius is `tau/4`.
+The hypotheses include the explicit analytic smoothing bound and coherent
+regularity modulus bound; neither a quasirandomness oracle nor a
+coherent-subset oracle is assumed.
+
+`IsSingleCoherentProgression.regularity_input` verifies that the previously
+constructed global anchor family supplies the exact full Bohr-domain,
+frequency, and coherent-density input. The needed upper bound on its
+vertical radius is also proved. Applying a globally uniform numerical
+threshold, obtaining the later BSG conclusion, transferring all source
+agreement, and certifying the final Gowers budget remain outstanding.
+In particular, prescribed box error here is not yet a certificate that it
+is small enough relative to every subsequent retained-density requirement.
+
+All seven modules check in a 484-module production closure. All nineteen
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No upstream source is added and no
+numbered catalogue entry is claimed closed. The completed full audit checks
+8,255 public Gowers theorems in a 5,373-module combined closure, with only
+the same three axioms. The facade closure has 5,371 modules, including
+4,152 OAI modules. The generated ledger is byte-identical to the tracked
+115-companion / five-open ledger, and the port scope check passes for the
+unchanged 4,134 upstream and 17 compatibility modules.
