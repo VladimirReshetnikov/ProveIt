@@ -1,0 +1,130 @@
+\section{Bounded search among tied minimum-span surfaces}
+\label{sec:cocycle-face}
+
+The minimum number of normal pieces does not determine the topology of a
+cocycle surface. Even a fixed optimal dual matching can certify both a disc
+and a non-disc on the same source exterior. This distinction motivates a
+new optional bounded fallback: after the selected optimum and all requested tree
+gauges miss, inspect several other potentials with the same minimum span.
+The construction uses shortest paths in a difference-constraint graph;
+it does not run another flow optimization. Every positive retains the
+existing independent source-bound certificate format.
+
+\subsection{An exact description of all tied optima}
+
+Fix a verified span certificate with optimum $D_*$ and matching rows
+$(t,i,s,j)$. Let $\ell_t$ be its selected lower corner in tetrahedron $t$,
+and let $u_t$ be its selected upper corner. Each exists exactly once because
+the matching uses every lower and upper tetrahedron once. For any potential
+$f$, write $a_{t,i}=h_{t,i}+f(v_{t,i})$. Cancellation at matched global
+vertices gives
+\[
+ D(f)-D_* = \sum_t \bigl(\max_i a_{t,i}-a_{t,u_t}\bigr)
+              +\sum_t\bigl(a_{t,\ell_t}-\min_i a_{t,i}\bigr).
+\]
+Every summand is nonnegative. Consequently $f$ is optimal if and only if
+all selected lower and upper corners remain extremal. Equivalently, for
+each tetrahedron and each of its four corners,
+\begin{align*}
+ f(v_{t,\ell_t})-f(v_{t,i})&\leq h_{t,i}-h_{t,\ell_t},\\
+ f(v_{t,i})-f(v_{t,u_t})&\leq h_{t,u_t}-h_{t,i}.
+\end{align*}
+These eight inequalities per tetrahedron describe \emph{every} optimum,
+including those admitting other optimal matchings. Necessity follows from
+weak-duality equality with this one fixed optimal matching; no uniqueness
+assumption is involved.
+
+Represent $f(b)-f(a)\leq w$ by an arc $a\to b$ of weight $w$.
+Given the certificate's original potential $f_0$, reweight it as
+$r(a,b)=w+f_0(a)-f_0(b)\geq0$. In displacement variables $q=f-f_0$,
+the inequalities become $q(b)-q(a)\leq r(a,b)$. The graph has at most
+$4T$ vertices and exactly $8T$ arcs, retaining parallel arcs and loops.
+The weights and the constructed extremal solutions are integral.
+
+Within each connected component of the tetrahedron--vertex incidence
+structure, this constraint graph is strongly connected. Indeed, fixing
+$D(f)=D_*$ bounds every local height span by $D_*$. Any two corners of a
+tetrahedron therefore have potential difference at most
+$D_*+|h_{t,i}-h_{t,j}|$. Chains of tetrahedra bound every relative potential
+in that incidence component. If the directed constraint graph were not
+strongly connected, decreasing all potentials in a sink strongly connected
+component would preserve all inequalities indefinitely, contradicting that
+bound. Different incidence components can translate independently.
+
+\subsection{Two simultaneous extrema from one root}
+
+For a root $r$ in a component, let $d(r,v)$ be shortest-path distance in
+the nonnegative reweighted graph. Normalize the displacement by $q(r)=0$.
+Every feasible displacement obeys
+\[
+ -d(v,r)\leq q(v)\leq d(r,v).
+\]
+Both simultaneous bound vectors are feasible:
+\[
+ q^+(v)=d(r,v),\qquad q^-(v)=-d(v,r).
+\]
+The upper assertion is the shortest-path triangle inequality along an arc;
+the lower assertion follows from the same inequality for paths ending at
+$r$. Thus each vector attains all its corresponding coordinate bounds at
+once. One Dijkstra search in each direction constructs the pair. Outside
+the root's incidence component, the producer keeps $q=0$. A common additive
+normalization then makes the smallest output potential zero.
+
+If two roots have zero distance in both directions, they are in the same
+zero-weight strongly connected component. Their forward distance vectors
+are identical, as are their reverse distance vectors. Testing both roots
+would therefore produce the same pair. The implementation marks all such
+roots after the two searches and skips them. It orders the remaining roots
+by descending total arc incidence, breaking ties by vertex label. It also
+skips normalized potentials already emitted or equal to the original one.
+These are exact duplicate rules, not assumptions about surface topology.
+
+Coordinates are reconstructed from the adjusted tetrahedral heights, and
+every emitted potential replays the unchanged span verifier with the
+original matching and optimum. At the source stage, the original primitive
+class and minimum-span connectedness theorem still apply. Negative
+candidates use normal matching and Euler accounting; a proposed disc must
+also pass the complete independent source-bound verifier. Failure to find
+a disc remains inconclusive.
+
+\subsection{Cost and scheduling limits}
+
+Let $R$ be the smaller of the requested root allowance and the number of
+vertices. After verification and graph construction, at most $2R$
+shortest-path searches and $2R$ candidate replays occur. In an indexed-graph
+model with constant-time table lookup and well-distributed signature hashes,
+the arithmetic cost is $O((R+1)T\log(T+1))$, including label/root sorting.
+This is a conditional container-cost bound, not an unconditional worst-case
+bound for Python's hash tables.
+
+The shipped code uses dictionaries for labels and distances and a set of
+potential tuples for duplicates. Adversarial hash collisions can require
+$O(T)$ probes per dictionary operation and $O(RT)$ coordinate comparisons
+per signature lookup. Since $R\leq4T$, a conservative deterministic bound
+for these container comparisons together with the graph arithmetic is
+$O((R+1)T^2)$. Storage is $O((R+1)T)$ integer records; stored duplicate
+signatures account for the factor $R$. With $B$ the largest input integer
+bit length, intermediate quantities use $O(B+\log(T+1))$ bits. Charging
+linear bit cost for integer hashing, addition and comparison gives the
+corresponding product bound. No loop ranges over a height's numerical
+value. Both bounds are local polynomial bounds, including when all roots
+are requested.
+
+The optional source-stage experiment requests four roots, after all
+previously requested trees and the single span optimization have failed.
+This placement preserves earlier positive proofs and their guard work.
+The shared cap and cancellation callback cover the new graph searches,
+coordinate checks and final replay. Setting \code{face\_roots=0}, or
+\code{normal\_seed\_face\_roots=0} in the recognizer, restores the
+previous search policy. The CLI exposes \code{--normal-seed-face-roots}.
+Without span optimization the face fallback is skipped. The face allowance defaults to zero: the measurements below show added
+coverage but slower complete calls. The entire native normal-surface stage
+also remains optional in the ordinary portfolio.
+
+Even trying every root does not enumerate all feasible potentials, all
+vertices of the optimality polytope, or all topology types. The exact
+inequality description is complete; this extremal candidate search is not.
+It does not maximize Euler characteristic, prove minimal genus, or complete
+the normal-surface search required for general quasipolynomial recognition.
+
+\input{cocycle_face_results.tex}
