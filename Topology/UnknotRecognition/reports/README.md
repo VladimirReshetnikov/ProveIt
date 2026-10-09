@@ -592,3 +592,15 @@ and costs on added positives and misses, so planar discovery remains opt-in.
 The synthesis article records the elementary proof, binary-size query,
 initial source snapshots, final 493-file pins and both timing runs. This
 extends certificate coverage without establishing a general recognition bound.
+
+The next integration reuses one prepared geometry during cocycle candidate
+construction and applies a height-based Euler prefilter to raw and optimized
+candidates. Independent positive verifiers remain byte-identical. An 84-source,
+four-policy comparison reproduces the published baseline and preserves every
+completed result apart from total guard work; 1,798 cell counts agree with
+coordinate reconstruction and Regina. All 1,214 tests pass. The nine-round
+complete-call comparison gives 1.26–1.28x on optimized positives, 1.47–1.51x
+on later tree positives and 1.89–2.00x on continuing misses, with about two
+percent overhead on immediate positives. The article retains both timing
+runs, A/A variation, all 496 source pins, and the unchanged coverage and
+optional-stage defaults. No general recognition-complexity bound follows.

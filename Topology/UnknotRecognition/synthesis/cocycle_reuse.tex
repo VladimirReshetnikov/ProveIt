@@ -1,0 +1,92 @@
+\section{Shared discovery geometry and independent positive checks}
+\label{sec:cocycle-reuse}
+
+The preceding planar experiment removed duplicate geometry preparation
+within its new checker, but the ordinary native search still prepared the
+same triangulation separately for seed construction, raw-surface replay,
+tree construction and optimized-surface replay. Profiling a continuing
+miss identified this repeated validation as a larger cost than boundary
+weight transport. The new search retains one prepared geometry for
+candidate construction and defers full source-certificate replay until a
+candidate could yield a positive answer. Independent verification of
+positive certificates is unchanged.
+
+\subsection{A height-based Euler prefilter}
+
+For an internally constructed coherent integral cocycle, let $h_{t,i}$ be
+its four local heights in tetrahedron $t$. At an optimized candidate add
+the returned vertex potential to the corresponding corners. For each
+global edge $e$, put $w_e=|h_{t,j}-h_{t,i}|$ using a local occurrence of
+that edge. Coherence makes this independent of the occurrence. Let
+$s_f$ be the height span on a global face, counted once, and let $s_t$ be
+the span of the four tetrahedral heights. Then
+\[
+  V(S)=\sum_e w_e,\qquad E(S)=\sum_f s_f,\qquad
+  F(S)=\sum_t s_t,\qquad
+  \chi(S)=\sum_e w_e-\sum_f s_f+\sum_t s_t.
+\]
+Here $F(S)$ counts normal pieces, rather than faces of the ambient
+triangulation. Every half-integral level between the lowest and highest
+height cuts one normal polygon from a tetrahedron. On a triangular face
+it cuts one normal arc; on an edge it cuts one point. Integral endpoint
+heights therefore give precisely the three counts above. Interior faces
+are counted once by their gluing pairs, and boundary faces once directly.
+Tetrahedral constant shifts preserve these counts. Adding a vertex gauge
+to the corner heights while subtracting that same gauge from the vertex
+potential leaves the adjusted heights, and hence the surface, unchanged.
+
+The helper scans $O(N)$ local cells and performs $O(N)$ dictionary
+operations for $N$ tetrahedra. If heights and potentials have at most $B$
+bits, its arithmetic and accumulated totals use $O(B+\log(N+1))$ bits.
+In an indexed or constant-table-cost model its arithmetic work is
+$O(N(B+\log(N+1)))$, with $O(N)$ stored integer entries. As with the earlier
+Python container accounting, a conservative collision-sensitive bound
+allows $O(N^2(B+\log(N+1)))$ work; no constant-time hashing assumption is
+needed for the polynomial claim. No normal piece or binary height interval
+is expanded.
+
+This helper is a discovery prefilter. It does not validate matching,
+primitivity, connectedness or source provenance. It reads the heights
+produced by the maintained exact constructor, or those heights plus the
+potential from the checked span optimizer. Tree and face candidates retain
+their existing normal-coordinate analysis. If Euler characteristic can
+support a disc or enabled annulus witness, the full independent cocycle
+inspector reconstructs the source and checks the entire coordinate vector
+before any positive verdict. A malformed vector with apparently promising
+heights therefore cannot bypass verification.
+
+\subsection{One prepared geometry per candidate search}
+
+The rank-one constructor has a private detailed return containing the
+prepared geometry it already built. Its public function still returns
+the same seed dictionary, with the same cocycle statistics and allowance
+semantics. The public tree generator still validates its supplied
+triangulation; an internal generator accepts the prepared geometry from
+the current native search. Its integral coherence checks, deterministic
+root order, gauges, duplicate suppression and candidate vectors are
+unchanged. Optional face analysis uses this same per-search geometry.
+
+Raw and optimized misses use the height cell count instead of full
+source-bound certificate replay. The constructor's primitive class and
+zero-tree construction, gauge invariance and checked minimum-span
+optimization establish the candidate family's mathematical invariants.
+These discovery summaries are not negative knot certificates. Candidate
+failure continues to mean only that the bounded search found no witness.
+
+The existing positive inspectors receive ordinary certificate data and
+construct their own authenticated source geometry. They accept no geometry
+cache from discovery. Disc and annulus candidates receive the full cocycle
+check; optional planar candidates receive the full cocycle and boundary
+check. The public verifier and its independent arithmetic modules are
+byte-identical to the preceding revision. Reusing producer geometry and
+skipping negative replays does not remove any positive-certificate gate.
+
+The candidate schedule, default trial counts and optional planar/face
+settings do not change. The shared guard allowance covers the new prefilter
+and retained checks. Guard totals can fall on continuing searches and rise
+slightly on an immediate positive that now receives the additional cheap
+prefilter. Exact allowance boundaries are therefore revalidated rather
+than inferred from old work counts. Global cancellation continues through
+construction, prefilter scans, discovery and independent positive replay.
+
+\input{cocycle_reuse_results.tex}

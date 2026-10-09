@@ -5,6 +5,7 @@ import GowersSzemeredi.Proofs16VarietyLossBound
 import GowersSzemeredi.Proofs16VarietyScaleBounds
 import GowersSzemeredi.Proofs16BudgetedExtraction
 import GowersSzemeredi.Proofs16CorollaryLowDimensions
+import GowersSzemeredi.Proofs16VarietyTwoScale
 
 /-! The variety route's pieces at the source's piece budget.
 
@@ -27,26 +28,26 @@ def section16VarietyThreeCount (D : Nat) (theta gamma : Real) : Nat :=
   section16VarietyExtractionCount D gamma (theta / 4)
 
 /-- The `ρ`-free width coefficient of the dimension-three pieces. -/
-def section16VarietyThreeWidthCoeff (D : Nat) (theta gamma : Real) : Real :=
+def section16VarietyThreeWidthCoeff (D D₂ : Nat) (theta gamma : Real) : Real :=
   section16VarietyCeilingFreeWidthCoeff explicitLiftK explicitLiftP explicitVarietyK
     explicitVarietyP D (section16VarietyExtractionCount D gamma (theta / 4))
-    (9 * section16VarietySpectrumCount D (theta / 2) gamma)
+    (9 * section16VarietySpectrumCount D₂ (theta / 2) gamma)
     (section16VarietyExtractionDensity gamma (theta / 4)) theta gamma
     (section16PolynomialJointVarietyExponent explicitVarietyK explicitVarietyP
-      (section16VarietySpectrumCount D (theta / 2) gamma) D
+      (section16VarietySpectrumCount D₂ (theta / 2) gamma) D₂
       (section16VarietySpectrumDensity (theta / 2) gamma))
 
 /-- The logarithmic loss of the dimension-three pieces. -/
-def section16VarietyThreeLoss (D : Nat) (theta gamma : Real) : Real :=
-  max (Real.log (section16VarietyThreeWidthCoeff D theta gamma)⁻¹)
+def section16VarietyThreeLoss (D D₂ : Nat) (theta gamma : Real) : Real :=
+  max (Real.log (section16VarietyThreeWidthCoeff D D₂ theta gamma)⁻¹)
     (Real.log (81 * 7 ^ 4 * ((section16VarietyThreeCount D theta gamma : Nat) : Real) ^ 2 + 27))
 
 /-- The piece parameter of the dimension-three pieces. -/
-def section16VarietyThreeParameter (D : Nat) (theta gamma : Real) : Real :=
-  18 * section16Lemma9R (theta / 2) gamma 2 / gamma + 64 + section16VarietyThreeLoss D theta gamma
+def section16VarietyThreeParameter (D D₂ : Nat) (theta gamma : Real) : Real :=
+  18 * section16Lemma9R (theta / 2) gamma 2 / gamma + 64 + section16VarietyThreeLoss D D₂ theta gamma
 
-theorem section16VarietyThreeLoss_nonneg (D : Nat) (theta gamma : Real) :
-    0 ≤ section16VarietyThreeLoss D theta gamma := by
+theorem section16VarietyThreeLoss_nonneg (D D₂ : Nat) (theta gamma : Real) :
+    0 ≤ section16VarietyThreeLoss D D₂ theta gamma := by
   unfold section16VarietyThreeLoss
   refine le_trans (Real.log_nonneg ?_) (le_max_right _ _)
   have : (0 : Real) ≤ 81 * 7 ^ 4 * ((section16VarietyThreeCount D theta gamma : Nat) : Real) ^ 2 :=
@@ -68,15 +69,15 @@ theorem one_le_section16Lemma9R_half_two {theta gamma : Real} (ht : 0 < theta) (
         mul_le_mul (mul_le_mul_of_nonneg_left h2 (by norm_num)) h1 (by norm_num) (by positivity)
 
 /-- **Variety pieces are the source's multiple multilinearity at the explicit parameter.** -/
-theorem MultiplyLinearWith.variety_three_multiplyLinear {N D : Nat} [NeZero N]
+theorem MultiplyLinearWith.variety_three_multiplyLinear {N D D₂ : Nat} [NeZero N]
     {theta gamma : Real} {Piece : Finset (Point N 3 × ZMod N)}
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (hW : 0 < section16VarietyThreeWidthCoeff D theta gamma)
+    (hW : 0 < section16VarietyThreeWidthCoeff D D₂ theta gamma)
     (h : MultiplyLinearWith (section16VarietyThreeGraphBound D theta gamma)
-      (section16VarietyThreePieceExponent explicitLiftK explicitLiftP explicitVarietyK
-        explicitVarietyP explicitVarietyK explicitVarietyP D theta gamma) Piece) :
-    MultiplyLinear gamma (section16VarietyThreeParameter D theta gamma) Piece := by
-  have hcf := h.variety_three_ceiling_free two_le_explicitLiftK explicitLiftP_pos
+      (section16VarietyThreePieceExponent2 explicitLiftK explicitLiftP explicitVarietyK
+        explicitVarietyP explicitVarietyK explicitVarietyP D D₂ theta gamma) Piece) :
+    MultiplyLinear gamma (section16VarietyThreeParameter D D₂ theta gamma) Piece := by
+  have hcf := h.variety_three_ceiling_free2 two_le_explicitLiftK explicitLiftP_pos
     two_le_explicitVarietyK explicitVarietyP_pos two_le_explicitVarietyK explicitVarietyP_pos
     ht ht1 hg hg1
   have hr := one_le_section16Lemma9R_half_two ht ht1 hg hg1
@@ -84,10 +85,10 @@ theorem MultiplyLinearWith.variety_three_multiplyLinear {N D : Nat} [NeZero N]
   unfold section16VarietyThreeParameter
   refine hcf.multiplyLinear_of_variety_shape (k := 3)
     (Q := ((section16VarietyThreeCount D theta gamma : Nat) : Real))
-    hg hg1 hr hW (Nat.cast_nonneg _) (section16VarietyThreeLoss_nonneg D theta gamma)
+    hg hg1 hr hW (Nat.cast_nonneg _) (section16VarietyThreeLoss_nonneg D D₂ theta gamma)
     (le_max_left _ _) (le_max_right _ _) ?_ ?_
   · intro rho hrho _
-    unfold section16VarietyThreeCeilingFreeExponent
+    unfold section16VarietyThreeCeilingFreeExponent2
     rw [section16VarietyCeilingFreeExponent_eq_shape _ _ _ _ _ _ _ hr0 hrho hg]
     rfl
   · intro rho hrho _
@@ -157,16 +158,16 @@ theorem nine_le_exp_three : (9 : Real) ≤ Real.exp 3 := by
 
 /-- **The loss of the dimension-three pieces fits the budget**, given bounds on the two
 Milićević values; `D` enters nowhere else. -/
-theorem section16VarietyThreeLoss_le_of_bounds {D : Nat} {theta gamma : Real} (ht : 0 < theta)
+theorem section16VarietyThreeLoss_le_of_bounds {D D₂ : Nat} {theta gamma : Real} (ht : 0 < theta)
     (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (hm1x : milicevicBound D (section16VarietyExtractionDensity gamma (theta / 4)) ≤
       (2 / (theta * gamma)) ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))))
-    (hm2x : milicevicBound D (section16VarietySpectrumDensity (theta / 2) gamma) ≤
+    (hm2x : milicevicBound D₂ (section16VarietySpectrumDensity (theta / 2) gamma) ≤
       (2 / (theta * gamma)) ^ (2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))))
     (hconst : (explicitLiftK : Real) ≤ 2 ^ 1700 ∧ (explicitLiftP : Real) ≤ 2 ^ 1700 ∧
       (explicitVarietyK : Real) ≤ 2 ^ 1700 ∧ (explicitVarietyP : Real) ≤ 2 ^ 1700) :
-    0 < section16VarietyThreeWidthCoeff D theta gamma ∧
-      section16VarietyThreeLoss D theta gamma ≤
+    0 < section16VarietyThreeWidthCoeff D D₂ theta gamma ∧
+      section16VarietyThreeLoss D D₂ theta gamma ≤
         (2 / (theta * gamma)) ^ (64 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) := by
   -- big-power hypotheses must not be visible to `linarith`; reintroduced below
   revert hm1x hm2x
@@ -180,22 +181,22 @@ theorem section16VarietyThreeLoss_le_of_bounds {D : Nat} {theta gamma : Real} (h
   -- the two counts
   have hm1 : 0 ≤ milicevicBound D (section16VarietyExtractionDensity gamma (theta / 4)) :=
     pow_nonneg (by linarith [two_le_milicevic_base hc1 hc11]) D
-  have hm2 : 0 ≤ milicevicBound D (section16VarietySpectrumDensity (theta / 2) gamma) :=
-    pow_nonneg (by linarith [two_le_milicevic_base hc2 hc21]) D
+  have hm2 : 0 ≤ milicevicBound D₂ (section16VarietySpectrumDensity (theta / 2) gamma) :=
+    pow_nonneg (by linarith [two_le_milicevic_base hc2 hc21]) D₂
   have hQ : ((section16VarietyExtractionCount D gamma (theta / 4) : Nat) : Real) + 1 ≤
       Real.exp ((section16VarietyExtractionFamily gamma (theta / 4) : Real) + 3 +
         milicevicBound D (section16VarietyExtractionDensity gamma (theta / 4))) := by
     unfold section16VarietyExtractionCount
     exact count_succ_le_exp (Nat.cast_nonneg _) hm1
-  have hn : ((section16VarietySpectrumCount D (theta / 2) gamma : Nat) : Real) + 1 ≤
+  have hn : ((section16VarietySpectrumCount D₂ (theta / 2) gamma : Nat) : Real) + 1 ≤
       Real.exp ((section16VarietyExtractionFamily
           (section16Delta (section16ThetaOne (theta / 2) gamma 2))
           (section16ThetaOne (theta / 2) gamma 2 / 8) : Real) + 3 +
-        milicevicBound D (section16VarietySpectrumDensity (theta / 2) gamma)) := by
+        milicevicBound D₂ (section16VarietySpectrumDensity (theta / 2) gamma)) := by
     unfold section16VarietySpectrumCount section16VarietyExtractionCount
     exact count_succ_le_exp (Nat.cast_nonneg _) hm2
   -- the Bohr-radius term
-  have hm : 1 ≤ explicitLiftK * (9 * section16VarietySpectrumCount D (theta / 2) gamma + 1) :=
+  have hm : 1 ≤ explicitLiftK * (9 * section16VarietySpectrumCount D₂ (theta / 2) gamma + 1) :=
     Nat.mul_pos (by have := two_le_explicitLiftK; omega) (by omega)
   obtain ⟨hLg1, hLgle⟩ := lg_bounds hm hS0
   -- the power bounds, all in `x = 2/(θγ)`
@@ -220,11 +221,11 @@ theorem section16VarietyThreeLoss_le_of_bounds {D : Nat} {theta gamma : Real} (h
     (section16ThetaOne (theta / 2) gamma 2 / 8) : Real) = F2 at hn hF2 hF20 ⊢
   generalize milicevicBound D (section16VarietyExtractionDensity gamma (theta / 4)) = m1
     at hQ hm1 hmb1 ⊢
-  generalize milicevicBound D (section16VarietySpectrumDensity (theta / 2) gamma) = m2
+  generalize milicevicBound D₂ (section16VarietySpectrumDensity (theta / 2) gamma) = m2
     at hn hm2 hmb2 ⊢
   generalize multipleS (theta / 2) gamma 2 = S at hS0 hLg1 hLgle hSx ⊢
   generalize 2 / (theta * gamma) = x at hF1 hF2 hmb1 hmb2 hSx hx ⊢
-  generalize section16VarietySpectrumCount D (theta / 2) gamma = n at hn hm hLg1 hLgle ⊢
+  generalize section16VarietySpectrumCount D₂ (theta / 2) gamma = n at hn hm hLg1 hLgle ⊢
   generalize section16VarietyExtractionCount D gamma (theta / 4) = Q at hQ ⊢
   generalize (16 + 4 * Real.log (16 / ((2 : Real) ^ (-S) /
     (4 * ((explicitLiftK * (9 * n + 1) : Nat) : Real))))) = Lg at hLg1 hLgle ⊢
@@ -318,8 +319,8 @@ theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < th
     (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hD : D ≤ 2 ^ 64)
     (hconst : (explicitLiftK : Real) ≤ 2 ^ 1700 ∧ (explicitLiftP : Real) ≤ 2 ^ 1700 ∧
       (explicitVarietyK : Real) ≤ 2 ^ 1700 ∧ (explicitVarietyP : Real) ≤ 2 ^ 1700) :
-    0 < section16VarietyThreeWidthCoeff D theta gamma ∧
-      section16VarietyThreeLoss D theta gamma ≤
+    0 < section16VarietyThreeWidthCoeff D D theta gamma ∧
+      section16VarietyThreeLoss D D theta gamma ≤
         (2 / (theta * gamma)) ^ (64 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6))) := by
   obtain ⟨hc1, hc11⟩ := section16VarietyExtractionDensity_pos_le_one gamma
     (show 0 < theta / 4 by positivity) (by linarith)
@@ -330,7 +331,7 @@ theorem section16VarietyThreeLoss_le {D : Nat} {theta gamma : Real} (ht : 0 < th
     (Nat.mul_le_mul_left _ hD).trans (by norm_num)
   have hD2 : 2 ^ 158 * D ≤ 2 * (2 : Nat) ^ ((2 : Nat) ^ (2 + 6)) :=
     (Nat.mul_le_mul_left _ hD).trans (by norm_num)
-  exact section16VarietyThreeLoss_le_of_bounds ht ht1 hg hg1
+  exact section16VarietyThreeLoss_le_of_bounds (D₂ := D) ht ht1 hg hg1
     ((milicevicBound_le_pow hc1 hc11 (variety_density_inv_le ht ht1 hg hg1)).trans
       (pow_le_pow_right₀ hx1 hD1))
     ((milicevicBound_le_pow hc2 hc21 (spectrum_density_inv_le ht ht1 hg hg1)).trans
@@ -344,9 +345,9 @@ theorem section16_budgeted_piece_three_of_deep_of_constants {D : Nat} (hD : D �
     (hM : MilicevicDeepVarietyStructure D) : Section16BudgetedPieceAt 3 := by
   intro gamma theta hg hg1 ht ht1
   -- `1 ≤ s`, before any big-power hypothesis is in scope
-  have hs1 : 1 ≤ section16VarietyThreeParameter D theta gamma := by
+  have hs1 : 1 ≤ section16VarietyThreeParameter D D theta gamma := by
     unfold section16VarietyThreeParameter
-    have hL0 := section16VarietyThreeLoss_nonneg D theta gamma
+    have hL0 := section16VarietyThreeLoss_nonneg D D theta gamma
     have hr := one_le_section16Lemma9R_half_two ht ht1 hg hg1
     have : 0 ≤ 18 * section16Lemma9R (theta / 2) gamma 2 / gamma :=
       div_nonneg (by linarith) hg.le
@@ -354,7 +355,7 @@ theorem section16_budgeted_piece_three_of_deep_of_constants {D : Nat} (hD : D �
   obtain ⟨hWpos, hL⟩ := section16VarietyThreeLoss_le ht ht1 hg hg1 hD hconst
   have hs := variety_piece_budget ht ht1 hg hg1 hL
   clear hL
-  refine ⟨section16VarietyPieceMass theta gamma, section16VarietyThreeParameter D theta gamma,
+  refine ⟨section16VarietyPieceMass theta gamma, section16VarietyThreeParameter D D theta gamma,
     section16VarietyPieceMass_pos ht hg, hs1, hs, ?_⟩
   obtain ⟨N0, hN0⟩ := polynomialVarietyRelationPieceAt_explicit D hM theta gamma ht ht1 hg hg1
   refine ⟨N0, fun N _ _ hN Gamma _ hprod hlarge => ?_⟩
