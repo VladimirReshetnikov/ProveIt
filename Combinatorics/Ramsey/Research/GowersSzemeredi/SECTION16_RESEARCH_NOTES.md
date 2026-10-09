@@ -5236,3 +5236,93 @@ with `IsVarietyPieceB` bounds in place of `milicevicBound`
 (`Proofs16DeepEventuallyPrime`); its absence is the interface gap J.5
 already names. It also assumes that the remaining Milićević steps lose
 no more than polynomially in their inputs.
+
+### J.103. Exact additive richness from matched four-walks
+
+**Verified 2026-10-09.** Seven modules carry J.102's walk counts through
+the endpoint identity and counting arguments. The conclusion is uniform
+additive richness in every pair of subsets of one dense column set.
+
+`Proofs16FourStepIdentity` first proves the crossing symmetry for plain
+column-pair identities. `ColumnPairIdentity.four_step_shrink` then
+composes four identities through three intermediate pairs. The endpoint
+defect vanishes on the union of all ten column Bohr domains by
+telescoping. Its own domain uses only the four endpoint spectra;
+`freiman_zero_remove_frequencies` removes the six intermediate spectra
+in one step. For rank `d`, initial radius `rho`, and identity radius
+`0 < r <= rho`, the cost is
+
+```
+N > refinementKernelCap (4*d) (6*d) rho r,
+rnew = refinementKernelRadius (4*d) (6*d) rho r.
+```
+
+`Proofs16FourWalkDifferences` records the four consecutive differences
+of a walk. Equality of these sequences is equivalent to translation of
+all corresponding vertices. In particular, a start and a difference
+sequence determine the complete walk. `Proofs16MatchedFourWalkIdentity`
+uses edge coherence, crossing, and the four-step composition to prove
+that matched walks give an endpoint pair relation at `rnew`. Repeated
+vertices cause no problem for this algebraic argument.
+
+`Proofs16FourWalkCollisionCount` counts the walks from `U` to `V` and
+applies the existing weighted Cauchy--Schwarz theorem to their difference
+sequences. There are `N^4` possible sequences. If the walk family has
+size at least `mu*N^5`, it has at least `mu^2*N^6` ordered matching pairs.
+`Proofs16FourWalkProjection` projects these pairs to their endpoint
+quadruples. The endpoints and the first walk's internal triple determine
+the second walk, so each fibre has size at most `N^3`. Consequently,
+there are at least `mu^2*N^3` distinct endpoint quadruples.
+
+`Proofs16WalkAdditiveRichness` defines `mixedExactColumnQuadruples U V`:
+these are exact additive quadruples `q` with `q0,q2` in `U` and `q1,q3`
+in `V`. If `|U| >= beta1*N`, `|V| >= beta2*N`, and every endpoint pair
+has at least `eta*N^3` four-walks, it proves
+
+```
+# mixedExactColumnQuadruples(U,V,rnew)
+  >= (beta1*beta2*eta)^2 * N^3.
+```
+
+The radius and modulus costs do not depend on `beta1` or `beta2`.
+
+`Proofs16GlobalColumnRichness` assembles this directly from the original
+dense bihomomorphism. Put
+
+```
+d = columnSpectrumCap (columnEightDensity alpha)
+rho = globalColumnIdentityRadius alpha
+r = columnIdentityRadius d rho 1
+delta = globalColumnQuadrupleDensity alpha / 4
+eta = globalColumnWalkDensity alpha = delta^5 / 16384
+Nrich = max(globalColumnGraphModulusBound alpha,
+            refinementKernelCap (4*d) (6*d) rho r + 1).
+```
+
+For prime `N >= Nrich`, `global_column_additive_richness` constructs
+`X,T,L,W,B`, retaining the original witness system, column rank,
+normalization, and Freiman linearity. It proves `B subset X`,
+`|B| >= 3*delta*N/8`, positive `eta` and `rnew`, and the displayed mixed
+quadruple bound for every `U,V subset B` and every nonnegative pair of
+lower density bounds. No graph, walk, or relation hypotheses remain in
+this global theorem.
+
+**Limits and next step.** This is hereditary abundance of exact additive
+quadruples, not exactness of every additive quadruple on `B`. The next
+selection step must retain vertices participating in many exact
+quadruples, then build the compatible representations needed for the
+structured family. Bilinear organization, shifted agreement, and the
+final numerical structure budget remain open. The numbered companion
+count does not change.
+
+**Verification.** The global construction checks 213 modules. All 14 new
+named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+Apache provenance changes were needed.
+
+After merging the retirement of the redundant six-walk module, the
+combined audit checks 7,058 public Gowers theorems in 5,116 modules
+(5,114 for the facade, including 4,152 OAI modules). Only the three
+approved standard axioms occur. The source ledger remains identical
+at 115 companions and five open entries; selected-port scope passes.
+Companion counts do not certify fidelity to every printed statement.
