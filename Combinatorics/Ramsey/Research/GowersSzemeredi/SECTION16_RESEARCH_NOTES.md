@@ -3628,3 +3628,14 @@ for Theorem 33 in this setting:
   `λ·L(y₁−y₂) = 0`;
 - the iteration bookkeeping, at most `r` steps, each multiplying the
   domain rank by a polynomial factor.
+
+
+The merged audit passes: 6,537 public Gowers theorems, a 5,008-module
+facade (4,152 OAI modules), and 5,010 modules including both audits.
+All fourteen new progression declarations also pass individual transitive
+axiom checks. Only propext, Classical.choice, and Quot.sound occur.
+The source ledger and selected port scope pass, preserving 115 companions,
+five open statements, and all existing fidelity caveats. The incoming
+dense-kernel and relation-subspace results are included in this audit.
+The upstream progression code was reused without changes; its existing
+Apache license and provenance records remain applicable and unchanged.
