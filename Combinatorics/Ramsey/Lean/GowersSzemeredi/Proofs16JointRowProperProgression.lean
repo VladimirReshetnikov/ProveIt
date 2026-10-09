@@ -25,6 +25,9 @@ theorem joint_rows_on_proper_progression {N d : Nat} [NeZero N]
       t 0+t 1 = t 2+t 3 ∧ S.Nonempty ∧
       rowProgressionQuadrupleDensity delta kappa d r*(N : Real)^3 ≤ S.card ∧
       (∀ j, ∀ i ∈ J j, FreimanHom 2 P.carrier (psi j i) ∧ psi j i 0 = 0) ∧
+      (∃ Gamma : Finset (ZMod N), Gamma.card ≤ rowCommonBohrRank delta kappa d r ∧
+        P.carrier ⊆ bohr Gamma ((1/(8*Real.pi))/4) ∧
+        ∀ j, ∀ i ∈ J j, FreimanHom 2 (bohr Gamma (1/(8*Real.pi))) (psi j i) ∧ psi j i 0 = 0) ∧
       ∀ b ∈ S, b 0+b 1 = b 2+b 3 ∧ (∀ j, b j ∈ P.carrier) ∧
         (fun j => t j+b j) ∈ R ∧
         ∀ j, ∀ i ∈ J j, (s.maps.get i).toFun (t j+b j) = c j i+psi j i (b j) := by
@@ -39,12 +42,13 @@ theorem joint_rows_on_proper_progression {N d : Nat} [NeZero N]
     (fun _j i => (s.maps.get i).toFun) psi hrho.le hPsub hSne
     (fun b hb => (hrealize b hb).2.1) (fun b hb => (hrealize b hb).2.2)
     (fun j => (hrows j).2)
-  refine ⟨P,t,S,psi,c,hPrank,hPproper,hPmass,ht,hSne,hS,?_,?_⟩
+  refine ⟨P,t,S,psi,c,hPrank,hPproper,hPmass,ht,hSne,hS,?_,?_,?_⟩
   · intro j i hi
     have hp := (hrows j).2 i hi
     have hsub : P.carrier ⊆ bohr Gamma (1/(8*Real.pi)) :=
       hPsub.trans (bohr_mono_radius _ (by linarith : (1/(8*Real.pi))/4 ≤ 1/(8*Real.pi)))
     exact ⟨IsAddFreimanHom.subset hsub hp.1 (Set.mapsTo_univ _ _),hp.2.1⟩
+  · exact ⟨Gamma,hG',hPsub,fun j i hi => ⟨((hrows j).2 i hi).1,((hrows j).2 i hi).2.1⟩⟩
   · intro b hb
     obtain ⟨hadd,hP,hmem⟩ := hrealize b hb
     exact ⟨hadd,hP,hR'R hmem,fun j i hi => hc j i hi (b j) (Finset.mem_image.mpr ⟨b,hb,rfl⟩)⟩

@@ -33,7 +33,7 @@ theorem IsSingleCoherentProgression.popular_agreement {N g d ell : Nat} [NeZero 
     ∀ u ∈ X, CoreAnchorAgreementAt C Gamma (B ∪ Finset.univ.image (fun i => theta i u))
       T L x y (t (color u)+u) r (jointSelectionRadius (g+d) r/2)
       (singleProgressionAgreementDensity popularity g d r) := by
-  obtain ⟨hPrank,hPproper,hPmass,hB,hell,htheta,ht,hXP,hX,hQ,hlocal,hcoherent⟩ := h
+  obtain ⟨hPrank,hPproper,hPmass,hB,hell,htheta,hfrequencyBohr,ht,hXP,hX,hQ,hlocal,hcoherent⟩ := h
   intro u hu
   obtain ⟨a,ha,hmem,he⟩ := (hlocal u hu).2.2
   obtain ⟨hpopular,hx,hy⟩ := popular_shift_anchor_bases C x y a ha hmem (color u)
