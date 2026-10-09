@@ -5716,6 +5716,15 @@ the decomposition with these named constants, but not `Theorem162At 3`.
          `(2R+1)^(−4d)` fraction of the triples. The four independent
          maps make the fixed points distinct.
          `exists_good_selection_indexed` counts over an index family.
+         Step 3 is done: `claim_9_4_core` (`Proofs16ClaimNineFourCore`).
+         From `εN³` prescribed decompositions `ξ₀ − ξ₁ = ξ₂ − ξ₃` it gets
+         the selected maps, an event set `E` of size
+         `ε(2R+1)^(−4d)N³`, and Lemma 9.2 for `(ψ₀, ψ₁)` with `ω = y`.
+         The result is a Freiman 2-homomorphism `θ` on a Bohr set with
+         `ψ₁ x − ψ₁ x′ = θ(x − x′)` on the event fibers. The escaping
+         frequency is `ψ₀(x+a) − ψ₁(x) = ξ₀ − ξ₁` on `E`. Still to do:
+         the escape bookkeeping (Theorem 2.12 produces the decompositions,
+         and θ's values grow the index sets) and the iteration.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.
