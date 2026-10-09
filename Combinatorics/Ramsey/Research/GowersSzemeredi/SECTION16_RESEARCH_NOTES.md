@@ -5385,8 +5385,6 @@ chosen per `(γ, θ)`.
    - `milicevicBound D c ≤ (4/c)^D`.
 
 **Remaining**, all mechanical:
-- match `section16VarietyCeilingFreeExponent` and `…GraphBound` to the
-  absorbed shape (via `section16_variety_line_factor_power`);
 - bound `L` by `x^(64·2^256)`. The constants' logs are at most a few
   thousand by the Weyl bounds (`A_j < 2^192`, degree `< 256`), and
   `mb ≤ (4/c)^D`. With `c⁻¹ ≤ x^(2^156)` at the spectrum density, a
@@ -5404,9 +5402,32 @@ Lean traps met here:
 - `linarith` treats `4·(M·r)·log X` and `18·(M·r)·log X` as unrelated
   atoms.
 
-Until one of these lands, `MilicevicDeepVarietyStructure D` (or its
-eventual, any-bound form) yields the decomposition with the unknown
-constants as parameters, but not `Theorem162At 3`.
+**Full dependency verification (2026-10-09).** The incoming fixed-constant
+chain, `ceilingFreeVarietyRelationDecompositionAt_explicit`, and the new
+count bounds now compile against the actual selected OAI dependency
+closure. The full merged audit checks 7,669 public Gowers theorems in
+5,244 modules and rejects all axioms except `propext`, `Classical.choice`,
+and `Quot.sound`; no stub or `sorry` is used in this verified closure.
+This supersedes the limited stub-based verification described above.
+The subsequent incoming `Proofs05WeylConstantBounds` also passes the full
+audit: in degrees one to three, the coefficient sums of the Weyl budget
+polynomials are below `2^192` and their degrees are below `256`. These
+are numerical inputs to the remaining recurrence-constant comparison.
+The later `Proofs16VarietyShapeMatch` also passes the full audit, proving
+exact identities for the width exponent and graph count in the absorbed
+variety shape. This discharges the shape-matching step above.
+The subsequently merged `Proofs16VarietyLossBound` also passes a full
+real-dependency audit. Its `variety_loss_le` proves positivity of the
+width coefficient and bounds both required logarithmic losses by
+`112*Lambda`, provided `Lambda >= 7` and each specified factor is bounded
+by `exp Lambda`. This reduces the remaining numerical comparison to
+those explicit factor bounds. The full numerical absorption and the deep
+structural input remain undischarged, so this does not yet supply
+`Theorem162At 3`.
+
+Until the remaining bound comparison is proved,
+`MilicevicDeepVarietyStructure D` (or its eventual, any-bound form) yields
+the decomposition with these named constants, but not `Theorem162At 3`.
 
 ### J.103. Exact additive richness from matched four-walks
 
@@ -7319,3 +7340,241 @@ The full audit checks 7,545 public Gowers theorems in 5,234 modules
 byte-for-byte unchanged at 115 companions and five open entries. The
 selected-port scope remains 4,134 upstream and 17 compatibility modules,
 with reciprocal-only dependencies excluded.
+
+
+### J.122. Simultaneous Freiman extraction at all sixteen endpoints
+
+The first-coordinate argument from J.121 now applies to every endpoint
+and can be iterated on one retained family of higher arrangements. This
+completes the dense-set Freiman extraction stage for all sixteen maps.
+It does not yet put paired maps on a common progression or align their
+difference maps.
+
+**Symmetries with their parameter maps.** `HigherArrangementSymmetry`
+records a bijection of the eleven-parameter space, a permutation of the
+sixteen endpoints, the identity relating these two maps, and preservation
+of the arrangement equation after reindexing the sixteen functions.
+Composition reverses the order of the coordinate pullbacks relative to
+the parameter maps. Four explicit involutions generate the symmetries
+needed here:
+
+- reverse every shifted/unshifted pair, negating all four shifts;
+- exchange the first two shifts and the last two shifts simultaneously;
+- exchange the first two shifts with the last two shifts;
+- exchange all left base points with the corresponding right base points.
+
+The shift relation `a1+a2=a3+a4` is preserved by each construction.
+The parameter transformations are proved involutive, and their endpoint
+identities are proved at every coordinate. The equation is preserved,
+with an overall sign change for pair reversal and side exchange.
+`higherArrangementCoordinateSymmetry_zero` proves that the selected
+symmetry takes any prescribed endpoint to position zero in the
+reindexed arrangement.
+
+**No extra density loss from reindexing.** Apply the first-coordinate
+extraction to the bijective image of the original family, and pull the
+retained subfamily back through the inverse parameter map. Both finite
+families retain their exact cardinalities. Thus
+`higher_arrangements_retain_coordinate` provides the same set-size and
+configuration-retention bounds as J.121 for any `i : Fin 16`. The result
+records containment in the original family and original endpoint image,
+not just a family of abstract solutions to the reindexed equation.
+
+**Coordinate fibres.** For any coordinate `i`, a parameter tuple is
+determined by its `i`-th endpoint and the ten-coordinate index of its
+reparametrization. The remaining base point is recovered by subtraction.
+This gives, for an arbitrary family `R` with its `i`-th endpoint in `E`,
+
+```
+card R <= card E * N^10.
+```
+
+No arrangement-equation hypothesis is needed for this fibre bound.
+Consequently `card R >= delta*N^11` implies `card E >= delta*N`.
+
+**One family for all sixteen maps.** Define the explicit density sequence
+
+```
+c_0 = delta,
+c_(n+1) = H(c_n),
+H(t) = t/2 * (2^(-1882) * (((t/2)^2)^4)^1164).
+```
+
+`higherArrangementDensity_pos` proves positivity at every finite stage
+for positive initial density. Induction on any finite subset of endpoint
+positions uses the coordinate extraction to shrink the retained family.
+Previously extracted Freiman sets stay valid, since all subsequent
+families are subsets of their predecessors. The number of steps is the
+cardinality of the selected coordinate set.
+
+The final theorem `higher_arrangements_freiman_family` starts with
+`delta*N^11` solutions of `HigherArrangementEquation f` and returns sets
+`E_i` and a single family `R subset Q` such that
+
+```
+f_i is Freiman of order eight on E_i for every i in Fin 16,
+card E_i >= c_16*N for every i,
+all sixteen endpoints of every tuple in R lie in their respective E_i,
+card R >= c_16*N^11.
+```
+
+Each `E_i` also lies in the `i`-th endpoint image of the original family.
+Thus the density assertion is about one simultaneous subfamily, with
+all sixteen restrictions in force.
+
+**Remaining work.** These are Freiman sets, not yet the common coset
+progressions in the full higher-arrangement structure theorem. Pair-map
+alignment, actual higher-arrangement frequency escape and enlargement,
+simultaneous selection, anchor coherence, and the final bilinear variety
+structure remain open. In particular, a sum of escaping frequencies
+must retain the multiplicities of repeated generators. The quadruple
+containment theorem alone does not establish the higher containments.
+No numbered catalogue entry or final source-theorem bound is claimed
+here. No new upstream port or licensing change was necessary.
+
+**Verification.** The all-coordinate extraction closure checks 233
+modules. All fifteen new named theorems pass individual axiom checks.
+After merging the incoming explicit variety-decomposition chain, the
+full audit checks 7,669 public Gowers theorems in 5,244 modules
+(5,242 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The incoming assembly
+and count bounds compile with their actual dependencies. The numbered
+ledger remains byte-for-byte unchanged at 115 companions and five open
+entries. The selected-port scope remains 4,134 upstream and 17
+compatibility modules, with reciprocal-only dependencies excluded.
+
+
+### J.123. Eight progression maps on one higher-arrangement family
+
+The sixteen-coordinate Freiman extraction from J.122 now feeds a
+simultaneous representation of all eight pair differences by maps on
+translated proper progressions. Every restriction preserves a quantified
+portion of the original eleven-parameter family. The resulting eight
+maps also satisfy the original arrangement equation on that family.
+
+**Cover retention for indexed configurations.**
+`indexed_common_graph_cover_retained_fibre` extends the earlier
+quadruple-specific cover argument to any finite indexed family `Q`,
+with endpoint maps `x,y`. Suppose a translated overlap of the two graphs
+has density at least `mu`, and suppose `Q` has mass at least `mass > 0`.
+The Freiman graph-cover argument supplies anchor sets `J,K` with
+`card J * card K * mu^2 <= 1`. Assign each original configuration an
+anchor pair and retain a large fibre of that assignment. At least
+`mu^2*mass` original configurations survive. Their paired differences
+all have one translated fourfold graph representation. In particular,
+repeated endpoint pairs in `Q` are counted with their original index
+multiplicity throughout this argument.
+
+**A dense overlap from an offset equation.** For the indexed equation
+
+```
+f(x+a(i)) - g(x) = v(i),
+card Q >= delta*M*N^2,
+card {i : a(i)=z} <= M,
+```
+
+J.121 supplies at least `delta^2*N^3` mixed collision quadruples. The
+existing graph-overlap theorem therefore gives a set `S subset B` with
+`card S >= delta^2*N` on which a translate of `f` agrees with `g` up to
+a constant. The original family `Q` remains available. This is proved
+as `offset_equation_dense_overlap`, including both endpoint-domain
+hypotheses.
+
+**A common difference map and its proper progression.** Write
+
+```
+kappa = delta^2,
+mu(kappa) = commonDifferenceClusterDensity kappa,
+eta(kappa) = commonDifferenceProgressionDensity kappa.
+```
+
+Assume `f` is Freiman of order two on its endpoint set and `g` is
+Freiman of order eight on its endpoint set. Localize the dense overlap
+to a Bohr cluster and apply the indexed cover retention there. This
+retains at least `mu(kappa)^2*delta*M*N^2` configurations whose offsets
+are represented by one translated normalized Freiman map on a full Bohr
+neighborhood. The offsets lie in its half-radius part, so the earlier
+indexed progression localization applies.
+
+`offset_equation_common_progression_map` consequently returns a proper
+centered progression `P`, a translation `b`, an additive constant `c`,
+and a normalized map `psi`, with
+
+```
+rank P <= commonDifferenceRank (delta^2) + 1,
+card P >= eta(delta^2)*N,
+f(x+a(i))-g(x) = c+psi(a(i)-b)
+```
+
+on a retained original family of size at least `G(delta)*M*N^2`, where
+
+```
+G(delta) = eta(delta^2)*mu(delta^2)^2*delta
+         = offsetDifferenceProgressionRetention delta.
+```
+
+`G(delta)` is positive when `delta` is positive and is independent of
+`M,N`. The packaged theorem `offset_equation_pair_frequency_map` returns
+an actual `PairFrequencyMap` controlled at `delta^2`; its map is
+`theta(t)=c+psi(t-b)` on the translated progression. The translation and
+additive constant are both retained. Properness is asserted for `P`,
+without an unproved properness claim for its dilates.
+
+**All eight pairs.** Specialize to the higher-arrangement parameters
+with `M=N^9`. The first pair's offset is the first shift, and its residual
+is already provided by the arrangement equation. Even-coordinate
+symmetries then move any of the eight pairs into this position while
+preserving the order of its two endpoints and the exact cardinality of
+the configuration family.
+
+The definitions `higherArrangementPairLeft`, `higherArrangementPairRight`,
+and `higherArrangementPairDifference` record this indexing. Additional
+lemmas prove that the first four shifts are additive and that the right
+four shifts equal the corresponding left shifts.
+
+For iteration, define
+
+```
+b_0 = epsilon,
+b_(n+1) = G(b_n).
+```
+
+`higher_arrangements_retain_pair_maps` treats any finite subset of pair
+positions. Every stage only restricts the previously retained family,
+so earlier map identities and domain memberships remain valid. A map
+selected at stage `n` is controlled at `b_n^2`; this stage is recorded
+explicitly instead of assuming an unproved monotonicity of the control
+functions. After eight stages, every selected map has such a control
+with `n < 8`, and at least `b_8*N^11` original configurations remain.
+
+**Combined theorem.** `higher_arrangements_common_pair_family` first
+uses all sixteen coordinate extractions, with
+`epsilon = higherArrangementDensity delta 16`, and then performs all
+eight pair alignments. It returns the sixteen Freiman sets, the eight
+controlled progression maps, and one subfamily `R subset Q` of size at
+least `higherArrangementPairDensity epsilon 8 * N^11`. Each coordinate
+set retains its density bound `epsilon*N`; every tuple in `R` has all
+sixteen endpoints in these sets and all eight shifts in their respective
+map domains. Each map value equals the original endpoint-map difference.
+The theorem also records `HigherArrangementPairMapEquation`: the sum of
+the four left map values equals the sum of the four right map values.
+
+**Remaining work.** This is an eight-map difference representation on
+one common family. It is not yet the higher-arrangement frequency-escape
+or enlargement theorem. Those steps must preserve repeated-generator
+multiplicities when passing from a sum of frequencies to an escaping
+component. Simultaneous selection, coherent anchor choices, and the
+final bilinear variety structure remain open, as do the unresolved
+numerical absorption estimates. No numbered catalogue entry or final
+source-theorem bound is claimed here. No new upstream port or licensing
+change was necessary.
+
+**Verification.** The complete common-pair-family closure checks 305
+modules. All seventeen new named theorems pass individual axiom checks.
+After integrating the incoming logarithmic-loss bound, the full audit
+checks 7,700 public Gowers theorems in 5,254 modules
+(5,252 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
+remains byte-for-byte unchanged at 115 companions and five open entries.
+The selected-port scope remains 4,134 upstream and 17 compatibility
+modules, with reciprocal-only dependencies excluded.
