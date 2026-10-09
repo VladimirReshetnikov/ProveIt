@@ -5738,6 +5738,34 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
     (`bohrCyclicProgression_carrier_subset`). But it builds that
     progression from successive minima (`minkowskiSecondConstant`), the
     lattice machinery the reverse inclusion would reuse.
+
+  **Correction (same day): in ℤ/N neither step is needed.** For `N`
+  prime, `freiman_small_image_zero` (`Proofs16PrimeSmallRange`, J.97)
+  already turns a bounded image into exact vanishing, with no new
+  frequencies: a normalized Freiman-linear map on `B(T;ρ)` with at most
+  `K < N` values is zero on `B(T;ρ/K)`.
+  - An alternating sum `∑ ±φ_{x_i}` is Freiman-linear on the common domain
+    `⋂ B(T_{x_i};ρ) = B(⋃ T_{x_i};ρ)`. So a bound `K` on its image gives
+    the zero relation at radius `ρ/K`, which costs `log K` in
+    `log(1/radius)` and nothing in codimension.
+  - Milićević needs random characters and Proposition 2.37 only because
+    a general finite abelian group has small subgroups. A prime cyclic
+    group has none.
+  - So `Proofs16CharacterRefinement` is not needed for ℤ/N. It stays as
+    a group-agnostic formalization of Proposition 8.1's core. The
+    Bohr-inside-progression step above is *not* a prerequisite here.
+
+  The redesign question therefore reduces to two inputs:
+  1. bounded-image (`log K` polynomial) alternating sums for many
+     additive quadruples; the exact identities of J.98 are a special
+     case;
+  2. the pass from many quadruples to all of them on a dense index set.
+
+  For (2) Milićević uses the abstract Balog–Szemerédi–Gowers theorem
+  (his Theorem 4.1, Steps 2 and 6). J.108–J.110 use model packing and
+  elimination instead, which is where the triple exponential enters. A
+  polynomial-loss abstract BSG for "respected" quadruple families is the
+  natural replacement to formalize next.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
