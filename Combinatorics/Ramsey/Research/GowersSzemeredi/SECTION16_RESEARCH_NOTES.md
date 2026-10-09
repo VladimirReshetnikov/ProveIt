@@ -3353,3 +3353,113 @@ intermediate extension is to choose the parameter cluster in a smaller
 neighborhood while retaining the maps on the original neighborhood,
 so that the required sums remain within their domains. The degree and
 codegree estimates alone do not prove the algebraic regularity input.
+
+
+### J.86. Separate domain radii and four-row completion
+
+`selected_common_bohr_cluster_radius` separates the radius sigma used
+for the parameter cluster from the radius rho used for the normalized
+map domains. `fixed_patterns_recentered_radius` propagates this distinction
+when 0<=sigma<=rho. Both preceding equal-radius theorems remain available
+as specializations. This ensures that choosing a smaller parameter set
+does not discard the maps' larger domains.
+
+`Proofs16QuarterPatternGeometry` takes sigma=rho/4 in the actual dense-row
+and global-density constructions. The centered set W now lies inside
+B(T;rho/4), while all active maps remain normalized order-two Freiman
+maps on B(T;rho). Its size is at least nu*|B(T;rho/8)|, with nu as in
+J.85. All frequency-rank bounds and the global-density input are retained.
+
+`Proofs16BohrFourTerm` proves the corresponding domain arithmetic. Four
+points of B(T;rho/4) have alternating sum in B(T;rho). The two pair sums
+lie in the half-radius neighborhood, so the Freiman identities can be
+applied with all arguments in B(T;rho). Hence a normalized map satisfies
+`psi(x1+x2-x3-x4)=psi(x1)+psi(x2)-psi(x3)-psi(x4)` for these inputs.
+The phase-error estimate accounts explicitly for all four signs.
+
+`Proofs16FourRowCompletion` proves the geometric implication needed for
+the later common-neighborhood argument. If y=x1+x2-x3-x4 with all xj in W,
+and d annihilates the variable frequencies at x1,x2,x3 and y to radius
+eta/4, it annihilates those at x4 to radius eta. Together with the constant
+frequency condition, all four points (d,a+xj) therefore lie in the target
+set. Two vertical differences cancel the anchor a and give (d,y).
+The triple-witness version sets x4=x1+x2-x3-y and retains its W-membership
+as an explicit hypothesis.
+
+`Proofs16GlobalFourRowCompletion.global_four_row_completion` combines
+this implication with the construction from global density. It yields
+(d,y) in `D_ver D_ver D_hor D_ver D_hor D_hor A` when an actual triple
+witness exists. This is a six-operator membership implication, not an
+unconditional variety-containment theorem. Producing witnesses with
+the required uniformity still needs the regularity and representation
+arguments; the final horizontal difference step also remains.
+
+There are thirteen new theorem declarations and two preserved wrappers.
+The 114-module source closure compiles. The proper-progression and
+algebraic-regularity inputs remain open, as do the five numbered entries
+in the source ledger. No existing paper-fidelity caveat is removed.
+
+
+### Bohr-set size from linear relations: [49] Proposition 23 (2026-10-09)
+
+`Proofs16BohrSizeRelations` proves [49]'s Proposition 23 in `ℤ/N`.
+Algebraic regularity (Theorem 33, Claim 34) runs on this formula, so it
+is the next input after the quasirandomness appendix.
+
+Let the frequencies be a tuple `γ : ι → ℤ/N`; repeats are allowed, as in
+Claim 34's families `Γ ∪ {L₁(y), …, L_r(y)}`. Let
+`c_r = N⁻¹·ĝ(r)` be the trapezoid coefficients
+(`trapezoidRelationCoeff a c r`); they depend only on `N, a, c`. Let
+`relationWeight γ a c R = Σ_{v ∈ [−R,R]^ι} (Π c_{vᵢ})·1(Σ vᵢγᵢ = 0)`.
+Then:
+- `bohr_card_approx_relations`: if
+  `|B(γ;(a+c)/N)| ≤ |B(γ;(a−c)/N)| + εN` ([49]'s weak regularity (8))
+  and the truncation error `(1 + N/(|I_c|(R+1)))^|ι| − 1` is at most `ε`,
+  then `|B(γ;(a−c)/N)|` is within `2εN` of `N·relationWeight γ a c R`.
+  This is exactly [49]'s `2ε|G|`.
+- `bohr_card_approx_relations_explicit`: the same with an explicit
+  cutoff `R + 1 ≥ 4(|ι|+1)N/(ε|I_c|)` for `0 < ε ≤ 1`. The cutoff
+  depends on `|ι|` and the radii, never on the frequencies.
+
+Supporting results:
+- `sum_boundedCharacterProduct`: orthogonality turns the summed
+  truncated product into `N` times the relation count.
+- `trapezoid_tuple_uniform_truncation`: the tuple form of
+  `trapezoid_product_uniform_truncation`.
+- `trapezoid_tuple_sum_sandwich`: `|B_in| ≤ Σ_x Π g(γᵢx) ≤ |B_out|`.
+- `mem_bohr_image_iff`: Bohr membership for a tuple at grid radii.
+
+Eight declarations, standard axioms only, collision gate clean. No
+numbered statement changes status. Next in this lane: Claim 34 (Bohr
+sizes are determined by the relation lattice), then the iteration of
+Theorem 33.
+
+
+The combined audit after the four-row work and incoming Bohr-size
+relation estimates passes: 6,479 public Gowers theorems, a 4,995-module
+facade (4,152 OAI modules), and 4,997 modules including both audits.
+The thirteen new declarations and the two equal-radius wrappers also
+pass individual transitive axiom checks. Only propext, Classical.choice,
+and Quot.sound occur. The numbered source ledger remains 115 companions
+and five open statements, with prior fidelity caveats retained. The
+selected upstream closure and license/provenance files are unchanged.
+
+
+### Claim 34's algebraic core in Z/N (2026-10-09)
+
+`Proofs16BohrSizeFactorization`. Suppose
+every bounded relation `Σνᵢγᵢ + Σμⱼℓⱼ = 0` splits as "`Σνᵢγᵢ = 0` and
+`μ ∈ Λ`", and conversely. Then
+`relationWeight (γ ⊔ ℓ) = relationWeight γ · W_Λ`, where
+`W_Λ = Σ_{μ∈Λ} Π c_{μⱼ}` (`relationWeight_sumElim_of_split`). With
+Proposition 23 on both Bohr sets,
+`‖|B(γ ⊔ ℓ)| − W_Λ·|B(γ)|‖ ≤ 2εN + ‖W_Λ‖·2εN`
+(`bohr_card_factor_of_split`). This is Claim 34 (i), and (ii) is the
+case `κ ⊕ κ`.
+
+[49] writes this with a real `δᵢ` and error `2η/5`. That tacitly
+uses `|δᵢ| ≤ 1`, which is not evident from the definition
+`δᵢ = Σ_{λ∈Λ} Π c_λ` with complex `c` in the unit disc. The formal
+statement therefore keeps `‖W_Λ‖` explicit. Bounding it, for instance
+via `|B(γ ⊔ ℓ)| ≤ |B(γ)|` and a lower bound on `|B(γ)|`, is left to the
+point of use. Three declarations, standard axioms only.

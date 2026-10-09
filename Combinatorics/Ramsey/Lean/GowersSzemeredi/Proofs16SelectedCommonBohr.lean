@@ -28,6 +28,40 @@ theorem selected_common_bohr_extensions {N m : Nat} [NeZero N]
 /-- A single dense cluster works simultaneously for the selected maps.
 Agreement is retained on every original domain pair whose difference
 belongs to the common neighborhood. -/
+theorem selected_common_bohr_cluster_radius {N m : Nat} [NeZero N]
+    (I : Finset (Fin m)) (E : Fin m → Finset (ZMod N))
+    (L : Fin m → ZMod N → ZMod N) (S : Fin m → Finset (ZMod N))
+    (V : Finset (ZMod N)) {rho sigma R nu : Real}
+    (hrho : 0 ≤ rho) (hsigma : 0 ≤ sigma) (hnu : 0 < nu) (hV : nu * N ≤ V.card)
+    (hE : ∀ i ∈ I, (E i).Nonempty)
+    (hS : ∀ i ∈ I, ((S i).card : Real) ≤ R)
+    (hB : ∀ i ∈ I, IsBHomomorphism (E i) (bohr (S i) rho) (L i)) :
+    ∃ (T : Finset (ZMod N)) (a : ZMod N) (C : Finset (ZMod N))
+      (psi : Fin m → ZMod N → ZMod N),
+      (T.card : Real) ≤ I.card * R ∧ a ∈ C ∧ C ⊆ V ∧
+      nu * (bohr T (sigma / 2)).card ≤ (C.card : Real) ∧
+      (∀ x ∈ C, ∀ y ∈ C, x - y ∈ bohr T sigma) ∧
+      ∀ i ∈ I, FreimanHom 2 (bohr T rho) (psi i) ∧ psi i 0 = 0 ∧
+        (∀ x ∈ bohr T rho, ∀ y ∈ bohr T rho, x + y ∈ bohr T rho →
+          psi i (x + y) = psi i x + psi i y) ∧
+        ∀ x ∈ E i, ∀ y ∈ E i, x - y ∈ bohr T rho →
+          L i x - L i y = psi i (x - y) := by
+  obtain ⟨T, hT, hcommon⟩ := selected_common_bohr_extensions I E L S hS hB
+  obtain ⟨a, C, ha, hCV, hC, hdiff⟩ := exists_dense_bohr_cluster V T hnu hsigma hV
+  have hex (i : Fin m) : ∃ psi : ZMod N → ZMod N,
+      i ∈ I → FreimanHom 2 (bohr T rho) psi ∧ psi 0 = 0 ∧
+        (∀ x ∈ bohr T rho, ∀ y ∈ bohr T rho, x + y ∈ bohr T rho →
+          psi (x + y) = psi x + psi y) ∧
+        ∀ x ∈ E i, ∀ y ∈ E i, x - y ∈ bohr T rho →
+          L i x - L i y = psi (x - y) := by
+    by_cases hi : i ∈ I
+    · obtain ⟨psi, hpsi⟩ := (hcommon i hi).normalized_extension (hE i hi) (zero_mem_bohr T hrho)
+      exact ⟨psi, fun _ => hpsi⟩
+    · exact ⟨0, fun h => (hi h).elim⟩
+  choose psi hpsi using hex
+  exact ⟨T, a, C, psi, hT, ha, hCV, hC, hdiff, hpsi⟩
+
+/-- The equal-radius specialization. -/
 theorem selected_common_bohr_cluster {N m : Nat} [NeZero N]
     (I : Finset (Fin m)) (E : Fin m → Finset (ZMod N))
     (L : Fin m → ZMod N → ZMod N) (S : Fin m → Finset (ZMod N))
@@ -46,19 +80,6 @@ theorem selected_common_bohr_cluster {N m : Nat} [NeZero N]
           psi i (x + y) = psi i x + psi i y) ∧
         ∀ x ∈ E i, ∀ y ∈ E i, x - y ∈ bohr T rho →
           L i x - L i y = psi i (x - y) := by
-  obtain ⟨T, hT, hcommon⟩ := selected_common_bohr_extensions I E L S hS hB
-  obtain ⟨a, C, ha, hCV, hC, hdiff⟩ := exists_dense_bohr_cluster V T hnu hrho hV
-  have hex (i : Fin m) : ∃ psi : ZMod N → ZMod N,
-      i ∈ I → FreimanHom 2 (bohr T rho) psi ∧ psi 0 = 0 ∧
-        (∀ x ∈ bohr T rho, ∀ y ∈ bohr T rho, x + y ∈ bohr T rho →
-          psi (x + y) = psi x + psi y) ∧
-        ∀ x ∈ E i, ∀ y ∈ E i, x - y ∈ bohr T rho →
-          L i x - L i y = psi (x - y) := by
-    by_cases hi : i ∈ I
-    · obtain ⟨psi, hpsi⟩ := (hcommon i hi).normalized_extension (hE i hi) (zero_mem_bohr T hrho)
-      exact ⟨psi, fun _ => hpsi⟩
-    · exact ⟨0, fun h => (hi h).elim⟩
-  choose psi hpsi using hex
-  exact ⟨T, a, C, psi, hT, ha, hCV, hC, hdiff, hpsi⟩
+  exact selected_common_bohr_cluster_radius I E L S V hrho hrho hnu hV hE hS hB
 
 end LeanProofs.GowersSzemeredi
