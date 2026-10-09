@@ -5671,6 +5671,12 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        `freiman_on_values_of_separated` applies Corollary 7.6 with
        `B₀ = V`, giving `B ⊆ V` with `|B| ≥ 2^(-1882)·c^4656·|V|` on which
        `f` is a Freiman 8-homomorphism.
+       Gap 2 is closed without extending `ψ` outside `A`.
+       `shared_linear_part` takes `f` locally affine on `A` with linear
+       part `ψ` on `K` (Lemma 7.8's `IsBHomomorphism`), and a family
+       separating `f` and `g`. It gives `g x − g x′ = ψ(x − x′)` whenever
+       `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. So `g` shares the linear
+       part `ψ`, which is Milićević's `φ₂ = ψ₁ + u`.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`

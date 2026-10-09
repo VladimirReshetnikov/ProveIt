@@ -87,4 +87,21 @@ theorem shift_agreement {G H : Type*} [AddCommGroup G] [AddCommGroup H] [Fintype
     rw [Finset.card_empty, mul_zero]
     exact hbound
 
+/-- **Shared linear part.** If `f` is locally affine on `A` with linear part
+`ψ` on the difference set `K` (Lemma 7.8's `IsBHomomorphism`), and `S`
+separates `f` and `g`, then `g` has the same linear part on each fiber:
+`g x − g x′ = ψ(x − x′)` when `x + a, x′ + a ∈ A` and `x − x′ ∈ K`. -/
+theorem shared_linear_part {G H : Type*} [AddCommGroup G] [AddCommGroup H]
+    (f g ψ : G → H) (A K : Finset G)
+    (hloc : ∀ y ∈ A, ∀ y' ∈ A, y - y' ∈ K → f y - f y' = ψ (y - y'))
+    {x x' a : G} (hsep : f (x + a) - g x = f (x' + a) - g x')
+    (hx : x + a ∈ A) (hx' : x' + a ∈ A) (hK : x - x' ∈ K) :
+    g x - g x' = ψ (x - x') := by
+  have hd : (x + a) - (x' + a) = x - x' := by abel
+  have h1 := hloc _ hx _ hx' (by rw [hd]; exact hK)
+  rw [hd] at h1
+  rw [← h1]
+  rw [sub_eq_sub_iff_sub_eq_sub] at hsep
+  rw [hsep]
+
 end LeanProofs.GowersSzemeredi
