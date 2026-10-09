@@ -3398,3 +3398,38 @@ There are thirteen new theorem declarations and two preserved wrappers.
 The 114-module source closure compiles. The proper-progression and
 algebraic-regularity inputs remain open, as do the five numbered entries
 in the source ledger. No existing paper-fidelity caveat is removed.
+
+
+### Bohr-set size from linear relations: [49] Proposition 23 (2026-10-09)
+
+`Proofs16BohrSizeRelations` proves [49]'s Proposition 23 in `ℤ/N`.
+Algebraic regularity (Theorem 33, Claim 34) runs on this formula, so it
+is the next input after the quasirandomness appendix.
+
+Let the frequencies be a tuple `γ : ι → ℤ/N`; repeats are allowed, as in
+Claim 34's families `Γ ∪ {L₁(y), …, L_r(y)}`. Let
+`c_r = N⁻¹·ĝ(r)` be the trapezoid coefficients
+(`trapezoidRelationCoeff a c r`); they depend only on `N, a, c`. Let
+`relationWeight γ a c R = Σ_{v ∈ [−R,R]^ι} (Π c_{vᵢ})·1(Σ vᵢγᵢ = 0)`.
+Then:
+- `bohr_card_approx_relations`: if
+  `|B(γ;(a+c)/N)| ≤ |B(γ;(a−c)/N)| + εN` ([49]'s weak regularity (8))
+  and the truncation error `(1 + N/(|I_c|(R+1)))^|ι| − 1` is at most `ε`,
+  then `|B(γ;(a−c)/N)|` is within `2εN` of `N·relationWeight γ a c R`.
+  This is exactly [49]'s `2ε|G|`.
+- `bohr_card_approx_relations_explicit`: the same with an explicit
+  cutoff `R + 1 ≥ 4(|ι|+1)N/(ε|I_c|)` for `0 < ε ≤ 1`. The cutoff
+  depends on `|ι|` and the radii, never on the frequencies.
+
+Supporting results:
+- `sum_boundedCharacterProduct`: orthogonality turns the summed
+  truncated product into `N` times the relation count.
+- `trapezoid_tuple_uniform_truncation`: the tuple form of
+  `trapezoid_product_uniform_truncation`.
+- `trapezoid_tuple_sum_sandwich`: `|B_in| ≤ Σ_x Π g(γᵢx) ≤ |B_out|`.
+- `mem_bohr_image_iff`: Bohr membership for a tuple at grid radii.
+
+Eight declarations, standard axioms only, collision gate clean. No
+numbered statement changes status. Next in this lane: Claim 34 (Bohr
+sizes are determined by the relation lattice), then the iteration of
+Theorem 33.
