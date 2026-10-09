@@ -5615,17 +5615,29 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   so the present chain cannot supply the polynomial contract however the
   bilinear organization is finished. Nor can it supply Milićević's
   quasi-polynomial form.
-- It does not show that no route can. Both blow-ups are artefacts of
-  two parameter choices, and either repair would remove one exponential:
-  - The rank `⌈4d/δ⌉` charges `d` frequencies to each of `1/δ` models.
-    A spectrum of rank `poly(1/alpha)` needs `δ ≥ poly(alpha)`, or models
-    that share frequencies.
-  - The elimination cost `(β/10)^(log M/β)` is exponential in `1/β`.
-    A density-increment that loses only `β^O(1)` per *model*, or a
-    `β` that is polynomial in the rank, would bring it back to
-    `exp(-poly)`.
-- With both repaired, the stage would lose `exp(-poly(1/alpha))`, which
-  is the polynomial-`Bnd` regime J.5 revisited assumed.
+- It does not show that no route can. The two blow-ups come from two
+  design choices, and each repair alone removes exactly one exponential
+  (triple to double):
+  - **Rank.** The common spectrum `⌈4d/δ⌉` charges `4d` frequencies to
+    each of up to `1/δ` packed models (J.108). A rank `poly(1/alpha)`
+    needs `δ ≥ poly(alpha)`, or models that share frequencies. Then
+    `β = exp(-poly)`, but `t = log M/β = exp(poly)` rounds still cost
+    `exp(-exp(poly))`.
+  - **Elimination.** Each round keeps `β/10` of the columns and kills
+    only a `β` fraction of the models, so the total cost
+    `(β/10)^(log M/β)` is exponential in `1/β`. The requirement is a
+    total cost `β^O(log M)`, i.e. each round must kill a *constant*
+    fraction of the active models at column cost `β^O(1)`.
+    - Killing `β^O(1)` per *model* is not enough, since there are
+      `M = ⌈1/δ⌉ = exp(poly)` models.
+    - Nor is "β polynomial in `1/alpha`" available: `β` is a Bohr-set
+      density, exponentially small in the rank.
+    - Counting tests relative to the common Bohr set `B(Γ;·)` would
+      remove `g` from `β` but leave `d`. It fixes the rank's
+      contribution, not the `1/β` round count.
+- With both repaired (rank `poly`, total cost `β^O(log M)`), the stage
+  would lose `exp(-poly(1/alpha))`. That is the polynomial-`Bnd` regime
+  J.5 revisited assumed. No such elimination scheme is proposed here.
 
 This is the audit the J.5 revisited estimate called for. It does not
 change any proved statement; it shows that the order-of-magnitude
