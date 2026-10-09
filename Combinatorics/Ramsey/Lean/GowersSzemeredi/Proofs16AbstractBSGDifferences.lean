@@ -93,7 +93,7 @@ theorem difference_ladder_rel_four {G : Type*} [AddCommGroup G]
     {A X : Finset G} (hX : X.Nonempty) (hAX : A ⊆ X) (Q : Nat → G → G → G → G → Prop)
     (hS1 : ∀ a₁ a₂ a₃ a₄, Q 1 a₁ a₂ a₃ a₄ → Q 1 a₃ a₄ a₁ a₂) {c' δ : Real} (hc'0 : 0 < c')
     (hδ : 0 < δ)
-    (hWT : ∀ i a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i, i + 1 ≤ 4 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
         Q i a₁ a₂ p.1 p.2 ∧ Q 1 p.1 p.2 a₃ a₄).card : Real) → Q (i + 1) a₁ a₂ a₃ a₄)
     (hc' : 8 * c' ≤ δ ^ 5 / 16384) {d : G}
     (hcount : δ * (X.card : Real) ^ 2 ≤ diffGoodCount A (Q 1) d) :
@@ -134,16 +134,16 @@ theorem difference_ladder_rel_four {G : Type*} [AddCommGroup G]
       _ = ∑ x : V, ((graphNeighbours (R 1) x).card : Real) := by
           rw [← hpairs, ← hsum]; push_cast; rfl
   -- weak transitivity transfers to the ladder on `V`
-  have hWTV : ∀ i x y, c' * (Fintype.card V : Real) ≤
+  have hWTV : ∀ i, i + 1 ≤ 4 → ∀ x y, c' * (Fintype.card V : Real) ≤
       ((Finset.univ.filter fun z => R i x z ∧ R 1 z y).card : Real) → R (i + 1) x y := by
-    intro i x y h
+    intro i hi x y h
     rw [hcardV] at h
     have hpos : 0 < (Finset.univ.filter fun z => R i x z ∧ R 1 z y).card := by
       have : (0 : Real) < c' * X.card := mul_pos hc'0 (by exact_mod_cast hX.card_pos)
       exact_mod_cast this.trans_le h
     obtain ⟨z, hz⟩ := Finset.card_pos.mp hpos
     obtain ⟨⟨hx1, hx2, -, -, -⟩, ⟨-, -, hy1, hy2, -⟩⟩ := (Finset.mem_filter.mp hz).2
-    refine ⟨hx1, hx2, hy1, hy2, hWT i _ _ _ _ (h.trans ?_)⟩
+    refine ⟨hx1, hx2, hy1, hy2, hWT i hi _ _ _ _ (h.trans ?_)⟩
     have hinj : ((Finset.univ.filter fun z => R i x z ∧ R 1 z y).card : Real) ≤
         (((A ×ˢ A).filter fun p => Q i ((x : G) + d) x p.1 p.2 ∧
           Q 1 p.1 p.2 ((y : G) + d) y).card : Real) := by
@@ -158,7 +158,8 @@ theorem difference_ladder_rel_four {G : Type*} [AddCommGroup G]
       exact_mod_cast this
     exact hinj
   obtain ⟨T, hT, hall⟩ := rel_four_on_four_walk_set R hsym hδ hedges
-    (fun i x y h => hWTV i x y (by convert h using 3; ext z; simp only [Finset.mem_filter])) hc'
+    (fun i hi x y h => hWTV i hi x y (by convert h using 3; ext z; simp only [Finset.mem_filter]))
+    hc'
   refine ⟨T.map (Function.Embedding.subtype _), ?_, ?_, ?_⟩
   · intro u hu
     obtain ⟨x, _, rfl⟩ := Finset.mem_map.mp hu

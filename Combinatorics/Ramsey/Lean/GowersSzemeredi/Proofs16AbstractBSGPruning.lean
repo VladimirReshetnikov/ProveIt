@@ -30,7 +30,7 @@ theorem rich_pruning {G : Type*} [AddCommGroup G] {A X B : Finset G}
     (h20 : ∀ p ∈ P, ∀ q ∈ P, p.1 - p.2 = q.1 - q.2 → Q 4 p.1 p.2 q.1 q.2)
     (hS3 : ∀ i a₁ a₂ a₃ a₄, Q i a₁ a₂ a₃ a₄ → Q i a₁ a₃ a₂ a₄)
     {c' K η ε θ : Real} (hc'0 : 0 < c')
-    (hWT : ∀ i j a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
         Q i a₁ a₂ p.1 p.2 ∧ Q j p.1 p.2 a₃ a₄).card : Real) → Q (i + j) a₁ a₂ a₃ a₄)
     (hK : 0 < K) (hdoub : ((X - X).card : Real) ≤ K * X.card)
     (hη : 0 ≤ η) (hwalk : ∀ u ∈ B, ∀ v ∈ B, η * (X.card : Real) ^ 3 ≤ (walkSet P X u v).card)

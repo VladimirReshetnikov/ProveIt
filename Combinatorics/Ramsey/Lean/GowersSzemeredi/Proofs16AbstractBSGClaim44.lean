@@ -111,7 +111,7 @@ theorem claim_4_4 {G : Type*} [AddCommGroup G] {A X B B₁ B₂ : Finset G}
     (h20 : ∀ p ∈ P, ∀ q ∈ P, p.1 - p.2 = q.1 - q.2 → Q 4 p.1 p.2 q.1 q.2)
     (hS3 : ∀ i a₁ a₂ a₃ a₄, Q i a₁ a₂ a₃ a₄ → Q i a₁ a₃ a₂ a₄)
     {c' K η ε₁ ε₂ : Real} (hc'0 : 0 < c')
-    (hWT : ∀ i j a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
+    (hWT : ∀ i j, i + j ≤ 16 → ∀ a₁ a₂ a₃ a₄, c' * X.card ≤ (((A ×ˢ A).filter fun p =>
         Q i a₁ a₂ p.1 p.2 ∧ Q j p.1 p.2 a₃ a₄).card : Real) → Q (i + j) a₁ a₂ a₃ a₄)
     (hK : 0 < K) (hdoub : ((X - X).card : Real) ≤ K * X.card)
     (hη : 0 ≤ η) (hwalk : ∀ u ∈ B, ∀ v ∈ B, η * (X.card : Real) ^ 3 ≤ (walkSet P X u v).card)
@@ -127,9 +127,10 @@ theorem claim_4_4 {G : Type*} [AddCommGroup G] {A X B B₁ B₂ : Finset G}
   have hBX : B ⊆ X := hBA.trans hAX
   -- the relation ladder at shift `e`
   let R : G → Nat → G → G → Prop := shiftRel A Q
-  have hWTR : ∀ e i x y, c' * X.card ≤ ((X.filter fun z => R e i x z ∧ R e 1 z y).card : Real) →
+  have hWTR : ∀ e i, i + 1 ≤ 4 → ∀ x y,
+      c' * X.card ≤ ((X.filter fun z => R e i x z ∧ R e 1 z y).card : Real) →
       R e (i + 1) x y := by
-    intro e i x y h
+    intro e i hi x y h
     have hpos : 0 < (X.filter fun z => R e i x z ∧ R e 1 z y).card := by
       have : (0 : Real) < c' * X.card := mul_pos hc'0 hXpos
       exact_mod_cast this.trans_le h
@@ -137,7 +138,7 @@ theorem claim_4_4 {G : Type*} [AddCommGroup G] {A X B B₁ B₂ : Finset G}
     obtain ⟨⟨hx1, hx2, -, -, -⟩, ⟨-, -, hy1, hy2, -⟩⟩ := (Finset.mem_filter.mp hz).2
     refine ⟨hx1, hx2, hy1, hy2, ?_⟩
     rw [show 4 * (i + 1) = 4 * i + 4 by ring]
-    apply hWT (4 * i) 4
+    apply hWT (4 * i) 4 (by omega)
     refine h.trans ?_
     have := Finset.card_le_card_of_injOn (fun z : G => (z, z - e))
       (s := X.filter fun z => R e i x z ∧ R e 1 z y)
@@ -361,7 +362,7 @@ theorem claim_4_4 {G : Type*} [AddCommGroup G] {A X B B₁ B₂ : Finset G}
     obtain ⟨hqQ, hqc⟩ := Finset.mem_filter.mp hq
     obtain ⟨hmem, hadd⟩ := Finset.mem_filter.mp hqQ
     have hrel := rel_of_chainCount (R (q.1 - q.2.1)) X (hWTR (q.1 - q.2.1)) 3 q.1 q.2.2.1
-      (η := κ / 2) (by positivity) (by norm_num; linarith) hqc
+      (η := κ / 2) (by norm_num) (by positivity) (by norm_num; linarith) hqc
     obtain ⟨-, -, -, -, hQ⟩ := hrel
     have h1 : q.1 - (q.1 - q.2.1) = q.2.1 := by abel
     have h2 : q.2.2.1 - (q.1 - q.2.1) = q.2.2.2 := by rw [hadd]; abel
