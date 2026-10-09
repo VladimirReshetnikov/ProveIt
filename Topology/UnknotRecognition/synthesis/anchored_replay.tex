@@ -1,0 +1,162 @@
+\section{Source-anchored replay of complete monomial blocks}
+\label{sec:anchored-replay}
+
+Report 49's saturated-lattice theorem, reviewed in
+Section~\ref{sec:incoming-2c7f}, bounds an entire raw monomial epoch by its
+fixed source. Its delivered lazy implementation authenticates disjoint pair
+batches on an immutable word grammar. We now adapt that representation to
+the maintained independent compressed verifier, including mixed blocks of
+disjoint projections and unit-coordinate forests. Ordinary words are exported
+once at the end of each maximal consecutive block. Producer discovery is
+unchanged in this integration.
+
+The report's eager-export experiment is a useful warning: a lazy table does
+not help if its ordinary circuit is reconstructed after every move. The
+native checker therefore keeps the table through donor authentication as
+well as through updates. It falls back to the existing direct replay for an
+isolated move and exports at every normalization or nonmonomial boundary.
+No existing certificate schema, trusted hypothesis or terminal condition
+changes.
+
+\subsection{An exact source representation}
+
+At block entry, retain the immutable source root handles $w_1,\ldots,w_m$
+and initialize one table entry $(g,1)$ for each live generator $g$. After
+some verified moves, an entry $(z,k)$ means that every occurrence of the
+original generator is replaced by $z^k$, with $k\ne0$. A negative occurrence
+uses exponent $-k$. Concatenation order is retained exactly. A separate set
+of retired donor slots records which roots are now zero; every unselected
+slot remains the image of its original source root.
+
+A disjoint primitive projection with primitive vector $(u,v)$ on the current
+labels $a<b$ has the local table
+\[
+ a\longmapsto a^{|v|},\qquad
+ b\longmapsto a^{-u\operatorname{sign}(v)}.
+\]
+A unit-coordinate forest solves each child as an integer power of its parent.
+The existing independent forest checker validates distinct slots and children,
+unit child coordinates and acyclicity, then propagates powers from surviving
+roots. If the resulting local table sends $z\mapsto y^e$, composition updates
+an original entry $(z,k)$ to $(y,ke)$. All donors in a move are authenticated
+against the pre-move table before any update is installed. This realizes
+exactly the same simultaneous substitution as the previous checker.
+
+The table is private to the verifier. It is reconstructed from the checked
+moves and never accepted as a certificate claim. At the end, a memoized
+postorder traversal exports surviving source roots into the ordinary
+\code{WordArena}. Equal signed powers share their binary powering circuits;
+each visited source concatenation is compiled once. Retired slots export as
+zero, and all other slot positions are preserved. No word normalization,
+expanded-letter enumeration, equality oracle or producer helper is needed.
+
+\subsection{Authenticating a donor without exporting its word}
+
+The existing primitive header requires exact integer types, legal slot and
+label data, positive power exponent, a primitive integer vector, and width
+$|u|+|v|-1$. It first bounds claimed integers by the reconstructed donor's
+raw length. The new checker computes that length lazily on the source grammar:
+a terminal mapped to $z^k$ has length $|k|$, and a concatenation adds lengths.
+Only requested donor descendants are visited; the cache is shared within a
+move and discarded when the image table changes.
+
+For a candidate pair $(a,b)$ with primitive vector $(u,v)$, the signed letters
+$a,a^{-1},b,b^{-1}$ have height increments $v,-v,-u,u$. A source terminal
+mapped to $z^k$ contributes $|k|$ occurrences of the appropriate signed letter.
+Its prefix-height path is monotone, so its total, minimum and maximum are
+\[
+ h=|k|\,\delta,\qquad \min(0,h),\qquad \max(0,h).
+\]
+The checker rejects a mapped label outside the pair. At concatenation,
+profiles $(h,l,r)$ and $(h',l',r')$ combine to
+\[
+ (h+h',\ \min(l,h+l'),\ \max(r,h+r')).
+\]
+Signed occurrence counts add componentwise. Therefore the resulting counts
+and extrema are exactly those obtained by applying the old checker to the
+exported word, including all intermediate letters within a binary power.
+The usual coherence, exponent-vector and width equalities authenticate the
+donor. This changes representation and evaluation cost, not the primitive
+word criterion.
+
+Proper-power deletion continues to require the source-established
+torsion-freeness of the recovered classical knot group. The integer table and
+lattice theorem do not authorize that deletion in an arbitrary presented
+group. The helper is internal algebraic replay; a verdict still requires
+independent diagram validation, presentation recovery, every earlier move,
+and the final rank-one or rank-two test.
+
+\subsection{Whole-block encoded cost}
+
+Let the frozen source have $r$ live generators, $m$ slots, $S_0$ reachable
+ordinary grammar nodes, maximum raw length $L\ge1$, and
+$B=\lceil\log_2(L+1)\rceil$. As established in
+Section~\ref{sec:incoming-2c7f}, the cumulative monomial matrix has primitive
+columns with disjoint supports. The selected original exponent rows have
+saturated integer kernel equal to the image of this matrix. On a block of
+$t$ original generators, cofactors and Hadamard's inequality give
+\[
+ |k_i|\le(t-1)^{(t-1)/2}L^{t-1}\quad(t\ge2),
+ \qquad |k_i|=1\quad(t=1).
+\]
+Thus every table exponent has
+$\Lambda=O(r(B+\log(r+1)))$ bits throughout the block. This is a bound in
+the fixed source, not a recurrence that raises the previous bound to a new
+power at each move. The earlier chained updater was already polynomial on
+this restricted class; the new representation improves its maintenance cost.
+
+There are at most $r-1$ authenticated donors in the entire block, since each
+removes one generator. A donor's length and profile each require at most
+$O(S_0)$ source-node evaluations. Cumulative image updates cost $O(r^2)$
+integer operations over all moves. Lengths have $O(B+\Lambda)$ bits; profile
+heights and checked primitive metadata have the same asymptotic bit bound.
+Final export adds at most $O(S_0+r\Lambda)$ ordinary grammar nodes. In terms
+of historical allocation $N_0$ at block entry,
+\[
+ N_{\rm final}\le N_0+O(S_0+r\Lambda).
+\]
+The traversal, arithmetic and powering counts are bounded by
+\[
+ O(rS_0+r^2+m+r\Lambda),
+\]
+with exact integer arithmetic, gcds and dictionary operations costed separately.
+These counts give polynomial bit complexity; they are not unit-cost claims
+for unbounded integers. Auxiliary length/profile tables occupy at most one
+source grammar's worth of entries at a time, alongside the $r$ monomial
+images and the retired-slot set. Existing historical nodes remain charged
+to the arena; no collection of unreachable nodes is silently assumed.
+
+The bound ends at a normalization, a Whitehead automorphism, an overlap move,
+a general singleton batch, a power-pair deletion, or any other operation that
+changes the source model. The next raw block starts from the resulting
+ordinary grammar. Neither this argument nor the implementation bounds the
+number or size of such source resets in general knot recognition.
+
+\subsection{Compatibility, resource limits and source binding}
+
+The compressed dispatcher groups consecutive projection and forest moves,
+checking version six for projections and version seven for every forest,
+including forests appearing later inside a mixed block. Isolated moves keep
+the existing checker. Normalization and all other operations end the group.
+The literal verifier remains unchanged and is an independent comparison path.
+
+The new state publishes neither roots nor live labels until every move has
+passed and export has completed. Malformed later evidence and work, node or
+cancellation failures leave those caller-visible objects unchanged. A failed
+export may have appended private, unreachable ordinary arena nodes, as with
+other speculative compressed operations; it cannot yield an accepted state.
+All source traversals, table updates and output construction use the existing
+cooperative work and cancellation budget. The ordinary node cap still measures
+grammar nodes, not total bytes or wall-clock time.
+
+Tests compare 120 signed mixed blocks against both literal and chained replay,
+retaining unrelated and empty relator slots. Other cases cover general
+nonunit primitive pairs, binary powering, dead donors, malformed integer
+fields, atomic work and node exhaustion, cancellation, source rebinding and
+normalization boundaries. A native 17-strand stabilized circle certificate
+contains seven two-move raw blocks and one final isolated projection. It
+passes the new path with producer planning and application disabled; replacing
+one unit projection by its equivalent forest checks a complete mixed-schema
+source proof and rejects a version-six downgrade.
+
+\input{anchored_replay_results.tex}
