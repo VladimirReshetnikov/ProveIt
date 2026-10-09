@@ -1,0 +1,282 @@
+\section{Contracting unit-coordinate primitive forests in one raw batch}
+\label{sec:primitive-forests}
+
+Disjointness is a sufficient condition for simultaneous primitive-pair
+projection, but it excludes a useful class of overlapping donors. A
+primitive root whose exponent vector has a unit coordinate solves that
+generator as an integer power of the other. If the resulting directed
+dependencies form a forest, all such equations can be composed and
+substituted in one raw batch. The new version-seven certificate checks
+this larger operation independently. It is a separate optional mode,
+so the preceding version-five and version-six search policies remain
+available without enabling the forest planner.
+
+\subsection{A scheduling obstruction that matching cannot repair}
+
+Fix $q\ge1$ and consider generators $a,b_1,\ldots,b_k$ with the two
+relations $(a^q b_i)^2$ and $(a^q b_i)^3$ for each $i$. The coprime powers
+imply $a^q b_i=1$, so this is an abstract presentation of $\mathbb Z$.
+Every eligible two-generator donor meets the common generator $a$.
+A disjoint-pair round can therefore choose at most one pair. Projecting
+that pair replaces its leaf by $a^{-q}$ and leaves all other donors in
+the same star form. The surviving cube slot of that leaf becomes a raw
+one-generator zero-exponent circuit, not a new two-generator donor.
+Inductively, \emph{every} schedule restricted to these current-relator
+pair operations needs $k$ rounds to reach rank one, or $k-1$ rounds
+before the rank-two terminal can finish. Choosing a better matching does
+not repair this example.
+
+This is an obstruction for the abstract algebraic operation model. It is
+not a lower bound for all recognition methods, nor a counterexample to a
+short-depth claim specifically about planar Wirtinger presentations.
+The family motivates allowing donors to share an anchor when their exact
+quotient equations can be composed safely. For this family the forest
+operation removes all $k$ leaves in one batch.
+
+\subsection{Why an acyclic unit-coordinate batch preserves the group}
+
+Use the source-provenance invariant from
+Section~\ref{sec:primitive-projections}. For a checked donor $w^d$ supported
+on distinct generators $p,c$, suppose the primitive root has signed
+exponent coordinates $(u,\epsilon)$, where $\epsilon\in\{1,-1\}$ is
+its coordinate at the chosen child $c$. Our arithmetic witnesses require
+coherent signs. Hence the primitive root contains exactly one occurrence
+of $c^{\epsilon}$ and is a cyclic conjugate of
+$p^u c^{\epsilon}$. Killing $w$ is exactly the substitution
+\[
+ c=p^{-u/\epsilon}=p^{-u\epsilon}.
+\]
+Knot-group torsion-freeness justifies replacing $w^d=1$ by $w=1$ when
+$d>1$. For $d=1$ this is an ordinary generator elimination. Both primitive
+coordinates must be nonzero, so no zero image exponent is introduced.
+
+Each selected child has exactly one parent, and selected directed edges
+must have no cycle. Donors may share parents, and a parent may itself be
+another edge's child. Following parents eventually reaches an uneliminated
+anchor $z$. The image of a vertex $x$ is
+\[
+ x\longmapsto z^{K_x},\qquad
+ K_x=\prod_{e\text{ on the path from }x\text{ to }z} k_e,
+ \qquad k_e=-u_e\epsilon_e.
+\]
+The empty path has product one. Leaf-first Tietze elimination proves that
+the quotient by all selected primitive roots is the free group on the
+anchors and untouched generators. Substituting these images into every
+other relator therefore preserves the full presented knot group. Each
+selected donor has zero exponent in its own anchor after substitution,
+so precisely those donor slots may be emptied. All other original slots
+are retained and checked later.
+
+The unit condition is essential. Overlapping arbitrary primitive pairs
+do not automatically give such a power forest: sharing a non-unit power
+of a newly introduced cyclic generator can produce an amalgamated group
+rather than a free cyclic factor. The checker never infers the forest
+rule from primitivity alone. Cycles are also excluded, even when particular
+cyclic equations might happen to be consistent. This is a sufficient,
+independently checkable operation with a clear cost contract.
+
+\subsection{Selection and shared construction of all quotient images}
+
+The planner reuses immutable capped-support and signed-count summaries.
+It scans original relator slots, excludes noncoherent roots and primitive
+vectors without a unit coordinate, and uses the existing arithmetic witness
+for proper powers. When the exponent gcd is one and one signed count is
+one, the coherent word is immediately a primitive conjugate of $p^u c$;
+no extra producer profile pass is necessary. The independent checker still
+recomputes its complete arithmetic profile.
+
+For each eligible donor, the planner chooses an unused unit-coordinate
+child, preferring the larger identifier when both orientations are available.
+An undirected union-find structure rejects edges joining vertices already
+in the same component. Together with at most one parent per child, this
+maintains a rooted forest. A component's sole vertex without a parent is
+its root, so an allowed new edge attaches one rooted component to another.
+The choice is deterministic, but it is not asserted to maximize the number
+of eliminations over all possible orientations and later states.
+
+At least two selected edges are required for the producer to choose a
+forest batch. Otherwise it falls back to the existing disjoint-pair planner.
+After either operation, raw search and the explicit normalization boundary
+behave as in the preceding section. A single checked forest edge is valid
+for replay, even though the producer uses the older operation for that case.
+
+A first implementation materialized every $K_x$ and rebuilt the power
+$z^{K_x}$ separately. This was polynomial but repeated power-construction
+loops along a long chain. The final producer follows dependency paths once,
+then constructs child images from already constructed parent images:
+\[
+ I_c=I_p^{k_e}.
+\]
+Both signed parent images are retained, so a negative edge uses the opposite
+parent image without a normalization step. Binary powering sees only the
+\emph{local} edge exponent. The result is a shared straight-line program
+for all images, followed by one raw mapping of the original reachable
+circuit. This change reduces abstract search work on the 64-generator,
+128-bit chain from the prototype's 1,723,368 to 223,340; it is a work-counter
+comparison, not a timing or whole-recognizer ratio. Exact prototype source
+snapshots and its initial passing test/audit records are retained.
+
+\subsection{Independent version-seven replay and resource behavior}
+
+A \texttt{primitive\_forest} move has exactly its kind and an edge list.
+Each edge contains exactly a child identifier and a primitive-power proof
+with its original donor slot. The checker requires strict integer types,
+live distinct pair members, a unit coordinate at the child, a nonzero other
+coordinate, distinct children and distinct donor slots. It validates every
+arithmetic donor against the intact pre-batch roots before modifying any
+root or live-generator set.
+
+The verifier uses a different graph algorithm from the producer. It builds
+parent-to-child adjacency, starts a queue at every surviving anchor, and
+propagates along edges. Every live generator must be reached exactly once.
+An isolated directed cycle cannot be reached from an anchor and is rejected.
+The traversal also derives signed exponent products for literal replay.
+Compressed replay constructs signed image circuits in this independently
+obtained parent-before-child order, then uses a fresh postorder traversal
+of the original grammar. It calls neither the forest planner nor its
+application helper. Literal replay independently substitutes repeated
+letters, checking the complete projected allocation and charged output work
+before constructing any repeated list.
+
+Version seven permits the earlier prefix operations, explicit normalization
+handoffs and either the raw rank-one exponent endpoint or the rank-two
+primitive terminal. Versions one through six retain their existing contracts;
+a forest move disguised under version six is rejected. The source PD and
+entire presentation prefix remain mandatory. Neither the local producer nor
+the local replayer is an arbitrary-presentation knot-verdict API.
+
+Both \texttt{compressed\_certificate} and \texttt{group\_decide} accept
+the option \texttt{primitive\_forest=True}.
+
+For \texttt{recognize}, set \texttt{group\_primitive\_forest=True}
+and \texttt{use\_group=True}.
+
+The CLI flag is \texttt{--group-primitive-forest}. Forest mode implies the projection route
+and mandatory compressed proof replay. It is incompatible with the older
+explicit-to-compressed adaptive-search flag. The mode defaults to false.
+All graph, grammar and arithmetic passes charge cooperative work and
+propagate external cancellation. As before, node limits do not cap all
+Python auxiliary memory, and the work allowance is not unit-cost bit time.
+
+\subsection{Polynomial cost of a batch, independent of forest depth}
+
+Let $r$ be the initial live rank, $m$ the retained slot count, $M$ the allocated
+SLP-node count and $B\ge1$ the maximum represented-length bit size. A donor's
+local exponent has at most $B$ bits. A dependency path has at most $r-1$
+edges, so a path product has $O(rB)$ bits. Word lengths after substitution
+have $O(rB+B)$ bits. This controls lengths without expanding them.
+
+Shared construction uses $O(B)$ new power nodes per selected edge, not
+$O(rB)$ per path endpoint. Mapping the original circuit creates at most one
+new concatenation per original reachable node. Thus a conservative bound
+for the new total grammar size is
+\[
+ M'\le 2M+O(rB),\qquad B'=O((r+1)(B+1)).
+\]
+Candidate arithmetic checks, union-find selection, path processing,
+independent graph replay, exact integer products and postorder mapping
+are all polynomial in the initial encoded parameters. A loose bound may
+classify all $m$ donors separately over all $M$ nodes; no shared-profile
+linear-time claim is needed. Standard multiplication/gcd bounds and the
+usual dictionary-access implementation qualification suffice. The compressed
+operation has this bound regardless of the depth of the selected forest.
+Literal replay instead pays for expanded output and may exhaust its budget.
+
+This is stronger than performing one disjoint-pair round per leaf on a star,
+but it is a local theorem. If $d$ raw phases mix these batches with ordinary
+pair projections, a conservative composition bound is
+\[
+ \operatorname{poly}(\text{initial parameters})\,
+       2^{O(d\log(r_0+1))}.
+\]
+The extra logarithm reflects the possible multiplicative bit-length growth
+of an entire forest; the preceding $2^{O(d)}$ statement counted disjoint-pair
+rounds and must not silently be relabeled as a forest-phase bound.
+Polylogarithmically many raw phases would still give a quasipolynomial
+bound from polynomial-size input data. No such general producer, endpoint
+or exposure bound is proved here. Normalization and legacy discovery work
+remain outside this raw-phase accounting.
+
+\subsection{Audits and measurements}
+
+The audit checks eighty actual diagrams against the complete package at \texttt{7bf6f01026a1}. Current default and current disjoint-only
+certificates are exactly equal to their respective prior versions. Forest
+mode produces 34 version-seven certificates with 203 forest edges, all of
+whose complete proofs pass both literal and compressed replay. No input
+is newly solved or loses a positive result; no donor in this diagram sample
+is a proper power. Three separate actual five-braid sources carry powered
+Whitehead prefixes of exponents $2^4$, $2^{128}$ and $2^{1024}$ and pass
+compressed replay of their version-seven proofs. The small prefix also
+passes literal replay.
+
+Seven new test methods cover one hundred random signed trees with unrelated
+retained relations, raw star/chain/balanced families, cycles, duplicate children
+and slots, non-unit forgeries, strict fields, source rebinding, legacy proofs,
+independence from producer helpers, allocation/work exhaustion, cancellation
+and CLI behavior. The full maintained suite passes 988 tests in 207.503 seconds with Regina;
+the log is \path{data/primitive-forest-full-tests.txt}.
+
+\input{tables/primitive_forest_capacity.tex}
+
+Capacity families use paired square/cube donors and are abstract presentations
+of $\mathbb Z$, not knot diagrams. Both old and new raw schedules, and their
+independent replay, run with reduction, cyclic reduction, expansion and equality
+disabled. Work counts include identical initial grammar construction. At rank
+256 the star needs 255 disjoint rounds and one forest batch; search work drops
+from 1,120,444 to 126,688, with the same 1,090 allocated nodes including the
+empty node. The 64-generator chain reaches represented-length bit size 8,067;
+forest construction uses 24,508 nodes versus 57,481 for the older six-round
+schedule. These exact counters establish reduced work on the supplied algebraic
+families without claiming a corresponding speedup on difficult knot inputs.
+
+\input{tables/primitive_forest_pipeline.tex}
+\input{tables/primitive_forest_stages.tex}
+
+The complete-recognition experiment uses nineteen fresh validated diagrams,
+five measured rounds and one warm-up per arm. Eight shuffled arms compare
+old default, old disjoint projections, current default and forest mode, each
+with an A/A control. Full source reconstruction and mandatory independent
+replay are inside the timed recognition call. The separate group-stage
+experiment uses actual stabilized-circle diagrams with 8 through 128 crossings
+and six shuffled arms. It bypasses earlier diagram simplification, so its
+ratios are group-stage measurements, not whole-recognizer speedups.
+All 760 whole-recognition calls and 150 group-stage calls complete, with
+152 and 30 respective warm-ups. The runs take 83.853 and 12.067 seconds.
+All samples, nondecisions, work counters, proof sizes and frozen source hashes
+are retained by the driver \path{primitive_power_research/forests.py}
+under \path{../fast}. Table ratios are medians of paired times; a value
+above one favors forests. They need not equal ratios of separate time medians.
+
+On ordinary survivor/mirror unknots other than survivor 06, old-default/forest
+ratios range from 0.911 to 0.940. Survivor 06 has ratio 0.806 and forest
+A/A ratio 1.112, so substantial local timing noise accompanies its observed
+overhead. Gordian's old-default/forest and old-pair/forest ratios both round
+to 0.964. Its search work increases from 1,215,145 in the default and
+1,265,669 with disjoint projections to 1,305,143 with forests: 141 forest
+attempts expose just one two-edge batch. Its forest proof is 10,060 bytes,
+compared with 9,663 and 10,020 bytes respectively. Across the whole corpus,
+old-default, old-pair, current-default and forest A/A ranges are
+0.986--1.050, 0.979--1.019, 0.959--1.051 and 0.986--1.112. Current default
+versus the pinned default ranges from 0.975 to 1.021. These observations
+support retaining the optional policy; they do not establish a gain from
+running the planner on every ordinary search state.
+
+The restricted actual-diagram group stage does benefit. At 128 crossings,
+old default, disjoint projections and forests take median 365.596, 194.214
+and 130.191 milliseconds; paired speed ratios are 2.808 and 1.524 relative
+to the first two arms. Search work falls from 493,856 to 263,317 to 185,764.
+Allocated node counts are 24,891, 1,017 and 1,017. Forest mode uses 63
+two-edge batches and 63 normalization handoffs rather than 126 disjoint
+rounds, so even these easy actual inputs do not realize the one-batch
+abstract-star example. Proof bytes are 8,640, 24,517 and 24,286: a faster
+checked group stage need not have a shorter proof than the old default. Across the
+five stage inputs, default A/A ratios are 0.986--1.006, pair A/A
+0.980--1.001 and forest A/A 0.967--1.007. Earlier diagram simplification
+would make these circles easy for the full recognizer; the stage improvement
+must not be presented as a difficult-unknot or whole-pipeline result.
+
+The new operation addresses one specific scheduling obstruction. It does
+not establish that useful forests become exposed cheaply, nor that the
+raw schedule reaches an endpoint for every unknot. The opt-in policy permits
+further work on exposure and progress-sensitive dispatch without imposing
+unproved performance benefits on the ordinary recognition route.
