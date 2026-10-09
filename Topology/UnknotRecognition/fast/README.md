@@ -3086,3 +3086,29 @@ python -B -m normal_orbit_research.face recognize --output ../synthesis/data/coc
 The audit requires optional Regina for independent topology controls.
 See the article's `cocycle_face.tex` section for the exact optimal-face
 characterization, complexity, coverage and unsuccessful-search overhead.
+
+The native stage now also accepts a **primitive connected annulus** in the
+source knot exterior. One boundary circle must be inessential on the boundary
+torus; capping it yields a compressing disc. This requires the existing
+independent source, primitivity, connectedness and orientability checks.
+Euler zero alone is insufficient.
+
+These proofs use `diagram-cocycle-annulus-v1` and replay through
+`verify_normal_seed_certificate`. Their stored surface remains an annulus:
+`compressing_discs` is zero and the stage records `unknot_witness: annulus-cap`.
+No expanded boundary trace or normal coordinates for the capped disc are
+needed in production. Legacy disc certificates keep their original rules.
+Use `annulus=False`, `normal_seed_annulus=False`, or
+`--normal-seed-no-annulus` to disable this criterion. The whole native stage
+remains optional, and face search still defaults to zero roots.
+
+```sh
+python -B -m normal_orbit_research.annulus audit --output ../synthesis/data/cocycle-annulus-audit.json
+python -B -m normal_orbit_research.annulus recognize --output ../synthesis/data/cocycle-annulus-recognize.json
+```
+
+The audit requires optional Regina. It also expands only small fixture
+boundaries to check the individual boundary-circle homology classes; that
+control is absent from recognition and certificate replay. The earlier tree,
+blocking-flow and optimal-face research drivers explicitly disable annulus
+recognition to retain their original comparison criteria.

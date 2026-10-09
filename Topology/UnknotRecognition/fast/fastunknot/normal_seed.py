@@ -1,10 +1,12 @@
-"""Bounded native search for a source-certified normal meridian candidate.
+"""Bounded native search for a source-certified cocycle unknot witness.
 
 Try the primitive integral cocycle, then a bounded prelude of alternative
 tree gauges, then optional span minimization and any requested later trees.
 Finally try bounded extrema in the certified minimum-span face. Source-bound
 connectedness witnesses avoid orbit searches for these restricted families.
 Failure of the tested seeds says nothing about knottedness.
+Primitive connected annuli can be capped on the exterior boundary; their
+certificates distinguish them from normal discs.
 """
 from .diagram import Diagram
 from .diagram_exterior import diagram_exterior
@@ -16,9 +18,9 @@ from .normal_cocycle_verify import inspect_cocycle_certificate
 from .normal_surface_geometry import NormalOrbitError, _prepare, _coordinates
 
 
-def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
+def normal_seed_decide(diagram, *, optimize=True, annulus=True, max_work=2000000,
                        max_cycles=None, tree_trials=4, face_roots=0, check=lambda: None):
-    """Return UNKNOT with a native source certificate, or INCONCLUSIVE.
+    """Return UNKNOT with a source-bound disc/annulus proof, or INCONCLUSIVE.
 
     The shared work allowance covers construction, cocycle extraction, all
     tree and optimal-face trials, connectedness/Euler checks and span
@@ -31,6 +33,8 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
     """
     if type(optimize) is not bool:
         raise ValueError('optimize must be bool')
+    if type(annulus) is not bool:
+        raise ValueError('annulus must be bool')
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if type(tree_trials) is not int or tree_trials < 0:
@@ -50,7 +54,8 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
             certificate = dict(schema='diagram-cocycle-disc-v1', input_pd=[list(row) for row in source.pd],
                                triangulation=raw, heights=heights, coordinates=coordinates,
                                span_certificate=span)
-            if candidate is not None and candidate['euler_characteristic'] != 1:
+            positive_euler = (0, 1) if annulus else (1,)
+            if candidate is not None and candidate['euler_characteristic'] not in positive_euler:
                 # A miss emits no positive proof. The original class was
                 # independently checked at the raw stage; this construction
                 # changes only its gauge and validates normal matching. A
@@ -68,7 +73,14 @@ def normal_seed_decide(diagram, *, optimize=True, max_work=2000000,
                 keys = ('root_trial', 'root', 'direction') if stage == 'face' else ('trial', 'root', 'randomized')
                 entry.update({k: candidate[k] for k in keys})
             stages.append(entry)
-            if answer['compressing_discs']:
+            capped_annulus = annulus and answer['euler_characteristic'] == 0
+            if capped_annulus:
+                # The independent inspection above establishes every
+                # annulus-cap hypothesis. Only the witness tag changes;
+                # compressing_discs remains zero for the stored surface.
+                certificate['schema'] = 'diagram-cocycle-annulus-v1'
+                entry['unknot_witness'] = 'annulus-cap'
+            if answer['compressing_discs'] or capped_annulus:
                 budget.tick()
                 return dict(status='UNKNOT', method='native-normal-cocycle', certificate=certificate,
                             stats=stats, stages=stages, work=budget.work)

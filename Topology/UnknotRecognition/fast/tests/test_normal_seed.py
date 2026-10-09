@@ -180,7 +180,7 @@ class NormalSeedTests(unittest.TestCase):
 
     def test_command_line_flags(self):
         output = subprocess.check_output([sys.executable, '-B', '-m', 'fastunknot', 'recognize', '--help'], text=True)
-        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize', '--normal-seed-tree-trials', '--normal-seed-face-roots'):
+        for flag in ('--normal-seed', '--normal-seed-max-work', '--normal-seed-no-optimize', '--normal-seed-tree-trials', '--normal-seed-face-roots', '--normal-seed-no-annulus'):
             self.assertIn(flag, output)
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory)/'curl.json'
