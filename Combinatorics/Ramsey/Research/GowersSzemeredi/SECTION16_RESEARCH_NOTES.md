@@ -8140,3 +8140,174 @@ open entries, with the documented statement-fidelity qualifications.
 The port-scope check remains at 4,134 upstream and 17 compatibility
 modules, excluding reciprocal-only dependencies. The merged remote
 changes affect only the independent topology development.
+
+
+### J.129. Global coherent anchors and a fixed small index set
+
+Eleven modules prove twenty-six named results connecting the even-column
+core to the coherent-anchor construction, then retaining many whole
+quadruples under one small index set. The global construction starts with
+the original dense Freiman bihomomorphism and retains its column witness
+system; the compatibility, eight-column failure, and arrangement-density
+assumptions from J.128 are now discharged through that core.
+
+**Absorb the common spectrum.** On the retained core `P`,
+`coreColumnSpectrum` is `Gamma union T(x)` and `coreColumnMap` is `L(x)`.
+Outside `P` they are the empty spectrum and zero map. These extensions
+have a global spectrum-cardinality bound and normalized local Freiman
+linearity at the core radius. The common spectrum is therefore present
+on every supported column domain used below.
+
+The length-four even-core identity, applied in order
+`[q0,q1,q3,q2]`, proves compatibility of the two matched column
+differences. The length-eight identity, applied in order
+`[v0,v1,v2,v3,v5,v4,v7,v6]`, proves the required four-difference
+quadruple relation on the common quarter-radius domain. Consequently
+both `incompatibleAnchorQuadruples` and `columnTupleFailures` are empty
+for the supported families on `P`.
+
+**Global construction.** `coherent_anchor_system_of_even_core` chooses
+joint-selection tolerance `beta^16/10` for a core of density `beta`.
+The J.128 error budget and anchor averaging give density `beta^16/4`
+of coherent distinct-shift quadruples once `16 <= beta^16*N`.
+`HasCoherentAnchorSystem` records the actual selected state, its map-count
+budget, both global anchor functions, the quadruple family, and the local
+linearity and coherence identities. Every realized arrangement remains
+supported on `P`.
+
+`global_coherent_column_anchors` supplies this system from
+`global_even_zero_column_core` at maximum half-length four. Its parameters
+are explicit functions of the original density `alpha`: core density
+`globalEvenColumnZeroDensity alpha 4`, spectrum rank bound equal to the
+core common rank plus the original column spectrum cap, core radius, and
+modulus threshold equal to the maximum of the existing core threshold
+and `ceil(16/beta^16)`. The original witness system, full-radius column
+linearity, witness density, and core identities are retained in the
+conclusion. No additional original-column failure oracle is assumed.
+
+**Retain whole quadruples with common indices.** For a set of at most
+`K` indices among `m`, `boundedIndexCode` sorts its elements and pads to
+length `K` with `none`. Equality of codes implies equality of the sets.
+A finite double count selects a nonempty subfamily with one common set,
+losing at most `(m+1)^K`. Empty index sets and `m < K` require no special
+exception. This counts bounded sets rather than all `2^m` subsets.
+
+`joint_anchor_common_indices` chooses exact pair-frequency index sets
+from the actual joint state. The union for a quadruple has size at most
+`8*jointSelectionRank d r`. It retains a subfamily of the original
+quadruples with one such common union `J`; the actual selected frequencies
+at all four shifts lie in the image of `J`. Thus it preserves quadruple
+relations, not merely the number of individually retained shifts.
+
+`HasCoherentAnchorSystem.common_indices` restricts the anchor maps to
+Bohr domains defined by this same index set. These domains are subsets
+of the prior selected domains, so local linearity, normalization, and
+all retained coherence identities persist. The loss is at most
+`(m+1)^(8*rank)`. The proved map-count budget further yields the positive,
+modulus-independent density
+`kappa/(rank/jointSelectionGain delta d r + 1)^(8*rank)`, implemented as
+`uniformAnchorIndexDensity` and used in `common_indices_uniform`.
+
+**Quantitative and structural limits.** The even-core density preserves
+its existing elimination formula, with test density
+`1/(4*refinementCells(r/2)^(g+d))` and round count
+`ceil(log(M+1)/testDensity)`. No bound establishing that the resulting
+composite parameters satisfy the polynomial deep-structure budget has
+been proved here. This global structural construction must not be
+reported as a final Gowers-bound improvement.
+
+The selected frequency maps are Freiman maps on their own translated
+progressions. Membership in an original selected pair-index set gives
+domain membership for that shift; membership in the larger common `J`
+does not give membership in every map's domain at every retained shift.
+The Bohr restriction above is valid because the maps have total value
+functions, but further progression-domain work is required before using
+joint Freiman linearity or algebraic regularity for that fixed family.
+Agreement with sufficiently many original columns and the remaining
+deep-structure argument are also still required. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Verification.** The production closure checks 400 modules. Individual
+axiom checks and the final merged audit are recorded below.
+
+
+**Final verification.** All twenty-six new named theorems pass individual
+axiom checks. The complete merged audit checks 8,033 public Gowers
+theorems in 5,318 combined modules (5,316 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and
+`Quot.sound`. The regenerated numbered ledger is unchanged at 115
+companions and five open entries, with the existing statement-fidelity
+qualifications. The selected dependency scope remains 4,134 upstream
+and 17 compatibility modules, excluding reciprocal-only dependencies.
+The fetched and merged remote delta changes only the independent
+topology development; no upstream source or license scope is added.
+
+## J.130 Popular shifts and dense agreement of coherent anchors (2026-10-09)
+
+**Popularity before selection.** `columnShiftBases P a` consists of bases
+`z` with both `z` and `z+a` in the exact core. For a fixed shift, a
+supported anchor quadruple is determined by its two bases. Consequently
+`unpopular_anchor_quadruples_card_le` bounds the number of quadruples
+whose shift has fewer than `t*N` bases by `t^2*N^3`. This inequality even
+holds for negative thresholds (the exceptional family is then empty).
+The higher-arrangement projection bounds remove at most `4*t^2*N^11`
+arrangements. Choosing `t = beta^8/4` leaves at least three quarters of
+the original `beta^16*N^11` mass. Joint selection at tolerance
+`beta^16/20` spends another quarter; anchor averaging therefore retains
+the previous `beta^16*N^3/4` quadruple-density guarantee. Every retained
+shift now has at least `beta^8*N/4` supported bases. The modulus condition
+`16 ≤ beta^16*N` is unchanged.
+
+**Preserve the actual family.** `HasCoherentAnchorSystemOn` records
+membership in an arbitrary input arrangement family. The earlier
+`HasCoherentAnchorSystem` is its supported-family specialization.
+Both common-index restriction theorems now have generic versions that
+preserve this membership, with the original statements retained as
+wrappers. Thus popularity survives common-index selection. The global
+popular-anchor theorem obtains all input core data from the original
+dense bihomomorphism; it introduces no new compatibility assumption.
+
+**Agreement and rank.** Compatibility on the exact even core and the
+quarter-domain extension formula prove `core_shift_anchor_agrees`:
+the anchor map equals `L(z+a)-L(z)` on the common quarter-radius Bohr
+set, for every supported base `z`. Intersecting with any selected Bohr
+domain `B(D;sigma)` retains that equality. The explicit domain of pairs
+`(z,w)` uses radius `min(sigma,r/4)` and at most `k+g+4*d` frequencies
+when `|D| ≤ k`, `|Gamma| ≤ g`, and each column spectrum has size at most
+`d`. The common spectrum is counted once, improving the direct union
+bound `k+4*(g+d)`. For every positive integer `Q` satisfying
+`1 ≤ min(sigma,r/4)*Q`, its cardinality obeys
+`t*N^2 ≤ Q^(k+g+4*d)*|domain|`.
+
+This establishes dense agreement with the local column models. It does
+not yet discharge the final deep-structure statement, the separate
+progression-domain requirement for the frequency maps, or the polynomial
+budget for the composite even-core parameters. No numbered catalogue
+entry or upstream port scope is changed.
+
+**Initial verification.** The production target through the agreement
+domain checks 408 modules. The final axiom and merged-closure verification
+is recorded below after the common-index agreement interface is added.
+
+**Common-index agreement interface.** `coreAnchorAgreementDensity` uses
+`Q = ceil(1/min(sigma,r/4))`, eliminating the auxiliary cell integer.
+It is positive for positive input density and radii. The theorem
+`popular_common_indices_agree` retains the joint state and map budget,
+common index set of size at most `8*jointSelectionRank (g+d) r`, and
+`uniformAnchorIndexDensity` of whole coherent quadruples. At each shift
+it also retains popularity and an actual agreement domain of density
+`coreAnchorAgreementDensity t (8*rank) g d r sigma`, with both column
+endpoints in the core and the evaluation point in the selected Bohr set.
+This domain and all equality assertions are constructed from the core;
+none is an additional input hypothesis.
+
+**Final verification.** The production closure checks 410 modules. All
+22 new named theorems pass individual axiom checks. The full audit checks
+8,070 public Gowers theorems in 5,327 combined modules (5,325 facade
+modules, including 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The regenerated numbered ledger is
+byte-for-byte unchanged at 115 companions and five open entries, subject
+to the existing statement-fidelity qualifications. Port scope remains
+4,134 upstream modules and 17 compatibility modules. No upstream code
+or license scope is added. The fetched `origin/main` was already an
+ancestor of the working branch.
