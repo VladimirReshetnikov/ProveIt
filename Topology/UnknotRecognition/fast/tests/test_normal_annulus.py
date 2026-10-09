@@ -22,7 +22,7 @@ class NormalAnnulusTests(unittest.TestCase):
     def test_raw_annulus_preempts_trees_and_flow_and_replays_independently(self):
         for pd in (EARLY_TWO,EARLY_THREE):
             diagram=Diagram.from_pd(pd)
-            with patch('fastunknot.normal_seed.cocycle_tree_candidates',side_effect=AssertionError), \
+            with patch('fastunknot.normal_seed._prepared_tree_candidates',side_effect=AssertionError), \
                  patch('fastunknot.normal_seed.minimize_cocycle_span',side_effect=AssertionError):
                 result=normal_seed_decide(diagram)
             self.assertEqual(result['status'],'UNKNOT')

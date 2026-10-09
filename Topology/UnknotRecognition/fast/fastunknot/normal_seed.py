@@ -10,12 +10,12 @@ certificates distinguish them from normal discs.
 """
 from .diagram import Diagram
 from .diagram_exterior import diagram_exterior
-from .normal_cocycle import rank_one_cocycle_seed, _Budget, CocycleLimit
+from .normal_cocycle import _rank_one_cocycle_seed_details, _height_summary, _Budget, CocycleLimit
 from .cocycle_span import minimize_cocycle_span
-from .cocycle_trees import cocycle_tree_candidates
+from .cocycle_trees import _prepared_tree_candidates
 from .cocycle_face import cocycle_face_candidates
 from .normal_cocycle_verify import inspect_cocycle_certificate
-from .normal_surface_geometry import NormalOrbitError, _prepare, _coordinates
+from .normal_surface_geometry import NormalOrbitError, _coordinates
 
 
 def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, max_work=2000000,
@@ -47,39 +47,35 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
     budget = _Budget(check, max_work)
     stats, stages = {}, []
     boundary_cycles = 0
-    planar_geometry = planar_basis = None
+    planar_basis = None
     try:
         budget.tick()
         source = Diagram.from_pd(diagram.pd)
         raw = diagram_exterior(source, check=budget.tick)
-        seed = rank_one_cocycle_seed(raw, check=budget.tick)
+        seed, prepared = _rank_one_cocycle_seed_details(raw, check=budget.tick)
         stats['cocycle'] = seed['stats']
         def evaluate(stage, heights, coordinates, span=None, candidate=None):
-            nonlocal boundary_cycles, planar_geometry, planar_basis
+            nonlocal boundary_cycles, planar_basis
             budget.tick()
             certificate = dict(schema='diagram-cocycle-disc-v1', input_pd=[list(row) for row in source.pd],
                                triangulation=raw, heights=heights, coordinates=coordinates,
                                span_certificate=span)
             analysed = None
-            positive_euler = (0, 1) if annulus else (1,)
-            if candidate is not None and candidate['euler_characteristic'] not in positive_euler:
-                # A miss emits no positive proof. The original class was
-                # independently checked at the raw stage; this construction
-                # changes only its gauge and validates normal matching. A
-                # face candidate also replays the original span optimum.
-                answer = dict(components=1, orientable_components=1,
-                              euler_characteristic=candidate['euler_characteristic'],
-                              normal_pieces=candidate['normal_pieces'], compressing_discs=0,
-                              connectivity='minimum-span' if span is not None else 'zero-tree')
+            if candidate is None:
+                potential = None if span is None else dict(zip(span['vertex_ids'], span['potential']))
+                candidate_summary = _height_summary(prepared, heights, potential=potential, check=budget.tick)
+                euler, pieces = candidate_summary['euler_characteristic'], candidate_summary['normal_pieces']
             else:
-                if planar:
-                    from .normal_cocycle_verify import _inspect_cocycle_details
-                    details = _inspect_cocycle_details(source, certificate, check=budget.tick)
-                    answer = None if details is None else details[0]
-                    if details is not None:
-                        planar_geometry, analysed = details[1:]
-                else:
-                    answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
+                euler, pieces = candidate['euler_characteristic'], candidate['normal_pieces']
+            # Candidate construction proves the family invariants. A miss is
+            # not a negative knot certificate. Only potential positive proofs
+            # pay for independent source/class/connectivity reconstruction.
+            answer = dict(components=1, orientable_components=1,
+                          euler_characteristic=euler, normal_pieces=pieces,
+                          compressing_discs=0,
+                          connectivity='minimum-span' if span is not None else 'zero-tree')
+            if euler == 1 or (annulus and euler == 0):
+                answer = inspect_cocycle_certificate(source, certificate, check=budget.tick)
                 if answer is None:
                     raise ArithmeticError('source-bound cocycle connectivity replay failed')
             entry = dict(stage=stage, status='COMPLETE', **answer)
@@ -104,10 +100,10 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
                 from .normal_planar_verify import inspect_planar_certificate
                 remaining = None if max_cycles is None else max_cycles-boundary_cycles
                 if planar_basis is None:
-                    planar_basis = boundary_homology_basis(planar_geometry, budget.tick)
+                    planar_basis = boundary_homology_basis(prepared, budget.tick)
                 if analysed is None:
-                    analysed = _coordinates(planar_geometry, coordinates, budget.tick)
-                query = _planar_cap_candidate(certificate, planar_geometry, analysed,
+                    analysed = _coordinates(prepared, coordinates, budget.tick)
+                query = _planar_cap_candidate(certificate, prepared, analysed,
                     basis=planar_basis, max_cycles=remaining, check=budget.tick)
                 boundary_cycles += query['stats']['orbit_cycles']
                 entry['planar_query'] = {k: v for k, v in query.items() if k != 'certificate'}
@@ -126,7 +122,7 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
         result = evaluate('raw', seed['heights'], seed['coordinates'])
         if result is not None:
             return result
-        candidates = iter(cocycle_tree_candidates(raw, seed['heights'], trials=tree_trials, check=budget.tick))
+        candidates = iter(_prepared_tree_candidates(prepared, seed['heights'], trials=tree_trials, check=budget.tick))
         tree_stats = dict(attempts=0, duplicates=0, candidates=0)
         if tree_trials:
             stats['tree_search'] = tree_stats
@@ -157,7 +153,6 @@ def normal_seed_decide(diagram, *, optimize=True, annulus=True, planar=False, ma
             if result is not None:
                 return result
         if optimize and face_roots:
-            prepared = _prepare(raw, budget.tick)
             face_stats = dict(candidates=0)
             stats['face_search'] = face_stats
             for candidate in cocycle_face_candidates(seed['vertices'], seed['heights'],

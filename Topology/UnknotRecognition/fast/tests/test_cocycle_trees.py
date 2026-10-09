@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 from fastunknot import Diagram, recognize
 from fastunknot.diagram_exterior import diagram_exterior
-from fastunknot.normal_cocycle import rank_one_cocycle_seed
+from fastunknot.normal_cocycle import rank_one_cocycle_seed, _rank_one_cocycle_seed_details
 from fastunknot.cocycle_trees import cocycle_tree_candidates
 from fastunknot.normal_seed import normal_seed_decide
 from fastunknot.normal_seed_verify import verify_normal_seed_certificate
@@ -26,7 +26,7 @@ class CocycleTreeTests(unittest.TestCase):
             diagram = Diagram.from_pd(pd)
             self.assertEqual(normal_seed_decide(diagram, annulus=False, tree_trials=0)['status'], 'INCONCLUSIVE')
             with patch('fastunknot.normal_seed.minimize_cocycle_span', side_effect=AssertionError), \
-                 patch('fastunknot.normal_seed.rank_one_cocycle_seed', wraps=rank_one_cocycle_seed) as solve:
+                 patch('fastunknot.normal_seed._rank_one_cocycle_seed_details', wraps=_rank_one_cocycle_seed_details) as solve:
                 result = normal_seed_decide(diagram, annulus=False)
             self.assertEqual(solve.call_count, 1)
             self.assertEqual(result['status'], 'UNKNOT')
@@ -49,7 +49,7 @@ class CocycleTreeTests(unittest.TestCase):
         self.assertTrue(verify_normal_seed_certificate(diagram, result['certificate']))
 
     def test_existing_positive_paths_skip_later_search(self):
-        with patch('fastunknot.normal_seed.cocycle_tree_candidates', side_effect=AssertionError):
+        with patch('fastunknot.normal_seed._prepared_tree_candidates', side_effect=AssertionError):
             self.assertEqual(normal_seed_decide(Diagram.from_pd([]))['status'], 'UNKNOT')
         diagram = Diagram.from_braid(4, [-1, 2, 1, -2, 3])
         before = normal_seed_decide(diagram, annulus=False, tree_trials=0)

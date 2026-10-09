@@ -26,6 +26,11 @@ def cocycle_tree_candidates(triangulation, heights, *, trials=4, check=lambda: N
     if trials == 0:
         return
     p = _prepare(triangulation, check)
+    yield from _prepared_tree_candidates(p, heights, trials=trials, check=check)
+
+
+def _prepared_tree_candidates(p, heights, *, trials, check):
+    """Internal discovery on geometry already validated in this search."""
     if type(heights) is not list or len(heights) != len(p['tetrahedra']):
         raise ValueError('expected one height row per tetrahedron')
     h, edges = [], {}
