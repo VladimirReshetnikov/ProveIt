@@ -7650,4 +7650,28 @@ is byte-for-byte unchanged at 115 companions and five open entries.
 The port-scope check still reports 4,134 upstream and 17 compatibility
 modules, with reciprocal-only dependencies excluded. The initial combined audit checks 7,748 public Gowers theorems in 5,266
 modules (5,264 facade modules and 4,152 OAI modules), with the same axiom
-boundary. Synchronization results are recorded below once complete.
+boundary. The final synchronized results are recorded below.
+
+
+**Incoming numerical bounds.** The merged `Proofs16VarietyScaleBounds`
+proves the variety and spectrum family/density scale bounds in
+`x = 2/(theta*gamma)`. `Proofs16ExplicitConstantBounds` bounds the named
+recurrence/partition constants by `2^1700`, conditional on its explicit
+per-degree Schmidt bounds. These two modules compile against the real
+selected dependencies; the synchronized audit checks 7,777 public
+Gowers theorems in 5,268 modules with the usual three-axiom boundary.
+These estimates do not by themselves instantiate the final source
+threshold or supply the missing deep variety structure.
+
+
+**Final merged verification.** The incoming named relation-piece theorem
+and `MultiplyLinearWith.variety_three_multiplyLinear` also compile
+against the real selected dependencies. The latter converts the actual
+piece controls under positivity of the width coefficient to parameter
+`18*r/gamma + 64 + L`, where `L` is the maximum of the two logarithmic
+losses. The final threshold comparison remains open. After both merges,
+the complete audit checks 7,788 public Gowers theorems in 5,269 modules
+(5,267 facade modules, including 4,152 OAI modules). Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The ledger and port-scope
+checks pass unchanged. Consumer audit counts were updated; no source
+port, adaptation notice, or license scope was changed.
