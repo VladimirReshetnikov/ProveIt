@@ -2593,3 +2593,46 @@ python -B compressed_word_research/ordered_batch.py kernels --output results/ord
 python -B compressed_word_research/ordered_batch.py stages --output results/ordered_batch_stages.json
 python -B compressed_word_research/ordered_batch.py pipeline --output results/ordered_batch_pipeline.json
 ```
+
+### Adaptive periodic-merger scheduling
+
+`interval_orbits.count_orbits` now defaults to `merger_scheduler='adaptive'`.
+It starts with the historical lexicographic greedy scan, indexes periodic
+rows after the first failed candidate, and switches to a generation-checked
+heap only when the closure spends its initial `k*(k-1)//2` merger-test
+allowance. This is a scheduling threshold, not an incompleteness budget.
+
+Stable row IDs and generations preserve the exact successful merge sequence,
+current certificate indices, complete orbit certificates and cycle counts.
+The independent orbit and weighted verifiers are unchanged. Native weighted,
+sparse-incidence and normal-surface consumers inherit the default. Callback
+counts and scheduler statistics can differ, so wall-clock cancellation can
+stop at different points. Incomplete calls still return no count or proof.
+
+Pure `merger_scheduler='queue'` makes at most `(k-1)**2` candidate tests per
+nonempty closure. Adaptive mode makes at most `k*(k-1)//2 + (k-1)**2`, while
+easy first-pair successes and no-merge closures avoid queue construction.
+The worst-case heap has quadratic storage. `merger_scheduler='legacy'`
+retains the linear-space restarting scan for comparison or callers preferring
+that storage bound. These are per-closure bounds; the general AHT cycle bound
+is unchanged. The scheduler improves a supplied-component kernel and does not
+add diagram provenance, surface discovery or a new knot-decision stage.
+
+```python
+from fastunknot.interval_orbits import IntervalPairing, count_orbits
+pairs = [IntervalPairing(0, 7, 8, 15)] * 32
+answer = count_orbits(16, pairs, record_certificate=True)
+assert answer.complete and answer.orbits == 8
+assert answer.stats['merger_queue_switches'] == 0
+```
+
+See [the proof and native measurements](../synthesis/adaptive_merger.tex).
+Reproduction freezes the prior package and measures complete certificate
+construction and independent replay, including fresh geometry for normal
+queries:
+
+```sh
+python -B merger_research/native.py audit --output results/adaptive_merger_audit.json
+python -B merger_research/native.py intervals --output results/adaptive_merger_intervals.json
+python -B merger_research/native.py normal --output results/adaptive_merger_normal.json
+```

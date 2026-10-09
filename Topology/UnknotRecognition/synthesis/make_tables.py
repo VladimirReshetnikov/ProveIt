@@ -1618,3 +1618,20 @@ if weighted_components:
                  '$b$, $g=2^b$ & raw ms & core ms & raw/core & raw A/A & core A/A')
         open(f'tables/weighted_components_{kind}.tex','w').write('\\begin{center}\\small\n'+table(
             heading,'@{}rrrrrr@{}',rows)+'\\end{center}\n')
+
+
+for ordered_mode in ('kernels','stages','pipeline'):
+    data=load(f'data/ordered-batch-{ordered_mode}.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        s,m,q=r['source'],r['medians'],r['paired_ratios']
+        cells=([esc(s['kind']),str(s['size'])] if ordered_mode=='kernels' else
+               [str(s['crossings'])] if ordered_mode=='stages' else [esc(s['name'])])
+        cells += ['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','current')]
+        cells += ['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('current','old_AA','current_AA')]
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Family & pivots' if ordered_mode=='kernels' else 'Crossings' if ordered_mode=='stages' else 'Input')
+    heading += ' & old ms & new ms & old/new & old A/A & new A/A'
+    open(f'tables/ordered_batch_{ordered_mode}.tex','w').write('\\begin{center}\\small\n'+table(
+        heading,'@{}l'+('r'* (6 if ordered_mode=='kernels' else 5))+'@{}',rows)+'\\end{center}\n')

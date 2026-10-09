@@ -1,0 +1,154 @@
+\section{Ordered singleton witnesses and virtual inverse replay}
+\label{sec:ordered-batch}
+
+Report 51's ordered-witness idea now accelerates verification of the maintained
+version-eight singleton batches. The previous checker separately located each
+donor's singleton and scanned its grammar for dependencies. A source subgrammar
+shared by many donors was repeatedly visited. The new checker validates a
+claimed dependency order using one shared summary, then evaluates signed
+references instead of eagerly constructing inverse words. It retains the
+existing certificate schema and complete fallback for unordered witnesses.
+This changes proof processing, not which algebraic moves are justified.
+
+\subsection{A scalar summary checks the claimed dependency order}
+
+A batch selects distinct generators $g_1,\ldots,g_k$ and distinct relator slots.
+The native schema requires at least one surviving generator. The witness lists
+the selected donors in dependency order: the definition of $g_i$ may mention
+survivors or $g_j$ with $j<i$, but no later selected generator. Give survivors
+rank zero and $g_i$ rank $i$. For each source grammar node $X$, record
+\[
+ h(X)=\max\{\operatorname{rank}(|a|):a\text{ occurs in }X\},\qquad
+ c(X)=\min\{2,\#\text{ occurrences of rank }h(X)\}.
+\]
+The empty node has $(h,c)=(0,0)$; a letter has its assigned rank and count one.
+For a concatenation $X=YZ$, set
+\[
+ h=\max\{h(Y),h(Z)\},\qquad
+ c=\min\{2,\mathbf1_{h(Y)=h}c(Y)+\mathbf1_{h(Z)=h}c(Z)\}.
+\]
+These count literal occurrences, without free or cyclic reduction. A repeated
+child contributes twice. The donor for $g_i$ is valid in the claimed order
+exactly when $(h,c)=(i,1)$. Distinct pivot ranks imply that the unique maximum
+is $g_i$ itself; every other selected letter has smaller rank. This checks
+both the singleton property and acyclicity of all definitions.
+
+The checker traverses the union of all current source roots, so a shared node
+is summarized once. It also rejects any source letter outside the current
+live set. The summary uses a constant number of integers, with $O(\log(k+1))$
+rank bits per node, rather than an explicit selected-generator support set.
+The traversal uses the arena's sorted reachable-node list, whose comparisons
+still cost $O(M\log M)$ for $M$ reachable nodes. Root-list processing, input
+labels, exact length arithmetic and cooperative work charges remain part of
+the implementation cost; ``one summary per node'' is not a linear bit-time
+claim for the whole verifier.
+
+The producer already has the dependency graph while selecting candidates.
+It now topologically sorts the selected subgraph before emitting a certificate,
+in $O(k+E)$ graph operations, where $E$ counts the stored dependencies
+of selected donors, including survivor edges inspected while filtering.
+The queue changes neither the candidate score nor the selected donor set.
+The checker's rank computation imports no producer planning or metadata.
+The internal planner's default result retains its earlier selection order;
+the actual search explicitly requests the ordered witness.
+
+\subsection{Compile both orientations without inverse expansion}
+
+Write the selected donor as $U_i g_i^{\epsilon_i}V_i$, with
+$\epsilon_i\in\{-1,1\}$. Its raw defining equation is
+\[
+ g_i=(V_iU_i)^{-\epsilon_i}.
+\]
+The checker descends the unique maximum-rank path to find the pivot position,
+then obtains $U_i,V_i$ by source slicing. No replacement word or dependency
+set supplied by the certificate is trusted. The contexts and their signs
+are retained as definitions, with no eager inverse construction.
+
+Evaluation states are pairs $(X,\sigma)$, $\sigma\in\{-1,1\}$.
+A positive concatenation state visits its children in source order; a
+negative state visits the children in reverse order with negative signs.
+A selected signed letter follows its defining context with the product of
+the requested sign, letter sign and $-\epsilon_i$. A surviving letter remains
+a signed terminal. A memoized iterative traversal compiles each needed signed
+state once, with an active-state set as an additional cycle check. It includes
+every donor definition as a goal, even if all surviving relators omit it.
+Only after successful evaluation are donor slots zeroed, the remaining roots
+replaced and eliminated generators removed from the live set.
+
+This is exact noncommutative word substitution. The implementation invokes no
+occurrence scan, support-mask query, eager inverse, word equality, expansion,
+free reduction or cyclic normalization during ordered replay. Shared arena
+slicing and concatenation retain their existing exact contracts. Independent
+literal replay continues to construct the explicit homomorphism after checking
+its expansion budget.
+
+Section~\ref{sec:incoming-2c7f} proves that pivot paths in distinct valid donors
+are disjoint: if a shared node contained two pivots, the corresponding two
+definitions would depend on each other. Complementary slices and cyclic
+contexts therefore add at most $M$ nodes in total. The source-plus-context
+union has at most $2M$ nodes, and its two orientations give at most $4M$
+compiled states. Consequently the new checker satisfies
+\[
+ M_{\rm out}\le4M,\qquad
+ N_{\rm after}-N_{\rm before}\le5M.
+\]
+Here $N$ counts all persistent arena nodes, including previously unreachable
+ones; $M$ counts only the current reachable source. The producer and unordered
+fallback retain their earlier eager-inverse bound of $7M$ added nodes.
+Bit lengths of represented words and stored lengths remain explicit costs.
+The result removes repeated local scans and unnecessary inverse grammars;
+it neither bounds the number of batches nor proves a general successful
+sequence for every unknot diagram.
+
+\subsection{Compatibility, budgets and source-bound evidence}
+
+The move remains \texttt{elimination\_batch} with the same original slot and
+generator records. No new certificate version, optional trust flag or producer
+ordering promise is introduced. If the rank test fails to establish the claimed
+order, the checker has not allocated contexts or changed any public state and
+falls back to the existing occurrence/support and dependency-graph checker.
+An unordered valid old witness therefore retains its meaning. A cycle,
+missing pivot or repeated literal pivot still fails independent validation.
+The rank attempt is charged: old certificates near a finite work cap can
+require more allowance, even when the unchanged fallback accepts them with
+sufficient resources. Resource exhaustion never becomes a mathematical rejection.
+
+The full source wrapper still rebuilds every Wirtinger relator from the input
+diagram, checks the existing terminal and binds the original diagram. New
+ordered certificates also pass the pinned previous literal and compressed
+verifiers. The optional batch portfolio retains its existing recovery-aware
+trial allowance and fallback policy. Its producer pays the additional order
+construction, and earlier simplification may bypass this backend entirely.
+End-to-end measurements must therefore accompany the local grammar result.
+
+The native audit checks 400 abstract acyclic systems with two noncommuting
+survivors, arbitrary contexts, both signs and empty definitions. Each is
+replayed in forward and reverse witness order by both the pinned old and new
+compressed engines and by literal substitution: 1,600 compressed and 800
+literal checks agree. Allocation bounds are checked on each completed replay.
+On 95 validated diagrams, default certificates remain identical; the optional
+batch search gains and loses no completed result in this corpus. All saved
+positive proofs undergo both literal and compressed source replay under both
+engines, giving 1,048 successful checks. These comparisons include old
+unordered proofs and newly ordered proofs, not only newly generated evidence.
+
+Six new tests cover arbitrary labels and noncommuting dependencies, legacy
+reverse order, shared 1,024-bit powers, literal repeated-pivot forgeries,
+unreferenced cycles, dead source labels, unchanged candidate selection,
+producer-disabled replay, public source certificates and interrupted-state
+publication. The 12 existing batch tests also pass. The new tests disable the
+producer and the word operations that ordered replay is intended to avoid.
+The report's original files remain unchanged; this is a native adaptation of
+its checker rather than application of its older search-policy overlay.
+
+\input{ordered_batch_results.tex}
+
+Reproduction uses \path{../fast/compressed_word_research/ordered_batch.py};
+\texttt{audit}, \texttt{kernels}, \texttt{stages} and \texttt{pipeline} select
+separate executions. Baseline \texttt{06fcb7685da7} is loaded as an isolated
+package. The word arena and source wrapper remain byte-identical; the only
+modified existing runtime modules are the batch planner, batch checker and
+search call site, plus the new ordered checker. Records and source manifests
+are retained under \path{data/ordered-batch-*}. General diagram discovery,
+controlled hierarchy growth and a complete quasipolynomial recognition bound
+remain open.

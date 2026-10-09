@@ -1,0 +1,81 @@
+\subsection{Measured savings, compatibility overhead and whole recognition}
+
+The maintained suite passes all 1,090 tests with Regina in 218.217 seconds.
+The 12 existing batch tests and six new integration tests take 0.556 and
+0.045 seconds respectively. The final source-pinned audit takes 8.101 seconds.
+Three separate benchmark executions contain 180 kernel calls, 120 group-stage
+calls and 380 whole-recognition calls, plus 36, 24 and 76 retained warm-ups.
+All 680 measured calls complete. Each fixture has five rounds with shuffled
+old/new and old/new A/A arms. All four runs preserve the same 424 native Python
+and corpus hashes; the pinned old package is loaded separately. Kernel,
+stage and pipeline runs take 39.082, 2.843 and 34.649 seconds respectively.
+
+Kernel timing includes fresh arena construction and complete checked raw
+substitution. The shared family has $k$ independent definitions
+$g_i=(ab)^{2^{4096}}$ sharing one source power grammar, with both signs used
+in retained roots. The tower family has $k$ dependent definitions with
+noncommuting contexts, each raised to $2^{128}$. The legacy family uses the
+same towers but reverses their witness order, deliberately exercising the
+compatibility fallback. No represented long word is expanded. Outputs have
+matching pinned-old and current structural digests; literal correctness is
+separately checked by the small-system audit.
+
+\input{tables/ordered_batch_kernels.tex}
+
+At 128 shared pivots, old/new total medians are 948.063/45.743 ms, with
+paired ratio 20.552. The replay work counter falls from 2,699,059 to 55,213.
+Exactly 4,357 source nodes are summarized once; the represented retained
+word length has 4,099 bits. Both implementations add 4,100 nodes in this
+case, so the saving is repeated inspection of shared grammars, not output
+size. The 128-level tower instead demonstrates virtual inverse savings:
+new allocations fall from 50,044 to 33,407, and replay work from 391,056 to
+221,082. The paired total-time ratio is 1.243, with 16,514-bit output lengths.
+
+The legacy compatibility cost is visible. On reversed 128-level towers,
+old/new medians are 276.179/308.654 ms and the paired ratio is 0.895. New
+allocations remain 50,044; replay work rises from 391,056 to 442,138 because
+the charged rank scan precedes the unchanged fallback. The smaller reversed
+cases also regress, with ratios 0.924 and 0.903. Kernel old A/A medians range
+from 0.953 to 1.008 and new A/A from 0.958 to 1.046. The large shared-case gain
+and the legacy overhead both remain recorded. Newly emitted ordered witnesses
+avoid this fallback; compatibility does not imply identical finite-budget cost.
+
+Group-stage timing uses validated stabilized-circle diagrams. It includes
+fresh diagram construction, recovery, the same optional batch portfolio and
+mandatory independent source replay, while bypassing earlier simplification.
+
+\input{tables/ordered_batch_stages.tex}
+
+Paired old/new medians range from 1.128 to 1.213. The largest case shows why
+paired ratios and separate arm medians must be distinguished: at 256 crossings,
+old/new medians are 47.905/51.442 ms, but the five paired ratios are
+0.931, 1.128, 1.213, 1.084 and 1.208. The last two rounds also have substantially
+larger absolute times. Median old/new A/A controls across this family range
+from 0.977 to 1.032 and 0.997 to 1.032, but these do not capture all individual
+variation. These data suggest modest stage savings, not a uniform factor.
+
+A separate deterministic replay audit checks the saved stage proofs under
+both verifiers, 24 times in total. At 256 crossings, compressed arena work
+falls from 31,010 to 18,097 and final arena nodes from 3,049 to 2,038. That
+counter includes SLP construction and replay after independent diagram
+reconstruction, but excludes the preceding source-recovery budget. Producer
+work rises from 94,320 to 95,842 to construct the ordering; the producer still
+has 2,544 nodes and the certificate remains 12,775 bytes. These counters
+explain why local verification savings give a smaller whole-stage effect.
+The additional driver and records are \path{data/ordered_batch_replay_work.py}
+and \path{data/ordered-batch-replay-work.json}.
+
+Whole-recognition timing uses the original 19-diagram corpus and the same
+optional batch portfolio on both versions. It includes fresh validated inputs,
+all earlier stages, bounded search and mandatory certificate replay. No
+incomplete result is omitted; all 380 measured calls complete.
+
+\input{tables/ordered_batch_pipeline.tex}
+
+The ratios range only from 0.968 to 1.038; old A/A medians range from 0.983 to
+1.017 and new A/A from 0.979 to 1.010. Gordian medians are 1,207.402 and
+1,210.837 ms, with paired ratio 0.998. This workload demonstrates no useful
+whole-recognizer acceleration from the new checker. Earlier exits and the
+existing discovery fallback limit its contribution. The strong kernel result
+therefore concerns compressed ordered proof replay; it is not promoted to a
+recognition speedup or a general complexity result.

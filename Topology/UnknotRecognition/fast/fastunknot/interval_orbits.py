@@ -27,6 +27,7 @@ References:
 from dataclasses import dataclass
 from math import gcd
 from typing import Iterable
+from .interval_merger import hybrid_closure, periodic_closure, restart_closure
 
 
 def _integer(value, label, minimum=0):
@@ -197,7 +198,8 @@ def _transmit(pair, carrier):
 def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                  max_cycles: int | None = None,
                  periodic_rule: str = 'fine_wilf', check=None,
-                 record_certificate: bool = False) -> OrbitResult:
+                 record_certificate: bool = False,
+                 merger_scheduler: str = 'adaptive') -> OrbitResult:
     """Count components of an interval equivalence relation, without expansion.
 
     On budget exhaustion, ``complete`` is false and ``orbits`` is None.
@@ -211,11 +213,22 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     merger; version 1 retains the classical threshold. Use integer_codec.json_safe
     when serializing binary integers beyond Python's decimal conversion limit.
     Incomplete runs never return a certificate or a partial orbit count.
+    The adaptive merger scheduler preserves the legacy greedy merge sequence,
+    but switches from indexed scans to a generation-checked candidate queue
+    when a closure exceeds its original all-pairs allowance.  It needs O(k^2)
+    candidate tests per closure and O(k^2) worst-case queue memory.  'legacy'
+    and 'queue' select controlled ablations.  All modes emit identical complete
+    certificates and cycles; pair_tests and scheduler diagnostics can differ.
     """
     checkpoint = check if check is not None else lambda: None
     checkpoint()
     if type(record_certificate) is not bool:
         raise ValueError('record_certificate must be bool')
+    schedulers = {'adaptive': hybrid_closure, 'legacy': restart_closure,
+                  'queue': periodic_closure}
+    if not isinstance(merger_scheduler, str) or merger_scheduler not in schedulers:
+        raise ValueError("merger_scheduler must be 'adaptive', 'legacy' or 'queue'")
+    closure = schedulers[merger_scheduler]
     pairs = _validate(n, pairings, max_cycles, periodic_rule)
     initial_n, initial_k = n, len(pairs)
     initial_rows = [[p.a, p.b, p.c, p.d, -1 if p.reverse else 1]
@@ -224,7 +237,9 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     stats = {'initial_pairings': initial_k, 'input_bits': n.bit_length(),
              'identity_deletions': 0, 'static_points': 0, 'contractions': 0,
              'trims': 0, 'mergers': 0, 'pair_tests': 0, 'transmissions': 0,
-             'truncations': 0, 'truncated_points': 0}
+             'truncations': 0, 'truncated_points': 0,
+             'merger_queue_runs': 0, 'merger_queue_switches': 0,
+             'merger_peak_queue': 0, 'merger_stale_pops': 0}
     total = cycles = 0
     while n:
         checkpoint()
@@ -271,31 +286,16 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                     operations.append({'op': 'trim', 'index': i})
                 pairs[i] = _trim(pair)
                 stats['trims'] += 1
-        while True:
-            found = False
-            for i in range(len(pairs)):
-                checkpoint()
-                if not pairs[i].periodic:
-                    continue
-                for j in range(i + 1, len(pairs)):
-                    checkpoint()
-                    if not pairs[j].periodic:
-                        continue
-                    stats['pair_tests'] += 1
-                    merged = periodic_merge(pairs[i], pairs[j],
-                                            periodic_rule=periodic_rule)
-                    if merged is not None:
-                        if operations is not None:
-                            operations.append({'op': 'merge', 'left': i, 'right': j})
-                        pairs[i] = merged
-                        pairs.pop(j)
-                        stats['mergers'] += 1
-                        found = True
-                        break
-                if found:
-                    break
-            if not found:
-                break
+        merged = closure(pairs, merge=lambda first, second: periodic_merge(
+            first, second, periodic_rule=periodic_rule),
+            check=checkpoint, operations=operations)
+        pairs = merged.pairings
+        stats['pair_tests'] += merged.pair_tests
+        stats['mergers'] += merged.mergers
+        stats['merger_queue_runs'] += merged.queue_runs
+        stats['merger_queue_switches'] += merged.queue_switches
+        stats['merger_peak_queue'] = max(stats['merger_peak_queue'], merged.peak_queue)
+        stats['merger_stale_pops'] += merged.stale_pops
         index = max(range(len(pairs)),
                     key=lambda i: (pairs[i].d, -pairs[i].c, -pairs[i].a,
                                    int(pairs[i].reverse)))
