@@ -1,0 +1,202 @@
+\section{A precise route toward quasi-polynomial recognition}
+\label{sec:research}
+
+The new component predicate improves the value of each supplied normal
+candidate.  A candidate may carry irrelevant closed or boundary-parallel
+components, yet its useful disk is still detected.  The scheduler improves
+one operation repeatedly used by that predicate.  To turn these gains into
+a global complexity theorem, one must control how candidates and geometric
+states are obtained, how many are visited, and how their bit sizes evolve.
+
+\subsection{A conditional assembly statement}
+
+The following formulation makes these obligations explicit.  It is a
+research specification, not an assertion that its hypotheses have been
+implemented.
+
+\begin{proposition}[Conditional recognition through compressed candidates]
+\label{prop:conditional-recognition}
+Suppose an algorithm, on an $n$-crossing knot diagram $D$, constructs in
+polynomial time a compact triangulation $E(D)$ and a checked correspondence
+with its knot exterior.  Suppose a complete candidate procedure has the
+following properties:
+\begin{enumerate}
+\item It visits at most $S(n)$ states, including unsuccessful branches, with
+an encoded state-size bound $B(n)$.
+\item Each transition, each normal-vector construction, and all bookkeeping
+take time polynomial in $B(n)$, including all integer bit costs.
+\item Its terminal acceptance condition is the presence of a compressing
+disk among the components of a supplied admissible normal vector; a terminal
+rejection certificate or an exhaustive termination theorem establishes
+completeness of rejection.
+\end{enumerate}
+Then adding the component query gives an exact recognizer with time
+$S(n)\operatorname{poly}(B(n))$, apart from the polynomial exterior
+construction.  In particular, if $B(n)$ is polynomial and
+$S(n)=2^{O((\log n)^a)}$ for a fixed $a\geq1$, the resulting bound is
+quasi-polynomial.
+\end{proposition}
+
+\begin{proof}
+The component query is polynomial in each encoded input.  Its positive
+predicate is exactly the existence of a compressing-disk component, and
+the verified exterior correspondence makes boundary compressibility
+equivalent to the input being the unknot.  The assumed rejection theorem
+rules out unvisited positive instances after termination.  Summing the
+polynomial transition and query costs over all visited states gives the
+bound.  No component multiplicity is expanded in this sum.
+\end{proof}
+
+The proposition also shows why a fast verifier alone is insufficient.
+Normal coordinates of bounded bit size still range over a vast set; bounding
+their encoding is not a bound on the number of candidates examined.  A
+successful search heuristic does not supply the rejection theorem in the
+third hypothesis.
+
+Lackenby's hierarchy iteration expression $L(g+1)^L$ provides a more
+geometric target \cite{Lackenby2026}.  If $g\leq n^c$ and all operations
+and state encodings satisfy polynomial bounds, then
+\[
+ \log\bigl(L(g+1)^L\bigr)=O(\log L+L\log n).
+\]
+Thus $L=O(\log n)$ would give $2^{O((\log n)^2)}$, while
+$L=O((\log n)^2)$ gives $2^{O((\log n)^3)}$.  The latter agrees with the
+exponent displayed in the 2021 Oxford handout \cite{Lackenby2021}.
+The expression becomes a runtime bound only after the geometric operations,
+branch count, and representation sizes have been bounded constructively.
+It is not enough to count hierarchy levels while allowing an exponential
+triangulation expansion inside a level.
+
+\subsection{Research questions with concrete completion criteria}
+
+\paragraph{1. Certify the passage from a diagram to a compact exterior.}
+Can a diagram-to-triangulation constructor emit a short, independently
+checkable correspondence including the peripheral marking?  The immediate
+deliverable should be a source-bound certificate whose verification accepts
+exactly the claimed exterior, with a proved polynomial tetrahedron and bit
+bound.  This closes the first missing logical link before the new component
+predicate can affect the ordinary recognizer.
+
+\paragraph{2. Find candidates without enumerating all admissible vectors.}
+Which hierarchy or handle moves produce a complete family of useful normal
+vectors while visiting only quasi-polynomially many states?  The component
+predicate permits extra disconnected summands, potentially relaxing the
+candidate specification.  A useful theorem would show that a cheaply
+constructed larger surface must contain the desired disk, without requiring
+enumeration of every fundamental or vertex normal surface.  Any such theorem
+must cover unsuccessful inputs as well as successful examples.
+
+\paragraph{3. Recover a selected component in compressed coordinates.}
+Given a positive five-coordinate profile, can one produce one actual disk
+component and its $7t$ normal-coordinate vector in polynomial bit time?
+One candidate approach first filters with five weights, then replays the
+same orbit trace with one coordinate for each normal-piece type and suitable
+representative information.  Classical weighted AHT makes the coordinate
+payload plausible, but selecting a particular component inside a repeated
+profile group and certifying its relation to the source remain explicit
+tasks.  Returning all exponentially many components is not a suitable
+completion criterion.
+
+\paragraph{4. Preserve three-dimensional information through cutting.}
+Can a verified disk or hierarchy surface be cut out while retaining a
+polynomial representation of the residual manifold, parallelity regions,
+peripheral curves, and attaching maps?  Scalar weights or set-incidence
+profiles do not contain cyclic order or three-dimensional gluing data.
+The compressed cutting and parallelity framework in
+\cite[Theorem~14.4]{Lackenby2026} is a natural target for constructive
+implementation and bit-size accounting.  A complete step should include
+both an output representation and a checker for its geometric meaning.
+
+\paragraph{5. Obtain a useful global potential.}
+What potential controls hierarchy length, candidate branching, coordinate
+growth, and the work of unsuccessful reductions simultaneously?  Existing
+local simplifications can decrease a word length while increasing another
+representation.  A successful potential should yield a recurrence for total
+work, not merely demonstrate progress in one favorable parameter.  The
+parameters $g$ and $L$ should be connected to quantities computed from the
+input, with every representation conversion included.
+
+\paragraph{6. Realize or exclude the cubic family in surface geometry.}
+The five-cycle family proves an asymptotic improvement for legal interval
+systems.  Does a comparable family arise from valid normal coordinates on
+compact torus-boundary triangulations, preferably from verified knot
+exteriors?  Alternatively, do geometric arc systems satisfy a structural
+restriction that rules it out and yields a stronger scheduling theorem?
+Either outcome would clarify which worst cases matter to the intended
+recognizer.  The present native meridian measurements show smaller constant
+factor gains and do not answer this question.
+
+\paragraph{7. Reduce the event queue's memory without losing its theorem.}
+Can one find all potentially successful periodic mergers using
+$o(k^2)$ stored candidates while retaining a proved $O(k^2)$ or better
+arithmetic work bound?  A naive per-row minimum can become invalid when a
+candidate is deleted and can silently restore repeated full scans.  Useful
+approaches must specify how failed pairs are remembered, how generation
+changes are propagated, and how all rescans are amortized.  The full
+trace-order guarantee is valuable, but a different order is acceptable only
+with a renewed trace-length and correctness analysis.
+
+\paragraph{8. Tune adaptive scheduling using measurable work.}
+The bounded prelude already protects easy first-pair successes from eager
+queue initialization.  What inexpensive indicators predict when building
+the queue will pay for its memory and arithmetic costs?  The preliminary
+experiment exposed a separate periodic-index rebuild cost, leading to the
+lazy first-pair path included here.  Future policies should retain a
+mathematical test allowance and be evaluated with paired timings on easy,
+native, adversarial, and large-bit inputs.  Universal speedup should not be
+assumed from a worst-case improvement.
+
+\paragraph{9. Stream weighted replay and share geometric preparation.}
+Can the producer emit checked operations to an online weight accumulator,
+while also saving a replayable certificate, to avoid retaining redundant
+state?  Can repeated candidates reuse a validated triangulation and the
+boundary basis without trusting stale source data?  The desired output is a
+clear ownership and source-binding contract, together with a peak-memory
+bound.  These changes can improve practical searches without changing the
+global mathematical exponent.
+
+\paragraph{10. Extend component features only when they answer a needed
+question.}
+Which constant-dimensional additive predicates suffice for subsequent
+hierarchy choices?  Euler characteristic and two mod-two evaluations suffice
+for the torus compressing-disk predicate, but they do not recover slopes,
+boundary-circle partitions, or embeddings.  Additional integer or oriented
+weights may recover some of this information; nonadditive information may
+require a richer compressed structure.  Each added field should have an
+explicit interpretation, bit bound, and independent test.
+
+\paragraph{11. Understand the higher-genus boundary obstruction.}
+For genus $h>1$, $2h$ mod-two coordinates detect a nonzero boundary homology
+class but miss essential separating curves.  Therefore replacing two cycles
+by $2h$ cycles does not extend the disk-essentiality theorem.  Can a
+compressed simple-curve algorithm decide essentiality for a selected disk
+boundary while preserving source markings?  A completion criterion must
+handle separating curves, multiple boundary components, and their
+interaction with the chosen component, rather than only aggregate homology.
+
+\paragraph{12. Shrink and verify the trusted geometric core.}
+The current trace verifier is independent of scheduling, whereas geometric
+preparation and weight construction are shared.  A second implementation or
+a formal proof should target local edge orientation transport, the
+one-cell/one-corner allocation, boundary homology bases with repeated
+incidences, and full-range weight transfer.  The fixed Regina fixtures and
+literal finite oracles are useful regression evidence, not substitutes for
+these proofs.  Formalization should be accompanied by encoding and bit-cost
+lemmas so that correctness does not conceal expansion.
+
+\subsection{Recommended next integration sequence}
+
+The most useful immediate sequence is to integrate the proved scheduler and
+component query, add a certified exterior constructor, and recover a single
+positive component in normal coordinates.  Those steps produce an exact
+geometric acceptance path with inspectable evidence.  In parallel, a
+hierarchy prototype should instrument state count, bit growth, parallelity
+compression, and unsuccessful branches.  Its purpose is to test and refine
+the hypotheses of \cref{prop:conditional-recognition}; small experimental
+state counts should not be reported as a quasi-polynomial proof.
+
+The long-term mathematical bottleneck is the controlled global geometric
+search.  The present work removes avoidable repeated merger tests and
+enriches the compressed certificate available at each candidate.  It makes
+that bottleneck more explicit and gives subsequent research a stronger,
+tested local interface.

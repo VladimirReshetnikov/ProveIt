@@ -1,0 +1,102 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{176B72}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\hypersetup{pdftitle={Compressed Component Certificates and Quadratic Periodic Scheduling for Unknot Recognition},
+pdfauthor={Research continuation prepared for Vladimir Reshetnikov},
+pdfsubject={ProveIt: rigorous compressed-kernel improvements and a research program toward quasi-polynomial unknot recognition},
+pdfkeywords={unknot recognition, normal surfaces, weighted AHT, interval orbits, certificates}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Compressed component certificates}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\usepackage{titlesec}
+\usepackage{needspace,etoolbox}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pretocmd{\section}{\Needspace{6\baselineskip}}{}{}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{}
+\setlength{\parskip}{0.32em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Ftwo}{\mathbb F_2}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\baselinecommit}{\texttt{274909dd8724e411ece14e47ac4addea717aeca6}}
+\title{\vspace{-1.6em}{\color{ink}\bfseries Compressed Component Certificates\\
+and Quadratic Periodic Scheduling\\for Unknot Recognition}}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt / Topology / UnknotRecognition}
+\date{9 October 2026\\[-0.2em]\small Source snapshot: 8 October 2026, 20:25 PDT}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We extend ProveIt's binary normal-surface backend in two complementary ways.
+First, we replace repeated all-pairs periodic-merger scans by a stable,
+generation-checked event queue, with an adaptive prelude for easy instances.
+The successful reductions and complete certificates are unchanged. A phase
+with \(k\) pairings uses at most \((k-1)^2\) merger tests in queue mode and at
+most \(\binom{k}{2}+(k-1)^2\) in adaptive mode. An explicit \(k=2m\) family
+takes exactly five complete Agol--Hass--Thurston cycles: historical merger work
+is \(m^3+(m^2+5m)/2-4\), whereas eager queue work is \(5m^2-6m+2\).
+Second, we implement classical weighted orbit replay and construct five
+integer weights that identify and count compressing-disk components inside a
+possibly disconnected normal surface. The weights record Euler
+characteristic, normal pieces, boundary vertices, and intersection counts
+with a basis of torus boundary homology. This avoids explicit component
+enumeration and does not require an orientation-double query for the disk
+predicate. We give proofs, source-bound replay, independent finite oracles,
+paired measurements, and a reproducible integration package.
+These are improvements to a polynomial compressed kernel and to the
+information it certifies. They do not supply the missing diagram-to-exterior
+provenance, surface discovery, or compressed hierarchy needed for a general
+quasi-polynomial unknot recognizer.
+\end{abstract}
+\vspace{0.4em}
+\noindent\textbf{Research status.}
+The scheduler theorem and its exact five-cycle lower-bound family are proved
+here for the maintained algorithm. Weighted orbit computation is classical
+AHT theory; the five-coordinate cellular construction is a focused
+implementation of that theory. No claim of a new general complexity bound for
+unknot recognition, or of priority for polynomial normal-surface topology, is made.
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\input{sections/context}
+\input{sections/periodic_queue}
+\input{sections/weighted_replay}
+\input{sections/normal_components}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/research_program}
+\appendix
+\input{sections/reproduction}
+\begingroup
+\raggedright
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}

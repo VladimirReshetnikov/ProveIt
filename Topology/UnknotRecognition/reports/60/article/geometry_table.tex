@@ -1,0 +1,25 @@
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Case & Dense & Sparse & Sparse + replay & D/S & A/A\\
+\midrule
+Static, disjoint, $r=4$ & 0.451 & 0.126 & 0.201 & 3.06 & 1.05\\
+Static, disjoint, $r=8$ & 15.045 & 0.184 & 0.324 & 81.55 & 0.97\\
+Static, disjoint, $r=12$ & 477.954 & 0.323 & 0.685 & 1390.69 & 1.05\\
+Static, nested, $r=12$ & 15.368 & 0.241 & 0.496 & 61.42 & 0.98\\
+Static, identical, $r=12$ & 15.384 & 0.158 & 0.343 & 99.07 & 0.99\\
+Meridian, disjoint, $r=4$ & 12.606 & 2.496 & 3.604 & 5.04 & 1.05\\
+Meridian, disjoint, $r=6$ & 38.299 & 2.908 & 4.212 & 14.07 & 0.99\\
+Meridian, disjoint, $r=8$ & 171.075 & 3.063 & 4.735 & 56.36 & 0.99\\
+Meridian, identical, $r=8$ & 3.223 & 2.522 & 3.348 & 1.23 & 0.98\\
+Parallel, disjoint, $r=4$ & 25.029 & 2.913 & 4.364 & 8.66 & 1.00\\
+Parallel, disjoint, $r=6$ & 94.974 & 3.269 & 4.868 & 28.99 & 1.00\\
+Parallel, disjoint, $r=8$ & 382.624 & 3.612 & 5.937 & 107.92 & 1.00\\
+Parallel, identical, $r=8$ & 6.542 & 2.721 & 3.584 & 2.29 & 1.01\\
+\bottomrule
+\end{tabular}
+\caption{Final primary geometry experiment. Times are median milliseconds per complete call. D/S and A/A are medians of paired dense/sparse and dense/control ratios. The full JSON retains all four arms and all samples.}
+\label{tab:geometry}
+\end{table}
