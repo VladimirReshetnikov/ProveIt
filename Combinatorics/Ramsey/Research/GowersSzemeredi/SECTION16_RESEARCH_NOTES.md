@@ -5633,6 +5633,13 @@ the decomposition with these named constants, but not `Theorem162At 3`.
      - Still to build: Lemma 9.2 (eight maps from one 11-parameter identity
        family) and the independence-counting iteration of Proposition 9.3
        (Claim 9.4, sets `I_{x,y}` of size at most `s₀ = (d + log 1/ρ)^O(1)`).
+     - *Progress.* Lemma 9.2's double Cauchy–Schwarz step is done:
+       `respected_quadruples_of_separated` (`Proofs16SeparatedRespect`).
+       Suppose a family `Q` of `c|G|²|Ω|` triples `(x, a, ω)` has
+       `f(x+a) − g(x)` depending only on `(a, ω)`. Then `f` respects at
+       least `c⁴|G|⁴` additive quadruples
+       `f(x+a) − f(x′+a) = f(x+b) − f(x′+b)`, which is Corollary 7.6's
+       input.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
