@@ -3107,3 +3107,12 @@ The three modules contain seven theorem declarations, checked in a
 cluster recentering input. The simultaneous choice of index patterns,
 algebraic regularity, quasirandomness and subsequent directional steps
 remain to be proved; no numbered statement changes status.
+
+
+The combined recentering audit passes: 6,355 public Gowers theorems,
+a 4,974-module facade (4,152 OAI modules), and 4,976 modules including
+the audit and import-compatibility check. The seven new declarations
+also pass individual transitive axiom checks. Only propext,
+Classical.choice, and Quot.sound occur. The source ledger remains 115/5
+with its existing fidelity caveats; upstream module scope and licenses
+are unchanged.
