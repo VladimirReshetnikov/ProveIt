@@ -2709,3 +2709,36 @@ selection interfaces also pass individual transitive axiom checks. The
 audit includes the incoming trapezoid Fourier estimates. The source ledger
 remains 115/5 with its existing fidelity caveats, and the selected upstream
 module scope is unchanged.
+
+
+### Bounded Fourier support and the trapezoid L1 bridge
+
+`Proofs16BoundedFrequencySpan` defines the bounded frequency span using
+centered coefficients of size at most `R`. Its cardinality is at most
+`(2*R+1)^m` for `m` frequencies, including the case where the coefficient
+interval wraps around the modulus. A product of finite character sums
+expands over these coefficient choices, and its Fourier transform
+vanishes outside the span. Consequently an L1 approximation error below
+`epsilon*N` forces every Fourier coefficient of size at least
+`epsilon*N` into that span. These results work for any finite index type.
+
+`Proofs16TrapezoidL1` proves the actual error bound for the previously
+constructed trapezoid product. A [0,1]-valued sandwich has L1 error at
+most the cardinality of its boundary band. For the Bohr indicator at
+radius `a/N` and the trapezoid with integer smoothing width `c <= a`,
+the error is at most `|K|*(4*c+2)` in prime modulus. The finite endpoint
+term `2*|K|` is retained.
+
+`large_bohr_fourier_mem_boundedFrequencySpan` combines the two modules.
+If the bounded character product approximates the trapezoid product
+uniformly within `delta` and
+`|K|*(4*c+2) + delta*N < epsilon*N`, then every Bohr Fourier coefficient
+of size at least `epsilon*N` lies in the bounded span. The uniform
+approximation remains an explicit hypothesis: deriving it from the
+inverse-square Fourier decay and controlling the product error is the
+remaining analytic step. No bounded-span duality or deep structure
+theorem is claimed without that input.
+
+The three new modules contain eight theorem declarations and compile
+in a 44-module closure. The numbered catalogue and upstream port scope
+are unchanged.
