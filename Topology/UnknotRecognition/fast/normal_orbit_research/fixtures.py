@@ -109,3 +109,29 @@ def boundary_cap(raw, coordinates):
             extension[permutation[v]] = rows[t][v] + rows[t][4 + _quad(f, v)]
     rows.append(extension)
     return {'tetrahedra': faces}, rows
+
+
+def interior_vertex_torus():
+    """Fixed 1-4 subdivision with sphere, disc and Mobius basis vectors.
+
+    The three basis surfaces are an interior vertex sphere, a boundary vertex
+    disc, and a properly embedded Mobius band. Their independently exported
+    normal vectors are compatible. No Regina call is needed to reproduce them.
+    """
+    specifications = [
+        [(3,[3,1,2,0]),(2,[0,3,2,1]),(1,[0,1,3,2]),None],
+        [(3,[2,1,0,3]),(2,[0,2,1,3]),None,(0,[0,1,3,2])],
+        [(3,[1,0,2,3]),(3,[3,0,1,2]),(1,[0,2,1,3]),(0,[0,3,2,1])],
+        [(2,[1,2,3,0]),(2,[1,0,2,3]),(1,[2,1,0,3]),(0,[3,1,2,0])],
+    ]
+    raw = {'tetrahedra': [[None if item is None else
+                          dict(tetrahedron=item[0],permutation=item[1])
+                          for item in row] for row in specifications]}
+    basis = dict(
+        sphere=[[0,0,0,1,0,0,0],[0,0,1,0,0,0,0],
+                [0,1,0,0,0,0,0],[1,0,0,0,0,0,0]],
+        boundary_disk=[[1,1,1,0,0,0,0],[1,1,0,1,0,0,0],
+                       [1,0,1,1,0,0,0],[0,1,1,1,0,0,0]],
+        mobius=[[0,0,0,0,0,1,0],[1,0,0,0,0,0,0],
+                [0,0,0,0,0,1,0],[0,0,1,0,0,0,0]])
+    return raw, basis
