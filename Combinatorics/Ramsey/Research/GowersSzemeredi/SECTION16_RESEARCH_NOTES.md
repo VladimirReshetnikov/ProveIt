@@ -5413,19 +5413,13 @@ exponent `D ≤ 2^64`. The steps, in order:
    and the host part of `Proofs16VarietyTheoremThree`). The four named
    constants are at most `2^1700`.
 
-*Verification status.*
-- Checked locally: the OAI-free modules, i.e. absorption, piece budget,
-  loss bound, scale bounds, count bounds and the Weyl bounds.
-- Checked against stubs: the modules downstream of
-  `Proofs05SchmidtRecurrence`, i.e. the refactored chain, the explicit
-  decomposition, shape matching, the budgeted piece and the constant
-  bookkeeping. The stubs replace only the OAI-backed recurrence proof,
-  and the explicit constants enter the assembly only through their
-  numeric bounds.
-- Host only: the unfolding of the port's `schmidtRecurrenceBase` in
-  `Proofs16VarietyTheoremThree`. Its proof script was checked against
-  verbatim copies of the definitions.
-- The full kernel check belongs to the full-verification host.
+*Verification status (full check, 2026-10-09).* All of these modules,
+including the unfolding of the actual port's recurrence definitions in
+`Proofs16VarietyTheoremThree`, now compile against the real selected
+sources. No scratch stubs enter this verification. The merged audit
+checks 7,867 public Gowers theorems in 5,286 modules using only
+`propext`, `Classical.choice`, and `Quot.sound`; see J.126. The deep
+structure hypothesis remains unproved.
 
 *What is still open* for 16.2 and 16.11 in dimension three is only
 `MilicevicDeepVarietyStructure D` for some `D ≤ 2^64`, which is the
@@ -7888,5 +7882,25 @@ construct the missing deep bilinear variety structure or close any
 numbered catalogue entry. No upstream port or license scope is added.
 
 **Verification.** The complete shift-anchor-map closure checks 337
-modules. All seventeen new named theorems are included in individual
-axiom checks. Final merged audit results are recorded below.
+modules. All seventeen new named theorems pass individual axiom checks.
+Final merged audit results are recorded below.
+
+
+**Incoming constant discharge and final verification.** The merged
+`Proofs16VarietyTheoremThree` proves the per-degree Schmidt bounds from
+the actual OAI recurrence definitions and the verified Weyl bounds.
+It discharges the four named constant assumptions, so
+`theorem_16_2_at_three_of_deep` and
+`corollary_16_11_at_three_of_deep` require only deep variety structure
+with `D <= 2^64`. The generalized loss lemma also accepts bounds on
+the two Milićević values directly, retaining the original fixed-`D`
+result as a corollary. All these sources pass the full kernel check.
+
+The merged audit checks 7,867 public Gowers theorems in 5,286 modules
+(5,284 facade modules, including 4,152 OAI modules), using only
+`propext`, `Classical.choice`, and `Quot.sound`. The regenerated ledger
+records the two new conditional consequences and refreshed source
+locations; its 115 companions and five open entries are unchanged.
+The port-scope check still reports 4,134 upstream and 17 compatibility
+modules, with reciprocal-only dependencies excluded. No upstream
+source or license scope was changed.
