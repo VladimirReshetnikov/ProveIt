@@ -1289,21 +1289,13 @@ The variety route splits this into three steps.
    **Remaining for `StackableStructureAt 2`:** Milićević's theorem (a
    hypothesis), and stackability of the variety class (step 3).
 
-   **Adapter to the joint cover (`Proofs16VarietyPieceJoint`,
-   kernel-checked).** The peer's `exists_joint_freiman_variety_cover` needs
-   one common mixed-phase count and each graph as `IsGraphOver` a shifted
-   half-radius variety. `IsVarietyPiece.joint` supplies both:
-   - L is padded by zero maps to ⌊B⌋ phases (`padPhases`). Zero maps are
-     Freiman-linear, and their conditions always hold, so the variety does
-     not change (`bilinearBohrVariety_padPhases`).
-   - The piece graph (`pieceGraph`) is `IsGraphOver` the shifted V(ρ/2),
-     with radius ≥ exp(−B).
-
-   With the peer's cover, the union of any n pieces from
-   `structure_side_of_milicevic` is then multiply linear with count 9n. The
-   exponent is polynomial in n·B, after the uniformity lemmas of
-   `Proofs16FreimanVarietyUniform`. That final composition imports the OAI
-   chain, so it belongs on the full-verification host.
+   **Adapter to the joint cover: done by the peer.**
+   `Proofs16JointVarietyUniform` pads phases (`padFreimanPhases`,
+   `bilinearBohrVariety_pad`). `Proofs16VarietyPieceFamilyCover` covers any
+   finite family of `IsVarietyPiece` graphs with 9n maps.
+   `Proofs16VarietySliceProvider` builds `Section16SliceProvider` from it.
+   My parallel `Proofs16VarietyPieceJoint`, which landed two minutes later,
+   duplicated the padding and was removed; git history keeps it.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
