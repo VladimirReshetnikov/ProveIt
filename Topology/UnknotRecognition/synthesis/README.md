@@ -880,3 +880,14 @@ to an unprobed general reducer. The global discovery bound remains open.
 The complete-recognition follow-up finishes all 760 measurements without
 establishing a broad whole-input gain; Gordian retains its proof and saves
 only 60 work units out of about 1.27 million.
+
+[`elimination_batch.tex`](elimination_batch.tex) extends raw elimination to
+acyclic singleton definitions with arbitrary word images. It proves the
+simultaneous Tietze transformation, polynomial encoded compilation/replay,
+and a conditional depth bound while retaining the missing global hypotheses.
+Version-eight replay is independent, and literal expansion is preflighted.
+The optional host uses a capped trial and original-source fallback because
+the changed order can make later exposure harder. All 1,008 tests pass;
+all 240 prior-mode results are unchanged and fallback retains 53 prior
+positives on 80 diagrams. Full-call measurements retain both gains and
+regressions; the default stays unchanged.

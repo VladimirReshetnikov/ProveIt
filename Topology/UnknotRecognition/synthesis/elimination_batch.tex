@@ -1,0 +1,240 @@
+\section{Acyclic elimination with nonmonomial word images}
+\label{sec:elimination-batch}
+
+Primitive forests replace generators by powers of individual surviving
+generators. A more general batch can replace a generator by an arbitrary
+word, provided each defining relator contains that generator exactly once
+and the chosen definitions have no cyclic dependencies. The resulting
+implementation compiles a linked word circuit once, rather than expanding
+definitions or repeatedly normalizing after individual eliminations.
+This broadens the available raw batch operation. It does not prove that
+arbitrary knot diagrams admit a short sequence of such batches.
+
+\subsection{The simultaneous Tietze transformation}
+
+Let a selected relator be $Lx^\varepsilon R$, where $\varepsilon\in\{1,-1\}$
+and neither $L$ nor $R$ contains $x$ or $x^{-1}$. Its equation is equivalent to
+\[
+ x=W_x,\qquad W_x=
+ \begin{cases}
+ L^{-1}R^{-1},&\varepsilon=1,\\
+ RL,&\varepsilon=-1.
+ \end{cases}
+\]
+Different chosen generators must use different original relator slots.
+Draw an edge from $x$ to each other chosen generator occurring in $W_x$.
+Assume this graph is acyclic. In dependency order, replace every chosen
+letter in $W_x$ by its already resolved word. This defines a homomorphism
+$\phi$ from the old free group to the free group on the surviving generators.
+It fixes every survivor.
+
+Repeated elementary Tietze elimination in that dependency order proves
+\[
+ \langle X\mid\mathcal R\rangle\cong
+ \left\langle X\setminus E\ \middle|\
+ \phi(r),\ r\text{ in an unselected original slot}\right\rangle.
+\]
+Each selected equation becomes trivial under $\phi$, which justifies
+clearing exactly its selected slot. Every other slot, including empty or
+repeated roots, is retained. A cycle is not allowed: simultaneous equations
+$x=y$, $y=x$ do not justify deleting both generators. The source-replay
+checker therefore validates the complete dependency graph before applying
+the quotient.
+
+This theorem is valid for arbitrary presentations and uses no
+torsion-freeness hypothesis. A knot verdict still requires the validated
+source diagram and replay of the entire presentation prefix. The existing
+rank-one exponent endpoint and rank-two primitive-power endpoint retain
+their source-dependent interpretation. The local batch helper alone is
+not a knot-recognition API.
+
+\subsection{Planning and compiling the raw circuit}
+
+The producer caches presence and repetition bit masks at immutable word
+nodes. At a concatenation, presence is union, and repetition is the union
+of child repetitions and their common presence. Thus a present but
+unrepeated generator occurs exactly once, without inspecting expanded
+letters. Generator bit positions remain fixed throughout a search; current
+slots and live membership are checked afresh.
+
+Candidates retain the earlier singleton cost ordering: relation length
+and total generator occurrence count determine the primary score, with
+original slot and generator order breaking ties. The greedy planner picks
+at most one definition per generator and one per donor slot. Before adding
+the outgoing dependencies of a new chosen generator, it checks whether
+any dependency already reaches that generator. This rejects cycles even
+when their other edges came from earlier selections. It leaves at least
+one generator alive. Search uses a batch only when at least two generators
+are selected and therefore skips planning below rank three. No optimality
+or general rank-halving property is asserted for this greedy selection.
+
+For each selected donor the producer finds its unique occurrence and
+constructs $W_x$ by exact substring and inverse operations. These are raw
+circuits; no free reduction is required. It then links terminal $x$ to
+the circuit for $W_x$, and terminal $x^{-1}$ to its inverse. Original word
+concatenations and these new definition links form an acyclic graph.
+An iterative postorder evaluation maps each encountered source node once,
+building shared output concatenations. The word circuit may have forward
+links relative to its old allocation order, so merely scanning old node
+identifiers would be incorrect. The dependency graph supplies the missing
+topological justification.
+
+If another batch is available, search continues on raw roots. Otherwise
+it records the existing explicit normalization boundary before returning
+to positional overlap and Whitehead moves. A terminal can instead close
+the raw state. Nonmonomial definitions can create many power runs, so the
+bounded-run closure theorem of Section~\ref{sec:syllable-normalization}
+does not automatically extend to these normalized phases.
+
+\subsection{Version eight and independent replay}
+
+A version-eight \texttt{elimination\_batch} move contains a nonempty
+\texttt{entries} list. Each entry has exactly its original relation slot
+and eliminated generator. The checker accepts no caller-provided word
+images, occurrence summaries, dependency graph or topological order.
+It checks strict integer types, live membership, valid distinct slots,
+distinct generators and preservation of at least one live generator.
+
+Compressed replay independently derives every unique occurrence and its
+donor support from the reconstructed words. It builds its own definitions
+and checks their dependency graph with a queue-based topological traversal.
+It then evaluates the linked word circuit with a second Kahn traversal,
+using incoming-edge counts and reverse adjacency, rather than the
+producer's postorder mapping. No producer planner, metadata or application
+routine is imported. Both evaluators implement the same proved quotient
+while preserving separate word-processing code.
+
+Literal replay derives the equations directly from lists. Before expanding
+any substituted definition, it computes all resolved image lengths in
+dependency order and the total retained-output length. It checks and charges
+the total storage for positive and negative images and retained words before
+allocating them. Large compressed certificates can therefore exhaust literal
+replay while remaining inexpensive to check with word circuits. Failure
+does not turn into a verdict. Both replay paths propagate external
+cancellation and retain all existing resource limits. Legacy versions
+remain accepted, and a version-eight move is rejected in an older wrapper.
+
+\subsection{Encoded cost of a batch and conditional depth bounds}
+
+Let $k$ be the number of chosen definitions, $M$ the historical grammar
+size, $H\le M$ its maximum reachable height, $r$ the live rank and $B\ge1$
+the maximum represented-length bit size. Each donor image is a substring
+rotation with a possible inverse. Exact slices add $O(H)$ nodes per donor;
+shared inverses add at most a constant multiple of the nodes they invert.
+The linked-circuit evaluation then allocates at most one concatenation
+per needed source concatenation. A conservative resulting storage bound is
+\[
+ M'=O(M+kH+k)=O((k+1)(M+1)).
+\]
+Occurrence scans, dense support masks, greedy cycle checks, slicing,
+topological replay and integer length arithmetic are polynomial in the
+encoded input parameters. Separate donor scans may revisit source nodes;
+the implementation does not claim one linear metadata pass for all replay
+checks. Identifier encoding and dictionary-access qualifications are the
+same as for the preceding compressed operations.
+
+If $L$ bounds an old expanded length, a resolved definition along a chain
+of at most $k$ selected generators has length at most
+$\max(2,L)^k$. A retained relator has length at most
+$\max(2,L)^{k+1}$. Hence
+\[
+ B'=O((k+1)(B+1)).
+\]
+Together these estimates give polynomial encoded cost for an entire batch,
+independent of the expanded output size and with polynomial dependence on
+dependency depth. For $d$ raw phases, allowing both these and the earlier
+monomial batches, a conservative composition bound is
+\[
+ \operatorname{poly}(\text{initial encoded parameters})\,
+       2^{O(d\log(r_0+1))}.
+\]
+If each successful phase removed a fixed fraction of the remaining rank,
+there would be $O(\log r_0)$ phases and this part would be quasipolynomial.
+That rank-reduction hypothesis, arrival at a checked endpoint, and the
+cost of arbitrary intervening normalization or exposure remain unproved
+for general diagrams. The new batch closes an encoded-operation gap, not
+the global discovery gap.
+
+The capacity family is explicitly nonmonomial. With two surviving letters
+$a,b$, define each successive generator by
+\[
+ x_i=(x_{i-1}a x_{i-1}^{-1}b)^{2^s},\qquad x_0=a.
+\]
+The raw length recurrence is $\ell_i=2^s(2\ell_{i-1}+2)$, $\ell_0=1$.
+Eight levels with $s=128$ give 1,034-bit output lengths and grow the arena
+from 1,076 to 3,959 nodes. Sixty-four levels with $s=64$ grow 4,484 nodes
+to 17,215 and give 4,162-bit lengths. At sixty-four levels and $s=1024$,
+65,924 nodes grow to 261,055, while the length needs 65,602 bits.
+These node counts include the empty node. Separately initialized producer
+and checker arenas give identical structural root digests and exact lengths.
+These are presentation-capacity checks with two surviving generators,
+not difficult knot instances or whole-recognition timing claims.
+
+\subsection{A capped adaptive trial protects the established search}
+
+Changing elimination order can make later exposure harder even when the
+batch itself is cheap and valid. On the Gordian source, direct batch search
+eliminates 127 generators in two batches but exhausts a two-million-work
+allowance. The prior search succeeds. Thus soundness and fewer elimination
+rounds do not imply faster complete recognition.
+
+The public host treats this new schedule as a bounded trial. With producer
+allowance $W$, it gives the trial $\min(\lfloor W/4\rfloor,50000)$ work
+units. On a nondecision or local resource exhaustion it reconstructs the
+original diagram's presentation and invokes the preceding compressed
+policy. The fallback receives $W$ minus the work charged or reserved for
+the trial. On an exception the entire trial quota is reserved at minimum,
+because initial presentation recovery can fail before arena counters are
+updated. A final aggregate charge can cross the nominal allowance; its
+reported cost is also deducted. The host retains the trial statistics even
+if fallback later exhausts its remaining allowance.
+
+Both attempts share the existing wall deadline, and caller cancellation
+propagates rather than triggering a restart. Mandatory independent replay
+still checks any returned certificate under its existing verifier allowance.
+The restart uses the original source, not the modified batch state whose
+subsequent search stalled. This preserves the useful alternative search
+order at a bounded cooperative-work cost; it does not promise identical
+coverage under every finite work or time limit, nor constant bit-time per
+charged operation.
+
+The \texttt{group\_decide} API accepts \texttt{elimination\_batch=True}.
+
+For \texttt{recognize}, enable \texttt{use\_group=True} and
+\texttt{group\_elimination\_batch=True}.
+
+The CLI flag is \texttt{--group-elimination-batch}. The option implies
+compressed search and replay and is incompatible with the older
+explicit-to-compressed adaptive-search flag. It defaults to false and can
+be combined with primitive projection/forest options. The lower-level
+\texttt{compressed\_certificate} API also accepts
+\texttt{elimination\_batch=True}. It exposes direct batch search with
+the caller's full allowance; its result is a
+certificate, not an independently verified verdict.
+
+\subsection{Validation and measurements}
+
+Eight focused tests cover one hundred random dependency DAGs with exact
+literal homomorphism oracles; positive and negative occurrences; cyclic
+donor rotations; empty definitions; unrelated and repeated retained slots;
+deep nonmonomial circuits; strict fields, cycles, duplicate donors and
+generators; source rebinding; independent replay; preflight allocation;
+CLI dispatch; cancellation; and original-source fallback accounting.
+The full maintained suite passes 1,008 tests with Regina in 213.793 seconds.
+
+Against the full pinned package at \texttt{3346396cd135}, eighty actual
+diagrams preserve all 240 results in the three prior modes. Every positive
+proof passes both literal and compressed source reconstruction and replay.
+Direct batch search returns 52 positive certificates, 47 of them version
+eight; it loses Gordian relative to the old 53-positive set. The capped host
+returns all 53 prior positives, with no new positive in this sample.
+The audit, including the capacity checks, takes 13.718 seconds.
+
+\input{elimination_batch_results.tex}
+
+The driver is \path{primitive_power_research/elimination.py} in
+\path{../fast}, with \texttt{audit}, \texttt{benchmark} and \texttt{stages}
+modes. Each run pins the complete prior package, checks 138 current source
+hashes before and after execution, and retains full proofs, shuffled sample
+orders, controls, work counters and incomplete outcomes. The circle stages
+bypass earlier simplification and cannot be reported as whole-knot speedups.

@@ -2371,3 +2371,37 @@ python -B primitive_power_research/syllable_frontier.py benchmark --output resul
 All 760 complete-recognition measurements also finish, but they do not
 establish a broad whole-input speedup: Gordian saves only 60 charged work
 units out of about 1.27 million and retains the same certificate.
+
+### Acyclic elimination with general word images
+
+`compressed_certificate(..., elimination_batch=True)` enables version-eight
+batches of distinct singleton donors with acyclic dependencies. Their images
+can be arbitrary words. One linked-circuit pass performs the simultaneous
+substitution without expansion or repeated normalization. Independent compressed
+replay uses Kahn evaluation; literal replay preflights all expanded images.
+All 1,008 maintained tests pass, including random DAG word oracles, deep
+nonmonomial images, strict forgery checks and complete source replay.
+
+Use `group_decide(..., elimination_batch=True)`,
+`recognize(..., use_group=True, group_elimination_batch=True)`, or
+`--group-elimination-batch` for the adaptive host. It gives the new schedule
+`min(max_work//4, 50000)` producer work units, then restarts the established
+compressed policy from the original source on nondecision. Charged or reserved
+trial work is deducted from the fallback allowance; the wall deadline is shared.
+The option implies compressed search/replay, defaults to false, and is mutually
+exclusive with the older explicit-to-compressed `group_adaptive` option.
+
+The 80-diagram audit preserves all 240 results in the prior modes. Direct
+batching loses one of 53 positives; capped fallback retains all 53. Whole-input
+timings show both wins and substantial regressions, so this is an optional
+alternative rather than a new default. The detailed
+[`article section`](../synthesis/elimination_batch.tex) gives the Tietze proof,
+polynomial encoded batch cost, conditional raw-phase bound, capacity checks,
+and separate complete-recognition and checked-stage measurements. General
+short-depth discovery and quasipolynomial recognition remain unproved.
+
+```sh
+python -B primitive_power_research/elimination.py audit --output results/elimination_batch_audit_20261008.json
+python -B primitive_power_research/elimination.py benchmark --output results/elimination_batch_pipeline_20261008.json
+python -B primitive_power_research/elimination.py stages --output results/elimination_batch_stages_20261008.json
+```

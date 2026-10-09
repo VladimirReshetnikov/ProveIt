@@ -1511,3 +1511,19 @@ def normalization_tables(prefix):
 
 for normalization_prefix in ('syllable_normalization','syllable_frontier'):
     normalization_tables(normalization_prefix)
+
+for elimination_mode in ('pipeline','stages'):
+    data=load(f'../fast/results/elimination_batch_{elimination_mode}_20261008.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['source']['name']) if elimination_mode=='pipeline' else str(r['source']['crossings'])]
+        arms=('old','current','portfolio') if elimination_mode=='pipeline' else ('old','old_forest','direct','portfolio')
+        cells+=['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in arms]
+        ratios=('portfolio',) if elimination_mode=='pipeline' else ('direct','portfolio')
+        cells+=['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ratios]
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Input & old ms & default ms & portfolio ms & old/portfolio' if elimination_mode=='pipeline' else
+        'Crossings & old ms & forest ms & direct ms & portfolio ms & old/direct & old/port.')
+    open(f'tables/elimination_batch_{elimination_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (len(arms)+len(ratios)))+'@{}',rows)+'\\end{center}\n')
