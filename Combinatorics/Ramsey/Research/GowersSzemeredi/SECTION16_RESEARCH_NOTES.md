@@ -1094,6 +1094,52 @@ differently:
 So Qb(θ) ≥ 4T², which is quasi-polynomial in 1/ρ and polynomial-exponent
 in the rank. On wide boxes, choose H₂ as the largest h with
 h^(e₁e₂) ≤ P.width, and take Eb = 1/(2e₁e₂).
+
+**Done, by the peer (2026-10-08).** `exists_freiman_variety_cover`
+(`Proofs16FreimanVarietyCover`, built on `Proofs16FreimanVarietyProfile`)
+carries out this bookkeeping with the actual partition theorem, so it is
+unconditional given the Freiman data. Small boxes use the existing coarse
+cover (`multiplyLinearWith_of_large_box_covers`), which needs only **9**
+maps. My parallel `variety_multiplyLinear_all_scales` landed two minutes
+later with the weaker count 4T². It was removed as a strict duplicate;
+see git history at 5758b5634. Lessons:
+- On narrow boxes, cells need width only ≥ w^Eb, not w. Even the
+  constant-cover route then costs about 4H₀ maps, not 4T².
+- `set` on `⌈·⌉₊` makes `nlinarith` whnf-unfold `Nat.ceil` on ℝ and time
+  out. Introduce such scales opaquely, with
+  `obtain ⟨H₀, hH₀⟩ : ∃ H₀, H₀ = … := ⟨_, rfl⟩`.
+
+**So item (R) of Part J is reduced to Milićević's structure alone.** Given
+`MilicevicDeepVarietyStructure`, one variety's agreement graph is
+multiply linear with count 9 (shift by (s, t): `MultiplyLinearWith.translate`).
+
+**Heads-up for the stacking step (Part J's `CubicStackableClass`).** The
+class fixes dimension one's controls: count 3nq and exponent
+cubicBaseExponent(nq)(θ) = 2⁻²⁷θ³/(nq)⁴, which is degree 4 in the number n
+of stacked members. Stacking n varieties by one joint two-stage partition
+(all n(|Γ|+|Ψ|) linear phases, then all nr mixed phases) gives inverse
+exponent ≈ p²(nr+1)⁸(n(|Γ|+|Ψ|)+1)⁸, degree **16** in n. Matching
+2⁻²⁷/(nq)⁴ at θ = 1 needs q⁴ ≳ 2⁻²⁶p²r⁸(|Γ|+|Ψ|)⁸·n¹². No fixed q works
+for all n. Sequential refinement is worse, since exponents multiply.
+Possible repairs:
+- (i) restate the cubic lift and `CubicStackableClass` with polynomial
+  controls of general degree, (C n^a q, c θ^b/(nq)^a′);
+- (ii) bound n by the lift's slice count R(θ, γ) and let q absorb poly(R).
+  Then q is quasi-polynomial, and `PolyBoundedControl` has to weaken
+  accordingly (J.3);
+- (iii) a stacking argument that does not partition jointly.
+
+**Correction (same night): repair (i) already exists at the lift level.**
+The peer's polynomial lift `Proofs16PolynomialMultilinearCover`, unlike
+the cubic packaging above, quantifies over **arbitrary** slice controls
+`Section16SliceProvider B₁ φ₁ Pb Es`. It evaluates them only at
+r = `samples` = ⌈6·max(1, q_Γ)/σ⌉. The count becomes
+max(Pb, C(samples,2)·Pb²), and the width exponent is
+`Es samples σ`. A degree-16 stacking exponent is therefore admissible as
+it stands. Only Part J's packaging, `CubicStackableClass` with
+`cubicBaseExponent`, is rigid. So the dimension-two slice provider for
+varieties should target `Section16SliceProvider` with its own (Pb, Es),
+not `CubicStackableClass`.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
@@ -1102,6 +1148,43 @@ dimension-three budget (H.5).
 **Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
+
+### J.4 The structure side (S) in dimension two (2026-10-08)
+
+Part J's `StackableStructureAt 2 Q q` asks that, after removing θ of the
+base, every product relation be covered by Q members of a stackable class.
+The variety route splits this into three steps.
+
+1. **Extraction (open).** From a relation with the product property,
+   extract Freiman bihomomorphisms on dense sets. In dimension one this is
+   `section16_extract_uniform_base_family`, which yields Freiman
+   8-homomorphisms. In dimension two the analogue is a bilinear
+   Balog–Szemerédi–Gowers step. It is the first stage of the U⁴ inverse
+   theory, and Milićević's papers carry quasi-polynomial versions. It is
+   not formalized here.
+2. **Greedy covering (proved, `Proofs16VarietyGreedyCover`).**
+   `greedy_variety_cover`: from `MilicevicDeepVarietyStructure D` and a
+   Freiman bihomomorphism φ on A₀, cover A₀ up to fewer than θN² points by
+   at most exp(B(θ)) **variety pieces**. Here B(θ) =
+   `milicevicBound D θ`. A piece is a set G with variety data within
+   Milićević's bounds at density θ, and a Freiman bihomomorphism Φ on V(ρ),
+   such that q − (s,t) ∈ V(ρ/2) and φ q = Φ(q − (s,t)) for every q ∈ G.
+   The recursion stays inside A₀ (`IsEBihomomorphism.mono`), and each step
+   removes at least exp(−B(θ))N² points (`exists_variety_piece`). The count
+   exp(B(θ)) is quasi-polynomial in 1/θ. Axioms: propext, Classical.choice,
+   Quot.sound.
+   `greedy_variety_cover_family` handles n bihomomorphisms φ_j on
+   domains A_j, which is what step 1 will produce. It uses at most
+   n·exp(B(θ/n)) pieces, each tagged with its owner j, and one exceptional
+   set U with |U| < θN². Every point of A_j outside U lies in some piece
+   owned by j. So if step 1 covers a relation Γ over J by the graphs of φ_j
+   on A_j, then Γ over J ∖ U is covered by the pieces' graphs. That is the
+   covering half of `StackableStructureAt 2`.
+3. **Stacking (open; the peer's lane).** One piece is multiply linear with
+   count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
+   once need a joint partition, with inverse exponent of degree 16 in n.
+   They should feed the polynomial lift's general `Section16SliceProvider`
+   controls (J.2 heads-up), not `CubicStackableClass`.
 
 ### J.3 Where the exponential in q comes from, and a lead for (D) (2026-10-08)
 
@@ -1686,3 +1769,36 @@ bihomomorphism and the deep-agreement structure theorem remain hypotheses.
 The new controls depend on the actual ranks and radius, with existential
 universal `C,p`; comparison with the manuscript's prescribed all-dimension
 controls and final explicit bounds remains separate.
+
+### Uniform controls and the conditional deep-agreement consequence
+
+`Proofs16FreimanVarietyUniform` proves the required comparisons explicitly:
+increasing either rank bound and decreasing a positive radius lower bound
+can only weaken the capped cover exponent. The resulting uniform cover
+uses rank bounds `S,R` and radius lower bound `delta`, independently of the
+particular variety.
+
+`Proofs16DeepVarietyCover.exists_deep_variety_graph_cover` then sets
+`B=milicevicBound D c`, `R=ceil(B)`, `S=2*R`, and `delta=exp(-B)`.
+Conditional on `MilicevicDeepVarietyStructure D`, every eligible density-`c`
+partial bihomomorphism has a subgraph of size at least `exp(-B)*N^2` with
+nine-map all-box controls. Its positive exponent depends only on `c,D` and
+the universal constants `C,p`. Encoding the agreement set and translating
+to the original graph are injective, so no agreement mass is lost. Here
+`B=(2+2*log(c^(-1)))^D`; the exponential appears in the mass and radius
+bounds. The deep structure statement remains an explicit hypothesis.
+Both production sources and all eight new transitive axiom checks pass;
+the combined facade audit is queued. No new upstream module is added.
+
+### Completed combined audit (2026-10-08)
+
+The combined facade and port-import audit now includes all the graph-piece,
+variety-partition, uniform-control, and conditional deep-agreement results
+above. It checks 5,827 public Gowers theorems over a combined 2,644-module
+closure, using only `propext`, `Classical.choice`, and `Quot.sound`. The
+facade alone reaches 1,408 modules, including 667 OAI modules. The numbered
+catalogue remains 114 companions and six open statements, with the same
+source-fidelity caveats. The separate 3,700-entry quantitative port audit
+checks 56,621 public OAI theorems; the full density conclusion is still
+unverified. The earlier queued-audit notices above are superseded by this
+checkpoint.

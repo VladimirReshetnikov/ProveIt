@@ -68,6 +68,8 @@ import GowersSzemeredi.Proofs16PolynomialVarietyProfile
 import GowersSzemeredi.Proofs16PolynomialVarietyCover
 import GowersSzemeredi.Proofs16FreimanVarietyProfile
 import GowersSzemeredi.Proofs16FreimanVarietyCover
+import GowersSzemeredi.Proofs16FreimanVarietyUniform
+import GowersSzemeredi.Proofs16DeepVarietyCover
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
@@ -344,6 +346,7 @@ import GowersSzemeredi.Proofs16CellOscillation
 import GowersSzemeredi.Proofs16VarietyTranslate
 import GowersSzemeredi.Proofs16OscillationPartition
 import GowersSzemeredi.Proofs16OscillationPartitionInst
+import GowersSzemeredi.Proofs16VarietyGreedyCover
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
