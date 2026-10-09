@@ -78,7 +78,9 @@ def reproduce():
     proof = family_proof(raw)
     summary = inspect_one_vertex_family(raw,proof)
     assert summary is not None
-    surface = normal_surface_topology(raw,proof['coordinates'],record_certificate=True)
+    # Freeze the published v1 orbit trace; newer topology shortcuts are optional
+    # for this historical certificate's exact reproduction.
+    surface = normal_surface_topology(raw,proof['coordinates'],record_certificate=True,coorientation=False)
     assert verify_normal_surface_certificate(raw,proof['coordinates'],surface['certificate'])
     answer = normal_compressing_disk_count(raw,DISC,record_certificate=True)
     assert answer['compressing_disk_components'] == 1

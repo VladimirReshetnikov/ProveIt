@@ -157,12 +157,12 @@ class NormalBoundaryTests(unittest.TestCase):
                 verify_normal_surface_certificate(raw,vector,proof)
         with self.assertRaises(ValueError):normal_surface_topology(raw,vector,classify_boundary=1)
 
-    def test_default_proof_formats_and_empty_classification(self):
+    def test_legacy_proof_formats_and_empty_classification(self):
         raw,base=layered_torus(1)
         for k in (1,3):
             vector=[[k*x for x in row] for row in base]
-            default=normal_surface_topology(raw,vector,record_certificate=True)
-            self.assertEqual(default,normal_surface_topology(raw,vector,record_certificate=True,classify_boundary=False))
+            default=normal_surface_topology(raw,vector,record_certificate=True,coorientation=False)
+            self.assertEqual(default,normal_surface_topology(raw,vector,record_certificate=True,classify_boundary=False,coorientation=False))
             self.assertEqual(default['certificate']['schema'],'normal-surface-topology-v'+str(1 if k==1 else 2))
             self.assertFalse(set(_BOUNDARY_FIELDS)&set(default))
             self.assertTrue(verify_normal_surface_certificate(raw,vector,default['certificate']))

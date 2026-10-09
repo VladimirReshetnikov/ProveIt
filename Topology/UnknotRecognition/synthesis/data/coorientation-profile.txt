@@ -1,0 +1,42 @@
+Diagnostic cProfile run before the change, baseline 7d9a6f60824a2fbc7e2a3421b7a74f3abb67387d.
+Input: layered_torus(256), normal_surface_topology(record_certificate=True), then independent replay.
+Profiler overhead is included; these are not benchmark timings.
+
+Fri Oct  9 08:22:22 2026    /tmp/unknot-topology256-profile.bin
+
+         16062565 function calls (16049127 primitive calls) in 7.866 seconds
+
+   Ordered by: cumulative time
+   List reduced from 296 to 28 due to restriction <28>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    5.286    5.286 normal_surface_orbits.py:91(normal_surface_topology)
+        3    0.663    0.221    5.192    1.731 interval_orbits.py:215(count_orbits)
+        1    0.000    0.000    2.583    2.583 normal_surface_verify.py:84(verify_normal_surface_certificate)
+        3    0.000    0.000    2.500    0.833 interval_orbit_verify.py:134(verify_orbit_certificate)
+        3    0.519    0.173    2.499    0.833 interval_orbit_verify.py:154(_verify)
+      778    0.688    0.001    1.478    0.002 interval_orbits.py:126(_contract)
+   164118    0.404    0.000    1.457    0.000 interval_orbit_verify.py:123(_transmitted_row)
+      778    0.513    0.001    1.293    0.002 interval_merger.py:127(support_closure)
+   164118    0.208    0.000    1.183    0.000 interval_orbits.py:189(_transmit)
+   169009    0.219    0.000    1.002    0.000 <string>:2(__init__)
+   169009    0.549    0.000    0.783    0.000 interval_orbits.py:54(__post_init__)
+   169009    0.431    0.000    0.662    0.000 interval_orbit_verify.py:29(_row)
+   348019    0.442    0.000    0.612    0.000 {built-in method builtins.sorted}
+  2041876    0.372    0.000    0.516    0.000 {built-in method builtins.max}
+    66312    0.028    0.000    0.417    0.000 interval_orbits.py:297(<lambda>)
+    66312    0.112    0.000    0.388    0.000 interval_orbits.py:167(periodic_merge)
+  1679546    0.355    0.000    0.355    0.000 interval_orbit_verify.py:21(_integer)
+   331071    0.189    0.000    0.305    0.000 interval_orbit_verify.py:73(_index)
+   328236    0.224    0.000    0.293    0.000 interval_orbit_verify.py:95(_inverse_image)
+  2707269    0.241    0.000    0.241    0.000 normal_surface_orbits.py:92(<lambda>)
+   796229    0.186    0.000    0.186    0.000 interval_orbits.py:76(periodic)
+   921972    0.162    0.000    0.162    0.000 interval_orbits.py:132(<genexpr>)
+    66837    0.153    0.000    0.153    0.000 {built-in method math.gcd}
+   676039    0.151    0.000    0.151    0.000 interval_orbits.py:33(_integer)
+   838865    0.148    0.000    0.148    0.000 {method 'get' of 'dict' objects}
+   460079    0.143    0.000    0.143    0.000 interval_orbits.py:310(<lambda>)
+      794    0.001    0.000    0.141    0.000 {method 'extend' of 'list' objects}
+     1802    0.086    0.000    0.139    0.000 interval_orbits.py:269(<genexpr>)
+
+Surface and double: 261 cycles and 82960 events each. Boundary: 259 cycles and 518 events.
