@@ -4720,3 +4720,37 @@ provenance/license files are unchanged.
   vanishing for abstract column-witness systems over `IsEBihomomorphism`.
   With the prime small-image rigidity they then go further, to exact
   column identities, and `many_exact_column_quadruples` does the count.
+
+
+### Proposition 5.1 assembled: from a Freiman bihomomorphism to exact column quadruples (2026-10-09)
+
+`Proofs16BihomWitnessSystem` connects the column modules
+(`Proofs16MilicevicColumns`, `Proofs16ColumnRepSystem`) to J.97's
+witness-system interface.
+- `column_freimanHom2`: every column of an `IsEBihomomorphism A φ {0}` is
+  a Freiman 2-homomorphism.
+- `exists_column_core`, `columnCore`, `columnCore_spec`: every column with
+  at least `αN` points has a Freiman 8-homomorphism core of size
+  `≥ κN`, where `κ = 2⁻¹⁸⁸²(α⁴)¹¹⁶⁴`.
+- `bihom_column_witness_system`: on the dense columns, the cores give a
+  system with `T x = columnSpectrum`, `L x = repMap` and
+  `W x = columnWitnesses`, satisfying `IsColumnWitnessSystem` at
+  `ρ = 1/(4π)`. Moreover `|T x| ≤ 16/κ²`, `L x` is Freiman-linear on
+  `B(T x; ρ)` with `L x 0 = 0`, and `κ⁴N⁴/4 ≤ 13^{|T x|}·|W x|`.
+- `denseColumns_card_ge`: `|A| ≥ δN²` gives at least `(δ/2)N` columns
+  with `(δ/2)N` points each.
+- `bihom_many_exact_column_quadruples`: let `φ` be a Freiman
+  bihomomorphism of density `δ`, in prime `ℤ/N` above the explicit
+  threshold `sharedWitnessImageCap d ρ θ < N`. It has at least `θN³`
+  additive quadruples of dense columns whose maps satisfy
+  `L x₀ + L x₁ = L x₂ + L x₃` exactly on `B(T; sharedWitnessKernelRadius)`.
+  The parameters are `α = δ/2`, `d = ⌊16/κ²⌋`,
+  `c = κ⁴/(4·13^d)` and `θ = c⁴α⁴/2`.
+
+This is Milićević's Proposition 5.1 (Step 1 of Theorem 1.4) with (iii)
+strengthened from bounded image to exact identities, by J.97's prime
+small-image rigidity. All bounds are explicit. They are polynomial in
+`δ` except through `13^d`, the Bohr density at the column spectrum's
+size, which is exponential in `δ^{-O(1)}`. Step 2 (Section 6, abstract
+Balog–Szemerédi–Gowers onto a set where almost all column quadruples
+are exact) is next. Standard axioms; collision gate clean.

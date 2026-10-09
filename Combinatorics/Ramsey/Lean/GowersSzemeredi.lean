@@ -522,6 +522,7 @@ import GowersSzemeredi.Proofs16WitnessProjection
 import GowersSzemeredi.Proofs16SharedWitnessZeros
 import GowersSzemeredi.Proofs16SharedWitnessKernel
 import GowersSzemeredi.Proofs16ManyExactColumnQuadruples
+import GowersSzemeredi.Proofs16BihomWitnessSystem
 import GowersSzemeredi.Proofs16CommonWitnesses
 import GowersSzemeredi.Proofs16RepresentedMap
 import GowersSzemeredi.Proofs16ColumnRepSystem
