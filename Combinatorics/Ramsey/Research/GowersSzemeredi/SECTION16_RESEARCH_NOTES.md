@@ -1860,3 +1860,22 @@ single-map greedy variety cover: 5,838 public Gowers theorems, 1,410 facade
 modules (667 OAI), and 2,646 combined modules. Only the three approved
 axioms occur. The catalogue remains at 114 companions and six open
 statements, with its existing source-fidelity caveats.
+
+### Family assembly and 3,800-entry audit checkpoint
+
+The combined Gowers audit now includes `greedy_variety_cover_family` and
+`variety_structure_side`: 5,849 public Gowers theorems, a 1,411-module
+facade (667 OAI modules), and 2,647 combined modules. Only the three
+approved axioms occur. The structure-side result retains both
+`BihomExtraction` and `MilicevicDeepVarietyStructure` as hypotheses.
+The numbered ledger reproduces exactly and remains 114/6 with its
+existing fidelity caveats.
+
+The first 3,800 pinned quantitative-port entries also pass: 3,816 build
+modules and 57,875 public OAI theorems in the separate 3,817-module axiom
+audit. This includes the explicit empty epoch-intersection compatibility
+repair. The later relative-patch finite-set repair passes its isolated
+production check but is beyond this audited prefix. Provenance checks
+retain all 4,134 pinned hashes, notices for 976 adapted files, and the
+original license/copyright notices. The full density conclusion remains
+unverified.
