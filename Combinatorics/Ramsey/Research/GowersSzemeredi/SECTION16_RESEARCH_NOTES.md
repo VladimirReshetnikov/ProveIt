@@ -8489,3 +8489,15 @@ the retained family, the translated tuple is additive because both the
 translation and centred tuple are additive. These two additional modules
 check in the 441-module production closure. All 22 new named theorems
 pass individual axiom checks. The full merged facade audit follows.
+
+
+**Final merged verification.** The full audit checks 8,165 public Gowers
+theorems in 5,354 combined modules (5,352 facade modules, including 4,152
+OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+All 22 new named theorems also pass their individual axiom checks. The
+regenerated numbered ledger is byte-for-byte unchanged at 115 companions
+and five open entries, retaining the documented statement-fidelity
+qualifications. The selected upstream scope remains 4,134 modules plus
+17 compatibility modules, with no new port or license requirement. The
+reviewed incoming main changes affect only the independent topology report
+and its measurements.
