@@ -1549,13 +1549,21 @@ the elementary lemmas of its §2:
   |aᵢ| ≤ K = O(k/(εη)). That is polynomial. The proof sandwiches 1_B
   between products of trapezoids, truncates their Fourier series
   (coefficients decay like 1/ξ²), and expands the product. Weak
-  regularity holds at every radius in ℤ/N (`bohr_annulus_card_le`).
+  regularity follows from `bohr_annulus_card_le` when the inner radius
+  is nonnegative and `|K|*(4*eta*N+2) <= (epsilon/2)*N`. The finite-size
+  term `2*|K|` must be retained; the statement is not uniform over
+  arbitrarily small epsilon at a fixed modulus.
   Formalization on ℤ/N, discretely:
   - **brick 1 done** (`Proofs16DirichletBound`, kernel-checked):
     `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
     the corpus's `four_centeredAbs_div_le_phase_norm`
     (`Proofs05PhaseMetric`, |e(ξ) − 1| ≥ 4|ξ|/N);
-  - next: the discrete trapezoid and its sandwich, its DFT via
+  - **brick A done** (`Proofs16Trapezoid`, kernel-checked): with
+    I_a = `centeredBall N a`, the trapezoid g = |{s ∈ I_a : |t−s| ≤ c}|/|I_c|
+    is 1 for |t| + c ≤ a, 0 for |t| > a + c, and lies in [0,1]. So
+    Π_{γ∈K} g(γx) equals 1 on B(K;(a−c)/N), vanishes off B(K;(a+c)/N),
+    and lies in [0,1] (`trapezoid_product_sandwich`);
+  - next: the trapezoid's DFT via
     convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
     bound, and the expansion.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
@@ -2626,3 +2634,43 @@ three new modules, registered in the facade. The combined audit is pending.
 This supplies genuine Bohr extensions, but does not establish the remaining
 bilinear structure, bounded-span duality, or printed Theorem 16.2 budget.
 No upstream port modules or numbered catalogue claims are added.
+
+
+The combined Bohr-selection audit now passes: 6,154 public Gowers theorems,
+a 4,944-module facade (4,152 OAI modules), and a 4,946-module combined audit
+closure. It includes the retained order-eight conclusions, dense selection
+invariants, uniform Bohr extensions, all-triples bound, and incoming
+Dirichlet character-sum estimate. Only propext, Classical.choice, and
+Quot.sound occur. The catalogue remains 115/5 with its fidelity caveats;
+this supersedes the pending audit notice for the selection extensions.
+
+
+### A common Bohr neighborhood for the selection family
+
+`Proofs16Corollary20CommonBohr` unions the individual spectra without
+shrinking the radius. `common_bohr_extensions` bounds the common rank by
+the sum of the individual rank bounds. `IsBHomomorphism.normalized_extension`
+extracts a difference map that vanishes at zero and is additive whenever
+its arguments and their sum belong to the neighborhood. Nonempty piece
+domains provide the normalization at zero.
+
+`corollary20_common_bohr` combines these facts with the all-triples
+selection theorem. Writing `kappa=corollary20Kappa (epsilon/2) K`, its
+common spectrum has size at most `(K/kappa+1)*16*kappa^-2`, radius
+`kappa/(32*pi)`, and normalized difference maps for every selected piece.
+It retains the order-eight property, the density and value-membership
+bounds, and fewer than `epsilon*N^3` bad witness triples when
+`N >= 8/epsilon`. No floor occurs in the spectrum bound.
+
+The three new theorem declarations compile in a 60-module source closure.
+They supply common parameters for the remaining bilinear argument; they
+do not discharge bounded-span duality, algebraic regularity, or the deep
+structure hypothesis. The combined audit is pending.
+
+The combined audit for the common-neighborhood extension has passed:
+6,169 public Gowers theorems, a 4,946-module facade (4,152 OAI modules),
+and a 4,948-module combined audit closure. Only propext, Classical.choice,
+and Quot.sound occur. This includes the incoming discrete trapezoid
+sandwich and supersedes the pending audit notice above. The source
+ledger matches the checked 115/5 catalogue, with its existing fidelity
+caveats. The port scope check still passes; no upstream modules were added.
