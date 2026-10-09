@@ -1,3 +1,5 @@
+/- Modified for ProveIt: give exists_preparedEmptyLayerLocalSchedule_budget
+   a finite local maxHeartbeats 400000 budget on Lean 4.32. Statements and proof bodies are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.EmptyLayerPrescribedScale
 import OAI.Combinatorics.Progressions.Estimates.PreparedFiniteScheduleWitnessScalarPower
 import OAI.Combinatorics.Progressions.Polynomial.PreparedFiniteNestedForwardAllDegreePaddedSource
@@ -193,6 +195,7 @@ theorem PreparedEmptyLayerLocalScheduleBudget.mono
   exact ⟨lift hg, lift hk, lift hp, lift ht, lift hr, lift htail, lift hl, lift hm,
     hres.mono hcap⟩
 
+set_option maxHeartbeats 400000 in
 theorem exists_preparedEmptyLayerLocalSchedule_budget (m nStages Cmax : ℕ) :
     ∃ C : ℕ, 2 ≤ C ∧
     ∀ {K G : Type} [Fintype K] [Fintype G]
