@@ -904,3 +904,17 @@ These are group-stage results. All 760 whole-recognition measurements finish,
 with no broad gain and additional Gordian trial work; 270 of 280 stage
 measurements finish, with all ten incomplete old outcomes retained. The
 strategy stays optional and the general quasipolynomial goal remains open.
+
+
+[`word_cache_frontier.tex`](word_cache_frontier.tex) proves exact inverse and
+free-reduction evaluation above cached grammar frontiers. Across completed
+queries, traversal costs `O(q + U log(U+1))` identifier operations; algebraic
+costs, interrupted attempts and overall grammar growth remain separate.
+All 1,018 tests pass, with 21,845 exhaustive short-word oracles and 400
+unchanged source-bound outcomes against the prior package. Every positive
+passes old/current literal and compressed replay. Synthetic 2,048-extension
+kernels improve about 119x for inversion and 138x for reduction, while full
+supplied-proof replay changes little. All 760 whole-recognition measurements
+complete, showing modest savings on several search inputs and retaining
+schedule regressions and A/A variation. The 352-page article records the
+proof, boundaries and reproducible evidence; the general QP goal is open.
