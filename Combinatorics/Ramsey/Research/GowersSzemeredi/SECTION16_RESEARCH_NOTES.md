@@ -8787,3 +8787,75 @@ radii; no estimates at further shrunk radii are silently assumed. A finite
 profile of radii can use the same sparse-relation certificate provided its
 cell parameter covers the smallest radius, but this extension remains to
 be formalized. No numbered entry is claimed closed.
+
+## J.137. Uniform radius profiles and coherent weak transitivity
+
+**One domain, all admissible radii.** `DenseBohrGraphProfiles` records
+positive-density box estimates for every pair `0 < nu <= eta < 1/4` with
+`1 <= nu*H`. The graph uses fixed frequencies at radius `eta` and varying
+frequencies at radius `nu`. Its density is at least `1/(2*H^m)`.
+`denseBohrGraphProfiles_of_sparse_relations` proves the entire profile from
+one bounded-relation certificate and one smoothing threshold.
+`exists_coherent_adaptive_profiles` constructs that certificate on the same
+refined domain as the retained coherent quadruples, with the exact adaptive
+state and all original source witnesses. No second refinement is needed
+when a smaller admissible radius is chosen.
+
+**Sharper coverage bound.** `box_empty_rectangle_card` and its finite-set
+version apply directly to a real-valued graph function that is zero on a
+rectangle. They prove `delta*|U|*|Z| <= epsilon*|B|*|C|` from a box bound
+`epsilon^4*|B|^2*|C|^2`. In the Boolean case this improves the previous
+variance-based missing-witness estimate: the density loss is linear in
+`delta*bridgeDensity`, instead of quadratic. Passing the actual graph
+function also avoids an expensive Lean definitional comparison between
+different decision procedures for the edge predicate.
+
+`quasirandom_freiman_zero` combines this estimate with
+`freiman_nonzero_card_half` and the Bohr cardinality lower bound. If a
+normalized Freiman map vanishes on all neighborhoods indexed by a set of
+at least `kappa*N` bridges, then it vanishes on the half-radius Bohr set,
+provided `2*M^|T|*epsilon < delta*kappa` and `(r/2)*M >= 1`.
+The profile specialization uses `M=2*H` and the sufficient inequality
+`4*(2*H)^|T|*epsilon < H^(-m)*kappa`.
+This step works for every nonzero modulus; it does not use prime-target
+frequency removal or its much smaller output radius.
+
+**Actual bridge composition.** `freiman_frequency_bohr_complete` proves
+that three frequency domains at radius `r/3` contain the fourth domain at
+radius `r` whenever the four frequency values satisfy the Freiman identity.
+`coherent_pair_weak_transitivity` applies this to bridges `(z+a,z)` between
+`(x+a,x)` and `(y+a,y)`. The two bridge identities make the endpoint defect
+vanish on the appropriate graph neighborhoods. The coverage theorem then
+proves the direct endpoint identity at radius `r/6`.
+All domains, endpoint memberships, bridge counts, and error conditions are
+explicit. The varying maps must be Freiman-linear on the common parameter
+domain, precisely as supplied by coherent regularity.
+
+**Finite chains with a concrete accuracy schedule.** The cell count
+`coherentRadiusProfileCells sigma ell depth =
+ceil(3*2^ell*6^depth/sigma)` pays for the one-third radii at every level
+`i <= depth`, after every possible regularity stopping time `s <= ell`.
+For `beta=H^(-m)`, `coherentBridgeAccuracy H m k eta` is
+`min(beta/2, beta*eta/(8*(2*H)^k))`. It is positive and satisfies the strict
+coverage inequality for bridge density `eta`.
+
+`exists_coherent_bridge_system` chooses
+`eta = retainedDensity^power/scale` at the exact stopping state and
+`k=4*(|B|+4*ell^2+ell)`. It constructs the original-witness-preserving
+coherent refinement, all admissible graph profiles, and a
+`CoherentBridgeSystem` along `tau/6^i`. The latter proves direct identities
+from sufficiently many same-level bridges with one further factor-six
+shrink. Here `power` and `depth` are arbitrary natural numbers and `scale`
+is any positive real number.
+
+The single-family and global wrappers choose all numerical parameters and
+use finite suprema over bounded frequency cardinalities. The global
+threshold depends only on the original density, chain depth, power, and
+scale. It retains the original column witnesses and popular anchor
+arrangements, so the actual-domain agreement theorem of J.136 still applies.
+
+This is the weak-transitivity input for the next combinatorial extraction,
+not the abstract Balog--Szemeredi--Gowers conclusion itself. Mixed-level
+composition, the dense relation catalogue, robust graph extraction and the
+subsequent local structure remain to be assembled. No numbered entry or
+final Gowers bound is claimed closed. Full verification follows.

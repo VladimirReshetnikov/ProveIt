@@ -8,16 +8,16 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 theorem box_empty_rectangle_card {X Y : Type*} [Fintype X] [Fintype Y]
-    (E : X → Y → Prop) (U : Finset X) (Z : Finset Y) {delta epsilon : Real}
+    (G : X → Y → Real) (U : Finset X) (Z : Finset Y) {delta epsilon : Real}
     (hd : 0 ≤ delta) (he : 0 ≤ epsilon)
-    (hbox : boxSum (fun x y => (if E x y then (1 : Real) else 0)-delta) ≤
+    (hbox : boxSum (fun x y => G x y-delta) ≤
       epsilon^4*(Fintype.card X : Real)^2*(Fintype.card Y : Real)^2)
-    (hempty : ∀ x ∈ U, ∀ y ∈ Z, ¬ E x y) :
+    (hempty : ∀ x ∈ U, ∀ y ∈ Z, G x y = 0) :
     delta*(U.card : Real)*(Z.card : Real) ≤ epsilon*Fintype.card X*Fintype.card Y := by
-  have h := abs_box_correlation_le (fun x y => (if E x y then (1 : Real) else 0)-delta)
+  have h := abs_box_correlation_le (fun x y => G x y-delta)
     he hbox (fun x => if x ∈ U then 1 else 0) (fun y => if y ∈ Z then 1 else 0)
     (fun x => by split_ifs <;> norm_num) (fun y => by split_ifs <;> norm_num)
-  have ht (x : X) (y : Y) : ((if E x y then (1 : Real) else 0)-delta)*
+  have ht (x : X) (y : Y) : (G x y-delta)*
       (if x ∈ U then 1 else 0)*(if y ∈ Z then 1 else 0) =
       if x ∈ U then (if y ∈ Z then -delta else 0) else 0 := by
     by_cases hx : x ∈ U <;> by_cases hy : y ∈ Z
@@ -35,18 +35,18 @@ theorem box_empty_rectangle_card {X Y : Type*} [Fintype X] [Fintype Y]
   exact h
 
 theorem box_empty_finset_rectangle_card {X Y : Type*} [Fintype X] [Fintype Y]
-    (E : X → Y → Prop) (B U : Finset X) (C Z : Finset Y)
+    (G : X → Y → Real) (B U : Finset X) (C Z : Finset Y)
     (hU : U ⊆ B) (hZ : Z ⊆ C) {delta epsilon : Real}
     (hd : 0 ≤ delta) (he : 0 ≤ epsilon)
-    (hbox : boxSum (fun (x : ↥B) (y : ↥C) => (if E x y then (1 : Real) else 0)-delta) ≤
+    (hbox : boxSum (fun (x : ↥B) (y : ↥C) => G x y-delta) ≤
       epsilon^4*(B.card : Real)^2*(C.card : Real)^2)
-    (hempty : ∀ x ∈ U, ∀ y ∈ Z, ¬ E x y) :
+    (hempty : ∀ x ∈ U, ∀ y ∈ Z, G x y = 0) :
     delta*(U.card : Real)*(Z.card : Real) ≤ epsilon*B.card*C.card := by
   let liftU : ↥U ↪ ↥B := ⟨fun x => ⟨x,hU x.property⟩,
     fun x y h => Subtype.ext (congrArg (fun z : ↥B => (z : X)) h)⟩
   let liftZ : ↥Z ↪ ↥C := ⟨fun y => ⟨y,hZ y.property⟩,
     fun x y h => Subtype.ext (congrArg (fun z : ↥C => (z : Y)) h)⟩
-  have h := box_empty_rectangle_card (fun (x : ↥B) (y : ↥C) => E x y)
+  have h := box_empty_rectangle_card (fun (x : ↥B) (y : ↥C) => G x y)
     (Finset.univ.map liftU) (Finset.univ.map liftZ) hd he
     (by simpa only [Fintype.card_coe] using hbox) (by
       intro x hx y hy
