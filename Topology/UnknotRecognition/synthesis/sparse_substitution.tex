@@ -1,0 +1,111 @@
+\section{Persistent letter summaries and sparse substitution}
+\label{sec:sparse-substitution}
+
+The frontier optimization of Section~\ref{sec:word-cache-frontier} leaves
+another repeated traversal in singleton discovery and substitution. An
+unchanged shared subword may already have an exact reduced result, yet a
+later singleton elimination still walks all its source nodes. The current
+word engine retains raw letter summaries and uses them to stop a warm
+substitution at subwords unaffected by the current image map. The operation
+remains exact simultaneous substitution followed by free reduction.
+
+\subsection{Immutable presence and repetition}
+
+For each raw grammar node $X$, store a pair $(P_X,R_X)$ of bit masks.
+$P_X$ marks absolute generator labels occurring at least once and $R_X$
+marks labels occurring at least twice, counting both signs. A terminal $a$
+has $(P_a,R_a)=(\{ |a|\},\varnothing)$; for $X=YZ$,
+\[
+ P_X=P_Y\cup P_Z,\qquad
+ R_X=R_Y\cup R_Z\cup(P_Y\cap P_Z).
+\]
+Thus $P_X\setminus R_X$ is exactly its singleton set. A shared child reached
+twice contributes twice to the expanded word, correctly detected by the
+intersection term. These are raw occurrences, not exponent sums.
+
+Dense bit positions are assigned once, when a label is first summarized,
+and appended as further labels appear. This avoids dependence on the numeric
+magnitude of a label. It also makes earlier masks valid forever, even if a
+new label is smaller than all previous ones. Returned singleton lists are
+sorted numerically to preserve the producer's previous tie-breaking behavior.
+A query follows the unresolved-node frontier, evaluates each newly reached
+node in allocation order, and publishes only completed exact summaries.
+The empty root is preseeded. Unlike the reduction cache, this metadata cache
+is descendant-closed: no other operation inserts a root-only shortcut.
+
+For $U$ distinct nodes first summarized, the completed discovery traversals
+cost $O(q+U\log(U+1))$ identifier operations over $q$ root queries, plus
+mask arithmetic and singleton decoding/sorting. With $a$ historically seen
+labels and $M$ historical nodes, stored masks use $O(Ma)$ bits, in addition
+to dictionary, label and node-identifier storage. A bitwise operation is
+charged for its operand width; it is not constant-time in the bit model.
+Repeatedly aborted discovery is outside the completed-query amortization.
+This trades persistent metadata memory for avoided recomputation and does
+not make a node-count allowance a bound on total process memory.
+
+\subsection{A fresh substitution map over a cached support frontier}
+
+For a call with images $I(a)$, let $C$ contain absolute labels whose supplied
+signed image is not syntactically that terminal. An absent image is identity.
+This conservative signed test may include both polarities when only one
+changes; that causes extra traversal but cannot omit a needed change.
+Image keys absent from the source terminal table are irrelevant.
+
+Use the support frontier only when every queried root already has a complete
+summary. If $P_X\cap C=\varnothing$, substitution leaves the raw word $X$
+unchanged, so its result is exactly $\operatorname{red}(X)$. The engine calls
+the existing cached reduction at this boundary. Simply returning a raw root
+would be incorrect when it contains cancellations. Otherwise descend to the
+children, deduplicate affected nodes, and evaluate them in allocation order.
+Terminals use their supplied images once; concatenations combine the two
+already reduced results through the existing exact cancellation operation.
+Letters inside images are not recursively substituted.
+
+Induction on this traversal proves equality with the original operation:
+frontier values are exact reduced unchanged words; affected terminals have
+exact reduced images; the reduced product of child values is the correct
+parent value. Each call starts with a new map from source nodes to results,
+so changing images, root order, duplicate roots and emptied relator slots
+cannot reuse stale substitution answers. Cancellation and resource exceptions
+propagate, leaving only exact completed immutable summaries and word results.
+
+If $D$ nodes have potentially changed support, the traversal examines only
+those nodes and their immediate unaffected frontier, besides the queried root
+list and supplied image map. Sorting costs $O(D\log(D+1))$ identifier
+operations. This accounting excludes mask bit arithmetic and the cost of
+new frontier reductions and affected reduced products. A cold query retains
+the old full traversal; it does not pay to discover support solely for this
+optimization. Ordinary certificate replay generally has cold support, while
+the producer has already queried singletons. We therefore make no generic
+replay acceleration claim.
+
+\subsection{Validation and controlled measurements}
+
+Seven focused tests cover 400 random signed substitution fixtures on both
+warm and cold paths, raw cancellation, irrelevant image keys, new sparse
+labels, repeated/reordered roots, incomplete metadata, interrupted operations,
+a 1,500-step growing prefix and a huge prefix with a 2,050-bit length.
+All 1,025 maintained tests pass with Regina in 223.592 seconds.
+The pinned package audit against \texttt{f9e20ed6f3f1} preserves all 400
+outcomes and certificate hashes on eighty diagrams in five modes. Every
+positive passes both old and current literal and compressed source replay.
+The exhaustive 21,845 short-word audit and five supplied-proof/source-rebinding
+checks also pass. Only \path{compressed_words.py} changes among production
+modules. The audit takes 19.379 seconds and verifies 145 source hashes.
+
+The default Gordian producer uses 789,805 work units instead of 1,154,597,
+with 139 warm substitutions. Projection and forest work fall from 1,206,616
+and 1,206,614 to 842,292 and 842,290 respectively. Direct batching still
+exhausts its two-million-work allowance. These are deterministic work
+counters on the audited inputs, not wall-time ratios or universal equality
+of budgeted search behavior.
+
+\input{sparse_substitution_results.tex}
+
+The retained driver \path{../fast/compressed_word_research/sparse_substitution.py}
+has \texttt{audit}, \texttt{kernels} and \texttt{benchmark} modes, pins the
+complete prior package and freezes source hashes around each run. Evidence
+is in \path{data/sparse-substitution-*}. Cold controls, A/A variability and
+small-case regressions remain visible. The optimization removes repeated
+work on immutable words; it does not supply a bound on global search,
+normalization or the size of every generated presentation.

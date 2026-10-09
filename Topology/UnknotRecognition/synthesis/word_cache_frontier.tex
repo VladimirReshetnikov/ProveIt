@@ -51,7 +51,9 @@ or node exhaustion therefore leaves only completed entries, which remain
 valid on a later query. The existing resource exceptions and caller
 cancellation still propagate; no partial traversal is treated as a proof.
 The old full reachable-node traversal remains available for operations that
-actually need every source node, such as occurrence counts and substitution.
+actually need every source node, such as occurrence counts and cold
+substitution. Section~\ref{sec:sparse-substitution} adds an exact support
+frontier when substitution metadata is already warm.
 
 \subsection{Amortized traversal cost and its limits}
 
