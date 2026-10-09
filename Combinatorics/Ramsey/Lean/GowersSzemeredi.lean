@@ -361,6 +361,7 @@ import GowersSzemeredi.Proofs16DenseBihomPiece
 import GowersSzemeredi.Proofs16LineExtractor
 import GowersSzemeredi.Proofs16BohrDenseDifference
 import GowersSzemeredi.Proofs16BohrAnnulus
+import GowersSzemeredi.Proofs16SeparatingFrequencies
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments

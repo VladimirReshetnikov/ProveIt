@@ -1391,9 +1391,16 @@ the elementary lemmas of its §2:
   |B(K;ρ+η) ∖ B(K;ρ−η)| ≤ |K|·(4ηN + 2) for 0 ≤ ρ − η, and
   `band_card_le` counts residues with centered value in (a, b].
   Weak regularity therefore holds at every radius, with ε = |K|(4η + 2/N).
-- Next: Lemma 2.6 (separating characters, probabilistic) and the
-  bilinear Bogolyubov argument (Theorem 1.6), the first substantial
-  component.
+- **Lemma 2.6, done deterministically (`Proofs16SeparatingFrequencies`,
+  kernel-checked).** In ℤ/N with N ≥ 7 prime and d ≠ 0, at most
+  2⌊N/5⌋ + 1 ≤ N/2 frequencies leave γd within N/5 of zero
+  (`small_multiples_card_le`). Double counting gives one frequency that
+  separates half of any set of nonzero differences
+  (`exists_halving_frequency`). Hence |D| < 2^m differences are separated
+  by m frequencies (`separating_frequencies`). For D = (S − S) ∖ {0} that
+  is 2⌈log₂|S|⌉ frequencies, matching the paper's O(log k).
+- Next: the bilinear Bogolyubov argument (Theorem 1.6), the first
+  substantial component.
 
 **Dependency map for Theorem 1.6** (Milićević, arXiv:2109.03093 [49]; read
 2026-10-08 from the ar5iv text, Sections 1–6 only). Sections:
