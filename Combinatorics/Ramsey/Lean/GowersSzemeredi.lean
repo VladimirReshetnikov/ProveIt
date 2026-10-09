@@ -858,6 +858,12 @@ import GowersSzemeredi.Proofs16OffsetCollisionDensity
 import GowersSzemeredi.Proofs16OffsetFreimanRetention
 import GowersSzemeredi.Proofs16HigherArrangementModel
 import GowersSzemeredi.Proofs16HigherArrangementFirstExtraction
+import GowersSzemeredi.Proofs16HigherArrangementSymmetry
+import GowersSzemeredi.Proofs16HigherArrangementGenerators
+import GowersSzemeredi.Proofs16HigherArrangementCoordinateSymmetry
+import GowersSzemeredi.Proofs16HigherArrangementCoordinateRetention
+import GowersSzemeredi.Proofs16HigherArrangementCoordinateDensity
+import GowersSzemeredi.Proofs16HigherArrangementFreimanFamily
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
