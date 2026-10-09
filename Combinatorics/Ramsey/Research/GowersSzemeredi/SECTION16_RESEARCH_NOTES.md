@@ -6440,3 +6440,115 @@ The numbered ledger remains identical at 115 companions and five open
 entries. Selected-port scope remains 4,134 upstream modules and 17
 compatibility modules, with reciprocal-only modules excluded; Apache
 license and provenance files are unchanged.
+
+
+## J.114. Escaping frequencies, indexed selection, and a sharper loss
+
+The first steps of the frequency-selection argument in Claim 9.4 of
+[the general U4 inverse theory](https://arxiv.org/pdf/2601.01682) are now
+formalized with explicit finite bounds. The new results concern actual
+failed containments and selected frequency values; they do not yet
+extract the coherent Freiman frequency maps required by Proposition 9.3.
+
+**From failed containment to a new frequency.** Suppose `T` and `U` have
+rank at most `d`, `0 < r < 4`, and the selected set `D` satisfies
+`D.card*sigma <= 1/(4*pi)`. If `bohr D sigma` is not contained in the sum
+of the quarter-radius Bohr sets for `T` and `U`, then
+`bohr_sum_frequency_escape` gives a point `y` in that selected Bohr set
+and a frequency `q` in `bohrExtensionSpectrum T U d r` such that
+
+```
+N/(4*pi) < centeredAbs(q*y)
+q not in boundedFrequencySpan D 1.
+```
+
+The point cannot lie in the intersection-spectrum Bohr set, by the
+previous containment theorem. A violated frequency condition gives `q`.
+The bounded-span phase estimate shows that every frequency in the unit
+span of `D` has phase at most `N/(4*pi)` at `y`, proving the exclusion.
+No duality or separation assumption is added.
+
+`column_pair_frequency_escape` applies this to the unions of the spectra
+of four columns. Splitting each union span gives four values `v_i`, each
+in its own column's bounded span at cutoff `R = bohrExtensionCutoff
+(2*d) r`, with `v_0-v_1 = v_2-v_3` outside the unit span of `D`. Overlap
+between the two frequency sets in a union does not increase the cutoff.
+
+**Indexed averaging.** `exists_good_indexed_selection` counts requirements
+by their original indices, even when several indices prescribe identical
+values on identical supports. If every allowed-value set has at most `K`
+elements and every requirement specifies at most `m` values, one
+selection meets at least a `K^(-m)` fraction of the indexed requirements.
+This follows by counting all assignments and interchanging two finite
+sums. There is no support-image multiplicity loss.
+
+`exists_good_colored_selection` uses the domain `Fin m × X` to select
+`m` independent functions. Each requirement prescribes one value per
+color. Positions in `X` may repeat: their colors distinguish the specified
+assignments. Consequently no distinct-position hypothesis or discarded
+diagonal count is needed for this result.
+
+`exists_escaping_frequency_selection` combines those facts. Given an
+arbitrary finite indexed family `B` of failed containments, spectra of
+rank at most `d`, and the stated selected-set radius bound for each
+configuration, it produces four frequency maps `f_i`, all taking values
+in the relevant bounded column spans, such that
+
+```
+B.card <= (2*R+1)^(4*d) * good.card.
+```
+
+Here `good` counts the original configurations for which the selected
+frequency differences agree and escape the prescribed unit span. This
+is the exact finite averaging loss for this construction; index-additivity
+can be imposed by the choice of `B`, but is not needed by the selection
+itself. The four maps are not asserted to be Freiman maps.
+
+**Independent-family growth.** A frequency outside the unit bounded span
+of a dissociated set can be inserted while preserving dissociation.
+`bounded_span_escape_rank_budget` then proves
+
+```
+D.card + 1 <= spanGeneratorBound K.card R
+```
+
+when both the selected family and the new frequency lie in the bounded
+span of `K` at cutoff `R`. `bohr_escape_extends_independent_family` applies
+this to the frequency supplied by an actual failed containment. This
+provides the pointwise insertion and rank-budget facts for a later global
+selection iteration; the global iteration is not yet constructed.
+
+**Quantitative improvement to the existing selection lemma.** For a
+single selected function, `exists_good_quad_selection` still requires
+consistent prescriptions at repeated indices. It counts the original
+quadruples directly with loss `K^4`. Combining it with the existing energy
+extraction proves `lemma19_indexed_selection_piece_eight`: if all four
+prescribed values belong to the new-value sets and
+
+```
+delta*N^3*K^4 <= T.card,
+```
+
+there is an order-eight Freiman piece of size at least
+`2^(-1882)*delta^1164*N`. The previous all-new-values interface required
+`256*delta*N^3*K^4`. Thus, for fixed `delta`, the required configuration
+count improves by a factor 256. The two-new-value and mixed selection
+interfaces and the downstream `corollary20Kappa` parameter have not yet
+been strengthened. No improved final density bound follows here.
+
+**Scope.** Structured index geometry, extraction of coherent new Freiman
+frequency maps from the escaping configurations, the higher-arrangement
+selection, and preservation of agreement through that organization
+remain open. The five numbered open entries and all documented
+source-fidelity caveats remain unchanged. No upstream code was ported,
+and the Apache license and provenance files are unchanged.
+
+
+**Verification.** The escaping-frequency selection closure checks 143
+modules, the independent-family extension checks 142, and the stronger
+Freiman selection checks 53. All ten new named theorems pass individual
+axiom checks. The combined audit checks 7,389 public Gowers theorems in
+5,187 modules (5,185 facade modules, including 4,152 OAI modules), with
+only `propext`, `Classical.choice`, and `Quot.sound`. The numbered ledger
+is identical at 115 companions and five open entries. The selected-port
+scope check passes with 4,134 upstream and 17 compatibility modules.
