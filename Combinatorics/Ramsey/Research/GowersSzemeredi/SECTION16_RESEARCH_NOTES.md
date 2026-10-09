@@ -5456,6 +5456,37 @@ The budget side is already written for this. `section16VarietyThreeLoss_le_of_bo
 uses `D` only through the two Milićević values. A polynomial `Bnd` gives
 `log Q ≈ Bnd(c) = poly(x)`, far inside `x^(2·2^256)`.
 
+**Resolved without the full `Bnd` refactor (2026-10-09).** Only two
+densities matter, so two Milićević indices suffice, chosen per density:
+`D` for the family at `c₁` and `D₂` for the spectrum at `c₂`. Each
+`Dᵢ` is the least index with `Bnd(cᵢ) ≤ milicevicBound Dᵢ cᵢ`, so it
+overshoots by at most one base factor:
+`milicevicBound Dᵢ cᵢ ≤ (4/cᵢ)·max(Bnd(cᵢ), 1)`
+(`exists_milicevicBound_between`).
+
+The modules:
+- `Proofs16VarietyTwoScale`: the controls with the two indices.
+  `section16PolynomialVarietyThreeExponent2`, with the old exponent as
+  its instance `D₂ = D`.
+- `Proofs16VarietyBudgetedPiece`: the budget with two indices.
+- `Proofs16VarietyLocalPieces`: the relation pieces from the two local
+  covers (`VarietyClassCoverAt`) instead of `MilicevicDeepVarietyStructure`.
+- `Proofs16DeepBoundSlices`: `variety_structure_class_cover_of_eventually_at`
+  gives the cover at any dominating index.
+- `Proofs16VarietyEventualThree`: assembles them.
+
+Result (`Proofs16VarietyTheoremThree`):
+
+```
+theorem_16_2_at_three_of_eventually {Bnd} {K} (hK : K ≤ 2^64)
+    (hBnd : ∀ c ∈ (0,1], Bnd c ≤ (4/c)^K)
+    (hM : MilicevicDeepEventuallyPrime Bnd) : Theorem162At 3
+```
+
+and the 16.11 corollary. So the dimension-three statements now follow
+from the deep structure in exactly the form the pipeline is expected to
+prove, at any polynomial degree `K ≤ 2^64`.
+
 Lean traps met here:
 - `norm_num`, `ring_nf` and `nlinarith` expand `(c·x)^n` once `n` folds
   to a literal (`2^(2^8)` folds; `2^510` does not). `Nat.pow` then panics,
