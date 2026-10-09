@@ -47,18 +47,31 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                 if not replay_compressed_batch(arena, roots, alive, move):
                     return False
                 continue
-            if kind == 'primitive_forest':
-                if certificate['version'] < 7:
+            if kind in ('primitive_projection', 'primitive_forest'):
+                required = {'primitive_projection':6, 'primitive_forest':7}
+                if certificate['version'] < required[kind]:
                     return False
-                from .primitive_forest_verify import replay_compressed_forest
-                if not replay_compressed_forest(arena, roots, alive, move):
-                    return False
-                continue
-            if kind == 'primitive_projection':
-                if certificate['version'] < 6:
-                    return False
-                from .primitive_projection_verify import replay_compressed_projection
-                if not replay_compressed_projection(arena, roots, alive, move):
+                end = index+1
+                while end < len(certificate['moves']):
+                    arena.tick()
+                    following = certificate['moves'][end]
+                    if (type(following) is not dict
+                            or following.get('kind') not in ('primitive_projection', 'primitive_forest')):
+                        break
+                    if certificate['version'] < required[following['kind']]:
+                        return False
+                    end += 1
+                if end-index >= 2:
+                    from .anchored_projection_verify import replay_compressed_monomial_block
+                    if not replay_compressed_monomial_block(arena,roots,alive,certificate['moves'][index:end]):
+                        return False
+                    skip_until = end
+                    continue
+                if kind == 'primitive_forest':
+                    from .primitive_forest_verify import replay_compressed_forest as replay
+                else:
+                    from .primitive_projection_verify import replay_compressed_projection as replay
+                if not replay(arena, roots, alive, move):
                     return False
                 continue
             if kind == 'normalize_relators':
