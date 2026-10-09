@@ -1259,9 +1259,12 @@ The variety route splits this into three steps.
    - **Chain closed.** `structure_side_of_line_and_milicevic` gives the
      covering half of `StackableStructureAt 2` from exactly two hypotheses:
      `LineFreimanExtraction κ` (Theorem 2.26: Sanders, quasi-polynomial κ)
-     and `MilicevicDeepVarietyStructure D`. Both are published theorems, or
-     faithful consequences of them, and both are stated as Props. With
-     quasi-polynomial κ, the piece count is quasi-polynomial in 1/(γθ).
+     and `MilicevicDeepVarietyStructure D`. Both remain unproved hypotheses
+     here. The line input is intended to follow from the cited theorem;
+     the deep-agreement form is our reformulation, not a quoted statement,
+     and its precise derivation is still a separate obligation. With a
+     quasi-polynomial κ satisfying the line input, the piece count is
+     quasi-polynomial in 1/(γθ).
    - **Theorem 2.26 removed (same night, `Proofs16LineExtractor`).**
      Gowers's product property is stronger than energy: it holds on every
      sub-domain, for every weight, and for p copies at once. A line
@@ -1274,7 +1277,8 @@ The variety route splits this into three steps.
        polynomial mass;
      - `structure_side_of_milicevic`: **the covering half of
        `StackableStructureAt 2` rests on `MilicevicDeepVarietyStructure`
-       alone**. The piece count is m·exp(B(θ/(2m))) with polynomial m, so
+       alone**. That is our reformulation of Milićević's construction, not a
+       quoted theorem; see the caveat above. The piece count is m·exp(B(θ/(2m))) with polynomial m, so
        it is quasi-polynomial in 1/(γθ) through Milićević's B.
 
      The dense-piece proof was refactored onto an abstract `LineExtractor`
@@ -1947,3 +1951,45 @@ production check but is beyond this audited prefix. Provenance checks
 retain all 4,134 pinned hashes, notices for 976 adapted files, and the
 original license/copyright notices. The full density conclusion remains
 unverified.
+
+### One-piece reduction and 3,900-entry audit checkpoint
+
+`Proofs16BihomPieceReduction` now passes the full audit on this host. The
+combined audit checks 5,854 public Gowers theorems in 2,648 modules; the
+facade reaches 1,412 modules, including 667 OAI modules. The extraction
+step remains the explicit `DenseBihomPiece` hypothesis. The catalogue
+remains 114/6 with its existing source-fidelity caveats.
+
+The 3,900-entry port checkpoint passes over 3,916 build modules. Its
+separate 3,917-module audit checks 58,849 public OAI theorems and the listed
+compatibility declarations. Only the three approved axioms occur. This
+now includes both the relative-patch finite-set repair and the redundant
+CRT tactic repair. The full density conclusion remains unverified.
+
+### Shared partitions and covers for translated variety families
+
+The four `Proofs16JointVariety*` modules now construct a common partition
+for `n` translated varieties, each with `r` mixed phases. The linear stage
+uses the union of all horizontal frequencies and the union of all vertical
+frequencies. Let `s` be the sum of those two union cardinalities. On each
+linear-stage cell, the mixed phases of varieties whose deep translates
+miss the cell are replaced by zero; all remaining phases are multilinear
+there. One simultaneous partition therefore uses `n*r` mixed phases.
+The cell proof handles independent translations and different radii.
+
+For a common radius lower bound `delta>0`, set
+`D0=(p*(n*r+1)^8)*(p*(s+1)^8)`. The large-box profile has exponent
+`1/(2*D0)` and integer threshold
+`max(C*(s+n*r+1),ceil(16/delta))^(2*D0)`. Every cell is good for every
+translated variety. One multilinear map per member covers the union
+on each large cell. Its fibres have cardinality at most `n`, so the
+coarse small-box cover gives `9*n` maps, with the usual capped positive
+exponent. This is one common partition, without sequential exponent
+multiplication. The count and exponent are independent of the allowed
+loss. The statement also handles the empty family.
+
+All four production sources and all seven new transitive axiom checks
+pass. The full facade audit is queued. Uniform rank padding and the
+packaging as a general slice provider remain further steps; no missing
+extraction or deep-structure hypothesis is asserted. These consumers
+reuse the scoped recurrence and add no upstream modules.

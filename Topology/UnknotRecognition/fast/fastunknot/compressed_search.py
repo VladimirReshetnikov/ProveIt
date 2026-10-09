@@ -138,7 +138,8 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
     All elimination and Whitehead operations instead obey max_nodes/max_work.
     The initial PD is always reconstructed; no caller-supplied state is trusted.
     primitive_power tries report 45's arithmetic rank-two terminal before
-    general shortening and emits version five only on a verified local hit.
+    general elimination/shortening and emits version five on a local hit;
+    independent source-bound replay is still required before trusting it.
     Disable it to retain the historical search and terminal contract.
     """
     if type(primitive_power) is not bool:
