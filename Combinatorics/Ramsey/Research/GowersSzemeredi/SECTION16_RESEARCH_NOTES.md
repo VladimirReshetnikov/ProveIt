@@ -5807,11 +5807,22 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
       `3δn/8` vertices has `R 4 u v` for all its pairs.
       `chainCount_three_eq` identifies the chain count with
       `graphFourWalks`.
-    - Still needed for Theorem 4.1: the difference-graph construction
-      (one graph per popular difference `d`, using `|X−X| ≤ K|X|`); the
-      union graph `P` and property (20); Claim 4.4 (Cauchy–Schwarz over
-      difference sequences, then the ladder again); and the final
-      pruning to `A′`.
+    - `Proofs16AbstractBSGDifferences` does the difference-graph step
+      in any abelian group.
+      - `exists_popular_differences`: suppose the good pairs of pairs
+        `(x+d,x),(y+d,y)` number at least `c|X|^3` in total and
+        `|X−X| ≤ K|X|`. Then at least `(c/2)|X|` differences each carry
+        `(c/2K)|X|^2` of them.
+      - `difference_ladder_rel_four`: fix such a `d`. Assume `Q 1` has
+        symmetry (S1), and `Q` is weakly transitive against `Q 1` with
+        `0 < c′ ≤ δ^5/2^17`. Then a set of `3δ|X|/8` vertices `u` has
+        `Q 4 (u+d) u (v+d) v` for all its pairs. That is Claim 4.3, via
+        the subtype graph on `X` and `rel_four_on_four_walk_set`.
+    - Still needed for Theorem 4.1:
+      - the union graph `P` over the chosen differences and property (20);
+      - Claim 4.4 (Cauchy–Schwarz over difference sequences, then the
+        ladder again);
+      - the final pruning to `A′`.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
