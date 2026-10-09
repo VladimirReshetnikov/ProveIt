@@ -59,7 +59,11 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 edges = plan_forest(arena, roots, alive, projection_cache, _prepared=prepared)
                 if len(edges) >= 2:
                     move = dict(kind='primitive_forest', edges=edges)
-                    if len(alive)-len(edges)>2:
+                    # Unit images do not build powering circuits. Keep their
+                    # cached ordinary path; measurements favor anchoring when
+                    # a nonunit image introduces binary powering instead.
+                    if len(alive)-len(edges)>2 and any(
+                            abs(k)>1 for edge in edges for k in edge['proof']['primitive_vector']):
                         from .anchored_projection import produce_block
                         produce_block(arena, roots, alive, moves, move, forest=True, elimination=elimination_batch)
                     else:
@@ -74,7 +78,9 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
             selected = plan_projection(arena, roots, alive, projection_cache, _prepared=prepared)
             if selected:
                 move = dict(kind='primitive_projection', pairs=selected)
-                if len(alive)-len(selected)>2:
+                # Match the forest policy: enter laziness on binary growth.
+                if len(alive)-len(selected)>2 and any(
+                        abs(k)>1 for proof in selected for k in proof['primitive_vector']):
                     from .anchored_projection import produce_block
                     produce_block(arena, roots, alive, moves, move, forest=primitive_forest, elimination=elimination_batch)
                 else:

@@ -22,6 +22,19 @@ BASELINE='339c5359d34be1945ccfa784c4696a527208859e';SEED=261009453
 encode=prior.encode
 
 
+
+def exposed(engine, diagram, bits, stats):
+    """Discover after a supplied legal exposure; this is not automatic exposure."""
+    alive,words=engine._presentation(diagram,engine._Budget(lambda:None,100000,1000000))
+    a=engine.WordArena(max_work=20000000);roots=[a.from_word(w) for w in words];k=1<<bits
+    roots=[a.cyclic_reduce(x) for x in a.substitute(roots,engine.powered_images(a,alive,1,{1,2},k))]
+    moves=[dict(kind='whitehead_power',multiplier=1,subset=[1,2],exponent=k)];terminal={}
+    assert engine._search(a,roots,alive,moves,primitive_terminal=terminal,primitive_projection=True)
+    stats.update(a.stats);stats['nodes']=len(a.rules)-1
+    return dict(version=6,method='wirtinger-cyclic-group',status='UNKNOT',
+                input_pd=[list(row) for row in diagram.pd],moves=moves,terminal=terminal)
+
+
 def audit(old,search,group):
     rng=random.Random(SEED);inputs=[dict(name=s['name'],pd=s['pd']) for s in prior.harness.corpus()];records=[];proofs={};replays=0;blocks=0
     for i in range(300):
@@ -53,6 +66,21 @@ def audit(old,search,group):
                     replays+=2
             blocks+=results['current']['stats'].get('anchored_search_blocks',0);modes[mode]=results
         records.append(dict(source=source,modes=modes))
+    exposed_cases=[]
+    for n in (5,17):
+        for bits in (4,128,512):
+            d=Diagram.from_braid(n,list(range(1,n)));od=old.Diagram.from_pd(d.pd);results={};found=[]
+            for label,engine,diagram in [('old',search,od),('current',current,d)]:
+                stats={};c=exposed(engine,diagram,bits,stats);found.append(c)
+                key=sha256(encode(c)).hexdigest();proofs[key]=c
+                results[label]=dict(certificate_sha256=key,stats=stats)
+            assert found[0]==found[1]
+            for compressed in ((False,True) if bits==4 else (True,)):
+                assert group.verify_group_certificate(od,found[1],compressed=compressed,max_work=20000000)
+                assert verify_group_certificate(d,found[1],compressed=compressed,max_work=20000000)
+                replays+=2
+            assert results['current']['stats'].get('anchored_search_blocks',0)>0
+            exposed_cases.append(dict(strands=n,bits=bits,pd=d.pd,engines=results))
     capacities=[]
     for shape,rank,bits,forest in [('balanced',32,128,False),('star',32,128,False),('chain',16,512,False),('chain',16,512,True)]:
         results={};reference=None
@@ -68,7 +96,7 @@ def audit(old,search,group):
             results[label]=dict(initial_nodes=initial,final_nodes=len(a.rules)-1,stats=deepcopy(a.stats),moves=moves,terminal=terminal)
         capacities.append(dict(shape=shape,rank=rank,bits=bits,forest=forest,engines=results))
     return dict(cases=records,certificates=proofs,diagrams=len(records),source_replays=replays,producer_blocks=blocks,
-                all_discovered_certificates_identical=True,capacity=capacities)
+                all_discovered_certificates_identical=True,capacity=capacities,exposed_cases=exposed_cases)
 
 
 def benchmark(mode,old,search,group):
@@ -82,6 +110,8 @@ def benchmark(mode,old,search,group):
     else:
         cases=[dict(name=f'circle-{n}-'+('forest' if forest else 'projection'),pd=Diagram.from_braid(n,list(range(1,n))).pd,forest=forest)
                for n in (5,17,65,129) for forest in (False,True)]
+        cases += [dict(name=f'circle-{n}-exposed-{bits}',pd=Diagram.from_braid(n,list(range(1,n))).pd,forest=False,bits=bits)
+                  for n,bits in ((5,128),(17,128),(17,512))]
     for source in cases:
         samples=[];warmups=[];reference=None
         for iteration in range(-1,5):
@@ -98,7 +128,8 @@ def benchmark(mode,old,search,group):
                     extra=dict(final_nodes=len(a.rules)-1,checker_stats=deepcopy(b.stats));c=dict(moves=moves,terminal=terminal)
                 else:
                     package=old if historical else sys.modules['fastunknot'];d=package.Diagram.from_pd(source['pd']);stats={}
-                    c=engine.compressed_certificate(d,primitive_projection=True,primitive_forest=source['forest'],stats=stats,max_work=20000000)
+                    c=(exposed(engine,d,source['bits'],stats) if 'bits' in source else
+                       engine.compressed_certificate(d,primitive_projection=True,primitive_forest=source['forest'],stats=stats,max_work=20000000))
                     checker=group.verify_group_certificate if historical else verify_group_certificate;verify_stats={}
                     checked=bool(c) and checker(d,c,compressed=True,max_work=20000000,stats=verify_stats)
                     elapsed=time.perf_counter()-begin;assert checked
@@ -114,7 +145,7 @@ def benchmark(mode,old,search,group):
         records.append(dict(source=source,samples=samples,warmups=warmups,medians=medians,paired_ratios=ratios));print(source['name'],ratios,flush=True)
     return dict(cases=records,certificates=proofs,measured_calls=len(cases)*20,warmup_calls=len(cases)*4,completed_calls=len(cases)*20,
                 scope=('Fresh abstract grammar construction, complete automatic greedy search, independent source-grammar rebuild and complete replay/endpoint; no diagram-derived knot claim.' if mode=='kernels' else
-                       'Fresh validated PD, automatic compressed certificate discovery and complete independent source recovery/replay/endpoint.')+
+                       'Fresh validated PD, automatic compressed certificate discovery and complete independent source recovery/replay/endpoint. Cases marked exposed additionally construct a supplied legal Whitehead prefix before discovery; its selection is not automatic.')+
                       ' Five shuffled rounds and both A/A controls. Exact comparisons and certificate serialization outside timers.')
 
 
