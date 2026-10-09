@@ -82,7 +82,8 @@ def reproduce():
     # for this historical certificate's exact reproduction.
     surface = normal_surface_topology(raw,proof['coordinates'],record_certificate=True,coorientation=False)
     assert verify_normal_surface_certificate(raw,proof['coordinates'],surface['certificate'])
-    answer = normal_compressing_disk_count(raw,DISC,record_certificate=True)
+    # Preserve the published certificate byte-for-byte under new producer defaults.
+    answer = normal_compressing_disk_count(raw,DISC,record_certificate=True,unit_ray=False)
     assert answer['compressing_disk_components'] == 1
     assert verify_normal_disk_count_certificate(raw,DISC,answer['certificate'])
     return dict(initial=initial,moves=moves,family_certificate=proof,family_summary=summary,
