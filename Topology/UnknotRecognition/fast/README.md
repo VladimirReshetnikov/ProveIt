@@ -2951,3 +2951,17 @@ python -B -m normal_orbit_research.seeds optimize --output results/cocycle_seed_
 python -B -m normal_orbit_research.seeds source --output results/cocycle_seed_source.json
 python -B -m normal_orbit_research.seeds pipeline --output results/cocycle_seed_pipeline.json
 ```
+
+Primitive cocycle discovery now schedules the shortest active equation first,
+preferring unit coefficients and columns incident to fewer equations. Exact
+column incidence avoids visiting rows that cannot change. Reverse elimination
+order reconstructs the kernel, and a fixed primitive sign preserves the
+previous implementation's exact heights and normal coordinates. This reduces
+observed fill and rational work; its conservative dense bound remains cubic.
+The independent source-disc verifier is unchanged.
+
+```bash
+python -B -m normal_orbit_research.cocycle_sparse audit --output results/cocycle_sparse_audit.json
+python -B -m normal_orbit_research.cocycle_sparse prepare --output results/cocycle_sparse_prepare.json
+python -B -m normal_orbit_research.cocycle_sparse recognize --output results/cocycle_sparse_recognize.json
+```
