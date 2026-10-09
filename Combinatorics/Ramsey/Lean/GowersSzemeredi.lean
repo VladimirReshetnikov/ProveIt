@@ -516,6 +516,7 @@ import GowersSzemeredi.Proofs16MilicevicColumns
 import GowersSzemeredi.Proofs16FreimanFewValues
 import GowersSzemeredi.Proofs16CommonWitnesses
 import GowersSzemeredi.Proofs16RepresentedMap
+import GowersSzemeredi.Proofs16ColumnRepSystem
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
