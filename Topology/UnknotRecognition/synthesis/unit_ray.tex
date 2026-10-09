@@ -1,0 +1,241 @@
+\section{Unit-pivot rays before disc orbit discovery}
+\label{sec:unit-ray-native}
+
+Report 69 supplies a particularly small sufficient test for a one-dimensional
+normal matching support. The maintained disc-count API now tries that test
+after its existing vertex-link removal and quadrilateral-gcd reduction.
+Success gives a checked connected primitive surface, whose Euler
+characteristic and boundary homology determine the essential-disc count.
+Failure uses the complete previous component observer. This is an adaptive
+choice of proof method based on an inexpensive structural certificate;
+it does not guess connectedness from coefficient size or from cohomological
+primitivity. The unit producer and checker are copied unchanged from the
+delivery; the surrounding disc protocol and native validation are new.
+
+\subsection{Triangular unit rows certify the integral ray}
+
+Let $x\ne0$ be the validated nonnegative admissible vector, $S$ its positive
+support, and $M_S$ the matching matrix restricted to that support. Choose a
+seed $s\in S$. A transcript lists $|S|-1$ pairs $(\text{row},\text{pivot})$.
+At each step the row has exactly one supported coordinate not yet known,
+its pivot, and its coefficient is $+1$ or $-1$. After the final step all
+supported coordinates are known. The source already establishes existence;
+the transcript establishes uniqueness.
+
+\begin{proposition}[Integral unit-ray witness]
+Such a transcript proves $\dim_{\mathbb Q}\ker M_S=1$. There is an integral
+kernel generator $u$ with $u_s=1$, and $x=x_su$. In particular
+$\gcd_{i\in S}x_i=x_s$.
+\end{proposition}
+\begin{proof}
+Set the seed value to one. Each row solves its new coordinate as an integer
+linear combination of earlier known coordinates, since its pivot is a unit.
+In discovery order these $|S|-1$ rows have a triangular minor with diagonal
+entries $\pm1$, so their rank is $|S|-1$. The nonzero matching source gives
+nullity at least one. Thus every kernel vector is determined by its seed,
+and the constructed $u$ equals $x/x_s$, satisfies all remaining equations,
+and is positive on $S$. Its integral coordinates include one, proving the
+gcd assertion. No values need to be propagated in the certificate planner:
+the already validated source and the ordered row pattern suffice.
+\end{proof}
+
+The producer chooses the minimum-bit positive coordinate, breaking ties by
+index. It keeps incident rows, an unknown count and the XOR of unknown
+column indices for each row. Processing a known column decrements each
+incident count once. A row reaching one unknown exposes that column if its
+coefficient is a unit. Each supported column is processed once and each
+incidence once. The independent checker instead reconstructs the support
+and examines the chosen original rows in order; it imports no planner.
+Matching rows have bounded local size, so both use linear sparse-incidence
+work, besides geometry preparation and source arithmetic. The indexed
+transcript has $O(|S|\log(t+1))$ bits. This is not a linear-bit-time claim
+for reading arbitrarily large coordinates.
+
+Failure of this gate does not prove nullity greater than one. For example
+the rank-one equation $2x_0-3x_1=0$ with source $(3,2)$ has no unit pivot.
+Multiple free variables, an empty support, or a seed that does not expose
+all columns also miss this sufficient criterion. No repeated seed search
+or Gaussian elimination is introduced on a miss.
+
+\subsection{Connectedness and the exact essential-disc count}
+
+Write the original source as vertex links plus $m v$, where the existing
+canonical routine removes maximal complete triangle layers and divides by
+the quadrilateral gcd $m$. A nonzero reduced core $v$ is primitive: its
+quadrilateral gcd is one and matching forces the peeled triangle content
+to divide by the same gcd. A successful unit transcript therefore has
+seed coordinate exactly one; both producer and checker enforce it.
+
+\begin{lemma}[Primitive supported ray is connected]
+If an admissible primitive normal vector $v$ spans its supported matching
+kernel, then its normal surface is connected.
+\end{lemma}
+\begin{proof}
+Each component has a nonnegative integral matching vector supported within
+$v$, hence equals $\lambda v$ for some positive rational $\lambda$.
+For a unit seed, $\lambda$ is the component's integral seed value. More
+generally primitivity and a B\'ezout combination of the entries also force
+$\lambda$ to be integral. These positive integers sum to one. There can
+be only one component.
+\end{proof}
+
+In the compact orientable manifold with torus boundary validated by the
+existing geometry, a connected surface with $\chi(v)=1$ is a disc when
+its boundary is nonempty; the closed alternative is a projective plane.
+The boundary class is computed from two checked torus homology cycles,
+by intersecting each with the normal boundary modulo two. A nonzero class
+excludes the closed alternative and proves essential disc boundary. Conversely
+an essential simple circle on a torus has primitive slope, so its two
+mod-two coordinates cannot both vanish. Therefore
+\[
+ D(mv)=m\,\mathbf1\{\chi(v)=1\text{ and }[\partial v]\ne0
+                       \text{ in }H_1(\partial T;\mathbb F_2)\}.
+\]
+Here $D$ counts essential-disc components, not all components.
+
+The zero case is also exact: any disc component of $mv$ has vector $kv$
+for a positive integer $k$, and $1=k\chi(v)$ forces $k=1$ and
+$\chi(v)=1$. Its essential boundary supplies the other condition. A disc
+is two-sided in this ambient manifold, so a positive result consists of
+$m$ parallel copies. One-sided primitive rays need not have $m$ total
+components: even scaling gives their connected two-sided frontier. That
+frontier has Euler characteristic $2\chi(v)$ and cannot create a disc.
+Removed vertex links are spheres or boundary-parallel discs and contribute
+zero to $D$. This proves the displayed count for the whole original source.
+
+The argument uses rank and integral coordinates. The disconnected
+primitive-cohomology example of Section~\ref{sec:completion-theorems} does
+not satisfy this reasoning merely because its class is primitive.
+
+\subsection{The whole Fibonacci family has short witnesses}
+
+The preserved report proves more than the finite tests. In its actual
+layered fixture, the three supported coordinates per tetrahedron are
+$a_i=b_i=F_{t-i+1}$ and $c_i=F_{t-i}$, with $F_1=F_2=1$.
+The original face equations for $i<t-1$ include
+\[
+ b_i=b_{i+1}+c_{i+1},\quad c_i=a_{i+1},\quad
+ a_i=a_{i+1}+c_{i+1},\quad c_i=b_{i+1},
+\]
+and the terminal triple is equal. For $t=1$ the chosen seed is $a_0$;
+otherwise it is $c_{t-2}$. The equalities expose the terminal triple,
+then the recurrence exposes each previous triple. Every pivot is a unit,
+so there are exactly $3t-1$ discovery steps for every $t\ge1$ and positive
+scale $m$. The next larger value is at least twice the seed, keeping the
+minimum-bit/index choice fixed under scaling.
+
+For completeness the source cell counts also prove the topology, rather
+than assuming a descriptive fixture name. Its global edge weights are
+$F_2,\ldots,F_{t+3}$, giving $V=F_{t+5}-2$; its pieces number
+$P=F_{t+5}-5$. The total local side count is
+$6F_{t+3}+4F_{t+2}-16$, with $2F_{t+3}$ unpaired boundary arcs, so
+$E=2F_{t+5}-8$ and $\chi=V-E+P=1$. Boundary weights on the one-vertex
+torus are $F_{t+1},F_{t+2},F_{t+3}$. Adjacent Fibonacci numbers are coprime;
+their mod-two cocycle is nonzero. A one-vertex triangulation has no nonzero
+vertex coboundaries, so the boundary class is nonzero. The ray theorem
+gives exactly $m$ essential discs.
+
+The primitive piece count is exponential in $t$, but the indexed rank
+witness has $O(t\log(t+1))$ bits. The full binary source has
+$\Theta(t^2+t\log(m+1))$ bits. This is a family theorem, not a linear-time
+claim in the tetrahedron count for the entire call. Unlike the delivery's
+full ray-block API, the native adaptation deliberately retains its existing
+gcd and division prefix. Only the subsequent unit-witness stage avoids
+value propagation and elimination. The whole call is still polynomial in
+its encoded supplied input; its proof and orbit work are substantially
+smaller on these dense rays.
+
+\subsection{Protocol, fallback and resource semantics}
+
+\code{normal\_compressing\_disk\_count} defaults to
+\code{unit\_ray=True}, with strict Boolean option validation. A successful
+gate returns \code{normal-disc-count-v2}; its seven outer fields bind the
+input fingerprint, divisor, vertex links, core coordinates, core certificate
+and final count. The inner \code{normal-unit-ray-disc-v1} has exactly six
+fields: its schema, support transcript, torus homology basis, Euler value,
+two mod-two boundary coordinates and primitive disc count. The transcript
+itself has strict support, seed, step and nullity fields.
+
+Replay independently rebuilds the original geometry, source binding,
+link/gcd reduction, matching support, triangular rank evidence, torus basis,
+Euler characteristic and boundary parities. It invokes neither the planner,
+the canonical reduction producer nor orbit discovery. Shared finite geometry
+and arithmetic helpers remain part of the trusted mathematical boundary;
+the producer and replay control paths are distinct. An incorrect primitive
+seed is rejected, rather than used as an asserted multiplicity.
+
+An unsuccessful gate retains the complete component query and its
+version-one proof. Setting \code{unit\_ray=False} reproduces the old
+schedule and result exactly.
+Pure vertex links retain the old zero-core proof. Existing version-one
+certificates remain accepted. The historical coherent-obstruction driver
+explicitly disables the gate to preserve its published proof bytes.
+
+The shortcut reports zero orbit cycles, zero weight runs and zero replay
+events, with its own ray-step count. A \code{max\_cycles=0} allowance bounds
+orbit discovery, so it permits this algebraic path. The supplied-sector
+test now correctly finds a certified meridian with zero orbit allowance;
+a zero basis-enumeration allowance still prevents candidate discovery.
+Callback cancellation covers preparation, planning and replay and propagates
+to callers. A missed gate with an exhausted orbit allowance remains
+inconclusive; it does not certify a negative knot verdict.
+
+The source pipeline still matters. The supplied-sector producer benefits
+through its disc checker, but the main cocycle candidate schedule does not
+use this API and has not acquired new source coverage. This integration is
+an exact observer improvement for a supplied vector or a supplied sector,
+not a new complete diagram-recognition implementation.
+
+\subsection{Validation and complete-call timings}
+
+All 1,317 maintained test methods pass in 236.139 seconds. The focused
+34-method run passes in 2.896 seconds. New tests cover layered sizes
+1, 2, 8, 32, 128 and 256; exact $3t-1$ transcripts; relabelings; links and
+binary scalings through $2^{20,000}$; one-sided negatives; nonunit rank-one
+misses; strict option types; callback cancellation; and field/row/seed
+mutations with producer-disabled replay.
+
+The corpus audit compares 1,275 vectors under both periodic rules, or
+2,550 configurations, against the frozen \code{66098968e} count producer
+and checker and the corpus component oracle. Every count agrees. The gate
+succeeds on 1,878 configurations and uses zero orbit cycles; the 672 misses
+reproduce the complete baseline result. Disabling the gate reproduces all
+2,550 baseline results exactly. The audit retains 44 representative complete
+proofs and 553 source hashes. Verification of old and new proof
+languages is checked separately. The corpus contains duplicates by scale
+and relabeling, so 1,878 is not a count of distinct knot types.
+
+The isolated benchmark uses five rounds and four interleaved arms,
+including old/old and new/new controls: 220 measured calls and 44 warmups
+all complete. Each timed call includes production, independent replay and
+serialization/hash of the complete certificate. The count reference is
+the frozen producer \emph{and} checker; for supplied-sector calls its disc
+producer is replaced by that baseline and the maintained outer replay
+accepts its legacy proof. All arms agree on counts or discovered-coordinate
+hashes, and proof bytes are deterministic within each arm. Timing ratios
+below are medians of paired old/new ratios, not ratios of separate medians.
+
+\noindent\textbf{Supplied-vector disc counts.}
+\input{tables/unit_ray_count.tex}
+\noindent\textbf{Complete supplied-sector discovery.}
+\input{tables/unit_ray_sector.tex}
+
+The layered-256 query drops from about 1.812 seconds to 0.057 seconds,
+a paired 31.39-fold gain. Its complete certificate shrinks from 7,098,789
+to 36,240 bytes. Layered-64 improves 8.68-fold; its $2^{4096}+1$ multiple
+improves 6.92-fold after paying the existing reduction prefix. Empty and
+pure-link controls are near parity. The mixture cases benefit because
+link removal leaves a certified ray; this is not promotion of a generic
+multi-block decomposition.
+
+Complete supplied-sector discovery improves only 1.30-fold at size 16 and
+1.07-fold at size 64 because enumeration remains dominant. The A/A medians
+range from 0.964 to 1.036; the raw records preserve all rounds and bytes.
+No full knot-recognition timing is inferred from these measurements.
+Reproduction is \code{python -B -m normal\_orbit\_research.unit\_rays audit}
+and \code{benchmark --rounds 5}, each with a required \code{--output}
+path, from \code{fast/}. The retained records
+are \code{data/unit-ray-audit.json}, \code{data/unit-ray-benchmark.json}
+and both test logs. The remaining global problem is controlled complete
+witness discovery, not the already polynomial inspection of one supplied
+normal vector. No general quasipolynomial bound follows from this shortcut.

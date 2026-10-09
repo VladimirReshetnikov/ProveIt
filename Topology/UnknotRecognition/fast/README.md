@@ -3424,3 +3424,38 @@ essentiality, diagram provenance or attachment maps. Article section 127 proves
 the observer and its trace contract and records the full timing tradeoffs.
 Reproduce with `python -B -m normal_orbit_research.spectra audit --output OUTPUT`
 or `benchmark --rounds 5` in the same driver.
+
+The disc-count API now tries a checked unit-pivot support ray after its existing
+vertex-link and quadrilateral-gcd reduction:
+
+```python
+from fastunknot.normal_disk_kernel import normal_compressing_disk_count
+result = normal_compressing_disk_count(triangulation, coordinates,
+    record_certificate=True, unit_ray=True)
+```
+
+A successful triangular unit-row transcript proves that the primitive core is
+connected. Its Euler characteristic and mod-two boundary class then give the exact
+essential-disc count, including multiplicity, without orbit discovery. Success
+uses `normal-disc-count-v2` and independent replay; old v1 proofs remain accepted.
+The default is `unit_ray=True`. A failed gate uses the previous complete observer;
+`unit_ray=False` reproduces the old schedule and result. Pure links retain their
+old proof. `max_cycles=0` permits the algebraic path because it bounds orbit
+cycles. Callback cancellation still propagates. Rank-one supports without an
+exposed unit pivot may miss this sufficient gate.
+
+All 1,317 maintained tests pass. On 2,550 corpus configurations every count agrees
+with the frozen producer and component oracle; 1,878 use the shortcut. Complete
+production, replay and serialization improves 31.39x on the layered-256 count
+query. Supplied-sector discovery gains 1.07–1.30x; this is not a whole knot
+recognition timing or a general complexity bound. Reproduce from `fast/`:
+
+```sh
+python -B -m normal_orbit_research.unit_rays audit --output /tmp/unit-ray-audit.json
+python -B -m normal_orbit_research.unit_rays benchmark --rounds 5 --output /tmp/unit-ray-benchmark.json
+```
+
+The [unit-ray article](../synthesis/unit_ray.tex) proves connectedness, scaling,
+primitive disc classification, the all-size Fibonacci family and protocol
+semantics. The [mathematical review](../synthesis/completion_theorems.tex) preserves
+other results from reports 64–69, including results not selected for native code.

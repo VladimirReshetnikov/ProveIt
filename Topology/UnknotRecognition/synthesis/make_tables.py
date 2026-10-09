@@ -1695,3 +1695,7 @@ if os.path.exists('data/incoming-sectors-benchmark.json'):
 if os.path.exists('data/topology-spectra-benchmark.json'):
     import runpy
     runpy.run_path('data/topology_spectra_tables.py')
+
+if os.path.exists('data/unit-ray-benchmark.json'):
+    import runpy
+    runpy.run_path('data/unit_ray_tables.py')
