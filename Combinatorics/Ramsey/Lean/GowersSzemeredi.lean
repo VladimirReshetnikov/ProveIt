@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16GlobalColumnExtensions
+import GowersSzemeredi.Proofs16GlobalEvenZeroColumnCore
 import GowersSzemeredi.Proofs16ColumnDifferenceExtension
 import GowersSzemeredi.Proofs16GlobalColumnAgreement
 import GowersSzemeredi.Proofs16ZeroColumnsBihomomorphism
