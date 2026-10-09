@@ -4844,3 +4844,81 @@ landed in the same hour as `Proofs16GlobalExactColumnQuadruples`
 (`global_many_exact_column_quadruples`), which proves the same statement
 with the slightly better column count `α/(2−α)·N`. The duplicate was
 removed before merging; git history keeps it.
+
+### J.99. Removing intermediate frequencies and composing column relations
+
+**Verified 2026-10-09.** Six modules extend J.98 from many exact
+quadruples to a dense relation system with a finite quantitative
+composition hierarchy. This addresses the changing domains of the
+partially defined column maps.
+
+`Proofs16RefinementKernel` proves `freiman_zero_remove_frequencies`.
+Let `|T| <= d`, `|U| <= e`, `0 < r <= rho`, and let `f` be normalized
+Freiman-linear on `B(T;rho)`. Put
+
+```
+P = ceil(4/rho), Q = ceil(1/r)
+K = P^d * Q^(d+e).
+```
+
+If `f` vanishes on `B(T union U;r)` and the prime modulus satisfies
+`N > K`, then it vanishes on `B(T;(rho/2)/K)`. The proof combines the
+Bohr cardinality lower bound, the dense-level image bound, and prime
+small-image rigidity. No frequency from `U` remains in the conclusion.
+
+`Proofs16ColumnPairComposition` encodes a relation between `(a,b)` and
+`(c,d)` as equality of `L(a)-L(b)` and `L(c)-L(d)` on the four endpoint
+Bohr domains. Two such identities through an intermediate pair compose
+at `refinementKernelRadius (4*d) (2*d) rho r`. Only the four endpoint
+frequency sets occur in the result; the two intermediate sets are
+removed by the preceding theorem.
+
+`Proofs16ColumnIdentityLevels` defines a positive decreasing schedule
+`r[0]=rho` and
+
+```
+r[j+1] = min(r[j], refinementKernelRadius (4*d) (2*d) rho r[j])
+N0(n) = 1 + max_{j<n} refinementKernelCap (4*d) (2*d) rho r[j].
+```
+
+The finite maximum is implemented by `Finset.sup`, including `n=0`.
+For `N >= N0(n)`, paths of at most `n` identities compose on the
+corresponding endpoint radius. `Proofs16ColumnRelationSystem` also
+requires equal index differences and proves the three symmetries:
+interchanging the pairs, reversing both pairs, and exchanging the
+middle entries. Positive levels `i,j` compose to level `i+j` when
+`i+j <= n`. A single intermediate pair suffices.
+
+This is a stronger qualitative transitivity condition than the
+many-bridge hypothesis of the abstract BSG argument in
+[Milićević, Theorem 4.1](https://arxiv.org/pdf/2601.01682), but it comes
+with the explicit prime-modulus threshold and radius costs above.
+No quasipolynomial estimate follows here.
+
+`Proofs16ColumnRelationCounting` identifies the pair relations with
+J.98's exact quadruples using `(p,q) -> (p.1,q.2,p.2,q.1)` and proves
+equality of their cardinalities. `Proofs16GlobalColumnRelations` takes
+the maximum of J.98's threshold and the composition threshold. Its
+`global_dense_column_relations` then constructs the dense level-one
+relations and all the stated compositions directly from `A`, `phi`,
+and their original density/bihomomorphism assumptions. The witnesses,
+normalization, column rank, and witness counts are retained. There is
+no assumed relation density or transitivity hypothesis.
+
+**Limits and next step.** This does not yet extract a dense set of
+indices on which every additive quadruple satisfies the local identity.
+The dense graph extraction, bilinear organization, and shifted agreement
+remain open, as do the all-modulus and quasipolynomial parts of the deep
+structure contract. One possible next step is to select a maximal-degree
+star in each difference fibre: single-bridge composition would make its
+leaves coherent. Establishing a dense index set still requires a further
+argument; naive symmetrization may combine unrelated stars.
+
+**Verification.** All 23 new named theorems pass individual axiom checks.
+The global construction checks 142 modules. The combined audit checks
+6,969 public Gowers theorems in 5,095 modules (5,093 for the facade,
+including the unchanged 4,152 OAI modules), with only `propext`,
+`Classical.choice`, and `Quot.sound`. The numbered catalogue remains
+115 companions and five open entries; this count does not certify
+fidelity to every printed statement. No upstream code or provenance
+files were changed and no new upstream modules were ported.
