@@ -1,0 +1,142 @@
+\section{Implementation, independent replay, and source correspondence}
+\label{sec:implementation}
+
+The patch is additive.  It leaves the default recognizer policy unchanged
+while exposing the new observer, exact ray count, and source-bound positive
+certificate as explicit APIs.  This makes the work reviewable and avoids
+turning an overhead-sensitive optimization into an unmeasured global default.
+
+\subsection{Module boundaries}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+Addition under \code{fastunknot/} & Responsibility \\
+\midrule
+\endhead
+\code{normal_support.py}\newline
+\code{normal_support_verify.py} &
+Cost-ordered exact support compilation; independent decoder identities and
+modular rank replay.\\[6pt]
+\code{normal_support_peeling.py}\newline
+\code{normal_support_peeling_verify.py} &
+Queue discovery of a unit-exposed ray; independent original-row transcript
+checking.\\[6pt]
+\code{normal_packed_components.py}\newline
+\code{normal_packed_verify.py} &
+Selected corner weights, scalar or vector transport, full-coordinate recovery,
+and independently reconstructed packing and classification.\\[6pt]
+\code{normal_ray_blocks.py}\newline
+\code{normal_ray_blocks_verify.py} &
+Raw-incidence geometric blocks, peeling-first rank gate, exact primitive disc
+count, and certified fallback.\\[6pt]
+\code{normal_support_diagram.py} &
+Canonical diagram-exterior binding plus positive disc evidence, with a separate
+verification entry point.\\
+\bottomrule
+\end{longtable}
+
+The support producer uses sparse fraction-free elimination; the checker
+reconstructs the source matrix and checks the resulting identities.  The
+packed checker builds its own slot radices and corner weights, extracts digits
+by quotient/remainder arithmetic, evaluates the rational decoder independently,
+and recomputes the full coordinate summary.  It does not call the producer's
+weight builder, decoder, or classifier.  It additionally checks
+\[
+ \sum_{\text{profile entries }(y,\mu)}\mu y=x.
+\]
+This conservation check is useful against omissions and wrong multiplicities;
+connectivity itself comes from the independently replayed orbit proof.
+
+For geometric blocks the producer uses union--find, while the checker constructs
+an adjacency graph and traverses it.  On a peeled block the producer evaluates
+unit rows into an array; the checker uses an independently written map of
+known coordinates.  Both validate the recovered primitive normal vector.
+They establish $x=x_jp$ by matching-space uniqueness and seed values.  No
+large multiplication or per-coordinate division is needed to re-establish
+that equality.  The generic rank-one branch retains exact gcd and division.
+
+The current block interface constructs a full $7t$ vector and revisits finite
+coordinate geometry for each of its $b$ blocks.  This can contribute $O(bt)$
+structural work even when every block is individually easy.  The linear
+peeling statement concerns one prepared block, not an unconditional linear
+bound for this entire public interface.  Sharing one sparse geometry pass
+across blocks is a concrete further optimization.
+
+\subsection{Exact integers and failure semantics}
+
+Certificates support the maintained hexadecimal integer codec.  A JSON string
+carrying an exact hexadecimal integer is decoded before use; booleans are not
+silently treated as integers.  Schema keys, index uniqueness, dimensions,
+support completeness, divisibility, coordinate bounds, and counts are checked.
+Large multiplicities remain integers with binary-length storage.  There is
+no loop over represented sheets or over repeated equal component records.
+
+A user callback supplies cooperative cancellation.  Tests inject specific
+exception objects at geometry, rank, weight, and source-correspondence boundaries
+and require the same objects to propagate.  A checker returning false for
+malformed evidence must not accidentally swallow cancellation because its
+exception class resembles a geometry or proof-validation error.
+
+The public meaning of each outcome is as follows:
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}p{0.25\linewidth}X@{}}
+\toprule
+Outcome & Claim made \\
+\midrule
+Complete profile & Exact component vectors and multiplicities of this supplied
+normal surface.\\
+Complete disc count & Exact number of essential-disc components of this
+supplied normal surface.\\
+Zero disc count & This source contributes no essential disc; another source
+may do so.\\
+Cycle exhaustion & The requested calculation is inconclusive.\\
+Source-bound positive & A checked essential disc exists in the canonical
+exterior of the supplied classical knot diagram.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Binding a disc to a knot diagram}
+
+An abstract torus-boundary manifold containing an essential disc is not by
+itself evidence about a particular diagram.  The pinned recognizer already
+supplies the missing source layer: its Weeks-based diagram exterior uses a
+canonical pulling subdivision with $20n$ tetrahedra for an $n$-crossing diagram
+when $n\ge1$ (and an alternative centered subdivision), together with an independent local-cell
+checker.  The zero-crossing circle is represented by a Reidemeister-I curl,
+so the general size formula is $20\max(1,n)$ for $n$ crossings.
+The new wrapper uses this maintained correspondence, documented in
+\code{synthesis/diagram_exterior.tex} and its linked primary Weeks construction
+\cite{ProveIt}.
+
+The function \code{certify_diagram_ray_disks} constructs that exterior,
+checks the supplied coordinate vector, obtains and checks a ray-block disc
+certificate, and returns \code{UNKNOT} only if the count is positive.  Its
+certificate contains the source PD code, canonical triangulation, source
+coordinates, and disc evidence.  The verifier checks the PD binding and the
+exterior independently before replaying the disc proof.  For a classical
+knot in $S^3$, compressibility of its exterior boundary implies that it is
+the unknot.  The canonical source construction is part of this implication's
+input contract.
+
+This interface does not implement disc discovery.  Its stabilization examples
+use coordinates supplied by the existing cocycle seed routine.  The ordinary
+recognizer can already settle many such examples through simpler routes, so
+timing the wrapper is evidence about a certificate stage, not a speedup of the
+entire recognizer on those diagrams.
+
+\subsection{Trust and resource boundaries}
+
+The independent checkers share the finite triangulation representation,
+normal-corner geometry, exact integer codec, and the established interval
+proof contract.  They do not share producer elimination, greedy discovery,
+or the ray block planner.  The trust boundary therefore remains explicit:
+the work checks the new optimized representations against maintained exact
+mathematics; it does not rebuild every existing foundation twice.
+
+The implemented validators are mathematical proof checkers, not resource
+sandboxes for arbitrary hostile byte streams.  Their polynomial bounds are
+in the lengths of the source and the supplied evidence, subject to the stated
+finite geometry contract.  A future network-facing service would separately
+need parser and resource limits.  Such deployment is outside this additive
+research package.

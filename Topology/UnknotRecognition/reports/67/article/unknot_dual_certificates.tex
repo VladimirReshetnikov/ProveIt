@@ -1,0 +1,94 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,multirow}
+\usepackage{graphicx,xcolor,enumitem,fancyhdr,float}
+\usepackage[hyphens]{url}
+\definecolor{ink}{HTML}{17384C}
+\definecolor{muted}{HTML}{516877}
+\definecolor{pale}{HTML}{EEF4F7}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink]{hyperref}
+\hypersetup{pdftitle={Dual Certificates and Forced Quadrilateral Propagation for Unknot Recognition},pdfauthor={ProveIt research continuation prepared with ChatGPT},pdfsubject={Exact normal-surface certificates, parameterized algorithms, and conditional quasi-polynomial complexity}}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=.25pt,rulecolor=\color{muted},backgroundcolor=\color{pale},showstringspaces=false}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt,leftmargin=*}
+\renewcommand{\arraystretch}{1.15}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{F}
+\newcommand{\Ftwo}{\mathbb F_2}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\ch}{\chi}
+\newcommand{\status}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\baseline}{\texttt{3a90fb34146c915328ab8eac6250cc2514f74ed0}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt / Unknot recognition}
+\fancyhead[R]{\small\color{muted}Dual certificates and propagation}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\large\color{muted}TOPOLOGY / ALGORITHMIC RESEARCH\par}
+\vspace{7mm}
+{\huge\bfseries\color{ink}Dual Certificates and Forced Quadrilateral Propagation for Unknot Recognition\par}
+\vspace{6mm}
+{\Large A support-aware LP continuation, a proved dense-family separation, and conditional quasi-polynomial search\par}
+\vspace{9mm}
+{\large Research continuation for Vladimir Reshetnikov's ProveIt project\par}
+{\normalsize Prepared with ChatGPT \quad | \quad 9 October 2026\par}
+\vspace{10mm}
+\begin{abstract}
+\noindent
+The previous quadrilateral-support kernel gives small exact normal-surface systems, but complete ray enumeration and exponential type selection remain different bottlenecks. This continuation develops three certificate-producing improvements and makes the remaining asymptotic obligation explicit. First, canonical positive-Euler existence in a compatible sector is decided by a family of rational linear programs, with at most $4k+1$ anchor objectives when the triangulation has one global vertex and the sector allows $k$ quadrilateral coordinates. Exact Farkas multipliers certify an entire negative sector without enumerating its rays; a componentwise envelope and certified dual reuse can reduce the work further. Second, primitivity and one modular rank witness certify connectedness of a standard extreme ray, allowing essential discs to be verified without a general component census. Third, mandatory-type implications give a monotone propagation closure and a strong backdoor parameter for the remaining quadrilateral choices.
+
+We prove that the Fibonacci layered solid tori have propagation backdoor zero for every number of tetrahedra, despite their linear essential-disc support obstruction and exponentially large coordinates. A supplied backdoor of size $b$ yields $A(T)3^b\poly(t)$ exact positive-Euler search with a polynomial rational-LP oracle; finding an unknown backdoor costs $A(T)(3t)^{O(b)}\poly(t)$, where $A(T)=4t$ for one vertex. This gives a precise conditional route to quasi-polynomial unknot recognition through the classical search-and-crush framework. An unused-tetrahedron obstruction limits the strong parameter; a policy-dependent deciding-set refinement permits early positive termination. No logarithmic bound for arbitrary knot exteriors is proved.
+
+The accompanying additive Python prototype has independent arithmetic checkers, explicit inconclusive outcomes under caps, frozen independent normal-surface oracles, adversarial examples, and reproducible measurements. The shipped simplex engine is exact but has no proved polynomial pivot bound. The report separates local theorems, executable evidence, classical ingredients, and the unresolved global theorem throughout.
+\end{abstract}
+\vfill
+{\small\color{muted}Repository snapshot: \baseline\par}
+{\small\color{muted}Primary paths: \code{Topology/UnknotRecognition} and \code{docs/incoming}.\par}
+\end{titlepage}
+\clearpage
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/overview}
+\input{sections/setting}
+\input{sections/sector_lp}
+\input{sections/ray}
+\input{sections/propagation}
+\input{sections/fibonacci}
+\input{sections/complexity}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/research}
+\appendix
+\input{sections/reproducibility}
+\input{references}
+\end{document}

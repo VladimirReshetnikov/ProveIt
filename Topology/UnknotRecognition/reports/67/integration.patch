@@ -1,0 +1,2691 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py b/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_sector.py
+@@ -0,0 +1,474 @@
++"""Exact quadrilateral-sector kernels and normal vertex-surface discovery.
++
++This is a supplied-triangulation search module, not a diagram recognizer.
++Every successful essential-disc query includes native independent replay.
++Pure vertex links are omitted.  Coordinates and linear algebra are exact.
++"""
++
++from dataclasses import dataclass
++from fractions import Fraction
++from hashlib import sha256
++from itertools import combinations, product
++from math import comb, gcd, lcm
++import json
++
++from .normal_surface_geometry import _prepare, _coordinates, _quad
++from .normal_disk_kernel import (
++    normal_compressing_disk_count, verify_normal_disk_count_certificate,
++)
++
++
++class SearchLimit(RuntimeError):
++    """An explicitly configured search allowance was exhausted."""
++
++
++def _rref(rows, width, check=lambda: None):
++    a = [[Fraction(x) for x in row] for row in rows if any(row)]
++    pivots = []
++    r = 0
++    for col in range(width):
++        check()
++        pivot = next((i for i in range(r, len(a)) if a[i][col]), None)
++        if pivot is None:
++            continue
++        a[r], a[pivot] = a[pivot], a[r]
++        value = a[r][col]
++        a[r] = [x / value for x in a[r]]
++        for i in range(len(a)):
++            if i != r and a[i][col]:
++                value = a[i][col]
++                a[i] = [x - value*y for x, y in zip(a[i], a[r])]
++        pivots.append(col)
++        r += 1
++        if r == len(a):
++            break
++    return a[:r], pivots
++
++
++def _nullspace(rows, width, check=lambda: None):
++    reduced, pivots = _rref(rows, width, check)
++    result = []
++    for free in (i for i in range(width) if i not in pivots):
++        vector = [Fraction(0)] * width
++        vector[free] = Fraction(1)
++        for row, pivot in zip(reduced, pivots):
++            vector[pivot] = -row[free]
++        result.append(vector)
++    return result
++
++
++def _primitive(values):
++    values = [Fraction(x) for x in values]
++    denominator = lcm(*(x.denominator for x in values)) if values else 1
++    integers = [int(x*denominator) for x in values]
++    divisor = 0
++    for value in integers:
++        divisor = gcd(divisor, abs(value))
++    if not divisor:
++        return tuple(integers)
++    if next(x for x in integers if x) < 0:
++        divisor = -divisor
++    return tuple(x//divisor for x in integers)
++
++
++def _dot(left, right):
++    return sum(x*y for x, y in zip(left, right))
++
++
++def _source_hash(triangulation):
++    raw = json.dumps(triangulation, sort_keys=True, separators=(',', ':'))
++    return sha256(raw.encode('utf-8')).hexdigest()
++
++
++def _support(value, tetrahedra):
++    if not isinstance(value, (list, tuple)):
++        raise ValueError('allowed_types must be a list or tuple')
++    answer = []
++    for item in value:
++        if (not isinstance(item, (list, tuple)) or len(item) != 2
++                or any(type(x) is not int for x in item)):
++            raise ValueError('each allowed type must be an integer pair')
++        t, q = item
++        if not 0 <= t < tetrahedra or not 0 <= q < 3:
++            raise ValueError('allowed quadrilateral type out of range')
++        answer.append((t, q))
++    if len({t for t, _ in answer}) != len(answer):
++        raise ValueError('allow at most one quadrilateral type per tetrahedron')
++    return tuple(sorted(answer))
++
++
++@dataclass
++class SectorKernel:
++    triangulation: dict
++    prepared: dict
++    support: tuple
++    corner_class: tuple
++    classes: tuple
++    groups: tuple
++    matrix: tuple
++    potentials: dict
++    cycle_rows: tuple
++    basis: tuple
++    stats: dict
++
++    def lift(self, quadrilaterals, check=lambda: None):
++        """Canonical integral lift; one minimum zero per global vertex."""
++        q = tuple(quadrilaterals)
++        if (len(q) != len(self.support) or any(type(x) is not int or x < 0 for x in q)
++                or any(_dot(row, q) for row in self.cycle_rows)):
++            raise ValueError('quadrilateral vector is outside the sector cone')
++        values = {c: _dot(self.potentials[c], q) for c in self.classes}
++        for group in self.groups:
++            minimum = min(values[c] for c in group)
++            for c in group:
++                values[c] -= minimum
++        rows = [[0]*7 for _ in self.prepared['tetrahedra']]
++        for corner, c in enumerate(self.corner_class):
++            check()
++            rows[corner//4][corner % 4] = values.get(c, 0)
++        for (t, typ), count in zip(self.support, q):
++            rows[t][4+typ] = count
++        _coordinates(self.prepared, rows, check)
++        return rows
++
++    def kernel_vector(self, rows):
++        flat = [rows[c//4][c % 4] for c in self.classes]
++        return flat + [rows[t][4+q] for t, q in self.support]
++
++    def is_standard_ray(self, rows, check=lambda: None):
++        positive = [i for i, x in enumerate(self.kernel_vector(rows)) if x]
++        if not positive:
++            return False
++        restricted = [[row[i] for i in positive] for row in self.matrix]
++        return len(_nullspace(restricted, len(positive), check)) == 1
++
++
++def build_sector_kernel(triangulation, allowed_types, *, check=lambda: None):
++    """Contract all triangle matching edges with identically zero q-label.
++
++    For k allowed types, the retained cone has at most 8k triangle variables,
++    k quadrilateral variables, and 4k equations of Euclidean row norm <= 2.
++    Every dropped class is an independent pure vertex-link factor.
++    """
++    prepared = _prepare(triangulation, check)
++    count = len(prepared['tetrahedra'])
++    support = _support(allowed_types, count)
++    index = {item: j for j, item in enumerate(support)}
++    k = len(support)
++    parent = list(range(4*count))
++
++    def find(x):
++        while parent[x] != x:
++            parent[x] = parent[parent[x]]
++            x = parent[x]
++        return x
++
++    def union(a, b):
++        a, b = find(a), find(b)
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++
++    edges = []
++    for t, f, u, g, permutation in prepared['pairs']:
++        check()
++        for v in range(4):
++            if v == f:
++                continue
++            w = permutation[v]
++            a, b = 4*t+v, 4*u+w
++            label = [0]*k
++            for key, sign in (((t, _quad(f, v)), 1),
++                              ((u, _quad(g, w)), -1)):
++                if key in index:
++                    label[index[key]] += sign
++            edges.append((a, b, tuple(label)))
++            if not any(label):
++                union(a, b)
++    corner_class = tuple(find(i) for i in range(4*count))
++    vertex_groups = {}
++    for i, c in enumerate(corner_class):
++        vertex_groups.setdefault(prepared['vertex_roots'][i], set()).add(c)
++    groups = tuple(tuple(sorted(group)) for _, group in sorted(vertex_groups.items())
++                   if len(group) > 1)
++    classes = tuple(sorted(c for group in groups for c in group))
++    class_index = {c: i for i, c in enumerate(classes)}
++    adjacency = {c: [] for c in set(corner_class)}
++    active = []
++    matrix = []
++    for a, b, label in edges:
++        if not any(label):
++            continue
++        a, b = corner_class[a], corner_class[b]
++        active.append((a, b, label))
++        adjacency[a].append((b, label))
++        adjacency[b].append((a, tuple(-x for x in label)))
++        row = [0]*(len(classes)+k)
++        if a in class_index:
++            row[class_index[a]] -= 1
++        if b in class_index:
++            row[class_index[b]] += 1
++        for j, value in enumerate(label):
++            row[len(classes)+j] -= value
++        if any(row):
++            matrix.append(tuple(row))
++    potentials = {}
++    for root in sorted(adjacency):
++        if root in potentials:
++            continue
++        potentials[root] = (0,)*k
++        queue = [root]
++        for a in queue:
++            check()
++            for b, label in adjacency[a]:
++                if b not in potentials:
++                    potentials[b] = tuple(x+y for x, y in zip(potentials[a], label))
++                    queue.append(b)
++    cycle_set = set()
++    for a, b, label in active:
++        row = _primitive(x+y-z for x, y, z
++                         in zip(potentials[a], label, potentials[b]))
++        if any(row):
++            cycle_set.add(row)
++    cycle_rows = tuple(sorted(cycle_set))
++    basis = tuple(tuple(row) for row in _nullspace(cycle_rows, k, check))
++    stats = dict(tetrahedra=count, allowed_types=k, active_equations=len(active),
++                 triangle_classes=len(classes), kernel_variables=len(classes)+k,
++                 kernel_equations=len(matrix), matching_nullity=len(basis),
++                 matching_rank=k-len(basis),
++                 removed_link_factors=sum(len(g) == 1 for g in vertex_groups.values()))
++    if (len(active) > 4*k or len(classes) > 8*k
++            or any(sum(x*x for x in row) > 4 for row in matrix)):
++        raise ArithmeticError('support-kernel size or row-norm invariant failed')
++    return SectorKernel(triangulation, prepared, support, corner_class, classes,
++                        groups, tuple(matrix), potentials, cycle_rows, basis, stats)
++
++
++def _hyperplanes(kernel, phase, check):
++    k = len(kernel.support)
++    normals = [[int(i == j) for i in range(k)] for j in range(k)]
++    if phase == 'standard':
++        for group in kernel.groups:
++            for a, b in combinations(group, 2):
++                normals.append([x-y for x, y
++                                in zip(kernel.potentials[a], kernel.potentials[b])])
++    projected = set()
++    for row in normals:
++        check()
++        vector = _primitive(_dot(row, column) for column in kernel.basis)
++        if any(vector):
++            projected.add(vector)
++    return tuple(sorted(projected))
++
++
++def _support_rays(kernel, check, max_bases, stats):
++    """Enumerate exact positive supports of the small standard cone."""
++    p = len(kernel.classes)
++    width = p + len(kernel.support)
++    rank = len(_rref(kernel.matrix, width, check)[1])
++    for size in range(1, min(width, rank+1)+1):
++        for indices in combinations(range(width), size):
++            if indices[-1] < p:
++                continue
++            check()
++            if max_bases is not None and stats['bases_attempted'] >= max_bases:
++                raise SearchLimit('candidate-basis allowance exhausted')
++            stats['bases_attempted'] += 1
++            matrix = [[row[i] for i in indices] for row in kernel.matrix]
++            null = _nullspace(matrix, size, check)
++            if len(null) != 1:
++                continue
++            vector = _primitive(null[0])
++            if any(x <= 0 for x in vector):
++                continue
++            full = [0]*width
++            for i, value in zip(indices, vector):
++                full[i] = value
++            rows = kernel.lift(tuple(full[p:]), check)
++            if kernel.kernel_vector(rows) != full:
++                raise ArithmeticError('non-link extreme ray was not canonical')
++            if max(full) > 4**len(kernel.support):
++                raise ArithmeticError('primitive extreme-ray height bound failed')
++            stats['positive_directions'] += 1
++            stats['emitted_rays'] += 1
++            yield rows
++
++
++def sector_rays(kernel, *, phase='standard', method='auto', check=lambda: None,
++                max_bases=None, stats=None):
++    """Yield primitive non-link standard rays in a supplied quad sector.
++
++    'quadrilateral' yields only canonical lifts of Q-cone extreme rays.
++    'standard' enumerates the potential arrangement, then filters by exact
++    standard-cone extremality.  k=0 and nullity=0 yield no non-link ray.
++    max_bases limits attempted linear systems, not just successful rays.
++    """
++    if phase not in ('quadrilateral', 'standard'):
++        raise ValueError('phase must be quadrilateral or standard')
++    if method not in ('auto', 'arrangement', 'supports'):
++        raise ValueError('method must be auto, arrangement, or supports')
++    if phase == 'quadrilateral' and method == 'supports':
++        raise ValueError('support enumeration is a standard-ray method')
++    if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
++        raise ValueError('max_bases must be a nonnegative integer or None')
++    if stats is None:
++        stats = {}
++    stats.update(bases_attempted=0, positive_directions=0,
++                 nonextreme_directions=0, emitted_rays=0)
++    d = len(kernel.basis)
++    if d == 0:
++        stats['hyperplanes'] = 0
++        stats['method'] = 'empty'
++        return
++    planes = _hyperplanes(kernel, phase, check)
++    stats['hyperplanes'] = len(planes)
++    stats['method'] = 'arrangement'
++    if phase == 'standard':
++        p = len(kernel.classes)
++        width = p + len(kernel.support)
++        rank = len(_rref(kernel.matrix, width, check)[1])
++        support_work = sum(comb(width, s)-(comb(p, s) if s <= p else 0)
++                           for s in range(1, min(width, rank+1)+1))
++        arrangement_work = comb(len(planes), d-1)
++        stats.update(support_work_bound=support_work,
++                     arrangement_work_bound=arrangement_work)
++        if method == 'supports' or (method == 'auto' and support_work < arrangement_work):
++            stats['method'] = 'supports'
++            yield from _support_rays(kernel, check, max_bases, stats)
++            return
++    seen = set()
++    for indices in combinations(range(len(planes)), d-1):
++        check()
++        if max_bases is not None and stats['bases_attempted'] >= max_bases:
++            raise SearchLimit('candidate-basis allowance exhausted')
++        stats['bases_attempted'] += 1
++        nullspace = _nullspace([planes[i] for i in indices], d, check)
++        if len(nullspace) != 1:
++            continue
++        z = nullspace[0]
++        q = _primitive(sum(kernel.basis[j][i]*z[j] for j in range(d))
++                       for i in range(len(kernel.support)))
++        if q in seen or not any(q) or any(x < 0 for x in q):
++            continue
++        seen.add(q)
++        stats['positive_directions'] += 1
++        rows = kernel.lift(q, check)
++        if not kernel.is_standard_ray(rows, check):
++            stats['nonextreme_directions'] += 1
++            if phase == 'quadrilateral':
++                raise ArithmeticError('canonical Q-ray lift was not standard extreme')
++            continue
++        if max(x for row in rows for x in row) > 4**len(kernel.support):
++            raise ArithmeticError('primitive extreme-ray height bound failed')
++        stats['emitted_rays'] += 1
++        yield rows
++
++
++def enumerate_sector(triangulation, allowed_types, *, phase='standard', method='auto',
++                     max_bases=None, check=lambda: None):
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    stats = dict(kernel.stats)
++    rows = list(sector_rays(kernel, phase=phase, method=method, max_bases=max_bases,
++                            check=check, stats=stats))
++    return rows, stats
++
++
++def discover_in_sector(triangulation, allowed_types, *, phase='quadrilateral',
++                       max_bases=None, max_orbit_cycles=None, check=lambda: None):
++    """Find a independently certified essential-disc component, if encountered.
++
++    A complete Q phase also decides existence of a positive-Euler canonical
++    surface in the sector.  Positive Euler alone is never a disc verdict.
++    A complete standard phase excludes only vertex discs in this sector.
++    A cap returns INCONCLUSIVE without an absence claim or partial proof.
++    """
++    if phase not in ('quadrilateral', 'standard'):
++        raise ValueError('unknown search phase')
++    if max_bases is not None and (type(max_bases) is not int or max_bases < 0):
++        raise ValueError('invalid basis allowance')
++    if max_orbit_cycles is not None and (
++            type(max_orbit_cycles) is not int or max_orbit_cycles < 0):
++        raise ValueError('invalid orbit allowance')
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    stats = dict(kernel.stats, positive_euler_rays=0, orbit_queries=0)
++    transcript = []
++    try:
++        for rows in sector_rays(kernel, phase=phase, max_bases=max_bases,
++                                check=check, stats=stats):
++            analysed = _coordinates(kernel.prepared, rows, check)
++            chi = analysed['euler_characteristic']
++            q = [rows[t][4+j] for t, j in kernel.support]
++            record = dict(quadrilaterals=q, euler_characteristic=chi)
++            transcript.append(record)
++            if chi <= 0:
++                continue
++            stats['positive_euler_rays'] += 1
++            stats['orbit_queries'] += 1
++            count = normal_compressing_disk_count(
++                triangulation, rows, max_cycles=max_orbit_cycles,
++                record_certificate=True, check=check)
++            if count['status'] != 'COMPLETE':
++                raise SearchLimit('normal-component query did not complete')
++            proof = count['certificate']
++            if not verify_normal_disk_count_certificate(
++                    triangulation, rows, proof, check=check):
++                raise ArithmeticError('independent native disc replay rejected')
++            record['disk_certificate'] = proof
++            if count['contains_compressing_disk']:
++                certificate = dict(schema='normal-sector-witness-v1',
++                    source_sha256=_source_hash(triangulation),
++                    allowed_types=[list(x) for x in kernel.support],
++                    coordinates=rows, disk_certificate=proof)
++                return dict(status='DISC_FOUND', coordinates=rows, certificate=certificate,
++                            stats=stats, trust='this supplied triangulation only')
++    except SearchLimit as exc:
++        return dict(status='INCONCLUSIVE', reason=str(exc), stats=stats)
++    if not stats['positive_euler_rays']:
++        status = 'NO_POSITIVE_EULER'
++    elif phase == 'quadrilateral':
++        status = 'POSITIVE_EULER_ONLY'
++    else:
++        status = 'NO_VERTEX_DISC_IN_SECTOR'
++    certificate = dict(schema='normal-sector-exhaustion-v1',
++        source_sha256=_source_hash(triangulation),
++        allowed_types=[list(x) for x in kernel.support], phase=phase,
++        status=status, rays=transcript)
++    return dict(status=status, stats=stats, certificate=certificate,
++                trust='sector statement only; no knot-diagram correspondence asserted')
++
++
++def sparse_disc_search(triangulation, *, max_active, max_sectors=None,
++                       max_bases_per_sector=None, check=lambda: None):
++    """Search all exact allowed supports of size <= max_active.
++
++    Uses Q-ray screening and, when necessary, all standard rays.  Exhaustion
++    gives NO_VERTEX_DISC_UP_TO_SUPPORT, never an unqualified knot verdict.
++    The triangulation itself is not asserted to come from a knot diagram.
++    """
++    count = len(_prepare(triangulation, check)['tetrahedra'])
++    if type(max_active) is not int or not 0 <= max_active <= count:
++        raise ValueError('max_active must lie between zero and tetrahedron count')
++    if max_sectors is not None and (type(max_sectors) is not int or max_sectors < 0):
++        raise ValueError('invalid sector allowance')
++    if max_bases_per_sector is not None and (
++            type(max_bases_per_sector) is not int or max_bases_per_sector < 0):
++        raise ValueError('invalid basis allowance')
++    visited = 0
++    for size in range(1, max_active+1):
++        for tets in combinations(range(count), size):
++            for types in product(range(3), repeat=size):
++                check()
++                if max_sectors is not None and visited >= max_sectors:
++                    return dict(status='INCONCLUSIVE', reason='sector allowance exhausted',
++                                sectors_visited=visited)
++                visited += 1
++                support = list(zip(tets, types))
++                result = discover_in_sector(triangulation, support,
++                    phase='quadrilateral', max_bases=max_bases_per_sector, check=check)
++                if result['status'] == 'POSITIVE_EULER_ONLY':
++                    result = discover_in_sector(triangulation, support,
++                        phase='standard', max_bases=max_bases_per_sector, check=check)
++                if result['status'] in ('DISC_FOUND', 'INCONCLUSIVE'):
++                    return dict(result, sectors_visited=visited)
++    return dict(status='NO_VERTEX_DISC_UP_TO_SUPPORT', max_active=max_active,
++                sectors_visited=visited,
++                trust='restricted search exhaustion only, not a knot verdict')
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_sector_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_sector_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_sector_verify.py
+@@ -0,0 +1,266 @@
++"""Independent witness and complete-sector replay using dense elimination.
++
++This module does not import the sector producer or its contraction, potential,
++nullspace, or enumeration helpers.  Native geometry validation and the older
++independent weighted-disc checker are the deliberately shared trust boundary.
++"""
++
++from fractions import Fraction
++from hashlib import sha256
++from itertools import combinations
++from math import gcd, lcm
++import json
++
++from .normal_surface_geometry import _prepare, _coordinates, NormalOrbitError
++from .normal_disk_kernel import verify_normal_disk_count_certificate
++from .integer_codec import encoded_integer
++
++
++def _digest(triangulation):
++    encoded = json.dumps(triangulation, sort_keys=True, separators=(',', ':')).encode()
++    return sha256(encoded).hexdigest()
++
++
++def _allowed(value, t):
++    if type(value) is not list:
++        raise ValueError('allowed type list missing')
++    result = []
++    for pair in value:
++        if (type(pair) is not list or len(pair) != 2
++                or any(type(x) is not int for x in pair)
++                or not 0 <= pair[0] < t or not 0 <= pair[1] < 3):
++            raise ValueError('malformed allowed type')
++        result.append(tuple(pair))
++    if result != sorted(result) or len(set(x[0] for x in result)) != len(result):
++        raise ValueError('unordered or overlapping types')
++    return result
++
++
++def _eliminate(matrix, columns, check):
++    matrix = [[Fraction(x) for x in row] for row in matrix]
++    pivots = []
++    target = 0
++    for column in range(columns):
++        check()
++        selected = next((r for r in range(target, len(matrix))
++                         if matrix[r][column] != 0), None)
++        if selected is None:
++            continue
++        matrix[target], matrix[selected] = matrix[selected], matrix[target]
++        scale = matrix[target][column]
++        matrix[target] = [x / scale for x in matrix[target]]
++        for r, row in enumerate(matrix):
++            if r != target:
++                scale = row[column]
++                if scale:
++                    matrix[r] = [a-scale*b for a, b in zip(row, matrix[target])]
++        pivots.append(column)
++        target += 1
++    return matrix, pivots
++
++
++def _kernel(matrix, columns, check):
++    reduced, pivots = _eliminate(matrix, columns, check)
++    vectors = []
++    for column in range(columns):
++        if column in pivots:
++            continue
++        v = [Fraction(int(j == column)) for j in range(columns)]
++        for r, p in enumerate(pivots):
++            v[p] = -reduced[r][column]
++        vectors.append(v)
++    return vectors
++
++
++def _integer_direction(vector):
++    vector = [Fraction(x) for x in vector]
++    multiplier = 1
++    for x in vector:
++        multiplier = lcm(multiplier, x.denominator)
++    ints = [int(multiplier*x) for x in vector]
++    common = 0
++    for x in ints:
++        common = gcd(common, x)
++    if not common:
++        return tuple(ints)
++    sign = 1 if next(x for x in ints if x) > 0 else -1
++    return tuple(sign*x//common for x in ints)
++
++
++def dense_sector_model(triangulation, allowed_types, *, check=lambda: None):
++    """Reference model from dense standard matching, without graph contraction."""
++    prepared = _prepare(triangulation, check)
++    t = len(prepared['tetrahedra'])
++    support = _allowed([list(x) for x in allowed_types], t)
++    columns = [7*i+j for i in range(t) for j in range(4)]
++    columns += [7*i+4+j for i, j in support]
++    matrix = [[row.get(column, 0) for column in columns]
++              for row in prepared['matching']]
++    reduced, pivots = _eliminate(matrix, 4*t, check)
++    constraints = [row[4*t:] for row in reduced[len(pivots):] if any(row[4*t:])]
++    basis = _kernel(constraints, len(support), check)
++    potentials = [[Fraction(0)]*len(support) for _ in range(4*t)]
++    for row, column in zip(reduced, pivots):
++        potentials[column] = [-x for x in row[4*t:]]
++    groups = {}
++    for corner, vertex in enumerate(prepared['vertex_roots']):
++        groups.setdefault(vertex, []).append(corner)
++    return dict(prepared=prepared, support=support, matrix=matrix,
++                potentials=potentials, groups=groups, basis=basis,
++                constraints=constraints)
++
++
++def _lift(model, q, check):
++    values = [sum(a*b for a, b in zip(row, q)) for row in model['potentials']]
++    for group in model['groups'].values():
++        minimum = min(values[i] for i in group)
++        for i in group:
++            values[i] -= minimum
++    if any(x.denominator != 1 for x in values):
++        raise ArithmeticError('dense canonical lift is not integral')
++    rows = [[0]*7 for _ in model['prepared']['tetrahedra']]
++    for i, x in enumerate(values):
++        rows[i//4][i % 4] = int(x)
++    for (i, typ), value in zip(model['support'], q):
++        rows[i][4+typ] = value
++    _coordinates(model['prepared'], rows, check)
++    return rows
++
++
++def dense_reference_rays(model, phase, *, check=lambda: None):
++    """Exact ray set used to certify enumeration coverage."""
++    if phase not in ('quadrilateral', 'standard'):
++        raise ValueError('invalid enumeration phase')
++    k, d = len(model['support']), len(model['basis'])
++    if d == 0:
++        return {}
++    projected = set()
++
++    def insert(row):
++        vector = _integer_direction(sum(a*b for a, b in zip(row, v))
++                                    for v in model['basis'])
++        if any(vector):
++            projected.add(vector)
++
++    for i in range(k):
++        insert([int(i == j) for j in range(k)])
++    if phase == 'standard':
++        for group in model['groups'].values():
++            # Deduplication is exact, after the independent dense solve.
++            local = sorted(set(tuple(model['potentials'][i]) for i in group))
++            for a, b in combinations(local, 2):
++                insert([x-y for x, y in zip(a, b)])
++    planes = sorted(projected)
++    result = {}
++    seen = set()
++    for selected in combinations(planes, d-1):
++        check()
++        null = _kernel(selected, d, check)
++        if len(null) != 1:
++            continue
++        q = _integer_direction(sum(v[j]*z for v, z in zip(model['basis'], null[0]))
++                               for j in range(k))
++        if q in seen or not any(q) or any(x < 0 for x in q):
++            continue
++        seen.add(q)
++        rows = _lift(model, q, check)
++        flat = [row[j] for row in rows for j in range(4)] + list(q)
++        active = [i for i, x in enumerate(flat) if x]
++        restricted = [[row[i] for i in active] for row in model['matrix']]
++        if len(_kernel(restricted, len(active), check)) != 1:
++            continue
++        chi = _coordinates(model['prepared'], rows, check)['euler_characteristic']
++        result[q] = (rows, chi)
++    return result
++
++
++def verify_sector_witness(triangulation, certificate, *, check=lambda: None):
++    check()
++    if type(certificate) is not dict or certificate.get('schema') != 'normal-sector-witness-v1':
++        return False
++    if certificate.get('source_sha256') != _digest(triangulation):
++        return False
++    try:
++        prepared = _prepare(triangulation, check)
++    except NormalOrbitError:
++        return False
++    try:
++        support = _allowed(certificate.get('allowed_types'), len(prepared['tetrahedra']))
++    except ValueError:
++        return False
++    try:
++        rows = _coordinates(prepared, certificate.get('coordinates'), check)['rows']
++    except NormalOrbitError:
++        return False
++    allowed = set(support)
++    if any(row[4+q] and (t, q) not in allowed for t, row in enumerate(rows) for q in range(3)):
++        return False
++    proof = certificate.get('disk_certificate')
++    if not verify_normal_disk_count_certificate(triangulation, rows, proof, check=check):
++        return False
++    try:
++        return encoded_integer(proof['compressing_disk_components']) > 0
++    except (KeyError, ValueError, TypeError):
++        return False
++
++
++def verify_sector_exhaustion(triangulation, certificate, *, check=lambda: None):
++    """Independently reconstruct every ray, its Euler value and negative disc proof.
++
++    A successfully checked Q certificate with NO_POSITIVE_EULER excludes every
++    positive-Euler canonical surface in the sector.  The other statuses have
++    exactly their advertised restricted meanings; none is a knot verdict.
++    """
++    check()
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'normal-sector-exhaustion-v1'
++            or certificate.get('source_sha256') != _digest(triangulation)):
++        return False
++    phase, status = certificate.get('phase'), certificate.get('status')
++    if phase not in ('quadrilateral', 'standard'):
++        return False
++    try:
++        prepared = _prepare(triangulation, check)
++    except NormalOrbitError:
++        return False
++    try:
++        support = _allowed(certificate.get('allowed_types'), len(prepared['tetrahedra']))
++    except ValueError:
++        return False
++    model = dense_sector_model(triangulation, support, check=check)
++    expected = dense_reference_rays(model, phase, check=check)
++    entries = certificate.get('rays')
++    if type(entries) is not list or len(entries) != len(expected):
++        return False
++    seen = set()
++    positive = False
++    for entry in entries:
++        check()
++        if type(entry) is not dict or type(entry.get('quadrilaterals')) is not list:
++            return False
++        values = entry['quadrilaterals']
++        if any(type(x) is not int for x in values):
++            return False
++        q = tuple(values)
++        if q in seen or q not in expected:
++            return False
++        seen.add(q)
++        rows, chi = expected[q]
++        if type(entry.get('euler_characteristic')) is not int or entry['euler_characteristic'] != chi:
++            return False
++        if chi > 0:
++            positive = True
++            proof = entry.get('disk_certificate')
++            if not verify_normal_disk_count_certificate(triangulation, rows, proof, check=check):
++                return False
++            try:
++                if encoded_integer(proof['compressing_disk_components']) != 0:
++                    return False
++            except (KeyError, ValueError, TypeError):
++                return False
++        elif 'disk_certificate' in entry:
++            return False
++    correct = ('NO_POSITIVE_EULER' if not positive else
++               'POSITIVE_EULER_ONLY' if phase == 'quadrilateral' else
++               'NO_VERTEX_DISC_IN_SECTOR')
++    return status == correct
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/exact_lp.py b/Topology/UnknotRecognition/fast/fastunknot/exact_lp.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/exact_lp.py
+@@ -0,0 +1,145 @@
++"""Exact feasibility certificates for a nonnegative rational kernel.
++
++The producer uses a feasible slack basis and Bland's simplex rule.  It is
++finite in exact arithmetic, but no polynomial pivot bound is claimed.
++All returned rational numbers use JSON pairs [numerator, denominator].
++"""
++
++from fractions import Fraction
++from math import gcd, lcm
++
++from .integer_codec import encoded_integer
++
++
++def _fraction(value):
++    if type(value) is Fraction:
++        return value
++    if type(value) in (list, tuple):
++        if len(value) != 2:
++            raise ValueError('a rational pair has two integer entries')
++        numerator, denominator = map(encoded_integer, value)
++        if denominator <= 0:
++            raise ValueError('a rational denominator must be positive')
++        return Fraction(numerator, denominator)
++    return Fraction(encoded_integer(value))
++
++
++def _pair(value):
++    value = Fraction(value)
++    return [value.numerator, value.denominator]
++
++
++def _primitive(vector):
++    denominator = 1
++    for value in vector:
++        denominator = lcm(denominator, value.denominator)
++    integers = [int(value * denominator) for value in vector]
++    common = 0
++    for value in integers:
++        common = gcd(common, abs(value))
++    return [value // common for value in integers] if common else integers
++
++
++def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
++                             check=lambda: None):
++    """Decide whether C x=0, x>=0 has a point with objective*x>0.
++
++    POSITIVE returns a basic feasible rational vector of the normalized
++    polytope C x=0, x>=0, sum(x)<=1 and its primitive integral ray vector.
++    NONPOSITIVE returns y with C^T y>=objective.  This homogeneous Farkas
++    certificate is enough to exclude positive values on the whole cone.
++    INCONCLUSIVE means the shared caller's pivot allowance was exhausted.
++
++    Coefficients may be integers, Fractions, or JSON rational pairs.  The
++    method uses C,-C,sum(x)<=1 with a feasible all-slack initial basis.  A
++    positive basic solution terminates the search early; it need not attain
++    the maximum.  No numerical solver or normal-surface code is used.
++    """
++    if max_pivots is not None and (type(max_pivots) is not int or max_pivots < 0):
++        raise ValueError('max_pivots must be a nonnegative integer or None')
++    if type(matrix) not in (list, tuple) or type(objective) not in (list, tuple):
++        raise ValueError('matrix and objective must be lists or tuples')
++    check()
++    c = [_fraction(value) for value in objective]
++    n = len(c)
++    source = []
++    for row in matrix:
++        check()
++        if type(row) not in (list, tuple) or len(row) != n:
++            raise ValueError('matrix rows must have the objective width')
++        source.append([_fraction(value) for value in row])
++    r = len(source)
++    inequalities = source + [[-value for value in row] for row in source]
++    inequalities.append([Fraction(1)] * n)
++    m, width = len(inequalities), n + len(inequalities)
++    tableau = []
++    for i, row in enumerate(inequalities):
++        check()
++        tableau.append(row + [Fraction(int(i == j)) for j in range(m)])
++    rhs = [Fraction(0)] * (m - 1) + [Fraction(1)]
++    basis = list(range(n, width))
++    reduced = c + [Fraction(0)] * m
++    value = Fraction(0)
++    pivots = updates = 0
++
++    def stats():
++        largest = max((max(abs(x.numerator).bit_length(), x.denominator.bit_length())
++                       for row in tableau for x in row), default=0)
++        return dict(pivots=pivots, tableau_updates=updates,
++                    variables=n, equations=r, tableau_rows=m,
++                    tableau_columns=width, maximum_tableau_bits=largest)
++
++    while True:
++        check()
++        if value > 0:
++            vector = [Fraction(0)] * n
++            for i, variable in enumerate(basis):
++                if variable < n:
++                    vector[variable] = rhs[i]
++            if (any(x < 0 for x in vector) or sum(vector) > 1
++                    or any(sum(a*x for a, x in zip(row, vector)) for row in source)
++                    or sum(a*x for a, x in zip(c, vector)) != value):
++                raise ArithmeticError('simplex produced an invalid positive basic point')
++            check()
++            return dict(status='POSITIVE', x=[_pair(x) for x in vector],
++                        primitive_x=_primitive(vector), objective=_pair(value),
++                        basis=basis, stats=stats())
++        entering = next((j for j, coefficient in enumerate(reduced)
++                         if coefficient > 0), None)
++        if entering is None:
++            dual = [-reduced[n+i] for i in range(m)]
++            y = [dual[i] - dual[r+i] for i in range(r)]
++            if (value != 0 or any(x < 0 for x in dual) or dual[-1] != 0
++                    or any(sum(source[i][j]*y[i] for i in range(r)) < c[j]
++                           for j in range(n))):
++                raise ArithmeticError('simplex produced an invalid homogeneous dual')
++            check()
++            return dict(status='NONPOSITIVE', y=[_pair(x) for x in y], stats=stats())
++        if max_pivots is not None and pivots >= max_pivots:
++            check()
++            return dict(status='INCONCLUSIVE', reason='LP pivot allowance exhausted',
++                        stats=stats())
++        candidates = [i for i in range(m) if tableau[i][entering] > 0]
++        if not candidates:
++            raise ArithmeticError('the normalized kernel LP cannot be unbounded')
++        leaving = min(candidates, key=lambda i: (rhs[i]/tableau[i][entering], basis[i]))
++        pivot = tableau[leaving][entering]
++        tableau[leaving] = [x/pivot for x in tableau[leaving]]
++        rhs[leaving] /= pivot
++        updates += width + 1
++        for i in range(m):
++            check()
++            if i == leaving:
++                continue
++            factor = tableau[i][entering]
++            if factor:
++                tableau[i] = [x-factor*y for x, y
++                              in zip(tableau[i], tableau[leaving])]
++                rhs[i] -= factor*rhs[leaving]
++                updates += width + 1
++        factor = reduced[entering]
++        reduced = [x-factor*y for x, y in zip(reduced, tableau[leaving])]
++        value += factor*rhs[leaving]
++        updates += width + 1
++        basis[leaving] = entering
++        pivots += 1
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_euler.py b/Topology/UnknotRecognition/fast/fastunknot/normal_euler.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_euler.py
+@@ -0,0 +1,195 @@
++"""Certificate-producing positive-Euler screening in a supplied quad sector.
++
++Canonical triangle peeling makes Euler characteristic a maximum of linear
++forms indexed by one retained corner class per active global vertex.  Test
++these forms by exact rational LP, without enumerating the quadrilateral rays.
++Positive Euler by itself is not an essential-disc or knot certificate.
++"""
++
++from itertools import product
++from math import prod
++from fractions import Fraction
++
++from .exact_lp import solve_nonnegative_kernel
++from .normal_sector import build_sector_kernel, _source_hash
++from .normal_surface_geometry import _coordinates, _EDGES, _quad
++
++
++def _euler_model(kernel, check=lambda: None):
++    """Return the linear unpeeled Euler functional and positive link weights."""
++    p, k = len(kernel.classes), len(kernel.support)
++    position = {c: i for i, c in enumerate(kernel.classes)}
++    quadrilateral = {item: p+j for j, item in enumerate(kernel.support)}
++    coefficients = [0] * (p+k)
++
++    def triangle(t, v, amount):
++        c = kernel.corner_class[4*t+v]
++        if c in position:
++            coefficients[position[c]] += amount
++
++    # Each global edge is counted using its first local representative.
++    represented = set()
++    for t in range(len(kernel.prepared['tetrahedra'])):
++        check()
++        for v in range(4):
++            triangle(t, v, 1)
++        for q in range(3):
++            if (t, q) in quadrilateral:
++                coefficients[quadrilateral[t, q]] += 1
++        for j, (a, b) in enumerate(_EDGES):
++            root = kernel.prepared['edge_roots'][6*t+j]
++            if root in represented:
++                continue
++            represented.add(root)
++            triangle(t, a, 1)
++            triangle(t, b, 1)
++            absent = _quad(a, b)
++            for q in range(3):
++                if q != absent and (t, q) in quadrilateral:
++                    coefficients[quadrilateral[t, q]] += 1
++    faces = kernel.prepared['boundary_faces'] + [
++        (t, f) for t, f, _, _, _ in kernel.prepared['pairs']]
++    for t, f in faces:
++        check()
++        for v in range(4):
++            if v != f:
++                triangle(t, v, -1)
++        for q in range(3):
++            if (t, q) in quadrilateral:
++                coefficients[quadrilateral[t, q]] -= 1
++    boundary = {kernel.prepared['vertex_roots'][4*t+v]
++                for t, f in kernel.prepared['boundary_faces'] for v in range(4) if v != f}
++    weights = []
++    for group in kernel.groups:
++        check()
++        root = kernel.prepared['vertex_roots'][group[0]]
++        weight = 1 if root in boundary else 2
++        if sum(coefficients[position[c]] for c in group) != weight:
++            raise ArithmeticError('Euler coefficients disagree with the vertex-link census')
++        weights.append(weight)
++    linear = coefficients[p:]
++    for c, i in position.items():
++        check()
++        for j, height in enumerate(kernel.potentials[c]):
++            linear[j] += coefficients[i]*height
++    return tuple(linear), tuple(weights)
++
++
++def decide_sector_euler(triangulation, allowed_types, *, strategy='anchors',
++                        max_anchors=None, max_pivots=None, check=lambda: None):
++    """Return POSITIVE_EULER, NO_POSITIVE_EULER, or INCONCLUSIVE.
++
++    The source is a supplied finite triangulation, not an authenticated knot
++    diagram.  All anchors share max_pivots.  A negative certificate contains
++    one exact homogeneous Farkas dual for every Cartesian anchor tuple.  A
++    positive result supplies a primitive Q ray, its rational LP vertex and
++    its complete canonical normal coordinates for subsequent topology checks.
++
++    strategy='envelope' first tests the componentwise maximum of all anchor
++    objectives.  A nonpositive result excludes the entire sector with one
++    dual.  A positive envelope point alone proves nothing about canonical
++    Euler; the ordinary anchor search then runs under the remaining budget.
++    Certified duals, including the initial zero dual, are reused for later
++    coordinatewise dominated anchor objectives.  All anchors still appear
++    in an ordinary negative certificate, even when their dual is reused.
++
++    With one active global vertex there are at most 8k anchor LPs; arbitrary
++    matching nullity is allowed.  Rational LP has polynomial algorithms, but
++    the shipped exact Bland simplex has no polynomial pivot guarantee.
++    """
++    for name, cap in (('max_anchors', max_anchors), ('max_pivots', max_pivots)):
++        if cap is not None and (type(cap) is not int or cap < 0):
++            raise ValueError(name+' must be a nonnegative integer or None')
++    if strategy not in ('anchors', 'envelope'):
++        raise ValueError('strategy must be anchors or envelope')
++    check()
++    kernel = build_sector_kernel(triangulation, allowed_types, check=check)
++    linear, weights = _euler_model(kernel, check)
++    statistics = dict(kernel.stats, active_vertices=len(kernel.groups),
++                      anchors_total=prod(map(len, kernel.groups)), anchors_tested=0,
++                      strategy=strategy, lp_calls=0, reused_anchors=0, envelope_calls=0,
++                      lp_pivots=0, lp_tableau_updates=0, maximum_tableau_bits=0)
++    duals = []
++    # Every objective dominated by zero has an immediate homogeneous dual.
++    cache = [(tuple(0 for _ in kernel.support), [[0, 1] for _ in kernel.cycle_rows])]
++
++    def solve(objective):
++        remaining = None if max_pivots is None else max_pivots-statistics['lp_pivots']
++        result = solve_nonnegative_kernel(kernel.cycle_rows, objective,
++                                         max_pivots=remaining, check=check)
++        statistics['lp_calls'] += 1
++        statistics['lp_pivots'] += result['stats']['pivots']
++        statistics['lp_tableau_updates'] += result['stats']['tableau_updates']
++        statistics['maximum_tableau_bits'] = max(statistics['maximum_tableau_bits'],
++                                                 result['stats']['maximum_tableau_bits'])
++        return result
++
++    if strategy == 'envelope':
++        envelope = list(linear)
++        for group, weight in zip(kernel.groups, weights):
++            check()
++            for j in range(len(kernel.support)):
++                envelope[j] -= weight*min(kernel.potentials[c][j] for c in group)
++        statistics['envelope_calls'] += 1
++        result = solve(envelope)
++        if result['status'] == 'INCONCLUSIVE':
++            return dict(status='INCONCLUSIVE', reason=result['reason'], stats=statistics)
++        if result['status'] == 'NONPOSITIVE':
++            certificate = dict(schema='normal-sector-euler-lp-v1', status='NO_POSITIVE_EULER',
++                source_sha256=_source_hash(triangulation),
++                allowed_types=[list(x) for x in kernel.support], proof_kind='envelope',
++                multipliers=result['y'])
++            check()
++            return dict(status='NO_POSITIVE_EULER', certificate=certificate, stats=statistics,
++                        trust='canonical positive-Euler exclusion in this sector only')
++        # Even a positive basic envelope point can have negative canonical
++        # Euler.  Only a subsequently positive anchor may return a surface.
++    for anchors in product(*kernel.groups):
++        check()
++        if max_anchors is not None and statistics['anchors_tested'] >= max_anchors:
++            return dict(status='INCONCLUSIVE', reason='anchor allowance exhausted',
++                        stats=statistics)
++        objective = list(linear)
++        for anchor, weight in zip(anchors, weights):
++            for j, height in enumerate(kernel.potentials[anchor]):
++                objective[j] -= weight*height
++        statistics['anchors_tested'] += 1
++        reused = None
++        for bound, dual in reversed(cache):
++            check()
++            if all(a <= b for a, b in zip(objective, bound)):
++                reused = dual
++                break
++        if reused is not None:
++            statistics['reused_anchors'] += 1
++            duals.append(dict(anchors=list(anchors), multipliers=reused))
++            continue
++        result = solve(objective)
++        if result['status'] == 'INCONCLUSIVE':
++            return dict(status='INCONCLUSIVE', reason=result['reason'], stats=statistics)
++        if result['status'] == 'POSITIVE':
++            q = result['primitive_x']
++            coordinates = kernel.lift(q, check)
++            chi = _coordinates(kernel.prepared, coordinates, check)['euler_characteristic']
++            if chi <= 0:
++                raise ArithmeticError('positive anchor objective did not survive canonical lifting')
++            certificate = dict(schema='normal-sector-euler-lp-v1', status='POSITIVE_EULER',
++                source_sha256=_source_hash(triangulation),
++                allowed_types=[list(x) for x in kernel.support],
++                quadrilaterals=q, coordinates=coordinates, euler_characteristic=chi)
++            check()
++            return dict(status='POSITIVE_EULER', quadrilaterals=q,
++                        rational_quadrilaterals=result['x'], coordinates=coordinates,
++                        euler_characteristic=chi, certificate=certificate, stats=statistics,
++                        trust='positive Euler in this supplied sector; no disc or knot verdict')
++        duals.append(dict(anchors=list(anchors), multipliers=result['y']))
++        multipliers = [Fraction(*pair) for pair in result['y']]
++        bound = tuple(sum(row[j]*y for row, y in zip(kernel.cycle_rows, multipliers))
++                      for j in range(len(kernel.support)))
++        cache.append((bound, result['y']))
++    certificate = dict(schema='normal-sector-euler-lp-v1', status='NO_POSITIVE_EULER',
++        source_sha256=_source_hash(triangulation),
++        allowed_types=[list(x) for x in kernel.support], proof_kind='anchors', duals=duals)
++    check()
++    return dict(status='NO_POSITIVE_EULER', certificate=certificate, stats=statistics,
++                trust='canonical positive-Euler exclusion in this sector only')
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_euler_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_euler_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_euler_verify.py
+@@ -0,0 +1,266 @@
++"""Independent source-bound replay of canonical sector Euler certificates.
++
++This checker imports no LP solver, sector constructor, ray enumerator, or
++Euler producer.  It reconstructs triangle components from the original
++normal matching rows, then checks finite rational Farkas inequalities.
++Native finite-manifold validation and coordinate incidence are shared.
++"""
++
++from fractions import Fraction
++from hashlib import sha256
++from itertools import product
++from math import gcd, prod
++import json
++
++from .integer_codec import encoded_integer
++from .normal_surface_geometry import _prepare, _coordinates, _EDGES, _quad, NormalOrbitError
++
++
++class _BadCertificate(ValueError):
++    pass
++
++
++def _integer(value):
++    try:
++        return encoded_integer(value)
++    except ValueError as exc:
++        raise _BadCertificate(str(exc)) from exc
++
++
++def _rational(value):
++    if type(value) is not list or len(value) != 2:
++        raise _BadCertificate('missing rational pair')
++    numerator, denominator = map(_integer, value)
++    if denominator <= 0:
++        raise _BadCertificate('nonpositive rational denominator')
++    return Fraction(numerator, denominator)
++
++
++def _support(value, tetrahedra):
++    if type(value) is not list:
++        raise _BadCertificate('missing allowed types')
++    answer = []
++    for pair in value:
++        if (type(pair) is not list or len(pair) != 2
++                or any(type(x) is not int for x in pair)
++                or not 0 <= pair[0] < tetrahedra or not 0 <= pair[1] < 3):
++            raise _BadCertificate('malformed allowed type')
++        answer.append(tuple(pair))
++    if answer != sorted(answer) or len({t for t, q in answer}) != len(answer):
++        raise _BadCertificate('noncanonical or overlapping allowed types')
++    return tuple(answer)
++
++
++def _primitive_row(row):
++    common = 0
++    for x in row:
++        common = gcd(common, abs(x))
++    if not common:
++        return tuple(row)
++    if next(x for x in row if x) < 0:
++        common = -common
++    return tuple(x//common for x in row)
++
++
++def _reference_model(prepared, support, check):
++    """Rebuild the algebra from matching rows, rather than sector face edges."""
++    n, k = len(prepared['tetrahedra']), len(support)
++    zero = [[] for _ in range(4*n)]
++    records = []
++    for equation in prepared['matching']:
++        check()
++        triangle = [(4*(i//7)+i % 7, a) for i, a in equation.items() if i % 7 < 4]
++        label = tuple(equation.get(7*t+4+q, 0) for t, q in support)
++        if not triangle:
++            # A glued face can identify its two triangle variables directly.
++            records.append((None, None, label))
++            continue
++        if len(triangle) != 2 or sorted(a for i, a in triangle) != [-1, 1]:
++            raise ArithmeticError('unexpected triangle part of a normal matching equation')
++        a = next(i for i, coefficient in triangle if coefficient == 1)
++        b = next(i for i, coefficient in triangle if coefficient == -1)
++        records.append((a, b, label))
++        if not any(label):
++            zero[a].append(b)
++            zero[b].append(a)
++    classes = [-1] * (4*n)
++    for root in range(4*n):
++        check()
++        if classes[root] >= 0:
++            continue
++        classes[root] = root
++        queue = [root]
++        for a in queue:
++            check()
++            for b in zero[a]:
++                if classes[b] < 0:
++                    classes[b] = root
++                    queue.append(b)
++    vertices = {}
++    for corner, c in enumerate(classes):
++        vertices.setdefault(prepared['vertex_roots'][corner], set()).add(c)
++    groups = tuple(tuple(sorted(cs)) for vertex, cs in sorted(vertices.items()) if len(cs) > 1)
++    adjacency = {c: [] for c in sorted(set(classes))}
++    for a, b, label in records:
++        check()
++        if a is None or not any(label):
++            continue
++        u, v = classes[a], classes[b]
++        adjacency[u].append((v, label))
++        adjacency[v].append((u, tuple(-x for x in label)))
++    potentials = {}
++    for root in adjacency:
++        check()
++        if root in potentials:
++            continue
++        potentials[root] = (0,)*k
++        queue = [root]
++        for a in queue:
++            check()
++            for b, increment in adjacency[a]:
++                if b not in potentials:
++                    potentials[b] = tuple(x+y for x, y in zip(potentials[a], increment))
++                    queue.append(b)
++    cycles = set()
++    for a, b, label in records:
++        check()
++        row = label if a is None else tuple(x+y-z for x, y, z in
++            zip(potentials[classes[a]], label, potentials[classes[b]]))
++        row = _primitive_row(row)
++        if any(row):
++            cycles.add(row)
++
++    # Compute the signed, unpeeled Euler value of each unit q vector directly.
++    # This differs from the producer's accumulated class coefficient method.
++    linear = []
++    faces = prepared['boundary_faces'] + [(t, f) for t, f, _, _, _ in prepared['pairs']]
++    for j, (selected_t, selected_q) in enumerate(support):
++        check()
++        heights = [[potentials[classes[4*t+v]][j] for v in range(4)] for t in range(n)]
++        pieces = sum(map(sum, heights)) + 1
++        arcs = sum(sum(heights[t][v] for v in range(4) if v != f)
++                   + int(t == selected_t) for t, f in faces)
++        weights = {}
++        for t in range(n):
++            check()
++            for e, (a, b) in enumerate(_EDGES):
++                root = prepared['edge_roots'][6*t+e]
++                if root not in weights:
++                    weights[root] = heights[t][a] + heights[t][b] + int(
++                        t == selected_t and selected_q != _quad(a, b))
++        linear.append(sum(weights.values())-arcs+pieces)
++    boundary = {prepared['vertex_roots'][4*t+v] for t, f in prepared['boundary_faces']
++                for v in range(4) if v != f}
++    weights = tuple(1 if prepared['vertex_roots'][group[0]] in boundary else 2
++                    for group in groups)
++    return tuple(sorted(cycles)), tuple(linear), groups, potentials, weights
++
++
++def verify_sector_euler_certificate(triangulation, certificate, *, check=lambda: None):
++    """Verify exactly the source and sector named in this Euler certificate.
++
++    The positive branch proves canonical nonzero coordinates and positive
++    Euler characteristic, not extremality, connectedness, or a disc.  The
++    negative branch proves absence of positive canonical Euler throughout
++    the supplied allowed quadrilateral sector, using either all anchor
++    inequalities or one componentwise envelope.  No knot verdict is inferred.
++    """
++    check()
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'normal-sector-euler-lp-v1'
++            or certificate.get('status') not in ('POSITIVE_EULER', 'NO_POSITIVE_EULER')):
++        return False
++    try:
++        prepared = _prepare(triangulation, check)
++    except NormalOrbitError:
++        return False
++    digest = sha256(json.dumps(triangulation, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
++    if certificate.get('source_sha256') != digest:
++        return False
++    try:
++        support = _support(certificate.get('allowed_types'), len(prepared['tetrahedra']))
++        if certificate['status'] == 'POSITIVE_EULER':
++            if set(certificate) != {'schema', 'status', 'source_sha256', 'allowed_types',
++                                    'quadrilaterals', 'coordinates', 'euler_characteristic'}:
++                return False
++            raw_q = certificate['quadrilaterals']
++            if type(raw_q) is not list or len(raw_q) != len(support):
++                return False
++            q = [_integer(x) for x in raw_q]
++            if not any(q) or any(x < 0 for x in q):
++                return False
++            common = 0
++            for x in q:
++                common = gcd(common, x)
++            if common != 1:
++                return False
++            try:
++                analysed = _coordinates(prepared, certificate['coordinates'], check)
++            except NormalOrbitError:
++                return False
++            allowed = {pair: value for pair, value in zip(support, q)}
++            minima = {}
++            for t, row in enumerate(analysed['rows']):
++                check()
++                for typ in range(3):
++                    if row[4+typ] != allowed.get((t, typ), 0):
++                        return False
++                for v in range(4):
++                    root = prepared['vertex_roots'][4*t+v]
++                    minima[root] = min(minima.get(root, row[v]), row[v])
++            chi = analysed['euler_characteristic']
++            if (any(minima.values()) or chi <= 0
++                    or _integer(certificate['euler_characteristic']) != chi):
++                return False
++            check()
++            return True
++        matrix, linear, groups, potentials, weights = _reference_model(prepared, support, check)
++        kind = certificate.get('proof_kind', 'anchors')
++        common_fields = {'schema', 'status', 'source_sha256', 'allowed_types'}
++        if 'proof_kind' in certificate:
++            common_fields.add('proof_kind')
++        if kind == 'envelope':
++            if set(certificate) != common_fields | {'multipliers'}:
++                return False
++            raw = certificate['multipliers']
++            if type(raw) is not list or len(raw) != len(matrix):
++                return False
++            dual = [_rational(value) for value in raw]
++            envelope = list(linear)
++            for group, weight in zip(groups, weights):
++                check()
++                for j in range(len(support)):
++                    envelope[j] -= weight*min(potentials[c][j] for c in group)
++            for j, target in enumerate(envelope):
++                check()
++                if sum(row[j]*coefficient for row, coefficient in zip(matrix, dual)) < target:
++                    return False
++            check()
++            return True
++        if kind != 'anchors' or set(certificate) != common_fields | {'duals'}:
++            return False
++        duals = certificate['duals']
++        if type(duals) is not list or len(duals) != prod(map(len, groups)):
++            return False
++        for anchors, record in zip(product(*groups), duals):
++            check()
++            if (type(record) is not dict or set(record) != {'anchors', 'multipliers'}
++                    or type(record['anchors']) is not list
++                    or any(type(x) is not int for x in record['anchors'])
++                    or record['anchors'] != list(anchors)
++                    or type(record['multipliers']) is not list
++                    or len(record['multipliers']) != len(matrix)):
++                return False
++            dual = [_rational(value) for value in record['multipliers']]
++            objective = list(linear)
++            for a, w in zip(anchors, weights):
++                for j, value in enumerate(potentials[a]):
++                    objective[j] -= w*value
++            for j, target in enumerate(objective):
++                check()
++                if sum(row[j]*coefficient for row, coefficient in zip(matrix, dual)) < target:
++                    return False
++        check()
++        return True
++    except _BadCertificate:
++        return False
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_ray.py b/Topology/UnknotRecognition/fast/fastunknot/normal_ray.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_ray.py
+@@ -0,0 +1,108 @@
++"""Short essential-disc certificates for primitive standard normal rays.
++
++The only algebraic witness is a full-rank minor modulo a fixed known prime.
++There is no expansion into discs or intersections and no orbit computation.
++This certifies the supplied triangulation; source-diagram provenance is an
++independent certificate and can be checked by the maintained exterior API.
++"""
++
++from math import gcd
++
++from .normal_surface_geometry import (
++    _prepare, _coordinates, _boundary_graph, _fingerprint,
++)
++from .normal_surface_parity import _parity_certificate
++
++
++_PRIMES = (65521, 1000000007, 2, 3, 5, 7, 11, 101, 1009)
++
++
++class _RankLimit(Exception):
++    pass
++
++
++def _independent_rows(matching, support, prime, tick):
++    """Sparse forward elimination, retaining source row identities."""
++    positions = {column: index for index, column in enumerate(support)}
++    pivots, selected = {}, []
++    for index, equation in enumerate(matching):
++        tick()
++        row = {positions[i]: value % prime for i, value in equation.items()
++               if i in positions and value % prime}
++        while row:
++            tick()
++            pivot = min(row)
++            if pivot not in pivots:
++                inverse = pow(row[pivot], -1, prime)
++                pivots[pivot] = {j: value * inverse % prime
++                                 for j, value in row.items()}
++                selected.append(index)
++                break
++            multiplier = row[pivot]
++            for j, value in pivots[pivot].items():
++                tick()
++                residue = (row.get(j, 0) - multiplier * value) % prime
++                if residue:
++                    row[j] = residue
++                else:
++                    row.pop(j, None)
++        if len(selected) == len(support) - 1:
++            return selected
++    return selected
++
++
++def certify_normal_ray_disc(triangulation, coordinates, *,
++                            max_rank_operations=None, check=lambda: None):
++    """Return DISC_FOUND only after a primitive extreme disc is certified.
++
++    Missing extremality at the tried primes is NOT_CERTIFIED, not a claim
++    that the vector is nonextreme or that the manifold has no disc.
++    A local operation cap returns INCONCLUSIVE; caller cancellation propagates.
++    Input coordinates are never silently divided or changed.
++    """
++    check()
++    if max_rank_operations is not None and (
++            type(max_rank_operations) is not int or max_rank_operations < 0):
++        raise ValueError('rank operation cap must be a nonnegative integer or None')
++    prepared = _prepare(triangulation, check)
++    analysed = _coordinates(prepared, coordinates, check)
++    rows = analysed['rows']
++    flat = [value for row in rows for value in row]
++    common = 0
++    for value in flat:
++        common = gcd(common, value)
++    if (common != 1 or analysed['euler_characteristic'] != 1
++            or analysed['boundary_arcs'] == 0):
++        return dict(status='NOT_CERTIFIED', reason='primitive Euler-one boundary vector required')
++    parity = _parity_certificate(_boundary_graph(prepared, analysed, check), check)
++    if not parity['nonzero']:
++        return dict(status='NOT_CERTIFIED', reason='boundary class is zero modulo two')
++    support = [i for i, value in enumerate(flat) if value]
++    operations = 0
++
++    def tick():
++        nonlocal operations
++        check()
++        if max_rank_operations is not None and operations >= max_rank_operations:
++            raise _RankLimit
++        operations += 1
++
++    try:
++        for prime in _PRIMES:
++            selected = _independent_rows(prepared['matching'], support, prime, tick)
++            if len(selected) == len(support) - 1:
++                certificate = dict(
++                    schema='normal-extreme-disc-v1',
++                    input_sha256=_fingerprint(triangulation, analysed, check),
++                    prime=prime, rank_rows=selected, boundary_homology=parity,
++                )
++                return dict(status='DISC_FOUND', coordinates=rows,
++                            certificate=certificate,
++                            stats=dict(support_size=len(support), prime=prime,
++                                       rank_operations=operations),
++                            trust='essential disc in the supplied triangulation')
++    except _RankLimit:
++        return dict(status='INCONCLUSIVE', reason='rank operation allowance exhausted',
++                    stats=dict(rank_operations=operations))
++    return dict(status='NOT_CERTIFIED', reason='no full-rank minor at the tried primes',
++                stats=dict(rank_operations=operations))
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_ray_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_ray_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_ray_verify.py
+@@ -0,0 +1,82 @@
++"""Independent sparse modular-rank replay for primitive normal disc rays.
++
++Shares the maintained finite-manifold and coordinate validator. Does not
++import a ray producer, LP solver, sector constructor, or orbit algorithm.
++"""
++
++from math import gcd
++
++from .normal_surface_geometry import (
++    _prepare, _coordinates, _boundary_graph, _fingerprint, NormalOrbitError,
++)
++from .normal_surface_parity import _verify_parity
++
++
++def verify_normal_ray_disc(triangulation, coordinates, certificate, *, check=lambda: None):
++    """Replay exact normal geometry, primitivity, rank and essential boundary.
++
++    A rank-(s-1) matrix modulo a prime has rational rank at least s-1.
++    The exact positive kernel vector bounds that rank by s-1. Its ray is
++    therefore extreme, and its primitive integral normal surface connected.
++    Euler one and nonempty boundary force a disc. A nonzero mod-two class
++    forces its single boundary curve to be essential in the validated torus.
++    """
++    check()
++    fields = {'schema', 'input_sha256', 'prime', 'rank_rows', 'boundary_homology'}
++    if (type(certificate) is not dict or set(certificate) != fields
++            or certificate.get('schema') != 'normal-extreme-disc-v1'):
++        return False
++    prime = certificate['prime']
++    # Fixed, explicitly known primes: no unverified primality claim is accepted.
++    if type(prime) is not int or prime not in (2, 3, 5, 7, 11, 101, 1009, 65521, 1000000007):
++        return False
++    try:
++        prepared = _prepare(triangulation, check)
++        analysed = _coordinates(prepared, coordinates, check)
++    except NormalOrbitError:
++        return False
++    if certificate['input_sha256'] != _fingerprint(triangulation, analysed, check):
++        return False
++    flat = [value for row in analysed['rows'] for value in row]
++    common = 0
++    for value in flat:
++        check()
++        common = gcd(common, value)
++    if (common != 1 or analysed['euler_characteristic'] != 1
++            or analysed['boundary_arcs'] <= 0):
++        return False
++    positive = {i for i, value in enumerate(flat) if value}
++    selected = certificate['rank_rows']
++    if (type(selected) is not list or len(selected) != len(positive) - 1
++            or any(type(i) is not int or not 0 <= i < len(prepared['matching'])
++                   for i in selected) or len(set(selected)) != len(selected)):
++        return False
++    # Descending-column elimination is separate from the producer's forward
++    # ascending-column elimination, and processes only the submitted rows.
++    basis = {}
++    for i in selected:
++        check()
++        row = {j: value % prime for j, value in prepared['matching'][i].items()
++               if j in positive and value % prime}
++        while row:
++            check()
++            j = max(row)
++            if j not in basis:
++                value = row[j]
++                inverse = pow(value, prime - 2, prime)
++                basis[j] = {k: entry * inverse % prime for k, entry in row.items()}
++                break
++            factor = row[j]
++            for k, entry in basis[j].items():
++                check()
++                value = (row.get(k, 0) - factor * entry) % prime
++                if value:
++                    row[k] = value
++                else:
++                    row.pop(k, None)
++        else:
++            return False
++    parity = certificate['boundary_homology']
++    if type(parity) is not dict or parity.get('nonzero') is not True:
++        return False
++    return _verify_parity(_boundary_graph(prepared, analysed, check), parity, check)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_propagation.py b/Topology/UnknotRecognition/fast/fastunknot/normal_propagation.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_propagation.py
+@@ -0,0 +1,238 @@
++"""Exact positive-Euler search with certified quadrilateral propagation.
++
++This bounded research prototype searches standard normal coordinates with at
++least one zero triangle at every global vertex.  Thus vertex-link components
++are excluded.  A positive result is a normal surface witness, not an unknot
++verdict; a negative result concerns exactly this class of normal surfaces.
++
++The relaxation allows all remaining quadrilateral types.  If forbidding one
++type makes positive Euler characteristic impossible, every admissible positive
++solution must use that type and must discard the other types in its tetrahedron.
++When this implication no longer applies, exhaustive singleton-type branches
++cover the admissible solutions, including those using no quad in that tetrahedron.
++
++The exact LP engine uses Bland simplex.  The operational pivot allowance is
++explicit; no polynomial worst-case bound for this implementation is claimed.
++"""
++
++from hashlib import sha256
++from itertools import combinations, product
++from math import prod
++import json
++
++from .exact_lp import solve_nonnegative_kernel
++from .normal_surface_geometry import _prepare, _coordinates, _quad
++
++
++_SCHEMA = 'normal-positive-euler-propagation-v1'
++_EDGES = tuple(combinations(range(4), 2))
++
++
++def _digest(triangulation):
++    data = json.dumps(triangulation, sort_keys=True, separators=(',', ':')).encode()
++    return sha256(data).hexdigest()
++
++
++def build_standard_model(triangulation, *, check=lambda: None):
++    """Build integer matching and F-E+V coefficients in all 7t coordinates.
++
++    A global normal vertex is counted at one representative local edge; a
++    normal edge is counted at one representative face.  Matching makes these
++    choices agree on the solution space, even in the quadrilateral relaxation.
++    Anchor groups contain standard coordinate indices, grouped by global vertex.
++    """
++    prepared = _prepare(triangulation, check)
++    t = len(prepared['tetrahedra'])
++    width = 7*t
++    matrix = [[row.get(j, 0) for j in range(width)]
++              for row in prepared['matching']]
++    euler = [1]*width
++    faces = prepared['boundary_faces'] + [(a, f) for a, f, _, _, _ in prepared['pairs']]
++    for a, f in faces:
++        check()
++        for v in range(4):
++            if v != f:
++                euler[7*a+v] -= 1
++        for q in range(3):
++            euler[7*a+4+q] -= 1
++    seen = set()
++    for a in range(t):
++        check()
++        for j, (u, v) in enumerate(_EDGES):
++            edge = prepared['edge_roots'][6*a+j]
++            if edge in seen:
++                continue
++            seen.add(edge)
++            euler[7*a+u] += 1
++            euler[7*a+v] += 1
++            omitted = _quad(u, v)
++            for q in range(3):
++                if q != omitted:
++                    euler[7*a+4+q] += 1
++    grouped = {}
++    for corner, vertex in enumerate(prepared['vertex_roots']):
++        grouped.setdefault(vertex, []).append(7*(corner//4)+corner % 4)
++    groups = [grouped[v] for v in sorted(grouped)]
++    return dict(prepared=prepared, matrix=matrix, euler=euler, anchor_groups=groups,
++                tetrahedra=t, vertices=len(groups), variables=width)
++
++
++def _limit(name, value):
++    if value is not None and (type(value) is not int or value < 0):
++        raise ValueError(name + ' must be a nonnegative integer or None')
++
++
++def search_positive_euler(triangulation, *, max_branch_depth=12, max_nodes=1000,
++                          max_pivots=100000, allowed_branch_tetrahedra=None,
++                          check=lambda: None):
++    """Return POSITIVE_EULER, NO_POSITIVE_EULER, or INCONCLUSIVE.
++
++    Every LP call shares ``max_pivots``.  ``max_nodes`` counts nodes across all
++    triangle-anchor assignments; ``max_branch_depth`` counts only actual
++    quadrilateral branching, not deterministic propagation.  A limit prevents
++    a negative conclusion and yields INCONCLUSIVE, never a knot verdict.
++
++    ``allowed_branch_tetrahedra`` optionally restricts guesses to a supplied
++    distinct list of tetrahedron indices.  Mandatory implications still apply
++    everywhere.  Remaining allowed tetrahedra are branched even if the current
++    relaxed witness happens to have only one quad type there; this is needed
++    for complete exploration of a supplied strong backdoor.
++
++    Positive certificates contain primitive integer standard coordinates.
++    Negative certificates contain one complete dual-certified tree for every
++    anchor tuple.  The independent verifier reconstructs the source model and
++    checks those trees without calling this search or an LP solver.
++    """
++    for name, value in (('max_branch_depth', max_branch_depth),
++                        ('max_nodes', max_nodes), ('max_pivots', max_pivots)):
++        _limit(name, value)
++    check()
++    model = build_standard_model(triangulation, check=check)
++    t, width = model['tetrahedra'], model['variables']
++    if allowed_branch_tetrahedra is not None and (
++            type(allowed_branch_tetrahedra) is not list
++            or any(type(a) is not int or not 0 <= a < t for a in allowed_branch_tetrahedra)
++            or len(set(allowed_branch_tetrahedra)) != len(allowed_branch_tetrahedra)):
++        raise ValueError('allowed_branch_tetrahedra must be a distinct list of tetrahedron indices or None')
++    branchable = set(range(t) if allowed_branch_tetrahedra is None else allowed_branch_tetrahedra)
++    source = _digest(triangulation)
++    stats = dict(tetrahedra=t, vertices=model['vertices'], variables=width,
++                 equations=len(model['matrix']),
++                 anchor_assignments=prod(map(len, model['anchor_groups'])),
++                 anchors_started=0, anchors_completed=0, nodes=0, branches=0,
++                 propagations=0, lp_calls=0, lp_pivots=0, tableau_updates=0,
++                 maximum_tableau_bits=0, maximum_branch_depth=0,
++                 branched_tetrahedra=[])
++    limits = dict(max_branch_depth=max_branch_depth, max_nodes=max_nodes,
++                  max_pivots=max_pivots,
++                  allowed_branch_tetrahedra=None if allowed_branch_tetrahedra is None
++                  else sorted(allowed_branch_tetrahedra))
++
++    def finish(status, **fields):
++        return dict(status=status, stats=dict(stats), limits=limits, **fields)
++
++    def relaxed(anchors, allowed, forbidden=None):
++        check()
++        zeros = set(anchors)
++        columns = [j for j in range(width) if j not in zeros
++                   and (j % 7 < 4 or j % 7-4 in allowed[j//7])
++                   and j != forbidden]
++        matrix = [[row[j] for j in columns] for row in model['matrix']]
++        objective = [model['euler'][j] for j in columns]
++        remaining = None if max_pivots is None else max_pivots-stats['lp_pivots']
++        answer = solve_nonnegative_kernel(matrix, objective,
++                                         max_pivots=remaining, check=check)
++        stats['lp_calls'] += 1
++        measured = answer['stats']
++        stats['lp_pivots'] += measured['pivots']
++        stats['tableau_updates'] += measured['tableau_updates']
++        stats['maximum_tableau_bits'] = max(stats['maximum_tableau_bits'],
++                                            measured['maximum_tableau_bits'])
++        if answer['status'] == 'POSITIVE':
++            flat = [0]*width
++            for j, value in zip(columns, answer['primitive_x']):
++                flat[j] = value
++            answer['coordinates'] = [flat[7*a:7*a+7] for a in range(t)]
++        return answer
++
++    def visit(anchors, allowed, depth):
++        check()
++        if max_nodes is not None and stats['nodes'] >= max_nodes:
++            return dict(status='INCONCLUSIVE', reason='node allowance exhausted')
++        stats['nodes'] += 1
++        stats['maximum_branch_depth'] = max(stats['maximum_branch_depth'], depth)
++        steps = []
++        while True:
++            current = relaxed(anchors, allowed)
++            if current['status'] == 'INCONCLUSIVE':
++                return dict(status='INCONCLUSIVE', reason=current['reason'])
++            if current['status'] == 'NONPOSITIVE':
++                tree = dict(propagations=steps,
++                            terminal=dict(kind='NONPOSITIVE', y=current['y']))
++                return dict(status='NO_POSITIVE_EULER', tree=tree)
++            rows = current['coordinates']
++            conflicts = [a for a, row in enumerate(rows)
++                         if sum(value > 0 for value in row[4:]) > 1]
++            if not conflicts:
++                analysed = _coordinates(model['prepared'], rows, check)
++                if analysed['euler_characteristic'] <= 0:
++                    raise ArithmeticError('positive LP witness has nonpositive Euler characteristic')
++                return dict(status='POSITIVE_EULER', coordinates=rows,
++                            euler_characteristic=analysed['euler_characteristic'])
++            forced = False
++            for a in range(t):
++                if len(allowed[a]) < 2:
++                    continue
++                for q in allowed[a]:
++                    test = relaxed(anchors, allowed, forbidden=7*a+4+q)
++                    if test['status'] == 'INCONCLUSIVE':
++                        return dict(status='INCONCLUSIVE', reason=test['reason'])
++                    if test['status'] == 'NONPOSITIVE':
++                        steps.append(dict(tetrahedron=a, type=q, y=test['y']))
++                        stats['propagations'] += 1
++                        allowed = allowed[:a] + ((q,),) + allowed[a+1:]
++                        forced = True
++                        break
++                if forced:
++                    break
++            if forced:
++                continue
++            candidates = [a for a in conflicts if a in branchable]
++            if not candidates:
++                candidates = [a for a in sorted(branchable) if len(allowed[a]) >= 2]
++            if not candidates:
++                return dict(status='INCONCLUSIVE', reason='allowed branch tetrahedra exhausted')
++            if max_branch_depth is not None and depth >= max_branch_depth:
++                return dict(status='INCONCLUSIVE', reason='branch depth allowance exhausted')
++            a = candidates[0]
++            stats['branches'] += 1
++            stats['branched_tetrahedra'] = sorted(set(stats['branched_tetrahedra']) | {a})
++            children = []
++            for q in allowed[a]:
++                child_allowed = allowed[:a] + ((q,),) + allowed[a+1:]
++                child = visit(anchors, child_allowed, depth+1)
++                if child['status'] != 'NO_POSITIVE_EULER':
++                    return child
++                children.append(dict(type=q, tree=child['tree']))
++            return dict(status='NO_POSITIVE_EULER', tree=dict(propagations=steps,
++                        terminal=dict(kind='BRANCH', tetrahedron=a, children=children)))
++
++    trees = []
++    for anchors in product(*model['anchor_groups']):
++        check()
++        stats['anchors_started'] += 1
++        answer = visit(anchors, ((0, 1, 2),)*t, 0)
++        if answer['status'] == 'INCONCLUSIVE':
++            return finish('INCONCLUSIVE', reason=answer['reason'])
++        if answer['status'] == 'POSITIVE_EULER':
++            certificate = dict(schema=_SCHEMA, source_sha256=source,
++                               status='POSITIVE_EULER', anchors=list(anchors),
++                               coordinates=answer['coordinates'])
++            return finish('POSITIVE_EULER', coordinates=answer['coordinates'],
++                          euler_characteristic=answer['euler_characteristic'],
++                          certificate=certificate)
++        stats['anchors_completed'] += 1
++        trees.append(dict(anchors=list(anchors), tree=answer['tree']))
++    certificate = dict(schema=_SCHEMA, source_sha256=source,
++                       status='NO_POSITIVE_EULER', anchor_trees=trees)
++    return finish('NO_POSITIVE_EULER', certificate=certificate)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_propagation_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_propagation_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_propagation_verify.py
+@@ -0,0 +1,191 @@
++"""Independent arithmetic replay of positive-Euler propagation certificates.
++
++No search, simplex solver, or producer model builder is imported.  Source
++matching rows, Euler coefficients, and vertex-anchor coverage are rebuilt.
++Negative trees are checked solely by rational Farkas inequalities and exhaustive
++quadrilateral branch coverage.  Shared low-level manifold/coordinate validation
++is the trust boundary; these certificates do not establish knot provenance.
++"""
++
++from fractions import Fraction
++from hashlib import sha256
++from itertools import combinations, product
++from math import gcd, prod
++import json
++
++from .integer_codec import encoded_integer
++from .normal_surface_geometry import _prepare, _coordinates, NormalOrbitError
++
++
++def _quad(a, b):
++    pair = {a, b}
++    return next(q for q in range(3)
++                if pair in ({0, q+1}, set(range(4))-{0, q+1}))
++
++
++def _source_model(triangulation, check):
++    prepared = _prepare(triangulation, check)
++    n = len(prepared['tetrahedra'])
++    equations = []
++    for a, f, b, g, permutation in prepared['pairs']:
++        check()
++        for v in range(4):
++            if v == f:
++                continue
++            w = permutation[v]
++            row = [0]*(7*n)
++            for column, sign in ((7*a+v, 1), (7*a+4+_quad(f, v), 1),
++                                 (7*b+w, -1), (7*b+4+_quad(g, w), -1)):
++                row[column] += sign
++            equations.append(row)
++    # Independently reconstruct each local disk's F-E+V contribution.
++    faces = set(prepared['boundary_faces'])
++    faces.update((a, f) for a, f, _, _, _ in prepared['pairs'])
++    representatives = {}
++    edge_pairs = tuple(combinations(range(4), 2))
++    for local, global_edge in enumerate(prepared['edge_roots']):
++        representatives.setdefault(global_edge, (local//6, edge_pairs[local % 6]))
++    euler = []
++    for a in range(n):
++        check()
++        for disk in range(7):
++            edge_count = 0
++            for b, f in faces:
++                if a == b and (disk >= 4 or disk != f):
++                    edge_count += 1
++            vertex_count = 0
++            for b, (u, v) in representatives.values():
++                if a == b and ((disk < 4 and disk in (u, v))
++                               or (disk >= 4 and disk-4 != _quad(u, v))):
++                    vertex_count += 1
++            euler.append(1-edge_count+vertex_count)
++    groups = {}
++    for corner, global_vertex in enumerate(prepared['vertex_roots']):
++        groups.setdefault(global_vertex, []).append(7*(corner//4)+corner % 4)
++    return prepared, equations, euler, [groups[v] for v in sorted(groups)]
++
++
++def _dual(dual, equations, euler, columns, check):
++    if type(dual) is not list or len(dual) != len(equations):
++        return False
++    values = []
++    for pair in dual:
++        check()
++        if type(pair) is not list or len(pair) != 2:
++            return False
++        try:
++            numerator, denominator = map(encoded_integer, pair)
++        except ValueError:
++            return False
++        if denominator <= 0:
++            return False
++        values.append(Fraction(numerator, denominator))
++    for column in columns:
++        check()
++        if sum(row[column]*value for row, value in zip(equations, values)) < euler[column]:
++            return False
++    return True
++
++
++def _index(value, size):
++    return type(value) is int and 0 <= value < size
++
++
++def verify_normal_propagation_certificate(triangulation, certificate, *, check=lambda: None):
++    """Check a positive witness or a complete negative branch certificate.
++
++    NO_POSITIVE_EULER excludes admissible normal surfaces having positive Euler
++    characteristic and a zero triangle at every global vertex.  It is not a
++    verdict about arbitrary normal surfaces, compressibility, or a knot diagram.
++    """
++    check()
++    if (type(certificate) is not dict
++            or certificate.get('schema') != 'normal-positive-euler-propagation-v1'):
++        return False
++    try:
++        prepared, equations, euler, groups = _source_model(triangulation, check)
++    except NormalOrbitError:
++        return False
++    source = json.dumps(triangulation, sort_keys=True, separators=(',', ':')).encode()
++    if certificate.get('source_sha256') != sha256(source).hexdigest():
++        return False
++    n, width = len(prepared['tetrahedra']), len(euler)
++    if certificate.get('status') == 'POSITIVE_EULER':
++        if set(certificate) != {'schema', 'source_sha256', 'status', 'anchors', 'coordinates'}:
++            return False
++        anchors = certificate['anchors']
++        if (type(anchors) is not list or len(anchors) != len(groups)
++                or any(type(a) is not int or a not in group for a, group in zip(anchors, groups))):
++            return False
++        try:
++            analysed = _coordinates(prepared, certificate['coordinates'], check)
++        except NormalOrbitError:
++            return False
++        flat = [x for row in analysed['rows'] for x in row]
++        common = 0
++        for x in flat:
++            common = gcd(common, x)
++        return (common == 1 and all(flat[a] == 0 for a in anchors)
++                and sum(x*c for x, c in zip(flat, euler)) > 0
++                and analysed['euler_characteristic'] > 0)
++    if (certificate.get('status') != 'NO_POSITIVE_EULER'
++            or set(certificate) != {'schema', 'source_sha256', 'status', 'anchor_trees'}):
++        return False
++    trees = certificate['anchor_trees']
++    if type(trees) is not list or len(trees) != prod(map(len, groups)):
++        return False
++    seen = set()
++    for record, anchors in zip(trees, product(*groups)):
++        check()
++        if (type(record) is not dict or set(record) != {'anchors', 'tree'}
++                or type(record['anchors']) is not list
++                or any(type(a) is not int for a in record['anchors'])
++                or record['anchors'] != list(anchors)):
++            return False
++        zeros = set(anchors)
++        stack = [(record['tree'], ((0, 1, 2),)*n)]
++        while stack:
++            check()
++            tree, allowed = stack.pop()
++            if (type(tree) is not dict or id(tree) in seen
++                    or set(tree) != {'propagations', 'terminal'}
++                    or type(tree['propagations']) is not list):
++                return False
++            seen.add(id(tree))
++
++            def columns(forbidden=None):
++                return [j for j in range(width) if j not in zeros and j != forbidden
++                        and (j % 7 < 4 or j % 7-4 in allowed[j//7])]
++
++            for step in tree['propagations']:
++                check()
++                if type(step) is not dict or set(step) != {'tetrahedron', 'type', 'y'}:
++                    return False
++                a, q = step['tetrahedron'], step['type']
++                if (not _index(a, n) or not _index(q, 3)
++                        or len(allowed[a]) < 2 or q not in allowed[a]
++                        or not _dual(step['y'], equations, euler, columns(7*a+4+q), check)):
++                    return False
++                allowed = allowed[:a] + ((q,),) + allowed[a+1:]
++            terminal = tree['terminal']
++            if type(terminal) is not dict:
++                return False
++            if terminal.get('kind') == 'NONPOSITIVE':
++                if (set(terminal) != {'kind', 'y'}
++                        or not _dual(terminal['y'], equations, euler, columns(), check)):
++                    return False
++            elif terminal.get('kind') == 'BRANCH':
++                if set(terminal) != {'kind', 'tetrahedron', 'children'}:
++                    return False
++                a, children = terminal['tetrahedron'], terminal['children']
++                if (not _index(a, n) or len(allowed[a]) < 2
++                        or type(children) is not list or len(children) != len(allowed[a])):
++                    return False
++                for child, q in zip(children, allowed[a]):
++                    if (type(child) is not dict or set(child) != {'type', 'tree'}
++                            or type(child['type']) is not int or child['type'] != q):
++                        return False
++                    stack.append((child['tree'], allowed[:a] + ((q,),) + allowed[a+1:]))
++            else:
++                return False
++    return True
+diff --git a/Topology/UnknotRecognition/fast/fibonacci_fixture.py b/Topology/UnknotRecognition/fast/fibonacci_fixture.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fibonacci_fixture.py
+@@ -0,0 +1,78 @@
++"""Arbitrary-size compact Fibonacci layered solid tori, with exact meridians.
++
++The face pairings match Regina Example3.lst(F_(n+1),F_(n+2)) but use no
++fixed-width integer parameters.  The standard normal meridian has n occupied
++quadrilateral types while its allowed quadrilateral sector has nullity one.
++"""
++
++from __future__ import annotations
++
++
++def fibonacci_torus(tetrahedra):
++    if type(tetrahedra) is not int or tetrahedra<1:
++        raise ValueError("tetrahedra must be a positive integer")
++    faces = [[None]*4 for _ in range(tetrahedra)]
++
++    def join(source,face,target,permutation):
++        opposite = permutation[face]
++        inverse = [permutation.index(v) for v in range(4)]
++        assert faces[source][face] is None
++        assert faces[target][opposite] is None
++        faces[source][face] = {"tetrahedron":target,"permutation":list(permutation)}
++        faces[target][opposite] = {"tetrahedron":source,"permutation":inverse}
++
++    for t in range(tetrahedra-1):
++        join(t,0,t+1,[2,1,3,0])
++        join(t,1,t+1,[0,3,1,2])
++    join(tetrahedra-1,0,tetrahedra-1,[1,2,3,0])
++    fib = [0,1]
++    while len(fib)<=tetrahedra+5:
++        fib.append(fib[-1]+fib[-2])
++    rows = [[fib[tetrahedra-t+1],fib[tetrahedra-t+1],0,0,0,0,
++             fib[tetrahedra-t]] for t in range(tetrahedra)]
++    assert sum(map(sum,rows)) == fib[tetrahedra+5]-5
++    return {
++        "triangulation":{"tetrahedra":faces},"coordinates":rows,
++        "quad_types":[2]*tetrahedra,
++        "maximum_coordinate":fib[tetrahedra+1],
++        "normal_disc_count":fib[tetrahedra+5]-5,
++        "boundary_meridional_cuts":fib[tetrahedra+1:tetrahedra+4],
++    }
++
++
++def to_regina(raw):
++    import regina
++    t = regina.Triangulation3()
++    for _ in raw["tetrahedra"]:
++        t.newTetrahedron()
++    for i,row in enumerate(raw["tetrahedra"]):
++        for f,target in enumerate(row):
++            if target is not None and t.tetrahedron(i).adjacentTetrahedron(f) is None:
++                t.tetrahedron(i).join(f,t.tetrahedron(target["tetrahedron"]),
++                                      regina.Perm4(*target["permutation"]))
++    return t
++
++
++if __name__ == "__main__":
++    import json
++    import regina
++    checks = []
++    for n in [1,2,3,4,8,12,16,24,32]:
++        fixture = fibonacci_torus(n)
++        t = to_regina(fixture["triangulation"])
++        a,b,_ = fixture["boundary_meridional_cuts"]
++        reference = regina.Example3.lst(a,b)
++        assert t.isoSig() == reference.isoSig()
++        qsurfaces = regina.NormalSurfaces(t,regina.NormalCoords.Quad)
++        euler_one = [s for s in qsurfaces if str(s.eulerChar()) == "1"]
++        assert len(euler_one) == 1
++        coordinates = [[int(str(euler_one[0].triangles(i,v))) for v in range(4)]
++                       +[int(str(euler_one[0].quads(i,q))) for q in range(3)]
++                       for i in range(n)]
++        assert coordinates == fixture["coordinates"]
++        checks.append({"tetrahedra":n,"isosig":t.isoSig(),
++                       "quad_vertex_count":len(qsurfaces),
++                       "maximum_coordinate":fixture["maximum_coordinate"],
++                       "normal_disc_count":fixture["normal_disc_count"]})
++    print(json.dumps({"regina_version":regina.versionString(),
++                      "independent_checks":checks},indent=2))
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_euler.py b/Topology/UnknotRecognition/fast/tests/test_normal_euler.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_euler.py
+@@ -0,0 +1,284 @@
++"""Exact cone duals, independent sector replay, and exhaustive small oracles."""
++
++from copy import deepcopy
++from fractions import Fraction
++from itertools import combinations, product
++import json
++from math import gcd
++import random
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++from fastunknot.exact_lp import solve_nonnegative_kernel
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_euler import decide_sector_euler, _euler_model
++from fastunknot.normal_euler_verify import verify_sector_euler_certificate, _reference_model
++from fastunknot.normal_sector import build_sector_kernel, sector_rays, _nullspace
++from fastunknot.normal_surface_geometry import _coordinates
++from normal_orbit_research.fixtures import layered_torus, interior_vertex_torus, boundary_cap
++
++
++def fraction(pair):
++    def integer(x):
++        return int(x, 16) if isinstance(x, str) else x
++    return Fraction(integer(pair[0]), integer(pair[1]))
++
++
++def exhaustive_positive(matrix, objective):
++    n = len(objective)
++    for size in range(1, n+1):
++        for selected in combinations(range(n), size):
++            null = _nullspace([[row[j] for j in selected] for row in matrix], size)
++            if len(null) != 1:
++                continue
++            vector = null[0]
++            if all(x < 0 for x in vector):
++                vector = [-x for x in vector]
++            if all(x > 0 for x in vector) and sum(objective[j]*x
++                                                 for j, x in zip(selected, vector)) > 0:
++                return True
++    return False
++
++
++class ExactKernelLPTests(unittest.TestCase):
++    def assert_replay(self, matrix, objective, result):
++        if result['status'] == 'POSITIVE':
++            x = list(map(fraction, result['x']))
++            self.assertTrue(all(value >= 0 for value in x))
++            self.assertEqual(sum(x), 1)
++            self.assertTrue(all(sum(a*b for a, b in zip(row, x)) == 0 for row in matrix))
++            value = sum(a*b for a, b in zip(objective, x))
++            self.assertGreater(value, 0)
++            self.assertEqual(value, fraction(result['objective']))
++            primitive = result['primitive_x']
++            self.assertEqual([Fraction(a, sum(primitive)) for a in primitive], x)
++            common = 0
++            for a in primitive:
++                common = gcd(common, a)
++            self.assertEqual(common, 1)
++            active = [j for j, value in enumerate(x) if value]
++            self.assertEqual(len(_nullspace([[row[j] for j in active]
++                                             for row in matrix], len(active))), 1)
++        else:
++            self.assertEqual(result['status'], 'NONPOSITIVE')
++            y = list(map(fraction, result['y']))
++            self.assertEqual(len(y), len(matrix))
++            self.assertTrue(all(sum(row[j]*value for row, value in zip(matrix, y)) >= c
++                                for j, c in enumerate(objective)))
++
++    def test_exhaustive_support_oracle_on_degenerate_random_cones(self):
++        rng = random.Random(261009483)
++        for _ in range(240):
++            n, m = rng.randrange(1, 6), rng.randrange(5)
++            matrix = [[rng.randrange(-3, 4) for _ in range(n)] for _ in range(m)]
++            objective = [rng.randrange(-4, 5) for _ in range(n)]
++            result = solve_nonnegative_kernel(matrix, objective)
++            self.assert_replay(matrix, objective, result)
++            self.assertEqual(result['status'] == 'POSITIVE', exhaustive_positive(matrix, objective))
++
++    def test_zero_width_redundant_equations_and_fractional_input(self):
++        for matrix, objective in (([], []), ([[], []], []), ([], [0, -1]),
++                                  ([[0, 0], [1, -2], [2, -4]], [Fraction(-1, 2), 0]),
++                                  ([[Fraction(1, 2), -1]], [1, 0])):
++            result = solve_nonnegative_kernel(matrix, objective)
++            self.assert_replay(matrix, objective, result)
++        self.assertEqual(solve_nonnegative_kernel([[[1, 2], -1]], [1, 0])['primitive_x'], [2, 1])
++
++    def test_binary_magnitude_and_exact_json_transport(self):
++        huge = 1 << 20000
++        matrix, objective = [[1, -huge]], [1, 0]
++        result = solve_nonnegative_kernel(matrix, objective)
++        self.assertEqual(result['primitive_x'], [huge, 1])
++        self.assert_replay(matrix, objective, result)
++        transported = json.loads(json.dumps(json_safe(result)))
++        self.assertEqual(list(map(fraction, transported['x'])), list(map(fraction, result['x'])))
++        result = solve_nonnegative_kernel([[huge, -1]], [1, -1])
++        self.assert_replay([[huge, -1]], [1, -1], result)
++        self.assertEqual(list(map(fraction, json.loads(json.dumps(json_safe(result)))['y'])),
++                         list(map(fraction, result['y'])))
++
++    def test_caps_validation_immutability_and_cancellation(self):
++        matrix, objective = [[1, -1]], [1, 0]
++        original = deepcopy((matrix, objective))
++        complete = solve_nonnegative_kernel(matrix, objective)
++        cap = complete['stats']['pivots']
++        self.assertEqual(solve_nonnegative_kernel(matrix, objective, max_pivots=cap), complete)
++        partial = solve_nonnegative_kernel(matrix, objective, max_pivots=cap-1)
++        self.assertEqual(partial['status'], 'INCONCLUSIVE')
++        self.assertNotIn('x', partial)
++        self.assertNotIn('y', partial)
++        for bad_matrix, bad_objective in (([[1]], [1, 2]), ([[True]], [1]),
++                                          ([[1.0]], [1]), ([[[1, 0]]], [1]),
++                                          ([[1]], [False])):
++            with self.assertRaises(ValueError):
++                solve_nonnegative_kernel(bad_matrix, bad_objective)
++        for cap in (-1, True, 2.0):
++            with self.assertRaises(ValueError):
++                solve_nonnegative_kernel(matrix, objective, max_pivots=cap)
++        calls = [0]
++        def count():
++            calls[0] += 1
++        solve_nonnegative_kernel(matrix, objective, check=count)
++        for stop in (1, calls[0]//2, calls[0]):
++            current = [0]
++            def cancel():
++                current[0] += 1
++                if current[0] == stop:
++                    raise RuntimeError('cancelled')
++            with self.assertRaisesRegex(RuntimeError, 'cancelled'):
++                solve_nonnegative_kernel(matrix, objective, check=cancel)
++        self.assertEqual((matrix, objective), original)
++
++
++class SectorEulerTests(unittest.TestCase):
++    def test_all_small_layered_sectors_against_q_ray_enumeration(self):
++        for n in range(1, 5):
++            raw, meridian = layered_torus(n)
++            for choices in product(range(-1, 3), repeat=n):
++                support = [(t, q) for t, q in enumerate(choices) if q >= 0]
++                kernel = build_sector_kernel(raw, support)
++                expected = any(_coordinates(kernel.prepared, rows, lambda: None)
++                               ['euler_characteristic'] > 0
++                               for rows in sector_rays(kernel, phase='quadrilateral'))
++                for strategy in ('anchors', 'envelope'):
++                    result = decide_sector_euler(raw, support, strategy=strategy)
++                    self.assertEqual(result['status'] == 'POSITIVE_EULER', expected)
++                    self.assertTrue(verify_sector_euler_certificate(raw, result['certificate']))
++                matrix, linear, groups, potentials, weights = _reference_model(
++                    kernel.prepared, kernel.support, lambda: None)
++                self.assertEqual(matrix, kernel.cycle_rows)
++                self.assertEqual((linear, weights), _euler_model(kernel))
++                self.assertEqual(groups, kernel.groups)
++                self.assertEqual(potentials, kernel.potentials)
++
++    def test_interior_and_multiple_boundary_vertex_link_weights(self):
++        rng = random.Random(261009492)
++        interior, _ = interior_vertex_torus()
++        raw, meridian = layered_torus(2)
++        capped, _ = boundary_cap(raw, meridian)
++        for raw in (interior, capped):
++            n = len(raw['tetrahedra'])
++            for _ in range(48):
++                support = [(t, q) for t in range(n) if (q := rng.randrange(-1, 3)) >= 0]
++                kernel = build_sector_kernel(raw, support)
++                expected = any(_coordinates(kernel.prepared, rows, lambda: None)
++                               ['euler_characteristic'] > 0
++                               for rows in sector_rays(kernel, phase='quadrilateral'))
++                result = decide_sector_euler(raw, support)
++                self.assertEqual(result['status'] == 'POSITIVE_EULER', expected)
++                self.assertTrue(verify_sector_euler_certificate(raw, result['certificate']))
++
++    def test_foreign_sources_malformed_fields_and_incomplete_anchor_cover(self):
++        raw, _ = layered_torus(3)
++        positive = decide_sector_euler(raw, [(t, 2) for t in range(3)])['certificate']
++        negative = decide_sector_euler(raw, [(t, 0) for t in range(3)])['certificate']
++        foreign, _ = layered_torus(2)
++        for proof in (positive, negative):
++            self.assertFalse(verify_sector_euler_certificate(foreign, proof))
++            for field, value in (('source_sha256', 'wrong'), ('status', 'UNKNOT'),
++                                  ('allowed_types', [[0, True]])):
++                bad = deepcopy(proof)
++                bad[field] = value
++                self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        for field, value in (('euler_characteristic', True), ('euler_characteristic', 2),
++                              ('quadrilaterals', [0, 0, 0])):
++            bad = deepcopy(positive)
++            bad[field] = value
++            self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        bad = deepcopy(positive)
++        bad['coordinates'][0][0] += 1
++        self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        bad = deepcopy(negative)
++        bad['duals'].pop()
++        self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        bad = deepcopy(negative)
++        bad['duals'][-1] = bad['duals'][0]
++        self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        for value in ([1, 0], [True, 1], [1.0, 1]):
++            bad = deepcopy(negative)
++            bad['duals'][0]['multipliers'][0] = value
++            self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        bad = deepcopy(negative)
++        for record in bad['duals']:
++            record['multipliers'] = [[0, 1] for _ in record['multipliers']]
++        self.assertFalse(verify_sector_euler_certificate(raw, bad))
++
++    def test_replay_independence_and_shared_pivot_anchor_caps(self):
++        raw, _ = layered_torus(4)
++        support = [(t, 0) for t in range(4)]
++        result = decide_sector_euler(raw, support)
++        proof = result['certificate']
++        with patch('fastunknot.normal_euler._euler_model', side_effect=AssertionError), \
++             patch('fastunknot.normal_sector.build_sector_kernel', side_effect=AssertionError), \
++             patch('fastunknot.exact_lp.solve_nonnegative_kernel', side_effect=AssertionError):
++            self.assertTrue(verify_sector_euler_certificate(raw, proof))
++        for key, maximum in (('max_pivots', result['stats']['lp_pivots']),
++                              ('max_anchors', result['stats']['anchors_tested'])):
++            self.assertEqual(decide_sector_euler(raw, support, **{key: maximum}), result)
++            partial = decide_sector_euler(raw, support, **{key: maximum-1})
++            self.assertEqual(partial['status'], 'INCONCLUSIVE')
++            self.assertNotIn('certificate', partial)
++        calls = [0]
++        def count():
++            calls[0] += 1
++        verify_sector_euler_certificate(raw, proof, check=count)
++        for stop in (1, calls[0]//2, calls[0]):
++            current = [0]
++            def cancel():
++                current[0] += 1
++                if current[0] == stop:
++                    raise ValueError('cancelled')
++            with self.assertRaisesRegex(ValueError, 'cancelled'):
++                verify_sector_euler_certificate(raw, proof, check=cancel)
++
++    def test_envelope_dual_replay_mutations_and_dominance_reuse(self):
++        raw, _ = layered_torus(4)
++        support = [(t, 0) for t in range(4)]
++        anchor = decide_sector_euler(raw, support)
++        self.assertGreater(anchor['stats']['reused_anchors'], 0)
++        self.assertLess(anchor['stats']['lp_calls'], anchor['stats']['anchors_tested'])
++        result = decide_sector_euler(raw, support, strategy='envelope', max_anchors=0)
++        proof = result['certificate']
++        self.assertEqual(proof['proof_kind'], 'envelope')
++        self.assertEqual(result['stats']['anchors_tested'], 0)
++        self.assertEqual(result['stats']['lp_calls'], 1)
++        with patch('fastunknot.normal_euler._euler_model', side_effect=AssertionError), \
++             patch('fastunknot.normal_sector.build_sector_kernel', side_effect=AssertionError), \
++             patch('fastunknot.exact_lp.solve_nonnegative_kernel', side_effect=AssertionError):
++            self.assertTrue(verify_sector_euler_certificate(raw, proof))
++        for field, value in (('proof_kind', 'anchors'), ('multipliers', [])):
++            bad = deepcopy(proof)
++            bad[field] = value
++            self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        bad = deepcopy(proof)
++        bad['multipliers'] = [[0, 1] for _ in bad['multipliers']]
++        self.assertFalse(verify_sector_euler_certificate(raw, bad))
++        for bad_strategy in ('unknown', True, None):
++            with self.assertRaises(ValueError):
++                decide_sector_euler(raw, support, strategy=bad_strategy)
++
++    def test_positive_abstract_envelope_is_not_a_positive_euler_witness(self):
++        # C q=0 forces q=(t,t).  Both anchor forms have value -t, but their
++        # componentwise envelope (1,1) has value 2t.  This deliberately
++        # abstract control tests the fallback controller, not a triangulation.
++        kernel = SimpleNamespace(support=((0, 0), (1, 0)), cycle_rows=((1, -1),),
++            groups=((0, 1),), potentials={0: (0, 0), 1: (3, -3)}, stats={})
++        def forbidden(*args):
++            raise AssertionError('a positive envelope must not be lifted as a witness')
++        kernel.lift = forbidden
++        self.assertEqual(solve_nonnegative_kernel([[1, -1]], [1, 1])['status'], 'POSITIVE')
++        for objective in ([1, -2], [-2, 1]):
++            self.assertEqual(solve_nonnegative_kernel([[1, -1]], objective)['status'], 'NONPOSITIVE')
++        with patch('fastunknot.normal_euler.build_sector_kernel', return_value=kernel), \
++             patch('fastunknot.normal_euler._euler_model', return_value=((1, -2), (1,))):
++            answer = decide_sector_euler({}, [], strategy='envelope')
++        self.assertEqual(answer['status'], 'NO_POSITIVE_EULER')
++        self.assertEqual(answer['certificate']['proof_kind'], 'anchors')
++        self.assertEqual(answer['stats']['envelope_calls'], 1)
++        self.assertEqual(answer['stats']['anchors_tested'], 2)
++        self.assertEqual(answer['stats']['lp_calls'], 3)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_ray.py b/Topology/UnknotRecognition/fast/tests/test_normal_ray.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_ray.py
+@@ -0,0 +1,68 @@
++import copy
++import json
++from pathlib import Path
++import sys
++import unittest
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path[:0] = [str(ROOT/'scripts'), str(ROOT/'work/fast' if (ROOT/'work').exists() else ROOT/'fast')]
++from fibonacci_fixture import fibonacci_torus
++from fastunknot.normal_ray import certify_normal_ray_disc
++from fastunknot.normal_ray_verify import verify_normal_ray_disc
++
++
++class NormalRayTests(unittest.TestCase):
++    def test_fibonacci_dense_binary(self):
++        for t in (1, 4, 16, 64, 256):
++            fixture = fibonacci_torus(t)
++            answer = certify_normal_ray_disc(fixture['triangulation'], fixture['coordinates'])
++            self.assertEqual(answer['status'], 'DISC_FOUND')
++            self.assertTrue(verify_normal_ray_disc(fixture['triangulation'],
++                           fixture['coordinates'], answer['certificate']))
++
++    def test_nonprimitive_is_not_connected_certificate(self):
++        fixture = fibonacci_torus(8)
++        rows = [[2*x for x in row] for row in fixture['coordinates']]
++        self.assertEqual(certify_normal_ray_disc(fixture['triangulation'], rows)['status'],
++                         'NOT_CERTIFIED')
++
++    def test_cap_and_callback(self):
++        fixture = fibonacci_torus(8)
++        self.assertEqual(certify_normal_ray_disc(fixture['triangulation'],
++                         fixture['coordinates'], max_rank_operations=0)['status'], 'INCONCLUSIVE')
++        def stop():
++            raise ValueError('caller cancellation')
++        with self.assertRaisesRegex(ValueError, 'caller cancellation'):
++            certify_normal_ray_disc(fixture['triangulation'], fixture['coordinates'], check=stop)
++        with self.assertRaisesRegex(ValueError, 'caller cancellation'):
++            verify_normal_ray_disc(fixture['triangulation'], fixture['coordinates'], {}, check=stop)
++
++    def test_source_and_rank_tampering(self):
++        fixture = fibonacci_torus(8)
++        answer = certify_normal_ray_disc(fixture['triangulation'], fixture['coordinates'])
++        for key, value in [('prime', True), ('prime', 9), ('rank_rows', [0]*23),
++                           ('input_sha256', 'x'), ('schema', 'normal-extreme-disc-v2')]:
++            bad = copy.deepcopy(answer['certificate'])
++            bad[key] = value
++            self.assertFalse(verify_normal_ray_disc(fixture['triangulation'],
++                             fixture['coordinates'], bad))
++
++    def test_empty_and_link_controls(self):
++        fixture = fibonacci_torus(4)
++        for rows in ([[0]*7 for _ in range(4)], [[1,1,1,1,0,0,0] for _ in range(4)]):
++            self.assertEqual(certify_normal_ray_disc(fixture['triangulation'], rows)['status'],
++                             'NOT_CERTIFIED')
++
++    def test_euler_and_boundary_parity_without_extremality_are_insufficient(self):
++        # Vertex-link disc plus the type-1 Mobius band in a one-tetrahedron
++        # solid torus: primitive, Euler one, essential total boundary class,
++        # but its disc component is boundary-parallel. Rank must reject it.
++        fixture = fibonacci_torus(1)
++        rows = [[1,1,1,1,0,1,0]]
++        answer = certify_normal_ray_disc(fixture['triangulation'], rows)
++        self.assertEqual(answer['status'], 'NOT_CERTIFIED')
++        self.assertIn('full-rank minor', answer['reason'])
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_propagation.py b/Topology/UnknotRecognition/fast/tests/test_normal_propagation.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_propagation.py
+@@ -0,0 +1,231 @@
++"""Exact propagation, finite coverage proofs, and bounded-search controls."""
++
++from copy import deepcopy
++import importlib.util
++import json
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_propagation import build_standard_model, search_positive_euler
++from fastunknot.normal_propagation_verify import verify_normal_propagation_certificate
++from fastunknot.normal_surface_geometry import _coordinates
++from normal_orbit_research.fixtures import (layered_torus, interior_vertex_torus,
++                                          boundary_cap, export_triangulation)
++
++
++def _raw(specifications):
++    return {'tetrahedra': [[None if item is None else
++                           dict(tetrahedron=item[0], permutation=list(item[1]))
++                           for item in row] for row in specifications]}
++
++
++def finite_trefoil():
++    """Fixed finite five-tetrahedron trefoil exterior, fLHPccdeeeqcieh.
++
++    Exported once from Regina's ideal trefoil after truncation and simplification;
++    the tests and certificate replay need no Regina installation.
++    """
++    return _raw([
++        [(3,[0,3,2,1]),None,(1,[0,1,3,2]),(2,[0,1,3,2])],
++        [(2,[0,2,1,3]),(4,[0,1,3,2]),(4,[1,0,2,3]),(0,[0,1,3,2])],
++        [(1,[0,2,1,3]),None,(0,[0,1,3,2]),(3,[1,0,2,3])],
++        [(0,[0,3,2,1]),(4,[1,0,2,3]),(4,[0,1,3,2]),(2,[1,0,2,3])],
++        [(3,[1,0,2,3]),(1,[0,1,3,2]),(1,[1,0,2,3]),(3,[0,1,3,2])],
++    ])
++
++
++def branching_torus():
++    """Five-tetrahedron torus requiring a guess for this deterministic policy.
++
++    Obtained from layered_torus(2) by three 2-3 Pachner moves; its isomorphism
++    signature is fLHgkacdeenkavj.  This fixture measures this policy, not an
++    intrinsic lower bound on all possible propagation/search strategies.
++    """
++    return _raw([
++        [(0,[2,0,3,1]),(1,[0,2,1,3]),(0,[1,3,0,2]),(3,[0,1,3,2])],
++        [None,(3,[1,0,2,3]),(0,[0,2,1,3]),(4,[0,3,2,1])],
++        [(2,[3,2,0,1]),(4,[0,3,2,1]),(3,[0,1,3,2]),(2,[2,3,1,0])],
++        [(1,[1,0,2,3]),(4,[0,2,1,3]),(0,[0,1,3,2]),(2,[0,1,3,2])],
++        [None,(1,[0,3,2,1]),(3,[0,2,1,3]),(2,[0,3,2,1])],
++    ])
++
++
++class NormalPropagationTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.trefoil = finite_trefoil()
++        cls.negative = search_positive_euler(cls.trefoil)
++
++    def test_source_euler_and_anchor_model(self):
++        cases = [layered_torus(t) for t in range(1, 5)]
++        cases.append(boundary_cap(*layered_torus(2)))
++        raw, basis = interior_vertex_torus()
++        cases.extend((raw, vector) for vector in basis.values())
++        for raw, vector in cases:
++            model = build_standard_model(raw)
++            flat = [x for row in vector for x in row]
++            self.assertTrue(all(sum(a*x for a, x in zip(row, flat)) == 0
++                                for row in model['matrix']))
++            expected = _coordinates(model['prepared'], vector, lambda: None)['euler_characteristic']
++            self.assertEqual(sum(a*x for a, x in zip(model['euler'], flat)), expected)
++            self.assertEqual(sorted(x for group in model['anchor_groups'] for x in group),
++                             [7*t+v for t in range(len(vector)) for v in range(4)])
++
++    def test_fibonacci_meridians_need_no_branch_tetrahedra(self):
++        for t in range(1, 9):
++            raw, expected = layered_torus(t)
++            answer = search_positive_euler(raw, max_branch_depth=0,
++                                          allowed_branch_tetrahedra=[])
++            self.assertEqual(answer['status'], 'POSITIVE_EULER', answer)
++            self.assertEqual(answer['coordinates'], expected)
++            self.assertEqual(answer['stats']['branches'], 0)
++            self.assertEqual(answer['stats']['propagations'], t-1)
++            self.assertEqual(answer['stats']['lp_calls'], 4*t-1)
++            self.assertTrue(verify_normal_propagation_certificate(raw, answer['certificate']))
++
++    def test_negative_all_anchor_coverage_and_solver_independence(self):
++        answer = self.negative
++        self.assertEqual(answer['status'], 'NO_POSITIVE_EULER', answer)
++        self.assertEqual(answer['stats']['anchors_completed'], 20)
++        proof = json.loads(json.dumps(json_safe(answer['certificate'])))
++        with patch('fastunknot.normal_propagation.build_standard_model', side_effect=AssertionError), \
++             patch('fastunknot.normal_propagation.solve_nonnegative_kernel', side_effect=AssertionError), \
++             patch('fastunknot.exact_lp.solve_nonnegative_kernel', side_effect=AssertionError):
++            self.assertTrue(verify_normal_propagation_certificate(self.trefoil, proof))
++        for mutate in (lambda p: p['anchor_trees'].pop(),
++                       lambda p: p['anchor_trees'][0]['anchors'].__setitem__(0, 1),
++                       lambda p: p.__setitem__('source_sha256', '0'*64),
++                       lambda p: p.__setitem__('status', 'KNOTTED')):
++            bad = deepcopy(proof)
++            mutate(bad)
++            self.assertFalse(verify_normal_propagation_certificate(self.trefoil, bad))
++
++    def test_dual_mutations_and_sound_forced_zero_steps(self):
++        proof = deepcopy(self.negative['certificate'])
++        first = proof['anchor_trees'][0]['tree']
++        y = deepcopy(first['terminal']['y'])
++        # A valid full-cone dual also proves every coordinate-deletion subcase.
++        # This redundant implication is a useful independent checker control.
++        first['propagations'].append(dict(tetrahedron=0, type=0, y=deepcopy(y)))
++        self.assertTrue(verify_normal_propagation_certificate(self.trefoil, proof))
++        mutations = [
++            lambda p: p['anchor_trees'][0]['tree']['propagations'][0].__setitem__('type', True),
++            lambda p: p['anchor_trees'][0]['tree']['propagations'][0].__setitem__('type', 3),
++            lambda p: p['anchor_trees'][0]['tree']['propagations'][0]['y'][0].__setitem__(1, 0),
++            lambda p: p['anchor_trees'][0]['tree']['propagations'][0]['y'].pop(),
++            lambda p: p['anchor_trees'][0]['tree']['terminal']['y'][0].__setitem__(0, True),
++            lambda p: p['anchor_trees'][0]['tree']['propagations'].append(
++                dict(tetrahedron=0, type=1, y=deepcopy(y))),
++        ]
++        for mutate in mutations:
++            bad = deepcopy(proof)
++            mutate(bad)
++            self.assertFalse(verify_normal_propagation_certificate(self.trefoil, bad))
++        bad = deepcopy(self.negative['certificate'])
++        bad['anchor_trees'][0]['tree']['terminal']['y'] = [[0, 1] for _ in y]
++        self.assertFalse(verify_normal_propagation_certificate(self.trefoil, bad))
++
++    def test_complete_branch_replay_and_omitted_branch_rejection(self):
++        proof = deepcopy(self.negative['certificate'])
++        first = proof['anchor_trees'][0]['tree']
++        y = first['terminal']['y']
++        first['terminal'] = dict(kind='BRANCH', tetrahedron=0, children=[
++            dict(type=q, tree=dict(propagations=[], terminal=dict(kind='NONPOSITIVE', y=deepcopy(y))))
++            for q in range(3)])
++        self.assertTrue(verify_normal_propagation_certificate(self.trefoil, proof))
++        for mutate in (lambda p: p['anchor_trees'][0]['tree']['terminal']['children'].pop(),
++                       lambda p: p['anchor_trees'][0]['tree']['terminal']['children'][0].__setitem__('type', 1),
++                       lambda p: p['anchor_trees'][0]['tree']['terminal'].__setitem__('tetrahedron', 5)):
++            bad = deepcopy(proof)
++            mutate(bad)
++            self.assertFalse(verify_normal_propagation_certificate(self.trefoil, bad))
++
++    def test_actual_branching_and_fixed_backdoor_scope(self):
++        raw = branching_torus()
++        stopped = search_positive_euler(raw, max_branch_depth=0)
++        self.assertEqual(stopped['status'], 'INCONCLUSIVE')
++        self.assertEqual(stopped['reason'], 'branch depth allowance exhausted')
++        stopped = search_positive_euler(raw, allowed_branch_tetrahedra=[])
++        self.assertEqual(stopped['status'], 'INCONCLUSIVE')
++        self.assertEqual(stopped['reason'], 'allowed branch tetrahedra exhausted')
++        answer = search_positive_euler(raw)
++        self.assertEqual(answer['status'], 'POSITIVE_EULER', answer)
++        self.assertGreater(answer['stats']['branches'], 0)
++        self.assertTrue(verify_normal_propagation_certificate(raw, answer['certificate']))
++        selected = answer['stats']['branched_tetrahedra']
++        restricted = search_positive_euler(raw, allowed_branch_tetrahedra=selected)
++        self.assertEqual(restricted['status'], 'POSITIVE_EULER', restricted)
++        self.assertTrue(set(restricted['stats']['branched_tetrahedra']) <= set(selected))
++        # The initial conflicting witness need not conflict inside a supplied
++        # backdoor.  An unresolved allowed tetrahedron must still be explored.
++        fallback = search_positive_euler(raw, allowed_branch_tetrahedra=[1])
++        self.assertEqual(fallback['status'], 'POSITIVE_EULER', fallback)
++        self.assertEqual(fallback['stats']['branched_tetrahedra'], [1])
++
++    def test_aggregate_budgets_never_issue_negative_certificates(self):
++        raw, _ = layered_torus(1)
++        for limits in (dict(max_nodes=0), dict(max_nodes=2),
++                       dict(max_pivots=0), dict(max_pivots=6)):
++            answer = search_positive_euler(raw, **limits)
++            self.assertEqual(answer['status'], 'INCONCLUSIVE', answer)
++            self.assertNotIn('certificate', answer)
++            if 'max_pivots' in limits:
++                self.assertLessEqual(answer['stats']['lp_pivots'], limits['max_pivots'])
++            if 'max_nodes' in limits:
++                self.assertLessEqual(answer['stats']['nodes'], limits['max_nodes'])
++        for name in ('max_nodes', 'max_pivots', 'max_branch_depth'):
++            for value in (-1, True, 1.5):
++                with self.assertRaises(ValueError):
++                    search_positive_euler(raw, **{name: value})
++        for value in ([True], [0, 0], [1], [-1], (), 'all'):
++            with self.assertRaises(ValueError):
++                search_positive_euler(raw, allowed_branch_tetrahedra=value)
++
++    def test_multiple_global_vertices_and_positive_witness_mutations(self):
++        cases = [boundary_cap(*layered_torus(2))[0], interior_vertex_torus()[0]]
++        for raw in cases:
++            answer = search_positive_euler(raw, max_pivots=20000)
++            self.assertEqual(answer['status'], 'POSITIVE_EULER', answer)
++            self.assertGreater(answer['stats']['vertices'], 1)
++            self.assertTrue(verify_normal_propagation_certificate(raw, answer['certificate']))
++        raw, _ = layered_torus(1)
++        proof = search_positive_euler(raw)['certificate']
++        for mutate in (lambda p: p.__setitem__('anchors', [0]),
++                       lambda p: p['coordinates'][0].__setitem__(0, -1),
++                       lambda p: p.__setitem__('coordinates', [[2*x for x in row] for row in p['coordinates']])):
++            bad = deepcopy(proof)
++            mutate(bad)
++            self.assertFalse(verify_normal_propagation_certificate(raw, bad))
++
++    def test_cancellation_propagates_in_search_and_replay(self):
++        class Cancelled(ValueError):
++            pass
++        for operation in (lambda cb: search_positive_euler(self.trefoil, check=cb),
++                          lambda cb: verify_normal_propagation_certificate(
++                              self.trefoil, self.negative['certificate'], check=cb)):
++            calls = 0
++            def cancel():
++                nonlocal calls
++                calls += 1
++                if calls == 12:
++                    raise Cancelled('caller stopped')
++            with self.assertRaises(Cancelled):
++                operation(cancel)
++
++    @unittest.skipUnless(importlib.util.find_spec('regina'), 'optional Regina fixture cross-check')
++    def test_optional_native_fixture_topology(self):
++        import regina
++        from normal_orbit_research.fixtures import regina_triangulation
++        torus = regina_triangulation(branching_torus())
++        trefoil = regina_triangulation(self.trefoil)
++        self.assertEqual(torus.isoSig(), 'fLHgkacdeenkavj')
++        self.assertTrue(torus.isSolidTorus())
++        self.assertEqual(trefoil.isoSig(), 'fLHPccdeeeqcieh')
++        self.assertFalse(trefoil.isSolidTorus())
++        # Reimport/export does not alter any source face pairing.
++        self.assertEqual(export_triangulation(trefoil), self.trefoil)
++
++
++if __name__ == '__main__':
++    unittest.main()

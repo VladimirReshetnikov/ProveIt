@@ -1,0 +1,105 @@
+\section{Positive-Euler search by anchor LPs and dual certificates}\label{sec:sector-lp}
+
+\subsection{A union of anchored coordinate faces}
+
+Let $M$ be the contracted standard matrix in \eqref{eq:small-kernel}, and let $c$ be the integer Euler covector obtained by expanding a contracted vector back to standard coordinates. For each tuple $a=(a_v)_v\in\prod_vG_v$, set its chosen triangle entries to zero. Let $J_a$ be the surviving columns and define
+\begin{equation}\label{eq:anchor-lp}
+ \mathcal L_a=\{z\in\R^{J_a}:z\ge0,\ M_{J_a}z=0,\ c_{J_a}^{T}z\ge1\}.
+\end{equation}
+
+\begin{theorem}[Support-sensitive anchored decision]\label{thm:anchor}
+A compatible sector contains a canonical normal surface of positive Euler characteristic if and only if $\mathcal L_a$ is nonempty for some anchor tuple $a$. Consequently this query is decidable by $P$ rational LP feasibility tests with $O(k)$ variables and rows, after polynomial preprocessing in $t$. For one global vertex the query has polynomial bit complexity when implemented with a polynomial-time rational-LP algorithm.
+\end{theorem}
+\begin{proof}
+Canonicality is precisely the existence of a zero triangle coordinate in each global vertex group. Equality contraction preserves these zero conditions. Thus the canonical nonnegative matching vectors form the union of the anchored coordinate faces. Positive Euler is homogeneous: any positive real value can be scaled to at least one. Conversely, a feasible rational point in \eqref{eq:anchor-lp} can be multiplied by a common denominator to produce integral matching coordinates. Compatibility is already enforced by the sector. Rational feasibility suffices because the polyhedron has rational defining data. The number of tuples is given by Lemma~\ref{lem:anchor-count}. The matrix and objective have polynomial encoding length; the result follows from rational LP complexity \cite{Khachiyan}.
+\end{proof}
+
+The theorem decides \emph{whether at least one} canonical positive-Euler surface exists. It does not list every such ray. Enumeration can still be required by a downstream task that needs alternatives, all boundary slopes, or a complete output set. It is inappropriate to claim a speedup for such a task merely because this weaker query became cheaper.
+
+\subsection{A complete negative result is a list of inequalities}
+
+\begin{theorem}[Homogeneous dual alternative]\label{thm:dual}
+For an anchor tuple $a$, the system $\mathcal L_a$ is empty if and only if there is a rational vector $y_a$ such that
+\begin{equation}\label{eq:standard-dual}
+ M_{J_a}^{T}y_a\ge c_{J_a}
+\end{equation}
+componentwise. A multiplier for every anchor tuple is a complete negative certificate for the sector.
+\end{theorem}
+\begin{proof}
+If \eqref{eq:standard-dual} holds, then every nonnegative kernel vector satisfies
+\[
+ c_{J_a}^{T}z\le y_a^{T}M_{J_a}z=0,
+\]
+contradicting the last inequality in \eqref{eq:anchor-lp}. For the converse, the polar of the polyhedral cone $\{z\ge0:M_{J_a}z=0\}$ is the sum of the row space of $M_{J_a}$ and the nonpositive orthant. If the objective is nonpositive on that cone, it therefore has the form $M_{J_a}^{T}y_a-s$, $s\ge0$. All defining data are rational, so a rational multiplier exists. This is the homogeneous Farkas alternative. The anchor theorem supplies complete coverage.
+\end{proof}
+
+The verifier reconstructs the anchor product itself. An asserted count, a sample of anchors, or a list of successfully tested anchors is insufficient. In the implementation, ordinary negative certificates list the deterministic Cartesian product in order; missing, repeated, reordered or foreign tuples are rejected. The checker rebuilds matching rows and Euler coefficients from the source and checks exact rational inequalities. The shipped checker uses the equivalent cycle-coordinate multipliers introduced below. It never asks the producer whether a branch was exhausted.
+
+\begin{proposition}[A sharp numeric bound in anchored standard coordinates]\label{prop:dual-bits}
+For each negative anchor query, a multiplier can be chosen with at most $4k$ nonzero entries, denominators at most $4^k$, and numerator absolute values at most $64kt4^k$. A full anchored-standard negative proof therefore needs
+\begin{equation}\label{eq:dual-bits}
+ O\bigl(Pk(k+\log t+\log(k+1))\bigr)
+\end{equation}
+numeric bits, apart from source and indexing metadata.
+\end{proposition}
+\begin{proof}
+Every square minor of the contracted matrix containing $a$ quadrilateral columns has absolute determinant at most $4^a$. Expand in those columns: their $\ell_1$ norms are at most four, and the remaining triangle minor is zero or has absolute determinant one because the triangle block is totally unimodular. This recovers the mixed-minor estimate used in the preceding report \cite{priorKernel}.
+
+Let $r=\rank M_{J_a}\le4k$ and retain $r$ independent rows, denoted $A$. Their row space is unchanged. The nonempty polyhedron $\{u:A^Tu\ge c_{J_a}\}$ is pointed, since $A^T$ has trivial kernel. A nonempty pointed polyhedron has a vertex. At a vertex, choose $r$ linearly independent active column inequalities. The resulting square matrix has nonzero integer determinant of absolute value at most $4^k$. A Cramer numerator expands along the inserted objective row into at most $r$ terms. The remaining minors have absolute value at most $4^k$, and $\|c\|_\infty\le16t$: at most $4t$ triangle coefficients of magnitude at most four are identified. Hence the numerator bound is $r(16t)4^k\le64kt4^k$. Put zeros on the omitted original rows. Reducing fractions can only decrease numerator and denominator magnitudes. Rank zero uses the empty multiplier and direct comparison $c_{J_a}\le0$. Taking binary lengths gives \eqref{eq:dual-bits}.
+\end{proof}
+
+This bound proves that the negative proof need not encode an enormous enumeration history. It is an existence bound for a suitable anchored-standard dual. The prototype below solves the smaller cycle-coordinate LPs, whose stored duals satisfy a generic polynomial bit bound. We do not assert that the actual cycle-coordinate multipliers satisfy the sharper $4^k$ bound without a proved change-of-basis estimate.
+
+\subsection{The equivalent quadrilateral formulation}
+
+The potential description makes all anchor objectives share the same feasible cone. Let $\lambda(q)$ be the Euler value of the lift using zero reference offsets, before subtracting vertex minima. Write $w_v=\chi(L_v)$, so $w_v=1$ for boundary vertices and $w_v=2$ for interior vertices. The canonical Euler functional is
+\begin{equation}\label{eq:canonical-euler}
+ g(q):=\chi(\F(q))=\lambda(q)-\sum_v w_v\min_{c\in G_v}\ell_c(q).
+\end{equation}
+It is generally piecewise linear, not one globally linear functional of $q$.
+
+\begin{theorem}[Maximum-of-objectives formulation]\label{thm:max-objectives}
+Define
+\[
+ h_a(q)=\lambda(q)-\sum_v w_v\ell_{a_v}(q).
+\]
+Then $g(q)=\max_a h_a(q)$ on $Q_S$. Therefore $g$ is positive somewhere on $Q_S$ if and only if at least one objective $h_a$ is positive on
+\begin{equation}\label{eq:normalized-Q}
+ \{q\ge0:Rq=0,\ \mathbf1^Tq\le1\}.
+\end{equation}
+A complete negative certificate consists of multipliers satisfying $R^Ty_a\ge h_a$ for all $a$.
+\end{theorem}
+\begin{proof}
+Each $w_v$ is positive, so replacing the minimum in \eqref{eq:canonical-euler} by any particular potential can only decrease the value. Choosing a minimizing potential independently in every group attains equality. Nonzero positive values can be scaled into \eqref{eq:normalized-Q}; the zero vector has value zero. Apply the homogeneous dual alternative to $R$ and $h_a$.
+\end{proof}
+
+No extra inequalities asserting that the chosen anchors are actual minima are needed. If an anchor objective is positive at $q$, the canonical objective is at least as large; if the canonical objective is positive, actual minima supply a successful tuple. This observation removes a potentially expensive and unnecessary cell arrangement from the decision problem.
+
+The sign of each vertex-link Euler characteristic matters for this maximum identity. A zero link weight disappears, while a negative weight changes the relevant minimum into a concave contribution. The direct anchored-standard theorem uses zero-coordinate faces and does not depend on that sign argument. The present implementation only accepts the finite sphere/disc-link setting, so there is no hidden extension to arbitrary ideal triangulations.
+
+\subsection{Obtaining a ray, rather than an arbitrary feasible point}
+
+The normalized polytope \eqref{eq:normalized-Q} is compact. Every nonzero vertex of it lies on $\mathbf1^Tq=1$ and spans an extreme ray of $Q_S$. A positive basic feasible point therefore gives a Q-ray, even if it does not maximize the objective. Clearing denominators and dividing by the gcd produces its primitive integral generator. Lemma~\ref{lem:lift-extreme} then gives a primitive standard ray after canonical lifting.
+
+The shipped simplex implementation begins with a feasible all-slack basis for $Rq\le0$, $-Rq\le0$ and $\mathbf1^Tq\le1$. It uses exact fractions and Bland's finite pivot rule \cite{Bland}, and stops as soon as its basic objective value becomes positive. For a nonpositive optimum it extracts a homogeneous dual and checks the dual inequalities before returning. Feasibility, primitivity and exact Euler characteristic are also checked before a positive result is exposed.
+
+A general polynomial LP routine might return an interior feasible point. To recover an extreme positive ray without assuming its output is basic, first work in the anchored standard formulation \eqref{eq:anchor-lp}. Preserve all current zero coordinates and repeatedly test whether one further positive coordinate can be set to zero while retaining the linear constraint $c^Tz\ge1$. Keep every successful deletion. At most $N$ tests yield minimal positive support. If that support face had dimension greater than one, its extreme-ray decomposition would contain a positive-Euler ray on smaller support, a contradiction. This support-descent mechanism is classical \cite{BO}. It makes the theoretical polynomial-oracle statement independent of a particular LP solver's output convention.
+
+\subsection{An inexpensive envelope and safe reuse of duals}
+
+Let $h_a$ also denote the coefficient vector of the corresponding linear form. Set
+\begin{equation}\label{eq:envelope}
+ u_j=\max_a(h_a)_j
+     =\lambda_j-\sum_vw_v\min_{c\in G_v}(\ell_c)_j.
+\end{equation}
+Because $q\ge0$, every $h_a(q)\le u^Tq$, so $g(q)\le u^Tq$. One multiplier $R^Ty\ge u$ proves that the entire sector has no canonical positive-Euler surface. The coefficientwise maximum can be constructed without enumerating the anchor product.
+
+This envelope is sufficient for a negative conclusion; positivity of the envelope proves nothing by itself. For example, let
+\[
+ R=(1,-1),\qquad h_1=(1,-2),\qquad h_2=(-2,1).
+\]
+The nonnegative kernel consists of $(s,s)$, $s\ge0$. Both anchor objectives equal $-s$, so $g=-s$, but $u=(1,1)$ gives $u^Tq=2s$. The prototype tests this failure mode and falls back to the actual anchor objectives after a positive envelope LP. It cannot return a surface merely from the positive upper bound.
+
+Duals can also be reused safely. If a previous multiplier has $b=R^Ty$, then it certifies every later objective $h$ with $h\le b$ componentwise. This requires only a coordinate comparison. The implementation initially caches the zero dual, which immediately handles objectives with nonpositive coefficients. Reusing a dual does not remove the anchor from an ordinary negative certificate: the checker still verifies full coverage. Duplicate multipliers could later be interned to reduce serialization, provided explicit coverage is retained.
+
+The envelope and cache improve concrete workloads but have no universal favorable-performance theorem. The envelope may add a useless LP; componentwise domination may miss inequalities valid only on $Q_S$. The default strategy remains ordinary anchors with safe reuse, and the measured envelope strategy is reported separately.
