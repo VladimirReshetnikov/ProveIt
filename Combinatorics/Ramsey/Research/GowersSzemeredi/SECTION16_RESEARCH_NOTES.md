@@ -2966,6 +2966,7 @@ zero and size conditions, and its common row-difference Bohr sets lie in
 it does not yet prove the subsequent algebraic regularity or the remaining
 five numbered statements. The four modules contain eleven new theorem
 declarations, checked in a 63-module source closure.
+
 ### Quarter-radius mixed Bogolyubov (2026-10-08)
 
 `Proofs16SpectrumPairSumset` sharpens `mixed_bogolyubov` and the
@@ -3004,3 +3005,14 @@ It was dropped because the modulus-independent
 `Proofs16PolynomialSpectrumSpan` cutoff supersedes it. All nine theorems
 use only propext, Classical.choice, and Quot.sound. The collision gate
 passes. No numbered statement changes status.
+
+
+The combined audit after merging the quarter-radius proofs and the dense-row
+alphabet construction passes: 6,326 public Gowers theorems, a 4,967-module
+facade (4,152 OAI modules), and 4,969 modules including the audit and import
+compatibility check. All eleven new directional declarations also pass
+individual transitive axiom checks. Only propext, Classical.choice, and
+Quot.sound occur. The source ledger remains 115/5 with the existing fidelity
+caveats; the selected upstream closure and provenance are unchanged.
+The quarter-radius improvement has not yet been propagated through the
+uniform rank-cap and directional-alphabet interfaces.
