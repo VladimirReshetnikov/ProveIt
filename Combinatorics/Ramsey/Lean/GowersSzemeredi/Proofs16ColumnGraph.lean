@@ -38,6 +38,7 @@ theorem global_coherent_column_graph {N : Nat} [NeZero N] [Fact N.Prime]
       (E : Finset (ZMod N × ZMod N)),
       (alpha / (2 - alpha)) * N ≤ X.card ∧
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
@@ -50,7 +51,7 @@ theorem global_coherent_column_graph {N : Nat} [NeZero N] [Fact N.Prime]
         ColumnPairIdentity T L (columnIdentityRadius d rho 1) p q) := by
   have hNbase : globalColumnCompositionModulusBound alpha 2 ≤ N := (le_max_left _ _).trans hN
   have hNsize : ⌈4 / globalColumnQuadrupleDensity alpha⌉₊ + 3 ≤ N := (le_max_right _ _).trans hN
-  obtain ⟨X, T, L, W, P, hX, hsys, hW, hT, hL, hzero, htheta, hr, hP, hPX, hcoh⟩ :=
+  obtain ⟨X, T, L, W, P, hX, hsys, hLfull, hW, hT, hL, hzero, htheta, hr, hP, hPX, hcoh⟩ :=
     global_coherent_column_pairs A phi ha ha1 hA hphi hNbase
   obtain ⟨Q, hPQ, hQX, hsym, hQcoh⟩ :=
     exists_symmetric_coherent_pairs (by omega) X T L _ P hPX hcoh
@@ -67,7 +68,7 @@ theorem global_coherent_column_graph {N : Nat} [NeZero N] [Fact N.Prime]
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hloop : (N : Real) ≤ (globalColumnQuadrupleDensity alpha / 4) * (N : Real)^2 := by
     nlinarith [mul_le_mul_of_nonneg_right hfour hNpos.le]
-  refine ⟨X, T, L, W, E, hX, hsys, hW, hT, hL, hzero, htheta, hr, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨X, T, L, W, E, hX, hsys, hLfull, hW, hT, hL, hzero, htheta, hr, ?_, ?_, ?_, ?_, ?_⟩
   · nlinarith
   · exact (Finset.filter_subset _ _).trans hQX
   · intro p hp

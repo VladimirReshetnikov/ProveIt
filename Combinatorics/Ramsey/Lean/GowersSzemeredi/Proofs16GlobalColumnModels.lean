@@ -40,6 +40,7 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (B P : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
@@ -63,7 +64,7 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
       (3*(k+1)*columnSpectrumCap (columnEightDensity alpha))
       (globalColumnIdentityRadius alpha) (globalColumnWordIdentityRadius alpha k) < N :=
     Nat.lt_of_succ_le ((le_max_right _ _).trans hN)
-  obtain ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,_,hr,_,hdelta,hs,htriple,hwords,hident,hrich⟩ :=
+  obtain ⟨X,T,L,W,B,P,hsys,hLfull,hW,hT,hL,hzero,hBX,hPB,hP,_,hr,_,hdelta,hs,htriple,hwords,hident,hrich⟩ :=
     global_column_word_identities A phi ha ha1 hA hphi k hNword
   have hrho := globalColumnIdentityRadius_pos ha ha1
   have hsle : globalColumnWordIdentityRadius alpha k ≤ globalColumnIdentityRadius alpha :=
@@ -82,7 +83,7 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
     intro a haP w hw
     exact fixedColumnWordRepresentations_spec B T L _ _ a
       (hident a.1 (List.ofFn a.2) haP (by simp)) hw
-  refine ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,hdelta k,
+  refine ⟨X,T,L,W,B,P,hsys,hLfull,hW,hT,hL,hzero,hBX,hPB,hP,hdelta k,
     refinementKernelRadius_pos _ _ hrho hs,hcount,?_⟩
   intro c
   have hpack := column_model_packing (columnAnchorFibre P k c) X T L columnAnchorList

@@ -28,6 +28,7 @@ theorem global_column_word_representations {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (B P : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
@@ -42,11 +43,11 @@ theorem global_column_word_representations {N : Nat} [NeZero N] [Fact N.Prime]
         ∀ (beta1 beta2 : Real), 0 ≤ beta1 → 0 ≤ beta2 →
           beta1*N ≤ (U.card : Real) → beta2*N ≤ (V.card : Real) →
           (beta1*beta2*eta)^2*(N : Real)^3 ≤ ((mixedExactColumnQuadruples U V T L r).card : Real)) := by
-  obtain ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hB,hP,heta,hr,hlambda,htriple,hrich⟩ :=
+  obtain ⟨X,T,L,W,B,P,hsys,hLfull,hW,hT,hL,hzero,hBX,hPB,hB,hP,heta,hr,hlambda,htriple,hrich⟩ :=
     global_popular_column_representations A phi ha ha1 hA hphi hN
   have hsigma : ∀ k, 0 < globalColumnWordDensity alpha k :=
     columnWordDensity_pos hlambda heta
-  refine ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,htriple,?_,hrich⟩
+  refine ⟨X,T,L,W,B,P,hsys,hLfull,hW,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,htriple,?_,hrich⟩
   intro a as has
   exact column_word_representations_count B P T L _ hlambda heta htriple hrich a as has
 

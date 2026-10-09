@@ -36,6 +36,7 @@ theorem global_popular_column_representations {N : Nat} [NeZero N] [Fact N.Prime
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (B P : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
@@ -47,7 +48,7 @@ theorem global_popular_column_representations {N : Nat} [NeZero N] [Fact N.Prime
         ∀ (beta1 beta2 : Real), 0 ≤ beta1 → 0 ≤ beta2 →
           beta1*N ≤ (U.card : Real) → beta2*N ≤ (V.card : Real) →
           (beta1*beta2*eta)^2*(N : Real)^3 ≤ ((mixedExactColumnQuadruples U V T L r).card : Real)) := by
-  obtain ⟨X,T,L,W,B,hsys,hW,hT,hL,hzero,hBX,hB,heta,hr,hrich⟩ :=
+  obtain ⟨X,T,L,W,B,hsys,hLfull,hW,hT,hL,hzero,hBX,hB,heta,hr,hrich⟩ :=
     global_column_additive_richness A phi ha ha1 hA hphi hN
   have hb := globalColumnVertexDensity_pos ha ha1
   have hB' : globalColumnVertexDensity alpha*N ≤ (B.card : Real) := by
@@ -61,7 +62,7 @@ theorem global_popular_column_representations {N : Nat} [NeZero N] [Fact N.Prime
   have hlambda : 0 < globalColumnAnchorDensity alpha := by
     unfold globalColumnAnchorDensity
     positivity
-  exact ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,Finset.filter_subset _ _,hB',hP,
+  exact ⟨X,T,L,W,B,P,hsys,hLfull,hW,hT,hL,hzero,hBX,Finset.filter_subset _ _,hB',hP,
     heta,hr,hlambda,fun a ha => popular_column_triple_count B T L _ _ ha,hrich⟩
 
 end LeanProofs.GowersSzemeredi

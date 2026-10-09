@@ -58,6 +58,7 @@ theorem global_column_core_bihomomorphism {N : Nat} [NeZero N] [Fact N.Prime]
     ∃ (X P Gamma : Finset (ZMod N)) (T : ZMod N → Finset (ZMod N))
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) (1/(4*Real.pi))) (L x)) ∧
       (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧ P ⊆ X ∧ P.Nonempty ∧
       globalColumnZeroDensity alpha*N ≤ (P.card : Real) ∧
       (∀ x ∈ P, (Gamma ∪ T x).card ≤ globalColumnModelRank alpha +
@@ -69,13 +70,13 @@ theorem global_column_core_bihomomorphism {N : Nat} [NeZero N] [Fact N.Prime]
         (refinementCells (globalColumnZeroRadius alpha) : Real)^
           (globalColumnModelRank alpha+columnSpectrumCap (columnEightDensity alpha))*
           (columnBohrDomain P (fun x => Gamma ∪ T x) (globalColumnZeroRadius alpha)).card := by
-  obtain ⟨X,T,L,W,P,Gamma,hsys,hW,hT,hL,hzero,hPX,hPne,hP,hG,hquad⟩ :=
+  obtain ⟨X,T,L,W,P,Gamma,hsys,hLfull,hW,hT,hL,hzero,hPX,hPne,hP,hG,hquad⟩ :=
     global_zero_column_core A phi ha ha1 hA hphi hN
   have hST : ∀ x ∈ P, (Gamma ∪ T x).card ≤ globalColumnModelRank alpha+
       columnSpectrumCap (columnEightDensity alpha) := by
     intro x hx
     exact (Finset.card_union_le _ _).trans (Nat.add_le_add hG (hT x (hPX hx)))
-  refine ⟨X,P,Gamma,T,L,W,hsys,hW,hPX,hPne,hP,hST,fun x hx => hzero x (hPX hx),?_,?_⟩
+  refine ⟨X,P,Gamma,T,L,W,hsys,hLfull,hW,hPX,hPne,hP,hST,fun x hx => hzero x (hPX hx),?_,?_⟩
   · exact zero_columns_bihomomorphism P Gamma T L (globalColumnZeroRadius_le ha ha1)
       (fun x hx => hL x (hPX hx)) hquad
   · have hs := globalColumnZeroRadius_pos ha ha1
