@@ -842,6 +842,7 @@ import GowersSzemeredi.Proofs16DeepBoundSlices
 import GowersSzemeredi.Proofs05ExplicitSchmidtRecurrence
 import GowersSzemeredi.Proofs16MonomialControlAbsorption
 import GowersSzemeredi.Proofs16VarietyControlAbsorption
+import GowersSzemeredi.Proofs16VarietyPieceBudget
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
