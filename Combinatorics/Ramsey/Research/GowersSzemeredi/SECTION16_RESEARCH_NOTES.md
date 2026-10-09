@@ -5546,6 +5546,30 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
 ### J.5c The zero-core chain loses triple-exponentially (2026-10-09, kernel-checked)
 
+**Handoff summary.**
+1. *Defect.* The J.108–J.110 model packing and elimination guarantees a
+   density of at most `exp(-2^(13^d)/2)` and a radius of at most
+   `2^(-13^d)`, with `d = poly(1/alpha)`. So no chain built on the
+   zero core (J.110–J.140, `global_single_coherent_progression`) can meet
+   the polynomial contract of `theorem_16_2_at_three_of_eventually`.
+   This is kernel-checked in `Proofs16ZeroCoreGrowth`,
+   `Proofs16CoherentAnchorGrowth` and `Proofs16SingleProgressionGrowth`.
+2. *ℤ/N simplification.* A bounded image already forces vanishing:
+   `freiman_small_image_zero` gives zero on `B(T;ρ/K)` with no new
+   frequencies.
+3. *Replacement engine, formalized.* `abstract_bsg_core`
+   (`Proofs16AbstractBSGCore`) is Milićević's Theorem 4.1 for single
+   elements (`ℓ = 1`), with polynomial constants.
+   - **Hypotheses.** A finite abelian group without 2-torsion; quadruple
+     families `Q i` with symmetries (S1)–(S3) and weak transitivity;
+     doubling `K`; `c|X|^3` good pairs of pairs.
+   - **Conclusion.** A dense `B′` whose elements each lie in
+     `θ|X|²` additive `Q 16`-quadruples.
+   - **Use.** For column maps, take `Q i` = "alternating sum has at most
+     `K^i` values on the common domain at radius `ρ/2^i`".
+4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
+   Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
+
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)
 does not. `Proofs16ZeroCoreGrowth` bounds the density that
@@ -5847,6 +5871,21 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
       than `ε|X|` elements of `B` lie in fewer than `θ|X|²` additive
       `Q 16`-quadruples (`richCount`). Otherwise Claim 4.4 on those
       poor elements gives more quadruples than they carry.
+    - `Proofs16AbstractBSGCore` assembles all of this into
+      `abstract_bsg_core`, stated for a finite abelian group without
+      2-torsion.
+      - **Hypotheses.** Symmetries (S1) for `Q 1`, (S2) for `Q 4`, (S3)
+        for all levels; weak transitivity with constant `c′`; doubling
+        `|X−X| ≤ K|X|`; `c|X|^3` good pairs of pairs; and `c|X| ≥ 4`.
+      - **Conclusion.** Sets `B′ ⊆ B ⊆ A` with `|B′| ≥ ε|X|`, in which
+        every element lies in at least `θ|X|²` additive
+        `Q 16`-quadruples with the rest in `B`.
+      - **Constants.** `δ = c/2K`, `δ₂ = 3cδ/64`, `η = δ₂⁵/2^14`,
+        `ε = 3δ₂/16`, `κ = (ε²η)²/K⁴` (`absBsgDelta`, …,
+        `absBsgKappa`), with `θ < κ/2`. All are polynomial in `c/K`.
+      - `exists_dense_rich_walk_set` and `walkSet_card_eq_fourWalks`
+        connect J.102's four-walk set on the subtype of `X` to
+        `walkSet`.
     - Still needed for Theorem 4.1: the bridging statement
       (`|Z_ℓ(a)| ≥ (c/2K)^O(1)|X|^(3ℓ−1)`).
     - **Correction to the plan above (same day).** Theorem 4.1 does not
