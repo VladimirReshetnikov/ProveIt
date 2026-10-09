@@ -1,0 +1,1037 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=28mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm,mathrsfs}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Uniform high-moment asymptotics for weighted uniform series},pdfauthor={Research manuscript prepared for the ProveIt project},pdfsubject={All-orders uniform saddle expansions and Fabius moment asymptotics},pdfkeywords={asymptotics, Fabius function, saddlepoint, exponential tilting, weighted uniforms}}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Uniform high-moment asymptotics}
+\fancyhead[R]{\small ProveIt research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Cj}{\mathscr C}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Lah}{\mathcal H}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Rea}{Re}
+\title{\textbf{Uniform high-moment asymptotics\\for weighted uniform series}\\[4mm]
+\large All-orders saddle expansions, sharp geometric error rates,\\and the critical failure of Laplace equivalence}
+\author{Research manuscript prepared for the ProveIt project}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $X=\sum_j a_jU_j$, where the $U_j$ are independent uniform random variables on $[0,1]$, the weights are positive, and $\sum_j a_j=1$. We develop asymptotic expansions of $M_n=\E X^n$ whose constants are uniform over all finite and countable weight arrays, including arrays depending arbitrarily on $n$. Exponential tilting at a uniquely defined parameter $t_n\in(n,2n)$ gives a saddle carrier $\A_n$. A gamma-kernel Fourier identity supplies smoothing even when the tilted sum has no growing number of effective summands. For each fixed $J$, we prove
+\[
+ \frac{M_n}{\A_n}=1+\sum_{j=1}^{J}\frac{\Cj_j}{n^j}
+       +O_J\!\left(\frac{\mu_n^*}{n^{J+2}}\right),
+\]
+where $\mu_n^*=t_n-n\le n$ and the coefficients are explicit rational functions of normalized tilted cumulants. For geometric weights $(1-q)q^j$ at fixed $q$, the uncorrected carrier has a sharp relative error asymptotic to $\log n/[12\log(1/q)n^2]$. The first correction improves the relative remainder to $O_q(n^{-3})$; a second correction gives a sharp $\log n/n^4$ remainder. These estimates transfer directly to the dyadic Fabius values. At the original tilt $n$, a separate result gives the global bound
+\[
+ \left|\frac{M_n}{L(n)}-\exp\!\left(-\frac{\mu_n^2}{2n}\right)\right|
+ \le \frac{15}{\sqrt n}.
+\]
+Consequently Laplace equivalence holds exactly when $\mu_n=o(\sqrt n)$. A first correction in the critical window proves that the uniform $n^{-1/2}$ order cannot be improved. Full proofs, coefficient generation, exact rational tests, and reproducible numerical comparisons are included.
+\end{abstract}
+\noindent\textbf{Status.} The analytic arguments below are intended as proofs, not conjectural derivations. They have not been independently refereed or formalized in Lean. The finite tests check identities and numerical behavior, not the asymptotic quantifiers. The uniform-array theorem and its specialized consequences are the contributions developed here; literature priority and the label ``breakthrough'' are not asserted.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research setting and the contribution}
+\label{sec:setting}
+The immediate starting point is the Fabius-function development in ProveIt. Its modules \texttt{EndpointLaplaceComparison.lean} and \texttt{LaplaceMomentBounds.lean} already contain endpoint-to-Laplace comparison, the normalized second-moment correction, and explicit quantitative estimates \cite{proveitendpoint,proveitbounds}. Thus neither exponential tilting nor the first Taylor correction should be presented as new. The aim here is to change the normalization, prove uniformity over an entire class of processes, and establish sharper error orders with explicit coefficients.
+
+The other requested repository, \texttt{openai/math}, motivates the emphasis on asymptotic improvements and proof artifacts. Its README explicitly distinguishes stages of verification \cite{openaimath}. No theorem from that collection is an assumption in this manuscript. In particular, this work does not depend on any of its announced resolutions of major conjectures.
+
+Saddlepoint approximation is classical \cite{daniels1954}. Uniform and endpoint-sensitive versions have a substantial literature \cite{jensen1988,jinrobinson1999}. The point of the present argument is a specific automatically satisfied set of hypotheses: arbitrary normalized uniform weights, no lower bound on any individual weight, no fixed dimension, no non-lattice hypothesis, and no requirement that the tilted variance tend to infinity. A gamma kernel supplies the large smoothing parameter. The coefficients and remainder estimates are proved directly rather than imported from an unspecified saddlepoint theorem.
+
+\subsection{The process and two different tilts}
+Let $(a_j)$ be a finite or countable sequence of positive real numbers satisfying $\sum_j a_j=1$, and let $(U_j)$ be independent $\operatorname{Unif}[0,1]$ random variables. Set
+\begin{equation}\label{eq:model}
+ X=\sum_j a_jU_j,\qquad M_n=\E(1-X)^n=\E X^n,\qquad
+ L(t)=\E e^{-tX},\quad t>0.
+\end{equation}
+The series converges pointwise absolutely, and $0\le X\le1$. The moment equality follows from reflection of every $U_j$.
+Under the tilted probability measure
+\begin{equation}\label{eq:tilt}
+ \dd\Pp_t=\frac{e^{-tX}}{L(t)}\dd\Pp,
+ \qquad Y_t=tX,
+\end{equation}
+write
+\begin{equation}\label{eq:cumulants}
+ \mu(t)=\E_tY_t,\qquad v(t)=\Var_tY_t,
+ \qquad \kappa_r(t)=\operatorname{cum}_r(Y_t)\quad(r\ge2).
+\end{equation}
+Thus $\kappa_2=v$. Higher cumulants are unchanged by centering.
+
+There are two scales in the article, and they must not be confused. At the \emph{original tilt},
+\[
+ \mu_n=\mu(n),\qquad v_n=v(n).
+\]
+At the \emph{self-consistent saddle}, $t_n-\mu(t_n)=n$, we use
+\[
+ \mu_n^*=\mu(t_n)=t_n-n,\quad v_n^*=v(t_n),\quad
+ \kappa_{r,n}^*=\kappa_r(t_n).
+\]
+The superscript is omitted locally only when the tilt has been specified.
+
+\subsection{The principal estimates at a glance}
+For geometric weights, $q\in(0,1)$ is fixed in the first four lines below. The two bottom lines allow arbitrary weight arrays depending on $n$.
+\begin{center}
+\small
+\begin{tabular}{p{0.40\textwidth}p{0.48\textwidth}}
+\toprule
+Approximation & Proved relative error or transition \\
+\midrule
+$L_q(n)$ & $-\dfrac{(\log n)^2}{2\log(1/q)^2n}(1+o_q(1))$ \\[2mm]
+Saddle carrier $\A_n$ & $\dfrac{\log n}{12\log(1/q)n^2}(1+o_q(1))$ \\[2mm]
+$\A_n(1+\Delta_n)$ & $O_q(n^{-3})$ \\[1mm]
+$\A_n(1+\Cj_1/n+\Cj_2/n^2)$ & Sharp order $\log n/n^4$ \\[1mm]
+$\A_n(1+\Delta_n)$, arbitrary arrays & $O(\mu_n^*/n^3)\subseteq O(n^{-2})$ \\[1mm]
+$M_n/L(n)$, arbitrary arrays & $e^{-\mu_n^2/(2n)}+O(n^{-1/2})$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Here ``relative error'' means exact quantity divided by the stated approximation, minus one. The full theorem gives every fixed correction order. These comparisons concern different, explicitly specified normalizers; they are not a claim that one existing Lean theorem has already been replaced.
+
+\section{Uniform estimates for the tilted summands}
+\label{sec:summands}
+Define, for $y>0$,
+\begin{equation}\label{eq:ellhv}
+ \ell(y)=\frac{1-e^{-y}}{y},\qquad
+ h(y)=1-\frac{y}{e^y-1},\qquad
+ w(y)=1-\frac{y^2e^y}{(e^y-1)^2}.
+\end{equation}
+All have their continuous values at zero. Independence gives
+\begin{equation}\label{eq:product}
+ L(t)=\prod_j\ell(ta_j),\qquad
+ \mu(t)=\sum_jh(ta_j),\qquad v(t)=\sum_jw(ta_j).
+\end{equation}
+Under $\Pp_t$, the variables $Z_j=ta_jU_j$ remain independent, each with density
+\begin{equation}\label{eq:truncexp}
+ \frac{e^{-z}}{1-e^{-y}}\boldsymbol1_{[0,y]}(z),\qquad y=ta_j.
+\end{equation}
+The following elementary estimates drive both the uniformity and the coefficient bounds.
+
+\begin{lemma}[One-summand bounds]\label{lem:single}
+For the variable $Z_y$ in \eqref{eq:truncexp},
+\[
+ \E Z_y=h(y),\quad \Var Z_y=w(y),\quad
+ 0<w(y)\le h(y)\le \min(1,y/2).
+\]
+For each integer $r\ge1$,
+\begin{equation}\label{eq:rawsingle}
+ \E Z_y^r\le r!h(y).
+\end{equation}
+There is a holomorphic logarithm of $\E e^{zZ_y}$ on $|z|\le1/4$, and the centered logarithm
+\[
+ \lambda_y(z)=\log\E e^{zZ_y}-h(y)z
+\]
+satisfies $|\lambda_y(z)|\le3h(y)/4$ there. Consequently, for $r\ge2$,
+\begin{equation}\label{eq:cauchycumulant}
+ \frac{|\operatorname{cum}_r(Z_y)|}{r!}
+ \le \frac34\,4^rh(y).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Integration and differentiation give the displayed formulas for mean and variance. Positivity of the variance is immediate from the nondegenerate density. The inequality $w\le h$ is equivalent to
+\[
+ \frac{ye^y}{e^y-1}\ge1,
+\]
+which follows from $y\ge1-e^{-y}$. The mean is at most $1$ by its formula. Pairing $z$ and $y-z$ in the integral of $(z-y/2)e^{-z}$ proves $h(y)\le y/2$.
+Integration by parts gives, for $r\ge1$,
+\[
+ \E Z_y^r=r\E Z_y^{r-1}-\frac{y^r}{e^y-1}.
+\]
+Starting at $r=1$ and iterating the upper bound proves \eqref{eq:rawsingle}.
+For $|z|\le1/4$ the power series and \eqref{eq:rawsingle} give
+\[
+ |\E e^{zZ_y}-1|\le h(y)\frac{|z|}{1-|z|}\le\frac{h(y)}3\le\frac13.
+\]
+The principal logarithm is therefore holomorphic, with modulus at most
+$(h/3)/(1-1/3)=h/2$. Subtracting $hz$ gives the $3h/4$ bound. Cauchy's coefficient estimate proves \eqref{eq:cauchycumulant}. One may apply Cauchy's formula on smaller circles and pass to radius $1/4$.
+\end{proof}
+
+\begin{lemma}[Array bounds and moment polynomials]\label{lem:array}
+For every normalized array and $t>0$,
+\begin{equation}\label{eq:arraybounds}
+ 0<v(t)\le\mu(t)\le t/2,\qquad
+ |\kappa_r(t)|\le K_r\mu(t),\quad K_r=\tfrac34r!4^r\ (r\ge2).
+\end{equation}
+The centered log-MGF $\lambda_t(z)=\log\E_t e^{z(Y_t-\mu(t))}$ is holomorphic in $|z|<1/4$ and has the corresponding uniform Taylor remainder on $|z|\le1/8$.
+Moreover, for $r\ge1$,
+\begin{equation}\label{eq:lah}
+ \E_tY_t^r\le\Lah_r(\mu(t)),\qquad
+ \Lah_r(u)=\sum_{k=1}^{r}\frac{r!}{k!}\binom{r-1}{k-1}u^k.
+\end{equation}
+If $t\ge1$, then $\mu(t)\ge1/(2e)$.
+\end{lemma}
+\begin{proof}
+Sum \cref{lem:single}; uniform convergence of the centered logarithms follows from $\sum_j h(ta_j)\le t/2$. The usual geometric bound on the tail of a power series gives, for every fixed $R$, a bound of the form
+\[
+ \left|\lambda_t(z)-\sum_{r=2}^{R}\frac{\kappa_r(t)z^r}{r!}\right|
+ \le K'_R\mu(t)|z|^{R+1},\qquad |z|\le1/8.
+\]
+For \eqref{eq:lah}, use a \emph{coefficientwise} inequality, not merely a pointwise MGF inequality:
+\[
+ \E e^{zZ_j}\preccurlyeq1+h(ta_j)\frac{z}{1-z}
+ \preccurlyeq\exp\!\left(h(ta_j)\frac{z}{1-z}\right).
+\]
+Multiplication preserves coefficientwise inequalities with nonnegative coefficients. Expanding $\exp(uz/(1-z))$ yields \eqref{eq:lah}. Finite partial sums increase to $Y_t$, so monotone convergence passes the moment bound to a countable array.
+
+Finally, $h$ is increasing, and for $0<y\le1$ its density formula gives
+$h(y)\ge e^{-1}y/2$. Hence $h(y)\ge\min(y,1)/(2e)$ for all $y>0$.
+Since $\sum_jta_j=t\ge1$, one has $\sum_j\min(ta_j,1)\ge1$.
+\end{proof}
+
+\begin{remark}
+The cumulant constants are deliberately simple rather than optimal. Their role is to make the class of tilted arrays uniformly analytic in a fixed disk. No assumption that $v(t)$ is large has been made.
+\end{remark}
+
+\section{The self-consistent saddle and the smoothing identity}
+\label{sec:saddle}
+\begin{proposition}[Existence, uniqueness, and conditioning]\label{prop:root}
+For every $n\ge1$, there is a unique $t_n\in(n,2n)$ satisfying
+\begin{equation}\label{eq:root}
+ t_n-\mu(t_n)=n.
+\end{equation}
+For $f(t)=t-\mu(t)-n$, one has $f'(t)\ge1/2$. In particular, any positive trial value $s$ has root error at most $2|f(s)|$.
+\end{proposition}
+\begin{proof}
+Differentiation under the bounded integral gives
+\[
+ \mu'(t)=\E_tX-t\Var_tX=\frac{\mu(t)-v(t)}{t}.
+\]
+Thus $f'(t)=1-\mu(t)/t+v(t)/t\ge1/2$.
+At $n$ the function is negative. At $2n$ it is positive because every nonconstant tilted uniform has mean strictly less than the midpoint. Continuity, strict increase, and the mean-value theorem give all assertions.
+\end{proof}
+
+At this saddle, put $T=Y_{t_n}-\mu_n^*$, so that $\E_{t_n}T=0$ and $T\le n$. Define
+\begin{equation}\label{eq:gn}
+ g_n(z)=
+ \begin{cases}
+ e^z(1-z/n)^n,&z\le n,\\
+ 0,&z>n.
+ \end{cases}
+\end{equation}
+The formula is also used for negative $z$, where $0<g_n(z)\le1$.
+
+\begin{proposition}[Exact centering identity]\label{prop:center}
+With $t=t_n$ and $\mu=\mu_n^*$,
+\begin{equation}\label{eq:exactcenter}
+ M_n=L(t)e^{\mu}(n/t)^n\E_tg_n(T).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The change of measure gives $M_n=L(t)\E_t[e^{tX}(1-X)^n]$.
+Since $t=n+\mu$ and $tX=\mu+T$,
+\[
+ 1-X=\frac{n-T}{t}.
+\]
+Substitution proves the identity, including the endpoint by continuity.
+\end{proof}
+
+\begin{proposition}[Gamma-kernel Fourier representation]\label{prop:fourier}
+Let $T$ be any real random variable and $n\ge1$. Then
+\begin{equation}\label{eq:gammafourier}
+ \E g_n(T)=\frac{\Gamma(n+1)e^n}{2\pi n^n}
+ \int_{\mathbb R}e^{-\ii un}(1-\ii u)^{-n-1}
+          \E e^{\ii uT}\dd u.
+\end{equation}
+The integral is absolutely convergent. For every fixed $\varepsilon>0$, its unnormalized tail over $|u|\ge\varepsilon$ is $O_\varepsilon(e^{-c_\varepsilon n})$ as $n\to\infty$, uniformly in the law of $T$.
+\end{proposition}
+\begin{proof}
+The Fourier transform of $g_n$, using the convention $\widehat g(u)=\int g(z)e^{-\ii uz}\dd z$, is obtained by $s=n-z$:
+\[
+ \widehat g_n(u)=\frac{e^n}{n^n}e^{-\ii un}
+      \int_0^\infty e^{-(1-\ii u)s}s^n\dd s
+ =\frac{\Gamma(n+1)e^n}{n^n}e^{-\ii un}(1-\ii u)^{-n-1}.
+\]
+It is integrable for $n\ge1$. Fourier inversion and Fubini yield \eqref{eq:gammafourier}. Because $|\E e^{\ii uT}|\le1$, the integrand modulus is bounded by $(1+u^2)^{-(n+1)/2}$. Splitting into a bounded interval away from zero and $|u|\ge\max(1,\varepsilon)$ gives exponential decay; one may also bound a fixed fraction of the exponent by its value at $\varepsilon$ and integrate the remaining factor.
+\end{proof}
+
+\begin{remark}[Why an effective-dimension hypothesis is unnecessary]
+If the tilted sum has only one substantial summand, a central limit theorem for that sum is not available. Nevertheless \eqref{eq:gammafourier} has a factor with frequency width $n^{-1/2}$ and exponentially small tails. This is the source of uniformity. We do not assert that the tilted sum itself is approximately normal in total variation.
+\end{remark}
+
+\section{An all-orders expansion with array-uniform remainders}
+\label{sec:allorders}
+\subsection{The coefficient algorithm}
+At the saddle set
+\begin{equation}\label{eq:parameters}
+ \rho=\frac{v_n^*}{n},\qquad
+ \eta_r=\frac{\kappa_{r,n}^*}{n},\qquad
+ b_r=(r-1)!+\eta_r\quad(r\ge3).
+\end{equation}
+Here $0\le\rho\le1$ and $|\eta_r|\le K_r$. For a formal variable $z$, define the Gaussian contraction
+\begin{equation}\label{eq:contraction}
+ \mathcal G_\rho(z^{2m})=\frac{(-1)^m(2m-1)!!}{(1+\rho)^m},
+ \qquad \mathcal G_\rho(z^{2m+1})=0,
+\end{equation}
+with $(-1)!!=1$. Introduce
+\begin{equation}\label{eq:Ep}
+ E_p(z)=\frac{z^p}{p}+\frac{b_{p+2}z^{p+2}}{(p+2)!}+s_p,
+ \quad
+ s_p=\begin{cases}
+ \dfrac{B_{2k}}{2k(2k-1)},&p=4k-2,\ k\ge1,\\
+ 0,&\text{otherwise},
+ \end{cases}
+\end{equation}
+where $B_{2k}$ are Bernoulli numbers. The finite recursion
+\begin{equation}\label{eq:Qrec}
+ Q_0(z)=1,\qquad
+ Q_m(z)=\frac1m\sum_{p=1}^{m}pE_p(z)Q_{m-p}(z)
+\end{equation}
+defines the polynomials needed for each order. Finally set
+\begin{equation}\label{eq:Cdef}
+ \Cj_j(\rho,\eta_3,\ldots,\eta_{2j+2})=\mathcal G_\rho(Q_{2j}).
+\end{equation}
+Only finitely many rational operations are involved at each order. The first coefficient is
+\begin{equation}\label{eq:C1}
+ \Cj_1=\frac1{12}-\frac1{1+\rho}
+ +\frac{b_3/2+b_4/8}{(1+\rho)^2}
+ -\frac{5b_3^2}{24(1+\rho)^3}.
+\end{equation}
+The repository package contains machine-readable exact expressions through $\Cj_3$ and the generator for further fixed orders.
+
+\subsection{The main theorem}
+Define the positive saddle carrier
+\begin{equation}\label{eq:carrier}
+ \A_n=L(t_n)e^{\mu_n^*}\left(\frac n{t_n}\right)^n
+                \left(1+\frac{v_n^*}{n}\right)^{-1/2}.
+\end{equation}
+
+\begin{theorem}[Uniform all-orders high-moment expansion]\label{thm:main}
+For every fixed integer $J\ge0$, there are constants $B_J,N_J>0$, independent of the number and values of the weights, such that for every $n\ge N_J$ and every normalized finite or countable array,
+\begin{equation}\label{eq:main}
+ \left|\frac{M_n}{\A_n}-\sum_{j=0}^{J}\frac{\Cj_j}{n^j}\right|
+ \le B_J\frac{\mu_n^*}{n^{J+2}}.
+\end{equation}
+Moreover $\Cj_0=1$, and for $j\ge1$,
+\begin{equation}\label{eq:sparsecoeff}
+ |\Cj_j|\le B'_j\frac{\mu_n^*}{n}.
+\end{equation}
+The same constants apply to triangular arrays whose weights change arbitrarily with $n$.
+\end{theorem}
+
+\begin{proof}
+We first establish the conventional expansion with remainder $O_J(n^{-J-1})$, uniformly in the array. We then use cancellation of the deterministic case to improve it by one power of $n$, weighted by $\mu_n^*$.
+
+\paragraph{Local form of the integral.}
+In \eqref{eq:gammafourier}, center $T$ and use its log-MGF. For $|u|\le1/8$ the exponent becomes
+\begin{align}\label{eq:localexponent}
+ &-\ii un-(n+1)\log(1-\ii u)+\lambda_{t_n}(\ii u)\notag\\
+ &\qquad=-\log(1-\ii u)-\frac{n+v_n^*}{2}u^2
+   +\sum_{r\ge3}\frac{((r-1)!n+\kappa_{r,n}^*)(\ii u)^r}{r!}.
+\end{align}
+Put $u=s/\sqrt n$ and $\epsilon=n^{-1/2}$. The quadratic part is
+$-(1+\rho)s^2/2$. The remaining exponential, apart from its Gaussian factor, has the formal expansion
+\begin{equation}\label{eq:formalexp}
+ \frac1{1-\epsilon z}
+ \exp\!\left(\sum_{r\ge3}\frac{b_rz^r\epsilon^{r-2}}{r!}\right),
+ \qquad z=\ii s.
+\end{equation}
+The prefactor from \eqref{eq:gammafourier} is the standard Stirling factor
+\[
+ S(n)=\frac{\Gamma(n+1)e^n}{\sqrt{2\pi n}\,n^n},
+ \qquad
+ \log S(n)\sim\sum_{k\ge1}\frac{B_{2k}}{2k(2k-1)n^{2k-1}}.
+\]
+The positive-real Stirling expansion has a remainder bounded by the first omitted term in its logarithmic form; see \cite[\S5.11]{dlmf}. Including this factor in \eqref{eq:formalexp} gives exactly \eqref{eq:Ep}--\eqref{eq:Qrec}.
+
+\paragraph{Remainder control.}
+Fix $J$, and choose a small positive $\alpha<1/(12J+24)$. On $|s|\le n^\alpha$, the Taylor remainder of the centered log-MGF after degree $2J+3$, multiplied by its scale, is bounded by
+\[
+ C_J n^{-J-1}|s|^{2J+4},
+\]
+by \cref{lem:array} and $\mu_n^*\le n$. The corresponding logarithmic and geometric remainders for the gamma factor and $(1-\ii u)^{-1}$ have the same form with a fixed polynomial in $|s|$. The nonquadratic exponent is $O(n^{-1/2}|s|^3)$ and is uniformly small on this window. Taylor's theorem for its exponential, or the finite recursion for exponential series, therefore bounds the error after degree $2J+1$ in $\epsilon$ by
+\[
+ C_J n^{-J-1}(1+|s|)^{D_J}e^{-s^2/2}
+\]
+after restoring the Gaussian; increasing $N_J$ if necessary suffices. The constants use only the fixed-radius bounds in \cref{lem:array}, not the weights.
+
+For $n^\alpha\le|s|\le\sqrt n/8$, use the original integrand rather than its Taylor expansion. Its modulus is at most
+\[
+ (1+s^2/n)^{-(n+1)/2}\le e^{-c s^2}
+\]
+with an absolute $c>0$. Its integral is smaller than every fixed power of $n^{-1}$. The remaining frequencies are exponentially small by \cref{prop:fourier}. The tails of the integrated coefficient polynomials are likewise negligible. Thus termwise integration is justified with a uniform $O_J(n^{-J-1})$ error. Odd powers integrate to zero by symmetry, while the normalized even Gaussian integrals are exactly \eqref{eq:contraction}. We obtain
+\begin{equation}\label{eq:standardexp}
+ \frac{M_n}{\A_n}=\sum_{j=0}^{J}\frac{\Cj_j}{n^j}+O_J(n^{-J-1}).
+\end{equation}
+This argument is valid at every fixed order, not just the displayed $J$.
+
+\paragraph{Cancellation at zero cumulants.}
+The same kernel computation may be applied to the deterministic variable $T=0$. Then $\E g_n(T)=1$ exactly, the Gaussian carrier is $1$, and all normalized cumulants vanish. Uniqueness of an asymptotic expansion in powers of $n^{-1}$ implies
+\begin{equation}\label{eq:zero}
+ \Cj_j(0,0,\ldots,0)=0\quad(j\ge1).
+\end{equation}
+Every $\Cj_j$ is a polynomial in the $\eta_r$ with rational functions of $\rho$ as coefficients; its only denominators are powers of $1+\rho$. The parameters lie in a fixed compact box, with $\rho\in[0,1]$. Bounded derivatives along the segment from the origin give
+\[
+ |\Cj_j|\le C_j\left(\rho+\sum_{r=3}^{2j+2}|\eta_r|\right)
+ \le C'_j\frac{\mu_n^*}{n},
+\]
+which proves \eqref{eq:sparsecoeff}.
+
+\paragraph{One-extra-order argument.}
+Apply \eqref{eq:standardexp} through order $J+1$, not merely $J$. After the terms through $J$, its next term is
+$\Cj_{J+1}/n^{J+1}=O_J(\mu_n^*/n^{J+2})$; the residual is $O_J(n^{-J-2})$.
+Because \cref{lem:array} gives $\mu_n^*\ge1/(2e)$, the latter is absorbed into the former. This proves \eqref{eq:main}.
+\end{proof}
+
+\begin{remark}[Meaning of ``all orders'']
+The order $J$ is fixed before $n$ tends to infinity. No convergence of the infinite asymptotic series, uniformity as $J\to\infty$, optimal truncation theorem, or factorial estimate on $B_J$ is claimed. Those are distinct questions.
+\end{remark}
+
+\section{Explicit correction and sharp geometric rates}
+\label{sec:geometric}
+\subsection{A uniform two-term formula}
+At the saddle abbreviate $v=v_n^*$, $k_3=\kappa_{3,n}^*$, $k_4=\kappa_{4,n}^*$, and $d=n+v$. Rewriting \eqref{eq:C1} gives the correction
+\begin{equation}\label{eq:Delta}
+ \boxed{\displaystyle
+ \Delta_n=\frac{k_4}{8d^2}-\frac{5k_3^2}{24d^3}
+ -\frac{k_3(2n-3v)}{6d^3}
+ -\frac{3v^2}{4nd^2}+\frac{5v^3}{6nd^3}.}
+\end{equation}
+The cancellation-resistant form \eqref{eq:Delta} is useful when the cumulants are small relative to $n$.
+
+\begin{corollary}[Uniform corrected saddle]\label{cor:uniform}
+For arbitrary normalized arrays,
+\begin{align}
+ \frac{M_n}{\A_n}&=1+O(\mu_n^*/n^2),\label{eq:uncorrected}\\
+ \frac{M_n}{\A_n}&=1+\Delta_n+O(\mu_n^*/n^3).
+ \label{eq:corrected}
+\end{align}
+In particular, $\A_n(1+\Delta_n)$ has relative error $O(n^{-2})$, uniformly over all arrays. For sufficiently large $n$, its correction factor is positive uniformly.
+\end{corollary}
+\begin{proof}
+Use \cref{thm:main} with $J=0,1$. Since $\mu_n^*\le n$, one has $\Delta_n=O(n^{-1})$, which also justifies division by $1+\Delta_n$.
+\end{proof}
+
+\subsection{Geometric arrays and bounded boundary defects}
+Now set
+\begin{equation}\label{eq:geometric}
+ a_j=(1-q)q^j,\quad j\ge0,\qquad \delta=\log(1/q)>0.
+\end{equation}
+For a single truncated exponential, direct differentiation gives
+\begin{equation}\label{eq:singlecumulant}
+ c_r(y)=(r-1)!-y^r\sum_{k\ge1}k^{r-1}e^{-ky},\quad r\ge1.
+\end{equation}
+The formula includes $c_1=h$. At $y\to\infty$ the correction is exponentially small. At $y\to0$, $c_r(y)=O_r(y)$; this also follows from \cref{lem:single} for $r\ge2$.
+
+\begin{lemma}[Geometric cumulant profile]\label{lem:geocumulants}
+For every fixed $q\in(0,1)$ and fixed $r\ge1$,
+\begin{align}
+ \kappa_r(t)&=(r-1)!\frac{\log t}{\delta}+O_{q,r}(1),\label{eq:geokappa}\\
+ \kappa_r(t)-(r-1)!\mu(t)&=O_{q,r}(1),\label{eq:defect}
+\end{align}
+as $t\to\infty$, where $\kappa_1=\mu$. Consequently
+\begin{equation}\label{eq:georoot}
+ t_n=n+O_q(\log n),\qquad \mu_n^*=\frac{\log n}{\delta}+O_q(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $A=t(1-q)$, $m=\lfloor\log A/\delta\rfloor$, and $z=Aq^m\in[1,q^{-1})$. The $m$ summands with $j<m$ are exponentially close to $(r-1)!$; their total defect is bounded uniformly in $m$ because their arguments, viewed backwards, are $zq^{-1},zq^{-2},\ldots$. The remaining summands have arguments $z,zq,zq^2,\ldots$ and their absolute sum is bounded uniformly in $z\in[1,q^{-1}]$. Therefore $\kappa_r(t)=(r-1)!m+O_{q,r}(1)$. Subtract the case $r=1$ to obtain \eqref{eq:defect}. Finally, $n<t_n<2n$ and the saddle equation give \eqref{eq:georoot}.
+\end{proof}
+
+\begin{theorem}[Sharp fixed-ratio improvement]\label{thm:geosharp}
+For fixed $q\in(0,1)$,
+\begin{equation}\label{eq:sharpfirst}
+ \lim_{n\to\infty}\frac{n^2}{\log n}
+       \left(\frac{M_n}{\A_n}-1\right)=\frac1{12\delta}.
+\end{equation}
+The first corrected saddle has the stronger remainder
+\begin{equation}\label{eq:sharpsecond}
+ \frac{M_n}{\A_n}=1+\Delta_n+O_q(n^{-3}).
+\end{equation}
+More precisely, with the cumulants evaluated at $t_n$, define
+\begin{equation}\label{eq:D}
+ D_q(t_n)=-\frac{\kappa_4(t_n)}4+\frac{\kappa_5(t_n)}6
+                    -\frac{\kappa_6(t_n)}{48}.
+\end{equation}
+Then $D_q(t_n)=O_q(1)$ and
+\begin{equation}\label{eq:Dexp}
+ \frac{M_n}{\A_n}=1+\Delta_n+\frac{D_q(t_n)}{n^3}
+                    +O_q\!\left(\frac{(\log n)^2}{n^4}\right).
+\end{equation}
+If the full second coefficient is retained instead, the next remainder is sharp:
+\begin{equation}\label{eq:thirdsharp}
+ \lim_{n\to\infty}\frac{n^4}{\log n}
+ \left(\frac{M_n}{\A_n}-1-\frac{\Cj_1}{n}-\frac{\Cj_2}{n^2}\right)
+ =-\frac1{120\delta}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Substitute $v=\mu+O_q(1)$, $k_3=2\mu+O_q(1)$, $k_4=6\mu+O_q(1)$ into \eqref{eq:Delta}. Since $\mu=O_q(\log n)$,
+\[
+ \Delta_n=\frac1{n^2}\left(\frac{6\mu}{8}-\frac{2\mu}{3}\right)
+       +O_q(n^{-2})+O_q((\log n)^2n^{-3})
+ =\frac{\log n}{12\delta n^2}+O_q(n^{-2}).
+\]
+Together with \eqref{eq:corrected}, this proves \eqref{eq:sharpfirst}.
+
+For the remaining refinements, finite coefficient identities are needed. Directly from \eqref{eq:Qrec}--\eqref{eq:Cdef},
+\begin{equation}\label{eq:C2linear}
+ \Cj_2=-\frac{\eta_4}{4}+\frac{\eta_5}{6}-\frac{\eta_6}{48}
+       +O\!\left((|\rho|+|\eta_3|+\cdots+|\eta_6|)^2\right)
+\end{equation}
+near the origin. For clarity, the exact first derivatives there are
+\[
+ (\partial_\rho,\partial_{\eta_3},\partial_{\eta_4},
+       \partial_{\eta_5},\partial_{\eta_6})\Cj_2
+       =(0,0,-1/4,1/6,-1/48).
+\]
+The coefficient of the bulk $\mu$ in \eqref{eq:D} is
+$-6/4+24/6-120/48=0$. Therefore \eqref{eq:defect} makes $D_q$ bounded. Apply \cref{thm:main} through $J=2$ to \eqref{eq:C2linear}; its remainder is $O_q(\log n/n^4)$. This proves \eqref{eq:Dexp} and hence \eqref{eq:sharpsecond}.
+
+We give an independent explanation of the coefficient cancellation and of the next sharp constant. Let $T=G-r$, with $G\sim\operatorname{Gamma}(r,1)$, $r=n\rho>0$. A beta integral gives
+\begin{equation}\label{eq:gammacal}
+ \E g_n(T)=e^{-r}\frac{(n+r)^{n+r}\Gamma(n+1)}{n^n\Gamma(n+r+1)}
+     =\sqrt{\frac n{n+r}}\frac{S(n)}{S(n+r)}.
+\end{equation}
+Thus on the gamma parameter line $\eta_k=(k-1)!\rho$ the first coefficients are
+\begin{align}
+ \Cj_1^{\Gamma}(\rho)&=\frac{\rho}{12(1+\rho)},\notag\\
+ \Cj_2^{\Gamma}(\rho)&=\frac{\rho^2}{288(1+\rho)^2},\label{eq:gammacoeff}\\
+ \Cj_3^{\Gamma}(\rho)&=
+ -\frac{\rho(139\rho^2+432\rho+432)}{51840(1+\rho)^3}
+ =-\frac{\rho}{120}+O(\rho^2).\notag
+\end{align}
+The case $r=0$ is understood as a deterministic limit. These formulas are obtained either from the Stirling ratio in \eqref{eq:gammacal} or from the same finite recursion. At the actual geometric saddle, all parameters differ by $O_q(n^{-1})$ from the gamma line with $\rho_0=\mu_n^*/n$. Bounded first derivatives of $\Cj_3$ therefore show
+\[
+ \Cj_3=-\frac{\mu_n^*}{120n}+O_q(n^{-1})+O_q((\log n)^2n^{-2}).
+\]
+Use \cref{thm:main} through $J=3$ and \eqref{eq:georoot} to obtain \eqref{eq:thirdsharp}.
+\end{proof}
+
+\begin{remark}
+Equation \eqref{eq:thirdsharp} is an error statement relative to $\A_n$. Dividing instead by $\A_n(1+\Cj_1/n+\Cj_2/n^2)$ gives the same limit because that factor tends to one. The same observation applies to \eqref{eq:sharpsecond}.
+\end{remark}
+
+\section{The ordinary Laplace expansion and its exact range}
+\label{sec:laplace}
+The self-consistent saddle works across all arrays. It is nevertheless useful to know exactly when the simpler choice $t=n$ suffices.
+At that tilt let $Y=nX$ and $\mu=\mu_n$. The change of measure gives
+\begin{equation}\label{eq:originaltilt}
+ R_n:=\frac{M_n}{L(n)}=\E_n g_n(Y),\qquad 0\le Y\le n.
+\end{equation}
+
+\subsection{A universal all-orders transfer}
+Define polynomials by
+\begin{equation}\label{eq:Pgenerating}
+ \sum_{j\ge0}P_j(y)z^j
+ =\exp\!\left(-\sum_{r\ge1}\frac{y^{r+1}}{r+1}z^r\right).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:Prec}
+ P_0=1,\qquad
+ P_j(y)=-\frac1j\sum_{r=1}^j\frac{r}{r+1}y^{r+1}P_{j-r}(y).
+\end{equation}
+The first few are
+\input{data/laplace_coefficients.tex}
+
+\begin{theorem}[Moment-to-Laplace transfer with a global remainder]\label{thm:transfer}
+For every fixed $J\ge0$ there is a finite constant $C_J$ such that for every normalized array and $n\ge2$,
+\begin{equation}\label{eq:transfer}
+ \left|R_n-\sum_{j=0}^J n^{-j}\E_nP_j(Y)\right|
+ \le\frac{C_J}{n^{J+1}}
+       \left[\Lah_{J+2}(\mu_n)+\Lah_{2J+2}(\mu_n)\right].
+\end{equation}
+In particular, for fixed geometric $q$ the relative remainder after order $J$ is
+\begin{equation}\label{eq:transfergeometric}
+ O_{q,J}\!\left(\frac{(\log n)^{2J+2}}{n^{J+1}}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+It suffices to show the pointwise inequality
+\begin{equation}\label{eq:pointwiseP}
+ \left|g_n(y)-\sum_{j=0}^Jn^{-j}P_j(y)\right|
+ \le\frac{C_J}{n^{J+1}}(y^{J+2}+y^{2J+2}),\qquad 0\le y\le n.
+\end{equation}
+For $y\le n/2$, consider
+\[
+ B(s,y)=-\sum_{r\ge1}\frac{y^{r+1}s^r}{r+1},\qquad
+ 0\le s\le1/n.
+\]
+For $\ell\ge1$,
+\[
+ |\partial_s^\ell B(s,y)|
+ \le\ell!\,2^{\ell+1}y^{\ell+1}.
+\]
+This follows by differentiating the series and summing
+$\sum_{r\ge\ell}\binom r\ell(sy)^{r-\ell}=(1-sy)^{-\ell-1}$.
+Also $B(s,y)\le0$. The derivative of order $J+1$ of $e^{B(s,y)}$ is a finite Bell-polynomial combination of these derivatives; every monomial has a power of $y$ between $J+2$ and $2J+2$. Taylor's theorem in $s$ at zero, together with \eqref{eq:Pgenerating}, proves \eqref{eq:pointwiseP} on this interval.
+For $y\ge n/2$, use $0\le g_n(y)\le1$. Each $P_j$ has degrees between $j+1$ and $2j$ when $j\ge1$, and the right side of \eqref{eq:pointwiseP}, with a sufficiently large constant depending only on $J$, dominates both $1$ and all the terms $n^{-j}P_j(y)$. This proves the pointwise statement globally. Taking expectations and using \eqref{eq:lah} proves \eqref{eq:transfer}. The fixed-$q$ consequence follows from \cref{lem:geocumulants} at $t=n$.
+\end{proof}
+
+For example,
+\begin{align}\label{eq:firstlaplace}
+ R_n&=1-\frac{\mu_n^2+v_n}{2n}
+ +\frac{\E_nY^4/8-\E_nY^3/3}{n^2}
+ +O_q((\log n)^6n^{-3}).
+\end{align}
+The cumulant-to-moment recursion makes every coefficient computable from derivatives of the product. In particular, at fixed $q$,
+\begin{equation}\label{eq:laplacesharp}
+ \lim_{n\to\infty}\frac{n}{(\log n)^2}(R_n-1)
+       =-\frac1{2\delta^2}.
+\end{equation}
+This explains precisely the improvement obtained by moving from $L(n)$ to the self-consistent carrier.
+
+\subsection{A global Gaussian crossover theorem}
+The expansion \eqref{eq:transfer} ceases to be perturbative when $\mu_n$ is of order $\sqrt n$. A different approximation survives uniformly.
+
+\begin{lemma}[A variance-controlled smoothing bound]\label{lem:smoothing}
+Let $Y\ge0$ have mean $\mu>0$ and variance at most $\mu$. For $n\ge1$,
+\begin{equation}\label{eq:smoothing}
+ \left|\E e^{-Y^2/(2n)}-e^{-\mu^2/(2n)}\right|
+       \le\frac{10}{\sqrt n}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $H(x)=e^{-x^2/2}$. Its second derivative has absolute value at most $1$. If $\mu\le\sqrt n$, Taylor's theorem and cancellation of the first centered moment give a bound $\Var(Y)/(2n)\le1/(2\sqrt n)$.
+Suppose $x=\mu/\sqrt n\ge1$ and put $z=Y/\sqrt n$. For every $z\ge0$,
+\begin{equation}\label{eq:smoothingpointwise}
+ |H(z)-H(x)-H'(x)(z-x)|\le\frac{10}{x}(z-x)^2.
+\end{equation}
+Indeed, if $z\ge x/2$, the whole segment is above $x/2$ and
+\[
+ x\sup_{s\ge x/2}|H''(s)|\le
+ \sup_{s\ge0}2s(1+s^2)e^{-s^2/2}\le6.
+\]
+Taylor's theorem yields the stronger coefficient $3/x$. If $z<x/2$, put $d=|z-x|\ge x/2$. The remainder is at most $2+xe^{-x^2/2}d$. Since $x\ge1$ and $xe^{-x^2/2}\le1$, the first term is at most $8d^2/x$, and the second is at most $2d^2/x$. This proves \eqref{eq:smoothingpointwise}. Taking expectations gives
+$10\Var(Y)/(\mu\sqrt n)\le10/\sqrt n$.
+\end{proof}
+
+\begin{theorem}[Sharp uniform crossover]\label{thm:crossover}
+For every normalized array and every $n\ge2$,
+\begin{equation}\label{eq:crossover}
+ \boxed{\displaystyle
+ \left|\frac{M_n}{L(n)}-\exp\!\left(-\frac{\mu_n^2}{2n}\right)\right|
+       \le\frac{15}{\sqrt n}.}
+\end{equation}
+Consequently, for arbitrary triangular arrays,
+\begin{equation}\label{eq:criterion}
+ M_n\sim L(n)\quad\Longleftrightarrow\quad \mu_n=o(\sqrt n).
+\end{equation}
+More generally, if $\mu_n/\sqrt n\to c\in[0,\infty]$, then
+\begin{equation}\label{eq:limitc}
+ \frac{M_n}{L(n)}\longrightarrow e^{-c^2/2},
+\end{equation}
+with the limit interpreted as zero for $c=\infty$. The uniform order $n^{-1/2}$ in \eqref{eq:crossover} is optimal; this refers to the order, not the constant $15$.
+\end{theorem}
+\begin{proof}
+For $0\le y\le n/2$,
+\[
+ 0\le n[-\log(1-y/n)-y/n]-\frac{y^2}{2n}
+       \le\frac{2y^3}{3n^2}.
+\]
+Using $1-e^{-a}\le a$ gives
+\[
+ 0\le e^{-y^2/(2n)}-g_n(y)
+       \le\frac{2y^3}{3n^2}e^{-y^2/(2n)}.
+\]
+For $n/2\le y\le n$, the same inequality with coefficient $4$ holds because
+$4y^3/n^2\ge n/2\ge1$ and $0\le g_n(y)\le e^{-y^2/(2n)}$.
+Thus the absolute difference is at most
+\[
+ \frac4{\sqrt n}\sup_{s\ge0}s^3e^{-s^2/2}<\frac5{\sqrt n}.
+\]
+Apply \cref{lem:smoothing} to the tilted $Y=nX$, whose variance is at most its mean by \cref{lem:array}, and use \eqref{eq:originaltilt}. This proves \eqref{eq:crossover}. The equivalence and limits follow immediately; for the converse in \eqref{eq:criterion}, $e^{-\mu_n^2/(2n)}\to1$ forces $\mu_n^2/n\to0$. Sharpness is established in \cref{cor:criticalgeometric} below.
+\end{proof}
+
+\subsection{The first correction inside the critical window}
+\begin{theorem}[Critical-window correction]\label{thm:criticalcorrection}
+For every fixed $C>0$, uniformly over arrays satisfying $\mu_n\le C\sqrt n$,
+\begin{equation}\label{eq:criticalcorrection}
+ \frac{M_n}{L(n)}=e^{-\mu_n^2/(2n)}
+ \left[1+\frac{v_n}{2n}\left(\frac{\mu_n^2}{n}-1\right)
+          -\frac{\mu_n^3}{3n^2}+O_C(n^{-1})\right].
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $f(y)=e^{-y^2/(2n)}$. A global kernel comparison is
+\begin{equation}\label{eq:kernelcritical}
+ \left|g_n(y)-f(y)\left(1-\frac{y^3}{3n^2}\right)\right|
+ \le32\left(\frac{y^4}{n^3}+\frac{y^6}{n^4}\right),\quad 0\le y\le n.
+\end{equation}
+For $y\le n/2$, the logarithmic terms of degree at least four are at most $y^4/(2n^3)$, and $|e^{-a}-(1-a)|\le a^2/2$ for $a\ge0$. These yield \eqref{eq:kernelcritical} with smaller constants. For $y\ge n/2$, bound the left side by $2+y^3/(3n^2)$ and compare powers; the stated constant works for all $n\ge2$.
+By \eqref{eq:lah}, its expected right side is $O_C(n^{-1})$.
+
+Taylor-expand $f(Y)$ about $\mu=\mu_n$ through order three. The expected cubic term is $\kappa_3(n)f'''(\mu)/6=O_C(n^{-1})$, since $\kappa_3=O(\mu)$ and $\sup|f'''|=O(n^{-3/2})$. The fourth-order remainder is bounded by
+\[
+ O(n^{-2})\E(Y-\mu)^4=O(n^{-2})(\kappa_4+3v_n^2)=O_C(n^{-1}).
+\]
+Consequently $\E f(Y)=f(\mu)+v_nf''(\mu)/2+O_C(n^{-1})$.
+For $H_n(y)=y^3f(y)$, one has $\sup|H_n''|=O(\sqrt n)$, so
+\[
+ \E H_n(Y)=H_n(\mu)+O(v_n\sqrt n)=H_n(\mu)+O_C(n).
+\]
+Insert these two estimates into \eqref{eq:kernelcritical}, and use
+$f''(\mu)=n^{-1}(\mu^2/n-1)f(\mu)$. Finally $f(\mu)\ge e^{-C^2/2}$, so the error can be placed inside the bracket.
+\end{proof}
+
+\section{Locating the critical geometric window}
+\label{sec:mesh}
+For $q=e^{-\delta}$ and $A=n(1-q)$, both the mean and variance can be located without summing an infinite series.
+
+\begin{proposition}[Two explicit mesh brackets]\label{prop:mesh}
+Put
+\[
+ H(A)=\log\frac{A}{1-e^{-A}}.
+\]
+Then
+\begin{align}
+ 0&\le\mu_n-\frac{H(A)}{\delta}\le h(A),\label{eq:meshmu}\\
+ 0&\le v_n-\frac{H(A)-h(A)}{\delta}\le w(A).
+ \label{eq:meshv}
+\end{align}
+The bounds hold for every $n>0$ and $q\in(0,1)$, not only asymptotically.
+\end{proposition}
+\begin{proof}
+Both $h$ and $w$ are increasing. For $h$ this follows by differentiating: the numerator controlling $h'$ is $(y-1)e^y+1$, which starts at zero and has derivative $ye^y>0$. For $w$, write
+\[
+ w(y)=1-\left(\frac{y}{2\sinh(y/2)}\right)^2
+\]
+and use $\tanh u<u$ for $u>0$.
+For a nonnegative decreasing function $g$, the left Riemann sum has the bounds
+\[
+ 0\le\sum_{j\ge0}g(j\delta)-\delta^{-1}\int_0^\infty g(s)\dd s\le g(0).
+\]
+Apply this to $h(Ae^{-s})$ and $w(Ae^{-s})$. Direct differentiation gives
+\[
+ \int_0^A\frac{h(y)}y\dd y=H(A),\qquad
+ w(y)=h(y)-yh'(y),
+\]
+so that $\int_0^Aw(y)\dd y/y=H(A)-h(A)$. The brackets follow.
+\end{proof}
+
+\begin{corollary}[An explicit critical family and optimal rate]\label{cor:criticalgeometric}
+Fix $\alpha>0$ and choose
+\begin{equation}\label{eq:qcritical}
+ q_n=\exp\!\left(-\alpha\frac{\log n}{\sqrt n}\right),\qquad
+ c=\frac1{2\alpha}.
+\end{equation}
+Then
+\begin{equation}\label{eq:criticalparameters}
+ \frac{\mu_n}{\sqrt n}\to c,\qquad \frac{v_n}{\sqrt n}\to c,
+ \qquad \frac{M_n(q_n)}{L_{q_n}(n)}\to e^{-1/(8\alpha^2)}.
+\end{equation}
+More precisely,
+\begin{equation}\label{eq:criticalconstant}
+ \lim_{n\to\infty}\sqrt n\left[
+ e^{\mu_n^2/(2n)}\frac{M_n(q_n)}{L_{q_n}(n)}-1\right]
+       =\frac{c^3}{6}-\frac c2.
+\end{equation}
+For example, $\alpha=1/2$ gives $c=1$ and a nonzero limiting coefficient $-1/3$. Hence no uniform $o(n^{-1/2})$ error can replace \eqref{eq:crossover}.
+\end{corollary}
+\begin{proof}
+Here $\delta_n=\alpha\log n/\sqrt n\to0$ and
+\[
+ A=n(1-e^{-\delta_n})\sim\alpha\sqrt n\log n,
+ \qquad \log A=\tfrac12\log n+\log\log n+\log\alpha+o(1).
+\]
+Use \eqref{eq:meshmu}--\eqref{eq:meshv}, $H(A)=\log A+O(e^{-A})$, and $h(A)\to1$ to prove the two parameter limits. The limit of the ratio follows from \cref{thm:crossover}.
+In \eqref{eq:criticalcorrection}, multiply the correction by $\sqrt n$ and pass to the limit:
+\[
+ \frac c2(c^2-1)-\frac{c^3}{3}=\frac{c^3}{6}-\frac c2.
+\]
+For $c=1$, the unnormalized error in \eqref{eq:crossover}, multiplied by $\sqrt n$, tends to $-e^{-1/2}/3$.
+\end{proof}
+
+\begin{remark}[A necessary centering precaution]
+The first two limits in \eqref{eq:criticalparameters} have corrections of size $\log\log n/\log n$. One must therefore retain the \emph{actual} $\mu_n$ in the exponential when using the $n^{-1/2}$ correction. Replacing it prematurely by $c\sqrt n$ loses much more accuracy than the correction supplies. The vanishing of \eqref{eq:criticalconstant} at $c=\sqrt3$ is not, by itself, an $O(n^{-1})$ claim for an arbitrarily calibrated sequence approaching that value.
+\end{remark}
+
+\section{Periodic structure and the Fabius dyadic sequence}
+\label{sec:fabius}
+\subsection{An explicit periodic carrier for the Laplace product}
+The exact product in \eqref{eq:product} is often the best computational normalizer. For an asymptotic description in elementary scales, a periodic factor must be retained.
+Let $q=e^{-\delta}$ be fixed and define, for real $\theta$ and $z=e^{\delta\theta}$,
+\begin{equation}\label{eq:periodic}
+ \Pi_q(\theta)=
+ \exp\!\left(\frac\delta2(\theta^2+\theta)\right)
+ \prod_{k\ge0}\ell(zq^k)
+ \prod_{r\ge1}(1-e^{-zq^{-r}}).
+\end{equation}
+Both products converge locally uniformly with all real derivatives.
+
+\begin{proposition}[Periodic product factorization]\label{prop:periodic}
+The function $\Pi_q$ is positive, smooth, and one-periodic. As $t\to\infty$, with $A=t(1-q)$,
+\begin{equation}\label{eq:periodicfactor}
+ L_q(t)=A^{-1/2}\exp\!\left(-\frac{(\log A)^2}{2\delta}\right)
+   \Pi_q\!\left(\frac{\log A}{\delta}\right)
+   \bigl[1+O_q(e^{-A/q})\bigr].
+\end{equation}
+\end{proposition}
+\begin{proof}
+Replacing $\theta$ by $\theta+1$ replaces $z$ by $z/q$. The first product acquires $\ell(z/q)$, the second loses $(1-e^{-z/q})$, and the elementary prefactor acquires $z/q$. These factors cancel, proving periodicity.
+For $m=\lfloor\log A/\delta\rfloor$ and $z=Aq^m$, split $L_q(t)$ at $j=m$. Its elementary denominator is
+\[
+ A^{-m}q^{-m(m-1)/2}.
+\]
+Writing $\theta=\log A/\delta-m$, its logarithm is
+\[
+ -\frac{(\log A)^2}{2\delta}-\frac{\log A}{2}
+       +\frac\delta2(\theta^2+\theta).
+\]
+The remaining head is $\prod_{r=1}^{m}(1-e^{-zq^{-r}})$. Completing it to the infinite product produces an inverse tail beginning with $e^{-A/q}$; the sum of its logarithmic errors is $O_q(e^{-A/q})$. This proves \eqref{eq:periodicfactor}. Smoothness follows from geometric convergence at the small-argument end and superexponential convergence at the other end.
+\end{proof}
+
+The periodic expression is a change of presentation, not an additional approximation used in the uniform saddle theorem. In particular, replacing $\Pi_q$ by a constant is not justified by \eqref{eq:periodicfactor}. For $q=1/2$ the simplification is
+\begin{equation}\label{eq:dyadicproduct}
+ L_{1/2}(t)=t^{1/2}\exp\!\left(-\frac{(\log t)^2}{2\log2}\right)
+     \Pi_{1/2}(\log_2t)\,[1+O(e^{-t})].
+\end{equation}
+The bounded defects in \eqref{eq:defect}, including $D_q$, are correspondingly expressible through smooth periodic functions up to exponentially small errors multiplied by fixed powers of $t$.
+
+\subsection{Exact transfer to dyadic Fabius values}
+Let $F$ denote the standard Fabius distribution function on $[0,1]$, normalized by $F(0)=0$, $F(1)=1$, and $F'(x)=2F(2x)$ for $0\le x\le1/2$. The probability model $q=1/2$ and the relation between moments and dyadic values are classical; see \cite{arias1982,arias2017,have2017}. We record the precise normalization to avoid confusion with the centered Rvachev function or its half moments.
+
+\begin{proposition}[Dyadic value identity]\label{prop:fabiusidentity}
+For every integer $n\ge1$,
+\begin{equation}\label{eq:fabiusidentity}
+ F(2^{-n})=\frac{2^{-n(n-1)/2}}{n!}\,M_n(1/2).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The standard Fabius differential identities give
+$F^{(n)}(x)=2^{n(n+1)/2}F(2^nx)$ on $[0,2^{-n}]$, and all derivatives at zero vanish. Taylor's integral formula and $u=2^nx$ give
+\[
+ F(2^{-n})=
+ \frac{2^{-n(n-1)/2}}{(n-1)!}\int_0^1(1-u)^{n-1}F(u)\dd u.
+\]
+Integration by parts against the distribution function yields
+$M_n=n\int_0^1(1-u)^{n-1}F(u)\dd u$.
+\end{proof}
+
+\begin{corollary}[Sharper asymptotics for a concrete Fabius sequence]\label{cor:fabius}
+Define
+\[
+ B_n=\frac{2^{-n(n-1)/2}}{n!}\A_n,
+\]
+using the dyadic weights in the saddle construction. Then
+\begin{align}
+ \frac{F(2^{-n})}{B_n}-1
+       &\sim\frac{\log n}{12\log2\,n^2},\label{eq:fabiussharp}\\
+ \frac{F(2^{-n})}{B_n(1+\Delta_n)}-1&=O(n^{-3}).\label{eq:fabiuscorrected}
+\end{align}
+The all-orders formula and \eqref{eq:thirdsharp} transfer without any further loss.
+\end{corollary}
+\begin{proof}
+The prefactor in \eqref{eq:fabiusidentity} is exact and cancels from relative errors. Apply \cref{thm:main,thm:geosharp}.
+\end{proof}
+
+This sequence consists of values of a smooth function at its infinitely flat endpoint, with a main scale involving $2^{-n(n-1)/2}$, $n!$, and a logarithmic-Gaussian product. At the same time, the arithmetic identity itself is established background, not a new claim of this paper.
+
+\section{Computation, error separation, and numerical evidence}
+\label{sec:computation}
+\subsection{Positive recurrences independent of the approximation}
+Self-similarity gives $X_q\overset d=(1-q)U+qX_q'$. Expanding the $n$th power produces the positive recurrence
+\begin{equation}\label{eq:recurrence}
+ (1-q^n)M_n=
+ \sum_{k=0}^{n-1}\binom nk\frac{q^k(1-q)^{n-k}}{n-k+1}M_k,
+ \qquad M_0=1.
+\end{equation}
+It computes all moments through $n$ with $O(n^2)$ arithmetic operations. For rational $q$ it is an exact rational algorithm. For floating-point computations its positive terms avoid cancellation, although this is not a substitute for a conditioning or interval analysis.
+For $m$ equal weights a second exact formula is
+\begin{equation}\label{eq:equalweights}
+ M_n=\frac{n!\,m!\,\left\{\begin{smallmatrix}n+m\\m\end{smallmatrix}\right\}}
+              {(n+m)!\,m^n},
+\end{equation}
+where the braces denote a Stirling number of the second kind. It follows from
+$((e^z-1)/z)^m=m!\sum_{r\ge m}\left\{\begin{smallmatrix}r\\m\end{smallmatrix}\right\}z^{r-m}/r!$.
+Both methods are independent of the saddle expansion being tested.
+
+\subsection{Summing the geometric tail}
+For large arguments evaluate the factors and cumulants directly. Once the remaining first argument is $b<1/2$, use
+\begin{equation}\label{eq:bernoullitail}
+ \sum_{j\ge0}\log\ell(bq^j)
+ =-\frac{b}{2(1-q)}+
+ \sum_{k\ge1}\frac{B_{2k}b^{2k}}{2k(2k)!(1-q^{2k})}.
+\end{equation}
+Differentiation supplies every required cumulant without enumerating the infinitely many small factors. If the series is cut after $k=K$, put $r=b/(2\pi)$. The omitted logarithmic tail is bounded by
+\begin{equation}\label{eq:tailbound}
+ \frac{4r^{2K+2}}{(2K+2)(1-q^{2K+2})(1-r^2)}.
+\end{equation}
+Indeed $|B_{2k}|/(2k)!\le4/(2\pi)^{2k}$ and the remaining geometric series is explicit. For cumulant order $s\ge1$, provided $2K+2\ge s$ and
+$\gamma=r^2((K+2)/(K+1))^{s-1}<1$, a corresponding bound is
+\begin{equation}\label{eq:tailboundcumulant}
+ \frac{4(2K+2)^{s-1}r^{2K+2}}
+ {(1-q^{2K+2})(1-\gamma)}.
+\end{equation}
+The code returns these analytic truncation bounds. Its ordinary \texttt{mpmath} arithmetic is \emph{not} interval arithmetic; the bounds do not certify floating-point rounding.
+
+At fixed $q$, the head length is $O_q(\log t)$ and the tail length depends on requested precision and cumulant order. When $q$ changes with $n$, the number of head factors need not remain logarithmic uniformly. The software imposes an explicit head-length guard rather than making an unsupported uniform running-time claim. No bit-complexity claim is made from an arithmetic-operation count alone.
+
+The saddle is solved by safeguarded Newton iteration on $[n,2n]$, using
+\[
+ f'(t)=1-\frac{\mu(t)-v(t)}t\ge\frac12.
+\]
+An interval implementation could combine this conditioning bound with \eqref{eq:tailbound}--\eqref{eq:tailboundcumulant} to certify the root. Such an implementation is a further task, not part of the present verification claim.
+
+\subsection{Fixed-ratio comparisons}
+The following values use 80-decimal-digit arithmetic and \eqref{eq:recurrence} as the reference. Signs are retained. The exact quantity is divided by each approximation before subtracting one.
+\begin{center}
+\small
+\input{data/fixed_q_table.tex}
+\end{center}
+For instance, at $q=1/2$, $n=1024$, the raw Laplace approximation is off by about $4.68\%$ in this convention, the uncorrected saddle ratio error is about $2.43\cdot10^{-7}$, and the first corrected error is about $1.90\cdot10^{-10}$. These finite values illustrate, but do not prove, the asymptotic estimates. The leading saddle error need not have its limiting positive sign at small $n$.
+
+\subsection{Critical-window comparisons}
+Here $q_n$ is chosen by \eqref{eq:qcritical}, with $\alpha=1/(2c)$. The table deliberately reports the actual $\mu_n/\sqrt n$, which converges slowly to $c$.
+\begin{center}
+\small
+\input{data/critical_table.tex}
+\end{center}
+``Gaussian'' means $e^{-\mu_n^2/(2n)}$, and ``Corrected'' means the displayed terms of \eqref{eq:criticalcorrection}. These are values of the ratio $M_n/L(n)$, not the moments themselves. The table is not evidence for replacing $\mu_n$ by its limiting surrogate.
+
+\subsection{Verification receipt}
+The default verification run completed \textbf{119 checks}, with no failures. It includes the two forms of the first correction, deterministic coefficient cancellation through order three, gamma calibration, the Laplace coefficient recursion, exact rational geometric moments, known low dyadic values, an independent equal-weight Stirling formula, derivative checks for cumulants, mesh brackets, saddle residuals, and finite numerical comparisons. Symbolic identities use exact rational coefficients. Numerical checks use 70 digits; tables use 80 digits.
+
+The shipped CSV files contain nine fixed-$q$ rows, six critical-window rows, and six finite-array rows. The latter include $m=n$ and $m>n$ equal-weight examples to exercise the theorem outside the fixed-geometric regime. Exact rational finite-array references use \eqref{eq:equalweights}.
+
+The test count is a receipt, not the theorem boundary. No automatic checker in this package proves the asymptotic statement for all $n$, verifies the entire complex-analytic argument, or establishes literature priority. The article's proofs, the exact finite identities, and the numerical diagnostics are separate evidence layers.
+
+\section{Integration and further research}
+\label{sec:future}
+\subsection{Suggested repository placement and dependencies}
+A natural destination is
+\begin{center}
+\texttt{Analysis/FabiusFunction/docs/research/UniformMomentAsymptotics/}.
+\end{center}
+The package is self-contained and does not modify existing Lean modules. Its \texttt{INTEGRATION.md} identifies connections to endpoint comparison, Laplace moments, the probability representation, and geometric-uniform products. It also records the normalization distinction between $M_n$ and the repository's various half-moment conventions.
+
+A formalization could proceed in layers. The summand inequalities, the positive recurrence, the mesh brackets, and the explicit crossover bound are real-variable targets with comparatively limited infrastructure. The Fourier smoothing theorem and the all-orders uniform expansion require more extensive analytic support. No unfinished Lean declarations are included under the guise of a checked formalization. Existing project rules about one-module-at-a-time builds remain applicable.
+
+\subsection{Research questions opened by these estimates}
+\paragraph{1. Effective constants and certified numerical bounds.}
+The uniform asymptotic constants $B_J$ are constructive through the proof but have not been optimized or turned into practical explicit numerical thresholds. Can an interval implementation produce usable certified bounds for $\A_n(1+\Delta_n)$ starting at modest $n$, uniformly over all arrays? The explicit constant $15$ in the crossover theorem is also far from optimized.
+
+\paragraph{2. Optimal truncation and order growth.}
+Determine the growth of $B_J$ and of the coefficient functions as $J$ increases. This is necessary before selecting $J=J(n)$, asserting exponentially improved remainders, or describing a convergent resummation. The present fixed-order theorem does not answer these questions.
+
+\paragraph{3. More general summand laws.}
+The gamma-smoothing proof only needs an automatically controlled tilted cumulant disk and a bound such as $\mu_n^*=O(n)$. Identify broad families of bounded or beta-type summands satisfying comparable estimates. A useful theorem should state the summand hypotheses explicitly rather than hiding array dependence in a generic analyticity assumption.
+
+\paragraph{4. Periodic boundary corrections to all orders.}
+The geometric bulk is gamma-like, while the bounded cumulant defects encode the logarithmic phase. Can the gamma ratio be factored out exactly enough to organize every fixed-$q$ coefficient into bounded periodic functions with optimal logarithmic degrees? The cancellation in \eqref{eq:C2linear} suggests a refined hierarchy beyond the uniform sparse bound.
+
+\paragraph{5. Calibrated critical cancellation.}
+The first self-normalized crossover coefficient vanishes at $c=\sqrt3$. Construct a precisely calibrated $q_n$, retaining the necessary logarithmic and constant corrections, and determine the first nonzero residual. Merely choosing the leading scale in \eqref{eq:qcritical} is not enough to claim an improved rate at this root.
+
+\paragraph{6. Joint endpoint and moment asymptotics.}
+Can the uniform method be extended from high moments to incomplete moments or to a moving endpoint of the distribution function? Such an extension would connect the present moment transition to small-deviation probabilities while preserving relative, rather than only logarithmic, errors.
+
+\paragraph{7. Fast parameter-uniform evaluation.}
+The geometric tail is compressed analytically, but the head can still be long when $q$ varies. Euler--Maclaurin summation in the mesh parameter, with rigorous uniform remainders and careful treatment of the logarithmic phase, may remove that computational bottleneck. This is a numerical-analysis problem distinct from proving the present asymptotic formula.
+
+\paragraph{8. Formal proof and novelty audit.}
+Formalize the crossover criterion first, then the uniform gamma-kernel expansion. In parallel, compare the exact theorem statements with the extensive saddlepoint and exponential-tilting literature and with the complete, evolving ProveIt research corpus. Such an audit is needed before making a claim of historical priority or describing the work as a breakthrough.
+
+\section{Conclusion}
+The main improvement is not a longer fixed-parameter expansion alone. A self-consistent tilt and an exact gamma smoothing identity produce an expansion with constants independent of the entire weight array. Deterministic cancellation then sharpens the usual remainder by an additional factor measuring the tilted mean. For geometric arrays, gamma-bulk cancellation yields still better fixed-ratio error orders and concrete refinements of the Fabius dyadic sequence.
+
+The original Laplace normalization has a different limitation: it fails at a sharply identified effective-mean scale. The uniform crossover bound and its first correction resolve that regime question for the full class of weighted-uniform arrays, with an optimal error order. These results come with explicit formulas, full analytic arguments, and independently computed finite checks; independent review and formal verification remain clearly separated from those accomplishments.
+
+\appendix
+\section{Coefficient construction and checks in the package}
+The file \texttt{code/coefficients.py} implements \eqref{eq:Qrec} over exact rational polynomials, contracts even powers by \eqref{eq:contraction}, and exports \texttt{data/coefficients.json}. The factor $S(n)$ is included; omitting it would already make the deterministic first coefficient incorrect by $1/12$.
+
+The linear part of $\Cj_2$ can be verified without trusting a large printed expression. Generate $Q_1,\ldots,Q_4$, apply the Gaussian contraction, substitute $\rho=0$ and $b_r=(r-1)!$, and differentiate once in each parameter. This gives precisely the five derivatives displayed after \eqref{eq:C2linear}. The gamma checks in \eqref{eq:gammacoeff} provide an independent closed-form calibration of several coefficients.
+
+The \texttt{code/moments.py} module keeps the exact rational routines separate from the numerical product and saddle routines. It returns analytic series-tail bounds alongside the floating-point outputs. The test suite also compares product-derived cumulants with independent numerical differentiation of a directly truncated product; this is a diagnostic, not a proof of derivative interchange, which was established analytically in \cref{sec:summands}.
+
+\section{Reproduction commands and trust boundary}
+From the package root, with Python 3 and the packages in \texttt{requirements.txt}, run
+\begin{verbatim}
+python code/coefficients.py --order 3
+python code/test_results.py
+python code/experiments.py
+latexmk -pdf -interaction=nonstopmode article.tex
+\end{verbatim}
+The optional \texttt{--extended} experiment mode includes more costly moment recurrences beyond the default tables. It is not needed to reproduce the supplied receipt. The current package uses no random sampling and requires no network access to run its checks or build the PDF.
+
+The formal theorem boundary is empty: no Lean theorem is claimed as newly checked here. The analytic proof boundary consists of the statements and proofs in this manuscript. The executable boundary consists of exact symbolic identities, exact rational finite recurrences, and high-precision numerical diagnostics. The latter do not provide outward-rounded interval enclosures. The distinction is recorded again in \texttt{THEOREM\_STATUS.md}.
+
+\begin{thebibliography}{10}
+\raggedright
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and properties}.
+English translation, arXiv:1702.05442 (2017), of
+\emph{Rev. Real Acad. Ciencias Madrid} \textbf{76} (1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias2017}
+J.~Arias de Reyna,
+\emph{Arithmetic of the Fabius function}, arXiv:1702.06487v3 (2017).
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{have2017}
+S.~G. Have,
+\emph{A recurrence relation for the odd order moments of the Fabius function},
+arXiv:1703.01904 (2017).
+\url{https://arxiv.org/abs/1703.01904}.
+
+\bibitem{daniels1954}
+H.~E. Daniels,
+\emph{Saddlepoint approximations in statistics},
+Annals of Mathematical Statistics \textbf{25} (1954), 631--650.
+DOI: \href{https://doi.org/10.1214/aoms/1177728652}{10.1214/aoms/1177728652}.
+
+\bibitem{jensen1988}
+J.~L. Jensen,
+\emph{Uniform saddlepoint approximations},
+Advances in Applied Probability \textbf{20} (1988), 622--634.
+DOI: \href{https://doi.org/10.2307/1427038}{10.2307/1427038}.
+
+\bibitem{jinrobinson1999}
+R.~Jin and J.~Robinson,
+\emph{Saddlepoint approximation near the endpoints of the support},
+Statistics \& Probability Letters \textbf{45} (1999), 295--303.
+DOI: \href{https://doi.org/10.1016/S0167-7152(99)00071-1}{10.1016/S0167-7152(99)00071-1}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\S5.11, \emph{Asymptotic expansions of the gamma function}.
+Equations 5.11.1--5.11.4 and the positive-real remainder discussion.
+\url{https://dlmf.nist.gov/5.11}. Accessed 7 October 2026.
+
+\bibitem{proveitendpoint}
+V.~Reshetnikov, \emph{ProveIt},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/EndpointLaplaceComparison.lean}.
+Retrieved source blob \texttt{876f3700f5fce63489ff66051333eaaaf5b5e4ed}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}. Accessed 7 October 2026.
+
+\bibitem{proveitbounds}
+V.~Reshetnikov, \emph{ProveIt},
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/LaplaceMomentBounds.lean}.
+Retrieved source blob \texttt{2ffeb693335c3b4baa1a7865e1a3e3e0ea1085f5}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}. Accessed 7 October 2026.
+
+\bibitem{openaimath}
+OpenAI, \emph{Mathematical manuscripts and supporting proof artifacts},
+repository README and manuscript catalogue.
+\url{https://github.com/openai/math}. Accessed 7 October 2026.
+The README notes that results have different verification statuses.
+\end{thebibliography}
+\end{document}

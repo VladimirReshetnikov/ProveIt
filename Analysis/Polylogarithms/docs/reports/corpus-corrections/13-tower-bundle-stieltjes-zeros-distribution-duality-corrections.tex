@@ -1,0 +1,83 @@
+% Copy-ready correction fragments; NOT a standalone document.
+% Prepared 2026-10-07 against ProveIt commit
+% c78c7c3dc2fc742a1af9492e47d578b3fb4e01e7.
+% Read stieltjes-zeros-distribution-duality-review.md before applying.
+% Requires amsmath/amssymb; no private macros or cross-document labels.
+% These passages are proposed replacements/insertions, not an automatic patch.
+
+\paragraph{Formal distribution-rank statement.}
+For every $q\geq2$ and $k\geq1$, the formal quotient by the specified
+distribution relations, with the integral coordinate and lower-order jet
+terms treated as background, has residual dimension $\varphi(q)-1$.
+An all-parameter proof is given by the character normal form in
+\emph{Zeros, Distribution Modules, and Regularized Duality in the Stieltjes
+Parameter-Derivative Tower}. This is a rank theorem for specified relations;
+it does not assert arithmetic independence of the residual numerical constants
+or completeness of all numerical identities.
+
+\paragraph{Numerical evidence for unresolved second-derivative constants.}
+The reported $200$-digit integer-relation search found no relation in the
+tested basis and search range. These computations motivate treating the six
+constants as separate candidate generators. They do not prove linear or
+algebraic independence, irrationality, or non-elementarity. A reproducible
+record must specify the basis, precision, coefficient-height limit, and
+iteration budget.
+
+\paragraph{Explicit regularization at a trivial zero.}
+Let $\chi$ be primitive of conductor $q$, let $k\geq1$, and suppose
+$\chi(-1)=(-1)^k$. Then
+\[
+ \frac{L'(k+1,\chi)}{L(k+1,\chi)}
+ +\overline{\frac{L''(-k,\chi)}{2L'(-k,\chi)}}
+ =\gamma+\log\frac{2\pi}{q}-H_k.
+\]
+Indeed, dividing $L(-k+t,\overline\chi)$ by its simple zero $t$ gives
+\[
+ V(t)=L'(-k,\overline\chi)
+      +\frac{L''(-k,\overline\chi)}{2}t
+      +\frac{L'''(-k,\overline\chi)}{6}t^2+\cdots.
+\]
+Its first logarithmic derivative therefore contains the factor $1/2$.
+At second order the corresponding identity is
+\[
+ \left(\frac{L''}{L}-\frac{(L')^2}{L^2}\right)(k+1,\chi)
+ -\overline{\left\{
+ \frac{L'''(-k,\chi)}{3L'(-k,\chi)}
+ -\left(\frac{L''(-k,\chi)}{2L'(-k,\chi)}\right)^2\right\}}
+ =H_k^{(2)}-\frac{\zeta(2)}2.
+\]
+For imprimitive characters, the conductor and missing Euler factors must be
+included before using the primitive functional equation.
+
+\paragraph{Quarter-argument elimination.}
+At $k=2$, the displayed identity eliminates the nonprincipal beta-derivative
+coordinate in favor of a negative-order polygamma value. The remaining terms
+include principal zeta jets and the explicitly displayed named constants.
+The formula $\beta'(-1)=2G/\pi$ reduces to a lower value (Catalan) coordinate;
+no elementary-reduction or non-elementarity theorem is asserted for $G$.
+
+\paragraph{Character-coordinate scope.}
+For every Dirichlet character modulo $q\geq2$, primitive or not,
+\[
+ \sum_{a=1}^{q}\chi(a)\zeta(s,a/q)=q^sL(s,\chi).
+\]
+Differentiation extends the character-coordinate identities to all characters.
+Primitivity remains necessary for the unmodified primitive functional equation.
+
+\paragraph{Clausen parity.}
+With the convention
+\[
+ \operatorname{Cl}_{2m}(\theta)=\operatorname{Im}
+       \operatorname{Li}_{2m}(e^{i\theta}),\qquad
+ \operatorname{Cl}_{2m+1}(\theta)=\operatorname{Re}
+       \operatorname{Li}_{2m+1}(e^{i\theta}),
+\]
+one has
+\[
+ \operatorname{Cl}_{w}(-\theta)=(-1)^{w+1}
+       \operatorname{Cl}_{w}(\theta).
+\]
+Thus the residual Clausen component of the polygamma Fourier bridge is odd at
+even weight and even at odd weight. The weight-three cosine component belongs
+to the symmetric tetragamma combination. The weight-two Catalan example is
+unchanged.

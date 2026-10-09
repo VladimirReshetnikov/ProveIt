@@ -1,0 +1,402 @@
+\section{High parameter derivatives of Stieltjes constants}
+\label{sec:asymptotics}
+
+The parameter-derivative tower admits a useful separation into a
+finite polynomial coefficient and an exponentially small spectral
+tail. This gives a different asymptotic regime from the frequently
+studied limit of a large Stieltjes index with derivative order fixed.
+Here the derivative order \(k\) tends to infinity, while the index
+\(n\) may grow proportionally to \(\log k\). The resulting profile is
+the reciprocal gamma function.
+
+\subsection{An exact spectral expansion}
+
+Fix the Laurent convention
+\begin{equation}\label{eq:stieltjes-convention}
+\zeta(s,a)=\frac{1}{s-1}
+ +\sum_{n=0}^{\infty}\frac{(-1)^n}{n!}\gamma_n(a)(s-1)^n,
+\qquad a>0.
+\end{equation}
+The superscript \(\gamma_n^{(k)}(a)\) always denotes differentiation
+with respect to \(a\), not to the index or the zeta variable. Define
+\begin{equation}\label{eq:coefficient-polynomial}
+P_{n,k}(x)=n![z^n]\left(e^{xz}\prod_{j=1}^{k}
+                  \left(1+\frac zj\right)\right).
+\end{equation}
+This is a degree-\(n\) polynomial in \(x\); its coefficients are
+rational. In particular \(P_{0,k}=1\) and
+\(P_{1,k}(x)=x+H_k\).
+
+\begin{theorem}[Spectral expansion and a finite-tail certificate]
+\label{thm:spectral}
+For \(a>0\), integers \(k\ge1\), and \(n\ge0\),
+\begin{equation}\label{eq:spectral}
+\frac{(-1)^{n+k}}{k!}\gamma_n^{(k)}(a)
+=\sum_{m=0}^{\infty}
+ \frac{P_{n,k}(-\log(a+m))}{(a+m)^{k+1}}.
+\end{equation}
+The series converges absolutely, locally uniformly for \(a>0\).
+If the sum is truncated before \(m=M\), where \(b=a+M\ge1\),
+then for every real \(0<R<k\) the magnitude of the omitted part is at
+most
+\begin{equation}\label{eq:spectral-tail}
+\frac{n!}{R^n}\prod_{j=1}^{k}\left(1+\frac Rj\right)
+\left(b^{-k-1+R}+\frac{b^{-k+R}}{k-R}\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The Hurwitz-zeta parameter identity
+\[
+\partial_a^k\zeta(s,a)=(-1)^k(s)_k\zeta(s+k,a)
+\]
+follows initially by differentiating its absolutely convergent
+Dirichlet series and then by analytic continuation; here
+\((s)_k=s(s+1)\cdots(s+k-1)\).
+The pole in \eqref{eq:stieltjes-convention} is independent of \(a\).
+Put \(s=1+z\), use
+\((1+z)_k=k!\prod_{j=1}^k(1+z/j)\), and compare coefficients.
+For \(|z|<k\), the series for \(\zeta(k+1+z,a)\) converges normally.
+This gives \eqref{eq:spectral} and justifies the coefficient
+interchange. Alternatively, absolute convergence follows directly
+because each summand is a linear combination of
+\((a+m)^{-k-1}\log^\ell(a+m)\), \(0\le\ell\le n\).
+The parameter identity is also the starting point of
+Coffey's all-order formulas~\cite{Coffey}.
+
+On the circle \(|z|=R\), and for \(x\ge b\ge1\),
+\[
+\left|e^{-z\log x}\prod_{j=1}^k(1+z/j)\right|
+\le x^R\prod_{j=1}^k(1+R/j).
+\]
+Cauchy's coefficient estimate bounds the \(m\)-th omitted summand
+by \(n!R^{-n}\prod_j(1+R/j)(a+m)^{-k-1+R}\).
+For the positive decreasing power, comparison with its integral gives
+\[
+\sum_{m=M}^{\infty}(a+m)^{-k-1+R}
+\le b^{-k-1+R}+\int_b^\infty x^{-k-1+R}\,dx.
+\]
+This is \eqref{eq:spectral-tail}.
+\end{proof}
+
+The condition \(b\ge1\) belongs to the stated majorant, rather than to
+the exact expansion. It always holds for the tail after the first
+term, because then \(b=a+1>1\). The choice of \(R\) can be optimized
+for a given \(n,k,M\); there is no need to differentiate a
+highly oscillatory numerical representation of \(\gamma_n\).
+
+\subsection{Exact rational enclosures at parameter one}
+
+Write \(\stirling{v}{u}\) for the unsigned Stirling number of the
+first kind. The elementary identity
+\begin{equation}\label{eq:stirling-product}
+\prod_{j=1}^k(1+z/j)
+ =\frac1{k!}\sum_{n=0}^k\stirling{k+1}{n+1}z^n
+\end{equation}
+turns the first spectral term at \(a=1\) into an exact rational
+number.
+
+\begin{corollary}[Rational certificates]\label{cor:rational}
+Let \(k\ge2\), \(n\ge0\), and
+\[
+e_n(k)=
+\begin{cases}
+\stirling{k+1}{n+1}/k!,&0\le n\le k,\\
+0,&n>k.
+\end{cases}
+\]
+For any integer \(1\le h<k\), set
+\begin{equation}\label{eq:rational-radius}
+B_{k,n,h}
+=h^{-n}\binom{k+h}{h}
+ \left(2^{-k-1+h}+\frac{2^{-k+h}}{k-h}\right).
+\end{equation}
+Then the following is an exact inclusion between real numbers:
+\begin{equation}\label{eq:rational-inclusion}
+\frac{(-1)^{n+k}\gamma_n^{(k)}(1)}{k!\,n!}
+\in[e_n(k)-B_{k,n,h},\,e_n(k)+B_{k,n,h}].
+\end{equation}
+One may take the minimum radius over all \(h=1,\ldots,k-1\).
+In particular, the simple choice \(h=1\) gives
+\begin{equation}\label{eq:simple-rational-radius}
+B_k=(k+1)\left(2^{-k}+\frac{2^{-k+1}}{k-1}\right),
+\end{equation}
+independently of \(n\).
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:spectral} with \(a=M=1\), \(b=2\), and
+\(R=h\), and divide its bound by \(n!\). The product in that bound is
+\(\prod_{j=1}^k(1+h/j)=\binom{k+h}{h}\).
+Equation~\eqref{eq:stirling-product} supplies the center.
+All quantities in the resulting endpoints are rational.
+\end{proof}
+
+Thus the term \emph{certificate} has its literal meaning here:
+integer arithmetic constructs the endpoints, and the proved tail
+bound supplies the inclusion. Floating-point agreement is not being
+renamed a proof. For example, positivity of an endpoint
+\(e_n(k)-B_{k,n,h}\) rigorously proves
+\((-1)^{n+k}\gamma_n^{(k)}(1)>0\).
+The accompanying script emits centers, radii, and both endpoints
+as numerator--denominator pairs, and checks their arithmetic exactly.
+
+\subsection{A uniform coefficient lemma}
+
+The main asymptotic step is an elementary coefficient estimate.
+It is convenient to set
+\(\fall{n}{j}=n(n-1)\cdots(n-j+1)\) for \(j\le n\), and
+\(\fall{n}{j}=0\) for \(j>n\).
+
+\begin{lemma}[Two uniform coefficient terms]\label{lem:coefficient}
+Suppose \(f\) is analytic on a neighborhood of the closed disk
+\(|z|\le R\), with \(|f(z)|\le M\) there. Let \(L>0\),
+\(n\ge1\), and \(r=n/L<R\). Put
+\[
+Q_n(L;f)=\frac{n!}{L^n}[z^n]e^{Lz}f(z).
+\]
+Then
+\begin{align}
+|Q_n(L;f)-f(r)|
+&\le\frac{Mn}{L^2R^2(1-r/R)^3},\label{eq:coefficient-first}\\
+\left|Q_n(L;f)-f(r)+\frac{n}{2L^2}f''(r)\right|
+&\le\frac{3Mn}{L^3R^3(1-r/R)^5}.\label{eq:coefficient-second}
+\end{align}
+For \(n=0\), \(Q_0(L;f)=f(0)\) exactly.
+\end{lemma}
+
+\begin{proof}
+Write \(f(z)=\sum_{j\ge0}c_jz^j\). Since \(|c_j|\le MR^{-j}\),
+\[
+Q_n(L;f)=\sum_{j\ge0}c_j\frac{\fall{n}{j}}{L^j}
+\]
+is a finite sum, which we compare with the absolutely convergent
+Taylor series at \(r\).
+
+For completeness, the needed inequalities remain valid when \(j>n\).
+Choose \(j\) independent uniform elements of a set of \(n\) elements.
+The probability of no repeated choice is
+\(\fall{n}{j}/n^j\), including its value zero when \(j>n\).
+For the \(K=\binom j2\) pair-collision events, every event has
+probability \(1/n\), and every intersection of two distinct events
+has probability \(1/n^2\), even if the pairs share a position.
+The union bound and the first two Bonferroni inequalities give
+\begin{align*}
+0&\le n^j-\fall{n}{j}\le\binom j2 n^{j-1},\\
+0&\le\fall{n}{j}-n^j+\binom j2 n^{j-1}
+ \le\binom{\binom j2}{2}n^{j-2}.
+\end{align*}
+At \(j=0,1,2\), the second remainder is zero, so no negative-power
+exception is needed. Now use
+\[
+\sum_{j\ge2}\binom j2 x^{j-2}=(1-x)^{-3},
+\qquad
+\sum_{j\ge3}\binom{\binom j2}{2}x^{j-3}=3(1-x)^{-5}.
+\]
+The first inequality gives \eqref{eq:coefficient-first}.
+In the second comparison,
+\[
+\sum_{j\ge2}c_j\binom j2\frac{n^{j-1}}{L^j}
+=\frac{n}{2L^2}f''(r).
+\]
+This proves \eqref{eq:coefficient-second}.
+\end{proof}
+
+\subsection{The reciprocal-gamma profile}
+
+\begin{theorem}[A joint logarithmic-range asymptotic]\label{thm:profile}
+Fix \(0<a_0\le a_1<\infty\) and \(C>0\). For
+\(a\in[a_0,a_1]\), put
+\[
+L=\log(k/a),\qquad r=\frac nL,\qquad
+g(r)=\frac1{\Gamma(1+r)},\qquad
+\rho=\frac{a_1}{a_1+1}<1.
+\]
+Uniformly over integers \(0\le n\le CL\), as \(k\to\infty\),
+\begin{equation}\label{eq:uniform-profile}
+\frac{(-1)^{n+k}a^{k+1}\gamma_n^{(k)}(a)}{k!\,L^n}
+=g(r)-\frac{n}{2L^2}g''(r)
+ +O_{a_0,a_1,C}\left(\frac n{L^3}+k^{C+1}\rho^k\right).
+\end{equation}
+Equivalently, the two displayed terms are
+\begin{equation}\label{eq:profile-polygamma}
+\frac1{\Gamma(1+r)}
+\left[1+\frac{n}{2L^2}
+ \left\{\psi^{(1)}(1+r)-\psi(1+r)^2\right\}\right].
+\end{equation}
+The formula includes \(n=0\), for which the first spectral term is
+exactly one. In particular, if \(n/\log(k/a)\to c\ge0\) in a bounded
+range, then the left side of \eqref{eq:uniform-profile} tends to
+\(1/\Gamma(1+c)\).
+\end{theorem}
+
+\begin{proof}
+Separate the \(m=0\) term of \eqref{eq:spectral}. Its generating
+function factors as
+\[
+e^{-z\log a}\prod_{j=1}^k(1+z/j)=e^{Lz}f_k(z),
+\qquad
+f_k(z)=k^{-z}\prod_{j=1}^k(1+z/j).
+\]
+The gamma product gives
+\[
+f_k(z)=\frac{\Gamma(k+1+z)}
+ {\Gamma(k+1)k^z\Gamma(1+z)}
+      =g(z)e^{D_k(z)}.
+\]
+On \(|z|<k+1\), define the analytic function
+\begin{equation}\label{eq:Dk}
+D_k(z)=z(H_k-\log k-\gamma)
+ +\sum_{\ell=2}^{\infty}
+   \frac{(-1)^\ell z^\ell}{\ell}
+       \bigl(\zeta(\ell)-H_k^{(\ell)}\bigr).
+\end{equation}
+The factorization follows first on a small disk from the
+Weierstrass product and then throughout \(|z|<k+1\) by analytic
+continuation. Defining \(D_k\) by its series avoids taking the
+logarithm of \(g\) at its zeros.
+
+The elementary bounds
+\[
+0<H_k-\log k-\gamma<\frac1{2k},\qquad
+\sum_{j>k}j^{-2}\le\frac1k
+\]
+imply, for \(|z|\le R<k+1\),
+\begin{equation}\label{eq:Dk-bound}
+|D_k(z)|\le\frac{R}{2k}
+   +\frac{R^2}{2k(1-R/(k+1))}.
+\end{equation}
+Indeed, for \(\ell\ge2\), bound the tail of \(\zeta(\ell)\) by
+\((k+1)^{2-\ell}/k\), and use \(1/\ell\le1/2\).
+Consequently \(f_k\) is uniformly bounded on every fixed disk,
+\(f_k-g=O_R(k^{-1})\), and Cauchy's estimate gives
+\(f_k''-g''=O_C(k^{-1})\) on \([0,C]\).
+The same estimate with \(R=r\), or the real product, also gives the
+slightly sharper
+\[
+f_k(r)-g(r)=O_C(r/k)\qquad(0\le r\le C).
+\]
+It is this factor \(r\) that preserves the exact \(n=0\) first term.
+
+Choose \(R=C+1\) in Lemma~\ref{lem:coefficient}. For \(n\ge1\)
+the normalized first spectral term is
+\[
+Q_n(L;f_k)
+=f_k(r)-\frac{n}{2L^2}f_k''(r)+O_C(n/L^3).
+\]
+Replacing \(f_k\) by \(g\) costs
+\(O_C(n/(kL)+n/(kL^2))\), which is absorbed in \(O(n/L^3)\)
+because \(L^2\le k\) for all sufficiently large \(k\), uniformly
+on the compact parameter interval.
+
+It remains to control the other spectral terms. Apply
+\eqref{eq:spectral-tail} with \(M=1\), and multiply the bound by
+\(a^{k+1}/L^n\). The result is
+\[
+\frac{n!}{(RL)^n}\prod_{j=1}^k(1+R/j)
+\left(\frac{a}{a+1}\right)^{k+1}(a+1)^R
+\left(1+\frac{a+1}{k-R}\right).
+\]
+The first factor is at most one: for \(n\ge1\), use
+\(n!\le n^n\) and \(n/L\le C<R\); for \(n=0\), it is one by
+convention. The product is \(O_R(k^R)\), as follows already from
+\eqref{eq:Dk-bound} at \(z=R\).
+The remaining factors are uniformly bounded apart from
+\((a/(a+1))^{k+1}\le\rho^{k+1}\). Thus the normalized tail is
+\(O_{a_0,a_1,C}(k^{C+1}\rho^k)\). The case \(n=0\) follows
+directly from \(P_{0,k}=1\).
+Finally,
+\(g''(r)=g(r)\{\psi(1+r)^2-\psi^{(1)}(1+r)\}\).
+\end{proof}
+
+\begin{corollary}[A uniform eventual sign]\label{cor:sign}
+For every compact interval \([a_0,a_1]\subset(0,\infty)\) and
+every \(C>0\), there is \(k_0\) such that
+\[
+(-1)^{n+k}\gamma_n^{(k)}(a)>0
+\]
+for all \(k\ge k_0\), \(a\in[a_0,a_1]\), and integers
+\(0\le n\le C\log(k/a)\).
+\end{corollary}
+
+\begin{proof}
+The continuous function \(g\) is strictly positive on \([0,C]\),
+so its minimum there is positive. Both the displayed correction
+and the remainder in Theorem~\ref{thm:profile} tend uniformly to zero.
+The other factors in the normalization are positive.
+\end{proof}
+
+The corollary is restricted to its stated range. It gives no sign
+theorem when \(n\) grows arbitrarily quickly compared with \(\log k\).
+For a concrete finite pair \(n,k\) at \(a=1\), the rational interval
+in Corollary~\ref{cor:rational} is a separate, effective certificate.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/derivative-profile.pdf}
+\caption{The reciprocal-gamma profile at \(a=1\).
+The first spectral term is computed from the elementary-symmetric
+coefficient recurrence; its rigorously bounded spectral error is
+smaller than the plotted resolution.
+The lower panel compares its deviation from the limiting profile
+with its deviation after the explicit second term is included.
+These plotted arithmetic evaluations are floating point; the separate
+rational certificates do not depend on them.}
+\label{fig:profile}
+\end{figure}
+
+\subsection{Fixed-index expansions and the classical mechanism}
+
+For a fixed \(n\), it is also useful to retain the polynomial in
+\(L=\log(k/a)\). Define Appell polynomials
+\[
+A_n(L)=n![z^n]\frac{e^{Lz}}{\Gamma(1+z)}.
+\]
+The first few are
+\begin{align*}
+A_0(L)&=1,\\
+A_1(L)&=L+\gamma,\\
+A_2(L)&=(L+\gamma)^2-\zeta(2),\\
+A_3(L)&=(L+\gamma)^3-3\zeta(2)(L+\gamma)+2\zeta(3).
+\end{align*}
+The standard gamma-ratio expansion~\cite{DLMF} gives, uniformly on
+fixed \(z\)-disks,
+\[
+e^{D_k(z)}=
+1+\frac{z+z^2}{2k}
+ +\frac{3z^4+2z^3-3z^2-2z}{24k^2}+O(k^{-3}).
+\]
+Consequently, for fixed \(n\ge1\) and \(a\) in a compact positive
+interval,
+\begin{align}
+\frac{(-1)^{n+k}a^{k+1}\gamma_n^{(k)}(a)}{k!}
+={}&A_n(L)
+ +\frac{nA_{n-1}(L)+n(n-1)A_{n-2}(L)}{2k}\notag\\
+&+O_n\left(\frac{(1+L)^{n-1}}{k^2}\right)
+ +O_{a_0,a_1,n}(k^2\rho^k).
+\label{eq:fixed-index}
+\end{align}
+Terms with a negative Appell index are omitted.
+To see the stated polynomial error, note that the analytic
+remainder after the first correction vanishes at \(z=0\);
+its coefficient convolution with \(e^{Lz}g(z)\) therefore has
+degree at most \(n-1\) in \(L\). For \(n=0\) the first term is
+exact and only the spectral error remains.
+Higher powers of \(k^{-1}\) follow by the same coefficient procedure.
+For example the \(k^{-2}\) numerator is
+\[
+\frac1{24}\left(
+3\fall{n}{4}A_{n-4}
++2\fall{n}{3}A_{n-3}
+-3\fall{n}{2}A_{n-2}
+-2nA_{n-1}\right).
+\]
+
+At \(a=1\), \eqref{eq:stirling-product} identifies the first spectral
+term with first-kind Stirling numbers. These are also the cycle-count
+coefficients of permutations. The reciprocal-gamma factor is thus a
+classical mechanism, closely related to mod-Poisson asymptotics
+\cite{KowalskiNikeghbali}. The contribution to this programme is the
+explicit spectral transfer, the uniform second coefficient estimate,
+and the exact rational enclosure, not a claim that the
+reciprocal-gamma phenomenon itself is new.

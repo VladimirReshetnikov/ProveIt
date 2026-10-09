@@ -1,0 +1,214 @@
+SOURCE AND SCOPE AUDIT
+Checked 8 October 2026
+
+Purpose
+-------
+This is a bounded literature and provenance audit, not a certification of
+worldwide priority. The mathematical proofs in the accompanying article are
+intended to stand independently of the novelty assessment. The two inspected
+repositories contain research manuscripts; their claims are not treated as
+refereed theorems merely because they are present in a repository.
+
+1. Direct ProveIt precursor and overlap
+--------------------------------------
+Repository snapshot: 9570aaede2458830be9b3bbb072481c88f4f5a4c
+Source:
+https://github.com/VladimirReshetnikov/ProveIt/blob/9570aaede2458830be9b3bbb072481c88f4f5a4c/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a094149-sparse-graph-moments/article.tex
+
+The inspected merged source develops the c=1 expansion of the sparse-graph
+even moments around 2 B_(k+1), including the dominant-departure reduction,
+weighted Polya-urn bounds, finite Newton collision transforms, and every
+fixed collision order. Its question labelled sgm:q:meandegree explicitly
+asks for general mean degree. It does not supply the sharp total variation
+laws for the maximum-departure deficit proved here.
+
+Crucial overlap exclusion: after an all-fixed-order expansion is known,
+the leading remainder at order p follows by invoking order p+1 and using
+the equivalent of A_(p+1). Improving a displayed log-power remainder in
+this manner is a corollary, not an independent breakthrough or a new
+method. The article distinguishes this fact from its parameter extension
+and its distributional results.
+
+2. Bauer--Golinelli: verified external enumerative input
+-------------------------------------------------------
+M. Bauer and O. Golinelli, Random incidence matrices: moments of the
+spectral density, Journal of Statistical Physics 103 (2001), 301--337.
+https://arxiv.org/abs/cond-mat/0007127
+https://arxiv.org/pdf/cond-mat/0007127
+
+Full primary preprint inspected. Section 5.5, equation (9), proves the
+coefficientwise Stirling--Catalan bounds
+    S(k,l) <= I(k,l) <= Cat_l S(k,l).
+These imply T_k(c) <= m_k(c) <= T_k(4c) for the present unscaled moments.
+Section 5.6, equation (13), also gives I(k,l) ~ 2 S(k,l) for each FIXED
+l >= 2 as k tends to infinity, via star configurations. That fixed-l
+statement cannot by itself be summed through the moving Bell saddle
+l of order k/log k. The article's complement and collision analysis
+addresses the necessary global walk enumeration.
+
+3. Khorunzhy--Shcherbina--Vengerovsky: full author copy inspected
+----------------------------------------------------------------
+O. Khorunzhy, M. Shcherbina, V. Vengerovsky, Eigenvalue distribution of
+large weighted random graphs, Journal of Mathematical Physics 45 (2004),
+1648--1672; DOI 10.1063/1.1667610.
+Publisher:
+https://pubs.aip.org/aip/jmp/article/45/4/1648/383196/Eigenvalue-distribution-of-large-weighted-random
+Author's institute publication list:
+https://ilt.kharkiv.ua/bvi/structure/depart_e/d24/mariya_shcherbina.htm
+Full author PDF linked by that list:
+https://ilt.kharkiv.ua/bvi/structure/depart_e/d24/rm_10.pdf
+
+The PDF's embedded text encoding is damaged, so its main-result pages
+were rendered and read visually. Theorem 1, page 4, equations (2.7)--(2.8),
+gives the limiting moment recurrence for fixed mean parameter. Theorem 3,
+pages 5--6, establishes the limiting resolvent equation under finite fourth
+moment. Pages 6--7 discuss finite-order inverse-spectral-parameter
+expansions and a convergent small-mean expansion when p<1. These main
+results do not state a fixed-mean, growing-moment equivalent or the
+departure-deficit total variation asymptotics used here. This inspection
+closes the access gap noted in the ProveIt precursor, without claiming
+that every result in the surrounding literature has been excluded.
+
+4. Hainzl--de Panafieu: distinct large-mean regime
+-------------------------------------------------
+E.-M. Hainzl and E. de Panafieu, Tree walks and the spectrum of random
+graphs, European Journal of Combinatorics 136 (July 2026), 104386;
+DOI 10.1016/j.ejc.2026.104386.
+https://arxiv.org/abs/2405.08347
+https://arxiv.org/html/2405.08347v1
+https://www.sciencedirect.com/science/article/pii/S0195669826000545
+Conference version:
+https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.AofA.2024.11
+
+The full 2024 primary preprint and the indexed 2026 journal introduction
+and main-result summary were inspected. Theorem 3 describes generating
+functions for walks of fixed excess as rational functions of the Catalan
+generating function. Theorem 4 expands each fixed normalized spectral
+moment through order c^(-5) as c tends to infinity; Conjecture 5 concerns
+continuation to arbitrary order. These results concern a different limit
+from a fixed compact set of c with moment order tending to infinity,
+and from the simultaneous critical scale c W(k/c) of order sqrt(k).
+Direct retrieval of the complete journal text returned an access error;
+the journal main-result summary agrees with this regime distinction.
+
+5. Spectral-tail motivation, with the approximation status retained
+-------------------------------------------------------------------
+G. Semerjian and L. F. Cugliandolo, Sparse random matrices: the eigenvalue
+spectrum revisited, Journal of Physics A 35 (2002), 4837--4851;
+DOI 10.1088/0305-4470/35/23/303.
+https://arxiv.org/abs/cond-mat/0202406
+https://arxiv.org/pdf/cond-mat/0202406
+
+Section 4.4, equations (30)--(33), derives a single-defect approximation
+with Poisson-weighted spectral peaks near plus or minus sqrt(k), then a
+smoothed tail proportional to
+    exp[-mu^2 log(mu^2/(p e))].
+The authors attribute the tail form to Rodgers--Bray (1988). Section 4.5
+discusses corrections from the first-neighbor environment; the conclusion
+states the difficulty of controlling the validity range and the errors of
+successive approximations. The present rigorous moment results must not
+be advertised as a pointwise spectral-density equivalent. The limiting
+spectral measure has atoms, and moment asymptotics alone do not justify
+such a claim.
+
+Rodgers--Bray primary abstract:
+G. J. Rodgers and A. J. Bray, Density of states of a sparse random matrix,
+Physical Review B 37 (1988), 3557--3562.
+https://journals.aps.org/prb/abstract/10.1103/PhysRevB.37.3557
+Only the publisher abstract was directly accessible in this audit.
+
+6. Classical Poisson component-count context
+--------------------------------------------
+B. Pittel, Random Set Partitions: Asymptotics of Subset Counts,
+Journal of Combinatorial Theory, Series A 79(2) (1997), 326--359;
+DOI 10.1006/jcta.1997.2791.
+https://www.sciencedirect.com/science/article/pii/S0097316597927916
+
+The primary indexed abstract establishes total variation approximation
+of suitable block-count segments by independent Poisson variables with
+means r^j/j!, where r exp(r)=n. Thus Poisson approximation for singleton
+counts in assemblies is classical background. The fresh law in the
+article is a marked-singleton law for a weighted partition assembly;
+the claimed new distributional content is the collision correction for
+the walk's maximum-departure deficit, its two sharp total variation
+constants, and optimality among all Poisson means. The full Pittel paper
+was not retrieved in this audit.
+
+For standard Stein--Chen context, see R. Arratia, L. Goldstein and
+L. Gordon, Poisson Approximation and the Chen--Stein Method, Statistical
+Science 5(4) (1990), 403--434:
+https://dornsife.usc.edu/larry-goldstein/wp-content/uploads/sites/221/2023/06/pacs-1.pdf
+The accompanying deficit proof includes its own required Stein-solution
+bound, using the immigration and death semigroup; no unproved specialized
+Poisson approximation theorem is needed there.
+
+7. Connection to the user-supplied openai/math repository
+--------------------------------------------------------
+Repository snapshot: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+Repository overview:
+https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/README.md
+Inspected related manuscript introduction:
+https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/GOE-bulk-universality-for-fixed-degree-random-regular-graphs-September-23-2026/build/sections/01-introduction.tex
+Companion preliminaries:
+https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/GOE-bulk-universality-for-fixed-degree-random-regular-graphs-September-23-2026/build/sections/02-preliminaries.tex
+
+That manuscript claims fixed-energy GOE point-process universality for
+uniform simple d-regular graphs at each fixed d>=3, with the
+Kesten--McKay bulk law. It gives contextual motivation from sparse
+spectral problems and locally tree-like geometry. It treats another
+ensemble and another spectral scale. None of its universality claims
+is a logical premise of the proofs in this article.
+
+8. Earlier varying-parameter Bell and sparse-matrix results
+-----------------------------------------------------------
+O. Khorunzhiy, On Asymptotic Properties of Bell Polynomials and
+Concentration of Vertex Degree of Large Random Graphs, Journal of
+Theoretical Probability 35 (2022), 20--51; published online 4 October 2020;
+DOI 10.1007/s10959-020-01025-w.
+https://link.springer.com/article/10.1007/s10959-020-01025-w
+https://arxiv.org/abs/1904.01339
+https://arxiv.org/pdf/1904.01339
+
+The full primary preprint v4, 22 July 2020, was inspected. Theorem 2.1
+gives asymptotic regimes for ordinary Bell/Touchard polynomials as both
+order and parameter vary. Section 4, equation (4.5), and Lemma 4.1
+provide the local-limit saddle equivalent
+    T_k(c) ~ k! exp(c(e^w-1)) / [w^k sqrt(2 pi k(1+w))],
+with w exp(w)=k/c, for nonvanishing c in its stated limiting setting.
+Theorem 2.2 treats restricted Bell polynomials/centered Poisson moments.
+Applications concern vertex degrees and their maxima. This establishes
+substantial prior varying-c Touchard analysis; that analysis by itself
+does not enumerate the full spectral tree-walk moment or prove the
+Catalan multiplier of the article's critical theorem. The article gives
+the quantitative estimates it needs directly rather than importing a
+remainder that is absent from this cited equivalent.
+
+O. Khorunzhiy, On High Moments of Strongly Diluted Large Wigner Random
+Matrices, in Seminaire de Probabilites XLVIII, Lecture Notes in
+Mathematics 2168 (2016), 347--399.
+https://arxiv.org/abs/1311.7021
+https://arxiv.org/pdf/1311.7021
+
+The primary preprint v4 abstract and Theorem 1.1, pages 3--4, were
+inspected. Its regime is N,rho -> infinity, rho=o(N^(1/5)), with the
+half-moment order s=floor(chi rho) for sufficiently small fixed positive
+chi and bounded symmetric edge weights. The theorem approximates the
+moment by a Catalan-type recurrence involving the second and fourth
+edge-weight moments, and supplies a corresponding bound. Thus
+simultaneous large-order, large-mean sparse-matrix analysis is established
+prior work. The critical regime proved in this article instead has
+k/c -> infinity and c W(k/c) of order sqrt(k), after taking the graph-size
+limit. No deduction of its finite exponential multiplier from the
+inspected fixed-ratio theorem was found.
+
+Priority assessment
+-------------------
+The bounded searches and source comparisons did not locate the specific
+collision-corrected maximum-departure law, its sharp/optimal Poisson
+approximation constants, or the stated full-moment critical Catalan
+multiplier at c W(k/c) of order sqrt(k). This supports presenting these
+as candidate new results with complete proofs, while reserving a
+definitive priority claim for broader expert review. The use of saddle
+points, Bell/Touchard
+polynomials, Poisson approximation, Charlier polynomials, and dominant
+star geometry is established methodology and is credited as such.

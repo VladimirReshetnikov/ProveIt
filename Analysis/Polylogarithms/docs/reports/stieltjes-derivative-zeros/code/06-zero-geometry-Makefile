@@ -1,0 +1,16 @@
+PYTHON ?= python3
+ARTICLE = stieltjes-zero-geometry-and-regularized-jets
+.PHONY: exact symbolic numerical tables pdf check clean
+exact:
+	$(PYTHON) tools/exact_verify.py
+symbolic:
+	$(PYTHON) tools/symbolic_checks.py
+numerical:
+	$(PYTHON) tools/numerical_checks.py
+tables:
+	$(PYTHON) tools/render_tables.py
+pdf:
+	cd article && latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+check: exact symbolic numerical
+clean:
+	cd article && latexmk -c $(ARTICLE).tex

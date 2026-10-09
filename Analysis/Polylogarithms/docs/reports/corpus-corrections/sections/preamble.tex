@@ -1,0 +1,113 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\definecolor{Ink}{HTML}{1B263B}
+\definecolor{Teal}{HTML}{176C70}
+\definecolor{Muted}{HTML}{566273}
+\usepackage[colorlinks=true,linkcolor=Ink,citecolor=Teal,urlcolor=Teal,
+  bookmarksnumbered=true,pdfencoding=auto]{hyperref}
+\hypersetup{
+ pdftitle={Real Zeros and Exact Relation Spaces in the Polylogarithm--Stieltjes Programme},
+ pdfauthor={Research draft prepared with OpenAI ChatGPT for Vladimir Reshetnikov},
+ pdfsubject={Stieltjes derivatives, weighted distribution modules, polylogarithm reductions, and corrections to ProveIt drafts},
+ pdfkeywords={generalized Stieltjes constants, Hurwitz zeta, real zeros, Appell polynomials, distribution relations, polylogarithms}
+}
+\DeclareMathOperator{\Li}{Li}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\titleformat{\section}{\Large\bfseries\color{Ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{Ink}}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.4ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{2.0ex plus .7ex minus .2ex}{.8ex plus .2ex}
+\setlist{itemsep=.35em,topsep=.5em,leftmargin=*}
+\setlength{\parskip}{.3em}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{1.5em}
+\allowdisplaybreaks[1]
+\raggedbottom
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Muted}ProveIt research continuation}
+\fancyhead[R]{\small\color{Muted}8 October 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+\begin{titlepage}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+{\large\sffamily\color{Teal}PROVEIT \quad / \quad ANALYSIS \quad / \quad POLYLOGARITHMS\par}
+\vspace{20mm}
+{\huge\bfseries\color{Ink}
+Real Zeros and Exact Relation Spaces\par}
+\vspace{4mm}
+{\LARGE\bfseries\color{Ink}
+in the Polylogarithm--Stieltjes Programme\par}
+\vspace{8mm}
+{\large
+Research continuation, asymptotic expansions,\\
+and corrections to the ProveIt drafts\par}
+\vspace{13mm}
+{\normalsize
+Prepared for Vladimir Reshetnikov\\
+Research and computational assistance: OpenAI ChatGPT\\
+8 October 2026\par}
+\vspace{12mm}
+{\color{Teal}\rule{\linewidth}{.8pt}\par}
+\vspace{3mm}
+\noindent\textbf{Abstract.}
+We continue the polylogarithm and special-function programme in the
+ProveIt draft corpus. A reciprocal-gamma Appell polynomial provides
+an exact Laplace kernel for every positive parameter derivative of
+the generalized Stieltjes constants. We prove that
+$\gamma_n^{(k)}(a)$ has at most $n$ positive real zeros for every
+$k\geq1$, that all $n$ simple zeros occur for sufficiently large $k$,
+and that their locations admit complete asymptotic expansions.
+For the first Laurent index, we prove uniqueness for every derivative
+order and a uniform half-unit bracket. A conductor-character
+argument proves the unrestricted formal rational-grid rank laws,
+including arbitrary weights and free finite-jet modules over
+coefficient algebras. We give the exact functional-equation bridge
+at trivial Dirichlet-$L$ zeros and reconstruct the known all-even-weight
+Gaussian Euler-sum reduction with attribution. The audit supplies
+explicit corrections to convergence, depth, iterated-integral,
+modified-polylogarithm, log-gamma, and Herglotz claims; exact
+class-number-one certificates repair five cubic examples.
+Reproducible exact and high-precision checks accompany the proofs.
+Thirteen further research questions distinguish quantitative
+extensions, arithmetic independence, and formalization.
+
+\vfill
+{\small\color{Muted}
+Source snapshot:
+\texttt{3a6d80ed618d839915deb0d19ab687f45e81d995}.\\
+An unrefereed research draft with explicit proofs and computational
+witnesses; historical priority is stated conservatively.\par}
+\end{titlepage}
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}

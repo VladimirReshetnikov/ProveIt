@@ -10195,3 +10195,90 @@ resulting Bohr set has uniformly many representations is still needed,
 as is the progression-indexed transfer of the almost-all image data.
 This lead requires no new upstream port; the relevant code is already
 in the licensed selected closure.
+
+### J.146. Robust progression geometry for the original tuple-image system
+
+The geometric extraction required at the start of Proposition 7.1 is
+proved in the prime-cyclic setting. Every point of the proper progression
+has uniformly many four-term representations in the same original index
+set whose additive 16-tuples have the J.145 image bound.
+
+`unpopular_difference_pairs_card_le` bounds discarded pairs by
+`theta N`. For a set of density at least `delta`, use the popular
+threshold `theta = delta^2 N/2`. Then the popular differences carry at
+least half of all pairs. `difference_event_probability_eq_pair_count`
+identifies this with the selected Croot–Sisask difference-event
+probability. A shifted event of probability at least `1/4` contributes at
+least `delta^4 N^3/8` four-term representations: every shifted popular
+pair has its whole difference fibre available.
+
+`exists_difference_event_bohr_controller` adapts the width/rank
+calculation from the selected upstream `exists_quartic_bogolyubov` proof
+to an arbitrary difference event, with error `1/4`. It uses the
+**pointwise** almost-periodicity theorem. It retains a regular Bohr set
+with
+
+```
+rank ≤ 1 + C(p+1)^4,
+radius ≥ exp(-C(p+1)),
+```
+
+where `C = 3*almostPeriodicityWidthConstant(1/4) > 0`, and controls every
+shift in its carrier. Apply it to the popular-difference event to obtain
+`exists_robust_difference_bohr`, whose every point has at least
+`exp(-p)^4 N^3/8` representations.
+
+`exists_robust_difference_progression` then uses the already selected
+proper-progression extraction theorem. It gives a proper centered
+progression `Q` with
+
+```
+rank ≤ 2 + C(p+1)^4,
+|Q| ≥ exp(-Cprog(p+1)^8) N,
+Cprog = 11(C+2)^2 > 0,
+```
+
+and preserves the same representation bound at **every** point. This is
+the robust count needed by the next argument, rather than only inclusion
+in a fourfold difference set. No eightfold convolution is required: the
+published Proposition 7.1 starts with four-term representation families
+and uses four of those families to read the additive 16-tuple bound.
+
+`global_almost_all_images_with_robust_progression` starts from the
+original dense bihomomorphism and retains its original witness system,
+local maps, the J.145 dense set, common nonzero point, and almost-all tuple
+image cap. Put `p = max(1,-log(globalColumnAlmostAllTupleDensity alpha))`.
+It returns the proper progression and its uniform representation families
+with rank and mass bounds independent of `epsilon`.
+
+The two adapted proof consumers have prominent source/modification
+notices. Their provenance, upstream copyright attribution, and full
+Apache-2.0 terms are recorded in the adjacent `LICENSE.openai-math` and
+`lib/openai-math/LICENSE.provenance`. The port manifest identifies the
+useful Gowers consumer. The upstream module was already in the selected
+licensed closure; no additional upstream module is ported.
+
+Next is the progression-indexed map transfer in Proposition 7.1:
+choose representative four-tuples with controlled image failures, construct
+normalized local maps on the progression, and purify the remaining
+relations. In a direct independent-choice argument, repeated progression
+indices make the four representation choices correlated; they must be
+handled explicitly rather than treating them as independent. Likewise,
+cancelling map values does not remove their Bohr constraints. Additional
+fixed helper spectra can be included in the chosen domains at `O(d)` cost,
+but this must be proved in the map-transfer interface. These are remaining
+proof obligations, not consequences of the robust geometric theorem.
+The subsequent structure assembly and final printed numerical comparison
+also remain open. No numbered catalogue entry or final bound improvement
+is claimed at this checkpoint.
+
+Verification after merging the incoming span-ball split: all 14 new named
+proofs pass individual axiom checks. The complete original-data production
+closure compiles across 374 modules. The combined audit checks 9,089 public
+Gowers theorems across 5,508 modules (5,506 in the facade closure), using
+only `propext`, `Classical.choice`, and `Quot.sound`. The selected OAI audit
+closure remains 4,152 modules. The generated catalogue is byte-identical,
+with 115 companion proofs and five open statements. These counts do not
+certify fidelity to every printed statement. The selected-port scope check
+passes. Adaptation licensing and the useful consumer are recorded without
+expanding the upstream closure.

@@ -1,0 +1,251 @@
+\section{A proved reduction at every even weight in the Gaussian ladder}
+\label{gau:section}
+
+The draft \emph{Gaussian multiple polylogarithm depth} studies
+\begin{equation}\label{gau:sum-definition}
+ S_p=\sum_{n\geq 0}\frac{(-1)^nH_n}{(2n+1)^p},
+ \qquad H_n=\sum_{j=1}^n\frac1j,\quad H_0=0.
+\end{equation}
+Its formulas for $S_5$ and $S_7$ are correct, but the argument that a new
+Dirichlet beta value ``absorbs'' the depth-two content is not a proof of a
+reduction at every even weight. Here we supply a complete analytic proof and
+an exact generating function.
+
+\paragraph{Prior art and the precise contribution.}
+The all-weight formula below already appears in a 2022 answer by
+Ali Olaikhan, including exactly the $S_5$ and $S_7$ specializations displayed
+in the repository draft \cite{gau-olaikhan-2022}.
+It therefore requires attribution rather than a novelty claim. The purpose
+of this section is to give a self-contained proof with convergence and
+parameter domains specified, connect the formula to the draft's depth
+question, and extract a convergent resummation. None of these arguments
+asserts irrationality, algebraic independence, or minimal depth.
+
+\subsection{Integral representation and a reflection identity}
+
+For every integer $p\geq1$, the sum in \eqref{gau:sum-definition} converges.
+For $p\geq2$ it converges absolutely. For $p=1$, the positive sequence
+$H_n/(2n+1)$ decreases to zero: indeed,
+\[
+ \frac{H_{n+1}}{2n+3}\leq\frac{H_n}{2n+1}
+ \quad\Longleftrightarrow\quad
+ \frac{2n+1}{n+1}\leq2H_n,
+\]
+which holds for $n\geq1$. The alternating-series test applies.
+
+\begin{lemma}\label{gau:moment}
+For every integer $p\geq1$,
+\begin{equation}\label{gau:moment-formula}
+ S_p=-\frac1{(p-1)!}\int_0^1
+       \frac{(-\log x)^{p-1}\log(1+x^2)}{1+x^2}\,dx.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Summing the geometric series after the inner harmonic-number sum gives
+\[
+ \sum_{n\geq0}H_n y^n=-\frac{\log(1-y)}{1-y},\qquad |y|<1.
+\]
+First use $y=-r x^2$ with $0<r<1$, multiply by
+$(-\log x)^{p-1}/(p-1)!$, and integrate term by term. The elementary
+Mellin integral of $x^{2n}$ gives $(2n+1)^{-p}$.
+Now let $r\uparrow1$. Abel's theorem applies to the convergent alternating
+series. On the integral side,
+$\log(1+rx^2)/(1+rx^2)$ is uniformly bounded on $0\leq x\leq1$,
+and $(-\log x)^{p-1}$ is integrable, so dominated convergence applies.
+This also covers the conditionally convergent case $p=1$.
+\end{proof}
+
+Introduce
+\begin{align}
+ J(s)&=\int_0^1\frac{x^{s-1}\log(1+x^2)}{1+x^2}\,dx,
+ & C(s)&=\int_0^1\frac{x^{s-1}}{1+x^2}\,dx,\label{gau:mellin-defs}\\
+ K(s)&=\int_0^\infty\frac{x^{s-1}\log(1+x^2)}{1+x^2}\,dx.
+ \nonumber
+\end{align}
+The functions $J$ and $C$ are holomorphic for $\Re s>-2$ and $\Re s>0$,
+respectively; $K$ is holomorphic for $-2<\Re s<2$.
+In the common strip $0<\Re s<2$, the substitution $x=1/t$ in the
+part of $K$ above $1$ gives
+\begin{equation}\label{gau:reflection}
+ K(s)=J(s)+J(2-s)-2C'(2-s).
+\end{equation}
+All signs in this identity matter: the logarithm transforms as
+$\log(1+t^{-2})=\log(1+t^2)-2\log t$.
+
+The beta integral gives another evaluation. For
+$0<\Re s<2\Re a$,
+\[
+ \int_0^\infty\frac{x^{s-1}}{(1+x^2)^a}\,dx
+ =\frac{\Gamma(s/2)\Gamma(a-s/2)}{2\Gamma(a)}.
+\]
+Taking minus the derivative in $a$ at $a=1$ yields
+\begin{equation}\label{gau:complete-mellin}
+ K(s)=\frac{\pi}{2\sin(\pi s/2)}
+          \bigl[\psi(1)-\psi(1-s/2)\bigr],
+ \qquad 0<\Re s<2.
+\end{equation}
+Differentiation under the integral is justified locally uniformly in that
+strip by integrable power bounds with a logarithmic factor.
+
+\subsection{The finite reduction}
+
+Write
+\[
+ \beta(r)=\sum_{n\geq0}\frac{(-1)^n}{(2n+1)^r},
+ \qquad
+ \sec t=\sum_{j\geq0}\frac{|E_{2j}|}{(2j)!}t^{2j},
+\]
+so that $|E_0|,|E_2|,|E_4|,|E_6|,|E_8|=1,1,5,61,1385$.
+Define $b_0=\log2$ and
+$b_k=(1-2^{-2k-1})\zeta(2k+1)$ for $k\geq1$.
+
+\begin{theorem}[All even-weight reductions]\label{gau:all-weights}
+For every integer $m\geq1$,
+\begin{equation}\label{gau:finite-reduction}
+ \boxed{\displaystyle
+ S_{2m-1}=(2m-1)\beta(2m)
+ -\frac\pi2\sum_{k=0}^{m-1}
+ \frac{|E_{2m-2-2k}|}{(2m-2-2k)!}
+       \left(\frac\pi2\right)^{2m-2-2k}b_k.}
+\end{equation}
+Consequently $S_{2m-1}$ is a rational linear combination of
+$\beta(2m)$, $\pi^{2m-1}\log2$, and
+$\pi^{2m-2k-1}\zeta(2k+1)$, $1\leq k\leq m-1$.
+\end{theorem}
+\begin{proof}
+For $|z|<1$, take the even part of \eqref{gau:reflection} about $s=1$.
+If $K_{\mathrm{ev}}(z)=(K(1+z)+K(1-z))/2$, then
+\begin{equation}\label{gau:even-reflection}
+ J(1+z)+J(1-z)
+ =K_{\mathrm{ev}}(z)+C'(1+z)+C'(1-z).
+\end{equation}
+The moment representation implies
+\[
+ J(1+z)+J(1-z)=-2\sum_{m\geq1}S_{2m-1}z^{2m-2}.
+\]
+Differentiating $C$ under its integral, then using the geometric series,
+gives
+\[
+ C'(1+z)+C'(1-z)
+ =-2\sum_{m\geq1}(2m-1)\beta(2m)z^{2m-2}.
+\]
+These expansions converge locally uniformly for $|z|<1$.
+
+Next, \eqref{gau:complete-mellin} yields
+\[
+ K_{\mathrm{ev}}(z)=\frac\pi{2\cos(\pi z/2)}
+ \left[\psi(1)-\frac{\psi((1-z)/2)+\psi((1+z)/2)}2\right].
+\]
+The digamma series, obtained by termwise differentiation of
+$\psi(w)=-\gamma+\sum_{n\geq0}((n+1)^{-1}-(n+w)^{-1})$, gives
+\[
+ \psi(1)-\psi(\tfrac12)=2\log2,
+ \qquad
+ \psi^{(2k)}(\tfrac12)=-(2k)!(2^{2k+1}-1)\zeta(2k+1)
+ \quad(k\geq1).
+\]
+It follows that
+\[
+ K_{\mathrm{ev}}(z)
+ =\pi\sec(\pi z/2)\sum_{k\geq0}b_k z^{2k}.
+\]
+Substitute these three series into \eqref{gau:even-reflection} and compare
+the coefficient of $z^{2m-2}$. The result is
+\eqref{gau:finite-reduction}.
+\end{proof}
+
+For orientation, the first two instances are
+\[
+ S_1=\beta(2)-\frac\pi2\log2,
+ \qquad
+ S_3=3\beta(4)-\frac{\pi^3}{16}\log2
+                     -\frac{7\pi}{16}\zeta(3).
+\]
+The cases $m=3,4$ give exactly the draft's equations
+\texttt{eq:S5} and \texttt{eq:S7}. The next instance is
+\begin{align}\label{gau:s9}
+ S_9={}&9\beta(10)-\frac{277\pi^9}{4128768}\log2
+       -\frac{427\pi^7}{737280}\zeta(3)
+       -\frac{155\pi^5}{24576}\zeta(5)\nonumber\\
+     &\hspace{14mm}-\frac{127\pi^3}{2048}\zeta(7)
+       -\frac{511\pi}{1024}\zeta(9).
+\end{align}
+Every term has total weight $10$.
+
+\paragraph{What parity does and does not prove.}
+The mechanism is the reflection $s\mapsto2-s$ of the Mellin integral.
+Its even Taylor part isolates the odd powers of the denominator. This
+proves the upper bound on the complexity of $S_{2m-1}$ without assuming
+that any even beta value is a new transcendental.
+It gives no lower bound for the complexity of $S_{2m}$.
+In particular, neither the collapse of $\beta(2m+1)$ to a rational multiple
+of $\pi^{2m+1}$ nor a failed integer-relation search proves that
+$S_{2m}$ requires a double polylogarithm.
+
+\subsection{An exact generating function and a resummation}
+
+\begin{proposition}\label{gau:generating}
+The generating function
+$F(z)=\sum_{m\geq1}S_{2m-1}z^{2m-2}$ has Taylor radius exactly $3$.
+It is represented, for $|\Re z|<3$, by
+\begin{equation}\label{gau:generating-integral}
+ F(z)=-\int_0^1\frac{\cosh(z\log x)\log(1+x^2)}{1+x^2}\,dx.
+\end{equation}
+For $|z|<1$ it also has the explicit form
+\begin{equation}\label{gau:generating-digamma}
+\begin{split}
+ F(z)={}&-\frac{C'(1+z)+C'(1-z)}2\\
+ &-\frac{\pi}{4\cos(\pi z/2)}
+ \left[\psi(1)-\frac{\psi((1-z)/2)+\psi((1+z)/2)}2\right],
+\end{split}
+\end{equation}
+where
+$C'(s)=\bigl[\psi'((s+2)/4)-\psi'(s/4)\bigr]/16$.
+The apparent singularities of the whole right side at $z=\pm1$ are removable.
+Moreover,
+\begin{equation}\label{gau:resummation}
+ \boxed{\displaystyle\sum_{m\geq1}S_{2m-1}=-\frac{\pi^2}{48}.}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The alternating-series estimate gives $|S_p|\leq3^{-p}$ for $p\geq1$.
+It follows that the Taylor series converges for $|z|<3$, and summing the
+moments in \eqref{gau:moment-formula} gives
+\eqref{gau:generating-integral}. The integrand is dominated on compact
+subsets of $|\Re z|<3$ because $\log(1+x^2)/(1+x^2)=O(x^2)$ at zero.
+Equation \eqref{gau:generating-digamma} follows from
+\eqref{gau:even-reflection}. Its apparent singularities at $\pm1$ must
+cancel by \eqref{gau:generating-integral}.
+
+More explicitly, subtracting the constant coefficient gives the meromorphic
+continuation
+\begin{equation}\label{gau:partial-fractions}
+ F(z)=S_1+\sum_{n\geq1}
+ \frac{(-1)^nH_n z^2}{(2n+1)((2n+1)^2-z^2)}.
+\end{equation}
+The series on the right is absolutely and locally uniformly convergent
+away from $z=\pm(2n+1)$, $n\geq1$. Its $n=1$ summand has a nonzero simple
+pole at $z=3$, while all remaining summands are analytic there. Therefore
+the Taylor radius is exactly $3$.
+Finally, setting $z=1$ in \eqref{gau:generating-integral} simplifies the
+kernel:
+\[
+ F(1)=-\frac12\int_0^1\frac{\log(1+x^2)}x\,dx
+      =-\frac14\int_0^1\frac{\log(1+t)}t\,dt
+      =-\frac{\pi^2}{48}.
+\]
+The last integral follows from the absolutely convergent integrated
+alternating series for $\log(1+t)$.
+\end{proof}
+
+\paragraph{Reproducible checks.}
+The program \texttt{code/verify\_gaussian.py} computes $p=1,3,5,7,9$ in
+three ways: accelerated summation of \eqref{gau:sum-definition}, numerical
+quadrature of \eqref{gau:moment-formula}, and the finite expression
+\eqref{gau:finite-reduction}. At $90$ decimal digits the largest pairwise
+absolute residual was less than $4\cdot10^{-91}$. It also checks five
+values of the generating function, including a complex argument and
+$z=3/2$, and the removable-singularity value $F(1)$.
+The values and precision settings are recorded in
+\texttt{data/gaussian\_checks.json}. These checks detect implementation
+and transcription errors; the proofs above establish the identities.

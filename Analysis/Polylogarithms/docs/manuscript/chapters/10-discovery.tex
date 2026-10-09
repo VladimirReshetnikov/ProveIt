@@ -1,0 +1,125 @@
+\chapter{Experimental discovery and the route to proof}\label{ch:10-discovery}
+The mathematical progression of the manuscript suggests a practical method.
+One begins with a value that is easy to compute but hard to recognize, finds
+an exact transformation that organizes its arguments, and then asks which
+coordinates remain after known laws are imposed. Numerical experiments are
+especially effective at proposing those coordinates. Their usefulness
+increases when the proposed identity is subsequently derived, and when a
+negative result is recorded with enough detail to explain its limits.
+
+\section{Constructing a meaningful integer-relation experiment}
+An experiment consists of a target, a finite ordered basket of constants,
+their coefficient field, a working precision, a coefficient bound and an
+acceptance rule. Weight and character parity give strong guidance for the
+basket. For instance a rational-angle Fourier transform can require
+$\sqrt q$-weighted atoms; searching only with rational coefficients in the
+unweighted values misses that structure. The
+$\pi^3\psi^{(-3)}(1/4)$ coordinate in Chapter~\ref{ch:08-differentiation}
+is another example: omitting the $\pi^3$ factor changes the question.
+
+Before searching, remove known basket dependencies. A search containing
+both $\log\Gamma(1/2)$ and $\frac12\log\pi$ may return their tautology
+instead of a relation involving the target. Reflecting arguments,
+distributing roots of unity and replacing elementary odd beta values
+reduce this problem before numerical linear algebra starts.
+
+Working precision must exceed the cancellation loss as well as the digits
+needed to discriminate the proposed coefficient height. The heuristic
+$10^{P/d}$, for $P$ available digits and $d$ basket coordinates, estimates
+a scale at which accidental short numerical relations can appear. It is
+neither a theorem about a specific basket nor a rigorous exclusion bound.
+Coefficient sizes, conditioning and the number of searches all matter.
+The earlier false negative for $S_5$ illustrates this: a $51$-coordinate
+basket at $150$ digits obscured the height-$3840$ relation that a smaller,
+properly structured basket exposed.
+
+\section{Controls and independent recomputation}
+A planted positive control checks that the search can recover a known
+relation of comparable scale. A perturbation of one coefficient tests the
+resolution of the residual check. A negative control and an auxiliary
+``canary'' constant can expose numerical coincidences. These controls are
+diagnostics. In particular no independence theorem is known between the
+Champernowne constant and the periods in these baskets, and a zero canary
+coefficient cannot certify an identity.
+
+A successful candidate should be frozen as exact rational or algebraic
+coefficients, then reevaluated at higher precision using an independent
+representation. For a nested sum that may be an iterated integral; for a
+CM row sum it may be a modular Fourier series; for Herglotz values it may
+be a defining integral compared with the finite dilogarithm sum.
+Agreement between two engines using the same incorrect formula is less
+informative than agreement between different mathematical representations.
+Error-controlled interval evaluation can establish a finite residual
+bound, but even an arbitrarily small nonzero numerical bound alone does
+not establish equality of general transcendental constants.
+
+\section{What exact linear algebra proves}
+An exact relation matrix proves an upper bound on the number of necessary
+coordinates in its presented quotient. Its row-combination matrix is a
+replayable finite certificate relative to the input identities. A free
+column is independent in that formal quotient, not automatically among
+the evaluated numerical periods. Additional functional equations or
+regularization can reduce the quotient further.
+
+Likewise a motivic dimension theorem concerns motivic objects. To infer
+numerical independence one needs a period-injectivity statement, generally
+conjectural. A dimension for a chosen word-length grading need not be the
+dimension of the classical depth filtration. The Gaussian triples are a
+natural test case for this distinction.
+
+Certificates require both exact atom cancellation and sound law
+instantiation. Substitution strings must be parsed within a restricted
+grammar; branches and domains must be established mathematically. A
+numerical branch guard is useful for rejecting errors but leaves a
+separate domain obligation. These issues motivate a future formal
+development rather than a current claim of proof-assistant verification.
+
+\section{Computational conventions}
+The manuscript uses decreasing nested indices. In the tested Wolfram
+Language~15 interface,
+\[
+\Li_{a,b}(z_1,z_2)=
+\texttt{MultiplePolyLog[\{a,b\},\{z1,z2\}]},\qquad
+\zeta(a,b)=\texttt{MultipleZeta[\{a,b\}]}.
+\]
+Finite checks such as $\zeta(2,1,1)=\zeta(4)$ and
+$H(0,1;z)=\Li_2(z)$ calibrate the interface. A divergent call does not
+resolve ordering ambiguities on its own. The same calibration is needed
+for signed harmonic indices and generalized-polylogarithm letter order.
+
+Negative-order polygamma means the integral based at zero:
+$\psi^{(-1)}=\log\Gamma$ and
+$\psi^{(-n)}(z)=\int_0^z\psi^{(-(n-1))}(t)\,dt$ for $n\ge2$.
+Balanced conventions can differ by explicit polynomials. In Hurwitz jets,
+$\zeta^{(j)}$ always differentiates the spectral variable; the superscript
+$(k)$ on $\gamma_n$ differentiates its parameter.
+The CM hexagonal point $e^{i\pi/3}$ and the Eisenstein cube root
+$e^{2\pi i/3}$ are different arguments even when a local section denotes
+each by $\rho$.
+
+\section{The surviving research programme}
+Several concrete proof problems now fit into one framework. The odd-weight
+$S_p$ directions need a precise choice of comparison algebra and a
+rigorous reduction or obstruction; the even-weight direction has the
+generating-integral proof of Chapter~\ref{ch:04-depth}. The Gaussian and
+Eisenstein mixed points need a full regularized relation computation with
+an explicit matrix and certified reductions. The Stieltjes distribution
+ranks need a uniform proof of the divisor-row structure. Numerical
+independence of character derivative coordinates remains a separate
+arithmetic problem.
+
+The gamma programme can transport its exact row certificates across the
+DFT and prove branch validity for each law instance. Its finite-matrix
+termination should remain separate from Rohrlich's conjecture. The CM
+programme can replace fitted coefficients by modular equations and
+class-field computations, while taking account of periods under Galois
+conjugation. The Herglotz programme needs complete explicit class-character
+and unit definitions for the regulator candidates before they become
+locally replayable, followed by the relevant Stark argument.
+
+The cubic log-gamma moment and the opaque individual CM components are
+good discovery targets because their defining integrals are accessible,
+but the naive single-value baskets miss their likely depth or modular
+structure. A richer representation is often more productive than a
+larger unstructured search. The scientific value of the experiments is
+that they tell us which representation to seek next.

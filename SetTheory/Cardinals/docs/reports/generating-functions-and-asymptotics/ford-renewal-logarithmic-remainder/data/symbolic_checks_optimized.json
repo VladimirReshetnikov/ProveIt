@@ -1,0 +1,524 @@
+{
+  "status": "Exact finite checks only; not formal proofs of infinite or asymptotic statements.",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "python_optimization_level": 1,
+  "independent_Gamma_log_moments": {
+    "Gamma_shape": 2,
+    "U_definition": "U=log(Y)+EulerGamma, Y~Gamma(shape=2,rate=1)",
+    "cumulants": {
+      "1": "1",
+      "2": "-1 + pi**2/6",
+      "3": "2 - 2*zeta(3)",
+      "4": "-6 + pi**4/15"
+    },
+    "moments_0_through_4": [
+      "1",
+      "1",
+      "pi**2/6",
+      "-2*zeta(3) + pi**2/2",
+      "-8*zeta(3) + 3*pi**4/20"
+    ],
+    "c0_through_c4": [
+      "1",
+      "2",
+      "-pi**2/2",
+      "-2*pi**2 - 8*zeta(3)",
+      "-40*zeta(3) + pi**4/12"
+    ]
+  },
+  "inverse_error_law": {
+    "Tminus1_coefficient": "2*c + 2",
+    "Tminus2_coefficient": "c**2 + 2*c - pi**2/2 - 2",
+    "scope": "Coefficient matching after analytically separating O(T/B); no remainder proof here."
+  },
+  "rational_scalar_witnesses": {
+    "exp4_lower_partial_degree": 9,
+    "exp4_lower_partial": "153527/2835",
+    "exp1_upper_with_geometric_tail": "1631/600",
+    "pi_upper_polynomial_integral": "52/15",
+    "tail_log_gap_at64_rational_lower": "155583/4096"
+  },
+  "checks": [
+    {
+      "name": "density_Q0",
+      "kind": "exact finite identity",
+      "computed": "1/(V**2 + pi**2)",
+      "expected": "1/(V**2 + pi**2)",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient of s^r in b(s) f(V+P(s)), through r=4."
+    },
+    {
+      "name": "density_Q1",
+      "kind": "exact finite identity",
+      "computed": "1/(2*V**2 + 2*pi**2)",
+      "expected": "1/(2*(V**2 + pi**2))",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient of s^r in b(s) f(V+P(s)), through r=4."
+    },
+    {
+      "name": "density_Q2",
+      "kind": "exact finite identity",
+      "computed": "-2*V*p2/(V**4 + 2*pi**2*V**2 + pi**4) + 1/(12*V**2 + 12*pi**2)",
+      "expected": "-2*V*p2/(V**2 + pi**2)**2 + 1/(12*(V**2 + pi**2))",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient of s^r in b(s) f(V+P(s)), through r=4."
+    },
+    {
+      "name": "density_Q3",
+      "kind": "exact finite identity",
+      "computed": "-V*p2/(V**4 + 2*pi**2*V**2 + pi**4) - 2*V*p3/(V**4 + 2*pi**2*V**2 + pi**4)",
+      "expected": "-2*V*(p2/2 + p3)/(V**2 + pi**2)**2",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient of s^r in b(s) f(V+P(s)), through r=4."
+    },
+    {
+      "name": "density_Q4",
+      "kind": "exact finite identity",
+      "computed": "4*V**2*p2**2/(V**6 + 3*pi**2*V**4 + 3*pi**4*V**2 + pi**6) - V*p2/(6*V**4 + 12*pi**2*V**2 + 6*pi**4) - V*p3/(V**4 + 2*pi**2*V**2 + pi**4) - 2*V*p4/(V**4 + 2*pi**2*V**2 + pi**4) - p2**2/(V**4 + 2*pi**2*V**2 + pi**4) - 1/(720*V**2 + 720*pi**2)",
+      "expected": "-2*V*(p2/12 + p3/2 + p4)/(V**2 + pi**2)**2 + p2**2*(4*V**2/(V**2 + pi**2) - 1)/(V**2 + pi**2)**2 - 1/(720*(V**2 + pi**2))",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient of s^r in b(s) f(V+P(s)), through r=4."
+    },
+    {
+      "name": "Bernoulli_prefactor_through_degree4",
+      "kind": "exact finite identity",
+      "computed": "-s**4/720 + s**2/12 + s/2 + 1",
+      "expected": "-s**4/720 + s**2/12 + s/2 + 1",
+      "residual": "0",
+      "passed": true,
+      "context": "Finite Taylor expansion of s/(1-exp(-s))."
+    },
+    {
+      "name": "P_hyperbolic_part_through_degree4",
+      "kind": "exact finite identity",
+      "computed": "s**4/240 - s**2/12",
+      "expected": "s**4/240 - s**2/12",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the elementary contributions to p2 and p4."
+    },
+    {
+      "name": "c0_Gamma_log_moments_vs_generator",
+      "kind": "exact finite identity",
+      "computed": "1",
+      "expected": "1",
+      "residual": "0",
+      "passed": true,
+      "context": "Independent finite Gamma log-moment and generator calculations."
+    },
+    {
+      "name": "c0_displayed_constant",
+      "kind": "exact finite identity",
+      "computed": "1",
+      "expected": "1",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the five displayed leading-sector constants."
+    },
+    {
+      "name": "c1_Gamma_log_moments_vs_generator",
+      "kind": "exact finite identity",
+      "computed": "2",
+      "expected": "2",
+      "residual": "0",
+      "passed": true,
+      "context": "Independent finite Gamma log-moment and generator calculations."
+    },
+    {
+      "name": "c1_displayed_constant",
+      "kind": "exact finite identity",
+      "computed": "2",
+      "expected": "2",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the five displayed leading-sector constants."
+    },
+    {
+      "name": "c2_Gamma_log_moments_vs_generator",
+      "kind": "exact finite identity",
+      "computed": "-pi**2/2",
+      "expected": "-pi**2/2",
+      "residual": "0",
+      "passed": true,
+      "context": "Independent finite Gamma log-moment and generator calculations."
+    },
+    {
+      "name": "c2_displayed_constant",
+      "kind": "exact finite identity",
+      "computed": "-pi**2/2",
+      "expected": "-pi**2/2",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the five displayed leading-sector constants."
+    },
+    {
+      "name": "c3_Gamma_log_moments_vs_generator",
+      "kind": "exact finite identity",
+      "computed": "-2*pi**2 - 8*zeta(3)",
+      "expected": "-2*pi**2 - 8*zeta(3)",
+      "residual": "0",
+      "passed": true,
+      "context": "Independent finite Gamma log-moment and generator calculations."
+    },
+    {
+      "name": "c3_displayed_constant",
+      "kind": "exact finite identity",
+      "computed": "-2*pi**2 - 8*zeta(3)",
+      "expected": "-2*pi**2 - 8*zeta(3)",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the five displayed leading-sector constants."
+    },
+    {
+      "name": "c4_Gamma_log_moments_vs_generator",
+      "kind": "exact finite identity",
+      "computed": "-40*zeta(3) + pi**4/12",
+      "expected": "-40*zeta(3) + pi**4/12",
+      "residual": "0",
+      "passed": true,
+      "context": "Independent finite Gamma log-moment and generator calculations."
+    },
+    {
+      "name": "c4_displayed_constant",
+      "kind": "exact finite identity",
+      "computed": "-40*zeta(3) + pi**4/12",
+      "expected": "-40*zeta(3) + pi**4/12",
+      "residual": "0",
+      "passed": true,
+      "context": "Checks the five displayed leading-sector constants."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_1",
+      "kind": "exact finite identity",
+      "computed": "-x/(x + 1) + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_2",
+      "kind": "exact finite identity",
+      "computed": "x**2/(x + 1) - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_3",
+      "kind": "exact finite identity",
+      "computed": "-x**3/(x + 1) + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_4",
+      "kind": "exact finite identity",
+      "computed": "x**4/(x + 1) - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_5",
+      "kind": "exact finite identity",
+      "computed": "-x**5/(x + 1) + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_6",
+      "kind": "exact finite identity",
+      "computed": "x**6/(x + 1) - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_7",
+      "kind": "exact finite identity",
+      "computed": "-x**7/(x + 1) + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_8",
+      "kind": "exact finite identity",
+      "computed": "x**8/(x + 1) - x**7 + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_9",
+      "kind": "exact finite identity",
+      "computed": "-x**9/(x + 1) + x**8 - x**7 + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_10",
+      "kind": "exact finite identity",
+      "computed": "x**10/(x + 1) - x**9 + x**8 - x**7 + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_11",
+      "kind": "exact finite identity",
+      "computed": "-x**11/(x + 1) + x**10 - x**9 + x**8 - x**7 + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "alternating_geometric_remainder_order_12",
+      "kind": "exact finite identity",
+      "computed": "x**12/(x + 1) - x**11 + x**10 - x**9 + x**8 - x**7 + x**6 - x**5 + x**4 - x**3 + x**2 - x + 1",
+      "expected": "1/(x + 1)",
+      "residual": "0",
+      "passed": true,
+      "context": "Exact finite identity; no convergence hypothesis on |x|."
+    },
+    {
+      "name": "product_denominator_substitution",
+      "kind": "exact finite identity",
+      "computed": "(1 - rho)*(rho*(1 - t)/(1 - rho) + 1)",
+      "expected": "-rho*t + 1",
+      "residual": "0",
+      "passed": true,
+      "context": "Substitution x=beta(1-t), beta=rho/(1-rho)."
+    },
+    {
+      "name": "inverse_input_logarithm",
+      "kind": "exact finite identity",
+      "computed": "z**2*(2 + pi**2/2) - 2*z",
+      "expected": "z**2*(2 + pi**2/2) - 2*z",
+      "residual": "0",
+      "passed": true,
+      "context": "Finite logarithm algebra for the relative error factor."
+    },
+    {
+      "name": "inverse_Tminus1_matching_equation",
+      "kind": "exact finite identity",
+      "computed": "alpha1 - 2*c - 2",
+      "expected": "alpha1 - 2*c - 2",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient equation for the manuscript's T^-1 term."
+    },
+    {
+      "name": "inverse_Tminus2_matching_equation",
+      "kind": "exact finite identity",
+      "computed": "alpha2 - c**2 - 2*c + 2 + pi**2/2",
+      "expected": "alpha2 - c**2 - 2*c + 2 + pi**2/2",
+      "residual": "0",
+      "passed": true,
+      "context": "Coefficient equation for the manuscript's T^-2 term."
+    },
+    {
+      "name": "inverse_retained_residual_vanishes",
+      "kind": "exact finite identity",
+      "computed": "-c**2*z**2 - 2*c*z**2 - 2*c*z + z**2*(c**2 + 2*c - pi**2/2 - 2) + 2*z**2 + pi**2*z**2/2 + z*(2*c + 2) - 2*z",
+      "expected": "0",
+      "residual": "0",
+      "passed": true,
+      "context": "The retained constant, T^-1, and T^-2 residuals cancel exactly."
+    },
+    {
+      "name": "exp4_positive_partial_sum_exceeds_54",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "437/2835",
+      "passed": true,
+      "context": "With the positive exponential Taylor remainder, e^4>54 and 18e^-4<1/3."
+    },
+    {
+      "name": "exp1_geometric_tail_upper_below_11_over4",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "19/600",
+      "passed": true,
+      "context": "After term 1/5!, later successive ratios are at most 1/6."
+    },
+    {
+      "name": "exp1_geometric_tail_upper_below3",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "169/600",
+      "passed": true,
+      "context": "Rational support for e<3, hence e^-1>1/3."
+    },
+    {
+      "name": "exp4_from_exp1_upper_below64",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "1217943454079/129600000000",
+      "passed": true,
+      "context": "Rational support for e^4<64; n^-1/2<=1/64<e^-4 at n>=4096."
+    },
+    {
+      "name": "exp5_partial_sum_exceeds64",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "11/8",
+      "passed": true,
+      "context": "Rational support for log(64)<5."
+    },
+    {
+      "name": "exp3_partial_sum_exceeds10",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "3",
+      "passed": true,
+      "context": "Rational support for log(10)<3."
+    },
+    {
+      "name": "pi_integrand_upper_polynomial_remainder",
+      "kind": "exact finite identity",
+      "computed": "1/(x**2 + 1)",
+      "expected": "-x**6/(x**2 + 1) + x**4 - x**2 + 1",
+      "residual": "0",
+      "passed": true,
+      "context": "On 0<x<1 the remainder is negative; integrating gives a rational upper bound for pi."
+    },
+    {
+      "name": "pi_polynomial_upper_below4",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "8/15",
+      "passed": true,
+      "context": "The integrated upper polynomial is 52/15<4."
+    },
+    {
+      "name": "density_lower_constant",
+      "kind": "exact finite identity",
+      "computed": "9/50",
+      "expected": "9/50",
+      "residual": "0",
+      "passed": true,
+      "context": "Combines h>=1/2, |R|<=4L/3 and pi<L."
+    },
+    {
+      "name": "density_upper_constant",
+      "kind": "exact finite identity",
+      "computed": "9/4",
+      "expected": "9/4",
+      "residual": "0",
+      "passed": true,
+      "context": "Combines h<=1 and |R|>=2L/3."
+    },
+    {
+      "name": "density_R_lower_margin",
+      "kind": "exact finite identity",
+      "computed": "L/3 - 4/3",
+      "expected": "L/3 - 4/3",
+      "residual": "0",
+      "passed": true,
+      "context": "Nonnegative for L>=4, by the stated assumption."
+    },
+    {
+      "name": "density_R_upper_margin",
+      "kind": "exact finite identity",
+      "computed": "L/3 - 4/3",
+      "expected": "L/3 - 4/3",
+      "residual": "0",
+      "passed": true,
+      "context": "Nonnegative for L>=4, by the stated assumption."
+    },
+    {
+      "name": "minus_log_linear_lower_derivative",
+      "kind": "exact finite identity",
+      "computed": "-1 + 1/(1 - u)",
+      "expected": "u/(1 - u)",
+      "residual": "0",
+      "passed": true,
+      "context": "Nonnegative on [0,1); supports -u-log(1-u)>=0."
+    },
+    {
+      "name": "minus_log_quadratic_upper_derivative",
+      "kind": "exact finite identity",
+      "computed": "2*u + 1 - 1/(1 - u)",
+      "expected": "u*(1 - 2*u)/(1 - u)",
+      "residual": "0",
+      "passed": true,
+      "context": "Nonnegative for 0<=u<=1/2; supports -u-log(1-u)<=u^2."
+    },
+    {
+      "name": "binomial_exponential_bound_derivative",
+      "kind": "exact finite identity",
+      "computed": "u/(1 - u)**2",
+      "expected": "u/(1 - u)**2",
+      "residual": "0",
+      "passed": true,
+      "context": "Supports log(1-u)>=-u/(1-u), used at u=1/n."
+    },
+    {
+      "name": "upper_tail_log_gap_derivative",
+      "kind": "exact finite identity",
+      "computed": "1 - 4/r - 2/(r*log(r)) + r**(-2) + 2/(r**3*(1 + r**(-2)))",
+      "expected": "1 - 4/r - 2/(r*log(r)) + 2/(r*(r**2 + 1)) + r**(-2)",
+      "residual": "0",
+      "passed": true,
+      "context": "For r>=64, log(r)>1 gives a lower bound 1-6/r."
+    },
+    {
+      "name": "upper_tail_derivative_lower_at64",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "29/32",
+      "passed": true,
+      "context": "Positive uniform derivative lower bound for r>=64."
+    },
+    {
+      "name": "upper_tail_log_gap_lower_at64",
+      "kind": "exact rational scalar inequality",
+      "positive_difference": "155583/4096",
+      "passed": true,
+      "context": "Uses log64<5, log10<3, and log(1+1/4096)<=1/4096."
+    },
+    {
+      "name": "lower_bound_restricted_interval_integral",
+      "kind": "exact finite identity",
+      "computed": "3/(8*n**2)",
+      "expected": "3/(8*n**2)",
+      "residual": "0",
+      "passed": true,
+      "context": "Integral of u over [1/(2n),1/n]."
+    },
+    {
+      "name": "lower_bound_prefactor",
+      "kind": "exact finite identity",
+      "computed": "9/1600",
+      "expected": "9/1600",
+      "residual": "0",
+      "passed": true,
+      "context": "Product of the scalar factors in the lower bound."
+    },
+    {
+      "name": "lower_bound_final_constant_margin",
+      "kind": "exact finite identity",
+      "computed": "-1/(200*n*(n + 1)) + 9/(1600*n**2)",
+      "expected": "(n + 9)/(1600*n**2*(n + 1))",
+      "residual": "0",
+      "passed": true,
+      "context": "Strictly positive for n>0, by the displayed positive-factor form."
+    }
+  ],
+  "check_count": 55,
+  "all_checks_passed": true,
+  "elapsed_seconds": 2.7845983320003143
+}

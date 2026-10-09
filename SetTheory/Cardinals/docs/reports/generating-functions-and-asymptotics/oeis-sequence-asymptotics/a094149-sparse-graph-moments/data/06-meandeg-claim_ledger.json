@@ -1,0 +1,157 @@
+{
+  "notation": {
+    "w": "positive Lambert W(k/c)",
+    "H_k(c)": "E[(X+c)^k], X~Pois(c)",
+    "TV": "one half of the l1 distance"
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "name": "Limiting tree moment and exact first-child recurrence",
+      "labels": [
+        "def:graphmoment",
+        "def:recurrence",
+        "def:rotation"
+      ],
+      "regime": "Every fixed k and c>0",
+      "status": "proved; foundational enumeration credited",
+      "proof_dependencies": [
+        "finite graph trace expansion",
+        "first-discovery bijection",
+        "time-shift averaging including periodic words"
+      ]
+    },
+    {
+      "id": "C2",
+      "name": "Uniform compact-c finite-collision expansion",
+      "labels": [
+        "cm:main"
+      ],
+      "regime": "c in any fixed compact K within (0,infinity); every fixed collision order p",
+      "formula": "m_k/(2H_k)=1+sum_{j=1}^p A_j+O_{K,p}(log^(10p+6)(k)/k^(p+1)); A_j~c^j w^(3j)/(2^j j! k^j)",
+      "status": "proved extension of earlier c=1 method",
+      "priority_boundary": "Sharper remainder equivalence alone follows from one further term in the earlier all-orders construction."
+    },
+    {
+      "id": "C3",
+      "name": "Explicit logarithmic evaluation",
+      "labels": [
+        "cm:explicit",
+        "cm:exponential"
+      ],
+      "regime": "c in fixed compact K within (0,infinity)",
+      "formula": "log(m_k/(2H_k))=c w^2(w+2+2c)/(2k)+c w^5/(6k^2)+O_K(w^4/k^2)",
+      "status": "proved explicit uniform evaluation",
+      "proof_dependencies": [
+        "quantitative saddle ratios",
+        "exact G1",
+        "pair collision cancellation",
+        "single order-three collision coefficient"
+      ]
+    },
+    {
+      "id": "C4",
+      "name": "Signed deficit law and two sharp total variation constants",
+      "labels": [
+        "dl:main"
+      ],
+      "regime": "c in fixed compact K within (0,infinity); lambda=cw, epsilon=w^2/k",
+      "formula": "nu=pi_lambda[1+epsilon(s-lambda)+epsilon C2/(2lambda)]+r; ||r||_1=O_K(w^(3/2)/k+w^16/k^2)",
+      "consequences": [
+        "TV(nu,Pois(cw))~sqrt(c/(2pi))*w^(5/2)/k",
+        "TV(nu,Pois(cw+cw^3/k))~phi(1)*w^2/k"
+      ],
+      "status": "proved; proposed new relative to inspected sources",
+      "scope": "Moment-weighted maximum-departure deficit; not graph vertex degree."
+    },
+    {
+      "id": "C5",
+      "name": "Global optimality over Poisson means",
+      "labels": [
+        "dl:optimal"
+      ],
+      "regime": "Same compact-c regime",
+      "formula": "inf_{theta>=0} TV(nu,Pois(theta))~phi(1)*w^2/k",
+      "status": "proved; proposed new relative to inspected sources",
+      "proof_dependencies": [
+        "signed quadratic expansion",
+        "Gaussian absolute-error profile",
+        "global Poisson separation lemma"
+      ]
+    },
+    {
+      "id": "C6",
+      "name": "Positive two-jump compound Poisson approximation",
+      "labels": [
+        "dl:compound"
+      ],
+      "regime": "Same compact-c regime",
+      "formula": "Y~Pois(cw), J~Pois(cw^3/(2k)) independently; TV(nu,Law(Y+2J))=O_K(w^(3/2)/k+w^16/k^2)=o_K(w^2/k)",
+      "status": "proved corollary of signed expansion",
+      "scope": "Auxiliary approximation; no independence decomposition of actual walks is asserted."
+    },
+    {
+      "id": "C7",
+      "name": "Critical growing-degree full-moment transition",
+      "labels": [
+        "gd:main"
+      ],
+      "regime": "a<=cW(k/c)/sqrt(k)<=b for fixed 0<a<b",
+      "formula": "m_k(c)/(2H_k(c))=exp(c^2w^2/k)[1+O_{a,b}(k^(-1/4)log^(13/4)(k))]",
+      "status": "proved; proposed new relative to inspected sources",
+      "proof_dependencies": [
+        "exact Catalan forest count",
+        "weighted allocation inequality",
+        "full growing-c complement proof",
+        "weighted rotation",
+        "critical fresh-law concentration"
+      ],
+      "limitation": "Conservative, not sharp, vanishing error; graph-size limit already taken."
+    },
+    {
+      "id": "C8",
+      "name": "Simple off-hub edges dominate in the critical regime",
+      "labels": [
+        "gd:simpledominance"
+      ],
+      "regime": "Critical growing-degree window of C7",
+      "formula": "Weight fraction outside a near-hub class with every off-hub edge simple is O(k^(-1/4)log^(13/4)(k))",
+      "status": "proved structural corollary"
+    },
+    {
+      "id": "V1",
+      "name": "Exact finite checks",
+      "artifact": "data/exact_checks.json",
+      "status": "PASS",
+      "scope": "Finite exact identities, not asymptotic certification"
+    },
+    {
+      "id": "V2",
+      "name": "Symbolic finite checks",
+      "artifact": "data/symbolic_checks.json",
+      "status": "PASS",
+      "scope": "Finite polynomial identities and Catalan products, not an all-order proof"
+    },
+    {
+      "id": "N1",
+      "name": "Floating-point illustrations",
+      "artifacts": [
+        "data/moment_diagnostics.json",
+        "data/deficit_diagnostics.json",
+        "data/critical_diagnostics.json"
+      ],
+      "status": "numerical diagnostics",
+      "scope": "First-collision and simple-forest models explicitly labeled; stability under wider sums, not interval certificates"
+    },
+    {
+      "id": "Q1-Q12",
+      "name": "Twelve further research questions",
+      "labels": [
+        "sec:research"
+      ],
+      "status": "open/proposed; not claimed solved"
+    }
+  ],
+  "proof_status": "Written mathematical proofs with independent internal AI-assisted audits; not peer review or proof-assistant verification.",
+  "priority_status": "Bounded-source extension assessment; no worldwide-priority certification."
+}
