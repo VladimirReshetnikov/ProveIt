@@ -9802,3 +9802,15 @@ additive 16-tuple image conclusion, robust Bogolyubov–Ruzsa progression
 extraction, the later common-extension and structure steps, or the final
 printed numerical comparison. The five numbered open entries remain.
 No upstream code is ported at this checkpoint.
+
+Verification after merging the direct column BSG application, its word
+construction, prime-target Step 4 and the BSG growth certificates:
+all 31 new named proofs pass individual axiom checks. The complete global
+endpoint production closure compiles across 245 modules; the generic
+bounded-image integration closure has 475 modules. The full combined
+audit checks 8,918 public Gowers theorems across 5,477 modules (5,475 in
+the facade closure), using only `propext`, `Classical.choice`, and
+`Quot.sound`. The selected OAI audit closure remains 4,152 modules. The
+regenerated catalogue is byte-identical: 115 companion proofs and five
+open statements; this count does not certify fidelity to every printed
+statement. The selected-port scope check passes.
