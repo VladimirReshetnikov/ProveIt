@@ -25,6 +25,10 @@ def HasCoherentProgressionRows {N : Nat} [NeZero N]
       rowProgressionQuadrupleDensity delta (uniformAnchorIndexDensity delta kappa d r) d r*(N : Real)^3 ≤ S.card ∧
       (affineRowConstants J c).card ≤ 8*jointSelectionRank d r ∧
       (∀ j, ∀ i ∈ J j, FreimanHom 2 P.carrier (psi j i) ∧ psi j i 0 = 0) ∧
+      (∃ Gamma : Finset (ZMod N),
+        Gamma.card ≤ rowCommonBohrRank delta (uniformAnchorIndexDensity delta kappa d r) d r ∧
+        P.carrier ⊆ bohr Gamma ((1/(8*Real.pi))/4) ∧
+        ∀ j, ∀ i ∈ J j, FreimanHom 2 (bohr Gamma (1/(8*Real.pi))) (psi j i) ∧ psi j i 0 = 0) ∧
       ∀ b ∈ S, b 0+b 1 = b 2+b 3 ∧ (∀ j, b j ∈ P.carrier) ∧
         Function.Injective (fun j => t j+b j) ∧
         shiftAnchorArrangement x y (fun j => t j+b j) ∈ H ∧
@@ -42,13 +46,13 @@ theorem HasCoherentAnchorSystemOn.progression_rows {N d : Nat} [NeZero N]
     (hT : ∀ x, (T x).card ≤ d) :
     HasCoherentProgressionRows H T L delta kappa d r := by
   obtain ⟨s,J,x,y,R,hs,hbudget,hJ,hR,hproperties⟩ := h.row_indices_uniform hk hd hT
-  obtain ⟨P,t,S,psi,c,hPrank,hPproper,hPmass,ht,hSne,hS,hpsi,hrealize⟩ :=
+  obtain ⟨P,t,S,psi,c,hPrank,hPproper,hPmass,ht,hSne,hS,hpsi,hcommon,hrealize⟩ :=
     joint_rows_on_proper_progression s T J R hs hJ (uniformAnchorIndexDensity_pos hd hk d r) hR
       (fun a ha => (hproperties a ha).1) (fun a ha j => ((hproperties a ha).2.2.2.2.2 j).2)
   have hconst : (affineRowConstants J c).card ≤ 8*jointSelectionRank d r := by
     have h := affineRowConstants_card_le J c hJ
     omega
-  refine ⟨s,J,x,y,P,t,S,psi,c,hs,hbudget,hJ,hPrank,hPproper,hPmass,ht,hSne,hS,hconst,hpsi,?_⟩
+  refine ⟨s,J,x,y,P,t,S,psi,c,hs,hbudget,hJ,hPrank,hPproper,hPmass,ht,hSne,hS,hconst,hpsi,hcommon,?_⟩
   intro b hb
   obtain ⟨hbadd,hbP,hbR,hbaffine⟩ := hrealize b hb
   obtain ⟨haadd,hainj,haH,halocal,hacoherent,hafreq⟩ := hproperties _ hbR

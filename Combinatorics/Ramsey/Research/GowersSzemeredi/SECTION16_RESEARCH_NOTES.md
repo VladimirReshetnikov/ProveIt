@@ -8571,3 +8571,74 @@ five open entries, with the existing statement-fidelity qualifications.
 The selected port scope is unchanged at 4,134 upstream and 17 compatibility
 modules. The branch is synchronized with main before the audit; no incoming
 changes alter the verification closure.
+
+
+### J.134. Relation-rank refinement preserving coherent quadruples
+
+**Retain the full frequency domain.** The progression-row and single-family
+conclusions now retain the spectrum already constructed in the proof:
+its size is bounded by `rowCommonBohrRank`, the proper progression lies
+in its quarter Bohr set, and every varying frequency map is normalized
+and Freiman on the full Bohr set of radius `1/(8*pi)`. The global theorem
+and the same-witness column-agreement theorem retain this stronger data.
+No new assumption or density loss is introduced by this strengthening.
+
+**Translations preserve the varying list.** For a normalized Freiman map
+on `B(Gamma,rho)`, a centre in `B(Gamma,rho/2)` and a point in
+`B(Gamma,rho/4)` satisfy `theta(t+u)=theta(t)+theta(u)`.
+`translatedFrequencyBase` adds all four centre values of each map to the
+fixed spectrum, costing at most `4*ell` frequencies. On the new vertical
+domain at half radius, the old translated domain constraints hold. All
+`ell` varying maps remain unchanged.
+
+**Localize whole coherent configurations.**
+`coherent_translation_localization` refines a coherent family of quadruple
+density `kappa` into any target set of ambient density at least `p` inside
+the same quarter Bohr set. Additive translation averaging first retains
+`kappa*p^4`; collision removal and pointwise row selection then retain
+`kappa*p^4/512`, provided `8 <= kappa*p^4*N`. The translation centres lie
+in the half Bohr set: this follows from an actual surviving configuration,
+not an assumption on the averaging output. The new single family retains
+local Freiman linearity, normalization, dense coherent quadruples, and
+actual translated witnesses in the original family.
+
+`HasCoherentTranslationRefinement` packages these witnesses for iteration.
+For a refined spectrum of size at most `d`, the quarter Bohr density is
+bounded below by `quarterBohrDensity d rho = refinementCells(rho/4)^(-d)`.
+`coherent_bohr_refinement` therefore provides a quantified refinement for
+any enlarged spectrum, with the same varying maps and their Freiman
+identities on the new full Bohr domain.
+
+**Strict rank increase with coherence retained.**
+`coherent_relation_rank_step` combines this result with the existing
+bounded-bad-pair rank theorem. If the bad-pair estimate at error `epsilon`
+and cutoff `R` fails, set
+
+`D = relationRankStep epsilon ((2*R+1)^(|B|+2*ell)) cells |Gamma|`.
+
+The constructed new spectrum contains `Gamma`, has size at most `D`, and
+strictly enlarges the relation submodule of the unchanged varying family.
+At the same time it yields a coherent translation refinement of density
+`kappa*(quarterBohrDensity D rho)^4/512`. Thus the rank potential and the
+coherent quadruple family can now be advanced in the same step. This
+addresses the defect that retaining an arbitrary dense vertex subset
+need not retain a dense coherent quadruple family. A uniform terminating
+iteration, the subsequent BSG argument, and the final quantitative budget
+are still required.
+
+The four new modules check in a 461-module production closure. Eight new
+named theorems and eight affected existing/global theorems pass individual
+axiom checks with only `propext`, `Classical.choice`, and `Quot.sound`.
+No upstream code is added and no numbered catalogue entry is closed.
+
+
+**Final merged verification.** The complete audit checks 8,221 public
+Gowers theorems in 5,366 combined modules (5,364 facade modules, including
+4,152 OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+The eight new named theorems and eight affected existing/global proofs
+also pass individual axiom checks. The numbered ledger is byte-for-byte
+unchanged at 115 companions and five open entries, retaining all existing
+statement-fidelity qualifications. The port scope remains 4,134 upstream
+and 17 compatibility modules. Reviewed incoming changes concern only the
+independent topology obstruction certificates, code, tests, and report;
+they add no Gowers dependency or licensing scope.

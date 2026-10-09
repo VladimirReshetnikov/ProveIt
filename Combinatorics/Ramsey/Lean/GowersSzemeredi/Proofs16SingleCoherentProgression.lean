@@ -23,6 +23,10 @@ def IsSingleCoherentProgression {N : Nat} [NeZero N]
     rowProgressionDensity delta (uniformAnchorIndexDensity delta kappa d r) d r*N ≤ (P.carrier.card : Real) ∧
     B.card ≤ 8*jointSelectionRank d r ∧ ell ≤ 8*jointSelectionRank d r ∧
     (∀ i, FreimanHom 2 P.carrier (theta i) ∧ theta i 0 = 0) ∧
+    (∃ Gamma : Finset (ZMod N),
+      Gamma.card ≤ rowCommonBohrRank delta (uniformAnchorIndexDensity delta kappa d r) d r ∧
+      P.carrier ⊆ bohr Gamma ((1/(8*Real.pi))/4) ∧
+      ∀ i, FreimanHom 2 (bohr Gamma (1/(8*Real.pi))) (theta i) ∧ theta i 0 = 0) ∧
     t 0+t 1 = t 2+t 3 ∧ X ⊆ P.carrier ∧
     singleProgressionDensity delta kappa d r*N ≤ (X.card : Real) ∧
     singleProgressionDensity delta kappa d r*(N : Real)^3 ≤ Q.card ∧
@@ -56,8 +60,15 @@ theorem HasCoherentProgressionRows.single_system {N d : Nat} [NeZero N]
     (h : HasCoherentProgressionRows H T L delta kappa d r)
     (hN : 8 ≤ coherentProgressionDensity delta kappa d r*(N : Real)) :
     HasSingleCoherentProgression H T L delta kappa d r := by
-  obtain ⟨s,J,x,y,P,t,S,psi,c,hs,hbudget,hJ,hPrank,hPproper,hPmass,ht,hSne,hS,hconst,hpsi,hprops⟩ := h
-  obtain ⟨ell,theta,hell,htheta,heq⟩ := exists_unified_freiman_family P.carrier J psi hJ hpsi
+  obtain ⟨s,J,x,y,P,t,S,psi,c,hs,hbudget,hJ,hPrank,hPproper,hPmass,ht,hSne,hS,hconst,hpsi,hcommon,hprops⟩ := h
+  obtain ⟨Gamma,hGamma,hPsub,hpsiBohr⟩ := hcommon
+  obtain ⟨ell,theta,hell,hthetaBohr,heq⟩ := exists_unified_freiman_family
+    (bohr Gamma (1/(8*Real.pi))) J psi hJ hpsiBohr
+  have hrho : (0 : Real) < 1/(8*Real.pi) := by positivity
+  have hPfull : P.carrier ⊆ bohr Gamma (1/(8*Real.pi)) :=
+    hPsub.trans (bohr_mono_radius _ (by linarith : (1/(8*Real.pi))/4 ≤ 1/(8*Real.pi)))
+  have htheta : ∀ i, FreimanHom 2 P.carrier (theta i) ∧ theta i 0 = 0 := fun i =>
+    ⟨IsAddFreimanHom.subset hPfull (hthetaBohr i).1 (Set.mapsTo_univ _ _),(hthetaBohr i).2⟩
   obtain ⟨color,R,hRS,hR,hXP,hX,hlocal,hcoherent⟩ := coherent_four_rows_to_single
     S P.carrier J c psi (fun j u => shiftAnchorMap T L r x y (t j+u)) (jointSelectionRadius d r)
     (fun b hb => (hprops b hb).1) (fun b hb => (hprops b hb).2.1) hS hN
@@ -67,7 +78,7 @@ theorem HasCoherentProgressionRows.single_system {N d : Nat} [NeZero N]
     unfold freimanFrequencyBohr unifiedRowBohrDomain
     rw [heq u]
   refine ⟨P,affineRowConstants J c,ell,theta,x,y,t,color,labeledRowSupport S color,R,
-    hPrank,hPproper,hPmass,hconst,by omega,htheta,ht,hXP,hX,hR,?_,?_⟩
+    hPrank,hPproper,hPmass,hconst,by omega,htheta,⟨Gamma,hGamma,hPsub,hthetaBohr⟩,ht,hXP,hX,hR,?_,?_⟩
   · intro u hu
     refine ⟨?_,(hlocal u hu).2,?_⟩
     · rw [hdomain]
