@@ -9499,3 +9499,87 @@ including the unchanged 4,152 OAI modules. The generated ledger remains
 byte-identical at 115 companions and five open statements. Port scope
 passes with the unchanged 4,134 upstream and 17 compatibility modules;
 no license or provenance scope is added.
+
+
+### J.141. Two nested word families from the same refined system
+
+Eleven new modules construct the two compatible-word layers needed by
+the common-extension argument. They add twenty-seven named proofs and no
+upstream port. The construction remains valid independently of the
+quantitative weakness of the earlier zero-core parameters documented in
+J.5c; it does not repair that weakness.
+
+**Restarting on actual exact quadruples.** The first word extraction has
+ambient set `A` and anchor set `P`, with densities at least
+`9*kappa^2/512` and `9*kappa^2/1024`. Its inherited richness applies to
+`P` itself: the word-density cutoff is below the guaranteed density of
+`P`. Consequently `P` contains an exact quadruple family of density
+`kappa2 = d*kappa^28`, where
+`d = coherentRobustWalkCoefficient^2*(9/1024)^4/2` is positive.
+`CoherentFrequencyFamily.exact_subfamily` supplies its normalized local
+maps and all quadruple identities at radius `sigma/1296`.
+This family is counted anew using richness; arbitrary restriction of the
+original quadruple family would not justify the density.
+
+The bridge-system restriction, threshold monotonicity and index-shift
+lemmas allow the second extraction to use the same frequency system,
+maps and regularity certificate. Its radius starts four levels later,
+since `6^4=1296`. Depth seven suffices for both extraction stages.
+
+**One accuracy schedule for both layers.** Let `P_K,S_K` be the word
+bridge power and scale from J.140. For outer and inner bounds `K,J`, use
+`P=max(P_K,28*P_J)` and `S=S_K+S_J/d^P_J`.
+For `0 < kappa <= 1`, the chosen accuracy `kappa^P/S` is at most both
+`kappa^P_K/S_K` and `kappa2^P_J/S_J`. All inequalities and the exact
+monomial identity are proved. No second regularity loss is introduced.
+
+`HasCoherentNestedWordFamily` retains the first layer's richness, triple
+and word counts, the exact new quadruple mass, and a second word family
+on `P`. Unpacking gives sets `D ⊆ C ⊆ P ⊆ A ⊆ X`. Words anchored in
+`D` have entries in `C`, hence in the first layer's anchor set `P`.
+The two endpoint identity systems use the same maps throughout.
+`HasCoherentNestedWordFamily.layers` combines both counts and identities
+on one common radius. For `K=35,J=11`, this supplies the nesting required
+for twelve anchors to thirty-six entries, followed by thirty-six anchors
+to one hundred eight entries.
+
+**Reserve the later profile scale explicitly.** Choose bridge depth
+`13+2*(K+J+2)` and common radius
+`R = sigma/(1296^2*9^(K+J+2)*3000)`.
+The denominator is bounded by `6^depth`. The original cell budget
+therefore satisfies `3 <= R*H` at every regularity stopping time.
+The common radius is below both layers' endpoint identity radii for all
+relevant word lengths. The factor `3000` reserves room for the later
+extension scales; no tuple-level coverage assertion is inferred from
+this numerical comparison alone.
+
+`DenseBohrGraphProfiles.nested_profile` gives an actual graph profile
+with fixed radius `R` and varying radius `R/3`, provided the original
+radius is below `1/4`. Its density and box-error bounds are those of the
+retained profile certificate.
+
+The single-family, popular-anchor and global wrappers preserve the
+original source map, original witnesses, full refinement data, profiles,
+both word layers and both endpoint identity systems. The explicit global
+modulus bound uses the above depth, power and scale and depends only on
+original density and the two word-length bounds.
+
+The remaining local common-extension and structural arguments are not
+proved here. In addition, the kernel-checked growth obstruction in J.5c
+shows the current global input chain cannot meet the final polynomial
+contract merely through improvements downstream. The generic nested
+construction can be reused with a replacement input chain. Neither a
+numbered catalogue entry nor a tighter final Gowers threshold is claimed.
+
+Verification after merging the incoming growth-obstruction and abstract BSG
+modules: all 27 new named nested-construction proofs pass individual axiom
+checks. The full combined audit checks 8,702 public Gowers theorems across
+5,457 modules (5,455 in the facade closure), using only `propext`,
+`Classical.choice`, and `Quot.sound`. The selected OAI audit closure remains
+4,152 modules. The generated catalogue is byte-identical: 115 companion
+proofs and five open statements; this count does not certify fidelity to
+every printed statement. The selected-port scope check passes.
+
+After also merging `Proofs16AbstractBSGCore`, the final audit passes with
+8,715 public Gowers theorems, 5,458 combined modules and 5,456 facade
+modules. The axiom boundary, port scope and numbered catalogue are unchanged.

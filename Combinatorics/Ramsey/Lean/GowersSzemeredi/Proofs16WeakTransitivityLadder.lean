@@ -11,7 +11,8 @@ Let `R : ℕ → V → V → Prop` be a family of relations on a finite vertex s
 * `chainCount r S m x y` counts the sequences `z₁, …, z_m ∈ S` with
   `r x z₁, r z₁ z₂, …, r z_m y`;
 * `chainCount_le`: there are at most `|S|^m`;
-* `rel_of_chainCount`: if `2^m·c ≤ η`, `0 < η` and
+* `rel_of_chainCount`: weak transitivity is needed only up to level `M`.
+  If `m + 1 ≤ M`, `2^m·c ≤ η`, `0 < η` and
   `η·|S|^m ≤ chainCount (R 1) S m x y`, then `R (m+1) x y`.
 
 The proof is Milićević's induction: average over the last intermediate
@@ -97,28 +98,29 @@ theorem many_good_last_vertices {V : Type*} (r : V → V → Prop) (S : Finset V
 
 /-- **The weak-transitivity ladder.** -/
 theorem rel_of_chainCount {V : Type*} (R : Nat → V → V → Prop) (S : Finset V) {c : Real}
-    (hWT : ∀ i x y, c * S.card ≤ ((S.filter fun z => R i x z ∧ R 1 z y).card : Real) →
-      R (i + 1) x y) :
-    ∀ (m : Nat) (x y : V) {η : Real}, 0 < η → 2 ^ m * c ≤ η →
+    {M : Nat}
+    (hWT : ∀ i, i + 1 ≤ M → ∀ x y,
+      c * S.card ≤ ((S.filter fun z => R i x z ∧ R 1 z y).card : Real) → R (i + 1) x y) :
+    ∀ (m : Nat) (x y : V) {η : Real}, m + 1 ≤ M → 0 < η → 2 ^ m * c ≤ η →
       η * (S.card : Real) ^ m ≤ chainCount (R 1) S m x y → R (m + 1) x y := by
   intro m
   induction m with
   | zero =>
-    intro x y η hη _ h
+    intro x y η _ hη _ h
     simp only [chainCount, pow_zero, mul_one] at h
     by_contra hr
     simp only [hr, if_false, Nat.cast_zero] at h
     linarith
   | succ m ih =>
-    intro x y η hη hc h
-    apply hWT (m + 1) x y
+    intro x y η hM hη hc h
+    apply hWT (m + 1) hM x y
     have hgood := many_good_last_vertices (R 1) S m x y h
     have hsub : (S.filter fun z => R 1 z y ∧
         η / 2 * (S.card : Real) ^ m ≤ chainCount (R 1) S m x z) ⊆
         S.filter fun z => R (m + 1) x z ∧ R 1 z y := by
       intro z hz
       obtain ⟨hzS, hzy, hcount⟩ := Finset.mem_filter.mp hz
-      refine Finset.mem_filter.mpr ⟨hzS, ih x z (by positivity) ?_ hcount, hzy⟩
+      refine Finset.mem_filter.mpr ⟨hzS, ih x z (by omega) (by positivity) ?_ hcount, hzy⟩
       rw [pow_succ] at hc
       linarith
     have hc2 : c ≤ η / 2 := by
