@@ -1094,6 +1094,32 @@ differently:
 So Qb(θ) ≥ 4T², which is quasi-polynomial in 1/ρ and polynomial-exponent
 in the rank. On wide boxes, choose H₂ as the largest h with
 h^(e₁e₂) ≤ P.width, and take Eb = 1/(2e₁e₂).
+
+**Done (2026-10-08, kernel-checked).** `variety_multiplyLinear_all_scales`
+(`Proofs16VarietyAllScales`) proves the bookkeeping exactly as planned:
+- for every proper box: the graph of Φ over V(ρ/2) is
+  `MultiplyLinearWith (fun _ => 4T²) (fun _ => 1/(2e))`, where
+  e = p²(r+1)^8(|Γ|+|Ψ|+1)^8, T = H₀^e and
+  H₀ = ⌈max(K(r+1), K(|Γ|+|Ψ|+1), 16/ρ)⌉;
+- wide boxes take H₂ = `Nat.findGreatest` (h^e ≤ w), and maximality gives
+  w^(1/(2e)) ≤ H₂ (`rpow_inv_two_mul_le`);
+- narrow boxes use `Box.bounded_partition` at their own width with
+  constant covers (`cell_cover_small`);
+- no θ is spent anywhere, since H = P.
+
+The only hypotheses are the Freiman data (Φ a Freiman bihomomorphism on
+V(ρ), and every L_k Freiman-linear on B(Ψ;ρ)) plus
+`MultilinearDiameterPartition K p`, which is the peer's theorem
+(`Proofs16OscillationPartitionInst`). Axioms: propext, Classical.choice,
+Quot.sound. Lean pitfall: `set` on `⌈·⌉₊` makes `nlinarith` and `linarith`
+whnf-unfold `Nat.ceil` on ℝ, which times out. Introduce such scales opaquely
+with `obtain ⟨H₀, hH₀⟩ : ∃ H₀, H₀ = … := ⟨_, rfl⟩`.
+
+**So item (R) of Part J is now reduced to Milićević's structure alone.**
+The variety route needs nothing beyond `MilicevicDeepVarietyStructure`.
+Remaining composition: transport by (s, t) (`MultiplyLinearWith.translate`
+exists), and match the result to Part J's `StackableStructureAt` /
+`PolyBoundedControl` interface. Both are next.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
