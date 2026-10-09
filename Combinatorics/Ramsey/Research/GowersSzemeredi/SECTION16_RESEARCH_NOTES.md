@@ -5326,3 +5326,87 @@ combined audit checks 7,058 public Gowers theorems in 5,116 modules
 approved standard axioms occur. The source ledger remains identical
 at 115 companions and five open entries; selected-port scope passes.
 Companion counts do not certify fidelity to every printed statement.
+
+### J.104. Dense popular columns and exact triple representations
+
+**Verified 2026-10-09.** Four modules select a dense core of columns with
+many representations, while preserving the ambient hereditary richness
+needed to connect those representations in later steps.
+
+`Proofs16ColumnAnchorCounts` defines `exactColumnAnchor B T L r a` as
+the exact quadruples in `B` whose first coordinate is `a`. It proves
+monotonicity under restriction of the vertex set, identifies the mixed
+quadruples for `(C,C)` with all exact quadruples in `C`, and bounds their
+count by the sum of ambient anchor degrees over `C`.
+
+The density-form richness statement also gives the denominator-free
+inequality
+
+```
+eta^2 * |C|^4 <= N * #exactColumnQuadruples(C)
+```
+
+for every `C subset B`, by applying it at the actual density `|C|/N`.
+
+`Proofs16PopularColumnAnchors.popular_column_anchors_dense` assumes
+`|B| >= b*N`, with `b,eta > 0`, and sets
+
+```
+lambda = eta^2*b^3/16,
+P = {a in B : #exactColumnAnchor(B,a) >= lambda*N^2}.
+```
+
+It proves `|P| >= b*N/2`. Indeed, if the discarded set `C` had size at
+least `b*N/2`, its anchor upper bound and the hereditary lower bound
+would give `eta^2*|C|^3 <= lambda*N^3`, contradicting the choice of
+`lambda`. This uses the actual discarded-set cardinality and gives a
+cubic dependence on `b`; bounding its cardinality merely by `N` would
+give the weaker quartic threshold considered previously.
+
+`Proofs16ColumnTripleRepresentations` reindexes anchor quadruples as
+triples. A triple `(x,y,z)` corresponds to the quadruple `(a,y,x,z)`,
+so its exactness gives
+
+```
+a = x-y+z,
+L(a)(t) = L(x)(t)-L(y)(t)+L(z)(t)
+```
+
+on the intersection of the four relevant column Bohr sets. All four
+indices lie in `B`. The reindexing is a bijection, so the triple count
+is exactly the anchor degree; the same `lambda*N^2` lower bound holds.
+
+`Proofs16GlobalColumnAnchors.global_popular_column_representations`
+assembles this from the original dense bihomomorphism, at the unchanged
+threshold `globalColumnRichnessModulusBound alpha`. Its parameters are
+
+```
+b = globalColumnVertexDensity alpha
+  = 3*(globalColumnQuadrupleDensity alpha/4)/8,
+eta = globalColumnWalkDensity alpha,
+lambda = globalColumnAnchorDensity alpha = eta^2*b^3/16.
+```
+
+The theorem constructs `X,T,L,W,B,P`, with `P subset B subset X`,
+`|B| >= b*N`, `|P| >= b*N/2`, and at least `lambda*N^2` exact triples
+for every `a in P`. It retains the original witness system, column rank,
+local Freiman linearity, normalization, positive radius and density
+parameters, and the full mixed-quadruple richness statement for subsets
+of `B`. No new radius loss or modulus threshold occurs in this selection.
+
+**Remaining work.** The triple representations form the base case for
+compatible representations of several columns. They have not yet been
+glued recursively, and their abundance does not imply that every
+additive quadruple on `P` has the exact identity. Bilinear organization,
+shifted agreement, and the final numerical structure budget remain open.
+
+**Verification.** The global construction checks 217 modules. All ten
+new named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+Apache provenance changes were needed.
+
+The combined audit checks 7,084 public Gowers theorems in 5,120 modules
+(5,118 for the facade, including 4,152 OAI modules), with the same three
+approved axioms. The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement.
