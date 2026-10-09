@@ -10007,3 +10007,14 @@ is named `milicevic_lemma_9_2_pair`. Its former name matched the Gowers
 catalogue's related-theorem prefix for Lemma 9.2, even though it concerns
 a different paper. The explicit source prefix removes that erroneous
 association without changing its mathematical statement or proof.
+
+Verification after merging the incoming Step 5 pairing and independence
+results, and correcting the modern-source lemma name: all 32 new named
+proofs pass individual axiom checks. The complete original-data sampling
+production closure compiles across 269 modules. The combined audit checks
+9,018 public Gowers theorems across 5,493 modules (5,491 in the facade
+closure), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The selected OAI audit closure remains 4,152 modules. The regenerated
+catalogue is byte-identical to the prior verified inventory, with 115
+companion proofs and five open statements. These counts do not certify
+fidelity to every printed statement. The selected-port scope check passes.
