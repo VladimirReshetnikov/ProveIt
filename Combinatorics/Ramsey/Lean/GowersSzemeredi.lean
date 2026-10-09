@@ -875,6 +875,8 @@ import GowersSzemeredi.Proofs16GlobalColumnWordEndpoints
 import GowersSzemeredi.Proofs16GlobalColumnTupleSampling
 import GowersSzemeredi.Proofs16AlmostAllTupleBudgets
 import GowersSzemeredi.Proofs16GlobalRobustProgressionInput
+import GowersSzemeredi.Proofs16GlobalSelectedProgressionMaps
+import GowersSzemeredi.Proofs16BoundedImageRemoveFrequencies
 import GowersSzemeredi.Proofs16StepFourPrime
 import GowersSzemeredi.Proofs16ColumnBSGGrowth
 import GowersSzemeredi.Proofs16SeparatedRespect
@@ -986,6 +988,7 @@ import GowersSzemeredi.Proofs16ClaimNineFour
 import GowersSzemeredi.Proofs16SubsetSumIndependence
 import GowersSzemeredi.Proofs16IterationTools
 import GowersSzemeredi.Proofs16PropNineThreeIteration
+import GowersSzemeredi.Proofs16ProgressionImagePurification
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -152,7 +152,12 @@ recorded is in the OEIS entry.
    Theorem 1.1 gives `z_n/f_n = C(1 + L/(6n) + O(n⁻²))`, an asymptotic answer
    to Babai–Lengyel's convergence-speed question (as the source reports it).
 2. **Dependence on the order** (`spc:q:order`).
-3. **A larger marking region** (`spc:q:disk`).
+3. **A larger marking region** (`spc:q:disk`). In part (dated note, batch
+   138): `a290354`'s Part IV (Corollary 39.3) proves, under four unrefereed
+   inputs, the leading equivalent `Z_n(q) ~ C(q)(n!)²[2L(q)]^{−n}n^{−1−L(q)/3}`
+   for every real `q > 0` and continues `C(q)` holomorphically to `ℜq > 0`;
+   the contraction, a fixed-order expansion beyond the disk and the zero set
+   of `C(q)` remain open.
 4. **Distributional refinements** (`spc:q:distribution`).
 5. **Comparison with analytic iteration, and priority** (`spc:q:analytic`):
    Prellberg's contour constant, the Flajolet–Salvy manuscript.
@@ -169,8 +174,14 @@ recorded is in the OEIS entry.
    `−(L²/18)(log n)²/n` term of `a139383`'s first correction
    (`ibd:pd:eq:P1`), which extrapolation in `1/n` cannot remove; a fit with
    that term recovers its coefficient (−0.02937 against −0.02933) and the
-   constant to about `10⁻⁵` (independent check, below). Missing: tail bounds
-   outside compact slopes, the logarithmic corrections of `a139383`, a
+   constant to about `10⁻⁵` (independent check, below). Missing at the
+   write: tail bounds outside compact slopes, the logarithmic corrections of
+   `a139383`, a certified `I(L)`. Since 9 October 2026 (dated note, batch
+   138) the leading part is a theorem under four unrefereed inputs:
+   `a290354`'s Part IV proves `C = L^{L/3−1} I(L)/2 = ½(2L)^{L/3} h(L)`
+   (Theorem 39.2, (39.12)), with a rational majorant
+   `H(n,m) ≤ n!(m/2)^{n−1}` for the depths outside the central window. Still
+   open: the summation of every correction (why the logarithms cancel) and a
    certified `I(L)`.
 7. **An evaluated inverse** (`spc:q:inverse`).
 8. **Van Cutsem–Ycart's variance conjecture** (`spc:q:variance`), not
@@ -195,6 +206,28 @@ with `C` to about `10⁻⁵` (sentence replaced, dated note). From exact `z_n` t
 `n = 400`, an eight-node fit gives `C = 1.09868580552518701`, with
 `c_1, …, c_4` confirmed to 12, 12, 9 and 7 digits. The record is a dated
 note at the end of Section 12.1.
+
+**Reciprocal note (batch 138, 9 October 2026).** Part IV of
+[`a290354-iterated-euler-diagonals`](../a290354-iterated-euler-diagonals/)
+(`03c28e4c8`, Sections 38–48) proves `I(t) = t·2^{t/3}·h(t)` for every
+`t > 0` (Theorem 39.1) and the geometric depth aggregate
+`Σ_m e^{−ℓm} H(n,m) ~ (n!)²(2ℓ)^{−n} n^{−1−ℓ/3} ℓ^{ℓ/3−1} I(ℓ)` uniformly on
+compact `ℓ`-intervals (Theorem 39.2), hence Lengyel's constant as
+`C = ½(2L)^{L/3} h(L)` ((39.12)) and the marked amplitude `C(q)` on
+`ℜq > 0` (Corollary 39.3). Its theorems are implications from four
+unrefereed inputs (that report's Part I: Fatou coordinate and positive
+measure; `a139383`: the absolute transfer and the holomorphy of `I`); it uses
+this report only for the agreement near `q = 1` and the cumulant constants.
+Two dated notes were appended, to items 6 (`spc:q:depth`: the heuristic is
+now a theorem; what stays open) and 3 (`spc:q:disk`: in part), and one dated
+sentence to "Relation to the repository" in Section 1.2. The note in item 6
+records, uncertified: with that report's exploratory `h(log 2)`, the right
+side is `1.0986858055251874…`, within `4·10⁻¹⁶` of the fitted `C`; the
+first correction of the aggregate is `L/(6n)` at `ℓ = L` by Theorem 1.1 and
+the identification; at `ℓ = 1` (`q = 1/(e−1)`, outside the disk) `n` times
+the relative excess is `0.1666941` at `n = 320`, against
+`c_1(1) + c_2(1)/320 = 0.1666946`, consistent with (6) beyond the disk, not
+proved. No label added, renamed or removed (still 91); no number changed.
 
 ## Checks made at intake
 
@@ -248,8 +281,22 @@ collection confers no formal status.
   here; parabolic iteration and a Fatou-coordinate contour there).
   Question 6 here is the bridge. The source's bibliography credits that
   report to "V. Reshetnikov", but it has no author line ("A merged research
-  report built from two manuscripts"); it is cited here by path. Its article
-  blob is still `ab5014ec`, the one the source inspected.
+  report built from two manuscripts"); it is cited here by path. The source
+  inspected its article blob `ab5014ec`; since then that article has gained
+  only dated notes (batch 106, `3f9fc9d4f`; batch 138, 9 October 2026, on
+  the result of `a290354`'s Part IV below). Two of the four inputs of that
+  Part IV are that report's absolute transfer and the holomorphy of its `I`.
+- `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290354-iterated-euler-diagonals`
+  (dated note, 9 October 2026, batch 138): its Part IV (Sections 38–48,
+  labels `ied:par:`) proves the heuristic of question 6 here,
+  `C = L^{L/3−1} I(L)/2 = ½(2L)^{L/3} h(L)`, by summing `a139383`'s
+  proportional-depth transfer with a rational majorant for the other
+  depths, and answers question 3 in part (the marked amplitude on
+  `ℜq > 0`); all under four unrefereed inputs. It uses this report's marked
+  and cumulant expansions for its Corollaries 39.3 (agreement near `q = 1`)
+  and 45.1 (`K_1`, `K_2` through `h(L)`, `h′(L)`, `h″(L)`); nothing here
+  depends on it. Its open Questions 2, 3–4 and 5 continue questions 6, 3
+  and 1 here.
 - `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`:
   Remark 10.5 says exactly which statements of Section 10 are instances
   (`p0:prop:factorial-core`, `p0:thm:core-reversion` after `E = δ/X`,
@@ -288,14 +335,16 @@ Section 1.1, unlabelled before), `spc:sec:provenance`, `spc:rem:oeis`,
 report has 91 labels; a build of the delivered text and of this one give all
 78 delivered labels the same numbers (aux files compared). The added remarks
 are the last statements of their sections and the added displays are
-unnumbered, so no theorem or equation number moved.
+unnumbered, so no theorem or equation number moved. The batch-138
+reciprocal notes (9 October 2026) add no label and only unnumbered
+displays: all 91 labels keep their numbers (aux files compared).
 
 ## Files
 
 ```text
 README.md                          this guide (replaces the delivery README)
 article.tex                        the report (delivered Report223.tex; labels prefixed, [write] additions)
-article.pdf                        compiled report, 27 pages
+article.pdf                        compiled report, 28 pages
 code/lengyel_exact.py              standard-library exact core and CLI (delivered code/)
 code/test_lengyel_exact.py         exact tests, full poset enumeration n <= 6, real CLI tests (delivered code/)
 code/symbolic.py                   SymPy coefficient, cumulant and inverse algebra (delivered code/)
@@ -390,7 +439,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX on 5 October 2026: 27
-pages after the independent check (26 at the write); no errors or warnings, no undefined references or citations, no
+pages after the independent check (26 at the write); rebuilt on 9 October
+2026 after the batch-138 reciprocal notes, 28 pages. Each build: no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 19 pages, also
 without warnings. The article keeps the delivered preamble lines that

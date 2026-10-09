@@ -1,0 +1,272 @@
+\section{One exact search over overlapping covers}\label{sec:implementation}
+
+The localization theorem makes the old spatial search complete for descent,
+but independent restarts still repeat substantial work. A source with many
+small overlapping covers can revisit the same marked trace prefix once for
+each cover containing its footprint. The new implementation represents the
+union of those finite search languages directly.
+
+\subsection{The cover intersection invariant}
+
+Let $\mathcal R$ be the complete family of permitted original regions,
+including the empty region. For each original tetrahedron $v$, build the
+inverted incidence list
+\[
+ I(v)=\{R\in\mathcal R:v\in R\}.
+\]
+A search frame with actual footprint $F$ retains precisely
+\begin{equation}\label{eq:cover-intersection}
+ C(F)=\{R\in\mathcal R:F\subseteq R\}
+     =\bigcap_{v\in F} I(v).
+\end{equation}
+The empty intersection means all covers. The implementation represents that
+root case by a sentinel instead of copying the complete index. If an event
+first consumes the original cells in $S$, its compatible covers become
+\[
+ C(F\cup S)=C(F)\cap\bigcap_{v\in S}I(v).
+\]
+An empty result rejects that branch. Consuming a born cell adds no new
+original identity: its ancestors already entered the footprint at their
+own first consumption. Intersections begin with the smallest available
+incidence set, reducing intermediate allocations without changing the set.
+
+\begin{proposition}[Exact union language]\label{prop:union}
+The indexed cover search permits exactly the traces admitted by at least
+one independently restarted search over $\mathcal R$. It preserves the
+relative commutation equivalence used by the sleep-set search.
+\end{proposition}
+\begin{proof}
+Induction on the trace length proves \eqref{eq:cover-intersection}. A trace
+is admitted exactly when some region contains every consumed original cell,
+which is the definition of membership in the union of the restarted
+languages. Every prefix consumes a subset of that final footprint, so it
+is admitted under the same covering region.
+
+For two adjacent independent events in an admitted trace, either order has
+the same final footprint, while the two intermediate footprints are subsets
+of it. The same cover therefore admits both orders. Their geometry and
+markings agree by \cref{lem:forward}. Thus all swaps required by the
+sleep-set argument remain within the union language.
+\end{proof}
+
+Two events may be individually allowed at a prefix although their combined
+footprint fits no cover. The proposition does not assert that every such
+pair can be combined. It asserts commutation when the whole two-event trace
+is admitted, which is exactly the property the reduction needs.
+
+An explicit index has at most $\sum_{R\in\mathcal R}|R|$ incidences. For
+connected radius $R_0=O(U)$ this is $t2^{O(U)}$ times a polynomial parameter
+factor. Intersecting finite sets and copying compatible-cover states keeps
+the same fixed-parameter time form, although it can consume more memory
+than streaming one region at a time. The theorem does not promise that a
+fully materialized index is the best implementation for every input.
+
+There is also a sharper accounting for cover intersections. Let $C_f$ be
+the compatible-cover set at visited frame $f$, and let $K_R$ bound the
+commuting trace classes admitted by a fixed cover $R$. Then
+\[
+ \sum_f |C_f|
+ =\sum_{R\in\mathcal R}\#\{f:R\in C_f\}
+ \le\sum_{R\in\mathcal R}K_R.
+\]
+For a fixed cover, the global sleep search still visits at most one
+representative of each admitted class. An intersection can scan the smaller
+set; ordered incidence tables with binary search give a deterministic
+logarithmic overhead per tested membership. Thus incidence work can be
+charged to compatible cover/frame pairs instead of multiplying every
+frame by the size of the entire region family. The prototype uses exact
+Python sets, with equality resolving hash collisions.
+
+\subsection{Lazy transitions and endpoint observations}
+
+Each queued branch stores its parent state and the proposed geometric event.
+The native replacement and integral cochain transport are performed only
+when that branch is visited. A positive early answer can therefore avoid
+constructing all unused siblings. The node limit is checked before producing
+the next unvisited child. This matters on the upward-required fixtures:
+the source has many upward choices, while a successful trace uses only
+three events.
+
+Exact marked endpoint keys suppress repeated endpoint queries. They retain
+the source incarnation identities and transported cochain, using exact
+interned structures rather than probabilistic hash equality. The search
+does \emph{not} delete continuation frames merely because an endpoint query
+was already made. Remaining upward budget, sleep obligations, and compatible
+covers can differ between histories reaching similar geometry. Proving a
+safe stronger quotient is a separate problem.
+
+A complete conclusion for a caller's predicate requires that predicate to
+be invariant under the represented marked endpoint and commuting trace
+equivalence. A callback that inspects the particular certificate history
+or arbitrarily selected witness cover is outside that guarantee. Strict
+tetrahedron descent and the supplied-vector disc predicate have the required
+invariance.
+
+The finite-family cost separates three tasks: construction of the complete
+cover index, exploration of geometric traces, and evaluation of endpoints.
+The descent endpoint test is just a tetrahedron count. A normal-disc query
+is optional and has its own potentially substantial cost. Performance
+claims for the descent test therefore do not automatically transfer to an
+arbitrary disc-search callback.
+
+\subsection{Public interfaces and exact meanings of results}
+
+The generic entry point is \code{search_pachner_cover} in
+\code{fastunknot/pachner_cover_search.py}. It accepts a source triangulation
+and height rows, a maximum region size, maximum number of components,
+total upward budget, and explicit resource limits. The methods are the
+maintained sleep-set route and a small-instance naive reference route.
+The older restarted and commitment implementations remain available.
+
+The convenience entry point \code{find_pachner_descent} supplies the
+radius $\min(t,3U+3)$ unless the caller explicitly requests another radius.
+It queries strict tetrahedron loss and independently verifies a positive
+answer. A smaller requested radius is a legitimate local search, but its
+failure has a deliberately narrower status.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}p{0.39\textwidth}X@{}}
+\toprule
+Status & Meaning \\
+\midrule
+\code{DESCENT_FOUND} & Source replay verifies strict descent and the declared
+total upward bound. \\
+\code{COMPLETE_BOUNDED_DESCENT} & No descent exists within that upward budget,
+using the sufficient localization radius and complete search. \\
+\code{COMPLETE_BOUNDED_LOCAL_DESCENT} & Only the explicitly smaller covered
+family is exhausted. \\
+\code{COMPLETE_BOUNDED_COVER_FAMILY} & The complete declared generic cover
+family is exhausted. \\
+\code{INCONCLUSIVE} & A required index, traversal, replay, or endpoint-query
+operation reached its limit. \\
+\bottomrule
+\end{tabularx}
+\caption{The principal search outcomes. Exhaustion is a bounded geometric
+conclusion and is not a nontrivial-knot certificate.}
+\label{tab:statuses}
+\end{table}
+
+The generic interface also distinguishes an independently verified normal-disc
+answer, \code{DISC_FOUND}, from a caller-selected endpoint,
+\code{ENDPOINT_SELECTED}. A certificate on an abstract manifold still needs
+the maintained diagram-to-exterior binding before it can certify a statement
+about a supplied knot diagram.
+
+\begin{lstlisting}[language=Python,float=htbp,caption={Complete bounded descent with an independently checked positive witness.}]
+from fastunknot.pachner_cover_search import find_pachner_descent
+from fastunknot.pachner_cover_verify import verify_pachner_descent
+
+answer = find_pachner_descent(
+    triangulation, heights, max_upward=1,
+    max_nodes=10000, max_regions=100000, max_work=2000000,
+)
+if answer["status"] == "DESCENT_FOUND":
+    assert verify_pachner_descent(
+        triangulation, heights, answer["certificate"],
+        max_upward=1,
+    )
+\end{lstlisting}
+
+\subsection{Independent certificate checking}
+
+The producer emits the existing
+\code{pachner-cochain-endpoint-v1} schema. Its declared active original
+region is one concrete member of the compatible-cover set; it need not
+equal the actual consumed footprint. The new verifier independently checks
+that this cover has the stated size and number of induced dual components,
+then invokes the maintained source-bound geometric and cochain replay.
+It imports no region enumerator, search engine, native move producer, or
+cochain-transport producer.
+
+For descent, it also recomputes upward and downward counts, checks the
+actual final tetrahedron count, and verifies
+$t_{\rm final}=t_{\rm initial}+u-d<t_{\rm initial}$. This prevents the
+search's status string or claimed counters from substituting for a proof.
+The verification tests disable the corresponding producer functions and
+still accept genuine retained certificates.
+
+Resource caps are part of the observable contract. \code{max_regions}
+limits construction of the \emph{complete} index, including the empty
+region. Partial construction cannot establish complete exhaustion.
+\code{max_nodes} counts visited search frames; \code{max_work} counts
+cooperative checkpoints across preparation, indexing, search, and positive
+replay. These checkpoints are operational accounting units, not bit
+operations. Optional disc-query caps also prevent a complete disc-negative
+claim when a required query was unfinished. User callback exceptions
+propagate unchanged, including exceptions whose class happens to match an
+internal budget exception. Callback inputs are isolated from mutable search
+state.
+
+\section{Certificate projection, composition, and packing}\label{sec:certificate-tools}
+
+\subsection{Extracting a connected first descent}
+
+The new \code{pachner_causality.py} reads a supplied endpoint proof only
+after independent source replay accepts it. Each live tetrahedron receives
+either a source identity or a pair consisting of its birth event and output
+slot. Reading the consumed regions recovers every birth arc and the actual
+source footprint. The analyzer reports the components, their losses, and
+the incidence census.
+
+For a descending certificate, \code{extract_local_descent} chooses a
+positive-loss component, projects its events, and truncates at first
+descent. These operations repeat until the retained trace is connected
+and first-descending. One projection followed by one truncation is
+insufficient: deleting a late event that joined earlier components can
+disconnect the prefix again. Every necessary repetition strictly shortens
+the trace, giving termination. The final witness satisfies the localization
+bound and is independently replayed before return.
+
+The consumer must respect every local frame accepted by the public verifier.
+A valid downward certificate can use either order for two belt vertices in
+the seed tetrahedron. A native producer may choose just one order. Replaying
+with that producer's frame and then treating its born tetrahedra as if they
+used the declared frame corrupts later dependent events, even though the
+first replacement has the right unmarked geometry. The extractor therefore
+retains the declared formal region and, where necessary, relabels the two
+born tetrahedra and all incident permutations before carrying the cochain.
+This fix is exercised by a retained noncanonical-frame counterexample and
+an exhaustive finite frame audit described in \cref{sec:experiments}.
+
+\subsection{Composing independently supplied traces}
+
+The companion \code{compose_disjoint_traces} authenticates every input
+endpoint against the same original source. It computes \emph{actual}
+consumed footprints and rejects intersecting ones, even if their advertised
+cover regions happen to differ. Birth names are namespaced by input trace,
+so equal event numbers from different certificates cannot collide. The
+replay transports source and birth identities, preserving declared formal
+frames, and returns one ordinary source-bound endpoint certificate together
+with the additive count census. This is an executable positive-witness
+counterpart of \cref{lem:compose}. Overlapping supplied covers are harmless
+when the actual footprints are disjoint.
+
+The function does not assume that input traces are descending. The geometric
+composition lemma applies to arbitrary legal traces with disjoint actual
+footprints; a caller may separately inspect their losses. Empty traces are
+allowed and contribute zero. Invalid proofs, overlap, or exhausted work
+do not produce a partial successful composition.
+
+\subsection{The supplied-coloring dynamic program}
+
+The prototype \code{causal_research/colorful_packing.py} implements the
+exact $0/1$ packing step of \cref{sec:multiunit} for a supplied coloring.
+It validates nonempty distinct-source footprints, nonnegative upward costs,
+and positive losses. It discards noncolorful items, compacts unused numeric
+color labels, and preserves original candidate indices in immutable witness
+tuples. A separate previous-item table prevents accidental reuse of an item.
+
+Its objective is maximum capped loss, followed by minimum upward cost.
+It does not claim globally minimum witness cardinality or lexicographically
+first item indices: retaining only one best capped profit per mask and
+cost does not justify those extra objectives. The result exposes actual
+loss as well as capped loss, upward cost, union footprint, and color mask.
+The candidate dictionaries can retain authenticated certificates, but the
+combinatorial routine itself does not authenticate their geometry.
+
+The delivered prototype does not generate the complete deterministic
+perfect-hash family. Consequently a negative result from one coloring
+is only a negative result for that colorful item instance. The mathematical
+algorithm in \cref{thm:k-fpt}, the implemented packing primitive, and the
+independent positive composition utility are separate, explicit deliverables.

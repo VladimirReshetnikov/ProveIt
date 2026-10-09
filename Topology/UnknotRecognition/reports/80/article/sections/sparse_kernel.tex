@@ -1,0 +1,162 @@
+\section{Reusable sparse construction of the matching sector}
+\label{sec:sparse}
+
+This section proves the construction bound used by the implementation.
+It changes representation and reuse, not the normal matching equations.
+For a paired face and one of its three corners, matching has the form
+\[
+ X_a+Q_\alpha=X_b+Q_\beta,
+ \qquad X_b-X_a=Q_\alpha-Q_\beta.
+\]
+Here \(X_a,X_b\) are triangle coordinates and the two quadrilateral
+incidences have coefficients \(+1,-1\).  If the two global types
+coincide, their contributions cancel.  The source can store this
+equation as its two corner indices and at most two signed type
+identifiers, before any sector is chosen.
+
+\begin{lemma}[Incidence and retained-class bounds]
+\label{sp:incidences}
+For a supplied sector with \(k\) allowed quadrilateral types, at most
+\(4k\) face-corner equations have a nonzero quadrilateral label.
+After all zero-labelled equations are contracted, the total number
+\(p\) of triangle classes in nonsingleton vertex groups is at most
+\(8k\).  Every coefficient of a path potential, and every coefficient
+of an unnormalized fundamental-cycle row, has absolute value at most
+four.
+\end{lemma}
+\begin{proof}
+A quadrilateral has one normal arc in each of its four faces.
+It therefore occurs in at most four paired face-corner equations,
+counting incidences before any cancellation.  The total number of
+active signed incidences is at most \(4k\); each nonzero labelled
+equation contains at least one.
+
+Triangle corners around a fixed vertex are connected by the original
+face-corner graph.  Contracting its zero-labelled edges preserves
+connectedness.  Every class in a nonsingleton quotient component is
+incident with an active edge.  The number of these classes is at most
+twice the number of active edges, hence at most \(8k\).
+Singleton components may be numerous, but contribute no retained
+triangle-difference variable.
+
+Choose a spanning forest of the quotient graph.  A path from a root
+to a class traverses each forest edge at most once.  A fundamental
+cycle consists of one nonforest edge and the simple forest path
+between its endpoints.  Each original signed incidence can therefore
+contribute at most once to either sum.  Each allowed quadrilateral
+has at most four such incidences in the entire graph, proving the
+coefficient bound.  Dividing a nonzero cycle row by the gcd of its
+entries cannot increase it.
+\end{proof}
+
+The last bound is about coefficients of linear forms, not the values
+of normal coordinates.  The kernel basis can have large rational
+coefficients, and a primitive normal vector can have exponentially
+large integer coordinates.  No unit-cost assumption about those
+values is used.
+
+\begin{theorem}[Sparse pre-elimination constructor]
+\label{sp:constructor}
+A validated source can be compiled into \(O(t)\) constant-size
+face-corner incidence records.  For each allowed support, a constructor
+can produce the incumbent retained matrix, canonical corner classes,
+vertex groups, path potentials, and lexicographically ordered primitive
+cycle rows in
+\[
+ O(t\log(t+1)+k^2)
+\]
+elementary integer operations, using \(O(t+k^2)\) integer slots.
+The indices in those slots require \(O(\log(t+1))\) bits.
+The cost of exact elimination and its resulting basis is additional.
+The same bounds include one-time native validation and compilation,
+using balanced union structures; subsequent sectors can reuse them.
+\end{theorem}
+\begin{proof}
+Scan the compiled incidences and keep only selected types.  Zero
+labels are recognized from a record of length at most two, without
+allocating a length-\(k\) vector.  Contract their corner pairs using
+union by size.  Each parent path has length \(O(\log(t+1))\), since
+the containing component at least doubles whenever the root is
+attached below another root.  Path compression can only shorten
+these paths.  A separate minimum-corner field gives every component
+its least original corner index, independent of the balancing
+choices.  This is the canonical representative used by the original
+constructor, whose structural union root need not be retained.
+
+There are \(O(t)\) equations and corners.  Computing representatives,
+grouping by the unchanged source vertex identities, and sorting
+canonical representatives costs \(O(t\log(t+1))\).  The support
+dictionary has \(k\) selected entries.  It may be implemented by
+balanced search or sorted lookups within this bound; its index values
+specify the incumbent column order.
+
+Only the at most \(4k\) active equations now receive dense labels.
+Each label and each retained matching row has \(O(k)\) entries,
+because \(p\le8k\).  The total materialization cost is \(O(k^2)\).
+The quotient adjacency lists preserve the original scan order.
+Breadth-first traversal in the original root order consequently
+chooses the same forest and the same potential gauge as the old
+routine.  Every traversed active edge requires \(O(k)\) additions.
+Isolated components all reference one immutable zero tuple, so their
+number contributes \(O(t)\) pointers rather than \(O(tk)\) zero
+entries.
+
+There are \(O(k)\) fundamental cycle rows of length \(k\).
+Producing and normalizing them costs \(O(k^2)\), with bounded
+coefficients by Lemma~\ref{sp:incidences}.  To preserve the old
+lexicographic order without an extra logarithmic factor from long
+tuple comparisons, apply stable radix sorting from the last column
+to the first over the fixed alphabet \(\{-4,\ldots,4\}\).
+Sorting and deleting adjacent duplicates costs \(O(k^2)\).
+The supplied implementation first deduplicates with a set and then
+performs this radix sort; the deterministic comparison-free version
+just described proves the bound without relying on hashing.
+
+Native validation uses a linear inventory of face, corner, and edge
+incidences together with balanced signed union structures and linear
+topological checks.  This fits \(O(t\log(t+1))\) elementary work.
+Compilation then adds only a linear scan.  The listed arrays contain
+\(O(t)\) source and quotient records and \(O(k^2)\) dense entries,
+proving the storage bound.  Rational elimination has not yet been
+performed and is charged separately.
+\end{proof}
+
+\subsection{Compatibility and the implementation contract}
+
+The constructor returns the existing \code{SectorKernel} type.
+The source's validation data, support ordering, minimum corner
+identities, adjacency order, canonical potentials, primitive cycle
+rows, and exact reduced nullspace agree with the incumbent routine.
+The row space being equal would suffice mathematically, but exact
+field agreement is a stronger regression check and prevents
+accidental changes to deterministic output or certificate labelling.
+The implementation deliberately calls the same dense rational
+elimination routine after the smaller allocation phase.  We therefore
+claim no improvement to the asymptotic cost of that elimination.
+
+The direct implementation uses Python dictionaries and sets for
+indexing and deduplication.  The displayed deterministic bound is for
+the balanced-index and radix-sort algorithm in the proof.  The usual
+expected constant-time hashing model gives the corresponding bound
+for those Python operations.  Adversarial hash collisions can worsen
+the Python container costs; they do not invalidate the algebra or
+the polynomial bit-complexity conclusion.  The numerical experiments
+measure the actual Python implementation, not the idealized unit-cost
+model.
+
+\code{PreparedSectorSource} validates one supplied triangulation and
+captures its source digest.  It can build many kernels from that same
+source.  The source dictionary, the prepared object, and the
+\code{prepared} field shared by returned kernels have an explicit
+read-only contract.  They are not deep-frozen copies.  The
+certificate-producing API compares the captured digest with the
+supplied source, but callers must still avoid mutating shared
+validation data.  Abandoning an interrupted sector build leaves the
+prepared source reusable.
+
+This distinction explains the timing design.  A one-shot sparse
+constructor still pays native validation and compilation; it can be
+slower than the original routine on a small instance.  Repeated sector
+work can amortize those costs.  Comparisons against an original
+constructor supplied with already prepared geometry are needed to
+distinguish the allocation improvement from validation reuse.

@@ -1,0 +1,939 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\usepackage{aliascnt}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Binary-compressed disk search}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollarys}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\crefname{example}{example}{examples}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Part}{\operatorname{Part}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}[1]{\mathbf 1\{#1\}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pin}{\texttt{cd984a34c0e06e467f3403576afbe6deeb1b5d11}}
+\newcommand{\rname}{\mathcal R}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,frame=single,rulecolor=\color{black!25},showstringspaces=false}
+\hypersetup{pdftitle={Disk-Transfer Algebras and Binary-Compressed Patch Search},pdfauthor={Research contribution prepared for the ProveIt project},pdfsubject={Unknot recognition research: exact finite-interface theorems and compressed search}}
+
+\begin{document}
+\begin{titlepage}
+\centering
+\vspace*{5mm}
+{\large TOPOLOGY \quad / \quad ALGORITHMIC COMPLEXITY\par}
+\vspace{8mm}
+{\Huge\bfseries Disk-Transfer Algebras and\par}
+\vspace{3mm}
+{\Huge\bfseries Binary-Compressed Patch Search\par}
+\vspace{5mm}
+{\Large Dual-number matrix structure, logarithmic repetition cost,\par
+and compressed optimal witnesses\par}
+\vspace{5mm}
+{\large Research contribution prepared for the ProveIt project\par}
+{\normalsize Mathematical development and reference software prepared with ChatGPT\par}
+\vspace{3mm}
+{\large 9 October 2026\par}
+\vspace{5mm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+The recent ProveIt disk-completion reports compress explicit frontier tables, but an exponentially long sequence of individually processed layers remains exponentially long. We develop a compositional quotient that permits exact search over a binary-encoded repetition count, including independent choices in every copy.
+
+For disk unions with $a$ input and $b$ output intervals, quotient formal binary combinations by all whole-disk completion queries. We prove that this quotient is a category and identify its morphisms explicitly with $2^{b-1}$ by $2^{a-1}$ matrices over the dual numbers $\F[\eps]/(\eps^2)$. A two-strip splitting identity gives matrix units; the disk-completion pairing is the coefficient of $\eps$ in a matrix trace. This is a structural refinement of the preceding rank theorem, not a new claim about the classical representative-family principle.
+
+Let a supplied homogeneous acyclic patch grammar have width $b$, $q$ XOR charges, binary repetition exponents, encoded length $N$, and atomic cost bit length $B$. Put $R=q2^{2b-1}$. We prove a deterministic $\poly(N,b,B)R^4$ bit bound for all-cap minimum-cost search and a polynomial-in-$R,N,B$ compressed run certificate. For one repeated library, the number of composition stages is $O(\log(W+1))$, not $W$. Every feasible optimum has a straight-line witness with $O(R\log(W+1))$ retained nodes in addition to the explicit library. Signed costs are allowed at fixed length. A separate nonnegative free-repetition theorem bounds a shortest optimum by $R-1$ layers; it does not shorten a prescribed geometric span.
+
+The standard-library implementation passes 52 tests, 4,964 rectangular matrix-product checks, 41,438 trace-pairing checks, and 1,408 literal triangulated word assemblies. It solves and checks an independently varying $2^{1024}$-layer control with a 2,049-node optimal-witness DAG. Paired abstract-grammar measurements include both gains and substantial short-run regressions. No general source-complete low-width producer, native recognizer acceleration, or unconditional quasi-polynomial unknot-recognition bound is claimed.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Reviewed repository snapshot:} \pin.\\
+\textbf{Status:} self-contained mathematical proofs and executed research software; no proof-assistant verification, external peer review, or production modification. The proposed intake destination is the next report under \code{Topology/UnknotRecognition/reports/}; no report number is preassigned.
+\end{minipage}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Research position and the precise improvement}\label{sec:position}
+
+\subsection{Continue the present programme, not an obsolete gap}
+The inspected repository distinguishes its implemented exact recognizers from the general quasi-polynomial implementation target \cite{repo}. Its canonical source bridge is already present. At the reviewed revision, \code{synthesis/diagram_exterior.tex} gives a validated planar-diagram construction of a compact knot exterior and a separate source checker; the pulling subdivision has $20\max(1,n)$ tetrahedra and $8\max(1,n)$ boundary triangles \cite{exterior}. These are existing project results, not contributions of this report. In particular, ``construct a triangulation of the exterior'' is not the unresolved task addressed here.
+
+The incoming cycle-envelope report proves exact binary rank $2^\lambda$ for a restricted disk-completion interface and implements an explicit layered patch solver. It also notes a possible binary-assembly extension, while explicitly declining to count an unexpanded binary syntax as an explicit small grammar without an argument \cite{cycle}. The rooted-component report addresses a different terminal question: one component is a disk while other components may be unsuitable \cite{rooted}. Its rejection rules must not be substituted for whole-disk rules, or conversely.
+
+Our target is the cost of \emph{repetition and composition}. An explicit loop through $W$ layers has a numerical $W$ factor even when the interface table is small and $W$ is given in binary. We prove the needed substitution theorem, give an exact algebraic structure, implement a compressed grammar, and bound the complete optimization and its compressed evidence. This does not turn an arbitrary collection of normal coordinates into a periodic patch language.
+
+Lackenby's hierarchy algorithm supplies relevant geometric context, but Section~9 of the inspected 2026 preprint separates its algorithmic step bound from the precision needed for running-time estimates \cite{lackenby}. We do not charge unspecified geometric operations as unit cost or infer an implementation bound from a hierarchy depth bound alone.
+
+\subsection{Contributions and attribution}
+Cost-ordered linear bases for representative families are classical \cite{rankbased,representative}. Exterior features for whole-disk completion and their $2^{r-1}$ rank already occur in the recent project manuscripts \cite{cycle,rooted,signed}. Diagram concatenation algebras have a substantial existing theory \cite{partition}, as do finite-dimensional linear representations of word languages \cite{rational}. Binary exponentiation itself is elementary and is not a novelty claim.
+
+The statements developed here, relative to the inspected project material, are:
+\begin{enumerate}[label=(\roman*)]
+\item the cap-radical category and its explicit rectangular dual-number matrix identification, including a trace formula for disk completion;
+\item exact optimization of homogeneous grammars with \emph{binary-encoded} powers and independent local choices, with complete bit and compressed-certificate accounting;
+\item the existence of a small straight-line \emph{optimal original witness}, not merely a small algebraic summary;
+\item a nonnegative free-repetition pumping theorem, together with a strict separation between this language and fixed-span geometric repetition.
+\end{enumerate}
+An exhaustive priority search for equivalent diagram-algebra formulations has not been completed. No worldwide priority or production-integration claim is made. All of the principal arguments below are supplied in full rather than relying on novelty terminology.
+
+\subsection{Main parameters at a glance}
+The distinction between the parameters is essential:
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.15\textwidth}p{0.75\textwidth}}
+\toprule
+Symbol & Meaning\\
+\midrule
+$b$ & Actual intervals on each end of a module; its two-sided summary has $2b$ intervals.\\
+$q$ & Number of additive charge values, normally $q=4$ for two boundary-parity bits when a geometric chain contract is available.\\
+$R$ & $q2^{2b-1}$, the maximum retained two-sided family size.\\
+$N,B$ & Encoded structural grammar length and maximum atomic cost bit length. Literal exponents are included in $N$.\\
+$L$ & Maximum expanded atomic length; possibly exponential in $N$.\\
+$S$ & Number of compiled rules after binary powering; polynomial in $N$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The implementation returns \code{FOUND_ABSTRACT_DISK} or \code{NO_DISK_IN_GRAMMAR} for a supplied cap query. Neither is, without additional geometry and completeness, a knot verdict.
+
+\section{The topology of separated interval attachments}\label{sec:topology}
+
+\subsection{The contract}
+Every local surface is a compact finite PL surface whose components have nonempty boundary. A port is a proper closed interval in its boundary with a specified collar. Distinct ports have disjoint endpoints and disjoint collars. A gluing identifies specified pairs of ports by homeomorphisms and makes no other identifications. Corners may be smoothed. All intervals counted in a formula are actual connected intervals, not bundles whose multiplicity is ignored.
+
+There is unused boundary between the finitely many separated proper intervals on each boundary circle. Such unused boundary survives gluing. Consequently every resulting connected component still has nonempty boundary. This hypothesis excludes whole-circle capping, point-identification quotients, and the simultaneous identification of polygonal edges that share endpoints. Those operations require other arguments.
+
+For a surface $S$ write $c(S)$ for its number of components and set
+\[
+\delta(S)=c(S)-\chi(S).
+\]
+For an orientable connected component of genus $g$ with $h\ge1$ boundary circles the defect is $2g+h-1$; for a nonorientable component with $k$ crosscaps it is $k+h-1$. Thus $\delta(S)\ge0$, with equality exactly for a disjoint union of disks.
+
+\begin{lemma}[Defect and connectivity]\label{lem:defect}
+Glue $r$ port pairs between two surfaces $S,T$ satisfying the contract. Let $G$ have one vertex per component of $S$ or $T$, and one edge per glued pair, retaining multiplicities and isolated vertices. For the quotient $W$,
+\begin{align}
+c(W)&=c(G), & \chi(W)&=\chi(S)+\chi(T)-r,\label{eq:chi}\\
+\delta(W)&=\delta(S)+\delta(T)+\beta_1(G), &
+\beta_1(G)&=r-c(S)-c(T)+c(G).\label{eq:defect}
+\end{align}
+In particular, $W$ is a disk union exactly when $S,T$ are disk unions and $G$ is a forest. It is one disk exactly when the same pieces have a tree as their incidence graph.
+\end{lemma}
+\begin{proof}
+A path between original components crosses a glued interval, so the quotient and incidence graph have the same component relation. Subdivide compatibly with all attachment intervals. Inclusion--exclusion subtracts the Euler characteristic of each interval, namely one; disjointness of intervals and their endpoints excludes any higher intersection correction. This proves \eqref{eq:chi}. Substituting in the definition of defect gives \eqref{eq:defect}. Every summand there is nonnegative, and the surface classification just recalled characterizes its vanishing. In the connected case a forest is a tree.
+\end{proof}
+
+\begin{corollary}[Irreversible failure for a whole-disk query]\label{cor:irreversible}
+During an interval-gluing-only assembly, a non-disk component cannot later become a disk. A component with no remaining external port cannot later join the required nonempty outside material. Thus an intermediate cycle or a sealed component can be rejected in a search whose \emph{entire} terminal surface must be one disk.
+\end{corollary}
+\begin{proof}
+The nonzero defect remains a nonnegative summand under every further gluing. A port-free component has no future attachment. Since an interface with positive size leaves other nonempty material in the assembly, a sealed component cannot be the sole final component.
+\end{proof}
+
+The last statement is not a criterion for existence of a disk component in a larger surface. For example, two disk unions with partition $0\mid12$, glued at all three labels, yield one disk and, with compatible orientations, one annulus. Global cycle rejection is correct for a whole-disk query and incorrect for the rooted-component query of \cite{rooted}.
+
+\subsection{Partitions and disk caps}
+Let $U_r=\{0,\ldots,r-1\}$ with $r\ge1$. A disk union in which every component meets a port determines a partition $p\in\Part(U_r)$. Write $|p|$ for its number of blocks and $p\vee q$ for the join of two partitions. The bipartite incidence graph $G(p,q)$ has one vertex for each block on each side and one edge for each label. Its components are the blocks of $p\vee q$.
+
+\begin{proposition}[The exact disk predicate]\label{prop:disk}
+Under the interval contract, gluing disk unions with partitions $p,q$ gives one disk precisely when
+\begin{equation}
+D_r(p,q)=\ind{p\vee q=\{U_r\},\quad |p|+|q|=r+1}=1.
+\label{eq:disk}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The graph has $r$ edges and $|p|+|q|$ vertices. It is a tree precisely when it is connected and has one fewer edge than vertices. Apply \cref{lem:defect}.
+\end{proof}
+
+The predicate does not check ambient embedding or legal normal quadrilateral choices. Those are separate constraints, made explicit in \cref{sec:geometry}.
+
+\section{The disk-completion vector space}\label{sec:features}
+
+We recall the whole-disk feature theorem with a proof, both for completeness and to specify the exact quotient used later. This section's rank bound is prior project material, not the principal new claim.
+
+\subsection{Exterior and transversal coordinates}
+Let
+\[
+V_r=\{x\in\F^{U_r}:\textstyle\sum_i x_i=0\},
+\qquad f_i=e_i+e_0\quad(1\le i<r).
+\]
+Inside every block of $p$, choose a spanning tree. Wedge all vectors $e_i+e_j$ corresponding to those tree edges. The result $\phi(p)\in\bigwedge V_r$ has degree $r-|p|$. Different spanning trees are bases of the same even-sum subspace on each block. Over $\F$, every nonzero change-of-basis determinant is one, so the wedge is independent of the choices.
+
+Use coordinates indexed by $A\subseteq U_r\setminus\{0\}$, where $e_A$ denotes the corresponding exterior basis vector. There are
+\[
+d_r=2^{r-1}
+\]
+coordinates in total, including the empty exterior product.
+
+\begin{lemma}[Transversal formula]\label{lem:transversal}
+For every partition $p$ and coordinate $A$,
+\begin{equation}
+\phi(p)_A=\ind{U_r\setminus A\text{ contains exactly one element of each block of }p}.
+\label{eq:transversal}
+\end{equation}
+In particular, the block containing $0$ must omit $0$ and no other element.
+\end{lemma}
+\begin{proof}
+The coordinate is the square minor of the blockwise forest incidence matrix using rows $A$, after the row indexed by $0$ is deleted. For a tree on $k$ vertices, the minor using $k-1$ vertex rows is nonzero exactly when one vertex row is omitted; its determinant is one over $\F$, as follows by removing a leaf inductively. Blocks are independent. A nonzero global maximal minor must select $|C|-1$ rows in each block $C$, so it must omit one element in each block. The unavailable row $0$ supplies the omitted element of its block. This also proves the statement when a block is a singleton.
+\end{proof}
+
+\begin{theorem}[Disk factorization and exact rank]\label{thm:rank}
+Put $\overline A=(U_r\setminus\{0\})\setminus A$. Then
+\begin{equation}
+D_r(p,q)=\sum_{A\subseteq U_r\setminus\{0\}}\phi(p)_A\phi(q)_{\overline A}
+\quad\text{in }\F.
+\label{eq:pairing}
+\end{equation}
+The matrix $D_r$ has binary rank exactly $d_r=2^{r-1}$.
+\end{theorem}
+\begin{proof}
+The combined within-block forests for $p$ and $q$ span the even-sum subspace on each block of $p\vee q$, hence have rank $r-|p\vee q|$. Their exterior product has top degree $r-1$ and is nonzero exactly when they form an independent spanning set of $V_r$. The degree equation is $|p|+|q|=r+1$; the spanning condition is $|p\vee q|=1$. The top coefficient is therefore the disk predicate. Expanding the exterior product gives \eqref{eq:pairing}, with no signs in characteristic two.
+
+For sharpness, for every $A\subseteq U_r\setminus\{0\}$ let $p_A$ have root block $\{0\}\cup A$ and all other elements singleton. Formula \eqref{eq:transversal} gives $\phi(p_A)=e_A$. Thus the rows $p_A$ and columns $p_{\overline A}$ form a permutation submatrix of order $d_r$. The factorization gives the matching upper bound.
+\end{proof}
+
+\subsection{The cap radical}
+Let $\F\Part(U_r)$ be the free vector space on partitions. Extend $\phi$ and $D_r$ linearly. Define
+\[
+\mathcal N_r=\{x:D_r(x,q)=0\text{ for every }q\in\Part(U_r)\}.
+\]
+Since cap features span every coordinate, \cref{thm:rank} proves
+\begin{equation}
+\mathcal N_r=\ker\phi,\qquad
+\F\Part(U_r)/\mathcal N_r\simeq\F^{d_r}.
+\label{eq:radical}
+\end{equation}
+This is an observational quotient: a linear combination vanishes precisely when every whole-disk cap evaluates it to zero. A vector sum is not itself an embedded surface, and is never used as the output witness.
+
+\section{A category of disk transfers}\label{sec:category}
+
+\subsection{Actual transfers and partial composition}
+An actual transfer $P:a\to b$, with $a,b\ge1$, is a disk union with its first $a$ labels designated inputs and its last $b$ labels outputs. Every component meets at least one of these $a+b$ intervals; its partition records its abstract type.
+
+For $P:a\to b$ and $Q:b\to c$, glue the $b$ paired output/input intervals. If the component-incidence graph contains a cycle, declare the product zero. Also declare it zero if a resulting component meets none of the $a+c$ outer intervals. Otherwise the result is a disk union on those outer intervals. We denote its partition by $Q\circ P$. The identity $I_b$ consists of $b$ separate strips, with input $i$ and output $i$ on one disk.
+
+Disjoint union defines a tensor operation, with all input labels placed before all output labels. Composition, tensoring, and permutations of boundary labels are extended bilinearly to formal combinations.
+
+\begin{lemma}[Associativity before quotienting]\label{lem:assoc}
+The zero-rejecting composition is associative. Identity strips are identities. Tensoring satisfies the interchange law.
+\end{lemma}
+\begin{proof}
+Consider all connected disk pieces of a triple product as vertices of one incidence graph, with edges for every internal seam. Composing two consecutive stages contracts a forest and retains its exterior incidences. A cycle in a partial graph remains a cycle obstruction under further attachments by \cref{lem:defect}. A sealed component can never attach to the remaining stages by \cref{cor:irreversible}. Therefore a partial rejection forces rejection of the whole expression in every grouping.
+
+If no rejection occurs, both groupings compute the same connected components of the same full graph, restricted to the same outer labels, so give the same partition. Identity strips merely subdivide connections without introducing a cycle or a sealed component. For tensoring, the relevant incidence graphs are disjoint unions until the explicitly specified compositions; the same argument proves interchange.
+\end{proof}
+
+\subsection{The substitution theorem}
+\begin{lemma}[Pulling back a cap]\label{lem:pullback}
+Fix an interval-gluing context with one hole accepting a transfer on $r$ boundary intervals, and one final whole-disk test. The resulting linear functional of that transfer is either identically zero or is $D_r(\,\cdot\,,q)$ for a disk-cap partition $q$ on those same $r$ labels.
+\end{lemma}
+\begin{proof}
+Assemble every piece outside the hole first. If that outside assembly has a non-disk component, positive defect prevents any whole-disk completion. If a component has no contact with the hole, it cannot join the nonempty material in the hole. In either case the functional is zero.
+
+Otherwise the outside assembly is a disk union, every component meets the hole, and its contact intervals are precisely the $r$ specified, separated intervals. Its component partition is a cap $q$. The final quotient is a disk exactly when $D_r(P,q)=1$ by \cref{prop:disk}. This argument depends on the actual interval contract, not on treating a compressed integer as a single interval.
+\end{proof}
+
+\begin{theorem}[Cap-radical congruence]\label{thm:ideal}
+The spaces $\mathcal N_{a+b}$ form a two-sided ideal for transfer composition and an ideal for tensoring. Consequently
+\[
+\Hom_{\mathcal C}(a,b)=\F\Part(U_{a+b})/\mathcal N_{a+b}
+\]
+defines a category $\mathcal C$, and
+\begin{equation}
+\dim_{\F}\Hom_{\mathcal C}(a,b)=2^{a+b-1}.
+\label{eq:homdimension}
+\end{equation}
+Every fixed left or right transfer acts linearly on these quotient spaces.
+\end{theorem}
+\begin{proof}
+Let $x\in\mathcal N_{a+b}$. Test a composition containing $x$ against any final cap. By \cref{lem:pullback}, this functional of $x$ is zero or is one of the cap functionals annihilating $x$. Thus the composition lies in the corresponding radical. The same reasoning applies to tensoring with a fixed transfer and then testing the larger interface. Bilinearity extends the statement to arbitrary formal companions. Associativity descends from \cref{lem:assoc}, and \eqref{eq:homdimension} follows from \eqref{eq:radical}.
+\end{proof}
+
+This theorem is the missing logical step in blindly powering a one-sided table. A module will be substituted into a hole with \emph{both} ends exposed. Its summary must answer all such two-sided caps, not merely the continuation queries seen by one particular prefix.
+
+\section{The dual-number matrix structure}\label{sec:algebra}
+
+\subsection{The two-strip splitting identity}
+Composition is written in categorical order: $QP=Q\circ P$. Inputs precede outputs in every partition string. Define
+\begin{align*}
+u_0:1\to2&\quad 000, &u_1:1\to2&\quad 001,\\
+v_0:2\to1&\quad 010, &v_1:2\to1&\quad 000.
+\end{align*}
+The first letter of a $1\to2$ string is its input; the first two letters of a $2\to1$ string are its inputs.
+
+\begin{lemma}[A decomposition of object two]\label{lem:split}
+In $\mathcal C$,
+\begin{equation}
+v_i u_j=\delta_{ij}I_1,
+\qquad u_0v_0+u_1v_1=I_2.
+\label{eq:split}
+\end{equation}
+The first identities already hold for actual zero-rejecting compositions.
+\end{lemma}
+\begin{proof}
+For $v_0u_0$ and $v_1u_1$, the two internal seam edges join three disk components in a tree; the two outer intervals lie on one disk, giving $I_1$. In $v_1u_0$, two edges join the same two components, forming a cycle. In $v_0u_1$, one intermediate component has no outer interval and is sealed. These give the two zero products.
+
+The partitions of $u_0v_0$ and $u_1v_1$ on four outer intervals are respectively $0100$ and $0001$. Identifying a coordinate subset of $\{1,2,3\}$ with its binary mask, their features are $e_6$ and $e_3$. The identity partition $0101$ has feature $e_6+e_3$ by \cref{lem:transversal}. Their difference is therefore in the cap radical, proving the second identity.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Latex, every node/.style={font=\small}]
+\node[draw,rounded corners,minimum width=25mm,minimum height=11mm] (one) at (0,0) {object $1$};
+\node[draw,rounded corners,minimum width=25mm,minimum height=11mm] (two) at (5,0) {object $2$};
+\draw[->] (one.north east) to[bend left=25] node[above] {$u_0,u_1$} (two.north west);
+\draw[->] (two.south west) to[bend left=25] node[below] {$v_0,v_1$} (one.south east);
+\node[align=center] at (2.5,-1.7) {$v_i u_j=\delta_{ij}I_1$\qquad $\sum_i u_i v_i=I_2$};
+\node[align=center] at (2.5,-2.5) {Iterate the splitting on one strip:\quad $b\simeq 1^{\oplus 2^{b-1}}$};
+\end{tikzpicture}
+\caption{An identity in a category with linear morphism spaces, not a geometric replacement of one surface by an XOR of surfaces. The optimizer always retains actual original transfers.}
+\label{fig:split}
+\end{figure}
+
+\subsection{Iterated matrix units}
+\begin{proposition}[Explicit inclusions and projections]\label{prop:units}
+For every $b\ge1$ there are $m_b=2^{b-1}$ actual disk transfers
+\[
+U_i^{(b)}:1\to b,\qquad V_i^{(b)}:b\to1
+\]
+with
+\begin{equation}
+V_i^{(b)}U_j^{(b)}=\delta_{ij}I_1,
+\qquad \sum_{i=1}^{m_b}U_i^{(b)}V_i^{(b)}=I_b.
+\label{eq:units}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $b=1$ use the identity, and for $b=2$ use \cref{lem:split}. Inductively, when $b\ge3$, tensor the two-strip splitting with $I_{b-2}$ and compose it with the inclusions and projections for $b-1$. Explicitly, with pairs $(i,j)$ indexing the new maps,
+\[
+U_{i,j}^{(b)}=(I_{b-2}\otimes u_j)U_i^{(b-1)},
+\quad
+V_{i,j}^{(b)}=V_i^{(b-1)}(I_{b-2}\otimes v_j).
+\]
+Interchange and \eqref{eq:split} give the first identity. Summing over $i$ in the second expression uses the old resolution of $I_{b-1}$; summing over $j$ then gives $I_{b-2}\otimes I_2=I_b$. The displayed compositions are actual transfers. None is zero, since its appropriate reverse composite is $I_1$. Thus they may be represented by genuine disk unions rather than only formal sums.
+\end{proof}
+
+\subsection{The scalar algebra}
+There are only two partitions on the two ports of an endomorphism of object one. Write $1$ for the strip $00$ and $\eps$ for the two separate disks $01$. Composing $\eps$ with itself seals the middle disk component, so $\eps^2=0$. Both classes are independent by \cref{thm:rank}. Therefore
+\begin{equation}
+\End_{\mathcal C}(1)\simeq K:=\F[\eps]/(\eps^2).
+\label{eq:dual}
+\end{equation}
+Here the scalar multiplication is not the multiplication of ordinary probabilities, costs, or Boolean reachability.
+
+\begin{theorem}[Rectangular dual-number transfer theorem]\label{thm:matrix}
+There are explicit isomorphisms
+\begin{equation}
+\Phi_{a,b}:\Hom_{\mathcal C}(a,b)
+\longrightarrow \Mat_{m_b\times m_a}(K),
+\qquad m_t=2^{t-1},
+\label{eq:matrix}
+\end{equation}
+compatible with composition:
+\[
+\Phi_{a,c}(QP)=\Phi_{b,c}(Q)\Phi_{a,b}(P).
+\]
+In particular,
+\begin{equation}
+\boxed{\End_{\mathcal C}(b)\simeq
+\Mat_{2^{b-1}}\bigl(\F[\eps]/(\eps^2)\bigr).}
+\label{eq:mainalgebra}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Define the $(j,i)$ entry by
+\[
+\Phi(P)_{j,i}=V_j^{(b)}P U_i^{(a)}\in\End_{\mathcal C}(1)=K.
+\]
+For a rectangular matrix $M$ define
+\[
+\Psi(M)=\sum_{j,i}U_j^{(b)} M_{j,i} V_i^{(a)}.
+\]
+The orthogonality identities in \eqref{eq:units} give $\Phi\Psi(M)=M$. The two resolutions of the identity give $\Psi\Phi(P)=I_bPI_a=P$. Hence the maps are inverse.
+
+Insert $I_b=\sum_j U_j^{(b)}V_j^{(b)}$ between $Q$ and $P$. The resulting entry formula is exactly matrix multiplication over $K$. This proves multiplicativity and the endomorphism statement. The binary dimension of the matrix space is $2m_am_b=2^{a+b-1}$, agreeing with \eqref{eq:homdimension}.
+\end{proof}
+
+The proof identifies the algebra without an unexplained classification theorem. Each entry of the matrix of an actual transfer is computed by two small graph compositions and is $0$, $1$, or $\eps$. Formal sums may also produce $1+\eps$. Enumerating all entries requires $2^{a+b-2}\poly(a+b)$ work. Matrix coordinates and exterior coordinates are two bases of the same space; the implementation uses the cheaper available partition features for weighted reduction and the matrix coordinates for structural audits.
+
+\subsection{Closure and the trace pairing}
+For $P:a\to b$, let $P^\dagger:b\to a$ be the same disk union with input and output groups interchanged and labels correspondingly reordered. This reversal is not a matrix transpose assertion. Define the closure functional on an endomorphism by
+\[
+\tau_a(M)=D_{2a}(M,I_a).
+\]
+Geometrically the identity strips join the paired input and output intervals of $M$.
+
+\begin{lemma}[Cyclic closure]\label{lem:trace}
+For $P:a\to b$ and $Q:b\to a$, $\tau_a(QP)=\tau_b(PQ)$. Moreover,
+\[
+\tau_a(M)=[\eps]\tr\Phi(M),
+\]
+where $[\eps](x+y\eps)=y$.
+\end{lemma}
+\begin{proof}
+Both cyclic closures glue the same pieces in a cyclic order. Removing or inserting identity strips only subdivides incidence edges. Whether the complete incidence graph is a tree is unchanged. A rejected intermediate product has an irreversible cycle or sealed component and cannot give a successful closure in the other grouping. This proves cyclicity, first on actual transfers and then linearly.
+
+At object one, $\tau_1(1)=0$ because the strip and its closing strip form a two-edge cycle, while $\tau_1(\eps)=1$ because two disks and a closing strip form a tree. Thus $\tau_1=[\eps]$. Expand $M$ using the inverse matrix formula, cyclically move $U_j$ to the other side, and use $V_iU_j=\delta_{ij}I_1$. Only diagonal entries survive, giving the trace formula.
+\end{proof}
+
+\begin{corollary}[Trace formula for every cap]\label{cor:tracepair}
+For transfers $P,Q:a\to b$, viewed also as partitions on their $a+b$ outer ports,
+\begin{equation}
+D_{a+b}(P,Q)
+=[\eps]\tr\!\left(\Phi(Q^\dagger)\Phi(P)\right).
+\label{eq:tracepair}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Compose $P$ with $Q^\dagger$ along their $b$ intervals and close along their remaining $a$ intervals. This is precisely the complete cap gluing, with optional identity-strip subdivisions. Apply \cref{lem:trace}.
+\end{proof}
+
+\section{Weighted representatives that survive substitution}\label{sec:weighted}
+
+\subsection{Exact sector-wise optimization}
+Let $H=(\F)^k$ and $q=|H|=2^k$. A candidate consists of an actual transfer, an integer cost $w$ written in binary, a charge $h\in H$, and its original witness reference. All candidates in one family have the same geometric type and span when those notions are present. For a cap $Q$ and required module charge $\eta$, define
+\[
+\operatorname{opt}(\mathcal A,Q,\eta)
+=\min\{w(P):P\in\mathcal A,\ D(P,Q)=1,\ h(P)=\eta\},
+\]
+with $\min\varnothing=+\infty$. A cap's own additive cost is a constant for this query, and its charge is accounted for by shifting the required module charge.
+
+\begin{theorem}[Cost-dominating representative theorem]\label{thm:weighted}
+For transfers $a\to b$, there is a deterministic reduction to original candidates of size at most
+\[
+R_{a,b}=q2^{a+b-1}
+\]
+that preserves $\operatorname{opt}$ for every cap and every required charge. It scans candidates in nondecreasing cost and retains a candidate exactly when its feature is independent of previously retained features in the same charge sector.
+\end{theorem}
+\begin{proof}
+Each charge sector has dimension $2^{a+b-1}$. A discarded feature is a binary linear combination of retained features of the same charge and no greater cost. Pair this identity with a cap that completes the discarded candidate. The resulting left side is one, so at least one retained summand also pairs to one. It supplies a successful original candidate of no greater cost in the required sector. Applying this to an optimum proves one inequality; the reverse follows because the retained family is a subset. The argument works with negative costs since the input family is finite.
+\end{proof}
+
+The field calculation is a witness replacement argument, not a test of whether the \emph{number} of solutions is odd. It outputs an original candidate rather than a linear combination of surfaces.
+
+\begin{proposition}[Universal sharpness]\label{prop:sharp}
+For each $a,b,q$, a cost-zero family requires all $R_{a,b}$ candidates to preserve every exact-charge cap query by a representative-subset method.
+\end{proposition}
+\begin{proof}
+For every exterior coordinate $A$ and every charge $h$, take the star partition $p_A$ from \cref{thm:rank} with charge $h$. Query the complementary star cap and require charge $h$. Exactly that candidate succeeds in the family. Omitting it changes a feasible query to infeasible.
+\end{proof}
+This is not a running-time lower bound for algorithms with a single fixed cap, nor for cap languages with additional restrictions. In particular it does not supersede the cycle-envelope bound for restricted continuations \cite{cycle}.
+
+\subsection{Why both children may be reduced}
+\begin{theorem}[Weighted contextual congruence]\label{thm:congruence}
+Suppose $\mathcal A'$ represents $\mathcal A$ and $\mathcal B'$ represents $\mathcal B$ for all caps and exact charges. Then $\mathcal A'\cup\mathcal B'$ represents $\mathcal A\cup\mathcal B$. For composable types, the surviving products from $\mathcal B'\mathcal A'$ represent the surviving products from $\mathcal B\mathcal A$. Costs add and charges add by XOR.
+\end{theorem}
+\begin{proof}
+The union assertion follows by taking the smaller optimum. For a successful product $QP$ under a fixed final cap, treat $Q$ together with that cap as a context for $P$. By \cref{lem:pullback}, it is a valid cap query for $P$, since this particular full assembly succeeds. Replace $P$ by a no-more-expensive $P'\in\mathcal A'$ with the same charge. The full assembly still succeeds. Now treat $P'$ and the final cap as the context for $Q$, and replace $Q$ by $Q'\in\mathcal B'$ similarly. The resulting product has the same total charge and no larger cost.
+
+Its intermediate composition cannot be rejected: a cycle or a sealed component would contradict success of the full assembly by \cref{cor:irreversible}. Thus $Q'P'$ is among the surviving generated products. The reverse optimum inequality follows from subset inclusion. The same argument works in a larger typed context provided the same outside pieces remain legal after substitution.
+\end{proof}
+
+A dependency valid for all caps can consequently be used repeatedly in a shared expression DAG. The proof uses complete contexts, not equality of all local physical states.
+
+\section{Binary-compressed homogeneous patch grammars}\label{sec:grammar}
+
+\subsection{Syntax and semantics}
+Fix a positive width $b$. The source is a finite acyclic list of nodes whose children refer to earlier nodes. Each node denotes a language of ordered $b\to b$ patch words. The allowed constructions are:
+\begin{itemize}
+\item an identity node, denoting the empty word, with span zero;
+\item an explicit finite list of atomic patch options, each with span one, cost and charge;
+\item ordered concatenation of two earlier languages;
+\item a finite union of earlier languages of the \emph{same span};
+\item $X^W$ for an earlier node $X$ and a nonnegative integer $W$ given literally in binary, or equivalently as an input integer whose bit length is charged.
+\end{itemize}
+The power means all $W$-fold concatenations with an independent choice of a word of $X$ in each occurrence. It is \emph{not} the smaller language $\{x^W:x\in X\}$. Costs and charges add over occurrences, even when a DAG node is shared. Invalid cyclic or sealed assemblies have no surviving transfer. They are rejected words, not zero-cost alternatives.
+
+All words denoted by a node have a common span $\ell(X)$, recursively given by $0$, $1$, addition, equality at a union, and multiplication by the literal $W$. Homogeneity is needed for the intended fixed-source use. The algebraic all-cap replacement itself does not inspect the span, but it is not legitimate to substitute a shorter physical slab for a longer one without a separate geometric theorem.
+
+\begin{lemma}[Compilation and integer lengths]\label{lem:compile}
+Let $g$ be the number of source nodes and let $E$ be the sum of bit lengths of literal power exponents. Powers can be lowered to identity and binary concatenation nodes with at most $O(g+E)$ compiled nodes, in addition to the original explicit lists and union incidences. If $N$ is the structural encoding length, the largest expanded span satisfies
+\[
+\log_2(L+1)=O(N).
+\]
+If atomic costs have at most $B$ bits, every accumulated cost has $O(B+N)$ bits.
+\end{lemma}
+\begin{proof}
+Compute $X,X^2,X^4,\ldots$ by squaring, and concatenate the powers selected by the binary digits of $W$. This uses at most $2\lfloor\log_2 W\rfloor$ concatenations when $W>0$; $W=0$ uses the identity. Each product is ordered. Since every factor is a language power of the same $X$, this constructs exactly all independent choices in $X^W$.
+
+For spans, a concatenation increases the maximum child value of $\log_2(\ell+1)$ by at most one. A power increases it by at most $\log_2(W+1)$. A homogeneous union does not increase it beyond its children. Along a path in the acyclic source, the total increase is bounded by the number of concatenation nodes plus the sum of literal exponent lengths, both charged to $N$. Sharing does not invalidate this recurrence. Finally, a sum of at most $L$ signed integers of magnitude below $2^B$ has magnitude at most $L2^B$.
+\end{proof}
+
+Exponent towers specified by arithmetic circuits are not in this syntax. Neither are succinct rules that implicitly offer exponentially many different atomic options without an option-generation algorithm and its cost.
+
+\subsection{Bottom-up algorithm}
+For a compiled node, maintain a family of at most
+\[
+R=q2^{2b-1}
+\]
+actual transfers. At an atomic list, reduce the original options. At a union, reduce the union of retained child tables. At a concatenation, try every pair of retained children, compose their actual partitions, reject cycles and sealed components, add costs and XOR charges, and reduce the surviving pairs. Identity nodes contain $I_b$ with cost and charge zero.
+
+\begin{lstlisting}[caption={Core algorithm; every retained item points to original data.}]
+for rule in topological_order(compiled_grammar):
+    if rule is ATOMS:
+        generated = original_options(rule)
+    elif rule is IDENTITY:
+        generated = [identity_transfer]
+    elif rule is UNION:
+        generated = concatenate_child_tables(rule)
+    else:  # ordered composition
+        generated = []
+        for left in table[rule.left]:
+            for right in table[rule.right]:
+                p = forest_composition(left.partition, right.partition)
+                if p is not REJECTED:
+                    generated.append((p, left.cost + right.cost,
+                                      left.charge XOR right.charge,
+                                      original_child_references))
+    table[rule] = cost_ordered_original_row_basis(generated)
+\end{lstlisting}
+
+\begin{theorem}[Exact compressed-language search]\label{thm:grammarcorrect}
+At every compiled node, the retained table represents its full expanded language for every disk cap and exact charge. Consequently the final table gives the exact minimum cost or infeasibility of every such query without expanding the language or its repetition count.
+\end{theorem}
+\begin{proof}
+The statement holds for explicit atomic lists and the identity by \cref{thm:weighted}. Induct on the compiled DAG. Union and concatenation preserve representativity by \cref{thm:congruence}; reducing the generated family preserves it again. The compiler has the same word-language semantics by \cref{lem:compile}. A final direct cap test therefore reads the exact optimum of the original source language.
+\end{proof}
+
+\subsection{Bit complexity, not merely a table bound}
+Let $M$ be the total number of listed atomic options, $U$ the total union incidences, and $C$ the number of compiled concatenation nodes. Let $\beta=O(B+\log(L+1))$ bound accumulated integer lengths. Canonical partition comparison, forest composition, charge operations and witness-reference creation cost polynomial work in the explicit local data and $\beta$.
+
+A feature has $d=2^{2b-1}$ bits, and can be constructed by \eqref{eq:transversal} in $\poly(b)d$ bit work. There are at most $d$ pivots per sector. Elementary elimination of one row costs $\poly(b)R^2$ bit operations as a conservative bound, charging a packed XOR by its bit length rather than as a unit operation. Cost sorting adds polynomial factors in $\beta$ and $\log R$.
+
+\begin{theorem}[Binary-grammar bit bound]\label{thm:complexity}
+All-cap optimization of a supplied grammar can be performed in
+\begin{equation}
+\poly(N,b,\beta)\bigl(MR^2+UR^3+CR^4+1\bigr)
+\label{eq:complexity}
+\end{equation}
+bit time. This is bounded by $\poly(N,b,B)R^4$. For an explicit library of $m$ options repeated $W$ times, a bound is
+\begin{equation}
+\poly(b,B+\log(W+1),\log q,\log(m+1))
+\left(mR^2+R^4\log(W+1)+1\right).
+\label{eq:repeatcomplexity}
+\end{equation}
+The numerical length $W$ is absent from the bound.
+\end{theorem}
+\begin{proof}
+Atomic reduction processes $M$ input rows. A union incidence contributes at most $R$ rows, each charged at most polynomial times $R^2$. A concatenation generates at most $R^2$ pairs; each graph check is polynomial, and reducing all surviving pairs costs at most polynomial times $R^4$. Sum over the compiled DAG and charge parsing, sorting, source storage and binary arithmetic. The quantities $M,U,C$ and $\log(L+1)$ are polynomially bounded by $N$, by the encoding and \cref{lem:compile}. The single-power specialization has $C=O(\log(W+1))$.
+\end{proof}
+
+These are elementary upper bounds, not optimized exponential bases. Using separate charge sectors often saves large factors in practice, but no unproved fast product-of-representatives algorithm is hidden in \eqref{eq:complexity}. The two-sided dimension can be much larger than a one-sided prefix dimension. Thus logarithmic repetition cost does not imply that powering wins on short words; \cref{sec:measurements} measures this explicitly.
+
+\section{Compressed optimal witnesses and run certificates}\label{sec:certificates}
+
+\subsection{A straight-line optimal witness theorem}
+A straight-line word program is a finite acyclic graph whose leaves name atomic choices or the empty word and whose binary nodes concatenate their children. A reference used twice denotes two occurrences in the expanded word, not one physical patch reused in place.
+
+\begin{theorem}[Small optimal-witness DAG]\label{thm:witness}
+For a grammar with $S$ compiled nodes, every feasible cap/charge optimum is attained by an original word with a straight-line witness using at most $O(M+SR)$ nodes. Its costs, charges, span and any supplied additive integer counters can be evaluated in time polynomial in $N,R,B$ and the counter bit lengths. For one library repeated $W$ times, the bound becomes
+\[
+O\bigl(m+R\log(W+1)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+At an atomic list, every retained item names an original option. At a union it points to one retained child item. At a concatenation it points to two retained child items. Store these references for each of the at most $R$ retained items at each node. Child indices are earlier, so the resulting graph is acyclic and has at most the stated size. The final exact query selects one retained actual witness attaining the optimum by \cref{thm:grammarcorrect}. Its reachable subgraph can only be smaller.
+
+Compute spans, costs and additive counters bottom-up. At a concatenation add child values, counting both occurrences when a child is repeated. XOR the charges. The length bound of \cref{lem:compile} controls the resulting integer sizes. A vector of atom multiplicities is one possible additive counter; its dimension is at most $M$. No expansion of the word is required.
+\end{proof}
+
+This theorem is stronger than saying ``store the final feature vector.'' It asserts the existence and recovery of a small description of an \emph{optimal actual word} even though different copies may choose different patches. It does not assert that an expanded mesh, a list of all normal disks, or a literal list of $W$ atom names has polylogarithmic size. Such outputs can have an unavoidable $\Omega(W)$ writing cost.
+
+\subsection{Source-bound pruning evidence}
+The run certificate names, for each compiled rule, the indices of the generated candidates retained there. It does not supply an alleged candidate list for the checker to trust. The checker receives the original grammar independently, recompiles it, and reconstructs the entire local source list: all atomic options, all union alternatives, or \emph{every} pair of previously checked child candidates.
+
+For a reduction certificate, the checker verifies index validity, absence of duplicate indices, and at most $d$ selected rows in each charge sector. It reconstructs features independently. Scan all source candidates in increasing cost. Before testing a source row of cost $w$, insert all selected rows in its sector whose cost is at most $w$. The source row must lie in their span. This checks a no-more-expensive expansion without storing an explicit list of coefficients for every discarded row.
+
+\begin{theorem}[Compressed run checking]\label{thm:checker}
+The preceding checks certify preservation of every cap/charge optimum at every compiled node. Their bit-time bound has the same form as \eqref{eq:complexity}. The selection certificate has size
+\[
+O\bigl(SR\log(N+R+2)\bigr)
+\]
+bits apart from fixed format and source-binding data. Witness records and replayed integer values occupy additional polynomial-in-$N,R,B$ storage.
+\end{theorem}
+\begin{proof}
+The checked span property is exactly the expansion property used in \cref{thm:weighted}; independence is a means of producing a small family but is not required to prove representativity. All source candidates are reconstructed, so omitting an option or a child pair from an alleged list cannot justify a false empty table. Induction using \cref{thm:congruence} proves the full run assertion.
+
+At most $R$ indices are recorded per rule. A concatenation source has at most $R^2$ rows, an atomic source at most $M$, and a union source at most $UR$; their indices have $O(\log(N+R+2))$ bits. Reconstruction, independent feature formation and weighted span tests satisfy the same conservative time accounting as the producer. All retained partitions and numeric witness values have the previously bounded bit lengths.
+\end{proof}
+
+The delivered checker uses breadth-first component graphs and edge counts rather than the producer's union--find cycle test. It enumerates all coordinate subsets and checks transversals rather than using the producer's block-product feature enumeration. Both share the small source parser/power compiler and plain record types. That shared compiler is an explicit trust boundary, tested separately against a direct interpreter of the original syntax. A source digest binds data but does not prove topology, completeness, or the correctness of either program.
+
+\subsection{A worked enormous-exponent control}\label{sec:huge}
+Take width one and two actual strip options, both with partition $00$. Option $A$ has cost $1$ and charge $0$; option $B$ has cost $-3$ and charge $1$. Repeat the library exactly $W=2^{1024}$ times and cap by $01$, requiring module charge one.
+
+Every word is a strip, so every word passes the cap. Charge one means that the number of $B$ occurrences is odd. Since $W$ is even and $B$ is cheaper, the optimum has one $A$ and $W-1$ copies of $B$, with exact cost
+\begin{equation}
+-3\cdot2^{1024}+4.
+\label{eq:huge}
+\end{equation}
+Repeating one chosen atom $W$ times would have charge zero and miss this optimum entirely.
+
+The executed solver uses 1,025 compiled rules, retains 2,050 table items in total, and generates 4,096 composition pairs. The selected optimum has 2,049 reachable witness nodes. Its selection certificate is 6,292 bytes in the recorded compact JSON encoding. The independent checker and multiplicity replay agree with \eqref{eq:huge}. This deliberately simple, analytically solvable control establishes correct binary repetition and independent choices; it is not evidence that a knot with $2^{1024}$ crossings was processed.
+
+\section{A different theorem for unrestricted repetition}\label{sec:pumping}
+
+Now change the language: allow any number of library atoms, including zero, and assume every atomic cost is nonnegative. The span is no longer prescribed. This section's linear-representation argument is an application of the classical finite-dimensional word-language viewpoint \cite{rational}, specialized to disk-cap optimization.
+
+\begin{theorem}[Rank pumping for a shortest optimum]\label{thm:pumping}
+Fix a width-$b$ library, $q$ charges, and a cap/charge query. If the free-repetition language has a feasible word, it has a minimum-cost word; among minimum-cost words there is one of length at most $R-1$, where $R=q2^{2b-1}$. With $s$ explicitly given finite control states restricting which atoms may follow, the same assertion holds with $sR-1$ in place of $R-1$.
+\end{theorem}
+\begin{proof}
+Costs are nonnegative integers, so a nonempty set of feasible costs has a minimum. Choose a shortest word among those with minimum cost. Write $x_t$ for the feature of its prefix of length $t$, placed in the direct-sum coordinate block indexed by its charge and current control state. Invalid prefixes cannot occur in a successful word by \cref{cor:irreversible}. Appending a fixed atom acts linearly on these spaces by \cref{thm:ideal}, with the prescribed charge/control shift.
+
+If the word has length at least $sR$, among $x_0,\ldots,x_{sR}$ some $x_t$ is in the span of earlier prefixes. In its dependency, only earlier prefixes with the same charge and control state need occur, since other direct-sum blocks can be discarded. Apply the linear suffix action and final cap functional to that dependency. The original prefix gives value one, so some earlier prefix $x_j$, $j<t$, followed by the same suffix also succeeds. The common control state makes the splice legal, and its total charge is unchanged. It deletes a nonempty segment of nonnegative cost. The resulting word has no larger cost and is shorter, a contradiction. Taking $s=1$ gives the first claim.
+\end{proof}
+
+\begin{proposition}[Cost-ordered free-star search]\label{prop:staralgorithm}
+For one control state, start with the identity and repeatedly pop the cheapest pending actual prefix. Retain and extend it only when its feature adds a new direction in its charge sector. This algorithm retains at most $R$ prefixes and preserves every free-star cap optimum. With $m$ options, elementary implementation costs $\poly(b,B,\log R,\log(m+1))mR^3$ bit work, plus input reading.
+\end{proposition}
+\begin{proof}
+Nonnegative atom costs make the sequence of popped costs nondecreasing: every newly inserted child costs at least its parent. Therefore every discarded row is spanned by retained rows of the same charge and no greater cost. At termination the retained family contains the identity and has the following weighted linear closure property: for every retained prefix and every atom, their composed feature is zero or is spanned by retained features whose costs are no larger than the prefix cost plus the atom cost. This is because every such successor was generated and processed. Induction on word length, using linearity of appending an atom, now expresses the feature of every word by retained features of the same charge and no greater cost. Pairing with a successful cap supplies a successful retained original prefix. Subset inclusion supplies the reverse optimum inequality.
+
+At most $R$ independent prefixes can be retained, each generating at most $m$ children. There are thus at most $1+mR$ queue entries and at most that many elimination tests, each costing a conservative polynomial times $R^2$. An accepted witness has fewer than $R$ atoms along its ancestor chain: the chain consists of earlier independent retained prefixes starting at the identity. Its cost has $O(B+\log R)$ bits. These bounds give the stated complexity.
+\end{proof}
+
+\textbf{The geometric warning is essential.} The pumping theorem does not permit replacing an assembly in $W$ specified slabs by an assembly in fewer slabs. It changes the language from exact length to free repetition. Likewise a negative-cost cycle may make a free-star optimum unbounded below, whereas a finite exact-length problem with negative costs remains well-defined. The executable \code{star_search.py} rejects negative costs and accepts only one explicit atom library; finite control is a proved extension, not implemented functionality.
+
+\section{Connection to source-certified unknot recognition}\label{sec:geometry}
+
+\subsection{A sufficient repeated-region contract}
+The algebra is independent of a three-manifold. A native adapter must supply more than partitions. Here is a sufficient contract for using the repeated-language algorithm in an authenticated exterior $M$:
+\begin{enumerate}[label=G\arabic*.]
+\item A finite PL or otherwise exactly checked chart identifies a source region with a sequence of congruent slabs, or a product region with a prescribed binary subdivision count. The source binding and chart are independently validated.
+\item Each atomic option is an embedded disk union in one reference slab. It meets its horizontal interfaces only in the $b$ named input and output intervals, agrees with the specified collar data, and has no undeclared intersections. All other boundary has a certified permitted destination, such as the physical boundary or an explicitly accounted adjoining piece.
+\item Moving a template to any legal slab preserves its embedding and collar type. Adjacent choices have identical interface positions and framing. There are no unrecorded predicates on the interior partition, and no globally incompatible local choice such as conflicting quadrilateral types.
+\item Any additive boundary charges are justified at the chain level in every occurrence, with correct seam cancellation and any local correction terms. Repetition of a template is not by itself a proof that its charge is position-independent.
+\end{enumerate}
+For an explicit product chart, copies can be placed by $t\mapsto(j+t)/W$. The rational coefficients have $O(\log(W+1))$ bits. A proof of the uniform template conditions covers every occurrence; a checker need not enumerate all $W$ slabs merely to verify this particular contract. However, a general knot-exterior algorithm is not assumed to provide such a chart for free.
+
+\begin{proposition}[Source soundness under uniform slab substitution]\label{prop:slab}
+Assume G1--G4 and source-compatible end caps. Every word accepted by the abstract whole-disk test gives a properly embedded disk in the authenticated source manifold, with the replayed boundary charge. A compressed witness can be certified by the uniform geometric contracts together with its checked composition DAG, without writing its expanded triangulation.
+\end{proposition}
+\begin{proof}
+Different open slabs have disjoint interiors. The template embedding and matching collar conditions imply that gluing any adjacent legal pair yields an embedded PL surface, with all its boundary accounted for. Induction over the selected word proves embeddedness; the same induction can be organized over its straight-line DAG, using the uniform substitution theorem at a shared node. The abstract incidence calculation is the topology of that very surface because each port is an actual interval with the stated collar. A successful terminal test therefore makes it a disk by \cref{lem:defect}. Chain-level additivity proves the replayed charge. Source binding and properness are supplied by the contracts, not by the abstract feature.
+\end{proof}
+
+The delivered program checks the abstract DAG and replays small expanded PL surfaces. It does \emph{not} implement a native product-chart verifier or normal-surface exporter. Standard normal-disk boundaries meet at triangulation edges; turning that geometry into the separated-interval model without losing completeness is itself a substantive obligation. The proposition must not be read as silently discharging it.
+
+\subsection{Two bits for an essential disk boundary}
+Suppose a certified basis of $H^1(\partial M;\F)$ is supplied for the boundary torus, and the chain-level ownership/cancellation contract assigns the two evaluations to each module and cap.
+
+\begin{proposition}[Essential boundary after the whole-disk test]\label{prop:essential}
+For a properly embedded disk $D$ in $M$, its boundary is essential in the boundary torus if and only if its two-bit homology evaluation is nonzero. Sector-wise reduction therefore preserves minimum-cost essential-disk queries under the stated chain contract.
+\end{proposition}
+\begin{proof}
+The boundary is an embedded circle. An inessential circle is null-homologous. An essential embedded circle on a torus has a primitive integral class $(a,b)$, so $a,b$ cannot both be even and its mod-two class is nonzero. Conversely nonzero mod-two homology rules out an inessential circle. A fixed cap shifts the required partial charge by its own charge, so \cref{thm:weighted} preserves each necessary sector.
+\end{proof}
+
+A generic two-bit field in a JSON record is not this chain certificate. Aggregate parity of a disconnected surface is also not a substitute for the component-local criterion of the rooted report: two essential disk components may cancel in aggregate. Here the terminal surface has already been certified to be \emph{one} disk.
+
+\subsection{The conditional quasi-polynomial consequence}
+\begin{theorem}[Binary-width route to quasi-polynomial recognition]\label{thm:qp}
+Suppose every validated $n$-crossing knot diagram has a constructible, source-faithful collection of homogeneous grammars as above with the following bounds: polynomial encoded size, polynomial atomic and source-checking bit cost, polynomially many explicitly charged geometric types and transitions, polynomial bit lengths of costs and uniform geometric certificates, and
+\[
+b=O\bigl((\log(n+2))^2\bigr),\qquad q=4.
+\]
+Assume the collection produces a properly embedded essential-boundary disk in the authenticated exterior exactly when such a disk exists. Then it yields an unknot recognizer of bit complexity $n^{O(\log n)}$ for $n\ge2$, even if individual repetition counts are exponentially large in a polynomial of $n$.
+\end{theorem}
+\begin{proof}
+Use the maintained source exterior construction rather than replacing its provenance by a bare manifold input. Optimize each grammar separately by \cref{thm:complexity}, reducing only within a type with the same legal outside substitutions. Explicitly polynomially many types, rules and collections contribute polynomial factors. Literal exponent lengths and all geometric verification work are charged by hypothesis. Since
+\[
+R^4=4^4\,2^{8b-4}=\exp\bigl(O((\log n)^2)\bigr),
+\]
+the total bound is $n^{O(\log n)}$. Source soundness and \cref{prop:essential} make successful witnesses essential disks in the actual exterior. The assumed completeness and the classical equivalence between compressibility of a knot exterior's boundary and the unknot \cite{lackenby} prove correctness in both directions.
+\end{proof}
+
+The producer, completeness theorem, type-count bound and universal width bound in this statement are \textbf{not proved here}. The established advance removes a numerical repetition factor for the supplied language; it does not solve the remaining geometric construction. The cycle-envelope report offers a complementary route through a potentially smaller overlap dimension \cite{cycle}. Using those restricted features inside a shared powered node requires safe envelopes for \emph{every} occurrence context; intersecting incompatible occurrence assumptions is unsound.
+
+\section{Failure modes and limits}\label{sec:limits}
+
+\subsection{Parity is not existential search}
+Summing the matrices of two identical successful choices over $\F$ gives zero. Both choices may nonetheless be feasible. The program never decides existence by the parity of all words. It retains a cost-ordered basis of original candidates, which preserves the existence of at least one successful summand under every cap.
+
+Nor may a binary matrix entrywise be replaced by its Boolean or tropical analogue. Take four-port partitions $p=0112$ and $q=0110$. Their exterior features are respectively $e_1+e_2$ and $e_5+e_6$. There are two nonzero complementary-coordinate products, so their binary pairing is zero; their incidence graph is not a tree. An entrywise ``some coordinate intersects'' rule would incorrectly answer yes. Matrix coordinates reorganize these cancellations; they do not eliminate them.
+
+\subsection{Hidden guards destroy substitutability}
+The feature rows of $0012$, $0102$, $0112$ are $e_1$, $e_2$, $e_1+e_2$. If the first two candidates have cost zero and the third cost one, a valid cap reduction discards the third. But a later rule enabled only when labels $1$ and $2$ share a component accepts only the third among these candidates. Such a guard is not a whole-disk cap test and is not preserved. The necessary information must be made part of the geometric/control type, with its increased multiplicity charged. Similar issues arise from cyclic orders, ambient locations, normal quadrilateral choices, and eligibility filters applied after pruning.
+
+\subsection{Repetition is not arc bundling}
+Two disks glued along two separated intervals have Euler characteristic zero, not one. Replacing those two arcs by one would invent a disk. Our powering retains each layer's full forest-composition law in a shared DAG. A long chain of strips and a large parallel bundle between two fixed disks are different incidence graphs and are not identified by the method.
+
+\subsection{Operations and objectives not covered}
+Whole-circle gluing, surgery, capping, self-intersections, and point-identification quotients are outside the interval theorem. Rooted disk-component existence requires a different interface; its ternary rank is not automatically the endomorphism algebra proved here. The algorithm preserves scalar minimum cost and feasibility, not the number of assemblies, all Pareto optima, or a prescribed lexicographic optimum. It supports explicit finite option lists and literal exponents, not unspecified succinct option generators.
+
+An incomplete geometric language may safely produce a checked positive disk witness, but a negative result in that language does not certify knottedness. Resource exhaustion is likewise inconclusive. The command-line producer reports \code{UNKNOWN_RESOURCE_LIMIT} for its configured allocation/work guards rather than turning an unfinished search into a negative answer.
+
+\section{Implementation, independent audits and measurements}\label{sec:measurements}
+
+\subsection{Executable scope}
+All research code uses the Python standard library. The recorded environment is CPython 3.13.5 on Linux x86-64. The maintained ProveIt recognizer was not modified, imported or benchmarked. Repository inspection was read-only through the GitHub connector; a runnable native checkout was unavailable in this execution environment.
+
+\begin{center}
+\begin{tabular}{p{0.31\textwidth}p{0.61\textwidth}}
+\toprule
+Module & Implemented responsibility\\
+\midrule
+\code{disk_algebra.py} & Actual composition, features, splitters, rectangular matrices and trace operations.\\
+\code{compressed_search.py} & Validated homogeneous syntax, binary power compiler, weighted tables, compact witnesses and CLI.\\
+\code{checker.py} & Independent component-graph and transversal computations; source-list reconstruction and weighted span validation.\\
+\code{mesh_oracle.py} & Explicit polygon triangulation, seam quotient, vertex-link and orientation checks, Euler characteristic and boundary circles.\\
+\code{star_search.py} & Nonnegative free-star search for a single atom library; not fixed-span shortening.\\
+\code{sequential_baseline.py} & One-sided explicit-layer solver for separated left/right caps.\\
+\code{audit.py}, \code{benchmark.py} & Reproducible finite evidence and paired timing corpus.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The checker is independently implemented in its mathematical kernels but is not an independently verified software stack. The shared compiler, Python runtime, and source-validation routines remain trusted. The article's proofs are not inferred from the tests.
+
+\subsection{Executed checks}
+The 52 test methods pass, including invalid inputs, dimension and work guards, signed finite costs, zero powers, empty libraries, span mismatches, source/certificate tampering, independent repetition, witness expansion guards, algebraic identities, mesh replay and free-star controls. A development test caught a Python cache-key issue in which Boolean and integer partition labels could compare equal before validation; validation now precedes the cached feature routine, and the regression test passes.
+
+The separate deterministic audit uses seed 2026100917 and records:
+\begin{center}
+\begin{tabular}{p{0.70\textwidth}r}
+\toprule
+Audit & Executed count\\
+\midrule
+Exhaustive disk-cap entries for $1\le r\le6$ & 44,168\\
+Rectangular matrix composition identities & 4,964\\
+Trace-pairing identities for widths $1,2,3$ & 41,438\\
+Random weighted families / cap queries & 1,200 / 14,400\\
+Powered versus explicit-language comparisons & 250\\
+Cap/charge queries within those comparisons & 39,926\\
+Literal triangulated pair gluings & 855\\
+Fully enumerated original-syntax languages & 80\\
+Literal triangulated complete-word assemblies & 1,408\\
+Free-star libraries checked against bounded search & 150\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 80 complete-language audits include unions and powers interpreted directly in the original syntax, without the power compiler. Every enumerated assignment is replayed, including unsuccessful surfaces; 65 assignments satisfy their sampled cap and charge query. This avoids checking only the witnesses already selected by the proposed solver.
+
+For the mesh oracle, each block is realized as a polygonal disk with three perimeter edges per marked interval. The middle spacing keeps marked edges endpoint-disjoint. A central vertex triangulates the polygon. Gluing uses explicit vertex identifications along reversed marked edges. The oracle checks edge incidence, connected path/circle vertex links, consistent triangle orientations, surface components, Euler characteristics and boundary-circle counts. This is literal abstract PL topology, not an ambient knot embedding.
+
+\subsection{Paired timing results, including regressions}
+The recorded corpus uses seed 2026100923. Every backend completes one untimed warmup and three measured runs per case; the measured order rotates. All exact optima agree. Costs, options, raw samples and work counters are in \code{data/benchmarks.json}. All cap choices are separated left/right caps so that a stronger one-sided comparator is available.
+
+The powered method produces a universal two-sided summary on $2b$ intervals. The one-sided scan fixes the left cap in advance and needs only $b$ frontier intervals. The two-sided scan is the like-for-like universal-summary comparator. None is a native knot recognizer.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrrrr}
+\toprule
+$b$ & $q$ & $W$ & Power (ms) & One-side (ms) & Two-side (ms) & One / power\\
+\midrule
+2 & 2 & 2 & 0.822 & 0.169 & 1.006 & 0.205 \\
+3 & 2 & 4 & 27.082 & 1.348 & 21.364 & 0.050 \\
+4 & 1 & 4 & 81.050 & 0.209 & 50.406 & 0.003 \\
+2 & 2 & 256 & 10.614 & 41.711 & 332.920 & 3.930 \\
+3 & 2 & 256 & 171.943 & 154.399 & 2396.447 & 0.898 \\
+2 & 2 & 4,096 & 17.371 & 679.075 & 5936.788 & 39.093 \\
+3 & 2 & 512 & 204.774 & 275.658 & 4873.231 & 1.346 \\
+\bottomrule
+\end{tabular}
+\caption{Median times from three measured runs after one warmup. The last column exceeds one when powering beats the stronger one-sided scan. All workloads are abstract patch grammars.}
+\label{tab:bench}
+\end{table}
+
+At width two and $W=4096$, the powered search is about $39.1$ times faster than the narrower one-sided scan and $342$ times faster than the two-sided scan in this corpus. At width three, $W=512$ gives a modest $1.35$ times gain against the one-sided scan, whereas $W=256$ still loses. Short-word overhead is substantial: the width-four, four-layer case is about $387$ times slower than its very small one-sided search. This is evidence for a hybrid dispatch policy based on expected work, not for replacing every explicit scan by powering.
+
+Two earlier combined timing calls exceeded the execution time limit before completing their proposed larger corpus. Their partial console measurements are excluded from the delivered data. The final seven-case corpus was run in three bounded calls; all listed samples are completed runs. No censored timeout is plotted as an attained running time.
+
+The enormous-exponent control of \cref{sec:huge} is recorded separately in \code{data/audit.json}. Its wall-clock times are small but are not the main claim; its analytically checked answer, logarithmic rule count, complete certificate, and witness-node count are the relevant evidence.
+
+\section{Further research questions and integration priorities}\label{sec:future}
+
+\subsection{A source-complete repeated-region producer}
+The central next theorem is geometric: identify a class of source-bound product or parallelity regions for which every relevant disk can be represented by a complete finite homogeneous template language. It must expose actual separated intervals, all ambient legality types, and a proved local option bound. A useful first milestone is one maintained exterior family where the adapter can export a normal or PL witness and replay it independently in the original source. This is more valuable than another abstract assertion that a small grammar would suffice.
+
+\subsection{Cycle-envelope bounds at shared binary nodes}
+A powered node occurs in many contexts. Can one construct, without expanding occurrences, safe past/future envelopes for all those contexts and retain dimension $2^{\lambda_*}$ rather than $2^{2b-1}$? A union of context languages is safe but may destroy the savings. An occurrence-sensitive finite control system may be more effective, provided its state count is bounded. The goal should be a compiler theorem and a counterexample-aware widening policy, not an uncharged assumption that every occurrence has the same restrictive cap.
+
+\subsection{Faster products of weighted representatives}
+The $R^4$ factor comes from $R^2$ candidate products and elementary elimination. The matrix description gives substantial additional structure. Can this be used for a correct product algorithm with $R^{3+o(1)}$ or a better grade-sensitive bound while preserving original witnesses and scalar costs? Any proposal must account for cancellations; naive entrywise minimum and Boolean products are ruled out by \cref{sec:limits}.
+
+\subsection{A smaller module-specific observation space}
+The universal quotient is sharp, but the actual generated module algebra or its reachable ideal may be much smaller. One can compute its unweighted linear closure by extending basis elements under generators; the challenging part is preserving exact-length cost optima and source types in the reduced representation. Can a certified reachable/observable quotient reduce both powering cost and witness size below the universal $R$? This asks for a problem-specific linear representation rather than an unrestricted partition classification.
+
+\subsection{Rooted disk-component transfer algebras}
+The rooted report has ternary interface rank and permits unrelated non-disk components. Determine its composition quotient and whether it has an equally explicit matrix or block-triangular structure. The sealed-component rule changes: non-root sealed components may be forgotten while their costs remain charged. A successful extension should include component-local homology and a proof that root selection does not erase source completeness.
+
+\subsection{Uniform chain-level boundary charges}
+Construct a native certificate that exported patch charges equal evaluations of actual boundary chains in every repeated occurrence. This must handle seam ownership, signs before mod-two reduction, and position-dependent corrections. A local two-bit annotation should be generated from the authenticated torus cocycles, not supplied by naming a generic sector ``homology.''
+
+\subsection{Hybrid evaluation and source-guided decomposition}
+The measured crossover depends strongly on width, option count, cap information and exponent. A hybrid solver could process short prefixes one-sided, power only long repeated blocks, and reduce back to a narrower frontier at selected boundaries. Prove a compositional dispatch theorem and measure complete source-bound workloads. The matrix structure also suggests choosing a decomposition with smaller two-sided module boundaries rather than minimizing only a sequential frontier width.
+
+\subsection{Compressed witness verification beyond abstract topology}
+A useful native verifier should combine a DAG of local source transformations with polynomial-bit coordinate arithmetic and a certified compressed normal-vector or PL-chain exporter. It must separate verification of an embedding from expansion of every simplex. Determine exactly which output queries---Euler characteristics, peripheral classes, selected coordinates, or intersections---admit direct DAG evaluation and which require larger descriptions.
+
+\subsection{Proof-assistant formalization and literature comparison}
+The algebra theorem has a short dependency chain suitable for formalization: graph defect, transversal pairing, cap-radical congruence, the four splitter products, and the matrix-unit identities. Formalizing these would substantially reduce the trusted mathematical kernel. Separately, compare this zero-cycle, zero-sealed-component quotient with known partition, forest, chromatic and related diagram algebras. An equivalence may improve both attribution and available algorithmic tools; it would not invalidate the explicit proofs or the source-specific complexity obligations.
+
+\subsection{Exact-length optimization with richer symbolic repetitions}
+Literal exponents give polynomial bit lengths of expanded spans. More general substitution systems or arithmetic-circuit exponents may cross that boundary. Characterize which succinct descriptions retain polynomial-time integer and certificate operations, and prove explicit negative examples when output numbers or mandatory geometric types already require superpolynomial bits. The model should be broadened only with an accompanying encoding theorem.
+
+\section{Conclusion}
+The whole-disk completion quotient is not merely a vector space with a single-exponential rank. It has an explicit compositional structure:
+\[
+\End_{\mathcal C}(b)\simeq
+\Mat_{2^{b-1}}\bigl(\F[\eps]/(\eps^2)\bigr).
+\]
+This structure, together with the cap-substitution proof and classical weighted basis reduction, supports exact search through independently varying binary-encoded repetitions. The resulting algorithm has no numerical repetition factor and produces a compact optimal original witness and a reconstructible pruning certificate.
+
+The limitation is equally precise. A small binary grammar is an input to this theorem, not a guaranteed description of all disks in every knot exterior. Establishing a source-complete, type-controlled, low-width geometric producer remains the decisive step toward a general quasi-polynomial implementation. The delivered results remove one real encoded-length bottleneck on that route and supply a checked algebraic interface for pursuing the next step.
+
+\appendix
+\section{Reproduction and artifact map}\label{app:reproduction}
+The package is self-contained apart from Python and a standard TeX installation. The code requires no third-party Python packages. Suggested commands from the package root are:
+\begin{lstlisting}
+python -m unittest discover -s tests -v
+python code/audit.py --output data/audit-rerun.json
+python code/benchmark.py --output data/benchmarks-rerun.json \
+    --csv data/benchmarks-rerun.csv --repeats 3
+python code/compressed_search.py examples/huge_repetition.json \
+    --certificate examples/huge_repetition-rerun.cert.json \
+    --output examples/huge_repetition-rerun.result.json
+python code/checker.py examples/huge_repetition.json \
+    examples/huge_repetition-rerun.cert.json
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+Use distinct output paths to retain the delivered evidence. Timings and runtime version strings naturally differ across reruns. The benchmark also accepts a comma-separated \code{--select} list for execution in smaller batches.
+
+\begin{center}
+\begin{tabular}{p{0.34\textwidth}p{0.58\textwidth}}
+\toprule
+Path & Contents\\
+\midrule
+\code{article.tex}, \code{article.pdf} & This article and its compiled PDF.\\
+\code{README.md}, \code{Makefile} & Entry points, reproduction and build commands.\\
+\code{code/}, \code{tests/} & Reference algorithms, independent checks and 52-test suite.\\
+\code{examples/} & Exact source grammars, run certificates and selected results.\\
+\code{data/} & Raw audit and timing evidence, CSV, test transcript, table rows and provenance.\\
+\code{docs/THEOREM_LEDGER.md} & Statements, proof dependencies and implementation status.\\
+\code{docs/SOURCE_AUDIT.md} & Inspected repository/library/public sources and access limits.\\
+\code{docs/INTEGRATION.md} & Native adapter obligations and intake guidance.\\
+\code{docs/REVIEW.md} & Counterexamples, resolved development defects and remaining review risks.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A compact source-format example}
+A two-option library repeated independently has the following source form. Integers may be decimal strings in the JSON input; their binary length is the mathematical size parameter.
+\begin{lstlisting}
+{
+  "width": 1,
+  "charges": 2,
+  "nodes": [
+    {"kind": "atoms", "options": [
+      {"partition": [0, 0], "cost": 1, "charge": 0},
+      {"partition": [0, 0], "cost": -3, "charge": 1}
+    ]},
+    {"kind": "power", "base": 0, "exponent": "16"}
+  ],
+  "query": {"cap": [0, 1], "allowed_charges": [1]}
+}
+\end{lstlisting}
+For this small example the exact optimum is $-44$: one expensive charge-zero strip and fifteen cheap charge-one strips. For the enormous example, only the exponent changes to the decimal representation of $2^{1024}$. Query charges refer to the module; a nonzero cap charge must be used to shift them before calling the query routine.
+
+\section{Review status and provenance}
+The article's proofs were developed alongside exact computations, but finite computations are not a proof of their unrestricted statements. The main algebraic theorem is established by explicit inverse maps; the search theorem is established by all-context replacement and induction; the complexity theorem charges generated rows, bit operations and encoded lengths. The unproved native-geometric obligations are hypotheses in \cref{thm:qp}, not assumptions hidden in a local lemma.
+
+The reviewed GitHub revision is \pin. The current source exterior passage was retrieved at that exact pin. The project README and incoming policy were retrieved from the same session's \code{main}; their returned blob identifiers are recorded in the source audit where available. The immediate predecessor manuscripts were inspected through the user's Library. Their titles and named incoming archives agree with the incoming inventory, but byte identity with the incoming ZIP members was not established. No incoming archives were silently treated as formally reviewed repository results.
+
+No remote branch, production module, source file or persistent Library folder was modified. This delivery is an additive report package. Its proofs are not certified by a proof assistant and it has not undergone independent external peer review. All newly written reference code and all recorded evidence needed for the stated experiments are included; no third-party fonts or copied upstream paper PDFs are redistributed.
+
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt: Topology/UnknotRecognition and docs/incoming}, reviewed 9 October 2026, revision \pin.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{exterior}
+ProveIt project, \emph{A native, source-checked compact knot exterior},
+\code{Topology/UnknotRecognition/synthesis/diagram_exterior.tex}, reviewed pinned revision as above, especially the pulling-subdivision proposition; Git blob \code{25bf7b9b771f2993c77969892879648685b96a8c}.
+
+\bibitem{cycle}
+Research contribution prepared for ProveIt with ChatGPT,
+\emph{Cycle-Envelope Kernels for Disk Completion: Exact $2^\lambda$ Compression Beyond Frontier Width}, 9 October 2026. Reviewed Library manuscript, particularly Sections 2--7 and Section 6.1's binary-grammar scope statement. Named incoming archive \code{ProveIt_Cycle_Envelope_Kernels_20261009.zip}; predecessor baseline \code{66098968e88bba797143ac1bf7ad0ac4c5f697df}.
+
+\bibitem{rooted}
+Research contribution prepared for ProveIt with ChatGPT,
+\emph{Rooted Disc Components and Sharp Ternary Completion Kernels}, 9 October 2026. Reviewed Library manuscript, particularly Sections 1--4. Named incoming archive \code{ProveIt_Rooted_Disc_Components_2026-10-09.zip}; baseline \code{66098968e88bba797143ac1bf7ad0ac4c5f697df}.
+
+\bibitem{signed}
+Research contribution prepared for ProveIt with ChatGPT,
+\emph{Signed Continuation Bases and Euler-Optimal Disk Completion}, 9 October 2026. Reviewed Library abstract and scope statements.
+
+\bibitem{rankbased}
+H. L. Bodlaender, M. Cygan, S. Kratsch and J. Nederlof,
+\emph{Solving weighted and counting variants of connectivity problems parameterized by treewidth deterministically in single exponential time}, arXiv:1211.1505, 2012.\newline
+\url{https://arxiv.org/abs/1211.1505}.
+
+\bibitem{representative}
+F. V. Fomin, D. Lokshtanov, F. Panolan and S. Saurabh,
+\emph{Efficient Computation of Representative Sets with Applications in Parameterized and Exact Algorithms}, arXiv:1304.4626.\newline
+\url{https://arxiv.org/abs/1304.4626}.
+
+\bibitem{partition}
+T. Halverson and A. Ram, \emph{Partition Algebras}, arXiv:math/0401314v2, 2004. Cited for established diagram-algebra background, not as an identification of the different cycle-killing quotient proved here.\newline
+\url{https://arxiv.org/abs/math/0401314}.
+
+\bibitem{rational}
+J. Berstel and C. Reutenauer, \emph{Noncommutative Rational Series with Applications}, Encyclopedia of Mathematics and its Applications 137, Cambridge University Press, 2011. An author draft dated 9 April 2010 was located as background; its full PDF retrieval failed in this session. The pumping argument used here is proved in full.\newline
+\url{https://www-igm.univ-mlv.fr/~perrin/Livres/RationalSeries9April2010.pdf}.
+
+\bibitem{lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, especially the introduction and Sections 9--10.\newline
+\url{https://arxiv.org/abs/2607.23350}.
+\end{thebibliography}
+\end{document}

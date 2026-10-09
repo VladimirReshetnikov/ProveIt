@@ -1108,3 +1108,29 @@ fallback control accompanies the noisy initial record. Data and source hashes
 are `data/weighted-coorientation-*`, with the maintained `coorientation_spectra`
 driver and publication/table/repeat scripts under `data/`. No full-recognizer
 speedup or general complexity theorem is inferred.
+
+[incoming_contexts.tex](incoming_contexts.tex) reviews the complete mathematical
+content of preserved reports 70–75: sharp affine profile support, cycle-envelope
+ranks, charged rooted kernels, matching-optimal coherent subbatches, active
+support/rank obstructions, constant-alphabet traces, constructive local regions
+and exact positive LP-witness reuse. It also proves two consequences with fresh
+controls: an unrestricted anchor relaxation has a formal positive-Euler vector
+whenever an interior vertex is present (hence at every pulling source), and a
+rooted tree envelope can still require exponential universal weighted witnesses.
+Their scope excludes embedded-surface or general knot-runtime conclusions.
+Full original manuscripts/PDFs remain in the report directories; fresh records
+are `data/incoming-818-*`, `data/anchored-relaxation.json` and
+`data/rooted-tree-envelope.json` with reproducible scripts.
+
+[minimum_envelopes.tex](minimum_envelopes.tex) integrates report 74's complete
+standard-ray method at matching nullity at most two and selects it automatically
+for eligible standard queries. It proves the exact minimum-face correspondence,
+R ≤ p−g+2 ≤ 3k+4 bound, O(tk) post-kernel arithmetic, strict independent coverage
+and resource semantics. A written all-size cap argument classifies every integral
+vector in the two-parameter family, supplementing the delivered finite formula
+checks. All 1,351 tests, 9,344 eligible oracle comparisons and 15 fresh Regina
+full enumerations pass. Complete size-32 enumeration improves 197.22x; complete
+supplied-sector disc discovery and independent replay improves 17.28x. These
+scopes are distinct and imply no whole-recognizer gain. The native `envelopes`
+driver and `data/envelopes-*` retain all rounds, 567 source pins, test logs,
+coverage capacity, table generation and publication review.

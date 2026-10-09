@@ -1,0 +1,470 @@
+\section{Cycle overlap, rooted components and local trace search}
+\label{sec:incoming-contexts}
+
+Arrival \code{8188525b7} supplies six more manuscripts, now preserved as
+reports 70--75 with their full PDFs, sources, code and evidence. Placement
+commit \code{7dff9ca69} removes only their wrappers and placed archives;
+existing Git attributes and ignore rules apply, without intake checksum or
+manual line-ending processing. The subsequent mathematical review and
+native integration are part of the authorized performance programme. The
+original report directories remain immutable. Their results are preserved
+independently of which implementation is selected.
+
+Three themes improve the available theoretical interfaces. Affine profiles
+bound distinct observed weights without expanding sheets. Cycle envelopes
+replace total seam count by a smaller two-sided overlap parameter. Rooted
+completion asks for one useful component rather than requiring an entire
+surface to be a disc. The geometric reports add exact batch selection and a
+constructive bounded local trace search, while proving an obstruction to
+unrestricted active-support parameterization. Report 74 supplies the native
+minimum-envelope improvement of the next section.
+
+\subsection{Sharp weighted affine profiles}
+
+Report 70 assumes an explicit base graph with uniform fibres of size $W$
+and full-fibre maps $x\mapsto\pm x+a\pmod W$. A spanning-tree gauge reduces
+each connected block to its root monodromy. The translation subgroup is
+described by a divisor $d\mid W$; an optional reflection pairs residues by
+$r\mapsto c-r\pmod d$. This gcd classification is inherited from earlier
+cover work. The new results concern interval weights and exact attachments.
+
+For $K$ transported signed vector interval records, write their lengths as
+$\ell_j=q_jd+t_j$, $0\le t_j<d$, and let $I_j$ be their cyclic residual
+intervals. A translation orbit has weight
+\[
+ F(r)=\sum_j(q_j+\mathbf1_{I_j}(r))z_j.
+\]
+Its endpoint sweep has at most $2K+1$ linear cells. In the reflected case
+put $G(r)=F(r)+F(c-r)$. A nonfixed residue pair has weight $G(r)$; a fixed
+residue has $F(r)$, not $2F(r)$. Reflection has at most two fixed residues.
+
+\begin{proposition}[Sharp affine profile support]
+The histogram has at most $2K+1$ distinct keys without reflection and
+$2K+3$ with reflection. Across $b$ blocks and $h$ additional pointwise
+attachments with additive payloads, its support is at most $2K+3b+h$.
+The reflected bound is attained for every $K\ge1$, even with scalar
+nonnegative weights.
+\end{proposition}
+\begin{proof}
+The indicator intervals give at most $4K$ changing edges for $G$ on the
+residue cycle. Its reflection quotient is a path, up to endpoint loops.
+A reflection-fixed edge has exchanged endpoints, so an invariant function
+cannot change there. Changing edges therefore come in pairs, giving at most
+$2K$ changes along the quotient and at most $2K+1$ generic values. Correcting
+the at most two fixed residues adds at most two keys. Small moduli one and
+two satisfy the bound directly. Block supports add. An attachment touches
+old orbit vertices; each new affected quotient component contains an
+attachment, so at most $h$ new keys appear after replacing its old entries.
+
+For sharpness take $d=4K+4$, $W=5d$, root maps $x\mapsto x+d$ and
+$x\mapsto-x$, and weight-one intervals
+$[d-j,4d+K+j+1)$ for $1\le j\le K$. The two fixed weights are $3K,4K$.
+The nonfixed weights are every integer from $6K$ through $8K$, each once.
+They are disjoint from the fixed weights, giving exactly $2K+3$ keys.
+\end{proof}
+
+The implementation may retain up to $4K+1$ sweep cells; the sharper theorem
+is about distinct output keys. Equal weights never identify equal attachment
+positions. The sparse overlay retains original endpoints and recomputes their
+actual orbit labels after a bulk change.
+
+During a fixed-base insertion-only epoch, a root translation updates
+$d$ to $\gcd(d,a)$; a later reflection updates it to $\gcd(d,a-c)$.
+A first reflection occurs at most once. Every changed divisor is a proper
+divisor, hence at most half its previous value. There are therefore at most
+\[
+ \sum_i\bigl(\lfloor\log_2d_i^0\rfloor+
+                      \mathbf1_{\text{no initial reflection in }i}\bigr)
+\]
+bulk rebuild triggers. Redundant maps need no rebuild, although reading their
+input records still costs time. The forest, blocks, weights and attachment
+coordinates are fixed during this epoch. Cross-block changes require another
+contract. Full-fibre structure must be authenticated before applying this
+kernel to a normal interval system; an arbitrary restricted pairing is not
+a full-fibre map. The manuscript does not supply that geometric extraction.
+
+\subsection{Exact ranks from the two-sided cycle envelope}
+
+Report 71 assumes candidate partitions refine $\sigma$ and future partitions
+refine $\rho$ on $r$ individually labelled seam intervals. Form their coarse
+bipartite multigraph $H$, retaining parallel seams. A disconnected $H$ cannot
+become a whole-disc completion by vertex splitting and is rejected. For
+connected $H$, put $s=|\sigma|$, $t=|\rho|$ and
+\[
+ \lambda=r+1-s-t=\dim Z(H;\mathbb F_2).
+\]
+This is two-sided cycle overlap, rather than total interface size.
+
+Choose a fundamental cycle basis $z_1,\ldots,z_\lambda$. Splitting a
+$\sigma$-vertex according to $p$ imposes even-incidence constraints on all
+but one of its subblocks. Their matrix $A_p$ has $j=|p|-s$ rows; similarly
+$B_q$ has $k=|q|-t$ rows on the other side. Summing subblock equations gives
+the omitted coarse equation, so
+\[
+ Z(G(p,q))=\ker\begin{pmatrix}A_p\\B_q\end{pmatrix}
+               \quad\text{in cycle-basis coordinates}.
+\]
+For $j+k=\lambda$, the split graph has $r$ edges and $r+1$ vertices. It
+is a tree exactly when that square stacked matrix is nonsingular. For any
+other grade sum it cannot be a tree. The separated-interval gluing theorem
+then gives the disc predicate, under its disc-fragment and geometric contracts.
+
+\begin{proposition}[Sharp cycle-envelope dimensions]
+The binary completion matrix has rank exactly $2^\lambda$, with
+grade-$j$ rank $\binom\lambda j$ for complementary future grade.
+\end{proposition}
+\begin{proof}
+The maximal minors of $A_p$ give a feature supported on $j$-subsets of
+$[\lambda]$. Laplace expansion of the stacked determinant pairs it with
+complementary minors of $B_q$. This gives the stated upper bounds.
+For the lower bounds choose a spanning tree of $H$ and its $\lambda$ chords.
+Detach the left endpoints of any chord subset $S$ into singleton subblocks,
+leaving core blocks nonempty because each retains a tree edge. Its constraint
+rows are the corresponding coordinate units, giving exterior feature $e_S$.
+Detaching right endpoints of $R$ gives $e_R$. The split graph is a tree
+exactly when $R=S^c$: each chord is then a pendant edge on the original
+tree; a chord detached at both ends is a separate component. These states
+give a complement-permutation submatrix of size $2^\lambda$, and its
+grade-$j$ restriction has size $\binom\lambda j$.
+\end{proof}
+
+A cost-ordered original-witness basis retains at most $2^\lambda$ candidates
+and preserves all admitted completion minima. The chord witnesses also force
+every representative-subset method to retain that many on a universal family.
+This sharpness is for the specified abstract continuation class, not every
+embedded knot-region class. A feature row vanishes exactly when
+$p\vee\rho$ is disconnected, providing a cheap shared viability filter.
+
+The delivered complete finite-grammar compiler derives safe candidate and
+future envelopes in polynomial time. Its elementary search cost is
+$\operatorname{poly}(I,B)2^{3\lambda_{\max}}$, including explicit input size
+$I$ and cost-bit bound $B$. A 256-arc example has $\lambda=3$ and needs eight
+representatives. A general low-cycle geometric producer remains unproved.
+Actual seams, fixed-type substitution and essential-boundary/source binding
+remain obligations; a binary multiplicity is not one physical seam.
+
+\subsection{One distinguished disc component: a ternary interface}
+
+Whole-disc completion can reject a useful disc accompanied by unrelated
+components. Report 72 distinguishes a root seam, records whether each
+fragment component is a disc, and permits other components to remain bad.
+Component-local charges lie in $H=(\mathbb F_2)^k$, with $q=|H|$.
+The root component succeeds exactly when all its fragments are good and its
+incidence graph is a tree, with the requested total charge.
+
+Its feature coordinates are $(X,A,\gamma)$, where $0\in X$,
+$A\subseteq X\setminus\{0\}$, and $\gamma\in H$. A coordinate is one when
+$X$ is a union of good blocks, $X\setminus A$ omits exactly one point from
+every block, and those blocks' charges sum to $\gamma$. Complementary
+exterior coordinates pair the two sides, with charges adding to the target.
+Saturation under both full partitions ensures that a connected restricted
+graph containing seam zero must be exactly the actual root component. Thus
+there is at most one contributing $X$, avoiding an uncontrolled parity sum
+over several possible components. The feature dimension is
+\[
+ q\sum_{X\ni0}2^{|X|-1}=q3^{r-1}.
+\]
+
+\begin{proposition}[Exact rooted ranks]
+The uncharged binary rank is $3^{r-1}$. Every exact-charge kernel has rank
+$q3^{r-1}$. For $q\ge2$, the nonzero-charge kernel has the same rank.
+\end{proposition}
+\begin{proof}
+At each non-root label take three fragment choices: join the good root
+block, be a good singleton, or be a bad singleton. Their compatibility matrix is
+\[
+ M=\begin{pmatrix}0&1&0\\1&1&1\\0&1&1\end{pmatrix},\qquad\det M=-1.
+\]
+Labels act independently, giving $M^{\otimes(r-1)}$. Arbitrary root charges
+add a permutation factor for an exact target. For a nonzero target predicate
+the charge factor is $J+I$ over $\mathbb F_2$; since $q$ is even,
+$(J+I)^2=I$. These full-rank submatrices attain the feature upper bound.
+\end{proof}
+
+Cost-ordered bases preserve every exact/nonzero completion minimum using
+original witnesses, even for large signed costs. For exact charges a
+weighted universal family forces all $q3^{r-1}$ witnesses: use local costs
+zero, two and one respectively for root/good/bad choices; appropriate
+complementary choices uniquely expose each candidate as cheapest. There is
+no claimed matching weighted lower bound for the nonzero-only predicate.
+Rank alone does not supply such a lower bound. Already with one seam and
+many root charges, the cheapest two distinct charges suffice for all
+nonzero-charge queries in that simple family, despite full charge-matrix rank.
+
+Two properly owned peripheral bits suffice for an actual disc on a boundary
+torus: its simple boundary is essential exactly when its mod-two class is
+nonzero. Aggregate charge cannot replace component-local charge; two parallel
+essential discs can sum to zero. A permanent root marker is represented by
+an algebraic dummy cap, not a physical cap added to the output.
+
+The complete supplied layered-language algorithm costs
+$\operatorname{poly}(I,B,b)q^3 27^b$ for frontier width $b$ excluding the
+root marker. Portless non-root components can be forgotten while retaining
+their costs and witness material; the objective is total assembly cost,
+not root-only cost. Cyclic rotation of a site order increases frontier width
+by at most a factor two, giving a root-selection theorem. The delivered
+executable is a layered-language solver, not a general order compiler.
+Mesh replay realizes bad pieces as annuli with formal charges; it does not
+construct their three-dimensional embedding or actual boundary cocycles.
+
+\subsection{A tree envelope does not compress every rooted query}
+
+The whole-disc cycle bound and the rooted bound cannot be combined by simply
+replacing $r$ with $\lambda$. A small counterfamily makes the missing
+root-reachability information explicit.
+
+\begin{proposition}[Rooted tree-envelope obstruction]
+There are connected coarse envelopes with $\lambda=0$ whose uncharged rooted
+compatibility matrix has binary rank $2^{r-1}$. A universal weighted
+original-witness reducer needs $2^{r-1}$ candidates on a corresponding family,
+even with nonnegative costs.
+\end{proposition}
+\begin{proof}
+Take $\sigma$ to be one block and $\rho$ to be all singletons. Their graph
+is a star with $r$ edges and $r+1$ vertices, hence $\lambda=0$. For every
+$X\subseteq\{1,\ldots,r-1\}$, the left candidate has a good root block
+$\{0\}\cup X$ and good singleton blocks elsewhere. The right cap is the
+singleton partition with root zero good and bad annuli at a subset $B$ of
+the other labels. Its remaining pieces are discs.
+
+The root component is always a star and is a disc exactly when
+$X\cap B=\varnothing$. The matrix on these two families is the disjointness
+matrix, a tensor power of
+$\left(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\right)$, whose determinant
+is $-1$. Its binary rank is $2^{r-1}$. Every other rooted row in this star
+envelope is zero or depends only on its good root block, so this is also
+the exact uncharged rank for that envelope.
+
+Give candidate $X$ total cost $(r-1)-|X|$, counting its non-root singleton
+pieces. Against cap $B=X^c$, the feasible candidates are precisely subsets
+of $X$. Candidate $X$ is their unique cheapest member. Deleting any candidate
+therefore changes one completion optimum, proving the weighted lower bound.
+\end{proof}
+
+This is an abstract surface-fragment result, realized by discs and annuli
+with separated seams. It is not a lower bound for all knot algorithms or for
+one fixed three-dimensional region. It does not force an exponential
+subfamily for mere feasibility: in this displayed family the root-only
+candidate succeeds against every cap. The lower bound concerns universal
+bilinear compatibility and weighted minima. It identifies an additional obligation:
+control the root-reachable good/bad frontier as well as cycle overlap. Fresh
+checks compare 1,365 direct/feature entries, 341 literal mesh pairs and 63
+uniquely exposed optima. The companion proof and audit are preserved even
+though the result warns against a tempting performance extrapolation.
+
+\subsection{Commuting moves and exact peeled batch selection}
+
+Report 73 proves that tetrahedron-disjoint formal $3$--$2$ bipyramids commute
+as relative-boundary replacements, even with shared global vertices or
+paired facets. Their raw Euler and piece changes add. Every region has only
+ten formal edge types; any overlapping collapse is centred at one of these,
+so the deduplicated conflict graph has maximum degree nine. Greedy packing
+of $M$ candidates therefore supplies at least $\lceil M/10\rceil$ moves.
+
+Vertex-link-peeled Euler changes are not additive: the retained genuine
+32-tetrahedron counterexample has singleton gains one and one but joint gain
+zero. For a fixed disjoint family $E$, let $r_i=2g_i$ be raw gain and
+$c_{vi}$ the reward for omitting move $i$ at global vertex $v$. Coherent
+minima prove at most two positive endpoints per move and
+$c_{vi}\le r_i$, with the sharper boundary bound $c_{vi}\le g_i$.
+The exact omission objective is
+\[
+ F(E\setminus R)=F(E)+
+ \sum_v\max(\{c_{vi}:i\in R\}\cup\{0\})-\sum_{i\in R}r_i.
+\]
+Among maximizers choose $R$ of minimum size. Removing any move uniquely
+maximizing at at most one endpoint loses reward at most its cost, contradicting
+minimality. Every retained omission therefore uniquely maximizes at two
+endpoints, and two omissions cannot share an endpoint. Thus the optimum
+omission set is a maximum-weight matching with edge weight
+$c_{ui}+c_{vi}-r_i>0$. Integer transformation $(|E|+1)w_i-1$ selects the
+fewest omissions among equal weights. This solves the fixed-family problem;
+it does not optimize the initial packing or authenticate an essential disc.
+
+Every positive edge has an interior endpoint, since two boundary rewards
+sum to at most $2g_i=r_i$. Hence at most one omission per relevant interior
+vertex is needed. The maintained pulling source has two interior poles,
+which form a vertex cover of the reward graph; a linear scan solves its
+matching problem. It retains at least
+$\max(0,\lceil M/10\rceil-2)$ packed moves with nondecreasing peeled score.
+The total number of boundary vertices is not two. Geometry preparation and
+packing costs are charged separately.
+
+Deterministic AVL corner trees retain all records and cache thirteen-key
+prefixes. A hypothetical singleton deletion removes at most twelve old
+corners, so its new minimum is among those prefixes and new corners.
+Committed edits replenish them in logarithmic tree work. The complete
+endpoint checker reconstructs the full geometry rather than trusting this
+dynamic index. The delivered large batch/scoring gains are local fixed-workload
+comparisons, not complete recognition measurements.
+
+\subsection{Complete active support and a linear root obstruction}
+
+For $C=\{x\ge0:Ax=0\}$ and positive objective $c$, report 73 gives one
+primal--dual active-support certificate:
+\[
+ Ax=0,\quad x\ge0,\quad c^Tx\ge1,\quad
+ s=A^{\mathsf T}y\ge0,\quad x+s\ge\mathbf1.
+\]
+Orthogonality $x^Ts=0$ proves that exactly one of $x_j,s_j$ is positive
+at every coordinate. A positive $x_j$ witnesses activity; a positive $s_j$
+forces that coordinate zero throughout $C$. Conversely summing active
+primal witnesses and inactive-coordinate Farkas multipliers constructs
+such a pair when the positive-objective part is nonempty. The negative
+alternative is the original homogeneous dual $A^{\mathsf T}h\ge c$.
+A lifted homogeneous system with $3N+2m+2$ variables realizes the pair,
+but its exact Bland implementation has no polynomial pivot bound. In the
+delivered adverse audit it reduces 130 unary calls to 17 lifted calls while
+time rises from 1.4183 to 22.8305 seconds. It remains an optional interface.
+
+Let $J(C)$ be active coordinates in still-conflicting type groups and define
+$\rho(C)$ as the rank of their coordinate functionals on $\operatorname{span}C$.
+Branching on an incompatible active pair $i,j$ into faces $x_i=0$ and
+$x_j=0$ preserves admissible coverage and drops this rank by at least one
+on each positive child. With a polynomial exact LP policy the binary tree
+has at most $2^{\rho+1}-1$ nodes. Complete anchor enumeration is still needed.
+
+For an unrestricted normal root with one zero triangle anchor per global
+vertex, all quadrilateral types are active. The vector $r$ with triangles
+zero and all quads one is matching. At any tetrahedron with no chosen anchor,
+the local vector $w_a$ with four triangle entries $+1$ and three quad entries
+$-1$ changes every face arc by zero. Both $r$ and $r+w_a$ belong to $C$.
+Their disjoint quadrilateral images prove
+\[
+ \rho(C)\ge t-u\ge t-v,
+\]
+where $u$ is the number of anchored tetrahedra and $v$ the total global
+vertex count. On pulling sources $t=20n'$, $v=4n'+2$, so
+$\rho\ge16n'-2$. This rules out a polylogarithmic unrestricted-root ambiguity
+rank on these actual sources; it is not a runtime lower bound or an
+obstruction to other hierarchy algorithms.
+
+\subsection{A constructive positive relaxation at every anchor}
+
+The same local relation gives a further consequence, made explicit here.
+Let $p$ count interior vertices of a finite compact manifold triangulation,
+and let $\chi_{\rm lin}$ be the usual normal Euler functional extended
+linearly to matching vectors without quadrilateral compatibility.
+
+\begin{proposition}[Uniform positive anchored relaxation]
+For every choice of one zero triangle anchor per global vertex, there is
+an integral nonnegative matching vector $z$ satisfying all anchors with
+\[
+ \chi_{\rm lin}(z)=v+p-u\ge p.
+\]
+In particular every unrestricted anchor root with $p>0$ has positive Euler
+LP feasibility. On the pulling diagram sources it has value at least two.
+\end{proposition}
+\begin{proof}
+Take $z=r+\sum_{a\text{ unanchored}}w_a$. In an anchored tetrahedron it
+has three quads and no triangles; in an unanchored tetrahedron it has four
+triangles and no quads. Every face has one arc of each type, every global
+edge has weight two, and every chosen anchor is zero. Thus it is a
+nonnegative matching vector.
+
+Write $e$ for global edges and $b$ for boundary facets. There are $4t-u$
+pieces, $12t$ local sides and $3b$ unpaired boundary arcs, so
+\[
+ \chi_{\rm lin}(z)=2e-(12t+3b)/2+(4t-u).
+\]
+The manifold has $f=2t+b/2$ faces and
+$e=v+t+b/2-\chi(M)$. Its boundary has $v_\partial=v-p$ vertices,
+$3b/2$ edges and $b$ triangles. Doubling, or mod-two duality, gives
+$2\chi(M)=\chi(\partial M)=v_\partial-b/2$.
+Substitution yields $2v-u-v_\partial=v+p-u$. Since $u\le v$, the bound
+follows. Pulling sources have $p=2$.
+\end{proof}
+
+This vector is deliberately incompatible: every anchored tetrahedron has
+all three quad types. It proves LP feasibility and never an embedded normal
+surface or a knot verdict. Thus an initial negative Euler dual cannot settle
+these unrestricted pulling roots, whether their diagrams are knotted or
+unknotted. The formal relative $2$--$3$ and $3$--$2$ moves preserve vertex classes
+and the external boundary, so this interior-vertex feasibility consequence
+also persists along those moves. The original linear rank bound is not
+asserted unchanged after tetrahedra are removed. Type-restricted descendants
+and other positive-witness tests remain meaningful. Adding a sufficiently
+small multiple of $r$ also proves all
+quadrilateral types active in the positive-objective part. Fresh controls
+check 374 anchor patterns on eleven genuine sources, including both knot
+and unknot diagrams; every vector matches, has the predicted formal Euler
+value, and is rejected by the actual admissible-normal validator. The proof
+is uniform and does not rely on these finite controls.
+
+\subsection{Commitments, local regions and positive LP witness reuse}
+
+Report 75 gives a constant-alphabet encoding for formal Pachner traces with
+at most $U$ total upward $2$--$3$ moves. A tetrahedron incarnation chooses
+idle, one of four upward faces, or one of six downward edges. Two different
+ready committed events cannot compete for an incarnation: its selected
+port identifies a unique legal event. Disjoint simultaneously enabled
+replacements commute relative to their boundary and transported cocycle.
+An intended ready event can be moved ahead of earlier disjoint events,
+giving a deterministic scheduler with the same endpoint.
+
+If there are $u\le U$ upward and $d$ downward moves, $d\le t+u$ and the
+number of original/new incarnations is
+$t+3u+2d\le3t+5U$. Padding commitments with idle symbols therefore bounds
+commuting trace classes, including all finite prefixes, by $11^{3t+5U}$.
+With $U=0$ the alphabet has seven symbols. Exact sleep-set exploration
+inherits the bound using persistent incarnation/event identities and the
+specific geometric commutation relation. This is not a theorem for arbitrary
+state-dependent independence rules or only for maximal traces.
+
+Protect originals outside an allowed region $F$ of size $i$. Then
+$d\le i+u$ and only $3i+5U$ incarnations need free commitments. The dual
+graph has degree at most four. A rooted depth-first tree traversal bounds
+connected $i$-vertex regions by $t16^{i-1}$; distributing components gives
+at most $(r+1)(c+1)t^c32^r$ regions of size at most $r$ with at most $c$
+components. Canonical-parent reverse search constructs them with polynomial
+delay rather than enumerating all $t^r$ subsets. The resulting complete
+bounded search costs
+\[
+ t^c2^{O(r+U)}\operatorname{poly}(t+U+B)
+\]
+when its endpoint predicate is complete and polynomial; otherwise its cost
+is charged explicitly. The region is a cover of the actual consumed
+original cells, which need not have only $c$ components. Neither maximum
+excess size nor upward-burst count can replace total $U$. Upward cocycle
+transport adds at most one coefficient bit per move; downward removal adds
+none. Source-complete successful regions with $c=O(\log t)$ and
+$r+U=O(\log^2t)$ would give a constructive QP class. No such general coverage
+theorem is supplied.
+
+The other interface reuses exact positive kernel witnesses for deletion LPs.
+If a checked witness already has the queried coordinate zero, it certifies
+feasibility of that deletion without solving again. Local reuse works even
+with global cache capacity zero; a source/anchor-bound support antichain
+extends reuse across masks. Only positive deletion queries whose witness
+content does not affect the fixed propagation policy are skipped, preserving
+every completed deterministic certificate. The delivered algebraic control
+has LP calls $3s^2+2s+1$ versus $2s+1$ and Bland pivots
+$6s^3+3s^2+s$ versus $3s^2+s$. It is not a claimed triangulation realization.
+The source adapter's four surveyed positives all use zero moves, validating
+provenance rather than adding move-search coverage. Bounded exhaustion stays
+inconclusive as a knot question.
+
+\subsection{Fresh evidence and integration decisions}
+
+Scratch validation of reports 70--72 passes 34, 42 and 42 test methods.
+Fresh audits reproduce the sharp-profile tests; 633,531 cycle-envelope
+entries over 3,162 matrices, 16,904 weighted queries and 1,412 literal grammar
+assignments; and the rooted charged/mesh/language audit with 10,000 weighted
+queries and 3,200 assignments. Their complete original theorem ledgers and
+proofs remain available. Report 73 passes 51 standard-library tests plus
+five optional matching tests in an isolated NetworkX 3.7 environment, with
+independent active and geometric replay. Report 75 passes 28 standard-library
+tests plus its optional native-topology test, and fresh geometric, region,
+LP and Regina replays. Detailed fresh counts and reproduction records are
+retained in \code{data/incoming-818-*}; the new relaxation check is
+\code{data/anchored-relaxation.json} and its companion script.
+
+These finite checks support source-level review, not proof-assistant
+formalization or an originality claim beyond the reports' attributions.
+The affine, cycle-envelope, rooted-language, active-face and trace/cache
+overlays remain separate research interfaces: their geometric admission and
+complete-source promises are not supplied by their algebraic features.
+Minimum envelopes are integrated and tested on the maintained native sector
+API in the next section. All six manuscripts remain preserved, including
+the structural obstructions and other results without a measured native
+recognition gain. None establishes a general subexponential or QP recognizer.

@@ -1,0 +1,72 @@
+--- incoming/tests/test_normal_ray_blocks.py
++++ adapted/tests/test_normal_ray_blocks.py
+@@ -1,6 +1,7 @@
+ """Ray-block disc counts: geometry, one-sided guards and independent replay."""
+ 
+ from copy import deepcopy
++from functools import partial
+ from itertools import product
+ import json
+ from pathlib import Path
+@@ -8,6 +9,7 @@
+ from unittest.mock import patch
+ 
+ from fastunknot.integer_codec import json_safe
++from fastunknot.normal_disk_kernel import normal_compressing_disk_count
+ from fastunknot.normal_ray_blocks import normal_ray_block_disk_count
+ from fastunknot.normal_ray_blocks_verify import verify_normal_ray_block_disk_certificate
+ from fastunknot.normal_surface_components import normal_component_census
+@@ -155,19 +157,40 @@
+         factor, links = 2**1000, 2**1000+1
+         vector = [[factor*value+(links if j < 4 else 0) for j, value in enumerate(row)]
+                   for row in meridian]
+-        answer = normal_ray_block_disk_count(raw, vector, record_certificate=True)
+-        self.assertEqual(answer['compressing_disk_components'], factor)
+-        self.assertEqual(answer['stats']['fallback_blocks'], 1)
+-        cycles = answer['stats']['orbit_cycles']
+-        self.assertGreater(cycles, 0)
+-        for cap in (0, cycles-1):
+-            partial = normal_ray_block_disk_count(raw, vector, max_cycles=cap,
+-                                                  record_certificate=True)
+-            self.assertEqual(partial['status'], 'INCONCLUSIVE')
+-            for field in ('certificate', 'compressing_disk_components', 'contains_compressing_disk'):
+-                self.assertNotIn(field, partial)
+-        self.assertEqual(normal_ray_block_disk_count(raw, vector, max_cycles=cycles,
+-                                                     record_certificate=True), answer)
++        # The current native kernel peels the vertex link and certifies the
++        # remaining unit ray, even though this mixed support is a fallback block.
++        with patch('fastunknot.normal_disk_kernel.normal_component_census',
++                   side_effect=AssertionError('native unit ray used orbit discovery')):
++            optimized = normal_ray_block_disk_count(raw, vector, max_cycles=0,
++                                                     record_certificate=True)
++        self.assertEqual(optimized['status'], 'COMPLETE')
++        self.assertEqual(optimized['compressing_disk_components'], factor)
++        self.assertEqual(optimized['stats']['fallback_blocks'], 1)
++        self.assertEqual(optimized['stats']['orbit_cycles'], 0)
++        self.assertEqual(optimized['certificate']['blocks'][0]['certificate']['schema'],
++                         'normal-disc-count-v2')
++        self.assertTrue(verify_normal_ray_block_disk_certificate(
++            raw, vector, optimized['certificate']))
++
++        # Explicitly request the supported legacy query schedule to retain
++        # exact fallback and shared-cap coverage alongside the native shortcut.
++        with patch('fastunknot.normal_ray_blocks.normal_compressing_disk_count',
++                   side_effect=partial(normal_compressing_disk_count, unit_ray=False)):
++            answer = normal_ray_block_disk_count(raw, vector, record_certificate=True)
++            self.assertEqual(answer['compressing_disk_components'], factor)
++            self.assertEqual(answer['stats']['fallback_blocks'], 1)
++            self.assertEqual(answer['certificate']['blocks'][0]['certificate']['schema'],
++                             'normal-disc-count-v1')
++            cycles = answer['stats']['orbit_cycles']
++            self.assertGreater(cycles, 0)
++            for cap in (0, cycles-1):
++                incomplete = normal_ray_block_disk_count(raw, vector, max_cycles=cap,
++                                                         record_certificate=True)
++                self.assertEqual(incomplete['status'], 'INCONCLUSIVE')
++                for field in ('certificate', 'compressing_disk_components', 'contains_compressing_disk'):
++                    self.assertNotIn(field, incomplete)
++            self.assertEqual(normal_ray_block_disk_count(raw, vector, max_cycles=cycles,
++                                                         record_certificate=True), answer)
+         self.assertTrue(verify_normal_ray_block_disk_certificate(raw, vector, answer['certificate']))
+ 
+     def test_boundary_cap_preserves_meridian_count(self):
