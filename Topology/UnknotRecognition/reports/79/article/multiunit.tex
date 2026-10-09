@@ -1,0 +1,154 @@
+\section{Several units of descent and color coding}\label{sec:multiunit}
+
+The connected witness theorem answers one-unit descent. Requiring a decrease
+by at least $k$ tetrahedra may require several independent regions. Their
+locations need not be enumerated with a $t^k$ factor: their total original
+footprint remains bounded, which permits standard deterministic color coding.
+This section gives a further algorithmic theorem. The delivered code includes
+the exact packing primitive for a supplied coloring and finite audits; it does
+not implement the full deterministic perfect-hash-family construction.
+
+\begin{theorem}[Multiunit localization]\label{thm:k-local}
+Suppose a trace with at most $U$ upward events reduces $T$ by at least
+$k\ge1$ tetrahedra. Then there is such a trace with $u\le U$, $d=u+k$,
+length $2u+k$, and at most $k$ birth components. Each component has positive
+loss and connected actual original footprint. Their disjoint union has size
+at most $3U+3k$.
+\end{theorem}
+\begin{proof}
+Choose a shortest trace meeting the threshold. It first reaches loss $k$
+at its final event, so $d=u+k$. If a component had nonpositive loss, deleting
+it using \cref{thm:projection} would preserve loss at least $k$ and shorten
+the trace. All component losses $\ell_j$ are therefore positive integers,
+with $\sum_j\ell_j=k$, so the number $c$ of components is at most $k$.
+Their footprints are disjoint and connected by \cref{lem:connected}. Summing
+\cref{lem:incidence} yields
+\[
+ |F|\le u+2d+c=3u+2k+c\le3U+3k.
+\]
+\end{proof}
+
+\begin{lemma}[Composing disjoint original footprints]\label{lem:compose}
+Let $\sigma_1,\ldots,\sigma_s$ be legal traces from the same marked source
+whose actual original footprints are pairwise disjoint. They can be replayed
+in any order, transporting the exterior attachments at each step. The
+combined upward cost and tetrahedron loss are the sums of the individual
+costs and losses.
+\end{lemma}
+\begin{proof}
+Give births in different traces disjoint names. Every incarnation consumed
+by one trace is either one of its original footprint cells or a birth
+descended from those cells. Distinct traces therefore have disjoint consumed
+incarnation sets after transport. At the common source their first events
+are simultaneously legal and commute. Inductively construct the grid of
+interleavings: at every square, \cref{lem:forward} transports the next event
+of either trace across the next event of the other, retaining the same
+relative-boundary attachments. This proves that both complete orders are
+legal. Apply the two-trace argument repeatedly. Marking agreement follows
+from the same local transport lemma, and the count assertions follow by
+adding event counts.
+\end{proof}
+
+This lemma does not require an actual footprint to be a ball or an induced
+subcomplex with embedded closure. Individual formal replacements, with their
+boundary ports, are the units of the proof. It also does not claim that
+arbitrary traces with overlapping original footprints compose.
+
+\subsection{Enumerating candidate items}
+
+Set $p=\min(t,3U+3k)$. Over every connected original cover of size at most
+$p$, enumerate the full bounded-upward region family and retain every
+positive-loss endpoint. Each item $j$ records
+\[
+ (A_j,a_j,b_j,\sigma_j),
+\]
+Here $A_j$ is its \emph{actual} consumed original footprint, $a_j\le U$
+is its upward cost, and $\sigma_j$ is a replayable source-bound trace.
+The positive profit is capped: $b_j=\min(k,\loss(\sigma_j))$. The total item
+count and generation cost are bounded by
+\begin{equation}\label{eq:items}
+ M\le t\,2^{O(p+U)}\poly(t+U+B).
+\end{equation}
+This is the generic connected-region commitment bound. A particular actual
+footprint can appear under several covers; retaining duplicate items does
+not affect the upper bound or correctness.
+
+The item generator must continue through intermediate descents. Calling a
+first-descent routine and collecting only its first answer would not enumerate
+the needed component alternatives. Birth-connectedness need not be tested
+for every retained item: extra legal items remain sound, while every component
+of the minimum witness in \cref{thm:k-local} is necessarily represented.
+
+\subsection{Colorful packing with original witnesses}
+
+A family $\mathcal H$ of functions $[t]\to[p]$ is $p$-perfect if every subset
+of at most $p$ source indices is mapped injectively by at least one member.
+The standard deterministic construction of Naor, Schulman, and Srinivasan
+has size $e^p p^{O(\log p)}\log(t+2)$ and total construction time bounded by
+$2^{O(p)}\poly(t)$ \cite{nss}. We need this total-time statement; we do not
+assume a constant-delay hash enumerator. Color coding itself is classical
+\cite{color-coding}; an explicit modern treatment of the stronger delay
+requirements is available in \cite{gutin-color}.
+
+For a fixed coloring $h\in\mathcal H$, discard an item if $h$ is not
+injective on $A_j$. Otherwise store its nonempty color mask
+$C_j=h(A_j)\subseteq[p]$. Use the following ordinary $0/1$ dynamic program:
+\begin{align*}
+ D_0(\varnothing,0)&=0,\qquad D_0(S,a)=-\infty\text{ otherwise},\\
+ D_j(S,a)&\gets D_{j-1}(S,a),\\
+ D_j(S\cup C_j,a+a_j)&\gets
+ \max\{D_j(S\cup C_j,a+a_j),\min(k,D_{j-1}(S,a)+b_j)\}
+\end{align*}
+for every finite state with $S\cap C_j=\varnothing$ and $a+a_j\le U$.
+The state value is the best capped total loss from the first $j$ items,
+using exactly mask $S$ and upward cost $a$. Take/skip predecessor data
+retains actual item identities for reconstruction; a linear combination of
+traces is never treated as a geometric witness.
+
+The number of states is $2^p(U+1)$, and a direct item scan costs
+$O(M2^p(U+1))$. Positive items have nonempty footprints, so the empty-mask
+degeneracy does not arise. Mask disjointness implies actual source-cell
+disjointness, even though distinct source cells may share colors. By
+\cref{lem:compose}, a successful collection is geometrically replayable and
+has total upward cost at most $U$ and loss at least $k$.
+
+\begin{theorem}[Fixed-parameter multiunit descent]\label{thm:k-fpt}
+For generalized formal-bipyramid moves, existence of a trace with at most
+$U$ total upward moves reducing a valid $t$-tetrahedron source by at least
+$k$ tetrahedra is decidable deterministically in
+\begin{equation}\label{eq:k-fpt}
+ 2^{O(U+k)}\poly(t+B)
+\end{equation}
+bit time. A positive result admits a source-bound geometric trace certificate.
+\end{theorem}
+\begin{proof}
+Trivial impossible thresholds, including $k\ge t$ for a nonempty connected
+source, may be answered directly. In the remaining cases construct the
+items above and run the packing dynamic program for every coloring in
+$\mathcal H$. Soundness follows from \cref{lem:compose}.
+
+For completeness, take the minimum-length witness of \cref{thm:k-local}.
+Its component footprints are individually connected, pairwise disjoint,
+and their union has at most $p$ vertices. Each component trace occurs among
+the items. Some $h\in\mathcal H$ colors the entire union injectively, so
+these items have pairwise disjoint color masks. Their upward costs sum to
+at most $U$ and their profits sum to $k$; the dynamic program finds a
+successful collection. Enumerating every coloring therefore decides the
+question completely.
+
+Multiply \eqref{eq:items}, the $2^p(U+1)$ dynamic-program factor, and the
+$2^{O(p)}\log(t+2)$ hash-family factor. Since $p\le3(U+k)$, the result is
+\eqref{eq:k-fpt}, with polynomial source and replay costs included.
+\end{proof}
+
+The weaker direct alternative is to enumerate covers with up to $k$
+components, which gives $t^k2^{O(U+k)}\poly(t+U+B)$. The color-coding
+argument removes the $t^k$ factor. This is a consequence of the new bounded
+total footprint and independent replay, composed with an established
+derandomization theorem. It is not a claim that color coding is new.
+
+With $U+k=O(\log t)$ the decision problem is polynomial; with
+$U+k=O(\log^2 t)$ it is quasi-polynomial. The supplied-coloring prototype
+tests the witness-preserving packing step, while \cref{thm:k-fpt} relies
+on the cited complete perfect-family construction for deterministic
+exhaustion over all possible locations.

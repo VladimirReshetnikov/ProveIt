@@ -1,0 +1,699 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor}
+\usepackage{aliascnt}
+\usepackage{fancyhdr,hyperref,cleveref,xurl}
+\usepackage{tikz,needspace}
+\usetikzlibrary{positioning}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black,
+ pdftitle={Compressed Boundary Certificates via Heisenberg Quotients and Optimal Double-Cover Banks},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov / ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Compressed boundary certificates}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{15pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\crefname{proposition}{proposition}{propositions}
+\Crefname{proposition}{Proposition}{Propositions}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\crefname{lemma}{lemma}{lemmas}
+\Crefname{lemma}{Lemma}{Lemmas}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\crefname{corollary}{corollary}{corollarys}
+\Crefname{corollary}{Corollary}{Corollarys}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\crefname{definition}{definition}{definitions}
+\Crefname{definition}{Definition}{Definitions}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\crefname{remark}{remark}{remarks}
+\Crefname{remark}{Remark}{Remarks}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\rad}{\operatorname{rad}}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\sig}{\sigma}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\pin}{\texttt{cd984a34c0e06e467f3403576afbe6deeb1b5d11}}
+\DeclareMathOperator{\im}{im}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.4in}
+{\large\sffamily PROVEIT \quad / \quad TOPOLOGY RESEARCH}\par
+\vspace{0.35in}
+{\LARGE\bfseries Compressed Boundary Certificates\par}
+\vspace{0.12in}
+{\Large via Heisenberg Quotients and\par Optimal Double-Cover Banks\par}
+\vspace{0.3in}
+{\large Genus recovery, polynomial universality tests,\par and safe transport through changing markings}\par
+\vspace{0.3in}
+Research continuation prepared for Vladimir Reshetnikov\par
+9 October 2026\par
+\vspace{0.25in}
+\begin{abstract}
+We develop an exact local primitive for the hierarchy route to unknot recognition: classification of a supplied, source-verified simple boundary curve represented by a straight-line program, without expanding its word. A classical finite quotient of Livingston and Pikaart becomes a small compiler carrying $2g$ modular homology coordinates and one central coordinate. The central coordinate recovers the unordered complementary genera of a separating curve. Evaluation costs $O(Sg\log^2(g+1))$ bit operations for encoded program size $S$.
+
+Our main structural result characterizes every fixed family of double covers that detects all essential separating simple curves. The span of the characters must be coisotropic, and an explicitly constructed interaction graph must be connected. This gives a polynomial universality test and proves that exactly $g+1$ covers are necessary and sufficient. A Lagrangian basis together with its sum attains the bound. We also prove a transport contract, exhibit the failure of the smaller even-genus quotient under a Dehn twist, and give an independent cellular/Magnus interpretation of the cover tests.
+
+The package includes exact code, independent dense-matrix replay, 47 unit tests, exhaustive low-genus audits, and paired local timings. It does not construct the source curve, certify its embeddedness, or bound the global hierarchy search. No general quasi-polynomial unknot-recognition theorem or native-runtime speedup is claimed.
+\end{abstract}
+\vfill
+\noindent\textbf{Research status.} Self-contained mathematical proofs and executable finite checks; not a proof-assistant formalization or an upstream integration. Classical quotient theory is credited explicitly.\par
+\smallskip
+\noindent\textbf{Repository reference.} \code{Topology/UnknotRecognition}, revision\par
+\noindent\pin
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{The bottleneck and the precise contribution}
+\label{sec:introduction}
+The maintained ProveIt project combines several exact recognizers, compressed algebraic observers, and certificate-producing local routines. Its repository documentation distinguishes those results from a general quasi-polynomial running-time guarantee \cite{repo}. The normal-boundary routine inspected at the pinned revision uses two additive parity weights on a torus. Its contract correctly requires independently validated torus cycles, and correctly treats its orbits as simple boundary circles \cite{nativeboundary}. On a torus, every essential simple circle has nonzero mod-two homology. This report does not identify a defect in that routine.
+
+The extension to higher-genus boundary components is different. An essential separating curve has zero homology, even integrally. Thus replacing the torus's two weights by a longer vector of ordinary homology weights is not a complete simple-curve essentiality test. Such boundary components naturally belong to a hierarchy implementation after cutting, even though the original knot exterior has torus boundary. The proposed primitive is aimed at that later, source-verified setting.
+
+Lackenby's 2026 paper supplies the hierarchy framework. Its Section~9 separates a count of algorithmic stages from complete cost estimates, and its boundary-pattern condition is stronger than deciding whether one curve is contractible \cite{lackenby}. These distinctions remain essential here. A small boundary-word observer does not produce a compressing disc, nor does it decide a boundary pattern.
+
+\subsection{Theorems proved in this report}
+There are three principal outputs. First, we give an implementable scalar quotient, a full proof of its genus interpretation, and explicit bit costs for compressed evaluation and marking transport. The underlying non-geometric finite quotient is classical \cite{livingston,pikaart}. Second, we characterize universal double-cover families by finite linear algebra and derive the sharp $g+1$ bound. Third, we connect the cover computations to degree-two Magnus data and give an independent replay path.
+
+The cover-bank characterization is more useful than a single successful construction. It decides whether an arbitrary proposed bank is universal, without enumerating simple curves, their isotopy classes, or all symplectic splittings. In particular, taking all $2g$ members of an ordinary symplectic basis of characters still fails, whereas a carefully chosen dependent family of only $g+1$ characters succeeds.
+
+\subsection{Attribution and the limits of novelty}
+Livingston constructed a finite quotient of order $g^{2g+1}$ whose kernel contains no essential simple loop \cite{livingston}. Pikaart analyzed characteristic versions and the odd/even genus distinction \cite{pikaart}. We do not claim to discover such quotients, or the need for an even-genus enlargement. The explicit compiler, certificate interface, and transport failure example specialize that theory to the repository's compressed-data setting.
+
+Malestein and Putman's Lemma~4.5 gives the key topological observation behind double-cover detection: a separating curve lifts nonseparatingly when the cover is nontrivial on both sides \cite{mp}. We prove the converse and use the resulting equivalence to obtain the coisotropic interaction criterion and sharp bank size. We have not established an exhaustive priority claim for the latter linear-algebraic characterization.
+
+Moreover, polynomial-time contractibility algorithms for \emph{arbitrary} compressed curves on variable-genus orientable surfaces are already available through the work of Chambers, Lazarus, de Mesmay, and Parsa \cite{clmp}. Our result is not the first polynomial compressed surface-word algorithm. It is a smaller, explicit, promise-sensitive observer with extra genus information and independently checkable arithmetic.
+
+\subsection{The source contract}
+A geometric caller must supply a closed, connected, orientable surface $\Sigma_g$, a valid marked presentation of its fundamental group, and an ordered word describing the particular boundary component. The positive use of the classification theorem additionally requires that the word's free homotopy class be represented by a simple closed curve traversed once. A based word may contain a long conjugating path; it need not itself draw an embedded based loop.
+
+A certificate for a word value is not a certificate for these geometric assertions. The delivered algebra API therefore reports only \code{NONTRIVIAL} or \code{UNDETECTED}. Its simple-curve interpretation is explicitly conditional. No routine returns an \code{UNKNOT} verdict.
+
+\section{Marked surfaces and compressed input}
+\label{sec:input}
+Fix $g\ge2$ and the presentation
+\begin{equation}\label{eq:presentation}
+ \pi_g=\left\langle a_1,b_1,\ldots,a_g,b_g\ \middle|\
+ R=\prod_{i=1}^g[a_i,b_i]=1\right\rangle,
+ \qquad [u,v]=uvu^{-1}v^{-1}.
+\end{equation}
+Coordinates are interleaved as $(a_1,b_1,\ldots,a_g,b_g)$. On $\Z^{2g}$ write
+\begin{equation}\label{eq:cocycle}
+ c(x,y)=\sum_{i=1}^g x_{a_i}y_{b_i},\qquad
+ \omega(x,y)=c(x,y)-c(y,x).
+\end{equation}
+The same notation denotes the induced alternating form over $\F$. A subspace $X$ of a symplectic vector space $V$ is \emph{coisotropic} when $X^\perp\subseteq X$, and \emph{Lagrangian} when $X=X^\perp$.
+
+\begin{definition}[Power straight-line program]
+A power straight-line program (SLP) is a finite, topologically ordered directed acyclic graph with rules
+\[
+ 1,\quad a_i^{\pm1},\quad b_i^{\pm1},\quad UV,\quad U^{-1},\quad U^k,
+\]
+where $k$ is a signed binary integer and every referenced node precedes the current node. One or more nodes are designated as roots. Its encoded size $S$ includes all rule data, indices, and exponent bits. The number of nodes is $m\le S$.
+\end{definition}
+Sharing is real sharing: $U$ used in many rules is computed once. An exponent with $B$ bits is not charged unit cost. The expanded word can be much larger than $S$, and expansion is never part of the production evaluator. With fixed genus, ordinary concatenation/inverse SLPs are included as a special case.
+
+We use standard schoolbook integer arithmetic for explicit bit bounds. Addition and residue reduction of $O(\log(g+1))$-bit integers cost at most a constant multiple of $\log^2(g+1)$; multiplication has the same conservative bound. Faster arithmetic can improve logarithmic factors but is not required.
+
+For $g=1$, mod-two homology gives the promised-simple-curve test, exactly as in the inspected native torus routine. For $g=0$, every simple closed curve is contractible in the sphere. The new implementation deliberately restricts its Heisenberg interface to $g\ge2$, rather than silently changing conventions at low genus. Punctured surfaces, boundary-parallel curves relative to punctures, and nonorientable surfaces are different input contracts.
+
+\section{A scalar finite quotient and genus certificates}
+\label{sec:scalar}
+Let $q$ be a positive multiple of $g$. Define
+\begin{equation}\label{eq:group}
+ \HH_g(q)=(\Z/q\Z)^{2g}\times\Z/g\Z,
+ \qquad (x,z)(y,t)=(x+y,z+t+c(x,y)).
+\end{equation}
+Coordinates in the first component are reduced modulo $q$ and the final component modulo $g$. The assumption $g\mid q$ makes the cross term independent of representative choices.
+
+\begin{lemma}[Arithmetic identities]\label{lem:group}
+Equation~\eqref{eq:group} defines a group of order $q^{2g}g$. Its identity, inverse, commutator, and integer powers satisfy
+\begin{align}
+ e&=(0,0),\\
+ (x,z)^{-1}&=(-x,-z+c(x,x)),\\
+ [(x,z),(y,t)]&=(0,\omega(x,y)),\label{eq:commutator}\\
+ (x,z)^k&=(kx,kz+\tbinom{k}{2}c(x,x)).\label{eq:power}
+\end{align}
+The formula for powers holds for negative integers as well.
+\end{lemma}
+\begin{proof}
+Bilinearity gives
+$c(x,y)+c(x+y,u)=c(y,u)+c(x,y+u)$, which is associativity. Substituting the proposed inverse gives the identity on either side. Applying the multiplication rule four times yields \eqref{eq:commutator}. For positive powers, induction adds $kc(x,x)$ to the central coordinate at the $(k+1)$st step, producing $\binom{k+1}{2}$. The inverse formula yields the case $k=-1$ and downward induction gives all negative powers. The set has the asserted cardinality by its definition.
+\end{proof}
+
+Send each marked generator to its corresponding unit vector with central coordinate zero. Every $[a_i,b_i]$ maps to $(0,1)$, so $R$ maps to $(0,g)=(0,0)$. There is therefore a well-defined, surjective homomorphism
+\[
+ \sig_q:\pi_g\longrightarrow\HH_g(q).
+\]
+Surjectivity follows because the marked generators supply every first coordinate and $[a_1,b_1]$ supplies the central generator.
+
+\begin{theorem}[Simple-curve classification and genus recovery]\label{thm:scalar}
+Let $q=g$ or $q=2g$, and let $w$ represent a simple closed curve on $\Sigma_g$, traversed once. Write $\sig_q(w)=(x,z)$ with $0\le z<g$.
+\begin{enumerate}[label=(\roman*)]
+\item The curve is nonseparating if and only if $x\ne0$.
+\item It is contractible if and only if $(x,z)=(0,0)$.
+\item If it is separating, the unordered genera of the two complementary sides are $\{z,g-z\}$. In particular, an essential separator has $1\le z\le g-1$.
+\end{enumerate}
+These assertions are invariant under conjugation and inversion of the input word in the indicated sense: inversion may replace $z$ by $g-z$.
+\end{theorem}
+\begin{proof}
+A nonseparating simple curve has primitive integral homology: an embedded dual curve intersects it once, so evaluation by an integral intersection functional is $\pm1$. Its homology cannot have every coordinate divisible by $q\ge2$. Thus its first coordinate in the quotient is nonzero. A separating curve has zero integral homology, hence $x=0$.
+
+Suppose the curve bounds a genus-$h$ side with one boundary component. Choose a symplectic system of $h$ pairs of curves in that side and paths to the marking basepoint. Up to conjugation and orientation, its boundary word is a product $\prod_{i=1}^h[u_i,v_i]$, with $\omega([u_i],[v_i])=1$ for each pair. By \eqref{eq:commutator}, every factor has quotient value $(0,1)$. Their product is $(0,h)$; conjugation does not change a central element. Reversing orientation changes $h$ to $-h$ modulo $g$.
+
+The two genera are $h$ and $g-h$. An essential separator has $1\le h\le g-1$, so the central coordinate is nonzero. A contractible simple curve bounds a disc and is trivial in $\pi_g$, giving quotient value zero. Conversely, a simple curve with zero quotient is neither nonseparating nor an essential separator, so it bounds a disc. The unordered pair is unchanged by the possible sign choice.
+\end{proof}
+
+This proof is a coordinate implementation of the classical non-geometric quotient principle \cite{livingston,pikaart}. It also shows precisely why the extra central coordinate matters: ordinary homology cannot distinguish a disc boundary from the boundary of a one-holed torus, whereas $z$ distinguishes them immediately.
+
+\begin{proposition}[Central modulus within the scalar-area model]\label{prop:centralminimal}
+Suppose the commutator rule is $(0,\omega(x,y))$ with central values in $\Z/d\Z$, and the surface relator is required to vanish. If this rule detects every essential separating simple curve, then $d=g$.
+\end{proposition}
+\begin{proof}
+The relator has central value $g$, so $d\mid g$. If $d<g$, a separator bounding genus $d$ has central value zero. Such a separator is essential, a contradiction. Conversely, $d=g$ succeeds by \cref{thm:scalar}.
+\end{proof}
+The proposition concerns this specified scalar-area model, not all finite quotients or all conceivable encodings. A separate information-theoretic observation is that recovery of the unordered genus pair needs at least $\lceil\log_2(\lfloor g/2\rfloor+1)\rceil$ bits among its possible outputs; the scalar coordinate is of the right logarithmic order.
+
+\section{Compressed evaluation, bit cost, and independent replay}
+\label{sec:compiler}
+\begin{lemma}[Bounded exponent]\label{lem:exponent}
+For $q=g$, every element of $\HH_g(g)$ has order dividing
+\[
+ e_g=\begin{cases}g,&g\text{ odd},\\2g,&g\text{ even}.\end{cases}
+\]
+For even $g$ and $q=2g$, every element of $\HH_g(2g)$ has order dividing $2g$.
+\end{lemma}
+\begin{proof}
+Apply \eqref{eq:power}. The first coordinate vanishes for a multiple of $q$, as does the linear central term for a multiple of $g$. For odd $g$, $g\mid\binom g2$. For $k=2g$, $\binom{2g}{2}=g(2g-1)$ is divisible by $g$ for every genus. These facts kill the quadratic term in the stated cases.
+\end{proof}
+
+\begin{theorem}[Finite compiler]\label{thm:compiler}
+Given a power SLP of encoded size $S$ over \eqref{eq:presentation}, and $q=g$ or the safe even-genus choice $q=2g$, its root value can be computed in
+\[
+ O\bigl(Sg\log^2(g+1)\bigr)
+\]
+bit operations. Caching all $m$ node values uses
+$O(S+mg\log(g+1))$ bits, including the input. Every designated root in a shared DAG is obtained in the same pass, with output costs added explicitly. No expanded word, cover, or multiplication table is constructed.
+\end{theorem}
+\begin{proof}
+A node stores $2g$ residues modulo $q\le2g$ and one modulo $g$. The multiplication and inverse formulas use $O(g)$ operations on $O(\log(g+1))$-bit numbers. The unreduced dot product has $g$ summands of magnitude $O(g^2)$, and therefore still has $O(\log(g+1))$ bits; alternatively, reduce after each addition.
+
+For a power node, scan the exponent bits to compute $k\bmod e_g$, using \cref{lem:exponent}. If that exponent has $B$ bits, this costs $O(B\log^2(g+1))$ conservatively. Apply \eqref{eq:power} to the resulting $O(\log(g+1))$-bit residue. Negative exponents are handled by modular negation. The rule then costs $O((B+g)\log^2(g+1))$. Summing over nodes and using the definition of $S$ proves the time estimate. A topological traversal visits each node once, and the stated memory bound follows from the cached value size. Marked generator values are constructed only when used; initializing a dense table of all $2g$ generators would introduce an unnecessary $O(g^2)$ setup term. The implementation and a dedicated test enforce this input-sensitive initialization.
+\end{proof}
+
+For fixed $g$ this is linear in the actual encoded program size. Large expanded length alone causes no expensive arithmetic. For example,
+\begin{equation}\label{eq:benchmarkfamily}
+ w_k=u^{2^k}[a_1,b_1]u^{-2^k},\qquad
+ u=a_1b_2b_1a_2^{-1},
+\end{equation}
+has a short shared grammar and expanded length $8\cdot2^k+4$. Its quotient value is $(0,1)$ for every $k$. The input power exponent still requires $k+1$ bits in the delivered encoding, and this linear scan is charged.
+
+\subsection{Independent matrix replay}
+The verification implementation uses $(g+2)\times(g+2)$ matrices rather than the producer's coordinate multiplication:
+\begin{equation}\label{eq:matrix}
+ T(u,v,z)=
+ \begin{pmatrix}
+  1&u_1&\cdots&u_g&z\\
+  0&1&&0&v_1\\
+  \vdots&&\ddots&&\vdots\\
+  0&0&&1&v_g\\
+  0&0&\cdots&0&1
+ \end{pmatrix}.
+\end{equation}
+Matrices are evaluated modulo $q$; the final top-right entry is then reduced modulo $g$. This produces the same signature because matrix multiplication contributes $\sum u_iv'_i$ in the top-right corner. When $q=2g$, the surface relator may be nonzero as a matrix modulo $q$, but its top-right entry is $g$, which disappears under the final central reduction. We never claim that the unreduced matrix model itself factors through $\pi_g$ in that case.
+
+For inversion, write $T=I+N$; then $N^3=0$ and $T^{-1}=I-N+N^2$. Powers use repeated squaring after scanning the exponent modulo $2q$, an exponent bound valid for these matrices. The replay code does not call the producer's multiplication, inverse, power, or SLP evaluator.
+
+This deliberately dense checker has the conservative polynomial bound
+$O(Sg^3\log^3(g+1))$, not the producer's sharper bound. It is an independent correctness oracle and an optional replay path. A production deployment must charge its cost when it is used. The certificate's SHA-256 field binds a canonical serialized word record; equality of a hash alone is never accepted as a mathematical proof, since the full word is replayed.
+
+\subsection{What the certificate does not verify}
+Algebraic replay checks rule order, generator range, moduli, root, quotient value, and consistency of every reported interpretation. It does not validate a triangulation, construct a surface marking, check a word-to-curve map, test embeddedness, or establish that the supplied disc belongs to the knot exterior. Those are inputs to a geometric adapter, not hidden preconditions discharged by the hash.
+
+\section{Transport through a changing marking}
+\label{sec:transport}
+Compressed hierarchy operations may change a marking while retaining summaries of many subwords. The validity of a final simple-curve test does not by itself make all those intermediate summaries transportable.
+
+\begin{proposition}[The even-genus narrow quotient loses transport data]\label{prop:failure}
+For even $g$, the generator substitution
+\[
+ a_1\longmapsto a_1b_1,\qquad b_1\longmapsto b_1,
+\]
+with all other generators fixed, does not induce a map on $\HH_g(g)$ through the source word evaluation. In particular, one cannot update arbitrary cached narrow signatures using only their old values.
+\end{proposition}
+\begin{proof}
+The substitution preserves $[a_1,b_1]$ and hence preserves the surface relator. It is an automorphism, with inverse $a_1\mapsto a_1b_1^{-1}$, and is the familiar twist on the first handle. The words $1$ and $a_1^g$ have the same narrow signature. After substitution, however,
+\[
+ \sig_g((a_1b_1)^g)
+ =\left(0,\binom g2\right)
+ =\left(0,\frac g2\right)\ne(0,0).
+\]
+Thus two equal source summaries have unequal image summaries.
+\end{proof}
+
+The counterexample uses a nonsimple intermediate word, exactly the kind of word that may occur at an SLP node. It does not contradict \cref{thm:scalar}. It explains why correct final answers and correct update semantics are separate claims. Pikaart's classical characteristic-quotient analysis already identifies the underlying parity distinction \cite{pikaart}; the example makes it a concrete cache invalidation rule.
+
+Define
+\[
+ q_{\rm safe}(g)=\begin{cases}g,&g\text{ odd},\\2g,&g\text{ even}.\end{cases}
+\]
+For a prospective orientation-preserving change of marking, let $A_i,B_i$ be the quotient values of the images of $a_i,b_i$ in $\HH_g(q_{\rm safe})$. Require their first-coordinate columns to form a symplectic matrix modulo $q_{\rm safe}$.
+
+\begin{theorem}[Safe algebraic transport]\label{thm:transport}
+Such an image tuple induces an automorphism of $\HH_g(q_{\rm safe})$ fixing its central generator. For $x=(u_1,v_1,\ldots,u_g,v_g)$ it acts by
+\begin{equation}\label{eq:transport}
+ F(x,z)=B_1^{v_1}\cdots B_g^{v_g}
+         A_1^{u_1}\cdots A_g^{u_g}(0,z).
+\end{equation}
+All exponents can be the canonical residues modulo $q_{\rm safe}$. Therefore arbitrary subword summaries, not only simple-curve values, can be transported without expanding their words.
+\end{theorem}
+\begin{proof}
+The group has generators $a_i,b_i,t$ with $t$ central of order $g$,
+$[a_i,b_j]=t^{\delta_{ij}}$, all $a$--$a$ and $b$--$b$ commutators trivial, and every $a_i,b_i$ of order dividing $q_{\rm safe}$. These relations give the unique normal form
+$b_1^{v_1}\cdots b_g^{v_g}a_1^{u_1}\cdots a_g^{u_g}t^z$;
+the section before $t^z$ has central coordinate zero by \eqref{eq:group}.
+
+The symplectic condition preserves all commutator relations modulo $g$, and \cref{lem:exponent} supplies the required order relations for every image element. Sending $t$ to itself therefore defines a homomorphism. Its induced first-coordinate map is invertible. A kernel element must consequently have first coordinate zero, and since the central generator is fixed, its central coordinate is zero as well. Thus the homomorphism is injective and, on a finite group, an automorphism. The normal form gives \eqref{eq:transport}.
+\end{proof}
+
+The finite symplectic test is sufficient for this algebraic theorem. It does not prove that a supplied tuple comes from a homeomorphism of the particular source surface. A geometric caller must bind the marking change to that source separately.
+
+\begin{proposition}[Minimal uniform coordinate modulus]\label{prop:safeminimal}
+Within the family \eqref{eq:group} with central modulus $g$ and one common coordinate modulus $q$, $q_{\rm safe}(g)$ is the smallest modulus compatible with all orientation-preserving changes of the marked generators.
+\end{proposition}
+\begin{proof}
+Well-definedness requires $g\mid q$. Write $q=kg$. Compatibility with $a_1\mapsto a_1b_1$ requires $(a_1b_1)^q=1$, and hence $g\mid\binom q2$. For odd $g$, the smallest multiple $q=g$ satisfies this. If $g$ is even, $q$ is even and
+$\binom q2=(kg/2)(kg-1)$ is divisible by $g$ exactly when $k$ is even. The smallest choice is then $q=2g$. Sufficiency follows from \cref{thm:transport}.
+\end{proof}
+
+Checking one image tuple by dense symplectic pairings costs
+$O(g^3\log^2(g+1))$ bit operations. The delivered \code{TransportPlan} performs this check once; its \code{apply} method then reuses the checked tuple. The convenience function \code{transport} checks anew on every call. After the one-time check, each transported signature costs $O(g^2\log^2(g+1))$ using \eqref{eq:transport}. Image-word compilation must also be charged. No uniform bound on the number of geometric marking changes is proved here.
+
+\section{Double covers as separating-curve detectors}
+\label{sec:covers}
+Let $V=H_1(\Sigma_g;\F)$. A connected unbranched double cover is determined by a nonzero character $\alpha:V\to\F$. Through the symplectic form we may identify characters with nonzero vectors of $V$; this identification will be used for the bank theorems.
+
+An essential separating simple curve $\gamma$ gives a nontrivial orthogonal symplectic splitting
+\begin{equation}\label{eq:splitting}
+ V=U\perp W,
+ \qquad \dim U=2h,\quad\dim W=2(g-h),\quad 1\le h<g.
+\end{equation}
+Its two sides have one boundary component each. The curve has trivial monodromy in every double cover, hence two individual closed lifts.
+
+\begin{lemma}[Exact double-cover criterion]\label{lem:covercriterion}
+An individual lift of $\gamma$ has nonzero mod-two homology in the cover if and only if $\alpha$ is nonzero on both $U$ and $W$. Under the symplectic identification, this means that the character vector belongs to neither $U$ nor $W$.
+\end{lemma}
+\begin{proof}
+If both restrictions are nonzero, the covers of both sides are connected. Each has two boundary circles, and the closed cover is obtained by joining these two connected pieces along both circles. Removing either one of the joining circles does not disconnect the result. That lift is nonseparating, so its mod-two homology is nonzero. This is the mechanism of Malestein--Putman's Lemma~4.5 \cite{mp}.
+
+Conversely, if the character vanishes on one side, the preimage of that side is two separate copies, each with one boundary component. Each corresponding lift of $\gamma$ bounds one of those copies and is separating. Its homology is zero. Finally, in a nondegenerate orthogonal splitting, the functional associated to a vector vanishes on one summand exactly when the vector lies in the other summand.
+\end{proof}
+
+\begin{remark}[Do not sum the two lift classes]
+In the successful case, the two lifts form the boundary of the covered side and have equal nonzero mod-two classes. Their \emph{sum} is zero. A total transfer vector that adds the two classes destroys exactly the information used by this test. The observer must preserve an individual lift, or an equivalent quotient of its chain data.
+\end{remark}
+
+\begin{lemma}[Realization of symplectic splittings]\label{lem:realization}
+Every nontrivial orthogonal symplectic splitting of $\F^{2g}$ is induced by some essential separating simple curve on the marked surface.
+\end{lemma}
+\begin{proof}
+Choose symplectic bases of its summands. Their concatenation gives a symplectic matrix carrying a standard coordinate splitting to the given one. We recall why such a matrix can be realized on mod-two homology. Symplectic transvections
+$T_v(x)=x+\omega(x,v)v$ generate the symplectic group: one first sends a prescribed nonzero vector to a standard basis vector, then its symplectic partner to the standard partner, and proceeds on their orthogonal complement. To send $x$ to $y$ when $\omega(x,y)=1$, use $T_{x+y}$. When the pairing is zero and $x\ne y$, choose $z$ pairing to one with both and use two such steps. The partner-adjustment steps use transvections orthogonal to the already fixed vector; the same argument with the extra linear constraint supplies them. This is symplectic elimination.
+
+Every nonzero mod-two vector has a simple nonseparating representative on the surface. On each handle, realize the nonzero coordinate pair by the $a$ curve, the $b$ curve, or a diagonal $(1,1)$ curve. Band-sum the nonempty choices along disjoint connecting arcs in a tree. The result is a single simple curve with the desired mod-two class. A Dehn twist around it realizes $T_v$. Composing these twists realizes the chosen matrix. Apply that homeomorphism to a standard genus-$h$ separating curve.
+\end{proof}
+
+\section{A polynomial universality criterion for any cover bank}
+\label{sec:bank}
+A \emph{cover bank} is a finite list $A=(\alpha_1,\ldots,\alpha_m)$ of nonzero character vectors. Repetitions are allowed. It is \emph{universal} if every essential separating simple curve is detected in at least one cover in the list. Base-surface homology for nonseparating curves is not included in this definition or in the cover count.
+
+By \cref{lem:covercriterion,lem:realization}, universality is equivalent to the nonexistence of a proper symplectic splitting $V=U\perp W$ with every $\alpha_i$ lying in $U\cup W$. We now replace this quantification over splittings by one graph and one rank computation.
+
+\subsection{The interaction graph}
+Let $X=\Span(A)$ and choose a basis $B\subseteq A$. Construct a graph $\mathcal I(A;B)$ with one vertex for each member of the list $A$.
+For every nonbasis member $a$, write its unique expansion
+$a=\sum_{b\in B}\lambda_b b$ and connect its vertex to every $b$ with $\lambda_b=1$.
+Also connect two basis vertices $b,b'$ whenever $\omega(b,b')=1$.
+The first kind of edge records a fundamental linear dependency. The second records a symplectic pairing. Neither kind can cross a valid pure-side assignment.
+
+\begin{lemma}[Canonical orthogonal blocks]\label{lem:blocks}
+If $C_1,\ldots,C_k$ are the connected components of $\mathcal I(A;B)$ and $X_i=\Span(C_i)$, then
+\[
+ X=X_1\perp\cdots\perp X_k
+\]
+is an orthogonal direct sum. Moreover, in every symplectic splitting for which all members of $A$ are pure, each entire $C_i$ lies on one side. The resulting blocks are independent of the chosen basis $B$.
+\end{lemma}
+\begin{proof}
+Every vector in $C_i$ expands only in basis vectors belonging to $C_i$, by the first edge rule. Therefore $X_i$ is precisely the span of that part of $B$. Since $B$ is independent, these spans have direct sum $X$. A nonzero pairing between basis vectors in different components would create an edge, so the spans are pairwise orthogonal.
+
+Now suppose $V=U\perp W$ and each member of $A$ lies in one summand. For $a\in U$, the $W$ part of its basis expansion must vanish. Independence of the basis implies that no basis vector lying in $W$ occurs in that expansion. The dependency edges remain on one side. Pairing edges also remain on one side, by orthogonality. Thus a connected component cannot split between $U$ and $W$.
+
+More generally, the same reasoning applies to every orthogonal direct-sum decomposition of $X$ with pure members of $A$, even when the summands are degenerate. The graph blocks refine every such decomposition, while themselves giving one. Hence they are the unique finest such blocks and do not depend on $B$.
+\end{proof}
+
+\begin{lemma}[Simultaneous nondegenerate envelopes]\label{lem:envelopes}
+Suppose $X=X_1\perp\cdots\perp X_k$ is an orthogonal direct sum inside a $2g$-dimensional symplectic space. Write $d_i=\dim X_i$ and $r_i=\dim\rad X_i$. There exist pairwise orthogonal nondegenerate subspaces $E_i\supseteq X_i$ with
+\[
+ \dim E_i=d_i+r_i.
+\]
+Every nondegenerate subspace containing $X_i$ has dimension at least $d_i+r_i$.
+\end{lemma}
+\begin{proof}
+Split each $X_i$ as a nondegenerate part $S_i$ and its radical $R_i$. The sum $S=\perp_i S_i$ is nondegenerate. In $S^\perp$, the direct sum $R=\oplus_i R_i$ is isotropic. Extend a basis of $R$ to a symplectic basis of $S^\perp$, assigning a dual partner to every radical basis vector. For each $i$, let $E_i$ be $S_i$ plus $R_i$ and its chosen dual partners. These are the required orthogonal envelopes.
+
+For the lower bound, if $E$ is nondegenerate and contains $X_i$, every nonzero functional direction on $R_i$ must pair with a vector of $E$ outside $X_i$, because $R_i$ annihilates $X_i$. Nondegeneracy makes the map $E\to R_i^*$ surjective. It factors through $E/X_i$, so $\dim(E/X_i)\ge r_i$.
+\end{proof}
+
+\begin{theorem}[Coisotropic interaction criterion]\label{thm:bank}
+Let $g\ge2$ and let $A$ be a nonempty cover bank. Then $A$ is universal if and only if
+\begin{equation}\label{eq:bankcriterion}
+ \mathcal I(A;B)\text{ is connected}
+ \quad\text{and}\quad X^\perp\subseteq X.
+\end{equation}
+Equivalently, writing $d=\dim X$ and letting $G_B$ be the restricted symplectic Gram matrix on a basis of $X$, the second condition is
+\begin{equation}\label{eq:rankcriterion}
+ 2d-\rank G_B=2g.
+\end{equation}
+The criterion can be decided in $O(mg^2+g^3)$ elementary binary operations, apart from near-linear graph bookkeeping. It does not enumerate symplectic splittings.
+\end{theorem}
+\begin{proof}
+Let $r=\dim\rad X=d-\rank G_B$. Since $\rad X=X\cap X^\perp$ and $\dim X^\perp=2g-d$, coisotropy is equivalent to $r=2g-d$, which is \eqref{eq:rankcriterion}.
+
+Suppose the graph is connected and $X$ is coisotropic. If all characters were pure in a proper symplectic splitting, \cref{lem:blocks} would force all of $X$ into one summand. By \cref{lem:envelopes}, that summand would have dimension at least $d+r=2g$, contradicting properness. Thus every splitting is detected.
+
+Conversely, if the graph has at least two components, apply \cref{lem:envelopes} to its blocks. The envelope $E_1$ is nonzero and proper because another nonzero block has a nonzero orthogonal envelope. The splitting $V=E_1\perp E_1^\perp$ places all bank members on pure sides and is undetected. If the graph is connected but $X$ is not coisotropic, then $d+r<2g$; an envelope $E\supseteq X$ of dimension $d+r$ gives the same obstruction. By \cref{lem:realization}, each obstruction splitting is realized by an essential separating simple curve.
+
+For the algorithm, binary elimination finds a basis and all fundamental coordinates in $O(mg^2)$ operations. At most $O(mg)$ dependency edges are needed. There are at most $2g$ basis vectors, so computing their pairings, taking the Gram rank, and checking connectivity requires $O(g^3)$ further binary operations and near-linear graph processing. These are bounds for elementary operations; the supplied Python implementation additionally benefits from packed-integer XORs.
+\end{proof}
+
+The empty bank is not universal for $g\ge2$. Repeated characters neither help nor invalidate the criterion: they are connected to their equal basis expression. The algorithm accepts them but makes no false gain from multiplicity.
+
+\subsection{A sharp consequence and two instructive examples}
+\begin{theorem}[Exactly $g+1$ double covers]\label{thm:optimal}
+For $g\ge2$, the minimum size of a universal fixed bank of connected unbranched double covers of $\Sigma_g$ is $g+1$. If $\lambda_1,\ldots,\lambda_g$ is a basis of any Lagrangian in the character space, an optimal bank is
+\[
+ \lambda_1,\ldots,\lambda_g,\quad \lambda_1+\cdots+\lambda_g.
+\]
+\end{theorem}
+\begin{proof}
+The displayed bank spans a Lagrangian, hence a coisotropic space. Its final vector joins every basis vector in one fundamental-dependency star, so its interaction graph is connected. It is universal by \cref{thm:bank}; all $g+1$ vectors are nonzero and distinct for $g\ge2$.
+
+For the lower bound, suppose $m\le g$. Coisotropy would require $d\ge g$, whereas $d\le m\le g$. Thus $d=m=g$ and $X$ must be Lagrangian. The bank is then an independent Lagrangian basis. There are no dependency edges and no nonzero pairing edges, so its graph has $g$ components. It is not universal. This rules out every bank of at most $g$ covers.
+\end{proof}
+
+A direct upper-bound proof is also illuminating. In an undetected splitting, every $\lambda_i$ would be pure. If they occupied both sides, independence would make their total sum mixed. If they all occupied one side, a proper symplectic summand would contain a $g$-dimensional isotropic space, exceeding its maximum isotropic dimension. Either possibility is impossible.
+
+An ordinary full symplectic basis is not universal: each handle pair forms its own interaction component, and the standard genus-one separator is missed. Conversely, optimal banks need not be Lagrangian. In genus two, the three vectors
+\[
+ a_1,\quad b_1,\quad a_1+b_1+a_2
+\]
+are independent with every pairwise symplectic pairing equal to one. Their span has dimension three and radical dimension one; it is coisotropic, and the graph is connected. This is a second optimal bank with a different linear structure.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[every node/.style={font=\small}, scale=1]
+\node[draw,rounded corners,inner sep=5pt] (s) at (0,0) {$\lambda_1+\lambda_2+\lambda_3$};
+\node (a) at (-1.6,1.2) {$\lambda_1$};
+\node (b) at (0,1.55) {$\lambda_2$};
+\node (c) at (1.6,1.2) {$\lambda_3$};
+\draw (s)--(a) (s)--(b) (s)--(c);
+\node[align=center] at (0,-1.05) {Genus three: dependency edges\\connect a Lagrangian bank.};
+\node (p) at (5,1.3) {$a_1$};
+\node (q) at (3.7,-0.05) {$b_1$};
+\node (r) at (6.3,-0.05) {$a_1+b_1+a_2$};
+\draw (p)--(q)--(r)--(p);
+\node[align=center] at (5,-1.05) {Genus two: pairing edges\\connect a coisotropic bank.};
+\end{tikzpicture}
+\caption{Two universal banks. Connectivity must be combined with coisotropy; either condition alone is insufficient.}
+\label{fig:banks}
+\end{figure}
+
+The optimality theorem is specifically about \emph{fixed degree-two covers and individual-lift homology}. It is not a lower bound for adaptive covers, one higher-degree cover, Heisenberg signatures, or arbitrary curve algorithms. It also does not say that a $g+1$-cover implementation will be faster than scalar quotient evaluation.
+
+\section{Quadratic Magnus data and a cellular bridge}
+\label{sec:magnus}
+The scalar compiler and the cover-bank theorem have a useful independent common description. Work over $\F$ and put $d=2g$. Define a degree-two signature $(x,M)$ with $x\in\F^d$ and $M\in\operatorname{Mat}_d(\F)$ by
+\begin{equation}\label{eq:magnus}
+ (x,M)(y,N)=(x+y,M+N+xy^{\mathsf T}).
+\end{equation}
+A positive generator has signature $(e_i,0)$; its inverse has $(e_i,e_ie_i^{\mathsf T})$. These rules are the truncation of the noncommutative Magnus expansion at degree two. Associativity follows from the same bilinear-cocycle calculation used in \cref{lem:group}. Every element has fourth power equal to the identity, so a power SLP can be evaluated using exponents modulo four.
+
+Let $J$ be the matrix with $2\times2$ blocks $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$. The relator has signature $(0,J)$. This element is central, and passage to the surface group therefore identifies $M$ with $M+J$ when the first coordinate is fixed.
+
+\begin{proposition}[Quadratic genus ranks]\label{prop:genusrank}
+For a word representing a separating simple curve bounding genus $h$, its degree-two signature has $x=0$, and
+\[
+ \{\rank M,\rank(M+J)\}=\{2h,2(g-h)\}.
+\]
+The pair is independent of the word representative. No converse for arbitrary words is asserted.
+\end{proposition}
+\begin{proof}
+The commutator of signatures with first coordinates $u,v$ has quadratic part $uv^{\mathsf T}+vu^{\mathsf T}$. For a symplectic system on a genus-$h$ side, the product of these commutators is the bivector matrix of that summand. In a symplectic basis adapted to the splitting, it is $\operatorname{diag}(J_h,0)$; its complement is $\operatorname{diag}(0,J_{g-h})$. A change of symplectic basis acts by congruence and preserves rank. Conjugation does not change a signature with $x=0$, and inserting a surface relator toggles $M$ by $J$. Hence the unordered pair is well-defined.
+\end{proof}
+
+\begin{theorem}[Cellular lift formula]\label{thm:bridge}
+Let $w$ have zero mod-two first coordinate and degree-two matrix $M$. For a nonzero cover character $\alpha$ written as a coordinate covector, put
+\[
+ t_\alpha=M^{\mathsf T}\alpha.
+\]
+In the two-vertex, $4g$-edge cellular model of its double cover, the edge chain of either lift of $w$ is the duplication of $t_\alpha$ on the two sheets. The two lifted surface relators both have chain equal to the duplication of $J\alpha$. Consequently,
+\begin{equation}\label{eq:liftcriterion}
+ [\widetilde w]\ne0\quad\Longleftrightarrow\quad
+ M^{\mathsf T}\alpha\notin\{0,J\alpha\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Traverse a signed word from sheet zero. Before a letter of generator type $j$, its sheet is the character applied to the mod-two exponent vector of the preceding prefix. A positive letter traverses the edge beginning on that sheet. A negative letter traverses, in reverse, the edge whose positive initial sheet differs by $\alpha_j$. Therefore the coefficient on the sheet-one edge of type $j$ is the sum of the prefix-sheet bits at its occurrences, plus $\alpha_j$ for each negative occurrence.
+
+Under \eqref{eq:magnus}, the first contribution is precisely the contraction of the prefix/letter outer products with $\alpha$, and the inverse-generator diagonal term accounts for the second. The result is $(M^{\mathsf T}\alpha)_j$. The total coefficient of both edges of type $j$ is the base exponent parity $x_j=0$, so the sheet-zero coefficient is the same. Starting on the other sheet exchanges identical entries.
+
+For $R$, substitute $M=J$. Both two-cells have the same boundary chain, and $J\alpha\ne0$ because $J$ is invertible and $\alpha\ne0$. Thus the image of the cellular boundary map in degree two is the one-dimensional span of that duplicated chain. The lifted word is closed since its monodromy is zero. Its class vanishes exactly when its chain is either zero or the displayed boundary, proving \eqref{eq:liftcriterion}.
+\end{proof}
+
+This gives two genuinely different checks of a cover observation. The Magnus implementation composes outer products, while the cellular implementation propagates a monodromy bit and an edge-chain bitset for each starting sheet. The tests compare them directly. In either method, no geometric cover with an expanded copy of the word is built.
+
+For a bank of $g+1$ covers, the direct binary transfer stores $O(g^2)$ bits per SLP node in an elementary representation. Full Magnus storage also has quadratic size and allows the genus-rank query. The scalar observer stores only $O(g\log(g+1))$ bits and recovers the same unordered genus pair for promised-simple separators. Packed-bit Python code can nevertheless make the quadratic implementation faster on moderate genus; the measurements below demonstrate precisely this distinction between asymptotic storage and wall time.
+
+\section{Soundness barriers and the route back to unknot recognition}
+\label{sec:barriers}
+\subsection{A concrete nonsimple blind word}
+Let $c=[a_1,b_1]$ and define
+\begin{equation}\label{eq:blind}
+ w=[c,a_1ca_1^{-1}].
+\end{equation}
+Every class-two quotient kills this word: the images of $c$ and its conjugate are central and hence commute. Both the scalar and quadratic observers therefore return zero. The word is nevertheless nontrivial in the surface group. For genus two, map
+\[
+ a_1\mapsto x,\quad b_1\mapsto y,\quad
+ a_2\mapsto y,\quad b_2\mapsto x
+\]
+to the free group on $x,y$. The surface relator maps to $[x,y][y,x]=1$, so this is a valid quotient map. The image of \eqref{eq:blind} freely reduces to
+\[
+ x y x^{-1} y^{-1} x x y x^{-1} y^{-1} x^{-1}
+ y x x y^{-1} x^{-1} x^{-1},
+\]
+a nonempty reduced word. For higher genus, send the additional generators to the identity. Thus zero signature is not a general contractibility certificate.
+
+This example also rules out inferring simplicity from agreement among all the delivered finite observers. A separate simplicity/source check is essential. The existence of a stronger general compressed word algorithm \cite{clmp} does not change the contract of this smaller finite kernel.
+
+\subsection{Ordered data cannot be replaced by an incidence census}
+The central coordinate records order-sensitive pair interactions. The empty word and $[a_1,b_1]$ have equal signed exponent totals but different areas. More strongly, $a_1b_1a_1^{-1}b_1^{-1}$ and $a_1a_1^{-1}b_1b_1^{-1}$ have the same multiset of signed letters but different signatures. Hence neither an unsigned incidence histogram nor a signed letter census determines the answer. A normal-orbit adapter must recover an \emph{ordered} grammar for the selected component, with its marking provenance intact.
+
+\subsection{Contractibility is not boundary-pattern admissibility}
+A curve may bound a disc in the closed boundary surface while that disc contains forbidden pattern arcs or vertices. Lackenby's boundary-pattern definition asks for a particular allowable intersection with the pattern, not merely nullhomotopy in the underlying surface \cite{lackenby}. Capping punctures before applying this observer can erase exactly the information that matters. A marked-pattern adapter must retain that information or restrict use of the observer to a step where ordinary closed-surface essentiality is the correct predicate.
+
+\subsection{Conditional cost composition, with all missing terms visible}
+\begin{corollary}[Observer cost under an external source generator]\label{cor:global}
+Suppose a source-verified hierarchy procedure, on an $n$-crossing input, constructs shared boundary SLP batches of sizes $S_e$ on genera $g_e\ge2$. Suppose it uses $D_e$ independently checked marking image tuples and transports $Q_e$ cached signatures in batch $e$. Apart from optional dense replay, the additional algebraic cost is bounded by a constant multiple of
+\[
+ \sum_e\left(S_e g_e+D_e g_e^3+Q_e g_e^2\right)
+            \log^2(g_e+1),
+\]
+plus image-word construction/evaluation and output costs. In particular, if the total source construction, source verification, and this displayed sum are $n^{O(\log n)}$, the boundary observer preserves that complexity class.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:compiler} once per shared batch and the costs following \cref{thm:transport} once per marking tuple and transported value. Add the independently supplied source costs. The sum of finitely many costs bounded by the stipulated total remains within that total bound.
+\end{proof}
+The corollary is cost accounting, not a construction of the required hierarchy procedure. We do not bound the number of source resets, construct all source grammars in quasi-polynomial time, prove a logarithmic hierarchy depth, or certify that all candidate discs are found. Those are the substantive global tasks still to be done. The local improvement is that expanded boundary-word length is no longer an unavoidable factor in this particular supplied-word query.
+
+\section{Implementation and completed experiments}
+\label{sec:experiments}
+The delivered package is standard-library Python. All reported runs were completed in this session; raw records are in \code{results/}. The maintained upstream test suite was not run, and no upstream file was changed. The finite and synthetic tests below are not a corpus of knot diagrams.
+
+\subsection{Modules and independent checks}
+\code{kernel.py} implements the scalar group, validated SLPs, shared evaluation, observations, and marking transport. \code{verify.py} contains independent dense-matrix replay. \code{binary.py} implements bit-packed Magnus data and a separate two-sheet cellular transfer. \code{cover_bank.py} implements the coisotropic interaction criterion. The command-line interface can evaluate a JSON word or replay an algebraic certificate.
+
+The 47 unit tests cover group identities, signed powers, binary exponents with 10,001 bits, surface relators, standard simple-curve genus classes and their conjugates, relation insertions, shared DAGs, malformed inputs, mutation rejection, narrow-quotient transport failure, safe transport, matrix replay, cellular/Magnus agreement, and cover-bank structure. The random test loops are deterministic. These checks support the implementation; the all-genus statements rely on the proofs above.
+
+\subsection{Exhaustive cover audits}
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Genus & Symplectic planes & Splittings & Banks of size $\le g$ & Optimal size\\
+\midrule
+2 & 20 & 10 & 121 & 3\\
+3 & 336 & 336 & 41,728 & 4\\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive lower-bound audits. In genus two and three, every proper symplectic splitting has a two-dimensional side. All listed banks of size at most $g$ fail; the supplied $g+1$ bank succeeds. The empty bank is included.}
+\label{tab:exhaustive}
+\end{table}
+
+For genus two, we additionally checked \emph{every one of the $2^{15}=32,768$ subsets} of the nonzero character vectors. For each bank, the polynomial criterion was compared with literal coverage of all ten splittings. Every answer agreed. There are 255 universal banks of cardinality three in that exhaustive model, confirming that the Lagrangian construction is not the unique kind of optimum.
+
+A separate deterministic audit generated 1,100 symplectic splittings in genera two through twelve by transvections. It checked 259,600 symplectic pairings, 2,200 complementary genus ranks, and detection by the designated optimal bank. All checks passed. These are finite linear-algebra instances, not evidence that a particular geometry producer is correct.
+
+\subsection{Paired local timings and a mixed comparison}
+Timing used CPython 3.13.5, \code{time.perf_counter}, and medians of repeated calls on one session environment. Exact platform information is in \code{benchmark.json}. There was no process isolation. The primary timing excludes SLP parsing, geometric source construction, and independent replay. Literal evaluation was only attempted below the explicit expansion cap.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$k$ & Encoded bytes & Scalar time ($\mu$s) & Literal time (ms) & Ratio\\
+\midrule
+0 & 280 & 25.56 & 0.0237 & 0.93\\
+4 & 284 & 19.30 & 0.2377 & 12.32\\
+8 & 288 & 20.42 & 4.4270 & 216.79\\
+12 & 292 & 20.01 & 63.4666 & 3,171.74\\
+15 & 295 & 20.03 & 489.6598 & 24,445.10\\
+\bottomrule
+\end{tabular}
+\caption{Evaluation of \eqref{eq:benchmarkfamily} in genus three, using the same scalar group law for compressed and literal paths. Every grammar has 18 nodes. Ratio is literal time divided by scalar time; these are not whole-recognizer speedups.}
+\label{tab:timing}
+\end{table}
+
+At $k=16,384$, the 18-node grammar occupies 16,664 JSON bytes and was evaluated in approximately $0.735$ milliseconds. Its literal length is $8\cdot2^{16384}+4$; no literal run was attempted. Independent certificate replay succeeded for every benchmark case. The constant-node count is not confused with constant encoded size: the exponent contributes linearly many bits.
+
+The comparison against bit-packed binary Magnus evaluation is \emph{mixed} on the delivered genus-scaling family. For genera $2,4,8$, the binary implementation took approximately $0.80$, $0.84$, and $0.92$ times the scalar evaluator's time, so the scalar representation was slower. For genera $16,32,64$, those ratios were approximately $1.10$, $1.23$, and $1.29$, so the scalar evaluator was faster. At genus 64 the measured times were approximately $3.928$ ms versus $3.037$ ms. No uniform wall-time superiority follows from the smaller asymptotic state. The family consists of relator-based programs and is not representative of arbitrary geometry; both the slowdowns and the gains are retained to avoid an unjustified default-policy change.
+
+The paired literal experiment demonstrates the cost of unnecessary expansion, not a speedup over the repository's existing compressed torus observer. The appropriate next benchmark is a real higher-genus source adapter, timed from its source normal data through certificate replay.
+
+\section{Integration plan and further research questions}
+\label{sec:questions}
+The package is an additive research module. The existing torus parity routine should remain unchanged. The proposed next interface is a higher-genus observer whose input includes a source identifier, genus, validated marking, selected component identifier, ordered SLP root, and a source-specific simplicity certificate. Algebraic observations should remain separate from the surrounding manifold verdict.
+
+The following questions are the most direct continuations of the proved results.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Ordered component extraction.} Can the maintained weighted normal-orbit machinery emit an ordered SLP for one selected boundary circle in polynomial bit time, together with a replay proving that it is exactly that circle? A weight census alone is insufficient; the order obstruction in \cref{sec:barriers} is a concrete test case for the interface.
+\item \textbf{Source-preserving marking changes.} Which hierarchy cuts and retriangulations admit polynomial-size, independently replayable words for the new generators in the old marking? The finite safe-transport theorem solves the target algebra once those words are supplied, but not their geometric construction.
+\item \textbf{Pattern-sensitive extensions.} Can the scalar signature be combined with a bounded amount of region or puncture data so that the resulting observer detects the relevant violating-disc predicate, rather than only closed-surface essentiality? Capping boundary components must not silently change the question.
+\item \textbf{Incremental cover-bank certification.} Can the coisotropic interaction criterion be maintained efficiently when characters are added, removed, or transported? Its static cost is polynomial; a dynamic rank/connectivity certificate could make adaptive banks practical.
+\item \textbf{Optimal bank classification.} Describe all minimum $g+1$ banks up to symplectic equivalence. The Lagrangian circuit and the genus-two non-Lagrangian triple show that cardinality optimality does not force one linear shape.
+\item \textbf{Exact augmentation costs.} Given a nonuniversal bank, determine the least number of extra covers needed to make it universal. The obstruction data are its orthogonal blocks and coisotropic deficit; whether these determine a closed formula is a natural finite problem suggested by \cref{thm:bank}.
+\item \textbf{Beyond the simplicity promise.} For bounded self-intersection number, what bounded-degree nilpotent or Magnus data suffice? The explicit word \eqref{eq:blind} shows that unrestricted words are not decided by the present class-two observer.
+\item \textbf{Batched finite replay.} Can the independent checker be implemented with the producer's $O(Sg\log^2(g+1))$ bound while retaining a sufficiently different code path? The delivered dense matrix checker favors audit transparency over the best asymptotic exponent.
+\item \textbf{Native end-to-end measurement.} After a real source adapter exists, compare scalar, binary, and existing general compressed-surface algorithms on paired higher-genus workloads. Include source construction, failed probes, transport, and replay, not just successful inner-kernel calls.
+\item \textbf{Global amortization.} Prove a joint bound on the number and encoded size of source grammars, marking changes, hierarchy resets, and selected-disc queries. Only such a theorem can turn the local estimates into an unconditional quasi-polynomial recognition bound.
+\end{enumerate}
+
+\section{Conclusion}
+The correct higher-genus replacement for ordinary boundary homology need not enumerate a large finite group or expand the boundary curve. A classical Heisenberg quotient gives an explicit compressed evaluator, a scalar complementary-genus certificate, and a rigorously delimited marking-transport rule. The new structural analysis of cover banks is exact: coisotropy plus interaction connectivity characterizes universality, and $g+1$ double covers are optimal.
+
+These results remove an expanded-word dependence from a well-specified local query and provide useful counterexamples against unsound compression interfaces. They do not settle the global unknot-recognition complexity target. The next decisive work is geometric: source-bound ordered grammars, admissible pattern data, and amortized control of the hierarchy that produces them.
+
+\appendix
+\section{Certificate format and reproducibility}
+A word file contains \code{rules} and \code{root}. A rule is one of the following JSON arrays:
+\begin{verbatim}
+["id"]
+["gen", 1]
+["cat", 3, 7]
+["inv", 8]
+["pow", 9, "-0b101101"]
+\end{verbatim}
+Generator indices are signed and one-based. References are zero-based and must point to earlier rules. Powers use signed binary strings in serialized certificates. The observation record adds the genus, coordinate modulus, canonical word digest, vector and central residues, two-valued algebraic status, and explicitly conditional simple-curve interpretation. Full certificates contain the word as well.
+
+From the package root:
+\begin{verbatim}
+python -m unittest discover -s tests -v
+python reproduce.py --output-dir results-rerun
+python -m boundary_kernel examples/separator_g3.json --genus 3
+python -m boundary_kernel examples/separator_g3_certificate.json --verify
+make pdf
+\end{verbatim}
+The reproduction script writes to a fresh output directory by default, preserving delivered evidence. Timing outputs are expected to vary. The finite audit data, Boolean conclusions, and test counts should agree. No third-party Python packages or network access are needed for code verification; PDF rebuilding additionally requires a normal LaTeX installation.
+
+\Needspace{10\baselineskip}
+\section{Claim ledger}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}@{}}
+\toprule
+Claim & Status & Exact scope\\
+\midrule
+\endhead
+Finite quotient detects simple loops & Classical, rederived & Livingston/Pikaart quotient; source-simple class on a marked closed orientable surface.\\[4pt]
+Scalar genus recovery & Proved explicitly & Unordered complementary genera for a supplied simple separator.\\[4pt]
+SLP evaluation bound & Proved; implemented & Encoded input size, including exponent bits; no source producer included.\\[4pt]
+Coisotropic bank criterion & Proved here; implemented & Fixed double covers, individual lifted homology, separating simple curves.\\[4pt]
+Sharp $g+1$ bank size & Proved here & Universal bank minimum under that exact cover model; no exhaustive novelty assertion.\\[4pt]
+Safe marking transport & Proved; implemented & Algebraic symplectic tuple; geometric provenance remains separate.\\[4pt]
+Quadratic lift/genus bridge & Proved; cross-checked & Binary cellular chains and degree-two word signatures.\\[4pt]
+Native recognizer improvement & Not measured or claimed & No maintained runtime changed; no upstream suite run.\\[4pt]
+General quasi-polynomial recognition & Not proved & Requires a complete, source-verified hierarchy with total cost control.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{repo}
+V.~Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository documentation, report catalogue, and incoming-report instructions, inspected 9 October 2026. Reference revision \pin.\par
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/cd984a34c0e06e467f3403576afbe6deeb1b5d11/Topology/UnknotRecognition}.
+
+\bibitem{nativeboundary}
+ProveIt contributors, \emph{normal\_boundary\_geometry.py}. Native source fetched at the above revision. The function \code{boundary_weight_system} has a torus-specific contract.\par
+\path{Topology/UnknotRecognition/fast/fastunknot/normal_boundary_geometry.py}.\par
+Git blob \code{f43dc70b7e1553b3a56830aebbe76e39cb82e6fb}.
+
+\bibitem{lackenby}
+M.~Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1 (2026), especially Sections 1, 2, and 9.\par
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{livingston}
+C.~Livingston, \emph{Maps of surface groups to finite groups with no simple loops in the kernel}, Journal of Knot Theory and Its Ramifications \textbf{9} (2000), 1029--1036. arXiv:math/0002162.\par
+\url{https://arxiv.org/abs/math/0002162}.
+
+\bibitem{pikaart}
+M.~Pikaart, \emph{Large characteristic subgroups of surface groups not containing any simple loops}, Journal of Knot Theory and Its Ramifications \textbf{10} (2001), 529--535. arXiv:math/0005093v2, especially Propositions 1.1 and 2.5 and Section 3.\par
+\url{https://arxiv.org/abs/math/0005093}.
+
+\bibitem{mp}
+J.~Malestein and A.~Putman, \emph{Pseudo-Anosov dilatations and the Johnson filtration}, Groups, Geometry, and Dynamics \textbf{10} (2016), 771--793. Lemmas 4.5--4.6. doi:10.4171/GGD/365.\par
+\url{https://arxiv.org/abs/1307.6226}.
+
+\bibitem{clmp}
+E.~W.~Chambers, F.~Lazarus, A.~de Mesmay, and S.~Parsa, \emph{Algorithms for Contractibility of Compressed Curves on 3-Manifold Boundaries}, arXiv:2012.02352 (2020); Discrete \& Computational Geometry \textbf{70} (2023), 323--354.\par
+\url{https://arxiv.org/abs/2012.02352}.
+\end{thebibliography}
+\end{document}

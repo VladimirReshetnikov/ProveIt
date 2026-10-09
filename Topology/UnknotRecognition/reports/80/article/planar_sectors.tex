@@ -1,0 +1,120 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{graphicx,xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{163449}
+\definecolor{teal}{HTML}{087F8C}
+\definecolor{light}{HTML}{EEF5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal,
+ pdftitle={Planar Canonical-Lift Diagrams and Reusable Sector Kernels for Unknot Recognition},
+ pdfauthor={ProveIt research continuation}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\basecommit}{8188525b70033dcfe7c51ea5ae2c8723ad0c0198}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\setlist{itemsep=3pt,topsep=6pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\linespread{1.04}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}ProveIt: planar normal sectors}
+\fancyhead[R]{\small October 2026}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{light},backgroundcolor=\color{light},
+ keepspaces=true,showstringspaces=false}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0mm}
+{\color{teal}\large PROVEIT RESEARCH CONTINUATION\par}
+\vspace{8mm}
+{\color{ink}\Huge\bfseries Planar Canonical-Lift Diagrams\par}
+\vspace{3mm}
+{\color{ink}\huge\bfseries and Reusable Sector Kernels\par}
+\vspace{5mm}
+{\color{ink}\Large for Unknot Recognition\par}
+\vspace{8mm}
+{\large Complete matching-dimension-three enumeration, independent
+coverage certificates, and a growing geometric family\par}
+\vspace{6mm}
+{\normalsize Prepared for Vladimir Reshetnikov and the ProveIt project\\
+October 2026\par}
+\vspace{4mm}
+\begin{abstract}
+We extend the preceding minimum-envelope method from matching nullity at
+most two to at most three.  For one supplied quadrilateral sector with
+\(k\) allowed types, contraction of zero-labelled face equations leaves
+at most \(8k\) triangle classes.  Its canonical standard-coordinate lift
+is linear on the common refinement of planar minimum diagrams.  We prove
+the explicit output bound
+\[
+ R\le b+2\sum_v(m_v-1)
+       +9\sum_{v<w}(m_v-1)(m_w-1)=O(k^2),
+\]
+including degeneracies and a linear bound when only one vertex group
+has a nontrivial diagram.  A simple exact implementation constructs all
+rays in \(O(k^3+tk^2)\) scalar operations after matching elimination,
+where \(t\) is the number of tetrahedra; integer normalization and bit
+length are charged separately.  We also prove completeness of a compact
+certificate based on dominance inequalities and exact area or length,
+and reduce reusable pre-elimination sector construction to
+\(O(t\log(t+1)+k^2)\) elementary integer work.
+
+A double-capped Fibonacci solid-torus family has exactly seven nonlink
+standard rays for every size, four representing essential discs; the
+old full arrangement generates quadratically many positive candidates.
+An abstract two-group family proves that quadratic output is unavoidable
+for the general potential-cone model.  Exact differential checks cover
+9,807 sectors on 48 triangulations, including 463 newly eligible sectors
+of nullity three.  The accompanying code, replay certificates, frozen
+oracle, paired timings, and additive patch make the results reproducible.
+These are local algorithmic theorems.  A complete quasi-polynomial
+recognizer still requires a proved bound on sector discovery,
+intermediate states, and all topology transitions.
+\end{abstract}
+\vfill
+{\footnotesize Repository baseline:
+\url{https://github.com/VladimirReshetnikov/ProveIt}\\
+Commit \texttt{\basecommit}.  This package proposes additive research
+modules; it does not change the maintained recognizer's dispatch.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\pagenumbering{arabic}
+\input{sections/context}
+\input{sections/sparse_kernel}
+\input{sections/planar_theory}
+\input{sections/fibonacci_family}
+\input{sections/implementation}
+\input{sections/experiments}
+\input{sections/research}
+\input{sections/reproducibility}
+\clearpage
+\input{references}
+\end{document}

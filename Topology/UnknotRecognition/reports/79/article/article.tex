@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{mathpazo}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{inkblue}{HTML}{153D62}
+\definecolor{teal}{HTML}{137C80}
+\definecolor{lightblue}{HTML}{EDF3F7}
+\hypersetup{colorlinks=true,linkcolor=inkblue,citecolor=teal,urlcolor=inkblue,
+  pdftitle={Causal Localization and Shared Region Search for Pachner Simplification},
+  pdfauthor={Research continuation for Vladimir Reshetnikov's ProveIt project}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Causal localization of Pachner descent}}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1em}
+\setlength{\emergencystretch}{1em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\loss}{\operatorname{loss}}
+\newcommand{\code}[1]{\texttt{\small\detokenize{#1}}}
+\newcommand{\QP}{\textsf{QP}}
+\newcommand{\sourcecommit}{8188525b70033dcfe7c51ea5ae2c8723ad0c0198}
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{lightblue},
+  frame=single,rulecolor=\color{lightblue},breaklines=true,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  xleftmargin=5pt,xrightmargin=5pt,aboveskip=10pt,belowskip=10pt}
+\title{\color{inkblue}\LARGE Causal Localization and Shared Region Search\\[5pt]
+  \Large for Bounded Pachner Simplification\\[9pt]
+  \large A fixed-parameter step toward quasi-polynomial unknot recognition}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project\\
+  \small Proofs, algorithms, experiments, and integration artifacts}
+\date{9 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt work already searches all small connected regions of a
+triangulation and compresses commuting Pachner traces. Its remaining locality
+hypothesis can be removed for the specific objective of decreasing the number
+of tetrahedra. We prove that if a generalized face-pairing triangulation has
+any simplifying $2$--$3$/$3$--$2$ sequence using at most $U$ total upward moves,
+then it has a first-descent sequence of length at most $2U+1$ whose actual
+original footprint is connected and contains at most $3U+3$ tetrahedra.
+The proof factors traces through a graph of tetrahedron births and consumptions;
+a minimum-length witness makes its additive loss concentrate in one component.
+A six-tetrahedron ball proves sharpness at $U=1$.
+
+Together with an explicit constant-alphabet trace encoding, this yields a
+deterministic $2^{O(U)}\poly(t+B)$ algorithm for bounded-total-upward
+simplification, where $t$ is the source size and $B$ bounds the binary marking.
+Thus logarithmic $U$ gives polynomial time, and $U=O(\log^2 t)$ gives
+$t^{O(\log t)}\poly(B)$ time. A further localization and deterministic
+color-coding argument decides reduction by at least $k$ tetrahedra within
+the same joint upward budget in $2^{O(U+k)}\poly(t+B)$ time. We state the
+additional structural requirements for complete recognition.
+
+The implementation replaces independent restarts on overlapping allowed
+regions by one exact search with an inverted cover index, lazy move production,
+and independent source-bound replay. A companion extractor shortens supplied
+descent certificates while preserving all local frames admitted by the verifier.
+The accompanying experiments retain exact endpoint comparisons, genuine
+solid-torus controls, a sharp obstruction to a smaller search radius, raw paired
+timings, and adversarial certificate tests. These results establish bounded
+simplification and reusable search improvements; a general quasi-polynomial
+unknot recognizer still requires a global structural and terminal theorem.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Reproducibility baseline.}\quad
+\code{8188525b70033dcfe7c51ea5ae2c8723ad0c0198}\\
+\noindent\textbf{Source tree.}\quad
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Topology/UnknotRecognition}{ProveIt / Topology / UnknotRecognition}
+\clearpage
+\tableofcontents
+\clearpage
+\input{overview}
+\input{causality}
+\input{complexity}
+\input{multiunit}
+\input{implementation}
+\input{experiments}
+\input{research}
+\input{references}
+\end{document}

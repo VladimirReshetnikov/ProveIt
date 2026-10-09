@@ -43,7 +43,7 @@ theorem self_mem_spanBall_one {G : Type*} [AddCommGroup G] {V : Finset G} {w : G
   simpa using h
 
 /-- **Adjoining an escaping frequency keeps independence.** -/
-theorem subsetSumInjective_insert {G : Type*} [AddCommGroup G] {V : Finset G} {w : G}
+theorem subsetSumInjective_insert {G : Type*} [AddCommGroup G] [DecidableEq G] {V : Finset G} {w : G}
     (hV : SubsetSumInjective V) (hw : w ∉ spanBall V 1) :
     SubsetSumInjective (insert w V) := by
   have hwV : w ∉ V := fun h => hw (self_mem_spanBall_one h)

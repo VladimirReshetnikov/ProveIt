@@ -1,0 +1,218 @@
+\section{Result, motivation, and source audit}
+
+The principal advance is a locality theorem for \emph{tetrahedron descent}.
+Previously, a small connected region was an additional hypothesis of the
+parameterized search guarantee. Here its existence follows from the upward
+budget and the objective itself. This is useful because the input to a
+simplifier normally specifies a triangulation and a resource budget, not
+the location of the successful modification.
+
+\subsection{The bounded question that is completely answered}
+
+Write $|T|=t$ for the number of tetrahedra in a generalized face-pairing
+triangulation. An upward move is a legal $2$--$3$ replacement and a downward
+move is a legal $3$--$2$ replacement. The decision problem is
+\begin{equation}\label{eq:decision}
+ \text{Does there exist a legal }\sigma:T\rightsquigarrow T'
+ \text{ with }u(\sigma)\le U\text{ and }|T'|<t\text{?}
+\end{equation}
+The budget counts \emph{all} upward moves, including upward moves made after
+earlier decreases. It is not a bound on the largest intermediate triangulation.
+
+For this precise question, the article proves an unconditional
+fixed-parameter algorithm in the generalized move model. The implemented
+version accepts the repository's finite, compact, connected, orientable
+triangulations with one torus boundary and an integral cocycle. The combinatorial
+locality proof itself applies to the corresponding formal relative-boundary
+moves on other valid generalized $3$-manifold triangulations as well. Ideal
+inputs are not thereby accepted by the native finite-manifold validator.
+
+The central conclusions are as follows.
+\begin{enumerate}
+\item A successful trace has a successful replacement using $u\le U$
+upward moves, $u+1$ downward moves, and at most $3u+3$ original tetrahedra.
+Its actual original footprint is connected in the original dual graph.
+\item Complete search for \eqref{eq:decision} takes
+$2^{O(U)}\poly(t+B)$ bit operations. The single-exponential dependence follows
+from explicit trace encoding, not from treating the set of geometrically
+possible triangulations as small.
+\item Reduction by at least $k$ tetrahedra under a joint upward budget
+is decidable in $2^{O(U+k)}\poly(t+B)$ time, using bounded total footprint,
+disjoint-trace composition, and deterministic color coding.
+\item The region-union search preserves the full declared bounded endpoint
+family. It shares common prefixes, indexes exact cover membership, and
+materializes only transitions actually visited.
+\item A valid input descent certificate can be projected and truncated to a
+connected first descent, then independently replayed. This operation requires
+preserving the declared local vertex frames of born tetrahedra.
+\end{enumerate}
+
+The cost bound includes polynomial-time source validation, move generation,
+transport, and the elementary endpoint test $|T'|<t$. An arbitrary disc-finding
+predicate has its own cost and does not inherit the component-projection
+argument merely because it is queried by the same search engine.
+
+\subsection{What was already present}
+
+The repository was read through its selected GitHub connection and cloned at
+the fixed revision
+\begin{center}\code{8188525b70033dcfe7c51ea5ae2c8723ad0c0198}.\end{center}
+The three relevant archives in \code{docs/incoming} at that revision were:
+\begin{itemize}
+\item \code{unknot_trace_search_20261009.zip};
+\item \code{unknot_active_faces_batched_descent_20261009.zip};
+\item \code{unknot_minimum_envelopes_20261009.zip}.
+\end{itemize}
+Their article sources and code were examined before choosing this continuation.
+They are preserved as prior work, not reported as results first obtained here.
+
+The trace-search archive already contains both an automatic canonical-parent
+enumerator for connected original regions and the bound
+\begin{equation}\label{eq:prior-bound}
+ t^c2^{O(r+U)}\poly(t+U+B),
+\end{equation}
+where the actual consumed original cells are contained in a permitted region
+of size at most $r$ with at most $c$ connected components. It also proves the
+generic $11^{3r+5U}$ commitment bound and implements exact sleep-set exploration
+\cite{incoming-trace}. Re-proposing that region enumeration would duplicate the
+incoming result. Our new implication is that successful one-unit descent
+automatically admits $c=1$ and $r\le3U+3$.
+
+The active-face archive studies normal-sector rank, support propagation, and
+simultaneous selection of already supplied disjoint coherent collapses
+\cite{incoming-active}. Those results address a different optimization problem:
+selecting or evaluating a batch whose candidates have already been produced.
+The minimum-envelope archive studies exact sector optimization
+\cite{incoming-envelope}. Neither supplies the causal-localization statement
+proved below.
+
+The working baseline retains all current native files. Only files absent from
+the native tree were imported from the trace archive. Six common files differ
+between the current native tree and that older archive; the native versions
+were retained. These include the current unit-ray disc kernel and topology
+observers. The integration manifest records byte hashes, origins, and the
+precise new overlay. No result depends on silently replacing current native
+code with a historical snapshot.
+
+\subsection{Relationship to the literature}
+
+The generalized face-pairing model and the local legality of $2$--$3$ and
+$3$--$2$ moves are standard in computational $3$-manifold topology. Burton
+and He explicitly describe the distinct-tetrahedron condition and the
+internal degree-three edge criterion; they also discuss tracking objects
+through renumbering \cite{burton-he-counterexamples}. The present proof makes
+the birth/consumption relation sufficiently explicit to factor simplifying
+traces and bound their original support.
+
+Dependency DAGs and topological reorderings are established tools in
+parameterized geometric search. Kanj and Xia use them in their fixed-parameter
+algorithm for planar flip distance \cite{kanj-xia}. That is a methodological
+precedent, not a theorem about these $3$-dimensional replacements. The local
+legality and relative-boundary arguments needed here are proved separately.
+We claim an extension relative to the supplied repository; priority for an
+equivalent result in the entire literature is not established by the targeted
+source search.
+
+Lackenby's author-level 2021 handout states the quasi-polynomial recognition
+bound
+\[
+ 2^{O((\log n)^3)}=n^{O((\log n)^2)}
+\]
+and describes a hierarchy-based route \cite{lackenby-talk}.
+This should be distinguished from the more specific
+$n^{O(\log n)}$ target in the project. The July 2026 preprint gives a new
+incompressibility and unknot-recognition algorithm, but its discussion of
+running time does not furnish the missing quasi-polynomial implementation
+bound. In particular, Proposition 9.1 bounds iterations by $L(g+1)^L$ in
+hierarchy parameters, and the paper explicitly discusses further acceleration
+\cite{lackenby-2026}. A bounded Pachner simplifier does not reproduce that
+hierarchy algorithm.
+
+\section{Formal replacements and encoded states}\label{sec:model}
+
+\subsection{Tetrahedra, ports, and formal boundary triangles}
+
+A generalized triangulation consists of finitely many abstract tetrahedra,
+each with local vertices $0,1,2,3$, and affine pairings of some triangular
+faces. A pairing is stored by the partner tetrahedron and a permutation of
+the four local vertices. Unpaired faces form the boundary. The quotient is
+required to be a valid manifold of the declared kind. Different edges may
+have the same global endpoint vertices; face pairings within one tetrahedron
+and repeated adjacencies are permitted when manifold validation accepts them.
+
+Both moves replace a formal bipyramid while preserving its six individually
+identified boundary triangles. Give its five formal vertices the labels
+$0,1,2,3,4$. The two-cell filling is
+\[
+ (0,1,2,3),\quad (0,1,2,4),
+\]
+and the three-cell filling is
+\[
+ (3,4,0,1),\quad (3,4,1,2),\quad (3,4,2,0).
+\]
+The upward move changes the first filling to the second. Its two old
+tetrahedra must be distinct. The downward move changes the second to the
+first; its central edge must be interior, have exactly three local edge
+occurrences in three distinct tetrahedra, and have the compatible triangular
+link of the formal bipyramid.
+
+The boundary attaching permutations are retained even when some boundary
+faces are attached to each other or their vertices are globally identified.
+This contract is stronger than merely saying that the old and new regions
+have homeomorphic boundaries. It preserves individual boundary ports and is
+what supports the causal proof.
+
+\begin{definition}[Incarnations and traces]
+A tetrahedron \emph{incarnation} is a tetrahedron from its creation to its
+unique possible consumption. An original tetrahedron starts with its own
+source identity. A new incarnation is named by its producing event and its
+output slot, with its local vertex labels retained. A trace is an ordered
+sequence of legal replacements together with this tracking data.
+\end{definition}
+
+If a trace contains $u$ upward and $d$ downward events, then
+\begin{equation}\label{eq:balance}
+ |T'|=t+u-d.
+\end{equation}
+We write $\loss=d-u$. A strict descent means $\loss>0$.
+
+\subsection{Original footprints and covers}
+
+Let $G_T$ be the simple dual graph on the original tetrahedra: two vertices
+are adjacent when the tetrahedra share a paired face. Its maximum degree
+is four; loops and repeated face adjacencies do not increase that degree.
+
+\begin{definition}[Actual footprint]
+The actual original footprint $F(\sigma)$ of a trace $\sigma$ is the set of
+original tetrahedron incarnations it consumes. An allowed region $A$ is a
+\emph{cover} when $F(\sigma)\subseteq A$. Original tetrahedra outside $A$
+are protected, while every born incarnation remains eligible.
+\end{definition}
+
+An allowed connected cover may contain unused cells, and its consumed subset
+may be disconnected. The earlier region search uses covers. The new
+localization theorem is stronger: its selected witness has a connected
+\emph{actual} footprint, so no auxiliary connecting corridor is needed.
+
+\subsection{Markings and the implementation boundary}
+
+The implemented source carries integral height rows
+$h_t=(h_{t,0},\ldots,h_{t,3})$ whose differences agree on identified oriented
+edges. Adding a constant to one row does not change its local edge values.
+Rows are normalized after transport. The move is selected by geometry; the
+cocycle is carried through the same formal replacement.
+
+Throughout the complexity statements, $B$ bounds the bit length of the supplied
+height entries and source edge values, up to a fixed additive constant.
+Bounding differences alone would omit the cost of reading arbitrarily large
+common offsets in unnormalized input rows. The source itself has
+$O(t\log(t+1))$ combinatorial bits. Explicit snapshot certificates include
+intermediate face pairings and height rows. All arithmetic bounds below
+refer to binary input size, not to the number of normal discs represented
+by a height vector.
+
+The native validator accepts only finite compact orientable manifolds with
+one torus boundary. The isolated sharp ball in \cref{sec:sharp} is checked by
+an independent Regina driver; the native performance fixtures attach copies
+of that ball to a solid-torus boundary. No ball input is passed through a
+validator that claims to accept only torus boundary.
