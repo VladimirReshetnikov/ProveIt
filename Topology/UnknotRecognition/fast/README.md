@@ -2702,3 +2702,41 @@ python -B compressed_word_research/persistent_producer.py source --output result
 python -B compressed_word_research/persistent_producer.py stages --output results/persistent_producer_stages.json
 python -B compressed_word_research/persistent_producer.py pipeline --output results/persistent_producer_pipeline.json
 ```
+
+### Plain power relations after primitive reductions stall
+
+Optional `primitive_projection` and `primitive_forest` searches now try pairs
+of raw cyclic power relators after their existing primitive donors fail.
+Relations `x^a y^b` and `x^c y^d` with `a*d-b*c != 0` force both generators
+to have finite order. In the independently source-verified knot group,
+torsion-freeness therefore permits deleting both everywhere. Every relator
+slot is retained. This internal rule is not valid for arbitrary groups with
+torsion and is not a knot verdict by itself.
+
+The producer recognizes the exact cyclic two-run spelling using bounded run
+summaries on the word circuit; a pure-power row may supplement a mixed row.
+It selects disjoint pairs and retains at least one generator. Version-nine
+`power_pair_delete` evidence contains only generator labels and two source
+slot indices per pair. Separate compressed and literal checkers authenticate
+the word shape, recompute the nonzero determinant, and perform their own
+substitutions. They do not call producer helpers or trust exponent claims.
+Version-eight and earlier certificates cannot use this new move.
+
+An empty coherent-pair snapshot from the existing primitive planner proves
+there is no mixed donor for this detector. Search skips its preparation in
+that case. This exact eligibility guard removes redundant scans while
+preserving the supported discovery class.
+
+A deletion-only epoch has polynomial encoded cost: reachable grammar size
+and raw lengths never grow. General exposure and normalization remain outside
+that bound. The operation closes supplied binary-power families where existing
+primitive forests find no donor. The 88-diagram audit found no automatic new
+proofs or coverage gain; a deliberately exposed complete PD certificate passes
+both independent verifiers. All 1,121 maintained tests pass.
+
+See [the proof, scope and measurements](../synthesis/power_pairs.tex).
+
+```sh
+python -B compressed_word_research/power_pairs.py audit --output results/power_pairs_audit.json
+python -B compressed_word_research/power_pairs.py benchmark --output results/power_pairs_benchmark.json
+```

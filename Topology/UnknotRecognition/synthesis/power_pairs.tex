@@ -1,0 +1,166 @@
+\section{Source-checked annihilation from plain power relations}
+\label{sec:power-pairs}
+
+The delivery \path{unknot_power_conjugacy_20261008.zip} in commit
+\texttt{b365341b1} studies graphs of power-conjugacy relations and their
+deletion closure. Its two-generator power-minor argument yields a directly
+implementable special case. The maintained optional primitive-projection
+search now tries this case after its existing primitive donors fail. It can
+delete pairs for which neither individual relation is primitive, while keeping
+all surviving relator slots and the source-bound cyclic-group endpoint.
+
+\subsection{An annihilating minor, not just an abelianized relation}
+
+Suppose the current full presentation contains relators cyclically spelled
+$x^a y^b$ and $x^c y^d$, where a zero exponent permits a pure-power relator.
+Their equations give $x^a=y^{-b}$ and $x^c=y^{-d}$. Taking powers and comparing
+within a single cyclic subgroup proves
+\[
+ x^{ad}=y^{-bd}=x^{cb},\qquad
+ y^{bc}=x^{-ac}=y^{da}.
+\]
+Consequently $x^\Delta=y^\Delta=1$ for $\Delta=ad-bc$. If $\Delta\ne0$
+and the ambient group is torsion-free, both $x$ and $y$ are trivial.
+Substituting the empty word for every occurrence of both generators preserves
+the presented group. This is not a commutativity assumption, and it does not
+use a unique-root rule for distinct elements.
+
+The hypothesis is supplied by the existing knot host: every accepted move
+starts from an independently reconstructed classical knot-group presentation
+and a checked prefix of group-preserving moves. Internal algebraic routines
+cannot establish that provenance. A nonzero minor does \emph{not} prove
+triviality in an arbitrary group; for example $x^2=y^2=1$ permits nontrivial
+torsion. No caller Boolean replaces the source reconstruction.
+
+The report also proves an unconditional variant. For a group presented solely
+by plain power rows on $x,y$, let $D$ be the gcd of all absolute two-row minors,
+with $D=0$ if all minors vanish. Each minor annihilates both elements, so
+$D=1$ implies $x=y=1$ in any ambient group. Conversely, for the isolated
+two-generator presentation, if the exponent-row lattice has rank below two,
+its abelianization has positive rank; at rank two its index is $D$. Thus the
+isolated group is trivial exactly when $D=1$. The sufficiency uses the actual
+power-word shape, not just the exponent matrix. Three rows can have minors
+$6,7,29$, so an unconditional witness may need more than one minor.
+The native knot-specific rule needs only one \emph{nonzero} minor, using its
+already established torsion-free premise.
+
+\subsection{Compressed donor discovery and independent checking}
+
+The producer recognizes raw cyclic words with at most two signed-letter runs
+on distinct absolute generators. It permits a single run as a pure-power
+supplement. It neither freely reduces a donor nor infers its shape from
+exponent sums alone. A cyclic cut may split one run into a prefix and suffix,
+so a linear spelling with three runs can still qualify when its first and
+last signed letters agree.
+
+For each immutable word node the producer caches at most three run records.
+Concatenation joins the touching equal signed letters and adds their binary
+multiplicities. More than three runs is a permanent rejection: concatenation
+cannot decrease the number of internal runs, and closing the cyclic boundary
+can remove at most one. Cached content remains valid as substitution creates
+new immutable nodes. The planner rebuilds slot and live-label associations
+on every call.
+
+Two-run donors are grouped by their unordered generator pair, with exponents
+oriented to the sorted labels. At most one pure-power donor per generator
+is appended to each corresponding group. The first mixed row is nonzero;
+all rows are collinear exactly when each has zero determinant with that row.
+Thus a linear scan per group finds a nonzero minor whenever that group has
+one. Groups are traversed deterministically; each selected pair is disjoint
+from earlier pairs, and at least one live generator remains. The present
+collector requires a mixed donor for a group: it does not enumerate pairs
+consisting solely of two pure-power relators. It is not a complete arbitrary
+compressed conjugacy or relator-exposure algorithm.
+
+The existing primitive planner has already prepared every coherent two-generator
+candidate when it stalls. Every mixed cyclic two-run donor belongs to this
+snapshot. If the snapshot is empty, the host skips the new detector completely:
+this is an exact eligibility implication, not a heuristic budget cutoff.
+It avoids repeating a whole-root scan on states with no possible mixed donor,
+while preserving the detector's supported discovery class. The first native
+timing exposed the cost of omitting this check; both runs are retained below.
+
+Version nine adds a \texttt{power\_pair\_delete} move containing the two
+generator labels and two original source-slot indices per pair. No claimed
+exponents, determinants or proof-produced word summaries are trusted. The
+independent compressed checker computes first/last letters, signed occurrence
+counts and the number of adjacent signed-letter changes, capped at three.
+Closing the cyclic boundary adds its last/first change. One or two signed
+labels with distinct absolute generators and at most two cyclic changes are
+exactly the permitted donor shapes. This checker does not import the
+producer's run-list representation, planner or updater. The literal checker
+separately counts changes directly in the supplied words.
+
+Both replayers authenticate all selected donors and nonzero minors before
+deleting any letters. Their separately implemented substitutions retain every
+slot, including donors, and remove the two labels everywhere. Public roots and
+live generators change only after the full substitution succeeds. Exhaustion
+can leave historical arena nodes but no partial published move. Strict schema,
+integer, distinct-label, live-membership and version checks reject malformed
+evidence. Every other certificate move and endpoint keeps its existing rules.
+Older version-eight certificates cannot authorize this new inference.
+
+\subsection{A polynomial deletion epoch and a strict local extension}
+
+Let $S_0$ be the initial reachable grammar size, $m$ its slot count, $r$ its
+live rank, and $B$ the largest initial raw-length bit size. One raw deletion
+maps each old concatenation to at most one new concatenation and maps each
+terminal to itself or zero. Therefore reachable size and expanded raw length
+do not increase. With $d\le\lfloor(r-1)/2\rfloor$ rounds,
+\[
+ S_i\le S_0,\qquad N_d\le N_0+dS_0,
+ \qquad B_i\le B.
+\]
+Each donor pass and substitution costs a polynomial in $S_0,m,r,B$ and
+identifier size. Exponents have at most $B$ bits and determinant arithmetic
+has polynomial bit cost. Sorting pair keys and scanning groups are charged;
+no integer factorization is needed. These bounds prove polynomial encoded
+cost for a raw epoch consisting solely of these deletions, including the
+implemented restricted discovery and independent replay. Normalization and
+changes of generators end that accounting epoch.
+
+For $M\ge2$, consider the supplied presentation
+\[
+ \left\langle t,x_1,y_1,\ldots,x_k,y_k\ \middle|\
+ x_i^M=y_i^{M+1},\quad x_i^{M+1}=y_i^{M+2}\ (1\le i\le k)
+ \right\rangle.
+\]
+Each pair has determinant $M(M+2)-(M+1)^2=-1$, so even the unconditional
+argument makes all $x_i,y_i$ trivial and leaves the infinite cyclic generator
+$t$. No displayed donor has a singleton. Neither two-run word is primitive:
+its one-relator quotient surjects onto $C_M*C_{M+1}$, or respectively
+$C_{M+1}*C_{M+2}$, which is nonabelian. Its coprime exponent coordinates also
+exclude a proper power. Thus the existing primitive-forest donor conditions
+find no move in this spelling, whereas the new detector closes it in one
+round. This is a strict extension of the local operations, not a hardness
+claim against the old complete search or a hard family of knot diagrams.
+
+\subsection{Source exposure and the unintegrated graph proposal}
+
+Original consistently oriented meridians all have abelianization charge one.
+A generator proved trivial must have charge zero. Consequently the new rule
+cannot activate directly on unmodified meridians; changes of generators are
+needed to expose its targets. A native source fixture starts with the closure
+of the four-strand braid $\sigma_1\sigma_2\sigma_3$. Its independently recovered
+presentation has relators
+\[
+ x_1x_2^{-1},\quad x_1x_2x_1^{-1}x_3^{-1},\quad x_3x_1^{-1}.
+\]
+Two explicit Whitehead automorphisms substitute $x_2\mapsto x_2x_1$ and
+$x_3\mapsto x_1x_3$. After checked cyclic normalization the relators are
+$x_2^{-1},x_2x_3^{-1},x_3$. The new move independently authenticates a mixed
+row and a pure row, deletes $x_2,x_3$, and reaches the existing rank-one
+endpoint. This proves source-bound integration. These deliberately supplied
+automorphisms are not claimed to be newly discovered by the automatic search.
+
+The broader delivered graph uses relations $x^a=u y^b u^{-1}$ and classical
+knot-group balancedness. The primary statement, Lemma 2.3 of
+\href{https://arxiv.org/abs/2208.00621}{Himeno--Motegi--Teragaito}, was checked:
+a nontrivial knot-group element conjugate between two powers has equal
+absolute exponents. It cannot be replaced by torsion-freeness alone, and
+inverse conjugacy is not a valid triviality test. That graph algorithm,
+complete compressed conjugator discovery, modular sieves and its delivered
+whole-braid audit are not integrated or claimed as native measurements here.
+The present implementation uses the elementary plain-power argument above.
+
+\input{power_pairs_results.tex}
