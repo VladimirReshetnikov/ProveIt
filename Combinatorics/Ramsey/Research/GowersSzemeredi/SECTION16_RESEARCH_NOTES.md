@@ -7267,3 +7267,94 @@ The full audit checks 7,545 public Gowers theorems in 5,234 modules
 byte-for-byte unchanged at 115 companions and five open entries. The
 selected-port scope remains 4,134 upstream and 17 compatibility modules,
 with reciprocal-only dependencies excluded.
+
+
+### J.122. Simultaneous Freiman extraction at all sixteen endpoints
+
+The first-coordinate argument from J.121 now applies to every endpoint
+and can be iterated on one retained family of higher arrangements. This
+completes the dense-set Freiman extraction stage for all sixteen maps.
+It does not yet put paired maps on a common progression or align their
+difference maps.
+
+**Symmetries with their parameter maps.** `HigherArrangementSymmetry`
+records a bijection of the eleven-parameter space, a permutation of the
+sixteen endpoints, the identity relating these two maps, and preservation
+of the arrangement equation after reindexing the sixteen functions.
+Composition reverses the order of the coordinate pullbacks relative to
+the parameter maps. Four explicit involutions generate the symmetries
+needed here:
+
+- reverse every shifted/unshifted pair, negating all four shifts;
+- exchange the first two shifts and the last two shifts simultaneously;
+- exchange the first two shifts with the last two shifts;
+- exchange all left base points with the corresponding right base points.
+
+The shift relation `a1+a2=a3+a4` is preserved by each construction.
+The parameter transformations are proved involutive, and their endpoint
+identities are proved at every coordinate. The equation is preserved,
+with an overall sign change for pair reversal and side exchange.
+`higherArrangementCoordinateSymmetry_zero` proves that the selected
+symmetry takes any prescribed endpoint to position zero in the
+reindexed arrangement.
+
+**No extra density loss from reindexing.** Apply the first-coordinate
+extraction to the bijective image of the original family, and pull the
+retained subfamily back through the inverse parameter map. Both finite
+families retain their exact cardinalities. Thus
+`higher_arrangements_retain_coordinate` provides the same set-size and
+configuration-retention bounds as J.121 for any `i : Fin 16`. The result
+records containment in the original family and original endpoint image,
+not just a family of abstract solutions to the reindexed equation.
+
+**Coordinate fibres.** For any coordinate `i`, a parameter tuple is
+determined by its `i`-th endpoint and the ten-coordinate index of its
+reparametrization. The remaining base point is recovered by subtraction.
+This gives, for an arbitrary family `R` with its `i`-th endpoint in `E`,
+
+```
+card R <= card E * N^10.
+```
+
+No arrangement-equation hypothesis is needed for this fibre bound.
+Consequently `card R >= delta*N^11` implies `card E >= delta*N`.
+
+**One family for all sixteen maps.** Define the explicit density sequence
+
+```
+c_0 = delta,
+c_(n+1) = H(c_n),
+H(t) = t/2 * (2^(-1882) * (((t/2)^2)^4)^1164).
+```
+
+`higherArrangementDensity_pos` proves positivity at every finite stage
+for positive initial density. Induction on any finite subset of endpoint
+positions uses the coordinate extraction to shrink the retained family.
+Previously extracted Freiman sets stay valid, since all subsequent
+families are subsets of their predecessors. The number of steps is the
+cardinality of the selected coordinate set.
+
+The final theorem `higher_arrangements_freiman_family` starts with
+`delta*N^11` solutions of `HigherArrangementEquation f` and returns sets
+`E_i` and a single family `R subset Q` such that
+
+```
+f_i is Freiman of order eight on E_i for every i in Fin 16,
+card E_i >= c_16*N for every i,
+all sixteen endpoints of every tuple in R lie in their respective E_i,
+card R >= c_16*N^11.
+```
+
+Each `E_i` also lies in the `i`-th endpoint image of the original family.
+Thus the density assertion is about one simultaneous subfamily, with
+all sixteen restrictions in force.
+
+**Remaining work.** These are Freiman sets, not yet the common coset
+progressions in the full higher-arrangement structure theorem. Pair-map
+alignment, actual higher-arrangement frequency escape and enlargement,
+simultaneous selection, anchor coherence, and the final bilinear variety
+structure remain open. In particular, a sum of escaping frequencies
+must retain the multiplicities of repeated generators. The quadruple
+containment theorem alone does not establish the higher containments.
+No numbered catalogue entry or final source-theorem bound is claimed
+here. No new upstream port or licensing change was necessary.
