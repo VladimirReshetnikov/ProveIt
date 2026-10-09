@@ -4498,6 +4498,87 @@ set `W ⊆ B(ρ/2)` on which `φ = φ(0)`. Distinct values of `φ` on `B(ρ/2)`
 then give disjoint translates `x + W ⊆ B(ρ)`. Standard axioms; collision
 gate clean.
 
+
+### J.96. Global seven-operator progression and bilinear Bohr variety
+
+The adaptive construction now composes with global dense tuple extraction.
+For every density `0 < alpha <= 1`, and every prime modulus above the
+explicit density-only threshold `densitySevenModulusBound alpha`, a set
+`A` of cardinality at least `alpha * N^2` has both a proper-progression
+family of filled rows and an entire bilinear Bohr variety inside
+
+```
+horDiff (verDiff (verDiff (horDiff (verDiff (horDiff (horDiff A))))))
+```
+
+These are proved conclusions, with no assumed graph quasirandomness,
+representation-count estimate, row-filling budget, or structure oracle.
+The construction needs no additional `openai/math` ports.
+
+`Proofs16CompletionParameters` packages fixed-frequency, domain-frequency,
+and map-count caps, the two initial radii, and the initial density. Its
+cell counts are `Q = ceil(4 / sigma)` and `H = ceil(2^K / eta)`. Finite
+suprema over the bounded initial ranks and adaptive iteration lengths
+provide the modulus threshold and final state cap `D`. The spectrum cap
+is `ceil(16 / (alpha0 / Q^D)^2)`; the uniform target row radius is
+`eta / 2^K / 8`. These quantities depend only on the initial numerical
+parameters, rather than on a chosen tuple configuration or on `N`.
+
+`Proofs16UniformSevenOperatorCompletion` applies these bounds to the last
+three operators. `Proofs16GlobalSevenOperatorTheorem` composes it with the
+first four operators and retains properness, symmetry, zero, a rank cap,
+a positive progression-density bound, and Freiman linearity of every
+variable frequency on the progression. `Proofs16DensitySevenOperator`
+fixes the extraction error to `(alpha / (2 - alpha))^4 / 2`, eliminating
+the auxiliary error parameter from the statement.
+
+The stronger domain conclusion comes from
+`Proofs16AdaptiveBohrCompletion`: the whole robust representation Bohr
+set, at radius `1 / (4*pi)`, lies inside the preceding map domain and
+carries filled target rows. Restricting the maps to this set preserves
+Freiman linearity. `Proofs16UniformBohrCompletion` bounds the spectrum
+and row frequencies uniformly. `Proofs16GlobalBilinearBohrTheorem` then
+uses the common radius `rho = min(targetRadius, 1 / (4*pi))` to obtain
+
+```
+V = bilinearBohrVariety F U L rho
+```
+
+inside all seven operators, with `#F <= f + K^2`, `#U <= S`, and at most
+`K` variable maps. Each map is Freiman-linear on `bohr U rho` and takes
+zero to zero. The radius is strictly positive.
+
+Finally, `Proofs16SevenOperatorVarietySize` defines
+
+```
+M = ceil(1 / rho)
+Dsize = M^(S + (f + K^2 + K))
+```
+
+and proves `0 < Dsize` and `N*N <= Dsize * #V`. Thus the produced variety
+has a positive proportion of the ambient product controlled solely by
+the input density. The proof applies the existing fibrewise Bohr size
+bound and enlarges only its frequency exponent.
+
+**Limits.** These explicit finite adaptive bounds are not proved to
+satisfy the printed or Milićević quasipolynomial estimates. Geometric
+containment does not provide the bihomomorphism extension or shifted
+map-value agreement required by `MilicevicVarietyStructure` and
+`MilicevicDeepVarietyStructure`. The five open numbered companions and
+the statement-fidelity caveats therefore remain unchanged. In particular,
+this checkpoint does not close Theorem 16.2 or Corollary 16.11.
+
+**Verification.** The focused variety-size closure checks 189 modules.
+All 20 newly named theorems pass individual axiom checks. The merged
+facade audit checks 6,831 public Gowers theorems in 5,072 modules (4,152
+OAI modules), or 5,074 modules with both audit consumers. Only `propext`,
+`Classical.choice`, and `Quot.sound` occur. The merged column extraction
+and dense-level small-image lemmas are included. The source ledger is
+identical to the tracked 115 companions and five open entries; the
+selected-port scope check passes. All upstream sources and Apache
+provenance/license files remain unchanged.
+
+
 **Proposition 5.1 (iii), counting core (`Proofs16CommonWitnesses`).** Each
 column `x ∈ X` has a witness set `T x` of size at least `cM` in a type of
 size `M`. In Proposition 5.1 these are the quadruples `(z₁,…,z₄)`
