@@ -1,5 +1,6 @@
 """Exact common-multiplicity reduction, one-sided lifting and v1 compatibility."""
 from copy import deepcopy
+from functools import partial
 import json
 import unittest
 from unittest.mock import patch
@@ -9,6 +10,10 @@ from fastunknot.normal_surface_geometry import _TOPOLOGY_FIELDS
 from fastunknot.normal_surface_orbits import normal_surface_topology
 from fastunknot.normal_surface_verify import verify_normal_surface_certificate
 from normal_orbit_research.fixtures import layered_torus
+
+# Isolate multiplicity and legacy v1/v2 compatibility on the original query
+# schedule. Coorientation/scaling interactions have dedicated coverage.
+normal_surface_topology = partial(normal_surface_topology, coorientation=False)
 
 
 def topology(result):

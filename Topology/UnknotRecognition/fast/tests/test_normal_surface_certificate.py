@@ -16,7 +16,9 @@ from test_normal_surface_orbits import relabel
 class NormalSurfaceCertificateTests(unittest.TestCase):
     def setUp(self):
         self.tri, self.coords = layered_torus(4)
-        self.result = normal_surface_topology(self.tri, self.coords, record_certificate=True)
+        # Keep the local-reduction mutation tests on the legacy three-query
+        # format; derived double proofs have separate schema/mutation tests.
+        self.result = normal_surface_topology(self.tri, self.coords, record_certificate=True,coorientation=False)
         self.proof = self.result['certificate']
 
     def verify(self, proof):

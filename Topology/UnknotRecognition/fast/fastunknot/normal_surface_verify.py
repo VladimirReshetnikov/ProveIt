@@ -95,6 +95,8 @@ def verify_normal_surface_certificate(triangulation, coordinates, certificate, *
     Version three also classifies boundary-touching and closed components.
     Missing cone queries require deductions from the verified base counts or
     full marked support; the producer's scheduling policy is never invoked.
+    Version four replaces the double query by a finite coorientation proof
+    and an exact doubled count, with an explicit boundary-classification flag.
     """
     check()
     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
@@ -103,17 +105,23 @@ def verify_normal_surface_certificate(triangulation, coordinates, certificate, *
         return False
     schema = certificate.get('schema')
     if schema not in ('normal-surface-topology-v1', 'normal-surface-topology-v2',
-                      'normal-surface-topology-v3'):
+                      'normal-surface-topology-v3', 'normal-surface-topology-v4'):
         return False
     fields = {'schema', 'input_sha256', 'queries', 'boundary_homology', 'topology'}
     if schema != 'normal-surface-topology-v1':
         fields.add('coordinate_divisor')
+    classify = schema == 'normal-surface-topology-v3'
+    if schema == 'normal-surface-topology-v4':
+        fields.add('classify_boundary')
+        if type(certificate.get('classify_boundary')) is not bool:
+            return False
+        classify = certificate['classify_boundary']
     if set(certificate) != fields:
         return False
     proofs = certificate['queries']
     base_labels = {'surface', 'double', 'boundary'}
     extra_labels = ({'surface_boundary_cone', 'double_boundary_cone'}
-                    if schema == 'normal-surface-topology-v3' else set())
+                    if classify else set())
     if (type(proofs) is not dict or not base_labels <= set(proofs)
             or not set(proofs) <= base_labels | extra_labels):
         return False
@@ -152,8 +160,29 @@ def verify_normal_surface_certificate(triangulation, coordinates, certificate, *
         check()
         size, pairings = _arc_system(prepared, orbit_data, boundary=boundary,
                                      scale=scale, check=check)
-        if schema == 'normal-surface-topology-v3' and not boundary:
+        if (classify or schema == 'normal-surface-topology-v4') and not boundary:
             systems[label] = size, pairings
+        if schema == 'normal-surface-topology-v4' and label == 'double':
+            proof = proofs[label]
+            if (set(proof) != {'schema','coorientation','orbit_count','operations'}
+                    or proof['schema'] != 'normal-double-coorientation-v1'
+                    or proof['operations'] != []
+                    or type(proof['coorientation']) is not dict
+                    or set(proof['coorientation']) != {'nonzero','vertex_values'}
+                    or proof['coorientation'].get('nonzero') is not False):
+                return False
+            from .normal_coorientation import _coorientation_graph
+            graph = _coorientation_graph(orbit_data, systems['surface'][1], check)
+            if not _verify_parity(graph, proof['coorientation'], check):
+                return False
+            try:
+                count = encoded_integer(proof['orbit_count'])
+            except ValueError:
+                return False
+            if count != 2*counts['surface']:
+                return False
+            counts[label] = count
+            continue
         if not verify_orbit_certificate(size, pairings, proofs[label], check=check):
             return False
         counts[label] = encoded_integer(proofs[label]['orbit_count'])
@@ -165,7 +194,7 @@ def verify_normal_surface_certificate(triangulation, coordinates, certificate, *
     if min(orientable, nonorientable) < 0:
         return False
     boundary_counts = None
-    if schema == 'normal-surface-topology-v3':
+    if classify:
         boundary_counts = _boundary_counts(prepared, orbit_data, systems, counts, proofs, check,
                                            even_multiple=divisor % 2 == 0)
         if boundary_counts is None:

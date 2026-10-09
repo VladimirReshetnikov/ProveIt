@@ -3284,3 +3284,26 @@ recognition settings are unchanged. Reproduce the comparison with
 `python -B -m normal_orbit_research.link_census audit --output OUTPUT.json`,
 and full recognition plus proof-replay timings using `recognize --rounds 5`
 in the same driver. General subexponential/QP recognition remains open.
+
+The supplied-coordinate `normal_surface_topology` API now tries a finite
+coorientation proof before counting orbits of doubled coordinates. One bit
+per incident global-edge block must change exactly across reversing normal
+arc pairings. A valid assignment trivializes the orientation cover, so its
+component count is twice the already verified base count. Success produces
+`normal-surface-topology-v4`, with a strictly checked finite double proof;
+the independent checker accepts the previous formats too. Failure is
+inconclusive and preserves the old double query and complete result exactly.
+Pass `coorientation=False` to restore the old query schedule.
+
+The finite test adds O(N log N) integer comparisons/operations for N tetrahedra
+and never expands sheet multiplicities. Existing multiplicity lifting and
+optional boundary classification still apply. On the 256-tetrahedron layered
+example, recorded events fall from 166,438 to 83,478 and producer plus checker
+plus proof serialization improves by 1.967x. The complete 1,275-vector batch
+is effectively neutral (1.003x); small inputs can regress. These are supplied
+normal-surface API timings, not complete knot-recognition timings. Reproduce
+the 5,100-configuration audit and isolated timings with
+`python -B -m normal_orbit_research.coorientation audit --output OUTPUT.json`
+and `benchmark --rounds 5` in the same driver. The separate corpus timing
+driver is `../synthesis/data/coorientation_corpus_benchmark.py`. The proof,
+limits and negative timing results are explained in article section 123.
