@@ -1,0 +1,52 @@
+\subsection{Complete weighted queries and source recognition}
+
+The final measurements run serially after the successful full suite, final
+audit and runtime publication. Each experiment uses five shuffled paired
+rounds, old and new A/A controls and one excluded warmup per arm and input.
+All 180 measured calls and 36 warmups finish. Every repeated old and new
+certificate hash agrees within its input. Tables report separate-arm median
+times and medians of within-round ratios.
+
+The weighted endpoint constructs its input, computes the entire histogram
+and certificate, independently verifies that certificate and computes its
+hash. Connected cases use the earlier five-cycle interval family with 32
+signed weight runs and either three or 128 coordinates. One case uses
+4096-bit endpoints. A reflection with 128 two-point orbits is the
+disconnected control. Both producer and verifier switch together between
+the baseline and new implementations; the unweighted orbit engine is fixed.
+
+\begin{center}
+\small
+\input{tables/single_orbit_weighted.tex}
+\end{center}
+
+All eighty measured queries and sixteen warmups finish in 1.052 seconds of
+driver elapsed time. Connected-case paired gains range from $1.188$ to
+$1.729$; the 128-coordinate small-endpoint case falls from 13.064 to
+7.648 milliseconds. The disconnected ratio is $1.005$, within the observed
+controls. Old A/A ratios range from $0.947$ to $1.004$ and new A/A from
+$0.977$ to $1.055$. These timings include source canonicalization, the
+unchanged unweighted search and proof replay, so they do not isolate the
+linear mass summation alone.
+
+The second endpoint is complete recognition with the native stage enabled
+and earlier shortcuts disabled. Both arms use the current recognizer,
+switching only weighted production and verification. There is no local
+native guard cap, and both retain the twelve-second global deadline.
+The three stabilized circles return raw disc proofs; the five-crossing
+positive uses span optimization; the trefoil continues to the exact
+Khovanov fallback. Positive result bookkeeping includes the certificate hash.
+
+\begin{center}
+\small
+\input{tables/single_orbit_recognize.tex}
+\end{center}
+
+All one hundred measured recognitions and twenty warmups finish, in
+101.929 seconds of driver elapsed time. Paired gains range from $1.081$
+to $1.346$, with old A/A ratios $0.999$--$1.037$ and new A/A ratios
+$0.966$--$1.009$. The 32-crossing circle's medians fall from 2.930303 to
+2.164070 seconds, including independent positive replay. Its default
+two-million-guard run remains capped; this timing does not imply a new
+default-budget success. The gains concern this explicitly exercised native
+workload. No ordinary-portfolio speedup or general recognition bound follows.
