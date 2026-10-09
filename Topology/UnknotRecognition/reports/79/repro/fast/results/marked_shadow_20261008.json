@@ -1,0 +1,7227 @@
+{
+  "scope": "Marked continuations versus existing complete recognizers and raw scanners.\n\nRecognition keeps every default filter enabled. Raw decisions bypass those\nfilters and compare saturated, Euler and marked continuation scans directly.\nBoth scopes time fresh PD construction, setup, inference and fallback, excluding\nimports and one warmup. Each case has seven shuffled paired rounds and an\nidentical control arm. UNKNOWN suppresses timing ratios for that entire case.\n",
+  "baseline_revision": "3a6d80ed618d839915deb0d19ab687f45e81d995",
+  "baseline_scope": "recognize.py only; other unchanged modules shared",
+  "python": "3.13.14",
+  "rounds": 7,
+  "seed": 2607,
+  "sources": {
+    "benchmark_shadow.py": "d635562c64ab9a8e870a78371eb3a8ffe62c0e9ed7c55ee1212c6c78c43826ce",
+    "fastunknot/shadow_scan.py": "2583f1db1f45a39b148999b3f2daec4f102628597a89bdb9254c6b597b2f47cd",
+    "fastunknot/euler_scan.py": "bc11dbf87b755819df75a8cc8a914c0a3c3c719329e029938b717481142d7c38",
+    "fastunknot/component_scan.py": "9357fcfaadc2e41adde0d03cf38ca77f6957bde64fe8fae3c3c6c45b974ca5c1",
+    "fastunknot/recovered_grading.py": "3b6cbd631925f4b1fecf0b582307de68b3967c4d85dea502c24143418c6aa96d",
+    "fastunknot/recognize.py": "5ca6866b3611f7924ccc67f7d922fbe12d221a71c088e3b26d0476686b46edb8",
+    "fastunknot/__main__.py": "147ee8b4dc79a6451d21b503b76362fad9881c60619f7d848a32e8cd88808926"
+  },
+  "rows": [
+    {
+      "name": "unknot",
+      "input": {
+        "name": "crossing-free circle",
+        "pd": []
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "current": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "UNKNOT",
+          "method": "seifert-genus-zero",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "current",
+            "shadow",
+            "saturated",
+            "baseline",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "current": 1.0350160300731659e-05,
+            "shadow": 9.990157559514046e-06,
+            "saturated": 9.815068915486336e-06,
+            "baseline": 1.0680174455046654e-05,
+            "euler": 1.0040123015642166e-05,
+            "control": 1.470521092414856e-05
+          },
+          "statuses": {
+            "current": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "euler",
+            "control",
+            "baseline",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "current": 1.4775199815630913e-05,
+            "euler": 1.0165106505155564e-05,
+            "control": 9.730132296681404e-06,
+            "baseline": 9.610084816813469e-06,
+            "shadow": 9.815162047743798e-06,
+            "saturated": 9.750109165906906e-06
+          },
+          "statuses": {
+            "current": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "baseline": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "baseline",
+            "control",
+            "euler",
+            "current"
+          ],
+          "seconds": {
+            "shadow": 1.3625156134366989e-05,
+            "saturated": 1.398017629981041e-05,
+            "baseline": 9.635090827941895e-06,
+            "control": 9.660189971327781e-06,
+            "euler": 9.690085425972938e-06,
+            "current": 1.1000176891684533e-05
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "control": "UNKNOT",
+            "euler": "UNKNOT",
+            "current": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "baseline",
+            "saturated",
+            "euler",
+            "current",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 9.805150330066682e-06,
+            "baseline": 9.655067697167396e-06,
+            "saturated": 9.785173460841179e-06,
+            "euler": 9.745173156261443e-06,
+            "current": 1.0010134428739547e-05,
+            "control": 9.645149111747741e-06
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "baseline": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "current": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "baseline",
+            "current",
+            "saturated",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "euler": 9.80510376393795e-06,
+            "baseline": 9.700143709778786e-06,
+            "current": 9.590107947587966e-06,
+            "saturated": 9.95015725493431e-06,
+            "control": 9.62517224252224e-06,
+            "shadow": 9.775115177035332e-06
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "baseline": "UNKNOT",
+            "current": "UNKNOT",
+            "saturated": "UNKNOT",
+            "control": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "saturated",
+            "baseline",
+            "current",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 9.615160524845124e-06,
+            "euler": 9.780097752809524e-06,
+            "saturated": 1.472020521759987e-05,
+            "baseline": 9.750109165906906e-06,
+            "current": 9.585078805685043e-06,
+            "shadow": 9.645149111747741e-06
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "current": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "shadow",
+            "control",
+            "baseline",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "current": 1.0985136032104493e-05,
+            "shadow": 1.0250089690089226e-05,
+            "control": 9.67513769865036e-06,
+            "baseline": 9.635090827941895e-06,
+            "euler": 9.765150025486946e-06,
+            "saturated": 1.0085152462124825e-05
+          },
+          "statuses": {
+            "current": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9974017960867869,
+        "current": 0.9645292743968814,
+        "saturated": 0.9748734076507644,
+        "euler": 0.9907538370381697,
+        "shadow": 0.984693489865314
+      }
+    },
+    {
+      "name": "unknot",
+      "input": {
+        "name": "crossing-free circle",
+        "pd": []
+      },
+      "scope": "raw-decision",
+      "repetitions": 20,
+      "evidence": {
+        "control": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 0,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 0,
+          "shadow_stats": {
+            "states": 0,
+            "evaluations": 0,
+            "max_coefficient_bits": 0,
+            "prepared_stages": 0,
+            "engine": "marked-residue-four",
+            "traversed_darts": 0,
+            "work_units": 0,
+            "determinants": 0,
+            "max_cofactor_size": 0,
+            "shadow_evaluations": 0
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 0,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 0,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 2.730078995227814e-06,
+            "shadow": 3.620050847530365e-05,
+            "saturated": 6.905011832714081e-06,
+            "euler": 2.5950372219085694e-06
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 2.5600194931030275e-06,
+            "control": 2.510007470846176e-06,
+            "euler": 2.545071765780449e-06,
+            "shadow": 3.515547141432762e-05
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "control": "UNKNOT",
+            "euler": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 2.745073288679123e-06,
+            "euler": 2.5500543415546416e-06,
+            "shadow": 3.4900428727269175e-05,
+            "control": 2.5950372219085694e-06
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 3.040023148059845e-06,
+            "control": 2.525048330426216e-06,
+            "shadow": 3.125038929283619e-05,
+            "saturated": 2.670055255293846e-06
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "euler": 2.6300083845853804e-06,
+            "saturated": 2.5050248950719833e-06,
+            "shadow": 3.300542011857033e-05,
+            "control": 2.6450492441654204e-06
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 2.5149900466203688e-06,
+            "shadow": 3.157542087137699e-05,
+            "control": 2.619996666908264e-06,
+            "euler": 2.5950372219085694e-06
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "control": 2.5400426238775252e-06,
+            "saturated": 2.519972622394562e-06,
+            "shadow": 4.012053832411766e-05,
+            "euler": 2.745073288679123e-06
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0199250491632965,
+        "euler": 0.9691537467700257,
+        "shadow": 0.07865442886477442
+      }
+    },
+    {
+      "name": "trefoil",
+      "input": {
+        "name": "trefoil",
+        "braid": {
+          "strands": 2,
+          "word": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "current",
+            "saturated",
+            "baseline",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 4.916563630104065e-05,
+            "current": 5.2410690113902095e-05,
+            "saturated": 5.291067063808441e-05,
+            "baseline": 4.6260608360171315e-05,
+            "euler": 4.520053043961525e-05,
+            "control": 4.588551819324493e-05
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "baseline",
+            "current",
+            "shadow",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 4.59455419331789e-05,
+            "baseline": 4.768059588968754e-05,
+            "current": 4.587057046592236e-05,
+            "shadow": 4.9220630899071693e-05,
+            "euler": 5.1055615767836573e-05,
+            "saturated": 4.759058356285095e-05
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "baseline",
+            "saturated",
+            "current"
+          ],
+          "seconds": {
+            "shadow": 4.5775528997182845e-05,
+            "control": 4.585557617247105e-05,
+            "euler": 4.557562060654163e-05,
+            "baseline": 4.7625647857785226e-05,
+            "saturated": 4.5995600521564485e-05,
+            "current": 4.557562060654163e-05
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "current",
+            "shadow",
+            "control",
+            "baseline"
+          ],
+          "seconds": {
+            "saturated": 4.642559215426445e-05,
+            "euler": 4.83405776321888e-05,
+            "current": 4.5725610107183456e-05,
+            "shadow": 4.5080622658133504e-05,
+            "control": 4.580561071634293e-05,
+            "baseline": 4.569063894450664e-05
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "baseline",
+            "current",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 4.761563614010811e-05,
+            "shadow": 4.577059298753739e-05,
+            "baseline": 4.708562046289444e-05,
+            "current": 5.026566796004772e-05,
+            "control": 4.762560129165649e-05,
+            "euler": 5.764574743807316e-05
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "baseline",
+            "saturated",
+            "euler",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "current": 4.559056833386421e-05,
+            "baseline": 4.74155880510807e-05,
+            "saturated": 4.637059755623341e-05,
+            "euler": 5.3235702216625215e-05,
+            "control": 4.57806047052145e-05,
+            "shadow": 4.597557708621025e-05
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "euler",
+            "saturated",
+            "shadow",
+            "current",
+            "control"
+          ],
+          "seconds": {
+            "baseline": 4.7240639105439186e-05,
+            "euler": 4.650559276342392e-05,
+            "saturated": 4.6580564230680466e-05,
+            "shadow": 7.578101940453053e-05,
+            "current": 4.815058782696724e-05,
+            "control": 4.5955600216984746e-05
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.027962617883065,
+        "current": 0.9992351952747084,
+        "saturated": 1.0018913894324855,
+        "euler": 0.945181898572978,
+        "shadow": 1.0135316739300422
+      }
+    },
+    {
+      "name": "trefoil",
+      "input": {
+        "name": "trefoil",
+        "braid": {
+          "strands": 2,
+          "word": [
+            1,
+            1,
+            1
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "marked-residue-four",
+          "stage": 0,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 12,
+            "work_units": 72,
+            "determinants": 1,
+            "max_cofactor_size": 1,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 3,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 3,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 3,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.0002269027754664421,
+            "euler": 0.0007862094789743423,
+            "control": 0.0009234128519892693,
+            "saturated": 0.0006692074239253998
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 0.0006309077143669128,
+            "shadow": 0.00023230258375406265,
+            "euler": 0.0006466079503297806,
+            "saturated": 0.0006420081481337547
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.00020580366253852844,
+            "control": 0.0006570089608430862,
+            "euler": 0.0006381077691912651,
+            "saturated": 0.0006531085819005966
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.000643707811832428,
+            "shadow": 0.00020920298993587494,
+            "control": 0.0006461078301072121,
+            "saturated": 0.0006294073536992073
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.0002054031938314438,
+            "control": 0.0006504086777567863,
+            "euler": 0.0006692083552479744,
+            "saturated": 0.0006232084706425667
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.0006425082683563232,
+            "shadow": 0.00020500365644693375,
+            "saturated": 0.0007330086082220078,
+            "control": 0.0006540082395076752
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.00020910147577524185,
+            "saturated": 0.0006305081769824028,
+            "euler": 0.0006435085088014603,
+            "control": 0.0007187090814113617
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9741521838464122,
+        "euler": 0.9797977312789994,
+        "shadow": 3.0153215066742085
+      }
+    },
+    {
+      "name": "conway",
+      "input": {
+        "name": "K11n34 (Conway, up to mirror)",
+        "pd": [
+          [
+            4,
+            2,
+            5,
+            1
+          ],
+          [
+            8,
+            4,
+            9,
+            3
+          ],
+          [
+            12,
+            5,
+            13,
+            6
+          ],
+          [
+            2,
+            8,
+            3,
+            7
+          ],
+          [
+            9,
+            17,
+            10,
+            16
+          ],
+          [
+            11,
+            18,
+            12,
+            19
+          ],
+          [
+            6,
+            13,
+            7,
+            14
+          ],
+          [
+            15,
+            20,
+            16,
+            21
+          ],
+          [
+            17,
+            1,
+            18,
+            22
+          ],
+          [
+            19,
+            14,
+            20,
+            15
+          ],
+          [
+            21,
+            10,
+            22,
+            11
+          ]
+        ],
+        "source": "https://katlas.org/wiki/K11n34"
+      },
+      "scope": "recognition",
+      "repetitions": 4,
+      "evidence": {
+        "control": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "baseline",
+            "current",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.0009992129635065794,
+            "saturated": 0.001020913477987051,
+            "euler": 0.000995837850496173,
+            "baseline": 0.0009922629687935114,
+            "current": 0.001001237891614437,
+            "shadow": 0.0010133881587535143
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "baseline",
+            "saturated",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "control": 0.0009929877705872059,
+            "euler": 0.0010455138981342316,
+            "baseline": 0.0010665887966752052,
+            "saturated": 0.0010368884541094303,
+            "shadow": 0.0010105632245540619,
+            "current": 0.0010103881359100342
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "baseline",
+            "control",
+            "shadow",
+            "saturated",
+            "current"
+          ],
+          "seconds": {
+            "euler": 0.001539669930934906,
+            "baseline": 0.0010196883231401443,
+            "control": 0.0010119129437953234,
+            "shadow": 0.0010619887616485357,
+            "saturated": 0.0010546634439378977,
+            "current": 0.001022088574245572
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "saturated",
+            "shadow",
+            "euler",
+            "control",
+            "baseline"
+          ],
+          "seconds": {
+            "current": 0.0010162880644202232,
+            "saturated": 0.0010762638412415981,
+            "shadow": 0.0016723466105759144,
+            "euler": 0.001081238966435194,
+            "control": 0.003081289818510413,
+            "baseline": 0.0038641002029180527
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "current",
+            "saturated",
+            "shadow",
+            "euler",
+            "baseline"
+          ],
+          "seconds": {
+            "control": 0.0010419385507702827,
+            "current": 0.0011175647377967834,
+            "saturated": 0.0010597887448966503,
+            "shadow": 0.001069963676854968,
+            "euler": 0.0010945643298327923,
+            "baseline": 0.0010421134065836668
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "control",
+            "saturated",
+            "current",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.001106564188376069,
+            "control": 0.0010178382508456707,
+            "saturated": 0.0015371949411928654,
+            "current": 0.0010663641151040792,
+            "euler": 0.00104233855381608,
+            "shadow": 0.0011080640833824873
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "saturated",
+            "current",
+            "control",
+            "baseline"
+          ],
+          "seconds": {
+            "shadow": 0.0010548136197030544,
+            "euler": 0.001096739200875163,
+            "saturated": 0.0010835642460733652,
+            "current": 0.001009112922474742,
+            "control": 0.001010538311675191,
+            "baseline": 0.0010258883703500032
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0151899819110928,
+        "current": 1.0166239550615617,
+        "saturated": 0.9719363983223827,
+        "euler": 0.9964101769169746,
+        "shadow": 0.9791539009238205
+      }
+    },
+    {
+      "name": "conway",
+      "input": {
+        "name": "K11n34 (Conway, up to mirror)",
+        "pd": [
+          [
+            4,
+            2,
+            5,
+            1
+          ],
+          [
+            8,
+            4,
+            9,
+            3
+          ],
+          [
+            12,
+            5,
+            13,
+            6
+          ],
+          [
+            2,
+            8,
+            3,
+            7
+          ],
+          [
+            9,
+            17,
+            10,
+            16
+          ],
+          [
+            11,
+            18,
+            12,
+            19
+          ],
+          [
+            6,
+            13,
+            7,
+            14
+          ],
+          [
+            15,
+            20,
+            16,
+            21
+          ],
+          [
+            17,
+            1,
+            18,
+            22
+          ],
+          [
+            19,
+            14,
+            20,
+            15
+          ],
+          [
+            21,
+            10,
+            22,
+            11
+          ]
+        ],
+        "source": "https://katlas.org/wiki/K11n34"
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 44,
+            "work_units": 316,
+            "determinants": 1,
+            "max_cofactor_size": 5,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.007208293303847313,
+            "control": 0.006893189623951912,
+            "euler": 0.00753919780254364,
+            "saturated": 0.00721279252320528
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.007484097965061665,
+            "saturated": 0.007459497079253197,
+            "euler": 0.007183592766523361,
+            "control": 0.006921790540218353
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.0071485936641693115,
+            "shadow": 0.007307394407689571,
+            "saturated": 0.0069406908005476,
+            "control": 0.006992691196501255
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.006985191255807877,
+            "shadow": 0.007731701247394085,
+            "euler": 0.006970489397644997,
+            "control": 0.007177194580435753
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.006931489333510399,
+            "saturated": 0.006981491111218929,
+            "euler": 0.0069314902648329735,
+            "shadow": 0.015312199480831623
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.007045992650091648,
+            "euler": 0.0072226934134960175,
+            "shadow": 0.009992529638111591,
+            "control": 0.018327838741242886
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 0.007344294339418411,
+            "euler": 0.0070817917585372925,
+            "shadow": 0.007393697276711464,
+            "saturated": 0.007007691077888012
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9925636075593224,
+        "euler": 0.9895364502126245,
+        "shadow": 0.9477925340493332
+      }
+    },
+    {
+      "name": "kinoshita_terasaka",
+      "input": {
+        "name": "K11n42 (Kinoshita-Terasaka, up to mirror)",
+        "pd": [
+          [
+            4,
+            2,
+            5,
+            1
+          ],
+          [
+            8,
+            4,
+            9,
+            3
+          ],
+          [
+            12,
+            5,
+            13,
+            6
+          ],
+          [
+            2,
+            8,
+            3,
+            7
+          ],
+          [
+            9,
+            18,
+            10,
+            19
+          ],
+          [
+            11,
+            21,
+            12,
+            20
+          ],
+          [
+            6,
+            13,
+            7,
+            14
+          ],
+          [
+            15,
+            10,
+            16,
+            11
+          ],
+          [
+            17,
+            22,
+            18,
+            1
+          ],
+          [
+            19,
+            15,
+            20,
+            14
+          ],
+          [
+            21,
+            16,
+            22,
+            17
+          ]
+        ],
+        "source": "https://katlas.org/wiki/K11n42"
+      },
+      "scope": "recognition",
+      "repetitions": 4,
+      "evidence": {
+        "current": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "current",
+            "saturated",
+            "control",
+            "euler",
+            "shadow",
+            "baseline"
+          ],
+          "seconds": {
+            "current": 0.001046838704496622,
+            "saturated": 0.0010523886885493994,
+            "control": 0.001079414039850235,
+            "euler": 0.0011380647774785757,
+            "shadow": 0.001165890134871006,
+            "baseline": 0.0011528900358825922
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "current",
+            "baseline",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.0010440887417644262,
+            "current": 0.001037138281390071,
+            "baseline": 0.0010451388079673052,
+            "euler": 0.0010595887433737516,
+            "shadow": 0.001036638393998146,
+            "control": 0.0010449883993715048
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "baseline",
+            "saturated",
+            "euler",
+            "control",
+            "current"
+          ],
+          "seconds": {
+            "shadow": 0.001056363806128502,
+            "baseline": 0.0010517386253923178,
+            "saturated": 0.001047438709065318,
+            "euler": 0.0010403385385870934,
+            "control": 0.0010379634331911802,
+            "current": 0.0010538885835558176
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "current",
+            "baseline",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.00104226334951818,
+            "saturated": 0.0011513151694089174,
+            "current": 0.0010914639569818974,
+            "baseline": 0.0010492135770618916,
+            "euler": 0.0010402384214103222,
+            "control": 0.001036013476550579
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "baseline",
+            "control",
+            "euler",
+            "current",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.0010460636112838984,
+            "baseline": 0.0010453634895384312,
+            "control": 0.0010426884982734919,
+            "euler": 0.0010428884997963905,
+            "current": 0.0010734889656305313,
+            "shadow": 0.001309016952291131
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "saturated",
+            "baseline",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "control": 0.0029198380652815104,
+            "euler": 0.0010635391809046268,
+            "saturated": 0.0012044406030327082,
+            "baseline": 0.001303117023780942,
+            "shadow": 0.0010585389100015163,
+            "current": 0.0011094396468251944
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "baseline",
+            "control",
+            "saturated",
+            "euler",
+            "current"
+          ],
+          "seconds": {
+            "shadow": 0.0010287633631378412,
+            "baseline": 0.0010503134690225124,
+            "control": 0.0010307386983186007,
+            "saturated": 0.0010388134978711605,
+            "euler": 0.001051388680934906,
+            "current": 0.0010591887403279543
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0127412440186225,
+        "current": 0.997959975848447,
+        "saturated": 1.0041051722547438,
+        "euler": 1.0086279793813049,
+        "shadow": 1.0066683986795897
+      }
+    },
+    {
+      "name": "kinoshita_terasaka",
+      "input": {
+        "name": "K11n42 (Kinoshita-Terasaka, up to mirror)",
+        "pd": [
+          [
+            4,
+            2,
+            5,
+            1
+          ],
+          [
+            8,
+            4,
+            9,
+            3
+          ],
+          [
+            12,
+            5,
+            13,
+            6
+          ],
+          [
+            2,
+            8,
+            3,
+            7
+          ],
+          [
+            9,
+            18,
+            10,
+            19
+          ],
+          [
+            11,
+            21,
+            12,
+            20
+          ],
+          [
+            6,
+            13,
+            7,
+            14
+          ],
+          [
+            15,
+            10,
+            16,
+            11
+          ],
+          [
+            17,
+            22,
+            18,
+            1
+          ],
+          [
+            19,
+            15,
+            20,
+            14
+          ],
+          [
+            21,
+            16,
+            22,
+            17
+          ]
+        ],
+        "source": "https://katlas.org/wiki/K11n42"
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 44,
+            "work_units": 316,
+            "determinants": 1,
+            "max_cofactor_size": 5,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.00782640092074871,
+            "shadow": 0.008183506317436695,
+            "saturated": 0.007846602238714695,
+            "euler": 0.007992103695869446
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.008344408124685287,
+            "control": 0.007911503314971924,
+            "euler": 0.007844901643693447,
+            "saturated": 0.007852102629840374
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.007785001769661903,
+            "euler": 0.007847301661968231,
+            "control": 0.008367108181118965,
+            "shadow": 0.008419410325586796
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "euler": 0.007822602055966854,
+            "control": 0.007900302298367023,
+            "saturated": 0.007798602804541588,
+            "shadow": 0.008305907249450684
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.007782500237226486,
+            "euler": 0.008088305592536926,
+            "shadow": 0.008137705735862255,
+            "control": 0.008246206678450108
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.00778990238904953,
+            "control": 0.00786720123142004,
+            "shadow": 0.008061305619776249,
+            "saturated": 0.008306408300995827
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "euler": 0.008032403886318207,
+            "saturated": 0.007908202707767487,
+            "control": 0.00826700683683157,
+            "shadow": 0.008314107544720173
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9871271389391699,
+        "euler": 0.9920609790485992,
+        "shadow": 0.9511787844011648
+      }
+    },
+    {
+      "name": "hard_unknot_8",
+      "input": {
+        "name": "unknot resisting R1/R2 (archive 05)",
+        "braid": {
+          "strands": 3,
+          "word": [
+            -2,
+            -2,
+            -2,
+            2,
+            1,
+            1,
+            2,
+            1
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "control": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "UNKNOT",
+          "method": "three-braid-free-product",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "current",
+            "shadow",
+            "euler",
+            "saturated",
+            "baseline"
+          ],
+          "seconds": {
+            "control": 0.0001005362719297409,
+            "current": 8.837613277137279e-05,
+            "shadow": 9.017619304358959e-05,
+            "euler": 8.756108582019806e-05,
+            "saturated": 8.974620141088963e-05,
+            "baseline": 8.828113786876201e-05
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "current": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "baseline",
+            "euler",
+            "control",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "saturated": 9.501627646386623e-05,
+            "baseline": 9.226622059941292e-05,
+            "euler": 9.6841249614954e-05,
+            "control": 8.746115490794182e-05,
+            "shadow": 0.00010391632094979286,
+            "current": 8.856114000082016e-05
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "current": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "euler",
+            "control",
+            "saturated",
+            "current",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 9.192619472742081e-05,
+            "euler": 9.654625318944454e-05,
+            "control": 9.177615866065025e-05,
+            "saturated": 9.087612852454185e-05,
+            "current": 8.738613687455654e-05,
+            "shadow": 8.9641148224473e-05
+          },
+          "statuses": {
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "current": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "euler",
+            "saturated",
+            "baseline",
+            "current"
+          ],
+          "seconds": {
+            "control": 8.810609579086303e-05,
+            "shadow": 8.836113847792149e-05,
+            "euler": 8.772113360464573e-05,
+            "saturated": 9.009619243443013e-05,
+            "baseline": 8.896114304661751e-05,
+            "current": 9.379121474921704e-05
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "current": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "shadow",
+            "baseline",
+            "euler",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "current": 8.974121883511543e-05,
+            "shadow": 8.883113041520118e-05,
+            "baseline": 8.804616518318654e-05,
+            "euler": 8.89461487531662e-05,
+            "saturated": 8.850614540278912e-05,
+            "control": 8.925115689635277e-05
+          },
+          "statuses": {
+            "current": "UNKNOT",
+            "shadow": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "current",
+            "saturated",
+            "baseline",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 8.923118002712727e-05,
+            "euler": 9.655626490712166e-05,
+            "current": 9.176619350910186e-05,
+            "saturated": 8.831615559756756e-05,
+            "baseline": 8.902112022042274e-05,
+            "control": 8.877110667526722e-05
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "current": "UNKNOT",
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "shadow",
+            "baseline",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "current": 8.686613291501999e-05,
+            "shadow": 9.157112799584866e-05,
+            "baseline": 8.8126165792346e-05,
+            "euler": 8.913618512451649e-05,
+            "control": 0.00030993898399174214,
+            "saturated": 0.00035216459073126314
+          },
+          "statuses": {
+            "current": "UNKNOT",
+            "shadow": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0016348043866745,
+        "current": 0.99892510681751,
+        "saturated": 0.9874018051468859,
+        "euler": 0.988668806829016,
+        "shadow": 0.9911633992684132
+      }
+    },
+    {
+      "name": "hard_unknot_8",
+      "input": {
+        "name": "unknot resisting R1/R2 (archive 05)",
+        "braid": {
+          "strands": 3,
+          "word": [
+            -2,
+            -2,
+            -2,
+            2,
+            1,
+            1,
+            2,
+            1
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 2,
+      "evidence": {
+        "control": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 8,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 8,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 8,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 32,
+            "work_units": 200,
+            "determinants": 1,
+            "max_cofactor_size": 3,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 8,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "saturated",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.0015159198082983494,
+            "saturated": 0.0016065211966633797,
+            "shadow": 0.001777523197233677,
+            "euler": 0.0015765205025672913
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.0018540238961577415,
+            "shadow": 0.002813886385411024,
+            "control": 0.002455282025039196,
+            "saturated": 0.002155677881091833
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.0015113693661987782,
+            "shadow": 0.0018396242521703243,
+            "saturated": 0.001671121921390295,
+            "euler": 0.0015261699445545673
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.001767273060977459,
+            "euler": 0.0015308703295886517,
+            "saturated": 0.0015046196058392525,
+            "control": 0.0015085693448781967
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 0.001502069178968668,
+            "shadow": 0.0017582224681973457,
+            "control": 0.0015038195997476578,
+            "euler": 0.0016636219806969166
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "euler": 0.001676071435213089,
+            "control": 0.0015132701955735683,
+            "saturated": 0.0015160194598138332,
+            "shadow": 0.0019214749336242676
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.0018369238823652267,
+            "saturated": 0.0018436238169670105,
+            "euler": 0.001529269851744175,
+            "control": 0.0014709187671542168
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0018167702293395,
+        "euler": 1.0190296885116519,
+        "shadow": 0.8543112183685696
+      }
+    },
+    {
+      "name": "grid_scrambled_unknot",
+      "input": {
+        "rows": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            5,
+            8
+          ]
+        ]
+      },
+      "scope": "recognition",
+      "repetitions": 17,
+      "evidence": {
+        "control": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "UNKNOT",
+          "method": "reidemeister-reduction",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "baseline",
+            "euler",
+            "saturated",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "control": 0.00013781349886866177,
+            "baseline": 0.00014908425509929657,
+            "euler": 0.00013593118637800217,
+            "saturated": 0.00021136157652911018,
+            "shadow": 0.00018686708062887192,
+            "current": 0.00016771393882877687
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "current": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "shadow",
+            "current",
+            "baseline",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.00019692021476871828,
+            "saturated": 0.0002639740157653304,
+            "shadow": 0.0002004614318994915,
+            "current": 0.00022483825245324303,
+            "baseline": 0.0001678315593915827,
+            "euler": 0.00018742592895732205
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "current": "UNKNOT",
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "euler",
+            "current",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.00014682546915376887,
+            "euler": 0.00013345463530105704,
+            "current": 0.00013904300901819677,
+            "control": 0.00015066668172093,
+            "saturated": 0.00015406085945227568,
+            "shadow": 0.00014366072547786375
+          },
+          "statuses": {
+            "baseline": "UNKNOT",
+            "euler": "UNKNOT",
+            "current": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "baseline",
+            "current",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.00015566087163546507,
+            "saturated": 0.00016535506309831843,
+            "euler": 0.00014963724157389472,
+            "baseline": 0.00013649008949013317,
+            "current": 0.00013590176754138048,
+            "shadow": 0.00014230767812799006
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "baseline": "UNKNOT",
+            "current": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "shadow",
+            "current",
+            "baseline",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.00014191367389524684,
+            "saturated": 0.00013659587677787333,
+            "shadow": 0.00013580178732381146,
+            "current": 0.00013750177972456987,
+            "baseline": 0.00013957830036387723,
+            "control": 0.00013349002555889243
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT",
+            "shadow": "UNKNOT",
+            "current": "UNKNOT",
+            "baseline": "UNKNOT",
+            "control": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "baseline",
+            "shadow",
+            "euler",
+            "control",
+            "current"
+          ],
+          "seconds": {
+            "saturated": 0.0001316840815193513,
+            "baseline": 0.00013411357341443792,
+            "shadow": 0.0001352488008492133,
+            "euler": 0.00013191937742864385,
+            "control": 0.00013548415154218674,
+            "current": 0.00013200171730097602
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "baseline": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "current": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "baseline",
+            "current",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.00013312522102804745,
+            "baseline": 0.00013125463224509184,
+            "current": 0.0001322782105382751,
+            "control": 0.00013368401457281674,
+            "saturated": 0.00018864952246932422,
+            "euler": 0.00015489614623434404
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "baseline": "UNKNOT",
+            "current": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9818274283915851,
+        "current": 1.0043290235248306,
+        "saturated": 0.8254364089775561,
+        "euler": 0.9835437032438927,
+        "shadow": 0.9859486521899444
+      }
+    },
+    {
+      "name": "grid_scrambled_unknot",
+      "input": {
+        "rows": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            4,
+            8
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            3,
+            7
+          ],
+          [
+            4,
+            6
+          ],
+          [
+            2,
+            7
+          ],
+          [
+            3,
+            5
+          ],
+          [
+            5,
+            8
+          ]
+        ]
+      },
+      "scope": "raw-decision",
+      "repetitions": 5,
+      "evidence": {
+        "control": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 6,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 6,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 24,
+            "work_units": 144,
+            "determinants": 1,
+            "max_cofactor_size": 2,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 6,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "UNKNOT",
+          "method": "closed-rank",
+          "stage": 6,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.0007545899599790574,
+            "shadow": 0.0009091917425394058,
+            "saturated": 0.0007383896037936211,
+            "euler": 0.0007351893931627273
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.0007612897083163261,
+            "shadow": 0.0009113717824220657,
+            "control": 0.0007336296141147614,
+            "saturated": 0.0007167493924498558
+          },
+          "statuses": {
+            "euler": "UNKNOT",
+            "shadow": "UNKNOT",
+            "control": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.0007847301661968231,
+            "euler": 0.0007765298709273338,
+            "control": 0.0007565697655081749,
+            "shadow": 0.000936112180352211
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.0010443536564707756,
+            "shadow": 0.0009230120107531547,
+            "saturated": 0.000741189531981945,
+            "euler": 0.0007562499493360519
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 0.0007252093404531479,
+            "shadow": 0.0009067118167877197,
+            "euler": 0.0007693899795413017,
+            "saturated": 0.0007308894768357277
+          },
+          "statuses": {
+            "control": "UNKNOT",
+            "shadow": "UNKNOT",
+            "euler": "UNKNOT",
+            "saturated": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.000920751877129078,
+            "saturated": 0.0007317695766687393,
+            "control": 0.0007304495200514793,
+            "euler": 0.0007418697699904442
+          },
+          "statuses": {
+            "shadow": "UNKNOT",
+            "saturated": "UNKNOT",
+            "control": "UNKNOT",
+            "euler": "UNKNOT"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "control",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.0007174091413617134,
+            "euler": 0.0007387695834040642,
+            "control": 0.0007752502337098121,
+            "shadow": 0.0009318320080637932
+          },
+          "statuses": {
+            "saturated": "UNKNOT",
+            "euler": "UNKNOT",
+            "control": "UNKNOT",
+            "shadow": "UNKNOT"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9785309147422451,
+        "euler": 0.980085397205872,
+        "shadow": 0.8030117954555682
+      }
+    },
+    {
+      "name": "stress_braid5_36",
+      "input": {
+        "name": "random 5-strand braid closure, 36 crossings; timed out at 600 s in version 0.1",
+        "braid": {
+          "strands": 5,
+          "word": [
+            -4,
+            -3,
+            4,
+            4,
+            -3,
+            2,
+            1,
+            1,
+            -1,
+            -1,
+            3,
+            -4,
+            -1,
+            3,
+            2,
+            2,
+            -2,
+            -1,
+            -3,
+            2,
+            3,
+            -3,
+            -4,
+            -4,
+            -3,
+            3,
+            1,
+            3,
+            -2,
+            -4,
+            -4,
+            3,
+            -3,
+            3,
+            -4,
+            -2
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 3,
+      "evidence": {
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "alexander-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "baseline",
+            "euler",
+            "current",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.001004212846358617,
+            "euler": 0.0010097135479251544,
+            "current": 0.0010442469889918964,
+            "control": 0.0010968474671244621,
+            "saturated": 0.0009941464910904567,
+            "shadow": 0.001003979705274105
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "current",
+            "control",
+            "baseline",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 0.0010219132527709007,
+            "current": 0.0010744140793879826,
+            "control": 0.001004813238978386,
+            "baseline": 0.0009982793902357419,
+            "shadow": 0.0009986792380611103,
+            "euler": 0.0012128824989000957
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "current",
+            "control",
+            "saturated",
+            "euler",
+            "baseline"
+          ],
+          "seconds": {
+            "shadow": 0.0017333561554551125,
+            "current": 0.0017420559500654538,
+            "control": 0.0012977501998345058,
+            "saturated": 0.0009961131339271863,
+            "euler": 0.000993712805211544,
+            "baseline": 0.000999312847852707
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "euler",
+            "shadow",
+            "current",
+            "baseline"
+          ],
+          "seconds": {
+            "saturated": 0.0010055797174572945,
+            "control": 0.0009989462171991665,
+            "euler": 0.0015021863703926404,
+            "shadow": 0.0031508741279443107,
+            "current": 0.0032172417268157005,
+            "baseline": 0.001021113246679306
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "current",
+            "shadow",
+            "baseline",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.001112414834400018,
+            "saturated": 0.0010686141128341358,
+            "current": 0.000994779480000337,
+            "shadow": 0.0010483134537935257,
+            "baseline": 0.0010085801283518474,
+            "euler": 0.0009971798087159793
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "shadow",
+            "saturated",
+            "current",
+            "baseline"
+          ],
+          "seconds": {
+            "euler": 0.0010131799305478733,
+            "control": 0.0010026795789599419,
+            "shadow": 0.0009990464895963669,
+            "saturated": 0.0010014129802584648,
+            "current": 0.0009908797219395638,
+            "baseline": 0.0010099466890096664
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "shadow",
+            "euler",
+            "baseline",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "current": 0.0010411466161410015,
+            "shadow": 0.000995713286101818,
+            "euler": 0.00100307942678531,
+            "baseline": 0.0010071465124686558,
+            "control": 0.0010112797220547993,
+            "saturated": 0.0010288134217262268
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9934974495864652,
+        "current": 0.9616621900227572,
+        "saturated": 1.0032121993140535,
+        "euler": 0.9968088180186727,
+        "shadow": 0.9995996233724207
+      }
+    },
+    {
+      "name": "stress_braid5_36",
+      "input": {
+        "name": "random 5-strand braid closure, 36 crossings; timed out at 600 s in version 0.1",
+        "braid": {
+          "strands": 5,
+          "word": [
+            -4,
+            -3,
+            4,
+            4,
+            -3,
+            2,
+            1,
+            1,
+            -1,
+            -1,
+            3,
+            -4,
+            -1,
+            3,
+            2,
+            2,
+            -2,
+            -1,
+            -3,
+            2,
+            3,
+            -3,
+            -4,
+            -4,
+            -3,
+            3,
+            1,
+            3,
+            -2,
+            -4,
+            -4,
+            3,
+            -3,
+            3,
+            -4,
+            -2
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 36,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "marked-residue-four",
+          "stage": 0,
+          "shadow_stats": {
+            "states": 1,
+            "evaluations": 2,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 1,
+            "engine": "marked-residue-four",
+            "traversed_darts": 144,
+            "work_units": 2428,
+            "determinants": 1,
+            "max_cofactor_size": 16,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 36,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 36,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.6019766246899962,
+            "shadow": 0.001715521328151226,
+            "saturated": 0.635384458117187,
+            "control": 0.6173372240737081
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.6502664517611265,
+            "shadow": 0.0018793242052197456,
+            "saturated": 0.6744482666254044,
+            "euler": 0.6371078817173839
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.6314597083255649,
+            "shadow": 0.0016972217708826065,
+            "saturated": 0.6193073494359851,
+            "euler": 0.6019057240337133
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.001785222440958023,
+            "control": 0.6710033230483532,
+            "saturated": 0.6430184580385685,
+            "euler": 0.622984298504889
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.6555357221513987,
+            "saturated": 0.6173250246793032,
+            "euler": 0.6330840298905969,
+            "shadow": 0.0017363214865326881
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.6704692160710692,
+            "shadow": 0.001696322113275528,
+            "euler": 0.6239579105749726,
+            "control": 0.5890195583924651
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.001652420498430729,
+            "euler": 0.5831962814554572,
+            "control": 0.5955705428496003,
+            "saturated": 0.5876028398051858
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9866217308090964,
+        "euler": 1.0321583699328536,
+        "shadow": 360.18954461131386
+      }
+    },
+    {
+      "name": "conway_sum_2",
+      "input": {
+        "pd": [
+          [
+            3,
+            1,
+            4,
+            0
+          ],
+          [
+            7,
+            3,
+            8,
+            2
+          ],
+          [
+            11,
+            4,
+            12,
+            5
+          ],
+          [
+            1,
+            7,
+            2,
+            6
+          ],
+          [
+            8,
+            16,
+            9,
+            15
+          ],
+          [
+            10,
+            17,
+            11,
+            18
+          ],
+          [
+            5,
+            12,
+            6,
+            13
+          ],
+          [
+            14,
+            19,
+            15,
+            20
+          ],
+          [
+            16,
+            22,
+            17,
+            21
+          ],
+          [
+            18,
+            13,
+            19,
+            14
+          ],
+          [
+            20,
+            9,
+            21,
+            10
+          ],
+          [
+            25,
+            23,
+            26,
+            0
+          ],
+          [
+            29,
+            25,
+            30,
+            24
+          ],
+          [
+            33,
+            26,
+            34,
+            27
+          ],
+          [
+            23,
+            29,
+            24,
+            28
+          ],
+          [
+            30,
+            38,
+            31,
+            37
+          ],
+          [
+            32,
+            39,
+            33,
+            40
+          ],
+          [
+            27,
+            34,
+            28,
+            35
+          ],
+          [
+            36,
+            41,
+            37,
+            42
+          ],
+          [
+            38,
+            22,
+            39,
+            43
+          ],
+          [
+            40,
+            35,
+            41,
+            36
+          ],
+          [
+            42,
+            31,
+            43,
+            32
+          ]
+        ]
+      },
+      "scope": "recognition",
+      "repetitions": 3,
+      "evidence": {
+        "current": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "current",
+            "control",
+            "baseline",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "current": 0.0013478842253486316,
+            "control": 0.001372384528319041,
+            "baseline": 0.00135538416604201,
+            "saturated": 0.0013467843333880107,
+            "euler": 0.0013630511239171028,
+            "shadow": 0.001366718051334222
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "current",
+            "shadow",
+            "baseline",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 0.0013444172218441963,
+            "current": 0.0013431506231427193,
+            "shadow": 0.0013475508118669193,
+            "baseline": 0.0013559175034364064,
+            "euler": 0.001340350757042567,
+            "saturated": 0.0013526842618981998
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "current",
+            "control",
+            "baseline",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 0.0014230854188402493,
+            "current": 0.0013876181716720264,
+            "control": 0.0013661176587144535,
+            "baseline": 0.0013452842831611633,
+            "shadow": 0.001341450959444046,
+            "euler": 0.0013593174517154694
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "current",
+            "saturated",
+            "shadow",
+            "baseline"
+          ],
+          "seconds": {
+            "control": 0.0013420504207412403,
+            "euler": 0.001343784232934316,
+            "current": 0.001361951231956482,
+            "saturated": 0.0013544509808222454,
+            "shadow": 0.001342783992489179,
+            "baseline": 0.001347484067082405
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "shadow",
+            "saturated",
+            "current",
+            "baseline"
+          ],
+          "seconds": {
+            "euler": 0.001342850737273693,
+            "control": 0.001364484429359436,
+            "shadow": 0.0013697510585188866,
+            "saturated": 0.0013662511482834816,
+            "current": 0.0013556176175673802,
+            "baseline": 0.0013866846760114033
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "euler",
+            "baseline",
+            "saturated",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "current": 0.0013751511772473652,
+            "euler": 0.0013455509518583615,
+            "baseline": 0.0013604511817296345,
+            "saturated": 0.0013754510631163914,
+            "shadow": 0.0013433843851089478,
+            "control": 0.0013866179312268894
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "shadow",
+            "euler",
+            "control",
+            "saturated",
+            "current"
+          ],
+          "seconds": {
+            "baseline": 0.0013577509671449661,
+            "shadow": 0.001360950991511345,
+            "euler": 0.0013604840884606044,
+            "control": 0.00135045126080513,
+            "saturated": 0.0013586174075802167,
+            "current": 0.001369150976339976
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0040487646791718,
+        "current": 0.9916736653648786,
+        "saturated": 0.9993622631136504,
+        "euler": 1.0027532948053797,
+        "shadow": 1.0035002462194336
+      }
+    },
+    {
+      "name": "conway_sum_2",
+      "input": {
+        "pd": [
+          [
+            3,
+            1,
+            4,
+            0
+          ],
+          [
+            7,
+            3,
+            8,
+            2
+          ],
+          [
+            11,
+            4,
+            12,
+            5
+          ],
+          [
+            1,
+            7,
+            2,
+            6
+          ],
+          [
+            8,
+            16,
+            9,
+            15
+          ],
+          [
+            10,
+            17,
+            11,
+            18
+          ],
+          [
+            5,
+            12,
+            6,
+            13
+          ],
+          [
+            14,
+            19,
+            15,
+            20
+          ],
+          [
+            16,
+            22,
+            17,
+            21
+          ],
+          [
+            18,
+            13,
+            19,
+            14
+          ],
+          [
+            20,
+            9,
+            21,
+            10
+          ],
+          [
+            25,
+            23,
+            26,
+            0
+          ],
+          [
+            29,
+            25,
+            30,
+            24
+          ],
+          [
+            33,
+            26,
+            34,
+            27
+          ],
+          [
+            23,
+            29,
+            24,
+            28
+          ],
+          [
+            30,
+            38,
+            31,
+            37
+          ],
+          [
+            32,
+            39,
+            33,
+            40
+          ],
+          [
+            27,
+            34,
+            28,
+            35
+          ],
+          [
+            36,
+            41,
+            37,
+            42
+          ],
+          [
+            38,
+            22,
+            39,
+            43
+          ],
+          [
+            40,
+            35,
+            41,
+            36
+          ],
+          [
+            42,
+            31,
+            43,
+            32
+          ]
+        ]
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "euler": {
+          "status": "KNOTTED",
+          "method": "component-euler",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "component-euler",
+          "stage": 11,
+          "shadow_stats": {
+            "states": 2,
+            "evaluations": 3,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 2,
+            "engine": "marked-residue-four",
+            "traversed_darts": 132,
+            "work_units": 1104,
+            "determinants": 1,
+            "max_cofactor_size": 11,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 22,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 22,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.012509562075138092,
+            "shadow": 0.013049470260739326,
+            "control": 0.01912134885787964,
+            "saturated": 0.019247649237513542
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 0.01919354870915413,
+            "control": 0.019327851943671703,
+            "shadow": 0.013104169629514217,
+            "euler": 0.012371860444545746
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.019209950231015682,
+            "saturated": 0.01909574866294861,
+            "shadow": 0.012807066552340984,
+            "euler": 0.012466661632061005
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.015015495009720325,
+            "euler": 0.012786366045475006,
+            "control": 0.019592855125665665,
+            "saturated": 0.020162462256848812
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.013659276999533176,
+            "control": 0.019612155854701996,
+            "saturated": 0.019551054574549198,
+            "euler": 0.01292466837912798
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.013114269822835922,
+            "saturated": 0.02092097233980894,
+            "control": 0.019679056480526924,
+            "euler": 0.012813267298042774
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.015027695335447788,
+            "control": 0.020075760781764984,
+            "saturated": 0.022731496021151543,
+            "euler": 0.023384003899991512
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0066052024139425,
+        "euler": 1.5386349355719608,
+        "shadow": 1.474975524134652
+      }
+    },
+    {
+      "name": "conway_sum_8",
+      "input": {
+        "pd": [
+          [
+            3,
+            1,
+            4,
+            0
+          ],
+          [
+            7,
+            3,
+            8,
+            2
+          ],
+          [
+            11,
+            4,
+            12,
+            5
+          ],
+          [
+            1,
+            7,
+            2,
+            6
+          ],
+          [
+            8,
+            16,
+            9,
+            15
+          ],
+          [
+            10,
+            17,
+            11,
+            18
+          ],
+          [
+            5,
+            12,
+            6,
+            13
+          ],
+          [
+            14,
+            19,
+            15,
+            20
+          ],
+          [
+            16,
+            22,
+            17,
+            21
+          ],
+          [
+            18,
+            13,
+            19,
+            14
+          ],
+          [
+            20,
+            9,
+            21,
+            10
+          ],
+          [
+            25,
+            23,
+            26,
+            44
+          ],
+          [
+            29,
+            25,
+            30,
+            24
+          ],
+          [
+            33,
+            26,
+            34,
+            27
+          ],
+          [
+            23,
+            29,
+            24,
+            28
+          ],
+          [
+            30,
+            38,
+            31,
+            37
+          ],
+          [
+            32,
+            39,
+            33,
+            40
+          ],
+          [
+            27,
+            34,
+            28,
+            35
+          ],
+          [
+            36,
+            41,
+            37,
+            42
+          ],
+          [
+            38,
+            22,
+            39,
+            43
+          ],
+          [
+            40,
+            35,
+            41,
+            36
+          ],
+          [
+            42,
+            31,
+            43,
+            32
+          ],
+          [
+            47,
+            45,
+            48,
+            66
+          ],
+          [
+            51,
+            47,
+            52,
+            46
+          ],
+          [
+            55,
+            48,
+            56,
+            49
+          ],
+          [
+            45,
+            51,
+            46,
+            50
+          ],
+          [
+            52,
+            60,
+            53,
+            59
+          ],
+          [
+            54,
+            61,
+            55,
+            62
+          ],
+          [
+            49,
+            56,
+            50,
+            57
+          ],
+          [
+            58,
+            63,
+            59,
+            64
+          ],
+          [
+            60,
+            44,
+            61,
+            65
+          ],
+          [
+            62,
+            57,
+            63,
+            58
+          ],
+          [
+            64,
+            53,
+            65,
+            54
+          ],
+          [
+            69,
+            67,
+            70,
+            88
+          ],
+          [
+            73,
+            69,
+            74,
+            68
+          ],
+          [
+            77,
+            70,
+            78,
+            71
+          ],
+          [
+            67,
+            73,
+            68,
+            72
+          ],
+          [
+            74,
+            82,
+            75,
+            81
+          ],
+          [
+            76,
+            83,
+            77,
+            84
+          ],
+          [
+            71,
+            78,
+            72,
+            79
+          ],
+          [
+            80,
+            85,
+            81,
+            86
+          ],
+          [
+            82,
+            66,
+            83,
+            87
+          ],
+          [
+            84,
+            79,
+            85,
+            80
+          ],
+          [
+            86,
+            75,
+            87,
+            76
+          ],
+          [
+            91,
+            89,
+            92,
+            110
+          ],
+          [
+            95,
+            91,
+            96,
+            90
+          ],
+          [
+            99,
+            92,
+            100,
+            93
+          ],
+          [
+            89,
+            95,
+            90,
+            94
+          ],
+          [
+            96,
+            104,
+            97,
+            103
+          ],
+          [
+            98,
+            105,
+            99,
+            106
+          ],
+          [
+            93,
+            100,
+            94,
+            101
+          ],
+          [
+            102,
+            107,
+            103,
+            108
+          ],
+          [
+            104,
+            88,
+            105,
+            109
+          ],
+          [
+            106,
+            101,
+            107,
+            102
+          ],
+          [
+            108,
+            97,
+            109,
+            98
+          ],
+          [
+            113,
+            111,
+            114,
+            132
+          ],
+          [
+            117,
+            113,
+            118,
+            112
+          ],
+          [
+            121,
+            114,
+            122,
+            115
+          ],
+          [
+            111,
+            117,
+            112,
+            116
+          ],
+          [
+            118,
+            126,
+            119,
+            125
+          ],
+          [
+            120,
+            127,
+            121,
+            128
+          ],
+          [
+            115,
+            122,
+            116,
+            123
+          ],
+          [
+            124,
+            129,
+            125,
+            130
+          ],
+          [
+            126,
+            110,
+            127,
+            131
+          ],
+          [
+            128,
+            123,
+            129,
+            124
+          ],
+          [
+            130,
+            119,
+            131,
+            120
+          ],
+          [
+            135,
+            133,
+            136,
+            154
+          ],
+          [
+            139,
+            135,
+            140,
+            134
+          ],
+          [
+            143,
+            136,
+            144,
+            137
+          ],
+          [
+            133,
+            139,
+            134,
+            138
+          ],
+          [
+            140,
+            148,
+            141,
+            147
+          ],
+          [
+            142,
+            149,
+            143,
+            150
+          ],
+          [
+            137,
+            144,
+            138,
+            145
+          ],
+          [
+            146,
+            151,
+            147,
+            152
+          ],
+          [
+            148,
+            132,
+            149,
+            153
+          ],
+          [
+            150,
+            145,
+            151,
+            146
+          ],
+          [
+            152,
+            141,
+            153,
+            142
+          ],
+          [
+            157,
+            155,
+            158,
+            0
+          ],
+          [
+            161,
+            157,
+            162,
+            156
+          ],
+          [
+            165,
+            158,
+            166,
+            159
+          ],
+          [
+            155,
+            161,
+            156,
+            160
+          ],
+          [
+            162,
+            170,
+            163,
+            169
+          ],
+          [
+            164,
+            171,
+            165,
+            172
+          ],
+          [
+            159,
+            166,
+            160,
+            167
+          ],
+          [
+            168,
+            173,
+            169,
+            174
+          ],
+          [
+            170,
+            154,
+            171,
+            175
+          ],
+          [
+            172,
+            167,
+            173,
+            168
+          ],
+          [
+            174,
+            163,
+            175,
+            164
+          ]
+        ]
+      },
+      "scope": "recognition",
+      "repetitions": 1,
+      "evidence": {
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "connected-sum-factor:jones-modular",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "baseline",
+            "saturated",
+            "current",
+            "control",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.00283883698284626,
+            "saturated": 0.0027769356966018677,
+            "current": 0.0027820365503430367,
+            "control": 0.0027350345626473427,
+            "euler": 0.0027824360877275467,
+            "shadow": 0.002736835740506649
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "current",
+            "euler",
+            "baseline",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.002854936756193638,
+            "shadow": 0.0027707358822226524,
+            "current": 0.0032010413706302643,
+            "euler": 0.004734562709927559,
+            "baseline": 0.0047722626477479935,
+            "control": 0.004952563904225826
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "saturated",
+            "shadow",
+            "euler",
+            "control",
+            "baseline"
+          ],
+          "seconds": {
+            "current": 0.004247555509209633,
+            "saturated": 0.002879137173295021,
+            "shadow": 0.002687634900212288,
+            "euler": 0.0026575345546007156,
+            "control": 0.002894737757742405,
+            "baseline": 0.002712635323405266
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "baseline",
+            "current",
+            "control",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.0026940349489450455,
+            "baseline": 0.002695835195481777,
+            "current": 0.002644534222781658,
+            "control": 0.0026940349489450455,
+            "euler": 0.0026511354371905327,
+            "shadow": 0.0026646340265870094
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "current",
+            "baseline",
+            "shadow",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.002723636105656624,
+            "current": 0.0027010347694158554,
+            "baseline": 0.0027432357892394066,
+            "shadow": 0.0026846351101994514,
+            "control": 0.002686934545636177,
+            "saturated": 0.0026320340111851692
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "current",
+            "euler",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.0026820357888936996,
+            "current": 0.003731147386133671,
+            "euler": 0.002876138314604759,
+            "control": 0.002766636200249195,
+            "saturated": 0.002672034315764904,
+            "shadow": 0.002677934244275093
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "shadow",
+            "baseline",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "current": 0.0026974352076649666,
+            "shadow": 0.0026932349428534508,
+            "baseline": 0.0026622340083122253,
+            "control": 0.0027763359248638153,
+            "saturated": 0.0027144355699419975,
+            "euler": 0.0026773354038596153
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9694212013318284,
+        "current": 1.0156240194689081,
+        "saturated": 1.003743018220158,
+        "euler": 1.0079627074621664,
+        "shadow": 1.0117093636812602
+      }
+    },
+    {
+      "name": "conway_sum_8",
+      "input": {
+        "pd": [
+          [
+            3,
+            1,
+            4,
+            0
+          ],
+          [
+            7,
+            3,
+            8,
+            2
+          ],
+          [
+            11,
+            4,
+            12,
+            5
+          ],
+          [
+            1,
+            7,
+            2,
+            6
+          ],
+          [
+            8,
+            16,
+            9,
+            15
+          ],
+          [
+            10,
+            17,
+            11,
+            18
+          ],
+          [
+            5,
+            12,
+            6,
+            13
+          ],
+          [
+            14,
+            19,
+            15,
+            20
+          ],
+          [
+            16,
+            22,
+            17,
+            21
+          ],
+          [
+            18,
+            13,
+            19,
+            14
+          ],
+          [
+            20,
+            9,
+            21,
+            10
+          ],
+          [
+            25,
+            23,
+            26,
+            44
+          ],
+          [
+            29,
+            25,
+            30,
+            24
+          ],
+          [
+            33,
+            26,
+            34,
+            27
+          ],
+          [
+            23,
+            29,
+            24,
+            28
+          ],
+          [
+            30,
+            38,
+            31,
+            37
+          ],
+          [
+            32,
+            39,
+            33,
+            40
+          ],
+          [
+            27,
+            34,
+            28,
+            35
+          ],
+          [
+            36,
+            41,
+            37,
+            42
+          ],
+          [
+            38,
+            22,
+            39,
+            43
+          ],
+          [
+            40,
+            35,
+            41,
+            36
+          ],
+          [
+            42,
+            31,
+            43,
+            32
+          ],
+          [
+            47,
+            45,
+            48,
+            66
+          ],
+          [
+            51,
+            47,
+            52,
+            46
+          ],
+          [
+            55,
+            48,
+            56,
+            49
+          ],
+          [
+            45,
+            51,
+            46,
+            50
+          ],
+          [
+            52,
+            60,
+            53,
+            59
+          ],
+          [
+            54,
+            61,
+            55,
+            62
+          ],
+          [
+            49,
+            56,
+            50,
+            57
+          ],
+          [
+            58,
+            63,
+            59,
+            64
+          ],
+          [
+            60,
+            44,
+            61,
+            65
+          ],
+          [
+            62,
+            57,
+            63,
+            58
+          ],
+          [
+            64,
+            53,
+            65,
+            54
+          ],
+          [
+            69,
+            67,
+            70,
+            88
+          ],
+          [
+            73,
+            69,
+            74,
+            68
+          ],
+          [
+            77,
+            70,
+            78,
+            71
+          ],
+          [
+            67,
+            73,
+            68,
+            72
+          ],
+          [
+            74,
+            82,
+            75,
+            81
+          ],
+          [
+            76,
+            83,
+            77,
+            84
+          ],
+          [
+            71,
+            78,
+            72,
+            79
+          ],
+          [
+            80,
+            85,
+            81,
+            86
+          ],
+          [
+            82,
+            66,
+            83,
+            87
+          ],
+          [
+            84,
+            79,
+            85,
+            80
+          ],
+          [
+            86,
+            75,
+            87,
+            76
+          ],
+          [
+            91,
+            89,
+            92,
+            110
+          ],
+          [
+            95,
+            91,
+            96,
+            90
+          ],
+          [
+            99,
+            92,
+            100,
+            93
+          ],
+          [
+            89,
+            95,
+            90,
+            94
+          ],
+          [
+            96,
+            104,
+            97,
+            103
+          ],
+          [
+            98,
+            105,
+            99,
+            106
+          ],
+          [
+            93,
+            100,
+            94,
+            101
+          ],
+          [
+            102,
+            107,
+            103,
+            108
+          ],
+          [
+            104,
+            88,
+            105,
+            109
+          ],
+          [
+            106,
+            101,
+            107,
+            102
+          ],
+          [
+            108,
+            97,
+            109,
+            98
+          ],
+          [
+            113,
+            111,
+            114,
+            132
+          ],
+          [
+            117,
+            113,
+            118,
+            112
+          ],
+          [
+            121,
+            114,
+            122,
+            115
+          ],
+          [
+            111,
+            117,
+            112,
+            116
+          ],
+          [
+            118,
+            126,
+            119,
+            125
+          ],
+          [
+            120,
+            127,
+            121,
+            128
+          ],
+          [
+            115,
+            122,
+            116,
+            123
+          ],
+          [
+            124,
+            129,
+            125,
+            130
+          ],
+          [
+            126,
+            110,
+            127,
+            131
+          ],
+          [
+            128,
+            123,
+            129,
+            124
+          ],
+          [
+            130,
+            119,
+            131,
+            120
+          ],
+          [
+            135,
+            133,
+            136,
+            154
+          ],
+          [
+            139,
+            135,
+            140,
+            134
+          ],
+          [
+            143,
+            136,
+            144,
+            137
+          ],
+          [
+            133,
+            139,
+            134,
+            138
+          ],
+          [
+            140,
+            148,
+            141,
+            147
+          ],
+          [
+            142,
+            149,
+            143,
+            150
+          ],
+          [
+            137,
+            144,
+            138,
+            145
+          ],
+          [
+            146,
+            151,
+            147,
+            152
+          ],
+          [
+            148,
+            132,
+            149,
+            153
+          ],
+          [
+            150,
+            145,
+            151,
+            146
+          ],
+          [
+            152,
+            141,
+            153,
+            142
+          ],
+          [
+            157,
+            155,
+            158,
+            0
+          ],
+          [
+            161,
+            157,
+            162,
+            156
+          ],
+          [
+            165,
+            158,
+            166,
+            159
+          ],
+          [
+            155,
+            161,
+            156,
+            160
+          ],
+          [
+            162,
+            170,
+            163,
+            169
+          ],
+          [
+            164,
+            171,
+            165,
+            172
+          ],
+          [
+            159,
+            166,
+            160,
+            167
+          ],
+          [
+            168,
+            173,
+            169,
+            174
+          ],
+          [
+            170,
+            154,
+            171,
+            175
+          ],
+          [
+            172,
+            167,
+            173,
+            168
+          ],
+          [
+            174,
+            163,
+            175,
+            164
+          ]
+        ]
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "euler": {
+          "status": "KNOTTED",
+          "method": "component-euler",
+          "stage": 11,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 88,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "component-euler",
+          "stage": 11,
+          "shadow_stats": {
+            "states": 2,
+            "evaluations": 3,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 2,
+            "engine": "marked-residue-four",
+            "traversed_darts": 660,
+            "work_units": 26930,
+            "determinants": 1,
+            "max_cofactor_size": 41,
+            "shadow_evaluations": 1
+          },
+          "exhausted": false
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 88,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.013824679888784885,
+            "saturated": 0.0769901005551219,
+            "shadow": 0.019087848253548145,
+            "control": 0.07844411954283714
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.077096501365304,
+            "control": 0.07846361957490444,
+            "euler": 0.014084583148360252,
+            "shadow": 0.018602541647851467
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "euler": 0.013811878859996796,
+            "control": 0.07970313634723425,
+            "saturated": 0.07738740555942059,
+            "shadow": 0.018773144111037254
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "control",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "euler": 0.013848080299794674,
+            "control": 0.08602971863001585,
+            "shadow": 0.021256075240671635,
+            "saturated": 0.08927586115896702
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.013856180012226105,
+            "saturated": 0.09525453951209784,
+            "shadow": 0.022012886591255665,
+            "control": 0.07940523140132427
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.01903264783322811,
+            "control": 0.07851252052932978,
+            "euler": 0.01386308018118143,
+            "saturated": 0.07933283038437366
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "saturated": 0.07846342027187347,
+            "control": 0.0782352164387703,
+            "euler": 0.014080782420933247,
+            "shadow": 0.019212150014936924
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0029168939959638,
+        "euler": 5.602960056618867,
+        "shadow": 4.144406867875949
+      }
+    },
+    {
+      "name": "torus_3_5",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "current",
+            "saturated",
+            "baseline",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 9.090113453567029e-05,
+            "current": 9.066122584044933e-05,
+            "saturated": 8.887611329555511e-05,
+            "baseline": 8.91911331564188e-05,
+            "control": 9.107119403779506e-05,
+            "euler": 9.363116696476936e-05
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "current",
+            "baseline",
+            "saturated",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 9.301621466875076e-05,
+            "current": 8.917613886296749e-05,
+            "baseline": 9.162118658423424e-05,
+            "saturated": 8.984114974737167e-05,
+            "euler": 9.10061877220869e-05,
+            "control": 9.21362079679966e-05
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "saturated",
+            "baseline",
+            "shadow",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "current": 9.047118946909904e-05,
+            "saturated": 8.883620612323284e-05,
+            "baseline": 9.215115569531918e-05,
+            "shadow": 8.923616260290146e-05,
+            "euler": 8.906116709113121e-05,
+            "control": 9.064623154699802e-05
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control",
+            "current",
+            "baseline"
+          ],
+          "seconds": {
+            "saturated": 8.781608194112778e-05,
+            "euler": 9.09261405467987e-05,
+            "shadow": 9.016119875013829e-05,
+            "control": 8.990615606307983e-05,
+            "current": 8.801613003015519e-05,
+            "baseline": 9.13362018764019e-05
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "current",
+            "baseline",
+            "euler",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 9.138616733253002e-05,
+            "current": 8.923118002712727e-05,
+            "baseline": 9.202617220580578e-05,
+            "euler": 8.965115994215011e-05,
+            "saturated": 8.844113908708095e-05,
+            "control": 8.98661557585001e-05
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "baseline",
+            "control",
+            "shadow",
+            "euler",
+            "current"
+          ],
+          "seconds": {
+            "saturated": 8.981116116046906e-05,
+            "baseline": 8.894111961126328e-05,
+            "control": 9.156619198620319e-05,
+            "shadow": 8.985116146504879e-05,
+            "euler": 9.016618132591247e-05,
+            "current": 8.96261539310217e-05
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "current",
+            "euler",
+            "baseline",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 9.080120362341404e-05,
+            "current": 9.068120270967483e-05,
+            "euler": 8.879615925252437e-05,
+            "baseline": 9.094113484025002e-05,
+            "shadow": 8.91511794179678e-05,
+            "saturated": 9.417622350156307e-05
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0015410722683404,
+        "current": 1.0185690741558553,
+        "saturated": 1.0198131573545968,
+        "euler": 1.0067577697466616,
+        "shadow": 1.0070033013962272
+      }
+    },
+    {
+      "name": "torus_3_5",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 10,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "marked-residue-four",
+          "stage": 9,
+          "shadow_stats": {
+            "states": 3,
+            "evaluations": 6,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 2,
+            "engine": "marked-residue-four",
+            "traversed_darts": 48,
+            "work_units": 365,
+            "determinants": 3,
+            "max_cofactor_size": 5,
+            "shadow_evaluations": 7
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 10,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 10,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.005764774978160858,
+            "shadow": 0.005651772953569889,
+            "saturated": 0.0057021742686629295,
+            "control": 0.0056837741285562515
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.005726474337279797,
+            "shadow": 0.005590572953224182,
+            "saturated": 0.005738274194300175,
+            "control": 0.005678974092006683
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.005674673244357109,
+            "control": 0.005679973401129246,
+            "saturated": 0.005624373443424702,
+            "euler": 0.005745474249124527
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.0069297906011343,
+            "saturated": 0.005932576954364777,
+            "euler": 0.005745174363255501,
+            "shadow": 0.0057320743799209595
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.0057669747620821,
+            "saturated": 0.005733273923397064,
+            "euler": 0.005754174664616585,
+            "shadow": 0.0057015735656023026
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.005624572746455669,
+            "euler": 0.005721074528992176,
+            "saturated": 0.007164092734456062,
+            "control": 0.005754575133323669
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "shadow": 0.005647273734211922,
+            "euler": 0.005718975327908993,
+            "saturated": 0.005779975093901157,
+            "control": 0.005695774219930172
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.003237310225653,
+        "euler": 1.002060579743379,
+        "shadow": 1.0234983048342978
+      }
+    },
+    {
+      "name": "torus_3_7",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "current": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "current",
+            "euler",
+            "control",
+            "shadow",
+            "saturated",
+            "baseline"
+          ],
+          "seconds": {
+            "current": 0.00011910656467080116,
+            "euler": 0.00011553149670362473,
+            "control": 0.00011333641596138478,
+            "shadow": 0.00011771158315241337,
+            "saturated": 0.0001131964847445488,
+            "baseline": 0.00011382652446627617
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "baseline",
+            "control",
+            "euler",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "current": 0.00011357651092112065,
+            "baseline": 0.00011301646009087563,
+            "control": 0.0001431068405508995,
+            "euler": 0.0001542970072478056,
+            "shadow": 0.0001610920298844576,
+            "saturated": 0.0004101953469216824
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "current",
+            "baseline",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.00012036659754812717,
+            "current": 0.00011284141801297665,
+            "baseline": 0.00014045177958905698,
+            "euler": 0.00022065783850848674,
+            "control": 0.00013806680217385293,
+            "saturated": 0.0001684171613305807
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "control",
+            "saturated",
+            "euler",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "baseline": 0.0001203115563839674,
+            "control": 0.0001173065509647131,
+            "saturated": 0.00011451649479568004,
+            "euler": 0.00011945655569434166,
+            "shadow": 0.00011520152911543846,
+            "current": 0.00011125146411359311
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "current",
+            "saturated",
+            "shadow",
+            "baseline"
+          ],
+          "seconds": {
+            "control": 0.00011507649905979633,
+            "euler": 0.00011006640270352363,
+            "current": 0.0001177715603262186,
+            "saturated": 0.00011083143763244153,
+            "shadow": 0.00011260644532740116,
+            "baseline": 0.00015374701470136643
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "current",
+            "shadow",
+            "baseline",
+            "saturated",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.00020073261111974716,
+            "current": 0.000212932750582695,
+            "shadow": 0.0008955266326665879,
+            "baseline": 0.0001167964655905962,
+            "saturated": 0.0001120464876294136,
+            "control": 0.00011149146594107151
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "control",
+            "saturated",
+            "baseline",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "current": 0.00011526644229888915,
+            "control": 0.00011054142378270626,
+            "saturated": 0.0001216765958815813,
+            "baseline": 0.00011154641397297383,
+            "euler": 0.00011478150263428688,
+            "shadow": 0.00011129644699394702
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 1.0172740831079792,
+        "current": 0.9950689554935,
+        "saturated": 1.0055658947638628,
+        "euler": 0.9718152438584065,
+        "shadow": 1.0022459565042574
+      }
+    },
+    {
+      "name": "torus_3_7",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 14,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 14,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "marked-residue-four",
+          "stage": 13,
+          "shadow_stats": {
+            "states": 3,
+            "evaluations": 6,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 2,
+            "engine": "marked-residue-four",
+            "traversed_darts": 64,
+            "work_units": 555,
+            "determinants": 3,
+            "max_cofactor_size": 7,
+            "shadow_evaluations": 8
+          },
+          "exhausted": false
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 14,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "control",
+            "euler",
+            "shadow",
+            "saturated"
+          ],
+          "seconds": {
+            "control": 0.010081731714308262,
+            "euler": 0.010125930421054363,
+            "shadow": 0.009994430467486382,
+            "saturated": 0.009914129041135311
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "control": 0.009985730051994324,
+            "shadow": 0.010468635708093643,
+            "saturated": 0.010139632038772106,
+            "euler": 0.01025033462792635
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.01027053315192461,
+            "euler": 0.010035431012511253,
+            "saturated": 0.009985930286347866,
+            "shadow": 0.009916328825056553
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.009739425964653492,
+            "control": 0.009871428832411766,
+            "euler": 0.010635637678205967,
+            "saturated": 0.010123631916940212
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.009922129102051258,
+            "euler": 0.010477336123585701,
+            "shadow": 0.010150431655347347,
+            "control": 0.010058230720460415
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.010056931525468826,
+            "euler": 0.0100322300568223,
+            "saturated": 0.009859427809715271,
+            "shadow": 0.009854927659034729
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "euler",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.009898827411234379,
+            "euler": 0.009944230318069458,
+            "shadow": 0.009874027222394943,
+            "control": 0.010037531144917011
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9861814890853045,
+        "euler": 0.982775290625486,
+        "shadow": 1.0004566396463008
+      }
+    },
+    {
+      "name": "torus_3_11",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "recognition",
+      "repetitions": 20,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "baseline": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "current": {
+          "status": "KNOTTED",
+          "method": "braid-bennequin",
+          "stage": null,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "baseline",
+            "euler",
+            "control",
+            "saturated",
+            "current"
+          ],
+          "seconds": {
+            "shadow": 0.00016258209943771363,
+            "baseline": 0.00016087708063423635,
+            "euler": 0.00016336212866008282,
+            "control": 0.00016031707637012004,
+            "saturated": 0.00017443224787712098,
+            "current": 0.0001742572523653507
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "baseline": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "shadow",
+            "current",
+            "control",
+            "saturated",
+            "baseline"
+          ],
+          "seconds": {
+            "euler": 0.00016145710833370686,
+            "shadow": 0.00016799219883978367,
+            "current": 0.00016955723986029626,
+            "control": 0.0001860224176198244,
+            "saturated": 0.00016650715842843057,
+            "baseline": 0.00016841222532093525
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "control",
+            "baseline",
+            "shadow",
+            "saturated",
+            "euler"
+          ],
+          "seconds": {
+            "current": 0.000160592095926404,
+            "control": 0.0001636120956391096,
+            "baseline": 0.00016011213883757592,
+            "shadow": 0.0001610470935702324,
+            "saturated": 0.00016441214829683305,
+            "euler": 0.000159662077203393
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED",
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "control",
+            "euler",
+            "saturated",
+            "shadow",
+            "current"
+          ],
+          "seconds": {
+            "baseline": 0.0001764773391187191,
+            "control": 0.00015875203534960748,
+            "euler": 0.00016118208877742292,
+            "saturated": 0.0001618121284991503,
+            "shadow": 0.00017043719999492167,
+            "current": 0.00016455715522170066
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "current": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "current",
+            "saturated",
+            "shadow",
+            "euler",
+            "baseline",
+            "control"
+          ],
+          "seconds": {
+            "current": 0.00016034203581511975,
+            "saturated": 0.000159487035125494,
+            "shadow": 0.0001602421049028635,
+            "euler": 0.0001595720648765564,
+            "baseline": 0.00016439715400338173,
+            "control": 0.00016156211495399475
+          },
+          "statuses": {
+            "current": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "baseline": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "baseline",
+            "current",
+            "control",
+            "saturated",
+            "euler",
+            "shadow"
+          ],
+          "seconds": {
+            "baseline": 0.00016038212925195694,
+            "current": 0.00016210712492465974,
+            "control": 0.00016041710041463374,
+            "saturated": 0.0001624570693820715,
+            "euler": 0.00016117710620164872,
+            "shadow": 0.00016169711016118528
+          },
+          "statuses": {
+            "baseline": "KNOTTED",
+            "current": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED",
+            "euler": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "current",
+            "shadow",
+            "euler",
+            "control",
+            "baseline"
+          ],
+          "seconds": {
+            "saturated": 0.00016004210337996482,
+            "current": 0.00016068206168711184,
+            "shadow": 0.0001615170855075121,
+            "euler": 0.0001774422824382782,
+            "control": 0.00016240710392594336,
+            "baseline": 0.00015947213396430015
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "current": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "baseline": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9997819985364004,
+        "current": 0.9932470324457722,
+        "saturated": 0.996438628313254,
+        "euler": 1.0028188386501422,
+        "shadow": 0.9941945258872447
+      }
+    },
+    {
+      "name": "torus_3_11",
+      "input": {
+        "braid": {
+          "strands": 3,
+          "word": [
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2,
+            1,
+            2
+          ]
+        }
+      },
+      "scope": "raw-decision",
+      "repetitions": 1,
+      "evidence": {
+        "shadow": {
+          "status": "KNOTTED",
+          "method": "marked-residue-four",
+          "stage": 21,
+          "shadow_stats": {
+            "states": 3,
+            "evaluations": 6,
+            "max_coefficient_bits": 2,
+            "prepared_stages": 2,
+            "engine": "marked-residue-four",
+            "traversed_darts": 96,
+            "work_units": 1131,
+            "determinants": 3,
+            "max_cofactor_size": 11,
+            "shadow_evaluations": 7
+          },
+          "exhausted": false
+        },
+        "euler": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 22,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "control": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 22,
+          "shadow_stats": null,
+          "exhausted": null
+        },
+        "saturated": {
+          "status": "KNOTTED",
+          "method": "closed-rank",
+          "stage": 22,
+          "shadow_stats": null,
+          "exhausted": null
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "shadow",
+            "euler",
+            "control",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.010566437616944313,
+            "euler": 0.010763240046799183,
+            "control": 0.009837428107857704,
+            "saturated": 0.009782527573406696
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "control",
+            "euler",
+            "saturated",
+            "shadow"
+          ],
+          "seconds": {
+            "control": 0.009908728301525116,
+            "euler": 0.00992782972753048,
+            "saturated": 0.009866728447377682,
+            "shadow": 0.009917029179632664
+          },
+          "statuses": {
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "control",
+            "shadow",
+            "euler"
+          ],
+          "seconds": {
+            "saturated": 0.009763126261532307,
+            "control": 0.00984322838485241,
+            "shadow": 0.010172831825911999,
+            "euler": 0.01019173301756382
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "saturated",
+            "control",
+            "euler"
+          ],
+          "seconds": {
+            "shadow": 0.010703539475798607,
+            "saturated": 0.010406235232949257,
+            "control": 0.009739927016198635,
+            "euler": 0.009883727878332138
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "saturated": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "saturated",
+            "shadow",
+            "euler",
+            "control"
+          ],
+          "seconds": {
+            "saturated": 0.009761225432157516,
+            "shadow": 0.010072731412947178,
+            "euler": 0.010004331357777119,
+            "control": 0.009788326919078827
+          },
+          "statuses": {
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "euler": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "shadow",
+            "control",
+            "euler",
+            "saturated"
+          ],
+          "seconds": {
+            "shadow": 0.009955729357898235,
+            "control": 0.009870029054582119,
+            "euler": 0.010797739960253239,
+            "saturated": 0.009913028217852116
+          },
+          "statuses": {
+            "shadow": "KNOTTED",
+            "control": "KNOTTED",
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED"
+          }
+        },
+        {
+          "order": [
+            "euler",
+            "saturated",
+            "shadow",
+            "control"
+          ],
+          "seconds": {
+            "euler": 0.009956929832696915,
+            "saturated": 0.009821026585996151,
+            "shadow": 0.009968829341232777,
+            "control": 0.009794927202165127
+          },
+          "statuses": {
+            "euler": "KNOTTED",
+            "saturated": "KNOTTED",
+            "shadow": "KNOTTED",
+            "control": "KNOTTED"
+          }
+        }
+      ],
+      "complete": true,
+      "median_speedups": {
+        "control": 0.9972312442008362,
+        "euler": 0.9756999326666027,
+        "shadow": 0.9722237449096559
+      }
+    }
+  ]
+}

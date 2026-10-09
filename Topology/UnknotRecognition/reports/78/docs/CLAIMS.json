@@ -1,0 +1,83 @@
+{
+  "reviewed_revision": "8188525b70033dcfe7c51ea5ae2c8723ad0c0198",
+  "review_status": "human-readable proofs, no external peer review or proof-assistant validation",
+  "claims": [
+    {
+      "id": "stratum_cover",
+      "article": "Theorem 4.1 and Corollary 4.2",
+      "status": "PROVED",
+      "scope": "Integral bounded-span-excess height models with balanced attaining anchors",
+      "result": "H(T,k) exact canonical descriptions; constant span per stratum; QP cover at logarithmic k",
+      "implementation": [
+        "strata.py",
+        "checker.py"
+      ]
+    },
+    {
+      "id": "band_profile",
+      "article": "Theorem 6.1",
+      "status": "PROVED_AND_IMPLEMENTED",
+      "scope": "Nonnegative weighted edge objective, geometric Euler interpretation only after coherence and manifold authentication",
+      "result": "Exact integral shell profile in H(T,k) times bit-polynomial work",
+      "implementation": [
+        "search.py",
+        "network.py",
+        "checker.py"
+      ]
+    },
+    {
+      "id": "primitive_core",
+      "article": "Theorem 7.2 and Corollary 7.3",
+      "status": "PROVED",
+      "scope": "Primitive coherent normal surface in a knot exterior",
+      "result": "All but any positive core have at most D-D* pieces; 2qD* <= D-D*; zero-class mass refinement",
+      "geometric_validation": "1200 literal surfaces, 1360 positive-core budgets; sharp opposite-pair family"
+    },
+    {
+      "id": "lexicographic_networks",
+      "article": "Theorem 8.2",
+      "status": "PROVED_AND_IMPLEMENTED",
+      "scope": "Nonnegative Euler edge weights",
+      "result": "Two bit-polynomial network solves minimize (F,D) lexicographically, without a large penalty coefficient",
+      "implementation": [
+        "lexicographic.py",
+        "checker.py"
+      ]
+    },
+    {
+      "id": "connected_output",
+      "article": "Theorem 8.3",
+      "status": "PROVED",
+      "scope": "Authenticated primitive knot-exterior hypotheses, nonnegative edge weights, no arbitrary deletion-unstable chamber constraints",
+      "result": "Every global (F,D)-lexicographic output is connected and orientable",
+      "geometric_validation": "100 constructed solid-torus outputs, all connected and primitive"
+    },
+    {
+      "id": "threshold",
+      "article": "Theorem 9.2 and Corollary 9.3",
+      "status": "PROVED",
+      "scope": "Same authenticated geometric hypotheses",
+      "result": "F* <= 2D* gives a disc or cappable annulus; coherent disc span <= D*+1 guarantees success; general k gives output chi >= 1-k"
+    }
+  ],
+  "not_claimed": [
+    "General quasi-polynomial unknot recognition",
+    "Universal logarithmic excess bound",
+    "Completeness of the coherent disc family",
+    "Aggregate Euler maximum decides disc existence",
+    "Native recognition speedup or added corpus coverage",
+    "Executed native adapter",
+    "Priority over unseen incoming archives"
+  ],
+  "implementation_status": {
+    "unit_tests": "66 passed",
+    "native_adapter": "NOT_RUN",
+    "production_defaults": "UNCHANGED"
+  },
+  "attribution": {
+    "anchor_identity": "existing ProveIt cocycle_face.tex",
+    "Euler_identity_and_flow": "existing ProveIt cocycle_euler.tex and cocycle_euler_flow.py",
+    "deletion_principle": "existing ProveIt cocycle_connectivity.tex",
+    "new_combination": "positive-defect cover, quantitative residual budgets, two-network F-first selector and threshold"
+  }
+}

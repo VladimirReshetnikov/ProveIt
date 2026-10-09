@@ -1,0 +1,149 @@
+\section{Implementation and the meaning of its certificates}
+\label{sec:implementation}
+
+The proposed change adds three runtime modules and keeps the maintained
+dispatcher unchanged.  \code{sector\_sparse.py} compiles and reuses the
+source.  \code{sector\_planar.py} constructs the minimum diagrams,
+enumerates their vertices, emits full primitive rays, and optionally
+composes them with the existing disc-component checker.
+\code{sector\_planar\_verify.py} checks coverage from the original
+native matching system.
+
+\subsection{Exact geometry and output}
+
+The producer computes a rational basis of the selected quadrilateral
+kernel.  A normalized affine chart uses actual quadrilateral
+coordinates as its independent variables.  Since every feasible
+coordinate lies in \([0,1]\), the initial unit interval or square
+is justified; it is not a numerical bounding-box guess.  The source
+nonnegativity inequalities are then intersected exactly.  A zero
+sum functional on the kernel correctly implies that the
+nonnegative cone has no nonzero point.
+
+For a polygon, the producer projects every retained potential into
+the two-dimensional chart once.  It clips a candidate cell by the
+dominance halfplanes and keeps only positive-area cells.  The
+representation removes consecutive collinear vertices, fixes
+counterclockwise order, and rotates to a deterministic first corner.
+For a feasible segment, it identifies forms by their values at the
+two endpoints and constructs a sorted lower envelope of lines.
+Thus forms that differ outside the feasible affine hull are
+correctly treated as identical when necessary.
+
+The producer evaluates all quadrilateral and projected triangle
+forms at each overlay vertex, normalizes quadrilaterals to their
+primitive integer direction, subtracts the group minima, expands
+contracted classes, and validates the resulting native coordinates.
+All geometry uses Python rational arithmetic.  No floating-point
+predicate determines feasibility, equality, extremality, or output
+identity.  Floating point occurs only in wall-clock timing and
+in the plotted presentation of exact formulas.
+
+\subsection{A checker that does not rerun the producer}
+
+The checker does not import the planar producer or the sparse
+constructor.  It reconstructs triangle-difference potentials from
+the native face matching rows before contraction and computes the
+quadrilateral consistency kernel independently.  Its affine-chart
+test combines matching, normalization, an actual-coordinate left
+inverse, and an independent dimension computation.  A submitted
+polygon is checked by an independent convex hull and source-supported
+facet test.  Degenerate or empty sections are checked by independent
+line-intersection feasibility.
+
+For each group, the checker verifies the label inventory,
+nondegenerate convex cell geometry, dominance at every cell vertex,
+distinct affine-function labels, and exact total area or length.
+It reconstructs overlay vertices with line-equation intersection
+formulas, whereas the producer uses a vector interpolation formula.
+Finally it independently lifts the complete point set and compares
+the entire ordered list of native vectors with the certificate.
+The coverage theorem justifies this comparison as a completeness
+claim, including a genuinely empty sector.
+
+This is algorithmic independence of the important reduction and
+geometry paths, not a claim of a formally verified trusted kernel.
+Both sides necessarily use the same source format, integer codec,
+and maintained normal-coordinate validation contract.  The checker
+also reuses an existing independent linear-algebra helper.  Differential
+tests against the old arrangement and Regina provide further
+independent evidence; none substitutes for the mathematical proof.
+
+The schema \code{normal-sector-planar-v1} records the source digest,
+allowed types, raw matching dimension, feasible section dimension,
+affine chart, section vertices, labelled group cells, and complete
+ray list.  Rational coordinates are reduced numerator--denominator
+pairs.  Large integers use the maintained integer codec, including
+hexadecimal representations beyond its threshold; replay must use
+the same semantics rather than assume every integer is a decimal
+JSON number.  The tests include a 20,000-bit value.
+
+\subsection{Composing with a disc search}
+
+The function \code{discover\_in\_planar\_sector} first obtains complete
+coverage, then asks the maintained compressed component routine
+about each ray.  Each component-count certificate is independently
+replayed before it is used.  It does not skip a ray merely because
+its total Euler characteristic is nonpositive; that would require
+an additional component argument.  The composition returns one of
+three semantically distinct outcomes:
+
+\medskip
+\noindent\textbf{\code{DISC\_FOUND}}\par
+A positive essential-disc witness for the supplied triangulation,
+using the existing \path{normal-sector-witness-v1} schema and its
+maintained independent verifier.  Recognition of an input knot
+still requires its certified exterior correspondence.
+\medskip
+\noindent\textbf{\code{NO\_VERTEX\_DISC\_IN\_SECTOR}}\par
+A full coverage certificate plus a zero essential-disc-component
+certificate for every enumerated nonlink standard ray.  The new
+\code{normal-sector-planar-disc-scan-v1} verifier replays both
+parts.  This excludes such components in these vertex rays of
+this supplied sector.  It is not a global negative knot verdict.
+\medskip
+\noindent\textbf{\code{INCONCLUSIVE}}\par
+A requested resource allowance was exhausted.  The result contains
+no certificate of complete exhaustion.
+\medskip
+
+A matching nullity above three is an explicit unsupported-input
+error for this specialized routine.  The ray generator raises the
+maintained search-limit exception when its emission allowance is
+exhausted; the certifying API returns an inconclusive result instead
+of packaging a partial list as complete.  Cooperative cancellation
+callbacks propagate their exceptions, including when the callable
+object itself has false Boolean value.  User-supplied callbacks
+are therefore tested by their call result, not by truthiness.
+
+This composition makes the local research result usable by the
+recognizer without silently modifying its global search policy.
+It also exposes the distinction between a cheap positive witness
+and complete negative exhaustion: on the growing family, the old
+arrangement can emit all actual rays before spending much more
+time ruling out the remaining candidate directions.
+
+\subsection{A minimal native example}
+
+From the included \code{code} directory:
+
+\begin{lstlisting}[language=Python]
+from planar_sector_research.fixtures import double_capped_fibonacci
+from fastunknot.sector_sparse import PreparedSectorSource
+from fastunknot.sector_planar import certify_planar_sector
+from fastunknot.sector_planar_verify import verify_planar_sector_certificate
+
+fixture = double_capped_fibonacci(8)
+tri = fixture["triangulation"]
+source = PreparedSectorSource(tri)
+result = certify_planar_sector(
+    tri, fixture["allowed_types"], source=source)
+assert result["status"] == "COMPLETE"
+assert len(result["rays"]) == 7
+assert verify_planar_sector_certificate(tri, result["certificate"])
+\end{lstlisting}
+
+The source may now be reused for other supports on the same
+triangulation, subject to its read-only contract.  The example
+requires no Regina installation.  Regina is an optional independent
+oracle for the full experimental reproduction.

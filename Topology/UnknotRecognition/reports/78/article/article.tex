@@ -1,0 +1,704 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,listings,xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr,needspace}
+\hypersetup{pdftitle={Beyond the Minimum-Span Face},pdfauthor={ProveIt research continuation},pdfsubject={Defect-stratified Euler optimization and connected cocycle surfaces}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Beyond the minimum-span face}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,keepspaces=true,frame=single}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\opt}{\operatorname{opt}}
+\newcommand{\snap}{8188525b70033dcfe7c51ea5ae2c8723ad0c0198}
+\newcommand{\repo}{\texttt{Topology/UnknotRecognition}}
+\newcommand{\Fmin}{F_*}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{10mm}
+\begin{center}
+{\LARGE\bfseries Beyond the Minimum-Span Face\par}
+\vspace{5mm}
+{\Large Defect-stratified Euler optimization,\par
+small residual components, and a two-flow\par
+connected-surface selector\par}
+\vspace{9mm}
+{\large Research contribution prepared for the ProveIt project\par}
+\vspace{2mm}
+{Mathematical development and reference software prepared with AI assistance\par}
+\vspace{5mm}
+{9 October 2026\par}
+\vspace{4mm}
+{\small Inspected repository revision\par\texttt{\snap}\par}
+\end{center}
+\vspace{7mm}
+\begin{abstract}
+The maintained cocycle branch optimizes Euler characteristic on the entire minimum-piece face. We extend that exact query to every integral coherent surface with at most $k$ additional normal pieces. A balanced minimum-span witness expresses the excess as a sum of $2T$ nonnegative integral extremal defects. Specifying the positive defects and one realizing corner for each gives a complete cover by
+\[
+ H(T,k)=\sum_{j=0}^{\min(2T,k)}\binom{2T}{j}3^j\binom{k}{j}
+\]
+difference-constraint systems. Each has constant span and an integral, polynomial-time Euler optimizer. Consequently the complete bounded-excess Euler profile is computable in $H(T,k)\poly(T,B,\log(k+1))$ bit time. For polynomial input size and $k=O(\log n)$ this is $n^{O(\log n)}$.
+
+A topological deletion theorem shows that all components except any chosen positive primitive core contain at most $k$ pieces altogether. Oppositely oriented primitive components cost at least twice the minimum primitive span per pair; a product solid-torus family attains that bound.
+
+We also reverse the optimization order. Two polynomial-size network solves minimize the Euler edge penalty $F$ and then span over all $F$-minimizers. In a primitive class of a knot exterior the selected surface is connected. The test $F_*\leq2D_*$ is sufficient for an unknot certificate, and a coherent disc of span at most $D_*+1$ guarantees this test succeeds.
+
+The package includes independently replayed arithmetic certificates, 66 passing test methods, exhaustive finite oracles, 1,200 literal normal-surface gluings, constructed solid-torus move histories, and paired benchmarks. It does not establish a complete quasi-polynomial recognizer: arbitrary knot inputs are not proved to admit a suitably bounded-excess coherent disc, and aggregate Euler optimization is not generally disc-existence optimization.
+\end{abstract}
+\end{titlepage}
+
+\begingroup\footnotesize\setlength{\parskip}{0pt}\renewcommand{\baselinestretch}{0.94}\selectfont\tableofcontents\endgroup
+\clearpage
+
+\section{Research position and the improvement being proved}\label{sec:position}
+
+\subsection{The maintained starting point}
+The goal is to advance the existing recognizer rather than to reintroduce an obsolete bottleneck. The inspected revision already has coherent cocycle seeds, certified minimum-span optimization, a connectedness argument for primitive minimum-span surfaces, and exact Euler optimization over the entire minimum-span face \cite{repo,face,euler,connectivity}. In particular, the current algorithm does not merely sample shortest-path root extrema when its full face optimizer is used. Replacing those samples by a complete face optimizer would not be a new contribution at this revision.
+
+There is nevertheless a substantive restriction: every surface considered by that full-face optimization still has the same globally minimum number of normal pieces. Its objective can fail to produce a disc even for an unknot. The inspected connectivity chapter also records a coherent primitive surface on a trefoil exterior whose total Euler characteristic is one but whose components do not include an essential disc \cite{connectivity}. Thus two distinct problems must be addressed: leaving the minimum-span face without enumerating large potential boxes, and avoiding the inference that a large aggregate Euler characteristic automatically certifies a disc.
+
+The developments here address both issues, but in different ways. Defect stratification solves an exact bounded-excess \emph{Euler} problem. A component budget explains what can go wrong topologically outside the minimum face. A separate two-stage convex optimization produces a connected surface and has a precise, limited completeness guarantee. These statements should not be conflated.
+
+\subsection{Attribution and novelty boundary}
+The balanced-anchor gap identity, the coherent surface cell-count identity, and the bounded-flow optimizer for nonnegative absolute differences are already present in ProveIt \cite{face,euler,flowcode}. The reference network code explicitly credits and adapts that construction. Standard minimum-cost flow, Bellman--Ford feasibility, Hungarian assignment, and minimal-additive-cost deletion arguments are not claimed as new general methods.
+
+The contributions developed and proved here are the complete positive-defect stratification and its count; the exact integral bounded-excess Euler algorithm and replay protocol; the quantitative primitive-core and opposite-pair bounds; and the combination of the Euler edge objective with a second span network, yielding connectedness and the one-extra-piece positive guarantee. All statements needed for those conclusions are proved below. No priority claim over every unpublished incoming report or all related optimization literature is made.
+
+The incoming directory was inspected at the level of its listing and intake instructions. Recent ZIPs named \path{unknot_minimum_envelopes_20261009.zip}, \path{unknot_active_faces_batched_descent_20261009.zip}, and \path{unknot_trace_search_20261009.zip} were visible but were not unpacked. Their unseen contents are not evidence for claims here. Before assigning priority or merging overlapping interfaces, those archives should be compared with this delivery. The inspected maintained source, in contrast, was read directly at the pinned revision.
+
+\subsection{Relationship to the global complexity target}
+The distinction between a local optimizer and a global recognition bound is essential. Lackenby's July 2026 hierarchy preprint supplies a current structural setting for the project, while Section~9 explicitly separates bounds on iteration counts from a fully specified timing analysis \cite{lackenby}. We do not infer a new worst-case bound for that hierarchy from a faster cocycle query.
+
+Our quasi-polynomial statement is an unconditional theorem for a precisely specified finite optimization problem, followed by a conditional connection to general unknot search. The independent polynomial selector is a sound sufficient stage under authenticated knot-exterior hypotheses. Neither statement proves that every unknot possesses a coherent disc in a logarithmic excess band, or even that a fixed supplied triangulation's coherent family contains a disc at all.
+
+\section{Coherent level surfaces and the Euler edge objective}\label{sec:geometry}
+
+\subsection{Integral height data}
+Let $M$ be a compact orientable triangulated $3$-manifold with $T$ tetrahedra. Each tetrahedron $t$ has corners $i\in\{0,1,2,3\}$, global vertex labels $v_{t,i}$, and integral heights $h_{t,i}$. Across an identified face, the local heights differ by an integral constant after applying the face identification. Equivalently, signed local edge differences define one coherent integral cocycle $c$ on the global one-skeleton. The manifold and coherence conditions are hypotheses, not consequences of an arbitrary list of numbers.
+
+For $p\in\Z^V$ put
+\[
+ a_{t,i}(p)=h_{t,i}+p_{v_{t,i}},\qquad
+ D(p)=\sum_{t=1}^T\left(\max_i a_{t,i}(p)-\min_i a_{t,i}(p)\right).
+\]
+The half-integral local levels glue to a cooriented normal surface $S_p$. They are the fibre over $1/2$ of the associated piecewise-linear map to $\R/\Z$. Every global vertex maps to zero. On any oriented global edge all intersections with the fibre have the same sign; this is the \emph{edge-coherence} property.
+
+For sorted heights $b_0\leq b_1\leq b_2\leq b_3$, the nonzero local multiplicities are the two triangle layers of sizes $b_1-b_0$ and $b_3-b_2$, and the intervening quadrilateral layer of size $b_2-b_1$. Zero gaps simply omit a layer. Thus $D(p)$ is the number of normal pieces, not merely a surrogate weight. The binary coordinates can be constructed by sorting four integers per tetrahedron; no level-by-level loop is needed.
+
+Let $D_*=\min_{p\in\Z^V}D(p)$, supplied together with the balanced primal--dual witness described in Section~\ref{sec:anchors}. Throughout the algorithmic theorems, input integer bit lengths are bounded by $B$. Global translations of $p$ change no local span or edge value; independent incidence components may translate independently.
+
+\subsection{An exact cell identity}
+Orient a global edge $e$ from $u_e$ to $v_e$ and write
+\[
+ x_e(p)=c_e+p_{v_e}-p_{u_e}.
+\]
+Let $d_e$ be its number of incidences with \emph{global triangular faces}. A glued face is counted once, a boundary face once, and local edge occurrences are counted with multiplicity. Define $w_e=d_e-2$ and
+\[
+ F(p)=\sum_e w_e|x_e(p)|.
+\]
+
+\begin{proposition}[Euler identity, as in the maintained optimizer]\label{prop:euler}
+For the coherent normal surface,
+\begin{equation}\label{eq:euler}
+ 2\chi(S_p)=2D(p)-F(p).
+\end{equation}
+If every $d_e\geq2$, then $w_e\geq0$ and $W:=\sum_e w_e\leq12T$.
+\end{proposition}
+\begin{proof}
+The vertices of the induced surface cellulation are the intersections with global edges, numbering $\sum_e|x_e|$. Its edges are the level arcs in global faces. On a triangular face the number of arcs is its height span. For three real heights that span equals half the sum of their three absolute pairwise differences. Summing over global faces therefore gives $\frac12\sum_e d_e|x_e|$ surface edges, with the stated multiplicity convention. There are $D(p)$ surface faces. The alternating cell count gives \eqref{eq:euler}. Finally, there are at most $4T$ global faces and three local edge occurrences per face, so $\sum_e d_e\leq12T$; subtracting $2$ per global edge only lowers the sum.
+\end{proof}
+
+The sign condition is substantive. The delivered model validator rejects negative objective weights rather than silently replacing them by zero. No claim that every generalized triangulation automatically meets the condition is needed. In a raw finite height model without authenticated gluing, the arithmetic quantity $2D-F$ is called \texttt{score2}; it is not labelled an Euler characteristic by the API.
+
+\section{Balanced anchors and excess}\label{sec:anchors}
+Choose a lower anchor $\ell_t$ and an upper anchor $u_t$ in each tetrahedron. The anchors form a \emph{balanced minimum-span witness} if their global vertex multiplicities agree,
+\begin{equation}\label{eq:balance}
+ \sum_t\mathbf1_{v_{t,u_t}=v}=\sum_t\mathbf1_{v_{t,\ell_t}=v}
+ \quad\text{for every global vertex }v,
+\end{equation}
+and if a supplied integral $p^0$ satisfies
+\begin{equation}\label{eq:dualvalue}
+ D(p^0)=D_*:=\sum_t(h_{t,u_t}-h_{t,\ell_t}).
+\end{equation}
+The notation $D_*$ is justified by the following argument; the checker need not trust a solver's reported optimum.
+
+\begin{lemma}[Balanced-anchor gap identity]\label{lem:gap}
+For every real potential $p$,
+\begin{align}
+ D(p)-D_* &=\sum_t\bigl(\alpha_t(p)+\beta_t(p)\bigr),\label{eq:gap}\\
+ \alpha_t(p)&=\max_i a_{t,i}(p)-a_{t,u_t}(p),\notag\\
+ \beta_t(p)&=a_{t,\ell_t}(p)-\min_i a_{t,i}(p).\notag
+\end{align}
+Every summand is nonnegative. In particular, \eqref{eq:dualvalue} certifies a global minimum over real and integral potentials. For integral $p$, every defect is integral.
+\end{lemma}
+\begin{proof}
+Balance cancels all coefficients of $p_v$ in $\sum_t(a_{t,u_t}-a_{t,\ell_t})$, leaving $D_*$. Subtract this sum from the sum of tetrahedral spans. The remaining two terms in each tetrahedron are exactly the displayed defects. Nonnegativity follows from the definitions of maximum and minimum. Equality at $p^0$ proves attainment of the lower bound.
+\end{proof}
+
+A matching certificate in the native span optimizer supplies such anchors: every lower tetrahedron and every upper tetrahedron is used once, and each matched pair meets at one global vertex. Balance follows immediately. The theory below needs only \eqref{eq:balance}--\eqref{eq:dualvalue}, so the standalone checker accepts this smaller arithmetic contract.
+
+At zero excess the anchors stay extremal. The familiar minimum-span face is therefore given by the $8T$ inequalities
+\begin{equation}\label{eq:zeroface}
+ a_{t,i}-a_{t,u_t}\leq0,\qquad
+ a_{t,\ell_t}-a_{t,i}\leq0 \quad(t,i).
+\end{equation}
+Our extension is to account for positive defects exactly, rather than to discard these useful anchors when leaving that face.
+
+\section{A complete positive-defect stratification}\label{sec:strata}
+Index the $2T$ defect slots by $(t,+)$ and $(t,-)$. For an integer budget $k\geq0$, a description consists of a set $J$ of positive slots, positive integers $d_s$ on $J$ with $\sum_{s\in J}d_s\leq k$, and one realizing corner $j_s$ for each positive slot. A plus witness cannot be $u_t$ and a minus witness cannot be $\ell_t$. There are at most three choices for either. All unlisted defects are zero.
+
+For a plus slot with specified value $d$, impose
+\begin{equation}\label{eq:plusstratum}
+ a_{t,i}-a_{t,u_t}\leq d\quad\text{for every }i,
+ \qquad a_{t,j_s}-a_{t,u_t}=d\quad\text{if }d>0.
+\end{equation}
+For a minus slot impose
+\begin{equation}\label{eq:minusstratum}
+ a_{t,\ell_t}-a_{t,i}\leq d\quad\text{for every }i,
+ \qquad a_{t,\ell_t}-a_{t,j_s}=d\quad\text{if }d>0.
+\end{equation}
+When $d=0$, the anchor itself realizes the extremum, so an extra equality is unnecessary. Each equality for a positive slot contributes just its reverse inequality; its other direction is already among the four displayed bounds. Consequently a stratum has $8T+|J|\leq10T$ difference inequalities.
+
+\begin{theorem}[Exact bounded-excess cover]\label{thm:cover}
+The integer potentials with $D(p)\leq D_*+k$ are exactly the union of the integer points of the above strata. Within the stratum indexed by $(J,d,j)$, every real potential has
+\[
+ D(p)=D_*+\sum_{s\in J}d_s.
+\]
+The number of canonical descriptions is
+\begin{equation}\label{eq:H}
+ H(T,k)=\sum_{r=0}^{\min(2T,k)}\binom{2T}{r}3^r\binom{k}{r}.
+\end{equation}
+Some descriptions may define empty sets, and different descriptions can overlap at tied extrema. Neither phenomenon affects completeness.
+\end{theorem}
+\begin{proof}
+For an integral potential in the band, take its actual positive defects from Lemma~\ref{lem:gap}. There are at most $k$ positive slots. At every positive plus defect choose a corner attaining the maximum; that corner cannot be the upper anchor. At a positive minus defect choose a corner attaining the minimum; it cannot be the lower anchor. These choices satisfy all stratum inequalities.
+
+Conversely, the four bounds and the realizing equality in \eqref{eq:plusstratum} force the maximum gap to equal $d$. For a zero slot the anchor gives a gap of at least zero, while all bounds give a gap of at most zero. The minus slots work identically. Every defect is therefore its advertised value. Lemma~\ref{lem:gap} gives the exact span and the band inclusion, over the reals as well as over the integers.
+
+To count descriptions with $r$ positive slots, choose the support in $\binom{2T}{r}$ ways and its witnesses in $3^r$ ways. The number of positive $r$-tuples with sum at most $k$ is $\binom{k}{r}$: introducing a nonnegative slack variable reduces this to stars and bars, or equivalently one sums $\binom{q-1}{r-1}$ over $r\leq q\leq k$. The empty support contributes one. This proves \eqref{eq:H}.
+\end{proof}
+
+\begin{corollary}[Quasi-polynomial-sized cover]\label{cor:count}
+For every $k\geq0$,
+\[
+ H(T,k)\leq3^k\binom{2T+k}{k}.
+\]
+If $T\leq n^c$ and $k\leq c'\log n$ for fixed constants, then $H(T,k)=n^{O(\log n)}$.
+\end{corollary}
+\begin{proof}
+Replace $3^r$ by $3^k$ and apply the Vandermonde identity
+$\sum_r\binom{2T}{r}\binom{k}{r}=\binom{2T+k}{k}$.
+For $k\geq1$ the binomial coefficient is at most $(e(2T+k)/k)^k$. Taking logarithms proves the asymptotic statement; $k=0$ is immediate.
+\end{proof}
+
+\begin{remark}[What is and is not counted]
+$H(T,k)$ counts descriptions, not feasible cells, distinct potentials, or topology types. Even the zero-defect face can contain arbitrarily many integer potentials as the height bit length grows. The cover concerns the \emph{integral} band; it does not assert that every real potential of nonintegral span belongs to one of these integer-defect strata. The single-cell optimizer will, however, optimize over its whole real polyhedron and return an integral point.
+\end{remark}
+
+\section{Exact network optimization within one stratum}\label{sec:network}
+A constraint $p_v-p_u\leq b$ is represented by an arc $(u,v,b)$. Arbitrary extra integral difference constraints may also be included. Such restrictions preserve the algebraic algorithm but need not preserve the topological component-deletion arguments later in the paper.
+
+\subsection{Feasibility and negative-cycle witnesses}
+Initialize all vertex distances at zero, equivalently adding a zero-cost super-source to every vertex. Bellman--Ford either produces an integral feasible potential or a directed cycle whose arc bounds sum to a negative integer. The latter is an exact infeasibility certificate: summing its constraints would give $0<0$. The delivered checker validates every arc index, cyclic endpoint continuity, and the strict negativity of the sum. A failed feasibility test is a statement about that stratum, never a knottedness verdict.
+
+\subsection{An independently checkable optimum}
+Consider the finite problem
+\begin{equation}\label{eq:networkprimal}
+ \min_p\sum_e w_e|c_e+p_{v_e}-p_{u_e}|
+ \quad\text{subject to }p_v-p_u\leq b_{uv},\qquad w_e\geq0.
+\end{equation}
+For each objective edge choose a signed flow $f_e\in[-w_e,w_e]$. For every hard constraint choose a flow $\lambda_{uv}\geq0$ on its directed arc. Require that the combined flow balance at every vertex.
+
+\begin{lemma}[Primal--dual equality certificate]\label{lem:dual}
+Every feasible $p$ and every such balanced pair of flows satisfy
+\begin{equation}\label{eq:weakdual}
+ F(p)\geq \sum_e f_ec_e-\sum_{uv}\lambda_{uv}b_{uv}.
+\end{equation}
+Equality proves that $p$ is a global real optimum, hence an integral optimum when $p$ is integral.
+\end{lemma}
+\begin{proof}
+Termwise, $w_e|x_e|\geq f_ex_e$. Balance cancels the coefficient of each $p_v$ in the sum of the objective and hard-arc flows. Thus
+\[
+ \sum_e f_e(c_e+p_{v_e}-p_{u_e})
+ =\sum_e f_ec_e-\sum_{uv}\lambda_{uv}(p_v-p_u)
+ \geq\sum_e f_ec_e-\sum_{uv}\lambda_{uv}b_{uv}.
+\]
+The last inequality uses feasibility and $\lambda\geq0$. Equality supplies both a feasible upper bound and a universal lower bound of the same value.
+\end{proof}
+
+\subsection{Why an integral equality witness is found}
+For completeness we give the bounded-flow construction, already used by the maintained face optimizer \cite{euler,flowcode}. Put $W=\sum_e w_e$. An objective arc from $u_e$ to $v_e$ has cost $-c_e$, signed capacity interval $[-w_e,w_e]$, and stored nonnegative flow $g_e=f_e+w_e\in[0,2w_e]$. A hard arc has cost $b_{uv}$ and capacity $W+1$.
+
+Given an integral feasible $p^0$, set $f_e=w_e\operatorname{sign}(x_e(p^0))$, taking zero at a zero argument. Set all hard flows to zero. Every usable residual arc has nonnegative reduced cost with potential $p^0$. This follows directly from the sign choice on objective arcs and from feasibility on hard arcs. The initial signed flow need not balance, but its total positive imbalance is at most $W$.
+
+Add a source at vertices with excess incoming flow and a sink at vertices with a deficit. Source and sink potentials chosen respectively as the maximum and minimum initial potentials at these terminals preserve nonnegative reduced costs. Reduced-cost Dijkstra searches send integral bottleneck flow. After each search, update every potential by its distance capped at the sink distance; this also handles unreachable vertices and preserves residual nonnegativity. Undoing the initial signed flow gives the balanced zero signed flow, so a repair is always possible.
+
+At most $W$ units are sent, with at least one unit per augmentation. No hard arc of capacity $W+1$ can saturate, because it began with zero flow and receives at most the total sent units. Its forward residual inequality survives and is precisely the required primal difference bound. When a hard flow is positive, its reverse residual arc forces that bound to be tight. On an objective edge, residual inequalities force $x_e=0$ for an interior signed flow and the appropriate sign of $x_e$ at a saturated endpoint. These are exactly the equalities required in Lemma~\ref{lem:dual}. All data and updates are integral.
+
+This proof is deliberately more specific than an appeal to numerical linear programming. The checker uses only integer bounds, vertex balance, primal feasibility, and equality of the two objective values. It imports no flow producer.
+
+\subsection{Operation counts and bit lengths}
+For $O(T)$ nodes and arcs, feasibility takes $O(T^2)$ arithmetic operations. The geometric weight bound $W\leq12T$ limits the flow algorithm to $O(T)$ shortest-path augmentations. Using indexed adjacency arrays and a binary heap gives $O(T^2\log(T+1))$ arithmetic and comparison operations per stratum. This is not a strong-polynomial claim for arbitrary binary-encoded weights: the generic solver's iteration bound is in $W$ itself.
+
+A conservative bit bound suffices. The stratum bounds have length $O(B+\log(k+1))$. Let $N=O(T)$ be the network size, $C$ the largest absolute original arc cost, and $P$ the largest absolute current potential. A simple shortest path has reduced length at most $(N-1)(C+2P)$. Consequently one capped update obeys
+\[
+ P'\leq P+(N-1)(C+2P).
+\]
+After $O(T)$ updates, all potential lengths are
+\begin{equation}\label{eq:bitlength}
+ O\bigl(B+\log(k+1)+T\log(T+1)\bigr).
+\end{equation}
+Flow values use $O(\log(T+1))$ bits. Ordinary integer arithmetic therefore establishes a bit-polynomial cost. The indexed operation count is not presented as a literal worst-case count of Python interpreter instructions or hash probes.
+
+\section{The bounded-excess Euler algorithm}\label{sec:band}
+For $0\leq q\leq k$, define
+\[
+ E_q=\max\{\chi(S_p):p\in\Z^V,\ D(p)=D_*+q\},
+\]
+with $E_q=-\infty$ when the shell is empty. Extra difference constraints, when supplied, are included in this definition.
+
+\begin{theorem}[Exact band profile]\label{thm:band}
+Assume coherent geometric data, a verified balanced minimum-span witness, and $d_e\geq2$. The complete integral profile $(E_0,\ldots,E_k)$ and an actual maximizing potential for every nonempty shell can be computed in
+\begin{equation}\label{eq:bandcomplexity}
+ H(T,k)\,\poly\bigl(T,B,\log(k+1)\bigr)
+\end{equation}
+bit time. With $O(T)$ extra difference constraints, the same conclusion holds with their bit lengths included in $B$. For polynomially bounded input length and $k=O(\log n)$, this is $n^{O(\log n)}$ time.
+\end{theorem}
+\begin{proof}
+Enumerate the canonical descriptions of Theorem~\ref{thm:cover}. Check feasibility of each stratum and, if feasible, minimize $F$ using Section~\ref{sec:network}. Its span is the fixed value $D_*+q$, so Proposition~\ref{prop:euler} identifies the minimum of $F$ with the maximum Euler characteristic on that stratum. An integral minimizing potential is returned.
+
+Every integral potential in the band occurs in at least one stratum. Conversely every feasible stratum lies in its advertised shell. Taking the best value for each $q$ is therefore exact. Tied descriptions merely repeat a legitimate candidate. The operation and bit bounds above apply to each of the $H(T,k)$ descriptions, and Corollary~\ref{cor:count} gives the last assertion.
+\end{proof}
+
+The algorithm discovers candidates; it does not require a supplied list of all potentials or surface coordinates. Its discrete enumeration depends on the allowed \emph{excess}, not on the possibly enormous optimum $D_*$ or on a coordinate's numerical height.
+
+\subsection{Complete and local certificates}
+A cell record contains its sparse positive-defect description and either a negative cycle or an optimum certificate from Lemma~\ref{lem:dual}. The checker independently reconstructs the inequalities from the model and the description. It also recomputes the span and the objective of every feasible record.
+
+A whole-band certificate must account for every description. The supplied verifier checks that all descriptions are valid, distinct, and within budget, and that the number of records is exactly $H(T,k)$. Since the number of possible canonical descriptions is already proved to be $H(T,k)$, these tests certify coverage without trusting the producer's enumeration order. It then recomputes the shell maxima and the chosen best candidate. A missing record, duplicated record, changed radius, or truncated log is rejected.
+
+Full logs can be large: their size is $H(T,k)$ times a polynomial record size. No polynomial-size universal negative certificate is asserted. The producer can stream records and retain only the profile and current optimum. The shipped streaming mode stores at most $k+1$ shell witnesses, hence $O((k+1)T)$ integer records besides the current network, rather than all $H(T,k)$ records. A result without a complete log is not accepted by the whole-band replay routine; it can still be used as a candidate for an independent positive verifier.
+
+\subsection{Why a shell maximum is not a disc-existence oracle}
+A primitive surface can have separating spheres, boundary-parallel discs, or oppositely oriented nonseparating components in addition to its essential part. Positive Euler contributions from those components can obscure the topology of the essential part. Choosing one Euler optimizer from each stratum does not preserve every topology type within that stratum.
+
+Accordingly, even a disc somewhere in the band does not in general imply that the selected aggregate-Euler maximizer is a disc, or that a negative outcome on that selected surface excludes all discs. The native verifier whose connectedness proof uses $D=D_*$ cannot be reused unchanged for a potential of larger span. Sections~\ref{sec:core} and \ref{sec:lex} give quantitative and algorithmic ways to recover useful connectedness information.
+
+\section{A small residual-component theorem}\label{sec:core}
+Now assume $M$ is the authenticated exterior of a knot in $S^3$. Thus $M$ is connected and orientable, $H^1(M;\Z)\cong\Z$, and $H_2(M;\Z)=0$. Fix a primitive cocycle class, denoted $+1$. Every $S_p$ represents this class and inherits a coorientation.
+
+\subsection{Deleting a zero-class union stays in the family}
+\begin{lemma}[Coherent deletion]\label{lem:delete}
+Let $Q$ be a union of connected components of $S_p$ whose relative homology class is zero. Then the remaining surface is the coherent local-height surface $S_{p-g}$ for some integral vertex potential $g$, in normal coordinates. Its piece count is $D(p)-D(Q)$.
+\end{lemma}
+\begin{proof}
+The signed intersections of $Q$ with global edges form an integral cocycle. Its class is the Poincar\'e dual of $[Q]$, hence it is an integral coboundary $\delta g$. The remaining surface has cocycle $c+\delta(p-g)$. Removing components preserves edge coherence, so its unsigned edge weights are exactly the absolute values of this cocycle.
+
+These unsigned weights determine an admissible normal coordinate vector uniquely. To see this locally, the kernel of the six edge-weight equations on the four triangle and three quadrilateral variables is generated by
+\[
+ (1,1,1,1,-1,-1,-1).
+\]
+If two distinct nonnegative admissible vectors had the same edge weights, moving in one direction along this kernel would make all three quadrilateral coordinates positive in one of them. That contradicts the quadrilateral constraint. The coherent local-height construction for $c+\delta(p-g)$ is admissible and has the same unsigned weights, so it is exactly the remaining vector. Piece counts subtract because whole components were removed.
+\end{proof}
+
+This deletion principle is the same geometric mechanism used in the maintained zero-excess connectedness proof \cite{connectivity}. The next theorem retains the amount by which that proof can fail.
+
+\begin{theorem}[Primitive core and residual piece budget]\label{thm:core}
+Let $S=S_p$ be primitive and coherent, and write $\delta=D(p)-D_*$. There is a connected component $C$ of class $+1$. For \emph{every} such component,
+\begin{equation}\label{eq:corebudget}
+ D(S\setminus C)\leq\delta.
+\end{equation}
+Consequently $S$ has at most $\delta+1$ components. If it has $q$ components of class $-1$, then
+\begin{equation}\label{eq:opposite}
+ 2qD_*\leq\delta,
+\end{equation}
+and the total piece count of its class-zero components is at most $\delta-2qD_*$.
+\end{theorem}
+\begin{proof}
+A connected cooriented proper surface is either separating, in which case its relative class is zero, or nonseparating. In the latter case a closed curve can cross it once and return through its connected complement. Its class is therefore primitive. Since the relevant group has rank one, each component has class $0$, $+1$, or $-1$.
+
+The sum of component classes is $+1$, so a positive component $C$ exists. The complement $Q=S\setminus C$ has total class zero. By Lemma~\ref{lem:delete}, $C$ itself is a coherent surface in the original primitive class. Therefore $D(C)\geq D_*$. Subtracting from $D(S)=D_*+\delta$ gives \eqref{eq:corebudget}. Every additional nonempty normal component has at least one piece, proving the component-count bound.
+
+If there are $q$ negative components, there are $q+1$ positive components. Every positive one has at least $D_*$ pieces. Reversing the coorientation of a negative one turns it into a coherent representative of $+1$ without changing its number of pieces, so it also has at least $D_*$ pieces. The nonzero-class components alone therefore contain at least $(2q+1)D_*$ pieces. Subtracting this from the total proves both remaining assertions.
+\end{proof}
+
+In particular, if $\delta<2D_*$, the positive primitive core is unique and all other components have class zero. This is stronger than merely bounding the number of components. The residual normal \emph{mass} is at most $\delta$, even when the core itself has exponentially many pieces encoded in binary. The theorem does not identify the core without computation. Compressed normal-component methods remain appropriate for that task; the weighted orbit framework of Agol--Hass--Thurston provides the classical basis \cite{aht}.
+
+\begin{corollary}[An Euler bound for the core]\label{cor:coreeuler}
+If also $d_e\geq2$, every positive primitive core satisfies
+\[
+ \chi(C)\geq\chi(S)-\delta.
+\]
+\end{corollary}
+\begin{proof}
+For $Q=S\setminus C$, coherence gives the same nonnegative edge weights in the Euler identity for $Q$. Hence $\chi(Q)=D(Q)-F(Q)/2\leq D(Q)\leq\delta$. Euler characteristic is additive over components.
+\end{proof}
+
+This bound is a safe estimate, not a claim that total Euler characteristic solves the connected problem. In particular, an aggregate optimizer can spend part of its excess on components contributing positive Euler characteristic.
+
+\subsection{A sharp opposite-pair family}
+Triangulate $S^1$ with three edges and a disc with one triangle. Subdivide each triangular prism into the standard three staircase tetrahedra. This gives a simplicial solid torus with nine tetrahedra. The three successive tetrahedral anchor pairs in each prism are
+\[
+ (\ell,u)=(2,3),\ (1,2),\ (0,1).
+\]
+Their global vertex multiplicities balance around the circle. Giving the wraparound top vertices height one and the other local vertices height zero makes the dual value three. The ordinary fibre has exactly three pieces, so $D_*=3$.
+
+For an integer $q\geq0$, give the three circle slices the constant potentials $0,q,0$, respectively, across all disc vertices. The signed height increments around the circle are $q,-q,1$. The fibre is a disjoint union of $q+1$ positively oriented meridional discs and $q$ negatively oriented meridional discs. Each has three normal pieces. Therefore
+\[
+ D=3(2q+1),\quad \delta=6q=2qD_*,\quad \#\pi_0(S)=2q+1.
+\]
+This proves sharpness of the coefficient in \eqref{eq:opposite} on genuine triangulated knot exteriors. It does not assert sharpness of the weaker universal bound $\#\pi_0(S)\leq\delta+1$. The shipped literal mesh oracle checks the family for $0\leq q\leq24$; the argument above proves it for every $q$.
+
+\section{A two-flow connected-surface selector}\label{sec:lex}
+The band algorithm optimizes the actual Euler characteristic but cannot automatically enforce connectedness. There is a complementary polynomial optimization whose output \emph{is} connected under the knot-exterior hypotheses. It reverses the usual optimization order:
+\begin{equation}\label{eq:lexgoal}
+ \text{first minimize }F(p)\text{ over all integral }p,
+ \quad\text{then minimize }D(p)\text{ over all }F\text{-minimizers}.
+\end{equation}
+The second step must range over the entire first optimum face, rather than over one potential chosen by the first solver.
+
+\subsection{The entire \texorpdfstring{$F$}{F}-optimal face from one dual flow}
+Run the solver of Section~\ref{sec:network} with no hard constraints. Its balanced signed flow $f$ gives $\Fmin=\sum_e f_ec_e$. For every real potential,
+\begin{equation}\label{eq:Fgap}
+ F(p)-\Fmin=\sum_e\left(w_e|x_e(p)|-f_ex_e(p)\right).
+\end{equation}
+Every term is nonnegative.
+
+\begin{lemma}[Exact edge-optimal face]\label{lem:Fface}
+The set of all real and integral $F$-minimizers is described edge by edge as follows:
+\[
+ \begin{array}{c|c}
+ \text{dual status}&\text{required condition}\\\hline
+ w_e=0&\text{none}\\
+ -w_e<f_e<w_e&x_e=0\\
+ f_e=w_e>0&x_e\geq0\\
+ f_e=-w_e<0&x_e\leq0.
+ \end{array}
+\]
+These are at most two difference inequalities per edge.
+\end{lemma}
+\begin{proof}
+Equality in \eqref{eq:Fgap} holds exactly when every summand vanishes. If $w>0$ and the signed flow is strictly inside its interval, either nonzero sign of $x$ gives a positive summand. At positive saturation, zero slack is equivalent to $x\geq0$; at negative saturation it is equivalent to $x\leq0$. For $w=0$ the flow is zero and the summand vanishes identically. The equivalence holds with this fixed dual optimizer, regardless of nonuniqueness of either primal or dual solutions.
+\end{proof}
+
+\subsection{Span as a second absolute-difference network}
+For each tetrahedron introduce an upper variable $U_t$ and a lower variable $L_t$. Add
+\begin{equation}\label{eq:auxspan}
+ p_{v_{t,i}}-U_t\leq-h_{t,i},\qquad
+ L_t-p_{v_{t,i}}\leq h_{t,i}\quad\text{for all }i,
+\end{equation}
+and minimize $\sum_t|U_t-L_t|$ subject to these inequalities and the face of Lemma~\ref{lem:Fface}. Every feasible point has $U_t\geq\max_i a_{t,i}\geq\min_i a_{t,i}\geq L_t$. Thus the absolute value is simply $U_t-L_t$. For fixed $p$, its minimum is exactly the tetrahedral span, attained by the actual upper and lower heights.
+
+The second problem is another instance of \eqref{eq:networkprimal}, now with $T$ unit-weight objective edges, $O(T)$ nodes and arcs, and a supplied feasible starting point obtained from the first potential. Its weight sum is $T$. Both solves are integral and have polynomial bit complexity, independently of the numerical heights or span.
+
+\begin{theorem}[Two-network lexicographic optimization]\label{thm:twoflows}
+For coherent data with $d_e\geq2$, two network solves compute an integral solution of \eqref{eq:lexgoal}. They use $O(T^2\log(T+1))$ indexed arithmetic and comparison operations and polynomial bit time. Their independently replayable certificates describe both complete optimality faces through primal--dual equality; no large coefficient is used to simulate lexicographic ordering.
+\end{theorem}
+\begin{proof}
+The first solve gives $\Fmin$ and a dual witness. Lemma~\ref{lem:Fface} gives its entire optimality face. The auxiliary construction \eqref{eq:auxspan} then minimizes exactly $D$ on that face. Each problem has $O(T)$ nodes and arcs, and weight sums at most $12T$ and $T$, respectively. The preceding network bounds apply twice. Finally, verifying the first certificate, reconstructing its face, verifying the second certificate, and checking that its auxiliary objective equals the returned span proves the claimed lexicographic optimum.
+\end{proof}
+
+Using a single artificially huge coefficient in front of $F$ would require an appropriate span bound and would inflate the generic solver's weight-sum iteration bound. The two-pass method avoids both issues.
+
+\subsection{Connectedness from the optimization order}
+\begin{theorem}[Connected output]\label{thm:lexconnected}
+Assume the authenticated knot-exterior and primitive-class hypotheses of Section~\ref{sec:core}, and $d_e\geq2$. Every lexicographic minimizer of $(F,D)$ is a connected orientable coherent surface of class $+1$.
+\end{theorem}
+\begin{proof}
+Choose a positive primitive component $C$ of the output $S$ and put $Q=S\setminus C$. Lemma~\ref{lem:delete} makes $C$ an admissible competitor in the same coherent class.
+
+Edge coherence implies additivity of absolute intersection numbers over components. Consequently $F(S)=F(C)+F(Q)$. All weights are nonnegative, so $F(Q)\geq0$. If $Q$ is nonempty and $F(Q)>0$, replacing $S$ by $C$ strictly improves the primary objective. If $Q$ is nonempty and $F(Q)=0$, it leaves the primary objective unchanged but decreases $D$ by the positive number of pieces in $Q$. Both contradict lexicographic optimality. Hence $Q$ is empty. Coorientation in an orientable ambient manifold gives orientability.
+\end{proof}
+
+The proof fails for arbitrary extra chamber constraints unless those constraints are known to survive deletion of a zero-class component union. The global two-pass selector intentionally imposes no such constraints. This is not a general theorem that optimizing any surface energy enforces connectedness.
+
+\section{A polynomial positive test and its exact guarantee}\label{sec:positive}
+
+\begin{lemma}[A nonnegative-Euler primitive connected surface]\label{lem:annulus}
+In a knot exterior, a connected cooriented proper surface of primitive nonzero relative class and Euler characteristic at least zero is either a compressing disc or an annulus that caps to a compressing disc. In either case the knot is an unknot.
+\end{lemma}
+\begin{proof}
+Since $H_2(M;\Z)=0$, a nonzero relative class cannot be carried by a closed surface. Thus the surface has nonempty boundary. The classification of compact connected orientable surfaces leaves only a disc or annulus when $\chi\geq0$.
+
+The boundary map from $H_2(M,\partial M;\Z)$ to $H_1(\partial M;\Z)$ is injective. For a knot exterior its primitive image is the longitude subgroup: the map from the boundary torus's first homology to $H_1(M;\Z)$ sends a meridian to a generator, so its kernel is primitive. The surface's oriented total boundary therefore represents a primitive nonzero torus class. For a disc its boundary is essential, giving a compression.
+
+For an annulus, two disjoint essential simple closed curves on a torus are parallel and individually primitive. Their oriented sum is either zero or twice a primitive class, never the required primitive nonzero class. Both boundary circles cannot be inessential either. Exactly one is therefore inessential. It bounds a disc in the boundary torus whose interior is disjoint from the essential circle. Cap along this disc and push the cap into a collar to obtain a properly embedded disc with essential boundary. Boundary compressibility of a knot exterior is the standard unknot criterion \cite{lackenby}.
+\end{proof}
+
+\Needspace{11\baselineskip}
+\begin{theorem}[Edge-penalty threshold and one-piece completeness]\label{thm:threshold}
+Under the hypotheses of Theorem~\ref{thm:lexconnected}, the following sufficient test can be implemented in polynomial bit time:
+\begin{equation}\label{eq:threshold}
+ \Fmin\leq2D_*.
+\end{equation}
+Whenever it succeeds, the two-flow selector returns a disc or a cappable annulus. Moreover, if the coherent family contains a disc with at most $D_*+1$ normal pieces, the test necessarily succeeds.
+\end{theorem}
+\begin{proof}
+Let $p^\dagger$ be the lexicographic output. It is connected by Theorem~\ref{thm:lexconnected}, and $D(p^\dagger)\geq D_*$. If \eqref{eq:threshold} holds, then
+\[
+ \chi(S_{p^\dagger})=D(p^\dagger)-\Fmin/2\geq D_*-\Fmin/2\geq0.
+\]
+Lemma~\ref{lem:annulus} applies. The minimum-span witness and the two network certificates make the numerical test polynomial and independently checkable.
+
+If a coherent disc $A$ has $D(A)\leq D_*+1$, its Euler characteristic is one, so
+\[
+ F(A)=2D(A)-2\leq2D_*.
+\]
+Since $\Fmin\leq F(A)$, the threshold holds. No enumeration of the disc or its potential is required for this implication.
+\end{proof}
+
+This is a genuine positive completeness statement, but only for the stated near-minimal coherent family. A general unknot can still fail the threshold. The theorem also does not guarantee that the returned surface has minimum genus, maximum Euler characteristic, or minimum span among \emph{all} connected surfaces.
+
+\begin{corollary}[A quantitative proxy guarantee]\label{cor:proxy}
+If there is a coherent disc of span $D_*+k$, the global two-flow output satisfies
+\[
+ \chi(S_{p^\dagger})\geq1-k.
+\]
+\end{corollary}
+\begin{proof}
+$\Fmin\leq2(D_*+k)-2$ and $D(p^\dagger)\geq D_*$ give the claim through \eqref{eq:euler}.
+\end{proof}
+
+The one-piece threshold is not promoted to a necessary condition for unknottedness. Its sharpness as a guarantee is an explicit research question below. The result is useful even when the bounded-excess enumeration is too expensive: it costs only two polynomial network solves, and its connectedness proof differs from the old assumption that the output itself minimizes span.
+
+\section{Executed experiments and their limits}\label{sec:experiments}
+All recorded executions use Python 3.13.5 and the standard library. The source includes a separate arithmetic checker, a deliberately literal polygon-gluing oracle, and deterministic random seeds. These computations support implementation correctness; the finite experiments do not replace the proofs.
+
+\subsection{Independent arithmetic audits}
+The unit suite contains 66 passing methods. It tests feasibility and negative cycles, signed-flow equality, loops and parallel constraints, zero and negative weights, malformed certificates, missing and duplicated strata, incorrect profile claims, cancellation, JSON round-tripping of large signed integers, and geometric construction/replay.
+
+A separate audit checks 600 weighted-difference instances against complete integral boxes. The boxes are enforced by actual constraints, so this is an exhaustive comparison, not a random feasible-point test. There are 342 feasible and 258 infeasible instances, with 418,908 boxed potentials examined. Another 80 height models compare complete band profiles against proved exhaustive potential boxes, examining 51,824 potentials and replaying 3,725 cell certificates. An additional 6,000 potential-to-stratum checks test the defect identity and witness construction directly.
+
+The complete saved examples can be replayed without rerunning any optimizer. The independent band checker reconstructs both local constraints and global coverage. A separate script also reconstructs geometric edge objectives from saved triangulations before accepting their arithmetic outputs.
+
+\subsection{Actual triangulated surface tests}
+The geometric corpus begins with products of a triangulated circle and a triangulated disc. Each prism receives a consistent staircase subdivision. We then apply 542 legal simplicial $2$--$3$ moves and 258 stellar $1$--$4$ moves, distributed among 100 independently constructed solid tori. The complete histories are saved and replayed. These are actual three-dimensional triangulations, not abstract partition or flow examples.
+
+The literal oracle expands normal polygons, glues face arcs by their exact global edge-intersection positions, constructs components independently, counts their cells and boundary circles, and measures each component's signed intersection with the retained longitudinal generator cycle. Across 1,200 surfaces it confirms the Euler identity, the primitive-core mass bound, the opposite-pair bound, and the class-zero mass refinement. It performs 1,360 positive-core budget checks; the corpus contains surfaces with up to 11 components and with component genus up to four.
+
+On all 100 meshes the two-flow output is a single component of primitive class. Eight transported meshes additionally receive complete radius-one band searches, whose 1,544 stratum records are replayed. The fixed nine-tetrahedron family checks the sharp opposite-pair equality for 25 parameter values.
+
+There is also an important negative performance finding: both the existing minimum-face Euler objective and the new two-flow objective return Euler characteristic one on all 100 constructed solid tori. This corpus demonstrates correctness on nontrivial geometric representations, but \emph{no added recognition coverage}. It is not a native knot-diagram benchmark, and it supplies no measured speedup for the maintained recognizer or its difficult unknot fixtures.
+
+\subsection{Paired exact-query timings}
+For a controlled numerical-size comparison, take two tetrahedra with the same four vertex labels and heights $(0,0,0,0)$ and $(L,0,0,0)$. The minimum span is $L$. Add the fixed nonnegative absolute-difference objective specified in the benchmark source. This is an \emph{abstract height model}; its score is not asserted to come from a manifold.
+
+Normalize $p_0=0$. For every other coordinate, $D(p)\geq|p_j|+|L-p_j|$, so a radius-$k$ search is completely contained in
+\[
+ -\lfloor k/2\rfloor\leq p_j\leq L+\lfloor k/2\rfloor.
+\]
+The baseline enumerates that proved finite box and filters by actual span. Both methods compute the same complete shell profile. The timing excludes minimum-span preparation equally. Five paired repetitions alternate order; Table~\ref{tab:paired} reports medians. Certificate construction and local replay remain in the stratified time, while the complete log is streamed rather than retained.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrrr}
+\toprule
+$L$ & Box points & Strata & Stratified (ms) & Exhaustive (ms) & Ratio\\
+\midrule
+2 & 125 & 79 & 6.68 & 0.33 & 0.05\\
+4 & 343 & 79 & 6.64 & 0.76 & 0.12\\
+8 & 1,331 & 79 & 6.73 & 2.64 & 0.39\\
+16 & 6,859 & 79 & 6.95 & 12.09 & 1.74\\
+32 & 42,875 & 79 & 7.13 & 72.25 & 10.13\\
+64 & 300,763 & 79 & 6.76 & 515.49 & 76.21\\
+\bottomrule
+\end{tabular}
+\caption{Median times for the same radius-two shell-profile query on an abstract height family. Ratio is exhaustive divided by stratified time; values below one are slowdowns for stratification. These are not native knot-recognition timings.}
+\label{tab:paired}
+\end{table}
+
+The new method loses on the smallest boxes and wins when the numerical range becomes larger. The exhaustive baseline is not claimed to be the best possible algorithm for this specially structured example. In particular, this is not a speed comparison against the maintained minimum-face optimizer: that optimizer answers the different radius-zero problem. The experiment illustrates the proved removal of dependence on a potential box's numerical volume, not a general native-recognizer acceleration factor.
+
+\subsection{Binary-size stress}
+In the same model take $L=2^b$ and keep $k=2$. The search has 79 descriptions for every tested $b$. The recorded runs from $b=16$ through $16{,}384$ all use 11,501 checked work ticks and 93 flow augmentations. Timing grows with integer arithmetic cost rather than with the number of represented height levels. Three repetitions per size give Table~\ref{tab:binary}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+Height exponent $b$ & Strata & Work ticks & Augmentations & Median (ms)\\
+\midrule
+16 & 79 & 11,501 & 93 & 6.58\\
+64 & 79 & 11,501 & 93 & 7.31\\
+256 & 79 & 11,501 & 93 & 7.90\\
+1,024 & 79 & 11,501 & 93 & 9.96\\
+4,096 & 79 & 11,501 & 93 & 9.49\\
+16,384 & 79 & 11,501 & 93 & 12.81\\
+\bottomrule
+\end{tabular}
+\caption{Binary-size stress with height $L=2^b$ and fixed excess budget two. The integer arithmetic cost grows, while the number of strata and instrumented combinatorial work remain unchanged on this family.}
+\label{tab:binary}
+\end{table}
+
+The work-tick count is an instrumentation count, not a proof of bit complexity. Equation~\eqref{eq:bitlength} supplies the latter. The signed-hex JSON codec is separately tested on 10,000-bit integers so that decimal conversion limits do not silently break large binary witnesses.
+
+\section{Integration contract and trust boundary}\label{sec:integration}
+
+\subsection{Arithmetic is not source authentication}
+A valid balanced-anchor witness proves a statement about a finite height model. A valid flow dual proves a finite optimization bound. Neither authenticates a triangulated knot exterior, a primitive cohomology class, or a source diagram. The same numbers can be placed in an unrelated abstract model. Source reconstruction, signed edge coherence, normal matching and admissibility, and integral primitivity must remain independently checked.
+
+The maintained minimum-span connectedness format cannot be populated with a non-minimum-span potential merely because its matching rows came from a valid older optimum. For a positive-excess candidate that would destroy the primal--dual span equality on which its connectedness argument relies. The adapter deliberately emits \texttt{RESEARCH\_CANDIDATE} with a null knot verdict, not a forged \texttt{diagram-cocycle-disc-v1} record.
+
+For an aggregate band candidate, use an independent general normal-component and source-bound positive verifier. For the two-flow output, an independently authenticated primitive source may use Theorem~\ref{thm:lexconnected} in a new verifier path, provided it reconstructs the edge objective and both optimization networks itself. The delivered arithmetic checker is suitable as a small component of that path, but the complete new native source-bound format has not been implemented or tested here.
+
+\subsection{The supplied adapter}
+\path{integration/native_adapter.py} targets the inspected private interfaces
+\path{fastunknot.cocycle_euler._euler_model},
+\path{fastunknot.normal_surface_geometry._prepare}, and
+\path{fastunknot.normal_surface_geometry._coordinates}.
+It exports the validated height and edge model, calls either research optimizer, reconstructs normal coordinates, and compares the arithmetic score with the native cell count. It never issues an unknot verdict. Its source was checked against the pinned modules, but a native checkout was not available for execution; the file and integration notes explicitly say \texttt{NOT\_RUN}.
+
+No maintained dispatch code, default allowance, certificate schema, or fallback policy is changed. A resource-limit exception means unfinished local work, not a negative answer. Integration should initially remain opt-in and preserve the existing exact fallback.
+
+\subsection{Proposed acceptance gates}
+Before enabling a native stage, replay both existing knot and unknot fixtures, including the documented primitive-disconnected regression. Require independent reconstruction of the two-network certificate from the source input, mutation tests for the primitive class and boundary data, and cancellation tests across geometry preparation and final replay. Measure full portfolio wall time, not only the inner network time. The present constructed-torus corpus should be retained as a geometric regression suite, not substituted for that native evaluation.
+
+The appropriate incoming destination is a descriptively named report directory assigned by the repository's intake process. This delivery does not reserve a report number or imply that its tests were run as part of the maintained test total.
+
+\section{Further research questions}\label{sec:future}
+\paragraph{A bounded-excess coherent disc theorem.}
+For which source-checked triangulation families can one prove that an unknot has a coherent disc with $D-D_*=O(\log n)$? A useful result must also bound any source-preserving retriangulation work and bit growth. Theorem~\ref{thm:band} makes this a quantitative geometric question rather than an unspecified search assumption, but does not settle it.
+
+\paragraph{Sharpness of the one-piece guarantee.}
+Construct or exclude a primitive coherent knot-exterior example having a disc at excess two but $F_*>2D_*$. If the threshold still succeeds under additional boundary or triangulation hypotheses, identify those hypotheses and prove the stronger statement. A synthetic absolute-difference example is not a substitute for the geometric construction.
+
+\paragraph{Connected Euler optimization in a small band.}
+Can the residual mass bound be used to optimize the primitive core's Euler characteristic directly in $T^{O(k)}\poly(B)$ time, without losing source placement or component identity? Merely enumerating coordinate subvectors of mass at most $k$ is not enough: an admissible summand need not be a disjoint component of the original surface.
+
+\paragraph{An improved dependence on the defect budget.}
+The cover has $T^{O(k)}$ growth. Is a $2^{O(k)}\poly(T,B)$ algorithm possible for the same exact band problem on geometric inputs? A support-localization argument alone does not provide such a bound. Conversely, an appropriate parameterized lower bound should preserve the coherent geometric constraints rather than only arbitrary piecewise-linear functions.
+
+\paragraph{Choosing the anchor dual for computational economy.}
+Different optimal matchings describe the same zero face and band but can yield very different numbers of feasible positive-defect descriptions. Can one select a balanced optimal dual whose corner functions or forced equalities minimize effective branching? Exact equivalence of the band must be preserved, including ties.
+
+\paragraph{Incremental constraint and flow reuse.}
+A neighboring stratum changes only a small number of defect slots. Can negative-cycle certificates, shortest-path information, or the maintained forced-equality contraction be updated with a provable total-work saving? Contracting zero-defect equalities permanently is unsafe when a later positive defect releases them.
+
+\paragraph{From two-flow certificates to geometric deletion.}
+Can an improving flow or a zero-primary-cost secondary improvement be translated into an explicit deletion of a null component union? Such a construction could connect the arithmetic certificate directly to the small residual geometry, rather than invoking a general component routine afterward.
+
+\paragraph{Boundary patterns and richer positive surfaces.}
+Determine which additional boundary constraints are preserved under null-union deletion. This is necessary before extending Theorem~\ref{thm:lexconnected} to hierarchy surfaces with prescribed pattern interaction. A correct extension should account for primitive annuli, planar capping, and essentiality separately.
+
+\paragraph{Native coverage and cost.}
+Evaluate the two-flow selector and low-radius band profiles on the maintained source-bound corpus, especially examples where the minimum-span face has a certified negative Euler optimum. Record unchanged positives, newly certified positives, slower complete calls, and resource exhaustion. The geometric tests in this package do not answer that question.
+
+\paragraph{Formal verification and certificate minimization.}
+Formalize balanced-anchor cancellation, the stratum cover, and the two-network weak-duality check before attempting the full topology. Investigate source-bound compressed coverage certificates for the stratum family; the current complete replay log intentionally pays the full $H(T,k)$ size.
+
+\section{Conclusion}
+The minimum-span face is not the end of exact cocycle optimization. Positive extremal defects give a complete, bit-controlled extension to a bounded piece-excess band, and their sparse support leads to an explicit quasi-polynomial regime. The same excess controls the total size of all components except a primitive core, with a sharp additional penalty for opposite primitive pairs.
+
+A complementary two-network optimization produces a connected surface without requiring it to minimize span. Its edge-penalty threshold has a rigorous one-extra-piece completeness guarantee for coherent discs. This is a concrete polynomial sufficient stage, not a proof that the whole recognition problem has become polynomial.
+
+The remaining global issue is geometric coverage: a justified way to obtain suitable coherent witnesses, small excess, or a controlled hierarchy from arbitrary knot inputs. The delivered theorems, reference kernels, certificates, and experiments make the local optimization obligations explicit while leaving that issue visible rather than hiding it inside an oracle assumption.
+
+\appendix
+\section{Reproduction and artifact map}\label{app:reproduce}
+All Python execution below is standard-library only; PDF compilation requires a TeX installation. From the package root:
+\begin{lstlisting}
+PYTHONPATH=src python -m unittest discover -s tests -v
+python scripts/audit.py
+python scripts/benchmark.py
+python scripts/check_examples.py
+python scripts/build_article.py
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+A saved full band can be checked without rerunning the search:
+\begin{lstlisting}
+PYTHONPATH=src python -m span_excess \
+  examples/solid_torus_band.json --verify
+\end{lstlisting}
+The command returns an arithmetic-certificate validity field and a null knot verdict. To run the global selector on the saved model, use \texttt{--lex}; to run the band search, use \texttt{--radius k}. A work cap produces \texttt{INCONCLUSIVE}, not a negative knot classification.
+
+\begin{center}\small
+\begin{tabular}{p{0.38\linewidth}p{0.55\linewidth}}
+\toprule
+Artifact & Role \\\midrule
+\path{src/span_excess/model.py}, \path{strata.py} & Balanced model and canonical defect descriptions.\\
+\path{network.py}, \path{search.py} & Feasibility, exact signed-flow optimization, and full band profiles.\\
+\path{lexicographic.py} & Complete $F$-optimal face and auxiliary span network.\\
+\path{checker.py} & Producer-independent local, full-band, and two-network replay.\\
+\path{geometry.py}, \path{pachner.py} & Constructed solid tori, legal move histories, and literal normal-polygon oracle.\\
+\path{examples/} & Complete saved arithmetic logs and geometric witnesses.\\
+\path{results/} & Executed tests, independent audit counts, raw paired timing samples, and move histories.\\
+\path{integration/}, \path{docs/} & Opt-in native adapter, source audit, claim boundaries, and merge gates.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{A worked arithmetic family}\label{app:example}
+For two tetrahedra with common vertex labels and heights $(0,0,0,0)$ and $(L,0,0,0)$, a balanced lower/upper choice is $(0,1)$ in the first and $(1,0)$ in the second. Its value is $L$. Potentials $(0,t,t,t)$ with $0\leq t\leq L$ attain that value, so the minimum face already contains $L+1$ distinct normalized integer potentials.
+
+At radius two there are
+\[
+ H(2,2)=1+\binom41 3\binom21+\binom42 3^2\binom22
+ =1+24+54=79
+\]
+descriptions, independently of $L$. The supplied example with $L=12$ stores every one of their feasibility or optimality proofs. Its objective edges are exactly those declared in \path{scripts/benchmark.py}; they are not claimed to be the Euler weights of an actual manifold. The genuine product-torus example is supplied separately so that algebraic complexity evidence and geometric correctness evidence are not confused.
+
+\section{Source and claim ledger}\label{app:ledger}
+The pinned files directly inspected include the project and reports READMEs; \path{synthesis/cocycle_face.tex}; \path{synthesis/cocycle_euler.tex}; \path{synthesis/cocycle_connectivity.tex}; \path{fast/fastunknot/cocycle_euler.py}; and \path{fast/fastunknot/cocycle_euler_flow.py}. The native adapter's private calls are based on those files. Incoming archive names and intake instructions were inspected, but the latest binary archive contents were not audited. The Library was used to distinguish the recent representative-family reports from the present cocycle optimization task.
+
+\textbf{Proved here:} the finite stratum cover and count; exact bounded-excess Euler optimization under the stated nonnegative-weight contract; primitive-core and opposite-pair bounds; two-network lexicographic optimization; its connectedness conclusion under authenticated primitive knot-exterior hypotheses; and the edge-penalty sufficient test with its one-piece guarantee.
+
+\textbf{Executed here:} the reference implementations, 66 unit tests, the independent finite audits, the explicit solid-torus surface gluings, and the saved example replays. Benchmark figures are derived from the recorded JSON rather than from an unexecuted estimate.
+
+\textbf{Not established here:} completeness of the coherent disc family for arbitrary triangulations; a universal logarithmic excess bound; general quasi-polynomial unknot recognition; native recognizer speedup or added corpus coverage; a production-integrated source-bound verifier for the new selector; or external peer review. These exclusions are logical and experimental boundaries, not a claim that the unresolved research directions cannot be advanced.
+
+\bigskip
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{9}
+\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt: UnknotRecognition research and implementation}, inspected revision \texttt{\snap}, 9 October 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{face}
+ProveIt contributors, \emph{Bounded search among tied minimum-span surfaces},
+\path{Topology/UnknotRecognition/synthesis/cocycle_face.tex}, revision \texttt{\snap}. Exact anchor-gap identity and minimum-span face constraints.
+
+\bibitem{euler}
+ProveIt contributors, \emph{Exact Euler optimization on a minimum-span face},
+\path{Topology/UnknotRecognition/synthesis/cocycle_euler.tex}, revision \texttt{\snap}. Coherent cell identity, signed-flow dual, and geometric weight bound.
+
+\bibitem{connectivity}
+ProveIt contributors, \emph{Checking cocycle connectedness without an orbit search},
+\path{Topology/UnknotRecognition/synthesis/cocycle_connectivity.tex}, revision \texttt{\snap}. Coherent deletion, primitive connectedness, and the disconnected trefoil regression.
+
+\bibitem{flowcode}
+ProveIt contributors, \emph{Exact bounded-flow dual for a weighted absolute-difference objective},
+\path{Topology/UnknotRecognition/fast/fastunknot/cocycle_euler_flow.py}, revision \texttt{\snap}. Source of the sign-saturated bounded-flow construction adapted in this package.
+
+\bibitem{aht}
+I. Agol, J. Hass, and W. P. Thurston, \emph{The computational complexity of knot genus and spanning area}, Transactions of the American Mathematical Society \textbf{358} (2006), 3821--3850. Preprint arXiv:math/0205057v2, especially Theorem~16 and Corollary~17.\newline
+\url{https://arxiv.org/abs/math/0205057}.
+
+\bibitem{lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026. In particular the boundary-compressibility recognition criterion and Section~9's discussion of timing and iteration bounds.\newline
+\url{https://arxiv.org/abs/2607.23350}.
+\end{thebibliography}
+\end{document}

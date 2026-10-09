@@ -1,0 +1,161 @@
+\section{Question, scope, and relation to the existing programme}
+\label{sec:context}
+
+The immediate problem is to make complete normal-surface search less
+expensive without weakening its mathematical meaning.  A fast test of
+one supplied surface, a fast search for one favourable linear objective,
+and a fast enumeration of every relevant vertex surface are different
+operations.  An improvement in the first does not automatically improve
+the worst-case complexity of the third, and none by itself bounds the
+number of triangulations or sectors that a recognizer must visit.
+
+The present continuation targets a specific expense exposed by the
+preceding report: once matching has reduced a sector to a small
+quadrilateral subspace, the existing general arrangement routine still
+intersects equality hyperplanes that never change the canonical lift.
+In dimension three, the normalized feasible set is a polygon.  The
+relevant geometry is therefore the overlay of the actual planar regions
+on which each triangle potential attains its minimum.  Enumerating those
+regions gives both a stronger output bound and a direct certificate that
+the whole supplied sector has been covered.
+
+The second expense is earlier in the pipeline.  The original constructor
+materializes a length-\(k\) quadrilateral label for every face-corner
+equation, although all but \(O(k)\) labels vanish.  Compiling the
+source incidences once and postponing dense labels until after this
+test removes that \(tk\) allocation pattern.  These two changes address
+separate stages, and the experiments time them separately.
+
+\subsection{The object actually being enumerated}
+
+Let \(T\) be a finite compact triangulation with \(t\) tetrahedra.
+Normal coordinates use four triangle counts and three quadrilateral
+counts in each tetrahedron.  A \emph{supplied sector} chooses at most
+one allowed quadrilateral type per tetrahedron and sets all other
+quadrilateral coordinates to zero.  Its number of allowed types is
+\(k\le t\).  Allowed coordinates may vanish: a sector contains all its
+coordinate faces.  The remaining matching equations and nonnegativity
+inequalities define a rational polyhedral cone in standard coordinates.
+We enumerate its extreme rays with nonzero quadrilateral part, in
+primitive integer normalization.  The excluded rays are pure vertex
+links.
+
+This is a complete list of the nonlink \emph{standard} rays of the
+sector.  It is not merely a list of extreme rays in quadrilateral
+coordinates.  Canonical lifting is positively homogeneous but
+piecewise linear, so a quadrilateral direction in the interior of a
+quadrilateral face can lift to a standard extreme ray.  This distinction
+is established in the classical conversion theory~\cite{Burton2009}
+and is essential here: the geometric family in
+Section~\ref{fib:family} has four essential standard disc rays but only
+one of them is quadrilateral-extreme.
+
+The abstract cone arguments apply whenever the stated potential model
+is available.  The executable modules use the maintained native
+validator, whose contract is narrower: a connected orientable finite
+3-manifold triangulation with one torus boundary component.  They do
+not implement ideal-vertex or arbitrary boundary-pattern input.
+The matching dimension \(d\) is the dimension of the rational
+quadrilateral matching kernel before nonnegativity.  The implemented
+eligibility test is \(d\le3\).  Nonnegativity may reduce the feasible
+dimension further; the empty, point, segment, and polygon cases all
+occur in genuine audited sources.
+
+\subsection{What is new in this continuation}
+
+The main mathematical statements are as follows.
+
+\begin{enumerate}
+\item \textbf{Reusable sparse construction.}
+Theorem~\ref{sp:constructor} proves a pre-elimination work and storage
+bound while preserving the incumbent kernel's exact combinatorial
+representatives, potential gauge, cycle rows, and rational basis.
+\item \textbf{Complete planar enumeration.}
+Theorem~\ref{pl:quadratic-bound} gives a bound in terms of the
+\emph{active} minimum cells, rather than all pairwise potential
+equalities.  Proposition~\ref{pl:operations} gives an exact polynomial
+construction and accounts for writing the full normal vectors.
+\item \textbf{Independent completeness replay.}
+Theorems~\ref{cv:area-theorem} and~\ref{cv:complete-replay} show why
+dominance and exact total area suffice to certify maximal minimum
+cells, not just a partial collection of valid rays.
+\item \textbf{An infinite geometric test family.}
+Section~\ref{fib:family} solves the entire cone and topology of the
+two-cap Fibonacci family, including the exact growth of the old
+arrangement's rejected directions.  Section~\ref{cf:grid} separately
+shows quadratic sharpness for abstract potential cones.
+\end{enumerate}
+
+The canonical-lift characterization itself is not a new claim.
+It is proved here to fix every degeneracy needed by the algorithm,
+with attribution to both the earlier report and the classical
+conversion framework.  Planar minimum diagrams are clipped power
+diagrams; their computational geometry and the quadratic complexity of
+three-dimensional normal-fan overlays have substantial prior
+literature~\cite{Aurenhammer1987,Weibel2010,Fogel2009}.
+Our contribution is the explicit complete normal-sector algorithm,
+the parameter-sensitive boundary count, its independent certificate,
+the exact implementation, and the geometric family.  We make no claim
+to a first general theorem about planar subdivisions.
+
+\subsection{Repository lineage}
+
+All code and incoming reports were read against the pinned commit
+\begin{center}\small\ttfamily\basecommit\end{center}
+The immediately preceding minimum-envelope
+package proves complete enumeration for \(d\le2\) and the general
+common-cell characterization~\cite{MinimumEnvelopes}.  Its optimized
+rank-two implementation is retained unchanged as a performance
+control.  The other recent incoming packages cover different parts
+of the programme: certified active-face reduction and batched local
+descent; bounded trace search; boundary assembly kernels; rooted disc
+components; and affine orbit profiles
+~\cite{ActiveFaces,TraceSearch,CycleKernels,RootedDiscs,AffineProfiles}.
+Their bounds are not imported as global coverage or termination
+theorems for this algorithm.
+Likewise, global admissible-face bounds proved for closed
+triangulations~\cite{Burton2011} are not transferred here to
+finite exteriors with boundary.
+
+In particular, the phrase \emph{cycle kernel} is potentially misleading
+across the reports.  Here it means linear consistency equations around
+cycles in the graph of triangle-coordinate differences.  The
+cycle-envelope incoming report studies a boundary assembly language.
+These are distinct objects with distinct parameters.
+
+The current maintained source already includes a native, certified
+diagram-to-exterior route; its pulling subdivision constructs
+\(20\max(1,n)\) tetrahedra from an \(n\)-crossing diagram.  We do not
+describe source provenance as an absent component.  The remaining
+question is how to use such a source, complete local searches, and
+certified topology transformations with a sufficiently small
+\emph{total} search bound.  The present modules accept a supplied
+triangulation and do not independently authenticate an accompanying
+knot diagram.
+
+\subsection{The asymptotic target}
+
+We use \emph{quasi-polynomial} for time
+\(2^{(\log n)^{O(1)}}\).  The more specific targets
+\(n^{O(\log n)}\) and \(n^{O((\log n)^2)}\) are different.
+Lackenby's March 2021 handout announces
+\[
+2^{O((\log n)^3)}=n^{O((\log n)^2)}
+\]
+for unknot recognition~\cite{Lackenby2021}.  It describes a hierarchy
+strategy combining controlled surface complexity, compressed
+representations, multisurfaces, and shortened hierarchy depth.
+The July 2026 manuscript gives detailed algorithms and certification
+theorems for incompressible surfaces and essential hierarchies, while
+explicitly leaving speed-up for further work~\cite{Lackenby2026}.
+We therefore use those sources as structural guidance, without
+attributing a fully implemented quasi-polynomial analysis to that
+manuscript or to the present code.
+
+For comparison, Burton and Ozlen's branching algorithm supplies a
+rigorous exponential worst-case analysis and strong experimental
+behaviour~\cite{BurtonOzlen2012}.  Improving one subroutine here neither
+changes that theorem nor establishes a polynomial empirical law for
+complete recognition.  The statements below are local theorems and
+reproducible stage measurements; Section~\ref{sec:research} specifies
+what would be needed to compose them into a global bound.

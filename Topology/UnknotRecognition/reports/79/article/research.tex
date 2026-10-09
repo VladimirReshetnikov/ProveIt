@@ -1,0 +1,263 @@
+\section{The remaining route to complete recognition}\label{sec:recognition}
+
+The proved algorithm completely decides a bounded simplification question.
+To use it as a complete unknot recognizer, one must connect that question
+to the topology of every relevant exterior. This section states a sufficient
+condition precisely, so that the missing research target is not hidden
+inside the phrase ``small barrier.''
+
+\subsection{A conditional closure theorem}
+
+Fix the maintained diagram-to-exterior construction and its source binding.
+Suppose an $n$-crossing diagram produces, in polynomial time with a verified
+source binding, a marked triangulation with at most $(n+2)^{O(1)}$
+tetrahedra and polynomial marking bit length. Let $\mathcal C$
+be a class containing these exteriors and closed under the permitted
+simplifications. A \emph{sound terminal predicate} $P$ is a computable
+predicate on members of $\mathcal C$ such that $P(T)$ implies that $T$ is a
+solid torus. Its acceptance must be bound to the actual exterior; a
+recognizer for an unrelated supplied triangulation is insufficient.
+
+\begin{theorem}[A sufficient global structural target]\label{thm:conditional}
+Assume the following two properties for the chosen exterior class and move
+model.
+\begin{enumerate}
+\item The predicate $P$ is decidable in
+$2^{O((\log(t+B+2))^2)}$ time and is sound for solid tori.
+\item There is an absolute constant $C$ such that every solid torus
+$T\in\mathcal C$ with $P(T)$ false admits a strict descent with at most
+$C(\log(t+2))^2$ total upward moves.
+\end{enumerate}
+Then the bounded-descent algorithm and $P$ yield a deterministic
+$n^{O(\log(n+2))}$ unknot-recognition algorithm for those input diagrams.
+\end{theorem}
+\begin{proof}
+Let $t_0$ be the initial source size and choose the fixed integer budget
+$U=\lceil C(\log(t_0+2))^2\rceil$. At each current triangulation first evaluate $P$.
+If it accepts, accept the input. Otherwise run complete bounded-$U$ descent.
+Adopt any independently verified positive endpoint and repeat. If the
+bounded search exhausts, reject.
+
+Every successful iteration strictly decreases the tetrahedron count, so
+there are fewer than $t_0$ such iterations. All replacements preserve the
+underlying manifold. If the input is knotted, its exterior is not a solid
+torus, so soundness prevents acceptance by $P$. If the input is an unknot,
+every current source is a solid torus in $\mathcal C$. Unless $P$ accepts,
+the second hypothesis supplies a descent within the chosen budget, since
+the current size is at most $t_0$. Complete exhaustion cannot then cause
+rejection. Finite termination therefore accepts exactly the unknot inputs.
+
+By \cref{cor:preprocess}, the cumulative marking bit bound increases by at
+most $t_0U+O(1)$, remaining polynomial in $n$. Each descent call costs
+$2^{O(U)}\poly(t_0+B)=n^{O(\log(n+2))}$, and the terminal calls have the
+same form. Multiplying by a polynomial number of iterations preserves
+that bound. The maintained exterior binding transfers the conclusion to
+the original diagram.
+\end{proof}
+
+This theorem is a conditional reduction, not a proof of its second
+hypothesis. It is useful because it permits \emph{any} successful bounded
+descent at each iteration: the structural hypothesis applies to every
+resulting solid torus in the closed class. A claim concerning only the
+existence of one favorable long path would not justify the same greedy
+choice of intermediate endpoints.
+
+The predicate need not recognize all solid tori. It must cover the
+solid-torus states that cannot be further simplified within the proposed
+budget. A terminal family may consequently be much larger than a handful
+of smallest triangulations. In this move model both the vertices and the
+boundary triangulation are preserved. These invariants constrain the
+reachable terminal states and must be part of any valid global theorem.
+
+\subsection{Three distinctions that cannot be suppressed}
+
+\paragraph{Total upward cost and maximum height.}
+A trace can alternate many upward and downward moves while remaining close
+to its initial tetrahedron count. A bound on the largest intermediate
+triangulation therefore does not bound the total number of upward events.
+The localization and counting theorems charge total upward cost. Converting
+a height-barrier theorem into this stronger resource bound requires an
+additional compression argument, potentially using causal components,
+redundant loops, or a monotone potential. It is not obtained by changing
+the notation for the parameter.
+
+\paragraph{Descent and disc discovery.}
+The component argument uses additive tetrahedron loss. A disc found after
+several independent modifications can depend on the combined endpoint
+geometry and cochain. Its existence need not be witnessed after projecting
+just one positive component. Any analogous theorem for normal-disc search
+needs a separate localization invariant for that topological endpoint
+property. The implementation's shared-cover engine can still accelerate
+that search, but its complete bounded region is then a supplied hypothesis.
+
+\paragraph{Bounded irreducibility and knot type.}
+A complete failure to descend within budget is an exact statement about
+the allowed moves. It identifies neither a canonical triangulation nor a
+nontrivial knot by itself. The terminal and structural hypotheses in
+\cref{thm:conditional} are what turn bounded failure into a topological
+decision. Resource-limited failure is weaker still and remains inconclusive.
+
+\section{Further research questions and proposed milestones}\label{sec:questions}
+
+The questions below separate structural mathematics from implementation
+work. Each has a concrete target whose success would change the next
+algorithmic decision.
+
+\subsection{Structural questions with direct asymptotic consequences}
+
+\paragraph{1. Find a terminal class admitting a small total-upward theorem.}
+For the exact finite exterior class produced by ProveIt, identify a sound
+terminal predicate $P$ and prove, or refute by a family, the second
+hypothesis of \cref{thm:conditional}. Boundary triangulation and vertex data
+must be retained in the statement. A useful intermediate result would
+establish $U=O(\log^2 t)$ for a natural subclass such as a controlled family
+of layered or hierarchy-derived solid tori. The milestone is a uniform
+theorem over that subclass, with its constants and encoding costs explicit.
+
+\paragraph{2. Relate height barriers to total upward cost.}
+Let $h$ bound the excess tetrahedra along a simplification path. What extra
+condition on that path, its dependency graph, or its hierarchy controls
+the minimum total upward cost by $\poly(h,\log t)$? A negative family with
+small $h$ and large minimum total upward cost would also be valuable: it
+would rule out a tempting but invalid route to the required bound. Recording
+both parameters in future searches is a necessary first experiment.
+
+\paragraph{3. Determine the optimal localization function.}
+Define $f(U)$ as the least universal radius guaranteeing a connected
+first-descent footprint whenever descent with at most $U$ upward events
+exists in the stated category. This report proves $f(U)\le3U+3$ and
+$f(1)=6$. Is the linear coefficient three asymptotically sharp, or do
+geometric constraints force extra birth arcs and improve the incidence
+estimate? Any proposed lower-bound family must rule out \emph{all}
+alternative low-cost simplifications, not only exhibit a large chosen
+trace. The six-cell proof illustrates the required strength.
+
+\paragraph{4. Generalize the additive objective carefully.}
+Which other integer potentials admit a componentwise additive loss and a
+bounded-per-event incidence census? A potential involving tetrahedra,
+specific normal coordinates, or a hierarchy measure could make more
+terminal states accessible without leaving the causal framework. The
+target is an abstract theorem with explicit local input/output sizes,
+backward persistence, and a positive-component argument. Nonadditive
+normal-disc existence should first be tested for counterexamples to naive
+projection.
+
+\paragraph{5. Extend the move set without losing the proof contract.}
+Boundary moves, vertex-changing moves, or $2$--$0$ reductions may overcome
+the preserved invariants of the present model. Each addition changes the
+legality and input/output census. One must establish whether every enabling
+dependency still consumes a born cell, or whether a richer graph is needed.
+The strict-simplicial suspension example gives a concrete diagnostic:
+global missing-simplex tests create dependencies invisible to tetrahedron
+births. A useful result would quantify localization for a larger,
+precisely specified move system rather than appeal to Pachner connectivity
+without resource bounds.
+
+\subsection{Algorithmic questions suggested by the new theorems}
+
+\paragraph{6. Complete the deterministic multiunit implementation.}
+Implement a reproducible perfect-hash-family generator, stream authenticated
+positive items through the supplied-coloring DP, reconstruct the selected
+certificates, and call the disjoint-trace composer. An end-to-end negative
+answer must certify that every required coloring and item family was
+exhausted. The first milestone is agreement with unrestricted small-instance
+search under a \emph{joint} upward budget. Enumerating components separately
+and greedily repeating descents is not a substitute for this comparison.
+
+\paragraph{7. Reduce index memory while preserving exact cover semantics.}
+The full inverted index removes repeated search but stores all connected
+covers. Can a compact decision diagram, canonical-parent search oracle,
+or incremental connected-completion structure represent
+$\{R:F\subseteq R\}$ exactly with substantially lower practical memory?
+An admissibility oracle must distinguish actual footprints from their
+possible connecting covers. It must also support resource-capped failure
+without misreporting complete exhaustion. Compare streaming restart,
+explicit index, and compact index on both positive and fully exhausted
+instances, including setup time and peak memory.
+
+\paragraph{8. Prove a stronger safe quotient of continuation states.}
+The present deduplication saves endpoint queries but retains continuation
+frames. A geometric isomorphism alone forgets original-source supports and
+sleep history. Determine the smallest additional data making two frames
+future-equivalent under the remaining upward budget and cover family.
+A proof of a right congruence would justify further pruning. Until then,
+endpoint equality remains evidence about outputs, not permission to merge
+all histories.
+
+\paragraph{9. Improve local geometry updates and marking storage.}
+Global validation and rebuilding are polynomial but dominate small traces.
+Maintain affected edge stars, dual incidences, and cochain transport using
+stable local frames and persistent data structures. The acceptance contract
+must remain independent: a faster producer should still emit certificates
+checked without calling its own move or transport routines. Test every
+accepted local frame, particularly downward belt relabelings, as part of
+the update invariant rather than relying only on the producer's canonical
+examples.
+
+\paragraph{10. Tighten the trace-count constants and use budget structure.}
+The $11$-symbol encoding deliberately permits many impossible commitments.
+Can local compatibility, first-descent balance, or birth-graph sparsity give
+a smaller exponential base without costly per-state reasoning? A second
+parameter such as pathwidth of the consumed region may support a different
+dynamic program. The milestone is a proved count and a measured crossover,
+not a branching-factor estimate based only on successful fixtures.
+
+\subsection{Evidence, verification, and integration questions}
+
+\paragraph{11. Build a heterogeneous barrier census.}
+Extend the current constructed solid-torus controls with genuine diagram
+exteriors, independently recognized hard solid tori, local-minimum
+triangulations, and adversarial cases from published Pachner-graph
+exploration. Record total upward cost, maximum height, minimum actual
+footprint, component structure, index size, peak memory, and complete or
+capped status. Retain unsuccessful cases and certificate replay. Such a
+census can guide conjectures about \cref{thm:conditional}; it cannot prove
+the required asymptotic bound on its own.
+
+\paragraph{12. Certify negative bounded search and formalize the core.}
+Positive traces already have an independent geometric checker. Can complete
+bounded failure be exported as a compact exploration DAG whose checker
+verifies initial state, all outgoing alternatives, resource budgets,
+commutation justifications, and terminal rejection? Separately, formalize
+the small core consisting of backward persistence, component projection,
+footprint connectivity, and the incidence theorem. A formalization should
+start from explicit generalized face pairings and local permutations;
+ordinary strict simplicial complexes have different legality rules. This
+would give the repository a precise trust boundary for future optimizations.
+
+\subsection{A practical order of work}
+
+The immediate integration milestone is the additive cover search with
+independent replay and the default radius $3U+3$. The next implementation
+milestone is complete multiunit color coding and a broader measured census.
+In parallel, the highest-value mathematical task is the terminal-class
+and total-upward structural theorem. Better constants and data structures
+make the current bounded primitive more useful, while that structural
+theorem is what could close the project's specific quasi-polynomial
+recognition argument.
+
+\section{Deliverables and integration contract}\label{sec:deliverables}
+
+The archive contains the complete article sources and compiled PDF, the
+new producer and verifier modules, causal certificate utilities, packing
+prototype, fixtures, targeted tests, exact raw benchmark records, positive
+certificates, independent audit results, and a self-contained reproduction
+snapshot. The snapshot combines the pinned native tree with only the
+previously absent incoming dependencies and the additive files from this
+report. It is not an instruction to overwrite the current repository with
+the whole snapshot.
+
+The integration script defaults to a dry run. It checks recorded native
+prerequisite hashes and refuses conflicting destination files; applying
+the overlay only creates absent files or accepts byte-identical existing
+ones. A manifest identifies native baseline files, incoming dependencies,
+and this report's additions separately. Reproduction scripts retain new
+outputs separately from the recorded evidence. Checksums make the delivered
+bytes auditable, while mathematical correctness rests on the proofs and
+geometric verification rather than on those checksums.
+
+The resulting contribution is a complete fixed-parameter simplification
+theorem, its multiunit strengthening, and a measured implementation of
+shared local search with independently checked witnesses. The project-wide
+recognition consequence is stated with its remaining assumptions in
+\cref{thm:conditional}, so it can be pursued as a precise research problem.
