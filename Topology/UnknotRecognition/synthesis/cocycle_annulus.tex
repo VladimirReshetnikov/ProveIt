@@ -1,0 +1,103 @@
+\section{Capping primitive annuli without another surface search}
+\label{sec:cocycle-annulus}
+
+The optimal-face experiment exposes a simpler improvement than searching
+for a tied disc: its seven-crossing source already has a certified annulus
+in the primitive relative class. That annulus itself proves unknottedness.
+The native stage now accepts this sufficient witness immediately. The
+stored surface remains an annulus with zero disc components; a new
+certificate schema records the separate boundary-capping implication.
+
+\subsection{Why the primitive annulus gives a compressing disc}
+
+Let $M$ be the authenticated compact exterior of a knot in $S^3$, with
+boundary torus $T$. As used in Section~\ref{sec:cocycle-connectivity},
+\[
+ H_2(M;\mathbb Z)=0,\qquad H_2(M,T;\mathbb Z)\cong\mathbb Z,
+ \qquad H_1(M;\mathbb Z)\cong\mathbb Z.
+\]
+The inclusion $i_*:H_1(T;\mathbb Z)\to H_1(M;\mathbb Z)$ is onto.
+For example, Mayer--Vietoris for $S^3=M\cup N(K)$ identifies
+$H_1(T;\mathbb Z)$ with $H_1(M;\mathbb Z)\oplus H_1(N(K);\mathbb Z)$.
+The exact sequence of the pair therefore makes
+\[
+ \partial:H_2(M,T;\mathbb Z)\longrightarrow H_1(T;\mathbb Z)
+\]
+injective, with image the primitive rank-one subgroup $\ker i_*$.
+Consequently a primitive relative class has nonzero primitive boundary
+class on the torus. This conclusion uses the source knot exterior; it is
+not asserted for an arbitrary torus-boundary manifold.
+
+Suppose $S$ is a connected orientable proper surface representing that
+primitive class, with $\chi(S)=0$. Classification of compact orientable
+surfaces leaves a torus or an annulus. A closed torus has zero boundary
+class, which contradicts the preceding paragraph. Thus $S$ is an annulus.
+
+Its two boundary circles are disjoint simple curves on $T$. If both were
+inessential, their homology sum would be zero. If both were essential,
+they would be parallel on the torus; their oriented classes would sum to
+zero or twice a primitive class. Neither possibility is nonzero primitive.
+Exactly one boundary circle is therefore essential and the other bounds
+a disc $D\subset T$. The essential circle lies outside that disc: an
+essential curve cannot lie inside a disc and cannot cross its boundary.
+
+The interior of the proper annulus is disjoint from $T$, so $S\cup D$
+is an embedded disc with boundary the remaining essential circle. Using
+a boundary collar, push its boundary cap inward and round the corner
+along the capped circle. The result is a properly embedded compressing
+disc for $T$. The knot-exterior disc criterion then proves that the source
+knot is the unknot. No normal vector for this capped disc is needed to
+verify the implication.
+
+The two essential hypotheses cannot be replaced by Euler characteristic
+alone. The audit below includes a connected null-class annulus in a trefoil
+exterior and a primitive disconnected surface there with total Euler
+characteristic zero. Both are rejected. Coorientation is also essential:
+the connectedness inspector proves orientability rather than inferring it
+from Euler characteristic.
+
+\subsection{A separate witness tag and unchanged surface inspection}
+
+The new schema is \code{diagram-cocycle-annulus-v1}. It contains the same
+six fields as the previous cocycle disc schema: source PD, canonical finite
+triangulation, integral heights, normal coordinates, optional span witness,
+and schema tag. The new independent wrapper translates only the tag for
+the existing surface inspector and requires Euler characteristic exactly
+zero. That inspector still checks the source geometry, all matching and
+coherence conditions, the primitive class after its own tree gauge, and
+either a zero spanning tree or the minimum-span certificate. Its code and
+the span optimality verifier are unchanged.
+
+The public seed verifier dispatches the new schema to this wrapper.
+An annulus relabeled as the old disc schema remains invalid as a positive
+disc proof; a disc relabeled as an annulus also fails. Legacy cocycle-disc
+and component-count certificates retain their previous acceptance rules.
+In particular, the new witness does not redefine a zero disc count as a
+positive normal-disc count.
+
+Discovery already performs independent surface inspection at the raw and
+optimized stages. A verified Euler-zero result now stops that search and
+emits the annulus tag. Tree and face candidates with Euler zero must also
+pass full independent source inspection before being accepted; the cheap
+negative-candidate branch cannot emit such a positive. The final stage
+record has \code{unknot\_witness=annulus-cap} and continues to report
+\code{compressing\_discs=0} for its actual stored surface.
+
+The new implication adds only constant-size metadata and a constant number
+of checks after surface inspection. The standalone wrapper repeats the
+same independent inspection and adds the Euler-zero test. It introduces
+no new search, no boundary-component enumeration, and no expansion of
+binary normal coordinates. All previously accounted-for arithmetic,
+container and bit costs of source inspection remain applicable. The
+capping argument is an existence certificate for a disc; it does not yet
+provide a normal-coordinate disc extraction or a hierarchy-cut operation.
+
+Annulus recognition is enabled within the optional native stage.
+The seed routine accepts \code{annulus=False} to recover the old criterion.
+The recognizer exposes \code{normal\_seed\_annulus=False}; the CLI exposes
+\code{--normal-seed-no-annulus}. The shared
+work allowance and cancellation behavior are retained. The separate face
+search remains disabled by default, and the ordinary recognition portfolio
+still leaves the whole native stage optional.
+
+\input{cocycle_annulus_results.tex}

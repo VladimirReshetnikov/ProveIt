@@ -1,4 +1,4 @@
-"""Check a source-bound normal-disc proof without seed or flow discovery."""
+"""Check source-bound disc or annulus-cap proofs without seed discovery."""
 from .diagram import Diagram, DiagramError
 from .diagram_exterior_verify import verify_diagram_exterior
 from .normal_disk_kernel import verify_normal_disk_count_certificate
@@ -7,6 +7,9 @@ from .integer_codec import certificate_equal, encoded_integer
 
 def verify_normal_seed_certificate(diagram, certificate, *, check=lambda: None):
     check()
+    if type(certificate) is dict and certificate.get('schema') == 'diagram-cocycle-annulus-v1':
+        from .normal_annulus_verify import inspect_annulus_certificate
+        return inspect_annulus_certificate(diagram, certificate, check=check) is not None
     if type(certificate) is dict and certificate.get('schema') == 'diagram-cocycle-disc-v1':
         from .normal_cocycle_verify import inspect_cocycle_certificate
         summary = inspect_cocycle_certificate(diagram, certificate, check=check)

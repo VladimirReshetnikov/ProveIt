@@ -1,0 +1,129 @@
+\subsection{Coverage and independent boundary controls}
+
+On 84 source inputs with the existing two-million-guard allowance, the
+four-tree policy now has 24 native positives, 59 completed restricted
+misses and one cap, compared with 23 positives before annulus recognition.
+Requesting 24 tree trials now gives 27 positives, 56 misses and one cap,
+compared with 24 positives before. The capped source remains Gordian.
+The optional four-face-root policy retains its 24 positives; its newly
+found disc is now preempted by the earlier optimized annulus.
+
+Three earlier positives, \code{random-29}, \code{random-79} and
+\code{random-99}, now stop at their raw annuli. Their shared guard work
+falls from 11,227, 10,192 and 7,785 to 6,561, 6,480 and 4,984 respectively.
+The seven-crossing \code{random-142} stops on its original 122-piece
+optimized annulus at 93,012 guards. Without annulus recognition and without
+face search it previously completed a miss at 93,011 guards: the extra
+unit is the final success guard, not another discovery pass. With four
+face roots enabled, its old disc proof required 117,848 guards.
+
+With the optional 24-tree allowance, \code{random-81} now succeeds at
+trial 5 rather than trial 22, reducing guards from 72,527 to 52,641.
+Two additional four-crossing unknots, \code{random-1} and
+\code{random-127}, succeed at tree trials 10 and 7 respectively. Their
+annuli have 86 and 111 pieces, and their guard totals are 44,244 and 48,849.
+These are additional positives for that explicit extended allowance;
+they remain misses under the default four tree trials.
+
+Seven distinct annulus certificates are retained. Every prior positive
+certificate still passes the public verifier. Under each of the three
+compared policies, twenty positive records retain their exact certificate
+hash; the intentional changes use the new annulus tag and may stop earlier.
+Cases that do not return an annulus preserve their complete recorded native
+result, including their work count. On nineteen ordinary corpus inputs,
+both settings return the expected verdicts without reaching the native
+stage, so no ordinary-portfolio gain follows from this experiment.
+
+The final audit independently checks all 787 original or root-extremal
+minimum-span surfaces from the preceding 74-source small-input experiment.
+Sixteen have Euler characteristic zero, and precisely those pass the new
+annulus wrapper. Regina agrees on connectedness, orientability, Euler
+characteristic and boundary count. The seven actual produced annulus
+witnesses receive separate Regina comparisons, including raw and later-tree
+surfaces outside that minimum-span experiment. Two trefoil adversaries
+bring the total to 796 Regina comparisons.
+
+For the sixteen accepted minimum-span annuli and the seven produced
+witnesses, a separate small-fixture control expands boundary arc pairings,
+finds each boundary circle and computes its mod-two intersection vector
+against an independently validated torus homology basis. All 23 comparisons
+give two circles, exactly one with zero vector. At most 86 boundary points
+are expanded. This is audit code only; neither recognition nor certificate
+verification calls it.
+
+The first trefoil adversary is a genuine connected orientable annulus with
+20 normal pieces. Set the local height at a corner to one exactly when its
+canonical global vertex is 3 or 7, and to zero otherwise. This is a pure
+vertex coboundary. Its two boundary circles both have zero mod-two homology,
+and the primitive-class checker rejects it. The second adversary changes
+the primitive trefoil seed by subtracting one at global vertex 3. Its total
+Euler characteristic is zero, but Regina and the native component census
+find two components and no compressing disc. The zero-tree connectedness
+check rejects this forged annulus witness.
+
+\subsection{Tests and complete-call measurements}
+
+All 34 focused tests pass in 4.809 seconds, and all 1,204 maintained tests
+pass in 226.376 seconds. Tests cover producer-free annulus replay, raw and
+optimized early termination, exact budget boundaries, cancellation, strict
+switch types, schema swaps, malformed fields, wrong sources, the trefoil
+adversaries, zero and doubled classes, and 20,000-bit gauge transport through
+hexadecimal JSON. Historical tree and face tests explicitly disable the new
+criterion when testing their original discovery paths.
+
+The final audit takes 159.502 seconds and pins 488 source files. Its
+elapsed time is a correctness-run total, not a paired performance result.
+A preliminary successful audit is retained as a log; the final run follows
+an update that makes the historical tree, blocking-flow and face research
+drivers explicitly retain their original disc-only comparison criterion.
+The cocycle-surface inspector and span verifier remain byte-identical to
+baseline \code{b2d13b5f4}.
+
+Measurements run serially without overlapping tests, audits, builds or
+commits. They start from the input diagram and include the complete
+recognizer, exact fallback when needed, independent replay of any returned
+native proof and certificate hashing. Earlier shortcuts are disabled to
+reach the native stage. Both arms have no local seed cap and retain the
+twelve-second global deadline. The on/off comparison changes only the
+annulus criterion. Tree trials are four except for the three explicitly
+extended-tree cases; face roots are zero except for the labeled prior
+face-search positive, which requests four.
+
+The initial five-round run has visible A/A variation, including a 1.089
+raw-disc on-arm ratio and a 0.876 ratio for the three-crossing raw annulus.
+It is retained, and a nine-round repeat supplies the final table. Each run
+has one warm-up round per case, and each round randomizes off, off A/A,
+on and on A/A endpoints. All 616 measured calls and 88 warm-ups across the
+two runs finish. Their per-implementation verdicts, witness hashes and
+native work counts are stable across both runs. The final run has 396
+measured calls and 44 warm-ups and takes 37.153 seconds.
+
+\begin{center}
+\small\input{tables/cocycle_annulus_recognize.tex}
+\end{center}
+
+The three early-annulus cases improve $1.57$--$1.64\times$ by paired
+ratios. The previous face-search positive improves $1.48\times$, and the
+late-tree positive improves $1.35\times$. The two new extended-tree
+positives have ratios 1.033 and 1.075; the first is modest relative to its
+A/A variation, so the main conclusion there is added native coverage.
+The unchanged raw-disc, optimized-disc and trefoil controls are near parity.
+Table times are primary-arm medians and ratios are medians of paired
+ratios; these need not be quotients of the displayed median times.
+
+The newly recognized seven-crossing source without face search is an
+adverse complete-call control. Its old exact fallback finishes in a median
+118 milliseconds; returning and independently replaying the new native
+proof takes 137 milliseconds, about 16 percent slower by the paired ratio.
+There is no claim of a uniform recognition speedup. The criterion adds no
+surface discovery loop and shortens several existing native searches, but
+native proof production and replay can cost more than the old fallback on
+a small diagram.
+
+The reproduction driver is \path{../fast/normal_orbit_research/annulus.py}.
+Use its \code{audit} or \code{recognize --rounds 9} subcommand;
+the audit uses optional Regina.
+The incoming archives and checked \code{openai/math} head
+\code{fd4aeeb2e} are unchanged. This is a stronger polynomial sufficient
+certificate test within an incomplete candidate search, not a general
+subexponential or quasipolynomial recognition algorithm.

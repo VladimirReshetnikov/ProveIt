@@ -24,10 +24,10 @@ class CocycleTreeTests(unittest.TestCase):
     def test_early_success_preempts_flow_and_reuses_one_cohomology_solve(self):
         for pd, trial in ((EARLY_TWO, 2), (EARLY_THREE, 3)):
             diagram = Diagram.from_pd(pd)
-            self.assertEqual(normal_seed_decide(diagram, tree_trials=0)['status'], 'INCONCLUSIVE')
+            self.assertEqual(normal_seed_decide(diagram, annulus=False, tree_trials=0)['status'], 'INCONCLUSIVE')
             with patch('fastunknot.normal_seed.minimize_cocycle_span', side_effect=AssertionError), \
                  patch('fastunknot.normal_seed.rank_one_cocycle_seed', wraps=rank_one_cocycle_seed) as solve:
-                result = normal_seed_decide(diagram)
+                result = normal_seed_decide(diagram, annulus=False)
             self.assertEqual(solve.call_count, 1)
             self.assertEqual(result['status'], 'UNKNOT')
             self.assertEqual(result['stages'][-1]['trial'], trial)
@@ -37,8 +37,8 @@ class CocycleTreeTests(unittest.TestCase):
 
     def test_late_trials_follow_failed_optimization_and_stop_on_success(self):
         diagram = Diagram.from_pd(LATE)
-        self.assertEqual(normal_seed_decide(diagram)['status'], 'INCONCLUSIVE')
-        result = normal_seed_decide(diagram, tree_trials=24)
+        self.assertEqual(normal_seed_decide(diagram, annulus=False)['status'], 'INCONCLUSIVE')
+        result = normal_seed_decide(diagram, annulus=False, tree_trials=24)
         self.assertEqual(result['status'], 'UNKNOT')
         self.assertEqual(result['stages'][-1]['trial'], 22)
         labels = [row['stage'] for row in result['stages']]
@@ -52,8 +52,8 @@ class CocycleTreeTests(unittest.TestCase):
         with patch('fastunknot.normal_seed.cocycle_tree_candidates', side_effect=AssertionError):
             self.assertEqual(normal_seed_decide(Diagram.from_pd([]))['status'], 'UNKNOT')
         diagram = Diagram.from_braid(4, [-1, 2, 1, -2, 3])
-        before = normal_seed_decide(diagram, tree_trials=0)
-        after = normal_seed_decide(diagram, tree_trials=24)
+        before = normal_seed_decide(diagram, annulus=False, tree_trials=0)
+        after = normal_seed_decide(diagram, annulus=False, tree_trials=24)
         self.assertEqual(before['certificate'], after['certificate'])
         self.assertEqual(after['stages'][-1]['stage'], 'optimized')
         self.assertEqual(after['stats']['tree_search']['attempts'], 4)
@@ -79,8 +79,8 @@ class CocycleTreeTests(unittest.TestCase):
 
     def test_caps_cancellation_and_exact_option_types(self):
         diagram = Diagram.from_pd(LATE)
-        full = normal_seed_decide(diagram, tree_trials=24)
-        limited = normal_seed_decide(diagram, tree_trials=24, max_work=full['work']-1)
+        full = normal_seed_decide(diagram, annulus=False, tree_trials=24)
+        limited = normal_seed_decide(diagram, annulus=False, tree_trials=24, max_work=full['work']-1)
         self.assertEqual(limited['status'], 'INCONCLUSIVE')
         self.assertNotIn('certificate', limited)
         calls = [0]
@@ -88,12 +88,12 @@ class CocycleTreeTests(unittest.TestCase):
             calls[0] += 1
             if calls[0] == 10000: raise RuntimeError('cancelled')
         with self.assertRaisesRegex(RuntimeError, 'cancelled'):
-            normal_seed_decide(diagram, tree_trials=24, check=stop)
+            normal_seed_decide(diagram, annulus=False, tree_trials=24, check=stop)
         for value in (True, -1, 1.0, None):
-            with self.assertRaises(ValueError): normal_seed_decide(diagram, tree_trials=value)
+            with self.assertRaises(ValueError): normal_seed_decide(diagram, annulus=False, tree_trials=value)
             with self.assertRaises(ValueError): recognize(diagram, normal_seed_tree_trials=value)
-        self.assertEqual(normal_seed_decide(Diagram.from_pd(EARLY_TWO), optimize=False)['status'], 'UNKNOT')
-        result = recognize(Diagram.from_pd(EARLY_TWO), **OPTIONS)
+        self.assertEqual(normal_seed_decide(Diagram.from_pd(EARLY_TWO), annulus=False, optimize=False)['status'], 'UNKNOT')
+        result = recognize(Diagram.from_pd(EARLY_TWO), normal_seed_annulus=False, **OPTIONS)
         self.assertEqual(result.method, 'native-normal-cocycle')
         self.assertTrue(verify_normal_seed_certificate(Diagram.from_pd(EARLY_TWO), result.evidence['normal_seed']['certificate']))
 

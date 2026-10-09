@@ -72,7 +72,7 @@ def audit(old):
         source = entry['source']; diagram = Diagram.from_pd(source['pd'])
         results = {}
         for label, trials in (('default', 4), ('extended', 24)):
-            answer = normal_seed_decide(diagram, tree_trials=trials)
+            answer = normal_seed_decide(diagram, tree_trials=trials, annulus=False)
             if answer['status'] == 'UNKNOT':
                 assert source['expected'] == 'UNKNOT'
                 assert verify_normal_seed_certificate(diagram, answer['certificate'])
@@ -121,7 +121,7 @@ def audit(old):
         results = []
         for label, optimize in (('old', old), ('new', minimize_cocycle_span)):
             with patch('fastunknot.normal_seed.minimize_cocycle_span', optimize):
-                result = recognize(Diagram.from_pd(source['pd']), **seeds.COMMON, use_normal_seed=True)
+                result = recognize(Diagram.from_pd(source['pd']), **seeds.COMMON, use_normal_seed=True, normal_seed_annulus=False)
             assert result.status == source['expected']
             results.append(dict(engine=label, status=result.status, method=result.method,
                                 native_attempts=len(list(seeds.native_stages(result.evidence)))))
@@ -175,7 +175,7 @@ def benchmark(old, mode, rounds):
             pd, trials = case
             with patch('fastunknot.normal_seed.minimize_cocycle_span', old if use_old else minimize_cocycle_span):
                 diagram = Diagram.from_pd(pd)
-                result = recognize(diagram, **seeds.FORCED, normal_seed_tree_trials=trials)
+                result = recognize(diagram, **seeds.FORCED, normal_seed_tree_trials=trials, normal_seed_annulus=False)
                 native = result.evidence.get('normal_seed', {}); proof = native.get('certificate')
                 if proof is not None: assert verify_normal_seed_certificate(diagram, proof)
             completed = result.status in ('UNKNOT', 'KNOTTED')
