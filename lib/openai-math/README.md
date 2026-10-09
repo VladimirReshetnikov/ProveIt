@@ -304,3 +304,10 @@ conditional on actual variety structure of the slices and the existing
 spectrum/selection/remainder inputs. All three new production modules
 and ten transitive axiom checks pass; the combined facade audit is queued.
 They reuse the same recurrence and add no upstream dependencies.
+
+The variety consumers now assemble bounded piece families on every slice,
+then construct the general provider on all common-base good domains.
+Only deep variety structure remains as the structure input. The actual
+three-dimensional family cover has candidate count `81*R^4*Q^2` and the
+polynomial exponent evaluated at `R*Q`. The six new production sources
+pass; their combined facade audit is queued. No upstream modules are added.
