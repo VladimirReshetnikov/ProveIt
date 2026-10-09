@@ -8711,4 +8711,9 @@ is small enough relative to every subsequent retained-density requirement.
 All seven modules check in a 484-module production closure. All nineteen
 new named theorems pass individual axiom checks using only `propext`,
 `Classical.choice`, and `Quot.sound`. No upstream source is added and no
-numbered catalogue entry is claimed closed. Full verification follows.
+numbered catalogue entry is claimed closed. The completed full audit checks
+8,255 public Gowers theorems in a 5,373-module combined closure, with only
+the same three axioms. The facade closure has 5,371 modules, including
+4,152 OAI modules. The generated ledger is byte-identical to the tracked
+115-companion / five-open ledger, and the port scope check passes for the
+unchanged 4,134 upstream and 17 compatibility modules.
