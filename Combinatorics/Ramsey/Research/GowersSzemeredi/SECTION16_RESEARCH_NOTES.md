@@ -8464,3 +8464,28 @@ new named theorems pass individual axiom checks with only `propext`,
 four row families still need the later regularity/BSG argument and a final
 quantitative budget. This does not close a numbered catalogue entry or
 improve the final Gowers threshold.
+
+
+**Global input and dense column agreement.**
+`global_popular_coherent_progression_rows` derives the progression-row
+conclusion from the original dense bihomomorphism, retaining the original
+column witness system, its witness density and spectrum bounds, and the
+even-core relations. The modulus assumption is the already explicit
+`globalCoherentAnchorModulusBound`; no additional geometric assumption is
+introduced.
+
+`popular_affine_row_agreement` applies the core agreement construction
+inside the new affine Bohr domains. A bound of `K` selected frequencies
+per row costs at most `5*K` frequencies, including the fixed constants.
+For the actual selected rows, this gives agreement density
+
+`affineRowAgreementDensity t g d r = coreAnchorAgreementDensity t (10*selectionRank) g d r (selectionRadius/2)`.
+
+It is positive whenever the popularity density and core radius are
+positive. Every agreement point has both endpoints in the original core,
+lies in the new affine row Bohr domain, and equates the anchor map with
+the difference of the original column maps. Applied to each member of
+the retained family, the translated tuple is additive because both the
+translation and centred tuple are additive. These two additional modules
+check in the 441-module production closure. All 22 new named theorems
+pass individual axiom checks. The full merged facade audit follows.
