@@ -375,6 +375,7 @@ import GowersSzemeredi.Proofs16BilinearBogolyubovRows
 import GowersSzemeredi.Proofs16LineFreimanUnconditional
 import GowersSzemeredi.Proofs16SelectionAveraging
 import GowersSzemeredi.Proofs16Lemma19Selection
+import GowersSzemeredi.Proofs16PairEnergyCS
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments

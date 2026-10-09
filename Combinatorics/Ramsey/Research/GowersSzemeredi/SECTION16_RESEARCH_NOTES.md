@@ -1440,6 +1440,17 @@ the elementary lemmas of its §2:
   preimages per requirement. After that come `exists_good_selection` and
   `lineFreimanExtraction_holds`. This replaces [49]'s random choice and
   Theorem 17 (Sanders).
+- **Correction to the Lemma 19 shape (same night).** In [49]'s proof the
+  witnesses force only **two** of a quadruple's four points into
+  A′ = {f(y) ∈ U_y ∖ ℒ_y(y)}. Quadruples entirely inside A′ come from
+  Cauchy–Schwarz. `lemma19_selection_piece` assumes all four points are
+  new, which is stronger than [49] provides. The Cauchy–Schwarz step is now
+  formalized (`Proofs16PairEnergyCS`, kernel-checked). Group pairs by the
+  key (a − c, f a − f c); then `two_new_points_energy` gives
+  pairEnergy(all, A′×A′)² ≤ N³·phiAdditiveCount(A′, f), via
+  `pairEnergy_sq_le` (Cauchy–Schwarz), `pairEnergy_univ_le` (≤ N³), and
+  `pairEnergy_self_eq_phiAdditiveCount`. Next: restate Lemma 19 with
+  two new positions and insert this step.
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
   coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
