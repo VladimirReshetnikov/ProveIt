@@ -3335,3 +3335,21 @@ its quantitative density inputs. It does not establish the later proper
 progression construction, algebraic regularity, or the final bilinear
 structure theorem. Five numbered catalogue entries remain open, and all
 existing paper-fidelity caveats remain applicable.
+
+
+The merged audit passes: 6,452 public Gowers theorems in a 4,990-module
+facade (4,152 OAI modules), and 4,992 modules including both audits.
+All ten declarations from J.85 also pass individual transitive axiom
+checks. Only propext, Classical.choice, and Quot.sound occur. The source
+ledger remains 115 companions and five open statements. The incoming
+one-sided quasirandomness estimates are included in this audit. No
+upstream dependency or provenance changes are needed.
+
+For the next structural step, [reference 49, Theorem 33 and Claim 37]
+(https://arxiv.org/html/2109.03093) use a proper progression and maps
+defined on its fourfold enlargement. The current theorem supplies a
+common Bohr domain, but does not yet provide that progression. A useful
+intermediate extension is to choose the parameter cluster in a smaller
+neighborhood while retaining the maps on the original neighborhood,
+so that the required sums remain within their domains. The degree and
+codegree estimates alone do not prove the algebraic regularity input.
