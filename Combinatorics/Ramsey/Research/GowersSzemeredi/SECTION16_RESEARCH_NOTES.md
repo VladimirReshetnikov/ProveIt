@@ -8929,3 +8929,187 @@ including the unchanged 4,152 OAI modules. The generated ledger is
 byte-identical to the tracked 115-companion / five-open catalogue. Port
 scope remains 4,134 upstream modules and 17 compatibility modules, with
 no change to the retained licenses or provenance notices.
+
+
+### J.139. Coherent mixed-subset richness via balanced walk compression
+
+The fourteen new modules assemble the second graph-extraction step while
+retaining the original column and anchor witnesses. They add twenty-seven
+named proofs and no upstream ports.
+
+**Two-level compression.** `graph_four_walks_le_of_small_common` counts
+four-walks by their middle vertex. If codegree at least `t` in `G` implies
+an edge of `H`, and the endpoints have at most `t` common neighbors in
+`H`, their four-walk count in `G` is at most `2*t*n^2`.
+For middle vertices outside the common `H` neighborhood, one `G` codegree
+is below `t` and the other is at most `n`; inside it, both are at most `n`.
+This proves the bound directly, including graphs with loops.
+
+`CoherentBridgeSystem.four_walks` applies two successive common-neighbor
+implications. More than `2*eta*N^3` four-walks at relation level `i+1`
+force the endpoint relation at level `i+3`, provided `i+1 <= depth`.
+Consequently four-walks of level-three relations give level five, at
+radius `sigma/1296`. This balanced argument avoids sequentially composing
+all four edges and does not use the old frequency-removal kernel radius.
+
+**Matched walks and popular endpoint fibres.** Two walks with equal edge
+steps are translates. Crossing the coherent edge identities gives a
+four-walk in their common-difference relation. The three-coordinate key
+`(u,u',v')` determines the endpoints; inside each key fibre the second
+internal triple determines both walks. Thus every fibre has size at most
+`N^3`, and injects into the corresponding coherent-relation four-walk set.
+
+A walk family of mass `mu*N^5` has at least `mu^2*N^6` matched pairs by
+Cauchy--Schwarz over the `N^4` possible edge-step sequences. At least
+`mu^2*N^3/2` endpoint keys have fibre size at least `mu^2*N^3/2`.
+When `4*eta < mu^2`, every such fibre passes the compression threshold.
+The key maps injectively to the mixed endpoint quadruple
+`(u,v',u',v'+u-u')`. Therefore endpoint sets of densities `beta1,beta2`,
+with four-walk density `lambda`, have at least
+`(beta1*beta2*lambda)^2*N^3/2` exact mixed quadruples at level five.
+All endpoint memberships and the additive identity are checked.
+
+**A nonvacuous density-dependent threshold.** For retained coherent
+quadruple density `kappa`, J.138 supplies a set `A` of density at least
+`9*kappa^2/512` and walk density
+`lambda = (3*kappa^2/64)^5/16384 = c*kappa^10`, where
+`c = 3^5/(64^5*16384)`.
+`HasCoherentRichSet` records the resulting exact mixed-quadruple lower
+bound for every two subsets of `A` above its specified threshold. It
+retains the full factor `(beta1*beta2*lambda)^2/2` for any two supplied
+density lower bounds `beta1,beta2 >= beta`. This dependence is needed
+for the later tuple recursion; replacing it by the bound at the minimum
+threshold would lose the quantitative input to that recursion.
+
+The global construction uses a freely chosen natural parameter `p` and
+subset threshold `beta = kappa^(p+2)/512`. Since `0 < kappa <= 1`,
+`beta <= kappa^2/512`; the set `A` itself meets the threshold. The explicit
+`HasCoherentRichSet.self_richness` theorem records this fact and the
+resulting actual quadruple count. A threshold chosen independently of the
+retained density would not establish this nonvacuity.
+
+Choose the constant
+`S = coherentRichPowerScale = 256 + 8*512^4/c^2`
+and bridge accuracy `eta = kappa^(28+4*p)/S`. The proved estimates are
+`eta <= kappa^2/256` and `4*eta < (beta^2*lambda)^2`.
+They hold at the exact regularity stopping state, so neither is an
+unproved error-budget hypothesis in the global result. Bridge depth three
+suffices for both extraction stages. The earlier general accuracy lemmas
+also remain available for independently specified positive thresholds.
+
+`global_coherent_rich_system` takes only the original dense
+bihomomorphism, `p`, and the explicit density-dependent modulus bound
+`max (globalCoherentBridgeModulusBound alpha 3 (28+4*p) S) 3`.
+Its single-family and popular-anchor packages retain the actual refined
+frequency system and source map, original coherent progression, original
+popular witnesses, and all-radius graph profiles. The radius loss is
+constant `1296`, independent of `p`; the accuracy requirement carries
+the increasing density exponent.
+
+The recursive higher-tuple construction, subsequent local structure and
+comparison with the printed final Gowers budget still remain. This
+checkpoint does not close a numbered catalogue entry and does not claim
+an improved final Szemeredi threshold.
+
+All fourteen modules compile in a 529-module production closure. The
+final interface passes all twenty-seven individual axiom checks and the
+full audit of 8,442 public Gowers theorems, using only `propext`,
+`Classical.choice`, and `Quot.sound`. The combined audit has 5,421 modules;
+the facade has 5,419, including the unchanged 4,152 OAI modules. The
+115-companion / five-open ledger is byte-identical, and port scope still
+contains 4,134 upstream and 17 compatibility modules. No upstream source,
+license scope, or provenance notice is changed.
+
+
+### J.140. Compatible words and endpoint identities at controlled radii
+
+Fifteen new modules extend J.139 to dense compatible representations of
+every bounded-length list of anchors. They add thirty-five named proofs,
+reuse the existing injective tuple splice, and add no upstream ports.
+
+**Threshold-aware anchor and word counts.** `ThresholdColumnRichness`
+retains the actual two subset densities and the factor one-half in J.139.
+`popular_column_anchors_dense_above` shows that the anchor pruning argument
+only needs richness for subsets of size at least half the guaranteed
+ambient density. For ambient density `b` and walk density `eta`, this
+retains at least `b*N/2` anchors, each with at least
+`lambda*N^2` triple representations, where `lambda = eta^2*b^3/32`.
+The subset cutoff must be at most `b/2`.
+
+`threshold_column_word_representations_step` glues a triple family of
+density `lambda` to a word family of density `delta`. It applies richness
+only at the two popular endpoint densities `lambda/2` and `delta/2`.
+With both above the cutoff, the output density is
+`eta^2*lambda^3*delta^3/128`. The splice is injective, so no multiplicity
+loss is hidden in this estimate. Keeping the two input densities separate
+preserves a cubic recurrence.
+
+Define `delta_0=lambda` and
+`delta_(n+1)=(eta^2*lambda^3/128)*delta_n^3`.
+The schedule is positive and decreasing when `0 < lambda,eta <= 1`, and
+its exact formula is
+`delta_n=(eta^2*lambda^3/128)^((3^n-1)/2)*lambda^(3^n)`.
+The proved sum-of-powers version uses the same geometric exponent.
+For words of at most `K+1` triples, choose the subset cutoff `delta_K/2`.
+It is below every needed intermediate density divided by two.
+
+**Parameters at the actual regularity state.** For retained density
+`kappa`, set `b=9*kappa^2/512` and `eta=c*kappa^10`, with the same
+`c=3^5/(64^5*16384)` as J.139. Then
+`lambda=a*kappa^26`, where `a=c^2*(9/512)^3/32`.
+`coherentWordDensity kappa n` is exactly `C_n*kappa^E_n`, with
+`C_0=a`, `C_(n+1)=c^2*a^3*C_n^3/128`, and
+`E_n=75*3^n-49`. Both the coefficient identity and exponent formula are
+proved. The coefficients are positive; fixed losses are retained rather
+than assumed absorbable by increasing a power of `kappa` near one.
+
+For a positive monomial cutoff `q*kappa^e`, the bridge accuracy
+`kappa^(20+4*e) / coherentRichBridgeScale q` satisfies both graph extraction
+and mixed-subset error inequalities. Instantiate `q=C_K/2`, `e=E_K`.
+This yields explicit `coherentWordBridgePower K` and
+`coherentWordBridgeScale K`, known before the regularity stopping time.
+`CoherentBridgeSystem.word_family` constructs the rich set and dense
+anchor set at that stopping state. Every list of `n+1` anchors, `n <= K`,
+has at least `coherentWordDensity kappa n * N^(3*n+2)` compatible word
+representations. The anchor set has density at least `9*kappa^2/1024`.
+
+**Recovering auxiliary domains without frequency removal.** Compatibility
+alone initially gives identities on a recursive domain involving two
+auxiliary indices per splice. `coherent_word_domain` recovers those domains
+from the anchors and output entries when each varying frequency is
+Freiman-linear on the ambient index set. The first auxiliary index follows
+from its triple's additive relation with radius cost three; the second
+follows from the gluing quadruple with another cost three. Induction thus
+uses a factor nine per word level.
+
+`CoherentWordEndpointIdentities` consequently gives `ColumnWordIdentity`
+using only anchor and output domains at radius
+`coherentWordEndpointRadius sigma m = sigma/(1296*9^m)` for a word of
+`m` triples. The radius is positive for positive `sigma`. There is no
+additional prime-modulus threshold or frequency-cardinality term in this
+identity theorem. The existing large-cost frequency-removal proof is not
+used to obtain it.
+
+The single-family and popular-anchor wrappers retain the same refined
+source map, original progression and popular witnesses, graph profiles,
+word families, and endpoint identities. Freiman-linearity on the refined
+index set follows from the actual refinement certificate. The global
+`global_coherent_word_system` constructs all of these from the original
+dense bihomomorphism under the explicit bound
+`max (globalCoherentBridgeModulusBound alpha 3
+  (coherentWordBridgePower K) (coherentWordBridgeScale K)) 3`.
+
+This completes the bounded compatible-word counting step along the new
+coherent route, including endpoint-only identities. The subsequent local
+structure and comparison with the printed Gowers budget remain open.
+No numbered catalogue entry or improved final Szemeredi threshold is
+claimed closed by this checkpoint.
+
+All fifteen modules compile in a 540-module production closure. All
+thirty-five named proofs pass individual axiom checks. The full audit
+checks 8,531 public Gowers theorems with only `propext`, `Classical.choice`,
+and `Quot.sound`, in 5,436 combined modules. The facade has 5,434 modules,
+including the unchanged 4,152 OAI modules. The generated ledger remains
+byte-identical at 115 companions and five open statements. Port scope
+passes with the unchanged 4,134 upstream and 17 compatibility modules;
+no license or provenance scope is added.
