@@ -1,0 +1,176 @@
+\section{Native certified sparse component incidence}
+\label{sec:sparse-incidence}
+
+The sparse observer reviewed in Section~\ref{sec:incoming-2c7f} is now part
+of the maintained \path{fastunknot} package. The implementation adapts report
+50's additive interface and independent checker. Report 52 supplies a second
+implementation and the support-sensitive analysis; its standalone code is
+not imported. The maintained dense API and its existing certificates remain
+available for consumers that require a full Boolean array. New sparse callers
+receive positive \texttt{[mask,count]} entries and never allocate that array.
+This is a supplied interval-relation query, not a knot verdict or a complete
+hierarchy state.
+
+\subsection{From coning to positive atoms}
+
+Let $C$ be the number of orbits of an interval relation on a binary universe
+of size $N$, and let $A_1,\ldots,A_r$ be interval-union ports. An orbit's
+signature $T$ consists of all ports it meets; $h(T)$ is its multiplicity.
+For a nonempty union $A$ of marked intervals, add translations joining
+consecutive points within each interval and singleton pairings joining the
+intervals to one hub. All original orbits meeting $A$ then become one,
+while every disjoint orbit is unchanged. If the augmented orbit count is
+$C_A$, the number of original orbits avoiding $A$ is $C_A-1$.
+
+For $U\subseteq[r]$, cone the union of ports outside $U$. This gives
+\[
+ G(U)=\sum_{T\subseteq U}h(T)=
+ \begin{cases}C_A-1,&A=\bigcup_{i\notin U}A_i\ne\varnothing,\\
+ C,&A=\varnothing.
+ \end{cases}
+\]
+Canonical interval unions share one orbit query and one certificate even
+when many masks describe the same marked set. Half-open port intervals are
+validated and merged before use; orbit pairings retain the native inclusive
+endpoint convention. No step lists the represented points.
+
+Subtract already certified atoms from $G$ to obtain a nonnegative monotone
+residual. Positive residual survives each accepted deletion. Every rejected
+single-port deletion remains zero as later deletions shrink the current set.
+The final positive set is therefore inclusion-minimal and its residual is
+one exact atom. The empty atom is recovered separately. Repeating until
+recovered mass equals $C$ proves completeness, including unmarked components.
+The only algebraic requirement for this peeling argument is nonnegativity;
+it would fail for arbitrary signed measures because cancellations can hide
+proper-subset atoms.
+
+The \texttt{linear} policy tries ports individually. The \texttt{split}
+policy recursively tries balanced blocks and explores children only when a
+whole-block deletion fails. It adapts the number of queries to the support
+sizes without predicting them. Section~\ref{sec:incoming-2c7f} proves the
+$O(1+sr)$ and support-sensitive bounds. The implementation keeps the explicit
+policy choice; it does not claim a universal faster policy. Residual
+subtractions, mask arithmetic, canonical unions, and orbit-query costs remain
+part of the encoded running time. Polynomial support follows from weighted
+AHT, so this is a polynomial local observer on interval-encoded inputs, not
+merely a fast special case assuming a small output.
+
+\subsection{Certificates independently certify completeness}
+
+A sparse certificate binds the universe, ordered normalized ports and original
+pairing relation through native orbit proofs. It records positive atoms in
+peeling order. For every retained port $i$ in atom $T$, it includes a zero
+residual witness $Z_i$ with
+\[
+ T\setminus\{i\}\subseteq Z_i,\qquad i\notin Z_i.
+\]
+The witness may be larger than the final immediate subset, since it was
+recorded before later deletions. Monotonicity makes its certified zero valid
+on the immediate subset too. These witnesses eliminate all unrecovered
+proper-subset atoms. The certified count at $T$, less previous atoms, fixes
+its weight. Finally the sum of positive weights must equal the baseline
+count. No missing positive atom can then remain.
+
+The checker reconstructs the coning relations independently, replays every
+needed orbit proof, checks each weight and zero witness, and rejects duplicate
+atoms, invalid masks, missing witnesses, missing proofs and unused union
+proofs. It imports neither the sparse producer nor its nonnegative-recovery
+helper nor the orbit-count producer. Source validation and exact local orbit
+rules provide the nonnegative-measure promise; the checker does not infer it
+from arbitrary supplied numbers. Consequently disabling all producer calls
+still permits certificate replay.
+
+The output histogram and the certificate are separate objects in the public
+result. Callers should derive a trusted histogram from the verified certificate
+entries, or compare their proposed histogram with those entries; a successful
+Boolean certificate check does not authenticate a separately modified result
+wrapper. Hexadecimal integer transport uses the maintained JSON helper and
+does not change Python's global decimal conversion limit.
+
+\subsection{Signed relations share the support search}
+
+For pairings labeled by a binary parity character, construct the two-sheet
+cover. A component with consistent parity lifts to two components, and an
+inconsistent component lifts to one. Lift every port to both sheets. Each
+lifted component has exactly its base component's signature, so no second
+support-discovery search is needed. If $h(T)$ and $\widetilde h(T)$ are base
+and cover multiplicities, then
+\[
+ h(T)\le\widetilde h(T)\le2h(T),\qquad
+ h_{\rm consistent}(T)=\widetilde h(T)-h(T),\quad
+ h_{\rm inconsistent}(T)=2h(T)-\widetilde h(T).
+\]
+The cover needs at most one additional coned count per base atom plus its
+baseline count. The independent checker constructs its own cover pairings,
+verifies the known-support equations and total mass, then checks the split.
+Parity consistency means orientability only when the supplied character has
+independently been shown to encode surface orientation. Interval reflection
+alone is not that character.
+
+\subsection{Budgets and API use}
+
+One cycle allowance and one orbit-query allowance cover the original baseline,
+all coned counts, the cover baseline and its counts. The signature allowance
+bounds the number of recovered atoms. Exhaustion returns
+\texttt{INCONCLUSIVE} with counters and a reason, without an ordinary or signed
+histogram and without a certificate. It never exposes a partial answer as
+complete. Callback exceptions propagate through input preparation, recovery,
+proof construction and verification. Callable objects remain callbacks even
+when they evaluate as false. Invalid strategy and signature-limit options are
+rejected before any orbit search, even if an independent work allowance is
+already zero.
+
+The producer's cycle and query allowances do not meter a subsequent independent
+replay. Verification has its own cooperative callback and explicit certificate
+size; a host measuring a complete certified query must include both operations.
+
+These are cooperative allowances, not a hard process-memory or serialized-input
+sandbox. Bit masks use $r$ bits, counts use $O(\log(N+1))$ bits, and dictionary
+and integer costs must be charged. Canonical-union and raw-query caches can
+retain the distinct requests made during discovery. A caller handling hostile
+serialized certificates must also limit their explicit size. The API does
+not assert a bound on arbitrary future attachment-map descriptions.
+
+\begin{verbatim}
+from fastunknot.sparse_incidence import analyze_sparse_port_incidence
+from fastunknot.sparse_incidence_verify import (
+    verify_sparse_port_incidence_certificate,
+)
+ports = [[(0, 4)], [(2, 6)]]
+result = analyze_sparse_port_incidence(
+    10, [], ports, strategy='split', record_certificate=True)
+assert result['status'] == 'COMPLETE'
+assert verify_sparse_port_incidence_certificate(
+    10, [], ports, result['certificate'])
+# Positive classes: {0: 4, 1: 2, 2: 2, 3: 2}.
+\end{verbatim}
+
+\subsection{Native validation and measurements}
+
+The delivered 21-test selection is now in the maintained suite. It covers
+500 random interval graphs under both policies, 1,000 arbitrary nonnegative
+measures under both policies, 300 signed interval graphs, 128 disjoint ports,
+huge binary universes, certificate mutations and producer-disabled replay.
+Four additional integration tests check validation before resource work,
+false-valued callable cancellation, exact signed shared-budget boundaries,
+source rebinding and hexadecimal certificate transport. All 25 focused tests
+pass in 2.074 seconds.
+
+A separate native audit checks every support subset of the three-port Boolean
+cube: 256 histograms, 512 dense/sparse comparisons and 768 independent dense
+or sparse replays. Sixteen large analytic cases cover both sparse policies
+on disjoint, coincident, nested, genuinely paired and all-signature fixtures.
+Two $2^{1024}$-point signed identity systems independently check consistent
+and inconsistent lifts. The dense observer, orbit producer, orbit verifier
+and integer codec are pinned byte-for-byte to baseline
+\texttt{308d5aad3b70}; the extension adds three modules.
+
+\input{sparse_incidence_results.tex}
+
+The audit and timing driver is \path{../fast/incidence_research/sparse.py};
+its source manifests, proofs, per-arm query counts, timings and outcomes are
+retained in \path{data/sparse-incidence-*}. The original delivered files stay
+unchanged. Native weighted component census and certified knot-exterior
+provenance remain subsequent tasks. This integration removes an exponential
+local output interface; it does not prove a quasipolynomial hierarchy or
+complete general unknot search.

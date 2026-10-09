@@ -5,8 +5,9 @@ The five deliveries in \texttt{2c7f4fd68bfd} are now reports 49--53.
 They address three different costs: algebraic substitution, sparse component
 observations, and componentwise normal-disc detection. This review strengthens
 the analysis of the existing algebraic implementation. The new sparse and
-weighted interfaces remain delivered research implementations pending native
-integration. Their tests and audit reruns below are separate from the earlier
+weighted interfaces were delivered research implementations at this review
+checkpoint. Section~\ref{sec:sparse-incidence} subsequently integrates the
+sparse observer and its independent checker. Their tests and audit reruns below are separate from the earlier
 placement-only intake. No delivered benchmark ratio is treated as a measurement
 of the current recognizer.
 
@@ -280,15 +281,17 @@ five-second driver allowance, and receive no speedup ratios. Report 52's
 literal components. Report 53 reproduces the abstract weighted and mutation
 audits and the frozen Regina corpus: 1,275 normal vectors on 45 triangulations,
 5,100 component comparisons and 5,100 certificate replays. These local tests
-provide evidence for the proposed interfaces; the sparse and weighted additions
-have not yet run as part of the maintained recognizer.
+provide evidence for the proposed interfaces. At this review checkpoint the
+sparse and weighted additions had not run in the maintained suite;
+Section~\ref{sec:sparse-incidence} supplies the subsequent sparse integration.
 
 The logs and JSON records are \path{data/incoming-2c7f-*}; the native grammar
 check is \path{../fast/compressed_word_research/incoming_bounds.py}.
 The delivered files remain unchanged after placement. Checksum-only files
 omitted by intake are recoverable from the original commit's ZIPs; integrity
 was checked on fresh original extractions before rerunning any generator.
-The next integration tasks are the additive sparse incidence API and weighted
-component replay, followed by source-bound exterior construction and controlled
+The subsequent integration in Section~\ref{sec:sparse-incidence} installs the
+additive sparse incidence API. Weighted component replay remains next,
+followed by source-bound exterior construction and controlled
 candidate discovery. Polynomial local epochs and observations reduce specific
 costs; they leave the general quasipolynomial recognition goal open.
