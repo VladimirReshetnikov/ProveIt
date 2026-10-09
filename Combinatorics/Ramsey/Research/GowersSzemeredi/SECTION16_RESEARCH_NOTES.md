@@ -5546,6 +5546,30 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
 ### J.5c The zero-core chain loses triple-exponentially (2026-10-09, kernel-checked)
 
+**Handoff summary.**
+1. *Defect.* The J.108–J.110 model packing and elimination guarantees a
+   density of at most `exp(-2^(13^d)/2)` and a radius of at most
+   `2^(-13^d)`, with `d = poly(1/alpha)`. So no chain built on the
+   zero core (J.110–J.140, `global_single_coherent_progression`) can meet
+   the polynomial contract of `theorem_16_2_at_three_of_eventually`.
+   This is kernel-checked in `Proofs16ZeroCoreGrowth`,
+   `Proofs16CoherentAnchorGrowth` and `Proofs16SingleProgressionGrowth`.
+2. *ℤ/N simplification.* A bounded image already forces vanishing:
+   `freiman_small_image_zero` gives zero on `B(T;ρ/K)` with no new
+   frequencies.
+3. *Replacement engine, formalized.* `abstract_bsg_core`
+   (`Proofs16AbstractBSGCore`) is Milićević's Theorem 4.1 for single
+   elements (`ℓ = 1`), with polynomial constants.
+   - **Hypotheses.** A finite abelian group without 2-torsion; quadruple
+     families `Q i` with symmetries (S1)–(S3) and weak transitivity;
+     doubling `K`; `c|X|^3` good pairs of pairs.
+   - **Conclusion.** A dense `B′` whose elements each lie in
+     `θ|X|²` additive `Q 16`-quadruples.
+   - **Use.** For column maps, take `Q i` = "alternating sum has at most
+     `K^i` values on the common domain at radius `ρ/2^i`".
+4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
+   Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
+
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)
 does not. `Proofs16ZeroCoreGrowth` bounds the density that
