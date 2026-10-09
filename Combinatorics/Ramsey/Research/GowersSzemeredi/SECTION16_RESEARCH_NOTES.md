@@ -1476,6 +1476,37 @@ the elementary lemmas of its §2:
     there is a different grouping.
   Check this against [49]'s full text (the WebFetch summaries cover only
   its first 100k characters) before formalizing Corollary 20.
+  **Resolved (same night): the mixed cases need two Cauchy–Schwarz rounds.**
+  `one_new_each_energy` (`Proofs16PairEnergyCS`, kernel-checked) treats the
+  case where the first pair has its new point first and the second pair
+  has it second. Then X² ≤ E(S₁,S₁)·E(S₂,S₂). Regrouping
+  ((u,v),(u′,v′)) ↦ ((v,v′),(u,u′)) (`pairEnergy_regroup`) and symmetry
+  (`pairEnergy_comm`) turn both factors into pairEnergy(all, A′×A′), whose
+  square is ≤ N³·E(A′). So X² ≤ N³·E(A′), the same bound as the (b,d)
+  case. All four cases are covered.
+  `lemma19_mixed_piece` (`Proofs16Lemma19TwoNew`, kernel-checked) is
+  Lemma 19 for the mixed cases: key relation q₀ − q₁ = q₂ − q₃, with new
+  points at q₀ and q₃. Cases (b,d) and (a,c) regroup to
+  `lemma19_two_new_piece`, and cases (a,d) and (b,c) to
+  `lemma19_mixed_piece`. Every case of [49]'s Lemma 19 is now proved in
+  ℤ/N with polynomial bounds.
+- **[49] Corollary 20, one step, done (`Proofs16Corollary20Step`,
+  kernel-checked).** A family (E_i, L_i) covers
+  cov(x) = {0} ∪ {L_i x ∈ U_x : x ∈ E_i}. A distinct-point triple is bad
+  if a witness a − b = c − d escapes (cov − cov) + (cov − cov).
+  `corollary20_step`: if at least εN³ triples are bad, there is a new
+  Freiman-linear piece (E′, f) with f(x) ∈ U_x ∖ cov(x) on E′ and
+  |E′| ≥ κ(ε,K)N, where κ = 2⁻¹⁸⁸²((ε/(1024K⁴))²)¹¹⁶⁴. The proof:
+  - one of each witness pair is new, since 0 ∈ cov (`bad_witness_new`);
+  - pigeonhole over the four cases;
+  - per-case encodings with explicit decoders;
+  - the matching Lemma 19 (`case_two_new`, `case_mixed`).
+
+  Distinct points make witness values consistent. Non-distinct triples
+  number O(N²) and are excluded from the count.
+- Next: the iteration. The potential Σ_x |cov(x)| ≤ K·N grows by
+  ≥ κN per step, so after ≤ K/κ steps fewer than εN³ distinct triples are
+  bad.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
