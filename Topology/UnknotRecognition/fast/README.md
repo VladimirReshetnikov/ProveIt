@@ -2786,3 +2786,28 @@ transfer operation. See [the proof and measured scope](../synthesis/suffix_folds
 python -B weighted_research/suffix_folds.py audit --output results/suffix_fold_audit.json
 python -B weighted_research/suffix_folds.py benchmark --output results/suffix_fold_benchmark.json
 ```
+
+### Source-anchored monomial certificate replay
+
+The compressed checker now holds consecutive primitive projections and
+unit-coordinate forests as images of immutable source roots. It authenticates
+each donor's exact counts and prefix heights without constructing intermediate
+words, and exports ordinary grammar nodes once at the block boundary. Isolated
+moves keep their existing checker. Source recovery, version checks, torsion-free
+knot-group prerequisites and terminal conditions remain mandatory. Producer
+discovery and the independent literal verifier are unchanged.
+
+Final allocation is `N0 + O(S0 + r*Lambda)` within a raw block, where `S0` is
+source grammar size, `r` the source rank and `Lambda` the polynomially bounded
+cumulative exponent bit size. Normalization or nonmonomial operations end that
+bound. Supplied binary-power schedules replay about 2–3× faster; the largest
+stabilized-circle full certificate has a 1.123 paired old/new timing ratio.
+Whole recognition on the 19-case corpus shows no broad gain. See
+[the proof and scoped measurements](../synthesis/anchored_replay.tex).
+
+```bash
+python -B compressed_word_research/anchored_replay.py audit --output results/anchored_replay_audit.json
+python -B compressed_word_research/anchored_replay.py kernels --output results/anchored_replay_kernels.json
+python -B compressed_word_research/anchored_replay.py source --output results/anchored_replay_source.json
+python -B compressed_word_research/anchored_replay.py pipeline --output results/anchored_replay_pipeline.json
+```

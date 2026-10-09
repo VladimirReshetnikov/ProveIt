@@ -1,0 +1,91 @@
+\subsection{Native audit and measured scope}
+
+The driver \code{compressed\_word\_research/anchored\_replay.py} compares
+against \code{b41fc4960968}, loading that package in an isolated namespace.
+It pins 446 current source and fixture files before and after each run.
+Among pre-existing runtime files only the compressed dispatcher changes;
+the source-anchored checker is a new module. Producer discovery and the
+literal checker are byte-for-byte unchanged.
+
+All 1,132 maintained tests pass in 219.025 seconds. A separate audit covers
+92 diagrams: the 19-case survivor/control corpus, filtered random closed
+braids and five stabilized circles. Default, projection and forest discovery
+return identical certificates in both packages. Every positive is replayed
+by both the literal and compressed verifiers in both packages, giving 768
+source replays. The new checker handles 74 blocks, all in projection mode;
+the default and forest modes do not activate it in this audit. There is no
+change in recognition coverage. The final pinned audit takes 8.988 seconds;
+that duration is not a benchmark.
+
+Three abstract infinite-cyclic presentation families additionally compare
+exact retained words through run-length representations. These fixtures are
+algebraic capacity tests, not diagram-derived recognition claims. A balanced
+32-generator, 128-bit fixture takes five rounds: final ordinary nodes fall
+from 8,170 to 3,341 and replay work from 119,154 to 45,156. A 31-round star
+has 385 final nodes in both engines, but work falls from 86,179 to 27,944.
+A mixed projection/forest chain with 16 generators and 512-bit local powers
+has 22,662 versus 22,635 final nodes and 968,191 versus 315,907 replay work.
+The largest reconstructed cumulative exponents have respectively 641, 129
+and 7,681 bits. Exact words, slot positions and rank-one endpoints agree.
+
+The three timing runs execute serially after tests, audit and first code
+publication. Each uses five shuffled rounds, both engines and an A/A copy
+of each engine. All 620 measured calls and 124 warm-ups complete; failed
+calls would have been retained. The tables report median times and medians
+of within-round ratios, which need not equal ratios of the median times.
+Raw samples and deduplicated proofs are retained in the three
+\code{data/anchored-replay-*.json} benchmark records; their table generator
+is \code{data/anchored\_replay\_tables.py}.
+
+\paragraph{Supplied algebraic schedules.}
+Each timed call constructs a fresh grammar, authenticates every move of the
+supplied schedule and verifies the final rank-one condition. Discovery and
+exact output comparisons are outside the timer. The four cases give 80
+measured calls and 16 warm-ups in 19.049 seconds.
+
+\input{tables/anchored_replay_kernels.tex}
+
+The three binary-power families give paired speed ratios of about $2.01$,
+$1.98$ and $2.99$. Their complete endpoints agree, so these are not ratios
+against an incomplete baseline. Their supplied schedules and abstract source
+presentations nevertheless prevent interpreting them as full recognition
+speedups.
+
+\paragraph{Complete supplied certificates from diagrams.}
+Each timed call validates a fresh PD, independently recovers its presentation,
+and checks the entire supplied certificate through its endpoint. Certificate
+discovery is excluded. The eight cases give 160 measured calls and 32 warm-ups
+in 4.390 seconds. The number in each name is the stabilized circle's strand
+count; it has one fewer crossings.
+
+\input{tables/anchored_replay_source.tex}
+
+The 129-strand projection certificate changes from 75.447 to 68.209 ms,
+with paired old/new ratio $1.123$. Charged work falls from 171,431 to 153,791;
+ordinary nodes remain 1,017 and maximum word-length bit size remains three.
+The new route checks 63 blocks comprising 126 moves, visits 378 nodes for
+lazy length queries, and uses only one-bit cumulative exponents. Both
+engines make 126 LCP calls and the same 318 frontier queries visiting 698
+nodes. This source-bound example gains through reduced repeated maintenance,
+not through enormous hidden powers. The corresponding forest proofs contain
+one forest batch and retain the direct checker; their ratios are effectively
+one. The sub-millisecond five-strand cases are noisy, including A/A variation,
+and do not support a reliable improvement claim.
+
+\paragraph{Whole recognition, including discovery.}
+Both engines enable primitive projections and compressed search on the
+19-case corpus. Calls include fresh PD validation, discovery and mandatory
+independent source replay, with the same 20-million group-work, ten-second
+group, twelve-second total and 50,000-object limits. All 380 measured calls
+and 76 warm-ups complete in 34.843 seconds.
+
+\input{tables/anchored_replay_pipeline.tex}
+
+Paired old/new ratios range from $0.979$ to $1.023$, with no broad improvement.
+Old A/A ratios range from $0.885$ to $1.026$ and new A/A ratios from $0.915$
+to $1.023$. The matching direct-discovery audit finds no eligible consecutive
+monomial blocks on these 19 sources. This corpus therefore supplies a
+compatibility and overhead control, not evidence for a whole-recognizer
+speedup. Producer-side lazy discovery remains a separate integration task.
+The native checker improvement proves neither a bound on general source
+resets nor a general quasipolynomial unknot algorithm.
