@@ -1,0 +1,112 @@
+\section{What would establish quasi-polynomial recognition?}
+\label{sec:roadmap}
+
+\subsection{Separate the query bound from the number of queries}
+
+Let $n$ be the size of a knot diagram and suppose a source-bound exterior has
+$t=\poly(n)$ tetrahedra. The results above make one supplied-vector disc query
+polynomial in $t$ and its coordinate bit length. This remains true if the
+normal surface contains exponentially many polygons or components. It gives
+no bound on how many candidate vectors a recognizer must try. An exponential
+search equipped with a faster polynomial verifier is still an exponential
+search.
+
+There are at least two useful directions for continuing the project. A
+search-based route can exploit canonical Q-data, certified pruning, and cheap
+component predicates. A hierarchy-based route can use the same compressed
+primitives when surfaces and their complements are transformed. Neither
+direction may replace its missing progress theorem by favorable timings.
+The distinction is particularly important for families of layered solid tori:
+their exponentially large normal discs stress compressed arithmetic, but the
+benchmark hands the disc vector to the algorithm. It does not measure the
+difficulty of finding that vector from a knot diagram.
+
+\subsection{A precise conditional budget theorem}
+
+Lackenby's Proposition~9.1 bounds hierarchy iterations by $L(g+1)^L$;
+Proposition~10.2 gives $L\le4c_q(\mathcal H_1)$ for the refined process
+\cite{Lackenby2026}. The following elementary bookkeeping formulation makes
+the desired improvement precise. It is a conditional statement about a
+future implementation, not a geometric bound established here.
+
+\begin{proposition}[Sufficient mixed-radix budget]
+\label{prop:qp-budget}
+Suppose a correct recognition algorithm on an input of size $n$ has a
+lexicographically decreasing integer progress vector
+$(a_1,\ldots,a_L)$ with $0\le a_i\le G_i$, where the $G_i$ are fixed
+nonnegative integers. Suppose these bounds are valid
+throughout the entire computation, including suffix reconstruction. Assume
+that each phase before the first decrease, between successive decreases,
+and after the last decrease performs at most $\poly(n)$ operations,
+each costing $\poly(n)$ bit operations on polynomial-size states. If
+\[
+ L=\poly(n),\qquad
+ \sum_{i=1}^{L}\log_2(G_i+1)=O((\log(n+2))^k),
+\]
+then its running time is
+$2^{O((\log(n+2))^{\max(1,k)})}$. In particular, $k=2$ gives
+$n^{O(\log n)}$ time.
+\end{proposition}
+\begin{proof}
+Use the mixed-radix integer
+\[
+ \Phi(a)=\sum_{i=1}^{L}a_i\prod_{j=i+1}^{L}(G_j+1).
+\]
+It is an integer between zero and $\prod_i(G_i+1)-1$. Decreasing one digit
+and replacing any later digits by their largest permitted values still
+decreases $\Phi$ by at least one. Thus there are at most
+$\prod_i(G_i+1)$ strict decreases. Multiplying this by the polynomial bound
+for work between decreases gives
+\[
+ \log_2 T(n)\le O(\log(n+2))+
+                    \sum_i\log_2(G_i+1),
+\]
+which proves the assertion. The same estimate charges polynomial-size
+certificates and their generation and replay whenever they are included in
+the per-operation hypothesis.
+\end{proof}
+
+Several cautions are mathematically substantive. A linear bound on $L$ and
+polynomial bounds on every $G_i$ yield only $2^{O(n\log n)}$ by this argument.
+They do not imply quasi-polynomial time. Many digits with $G_i=1$ can already
+cause an exponential product. Nor does a logarithmic hierarchy depth help if
+the permitted digits have exponential bit lengths. Finally, state-dependent
+digit bounds need a single valid potential or a proved amortized replacement;
+substituting small bounds observed on one run is insufficient.
+
+The mixed-radix statement identifies a useful research target. One might
+bound the total logarithmic digit budget, construct balanced blocks with
+certified smaller budgets, or prove that the realizable states occupy a much
+smaller set than the entire product box. The last option requires an actual
+bound on reachable states and a way to recognize equivalent states within
+the intended time. A memoization table without such a theorem can itself
+be exponentially large.
+
+\subsection{A compressed transition must preserve its hypotheses}
+
+Polynomial verification and polynomial discovery are different obligations.
+Theorem~14.1 of the 2026 hierarchy paper concerns efficient encoding and
+checking of an essential hierarchy. Proposition~14.2 supplies a polynomial
+compressed transition under its uniform-type, irreducibility and essential
+boundary-pattern hypotheses, with a connected normal surface
+\cite{Lackenby2026}. The transition caller must establish essentiality for its actual boundary
+pattern; a knot-exterior triangulation alone does not supply that hypothesis.
+
+The appropriate implementation objective is consequently a checked transition
+whose caller supplies the relevant established hypotheses, or a broader
+algorithm with explicit alternative outputs when those hypotheses fail.
+Likewise, retaining a small description of the parallelity complement is not
+the same as constructing every sheet of the cut-open triangulation. Our
+weighted census supplies component data but does not yet retain all attaching
+maps required by that transition.
+
+Fast compressed curve operations are relevant to the boundary interface.
+For example, Lackenby's curve algorithms compute geometric intersection and
+test isotopy in time polynomial in triangulation size and logarithmic curve
+weights \cite{LackenbyCurves2026}. Their inputs, essentiality assumptions and
+representation changes must be matched explicitly when used for a hierarchy
+pattern. The torus homology test in this article is a smaller specialized
+operation; the higher-genus obstruction in \cref{sec:geometry} explains why
+it cannot replace the more general curve machinery.
+
+\input{sections/research_questions}

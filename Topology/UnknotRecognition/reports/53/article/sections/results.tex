@@ -1,0 +1,180 @@
+\section{Result, scope, and relation to the repository}\label{sec:results}
+
+\subsection{The concrete problem addressed}
+
+Let $\mathcal T$ be a finite triangulation of a compact connected orientable
+three-manifold whose boundary is one torus. Let $x\in\Z_{\geq0}^{7t}$ be an
+admissible normal vector, where $t$ is the number of tetrahedra. Write $S(x)$
+for the corresponding embedded normal surface. The input coordinates are
+binary integers; neither $S(x)$ nor its components are supplied as expanded
+cell complexes. Define
+\[
+  \D(x)=\#\{C\in\pi_0(S(x)):C\text{ is a disc with essential boundary}\}.
+\]
+All multiplicities in this definition count actual components. In particular,
+$10^{100}$ parallel meridian discs contribute $10^{100}$, not one.
+
+The previous native backend obtains the number of components, orientability
+counts, boundary-curve count, and total Euler characteristic through interval
+orbits, with optional additional classification of closed and boundary-touching
+components. Its positive disc predicate requires the \emph{whole supplied
+surface} to be connected. The maintained boundary-classification discussion
+explicitly leaves componentwise disc identification unresolved
+\cite{ProveItSnapshot}. The new operation computes $\D(x)$ for a disconnected
+surface and supplies replayable evidence for the answer.
+
+This is a sharply delimited algorithmic improvement. A positive answer proves
+that the supplied manifold has compressible boundary. If that manifold has
+independently been identified with the exterior of an input knot in $S^3$, it
+certifies unknottedness. A zero answer only eliminates this particular vector.
+It does not eliminate other normal surfaces, prove boundary incompressibility,
+or establish knottedness. The delivered code does not silently add any of
+these missing implications.
+
+\subsection{Main statements}
+
+\begin{theorem}[Three-weight disc query]\label{thm:main-disc}
+For the validated input class above, there is an algorithm that computes
+$\D(x)$ and a compressed histogram of componentwise Euler characteristic and
+boundary homology using three integer weights per orbit representative.
+Its running time, output length, and certificate length are polynomial in
+$t$ and the maximum input-coordinate bit length. Its certificate can be
+checked without invoking its orbit-discovery scheduler or its weight-transport
+implementation.
+\end{theorem}
+
+The topology in this theorem is proved in \cref{sec:geometry}; the compressed
+algorithm and its bit accounting are established in \cref{sec:weighted-orbits}.
+The checker shares the finite-manifold input validator and the deterministic
+cell-weight construction. Independence therefore concerns discovery and
+arithmetic transport, not two unrelated implementations of the entire
+topological input model.
+A further refinement to two weights after certified ambient homology
+preprocessing is proved in \cref{sec:two-weight-refinement}. That variant is
+not implemented or included in the reported timings.
+
+\begin{theorem}[Primitive quadrilateral core]\label{thm:main-core}
+For each global vertex $v$, let $\ell_v$ be the least triangle coordinate
+among the tetrahedral corners at $v$, and let $L_v$ be its vertex-link vector.
+If $x$ has a nonzero quadrilateral coordinate, let $g$ be the gcd of its
+quadrilateral coordinates and set
+\[
+ P=\frac{x-\sum_v\ell_v L_v}{g},\qquad
+ Q=\max_j\frac{x_{q_j}}{g}.
+\]
+Then $P$ is an admissible nonnegative integral normal vector and
+\[
+                  \D(x)=g\D(P).
+\]
+Every coordinate of $P$ is at most $\max(1,4t-1)Q$. If all quadrilateral
+coordinates vanish, $\D(x)=0$ and no orbit computation is needed.
+\end{theorem}
+
+The full proof, including the effect of one-sided components under scaling,
+appears in \cref{sec:quadrilateral-core}. The central computational consequence is that
+the expensive orbit query can use
+\[
+                    O(\log(t+1)+\log(Q+1))
+\]
+bits per geometric coordinate. Large common multiplicity and large independent
+vertex-link offsets still have to be read and processed, but they disappear
+from the subsequent orbit search. This remains useful when the gcd of the
+\emph{original seven-coordinate vector} is one.
+
+\subsection{Which parts are established antecedents?}
+
+The weighted orbit method and polynomial component recovery are classical
+Agol--Hass--Thurston results. Canonical removal of vertex links and conversion
+between quadrilateral and standard coordinates are classical Q-theory.
+We use them openly rather than describe them as new topology
+\cite{AHT2006,Tollefson1998,Burton2009}. The contribution here is the implemented
+specialization, its source-bound certificate, its exact disc-count reduction,
+and its measured improvement against more expensive routes to the same query.
+We do not claim that the specialized mathematical statements have no earlier
+appearance in the literature.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.59\linewidth}}
+\toprule
+Ingredient & Status in this continuation \\
+\midrule
+Weighted interval orbits & Classical algorithm; newly implemented as a
+checked extension of the maintained repository trace. \\
+Vertex-link canonicalization & Classical construction, used with explicit
+binary-cost and quadrilateral-content accounting. \\
+Three statistics for disc detection & A proved specialization that avoids
+recovering $7t$ weights or counting orientation and boundary covers. \\
+Two weights with ambient homology & Proved refinement; implementation and
+performance comparison remain future work. \\
+Disconnected disc census & New native repository capability with finite
+oracles and source-bound replay. \\
+General quasi-polynomial recognition & Remains unimplemented and unproved
+for the delivered pipeline. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Why aggregate invariants are insufficient}
+
+There are two different pitfalls. First, even parallel meridian discs have
+zero \emph{total} mod-two boundary class. Thus requiring a nonzero total
+class rejects valid positive examples. Second, a surface can have total
+Euler characteristic one and a nonzero total boundary class without containing
+a disc. For example, a small interior vertex-link sphere disjoint from an
+orientable genus-one spanning surface has total Euler characteristic
+$2+(-1)=1$. The sphere has no boundary and the genus-one component is not a
+disc. The corresponding finite normal-surface example is included in the
+external audit.
+
+The new query associates Euler characteristic and boundary class to the
+\emph{same connected component}. Its correctness does not follow from a
+test of the sums of these quantities. This distinction is the main reason
+weighted orbits are needed.
+
+\subsection{Exact API contracts}
+
+The new APIs are additive modules under \code{fastunknot}; existing recognizer
+defaults, certificate versions, and old aggregate APIs are unchanged. The
+following table specifies the information computed by each route.
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.47\linewidth}}
+\toprule
+Route & Dimension & Certified output \\
+\midrule
+\code{mode='disk'} & $3$ & Component histogram of $(\chi,h_1,h_2\bmod2)$,
+total components, and essential-disc count. \\
+\code{mode='summary'} & $5$ & The preceding data, normal-disc count, and
+boundary intersection weight for each histogram type. \\
+\code{mode='coordinates'} & $7t$ & Actual connected-component normal vectors,
+grouped with binary multiplicities, and their disc predicates. \\
+Reduced count API & $3$ on $P$ & Essential-disc count of the original $x$,
+with a certified canonical reduction. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Boundary intersection weight is the number of normal boundary edge points,
+equal to the number of boundary normal arcs. It is \emph{not} the number of
+boundary circles. The reduced count API intentionally makes no claim about
+the total number of original components: that quantity is not homogeneous
+in the presence of one-sided components. The full-coordinate route can
+extract a concrete disc vector for a later cutting operation, but finding
+and certifying that cut is outside this package.
+
+\subsection{The quasi-polynomial target in the inspected sources}
+
+The explicit March 2021 slides announce
+$2^{O((\log n)^3)}=n^{O((\log n)^2)}$ time; the institutional announcement
+instead uses $n^{c\log n}$. Both are quasi-polynomial, but the exponents are
+different \cite{LackenbySlides,Oxford2021}. The July 2026 preprint provides a
+hierarchy algorithm and polynomial verification results, while separating
+iteration counts from step costs that have not all been specified sufficiently
+for runtime analysis \cite{Lackenby2026}. The repository makes the same
+distinction. Consequently this article treats quasi-polynomial time as the
+global implementation target and states the local proved bounds explicitly.
+
+The selected source snapshot is commit \baseline, whose full identity is
+recorded in the provenance manifest. This pins the comparison despite active
+development elsewhere in the repository. No remote repository changes are
+required to inspect, reproduce, or integrate the accompanying archive.

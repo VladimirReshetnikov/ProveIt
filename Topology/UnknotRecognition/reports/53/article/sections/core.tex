@@ -1,0 +1,248 @@
+\section{A canonical quadrilateral kernel for exact disc counts}
+\label{sec:quadrilateral-core}
+
+The weighted census answers a stronger question than an aggregate topology
+summary, but it still receives endpoints whose bit lengths reflect every
+normal-coordinate multiplicity. The maintained common-gcd reduction does not
+remove a large additive collection of vertex-link surfaces. Such additions
+can make the gcd of all $7t$ coordinates equal to one while almost every
+coordinate has thousands of bits. For the particular question of counting
+essential disc components, we can remove both sources of numerical growth.
+
+The coordinate canonicalization is classical Q-theory. Tollefson introduced
+quadrilateral coordinates, and Burton describes equal quadrilateral data,
+vertex-link ambiguity, canonical representatives, positive homogeneity and
+minimum-triangle subtraction explicitly
+\cite{Tollefson1998,Burton2009}. We use these facts with proofs because their
+exact hypotheses and their connection to the maintained interval interface
+matter here. The delivered specialization is a source-bound essential-disc
+count, together with its parameter-sensitive query bound and replayable
+arithmetic reduction.
+
+\subsection{Remove precisely the normal vertex-link components}
+
+Let $x$ be an admissible normal vector in the supported finite triangulation
+with $t$ tetrahedra. For a global vertex $v$, let $\mathcal C_v$ be the set of
+tetrahedron corners identified with $v$, and write $n_v=|\mathcal C_v|$.
+The sets $\mathcal C_v$ partition the $4t$ corners. Write $T_c(x)$ for the
+triangle coordinate at corner $c$, and let $L_v$ be the vector with one
+triangle at every corner in $\mathcal C_v$ and zero elsewhere. It represents
+the vertex link: a sphere at an interior vertex and a disc at a boundary
+vertex. Define
+\[
+ \ell_v=\min_{c\in\mathcal C_v}T_c(x),
+ \qquad Y=x-\sum_v\ell_vL_v.
+\]
+Thus $Y$ has a zero triangle coordinate at some corner of every global
+vertex. Its quadrilateral coordinates equal those of $x$.
+
+\begin{lemma}[Geometric meaning of vertex-link subtraction]
+\label{lem:vertex-link-peeling}
+The vector $Y$ is admissible, and the embedded normal surface represented by
+$x$ is normally isotopic to the disjoint union of the surface represented by
+$Y$ and $\ell_v$ copies of the vertex link at every $v$.
+\end{lemma}
+\begin{proof}
+Nonnegativity follows from the definition of each minimum, and no
+quadrilateral coordinate changes. A matching equation across a face contains
+one triangle coordinate from each of two corners identified with the same
+global vertex. Subtracting $\ell_v$ from both preserves that equation.
+
+Realize the admissible vector $Y$ as a normal surface. Since the surface is
+finite and misses the triangulation vertices, sufficiently small vertex
+neighborhoods are disjoint from it. Nested frontiers of these neighborhoods
+give the requested vertex-link copies, also disjoint from one another.
+Their disjoint union with the realization of $Y$ has coordinate vector $x$.
+Uniqueness of a normal realization with its admissible coordinates, up to
+normal isotopy, gives the asserted decomposition. This argument uses an
+actual disjoint union; it does not assume an arbitrary normal sum preserves
+its summands as components.
+\end{proof}
+
+Every boundary vertex-link disc has contractible boundary on the boundary
+torus. Its presence therefore increases the number of discs without
+increasing the number of \emph{compressing} discs. Interior vertex links
+are closed and contribute no such disc either. These facts justify removing
+the links before the specialized query, even when their multiplicities
+dominate the input size.
+
+\subsection{Quadrilateral content is the full content of the peeled vector}
+
+Suppose at least one quadrilateral coordinate is nonzero, and let
+\[
+ g=\gcd\{Q_{\tau,j}(x):1\le\tau\le t,\ 1\le j\le3\}.
+\]
+Zero entries participate in the ordinary gcd convention. Let
+$Q_{\max}$ be the largest quadrilateral coordinate and set $r=Q_{\max}/g$.
+In particular $g\ge1$ and $r\ge1$.
+
+\begin{theorem}[Canonical primitive quadrilateral core]
+\label{thm:primitive-q-core}
+Every coordinate of $Y$ is divisible by $g$, and its full coordinate gcd is
+exactly $g$. The vector $P=Y/g$ is admissible, primitive and has a zero
+triangle at every global vertex. Moreover,
+\[
+ T_c(P)\le(n_v-1)r\quad(c\in\mathcal C_v),
+ \qquad \max_i P_i\le(4t-1)r.
+\]
+The vector $P$ is uniquely determined by the primitive quadrilateral vector
+$Q(x)/g$. If all quadrilateral coordinates of $x$ are zero, then $Y=0$.
+\end{theorem}
+\begin{proof}
+Consider the graph whose vertices are the corners in $\mathcal C_v$, with
+edges recording their identifications across paired faces. It is connected
+because those face identifications define the global vertex class. Along
+each graph edge, the normal matching equation has the form
+\[
+ T_c(Y)-T_{c'}(Y)=Q'-Q,
+\]
+where $Q,Q'$ are individual quadrilateral coordinates, possibly zero.
+The right side is divisible by $g$. Choose a corner with triangle
+coordinate zero and follow a graph path to any other corner. Its triangle
+coordinate is divisible by $g$ as well. All quadrilateral coordinates are
+already divisible by $g$. Conversely, a common divisor of all coordinates
+must divide their quadrilateral subset, whose gcd is $g$. The full gcd is
+therefore exactly $g$.
+
+After division, every quadrilateral appearing in one matching equation lies
+between zero and $r$, so each triangle difference has absolute value at most
+$r$. A simple path from a zero corner has at most $n_v-1$ edges. Summing the
+differences proves the triangle bound. The global bound follows from
+$n_v\le4t$ and the bound $r$ on quadrilateral coordinates.
+
+If two vectors have the same quadrilateral coordinates, the difference
+between their triangles is constant on each connected corner graph. Requiring
+minimum zero at each vertex fixes every such constant. This proves uniqueness
+of the vertex-reduced lift and hence of $P$. Finally, if every quadrilateral
+vanishes, all triangle differences on each corner graph vanish; its minimum
+zero forces every residual triangle to vanish.
+\end{proof}
+
+The theorem is invoked only after validating an actual supplied standard
+normal vector. It does not assert that arbitrary quadrilateral data has a
+finite normal lift, and it does not replace the matching and quadrilateral
+constraints with an unchecked Q-coordinate input.
+
+\subsection{Essential-disc counts survive the nonlinear sheet behavior}
+
+Let $\D(z)$ denote the number of compressing-disc components in the embedded
+normal surface of vector $z$. The scalar behavior of this number is simpler
+than the scalar behavior of the full component count.
+
+\begin{lemma}[Homogeneity of the essential-disc count]
+\label{lem:disc-homogeneity}
+For every admissible normal vector $z$ in the supported orientable manifold
+and every positive integer $k$,
+\[
+ \D(kz)=k\D(z).
+\]
+\end{lemma}
+\begin{proof}
+Realize the surface with coordinates $kz$ in the normal interval
+neighborhood of the surface with coordinates $z$. Local normal sheet orders
+are either preserved or reversed. A two-sided component therefore produces
+$k$ disjoint copies. Each compressing disc is two-sided, and these copies
+have isotopic essential boundaries on the ambient torus.
+
+A one-sided component has nontrivial normal monodromy: sheet $j$ is paired
+with sheet $k-1-j$. For even $k$, this produces $k/2$ copies of its connected
+normal orientation double. For odd $k$, it produces $(k-1)/2$ such doubles
+and one original one-sided component. The ambient manifold is orientable,
+so a one-sided surface is nonorientable. If it has boundary, its Euler
+characteristic is at most zero, and the orientation double also has Euler
+characteristic at most zero. Neither can be a disc. If the component is
+closed, every such cover remains closed. Thus one-sided components never
+create discs through this scaling process. Exactly the original compressing
+discs contribute, each with multiplicity $k$.
+\end{proof}
+
+\begin{corollary}[Exact count on the primitive core]
+\label{cor:core-disc-count}
+With the notation above, if $g>0$ then
+\[
+ \boxed{\D(x)=g\D(P).}
+\]
+If all quadrilateral coordinates vanish, then $\D(x)=0$ and no orbit query
+is needed.
+\end{corollary}
+\begin{proof}
+Apply Lemma~\ref{lem:vertex-link-peeling}; none of the removed vertex links
+contributes an essential disc. Then apply Lemma~\ref{lem:disc-homogeneity}
+to $Y=gP$. In the triangle-only case the peeled vector is zero.
+\end{proof}
+
+The count-only interface deliberately reports no full component count for
+$x$. For example, twice a normal M\"obius band is an annulus, so multiplying
+its original component count by two is incorrect. Both surfaces have zero
+compressing-disc components, consistently with the corollary. The separate
+unreduced census remains the appropriate interface for complete component
+histograms and coordinate extraction.
+
+The corollary asserts scalar homogeneity after a specific geometric
+decomposition. It does not assert additivity of $\D$ under arbitrary
+compatible normal-vector addition: regular exchanges in a general normal
+sum can change the connected components. Vertex links are removable here
+because Lemma~\ref{lem:vertex-link-peeling} realizes that particular addition
+as a disjoint union.
+
+\subsection{Input arithmetic and reduced query complexity}
+
+There are at most $t$ nonzero quadrilateral coordinates by admissibility.
+The coefficient bound gives a convenient coarse disc-count estimate
+\[
+ W(P)=\sum_iP_i\le(16t^2-3t)r\le16t^2r.
+\]
+The maintained edge-point orbit universe has at most $4W(P)$ points, so its
+endpoints use
+\[
+ b_0=O\bigl(\log(t+1)+\log(r+1)\bigr)
+\]
+bits. This bound is independent of $g$ and the vertex-link multiplicities.
+Only one three-weight component query is required on $P$.
+
+For an explicit accounting, let $B$ bound the original coordinate bit
+lengths, let $V(t,B)$ denote full source validation and decoding, and let
+$\mathcal P(t,b)$ denote the polynomial cost of the delivered three-weight
+census on a source whose coordinates and endpoints have $O(b)$ bits.
+Writing $G(B)$ and $\operatorname{Div}(B)$ for binary gcd and division costs,
+the count-only route has the bound
+\[
+\begin{split}
+ V(t,B)&+O\!\left(tB+tG(B)+t\operatorname{Div}(B)\right)\\
+ &+\mathcal P\!\left(t,O(\log(t+1)+\log(r+1))\right)
+ +O\!\left(M(B+\log(t+1))\right),
+\end{split}
+\]
+where $M$ accounts for the final binary multiplication. Comparisons and
+subtractions for the vertex minima are charged in $tB$. A second validation
+of the small core, as performed by the current wrapper, is included in
+$\mathcal P$. In the triangle-only case the census term is absent.
+
+The certificate binds the full original source, records the vertex-link
+multiplicities, the divisor, the explicit core and its independently checked
+three-weight proof, and verifies the final product. Thus the outer arithmetic
+fields still depend on the original input size. Large multiplicity is not
+removed from the cost of reading, validating or binding that input; it is
+removed from every endpoint and weight in the expensive core orbit trace.
+
+\begin{example}[An arbitrarily large source with full coordinate gcd one]
+Take a primitive, vertex-reduced meridian vector $D$ in a one-vertex layered
+solid torus, with quadrilateral gcd one, and let $L$ be the boundary vertex
+link. For any positive binary integer $g$, set
+\[
+ x_g=gD+(g+1)L.
+\]
+The quadrilateral coordinates have gcd $g$, while a triangle at a zero corner
+of $D$ equals $g+1$. Hence the gcd of all coordinates is one. Common
+multiplicity reduction alone leaves the original large endpoints in place.
+The canonical kernel removes $g+1$ vertex-link discs, divides by $g$, and
+recovers the fixed core $D$. It returns exactly $g$ compressing-disc
+components. For a fixed triangulation and deterministic scheduler, its core
+orbit trace is independent of the number of bits of $g$.
+\end{example}
+
+This is a concrete improvement for a supplied-vector subroutine. Primitive
+quadrilateral coordinates may themselves remain large, and the operation
+does not search for a useful normal vector or construct its knot-exterior
+provenance. Those separate geometric obligations continue to control the
+general recognition problem.

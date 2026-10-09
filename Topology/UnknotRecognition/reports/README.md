@@ -58,6 +58,7 @@ modification times.
 | `50/` | `unknot_sparse_incidence_20261008.zip` | three additive modules, tests and `integration.patch` (not applied) | polynomial sparse component-incidence histogram for interval-pairing systems, O(s*r) subset-sum queries, certificates with zero witnesses | polynomial support via the existing weighted Agol–Hass–Thurston theorem | placed as delivered; not run, not reviewed |
 | `51/` | `unknot_singleton_dag_20261009.zip` | `integration.patch` and `repo_overlay/` (not applied), snapshots, independent certificate checkers | simultaneous Tietze elimination of acyclic singleton definitions with linear shared-grammar growth; 28-page article | local exact operation only; no whole-recognizer gain on the ordinary workload | placed as delivered; not run, not reviewed |
 | `52/` | `unknot_sparse_incidence_research_20261008.zip` | standard-library package (`52/src/`), vendored baseline, integration notes | sparse-zeta extraction of component/port signatures, balanced block deletion, independently certified sparse answers; 25-page article | polynomial bit complexity of the supplied incidence query, via weighted AHT | placed as delivered; not run, not reviewed |
+| `53/` | `proveit_weighted_normal_components_20261009.zip` | `integration.patch` (not applied), code, examples, `reproduce.py` | weighted normal components and quadrilateral disc-count reduction: component weights without expansion, essential disc counts from three statistics, independent weighted replay; 30-page article | local reduction; a positive count is an unknot witness only once the triangulation is bound to the knot exterior | placed as delivered; not run, not reviewed |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -98,14 +99,15 @@ them (`35/scripts/reproduce.py`, `36/verify_release.py`,
 `37/results/benchmark_medians.csv` is stored with LF. Each delivery states
 that it does not prove general quasi-polynomial recognition.
 
-`49/`–`52/` arrived together in drop commit `2c7f4fd68` (9 October 2026) and
+`49/`–`53/` arrived together in drop commit `2c7f4fd68` (9 October 2026) and
 were placed the same way, numbered by member timestamps (ties by archive
 name). `50/` and `52/` are different deliveries whose archives share the
 wrapper name `unknot_sparse_incidence_20261008/`. Their checksum lists
 (`SHA256SUMS`, `MANIFEST.sha256`, `CHECKSUMS.sha256`) verified clean and were
-dropped; `50/tools/check_manifest.py` and `51/scripts/verify_bundle.py`
-therefore report them absent. `51/MANIFEST.json` carries provenance beyond
-hashes (baseline commit, snapshot roles) and is kept. Delivered text files
+dropped; `50/tools/check_manifest.py`, `51/scripts/verify_bundle.py` and
+`53/reproduce.py verify-manifest` therefore report them absent. `53/`, whose
+generic archive name hid it, was placed in a second pass. `51/MANIFEST.json` and `53/MANIFEST.json` carry
+provenance beyond hashes (baseline commit, titles, roles) and are kept. Delivered text files
 were CRLF and are stored with LF; ignored run records (`*.log`, `*.bbl`) are
 force-added as delivered.
 
