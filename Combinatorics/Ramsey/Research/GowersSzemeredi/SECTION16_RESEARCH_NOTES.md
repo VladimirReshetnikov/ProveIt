@@ -2807,3 +2807,42 @@ individual transitive axiom checks. Only propext, Classical.choice, and
 Quot.sound occur. Incoming Fourier inversion and positive-cutoff tail
 results are included. The source ledger remains 115/5 with its existing
 fidelity caveats, and the selected upstream module scope is unchanged.
+
+
+### Bohr-sum containment: [49] Theorem 27 in Z/N (2026-10-08)
+
+`Proofs16SpectrumPairSumset` proves the Fourier core of [49]'s Theorem 27
+for arbitrary sets, then specializes it with the explicit bounded-span
+cutoff of `Proofs16BohrSpectrumBudget`.
+
+- `norm_sq_fourier_indicator`: `|Â(ξ)|² = Σ_{a,b∈A} e((b−a)ξ)`.
+- `sum_exponential_mul_eq_ite`: character orthogonality, from Mathlib's
+  `AddChar.sum_mulShift` with the primitive standard character.
+- `sum_norm_sq_fourier_indicator`: Parseval for indicators,
+  `Σ_ξ |Â(ξ)|² = N|A|`.
+- `re_exponential_nonneg`: `Re e(y) ≥ 0` when the centered value of `y`
+  is at most `N/4`.
+- `sum_weight_exponential`: `Σ_ξ |Â|²|Â′|² e(ξx)` is `N` times the number
+  of solutions of `(b−a)+(b′−a′)+x = 0` in `A²×A′²`.
+- `sumset_contains_bohr_of_spectrum_pair`: let `S` contain every
+  frequency at which both `|Â|` and `|Â′|` are at least `εN`. If
+  `ε²N³(|A|+|A′|) < |A|²|A′|²`, then every `x ∈ B(S; 1/4)` is
+  `a − b + (a′ − b′)` with `a,b ∈ A` and `a′,b′ ∈ A′`. The zero frequency
+  is handled by adjoining it to `S`, which leaves `B(S; 1/4)` unchanged.
+  Frequencies outside `S` contribute at most `(εN)²·N(|A|+|A′|)` by
+  Parseval, and frequencies in `S` have nonnegative real part.
+- `bohr_sumset_contains_span_intersection`: for Bohr sets
+  `B = B(K; a/N)` and `B′ = B(K′; a′/N)` in prime modulus, under the
+  boundary-band conditions of the explicit cutoff, the set
+  `(B − B) + (B′ − B′)` contains `B(⟨K⟩_R ∩ ⟨K′⟩_{R′}; 1/4)`. The
+  budget `ε²N³(|B|+|B′|) < |B|²|B′|²` stays an explicit hypothesis.
+  Since Bohr sets are symmetric and `B − B ⊆ B(K; 2a/N)`, this is [49]'s
+  containment of a span-intersection Bohr set in a sum of two Bohr sets,
+  with polynomial cutoffs `R`, `R′`.
+
+All seven theorems use only the standard axioms. The collision gate
+passes. No numbered statement or deep hypothesis changes status. Still
+open in step 3: Theorem 31 (bounded spans and the Hosseini–Lovett
+averaging), Proposition 18, algebraic regularity (Theorem 33), robust
+Bogolyubov–Ruzsa (Corollary 16), quasirandomness, and the final
+composition.
