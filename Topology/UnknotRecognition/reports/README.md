@@ -58,7 +58,7 @@ modification times.
 | `50/` | `unknot_sparse_incidence_20261008.zip` | three additive modules, tests and `integration.patch` (adapted into `fast/`) | polynomial sparse component-incidence histogram for interval-pairing systems, O(s*r) subset-sum queries, certificates with zero witnesses | polynomial support via the existing weighted Agol–Hass–Thurston theorem | native sparse unsigned/signed APIs and independent replay integrated; 25 focused tests, 512 dense/sparse comparisons and all 1,050 maintained tests pass |
 | `51/` | `unknot_singleton_dag_20261009.zip` | `integration.patch` and `repo_overlay/` (not applied), snapshots, independent certificate checkers | simultaneous Tietze elimination of acyclic singleton definitions with linear shared-grammar growth; 28-page article | local exact operation only; no whole-recognizer gain on the ordinary workload | 16 focused tests and 108 saved source replays pass; linear grammar theorem incorporated and checked on 800 maintained producer/checker updates; ordered-checker overlay not applied |
 | `52/` | `unknot_sparse_incidence_research_20261008.zip` | standard-library package (`52/src/`), vendored baseline, integration notes | sparse-zeta extraction of component/port signatures, balanced block deletion, independently certified sparse answers; 25-page article | polynomial bit complexity of the supplied incidence query, via weighted AHT | 33 delivery tests and 1,000 ordinary/signed graph audit cases pass; sparse-zeta theory reviewed; native integration pending |
-| `53/` | `proveit_weighted_normal_components_20261009.zip` | `integration.patch` (not applied), code, examples, `reproduce.py` | weighted normal components and quadrilateral disc-count reduction: component weights without expansion, essential disc counts from three statistics, independent weighted replay; 30-page article | local reduction; a positive count is an unknot witness only once the triangulation is bound to the knot exterior | 103 selected tests, weighted/mutation audits and 5,100 Regina comparisons/replays pass; component/core theory reviewed; native integration and diagram provenance pending |
+| `53/` | `proveit_weighted_normal_components_20261009.zip` | six additive runtime modules adapted into `fast/`, tests, examples, `reproduce.py` | weighted normal components and quadrilateral disc-count reduction: component weights without expansion, essential disc counts from three statistics, independent weighted replay; 30-page article | local reduction; a positive count is an unknot witness only once the triangulation is bound to the knot exterior | native weighted census and quadrilateral core integrated with independent replay; all 1,084 maintained tests and 5,100 native Regina comparisons/replays pass; diagram provenance and candidate discovery remain open |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -370,6 +370,8 @@ task. Their delivered files are unchanged. See `../synthesis/incoming_2c7f.tex`
 and `../synthesis/data/incoming-2c7f-*` for original-archive reconciliation,
 rerun results, strengthened native bounds and the integration boundary.
 Report 50's sparse observer and independent checker are now integrated in
-the maintained package; see `../synthesis/sparse_incidence.tex`. The weighted
-component census, lazy source state and ordered singleton checker remain
-pending native integration. Report 52 remains an independent reference implementation.
+the maintained package; see `../synthesis/sparse_incidence.tex`. Report 53's
+weighted component census and quadrilateral disc-count core are also integrated;
+see `../synthesis/weighted_components.tex` and its native audit/timing records.
+Lazy source state and the ordered singleton checker remain pending native
+integration. Report 52 remains an independent reference implementation.

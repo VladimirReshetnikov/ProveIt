@@ -1,0 +1,72 @@
+\subsection{Complete supplied-vector measurements}
+
+The maintained suite passes all 1,084 tests with Regina in 209.265 seconds;
+the 34 focused tests pass in 1.566 seconds. The native audit completes in
+35.314 seconds. A separate timing run takes 280.161 seconds and completes
+all 200 measured calls and 40 retained warm-ups. Ten fixtures each have two
+query methods, an identical A/A copy of each, five shuffled measured rounds
+and one warm-up per arm. Each timed call includes fresh input validation,
+certificate production and independent source replay. Certificate serialization
+and the expected-count assertion are outside the clock. Both audit and timing
+freeze the same 153 source, driver, test, fixture and corpus hashes. The four
+original codec, orbit and geometry dependencies match the baseline exactly.
+
+These are comparisons between the new query interfaces. Full-coordinate
+census provides more output than a three-weight disc query, and an unreduced
+census provides more output than the core count-only operation. The table
+therefore measures the saving from requesting sufficient information for the
+disc-count task; it is not a comparison against a previously available
+whole-knot recognizer.
+
+The first family uses primitive meridian discs in layered solid tori with
+$t=4,8,16,32,64,128$ tetrahedra. Every query reports one compressing disc.
+The full census carries $7t$ weights and the disc census carries three.
+
+\input{tables/weighted_components_dimension.tex}
+
+At $t=128$, complete full-coordinate and three-weight medians are
+16,945.105 and 1,698.802 ms; the median paired ratio is 9.975. Both execute
+133 orbit cycles and 21,008 replay events. The saving comes from weight
+construction and transport, rather than a different orbit schedule: weight
+dimension falls from 896 to three and maximum constant-weight runs from
+385 to eight. The compact serialized certificate falls from 2,504,362 to
+1,777,349 bytes; the large common orbit trace remains. Across this family,
+full A/A paired medians range from 0.999 to 1.023 and three-weight A/A from
+0.974 to 1.073. These controls are much smaller than the larger dimension
+savings. No asymptotic exponent is fitted to these six timing points.
+
+The second family fixes $t=16$ and supplies
+$x=2^bD+(2^b+1)L$ for $b=64,512,4096,32768$. Its full coordinate gcd is one,
+while every query must count exactly $2^b$ essential discs. Both arms already
+use three weights. The comparison isolates vertex-link removal and
+quadrilateral-content division, including the original-source checks and
+outer count proof.
+
+\input{tables/weighted_components_core.tex}
+
+For every scale the core has 11-bit coordinates and 14-bit orbit endpoints.
+The unreduced query uses 39 cycles, 819 replay events and at most 51 weight
+runs; the core uses 21 cycles, 400 events and at most eight runs. At
+$b=32768$, the original maximum coordinate length is 32,779 bits and its
+unreduced orbit endpoints have 32,782 bits. The compact proof shrinks from
+4,523,182 to 56,757 bytes, while still binding the original source. The
+reduced orbit work is independent of $b$ for this family; the outer reading,
+validation, arithmetic and fingerprint work remains sensitive to $b$.
+
+The largest core case has appreciable timing variability. Its five raw/core
+ratios are 5.187, 4.784, 8.899, 5.620 and 5.977; their median is 5.620.
+The separate arm medians, 296.942 and 35.789 ms, must not be divided and
+reported as that paired ratio. The identical core control has a 60.289 ms
+median, and individual raw/core timings change substantially across rounds,
+even though their median A/A ratios are 1.041 and 0.967. Across the core
+family the raw A/A medians range from 0.999 to 1.041 and core A/A from
+0.967 to 0.996. Median controls alone do not capture the observed variation.
+The raw samples and warm-ups are retained; deterministic operation counts,
+bit sizes and certificate sizes substantiate the reduction independently of
+the precise elapsed-time factor.
+
+These measurements neither include finding a normal vector nor establish a
+uniform saving on arbitrary triangulations. Small already primitive vectors
+can incur reduction overhead. No automatic knot-decision stage is added by
+this integration, and a zero count is not evidence that other disc vectors
+do not exist.
