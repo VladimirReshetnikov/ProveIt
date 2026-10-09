@@ -5044,6 +5044,74 @@ concerns the peer's polynomial lift and `PolyBoundedControl`, not the
 interface. The original theorems are unchanged. Standard axioms;
 collision gate clean.
 
+### J.101. Symmetric loopless graph of coherent column pairs
+
+**Verified 2026-10-09.** J.100 gives a dense pair family, but it does not
+make that family symmetric. Reflecting the entire family could join
+unrelated selected stars in opposite difference fibres. The new
+orientation step resolves this before applying graph extraction.
+
+`Proofs16OrientedPairs.exists_oriented_pair_subset` partitions the pairs
+according to whether `val(a-b) <= val(-(a-b))` and chooses the larger
+part. It retains at least half the original cardinality. If two selected
+pairs have opposite differences, those differences must equal their own
+negatives. `prime_self_opposite_zero` proves that such a difference is
+zero when the prime modulus exceeds two.
+
+`Proofs16SymmetricColumnPairs` reflects the selected part and proves
+coherence for the resulting union. Pairs with the same orientation use
+the previous coherence theorem; reversing both pairs negates both map
+differences. Mixed orientations meet only at zero index difference,
+where both pairs are diagonal and both map differences vanish. The
+union is symmetric, stays inside `X × X`, and has at least half the
+original pair count. No radius shrink is needed for this step.
+
+`Proofs16ColumnGraph` removes diagonal pairs, proving that at most `N`
+ordered pairs are lost. Its global theorem starts from the original
+`A,phi,alpha` assumptions. Put
+
+```
+theta = globalColumnQuadrupleDensity alpha
+Ngraph = max(globalColumnCompositionModulusBound alpha 2,
+             ceil(4/theta) + 3).
+```
+
+For prime `N >= Ngraph`, `global_coherent_column_graph` constructs
+`X,T,L,W,E`, retaining the original witness system, the dense index set,
+uniform rank bounds, normalized maps, and local Freiman linearity.
+Its ordered edge set satisfies
+
+```
+(theta/4)*N^2 <= |E|,
+E subset X × X,
+(a,b) in E implies a != b and (b,a) in E.
+```
+
+Every two edges with equal differences have equal column-map differences
+on their four endpoint Bohr domains, at J.100's positive radius
+`columnIdentityRadius d rho 1`. The threshold ensures that the diagonal
+loss is at most `(theta/4)*N^2`.
+
+This supplies a graph for the vertex-set extraction stage, corresponding
+to the second graph in the abstract BSG argument of
+[Milićević, Theorem 4.1](https://arxiv.org/pdf/2601.01682). It does not yet
+prove that a dense vertex set has all required additive identities.
+The path-counting step, bilinear organization, and shifted agreement
+remain open. The newly merged bound-parametric eventual-prime interface
+is still conditional; no deep structure theorem is claimed here.
+
+**Verification.** The focused construction checks 148 modules. All seven
+new named theorems pass individual axiom checks with only `propext`,
+`Classical.choice`, and `Quot.sound`. No additional upstream modules or
+changes to Apache provenance were needed.
+
+After merging the generalized eventual-prime interface, the full audit
+checks 7,012 public Gowers theorems in 5,102 modules (5,100 for the facade,
+including 4,152 OAI modules), with the same approved axiom boundary.
+The numbered catalogue remains 115 companions and five open statements;
+this does not certify fidelity to every printed statement.
+
+
 
 ### Robustly connected pieces of dense graphs: Milićević's Lemma 4.2 (2026-10-09)
 

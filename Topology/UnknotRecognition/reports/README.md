@@ -54,7 +54,7 @@ modification times.
 | `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | orbit/topology and worker subset integrated; 805 maintained tests pass; full overlay not rerun |
 | `47/` | `unknot_native_orbits_20261008.zip` | source snapshot and integration patch (`47/snapshot/`) | native normal-orbit research with an article, raw data and representative certificates | — | orbit replay and shared incidence integrated; 831 maintained tests pass; native-disc adapter and seed search pending |
 | `48/` | `ProveIt_compressed_braid_certificates_2026-10-08.zip` | standard-library `compressed_b3` (`48/compressed_b3/`, integration notes in `48/integration/`) | native compressed three-braid recognition on binary straight-line programs, replayable certificates, singleton connected-sum forests with `INCONCLUSIVE` for unsupported wider leaves | conditional exceptional-minority bound | already integrated before numbered placement; 53 manifest files reconciled; prior 42 delivery tests and actual-kernel audit pass |
-| `49/` | `unknot_source_anchored_20261008.zip` | standalone exact Python kernel (`49/src/`) with independent arithmetic replay | source-anchored primitive projections; saturated-lattice exponent bound `(t-1)^((t-1)/2) L^(t-1)` within a raw epoch, polynomial raw-epoch cost | polynomial raw epochs only; exposure, normalization and source resets stay open | 38 delivery tests and source-anchored arithmetic audit pass; native updater pin matches; polynomial raw-epoch theorem incorporated; native mixed-block lazy checker integrated; lazy producer pending |
+| `49/` | `unknot_source_anchored_20261008.zip` | standalone exact Python kernel (`49/src/`) with independent arithmetic replay | source-anchored primitive projections; saturated-lattice exponent bound `(t-1)^((t-1)/2) L^(t-1)` within a raw epoch, polynomial raw-epoch cost | polynomial raw epochs only; exposure, normalization and source resets stay open | 38 delivery tests and source-anchored arithmetic audit pass; native updater pin matches; polynomial raw-epoch theorem incorporated; native mixed-block lazy checker and producer integrated; general source-reset bound open |
 | `50/` | `unknot_sparse_incidence_20261008.zip` | three additive modules, tests and `integration.patch` (adapted into `fast/`) | polynomial sparse component-incidence histogram for interval-pairing systems, O(s*r) subset-sum queries, certificates with zero witnesses | polynomial support via the existing weighted Agol–Hass–Thurston theorem | native sparse unsigned/signed APIs and independent replay integrated; 25 focused tests, 512 dense/sparse comparisons and all 1,050 maintained tests pass |
 | `51/` | `unknot_singleton_dag_20261009.zip` | `integration.patch` and `repo_overlay/` (not applied), snapshots, independent certificate checkers | simultaneous Tietze elimination of acyclic singleton definitions with linear shared-grammar growth; 28-page article | local exact operation only; no whole-recognizer gain on the ordinary workload | linear grammar theorem incorporated; ordered checker adapted with legacy fallback and virtual inverses; 1,090 maintained tests, 1,600 old/new compressed abstract replays and 1,048 source replays pass; original search-policy overlay not applied |
 | `52/` | `unknot_sparse_incidence_research_20261008.zip` | standard-library package (`52/src/`), vendored baseline, integration notes | sparse-zeta extraction of component/port signatures, balanced block deletion, independently certified sparse answers; 25-page article | polynomial bit complexity of the supplied incidence query, via weighted AHT | 33 delivery tests and 1,000 ordinary/signed graph audit cases pass; sparse-zeta theory reviewed; native integration pending |
@@ -375,7 +375,8 @@ weighted component census and quadrilateral disc-count core are also integrated;
 see `../synthesis/weighted_components.tex` and its native audit/timing records.
 Report 51's ordered singleton checker is adapted to the native schema with
 legacy compatibility; see `../synthesis/ordered_batch.tex`. Report 49's lazy
-monomial source state remains pending native integration. Report 52 remains an independent reference
+monomial source state is now integrated in both native producer and checker;
+see `../synthesis/anchored_producer.tex`. Report 52 remains an independent reference
 implementation.
 
 Three further archives arrived in commit `92efcbaed`. Their initial integrity
@@ -435,5 +436,14 @@ table, then exported once. The independent literal verifier and all producer
 code remain unchanged. See `../synthesis/anchored_replay.tex` for the whole-block
 bound, 1,132-test validation, 768 source replays and separately scoped algebraic,
 full-certificate and whole-recognition measurements. The 2–3× supplied-schedule
-gains do not imply a general recognition speedup; lazy producer discovery and
-bounds across source resets remain open.
+gains do not imply a general recognition speedup. Producer discovery was
+subsequently integrated below; bounds across source resets remain open.
+
+Native source-anchored **producer discovery** is now integrated as well. It
+reuses the maintained greedy projection/forest selection and independently
+evaluates source counts and height profiles. Exact singleton priority and
+rank-two terminal boundaries are preserved. See
+`../synthesis/anchored_producer.tex` for the producer's polynomial raw-block
+cost, unchanged complete certificate traces, independent replay and measurements
+that include automatic discovery. This supersedes the producer-pending status
+of the earlier checker-only integration, without resolving general source resets.

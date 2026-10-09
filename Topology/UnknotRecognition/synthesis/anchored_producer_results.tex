@@ -1,0 +1,63 @@
+\subsection{Audit, adaptive correction and complete-call evidence}
+
+The native \code{anchored\_producer.py} research driver compares
+against \code{339c5359d34b}, which already contains the source-anchored checker.
+It loads the predecessor in an isolated namespace and pins 449 current source
+and fixture files before and after each run. Three pre-existing producer
+modules change: the search dispatcher and the two greedy planners' internal
+profile callbacks. The source-anchored producer is a new module. All independent
+checker files, including the compressed dispatcher, remain byte-for-byte equal
+to the baseline.
+
+The final maintained suite passes all 1,137 tests in 219.992 seconds. Focused
+tests compare exact greedy projection, forest and singleton-priority choices
+on 240 randomized signed presentations, including unrelated and empty roots.
+Other cases cover binary powers, checker-disabled production, producer-disabled
+source replay, unit-versus-growth dispatch, node/work exhaustion and cancellation
+without partial public state or trace publication.
+
+The source audit covers 102 diagrams in six modes: default, projection,
+forest, combined singleton/projection, combined singleton/forest, and projection
+with the rank-two terminal disabled. Both packages return identical complete
+certificates or the same absence of a certificate. The two combined Gordian
+modes exhaust the same five-million-work allowance in both engines; these
+are recorded incomplete discovery attempts, not successes. Every positive
+certificate is replayed by both engines in both literal and compressed modes.
+The adaptive rule leaves these ordinary diagram cases on the direct producer.
+
+Six further cases start from actual five- and seventeen-strand stabilized
+circles and a supplied legal Whitehead power with exponent $2^b$, for
+$b=4,128,512$. Subsequent primitive discovery is automatic and activates one
+two-round lazy block in every case. Complete certificates, including the
+exposure prefix, agree with the predecessor and pass both compressed source
+checkers; the $b=4$ cases also pass both literal checkers. The full audit totals
+1,328 source replays and takes 34.060 seconds while overlapping the suite;
+its duration is not a performance measurement. On the five-strand $b=512$
+case, producer work falls from 54,305 to 39,465 and nodes from 2,591 to 2,078.
+On the seventeen-strand $b=4$ case, work instead rises from 5,099 to 5,243:
+the adaptive criterion is a practical choice, not a proof that every accepted
+entry is faster. Automatic discovery of the exposure prefix is not claimed.
+
+Abstract infinite-cyclic capacity cases additionally compare every move,
+terminal claim and retained run-length word. At rank 32 and 128 local bits,
+the balanced case changes final nodes from 8,170 to 4,250 and total producer
+work from 160,464 to 93,032. The 32-generator star has 385 nodes in both
+engines, with work 109,465 versus 56,429. A 16-generator, 512-bit chain in
+projection mode changes nodes from 38,598 to 29,316 and work from 568,655
+to 447,260. The same chain in forest mode ends in one batch and retains
+exactly the old route: 22,635 nodes and 208,807 work. These are algebraic
+capacity checks, not new diagram-derived recognition successes.
+
+\paragraph{Why entry became adaptive.}
+The first serial timing run used lazy discovery whenever a move left more
+than two labels. On a 129-strand circle, complete projection discovery and
+replay changed from 143.994 to 194.017 ms, with paired old/new ratio $0.730$;
+the forest case changed from 92.595 to 142.539 ms, ratio $0.664$. Both are
+real regressions despite passing correctness tests. Signed unit images have
+no nontrivial powers to amortize the repeated source-summary work. The final
+entry rule therefore retains the cached ordinary path on those moves.
+The complete initial audit, tests and all three benchmark runs remain in
+\path{data/anchored-producer-before-gate-*}; they are not substituted for
+measurements of the final implementation.
+
+\input{anchored_producer_measurements.tex}

@@ -535,6 +535,9 @@ import GowersSzemeredi.Proofs16GlobalColumnRelations
 import GowersSzemeredi.Proofs16FibreStars
 import GowersSzemeredi.Proofs16DifferenceStars
 import GowersSzemeredi.Proofs16CoherentColumnPairs
+import GowersSzemeredi.Proofs16OrientedPairs
+import GowersSzemeredi.Proofs16SymmetricColumnPairs
+import GowersSzemeredi.Proofs16ColumnGraph
 import GowersSzemeredi.Proofs16CommonWitnesses
 import GowersSzemeredi.Proofs16RepresentedMap
 import GowersSzemeredi.Proofs16ColumnRepSystem

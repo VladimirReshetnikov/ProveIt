@@ -1,0 +1,74 @@
+\paragraph{Final serial measurements.}
+After the adaptive correction, the suite, audit and second code publication,
+the driver reruns all three timing modes serially. Five shuffled rounds retain
+both engines and an A/A copy of each. All 700 measured calls and 140 warm-ups
+complete. The tables contain median times and median within-round ratios;
+these are different estimators, especially when machine timings drift across
+rounds. No incomplete baseline is used as the denominator of a speedup claim.
+
+For algebraic stages, each timer includes fresh grammar construction, complete
+greedy discovery, fresh source-grammar reconstruction and independent replay
+through the rank-one endpoint. Exact output comparisons and proof serialization
+are outside the timer. All words, moves and terminal claims agree. The five
+cases take 21.687 seconds for 100 measured calls and 20 warm-ups.
+
+\input{tables/anchored_producer_kernels.tex}
+
+The balanced, star and chain binary-growth cases give paired old/new ratios
+$1.363$, $1.233$ and $1.143$. These are complete discovery-and-replay operations,
+not the maintenance-only schedules timed in the preceding section. They also
+use a different baseline, which already has the new checker; ratios from the
+two sections must not be multiplied into an unmeasured combined speedup.
+The forest chain ends in one batch and changes neither algorithm nor proof;
+its ratio $0.993$ is a control. The sub-millisecond unit star has a new A/A
+ratio $1.117$, so its $0.885$ cross-engine ratio is too noisy to establish a
+reliable regression or gain.
+
+The source-stage timers include fresh PD validation, discovery and mandatory
+independent presentation recovery, full proof replay and endpoint verification.
+Cases named ``exposed'' additionally construct the stated supplied Whitehead
+prefix inside the timer. Choosing that prefix is not automatic. The eleven
+cases take 14.103 seconds for 220 measured calls and 44 warm-ups.
+
+\input{tables/anchored_producer_source.tex}
+
+The 129-strand ordinary projection and forest ratios are now $0.994$ and
+$0.989$, respectively. The large regression from unconditional entry is absent;
+these cases retain ordinary production. The exposed cases give $1.021$,
+$1.025$ and $1.050$. Their modest effects should be interpreted with the raw
+samples. In the 129-strand projection run, old-engine times move from about
+140 ms in the first round to about 258 ms in later rounds. In the five-strand
+exposed case, the unpaired median time increases while the median paired ratio
+is above one. Neither should be presented as a robust source-wide improvement.
+The seventeen-strand, 512-bit exposed case has ratios above one in all five
+paired rounds, but its new A/A median is $1.023$: the observed benefit remains
+small compared with the algebraic capacity gains.
+
+Finally, the whole-recognition control uses the nineteen-case corpus with
+primitive projections and compressed search enabled in both engines. It
+includes discovery and required source replay, preserving the same
+20-million group-work, ten-second group, twelve-second total and 50,000-object
+limits. All 380 measured calls and 76 warm-ups complete in 35.270 seconds.
+
+\input{tables/anchored_producer_pipeline.tex}
+
+Paired old/new ratios range from $0.978$ to $1.064$. Old A/A ranges from
+$0.990$ to $1.076$ and new A/A from $0.949$ to $1.018$. In particular the
+Gordian cross-engine ratio $1.064$ is smaller than its old A/A ratio $1.076$,
+so it is not evidence for a recognition improvement. The source audit finds
+no adaptive lazy entry on the ordinary corpus. Recognition coverage and
+complete certificates are unchanged. These measurements support a targeted
+representation choice and polynomial fixed-source discovery, not a general
+recognition speedup or a quasipolynomial completeness theorem.
+
+The final raw records and their table generator are:
+\begin{flushleft}\small
+\path{data/anchored-producer-kernels.json}\\
+\path{data/anchored-producer-source.json}\\
+\path{data/anchored-producer-pipeline.json}\\
+\path{data/anchored_producer_tables.py}
+\end{flushleft}
+Each record retains every sample, source description, proof reference and
+source pin. The read-only upstream
+check finds \path{openai/math} unchanged at \code{fd4aeeb2ee4f}; no new external
+mathematics is imported in this step.
