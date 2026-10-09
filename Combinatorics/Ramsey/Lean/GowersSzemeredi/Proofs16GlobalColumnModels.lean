@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FixedColumnWordFamilies
+import GowersSzemeredi.Proofs16ColumnModelDomain
 import GowersSzemeredi.Proofs16GlobalColumnWordIdentities
 
 /-! A uniformly bounded list of local models in each alternating-value fibre,
@@ -46,8 +47,16 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
       (∀ a : ColumnAnchorTuple N k, (∀ x ∈ columnAnchorList a, x ∈ P) →
         delta*(N : Real)^(3*k+2) ≤ (fixedColumnWordRepresentations B T L r a).card) ∧
       (∀ c : ZMod N, ∃ J ⊆ columnAnchorFibre P k c, (J.card : Real)*delta ≤ 1 ∧
-        ∀ a ∈ columnAnchorFibre P k c, ∃ j ∈ J,
-          ColumnListIdentity T L s (columnAnchorList a) (columnAnchorList j)) := by
+        ∃ Gamma : Finset (ZMod N), Gamma.card ≤ J.card*(k+1)*d ∧
+          (Gamma.card : Real)*delta ≤ (k+1)*d ∧
+          (∀ j ∈ J, IsFreimanLinearOn (bohr Gamma rho)
+            (fun y => columnAnchorEval (fun x => L x y) (columnAnchorList j)) ∧
+            columnAnchorEval (fun x => L x 0) (columnAnchorList j) = 0) ∧
+          (∀ a ∈ columnAnchorFibre P k c, ∃ j ∈ J,
+            ColumnListIdentity T L s (columnAnchorList a) (columnAnchorList j) ∧
+            ∀ y ∈ bohr Gamma s, (∀ x ∈ columnAnchorList a, y ∈ bohr (T x) s) →
+              columnAnchorEval (fun x => L x y) (columnAnchorList a) =
+                columnAnchorEval (fun x => L x y) (columnAnchorList j))) := by
   have hNword : globalColumnWordIdentityModulusBound alpha k ≤ N := (le_max_left _ _).trans hN
   have hNker : refinementKernelCap (2*(k+1)*columnSpectrumCap (columnEightDensity alpha))
       (3*(k+1)*columnSpectrumCap (columnEightDensity alpha))
@@ -75,7 +84,7 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
   refine ⟨X,T,L,W,B,P,hsys,hT,hL,hzero,hBX,hPB,hP,hdelta k,
     refinementKernelRadius_pos _ _ hrho hs,hcount,?_⟩
   intro c
-  apply column_model_packing (columnAnchorFibre P k c) X T L columnAnchorList
+  have hpack := column_model_packing (columnAnchorFibre P k c) X T L columnAnchorList
     (fixedColumnWordRepresentations B T L (globalColumnRichnessRadius alpha)) c
     hrho hs hsle (hdelta k) hT hL hzero
     (fun a _ => columnAnchorList_length a)
@@ -84,5 +93,32 @@ theorem global_column_models {N : Nat} [NeZero N] [Fact N.Prime]
     (fun a ha w hw => (hspec a (Finset.mem_filter.mp ha).2.1 w hw).2.1.trans (Finset.mem_filter.mp ha).2.2)
     (fun a ha => hcount a (Finset.mem_filter.mp ha).2.1)
     (fun a ha w hw => (hspec a (Finset.mem_filter.mp ha).2.1 w hw).2.2) hNker
+
+  obtain ⟨J,hJA,hJ,hcover⟩ := hpack
+  let Gamma := columnModelSpectrum T columnAnchorList J
+  have hjX : ∀ j ∈ J, ∀ x ∈ columnAnchorList j, x ∈ X :=
+    fun j hj x hx => hBX (hPB ((Finset.mem_filter.mp (hJA hj)).2.1 x hx))
+  have hGamma : Gamma.card ≤ J.card*(k+1)*columnSpectrumCap (columnEightDensity alpha) :=
+    columnModelSpectrum_card_le T columnAnchorList J
+      (fun j _ => (columnAnchorList_length j).le) (fun j hj x hx => hT x (hjX j hj x hx))
+  have hGammaR : (Gamma.card : Real)*globalColumnWordDensity alpha k ≤
+      (k+1)*columnSpectrumCap (columnEightDensity alpha) := by
+    have hGR : (Gamma.card : Real) ≤ (J.card : Real)*(k+1)*columnSpectrumCap (columnEightDensity alpha) := by
+      exact_mod_cast hGamma
+    calc _ ≤ ((J.card : Real)*(k+1)*columnSpectrumCap (columnEightDensity alpha))*globalColumnWordDensity alpha k :=
+        mul_le_mul_of_nonneg_right hGR (hdelta k).le
+      _ = ((J.card : Real)*globalColumnWordDensity alpha k)*((k+1)*columnSpectrumCap (columnEightDensity alpha)) := by ring
+      _ ≤ 1*((k+1)*columnSpectrumCap (columnEightDensity alpha)) :=
+        mul_le_mul_of_nonneg_right hJ (by positivity)
+      _ = _ := one_mul _
+  refine ⟨J,hJA,hJ,Gamma,hGamma,hGammaR,
+    column_models_freiman T L columnAnchorList J _
+      (fun j hj x hx => hL x (hjX j hj x hx))
+      (fun j hj x hx => hzero x (hjX j hj x hx)),?_⟩
+  intro a haF
+  obtain ⟨j,hj,hij⟩ := hcover a haF
+  refine ⟨j,hj,hij,?_⟩
+  intro y hy hya
+  exact hij y hya ((mem_columnModelSpectrum_bohr T columnAnchorList J _ y).mp hy j hj)
 
 end LeanProofs.GowersSzemeredi
