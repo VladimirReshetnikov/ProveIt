@@ -1173,6 +1173,13 @@ The variety route splits this into three steps.
    removes at least exp(−B(θ))N² points (`exists_variety_piece`). The count
    exp(B(θ)) is quasi-polynomial in 1/θ. Axioms: propext, Classical.choice,
    Quot.sound.
+   `greedy_variety_cover_family` handles n bihomomorphisms φ_j on
+   domains A_j, which is what step 1 will produce. It uses at most
+   n·exp(B(θ/n)) pieces, each tagged with its owner j, and one exceptional
+   set U with |U| < θN². Every point of A_j outside U lies in some piece
+   owned by j. So if step 1 covers a relation Γ over J by the graphs of φ_j
+   on A_j, then Γ over J ∖ U is covered by the pieces' graphs. That is the
+   covering half of `StackableStructureAt 2`.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.

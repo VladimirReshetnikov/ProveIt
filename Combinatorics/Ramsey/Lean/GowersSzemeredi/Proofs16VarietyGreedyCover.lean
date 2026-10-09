@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16DeepAgreement
+import GowersSzemeredi.Proofs05Lemma9Induction
 
 /-! Greedy covering by variety pieces.
 
@@ -18,6 +19,11 @@ every `q ∈ G` satisfies `q − (s,t) ∈ V(ρ/2)` and `φ q = Φ(q − (s,t))`
 `φ`'s graph over `G`, shifted back by `(s,t)`, is part of `Φ`'s graph over
 `V(ρ/2)`. The peer's `exists_freiman_variety_cover` covers that graph with
 count 9, and `MultiplyLinearWith.translate` moves the cover back.
+
+`greedy_variety_cover_family` does the same for several bihomomorphisms
+`φ_j` on domains `A_j`. It runs the greedy cover at `θ/n` for each, leaving
+one exceptional set of size `< θN²` and at most `n·exp(B(θ/n))` pieces.
+Each piece carries its owner `j`.
 
 This is the structure side (S) of Part J for dimension two, from a Freiman
 bihomomorphism on a dense set. The extraction of such bihomomorphisms from
@@ -154,5 +160,52 @@ theorem greedy_variety_cover {D : Nat} (hM : MilicevicDeepVarietyStructure D)
     rw [hδ, ← Real.exp_add, add_neg_cancel, Real.exp_zero]
   have hEpos : 0 < Real.exp (milicevicBound D θ) := Real.exp_pos _
   nlinarith
+
+/-- **Greedy covering of several bihomomorphisms.** Given Freiman
+bihomomorphisms `φ_j` on domains `A_j` (`j < n`), at most `n·exp(B(θ/n))`
+variety pieces, each inside the domain of its owner `j`, cover every
+`A_j` outside a common exceptional set `U` with `|U| < θN²`. -/
+theorem greedy_variety_cover_family {D : Nat} (hM : MilicevicDeepVarietyStructure D)
+    {N : Nat} [NeZero N] {θ : Real} (hθ : 0 < θ) {n : Nat} (hn : 0 < n)
+    (φ : Fin n → ZMod N × ZMod N → ZMod N) (A : Fin n → Finset (ZMod N × ZMod N))
+    (hA : ∀ j, IsEBihomomorphism (A j) (φ j) {0}) :
+    ∃ (K : Nat) (piece : Fin K → Finset (ZMod N × ZMod N)) (owner : Fin K → Fin n)
+      (U : Finset (ZMod N × ZMod N)),
+      (K : Real) ≤ n * Real.exp (milicevicBound D (θ / n)) ∧
+      (U.card : Real) < θ * (N : Real) ^ 2 ∧
+      (∀ k, piece k ⊆ A (owner k) ∧ IsVarietyPiece D (θ / n) (φ (owner k)) (piece k)) ∧
+      ∀ j, ∀ x ∈ A j, x ∉ U → ∃ k, owner k = j ∧ x ∈ piece k := by
+  have hnR : (0 : Real) < n := by exact_mod_cast hn
+  have hθn : 0 < θ / n := div_pos hθ hnR
+  choose m G hm hrem hpieces using fun j => greedy_variety_cover hM hθn (hA j)
+  let e := section5NatFlattenEquiv m
+  refine ⟨∑ j, m j, fun k => G (e.symm k).1 (e.symm k).2, fun k => (e.symm k).1,
+    Finset.univ.biUnion (fun j => A j \ Finset.univ.biUnion (G j)), ?_, ?_, ?_, ?_⟩
+  · push_cast
+    calc (∑ j, (m j : Real)) ≤ ∑ _j : Fin n, Real.exp (milicevicBound D (θ / n)) :=
+          Finset.sum_le_sum fun j _ => hm j
+      _ = n * Real.exp (milicevicBound D (θ / n)) := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  · calc ((Finset.univ.biUnion (fun j => A j \ Finset.univ.biUnion (G j))).card : Real)
+        ≤ ∑ j, ((A j \ Finset.univ.biUnion (G j)).card : Real) := by
+          exact_mod_cast Finset.card_biUnion_le
+      _ < ∑ _j : Fin n, θ / n * (N : Real) ^ 2 :=
+          Finset.sum_lt_sum_of_nonempty ⟨⟨0, hn⟩, Finset.mem_univ _⟩ fun j _ => hrem j
+      _ = θ * (N : Real) ^ 2 := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+          field_simp
+  · intro k
+    exact hpieces (e.symm k).1 (e.symm k).2
+  · intro j x hx hxU
+    have hxG : x ∈ Finset.univ.biUnion (G j) := by
+      by_contra hcon
+      exact hxU (Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _,
+        Finset.mem_sdiff.mpr ⟨hx, hcon⟩⟩)
+    obtain ⟨i, _, hi⟩ := Finset.mem_biUnion.mp hxG
+    refine ⟨e ⟨j, i⟩, ?_, ?_⟩
+    · simp
+    · show x ∈ G (e.symm (e ⟨j, i⟩)).1 (e.symm (e ⟨j, i⟩)).2
+      rw [Equiv.symm_apply_apply]
+      exact hi
 
 end LeanProofs.GowersSzemeredi
