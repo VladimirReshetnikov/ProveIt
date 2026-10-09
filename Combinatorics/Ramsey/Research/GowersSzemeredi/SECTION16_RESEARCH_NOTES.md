@@ -4184,3 +4184,12 @@ budget or the corresponding argument from the source must close it.
 All five numbered open entries and source-fidelity caveats remain in
 force; these results do not establish the deep variety theorem or its
 printed numerical constants.
+
+Validation: the focused final check covers 146 modules. All 11 newly
+named theorems pass individual transitive axiom checks. The full audit
+passes for 6,725 public Gowers theorems in a 5,046-module facade (4,152
+OAI modules), or 5,048 modules including both audits, using only
+`propext`, `Classical.choice`, and `Quot.sound`. The source ledger still
+matches 115 companions and five open entries. The selected port-scope
+check passes; upstream sources and Apache provenance/license files are
+unchanged. The merged incoming work concerns topology only.
