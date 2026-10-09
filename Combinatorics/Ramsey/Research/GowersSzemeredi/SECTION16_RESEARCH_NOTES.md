@@ -5720,3 +5720,104 @@ The combined audit checks 7,139 public Gowers theorems in 5,133 modules
 approved axioms. The source ledger is identical at 115 companions and
 five open entries, and the selected-port scope check passes. These
 counts do not certify fidelity to every printed statement.
+
+### J.107. Removing all intermediate domains from word identities
+
+**Verified 2026-10-09.** Five modules turn J.106's recursive local map
+identities into identities on only the anchor and output Bohr domains,
+with explicit parameters for every fixed word length.
+
+`Proofs16ColumnWordDomains` flattens a word into `columnWordEntries`
+and proves that its length is `3*k` for a word of `k` triples. Its
+alternating list evaluation is exactly `columnWordEval`. The same
+module defines `columnWordAux`: at each splice it records only the old
+triple's last entry and the old word's first entry, followed by the
+auxiliary entries of the recovered shorter word. A representation of
+`a :: as` therefore has exactly `2*as.length` auxiliary entries. This is
+smaller than counting every vertex of every recursive triple and
+connecting quadruple separately.
+
+All auxiliary entries of a valid representation lie in `B`.
+`columnWordDomain_of_entries_aux` proves that the anchor, output, and
+auxiliary constraints imply the full recursive `columnWordDomain`.
+The proof observes that the connecting quadruple's other two entries
+are output entries, while its two old entries are precisely the two
+new auxiliary entries. No further intermediate constraints are needed.
+
+`Proofs16ColumnListSpectrum` forms the union of the column spectra for
+a finite list. If every spectrum has cardinality at most `d`, the union
+has cardinality at most `length*d`. Membership in its Bohr set is
+exactly membership in every listed column's Bohr set. Alternating list
+evaluations preserve Freiman linearity and normalization. In particular,
+the difference between the anchor map sum and output map sum is
+Freiman-linear on the union of the anchor and output spectra.
+
+`column_word_identity_remove_aux` applies the prime-target
+frequency-removal theorem to this difference. Write `k = as.length`,
+so the represented anchor list has `k+1` terms. The two rank bounds are
+
+```
+D = 4*(k+1)*d,    E = 2*k*d.
+```
+
+The first counts the anchors and the `3*(k+1)` output entries. The
+second counts the auxiliary entries. Given `0 < r <= rho`, set
+
+```
+K = ceil(4/rho)^D * ceil(1/r)^(D+E),
+s = (rho/2)/K.
+```
+
+If the prime modulus satisfies `N > K`, the output map sum equals the
+anchor map sum whenever the argument belongs to the Bohr sets of the
+anchors and output entries at radius `s`. No auxiliary spectrum appears
+in this conclusion. The proof first obtains zero on the intersection
+with the auxiliary constraints at radius `r`, then uses
+`freiman_zero_remove_frequencies` once. The counts of representations
+are unaffected.
+
+`ColumnWordIdentity` packages exactly this conclusion, without recovered
+intermediate domain assumptions. The auxiliary rank bound is `2*k*d`,
+rather than the preliminary `8*(k+1)*d` estimate from counting every
+recursive domain column.
+
+`Proofs16ColumnWordIdentityParameters` specializes these parameters to
+J.106's global construction. It defines
+
+```
+globalColumnWordIdentityRadius alpha k
+  = refinementKernelRadius (4*(k+1)*d) (2*k*d) rho r,
+globalColumnWordIdentityModulusBound alpha k
+  = max(globalColumnRichnessModulusBound alpha,
+        refinementKernelCap (4*(k+1)*d) (2*k*d) rho r + 1),
+```
+
+where `d = columnSpectrumCap (columnEightDensity alpha)`,
+`rho = globalColumnIdentityRadius alpha`, and
+`r = globalColumnRichnessRadius alpha`. Positivity of the new radius and
+the required comparison `r <= rho` are proved.
+
+`global_column_word_identities` constructs the dense core directly from
+the original dense bihomomorphism under this explicit modulus bound.
+It retains the witness system, spectrum rank, normalization, local
+linearity, core density, all triple and arbitrary-length representation
+counts, and full hereditary richness. Every represented word whose
+anchor list has `k+1` terms satisfies `ColumnWordIdentity` at the radius
+above. This finishes removal of the intermediate domains for any fixed
+length, with the stated length-dependent size and radius costs.
+
+**Remaining work.** The core does not yet satisfy all additive map
+identities, and no global bilinear organization or shifted agreement is
+claimed. These structural steps and the final numerical structure budget
+remain open. The earlier radius `r` is not claimed sufficient after
+removing auxiliary conditions; the new radius and threshold are part of
+the theorem.
+
+**Verification.** The global construction checks 231 modules. All 17 new
+named theorems pass individual axiom checks using only `propext`,
+`Classical.choice`, and `Quot.sound`. The combined audit checks 7,173
+public Gowers theorems in 5,138 modules (5,136 for the facade, including
+4,152 OAI modules). The source ledger is identical at 115 companions and
+five open entries, and the selected-port scope check passes. These
+counts do not certify fidelity to every printed statement. No upstream
+modules or Apache provenance changed.
