@@ -8041,3 +8041,15 @@ sources: 7,909 public Gowers theorems, 5,295 combined modules and 5,293
 facade modules. The axiom boundary and numbered ledger are unchanged.
 The two local cover inputs remain hypotheses; no deep-structure closure
 is asserted by this integration.
+
+
+**Eventual polynomial-bound bridge verified.** A second concurrent merge
+adds the least-index bound comparison and assembles the two local covers
+from `MilicevicDeepEventuallyPrime Bnd`. The dimension-three consequences
+now accept `Bnd c <= (4/c)^K` with `K <= 2^64`; the named numerical
+constants are discharged. This resolves the two-density budget mismatch
+in J.5b while retaining the deep-structure and polynomial-bound hypotheses.
+The actual merged closure passes: 7,920 public Gowers theorems in 5,296
+combined modules (5,294 facade modules), with the same three allowed
+axioms. The ledger adds four conditional consequences and updates source
+locations; its 115 companions and five open entries remain unchanged.
