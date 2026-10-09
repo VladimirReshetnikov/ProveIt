@@ -7999,3 +7999,14 @@ at the two densities. The existing fixed-index dimension-three results
 are recovered at `D₂ = D`. This enables separate future choices at the
 two densities; it does not itself supply deep structure or discharge
 the remaining quantitative bridge.
+
+
+**Concurrent local-cover integration.** A fast-forward push race brought
+in `Proofs16VarietyLocalPieces`. It constructs the dimension-three relation
+pieces from two local `VarietyClassCoverAt` inputs and supplies
+`section16_budgeted_piece_three_of_local` when their two numerical values
+fit the budget. The new module and merged audit pass against the actual
+sources: 7,909 public Gowers theorems, 5,295 combined modules and 5,293
+facade modules. The axiom boundary and numbered ledger are unchanged.
+The two local cover inputs remain hypotheses; no deep-structure closure
+is asserted by this integration.
