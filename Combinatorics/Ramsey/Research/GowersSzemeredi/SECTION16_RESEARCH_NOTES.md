@@ -8868,3 +8868,64 @@ the facade has 5,395 modules, including 4,152 OAI modules. The generated
 ledger is byte-identical to the tracked 115-companion / five-open catalogue,
 and port scope passes with the unchanged 4,134 upstream and 17 compatibility
 modules. No upstream source or licensing scope is added.
+
+
+### J.138. Dense coherent pairs and robust graphs with two radius losses
+
+The coherent bridge system from J.137 now supplies the first combinatorial
+extraction, with all witnesses retained through the global construction.
+The ten new modules add twenty named proofs and require no new upstream port.
+
+`CoherentRelationLevel` uses radius `sigma/6^(i-1)` at level `i`.
+Monotonicity, symmetry, simultaneous endpoint swapping, crossing, and
+mixed-level bridge composition are proved from the existing pair relation
+and the constructed bridge system. Encoding a coherent quadruple as
+`((a0,a2),(a3,a1))` injects its mass into level-one pair relations. Summing
+over their common difference gives exactly the sum of difference-graph
+edge counts.
+
+For quadruple mass at least `kappa*N^3`, the density obeys `kappa <= 1`.
+At least `kappa*N/2` differences have graph density at least `kappa/2`.
+For each such difference, common-codegree extraction gives a set of at
+least `3*kappa*N/16` vertices. Two applications of weak transitivity make
+all pairs in that set related at level three, hence radius `sigma/36`.
+The sufficient bridge threshold is `eta <= kappa^2/256`, with `eta > 0`;
+only bridge indices zero and one are needed. This directly exploits the
+existing common-codegree lemma, avoiding a longer path-compression step.
+
+Encoding a vertex and its difference as `(u+a,u)` is injective. The union
+of the selected sets therefore has at least `3*kappa^2*N^2/32` pairs,
+and every two pairs with the same difference have the level-three identity.
+For odd prime modulus, the proved orientation-and-symmetrization lemma
+retains at least half this mass while preserving those identities. It is
+not sufficient merely to union an arbitrary pair family with its reversal.
+
+`HasCoherentRobustGraph` records a symmetric graph `E` of density at least
+`delta = 3*kappa^2/64`, whose equal-difference edges have coherent identities
+at radius `sigma/36`. It also records a subset `A` of density at least
+`9*kappa^2/512`, such that every two vertices of `A` have at least
+`delta^5*N^3/16384` four-edge walks in `E`.
+
+The single-family and popular-anchor wrappers retain the exact refined
+frequency system, source map, original coherent progression and original
+popular witnesses. `global_coherent_robust_system` constructs them from
+the original dense bihomomorphism. Its modulus threshold is
+`max (globalCoherentBridgeModulusBound alpha 1 2 256) 3`.
+The density in the graph estimates is the positive density at the actual
+regularity stopping state. No arbitrary restriction to a source-offset
+fiber is made; the previous agreement-transfer theorem remains applicable.
+
+This establishes the first extraction with an explicit constant radius
+loss. Matching walks to obtain rich cross-subset relations, the subsequent
+local structure, and a comparison with the printed final Gowers budget
+remain open. This checkpoint does not close a numbered catalogue entry
+or assert a tighter final Szemeredi threshold.
+
+All ten modules compile in a 518-module production closure. All twenty
+named proofs pass individual axiom checks, and the full audit checks
+8,387 public Gowers theorems with only `propext`, `Classical.choice`, and
+`Quot.sound`. The combined audit has 5,407 modules; the facade has 5,405,
+including the unchanged 4,152 OAI modules. The generated ledger is
+byte-identical to the tracked 115-companion / five-open catalogue. Port
+scope remains 4,134 upstream modules and 17 compatibility modules, with
+no change to the retained licenses or provenance notices.
