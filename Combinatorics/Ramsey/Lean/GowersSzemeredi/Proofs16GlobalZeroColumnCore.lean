@@ -21,6 +21,7 @@ theorem global_zero_column_core {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (P Gamma : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
       (∀ x ∈ X, L x 0 = 0) ∧ P ⊆ X ∧ P.Nonempty ∧
@@ -37,7 +38,7 @@ theorem global_zero_column_core {N : Nat} [NeZero N] [Fact N.Prime]
   have hNk : refinementKernelCap g d (globalColumnIdentityRadius alpha) (r/2) < N :=
     Nat.lt_of_succ_le ((le_max_left _ _).trans ((le_max_right _ _).trans hN))
   have h7 : 7 ≤ N := (le_max_right _ _).trans ((le_max_right _ _).trans hN)
-  obtain ⟨X,T,L,W,B,P,hsys,hT,hL,hzero,hBX,hPB,hP,hdelta,hr,_,hmodels⟩ :=
+  obtain ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,hdelta,hr,_,hmodels⟩ :=
     global_column_models A phi ha ha1 hA hphi 3 hNm
   obtain ⟨J,_,hJ,Gamma,_,hG,hf,hcover⟩ := hmodels 0
   have hGamma : Gamma.card ≤ g := by
@@ -60,7 +61,7 @@ theorem global_zero_column_core {N : Nat} [NeZero N] [Fact N.Prime]
     hPne hGamma hJcard (fun x hx => hT x (hBX (hPB hx)))
     (fun j hj => (hf j hj).1) (fun j hj => (hf j hj).2) hNk h7
     (fun a ha => by obtain ⟨j,hj,_,hc⟩ := hcover a ha; exact ⟨j,hj,hc⟩)
-  refine ⟨X,T,L,W,Q,Gamma,hsys,hT,hL,hzero,
+  refine ⟨X,T,L,W,Q,Gamma,hsys,hW,hT,hL,hzero,
     fun x hx => hBX (hPB (hQP hx)),hQne,?_,hGamma,hquad⟩
   have hb : 0 < beta := modelTestDensity_pos g d hr
   calc

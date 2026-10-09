@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16GlobalZeroColumnCore
+import GowersSzemeredi.Proofs16ColumnBohrDomainDensity
 
 /-! Convert zero column relations into a Freiman bihomomorphism by
 including the common frequencies in every column spectrum. -/
@@ -56,19 +57,34 @@ theorem global_column_core_bihomomorphism {N : Nat} [NeZero N] [Fact N.Prime]
     (hN : globalColumnZeroModulusBound alpha ≤ N) :
     ∃ (X P Gamma : Finset (ZMod N)) (T : ZMod N → Finset (ZMod N))
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N)),
-      IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧ P ⊆ X ∧ P.Nonempty ∧
+      IsColumnWitnessSystem A phi X T L W (1/(4*Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧ P ⊆ X ∧ P.Nonempty ∧
       globalColumnZeroDensity alpha*N ≤ (P.card : Real) ∧
       (∀ x ∈ P, (Gamma ∪ T x).card ≤ globalColumnModelRank alpha +
         columnSpectrumCap (columnEightDensity alpha)) ∧
       (∀ x ∈ P, L x 0 = 0) ∧
       IsEBihomomorphism (columnBohrDomain P (fun x => Gamma ∪ T x) (globalColumnZeroRadius alpha))
-        (fun p => L p.1 p.2) {0} := by
-  obtain ⟨X,T,L,W,P,Gamma,hsys,hT,hL,hzero,hPX,hPne,hP,hG,hquad⟩ :=
+        (fun p => L p.1 p.2) {0} ∧
+      globalColumnZeroDensity alpha*(N : Real)^2 ≤
+        (refinementCells (globalColumnZeroRadius alpha) : Real)^
+          (globalColumnModelRank alpha+columnSpectrumCap (columnEightDensity alpha))*
+          (columnBohrDomain P (fun x => Gamma ∪ T x) (globalColumnZeroRadius alpha)).card := by
+  obtain ⟨X,T,L,W,P,Gamma,hsys,hW,hT,hL,hzero,hPX,hPne,hP,hG,hquad⟩ :=
     global_zero_column_core A phi ha ha1 hA hphi hN
-  refine ⟨X,P,Gamma,T,L,W,hsys,hPX,hPne,hP,?_,fun x hx => hzero x (hPX hx),?_⟩
-  · intro x hx
+  have hST : ∀ x ∈ P, (Gamma ∪ T x).card ≤ globalColumnModelRank alpha+
+      columnSpectrumCap (columnEightDensity alpha) := by
+    intro x hx
     exact (Finset.card_union_le _ _).trans (Nat.add_le_add hG (hT x (hPX hx)))
+  refine ⟨X,P,Gamma,T,L,W,hsys,hW,hPX,hPne,hP,hST,fun x hx => hzero x (hPX hx),?_,?_⟩
   · exact zero_columns_bihomomorphism P Gamma T L (globalColumnZeroRadius_le ha ha1)
       (fun x hx => hL x (hPX hx)) hquad
+  · have hs := globalColumnZeroRadius_pos ha ha1
+    let Q := refinementCells (globalColumnZeroRadius alpha)
+    have hQpos : 0 < Q := Nat.ceil_pos.mpr (by positivity)
+    letI : NeZero Q := ⟨Nat.ne_of_gt hQpos⟩
+    have hQ : 1 ≤ globalColumnZeroRadius alpha*Q := by
+      have hceil : 1/globalColumnZeroRadius alpha ≤ (Q : Real) := Nat.le_ceil _
+      simpa only [mul_comm] using (div_le_iff₀ hs).mp hceil
+    exact columnBohrDomain_density_lower P (fun x => Gamma ∪ T x) hQ hST hP
 
 end LeanProofs.GowersSzemeredi

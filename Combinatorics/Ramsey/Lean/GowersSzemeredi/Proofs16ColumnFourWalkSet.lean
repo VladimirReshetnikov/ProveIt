@@ -21,6 +21,7 @@ theorem global_column_four_walk_set {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (E : Finset (ZMod N × ZMod N)) (B : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
       (∀ x ∈ X, L x 0 = 0) ∧
@@ -31,11 +32,11 @@ theorem global_column_four_walk_set {N : Nat} [NeZero N] [Fact N.Prime]
       B ⊆ X ∧ 3*delta*N/8 ≤ (B.card : Real) ∧
       (∀ u ∈ B, ∀ v ∈ B, delta^5*(N : Real)^3/16384 ≤
         ((graphFourWalks (fun a b => (a,b) ∈ E) u v).card : Real)) := by
-  obtain ⟨X, T, L, W, E, hX, hsys, hT, hL, hzero, htheta, hr, hE, hEX, hloop, hsym, hcoh⟩ :=
+  obtain ⟨X, T, L, W, E, hX, hsys, hW, hT, hL, hzero, htheta, hr, hE, hEX, hloop, hsym, hcoh⟩ :=
     global_coherent_column_graph A phi ha ha1 hA hphi hN
   have hd : 0 < globalColumnQuadrupleDensity alpha/4 := by positivity
   obtain ⟨B, hBX, hB, hwalk⟩ := exists_dense_four_walk_set_on X E hEX hsym hd (by simpa using hE)
-  refine ⟨X, T, L, W, E, B, hsys, hT, hL, hzero, hd, hr, hEX, hloop, hsym, hcoh, hBX, ?_, ?_⟩
+  refine ⟨X, T, L, W, E, B, hsys, hW, hT, hL, hzero, hd, hr, hEX, hloop, hsym, hcoh, hBX, ?_, ?_⟩
   · simpa using hB
   · simpa using hwalk
 

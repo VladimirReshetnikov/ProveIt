@@ -22,6 +22,7 @@ theorem global_coherent_column_pairs {N : Nat} [NeZero N] [Fact N.Prime]
       (P : Finset (ZMod N × ZMod N)),
       (alpha / (2 - alpha)) * N ≤ X.card ∧
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
       (∀ x ∈ X, L x 0 = 0) ∧
@@ -41,7 +42,7 @@ theorem global_coherent_column_pairs {N : Nat} [NeZero N] [Fact N.Prime]
   have hdensity : globalColumnQuadrupleDensity alpha * (N : Real)^2 ≤ P.card := by
     apply (mul_le_mul_iff_right₀ hNpos).mp
     nlinarith [hcount]
-  refine ⟨X, T, L, W, P, hX, hsys, hT, hL, hzero, htheta,
+  refine ⟨X, T, L, W, P, hX, hsys, hW, hT, hL, hzero, htheta,
     columnIdentityRadius_pos _ hrho 1, hdensity, ?_, ?_⟩
   · intro p hp
     obtain ⟨z, hz⟩ := hP p hp

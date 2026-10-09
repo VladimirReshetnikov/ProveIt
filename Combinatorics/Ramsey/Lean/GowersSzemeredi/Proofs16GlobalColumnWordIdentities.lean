@@ -25,6 +25,7 @@ theorem global_column_word_identities {N : Nat} [NeZero N] [Fact N.Prime]
       (L : ZMod N → ZMod N → ZMod N) (W : ZMod N → Finset (Fin 4 → ZMod N))
       (B P : Finset (ZMod N)),
       IsColumnWitnessSystem A phi X T L W (1 / (4 * Real.pi)) ∧
+      (∀ x ∈ X, columnWitnessDensity (columnEightDensity alpha)*(N : Real)^4 ≤ (W x).card) ∧
       (∀ x ∈ X, (T x).card ≤ d) ∧
       (∀ x ∈ X, IsFreimanLinearOn (bohr (T x) rho) (L x)) ∧
       (∀ x ∈ X, L x 0 = 0) ∧ B ⊆ X ∧ P ⊆ B ∧
@@ -45,9 +46,9 @@ theorem global_column_word_identities {N : Nat} [NeZero N] [Fact N.Prime]
       (2*k*columnSpectrumCap (columnEightDensity alpha))
       (globalColumnIdentityRadius alpha) (globalColumnRichnessRadius alpha) < N :=
     Nat.lt_of_succ_le ((le_max_right _ _).trans hN)
-  obtain ⟨X,T,L,W,B,P,hsys,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,htriple,hwords,hrich⟩ :=
+  obtain ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,htriple,hwords,hrich⟩ :=
     global_column_word_representations A phi ha ha1 hA hphi hNrich
-  refine ⟨X,T,L,W,B,P,hsys,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,
+  refine ⟨X,T,L,W,B,P,hsys,hW,hT,hL,hzero,hBX,hPB,hP,heta,hr,hlambda,hsigma,
     globalColumnWordIdentityRadius_pos ha ha1 k,htriple,hwords,?_,hrich⟩
   intro a as has hlen w hw
   have hcap : refinementKernelCap (4*(as.length+1)*columnSpectrumCap (columnEightDensity alpha))
