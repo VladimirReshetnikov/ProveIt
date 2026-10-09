@@ -1527,3 +1527,23 @@ for elimination_mode in ('pipeline','stages'):
     heading=('Input & old ms & default ms & portfolio ms & old/portfolio' if elimination_mode=='pipeline' else
         'Crossings & old ms & forest ms & direct ms & portfolio ms & old/direct & old/port.')
     open(f'tables/elimination_batch_{elimination_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (len(arms)+len(ratios)))+'@{}',rows)+'\\end{center}\n')
+
+
+for reach_mode in ('pipeline','stages'):
+    data=load(f'../fast/results/elimination_reach_{reach_mode}_20261008.json')
+    if not data:continue
+    rows=[]
+    for r in data['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['source']['name']) if reach_mode=='pipeline' else str(r['source']['crossings'])]
+        if reach_mode=='pipeline':
+            cells+=['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('current','old_portfolio','portfolio')]
+            cells+=['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('portfolio','versus_default')]
+        else:
+            for mode,old in (('direct','old_direct'),('portfolio','old_portfolio')):
+                cells.append('/'.join('--' if m[a] is None else f'{1000*m[a]:.3f}' for a in (old,mode)))
+                cells.append('--' if q[mode]['median'] is None else f"{q[mode]['median']:.3f}")
+        rows.append(' & '.join(cells)+r' \\')
+    heading=('Input & default ms & old port. ms & new port. ms & old/new & default/new' if reach_mode=='pipeline' else
+        'Crossings & direct old/new ms & ratio & portfolio old/new ms & ratio')
+    open(f'tables/elimination_reach_{reach_mode}.tex','w').write('\\begin{center}\\small\n'+table(heading,'@{}l'+('r'* (5 if reach_mode=='pipeline' else 4))+'@{}',rows)+'\\end{center}\n')

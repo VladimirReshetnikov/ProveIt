@@ -178,7 +178,9 @@ eliminates 127 generators in two batches but exhausts a two-million-work
 allowance. The prior search succeeds. Thus soundness and fewer elimination
 rounds do not imply faster complete recognition.
 
-The public host treats this new schedule as a bounded trial. With producer
+The first public host treated this new schedule as a bounded trial. Its
+original policy, measured below, is refined in
+Section~\ref{sec:elimination-reach}. With producer
 allowance $W$, it gives the trial $\min(\lfloor W/4\rfloor,50000)$ work
 units. On a nondecision or local resource exhaustion it reconstructs the
 original diagram's presentation and invokes the preceding compressed
@@ -238,3 +240,5 @@ modes. Each run pins the complete prior package, checks 138 current source
 hashes before and after execution, and retains full proofs, shuffled sample
 orders, controls, work counters and incomplete outcomes. The circle stages
 bypass earlier simplification and cannot be reported as whole-knot speedups.
+
+\input{elimination_reach.tex}

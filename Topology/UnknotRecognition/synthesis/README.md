@@ -891,3 +891,16 @@ the changed order can make later exposure harder. All 1,008 tests pass;
 all 240 prior-mode results are unchanged and fallback retains 53 prior
 positives on 80 diagrams. Full-call measurements retain both gains and
 regressions; the default stays unchanged.
+
+
+[`elimination_reach.tex`](elimination_reach.tex) proves the exact incremental
+reachability update and documents the revised recovery-aware trial budget.
+All 1,012 tests pass; 2,250 audited planner states agree with both the old
+planner and an independent literal oracle, and all 80 direct outcomes retain
+their prior certificate hashes where positive. Direct checked circle stages
+improve 1.515x at 256 crossings and 2.326x at 512. The adaptive host improves
+30.105x at 256 and completes at 512 where the old host hits its node cap.
+These are group-stage results. All 760 whole-recognition measurements finish,
+with no broad gain and additional Gordian trial work; 270 of 280 stage
+measurements finish, with all ten incomplete old outcomes retained. The
+strategy stays optional and the general quasipolynomial goal remains open.
