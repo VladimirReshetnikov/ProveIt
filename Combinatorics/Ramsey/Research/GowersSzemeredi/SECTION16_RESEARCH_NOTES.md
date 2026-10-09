@@ -1094,6 +1094,52 @@ differently:
 So Qb(θ) ≥ 4T², which is quasi-polynomial in 1/ρ and polynomial-exponent
 in the rank. On wide boxes, choose H₂ as the largest h with
 h^(e₁e₂) ≤ P.width, and take Eb = 1/(2e₁e₂).
+
+**Done, by the peer (2026-10-08).** `exists_freiman_variety_cover`
+(`Proofs16FreimanVarietyCover`, built on `Proofs16FreimanVarietyProfile`)
+carries out this bookkeeping with the actual partition theorem, so it is
+unconditional given the Freiman data. Small boxes use the existing coarse
+cover (`multiplyLinearWith_of_large_box_covers`), which needs only **9**
+maps. My parallel `variety_multiplyLinear_all_scales` landed two minutes
+later with the weaker count 4T². It was removed as a strict duplicate;
+see git history at 5758b5634. Lessons:
+- On narrow boxes, cells need width only ≥ w^Eb, not w. Even the
+  constant-cover route then costs about 4H₀ maps, not 4T².
+- `set` on `⌈·⌉₊` makes `nlinarith` whnf-unfold `Nat.ceil` on ℝ and time
+  out. Introduce such scales opaquely, with
+  `obtain ⟨H₀, hH₀⟩ : ∃ H₀, H₀ = … := ⟨_, rfl⟩`.
+
+**So item (R) of Part J is reduced to Milićević's structure alone.** Given
+`MilicevicDeepVarietyStructure`, one variety's agreement graph is
+multiply linear with count 9 (shift by (s, t): `MultiplyLinearWith.translate`).
+
+**Heads-up for the stacking step (Part J's `CubicStackableClass`).** The
+class fixes dimension one's controls: count 3nq and exponent
+cubicBaseExponent(nq)(θ) = 2⁻²⁷θ³/(nq)⁴, which is degree 4 in the number n
+of stacked members. Stacking n varieties by one joint two-stage partition
+(all n(|Γ|+|Ψ|) linear phases, then all nr mixed phases) gives inverse
+exponent ≈ p²(nr+1)⁸(n(|Γ|+|Ψ|)+1)⁸, degree **16** in n. Matching
+2⁻²⁷/(nq)⁴ at θ = 1 needs q⁴ ≳ 2⁻²⁶p²r⁸(|Γ|+|Ψ|)⁸·n¹². No fixed q works
+for all n. Sequential refinement is worse, since exponents multiply.
+Possible repairs:
+- (i) restate the cubic lift and `CubicStackableClass` with polynomial
+  controls of general degree, (C n^a q, c θ^b/(nq)^a′);
+- (ii) bound n by the lift's slice count R(θ, γ) and let q absorb poly(R).
+  Then q is quasi-polynomial, and `PolyBoundedControl` has to weaken
+  accordingly (J.3);
+- (iii) a stacking argument that does not partition jointly.
+
+**Correction (same night): repair (i) already exists at the lift level.**
+The peer's polynomial lift `Proofs16PolynomialMultilinearCover`, unlike
+the cubic packaging above, quantifies over **arbitrary** slice controls
+`Section16SliceProvider B₁ φ₁ Pb Es`. It evaluates them only at
+r = `samples` = ⌈6·max(1, q_Γ)/σ⌉. The count becomes
+max(Pb, C(samples,2)·Pb²), and the width exponent is
+`Es samples σ`. A degree-16 stacking exponent is therefore admissible as
+it stands. Only Part J's packaging, `CubicStackableClass` with
+`cubicBaseExponent`, is rigid. So the dimension-two slice provider for
+varieties should target `Section16SliceProvider` with its own (Pb, Es),
+not `CubicStackableClass`.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
