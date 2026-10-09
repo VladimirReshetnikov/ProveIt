@@ -1212,10 +1212,35 @@ The variety route splits this into three steps.
      arXiv:2601.01682 states that its proof uses an abstract BSG theorem.
      See also Gowers–Milićević arXiv:2002.11667 and the F_p^n quasipolynomial
      U⁴ paper arXiv:2410.08966.
-   - **Not yet checked:** that any of these yields exactly the
-     relation-covering form above, with quasi-polynomial m(γ,θ), from
-     Gowers's product property in place of a U⁴ hypothesis. That is the
-     next reading task for step 1.
+   - **Checked (same night) against arXiv:2601.01682 §15**, the proof of
+     Theorem 15.1, pp. 103–104. The dense Freiman bihomomorphism there is
+     produced without abstract BSG:
+     - a single-valued φ on a dense A respects (c/2)^O(1) of the
+       horizontal quadruples in many rows;
+     - Theorem 2.26 (Sanders's bounds: many respected quadruples give
+       agreement with a Freiman homomorphism on a coset progression, on an
+       exp(−polylog) fraction) is applied row by row, giving a dense
+       horizontally Freiman piece A′;
+     - the same is repeated on columns. Domains only shrink and values are
+       unchanged, so the horizontal property survives.
+
+     For Gowers's product property, a single-valued selection of a
+     relation inherits the property (`RelationProductProperty.mono`, already
+     in `Proofs16GreedyRelations`). With p = 1 and θ ≡ 1 on a row of size
+     ≥ βN, it has energy ≥ γ⁸β⁴N³, the input Theorem 2.26 needs.
+   - **Reduction formalized (`Proofs16BihomPieceReduction`,
+     kernel-checked).** `DenseBihomPiece mass` is the single step: a
+     sub-relation with the product property and projection ≥ θN² contains
+     the graph of a Freiman bihomomorphism on ≥ mass(γ,θ)N² points.
+     `bihomExtraction_of_densePiece` derives `BihomExtraction` from it, with
+     m = ⌈γ⁻²/mass⌉ + 1. It uses the corpus's peeling
+     (`section16_greedy_relation_decomposition`) and pads short families with
+     empty pieces (`isEBihomomorphism_empty`).
+   - So step 1 is now exactly `DenseBihomPiece`. What remains in it is the
+     §15 row/column argument, with Theorem 2.26 as its quasi-polynomial
+     input, applied to a selection. Theorem 2.26 is Sanders-strength
+     Freiman–Bogolyubov, which the corpus does not contain at quasi-polynomial
+     strength.
 3. **Stacking (open; the peer's lane).** One piece is multiply linear with
    count 9 (`exists_freiman_variety_cover`, then translate). n pieces at
    once need a joint partition, with inverse exponent of degree 16 in n.
