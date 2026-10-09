@@ -5619,6 +5619,13 @@ the decomposition with these named constants, but not `Theorem162At 3`.
    - Also this session: the quantitative audit of each new global stage
      against `theorem_16_2_at_three_of_eventually`.
    - Either side may claim a lane differently by recording it here.
+   - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
+     (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
+     Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
+     vanishes on `B(⋃ T_j; ρ/K)`. This holds for every such tuple, with no
+     added frequencies, random characters or `ε` loss.
+     `IsFreimanLinearOn.const_mul` and `IsFreimanLinearOn.finset_sum`
+     are the closure lemmas.
 
 J.5 revisited assumed that the remaining pipeline steps "lose no more
 than polynomially". The model-elimination stage built since (J.109–J.111)
