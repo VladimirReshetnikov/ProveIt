@@ -9579,3 +9579,7 @@ checks. The full combined audit checks 8,702 public Gowers theorems across
 4,152 modules. The generated catalogue is byte-identical: 115 companion
 proofs and five open statements; this count does not certify fidelity to
 every printed statement. The selected-port scope check passes.
+
+After also merging `Proofs16AbstractBSGCore`, the final audit passes with
+8,715 public Gowers theorems, 5,458 combined modules and 5,456 facade
+modules. The axiom boundary, port scope and numbered catalogue are unchanged.

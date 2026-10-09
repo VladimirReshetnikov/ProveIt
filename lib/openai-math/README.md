@@ -86,7 +86,7 @@ OAI theorems and the listed compatibility declarations in a 4,152-module
 closure. Only `propext`, `Classical.choice`, and `Quot.sound` occur. The
 selected quantitative density theorem and the exact Gowers Theorem 1.3
 companion also pass their own transitive axiom checks. The combined Gowers
-audit checks 8,702 public Gowers theorems in a 5,457-module closure with
+audit checks 8,715 public Gowers theorems in a 5,458-module closure with
 the same axiom boundary. The asymptotic constants
 do not supply Theorem 18.2's prescribed numerical threshold.
 
