@@ -10,7 +10,7 @@ from .whitehead_power import power_profile, powered_images
 
 
 def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000,
-            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True):
+            primitive_terminal=None, primitive_projection=False, rank_two_terminal=True, primitive_forest=False):
     """Return algebraic success; an optional output dict enables the new terminal.
 
     Without that dict, True retains the old rank-one, no-relator contract.
@@ -18,6 +18,7 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
     one-generator zero-exponent endpoint after disjoint projections. Only a
     source-reconstructing wrapper can turn this into a verdict.
     """
+    primitive_projection = primitive_projection or primitive_forest
     if primitive_projection and primitive_terminal is None:
         raise ValueError('projection search requires an explicit terminal output')
     raw = False
@@ -30,6 +31,14 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                 primitive_terminal.update(evidence)
                 return True
 
+        if primitive_forest:
+            from .primitive_forest import plan_forest, apply_forest
+            edges = plan_forest(arena, roots, alive, projection_cache)
+            if len(edges) >= 2:
+                apply_forest(arena, roots, alive, edges)
+                moves.append(dict(kind='primitive_forest', edges=edges))
+                raw = True
+                continue
         if primitive_projection:
             from .primitive_projection import plan_projection, apply_projection
             selected = plan_projection(arena, roots, alive, projection_cache)
@@ -159,7 +168,7 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
 
 def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
                            max_work=2000000, max_nodes=100000, relator_moves=False, stats=None,
-                           primitive_power=True, primitive_projection=False):
+                           primitive_power=True, primitive_projection=False, primitive_forest=False):
     """Find a trace or None; resource exhaustion raises GroupLimit.
 
     max_letters caps the initial presentation and optional overlap expansion.
@@ -170,11 +179,17 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
     independent source-bound replay is still required before trusting it.
     Disjoint primitive projections run on raw circuits with an explicit
     normalization handoff. Version six replays each full projection round.
-    Disable primitive_projection to retain the version-five search; disabling
+    primitive_forest additionally batches overlapping unit-coordinate donors
+    with acyclic dependencies and emits version seven on activation. It implies
+    primitive_projection; both modes are optional.
+    Disable both projection options to retain the version-five search; disabling
     both primitive options retains the historical rank-one contract.
     """
     if type(primitive_projection) is not bool:
         raise ValueError('primitive_projection must be boolean')
+    if type(primitive_forest) is not bool:
+        raise ValueError('primitive_forest must be boolean')
+    primitive_projection = primitive_projection or primitive_forest
     if type(primitive_power) is not bool:
         raise ValueError('primitive_power must be boolean')
     if type(relator_moves) is not bool:
@@ -191,13 +206,14 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         terminal = {} if primitive_power or primitive_projection else None
         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters,
                        primitive_terminal=terminal, primitive_projection=primitive_projection,
-                       rank_two_terminal=primitive_power):
+                       rank_two_terminal=primitive_power, primitive_forest=primitive_forest):
             return None
-        projected = any(move['kind'] == 'primitive_projection' for move in moves)
+        forested = any(move['kind'] == 'primitive_forest' for move in moves)
+        projected = forested or any(move['kind'] == 'primitive_projection' for move in moves)
         if projected and not terminal:
             terminal.update(kind='rank_one_exponent_zero',generator=next(iter(alive)))
         if terminal:
-            return dict(version=6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
+            return dict(version=7 if forested else 6 if projected else 5, method='wirtinger-cyclic-group', status='UNKNOT',
                         input_pd=[list(row) for row in diagram.pd], moves=moves, terminal=terminal)
         return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',

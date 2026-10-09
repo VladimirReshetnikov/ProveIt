@@ -7,6 +7,8 @@ checks a primitive-power relator at rank two after full prefix replay; knot
 group torsion-freeness and abelianization then imply infinite cyclicity.
 Version six also replays complete disjoint primitive-pair projections and
 checks raw one-generator exponent endpoints without discarding relator slots.
+Version seven also permits acyclic unit-coordinate forests whose donors may
+share generators.
 Stalling is inconclusive, including after Whitehead minimization. Explicit
 relator expansion has no polynomial bound in the input crossing number.
 """
@@ -293,9 +295,9 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     if type(certificate) is not dict or type(certificate.get('version')) is not int:
         return False
     version = certificate['version']
-    final_field = 'terminal' if version in (5, 6) else 'remaining_generator'
+    final_field = 'terminal' if version in (5, 6, 7) else 'remaining_generator'
     if (set(certificate) != {'version', 'method', 'status', 'input_pd', 'moves', final_field}
-            or version not in (1, 2, 3, 4, 5, 6)
+            or version not in (1, 2, 3, 4, 5, 6, 7)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -387,6 +389,13 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
         if type(move) is not dict:
             return False
         kind = move.get('kind')
+        if kind == 'primitive_forest':
+            if certificate['version'] < 7:
+                return False
+            from .primitive_forest_verify import replay_literal_forest
+            if not replay_literal_forest(words, alive, move, budget):
+                return False
+            continue
         if kind == 'primitive_projection':
             if certificate['version'] < 6:
                 return False
@@ -507,10 +516,10 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             budget.size(expanded)
             words = [normalize(y for x in word for y in images.get(x, (x,))) for word in words]
     budget.tick()
-    if certificate['version'] == 6 and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
+    if certificate['version'] in (6, 7) and certificate['terminal'].get('kind') == 'rank_one_exponent_zero':
         from .primitive_projection_verify import verify_literal_rank_one
         return verify_literal_rank_one(words, alive, certificate['terminal'], budget)
-    if certificate['version'] in (5, 6):
+    if certificate['version'] in (5, 6, 7):
         from .primitive_power_verify import verify_literal_terminal
         return verify_literal_terminal(words, alive, certificate['terminal'], budget)
     return alive == {certificate['remaining_generator']} and not any(words)
@@ -519,11 +528,13 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                  relator_moves=False, compressed_verification=False,
                  compressed_search=False, adaptive_search=False, switch_letters=None,
-                 max_nodes=100000, check=lambda: None, primitive_projection=False):
+                 max_nodes=100000, check=lambda: None, primitive_projection=False, primitive_forest=False):
     """Bounded search AND independent verification sharing one wall allowance.
 
     primitive_projection opts into raw disjoint-pair rounds and implies
-    compressed search/replay. Defaults retain the earlier search policy.
+    compressed search/replay. primitive_forest additionally permits acyclic
+    unit-coordinate batches and implies projections. Defaults retain the earlier
+    search policy.
     """
     from math import isfinite
     start = monotonic()
@@ -533,6 +544,9 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
         raise ValueError('compressed_search must be boolean')
     if type(primitive_projection) is not bool:
         raise ValueError('primitive_projection must be boolean')
+    if type(primitive_forest) is not bool:
+        raise ValueError('primitive_forest must be boolean')
+    primitive_projection = primitive_projection or primitive_forest
     compressed_search = compressed_search or primitive_projection
     if type(adaptive_search) is not bool:
         raise ValueError('adaptive_search must be boolean')
@@ -563,7 +577,7 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             from .compressed_search import compressed_certificate
             certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
                 max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats,
-                primitive_projection=primitive_projection)
+                primitive_projection=primitive_projection, primitive_forest=primitive_forest)
         else:
             certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
                 relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,

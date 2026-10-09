@@ -7,8 +7,8 @@ The source-bound checker reconstructs and replays each complete round.
 from .primitive_power import primitive_power_terminal
 
 
-def plan_projection(arena, roots, alive, cache=None):
-    """Greedily select disjoint coherent donors; cache immutable node summaries."""
+def projection_metadata(arena, roots, cache=None):
+    """Build immutable capped support/count summaries once per allocated node."""
     arena.stats['projection_attempts'] = arena.stats.get('projection_attempts',0)+1
     if cache is None:cache = {}
     meta = cache.setdefault('counts',{0:{}})
@@ -38,6 +38,12 @@ def plan_projection(arena, roots, alive, cache=None):
                         a,b = counts.get(g,(0,0));counts[g] = a+p,b+n
                     meta[node] = counts
             arena.stats['projection_metadata_nodes'] = arena.stats.get('projection_metadata_nodes',0)+1
+    return meta, powers
+
+
+def plan_projection(arena, roots, alive, cache=None):
+    """Greedily select disjoint coherent donors; cache immutable node summaries."""
+    meta,powers = projection_metadata(arena,roots,cache)
     selected,used = [],set()
     for slot,root in enumerate(roots):
         arena.tick()
