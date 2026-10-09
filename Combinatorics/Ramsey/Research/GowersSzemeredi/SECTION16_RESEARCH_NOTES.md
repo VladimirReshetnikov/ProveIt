@@ -1504,9 +1504,20 @@ the elementary lemmas of its §2:
 
   Distinct points make witness values consistent. Non-distinct triples
   number O(N²) and are excluded from the count.
-- Next: the iteration. The potential Σ_x |cov(x)| ≤ K·N grows by
-  ≥ κN per step, so after ≤ K/κ steps fewer than εN³ distinct triples are
-  bad.
+- **[49] Corollary 20 in ℤ/N, done (`Proofs16Corollary20`,
+  kernel-checked).** `corollary20`: after at most ⌊K/κ⌋ + 1 Freiman pieces
+  (E_i, L_i), fewer than εN³ distinct triples are bad. The potential
+  Σ_x |cov(x)| starts at N (`covPotential_empty`), is ≤ K·N
+  (`covPotential_le`, since cov ⊆ U), and grows by ≥ |E′| ≥ κN per step
+  (`potential_snoc`). **Step 2 of the bilinear Bogolyubov argument is
+  complete** in ℤ/N, with polynomial bounds and maps on sub-domains rather
+  than coset progressions.
+- Remaining for Theorem 1.6: step 3, the columns. It needs Bogolyubov on
+  the good index set, [49]'s algebraic regularity (Theorem 4), bipartite
+  quasirandomness (App. B), and the lattice theorems (Theorems 5 and 6).
+  Then comes the composition into the seven-fold difference set. That last
+  part of [49] has not been read yet, since the WebFetch summaries stop at
+  100k characters.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
