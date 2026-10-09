@@ -457,6 +457,7 @@ import GowersSzemeredi.Proofs16BohrSizeFactorization
 import GowersSzemeredi.Proofs16FreimanKernelBohr
 import GowersSzemeredi.Proofs16ComplexProfileQuasirandom
 import GowersSzemeredi.Proofs16SplitProfile
+import GowersSzemeredi.Proofs16RelationAveraging
 import GowersSzemeredi.Proofs16BoundedFrequencySpan
 import GowersSzemeredi.Proofs16TrapezoidL1
 import GowersSzemeredi.Proofs16BohrLargeSpectrumSpan
