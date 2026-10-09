@@ -1,0 +1,78 @@
+\subsubsection{Complete seed-optimization calls}
+
+The final measurements run serially after the tests, audit and publication
+of the runtime change. Each experiment has five shuffled paired rounds,
+old and new A/A controls, and one excluded warmup per arm and input. All
+580 measured calls and 116 warmups complete. The source pins are identical
+across the final audit and all three benchmarks.
+
+The optimization experiment starts from a fresh stabilized-circle diagram,
+constructs and independently checks its exterior, discovers its primitive
+cocycle, runs the optimizer, checks the span witness, and validates the
+resulting normal coordinates. The binary case first adds a global vertex
+potential of amplitude $2^{4096}$, preserving the primitive class. The
+baseline is the unchanged delivered solver with a native certificate adapter;
+its own built-in check is retained, and the adapter also invokes the native
+independent checker. The new producer already invokes that checker. The
+common measurement endpoint additionally replays the returned span proof.
+These are complete adapted seed-optimization calls, not isolated flow times.
+
+\begin{center}
+\small
+\input{tables/cocycle_seed_optimize.tex}
+\end{center}
+
+All one hundred measured calls and twenty warmups finish; driver elapsed
+time is 25.414 seconds. Paired gains range from $1.187$ to $1.906$, beyond
+the observed old A/A range $0.987$--$1.032$ and new A/A range
+$0.985$--$1.000$. At sixteen crossings, the median falls from 895.695 ms
+to 499.241 ms. The high-bit case falls from 110.527 ms to 58.919 ms.
+Each implementation's certificate hash is stable across its repeats, and
+the two optimum values agree. Different optimal potentials may produce
+different valid witnesses.
+
+\subsubsection{Full recognition with the native stage deliberately reached}
+
+The second experiment disables earlier diagram, braid and invariant
+shortcuts so that the source reaches the new native stage. Both arms use
+the same current recognizer; only the span optimizer changes between the
+delivered implementation and the native one. The raw-circle case exits
+before either optimizer. The optimized-positive case returns a checked
+normal-disc proof. The remaining cases continue through the exact
+Khovanov fallback after the candidate queries fail. All verdicts agree with
+the known inputs; no inconclusive recognition is treated as completed.
+
+\begin{center}
+\small
+\input{tables/cocycle_seed_source.tex}
+\end{center}
+
+All one hundred measured recognitions and twenty warmups finish in
+24.132 seconds of driver elapsed time. Paired ratios range from $0.986$
+to $1.098$, much smaller than the optimization-stage gains. The
+optimized-positive ratio $1.034$ is comparable to its new A/A fluctuation
+($0.959$), and the trefoil's $1.064$ is close to its old A/A ratio $1.057$.
+The raw-circle control follows the same code in both arms. These results
+do not justify a broad whole-recognition speedup claim; source preparation,
+component queries, proof replay and fallback can dominate the saved flow work.
+
+\subsubsection{The ordinary compressed-group portfolio}
+
+The last experiment compares release \code{535a914a6} with the new release
+and the native option enabled, using the established compressed-group
+portfolio on all nineteen ordinary cases. The earlier stages decide every
+input, so there are zero native-seed attempts in all measured calls. This
+is an integration and overhead control, not a measurement of native-seed
+discovery or an expansion of automatic recognition coverage.
+
+\begin{center}
+\small
+\input{tables/cocycle_seed_pipeline.tex}
+\end{center}
+
+All 380 measured calls and 76 warmups finish; driver elapsed time is
+34.309 seconds. Old/new paired ratios span $0.972$--$1.035$, old A/A ratios
+$0.928$--$1.020$, and new A/A ratios $0.985$--$1.050$. Gordian's old and
+new medians are 1.223718 and 1.233042 seconds, with paired ratio $0.998$.
+No broad ordinary-workload gain or regression is established. The new
+option remains disabled by default.
