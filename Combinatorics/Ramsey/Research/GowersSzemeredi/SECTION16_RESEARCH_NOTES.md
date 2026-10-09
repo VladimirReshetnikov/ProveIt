@@ -1476,6 +1476,80 @@ the elementary lemmas of its §2:
     there is a different grouping.
   Check this against [49]'s full text (the WebFetch summaries cover only
   its first 100k characters) before formalizing Corollary 20.
+  **Resolved (same night): the mixed cases need two Cauchy–Schwarz rounds.**
+  `one_new_each_energy` (`Proofs16PairEnergyCS`, kernel-checked) treats the
+  case where the first pair has its new point first and the second pair
+  has it second. Then X² ≤ E(S₁,S₁)·E(S₂,S₂). Regrouping
+  ((u,v),(u′,v′)) ↦ ((v,v′),(u,u′)) (`pairEnergy_regroup`) and symmetry
+  (`pairEnergy_comm`) turn both factors into pairEnergy(all, A′×A′), whose
+  square is ≤ N³·E(A′). So X² ≤ N³·E(A′), the same bound as the (b,d)
+  case. All four cases are covered.
+  `lemma19_mixed_piece` (`Proofs16Lemma19TwoNew`, kernel-checked) is
+  Lemma 19 for the mixed cases: key relation q₀ − q₁ = q₂ − q₃, with new
+  points at q₀ and q₃. Cases (b,d) and (a,c) regroup to
+  `lemma19_two_new_piece`, and cases (a,d) and (b,c) to
+  `lemma19_mixed_piece`. Every case of [49]'s Lemma 19 is now proved in
+  ℤ/N with polynomial bounds.
+- **[49] Corollary 20, one step, done (`Proofs16Corollary20Step`,
+  kernel-checked).** A family (E_i, L_i) covers
+  cov(x) = {0} ∪ {L_i x ∈ U_x : x ∈ E_i}. A distinct-point triple is bad
+  if a witness a − b = c − d escapes (cov − cov) + (cov − cov).
+  `corollary20_step`: if at least εN³ triples are bad, there is a new
+  Freiman-linear piece (E′, f) with f(x) ∈ U_x ∖ cov(x) on E′ and
+  |E′| ≥ κ(ε,K)N, where κ = 2⁻¹⁸⁸²((ε/(1024K⁴))²)¹¹⁶⁴. The proof:
+  - one of each witness pair is new, since 0 ∈ cov (`bad_witness_new`);
+  - pigeonhole over the four cases;
+  - per-case encodings with explicit decoders;
+  - the matching Lemma 19 (`case_two_new`, `case_mixed`).
+
+  Distinct points make witness values consistent. Non-distinct triples
+  number O(N²) and are excluded from the count.
+- **[49] Corollary 20 in ℤ/N, done (`Proofs16Corollary20`,
+  kernel-checked).** `corollary20`: after at most ⌊K/κ⌋ + 1 Freiman pieces
+  (E_i, L_i), fewer than εN³ distinct triples are bad. The potential
+  Σ_x |cov(x)| starts at N (`covPotential_empty`), is ≤ K·N
+  (`covPotential_le`, since cov ⊆ U), and grows by ≥ |E′| ≥ κN per step
+  (`potential_snoc`). **Step 2 of the bilinear Bogolyubov argument is
+  complete** in ℤ/N, with polynomial bounds and maps on sub-domains rather
+  than coset progressions.
+- Remaining for Theorem 1.6: step 3, the columns. It needs Bogolyubov on
+  the good index set, [49]'s algebraic regularity (Theorem 4), bipartite
+  quasirandomness (App. B), and the lattice theorems (Theorems 5 and 6).
+  Then comes the composition into the seven-fold difference set.
+- **[49] Section 7 (Theorem 35), read from offset 100k.** The proof:
+  1. Row Bogolyubov on dense rows Y¹ gives A¹ = D_hor D_hor A, whose rows
+     contain B(Γ_y, ρ). **Done:** `row_bogolyubov`.
+  2. A² = D_ver A¹ has fibre ⊇ ∪_z B(Γ_{y+z}) ∩ B(Γ_z). **Done:**
+     `verDiff_rowBohr_intersection`, with `mem_verDiff`.
+  3. A³ = D_hor A². By Theorem 27, a sum of Bohr sets contains
+     B(⟨Γ⟩_R ∩ ⟨Γ′⟩_R; 1/4); this is lattice theory. Corollary 20 is then
+     applied with U_y = ⟨Γ_y⟩_R, giving the L_i. Theorem 31 (bounded spans)
+     and the Hosseini–Lovett averaging over index sets J₁…J₄ avoid
+     exponential counts (Claim 36). Proposition 18 (density in a coset
+     progression) and re-centering make the maps Freiman-linear on
+     2C − 2C (Claim 37).
+  4. A⁴ = D_ver D_ver A³. This uses algebraic regularity (Theorem 33,
+     stated in the fetch) to partition C into pieces with quasirandom
+     fibres, robust Bogolyubov (Corollary 16) on Y′, and quasirandomness
+     (Claim 38).
+
+  The seventh operator and the final containment fall in the part the
+  fetch truncated.
+- **Theorem 27, Fourier half, done (`Proofs16BohrSpectrum`,
+  kernel-checked).** `bohr_fourier_annihilation`: for b ∈ B(K;ρ′),
+  |1̂_B(ξ)|·|1 − e(−bξ)| ≤ 2|K|(4ρ′N + 2), with B = B(K;ρ). It rests on
+  `fourier_translate`, then `bohr_escape_card_le` (escaping points lie in
+  the annulus), then `bohr_annulus_card_le`. A large coefficient at ξ
+  therefore forces e(bξ) ≈ 1 on the whole smaller Bohr set. What remains
+  of Theorem 27 is the duality: e(bξ) ≈ 1 on B(K;ρ′) implies
+  ξ ∈ ⟨K⟩_R. That is geometry of numbers.
+- **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
+  intersections, needing lattices or duality), Theorem 31, Proposition 18,
+  Theorem 33 (algebraic regularity), Corollary 16 (robust
+  Bogolyubov–Ruzsa), and bipartite quasirandomness. Each is a substantial
+  formalization. In ℤ/N with polynomial bounds some may simplify: in a
+  prime field a span ⟨Γ⟩_R is a generalized arithmetic progression, and
+  Bohr sets are close to the dual of a lattice.
 
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on

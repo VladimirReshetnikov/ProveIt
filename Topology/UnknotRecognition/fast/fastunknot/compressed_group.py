@@ -10,6 +10,7 @@ from .compressed_words import WordArena, CompressedLimit
 def verify_moves(words, alive, certificate, budget, max_nodes, stats):
     arena = WordArena(max_nodes=max_nodes, max_work=budget.left, check=budget.check)
     roots = [arena.reduce(arena.from_word(word)) for word in words]
+    normalization_cache = {}
     try:
         for move in certificate['moves']:
             arena.tick()
@@ -33,7 +34,9 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
             if kind == 'normalize_relators':
                 if certificate['version'] < 6 or set(move) != {'kind'}:
                     return False
-                roots = [arena.cyclic_reduce(x) for x in roots]
+                from .syllable_normalize_verify import replay_cyclic_roots
+                normalized = replay_cyclic_roots(arena, roots, cache=normalization_cache)
+                roots = normalized if normalized is not None else [arena.cyclic_reduce(x) for x in roots]
                 continue
             if kind == 'eliminate':
                 if set(move) != {'kind', 'relation', 'generator'}:

@@ -1,0 +1,69 @@
+The complete-recognition run uses nineteen actual diagrams, five measured
+rounds and one warm-up per arm. Eight shuffled arms compare the old and
+new projection and forest modes, each with an A/A control. All 760
+measurements and 152 warm-ups complete; the run takes 88.628 seconds.
+The following table retains all inputs. Ratios are medians of paired
+old/new times, so values above one favor the new implementation and need
+not equal ratios of the separate displayed time medians.
+
+\input{tables/syllable_normalization_pipeline.tex}
+
+Pair-mode ratios range from 0.955 to 1.059, and forest ratios from 0.957
+to 1.031. The old/new pair A/A ranges are 0.983--1.069 and 0.963--1.071;
+the old/new forest controls span 0.967--1.054 and 0.919--1.060.
+These measurements do not establish an overall recognition speedup.
+Gordian has pair/forest ratios 1.004/1.001. In both modes its single
+long-root probe declines, visiting 51 new summaries; the source has no
+successful bounded normalization. Forest work rises from 1,266,731 to
+1,267,256, while its 9,084 nodes and 10,060-byte proof are unchanged.
+No other input in this corpus activates a long-root producer probe.
+
+\input{tables/syllable_normalization_stages.tex}
+
+The separate checked group stages bypass earlier simplification on actual
+stabilized circles. All 200 measurements and 40 warm-ups complete in
+10.578 seconds. Every normalization is below the long-word gate; these
+rows measure dispatch overhead, not the bounded arithmetic kernel.
+The 128-crossing stage has pair/forest paired ratios 1.026/1.004.
+Charged forest work nevertheless rises from 170,833 to 178,960 because
+the new length preflight is charged on each normalization boundary.
+Its 1,017 nodes and complete proof are unchanged. Smaller stages include
+regressions. Neither these easy circles nor bypassing earlier simplification
+supports a claim about difficult whole-knot recognition.
+
+\input{tables/syllable_normalization_kernels.tex}
+
+The final experiment separates twelve controlled cases, with four shuffled
+arms and five measured rounds. All 240 measurements and 48 warm-ups
+complete within their five-second/20-million-work allowances; the complete
+run takes 14.216 seconds. In the table, ``bits'' is $b$ for an exponent
+$2^b$. Conjugate rows construct a fresh grammar for
+$a^{2^b}b^{2^b+3}a^{-2^b}$ and normalize it. Source-replay rows reconstruct
+an actual source PD and verify a complete supplied proof with a powered
+prefix; proof discovery is outside the timer. Wide-cancellation rows use
+$(ab)^{2^b}((ab)^{2^b})^{-1}$ and exercise the unsupported-intermediate
+fallback. Each result is checked against its known word or full source proof.
+
+The conjugate kernel has paired ratios 1.164--1.331. At $b=256$, the
+ratio is 1.262 with both A/A controls 0.985. At $b=4096$, old/new work
+is 127,040/110,645 and allocated nodes are 16,396/12,295, but its new
+A/A ratio 1.139 cautions against attributing the entire 1.164 timing ratio
+to the implementation. The smallest case is also noisy, with new A/A 0.749.
+
+Complete supplied-proof replay regresses: ratios range from 0.879 to 0.945.
+At $b=4096$, old/new separate medians are 319.300/338.978 milliseconds
+and the paired ratio is 0.916. One bounded replay succeeds, but visiting
+16,386 summaries adds enough work that the total rises from 438,720 to
+463,311; both versions allocate 20,511 nodes. The earlier powered-prefix
+operations already populate useful general-reduction caches, so a fresh
+normalization pass is not automatically a net saving. At $b=1024$ the
+old A/A ratio 0.852 also shows substantial timing variation.
+
+Unsupported wide words regress more clearly, with ratios 0.731 and 0.742.
+At $b=1024$, both implementations allocate 2,055 nodes, while charged work
+increases from 15,393 to 21,577. The probe adds no word nodes but still
+pays to establish that its intermediate summaries are unsupported before
+calling the general reducer. These retained negative results limit the
+practical claim: the change supplies a closed-class encoded bound and
+a faster isolated conjugate kernel, not a universal speed improvement.
+Projection and forest recognition remain optional.

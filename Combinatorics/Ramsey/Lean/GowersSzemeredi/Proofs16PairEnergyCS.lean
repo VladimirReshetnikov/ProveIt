@@ -148,4 +148,73 @@ theorem two_new_points_energy {N : Nat} [NeZero N] (A' : Finset (ZMod N)) (f : Z
         rw [pairEnergy_self_eq_phiAdditiveCount]
         exact Nat.mul_le_mul_right _ (pairEnergy_univ_le f)
 
+/-- Regrouping pairs-of-pairs: matching keys of `(u, v), (u', v')` is the same as
+matching keys of `(v, v'), (u, u')`. -/
+theorem pairEnergy_regroup {N : Nat} [NeZero N] (P : ZMod N × ZMod N → ZMod N × ZMod N → Prop)
+    [DecidablePred fun uv : (ZMod N × ZMod N) × (ZMod N × ZMod N) => P uv.1 uv.2]
+    (f : ZMod N → ZMod N) :
+    ((Finset.univ.filter fun uv : (ZMod N × ZMod N) × (ZMod N × ZMod N) =>
+        P uv.1 uv.2 ∧ pairKey f uv.1 = pairKey f uv.2)).card =
+      ((Finset.univ.filter fun uv : (ZMod N × ZMod N) × (ZMod N × ZMod N) =>
+        P (uv.2.1, uv.1.1) (uv.2.2, uv.1.2) ∧ pairKey f uv.1 = pairKey f uv.2)).card := by
+  apply Finset.card_bij (fun uv _ => ((uv.1.2, uv.2.2), (uv.1.1, uv.2.1)))
+  · intro uv huv
+    obtain ⟨hP, hk⟩ := (Finset.mem_filter.mp huv).2
+    simp only [pairKey, Prod.mk.injEq] at hk
+    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_, ?_⟩
+    · exact hP
+    · simp only [pairKey, Prod.mk.injEq]
+      exact ⟨by linear_combination -hk.1, by linear_combination -hk.2⟩
+  · intro uv _ uv' _ h
+    simp only [Prod.mk.injEq] at h
+    ext <;> simp_all
+  · intro uv huv
+    obtain ⟨hP, hk⟩ := (Finset.mem_filter.mp huv).2
+    simp only [pairKey, Prod.mk.injEq] at hk
+    refine ⟨((uv.2.1, uv.1.1), (uv.2.2, uv.1.2)), ?_, rfl⟩
+    refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, hP, ?_⟩
+    simp only [pairKey, Prod.mk.injEq]
+    exact ⟨by linear_combination -hk.1, by linear_combination -hk.2⟩
+
+/-- Pair energy as a filter over all pairs-of-pairs. -/
+theorem pairEnergy_eq_filter {N : Nat} [NeZero N] (S T : Finset (ZMod N × ZMod N))
+    (f : ZMod N → ZMod N) :
+    pairEnergy S T f = (Finset.univ.filter fun uv : (ZMod N × ZMod N) × (ZMod N × ZMod N) =>
+      (uv.1 ∈ S ∧ uv.2 ∈ T) ∧ pairKey f uv.1 = pairKey f uv.2).card := by
+  unfold pairEnergy
+  congr 1
+  ext uv
+  simp [Finset.mem_product]
+
+/-- Pair energy is symmetric. -/
+theorem pairEnergy_comm {N : Nat} [NeZero N] (S T : Finset (ZMod N × ZMod N)) (f : ZMod N → ZMod N) :
+    pairEnergy S T f = pairEnergy T S f := by
+  rw [pairEnergy_eq_sum, pairEnergy_eq_sum]
+  exact Finset.sum_congr rfl fun κ _ => Nat.mul_comm _ _
+
+/-- **One new point in each pair also suffices**, after two Cauchy–Schwarz
+rounds. This handles the mixed cases of [49] Lemma 19. -/
+theorem one_new_each_energy {N : Nat} [NeZero N] (A' : Finset (ZMod N)) (f : ZMod N → ZMod N) :
+    (pairEnergy (Finset.univ.filter fun p : ZMod N × ZMod N => p.1 ∈ A')
+      (Finset.univ.filter fun p : ZMod N × ZMod N => p.2 ∈ A') f) ^ 2 ≤
+      N ^ 3 * phiAdditiveCount A' f := by
+  set S₁ := Finset.univ.filter fun p : ZMod N × ZMod N => p.1 ∈ A'
+  set S₂ := Finset.univ.filter fun p : ZMod N × ZMod N => p.2 ∈ A'
+  have h1 : pairEnergy S₁ S₁ f = pairEnergy Finset.univ (A' ×ˢ A') f := by
+    rw [pairEnergy_eq_filter S₁ S₁, pairEnergy_eq_filter Finset.univ (A' ×ˢ A'),
+      pairEnergy_regroup (fun u v => u ∈ S₁ ∧ v ∈ S₁) f]
+    congr 1
+    ext uv
+    simp [S₁, Finset.mem_product]
+  have h2 : pairEnergy S₂ S₂ f = pairEnergy Finset.univ (A' ×ˢ A') f := by
+    rw [pairEnergy_comm Finset.univ (A' ×ˢ A'), pairEnergy_eq_filter S₂ S₂,
+      pairEnergy_eq_filter (A' ×ˢ A') Finset.univ,
+      pairEnergy_regroup (fun u v => u ∈ S₂ ∧ v ∈ S₂) f]
+    congr 1
+    ext uv
+    simp [S₂, Finset.mem_product]
+  calc (pairEnergy S₁ S₂ f) ^ 2 ≤ pairEnergy S₁ S₁ f * pairEnergy S₂ S₂ f := pairEnergy_sq_le _ _ f
+    _ = (pairEnergy Finset.univ (A' ×ˢ A') f) ^ 2 := by rw [h1, h2, sq]
+    _ ≤ N ^ 3 * phiAdditiveCount A' f := two_new_points_energy A' f
+
 end LeanProofs.GowersSzemeredi

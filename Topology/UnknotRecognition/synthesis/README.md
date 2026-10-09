@@ -847,3 +847,23 @@ both existing modes are exactly preserved in an 80-diagram audit. The star
 example isolates a limitation of disjoint matching, not a lower bound for all
 unknot recognition. Forest mode remains opt-in, and a general short-depth
 producer with controlled exposure/normalization remains unproved.
+
+
+[`primitive_planner.tex`](primitive_planner.tex) removes duplicate structural
+planning across forest/pair fallback and caches immutable root eligibility.
+It preserves all 240 outputs on eighty actual diagrams in three modes,
+passes 2,000 additional planner comparisons, and keeps the independent
+checkers unchanged. The complete suite passes 992 tests. The article records
+amortized candidate costs and fresh complete-call measurements; no new global
+recognition complexity bound follows from the planning optimization.
+
+[`syllable_normalization.tex`](syllable_normalization.tex) includes exact
+bounded-run normalization in the conditional monomial-phase cost bound.
+A separately implemented checker replays the existing normalization move;
+unknown intermediates preserve general fallback. All 998 maintained tests,
+240 actual-diagram mode comparisons and 87,381 short-word comparisons pass.
+The accompanying results retain 760 whole-recognition, 200 checked-stage
+and 240 kernel/replay measurements: conjugate kernels improve, full supplied
+proof replay and unsupported-word fallback regress, and no overall recognition
+speedup is established. The modes remain optional. A global short-depth
+producer and a general quasipolynomial bound are still missing.
