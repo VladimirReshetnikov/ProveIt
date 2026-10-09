@@ -5709,8 +5709,29 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   - `nonseparating_tuples_card_le` and `not_separates_signed_sum` are the
     two ingredients.
 
-  Still open: the Bohr-set containment of the refined domains
-  (Milićević's Lemma 2.37) and the bounded-image input.
+  Still open: the Bohr-set containment of the refined domains and the
+  bounded-image input. The containment is Milićević's Proposition 2.37
+  ("Bohr–Bohr sets are Bohr", printed p. 31).
+  - **Statement.** For a Freiman-linear `ψ : B(Γ;ρ) → T^d`, the set
+    `{x ∈ B : ‖ψ(x)‖ ≤ ε}` contains a Bohr set of codimension
+    `d + (2r·log(1/(ερ)))^O(1)` and radius `ε·(2r·log(1/(ερ)))^(-O(1))`,
+    where `r = |Γ|`.
+  - **Proof.** A proper coset progression `C ⊆ B` (his Prop. 2.35); a
+    homomorphism approximating `ψ` on a sub-progression (Lemma 2.22); a
+    Bohr set inside that sub-progression (Prop. 2.13); then add the
+    approximating characters as frequencies.
+  - **What the corpus has, for ℤ/N.**
+    - A proper progression inside a Bohr set:
+      `exists_proper_progression_in_bohr`, through the OAI port.
+    - Coordinate affinity of Freiman-linear maps on it:
+      `freiman_linear_gap_affine`.
+    - Simultaneous Dirichlet: `simultaneous_small_multiplier`.
+  - **What is missing.** The reverse inclusion, a Bohr set inside a proper
+    progression (Prop. 2.13). In ℤ/N a Freiman-linear map on a rank-`r`
+    Bohr set is `∑ nᵢ(y)·bᵢ` in progression coordinates. So the refined
+    set is a *generalized* Bohr set, and recovering an ordinary Bohr set
+    inside it is a geometry-of-numbers step. It is the next formalization
+    target if this redesign is pursued.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
