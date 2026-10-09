@@ -5640,6 +5640,11 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        least `c⁴|G|⁴` additive quadruples
        `f(x+a) − f(x′+a) = f(x+b) − f(x′+b)`, which is Corollary 7.6's
        input.
+       `freiman_of_separated` (`Proofs16SeparatedFreiman`) finishes the
+       Theorem 2.26 step polynomially: such an `f` is a Freiman
+       8-homomorphism on a set of size `2^(-1882)·c^4656·N`.
+       `phiAdditiveCount_ge_of_respected` is the `N`-to-one transfer to
+       `phiAdditiveCount`.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`
