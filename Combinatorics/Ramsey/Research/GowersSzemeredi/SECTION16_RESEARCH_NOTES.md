@@ -2327,3 +2327,44 @@ rounded threshold, retaining mass `1-rho`. These two production sources
 and their three transitive axiom checks pass with only the three approved
 axioms. The combined audit is queued. The spectral, selection, and
 remainder inputs remain explicit.
+
+
+### Actual dimension-three pieces and relation decomposition
+
+`Proofs16VarietySpectrumRestriction` uses the padded variety class cover
+on the two-dimensional spectrum relation. Both its graph count and its
+polynomial exponent are independent of the inner covering loss.
+`Proofs16VarietyStructuredExtraction` carries the variety-family slice
+property through the existing proper-face and cube-respecting
+restrictions, producing `Section16StructuredPair (theta/2) gamma`.
+Both constructions assume deep variety structure.
+
+`Proofs16PolynomialVarietyCommonBaseCover` supplies the spectrum,
+selection, identity, and remainder inputs from common-base geometry and
+extends the family power cover to every proper box. The graph count is
+`max(81*R^4*Q^2,27)`. The width exponent is the cap of `e*a/4` against the
+explicit rounded-power threshold, with `a` the polynomial variety control
+at `R*Q`. The constants for the line recurrence, slice cover, and spectrum
+cover are universal and remain existential.
+
+`Proofs16PolynomialVarietyStructuredPiece` now constructs actual graph
+pieces. For a three-dimensional product-property set of density `theta`,
+it obtains a subgraph of mass at least
+`eta*N^3`, where `eta=section16ThetaTwo(section16ThetaOne(theta/2,gamma,2))`.
+Spectrum, slice, selection, and remainder assumptions have all been
+constructed. The only additional structural hypothesis is
+`MilicevicDeepVarietyStructure D`.
+
+`Proofs16PolynomialVarietyRelationDecomposition` transfers this to arbitrary
+product relations. For size at most `gamma^-2*N^3`, it covers the relation
+over a base of size at least `(1-theta)*N^3` by at most `gamma^-2/eta`
+pieces, each with the same polynomial-recurrence controls. This is an
+actual conditional relation decomposition, not a source-fidelity claim
+for Theorem 16.2. Deep structure and comparison with its printed numerical
+budget remain open.
+
+All five production sources and all eleven transitive axiom checks pass,
+using only propext, Classical.choice, and Quot.sound. The combined audit
+is queued. The source ledger
+retains its six open statements, with the existing fidelity caveats. No
+upstream modules are added by these consumers.

@@ -311,3 +311,10 @@ Only deep variety structure remains as the structure input. The actual
 three-dimensional family cover has candidate count `81*R^4*Q^2` and the
 polynomial exponent evaluated at `R*Q`. The six new production sources
 pass; their combined facade audit is queued. No upstream modules are added.
+
+The same recurrence now supplies actual three-dimensional graph pieces
+and a greedy product-relation decomposition, conditional on deep variety
+structure. Spectrum, slice, selection, and remainder inputs are constructed
+inside this route. The five production modules pass; the combined audit
+is queued. The printed Theorem 16.2 budget is not yet established, and no
+additional upstream modules are imported for these consumers.
