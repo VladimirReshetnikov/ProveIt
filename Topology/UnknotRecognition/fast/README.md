@@ -2965,3 +2965,18 @@ python -B -m normal_orbit_research.cocycle_sparse audit --output results/cocycle
 python -B -m normal_orbit_research.cocycle_sparse prepare --output results/cocycle_sparse_prepare.json
 python -B -m normal_orbit_research.cocycle_sparse recognize --output results/cocycle_sparse_recognize.json
 ```
+
+The default AHT merger scheduler now skips disjoint periodic supports with
+a sweep ordered by interval endpoints. It preserves the greedy successful
+merge sequence and the exact certificates, and charges overlap enumeration
+before switching to the existing queue on dense cases. A no-merger disjoint
+closure takes `O(k log k)` scheduling work instead of testing every pair;
+the conservative per-closure bound remains `O(k^2 log k)` with quadratic
+memory. Static-gap contraction also reuses immutable rows when its map is
+the identity. Independent orbit and normal-surface verifiers are unchanged.
+
+```bash
+python -B -m normal_orbit_research.supports audit --output results/orbit_support_audit.json
+python -B -m normal_orbit_research.supports orbits --output results/orbit_support_orbits.json
+python -B -m normal_orbit_research.supports recognize --output results/orbit_support_recognize.json
+```
