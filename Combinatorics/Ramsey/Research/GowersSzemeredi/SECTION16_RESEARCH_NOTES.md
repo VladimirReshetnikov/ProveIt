@@ -6333,3 +6333,110 @@ facade, including 4,152 OAI modules), with only `propext`,
 `Classical.choice`, and `Quot.sound`. The numbered ledger remains identical
 at 115 companions and five open entries, and selected-port scope passes.
 No upstream ports or Apache provenance changes were needed.
+
+
+## J.113. Zero column relations of every bounded even length
+
+The arbitrary-word model construction now feeds an elimination theorem
+for every fixed even length, rather than only quadruples. This supplies
+the higher identities identified as missing in J.112. It does not supply
+the structured index domain required by the source's Proposition 9.3.
+
+**Arity-dependent elimination.** Fix `k > 0`. If all entries of an
+alternating list of length `2*k` occupy one of `Q` Dirichlet cells, then
+
+```
+centeredAbs (gamma * columnAnchorEval f as) * Q <= k*N.
+```
+
+Pair consecutive entries, use cell closeness for each difference, and
+apply the centered-distance triangle inequality. With `Q = 5*k`, this
+precludes the separation condition `N < 5*centeredAbs(...)`. Thus the
+same evaluation test used for quadruples removes every detected model
+on a cell retaining at least `beta/(5*k)` of the columns. The common
+Bohr testing point and all individual column domains are retained.
+
+`even_model_elimination_iterate` and `even_model_elimination_zero_core`
+carry this loss through the logarithmic elimination rounds.
+`even_models_initialize` converts the full model cover of
+`columnAnchorFibre A (2*k-1) 0` into alternatives: inactive models already
+vanish on the kernel neighborhood, and active models keep their original
+testing-radius comparisons. `even_model_cover_zero_core` gives a
+nonempty core retaining
+
+```
+(beta/(5*k))^(modelEliminationRounds beta M) * A.card
+```
+
+when the full model count is at most `M`. At `k=2` the cell count is the
+previous ten-cell bound. The earlier quadruple interfaces remain valid.
+
+**Global parameters.** Define
+
+```
+d     = columnSpectrumCap (columnEightDensity alpha)
+delta = globalColumnWordDensity alpha (2*k-1)
+g     = ceil((2*k)*d/delta)
+M     = ceil(1/delta)
+rho   = globalColumnIdentityRadius alpha
+r     = globalColumnModelRadius alpha (2*k-1)
+s     = min r (refinementKernelRadius g d rho (r/2))
+beta  = modelTestDensity g d r
+c     = (beta/(5*k))^(modelEliminationRounds beta M)
+          * globalColumnVertexDensity alpha/2.
+```
+
+The exported names are `globalEvenColumnModelRank`,
+`globalEvenColumnModelCount`, `globalEvenColumnZeroRadius`, and
+`globalEvenColumnZeroDensity`. The modulus threshold is the maximum of
+the global model threshold at `2*k-1`, the new kernel cap plus one, and
+seven. The radius is positive and at most `rho`; the density is positive
+for positive `k` and `0 < alpha <= 1`.
+
+`global_even_zero_column_core` starts with the original dense
+bihomomorphism, the density assumptions, primality, and that explicit
+modulus threshold. It produces `X,T,L,W,P,Gamma`, retaining the original
+witness system, full-radius column linearity, witness counts, small-radius
+linearity, normalization, and original column ranks. The core `P` is a
+nonempty subset of `X`, has size at least `c*N`, and `Gamma.card <= g`.
+For every `m <= k`, every length-`2*m` list from `P` whose alternating
+index sum is zero has zero alternating map value on the intersection
+of the common and individual Bohr domains at radius `s`.
+
+**All shorter even relations on one core.** `columnPairPadding` prepends
+pairs of the same anchor. Its length grows by two per pair, its
+alternating value is unchanged, and all its entries satisfy any
+predicate satisfied by the anchor and the original list. For a nonempty
+shorter list, use its own first entry as the repeated anchor. Hence
+`even_zero_relations_mono` needs no extra frequency or Bohr-domain
+assumption. The empty-list case is immediate. In particular, choosing
+`k=8` in the global theorem supplies the 4-, 8-, and 16-term identities
+simultaneously. No implication from quadruple identities to higher
+identities is assumed.
+
+**Remaining work.** These are identities on a dense set with arbitrary
+bounded-rank column spectra. Structured index geometry, coherent
+frequency selection, preservation of agreement under that construction,
+and the final numerical bounds remain to be proved. The common rank
+still depends on `1/delta`; no fit to the printed density budget is
+claimed. The five numbered open entries and existing source-fidelity
+caveats are unchanged. No new upstream code was ported.
+
+**Incoming numeric controls.** `Proofs16VarietyControlAbsorption`, merged
+from `origin/main`, converts variety-shaped width and graph-count bounds
+into `MultiplyLinear gamma (18*r/gamma + 64 + L)`. Its hypotheses include
+positive width coefficient, the scale and density conditions, and
+explicit logarithmic bounds absorbed by `L`. This is a numeric bridge
+for the variety route; the required deep structure is still open.
+
+
+**Verification.** The generic elimination closure passes 255 modules,
+and the global theorem with shorter-relation padding passes 259 modules.
+All 17 new named theorems and the five incoming variety-control theorems
+pass individual axiom checks. The final merged audit checks 7,359 public
+Gowers theorems in 5,182 modules (5,180 facade modules, including 4,152
+OAI modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger remains identical at 115 companions and five open
+entries. Selected-port scope remains 4,134 upstream modules and 17
+compatibility modules, with reciprocal-only modules excluded; Apache
+license and provenance files are unchanged.
