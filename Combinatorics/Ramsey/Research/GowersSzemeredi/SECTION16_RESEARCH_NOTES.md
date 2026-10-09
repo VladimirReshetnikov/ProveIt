@@ -8560,3 +8560,14 @@ All eight new modules check in the 449-module production closure. All
 `Classical.choice`, and `Quot.sound`. No upstream source is ported and no
 numbered catalogue entry is claimed closed. Full merged verification is
 recorded below.
+
+
+**Final verification.** The complete audit checks 8,207 public Gowers
+theorems in 5,362 combined modules (5,360 facade modules, including 4,152
+OAI modules), with only `propext`, `Classical.choice`, and `Quot.sound`.
+All 22 new named theorems also pass individual axiom checks. The regenerated
+numbered ledger remains byte-for-byte unchanged: 115 companion proofs and
+five open entries, with the existing statement-fidelity qualifications.
+The selected port scope is unchanged at 4,134 upstream and 17 compatibility
+modules. The branch is synchronized with main before the audit; no incoming
+changes alter the verification closure.
