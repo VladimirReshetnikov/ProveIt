@@ -7748,5 +7748,26 @@ modules are original consumers of existing dependencies; no port or
 license scope is added.
 
 **Verification.** The complete uniform-control closure checks 329
-modules. The sixteen named theorems are checked individually for their
-axioms. Final combined audit and synchronization results follow below.
+modules. All sixteen named theorems pass individual axiom checks. Final
+combined audit and synchronization results follow below.
+
+
+**Incoming conditional dimension-three budget.** The merged variety
+budget module now proves `section16VarietyThreeLoss_le`: if
+`D <= 2^64` and the four named constants are at most `2^1700`, its
+width coefficient is positive and its logarithmic loss is at most
+`x^(64*2^256)`, where `x = 2/(theta*gamma)`. Together with
+`MilicevicDeepVarietyStructure D`, this constructs
+`Section16BudgetedPieceAt 3` and the corresponding conditional
+`Theorem162At 3` and `Corollary1611At 3`. These statements compile
+against the actual selected dependencies. Their unproved deep-structure
+and constant hypotheses remain explicit; they are not closed catalogue
+companions.
+
+**Final merged verification.** The complete audit checks 7,823 public
+Gowers theorems in 5,277 modules (5,275 facade modules, including 4,152
+OAI modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The regenerated ledger adds precisely the two new conditional theorem
+records; it still reports 115 companions and five open entries. The
+port-scope check passes with 4,134 upstream and 17 compatibility
+modules. No upstream source or license scope was changed.
