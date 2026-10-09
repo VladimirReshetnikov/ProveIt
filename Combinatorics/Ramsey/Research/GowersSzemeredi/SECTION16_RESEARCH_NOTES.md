@@ -1563,7 +1563,12 @@ the elementary lemmas of its §2:
     is 1 for |t| + c ≤ a, 0 for |t| > a + c, and lies in [0,1]. So
     Π_{γ∈K} g(γx) equals 1 on B(K;(a−c)/N), vanishes off B(K;(a+c)/N),
     and lies in [0,1] (`trapezoid_product_sandwich`);
-  - next: the trapezoid's DFT via
+  - **brick B done** (`Proofs16TrapezoidFourier`, kernel-checked):
+    `centeredBall_eq_image` (the ball is a progression when 2a < N),
+    `fourier_centeredBall_le` (|Î_a(ξ)| ≤ N/(2|ξ|)), `fourier_trapezoid`
+    (ĝ = Î_a·Î_c/|I_c|), and `fourier_trapezoid_le`
+    (|ĝ(ξ)| ≤ (N/(2|ξ|))²/|I_c|);
+  - next (was: the trapezoid's DFT via
     convolution (decay ≤ N²/(4|J|v²)), truncation, the telescoping product
     bound, and the expansion.
 - **Open dependencies for step 3:** Theorem 27 (Bohr-set sums vs span
