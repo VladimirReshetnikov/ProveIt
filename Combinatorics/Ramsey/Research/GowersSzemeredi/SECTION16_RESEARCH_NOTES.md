@@ -6760,3 +6760,103 @@ and `Quot.sound`. The numbered ledger is byte-for-byte unchanged at
 115 companions and five open entries. The selected-port scope remains
 4,134 upstream and 17 compatibility modules; reciprocal-only modules
 remain excluded.
+
+### J.117. Common difference maps on controlled Bohr neighborhoods
+
+The common map from J.116 now has a full Bohr domain, and a quantitatively
+dense family of original configurations has its translated differences
+in the half-radius neighborhood. The escape from the prescribed unit
+span is preserved on every retained configuration.
+
+**Separate the two density costs.** The new
+`common_graph_cover_retained_fibre` accepts an already chosen overlap
+`S` of density `mu` and an original configuration family of density
+`delta`. The graph cover uses at most `mu^-2` anchor pairs, so a single
+pair retains at least `mu^2*delta*N^3` configurations. The supplied map
+need only agree with every four-term representation on `S`; its larger
+domain and Freiman properties are retained by the caller. The earlier
+cubic retention theorem is now a consequence with `mu=delta`, avoiding
+a duplicate pigeonhole proof.
+
+**Small clusters preserve fourfold values.** If all pairwise differences
+in `C` lie in `B(Gamma;rho/4)`, their differences lie in
+`B(Gamma;rho/2)`. For a map on `E` that extends to `B(Gamma;rho)`, with
+`C` contained in `E`, the normalized extension satisfies
+
+```
+psi((u-v)-(w-z)) = (f(u)-f(v))-(f(w)-f(z))
+```
+
+for all four points in `C`. The proof uses the order-two Freiman identity
+on the full neighborhood, its value at zero, and its agreement on pair
+differences. Both neighborhood membership and value agreement are proved
+in `Proofs16FourfoldBohrExtension`.
+
+**Uniform parameters.** For an input density `kappa > 0`, define
+
+```
+rho(kappa) = commonDifferenceRadius kappa = kappa/(32*pi),
+r(kappa)   = commonDifferenceRank kappa = ceil(16*kappa^(-2)),
+M(kappa)   = commonDifferenceCells kappa = ceil(8/rho(kappa)),
+mu(kappa)  = commonDifferenceClusterDensity kappa
+           = kappa/M(kappa)^r(kappa),
+beta(kappa) = commonDifferenceBohrDensity kappa
+            = mu(kappa)^2*kappa.
+```
+
+Positivity of the radius, cell count, cluster density, and final retained
+density is proved. The rank ceiling also proves that `mu(kappa)` is a
+valid lower bound for the density computed with any spectrum of rank at
+most `16*kappa^(-2)`.
+
+`dense_freiman_fourfold_bohr_cluster` starts with an order-eight Freiman
+map on a set of density at least `kappa`. The existing dense extension
+theorem gives a spectrum of rank at most `16*kappa^(-2)` and radius
+`rho(kappa)`. Averaging produces a cluster whose pairwise differences
+lie in the quarter-radius Bohr set. The existing Bohr cardinality lower
+bound, with `M(kappa)` cells per frequency, gives this cluster ambient
+density at least `mu(kappa)`. Its fourfold graph values therefore agree
+with a normalized Freiman map on the full Bohr set, and its fourfold
+indices lie in the half-radius set.
+
+**Mixed configurations and actual failures.**
+`mixed_configurations_common_bohr_map` extracts the dense overlap from
+J.116, localizes it to the cluster above, and applies the generalized
+retention theorem. From `delta*N^3` configurations it returns a subfamily
+of size at least `beta(delta)*N^3`, a spectrum of rank at most
+`16*delta^(-2)`, and a normalized order-two Freiman map `psi` on
+`B(Gamma;rho(delta))`. There are constants `a,c` such that every retained
+configuration satisfies
+
+```
+q0-q1-a in B(Gamma;rho(delta)/2),
+f0(q0)-f1(q1) = c+psi(q0-q1-a).
+```
+
+No primality assumption is needed for this mixed-map localization.
+`failed_containments_common_bohr_map` applies it to the coordinate maps
+from the actual containment failures of J.115. With
+`epsilon = escapingFreimanDensity delta d r`, its retained density is
+`beta(epsilon)`. The common value equals both selected pair differences,
+stays outside each configuration's selected unit span, and the selected
+maps still belong to their original bounded column spans.
+
+**Remaining work.** This closes the common Bohr-map step, not the proper
+progression or global iteration steps. A proper progression inside a
+Bohr set is already available through `exists_proper_progression_in_bohr`,
+but a dense retained family with differences in a suitable translated
+progression must still be constructed. Higher arrangements, the global
+independent-family iteration, the final bilinear variety structure, and
+its remaining quantitative inputs are also still open. No numbered
+source entry or final source-theorem bound is claimed by this checkpoint.
+No upstream code was ported and no license or provenance file changed.
+
+**Verification.** The new failed-containment Bohr-map application and
+previous difference-map application check together in 271 modules. All
+eleven new named theorems and the refactored common-difference theorem
+pass individual axiom checks. The full audit checks 7,470 public Gowers
+theorems in 5,209 modules (5,207 facade modules, including 4,152 OAI
+modules), using only `propext`, `Classical.choice`, and `Quot.sound`.
+The numbered ledger is byte-for-byte unchanged at 115 companions and
+five open entries. The scope check still reports 4,134 upstream and
+17 compatibility modules, excluding reciprocal-only dependencies.
