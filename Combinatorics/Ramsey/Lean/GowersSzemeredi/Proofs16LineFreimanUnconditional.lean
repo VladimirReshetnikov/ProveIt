@@ -12,6 +12,7 @@ own Corollary 7.6, already proved in the corpus, gives exactly this with a
 
 * `energy_eq_phiAdditiveCount`: with unit weights and one map, the weighted
   energy is the count of respected quadruples.
+* `lineFreimanExtraction_eight`: retain the order-eight conclusion for Bohr extension.
 * `lineFreimanExtraction_holds`: `LineFreimanExtraction` with
   `κ(δ) = 2^(−1882)δ^1164`, taking `γ = δ/α³` and using `α ≤ 1`.
 * `densePiece_energy_unconditional`: the energy route to `DenseBihomPiece`
@@ -48,10 +49,21 @@ theorem energy_eq_phiAdditiveCount {N : Nat} [NeZero N] (E : Finset (ZMod N)) (f
       fun h'' => h ⟨h''.1, h''.2.1, h''.2.2 0⟩
     rw [if_neg h', if_neg h]
 
-/-- **The line-wise Freiman input holds**, with a polynomial `κ`. -/
-theorem lineFreimanExtraction_holds :
-    LineFreimanExtraction (fun δ => (2 : Real) ^ (-(1882 : Real)) * δ ^ 1164) := by
-  refine ⟨fun δ hδ => by positivity, ?_⟩
+/-- Order-eight Freiman homomorphisms retain the quadruple property. -/
+theorem FreimanHom.isFreimanLinearOn {N r : Nat} {A : Finset (ZMod N)}
+    {f : ZMod N → ZMod N} (h : FreimanHom r A f) (hr : 2 ≤ r) :
+    IsFreimanLinearOn A f := by
+  intro y1 y2 y3 y4 h1 h2 h3 h4 hsum
+  exact (h.mono hr).add_eq_add
+    (by exact_mod_cast h1) (by exact_mod_cast h2) (by exact_mod_cast h3) (by exact_mod_cast h4) hsum
+
+/-- Preserve the order-eight conclusion of Corollary 7.6 for Bohr extension. -/
+theorem lineFreimanExtraction_eight :
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime] (E : Finset (ZMod N))
+      (f : ZMod N → ZMod N) (δ : Real),
+      0 < δ → δ * (N : Real)^3 ≤
+        weightedSimultaneousAdditiveEnergy E (fun _ => 1) (fun _ : Fin 1 => f) →
+      ∃ B ⊆ E, (2 : Real)^(-(1882 : Real)) * δ^1164 * N ≤ B.card ∧ FreimanHom 8 B f := by
   intro N _ _ E f δ hδ henergy
   have hNR : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   rw [energy_eq_phiAdditiveCount] at henergy
@@ -108,9 +120,15 @@ theorem lineFreimanExtraction_holds :
           exact mul_le_mul_of_nonneg_left hpow (by positivity)
       _ = (2 : Real) ^ (-(1882 : Real)) * (δ / α ^ 3) ^ 1164 * α * N := by ring
       _ ≤ B.card := hBcard
-  · intro y₁ y₂ y₃ y₄ h1 h2 h3 h4 hsum
-    exact (hBfreiman.mono (by norm_num : 2 ≤ 8)).add_eq_add
-      (by exact_mod_cast h1) (by exact_mod_cast h2) (by exact_mod_cast h3) (by exact_mod_cast h4) hsum
+  · exact hBfreiman
+
+/-- **The line-wise Freiman input holds**, with a polynomial `κ`. -/
+theorem lineFreimanExtraction_holds :
+    LineFreimanExtraction (fun δ => (2 : Real) ^ (-(1882 : Real)) * δ ^ 1164) := by
+  refine ⟨fun δ hδ => by positivity, ?_⟩
+  intro N _ _ E f δ hδ henergy
+  obtain ⟨B, hBE, hBcard, hB⟩ := lineFreimanExtraction_eight N E f δ hδ henergy
+  exact ⟨B, hBE, hBcard, hB.isFreimanLinearOn (by decide)⟩
 
 /-- The energy route to the single extraction step, now unconditional. -/
 theorem densePiece_energy_unconditional :

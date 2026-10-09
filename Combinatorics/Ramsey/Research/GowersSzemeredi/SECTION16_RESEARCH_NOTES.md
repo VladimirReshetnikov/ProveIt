@@ -1549,7 +1549,10 @@ the elementary lemmas of its §2:
   |aᵢ| ≤ K = O(k/(εη)). That is polynomial. The proof sandwiches 1_B
   between products of trapezoids, truncates their Fourier series
   (coefficients decay like 1/ξ²), and expands the product. Weak
-  regularity holds at every radius in ℤ/N (`bohr_annulus_card_le`).
+  regularity follows from `bohr_annulus_card_le` when the inner radius
+  is nonnegative and `|K|*(4*eta*N+2) <= (epsilon/2)*N`. The finite-size
+  term `2*|K|` must be retained; the statement is not uniform over
+  arbitrarily small epsilon at a fixed modulus.
   Formalization on ℤ/N, discretely:
   - **brick 1 done** (`Proofs16DirichletBound`, kernel-checked):
     `interval_exponential_sum_le` (interval sums ≤ N/(2|ξ|)). It reuses
@@ -2595,3 +2598,48 @@ ledger agrees with the checked environment: 115 companions and five open
 statements, with the existing source-fidelity caveats. The remaining open
 entries are Theorem 16.2, Corollary 16.11, Theorems 18.1 and 18.2, and
 Corollary 18.7; no completion claim is made for these.
+
+
+### Dense order-eight selection pieces and actual Bohr extensions
+
+The selection route now retains the order-eight Freiman property already
+supplied by Corollary 7.6. `lineFreimanExtraction_eight`, the two
+`lemma19_*_piece_eight` results, and `corollary20_step_eight` keep that
+stronger conclusion. The original order-two interfaces follow from them,
+with the same statements and numerical bounds.
+
+`corollary20_dense_eight` carries three properties through the iteration:
+every selected piece has size at least `kappa*N`, is an order-eight
+Freiman homomorphism, and takes values in `U` on its domain. Here
+`kappa=corollary20Kappa epsilon K`; the family count remains at most
+`floor(K/kappa)+1`, and fewer than `epsilon*N^3` distinct triples are bad.
+These properties were not all retained by the previous iteration's output.
+
+`Proofs16Corollary20Bohr` applies Lemma 7.8 to every piece at its actual
+density. Each receives a spectrum of size at most `16*kappa^-2` and an
+actual `IsBHomomorphism` extension on the Bohr neighborhood of radius
+`kappa/(32*pi)`. Neighborhood restriction preserves the extension.
+
+`Proofs16Corollary20AllTriples` bounds the triples with coincident evaluation
+points by `4*N^2`, using four explicit images of the two-dimensional
+ambient group. Running the selection at `epsilon/2` and assuming
+`N >= 8/epsilon` yields the exceptional bound `epsilon*N^3` for all bad
+witness triples, including repeated points, while retaining the dense
+pieces and uniform Bohr extensions.
+
+All final sources compile in their 59-module closure, and all 27 new and
+retained public theorem interfaces pass transitive axiom checks using only
+propext, Classical.choice, and Quot.sound. There are 14 new theorems and
+three new modules, registered in the facade. The combined audit is pending.
+This supplies genuine Bohr extensions, but does not establish the remaining
+bilinear structure, bounded-span duality, or printed Theorem 16.2 budget.
+No upstream port modules or numbered catalogue claims are added.
+
+
+The combined Bohr-selection audit now passes: 6,154 public Gowers theorems,
+a 4,944-module facade (4,152 OAI modules), and a 4,946-module combined audit
+closure. It includes the retained order-eight conclusions, dense selection
+invariants, uniform Bohr extensions, all-triples bound, and incoming
+Dirichlet character-sum estimate. Only propext, Classical.choice, and
+Quot.sound occur. The catalogue remains 115/5 with its fidelity caveats;
+this supersedes the pending audit notice for the selection extensions.
