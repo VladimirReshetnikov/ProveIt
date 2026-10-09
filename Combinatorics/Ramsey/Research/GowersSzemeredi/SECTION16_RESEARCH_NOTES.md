@@ -5666,6 +5666,11 @@ the decomposition with these named constants, but not `Theorem162At 3`.
 
        Each restriction keeps a polynomial fraction of the triples,
        because popular values carry `(c/2)N|Ω|` triples each.
+       Gap 1 is closed. `respected_quadruples_of_separated_in` keeps all
+       four sums in the value set `V = {x + a}`.
+       `freiman_on_values_of_separated` applies Corollary 7.6 with
+       `B₀ = V`, giving `B ⊆ V` with `|B| ≥ 2^(-1882)·c^4656·|V|` on which
+       `f` is a Freiman 8-homomorphism.
    - *Step 4 done (kernel-checked).* `signed_sum_zero_of_small_image`
      (`Proofs16StepFourPrime`): a signed sum `∑ s_j·f_j` of normalized
      Freiman-linear maps with at most `K < N` values on `B(⋃ T_j; ρ)`

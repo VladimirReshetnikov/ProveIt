@@ -22,15 +22,21 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open Classical
 
-/-- **Respected quadruples from a separated family.** -/
-theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [AddCommGroup H]
+/-- **Respected quadruples from a separated family**, with all four sums among
+the values `x + a` of the family. -/
+theorem respected_quadruples_of_separated_in {G H Ω : Type*} [AddCommGroup G] [AddCommGroup H]
     [Fintype G] [Fintype Ω] [Nonempty Ω] (f g : G → H) (Q : Finset (G × G × Ω))
     (hsep : ∀ x x' a ω, (x, a, ω) ∈ Q → (x', a, ω) ∈ Q → f (x + a) - g x = f (x' + a) - g x')
     {c : Real} (hc : 0 ≤ c)
     (hQ : c * (Fintype.card G : Real) ^ 2 * Fintype.card Ω ≤ Q.card) :
     c ^ 4 * (Fintype.card G : Real) ^ 4 ≤
       ((Finset.univ : Finset (G × G × G × G)).filter fun t =>
-        f (t.1 + t.2.2.1) - f (t.2.1 + t.2.2.1) = f (t.1 + t.2.2.2) - f (t.2.1 + t.2.2.2)).card := by
+        f (t.1 + t.2.2.1) - f (t.2.1 + t.2.2.1) = f (t.1 + t.2.2.2) - f (t.2.1 + t.2.2.2) ∧
+        t.1 + t.2.2.1 ∈ Q.image (fun q => q.1 + q.2.1) ∧
+        t.2.1 + t.2.2.1 ∈ Q.image (fun q => q.1 + q.2.1) ∧
+        t.1 + t.2.2.2 ∈ Q.image (fun q => q.1 + q.2.1) ∧
+        t.2.1 + t.2.2.2 ∈ Q.image (fun q => q.1 + q.2.1)).card := by
+  let V := Q.image (fun q : G × G × Ω => q.1 + q.2.1)
   set n := (Fintype.card G : Real) with hn
   set m := (Fintype.card Ω : Real) with hm
   rcases Nat.eq_zero_or_pos (Fintype.card G) with hG0 | hGpos
@@ -50,7 +56,7 @@ theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [Add
     congr 1; ext p; simp only [C1, Finset.mem_filter]
   -- Step 2: forget `ω`
   let T2 := (Finset.univ : Finset (G × G × G)).filter fun t =>
-    f (t.1 + t.2.2) - f (t.2.1 + t.2.2) = g t.1 - g t.2.1
+    f (t.1 + t.2.2) - f (t.2.1 + t.2.2) = g t.1 - g t.2.1 ∧ t.1 + t.2.2 ∈ V ∧ t.2.1 + t.2.2 ∈ V
   have hT2 : (C1.card : Real) ≤ m * T2.card := by
     have hmap : ∀ p ∈ C1, ((p.1.1, p.2.1, p.1.2.1) : G × G × G) ∈ T2 := by
       intro p hp
@@ -58,9 +64,11 @@ theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [Add
       obtain ⟨h1, h2⟩ := Finset.mem_product.mp hpQ
       simp only [key1, Prod.mk.injEq] at hk
       obtain ⟨ha, hω⟩ := hk
-      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
-      have := hsep p.1.1 p.2.1 p.1.2.1 p.1.2.2 h1 (by
-        rw [show (p.2.1, p.1.2.1, p.1.2.2) = p.2 by rw [ha, hω]]; exact h2)
+      have h2' : (p.2.1, p.1.2.1, p.1.2.2) ∈ Q := by
+        rw [show (p.2.1, p.1.2.1, p.1.2.2) = p.2 by rw [ha, hω]]; exact h2
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_,
+        Finset.mem_image.mpr ⟨p.1, h1, rfl⟩, Finset.mem_image.mpr ⟨_, h2', rfl⟩⟩
+      have := hsep p.1.1 p.2.1 p.1.2.1 p.1.2.2 h1 h2'
       rw [sub_eq_sub_iff_sub_eq_sub] at this
       exact this
     have hle : ∀ t, (C1.filter fun p => ((p.1.1, p.2.1, p.1.2.1) : G × G × G) = t).card ≤
@@ -106,19 +114,22 @@ theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [Add
     rw [← hu]; convert hC3 using 3
     congr 1; ext p; simp only [C3, Finset.mem_filter]
   have hfinal : C3.card ≤ ((Finset.univ : Finset (G × G × G × G)).filter fun t =>
-      f (t.1 + t.2.2.1) - f (t.2.1 + t.2.2.1) = f (t.1 + t.2.2.2) - f (t.2.1 + t.2.2.2)).card := by
+      f (t.1 + t.2.2.1) - f (t.2.1 + t.2.2.1) = f (t.1 + t.2.2.2) - f (t.2.1 + t.2.2.2) ∧
+      t.1 + t.2.2.1 ∈ V ∧ t.2.1 + t.2.2.1 ∈ V ∧ t.1 + t.2.2.2 ∈ V ∧ t.2.1 + t.2.2.2 ∈ V).card := by
     apply Finset.card_le_card_of_injOn (fun p => ((p.1.1, p.1.2.1, p.1.2.2, p.2.2.2) :
       G × G × G × G))
     · intro p hp
       obtain ⟨hpT, hk⟩ := Finset.mem_filter.mp hp
       obtain ⟨h1, h2⟩ := Finset.mem_product.mp hpT
-      have e1 := (Finset.mem_filter.mp h1).2
-      have e2 := (Finset.mem_filter.mp h2).2
+      obtain ⟨e1, v1, v2⟩ := (Finset.mem_filter.mp h1).2
+      obtain ⟨e2, v3, v4⟩ := (Finset.mem_filter.mp h2).2
       simp only [key3, Prod.mk.injEq] at hk
       obtain ⟨k1, k2⟩ := hk
-      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
-      simp only
-      rw [e1, k1, k2, ← e2]
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_, v1, v2, ?_, ?_⟩
+      · simp only
+        rw [e1, k1, k2, ← e2]
+      · simp only; rw [k1]; exact v3
+      · simp only; rw [k2]; exact v4
     · intro p hp p' hp' h
       have hk := (Finset.mem_filter.mp hp).2
       have hk' := (Finset.mem_filter.mp hp').2
@@ -147,5 +158,18 @@ theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [Add
     rw [this] at h
     exact le_of_mul_le_mul_left h (by positivity)
   exact hC3ge.trans (by exact_mod_cast hfinal)
+
+/-- **Respected quadruples from a separated family.** -/
+theorem respected_quadruples_of_separated {G H Ω : Type*} [AddCommGroup G] [AddCommGroup H]
+    [Fintype G] [Fintype Ω] [Nonempty Ω] (f g : G → H) (Q : Finset (G × G × Ω))
+    (hsep : ∀ x x' a ω, (x, a, ω) ∈ Q → (x', a, ω) ∈ Q → f (x + a) - g x = f (x' + a) - g x')
+    {c : Real} (hc : 0 ≤ c)
+    (hQ : c * (Fintype.card G : Real) ^ 2 * Fintype.card Ω ≤ Q.card) :
+    c ^ 4 * (Fintype.card G : Real) ^ 4 ≤
+      ((Finset.univ : Finset (G × G × G × G)).filter fun t =>
+        f (t.1 + t.2.2.1) - f (t.2.1 + t.2.2.1) = f (t.1 + t.2.2.2) - f (t.2.1 + t.2.2.2)).card := by
+  refine (respected_quadruples_of_separated_in f g Q hsep hc hQ).trans ?_
+  exact_mod_cast Finset.card_le_card (fun t ht => by
+    simp only [Finset.mem_filter] at ht ⊢; exact ⟨ht.1, ht.2.1⟩)
 
 end LeanProofs.GowersSzemeredi
