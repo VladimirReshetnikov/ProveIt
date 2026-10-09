@@ -1,0 +1,102 @@
+VERIFICATION RECORD
+8 October 2026
+
+MATHEMATICAL CHECKS
+
+The proofs were developed and checked using separate AI-agent derivations
+and audits. Two final consistency reviews of the assembled TeX sections
+found no substantive mathematical discrepancy. The reviewed points were:
+
+  - Existence, uniqueness, and expansion of the size saddle.
+  - A common block of consecutive positive weights bounding the entire
+    Fourier circle for both the full and truncated Poisson laws.
+  - The normalized central local probability and the shifted Edgeworth
+    estimate used for the largest-atom theorem.
+  - Cancellation of the shared O(tau) term when the Fourier integrals
+    are subtracted before their errors are estimated.
+  - The negative skewness contribution -B_3*S_1/(2*V^2).
+  - The O(tau^(3/2)*L^3) paired remainder and both remote-tail bounds.
+  - Exact lattice sign and constant terms in the universal formula.
+  - The ordinary Kolmogorov constant and the positive affine obstruction.
+  - The direct single-occupancy proof of the largest atom and the
+    exact half-largest-jump minimax identity for continuous CDFs.
+  - Global monotonicity of the explicit nonlinear calibration.
+  - Uniform compact-probability quantile inversion.
+  - The E1 harmonic tail, residual coefficient error, and sharp
+    |a_*|*tau/(c*e*L) equivalent.
+  - The nested-cycle constants and the two-term explicit saddle.
+  - Restriction of the approximate-saddle substitution to continuous
+    formulas; the exact phase is retained for the finer lattice formulas.
+
+The final reviews led to corrected section references, unified notation,
+and a qualification of the generic log^2(n) quantile shift: at probability
+p=exp(-1), its leading quadratic term cancels. These checks are not
+specialist peer review, machine-checked formalization, or an independent
+publication-level validation of priority.
+
+EXACT ARITHMETIC AND INDEPENDENT NUMERICAL CHECKS
+
+Nested-cycle model:
+  The initial 22 A308338 counts match the inspected OEIS data exactly.
+  Rational finite-product coefficients and integer assembly recurrences
+  were used in these checks.
+
+  At n=50, six exact rational CDF values were compared with 2048-node
+  full-circle Gauss-Legendre Fourier integration. The maximum absolute
+  difference was 1.824029208924438e-14. Exact fractions are preserved in
+  data/verification.json.
+
+  At n=1000, a separate tilted coefficient recurrence was compared with
+  the central Fourier integral at cutoffs 65, 90, 115, 140, 180, and 250.
+  The maximum absolute difference was 1.844130930914959e-9. This recurrence
+  uses double precision, not exact fractions. The check is included in
+  code/nested_numerics.py and its result in data/verification.json.
+
+  The larger experiments use n=1000,10000,100000. Replacing 256 quadrature
+  nodes with 384 at the checked thresholds changed values by at most
+  1.45e-15. The finite coefficient cutoff is 18,992. Node agreement does
+  not bound the omitted Fourier arc or floating-point error; it is one
+  convergence check. The recurrence comparison independently tests that
+  arc truncation at the smallest displayed n.
+
+Path-forest model:
+  A separate implementation evaluates a rational component EGF and its
+  truncated counterpart, with no nested-cycle product coefficients.
+  It checks n=10^4 through n=10^12.
+
+  Replacing 512 Gauss-Legendre nodes with 1024 changed evaluated CDFs by
+  at most 2.56e-15. The largest numerically evaluated analytic omitted-arc
+  bound was 1.26e-16. At n=10^4, comparison with a separate 60-digit sparse
+  coefficient recurrence at three cutoffs differed by at most 3.34e-16.
+  Full details are in data/forest_verification.txt.
+
+INTERPRETATION
+
+The general theorems are proved analytically. Computation checks finite
+instances, signs, and predicted behavior; it is not their logical basis.
+
+The retained error columns are numerical maxima over the examined
+thresholds. Continuous CDF comparisons include both ends of a lattice
+step. Lattice and E1 residuals in the nested-cycle table are evaluated
+at lattice points. Larger path-forest cases use a dense sampled grid.
+No directed-rounding interval certificate or certified global numerical
+supremum is claimed. O-constants are asymptotic, with no effective finite
+threshold supplied. Moderate sizes can be far from a leading equivalent.
+
+BUILD AND DOCUMENT CHECKS
+
+The final 27-page PDF was compiled with:
+  pdfTeX 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian)
+  LaTeX2e 2023-11-01
+  latexmk 4.83
+
+All eight bibliography keys and all cross-references resolve. The final
+LaTeX log has no overfull boxes, underfull boxes, or LaTeX warnings.
+Every page was rendered to PNG and visually checked for page geometry,
+readable equations, figure placement, and clipping. The first pages,
+figures/tables, and bibliography were also examined at larger scale.
+
+The ZIP contains the PDF, all TeX inputs, bibliography, figures, Python
+code, retained data, provenance, and this verification record. Build
+auxiliaries and Python bytecode caches are excluded. MANIFEST.sha256
+records hashes for all other packaged files.

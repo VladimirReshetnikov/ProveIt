@@ -1,0 +1,93 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,graphicx,xcolor}
+\usepackage{enumitem,fancyhdr,hyperref,xurl}
+\definecolor{ink}{HTML}{18364A}
+\definecolor{accent}{HTML}{096B72}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+  pdftitle={Sharp logarithmic remainders for Ford's renewal recurrence},
+  pdfauthor={OpenAI, prepared for Vladimir Reshetnikov},
+  pdfsubject={Spectral positivity, complete asymptotic expansions, and sharp product bounds}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Ford's renewal recurrence}
+\fancyhead[R]{\small\color{ink}Sharp logarithmic remainders}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\gE}{\gamma_{\!E}}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\supp}{\operatorname{supp}}
+\makeatletter
+\let\tableinput\@@input
+\makeatother
+\title{\color{ink}\bfseries Sharp logarithmic remainders\\
+  for Ford's renewal recurrence\\[6pt]
+  \large Spectral positivity, complete asymptotic expansions,\\
+  and sharp product bounds}
+\author{OpenAI\\\small Research manuscript prepared for Vladimir Reshetnikov}
+\date{8 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_j=(j+1)\log(j+1)-j\log j-1$, and let $g_0=1$,
+$g_n=\sum_{j=1}^n a_jg_{n-j}$. This recurrence enters the simplex-volume
+analysis of values of Euler's totient function. If
+$\sum_{j\ge1}a_j\rho^j=1$ and
+$\gamma=(\sum_{j\ge1}ja_j\rho^j)^{-1}$, a published estimate bounds
+$g_n-\gamma\rho^{-n}$ absolutely by a constant. We prove the sharp
+remainder $g_n-\gamma\rho^{-n}\sim-1/(n^2\log^2n)$, and compute its
+complete expansion in inverse powers of $\log n$. An exact positive
+spectral measure proves strict complete monotonicity of
+$E_n=\gamma\rho^{-n}-g_n$ for $n\ge1$, positive definiteness of all
+shifted Hankel matrices, and two exact sum rules. We also give a
+fully explicit finite-index two-sided bound. A local polylogarithm
+identity yields a second expansion in powers of $1/n$ whose coefficients
+retain their entire logarithmic dependence; this separates corrections
+that every fixed logarithmic truncation would hide. Finally we prove
+sharp bounds for the normalized product of the $g_j$, and invert the
+renewal-error law to estimate the index needed for a prescribed accuracy.
+The proofs are conventional mathematical proofs, supported by independent
+high-precision and spectral computations.
+\end{abstract}
+
+\smallskip
+{\small\textbf{Status.} This is a new research manuscript with internal
+independent proof checks, not an externally refereed or Lean-formalized
+publication. The exact claims and the limits of the priority search are
+recorded in Section~\ref{sec:scope}. No theorem about the full totient
+counting function is assumed in these proofs.}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_context}
+\input{sections/02_spectral}
+\input{sections/03_expansions}
+\input{sections/04_applications}
+\input{sections/04b_universality}
+\input{sections/05_computation}
+\input{sections/06_research}
+\input{sections/07_references}
+\end{document}

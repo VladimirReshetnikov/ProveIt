@@ -1,0 +1,23 @@
+PYTHON ?= python
+ARTICLE = reflection_envelopes_depth_transition
+.PHONY: test verify polynomials diagnostics pdf all clean
+all: test verify polynomials diagnostics pdf
+
+test:
+	$(PYTHON) code/test_core.py
+
+verify:
+	$(PYTHON) code/polylog_research.py --full
+
+polynomials:
+	$(PYTHON) code/transition_polynomials.py
+
+diagnostics:
+	$(PYTHON) code/additional_diagnostics.py
+
+pdf:
+	cd article && latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+clean:
+	cd article && latexmk -c $(ARTICLE).tex
+	find code corrections -type d -name __pycache__ -prune -exec rm -rf {} +

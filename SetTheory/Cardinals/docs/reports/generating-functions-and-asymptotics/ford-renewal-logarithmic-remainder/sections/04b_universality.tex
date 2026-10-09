@@ -1,0 +1,104 @@
+\section{A universality theorem for logarithmic moment increments}
+\label{sec:universality}
+
+The main mechanism is reusable. The following sufficient conditions
+make its precise range transparent; no claim is made that they are
+minimal.
+
+\begin{theorem}[A class of logarithmic renewal recurrences]
+\label{thm:general-kernel}
+Let $h$ be continuous on $[0,1]$, positive on $(0,1]$, continuously
+differentiable on $(0,1)$, and twice continuously differentiable near
+one. Suppose
+\[
+ H=h(1)>0,\qquad I_0=\int_0^1\frac{h(t)}t\,dt<\infty.
+\]
+Choose $c>1$ with $c\ge I_0$. Define
+\[
+ a_1=c-1,\qquad a_{j+1}-a_j=\int_0^1t^{j-1}h(t)\,dt,
+\]
+and define $g_n,\rho,\gamma$ from these coefficients as in
+\eqref{eq:definition-g}--\eqref{eq:normalization}. Put
+\begin{equation}\label{eq:general-beta}
+ b=\frac{1-c-\displaystyle\int_0^1
+              \frac{h(t)-H}{1-t}\,dt}{H}.
+\end{equation}
+Then $E_n=\gamma\rho^{-n}-g_n$ is a strictly positive Hausdorff
+moment sequence for $n\ge1$, with a possible mass at zero that
+affects only $E_1$. For every fixed $K\ge0$,
+\begin{equation}\label{eq:general-expansion}
+ E_n=\frac1{Hn^2}\left\{
+  \sum_{k=0}^K\frac{c_k(b)}{\log^{k+2}n}
+             +O_K(\log^{-K-3}n)\right\},
+ \qquad
+ c_k(b)=(k+1)![u^k]\frac{(1+u)e^{bu}}{\Gamma(1-u)}.
+\end{equation}
+In particular $E_n\sim1/(Hn^2\log^2n)$.
+\end{theorem}
+
+\begin{proof}
+The moment hypothesis implies $a_j=H\log j+O(1)$: subtract $H$
+inside the increment formula, use $h(t)-H=O(1-t)$ near one,
+and sum the resulting $O(j^{-2})$ errors. Thus the defining root
+exists exactly as before. With
+$J(w)=w-c-\int h(t)/(w-t)\,dt$, the same operator has quadratic
+form
+\[
+ (c-I_0)|x|^2+\int_0^1t h(t)|f(t)+x/t|^2\,dt\ge0.
+\]
+The unique point of its spectrum above one is a simple root of $J$.
+Its interior spectral density is $h(t)/|J_+(t)|^2$; local $C^1$
+regularity gives the continuous boundary values needed for inversion.
+There is no atom at one. If $c>I_0$ there is no atom at zero; if
+$c=I_0$, that atom has mass
+$(1+\int h(t)/t^2\,dt)^{-1}$, interpreted as zero for a divergent
+integral. The same coefficient comparison therefore gives a positive
+moment formula, with an additional atom at zero only when described.
+
+The endpoint decomposition used in
+\eqref{eq:spec-etaidentity} now gives
+\[
+ \frac{\Re J_+(1-u)}{h(1-u)}
+      =\log u+b+O(u\log(1/u)),\qquad
+ \frac{\Im J_+(1-u)}{h(1-u)}=\pi.
+\]
+Consequently the density of the remainder measure is
+\[
+ \frac{u}{H}\left\{
+  \frac1{(\log u+b)^2+\pi^2}
+              +O\!\left(\frac{u}{1+\log^2u}\right)\right\}.
+\]
+Changing to $y=nu$ gives, up to
+$O(n^{-3}\log^{-2}n)$ and exponentially small terms, the integral
+\[
+ \frac1{Hn^2}\int_0^\infty
+ \frac{ye^{-y}}{(\log n-\log y-b)^2+\pi^2}\,dy.
+\]
+For completeness, on any fixed $0<u\le\delta<1$,
+\[
+ |(1-u)^{n-1}-e^{-nu}|
+       \le C_\delta e^{-nu}(u+nu^2).
+\]
+Integrating this bound against the leading density proves the stated
+error for the exponential-kernel replacement.
+The finite geometric expansion from Section~\ref{sec:expansions}
+applies with $b$ in place of $\gE$. Its gamma-moment generator is
+$(1+u)e^{bu}/\Gamma(1-u)$, proving
+\eqref{eq:general-expansion}. The atom at zero contributes nothing
+when $n\ge2$.
+\end{proof}
+
+For example, replace Ford's coefficients by $a_j+\theta$, with
+$\theta\ge0$. The kernel $h$ stays fixed, while $c$ increases by
+$\theta$ and $b=\gE-\theta$. After subtracting the new pole term,
+the remainder is
+\begin{equation}\label{eq:shifted-family}
+ E_n^{(\theta)}=\frac1{n^2\log^2n}
+ \left[1+\frac{2(1-\theta)}{\log n}
+       +\frac{3\theta^2-6\theta-\pi^2/2}{\log^2n}
+       +O_\theta(\log^{-3}n)\right].
+\end{equation}
+At $\theta=1$ the first inverse-logarithmic correction vanishes.
+This illustrates which part of the error is universal (the scale
+and leading constant) and which part records the detailed kernel
+and initial coefficient.

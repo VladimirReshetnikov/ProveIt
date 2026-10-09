@@ -1,0 +1,119 @@
+{
+  "status": "Floating-point diagnostics only; not proofs or interval certificates.",
+  "date": "2026-10-08",
+  "nmax": 1000,
+  "python_optimization_level": 0,
+  "working_decimal_precision": 370,
+  "root_series_cutoff": 1657,
+  "rho": "0.5425985860984710219593845957794694267795046161953924696651578103470893189476456223295937474513489109",
+  "gamma": "0.3234575341913806765748215485657145348903538274125550795520913973500110193940048319227939347984080486",
+  "continuous_spectral_mass": "0.2928366105553495769785736577519374382505100404006506820569417742282900929515991439204044681412787286",
+  "sum_b_n_to_nmax": "0.29281821231082405541920214727258310894080355333347512702484627337753579622861698",
+  "theoretical_total_sum_b_n": "0.29283661055534957697857365775193743825051004040065068205694177422829009295159914",
+  "sum_n_b_n_to_nmax": "0.68148753484052857591894835135039185500435230059384906348253496517574017238079621",
+  "theoretical_total_sum_n_b_n": "0.83888209260296541936060981104228038229063087914628469462843869215899131194546275",
+  "C_N_at_nmax": "0.617881334348288413810860771638287102628936369016356993883512628540272582104822272192033603",
+  "all_sampled_residuals_positive": true,
+  "all_sampled_differences_positive": true,
+  "precision_check": [
+    {
+      "n": 1,
+      "relative_difference": "1.4123108715588566501e-371"
+    },
+    {
+      "n": 10,
+      "relative_difference": "7.8972146914464440748e-366"
+    },
+    {
+      "n": 50,
+      "relative_difference": "5.5186331771180882133e-353"
+    },
+    {
+      "n": 100,
+      "relative_difference": "1.0718574131700864048e-338"
+    },
+    {
+      "n": 250,
+      "relative_difference": "1.4106365253630848502e-297"
+    }
+  ],
+  "rho_precision_difference": "2.6982379676338129129e-373",
+  "gamma_precision_difference": "5.3347279889956498108e-373",
+  "spectral_runs": [
+    {
+      "quadrature_nodes": 128,
+      "rho_approx": 0.5425985808707107,
+      "gamma_approx": 0.3234575379284602,
+      "smallest_eigenvalue": 6.505107468223571e-05,
+      "continuous_largest_eigenvalue": 0.9998852202542554,
+      "sum_spectral_masses": 0.9999999999999993,
+      "seconds": 0.006551165999553632
+    },
+    {
+      "quadrature_nodes": 256,
+      "rho_approx": 0.5425985851497456,
+      "gamma_approx": 0.323457534869571,
+      "smallest_eigenvalue": 1.7021146100637554e-05,
+      "continuous_largest_eigenvalue": 0.9999721589243064,
+      "sum_spectral_masses": 1.0000000000000007,
+      "seconds": 0.01868477999960305
+    },
+    {
+      "quadrature_nodes": 512,
+      "rho_approx": 0.5425985859215007,
+      "gamma_approx": 0.32345753431788804,
+      "smallest_eigenvalue": 4.39896154881634e-06,
+      "continuous_largest_eigenvalue": 0.9999932091155773,
+      "sum_spectral_masses": 0.9999999999999999,
+      "seconds": 0.06521715900453273
+    }
+  ],
+  "endpoint_spectral_integral": {
+    "status": "Floating local-series quadrature, not an interval certificate.",
+    "decimal_precision": 70,
+    "P_series_degree": 24,
+    "scaled_integral_cutoff": 120,
+    "F_k_definition": "integral_0^infinity y^(k-1)exp(-y)/((log(n)-log(y)-EulerGamma)^2+pi^2) dy",
+    "p2": "-0.24875447703378426254725299357611397609736971366854",
+    "stronger_run": {
+      "status": "Floating local-series quadrature, not an interval certificate.",
+      "decimal_precision": 90,
+      "P_series_degree": 32,
+      "scaled_integral_cutoff": 160,
+      "F_k_definition": "integral_0^infinity y^(k-1)exp(-y)/((log(n)-log(y)-EulerGamma)^2+pi^2) dy",
+      "p2": "-0.24875447703378426254725299357611397609736971366854"
+    },
+    "sensitivity_diagnostics": [
+      {
+        "n": "50",
+        "relative_change_after_precision_order_cutoff_increase": "6.7643319254277543987e-36",
+        "stronger_relative_difference_from_recurrence": "4.6884747265181202753928677682e-44"
+      },
+      {
+        "n": "256",
+        "relative_change_after_precision_order_cutoff_increase": "2.9397623163830792598e-50",
+        "stronger_relative_difference_from_recurrence": "-3.11023861468548017155156484188e-66"
+      },
+      {
+        "n": "1000",
+        "relative_change_after_precision_order_cutoff_increase": "4.3464545423702789725e-50",
+        "stronger_relative_difference_from_recurrence": "-2.15610277547310676224029298993e-67"
+      }
+    ]
+  },
+  "elapsed_seconds": 16.693023924002773,
+  "versions": {
+    "python": "3.12.14",
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0"
+  },
+  "limitations": [
+    "No directed rounding or interval arithmetic is used.",
+    "The root uses a truncated defining series with a generous but uncertified precision margin.",
+    "Spectral quadrature convergence is empirical at the reported resolutions.",
+    "C_N is a finite product, not an independently certified value of the infinite product.",
+    "Fixed-order asymptotic expansions need not improve monotonically at moderate n."
+  ]
+}

@@ -1,0 +1,1039 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-08",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "repository_snapshot_commit": "c78c7c3dc2fc742a1af9492e47d578b3fb4e01e7",
+  "source_manifest": "data/source_snapshot.json",
+  "scope": "Targeted corrections for the inspected Herglotz, CM-row-sum and polylogarithm-polygamma bridge drafts; not a claim to have audited every source formula.",
+  "status_convention": "A false statement has an exact counterargument in the specified domain; a missing-proof status records an unsupported conclusion without asserting its negation. A repair-state records corrections already present elsewhere in the inspected snapshot.",
+  "numerical_scope": "Reported high-precision residuals are supporting evidence, not interval certificates or proofs of independence.",
+  "manuscript": "herglotz_research.tex",
+  "correction_count": 25,
+  "corrections": [
+    {
+      "id": "H001_denominator_only_collapse",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The collapse criterion and the values J(p/q)",
+          "anchor": "\\label{prop:collapse}",
+          "anchor_lines": [
+            207
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "git_blob_sha": "052c34f5b7d4b700a984ed57e51f7b5a512c17a4",
+          "section": "The elementary boundary for F(p/q)",
+          "anchor": "\\label{prop:collapse}",
+          "anchor_lines": [
+            139
+          ]
+        }
+      ],
+      "issue": "The denominator-only criterion rad(q)|30 is false. The nearby criterion based only on the real cyclotomic degree is also false. The numerator is essential, and bounded PSLQ does not establish an if-and-only-if about real numbers.",
+      "proposed_correction": "Replace both criteria by the exact formal five-term criterion for coprime positive p,q: p^2 is congruent to 1 or -1 modulo q, and q^2 is congruent to 1 or -1 modulo p, with independent signs. Distinguish this formal statement from unproved numerical nonreduction claims.",
+      "evidence": [
+        {
+          "kind": "exact_counterexample",
+          "description": "The same reports give F(n/(n+1)) for every n. Taking n=6 yields a rational-dilogarithm evaluation at 6/7 although rad(7) does not divide 30. The core at 4/17 is (1/2)Li_2(16/17)."
+        },
+        {
+          "kind": "exact_formal_obstruction",
+          "description": "At 2/9, the proposed denominator condition holds, but 2^2 is not congruent to plus or minus 1 modulo 9; beta_9(2) is nonzero. At 11/8, 8^2=9 modulo 11 is neither 1 nor -1."
+        },
+        {
+          "kind": "proved_replacement",
+          "description": "All-conductor kernel theorem plus normalized field-norm separation.",
+          "manuscript_labels": [
+            "thm:kernel",
+            "lem:norm",
+            "thm:reduction"
+          ]
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H002_fixed_rational_dilog_vocabulary",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "Collapse criterion, final sentence",
+          "anchor": "Across",
+          "anchor_lines": [
+            210
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "git_blob_sha": "052c34f5b7d4b700a984ed57e51f7b5a512c17a4",
+          "section": "Collapse criterion, final sentence",
+          "anchor": "Across all such rational",
+          "anchor_lines": [
+            142
+          ]
+        }
+      ],
+      "issue": "The assertion that all reducible rational Herglotz values require only Li_2(1/3), Li_2(1/5), and Li_2(2/5) is unsupported numerically and false in the stated formal calculus.",
+      "proposed_correction": "Use the constructive rational-core recursion, allowing rational arguments determined by the numerator and denominator. Remove the universal fixed-vocabulary assertion.",
+      "evidence": [
+        {
+          "kind": "exact_boundary_certificate",
+          "description": "The boundary of xi_(4/17) is -2<2> wedge <17>. Every rational linear combination of the three listed dilogarithm symbols has boundary supported only on primes 2,3,5. Logarithm products contribute zero in the pre-Bloch quotient, so the claimed formal vocabulary cannot represent this value."
+        },
+        {
+          "kind": "constructive_replacement",
+          "description": "A rational core is (1/2)[16/17].",
+          "artifact": "code/dilogarithm_cores.py",
+          "manuscript_label": "thm:core"
+        }
+      ],
+      "status": {
+        "verdict": "false_in_formal_calculus_and_unproved_as_numerical_claim",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H003_large_denominator_F2q_nonreduction",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "F(2/q): the general theorem, following paragraph",
+          "anchor": "but for $q\\ge7$",
+          "anchor_lines": [
+            172
+          ]
+        }
+      ],
+      "issue": "The blanket claim that the cotangent-square dilogarithm sum cannot simplify for q>=7 includes even denominators, where F(2/q)=F(1/(q/2)) has a logarithmic evaluation.",
+      "proposed_correction": "State the reciprocal-integer logarithmic reduction for every even q. For odd q>=7, the new boundary theorem supplies a formal rational-dilogarithm obstruction, not a proof excluding arbitrary numerical identities.",
+      "evidence": [
+        {
+          "kind": "exact_counterexample",
+          "description": "At q=8, F(2/q)=F(1/4), and the report itself supplies its logarithmic formula in Theorem thm:F1q."
+        },
+        {
+          "kind": "proved_formal_scope",
+          "description": "For odd q, beta_q(2)=0 exactly when q divides 3 or 5. Thus every odd q>=7 has nonzero formal obstruction.",
+          "manuscript_label": "thm:kernel"
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H004_degree_of_cotangent_arguments",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "F(2/q): discussion of algebraic arguments",
+          "anchor": "degree $\\varphi(q)/2$",
+          "anchor_lines": [
+            171
+          ]
+        }
+      ],
+      "issue": "The degree phi(q)/2 is assigned to every cotangent-square argument, including indices k that are not coprime to q.",
+      "proposed_correction": "For 1<=k<q/2 set q0=q/gcd(k,q). The argument -cot^2(pi*k/q) generates the maximal real subfield of Q(zeta_q0), and has degree phi(q0)/2 for q0>=3.",
+      "evidence": [
+        {
+          "kind": "exact_algebra",
+          "description": "cot^2(theta)=(1+cos(2theta))/(1-cos(2theta)); this invertible rational transformation gives the same field as cos(2pi*k/q). At q=12,k=3 the argument is -1, of degree 1, rather than phi(12)/2=2."
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H005_J_classification",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The collapse criterion and the values J(p/q)",
+          "anchor": "\\label{prop:J}",
+          "anchor_lines": [
+            218
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "git_blob_sha": "052c34f5b7d4b700a984ed57e51f7b5a512c17a4",
+          "section": "Further general laws, the values J(p/q)",
+          "anchor": "\\paragraph{The values $J(p/q)$.}",
+          "anchor_lines": [
+            177
+          ]
+        }
+      ],
+      "issue": "The claimed logarithmic classification q in {3,5} omits q=2 and every multiple of 4. The statement that J(1/q) always retains dilogarithms is false for every even q.",
+      "proposed_correction": "For q>=2, formal logarithmic reduction holds exactly for q in {2,3,5} or 4|q. Formal rational-dilogarithm reduction additionally includes q=6,10. State that necessity concerns the five-term calculus. Use the explicit analytic formulas for all successful cases.",
+      "evidence": [
+        {
+          "kind": "exact_counterexample",
+          "description": "J(1/2)=pi^2/48+(1/4)log^2(2), corresponding to q=4."
+        },
+        {
+          "kind": "proved_replacement",
+          "description": "For even m, J(1/m)=pi^2*(m^2-2)/(48*m)+S(m)-S(m/2)/2-S(2*m)/2, where S(n)=sum_(k=1)^(n-1) log^2(2sin(pi*k/n)).",
+          "manuscript_labels": [
+            "thm:J-class",
+            "eq:J-even-family"
+          ]
+        },
+        {
+          "kind": "exact_checks",
+          "description": "Canonical cyclotomic and rational-prime wedge checks for q<=1000.",
+          "artifact": "data/cyclotomic_checks.json"
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H006_derivative_midpoint",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The derivative law",
+          "anchor": "\\label{thm:deriv}",
+          "anchor_lines": [
+            196
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "git_blob_sha": "052c34f5b7d4b700a984ed57e51f7b5a512c17a4",
+          "section": "Further general laws, derivative law",
+          "anchor": "\\paragraph{The derivative law",
+          "anchor_lines": [
+            169
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-bridges__469ff48bb80a.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-bridges__469ff48bb80a.tex",
+          "git_blob_sha": "70a686abea1a285917d94dce109aadb3ca76ba07",
+          "section": "The Clausen bridge (the derivative law)",
+          "anchor": "\\section{The Clausen bridge",
+          "anchor_lines": [
+            71
+          ]
+        }
+      ],
+      "issue": "For even q, the definition of W(q) contains the undefined product cot(pi)*Cl_2(pi). Including its continuous limit and also adding the displayed extra -log(2) double-counts the midpoint contribution.",
+      "proposed_correction": "Define W_star(q)=sum_(1<=k<q, 2k!=q) cot(2pi*k/q)Cl_2(2pi*k/q). Then (2/q)F_prime(2/q)-(1+log(2))=pi^2*(q^2-4)/(24*q)+W_star(q)-[2|q]log(2). Equivalently include the midpoint limit inside W and remove the separate correction.",
+      "evidence": [
+        {
+          "kind": "exact_limit",
+          "description": "Cl_2(pi)=0, Cl_2_prime(pi)=-log(2), and cot(pi+h)=1/h+O(h), so the product tends to -log(2)."
+        },
+        {
+          "kind": "independent_numerical_check",
+          "description": "Positive Binet derivative quadrature at q=4,6,8,12 agrees with the corrected formula at 65 working digits; the maximum observed absolute residual is about 1.52e-64. Double-counting changes F_prime by (q/2)log(2). This numerical check is supporting evidence, not an interval proof.",
+          "artifacts": [
+            "code/verify_derivative_correction.py",
+            "data/derivative_correction_checks.json"
+          ]
+        }
+      ],
+      "status": {
+        "verdict": "undefined_expression_and_ambiguous_normalization",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H007_derivative_irreducibility",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The derivative law, last sentence",
+          "anchor": "does \\emph{not} reduce",
+          "anchor_lines": [
+            202
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-rational-values__cb565fc1c0d9.tex",
+          "git_blob_sha": "052c34f5b7d4b700a984ed57e51f7b5a512c17a4",
+          "section": "The derivative law, last sentence",
+          "anchor": "does \\emph{not} reduce",
+          "anchor_lines": [
+            174
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-bridges__469ff48bb80a.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-bridges__469ff48bb80a.tex",
+          "git_blob_sha": "70a686abea1a285917d94dce109aadb3ca76ba07",
+          "section": "The Clausen bridge",
+          "anchor": "not reduce to logarithms",
+          "anchor_lines": [
+            74
+          ]
+        }
+      ],
+      "issue": "The derivative is described as invariably nonelementary, and W(q) as irreducible, without a proof. The universal assertion already fails at q=4.",
+      "proposed_correction": "Remove universal irreducibility language. Record exact reductions such as W_star(4)=0 and F_prime(1/2)=2+pi^2/4. For other denominators, distinguish an explicit Clausen representation from an independence theorem.",
+      "evidence": [
+        {
+          "kind": "exact_counterexample",
+          "description": "After the midpoint is omitted, all remaining cotangents at q=4 are zero. The corrected derivative identity gives F_prime(1/2)=2+pi^2/4."
+        },
+        {
+          "kind": "independent_numerical_check",
+          "description": "The positive Binet derivative integral confirms the q=4 identity.",
+          "artifact": "data/derivative_correction_checks.json"
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H008_Clausen_coefficient_field",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The Clausen bridge",
+          "anchor": "\\paragraph{The Clausen bridge",
+          "anchor_lines": [
+            247
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-bridges__469ff48bb80a.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-bridges__469ff48bb80a.tex",
+          "git_blob_sha": "70a686abea1a285917d94dce109aadb3ca76ba07",
+          "section": "The Clausen bridge",
+          "anchor": "\\section{The Clausen bridge",
+          "anchor_lines": [
+            71
+          ]
+        }
+      ],
+      "issue": "The displayed cotangent coefficients are asserted to lie in Q(zeta_q)^+, although this need not be true. Their absence from that field also does not prove the nonexistence of a different reduction.",
+      "proposed_correction": "Use the valid uniform coefficient field Q(zeta_lcm(4,q))^+ for the displayed real Clausen sum. State any smaller coefficient field only after proof, and remove deductions of numerical nonreduction based solely on these displayed coefficients.",
+      "evidence": [
+        {
+          "kind": "exact_field_identity",
+          "description": "cot(2pi*k/q)=i*(zeta_q^(2k)+1)/(zeta_q^(2k)-1), wherever finite; this lies in the indicated enlarged real field."
+        },
+        {
+          "kind": "exact_counterexample",
+          "description": "For q=3 the proposed smaller real field is Q, while cot(2pi/3)=-1/sqrt(3). Moreover W(3)=-(2/sqrt(3))*Cl_2(2pi/3). The latter Clausen value is positive because it is (sqrt(3)/2)*sum_(m>=0)((3m+1)^(-2)-(3m+2)^(-2)). Thus W(3) is not in the Q-span of the conductor-3 Clausen values."
+        }
+      ],
+      "status": {
+        "verdict": "false_coefficient_field_and_missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "H009_golden_antisymmetric_PSLQ",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-arithmetic-study__467d9018ec87.tex",
+          "git_blob_sha": "14a560e53d09a41f9fbc2a1a3ac0218c97b307f4",
+          "section": "The golden bridge",
+          "anchor": "Only the symmetric sum reduces",
+          "anchor_lines": [
+            241
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-bridges__469ff48bb80a.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-bridges__469ff48bb80a.tex",
+          "git_blob_sha": "70a686abea1a285917d94dce109aadb3ca76ba07",
+          "section": "The golden bridge, antisymmetric part",
+          "anchor": "$X:=",
+          "anchor_lines": [
+            64
+          ]
+        }
+      ],
+      "issue": "Failure of a bounded integer-relation search is promoted to numerical irreducibility of the antisymmetric golden dilogarithm and to a claim of a new independent constant.",
+      "proposed_correction": "Retain the exact symmetric-sum identity. State the search precision, coefficient-height bound, and vocabulary for the antisymmetric part, and say that no relation was found in that search. Prove a specified formal boundary obstruction separately if one is desired.",
+      "evidence": [
+        {
+          "kind": "logical_gap",
+          "description": "A finite search excludes only coefficients within the verified search bounds; it cannot exclude all rational relations or other functional identities. An unbalanced pre-Bloch element need not lie in the Bloch-group kernel, so vanishing of a rationalized K3 group alone does not settle its reduction."
+        }
+      ],
+      "status": {
+        "verdict": "missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "S001_cubic_subfield_vs_class_field",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "The determinant is a regulator",
+          "anchor": "\\paragraph{The determinant is a regulator.}",
+          "anchor_lines": [
+            113
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "The cubic ring-class family",
+          "anchor": "\\section{The cubic ring-class family}",
+          "anchor_lines": [
+            144
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "Cubic family table caption",
+          "anchor": "\\label{tab:family}",
+          "anchor_lines": [
+            176
+          ]
+        }
+      ],
+      "issue": "The degree-three non-Galois polynomial field H0 is repeatedly identified with a cyclic cubic class field over a quadratic field K. These fields have different absolute degrees.",
+      "proposed_correction": "Write L for the totally real cubic subfield and H=K*L for its normal closure. H has degree 6 over Q and degree 3 over K; H/K is the cyclic Hilbert or ring class extension. Use R_L for the regulator of the cubic polynomial field.",
+      "evidence": [
+        {
+          "kind": "degree_argument",
+          "description": "A degree-three extension of Q cannot contain the quadratic field K. A non-Galois S3 cubic with quadratic resolvent K has normal closure H=KL of degree six."
+        }
+      ],
+      "status": {
+        "verdict": "false_field_identification",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "S002_leading_Artin_L_value",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "The regulator as a leading L-value",
+          "anchor": "\\section{The regulator as a leading L-value}",
+          "anchor_lines": [
+            216
+          ]
+        }
+      ],
+      "issue": "The leading coefficient is written as R_L without a class-number hypothesis, and attributed to an asserted general abelian Stark theorem in a rank-one-per-place setting.",
+      "proposed_correction": "For either nontrivial character chi of Gal(H/K)=C3, with primitive complete finite Euler factors, use Artin induction: L_K(s,chi)=zeta_L(s)/zeta(s). For totally real cubic L this gives L_K(s,chi)=h_L*R_L*s^2+O(s^3). The coefficient is R_L only after h_L=1 is verified. No claimed general Stark theorem is needed for this identity.",
+      "evidence": [
+        {
+          "kind": "exact_representation_identity",
+          "description": "Ind_(C3)^(S3)(chi) is the standard two-dimensional representation; the cubic permutation representation is its direct sum with the trivial representation."
+        },
+        {
+          "kind": "analytic_class_number_formula",
+          "description": "zeta_L(s)=-(h_L*R_L/2)*s^2+O(s^3) and zeta(0)=-1/2."
+        },
+        {
+          "kind": "primary_reference",
+          "description": "Cogdell, On Artin L-functions: inductivity and zeta factorization.",
+          "url": "https://math.osu.edu/~cogdell/artin-www.pdf"
+        },
+        {
+          "kind": "primary_reference",
+          "description": "Dasgupta, Stark's Conjectures, Theorem 3.1.2: zeta_k^*(0)=-h_k R_k/e_k.",
+          "url": "https://sites.math.duke.edu/~dasgupta/papers/Dasguptaseniorthesis.pdf"
+        },
+        {
+          "kind": "exact_class_number_certificate_for_257",
+          "description": "For f=x^3-2x^2-3x+1, disc(f)=257 is squarefree. Minkowski gives ideal norm at most (2/9)sqrt(257)<4. Mod 2, f=x^3+x+1 is irreducible. Mod 3, f=(x-1)(x^2+2x+2), with irreducible quadratic; the unique norm-3 prime is principal since Norm(alpha-1)=3. Thus h_L=1 in this case."
+        }
+      ],
+      "status": {
+        "verdict": "missing_hypothesis_and_unsupported_theorem_attribution",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "S003_primitive_Euler_factors_at_257",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "The regulator as a leading L-value, ray modulus and bnrL1",
+          "anchor": "of the narrow ray class group modulo",
+          "anchor_lines": [
+            221
+          ]
+        }
+      ],
+      "issue": "The actual conductor of the order-three character is not distinguished from the displayed ray modulus. At D0=257 the character is unramified, and omission of the factors over 2 changes the leading coefficient by a factor of 3.",
+      "proposed_correction": "Specify whether L_K is the primitive Artin/Hecke L-function with complete finite Euler factors, or an imprimitive ray-modulus L-function. At D0=257, if the two Euler factors over 2 are omitted, multiply the primitive L-function by 1+2^(-s)+2^(-2s), and multiply its leading coefficient at zero by 3.",
+      "evidence": [
+        {
+          "kind": "exact_local_calculation",
+          "description": "The prime 2 splits in Q(sqrt(257)) because 257=1 mod 8. The original cubic polynomial x^3-2x^2-3x+1 reduces to x^3+x+1 modulo 2 and is irreducible; its Frobenius is a 3-cycle. Thus the two character values over 2 are omega and omega^2, and (1-omega*2^(-s))(1-omega^2*2^(-s))=1+2^(-s)+2^(-2s)."
+        },
+        {
+          "kind": "scope",
+          "description": "This is a convention clarification; the audit does not assert that the report actually ran PARI with the wrong flag. Its recorded normalization is insufficient to determine that."
+        }
+      ],
+      "status": {
+        "verdict": "normalization_unspecified",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "S004_fitted_regulator_coefficients_and_unit_index",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "The cubic ring-class family, table and observation",
+          "anchor": "\\label{tab:family}",
+          "anchor_lines": [
+            176
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "Explanation of the exceptional coefficient at n=16",
+          "anchor": "discrepancy is the index",
+          "anchor_lines": [
+            190
+          ]
+        }
+      ],
+      "issue": "High-precision fitting of the new Herglotz/regulator coefficients is treated as exact, and their variation is assigned to a Stark-unit index without the required unit-lattice or class-character computation.",
+      "proposed_correction": "Mark fitted identities as conjectural until derived from the Kronecker-limit decomposition with the exact class-group coefficients and unit index. For a determinant to equal the field regulator rather than an integer multiple of it, certify that its units generate a subgroup of index one. Keep previously established identities separately attributed.",
+      "evidence": [
+        {
+          "kind": "proof_gap",
+          "description": "A determinant of logarithms of independent units equals the regulator times the subgroup index, up to orientation. A small numerical residual and the analytic class-number formula do not by themselves certify this index or the fitted Herglotz coefficients."
+        }
+      ],
+      "status": {
+        "verdict": "missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "S005_single_regulator_if_and_only_if_C3",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "snapshot_path": "input_snapshot/reports/herglotz-stark-regulators__6096eccfa2a0.tex",
+          "git_blob_sha": "05e27eb7e6b3a8af64e713004334259087866a4c",
+          "section": "Single regulator iff C3",
+          "anchor": "\\begin{observation}[Single regulator",
+          "anchor_lines": [
+            202
+          ]
+        }
+      ],
+      "issue": "A structural explanation and failed PSLQ searches at a few C5 and C7 examples are promoted to a universal if-and-only-if classification of single-regulator reductions.",
+      "proposed_correction": "Retain the representation-theoretic decomposition into character pairs. State the tested C5 and C7 examples and the coefficient-height bounds as numerical evidence. Do not conclude that every possible single-regulator relation is impossible without an exact algebraic or period-independence argument.",
+      "evidence": [
+        {
+          "kind": "logical_gap",
+          "description": "Several character pairs explain why several regulator components naturally occur. They do not prove that a particular weighted sum cannot satisfy a further relation. A bounded negative PSLQ result does not prove such independence."
+        }
+      ],
+      "status": {
+        "verdict": "missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "CM001_bilateral_polygamma_sign",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "1. The hunch",
+          "anchor": "Σ_{m ∈ ℤ}",
+          "anchor_lines": [
+            19
+          ]
+        }
+      ],
+      "issue": "The displayed bilateral formula omits the sign (-1)^(s+1) on the first polygamma term and is correct as printed only for odd s.",
+      "proposed_correction": "Use sum_(m in Z)(m+a)^(-s-1) = ((-1)^(s+1)*psi^(s)(a)+psi^(s)(1-a))/s! for s>=1 and a outside Z.",
+      "evidence": [
+        {
+          "kind": "direct_proof",
+          "description": "Split the bilateral sum into m>=0 and m<=-1 and apply the absolutely convergent polygamma series."
+        },
+        {
+          "kind": "associated_article_repair",
+          "description": "The associated article already gives the corrected general formula and its odd-s specialization.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+            "section": "Introduction",
+            "anchor": "\\label{eq:bilateral}",
+            "anchor_lines": [
+              72
+            ]
+          }
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "already_repaired_in_associated_article_report_body_stale"
+      }
+    },
+    {
+      "id": "CM002_discriminant_minus15_real_part",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "2.6 Class number 2, discriminant -15",
+          "anchor": "G₄(τ₁) / G₄(τ₂) = 2",
+          "anchor_lines": [
+            193
+          ]
+        }
+      ],
+      "issue": "The main-body ratio and product use a genuinely complex G4((1+i sqrt(15))/4) while giving real right-hand sides.",
+      "proposed_correction": "Replace that factor by Re G4((1+i sqrt(15))/4), equivalently by the average at (1+i sqrt(15))/4 and (-1+i sqrt(15))/4.",
+      "evidence": [
+        {
+          "kind": "exact_Fourier_bound",
+          "description": "Write the Fourier parameter as i*r, with r=exp(-pi*sqrt(15)/2)<1/100. In E4=1+240*sum_(n>=1)sigma_3(n)*(i*r)^n, the leading imaginary term is 240*r. Since sigma_3(n)<2*n^3 and 2*sum_(n>=2)n^3*r^n<r for 0<r<=1/100, the tail cannot cancel it. Hence the imaginary part of G4 is nonzero."
+        },
+        {
+          "kind": "already_recorded_report_repair",
+          "description": "The source report correction addendum dated 2026-06-11 explicitly records this correction.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+            "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+            "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+            "section": "Correction addendum, item 1",
+            "anchor": "**S2.6, disc -15**",
+            "anchor_lines": [
+              430
+            ]
+          }
+        },
+        {
+          "kind": "associated_article_repair",
+          "description": "The associated article uses the class-pair average explicitly.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+            "section": "Class number 2, discriminant -15",
+            "anchor": "\\label{res:d15}",
+            "anchor_lines": [
+              305
+            ]
+          }
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "already_repaired_in_report_addendum_and_article_main_report_body_stale",
+        "newly_discovered": false
+      }
+    },
+    {
+      "id": "CM003_norm_of_ratio",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "2.6 Class number 2, discriminant -20",
+          "anchor": "`121 = 11²`",
+          "anchor_lines": [
+            186
+          ]
+        }
+      ],
+      "issue": "The norm of (29+12sqrt(5))/44 is stated as 121; 121 is the norm of its numerator.",
+      "proposed_correction": "Write N((29+12sqrt(5))/44)=121/44^2=1/16, and separately N(29+12sqrt(5))=121.",
+      "evidence": [
+        {
+          "kind": "exact_arithmetic",
+          "description": "(29+12sqrt(5))*(29-12sqrt(5))=841-720=121."
+        },
+        {
+          "kind": "associated_article_repair",
+          "description": "The associated article explicitly places the norm on the numerator. Its prose can be made completely unambiguous by also giving the norm of the ratio.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+            "section": "Class number 2, discriminant -20",
+            "anchor": "$N(29+12\\sqrt5)=121",
+            "anchor_lines": [
+              301
+            ]
+          }
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "numerator_norm_already_identified_in_associated_article_report_body_stale"
+      }
+    },
+    {
+      "id": "CM004_modular_form_existence_vs_value",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "2.2 Vanishing identities",
+          "anchor": "*do not exist*",
+          "anchor_lines": [
+            114
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+          "section": "Maximal symmetry, vanishing identities",
+          "anchor": "corresponding modular forms do not exist",
+          "anchor_lines": [
+            199
+          ]
+        }
+      ],
+      "issue": "Vanishing of G4 or G6 at a special lattice is explained by saying the corresponding modular forms do not exist.",
+      "proposed_correction": "State that these modular forms exist, but their values vanish at the indicated CM points because of lattice automorphisms: G4(rho)=0 and G6(i)=0.",
+      "evidence": [
+        {
+          "kind": "exact_automorphism_argument",
+          "description": "For a lattice invariant under multiplication by a unit u, the absolutely convergent weight-w lattice sum equals u^(-w) times itself; it is zero if u^w differs from 1. This concerns a value, not the existence of the modular form."
+        }
+      ],
+      "status": {
+        "verdict": "false_explanation",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "CM005_PSLQ_irrationality_and_degree",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+          "section": "Weight-4 sums are not Galois-clean",
+          "anchor": "\\label{neg:sums}",
+          "anchor_lines": [
+            357
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+          "section": "Genus structure inside the quartet",
+          "anchor": "\\label{res:genus}",
+          "anchor_lines": [
+            399
+          ]
+        }
+      ],
+      "issue": "Negative PSLQ searches are used to state that raw symmetric ratios are irrational and that a cross-class ratio has algebraic degree four.",
+      "proposed_correction": "Replace the categorical conclusions by the exact searches performed, or supply independent algebraicity and minimal-polynomial certificates. A proof of degree four requires an annihilating polynomial and an irreducibility or equivalent degree argument.",
+      "evidence": [
+        {
+          "kind": "logical_gap",
+          "description": "Failure to find a rational relation to height 10^30 does not establish irrationality. Failure to find a quadratic polynomial to height 10^12 establishes neither algebraicity nor degree four."
+        }
+      ],
+      "status": {
+        "verdict": "missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "CM006_vanishing_test_prefactor",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "3. Methodology note, factor-of-two bug",
+          "anchor": "blind to such a factor",
+          "anchor_lines": [
+            377
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+          "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+          "section": "Methodology notes, vanishing test",
+          "anchor": "tests are blind to such a factor",
+          "anchor_lines": [
+            472
+          ]
+        }
+      ],
+      "issue": "The blanket statement that the vanishing tests are blind to the wrong row prefactor is false for a test of the displayed inhomogeneous row-sum formula. The report does not identify which different zero test was actually run.",
+      "proposed_correction": "Specify the exact test and its independent inputs. A test of G6(i)=2zeta(6)+(1/60)*sum_rows detects replacement of 1/60 by 1/120; only a common scaling of an independently vanishing complete expression is invisible.",
+      "evidence": [
+        {
+          "kind": "exact_countercheck",
+          "description": "The row sum at i is -120zeta(6). With prefactor 1/60 the expression is zero; with 1/120 it is zeta(6), not zero."
+        }
+      ],
+      "status": {
+        "verdict": "incorrect_general_explanation_test_unspecified",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "CM007_equianharmonic_eta_sign",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+          "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+          "section": "3. Methodology note, eta anchor",
+          "anchor": "`E₆(ρ)² = 1728 η(ρ)²⁴`",
+          "anchor_lines": [
+            387
+          ]
+        }
+      ],
+      "issue": "The report main body omits the minus sign in the equianharmonic identity involving eta(rho)^24.",
+      "proposed_correction": "Use E6(rho)^2=-1728*eta(rho)^24=1728*abs(eta(rho))^24 at rho=exp(i*pi/3).",
+      "evidence": [
+        {
+          "kind": "exact_modular_identity",
+          "description": "E4^3-E6^2=1728*Delta and Delta=eta^24; E4(rho)=0."
+        },
+        {
+          "kind": "already_recorded_report_repair",
+          "description": "The source report correction addendum explicitly records this sign correction.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+            "snapshot_path": "input_snapshot/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md",
+            "git_blob_sha": "4ef8ff38453aa471b4d5b6e77ab36ef4ece3b902",
+            "section": "Correction addendum, item 2",
+            "anchor": "**S3 item 2**",
+            "anchor_lines": [
+              437
+            ]
+          }
+        },
+        {
+          "kind": "associated_article_repair",
+          "description": "The associated article uses the absolute eta value and explains the negative real value of eta(rho)^24.",
+          "source_location": {
+            "repository_path": "Analysis/Polylogarithms/docs/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "snapshot_path": "input_snapshot/articles/eisenstein-row-sums-cm-polygamma.tex",
+            "git_blob_sha": "4147bfd4d0bc6bb271cbb1710a23c0d803200a05",
+            "section": "Methodology notes, eta anchor",
+            "anchor": "$E_6(\\rho)^2=1728",
+            "anchor_lines": [
+              483
+            ]
+          }
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "already_repaired_in_report_addendum_and_article_main_report_body_stale",
+        "newly_discovered": false
+      }
+    },
+    {
+      "id": "B001_Clausen_parity",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex",
+          "snapshot_path": "input_snapshot/articles/polylog-polygamma-bridge.tex",
+          "git_blob_sha": "ec42cc3f5249f1ac03aaa7553d1d2c31e833db18",
+          "section": "The two-way exact DFT, consequence 2",
+          "anchor": "values ($\\operatorname{Im}\\Li_n$ at even $n$",
+          "anchor_lines": [
+            150
+          ]
+        }
+      ],
+      "issue": "The Clausen component is called the odd part of the polygamma grid at every weight.",
+      "proposed_correction": "State the parity by weight: Cl_(2k)(-theta)=-Cl_(2k)(theta), while Cl_(2k+1)(-theta)=Cl_(2k+1)(theta). The Clausen component is antisymmetric at even weight and symmetric at odd weight. The Catalan example remains correct.",
+      "evidence": [
+        {
+          "kind": "exact_Fourier_parity",
+          "description": "The definitions use the sine Fourier series at even weight and the cosine Fourier series at odd weight."
+        }
+      ],
+      "status": {
+        "verdict": "false_statement",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "B002_odd_weight_Clausen_necessity",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex",
+          "snapshot_path": "input_snapshot/articles/polylog-polygamma-bridge.tex",
+          "git_blob_sha": "ec42cc3f5249f1ac03aaa7553d1d2c31e833db18",
+          "section": "Abstract, crystallographic-angle claim",
+          "anchor": "holds exactly for denominators",
+          "anchor_lines": [
+            58
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex",
+          "snapshot_path": "input_snapshot/articles/polylog-polygamma-bridge.tex",
+          "git_blob_sha": "ec42cc3f5249f1ac03aaa7553d1d2c31e833db18",
+          "section": "The boundary of the odd-weight Clausen collapse",
+          "anchor": "\\label{res:crystal}",
+          "anchor_lines": [
+            270
+          ]
+        }
+      ],
+      "issue": "The proved reduction at crystallographic angles is stated as a numerical if-and-only-if for all reduced denominators. The displayed character decompositions and bounded PSLQ do not prove the necessity direction.",
+      "proposed_correction": "Keep the sufficiency result for q in {1,2,3,4,6} and the exact Dirichlet L-value decompositions at q=5,8,12. State independence of the additional parity-mismatched L-values from zeta(3) as unresolved here, rather than as a theorem.",
+      "evidence": [
+        {
+          "kind": "precise_missing_step",
+          "description": "The identity Cl_3(2pi/5)=-(6/25)zeta(3)+(sqrt(5)/4)L(3,chi_5) shows that the claimed noncollapse at q=5 requires sqrt(5)L(3,chi_5)/zeta(3) to be nonrational. No proof of that assertion is supplied. Negative bounded PSLQ does not prove it."
+        }
+      ],
+      "status": {
+        "verdict": "missing_proof",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "B003_DFT_dimension_scope",
+      "source_locations": [
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex",
+          "snapshot_path": "input_snapshot/articles/polylog-polygamma-bridge.tex",
+          "git_blob_sha": "ec42cc3f5249f1ac03aaa7553d1d2c31e833db18",
+          "section": "Abstract, dimension counts",
+          "anchor": "their identical dimension counts",
+          "anchor_lines": [
+            50
+          ]
+        },
+        {
+          "repository_path": "Analysis/Polylogarithms/docs/articles/polylog-polygamma-bridge.tex",
+          "snapshot_path": "input_snapshot/articles/polylog-polygamma-bridge.tex",
+          "git_blob_sha": "ec42cc3f5249f1ac03aaa7553d1d2c31e833db18",
+          "section": "The two-way exact DFT, consequence 1",
+          "anchor": "computed independently by the project",
+          "anchor_lines": [
+            147
+          ]
+        }
+      ],
+      "issue": "The dimension phi(q)/2 is given without specifying the coefficient field and the formal relation quotient. An invertible DFT over a cyclotomic field does not by itself prove numerical Q-linear independence.",
+      "proposed_correction": "Define the formal module, coefficient field, and reflection/distribution relations whose quotient is being counted. Distinguish its dimension from the dimension of a numerical period span, and retain DFT transport only over the specified field.",
+      "evidence": [
+        {
+          "kind": "linear_algebra_scope",
+          "description": "The displayed Fourier matrix has entries in Q(zeta_q), so its invertibility compares dimensions over that field. Additional hypotheses are needed to identify a numerical Q-linear relation space or prove an exact numerical rank."
+        }
+      ],
+      "status": {
+        "verdict": "notation_and_missing_hypotheses",
+        "repair_state": "proposed"
+      }
+    },
+    {
+      "id": "EXT001_RZ_2020_preprint_untwisted_identity",
+      "source_locations": [
+        {
+          "repository_path": null,
+          "snapshot_path": null,
+          "source_type": "external_primary_preprint",
+          "title": "Arithmetic properties of the Herglotz function",
+          "authors": [
+            "Danylo Radchenko",
+            "Don Zagier"
+          ],
+          "version": "arXiv:2012.15805v1, 31 December 2020; inspected 18-page author preprint",
+          "section": "7.2, final paragraph following equation (37)",
+          "page": 16,
+          "anchor": "beta_p(n)=beta_p(n+1)+beta_p(n/(n+1))",
+          "urls": [
+            "https://arxiv.org/html/2012.15805v1",
+            "https://people.mpim-bonn.mpg.de/zagier/files/preprints/HerglotzFunction.pdf"
+          ]
+        }
+      ],
+      "issue": "The displayed three-term identity is false for the stated untwisted exterior-square values of beta_p.",
+      "proposed_correction": "Do not use this identity in the stated untwisted coefficient space. Remove it or replace it by a correctly formulated identity with a specified action or quotient and a proof. The valid inverse and sign symmetries are sufficient for the relation theorem in this continuation.",
+      "evidence": [
+        {
+          "kind": "exact_counterexample",
+          "description": "Take p=7,n=2. Then n/(n+1)=3 modulo 7 and beta_7(3)=-beta_7(2). The printed identity would imply 3 beta_7(2)=0. The all-conductor relation theorem gives beta_7(2) nonzero because 4 is neither 1 nor -1 modulo 7."
+        },
+        {
+          "kind": "integer_matrix_certificate",
+          "description": "In the exact regular-representation model the defect is the nonzero matrix [[0,3,-3],[-3,0,3],[3,-3,0]].",
+          "artifacts": [
+            "code/verify_cyclotomic.py",
+            "data/cyclotomic_checks.json"
+          ]
+        }
+      ],
+      "status": {
+        "verdict": "false_statement_in_inspected_preprint",
+        "repair_state": "correction_proposed_for_inspected_version_only",
+        "journal_version_scope": "The 2023 journal version was not inspected in this audit. No claim is made that its text retains the same error.",
+        "journal_metadata": "Journal fuer die reine und angewandte Mathematik 797 (2023), 229-253; DOI 10.1515/crelle-2023-0009"
+      }
+    }
+  ]
+}
