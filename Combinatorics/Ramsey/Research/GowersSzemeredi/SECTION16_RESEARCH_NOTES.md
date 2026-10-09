@@ -3929,3 +3929,107 @@ and the two counting steps above. One input remains open: the
 representation density on the chosen piece. `proper_progression_pattern_completion`
 currently takes `C = Q.carrier`; a piece-relative witness count would
 be needed if the piece is a proper subset.
+
+### J.91. Quantitative strict-relation iteration on Bohr domains
+
+The algebraic regularity refinement is now constructed, including a
+modulus-independent rank recurrence and a termination proof. The result
+controls the bounded bad relations on a nested Bohr domain. Transporting
+the selected dense parameter set through this construction remains a
+separate task; this is not a claim that the complete structural theorem
+or its printed bounds have been proved.
+
+`Proofs16StrictRelationKernel` applies the dense constant-fibre kernel
+lemma to a coefficient vector `w` that is not a relation on the current
+full domain `B(Gamma;sigma)`. On the new Bohr domain the combination equals
+its value at zero, so `w` becomes a relation. Restriction preserves the
+previous relations, giving a strict inclusion of relation subspaces.
+The individual maps need not be normalized for this refinement.
+
+`Proofs16PopularRelationFiber` fixes one coordinate of a popular matching
+equation. If a fraction `theta` of `C × C` satisfies a two-sided relation,
+some constant fibre has at least `theta*|C|` points. In
+`Proofs16PopularKernelStep`, that fibre yields a kernel Bohr set with rank
+at most
+
+```
+16 * (theta * |C| / N)^(-2).
+```
+
+Either coefficient vector may be the nonrelation: swapping the two
+coordinates preserves the exact pair count. This direct fibre argument
+retains `theta`, instead of first replacing it by `theta²` through the
+collision-pair Cauchy--Schwarz estimate. The inverse-square rank loss is
+therefore in the original matching density.
+
+`Proofs16BadRelationKernel` first selects a popular witness from a finite
+cover of bad pairs. `Proofs16BoundedBadRelations` specializes it to bounded
+fixed, left, and right coefficient vectors. For fixed-frequency index
+set `iota`, map index set `kappa`, and cutoff `R`, the witness count is at
+most
+
+```
+M = (2R+1)^(|iota|+2|kappa|).
+```
+
+This bound holds even when the coefficient radius wraps around the cyclic
+group. Too many bounded bad pairs then give a strict refinement with
+spectrum rank at most `16*((theta/M)*|C|/N)^(-2)`.
+
+`Proofs16NestedRelationKernel` adjoins the old frequencies and uses radius
+`min(sigma,1/(8*pi))`. Both the full and quarter domains are contained in
+their old counterparts. Full-domain containment alone would not imply
+quarter-domain containment; retaining the old frequencies establishes the
+needed stronger property. The strict relation increase survives this
+additional restriction.
+
+`Proofs16BadRelationSplitting` connects the stopping criterion to the
+quasirandomness interfaces. For maps normalized at zero, every pair
+outside `boundedBadRelationPairs` satisfies the exact bounded splitting
+identity with `boundedRelationClass` of the full domain. The analogous
+single-vertex identity holds outside `boundedBadRelationVertices`. Every
+bad vertex makes all its pairs bad, using zero coefficients on the other
+side, so a bad-pair fraction at most `theta` also bounds the bad-vertex
+fraction by `theta`.
+
+The quantitative iteration fixes `0 < sigma ≤ 1/(8*pi)` and a natural
+cell count `Q > 0` with `4 ≤ sigma*Q`. The quarter Bohr domain of a rank-`d`
+frequency set has density at least `Q^(-d)`. Define
+
+```
+Phi(d) = d + ceil(16*((theta/M)/Q^d)^(-2)).
+```
+
+`Proofs16RelationRankBudget` proves that `Phi` is monotone, `d ≤ Phi(d)`,
+and every failed bad-pair bound has a refinement of rank at most `Phi(d)`.
+There is no dependence on the ambient modulus in this recurrence.
+
+`Proofs16BohrRelationIteration.exists_sparse_bad_relation_domain` proves
+termination with an explicit bound. If the initial relation subspace has
+dimension `s`, the final spectrum has rank at most
+`Phi^[|kappa|-s](|Gamma|)`, contains the original frequencies, preserves
+full and quarter containment, and has strictly fewer than
+`theta*|B(S;sigma/4)|²` bad pairs. Every unsuccessful step strictly increases
+the relation dimension, so the initial relation codimension bounds the
+number of recurrence steps.
+
+The incoming `Proofs16PrimeBandSplit` supplies mixed-Bohr annulus bounds
+in prime cyclic groups and discharges the weak-regularity hypotheses of
+the generic split-profile theorem. Its explicit truncation and size
+budgets still need to be made compatible with the final construction.
+Density retention for the selected parameter set, affine recentering,
+and the paper's prescribed quantitative constants remain unresolved.
+All five numbered open entries and the recorded source-fidelity caveats
+remain unchanged.
+
+The increment/splitting source check covers 55 modules, and the iteration
+check covers 57. All 22 new declarations pass individual transitive axiom
+checks with only `propext`, `Classical.choice`, and `Quot.sound`. No upstream
+source, selected port scope, license, or provenance record was changed.
+
+The full merged audit passes for 6,689 public Gowers theorems in a
+5,034-module facade (4,152 OAI modules), or 5,036 modules including both
+audits. The incoming prime mixed-Bohr band estimates are included. The
+source ledger matches the tracked 115 companions and five open entries,
+and the selected port-scope check passes. All audited declarations remain
+within the same three-axiom boundary.
