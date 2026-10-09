@@ -944,6 +944,7 @@ import GowersSzemeredi.Proofs16GlobalSingleProgression
 import GowersSzemeredi.Proofs16CoherentRelationRankStep
 import GowersSzemeredi.Proofs16SingleFamilyRegularityInput
 import GowersSzemeredi.Proofs16GlobalCoherentGraph
+import GowersSzemeredi.Proofs16GlobalCoherentBridge
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
