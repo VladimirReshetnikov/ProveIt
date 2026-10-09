@@ -2175,3 +2175,39 @@ The driver compares adaptive classification with the same implementation forced
 to compute both cone counts, includes identical A/A controls and production plus
 independent replay, and separately checks the smaller default feature against
 the actual baseline at `ce180ce1e640`. Timed calls reconstruct all geometry.
+
+### Source-bound compressed primitive-power terminals
+
+The optional compressed group search now tests report 45's minimum Christoffel
+width when it reaches two live generators. One shared prefix-height scan can
+certify that a current relator is a power of a primitive free-group word.
+The new version-five certificate retains the full source diagram and verified
+move prefix and uses an explicit `terminal` field. Independent literal and
+compressed checkers reconstruct that state before checking the arithmetic.
+Knot-group torsion-freeness and abelianization then justify the positive verdict.
+The arithmetic query alone is not a knot decision for an arbitrary presentation.
+
+`compressed_certificate(..., primitive_power=False)` retains the old search and
+rank-one terminal. Ordinary recognition reaches the new rule through the existing
+`group_compressed_search=True` / `--group-compressed-search` opt-in. Explicit search
+and its adaptive representation handoff retain their prior terminal contracts.
+
+All 29,540 audited cyclically reduced words agree with the literal Whitehead/root
+oracle and report 45; 844 are primitive powers. The 74-diagram audit produces 44
+new terminal records, all exponent one, and solves no previously stalled diagram.
+All 974 tests pass. Whole-recognition timings on nineteen diagrams are mostly
+unchanged; Gordian's paired old/new ratio is 0.998 despite a small work reduction.
+No proper-power activity, broad speedup, or general quasi-polynomial bound is claimed.
+
+See [`primitive_power.tex`](../synthesis/primitive_power.tex) for the arithmetic
+proof, source-bound topological implication, version contract, local cost and
+complete measurements. From this directory:
+
+```sh
+python -B primitive_power_research/native.py audit --output ../synthesis/data/primitive-power-native-audit.json
+python -B primitive_power_research/native.py benchmark --output results/primitive_power_pipeline_20261008.json
+```
+
+The timing driver loads the actual old group host, search and replay modules at
+`cd77d1bee8fa`, includes full recognition and proof replay, and retains A/A controls,
+exact certificates, work and node counts, raw samples and source hashes.

@@ -1,0 +1,273 @@
+\section{A source-bound primitive-power terminal for compressed knot groups}
+\label{sec:primitive-power-terminal}
+
+Report 45's arithmetic kernel was previously reproduced but deliberately
+kept outside the knot-verdict path. The missing step was a terminal contract:
+the old compressed search succeeded only after reaching one generator and
+no nonempty relators. A primitive-power relation at rank two does not meet
+that syntactic condition. We now add a distinct version-five terminal,
+replay its entire presentation prefix, and independently verify its
+arithmetic evidence on the reconstructed relator. This adds a positive
+stopping rule to the existing optional compressed group route.
+
+\subsection{The minimum-width arithmetic test}
+
+For a nonempty positive two-letter word, let $P,Q$ count its letters,
+$d=\gcd(P,Q)$, and $(p,q)=(P/d,Q/d)$. The prefix-height walk assigns
+weight $q$ to the first letter and $-p$ to the second. Its total height is
+zero. Write $\Omega$ for the difference between its maximum and minimum
+prefix heights, including the empty prefix.
+
+When both counts are positive, each step changes height by $q$ modulo
+$\ell=p+q$. Coprimality makes the first $\ell$ prefixes visit all residues,
+so $\Omega\ge\ell-1$. If equality holds, all heights lie in an interval
+of exactly $\ell$ consecutive integers. The two possible next heights,
+$h+q$ and $h-p$, differ by $\ell$, and exactly one remains in that interval.
+Thus the next letter is forced by the present height. The walk repeats
+the same length-$\ell$ rotation cycle $d$ times. That cycle is a cyclic
+conjugate of the Christoffel word with counts $(p,q)$.
+
+Euclidean division of $(p,q)$ expresses its Christoffel word through
+Nielsen maps $a\mapsto a$, $b\mapsto a^k b$, or
+$a\mapsto ab^k$, $b\mapsto b$, until one generator remains. Hence the
+cycle is primitive in $F(a,b)$. Conversely, the rank-two primitive
+conjugacy classification used in report 45 identifies every cyclically
+reduced primitive word, after independent generator inversions, with
+such a cycle. Therefore a nonempty cyclically reduced word is a power of
+a primitive element exactly when each generator occurs with only one sign
+and its normalized width is $|u|+|v|-1$. Here
+\[
+ (A,B)=d(u,v),\qquad d=\gcd(|A|,|B|),
+\]
+where $A,B$ are signed exponent sums. The signed-letter weights are
+$(v,-v,-u,u)$ on $(a,a^{-1},b,b^{-1})$.
+A one-letter power has width zero and primitive vector $(\pm1,0)$ or
+$(0,\pm1)$, so it is included.
+
+For a binary grammar, prefix profiles form a small exact concatenation
+summary. If $U$ has total, minimum and maximum $(s,l,h)$ and $V$ has
+$(t,L,H)$, then
+\[
+ \operatorname{profile}(UV)
+   =(s+t,\min(l,s+L),\max(h,s+H)).
+\]
+Four signed occurrence counts also add at concatenations. These recurrences
+use binary integers and never enumerate represented letters. The native
+query uses the maintained \texttt{WordArena} directly, preserving its
+original generator names and relator slots. It creates no word nodes and
+calls no equality, longest-prefix or normalization routine.
+
+\subsection{One shared slope for the intact rank-two state}
+
+At a two-generator presentation of a knot group, the relator exponent rows
+span one rational line: the abelianization is $\mathbb Z$. The producer
+computes a primitive direction $(u,v)$ from the first nonzero row, checks
+collinearity of every row by $vA-uB=0$, and performs one shared profile
+pass over the reachable grammar. It keeps every root slot, including empty
+and repeated roots. A nonzero, sign-coherent root with the required width
+supplies the terminal witness. Its exponent and signed vector are derived
+from its own counts, so inverse-oriented roots are handled correctly.
+
+All sign-incoherent roots are skipped. This makes the positive test safe
+even if a caller provides a raw grammar: sign coherence itself implies
+free and cyclic reduction, since inverse letters cannot occur. Absence
+of a hit on an arbitrary raw root is not a complete primitivity decision;
+normalizing a general compressed input remains a separate cost. On the
+cyclically reduced states maintained by the knot search, the report's
+criterion applies directly. Noncollinear input is outside the shared-slope
+query's supported family and yields no terminal evidence.
+
+The query runs when the compressed search reaches two live generators,
+before building a general elimination plan or searching for further
+Whitehead and overlap moves. This position matters in the actual corpus:
+a prototype placed after singleton detection had no positive activations,
+because all tested successful states already contained an eliminable
+relation. Moving the exact stopping rule before that work permits avoiding
+the final substitution and normalization across all relator slots. The
+measurements below determine the resulting whole-call effect.
+
+\subsection{Why the source-bound terminal proves an unknot}
+
+The certificate checker begins with a validated classical one-component
+planar diagram. It independently reconstructs the full Wirtinger
+presentation and replays every elimination, Whitehead and relator move
+in the supplied prefix. Those moves preserve the presented group, and
+no unaccounted relator slot is discarded. Suppose that the resulting
+presentation has exactly two live generators and contains a relator
+$w^d$, with $d>0$ and $w$ primitive.
+
+A classical knot group is torsion-free, so $w^d=1$ implies $w=1$ in that
+group. Since $w$ belongs to a free basis of the rank-two free group, its
+normal quotient is infinite cyclic. The full presented group is therefore
+a quotient of a cyclic group. Its abelianization is still $\mathbb Z$,
+so it must itself be infinite cyclic. The classical knot-group unknot
+criterion then implies that the original diagram represents the unknot.
+For exponent one the root-killing step does not require torsion-freeness.
+These are imported topological facts, as in the report's source-bound
+argument, not new claims about arbitrary presentations.
+
+Other relator slots need not be individually shown redundant after this
+terminal is established, but all of them must have been retained in the
+verified presentation prefix. The distinction is essential: the abstract
+presentation $\langle a,b\mid a^d\rangle$ for $d>1$ also has a local
+primitive-power witness and is not an infinite cyclic knot group.
+Neither the arithmetic producer nor its arithmetic checker alone returns
+a knot verdict or accepts a caller's torsion-free flag.
+
+\subsection{Version five, independent replay and bounded execution}
+
+A successful terminal proof retains the usual method, status, original PD
+and move prefix. Version five replaces \texttt{remaining\_generator} by
+\texttt{terminal}, containing its kind, original current relation slot,
+ordered live generator pair, two signed primitive coordinates, positive
+exponent and width. The outer checker rejects extra or missing fields,
+unknown versions and mismatched diagrams. Versions one through four
+continue to require the original rank-one terminal.
+
+After independent prefix replay, the explicit checker walks the selected
+literal relator and recomputes signed counts and prefix extrema. The
+compressed checker instead performs a fresh postorder traversal of that
+root's grammar, distinct from the producer's sorted reachable-node scan.
+Both check exactly two live generators, the selected slot, strict integer
+types, primitive gcd, exponent products, sign coherence and minimum width.
+The proof's numerical fields are bounded by the reconstructed word length
+before gcd or profile arithmetic, so forged oversized metadata cannot
+inflate the replay calculation. Neither route calls the query producer,
+selects a gcd direction for search, or runs Whitehead discovery.
+
+Every arithmetic pass charges the existing work budget and propagates
+external cancellation. The kernel allocates no new SLP nodes; its temporary
+summaries are proportional to the reachable grammar, already bounded by
+the enclosing node cap. These are cooperative abstract allowances, not
+hard bounds on Python integer-instruction time or process memory. Search
+exhaustion remains inconclusive. An unaffordable explicit replay can fail
+its resource allowance even where compressed replay succeeds; it never
+silently expands beyond that allowance.
+
+The low-level \texttt{compressed\_certificate} option
+\texttt{primitive\_power} defaults to true and can be disabled for the old
+search path. The ordinary PD dispatcher still requires the existing
+compressed-group opt-in. The explicit search and its representation-switching
+handoff retain their old terminal contract. Internally, the compressed
+search enables rank-two success only when its caller supplies a distinct
+terminal-output record; the old call form still means one generator and
+no relators. Thus an abstract internal success cannot accidentally be
+encoded with a fabricated remaining generator.
+
+\subsection{Local cost and what remains unproved}
+
+Let $S$ count reachable grammar nodes, $M$ all allocated node identifiers,
+$m$ current relator slots and $B$ the largest represented-length bit size.
+The native query uses $O(S\log(S+1)+m)$ structural operations and a
+constant number of additions/comparisons per profile node, plus gcd and
+collinearity arithmetic. The sorting term comes from the maintained
+reachable-node ordering; it is absent from the report's already ordered
+standalone grammar scan. Prefix heights have $O(B)$ bits, since their
+absolute value is at most the product of word length and a slope component.
+
+With conventional dictionary access, a conservative arithmetic/identifier
+bit accounting is
+\[
+ O\bigl(SB+S\log(S+1)\log(M+1)+Sb
+        +m(B^2+\log(M+1))\bigr),
+\]
+where $b$ bounds generator-label encoding. The quadratic term permits
+ordinary integer multiplication and gcd bounds. Replay needs only the
+selected root's postorder summaries and the claimed primitive vector;
+it does not repeat the all-relator slope search. Python hash tables retain
+the usual implementation-model qualification; these counts are not an
+unconditional adversarial dictionary-time theorem.
+
+This polynomial local test removes a potentially long sequence of
+normalizations or substitutions once a suitable rank-two state exists.
+It bounds neither the cost of reaching that state nor aggregate grammar
+growth during the preceding presentation search. Higher-rank disjoint-pair
+contractions from report 45 still need a complete independently replayed
+projection contract and a controlled schedule. No general quasipolynomial
+unknot-recognition bound follows from the new terminal.
+
+\subsection{Native audits and whole-recognition evidence}
+
+The pinned maintained baseline is \texttt{cd77d1bee8fa}. Its actual group
+host, compressed search and compressed replay are loaded in a separate
+package. Relevant downstream modules are checked byte-for-byte against
+that baseline. The algebraic audit compares all 29,540 cyclically reduced
+words through length nine with the independent literal KMP-root/Whitehead
+oracle, report 45's delivered arithmetic producer and checker, and native
+arithmetic replay. All results agree, including 844 primitive-power
+positives.
+
+The source audit checks 74 actual diagrams: the nineteen-case research
+corpus and 55 valid single-component braids from a fixed 240-attempt random
+sample. Disabling the new terminal yields exactly the old producer's
+certificate or nondecision on every input. Every new positive certificate
+passes both full source-reconstructing replay paths. Any newly closed
+state would additionally be checked with the complete independent
+recognizer; none occurred in this sample. Recorded data do not treat a
+failed positive group search as proof of knottedness.
+
+Eight focused tests cover short exhaustive words, 300 random parses,
+large generator identifiers, repeated and empty slots, noncollinear and
+sign-incoherent inputs, forged numerical fields, schema/source mutations,
+caller cancellation and shared exhaustion. A nonuniform Fibonacci grammar
+raised to exponent $2^{5000}+1$ passes query and replay with expansion,
+equality and longest-prefix methods disabled. A separate actual-diagram
+proof has a powered Whitehead prefix of exponent $2^{1024}$; compressed
+source replay succeeds with query discovery and expansion disabled, while
+explicit replay correctly exceeds its finite allowance. These are
+capacity and verifier tests, not difficult-diagram speedup claims.
+The full maintained suite passes 974 tests with Regina in 210.163 seconds.
+The diagram audit contains 44 version-five terminal hits, all with exponent
+one. There are no observed proper-power hits and no newly solved diagrams.
+The more general torsion-free rule is therefore supported by its proof
+and algebraic tests, not by a claim of proper-power activity in this corpus.
+Raw audit results are in \path{data/primitive-power-native-audit.json}.
+
+\input{tables/primitive_power.tex}
+
+The complete-recognition benchmark uses nineteen actual diagrams, four
+shuffled arms, five measured rounds and one excluded warmup: 380 measured
+calls and 76 warmups. Every measured call completes with the expected
+verdict. Each starts with fresh PD validation and includes the compressed
+group search, source reconstruction and independent proof replay when
+that stage is reached. The old host and its old compressed search/replay
+modules are pinned together; the comparison does not silently run old
+search through the new terminal checker. Identical old and new arms
+measure timing variation. The 43.282-second run retains all inputs,
+certificates, orders, elapsed samples, charged work and arena statistics
+in \path{../fast/results/primitive_power_pipeline_20261008.json}.
+
+The elapsed results are mostly close to unchanged. Survivor 00 has
+old/new medians 16.892/16.588 ms and paired ratio 1.015. Its charged search
+work falls from 17,998 to 17,879, but the terminal record makes its compact
+certificate 1,216 bytes instead of 1,160. Mirror 03 has ratio 0.985,
+with arena nodes decreasing from 617 to 615 and charged work from
+25,558 to 25,431. Mirror 08 has ratio 1.052; this is a small measured
+improvement, not the large literal-baseline ratio advertised for the
+standalone delivered arithmetic kernel.
+
+On Gordian, search work decreases from 1,215,916 to 1,215,145, and one
+longest-prefix call is avoided. The arena still has 9,025 nodes and
+largest word bit length thirteen. Certificate size increases from 9,607
+to 9,663 bytes. Whole-call medians are 1,500.813 and 1,512.295 ms, with
+paired ratio 0.998; no speedup is established. The expensive prefix
+leading to rank two dominates this input. The new certificate replaces
+one final elimination; it does not accelerate that prefix.
+
+The old identical-arm ratios across the corpus range from 0.974 to 1.016;
+the new controls range from 0.978 to 1.046. Survivor 02 has paired ratio
+0.964 and new-control ratio 1.046. Nontrivial-knot examples resolved before
+the group stage also exhibit small variations. These controls preclude
+interpreting every few-percent difference as an algorithmic effect.
+Arena node counts and exact certificate bytes are retained as storage
+measures; process peak memory was not measured. No result is censored in
+this run, but the driver retains incomplete calls and excludes them from
+completed medians and paired ratios.
+
+This integration supplies a sound compressed stopping rule and removes
+some exact work at the observed terminal states. Its current whole-diagram
+timing benefit is small or absent. The next research question is whether
+certified transformations expose primitive-power relators earlier, or
+support independently replayed higher-rank pair contractions with bounded
+aggregate grammar growth. Merely repeating a polynomial local query does
+not establish the required global bound.
