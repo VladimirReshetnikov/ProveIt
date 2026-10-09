@@ -826,3 +826,14 @@ whole-call benchmark from `fast/`:
 python -B compressed_braid_research/lazy_forest.py audit --output ../synthesis/data/lazy-forest-audit.json
 python -B compressed_braid_research/lazy_forest.py benchmark --output results/lazy_forest_20261008.json
 ```
+
+
+The higher-rank report-45 continuation is now implemented in
+[`primitive_projection.tex`](primitive_projection.tex): optional simultaneous
+primitive-pair quotients, independently replayed version-six certificates,
+raw rank-one exponent endpoints, and explicit normalization handoffs.
+The 981-test suite and 79-diagram audit pass; all enabled positive proofs
+pass both literal and compressed source replay. The 570-call benchmark shows
+ordinary-corpus overhead, so this mode remains opt-in. The article proves
+only the conditional `poly(initial parameters) * 2^O(d)` bound for consecutive
+raw rounds; a general short-depth producer and endpoint guarantee remain open.
