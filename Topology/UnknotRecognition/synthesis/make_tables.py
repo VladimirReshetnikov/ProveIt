@@ -1422,3 +1422,41 @@ if pj:
     open('tables/primitive_projection.tex','w').write('\\begin{center}\\small\n'+table(
         'Input & old ms & projection ms & ratio & old A/A & proj. A/A',
         '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+pf = load('../fast/results/primitive_forest_audit_20261008.json')
+if pf:
+    rows=[]
+    for r in pf['capacity']['cases']:
+        old,new=(r['modes'][k] for k in ('old_projection','forest'))
+        cells=[f"{esc(r['shape'])} {r['rank']}",f"{old['rounds']}/{new['rounds']}",
+            f"{old['stats']['work']:,}/{new['stats']['work']:,}",f"{old['final_nodes']:,}/{new['final_nodes']:,}"]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/primitive_forest_capacity.tex','w').write('\\begin{center}\\small\n'+table(
+        'Family & rounds pair/forest & search work pair/forest & nodes pair/forest',
+        '@{}lrrr@{}',rows)+'\\end{center}\n')
+
+pf = load('../fast/results/primitive_forest_pipeline_20261008.json')
+if pf:
+    rows=[]
+    selected={'survivor-00','survivor-06','survivor-08','mirror-03','gordian','trefoil','conway'}
+    for r in pf['cases']:
+        if r['source']['name'] not in selected:continue
+        m,q=r['medians'],r['paired_ratios']
+        cells=[esc(r['source']['name'])]+['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','old_projection','forest')]
+        cells+=['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('forest','versus_projection')]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/primitive_forest_pipeline.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & old ms & pair ms & forest ms & old/forest & pair/forest',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')
+
+pf = load('../fast/results/primitive_forest_stages_20261008.json')
+if pf:
+    rows=[]
+    for r in pf['cases']:
+        m,q=r['medians'],r['paired_ratios']
+        cells=[str(r['rank'])]+['--' if m[a] is None else f'{1000*m[a]:.3f}' for a in ('old','projection','forest')]
+        cells+=['--' if q[a]['median'] is None else f"{q[a]['median']:.3f}" for a in ('forest','versus_projection')]
+        rows.append(' & '.join(cells)+r' \\')
+    open('tables/primitive_forest_stages.tex','w').write('\\begin{center}\\small\n'+table(
+        'Crossings & old ms & pair ms & forest ms & old/forest & pair/forest',
+        '@{}rrrrrr@{}',rows)+'\\end{center}\n')
