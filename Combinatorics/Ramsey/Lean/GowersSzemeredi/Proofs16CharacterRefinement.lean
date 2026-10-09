@@ -24,7 +24,12 @@ choice is replaced by averaging over all `N^m` character tuples.
   on the refined domains for all but a `K/2^m` fraction of `q`.
 
 The containment of large Bohr sets in the refined domains (Milićević's
-Lemma 2.37) is a separate step and is not proved here. -/
+Proposition 2.37) is a separate step and is not proved here.
+
+In `ℤ/N` with `N` prime neither step is needed: `freiman_small_image_zero`
+makes a normalized Freiman-linear map with at most `K < N` values vanish on
+`B(T;ρ/K)` directly. This module is the group-agnostic version of the
+argument. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
