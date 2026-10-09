@@ -2636,3 +2636,39 @@ python -B merger_research/native.py audit --output results/adaptive_merger_audit
 python -B merger_research/native.py intervals --output results/adaptive_merger_intervals.json
 python -B merger_research/native.py normal --output results/adaptive_merger_normal.json
 ```
+
+### Persistent replay across raw elimination batches
+
+Compressed version-eight verification now groups two or more consecutive
+`elimination_batch` moves into one private signed circuit. Concatenation nodes
+remain immutable; each eliminated generator receives one binding. Later
+bindings update historical occurrences through that circuit. The checker
+derives each donor from the independently reconstructed source, validates
+singleton occurrence and acyclic dependencies, and exports ordinary immutable
+word nodes once at the end of the block. No free reduction or equality query
+is used inside a block. Normalization, projection, Whitehead and every other
+move end the block; isolated batches retain the existing checker.
+
+Ordered witnesses use a maximum-rank summary. Unordered legacy witnesses
+reconstruct a dependency order with selected-generator support masks, then
+undergo the same independent rank check. All donor contexts are checked
+before publishing a batch internally, including unused definitions. Public
+relator roots and live generators change only after the complete block and
+its export succeed. Private circuit and historical word nodes share the
+node allowance; all work uses the original callback and work budget.
+Finite-budget outcomes can therefore differ from the old replay path.
+
+Balanced context assembly bounds the entire raw block polynomially in its
+initial grammar and generator count, even when the expanded words grow
+exponentially. This replaces the per-batch growth accounting for replay.
+The producer still uses its existing representation and search policy;
+normalization boundaries and general knot discovery remain separate
+complexity obligations. Certificates and literal verification are unchanged.
+See [the proof and measurements](../synthesis/persistent_replay.tex).
+
+```sh
+python -B compressed_word_research/persistent_replay.py audit --output results/persistent_replay_audit.json
+python -B compressed_word_research/persistent_replay.py kernels --output results/persistent_replay_kernels.json
+python -B compressed_word_research/persistent_replay.py stages --output results/persistent_replay_stages.json
+python -B compressed_word_research/persistent_replay.py pipeline --output results/persistent_replay_pipeline.json
+```
