@@ -3016,3 +3016,48 @@ Quot.sound occur. The source ledger remains 115/5 with the existing fidelity
 caveats; the selected upstream closure and provenance are unchanged.
 The quarter-radius improvement has not yet been propagated through the
 uniform rank-cap and directional-alphabet interfaces.
+
+
+### J.81. Quarter-radius dense-row selection
+
+`Proofs16UniformQuarterBohrSum` propagates the quarter-radius improvement
+through the uniform large-spectrum theorem. The actual mixed threshold is
+at most 1/4, so twice this threshold remains in the permitted interval.
+`bohr_sum_contains_span_intersection_uniform_quarter` removes both
+finite-modulus restrictions from the incoming quarter-radius theorem.
+`bohr_sum_contains_rank_cap_span_quarter` uses the doubled uniform lower
+threshold `2/(4*M^r*M^r)` for any pair of ranks at most r.
+
+`Proofs16QuarterRowAlphabets` carries this into the directional construction.
+The common-difference Bohr radius is 1/4 rather than 1/(4*pi), and
+`directionalQuarterSpanCutoff_le` verifies that the coefficient cutoff
+never increases. Before taking the maximum and ceiling, doubling the
+threshold divides the linear cutoff term by two and the quadratic term
+by four. The dense-row input is proved for every prime modulus.
+
+`Proofs16SelectedRowBohr` supplies the geometric consequence of selection.
+Without a bad witness, every common row difference is in the sum of the
+two covered difference sets. Four selected row spectra at radius 1/16
+therefore control the entire common-difference spectrum at radius 1/4.
+Their union has at most 4m frequencies, even though the underlying row
+alphabets can be much larger. The zero values in the covered sets require
+no additional frequencies.
+
+`Proofs16DenseRowSelection.dense_row_selected_bohr` applies this to the
+original set A. For rows in Y of density at least delta>0, set
+`r=ceil(16*delta^(-2))`, `R=directionalQuarterSpanCutoff r 64 (1/(8*pi))`,
+`K=(2R+1)^r`, and `kappa=corollary20Kappa (epsilon/2) K`.
+The fixed cell count 64 satisfies the radius condition by pi<4.
+For epsilon>0 and N>=8/epsilon, there are m selected pieces and fewer than
+epsilon*N^3 exceptional triples, with `m*kappa <= K-1`. Every piece has
+size at least kappa*N, is Freiman of order eight, and retains its Bohr
+extension with rank at most `16*kappa^(-2)` and radius `kappa/(32*pi)`.
+For every nonexceptional triple whose four rows are in Y, the Bohr set of
+its at most 4m selected values at radius 1/16 lies in row y of
+`D_hor D_ver D_hor D_hor A`. All parameters depend only on delta and epsilon.
+
+The four modules contain twelve theorem declarations, checked in a
+91-module source closure and individually audited for transitive axioms.
+This connects the previously separate geometric and selection arguments.
+The later algebraic-regularity argument and the five open numbered
+statements remain unresolved; the catalogue fidelity caveats still apply.
