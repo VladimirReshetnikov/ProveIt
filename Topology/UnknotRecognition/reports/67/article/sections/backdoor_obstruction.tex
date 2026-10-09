@@ -1,0 +1,201 @@
+\subsection{A limitation: unused tetrahedra can force a large strong backdoor}
+\label{sec:backdoor-obstruction}
+
+The strong parameter asks for a compatible \emph{allowed mask} at every
+surviving assignment. This requirement is stricter than finding one
+admissible positive vector. For the mandatory-only rule, the distinction
+has a substantial mathematical consequence.
+
+For an admissible canonical vector $x$ with $\chi(x)>0$, let
+\[
+ Z(x)=\{i:q_{i,0}(x)=q_{i,1}(x)=q_{i,2}(x)=0\},
+ \qquad
+ U(T)=\bigcup_{\substack{x\text{ canonical, admissible}\\\chi(x)>0}}Z(x).
+\]
+The union is empty if no such vector exists. Here $Z(x)$ records
+tetrahedra in which the surface uses no quadrilateral; it may still use
+triangles there.
+
+\begin{proposition}[Unused-tetrahedron obstruction]
+\label{prop:unused-obstruction}
+Every uniform strong mandatory-LP backdoor $B$ contains $U(T)$.
+Consequently, for every admissible canonical positive-Euler vector $x$,
+\begin{equation}\label{eq:unused-lower-bound}
+ \beta_{\mathrm{LP}}(T)\ge |U(T)|\ge |Z(x)|
+   =t-|\operatorname{qsupp}(x)|.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Choose a zero triangle coordinate of $x$ at every global vertex as the
+anchor tuple, and rescale $x$ so that $\chi(x)\ge1$. At each tetrahedron
+of $B$, choose the nonzero quadrilateral type of $x$ if there is one;
+otherwise choose any type. Thus $x$ belongs to the restricted positive
+polyhedron for this anchor and this assignment.
+
+The preservation theorem ensures that $x$ survives every mandatory
+deletion. More directly, if a coordinate is mandatory in the current
+positive polyhedron, it is positive in $x$, and admissibility of $x$
+makes its two incompatible peers zero. Deleting those peers preserves
+$x$. The current positive polyhedron therefore never becomes empty.
+
+Suppose $i\in Z(x)$ but $i\notin B$. For each of its three types, $x$
+remains a feasible witness to the query obtained by setting that
+coordinate to zero. None of the three types can ever be mandatory.
+There is no initial restriction at $i$, since $i\notin B$, and the only
+propagation rule removes peers of a mandatory type in the same
+tetrahedron. Hence all three types at $i$ remain allowed. The terminal
+mask is incompatible, contradicting the strong-backdoor property for
+this anchor and assignment. Thus $Z(x)\subseteq B$. Taking the union over
+all $x$ proves the assertion.
+\end{proof}
+
+This is an obstruction in the actual normal-coordinate setting; it
+does not rely on a constructed abstract LP. A single positive surface
+of support $k$ forces $\beta_{\mathrm{LP}}\ge t-k$, even though a solver
+might immediately return that surface. The union bound can be stronger:
+if every tetrahedron is omitted by some canonical positive surface,
+then $\beta_{\mathrm{LP}}=t$.
+
+A general logarithmic strong-backdoor theorem would therefore have to
+exclude sparse canonical positive surfaces on the selected class of
+triangulations, and control the union of their omitted tetrahedra. The
+Fibonacci family is consistent with this requirement: its positive
+canonical admissible cone has a single ray using a quadrilateral in
+every tetrahedron. Large support can coexist with an easy search, but
+small support need not produce a small \emph{strong} parameter.
+
+It would be premature to infer a topological refinement counterexample
+without checking normal coordinates. To prove a linear lower bound for
+a particular sequence of moves, one must exhibit a canonical positive
+surface that uses no quadrilaterals in the added tetrahedra and verify
+that the required finite one-vertex hypotheses survive. Proposition~
+\ref{prop:unused-obstruction} then supplies the lower bound immediately.
+
+The optional forced-zero rule from the preceding subsection addresses
+one aspect of this limitation. If all three quadrilateral coordinates
+at an unused tetrahedron are identically zero throughout the residual
+positive polyhedron, that stronger rule can delete them. The preceding
+proof no longer applies: a coordinate can disappear without any peer
+being mandatory. This observation suggests a different structural
+parameter; it does not establish a small bound for it.
+
+\subsection{Deciding sets for a fixed exact search policy}
+\label{sec:deciding-sets}
+
+The implementation already permits a useful kind of termination that
+the strong parameter ignores: its current basic vector may be
+admissible while the allowed mask still contains unused incompatible
+types. The following refinement measures that behavior explicitly.
+
+Fix a deterministic policy $\Pi$. It specifies the exact LP algorithm
+and its basic-vector recovery rule, the order of anchors and type tests,
+the order of branches, and the stopping behavior. In particular, it
+returns a positive certificate immediately upon obtaining an admissible
+positive vector. When branching is restricted to $B$, it chooses an
+unresolved tetrahedron in $B$ whenever one remains, as in the delivered
+fallback rule. Only after exhausting that option can an unresolved
+incompatible node stop the run without a decision. Disable extraneous
+resource caps for this mathematical definition; a capped run can of
+course remain inconclusive for an additional operational reason.
+
+\begin{definition}[Deciding set]\label{def:deciding-set}
+A set $B$ is \emph{deciding for $(T,\Pi)$} if the search under $\Pi$,
+restricted to branch only on tetrahedra in $B$, terminates with an
+independently verified positive-Euler certificate or a complete verified
+negative proof, rather than an unresolved-$B$ outcome. Write
+\[
+ \delta_{\mathrm{LP}}^{\Pi}(T)
+   =\min\{|B|:B\text{ is deciding for }(T,\Pi)\}.
+\]
+With $\Pi$ fixed, we abbreviate this by $\delta_{\mathrm{LP}}(T)$.
+\end{definition}
+
+A positive run need not examine the remaining anchors or siblings:
+one admissible witness answers the existence question. A negative run
+still requires all anchor and branch coverage. The definition makes no
+exception to negative proof completeness and uses no oracle for normal
+surface existence beyond the stated LP and arithmetic checks.
+
+\begin{theorem}[Deciding-set bounds]\label{thm:deciding-set}
+For every policy as specified above,
+\begin{equation}\label{eq:deciding-comparison}
+ \delta_{\mathrm{LP}}^{\Pi}(T)
+   \le\beta_{\mathrm{LP}}(T)\le t.
+\end{equation}
+If the fixed LP and basic-vector recovery procedures have polynomial
+bit complexity, a supplied deciding set of size $b$ gives a decision
+and its proof in $A(T)3^b\poly(t)$ bit operations. If only the existence
+of a deciding set of size at most $b$ is known, subset enumeration costs
+\begin{equation}\label{eq:unknown-deciding-set}
+ A(T)\sum_{j=0}^{b}\binom tj3^j\poly(t).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $B$ be a strong backdoor. An early admissible witness already gives
+a decision. Otherwise the restricted algorithm fairly completes
+mandatory propagation and branches whenever an unresolved tetrahedron
+of $B$ remains. Once all such tetrahedra have singleton masks, the
+strong-backdoor property and confluence imply rejection or a compatible
+mask. The latter yields an admissible positive witness. An unresolved
+terminal outcome is therefore impossible. Every strong backdoor is
+deciding, which proves the first inequality. Taking all tetrahedra as
+$B$ proves the bound by $t$ as well.
+
+On every root-to-leaf path a tetrahedron is branched on at most once:
+a branch makes its mask a singleton, and later propagation only removes
+types. The depth is at most $b$, each node has at most three children,
+and there are $O(3^b)$ nodes per anchor. Every node uses polynomially
+many LP calls and produces polynomial-size arithmetic data. An early
+positive return or an unresolved return can only shorten this tree.
+Thus the stated bound holds for \emph{every attempted} candidate $B$,
+whether or not it is deciding. A deciding candidate eventually occurs
+among the subsets of size at most $b$. Verify its result and stop;
+summing the per-candidate bound gives
+\eqref{eq:unknown-deciding-set}.
+\end{proof}
+
+\begin{proposition}[Agreement on negative instances]
+\label{prop:negative-deciding}
+If $T$ has no canonical admissible positive-Euler vector, then its
+deciding sets are exactly its strong mandatory-LP backdoors. In
+particular, $\delta_{\mathrm{LP}}^{\Pi}(T)=\beta_{\mathrm{LP}}(T)$.
+\end{proposition}
+\begin{proof}
+A deciding run on such an input supplies a complete negative tree.
+Fix any anchor and any full singleton assignment on $B$. Follow the
+tree's branch choices according to that assignment. Every mandatory
+implication remains valid under these extra restrictions, unless the
+restricted polyhedron has already become empty. If the assignment
+forbids a type that was mandatory, emptiness follows immediately.
+Otherwise the path reaches a negative leaf, and its polyhedron remains
+empty after the extra restrictions. Exhaustive mandatory closure for
+that full assignment therefore rejects. Since the anchor and assignment
+were arbitrary, $B$ is strong. The converse follows from
+Theorem~\ref{thm:deciding-set}.
+\end{proof}
+
+The unused-tetrahedron lower bound does not transfer to
+$\delta_{\mathrm{LP}}^{\Pi}$. Its contradiction required a final compatible
+mask, whereas a deciding run may return precisely the sparse vector $x$
+while all three types in its unused tetrahedra remain allowed. This
+removes that particular definitional obstacle. It proves neither that
+such a basic vector will be selected nor that deciding sets are always
+small.
+
+The policy dependence is substantive. Different exact LP procedures
+can return different basic vectors; branch and anchor orders can also
+change which unresolved node is reached first. Adding tetrahedra to a
+deciding set need not preserve the same run, and no monotonicity is
+used in the enumeration proof. Measurements using the shipped Bland
+simplex backend therefore do not automatically establish bounds for a
+different polynomial-time LP backend. The asymptotic theorem must use
+the parameter of the fixed polynomial policy, or the stronger
+oracle-independent $\beta_{\mathrm{LP}}$.
+
+For one vertex, a logarithmic unknown deciding-set bound again gives
+quasi-polynomial search, whereas a supplied logarithmic deciding set
+gives polynomial search. The complete recognition assembly additionally
+requires that the corresponding bound hold at every visited
+triangulation, with the same checked topological continuation as before.
+This refinement is a precise research target for a decision algorithm;
+it is not itself a structural theorem about knot exteriors.

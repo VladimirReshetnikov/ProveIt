@@ -1,0 +1,54 @@
+\section{The result and its scope}\label{sec:overview}
+
+The most useful next performance step is to stop treating enumeration of every normal ray as the default way to answer a positive-Euler existence query. An exact linear program can either supply one useful ray or certify a whole cone negatively. The unresolved exponential work then has a more specific location: selecting compatible quadrilateral types after all sound implications have been exhausted. This report develops that separation mathematically and implements it in the ProveIt normal-surface research code.
+
+The resulting contribution is a combination of local algorithms, a structural parameter, an infinite-family theorem, and an executable audit. It is not a proof of general quasi-polynomial running time. That distinction determines both the statements below and the meanings of the code's return values.
+
+\subsection{What this continuation establishes}
+
+\begin{enumerate}
+\item \textbf{A sector decision method independent of matching nullity.} For a supplied compatible sector with $k$ quadrilateral coordinates, the canonical Euler functional is the maximum of $P$ linear objectives. The contracted anchor count satisfies
+\[
+ P\le (1+4k/\nu)^\nu\quad(\nu>0),\qquad
+ P\le 2^{4k},
+\]
+where $\nu$ is the number of active global vertices; $P=1$ if $\nu=0$. For one global vertex, $P\le4k+1$. Positive-Euler existence can therefore be decided by polynomially many rational LPs in a one-vertex sector, with no assumption that its matching nullity is small.
+\item \textbf{Short negative proofs.} Each unsuccessful objective admits a homogeneous Farkas multiplier. Complete anchor coverage turns these local inequalities into a source-bound negative sector certificate. A single upper-envelope multiplier sometimes replaces the whole list. Neither verification route invokes ray enumeration.
+\item \textbf{A restricted, cheaper disc proof.} Given a primitive integer standard normal ray, exact matching plus rank $s-1$ on its $s$ positive columns proves that the represented surface is connected. Euler characteristic one, nonempty boundary and nonzero boundary class modulo two then certify an essential disc in the supplied torus-boundary manifold. A modular rank witness avoids a general component census on this class of inputs.
+\item \textbf{A propagation parameter with a proved non-sparse family.} Mandatory quadrilateral types can be justified by negative LP certificates for coordinate faces. These implications preserve every admissible positive-Euler solution and have a confluent exhaustive closure. The Fibonacci layered solid tori have strong propagation backdoor zero for all $t$, although their essential vertex discs cannot have sublinear quadrilateral support. Conversely, any canonical positive surface avoiding $t-k$ tetrahedra forces the strong parameter to be at least $t-k$. A deciding-set refinement retains early positive termination and has the same parameterized search bounds for a fixed polynomial LP policy.
+\item \textbf{An explicit conditional asymptotic theorem.} A logarithmic strong backdoor bound, maintained through a complete topological continuation and used with polynomial-time exact LP, would give quasi-polynomial recognition. The package does not establish that structural bound or implement the complete certified crushing continuation.
+\end{enumerate}
+
+\subsection{Which earlier results are being continued}
+
+The main dependency is the incoming report \emph{Quadrilateral Support Kernels and Certified Normal-Disc Discovery} and its archive \code{unknot_quadrilateral_support_kernel_20261009.zip} \cite{priorKernel}. Its contraction, canonical lifting, mixed-minor height estimate, low-nullity ray methods and dense layered-torus obstruction are treated as earlier work. The two modules \code{normal_sector.py} and \code{normal_sector_verify.py} are included unchanged as explicit dependencies. They are not part of the maintained runtime at the pinned commit.
+
+The other incoming continuations matter because they distinguish the cost of choosing a surface from the cost of processing one already supplied: compiled certificates, orbit transfer, sparse incidence, persistent elimination and topology spectra attack different portions of that pipeline. The present changes do not replace their general component or boundary machinery. They add a short ray-specific proof route and a decision query that avoids unnecessary ray output. The package's source inventory records the ten relevant incoming archives inspected, so the continuation is anchored to the actual intake state rather than to report titles alone.
+
+The maintained source snapshot is \baseline. Its existing normal-surface validation and component APIs provide the geometric trust boundary and the comparison implementation. All new files are delivered additively, with a patch for later review. No conclusion in this report depends on applying an incoming patch silently to the maintained tree.
+
+\subsection{Relation to the published algorithmic framework}
+
+Linear programming, zero-triangle anchors, support descent and greedy LP branching are classical ingredients here. Burton--\"Ozlen explicitly use them in their branching recognizer; their Algorithm~9, Lemmas~7--10 and Theorems~11--12 in arXiv version~3 are the relevant references \cite{BO}. The present claims concern the contracted anchor count, dual certificate interfaces and bounds, the precise propagation parameter, its all-$t$ Fibonacci separation, and this implementation. They do not claim that LP normal-surface search or forced branching is newly invented.
+
+Canonical lifting in quadrilateral coordinates belongs to the established Q-theory literature \cite{Tollefson,BurtonQ}. Essential-disc vertex results are also classical \cite{HLP,Suh}. We give the needed elementary extremality and connectedness arguments explicitly because they delimit the new short checker.
+
+Current quasi-polynomial announcements also require care. Lackenby's detailed Oxford talk displays $2^{O((\log n)^3)}$, equivalently $n^{O((\log n)^2)}$ \cite{LackenbyTalk}. The July 2026 hierarchy paper expressly leaves some algorithms insufficiently specified for a running-time estimate in Section~9 \cite{Lackenby2026}. These sources motivate a serious quasi-polynomial programme; they do not supply a complexity theorem for this Python prototype. In this report ``quasi-polynomial'' means $\exp((\log n)^{O(1)})$, with the exponent stated whenever a sharper conditional bound is available.
+
+\subsection{A claim ledger}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.23\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.24\textwidth}@{}}
+\toprule
+Claim & Evidence & Status\\
+\midrule
+Fixed-sector positive-Euler decision & Anchor/max theorem and Farkas alternative & Proved; polynomial for bounded vertex count with polynomial LP\\
+Primitive-ray disc verification & Exact geometry, gcd, modular rank and boundary homology & Proved on the stated domain; implemented\\
+Mandatory-type closure & Preservation and monotone fixed-point proof & Proved; bounded prototype implemented\\
+Fibonacci backdoor zero & Symbolic matching and Euler identities for arbitrary $t$ & Proved infinite family\\
+Small general backdoor & No universal estimate obtained & Open research question\\
+Quasi-polynomial complete recognizer & Conditional backdoor theorem plus complete topological continuation & Conditional; not delivered as a finished recognizer\\
+Polynomial implementation runtime & Exact Bland simplex, measured caps and operation counts & Not proved; polynomial-oracle theorem kept separate\\
+\bottomrule
+\end{tabularx}
+\end{center}

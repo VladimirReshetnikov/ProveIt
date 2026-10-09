@@ -5710,6 +5710,29 @@ the decomposition with these named constants, but not `Theorem162At 3`.
             pairs.
 
          Claim 9.5 is the same for 12-tuples.
+         Step 2 is done: `claim_9_4_selection`
+         (`Proofs16ClaimNineFourSelection`) chooses `ψ : Fin 4 → G → G`
+         with `ψ i z ∈ spanBall (Γ z) R` that realize a prescribed
+         decomposition at `(x + a, x, y + a, y)` for a
+         `(2R+1)^(−4d)` fraction of the triples. The four independent
+         maps make the fixed points distinct.
+         `exists_good_selection_indexed` counts over an index family.
+         Step 3 is done: `claim_9_4_core` (`Proofs16ClaimNineFourCore`).
+         From `εN³` prescribed decompositions `ξ₀ − ξ₁ = ξ₂ − ξ₃` it gets
+         the selected maps, an event set `E` of size
+         `ε(2R+1)^(−4d)N³`, and Lemma 9.2 for `(ψ₀, ψ₁)` with `ω = y`.
+         The result is a Freiman 2-homomorphism `θ` on a Bohr set with
+         `ψ₁ x − ψ₁ x′ = θ(x − x′)` on the event fibers. The escaping
+         frequency is `ψ₀(x+a) − ψ₁(x) = ξ₀ − ξ₁` on `E`.
+         Step 1 is done: `escape_frequency`
+         (`Proofs16ClaimNineFourEscape`). Suppose some `d` with
+         `|θ_i·d| ≤ ηN` and `sη ≤ 1/4` is not in `B(K;ρ) + B(L;σ)`. Then a
+         frequency of `⟨K⟩ ∩ ⟨L⟩` escapes the `{-1,0,1}`-span of the
+         `θ_i`, by the corpus's quarter-radius Theorem 27. With
+         `K = Γ_{x+a} ∪ Γ_x` and `L = Γ_{y+a} ∪ Γ_y`, it splits as
+         `ξ₀ − ξ₁ = ξ₂ − ξ₃`. Still to do: the per-triple splitting into
+         span balls, θ's values growing the index sets, and the
+         iteration.
        - **Termination.** Each round raises some `|I_{x,y}|` on a dense set
          of pairs, and the size is capped at `s₀`. So the iteration stops
          after polynomially many rounds.

@@ -1,0 +1,1311 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Disk-Completion Kernels: Optimal Single-Exponential Representative Families for Surface Frontiers},
+ pdfauthor={OpenAI, research continuation for ProveIt}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Disk-completion kernels}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,keepspaces=true,breaklines=true,frame=single}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\crefname{lemma}{lemma}{lemmas}
+\crefname{corollary}{corollary}{corollaries}
+\crefname{example}{example}{examples}
+\crefname{definition}{definition}{definitions}
+\crefname{proposition}{proposition}{propositions}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Part}{\operatorname{Part}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\Bell}{\operatorname{Bell}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\one}{\boldsymbol{1}}
+\newcommand{\ccomp}{\operatorname{comp}}
+\newcommand{\cost}{\operatorname{cost}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\ind}[1]{[\,#1\,]}
+\input{results/measurements.tex}
+\title{\textbf{Disk-Completion Kernels}\\[5pt]
+\Large Optimal Single-Exponential Representative Families\\for Surface Frontiers\\[6pt]
+\large A certified search compression toward quasi-polynomial unknot recognition}
+\author{OpenAI\\\small Research continuation prepared for the ProveIt project}
+\date{October 9, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A frontier can have Bell-many distinct connectivity states without requiring Bell-many
+representatives for a particular terminal question. We study the question relevant to a
+compressing-disc search: which partial surfaces can be completed to one disk by gluing along
+specified, disjoint boundary arcs? For compact surfaces with boundary, the defect
+$\delta(S)=\ccomp(S)-\chi(S)$ satisfies an exact gluing identity: defects add, together with
+the cycle rank of the component-attachment graph. Thus a disk completion requires disk
+pieces and a tree attachment graph, with no orientability hypothesis.
+
+For $r$ labelled arcs, the resulting disk-completion matrix has exact rank $2^{r-1}$ over
+$\F$. Its block with $c$ components has exact rank $\binom{r-1}{c-1}$. An explicit
+root-transversal factorization gives a deterministic, minimum-weight representative
+\emph{subset} of these sizes, preserving every disk-completion query. The sizes are sharp
+even for unrestricted representative subsets. We prove a typed composition theorem,
+a $3^b$ bound when active labels vary inside a pool of size $b$, and a signed-connectivity
+extension. A supplied finite surface-assembly grammar can consequently be searched in
+$2^{O(b)}$ times its encoded polynomial overhead, instead of enumerating all partitions.
+Under a complete polynomial-size geometric grammar and $b=O((\log n)^2)$, this would
+give a quasi-polynomial recognition route.
+
+The delivery includes a weighted reducer, an independent algebraic certificate checker,
+a complete finite-grammar solver, and an independent triangulated-surface replay.
+Thirty-six test methods pass; additional audits check 813,297 direct compatibility-matrix
+entries, 1,000 weighted families, 1,000 literal surface gluings, and 200 complete grammars.
+Paired abstract-grammar experiments show $\MinBenchRatio$--$\MaxBenchRatio$ times lower median running times,
+while a one-query control is slower after compression. These are not timings of the
+maintained knot recognizer. The general rank-based method is classical; the contribution
+is its sharp disk-specific formulation, topological contract, and checked implementation.
+No complete bounded-width grammar for all knot exteriors is established here.
+\end{abstract}
+\noindent\textbf{Status.} Proved local and supplied-grammar theorems; tested standalone code.
+No proof-assistant verification, native recognizer integration, or general
+quasi-polynomial unknot-recognition bound is claimed.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Research position and the precise improvement}\label{sec:position}
+\subsection{The current project already has a geometric source bridge}
+This article continues \texttt{Topology/UnknotRecognition} in ProveIt. The reviewed
+repository revision is
+\begin{center}\small\texttt{3a90fb34146c915328ab8eac6250cc2514f74ed0}.\end{center}
+At this revision, the maintained material includes source-checked diagram-to-exterior
+construction and a source-bound normal-surface component census
+\cite{proveit-exterior,proveit-weighted}. In particular, the canonical pulling construction
+uses $20\max(1,n)$ tetrahedra for an $n$-crossing validated planar diagram. A supplied
+normal surface can be decomposed and tested for compressing-disc components using Euler
+characteristic and two torus-boundary parities. These are important advances: it would be
+incorrect to describe the entire diagram-to-manifold provenance step as still absent.
+
+The remaining search problem is different. Fast verification of one supplied normal vector
+does not construct a complete, efficiently searchable collection of vectors or hierarchy
+moves. The present work addresses one source of search growth, namely the number of
+connectivity alternatives carried through a surface frontier. It neither replaces the
+existing compressed orbit engine nor reproves its weighted census; the classical
+compressed-orbit context is supplied by Agol, Hass, and Thurston \cite{aht}.
+
+The predecessor \emph{Certified Port Quotients and Guarded Interval Attachments}
+\cite{port-report} gives a sharp $\Bell(r+1)$ state bound for a fixed-source coning model.
+Those states are physically distinguishable by suitable subsequent operations. It asks
+whether useful restricted continuations permit $2^{O(r)}$ rather than
+$2^{O(r\log r)}$ search. We obtain such a bound for a \emph{different, explicitly narrower
+observation}: minimum-cost completion to a disk along genuine boundary arcs. We do not
+identify all physical states, and we do not preserve arbitrary coning predicates.
+
+\subsection{What changes, and what does not}
+A partition of $r$ labels says which frontier arcs lie on the same partial disk. An exact
+state table can contain $\Bell(r)$ partitions. Our reducer retains at most $2^{r-1}$
+\emph{actual candidates} of one geometric type, while preserving the optimum for every
+possible disk-union cap on those arcs. A discarded candidate need not have the same
+behavior as any single retained candidate. Instead, for each cap that completes it, at
+least one no-more-expensive retained candidate completes that cap. This is the critical
+logical distinction between state equivalence and representative families.
+
+The main steps are a topological reduction to a tree, an exact matrix factorization,
+a cost-ordered basis argument, and a replacement proof inside a finite assembly grammar.
+The first three do not assume a special knot class. The global application does require
+that a valid geometric producer expose its partial surfaces through the stated interface.
+We give counterexamples showing why dropping this requirement is unsound.
+
+\subsection{Relation to established methods and the novelty boundary}
+Deterministic rank-based compression of connectivity dynamic programs, including weighted
+variants, is established by Bodlaender, Cygan, Kratsch, and Nederlof \cite{bckn}.
+Representative families for linear matroids and their exterior-algebra constructions are
+also classical algorithmic tools; Fomin, Lokshtanov, Panolan, and Saurabh give systematic
+algorithms and applications \cite{flps,products}. Our reduced incidence minors are a
+concrete graphic-matroid instance of that machinery. We do not claim the greedy basis
+principle, Gaussian elimination, or single-exponential connectivity dynamic programming
+as new inventions.
+
+The disk-specific completion matrix is not the unrestricted ``union is a forest''
+compatibility matrix studied in work on the Tutte polynomial \cite{mannens}.
+We require a \emph{connected tree}, work over $\F$, and keep component count as a grading.
+The explicit root-transversal coordinates make the exact ranks and matching lower bounds
+transparent. The research contribution here is the combined disk-topology statement,
+sharp completion kernel, typed replacement theorem, safety analysis, and reproducible
+project-facing implementation. We establish these assertions in full below; we have not
+established worldwide priority for every equivalent algebraic formulation.
+
+Lackenby's hierarchy paper is relevant geometric context, not a complexity theorem we
+silently assume. Its Section~9 explicitly distinguishes a bound on certain algorithmic
+steps from a running-time estimate for all operations \cite{lackenby}. Our conditional
+corollary will name construction, type-count, width, and bit-size obligations separately.
+
+\section{Surfaces, interfaces, and topological defect}\label{sec:defect}
+\subsection{The geometric interface contract}
+All surfaces are finite compact PL surfaces, possibly disconnected and nonorientable.
+Every connected component has nonempty boundary. An attachment arc is a subspace
+homeomorphic to a closed interval properly contained in a boundary circle. In a single
+surface, different attachment arcs are disjoint \emph{including their endpoints}.
+They have disjoint collars, and gluing pairs them by homeomorphisms; corners are then
+smoothed. No other points are identified. These conditions ensure that the quotient is
+again a compact surface with boundary. Boundary intervals not used for this attachment
+remain available for later stages.
+
+One label denotes one connected geometric arc. It does not denote a union of separated
+arcs, an entire point-incidence port, or a binary-compressed bundle of many parallel
+arcs. Translating the repository's compressed incidence data into this interface requires
+an additional geometric theorem. The same word ``port'' is not such a theorem.
+
+Write $c(S)=\ccomp(S)$ and define
+\[
+                   \delta(S)=c(S)-\chi(S).
+\]
+For a connected orientable surface of genus $g$ with $h\ge1$ boundary circles,
+$\delta=2g+h-1$. For a connected nonorientable surface with $k\ge1$ crosscaps and
+$h\ge1$ boundary circles, $\delta=k+h-1$. Thus $\delta(S)\ge0$, and
+$\delta(S)=0$ precisely when every component of $S$ is a disk. These formulas may
+also be read as the elementary classification-of-surfaces test used in the following proof.
+
+\begin{theorem}[Exact defect under boundary-arc gluing]\label{thm:defect}
+Let $S$ and $T$ satisfy the preceding contract, and glue $r$ pairs of boundary arcs
+between them. Let $G$ be the bipartite multigraph whose vertices are the connected
+components of $S$ and $T$, and whose edges are the $r$ glued pairs. Include isolated
+vertices when a component has no arc used in this particular attachment. For
+$W=S\cup_{\mathrm{arcs}}T$,
+\begin{align}
+ c(W)&=c(G), & \chi(W)&=\chi(S)+\chi(T)-r,\label{eq:chi}\\
+ \delta(W)&=\delta(S)+\delta(T)+\beta_1(G), &
+ \beta_1(G)&=r-c(S)-c(T)+c(G).\label{eq:defect}
+\end{align}
+In particular, $W$ is a union of disks if and only if $S$ and $T$ are unions of disks
+and $G$ is a forest. It is one disk if and only if the pieces are unions of disks and
+$G$ is a tree.
+\end{theorem}
+\begin{proof}
+A path in the quotient moves within connected components of the original surfaces and
+crosses glued intervals. Such a path determines a walk in $G$. Conversely, an edge of
+$G$ joins the indicated surface components in the quotient. This proves the component
+identity, including isolated vertices.
+
+Choose compatible triangulations in which each gluing interval is a subcomplex.
+Euler-characteristic inclusion--exclusion subtracts one for each glued interval,
+because an interval has Euler characteristic one. The intervals are pairwise disjoint,
+so no additional multiple-intersection terms occur. This gives the second identity in
+\eqref{eq:chi}. Substitute it into $c(W)-\chi(W)$ and add and subtract
+$c(S)+c(T)$ to obtain \eqref{eq:defect}. The expression for $\beta_1(G)$ is the
+usual edge--vertex--component formula for a multigraph, and is nonnegative.
+
+There is free boundary in each component: finitely many pairwise disjoint proper closed
+intervals cannot cover a boundary circle, and a free boundary point survives gluing.
+Thus the nonnegativity and disk characterization of $\delta$ apply to $W$ as well as
+to $S,T$. Every term on the right of \eqref{eq:defect} is nonnegative. Their sum
+vanishes exactly when both inputs are disk unions and $G$ has no cycle. Adding
+connectedness gives the final assertion.
+\end{proof}
+
+\begin{corollary}[Defect cannot be repaired]\label[corollary]{cor:persistent}
+During a sequence of attachments satisfying the contract, an existing positive surface
+defect cannot be removed by attaching more surfaces with boundary. Every partial
+surface on a successful disk assembly is therefore a union of disks. A partial component
+with no remaining attachment arc cannot become connected to later material.
+\end{corollary}
+\begin{proof}
+Apply \eqref{eq:defect} successively. For the second statement, a component with no
+remaining arc is an isolated vertex in every future attachment graph. If additional
+material must be part of the same final disk, such a component prevents success.
+\end{proof}
+
+A component that has lost its last live arc can still be a \emph{terminal} disk when no
+other material remains. It must be handled by a separate terminal rule, not silently
+deleted from an intermediate partition. The delivered layered grammar always has a
+nonempty outgoing interface until its final cap, so its intermediate rejection of sealed
+components is safe.
+
+\subsection{Orientation and parallel-arc examples}
+No orientation signs are needed to recognize the tree case. Inductively remove a leaf
+of the attachment tree: it is a disk glued along one boundary interval to the rest.
+This attachment makes a disk boundary connected sum, irrespective of the chosen
+homeomorphism of the interval. One may choose the orientation of the leaf after the
+orientation of the remaining component is fixed.
+
+By contrast, two disks glued along two separated intervals have
+$\chi=1+1-2=0$ and a connected attachment graph with one cycle. Suitable gluing maps
+give an annulus; other choices give a M\"obius band. Neither can later be made a disk
+by the permitted operations. Collapsing those two intervals to one abstract port would
+falsely predict a disk. The cycle term is not a cosmetic correction: it is precisely the
+information a parallel-arc compression must preserve.
+
+\section{The disk-completion matrix}\label{sec:matrix}
+\subsection{Partitions and the completion predicate}
+Fix $r\ge1$ and $U=\{0,1,\ldots,r-1\}$, with distinguished label $0$.
+Let $\Part(U)$ be its set of partitions. A live disk-union frontier has one labelled
+arc for each element of $U$, and every disk component meets at least one arc.
+It determines $p\in\Part(U)$: labels lie in one block exactly when their arcs lie
+on the same disk. Let $|p|$ denote the number of blocks.
+
+For $p,q\in\Part(U)$, form the bipartite graph $G(p,q)$ with one vertex for each
+block of $p$ or $q$, and an edge labelled $u$ joining the two blocks containing $u$.
+Let $p\vee q$ be the least common coarsening, whose blocks are the connected classes
+generated by the two equivalence relations. Write $\one_U=\{U\}$ for the one-block
+partition. Define the zero--one matrix
+\begin{equation}
+ D_r(p,q)=\ind{p\vee q=\one_U\ \text{and}\ |p|+|q|=r+1}.
+ \label{eq:D}
+\end{equation}
+Every vertex of $G(p,q)$ has an incident edge. It is connected exactly when
+$p\vee q=\one_U$. Its vertex count is $|p|+|q|$ and its edge count is $r$.
+Consequently \eqref{eq:D} is exactly the indicator that $G(p,q)$ is a tree.
+By \cref{thm:defect}, it is exactly the topological disk-completion predicate.
+
+This interpretation depends only on which disks carry the labelled intervals. It does
+not require a common cyclic order on all the intervals, noncrossing partitions, or a
+planar embedding of $G(p,q)$. Any restrictions imposed by an ambient 3-manifold enter
+through the set of permitted candidates and caps and their geometric types.
+
+\subsection{Root transversals}
+Let
+\[
+ \mathcal R=\{R\subseteq U:0\in R\},\qquad d=|\mathcal R|=2^{r-1}.
+\]
+A set $R$ is a transversal of $p$ if it contains exactly one element of each block.
+Define
+\begin{equation}
+ C(p,R)=\ind{R\text{ is a transversal of }p},\qquad
+ R^\star=\{0\}\cup(U\setminus R).
+ \label{eq:C}
+\end{equation}
+The map $R\mapsto R^\star$ is an involution of $\mathcal R$. Let $J$ be its
+permutation matrix. The vector $C(p,\cdot)$ is supported on sets of size $|p|$.
+
+\begin{theorem}[Exact root-transversal factorization]\label{thm:factor}
+Over $\F$,
+\begin{equation}
+             D_r=CJC^{\mathsf T}.
+             \label{eq:factor}
+\end{equation}
+Equivalently, the parity of the number of sets $R\ni0$ such that $R$ is a
+transversal of $p$ and $R^\star$ is a transversal of $q$ is one precisely when
+the two disk unions complete to a disk.
+\end{theorem}
+We give a minors proof, rather than assuming an unproved rule about gluing arbitrary
+partition encodings.
+
+\begin{lemma}[Rooted forest minor]\label[lemma]{lem:minor}
+Let $F$ be a forest on $U$ with $c$ components, and let $B_F$ be an oriented vertex--edge
+incidence matrix over $\F$ with the row for vertex $0$ removed. If
+$A\subseteq U\setminus\{0\}$ has size $r-c$, then the square minor $B_F[A,*]$
+has determinant one if and only if $U\setminus A$ contains exactly one vertex from
+each component of $F$.
+\end{lemma}
+\begin{proof}
+A tree component with $v$ vertices contributes $v-1$ columns. Its full incidence
+matrix has rank $v-1$: a leaf elimination proves that deleting any one row gives a
+square matrix of determinant one. If no row is deleted from some component, the
+selected rows of that component contain a dependence. If two or more rows are deleted
+from some component, fewer than $v-1$ selected rows remain in that component, so its
+columns cannot be independent. Thus a nonsingular global square minor requires
+exactly one omitted row per component. Under that condition it is block diagonal,
+after row and column permutations, with the rooted-tree matrices just described.
+Each determinant is one over $\F$, proving the converse as well.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:factor}]
+If $C(p,R)C(q,R^\star)$ is nonzero, then
+$|p|=|R|$ and $|q|=|R^\star|=r+1-|R|$. Hence both sides of
+\eqref{eq:factor} vanish when $|p|+|q|\ne r+1$.
+
+Assume the block counts are complementary. Choose an arbitrary tree on each block
+of $p$ and of $q$, obtaining forests $F_p,F_q$ on $U$ with $r-|p|$ and
+$r-|q|$ edges. Keep edges from the two forests distinct, even if they have identical
+endpoints. The concatenated reduced incidence matrix
+\[
+                         B=[B_{F_p}\mid B_{F_q}]
+\]
+is square of size $r-1$. Its determinant is one precisely when the resulting
+multigraph is a tree. The graph has $r-1$ edges and has connected classes
+$p\vee q$, so this is precisely $D_r(p,q)=1$.
+
+Expand the determinant by the columns belonging to $F_p$. A term selects a row set
+$A$ of size $r-|p|$ for those columns and the complementary rows for $F_q$.
+All Laplace signs disappear in characteristic two. By \cref{lem:minor}, the first
+minor is $C(p,U\setminus A)$. Put $R=U\setminus A$; the omitted rows for the
+second forest are $\{0\}\cup A=R^\star$. Its minor is $C(q,R^\star)$.
+Summing the products gives \eqref{eq:factor}. The empty $0\times0$ determinant
+has value one, covering $r=1$ without an exception.
+\end{proof}
+
+\subsection{Exact total and graded ranks}
+\begin{theorem}[Sharp rank in every component grading]\label{thm:rank}
+For every $r\ge1$,
+\begin{equation}
+ \rk_{\F}D_r=2^{r-1}.
+ \label{eq:rank}
+\end{equation}
+For $1\le c\le r$, the submatrix with row partitions having $c$ blocks and
+column partitions having $r+1-c$ blocks has rank
+\begin{equation}
+                         \binom{r-1}{c-1}.
+                         \label{eq:graded}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The factorization bounds the total rank by $d$. The homogeneous support of a row
+with $c$ blocks lies in the $\binom{r-1}{c-1}$ coordinates of size $c$, giving the
+graded upper bound.
+
+For $R\in\mathcal R$, let $\pi_R$ be the partition with one block
+$(U\setminus R)\cup\{0\}$ and singleton blocks $\{u\}$ for all
+$u\in R\setminus\{0\}$. A transversal containing $0$ must choose $0$ from the
+first block and must choose each of the singleton vertices. Therefore
+\[
+                         C(\pi_R,\cdot)=e_R.
+\]
+The submatrix of $D_r$ indexed by these $d$ partitions is the permutation matrix
+$J$. In the $c$-block grading, the rows indexed by $|R|=c$ and columns indexed by
+$\pi_{R^\star}$ similarly give a permutation matrix of order
+$\binom{r-1}{c-1}$. The lower bounds match the upper bounds.
+\end{proof}
+
+\begin{example}[The first nontrivial dependence]\label[example]{ex:r3}
+At width three, write partitions in restricted-growth notation. The partitions
+$001$, $010$, and $011$ have root vectors
+\[
+ C(001)=e_{\{0,2\}},\qquad C(010)=e_{\{0,1\}},\qquad
+ C(011)=e_{\{0,1\}}+e_{\{0,2\}}.
+\]
+Together with $000$ and $012$, the five partitions span four dimensions.
+The dependence is not an equality of physical surfaces; it is a linear identity
+for their completion tests.
+\end{example}
+
+\section{Minimum-weight representative subsets and certificates}\label{sec:representatives}
+\subsection{The exact guarantee}
+A candidate is a tuple $(p,w,\omega)$: a frontier partition, an integer cost written in
+binary, and an actual witness describing the partial surface. All candidates in one
+reduction call must share one geometric and boundary type. This type requirement is
+formalized in \cref{sec:composition}; it cannot be certified from $p$ alone.
+
+For a finite family $\mathcal A$ and a cap partition $q$, put
+\[
+ \operatorname{opt}(\mathcal A,q)
+   =\min\{w(a):a\in\mathcal A,\ D_r(p_a,q)=1\},
+\]
+with minimum $+\infty$ for the empty set. A subset $\mathcal A'\subseteq\mathcal A$
+is \emph{minimum disk-representative} if these optima agree for every
+$q\in\Part(U)$. Costs may be negative: finiteness of the family, not positivity,
+is what is needed.
+
+\begin{theorem}[Sharp weighted disk-completion kernel]\label{thm:weighted}
+Every finite family of candidates on $r\ge1$ arcs has a minimum disk-representative
+subset $\mathcal A'$ with
+\[
+ |\mathcal A'|\le2^{r-1},\qquad
+ |\{a\in\mathcal A':|p_a|=c\}|\le\binom{r-1}{c-1}.
+\]
+Such a subset is found deterministically by scanning candidates in nondecreasing cost
+and retaining precisely those root vectors independent of the vectors retained so far.
+The output consists of original candidates, not formal sums of witnesses.
+\end{theorem}
+\begin{proof}
+Fix a total order refining cost order. During Gaussian elimination retain an original
+candidate if and only if its vector is independent of earlier retained vectors. Every
+discarded vector is an $\F$-linear combination of retained vectors whose costs are
+no larger. All nonzero vectors have a well-defined component grading, and the
+coordinate spaces of different gradings are disjoint. Hence an independent collection
+has at most the stated number of vectors in each grading; summing gives $2^{r-1}$.
+
+Consider any candidate $a$ completed by $q$. If $a$ is retained, nothing needs to be
+shown. Otherwise write
+\[
+ C(p_a,\cdot)=\sum_{b\in B_a}C(p_b,\cdot),\qquad
+                         w(b)\le w(a).
+\]
+Pair with $JC(q,\cdot)^{\mathsf T}$. By \cref{thm:factor}, the left side is one.
+Therefore at least one summand is one. That summand comes from a retained candidate
+completed by $q$ at no greater cost. Apply this observation to an optimum candidate.
+The reverse inequality follows because the retained family is a subset of the original
+family. This proves equality of optima, including the case of no completion.
+\end{proof}
+
+This argument is deterministic. It does not conclude that an odd number of solutions
+exists because some randomized evaluation is nonzero. The parity identity is used to
+certify that a \emph{particular successful row} has a successful retained replacement.
+No valid witness is replaced by an XOR of surfaces.
+
+\begin{theorem}[Representative-size lower bound]\label{thm:lower}
+The bounds in \cref{thm:weighted} cannot be reduced in general, even by a method
+that is not based on linear algebra, as long as it must output a subset preserving all
+disk-completion queries. The same holds separately in each component grading.
+\end{theorem}
+\begin{proof}
+Take one cost-zero candidate for each $\pi_R$ of \cref{thm:rank}.
+The query $q=\pi_{R^\star}$ completes $\pi_R$ and no other member of this
+family, since the induced completion matrix is $J$. Omitting that candidate changes
+its query optimum from zero to $+\infty$. Thus all $2^{r-1}$ candidates are
+necessary. Restricting to $|R|=c$ gives the graded lower bound.
+\end{proof}
+
+The lower bound concerns worst-case representative \emph{subsets}. It is not a
+lower bound on the running time of every algorithm for one particular cap, nor a
+claim that all knot-derived frontiers realize the sharp family. A single supplied cap
+can be tested directly against a family in polynomial time per candidate, without
+any exponential-dimensional preprocessing.
+
+\subsection{A certificate that checks the discarded rows}
+A positive witness alone proves a feasible assembly, but not that pruning preserved the
+best one. The reducer therefore optionally returns the following evidence: the list of
+retained original indices and, for every input row $a$, a list $B_a$ of retained indices
+such that
+\begin{equation}
+ C(p_a,\cdot)=\bigoplus_{b\in B_a}C(p_b,\cdot),
+ \qquad w(b)\le w(a)\quad(b\in B_a).
+ \label{eq:certificate}
+\end{equation}
+A retained row can cite itself. Distinct indices are required inside each expansion.
+The checker receives the original ordered partitions and costs independently of the
+certificate, reconstructs all root vectors, and checks every identity and cost comparison.
+It also checks the total and graded output-size bounds. A certificate for a modified
+source is not accepted merely because some digest has a plausible shape.
+
+To verify the pruning guarantee, it is not necessary to trust the producer's pivot
+order or to recompute an optimal basis. Indeed, any retained subset satisfying
+\eqref{eq:certificate} has the required replacement property. Independence is a
+convenient way to \emph{produce} a small subset, while the linear expansion and
+cost dominance are a simple way to \emph{check} it.
+
+The delivered checker is deliberately separate. The producer builds root vectors by
+choosing one root from each block not containing $0$. The checker scans all root subsets
+and counts the roots in each block. The producer tests compatibility by disjoint sets;
+the independent direct predicate uses breadth-first connectivity and the graph's
+edge--vertex count. Tests disable the producer while the checker runs and mutate source
+partitions, costs, indices, expansions, and schema fields. These are independent code
+paths, not a claim that shared mathematical mistakes are impossible.
+
+\subsection{Encoded cost, memory, and input dependence}\label{sub:cost}
+Let $L$ be the number of input candidates, $B$ the maximum bit length of an integer
+cost, and $W$ the total encoded witness length or the size of a shared witness DAG.
+Let $d=2^{r-1}$. A transparent implementation may form each vector by scanning its
+$d$ coordinates and testing transversality in $O(r)$ elementary operations. Thus
+$O(Lrd\,\poly(\log(r+1)))$ bit work is a safe construction bound.
+
+Naive elimination uses at most $d$ pivots per input row and XORs vectors with at most
+$d$ bits. Tracking a retained-row expansion also uses at most $d$ bits per basis
+vector. Hence
+\begin{equation}
+ O\!\left(Ld^2+Lrd\,\poly(\log(r+1))
+       +LB\log(L+1)+\text{input and witness costs}\right)
+ \label{eq:kernel-cost}
+\end{equation}
+is a conservative bit bound. It does not treat a $d$-bit Python integer as one
+constant-time object. The implementation's packed integers can improve constants,
+not the stated guarantee. Witnesses may be kept by immutable indices or parent pointers;
+copying long witness arrays must instead be charged explicitly.
+
+The basis and its expansions use $O(d^2)$ bits. An explicit certificate with up to
+$d$ original indices per row uses $O(Ld\log(L+1))$ bits. The input itself occupies
+$\Omega(L)$ space, and certificates retained from every stage must also be counted.
+One may stream certificates or check them before discarding a stage, but that is a
+separate storage policy. The size bound counts \emph{retained candidates}, not total
+working bits.
+
+There is no $2^{O(r)}$ total-time theorem for an arbitrarily large explicit input list
+without charging its length. In particular, constructing all $\Bell(r)$ partitions
+and then reducing them still costs at least $\Bell(r)$ input operations. The
+single-exponential search theorem in \cref{sec:composition} assumes candidates are
+built from already reduced child families and a bounded explicit rule set.
+
+\section{Active interfaces and signed connectivity}\label{sec:extensions}
+\subsection{A pool of potentially active arc labels}
+A geometric interface may specify a pool $P$ of $b$ possible labels, while an individual
+state uses only a subset $A\subseteq P$. In general different active sets cannot be
+merged: a future attachment may require an arc absent from one of them. Reduce each
+nonempty active set separately, after relabelling one of its elements as the distinguished
+root.
+
+\begin{corollary}[The active-set sum]\label[corollary]{cor:active}
+For one fixed external type and a pool of $b$ labels, the total number of representatives
+across nonempty active sets is at most
+\begin{equation}
+ \sum_{\varnothing\ne A\subseteq P}2^{|A|-1}
+                  =\frac{3^b-1}{2}.
+ \label{eq:active}
+\end{equation}
+If one additional empty-interface terminal record is needed, the bound is
+$(3^b+1)/2$. These bounds apply per type; independent homology or geometry types
+multiply the count.
+\end{corollary}
+\begin{proof}
+Apply \cref{thm:weighted} on each active set and sum the binomial expansion of
+$(1+2)^b$. The empty interface is a separate terminal case, not a partition of positive
+width to which the root-vector construction is applied.
+\end{proof}
+
+Equation~\eqref{eq:active} does not identify arbitrary partial partitions arising in
+coning. The predecessor's $\Bell(b+1)$ physical-state distinction remains valid.
+Here a table of \emph{families} is compressed for one completion predicate under a
+different transition contract.
+
+\subsection{An exact signed-connectivity rank}
+For some extensions, signs on the interface must be retained. A signed partition is a
+pair $(p,a)$ where $a\in\F^U$, with two assignments identified if they differ by
+flipping all signs in any whole block of $p$. It describes the within-component
+relations
+\[
+                         x_u+x_v=a_u+a_v\quad(u,v\text{ in one block of }p).
+\]
+Use one fixed framing for interface labels. Any reversal needed on the cap side is
+transported into its assignment before these equations are combined.
+
+Let $\mathcal X=\{x\in\F^U:x_0=0\}$ and set
+\[
+ H((p,a),x)=\ind{x\text{ satisfies all within-block equations of }(p,a)}.
+\]
+Define $M(s,t)$ to be one when the combined unsigned partition is connected and the
+combined signed equations are consistent, and zero otherwise.
+
+\begin{theorem}[Signed root-coloring factorization]\label{thm:signed}
+Over $\F$,
+\[
+                          M=HH^{\mathsf T},\qquad \rk_{\F}M=2^{r-1}.
+\]
+Thus minimum-cost representatives of size at most $2^{r-1}$ also suffice for all
+connected-and-consistent signed completion queries.
+\end{theorem}
+\begin{proof}
+The $(s,t)$ entry of $HH^{\mathsf T}$ is the parity of the common root-fixed
+solutions. An inconsistent system has no solutions. A consistent one with $k$
+connected classes has $2^{k-1}$ solutions after fixing $x_0=0$, because each class
+has one free flip and the class containing $0$ has its flip fixed. Its parity is one
+exactly when $k=1$. This proves the factorization and the upper rank bound.
+
+For a one-block partition and any chosen root-fixed assignment $a$, the vector
+$H((\one_U,a),\cdot)$ is the unit vector at $a$. These $2^{r-1}$ signed states
+give an identity submatrix of $M$. This proves equality. The same cost-ordered
+basis and pairing proof as \cref{thm:weighted} gives the representative statement.
+\end{proof}
+
+This theorem concerns connectedness and consistency, not disk topology. A connected
+orientable annulus satisfies an orientation consistency test but has positive defect.
+Euler information must not be discarded. Conversely, in the genuine disk-completion
+case the tree condition already permits compatible orientations, so signs are not a
+necessary extra exponential factor. The delivery includes signed vectors and an
+independent signed compatibility predicate, with exhaustive small tests. It does
+\emph{not} include a general signed, higher-genus surface-assembly solver.
+
+\section{Safe composition in a finite assembly grammar}\label{sec:composition}
+\subsection{What a geometric type must guarantee}
+The weighted theorem is a statement about a family and every cap. To use it repeatedly
+inside a search, one must know that an actual remaining computation can be treated as
+such a cap. We make that condition explicit.
+
+\begin{definition}[Typed boundary-arc assembly grammar]\label[definition]{def:grammar}
+A finite typed assembly grammar is an acyclic construction specification with the
+following data and requirements.
+\begin{enumerate}[label=(\roman*)]
+\item A partial object is a realized compact surface with boundary and a finite labelled
+live-arc interface satisfying \cref{sec:defect}. A live nonterminal object has no
+component without a live arc. Its state includes a geometric type, its active labels,
+its partition, its integer cost, and a recoverable witness.
+\item Local rules glue prescribed pairs of interface arcs between disjoint partial
+objects or prescribed pieces. The rules maintain the interval and collar contract.
+They include all boundary identifications relevant to later stages; there are no
+unrecorded point or edge identifications.
+\item Within a fixed type and active set, the admissible complementary objects and
+arc maps are independent of the internal connectivity partition. Any required
+boundary framing, cyclic order, ambient region, boundary-chain constraint, matching
+condition, or parity label is included in the type or separately certified to be
+irrelevant to all future rules.
+\item Costs add under assembly. A terminal success is one disk with any prescribed
+external constraints encoded by the terminal type. A region decomposition, when
+ambient embedding matters, keeps interiors of pieces in disjoint regions and ensures
+that matching boundary types can actually be glued as embedded surfaces.
+\item The specification is complete for its \emph{own stated language}: every allowed
+assembly is generated by its finite rules. Completeness for all compressing discs
+in a manifold is an additional assertion, not part of this definition.
+\end{enumerate}
+\end{definition}
+
+Here geometric admissibility means that the specified gluing and external constraints
+are well defined; it does not mean that the result is a disk independently of its
+partition. That latter question is still decided by $D_r$. Computational DAG sharing
+reuses descriptions, not an unrecorded identification of physical surface pieces.
+
+Item (iii) is stronger than saying that two states have the same number of ports.
+For example, a transition allowed only when two specified arcs are on the same current
+component does not satisfy it unless that information has been included in the type.
+Adding enough type information can restore correctness while destroying a small type
+count. Both issues must be tracked.
+
+\begin{theorem}[Replacement is safe in every grammar context]\label{thm:composition}
+In a typed boundary-arc assembly grammar, replacing a family of live disk-union
+candidates of one type and active set by a minimum disk-representative subset
+preserves the minimum cost of every successful terminal assembly using that family.
+Repeated replacements at intermediate stages preserve the global optimum within
+the grammar.
+\end{theorem}
+\begin{proof}
+Fix a successful terminal assembly using a candidate $S$ at the selected stage.
+Regard everything outside $S$ in that assembly as one complementary surface $T$,
+with the already specified identifications among its own pieces performed. The type
+and collar contract says that its entire contact with $S$ is the labelled arc interface.
+There are no hidden additional intersections. Components of $S$ meet the interface
+by the live-state convention. Since the result is one disk and $S$ is a proper
+nonterminal part, components of $T$ also meet the interface. The complementary
+surface satisfies the surface-with-boundary contract.
+
+Apply \cref{thm:defect} to this final gluing. The complement $T$ must be a union
+of disks, and its labelled arcs give a cap partition $q$. The chosen $S$ satisfies
+$D_r(p_S,q)=1$. By representativity, some retained candidate $S'$ of the same type
+is completed by $q$ at cost at most that of $S$. Item (iii) ensures the very same
+outside assembly and arc maps remain legal for $S'$, and item (iv) ensures that any
+ambient embedding and terminal type constraints are preserved. By the disk-completion
+criterion, their union is a disk. Additivity of cost gives a no-more-expensive successful
+assembly.
+
+The retained family is a subset, so replacing it cannot introduce a cheaper assembly
+that did not already belong to the original language. Hence the optimum is unchanged.
+This argument applies to each replacement in a finite acyclic evaluation order,
+proving the iterated statement.
+\end{proof}
+
+The proof uses the whole remaining context, not just the next local move. A retained
+candidate may react differently to an individual intermediate operation than a discarded
+one. That causes no error when the type contract holds: the successful whole completion
+can still be substituted, and \cref{cor:persistent} ensures that its intermediate pieces
+will pass the disk-union and live-component tests. This is exactly why arbitrary
+history-dependent guards need separate treatment.
+
+\subsection{A complete sequential grammar implemented in this delivery}
+The implemented grammar starts with a nonempty finite family of disk unions on $r_0$ arcs.
+Layer $i$ has an explicit list of options, each a disk union with $r_{i-1}$ incoming
+arcs and $r_i\ge1$ outgoing arcs. The incoming arcs are glued to the previous frontier
+by the fixed labels. A final family of disk-union caps consumes the last outgoing
+interface. Costs of the selected initial object, layer options, and cap are added.
+
+At one transition, build the component graph of the current object and the selected
+layer option. If adding an edge creates a cycle, reject: positive defect is permanent.
+Otherwise each component of that forest gives a disk. Restrict its labels to the
+outgoing arcs; if any graph component has no outgoing arc, reject the transition because
+later material still has to be attached. Canonicalize the resulting output partition.
+Layer components that have only outgoing arcs are permitted: they are new disks that
+may be connected later. The graph includes them as isolated vertices until that happens.
+
+After each layer, both the exact baseline and the reduced solver keep only the cheapest
+witness for an identical partition. The reduced solver additionally applies
+\cref{thm:weighted}. At the cap, both evaluate \eqref{eq:D} directly. By
+\cref{thm:composition}, both solvers return the same minimum cost or both find no
+assembly in the given grammar. A literal polygon-and-triangle replay checks a returned
+witness independently of the frontier transitions.
+
+This is a complete search in an explicit finite language, not a simulation in which
+success has been assumed in advance. It is nevertheless an \emph{abstract surface}
+language until actual embedded pieces and a source manifold are bound to it. The
+code accordingly returns \texttt{FOUND\_ABSTRACT\_DISK} or
+\texttt{NO\_DISK\_IN\_GRAMMAR}. Neither is an unknot-recognition verdict.
+
+\subsection{End-to-end accounting within a supplied grammar}
+\begin{theorem}[Single-exponential typed-grammar search]\label{thm:complexity}
+Consider a supplied acyclic binary assembly grammar of explicit input bit length $I$,
+with $H$ evaluation nodes, at most $A$ geometric types per node, and at most $b\ge1$
+live arcs in each type. Assume at most $K$ explicit local choices per ordered pair
+of child types. Let $P$ bound the encoded work per local validation, state construction,
+integer cost operation, and witness-DAG update; also let $P$ bound the full encoded
+size and verification cost of a required terminal witness. Then a
+deterministic minimum-cost disk-assembly search can be performed in
+\begin{equation}
+                         2^{O(b)}\poly(I,H,A,K,P)
+                         \label{eq:grammar-bound}
+\end{equation}
+bit time, with independently checkable pruning evidence and recoverable witnesses.
+The constants in the polynomial do not depend on $b$. Any cost of discovering or
+constructing this supplied grammar from a different input is additional.
+\end{theorem}
+\begin{proof}
+Reduce each leaf family by type, charging its full explicit length and the
+output-sensitive bound \eqref{eq:kernel-cost}. Summed over the leaves, the number
+of input candidates is at most $I$, so this contributes at most
+$2^{O(b)}\poly(I,P)$. No Bell-sized list is generated implicitly.
+
+Each child family has at most $A2^{b-1}$ candidates. A binary node therefore creates
+at most $KA^2 4^{b-1}$ ordered combinations before local tests. Collect successful
+ones by output type and active interface, and reduce each collection. Formula
+\eqref{eq:kernel-cost}, with $d\le2^{b-1}$, gives a conservative factor at most
+another $4^{b-1}$, up to the polynomial input, cost, and sorting factors. Thus a
+bound of the form
+\[
+                 O\!\left(HKA^2 16^b\,\poly(b,P,\log(HKA+2))\right)
+\]
+is sufficient for the internal nodes. We do not claim this base is optimized.
+If varying active sets are not already counted as types, \cref{cor:active}
+replaces the per-type bound by $O(3^b)$; the same argument remains single
+exponential. Apply \cref{thm:composition} after each reduction. Finally check
+terminal records and replay a minimum witness. The parameter $P$ includes any
+required expanded witness size, not merely its DAG size.
+\end{proof}
+
+The input-length parameter is essential. A binary-compressed grammar description
+whose explicit expansion is huge is not covered by pretending that expansion is
+free. Similarly, small representative tables do not bound the discovery cost of
+new geometric types or the cost of expanding a shared witness into an actual
+surface certificate.
+
+\begin{corollary}[Polynomial and quasi-polynomial regimes]\label[corollary]{cor:qp}
+Suppose an $n$-crossing input has a complete geometric disk-search grammar satisfying
+\cref{def:grammar}, constructible with polynomial encoded overhead, polynomially many
+types and rules, and polynomial-size witnesses and local verification. If its live-arc
+bound is $b=O(\log(n+2))$, the search above is polynomial. If
+$b=O((\log(n+2))^2)$, it runs in
+\[
+                         \exp(O((\log(n+2))^2))=n^{O(\log n)}
+\]
+for $n\ge2$. If terminal success is a properly embedded essential-boundary disk in
+a source-certified knot exterior and the grammar is complete for those disks, this
+yields a recognition algorithm within the same bound.
+\end{corollary}
+\begin{proof}
+Substitute the bounds into \cref{thm:complexity}. The last assertion additionally
+uses the compressing-disc characterization discussed in \cref{sec:native}, and the
+assumed completeness of the grammar.
+\end{proof}
+
+The corollary isolates a genuine improvement in the allowable frontier scale. Direct
+Bell-state enumeration pays $2^{\Theta(b\log b)}$, giving the sufficient scale
+$b=O((\log n)^2/\log\log n)$ for a similar quasi-polynomial bound. Here the
+$\log b$ loss disappears for the disk-completion language. This comparison does
+not imply that the predecessor's more general coning language can be reduced by the
+same rule. Nor have we proved the stated width or completeness assumptions for all
+knot diagrams.
+
+\section{Connecting the kernel to the native compressing-disc route}\label{sec:native}
+\subsection{What the reviewed native modules already provide}
+The maintained synthesis \cite{proveit-weighted} describes three relevant entry points:
+\begin{quote}\small
+\path{normal_surface_components.normal_component_census}\\
+\path{normal_component_verify.verify_normal_component_certificate}\\
+\path{normal_disk_kernel.normal_compressing_disk_count}.
+\end{quote}
+Their purpose is to analyze a \emph{supplied} admissible normal vector in a validated
+compact triangulation. Binary multiplicities remain compressed. The source-checked
+exterior construction \cite{proveit-exterior} binds one canonical triangulation to a
+validated input knot diagram. Those facts make a constructive disk search more useful
+than an isolated partition calculation, but they do not supply the assembly grammar
+assumed in \cref{cor:qp}.
+
+The native essential-disc criterion is componentwise: a connected component with
+Euler characteristic one and a nonzero pair of torus-boundary parity evaluations is
+a compressing disk. A closed projective plane also has Euler characteristic one but
+has zero boundary values, so it is excluded. Taking only the total boundary parity of
+a whole normal surface is insufficient; parallel meridian disks can cancel in the
+aggregate. Our search instead assembles a single disk and must retain its own boundary
+class. This is an application of the existing criterion, not a replacement for the
+native component census.
+
+\subsection{Two homology bits do not destroy the state bound}
+Let $M$ be a source-certified knot exterior, with boundary torus $\mathbb T$.
+Fix a certified basis of $H^1(\mathbb T;\F)$. Suppose a geometric grammar assigns
+to each piece its external boundary chain on $\mathbb T$ and ensures that all internal
+arc identifications cancel the appropriate chain contributions. The two cocycle
+evaluations of the final boundary are then the sum of the piece contributions,
+including any certified local correction terms. This is a \emph{chain-level}
+requirement: naming two arbitrary stored bits ``homology'' does not meet it.
+
+\begin{proposition}[Essential-boundary refinement]\label[proposition]{prop:essential}
+Under the preceding certified chain contract, reducing separately for the four possible
+boundary parity labels preserves minimum-cost disk completions with any prescribed
+final parity. It uses at most $4\cdot2^{r-1}$ representatives per other fixed type
+and active interface. A terminal properly embedded disk with nonzero parity is a
+compressing disk in $M$.
+\end{proposition}
+\begin{proof}
+For a fixed complementary object, the required partial parity is determined by the
+specified final parity and the complementary contribution. The representative theorem
+applies within that parity class, so a no-more-expensive replacement leaves the final
+parity unchanged. There are four classes.
+
+The boundary of a properly embedded disk is an embedded circle in the torus. An
+inessential embedded circle has zero homology class. An essential embedded circle on
+a torus represents a primitive integral class $(a,b)$; a primitive pair cannot have
+both entries even, and hence has nonzero reduction modulo two. Thus nonzero parity
+is precisely essentiality for this circle. The disk is therefore a compressing disk.
+\end{proof}
+
+For a genuine knot exterior in $S^3$, the existence of a compressing disk for its
+boundary torus characterizes the unknot: the exterior is irreducible, boundary
+compression gives the solid-torus case, and the knot is unknotted. This is the
+geometric endpoint already used in the native source theorem \cite{proveit-exterior}.
+The source binding matters. A disk in an unrelated solid torus says nothing about
+the input knot.
+
+\subsection{The integration gate}
+A native use of this reducer needs four independently identifiable layers. First, a
+producer must export actual disk pieces, their labelled boundary intervals, and their
+embedded regions or other sufficient compatibility types from the current geometric
+representation. Second, the search must account for all rule generation and all type
+and width growth. Third, each rank reduction must be checked against the actual
+family it prunes. Finally, an accepted assembly must replay to a properly embedded
+essential-boundary disk in the \emph{same} source-certified exterior.
+
+The package supplies the third layer and an independent \emph{abstract-surface} form
+of the final replay, together with a complete solver for its supplied finite grammar.
+It does not supply the first layer, a complete normal-vector search, a general hierarchy
+compiler, or a native embedded-disk certificate exporter. The canonical exterior
+producer itself is \emph{not} missing at the reviewed pin. The remaining gap is the
+complete, type-controlled disk-assembly search attached to it.
+
+The intended integration is an isolated experimental report or library module. No
+maintained dispatch should infer \texttt{KNOTTED} from the absence of a disk in an
+incomplete grammar. A successful abstract polygon gluing should not infer
+\texttt{UNKNOT} without its ambient embedding and source certificate. Resource-limit
+exceptions are inconclusive and must preserve access to the existing exact fallback.
+
+\section{Safety boundaries and explicit counterexamples}\label{sec:barriers}
+\subsection{A same-component guard is not preserved}
+Take the three candidates of \cref{ex:r3} with costs $0,0,1$, in the order
+$001,010,011$. The reducer keeps the first two and discards the third, because its
+root vector is their sum. It still preserves the minimum cost for \emph{every}
+disk-completion query.
+
+However, the predicate ``labels $1$ and $2$ lie in the same block'' holds only for
+$011$ among these candidates. A subsequent rule enabled only by that predicate
+would lose its only admissible source. Therefore the reducer is not a valid
+optimization of arbitrary partition-dependent transition systems. This is an executable
+negative test in the delivery. The correct repair is to prove an appropriate context
+contract or split types by the relevant predicate, and then count the extra types.
+
+In particular, homogeneity guards for arbitrary interval attachments in the preceding
+port report may depend on component information not preserved here. Neither the
+Bell-state lower bound nor that report's guard semantics is contradicted by our result.
+We preserve a narrower terminal language rather than reconstruct the entire state.
+
+\subsection{Compressed point incidence is not geometric arc incidence}
+The sparse component census counts components meeting specified point sets. One row
+can describe many components and a marked interval can represent many normal arcs.
+Our width $r$ counts actual boundary intervals in a surface gluing. The example of
+two disks glued along two arcs, rather than one, proves that simply using the number
+of histogram rows or named point ports as $r$ is unsound.
+
+A future compressed version could attach a binary multiplicity to a family of parallel
+arcs, but it would need to track the resulting Euler correction, attachment cycles,
+possible orientation effects, and geometric compatibility. The present theorem does
+not turn an exponential number of actual arcs into a logarithmic interface by naming
+their bundle once.
+
+\subsection{Boundary constraints, hidden types, and circles}
+A partition does not encode every ambient embedding constraint. Different cyclic
+orders, different positions on an incompressible boundary pattern, or different
+quadrilateral choices can be incompatible with the same future region. The type
+contract must expose whatever data the continuation can inspect. If there are
+$2^{\Theta(b\log b)}$ such types, a $2^b$ representative count inside each type
+has not eliminated the overall Bell-scale obstruction.
+
+Gluing along a whole boundary circle is also not an arc gluing. Its Euler correction
+is zero rather than one, and capping by a disk can remove boundary in a way excluded
+by the defect monotonicity argument. Likewise, compressing an annulus by an actual
+surgery is not an attachment of surfaces along disjoint boundary intervals. The
+persistence theorem must not be extended to these operations without a new proof.
+
+\subsection{Optimization is not counting, and certificates have scope}
+A representative subset preserves minima and existence for the specified completion
+predicates. It does not preserve the number of successful candidates, their distribution
+of witness topologies beyond the recorded type, or a full Pareto frontier of several
+costs. Linear dependencies may eliminate many distinct valid witnesses. This is
+intentional for decision and scalar optimization, but it is unsuitable as a counting
+algorithm without additional machinery.
+
+The algebraic checker certifies source-bound row identities and cost dominance.
+The PL replay certifies the topology of the returned abstract glued surface. Neither
+checks an embedding in a 3-manifold, normal matching equations, diagram-to-exterior
+provenance, or the completeness of a producer's rule set. Those are separate proof
+obligations, even when all local code checks pass.
+
+\section{Implementation, validation, and paired measurements}\label{sec:validation}
+\subsection{The independent triangulated-surface oracle}
+For each partition block containing $k$ labels, \path{code/surface_model.py}
+constructs a polygonal disk with $4k$ boundary vertices, triangulated from a new central
+vertex. It marks $k$ separated boundary edges as the attachment arcs, leaving gaps
+between their endpoints. For two frontiers or a whole grammar witness, it glues the
+selected boundary edges with the prescribed endpoint maps.
+
+The oracle then constructs the quotient simplicial complex. It checks triangle and
+edge incidence and checks every vertex link is a connected path or circle, thereby
+rejecting nonmanifold identifications instead of merely counting cells. It computes
+connected components, Euler characteristic, boundary-circle count, and orientability
+by propagating triangle orientations. These computations do not call the root-vector
+or transition routines. The result is a genuine finite surface calculation, not the
+partition predicate restated as an expected value.
+
+This oracle intentionally expands small polygonal fixtures. It is not a compressed
+normal-surface algorithm, and its triangle count is part of its runtime. An abstract
+surface can be checked this way without claiming to know where it embeds in a knot
+exterior.
+
+\subsection{Executed validation and its exact size}
+The retained environment was CPython 3.13.5 on Linux x86\_64 with glibc 2.41.
+The standard-library unit suite contains \textbf{36 test methods}, all passing.
+These methods include exhaustive factorization checks through $r=6$, root-feature
+graded ranks through $r=8$, independent row construction, signed all-pair checks
+through $r=5$, width and cancellation controls, huge $4096$-bit signed costs,
+source and certificate mutations, literal small-surface gluings, and complete
+layered searches. Loop iterations inside a test are not additional test methods.
+
+The separate audit, seeded by \texttt{20261009}, records:
+\begin{center}
+\begin{tabular}{p{.62\textwidth}r}
+\toprule
+Audit operation & Completed checks\\\midrule
+Entries of direct completion matrices, $r=1,\ldots,7$ & 813,297\\
+Weighted candidate families and certificate replay & 1,000\\
+Minimum-completion queries on those families & 14,014\\
+Random literal triangulated-surface gluings, $r\le8$ & 1,000\\
+Complete variable-width grammar comparisons & 200\\\bottomrule
+\end{tabular}
+\end{center}
+The direct matrix ranks are computed from the independently constructed graph
+predicate, \emph{not} by taking the rank of the proposed feature vectors. They are
+$1,2,4,8,16,32,64$ for widths $1$ through $7$, as predicted. The weighted audit
+checks both preservation of finite minima and preservation of infeasibility. The
+complete-grammar audit compares reduced and unreduced searches, checks each retained
+pruning certificate, and replays every successful witness as a triangulated surface.
+
+Negative controls include the two-arc annulus, a twisted M\"obius-band gluing,
+a same-component guard lost after otherwise valid reduction, rejection of sealed
+components, and persistence of an annular defect after a further disk attachment.
+The latter replay has Euler characteristic zero and two boundary circles, not a disk.
+All audit checks passed. These finite checks support implementation reliability but
+do not replace the universal proofs or constitute proof-assistant verification.
+
+\subsection{Benchmark design and fair baseline}
+The benchmark is a complete \emph{explicit abstract assembly grammar}, not a collection
+of knots. For each $r=6,7,8$, it supplies all partitions as an initial candidate family
+with deterministic seeded integer costs. It then supplies two layers. Each layer has
+an identity option and an option for merging each pair of strands, with explicit costs,
+followed by a fixed cap. Both solvers use exactly the same input, validation, local
+transition generator, exact duplicate-state elimination, and witness bookkeeping.
+The only algorithmic difference is representative reduction between stages.
+
+Each mode is run three times with alternating run order; the table reports medians.
+Input grammar construction and the final literal replay are excluded from both solver
+timings. Validation, candidate deduplication, reduction, cost arithmetic, and witness
+handling inside the solver are included. The initial list is Bell-sized by design,
+and both modes must read it. These measurements therefore demonstrate amortization
+across later search layers, not an algorithm for generating a Bell-sized family in
+single-exponential time. The input language is deliberately transparent; specialized
+algorithms for a particular generated family may improve on both generic solvers.
+
+\begin{table}[htbp]
+\centering\small
+\input{results/benchmark_table.tex}
+\caption{Paired complete abstract-grammar search. The ratio is exact median time
+divided by reduced median time. Reduced-state counts are the stored counts at each
+of the three stages on these inputs. These are not native recognizer speedups.}
+\label{tab:time}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\input{results/work_table.tex}
+\caption{Deterministic work counters for the same experiments. The two solvers agree
+on the optimum. Every returned reduced witness replays to one orientable surface
+with Euler characteristic one and one boundary circle.}
+\label{tab:work}
+\end{table}
+
+At width eight, the unreduced search attempts $240{,}120$ layer transitions; the
+reduced search attempts $7{,}424$. It stores $128$ states instead of $4{,}140$.
+The corresponding median speed ratio is $\WidthEightRatio$, less than the transition-count
+ratio because reduction and other bookkeeping still cost time. Before the second
+and third reductions, its deduplicated candidate counts are $1{,}072$ and $943$;
+pre-reduction work has not been hidden behind the final $128$-state bound.
+
+\subsection{A negative timing result: do not compress a lone query by default}
+A width-eight control uses the same initial family and cap but no intermediate layer.
+The direct solver takes \ControlExact{} seconds, while the representative version
+takes \ControlReduced{} seconds, approximately \ControlSlowdown{} times longer.
+Both return cost $-97$. This control is a single recorded timing per mode, not a
+three-repeat median. Its purpose is to show a real overhead case, not to estimate
+stable hardware performance from one sample.
+
+A single cap can be checked directly in $\poly(r)$ work per candidate. Constructing
+and reducing $2^{r-1}$-bit vectors before that one query is often wasteful. The
+benefit appears when enough subsequent candidate generation or cap queries reuse the
+smaller family. An eventual native scheduler should retain a direct path and compare
+amortized savings against construction and checking costs. The present measurements
+justify neither enabling this kernel everywhere nor advertising a whole-recognizer
+speed factor.
+
+\subsection{What was not run}
+The maintained ProveIt test suite was not executed in this environment. No patch was
+applied to \texttt{fast/}, and no native normal-vector, hierarchy, or knot-corpus
+benchmark was performed. The repository sources and incoming directory were inspected
+through the available read interfaces; the incoming binary archive collection was not
+fully unpacked and audited. The predecessor port report was reviewed through its
+available Library text. The source-audit file records this coverage rather than
+claiming an exhaustive review of every incoming manuscript.
+
+\section{Further research questions and concrete next milestones}\label{sec:future}
+\subsection{Geometric construction and completeness}
+\paragraph{1. A native arc-interface exporter.}
+Can the current source-checked compact exterior and normal-component modules export a
+supplied disk decomposition with genuine separated boundary arcs, explicit collars,
+and an independently replayable embedding? The first target is correctness on supplied
+witnesses, not discovery. A successful exporter should distinguish point-incidence ports
+from the arc labels used in this article and verify all chain-level boundary parities.
+
+\paragraph{2. A complete disk-assembly grammar.}
+Which normal or hierarchy decompositions guarantee that every essential disk has an
+assembly generated by polynomially described local rules? The proof must show that
+intermediate cuts satisfy the boundary-arc contract, that no omitted surgery is needed,
+and that every required normal-coordinate choice can actually be generated within the
+claimed bound. A small successful witness is not a bound on the complete search.
+
+\paragraph{3. Controlling geometric types.}
+Can cyclic order, normal matching, quadrilateral compatibility, ambient region data,
+and external-boundary constraints be organized into only $2^{O(b)}\poly(n)$ types?
+If a stronger polynomial type bound is false, isolate the smallest datum producing
+super-single-exponential growth. This is as important as reducing partition counts.
+
+\paragraph{4. A width theorem tied to a hierarchy.}
+Does a complete compressed hierarchy admit disk-search frontiers with
+$b=O((\log n)^2)$ and polynomially bounded witness encodings? A width estimate for
+a projection graph alone does not bound the number of actual surface arcs carried
+through that frontier. A proof needs a global encoded potential paying for arc births,
+refinement, coordinate growth, and all visited geometric types.
+
+\subsection{Sharper algebra and compressed geometry}
+\paragraph{5. Multiplicity-aware arc bundles.}
+Find a compact completion algebra for many parallel boundary arcs that preserves the
+cycle defect and orientation data. A desirable theorem would use logarithms of binary
+multiplicities rather than expanding all arcs, while still reproducing the annulus and
+M\"obius negative controls. The one-port surrogate without correction is ruled out
+by \cref{sec:barriers}.
+
+\paragraph{6. Faster graded reduction and joins.}
+The implementation uses conservative dense bit vectors. Can the rooted-forest minors
+be streamed, factored, or kept in sparse graded form to avoid $d^2$ storage in common
+cases? Representative product-family methods \cite{products} suggest reducing joins
+without first constructing every child pair. Any improved bound should include
+certificate generation, integer weight comparisons, and witness recovery, not only
+field-operation counts.
+
+\paragraph{7. Persistent and changing-interface families.}
+Can verified bases be reused under rollback, changes of costs, or insertion and deletion
+of active labels? Cost monotonicity in the present certificate is tied to one input
+ordering, and arbitrary future weight changes invalidate it. A useful persistent
+scheme should maintain checkable source binding and charge its work across the actual
+search DAG, not just one successful branch.
+
+\paragraph{8. Bounded-defect completion.}
+For targets of genus at most $g$ or a prescribed boundary pattern, determine the rank
+of the completion predicate after simultaneously recording defect, component count,
+and the signed consistency data of \cref{thm:signed}. The disk case has the special
+zero-defect obstruction. Simply accepting connected signed states does not control
+annuli or handles. It would be useful to identify parameter ranges admitting
+$2^{O(b+g)}$ rather than Bell-scale kernels.
+
+\subsection{Verification, scheduling, and limitations}
+\paragraph{9. Multiobjective costs and actual geometric weight.}
+Normal weight, encoded complexity, boundary data, and future width may be competing
+objectives. Does a useful restricted Pareto order permit small representative families,
+or do unavoidable trade-offs force many representatives? For scalar cost, determine
+which geometric weights remain exactly additive under the chosen local rules and
+which need correction terms.
+
+\paragraph{10. Whole-pipeline ablation.}
+After the native exporter exists, benchmark complete recognition with and without
+representative reduction on the same knot inputs and budgets. Include direct cap
+queries, already-small families, failed grammar searches, and large-type cases.
+Record candidate generation, geometry validation, certificate replay, and fallback
+work separately. The negative one-query control should remain a required regression.
+
+\paragraph{11. Formal proof and checker hardening.}
+A compact formalization can begin with the defect identity, the rooted-forest minor
+lemma, the exact matrix factorization, and cost-dominating row expansions. The
+geometric type/context replacement theorem is a separate formalization task, not a
+consequence of verifying Gaussian elimination. On the implementation side, bounded
+allocation, adversarial certificate size, serialization, and cancellation throughout
+a long grammar evaluation need production-level engineering.
+
+\paragraph{12. Sharp families inside knot geometry.}
+The coordinate partitions prove optimality in the abstract interface model. Which of
+them can coexist with one common boundary type in a natural decomposition of a knot
+exterior? A realizability theorem would clarify whether the sharp bound is relevant
+in practice; an obstruction could yield a still smaller kernel. Conversely, construct
+families where the partition kernel is small but type growth or actual arc width defeats
+the desired global bound. Such examples would identify the true next bottleneck.
+
+\section{Conclusion}
+Bell-many distinguishable physical states do not force Bell-many representatives for
+minimum disk completion. The reason is not that topology can be ignored. The exact
+defect identity first shows which topology is relevant: all pieces must be disks and
+their attachment graph must be a tree. That specific predicate has an explicit
+root-transversal factorization, exact rank $2^{r-1}$, and sharp graded representative
+bounds. Weighted reduction retains actual witnesses and admits source-bound independent
+checking. The typed replacement theorem then justifies reuse inside a finite assembly
+search, rather than merely optimizing an isolated matrix calculation.
+
+The verified standalone implementation and its complete-grammar comparisons demonstrate
+both the potential benefit and the overhead. The current ProveIt exterior and component
+certificates provide a concrete destination for the next geometric integration, but the
+complete bounded-width disk-assembly producer is still an unproved obligation. The
+present result removes a Bell-number factor from a precisely specified search layer;
+it does not disguise the remaining search and geometry costs as constant-time operations.
+
+\appendix
+\section{Reproduction and artifact map}\label{app:reproduce}
+From the extracted package directory, run:
+\begin{lstlisting}
+make test
+make audit
+make example
+make benchmark   # new timings; overwrites results/benchmark.json
+make tables      # reads retained JSON only
+make pdf         # requires pdflatex; no benchmark rerun
+\end{lstlisting}
+The Python code requires only the standard library and uses syntax compatible with
+Python 3.10 or later; the executed environment is recorded above. The PDF uses the
+LaTeX packages listed in its preamble. The recorded timing results are retained so
+that rebuilding the article does not silently rerun the experiments.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{.37\textwidth}>{\raggedright\arraybackslash}p{.57\textwidth}}
+\toprule File & Role\\\midrule\endhead
+\path{article.tex}, \path{article.pdf} & Self-contained article and compiled delivery.\\
+\path{references.bib} & Bibliographic export; the TeX also contains its own reference list.\\
+\path{code/disk_kernel.py} & Root vectors, direct completion, cost-ordered representative subset, and expansion certificates.\\
+\path{code/certificate_check.py} & Separate row reconstruction, graph predicate, strict algebraic certificate verification.\\
+\path{code/assembly.py} & Exact and reduced finite layered-grammar solvers; literal witness replay entry point.\\
+\path{code/surface_model.py} & Polygon triangulation, gluing, manifold checks, Euler characteristic, boundary and orientation replay.\\
+\path{code/signed_kernel.py} & Signed root-coloring and direct compatibility kernels.\\
+\path{tests/test_research.py} & The 36-method standard-library unit suite.\\
+\path{code/audit.py}, \path{code/benchmark.py} & Deterministic mathematical audit and paired complete-grammar measurements.\\
+\path{code/example.py} & A small certificate example and a full grammar witness with literal surface replay.\\
+\path{results/} & Executed logs, raw JSON measurements, and generated table fragments.\\
+\path{docs/CLAIMS.md} & Proof, implementation, test, and integration status by claim.\\
+\path{docs/INTEGRATION.md} & Safe interfaces and explicit native integration gates.\\
+\path{docs/SOURCE_AUDIT.md} & Reviewed revision, source coverage, literature, and novelty limitations.\\
+\bottomrule
+\end{longtable}
+
+\section{A complete small reduction example}
+\begin{lstlisting}[language=Python]
+from disk_kernel import Candidate, reduce_family
+from certificate_check import verify_certificate
+
+items = [Candidate((0, 0, 1), 0),
+         Candidate((0, 1, 0), 0),
+         Candidate((0, 1, 1), 1)]
+answer = reduce_family(items)
+assert len(answer.retained) == 2
+assert verify_certificate([x.partition for x in items],
+                          [x.cost for x in items],
+                          answer.certificate)
+# For the third row the expansion is [0, 1].
+# This certifies every disk-completion optimum, not arbitrary guards.
+\end{lstlisting}
+
+The default root-vector cap is 20 labels. It is an allocation guard, not a mathematical
+bound on the theorem. The layered prototype also validates the combined incoming and
+outgoing partition of each piece under its current width guard. Its intended role is
+small exact experimentation and independent replay, not an uncapped production engine.
+The reducer accepts a cooperative callback; an exception propagates rather than
+publishing a partial reduction as a complete result. The top-level grammar solver is
+finite but does not yet implement a global cooperative cancellation budget. A native
+integration must add and test that resource contract.
+
+\section{Source and authorship note}
+This package was prepared against the pinned repository listed in
+\cref{sec:position}. The incoming intake policy assigns the next report number during
+placement and retains a delivered report separately from maintained runtime changes.
+Accordingly, this package does not choose a report number, modify the upstream
+repository, or include an automatically applied patch. Its provenance document is a
+source-and-scope record, not a checksum-only manifest. No third-party font files,
+upstream source archive, or copied research-paper PDF is redistributed.
+
+The mathematical assertions are human-readable proofs and finite computational checks.
+They have not been externally peer reviewed or formalized in Lean or another proof
+assistant. Established rank-based and matroid-representative methods are explicitly
+credited, and the global unknot-recognition corollary remains conditional on its stated
+geometric construction hypotheses.
+
+\begin{thebibliography}{10}
+\small\raggedright
+\setlength{\itemsep}{1pt}
+\setlength{\parsep}{0pt}
+\setlength{\parskip}{0pt}
+\bibitem{bckn}
+H. L. Bodlaender, M. Cygan, S. Kratsch, and J. Nederlof.
+\emph{Solving weighted and counting variants of connectivity problems parameterized
+by treewidth deterministically in single exponential time}.
+arXiv:1211.1505, 2012. \url{https://arxiv.org/abs/1211.1505}.
+
+\bibitem{flps}
+F. V. Fomin, D. Lokshtanov, F. Panolan, and S. Saurabh.
+\emph{Efficient Computation of Representative Sets with Applications in Parameterized
+and Exact Algorithms}. arXiv:1304.4626, version 4, 2016.
+\url{https://arxiv.org/abs/1304.4626}.
+
+\bibitem{products}
+F. V. Fomin, D. Lokshtanov, F. Panolan, and S. Saurabh.
+\emph{Representative Sets of Product Families}. arXiv:1402.3909, 2014.
+\url{https://arxiv.org/abs/1402.3909}.
+
+\bibitem{mannens}
+I. Mannens and J. Nederlof.
+\emph{A Fine-Grained Classification of the Complexity of Evaluating the Tutte Polynomial
+on Integer Points Parameterized by Treewidth and Cutwidth}.
+arXiv:2307.01046, 2023. \url{https://arxiv.org/abs/2307.01046}.
+
+\bibitem{lackenby}
+M. Lackenby. \emph{Incompressible surfaces, hierarchies and unknot recognition}.
+arXiv:2607.23350v1, July 2026, especially Section 9.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{proveit-exterior}
+ProveIt project. \emph{A native, source-checked compact knot exterior}.
+\path{Topology/UnknotRecognition/synthesis/diagram_exterior.tex},
+revision \texttt{3a90fb34146c915328ab8eac6250cc2514f74ed0}, 2026.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{proveit-weighted}
+ProveIt project. \emph{Native weighted normal components and essential-disc counts}.
+\path{Topology/UnknotRecognition/synthesis/weighted_components.tex},
+same reviewed revision, 2026.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{port-report}
+OpenAI, research continuation for ProveIt.
+\emph{Certified Port Quotients and Guarded Interval Attachments:
+Amortized continuation kernels and sharp information bounds toward
+quasi-polynomial unknot recognition}. October 8, 2026.
+Reviewed Library artifact \path{unknot_port_continuations.pdf}, especially
+Theorems 7.3 and 7.6 and the further-research section; predecessor source pin
+\texttt{eb368edf975695e3e16a8774dcb7846bda0c13a0}.
+
+\bibitem{aht}
+I. Agol, J. Hass, and W. P. Thurston.
+\emph{The Computational Complexity of Knot Genus and Spanning Area}.
+arXiv:math/0205057, 2002. \url{https://arxiv.org/abs/math/0205057}.
+\end{thebibliography}
+\end{document}

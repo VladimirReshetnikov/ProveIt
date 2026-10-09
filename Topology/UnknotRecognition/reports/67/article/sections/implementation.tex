@@ -1,0 +1,78 @@
+\section{Implementation, proof interfaces and integration}\label{sec:implementation}
+
+\subsection{Delivered modules}
+
+The implementation is additive Python using the standard library for exact arithmetic. Regina is used as an external test oracle and for optional fixture cross-checks, not by the new certificate producers or verifiers. The package includes the pinned runtime dependencies so the focused tests and frozen-oracle audits can run without a live repository or network connection.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.39\textwidth}X@{}}
+\toprule
+Module & Responsibility\\
+\midrule
+\code{exact_lp.py} & Normalized nonnegative-kernel LP; exact rational basic witness or Farkas multiplier; shared pivot cap.\\
+\code{normal_euler.py} & Compatible-sector canonical Euler objectives, envelope option, exact dual cache, witness lifting.\\
+\code{normal_euler_verify.py} & Independent sector model reconstruction and exact positive/negative proof replay.\\
+\code{normal_ray.py} & Primitive-ray essential-disc producer with sparse modular rank witness.\\
+\code{normal_ray_verify.py} & Separate rank elimination, geometric and boundary-homology replay.\\
+\code{normal_propagation.py} & Standard-coordinate relaxation, mandatory-type propagation, bounded branching and complete negative proof trees.\\
+\code{normal_propagation_verify.py} & Source matching/Euler reconstruction and exhaustive arithmetic tree replay.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The unchanged incoming \code{normal_sector.py} and \code{normal_sector_verify.py} supply the earlier support contraction and enumeration comparison. Their inclusion in the patch is explicitly marked as dependency import rather than new work.
+
+\subsection{Query and result contracts}
+
+The principal calls are:
+\begin{lstlisting}[language=Python]
+decide_sector_euler(triangulation, allowed_types,
+    strategy='anchors', max_anchors=None, max_pivots=None)
+verify_sector_euler_certificate(triangulation, certificate)
+
+certify_normal_ray_disc(triangulation, coordinates,
+    max_rank_operations=None)
+verify_normal_ray_disc(triangulation, coordinates, certificate)
+
+search_positive_euler(triangulation,
+    max_branch_depth=12, max_nodes=1000, max_pivots=100000,
+    allowed_branch_tetrahedra=None)
+verify_normal_propagation_certificate(triangulation, certificate)
+\end{lstlisting}
+Every call also accepts a cancellation/check callback. Ordinary caller cancellation exceptions propagate. As in the maintained geometry APIs, a callback deliberately raising the validator's own \code{NormalOrbitError} inside a validation guard is treated as validation failure by a verifier; callers should use a distinct cancellation exception. The producer's uncapped recursive branch search is also subject to interpreter stack resources; the default finite depth is safe from deep-tree recursion. These operational limits are separate from the abstract algorithmic theorem.
+
+Sector and propagation producers return \status{POSITIVE\_EULER}, \status{NO\_POSITIVE\_EULER}, or \status{INCONCLUSIVE}. The negative results from the two producers have different domains: the former excludes a supplied compatible sector, while the latter excludes all canonical admissible positive-Euler surfaces only after full anchor and branch coverage. Neither names the input knot.
+
+The ray endpoint returns \status{DISC\_FOUND}, \status{NOT\_CERTIFIED}, or \status{INCONCLUSIVE}. \status{NOT\_CERTIFIED} can mean nonprimitivity, unsuitable Euler/boundary data, zero boundary class, or inability to find the required minor at the fixed primes. It is not a negative disc-existence result.
+
+\subsection{Certificate schemas and independent replay}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.39\textwidth}X@{}}
+\toprule
+Schema & Essential checked content\\
+\midrule
+\code{normal-sector-euler-lp-v1} & Source and exact allowed support. Positive: primitive $q$, canonical full coordinates and Euler. Negative: every anchor's dual, or an independently reconstructed envelope dual.\\
+\code{normal-extreme-disc-v1} & Source-coordinate binding, known prime, distinct source rank rows, boundary homology proof; exact normal geometry and gcd rebuilt.\\
+\code{normal-positive-euler-}\newline\code{propagation-v1} & Source binding. Positive: canonical admissible coordinates. Negative: all anchor trees, each mandatory deletion's omitted-column dual, and complete singleton children or a negative leaf.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Rationals are represented by integer numerator/positive-denominator pairs. The project's \code{json_safe} encoding transports very large integers without relying on unbounded decimal string conversion. The LP tests include 20,000-bit coefficients. The checkers use exact fractions and reject malformed denominators, support indices, source hashes, missing coverage and incompatible witness coordinates.
+
+Positive sector and propagation certificates establish positive Euler, not extremality by themselves. Their producers obtain basic rays, but an independent disc claim still requires the rank or general component proof. This avoids trusting an unverified statement such as ``the solver returned a vertex''.
+
+Negative propagation trees are checked iteratively. Every mandatory step is interpreted in the current allowed mask, and the dual is checked on exactly the columns that remain after forbidding its claimed type. Branch children must cover all current singleton choices. Repeated object identities are rejected to prevent cyclic in-memory proof objects. JSON round trips and tampered child/anchor coverage are included in the tests.
+
+No verifier imports its producer or the exact simplex routine. The sector verifier also rebuilds contraction and potentials without importing the producer's sector constructor. The common trusted foundation is the maintained finite-manifold and normal-coordinate validator, plus Python's exact integer/fraction arithmetic and the mathematical interpretation of those checks. These are executable certificates and written proofs, not a Lean formalization.
+
+\subsection{A conservative integration sequence}
+
+The most immediately useful integration point is a primitive-ray fast path after a candidate has been found. Call the new ray producer and independently replay any \status{DISC\_FOUND} proof. When it cannot certify, retain the general component path. This change concerns a supplied candidate and need not alter the global search policy.
+
+For a supplied sector, expose the LP query as a separate decision API. Keep enumeration available where callers need all rays or where the low-nullity method is measurably faster. The optional envelope should remain separately selectable until workload evidence supports a default. A hybrid can use structural features such as nullity and kernel size; it should not silently replace an all-output request by an existence request.
+
+The propagation prototype should remain an explicit bounded research search until the complete geometric continuation and provenance are integrated. Caps on pivots, nodes, anchors, rank operations or branch depth must retain their inconclusive semantics. Independent negative replay is a required acceptance gate, not a debug-only check.
+
+The supplied patch adds modules and tests against the pinned source. It does not change the maintained recognizer's default dispatch. The repository's incoming-report convention places the extracted delivery under the next \code{Topology/UnknotRecognition/reports/<NN>/} directory, with the patch retained inside the report for later integration. This package follows that separation and includes no checksum-only inventory files.

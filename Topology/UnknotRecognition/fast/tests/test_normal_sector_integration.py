@@ -83,11 +83,15 @@ class NormalSectorIntegrationTests(unittest.TestCase):
         answer = discover_in_sector(tri, [], max_bases=0)
         self.assertEqual(answer['status'], 'NO_POSITIVE_EULER')
         self.assertTrue(verify_sector_exhaustion(tri, answer['certificate']))
-        for allowance in ({'max_bases': 0}, {'max_orbit_cycles': 0}):
+        for allowance in ({'max_bases': 0},):
             with self.subTest(allowance=allowance):
                 answer = discover_in_sector(tri, [(0, 2)], **allowance)
                 self.assertEqual(answer['status'], 'INCONCLUSIVE')
                 self.assertNotIn('certificate', answer)
+        # The certified unit-ray path consumes no orbit cycles.
+        answer=discover_in_sector(tri,[(0,2)],max_orbit_cycles=0)
+        self.assertEqual(answer['status'],'DISC_FOUND')
+        self.assertTrue(verify_sector_witness(tri,answer['certificate']))
 
     def test_false_witness_and_exhaustion_assertions_are_rejected(self):
         tri = solid_torus()
