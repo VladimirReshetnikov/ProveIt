@@ -1460,6 +1460,23 @@ the elementary lemmas of its §2:
   `two_new_points_energy`, then Corollary 7.6. It supersedes the
   four-new-points `lemma19_selection_piece`, which stays as a true but
   weaker statement.
+- **Open subtlety before Corollary 20: the "WLOG" in [49] Lemma 19.** A
+  failing triple (y,z,w) has witnesses a ∈ U_{y+z}, b ∈ U_z, c ∈ U_{y+w},
+  d ∈ U_w with a − b = c − d. Since 0 ∈ every ℒ-family, one of a, b is new
+  and one of c, d is new. That leaves four cases: (a,c), (a,d), (b,c),
+  (b,d). [49] (as summarized from the ar5iv text) takes (b,d) "without
+  loss of generality".
+  - (a,c) ↔ (b,d) by swapping the roles of the two pairs.
+  - The failing set is closed under (y,z,w) ↦ (−y, y+z, y+w), which
+    exchanges (a,b) and (c,d). That maps (a,d) ↔ (b,c).
+  - So the mixed cases (a,d) and (b,c) are not reduced to (b,d) by these
+    symmetries. In them each Cauchy–Schwarz pair (key a − b = c − d)
+    carries exactly one new point, and `two_new_points_energy` does not
+    apply directly. Either a second Cauchy–Schwarz round is needed, or
+    there is a different grouping.
+  Check this against [49]'s full text (the WebFetch summaries cover only
+  its first 100k characters) before formalizing Corollary 20.
+
 - Next: [49] Corollary 20, iterating Lemma 19 from the zero map, and
   extending pieces to Bohr sets with Lemma 7.8. In [49] the L_i live on
   coset progressions; in ℤ/N with polynomial bounds, Bohr sets via
