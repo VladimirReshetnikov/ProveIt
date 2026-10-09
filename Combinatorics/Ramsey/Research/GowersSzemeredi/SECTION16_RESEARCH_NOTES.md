@@ -5578,6 +5578,23 @@ the decomposition with these named constants, but not `Theorem162At 3`.
        J.98-type data.
      - The output is a dense `B′` whose elements each lie in `θ|X|²`
        additive quadruples, all zero relations at level 16.
+     - **From the original data (kernel-checked).** `global_column_bsg`
+       (`Proofs16GlobalColumnBSG`) starts from a dense
+       `E`-bihomomorphism, with `N ≥ globalColumnBSGModulusBound α`. It
+       takes J.98's column system and exact identities: J.98 supplies
+       `γN³` of them with `γ = globalColumnQuadrupleDensity α`, and
+       `exact_quadruples_le_diffGoodCount` turns them into level-1 zero
+       quadruples. With doubling `K = 2/α` (from `|X| ≥ αN/2`) it
+       returns a dense `B′` of columns, each in `θ|X|²` additive
+       level-16 zero relations.
+       - No model packing or elimination is used.
+       - `γ` is `exp(-poly(1/α))` (witness density `13^(-d)`), and every
+         BSG loss is polynomial in `γ` and `α`. The radii are
+         `ρ_16 ≈ ρ₁^((6d)^16)`, still `exp(-poly)`.
+       - This is the first stage of a replacement for J.108–J.110 that
+         stays in the `exp(-poly)` regime. It does not yet give "all
+         quadruples respected"; the bridging (J.142) and the later
+         steps remain.
 4. *Not done.* The bridging statement for `ℓ > 1`, Proposition 6.1, robust
    Bogolyubov–Ruzsa (Step 3), and Steps 4–6. The details follow below.
 
