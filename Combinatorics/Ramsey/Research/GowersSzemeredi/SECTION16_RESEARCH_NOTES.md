@@ -5697,6 +5697,20 @@ the agreement that `DeepStructureAt Bnd` requires at density `alpha` when
   alternating sums rather than at a packing of linear models. Then a
   Proposition 8.1 analogue can kill the nonzero values at polylog
   codimension cost.
+
+  *Formalized core (2026-10-09).* `Proofs16CharacterRefinement` proves the
+  deterministic selection behind Proposition 8.1 by averaging over all
+  `N^m` character tuples, with no probability.
+  - `exists_character_refinement`: suppose each signed sum
+    `∑ j, s j * f q j y` (signs `±1`) takes at most `K` values on
+    `⋂ j, B q j`. Then some `χ : Fin m → ZMod N` makes it vanish on the
+    refinements `characterRefinement χ n (B q j) (f q j)` for all but
+    `K·|Q|/2^m` of the indices `q`. The index set is not shrunk.
+  - `nonseparating_tuples_card_le` and `not_separates_signed_sum` are the
+    two ingredients.
+
+  Still open: the Bohr-set containment of the refined domains
+  (Milićević's Lemma 2.37) and the bounded-image input.
 - *Small additive rank.* Otherwise, a model family spanned by `R` basic
   maps might be eliminated with one test per generator, at column cost
   `β^O(R)`. That is `exp(-poly)` when `R` and the spectrum rank are
