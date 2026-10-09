@@ -4482,3 +4482,18 @@ is Proposition 5.1 (i)–(ii). Part (iii), bounded images of
 comes next. It needs the Cauchy–Schwarz chain of p. 54 and Lemma 2.42,
 which says that a Freiman-linear map vanishing on a dense part of a Bohr
 set has a small image. Standard axioms only; collision gate clean.
+
+**Lemma 2.42 without regular radii (`Proofs16FreimanFewValues`).**
+Milićević's "many zeroes imply small range" (p. 35) picks a regular
+radius `ρ′` with a small annulus. In `ℤ/N` a translate-averaging argument
+avoids that step, and it works for any level set.
+- `exists_dense_level_translate`: some `t` has
+  `|Z ∩ (t + B)|·N ≥ |Z|·|B|`.
+- `freiman_image_card_mul_le`: let `φ` be Freiman-linear on `B(Γ;ρ)` and
+  constant on `Z ⊆ B(Γ;ρ)`. Then
+  `#φ(B(Γ;ρ/2)) · |Z| · |B(Γ;ρ/4)| ≤ N·|B(Γ;ρ)|`.
+
+The differences of the level set inside one translate `t + B(ρ/4)` form a
+set `W ⊆ B(ρ/2)` on which `φ = φ(0)`. Distinct values of `φ` on `B(ρ/2)`
+then give disjoint translates `x + W ⊆ B(ρ)`. Standard axioms; collision
+gate clean.
